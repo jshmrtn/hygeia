@@ -1,3 +1,0 @@
-# Hygeia
-
-**TODO: Add description**
