@@ -54,6 +54,7 @@ defmodule Hygeia.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.0"},
       {:ecto_boot_migration, "~> 0.2"},
+      {:email_checker, "~> 0.1"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end
@@ -64,7 +65,11 @@ defmodule Hygeia.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.setup":
+        case Mix.env() do
+          :test -> ["ecto.create", "ecto.migrate"]
+          _env -> ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"]
+        end,
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]

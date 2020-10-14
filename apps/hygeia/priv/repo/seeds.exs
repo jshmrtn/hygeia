@@ -9,3 +9,12 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+import Hygeia.UserContext
+
+{:ok, _user_1} =
+  create_user(%{
+    email: "user@example.com",
+    display_name: "Test User",
+    iam_sub: "8fe86005-b3c6-4d7c-9746-53e090d05e48"
+  })

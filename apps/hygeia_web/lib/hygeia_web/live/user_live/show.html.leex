@@ -1,0 +1,30 @@
+<h1>
+  <%= gettext("Show User") %>
+</h1>
+
+<ul>
+
+  <li>
+    <strong>
+      <%= gettext("Email:") %>
+    </strong>
+    <%= @user.email %>
+  </li>
+
+  <li>
+    <strong>
+      <%= gettext("Display name:") %>
+    </strong>
+    <%= @user.display_name %>
+  </li>
+
+  <li>
+    <strong>
+      <%= gettext("IAM Subject:") %>
+    </strong>
+    <%= @user.iam_sub %>
+  </li>
+
+</ul>
+
+<span><%= "Back" |> gettext() |> live_redirect(to: Routes.user_index_path(@socket, :index)) %></span>

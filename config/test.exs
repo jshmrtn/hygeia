@@ -7,5 +7,9 @@ import Config
 # Run `mix help test` for more information.
 config :hygeia, Hygeia.Repo, pool: Ecto.Adapters.SQL.Sandbox
 
+# DO not check emails MX in test
+config :email_checker,
+  validations: [EmailChecker.Check.Format]
+
 # Print only warnings and errors during test
 config :logger, level: :warn
