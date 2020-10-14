@@ -90,7 +90,10 @@ defmodule HygeiaWeb do
 
       import HygeiaWeb.ErrorHelpers
       import HygeiaWeb.Gettext
+
       alias HygeiaWeb.Router.Helpers, as: Routes
+
+      import Surface
     end
   end
 

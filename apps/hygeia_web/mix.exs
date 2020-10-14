@@ -51,7 +51,11 @@ defmodule HygeiaWeb.MixProject do
     [
       {:phoenix, "~> 1.5.6"},
       {:phoenix_ecto, "~> 4.0"},
-      {:phoenix_live_view, "~> 0.14.6"},
+      # TODO: Switch back to released version when surface works with it
+      {:phoenix_live_view,
+       github: "phoenixframework/phoenix_live_view",
+       ref: "0f592a4b249858590a6b96c4e26e48fd7a46833b",
+       override: true},
       {:floki, ">= 0.27.0", only: :test},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -70,6 +74,7 @@ defmodule HygeiaWeb.MixProject do
       {:ex_cldr_calendars, "~> 1.10"},
       {:ex_cldr_units, "~> 3.2"},
       {:ex_cldr_languages, "~> 0.2.1"},
+      {:surface, git: "https://github.com/msaraiva/surface.git", tag: "v0.1.0-rc.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end
