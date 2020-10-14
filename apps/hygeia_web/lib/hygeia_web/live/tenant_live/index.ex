@@ -3,12 +3,17 @@ defmodule HygeiaWeb.TenantLive.Index do
 
   use HygeiaWeb, :live_view
 
+  alias Hygeia.Helpers.Versioning
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "tenants")
+
+    # TODO: Replace with correct Origin / Originator
+    Versioning.put_origin(:web)
+    Versioning.put_originator(:noone)
 
     {:ok, assign(socket, :tenants, list_tenants())}
   end
@@ -45,7 +50,7 @@ defmodule HygeiaWeb.TenantLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({_type, %Tenant{}}, socket) do
+  def handle_info({_type, %Tenant{}, _version}, socket) do
     {:noreply, assign(socket, :tenants, list_tenants())}
   end
 

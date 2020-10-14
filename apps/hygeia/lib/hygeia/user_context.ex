@@ -54,8 +54,9 @@ defmodule Hygeia.UserContext do
     do:
       %User{}
       |> change_user(attrs)
-      |> Repo.insert()
+      |> versioning_insert()
       |> broadcast("users", :create)
+      |> versioning_extract()
 
   @doc """
   Updates a user.
@@ -75,8 +76,9 @@ defmodule Hygeia.UserContext do
     do:
       user
       |> change_user(attrs)
-      |> Repo.update()
+      |> versioning_update()
       |> broadcast("users", :update)
+      |> versioning_extract()
 
   @doc """
   Deletes a user.
@@ -95,8 +97,9 @@ defmodule Hygeia.UserContext do
     do:
       user
       |> change_user()
-      |> Repo.delete()
+      |> versioning_delete()
       |> broadcast("users", :delete)
+      |> versioning_extract()
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking user changes.

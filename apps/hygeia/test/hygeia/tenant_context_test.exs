@@ -6,6 +6,9 @@ defmodule Hygeia.TenantContextTest do
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
 
+  @moduletag origin: :test
+  @moduletag originator: :noone
+
   describe "tenants" do
     @valid_attrs %{name: "some name"}
     @update_attrs %{name: "some updated name"}

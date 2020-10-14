@@ -14,9 +14,16 @@ config :hygeia,
   ecto_repos: [Hygeia.Repo]
 
 config :hygeia, Hygeia.Repo,
-  migration_timestamps: [type: :naive_datetime_usec],
+  migration_timestamps: [type: :utc_datetime_usec],
   migration_primary_key: [name: :uuid, type: :binary_id],
-  migration_foreign_key: [name: :uuid, type: :binary_id]
+  migration_foreign_key: [column: :uuid, type: :binary_id]
+
+config :paper_trail,
+  item_type: Ecto.UUID,
+  originator_type: Ecto.UUID,
+  timestamps_type: :utc_datetime_usec,
+  repo: Hygeia.Repo,
+  originator: [name: :user, model: Hygeia.UserContext.User]
 
 config :hygeia_web,
   ecto_repos: [Hygeia.Repo],

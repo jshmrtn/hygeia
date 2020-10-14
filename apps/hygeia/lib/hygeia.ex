@@ -23,6 +23,8 @@ defmodule Hygeia do
 
   @type ecto_changeset_params :: %{required(binary()) => term()} | %{required(atom()) => term()}
 
+  @type papertrail_version :: %PaperTrail.Version{}
+
   def model do
     quote do
       use Ecto.Schema
@@ -50,6 +52,7 @@ defmodule Hygeia do
       import Ecto.Query, warn: false
       import Hygeia.Helpers.PostgresError
       import Hygeia.Helpers.PubSub
+      import Hygeia.Helpers.Versioning
 
       alias Hygeia.Repo
 

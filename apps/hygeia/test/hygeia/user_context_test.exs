@@ -5,6 +5,9 @@ defmodule Hygeia.UserContextTest do
 
   alias Hygeia.UserContext
 
+  @moduletag origin: :test
+  @moduletag originator: :noone
+
   describe "user" do
     alias Hygeia.UserContext.User
 

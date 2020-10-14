@@ -54,8 +54,9 @@ defmodule Hygeia.CaseContext do
     do:
       %Profession{}
       |> change_profession(attrs)
-      |> Repo.insert()
+      |> versioning_insert()
       |> broadcast("professions", :create)
+      |> versioning_extract()
 
   @doc """
   Updates a profession.
@@ -75,8 +76,9 @@ defmodule Hygeia.CaseContext do
     do:
       profession
       |> change_profession(attrs)
-      |> Repo.update()
+      |> versioning_update()
       |> broadcast("professions", :update)
+      |> versioning_extract()
 
   @doc """
   Deletes a profession.
@@ -96,8 +98,9 @@ defmodule Hygeia.CaseContext do
     do:
       profession
       |> change_profession
-      |> Repo.delete()
+      |> versioning_delete()
       |> broadcast("professions", :delete)
+      |> versioning_extract()
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking profession changes.

@@ -18,6 +18,8 @@ defmodule Hygeia.DataCase do
 
   alias Ecto.Adapters.SQL.Sandbox
 
+  alias Hygeia.Helpers.Versioning
+
   using do
     quote do
       alias Hygeia.Repo
@@ -35,6 +37,16 @@ defmodule Hygeia.DataCase do
 
     unless tags[:async] do
       Sandbox.mode(Hygeia.Repo, {:shared, self()})
+    end
+
+    case tags[:origin] do
+      nil -> nil
+      origin -> Versioning.put_origin(origin)
+    end
+
+    case tags[:originator] do
+      nil -> nil
+      originator -> Versioning.put_originator(originator)
     end
 
     :ok

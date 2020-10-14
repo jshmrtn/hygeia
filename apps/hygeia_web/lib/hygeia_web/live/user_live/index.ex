@@ -25,7 +25,7 @@ defmodule HygeiaWeb.UserLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({_type, %User{}}, socket) do
+  def handle_info({_type, %User{}, _version}, socket) do
     {:noreply, assign(socket, :users, list_users())}
   end
 

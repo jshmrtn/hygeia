@@ -6,6 +6,9 @@ defmodule HygeiaWeb.UserLiveTest do
 
   import Phoenix.LiveViewTest
 
+  @moduletag origin: :test
+  @moduletag originator: :noone
+
   defp create_user(_tags) do
     %{user: user_fixture()}
   end

@@ -3,11 +3,16 @@ defmodule HygeiaWeb.TenantLive.Show do
 
   use HygeiaWeb, :live_view
 
+  alias Hygeia.Helpers.Versioning
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
+    # TODO: Replace with correct Origin / Originator
+    Versioning.put_origin(:web)
+    Versioning.put_originator(:noone)
+
     {:ok, socket}
   end
 
@@ -22,12 +27,12 @@ defmodule HygeiaWeb.TenantLive.Show do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:updated, %Tenant{} = tenant}, socket) do
+  def handle_info({:updated, %Tenant{} = tenant, _version}, socket) do
     {:noreply, assign(socket, :tenant, tenant)}
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:deleted, %Tenant{}}, socket) do
+  def handle_info({:deleted, %Tenant{}, _version}, socket) do
     {:noreply, redirect(socket, to: Routes.tenant_index_path(socket, :index))}
   end
 

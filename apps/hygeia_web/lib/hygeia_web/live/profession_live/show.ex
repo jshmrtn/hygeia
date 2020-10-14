@@ -5,9 +5,14 @@ defmodule HygeiaWeb.ProfessionLive.Show do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.Helpers.Versioning
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
+    # TODO: Replace with correct Origin / Originator
+    Versioning.put_origin(:web)
+    Versioning.put_originator(:noone)
+
     {:ok, socket}
   end
 
@@ -27,7 +32,7 @@ defmodule HygeiaWeb.ProfessionLive.Show do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:deleted, %Profession{}}, socket) do
+  def handle_info({:deleted, %Profession{}, _version}, socket) do
     {:noreply, redirect(socket, to: Routes.profession_index_path(socket, :index))}
   end
 

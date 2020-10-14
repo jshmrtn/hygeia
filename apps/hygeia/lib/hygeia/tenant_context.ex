@@ -54,8 +54,9 @@ defmodule Hygeia.TenantContext do
     do:
       %Tenant{}
       |> change_tenant(attrs)
-      |> Repo.insert()
+      |> versioning_insert()
       |> broadcast("tenants", :create)
+      |> versioning_extract()
 
   @doc """
   Updates a tenant.
@@ -75,8 +76,9 @@ defmodule Hygeia.TenantContext do
     do:
       tenant
       |> change_tenant(attrs)
-      |> Repo.update()
+      |> versioning_update()
       |> broadcast("tenants", :update)
+      |> versioning_extract()
 
   @doc """
   Deletes a tenant.
@@ -95,8 +97,9 @@ defmodule Hygeia.TenantContext do
     do:
       tenant
       |> change_tenant()
-      |> Repo.delete()
+      |> versioning_delete()
       |> broadcast("tenants", :delete)
+      |> versioning_extract()
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking tenant changes.

@@ -1,4 +1,6 @@
 defmodule HygeiaWeb.PageLiveTest do
+  @moduledoc false
+
   use HygeiaWeb.ConnCase
 
   import Phoenix.LiveViewTest

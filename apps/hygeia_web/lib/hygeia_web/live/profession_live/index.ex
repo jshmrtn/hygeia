@@ -5,9 +5,14 @@ defmodule HygeiaWeb.ProfessionLive.Index do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.Helpers.Versioning
 
   @impl true
   def mount(_params, _session, socket) do
+    # TODO: Replace with correct Origin / Originator
+    Versioning.put_origin(:web)
+    Versioning.put_originator(:noone)
+
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "professions")
 
     {:ok, assign(socket, :professions, list_professions())}
@@ -45,7 +50,7 @@ defmodule HygeiaWeb.ProfessionLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({_type, %Profession{}}, socket) do
+  def handle_info({_type, %Profession{}, _version}, socket) do
     {:noreply, assign(socket, :professions, list_professions())}
   end
 

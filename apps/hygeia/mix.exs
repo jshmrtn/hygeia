@@ -55,6 +55,7 @@ defmodule Hygeia.MixProject do
       {:jason, "~> 1.0"},
       {:ecto_boot_migration, "~> 0.2"},
       {:email_checker, "~> 0.1"},
+      {:paper_trail, "~> 0.9.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

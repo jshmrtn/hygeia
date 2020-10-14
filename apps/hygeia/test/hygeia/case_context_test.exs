@@ -6,6 +6,9 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Profession
 
+  @moduletag origin: :test
+  @moduletag originator: :noone
+
   describe "professions" do
     @valid_attrs %{name: "some name"}
     @update_attrs %{name: "some updated name"}

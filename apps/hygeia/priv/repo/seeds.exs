@@ -12,6 +12,11 @@
 
 import Hygeia.UserContext
 
+alias Hygeia.Helpers.Versioning
+
+Versioning.put_origin(:web)
+Versioning.put_originator(:noone)
+
 {:ok, _user_1} =
   create_user(%{
     email: "user@example.com",
