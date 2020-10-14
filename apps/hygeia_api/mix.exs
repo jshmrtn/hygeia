@@ -1,19 +1,19 @@
-defmodule HygeiaWeb.MixProject do
+defmodule HygeiaApi.MixProject do
   @moduledoc false
 
   use Mix.Project
 
   def project do
     [
-      app: :hygeia_web,
-      version: "0.0.0-noversion",
+      app: :hygeia_api,
+      version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
-      elixir: "~> 1.11",
+      elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
@@ -35,7 +35,7 @@ defmodule HygeiaWeb.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {HygeiaWeb.Application, []},
+      mod: {HygeiaApi.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -50,30 +50,30 @@ defmodule HygeiaWeb.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.5.6"},
-      {:phoenix_ecto, "~> 4.0"},
-      {:phoenix_live_view, "~> 0.14.6"},
-      {:floki, ">= 0.27.0", only: :test},
-      {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.3 or ~> 0.2.9"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
-      {:gettext, "~> 0.11"},
-      {:hygeia, in_umbrella: true},
-      {:hygeia_telemetry, in_umbrella: true},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:cors_plug, "~> 2.0"},
+      {:absinthe_phoenix, "~> 2.0"},
+      {:absinthe_relay, "~> 1.5"},
+      {:absinthe_error_payload, "1.0.1"},
+      {:dataloader, "~> 1.0"},
+      {:hygeia, in_umbrella: true},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
+  # For example, to install project dependencies and perform other setup tasks, run:
+  #
+  #     $ mix setup
   #
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "cmd npm install --prefix assets"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      setup: ["deps.get"]
     ]
   end
 end

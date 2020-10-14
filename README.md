@@ -26,3 +26,30 @@ $ docker run \
   * Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+
+## Environment Variables
+
+* Web
+  * `WEB_PORT` (default `4000`) - Port of the Web Server
+  * `WEB_EXTERNAL_PORT` (default same as port) - Externally Reachable Port
+  * `WEB_EXTERNAL_HOST` (default `localhost`) - Externally Reachable Host
+  * `WEB_EXTERNAL_SCHEME` (default `http`) - Externally Reachable Scheme (http/https)
+* API Web Server
+  * `API_PORT` (default `4001`) - Port of the Web Server
+  * `API_EXTERNAL_PORT` (default same as port) - Externally Reachable Port
+  * `API_EXTERNAL_HOST` (default `localhost`) - Externally Reachable Host
+  * `API_EXTERNAL_SCHEME` (default `http`) - Externally Reachable Scheme (http/https)
+* Database (Postgres)
+  * `DATABASE_SSL` (default `false`) - Use SSL for Database
+  * `DATABASE_USER` (default `root`) - Database Username
+  * `DATABASE_PASSWORD` (default empty`) - Database User Password
+  * `DATABASE_NAME` (default `hygeia`) - Database Name
+  * `DATABASE_PORT` (default `5432`) - Database Port
+  * `DATABASE_HOST` (default `localhost`) - Database Hostname / IP
+  * `POOL_SIZE` (default `10`) - Database Pool Size
+* Clustering
+  * `RELEASE_NAME` (`optional`) - App Name
+  * `KUBERNETES_POD_SELECTOR` (`optional`) - Selector to load Pod List
+  * `KUBERNETES_NAMESPACE` (`optional`) - Kubernetes Namespace
+* Security
+  * `SECRET_KEY_BASE` (`required`) - Secret Key to generate Tokens with

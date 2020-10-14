@@ -22,6 +22,12 @@ config :hygeia, Hygeia.Repo,
   hostname: System.get_env("DATABASE_HOST", "localhost"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE", "10"))
 
+secret_key_base =
+  System.get_env(
+    "SECRET_KEY_BASE",
+    "***REMOVED***"
+  )
+
 web_port =
   String.to_integer(
     System.get_env(
@@ -43,8 +49,27 @@ config :hygeia_web, HygeiaWeb.Endpoint,
     port: web_port,
     transport_options: [socket_opts: [:inet6]]
   ],
-  secret_key_base:
+  secret_key_base: secret_key_base
+
+api_port =
+  String.to_integer(
     System.get_env(
-      "SECRET_KEY_BASE",
-      "***REMOVED***"
+      "API_PORT",
+      case config_env() do
+        :test -> "5001"
+        _env -> "4001"
+      end
     )
+  )
+
+config :hygeia_api, HygeiaApi.Endpoint,
+  url: [
+    host: System.get_env("API_EXTERNAL_HOST", "localhost"),
+    port: System.get_env("API_EXTERNAL_PORT", "#{api_port}"),
+    scheme: System.get_env("API_EXTERNAL_SCHEME", "http")
+  ],
+  http: [
+    port: api_port,
+    transport_options: [socket_opts: [:inet6]]
+  ],
+  secret_key_base: secret_key_base

@@ -17,13 +17,20 @@ config :hygeia_web,
   ecto_repos: [Hygeia.Repo],
   generators: [context_app: :hygeia, binary_id: true]
 
+config :hygeia_api,
+  ecto_repos: [Hygeia.Repo],
+  generators: [context_app: :hygeia, binary_id: true]
+
 # Configures the endpoint
 config :hygeia_web, HygeiaWeb.Endpoint,
-  url: [host: "localhost"],
-  secret_key_base: "lHFPlFS0kRRA+s3hm0CEAmkdEK/VJmX/o2ZGkZlbpjFtbuxC8okGkvoj63TR/218",
   render_errors: [view: HygeiaWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Hygeia.PubSub,
   live_view: [signing_salt: "S3zkaQcW"]
+
+config :hygeia_api, HygeiaApi.Endpoint,
+  render_errors: [view: HygeiaApi.ErrorView, accepts: ~w(json), layout: false],
+  pubsub_server: Hygeia.PubSub,
+  live_view: [signing_salt: "eLUX7ihG"]
 
 # Configures Elixir's Logger
 config :logger, :console,
