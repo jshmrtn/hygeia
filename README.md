@@ -1,4 +1,4 @@
-# Hygeia.Umbrella
+# Hygeia
 
 ## Development
 
