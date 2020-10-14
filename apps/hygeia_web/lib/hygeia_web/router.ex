@@ -46,6 +46,13 @@ defmodule HygeiaWeb.Router do
 
       live "/tenants/:id", TenantLive.Show, :show
       live "/tenants/:id/show/edit", TenantLive.Show, :edit
+
+      live "/professions", ProfessionLive.Index, :index
+      live "/professions/new", ProfessionLive.Index, :new
+      live "/professions/:id/edit", ProfessionLive.Index, :edit
+
+      live "/professions/:id", ProfessionLive.Show, :show
+      live "/professions/:id/show/edit", ProfessionLive.Show, :edit
     end
   end
 end
