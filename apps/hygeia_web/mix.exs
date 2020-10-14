@@ -63,6 +63,13 @@ defmodule HygeiaWeb.MixProject do
       {:hygeia_telemetry, in_umbrella: true},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:ex_cldr, "~> 2.17"},
+      {:ex_cldr_numbers, "~> 2.15"},
+      {:ex_cldr_lists, "~> 2.6"},
+      {:ex_cldr_dates_times, "~> 2.5"},
+      {:ex_cldr_calendars, "~> 1.10"},
+      {:ex_cldr_units, "~> 3.2"},
+      {:ex_cldr_languages, "~> 0.2.1"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

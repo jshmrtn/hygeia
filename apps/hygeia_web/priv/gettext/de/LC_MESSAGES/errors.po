@@ -1,14 +1,14 @@
-# # `msgid`s in this file come from POT (.pot) files.
+# # "msgid"s in this file come from POT (.pot) files.
 # #
-# # Do not add, change, or remove `msgid`s manually here as
+# # Do not add, change, or remove "msgid"s manually here as
 # # they're tied to the ones in the corresponding POT file
 # # (with the same domain).
 # #
-# # Use `mix gettext.extract --merge` or `mix gettext.merge`
+# # Use "mix gettext.extract --merge" or "mix gettext.merge"
 # # to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: en\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Project-Id-Version: Hygeia\n"
 "POT-Creation-Date: \n"
@@ -21,88 +21,97 @@ msgstr ""
 "X-Generator: Poedit 2.4.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
+# # This is a PO Template file.
+# #
+# # `msgid`s here are often extracted from source code.
+# # Add new translations manually only if they're dynamic
+# # translations that can't be statically extracted.
+# #
+# # Run `mix gettext.extract` to bring this file up to
+# # date. Leave `msgstr`s empty as changing them here has no
+# # effect: edit them in PO (`.po`) files instead.
 # # From Ecto.Changeset.cast/4
 msgid "can't be blank"
-msgstr ""
+msgstr "kann nicht leer sein"
 
 # # From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr ""
+msgstr "wurde bereits vergeben"
 
 # # From Ecto.Changeset.put_change/3
 msgid "is invalid"
-msgstr ""
+msgstr "ist ungültig"
 
 # # From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
-msgstr ""
+msgstr "muss akzeptiert werden"
 
 # # From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
-msgstr ""
+msgstr "hat ungültiges Format"
 
 # # From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
-msgstr ""
+msgstr "hat einen ungültigen Eintrag"
 
 # # From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
-msgstr ""
+msgstr "ist reserviert"
 
 # # From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
-msgstr ""
+msgstr "entspricht nicht der Bestätigung"
 
 # # From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
-msgstr ""
+msgstr "ist immer noch mit diesem Eintrag verknüpft"
 
 msgid "are still associated with this entry"
-msgstr ""
+msgstr "sind immer noch mit diesem Eintrag verknüpft"
 
 # # From Ecto.Changeset.validate_length/3
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "sollte %{count} Zeichen lang sein"
+msgstr[1] "sollte %{count} Zeichen lang sein"
 
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "sollte %{count} Einträge haben"
+msgstr[1] "sollte %{count} Einträge haben"
 
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "sollte mindestens das Zeichen \"Anzahl\" (n) sein."
+msgstr[1] "sollte mindestens das Zeichen \"Anzahl\" (n) sein."
 
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "sollte mindestens %-Anzahl-Elemente aufweisen"
+msgstr[1] "sollte mindestens %-Anzahl-Elemente aufweisen"
 
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "sollte höchstens %-Anzahl-Zeichen(n) sein"
+msgstr[1] "sollte höchstens %-Anzahl-Zeichen(n) sein"
 
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "sollte höchstens %-Anzahl-Elemente haben"
+msgstr[1] "sollte höchstens %-Anzahl-Elemente haben"
 
 # # From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
-msgstr ""
+msgstr "muss kleiner als %{number} sein"
 
 msgid "must be greater than %{number}"
-msgstr ""
+msgstr "muss grösser als %{number} sein"
 
 msgid "must be less than or equal to %{number}"
-msgstr ""
+msgstr "muss kleiner oder gleich wie %{number} sein"
 
 msgid "must be greater than or equal to %{number}"
-msgstr ""
+msgstr "muss grösser oder gleich wie %{number} sein"
 
 msgid "must be equal to %{number}"
-msgstr ""
+msgstr "muss kleiner als %{number} sein"

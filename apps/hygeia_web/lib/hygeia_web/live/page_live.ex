@@ -7,7 +7,9 @@ defmodule HygeiaWeb.PageLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, query: "", results: %{})}
+    Process.send_after(self(), :tick, 10)
+
+    {:ok, assign(socket, query: "", results: %{}, time: DateTime.utc_now())}
   end
 
   @impl true
@@ -27,6 +29,13 @@ defmodule HygeiaWeb.PageLive do
          |> put_flash(:error, "No dependencies found matching \"#{query}\"")
          |> assign(results: %{}, query: query)}
     end
+  end
+
+  @impl true
+  def handle_info(:tick, socket) do
+    Process.send_after(self(), :tick, 10)
+
+    {:noreply, assign(socket, time: DateTime.utc_now())}
   end
 
   defp search(query) do
