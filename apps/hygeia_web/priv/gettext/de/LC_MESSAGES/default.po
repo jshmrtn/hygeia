@@ -21,6 +21,85 @@ msgstr ""
 "X-Generator: Poedit 2.4.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: lib/hygeia_web/live/page_live.html.leex:2
+#: lib/hygeia_web/live/page_live.ex:19
 msgid "Welcome to %{name}!"
 msgstr "Willkommen zu %{name}!"
+
+#: lib/hygeia_web/live/tenant_live/index.html.leex:32
+msgid "Are you sure?"
+msgstr "Sind Sie sicher?"
+
+#: lib/hygeia_web/live/page_live.ex:23
+msgid "CLDR Demo:"
+msgstr "CLDR-Demo:"
+
+#: lib/hygeia_web/live/tenant_live/index.html.leex:32
+msgid "Delete"
+msgstr "Löschen"
+
+#: lib/hygeia_web/live/tenant_live/index.html.leex:31
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: lib/hygeia_web/live/tenant_live/index.ex:23
+#: lib/hygeia_web/live/tenant_live/show.ex:35
+msgid "Edit Tenant"
+msgstr "Mandant bearbeiten"
+
+#: lib/hygeia_web/live/page_live.ex:32
+msgid "Go to Hexdocs"
+msgstr "Weiter zu Hexdocs"
+
+#: lib/hygeia_web/live/tenant_live/index.ex:35
+#: lib/hygeia_web/live/tenant_live/index.html.leex:2
+msgid "Listing Tenants"
+msgstr "Tenant Liste"
+
+#: lib/hygeia_web/live/page_live.ex:11
+msgid "Live dependency search"
+msgstr "Live-Abhängigkeitssuche"
+
+#: lib/hygeia_web/live/tenant_live/form_component.html.leex:9
+#: lib/hygeia_web/live/tenant_live/index.html.leex:18
+msgid "Name"
+msgstr "Name"
+
+#: lib/hygeia_web/live/tenant_live/index.html.leex:39
+msgid "New Tenant"
+msgstr "Neuer Mandant"
+
+#: lib/hygeia_web/live/page_live.ex:52
+msgid "No dependencies found matching \"%{query}\""
+msgstr "Es wurden keine Abhängigkeiten gefunden, die mit \"%{query}\" übereinstimmen."
+
+#: lib/hygeia_web/live/page_live.ex:20
+msgid "Peace of mind from prototype to production"
+msgstr "Seelenfrieden vom Prototypen bis zur Produktion"
+
+#: lib/hygeia_web/live/tenant_live/form_component.html.leex:13
+msgid "Save"
+msgstr "Speichern"
+
+#: lib/hygeia_web/live/tenant_live/form_component.html.leex:13
+msgid "Saving..."
+msgstr "Speichern..."
+
+#: lib/hygeia_web/live/page_live.ex:15
+msgid "Searching..."
+msgstr "Suche..."
+
+#: lib/hygeia_web/live/tenant_live/index.html.leex:30
+msgid "Show"
+msgstr "Anzeigen"
+
+#: lib/hygeia_web/live/tenant_live/show.ex:34
+msgid "Show Tenant"
+msgstr "Mandant anzeigen"
+
+#: lib/hygeia_web/live/tenant_live/form_component.ex:50
+msgid "Tenant created successfully"
+msgstr "Mandant wurde erfolgreich erstellt"
+
+#: lib/hygeia_web/live/tenant_live/form_component.ex:37
+msgid "Tenant updated successfully"
+msgstr "Mandant wurde erfolgreich aktualisiert"

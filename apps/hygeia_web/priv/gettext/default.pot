@@ -7,7 +7,6 @@
 # # Run "mix gettext.extract" to bring this file up to
 # # date. Leave "msgstr"s empty as changing them here as no
 # # effect: edit them in PO (.po) files instead.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Hygeia\n"
@@ -21,6 +20,104 @@ msgstr ""
 "X-Generator: Poedit 2.4.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: lib/hygeia_web/live/page_live.html.leex:2
+#: lib/hygeia_web/live/page_live.ex:19
 msgid "Welcome to %{name}!"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/index.html.leex:32
+msgid "Are you sure?"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/page_live.ex:23
+msgid "CLDR Demo:"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/index.html.leex:32
+msgid "Delete"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/index.html.leex:31
+msgid "Edit"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/index.ex:23
+#: lib/hygeia_web/live/tenant_live/show.ex:35
+msgid "Edit Tenant"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/page_live.ex:32
+msgid "Go to Hexdocs"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/index.ex:35
+#: lib/hygeia_web/live/tenant_live/index.html.leex:2
+msgid "Listing Tenants"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/page_live.ex:11
+msgid "Live dependency search"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/form_component.html.leex:9
+#: lib/hygeia_web/live/tenant_live/index.html.leex:18
+msgid "Name"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/index.html.leex:39
+msgid "New Tenant"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/page_live.ex:52
+msgid "No dependencies found matching \"%{query}\""
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/page_live.ex:20
+msgid "Peace of mind from prototype to production"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/form_component.html.leex:13
+msgid "Save"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/form_component.html.leex:13
+msgid "Saving..."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/page_live.ex:15
+msgid "Searching..."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/index.html.leex:30
+msgid "Show"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/show.ex:34
+msgid "Show Tenant"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/form_component.ex:50
+msgid "Tenant created successfully"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/form_component.ex:37
+msgid "Tenant updated successfully"
 msgstr ""
