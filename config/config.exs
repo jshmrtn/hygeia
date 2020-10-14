@@ -13,6 +13,11 @@ import Config
 config :hygeia,
   ecto_repos: [Hygeia.Repo]
 
+config :hygeia, Hygeia.Repo,
+  migration_timestamps: [type: :naive_datetime_usec],
+  migration_primary_key: [name: :uuid, type: :binary_id],
+  migration_foreign_key: [name: :uuid, type: :binary_id]
+
 config :hygeia_web,
   ecto_repos: [Hygeia.Repo],
   generators: [context_app: :hygeia, binary_id: true]

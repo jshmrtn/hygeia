@@ -26,6 +26,7 @@ defmodule Hygeia.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Hygeia.DataCase
+      import Hygeia.Fixtures
     end
   end
 

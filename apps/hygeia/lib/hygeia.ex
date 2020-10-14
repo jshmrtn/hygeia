@@ -26,13 +26,12 @@ defmodule Hygeia do
   def model do
     quote do
       use Ecto.Schema
-      use I18nHelpers.Ecto.TranslatableFields
 
       import Ecto.Changeset
 
-      alias Money.Ecto.Composite.Type, as: MoneyType
+      alias Ecto.Changeset
 
-      @primary_key {:id, :binary_id, autogenerate: true}
+      @primary_key {:uuid, :binary_id, autogenerate: true}
       @foreign_key_type :binary_id
       @timestamps_opts type: :naive_datetime_usec
     end
@@ -49,9 +48,18 @@ defmodule Hygeia do
   def context do
     quote do
       import Ecto.Query, warn: false
-      import MHygeia.Helpers.PostgresError
+      import Hygeia.Helpers.PostgresError
 
       alias Hygeia.Repo
+
+      alias Ecto.Changeset
     end
+  end
+
+  @doc """
+  When used, dispatch to the appropriate controller/view/etc.
+  """
+  defmacro __using__(which) when is_atom(which) do
+    apply(__MODULE__, which, [])
   end
 end

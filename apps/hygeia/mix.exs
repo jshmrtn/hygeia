@@ -48,6 +48,7 @@ defmodule Hygeia.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:phoenix, "~> 1.5.6"},
       {:phoenix_pubsub, "~> 2.0"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},

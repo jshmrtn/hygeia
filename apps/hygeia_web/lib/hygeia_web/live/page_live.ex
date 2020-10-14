@@ -5,19 +5,19 @@ defmodule HygeiaWeb.PageLive do
 
   use HygeiaWeb, :live_view
 
-  @impl true
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     Process.send_after(self(), :tick, 10)
 
     {:ok, assign(socket, query: "", results: %{}, time: DateTime.utc_now())}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("suggest", %{"q" => query}, socket) do
     {:noreply, assign(socket, results: search(query), query: query)}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("search", %{"q" => query}, socket) do
     case search(query) do
       %{^query => vsn} ->
@@ -31,7 +31,7 @@ defmodule HygeiaWeb.PageLive do
     end
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_info(:tick, socket) do
     Process.send_after(self(), :tick, 10)
 

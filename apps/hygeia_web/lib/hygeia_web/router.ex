@@ -35,9 +35,17 @@ defmodule HygeiaWeb.Router do
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
-    scope "/" do
+    scope "/", HygeiaWeb do
       pipe_through :browser
+
       live_dashboard "/dashboard", metrics: HygeiaTelemetry
+
+      live "/tenants", TenantLive.Index, :index
+      live "/tenants/new", TenantLive.Index, :new
+      live "/tenants/:id/edit", TenantLive.Index, :edit
+
+      live "/tenants/:id", TenantLive.Show, :show
+      live "/tenants/:id/show/edit", TenantLive.Show, :edit
     end
   end
 end
