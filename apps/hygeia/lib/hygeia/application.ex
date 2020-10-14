@@ -5,7 +5,12 @@ defmodule Hygeia.Application do
 
   use Application
 
+  @impl Application
+  @spec start(start_type :: Application.start_type(), start_args :: term()) ::
+          {:ok, pid()} | {:ok, pid(), Application.state()} | {:error, reason :: term()}
   def start(_type, _args) do
+    {:ok, _} = EctoBootMigration.migrate(:hygeia)
+
     children = [
       # Start the Ecto repository
       Hygeia.Repo,

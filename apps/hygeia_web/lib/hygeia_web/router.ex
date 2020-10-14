@@ -37,7 +37,7 @@ defmodule HygeiaWeb.Router do
 
     scope "/" do
       pipe_through :browser
-      live_dashboard "/dashboard", metrics: HygeiaWeb.Telemetry
+      live_dashboard "/dashboard", metrics: HygeiaTelemetry
     end
   end
 end

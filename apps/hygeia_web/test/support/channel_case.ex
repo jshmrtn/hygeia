@@ -28,13 +28,7 @@ defmodule HygeiaWeb.ChannelCase do
     end
   end
 
-  setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Hygeia.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Hygeia.Repo, {:shared, self()})
-    end
-
+  setup do
     :ok
   end
 end

@@ -1,7 +1,12 @@
-defmodule HygeiaWeb.Telemetry do
+defmodule HygeiaTelemetry do
+  @moduledoc """
+  API Telemetry
+  """
+
   use Supervisor
   import Telemetry.Metrics
 
+  @spec start_link(args :: Keyword.t()) :: Supervisor.on_start()
   def start_link(arg) do
     Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
   end

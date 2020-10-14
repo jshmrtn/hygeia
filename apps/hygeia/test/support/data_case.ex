@@ -16,6 +16,8 @@ defmodule Hygeia.DataCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL.Sandbox
+
   using do
     quote do
       alias Hygeia.Repo
@@ -28,10 +30,10 @@ defmodule Hygeia.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Hygeia.Repo)
+    :ok = Sandbox.checkout(Hygeia.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Hygeia.Repo, {:shared, self()})
+      Sandbox.mode(Hygeia.Repo, {:shared, self()})
     end
 
     :ok
@@ -45,9 +47,10 @@ defmodule Hygeia.DataCase do
       assert %{password: ["password is too short"]} = errors_on(changeset)
 
   """
+  @spec errors_on(changeset :: Ecto.Changeset.t()) :: [String.t()]
   def errors_on(changeset) do
     Ecto.Changeset.traverse_errors(changeset, fn {message, opts} ->
-      Regex.replace(~r"%{(\w+)}", message, fn _, key ->
+      Regex.replace(~r"%{(\w+)}", message, fn _message, key ->
         opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
       end)
     end)

@@ -1,4 +1,8 @@
 defmodule HygeiaWeb.PageLive do
+  @moduledoc """
+  Page Live View
+  """
+
   use HygeiaWeb, :live_view
 
   @impl true
@@ -17,7 +21,7 @@ defmodule HygeiaWeb.PageLive do
       %{^query => vsn} ->
         {:noreply, redirect(socket, external: "https://hexdocs.pm/#{query}/#{vsn}")}
 
-      _ ->
+      _query ->
         {:noreply,
          socket
          |> put_flash(:error, "No dependencies found matching \"#{query}\"")

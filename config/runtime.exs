@@ -4,14 +4,14 @@ case config_env() do
   :prod ->
     config :hygeia_web, HygeiaWeb.Endpoint, server: true
 
-  _ ->
+  _env ->
     nil
 end
 
 database_ssl =
   case System.get_env("DATABASE_SSL", "false") do
     truthy when truthy in ["true", "1"] -> true
-    _ -> false
+    _falsy -> false
   end
 
 config :hygeia, Hygeia.Repo,
@@ -28,7 +28,7 @@ web_port =
       "WEB_PORT",
       case config_env() do
         :test -> "5000"
-        _ -> "4000"
+        _env -> "4000"
       end
     )
   )
