@@ -50,19 +50,12 @@ defmodule Hygeia.TenantContext do
   """
   @spec create_tenant(attrs :: Hygeia.ecto_changeset_params()) ::
           {:ok, Tenant.t()} | {:error, Ecto.Changeset.t()}
-  def create_tenant(attrs \\ %{}) do
-    %Tenant{}
-    |> change_tenant(attrs)
-    |> Repo.insert()
-    |> case do
-      {:ok, tenant} ->
-        Phoenix.PubSub.broadcast!(Hygeia.PubSub, "tenants", {:created, tenant})
-        {:ok, tenant}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  end
+  def create_tenant(attrs \\ %{}),
+    do:
+      %Tenant{}
+      |> change_tenant(attrs)
+      |> Repo.insert()
+      |> broadcast("tenants", :create)
 
   @doc """
   Updates a tenant.
@@ -78,20 +71,12 @@ defmodule Hygeia.TenantContext do
   """
   @spec update_tenant(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           {:ok, Tenant.t()} | {:error, Ecto.Changeset.t()}
-  def update_tenant(%Tenant{} = tenant, attrs) do
-    tenant
-    |> change_tenant(attrs)
-    |> Repo.update()
-    |> case do
-      {:ok, tenant} ->
-        Phoenix.PubSub.broadcast!(Hygeia.PubSub, "tenants", {:updated, tenant})
-        Phoenix.PubSub.broadcast!(Hygeia.PubSub, "tenants:#{tenant.uuid}", {:updated, tenant})
-        {:ok, tenant}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  end
+  def update_tenant(%Tenant{} = tenant, attrs),
+    do:
+      tenant
+      |> change_tenant(attrs)
+      |> Repo.update()
+      |> broadcast("tenants", :update)
 
   @doc """
   Deletes a tenant.
@@ -106,20 +91,12 @@ defmodule Hygeia.TenantContext do
 
   """
   @spec delete_tenant(tenant :: Tenant.t()) :: {:ok, Tenant.t()} | {:error, Ecto.Changeset.t()}
-  def delete_tenant(%Tenant{} = tenant) do
-    tenant
-    |> change_tenant()
-    |> Repo.delete()
-    |> case do
-      {:ok, tenant} ->
-        Phoenix.PubSub.broadcast!(Hygeia.PubSub, "tenants", {:deleted, tenant})
-        Phoenix.PubSub.broadcast!(Hygeia.PubSub, "tenants:#{tenant.uuid}", {:deleted, tenant})
-        {:ok, tenant}
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  end
+  def delete_tenant(%Tenant{} = tenant),
+    do:
+      tenant
+      |> change_tenant()
+      |> Repo.delete()
+      |> broadcast("tenants", :delete)
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking tenant changes.

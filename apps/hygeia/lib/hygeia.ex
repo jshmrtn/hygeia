@@ -49,6 +49,7 @@ defmodule Hygeia do
     quote do
       import Ecto.Query, warn: false
       import Hygeia.Helpers.PostgresError
+      import Hygeia.Helpers.PubSub
 
       alias Hygeia.Repo
 
