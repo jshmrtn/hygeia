@@ -15,7 +15,8 @@ defmodule Hygeia.Umbrella.MixProject do
       test_coverage: [tool: ExCoveralls],
       dialyzer: [
         ignore_warnings: ".dialyzer_ignore.exs",
-        list_unused_filters: true
+        list_unused_filters: true,
+        plt_add_apps: [:mix]
       ],
       preferred_cli_env: [
         coveralls: :test,

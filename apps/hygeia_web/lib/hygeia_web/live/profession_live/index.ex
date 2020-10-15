@@ -7,7 +7,7 @@ defmodule HygeiaWeb.ProfessionLive.Index do
   alias Hygeia.CaseContext.Profession
   alias Hygeia.Helpers.Versioning
 
-  @impl true
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     # TODO: Replace with correct Origin / Originator
     Versioning.put_origin(:web)
@@ -18,7 +18,7 @@ defmodule HygeiaWeb.ProfessionLive.Index do
     {:ok, assign(socket, :professions, list_professions())}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
@@ -41,7 +41,7 @@ defmodule HygeiaWeb.ProfessionLive.Index do
     |> assign(:profession, nil)
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id}, socket) do
     profession = CaseContext.get_profession!(id)
     {:ok, _} = CaseContext.delete_profession(profession)

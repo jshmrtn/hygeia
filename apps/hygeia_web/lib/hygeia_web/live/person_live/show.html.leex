@@ -1,0 +1,23 @@
+<h1>
+  <%= gettext("Show Person") %>
+</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, HygeiaWeb.PersonLive.FormComponent,
+    id: @person.uuid,
+    title: @page_title,
+    action: @live_action,
+    person: @person,
+    return_to: Routes.person_show_path(@socket, :show, @person) %>
+<% end %>
+
+<pre><%= inspect(@person, pretty: true) %></pre>
+<%= for version <- @versions do %>
+  <details>
+    <summary><%= version.event %></summary>
+    <pre><%= inspect(version, pretty: true) %></pre>
+  </details>
+<% end %>
+
+<span><%= "Edit" |> gettext() |> live_patch(to: Routes.person_show_path(@socket, :edit, @person), class: "button") %></span>
+<span><%= "Back" |> gettext() |> live_redirect(to: Routes.person_index_path(@socket, :index)) %></span>
