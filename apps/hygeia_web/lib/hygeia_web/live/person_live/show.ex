@@ -8,7 +8,11 @@ defmodule HygeiaWeb.PersonLive.Show do
   alias Hygeia.Helpers.Versioning
 
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    unless is_nil(session["cldr_locale"]) do
+      HygeiaWeb.Cldr.put_locale(session["cldr_locale"])
+    end
+
     # TODO: Replace with correct Origin / Originator
     Versioning.put_origin(:web)
     Versioning.put_originator(:noone)

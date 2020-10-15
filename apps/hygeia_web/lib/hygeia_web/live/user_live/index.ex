@@ -7,7 +7,11 @@ defmodule HygeiaWeb.UserLive.Index do
   alias Hygeia.UserContext.User
 
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    unless is_nil(session["cldr_locale"]) do
+      HygeiaWeb.Cldr.put_locale(session["cldr_locale"])
+    end
+
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "users")
 
     {:ok, assign(socket, :users, list_users())}

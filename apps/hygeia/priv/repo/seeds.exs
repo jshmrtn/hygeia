@@ -39,8 +39,8 @@ Versioning.put_originator(:noone)
       address: "Erlen 4",
       zip: "9042",
       place: "Speicher",
-      region: "Kanton Appenzell Ausserrhoden",
-      country: "CHE"
+      subdivision: "AR",
+      country: "CH"
     },
     birth_date: ~D[1993-01-30],
     contact_methods: [
@@ -57,8 +57,8 @@ Versioning.put_originator(:noone)
           address: "Neugasse 51",
           zip: "9000",
           place: "St. Gallen",
-          region: "St. Gallen",
-          country: "CHE"
+          subdivision: "SG",
+          country: "CH"
         }
       }
     ],

@@ -40,13 +40,13 @@
     <%= text_input address_f, :place %>
     <%= error_tag address_f, :place %>
 
-    <%= label address_f, :region, gettext("Region") %>
-    <%= text_input address_f, :region %>
-    <%= error_tag address_f, :region %>
-
     <%= label address_f, :country, gettext("Country") %>
-    <%= text_input address_f, :country %>
+    <%= select address_f, :country, countries(), prompt: gettext("-- choose country --") %>
     <%= error_tag address_f, :country %>
+
+    <%= label address_f, :subdivision, gettext("Subdivision") %>
+    <%= select address_f, :subdivision, subdivisions(address_f.source), prompt: gettext("-- choose subdivision --") %>
+    <%= error_tag address_f, :subdivision %>
 
   <% end %>
 
@@ -54,5 +54,5 @@
   <%= select f, :profession_uuid, Enum.map(@professions, &({&1.name, &1.uuid})), prompt: gettext("-- select profession --") %>
   <%= error_tag f, :profession_uuid %>
 
-  <%= "Save" |> gettext() |> submit(phx_disable_with: gettext("Saving...")) %>
+  <%= "Save" |> gettext() |> submit(phx_disable_with: gettext("Saving..."), disabled: not(@changeset.valid?)) %>
 </form>

@@ -8,7 +8,11 @@ defmodule HygeiaWeb.TenantLive.Index do
   alias Hygeia.TenantContext.Tenant
 
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    unless is_nil(session["cldr_locale"]) do
+      HygeiaWeb.Cldr.put_locale(session["cldr_locale"])
+    end
+
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "tenants")
 
     # TODO: Replace with correct Origin / Originator

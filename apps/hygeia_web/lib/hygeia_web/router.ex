@@ -1,6 +1,9 @@
 defmodule HygeiaWeb.Router do
   use HygeiaWeb, :router
 
+  # Make sure compilation order is correct
+  require HygeiaWeb.Cldr
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +11,18 @@ defmodule HygeiaWeb.Router do
     plug :put_root_layout, {HygeiaWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+
+    plug Cldr.Plug.AcceptLanguage,
+      cldr_backend: HygeiaWeb.Cldr
+
+    plug Cldr.Plug.SetLocale,
+      apps: [:cldr, :gettext],
+      from: [:session, :accept_language],
+      gettext: HygeiaWeb.Gettext,
+      cldr: HygeiaWeb.Cldr,
+      session_key: "cldr_locale"
+
+    plug :store_locale
   end
 
   pipeline :api do
@@ -18,6 +33,31 @@ defmodule HygeiaWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+
+    live "/tenants", TenantLive.Index, :index
+    live "/tenants/new", TenantLive.Index, :new
+    live "/tenants/:id/edit", TenantLive.Index, :edit
+
+    live "/tenants/:id", TenantLive.Show, :show
+    live "/tenants/:id/show/edit", TenantLive.Show, :edit
+
+    live "/professions", ProfessionLive.Index, :index
+    live "/professions/new", ProfessionLive.Index, :new
+    live "/professions/:id/edit", ProfessionLive.Index, :edit
+
+    live "/professions/:id", ProfessionLive.Show, :show
+    live "/professions/:id/show/edit", ProfessionLive.Show, :edit
+
+    live "/users", UserLive.Index, :index
+
+    live "/users/:id", UserLive.Show, :show
+
+    live "/people", PersonLive.Index, :index
+    live "/people/new", PersonLive.Index, :new
+    live "/people/:id/edit", PersonLive.Index, :edit
+
+    live "/people/:id", PersonLive.Show, :show
+    live "/people/:id/show/edit", PersonLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
@@ -39,31 +79,10 @@ defmodule HygeiaWeb.Router do
       pipe_through :browser
 
       live_dashboard "/dashboard", metrics: HygeiaTelemetry
-
-      live "/tenants", TenantLive.Index, :index
-      live "/tenants/new", TenantLive.Index, :new
-      live "/tenants/:id/edit", TenantLive.Index, :edit
-
-      live "/tenants/:id", TenantLive.Show, :show
-      live "/tenants/:id/show/edit", TenantLive.Show, :edit
-
-      live "/professions", ProfessionLive.Index, :index
-      live "/professions/new", ProfessionLive.Index, :new
-      live "/professions/:id/edit", ProfessionLive.Index, :edit
-
-      live "/professions/:id", ProfessionLive.Show, :show
-      live "/professions/:id/show/edit", ProfessionLive.Show, :edit
-
-      live "/users", UserLive.Index, :index
-
-      live "/users/:id", UserLive.Show, :show
-
-      live "/people", PersonLive.Index, :index
-      live "/people/new", PersonLive.Index, :new
-      live "/people/:id/edit", PersonLive.Index, :edit
-
-      live "/people/:id", PersonLive.Show, :show
-      live "/people/:id/show/edit", PersonLive.Show, :edit
     end
+  end
+
+  defp store_locale(conn, _params) do
+    Plug.Conn.put_session(conn, "cldr_locale", conn.private.cldr_locale.requested_locale_name)
   end
 end

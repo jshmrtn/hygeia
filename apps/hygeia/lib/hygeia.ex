@@ -31,6 +31,8 @@ defmodule Hygeia do
 
       import Ecto.Changeset
 
+      import Hygeia.Helpers.Country
+
       alias Ecto.Changeset
 
       @primary_key {:uuid, :binary_id, autogenerate: true}

@@ -56,8 +56,8 @@ defmodule Hygeia.Fixtures do
       address: "Neugasse 51",
       zip: "9000",
       place: "St. Gallen",
-      region: "St. Gallen",
-      country: "CHE"
+      subdivision: "SG",
+      country: "CH"
     },
     birth_date: ~D[2010-04-17],
     contact_methods: [
@@ -74,8 +74,8 @@ defmodule Hygeia.Fixtures do
           address: "Neugasse 51",
           zip: "9000",
           place: "St. Gallen",
-          region: "St. Gallen",
-          country: "CHE"
+          subdivision: "SG",
+          country: "CH"
         }
       }
     ],

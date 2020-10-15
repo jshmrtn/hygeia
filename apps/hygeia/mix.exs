@@ -58,6 +58,8 @@ defmodule Hygeia.MixProject do
       # TODO: Replace with released version when https://github.com/izelnakri/paper_trail/pull/112 is released
       {:paper_trail, github: "jshmrtn/paper_trail", branch: "master"},
       {:ecto_enum, "~> 1.4"},
+      # TODO: Replace with released version when https://github.com/Recruitee/cadastre/pull/1 is released
+      {:cadastre, github: "jshmrtn/cadastre", branch: "master"},
       {:human_readable_identifier_generator, in_umbrella: true},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]

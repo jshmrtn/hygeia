@@ -52,6 +52,11 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Cadastre only do required languages
+config :cadastre, Cadastre.I18n,
+  default_locale: "en",
+  allowed_locales: ["de", "en", "fr", "it"]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

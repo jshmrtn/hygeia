@@ -6,7 +6,11 @@ defmodule HygeiaWeb.PageLive do
   use HygeiaWeb, :surface_view
 
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    unless is_nil(session["cldr_locale"]) do
+      HygeiaWeb.Cldr.put_locale(session["cldr_locale"])
+    end
+
     Process.send_after(self(), :tick, 10)
 
     {:ok, socket |> Surface.init() |> assign(query: "", results: %{}, time: DateTime.utc_now())}

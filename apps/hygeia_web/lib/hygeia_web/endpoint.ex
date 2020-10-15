@@ -1,9 +1,6 @@
 defmodule HygeiaWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :hygeia_web
 
-  # Make sure compilation order is correct
-  require HygeiaWeb.Cldr
-
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
@@ -53,15 +50,6 @@ defmodule HygeiaWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-
-  plug Cldr.Plug.AcceptLanguage,
-    cldr_backend: HygeiaWeb.Cldr
-
-  plug Cldr.Plug.SetLocale,
-    apps: [:cldr, :gettext],
-    from: [:accept_language],
-    gettext: HygeiaWeb.Gettext,
-    cldr: HygeiaWeb.Cldr
 
   plug HygeiaWeb.Router
 end
