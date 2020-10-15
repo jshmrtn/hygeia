@@ -51,9 +51,26 @@ defmodule HygeiaWeb do
     end
   end
 
+  def surface_view do
+    quote do
+      use Surface.LiveView,
+        layout: {HygeiaWeb.LayoutView, "live.html"}
+
+      unquote(view_helpers())
+    end
+  end
+
   def live_component do
     quote do
       use Phoenix.LiveComponent
+
+      unquote(view_helpers())
+    end
+  end
+
+  def surface_component do
+    quote do
+      use Surface.LiveComponent
 
       unquote(view_helpers())
     end
@@ -92,8 +109,6 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Gettext
 
       alias HygeiaWeb.Router.Helpers, as: Routes
-
-      import Surface
     end
   end
 

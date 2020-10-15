@@ -3,36 +3,13 @@ defmodule HygeiaWeb.PageLive do
   Page Live View
   """
 
-  use HygeiaWeb, :live_view
+  use HygeiaWeb, :surface_view
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     Process.send_after(self(), :tick, 10)
 
     {:ok, socket |> Surface.init() |> assign(query: "", results: %{}, time: DateTime.utc_now())}
-  end
-
-  @impl Phoenix.LiveView
-  def render(assigns) do
-    ~H"""
-    <section class="phx-hero">
-      <h1>{{ gettext("Welcome to %{name}!", name: "Phoenix") }}</h1>
-      <p>{{ gettext("Peace of mind from prototype to production") }}</p>
-
-      <p>
-        <b>{{ gettext("CLDR Demo:") }}</b>
-        {{ Cldr.DateTime.to_string! @time, HygeiaWeb.Cldr }}
-      </p>
-
-      <form :on-change="suggest" :on-submit="search">
-        <input type="text" name="q" value="{{ @query }}" placeholder="{{ gettext("Live dependency search") }}" list="results" autocomplete="off"/>
-        <datalist id="results">
-          <option :for={{ {app, _version} <- @results }} value="{{ app }}">{{ app }}</option>
-        </datalist>
-        <button type="submit" phx-disable-with="{{ gettext("Searching...") }}">{{ gettext("Go to Hexdocs") }}</button>
-      </form>
-    </section>
-    """
   end
 
   @impl Phoenix.LiveView

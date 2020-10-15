@@ -5,24 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%= csrf_meta_tag() %>
-    <%= live_title_tag assigns[:page_title] || "Hygeia", suffix: " · Phoenix Framework" %>
+    <%= live_title_tag assigns[:page_title] || "Hygeia" %>
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body>
     <header>
       <section class="container">
-        <nav role="navigation">
-          <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
+        <ul class="nav nav-pills my-3" role="navigation">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Active</a>
+          </li>
+          <li class="nav-item">
             <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
+              <%= "Live Dashboard" |> gettext() |> link(to: Routes.live_dashboard_path(@conn, :home), class: "nav-link") %>
             <% end %>
-          </ul>
-        </nav>
-        <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
-        </a>
+          </li>
+        </ul>
       </section>
     </header>
     <%= @inner_content %>
