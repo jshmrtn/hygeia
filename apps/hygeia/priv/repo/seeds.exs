@@ -10,6 +10,8 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+import Hygeia.CaseContext
+import Hygeia.TenantContext
 import Hygeia.UserContext
 
 alias Hygeia.Helpers.Versioning
@@ -22,4 +24,57 @@ Versioning.put_originator(:noone)
     email: "user@example.com",
     display_name: "Test User",
     iam_sub: "8fe86005-b3c6-4d7c-9746-53e090d05e48"
+  })
+
+{:ok, _tenant_sg} = create_tenant(%{name: "Kanton St. Gallen"})
+{:ok, _tenant_ai} = create_tenant(%{name: "Kanton Appenzell Innerrhoden"})
+{:ok, tenant_ar} = create_tenant(%{name: "Kanton Appenzell Ausserrhoden"})
+
+{:ok, profession_office} = create_profession(%{name: "Büro"})
+{:ok, _profession_construction} = create_profession(%{name: "Baustelle"})
+
+{:ok, _person_jony} =
+  create_person(tenant_ar, %{
+    address: %{
+      address: "Erlen 4",
+      zip: "9042",
+      place: "Speicher",
+      region: "Kanton Appenzell Ausserrhoden",
+      country: "CHE"
+    },
+    birth_date: ~D[1993-01-30],
+    contact_methods: [
+      %{
+        type: :mobile,
+        value: "+41 78 724 57 90",
+        comment: "Call only between 7 and 9 am"
+      }
+    ],
+    employers: [
+      %{
+        name: "JOSHMARTIN GmbH",
+        address: %{
+          address: "Neugasse 51",
+          zip: "9000",
+          place: "St. Gallen",
+          region: "St. Gallen",
+          country: "CHE"
+        }
+      }
+    ],
+    external_references: [
+      %{
+        type: :ism,
+        value: "7000"
+      },
+      %{
+        type: :other,
+        type_name: "foo",
+        value: "7000"
+      }
+    ],
+    profession_uuid: profession_office.uuid,
+    first_name: "Jonatan",
+    last_name: "Männchen",
+    sex: :male
   })
