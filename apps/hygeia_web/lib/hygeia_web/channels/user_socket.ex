@@ -27,7 +27,7 @@ defmodule HygeiaWeb.UserSocket do
   # Would allow you to broadcast a "disconnect" event and terminate
   # all active sockets and channels for a given user:
   #
-  #     HygeiaWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
+  #     HygeiaWeb.Endpoint.broadcast("user_socket:#{user.uuid}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
   @impl Phoenix.Socket

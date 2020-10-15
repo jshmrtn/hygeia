@@ -8,6 +8,7 @@ defmodule Hygeia.CaseContext.Person do
   import EctoEnum
 
   alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.ContactMethod
   alias Hygeia.CaseContext.Employer
   alias Hygeia.CaseContext.ExternalReference
@@ -33,6 +34,7 @@ defmodule Hygeia.CaseContext.Person do
           profession: Ecto.Schema.belongs_to(Profession.t()) | nil,
           tenant_uuid: String.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
+          cases: Ecto.Schema.has_many(Case.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -52,6 +54,7 @@ defmodule Hygeia.CaseContext.Person do
           profession: Ecto.Schema.belongs_to(Profession.t()),
           tenant_uuid: String.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
+          cases: Ecto.Schema.has_many(Case.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -70,6 +73,7 @@ defmodule Hygeia.CaseContext.Person do
 
     belongs_to :profession, Profession, references: :uuid, foreign_key: :profession_uuid
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
+    has_many :cases, Case
 
     timestamps()
   end
@@ -95,28 +99,5 @@ defmodule Hygeia.CaseContext.Person do
     |> cast_embed(:employers)
     |> foreign_key_constraint(:tenant_uuid)
     |> foreign_key_constraint(:profession_uuid)
-  end
-
-  defp fill_uuid(changeset) do
-    changeset
-    |> fetch_field!(:uuid)
-    |> case do
-      nil -> put_change(changeset, :uuid, Ecto.UUID.generate())
-      uuid when is_binary(uuid) -> changeset
-    end
-  end
-
-  defp fill_human_readable_id(changeset) do
-    {:ok, new_id} =
-      changeset
-      |> fetch_field!(:uuid)
-      |> HumanReadableIdentifierGenerator.fetch_human_readable_id()
-
-    changeset
-    |> fetch_field!(:human_readable_id)
-    |> case do
-      nil -> put_change(changeset, :human_readable_id, new_id)
-      ^new_id -> changeset
-    end
   end
 end

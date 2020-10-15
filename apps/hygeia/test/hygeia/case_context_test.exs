@@ -5,10 +5,17 @@ defmodule Hygeia.CaseContextTest do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.Clinical
   alias Hygeia.CaseContext.ContactMethod
   alias Hygeia.CaseContext.Employer
+  alias Hygeia.CaseContext.ExternalReference
+  alias Hygeia.CaseContext.Hospitalization
+  alias Hygeia.CaseContext.Monitoring
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.Phase
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.TenantContext.Tenant
+  alias Hygeia.UserContext.User
 
   @moduletag origin: :test
   @moduletag originator: :noone
@@ -243,6 +250,191 @@ defmodule Hygeia.CaseContextTest do
     test "change_person/1 returns a person changeset" do
       person = person_fixture()
       assert %Ecto.Changeset{} = CaseContext.change_person(person)
+    end
+  end
+
+  describe "cases" do
+    alias Hygeia.CaseContext.Case
+
+    @valid_attrs %{
+      complexity: :high,
+      status: :first_contact,
+      hospitalizations: [
+        %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
+        %{start: ~D[2020-10-16], end: nil}
+      ],
+      clinical: %{
+        reasons_for_pcr_test: [:symptoms, :outbreak_examination],
+        symptoms: [:fever],
+        symptom_start: ~D[2020-10-10],
+        test: ~D[2020-10-11],
+        laboratory_report: ~D[2020-10-12],
+        test_kind: :pcr,
+        result: :positive
+      },
+      external_references: [
+        %{
+          type: :ism,
+          value: "7000"
+        },
+        %{
+          type: :other,
+          type_name: "foo",
+          value: "7000"
+        }
+      ],
+      monitoring: %{
+        first_contact: ~D[2020-10-12],
+        location: :home,
+        location_details: "Bei Mutter zuhause",
+        address: %{
+          address: "Helmweg 48",
+          zip: "8405",
+          place: "Winterthur",
+          subdivision: "ZH",
+          country: "CH"
+        }
+      },
+      phases: [
+        %{
+          type: :possible_index,
+          start: ~D[2020-10-10],
+          end: ~D[2020-10-12],
+          end_reason: :converted_to_index
+        },
+        %{
+          type: :index,
+          start: ~D[2020-10-12],
+          end: ~D[2020-10-22],
+          end_reason: :healed
+        }
+      ]
+    }
+    @update_attrs %{
+      complexity: :low,
+      status: :done
+    }
+    @invalid_attrs %{
+      complexity: nil,
+      status: nil
+    }
+
+    test "list_cases/0 returns all cases" do
+      case = case_fixture()
+      assert CaseContext.list_cases() == [case]
+    end
+
+    test "get_case!/1 returns the case with given id" do
+      case = case_fixture()
+      assert CaseContext.get_case!(case.uuid) == case
+    end
+
+    test "create_case/1 with valid data creates a case" do
+      tenant = %Tenant{uuid: tenant_uuid} = tenant_fixture()
+      person = %Person{uuid: person_uuid} = person_fixture(tenant)
+      user = %User{uuid: user_uuid} = user_fixture()
+
+      assert {:ok,
+              %Case{
+                clinical: %Clinical{
+                  laboratory_report: ~D[2020-10-12],
+                  reasons_for_pcr_test: [:symptoms, :outbreak_examination],
+                  result: :positive,
+                  symptom_start: ~D[2020-10-10],
+                  symptoms: [:fever],
+                  test: ~D[2020-10-11],
+                  test_kind: :pcr,
+                  uuid: _
+                },
+                complexity: :high,
+                external_references: [
+                  %ExternalReference{type: :ism, type_name: nil, uuid: _, value: "7000"},
+                  %ExternalReference{type: :other, type_name: "foo", uuid: _, value: "7000"}
+                ],
+                hospitalizations: [
+                  %Hospitalization{end: ~D[2020-10-15], start: ~D[2020-10-13], uuid: _},
+                  %Hospitalization{end: nil, start: ~D[2020-10-16], uuid: _}
+                ],
+                human_readable_id: _,
+                inserted_at: _,
+                monitoring: %Monitoring{
+                  address: %Address{
+                    address: "Helmweg 48",
+                    country: "CH",
+                    place: "Winterthur",
+                    subdivision: "ZH",
+                    uuid: _,
+                    zip: "8405"
+                  },
+                  first_contact: ~D[2020-10-12],
+                  location: :home,
+                  location_details: "Bei Mutter zuhause",
+                  uuid: _
+                },
+                phases: [
+                  %Phase{
+                    end: ~D[2020-10-12],
+                    end_reason: :converted_to_index,
+                    start: ~D[2020-10-10],
+                    type: :possible_index,
+                    uuid: _
+                  },
+                  %Phase{
+                    end: ~D[2020-10-22],
+                    end_reason: :healed,
+                    start: ~D[2020-10-12],
+                    type: :index,
+                    uuid: _
+                  }
+                ],
+                person: _,
+                person_uuid: ^person_uuid,
+                status: :first_contact,
+                supervisor: _,
+                supervisor_uuid: ^user_uuid,
+                tenant: _,
+                tenant_uuid: ^tenant_uuid,
+                tracer: _,
+                tracer_uuid: ^user_uuid,
+                updated_at: _,
+                uuid: _
+              }} =
+               CaseContext.create_case(
+                 person,
+                 Map.merge(@valid_attrs, %{tracer_uuid: user.uuid, supervisor_uuid: user.uuid})
+               )
+    end
+
+    test "create_case/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               CaseContext.create_case(person_fixture(), @invalid_attrs)
+    end
+
+    test "update_case/2 with valid data updates the case" do
+      case = case_fixture()
+
+      assert {:ok,
+              %Case{
+                complexity: :low,
+                status: :done
+              }} = CaseContext.update_case(case, @update_attrs)
+    end
+
+    test "update_case/2 with invalid data returns error changeset" do
+      case = case_fixture()
+      assert {:error, %Ecto.Changeset{}} = CaseContext.update_case(case, @invalid_attrs)
+      assert case == CaseContext.get_case!(case.uuid)
+    end
+
+    test "delete_case/1 deletes the case" do
+      case = case_fixture()
+      assert {:ok, %Case{}} = CaseContext.delete_case(case)
+      assert_raise Ecto.NoResultsError, fn -> CaseContext.get_case!(case.uuid) end
+    end
+
+    test "change_case/1 returns a case changeset" do
+      case = case_fixture()
+      assert %Ecto.Changeset{} = CaseContext.change_case(case)
     end
   end
 end

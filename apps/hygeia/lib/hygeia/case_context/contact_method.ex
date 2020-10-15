@@ -10,13 +10,13 @@ defmodule Hygeia.CaseContext.ContactMethod do
   defenum Type, :contact_method_type, ["mobile", "landline", "email", "other"]
 
   @type empty :: %__MODULE__{
-          type: String.t() | nil,
+          type: Type.t() | nil,
           comment: String.t() | nil,
           value: String.t() | nil
         }
 
   @type t :: %__MODULE__{
-          type: String.t(),
+          type: Type.t(),
           comment: String.t() | nil,
           value: String.t()
         }

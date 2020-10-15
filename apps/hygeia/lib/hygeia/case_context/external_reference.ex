@@ -10,13 +10,13 @@ defmodule Hygeia.CaseContext.ExternalReference do
   defenum Type, :external_reference_type, ["ism", "other"]
 
   @type empty :: %__MODULE__{
-          type: String.t() | nil,
+          type: Type.t() | nil,
           type_name: String.t() | nil,
           value: String.t() | nil
         }
 
   @type t :: %__MODULE__{
-          type: String.t(),
+          type: Type.t(),
           type_name: String.t(),
           value: String.t()
         }

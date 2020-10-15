@@ -32,6 +32,7 @@ defmodule Hygeia do
       import Ecto.Changeset
 
       import Hygeia.Helpers.Country
+      import Hygeia.Helpers.Id
 
       alias Ecto.Changeset
 

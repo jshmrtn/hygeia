@@ -1,0 +1,23 @@
+<h1>
+  <%= gettext("Show Case") %>
+</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, HygeiaWeb.CaseLive.FormComponent,
+    id: @case.uuid,
+    title: @page_title,
+    action: @live_action,
+    case: @case,
+    return_to: Routes.case_show_path(@socket, :show, @case) %>
+<% end %>
+
+<pre><%= inspect(@case, pretty: true) %></pre>
+<%= for version <- @versions do %>
+  <details>
+    <summary><%= version.event %></summary>
+    <pre><%= inspect(version, pretty: true) %></pre>
+  </details>
+<% end %>
+
+<span><%= live_patch "Edit", to: Routes.case_show_path(@socket, :edit, @case), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.case_index_path(@socket, :index) %></span>

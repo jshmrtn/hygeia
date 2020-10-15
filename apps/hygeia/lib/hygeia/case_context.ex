@@ -5,6 +5,7 @@ defmodule Hygeia.CaseContext do
 
   use Hygeia, :context
 
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
   alias Hygeia.TenantContext.Tenant
@@ -237,4 +238,135 @@ defmodule Hygeia.CaseContext do
   def change_person(%Person{} = person, attrs \\ %{}) do
     Person.changeset(person, attrs)
   end
+
+  @doc """
+  Returns the list of cases.
+
+  ## Examples
+
+      iex> list_cases()
+      [%Case{}, ...]
+
+  """
+  @spec list_cases :: [Case.t()]
+  def list_cases, do: Repo.all(Case)
+
+  @doc """
+  Gets a single case.
+
+  Raises `Ecto.NoResultsError` if the Case does not exist.
+
+  ## Examples
+
+      iex> get_case!(123)
+      %Case{}
+
+      iex> get_case!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_case!(id :: String.t()) :: Case.t()
+  def get_case!(id), do: Repo.get!(Case, id)
+
+  @doc """
+  Creates a case.
+
+  ## Examples
+
+      iex> create_case(%{field: value})
+      {:ok, %Case{}}
+
+      iex> create_case(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_case(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t()}
+  def create_case(%Person{} = person, attrs \\ %{}) do
+    tenant = Repo.preload(person, :tenant).tenant
+    create_case(person, tenant, attrs)
+  end
+
+  @spec create_case(
+          person :: Person.t(),
+          tenant :: Tenant.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t()}
+  def create_case(%Person{} = person, %Tenant{} = tenant, attrs),
+    do:
+      person
+      |> Ecto.build_assoc(:cases)
+      |> change_case(
+        Map.put(
+          attrs,
+          case Enum.to_list(attrs) do
+            [{key, _value} | _] when is_binary(key) -> "tenant_uuid"
+            _other -> :tenant_uuid
+          end,
+          tenant.uuid
+        )
+      )
+      |> versioning_insert()
+      |> broadcast("cases", :create)
+      |> versioning_extract()
+
+  @doc """
+  Updates a case.
+
+  ## Examples
+
+      iex> update_case(case, %{field: new_value})
+      {:ok, %Case{}}
+
+      iex> update_case(case, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_case(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t()}
+  def update_case(%Case{} = case, attrs),
+    do:
+      case
+      |> change_case(attrs)
+      |> versioning_update()
+      |> broadcast("cases", :update)
+      |> versioning_extract()
+
+  @doc """
+  Deletes a case.
+
+  ## Examples
+
+      iex> delete_case(case)
+      {:ok, %Case{}}
+
+      iex> delete_case(case)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_case(case :: Case.t()) :: {:ok, Case.t()} | {:error, Ecto.Changeset.t()}
+  def delete_case(%Case{} = case),
+    do:
+      case
+      |> change_case()
+      |> versioning_delete()
+      |> broadcast("cases", :delete)
+      |> versioning_extract()
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking case changes.
+
+  ## Examples
+
+      iex> change_case(case)
+      %Ecto.Changeset{data: %Case{}}
+
+  """
+  @spec change_case(
+          case :: Case.t() | Case.empty(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          Ecto.Changeset.t()
+  def change_case(%Case{} = case, attrs \\ %{}), do: Case.changeset(case, attrs)
 end

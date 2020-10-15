@@ -1,0 +1,50 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "case-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <%= if @action == :new do %>
+    <%= label f, :person_uuid, label: gettext("Person") %>
+    <%= select f, :person_uuid, Enum.map(@people, &({&1.first_name, &1.uuid})), prompt: gettext("-- choose person --") %>
+    <%= error_tag f, :person_uuid %>
+  <% end %>
+
+  <%= inputs_for f, :phases, fn phases_f -> %>
+    <%= label phases_f, :type, label: gettext("Type") %>
+    <%= select phases_f, :type, Hygeia.CaseContext.Phase.Type.__enum_map__(), prompt: gettext("-- choose type --") %>
+    <%= error_tag phases_f, :type %>
+
+    <%= label phases_f, :start, label: gettext("Start") %>
+    <%= date_input phases_f, :start %>
+    <%= error_tag phases_f, :start %>
+
+    <%= label phases_f, :end, label: gettext("End") %>
+    <%= date_input phases_f, :end %>
+    <%= error_tag phases_f, :end %>
+  <% end %>
+
+  <%= label f, :tenant_uuid, label: gettext("Tenant") %>
+  <%= select f, :tenant_uuid, Enum.map(@tenants, &({&1.name, &1.uuid})), prompt: gettext("-- choose tenant --") %>
+  <%= error_tag f, :tenant_uuid %>
+
+  <%= label f, :tracer_uuid, label: gettext("Tracer") %>
+  <%= select f, :tracer_uuid, Enum.map(@users, &({&1.display_name, &1.uuid})), prompt: gettext("-- choose user --") %>
+  <%= error_tag f, :tracer_uuid %>
+
+  <%= label f, :supervisor_uuid, label: gettext("Supervisor") %>
+  <%= select f, :supervisor_uuid, Enum.map(@users, &({&1.display_name, &1.uuid})), prompt: gettext("-- choose user --") %>
+  <%= error_tag f, :supervisor_uuid %>
+
+  <%= label f, :complexity, label: gettext("Complexity") %>
+  <%= select f, :complexity, Hygeia.CaseContext.Case.Complexity.__enum_map__(), prompt: gettext("-- choose complexity --") %>
+  <%= error_tag f, :complexity %>
+
+  <%= label f, :status, label: gettext("Status") %>
+  <%= select f, :status, Hygeia.CaseContext.Case.Status.__enum_map__(), prompt: gettext("-- choose status --") %>
+  <%= error_tag f, :status %>
+
+  <%= "Save" |> gettext() |> submit(phx_disable_with: gettext("Saving..."), disabled: not(@changeset.valid?)) %>
+</form>

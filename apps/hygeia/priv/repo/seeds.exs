@@ -2,13 +2,6 @@
 #
 #     mix run priv/repo/seeds.exs
 #
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Hygeia.Repo.insert!(%Hygeia.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
 
 import Hygeia.CaseContext
 import Hygeia.TenantContext
@@ -19,7 +12,7 @@ alias Hygeia.Helpers.Versioning
 Versioning.put_origin(:web)
 Versioning.put_originator(:noone)
 
-{:ok, _user_1} =
+{:ok, user_1} =
   create_user(%{
     email: "user@example.com",
     display_name: "Test User",
@@ -30,10 +23,30 @@ Versioning.put_originator(:noone)
 {:ok, _tenant_ai} = create_tenant(%{name: "Kanton Appenzell Innerrhoden"})
 {:ok, tenant_ar} = create_tenant(%{name: "Kanton Appenzell Ausserrhoden"})
 
-{:ok, profession_office} = create_profession(%{name: "Büro"})
-{:ok, _profession_construction} = create_profession(%{name: "Baustelle"})
+{:ok, _profession_hospital} = create_profession(%{name: "Spital"})
+{:ok, _profession_doctor} = create_profession(%{name: "Praxis"})
+{:ok, _profession_nursing_home} = create_profession(%{name: "Heim"})
+{:ok, _profession_pharmacy} = create_profession(%{name: "Apotheke"})
+{:ok, _profession_spitex} = create_profession(%{name: "Spitex"})
+{:ok, _profession_day_care} = create_profession(%{name: "Kindertagesstätte"})
+{:ok, _profession_school} = create_profession(%{name: "Volksschule"})
+{:ok, _profession_high_school} = create_profession(%{name: "Oberstufe"})
+{:ok, _profession_gymnasium} = create_profession(%{name: "Gymnasium / Berufsschule"})
+{:ok, _porfession_security} = create_profession(%{name: "Sicherheit: Polizei, Securitas"})
 
-{:ok, _person_jony} =
+{:ok, _porfession_public_transport} =
+  create_profession(%{name: "ÖV: Bus, Bahn, Schiff, Bergbahn"})
+
+{:ok, _porfession_sales} = create_profession(%{name: "Verkauf"})
+{:ok, _porfession_restaurants} = create_profession(%{name: "Gastronomie / Veranstaltungen"})
+{:ok, _profession_public_administration} = create_profession(%{name: "Öffentliche Verwaltung"})
+{:ok, profession_office} = create_profession(%{name: "Büro"})
+{:ok, _profession_construction} = create_profession(%{name: "Bau"})
+{:ok, _profession_pension} = create_profession(%{name: "Rentner"})
+{:ok, _profession_unemployed} = create_profession(%{name: "Arbeitssuchend"})
+{:ok, _profession_other} = create_profession(%{name: "Sonstiges"})
+
+{:ok, person_jony} =
   create_person(tenant_ar, %{
     address: %{
       address: "Erlen 4",
@@ -77,4 +90,62 @@ Versioning.put_originator(:noone)
     first_name: "Jonatan",
     last_name: "Männchen",
     sex: :male
+  })
+
+{:ok, _case_1} =
+  create_case(person_jony, %{
+    complexity: :medium,
+    status: :in_progress,
+    tracer_uuid: user_1.uuid,
+    supervisor_uuid: user_1.uuid,
+    hospitalizations: [
+      %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
+      %{start: ~D[2020-10-16], end: nil}
+    ],
+    clinical: %{
+      reasons_for_pcr_test: [:symptoms, :outbreak_examination],
+      symptoms: [:fever],
+      symptom_start: ~D[2020-10-10],
+      test: ~D[2020-10-11],
+      laboratory_report: ~D[2020-10-12],
+      test_kind: :pcr,
+      result: :positive
+    },
+    external_references: [
+      %{
+        type: :ism,
+        value: "7000"
+      },
+      %{
+        type: :other,
+        type_name: "foo",
+        value: "7000"
+      }
+    ],
+    monitoring: %{
+      first_contact: ~D[2020-10-12],
+      location: :home,
+      location_details: "Bei Mutter zuhause",
+      address: %{
+        address: "Helmweg 48",
+        zip: "8405",
+        place: "Winterthur",
+        subdivision: "ZH",
+        country: "CH"
+      }
+    },
+    phases: [
+      %{
+        type: :possible_index,
+        start: ~D[2020-10-10],
+        end: ~D[2020-10-12],
+        end_reason: :converted_to_index
+      },
+      %{
+        type: :index,
+        start: ~D[2020-10-12],
+        end: ~D[2020-10-22],
+        end_reason: :healed
+      }
+    ]
   })

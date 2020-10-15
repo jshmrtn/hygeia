@@ -102,4 +102,83 @@ defmodule Hygeia.Fixtures do
 
     person
   end
+
+  @valid_attrs %{
+    complexity: :medium,
+    status: :first_contact,
+    hospitalizations: [
+      %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
+      %{start: ~D[2020-10-16], end: nil}
+    ],
+    clinical: %{
+      reasons_for_pcr_test: [:symptoms, :outbreak_examination],
+      symptoms: [:fever],
+      symptom_start: ~D[2020-10-10],
+      test: ~D[2020-10-11],
+      laboratory_report: ~D[2020-10-12],
+      test_kind: :pcr,
+      result: :positive
+    },
+    external_references: [
+      %{
+        type: :ism,
+        value: "7000"
+      },
+      %{
+        type: :other,
+        type_name: "foo",
+        value: "7000"
+      }
+    ],
+    monitoring: %{
+      first_contact: ~D[2020-10-12],
+      location: :home,
+      location_details: "Bei Mutter zuhause",
+      address: %{
+        address: "Helmweg 48",
+        zip: "8405",
+        place: "Winterthur",
+        subdivision: "ZH",
+        country: "CH"
+      }
+    },
+    phases: [
+      %{
+        type: :possible_index,
+        start: ~D[2020-10-10],
+        end: ~D[2020-10-12],
+        end_reason: :converted_to_index
+      },
+      %{
+        type: :index,
+        start: ~D[2020-10-12],
+        end: ~D[2020-10-22],
+        end_reason: :healed
+      }
+    ]
+  }
+
+  @spec case_fixture(
+          person :: Person.t(),
+          tracer :: User.t(),
+          supervisor :: User.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Case.t()
+  def case_fixture(
+        person \\ person_fixture(),
+        tracer \\ user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+        supervisor \\ user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+        attrs \\ %{}
+      ) do
+    {:ok, case} =
+      CaseContext.create_case(
+        person,
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Map.put_new(:tracer_uuid, tracer.uuid)
+        |> Map.put_new(:supervisor_uuid, supervisor.uuid)
+      )
+
+    case
+  end
 end

@@ -58,6 +58,13 @@ defmodule HygeiaWeb.Router do
 
     live "/people/:id", PersonLive.Show, :show
     live "/people/:id/show/edit", PersonLive.Show, :edit
+
+    live "/cases", CaseLive.Index, :index
+    live "/cases/new", CaseLive.Index, :new
+    live "/cases/:id/edit", CaseLive.Index, :edit
+
+    live "/cases/:id", CaseLive.Show, :show
+    live "/cases/:id/show/edit", CaseLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
