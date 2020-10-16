@@ -60,7 +60,7 @@ defmodule Hygeia.MixProject do
       {:ecto_enum, "~> 1.4"},
       # TODO: Replace with released version when https://github.com/Recruitee/cadastre/pull/1 is released
       {:cadastre, github: "jshmrtn/cadastre", branch: "master"},
-      {:human_readable_identifier_generator, in_umbrella: true},
+      {:human_readable_identifier_generator, "~> 1.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end
