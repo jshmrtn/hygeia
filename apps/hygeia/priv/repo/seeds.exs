@@ -95,7 +95,7 @@ Versioning.put_originator(:noone)
 {:ok, _case_1} =
   create_case(person_jony, %{
     complexity: :medium,
-    status: :in_progress,
+    status: :first_contact,
     tracer_uuid: user_1.uuid,
     supervisor_uuid: user_1.uuid,
     hospitalizations: [
