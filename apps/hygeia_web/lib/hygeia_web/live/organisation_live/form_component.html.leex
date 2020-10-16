@@ -1,0 +1,43 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "organisation-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <%= label f, :name, label: gettext("Name") %>
+  <%= text_input f, :name %>
+  <%= error_tag f, :name %>
+
+  <%= inputs_for f, :address, fn address_f -> %>
+
+    <%= label address_f, :address, label: gettext("Address") %>
+    <%= text_input address_f, :address %>
+    <%= error_tag address_f, :address %>
+
+    <%= label address_f, :zip, label: gettext("ZIP") %>
+    <%= text_input address_f, :zip %>
+    <%= error_tag address_f, :zip %>
+
+    <%= label address_f, :place, gettext("Place") %>
+    <%= text_input address_f, :place %>
+    <%= error_tag address_f, :place %>
+
+    <%= label address_f, :country, gettext("Country") %>
+    <%= select address_f, :country, countries(), prompt: gettext("-- choose country --") %>
+    <%= error_tag address_f, :country %>
+
+    <%= label address_f, :subdivision, gettext("Subdivision") %>
+    <%= select address_f, :subdivision, subdivisions(address_f.source), prompt: gettext("-- choose subdivision --") %>
+    <%= error_tag address_f, :subdivision %>
+
+  <% end %>
+
+  <%= label f, :notes, label: gettext("Notes") %>
+  <%= text_input f, :notes %>
+  <%= error_tag f, :notes %>
+
+  <%= "Save" |> gettext() |> submit(phx_disable_with: gettext("Saving..."), disabled: not(@changeset.valid?)) %>
+
+</form>

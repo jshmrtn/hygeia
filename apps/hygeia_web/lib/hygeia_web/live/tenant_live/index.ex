@@ -35,7 +35,7 @@ defmodule HygeiaWeb.TenantLive.Index do
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "New Tenant")
+    |> assign(:page_title, gettext("New Tenant"))
     |> assign(:tenant, %Tenant{})
   end
 

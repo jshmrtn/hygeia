@@ -6,6 +6,8 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.OrganisationContext
+  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext
@@ -180,5 +182,26 @@ defmodule Hygeia.Fixtures do
       )
 
     case
+  end
+
+  @valid_attrs %{
+    address: %{
+      address: "Neugasse 51",
+      zip: "9000",
+      place: "St. Gallen",
+      subdivision: "SG",
+      country: "CH"
+    },
+    name: "JOSHMARTIN GmbH",
+    notes: "Coole Astronauten"
+  }
+  @spec organisation_fixture(attrs :: Hygeia.ecto_changeset_params()) :: Organisation.t()
+  def organisation_fixture(attrs \\ %{}) do
+    {:ok, organisation} =
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> OrganisationContext.create_organisation()
+
+    organisation
   end
 end

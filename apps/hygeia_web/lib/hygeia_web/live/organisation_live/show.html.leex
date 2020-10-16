@@ -1,0 +1,26 @@
+<h1>
+  <%= gettext("Show Organisation") %>
+</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, HygeiaWeb.OrganisationLive.FormComponent,
+    id: @organisation.uuid,
+    title: @page_title,
+    action: @live_action,
+    organisation: @organisation,
+    return_to: Routes.organisation_show_path(@socket, :show, @organisation) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>
+      <%= gettext("Name:") %>
+    </strong>
+    <%= @organisation.name %>
+  </li>
+
+</ul>
+
+<span><%= "Edit" |> gettext() |> live_patch(to: Routes.organisation_show_path(@socket, :edit, @organisation), class: "button") %></span>
+<span><%= "Back" |> gettext() |> live_redirect(to: Routes.organisation_index_path(@socket, :index)) %></span>

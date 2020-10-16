@@ -106,6 +106,7 @@ defmodule HygeiaWeb do
       import Phoenix.View
 
       import HygeiaWeb.ErrorHelpers
+      import HygeiaWeb.RegionHelpers
       import HygeiaWeb.Gettext
 
       alias HygeiaWeb.Router.Helpers, as: Routes

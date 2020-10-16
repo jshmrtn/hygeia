@@ -35,7 +35,7 @@ defmodule HygeiaWeb.PersonLive.Index do
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "New Person")
+    |> assign(:page_title, gettext("New Person"))
     |> assign(:person, %Person{})
   end
 
