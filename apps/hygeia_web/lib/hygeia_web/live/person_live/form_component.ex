@@ -1,11 +1,25 @@
 defmodule HygeiaWeb.PersonLive.FormComponent do
   @moduledoc false
 
-  use HygeiaWeb, :live_component
+  use HygeiaWeb, :surface_live_component
 
   alias Hygeia.CaseContext
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
+
+  alias HygeiaWeb.FormError
+
+  alias Surface.Components.Form
+  alias Surface.Components.Form.DateInput
+  alias Surface.Components.Form.Field
+  alias Surface.Components.Form.Inputs
+  alias Surface.Components.Form.Label
+  alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextInput
+
+  prop person, :any, required: true
+  prop action, :any, required: true
+  prop return_to, :string, required: false, default: "#"
 
   @impl Phoenix.LiveComponent
   def update(%{person: person} = assigns, socket) do

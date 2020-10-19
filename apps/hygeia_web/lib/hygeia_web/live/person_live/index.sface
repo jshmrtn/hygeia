@@ -1,0 +1,143 @@
+<div class="component-person-index">
+  <h1 class="mb-3">
+    {{ gettext("People") }}
+  </h1>
+
+  <HygeiaWeb.Modal 
+    :if={{ @live_action in [:new, :edit] }}
+    title={{ @page_title }}
+    id={{ @person.uuid || :new }}
+    return_to={{ Routes.person_index_path(@socket, :index) }}
+  >
+    <HygeiaWeb.PersonLive.FormComponent
+      id={{ @person.uuid || :new }}
+      action={{ @live_action }}
+      person={{ @person }}
+      return_to={{ Routes.person_index_path(@socket, :index) }}
+    />
+  </HygeiaWeb.Modal>
+
+  <div class="d-flex">
+    <LivePatch class="mr-2" to={{ Routes.person_index_path(@socket, :new) }}>
+      <button type="button" class="mb-2 mt-3 btn btn-primary">
+        <span class="oi oi-plus" aria-hidden="true"></span>
+        {{ "New Person" |> gettext() }}
+      </button>
+    </LivePatch>
+
+    <div class="dropdown mt-3" phx-update="ignore" id="test-dropdown">
+      <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="oi oi-cog" aria-hidden="true"></span>
+        Filter
+      </button>
+      <div class="dropdown-menu p-3 filter-dropdown" onclick="event.stopPropagation()">
+        <h4>Filter</h4>
+        <!-- TODO: for property, field name properties -->
+        <Form action="#" change="filter" submit="filter" opts={{ autocomplete: "off", id: "filter-form" }}>
+          <div class="form-group">
+            <label class="d-block">{{ "Status" |> gettext }}</label>
+            <Field name="active" class="form-check form-check-inline">
+              <label class="form-check-label">
+                <RadioButton class="form-check-input" value={{ true }} checked/> 
+                {{ "All" |> gettext }}
+              </label>
+            </Field>
+            <Field name="active" class="form-check form-check-inline">
+              <label class="form-check-label">
+                <RadioButton class="form-check-input" value={{ false }} /> 
+                {{ "Only active cases" |> gettext }}
+              </label>
+            </Field>
+          </div>
+
+          <div class="form-group">
+            <label class="d-block">{{ "Assignee" |> gettext }}</label>
+            <Field name="assigned_to_me" class="form-check form-check-inline">
+              <label class="form-check-label">
+                <RadioButton class="form-check-input" value={{ true }} checked/> 
+                {{ "Assigned to me" |> gettext }}
+              </label>
+            </Field>
+            <Field name="assigned_to_me" class="form-check form-check-inline">
+              <label class="form-check-label">
+                <RadioButton class="form-check-input" value={{ false }} /> 
+                {{ "All" |> gettext }}
+              </label>
+            </Field>
+          </div>
+
+          <div class="form-group">
+            <Field class="form-group">
+              <Label>{{ "Country of residence" |> gettext }}</Label>
+              <Select class="form-control" opts={{ prompt: "Any" |> gettext }} options={{ countries() }} />
+            </Field>
+          </div>
+        </Form>
+      </div>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          {{ gettext("First name") }}
+        </th>
+        <th>
+          {{ gettext("Last name") }}
+        </th>
+        <th>
+          {{ gettext("Birth Date") }}
+        </th>
+        <th>
+          {{ gettext("Residency Address") }}
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="people">
+      <tr :for={{ person <- @people }} id="person-{{ person.uuid }}">
+        <td>{{ person.first_name }}</td>
+        <td>{{ person.last_name }}</td>
+        <td>{{ Cldr.Date.to_string! person.birth_date, HygeiaWeb.Cldr }}</td>
+        <td>{{ person.address.address }}, {{ person.address.zip }} {{ person.address.place }}, {{ person.address.country }}</td>
+        <td>
+          <LiveRedirect to={{ Routes.person_show_path(@socket, :show, person) }}>
+            <button class="btn btn-sm btn-secondary">{{ "Show" |> gettext }}</button>
+          </LiveRedirect>
+          <LivePatch to={{ Routes.person_index_path(@socket, :edit, person) }}>
+            <button class="btn btn-sm btn-secondary">
+              <span class="oi oi-pencil" title={{ "Edit" |> gettext }} aria-hidden="true"></span>
+            </button>
+          </LivePatch>
+          <Link 
+            to="#" 
+            click="delete" 
+            opts={{
+              title: "Delete" |> gettext,
+              data: [confirm: "Are you sure?" |> gettext],
+              phx_value_id: person.uuid
+            }}
+          >
+            <button class="btn btn-sm btn-danger">
+              <span class="oi oi-trash" aria-hidden="true"></span>
+            </button>
+          </Link>
+        </td>
+      </tr>
+      <tr :if={{ length(@people) == 0 }}>
+        <td colspan="5">
+          <div class="d-flex justify-content-center py-3">
+            {{ "No data to display" |> gettext }}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ul class="pagination justify-content-center">
+    <li class="page-item"><a class="page-link" href="#">{{ "Previous" |> gettext }}</a></li>
+    <li class="page-item" :for={{ page <- 0..4 }}><a class="page-link" href="#">{{ page + 1 }}</a></li>
+    <li class="page-item"><a class="page-link" href="#">{{ "Next" |> gettext }}</a></li>
+  </ul>
+</div>

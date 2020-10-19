@@ -7,7 +7,7 @@
     {{ Cldr.DateTime.to_string! @time, HygeiaWeb.Cldr }}
   </p>
 
-  <form :on-change="suggest" :on-submit="search">
+  <form change="suggest" submit="search">
     <div class="form-group">
     <input class="form-control" type="text" name="q" value="{{ @query }}" placeholder="{{ gettext("Live dependency search") }}" list="results" autocomplete="off"/>
     <datalist id="results">

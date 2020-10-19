@@ -1,10 +1,19 @@
 defmodule HygeiaWeb.PersonLive.Index do
   @moduledoc false
 
-  use HygeiaWeb, :live_view
+  use HygeiaWeb, :surface_view
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
+
+  alias Surface.Components.Form
+  alias Surface.Components.Form.Field
+  alias Surface.Components.Form.Label
+  alias Surface.Components.Form.RadioButton
+  alias Surface.Components.Form.Select
+  alias Surface.Components.Link
+  alias Surface.Components.LivePatch
+  alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
@@ -34,6 +43,12 @@ defmodule HygeiaWeb.PersonLive.Index do
     socket
     |> assign(:page_title, gettext("Listing People"))
     |> assign(:person, nil)
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event("filter", _filter, socket) do
+    # TODO: implement filter
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveView

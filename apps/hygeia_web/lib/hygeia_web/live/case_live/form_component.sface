@@ -1,0 +1,108 @@
+<Form for={{ @changeset }} change="validate" submit="save" opts={{ autocomplete: "off", id: "case-form" }}>
+  <Field :if={{ @action == :new }} name={{ :person_uuid }} class="form-group">
+    <Label>{{ "Person" |> gettext }}</Label>
+    <Select class="form-control" opts={{ prompt: "Choose person" |> gettext }} field={{ :person_uuid }} options={{ Enum.map(@people, &({&1.first_name, &1.uuid})) }} />
+    <FormError />
+  </Field>
+
+  <Inputs for={{ :phases }}>
+    <Field name={{ :type }} class="form-group">
+      <Label>{{ "Type" |> gettext }}</Label>
+      <Select
+        class="form-control"
+        opts={{ prompt: "Choose type" |> gettext }}
+        field={{ :type }}
+        options={{ Hygeia.CaseContext.Phase.Type.__enum_map__() }}
+      />
+      <FormError />
+    </Field>
+
+    <div class="row">
+      <div class="col">
+        <Field name={{ :start }} class="form-group">
+          <Label>{{ "Start" |> gettext }}</Label>
+          <DateInput class="form-control" field={{ :start }}/>
+          <FormError />
+        </Field>
+      </div>
+      <div class="col">
+        <Field name={{ :end }} class="form-group">
+          <Label>{{ "End" |> gettext }}</Label>
+          <DateInput class="form-control" field={{ :end }}/>
+          <FormError />
+        </Field>
+      </div>
+    </div>
+    <hr>
+  </Inputs>
+
+  <Field name={{ :tenant_uuid }} class="form-group">
+    <Label>{{ "Tenant" |> gettext }}</Label>
+    <Select 
+      class="form-control" 
+      opts={{ prompt: "Select tenant" |> gettext }} 
+      field={{ :tenant_uuid }} 
+      options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
+    />
+    <FormError />
+  </Field>
+
+  <div class="row">
+    <div class="col">
+      <Field name={{ :tracer_uuid }} class="form-group">
+        <Label>{{ "Tracer" |> gettext }}</Label>
+        <Select 
+          class="form-control" 
+          opts={{ prompt: "Select user" |> gettext }} 
+          field={{ :tracer_uuid }} 
+          options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+        />
+        <FormError />
+      </Field>
+    </div>
+    <div class="col">
+      <Field name={{ :supervisor_uuid }} class="form-group">
+        <Label>{{ "Supervisor" |> gettext }}</Label>
+        <Select 
+          class="form-control" 
+          opts={{ prompt: "Select user" |> gettext }} 
+          field={{ :supervisor_uuid }} 
+          options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+        />
+        <FormError />
+      </Field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <Field name={{ :complexity }} class="form-group">
+        <Label>{{ "Complexity" |> gettext }}</Label>
+        <Select 
+          class="form-control" 
+          opts={{ prompt: "Select complexity" |> gettext }} 
+          field={{ :complexity }} 
+          options={{ Hygeia.CaseContext.Case.Complexity.__enum_map__() }}
+        />
+        <FormError />
+      </Field>
+    </div>
+    <div class="col">
+      <Field name={{ :status }} class="form-group">
+        <Label>{{ "Status" |> gettext }}</Label>
+        <Select 
+          class="form-control" 
+          opts={{ prompt: "Select status" |> gettext }} 
+          field={{ :status }} 
+          options={{ Hygeia.CaseContext.Case.Status.__enum_map__() }}
+        />
+        <FormError />
+      </Field>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
+    {{ "Save" |> gettext }}
+  </button>
+</Form>
+ 

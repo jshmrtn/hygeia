@@ -88,9 +88,17 @@ defmodule HygeiaWeb do
     end
   end
 
-  def surface_component do
+  def surface_live_component do
     quote do
       use Surface.LiveComponent
+
+      unquote(view_helpers())
+    end
+  end
+
+  def surface_component do
+    quote do
+      use Surface.Component
 
       unquote(view_helpers())
     end
