@@ -3,6 +3,7 @@ import Config
 case config_env() do
   :prod ->
     config :hygeia_web, HygeiaWeb.Endpoint, server: true
+    config :hygeia_api, HygeiaApi.Endpoint, server: true
 
   _env ->
     nil

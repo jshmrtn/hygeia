@@ -10,7 +10,6 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :hygeia_web, HygeiaWeb.Endpoint, cache_static_manifest: "priv/static/cache_manifest.json"
-config :hygeia_api, HygeiaApi.Endpoint, cache_static_manifest: "priv/static/cache_manifest.json"
 
 # ## SSL Support
 #
