@@ -30,6 +30,7 @@ defmodule Hygeia.Umbrella.MixProject do
         hygeia: [
           applications: [
             hygeia_web: :permanent,
+            hygeia_api: :permanent,
             hygeia_cluster: :permanent
           ]
         ]
