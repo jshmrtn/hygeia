@@ -52,4 +52,12 @@ defmodule HygeiaWeb.Endpoint do
   plug Plug.Session, @session_options
 
   plug HygeiaWeb.Router
+
+  @impl Phoenix.Endpoint
+  def init(_name, config) do
+    # credo:disable-for-next-line Credo.Check.Warning.IoInspect
+    IO.inspect(config)
+
+    {:ok, config}
+  end
 end
