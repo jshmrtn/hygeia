@@ -19,5 +19,11 @@
   </details>
 <% end %>
 
+<h2>
+  <%= gettext("Propagated Transmissions (Contact Persons)") %>
+</h2>
+
+<%= live_component @socket, HygeiaWeb.TransmissionLive.Index, case: @case, id: @case.uuid, live_action: @live_action%>
+
 <span><%= live_patch "Edit", to: Routes.case_show_path(@socket, :edit, @case), class: "button" %></span>
 <span><%= live_redirect "Back", to: Routes.case_index_path(@socket, :index) %></span>

@@ -12,6 +12,7 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.CaseContext.Monitoring
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Phase
+  alias Hygeia.CaseContext.Transmission
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
@@ -84,12 +85,14 @@ defmodule Hygeia.CaseContext.Case do
     embeds_one :monitoring, Monitoring
     embeds_many :phases, Phase
 
-    # TODO: Links between cases (including infetion / exposition places)
-
     belongs_to :person, Person, references: :uuid, foreign_key: :person_uuid
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     belongs_to :tracer, User, references: :uuid, foreign_key: :tracer_uuid
     belongs_to :supervisor, User, references: :uuid, foreign_key: :supervisor_uuid
+    # , references: :recipient_case
+    has_many :received_transmissions, Transmission, foreign_key: :recipient_case_uuid
+    # , references: :propagator_case
+    has_many :propagated_transmissions, Transmission, foreign_key: :propagator_case_uuid
 
     timestamps()
   end

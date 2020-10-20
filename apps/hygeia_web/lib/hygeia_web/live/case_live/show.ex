@@ -6,6 +6,7 @@ defmodule HygeiaWeb.CaseLive.Show do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.Helpers.Versioning
+  alias Hygeia.Repo
 
   @impl Phoenix.LiveView
   def mount(_params, session, socket) do
@@ -29,13 +30,31 @@ defmodule HygeiaWeb.CaseLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:case, case)
+     |> assign(
+       :case,
+       Repo.preload(
+         case,
+         person: [],
+         received_transmissions: [propagator_case: [person: []]],
+         propagated_transmissions: [recipient_case: [person: []]]
+       )
+     )
      |> assign(:versions, PaperTrail.get_versions(case))}
   end
 
   @impl Phoenix.LiveView
   def handle_info({:updated, %Case{} = case, _version}, socket) do
-    {:noreply, assign(socket, :case, case)}
+    {:noreply,
+     assign(
+       socket,
+       :case,
+       Repo.preload(
+         case,
+         person: [],
+         received_transmissions: [propagator_case: [person: []]],
+         propagated_transmissions: [recipient_case: [person: []]]
+       )
+     )}
   end
 
   @impl Phoenix.LiveView

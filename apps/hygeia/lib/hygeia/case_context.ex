@@ -8,6 +8,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.CaseContext.Transmission
   alias Hygeia.TenantContext.Tenant
 
   @doc """
@@ -369,4 +370,133 @@ defmodule Hygeia.CaseContext do
         ) ::
           Ecto.Changeset.t()
   def change_case(%Case{} = case, attrs \\ %{}), do: Case.changeset(case, attrs)
+
+  @doc """
+  Returns the list of transmissions.
+
+  ## Examples
+
+      iex> list_transmissions()
+      [%Transmission{}, ...]
+
+  """
+  @spec list_transmissions :: [Transmission.t()]
+  def list_transmissions, do: Repo.all(Transmission)
+
+  @doc """
+  Gets a single transmission.
+
+  Raises `Ecto.NoResultsError` if the Transmission does not exist.
+
+  ## Examples
+
+      iex> get_transmission!(123)
+      %Transmission{}
+
+      iex> get_transmission!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_transmission!(id :: String.t()) :: Transmission.t()
+  def get_transmission!(id), do: Repo.get!(Transmission, id)
+
+  @doc """
+  Creates a transmission.
+
+  ## Examples
+
+      iex> create_transmission(%{field: value})
+      {:ok, %Transmission{}}
+
+      iex> create_transmission(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_transmission(attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Transmission.t()} | {:error, Ecto.Changeset.t()}
+  def create_transmission(attrs \\ %{}),
+    do:
+      %Transmission{}
+      |> change_transmission(attrs)
+      |> versioning_insert()
+      |> broadcast(
+        "transmissions",
+        :create,
+        & &1.uuid,
+        &["cases:#{&1.recipient_case_uuid}", "cases:#{&1.propagator_case_uuid}"]
+      )
+      |> versioning_extract()
+
+  @doc """
+  Updates a transmission.
+
+  ## Examples
+
+      iex> update_transmission(transmission, %{field: new_value})
+      {:ok, %Transmission{}}
+
+      iex> update_transmission(transmission, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_transmission(
+          transmission :: Transmission.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: {:ok, Transmission.t()} | {:error, Ecto.Changeset.t()}
+  def update_transmission(%Transmission{} = transmission, attrs),
+    do:
+      transmission
+      |> change_transmission(attrs)
+      |> versioning_update()
+      |> broadcast(
+        "transmissions",
+        :update,
+        & &1.uuid,
+        &["cases:#{&1.recipient_case_uuid}", "cases:#{&1.propagator_case_uuid}"]
+      )
+      |> versioning_extract()
+
+  @doc """
+  Deletes a transmission.
+
+  ## Examples
+
+      iex> delete_transmission(transmission)
+      {:ok, %Transmission{}}
+
+      iex> delete_transmission(transmission)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_transmission(transmission :: Transmission.t()) ::
+          {:ok, Transmission.t()} | {:error, Ecto.Changeset.t()}
+  def delete_transmission(%Transmission{} = transmission),
+    do:
+      transmission
+      |> change_transmission()
+      |> versioning_delete()
+      |> broadcast(
+        "transmissions",
+        :delete,
+        & &1.uuid,
+        &["cases:#{&1.recipient_case_uuid}", "cases:#{&1.propagator_case_uuid}"]
+      )
+      |> versioning_extract()
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking transmission changes.
+
+  ## Examples
+
+      iex> change_transmission(transmission)
+      %Ecto.Changeset{data: %Transmission{}}
+
+  """
+  @spec change_transmission(
+          tenant :: Transmission.t() | Transmission.empty(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          Ecto.Changeset.t()
+  def change_transmission(%Transmission{} = transmission, attrs \\ %{}),
+    do: Transmission.changeset(transmission, attrs)
 end

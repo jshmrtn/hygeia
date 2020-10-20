@@ -15,6 +15,9 @@
   <thead>
     <tr>
       <th>
+        <%= gettext("Person") %>
+      </th>
+      <th>
         <%= gettext("Complexity") %>
       </th>
       <th>
@@ -27,6 +30,7 @@
   <tbody id="cases">
     <%= for case <- @cases do %>
       <tr id="case-<%= case.uuid %>">
+        <td><%= case.person.first_name %> <%= case.person.last_name %></td>
         <td><%= case.complexity %></td>
         <td><%= case.status %></td>
 

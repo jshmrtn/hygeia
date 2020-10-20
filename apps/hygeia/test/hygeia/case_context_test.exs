@@ -437,4 +437,119 @@ defmodule Hygeia.CaseContextTest do
       assert %Ecto.Changeset{} = CaseContext.change_case(case)
     end
   end
+
+  describe "transmissions" do
+    alias Hygeia.CaseContext.Transmission
+
+    @valid_attrs %{
+      date: ~D[2010-04-17]
+    }
+    @update_attrs %{
+      date: ~D[2011-05-18]
+    }
+    @invalid_attrs %{
+      date: nil,
+      propagator_ims_id: "00000",
+      propagator_internal: true,
+      recipient_ims_id: nil,
+      recipient_internal: nil
+    }
+
+    test "list_transmissions/0 returns all transmissions" do
+      index_case = case_fixture()
+
+      transmission =
+        transmission_fixture(%{
+          propagator_internal: true,
+          propagator_case_uuid: index_case.uuid
+        })
+
+      assert CaseContext.list_transmissions() == [transmission]
+    end
+
+    test "get_transmission!/1 returns the transmission with given id" do
+      index_case = case_fixture()
+
+      transmission =
+        transmission_fixture(%{
+          propagator_internal: true,
+          propagator_case_uuid: index_case.uuid
+        })
+
+      assert CaseContext.get_transmission!(transmission.uuid) == transmission
+    end
+
+    test "create_transmission/1 with valid data creates a transmission" do
+      index_case = case_fixture()
+
+      assert {:ok, %Transmission{} = transmission} =
+               %{
+                 propagator_internal: true,
+                 propagator_case_uuid: index_case.uuid
+               }
+               |> Enum.into(@valid_attrs)
+               |> CaseContext.create_transmission()
+
+      assert transmission.date == ~D[2010-04-17]
+    end
+
+    test "create_transmission/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = CaseContext.create_transmission(@invalid_attrs)
+    end
+
+    test "update_transmission/2 with valid data updates the transmission" do
+      index_case = case_fixture()
+
+      transmission =
+        transmission_fixture(%{
+          propagator_internal: true,
+          propagator_case_uuid: index_case.uuid
+        })
+
+      assert {:ok, %Transmission{} = transmission} =
+               CaseContext.update_transmission(transmission, @update_attrs)
+
+      assert transmission.date == ~D[2011-05-18]
+    end
+
+    test "update_transmission/2 with invalid data returns error changeset" do
+      index_case = case_fixture()
+
+      transmission =
+        transmission_fixture(%{
+          propagator_internal: true,
+          propagator_case_uuid: index_case.uuid
+        })
+
+      assert {:error, %Ecto.Changeset{}} =
+               CaseContext.update_transmission(transmission, @invalid_attrs)
+
+      assert transmission == CaseContext.get_transmission!(transmission.uuid)
+    end
+
+    test "delete_transmission/1 deletes the transmission" do
+      index_case = case_fixture()
+
+      transmission =
+        transmission_fixture(%{
+          propagator_internal: true,
+          propagator_case_uuid: index_case.uuid
+        })
+
+      assert {:ok, %Transmission{}} = CaseContext.delete_transmission(transmission)
+      assert_raise Ecto.NoResultsError, fn -> CaseContext.get_transmission!(transmission.uuid) end
+    end
+
+    test "change_transmission/1 returns a transmission changeset" do
+      index_case = case_fixture()
+
+      transmission =
+        transmission_fixture(%{
+          propagator_internal: true,
+          propagator_case_uuid: index_case.uuid
+        })
+
+      assert %Ecto.Changeset{} = CaseContext.change_transmission(transmission)
+    end
+  end
 end

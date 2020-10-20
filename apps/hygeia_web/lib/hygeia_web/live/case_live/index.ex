@@ -6,6 +6,7 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.Helpers.Versioning
+  alias Hygeia.Repo
 
   @impl Phoenix.LiveView
   def mount(_params, session, socket) do
@@ -59,6 +60,6 @@ defmodule HygeiaWeb.CaseLive.Index do
   end
 
   defp list_cases do
-    CaseContext.list_cases()
+    Repo.preload(CaseContext.list_cases(), :person)
   end
 end

@@ -6,6 +6,7 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.CaseContext.Transmission
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext
@@ -203,5 +204,19 @@ defmodule Hygeia.Fixtures do
       |> OrganisationContext.create_organisation()
 
     organisation
+  end
+
+  @valid_attrs %{
+    date: ~D[2010-04-17]
+  }
+
+  @spec transmission_fixture(attrs :: Hygeia.ecto_changeset_params()) :: Transmission.t()
+  def transmission_fixture(attrs \\ %{}) do
+    {:ok, transmission} =
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> CaseContext.create_transmission()
+
+    transmission
   end
 end

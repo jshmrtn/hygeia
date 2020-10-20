@@ -19,7 +19,7 @@ Versioning.put_originator(:noone)
     iam_sub: "8fe86005-b3c6-4d7c-9746-53e090d05e48"
   })
 
-{:ok, _tenant_sg} = create_tenant(%{name: "Kanton St. Gallen"})
+{:ok, tenant_sg} = create_tenant(%{name: "Kanton St. Gallen"})
 {:ok, _tenant_ai} = create_tenant(%{name: "Kanton Appenzell Innerrhoden"})
 {:ok, tenant_ar} = create_tenant(%{name: "Kanton Appenzell Ausserrhoden"})
 
@@ -92,7 +92,35 @@ Versioning.put_originator(:noone)
     sex: :male
   })
 
-{:ok, _case_1} =
+{:ok, person_jay} =
+  create_person(tenant_sg, %{
+    address: %{
+      address: "Hebelstrasse 20",
+      zip: "9000",
+      place: "St. Gallen",
+      subdivision: "SG",
+      country: "CH"
+    },
+    birth_date: ~D[1992-03-27],
+    contact_methods: [
+      %{
+        type: :mobile,
+        value: "+41 79 794 57 83"
+      }
+    ],
+    external_references: [
+      %{
+        type: :ism,
+        value: "7002"
+      }
+    ],
+    profession_uuid: profession_office.uuid,
+    first_name: "Jeremy",
+    last_name: "Zahner",
+    sex: :male
+  })
+
+{:ok, case_jony} =
   create_case(person_jony, %{
     complexity: :medium,
     status: :first_contact,
@@ -148,4 +176,54 @@ Versioning.put_originator(:noone)
         end_reason: :healed
       }
     ]
+  })
+
+{:ok, case_jay} =
+  create_case(person_jay, %{
+    complexity: :medium,
+    status: :first_contact,
+    tracer_uuid: user_1.uuid,
+    supervisor_uuid: user_1.uuid,
+    external_references: [
+      %{
+        type: :ism,
+        value: "7002"
+      }
+    ],
+    monitoring: %{
+      first_contact: ~D[2020-10-12],
+      location: :home,
+      address: %{
+        address: "Hebelstrasse 20",
+        zip: "9000",
+        place: "St. Gallen",
+        subdivision: "SG",
+        country: "CH"
+      }
+    },
+    phases: [
+      %{
+        type: :possible_index,
+        start: ~D[2020-10-10],
+        end: ~D[2020-10-20]
+      }
+    ]
+  })
+
+{:ok, _transmission_jony_jay} =
+  create_transmission(%{
+    date: ~D[2020-10-12],
+    propagator_internal: true,
+    propagator_case_uuid: case_jony.uuid,
+    recipient_internal: true,
+    recipient_case_uuid: case_jay.uuid
+  })
+
+{:ok, _transmission_jony_josia} =
+  create_transmission(%{
+    date: ~D[2020-10-12],
+    propagator_internal: true,
+    propagator_case_uuid: case_jony.uuid,
+    recipient_internal: false,
+    recipient_ims_id: "94327"
   })

@@ -7,61 +7,47 @@ defmodule Hygeia.Helpers.PubSub do
             | {:error, reason},
           resource_name :: String.t(),
           action :: :create | :update | :delete,
-          id_fetcher :: (resource -> String.t())
+          id_fetcher :: (resource -> String.t()),
+          additional_topics_fetcher :: (resource -> [String.t()])
         ) :: {:ok, resource} | {:error, reason}
         when resource: term, reason: term
-  def broadcast(result, resource_name, action, id_fetcher \\ & &1.uuid)
-
-  def broadcast({:error, reason}, _resource_name, _action, _id_fetcher), do: {:error, reason}
+  def broadcast(
+        result,
+        resource_name,
+        action,
+        id_fetcher \\ & &1.uuid,
+        additional_topics_fetcher \\ fn _reesource -> [] end
+      )
 
   def broadcast(
-        {:ok, %{model: resource, version: %PaperTrail.Version{} = version}} = result,
-        resource_name,
-        :create,
-        id_fetcher
-      ) do
-    Phoenix.PubSub.broadcast!(Hygeia.PubSub, resource_name, {:created, resource, version})
+        {:error, reason},
+        _resource_name,
+        _action,
+        _id_fetcher,
+        _additional_topics_fetcher
+      ),
+      do: {:error, reason}
 
-    Phoenix.PubSub.broadcast!(
-      Hygeia.PubSub,
-      resource_name <> ":" <> id_fetcher.(resource),
-      {:updated, resource, version}
-    )
+  for {cause, event} <- %{
+        create: :created,
+        update: :updated,
+        delete: :deleted
+      } do
+    def broadcast(
+          {:ok, %{model: resource, version: %PaperTrail.Version{} = version}} = result,
+          resource_name,
+          unquote(cause),
+          id_fetcher,
+          additional_topics_fetcher
+        ) do
+      for topic <- [
+            resource_name,
+            resource_name <> ":" <> id_fetcher.(resource) | additional_topics_fetcher.(resource)
+          ] do
+        Phoenix.PubSub.broadcast!(Hygeia.PubSub, topic, {unquote(event), resource, version})
+      end
 
-    result
-  end
-
-  def broadcast(
-        {:ok, %{model: resource, version: %PaperTrail.Version{} = version}} = result,
-        resource_name,
-        :update,
-        id_fetcher
-      ) do
-    Phoenix.PubSub.broadcast!(Hygeia.PubSub, resource_name, {:updated, resource, version})
-
-    Phoenix.PubSub.broadcast!(
-      Hygeia.PubSub,
-      resource_name <> ":" <> id_fetcher.(resource),
-      {:updated, resource, version}
-    )
-
-    result
-  end
-
-  def broadcast(
-        {:ok, %{model: resource, version: %PaperTrail.Version{} = version}} = result,
-        resource_name,
-        :delete,
-        id_fetcher
-      ) do
-    Phoenix.PubSub.broadcast!(Hygeia.PubSub, resource_name, {:deleted, resource, version})
-
-    Phoenix.PubSub.broadcast!(
-      Hygeia.PubSub,
-      resource_name <> ":" <> id_fetcher.(resource),
-      {:deleted, resource, version}
-    )
-
-    result
+      result
+    end
   end
 end
