@@ -49,6 +49,17 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Mute unsupported metrics b< prometheus reporter
+config :logger,
+  compile_time_purge_matching: [
+    [
+      level_lower_than: :error,
+      application: :telemetry_metrics_prometheus_core,
+      module: TelemetryMetricsPrometheus.Core.Registry,
+      function: "register_metrics/2"
+    ]
+  ]
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
