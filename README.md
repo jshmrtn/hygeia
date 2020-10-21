@@ -53,3 +53,5 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   * `KUBERNETES_NAMESPACE` (`optional`) - Kubernetes Namespace
 * Security
   * `SECRET_KEY_BASE` (`required`) - Secret Key to generate Tokens with
+* Prometheus Metrics
+  * `METRICS_PORT` (default `9568`) - Prometheus Metrics Port
