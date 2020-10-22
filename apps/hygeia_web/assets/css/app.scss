@@ -1,4 +1,5 @@
 @import "../node_modules/nprogress/nprogress.css";
+@import "./open-iconic-bootstrap.scss";
 
 // LiveView specific classes for your customizations
 .phx-no-feedback.invalid-feedback,
@@ -39,7 +40,8 @@
 // bootstrap theming options
 $body-bg: #fdfdfd;
 $body-color: #111;
-$enable-rounded: false;
+$enable-rounded: true;
+$border-radius: 2px;
 $theme-colors: (
   "primary": #01c5c4,
   "secondary": #625261,

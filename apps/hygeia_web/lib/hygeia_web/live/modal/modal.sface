@@ -1,0 +1,25 @@
+<div :id="@id" class="modal fade show live-modal" tabindex="-1"
+  :on-capture-click="close"
+  :on-window-keydown="close"
+  phx-key="escape"
+  :phx-target="@myself"
+  phx-page-loading>
+
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      <div class="modal-title">
+          <h5>{{ @title }}</h5>
+        </div>
+        <LivePatch to="{{ @return_to }}">
+          <button type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </LivePatch>
+      </div>
+      <div class="modal-body">
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>

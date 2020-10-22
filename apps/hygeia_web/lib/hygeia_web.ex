@@ -109,6 +109,8 @@ defmodule HygeiaWeb do
       import HygeiaWeb.RegionHelpers
       import HygeiaWeb.Gettext
 
+      import PhoenixActiveLink
+
       alias HygeiaWeb.Router.Helpers, as: Routes
     end
   end

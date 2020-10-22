@@ -9,19 +9,85 @@
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
-  <body>
-    <header>
+  <body class="layout-root">
+    <header class="layout-header py-3 bg-dark mb-5">
       <section class="container">
-        <ul class="nav nav-pills my-3" role="navigation">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">Active</a>
-          </li>
-          <li class="nav-item">
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <%= "Live Dashboard" |> gettext() |> link(to: Routes.live_dashboard_path(@conn, :home), class: "nav-link") %>
-            <% end %>
-          </li>
-        </ul>
+        <div class="d-flex justify-content-between">
+          <ul class="nav nav-pills" role="navigation">
+            <li class="nav-item">
+              <div class="dropdown" phx-update="ignore">
+                <a class="nav-link <%= if active_path?(@conn, to: Routes.person_index_path(@conn, :index)) do "active" end %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <%= gettext("People") %>
+                </a>
+                <div class="nav-dropdown dropdown-menu">
+                  <%= active_link(@conn, gettext("List"),
+                    to: Routes.person_index_path(@conn, :index),
+                    class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                  %>
+                  <%= active_link(@conn, gettext("New"),
+                    to: Routes.person_index_path(@conn, :new),
+                    class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                  %>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item">
+              <div class="dropdown" phx-update="ignore">
+                <a class="nav-link <%= if active_path?(@conn, to: Routes.case_index_path(@conn, :index)) do "active" end %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <%= gettext("Cases") %>
+                </a>
+                <div class="nav-dropdown dropdown-menu">
+                  <%= active_link(@conn, gettext("List"),
+                    to: Routes.case_index_path(@conn, :index),
+                    class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                  %>
+                  <%= active_link(@conn, gettext("New Index"),
+                    to: Routes.case_index_path(@conn, :new),
+                    class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                  %>
+                  <%# TODO: route %>
+                  <%= active_link(@conn, gettext("New Possible Index"),
+                    to: Routes.case_index_path(@conn, :new),
+                    class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                  %>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item">
+              <%# TODO: route %>
+              <%= active_link(@conn, gettext("Statistics"),
+                to: Routes.statistics_index_path(@conn, :index),
+                class_active: "nav-link active", class_inactive: "nav-link")
+              %>
+            </li>
+          </ul>
+          <div class="nav nav-pills">
+            <li class="nav-item mr-3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+                  </span>
+                </div>
+                <%# TODO: search action %>
+                <input type="search" class="form-control" placeholder="<%= gettext("Search") %>" />
+              </div>
+            </li>
+            <li class="nav-item">
+              <div class="dropdown" phx-update="ignore">
+                <a class="nav-link <%= if active_path?(@conn, to: Routes.user_show_path(@conn, :show, 1)) do "active" end %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="oi oi-person" title="<%= gettext("Profile") %>" aria-hidden="true"></span>
+                </a>
+                <div class="nav-dropdown dropdown-menu dropdown-menu-right">
+                  <%# TODO: id %>
+                  <%= active_link(@conn, gettext("Profile"), to: Routes.user_show_path(@conn, :show, 1), class_active: "nav-link active", class_inactive: "nav-link") %>
+                  <%# TODO: logout action %>
+                  <a class="nav-link" href="#"><%= gettext("Logout") %></a>
+                </div>
+              </div>
+            </li>
+          </div>
+        </div>
       </section>
     </header>
     <%= @inner_content %>

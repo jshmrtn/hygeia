@@ -1,0 +1,11 @@
+<div class="component-statistics-stat-panel">
+  <div class="header text-muted">
+    {{ @header }}
+  </div>
+  <div class="value mt-4 text-dark">
+    {{ Cldr.Number.to_string! @value, HygeiaWeb.Cldr }}
+  </div>
+  <div class="label text-muted mb-5">
+    {{ @label }}
+  </div>
+</div>

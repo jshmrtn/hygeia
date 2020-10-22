@@ -72,6 +72,8 @@ defmodule HygeiaWeb.Router do
 
     live "/organisations/:id", OrganisationLive.Show, :show
     live "/organisations/:id/show/edit", OrganisationLive.Show, :edit
+
+    live "/statistics", StatisticsLive.Index, :index
   end
 
   # Other scopes may use custom stacks.

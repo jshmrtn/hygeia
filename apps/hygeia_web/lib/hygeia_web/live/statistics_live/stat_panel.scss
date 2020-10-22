@@ -1,0 +1,19 @@
+.component-statistics-stat-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .header {
+    font-size: 15px;
+  }
+
+  .value {
+    font-size: 50px;
+    font-weight: bold;
+  }
+
+  .label {
+    font-size: 13px;
+    font-weight: 500;
+  }
+}

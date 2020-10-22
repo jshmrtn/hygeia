@@ -57,6 +57,7 @@ defmodule HygeiaWeb.MixProject do
        ref: "0f592a4b249858590a6b96c4e26e48fd7a46833b",
        override: true},
       {:floki, ">= 0.27.0", only: :test},
+      {:phoenix_active_link, "~> 0.2.1"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.3 or ~> 0.2.9"},
