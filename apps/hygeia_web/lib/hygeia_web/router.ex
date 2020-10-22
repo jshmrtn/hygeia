@@ -94,7 +94,7 @@ defmodule HygeiaWeb.Router do
     scope "/", HygeiaWeb do
       pipe_through :browser
 
-      live_dashboard "/dashboard", metrics: HygeiaTelemetry
+      live_dashboard "/dashboard", metrics: HygeiaTelemetry, ecto_repos: [Hygeia.Repo]
     end
   end
 

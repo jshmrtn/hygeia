@@ -54,13 +54,14 @@ defmodule HygeiaWeb.MixProject do
       # TODO: Switch back to released version when surface works with it
       {:phoenix_live_view,
        github: "phoenixframework/phoenix_live_view",
-       ref: "0f592a4b249858590a6b96c4e26e48fd7a46833b",
+       ref: "597c5ddf8af2ca39216a3fe5a44c066774de3abd",
        override: true},
       {:floki, ">= 0.27.0", only: :test},
       {:phoenix_active_link, "~> 0.2.1"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_dashboard, "~> 0.3 or ~> 0.2.9"},
+      # TODO: Replace with released version as soon as it is compatible with LiveView 0.15
+      {:phoenix_live_dashboard, github: "maennchen/phoenix_live_dashboard", branch: "master"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
@@ -75,7 +76,10 @@ defmodule HygeiaWeb.MixProject do
       {:ex_cldr_calendars, "~> 1.10"},
       {:ex_cldr_units, "~> 3.2"},
       {:ex_cldr_languages, "~> 0.2.1"},
-      {:surface, git: "https://github.com/msaraiva/surface.git", tag: "v0.1.0-rc.0"},
+      {:surface, github: "msaraiva/surface", tag: "v0.1.0-rc.1"},
+      # Force Newer Dependency for surface
+      {:nimble_parsec, "~> 0.5.3"},
+      {:ecto_psql_extras, "~> 0.2"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end
