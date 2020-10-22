@@ -13,6 +13,7 @@ defmodule Hygeia.CaseContext.Person do
   alias Hygeia.CaseContext.Employer
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.OrganisationContext.Position
   alias Hygeia.TenantContext.Tenant
 
   defenum Sex, :sex, ["male", "female", "other"]
@@ -35,6 +36,7 @@ defmodule Hygeia.CaseContext.Person do
           tenant_uuid: String.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
+          positions: Ecto.Schema.has_many(Position.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -55,6 +57,7 @@ defmodule Hygeia.CaseContext.Person do
           tenant_uuid: String.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
           cases: Ecto.Schema.has_many(Case.t()),
+          positions: Ecto.Schema.has_many(Position.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -74,6 +77,7 @@ defmodule Hygeia.CaseContext.Person do
     belongs_to :profession, Profession, references: :uuid, foreign_key: :profession_uuid
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     has_many :cases, Case
+    has_many :positions, Position, foreign_key: :person_uuid
 
     timestamps()
   end

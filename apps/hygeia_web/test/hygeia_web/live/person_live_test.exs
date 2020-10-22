@@ -16,12 +16,12 @@ defmodule HygeiaWeb.PersonLiveTest do
     last_name: "some last_name",
     sex: "male"
   }
-  @update_attrs %{
-    birth_date: ~D[2011-05-18],
-    first_name: "some updated first_name",
-    last_name: "some updated last_name",
-    sex: "female"
-  }
+  # @update_attrs %{
+  #   birth_date: ~D[2011-05-18],
+  #   first_name: "some updated first_name",
+  #   last_name: "some updated last_name",
+  #   sex: "female"
+  # }
   @invalid_attrs %{
     birth_date: nil,
     first_name: nil,

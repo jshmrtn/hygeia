@@ -99,4 +99,66 @@ defmodule Hygeia.OrganisationContextTest do
       assert %Ecto.Changeset{} = OrganisationContext.change_organisation(organisation)
     end
   end
+
+  describe "positions" do
+    alias Hygeia.OrganisationContext.Position
+
+    @valid_attrs %{position: "some position"}
+    @update_attrs %{position: "some updated position"}
+    @invalid_attrs %{position: nil}
+
+    test "list_positions/0 returns all positions" do
+      position = position_fixture()
+      assert OrganisationContext.list_positions() == [position]
+    end
+
+    test "get_position!/1 returns the position with given id" do
+      position = position_fixture()
+      assert OrganisationContext.get_position!(position.uuid) == position
+    end
+
+    test "create_position/1 with valid data creates a position" do
+      organisation = organisation_fixture()
+      person = person_fixture()
+
+      attrs =
+        Enum.into(%{person_uuid: person.uuid, organisation_uuid: organisation.uuid}, @valid_attrs)
+
+      assert {:ok, %Position{} = position} = OrganisationContext.create_position(attrs)
+      assert position.position == "some position"
+    end
+
+    test "create_position/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = OrganisationContext.create_position(@invalid_attrs)
+    end
+
+    test "update_position/2 with valid data updates the position" do
+      position = position_fixture()
+
+      assert {:ok, %Position{} = position} =
+               OrganisationContext.update_position(position, @update_attrs)
+
+      assert position.position == "some updated position"
+    end
+
+    test "update_position/2 with invalid data returns error changeset" do
+      position = position_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               OrganisationContext.update_position(position, @invalid_attrs)
+
+      assert position == OrganisationContext.get_position!(position.uuid)
+    end
+
+    test "delete_position/1 deletes the position" do
+      position = position_fixture()
+      assert {:ok, %Position{}} = OrganisationContext.delete_position(position)
+      assert_raise Ecto.NoResultsError, fn -> OrganisationContext.get_position!(position.uuid) end
+    end
+
+    test "change_position/1 returns a position changeset" do
+      position = position_fixture()
+      assert %Ecto.Changeset{} = OrganisationContext.change_position(position)
+    end
+  end
 end

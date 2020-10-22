@@ -22,5 +22,7 @@
 
 </ul>
 
+<%= live_component @socket, HygeiaWeb.PositionLive.Index, organisation: @organisation, id: "Positions-#{@organisation.uuid}", live_action: @live_action, params: @params %>
+
 <span><%= "Edit" |> gettext() |> live_patch(to: Routes.organisation_show_path(@socket, :edit, @organisation), class: "button") %></span>
 <span><%= "Back" |> gettext() |> live_redirect(to: Routes.organisation_index_path(@socket, :index)) %></span>

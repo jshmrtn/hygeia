@@ -21,10 +21,11 @@ defmodule HygeiaWeb.CaseLiveTest do
       }
     }
   }
-  @update_attrs %{
-    complexity: :high,
-    status: :done
-  }
+
+  # @update_attrs %{
+  #   complexity: :high,
+  #   status: :done
+  # }
 
   # @invalid_attrs %{
   #   complexity: "",

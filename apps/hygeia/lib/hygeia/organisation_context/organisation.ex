@@ -6,6 +6,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
   use Hygeia, :model
 
   alias Hygeia.CaseContext.Address
+  alias Hygeia.OrganisationContext.Position
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -14,6 +15,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           name: String.t() | nil,
           address: Address.t() | nil,
           notes: String.t() | nil,
+          positions: Ecto.Schema.has_many(Position.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -22,6 +24,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           name: String.t(),
           address: Address.t(),
           notes: String.t() | nil,
+          positions: Ecto.Schema.has_many(Position.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -31,6 +34,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
     field :notes, :string
 
     embeds_one :address, Address, on_replace: :delete
+    has_many :positions, Position, foreign_key: :organisation_uuid
 
     timestamps()
   end

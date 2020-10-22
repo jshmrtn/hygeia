@@ -4,6 +4,7 @@
 #
 
 import Hygeia.CaseContext
+import Hygeia.OrganisationContext
 import Hygeia.TenantContext
 import Hygeia.UserContext
 
@@ -273,4 +274,24 @@ Versioning.put_originator(:noone)
       name: nil,
       flight_information: nil
     }
+  })
+
+{:ok, organisation_jm} =
+  create_organisation(%{
+    address: %{
+      address: "Neugasse 51",
+      zip: "9000",
+      place: "St. Gallen",
+      subdivision: "SG",
+      country: "CH"
+    },
+    name: "JOSHMARTIN GmbH",
+    notes: "Coole Astronauten"
+  })
+
+{:ok, _position_jm_jay} =
+  create_position(%{
+    organisation_uuid: organisation_jm.uuid,
+    person_uuid: person_jay.uuid,
+    position: "CEO"
   })

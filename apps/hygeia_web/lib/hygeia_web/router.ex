@@ -92,6 +92,12 @@ defmodule HygeiaWeb.Router do
     live "/organisations/:id/show/edit", OrganisationLive.Show, :edit
 
     live "/statistics", StatisticsLive.Index, :index
+
+    live "/organisations/:id/positions/new", OrganisationLive.Show, :position_new
+
+    live "/organisations/:id/positions/:position_id/edit",
+         OrganisationLive.Show,
+         :position_edit
   end
 
   scope "/dashboard" do
