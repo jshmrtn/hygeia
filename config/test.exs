@@ -11,5 +11,8 @@ config :hygeia, Hygeia.Repo, pool: Ecto.Adapters.SQL.Sandbox
 config :email_checker,
   validations: [EmailChecker.Check.Format]
 
+# Prometheus Exporter
+config :hygeia_telemetry, server: false
+
 # Print only warnings and errors during test
 config :logger, level: :warn

@@ -74,3 +74,6 @@ config :hygeia_api, HygeiaApi.Endpoint,
     transport_options: [socket_opts: [:inet6]]
   ],
   secret_key_base: secret_key_base
+
+# Prometheus Exporter
+config :hygeia_telemetry, port: "METRICS_PORT" |> System.get_env("9568") |> String.to_integer()

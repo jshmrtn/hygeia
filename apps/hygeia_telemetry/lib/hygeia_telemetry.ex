@@ -13,17 +13,26 @@ defmodule HygeiaTelemetry do
 
   @impl Supervisor
   def init(_arg) do
-    children = [
-      # Telemetry poller will execute the given period measurements
-      # every 10_000ms. Learn more here: https://hexdocs.pm/telemetry_metrics
-      {:telemetry_poller, measurements: periodic_measurements(), period: 1_000},
-      # Add reporters as children of your supervision tree.
-      # {Telemetry.Metrics.ConsoleReporter, metrics: metrics()},
-      {TelemetryMetricsPrometheus,
-       metrics: metrics(), port: "METRICS_PORT" |> System.get_env("9568") |> String.to_integer()}
-    ]
+    Supervisor.init(
+      [
+        # Telemetry poller will execute the given period measurements
+        # every 10_000ms. Learn more here: https://hexdocs.pm/telemetry_metrics
+        {:telemetry_poller, measurements: periodic_measurements(), period: 1_000}
+        # Add reporters as children of your supervision tree.
+        # {Telemetry.Metrics.ConsoleReporter, metrics: metrics()},
+        | case Application.fetch_env!(:hygeia_telemetry, :server) do
+            true ->
+              [
+                {TelemetryMetricsPrometheus,
+                 metrics: metrics(), port: Application.fetch_env!(:hygeia_telemetry, :port)}
+              ]
 
-    Supervisor.init(children, strategy: :one_for_one)
+            false ->
+              []
+          end
+      ],
+      strategy: :one_for_one
+    )
   end
 
   # credo:disable-for-next-line Credo.Check.Refactor.ABCSize

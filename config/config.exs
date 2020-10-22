@@ -68,6 +68,9 @@ config :cadastre, Cadastre.I18n,
   default_locale: "en",
   allowed_locales: ["de", "en", "fr", "it"]
 
+# Prometheus Exporter
+config :hygeia_telemetry, server: true
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
