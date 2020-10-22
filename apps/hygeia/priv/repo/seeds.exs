@@ -216,7 +216,38 @@ Versioning.put_originator(:noone)
     propagator_internal: true,
     propagator_case_uuid: case_jony.uuid,
     recipient_internal: true,
-    recipient_case_uuid: case_jay.uuid
+    recipient_case_uuid: case_jay.uuid,
+    infection_place: %{
+      address: %{
+        address: "Torstrasse 25",
+        zip: "9000",
+        place: "St. Gallen",
+        subdivision: "SG",
+        country: "CH"
+      },
+      known: true,
+      activity_mapping_executed: true,
+      activity_mapping: "Drank beer, kept distance to other people",
+      type: "Pub",
+      name: "BrüW",
+      flight_information: nil
+    }
+  })
+
+{:ok, _transmission_flight_jony} =
+  create_transmission(%{
+    date: ~D[2020-10-12],
+    recipient_internal: true,
+    recipient_case_uuid: case_jony.uuid,
+    infection_place: %{
+      address: nil,
+      known: true,
+      activity_mapping_executed: false,
+      activity_mapping: nil,
+      type: "Flight",
+      name: "Swiss International Airlines",
+      flight_information: "LX-332"
+    }
   })
 
 {:ok, _transmission_jony_josia} =
@@ -225,5 +256,21 @@ Versioning.put_originator(:noone)
     propagator_internal: true,
     propagator_case_uuid: case_jony.uuid,
     recipient_internal: false,
-    recipient_ims_id: "94327"
+    recipient_ims_id: "94327",
+    infection_place: %{
+      address: %{
+        address: "Sunnehof 1",
+        zip: "8047",
+        place: "Dinhard",
+        subdivision: "ZH",
+        country: "CH"
+      },
+      known: true,
+      activity_mapping_executed: true,
+      activity_mapping:
+        "stayed at brothers place, were in contact for more than 15 minutes while not keeping save distance",
+      type: "Home",
+      name: nil,
+      flight_information: nil
+    }
   })

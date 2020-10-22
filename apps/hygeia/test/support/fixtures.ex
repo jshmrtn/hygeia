@@ -207,7 +207,22 @@ defmodule Hygeia.Fixtures do
   end
 
   @valid_attrs %{
-    date: ~D[2010-04-17]
+    date: ~D[2010-04-17],
+    infection_place: %{
+      address: %{
+        address: "Torstrasse 25",
+        zip: "9000",
+        place: "St. Gallen",
+        subdivision: "SG",
+        country: "CH"
+      },
+      known: true,
+      activity_mapping_executed: true,
+      activity_mapping: "Drank beer, kept distance to other people",
+      type: "Pub",
+      name: "BrüW",
+      flight_information: nil
+    }
   }
 
   @spec transmission_fixture(attrs :: Hygeia.ecto_changeset_params()) :: Transmission.t()

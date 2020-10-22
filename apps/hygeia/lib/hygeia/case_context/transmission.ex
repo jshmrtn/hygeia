@@ -10,8 +10,10 @@ defmodule Hygeia.CaseContext.Transmission do
   use Hygeia, :model
 
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.InfectionPlace
 
   @type t :: %__MODULE__{
+          uuid: String.t(),
           date: Date.t() | nil,
           propagator_internal: boolean,
           propagator_ims_id: String.t() | nil,
@@ -20,10 +22,14 @@ defmodule Hygeia.CaseContext.Transmission do
           recipient_internal: boolean,
           recipient_ims_id: String.t() | nil,
           recipient_case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          recipient_case_uuid: String.t() | nil
+          recipient_case_uuid: String.t() | nil,
+          infection_place: InfectionPlace.t() | nil,
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
         }
 
   @type empty :: %__MODULE__{
+          uuid: String.t() | nil,
           date: Date.t() | nil,
           propagator_internal: boolean | nil,
           propagator_ims_id: String.t() | nil,
@@ -32,7 +38,10 @@ defmodule Hygeia.CaseContext.Transmission do
           recipient_internal: boolean | nil,
           recipient_ims_id: String.t() | nil,
           recipient_case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          recipient_case_uuid: String.t() | nil
+          recipient_case_uuid: String.t() | nil,
+          infection_place: InfectionPlace.t(),
+          inserted_at: NaiveDateTime.t() | nil,
+          updated_at: NaiveDateTime.t() | nil
         }
 
   @derive {Phoenix.Param, key: :uuid}
@@ -46,6 +55,8 @@ defmodule Hygeia.CaseContext.Transmission do
 
     belongs_to :propagator_case, Case, references: :uuid, foreign_key: :propagator_case_uuid
     belongs_to :recipient_case, Case, references: :uuid, foreign_key: :recipient_case_uuid
+
+    embeds_one :infection_place, InfectionPlace
 
     timestamps()
   end
@@ -63,6 +74,7 @@ defmodule Hygeia.CaseContext.Transmission do
       :propagator_ims_id,
       :recipient_case_uuid
     ])
+    |> cast_embed(:infection_place)
     |> validate_required([])
     |> validate_case(:propagator_internal, :propagator_ims_id, :propagator_case_uuid)
     |> validate_case(:recipient_internal, :recipient_ims_id, :recipient_case_uuid)
