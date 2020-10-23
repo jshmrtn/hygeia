@@ -135,12 +135,12 @@ defmodule HygeiaWeb do
       import Phoenix.View
 
       import HygeiaWeb.ErrorHelpers
-      import HygeiaWeb.RegionHelpers
       import HygeiaWeb.Gettext
 
       import HygeiaWeb.Helpers.Address
       import HygeiaWeb.Helpers.Case
       import HygeiaWeb.Helpers.Phase
+      import HygeiaWeb.Helpers.Region
 
       import PhoenixActiveLink
 

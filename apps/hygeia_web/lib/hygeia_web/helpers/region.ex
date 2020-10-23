@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.RegionHelpers do
+defmodule HygeiaWeb.Helpers.Region do
   @moduledoc """
   countries and subdivisions
   """
