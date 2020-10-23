@@ -101,8 +101,8 @@
     <tbody id="cases">
       <tr :for={{ case <- @cases }} id="case-{{ case.uuid }}">
         <td>{{ case.person.first_name }} {{ case.person.last_name }}</td>
-        <td>{{ case.complexity }}</td>
-        <td>{{ case.status }}</td>
+        <td>{{ case.complexity |> case_complexity_translation }}</td>
+        <td>{{ case.status |> case_status_translation }}</td>
         <td>
           <LiveRedirect to={{ Routes.case_show_path(@socket, :show, case) }}>
             <button class="btn btn-sm btn-secondary">{{ "Show" |> gettext }}</button>

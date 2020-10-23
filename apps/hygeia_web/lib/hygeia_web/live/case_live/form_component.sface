@@ -12,7 +12,7 @@
         class="form-control"
         opts={{ prompt: "Choose type" |> gettext }}
         field={{ :type }}
-        options={{ Hygeia.CaseContext.Phase.Type.__enum_map__() }}
+        options={{ phase_type_map() }}
       />
       <FormError />
     </Field>
@@ -82,7 +82,7 @@
           class="form-control" 
           opts={{ prompt: "Select complexity" |> gettext }} 
           field={{ :complexity }} 
-          options={{ Hygeia.CaseContext.Case.Complexity.__enum_map__() }}
+          options={{ case_complexity_map() }}
         />
         <FormError />
       </Field>
@@ -94,7 +94,7 @@
           class="form-control" 
           opts={{ prompt: "Select status" |> gettext }} 
           field={{ :status }} 
-          options={{ Hygeia.CaseContext.Case.Status.__enum_map__() }}
+          options={{ case_status_map() }}
         />
         <FormError />
       </Field>

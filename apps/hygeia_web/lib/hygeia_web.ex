@@ -25,6 +25,7 @@ defmodule HygeiaWeb do
 
       import Plug.Conn
       import HygeiaWeb.Gettext
+
       alias HygeiaWeb.Router.Helpers, as: Routes
     end
   end
@@ -136,6 +137,9 @@ defmodule HygeiaWeb do
       import HygeiaWeb.ErrorHelpers
       import HygeiaWeb.RegionHelpers
       import HygeiaWeb.Gettext
+
+      import HygeiaWeb.Helpers.Case
+      import HygeiaWeb.Helpers.Phase
 
       import PhoenixActiveLink
 

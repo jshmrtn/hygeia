@@ -99,7 +99,10 @@
       <tr :for={{ person <- @people }} id="person-{{ person.uuid }}">
         <td>{{ person.first_name }}</td>
         <td>{{ person.last_name }}</td>
-        <td>{{ Cldr.Date.to_string! person.birth_date, HygeiaWeb.Cldr }}</td>
+        <td>{{ case person.birth_date do
+                 nil -> nil
+                 date -> Cldr.Date.to_string! date, HygeiaWeb.Cldr
+               end }}</td>
         <td>{{ person.address.address }}, {{ person.address.zip }} {{ person.address.place }}, {{ person.address.country }}</td>
         <td>
           <LiveRedirect to={{ Routes.person_show_path(@socket, :show, person) }}>

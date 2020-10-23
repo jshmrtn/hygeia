@@ -4,6 +4,7 @@ defmodule HygeiaWeb.CaseLiveTest do
   use Hygeia.DataCase
   use HygeiaWeb.ConnCase
 
+  import HygeiaWeb.Helpers.Case
   import Phoenix.LiveViewTest
 
   @moduletag origin: :test
@@ -41,7 +42,7 @@ defmodule HygeiaWeb.CaseLiveTest do
       {:ok, _index_live, html} = live(conn, Routes.case_index_path(conn, :index))
 
       assert html =~ "Listing Cases"
-      assert html =~ Atom.to_string(case.complexity)
+      assert html =~ case_complexity_translation(case.complexity)
     end
 
     test "saves new case", %{conn: conn} do
@@ -75,7 +76,7 @@ defmodule HygeiaWeb.CaseLiveTest do
         |> follow_redirect(conn, Routes.case_index_path(conn, :index))
 
       assert html =~ "Case created successfully"
-      assert html =~ Atom.to_string(@create_attrs.complexity)
+      assert html =~ case_complexity_translation(@create_attrs.complexity)
     end
 
     # test "updates case in listing", %{conn: conn, case_model: case} do
