@@ -10,6 +10,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
+  @moduletag log_in: true
 
   describe "Index" do
     test "lists all transmissions" do

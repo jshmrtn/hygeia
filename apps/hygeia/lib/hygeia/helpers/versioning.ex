@@ -63,7 +63,7 @@ defmodule Hygeia.Helpers.Versioning do
         case get_originator() do
           nil -> raise "Originator must be set to mutate resources"
           :noone -> nil
-          %User{} = originator -> originator
+          %User{uuid: originator_uuid} -> %{id: originator_uuid}
         end
     ]
   end

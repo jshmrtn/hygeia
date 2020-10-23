@@ -80,6 +80,11 @@ defmodule HygeiaWeb.MixProject do
       # Force Newer Dependency for surface
       {:nimble_parsec, "~> 0.5.3"},
       {:ecto_psql_extras, "~> 0.2"},
+      {:ueberauth, "~> 0.6", override: true},
+      {:jsone, "~> 1.5", override: true},
+      {:ueberauth_oidc, github: "rng2/ueberauth_oidc", tag: "0.0.1"},
+      {:oidcc, github: "jshmrtn/oidcc", branch: "master", override: true},
+      {:certifi, "~> 2.5"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

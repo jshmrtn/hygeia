@@ -8,6 +8,7 @@ defmodule HygeiaWeb.PersonLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
+  @moduletag log_in: true
 
   @create_attrs %{
     birth_date: ~D[2010-04-17],

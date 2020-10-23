@@ -17,6 +17,8 @@ defmodule HygeiaWeb do
   and import those modules here.
   """
 
+  alias Hygeia.Helpers.Versioning
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: HygeiaWeb
@@ -48,6 +50,15 @@ defmodule HygeiaWeb do
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
       unquote(view_helpers())
+
+      @impl Phoenix.LiveView
+      def mount(_params, session, socket) do
+        HygeiaWeb.setup_live_view(session)
+
+        {:ok, socket}
+      end
+
+      defoverridable mount: 3
     end
   end
 
@@ -57,6 +68,15 @@ defmodule HygeiaWeb do
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
       unquote(view_helpers())
+
+      @impl Phoenix.LiveView
+      def mount(_params, session, socket) do
+        HygeiaWeb.setup_live_view(session)
+
+        {:ok, socket}
+      end
+
+      defoverridable mount: 3
     end
   end
 
@@ -113,6 +133,23 @@ defmodule HygeiaWeb do
 
       alias HygeiaWeb.Router.Helpers, as: Routes
     end
+  end
+
+  @doc false
+  @spec setup_live_view(session :: map) :: :ok
+  def setup_live_view(session) do
+    unless is_nil(session["cldr_locale"]) do
+      HygeiaWeb.Cldr.put_locale(session["cldr_locale"])
+      Gettext.put_locale(HygeiaWeb.Cldr.get_locale().gettext_locale_name)
+    end
+
+    Versioning.put_origin(:web)
+
+    unless is_nil(session["auth"]) do
+      Versioning.put_originator(session["auth"])
+    end
+
+    :ok
   end
 
   @doc """

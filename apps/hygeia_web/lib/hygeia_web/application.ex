@@ -5,21 +5,45 @@ defmodule HygeiaWeb.Application do
 
   use Application
 
+  alias HygeiaWeb.Router.Helpers, as: Routes
+
   @impl Application
   @spec start(start_type :: Application.start_type(), start_args :: term()) ::
           {:ok, pid()} | {:ok, pid(), Application.state()} | {:error, reason :: term()}
   def start(_type, _args) do
-    children = [
+    :application.set_env(:oidcc, :cacertfile, :certifi.cacertfile())
+
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+    [
       # Start the Endpoint (http/https)
       HygeiaWeb.Endpoint
       # Start a worker by calling: HygeiaWeb.Worker.start_link(arg)
       # {HygeiaWeb.Worker, arg}
     ]
+    |> Supervisor.start_link(
+      strategy: :one_for_one,
+      name: HygeiaWeb.Supervisor
+    )
+    |> case do
+      {:ok, pid} ->
+        iam_config =
+          :ueberauth
+          |> Application.fetch_env!(UeberauthOIDC)
+          |> Keyword.put_new(
+            :local_endpoint,
+            Routes.auth_url(HygeiaWeb.Endpoint, :callback, "oidc")
+          )
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: HygeiaWeb.Supervisor]
-    Supervisor.start_link(children, opts)
+        Application.put_env(:ueberauth, UeberauthOIDC, iam_config)
+
+        UeberauthOIDC.init!()
+
+        {:ok, pid}
+
+      {:error, reason} ->
+        {:error, reason}
+    end
   end
 
   # Tell Phoenix to update the endpoint configuration

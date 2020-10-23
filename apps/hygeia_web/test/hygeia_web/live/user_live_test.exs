@@ -8,6 +8,7 @@ defmodule HygeiaWeb.UserLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
+  @moduletag log_in: true
 
   defp create_user(_tags) do
     %{user: user_fixture()}

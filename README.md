@@ -34,6 +34,9 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   * `WEB_EXTERNAL_PORT` (default same as port) - Externally Reachable Port
   * `WEB_EXTERNAL_HOST` (default `localhost`) - Externally Reachable Host
   * `WEB_EXTERNAL_SCHEME` (default `http`) - Externally Reachable Scheme (http/https)
+  * `WEB_IAM_ISSUER` (default `https://issuer.zitadel.ch`) - IAM Issuer
+  * `WEB_IAM_CLIENT_ID` (default `***REMOVED***`) - IAM Client ID
+  * `WEB_IAM_CLIENT_SECRET` (default `***REMOVED***`) - IAM Client Secret
 * API Web Server
   * `API_PORT` (default `4001`) - Port of the Web Server
   * `API_EXTERNAL_PORT` (default same as port) - Externally Reachable Port

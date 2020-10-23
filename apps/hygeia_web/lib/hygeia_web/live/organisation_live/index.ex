@@ -3,23 +3,14 @@ defmodule HygeiaWeb.OrganisationLive.Index do
 
   use HygeiaWeb, :live_view
 
-  alias Hygeia.Helpers.Versioning
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
 
   @impl Phoenix.LiveView
-  def mount(_params, session, socket) do
+  def mount(params, session, socket) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "organisations")
 
-    unless is_nil(session["cldr_locale"]) do
-      HygeiaWeb.Cldr.put_locale(session["cldr_locale"])
-    end
-
-    # TODO: Replace with correct Origin / Originator
-    Versioning.put_origin(:web)
-    Versioning.put_originator(:noone)
-
-    {:ok, assign(socket, :organisations, list_organisations())}
+    super(params, session, assign(socket, :organisations, list_organisations()))
   end
 
   @impl Phoenix.LiveView

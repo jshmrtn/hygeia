@@ -17,6 +17,8 @@ defmodule HygeiaWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
+  import Phoenix.ConnTest
+
   using do
     quote do
       # Import conveniences for testing with connections
@@ -31,7 +33,15 @@ defmodule HygeiaWeb.ConnCase do
     end
   end
 
-  setup do
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+  setup tags do
+    conn = build_conn()
+
+    if tags[:log_in] do
+      user = Hygeia.Fixtures.user_fixture(%{iam_sub: Ecto.UUID.generate()})
+
+      {:ok, conn: init_test_session(conn, auth: user), user: user}
+    else
+      {:ok, conn: conn}
+    end
   end
 end

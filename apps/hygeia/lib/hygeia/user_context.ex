@@ -36,6 +36,9 @@ defmodule Hygeia.UserContext do
   @spec get_user!(id :: String.t()) :: User.t()
   def get_user!(id), do: Repo.get!(User, id)
 
+  @spec get_user_by_sub!(sub :: String.t()) :: User.t()
+  def get_user_by_sub!(sub), do: Repo.get_by!(User, iam_sub: sub)
+
   @doc """
   Creates a user.
 

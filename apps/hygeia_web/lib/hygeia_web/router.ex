@@ -23,14 +23,26 @@ defmodule HygeiaWeb.Router do
       session_key: "cldr_locale"
 
     plug :store_locale
+
+    plug HygeiaWeb.Plug.SetupVersioning
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
+  pipeline :protected do
+    plug HygeiaWeb.Plug.RequireAuthentication
+  end
+
+  scope "/auth", HygeiaWeb do
+    pipe_through [:browser]
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+    post "/:provider/callback", AuthController, :callback
+
+    delete "/", AuthController, :delete
   end
 
   scope "/", HygeiaWeb do
-    pipe_through :browser
+    pipe_through [:browser, :protected]
 
     live "/", PageLive, :index
 

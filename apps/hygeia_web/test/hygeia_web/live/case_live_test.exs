@@ -8,6 +8,7 @@ defmodule HygeiaWeb.CaseLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
+  @moduletag log_in: true
 
   @create_attrs %{
     complexity: :medium,

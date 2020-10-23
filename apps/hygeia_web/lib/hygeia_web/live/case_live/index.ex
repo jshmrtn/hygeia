@@ -5,22 +5,13 @@ defmodule HygeiaWeb.CaseLive.Index do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
 
   @impl Phoenix.LiveView
-  def mount(_params, session, socket) do
+  def mount(params, session, socket) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases")
 
-    unless is_nil(session["cldr_locale"]) do
-      HygeiaWeb.Cldr.put_locale(session["cldr_locale"])
-    end
-
-    # TODO: Replace with correct Origin / Originator
-    Versioning.put_origin(:web)
-    Versioning.put_originator(:noone)
-
-    {:ok, assign(socket, :cases, list_cases())}
+    super(params, session, assign(socket, :cases, list_cases()))
   end
 
   @impl Phoenix.LiveView

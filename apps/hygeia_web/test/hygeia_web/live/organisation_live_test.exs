@@ -8,6 +8,7 @@ defmodule HygeiaWeb.OrganisationLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
+  @moduletag log_in: true
 
   @create_attrs %{
     address: %{

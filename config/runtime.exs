@@ -77,3 +77,16 @@ config :hygeia_api, HygeiaApi.Endpoint,
 
 # Prometheus Exporter
 config :hygeia_telemetry, port: "METRICS_PORT" |> System.get_env("9568") |> String.to_integer()
+
+# IAM
+config :ueberauth, UeberauthOIDC,
+  zitadel: [
+    issuer_or_config_endpoint: System.get_env("WEB_IAM_ISSUER", "https://issuer.zitadel.ch"),
+    client_id: System.get_env("WEB_IAM_CLIENT_ID", "***REMOVED***"),
+    client_secret:
+      System.get_env(
+        "ADMIN_IAM_CLIENT_SECRET",
+        "***REMOVED***"
+      ),
+    request_scopes: ["openid", "profile", "email"]
+  ]

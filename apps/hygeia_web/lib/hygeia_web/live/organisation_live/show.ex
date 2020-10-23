@@ -3,22 +3,8 @@ defmodule HygeiaWeb.OrganisationLive.Show do
 
   use HygeiaWeb, :live_view
 
-  alias Hygeia.Helpers.Versioning
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
-
-  @impl Phoenix.LiveView
-  def mount(_params, session, socket) do
-    unless is_nil(session["cldr_locale"]) do
-      HygeiaWeb.Cldr.put_locale(session["cldr_locale"])
-    end
-
-    # TODO: Replace with correct Origin / Originator
-    Versioning.put_origin(:web)
-    Versioning.put_originator(:noone)
-
-    {:ok, socket}
-  end
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
