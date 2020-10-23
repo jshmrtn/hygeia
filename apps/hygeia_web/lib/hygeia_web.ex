@@ -138,6 +138,7 @@ defmodule HygeiaWeb do
       import HygeiaWeb.RegionHelpers
       import HygeiaWeb.Gettext
 
+      import HygeiaWeb.Helpers.Address
       import HygeiaWeb.Helpers.Case
       import HygeiaWeb.Helpers.Phase
 
