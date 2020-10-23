@@ -1,6 +1,8 @@
 defmodule HygeiaWeb.Router do
   use HygeiaWeb, :router
 
+  import Phoenix.LiveDashboard.Router
+
   # Make sure compilation order is correct
   require HygeiaWeb.Cldr
 
@@ -29,6 +31,10 @@ defmodule HygeiaWeb.Router do
 
   pipeline :protected do
     plug HygeiaWeb.Plug.RequireAuthentication
+  end
+
+  pipeline :protected_webmaster do
+    plug HygeiaWeb.Plug.HasRole, :webmaster
   end
 
   scope "/auth", HygeiaWeb do
@@ -88,26 +94,10 @@ defmodule HygeiaWeb.Router do
     live "/statistics", StatisticsLive.Index, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", HygeiaWeb do
-  #   pipe_through :api
-  # end
+  scope "/dashboard" do
+    pipe_through [:browser, :protected, :protected_webmaster]
 
-  # Enables LiveDashboard only for development
-  #
-  # If you want to use the LiveDashboard in production, you should put
-  # it behind authentication and allow only admins to access it.
-  # If your application does not have an admins-only section yet,
-  # you can use Plug.BasicAuth to set up some basic authentication
-  # as long as you are also using SSL (which you should anyway).
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
-
-    scope "/", HygeiaWeb do
-      pipe_through :browser
-
-      live_dashboard "/dashboard", metrics: HygeiaTelemetry, ecto_repos: [Hygeia.Repo]
-    end
+    live_dashboard "/", metrics: HygeiaTelemetry, ecto_repos: [Hygeia.Repo]
   end
 
   defp store_locale(conn, _params) do

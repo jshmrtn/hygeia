@@ -3,6 +3,7 @@ defmodule HygeiaWeb.AuthController do
 
   alias Hygeia.Helpers.Versioning
   alias Hygeia.UserContext
+  alias Hygeia.UserContext.User.Role
 
   plug Ueberauth
 
@@ -77,11 +78,24 @@ defmodule HygeiaWeb.AuthController do
     end
   end
 
-  defp upsert_user(%{email: email, name: name, sub: sub}) do
+  defp upsert_user(%{
+         email: email,
+         name: name,
+         sub: sub,
+         "urn:zitadel:iam:org:project:roles": roles
+       }) do
+    roles =
+      roles
+      |> Map.keys()
+      |> MapSet.new()
+      |> MapSet.intersection(MapSet.new(Role.__enum_map__()))
+      |> MapSet.to_list()
+
     %{
       email: email,
       display_name: name,
-      iam_sub: sub
+      iam_sub: sub,
+      roles: roles
     }
     |> UserContext.create_user()
     |> case do
@@ -99,7 +113,8 @@ defmodule HygeiaWeb.AuthController do
           |> UserContext.get_user_by_sub!()
           |> UserContext.update_user(%{
             email: email,
-            display_name: name
+            display_name: name,
+            roles: roles
           })
 
         user

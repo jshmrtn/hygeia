@@ -15,52 +15,65 @@
         <section class="container">
           <div class="d-flex justify-content-between">
             <ul class="nav nav-pills" role="navigation">
-              <li class="nav-item">
-                <div class="dropdown" phx-update="ignore">
-                  <a class="nav-link <%= if active_path?(@conn, to: Routes.person_index_path(@conn, :index)) do "active" end %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <%= gettext("People") %>
-                  </a>
-                  <div class="nav-dropdown dropdown-menu">
-                    <%= active_link(@conn, gettext("List"),
-                      to: Routes.person_index_path(@conn, :index),
-                      class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
-                    %>
-                    <%= active_link(@conn, gettext("New"),
-                      to: Routes.person_index_path(@conn, :new),
-                      class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
-                    %>
+              <%= if User.has_role?(get_auth(@conn), :admin) do %>
+                <li class="nav-item">
+                  <div class="dropdown" phx-update="ignore">
+                    <a class="nav-link <%= if active_path?(@conn, to: Routes.person_index_path(@conn, :index)) do "active" end %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= gettext("People") %>
+                    </a>
+                    <div class="nav-dropdown dropdown-menu">
+                      <%= active_link(@conn, gettext("List"),
+                        to: Routes.person_index_path(@conn, :index),
+                        class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                      %>
+                      <%= active_link(@conn, gettext("New"),
+                        to: Routes.person_index_path(@conn, :new),
+                        class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                      %>
+                    </div>
                   </div>
-                </div>
-              </li>
-              <li class="nav-item">
-                <div class="dropdown" phx-update="ignore">
-                  <a class="nav-link <%= if active_path?(@conn, to: Routes.case_index_path(@conn, :index)) do "active" end %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <%= gettext("Cases") %>
-                  </a>
-                  <div class="nav-dropdown dropdown-menu">
-                    <%= active_link(@conn, gettext("List"),
-                      to: Routes.case_index_path(@conn, :index),
-                      class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
-                    %>
-                    <%= active_link(@conn, gettext("New Index"),
-                      to: Routes.case_index_path(@conn, :new),
-                      class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
-                    %>
-                    <%# TODO: route %>
-                    <%= active_link(@conn, gettext("New Possible Index"),
-                      to: Routes.case_index_path(@conn, :new),
-                      class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
-                    %>
+                </li>
+              <% end %>
+              <%= if User.has_role?(get_auth(@conn), :tracer) or User.has_role?(get_auth(@conn), :supervisor) do %>
+                <li class="nav-item">
+                  <div class="dropdown" phx-update="ignore">
+                    <a class="nav-link <%= if active_path?(@conn, to: Routes.case_index_path(@conn, :index)) do "active" end %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= gettext("Cases") %>
+                    </a>
+                    <div class="nav-dropdown dropdown-menu">
+                      <%= active_link(@conn, gettext("List"),
+                        to: Routes.case_index_path(@conn, :index),
+                        class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                      %>
+                      <%= active_link(@conn, gettext("New Index"),
+                        to: Routes.case_index_path(@conn, :new),
+                        class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                      %>
+                      <%# TODO: route %>
+                      <%= active_link(@conn, gettext("New Possible Index"),
+                        to: Routes.case_index_path(@conn, :new),
+                        class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                      %>
+                    </div>
                   </div>
-                </div>
-              </li>
-              <li class="nav-item">
-                <%# TODO: route %>
-                <%= active_link(@conn, gettext("Statistics"),
-                  to: Routes.statistics_index_path(@conn, :index),
-                  class_active: "nav-link active", class_inactive: "nav-link")
-                %>
-              </li>
+                </li>
+              <% end %>
+              <%= if User.has_role?(get_auth(@conn), :statistics_viewer) do %>
+                <li class="nav-item">
+                  <%= active_link(@conn, gettext("Statistics"),
+                    to: Routes.statistics_index_path(@conn, :index),
+                    class_active: "nav-link active", class_inactive: "nav-link")
+                  %>
+                </li>
+              <% end %>
+              <%= if User.has_role?(get_auth(@conn), :webmaster) do %>
+                <li class="nav-item">
+                  <%= active_link(@conn, gettext("Phoenix Dashboard"),
+                    to: Routes.live_dashboard_path(@conn, :home),
+                    class_active: "nav-link active", class_inactive: "nav-link")
+                  %>
+                </li>
+              <% end %>
             </ul>
             <div class="nav nav-pills">
               <li class="nav-item mr-3">
