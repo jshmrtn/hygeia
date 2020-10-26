@@ -103,7 +103,7 @@ defmodule HygeiaWeb.Router do
   scope "/dashboard" do
     pipe_through [:browser, :protected, :protected_webmaster]
 
-    live_dashboard "/", metrics: HygeiaTelemetry, ecto_repos: [Hygeia.Repo]
+    live_dashboard "/", metrics: {HygeiaTelemetry, :dashboard_metrics}, ecto_repos: [Hygeia.Repo]
   end
 
   defp store_locale(conn, _params) do

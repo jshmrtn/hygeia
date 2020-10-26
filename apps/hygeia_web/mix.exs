@@ -57,7 +57,7 @@ defmodule HygeiaWeb.MixProject do
        ref: "597c5ddf8af2ca39216a3fe5a44c066774de3abd",
        override: true},
       {:floki, ">= 0.27.0", only: :test},
-      {:phoenix_active_link, "~> 0.2.1"},
+      {:phoenix_active_link, "~> 0.3.1"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # TODO: Replace with released version as soon as it is compatible with LiveView 0.15
@@ -79,7 +79,7 @@ defmodule HygeiaWeb.MixProject do
       {:surface, github: "msaraiva/surface", tag: "v0.1.0-rc.1"},
       # Force Newer Dependency for surface
       {:nimble_parsec, "~> 0.5.3"},
-      {:ecto_psql_extras, "~> 0.2"},
+      {:ecto_psql_extras, "~> 0.4"},
       {:ueberauth, "~> 0.6", override: true},
       {:jsone, "~> 1.5", override: true},
       {:ueberauth_oidc, github: "rng2/ueberauth_oidc", tag: "0.0.1"},
