@@ -6,6 +6,7 @@ defmodule HygeiaWeb.CaseLive.Show do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.Repo
+  alias Hygeia.UserContext.User
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
@@ -22,7 +23,8 @@ defmodule HygeiaWeb.CaseLive.Show do
          case,
          person: [],
          received_transmissions: [propagator_case: [person: []]],
-         propagated_transmissions: [recipient_case: [person: []]]
+         propagated_transmissions: [recipient_case: [person: []]],
+         protocol_entries: []
        )
      )
      |> assign(:versions, PaperTrail.get_versions(case))}

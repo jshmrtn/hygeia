@@ -179,6 +179,11 @@ Versioning.put_originator(:noone)
     ]
   })
 
+{:ok, _protocol_entry_jony} =
+  create_protocol_entry(case_jony, %{
+    entry: %{__type__: "note", note: "zeigt symptome, geht an PCR test"}
+  })
+
 {:ok, case_jay} =
   create_case(person_jay, %{
     complexity: :medium,

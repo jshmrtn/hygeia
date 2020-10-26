@@ -6,6 +6,7 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
@@ -254,5 +255,16 @@ defmodule Hygeia.Fixtures do
       |> OrganisationContext.create_position()
 
     position
+  end
+
+  @valid_attrs %{entry: %{__type__: "note", note: "some note"}}
+
+  @spec protocol_entry_fixture(case :: Cate.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          ProtocolEntry.t()
+  def protocol_entry_fixture(case \\ case_fixture(), attrs \\ %{}) do
+    {:ok, protocol_entry} =
+      CaseContext.create_protocol_entry(case, Enum.into(attrs, @valid_attrs))
+
+    protocol_entry
   end
 end

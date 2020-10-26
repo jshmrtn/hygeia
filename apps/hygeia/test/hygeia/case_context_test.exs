@@ -11,6 +11,7 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.CaseContext.Monitoring
+  alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Phase
   alias Hygeia.CaseContext.Profession
@@ -550,6 +551,66 @@ defmodule Hygeia.CaseContextTest do
         })
 
       assert %Ecto.Changeset{} = CaseContext.change_transmission(transmission)
+    end
+  end
+
+  describe "protocol_entries" do
+    alias Hygeia.CaseContext.ProtocolEntry
+
+    @valid_attrs %{entry: %{__type__: "note", note: "some note"}}
+    @update_attrs %{entry: %{__type__: "note", note: "some other note"}}
+    @invalid_attrs %{entry: %{__type__: :invalid}}
+
+    test "list_protocol_entries/0 returns all protocol_entries" do
+      protocol_entry = protocol_entry_fixture()
+      assert CaseContext.list_protocol_entries() == [protocol_entry]
+    end
+
+    test "get_protocol_entry!/1 returns the protocol_entry with given id" do
+      protocol_entry = protocol_entry_fixture()
+      assert CaseContext.get_protocol_entry!(protocol_entry.uuid) == protocol_entry
+    end
+
+    test "create_protocol_entry/1 with valid data creates a protocol_entry" do
+      case = case_fixture()
+
+      assert {:ok, %ProtocolEntry{entry: %Note{note: "some note"}}} =
+               CaseContext.create_protocol_entry(case, @valid_attrs)
+    end
+
+    test "create_protocol_entry/1 with invalid data returns error changeset" do
+      case = case_fixture()
+      assert {:error, %Ecto.Changeset{}} = CaseContext.create_protocol_entry(case, @invalid_attrs)
+    end
+
+    test "update_protocol_entry/2 with valid data updates the protocol_entry" do
+      protocol_entry = protocol_entry_fixture()
+
+      assert {:ok, %ProtocolEntry{entry: %Note{note: "some other note"}}} =
+               CaseContext.update_protocol_entry(protocol_entry, @update_attrs)
+    end
+
+    test "update_protocol_entry/2 with invalid data returns error changeset" do
+      protocol_entry = protocol_entry_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               CaseContext.update_protocol_entry(protocol_entry, @invalid_attrs)
+
+      assert protocol_entry == CaseContext.get_protocol_entry!(protocol_entry.uuid)
+    end
+
+    test "delete_protocol_entry/1 deletes the protocol_entry" do
+      protocol_entry = protocol_entry_fixture()
+      assert {:ok, %ProtocolEntry{}} = CaseContext.delete_protocol_entry(protocol_entry)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        CaseContext.get_protocol_entry!(protocol_entry.uuid)
+      end
+    end
+
+    test "change_protocol_entry/1 returns a protocol_entry changeset" do
+      protocol_entry = protocol_entry_fixture()
+      assert %Ecto.Changeset{} = CaseContext.change_protocol_entry(protocol_entry)
     end
   end
 end

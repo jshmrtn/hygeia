@@ -34,6 +34,8 @@ defmodule Hygeia do
       import Hygeia.Helpers.Country
       import Hygeia.Helpers.Id
 
+      import PolymorphicEmbed, only: [cast_polymorphic_embed: 2]
+
       alias Ecto.Changeset
 
       @primary_key {:uuid, :binary_id, autogenerate: true}

@@ -12,6 +12,7 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.CaseContext.Monitoring
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Phase
+  alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
@@ -46,6 +47,7 @@ defmodule Hygeia.CaseContext.Case do
           tracer: Ecto.Schema.belongs_to(User.t()) | nil,
           supervisor_uuid: String.t() | nil,
           supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
+          protocol_entries: Ecto.Schema.has_many(ProtocolEntry.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -68,6 +70,7 @@ defmodule Hygeia.CaseContext.Case do
           tracer: Ecto.Schema.belongs_to(User.t()),
           supervisor_uuid: String.t(),
           supervisor: Ecto.Schema.belongs_to(User.t()),
+          protocol_entries: Ecto.Schema.has_many(ProtocolEntry.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -93,6 +96,7 @@ defmodule Hygeia.CaseContext.Case do
     has_many :received_transmissions, Transmission, foreign_key: :recipient_case_uuid
     # , references: :propagator_case
     has_many :propagated_transmissions, Transmission, foreign_key: :propagator_case_uuid
+    has_many :protocol_entries, ProtocolEntry, foreign_key: :case_uuid
 
     timestamps()
   end

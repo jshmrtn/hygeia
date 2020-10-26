@@ -8,6 +8,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.TenantContext.Tenant
 
@@ -499,4 +500,118 @@ defmodule Hygeia.CaseContext do
           Ecto.Changeset.t()
   def change_transmission(%Transmission{} = transmission, attrs \\ %{}),
     do: Transmission.changeset(transmission, attrs)
+
+  @doc """
+  Returns the list of protocol_entries.
+
+  ## Examples
+
+      iex> list_protocol_entries()
+      [%ProtocolEntry{}, ...]
+
+  """
+  @spec list_protocol_entries :: [ProtocolEntry.t()]
+  def list_protocol_entries, do: Repo.all(ProtocolEntry)
+
+  @doc """
+  Gets a single protocol_entry.
+
+  Raises `Ecto.NoResultsError` if the Protocol entry does not exist.
+
+  ## Examples
+
+      iex> get_protocol_entry!(123)
+      %ProtocolEntry{}
+
+      iex> get_protocol_entry!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_protocol_entry!(id :: String.t()) :: ProtocolEntry.t()
+  def get_protocol_entry!(id), do: Repo.get!(ProtocolEntry, id)
+
+  @doc """
+  Creates a protocol_entry.
+
+  ## Examples
+
+      iex> create_protocol_entry(%{field: value})
+      {:ok, %ProtocolEntry{}}
+
+      iex> create_protocol_entry(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_protocol_entry(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t()}
+  def create_protocol_entry(%Case{} = case, attrs \\ %{}),
+    do:
+      case
+      |> Ecto.build_assoc(:protocol_entries)
+      |> change_protocol_entry(attrs)
+      |> versioning_insert()
+      |> broadcast("protocol_entries", :create)
+      |> versioning_extract()
+
+  @doc """
+  Updates a protocol_entry.
+
+  ## Examples
+
+      iex> update_protocol_entry(protocol_entry, %{field: new_value})
+      {:ok, %ProtocolEntry{}}
+
+      iex> update_protocol_entry(protocol_entry, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_protocol_entry(
+          protocol_entry :: ProtocolEntry.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t()}
+  def update_protocol_entry(%ProtocolEntry{} = protocol_entry, attrs),
+    do:
+      protocol_entry
+      |> change_protocol_entry(attrs)
+      |> versioning_update()
+      |> broadcast("protocol_entries", :update)
+      |> versioning_extract()
+
+  @doc """
+  Deletes a protocol_entry.
+
+  ## Examples
+
+      iex> delete_protocol_entry(protocol_entry)
+      {:ok, %ProtocolEntry{}}
+
+      iex> delete_protocol_entry(protocol_entry)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_protocol_entry(protocol_entry :: ProtocolEntry.t()) ::
+          {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t()}
+  def delete_protocol_entry(%ProtocolEntry{} = protocol_entry),
+    do:
+      protocol_entry
+      |> change_protocol_entry()
+      |> versioning_delete()
+      |> broadcast("protocol_entries", :delete)
+      |> versioning_extract()
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking protocol_entry changes.
+
+  ## Examples
+
+      iex> change_protocol_entry(protocol_entry)
+      %Ecto.Changeset{data: %ProtocolEntry{}}
+
+  """
+  @spec change_protocol_entry(
+          protocol_entry :: ProtocolEntry.t() | ProtocolEntry.empty(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Ecto.Changeset.t()
+  def change_protocol_entry(%ProtocolEntry{} = protocol_entry, attrs \\ %{}),
+    do: ProtocolEntry.changeset(protocol_entry, attrs)
 end

@@ -20,6 +20,48 @@
 <% end %>
 
 <h2>
+  <%= gettext("Protocol") %>
+</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><%= gettext("Date") %></th>
+      <th><%= gettext("Creator") %></th>
+      <th><%= gettext("Type") %></th>
+      <th><%= gettext("Meta") %></th>
+    <tr>
+  </thead>
+  <tbody>
+    <%= for protocol_entry <- @case.protocol_entries do %>
+      <tr>
+        <td><%= Cldr.DateTime.to_string! protocol_entry.inserted_at, HygeiaWeb.Cldr %></td>
+        <td><%=
+          protocol_entry
+          |> PaperTrail.get_version()
+          |> Repo.preload(:user)
+          |> Map.fetch!(:user)
+          |> case do
+            nil -> nil
+            %User{display_name: display_name} -> display_name
+          end
+        %></td>
+        <td><%=
+          case protocol_entry.entry do
+            %Hygeia.CaseContext.Note{} -> gettext("Note")
+          end
+        %></td>
+        <td><%=
+          case protocol_entry.entry do
+            %Hygeia.CaseContext.Note{note: note} -> note
+          end
+        %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>
   <%= gettext("Propagated Transmissions (Contact Persons)") %>
 </h2>
 
