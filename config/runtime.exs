@@ -85,7 +85,7 @@ config :ueberauth, UeberauthOIDC,
     client_id: System.get_env("WEB_IAM_CLIENT_ID", "***REMOVED***"),
     client_secret:
       System.get_env(
-        "ADMIN_IAM_CLIENT_SECRET",
+        "WEB_IAM_CLIENT_SECRET",
         "***REMOVED***"
       ),
     request_scopes: ["openid", "profile", "email"]
