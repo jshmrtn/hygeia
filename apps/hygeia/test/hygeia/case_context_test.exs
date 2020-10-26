@@ -15,6 +15,7 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Phase
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
@@ -334,6 +335,7 @@ defmodule Hygeia.CaseContextTest do
       tenant = %Tenant{uuid: tenant_uuid} = tenant_fixture()
       person = %Person{uuid: person_uuid} = person_fixture(tenant)
       user = %User{uuid: user_uuid} = user_fixture()
+      organisation = organisation_fixture()
 
       assert {:ok,
               %Case{
@@ -353,7 +355,8 @@ defmodule Hygeia.CaseContextTest do
                   %ExternalReference{type: :other, type_name: "foo", uuid: _, value: "7000"}
                 ],
                 hospitalizations: [
-                  %Hospitalization{end: ~D[2020-10-15], start: ~D[2020-10-13], uuid: _},
+                  %Hospitalization{end: ~D[2020-10-15], start: ~D[2020-10-13], uuid: _} =
+                    hospitalization,
                   %Hospitalization{end: nil, start: ~D[2020-10-16], uuid: _}
                 ],
                 human_readable_id: _,
@@ -402,8 +405,16 @@ defmodule Hygeia.CaseContextTest do
               }} =
                CaseContext.create_case(
                  person,
-                 Map.merge(@valid_attrs, %{tracer_uuid: user.uuid, supervisor_uuid: user.uuid})
+                 @valid_attrs
+                 |> Map.merge(%{tracer_uuid: user.uuid, supervisor_uuid: user.uuid})
+                 |> put_in(
+                   [:hospitalizations, Access.at(0), :organisation_uuid],
+                   organisation.uuid
+                 )
                )
+
+      assert %Hospitalization{organisation: %Organisation{}} =
+               Repo.preload(hospitalization, :organisation)
     end
 
     test "create_case/1 with invalid data returns error changeset" do
@@ -436,6 +447,14 @@ defmodule Hygeia.CaseContextTest do
     test "change_case/1 returns a case changeset" do
       case = case_fixture()
       assert %Ecto.Changeset{} = CaseContext.change_case(case)
+    end
+
+    test "relate_case_to_organisation/2 relates organisation" do
+      case = case_fixture()
+      organisation = organisation_fixture()
+
+      {:ok, %Case{related_organisations: [^organisation]}} =
+        CaseContext.relate_case_to_organisation(case, organisation)
     end
   end
 

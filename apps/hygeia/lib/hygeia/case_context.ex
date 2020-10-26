@@ -10,6 +10,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
 
   @doc """
@@ -312,6 +313,21 @@ defmodule Hygeia.CaseContext do
       |> versioning_insert()
       |> broadcast("cases", :create)
       |> versioning_extract()
+
+  @spec relate_case_to_organisation(case :: Case.t(), organisation :: Organisation.t()) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t()}
+  def relate_case_to_organisation(case, organisation) do
+    case = Repo.preload(case, :related_organisations)
+
+    case
+    |> change_case()
+    |> Ecto.Changeset.put_assoc(:related_organisations, [
+      organisation | case.related_organisations
+    ])
+    |> versioning_update()
+    |> broadcast("cases", :update)
+    |> versioning_extract()
+  end
 
   @doc """
   Updates a case.

@@ -47,6 +47,24 @@ Versioning.put_originator(:noone)
 {:ok, _profession_unemployed} = create_profession(%{name: "Arbeitssuchend"})
 {:ok, _profession_other} = create_profession(%{name: "Sonstiges"})
 
+{:ok, organisation_jm} =
+  create_organisation(%{
+    address: %{
+      address: "Neugasse 51",
+      zip: "9000",
+      place: "St. Gallen",
+      subdivision: "SG",
+      country: "CH"
+    },
+    name: "JOSHMARTIN GmbH",
+    notes: "Coole Astronauten"
+  })
+
+{:ok, organisation_kssg} =
+  create_organisation(%{
+    name: "Kantonsspital St. Gallen"
+  })
+
 {:ok, person_jony} =
   create_person(tenant_ar, %{
     address: %{
@@ -128,7 +146,7 @@ Versioning.put_originator(:noone)
     tracer_uuid: user_1.uuid,
     supervisor_uuid: user_1.uuid,
     hospitalizations: [
-      %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
+      %{start: ~D[2020-10-13], end: ~D[2020-10-15], organisation_uuid: organisation_kssg.uuid},
       %{start: ~D[2020-10-16], end: nil}
     ],
     clinical: %{
@@ -179,6 +197,8 @@ Versioning.put_originator(:noone)
     ]
   })
 
+{:ok, case_jony} = relate_case_to_organisation(case_jony, organisation_jm)
+
 {:ok, _protocol_entry_jony} =
   create_protocol_entry(case_jony, %{
     entry: %{__type__: "note", note: "zeigt symptome, geht an PCR test"}
@@ -215,6 +235,8 @@ Versioning.put_originator(:noone)
       }
     ]
   })
+
+{:ok, case_jay} = relate_case_to_organisation(case_jay, organisation_jm)
 
 {:ok, _transmission_jony_jay} =
   create_transmission(%{
@@ -279,19 +301,6 @@ Versioning.put_originator(:noone)
       name: nil,
       flight_information: nil
     }
-  })
-
-{:ok, organisation_jm} =
-  create_organisation(%{
-    address: %{
-      address: "Neugasse 51",
-      zip: "9000",
-      place: "St. Gallen",
-      subdivision: "SG",
-      country: "CH"
-    },
-    name: "JOSHMARTIN GmbH",
-    notes: "Coole Astronauten"
   })
 
 {:ok, _position_jm_jay} =
