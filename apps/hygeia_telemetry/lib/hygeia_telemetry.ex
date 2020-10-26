@@ -4,6 +4,7 @@ defmodule HygeiaTelemetry do
   """
 
   use Supervisor
+
   import Telemetry.Metrics
 
   @spec start_link(args :: Keyword.t()) :: Supervisor.on_start()
@@ -24,7 +25,8 @@ defmodule HygeiaTelemetry do
             true ->
               [
                 {TelemetryMetricsPrometheus,
-                 metrics: metrics(), port: Application.fetch_env!(:hygeia_telemetry, :port)}
+                 metrics: prometheus_metrics(),
+                 port: Application.fetch_env!(:hygeia_telemetry, :port)}
               ]
 
             false ->
@@ -66,7 +68,7 @@ defmodule HygeiaTelemetry do
 
       # Database Metrics
       summary("hygeia.repo.query.total_time", unit: {:native, :millisecond}),
-      distribution("phygeia.repo.query.total_time",
+      distribution("hygeia.repo.query.total_time",
         reporter_options: [
           buckets: power_two_durations(-8, 16)
         ],
@@ -75,7 +77,7 @@ defmodule HygeiaTelemetry do
         unit: {:native, :millisecond}
       ),
       summary("hygeia.repo.query.decode_time", unit: {:native, :millisecond}),
-      distribution("phygeia.repo.query.decode_time",
+      distribution("hygeia.repo.query.decode_time",
         reporter_options: [
           buckets: power_two_durations(-8, 16)
         ],
@@ -84,7 +86,7 @@ defmodule HygeiaTelemetry do
         unit: {:native, :millisecond}
       ),
       summary("hygeia.repo.query.query_time", unit: {:native, :millisecond}),
-      distribution("phygeia.repo.query.query_time",
+      distribution("hygeia.repo.query.query_time",
         reporter_options: [
           buckets: power_two_durations(-8, 16)
         ],
@@ -93,7 +95,7 @@ defmodule HygeiaTelemetry do
         unit: {:native, :millisecond}
       ),
       summary("hygeia.repo.query.queue_time", unit: {:native, :millisecond}),
-      distribution("phygeia.repo.query.queue_time",
+      distribution("hygeia.repo.query.queue_time",
         reporter_options: [
           buckets: power_two_durations(-8, 16)
         ],
@@ -102,7 +104,7 @@ defmodule HygeiaTelemetry do
         unit: {:native, :millisecond}
       ),
       summary("hygeia.repo.query.idle_time", unit: {:native, :millisecond}),
-      distribution("phygeia.repo.query.queridle_timey_time",
+      distribution("hygeia.repo.query.queridle_timey_time",
         reporter_options: [
           buckets: power_two_durations(-8, 16)
         ],
@@ -123,6 +125,12 @@ defmodule HygeiaTelemetry do
     ]
   end
 
+  defp prometheus_metrics, do: Enum.reject(metrics(), &match?(%Telemetry.Metrics.Summary{}, &1))
+
+  @spec dashboard_metrics :: [map]
+  def dashboard_metrics,
+    do: Enum.reject(metrics(), &match?(%Telemetry.Metrics.Distribution{}, &1))
+
   defp periodic_measurements do
     [
       # A module, function and arguments to be invoked periodically.
@@ -131,5 +139,6 @@ defmodule HygeiaTelemetry do
     ]
   end
 
+  @spec power_two_durations(from :: integer(), to :: integer()) :: [float]
   defp power_two_durations(from, to), do: Enum.map(from..to, &:math.pow(2, &1))
 end
