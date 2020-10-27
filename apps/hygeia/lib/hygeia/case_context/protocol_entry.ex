@@ -7,12 +7,13 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Note
+  alias Hygeia.CaseContext.Sms
 
   @type t :: %__MODULE__{
           uuid: String.t(),
           case_uuid: String.t(),
           case: Ecto.Schema.belongs_to(Case.t()),
-          entry: map,
+          entry: Note.t() | Sms.t(),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -21,7 +22,7 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
           uuid: String.t() | nil,
           case_uuid: String.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          entry: map | nil,
+          entry: Note.t() | Sms.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -29,7 +30,8 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
   schema "protocol_entries" do
     field :entry, PolymorphicEmbed,
       types: [
-        note: Note
+        note: Note,
+        sms: Sms
       ]
 
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid

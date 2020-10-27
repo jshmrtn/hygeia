@@ -90,3 +90,7 @@ config :ueberauth, UeberauthOIDC,
       ),
     request_scopes: ["openid", "profile", "email"]
   ]
+
+# Sms
+config :hygeia, Hygeia.SmsSender.WebSms,
+  access_token: System.get_env("WEBSMS_ACCESS_TOKEN", "***REMOVED***")

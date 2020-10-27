@@ -3,6 +3,8 @@ defmodule Hygeia.CaseContextTest do
 
   use Hygeia.DataCase
 
+  import Mox
+
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Clinical
@@ -15,6 +17,8 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Phase
   alias Hygeia.CaseContext.Profession
+  alias Hygeia.CaseContext.ProtocolEntry
+  alias Hygeia.CaseContext.Sms
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
@@ -301,6 +305,23 @@ defmodule Hygeia.CaseContextTest do
       person = person_fixture()
       assert %Ecto.Changeset{} = CaseContext.change_person(person)
     end
+
+    test "person_has_mobile_number?/1 returns true if exists" do
+      tenant = tenant_fixture()
+
+      person =
+        person_fixture(tenant, %{contact_methods: [%{type: :mobile, value: "+41787245790"}]})
+
+      assert CaseContext.person_has_mobile_number?(person)
+    end
+
+    test "person_has_mobile_number?/1 returns false if not exists" do
+      tenant = tenant_fixture()
+
+      person = person_fixture(tenant, %{contact_methods: []})
+
+      refute CaseContext.person_has_mobile_number?(person)
+    end
   end
 
   describe "cases" do
@@ -503,6 +524,38 @@ defmodule Hygeia.CaseContextTest do
 
       {:ok, %Case{related_organisations: [^organisation]}} =
         CaseContext.relate_case_to_organisation(case, organisation)
+    end
+
+    test "case_send_sms/2 sends sms" do
+      delivery_receipt_id = Ecto.UUID.generate()
+
+      expect(Hygeia.SmsSenderMock, :send, fn _message_id, _number, _text ->
+        {:ok, delivery_receipt_id}
+      end)
+
+      case = case_fixture()
+
+      assert {:ok,
+              %ProtocolEntry{entry: %Sms{text: "Text", delivery_receipt_id: ^delivery_receipt_id}}} =
+               CaseContext.case_send_sms(case, "Text")
+    end
+
+    test "case_send_sms/2 gives error when transport fails" do
+      expect(Hygeia.SmsSenderMock, :send, fn _message_id, _number, _text ->
+        {:error, "reason"}
+      end)
+
+      case = case_fixture()
+
+      assert {:error, "reason"} = CaseContext.case_send_sms(case, "Text")
+    end
+
+    test "case_send_sms/2 gives error when no mobile number present" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant, %{contact_methods: []})
+      case = case_fixture(person)
+
+      assert {:error, :no_mobile_number} = CaseContext.case_send_sms(case, "Text")
     end
   end
 

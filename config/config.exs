@@ -12,7 +12,8 @@ import Config
 # Configure Mix tasks and generators
 config :hygeia,
   ecto_repos: [Hygeia.Repo],
-  phone_number_parsing_origin_country: "CH"
+  phone_number_parsing_origin_country: "CH",
+  sms_sender: Hygeia.SmsSender.WebSms
 
 config :hygeia, Hygeia.Repo,
   migration_timestamps: [type: :utc_datetime_usec],

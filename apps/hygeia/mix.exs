@@ -63,6 +63,8 @@ defmodule Hygeia.MixProject do
       {:human_readable_identifier_generator, "~> 1.0"},
       {:polymorphic_embed, "~> 0.12"},
       {:ex_phone_number, "~> 0.2"},
+      {:mox, "~> 1.0", only: :test},
+      {:websms, "~> 1.0.0-alpha"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

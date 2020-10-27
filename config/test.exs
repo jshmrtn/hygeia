@@ -7,6 +7,8 @@ import Config
 # Run `mix help test` for more information.
 config :hygeia, Hygeia.Repo, pool: Ecto.Adapters.SQL.Sandbox
 
+config :hygeia, sms_sender: Hygeia.SmsSenderMock
+
 # DO not check emails MX in test
 config :email_checker,
   validations: [EmailChecker.Check.Format]

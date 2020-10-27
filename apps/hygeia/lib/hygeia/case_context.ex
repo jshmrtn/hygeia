@@ -6,12 +6,15 @@ defmodule Hygeia.CaseContext do
   use Hygeia, :context
 
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.ContactMethod
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
+
+  @sms_sender Application.fetch_env!(:hygeia, :sms_sender)
 
   @doc """
   Returns the list of professions.
@@ -180,6 +183,10 @@ defmodule Hygeia.CaseContext do
       |> versioning_insert()
       |> broadcast("people", :create)
       |> versioning_extract()
+
+  @spec person_has_mobile_number?(person :: Person.t()) :: boolean
+  def person_has_mobile_number?(%Person{contact_methods: contact_methods} = _person),
+    do: Enum.any?(contact_methods, &match?(%ContactMethod{type: :mobile}, &1))
 
   @doc """
   Updates a person.
@@ -371,6 +378,35 @@ defmodule Hygeia.CaseContext do
       |> versioning_delete()
       |> broadcast("cases", :delete)
       |> versioning_extract()
+
+  @spec case_send_sms(case :: Case.t(), text :: String.t()) ::
+          {:ok, ProtocolEntry.t()} | {:error, :no_mobile_number | term}
+  def case_send_sms(%Case{} = case, text) do
+    %Case{person: %Person{contact_methods: contact_methods} = person} =
+      Repo.preload(case, :person)
+
+    if person_has_mobile_number?(person) do
+      phone_number =
+        Enum.find_value(contact_methods, fn
+          %{type: :mobile, value: value} -> value
+          _contact_method -> false
+        end)
+
+      message_id = Ecto.UUID.generate()
+
+      case @sms_sender.send(message_id, phone_number, text) do
+        {:ok, delivery_receipt_id} ->
+          create_protocol_entry(case, %{
+            entry: %{__type__: "sms", text: text, delivery_receipt_id: delivery_receipt_id}
+          })
+
+        {:error, reason} ->
+          {:error, reason}
+      end
+    else
+      {:error, :no_mobile_number}
+    end
+  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking case changes.
