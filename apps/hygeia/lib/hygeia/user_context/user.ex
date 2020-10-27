@@ -49,6 +49,7 @@ defmodule Hygeia.UserContext.User do
     |> cast(attrs, [:email, :display_name, :iam_sub, :roles])
     |> validate_required([:email, :display_name, :iam_sub, :roles])
     |> unique_constraint(:iam_sub)
+    |> validate_email(:email)
   end
 
   @spec has_role?(user :: t, role :: Role.t()) :: boolean

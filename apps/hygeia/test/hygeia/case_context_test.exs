@@ -155,7 +155,7 @@ defmodule Hygeia.CaseContextTest do
                 contact_methods: [
                   %ContactMethod{
                     type: :mobile,
-                    value: "+41 78 724 57 90",
+                    value: "+41787245790",
                     comment: "Call only between 7 and 9 am"
                   }
                 ],
@@ -179,6 +179,54 @@ defmodule Hygeia.CaseContextTest do
               }} = CaseContext.create_person(tenant, @valid_attrs)
     end
 
+    test "create_person/1 with valid data formats phone number" do
+      tenant = tenant_fixture()
+
+      assert {:ok,
+              %Person{
+                contact_methods: [
+                  %ContactMethod{
+                    type: :mobile,
+                    value: "+41787245790"
+                  },
+                  %ContactMethod{
+                    type: :mobile,
+                    value: "+41787245790"
+                  },
+                  %ContactMethod{
+                    type: :landline,
+                    value: "+41715117254"
+                  },
+                  %ContactMethod{
+                    type: :email,
+                    value: "example@example.com"
+                  }
+                ]
+              }} =
+               CaseContext.create_person(tenant, %{
+                 contact_methods: [
+                   %{
+                     type: :mobile,
+                     value: "+41 78 724 57 90"
+                   },
+                   %{
+                     type: :mobile,
+                     value: "078 724 57 90"
+                   },
+                   %{
+                     type: :landline,
+                     value: "0041715117254"
+                   },
+                   %{
+                     type: :email,
+                     value: "example@example.com"
+                   }
+                 ],
+                 first_name: "some first_name",
+                 last_name: "some last_name"
+               })
+    end
+
     test "create_person/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} =
                CaseContext.create_person(tenant_fixture(), @invalid_attrs)
@@ -200,7 +248,7 @@ defmodule Hygeia.CaseContextTest do
                 contact_methods: [
                   %ContactMethod{
                     type: :mobile,
-                    value: "+41 78 724 57 90",
+                    value: "+41787245790",
                     comment: "Call only between 7 and 9 am"
                   }
                 ],

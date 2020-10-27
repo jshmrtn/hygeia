@@ -62,6 +62,7 @@ defmodule Hygeia.MixProject do
       {:cadastre, github: "jshmrtn/cadastre", branch: "master"},
       {:human_readable_identifier_generator, "~> 1.0"},
       {:polymorphic_embed, "~> 0.12"},
+      {:ex_phone_number, "~> 0.2"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

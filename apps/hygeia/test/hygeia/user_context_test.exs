@@ -13,12 +13,12 @@ defmodule Hygeia.UserContextTest do
 
     @valid_attrs %{
       display_name: "some display_name",
-      email: "some email",
+      email: "some_email@example.com",
       iam_sub: "8fe86005-b3c6-4d7c-9746-53e090d05e48"
     }
     @update_attrs %{
       display_name: "some updated display_name",
-      email: "some updated email",
+      email: "some_updated_email@example.com",
       iam_sub: "a05fb916-8c5a-4b3a-928c-59b50d9bbef8"
     }
     @invalid_attrs %{display_name: nil, email: nil, iam_sub: nil}
@@ -36,7 +36,7 @@ defmodule Hygeia.UserContextTest do
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = UserContext.create_user(@valid_attrs)
       assert user.display_name == "some display_name"
-      assert user.email == "some email"
+      assert user.email == "some_email@example.com"
       assert user.iam_sub == "8fe86005-b3c6-4d7c-9746-53e090d05e48"
     end
 
@@ -48,7 +48,7 @@ defmodule Hygeia.UserContextTest do
       user = user_fixture()
       assert {:ok, %User{} = user} = UserContext.update_user(user, @update_attrs)
       assert user.display_name == "some updated display_name"
-      assert user.email == "some updated email"
+      assert user.email == "some_updated_email@example.com"
       assert user.iam_sub == "a05fb916-8c5a-4b3a-928c-59b50d9bbef8"
     end
 

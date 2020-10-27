@@ -32,6 +32,7 @@ defmodule Hygeia do
       import Ecto.Changeset
 
       import Hygeia.Helpers.Country
+      import Hygeia.Helpers.Email
       import Hygeia.Helpers.Id
 
       import PolymorphicEmbed, only: [cast_polymorphic_embed: 2]
