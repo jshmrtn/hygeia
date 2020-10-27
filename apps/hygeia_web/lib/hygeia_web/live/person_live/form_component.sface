@@ -79,7 +79,9 @@
       <div class="col">
         <Field name={{ :subdivision }} class="form-group">
           <Label>{{ "Subdivision" |> gettext }}</Label>
-          <Select class="form-control" opts={{ prompt: "Choose subdivision" |> gettext }} field={{ :subdivision }} options={{ Enum.map(@professions, &({&1.name, &1.uuid})) }} />
+          <InputContext assigns={{ assigns }} :let={{ form: form }}>
+            <Select class="form-control" opts={{ prompt: "Choose subdivision" |> gettext }} field={{ :subdivision }} options={{ subdivisions(form.source) }} />
+          </InputContext>
           <FormError />
         </Field>
       </div>
