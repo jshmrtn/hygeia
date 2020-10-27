@@ -139,6 +139,8 @@ defmodule HygeiaWeb do
 
       import HygeiaWeb.Helpers.Address
       import HygeiaWeb.Helpers.Case
+      import HygeiaWeb.Helpers.ContactMethod
+      import HygeiaWeb.Helpers.ExternalReference
       import HygeiaWeb.Helpers.Phase
       import HygeiaWeb.Helpers.Region
 

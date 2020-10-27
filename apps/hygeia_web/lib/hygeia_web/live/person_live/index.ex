@@ -23,29 +23,6 @@ defmodule HygeiaWeb.PersonLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
-  end
-
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, gettext("Edit Person"))
-    |> assign(:person, CaseContext.get_person!(id))
-  end
-
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, gettext("New Person"))
-    |> assign(:person, %Person{})
-  end
-
-  defp apply_action(socket, :index, _params) do
-    socket
-    |> assign(:page_title, gettext("Listing People"))
-    |> assign(:person, nil)
-  end
-
-  @impl Phoenix.LiveView
   def handle_event("filter", _filter, socket) do
     # TODO: implement filter
     {:noreply, socket}

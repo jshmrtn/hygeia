@@ -1,24 +1,10 @@
 <div class="component-person-index">
   <h1 class="mb-3">
-    {{ gettext("People") }}
+    {{ gettext("Listing People") }}
   </h1>
 
-  <HygeiaWeb.Modal 
-    :if={{ @live_action in [:new, :edit] }}
-    title={{ @page_title }}
-    id={{ @person.uuid || :new }}
-    return_to={{ Routes.person_index_path(@socket, :index) }}
-  >
-    <HygeiaWeb.PersonLive.FormComponent
-      id={{ @person.uuid || :new }}
-      action={{ @live_action }}
-      person={{ @person }}
-      return_to={{ Routes.person_index_path(@socket, :index) }}
-    />
-  </HygeiaWeb.Modal>
-
   <div class="d-flex">
-    <LivePatch class="mr-2" to={{ Routes.person_index_path(@socket, :new) }}>
+    <LivePatch class="mr-2" to={{ Routes.person_create_path(@socket, :create) }}>
       <button type="button" class="mb-2 mt-3 btn btn-primary">
         <span class="oi oi-plus" aria-hidden="true"></span>
         {{ "New Person" |> gettext() }}
@@ -110,7 +96,7 @@
           <LiveRedirect to={{ Routes.person_show_path(@socket, :show, person) }}>
             <button class="btn btn-sm btn-secondary">{{ "Show" |> gettext }}</button>
           </LiveRedirect>
-          <LivePatch to={{ Routes.person_index_path(@socket, :edit, person) }}>
+          <LivePatch to={{ Routes.person_show_path(@socket, :edit, person) }}>
             <button class="btn btn-sm btn-secondary">
               <span class="oi oi-pencil" title={{ "Edit" |> gettext }} aria-hidden="true"></span>
             </button>

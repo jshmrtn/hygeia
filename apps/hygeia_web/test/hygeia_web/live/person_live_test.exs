@@ -11,22 +11,16 @@ defmodule HygeiaWeb.PersonLiveTest do
   @moduletag log_in: true
 
   @create_attrs %{
-    birth_date: ~D[2010-04-17],
     first_name: "some first_name",
-    last_name: "some last_name",
-    sex: "male"
+    last_name: "some last_name"
   }
-  # @update_attrs %{
-  #   birth_date: ~D[2011-05-18],
-  #   first_name: "some updated first_name",
-  #   last_name: "some updated last_name",
-  #   sex: "female"
-  # }
+  @update_attrs %{
+    first_name: "some updated first_name",
+    last_name: "some updated last_name"
+  }
   @invalid_attrs %{
-    birth_date: nil,
     first_name: nil,
-    last_name: nil,
-    sex: "other"
+    last_name: nil
   }
 
   defp create_person(_tags) do
@@ -43,56 +37,31 @@ defmodule HygeiaWeb.PersonLiveTest do
       assert html =~ person.first_name
     end
 
-    test "saves new person", %{conn: conn} do
-      tenant = tenant_fixture()
-      {:ok, index_live, _html} = live(conn, Routes.person_index_path(conn, :index))
-
-      assert index_live |> element("a", "New Person") |> render_click() =~
-               "New Person"
-
-      assert_patch(index_live, Routes.person_index_path(conn, :new))
-
-      assert index_live
-             |> form("#person-form", person: Map.put(@invalid_attrs, :tenant_uuid, tenant.uuid))
-             |> render_change() =~ "can&apos;t be blank"
-
-      {:ok, _, html} =
-        index_live
-        |> form("#person-form", person: @create_attrs)
-        |> render_submit()
-        |> follow_redirect(conn, Routes.person_index_path(conn, :index))
-
-      assert html =~ "Person created successfully"
-      assert html =~ "some first_name"
-    end
-
-    # test "updates person in listing", %{conn: conn, person: person} do
-    #   {:ok, index_live, _html} = live(conn, Routes.person_index_path(conn, :index))
-
-    #   assert index_live |> element("#person-#{person.uuid} a", "Edit") |> render_click() =~
-    #            "Edit Person"
-
-    #   assert_patch(index_live, Routes.person_index_path(conn, :edit, person))
-
-    #   assert index_live
-    #          |> form("#person-form", person: @invalid_attrs)
-    #          |> render_change() =~ "can&apos;t be blank"
-
-    #   {:ok, _, html} =
-    #     index_live
-    #     |> form("#person-form", person: @update_attrs)
-    #     |> render_submit()
-    #     |> follow_redirect(conn, Routes.person_index_path(conn, :index))
-
-    #   assert html =~ "Person updated successfully"
-    #   assert html =~ "some updated first_name"
-    # end
-
     test "deletes person in listing", %{conn: conn, person: person} do
       {:ok, index_live, _html} = live(conn, Routes.person_index_path(conn, :index))
 
       assert index_live |> element("#person-#{person.uuid} a[title=Delete]") |> render_click()
       refute has_element?(index_live, "#person-#{person.uuid}")
+    end
+  end
+
+  describe "Create" do
+    test "saves new person", %{conn: conn} do
+      tenant = tenant_fixture()
+      {:ok, create_live, _html} = live(conn, Routes.person_create_path(conn, :create))
+
+      assert create_live
+             |> form("#person-form", person: Map.put(@invalid_attrs, :tenant_uuid, tenant.uuid))
+             |> render_change() =~ "can&apos;t be blank"
+
+      {:ok, _, html} =
+        create_live
+        |> form("#person-form", person: @create_attrs)
+        |> render_submit()
+        |> follow_redirect(conn)
+
+      assert html =~ "Person created successfully"
+      assert html =~ "some first_name"
     end
   end
 
@@ -106,26 +75,22 @@ defmodule HygeiaWeb.PersonLiveTest do
       assert html =~ person.first_name
     end
 
-    # test "updates person within modal", %{conn: conn, person: person} do
-    #   {:ok, show_live, _html} = live(conn, Routes.person_show_path(conn, :show, person))
+    test "updates person within modal", %{conn: conn, person: person} do
+      {:ok, edit_live, _html} = live(conn, Routes.person_show_path(conn, :edit, person))
 
-    #   assert show_live |> element("a", "Edit") |> render_click() =~
-    #            "Edit Person"
+      assert edit_live
+             |> form("#person-form", person: @invalid_attrs)
+             |> render_change() =~ "can&apos;t be blank"
 
-    #   assert_patch(show_live, Routes.person_show_path(conn, :edit, person))
+      html =
+        edit_live
+        |> form("#person-form", person: @update_attrs)
+        |> render_submit()
 
-    #   assert show_live
-    #          |> form("#person-form", person: @invalid_attrs)
-    #          |> render_change() =~ "can&apos;t be blank"
+      assert_patch(edit_live, Routes.person_show_path(conn, :show, person))
 
-    #   {:ok, _, html} =
-    #     show_live
-    #     |> form("#person-form", person: @update_attrs)
-    #     |> render_submit()
-    #     |> follow_redirect(conn, Routes.person_show_path(conn, :show, person))
-
-    #   assert html =~ "Person updated successfully"
-    #   assert html =~ "some updated first_name"
-    # end
+      assert html =~ "Person updated successfully"
+      assert html =~ "some updated first_name"
+    end
   end
 end

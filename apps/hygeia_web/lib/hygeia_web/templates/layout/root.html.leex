@@ -27,7 +27,7 @@
                         class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
                       %>
                       <%= active_link(@conn, gettext("New"),
-                        to: Routes.person_index_path(@conn, :new),
+                        to: Routes.person_create_path(@conn, :create),
                         class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
                       %>
                     </div>

@@ -1,0 +1,81 @@
+<Form 
+  for={{ @changeset }} 
+  change="validate" 
+  submit="save" 
+  opts={{ autocomplete: "off", id: "person-form" }}
+>
+  <Field name={{ :tenant_uuid }} class="form-group">
+    <Label>{{ "Tenant" |> gettext }}</Label>
+    <Select class="form-control" opts={{ prompt: "Select tenant" |> gettext }} field={{ :tenant_uuid }} options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }} />
+    <FormError />
+  </Field>
+
+  <div class="row">
+    <div class="col">
+      <Field name={{ :first_name }} class="form-group">
+        <Label>{{ "First Name" |> gettext }}</Label>
+        <TextInput field={{ :first_name }} class="form-control" />
+        <FormError />
+      </Field>
+    </div>
+    <div class="col">
+      <Field name={{ :last_name }} class="form-group">
+        <Label>{{ "Last Name" |> gettext }}</Label>
+        <TextInput class="form-control" field={{ :last_name }}/>
+        <FormError />
+      </Field>
+    </div>
+  </div>
+
+  <Inputs for={{ :address }}>
+    <HygeiaWeb.AddressForm />
+  </Inputs>
+
+  <table>
+    <thead>
+      <tr>
+        <th>{{ gettext("Type") }}</th>
+        <th>{{ gettext("Value") }}</th>
+        <th>{{ gettext("Comment") }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <Inputs for={{ :contact_methods }}>
+        <tr>
+          <td>
+            <Field name={{ :type }} class="form-group">
+              <Select class="form-control" opts={{ prompt: gettext("Choose Type") }} field={{ :type }} options={{ contact_method_options() }} />
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <Field name={{ :value }} class="form-group">
+              <TextInput class="form-control" field={{ :value }}/>
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <Field name={{ :comment }} class="form-group">
+              <TextInput class="form-control" field={{ :comment }}/>
+              <FormError />
+            </Field>
+          </td>
+        </tr>
+      </Inputs>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">
+          <button type="button" :on-click="add_contact_method">
+            {{ gettext("+") }}
+          </button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <button class="btn btn-primary" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
+    {{ "Save" |> gettext }}
+  </button>
+</Form>
+ 

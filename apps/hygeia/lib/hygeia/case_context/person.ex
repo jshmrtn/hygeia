@@ -69,7 +69,7 @@ defmodule Hygeia.CaseContext.Person do
     field :last_name, :string
     field :sex, Sex
 
-    embeds_one :address, Address, on_replace: :delete
+    embeds_one :address, Address, on_replace: :update
     embeds_many :contact_methods, ContactMethod, on_replace: :delete
     embeds_many :external_references, ExternalReference, on_replace: :delete
     embeds_many :employers, Employer, on_replace: :delete
