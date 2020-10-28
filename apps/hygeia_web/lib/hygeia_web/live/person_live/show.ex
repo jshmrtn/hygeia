@@ -48,15 +48,18 @@ defmodule HygeiaWeb.PersonLive.Show do
     {:noreply,
      socket
      |> load_data(socket.assigns.person)
-     |> push_patch(to: Routes.person_show_path(socket, :show, person))}
+     |> push_patch(to: Routes.person_show_path(socket, :show, person))
+     |> maybe_block_navigation()}
   end
 
   def handle_event("validate", %{"person" => person_params}, socket) do
     {:noreply,
-     assign(socket, :changeset, %{
+     socket
+     |> assign(:changeset, %{
        CaseContext.change_person(socket.assigns.person, person_params)
        | action: :validate
-     })}
+     })
+     |> maybe_block_navigation()}
   end
 
   def handle_event("add_contact_method", _params, socket) do
@@ -69,7 +72,10 @@ defmodule HygeiaWeb.PersonLive.Show do
         contact_methods ++ [%{}]
       )
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    {:noreply,
+     socket
+     |> assign(:changeset, changeset)
+     |> maybe_block_navigation()}
   end
 
   def handle_event("add_external_reference", _params, socket) do
@@ -83,7 +89,10 @@ defmodule HygeiaWeb.PersonLive.Show do
         external_references ++ [%{}]
       )
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    {:noreply,
+     socket
+     |> assign(:changeset, changeset)
+     |> maybe_block_navigation()}
   end
 
   def handle_event("add_employer", _params, socket) do
@@ -96,7 +105,10 @@ defmodule HygeiaWeb.PersonLive.Show do
         employers ++ [%{}]
       )
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    {:noreply,
+     socket
+     |> assign(:changeset, changeset)
+     |> maybe_block_navigation()}
   end
 
   def handle_event("save", %{"person" => person_params}, socket) do
@@ -111,7 +123,10 @@ defmodule HygeiaWeb.PersonLive.Show do
          |> push_patch(to: Routes.person_show_path(socket, :show, person))}
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        {:noreply,
+         socket
+         |> assign(changeset: changeset)
+         |> maybe_block_navigation()}
     end
   end
 
@@ -120,11 +135,20 @@ defmodule HygeiaWeb.PersonLive.Show do
 
     changeset = CaseContext.change_person(person)
 
-    assign(
-      socket,
+    socket
+    |> assign(
       person: person,
       changeset: changeset,
       versions: PaperTrail.get_versions(person)
     )
+    |> maybe_block_navigation()
+  end
+
+  defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do
+    if changes == %{} do
+      push_event(socket, "unblock_navigation", %{})
+    else
+      push_event(socket, "block_navigation", %{})
+    end
   end
 end

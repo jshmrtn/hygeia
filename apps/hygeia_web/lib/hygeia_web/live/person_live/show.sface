@@ -15,7 +15,7 @@
   for={{ @changeset }} 
   change="validate" 
   submit="save" 
-  opts={{ autocomplete: "off", id: "person-form" }}
+  opts={{ autocomplete: "off", id: "person-form", "phx-hook": "BlockNavigation" }}
 >
   <div :if={{ @live_action == :edit }}>
     <button class="btn btn-primary" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
