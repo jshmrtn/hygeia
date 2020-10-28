@@ -3,7 +3,7 @@ const Hook = {
     this.locked = false;
 
     this.preventNavigation = (event) => {
-      if(!this.locked) return;
+      if (!this.locked) return;
 
       event.preventDefault()
       event.returnValue = ""
@@ -12,10 +12,10 @@ const Hook = {
     window.addEventListener("beforeunload", this.preventNavigation);
 
     this.handleEvent("block_navigation", () => this.locked = true);
-    this.handleEvent("unblock_navigation", () =>       this.locked = false);
+    this.handleEvent("unblock_navigation", () => this.locked = false);
   },
   beforeDestroy() {
-    this.removeEventListener("beforeunload", this.preventNavigation);
+    window.removeEventListener("beforeunload", this.preventNavigation);
   },
 };
 

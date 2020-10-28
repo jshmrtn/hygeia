@@ -1,0 +1,18 @@
+<div>
+  <h1>
+    {{ @person_display_name }}
+  </h1>
+
+  <ul class="nav nav-tabs justify-content-center">
+    <li class="nav-item">
+      <LivePatch to={{ Routes.person_base_data_path(@socket, :show, @person) }} class="nav-link {{ if is_nil(@active_case), do: "active" }}">
+        {{ gettext("Base Data") }}
+      </LivePatch>
+    </li>
+    <li class="nav-item" :for={{ case <- @person.cases }}>
+      <LivePatch to={{ Routes.case_base_data_path(@socket, :show, case) }} class="nav-link {{ if @active_case != nil and @active_case.uuid == case.uuid, do: "active" }}">
+        {{ case_display_name(case) }}
+      </LivePatch>
+    </li>
+  </ul>
+</div>

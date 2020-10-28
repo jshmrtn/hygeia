@@ -26,7 +26,7 @@
     <%= for position <- @organisation.positions do %>
       <tr id="position-<%= position.uuid %>">
         <td><%= position.position %></td>
-        <td><%= link position.person.first_name, to: Routes.person_show_path(@socket, :show, position.person) %></td>
+        <td><%= link position.person.first_name, to: Routes.person_base_data_path(@socket, :show, position.person) %></td>
 
         <td>
           <span><%= "Edit" |> gettext() |> live_patch(to: Routes.organisation_show_path(@socket, :position_edit, @organisation, position)) %></span>

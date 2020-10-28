@@ -1,9 +1,33 @@
-<Form for={{ @changeset }} change="validate" submit="save" opts={{ autocomplete: "off", id: "case-form" }}>
-  <Field :if={{ @action == :new }} name={{ :person_uuid }} class="form-group">
-    <Label>{{ "Person" |> gettext }}</Label>
-    <Select class="form-control" opts={{ prompt: "Choose person" |> gettext }} field={{ :person_uuid }} options={{ Enum.map(@people, &({&1.first_name, &1.uuid})) }} />
-    <FormError />
-  </Field>
+<HygeiaWeb.PersonLive.Header person={{ @case.person }} active_case={{ @case }} id="header" />
+
+<HygeiaWeb.CaseLive.Navigation active_view={{ __MODULE__ }} case={{ @case }} id="navigation" />
+
+<LivePatch :if={{ @live_action == :show }} to={{ Routes.case_base_data_path(@socket, :edit, @case) }}>
+  <button class="btn btn-sm btn-secondary" id="person-edit">
+    <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+  </button>
+</LivePatch>
+
+<Form 
+  for={{ @changeset }} 
+  change="validate" 
+  submit="save" 
+  opts={{ autocomplete: "off", id: "case-form", "phx-hook": "BlockNavigation" }}
+>
+  <div :if={{ @live_action == :edit }}>
+    <button class="btn btn-primary" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
+      <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+    </button>
+    <button :on-click="reset" class="btn btn-sm btn-secondary" type="button" data-confirm={{ gettext("Do you really want to reset?") }}>
+      <span class="oi oi-circle-x" title={{ gettext("Reset") }} aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <fieldset class="col">
+    <legend>{{ gettext("References") }}</legend>
+
+      <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @case }} id="references" add_external_reference="add_external_reference" />
+  </fieldset>
 
   <Inputs for={{ :phases }}>
     <Field name={{ :type }} class="form-group">
@@ -100,9 +124,4 @@
       </Field>
     </div>
   </div>
-
-  <button class="btn btn-primary" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
-    {{ "Save" |> gettext }}
-  </button>
 </Form>
- 

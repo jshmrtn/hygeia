@@ -138,6 +138,7 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Gettext
 
       import HygeiaWeb.Helpers.Address
+      import HygeiaWeb.Helpers.Auth
       import HygeiaWeb.Helpers.Case
       import HygeiaWeb.Helpers.ContactMethod
       import HygeiaWeb.Helpers.ExternalReference

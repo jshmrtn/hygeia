@@ -12,8 +12,6 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
-  alias Surface.Components.Link
-  alias Surface.Components.LivePatch
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView

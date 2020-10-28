@@ -3,28 +3,7 @@
     {{ gettext("Listing Cases") }}
   </h1>
 
-  <HygeiaWeb.Modal 
-    :if={{ @live_action in [:new, :edit] }}
-    title={{ @page_title }}
-    id={{ @case.uuid || :new }}
-    return_to={{ Routes.case_index_path(@socket, :index) }}
-  >
-    <HygeiaWeb.CaseLive.FormComponent
-      id={{ @case.uuid || :new }}
-      action={{ @live_action }}
-      case={{ @case }}
-      return_to={{ Routes.case_index_path(@socket, :index) }}
-    />
-  </HygeiaWeb.Modal>
-
   <div class="d-flex">
-    <LivePatch class="mr-2" to={{ Routes.case_index_path(@socket, :new) }}>
-      <button type="button" class="mb-2 mt-3 btn btn-primary">
-        <span class="oi oi-plus" aria-hidden="true"></span>
-        {{ "New Case" |> gettext() }}
-      </button>
-    </LivePatch>
-
     <div class="dropdown mt-3" phx-update="ignore" id="test-dropdown">
       <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="oi oi-cog" aria-hidden="true"></span>
@@ -104,27 +83,9 @@
         <td>{{ case.complexity |> case_complexity_translation }}</td>
         <td>{{ case.status |> case_status_translation }}</td>
         <td>
-          <LiveRedirect to={{ Routes.case_show_path(@socket, :show, case) }}>
+          <LiveRedirect to={{ Routes.case_base_data_path(@socket, :show, case) }}>
             <button class="btn btn-sm btn-secondary">{{ "Show" |> gettext }}</button>
           </LiveRedirect>
-          <LivePatch to={{ Routes.case_index_path(@socket, :edit, case) }}>
-            <button class="btn btn-sm btn-secondary">
-              <span class="oi oi-pencil" title={{ "Edit" |> gettext }} aria-hidden="true"></span>
-            </button>
-          </LivePatch>
-          <Link 
-            to="#" 
-            click="delete" 
-            opts={{
-              title: "Delete" |> gettext,
-              data: [confirm: "Are you sure?" |> gettext],
-              phx_value_id: case.uuid
-            }}
-          >
-            <button class="btn btn-sm btn-danger">
-              <span class="oi oi-trash" aria-hidden="true"></span>
-            </button>
-          </Link>
         </td>
       </tr>
       <tr :if={{ length(@cases) == 0 }}>

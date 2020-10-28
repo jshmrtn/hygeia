@@ -70,7 +70,7 @@ defmodule HygeiaWeb.PersonLive.Create do
             {:noreply,
              socket
              |> put_flash(:info, gettext("Person created successfully"))
-             |> push_redirect(to: Routes.person_show_path(socket, :show, person))}
+             |> push_redirect(to: Routes.person_base_data_path(socket, :show, person))}
 
           {:error, changeset} ->
             {:noreply, assign(socket, :changeset, changeset)}

@@ -1,0 +1,5 @@
+<HygeiaWeb.PersonLive.Header person={{ @case.person }} active_case={{ @case }} id="header" />
+
+<HygeiaWeb.CaseLive.Navigation active_view={{ __MODULE__ }} case={{ @case }} id="navigation" />
+
+TODO: Display / Edit Transmissions

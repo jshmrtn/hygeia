@@ -1,11 +1,6 @@
-<h1 :if={{ @live_action == :show }}>
-  {{ gettext("Show Person") }}
-</h1>
-<h1 :if={{ @live_action == :edit }}>
-  {{ gettext("Edit Person") }}
-</h1>
+<HygeiaWeb.PersonLive.Header person={{@changeset}} id="header" />
 
-<LivePatch :if={{ @live_action == :show }} to={{ Routes.person_show_path(@socket, :edit, @person) }}>
+<LivePatch :if={{ @live_action == :show }} to={{ Routes.person_base_data_path(@socket, :edit, @person) }}>
   <button class="btn btn-sm btn-secondary" id="person-edit">
     <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
   </button>
@@ -74,55 +69,7 @@
     <fieldset class="col">
       <legend>{{ gettext("References") }}</legend>
 
-      <table>
-        <thead>
-          <tr>
-            <th>{{ gettext("Type") }}</th>
-            <th>{{ gettext("Value") }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ gettext("UUID") }}</td>
-            <td>{{ @person.uuid }}</td>
-          </tr>
-          <tr>
-            <td>{{ gettext("Human Readable ID") }}</td>
-            <td>{{ @person.human_readable_id }}</td>
-          </tr>
-          <Inputs for={{ :external_references }}>
-            <tr>
-              <td>
-                <Field name={{ :type }} class="form-group">
-                  <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }} field={{ :type }} options={{ external_reference_options() }} />
-                  <FormError />
-                </Field>
-                <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                  <Field name={{ :type_name }} class="form-group" :if={{ Ecto.Changeset.get_field(form.source, :type) == :other }}>
-                    <TextInput class="form-control" field={{ :type_name }} opts={{ disabled: @live_action == :show }} />
-                    <FormError />
-                  </Field>
-                </InputContext>
-              </td>
-              <td>
-                <Field name={{ :value }} class="form-group">
-                  <TextInput class="form-control" field={{ :value }} opts={{ disabled: @live_action == :show }} />
-                  <FormError />
-                </Field>
-              </td>
-            </tr>
-          </Inputs>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3">
-              <button type="button" :on-click="add_external_reference" disabled={{ @live_action == :show }}>
-                {{ gettext("+") }}
-              </button>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+       <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @person }} id="references" add_external_reference="add_external_reference" />
     </fieldset>
   </div>
 
@@ -131,7 +78,7 @@
       <legend>{{ gettext("Address") }}</legend>
 
       <Inputs for={{ :address }}>
-        <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} />
+        <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address" />
       </Inputs>
     </fieldset>
 
@@ -183,8 +130,6 @@
     </fieldset>
   </div>
 
-  
-
   <fieldset>
     <legend>{{ gettext("Employment") }}</legend>
 
@@ -208,7 +153,7 @@
           </Field>
 
           <Inputs for={{ :address }}>
-            <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} />
+            <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="employer_address" />
           </Inputs>
         </div>
       </Inputs>
@@ -232,8 +177,3 @@
     </li>
   </ul>
 </div>
-
-<details :for={{version <- @versions }}>
-  <summary>{{ version.event }}</summary>
-  <pre>{{ inspect(version, pretty: true) }}</pre>
-</details>

@@ -34,6 +34,9 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
         sms: Sms
       ]
 
+    # Use in Protocol Creation Form
+    field :type, :string, virtual: true, default: "note"
+
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
 
     timestamps()
@@ -43,7 +46,7 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
           Ecto.Changeset.t()
   def changeset(protocol_entry, attrs) do
     protocol_entry
-    |> cast(attrs, [:case_uuid])
+    |> cast(attrs, [:case_uuid, :type])
     |> cast_polymorphic_embed(:entry)
     |> validate_required([:case_uuid, :entry])
     |> assoc_constraint(:case)

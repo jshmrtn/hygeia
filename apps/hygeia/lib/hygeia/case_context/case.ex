@@ -85,11 +85,11 @@ defmodule Hygeia.CaseContext.Case do
     field :human_readable_id, :string
     field :status, Status, default: :in_progress
 
-    embeds_one :clinical, Clinical
-    embeds_many :external_references, ExternalReference
-    embeds_many :hospitalizations, Hospitalization
-    embeds_one :monitoring, Monitoring
-    embeds_many :phases, Phase
+    embeds_one :clinical, Clinical, on_replace: :update
+    embeds_many :external_references, ExternalReference, on_replace: :delete
+    embeds_many :hospitalizations, Hospitalization, on_replace: :delete
+    embeds_one :monitoring, Monitoring, on_replace: :update
+    embeds_many :phases, Phase, on_replace: :delete
 
     belongs_to :person, Person, references: :uuid, foreign_key: :person_uuid
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid

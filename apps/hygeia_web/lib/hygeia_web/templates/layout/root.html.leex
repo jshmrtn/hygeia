@@ -45,15 +45,6 @@
                         to: Routes.case_index_path(@conn, :index),
                         class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
                       %>
-                      <%= active_link(@conn, gettext("New Index"),
-                        to: Routes.case_index_path(@conn, :new),
-                        class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
-                      %>
-                      <%# TODO: route %>
-                      <%= active_link(@conn, gettext("New Possible Index"),
-                        to: Routes.case_index_path(@conn, :new),
-                        class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
-                      %>
                     </div>
                   </div>
                 </li>

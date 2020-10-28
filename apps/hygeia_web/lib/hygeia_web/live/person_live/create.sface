@@ -28,7 +28,7 @@
   </div>
 
   <Inputs for={{ :address }}>
-    <HygeiaWeb.AddressForm />
+    <HygeiaWeb.AddressForm id="address" />
   </Inputs>
 
   <table>

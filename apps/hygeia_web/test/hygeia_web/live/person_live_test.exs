@@ -65,18 +65,17 @@ defmodule HygeiaWeb.PersonLiveTest do
     end
   end
 
-  describe "Show" do
+  describe "BaseData" do
     setup [:create_person]
 
     test "displays person", %{conn: conn, person: person} do
-      {:ok, _show_live, html} = live(conn, Routes.person_show_path(conn, :show, person))
+      {:ok, _show_live, html} = live(conn, Routes.person_base_data_path(conn, :show, person))
 
-      assert html =~ "Show Person"
       assert html =~ person.first_name
     end
 
     test "updates person within modal", %{conn: conn, person: person} do
-      {:ok, edit_live, _html} = live(conn, Routes.person_show_path(conn, :edit, person))
+      {:ok, edit_live, _html} = live(conn, Routes.person_base_data_path(conn, :edit, person))
 
       assert edit_live
              |> form("#person-form", person: @invalid_attrs)
@@ -87,7 +86,7 @@ defmodule HygeiaWeb.PersonLiveTest do
         |> form("#person-form", person: @update_attrs)
         |> render_submit()
 
-      assert_patch(edit_live, Routes.person_show_path(conn, :show, person))
+      assert_patch(edit_live, Routes.person_base_data_path(conn, :show, person))
 
       assert html =~ "Person updated successfully"
       assert html =~ "some updated first_name"

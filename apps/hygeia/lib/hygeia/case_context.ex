@@ -602,7 +602,12 @@ defmodule Hygeia.CaseContext do
       |> Ecto.build_assoc(:protocol_entries)
       |> change_protocol_entry(attrs)
       |> versioning_insert()
-      |> broadcast("protocol_entries", :create)
+      |> broadcast(
+        "protocol_entries",
+        :create,
+        & &1.uuid,
+        &["protocol_entries:case:#{&1.case_uuid}"]
+      )
       |> versioning_extract()
 
   @doc """
@@ -626,7 +631,12 @@ defmodule Hygeia.CaseContext do
       protocol_entry
       |> change_protocol_entry(attrs)
       |> versioning_update()
-      |> broadcast("protocol_entries", :update)
+      |> broadcast(
+        "protocol_entries",
+        :update,
+        & &1.uuid,
+        &["protocol_entries:case:#{&1.case_uuid}"]
+      )
       |> versioning_extract()
 
   @doc """
@@ -648,7 +658,12 @@ defmodule Hygeia.CaseContext do
       protocol_entry
       |> change_protocol_entry()
       |> versioning_delete()
-      |> broadcast("protocol_entries", :delete)
+      |> broadcast(
+        "protocol_entries",
+        :delete,
+        & &1.uuid,
+        &["protocol_entries:case:#{&1.case_uuid}"]
+      )
       |> versioning_extract()
 
   @doc """

@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.PersonLive.Show do
+defmodule HygeiaWeb.PersonLive.BaseData do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
@@ -12,7 +12,6 @@ defmodule HygeiaWeb.PersonLive.Show do
   alias Surface.Components.Form
   alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.Field
-  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.Select
@@ -48,7 +47,7 @@ defmodule HygeiaWeb.PersonLive.Show do
     {:noreply,
      socket
      |> load_data(socket.assigns.person)
-     |> push_patch(to: Routes.person_show_path(socket, :show, person))
+     |> push_patch(to: Routes.person_base_data_path(socket, :show, person))
      |> maybe_block_navigation()}
   end
 
@@ -120,7 +119,7 @@ defmodule HygeiaWeb.PersonLive.Show do
          socket
          |> load_data(person)
          |> put_flash(:info, gettext("Person updated successfully"))
-         |> push_patch(to: Routes.person_show_path(socket, :show, person))}
+         |> push_patch(to: Routes.person_base_data_path(socket, :show, person))}
 
       {:error, changeset} ->
         {:noreply,
