@@ -49,5 +49,7 @@ defmodule HygeiaWeb.ProfessionLive.Index do
     {:noreply, assign(socket, :professions, list_professions())}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp list_professions, do: CaseContext.list_professions()
 end

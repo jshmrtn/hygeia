@@ -21,10 +21,11 @@ defmodule HygeiaWeb.ProfessionLive.Show do
     {:noreply, assign(socket, :profession, profession)}
   end
 
-  @impl Phoenix.LiveView
   def handle_info({:deleted, %Profession{}, _version}, socket) do
     {:noreply, redirect(socket, to: Routes.profession_index_path(socket, :index))}
   end
+
+  def handle_info(_other, socket), do: {:noreply, socket}
 
   defp page_title(:show), do: gettext("Show Profession")
   defp page_title(:edit), do: gettext("Edit Profession")

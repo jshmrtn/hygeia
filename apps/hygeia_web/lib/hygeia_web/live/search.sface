@@ -1,0 +1,33 @@
+<form :on-change="search">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text">
+        <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+      </span>
+    </div>
+    <SearchInput class="form-control" opts={{ placeholder: gettext("Search"), name: "query" }} value={{ @query }} />
+  </div>
+
+  <ul>
+    <li :for={{ {group, items} <- @results }}>
+      {{ group }}
+
+      <ul>
+        <li :for={{ {id, name} <- items }}>
+          <Link :if={{ group == :organisation }} to={{ Routes.organisation_show_path(@socket, :show, id) }}>
+            {{ name }}
+          </Link>
+          <Link :if={{ group == :case }} to={{ Routes.case_base_data_path(@socket, :show, id) }}>
+            {{ name }}
+          </Link>
+          <Link :if={{ group == :person }} to={{ Routes.person_base_data_path(@socket, :show, id) }}>
+            {{ name }}
+          </Link>
+          <Link :if={{ group == :user }} to={{ Routes.user_show_path(@socket, :show, id) }}>
+            {{ name }}
+          </Link>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</form>

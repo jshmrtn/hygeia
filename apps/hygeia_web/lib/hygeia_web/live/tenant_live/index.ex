@@ -49,5 +49,7 @@ defmodule HygeiaWeb.TenantLive.Index do
     {:noreply, assign(socket, :tenants, list_tenants())}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp list_tenants, do: TenantContext.list_tenants()
 end

@@ -49,5 +49,7 @@ defmodule HygeiaWeb.OrganisationLive.Index do
     {:noreply, assign(socket, :organisations, list_organisations())}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp list_organisations, do: OrganisationContext.list_organisations()
 end

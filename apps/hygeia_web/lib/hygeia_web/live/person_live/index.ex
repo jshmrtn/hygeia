@@ -41,6 +41,8 @@ defmodule HygeiaWeb.PersonLive.Index do
     {:noreply, assign(socket, :people, list_people())}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp list_people do
     CaseContext.list_people()
   end

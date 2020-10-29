@@ -171,6 +171,33 @@ defmodule Hygeia.CaseContext do
         )
       )
 
+  @spec fulltext_person_search(query :: String.t(), limit :: pos_integer()) :: [Person.t()]
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
+  def fulltext_person_search(query, limit \\ 10),
+    do:
+      Repo.all(
+        from(person in Person,
+          left_join: contact_method in fragment("unnest(?)", person.contact_methods),
+          left_join: external_reference in fragment("unnest(?)", person.external_references),
+          left_join: employer in fragment("unnest(?)", person.employers),
+          where:
+            fragment("? % ?::text", ^query, person.uuid) or
+              fragment("? % ?", ^query, person.human_readable_id) or
+              fragment("? % ?", ^query, person.first_name) or
+              fragment("? % ?", ^query, person.last_name) or
+              fragment("? % (?->'value')::text", ^query, contact_method) or
+              fragment("? % (?->'value')::text", ^query, external_reference) or
+              fragment("? % (?->'address')::text", ^query, person.address) or
+              fragment("? % (?->'zip')::text", ^query, person.address) or
+              fragment("? % (?->'place')::text", ^query, person.address) or
+              fragment("? % (?->'subdivision')::text", ^query, person.address) or
+              fragment("? % (?->'country')::text", ^query, person.address) or
+              fragment("? % (?->'name')::text", ^query, employer),
+          group_by: person.uuid,
+          limit: ^limit
+        )
+      )
+
   @doc """
   Gets a single person.
 
@@ -287,6 +314,40 @@ defmodule Hygeia.CaseContext do
   """
   @spec list_cases :: [Case.t()]
   def list_cases, do: Repo.all(Case)
+
+  @spec fulltext_case_search(query :: String.t(), limit :: pos_integer()) :: [Case.t()]
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
+  def fulltext_case_search(query, limit \\ 10),
+    do:
+      Repo.all(
+        from(case in Case,
+          join: person in assoc(case, :person),
+          left_join: organisation in assoc(case, :related_organisations),
+          left_join: case_external_reference in fragment("unnest(?)", case.external_references),
+          left_join: person_contact_method in fragment("unnest(?)", person.contact_methods),
+          left_join:
+            person_external_reference in fragment("unnest(?)", person.external_references),
+          where:
+            fragment("? % ?::text", ^query, case.uuid) or
+              fragment("? % ?", ^query, case.human_readable_id) or
+              fragment("? % (?->'value')::text", ^query, case_external_reference) or
+              fragment("? % ?::text", ^query, organisation.uuid) or
+              fragment("? % ?", ^query, organisation.name) or
+              fragment("? % (?->'address')::text", ^query, organisation.address) or
+              fragment("? % (?->'zip')::text", ^query, organisation.address) or
+              fragment("? % (?->'place')::text", ^query, organisation.address) or
+              fragment("? % (?->'subdivision')::text", ^query, organisation.address) or
+              fragment("? % (?->'country')::text", ^query, organisation.address) or
+              fragment("? % ?::text", ^query, person.uuid) or
+              fragment("? % ?", ^query, person.human_readable_id) or
+              fragment("? % ?", ^query, person.first_name) or
+              fragment("? % ?", ^query, person.last_name) or
+              fragment("? % (?->'value')::text", ^query, person_contact_method) or
+              fragment("? % (?->'value')::text", ^query, person_external_reference),
+          group_by: case.uuid,
+          limit: ^limit
+        )
+      )
 
   @doc """
   Gets a single case.

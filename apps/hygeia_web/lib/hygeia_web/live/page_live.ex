@@ -45,6 +45,8 @@ defmodule HygeiaWeb.PageLive do
     {:noreply, assign(socket, time: DateTime.utc_now())}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp search(query) do
     if not HygeiaWeb.Endpoint.config(:code_reloader) do
       raise "action disabled when not in development"

@@ -241,6 +241,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
     FunctionClauseError -> {:noreply, put_flash(socket, :error, gettext("Could not parse CSV"))}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp get_csv_key_mapping,
     do:
       %{

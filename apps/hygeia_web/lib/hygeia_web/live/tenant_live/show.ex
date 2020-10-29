@@ -26,6 +26,8 @@ defmodule HygeiaWeb.TenantLive.Show do
     {:noreply, redirect(socket, to: Routes.tenant_index_path(socket, :index))}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp page_title(:show), do: gettext("Show Tenant")
   defp page_title(:edit), do: gettext("Edit Tenant")
 end

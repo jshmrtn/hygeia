@@ -30,7 +30,7 @@ defmodule HygeiaWeb.CaseLiveTest do
     setup [:create_case]
 
     test "displays case", %{conn: conn, case_model: case} do
-      {:ok, show_live, html} = live(conn, Routes.case_base_data_path(conn, :show, case))
+      {:ok, _show_live, html} = live(conn, Routes.case_base_data_path(conn, :show, case))
 
       assert html =~ Atom.to_string(case.complexity)
     end

@@ -63,6 +63,8 @@ defmodule HygeiaWeb.CaseLive.Index do
     {:noreply, assign(socket, :cases, list_cases())}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp list_cases do
     Repo.preload(CaseContext.list_cases(), :person)
   end

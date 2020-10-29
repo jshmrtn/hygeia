@@ -38,6 +38,8 @@ defmodule HygeiaWeb.CaseLive.BaseData do
     {:noreply, redirect(socket, to: Routes.case_index_path(socket, :index))}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   @impl Phoenix.LiveView
   def handle_event("reset", _params, socket) do
     case = CaseContext.get_case!(socket.assigns.case.uuid)

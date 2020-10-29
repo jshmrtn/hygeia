@@ -20,6 +20,25 @@ defmodule Hygeia.OrganisationContext do
   @spec list_organisations :: [Organisation.t()]
   def list_organisations, do: Repo.all(Organisation)
 
+  @spec fulltext_organisation_search(query :: String.t(), limit :: pos_integer()) :: [
+          Organisation.t()
+        ]
+  def fulltext_organisation_search(query, limit \\ 10),
+    do:
+      Repo.all(
+        from(organisation in Organisation,
+          where:
+            fragment("? % ?::text", ^query, organisation.uuid) or
+              fragment("? % ?", ^query, organisation.name) or
+              fragment("? % (?->'address')::text", ^query, organisation.address) or
+              fragment("? % (?->'zip')::text", ^query, organisation.address) or
+              fragment("? % (?->'place')::text", ^query, organisation.address) or
+              fragment("? % (?->'subdivision')::text", ^query, organisation.address) or
+              fragment("? % (?->'country')::text", ^query, organisation.address),
+          limit: ^limit
+        )
+      )
+
   @doc """
   Gets a single organisation.
 

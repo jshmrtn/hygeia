@@ -38,6 +38,8 @@ defmodule HygeiaWeb.CaseLive.Protocol do
     {:noreply, redirect(socket, to: Routes.case_index_path(socket, :index))}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   @impl Phoenix.LiveView
   def handle_event("validate", %{"protocol_entry" => protocol_entry_params}, socket) do
     {:noreply,

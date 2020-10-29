@@ -19,6 +19,19 @@ defmodule Hygeia.UserContext do
   @spec list_users :: [User.t()]
   def list_users, do: Repo.all(User)
 
+  @spec fulltext_user_search(query :: String.t(), limit :: pos_integer()) :: [User.t()]
+  def fulltext_user_search(query, limit \\ 10),
+    do:
+      Repo.all(
+        from(user in User,
+          where:
+            fragment("? % ?::text", ^query, user.uuid) or
+              fragment("? % ?", ^query, user.display_name) or
+              fragment("? % ?", ^query, user.email),
+          limit: ^limit
+        )
+      )
+
   @doc """
   Gets a single user.
 

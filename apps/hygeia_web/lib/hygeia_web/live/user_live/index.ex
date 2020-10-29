@@ -29,5 +29,7 @@ defmodule HygeiaWeb.UserLive.Index do
     {:noreply, assign(socket, :users, list_users())}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp list_users, do: UserContext.list_users()
 end

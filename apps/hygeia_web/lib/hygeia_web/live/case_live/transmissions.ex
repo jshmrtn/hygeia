@@ -23,6 +23,8 @@ defmodule HygeiaWeb.CaseLive.Transmissions do
     {:noreply, redirect(socket, to: Routes.case_index_path(socket, :index))}
   end
 
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp load_data(socket, id) do
     case =
       id

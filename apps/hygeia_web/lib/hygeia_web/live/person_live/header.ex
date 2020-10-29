@@ -4,9 +4,7 @@ defmodule HygeiaWeb.PersonLive.Header do
   use HygeiaWeb, :surface_live_component
 
   alias Ecto.Changeset
-  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
-  alias Hygeia.CaseContext.Phase
   alias Hygeia.Repo
   alias Surface.Components.LivePatch
 
@@ -50,15 +48,4 @@ defmodule HygeiaWeb.PersonLive.Header do
   defp person_display_name(%Person{last_name: last_name, first_name: first_name} = _person) do
     "#{first_name} #{last_name}"
   end
-
-  defp case_display_name(%Case{phases: [%Phase{start: start_date} | _] = phases}) do
-    %Phase{end: end_date} = last_phase = List.last(phases)
-
-    "#{case_phase_type_translation(last_phase)} (#{
-      Cldr.Interval.to_string!(Date.range(start_date, end_date), HygeiaWeb.Cldr)
-    })"
-  end
-
-  defp case_phase_type_translation(%Phase{type: :possible_index}), do: gettext("Possible Index")
-  defp case_phase_type_translation(%Phase{type: :index}), do: gettext("Index")
 end
