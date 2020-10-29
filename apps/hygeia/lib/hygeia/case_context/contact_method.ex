@@ -7,11 +7,6 @@ defmodule Hygeia.CaseContext.ContactMethod do
 
   import EctoEnum
 
-  @phone_number_parsing_origin_country Application.fetch_env!(
-                                         :hygeia,
-                                         :phone_number_parsing_origin_country
-                                       )
-
   defenum Type, :contact_method_type, ["mobile", "landline", "email", "other"]
 
   @type empty :: %__MODULE__{
@@ -41,9 +36,10 @@ defmodule Hygeia.CaseContext.ContactMethod do
     |> validate_required([:type, :value])
     |> switch_type(fn
       :email, changeset -> validate_email(changeset, :value)
-      :mobile, changeset -> validate_and_normalize_phone(changeset)
-      :landline, changeset -> validate_and_normalize_phone(changeset)
+      :mobile, changeset -> validate_and_normalize_phone(changeset, :value)
+      :landline, changeset -> validate_and_normalize_phone(changeset, :value)
       :other, changeset -> changeset
+      _other, changeset -> changeset
     end)
   end
 
@@ -51,26 +47,5 @@ defmodule Hygeia.CaseContext.ContactMethod do
     changeset
     |> fetch_field!(:type)
     |> callback.(changeset)
-  end
-
-  defp validate_and_normalize_phone(changeset) do
-    with {:ok, phone_number} <- fetch_change(changeset, :value),
-         {:ok, parsed_number} <-
-           ExPhoneNumber.parse(phone_number, @phone_number_parsing_origin_country),
-         true <- ExPhoneNumber.is_valid_number?(parsed_number) do
-      put_change(changeset, :value, ExPhoneNumber.Formatting.format(parsed_number, :e164))
-    else
-      :error ->
-        changeset
-
-      {:ok, nil} ->
-        changeset
-
-      {:error, _reason} ->
-        add_error(changeset, :value, "is invalid")
-
-      false ->
-        add_error(changeset, :value, "is invalid")
-    end
   end
 end

@@ -1,0 +1,148 @@
+<h1>{{ gettext("Create Index Cases") }}</h1>
+
+<Form 
+  for={{ @changeset }} 
+  change="validate" 
+  submit="save" 
+  opts={{ autocomplete: "off", id: "case-create-form", "phx-hook": "BlockNavigation" }}
+>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">{{ gettext("ID") }}</th>
+        <th scope="col">{{ gettext("Firstname") }}</th>
+        <th scope="col">{{ gettext("Lastname") }}</th>
+        <th scope="col">{{ gettext("Mobile Phone") }}</th>
+        <th scope="col">{{ gettext("Landline") }}</th>
+        <th scope="col">{{ gettext("Email") }}</th>
+        <th scope="col">{{ gettext("Tenant") }}</th>
+        <th scope="col">{{ gettext("Duplicate Check") }}</th>
+      </tr>
+    </thead>
+    <Inputs for={{ :people }}>
+      <InputContext assigns={{ assigns }} :let={{ form: form }}>
+        <tr>
+          <td>
+            <HiddenInput field={{ :uuid }} />
+            <HiddenInput field={{ :accepted_duplicate_human_readable_id }} />
+            <Field name={{ :accepted_duplicate_human_readable_id }} class="form-group">
+              <TextInput field={{ :accepted_duplicate_human_readable_id }} class="form-control" opts={{ disabled: true }} />
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :first_name }} />
+            <Field name={{ :first_name }} class="form-group">
+              <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :last_name }} />
+            <Field name={{ :last_name }} class="form-group">
+              <TextInput field={{ :last_name }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :mobile }} />
+            <Field name={{ :mobile }} class="form-group">
+              <TextInput field={{ :mobile }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :landline }} />
+            <Field name={{ :landline }} class="form-group">
+              <TextInput field={{ :landline }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :email }} />
+            <Field name={{ :email }} class="form-group">
+              <TextInput field={{ :email }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :tenant_uuid }} />
+            <Field name={{ :tenant_uuid }} class="form-group">
+              <Select 
+                class="form-control"
+                options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
+                opts={{ prompt: gettext("Select tenant"), disabled: form.source.changes[:accepted_duplicate] == true }}
+              />
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :suspected_duplicates_uuid }} />
+            <HiddenInput field={{ :accepted_duplicate }} />
+            <HiddenInput field={{ :accepted_duplicate_uuid }} />
+
+            <div :if={{ not(form.source.changes[:suspected_duplicates_uuid] in [[], nil]) and form.source.changes[:accepted_duplicate] == nil }}>
+              <button type="button" phx-value-changeset-uuid={{ form.source.changes[:uuid] }} phx-click="check_duplicate">
+                Check Duplicate
+              </button>
+
+              <HygeiaWeb.Modal
+                :if={{ not(is_nil(@suspected_duplicate_changeset_uuid)) and @suspected_duplicate_changeset_uuid == form.source.changes[:uuid]}}
+                title={{ gettext("Conflict Reolution") }}
+                id={{ "modal" }}
+                return_to={{ Routes.case_create_index_path(@socket, :create) }}
+              >
+                <h2>{{ gettext("Candidates") }}</h2>
+
+                <ul>
+                  <li :for={{ person_uuid <- form.source.changes[:suspected_duplicates_uuid] }}>
+                    <input
+                      type="button"
+                      checked={{ person_uuid == form.source.changes[:accepted_duplicate_uuid] }}
+                      phx-click="select_accepted_duplicate"
+                      phx-value-person-uuid={{ person_uuid }}
+                      value="choose"
+                    />
+                    {{ get_person_name(person_uuid) }}
+                  </li>
+                  <li>
+                    <input
+                      type="button"
+                      checked={{ form.source.changes[:accepted_duplicate] == true and is_nil(form.source.changes[:accepted_duplicate_uuid]) }}
+                      phx-click="decline_duplicate"
+                      value="choose"
+                    /> None
+                  </li>
+                </ul>
+              </HygeiaWeb.Modal>
+            </div>
+          </td>
+        </tr>
+      </InputContext>
+    </Inputs>
+  </table>
+
+  <h2>{{ gettext("Import from CSV") }}</h2>
+
+  <h3>{{ gettext("Constraints") }}</h3>
+
+  <dl>
+    <dt>{{ gettext("File Type") }}</dt>
+    <dd>{{ gettext(".csv") }}</dd>
+
+    <dt>{{ gettext("Encoding") }}</dt>
+    <dd>{{ gettext("UTF-8") }}</dd>
+
+    <dt>{{ gettext("Separator") }}</dt>
+    <dd>{{ gettext("Comma (,)") }}</dd>
+
+    <dt>{{ gettext("Available Column Headers") }}</dt>
+    <dd>{{ gettext("The table headers from above expect ID and Duplicate Check") }}</dd>
+  </dl>
+
+  {{ live_component @socket, PhoenixLiveViewDropzone, file_data: @file, file_types: ["application/csv", "text/csv"] }}
+
+  <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
+    {{ gettext("Save") }}
+  </button>
+</Form>

@@ -87,6 +87,7 @@ defmodule Hygeia.CaseContext.Person do
   def changeset(person, attrs) do
     person
     |> cast(attrs, [
+      :uuid,
       :first_name,
       :last_name,
       :sex,

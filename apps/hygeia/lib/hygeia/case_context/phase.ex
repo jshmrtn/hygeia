@@ -48,7 +48,8 @@ defmodule Hygeia.CaseContext.Phase do
     phase
     |> cast(attrs, [:type, :start, :end, :end_reason])
     |> prefill_start
-    |> validate_required([:type, :start])
+    |> prefill_end
+    |> validate_required([:type, :start, :end])
   end
 
   defp prefill_start(changeset) do
@@ -56,6 +57,16 @@ defmodule Hygeia.CaseContext.Phase do
     |> fetch_field!(:start)
     |> case do
       nil -> put_change(changeset, :start, Date.utc_today())
+      %Date{} -> changeset
+    end
+  end
+
+  defp prefill_end(changeset) do
+    changeset
+    |> fetch_field!(:end)
+    |> case do
+      # TODO: Check Logic
+      nil -> put_change(changeset, :end, Date.add(fetch_field!(changeset, :start), 10))
       %Date{} -> changeset
     end
   end

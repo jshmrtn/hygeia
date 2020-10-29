@@ -34,6 +34,7 @@ defmodule Hygeia do
       import Hygeia.Helpers.Country
       import Hygeia.Helpers.Email
       import Hygeia.Helpers.Id
+      import Hygeia.Helpers.Phone
 
       import PolymorphicEmbed, only: [cast_polymorphic_embed: 2]
 

@@ -83,7 +83,7 @@ defmodule Hygeia.CaseContext.Case do
   schema "cases" do
     field :complexity, Complexity
     field :human_readable_id, :string
-    field :status, Status, default: :in_progress
+    field :status, Status, default: :new
 
     embeds_one :clinical, Clinical, on_replace: :update
     embeds_many :external_references, ExternalReference, on_replace: :delete

@@ -56,7 +56,7 @@ defmodule HygeiaWeb do
       def mount(_params, session, socket) do
         HygeiaWeb.setup_live_view(session)
 
-        {:ok, socket}
+        {:ok, assign(socket, auth: get_auth(socket))}
       end
 
       defoverridable mount: 3
@@ -74,7 +74,7 @@ defmodule HygeiaWeb do
       def mount(_params, session, socket) do
         HygeiaWeb.setup_live_view(session)
 
-        {:ok, socket}
+        {:ok, assign(socket, auth: get_auth(socket))}
       end
 
       defoverridable mount: 3

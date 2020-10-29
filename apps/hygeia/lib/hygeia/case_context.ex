@@ -144,6 +144,33 @@ defmodule Hygeia.CaseContext do
   @spec list_people(tenant :: Tenant.t()) :: [Person.t()]
   def list_people(tenant), do: tenant |> Ecto.assoc(:people) |> Repo.all()
 
+  @spec list_people_by_contact_method(type :: ContactMethod.Type.t(), value :: String.t()) :: [
+          Person.t()
+        ]
+  def list_people_by_contact_method(type, value),
+    do:
+      Repo.all(
+        from(person in Person,
+          where:
+            fragment(
+              ~S[?::jsonb <@ ANY (?)],
+              ^%{type: type, value: value},
+              person.contact_methods
+            )
+        )
+      )
+
+  @spec list_people_by_name(first_name :: String.t(), last_name :: String.t()) :: [Person.t()]
+  def list_people_by_name(first_name, last_name),
+    do:
+      Repo.all(
+        from(person in Person,
+          where:
+            fragment("SIMILARITY(?, ?) > 0.4", person.first_name, ^first_name) and
+              fragment("SIMILARITY(?, ?) > 0.4", person.last_name, ^last_name)
+        )
+      )
+
   @doc """
   Gets a single person.
 

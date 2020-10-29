@@ -11,7 +11,6 @@ defmodule HygeiaWeb.Router do
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, {HygeiaWeb.LayoutView, :root}
-    plug :protect_from_forgery
     plug :put_secure_browser_headers
 
     plug Cldr.Plug.AcceptLanguage,
@@ -29,6 +28,10 @@ defmodule HygeiaWeb.Router do
     plug HygeiaWeb.Plug.SetupVersioning
   end
 
+  pipeline :csrf do
+    plug :protect_from_forgery
+  end
+
   pipeline :protected do
     plug HygeiaWeb.Plug.RequireAuthentication
   end
@@ -38,7 +41,7 @@ defmodule HygeiaWeb.Router do
   end
 
   scope "/auth", HygeiaWeb do
-    pipe_through [:browser]
+    pipe_through [:browser, :csrf]
 
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
@@ -48,7 +51,7 @@ defmodule HygeiaWeb.Router do
   end
 
   scope "/", HygeiaWeb do
-    pipe_through [:browser, :protected]
+    pipe_through [:browser, :csrf, :protected]
 
     live "/", PageLive, :index
 
@@ -76,7 +79,7 @@ defmodule HygeiaWeb.Router do
     live "/people/:id/show/edit", PersonLive.BaseData, :edit
 
     live "/cases", CaseLive.Index, :index
-    live "/cases/new", CaseLive.Create, :create
+    live "/cases/new/index", CaseLive.CreateIndex, :create
 
     live "/cases/:id", CaseLive.BaseData, :show
     live "/cases/:id/show/edit", CaseLive.BaseData, :edit
@@ -100,8 +103,13 @@ defmodule HygeiaWeb.Router do
          :position_edit
   end
 
+  scope "/", HygeiaWeb do
+    pipe_through [:browser]
+    put "/uploads/:id", UploadController, :upload
+  end
+
   scope "/dashboard" do
-    pipe_through [:browser, :protected, :protected_webmaster]
+    pipe_through [:browser, :csrf, :protected, :protected_webmaster]
 
     live_dashboard "/", metrics: {HygeiaTelemetry, :dashboard_metrics}, ecto_repos: [Hygeia.Repo]
   end

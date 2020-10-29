@@ -54,7 +54,7 @@ defmodule HygeiaWeb.MixProject do
       # TODO: Switch back to released version when surface works with it
       {:phoenix_live_view,
        github: "phoenixframework/phoenix_live_view",
-       ref: "597c5ddf8af2ca39216a3fe5a44c066774de3abd",
+       ref: "7e515e7e664bf0eb074388d884297662b3731264",
        override: true},
       {:floki, ">= 0.27.0", only: :test},
       {:phoenix_active_link, "~> 0.3.1"},
@@ -76,7 +76,7 @@ defmodule HygeiaWeb.MixProject do
       {:ex_cldr_calendars, "~> 1.10"},
       {:ex_cldr_units, "~> 3.2"},
       {:ex_cldr_languages, "~> 0.2.1"},
-      {:surface, github: "msaraiva/surface", tag: "v0.1.0-rc.1"},
+      {:surface, github: "msaraiva/surface", ref: "d95b659aee0243223f7c8fb87c6387e721ec0512"},
       # Force Newer Dependency for surface
       {:nimble_parsec, "~> 0.5.3"},
       {:ecto_psql_extras, "~> 0.4"},
@@ -85,6 +85,8 @@ defmodule HygeiaWeb.MixProject do
       {:ueberauth_oidc, github: "rng2/ueberauth_oidc", tag: "0.0.1"},
       {:oidcc, github: "jshmrtn/oidcc", branch: "master", override: true},
       {:certifi, "~> 2.5"},
+      {:phoenix_live_view_dropzone, "~> 0.0"},
+      {:csv, "~> 2.4"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

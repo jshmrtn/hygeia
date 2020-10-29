@@ -27,5 +27,6 @@ defmodule Hygeia.Repo.Migrations.CreatePeople do
     create index(:people, [:profession_uuid])
     create index(:people, [:tenant_uuid])
     create index(:people, [:external_references], using: :gin)
+    create index(:people, [:contact_methods], using: :gin)
   end
 end

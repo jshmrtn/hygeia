@@ -80,6 +80,14 @@ Versioning.put_originator(:noone)
         type: :mobile,
         value: "+41 78 724 57 90",
         comment: "Call only between 7 and 9 am"
+      },
+      %{
+        type: :landline,
+        value: "+41 52 233 06 89"
+      },
+      %{
+        type: :email,
+        value: "jonatan@maennchen.ch"
       }
     ],
     employers: [

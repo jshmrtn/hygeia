@@ -10,6 +10,7 @@ defmodule HygeiaWeb.Helpers.Auth do
   def get_auth(%Plug.Conn{} = conn), do: Plug.Conn.get_session(conn, :auth)
 
   def get_auth(%Phoenix.LiveView.Socket{} = socket) do
-    socket.private[:conn_session]["auth"] || socket.private[:connect_info][:session]["auth"]
+    socket.private[:conn_session]["auth"] || socket.private[:connect_info][:session]["auth"] ||
+      socket.assigns[:auth]
   end
 end
