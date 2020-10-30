@@ -8,6 +8,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
+  alias Hygeia.UserContext
+  alias Hygeia.UserContext.User
   alias HygeiaWeb.CaseLive.CreateIndex.CreatePersonSchema
   alias HygeiaWeb.CaseLive.CreateIndex.CreateSchema
   alias HygeiaWeb.FormError
@@ -16,19 +18,27 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
+  alias Surface.Components.Form.Label
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
     tenants = TenantContext.list_tenants()
+    users = UserContext.list_users()
+    auth_user = get_auth(socket)
 
     super(
       params,
       session,
       assign(socket,
-        changeset: CreateSchema.changeset(%CreateSchema{people: []}),
+        changeset:
+          CreateSchema.changeset(%CreateSchema{people: []}, %{
+            default_tracer_uuid: auth_user.uuid,
+            default_supervisor_uuid: auth_user.uuid
+          }),
         tenants: tenants,
+        users: users,
         suspected_duplicate_changeset_uuid: nil,
         file: nil
       )
@@ -143,15 +153,20 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
             changeset
             |> Ecto.Changeset.fetch_field!(:people)
             |> Enum.reject(&match?(%CreatePersonSchema{uuid: nil}, &1))
-            |> Enum.map(&save_or_load_person_schema(&1, socket.assigns.tenants))
-            |> Enum.map(&create_case(&1, get_auth(socket), get_auth(socket)))
+            |> Enum.map(&save_or_load_person_schema(&1, socket, changeset))
+            |> Enum.map(&create_case/1)
           end)
 
         {:noreply,
          socket
          |> put_flash(:info, ngettext("Created Case", "Created %{n} Cases", length(cases)))
          |> assign(
-           changeset: CreateSchema.changeset(%CreateSchema{people: []}),
+           changeset:
+             changeset
+             |> Ecto.Changeset.put_embed(:people, [])
+             |> Map.put(:errors, [])
+             |> Map.put(:valid?, true)
+             |> CreateSchema.validate_changeset(),
            suspected_duplicate_changeset_uuid: nil,
            file: nil
          )}
@@ -188,22 +203,77 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   end
 
   defp save_or_load_person_schema(
-         %CreatePersonSchema{accepted_duplicate_uuid: nil} = schema,
-         tenants
+         %CreatePersonSchema{
+           accepted_duplicate_uuid: nil,
+           tenant_uuid: tenant_uuid,
+           tracer_uuid: tracer_uuid,
+           supervisor_uuid: supervisor_uuid
+         } = schema,
+         socket,
+         global_changeset
        ) do
-    {tenant, person_attrs} = CreatePersonSchema.to_person_attrs(schema, tenants)
+    tenant_uuid =
+      case tenant_uuid do
+        nil -> Ecto.Changeset.fetch_field!(global_changeset, :default_tenant_uuid)
+        other -> other
+      end
+
+    tracer_uuid =
+      case tracer_uuid do
+        nil -> Ecto.Changeset.fetch_field!(global_changeset, :default_tracer_uuid)
+        other -> other
+      end
+
+    supervisor_uuid =
+      case supervisor_uuid do
+        nil -> Ecto.Changeset.fetch_field!(global_changeset, :default_supervisor_uuid)
+        other -> other
+      end
+
+    tenant = Enum.find(socket.assigns.tenants, &match?(%Tenant{uuid: ^tenant_uuid}, &1))
+
+    tracer = Enum.find(socket.assigns.users, &match?(%User{uuid: ^tracer_uuid}, &1))
+
+    supervisor = Enum.find(socket.assigns.users, &match?(%User{uuid: ^supervisor_uuid}, &1))
+
+    person_attrs = CreatePersonSchema.to_person_attrs(schema)
 
     {:ok, person} = CaseContext.create_person(tenant, person_attrs)
-    person
+
+    {person, supervisor, tracer}
   end
 
   defp save_or_load_person_schema(
-         %CreatePersonSchema{accepted_duplicate_uuid: person_uuid},
-         _socket
-       ),
-       do: CaseContext.get_person!(person_uuid)
+         %CreatePersonSchema{
+           accepted_duplicate_uuid: person_uuid,
+           tracer_uuid: tracer_uuid,
+           supervisor_uuid: supervisor_uuid
+         },
+         socket,
+         global_changeset
+       ) do
+    tracer_uuid =
+      case tracer_uuid do
+        nil -> Ecto.Changeset.fetch_field!(global_changeset, :default_tracer_uuid)
+        other -> other
+      end
 
-  defp create_case(person, supervisor, tracer) do
+    supervisor_uuid =
+      case supervisor_uuid do
+        nil -> Ecto.Changeset.fetch_field!(global_changeset, :default_supervisor_uuid)
+        other -> other
+      end
+
+    tracer = Enum.find(socket.assigns.users, &match?(%User{uuid: ^tracer_uuid}, &1))
+
+    supervisor = Enum.find(socket.assigns.users, &match?(%User{uuid: ^supervisor_uuid}, &1))
+
+    person = CaseContext.get_person!(person_uuid)
+
+    {person, supervisor, tracer}
+  end
+
+  defp create_case({person, supervisor, tracer}) do
     {:ok, case} =
       CaseContext.create_case(person, %{
         phases: [%{type: :index}],

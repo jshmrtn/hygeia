@@ -3,9 +3,15 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
 
   use Hygeia, :model
 
+  alias Hygeia.TenantContext.Tenant
+  alias Hygeia.UserContext.User
   alias HygeiaWeb.CaseLive.CreateIndex.CreatePersonSchema
 
   embedded_schema do
+    belongs_to :default_tenant, Tenant, references: :uuid, foreign_key: :default_tenant_uuid
+    belongs_to :default_supervisor, User, references: :uuid, foreign_key: :default_supervisor_uuid
+    belongs_to :default_tracer, User, references: :uuid, foreign_key: :default_tracer_uuid
+
     embeds_many :people, CreatePersonSchema, on_replace: :delete
   end
 
@@ -13,7 +19,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
           Ecto.Changeset.t()
   def changeset(schema, attrs \\ %{}) do
     schema
-    |> cast(attrs, [])
+    |> cast(attrs, [:default_tenant_uuid, :default_supervisor_uuid, :default_tracer_uuid])
     |> cast_embed(:people, required: true)
     |> validate_changeset()
   end
@@ -21,7 +27,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
   @spec validate_changeset(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_changeset(changeset) do
     changeset
-    |> validate_required([])
+    |> validate_required([:default_tenant_uuid, :default_supervisor_uuid, :default_tracer_uuid])
     |> drop_empty_rows()
     |> add_one_person()
   end

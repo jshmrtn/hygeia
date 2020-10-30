@@ -5,6 +5,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreatePersonSchema do
 
   alias Hygeia.CaseContext
   alias Hygeia.TenantContext.Tenant
+  alias Hygeia.UserContext.User
 
   embedded_schema do
     field :first_name, :string
@@ -18,6 +19,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreatePersonSchema do
     field :accepted_duplicate_human_readable_id, :string
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
+    belongs_to :supervisor, User, references: :uuid, foreign_key: :supervisor_uuid
+    belongs_to :tracer, User, references: :uuid, foreign_key: :tracer_uuid
   end
 
   @spec changeset(
@@ -35,10 +38,12 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreatePersonSchema do
         :email,
         :mobile,
         :landline,
-        :tenant_uuid,
         :accepted_duplicate,
         :accepted_duplicate_uuid,
-        :accepted_duplicate_human_readable_id
+        :accepted_duplicate_human_readable_id,
+        :tenant_uuid,
+        :tracer_uuid,
+        :supervisor_uuid
       ])
 
     if Map.drop(changes, [:uuid]) == %{} do
@@ -52,10 +57,23 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreatePersonSchema do
   def validate_changeset(changeset) do
     changeset
     |> fill_uuid
-    |> validate_required([:uuid, :first_name, :last_name, :tenant_uuid])
+    |> validate_required([:uuid, :first_name, :last_name])
     |> validate_email(:email)
-    |> validate_and_normalize_phone(:mobile)
-    |> validate_and_normalize_phone(:landline)
+    |> validate_and_normalize_phone(:mobile, fn
+      :mobile -> :ok
+      :fixed_line_or_mobile -> :ok
+      :personal_number -> :ok
+      :unknown -> :ok
+      _other -> {:error, "not a mobile number"}
+    end)
+    |> validate_and_normalize_phone(:landline, fn
+      :fixed_line -> :ok
+      :fixed_line_or_mobile -> :ok
+      :voip -> :ok
+      :personal_number -> :ok
+      :unknown -> :ok
+      _other -> {:error, "not a landline number"}
+    end)
     |> detect_duplicates(:mobile)
     |> detect_duplicates(:landline)
     |> detect_duplicates(:email)
@@ -131,21 +149,14 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreatePersonSchema do
     end
   end
 
-  @spec to_person_attrs(schema :: %__MODULE__{}, tenants :: [Tenant.t()]) ::
-          {Tenant.t(), Hygeia.ecto_changeset_params()}
-  def to_person_attrs(
-        %__MODULE__{
-          tenant_uuid: tenant_uuid,
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          mobile: mobile,
-          landline: landline
-        },
-        tenants
-      ) do
-    tenant = Enum.find(tenants, &match?(%Tenant{uuid: ^tenant_uuid}, &1))
-
+  @spec to_person_attrs(schema :: %__MODULE__{}) :: Hygeia.ecto_changeset_params()
+  def to_person_attrs(%__MODULE__{
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        mobile: mobile,
+        landline: landline
+      }) do
     attrs = %{
       first_name: first_name,
       last_name: last_name,
@@ -162,11 +173,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreatePersonSchema do
         do: attrs,
         else: update_in(attrs.contact_methods, &[%{type: :landline, value: landline} | &1])
 
-    attrs =
-      if is_nil(email),
-        do: attrs,
-        else: update_in(attrs.contact_methods, &[%{type: :email, value: email} | &1])
-
-    {tenant, attrs}
+    if is_nil(email),
+      do: attrs,
+      else: update_in(attrs.contact_methods, &[%{type: :email, value: email} | &1])
   end
 end

@@ -42,12 +42,31 @@ defmodule HygeiaWeb.Helpers.Case do
   end
 
   @spec case_display_name(case :: Case.t()) :: String.t()
-  def case_display_name(%Case{phases: [%Phase{start: start_date} | _] = phases}) do
+  def case_display_name(%Case{
+        phases: [%Phase{start: start_date} | _] = phases,
+        inserted_at: inserted_at
+      }) do
     %Phase{end: end_date} = last_phase = List.last(phases)
 
-    "#{case_phase_type_translation(last_phase)} (#{
-      Cldr.Interval.to_string!(Date.range(start_date, end_date), HygeiaWeb.Cldr)
-    })"
+    case {start_date, end_date} do
+      {nil, _end_date} ->
+        gettext("%{phase_type} (Created at %{created_at})",
+          phase_type: case_phase_type_translation(last_phase),
+          created_at: Cldr.DateTime.to_string!(inserted_at, HygeiaWeb.Cldr)
+        )
+
+      {_start_date, nil} ->
+        gettext("%{phase_type} (Created at %{created_at})",
+          phase_type: case_phase_type_translation(last_phase),
+          created_at: Cldr.DateTime.to_string!(inserted_at, HygeiaWeb.Cldr)
+        )
+
+      {start_date, end_date} ->
+        gettext("%{phase_type} (%{date_range})",
+          phase_type: case_phase_type_translation(last_phase),
+          date_range: Cldr.Interval.to_string!(Date.range(start_date, end_date), HygeiaWeb.Cldr)
+        )
+    end
   end
 
   defp case_phase_type_translation(%Phase{type: :possible_index}), do: gettext("Possible Index")

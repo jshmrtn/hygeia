@@ -327,16 +327,16 @@ defmodule Hygeia.CaseContextTest do
       tenant = tenant_fixture()
 
       person_matching =
-        person_fixture(tenant, %{contact_methods: [%{type: :mobile, value: "+41787245790"}]})
+        person_fixture(tenant, %{contact_methods: [%{type: :mobile, value: "+41878123456"}]})
 
       _person_not_matching_value =
-        person_fixture(tenant, %{contact_methods: [%{type: :mobile, value: "+41787245792"}]})
+        person_fixture(tenant, %{contact_methods: [%{type: :mobile, value: "+41878123458"}]})
 
       _person_not_matching_type =
-        person_fixture(tenant, %{contact_methods: [%{type: :landline, value: "+41787245790"}]})
+        person_fixture(tenant, %{contact_methods: [%{type: :landline, value: "+41878123456"}]})
 
       assert [^person_matching] =
-               CaseContext.list_people_by_contact_method(:mobile, "+41787245790")
+               CaseContext.list_people_by_contact_method(:mobile, "+41878123456")
     end
 
     test "list_people_by_name/2 finds relevant people" do

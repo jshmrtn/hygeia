@@ -35,11 +35,33 @@ defmodule Hygeia.CaseContext.ContactMethod do
     |> cast(attrs, [:type, :comment, :value])
     |> validate_required([:type, :value])
     |> switch_type(fn
-      :email, changeset -> validate_email(changeset, :value)
-      :mobile, changeset -> validate_and_normalize_phone(changeset, :value)
-      :landline, changeset -> validate_and_normalize_phone(changeset, :value)
-      :other, changeset -> changeset
-      _other, changeset -> changeset
+      :email, changeset ->
+        validate_email(changeset, :value)
+
+      :mobile, changeset ->
+        validate_and_normalize_phone(changeset, :value, fn
+          :mobile -> :ok
+          :fixed_line_or_mobile -> :ok
+          :personal_number -> :ok
+          :unknown -> :ok
+          _other -> {:error, "not a mobile number"}
+        end)
+
+      :landline, changeset ->
+        validate_and_normalize_phone(changeset, :value, fn
+          :fixed_line -> :ok
+          :fixed_line_or_mobile -> :ok
+          :voip -> :ok
+          :personal_number -> :ok
+          :unknown -> :ok
+          _other -> {:error, "not a landline number"}
+        end)
+
+      :other, changeset ->
+        changeset
+
+      _other, changeset ->
+        changeset
     end)
   end
 
