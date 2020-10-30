@@ -91,7 +91,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
          socket
          |> put_flash(
            :info,
-           ngettext("Created Case", "Created %{n} Cases", length(transmissions))
+           ngettext("Created Case", "Created %{n} Cases", length(transmissions),
+             n: length(transmissions)
+           )
          )
          |> assign(
            changeset:
@@ -102,9 +104,43 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
              |> CreateSchema.validate_changeset(),
            suspected_duplicate_changeset_uuid: nil,
            file: nil
-         )}
+         )
+         |> maybe_block_navigation()}
     end
   end
+
+  @impl Phoenix.LiveView
+  def handle_info({:upload, data}, socket) do
+    send_update(HygeiaWeb.CaseLive.CSVImport, id: "csv-import", data: data)
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:csv_import, {:ok, data}}, socket) do
+    {:noreply,
+     socket
+     |> assign(
+       changeset: import_into_changeset(socket.assigns.changeset, data, socket.assigns.tenants)
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_info({:csv_import, {:error, _reason}}, socket) do
+    {:noreply, put_flash(socket, :error, gettext("Could not parse CSV"))}
+  end
+
+  def handle_info({:accept_duplicate, uuid, person}, socket) do
+    {:noreply,
+     assign(socket,
+       changeset: accept_duplicate(socket.assigns.changeset, uuid, person)
+     )}
+  end
+
+  def handle_info({:declined_duplicate, uuid}, socket) do
+    {:noreply, assign(socket, changeset: decline_duplicate(socket.assigns.changeset, uuid))}
+  end
+
+  def handle_info(_other, socket), do: {:noreply, socket}
 
   defp create_case({person, supervisor, tracer}, changeset) do
     {:ok, case} =
@@ -147,42 +183,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   defp unpack(other), do: other
 
-  @impl Phoenix.LiveView
-  def handle_info({:upload, data}, socket) do
-    send_update(HygeiaWeb.CaseLive.CSVImport, id: "csv-import", data: data)
-
-    {:noreply, socket}
-  end
-
-  def handle_info({:csv_import, {:ok, data}}, socket) do
-    {:noreply,
-     assign(socket,
-       changeset: import_into_changeset(socket.assigns.changeset, data, socket.assigns.tenants)
-     )}
-  end
-
-  def handle_info({:csv_import, {:error, _reason}}, socket) do
-    {:noreply, put_flash(socket, :error, gettext("Could not parse CSV"))}
-  end
-
-  def handle_info({:accept_duplicate, uuid, person}, socket) do
-    {:noreply,
-     assign(socket,
-       changeset: accept_duplicate(socket.assigns.changeset, uuid, person)
-     )}
-  end
-
-  def handle_info({:declined_duplicate, uuid}, socket) do
-    {:noreply, assign(socket, changeset: decline_duplicate(socket.assigns.changeset, uuid))}
-  end
-
-  def handle_info(_other, socket), do: {:noreply, socket}
-
-  defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do
-    if changes == %{} do
-      push_event(socket, "unblock_navigation", %{})
-    else
-      push_event(socket, "block_navigation", %{})
+  defp maybe_block_navigation(%{assigns: %{changeset: changeset}} = socket) do
+    changeset
+    |> Ecto.Changeset.get_field(:people, [])
+    |> case do
+      [] -> push_event(socket, "unblock_navigation", %{})
+      [_] -> push_event(socket, "unblock_navigation", %{})
+      [_ | _] -> push_event(socket, "block_navigation", %{})
     end
   end
 end

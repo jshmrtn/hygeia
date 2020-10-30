@@ -79,7 +79,10 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
 
         {:noreply,
          socket
-         |> put_flash(:info, ngettext("Created Case", "Created %{n} Cases", length(cases)))
+         |> put_flash(
+           :info,
+           ngettext("Created Case", "Created %{n} Cases", length(cases), n: length(cases))
+         )
          |> assign(
            changeset:
              changeset
@@ -89,19 +92,9 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
              |> CreateSchema.validate_changeset(),
            suspected_duplicate_changeset_uuid: nil,
            file: nil
-         )}
+         )
+         |> maybe_block_navigation()}
     end
-  end
-
-  defp create_case({person, supervisor, tracer}) do
-    {:ok, case} =
-      CaseContext.create_case(person, %{
-        phases: [%{details: %{__type__: :index}}],
-        supervisor_uuid: supervisor.uuid,
-        tracer_uuid: tracer.uuid
-      })
-
-    case
   end
 
   @impl Phoenix.LiveView
@@ -135,11 +128,24 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do
-    if changes == %{} do
-      push_event(socket, "unblock_navigation", %{})
-    else
-      push_event(socket, "block_navigation", %{})
+  defp create_case({person, supervisor, tracer}) do
+    {:ok, case} =
+      CaseContext.create_case(person, %{
+        phases: [%{details: %{__type__: :index}}],
+        supervisor_uuid: supervisor.uuid,
+        tracer_uuid: tracer.uuid
+      })
+
+    case
+  end
+
+  defp maybe_block_navigation(%{assigns: %{changeset: changeset}} = socket) do
+    changeset
+    |> Ecto.Changeset.get_field(:people, [])
+    |> case do
+      [] -> push_event(socket, "unblock_navigation", %{})
+      [_] -> push_event(socket, "unblock_navigation", %{})
+      [_ | _] -> push_event(socket, "block_navigation", %{})
     end
   end
 end

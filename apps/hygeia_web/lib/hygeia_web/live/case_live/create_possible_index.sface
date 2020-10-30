@@ -123,7 +123,7 @@
               <FormError />
             </Field>
             <Field name={{ :flight_information }} class="form-group">
-              <Label>{{ gettext("Name") }}</Label>
+              <Label>{{ gettext("Flight Information") }}</Label>
               <TextInput class="form-control" />
               <FormError />
             </Field>

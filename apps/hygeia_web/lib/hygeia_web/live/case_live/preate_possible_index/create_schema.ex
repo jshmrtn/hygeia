@@ -52,7 +52,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
   def validate_changeset(changeset) do
     changeset
     |> validate_required([
-      :propagator_internal,
       :default_tenant_uuid,
       :default_supervisor_uuid,
       :default_tracer_uuid,
