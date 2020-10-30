@@ -5,7 +5,7 @@ defmodule Hygeia.Repo.Migrations.FulltextSearchIndex do
 
   def change do
     execute """
-    CREATE EXTENSION pg_trgm
+    CREATE EXTENSION IF NOT EXISTS pg_trgm
     """
   end
 end
