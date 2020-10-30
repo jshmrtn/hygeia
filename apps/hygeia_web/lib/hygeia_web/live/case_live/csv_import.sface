@@ -1,0 +1,21 @@
+<div>
+  <h2>{{ gettext("Import from CSV") }}</h2>
+
+  <h3>{{ gettext("Constraints") }}</h3>
+
+  <dl>
+    <dt>{{ gettext("File Type") }}</dt>
+    <dd>{{ gettext(".csv") }}</dd>
+
+    <dt>{{ gettext("Encoding") }}</dt>
+    <dd>{{ gettext("UTF-8") }}</dd>
+
+    <dt>{{ gettext("Separator") }}</dt>
+    <dd>{{ gettext("Comma (,)") }}</dd>
+
+    <dt>{{ gettext("Available Column Headers") }}</dt>
+    <dd>{{ gettext("The table headers from above expect ID and Duplicate Check") }}</dd>
+  </dl>
+
+  {{ live_component @socket, PhoenixLiveViewDropzone, file_data: @file, file_types: ["application/csv", "text/csv"], target: @myself }}
+</div>

@@ -1,1 +1,2 @@
+<!-- TODO: Make error nice -->
 <%= inspect(@reason, pretty: true) %>

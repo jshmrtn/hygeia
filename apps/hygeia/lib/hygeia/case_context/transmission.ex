@@ -81,7 +81,13 @@ defmodule Hygeia.CaseContext.Transmission do
     |> validate_propagator_or_recipient_required
   end
 
-  defp validate_case(changeset, internal_key, ims_id_key, case_relation_key) do
+  @spec validate_case(
+          changeset :: Ecto.Changeset.t(),
+          internal_key :: atom,
+          ims_id_key :: atom,
+          case_relation_key :: atom
+        ) :: Ecto.Changeset.t()
+  def validate_case(changeset, internal_key, ims_id_key, case_relation_key) do
     changeset
     |> fetch_field!(internal_key)
     |> case do

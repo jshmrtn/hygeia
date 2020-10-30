@@ -79,15 +79,16 @@ defmodule HygeiaWeb.Router do
     live "/people/:id/show/edit", PersonLive.BaseData, :edit
 
     live "/cases/new/index", CaseLive.CreateIndex, :create
-
-    live "/cases/", CaseLive.Index, :index
-    live "/cases/:cursor_direction/:cursor", CaseLive.Index, :index
+    live "/cases/new/possible-index", CaseLive.CreatePossibleIndex, :create
 
     live "/cases/:id", CaseLive.BaseData, :show
     live "/cases/:id/show/edit", CaseLive.BaseData, :edit
 
     live "/cases/:id/transmissions", CaseLive.Transmissions, :show
     live "/cases/:id/protocol", CaseLive.Protocol, :show
+
+    live "/cases/", CaseLive.Index, :index
+    live "/cases/:cursor_direction/:cursor", CaseLive.Index, :index
 
     live "/organisations", OrganisationLive.Index, :index
     live "/organisations/new", OrganisationLive.Index, :new

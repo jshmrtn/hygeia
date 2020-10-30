@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.CreateIndex.CreatePersonSchema do
+defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
   @moduledoc false
 
   use Hygeia, :model

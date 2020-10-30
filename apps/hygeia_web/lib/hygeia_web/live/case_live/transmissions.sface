@@ -3,3 +3,15 @@
 <HygeiaWeb.CaseLive.Navigation active_view={{ __MODULE__ }} case={{ @case }} id="navigation" />
 
 TODO: Display / Edit Transmissions
+
+<h2>{{ gettext("Received") }}</h2>
+<pre>{{ inspect(@case.received_transmissions) }}</pre>
+
+<h2>{{ gettext("Propagated") }}</h2>
+<pre>{{ inspect(@case.propagated_transmissions) }}</pre>
+
+<h2>{{ gettext("Actions") }}</h2>
+
+<LiveRedirect to={{ Routes.case_create_possible_index_path(@socket, :create, propagator_internal: true, propagator_case_uuid: @case.uuid, default_tenant_uuid: @case.tenant_uuid) }}>
+  {{ gettext("Create Contact Cases") }}
+</LiveRedirect>

@@ -49,6 +49,10 @@
                         to: Routes.case_create_index_path(@conn, :create),
                         class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
                       %>
+                      <%= active_link(@conn, gettext("New Possible Index"),
+                        to: Routes.case_create_possible_index_path(@conn, :create),
+                        class_active: "nav-link active", class_inactive: "nav-link", active: :exact )
+                      %>
                     </div>
                   </div>
                 </li>

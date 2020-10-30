@@ -5,6 +5,8 @@ defmodule HygeiaWeb.Helpers.Case do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Phase
+  alias Hygeia.CaseContext.Phase.Index
+  alias Hygeia.CaseContext.Phase.PossibleIndex
 
   @spec case_complexity_translation(complexity :: Case.Complexity.t()) :: String.t()
   def case_complexity_translation(:low), do: gettext("Low")
@@ -31,30 +33,30 @@ defmodule HygeiaWeb.Helpers.Case do
     Enum.map(Case.Status.__enum_map__(), &{case_status_translation(&1), &1})
   end
 
-  @spec case_phase_index_end_reason_map :: [{String.t(), Phase.Index.EndReason.t()}]
+  @spec case_phase_index_end_reason_map :: [{String.t(), Index.EndReason.t()}]
   def case_phase_index_end_reason_map do
     Enum.map(
-      Phase.Index.EndReason.__enum_map__(),
+      Index.EndReason.__enum_map__(),
       &{case_phase_index_end_reason_translation(&1), &1}
     )
   end
 
-  @spec case_phase_index_end_reason_translation(Phase.Index.EndReason.t()) :: String.t()
+  @spec case_phase_index_end_reason_translation(Index.EndReason.t()) :: String.t()
   def case_phase_index_end_reason_translation(:healed), do: gettext("Healed")
   def case_phase_index_end_reason_translation(:death), do: gettext("Death")
   def case_phase_index_end_reason_translation(:no_follow_up), do: gettext("No Follow Up")
 
   @spec case_phase_possible_index_end_reason_map :: [
-          {String.t(), Phase.PossibleIndex.EndReason.t()}
+          {String.t(), PossibleIndex.EndReason.t()}
         ]
   def case_phase_possible_index_end_reason_map do
     Enum.map(
-      Phase.PossibleIndex.EndReason.__enum_map__(),
+      PossibleIndex.EndReason.__enum_map__(),
       &{case_phase_possible_index_end_reason_translation(&1), &1}
     )
   end
 
-  @spec case_phase_possible_index_end_reason_translation(Phase.PossibleIndex.EndReason.t()) ::
+  @spec case_phase_possible_index_end_reason_translation(PossibleIndex.EndReason.t()) ::
           String.t()
   def case_phase_possible_index_end_reason_translation(:asymptomatic), do: gettext("Asymptomatic")
 
@@ -64,7 +66,17 @@ defmodule HygeiaWeb.Helpers.Case do
   def case_phase_possible_index_end_reason_translation(:no_follow_up), do: gettext("No Follow Up")
   def case_phase_possible_index_end_reason_translation(:other), do: gettext("Other")
 
-  @spec case_phase_possible_index_type_translation(Phase.PossibleIndex.Type.t()) :: String.t()
+  @spec case_phase_possible_index_type_map :: [
+          {String.t(), PossibleIndex.Type.t()}
+        ]
+  def case_phase_possible_index_type_map do
+    Enum.map(
+      PossibleIndex.Type.__enum_map__(),
+      &{case_phase_possible_index_type_translation(&1), &1}
+    )
+  end
+
+  @spec case_phase_possible_index_type_translation(PossibleIndex.Type.t()) :: String.t()
   def case_phase_possible_index_type_translation(:contact_person), do: gettext("Contact Person")
   def case_phase_possible_index_type_translation(:travel), do: gettext("Travel")
 
@@ -97,11 +109,11 @@ defmodule HygeiaWeb.Helpers.Case do
   end
 
   @spec case_phase_type_translation(phase :: Phase.t()) :: String.t()
-  def case_phase_type_translation(%Phase{details: %Phase.PossibleIndex{type: :travel}}),
+  def case_phase_type_translation(%Phase{details: %PossibleIndex{type: :travel}}),
     do: gettext("Travel")
 
-  def case_phase_type_translation(%Phase{details: %Phase.PossibleIndex{type: :contact_person}}),
+  def case_phase_type_translation(%Phase{details: %PossibleIndex{type: :contact_person}}),
     do: gettext("Contact Person")
 
-  def case_phase_type_translation(%Phase{details: %Phase.Index{}}), do: gettext("Index")
+  def case_phase_type_translation(%Phase{details: %Index{}}), do: gettext("Index")
 end

@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.CreateIndex do
+defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
@@ -10,13 +10,19 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
   alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
-  alias HygeiaWeb.CaseLive.CreateIndex.CreateSchema
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema
   alias HygeiaWeb.FormError
   alias Surface.Components.Form
+  alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
+  alias Surface.Components.Form.Input.InputContext
+  alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label
+  alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextArea
+  alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
@@ -29,10 +35,13 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
       session,
       assign(socket,
         changeset:
-          CreateSchema.changeset(%CreateSchema{people: []}, %{
-            default_tracer_uuid: auth_user.uuid,
-            default_supervisor_uuid: auth_user.uuid
-          }),
+          CreateSchema.changeset(
+            %CreateSchema{people: []},
+            Map.merge(params, %{
+              "default_tracer_uuid" => auth_user.uuid,
+              "default_supervisor_uuid" => auth_user.uuid
+            })
+          ),
         tenants: tenants,
         users: users,
         suspected_duplicate_changeset_uuid: nil,
@@ -68,18 +77,22 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
          |> maybe_block_navigation()}
 
       %Ecto.Changeset{valid?: true} = changeset ->
-        {:ok, cases} =
+        {:ok, transmissions} =
           Repo.transaction(fn ->
             changeset
             |> Ecto.Changeset.fetch_field!(:people)
             |> Enum.reject(&match?(%CreatePersonSchema{uuid: nil}, &1))
             |> Enum.map(&save_or_load_person_schema(&1, socket, changeset))
-            |> Enum.map(&create_case/1)
+            |> Enum.map(&create_case(&1, changeset))
+            |> Enum.map(&create_transmission(&1, changeset))
           end)
 
         {:noreply,
          socket
-         |> put_flash(:info, ngettext("Created Case", "Created %{n} Cases", length(cases)))
+         |> put_flash(
+           :info,
+           ngettext("Created Case", "Created %{n} Cases", length(transmissions))
+         )
          |> assign(
            changeset:
              changeset
@@ -93,16 +106,46 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
     end
   end
 
-  defp create_case({person, supervisor, tracer}) do
+  defp create_case({person, supervisor, tracer}, changeset) do
     {:ok, case} =
       CaseContext.create_case(person, %{
-        phases: [%{details: %{__type__: :index}}],
+        phases: [
+          %{
+            details: %{
+              __type__: :possible_index,
+              type: Ecto.Changeset.fetch_field!(changeset, :type)
+            }
+          }
+        ],
         supervisor_uuid: supervisor.uuid,
         tracer_uuid: tracer.uuid
       })
 
     case
   end
+
+  defp create_transmission(case, changeset) do
+    {:ok, transmission} =
+      CaseContext.create_transmission(%{
+        recipient_internal: true,
+        recipient_case_uuid: case.uuid,
+        infection_place: changeset |> Ecto.Changeset.fetch_field!(:infection_place) |> unpack,
+        propagator_internal: Ecto.Changeset.fetch_field!(changeset, :propagator_internal),
+        propagator_ims_id: Ecto.Changeset.get_field(changeset, :propagator_ims_id),
+        propagator_case_uuid: Ecto.Changeset.get_field(changeset, :propagator_case_uuid)
+      })
+
+    transmission
+  end
+
+  defp unpack(struct) when is_struct(struct) do
+    struct
+    |> Map.from_struct()
+    |> Enum.map(fn {key, value} -> {key, unpack(value)} end)
+    |> Map.new()
+  end
+
+  defp unpack(other), do: other
 
   @impl Phoenix.LiveView
   def handle_info({:upload, data}, socket) do
