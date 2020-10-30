@@ -3,6 +3,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
 
   use Hygeia, :model
 
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.InfectionPlace
   alias Hygeia.CaseContext.Phase.PossibleIndex.Type
   alias Hygeia.CaseContext.Transmission
@@ -22,7 +23,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     field :propagator_internal, :boolean
 
     belongs_to :propagator_case, Case, references: :uuid, foreign_key: :propagator_case_uuid
-    belongs_to :recipient_case, Case, references: :uuid, foreign_key: :recipient_case_uuid
 
     embeds_one :infection_place, InfectionPlace
 

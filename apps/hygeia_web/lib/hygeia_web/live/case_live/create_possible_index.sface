@@ -84,15 +84,20 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-6">
+      <Field name={{ :date }} class="form-group">
+        <Label>{{ gettext("Date") }}</Label>
+        <DateInput class="form-control" />
+        <FormError />
+      </Field>
+    </div>
+  </div>
+
   <Inputs for={{ :infection_place }}>
     <InputContext assigns={{ assigns }} :let={{ form: form }}>
       <div class="row">
         <div class="col-6">
-          <Field name={{ :date }} class="form-group">
-            <Label>{{ gettext("Date") }}</Label>
-            <DateInput class="form-control" />
-            <FormError />
-          </Field>
           <Field name={{ :known }} class="form-group">
             <Label>{{ gettext("Known") }}</Label>
             <RadioButton value="true" /> Yes
@@ -137,14 +142,6 @@
       </div>
     </InputContext>
   </Inputs>
-
-  <!-- address: Address.t() | nil,
-          known: boolean() | nil,
-          activity_mapping_executed: boolean() | nil,
-          activity_mapping: String.t() | nil,
-          type: String.t() | nil,
-          name: String.t() | nil,
-          flight_information: String.t() | nil -->
 
   TODO: Add Infection Place / Relation to Index
 

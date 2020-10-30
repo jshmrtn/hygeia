@@ -143,6 +143,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   def handle_info(_other, socket), do: {:noreply, socket}
 
   defp create_case({person, supervisor, tracer}, changeset) do
+    {start_date, end_date} =
+      changeset
+      |> Ecto.Changeset.get_field(:date, nil)
+      |> case do
+        nil -> {nil, nil}
+        %Date{} = start -> {start, Date.add(start, 11)}
+      end
+
     {:ok, case} =
       CaseContext.create_case(person, %{
         phases: [
@@ -150,7 +158,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             details: %{
               __type__: :possible_index,
               type: Ecto.Changeset.fetch_field!(changeset, :type)
-            }
+            },
+            start: start_date,
+            end: end_date
           }
         ],
         supervisor_uuid: supervisor.uuid,
