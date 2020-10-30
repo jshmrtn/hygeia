@@ -69,6 +69,7 @@ defmodule HygeiaWeb.Helpers.Case do
     end
   end
 
-  defp case_phase_type_translation(%Phase{type: :possible_index}), do: gettext("Possible Index")
-  defp case_phase_type_translation(%Phase{type: :index}), do: gettext("Index")
+  @spec case_phase_type_translation(phase :: Phase.t()) :: String.t()
+  def case_phase_type_translation(%Phase{type: :possible_index}), do: gettext("Possible Index")
+  def case_phase_type_translation(%Phase{type: :index}), do: gettext("Index")
 end

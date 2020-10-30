@@ -25,6 +25,11 @@ defmodule Hygeia do
 
   @type papertrail_version :: %PaperTrail.Version{}
 
+  @type paginator_page(row_type) :: %Paginator.Page{
+          entries: [row_type],
+          metadata: Paginator.Page.Metadata.t()
+        }
+
   @doc false
   @spec model :: Macro.t()
   def model do

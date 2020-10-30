@@ -313,7 +313,10 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec list_cases :: [Case.t()]
-  def list_cases, do: Repo.all(Case)
+  def list_cases, do: Repo.all(list_cases_query())
+
+  @spec list_cases_query :: Ecto.Queryable.t()
+  def list_cases_query, do: Case
 
   @spec fulltext_case_search(query :: String.t(), limit :: pos_integer()) :: [Case.t()]
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
