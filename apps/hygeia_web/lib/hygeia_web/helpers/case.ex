@@ -6,40 +6,67 @@ defmodule HygeiaWeb.Helpers.Case do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Phase
 
-  @spec case_complexity_translation(complexity :: :complexity) :: :string
-  def case_complexity_translation(complexity) do
-    case complexity do
-      :low -> gettext("Low")
-      :medium -> gettext("Medium")
-      :high -> gettext("High")
-      :extreme -> gettext("Extreme")
-      _default -> complexity
-    end
-  end
+  @spec case_complexity_translation(complexity :: Case.Complexity.t()) :: String.t()
+  def case_complexity_translation(:low), do: gettext("Low")
+  def case_complexity_translation(:medium), do: gettext("Medium")
+  def case_complexity_translation(:high), do: gettext("High")
+  def case_complexity_translation(:extreme), do: gettext("Extreme")
 
-  @spec case_complexity_map :: [{:string, :complexity}]
+  @spec case_complexity_map :: [{String.t(), Case.Complexity.t()}]
   def case_complexity_map do
     Enum.map(Case.Complexity.__enum_map__(), &{case_complexity_translation(&1), &1})
   end
 
-  @spec case_status_translation(status :: :status) :: :string
-  def case_status_translation(status) do
-    case status do
-      :new -> gettext("New")
-      :first_contact -> gettext("First contact")
-      :first_check -> gettext("First check")
-      :tracing -> gettext("Tracing")
-      :care -> gettext("Care")
-      :second_check -> gettext("Second check")
-      :done -> gettext("Done")
-      _default -> status
-    end
-  end
+  @spec case_status_translation(status :: Case.Status.t()) :: String.t()
+  def case_status_translation(:new), do: gettext("New")
+  def case_status_translation(:first_contact), do: gettext("First contact")
+  def case_status_translation(:first_check), do: gettext("First check")
+  def case_status_translation(:tracing), do: gettext("Tracing")
+  def case_status_translation(:care), do: gettext("Care")
+  def case_status_translation(:second_check), do: gettext("Second check")
+  def case_status_translation(:done), do: gettext("Done")
 
-  @spec case_status_map :: [{:string, :status}]
+  @spec case_status_map :: [{String.t(), Case.Status.t()}]
   def case_status_map do
     Enum.map(Case.Status.__enum_map__(), &{case_status_translation(&1), &1})
   end
+
+  @spec case_phase_index_end_reason_map :: [{String.t(), Phase.Index.EndReason.t()}]
+  def case_phase_index_end_reason_map do
+    Enum.map(
+      Phase.Index.EndReason.__enum_map__(),
+      &{case_phase_index_end_reason_translation(&1), &1}
+    )
+  end
+
+  @spec case_phase_index_end_reason_translation(Phase.Index.EndReason.t()) :: String.t()
+  def case_phase_index_end_reason_translation(:healed), do: gettext("Healed")
+  def case_phase_index_end_reason_translation(:death), do: gettext("Death")
+  def case_phase_index_end_reason_translation(:no_follow_up), do: gettext("No Follow Up")
+
+  @spec case_phase_possible_index_end_reason_map :: [
+          {String.t(), Phase.PossibleIndex.EndReason.t()}
+        ]
+  def case_phase_possible_index_end_reason_map do
+    Enum.map(
+      Phase.PossibleIndex.EndReason.__enum_map__(),
+      &{case_phase_possible_index_end_reason_translation(&1), &1}
+    )
+  end
+
+  @spec case_phase_possible_index_end_reason_translation(Phase.PossibleIndex.EndReason.t()) ::
+          String.t()
+  def case_phase_possible_index_end_reason_translation(:asymptomatic), do: gettext("Asymptomatic")
+
+  def case_phase_possible_index_end_reason_translation(:converted_to_index),
+    do: gettext("Converted to Index")
+
+  def case_phase_possible_index_end_reason_translation(:no_follow_up), do: gettext("No Follow Up")
+  def case_phase_possible_index_end_reason_translation(:other), do: gettext("Other")
+
+  @spec case_phase_possible_index_type_translation(Phase.PossibleIndex.Type.t()) :: String.t()
+  def case_phase_possible_index_type_translation(:contact_person), do: gettext("Contact Person")
+  def case_phase_possible_index_type_translation(:travel), do: gettext("Travel")
 
   @spec case_display_name(case :: Case.t()) :: String.t()
   def case_display_name(%Case{
@@ -70,6 +97,11 @@ defmodule HygeiaWeb.Helpers.Case do
   end
 
   @spec case_phase_type_translation(phase :: Phase.t()) :: String.t()
-  def case_phase_type_translation(%Phase{type: :possible_index}), do: gettext("Possible Index")
-  def case_phase_type_translation(%Phase{type: :index}), do: gettext("Index")
+  def case_phase_type_translation(%Phase{details: %Phase.PossibleIndex{type: :travel}}),
+    do: gettext("Travel")
+
+  def case_phase_type_translation(%Phase{details: %Phase.PossibleIndex{type: :contact_person}}),
+    do: gettext("Contact Person")
+
+  def case_phase_type_translation(%Phase{details: %Phase.Index{}}), do: gettext("Index")
 end

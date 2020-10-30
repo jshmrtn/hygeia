@@ -191,39 +191,26 @@ Versioning.put_originator(:noone)
     },
     phases: [
       %{
-        type: :possible_index,
+        details: %{
+          __type__: "possible_index",
+          type: :contact_person,
+          end_reason: :converted_to_index
+        },
         start: ~D[2020-10-10],
-        end: ~D[2020-10-12],
-        end_reason: :converted_to_index
+        end: ~D[2020-10-12]
       },
       %{
-        type: :index,
+        details: %{
+          __type__: "index",
+          end_reason: :healed
+        },
         start: ~D[2020-10-12],
-        end: ~D[2020-10-22],
-        end_reason: :healed
+        end: ~D[2020-10-22]
       }
     ]
   })
 
 {:ok, case_jony} = relate_case_to_organisation(case_jony, organisation_jm)
-
-for _i <- 1..100 do
-  {:ok, _case} =
-    create_case(person_jony, %{
-      complexity: :medium,
-      status: :first_contact,
-      tracer_uuid: user_1.uuid,
-      supervisor_uuid: user_1.uuid,
-      phases: [
-        %{
-          type: :possible_index,
-          start: ~D[2020-10-10],
-          end: ~D[2020-10-12],
-          end_reason: :converted_to_index
-        }
-      ]
-    })
-end
 
 {:ok, _protocol_entry_jony} =
   create_protocol_entry(case_jony, %{
@@ -255,7 +242,11 @@ end
     },
     phases: [
       %{
-        type: :possible_index,
+        details: %{
+          __type__: "possible_index",
+          type: :contact_person,
+          end_reason: :no_follow_up
+        },
         start: ~D[2020-10-10],
         end: ~D[2020-10-20]
       }

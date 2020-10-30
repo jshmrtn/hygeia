@@ -148,16 +148,21 @@ defmodule Hygeia.Fixtures do
     },
     phases: [
       %{
-        type: :possible_index,
+        details: %{
+          __type__: :possible_index,
+          type: :contact_person,
+          end_reason: :converted_to_index
+        },
         start: ~D[2020-10-10],
-        end: ~D[2020-10-12],
-        end_reason: :converted_to_index
+        end: ~D[2020-10-12]
       },
       %{
-        type: :index,
+        details: %{
+          __type__: :index,
+          end_reason: :healed
+        },
         start: ~D[2020-10-12],
-        end: ~D[2020-10-22],
-        end_reason: :healed
+        end: ~D[2020-10-22]
       }
     ]
   }

@@ -21,7 +21,7 @@ defmodule Hygeia.Pagination do
       </li>
       <li class="page-item disabled">
         <span class="page-link">
-          {{ gettext("Showing %{count} of %{total} entries", count: @pagination.limit, total: @pagination.total_count) }}
+          {{ gettext("Showing %{count} of %{total} entries", count: min(@pagination.limit, @pagination.total_count), total: @pagination.total_count) }}
         </span>
       </li>
       <li class="page-item" :if={{ not(is_nil(@pagination.after)) }}>

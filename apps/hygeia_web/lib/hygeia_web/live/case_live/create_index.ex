@@ -276,7 +276,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   defp create_case({person, supervisor, tracer}) do
     {:ok, case} =
       CaseContext.create_case(person, %{
-        phases: [%{type: :index}],
+        phases: [%{details: %{__type__: :index}}],
         supervisor_uuid: supervisor.uuid,
         tracer_uuid: tracer.uuid
       })

@@ -70,7 +70,12 @@
     <tbody id="cases">
       <tr :for={{ case <- @cases }} id="case-{{ case.uuid }}">
         <td>{{ case.person.first_name }} {{ case.person.last_name }}</td>
-        <td>{{ case.complexity |> case_complexity_translation }}</td>
+        <td>{{
+          case case.complexity do
+            nil -> nil
+            other -> case_complexity_translation(other)
+          end
+        }}</td>
         <td>{{ case.status |> case_status_translation }}</td>
         <td>{{ case.phases |> List.last() |> case_phase_type_translation }}</td>
         <td>

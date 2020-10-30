@@ -14,11 +14,6 @@ defmodule HygeiaWeb.Helpers.Phase do
     end
   end
 
-  @spec phase_type_map :: [{:string, :phase_type}]
-  def phase_type_map do
-    Enum.map(Phase.Type.__enum_map__(), &{phase_type_translation(&1), &1})
-  end
-
   @spec phase_end_reason_translation(phase_end_reason :: :isolation_location) :: :string
   def phase_end_reason_translation(phase_end_reason) do
     case phase_end_reason do
@@ -32,8 +27,8 @@ defmodule HygeiaWeb.Helpers.Phase do
     end
   end
 
-  @spec phase_end_reason_map :: [{:string, :isolation_location}]
+  @spec phase_end_reason_map :: [{String.t(), atom}]
   def phase_end_reason_map do
-    Enum.map(Phase.Type.__enum_map__(), &{phase_end_reason_translation(&1), &1})
+    Enum.map(Phase.EndReason.__enum_map__(), &{phase_end_reason_translation(&1), &1})
   end
 end

@@ -29,36 +29,83 @@
       <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @case }} id="references" add_external_reference="add_external_reference" />
   </fieldset>
 
-  <Inputs for={{ :phases }}>
-    <Field name={{ :type }} class="form-group">
-      <Label>{{ "Type" |> gettext }}</Label>
-      <Select
-        class="form-control"
-        opts={{ prompt: "Choose type" |> gettext }}
-        field={{ :type }}
-        options={{ phase_type_map() }}
-      />
-      <FormError />
-    </Field>
+  <fieldset>
+    <legend>{{ gettext("Phases") }}</legend>
+    <Inputs for={{ :phases }}>
+      <InputContext assigns={{ assigns }} :let={{ form: form }}>
+        <div class="form-group">
+          <Label>{{ gettext("Type") }}</Label>
+          <span>{{
+            case Ecto.Changeset.fetch_field!(form.source, :details) do
+              %Phase.Index{} -> gettext("Index")
+              %Phase.PossibleIndex{} -> gettext("Possible Index")
+            end
+          }}</span>
+        </div>
+        <PolimorphicInputs
+          :if={{ match?(%Phase.Index{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
+          field={{ :details }}
+          type={{ :index }}
+          id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+        >
+          <Field name={{ :end_reason }} class="form-group">
+            <Label>{{ gettext("End Reason") }}</Label>
+            <Select 
+              class="form-control" 
+              opts={{ prompt: gettext("Select end reason") }} 
+              field={{ :end_reason }} 
+              options={{ case_phase_index_end_reason_map() }}
+            />
+            <FormError />
+          </Field>
+        </PolimorphicInputs>
+        <PolimorphicInputs
+          :if={{ match?(%Phase.PossibleIndex{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
+          field={{ :details }}
+          type={{ :possible_index }}
+          id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+        >
+          <InputContext assigns={{ assigns }} :let={{ form: form }}>
+            <div class="form-group">
+              <Label>{{ gettext("Sub Type") }}</Label>
+              <span class="form-control">
+                {{ form.source |> Ecto.Changeset.fetch_field!(:type) |> case_phase_possible_index_type_translation() }}
+              </span>
+            </div>
 
-    <div class="row">
-      <div class="col">
-        <Field name={{ :start }} class="form-group">
-          <Label>{{ "Start" |> gettext }}</Label>
-          <DateInput class="form-control" field={{ :start }}/>
-          <FormError />
-        </Field>
-      </div>
-      <div class="col">
-        <Field name={{ :end }} class="form-group">
-          <Label>{{ "End" |> gettext }}</Label>
-          <DateInput class="form-control" field={{ :end }}/>
-          <FormError />
-        </Field>
-      </div>
-    </div>
-    <hr>
-  </Inputs>
+            <Field name={{ :end_reason }} class="form-group">
+              <Label>{{ gettext("End Reason") }}</Label>
+              <Select 
+                class="form-control" 
+                opts={{ prompt: gettext("Select end reason") }} 
+                field={{ :end_reason }} 
+                options={{ case_phase_possible_index_end_reason_map() }}
+              />
+              <FormError />
+            </Field>
+          </InputContext>
+        </PolimorphicInputs>
+
+        <div class="row">
+          <div class="col">
+            <Field name={{ :start }} class="form-group">
+              <Label>{{ "Start" |> gettext }}</Label>
+              <DateInput class="form-control" field={{ :start }}/>
+              <FormError />
+            </Field>
+          </div>
+          <div class="col">
+            <Field name={{ :end }} class="form-group">
+              <Label>{{ "End" |> gettext }}</Label>
+              <DateInput class="form-control" field={{ :end }}/>
+              <FormError />
+            </Field>
+          </div>
+        </div>
+      </InputContext>
+      <hr>
+    </Inputs>
+  </fieldset>
 
   <Field name={{ :tenant_uuid }} class="form-group">
     <Label>{{ "Tenant" |> gettext }}</Label>

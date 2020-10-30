@@ -7,6 +7,9 @@ defmodule Hygeia.CaseContext.Phase do
 
   import EctoEnum
 
+  alias Hygeia.CaseContext.Phase.Index
+  alias Hygeia.CaseContext.Phase.PossibleIndex
+
   defenum EndReason, :isolation_location, [
     "healed",
     "death",
@@ -16,37 +19,35 @@ defmodule Hygeia.CaseContext.Phase do
     "other"
   ]
 
-  defenum Type, :phase_type, [
-    "index",
-    "possible_index"
-  ]
-
   @type empty :: %__MODULE__{
-          type: Type.t() | nil,
           start: Date.t() | nil,
           end: Date.t() | nil,
-          end_reason: EndReason.t() | nil
+          details: Index.t() | PossibleIndex.t() | nil
         }
 
   @type t :: %__MODULE__{
-          type: Type.t(),
           start: Date.t() | nil,
           end: Date.t() | nil,
-          end_reason: EndReason.t() | nil
+          details: Index.t() | PossibleIndex.t()
         }
 
   embedded_schema do
-    field :type, Type
     field :start, :date
     field :end, :date
-    field :end_reason, EndReason
+
+    field :details, PolymorphicEmbed,
+      types: [
+        index: Index,
+        possible_index: PossibleIndex
+      ]
   end
 
   @doc false
   @spec changeset(phase :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(phase, attrs) do
     phase
-    |> cast(attrs, [:type, :start, :end, :end_reason])
-    |> validate_required([:type])
+    |> cast(attrs, [:start, :end])
+    |> cast_polymorphic_embed(:details)
+    |> validate_required([:details])
   end
 end

@@ -19,7 +19,6 @@ defmodule HygeiaWeb.PolimorphicInputs do
     <InputContext assigns={{ assigns }} :let={{ form: form }}>
       <Context :for={{ f <- to_form(form.source, form, @field, @type, Keyword.take(form.options, [:multipart])) }} put={{ Surface.Components.Form, form: f }}>
         {{ hidden_inputs_for(f) }}
-
         <slot :props={{ form: f }} />
       </Context>
     </InputContext>
