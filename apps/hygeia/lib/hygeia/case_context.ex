@@ -14,7 +14,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
 
-  @sms_sender Application.fetch_env!(:hygeia, :sms_sender)
+  @sms_sender Application.compile_env!(:hygeia, [:sms_sender])
 
   @doc """
   Returns the list of professions.

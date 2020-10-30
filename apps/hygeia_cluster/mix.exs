@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Readability.Specs
 defmodule HygeiaCluster.MixProject do
   @moduledoc false
 

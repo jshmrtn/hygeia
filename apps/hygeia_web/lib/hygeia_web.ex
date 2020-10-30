@@ -19,6 +19,8 @@ defmodule HygeiaWeb do
 
   alias Hygeia.Helpers.Versioning
 
+  @doc false
+  @spec controller :: Macro.t()
   def controller do
     quote do
       use Phoenix.Controller, namespace: HygeiaWeb
@@ -30,6 +32,8 @@ defmodule HygeiaWeb do
     end
   end
 
+  @doc false
+  @spec view :: Macro.t()
   def view do
     quote do
       use Phoenix.View,
@@ -45,6 +49,8 @@ defmodule HygeiaWeb do
     end
   end
 
+  @doc false
+  @spec live_view :: Macro.t()
   def live_view do
     quote do
       use Phoenix.LiveView,
@@ -63,6 +69,8 @@ defmodule HygeiaWeb do
     end
   end
 
+  @doc false
+  @spec surface_view :: Macro.t()
   def surface_view do
     quote do
       use Surface.LiveView,
@@ -81,6 +89,8 @@ defmodule HygeiaWeb do
     end
   end
 
+  @doc false
+  @spec live_component :: Macro.t()
   def live_component do
     quote do
       use Phoenix.LiveComponent
@@ -89,6 +99,8 @@ defmodule HygeiaWeb do
     end
   end
 
+  @doc false
+  @spec surface_live_component :: Macro.t()
   def surface_live_component do
     quote do
       use Surface.LiveComponent
@@ -97,6 +109,8 @@ defmodule HygeiaWeb do
     end
   end
 
+  @doc false
+  @spec surface_component :: Macro.t()
   def surface_component do
     quote do
       use Surface.Component
@@ -105,6 +119,8 @@ defmodule HygeiaWeb do
     end
   end
 
+  @doc false
+  @spec router :: Macro.t()
   def router do
     quote do
       use Phoenix.Router
@@ -115,6 +131,8 @@ defmodule HygeiaWeb do
     end
   end
 
+  @doc false
+  @spec channel :: Macro.t()
   def channel do
     quote do
       use Phoenix.Channel

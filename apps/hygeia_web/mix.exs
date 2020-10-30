@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Readability.Specs
 defmodule HygeiaWeb.MixProject do
   @moduledoc false
 
@@ -54,7 +55,7 @@ defmodule HygeiaWeb.MixProject do
       # TODO: Switch back to released version when surface works with it
       {:phoenix_live_view,
        github: "phoenixframework/phoenix_live_view",
-       ref: "7e515e7e664bf0eb074388d884297662b3731264",
+       ref: "30cb45037c340570d4612926cf9111498e22315a",
        override: true},
       {:floki, ">= 0.27.0", only: :test},
       {:phoenix_active_link, "~> 0.3.1"},

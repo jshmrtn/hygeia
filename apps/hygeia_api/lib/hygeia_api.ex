@@ -17,6 +17,8 @@ defmodule HygeiaApi do
   and import those modules here.
   """
 
+  @doc false
+  @spec controller :: Macro.t()
   def controller do
     quote do
       use Phoenix.Controller, namespace: HygeiaApi
@@ -26,6 +28,8 @@ defmodule HygeiaApi do
     end
   end
 
+  @doc false
+  @spec view :: Macro.t()
   def view do
     quote do
       use Phoenix.View,
@@ -41,6 +45,8 @@ defmodule HygeiaApi do
     end
   end
 
+  @doc false
+  @spec router :: Macro.t()
   def router do
     quote do
       use Phoenix.Router
@@ -50,6 +56,8 @@ defmodule HygeiaApi do
     end
   end
 
+  @doc false
+  @spec channel :: Macro.t()
   def channel do
     quote do
       use Phoenix.Channel
@@ -66,6 +74,8 @@ defmodule HygeiaApi do
     end
   end
 
+  @doc false
+  @spec subschema :: Macro.t()
   def subschema do
     quote do
       use Absinthe.Schema.Notation
@@ -88,6 +98,8 @@ defmodule HygeiaApi do
     end
   end
 
+  @doc false
+  @spec resolver :: Macro.t()
   def resolver do
     quote do
       import HygeiaApi.Authorization
@@ -100,6 +112,8 @@ defmodule HygeiaApi do
     end
   end
 
+  @doc false
+  @spec subscription_config :: Macro.t()
   def subscription_config do
     quote do
       @type config_result ::
@@ -111,6 +125,8 @@ defmodule HygeiaApi do
     end
   end
 
+  @doc false
+  @spec subscription_trigger_topic :: Macro.t()
   def subscription_trigger_topic do
     quote do
     end

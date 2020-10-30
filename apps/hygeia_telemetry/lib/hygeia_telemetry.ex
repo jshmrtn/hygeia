@@ -37,7 +37,7 @@ defmodule HygeiaTelemetry do
     )
   end
 
-  # credo:disable-for-next-line Credo.Check.Refactor.ABCSize
+  @spec metrics :: [struct]
   def metrics do
     [
       # Phoenix Metrics

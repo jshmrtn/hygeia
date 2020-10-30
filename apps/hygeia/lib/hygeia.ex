@@ -25,6 +25,8 @@ defmodule Hygeia do
 
   @type papertrail_version :: %PaperTrail.Version{}
 
+  @doc false
+  @spec model :: Macro.t()
   def model do
     quote do
       use Ecto.Schema
@@ -46,6 +48,8 @@ defmodule Hygeia do
     end
   end
 
+  @doc false
+  @spec migration :: Macro.t()
   def migration do
     quote do
       use Ecto.Migration
@@ -54,6 +58,8 @@ defmodule Hygeia do
     end
   end
 
+  @doc false
+  @spec context :: Macro.t()
   def context do
     quote do
       import Ecto.Query, warn: false

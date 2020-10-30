@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Readability.Specs
 defmodule Hygeia.MixProject do
   @moduledoc false
 
@@ -65,6 +66,7 @@ defmodule Hygeia.MixProject do
       {:ex_phone_number, "~> 0.2"},
       {:mox, "~> 1.0", only: :test},
       {:websms, "~> 1.0.0-alpha"},
+      {:paginator, "~> 1.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end
