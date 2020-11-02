@@ -162,6 +162,7 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.ExternalReference
       import HygeiaWeb.Helpers.Phase
       import HygeiaWeb.Helpers.Region
+      import HygeiaWeb.Helpers.Search
 
       import PhoenixActiveLink
 
