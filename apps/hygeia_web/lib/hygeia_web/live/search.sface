@@ -1,33 +1,33 @@
-<form :on-change="search">
+<form class="component-search" :on-change="search" style="position: relative;">
   <div class="input-group">
     <div class="input-group-prepend">
       <span class="input-group-text">
         <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
       </span>
     </div>
-    <SearchInput class="form-control" opts={{ placeholder: gettext("Search"), name: "query" }} value={{ @query }} />
+    <SearchInput class="form-control" opts={{ placeholder: gettext("Search"), name: "query", autocomplete: "off" }} value={{ @query }} />
   </div>
 
-  <ul>
-    <li :for={{ {group, items} <- @results }}>
-      {{ group }}
+  <ul :if={{ map_size(@results) > 0 }} style="display: block;" class="dropdown-menu dropdown-menu-right">
+    <li class="dropdown-submenu" :for={{ {group, items} <- @results }}>
+      <h6 :if={{ length(items) > 0 }} class="submenu-label">{{ translate_group(group) }}</h6>
 
-      <ul>
-        <li :for={{ {id, name} <- items }}>
-          <Link :if={{ group == :organisation }} to={{ Routes.organisation_show_path(@socket, :show, id) }}>
+      <div class="items">
+        <div :for={{ {id, name} <- items }}>
+          <Link class="dropdown-item" :if={{ group == :organisation }} to={{ Routes.organisation_show_path(@socket, :show, id) }}>
             {{ name }}
           </Link>
-          <Link :if={{ group == :case }} to={{ Routes.case_base_data_path(@socket, :show, id) }}>
+          <Link class="dropdown-item" :if={{ group == :case }} to={{ Routes.case_base_data_path(@socket, :show, id) }}>
             {{ name }}
           </Link>
-          <Link :if={{ group == :person }} to={{ Routes.person_base_data_path(@socket, :show, id) }}>
+          <Link class="dropdown-item" :if={{ group == :person }} to={{ Routes.person_base_data_path(@socket, :show, id) }}>
             {{ name }}
           </Link>
-          <Link :if={{ group == :user }} to={{ Routes.user_show_path(@socket, :show, id) }}>
+          <Link class="dropdown-item" :if={{ group == :user }} to={{ Routes.user_show_path(@socket, :show, id) }}>
             {{ name }}
           </Link>
-        </li>
-      </ul>
+        </div>
+      </div>
     </li>
   </ul>
 </form>
