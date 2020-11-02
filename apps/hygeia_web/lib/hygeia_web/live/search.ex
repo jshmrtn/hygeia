@@ -53,7 +53,7 @@ defmodule HygeiaWeb.Search do
         end)
       end)
       |> Enum.map(&Task.await(&1))
-      |> Enum.reject(fn {_, v} -> Enum.empty?(v) end)
+      |> Enum.reject(&match?({_key, []}, &1))
       |> Map.new()
 
     assign(socket, query: query, results: results)
