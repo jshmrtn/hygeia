@@ -41,11 +41,12 @@
 $body-bg: #fdfdfd;
 $body-color: #111;
 $enable-rounded: true;
-$border-radius: 2px;
+$border-radius: 3px;
 $theme-colors: (
   "primary": #01c5c4,
   "secondary": #625261,
 );
+$grid-gutter-width: 0.75rem;
 
 @import "node_modules/bootstrap/scss/bootstrap";
 

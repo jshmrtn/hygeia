@@ -1,0 +1,62 @@
+.component-person-base-data {
+  padding-bottom: 3rem;
+
+  .edit-menu {
+    margin-bottom: 1rem;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-gap: 1.5rem;
+
+    @include media-breakpoint-down(md) {
+      grid-template-columns: 1fr;
+    }
+
+    .form-control {
+      text-overflow: ellipsis;
+    }
+
+    .value,
+    .form-control[disabled] {
+      background-color: transparent;
+      border: 0;
+      padding: 0;
+      color: $gray-600;
+      appearance: none;
+      height: auto;
+    }
+  }
+
+  .contact-method-grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto;
+    grid-gap: $grid-gutter-width;
+
+    .add-button {
+      grid-column: span 3;
+    }
+  }
+
+  .employment {
+    grid-column: span 2;
+
+    @include media-breakpoint-down(md) {
+      grid-column: 1;
+    }
+
+    .employment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      grid-gap: $grid-gutter-width;
+
+      @include media-breakpoint-down(md) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

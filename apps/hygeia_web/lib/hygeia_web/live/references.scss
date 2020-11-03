@@ -1,0 +1,14 @@
+.component-references {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto;
+  grid-gap: $grid-gutter-width;
+
+  .type-label {
+    display: block;
+  }
+
+  .add-button {
+    grid-column: span 2;
+  }
+}

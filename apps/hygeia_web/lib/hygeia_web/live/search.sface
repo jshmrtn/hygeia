@@ -1,11 +1,11 @@
 <form class="component-search" :on-change="search" style="position: relative;">
   <div class="input-group">
     <div class="input-group-prepend">
-      <span class="input-group-text">
+      <span class="input-group-text border-0">
         <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
       </span>
     </div>
-    <SearchInput class="form-control" opts={{ placeholder: gettext("Search"), name: "query", autocomplete: "off" }} value={{ @query }} />
+    <SearchInput class="form-control border-0" opts={{ placeholder: gettext("Search"), name: "query", autocomplete: "off" }} value={{ @query }} />
   </div>
 
   <ul :if={{ map_size(@results) > 0 }} style="display: block;" class="dropdown-menu dropdown-menu-right">

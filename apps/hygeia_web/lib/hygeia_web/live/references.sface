@@ -1,49 +1,44 @@
-<table>
-  <thead>
-    <tr>
-      <th>{{ gettext("Type") }}</th>
-      <th>{{ gettext("Value") }}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>{{ gettext("UUID") }}</td>
-      <td>{{ @source.uuid }}</td>
-    </tr>
-    <tr>
-      <td>{{ gettext("Human Readable ID") }}</td>
-      <td>{{ @source.human_readable_id }}</td>
-    </tr>
-    <Inputs for={{ :external_references }}>
-      <tr>
-        <td>
-          <Field name={{ :type }} class="form-group">
-            <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @disabled }} field={{ :type }} options={{ external_reference_options() }} />
-            <FormError />
-          </Field>
-          <InputContext assigns={{ assigns }} :let={{ form: form }}>
-            <Field name={{ :type_name }} class="form-group" :if={{ Ecto.Changeset.get_field(form.source, :type) == :other }}>
-              <TextInput class="form-control" field={{ :type_name }} opts={{ disabled: @disabled }} />
-              <FormError />
-            </Field>
-          </InputContext>
-        </td>
-        <td>
-          <Field name={{ :value }} class="form-group">
-            <TextInput class="form-control" field={{ :value }} opts={{ disabled: @disabled }} />
-            <FormError />
-          </Field>
-        </td>
-      </tr>
-    </Inputs>
-  </tbody>
-  <tfoot :if={{ not(@disabled) }}>
-    <tr>
-      <td colspan="3">
-        <button type="button" :on-click={{ @add_external_reference }}>
-          {{ gettext("+") }}
-        </button>
-      </td>
-    </tr>
-  </tfoot>
-</table>
+<div class="component-references">
+  <h6>{{ gettext("Type") }}</h6>
+  <h6>{{ gettext("Value") }}</h6>
+
+  <div>{{ gettext("UUID") }}</div>
+  <div class="value">{{ @source.uuid }}</div>
+
+
+  <div>{{ gettext("Human Readable ID") }}</div>
+  <div class="value">{{ @source.human_readable_id }}</div>
+
+  <Inputs for={{ :external_references }}>
+    <div :if={{ @disabled }}>
+      <InputContext assigns={{ assigns }} :let={{ form: form }}>
+        <label class="type-label d-flex align-items-center">{{ Ecto.Changeset.get_field(form.source, :type) }}<span :if={{ Ecto.Changeset.get_field(form.source, :type) == :other }}>: {{ Ecto.Changeset.get_field(form.source, :type_name) }}</span></label>
+      </InputContext>
+    </div>
+    <div :if={{ !@disabled }}>
+      <Field name={{ :type }}>
+        <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @disabled }} field={{ :type }} options={{ external_reference_options() }} />
+        <FormError />
+      </Field>
+      <InputContext assigns={{ assigns }} :let={{ form: form }}>
+        <Field class="mt-1" name={{ :type_name }} :if={{ Ecto.Changeset.get_field(form.source, :type) == :other }}>
+          <TextInput class="form-control" field={{ :type_name }} opts={{ disabled: @disabled }} />
+          <FormError />
+        </Field>
+      </InputContext>
+    </div>
+    <div>
+      <Field name={{ :value }}>
+        <TextInput class="form-control" field={{ :value }} opts={{ disabled: @disabled }} />
+        <FormError />
+      </Field>
+    </div>
+  </Inputs>
+    
+  <div class="add-button mt-2" :if={{ not(@disabled) }}>
+    <button type="button" class="btn btn-secondary" :on-click={{ @add_external_reference }}>
+      <span class="oi oi-plus" aria-hidden="true"></span>
+      {{ gettext("New reference") }}
+    </button>
+  </div>
+</div>
