@@ -1,0 +1,115 @@
+<header class="layout-header py-3 bg-dark mb-5">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <section class="container" :if={{ not(is_nil(auth)) }}>
+      <div class="d-flex justify-content-between">
+        <ul class="nav nav-pills" role="navigation">
+          <li class="nav-item" :if={{ User.has_role?(auth, :admin) }}>
+            <div class="dropdown" id="people" phx-update="ignore">
+              <UriActiveContext
+                to={{ Routes.person_index_path(@socket, :index) }}
+                :let={{ active: active }}
+                opts={{ active: :inclusive }}
+              >
+                <a class="nav-link {{ if active, do: "active" }}" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ gettext("People") }}
+                </a>
+              </UriActiveContext>
+              <div class="nav-dropdown dropdown-menu">
+                <UriActiveContext
+                  to={{ Routes.person_index_path(@socket, :index) }}
+                  :let={{ to: to, active: active }}
+                >
+                  <LiveRedirect to={{ to }} class="dropdown-item {{ if active, do: "active" }}">
+                    {{ gettext("List") }}
+                  </LiveRedirect>
+                </UriActiveContext>
+                <UriActiveContext
+                  to={{ Routes.person_create_path(@socket, :create)  }}
+                  :let={{ to: to, active: active }}
+                >
+                  <LiveRedirect to={{ to}} class="dropdown-item {{ if active, do: "active" }}">
+                    {{ gettext("New") }}
+                  </LiveRedirect>
+                </UriActiveContext>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item" :if={{ User.has_role?(auth, :tracer) or User.has_role?(auth, :supervisor) }}>
+            <div class="dropdown" id="cases" phx-update="ignore">
+              <UriActiveContext
+                to={{ Routes.case_index_path(@socket, :index) }}
+                :let={{ active: active }}
+                opts={{ active: :inclusive }}
+              >
+                <a class="nav-link {{ if active, do: "active" }}" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ gettext("Cases") }}
+                </a>
+              </UriActiveContext>
+              <div class="nav-dropdown dropdown-menu">
+                <UriActiveContext
+                  to={{ Routes.case_index_path(@socket, :index) }}
+                  :let={{ to: to, active: active }}
+                >
+                  <LiveRedirect to={{ to }} class="dropdown-item {{ if active, do: "active" }}">
+                    {{ gettext("List") }}
+                  </LiveRedirect>
+                </UriActiveContext>
+                <UriActiveContext
+                  to={{ Routes.case_create_index_path(@socket, :create) }}
+                  :let={{ to: to, active: active }}
+                >
+                  <LiveRedirect to={{ to }} class="dropdown-item {{ if active, do: "active" }}">
+                    {{ gettext("New Index") }}
+                  </LiveRedirect>
+                </UriActiveContext>
+                <UriActiveContext
+                  to={{ Routes.case_create_possible_index_path(@socket, :create) }}
+                  :let={{ to: to, active: active }}
+                >
+                  <LiveRedirect to={{ to }} class="dropdown-item {{ if active, do: "active" }}">
+                    {{ gettext("New Possible Index") }}
+                  </LiveRedirect>
+                </UriActiveContext>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item" :if={{ User.has_role?(auth, :statistics_viewer) }}>
+            <UriActiveContext
+              to={{ Routes.statistics_index_path(@socket, :index) }}
+              :let={{ to: to, active: active }}
+            >
+              <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+                {{ gettext("Statistics") }}
+              </LiveRedirect>
+            </UriActiveContext>
+          </li>
+          <li class="nav-item" :if={{ User.has_role?(auth, :webmaster) }}>
+            <Link to={{ Routes.live_dashboard_path(@socket, :home) }} class="nav-link">
+              {{ gettext("Phoenix Dashboard") }}
+            </Link>
+          </li>
+        </ul>
+        <div class="nav nav-pills">
+          <li class="nav-item mr-3">
+            <HygeiaWeb.Search id="serach" />
+          </li>
+          <li class="nav-item">
+            <div class="dropdown" id="profile" phx-update="ignore">
+              <a class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="oi oi-person" title={{ gettext("Profile") }} aria-hidden="true"></span>
+              </a>
+              <div class="nav-dropdown dropdown-menu dropdown-menu-right">
+                <LiveRedirect to={{ Routes.user_show_path(@socket, :show, auth.uuid) }} class="dropdown-item">
+                  {{ gettext("Profile") }}
+                </LiveRedirect>
+                <Link to={{ Routes.auth_path(@socket, :delete) }} opts={{ method: :delete }} class="dropdown-item">
+                  {{ gettext("Logout") }}
+                </Link>
+              </div>
+            </div>
+          </li>
+        </div>
+      </div>
+    </section>
+  </Context>  
+</header>

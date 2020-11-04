@@ -1,83 +1,17 @@
-<%= if is_logged_in?(@socket) do %>
-  <header class="layout-header py-3 bg-dark mb-5">
-    <section class="container">
-      <div class="d-flex justify-content-between">
-        <ul class="nav nav-pills" role="navigation">
-          <%= if User.has_role?(get_auth(@socket), :admin) do %>
-            <li class="nav-item">
-              <div class="dropdown" id="people" phx-update="ignore">
-                <a class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <%= gettext("People") %>
-                </a>
-                <div class="nav-dropdown dropdown-menu">
-                  <%= link to: Routes.person_index_path(@socket, :index), class: "nav-link" do %>
-                    <%= gettext("List") %>
-                  <% end %>
-                  <%= link to: Routes.person_create_path(@socket, :create), class: "nav-link" do %>
-                    <%= gettext("New") %>
-                  <% end %>
-                </div>
-              </div>
-            </li>
-          <% end %>
-          <%= if User.has_role?(get_auth(@socket), :tracer) or User.has_role?(get_auth(@socket), :supervisor) do %>
-            <li class="nav-item">
-              <div class="dropdown" id="cases" phx-update="ignore">
-                <a class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <%= gettext("Cases") %>
-                </a>
-                <div class="nav-dropdown dropdown-menu">
-                  <%= link to: Routes.case_index_path(@socket, :index), class: "nav-link" do %>
-                    <%= gettext("List") %>
-                  <% end %>
-                  <%= link to: Routes.case_create_index_path(@socket, :create), class: "nav-link" do %>
-                    <%= gettext("New Index") %>
-                  <% end %>
-                  <%= link to: Routes.case_create_possible_index_path(@socket, :create), class: "nav-link" do %>
-                    <%= gettext("New Possible Index") %>
-                  <% end %>
-                </div>
-              </div>
-            </li>
-          <% end %>
-          <%= if User.has_role?(get_auth(@socket), :statistics_viewer) do %>
-            <li class="nav-item">
-              <%= link to: Routes.statistics_index_path(@socket, :index), class: "nav-link" do %>
-                <%= gettext("Statistics") %>
-              <% end %>
-            </li>
-          <% end %>
-          <%= if User.has_role?(get_auth(@socket), :webmaster) do %>
-            <li class="nav-item">
-              <%= link to: Routes.live_dashboard_path(@socket, :home), class: "nav-link" do %>
-                <%= gettext("Phoenix Dashboard") %>
-                <% end %>
-            </li>
-          <% end %>
-        </ul>
-        <div class="nav nav-pills">
-          <li class="nav-item mr-3">
-            <%= live_component @socket, HygeiaWeb.Search, id: "search" %>
-          </li>
-          <li class="nav-item">
-            <div class="dropdown" id="profile" phx-update="ignore">
-              <a class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="oi oi-person" title="<%= gettext("Profile") %>" aria-hidden="true"></span>
-              </a>
-              <div class="nav-dropdown dropdown-menu dropdown-menu-right">
-                <%= link to: Routes.user_show_path(@socket, :show, get_auth(@socket).uuid), class: "nav-link" do %>
-                  <%= gettext("Profile") %>
-                <% end %>
-                <%# TODO: logout action %>
-                <%= "Logout" |> gettext() |> link(to: Routes.auth_path(@socket, :delete), method: :delete, class: "nav-link") %>
-              </div>
-            </div>
-          </li>
-        </div>
-      </div>
-    </section>
-  </header>
-<% end %>
+<%= live_component(
+  @socket,
+  HygeiaWeb.Header,
+  Surface.build_assigns(
+    assigns[:__context__],
+    [],
+    %{},
+    [],
+    %{},
+    HygeiaWeb.Header,
+    HygeiaWeb.Header
+  )
+) %>
+
 <main role="main" class="container">
   <p class="alert alert-info" role="alert"
     phx-click="lv:clear-flash"

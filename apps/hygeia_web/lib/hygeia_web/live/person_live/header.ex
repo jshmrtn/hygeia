@@ -6,31 +6,29 @@ defmodule HygeiaWeb.PersonLive.Header do
   alias Ecto.Changeset
   alias Hygeia.CaseContext.Person
   alias Hygeia.Repo
-  alias Surface.Components.LivePatch
+  alias HygeiaWeb.UriActiveContext
+  alias Surface.Components.LiveRedirect
 
   # Changeset or actual Person
   prop person, :map, required: true
-  prop active_case, :map, default: nil
 
   @impl Phoenix.LiveComponent
   def update(
-        %{person: %Changeset{data: data} = changeset, active_case: active_case} = _assings,
+        %{person: %Changeset{data: data} = changeset} = _assings,
         socket
       ) do
     {:ok,
      assign(socket,
        person_display_name: person_display_name(changeset),
-       person: Repo.preload(data, :cases),
-       active_case: active_case
+       person: Repo.preload(data, :cases)
      )}
   end
 
-  def update(%{person: %Person{} = person, active_case: active_case} = _assings, socket) do
+  def update(%{person: %Person{} = person} = _assings, socket) do
     {:ok,
      assign(socket,
        person_display_name: person_display_name(person),
-       person: Repo.preload(person, :cases),
-       active_case: active_case
+       person: Repo.preload(person, :cases)
      )}
   end
 

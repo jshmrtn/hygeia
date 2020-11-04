@@ -5,14 +5,24 @@
 
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <LivePatch to={{ Routes.person_base_data_path(@socket, :show, @person) }} class="nav-link {{ if is_nil(@active_case), do: "active" }}">
-        {{ gettext("Base Data") }}
-      </LivePatch>
+      <UriActiveContext
+        to={{ Routes.person_base_data_path(@socket, :show, @person) }}
+        :let={{ to: to, active: active }}
+      >
+        <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+          {{ gettext("Base Data") }}
+        </LiveRedirect>
+      </UriActiveContext>
     </li>
     <li class="nav-item" :for={{ case <- @person.cases }}>
-      <LivePatch to={{ Routes.case_base_data_path(@socket, :show, case) }} class="nav-link {{ if @active_case != nil and @active_case.uuid == case.uuid, do: "active" }}">
-        {{ case_display_name(case) }}
-      </LivePatch>
+      <UriActiveContext
+        to={{ Routes.case_base_data_path(@socket, :show, case) }}
+        :let={{ to: to, active: active }}
+      >
+        <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+          {{ case_display_name(case) }}
+        </LiveRedirect>
+      </UriActiveContext>
     </li>
   </ul>
 </div>

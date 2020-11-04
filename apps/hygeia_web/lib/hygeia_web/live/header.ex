@@ -1,10 +1,11 @@
-defmodule HygeiaWeb.CaseLive.Navigation do
+defmodule HygeiaWeb.Header do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
 
+  alias Hygeia.UserContext.User
   alias HygeiaWeb.UriActiveContext
+  alias Surface.Components.Context
+  alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
-
-  prop case, :map, required: true
 end

@@ -6,13 +6,16 @@ defmodule HygeiaWeb.UserLive.Show do
   alias Hygeia.UserContext.User
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id}, _uri, socket) do
+  def handle_params(%{"id" => id} = params, uri, socket) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "users:#{id}")
 
-    {:noreply,
-     socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:user, UserContext.get_user!(id))}
+    super(
+      params,
+      uri,
+      socket
+      |> assign(:page_title, page_title(socket.assigns.live_action))
+      |> assign(:user, UserContext.get_user!(id))
+    )
   end
 
   @impl Phoenix.LiveView

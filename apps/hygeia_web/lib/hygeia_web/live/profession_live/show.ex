@@ -7,13 +7,16 @@ defmodule HygeiaWeb.ProfessionLive.Show do
   alias Hygeia.CaseContext.Profession
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id}, _uri, socket) do
+  def handle_params(%{"id" => id} = params, uri, socket) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "professions:#{id}")
 
-    {:noreply,
-     socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:profession, CaseContext.get_profession!(id))}
+    super(
+      params,
+      uri,
+      socket
+      |> assign(:page_title, page_title(socket.assigns.live_action))
+      |> assign(:profession, CaseContext.get_profession!(id))
+    )
   end
 
   @impl Phoenix.LiveView

@@ -59,13 +59,33 @@ defmodule HygeiaWeb do
       unquote(view_helpers())
 
       @impl Phoenix.LiveView
-      def mount(_params, session, socket) do
+      def mount(_params, session, %{assigns: assigns} = socket) do
         HygeiaWeb.setup_live_view(session)
 
-        {:ok, assign(socket, auth: get_auth(socket))}
+        {:ok,
+         assign(
+           socket,
+           :__context__,
+           assigns
+           |> Map.get(:__context__, %{})
+           |> Map.put({unquote(__MODULE__), :auth}, get_auth(socket))
+         )}
       end
 
-      defoverridable mount: 3
+      @impl Phoenix.LiveView
+      def handle_params(params, uri, %{assigns: assigns} = socket) do
+        {:noreply,
+         assign(
+           socket,
+           :__context__,
+           assigns
+           |> Map.get(:__context__, %{})
+           |> Map.put({unquote(__MODULE__), :params}, params)
+           |> Map.put({unquote(__MODULE__), :uri}, uri)
+         )}
+      end
+
+      defoverridable mount: 3, handle_params: 3
     end
   end
 
@@ -79,13 +99,33 @@ defmodule HygeiaWeb do
       unquote(view_helpers())
 
       @impl Phoenix.LiveView
-      def mount(_params, session, socket) do
+      def mount(_params, session, %{assigns: assigns} = socket) do
         HygeiaWeb.setup_live_view(session)
 
-        {:ok, assign(socket, auth: get_auth(socket))}
+        {:ok,
+         assign(
+           socket,
+           :__context__,
+           assigns
+           |> Map.get(:__context__, %{})
+           |> Map.put({unquote(__MODULE__), :auth}, get_auth(socket))
+         )}
       end
 
-      defoverridable mount: 3
+      @impl Phoenix.LiveView
+      def handle_params(params, uri, %{assigns: assigns} = socket) do
+        {:noreply,
+         assign(
+           socket,
+           :__context__,
+           assigns
+           |> Map.get(:__context__, %{})
+           |> Map.put({unquote(__MODULE__), :params}, params)
+           |> Map.put({unquote(__MODULE__), :uri}, uri)
+         )}
+      end
+
+      defoverridable mount: 3, handle_params: 3
     end
   end
 

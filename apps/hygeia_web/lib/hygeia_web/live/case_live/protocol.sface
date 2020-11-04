@@ -1,6 +1,6 @@
-<HygeiaWeb.PersonLive.Header person={{ @case.person }} active_case={{ @case }} id="header" />
+<HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
 
-<HygeiaWeb.CaseLive.Navigation active_view={{ __MODULE__ }} case={{ @case }} id="navigation" />
+<HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
 
 <Form 
   for={{ @protocol_entry_changeset }} 

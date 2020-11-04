@@ -1,6 +1,6 @@
-<HygeiaWeb.PersonLive.Header person={{ @case.person }} active_case={{ @case }} id="header" />
+<HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
 
-<HygeiaWeb.CaseLive.Navigation active_view={{ __MODULE__ }} case={{ @case }} id="navigation" />
+<HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
 
 <LivePatch :if={{ @live_action == :show }} to={{ Routes.case_base_data_path(@socket, :edit, @case) }}>
   <button class="btn btn-sm btn-secondary" id="person-edit">

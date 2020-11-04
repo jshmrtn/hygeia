@@ -42,8 +42,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   end
 
   @impl Phoenix.LiveView
-  def handle_params(_params, _uri, socket) do
-    {:noreply, assign(socket, suspected_duplicate_changeset_uuid: nil)}
+  def handle_params(params, uri, socket) do
+    super(params, uri, assign(socket, suspected_duplicate_changeset_uuid: nil))
   end
 
   @impl Phoenix.LiveView

@@ -7,14 +7,17 @@ defmodule HygeiaWeb.OrganisationLive.Show do
   alias Hygeia.OrganisationContext.Organisation
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id} = params, _uri, socket) do
+  def handle_params(%{"id" => id} = params, uri, socket) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "organisations:#{id}")
 
-    {:noreply,
-     socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:params, params)
-     |> assign(:organisation, OrganisationContext.get_organisation!(id))}
+    super(
+      params,
+      uri,
+      socket
+      |> assign(:page_title, page_title(socket.assigns.live_action))
+      |> assign(:params, params)
+      |> assign(:organisation, OrganisationContext.get_organisation!(id))
+    )
   end
 
   @impl Phoenix.LiveView

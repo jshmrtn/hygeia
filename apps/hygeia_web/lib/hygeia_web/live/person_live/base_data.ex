@@ -20,7 +20,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Surface.Components.LivePatch
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id}, _uri, socket) do
+  def handle_params(%{"id" => id} = params, uri, socket) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "people:#{id}")
 
     person = CaseContext.get_person!(id)
@@ -28,7 +28,11 @@ defmodule HygeiaWeb.PersonLive.BaseData do
     tenants = TenantContext.list_tenants()
     professions = CaseContext.list_professions()
 
-    {:noreply, socket |> assign(tenants: tenants, professions: professions) |> load_data(person)}
+    super(
+      params,
+      uri,
+      socket |> assign(tenants: tenants, professions: professions) |> load_data(person)
+    )
   end
 
   @impl Phoenix.LiveView

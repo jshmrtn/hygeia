@@ -18,11 +18,11 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   alias Surface.Components.Link
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id}, _uri, socket) do
+  def handle_params(%{"id" => id} = params, uri, socket) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "protocol_entries:case:#{id}")
 
-    {:noreply, load_data(socket, id)}
+    super(params, uri, load_data(socket, id))
   end
 
   @impl Phoenix.LiveView
