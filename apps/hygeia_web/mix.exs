@@ -68,6 +68,7 @@ defmodule HygeiaWeb.MixProject do
       {:gettext, "~> 0.11"},
       {:hygeia, in_umbrella: true},
       {:hygeia_telemetry, in_umbrella: true},
+      {:hygeia_pdf_confirmation, in_umbrella: true},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:ex_cldr, "~> 2.17"},

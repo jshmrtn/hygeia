@@ -1,0 +1,5 @@
+Isolation
+
+<pre><%= inspect(@phase, pretty: true) %></pre>
+
+<pre><%= inspect(@case, pretty: true) %></pre>

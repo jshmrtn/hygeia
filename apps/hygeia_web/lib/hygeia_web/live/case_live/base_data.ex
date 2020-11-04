@@ -18,6 +18,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.Select
+  alias Surface.Components.Link
   alias Surface.Components.LivePatch
 
   @impl Phoenix.LiveView

@@ -4,6 +4,8 @@
 
 To start your Phoenix server:
 
+* [Install `wkhtmltopdf`](https://github.com/gutschilla/elixir-pdf-generator#wkhtmltopdf)
+* Install `poppler-utils` (`brew install poppler`, `apt-get install poppler-utils`, `apk add poppler-utils`)
 * Start Database
 
 ```console

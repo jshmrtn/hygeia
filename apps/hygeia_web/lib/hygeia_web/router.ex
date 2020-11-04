@@ -69,7 +69,7 @@ defmodule HygeiaWeb.Router do
           form_action: ["'self'" | sso_origins],
           upgrade_insecure_requests: ~w(),
           block_all_mixed_content: ~w(),
-          sandbox: ~w(allow-forms allow-scripts allow-modals allow-same-origin),
+          sandbox: ~w(allow-forms allow-scripts allow-modals allow-same-origin allow-downloads),
           base_uri: ~w('none'),
           manifest_src: ~w('none')
         }
@@ -157,6 +157,9 @@ defmodule HygeiaWeb.Router do
     live "/organisations/:id/positions/:position_id/edit",
          OrganisationLive.Show,
          :position_edit
+
+    get "/pdf/isolation/:case_uuid/:phase_uuid", PdfController, :isolation_confirmation
+    get "/pdf/quarantine/:case_uuid/:phase_uuid", PdfController, :quarantine_confirmation
   end
 
   scope "/", HygeiaWeb do

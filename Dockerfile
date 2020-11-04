@@ -1,4 +1,8 @@
-FROM hexpm/elixir:1.11.0-erlang-23.1.1-alpine-3.12.0
+FROM elixir:1.11-slim
+
+RUN apt-get update && \
+  apt-get install wkhtmltopdf -y && \
+  rm -rf /var/lib/apt/lists/*
 
 ADD _build/prod/rel/hygeia /app
 ADD entry.sh /entry.sh
