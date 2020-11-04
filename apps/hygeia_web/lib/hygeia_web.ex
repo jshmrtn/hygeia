@@ -159,6 +159,7 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.Auth
       import HygeiaWeb.Helpers.Case
       import HygeiaWeb.Helpers.ContactMethod
+      import HygeiaWeb.Helpers.CSP
       import HygeiaWeb.Helpers.ExternalReference
       import HygeiaWeb.Helpers.Phase
       import HygeiaWeb.Helpers.Region

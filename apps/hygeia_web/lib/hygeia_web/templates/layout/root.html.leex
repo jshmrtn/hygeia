@@ -6,8 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%= csrf_meta_tag() %>
     <%= live_title_tag assigns[:page_title] || "Hygeia" %>
-    <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
-    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <link
+      phx-track-static
+      rel="stylesheet"
+      href="<%= Routes.static_path(@conn, "/css/app.css") %>"
+      integrity="<%= integrity_hash(Routes.static_path(@conn, "/css/app.css")) %>"
+      nonce="<%= nonce(@conn, :style) %>"
+    />
+    <script type="text/javascript" nonce="<%= nonce(@conn, :script) %>">
+      __webpack_nonce__ = <%= @conn |> nonce(:script) |> Jason.encode! |> raw %>;
+    </script>
+    <script
+      defer
+      phx-track-static
+      type="text/javascript"
+      src="<%= Routes.static_path(@conn, "/js/app.js") %>"
+      integrity="<%= integrity_hash(Routes.static_path(@conn, "/css/app.js")) %>"
+      nonce="<%= nonce(@conn, :script) %>"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body class="layout-root">
     <%= @inner_content %>

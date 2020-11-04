@@ -2,9 +2,19 @@ defmodule HygeiaWeb.Router do
   use HygeiaWeb, :router
 
   import Phoenix.LiveDashboard.Router
+  import PlugDynamic.Builder
 
   # Make sure compilation order is correct
   require HygeiaWeb.Cldr
+
+  @debug_errors Application.compile_env(:hygeia_web, [HygeiaWeb.Endpoint, :debug_errors], false)
+  @code_reloading Application.compile_env(
+                    :hygeia_web,
+                    [HygeiaWeb.Endpoint, :code_reloader],
+                    false
+                  )
+  @frame_src if(@code_reloading, do: ~w('self'), else: ~w('none'))
+  @style_src if(@debug_errors, do: ~w('unsafe-inline'), else: ~w())
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -22,6 +32,49 @@ defmodule HygeiaWeb.Router do
       gettext: HygeiaWeb.Gettext,
       cldr: HygeiaWeb.Cldr,
       session_key: "cldr_locale"
+
+    dynamic_plug PlugContentSecurityPolicy do
+      sso_origins =
+        :ueberauth
+        |> Application.fetch_env!(UeberauthOIDC)
+        |> Enum.filter(&match?({_name, [_head | _tail]}, &1))
+        |> Enum.map(&elem(&1, 1))
+        |> Enum.map(&Keyword.fetch(&1, :issuer_or_config_endpoint))
+        |> Enum.filter(&match?({:ok, _endpoint}, &1))
+        |> Enum.map(&elem(&1, 1))
+        |> Enum.map(
+          &(&1
+            |> URI.parse()
+            |> Map.put(:path, nil)
+            |> Map.put(:query, nil)
+            |> URI.to_string())
+        )
+
+      [
+        nonces_for: [:script_src, :style_src],
+        directives: %{
+          default_src: ~w('none'),
+          script_src: ~w(),
+          style_src: @style_src,
+          img_src: ~w('self' data:),
+          font_src: ~w('self' data:),
+          connect_src: ~w('self'),
+          media_src: ~w('none'),
+          object_src: ~w('none'),
+          prefetch_src: ~w('none'),
+          child_src: ~w('none'),
+          frame_src: @frame_src,
+          worker_src: ~w('none'),
+          frame_ancestors: ~w('none'),
+          form_action: ["'self'" | sso_origins],
+          upgrade_insecure_requests: ~w(),
+          block_all_mixed_content: ~w(),
+          sandbox: ~w(allow-forms allow-scripts allow-modals allow-same-origin),
+          base_uri: ~w('none'),
+          manifest_src: ~w('none')
+        }
+      ]
+    end
 
     plug :store_locale
 
@@ -114,7 +167,37 @@ defmodule HygeiaWeb.Router do
   scope "/dashboard" do
     pipe_through [:browser, :csrf, :protected, :protected_webmaster]
 
-    live_dashboard "/", metrics: {HygeiaTelemetry, :dashboard_metrics}, ecto_repos: [Hygeia.Repo]
+    live_dashboard "/",
+      metrics: {HygeiaTelemetry, :dashboard_metrics},
+      ecto_repos: [Hygeia.Repo],
+      env_keys: [
+        "WEB_PORT",
+        "WEB_EXTERNAL_PORT",
+        "WEB_EXTERNAL_HOST",
+        "WEB_EXTERNAL_SCHEME",
+        "WEB_IAM_ISSUER",
+        "WEB_IAM_CLIENT_ID",
+        "API_PORT",
+        "API_EXTERNAL_PORT",
+        "API_EXTERNAL_HOST",
+        "API_EXTERNAL_SCHEME",
+        "DATABASE_SSL",
+        "DATABASE_USER",
+        "DATABASE_NAME",
+        "DATABASE_PORT",
+        "DATABASE_HOST",
+        "DATABASE_POOL_SIZE",
+        "RELEASE_NAME",
+        "KUBERNETES_POD_SELECTOR",
+        "KUBERNETES_NAMESPACE",
+        "METRICS_PORT"
+      ],
+      allow_destructive_actions: true,
+      csp_nonce_assign_key: %{
+        img: :img_src_nonce,
+        style: :style_src_nonce,
+        script: :script_src_nonce
+      }
   end
 
   defp store_locale(conn, _params) do

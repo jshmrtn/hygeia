@@ -88,6 +88,9 @@ defmodule HygeiaWeb.MixProject do
       {:certifi, "~> 2.5"},
       {:phoenix_live_view_dropzone, "~> 0.0"},
       {:csv, "~> 2.4"},
+      {:plug_content_security_policy, "~> 0.2.1"},
+      {:remote_ip, "~> 0.1"},
+      {:plug_dynamic, "~> 1.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

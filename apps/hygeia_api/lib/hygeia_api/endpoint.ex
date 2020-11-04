@@ -5,6 +5,8 @@ defmodule HygeiaApi.Endpoint do
     websocket: true,
     longpoll: false
 
+  plug RemoteIp, proxies: ~w[10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 fc00::/7]
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do

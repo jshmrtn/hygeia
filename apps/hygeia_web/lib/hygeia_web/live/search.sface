@@ -1,4 +1,4 @@
-<form class="component-search" :on-change="search" style="position: relative;">
+<form class="component-search" :on-change="search">
   <div class="input-group">
     <div class="input-group-prepend">
       <span class="input-group-text border-0">

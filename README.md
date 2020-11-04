@@ -49,7 +49,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   * `DATABASE_NAME` (default `hygeia`) - Database Name
   * `DATABASE_PORT` (default `5432`) - Database Port
   * `DATABASE_HOST` (default `localhost`) - Database Hostname / IP
-  * `POOL_SIZE` (default `10`) - Database Pool Size
+  * `DATABASE_POOL_SIZE` (default `10`) - Database Pool Size
 * Clustering
   * `RELEASE_NAME` (`optional`) - App Name
   * `KUBERNETES_POD_SELECTOR` (`optional`) - Selector to load Pod List
