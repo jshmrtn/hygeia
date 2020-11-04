@@ -56,6 +56,8 @@ defmodule HygeiaApi.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:cors_plug, "~> 2.0"},
+      # TODO: Use released version when https://github.com/absinthe-graphql/absinthe/pull/988 is merged
+      {:absinthe, github: "jshmrtn/absinthe", branch: "master", override: true},
       {:absinthe_phoenix, "~> 2.0"},
       {:absinthe_relay, "~> 1.5"},
       {:absinthe_error_payload, "1.0.1"},

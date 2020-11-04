@@ -77,9 +77,8 @@ defmodule HygeiaWeb.MixProject do
       {:ex_cldr_calendars, "~> 1.10"},
       {:ex_cldr_units, "~> 3.2"},
       {:ex_cldr_languages, "~> 0.2.1"},
-      {:surface, github: "msaraiva/surface", ref: "d95b659aee0243223f7c8fb87c6387e721ec0512"},
-      # Force Newer Dependency for surface
-      {:nimble_parsec, "~> 0.5.3"},
+      # Switch to Official repo when https://github.com/msaraiva/surface/pull/193 is merged
+      {:surface, github: "jshmrtn/surface", branch: "master"},
       {:ecto_psql_extras, "~> 0.4"},
       {:ueberauth, "~> 0.6", override: true},
       {:jsone, "~> 1.5", override: true},
