@@ -1,0 +1,15 @@
+@mixin readonly-form {
+  .form-control {
+    text-overflow: ellipsis;
+  }
+
+  .value,
+  .form-control[disabled] {
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    color: $gray-600;
+    appearance: none;
+    height: auto;
+  }
+}

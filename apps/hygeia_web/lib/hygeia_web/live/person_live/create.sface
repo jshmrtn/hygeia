@@ -4,6 +4,8 @@
   submit="save" 
   opts={{ autocomplete: "off", id: "person-form" }}
 >
+  <h1 class="mb-4">{{ gettext("New person") }}</h1>
+
   <Field name={{ :tenant_uuid }} class="form-group">
     <Label>{{ "Tenant" |> gettext }}</Label>
     <Select class="form-control" opts={{ prompt: "Select tenant" |> gettext }} field={{ :tenant_uuid }} options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }} />
@@ -31,7 +33,8 @@
     <HygeiaWeb.AddressForm id="address" />
   </Inputs>
 
-  <table>
+  <h3 class="mb-3">{{ gettext("Contact methods") }}</h3>
+  <table class="table mb-2">
     <thead>
       <tr>
         <th>{{ gettext("Type") }}</th>
@@ -43,19 +46,19 @@
       <Inputs for={{ :contact_methods }}>
         <tr>
           <td>
-            <Field name={{ :type }} class="form-group">
+            <Field name={{ :type }}>
               <Select class="form-control" opts={{ prompt: gettext("Choose Type") }} field={{ :type }} options={{ contact_method_options() }} />
               <FormError />
             </Field>
           </td>
           <td>
-            <Field name={{ :value }} class="form-group">
+            <Field name={{ :value }}>
               <TextInput class="form-control" field={{ :value }}/>
               <FormError />
             </Field>
           </td>
           <td>
-            <Field name={{ :comment }} class="form-group">
+            <Field name={{ :comment }}>
               <TextInput class="form-control" field={{ :comment }}/>
               <FormError />
             </Field>
@@ -63,16 +66,11 @@
         </tr>
       </Inputs>
     </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="3">
-          <button type="button" :on-click="add_contact_method">
-            {{ gettext("+") }}
-          </button>
-        </td>
-      </tr>
-    </tfoot>
   </table>
+  <button type="button" class="btn btn-secondary d-block mb-4" :on-click="add_contact_method">
+    <span class="oi oi-plus" aria-hidden="true"></span>
+    {{ gettext("New contact method") }}
+  </button>
 
   <button class="btn btn-primary" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
     {{ "Save" |> gettext }}

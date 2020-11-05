@@ -1,67 +1,77 @@
 <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
+<div class="card">
+  <div class="card-header">
+    <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
+  </div>
+  <div class="card-body">
+    <Form 
+      for={{ @protocol_entry_changeset }} 
+      change="validate" 
+      submit="save" 
+      opts={{ autocomplete: "off", id: "protocol-form", "phx-hook": "BlockNavigation" }}
+    >
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">{{ gettext("Type") }}</th>
+            <th scope="col">{{ gettext("Date") }}</th>
+            <th scope="col">{{ gettext("Author") }}</th>
+            <th scope="col" colspan="2">{{ gettext("Meta") }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <Field name={{ :type }}>
+                <Select class="form-control" opts={{ prompt: gettext("Choose Type") }} field={{ :type }} options={{ [{gettext("Note"), "note"}] }} />
+                <FormError />
+              </Field>
+            </td>
+            <td class="align-middle">
+              {{ gettext("Now") }}
+            </td>
+            <td class="align-middle">
+              {{ unless is_nil(get_auth(@socket)), do: get_auth(@socket).display_name }}
+            </td>
+            <td>
+              <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "note" }} field={{ :entry }} type={{ :note }} id="poly-inputs">
+                  <Field name={{ :place }}>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <Label class="input-group-text">{{ gettext("Note") }}</Label>
+                      </div>
+                      <TextInput class="form-control" field={{ :note }} />
+                    </div>
+                    <FormError />
+                  </Field>
+                </PolimorphicInputs>
+              </InputContext>
+            </td>
+            <td>
+              <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} diabled={{ @protocol_entry_changeset.valid? }}>
+                <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+                {{ gettext("Save") }}
+              </button>
+            </td>
+          </tr>
 
-<HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
-
-<Form 
-  for={{ @protocol_entry_changeset }} 
-  change="validate" 
-  submit="save" 
-  opts={{ autocomplete: "off", id: "protocol-form", "phx-hook": "BlockNavigation" }}
->
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">{{ gettext("Type") }}</th>
-        <th scope="col">{{ gettext("Date") }}</th>
-        <th scope="col">{{ gettext("Author") }}</th>
-        <th scope="col" colspan="2">{{ gettext("Meta") }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr :for={{ %ProtocolEntry{entry: %type{} = entry, inserted_at: inserted_at} = protocol_entry <- @case.protocol_entries }}>
-        <td>{{ protocol_type_type_name(type) }}</td>
-        <td>{{ Cldr.DateTime.to_string! inserted_at, HygeiaCldr }}</td>
-        <td>
-          <Link to={{ Routes.user_show_path(@socket, :show, get_protocol_user(protocol_entry)) }} :if={{ get_protocol_user(protocol_entry) != nil }}>
-            {{ protocol_entry |> get_protocol_user() |> Map.fetch!(:display_name) }}
-          </Link>
-        </td>
-        <td colspan="2" :if={{ type == Hygeia.CaseContext.Note }}>
-          {{ entry.note }}
-        </td>
-      </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-          <td>
-            <Field name={{ :type }} class="form-group">
-              <Select class="form-control" opts={{ prompt: gettext("Choose Type") }} field={{ :type }} options={{ [{gettext("Note"), "note"}] }} />
-              <FormError />
-            </Field>
-          </td>
-          <td>
-            {{ gettext("Now") }}
-          </td>
-          <td>
-            {{ unless is_nil(get_auth(@socket)), do: get_auth(@socket).display_name }}
-          </td>
-          <td>
-            <InputContext assigns={{ assigns }} :let={{ form: form }}>
-              <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "note" }} field={{ :entry }} type={{ :note }} id="poly-inputs">
-                <Field name={{ :place }} class="form-group">
-                  <Label>{{ gettext("Note") }}</Label>
-                  <TextInput class="form-control" field={{ :note }} />
-                  <FormError />
-                </Field>
-              </PolimorphicInputs>
-            </InputContext>
-          </td>
-          <td>
-            <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} diabled={{ @protocol_entry_changeset.valid? }}>
-              <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
-            </button>
-          </td>
-        </tr>
-    </tfoot>
-  </table>
-</Form>
+          <tr :for={{ %ProtocolEntry{entry: %type{} = entry, inserted_at: inserted_at} = protocol_entry <- Enum.reverse(@case.protocol_entries) }}>
+            <td>{{ protocol_type_type_name(type) }}</td>
+            <td title={{ Cldr.DateTime.to_string!(inserted_at, HygeiaCldr) }}>
+              {{ Cldr.DateTime.Relative.to_string!(DateTime.from_naive!(inserted_at, "Etc/UTC"), HygeiaCldr, format: :short) }}
+            </td>
+            <td>
+              <Link to={{ Routes.user_show_path(@socket, :show, get_protocol_user(protocol_entry)) }} :if={{ get_protocol_user(protocol_entry) != nil }}>
+                {{ protocol_entry |> get_protocol_user() |> Map.fetch!(:display_name) }}
+              </Link>
+            </td>
+            <td colspan="2" :if={{ type == Hygeia.CaseContext.Note }}>
+              {{ entry.note }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </Form>
+  </div>
+</div>

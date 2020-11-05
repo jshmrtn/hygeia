@@ -1,12 +1,17 @@
-<ul class="nav nav-tabs justify-content-center">
+<ul class="nav nav-tabs card-header-tabs">
   <li class="nav-item">
     <UriActiveContext
       to={{ Routes.case_base_data_path(@socket, :show, @case) }}
       :let={{ to: to, active: active }}
     >
-      <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active"}}">
-        {{ gettext("Base Data") }}
-      </LiveRedirect>
+      <UriActiveContext
+        to={{ Routes.case_base_data_path(@socket, :edit, @case) }}
+        :let={{ active: editActive }}
+      >
+        <LiveRedirect to={{ to }} class="nav-link {{ if active || editActive, do: "active"}}">
+          {{ gettext("Base Data") }}
+        </LiveRedirect>
+      </UriActiveContext>
     </UriActiveContext>
   </li>
   <li class="nav-item">

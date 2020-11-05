@@ -11,7 +11,7 @@
       </button>
     </LivePatch>
 
-    <div class="dropdown mt-3" phx-update="ignore" id="test-dropdown">
+    <div class="dropdown mt-3" phx-update="ignore" id="filter-dropdown">
       <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="oi oi-cog" aria-hidden="true"></span>
         Filter
@@ -126,9 +126,9 @@
     </tbody>
   </table>
 
-  <ul class="pagination justify-content-center">
-    <li class="page-item"><a class="page-link" href="#">{{ "Previous" |> gettext }}</a></li>
-    <li class="page-item" :for={{ page <- 0..4 }}><a class="page-link" href="#">{{ page + 1 }}</a></li>
-    <li class="page-item"><a class="page-link" href="#">{{ "Next" |> gettext }}</a></li>
-  </ul>
+  <Hygeia.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }}>
+      <LiveRedirect class="page-link" to={{ Routes.person_index_path(@socket, :index, cursor_direction, cursor) }}>
+        {{ text }}
+      </LiveRedirect>
+  </Hygeia.Pagination>
 </div>

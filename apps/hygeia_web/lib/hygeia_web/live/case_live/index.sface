@@ -4,10 +4,10 @@
   </h1>
 
   <div class="d-flex">
-    <div class="dropdown mt-3" phx-update="ignore" id="test-dropdown">
+    <div class="dropdown mt-3 mb-2" phx-update="ignore" id="filter-dropdown">
       <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="oi oi-cog" aria-hidden="true"></span>
-        Filter
+        {{ gettext("Filter") }}
       </button>
       <div class="dropdown-menu p-3 filter-dropdown" onclick="event.stopPropagation()">
         <h4>{{ gettext("Filter") }}</h4>
@@ -15,13 +15,13 @@
           <div class="form-group">
             <label class="d-block">{{ gettext("Status") }}</label>
             <FieldContext name={{ :status }}>
-              <MultipleSelect class="form-control" options={{ Case.Status.__enum_map__() }} />
+              <MultipleSelect class="form-control" options={{ case_status_map() }} />
             </FieldContext>
           </div>
           <div class="form-group">
             <label class="d-block">{{ gettext("Complexity") }}</label>
             <FieldContext name={{ :complexity }}>
-              <MultipleSelect class="form-control" options={{ Case.Complexity.__enum_map__() }} />
+              <MultipleSelect class="form-control" options={{ case_complexity_map() }} />
             </FieldContext>
           </div>
 
@@ -95,7 +95,7 @@
         </td>
       </tr>
       <tr :if={{ length(@cases) == 0 }}>
-        <td colspan="5">
+        <td colspan="7">
           <div class="d-flex justify-content-center py-3">
             {{ "No data to display" |> gettext }}
           </div>

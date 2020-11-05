@@ -14,8 +14,8 @@
     <dd>{{ gettext("Comma (,)") }}</dd>
 
     <dt>{{ gettext("Available Column Headers") }}</dt>
-    <dd>{{ gettext("The table headers from above expect ID and Duplicate Check") }}</dd>
+    <dd>{{ gettext("The table headers from above except ID and Duplicate Check") }}</dd>
   </dl>
 
-  {{ live_component @socket, PhoenixLiveViewDropzone, file_data: @file, file_types: ["application/csv", "text/csv"], target: @myself }}
+  {{ live_component @socket, PhoenixLiveViewDropzone, file_data: @file, file_types: ["application/csv", "text/csv"], target: @myself, button_class: "btn btn-secondary mb-3" }}
 </div>

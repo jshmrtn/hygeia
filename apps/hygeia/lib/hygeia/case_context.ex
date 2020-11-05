@@ -141,6 +141,9 @@ defmodule Hygeia.CaseContext do
   @spec list_people :: [Person.t()]
   def list_people, do: Repo.all(Person)
 
+  @spec list_people_query :: Ecto.Queryable.t()
+  def list_people_query, do: Person
+
   @spec list_people(tenant :: Tenant.t()) :: [Person.t()]
   def list_people(tenant), do: tenant |> Ecto.assoc(:people) |> Repo.all()
 

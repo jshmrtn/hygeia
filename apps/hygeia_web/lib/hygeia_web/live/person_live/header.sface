@@ -1,4 +1,4 @@
-<div class="component-person-header">
+<div class="component-person-header mb-4">
   <h1 class="mb-4">
     {{ @person_display_name }}
   </h1>
@@ -8,6 +8,7 @@
       <UriActiveContext
         to={{ Routes.person_base_data_path(@socket, :show, @person) }}
         :let={{ to: to, active: active }}
+        opts={{ active: :inclusive }}
       >
         <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
           {{ gettext("Base Data") }}
@@ -18,6 +19,7 @@
       <UriActiveContext
         to={{ Routes.case_base_data_path(@socket, :show, case) }}
         :let={{ to: to, active: active }}
+        opts={{ active: :inclusive }}
       >
         <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
           {{ case_display_name(case) }}

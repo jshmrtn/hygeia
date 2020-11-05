@@ -64,8 +64,8 @@
     <div class="col-6">
       <Field name={{ :propagator_internal }} class="form-group">
         <Label>{{ gettext("Propagator Internal") }}</Label>
-        <RadioButton value="true" /> Yes
-        <RadioButton value="false" /> No
+        <label><RadioButton value="true" /> Yes</label>
+        <label><RadioButton value="false" /> No</label>
         <FormError />
       </Field>
     </div>

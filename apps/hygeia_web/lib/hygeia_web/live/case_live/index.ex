@@ -72,6 +72,7 @@ defmodule HygeiaWeb.CaseLive.Index do
       end)
       |> Enum.reject(&match?({nil, _value}, &1))
       |> Enum.reject(&match?({_key, nil}, &1))
+      # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
       |> Enum.reduce(CaseContext.list_cases_query(), fn
         {key, value}, query when is_list(value) ->

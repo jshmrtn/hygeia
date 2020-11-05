@@ -3,8 +3,11 @@ defmodule HygeiaWeb.PersonLive.Index do
 
   use HygeiaWeb, :surface_view
 
+  import Ecto.Query
+
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
+  alias Hygeia.Repo
 
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
@@ -19,7 +22,20 @@ defmodule HygeiaWeb.PersonLive.Index do
   def mount(params, session, socket) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "people")
 
-    super(params, session, assign(socket, :people, list_people()))
+    pagination_params =
+      case params do
+        %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
+        %{"cursor" => cursor, "cursor_direction" => "before"} -> [before: cursor]
+        _other -> []
+      end
+
+    super(
+      params,
+      session,
+      socket
+      |> assign(pagination_params: pagination_params, filters: %{})
+      |> list_people()
+    )
   end
 
   @impl Phoenix.LiveView
@@ -33,17 +49,37 @@ defmodule HygeiaWeb.PersonLive.Index do
     person = CaseContext.get_person!(id)
     {:ok, _} = CaseContext.delete_person(person)
 
-    {:noreply, assign(socket, :people, list_people())}
+    {:noreply, socket |> assign(pagination_params: []) |> list_people()}
   end
 
   @impl Phoenix.LiveView
   def handle_info({_type, %Person{}, _version}, socket) do
-    {:noreply, assign(socket, :people, list_people())}
+    {:noreply, socket |> assign(pagination_params: []) |> list_people()}
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp list_people do
-    CaseContext.list_people()
+  defp list_people(socket) do
+    %Paginator.Page{entries: entries, metadata: metadata} =
+      socket.assigns.filters
+      |> Enum.map(fn {key, value} ->
+        {@allowed_filter_fields[key], value}
+      end)
+      |> Enum.reject(&match?({nil, _value}, &1))
+      |> Enum.reject(&match?({_key, nil}, &1))
+      # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
+      |> Enum.reject(&match?({_key, []}, &1))
+      |> Enum.reduce(CaseContext.list_people_query(), fn
+        {key, value}, query when is_list(value) ->
+          where(query, [person], field(person, ^key) in ^value)
+      end)
+      |> Repo.paginate(
+        Keyword.merge(socket.assigns.pagination_params, cursor_fields: [inserted_at: :asc])
+      )
+
+    assign(socket,
+      pagination: metadata,
+      people: entries
+    )
   end
 end

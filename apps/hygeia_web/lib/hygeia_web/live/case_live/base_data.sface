@@ -1,184 +1,198 @@
-<HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
+<div class="component-case-base-data">
+  <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
 
-<HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
+  <div class="card">
+    <div class="card-header">
+      <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
+    </div>
+    <div class="card-body">
+      <LivePatch :if={{ @live_action == :show }} to={{ Routes.case_base_data_path(@socket, :edit, @case) }}>
+        <button class="btn btn-primary mb-3" id="case-edit">
+          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+          {{ gettext("Edit") }}
+        </button>
+      </LivePatch>
 
-<LivePatch :if={{ @live_action == :show }} to={{ Routes.case_base_data_path(@socket, :edit, @case) }}>
-  <button class="btn btn-sm btn-secondary" id="person-edit">
-    <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
-  </button>
-</LivePatch>
-
-<Form 
-  for={{ @changeset }} 
-  change="validate" 
-  submit="save" 
-  opts={{ autocomplete: "off", id: "case-form", "phx-hook": "BlockNavigation" }}
->
-  <div :if={{ @live_action == :edit }}>
-    <button class="btn btn-primary" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
-      <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
-    </button>
-    <button :on-click="reset" class="btn btn-sm btn-secondary" type="button" data-confirm={{ gettext("Do you really want to reset?") }}>
-      <span class="oi oi-circle-x" title={{ gettext("Reset") }} aria-hidden="true"></span>
-    </button>
-  </div>
-
-  <fieldset class="col">
-    <legend>{{ gettext("References") }}</legend>
-
-      <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @case }} id="references" add_external_reference="add_external_reference" />
-  </fieldset>
-
-  <fieldset>
-    <legend>{{ gettext("Phases") }}</legend>
-    <Inputs for={{ :phases }}>
-      <InputContext assigns={{ assigns }} :let={{ form: form }}>
-        <div class="form-group">
-          <Label>{{ gettext("Type") }}</Label>
-          <span>{{
-            case Ecto.Changeset.fetch_field!(form.source, :details) do
-              %Phase.Index{} -> gettext("Index")
-              %Phase.PossibleIndex{} -> gettext("Possible Index")
-            end
-          }}</span>
+      <Form 
+        for={{ @changeset }} 
+        change="validate" 
+        submit="save" 
+        opts={{ autocomplete: "off", id: "case-form", "phx-hook": "BlockNavigation" }}
+      >
+        <div :if={{ @live_action == :edit }}>
+          <div class="mb-3" :if={{ @live_action == :edit }}>
+            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
+              <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+              {{ gettext("Save") }}
+            </button>
+            <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
+              <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+              {{ gettext("Discard") }}
+            </button>
+          </div>
         </div>
-        <PolimorphicInputs
-          :if={{ match?(%Phase.Index{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
-          field={{ :details }}
-          type={{ :index }}
-          id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
-        >
-          <p>
-            <Link to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, Ecto.Changeset.fetch_field!(form.source, :uuid)) }}>
-              {{ gettext("Isolation Confirmation") }}
-            </Link>
-          </p>
-          <Field name={{ :end_reason }} class="form-group">
-            <Label>{{ gettext("End Reason") }}</Label>
-            <Select 
-              class="form-control" 
-              opts={{ prompt: gettext("Select end reason") }} 
-              field={{ :end_reason }} 
-              options={{ case_phase_index_end_reason_map() }}
-            />
-            <FormError />
-          </Field>
-        </PolimorphicInputs>
-        <PolimorphicInputs
-          :if={{ match?(%Phase.PossibleIndex{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
-          field={{ :details }}
-          type={{ :possible_index }}
-          id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
-        >
-          <p>
-            <Link to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, Ecto.Changeset.fetch_field!(form.source, :uuid)) }}>
-              {{ gettext("Quarantine Confirmation") }}
-            </Link>
-          </p>
-          <InputContext assigns={{ assigns }} :let={{ form: form }}>
-            <div class="form-group">
-              <Label>{{ gettext("Sub Type") }}</Label>
-              <span class="form-control">
-                {{ form.source |> Ecto.Changeset.fetch_field!(:type) |> case_phase_possible_index_type_translation() }}
-              </span>
-            </div>
 
-            <Field name={{ :end_reason }} class="form-group">
-              <Label>{{ gettext("End Reason") }}</Label>
-              <Select 
-                class="form-control" 
-                opts={{ prompt: gettext("Select end reason") }} 
-                field={{ :end_reason }} 
-                options={{ case_phase_possible_index_end_reason_map() }}
-              />
-              <FormError />
-            </Field>
-          </InputContext>
-        </PolimorphicInputs>
+        <div class="row mb-4">
+          <fieldset class="col-12 col-lg-8">
+            <legend>{{ gettext("References") }}</legend>
+            <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @case }} id="references" add_external_reference="add_external_reference" />
+          </fieldset>
+        </div>
+
+        <fieldset>
+          <legend>{{ gettext("Phases") }}</legend>
+          <Inputs for={{ :phases }}>
+            <InputContext assigns={{ assigns }} :let={{ form: form }}>
+              <div class="form-group">
+                <Label>{{ gettext("Type") }}</Label>
+                <span>{{
+                  case Ecto.Changeset.fetch_field!(form.source, :details) do
+                    %Phase.Index{} -> gettext("Index")
+                    %Phase.PossibleIndex{} -> gettext("Possible Index")
+                  end
+                }}</span>
+              </div>
+              <PolimorphicInputs
+                :if={{ match?(%Phase.Index{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
+                field={{ :details }}
+                type={{ :index }}
+                id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+              >
+                <p>
+                  <Link class="btn btn-secondary" to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, Ecto.Changeset.fetch_field!(form.source, :uuid)) }}>
+                    <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
+                    {{ gettext("Isolation Confirmation") }}
+                  </Link>
+                </p>
+                <Field name={{ :end_reason }} class="form-group">
+                  <Label>{{ gettext("End Reason") }}</Label>
+                  <Select 
+                    class="form-control" 
+                    opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
+                    field={{ :end_reason }} 
+                    options={{ case_phase_index_end_reason_map() }}
+                  />
+                  <FormError />
+                </Field>
+              </PolimorphicInputs>
+              <PolimorphicInputs
+                :if={{ match?(%Phase.PossibleIndex{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
+                field={{ :details }}
+                type={{ :possible_index }}
+                id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+              >
+                <p>
+                  <Link to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, Ecto.Changeset.fetch_field!(form.source, :uuid)) }}>
+                    {{ gettext("Quarantine Confirmation") }}
+                  </Link>
+                </p>
+                <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                  <div class="form-group">
+                    <Label>{{ gettext("Sub Type") }}</Label>
+                    <span class="form-control">
+                      {{ form.source |> Ecto.Changeset.fetch_field!(:type) |> case_phase_possible_index_type_translation() }}
+                    </span>
+                  </div>
+
+                  <Field name={{ :end_reason }} class="form-group">
+                    <Label>{{ gettext("End Reason") }}</Label>
+                    <Select 
+                      class="form-control" 
+                      opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
+                      field={{ :end_reason }} 
+                      options={{ case_phase_possible_index_end_reason_map() }}
+                    />
+                    <FormError />
+                  </Field>
+                </InputContext>
+              </PolimorphicInputs>
+
+              <div class="row">
+                <div class="col">
+                  <Field name={{ :start }} class="form-group">
+                    <Label>{{ "Start" |> gettext }}</Label>
+                    <DateInput class="form-control" field={{ :start }} opts={{ disabled: @live_action == :show }} />
+                    <FormError />
+                  </Field>
+                </div>
+                <div class="col">
+                  <Field name={{ :end }} class="form-group">
+                    <Label>{{ "End" |> gettext }}</Label>
+                    <DateInput class="form-control" field={{ :end }} opts={{ disabled: @live_action == :show }}/>
+                    <FormError />
+                  </Field>
+                </div>
+              </div>
+            </InputContext>
+            <hr>
+          </Inputs>
+        </fieldset>
+
+        <Field name={{ :tenant_uuid }} class="form-group">
+          <Label>{{ "Tenant" |> gettext }}</Label>
+          <Select 
+            class="form-control" 
+            opts={{ prompt: "Select tenant" |> gettext, disabled: @live_action == :show }} 
+            field={{ :tenant_uuid }} 
+            options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
+          />
+          <FormError />
+        </Field>
 
         <div class="row">
           <div class="col">
-            <Field name={{ :start }} class="form-group">
-              <Label>{{ "Start" |> gettext }}</Label>
-              <DateInput class="form-control" field={{ :start }}/>
+            <Field name={{ :tracer_uuid }} class="form-group">
+              <Label>{{ "Tracer" |> gettext }}</Label>
+              <Select 
+                class="form-control" 
+                opts={{ prompt: "Select user" |> gettext,  disabled: @live_action == :show }} 
+                field={{ :tracer_uuid }} 
+                options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+              />
               <FormError />
             </Field>
           </div>
           <div class="col">
-            <Field name={{ :end }} class="form-group">
-              <Label>{{ "End" |> gettext }}</Label>
-              <DateInput class="form-control" field={{ :end }}/>
+            <Field name={{ :supervisor_uuid }} class="form-group">
+              <Label>{{ "Supervisor" |> gettext }}</Label>
+              <Select 
+                class="form-control" 
+                opts={{ prompt: "Select user" |> gettext, disabled: @live_action == :show }} 
+                field={{ :supervisor_uuid }} 
+                options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+              />
               <FormError />
             </Field>
           </div>
         </div>
-      </InputContext>
-      <hr>
-    </Inputs>
-  </fieldset>
 
-  <Field name={{ :tenant_uuid }} class="form-group">
-    <Label>{{ "Tenant" |> gettext }}</Label>
-    <Select 
-      class="form-control" 
-      opts={{ prompt: "Select tenant" |> gettext }} 
-      field={{ :tenant_uuid }} 
-      options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
-    />
-    <FormError />
-  </Field>
-
-  <div class="row">
-    <div class="col">
-      <Field name={{ :tracer_uuid }} class="form-group">
-        <Label>{{ "Tracer" |> gettext }}</Label>
-        <Select 
-          class="form-control" 
-          opts={{ prompt: "Select user" |> gettext }} 
-          field={{ :tracer_uuid }} 
-          options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
-        />
-        <FormError />
-      </Field>
-    </div>
-    <div class="col">
-      <Field name={{ :supervisor_uuid }} class="form-group">
-        <Label>{{ "Supervisor" |> gettext }}</Label>
-        <Select 
-          class="form-control" 
-          opts={{ prompt: "Select user" |> gettext }} 
-          field={{ :supervisor_uuid }} 
-          options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
-        />
-        <FormError />
-      </Field>
+        <div class="row">
+          <div class="col">
+            <Field name={{ :complexity }} class="form-group">
+              <Label>{{ "Complexity" |> gettext }}</Label>
+              <Select 
+                class="form-control" 
+                opts={{ prompt: "Select complexity" |> gettext, disabled: @live_action == :show }} 
+                field={{ :complexity }} 
+                options={{ case_complexity_map() }}
+              />
+              <FormError />
+            </Field>
+          </div>
+          <div class="col">
+            <Field name={{ :status }} class="form-group">
+              <Label>{{ "Status" |> gettext }}</Label>
+              <Select 
+                class="form-control" 
+                opts={{ prompt: "Select status" |> gettext, disabled: @live_action == :show }} 
+                field={{ :status }} 
+                options={{ case_status_map() }}
+              />
+              <FormError />
+            </Field>
+          </div>
+        </div>
+      </Form>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col">
-      <Field name={{ :complexity }} class="form-group">
-        <Label>{{ "Complexity" |> gettext }}</Label>
-        <Select 
-          class="form-control" 
-          opts={{ prompt: "Select complexity" |> gettext }} 
-          field={{ :complexity }} 
-          options={{ case_complexity_map() }}
-        />
-        <FormError />
-      </Field>
-    </div>
-    <div class="col">
-      <Field name={{ :status }} class="form-group">
-        <Label>{{ "Status" |> gettext }}</Label>
-        <Select 
-          class="form-control" 
-          opts={{ prompt: "Select status" |> gettext }} 
-          field={{ :status }} 
-          options={{ case_status_map() }}
-        />
-        <FormError />
-      </Field>
-    </div>
-  </div>
-</Form>
+</div>

@@ -127,6 +127,8 @@ defmodule HygeiaWeb.Router do
     live "/users/:id", UserLive.Show, :show
 
     live "/people", PersonLive.Index, :index
+    live "/people/:cursor_direction/:cursor", PersonLive.Index, :index
+
     live "/people/new", PersonLive.Create, :create
     live "/people/:id", PersonLive.BaseData, :show
     live "/people/:id/show/edit", PersonLive.BaseData, :edit
