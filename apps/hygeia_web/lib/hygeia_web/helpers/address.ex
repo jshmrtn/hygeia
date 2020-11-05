@@ -7,7 +7,7 @@ defmodule HygeiaWeb.Helpers.Address do
   def format_address(nil), do: nil
   @spec format_address(address :: Address.t()) :: String.t()
   def format_address(address) do
-    locale = HygeiaWeb.Cldr.get_locale().language
+    locale = HygeiaCldr.get_locale().language
 
     [
       address.address,

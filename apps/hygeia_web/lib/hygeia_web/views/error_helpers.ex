@@ -41,9 +41,9 @@ defmodule HygeiaWeb.ErrorHelpers do
     # should be written to the errors.po file. The :count option is
     # set by Ecto and indicates we should also apply plural rules.
     if count = opts[:count] do
-      Gettext.dngettext(HygeiaWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(HygeiaGettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(HygeiaWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(HygeiaGettext, "errors", msg, opts)
     end
   end
 end

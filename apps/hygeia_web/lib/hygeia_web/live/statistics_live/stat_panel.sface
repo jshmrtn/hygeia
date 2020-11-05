@@ -3,7 +3,7 @@
     {{ @header }}
   </div>
   <div class="value mt-4 text-dark">
-    {{ Cldr.Number.to_string! @value, HygeiaWeb.Cldr }}
+    {{ Cldr.Number.to_string! @value, HygeiaCldr }}
   </div>
   <div class="label text-muted mb-5">
     {{ @label }}

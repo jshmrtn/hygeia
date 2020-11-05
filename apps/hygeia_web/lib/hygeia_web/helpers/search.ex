@@ -1,7 +1,7 @@
 defmodule HygeiaWeb.Helpers.Search do
   @moduledoc false
 
-  import HygeiaWeb.Gettext
+  import HygeiaGettext
 
   @spec translate_group(type :: atom()) :: String.t()
   def translate_group(:person), do: gettext("Person")

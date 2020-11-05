@@ -1,19 +1,18 @@
 # credo:disable-for-this-file Credo.Check.Readability.Specs
-defmodule HygeiaPdfConfirmation.MixProject do
+defmodule HygeiaGettext.MixProject do
   @moduledoc false
 
   use Mix.Project
 
   def project do
     [
-      app: :hygeia_pdf_confirmation,
+      app: :hygeia_gettext,
       version: "0.0.0-noversion",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.11",
-      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       build_embedded: Mix.env() == :prod or System.get_env("BUILD_EMBEDDED") in ["1", "true"],
       test_coverage: [tool: ExCoveralls],
@@ -37,21 +36,10 @@ defmodule HygeiaPdfConfirmation.MixProject do
     ]
   end
 
-  # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_env), do: ["lib"]
-
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:hygeia, in_umbrella: true},
-      {:hygeia_gettext, in_umbrella: true},
-      {:hygeia_cldr, in_umbrella: true},
-      {:briefly, "~> 0.3"},
-      {:pdf_generator, "~> 0.6.2"},
-      {:phoenix, "~> 1.5.6"},
-      {:phoenix_html, "~> 2.11"},
-      {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+      {:gettext, "~> 0.11"}
     ]
   end
 end

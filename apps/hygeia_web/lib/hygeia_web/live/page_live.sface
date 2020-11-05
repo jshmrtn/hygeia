@@ -4,7 +4,7 @@
 
   <p>
     <b>{{ gettext("CLDR Demo:") }}</b>
-    {{ Cldr.DateTime.to_string! @time, HygeiaWeb.Cldr }}
+    {{ Cldr.DateTime.to_string! @time, HygeiaCldr }}
   </p>
 
   <form change="suggest" submit="search">

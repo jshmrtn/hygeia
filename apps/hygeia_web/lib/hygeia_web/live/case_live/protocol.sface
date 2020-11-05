@@ -20,7 +20,7 @@
     <tbody>
       <tr :for={{ %ProtocolEntry{entry: %type{} = entry, inserted_at: inserted_at} = protocol_entry <- @case.protocol_entries }}>
         <td>{{ protocol_type_type_name(type) }}</td>
-        <td>{{ Cldr.DateTime.to_string! inserted_at, HygeiaWeb.Cldr }}</td>
+        <td>{{ Cldr.DateTime.to_string! inserted_at, HygeiaCldr }}</td>
         <td>
           <Link to={{ Routes.user_show_path(@socket, :show, get_protocol_user(protocol_entry)) }} :if={{ get_protocol_user(protocol_entry) != nil }}>
             {{ protocol_entry |> get_protocol_user() |> Map.fetch!(:display_name) }}

@@ -1,7 +1,7 @@
 defmodule HygeiaWeb.Helpers.Case do
   @moduledoc false
 
-  import HygeiaWeb.Gettext
+  import HygeiaGettext
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Phase
@@ -91,19 +91,19 @@ defmodule HygeiaWeb.Helpers.Case do
       {nil, _end_date} ->
         gettext("%{phase_type} (Created at %{created_at})",
           phase_type: case_phase_type_translation(last_phase),
-          created_at: Cldr.DateTime.to_string!(inserted_at, HygeiaWeb.Cldr)
+          created_at: Cldr.DateTime.to_string!(inserted_at, HygeiaCldr)
         )
 
       {_start_date, nil} ->
         gettext("%{phase_type} (Created at %{created_at})",
           phase_type: case_phase_type_translation(last_phase),
-          created_at: Cldr.DateTime.to_string!(inserted_at, HygeiaWeb.Cldr)
+          created_at: Cldr.DateTime.to_string!(inserted_at, HygeiaCldr)
         )
 
       {start_date, end_date} ->
         gettext("%{phase_type} (%{date_range})",
           phase_type: case_phase_type_translation(last_phase),
-          date_range: Cldr.Interval.to_string!(Date.range(start_date, end_date), HygeiaWeb.Cldr)
+          date_range: Cldr.Interval.to_string!(Date.range(start_date, end_date), HygeiaCldr)
         )
     end
   end

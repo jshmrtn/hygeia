@@ -26,7 +26,7 @@ defmodule HygeiaWeb do
       use Phoenix.Controller, namespace: HygeiaWeb
 
       import Plug.Conn
-      import HygeiaWeb.Gettext
+      import HygeiaGettext
 
       alias HygeiaWeb.Router.Helpers, as: Routes
     end
@@ -176,7 +176,7 @@ defmodule HygeiaWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import HygeiaWeb.Gettext
+      import HygeiaGettext
     end
   end
 
@@ -193,7 +193,7 @@ defmodule HygeiaWeb do
       import Phoenix.View
 
       import HygeiaWeb.ErrorHelpers
-      import HygeiaWeb.Gettext
+      import HygeiaGettext
 
       import HygeiaWeb.Helpers.Address
       import HygeiaWeb.Helpers.Auth
@@ -215,8 +215,8 @@ defmodule HygeiaWeb do
   @spec setup_live_view(session :: map) :: :ok
   def setup_live_view(session) do
     unless is_nil(session["cldr_locale"]) do
-      HygeiaWeb.Cldr.put_locale(session["cldr_locale"])
-      Gettext.put_locale(HygeiaWeb.Cldr.get_locale().gettext_locale_name)
+      HygeiaCldr.put_locale(session["cldr_locale"])
+      Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name)
     end
 
     Versioning.put_origin(:web)

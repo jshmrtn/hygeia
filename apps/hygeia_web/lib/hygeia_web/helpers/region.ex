@@ -5,7 +5,7 @@ defmodule HygeiaWeb.Helpers.Region do
 
   @spec countries :: [{String.t(), String.t()}]
   def countries do
-    locale = HygeiaWeb.Cldr.get_locale().language
+    locale = HygeiaCldr.get_locale().language
 
     Enum.map(
       Cadastre.Country.ids(),
@@ -15,7 +15,7 @@ defmodule HygeiaWeb.Helpers.Region do
 
   @spec subdivisions(changeset :: Ecto.Changeset.t()) :: [{String.t(), String.t()}]
   def subdivisions(changeset) do
-    locale = HygeiaWeb.Cldr.get_locale().language
+    locale = HygeiaCldr.get_locale().language
 
     changeset
     |> Ecto.Changeset.fetch_field!(:country)

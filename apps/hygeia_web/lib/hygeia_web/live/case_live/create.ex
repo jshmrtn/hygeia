@@ -1,7 +1,7 @@
 defmodule HygeiaWeb.CaseLive.Create do
   @moduledoc false
 
-  import HygeiaWeb.Gettext
+  import HygeiaGettext
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.ContactMethod

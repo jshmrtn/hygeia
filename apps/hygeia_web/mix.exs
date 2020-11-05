@@ -50,6 +50,11 @@ defmodule HygeiaWeb.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:hygeia, in_umbrella: true},
+      {:hygeia_telemetry, in_umbrella: true},
+      {:hygeia_pdf_confirmation, in_umbrella: true},
+      {:hygeia_gettext, in_umbrella: true},
+      {:hygeia_cldr, in_umbrella: true},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_ecto, "~> 4.0"},
       # TODO: Switch back to released version when surface works with it
@@ -65,19 +70,8 @@ defmodule HygeiaWeb.MixProject do
       {:phoenix_live_dashboard, github: "maennchen/phoenix_live_dashboard", branch: "master"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
-      {:gettext, "~> 0.11"},
-      {:hygeia, in_umbrella: true},
-      {:hygeia_telemetry, in_umbrella: true},
-      {:hygeia_pdf_confirmation, in_umbrella: true},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:ex_cldr, "~> 2.17"},
-      {:ex_cldr_numbers, "~> 2.15"},
-      {:ex_cldr_lists, "~> 2.6"},
-      {:ex_cldr_dates_times, "~> 2.5"},
-      {:ex_cldr_calendars, "~> 1.10"},
-      {:ex_cldr_units, "~> 3.2"},
-      {:ex_cldr_languages, "~> 0.2.1"},
       # TODO: Replace to released version when https://github.com/msaraiva/surface/pull/193 is merged
       {:surface, github: "msaraiva/surface", branch: "master"},
       {:ecto_psql_extras, "~> 0.4"},

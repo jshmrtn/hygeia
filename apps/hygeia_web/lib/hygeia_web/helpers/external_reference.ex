@@ -1,7 +1,7 @@
 defmodule HygeiaWeb.Helpers.ExternalReference do
   @moduledoc false
 
-  import HygeiaWeb.Gettext
+  import HygeiaGettext
 
   alias Hygeia.CaseContext.ExternalReference
 

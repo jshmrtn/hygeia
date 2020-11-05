@@ -1,7 +1,7 @@
 defmodule HygeiaWeb.Helpers.Phase do
   @moduledoc false
 
-  import HygeiaWeb.Gettext
+  import HygeiaGettext
 
   alias Hygeia.CaseContext.Phase
 

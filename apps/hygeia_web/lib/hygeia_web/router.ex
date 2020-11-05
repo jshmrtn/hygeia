@@ -5,7 +5,7 @@ defmodule HygeiaWeb.Router do
   import PlugDynamic.Builder
 
   # Make sure compilation order is correct
-  require HygeiaWeb.Cldr
+  require HygeiaCldr
 
   @debug_errors Application.compile_env(:hygeia_web, [HygeiaWeb.Endpoint, :debug_errors], false)
   @code_reloading Application.compile_env(
@@ -24,13 +24,13 @@ defmodule HygeiaWeb.Router do
     plug :put_secure_browser_headers
 
     plug Cldr.Plug.AcceptLanguage,
-      cldr_backend: HygeiaWeb.Cldr
+      cldr_backend: HygeiaCldr
 
     plug Cldr.Plug.SetLocale,
       apps: [:cldr, :gettext],
       from: [:session, :accept_language],
-      gettext: HygeiaWeb.Gettext,
-      cldr: HygeiaWeb.Cldr,
+      gettext: HygeiaGettext,
+      cldr: HygeiaCldr,
       session_key: "cldr_locale"
 
     dynamic_plug PlugContentSecurityPolicy do

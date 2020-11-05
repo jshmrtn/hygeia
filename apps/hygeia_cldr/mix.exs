@@ -1,19 +1,18 @@
 # credo:disable-for-this-file Credo.Check.Readability.Specs
-defmodule HygeiaPdfConfirmation.MixProject do
+defmodule HygeiaCldr.MixProject do
   @moduledoc false
 
   use Mix.Project
 
   def project do
     [
-      app: :hygeia_pdf_confirmation,
-      version: "0.0.0-noversion",
+      app: :hygeia_cldr,
+      version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.11",
-      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       build_embedded: Mix.env() == :prod or System.get_env("BUILD_EMBEDDED") in ["1", "true"],
       test_coverage: [tool: ExCoveralls],
@@ -37,21 +36,17 @@ defmodule HygeiaPdfConfirmation.MixProject do
     ]
   end
 
-  # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_env), do: ["lib"]
-
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:hygeia, in_umbrella: true},
-      {:hygeia_gettext, in_umbrella: true},
-      {:hygeia_cldr, in_umbrella: true},
-      {:briefly, "~> 0.3"},
-      {:pdf_generator, "~> 0.6.2"},
-      {:phoenix, "~> 1.5.6"},
-      {:phoenix_html, "~> 2.11"},
-      {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+      {:ex_cldr, "~> 2.17"},
+      {:ex_cldr_numbers, "~> 2.15"},
+      {:ex_cldr_lists, "~> 2.6"},
+      {:ex_cldr_dates_times, "~> 2.5"},
+      {:ex_cldr_calendars, "~> 1.10"},
+      {:ex_cldr_units, "~> 3.2"},
+      {:ex_cldr_languages, "~> 0.2.1"},
+      {:hygeia_gettext, in_umbrella: true}
     ]
   end
 end
