@@ -4,74 +4,26 @@
       <div class="d-flex justify-content-between">
         <ul class="nav nav-pills" role="navigation">
           <li class="nav-item" :if={{ User.has_role?(auth, :admin) }}>
-            <div class="dropdown" id="people" phx-update="ignore">
-              <UriActiveContext
-                to={{ Routes.person_index_path(@socket, :index) }}
-                :let={{ active: active }}
-                opts={{ active: :inclusive }}
-              >
-                <a class="nav-link {{ if active, do: "active" }}" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{ gettext("People") }}
-                </a>
-              </UriActiveContext>
-              <div class="nav-dropdown dropdown-menu">
-                <UriActiveContext
-                  to={{ Routes.person_index_path(@socket, :index) }}
-                  :let={{ to: to, active: active }}
-                >
-                  <LiveRedirect to={{ to }} class="dropdown-item {{ if active, do: "active" }}">
-                    {{ gettext("List") }}
-                  </LiveRedirect>
-                </UriActiveContext>
-                <UriActiveContext
-                  to={{ Routes.person_create_path(@socket, :create)  }}
-                  :let={{ to: to, active: active }}
-                >
-                  <LiveRedirect to={{ to}} class="dropdown-item {{ if active, do: "active" }}">
-                    {{ gettext("New") }}
-                  </LiveRedirect>
-                </UriActiveContext>
-              </div>
-            </div>
+            <UriActiveContext
+              to={{ Routes.person_index_path(@socket, :index) }}
+              :let={{ to: to, active: active }}
+              opts={{ active: :inclusive }}
+            >
+              <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+                {{ gettext("People") }}
+              </LiveRedirect>
+            </UriActiveContext>
           </li>
           <li class="nav-item" :if={{ User.has_role?(auth, :tracer) or User.has_role?(auth, :supervisor) }}>
-            <div class="dropdown" id="cases" phx-update="ignore">
-              <UriActiveContext
-                to={{ Routes.case_index_path(@socket, :index) }}
-                :let={{ active: active }}
-                opts={{ active: :inclusive }}
-              >
-                <a class="nav-link {{ if active, do: "active" }}" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{ gettext("Cases") }}
-                </a>
-              </UriActiveContext>
-              <div class="nav-dropdown dropdown-menu">
-                <UriActiveContext
-                  to={{ Routes.case_index_path(@socket, :index) }}
-                  :let={{ to: to, active: active }}
-                >
-                  <LiveRedirect to={{ to }} class="dropdown-item {{ if active, do: "active" }}">
-                    {{ gettext("List") }}
-                  </LiveRedirect>
-                </UriActiveContext>
-                <UriActiveContext
-                  to={{ Routes.case_create_index_path(@socket, :create) }}
-                  :let={{ to: to, active: active }}
-                >
-                  <LiveRedirect to={{ to }} class="dropdown-item {{ if active, do: "active" }}">
-                    {{ gettext("New Index") }}
-                  </LiveRedirect>
-                </UriActiveContext>
-                <UriActiveContext
-                  to={{ Routes.case_create_possible_index_path(@socket, :create) }}
-                  :let={{ to: to, active: active }}
-                >
-                  <LiveRedirect to={{ to }} class="dropdown-item {{ if active, do: "active" }}">
-                    {{ gettext("New Possible Index") }}
-                  </LiveRedirect>
-                </UriActiveContext>
-              </div>
-            </div>
+            <UriActiveContext
+              to={{ Routes.case_index_path(@socket, :index) }}
+              :let={{ to: to, active: active }}
+              opts={{ active: :inclusive }}
+            >
+              <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+                {{ gettext("Cases") }}
+              </LiveRedirect>
+            </UriActiveContext>
           </li>
           <li class="nav-item" :if={{ User.has_role?(auth, :statistics_viewer) }}>
             <UriActiveContext

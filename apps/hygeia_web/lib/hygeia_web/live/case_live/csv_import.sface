@@ -1,21 +1,22 @@
-<div>
-  <h2>{{ gettext("Import from CSV") }}</h2>
+<div class="d-flex">
+  {{ live_component @socket, PhoenixLiveViewDropzone, file_data: @file, file_types: ["application/csv", "text/csv"], target: @myself, button_class: "btn btn-secondary", button_text: gettext("Import CSV") }}
 
-  <h3>{{ gettext("Constraints") }}</h3>
+  <button type="button" class="ml-1 btn btn-info" data-trigger="click" data-toggle="popover" data-content="
+    <dl>
+      <dt>{{ gettext("File Type") }}</dt>
+      <dd>{{ gettext(".csv") }}</dd>
 
-  <dl>
-    <dt>{{ gettext("File Type") }}</dt>
-    <dd>{{ gettext(".csv") }}</dd>
+      <dt>{{ gettext("Encoding") }}</dt>
+      <dd>{{ gettext("UTF-8") }}</dd>
 
-    <dt>{{ gettext("Encoding") }}</dt>
-    <dd>{{ gettext("UTF-8") }}</dd>
+      <dt>{{ gettext("Separator") }}</dt>
+      <dd>{{ gettext("Comma (,)") }}</dd>
 
-    <dt>{{ gettext("Separator") }}</dt>
-    <dd>{{ gettext("Comma (,)") }}</dd>
-
-    <dt>{{ gettext("Available Column Headers") }}</dt>
-    <dd>{{ gettext("The table headers from above except ID and Duplicate Check") }}</dd>
-  </dl>
-
-  {{ live_component @socket, PhoenixLiveViewDropzone, file_data: @file, file_types: ["application/csv", "text/csv"], target: @myself, button_class: "btn btn-secondary mb-3" }}
+      <dt>{{ gettext("Available Column Headers") }}</dt>
+      <dd>{{ gettext("Firstname, Lastname, Mobile Phone, Landline, Email, Tenant, Supervisor, Tracer") }}</dd>
+    </dl>
+  ">
+    <span class="oi oi-info mr-1" title={{ gettext("Info") }} aria-hidden="true"></span>
+    {{ gettext("Info") }}
+  </button>
 </div>

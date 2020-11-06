@@ -207,6 +207,23 @@ defmodule HygeiaWeb.CaseLive.Create do
     |> CreateSchema.validate_changeset()
   end
 
+  @spec remove_person(
+          changeset :: Ecto.Changeset.t(),
+          person_changeset_uuid :: String.t()
+        ) :: Ecto.Changeset.t()
+  def remove_person(changeset, person_changeset_uuid) do
+    changeset
+    |> Ecto.Changeset.put_embed(
+      :people,
+      changeset
+      |> Ecto.Changeset.get_change(:people, [])
+      |> Enum.reject(&match?(%Ecto.Changeset{changes: %{uuid: ^person_changeset_uuid}}, &1))
+    )
+    |> Map.put(:errors, [])
+    |> Map.put(:valid?, true)
+    |> CreateSchema.validate_changeset()
+  end
+
   @spec get_csv_key_mapping() :: map
   def get_csv_key_mapping,
     do: %{

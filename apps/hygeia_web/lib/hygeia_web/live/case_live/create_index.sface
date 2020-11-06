@@ -1,58 +1,76 @@
-<h1>{{ gettext("Create Index Cases") }}</h1>
+<div class="component-case-create-case">
+  <h1 class="container mb-4">{{ gettext("Create Index Cases") }}</h1>
 
-<Form 
-  for={{ @changeset }} 
-  change="validate" 
-  submit="save" 
-  opts={{ autocomplete: "off", id: "case-create-form", "phx-hook": "BlockNavigation" }}
->
-  <div class="row">
-    <div class="col-6">
-      <Field name={{ :default_tenant_uuid }} class="form-group">
-        <Label>{{ gettext("Default Tenant") }}</Label>
-        <Select 
-          class="form-control"
-          options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
-          opts={{ prompt: gettext("Select Tenant") }}
-        />
-        <FormError />
-      </Field>
+  <Form 
+    for={{ @changeset }} 
+    change="validate" 
+    submit="save" 
+    opts={{ autocomplete: "off", id: "case-create-form", "phx-hook": "BlockNavigation" }}
+  >
+    <div class="container mt-5">
+      <div class="row mb-2">
+        <div class="col">
+          <Field name={{ :default_tenant_uuid }} class="input-group">
+            <Label class="input-group-prepend mb-0">
+              <span class="input-group-text">
+                {{ gettext("Default Tenant") }}
+              </span>
+            </Label>
+            <Select 
+              class="form-control"
+              options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
+              opts={{ prompt: gettext("Select Tenant") }}
+            />
+            <FormError />
+          </Field>
+        </div>
+        <div class="col">
+          <HiddenInput field={{ :default_supervisor_uuid }} />
+
+          <Field name={{ :default_supervisor_uuid }} class="input-group">
+            <Label class="input-group-prepend mb-0">
+              <span class="input-group-text">
+                {{ gettext("Default Supervisor") }}
+              </span>
+            </Label>
+            <Select 
+              class="form-control"
+              options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+              opts={{ prompt: gettext("Default Supervisor") }}
+            />
+            <FormError />
+          </Field>
+        </div>
+        <div class="col">
+          <HiddenInput field={{ :default_tracer_uuid }} />
+
+          <Field name={{ :default_tracer_uuid }} class="input-group">
+            <Label class="input-group-prepend mb-0">
+              <span class="input-group-text">
+                {{ gettext("Default Tracer") }}
+              </span>
+            </Label>
+            <Select 
+              class="form-control"
+              options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+              opts={{ prompt: gettext("Default Tracer") }}
+            />
+            <FormError />
+          </Field>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <HiddenInput field={{ :default_supervisor_uuid }} />
 
-      <Field name={{ :default_supervisor_uuid }} class="form-group">
-        <Label>{{ gettext("Default Supervisor") }}</Label>
-        <Select 
-          class="form-control"
-          options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
-          opts={{ prompt: gettext("Default Supervisor") }}
-        />
-        <FormError />
-      </Field>
+    <div class="mx-auto person-table">
+      <HygeiaWeb.CaseLive.PersonCreateTable id="person-table" tenants={{ @tenants }} users={{ @users }} />
     </div>
-    <div class="col">
-      <HiddenInput field={{ :default_tracer_uuid }} />
 
-      <Field name={{ :default_tracer_uuid }} class="form-group">
-        <Label>{{ gettext("Default Tracer") }}</Label>
-        <Select 
-          class="form-control"
-          options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
-          opts={{ prompt: gettext("Default Tracer") }}
-        />
-        <FormError />
-      </Field>
+    <div class="container">
+      <HygeiaWeb.CaseLive.CSVImport id="csv-import" mapping={{ get_csv_key_mapping() }} />
+
+      <button class="btn btn-primary mt-5" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
+        {{ gettext("Save") }}
+      </button>
     </div>
-  </div>
-
-  <HygeiaWeb.CaseLive.PersonCreateTable id="person-table" tenants={{ @tenants }} users={{ @users }} />
-
-  <HygeiaWeb.CaseLive.CSVImport id="csv-import" mapping={{ get_csv_key_mapping() }} />
-
-  <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
-    {{ gettext("Save") }}
-  </button>
-</Form>
+  </Form>
+</div>

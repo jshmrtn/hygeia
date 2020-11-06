@@ -1,4 +1,4 @@
-<div class="component-person-base-data">
+<div class="component-person-base-data container">
   <HygeiaWeb.PersonLive.Header person={{@changeset}} id="header" />
 
   <LivePatch :if={{ @live_action == :show }} to={{ Routes.person_base_data_path(@socket, :edit, @person) }}>

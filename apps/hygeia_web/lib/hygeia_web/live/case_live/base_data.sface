@@ -1,4 +1,4 @@
-<div class="component-case-base-data">
+<div class="component-case-base-data container">
   <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
 
   <div class="card">

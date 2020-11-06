@@ -126,6 +126,13 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
     {:noreply, assign(socket, changeset: decline_duplicate(socket.assigns.changeset, uuid))}
   end
 
+  def handle_info({:remove_person, uuid}, socket) do
+    {:noreply,
+     assign(socket,
+       changeset: remove_person(socket.assigns.changeset, uuid)
+     )}
+  end
+
   def handle_info(_other, socket), do: {:noreply, socket}
 
   defp create_case({person, supervisor, tracer}) do

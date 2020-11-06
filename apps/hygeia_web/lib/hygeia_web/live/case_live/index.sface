@@ -1,10 +1,24 @@
-<div class="component-case-index">
+<div class="component-case-index container">
   <h1 class="mb-3">
     {{ gettext("Listing Cases") }}
   </h1>
 
   <div class="d-flex">
-    <div class="dropdown mt-3 mb-2" phx-update="ignore" id="filter-dropdown">
+    <LivePatch class="mr-2" to={{ Routes.case_create_index_path(@socket, :create) }}>
+      <button type="button" class="mb-2 mt-3 btn btn-primary">
+        <span class="oi oi-plus" aria-hidden="true"></span>
+        {{ gettext("New Index") }}
+      </button>
+    </LivePatch>
+
+    <LivePatch class="mr-2" to={{ Routes.case_create_possible_index_path(@socket, :create) }}>
+      <button type="button" class="mb-2 mt-3 btn btn-primary">
+        <span class="oi oi-plus" aria-hidden="true"></span>
+        {{ gettext("New Possible Index") }}
+      </button>
+    </LivePatch>
+
+    <div class="dropdown mt-3 mb-2 ml-auto" phx-update="ignore" id="filter-dropdown">
       <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="oi oi-cog" aria-hidden="true"></span>
         {{ gettext("Filter") }}
@@ -89,9 +103,11 @@
           </Link>
         </td>
         <td>
-          <LiveRedirect to={{ Routes.case_base_data_path(@socket, :show, case) }}>
-            <button class="btn btn-sm btn-secondary">{{ "Show" |> gettext }}</button>
-          </LiveRedirect>
+          <div class="d-flex justify-content-end w-100">
+            <LiveRedirect to={{ Routes.case_base_data_path(@socket, :show, case) }}>
+              <button class="ml-auto btn btn-sm btn-secondary">{{ "Show" |> gettext }}</button>
+            </LiveRedirect>
+          </div>
         </td>
       </tr>
       <tr :if={{ length(@cases) == 0 }}>

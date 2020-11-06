@@ -1,0 +1,14 @@
+.component-case-create-case {
+  .person-table {
+    overflow-x: auto;
+    max-width: 1750px;
+    padding-right: 3rem;
+    padding-left: 3rem;
+
+    @include media-breakpoint-down(lg) {
+      max-width: 100%;
+      padding-right: 0.375rem;
+      padding-left: 0.375rem;
+    }
+  }
+}

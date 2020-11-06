@@ -20,8 +20,8 @@ defmodule Hygeia.CaseContext.InfectionPlace do
   @type t :: empty
 
   embedded_schema do
-    field :known, :boolean
-    field :activity_mapping_executed, :boolean
+    field :known, :boolean, default: false
+    field :activity_mapping_executed, :boolean, default: false
     field :activity_mapping, :string
     # TODO: Make place an enum / relation
     field :type, :string

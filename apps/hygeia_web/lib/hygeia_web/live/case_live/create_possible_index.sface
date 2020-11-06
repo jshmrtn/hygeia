@@ -1,155 +1,204 @@
-<h1>{{ gettext("Create Possible Index Cases") }}</h1>
+<div class="component-case-create-case">
+  <h1 class="container mb-4">{{ gettext("Create Possible Index Cases") }}</h1>
 
-<Form 
-  for={{ @changeset }} 
-  change="validate" 
-  submit="save" 
-  opts={{ autocomplete: "off", id: "case-create-form", "phx-hook": "BlockNavigation" }}
->
-  <div class="row">
-    <div class="col-6">
-      <Field name={{ :default_tenant_uuid }} class="form-group">
-        <Label>{{ gettext("Default Tenant") }}</Label>
-        <Select 
-          class="form-control"
-          options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
-          opts={{ prompt: gettext("Select Tenant") }}
-        />
-        <FormError />
-      </Field>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <HiddenInput field={{ :default_supervisor_uuid }} />
+  <Form 
+    for={{ @changeset }}
+    change="validate"
+    submit="save"
+    opts={{ autocomplete: "off", id: "case-create-form", "phx-hook": "BlockNavigation" }}
+  >
+    <div class="container">
+      <div class="row mb-3">
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <Field name={{ :type }} class="form-group">
+                <Label>{{ gettext("Type") }}</Label>
+                <Select
+                  class="form-control"
+                  options={{ case_phase_possible_index_type_map() }}
+                  opts={{ prompt: gettext("Select Type") }}
+                />
+                <FormError />
+              </Field>
+              <Field name={{ :propagator_internal }} class="form-group">
+                <div class="btn-group btn-group-toggle btn-radio-group">
+                  <label class="input-group-text input-sm">{{ gettext("Propagator") }}:</label>
+                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil, do: "active" }}">
+                    <RadioButton value="" /> {{ gettext("No propagator") }}
+                  </label>
+                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == true, do: "active" }}">
+                    <RadioButton value="true" /> {{ gettext("Internal") }}
+                  </label>
+                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == false, do: "active" }}">
+                    <RadioButton value="false" /> {{ gettext("External") }}
+                  </label>
+                </div>
+                <FormError />
+              </Field>
+              <Field name={{ :propagator_ims_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
+                <Label>{{ gettext("Propagator IMS ID") }}</Label>
+                <TextInput class="form-control" />
+                <FormError />
+              </Field>
+              <Field name={{ :propagator_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}>
+                <Label>{{ gettext("Propagator Case UUID") }}</Label>
+                <!-- TODO: Select Pattern... -->
+                <TextInput class="form-control" />
+                <FormError />
+              </Field>
 
-      <Field name={{ :default_supervisor_uuid }} class="form-group">
-        <Label>{{ gettext("Default Supervisor") }}</Label>
-        <Select 
-          class="form-control"
-          options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
-          opts={{ prompt: gettext("Default Supervisor") }}
-        />
-        <FormError />
-      </Field>
-    </div>
-    <div class="col">
-      <HiddenInput field={{ :default_tracer_uuid }} />
-
-      <Field name={{ :default_tracer_uuid }} class="form-group">
-        <Label>{{ gettext("Default Tracer") }}</Label>
-        <Select 
-          class="form-control"
-          options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
-          opts={{ prompt: gettext("Default Tracer") }}
-        />
-        <FormError />
-      </Field>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-6">
-      <Field name={{ :type }} class="form-group">
-        <Label>{{ gettext("Type") }}</Label>
-        <Select 
-          class="form-control"
-          options={{ case_phase_possible_index_type_map() }}
-          opts={{ prompt: gettext("Select Type") }}
-        />
-        <FormError />
-      </Field>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-6">
-      <Field name={{ :propagator_internal }} class="form-group">
-        <Label>{{ gettext("Propagator Internal") }}</Label>
-        <label><RadioButton value="true" /> Yes</label>
-        <label><RadioButton value="false" /> No</label>
-        <FormError />
-      </Field>
-    </div>
-    <div class="col-6">
-      <Field name={{ :propagator_ims_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
-        <Label>{{ gettext("Propagator IMS ID") }}</Label>
-        <TextInput class="form-control" />
-        <FormError />
-      </Field>
-      <Field name={{ :propagator_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}>
-        <Label>{{ gettext("Propagator Case UUID") }}</Label>
-        <!-- TODO: Select Pattern... -->
-        <TextInput class="form-control" />
-        <FormError />
-      </Field>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6">
-      <Field name={{ :date }} class="form-group">
-        <Label>{{ gettext("Date") }}</Label>
-        <DateInput class="form-control" />
-        <FormError />
-      </Field>
-    </div>
-  </div>
-
-  <Inputs for={{ :infection_place }}>
-    <InputContext assigns={{ assigns }} :let={{ form: form }}>
-      <div class="row">
-        <div class="col-6">
-          <Field name={{ :known }} class="form-group">
-            <Label>{{ gettext("Known") }}</Label>
-            <RadioButton value="true" /> Yes
-            <RadioButton value="false" /> No
-            <FormError />
-          </Field>
-          <div :if={{ Ecto.Changeset.get_field(form.source, :known) == true }}>
-            <Field name={{ :activity_mapping_executed }} class="form-group">
-              <Label>{{ gettext("Activity Mapping Executed") }}</Label>
-              <RadioButton value="true" /> Yes
-              <RadioButton value="false" /> No
-              <FormError />
-            </Field>
-            <Field name={{ :activity_mapping }} class="form-group" :if={{ Ecto.Changeset.get_field(form.source, :activity_mapping_executed) == true }}>
-              <Label>{{ gettext("Activity Mapping") }}</Label>
-              <TextArea class="form-control" />
-              <FormError />
-            </Field>
-            <Field name={{ :type }} class="form-group">
-              <Label>{{ gettext("Type") }}</Label>
-              <!-- TODO: Make Type an enum -->
-              <TextInput class="form-control" />
-              <FormError />
-            </Field>
-            <Field name={{ :name }} class="form-group">
-              <Label>{{ gettext("Name") }}</Label>
-              <TextInput class="form-control" />
-              <FormError />
-            </Field>
-            <Field name={{ :flight_information }} class="form-group">
-              <Label>{{ gettext("Flight Information") }}</Label>
-              <TextInput class="form-control" />
-              <FormError />
-            </Field>
+              <Field name={{ :date }} class="form-group">
+                <Label>{{ gettext("Date") }}</Label>
+                <DateInput class="form-control" />
+                <FormError />
+              </Field>
+            </div>
           </div>
         </div>
-        <div class="col-6" :if={{ Ecto.Changeset.get_field(form.source, :known) == true }}>
-          <Inputs for={{ :address }}>
-            <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="infection-place-address" />
-          </Inputs>
+      </div>
+
+      <Inputs for={{ :infection_place }}>
+        <InputContext assigns={{ assigns }} :let={{ form: form }}>
+          <div class="row">
+            <div class="col">
+              <Field name={{ :known }} class="form-group">
+                <div class="btn-group btn-group-toggle btn-radio-group">
+                  <label class="input-group-text input-sm">{{ gettext("Infection place") }}:</label>
+                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :known) == true, do: "active" }}">
+                    <RadioButton value="true" /> {{ gettext("Known") }}
+                  </label>
+                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :known) == false, do: "active" }}">
+                    <RadioButton value="false" /> {{ gettext("Unknown") }}
+                  </label>
+                </div>
+                <FormError />
+              </Field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div :if={{ Ecto.Changeset.get_field(form.source, :known) == true }}>
+                <div class="card">
+                  <div class="card-body">
+                    <Field name={{ :activity_mapping_executed }} class="form-group">
+                      <div class="btn-group btn-group-toggle btn-radio-group">
+                        <label class="input-group-text input-sm">{{ gettext("Activity Mapping Executed") }}:</label>
+                        <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :activity_mapping_executed) == true, do: "active" }}">
+                          <RadioButton value="true" /> {{ gettext("Yes") }}
+                        </label>
+                        <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :activity_mapping_executed) == false, do: "active" }}">
+                          <RadioButton value="false" /> {{ gettext("No") }}
+                        </label>
+                      </div>
+                      <FormError />
+                    </Field>
+                    <Field name={{ :activity_mapping }} class="form-group" :if={{ Ecto.Changeset.get_field(form.source, :activity_mapping_executed) == true }}>
+                      <Label>{{ gettext("Activity Mapping") }}</Label>
+                      <TextArea class="form-control" />
+                      <FormError />
+                    </Field>
+                    <Field name={{ :type }} class="form-group">
+                      <Label>{{ gettext("Type") }}</Label>
+                      <!-- TODO: Make Type an enum -->
+                      <TextInput class="form-control" />
+                      <FormError />
+                    </Field>
+                    <Field name={{ :name }} class="form-group">
+                      <Label>{{ gettext("Name") }}</Label>
+                      <TextInput class="form-control" />
+                      <FormError />
+                    </Field>
+                    <Field name={{ :flight_information }} class="form-group">
+                      <Label>{{ gettext("Flight Information") }}</Label>
+                      <TextInput class="form-control" />
+                      <FormError />
+                    </Field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6" :if={{ Ecto.Changeset.get_field(form.source, :known) == true }}>
+              <div class="card">
+                <div class="card-body">
+                  <Inputs for={{ :address }}>
+                    <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="infection-place-address" />
+                  </Inputs>
+                </div>
+              </div>
+            </div>
+          </div>
+        </InputContext>
+      </Inputs>
+
+
+      TODO: Add Infection Place / Relation to Index
+    </div>
+
+    <div class="container mt-5">
+      <div class="row mb-2">
+        <div class="col">
+          <Field name={{ :default_tenant_uuid }} class="input-group">
+            <Label class="input-group-prepend mb-0">
+              <span class="input-group-text">
+                {{ gettext("Default Tenant") }}
+              </span>
+            </Label>
+            <Select 
+              class="form-control"
+              options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
+              opts={{ prompt: gettext("Select Tenant") }}
+            />
+            <FormError />
+          </Field>
+        </div>
+        <div class="col">
+          <HiddenInput field={{ :default_supervisor_uuid }} />
+
+          <Field name={{ :default_supervisor_uuid }} class="input-group">
+            <Label class="input-group-prepend mb-0">
+              <span class="input-group-text">
+                {{ gettext("Default Supervisor") }}
+              </span>
+            </Label>
+            <Select 
+              class="form-control"
+              options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+              opts={{ prompt: gettext("Default Supervisor") }}
+            />
+            <FormError />
+          </Field>
+        </div>
+        <div class="col">
+          <HiddenInput field={{ :default_tracer_uuid }} />
+
+          <Field name={{ :default_tracer_uuid }} class="input-group">
+            <Label class="input-group-prepend mb-0">
+              <span class="input-group-text">
+                {{ gettext("Default Tracer") }}
+              </span>
+            </Label>
+            <Select 
+              class="form-control"
+              options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+              opts={{ prompt: gettext("Default Tracer") }}
+            />
+            <FormError />
+          </Field>
         </div>
       </div>
-    </InputContext>
-  </Inputs>
+    </div>
 
-  TODO: Add Infection Place / Relation to Index
+    <div class="mx-auto person-table">
+      <HygeiaWeb.CaseLive.PersonCreateTable id="person-table" tenants={{ @tenants }} users={{ @users }} />
+    </div>
 
-  <HygeiaWeb.CaseLive.PersonCreateTable id="person-table" tenants={{ @tenants }} users={{ @users }} />
+    <div class="container">
+      <HygeiaWeb.CaseLive.CSVImport id="csv-import" mapping={{ get_csv_key_mapping() }} />
 
-  <HygeiaWeb.CaseLive.CSVImport id="csv-import" mapping={{ get_csv_key_mapping() }} />
-
-  <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
-    {{ gettext("Save") }}
-  </button>
-</Form>
+      <button class="btn btn-primary mt-5" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
+        {{ gettext("Save") }}
+      </button>
+    </div>
+  </Form>
+</div>

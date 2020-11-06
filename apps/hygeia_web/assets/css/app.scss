@@ -71,5 +71,26 @@ a:hover {
   }
 }
 
+.table.no-end-padding {
+  th:first-child,
+  td:first-child {
+    padding-left: 0;
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: 0;
+  }
+}
+
+.no-autofill-background {
+  &:-webkit-autofill,
+  input:-webkit-autofill {
+    color: inherit !important;
+    transition-delay: 1e9s;
+    transition-property: background-color;
+  }
+}
+
 @import "./mixins.scss";
 @import "../../lib/**/*.scss";

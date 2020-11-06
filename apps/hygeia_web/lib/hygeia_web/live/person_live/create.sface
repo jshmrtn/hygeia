@@ -1,8 +1,8 @@
-<Form 
+<Form
   for={{ @changeset }} 
   change="validate" 
   submit="save" 
-  opts={{ autocomplete: "off", id: "person-form" }}
+  opts={{ autocomplete: "off", id: "person-form", class: "container" }}
 >
   <h1 class="mb-4">{{ gettext("New person") }}</h1>
 

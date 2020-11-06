@@ -25,6 +25,13 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
     {:noreply, assign(socket, suspected_duplicate_changeset_uuid: uuid)}
   end
 
+  @impl Phoenix.LiveComponent
+  def handle_event("remove_person", %{"changeset-uuid" => uuid}, socket) do
+    send(self(), {:remove_person, uuid})
+
+    {:noreply, socket}
+  end
+
   def handle_event(
         "select_accepted_duplicate",
         %{"person-uuid" => duplicate_uuid},

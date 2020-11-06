@@ -13,6 +13,7 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Surface.Components.Form.FieldContext
   alias Surface.Components.Form.MultipleSelect
   alias Surface.Components.Link
+  alias Surface.Components.LivePatch
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView

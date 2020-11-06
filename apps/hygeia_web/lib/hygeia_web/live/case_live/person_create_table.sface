@@ -1,67 +1,61 @@
-<table class="table">
+<div class="component-case-person-create-table mb-2">
+  <table class="table table-responsive table-sm no-autofill-background">
     <thead>
       <tr>
-        <th scope="col">{{ gettext("ID") }}</th>
         <th scope="col">{{ gettext("Firstname") }}</th>
         <th scope="col">{{ gettext("Lastname") }}</th>
         <th scope="col">{{ gettext("Mobile Phone") }}</th>
         <th scope="col">{{ gettext("Landline") }}</th>
         <th scope="col">{{ gettext("Email") }}</th>
-        <th scope="col">{{ gettext("Tenant") }}</th>
+        <th scope="col" class="table-col-border">{{ gettext("Tenant") }}</th>
         <th scope="col">{{ gettext("Supervisor") }}</th>
         <th scope="col">{{ gettext("Tracer") }}</th>
-        <th scope="col">{{ gettext("Duplicate Check") }}</th>
+        <th scope="col" class="actions-col"></th>
       </tr>
     </thead>
     <Inputs for={{ :people }}>
       <InputContext assigns={{ assigns }} :let={{ form: form }}>
-        <tr>
+        <tr class={{ if form.source.changes[:accepted_duplicate] == true, do: "duplicate-accepted" }}>
           <td>
             <HiddenInput field={{ :uuid }} />
             <HiddenInput field={{ :accepted_duplicate_human_readable_id }} />
-            <Field name={{ :accepted_duplicate_human_readable_id }} class="form-group">
-              <TextInput field={{ :accepted_duplicate_human_readable_id }} class="form-control" opts={{ disabled: true }} />
-              <FormError />
-            </Field>
-          </td>
-          <td>
             <HiddenInput field={{ :first_name }} />
-            <Field name={{ :first_name }} class="form-group">
+            <Field class="fill-cell" name={{ :first_name }}>
               <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
               <FormError />
             </Field>
           </td>
           <td>
             <HiddenInput field={{ :last_name }} />
-            <Field name={{ :last_name }} class="form-group">
+            <Field class="fill-cell" name={{ :last_name }}>
               <TextInput field={{ :last_name }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
               <FormError />
             </Field>
           </td>
           <td>
             <HiddenInput field={{ :mobile }} />
-            <Field name={{ :mobile }} class="form-group">
+            <Field class="fill-cell" name={{ :mobile }}>
               <TextInput field={{ :mobile }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
               <FormError />
             </Field>
           </td>
           <td>
             <HiddenInput field={{ :landline }} />
-            <Field name={{ :landline }} class="form-group">
+            <Field class="fill-cell" name={{ :landline }}>
               <TextInput field={{ :landline }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
               <FormError />
             </Field>
           </td>
           <td>
             <HiddenInput field={{ :email }} />
-            <Field name={{ :email }} class="form-group">
+            <Field class="fill-cell" name={{ :email }}>
               <TextInput field={{ :email }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
               <FormError />
             </Field>
           </td>
-          <td>
+          <td class="table-col-border">
             <HiddenInput field={{ :tenant_uuid }} />
-            <Field name={{ :tenant_uuid }} class="form-group">
+            <Field class="fill-cell" name={{ :tenant_uuid }}>
               <Select 
                 class="form-control"
                 options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
@@ -72,7 +66,7 @@
           </td>
           <td>
             <HiddenInput field={{ :supervisor_uuid }} />
-            <Field name={{ :supervisor_uuid }} class="form-group">
+            <Field class="fill-cell" name={{ :supervisor_uuid }}>
               <Select 
                 class="form-control"
                 options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
@@ -83,7 +77,7 @@
           </td>
           <td>
             <HiddenInput field={{ :tracer_uuid }} />
-            <Field name={{ :supervistracer_uuidor_uuid }} class="form-group">
+            <Field class="fill-cell" name={{ :supervistracer_uuidor_uuid }}>
               <Select 
                 class="form-control"
                 options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
@@ -97,19 +91,22 @@
             <HiddenInput field={{ :accepted_duplicate }} />
             <HiddenInput field={{ :accepted_duplicate_uuid }} />
 
-            <div :if={{ not(form.source.changes[:suspected_duplicates_uuid] in [[], nil]) and form.source.changes[:accepted_duplicate] == nil }}>
+            <div class="d-flex justify-content-end p-1">
               <button
+                :if={{ not(form.source.changes[:suspected_duplicates_uuid] in [[], nil]) and form.source.changes[:accepted_duplicate] != true }}
+                class="btn btn-secondary btn-sm"
                 type="button"
                 phx-value-changeset-uuid={{ form.source.changes[:uuid] }}
                 phx-click="check_duplicate"
                 phx-target={{ @myself }}
+                title={{ gettext("Check Duplicates") }}
               >
-                Check Duplicate
+                <span class="oi oi-person" title={{ gettext("Edit") }} aria-hidden="true"></span>
               </button>
 
               <HygeiaWeb.Modal
                 :if={{ not(is_nil(@suspected_duplicate_changeset_uuid)) and @suspected_duplicate_changeset_uuid == form.source.changes[:uuid]}}
-                title={{ gettext("Conflict Reolution") }}
+                title={{ gettext("Conflict Resolution") }}
                 id={{ "modal" }}
                 return_to={{ Routes.case_create_index_path(@socket, :create) }}
               >
@@ -138,9 +135,22 @@
                   </li>
                 </ul>
               </HygeiaWeb.Modal>
+
+              <button
+                :if={{ Map.drop(form.source.changes,[:uuid]) != %{} }}
+                class="ml-1 btn btn-secondary btn-sm btn-danger"
+                type="button"
+                phx-value-changeset-uuid={{ form.source.changes[:uuid] }}
+                phx-click="remove_person"
+                phx-target={{ @myself }}
+                title={{ gettext("Remove") }}
+              >
+                <span class="oi oi-trash" aria-hidden="true"></span>
+              </button>
             </div>
           </td>
         </tr>
       </InputContext>
     </Inputs>
   </table>
+</div>
