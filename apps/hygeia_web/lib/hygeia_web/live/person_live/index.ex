@@ -11,6 +11,7 @@ defmodule HygeiaWeb.PersonLive.Index do
 
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
+  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
@@ -39,9 +40,8 @@ defmodule HygeiaWeb.PersonLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("filter", _filter, socket) do
-    # TODO: implement filter
-    {:noreply, socket}
+  def handle_event("filter", params, socket) do
+    {:noreply, socket |> assign(filters: params["filter"] || %{}) |> list_people()}
   end
 
   @impl Phoenix.LiveView
@@ -59,6 +59,11 @@ defmodule HygeiaWeb.PersonLive.Index do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
+  @allowed_filter_fields %{
+    "country" => :country,
+    "subdivision" => :subdivision
+  }
+
   defp list_people(socket) do
     %Paginator.Page{entries: entries, metadata: metadata} =
       socket.assigns.filters
@@ -70,8 +75,20 @@ defmodule HygeiaWeb.PersonLive.Index do
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
       |> Enum.reduce(CaseContext.list_people_query(), fn
-        {key, value}, query when is_list(value) ->
+        {_key, value}, query when value in ["", nil] ->
+          query
+
+        {:country, value}, query ->
+          where(query, [person], fragment("?->'country'", person.address) == ^value)
+
+        {:subdivision, value}, query ->
+          where(query, [person], fragment("?->'subdivision'", person.address) == ^value)
+
+        {key, [_ | _] = value}, query when is_list(value) ->
           where(query, [person], field(person, ^key) in ^value)
+
+        {key, value}, query ->
+          where(query, [person], field(person, ^key) == ^value)
       end)
       |> Repo.paginate(
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: [inserted_at: :asc])

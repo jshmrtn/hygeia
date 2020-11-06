@@ -18,14 +18,14 @@
       </button>
     </LivePatch>
 
-    <div class="dropdown mt-3 mb-2 ml-auto" phx-update="ignore" id="filter-dropdown">
+    <div class="dropdown mt-3 mb-2 ml-auto" id="filter-dropdown">
       <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="oi oi-cog" aria-hidden="true"></span>
         {{ gettext("Filter") }}
       </button>
       <div class="dropdown-menu p-3 filter-dropdown" onclick="event.stopPropagation()">
         <h4>{{ gettext("Filter") }}</h4>
-        <Form for={{ :filter }} change="filter" submit="filter" opts={{ autocomplete: "off", id: "filter-form", as: :filter }}>
+        <Form for={{ @filters }} change="filter" submit="filter" opts={{ autocomplete: "off", id: "filter-form", as: :filter }}>
           <div class="form-group">
             <label class="d-block">{{ gettext("Status") }}</label>
             <FieldContext name={{ :status }}>
