@@ -66,6 +66,11 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   end
 
   def handle_event("validate", %{"case" => case_params}, socket) do
+    case_params =
+      case_params
+      |> Map.put_new("hospitalizations", [])
+      |> Map.put_new("external_references", [])
+
     {:noreply,
      socket
      |> assign(:changeset, %{
@@ -76,6 +81,11 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   end
 
   def handle_event("save", %{"case" => case_params}, socket) do
+    case_params =
+      case_params
+      |> Map.put_new("hospitalizations", [])
+      |> Map.put_new("external_references", [])
+
     socket.assigns.case
     |> CaseContext.update_case(case_params)
     |> case do
@@ -128,8 +138,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   end
 
   def handle_event("remove_hospitalization", %{"changeset-uuid" => uuid}, socket) do
-    # TODO: bug, last item cannot be removed
-
     hospitalizations =
       socket.assigns.changeset
       |> Ecto.Changeset.get_field(:hospitalizations, [])

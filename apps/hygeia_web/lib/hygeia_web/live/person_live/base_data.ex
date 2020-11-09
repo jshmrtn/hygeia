@@ -74,6 +74,12 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   end
 
   def handle_event("validate", %{"person" => person_params}, socket) do
+    person_params =
+      person_params
+      |> Map.put_new("employers", [])
+      |> Map.put_new("contact_methods", [])
+      |> Map.put_new("external_references", [])
+
     {:noreply,
      socket
      |> assign(:changeset, %{
@@ -133,6 +139,12 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   end
 
   def handle_event("save", %{"person" => person_params}, socket) do
+    person_params =
+      person_params
+      |> Map.put_new("employers", [])
+      |> Map.put_new("contact_methods", [])
+      |> Map.put_new("external_references", [])
+
     socket.assigns.person
     |> CaseContext.update_person(person_params)
     |> case do
