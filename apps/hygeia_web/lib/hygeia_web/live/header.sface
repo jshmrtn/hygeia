@@ -35,10 +35,47 @@
               </LiveRedirect>
             </UriActiveContext>
           </li>
-          <li class="nav-item" :if={{ User.has_role?(auth, :webmaster) }}>
-            <Link to={{ Routes.live_dashboard_path(@socket, :home) }} class="nav-link">
-              {{ gettext("Phoenix Dashboard") }}
-            </Link>
+          <li class="nav-item dropdown" phx-update="ignore" id="nav-ignore">
+            <a
+              class="nav-link dropdown-toggle"
+              data-toggle="dropdown"
+              href="#"
+              role="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              {{ gettext("More") }}
+            </a>
+            <div class="dropdown-menu">
+              <Link
+                to={{ Routes.live_dashboard_path(@socket, :home) }}
+                class="dropdown-item"
+                :if={{ User.has_role?(auth, :webmaster) }}
+              >
+                {{ gettext("Phoenix Dashboard") }}
+              </Link>
+              <Link
+                to={{ Routes.user_index_path(@socket, :index) }}
+                class="dropdown-item"
+                :if={{ authorized?(Hygeia.UserContext.User, :list, auth) }}
+              >
+                {{ gettext("Users") }}
+              </Link>
+              <Link
+                to={{ Routes.tenant_index_path(@socket, :index) }}
+                class="dropdown-item"
+                :if={{ authorized?(Hygeia.TenantContext.Tenant, :list, auth) }}
+              >
+                {{ gettext("Tenants") }}
+              </Link>
+              <Link
+                to={{ Routes.profession_index_path(@socket, :index) }}
+                class="dropdown-item"
+                :if={{ authorized?(Hygeia.CaseContext.Profession, :list, auth) }}
+              >
+                {{ gettext("Professions") }}
+              </Link>
+            </div>
           </li>
         </ul>
         <div class="nav nav-pills">

@@ -54,4 +54,20 @@ defmodule Hygeia.UserContext.User do
 
   @spec has_role?(user :: t, role :: Role.t()) :: boolean
   def has_role?(%__MODULE__{roles: roles}, role) when role in @role_map, do: role in roles
+
+  defimpl Hygeia.Authorization.Resource do
+    @spec authorized?(
+            resource :: User.t(),
+            action :: :list | :details,
+            user :: :anonymous | User.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(_resource_user, action, :anonymous, _meta)
+        when action in [:list, :details],
+        do: false
+
+    def authorized?(_resource_user, action, _user, _meta)
+        when action in [:list, :details],
+        do: true
+  end
 end
