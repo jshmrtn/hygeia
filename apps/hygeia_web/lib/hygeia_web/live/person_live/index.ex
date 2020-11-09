@@ -23,6 +23,15 @@ defmodule HygeiaWeb.PersonLive.Index do
   def mount(params, session, socket) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "people")
 
+    socket =
+      if authorized?(Person, :list, get_auth(socket)) do
+        socket
+      else
+        socket
+        |> push_redirect(to: Routes.page_path(socket, :index))
+        |> put_flash(:error, gettext("You are not authorized to do this action."))
+      end
+
     pagination_params =
       case params do
         %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]

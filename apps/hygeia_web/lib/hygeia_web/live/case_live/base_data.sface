@@ -111,6 +111,7 @@
             </div>
             <div class="card-body form-grid">
               <Inputs for={{ :phases }}>
+                <HiddenInput field={{ :uuid }} />
                 <div class="card">
                   <div class="card-body">
                     <InputContext assigns={{ assigns }} :let={{ form: form }}>
@@ -202,48 +203,48 @@
                   <div class="col">
                     <div class="form-group">
                       <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                        <Label>{{ gettext("Reasons for PCR test") }}</Label>
-                        <label
-                          :for={{ {name, key} <- pcr_test_reasons() }}
-                          class="d-block checkbox-label"
-                          data-disabled={{ @live_action == :show }}
-                        >
-                          <input
-                            type="checkbox"
-                            name={{ input_name(form, :reasons_for_pcr_test) <> "[]" }}
-                            disabled={{ @live_action == :show }}
-                            checked={{ key in (Ecto.Changeset.get_field(form.source, :reasons_for_pcr_test, []) || []) }}
-                            value={{ key }}
-                          />
-                          {{ name }}
-                        </label>
-                        <Context set={{ Surface.Components.Form, field: :reasons_for_pcr_test }}>
+                        <Field name={{ :reasons_for_pcr_test }}>
+                          <Label>{{ gettext("Reasons for PCR test") }}</Label>
+                          <label
+                            :for={{ {name, key} <- pcr_test_reasons() }}
+                            class="d-block checkbox-label"
+                            data-disabled={{ @live_action == :show }}
+                          >
+                            <input
+                              type="checkbox"
+                              name={{ input_name(form, :reasons_for_pcr_test) <> "[]" }}
+                              disabled={{ @live_action == :show }}
+                              checked={{ key in (Ecto.Changeset.get_field(form.source, :reasons_for_pcr_test, []) || []) }}
+                              value={{ key }}
+                            />
+                            {{ name }}
+                          </label>
                           <FormError />
-                        </Context>
+                        </Field>
                       </InputContext>
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-group">
                       <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                        <Label>{{ gettext("Symptoms") }}</Label>
-                        <label
-                          :for={{ {name, key} <- symptoms() }}
-                          class="d-block checkbox-label"
-                          data-disabled={{ @live_action == :show }}
-                        >
-                          <input
-                            type="checkbox"
-                            name={{ input_name(form, :symptoms) <> "[]" }}
-                            disabled={{ @live_action == :show }}
-                            checked={{ key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || []) }}
-                            value={{ key }}
-                          />
-                          {{ name }}
-                        </label>
-                        <Context set={{ Surface.Components.Form, field: :symptoms }}>
+                        <Field name={{ :symptoms }}>
+                          <Label>{{ gettext("Symptoms") }}</Label>
+                          <label
+                            :for={{ {name, key} <- symptoms() }}
+                            class="d-block checkbox-label"
+                            data-disabled={{ @live_action == :show }}
+                          >
+                            <input
+                              type="checkbox"
+                              name={{ input_name(form, :symptoms) <> "[]" }}
+                              disabled={{ @live_action == :show }}
+                              checked={{ key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || []) }}
+                              value={{ key }}
+                            />
+                            {{ name }}
+                          </label>
                           <FormError />
-                        </Context>
+                        </Field>
                       </InputContext>
                     </div>
                   </div>
@@ -299,8 +300,6 @@
                 disabled={{ @live_action == :show }}
                 source={{ @case }}
                 id="monitoring"
-                add_monitoring="add_monitoring"
-                remove_monitoring="remove_monitoring"
               />
             </div>
           </div>

@@ -149,4 +149,23 @@ defmodule Hygeia.CaseContext.Case do
       _other -> changeset
     end
   end
+
+  defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Case
+    alias Hygeia.UserContext.User
+
+    @spec authorized?(
+            resource :: Case.t(),
+            action :: :details | :create | :list | :update | :delete,
+            user :: :anonymous | User.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(_case, action, :anonymous, _meta)
+        when action in [:list, :create, :details, :update, :delete],
+        do: false
+
+    def authorized?(_case, action, %User{roles: roles}, _meta)
+        when action in [:list, :create, :details, :update, :delete],
+        do: :tracer in roles or :supervisor in roles or :admin in roles
+  end
 end

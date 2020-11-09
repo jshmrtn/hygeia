@@ -1,180 +1,185 @@
 <div class="component-person-base-data container">
-  <HygeiaWeb.PersonLive.Header person={{@changeset}} id="header" />
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <HygeiaWeb.PersonLive.Header person={{@changeset}} id="header" />
 
-  <LivePatch :if={{ @live_action == :show }} to={{ Routes.person_base_data_path(@socket, :edit, @person) }}>
-    <button class="btn btn-primary mb-3" id="person-edit">
-      <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
-      {{ gettext("Edit") }}
-    </button>
-  </LivePatch>
-
-  <Form 
-    for={{ @changeset }} 
-    change="validate" 
-    submit="save" 
-    opts={{ autocomplete: "off", id: "person-form", "phx-hook": "BlockNavigation" }}
-  >
-    <div class="mb-3" :if={{ @live_action == :edit }}>
-      <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
-        <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
-        {{ gettext("Save") }}
+    <LivePatch
+      :if={{ @live_action == :show and authorized?(@person, :update, auth) }}
+      to={{ Routes.person_base_data_path(@socket, :edit, @person) }}
+    >
+      <button class="btn btn-primary mb-3" id="person-edit">
+        <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+        {{ gettext("Edit") }}
       </button>
-      <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
-        <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
-        {{ gettext("Discard") }}
-      </button>
-    </div>
-    
-    <div class="form-grid">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">{{ gettext("Base Data") }}</h4>
+    </LivePatch>
 
-          <Field name={{ :tenant_uuid }} class="form-group">
-            <Label>{{ "Tenant" |> gettext }}</Label>
-            <Select class="form-control" opts={{ prompt: gettext("Select tenant"), disabled: @live_action == :show }} field={{ :tenant_uuid }} options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }} />
-            <FormError />
-          </Field>
-
-          <div class="row">
-            <div class="col">
-              <Field name={{ :first_name }} class="form-group">
-                <Label>{{ "First Name" |> gettext }}</Label>
-                <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: @live_action == :show }} />
-                <FormError />
-              </Field>
-            </div>
-            <div class="col">
-              <Field name={{ :last_name }} class="form-group">
-                <Label>{{ "Last Name" |> gettext }}</Label>
-                <TextInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :last_name }}/>
-                <FormError />
-              </Field>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <Field name={{ :sex }} class="form-group">
-                <Label>{{ "Sex" |> gettext }}</Label>
-                <Select opts={{ disabled: @live_action == :show }} class="form-control" field={{ :sex }} options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }} />
-                <FormError />
-              </Field>
-            </div>
-            <div class="col">
-              <Field name={{ :birth_date }} class="form-group">
-                <Label>{{ "Birth Date" |> gettext }}</Label>
-                <DateInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :birth_date }}/>
-                <FormError />
-              </Field>
-            </div>
-          </div>
-        </div>
+    <Form 
+      for={{ @changeset }} 
+      change="validate" 
+      submit="save" 
+      opts={{ autocomplete: "off", id: "person-form", "phx-hook": "BlockNavigation" }}
+    >
+      <div class="mb-3" :if={{ @live_action == :edit }}>
+        <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
+          <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+          {{ gettext("Save") }}
+        </button>
+        <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
+          <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+          {{ gettext("Discard") }}
+        </button>
       </div>
+      
+      <div class="form-grid">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{ gettext("Base Data") }}</h4>
 
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">{{ gettext("References") }}</h4>
+            <Field name={{ :tenant_uuid }} class="form-group">
+              <Label>{{ "Tenant" |> gettext }}</Label>
+              <Select class="form-control" opts={{ prompt: gettext("Select tenant"), disabled: @live_action == :show }} field={{ :tenant_uuid }} options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }} />
+              <FormError />
+            </Field>
 
-          <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @person }} id="references" add_external_reference="add_external_reference" />
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">{{ gettext("Address") }}</h4>
-
-          <Inputs for={{ :address }}>
-            <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address" />
-          </Inputs>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">{{ gettext("Contact Methods") }}</h4>
-          
-          <div class="contact-method-grid">
-            <h6>{{ gettext("Type") }}</h6>
-            <h6>{{ gettext("Value") }}</h6>
-            <h6>{{ gettext("Comment") }}</h6>
-
-            <Inputs for={{ :contact_methods }}>
-              <Field name={{ :type }}>
-                <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }} field={{ :type }} options={{ contact_method_options() }} />
-                <FormError />
-              </Field>
-              <Field name={{ :value }}>
-                <TextInput class="form-control" field={{ :value }} opts={{ disabled: @live_action == :show }} />
-                <FormError />
-              </Field>
-              <Field name={{ :comment }}>
-                <TextInput class="form-control" field={{ :comment }} opts={{ disabled: @live_action == :show }} />
-                <FormError />
-              </Field>
-            </Inputs>
-
-            <div class="add-button mt-2" :if={{ @live_action == :edit }}>
-              <button type="button" class="btn btn-secondary" :on-click="add_contact_method">
-                <span class="oi oi-plus" aria-hidden="true"></span>
-                {{ gettext("New contact method") }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card employment">
-        <div class="card-body">
-          <h4 class="card-title">{{ gettext("Employment") }}</h4>
-
-          <div class="row">
-            <div class="col">
-              <Field name={{ :profession_uuid }} class="form-group">
-                <Label>{{ "Profession" |> gettext }}</Label>
-                <Select  class="form-control" opts={{ prompt: gettext("Choose profession"), disabled: @live_action == :show }} field={{ :profession_uuid }} options={{ Enum.map(@professions, &({&1.name, &1.uuid})) }} />
-                <FormError />
-              </Field>
-            </div>
-          </div>
-
-          <div class="employment-grid mb-3">
-            <Inputs for={{ :employers }}>
-              <div class="card">
-                <div class="card-body">
-                  <Field name={{ :name }} class="form-group">
-                    <Label>{{ gettext("Name") }}</Label>
-                    <TextInput class="form-control" field={{ :name }} opts={{ disabled: @live_action == :show }} />
-                    <FormError />
-                  </Field>
-
-                  <Inputs for={{ :address }}>
-                    <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="addredd-form" />
-                  </Inputs>
-                </div>
+            <div class="row">
+              <div class="col">
+                <Field name={{ :first_name }} class="form-group">
+                  <Label>{{ "First Name" |> gettext }}</Label>
+                  <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: @live_action == :show }} />
+                  <FormError />
+                </Field>
               </div>
+              <div class="col">
+                <Field name={{ :last_name }} class="form-group">
+                  <Label>{{ "Last Name" |> gettext }}</Label>
+                  <TextInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :last_name }}/>
+                  <FormError />
+                </Field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <Field name={{ :sex }} class="form-group">
+                  <Label>{{ "Sex" |> gettext }}</Label>
+                  <Select opts={{ disabled: @live_action == :show }} class="form-control" field={{ :sex }} options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }} />
+                  <FormError />
+                </Field>
+              </div>
+              <div class="col">
+                <Field name={{ :birth_date }} class="form-group">
+                  <Label>{{ "Birth Date" |> gettext }}</Label>
+                  <DateInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :birth_date }}/>
+                  <FormError />
+                </Field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{ gettext("References") }}</h4>
+
+            <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @person }} id="references" add_external_reference="add_external_reference" />
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{ gettext("Address") }}</h4>
+
+            <Inputs for={{ :address }}>
+              <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address" />
             </Inputs>
           </div>
+        </div>
 
-          <button :if={{ @live_action == :edit }} type="button" class="btn btn-secondary" :on-click="add_employer">
-            <span class="oi oi-plus" aria-hidden="true"></span>
-            {{ gettext("New employment") }}
-          </button>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{ gettext("Contact Methods") }}</h4>
+            
+            <div class="contact-method-grid">
+              <h6>{{ gettext("Type") }}</h6>
+              <h6>{{ gettext("Value") }}</h6>
+              <h6>{{ gettext("Comment") }}</h6>
+
+              <Inputs for={{ :contact_methods }}>
+                <Field name={{ :type }}>
+                  <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }} field={{ :type }} options={{ contact_method_options() }} />
+                  <FormError />
+                </Field>
+                <Field name={{ :value }}>
+                  <TextInput class="form-control" field={{ :value }} opts={{ disabled: @live_action == :show }} />
+                  <FormError />
+                </Field>
+                <Field name={{ :comment }}>
+                  <TextInput class="form-control" field={{ :comment }} opts={{ disabled: @live_action == :show }} />
+                  <FormError />
+                </Field>
+              </Inputs>
+
+              <div class="add-button mt-2" :if={{ @live_action == :edit }}>
+                <button type="button" class="btn btn-secondary" :on-click="add_contact_method">
+                  <span class="oi oi-plus" aria-hidden="true"></span>
+                  {{ gettext("New contact method") }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card employment">
+          <div class="card-body">
+            <h4 class="card-title">{{ gettext("Employment") }}</h4>
+
+            <div class="row">
+              <div class="col">
+                <Field name={{ :profession_uuid }} class="form-group">
+                  <Label>{{ "Profession" |> gettext }}</Label>
+                  <Select  class="form-control" opts={{ prompt: gettext("Choose profession"), disabled: @live_action == :show }} field={{ :profession_uuid }} options={{ Enum.map(@professions, &({&1.name, &1.uuid})) }} />
+                  <FormError />
+                </Field>
+              </div>
+            </div>
+
+            <div class="employment-grid mb-3">
+              <Inputs for={{ :employers }}>
+                <div class="card">
+                  <div class="card-body">
+                    <Field name={{ :name }} class="form-group">
+                      <Label>{{ gettext("Name") }}</Label>
+                      <TextInput class="form-control" field={{ :name }} opts={{ disabled: @live_action == :show }} />
+                      <FormError />
+                    </Field>
+
+                    <Inputs for={{ :address }}>
+                      <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="addredd-form" />
+                    </Inputs>
+                  </div>
+                </div>
+              </Inputs>
+            </div>
+
+            <button :if={{ @live_action == :edit }} type="button" class="btn btn-secondary" :on-click="add_employer">
+              <span class="oi oi-plus" aria-hidden="true"></span>
+              {{ gettext("New employment") }}
+            </button>
+          </div>
         </div>
       </div>
+    </Form>
+
+    <div :if={{ @person.positions != [] }}>
+      <h2>{{ gettext("Organisation Positions") }}</h2>
+
+      <ul>
+        <li :for={{ position <- @person.positions }}>
+          {{ position.position }} -
+          <Link to={{ Routes.organisation_show_path(@socket, :show, position.organisation) }}>
+            {{ position.organisation.name }}
+          </Link>
+        </li>
+      </ul>
     </div>
-  </Form>
-
-  <div :if={{ @person.positions != [] }}>
-    <h2>{{ gettext("Organisation Positions") }}</h2>
-
-    <ul>
-      <li :for={{ position <- @person.positions }}>
-        {{ position.position }} -
-        <Link to={{ Routes.organisation_show_path(@socket, :show, position.organisation) }}>
-          {{ position.organisation.name }}
-        </Link>
-      </li>
-    </ul>
-  </div>
+  </Context>
 </div>

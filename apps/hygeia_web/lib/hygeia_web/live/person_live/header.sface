@@ -1,30 +1,39 @@
 <div class="component-person-header mb-4">
-  <h1 class="mb-4">
-    {{ @person_display_name }}
-  </h1>
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <h1 class="mb-4">
+      {{ @person_display_name }}
+    </h1>
 
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <UriActiveContext
-        to={{ Routes.person_base_data_path(@socket, :show, @person) }}
-        :let={{ to: to, active: active }}
-        opts={{ active: :inclusive }}
+    <ul class="nav nav-tabs">
+      <li
+        class="nav-item"
+        :if={{ authorized?(@person, :details, auth) }}
       >
-        <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
-          {{ gettext("Base Data") }}
-        </LiveRedirect>
-      </UriActiveContext>
-    </li>
-    <li class="nav-item" :for={{ case <- @person.cases }}>
-      <UriActiveContext
-        to={{ Routes.case_base_data_path(@socket, :show, case) }}
-        :let={{ to: to, active: active }}
-        opts={{ active: :inclusive }}
+        <UriActiveContext
+          to={{ Routes.person_base_data_path(@socket, :show, @person) }}
+          :let={{ to: to, active: active }}
+          opts={{ active: :inclusive }}
+        >
+          <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+            {{ gettext("Base Data") }}
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li
+        class="nav-item"
+        :for={{ case <- @person.cases }}
+        :if={{ authorized?(case, :details, auth) }}
       >
-        <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
-          {{ case_phase_type_translation(List.last(case.phases)) }} <span class="date ml-2">{{ case_display_date(case) }}</span>
-        </LiveRedirect>
-      </UriActiveContext>
-    </li>
-  </ul>
+        <UriActiveContext
+          to={{ Routes.case_base_data_path(@socket, :show, case) }}
+          :let={{ to: to, active: active }}
+          opts={{ active: :inclusive }}
+        >
+          <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+            {{ case_phase_type_translation(List.last(case.phases)) }} <span class="date ml-2">{{ case_display_date(case) }}</span>
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+    </ul>
+  </Context>
 </div>

@@ -6,7 +6,6 @@ defmodule HygeiaWeb.CaseLive.Transmissions do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.Repo
-  alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id} = params, uri, socket) do

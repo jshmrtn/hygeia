@@ -20,6 +20,15 @@ defmodule HygeiaWeb.PersonLive.Create do
   def mount(params, session, socket) do
     tenants = TenantContext.list_tenants()
 
+    socket =
+      if authorized?(Person, :create, get_auth(socket)) do
+        socket
+      else
+        socket
+        |> push_redirect(to: Routes.page_path(socket, :index))
+        |> put_flash(:error, gettext("You are not authorized to do this action."))
+      end
+
     super(
       params,
       session,

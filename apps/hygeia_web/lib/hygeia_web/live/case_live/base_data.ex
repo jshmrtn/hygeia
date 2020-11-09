@@ -16,6 +16,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Surface.Components.Form
   alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.Field
+  alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label

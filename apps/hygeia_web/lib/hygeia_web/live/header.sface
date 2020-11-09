@@ -3,7 +3,7 @@
     <section class="container" :if={{ not(is_nil(auth)) }}>
       <div class="d-flex justify-content-between">
         <ul class="nav nav-pills" role="navigation">
-          <li class="nav-item" :if={{ User.has_role?(auth, :admin) }}>
+          <li class="nav-item" :if={{ authorized?(Hygeia.CaseContext.Person, :list, auth) }}>
             <UriActiveContext
               to={{ Routes.person_index_path(@socket, :index) }}
               :let={{ to: to, active: active }}
@@ -14,7 +14,7 @@
               </LiveRedirect>
             </UriActiveContext>
           </li>
-          <li class="nav-item" :if={{ User.has_role?(auth, :tracer) or User.has_role?(auth, :supervisor) }}>
+          <li class="nav-item" :if={{ authorized?(Hygeia.CaseContext.Case, :list, auth) }}>
             <UriActiveContext
               to={{ Routes.case_index_path(@socket, :index) }}
               :let={{ to: to, active: active }}
@@ -25,7 +25,7 @@
               </LiveRedirect>
             </UriActiveContext>
           </li>
-          <li class="nav-item" :if={{ User.has_role?(auth, :statistics_viewer) }}>
+          <li class="nav-item" :if={{ authorized?(Hygeia.TenantContext.Tenant, :statistics, auth) }}>
             <UriActiveContext
               to={{ Routes.statistics_index_path(@socket, :index) }}
               :let={{ to: to, active: active }}

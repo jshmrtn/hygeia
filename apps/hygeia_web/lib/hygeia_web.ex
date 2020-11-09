@@ -192,9 +192,11 @@ defmodule HygeiaWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import HygeiaWeb.ErrorHelpers
       import HygeiaGettext
 
+      import Hygeia.Authorization
+
+      import HygeiaWeb.ErrorHelpers
       import HygeiaWeb.Helpers.Address
       import HygeiaWeb.Helpers.Auth
       import HygeiaWeb.Helpers.Case

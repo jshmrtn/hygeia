@@ -35,4 +35,27 @@ defmodule Hygeia.CaseContext.Profession do
     |> cast(attrs, [:name])
     |> validate_required([:name])
   end
+
+  defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Profession
+    alias Hygeia.UserContext.User
+
+    @spec authorized?(
+            resource :: Profession.t(),
+            action :: :create | :list | :details | :update | :delete,
+            user :: :anonymous | User.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(_profession, action, _user, _meta)
+        when action in [:list, :details],
+        do: true
+
+    def authorized?(_profession, action, :anonymous, _meta)
+        when action in [:create, :update, :delete],
+        do: false
+
+    def authorized?(_profession, action, %User{roles: roles}, _meta)
+        when action in [:create, :update, :delete],
+        do: :admin in roles
+  end
 end

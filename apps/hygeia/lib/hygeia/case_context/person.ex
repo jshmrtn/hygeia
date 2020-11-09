@@ -105,4 +105,23 @@ defmodule Hygeia.CaseContext.Person do
     |> foreign_key_constraint(:tenant_uuid)
     |> foreign_key_constraint(:profession_uuid)
   end
+
+  defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
+    alias Hygeia.UserContext.User
+
+    @spec authorized?(
+            resource :: Person.t(),
+            action :: :create | :details | :list | :update | :delete,
+            user :: :anonymous | User.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(_person, action, :anonymous, _meta)
+        when action in [:list, :create, :details, :update, :delete],
+        do: false
+
+    def authorized?(_person, action, %User{roles: roles}, _meta)
+        when action in [:list, :create, :details, :update, :delete],
+        do: :tracer in roles or :supervisor in roles or :admin in roles
+  end
 end

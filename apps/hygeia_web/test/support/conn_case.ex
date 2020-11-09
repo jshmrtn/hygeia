@@ -36,12 +36,19 @@ defmodule HygeiaWeb.ConnCase do
   setup tags do
     conn = build_conn()
 
-    if tags[:log_in] do
-      user = Hygeia.Fixtures.user_fixture(%{iam_sub: Ecto.UUID.generate()})
+    case tags[:log_in] do
+      nil ->
+        {:ok, conn: conn}
 
-      {:ok, conn: init_test_session(conn, auth: user), user: user}
-    else
-      {:ok, conn: conn}
+      true ->
+        user = Hygeia.Fixtures.user_fixture(%{iam_sub: Ecto.UUID.generate()})
+
+        {:ok, conn: init_test_session(conn, auth: user), user: user}
+
+      params ->
+        user = Hygeia.Fixtures.user_fixture(Enum.into(params, %{iam_sub: Ecto.UUID.generate()}))
+
+        {:ok, conn: init_test_session(conn, auth: user), user: user}
     end
   end
 end

@@ -51,4 +51,23 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
     |> validate_required([:case_uuid, :entry])
     |> assoc_constraint(:case)
   end
+
+  defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.ProtocolEntry
+    alias Hygeia.UserContext.User
+
+    @spec authorized?(
+            resource :: ProtocolEntry.t(),
+            action :: :create | :list,
+            user :: :anonymous | User.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(_protocol_entry, action, :anonymous, _meta)
+        when action in [:list, :create],
+        do: false
+
+    def authorized?(_protocol_entry, action, %User{roles: roles}, _meta)
+        when action in [:list, :create],
+        do: :tracer in roles or :supervisor in roles or :admin in roles
+  end
 end

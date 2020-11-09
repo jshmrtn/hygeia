@@ -116,4 +116,32 @@ defmodule Hygeia.CaseContext.Transmission do
       uuid when is_binary(uuid) -> validate_required(changeset, [:propagator_case_uuid])
     end
   end
+
+  defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.Authorization.Resource
+    alias Hygeia.CaseContext.Transmission
+    alias Hygeia.Repo
+    alias Hygeia.UserContext.User
+
+    @spec authorized?(
+            resource :: Transmission.t(),
+            action :: :create | :details | :list | :update | :delete,
+            user :: :anonymous | User.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(transmission, action, user, meta)
+        when action in [:details, :update, :delete] do
+      %Transmission{propagator_case: propagator_case, recipient_case: recipient_case} =
+        Repo.preload(transmission, propagator_case: [], recipient_case: [])
+
+      [propagator_case, recipient_case]
+      |> Enum.reject(&is_nil/1)
+      |> Enum.any?(&Resource.authorized?(&1, action, user, meta))
+    end
+
+    def authorized?(_transmission, :create, :anonymous, _meta), do: false
+
+    def authorized?(_transmission, :create, %User{roles: roles}, _meta),
+      do: :tracer in roles or :supervisor in roles or :admin in roles
+  end
 end

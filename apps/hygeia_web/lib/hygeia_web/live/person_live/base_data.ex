@@ -25,6 +25,22 @@ defmodule HygeiaWeb.PersonLive.BaseData do
 
     person = CaseContext.get_person!(id)
 
+    socket =
+      if authorized?(
+           person,
+           case socket.assigns.live_action do
+             :edit -> :update
+             :show -> :details
+           end,
+           get_auth(socket)
+         ) do
+        socket
+      else
+        socket
+        |> push_redirect(to: Routes.page_path(socket, :index))
+        |> put_flash(:error, gettext("You are not authorized to do this action."))
+      end
+
     tenants = TenantContext.list_tenants()
     professions = CaseContext.list_professions()
 

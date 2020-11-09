@@ -55,4 +55,27 @@ defmodule Hygeia.OrganisationContext.Organisation do
     |> validate_required([:name])
     |> cast_embed(:address)
   end
+
+  defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.OrganisationContext.Organisation
+    alias Hygeia.UserContext.User
+
+    @spec authorized?(
+            resource :: Organisation.t(),
+            action :: :create | :list | :details | :update | :delete,
+            user :: :anonymous | User.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(_organisation, action, :anonymous, _meta)
+        when action in [:list, :create, :details, :update, :delete],
+        do: false
+
+    def authorized?(_organisation, action, %User{}, _meta)
+        when action in [:details, :list],
+        do: true
+
+    def authorized?(_organisation, action, %User{roles: roles}, _meta)
+        when action in [:create, :update, :delete],
+        do: :tracer in roles or :supervisor in roles or :admin in roles
+  end
 end

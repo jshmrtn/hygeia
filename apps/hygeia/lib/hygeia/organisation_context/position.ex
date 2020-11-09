@@ -48,4 +48,25 @@ defmodule Hygeia.OrganisationContext.Position do
     |> cast(attrs, [:position, :person_uuid, :organisation_uuid])
     |> validate_required([:position, :person_uuid, :organisation_uuid])
   end
+
+  defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.OrganisationContext.Position
+    alias Hygeia.UserContext.User
+
+    @spec authorized?(
+            resource :: Position.t(),
+            action :: :create | :list | :delete,
+            user :: :anonymous | User.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(_position, action, :anonymous, _meta)
+        when action in [:list, :create, :delete],
+        do: false
+
+    def authorized?(_position, :list, %User{}, _meta), do: true
+
+    def authorized?(_position, action, %User{roles: roles}, _meta)
+        when action in [:create, :delete],
+        do: :tracer in roles or :supervisor in roles or :admin in roles
+  end
 end

@@ -99,7 +99,7 @@ defmodule HygeiaWeb.Helpers.Case do
         phases: [%Phase{start: start_date} | _] = phases,
         inserted_at: inserted_at
       }) do
-    %Phase{end: end_date} = last_phase = List.last(phases)
+    %Phase{end: end_date} = List.last(phases)
 
     case {start_date, end_date} do
       {nil, _end_date} ->
