@@ -81,7 +81,21 @@ defmodule HygeiaWeb.Helpers.Case do
   def case_phase_possible_index_type_translation(:travel), do: gettext("Travel")
 
   @spec case_display_name(case :: Case.t()) :: String.t()
-  def case_display_name(%Case{
+  def case_display_name(
+        %Case{
+          phases: [%Phase{} | _] = phases
+        } = case
+      ) do
+    last_phase = List.last(phases)
+
+    gettext("%{phase_type} (%{date})",
+      phase_type: case_phase_type_translation(last_phase),
+      date: case_display_date(case)
+    )
+  end
+
+  @spec case_display_date(case :: Case.t()) :: String.t()
+  def case_display_date(%Case{
         phases: [%Phase{start: start_date} | _] = phases,
         inserted_at: inserted_at
       }) do
@@ -89,22 +103,17 @@ defmodule HygeiaWeb.Helpers.Case do
 
     case {start_date, end_date} do
       {nil, _end_date} ->
-        gettext("%{phase_type} (Created at %{created_at})",
-          phase_type: case_phase_type_translation(last_phase),
+        gettext("Created at %{created_at}",
           created_at: Cldr.DateTime.to_string!(inserted_at, HygeiaCldr)
         )
 
       {_start_date, nil} ->
-        gettext("%{phase_type} (Created at %{created_at})",
-          phase_type: case_phase_type_translation(last_phase),
+        gettext("Created at %{created_at}",
           created_at: Cldr.DateTime.to_string!(inserted_at, HygeiaCldr)
         )
 
       {start_date, end_date} ->
-        gettext("%{phase_type} (%{date_range})",
-          phase_type: case_phase_type_translation(last_phase),
-          date_range: Cldr.Interval.to_string!(Date.range(start_date, end_date), HygeiaCldr)
-        )
+        Cldr.Interval.to_string!(Date.range(start_date, end_date), HygeiaCldr)
     end
   end
 

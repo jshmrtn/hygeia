@@ -37,7 +37,7 @@ defmodule Hygeia.CaseContext.Monitoring do
     field :location, IsolationLocation
     field :location_details, :string
 
-    embeds_one :address, Address
+    embeds_one :address, Address, on_replace: :update
   end
 
   @doc false

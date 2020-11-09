@@ -71,6 +71,41 @@ a:hover {
   }
 }
 
+[type="checkbox"] {
+  appearance: none;
+  outline: none;
+  height: 0.9rem;
+  width: 0.9rem;
+  border: 2px solid theme-color("primary");
+  border-radius: $border-radius;
+
+  &:checked {
+    background-color: theme-color("primary");
+  }
+
+  &:disabled {
+    border-color: $gray-500;
+
+    &:checked {
+      background-color: $gray-500;
+    }
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+.checkbox-label {
+  cursor: pointer;
+  color: $gray-700;
+
+  &[data-disabled] {
+    color: $gray-600;
+    cursor: default;
+  }
+}
+
 .table.no-end-padding {
   th:first-child,
   td:first-child {

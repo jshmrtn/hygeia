@@ -32,7 +32,8 @@ defmodule Hygeia.CaseContext.Hospitalization do
           Changeset.t()
   def changeset(hospitalization, attrs) do
     hospitalization
-    |> cast(attrs, [:start, :end, :organisation_uuid])
+    |> cast(attrs, [:uuid, :start, :end, :organisation_uuid])
+    |> fill_uuid
     |> validate_required([])
   end
 end

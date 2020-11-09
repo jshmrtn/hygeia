@@ -34,4 +34,34 @@
       </LiveRedirect>
     </UriActiveContext>
   </li>
+  
+  <div class="ml-auto dropdown show">
+    <a class="btn btn-sm btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{ gettext("Actions") }}
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+      <Link
+        :if={{ match?(%Phase.Index{}, List.last(@case.phases).details) }}
+        class="dropdown-item"
+        to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, List.last(@case.phases).uuid) }}
+      >
+        <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
+        {{ gettext("Isolation Confirmation") }}
+      </Link>
+      <Link
+        :if={{ match?(%Phase.PossibleIndex{}, List.last(@case.phases).details) }}
+        class="dropdown-item"
+        to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, List.last(@case.phases).uuid) }}
+      >
+        {{ gettext("Quarantine Confirmation") }}
+      </Link>
+      <LiveRedirect
+        class="dropdown-item"
+        to={{ Routes.case_create_possible_index_path(@socket, :create, propagator_internal: true, propagator_case_uuid: @case.uuid, default_tenant_uuid: @case.tenant_uuid) }}
+      >
+        {{ gettext("Create Contact Cases") }}
+      </LiveRedirect>
+    </div>
+  </div>
 </ul>

@@ -5,7 +5,9 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.CaseContext.Phase
+  alias Hygeia.OrganisationContext
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
@@ -27,10 +29,17 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
     tenants = TenantContext.list_tenants()
     users = UserContext.list_users()
+    organizations = OrganisationContext.list_organisations()
 
     case = CaseContext.get_case!(id)
 
-    super(params, uri, socket |> load_data(case) |> assign(tenants: tenants, users: users))
+    super(
+      params,
+      uri,
+      socket
+      |> load_data(case)
+      |> assign(tenants: tenants, users: users, organizations: organizations)
+    )
   end
 
   @impl Phoenix.LiveView
@@ -93,6 +102,48 @@ defmodule HygeiaWeb.CaseLive.BaseData do
         socket.assigns.changeset,
         :external_references,
         external_references ++ [%{}]
+      )
+
+    {:noreply,
+     socket
+     |> assign(:changeset, changeset)
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event("add_hospitalization", _params, socket) do
+    hospitalizations = Ecto.Changeset.get_field(socket.assigns.changeset, :hospitalizations, [])
+
+    changeset =
+      Ecto.Changeset.put_change(
+        socket.assigns.changeset,
+        :hospitalizations,
+        hospitalizations ++ [Hospitalization.changeset(%Hospitalization{}, %{})]
+      )
+
+    {:noreply,
+     socket
+     |> assign(:changeset, changeset)
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event("remove_hospitalization", %{"changeset-uuid" => uuid}, socket) do
+    # TODO: bug, last item cannot be removed
+
+    hospitalizations =
+      socket.assigns.changeset
+      |> Ecto.Changeset.get_field(:hospitalizations, [])
+      |> Enum.map(&Hospitalization.changeset(&1, %{}))
+      |> Enum.map(fn changeset ->
+        if Ecto.Changeset.get_field(changeset, :uuid) == uuid,
+          do: %{changeset | action: :delete},
+          else: changeset
+      end)
+
+    changeset =
+      Ecto.Changeset.put_embed(
+        socket.assigns.changeset,
+        :hospitalizations,
+        hospitalizations
       )
 
     {:noreply,

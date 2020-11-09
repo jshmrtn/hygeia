@@ -1,3 +1,24 @@
 .component-case-base-data {
   @include readonly-form;
+
+  .form-grid {
+    @include readonly-form;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-gap: 1.5rem;
+
+    .phases-card {
+      grid-column: span 2;
+    }
+
+    @include media-breakpoint-down(md) {
+      grid-template-columns: 1fr;
+
+      .phases-card {
+        grid-column: 1;
+      }
+    }
+  }
 }

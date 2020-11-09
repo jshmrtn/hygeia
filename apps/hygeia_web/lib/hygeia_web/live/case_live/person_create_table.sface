@@ -1,5 +1,5 @@
 <div class="component-case-person-create-table mb-2">
-  <table class="table table-responsive table-sm no-autofill-background">
+  <table class="table table-sm no-autofill-background">
     <thead>
       <tr>
         <th scope="col">{{ gettext("Firstname") }}</th>

@@ -1,0 +1,36 @@
+<div class="component-case-monitoring">
+  <Inputs for={{ :monitoring }}>
+    <div class="row">
+      <div class="col">
+        <Field class="form-group" name={{ :first_contact }}>
+          <Label>{{ gettext("First contact") }}</Label>
+          <DateInput class="form-control" field={{ :first_contact }} opts={{ disabled: @disabled }}/>
+          <FormError />
+        </Field>
+      </div>
+      <div class="col">
+        <Field class="form-group" name={{ :location }}>
+          <Label>{{ gettext("Location") }}</Label>
+          <Select class="form-control" opts={{ prompt: gettext("Choose location"), disabled: @disabled }} field={{ :location }} options={{ isolation_locations() }} />
+          <FormError />
+        </Field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <Field class="form-group" name={{ :location_details }}>
+          <Label>{{ gettext("Location details") }}</Label>
+          <TextArea class="form-control" field={{ :location_details }} opts={{ disabled: @disabled }} />
+          <FormError />
+        </Field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <Inputs for={{ :address }}>
+          <HygeiaWeb.AddressForm disabled={{ @disabled }} id="address" />
+        </Inputs>
+      </div>
+    </div>
+  </Inputs>
+</div>

@@ -198,9 +198,11 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.Address
       import HygeiaWeb.Helpers.Auth
       import HygeiaWeb.Helpers.Case
+      import HygeiaWeb.Helpers.Clinical
       import HygeiaWeb.Helpers.ContactMethod
       import HygeiaWeb.Helpers.CSP
       import HygeiaWeb.Helpers.ExternalReference
+      import HygeiaWeb.Helpers.Monitoring
       import HygeiaWeb.Helpers.Phase
       import HygeiaWeb.Helpers.Region
       import HygeiaWeb.Helpers.Search

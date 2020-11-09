@@ -1,0 +1,62 @@
+<div class="component-case-hospitalizations">
+  <InputContext assigns={{ assigns }} :let={{ form: form }}>
+    <div :if={{ @disabled and length(Ecto.Changeset.get_field(form.source, :hospitalizations, [])) == 0 }} class="alert alert-info">
+      {{ gettext("No hospitalizations") }}
+    </div>
+  </InputContext>
+  <Inputs for={{ :hospitalizations }}>
+    <div class="card mb-2">
+      <div class="card-body">
+        <div class="row">
+          <HiddenInput field={{ :uuid }} />
+          <div class="col">
+            <Field class="form-group" name={{ :start }}>
+              <Label>{{ gettext("Start date") }}</Label>
+              <DateInput class="form-control" opts={{ disabled: @disabled }}/>
+              <FormError />
+            </Field>
+          </div>
+          <div class="col">
+            <Field class="form-group" name={{ :end }}>
+              <Label>{{ gettext("End date") }}</Label>
+              <DateInput class="form-control" opts={{ disabled: @disabled }}/>
+              <FormError />
+            </Field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <Field class="form-group" name={{ :organisation_uuid }}>
+              <Label>{{ gettext("Organization") }}</Label>
+              <Select class="form-control" opts={{ prompt: gettext("Choose organization"), disabled: @disabled }} options={{ Enum.map(@organizations, &({&1.name, &1.uuid})) }} />
+              <FormError />
+            </Field>
+          </div>
+        </div>
+        <div :if={{ !@disabled }} class="row">
+          <div class="col d-flex justify-content-end">
+            <InputContext assigns={{ assigns }} :let={{ form: form }}>
+              <button
+                class="btn btn-sm btn-danger"
+                type="button"
+                phx-value-changeset-uuid={{ Ecto.Changeset.get_field(form.source, :uuid, []) }}
+                :on-click={{ @remove_hospitalization }}
+                title={{ gettext("Remove") }}
+              >
+                {{ gettext("Remove") }}
+                <span class="oi oi-trash" aria-hidden="true"></span>
+              </button>
+            </InputContext>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Inputs>
+    
+  <div class="add-button mt-2" :if={{ not(@disabled) }}>
+    <button type="button" class="btn btn-secondary" :on-click={{ @add_hospitalization }}>
+      <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+      {{ gettext("Add hospitalization") }}
+    </button>
+  </div>
+</div>

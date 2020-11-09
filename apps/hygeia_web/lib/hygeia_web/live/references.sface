@@ -37,7 +37,7 @@
     
   <div class="add-button mt-2" :if={{ not(@disabled) }}>
     <button type="button" class="btn btn-secondary" :on-click={{ @add_external_reference }}>
-      <span class="oi oi-plus" aria-hidden="true"></span>
+      <span class="oi oi-plus mr-1" aria-hidden="true"></span>
       {{ gettext("New reference") }}
     </button>
   </div>
