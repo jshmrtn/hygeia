@@ -1,10 +1,9 @@
-defmodule HygeiaWeb.CaseLive.Hospitalizations do
+defmodule HygeiaWeb.CaseLive.RelatedOrganisations do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
 
   alias HygeiaWeb.FormError
-  alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
@@ -14,7 +13,7 @@ defmodule HygeiaWeb.CaseLive.Hospitalizations do
 
   prop source, :map, required: true
   prop organisations, :list, required: true
-  prop add_hospitalization, :event, required: true
-  prop remove_hospitalization, :event, required: true
+  prop add, :event, required: true
+  prop remove, :event, required: true
   prop disabled, :boolean, default: false
 end

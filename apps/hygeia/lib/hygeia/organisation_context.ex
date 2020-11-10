@@ -69,7 +69,7 @@ defmodule Hygeia.OrganisationContext do
 
   """
   @spec create_organisation(attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Organisation.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Organisation.t()} | {:error, Ecto.Changeset.t(Organisation.t())}
   def create_organisation(attrs \\ %{}),
     do:
       %Organisation{}
@@ -94,7 +94,7 @@ defmodule Hygeia.OrganisationContext do
           organisation :: Organisation.t(),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
-          {:ok, Organisation.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Organisation.t()} | {:error, Ecto.Changeset.t(Organisation.t())}
   def update_organisation(%Organisation{} = organisation, attrs),
     do:
       organisation
@@ -116,7 +116,7 @@ defmodule Hygeia.OrganisationContext do
 
   """
   @spec delete_organisation(organisation :: Organisation.t()) ::
-          {:ok, Organisation.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Organisation.t()} | {:error, Ecto.Changeset.t(Organisation.t())}
   def delete_organisation(%Organisation{} = organisation),
     do:
       organisation
@@ -138,7 +138,7 @@ defmodule Hygeia.OrganisationContext do
           organisation :: Organisation.t() | Organisation.empty(),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
-          Ecto.Changeset.t()
+          Ecto.Changeset.t(Organisation.t())
   def change_organisation(%Organisation{} = organisation, attrs \\ %{}) do
     Organisation.changeset(organisation, attrs)
   end
@@ -185,7 +185,7 @@ defmodule Hygeia.OrganisationContext do
 
   """
   @spec create_position(attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Position.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Position.t()} | {:error, Ecto.Changeset.t(Position.t())}
   def create_position(attrs \\ %{}) do
     %Position{}
     |> change_position(attrs)
@@ -210,7 +210,7 @@ defmodule Hygeia.OrganisationContext do
           position :: Position.t(),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
-          {:ok, Position.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Position.t()} | {:error, Ecto.Changeset.t(Position.t())}
   def update_position(%Position{} = position, attrs) do
     position
     |> change_position(attrs)
@@ -232,7 +232,7 @@ defmodule Hygeia.OrganisationContext do
 
   """
   @spec delete_position(position :: Position.t()) ::
-          {:ok, Position.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Position.t()} | {:error, Ecto.Changeset.t(Position.t())}
   def delete_position(%Position{} = position) do
     position
     |> change_position()
@@ -254,7 +254,7 @@ defmodule Hygeia.OrganisationContext do
           position :: Position.t() | Position.empty(),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
-          Ecto.Changeset.t()
+          Ecto.Changeset.t(Position.t())
   def change_position(%Position{} = position, attrs \\ %{}) do
     Position.changeset(position, attrs)
   end

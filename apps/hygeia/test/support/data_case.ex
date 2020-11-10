@@ -60,7 +60,7 @@ defmodule Hygeia.DataCase do
       assert %{password: ["password is too short"]} = errors_on(changeset)
 
   """
-  @spec errors_on(changeset :: Ecto.Changeset.t()) :: [String.t()]
+  @spec errors_on(changeset :: Ecto.Changeset.t(resource)) :: [String.t()] when resource: term
   def errors_on(changeset) do
     Ecto.Changeset.traverse_errors(changeset, fn {message, opts} ->
       Regex.replace(~r"%{(\w+)}", message, fn _message, key ->

@@ -11,7 +11,10 @@ defmodule HygeiaWeb.CaseLive.Create do
   alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
   alias HygeiaWeb.CaseLive.CreateIndex.CreateSchema
 
-  @spec update_person_changeset(changeset :: Ecto.Changeset.t(), person :: Person.t()) ::
+  @spec update_person_changeset(
+          changeset :: Ecto.Changeset.t(),
+          person :: Person.t()
+        ) ::
           Ecto.Changeset.t()
   def update_person_changeset(changeset, person) do
     changeset

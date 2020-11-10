@@ -21,32 +21,34 @@
                 />
                 <FormError />
               </Field>
-              <Field name={{ :propagator_internal }} class="form-group">
-                <div class="btn-group btn-group-toggle btn-radio-group">
-                  <label class="input-group-text input-sm">{{ gettext("Propagator") }}:</label>
-                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil, do: "active" }}">
-                    <RadioButton value="" /> {{ gettext("No propagator") }}
-                  </label>
-                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == true, do: "active" }}">
-                    <RadioButton value="true" /> {{ gettext("Internal") }}
-                  </label>
-                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == false, do: "active" }}">
-                    <RadioButton value="false" /> {{ gettext("External") }}
-                  </label>
-                </div>
-                <FormError />
-              </Field>
-              <Field name={{ :propagator_ims_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
-                <Label>{{ gettext("Propagator IMS ID") }}</Label>
-                <TextInput class="form-control" />
-                <FormError />
-              </Field>
-              <Field name={{ :propagator_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}>
-                <Label>{{ gettext("Propagator Case UUID") }}</Label>
-                <!-- TODO: Select Pattern... -->
-                <TextInput class="form-control" />
-                <FormError />
-              </Field>
+              <div :if={{ Ecto.Changeset.get_field(@changeset, :type) != :travel }}>
+                <Field name={{ :propagator_internal }} class="form-group">
+                  <div class="btn-group btn-group-toggle btn-radio-group">
+                    <label class="input-group-text input-sm">{{ gettext("Propagator") }}:</label>
+                    <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil, do: "active" }}">
+                      <RadioButton value="" /> {{ gettext("No propagator") }}
+                    </label>
+                    <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == true, do: "active" }}">
+                      <RadioButton value="true" /> {{ gettext("Internal") }}
+                    </label>
+                    <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == false, do: "active" }}">
+                      <RadioButton value="false" /> {{ gettext("External") }}
+                    </label>
+                  </div>
+                  <FormError />
+                </Field>
+                <Field name={{ :propagator_ims_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
+                  <Label>{{ gettext("Propagator IMS ID") }}</Label>
+                  <TextInput class="form-control" />
+                  <FormError />
+                </Field>
+                <Field name={{ :propagator_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}>
+                  <Label>{{ gettext("Propagator Case UUID") }}</Label>
+                  <!-- TODO: Select Pattern... -->
+                  <TextInput class="form-control" />
+                  <FormError />
+                </Field>
+              </div>
 
               <Field name={{ :date }} class="form-group">
                 <Label>{{ gettext("Date") }}</Label>

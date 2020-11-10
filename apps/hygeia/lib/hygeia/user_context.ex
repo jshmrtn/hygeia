@@ -65,7 +65,7 @@ defmodule Hygeia.UserContext do
 
   """
   @spec create_user(attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, User.t()} | {:error, Ecto.Changeset.t(User.t())}
   def create_user(attrs \\ %{}),
     do:
       %User{}
@@ -87,7 +87,7 @@ defmodule Hygeia.UserContext do
 
   """
   @spec update_user(user :: User.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, User.t()} | {:error, Ecto.Changeset.t(User.t())}
   def update_user(%User{} = user, attrs),
     do:
       user
@@ -108,7 +108,7 @@ defmodule Hygeia.UserContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec delete_user(user :: User.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
+  @spec delete_user(user :: User.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t(User.t())}
   def delete_user(%User{} = user),
     do:
       user

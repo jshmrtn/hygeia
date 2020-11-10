@@ -1,32 +1,16 @@
-<div class="component-case-hospitalizations">
+<div class="component-case-related_organisations">
   <InputContext assigns={{ assigns }} :let={{ form: form }}>
-    <div :if={{ @disabled and length(Ecto.Changeset.get_field(form.source, :hospitalizations, [])) == 0 }} class="alert alert-info">
-      {{ gettext("No hospitalizations") }}
+    <div :if={{ @disabled and length(Ecto.Changeset.get_field(form.source, :related_organisations, [])) == 0 }} class="alert alert-info">
+      {{ gettext("No related organisations") }}
     </div>
   </InputContext>
-  <Inputs for={{ :hospitalizations }}>
+  <Inputs for={{ :related_organisations }}>
     <div class="card mb-2">
+      <HiddenInput field={{ :uuid }} />
       <div class="card-body">
         <div class="row">
-          <HiddenInput field={{ :uuid }} />
           <div class="col">
-            <Field class="form-group" name={{ :start }}>
-              <Label>{{ gettext("Start date") }}</Label>
-              <DateInput class="form-control" opts={{ disabled: @disabled }}/>
-              <FormError />
-            </Field>
-          </div>
-          <div class="col">
-            <Field class="form-group" name={{ :end }}>
-              <Label>{{ gettext("End date") }}</Label>
-              <DateInput class="form-control" opts={{ disabled: @disabled }}/>
-              <FormError />
-            </Field>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <Field class="form-group" name={{ :organisation_uuid }}>
+            <Field class="form-group" name={{ :uuid }}>
               <Label>{{ gettext("Organisation") }}</Label>
               <Select class="form-control" opts={{ prompt: gettext("Choose organisation"), disabled: @disabled }} options={{ Enum.map(@organisations, &({&1.name, &1.uuid})) }} />
               <FormError />
@@ -40,7 +24,7 @@
                 class="btn btn-sm btn-danger"
                 type="button"
                 phx-value-changeset-uuid={{ Ecto.Changeset.get_field(form.source, :uuid, []) }}
-                :on-click={{ @remove_hospitalization }}
+                :on-click={{ @remove }}
                 title={{ gettext("Remove") }}
               >
                 {{ gettext("Remove") }}
@@ -54,9 +38,9 @@
   </Inputs>
     
   <div class="add-button mt-2" :if={{ not(@disabled) }}>
-    <button type="button" class="btn btn-secondary" :on-click={{ @add_hospitalization }}>
+    <button type="button" class="btn btn-secondary" :on-click={{ @add }}>
       <span class="oi oi-plus mr-1" aria-hidden="true"></span>
-      {{ gettext("Add hospitalization") }}
+      {{ gettext("Add related organisation") }}
     </button>
   </div>
 </div>

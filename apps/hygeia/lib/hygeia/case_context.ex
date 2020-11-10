@@ -58,7 +58,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec create_profession(attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Profession.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Profession.t()} | {:error, Ecto.Changeset.t(Profession.t())}
   def create_profession(attrs \\ %{}),
     do:
       %Profession{}
@@ -80,7 +80,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec update_profession(profession :: Profession.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Profession.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Profession.t()} | {:error, Ecto.Changeset.t(Profession.t())}
   def update_profession(%Profession{} = profession, attrs),
     do:
       profession
@@ -102,7 +102,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec delete_profession(profession :: Profession.t()) ::
-          {:ok, Profession.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Profession.t()} | {:error, Ecto.Changeset.t(Profession.t())}
   def delete_profession(%Profession{} = profession),
     do:
       profession
@@ -125,7 +125,7 @@ defmodule Hygeia.CaseContext do
           tenant :: Profession.t() | Profession.empty(),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
-          Ecto.Changeset.t()
+          Ecto.Changeset.t(Profession.t())
   def change_profession(%Profession{} = profession, attrs \\ %{}),
     do: Profession.changeset(profession, attrs)
 
@@ -231,7 +231,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec create_person(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Person.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
   def create_person(%Tenant{} = tenant, attrs \\ %{}),
     do:
       tenant
@@ -258,7 +258,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec update_person(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Person.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
   def update_person(%Person{} = person, attrs),
     do:
       person
@@ -279,7 +279,8 @@ defmodule Hygeia.CaseContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec delete_person(person :: Person.t()) :: {:ok, Person.t()} | {:error, Ecto.Changeset.t()}
+  @spec delete_person(person :: Person.t()) ::
+          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
   def delete_person(%Person{} = person),
     do:
       person
@@ -301,7 +302,7 @@ defmodule Hygeia.CaseContext do
           person :: Person.t() | Person.empty(),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
-          Ecto.Changeset.t()
+          Ecto.Changeset.t(Person.t())
   def change_person(%Person{} = person, attrs \\ %{}) do
     Person.changeset(person, attrs)
   end
@@ -385,7 +386,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec create_case(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Case.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
   def create_case(%Person{} = person, attrs \\ %{}) do
     tenant = Repo.preload(person, :tenant).tenant
     create_case(person, tenant, attrs)
@@ -396,7 +397,7 @@ defmodule Hygeia.CaseContext do
           tenant :: Tenant.t(),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
-          {:ok, Case.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
   def create_case(%Person{} = person, %Tenant{} = tenant, attrs),
     do:
       person
@@ -416,7 +417,7 @@ defmodule Hygeia.CaseContext do
       |> versioning_extract()
 
   @spec relate_case_to_organisation(case :: Case.t(), organisation :: Organisation.t()) ::
-          {:ok, Case.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
   def relate_case_to_organisation(case, organisation) do
     case = Repo.preload(case, :related_organisations)
 
@@ -443,7 +444,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec update_case(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Case.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
   def update_case(%Case{} = case, attrs),
     do:
       case
@@ -464,7 +465,7 @@ defmodule Hygeia.CaseContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec delete_case(case :: Case.t()) :: {:ok, Case.t()} | {:error, Ecto.Changeset.t()}
+  @spec delete_case(case :: Case.t()) :: {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
   def delete_case(%Case{} = case),
     do:
       case
@@ -515,7 +516,7 @@ defmodule Hygeia.CaseContext do
           case :: Case.t() | Case.empty(),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
-          Ecto.Changeset.t()
+          Ecto.Changeset.t(Case.t())
   def change_case(%Case{} = case, attrs \\ %{}), do: Case.changeset(case, attrs)
 
   @doc """
@@ -560,7 +561,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec create_transmission(attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Transmission.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Transmission.t()} | {:error, Ecto.Changeset.t(Transmission.t())}
   def create_transmission(attrs \\ %{}),
     do:
       %Transmission{}
@@ -589,7 +590,7 @@ defmodule Hygeia.CaseContext do
   @spec update_transmission(
           transmission :: Transmission.t(),
           attrs :: Hygeia.ecto_changeset_params()
-        ) :: {:ok, Transmission.t()} | {:error, Ecto.Changeset.t()}
+        ) :: {:ok, Transmission.t()} | {:error, Ecto.Changeset.t(Transmission.t())}
   def update_transmission(%Transmission{} = transmission, attrs),
     do:
       transmission
@@ -616,7 +617,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec delete_transmission(transmission :: Transmission.t()) ::
-          {:ok, Transmission.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Transmission.t()} | {:error, Ecto.Changeset.t(Transmission.t())}
   def delete_transmission(%Transmission{} = transmission),
     do:
       transmission
@@ -643,7 +644,7 @@ defmodule Hygeia.CaseContext do
           tenant :: Transmission.t() | Transmission.empty(),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
-          Ecto.Changeset.t()
+          Ecto.Changeset.t(Transmission.t())
   def change_transmission(%Transmission{} = transmission, attrs \\ %{}),
     do: Transmission.changeset(transmission, attrs)
 
@@ -689,7 +690,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec create_protocol_entry(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t(ProtocolEntry.t())}
   def create_protocol_entry(%Case{} = case, attrs \\ %{}),
     do:
       case
@@ -719,7 +720,7 @@ defmodule Hygeia.CaseContext do
   @spec update_protocol_entry(
           protocol_entry :: ProtocolEntry.t(),
           attrs :: Hygeia.ecto_changeset_params()
-        ) :: {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t()}
+        ) :: {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t(ProtocolEntry.t())}
   def update_protocol_entry(%ProtocolEntry{} = protocol_entry, attrs),
     do:
       protocol_entry
@@ -746,7 +747,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec delete_protocol_entry(protocol_entry :: ProtocolEntry.t()) ::
-          {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t(ProtocolEntry.t())}
   def delete_protocol_entry(%ProtocolEntry{} = protocol_entry),
     do:
       protocol_entry
@@ -772,7 +773,7 @@ defmodule Hygeia.CaseContext do
   @spec change_protocol_entry(
           protocol_entry :: ProtocolEntry.t() | ProtocolEntry.empty(),
           attrs :: Hygeia.ecto_changeset_params()
-        ) :: Ecto.Changeset.t()
+        ) :: Ecto.Changeset.t(ProtocolEntry.t())
   def change_protocol_entry(%ProtocolEntry{} = protocol_entry, attrs \\ %{}),
     do: ProtocolEntry.changeset(protocol_entry, attrs)
 end

@@ -62,7 +62,7 @@ defmodule Hygeia.CaseContext.Transmission do
   end
 
   @spec changeset(transmission :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
-          Ecto.Changeset.t()
+          Ecto.Changeset.t(t)
   def changeset(transmission, attrs) do
     transmission
     |> cast(attrs, [
@@ -82,11 +82,11 @@ defmodule Hygeia.CaseContext.Transmission do
   end
 
   @spec validate_case(
-          changeset :: Ecto.Changeset.t(),
+          changeset :: Ecto.Changeset.t(t),
           internal_key :: atom,
           ims_id_key :: atom,
           case_relation_key :: atom
-        ) :: Ecto.Changeset.t()
+        ) :: Ecto.Changeset.t(t)
   def validate_case(changeset, internal_key, ims_id_key, case_relation_key) do
     changeset
     |> fetch_field!(internal_key)

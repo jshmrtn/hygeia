@@ -43,7 +43,7 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
   end
 
   @spec changeset(protocol_entry :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
-          Ecto.Changeset.t()
+          Ecto.Changeset.t(t)
   def changeset(protocol_entry, attrs) do
     protocol_entry
     |> cast(attrs, [:case_uuid, :type])

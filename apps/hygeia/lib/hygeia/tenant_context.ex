@@ -49,7 +49,7 @@ defmodule Hygeia.TenantContext do
 
   """
   @spec create_tenant(attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Tenant.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Tenant.t()} | {:error, Ecto.Changeset.t(Tenant.t())}
   def create_tenant(attrs \\ %{}),
     do:
       %Tenant{}
@@ -71,7 +71,7 @@ defmodule Hygeia.TenantContext do
 
   """
   @spec update_tenant(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Tenant.t()} | {:error, Ecto.Changeset.t()}
+          {:ok, Tenant.t()} | {:error, Ecto.Changeset.t(Tenant.t())}
   def update_tenant(%Tenant{} = tenant, attrs),
     do:
       tenant
@@ -92,7 +92,8 @@ defmodule Hygeia.TenantContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec delete_tenant(tenant :: Tenant.t()) :: {:ok, Tenant.t()} | {:error, Ecto.Changeset.t()}
+  @spec delete_tenant(tenant :: Tenant.t()) ::
+          {:ok, Tenant.t()} | {:error, Ecto.Changeset.t(Tenant.t())}
   def delete_tenant(%Tenant{} = tenant),
     do:
       tenant
@@ -114,6 +115,6 @@ defmodule Hygeia.TenantContext do
           tenant :: Tenant.t() | Tenant.empty(),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
-          Ecto.Changeset.t()
+          Ecto.Changeset.t(Tenant.t())
   def change_tenant(%Tenant{} = tenant, attrs \\ %{}), do: Tenant.changeset(tenant, attrs)
 end

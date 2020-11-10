@@ -19,22 +19,25 @@ defmodule Hygeia.Helpers.Versioning do
 
   def versioning_extract({:ok, %{model: model}}), do: {:ok, model}
 
-  @spec versioning_insert(changeset :: Ecto.Changeset.t()) ::
-          {:ok, %{model: resource, version: %PaperTrail.Version{}}} | {:error, Ecto.Changeset.t()}
+  @spec versioning_insert(changeset :: Ecto.Changeset.t(resource)) ::
+          {:ok, %{model: resource, version: %PaperTrail.Version{}}}
+          | {:error, Ecto.Changeset.t(resource)}
         when resource: term
   def versioning_insert(changeset) do
     PaperTrail.insert(changeset, get_paper_trail_options())
   end
 
-  @spec versioning_update(changeset :: Ecto.Changeset.t()) ::
-          {:ok, %{model: resource, version: %PaperTrail.Version{}}} | {:error, Ecto.Changeset.t()}
+  @spec versioning_update(changeset :: Ecto.Changeset.t(resource)) ::
+          {:ok, %{model: resource, version: %PaperTrail.Version{}}}
+          | {:error, Ecto.Changeset.t(resource)}
         when resource: term
   def versioning_update(changeset) do
     PaperTrail.update(changeset, get_paper_trail_options())
   end
 
-  @spec versioning_delete(changeset :: Ecto.Changeset.t()) ::
-          {:ok, %{model: resource, version: %PaperTrail.Version{}}} | {:error, Ecto.Changeset.t()}
+  @spec versioning_delete(changeset :: Ecto.Changeset.t(resource)) ::
+          {:ok, %{model: resource, version: %PaperTrail.Version{}}}
+          | {:error, Ecto.Changeset.t(resource)}
         when resource: term
   def versioning_delete(changeset) do
     PaperTrail.delete(changeset, get_paper_trail_options())
