@@ -4,6 +4,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   use HygeiaWeb, :surface_live_component
 
   alias Hygeia.CaseContext
+  alias Hygeia.TenantContext
   alias HygeiaWeb.FormError
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
@@ -54,7 +55,16 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
     {:noreply, assign(socket, suspected_duplicate_changeset_uuid: nil)}
   end
 
-  defp get_person_name(uuid) do
-    CaseContext.get_person!(uuid).first_name
+  defp get_person(uuid), do: CaseContext.get_person!(uuid)
+
+  defp get_person_name(person) do
+    "#{person.first_name} #{person.last_name}"
   end
+
+  defp get_contact_method(person, type) do
+    Enum.find(person.contact_methods, &match?(^type, &1.type)).value
+  end
+
+  defp get_tenant(tenants, uuid),
+    do: Enum.find(tenants, &match?(%TenantContext.Tenant{uuid: ^uuid}, &1))
 end

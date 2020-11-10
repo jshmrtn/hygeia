@@ -2,7 +2,7 @@
   overflow-x: auto;
   $border-color: $gray-400;
 
-  .table {
+  .person-table {
     min-width: 1200px;
     margin-bottom: 0;
 
@@ -74,6 +74,57 @@
       background-color: transparent;
       border: none;
       padding: 0.375rem 0.375rem;
+    }
+  }
+
+  .card-vertical-header {
+    border-radius: $border-radius 0 0 $border-radius;
+    border-bottom: none;
+    border-right: 1px solid $gray-400;
+  }
+
+  .candidate-card {
+    display: flex;
+
+    .card-header {
+      padding: 0.75rem;
+    }
+
+    .card-body {
+      padding: 0 !important;
+      overflow: hidden;
+    }
+
+    .candidates {
+      width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+
+      .candidate {
+        padding: 0.75rem;
+        border-right: 1px solid $gray-400;
+      }
+    }
+  }
+
+  .candidate-table {
+    tr {
+      background-color: transparent !important;
+      height: 32px;
+    }
+
+    th {
+      font-weight: 600;
+      padding-right: 0.75rem;
+      text-align: right;
+    }
+
+    th,
+    td {
+      border: none !important;
+      vertical-align: middle;
+      white-space: nowrap;
     }
   }
 }

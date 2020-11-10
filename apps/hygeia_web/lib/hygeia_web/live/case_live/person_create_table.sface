@@ -1,5 +1,5 @@
 <div class="component-case-person-create-table mb-2">
-  <table class="table table-sm no-autofill-background">
+  <table class="person-table table table-sm no-autofill-background">
     <thead>
       <tr>
         <th scope="col">{{ gettext("Firstname") }}</th>
@@ -106,34 +106,81 @@
 
               <HygeiaWeb.Modal
                 :if={{ not(is_nil(@suspected_duplicate_changeset_uuid)) and @suspected_duplicate_changeset_uuid == form.source.changes[:uuid]}}
-                title={{ gettext("Conflict Resolution") }}
+                title={{ gettext("Select existing person") }}
                 id={{ "modal" }}
-                return_to={{ Routes.case_create_index_path(@socket, :create) }}
+                close="decline_duplicate"
               >
-                <h2>{{ gettext("Candidates") }}</h2>
-
-                <ul>
-                  <li :for={{ person_uuid <- form.source.changes[:suspected_duplicates_uuid] }}>
+                <div class="candidate-card card flex-row">
+                  <div class="card-header card-vertical-header">
+                    <table class="candidate-table">
+                      <tr>
+                        <th>{{ gettext("Name") }}</th>
+                        <td>{{ form.source.changes[:first_name] || "" }} {{ form.source.changes[:last_name] || "" }}<br></td>
+                      </tr>
+                      <tr>
+                        <th>{{ gettext("Mobile") }}</th>
+                        <td>{{ form.source.changes[:mobile] || "" }}</td>
+                      </tr>
+                      <tr>
+                        <th>{{ gettext("Landline") }}</th>
+                        <td>{{ form.source.changes[:landline] || "" }}</td>
+                      </tr>
+                      <tr>
+                        <th>{{ gettext("Email") }}</th>
+                        <td>{{ form.source.changes[:email] || "" }}</td>
+                      </tr>
+                      <tr>
+                        <th>{{ gettext("Tenant") }}</th>
+                        <td>{{ get_tenant(@tenants, form.source.changes.tenant_uuid).name }}</td>
+                      </tr>
+                    </table>
                     <input
                       type="button"
-                      checked={{ person_uuid == form.source.changes[:accepted_duplicate_uuid] }}
-                      phx-click="select_accepted_duplicate"
-                      phx-value-person-uuid={{ person_uuid }}
-                      phx-target={{ @myself }}
-                      value="choose"
-                    />
-                    {{ get_person_name(person_uuid) }}
-                  </li>
-                  <li>
-                    <input
-                      type="button"
+                      class="btn btn-primary mt-3"
                       checked={{ form.source.changes[:accepted_duplicate] == true and is_nil(form.source.changes[:accepted_duplicate_uuid]) }}
                       phx-click="decline_duplicate"
                       phx-target={{ @myself }}
-                      value="choose"
-                    /> None
-                  </li>
-                </ul>
+                      value={{ gettext("Keep") }}
+                    />
+                  </div>
+                  <div class="card-body">
+                    <div class="candidates">
+                      <div
+                        :for={{ person_uuid <- form.source.changes[:suspected_duplicates_uuid] }}
+                        class="candidate"
+                      >
+                        <Context put={{ person: get_person(person_uuid) }} get={{ person: person }}>
+                          <table class="candidate-table">
+                            <tr>
+                              <td>{{ get_person_name(person) }}<br></td>
+                            </tr>
+                            <tr>
+                              <td>{{ get_contact_method(person, :mobile) }}</td>
+                            </tr>
+                            <tr>
+                              <td>{{ get_contact_method(person, :landline) }}</td>
+                            </tr>
+                            <tr>
+                              <td>{{ get_contact_method(person, :email) }}</td>
+                            </tr>
+                            <tr>
+                              <td>{{ get_tenant(@tenants, person.tenant_uuid).name }}</td>
+                            </tr>
+                          </table>
+                          <input
+                            type="button"
+                            class="btn btn-primary mt-3"
+                            checked={{ person_uuid == form.source.changes[:accepted_duplicate_uuid] }}
+                            phx-click="select_accepted_duplicate"
+                            phx-value-person-uuid={{ person_uuid }}
+                            phx-target={{ @myself }}
+                            value={{ gettext("Choose") }}
+                          />
+                        </Context>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </HygeiaWeb.Modal>
 
               <button
