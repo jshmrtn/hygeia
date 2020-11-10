@@ -13,6 +13,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   alias HygeiaWeb.CaseLive.CreateIndex.CreateSchema
   alias HygeiaWeb.FormError
   alias Surface.Components.Form
+  alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Label
@@ -73,7 +74,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
             changeset
             |> Ecto.Changeset.fetch_field!(:people)
             |> Enum.reject(&match?(%CreatePersonSchema{uuid: nil}, &1))
-            |> Enum.map(&save_or_load_person_schema(&1, socket, changeset))
+            |> Enum.map(&{&1, save_or_load_person_schema(&1, socket, changeset)})
             |> Enum.map(&create_case/1)
           end)
 
@@ -135,12 +136,18 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp create_case({person, supervisor, tracer}) do
+  defp create_case({person_schema, {person, supervisor, tracer}}) do
     {:ok, case} =
       CaseContext.create_case(person, %{
         phases: [%{details: %{__type__: :index}}],
         supervisor_uuid: supervisor.uuid,
-        tracer_uuid: tracer.uuid
+        tracer_uuid: tracer.uuid,
+        clinical: %{
+          test: person_schema.test_date,
+          laboratory_report: person_schema.test_laboratory_report,
+          test_kind: person_schema.test_kind,
+          result: person_schema.test_result
+        }
       })
 
     case

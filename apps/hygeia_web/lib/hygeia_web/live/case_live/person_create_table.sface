@@ -8,8 +8,10 @@
         <th scope="col">{{ gettext("Landline") }}</th>
         <th scope="col">{{ gettext("Email") }}</th>
         <th scope="col" class="table-col-border">{{ gettext("Tenant") }}</th>
+        <slot name="additional_header" />
         <th scope="col">{{ gettext("Supervisor") }}</th>
-        <th scope="col">{{ gettext("Tracer") }}</th>
+        <th scope="col" class="table-col-border">{{ gettext("Tracer") }}</th>
+        <th scope="col" class="table-col-border">{{ gettext("Employer") }}</th>
         <th scope="col" class="actions-col"></th>
       </tr>
     </thead>
@@ -64,24 +66,34 @@
               <FormError />
             </Field>
           </td>
+          <slot name="additional_row" :props={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
           <td>
             <HiddenInput field={{ :supervisor_uuid }} />
             <Field class="fill-cell" name={{ :supervisor_uuid }}>
               <Select 
                 class="form-control"
                 options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
-                opts={{ prompt: gettext("Default Supervisor"), disabled: form.source.changes[:accepted_duplicate] == true }}
+                opts={{ prompt: gettext("Default Supervisor") }}
               />
               <FormError />
             </Field>
           </td>
-          <td>
+          <td class="table-col-border">
             <HiddenInput field={{ :tracer_uuid }} />
-            <Field class="fill-cell" name={{ :supervistracer_uuidor_uuid }}>
+            <Field class="fill-cell" name={{ :tracer_uuid }}>
               <Select 
                 class="form-control"
                 options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
-                opts={{ prompt: gettext("Default Tracer"), disabled: form.source.changes[:accepted_duplicate] == true }}
+                opts={{ prompt: gettext("Default Tracer") }}
+              />
+              <FormError />
+            </Field>
+          </td>
+          <td class="table-col-border">
+            <Field class="fill-cell" name={{ :employer }}>
+              <TextInput 
+                class="form-control"
+                opts={{ disabled: form.source.changes[:accepted_duplicate] == true }}
               />
               <FormError />
             </Field>
@@ -131,7 +143,12 @@
                       </tr>
                       <tr>
                         <th>{{ gettext("Tenant") }}</th>
-                        <td>{{ get_tenant(@tenants, form.source.changes.tenant_uuid).name }}</td>
+                        <td>
+                          {{ case form.source.changes[:tenant_uuid] do
+                            nil -> nil
+                            uuid -> get_tenant(@tenants, uuid).name
+                          end }}
+                        </td>
                       </tr>
                     </table>
                     <input

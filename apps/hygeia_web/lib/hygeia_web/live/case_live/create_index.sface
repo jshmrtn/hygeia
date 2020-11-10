@@ -62,7 +62,48 @@
     </div>
 
     <div class="mx-auto person-table">
-      <HygeiaWeb.CaseLive.PersonCreateTable id="person-table" tenants={{ @tenants }} users={{ @users }} />
+      <HygeiaWeb.CaseLive.PersonCreateTable id="person-table" tenants={{ @tenants }} users={{ @users }}>
+        <template slot="additional_header">
+          <th>
+            {{ gettext("Test Date") }}
+          </th>
+          <th>
+            {{ gettext("Laboratory report date") }}
+          </th>
+          <th>
+            {{ gettext("Test kind") }}
+          </th>
+          <th class="table-col-border">
+            {{ gettext("Test result") }}
+          </th>
+        </template>
+        <template slot="additional_row">
+          <td>
+            <Field class="fill-cell" name={{ :test_date }}>
+              <DateInput class="form-control" />
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <Field class="fill-cell" name={{ :test_laboratory_report }}>
+              <DateInput class="form-control" />
+              <FormError />
+            </Field>
+          </td>
+          <td>
+            <Field class="fill-cell" name={{ :test_kind }}>
+              <Select class="form-control" opts={{ prompt: gettext("Choose test kind") }} options={{ test_kinds() }} />
+              <FormError />
+            </Field>
+          </td>
+          <td class="table-col-border">
+            <Field class="fill-cell" name={{ :test_result }}>
+              <Select class="form-control" opts={{ prompt: gettext("Choose test result") }} options={{ test_results() }} />
+              <FormError />
+            </Field>
+          </td>
+        </template>
+      </HygeiaWeb.CaseLive.PersonCreateTable>
     </div>
 
     <div class="container">

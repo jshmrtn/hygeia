@@ -4,6 +4,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   use HygeiaWeb, :surface_live_component
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.ContactMethod
   alias Hygeia.TenantContext
   alias HygeiaWeb.FormError
   alias Surface.Components.Form.Field
@@ -15,6 +16,9 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
 
   prop tenants, :list, required: true
   prop users, :list, required: true
+
+  slot additional_header, required: false
+  slot additional_row, required: false, props: [:disabled]
 
   @impl Phoenix.LiveComponent
   def mount(socket) do
@@ -62,7 +66,12 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   end
 
   defp get_contact_method(person, type) do
-    Enum.find(person.contact_methods, &match?(^type, &1.type)).value
+    person.contact_methods
+    |> Enum.find(&match?(^type, &1.type))
+    |> case do
+      nil -> nil
+      %ContactMethod{value: value, type: ^type} -> value
+    end
   end
 
   defp get_tenant(tenants, uuid),

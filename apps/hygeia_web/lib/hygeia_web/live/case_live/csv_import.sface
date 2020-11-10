@@ -13,7 +13,33 @@
       <dd>{{ gettext("Comma (,)") }}</dd>
 
       <dt>{{ gettext("Available Column Headers") }}</dt>
-      <dd>{{ gettext("Firstname, Lastname, Mobile Phone, Landline, Email, Tenant, Supervisor, Tracer") }}</dd>
+      <dd>
+        {{ HygeiaCldr.List.to_string!(
+          [
+            gettext("Firstname"),
+            gettext("Lastname"),
+            gettext("Mobile Phone"),
+            gettext("Landline"),
+            gettext("Email"),
+            gettext("Tenant"),
+            gettext("Supervisor"),
+            gettext("Tracer"),
+            gettext("Employer"),
+            gettext("Test Date"),
+            gettext("Laboratory report date"),
+            gettext("Test kind"),
+            gettext("Test result")
+          ]
+        ) }}
+      </dd>
+
+      <dt>{{ gettext("Date Format") }}</dt>
+      <dd>
+        {{
+          gettext_comment("Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj");
+          gettext("yyyy-mm-dd")
+        }}
+      </dd>
     </dl>
   ">
     <span class="oi oi-info mr-1" title={{ gettext("Info") }} aria-hidden="true"></span>

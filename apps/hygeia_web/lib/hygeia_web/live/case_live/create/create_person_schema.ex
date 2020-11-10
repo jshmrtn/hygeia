@@ -17,6 +17,11 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
     field :accepted_duplicate, :boolean
     field :accepted_duplicate_uuid, :binary_id
     field :accepted_duplicate_human_readable_id, :string
+    field :employer, :string
+    field :test_date, :date
+    field :test_laboratory_report, :date
+    field :test_kind, Hygeia.CaseContext.Clinical.TestKind
+    field :test_result, Hygeia.CaseContext.Clinical.Result
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     belongs_to :supervisor, User, references: :uuid, foreign_key: :supervisor_uuid
@@ -43,7 +48,12 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
         :accepted_duplicate_human_readable_id,
         :tenant_uuid,
         :tracer_uuid,
-        :supervisor_uuid
+        :supervisor_uuid,
+        :employer,
+        :test_date,
+        :test_laboratory_report,
+        :test_kind,
+        :test_result
       ])
 
     if Map.drop(changes, [:uuid]) == %{} do
@@ -155,12 +165,14 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
         last_name: last_name,
         email: email,
         mobile: mobile,
-        landline: landline
+        landline: landline,
+        employer: employer
       }) do
     attrs = %{
       first_name: first_name,
       last_name: last_name,
-      contact_methods: []
+      contact_methods: [],
+      employers: []
     }
 
     attrs =
@@ -173,8 +185,13 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
         do: attrs,
         else: update_in(attrs.contact_methods, &[%{type: :landline, value: landline} | &1])
 
-    if is_nil(email),
+    attrs =
+      if is_nil(email),
+        do: attrs,
+        else: update_in(attrs.contact_methods, &[%{type: :email, value: email} | &1])
+
+    if is_nil(employer),
       do: attrs,
-      else: update_in(attrs.contact_methods, &[%{type: :email, value: email} | &1])
+      else: update_in(attrs.employers, &[%{name: employer} | &1])
   end
 end

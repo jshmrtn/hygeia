@@ -82,7 +82,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             changeset
             |> Ecto.Changeset.fetch_field!(:people)
             |> Enum.reject(&match?(%CreatePersonSchema{uuid: nil}, &1))
-            |> Enum.map(&save_or_load_person_schema(&1, socket, changeset))
+            |> Enum.map(&{&1, save_or_load_person_schema(&1, socket, changeset)})
             |> Enum.map(&create_case(&1, changeset))
             |> Enum.map(&create_transmission(&1, changeset))
           end)
@@ -149,7 +149,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp create_case({person, supervisor, tracer}, changeset) do
+  defp create_case({person_schema, {person, supervisor, tracer}}, changeset) do
     {start_date, end_date} =
       changeset
       |> Ecto.Changeset.get_field(:date, nil)
@@ -171,7 +171,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           }
         ],
         supervisor_uuid: supervisor.uuid,
-        tracer_uuid: tracer.uuid
+        tracer_uuid: tracer.uuid,
+        clinical: %{
+          test: person_schema.test_date,
+          laboratory_report: person_schema.test_laboratory_report,
+          test_kind: person_schema.test_kind,
+          result: person_schema.test_result
+        }
       })
 
     case

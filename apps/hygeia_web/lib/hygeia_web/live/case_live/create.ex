@@ -139,6 +139,48 @@ defmodule HygeiaWeb.CaseLive.Create do
     |> Map.new()
   end
 
+  @spec fetch_test_kind(row :: map) :: map
+  def fetch_test_kind(row) do
+    row
+    |> Enum.map(fn
+      {:test_kind, kind} ->
+        {:test_kind,
+         cond do
+           String.downcase(kind) == String.downcase("PCR") -> :pcr
+           String.downcase(kind) == String.downcase("Serology") -> :serology
+           String.downcase(kind) == String.downcase(gettext("PCR")) -> :pcr
+           String.downcase(kind) == String.downcase(gettext("Serology")) -> :serology
+           true -> nil
+         end}
+
+      other ->
+        other
+    end)
+    |> Enum.reject(&match?({:test_kind, nil}, &1))
+    |> Map.new()
+  end
+
+  @spec fetch_test_result(row :: map) :: map
+  def fetch_test_result(row) do
+    row
+    |> Enum.map(fn
+      {:test_result, kind} ->
+        {:test_result,
+         cond do
+           String.downcase(kind) == String.downcase("positive") -> :positive
+           String.downcase(kind) == String.downcase("negative") -> :negative
+           String.downcase(kind) == String.downcase(gettext("positive")) -> :positive
+           String.downcase(kind) == String.downcase(gettext("negative")) -> :negative
+           true -> nil
+         end}
+
+      other ->
+        other
+    end)
+    |> Enum.reject(&match?({:test_result, nil}, &1))
+    |> Map.new()
+  end
+
   @spec import_into_changeset(
           changeset :: Ecto.Changeset.t(),
           data :: [map],
@@ -151,6 +193,8 @@ defmodule HygeiaWeb.CaseLive.Create do
       Ecto.Changeset.get_change(changeset, :people, []) ++
         (data
          |> Stream.map(&fetch_tenant(&1, tenants))
+         |> Stream.map(&fetch_test_kind/1)
+         |> Stream.map(&fetch_test_result/1)
          |> Stream.map(&CreatePersonSchema.changeset(%CreatePersonSchema{}, &1))
          |> Enum.to_list())
     )
@@ -243,6 +287,16 @@ defmodule HygeiaWeb.CaseLive.Create do
       "email" => :email,
       gettext("Email") => :email,
       "tenant" => :tenant,
-      gettext("Tenant") => :tenant
+      gettext("Tenant") => :tenant,
+      "employer" => :employer,
+      gettext("Employer") => :employer,
+      "test_date" => :test_date,
+      gettext("Test date") => :test_date,
+      "test_laboratory_report" => :test_laboratory_report,
+      gettext("Laboratory report date") => :test_laboratory_report,
+      "test_kind" => :test_kind,
+      gettext("Test Kind") => :test_kind,
+      "test_result" => :test_result,
+      gettext("Test Result") => :test_result
     }
 end
