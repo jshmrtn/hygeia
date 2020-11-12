@@ -8,7 +8,7 @@ defmodule HygeiaWeb.UserLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
-  @moduletag log_in: true
+  @moduletag log_in: [roles: [:admin]]
 
   defp create_user(_tags) do
     %{user: user_fixture()}
@@ -31,7 +31,6 @@ defmodule HygeiaWeb.UserLiveTest do
     test "displays user", %{conn: conn, user: user} do
       {:ok, _show_live, html} = live(conn, Routes.user_show_path(conn, :show, user))
 
-      assert html =~ "Show User"
       assert html =~ user.display_name
     end
   end

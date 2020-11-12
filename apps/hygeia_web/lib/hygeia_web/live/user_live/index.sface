@@ -1,0 +1,58 @@
+<div class="component-user-index container">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <h1>
+      {{ gettext("Listing Users") }}
+    </h1>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            {{ gettext("Display Name") }}
+          </th>
+          <th>
+            {{ gettext("Email") }}
+          </th>
+          <th>
+            {{ gettext("Roles") }}
+          </th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="users">
+        <tr
+          :for={{ user <- @users  }}
+          id="user-{{ user.uuid }}"
+        >
+          <td>
+            {{ user.display_name }}
+          </td>
+          <td>
+            {{ user.email }}
+          </td>
+          <td>
+            <span :for={{ role <- user.roles }}>
+              <span class="badge badge-secondary">
+              {{ role }}
+              </span>
+            </span>
+          </td>
+
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LiveRedirect
+                to={{ Routes.user_show_path(@socket, :show, user) }}
+                :if={{ authorized?(user, :details, auth) }}
+              >
+                <button class="ml-auto btn btn-sm btn-secondary">
+                  {{ gettext("Show") }}
+                </button>
+              </LiveRedirect>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </Context>
+</div>
