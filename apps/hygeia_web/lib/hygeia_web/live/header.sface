@@ -75,6 +75,13 @@
               >
                 {{ gettext("Professions") }}
               </Link>
+              <Link
+                to={{ Routes.organisation_index_path(@socket, :index) }}
+                class="dropdown-item"
+                :if={{ authorized?(Hygeia.OrganisationContext.Organisation, :list, auth) }}
+              >
+                {{ gettext("Organisations") }}
+              </Link>
             </div>
           </li>
         </ul>
