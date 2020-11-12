@@ -1,67 +1,82 @@
 <ul class="nav nav-tabs card-header-tabs">
-  <li class="nav-item">
-    <UriActiveContext
-      to={{ Routes.case_base_data_path(@socket, :show, @case) }}
-      :let={{ to: to, active: active }}
-    >
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <li class="nav-item">
       <UriActiveContext
-        to={{ Routes.case_base_data_path(@socket, :edit, @case) }}
-        :let={{ active: editActive }}
+        to={{ Routes.case_base_data_path(@socket, :show, @case) }}
+        :let={{ to: to, active: active }}
       >
-        <LiveRedirect to={{ to }} class="nav-link {{ if active || editActive, do: "active"}}">
-          {{ gettext("Base Data") }}
+        <UriActiveContext
+          to={{ Routes.case_base_data_path(@socket, :edit, @case) }}
+          :let={{ active: editActive }}
+        >
+          <LiveRedirect to={{ to }} class="nav-link {{ if active || editActive, do: "active"}}">
+            {{ gettext("Base Data") }}
+          </LiveRedirect>
+        </UriActiveContext>
+      </UriActiveContext>
+    </li>
+    <li class="nav-item">
+      <UriActiveContext
+        to={{ Routes.case_transmissions_path(@socket, :show, @case) }}
+        :let={{ to: to, active: active }}
+      >
+        <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active"}}">
+          {{ gettext("Transmissions") }}
         </LiveRedirect>
       </UriActiveContext>
-    </UriActiveContext>
-  </li>
-  <li class="nav-item">
-    <UriActiveContext
-      to={{ Routes.case_transmissions_path(@socket, :show, @case) }}
-      :let={{ to: to, active: active }}
-    >
-      <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active"}}">
-        {{ gettext("Transmissions") }}
-      </LiveRedirect>
-    </UriActiveContext>
-  </li>
-  <li class="nav-item">
-    <UriActiveContext
-      to={{ Routes.case_protocol_path(@socket, :show, @case) }}
-      :let={{ to: to, active: active }}
-    >
-      <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active"}}">
-        {{ gettext("Protocol") }}
-      </LiveRedirect>
-    </UriActiveContext>
-  </li>
-  
-  <div class="ml-auto dropdown show">
-    <a class="btn btn-sm btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{ gettext("Actions") }}
-    </a>
+    </li>
+    <li class="nav-item">
+      <UriActiveContext
+        to={{ Routes.case_protocol_path(@socket, :show, @case) }}
+        :let={{ to: to, active: active }}
+      >
+        <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active"}}">
+          {{ gettext("Protocol") }}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+    
+    <li class="ml-auto dropdown show">
+      <a class="btn btn-sm btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{ gettext("Actions") }}
+      </a>
 
-    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-      <Link
-        :if={{ match?(%Phase.Index{}, List.last(@case.phases).details) }}
-        class="dropdown-item"
-        to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, List.last(@case.phases).uuid) }}
-      >
-        <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
-        {{ gettext("Isolation Confirmation") }}
-      </Link>
-      <Link
-        :if={{ match?(%Phase.PossibleIndex{}, List.last(@case.phases).details) }}
-        class="dropdown-item"
-        to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, List.last(@case.phases).uuid) }}
-      >
-        {{ gettext("Quarantine Confirmation") }}
-      </Link>
-      <LiveRedirect
-        class="dropdown-item"
-        to={{ Routes.case_create_possible_index_path(@socket, :create, propagator_internal: true, propagator_case_uuid: @case.uuid, default_tenant_uuid: @case.tenant_uuid) }}
-      >
-        {{ gettext("Create Contact Cases") }}
-      </LiveRedirect>
-    </div>
-  </div>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+        <Link
+          :for={{ %{details: %Phase.Index{}} <- @case.phases }}
+          class="dropdown-item"
+          to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, List.last(@case.phases).uuid) }}
+        >
+          <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
+          {{ gettext("Isolation Confirmation") }}
+        </Link>
+        <Link
+          :for={{ %{details: %Phase.PossibleIndex{}} <- @case.phases }}
+          class="dropdown-item"
+          to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, List.last(@case.phases).uuid) }}
+        >
+          <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
+          {{ gettext("Quarantine Confirmation") }}
+        </Link>
+        <LiveRedirect
+          class="dropdown-item"
+          to={{ Routes.case_create_possible_index_path(@socket, :create, propagator_internal: true, propagator_case_uuid: @case.uuid, default_tenant_uuid: @case.tenant_uuid) }}
+        >
+          {{ gettext("Create Contact Cases") }}
+        </LiveRedirect>
+        <Link
+          :if={{ authorized?(@case, :update, auth) and not match?(%{details: %Phase.Index{}}, List.last(@case.phases)) }}
+          class="dropdown-item"
+          to="#"
+          click="convert_to_index" 
+          opts={{
+            title: gettext("Convert To Index"),
+            data: [confirm: gettext("Are you sure?")]
+          }}
+        >
+          {{ gettext("Convert to Index") }}
+        </Link>
+      </div>
+    </li>
+  </Context>
 </ul>
