@@ -26,7 +26,7 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec list_professions :: [Profession.t()]
-  def list_professions, do: Repo.all(Profession)
+  def list_professions, do: Repo.all(from profession in Profession, order_by: profession.name)
 
   @doc """
   Gets a single profession.

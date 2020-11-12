@@ -94,44 +94,35 @@ defmodule HygeiaWeb.Router do
     live "/tenants", TenantLive.Index, :index
     live "/tenants/new", TenantLive.Index, :new
     live "/tenants/:id/edit", TenantLive.Index, :edit
-
     live "/tenants/:id", TenantLive.Show, :show
     live "/tenants/:id/show/edit", TenantLive.Show, :edit
 
     live "/professions", ProfessionLive.Index, :index
-    live "/professions/new", ProfessionLive.Index, :new
-    live "/professions/:id/edit", ProfessionLive.Index, :edit
-
+    live "/professions/new", ProfessionLive.Create, :create
     live "/professions/:id", ProfessionLive.Show, :show
     live "/professions/:id/show/edit", ProfessionLive.Show, :edit
 
     live "/users", UserLive.Index, :index
-
     live "/users/:id", UserLive.Show, :show
 
     live "/people", PersonLive.Index, :index
     live "/people/:cursor_direction/:cursor", PersonLive.Index, :index
-
     live "/people/new", PersonLive.Create, :create
     live "/people/:id", PersonLive.BaseData, :show
     live "/people/:id/show/edit", PersonLive.BaseData, :edit
 
     live "/cases/new/index", CaseLive.CreateIndex, :create
     live "/cases/new/possible-index", CaseLive.CreatePossibleIndex, :create
-
     live "/cases/:id", CaseLive.BaseData, :show
     live "/cases/:id/show/edit", CaseLive.BaseData, :edit
-
     live "/cases/:id/transmissions", CaseLive.Transmissions, :show
     live "/cases/:id/protocol", CaseLive.Protocol, :show
-
     live "/cases/", CaseLive.Index, :index
     live "/cases/:cursor_direction/:cursor", CaseLive.Index, :index
 
     live "/organisations", OrganisationLive.Index, :index
     live "/organisations/new", OrganisationLive.Index, :new
     live "/organisations/:id/edit", OrganisationLive.Index, :edit
-
     live "/organisations/:id", OrganisationLive.Show, :show
     live "/organisations/:id/show/edit", OrganisationLive.Show, :edit
 

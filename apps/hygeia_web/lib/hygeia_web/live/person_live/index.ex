@@ -21,31 +21,27 @@ defmodule HygeiaWeb.PersonLive.Index do
 
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
-    Phoenix.PubSub.subscribe(Hygeia.PubSub, "people")
-
     socket =
       if authorized?(Person, :list, get_auth(socket)) do
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "people")
+
+        pagination_params =
+          case params do
+            %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
+            %{"cursor" => cursor, "cursor_direction" => "before"} -> [before: cursor]
+            _other -> []
+          end
+
         socket
+        |> assign(pagination_params: pagination_params, filters: %{})
+        |> list_people()
       else
         socket
         |> push_redirect(to: Routes.page_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    pagination_params =
-      case params do
-        %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
-        %{"cursor" => cursor, "cursor_direction" => "before"} -> [before: cursor]
-        _other -> []
-      end
-
-    super(
-      params,
-      session,
-      socket
-      |> assign(pagination_params: pagination_params, filters: %{})
-      |> list_people()
-    )
+    super(params, session, socket)
   end
 
   @impl Phoenix.LiveView

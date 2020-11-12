@@ -18,25 +18,21 @@ defmodule HygeiaWeb.PersonLive.Create do
 
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
-    tenants = TenantContext.list_tenants()
-
     socket =
       if authorized?(Person, :create, get_auth(socket)) do
-        socket
+        tenants = TenantContext.list_tenants()
+
+        assign(socket,
+          changeset: CaseContext.change_person(%Person{}),
+          tenants: tenants
+        )
       else
         socket
         |> push_redirect(to: Routes.page_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(
-      params,
-      session,
-      assign(socket,
-        changeset: CaseContext.change_person(%Person{}),
-        tenants: tenants
-      )
-    )
+    super(params, session, socket)
   end
 
   @impl Phoenix.LiveView
