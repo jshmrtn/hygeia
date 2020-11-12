@@ -91,7 +91,8 @@
                 <LiveRedirect to={{ Routes.user_show_path(@socket, :show, auth.uuid) }} class="dropdown-item">
                   {{ gettext("Profile") }}
                 </LiveRedirect>
-                <Link to={{ Routes.auth_path(@socket, :delete) }} opts={{ method: :delete }} class="dropdown-item">
+                <!-- TODO: Put method DELETE when https://github.com/w3c/webappsec-csp/issues/8 is resolved -->
+                <Link to={{ Routes.auth_path(@socket, :delete) }} class="dropdown-item">
                   {{ gettext("Logout") }}
                 </Link>
               </div>

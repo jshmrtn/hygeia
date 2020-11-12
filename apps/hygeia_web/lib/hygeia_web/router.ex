@@ -2,7 +2,6 @@ defmodule HygeiaWeb.Router do
   use HygeiaWeb, :router
 
   import Phoenix.LiveDashboard.Router
-  import PlugDynamic.Builder
 
   # Make sure compilation order is correct
   require HygeiaCldr
@@ -33,48 +32,29 @@ defmodule HygeiaWeb.Router do
       cldr: HygeiaCldr,
       session_key: "cldr_locale"
 
-    dynamic_plug PlugContentSecurityPolicy do
-      sso_origins =
-        :ueberauth
-        |> Application.fetch_env!(UeberauthOIDC)
-        |> Enum.filter(&match?({_name, [_head | _tail]}, &1))
-        |> Enum.map(&elem(&1, 1))
-        |> Enum.map(&Keyword.fetch(&1, :issuer_or_config_endpoint))
-        |> Enum.filter(&match?({:ok, _endpoint}, &1))
-        |> Enum.map(&elem(&1, 1))
-        |> Enum.map(
-          &(&1
-            |> URI.parse()
-            |> Map.put(:path, nil)
-            |> Map.put(:query, nil)
-            |> URI.to_string())
-        )
-
-      [
-        nonces_for: [:script_src, :style_src],
-        directives: %{
-          default_src: ~w('none'),
-          script_src: ~w(),
-          style_src: @style_src,
-          img_src: ~w('self' data:),
-          font_src: ~w('self' data:),
-          connect_src: ~w('self'),
-          media_src: ~w('none'),
-          object_src: ~w('none'),
-          prefetch_src: ~w('none'),
-          child_src: ~w('none'),
-          frame_src: @frame_src,
-          worker_src: ~w('none'),
-          frame_ancestors: ~w('none'),
-          form_action: ["'self'" | sso_origins],
-          upgrade_insecure_requests: ~w(),
-          block_all_mixed_content: ~w(),
-          sandbox: ~w(allow-forms allow-scripts allow-modals allow-same-origin allow-downloads),
-          base_uri: ~w('none'),
-          manifest_src: ~w('none')
-        }
-      ]
-    end
+    plug PlugContentSecurityPolicy,
+      nonces_for: [:script_src, :style_src],
+      directives: %{
+        default_src: ~w('none'),
+        script_src: ~w(),
+        style_src: @style_src,
+        img_src: ~w('self' data:),
+        font_src: ~w('self' data:),
+        connect_src: ~w('self'),
+        media_src: ~w('none'),
+        object_src: ~w('none'),
+        prefetch_src: ~w('none'),
+        child_src: ~w('none'),
+        frame_src: @frame_src,
+        worker_src: ~w('none'),
+        frame_ancestors: ~w('none'),
+        form_action: ~w('self'),
+        upgrade_insecure_requests: ~w(),
+        block_all_mixed_content: ~w(),
+        sandbox: ~w(allow-forms allow-scripts allow-modals allow-same-origin allow-downloads),
+        base_uri: ~w('none'),
+        manifest_src: ~w('none')
+      }
 
     plug :store_locale
 
@@ -101,6 +81,9 @@ defmodule HygeiaWeb.Router do
     post "/:provider/callback", AuthController, :callback
 
     delete "/", AuthController, :delete
+    # This route also exists as get because of this issue
+    # https://github.com/w3c/webappsec-csp/issues/8
+    get "/", AuthController, :delete
   end
 
   scope "/", HygeiaWeb do
