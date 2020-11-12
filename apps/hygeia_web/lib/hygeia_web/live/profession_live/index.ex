@@ -28,6 +28,9 @@ defmodule HygeiaWeb.ProfessionLive.Index do
   @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id}, socket) do
     profession = CaseContext.get_profession!(id)
+
+    true = authorized?(profession, :delete, get_auth(socket))
+
     {:ok, _} = CaseContext.delete_profession(profession)
 
     {:noreply, assign(socket, :professions, list_professions())}

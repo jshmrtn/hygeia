@@ -41,4 +41,15 @@ defmodule HygeiaWeb.CaseLive.Navigation do
      |> push_redirect(to: Routes.case_base_data_path(socket, :show, case))
      |> put_flash(:info, gettext("Created Index Phase."))}
   end
+
+  def handle_event("delete", _params, %{assigns: %{case: case}} = socket) do
+    true = authorized?(case, :delete, get_auth(socket))
+
+    {:ok, _} = CaseContext.delete_case(case)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, gettext("Case deleted successfully"))
+     |> redirect(to: Routes.case_index_path(socket, :index))}
+  end
 end

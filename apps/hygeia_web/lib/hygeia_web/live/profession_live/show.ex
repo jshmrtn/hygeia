@@ -71,6 +71,8 @@ defmodule HygeiaWeb.ProfessionLive.Show do
   end
 
   def handle_event("delete", _params, socket) do
+    true = authorized?(socket.assigns.profession, :delete, get_auth(socket))
+
     {:ok, _} = CaseContext.delete_profession(socket.assigns.profession)
 
     {:noreply,

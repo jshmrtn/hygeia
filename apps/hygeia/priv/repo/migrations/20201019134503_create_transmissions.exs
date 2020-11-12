@@ -11,8 +11,8 @@ defmodule Hygeia.Repo.Migrations.CreateTransmissions do
       add :recipient_ims_id, :string
       add :propagator_internal, :boolean
       add :propagator_ims_id, :string
-      add :recipient_case_uuid, references(:cases, on_delete: :nothing)
-      add :propagator_case_uuid, references(:cases, on_delete: :nothing)
+      add :recipient_case_uuid, references(:cases, on_delete: :nilify_all)
+      add :propagator_case_uuid, references(:cases, on_delete: :nilify_all)
 
       timestamps()
     end

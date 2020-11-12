@@ -281,13 +281,28 @@ defmodule Hygeia.CaseContext do
   """
   @spec delete_person(person :: Person.t()) ::
           {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
-  def delete_person(%Person{} = person),
-    do:
+  def delete_person(%Person{} = person) do
+    cases = Repo.preload(person, :cases).cases
+
+    Repo.transaction(fn ->
+      cases
+      |> Enum.map(&delete_case/1)
+      |> Enum.each(fn
+        {:ok, _case} -> :ok
+        {:error, reason} -> Repo.rollback(reason)
+      end)
+
       person
       |> change_person()
       |> versioning_delete()
       |> broadcast("people", :delete)
       |> versioning_extract()
+      |> case do
+        {:ok, person} -> person
+        {:error, reason} -> Repo.rollback(reason)
+      end
+    end)
+  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking person changes.
@@ -466,13 +481,39 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec delete_case(case :: Case.t()) :: {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
-  def delete_case(%Case{} = case),
-    do:
+  def delete_case(%Case{} = case) do
+    case = Repo.preload(case, protocol_entries: [], related_organisations: [])
+    protocol_entries = case.protocol_entries
+
+    Repo.transaction(fn ->
+      protocol_entries
+      |> Enum.map(&delete_protocol_entry/1)
+      |> Enum.each(fn
+        {:ok, _protocol_entry} -> :ok
+        {:error, reason} -> Repo.rollback(reason)
+      end)
+
+      case =
+        case
+        |> change_case(%{related_organisations: []})
+        |> versioning_update()
+        |> broadcast("cases", :update)
+        |> versioning_extract()
+        |> case do
+          {:ok, case} -> case
+          {:error, reason} -> Repo.rollback(reason)
+        end
+
       case
-      |> change_case()
       |> versioning_delete()
       |> broadcast("cases", :delete)
       |> versioning_extract()
+      |> case do
+        {:ok, case} -> case
+        {:error, reason} -> Repo.rollback(reason)
+      end
+    end)
+  end
 
   @spec case_send_sms(case :: Case.t(), text :: String.t()) ::
           {:ok, ProtocolEntry.t()} | {:error, :no_mobile_number | term}

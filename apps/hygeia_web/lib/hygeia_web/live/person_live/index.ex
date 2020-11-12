@@ -52,6 +52,9 @@ defmodule HygeiaWeb.PersonLive.Index do
   @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id}, socket) do
     person = CaseContext.get_person!(id)
+
+    true = authorized?(person, :delete, get_auth(socket))
+
     {:ok, _} = CaseContext.delete_person(person)
 
     {:noreply, socket |> assign(pagination_params: []) |> list_people()}

@@ -27,21 +27,33 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id} = params, uri, socket) do
-    Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
-
-    tenants = TenantContext.list_tenants()
-    users = UserContext.list_users()
-    organisations = OrganisationContext.list_organisations()
-
     case = CaseContext.get_case!(id)
 
-    super(
-      params,
-      uri,
-      socket
-      |> load_data(case)
-      |> assign(tenants: tenants, users: users, organisations: organisations)
-    )
+    socket =
+      if authorized?(
+           case,
+           case socket.assigns.live_action do
+             :edit -> :update
+             :show -> :details
+           end,
+           get_auth(socket)
+         ) do
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
+
+        tenants = TenantContext.list_tenants()
+        users = UserContext.list_users()
+        organisations = OrganisationContext.list_organisations()
+
+        socket
+        |> load_data(case)
+        |> assign(tenants: tenants, users: users, organisations: organisations)
+      else
+        socket
+        |> push_redirect(to: Routes.page_path(socket, :index))
+        |> put_flash(:error, gettext("You are not authorized to do this action."))
+      end
+
+    super(params, uri, socket)
   end
 
   @impl Phoenix.LiveView

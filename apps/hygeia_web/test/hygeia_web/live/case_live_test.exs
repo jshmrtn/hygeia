@@ -9,7 +9,7 @@ defmodule HygeiaWeb.CaseLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
-  @moduletag log_in: true
+  @moduletag log_in: [roles: [:admin]]
 
   defp create_case(_tags) do
     %{case_model: case_fixture()}

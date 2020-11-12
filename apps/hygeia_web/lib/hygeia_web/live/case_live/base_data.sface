@@ -1,336 +1,343 @@
 <div class="component-case-base-data container">
-  <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
 
-  <div class="card">
-    <div class="card-header">
-      <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
-    </div>
-    <div class="card-body">
-      <LivePatch :if={{ @live_action == :show }} to={{ Routes.case_base_data_path(@socket, :edit, @case) }}>
-        <button class="btn btn-primary mb-3" id="case-edit">
-          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
-          {{ gettext("Edit") }}
-        </button>
-      </LivePatch>
-
-      <Form 
-        for={{ @changeset }} 
-        change="validate" 
-        submit="save" 
-        opts={{ autocomplete: "off", id: "case-form", "phx-hook": "BlockNavigation" }}
-      >
-        <div :if={{ @live_action == :edit }}>
-          <div class="mb-3" :if={{ @live_action == :edit }}>
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
-              <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
-              {{ gettext("Save") }}
+    <div class="card">
+      <div class="card-header">
+        <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
+      </div>
+      <div class="card-body">
+        <div class="mb-3" :if={{ @live_action == :show }}>
+          <LivePatch
+            :if={{ authorized?(@case, :update, auth) }}
+            to={{ Routes.case_base_data_path(@socket, :edit, @case) }}
+          >
+            <button class="btn btn-primary mb-3" id="case-edit">
+              <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+              {{ gettext("Edit") }}
             </button>
-            <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
-              <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
-              {{ gettext("Discard") }}
-            </button>
-          </div>
+          </LivePatch>
         </div>
 
-        <div class="form-grid">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("Tracing") }}</h4>
-              <Field name={{ :tenant_uuid }} class="form-group">
-                <Label>{{ "Tenant" |> gettext }}</Label>
-                <Select 
-                  class="form-control" 
-                  opts={{ prompt: "Select tenant" |> gettext, disabled: @live_action == :show }} 
-                  options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
-                />
-                <FormError />
-              </Field>
-
-              <div class="row">
-                <div class="col">
-                  <Field name={{ :tracer_uuid }} class="form-group">
-                    <Label>{{ "Tracer" |> gettext }}</Label>
-                    <Select 
-                      class="form-control" 
-                      opts={{ prompt: "Select user" |> gettext,  disabled: @live_action == :show }} 
-                      options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
-                    />
-                    <FormError />
-                  </Field>
-                </div>
-                <div class="col">
-                  <Field name={{ :supervisor_uuid }} class="form-group">
-                    <Label>{{ "Supervisor" |> gettext }}</Label>
-                    <Select 
-                      class="form-control" 
-                      opts={{ prompt: "Select user" |> gettext, disabled: @live_action == :show }} 
-                      options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
-                    />
-                    <FormError />
-                  </Field>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col">
-                  <Field name={{ :complexity }} class="form-group">
-                    <Label>{{ "Complexity" |> gettext }}</Label>
-                    <Select 
-                      class="form-control" 
-                      opts={{ prompt: "Select complexity" |> gettext, disabled: @live_action == :show }} 
-                      options={{ case_complexity_map() }}
-                    />
-                    <FormError />
-                  </Field>
-                </div>
-                <div class="col">
-                  <Field name={{ :status }} class="form-group">
-                    <Label>{{ "Status" |> gettext }}</Label>
-                    <Select 
-                      class="form-control" 
-                      opts={{ prompt: "Select status" |> gettext, disabled: @live_action == :show }} 
-                      options={{ case_status_map() }}
-                    />
-                    <FormError />
-                  </Field>
-                </div>
-              </div>
+        <Form 
+          for={{ @changeset }} 
+          change="validate" 
+          submit="save" 
+          opts={{ autocomplete: "off", id: "case-form", "phx-hook": "BlockNavigation" }}
+        >
+          <div :if={{ @live_action == :edit }}>
+            <div class="mb-3" :if={{ @live_action == :edit }}>
+              <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
+                <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+                {{ gettext("Save") }}
+              </button>
+              <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
+                <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+                {{ gettext("Discard") }}
+              </button>
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("References") }}</h4>
-              <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @case }} id="references" add_external_reference="add_external_reference" />
+          <div class="form-grid">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Tracing") }}</h4>
+                <Field name={{ :tenant_uuid }} class="form-group">
+                  <Label>{{ "Tenant" |> gettext }}</Label>
+                  <Select 
+                    class="form-control" 
+                    opts={{ prompt: "Select tenant" |> gettext, disabled: @live_action == :show }} 
+                    options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
+                  />
+                  <FormError />
+                </Field>
+
+                <div class="row">
+                  <div class="col">
+                    <Field name={{ :tracer_uuid }} class="form-group">
+                      <Label>{{ "Tracer" |> gettext }}</Label>
+                      <Select 
+                        class="form-control" 
+                        opts={{ prompt: "Select user" |> gettext,  disabled: @live_action == :show }} 
+                        options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+                      />
+                      <FormError />
+                    </Field>
+                  </div>
+                  <div class="col">
+                    <Field name={{ :supervisor_uuid }} class="form-group">
+                      <Label>{{ "Supervisor" |> gettext }}</Label>
+                      <Select 
+                        class="form-control" 
+                        opts={{ prompt: "Select user" |> gettext, disabled: @live_action == :show }} 
+                        options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+                      />
+                      <FormError />
+                    </Field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <Field name={{ :complexity }} class="form-group">
+                      <Label>{{ "Complexity" |> gettext }}</Label>
+                      <Select 
+                        class="form-control" 
+                        opts={{ prompt: "Select complexity" |> gettext, disabled: @live_action == :show }} 
+                        options={{ case_complexity_map() }}
+                      />
+                      <FormError />
+                    </Field>
+                  </div>
+                  <div class="col">
+                    <Field name={{ :status }} class="form-group">
+                      <Label>{{ "Status" |> gettext }}</Label>
+                      <Select 
+                        class="form-control" 
+                        opts={{ prompt: "Select status" |> gettext, disabled: @live_action == :show }} 
+                        options={{ case_status_map() }}
+                      />
+                      <FormError />
+                    </Field>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div class="card phases-card">
-            <div class="card-header mb-0">
-              <h4 class="card-title">{{ gettext("Phases") }}</h4>
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("References") }}</h4>
+                <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @case }} id="references" add_external_reference="add_external_reference" />
+              </div>
             </div>
-            <div class="card-body form-grid">
-              <Inputs for={{ :phases }}>
-                <HiddenInput field={{ :uuid }} />
-                <div class="card">
-                  <div class="card-body">
-                    <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                      <div class="form-group">
-                        <Label>{{ gettext("Type") }}</Label>
-                        <div class="value">{{
-                          case Ecto.Changeset.fetch_field!(form.source, :details) do
-                            %Phase.Index{} -> gettext("Index")
-                            %Phase.PossibleIndex{} -> gettext("Possible Index")
-                          end
-                        }}</div>
-                      </div>
 
-                      <div class="row">
-                        <div class="col">
-                          <Field name={{ :start }} class="form-group">
-                            <Label>{{ "Start" |> gettext }}</Label>
-                            <DateInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                            <FormError />
-                          </Field>
+            <div class="card phases-card">
+              <div class="card-header mb-0">
+                <h4 class="card-title">{{ gettext("Phases") }}</h4>
+              </div>
+              <div class="card-body form-grid">
+                <Inputs for={{ :phases }}>
+                  <HiddenInput field={{ :uuid }} />
+                  <div class="card">
+                    <div class="card-body">
+                      <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                        <div class="form-group">
+                          <Label>{{ gettext("Type") }}</Label>
+                          <div class="value">{{
+                            case Ecto.Changeset.fetch_field!(form.source, :details) do
+                              %Phase.Index{} -> gettext("Index")
+                              %Phase.PossibleIndex{} -> gettext("Possible Index")
+                            end
+                          }}</div>
                         </div>
-                        <div class="col">
-                          <Field name={{ :end }} class="form-group">
-                            <Label>{{ "End" |> gettext }}</Label>
-                            <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                            <FormError />
-                          </Field>
-                        </div>
-                      </div>
 
-                      <PolimorphicInputs
-                        :if={{ match?(%Phase.Index{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
-                        field={{ :details }}
-                        type={{ :index }}
-                        id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
-                      >
-                        <Field name={{ :end_reason }} class="form-group">
-                          <Label>{{ gettext("End Reason") }}</Label>
-                          <Select 
-                            class="form-control" 
-                            opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
-                            options={{ case_phase_index_end_reason_map() }}
-                          />
-                          <FormError />
-                        </Field>
-                      </PolimorphicInputs>
-                      <PolimorphicInputs
-                        :if={{ match?(%Phase.PossibleIndex{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
-                        field={{ :details }}
-                        type={{ :possible_index }}
-                        id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
-                      >
-                        <p>
-                          <Link to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, Ecto.Changeset.fetch_field!(form.source, :uuid)) }}>
-                            {{ gettext("Quarantine Confirmation") }}
-                          </Link>
-                        </p>
-                        <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                          <div class="form-group">
-                            <Label>{{ gettext("Sub Type") }}</Label>
-                            <span class="form-control">
-                              {{ form.source |> Ecto.Changeset.fetch_field!(:type) |> case_phase_possible_index_type_translation() }}
-                            </span>
+                        <div class="row">
+                          <div class="col">
+                            <Field name={{ :start }} class="form-group">
+                              <Label>{{ "Start" |> gettext }}</Label>
+                              <DateInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                              <FormError />
+                            </Field>
                           </div>
+                          <div class="col">
+                            <Field name={{ :end }} class="form-group">
+                              <Label>{{ "End" |> gettext }}</Label>
+                              <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
+                              <FormError />
+                            </Field>
+                          </div>
+                        </div>
 
+                        <PolimorphicInputs
+                          :if={{ match?(%Phase.Index{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
+                          field={{ :details }}
+                          type={{ :index }}
+                          id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+                        >
                           <Field name={{ :end_reason }} class="form-group">
                             <Label>{{ gettext("End Reason") }}</Label>
                             <Select 
                               class="form-control" 
                               opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
-                              options={{ case_phase_possible_index_end_reason_map() }}
+                              options={{ case_phase_index_end_reason_map() }}
                             />
                             <FormError />
                           </Field>
-                        </InputContext>
-                      </PolimorphicInputs>
-                    </InputContext>
-                  </div>
-                </div>
-              </Inputs>
-            </div>
-          </div>
+                        </PolimorphicInputs>
+                        <PolimorphicInputs
+                          :if={{ match?(%Phase.PossibleIndex{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
+                          field={{ :details }}
+                          type={{ :possible_index }}
+                          id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+                        >
+                          <p>
+                            <Link to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, Ecto.Changeset.fetch_field!(form.source, :uuid)) }}>
+                              {{ gettext("Quarantine Confirmation") }}
+                            </Link>
+                          </p>
+                          <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                            <div class="form-group">
+                              <Label>{{ gettext("Sub Type") }}</Label>
+                              <span class="form-control">
+                                {{ form.source |> Ecto.Changeset.fetch_field!(:type) |> case_phase_possible_index_type_translation() }}
+                              </span>
+                            </div>
 
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("Clinical Information") }}</h4>
-              <Inputs for={{ :clinical }}>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group">
-                      <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                        <Field name={{ :reasons_for_pcr_test }}>
-                          <Label>{{ gettext("Reasons for PCR test") }}</Label>
-                          <label
-                            :for={{ {name, key} <- pcr_test_reasons() }}
-                            class="d-block checkbox-label"
-                            data-disabled={{ @live_action == :show }}
-                          >
-                            <input
-                              type="checkbox"
-                              name={{ input_name(form, :reasons_for_pcr_test) <> "[]" }}
-                              disabled={{ @live_action == :show }}
-                              checked={{ key in (Ecto.Changeset.get_field(form.source, :reasons_for_pcr_test, []) || []) }}
-                              value={{ key }}
-                            />
-                            {{ name }}
-                          </label>
-                          <FormError />
-                        </Field>
+                            <Field name={{ :end_reason }} class="form-group">
+                              <Label>{{ gettext("End Reason") }}</Label>
+                              <Select 
+                                class="form-control" 
+                                opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
+                                options={{ case_phase_possible_index_end_reason_map() }}
+                              />
+                              <FormError />
+                            </Field>
+                          </InputContext>
+                        </PolimorphicInputs>
                       </InputContext>
                     </div>
                   </div>
-                  <div class="col">
-                    <div class="form-group">
-                      <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                        <Field name={{ :symptoms }}>
-                          <Label>{{ gettext("Symptoms") }}</Label>
-                          <label
-                            :for={{ {name, key} <- symptoms() }}
-                            class="d-block checkbox-label"
-                            data-disabled={{ @live_action == :show }}
-                          >
-                            <input
-                              type="checkbox"
-                              name={{ input_name(form, :symptoms) <> "[]" }}
-                              disabled={{ @live_action == :show }}
-                              checked={{ key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || []) }}
-                              value={{ key }}
-                            />
-                            {{ name }}
-                          </label>
-                          <FormError />
-                        </Field>
-                      </InputContext>
+                </Inputs>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Clinical Information") }}</h4>
+                <Inputs for={{ :clinical }}>
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group">
+                        <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                          <Field name={{ :reasons_for_pcr_test }}>
+                            <Label>{{ gettext("Reasons for PCR test") }}</Label>
+                            <label
+                              :for={{ {name, key} <- pcr_test_reasons() }}
+                              class="d-block checkbox-label"
+                              data-disabled={{ @live_action == :show }}
+                            >
+                              <input
+                                type="checkbox"
+                                name={{ input_name(form, :reasons_for_pcr_test) <> "[]" }}
+                                disabled={{ @live_action == :show }}
+                                checked={{ key in (Ecto.Changeset.get_field(form.source, :reasons_for_pcr_test, []) || []) }}
+                                value={{ key }}
+                              />
+                              {{ name }}
+                            </label>
+                            <FormError />
+                          </Field>
+                        </InputContext>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group">
+                        <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                          <Field name={{ :symptoms }}>
+                            <Label>{{ gettext("Symptoms") }}</Label>
+                            <label
+                              :for={{ {name, key} <- symptoms() }}
+                              class="d-block checkbox-label"
+                              data-disabled={{ @live_action == :show }}
+                            >
+                              <input
+                                type="checkbox"
+                                name={{ input_name(form, :symptoms) <> "[]" }}
+                                disabled={{ @live_action == :show }}
+                                checked={{ key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || []) }}
+                                value={{ key }}
+                              />
+                              {{ name }}
+                            </label>
+                            <FormError />
+                          </Field>
+                        </InputContext>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <Field name={{ :symptom_start }} class="form-group">
-                      <Label>{{ gettext("Symptoms start date") }}</Label>
-                      <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                      <FormError />
-                    </Field>
+                  <div class="row">
+                    <div class="col">
+                      <Field name={{ :symptom_start }} class="form-group">
+                        <Label>{{ gettext("Symptoms start date") }}</Label>
+                        <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
+                        <FormError />
+                      </Field>
+                    </div>
+                    <div class="col">
+                      <Field name={{ :test }} class="form-group">
+                        <Label>{{ gettext("Test date") }}</Label>
+                        <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
+                        <FormError />
+                      </Field>
+                    </div>
                   </div>
-                  <div class="col">
-                    <Field name={{ :test }} class="form-group">
-                      <Label>{{ gettext("Test date") }}</Label>
-                      <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                      <FormError />
-                    </Field>
+                  <div class="row">
+                    <div class="col">
+                      <Field name={{ :laboratory_report }} class="form-group">
+                        <Label>{{ gettext("Laboratory report date") }}</Label>
+                        <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
+                        <FormError />
+                      </Field>
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <Field name={{ :laboratory_report }} class="form-group">
-                      <Label>{{ gettext("Laboratory report date") }}</Label>
-                      <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                      <FormError />
-                    </Field>
+                  <div class="row">
+                    <div class="col">
+                      <Field name={{ :test_kind }} class="form-group">
+                        <Label>{{ gettext("Test kind") }}</Label>
+                        <Select class="form-control" opts={{ prompt: gettext("Choose test kind"), disabled: @live_action == :show }} options={{ test_kinds() }} />
+                        <FormError />
+                      </Field>
+                    </div>
+                    <div class="col">
+                      <Field name={{ :result }} class="form-group">
+                        <Label>{{ gettext("Test result") }}</Label>
+                        <Select class="form-control" opts={{ prompt: gettext("Choose test result"), disabled: @live_action == :show }} options={{ test_results() }} />
+                        <FormError />
+                      </Field>
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <Field name={{ :test_kind }} class="form-group">
-                      <Label>{{ gettext("Test kind") }}</Label>
-                      <Select class="form-control" opts={{ prompt: gettext("Choose test kind"), disabled: @live_action == :show }} options={{ test_kinds() }} />
-                      <FormError />
-                    </Field>
-                  </div>
-                  <div class="col">
-                    <Field name={{ :result }} class="form-group">
-                      <Label>{{ gettext("Test result") }}</Label>
-                      <Select class="form-control" opts={{ prompt: gettext("Choose test result"), disabled: @live_action == :show }} options={{ test_results() }} />
-                      <FormError />
-                    </Field>
-                  </div>
-                </div>
-              </Inputs>
+                </Inputs>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Monitoring") }}</h4>
+                <HygeiaWeb.CaseLive.Monitoring
+                  disabled={{ @live_action == :show }}
+                  source={{ @case }}
+                  id="monitoring"
+                />
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Hospitalizations") }}</h4>
+                <HygeiaWeb.CaseLive.Hospitalizations
+                  disabled={{ @live_action == :show }}
+                  source={{ @case }}
+                  id="hospitalizations"
+                  organisations={{ @organisations }}
+                  add_hospitalization="add_hospitalization"
+                  remove_hospitalization="remove_hospitalization"
+                />
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Related Organisations") }}</h4>
+                <HygeiaWeb.CaseLive.RelatedOrganisations
+                  disabled={{ @live_action == :show }}
+                  source={{ @case }}
+                  organisations={{ @organisations }}
+                  id="related_organisations"
+                  add="add_related_organisation"
+                  remove="remove_related_organisation"
+                />
+              </div>
             </div>
           </div>
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("Monitoring") }}</h4>
-              <HygeiaWeb.CaseLive.Monitoring
-                disabled={{ @live_action == :show }}
-                source={{ @case }}
-                id="monitoring"
-              />
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("Hospitalizations") }}</h4>
-              <HygeiaWeb.CaseLive.Hospitalizations
-                disabled={{ @live_action == :show }}
-                source={{ @case }}
-                id="hospitalizations"
-                organisations={{ @organisations }}
-                add_hospitalization="add_hospitalization"
-                remove_hospitalization="remove_hospitalization"
-              />
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("Related Organisations") }}</h4>
-              <HygeiaWeb.CaseLive.RelatedOrganisations
-                disabled={{ @live_action == :show }}
-                source={{ @case }}
-                organisations={{ @organisations }}
-                id="related_organisations"
-                add="add_related_organisation"
-                remove="remove_related_organisation"
-              />
-            </div>
-          </div>
-        </div>
-      </Form>
+        </Form>
+      </div>
     </div>
-  </div>
+  </Context>
 </div>

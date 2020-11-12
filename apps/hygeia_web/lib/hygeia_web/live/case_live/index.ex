@@ -19,24 +19,29 @@ defmodule HygeiaWeb.CaseLive.Index do
 
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
-    Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases")
+    socket =
+      if authorized?(Case, :list, get_auth(socket)) do
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases")
 
-    pagination_params =
-      case params do
-        %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
-        %{"cursor" => cursor, "cursor_direction" => "before"} -> [before: cursor]
-        _other -> []
+        pagination_params =
+          case params do
+            %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
+            %{"cursor" => cursor, "cursor_direction" => "before"} -> [before: cursor]
+            _other -> []
+          end
+
+        users = UserContext.list_users()
+
+        socket
+        |> assign(pagination_params: pagination_params, filters: %{}, users: users)
+        |> list_cases()
+      else
+        socket
+        |> push_redirect(to: Routes.page_path(socket, :index))
+        |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    users = UserContext.list_users()
-
-    super(
-      params,
-      session,
-      socket
-      |> assign(pagination_params: pagination_params, filters: %{}, users: users)
-      |> list_cases()
-    )
+    super(params, session, socket)
   end
 
   @impl Phoenix.LiveView
@@ -47,6 +52,9 @@ defmodule HygeiaWeb.CaseLive.Index do
   @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id}, socket) do
     case = CaseContext.get_case!(id)
+
+    true = authorized?(case, :delete, get_auth(socket))
+
     {:ok, _} = CaseContext.delete_case(case)
 
     {:noreply, socket |> assign(pagination_params: []) |> list_cases()}

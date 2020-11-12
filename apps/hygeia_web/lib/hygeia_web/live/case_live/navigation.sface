@@ -62,6 +62,7 @@
           class="dropdown-item"
           to={{ Routes.case_create_possible_index_path(@socket, :create, propagator_internal: true, propagator_case_uuid: @case.uuid, default_tenant_uuid: @case.tenant_uuid) }}
         >
+          <span class="oi oi-plus mr-1" aria-hidden="true"></span>
           {{ gettext("Create Contact Cases") }}
         </LiveRedirect>
         <Link
@@ -74,7 +75,21 @@
             data: [confirm: gettext("Are you sure?")]
           }}
         >
+          <span class="oi oi-beaker mr-1" aria-hidden="true"></span>
           {{ gettext("Convert to Index") }}
+        </Link>
+        <Link 
+          to="#" 
+          click="delete"
+          class="dropdown-item"
+          opts={{
+            title: gettext("Delete"),
+            data: [confirm: gettext("Are you sure?")]
+          }}
+          :if={{ authorized?(@case, :delete, auth) }}
+        >
+          <span class="oi oi-trash mr-1" aria-hidden="true"></span>
+          {{ gettext("Delete") }}
         </Link>
       </div>
     </li>

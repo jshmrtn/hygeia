@@ -6,6 +6,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   import HygeiaWeb.CaseLive.Create
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
@@ -26,28 +27,30 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
-    tenants = TenantContext.list_tenants()
-    users = UserContext.list_users()
-    auth_user = get_auth(socket)
+    socket =
+      if authorized?(Case, :create, get_auth(socket)) do
+        tenants = TenantContext.list_tenants()
+        users = UserContext.list_users()
+        auth_user = get_auth(socket)
 
-    super(
-      params,
-      session,
-      assign(socket,
-        changeset:
-          CreateSchema.changeset(
-            %CreateSchema{people: []},
-            Map.merge(params, %{
-              "default_tracer_uuid" => auth_user.uuid,
-              "default_supervisor_uuid" => auth_user.uuid
-            })
-          ),
-        tenants: tenants,
-        users: users,
-        suspected_duplicate_changeset_uuid: nil,
-        file: nil
-      )
-    )
+        assign(socket,
+          changeset:
+            CreateSchema.changeset(%CreateSchema{people: []}, %{
+              default_tracer_uuid: auth_user.uuid,
+              default_supervisor_uuid: auth_user.uuid
+            }),
+          tenants: tenants,
+          users: users,
+          suspected_duplicate_changeset_uuid: nil,
+          file: nil
+        )
+      else
+        socket
+        |> push_redirect(to: Routes.page_path(socket, :index))
+        |> put_flash(:error, gettext("You are not authorized to do this action."))
+      end
+
+    super(params, session, socket)
   end
 
   @impl Phoenix.LiveView
