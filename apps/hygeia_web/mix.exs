@@ -55,6 +55,7 @@ defmodule HygeiaWeb.MixProject do
       {:hygeia_pdf_confirmation, in_umbrella: true},
       {:hygeia_gettext, in_umbrella: true},
       {:hygeia_cldr, in_umbrella: true},
+      {:hygeia_iam, in_umbrella: true},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_ecto, "~> 4.0"},
       # TODO: Switch back to released version when surface works with it
@@ -79,7 +80,6 @@ defmodule HygeiaWeb.MixProject do
       {:jsone, "~> 1.5", override: true},
       {:ueberauth_oidc, github: "rng2/ueberauth_oidc", tag: "0.0.1"},
       {:oidcc, github: "jshmrtn/oidcc", branch: "master", override: true},
-      {:certifi, "~> 2.5"},
       {:phoenix_live_view_dropzone, "~> 0.0"},
       {:csv, "~> 2.4"},
       {:plug_content_security_policy, "~> 0.2.1"},

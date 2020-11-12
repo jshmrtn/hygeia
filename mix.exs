@@ -56,7 +56,9 @@ defmodule Hygeia.Umbrella.MixProject do
       {:credo, "~> 1.4", runtime: false, only: [:dev]},
       {:dialyxir, "~> 1.0", runtime: false, only: [:dev]},
       {:ex_doc, "~> 0.19", runtime: false, onlky: [:dev]},
-      {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+      {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
+      # Override Reason: https://github.com/elixir-grpc/grpc#grpc-elixir
+      {:gun, "~> 2.0.0", hex: :grpc_gun, override: true}
     ]
   end
 

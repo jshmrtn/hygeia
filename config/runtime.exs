@@ -79,17 +79,44 @@ config :hygeia_api, HygeiaApi.Endpoint,
 config :hygeia_telemetry, port: "METRICS_PORT" |> System.get_env("9568") |> String.to_integer()
 
 # IAM
-config :ueberauth, UeberauthOIDC,
-  zitadel: [
-    issuer_or_config_endpoint: System.get_env("WEB_IAM_ISSUER", "https://issuer.zitadel.ch"),
-    client_id: System.get_env("WEB_IAM_CLIENT_ID", "***REMOVED***"),
-    client_secret:
+iam_config = [
+  issuer_or_config_endpoint: System.get_env("IAM_ISSUER", "https://issuer.zitadel.ch"),
+  client_id: System.get_env("WEB_IAM_CLIENT_ID", "***REMOVED***"),
+  client_secret:
+    System.get_env(
+      "WEB_IAM_CLIENT_SECRET",
+      "***REMOVED***"
+    ),
+  local_endpoint:
+    URI.to_string(%URI{
+      host: System.get_env("WEB_EXTERNAL_HOST", "localhost"),
+      scheme: System.get_env("WEB_EXTERNAL_SCHEME", "http"),
+      port: "WEB_EXTERNAL_PORT" |> System.get_env("#{web_port}") |> String.to_integer(),
+      path: "/auth/oidc/callback"
+    })
+]
+
+config :hygeia_iam, :providers, zitadel: iam_config
+
+config :hygeia_iam, :service_accounts,
+  user_sync: [
+    login:
       System.get_env(
-        "WEB_IAM_CLIENT_SECRET",
-        "***REMOVED***"
+        "IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN",
+        ~S({"type":"serviceaccount","keyId":"***REMOVED***","key":"-----BEGIN RSA PRIVATE KEY-----\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n-----END RSA PRIVATE KEY-----\n","userId":"***REMOVED***"})
       ),
-    request_scopes: ["openid", "profile", "email"]
+    audience: [
+      "https://api.zitadel.ch/oauth/v2/token",
+      "https://api.zitadel.ch/"
+    ]
   ]
+
+config :hygeia_iam,
+  organisation_id: System.get_env("IAM_ORGANISATION_ID", "***REMOVED***"),
+  project_id: System.get_env("IAM_PROJECT_ID", "***REMOVED***")
+
+config :ueberauth, UeberauthOIDC,
+  zitadel: [request_scopes: ["openid", "profile", "email"]] ++ iam_config
 
 # Sms
 config :hygeia, Hygeia.SmsSender.WebSms,

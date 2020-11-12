@@ -4,8 +4,8 @@ defmodule Hygeia.Helpers.Versioning do
   alias Hygeia.UserContext.User
 
   case Mix.env() do
-    :test -> @type origin :: :web | :api | :test
-    _env -> @type origin :: :web | :api
+    :test -> @type origin :: :web | :api | :user_sync_job | :test
+    _env -> @type origin :: :web | :api | :user_sync_job
   end
 
   @type originator :: User.t() | :noone
