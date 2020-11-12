@@ -117,13 +117,28 @@ defmodule Hygeia.OrganisationContext do
   """
   @spec delete_organisation(organisation :: Organisation.t()) ::
           {:ok, Organisation.t()} | {:error, Ecto.Changeset.t(Organisation.t())}
-  def delete_organisation(%Organisation{} = organisation),
-    do:
+  def delete_organisation(%Organisation{} = organisation) do
+    positions = Repo.preload(organisation, :positions).positions
+
+    Repo.transaction(fn ->
+      positions
+      |> Enum.map(&delete_position/1)
+      |> Enum.each(fn
+        {:ok, _position} -> :ok
+        {:error, reason} -> Repo.rollback(reason)
+      end)
+
       organisation
       |> change_organisation()
       |> versioning_delete()
       |> broadcast("organisations", :delete)
       |> versioning_extract()
+      |> case do
+        {:ok, organisation} -> organisation
+        {:error, reason} -> Repo.rollback(reason)
+      end
+    end)
+  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking organisation changes.

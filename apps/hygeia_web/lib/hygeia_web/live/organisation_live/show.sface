@@ -1,0 +1,176 @@
+<!-- <%= live_component @socket, HygeiaWeb.PositionLive.Index, organisation: @organisation, id: "Positions-#{@organisation.uuid}", live_action: @live_action, params: @params %> -->
+<div class="component-organisation-base-data container">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <h1>
+      {{ Ecto.Changeset.get_field(@changeset, :name) }}
+    </h1>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="mb-3" :if={{ @live_action == :show }}>
+          <LivePatch
+            :if={{ authorized?(@organisation, :update, auth) }}
+            to={{ Routes.organisation_show_path(@socket, :edit, @organisation) }}
+          >
+            <button class="btn btn-primary mb-3" id="organisation-edit">
+              <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+              {{ gettext("Edit") }}
+            </button>
+          </LivePatch>
+          <Link 
+            to="#" 
+            click="delete" 
+            opts={{
+              title: gettext("Delete"),
+              data: [confirm: gettext("Are you sure?")]
+            }}
+            :if={{ authorized?(@organisation, :delete, auth) }}
+          >
+            <button class="btn btn-danger mb-3">
+              <span class="oi oi-trash" aria-hidden="true"></span>
+              {{ gettext("Delete") }}
+            </button>
+          </Link>
+        </div>
+
+        <Form 
+          for={{ @changeset }} 
+          change="validate" 
+          submit="save" 
+          opts={{ autocomplete: "off", id: "organisation-form", "phx-hook": "BlockNavigation" }}
+        >
+          <div :if={{ @live_action == :edit }}>
+            <div class="mb-3" :if={{ @live_action == :edit }}>
+              <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
+                <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+                {{ gettext("Save") }}
+              </button>
+              <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
+                <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+                {{ gettext("Discard") }}
+              </button>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Name") }}</h4>
+                <Field name={{ :name }} class="form-group">
+                  <Label>{{ gettext("Name") }}</Label>
+                  <TextInput 
+                    class="form-control" 
+                    opts={{ disabled: @live_action == :show }}
+                  />
+                  <FormError />
+                </Field>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Name") }}</h4>
+                <Field name={{ :notes }} class="form-group">
+                  <Label>{{ gettext("Notes") }}</Label>
+                  <TextArea
+                    class="form-control"
+                    opts={{ disabled: @live_action == :show }}
+                  />
+                  <FormError />
+                </Field>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Address") }}</h4>
+
+                <Inputs for={{ :address }}>
+                  <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address" />
+                </Inputs>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Positions") }}</h4>
+
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>{{ gettext("Person") }}</th>
+                      <th>{{ gettext("Position") }}</th>
+                      <th :if={{ @live_action == :edit }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <Inputs for={{ :positions }}>
+                      <HiddenInput field={{ :organisation_uuid }} />
+                      <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                        <tr>
+                          <td :if={{ @live_action == :edit }}>
+                            <Field name={{ :person_uuid }} class="form-group">
+                              <Select 
+                                class="form-control" 
+                                opts={{ prompt: gettext("Chose person"), disabled: @live_action == :show }}
+                                options={{ Enum.map(@people, &({person_display_name(&1), &1.uuid}))}}
+                              />
+                              <FormError />
+                            </Field>
+                          </td>
+                          <td :if={{ @live_action == :show }}>
+                            <LiveRedirect
+                              to={{ Routes.person_base_data_path(@socket, :show, form.source.data.person) }}
+                              :if={{ authorized?(form.source.data.person, :details, auth) }}
+                            >
+                              {{ person_display_name(form.source.data.person)}}
+                            </LiveRedirect>
+                            <span :if={{ not authorized?(form.source.data.person, :details, auth) }}>
+                              {{ person_display_name(form.source.data.person)}}
+                            </span>
+                          </td>
+                          <td>
+                            <Field name={{ :position }} class="form-group">
+                              <TextInput 
+                                class="form-control" 
+                                opts={{ disabled: @live_action == :show }} 
+                              />
+                              <FormError />
+                            </Field>
+                          </td>
+                          <td :if={{ @live_action == :edit }}>
+                            <button
+                              :if={{ Ecto.Changeset.get_field(form.source, :person_uuid) != nil or Ecto.Changeset.get_field(form.source, :position) != nil }}
+                              class="ml-1 btn btn-secondary btn-sm btn-danger"
+                              type="button"
+                              phx-value-uuid={{ Ecto.Changeset.get_field(form.source, :uuid) }}
+                              phx-click="remove_position"
+                              title={{ gettext("Remove") }}
+                            >
+                              <span class="oi oi-trash" aria-hidden="true"></span>
+                            </button>
+                          </td>
+                        </tr>
+                      </InputContext>
+                    </Inputs>
+                  </tbody>
+                  <tfoot :if={{ @live_action == :edit }}>
+                    <td colspan="3">
+                      <button
+                        class="ml-1 btn btn-secondary btn-sm"
+                        type="button"
+                        phx-click="add_position"
+                        title={{ gettext("Add") }}
+                      >
+                        <span class="oi oi-plus" aria-hidden="true"></span>
+                      </button>
+                    </td>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </Form>
+      </div>
+    </div>
+  </Context>
+</div>

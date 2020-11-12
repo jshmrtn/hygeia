@@ -37,7 +37,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
     field :notes, :string
 
     embeds_one :address, Address, on_replace: :delete
-    has_many :positions, Position, foreign_key: :organisation_uuid
+    has_many :positions, Position, foreign_key: :organisation_uuid, on_replace: :delete
 
     many_to_many :related_cases, Case,
       join_through: "case_related_organisations",
@@ -54,6 +54,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
     |> cast(attrs, [:name, :notes])
     |> validate_required([:name])
     |> cast_embed(:address)
+    |> cast_assoc(:positions)
   end
 
   defimpl Hygeia.Authorization.Resource do

@@ -8,7 +8,7 @@ defmodule HygeiaWeb.OrganisationLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
-  @moduletag log_in: true
+  @moduletag log_in: [roles: [:admin]]
 
   @create_attrs %{
     address: %{
@@ -52,60 +52,33 @@ defmodule HygeiaWeb.OrganisationLiveTest do
       assert html =~ organisation.name
     end
 
-    test "saves new organisation", %{conn: conn} do
-      {:ok, index_live, _html} = live(conn, Routes.organisation_index_path(conn, :index))
-
-      assert index_live |> element("a", "New Organisation") |> render_click() =~
-               "New Organisation"
-
-      assert_patch(index_live, Routes.organisation_index_path(conn, :new))
-
-      assert index_live
-             |> form("#organisation-form", organisation: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
-
-      {:ok, _, html} =
-        index_live
-        |> form("#organisation-form", organisation: @create_attrs)
-        |> render_submit()
-        |> follow_redirect(conn, Routes.organisation_index_path(conn, :index))
-
-      assert html =~ "Organisation created successfully"
-      assert html =~ "some name"
-    end
-
-    test "updates organisation in listing", %{conn: conn, organisation: organisation} do
-      {:ok, index_live, _html} = live(conn, Routes.organisation_index_path(conn, :index))
-
-      assert index_live
-             |> element("#organisation-#{organisation.uuid} a", "Edit")
-             |> render_click() =~
-               "Edit Organisation"
-
-      assert_patch(index_live, Routes.organisation_index_path(conn, :edit, organisation))
-
-      assert index_live
-             |> form("#organisation-form", organisation: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
-
-      {:ok, _, html} =
-        index_live
-        |> form("#organisation-form", organisation: @update_attrs)
-        |> render_submit()
-        |> follow_redirect(conn, Routes.organisation_index_path(conn, :index))
-
-      assert html =~ "Organisation updated successfully"
-      assert html =~ "some updated name"
-    end
-
     test "deletes organisation in listing", %{conn: conn, organisation: organisation} do
       {:ok, index_live, _html} = live(conn, Routes.organisation_index_path(conn, :index))
 
       assert index_live
-             |> element("#organisation-#{organisation.uuid} a", "Delete")
+             |> element("#organisation-#{organisation.uuid} a.delete")
              |> render_click()
 
       refute has_element?(index_live, "#organisation-#{organisation.uuid}")
+    end
+  end
+
+  describe "Create" do
+    test "saves new organisation", %{conn: conn} do
+      {:ok, create_live, _html} = live(conn, Routes.organisation_create_path(conn, :create))
+
+      assert create_live
+             |> form("#organisation-form", organisation: @invalid_attrs)
+             |> render_change() =~ "can&apos;t be blank"
+
+      {:ok, _, html} =
+        create_live
+        |> form("#organisation-form", organisation: @create_attrs)
+        |> render_submit()
+        |> follow_redirect(conn)
+
+      assert html =~ "Organisation created successfully"
+      assert html =~ "some name"
     end
   end
 
@@ -116,7 +89,6 @@ defmodule HygeiaWeb.OrganisationLiveTest do
       {:ok, _show_live, html} =
         live(conn, Routes.organisation_show_path(conn, :show, organisation))
 
-      assert html =~ "Show Organisation"
       assert html =~ organisation.name
     end
 
@@ -124,8 +96,7 @@ defmodule HygeiaWeb.OrganisationLiveTest do
       {:ok, show_live, _html} =
         live(conn, Routes.organisation_show_path(conn, :show, organisation))
 
-      assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Organisation"
+      assert show_live |> element("a", "Edit") |> render_click()
 
       assert_patch(show_live, Routes.organisation_show_path(conn, :edit, organisation))
 
@@ -133,11 +104,12 @@ defmodule HygeiaWeb.OrganisationLiveTest do
              |> form("#organisation-form", organisation: @invalid_attrs)
              |> render_change() =~ "can&apos;t be blank"
 
-      {:ok, _, html} =
+      html =
         show_live
         |> form("#organisation-form", organisation: @update_attrs)
         |> render_submit()
-        |> follow_redirect(conn, Routes.organisation_show_path(conn, :show, organisation))
+
+      assert_patch(show_live, Routes.organisation_show_path(conn, :show, organisation))
 
       assert html =~ "Organisation updated successfully"
       assert html =~ "some updated name"

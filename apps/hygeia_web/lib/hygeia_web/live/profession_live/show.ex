@@ -82,6 +82,8 @@ defmodule HygeiaWeb.ProfessionLive.Show do
   end
 
   def handle_event("save", %{"profession" => profession_params}, socket) do
+    true = authorized?(socket.assigns.profession, :update, get_auth(socket))
+
     socket.assigns.profession
     |> CaseContext.update_profession(profession_params)
     |> case do

@@ -1,44 +1,36 @@
 defmodule HygeiaWeb.OrganisationLive.Index do
   @moduledoc false
 
-  use HygeiaWeb, :live_view
+  use HygeiaWeb, :surface_view
 
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
+  alias Surface.Components.Context
+  alias Surface.Components.Link
+  alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
-    Phoenix.PubSub.subscribe(Hygeia.PubSub, "organisations")
+    socket =
+      if authorized?(Organisation, :list, get_auth(socket)) do
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "organisations")
 
-    super(params, session, assign(socket, :organisations, list_organisations()))
-  end
+        assign(socket, :organisations, list_organisations())
+      else
+        socket
+        |> push_redirect(to: Routes.page_path(socket, :index))
+        |> put_flash(:error, gettext("You are not authorized to do this action."))
+      end
 
-  @impl Phoenix.LiveView
-  def handle_params(params, uri, socket) do
-    super(params, uri, apply_action(socket, socket.assigns.live_action, params))
-  end
-
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, gettext("Edit Organisation"))
-    |> assign(:organisation, OrganisationContext.get_organisation!(id))
-  end
-
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, gettext("New Organisation"))
-    |> assign(:organisation, %Organisation{})
-  end
-
-  defp apply_action(socket, :index, _params) do
-    socket
-    |> assign(:page_title, gettext("Listing Organisations"))
-    |> assign(:organisation, nil)
+    super(params, session, socket)
   end
 
   @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id}, socket) do
     organisation = OrganisationContext.get_organisation!(id)
+
+    true = authorized?(organisation, :delete, get_auth(socket))
+
     {:ok, _} = OrganisationContext.delete_organisation(organisation)
 
     {:noreply, assign(socket, :organisations, list_organisations())}

@@ -1,0 +1,36 @@
+<Form
+  for={{ @changeset }} 
+  change="validate" 
+  submit="save" 
+  opts={{ autocomplete: "off", id: "organisation-form", class: "container" }}
+>
+  <h1 class="mb-4">
+    {{ gettext("New organisation") }}
+  </h1>
+
+  <Field name={{ :name }} class="form-group">
+    <Label>{{ gettext("Name") }}</Label>
+    <TextInput class="form-control" />
+    <FormError />
+  </Field>
+
+  <Inputs for={{ :address }}>
+    <HygeiaWeb.AddressForm id="address" />
+  </Inputs>
+
+  <Field name={{ :notes }} class="form-group">
+    <Label>{{ gettext("Notes") }}</Label>
+    <TextArea class="form-control" />
+    <FormError />
+  </Field>
+
+  <button
+    class="btn btn-primary"
+    type="submit"
+    phx-disable-with={{ gettext("Saving...") }}
+    disabled={{ not @changeset.valid? }}
+  >
+    {{ gettext("Save") }}
+  </button>
+</Form>
+ 

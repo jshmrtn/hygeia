@@ -45,8 +45,9 @@ defmodule Hygeia.OrganisationContext.Position do
           Ecto.Changeset.t()
   def changeset(position, attrs) do
     position
-    |> cast(attrs, [:position, :person_uuid, :organisation_uuid])
-    |> validate_required([:position, :person_uuid, :organisation_uuid])
+    |> cast(attrs, [:uuid, :position, :person_uuid, :organisation_uuid])
+    |> fill_uuid
+    |> validate_required([:position, :person_uuid])
   end
 
   defimpl Hygeia.Authorization.Resource do
