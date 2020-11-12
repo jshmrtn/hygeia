@@ -5,6 +5,7 @@ defmodule HygeiaWeb.Search do
 
   alias Hygeia.CaseContext
   alias Hygeia.OrganisationContext
+  alias Hygeia.Repo
   alias Hygeia.UserContext
   alias Surface.Components.Form.SearchInput
   alias Surface.Components.Link
@@ -29,12 +30,13 @@ defmodule HygeiaWeb.Search do
         person: fn ->
           socket.assigns.query
           |> CaseContext.fulltext_person_search()
-          |> Enum.map(&{&1.uuid, &1.first_name})
+          |> Enum.map(&{&1.uuid, &1})
         end,
         case: fn ->
           socket.assigns.query
           |> CaseContext.fulltext_case_search()
-          |> Enum.map(&{&1.uuid, case_display_name(&1)})
+          |> Repo.preload(:person)
+          |> Enum.map(&{&1.uuid, &1})
         end,
         organisation: fn ->
           socket.assigns.query

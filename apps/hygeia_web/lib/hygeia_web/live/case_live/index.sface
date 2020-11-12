@@ -18,40 +18,72 @@
       </button>
     </LivePatch>
 
-    <div class="dropdown mt-3 mb-2 ml-auto" id="filter-dropdown">
+    <div class="dropdown mt-3 mb-2 ml-auto" phx-update="ignore" id="filter-dropdown">
       <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="oi oi-cog" aria-hidden="true"></span>
         {{ gettext("Filter") }}
       </button>
-      <div class="dropdown-menu p-3 filter-dropdown" onclick="event.stopPropagation()">
+      <div class="dropdown-menu dropdown-menu-right p-3 filter-dropdown stop-propagation">
         <h4>{{ gettext("Filter") }}</h4>
         <Form for={{ @filters }} change="filter" submit="filter" opts={{ autocomplete: "off", id: "filter-form", as: :filter }}>
-          <div class="form-group">
-            <label class="d-block">{{ gettext("Status") }}</label>
-            <FieldContext name={{ :status }}>
-              <MultipleSelect class="form-control" options={{ case_status_map() }} />
-            </FieldContext>
-          </div>
-          <div class="form-group">
-            <label class="d-block">{{ gettext("Complexity") }}</label>
-            <FieldContext name={{ :complexity }}>
-              <MultipleSelect class="form-control" options={{ case_complexity_map() }} />
-            </FieldContext>
-          </div>
+          <InputContext assigns={{ assigns }} :let={{ form: form }}>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                  <label class="d-block">{{ gettext("Status") }}</label>
+                  <label
+                    :for={{ {name, key} <- case_status_map() }}
+                    class="d-block checkbox-label"
+                    data-disabled={{ @live_action == :show }}
+                  >
+                    <input
+                      type="checkbox"
+                      name={{ input_name(form, :status) <> "[]" }}
+                      disabled={{ @live_action == :show }}
+                      checked={{ Atom.to_string(key) in (form.source["status"] || []) }}
+                      value={{ key }}
+                    />
+                    {{ name }}
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <div class="form-group">
+                  <label class="d-block">{{ gettext("Complexity") }}</label>
+                  <label
+                    :for={{ {name, key} <- case_complexity_map() }}
+                    class="d-block checkbox-label"
+                    data-disabled={{ @live_action == :show }}
+                  >
+                    <input
+                      type="checkbox"
+                      name={{ input_name(form, :complexity) <> "[]" }}
+                      disabled={{ @live_action == :show }}
+                      checked={{ Atom.to_string(key) in (form.source["complexity"] || []) }}
+                      value={{ key }}
+                    />
+                    {{ name }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            
 
-          <div class="form-group">
-            <label class="d-block">{{ gettext("Tracer") }}</label>
-            <FieldContext name={{ :tracer_uuid }}>
-              <MultipleSelect class="form-control" options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }} />
-            </FieldContext>
-          </div>
+            <div class="form-group">
+              <label class="d-block">{{ gettext("Tracer") }}</label>
+              <FieldContext name={{ :tracer_uuid }}>
+                <MultipleSelect class="form-control" options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }} />
+              </FieldContext>
+            </div>
 
-          <div class="form-group">
-            <label class="d-block">{{ gettext("Supervisor") }}</label>
-            <FieldContext name={{ :supervisor_uuid }}>
-              <MultipleSelect class="form-control" options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }} />
-            </FieldContext>
-          </div>
+            <div class="form-group">
+              <label class="d-block">{{ gettext("Supervisor") }}</label>
+              <FieldContext name={{ :supervisor_uuid }}>
+                <MultipleSelect class="form-control" options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }} />
+              </FieldContext>
+            </div>
+          </InputContext>
         </Form>
       </div>
     </div>

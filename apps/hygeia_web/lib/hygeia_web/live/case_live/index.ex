@@ -11,6 +11,7 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Hygeia.UserContext
   alias Surface.Components.Form
   alias Surface.Components.Form.FieldContext
+  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.MultipleSelect
   alias Surface.Components.Link
   alias Surface.Components.LivePatch

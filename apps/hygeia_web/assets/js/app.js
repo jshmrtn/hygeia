@@ -20,14 +20,21 @@ import BSN from "bootstrap.native";
 import BlockNavigation from "./block-navigation.hook";
 import { PhoenixLiveViewDropzone } from "phoenix_live_view_drop_zone";
 
-
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: { BlockNavigation, PhoenixLiveViewDropzone: new PhoenixLiveViewDropzone() } });
+let liveSocket = new LiveSocket("/live", Socket, {
+  params: { _csrf_token: csrfToken },
+  hooks: { BlockNavigation, PhoenixLiveViewDropzone: new PhoenixLiveViewDropzone() },
+});
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", (info) => NProgress.start());
 window.addEventListener("phx:page-loading-stop", (info) => {
   BSN.initCallback(document.body);
+
+  document.querySelectorAll(".stop-propagation").forEach((d) => {
+    d.addEventListener("click", (e) => e.stopPropagation());
+  });
+
   NProgress.done();
 });
 

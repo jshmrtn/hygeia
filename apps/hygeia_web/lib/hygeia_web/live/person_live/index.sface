@@ -16,12 +16,13 @@
         </button>
       </LivePatch>
 
-      <div class="dropdown mt-3 ml-auto" id="filter-dropdown">
+      <!-- TODO: implement dropdown behavior using phoenix and remove phx-update -->
+      <div class="dropdown mt-3 ml-auto" phx-update="ignore" id="filter-dropdown">
         <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="oi oi-cog" aria-hidden="true"></span>
           {{ gettext("Filter") }}
         </button>
-        <div class="dropdown-menu p-3 filter-dropdown" onclick="event.stopPropagation()">
+        <div class="dropdown-menu dropdown-menu-right p-3 filter-dropdown stop-propagation">
           <h4>Filter</h4>
           <!-- TODO: for property, field name properties -->
           <Form for={{ @filters }} change="filter" submit="filter" opts={{ autocomplete: "off", id: "filter-form", as: :filter }}>
