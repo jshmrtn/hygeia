@@ -30,10 +30,16 @@ defmodule HygeiaWeb.CaseLive.Index do
             _other -> []
           end
 
-        users = UserContext.list_users()
+        supervisor_users = UserContext.list_users_with_role(:supervisor)
+        tracer_users = UserContext.list_users_with_role(:tracer)
 
         socket
-        |> assign(pagination_params: pagination_params, filters: %{}, users: users)
+        |> assign(
+          pagination_params: pagination_params,
+          filters: %{},
+          supervisor_users: supervisor_users,
+          tracer_users: tracer_users
+        )
         |> list_cases()
       else
         socket

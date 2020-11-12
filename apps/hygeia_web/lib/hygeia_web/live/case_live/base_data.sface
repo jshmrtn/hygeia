@@ -59,7 +59,7 @@
                       <Select 
                         class="form-control" 
                         opts={{ prompt: "Select user" |> gettext,  disabled: @live_action == :show }} 
-                        options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+                        options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
                       />
                       <FormError />
                     </Field>
@@ -70,7 +70,7 @@
                       <Select 
                         class="form-control" 
                         opts={{ prompt: "Select user" |> gettext, disabled: @live_action == :show }} 
-                        options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+                        options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
                       />
                       <FormError />
                     </Field>

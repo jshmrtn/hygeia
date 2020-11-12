@@ -35,7 +35,7 @@
             </Label>
             <Select 
               class="form-control"
-              options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+              options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
               opts={{ prompt: gettext("Default Supervisor") }}
             />
             <FormError />
@@ -52,7 +52,7 @@
             </Label>
             <Select 
               class="form-control"
-              options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }}
+              options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
               opts={{ prompt: gettext("Default Tracer") }}
             />
             <FormError />
@@ -62,7 +62,7 @@
     </div>
 
     <div class="mx-auto person-table">
-      <HygeiaWeb.CaseLive.PersonCreateTable id="person-table" tenants={{ @tenants }} users={{ @users }}>
+      <HygeiaWeb.CaseLive.PersonCreateTable id="person-table" tenants={{ @tenants }} supervisor_users={{ @supervisor_users }} tracer_users={{ @tracer_users }}>
         <template slot="additional_header">
           <th>
             {{ gettext("Test Date") }}

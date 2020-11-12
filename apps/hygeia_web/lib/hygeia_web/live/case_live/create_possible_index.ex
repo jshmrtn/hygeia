@@ -26,11 +26,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView
+  # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
   def mount(params, session, socket) do
     socket =
       if authorized?(Case, :create, get_auth(socket)) do
         tenants = TenantContext.list_tenants()
-        users = UserContext.list_users()
+        supervisor_users = UserContext.list_users_with_role(:supervisor)
+        tracer_users = UserContext.list_users_with_role(:tracer)
         auth_user = get_auth(socket)
 
         assign(socket,
@@ -40,7 +42,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
               default_supervisor_uuid: auth_user.uuid
             }),
           tenants: tenants,
-          users: users,
+          supervisor_users: supervisor_users,
+          tracer_users: tracer_users,
           suspected_duplicate_changeset_uuid: nil,
           file: nil
         )

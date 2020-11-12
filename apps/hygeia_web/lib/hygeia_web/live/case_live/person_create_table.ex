@@ -15,7 +15,8 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   alias Surface.Components.Form.TextInput
 
   prop tenants, :list, required: true
-  prop users, :list, required: true
+  prop supervisor_users, :list, required: true
+  prop tracer_users, :list, required: true
 
   slot additional_header, required: false
   slot additional_row, required: false, props: [:disabled]

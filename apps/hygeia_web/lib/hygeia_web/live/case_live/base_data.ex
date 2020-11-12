@@ -41,12 +41,18 @@ defmodule HygeiaWeb.CaseLive.BaseData do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
 
         tenants = TenantContext.list_tenants()
-        users = UserContext.list_users()
+        supervisor_users = UserContext.list_users_with_role(:supervisor)
+        tracer_users = UserContext.list_users_with_role(:tracer)
         organisations = OrganisationContext.list_organisations()
 
         socket
         |> load_data(case)
-        |> assign(tenants: tenants, users: users, organisations: organisations)
+        |> assign(
+          tenants: tenants,
+          supervisor_users: supervisor_users,
+          tracer_users: tracer_users,
+          organisations: organisations
+        )
       else
         socket
         |> push_redirect(to: Routes.page_path(socket, :index))

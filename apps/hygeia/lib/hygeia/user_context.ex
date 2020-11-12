@@ -19,6 +19,10 @@ defmodule Hygeia.UserContext do
   @spec list_users :: [User.t()]
   def list_users, do: Repo.all(from(user in User, order_by: user.display_name))
 
+  @spec list_users_with_role(role :: User.Role.t()) :: [User.t()]
+  def list_users_with_role(role),
+    do: Repo.all(from(user in User, where: ^role in user.roles, order_by: user.display_name))
+
   @spec fulltext_user_search(query :: String.t(), limit :: pos_integer()) :: [User.t()]
   def fulltext_user_search(query, limit \\ 10),
     do:

@@ -74,14 +74,14 @@
               <div class="form-group">
                 <label class="d-block">{{ gettext("Tracer") }}</label>
                 <FieldContext name={{ :tracer_uuid }}>
-                  <MultipleSelect class="form-control" options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }} />
+                  <MultipleSelect class="form-control" options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }} />
                 </FieldContext>
               </div>
 
               <div class="form-group">
                 <label class="d-block">{{ gettext("Supervisor") }}</label>
                 <FieldContext name={{ :supervisor_uuid }}>
-                  <MultipleSelect class="form-control" options={{ Enum.map(@users, &({&1.display_name, &1.uuid})) }} />
+                  <MultipleSelect class="form-control" options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }} />
                 </FieldContext>
               </div>
             </InputContext>
