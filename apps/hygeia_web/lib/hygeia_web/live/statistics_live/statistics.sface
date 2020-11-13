@@ -1,10 +1,16 @@
 <div class="component-statistics-index pt-5">
+  <Form for={{ assigns }} change="params_change">
+    <DateInput field={{ :from }} />
+    <DateInput field={{ :to }} />
+  </Form>
+
   <div class="stat-grid">
     <StatPanel
       header={{ "IF im Tracing / Isolation" |> gettext }}
       value={{ 109 }}
       label={{ "Total IF - Bestätigt" |> gettext }}
     />
+    {{ basic_plot(@active_isolation_cases_per_day) }}
     <StatPanel
       header={{ "IF im Tracing / Isolation" |> gettext }}
       value={{ 109 }}

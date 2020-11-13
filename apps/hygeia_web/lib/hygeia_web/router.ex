@@ -125,7 +125,9 @@ defmodule HygeiaWeb.Router do
     live "/organisations/:id", OrganisationLive.Show, :show
     live "/organisations/:id/show/edit", OrganisationLive.Show, :edit
 
-    live "/statistics", StatisticsLive.Index, :index
+    live "/statistics", StatisticsLive.ChooseTenant, :index
+    live "/statistics/:tenant_uuid", StatisticsLive.Statistics, :show
+    live "/statistics/:tenant_uuid/:from/:to", StatisticsLive.Statistics, :show
 
     live "/organisations/:id/positions/new", OrganisationLive.Show, :position_new
 

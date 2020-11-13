@@ -337,6 +337,32 @@ defmodule Hygeia.CaseContext do
   @spec list_cases_query :: Ecto.Queryable.t()
   def list_cases_query, do: Case
 
+  @spec active_isolation_cases_per_day(tenant :: Tenant.t(), from :: Date.t(), to :: Date.t()) ::
+          [{Date.t(), non_neg_integer()}]
+  def active_isolation_cases_per_day(tenant, from, to) do
+    Repo.all(
+      from(case in Ecto.assoc(tenant, :cases),
+        left_join: phase in fragment("unnest(?)", case.phases),
+        right_join:
+          date in fragment("generate_series(?::date, ?::date, interval '1 day')", ^from, ^to),
+        on:
+          fragment("COALESCE (?, ?)", fragment("(?->>'start')::date", phase), case.inserted_at) <=
+            date and
+            (fragment("(?->>'end')::date", phase) >= date or is_nil(fragment("?->>'end'", phase))),
+        where:
+          fragment(
+            ~S[?::jsonb <@ (?)],
+            ^%{"details" => %{"__type__" => "index"}},
+            phase
+          ),
+        group_by: date,
+        group_by: case.person_uuid,
+        order_by: date,
+        select: {fragment("?::date", date), count(case.person_uuid)}
+      )
+    )
+  end
+
   @spec fulltext_case_search(query :: String.t(), limit :: pos_integer()) :: [Case.t()]
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def fulltext_case_search(query, limit \\ 10),

@@ -5,6 +5,7 @@ defmodule Hygeia.TenantContext.Tenant do
 
   use Hygeia, :model
 
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
 
   @derive {Phoenix.Param, key: :uuid}
@@ -14,6 +15,7 @@ defmodule Hygeia.TenantContext.Tenant do
           name: String.t() | nil,
           public_statistics: boolean | nil,
           people: Ecto.Schema.has_many(Person.t()) | nil,
+          cases: Ecto.Schema.has_many(Case.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -23,6 +25,7 @@ defmodule Hygeia.TenantContext.Tenant do
           name: String.t(),
           public_statistics: boolean,
           people: Ecto.Schema.has_many(Person.t()),
+          cases: Ecto.Schema.has_many(Case.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -32,6 +35,7 @@ defmodule Hygeia.TenantContext.Tenant do
     field :public_statistics, :boolean, default: false
 
     has_many :people, Person
+    has_many :cases, Case
 
     timestamps()
   end

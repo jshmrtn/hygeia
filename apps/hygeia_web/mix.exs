@@ -84,7 +84,8 @@ defmodule HygeiaWeb.MixProject do
       {:csv, "~> 2.4"},
       {:plug_content_security_policy, "~> 0.2.1"},
       {:remote_ip, "~> 0.1"},
-      {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+      {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
+      {:contex, "~> 0.3.0"}
     ]
   end
 
