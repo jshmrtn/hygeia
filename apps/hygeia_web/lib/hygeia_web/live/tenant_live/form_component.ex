@@ -1,9 +1,18 @@
 defmodule HygeiaWeb.TenantLive.FormComponent do
   @moduledoc false
 
-  use HygeiaWeb, :live_component
+  use HygeiaWeb, :surface_live_component
 
   alias Hygeia.TenantContext
+  alias HygeiaWeb.FormError
+  alias Surface.Components.Form
+  alias Surface.Components.Form.Field
+  alias Surface.Components.Form.Label
+  alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextInput
+
+  alias HygeiaWeb.PolimorphicInputs
+  alias Surface.Components.Form.Input.InputContext
 
   @impl Phoenix.LiveComponent
   def update(%{tenant: tenant} = assigns, socket) do

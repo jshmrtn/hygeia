@@ -6,6 +6,7 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
   use Hygeia, :model
 
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Email
   alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Sms
 
@@ -13,7 +14,7 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
           uuid: String.t(),
           case_uuid: String.t(),
           case: Ecto.Schema.belongs_to(Case.t()),
-          entry: Note.t() | Sms.t(),
+          entry: Note.t() | Sms.t() | Email.t(),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -22,7 +23,7 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
           uuid: String.t() | nil,
           case_uuid: String.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          entry: Note.t() | Sms.t() | nil,
+          entry: Note.t() | Sms.t() | Email.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -31,7 +32,8 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
     field :entry, PolymorphicEmbed,
       types: [
         note: Note,
-        sms: Sms
+        sms: Sms,
+        email: Email
       ]
 
     # Use in Protocol Creation Form

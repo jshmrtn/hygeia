@@ -18,3 +18,6 @@ config :hygeia_telemetry, server: false
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Bamboo Mailer
+config :hygeia, Hygeia.EmailSender.MailSender, adapter: Bamboo.TestAdapter

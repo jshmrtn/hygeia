@@ -73,6 +73,12 @@ defmodule HygeiaWeb.CaseLive.Protocol do
      |> maybe_block_navigation()}
   end
 
+  def handle_event("send_email", %{"subject" => subject, "body" => body}, socket) do
+    CaseContext.case_send_email(socket.assigns.case, subject, body)
+
+    {:noreply, socket}
+  end
+
   def handle_event("save", %{"protocol_entry" => protocol_entry_params}, socket) do
     true = authorized?(ProtocolEntry, :create, get_auth(socket), %{case: socket.assigns.case})
 
@@ -118,4 +124,5 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   end
 
   defp protocol_type_type_name(Hygeia.CaseContext.Note), do: gettext("Note")
+  defp protocol_type_type_name(Hygeia.CaseContext.Email), do: gettext("Email")
 end

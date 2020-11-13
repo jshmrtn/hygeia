@@ -20,9 +20,35 @@ Versioning.put_originator(:noone)
     iam_sub: "8fe86005-b3c6-4d7c-9746-53e090d05e48"
   })
 
-{:ok, tenant_sg} = create_tenant(%{name: "Kanton St. Gallen"})
+{:ok, tenant_sg} =
+  create_tenant(%{
+    name: "Kanton St. Gallen",
+    outgoing_mail_configuration: %{
+      __type__: "smtp",
+      server: "smtp.postmarkapp.com",
+      hostname: "joshmartin.ch",
+      port: 2525,
+      from_email: "hygeia@joshmartin.ch",
+      username: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3",
+      password: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3"
+    }
+  })
+
 {:ok, _tenant_ai} = create_tenant(%{name: "Kanton Appenzell Innerrhoden"})
-{:ok, tenant_ar} = create_tenant(%{name: "Kanton Appenzell Ausserrhoden"})
+
+{:ok, tenant_ar} =
+  create_tenant(%{
+    name: "Kanton Appenzell Ausserrhoden",
+    outgoing_mail_configuration: %{
+      __type__: "smtp",
+      server: "smtp.postmarkapp.com",
+      hostname: "joshmartin.ch",
+      port: 2525,
+      from_email: "hygeia@joshmartin.ch",
+      username: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3",
+      password: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3"
+    }
+  })
 
 {:ok, _profession_hospital} = create_profession(%{name: "Spital"})
 {:ok, _profession_doctor} = create_profession(%{name: "Praxis"})

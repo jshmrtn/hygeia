@@ -2,6 +2,11 @@
   <Context get={{ HygeiaWeb, auth: auth }}>
     <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
 
+    <!-- TODO: implement real email sending frontend -->
+    <button :on-click="send_email" phx-value-body="body 1" phx-value-subject="subject">
+      {{gettext("send email")}}
+    </button>
+
     <div class="card">
       <div class="card-header">
         <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
@@ -71,6 +76,10 @@
                 </td>
                 <td colspan="2" :if={{ type == Hygeia.CaseContext.Note }}>
                   {{ entry.note }}
+                </td>
+                <td colspan="2" :if={{ type == Hygeia.CaseContext.Email }}>
+                  subject: {{ entry.subject }}
+                  body: {{ entry.body }}
                 </td>
               </tr>
             </tbody>

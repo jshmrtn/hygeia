@@ -2,6 +2,7 @@ defmodule Hygeia.CaseContextTest do
   @moduledoc false
 
   use Hygeia.DataCase
+  use Bamboo.Test
 
   import Mox
 
@@ -9,6 +10,7 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Clinical
   alias Hygeia.CaseContext.ContactMethod
+  alias Hygeia.CaseContext.Email
   alias Hygeia.CaseContext.Employer
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Hospitalization
@@ -587,11 +589,76 @@ defmodule Hygeia.CaseContextTest do
     end
 
     test "case_send_sms/2 gives error when no mobile number present" do
-      tenant = tenant_fixture()
-      person = person_fixture(tenant, %{contact_methods: []})
+      person = person_fixture(tenant_fixture(), %{contact_methods: []})
       case = case_fixture(person)
 
       assert {:error, :no_mobile_number} = CaseContext.case_send_sms(case, "Text")
+    end
+
+    test "case_send_email/3 sends email" do
+      tenant =
+        tenant_fixture(%{
+          name: "Kanton",
+          outgoing_mail_configuration: %{
+            __type__: "smtp",
+            server: "kanton.com",
+            port: 2525,
+            from_email: "info@kanton.com",
+            username: "test1",
+            password: "test1"
+          }
+        })
+
+      person =
+        person_fixture(tenant, %{
+          contact_methods: [
+            %{
+              type: :email,
+              value: "example@example.com"
+            }
+          ]
+        })
+
+      case = case_fixture(person)
+
+      assert {:ok, %ProtocolEntry{entry: %Email{subject: "Subject", body: "Body"}}} =
+               CaseContext.case_send_email(case, "Subject", "Body")
+
+      assert_delivered_email_matches(%{
+        to: [{_, "example@example.com"}],
+        text_body: "Body",
+        subject: "Subject"
+      })
+    end
+
+    test "case_send_email/3 returns error if tenant has no outgoing mail configuration" do
+      tenant =
+        tenant_fixture(%{
+          name: "Kanton",
+          outgoing_mail_configuration: nil
+        })
+
+      person =
+        person_fixture(tenant, %{
+          contact_methods: [
+            %{
+              type: :email,
+              value: "example@example.com"
+            }
+          ]
+        })
+
+      case = case_fixture(person)
+
+      assert {:error, :no_outgoing_mail_configuration} =
+               CaseContext.case_send_email(case, "Subject", "Body")
+    end
+
+    test "case_send_email/3 gives error when no email present" do
+      person = person_fixture(tenant_fixture(), %{contact_methods: []})
+      case = case_fixture(person)
+
+      assert {:error, :no_email} = CaseContext.case_send_email(case, "Subject", "Body")
     end
   end
 

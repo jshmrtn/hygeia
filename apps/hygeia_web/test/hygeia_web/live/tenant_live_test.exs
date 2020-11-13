@@ -10,8 +10,28 @@ defmodule HygeiaWeb.TenantLiveTest do
   @moduletag originator: :noone
   @moduletag log_in: true
 
-  @create_attrs %{name: "some name"}
-  @update_attrs %{name: "some updated name"}
+  @create_attrs %{
+    name: "some name",
+    outgoing_mail_configuration: %{
+      __type__: "smtp",
+      server: "kanton.com",
+      port: 2525,
+      from_email: "info@kanton.com",
+      username: "test1",
+      password: "test1"
+    }
+  }
+  @update_attrs %{
+    name: "some updated name",
+    outgoing_mail_configuration: %{
+      __type__: "smtp",
+      server: "kanton.com",
+      port: 2525,
+      from_email: "info@kanton.com",
+      username: "test1",
+      password: "test1"
+    }
+  }
   @invalid_attrs %{name: nil}
 
   defp create_tenant(_tags) do

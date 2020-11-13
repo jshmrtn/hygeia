@@ -7,6 +7,7 @@ defmodule Hygeia.TenantContext.Tenant do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
+  alias Hygeia.TenantContext.Smtp
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -14,6 +15,7 @@ defmodule Hygeia.TenantContext.Tenant do
           uuid: String.t() | nil,
           name: String.t() | nil,
           public_statistics: boolean | nil,
+          outgoing_mail_configuration: Smtp.t() | nil,
           people: Ecto.Schema.has_many(Person.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
@@ -24,6 +26,7 @@ defmodule Hygeia.TenantContext.Tenant do
           uuid: String.t(),
           name: String.t(),
           public_statistics: boolean,
+          outgoing_mail_configuration: Smtp.t() | nil,
           people: Ecto.Schema.has_many(Person.t()),
           cases: Ecto.Schema.has_many(Case.t()),
           inserted_at: NaiveDateTime.t(),
@@ -38,6 +41,14 @@ defmodule Hygeia.TenantContext.Tenant do
     has_many :cases, Case
 
     timestamps()
+
+    field :outgoing_mail_configuration, PolymorphicEmbed,
+      types: [
+        smtp: Smtp
+      ]
+
+    # Use in Protocol Creation Form
+    field :outgoing_mail_configuration_type, :string, virtual: true, default: "smtp"
   end
 
   @doc false
@@ -46,6 +57,7 @@ defmodule Hygeia.TenantContext.Tenant do
     tenant
     |> cast(attrs, [:name, :public_statistics])
     |> validate_required([:name, :public_statistics])
+    |> cast_polymorphic_embed(:outgoing_mail_configuration)
   end
 
   defimpl Hygeia.Authorization.Resource do

@@ -11,7 +11,9 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.EmailSender.MailSender
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
 
   @sms_sender Application.compile_env!(:hygeia, [:sms_sender])
@@ -244,6 +246,10 @@ defmodule Hygeia.CaseContext do
   @spec person_has_mobile_number?(person :: Person.t()) :: boolean
   def person_has_mobile_number?(%Person{contact_methods: contact_methods} = _person),
     do: Enum.any?(contact_methods, &match?(%ContactMethod{type: :mobile}, &1))
+
+  @spec person_has_email?(person :: Person.t()) :: boolean
+  def person_has_email?(%Person{contact_methods: contact_methods} = _person),
+    do: Enum.any?(contact_methods, &match?(%ContactMethod{type: :email}, &1))
 
   @doc """
   Updates a person.
@@ -567,6 +573,40 @@ defmodule Hygeia.CaseContext do
       end
     else
       {:error, :no_mobile_number}
+    end
+  end
+
+  @spec case_send_email(case :: Case.t(), subject :: String.t(), body :: String.t()) ::
+          {:ok, ProtocolEntry.t()} | {:error, :no_email | :no_outgoing_mail_configuration | term}
+  def case_send_email(%Case{} = case, subject, body) do
+    %Case{person: %Person{contact_methods: contact_methods} = person, tenant: %Tenant{} = tenant} =
+      Repo.preload(case, person: [], tenant: [])
+
+    cond do
+      !person_has_email?(person) ->
+        {:error, :no_email}
+
+      !TenantContext.tenant_has_outgoing_mail_configuration?(tenant) ->
+        {:error, :no_outgoing_mail_configuration}
+
+      true ->
+        recipient_email =
+          Enum.find_value(contact_methods, fn
+            %{type: :email, value: value} -> value
+            _contact_method -> false
+          end)
+
+        recipient_name = person.last_name
+
+        case MailSender.send(recipient_name, recipient_email, subject, body, tenant) do
+          :ok ->
+            create_protocol_entry(case, %{
+              entry: %{__type__: "email", subject: subject, body: body}
+            })
+
+          {:error, reason} ->
+            {:error, reason}
+        end
     end
   end
 

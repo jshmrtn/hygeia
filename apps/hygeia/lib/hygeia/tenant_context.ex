@@ -117,4 +117,13 @@ defmodule Hygeia.TenantContext do
         ) ::
           Ecto.Changeset.t(Tenant.t())
   def change_tenant(%Tenant{} = tenant, attrs \\ %{}), do: Tenant.changeset(tenant, attrs)
+
+  @spec tenant_has_outgoing_mail_configuration?(tenant :: Tenant.t()) :: boolean
+  def tenant_has_outgoing_mail_configuration?(%Tenant{outgoing_mail_configuration: nil}),
+    do: false
+
+  def tenant_has_outgoing_mail_configuration?(%Tenant{
+        outgoing_mail_configuration: _outgoing_mail_configuration
+      }),
+      do: true
 end

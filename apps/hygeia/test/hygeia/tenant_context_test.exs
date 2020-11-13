@@ -55,5 +55,32 @@ defmodule Hygeia.TenantContextTest do
       tenant = tenant_fixture()
       assert %Ecto.Changeset{} = TenantContext.change_tenant(tenant)
     end
+
+    test "tenant_has_outgoing_mail_configuration?/1 returns false" do
+      tenant =
+        tenant_fixture(%{
+          name: "Kanton",
+          outgoing_mail_configuration: nil
+        })
+
+      refute TenantContext.tenant_has_outgoing_mail_configuration?(tenant)
+    end
+
+    test "tenant_has_outgoing_mail_configuration?/1 returns true" do
+      tenant =
+        tenant_fixture(%{
+          name: "Kanton",
+          outgoing_mail_configuration: %{
+            __type__: "smtp",
+            server: "kanton.com",
+            port: 2525,
+            from_email: "info@kanton.com",
+            username: "test1",
+            password: "test1"
+          }
+        })
+
+      assert TenantContext.tenant_has_outgoing_mail_configuration?(tenant)
+    end
   end
 end

@@ -66,7 +66,9 @@ defmodule Hygeia.MixProject do
       {:mox, "~> 1.0", only: :test},
       {:websms, "~> 1.0.0-alpha"},
       {:paginator, "~> 1.0"},
-      {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+      {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
+      {:bamboo, "~> 1.6"},
+      {:bamboo_smtp, "~> 3.0.0"}
     ]
   end
 
