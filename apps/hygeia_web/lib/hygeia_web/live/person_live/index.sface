@@ -5,16 +5,16 @@
     </h1>
 
     <div class="d-flex">
-      <LivePatch
+      <LiveRedirect
         class="mr-2"
         to={{ Routes.person_create_path(@socket, :create) }}
-        :if={{ authorized?(Hygeia.CaseContext.Person, :create, auth) }}
+        :if={{ authorized?(Person, :create, auth) }}
       >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
           <span class="oi oi-plus" aria-hidden="true"></span>
           {{ gettext("New Person") }}
         </button>
-      </LivePatch>
+      </LiveRedirect>
 
       <!-- TODO: implement dropdown behavior using phoenix and remove phx-update -->
       <div class="dropdown mt-3 ml-auto" phx-update="ignore" id="filter-dropdown">

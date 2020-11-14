@@ -42,7 +42,7 @@ defmodule Hygeia.TenantContext.Smtp do
   def changeset(smtp, attrs) do
     smtp
     |> cast(attrs, [:server, :hostname, :port, :from_email, :username, :password])
-    |> validate_required([:server, :port, :from_email, :username, :password])
+    |> validate_required([:server, :port, :from_email])
     |> validate_number(:port, greater_than: 0, less_than: 65_536)
     |> validate_hostname_format(:server)
     |> validate_hostname_format(:hostname)

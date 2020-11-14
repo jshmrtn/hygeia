@@ -55,9 +55,19 @@ defmodule Hygeia.TenantContext.Tenant do
   @spec changeset(tenant :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(tenant, attrs) do
     tenant
-    |> cast(attrs, [:name, :public_statistics])
+    |> cast(attrs, [:name, :public_statistics, :outgoing_mail_configuration_type],
+      empty_values: []
+    )
     |> validate_required([:name, :public_statistics])
     |> cast_polymorphic_embed(:outgoing_mail_configuration)
+    |> foreign_key_constraint(:people,
+      name: :cases_tenant_uuid_fkey,
+      message: "has assigned relations"
+    )
+    |> foreign_key_constraint(:cases,
+      name: :people_tenant_uuid_fkey,
+      message: "has assigned relations"
+    )
   end
 
   defimpl Hygeia.Authorization.Resource do

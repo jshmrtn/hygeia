@@ -200,6 +200,7 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.Address
       import HygeiaWeb.Helpers.Auth
       import HygeiaWeb.Helpers.Case
+      import HygeiaWeb.Helpers.Changeset
       import HygeiaWeb.Helpers.Clinical
       import HygeiaWeb.Helpers.ContactMethod
       import HygeiaWeb.Helpers.CSP

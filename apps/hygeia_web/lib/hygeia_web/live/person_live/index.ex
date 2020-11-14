@@ -8,7 +8,6 @@ defmodule HygeiaWeb.PersonLive.Index do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
   alias Hygeia.Repo
-
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext

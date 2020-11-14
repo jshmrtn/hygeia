@@ -1,0 +1,74 @@
+<div class="component-person-index container">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <h1 class="mb-3">
+      {{ gettext("Listing Tenants") }}
+    </h1>
+
+    <div class="d-flex">
+      <LiveRedirect
+        class="mr-2"
+        to={{ Routes.tenant_create_path(@socket, :create) }}
+        :if={{ authorized?(Tenant, :create, auth) }}
+      >
+        <button type="button" class="mb-2 mt-3 btn btn-primary">
+          <span class="oi oi-plus" aria-hidden="true"></span>
+          {{ gettext("New Tenant") }}
+        </button>
+      </LiveRedirect>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            {{ gettext("Name") }}
+          </th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tenants">
+        <tr
+          :for={{ tenant <- @tenants  }}
+          id="tenant-{{ tenant.uuid }}"
+        >
+          <td>{{ tenant.name }}</td>
+
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LiveRedirect
+                to={{ Routes.tenant_show_path(@socket, :show, tenant) }}
+                :if={{ authorized?(tenant, :details, auth) }}
+              >
+                <button class="ml-auto btn btn-sm btn-secondary">{{ gettext("Show") }}</button>
+              </LiveRedirect>
+              <LivePatch
+                to={{ Routes.tenant_show_path(@socket, :edit, tenant) }}
+                :if={{ authorized?(tenant, :update, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-secondary">
+                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                </button>
+              </LivePatch>
+              <Link 
+                to="#" 
+                click="delete" 
+                opts={{
+                  title: gettext("Delete"),
+                  data: [confirm: gettext("Are you sure?")],
+                  phx_value_id: tenant.uuid,
+                  class: "delete"
+                }}
+                :if={{ authorized?(tenant, :delete, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-danger">
+                  <span class="oi oi-trash" aria-hidden="true"></span>
+                </button>
+              </Link>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </Context>
+</div>

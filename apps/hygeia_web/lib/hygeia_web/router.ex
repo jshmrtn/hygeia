@@ -96,29 +96,28 @@ defmodule HygeiaWeb.Router do
     live "/", PageLive, :index
 
     live "/tenants", TenantLive.Index, :index
-    live "/tenants/new", TenantLive.Index, :new
-    live "/tenants/:id/edit", TenantLive.Index, :edit
+    live "/tenants/new", TenantLive.Create, :create
     live "/tenants/:id", TenantLive.Show, :show
-    live "/tenants/:id/show/edit", TenantLive.Show, :edit
+    live "/tenants/:id/edit", TenantLive.Show, :edit
 
     live "/professions", ProfessionLive.Index, :index
     live "/professions/new", ProfessionLive.Create, :create
     live "/professions/:id", ProfessionLive.Show, :show
-    live "/professions/:id/show/edit", ProfessionLive.Show, :edit
+    live "/professions/:id/edit", ProfessionLive.Show, :edit
 
     live "/users", UserLive.Index, :index
     live "/users/:id", UserLive.Show, :show
 
     live "/people", PersonLive.Index, :index
-    live "/people/:cursor_direction/:cursor", PersonLive.Index, :index
     live "/people/new", PersonLive.Create, :create
     live "/people/:id", PersonLive.BaseData, :show
-    live "/people/:id/show/edit", PersonLive.BaseData, :edit
+    live "/people/:id/edit", PersonLive.BaseData, :edit
+    live "/people/:cursor_direction/:cursor", PersonLive.Index, :index
 
     live "/cases/new/index", CaseLive.CreateIndex, :create
     live "/cases/new/possible-index", CaseLive.CreatePossibleIndex, :create
     live "/cases/:id", CaseLive.BaseData, :show
-    live "/cases/:id/show/edit", CaseLive.BaseData, :edit
+    live "/cases/:id/edit", CaseLive.BaseData, :edit
     live "/cases/:id/transmissions", CaseLive.Transmissions, :show
     live "/cases/:id/protocol", CaseLive.Protocol, :show
     live "/cases/", CaseLive.Index, :index
@@ -127,7 +126,7 @@ defmodule HygeiaWeb.Router do
     live "/organisations", OrganisationLive.Index, :index
     live "/organisations/new", OrganisationLive.Create, :create
     live "/organisations/:id", OrganisationLive.Show, :show
-    live "/organisations/:id/show/edit", OrganisationLive.Show, :edit
+    live "/organisations/:id/edit", OrganisationLive.Show, :edit
 
     live "/statistics", StatisticsLive.ChooseTenant, :index
     live "/statistics/:tenant_uuid", StatisticsLive.Statistics, :show

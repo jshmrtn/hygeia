@@ -1,4 +1,3 @@
-<!-- <%= live_component @socket, HygeiaWeb.PositionLive.Index, organisation: @organisation, id: "Positions-#{@organisation.uuid}", live_action: @live_action, params: @params %> -->
 <div class="component-organisation-base-data container">
   <Context get={{ HygeiaWeb, auth: auth }}>
     <h1>

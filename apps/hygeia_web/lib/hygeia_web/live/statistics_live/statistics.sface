@@ -1,4 +1,9 @@
-<div class="component-statistics-index pt-5">
+<div class="component-statistics-index pt-5 container">
+  <!-- TODO: Remove this warning & complete / style view -->
+  <div class="alert alert-danger" role="alert">
+    {{ gettext("This view is not finished, do not report any issues about it yet...") }}
+  </div>
+
   <Form for={{ assigns }} change="params_change">
     <DateInput field={{ :from }} />
     <DateInput field={{ :to }} />

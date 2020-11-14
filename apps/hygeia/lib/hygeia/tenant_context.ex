@@ -17,7 +17,7 @@ defmodule Hygeia.TenantContext do
 
   """
   @spec list_tenants :: [Tenant.t()]
-  def list_tenants, do: Repo.all(Tenant)
+  def list_tenants, do: Repo.all(from(tenant in Tenant, order_by: tenant.name))
 
   @doc """
   Gets a single tenant.
