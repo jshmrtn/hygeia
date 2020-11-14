@@ -43,55 +43,191 @@
       </a>
 
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-        <Link
-          :for={{ %{details: %Phase.Index{}} <- @case.phases }}
-          class="dropdown-item"
-          to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, List.last(@case.phases).uuid) }}
-        >
-          <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
-          {{ gettext("Isolation Confirmation") }}
-        </Link>
-        <Link
-          :for={{ %{details: %Phase.PossibleIndex{}} <- @case.phases }}
-          class="dropdown-item"
-          to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, List.last(@case.phases).uuid) }}
-        >
-          <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
-          {{ gettext("Quarantine Confirmation") }}
-        </Link>
-        <LiveRedirect
-          class="dropdown-item"
-          to={{ Routes.case_create_possible_index_path(@socket, :create, propagator_internal: true, propagator_case_uuid: @case.uuid, default_tenant_uuid: @case.tenant_uuid) }}
-        >
-          <span class="oi oi-plus mr-1" aria-hidden="true"></span>
-          {{ gettext("Create Contact Cases") }}
-        </LiveRedirect>
-        <Link
-          :if={{ authorized?(@case, :update, auth) and not match?(%{details: %Phase.Index{}}, List.last(@case.phases)) }}
-          class="dropdown-item"
-          to="#"
-          click="convert_to_index" 
-          opts={{
-            title: gettext("Convert To Index"),
-            data: [confirm: gettext("Are you sure?")]
-          }}
-        >
-          <span class="oi oi-beaker mr-1" aria-hidden="true"></span>
-          {{ gettext("Convert to Index") }}
-        </Link>
-        <Link 
-          to="#" 
-          click="delete"
-          class="dropdown-item"
-          opts={{
-            title: gettext("Delete"),
-            data: [confirm: gettext("Are you sure?")]
-          }}
-          :if={{ authorized?(@case, :delete, auth) }}
-        >
-          <span class="oi oi-trash mr-1" aria-hidden="true"></span>
-          {{ gettext("Delete") }}
-        </Link>
+        <div :if={{ Enum.any?(@case.phases, &match?(%{details: %Phase.Index{}}, &1)) }}>
+          <Link
+            :for={{ %{details: %Phase.Index{}, uuid: uuid} <- @case.phases }}
+            class="dropdown-item"
+            to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, uuid) }}
+          >
+            <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
+            {{ gettext("Isolation Confirmation") }}
+          </Link>
+          <LiveRedirect
+            class="dropdown-item"
+            :for={{ %{details: %Phase.Index{}, uuid: uuid} <- @case.phases }}
+            to={{ Routes.case_protocol_path(
+              @socket,
+              :show,
+              @case,
+              type: "sms",
+              entry: %{
+                text: gettext(
+                  """
+                  You have been tested positive for the corona virus.
+                  Therefore you have to self isolate.
+                  Details: %{isolation_confirmation_link}
+                  """,
+                  isolation_confirmation_link: Routes.pdf_url(@socket, :isolation_confirmation, @case.uuid, uuid)
+                )
+              }
+            )}}
+            :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) }}
+          >
+            <span class="oi oi-phone mr-1" aria-hidden="true"></span>
+            {{ gettext("Send SMS Isolation Confirmation") }}
+          </LiveRedirect>
+          <LiveRedirect
+            class="dropdown-item"
+            :for={{ %{details: %Phase.Index{}, uuid: uuid} <- @case.phases }}
+            to={{ Routes.case_protocol_path(
+              @socket,
+              :show,
+              @case,
+              type: "email",
+              entry: %{
+                subject: gettext("Isolation Order"),
+                body: gettext(
+                  """
+                  You have been tested positive for the corona virus.
+                  Therefore you have to self isolate.
+                  Details: %{isolation_confirmation_link}
+                  """,
+                  isolation_confirmation_link: Routes.pdf_url(@socket, :isolation_confirmation, @case.uuid, uuid)
+                )
+              }
+            )}}
+            :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) }}
+          >
+            <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
+            {{ gettext("Send Email Isolation Confirmation") }}
+          </LiveRedirect>
+        </div>
+        <div :if={{ Enum.any?(@case.phases, &match?(%{details: %Phase.PossibleIndex{}}, &1)) }}>
+          <div class="dropdown-divider"></div>
+          <Link
+            :for={{ %{details: %Phase.PossibleIndex{}} <- @case.phases }}
+            class="dropdown-item"
+            to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, List.last(@case.phases).uuid) }}
+          >
+            <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
+            {{ gettext("Quarantine Confirmation") }}
+          </Link>
+          <LiveRedirect
+            class="dropdown-item"
+            :for={{ %{details: %Phase.PossibleIndex{}, uuid: uuid} <- @case.phases }}
+            to={{ Routes.case_protocol_path(
+              @socket,
+              :show,
+              @case,
+              type: "sms",
+              entry: %{
+                text: gettext(
+                  """
+                  You have been identified as a contact person of a person with corona.
+                  Therefore you have to self quarantine.
+                  Details: %{quarantine_confirmation_link}
+                  """,
+                  quarantine_confirmation_link: Routes.pdf_url(@socket, :quarantine_confirmation, @case.uuid, uuid)
+                )
+              }
+            )}}
+            :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) }}
+          >
+            <span class="oi oi-phone mr-1" aria-hidden="true"></span>
+            {{ gettext("Send SMS Quarantine Confirmation") }}
+          </LiveRedirect>
+          <LiveRedirect
+            class="dropdown-item"
+            :for={{ %{details: %Phase.PossibleIndex{}, uuid: uuid} <- @case.phases }}
+            to={{ Routes.case_protocol_path(
+              @socket,
+              :show,
+              @case,
+              type: "email",
+              entry: %{
+                subject: gettext("Quarantine Order"),
+                body: gettext(
+                  """
+                  You have been identified as a contact person of a person with corona.
+                  Therefore you have to self quarantine.
+                  Details: %{quarantine_confirmation_link}
+                  """,
+                  quarantine_confirmation_link: Routes.pdf_url(@socket, :quarantine_confirmation, @case.uuid, uuid)
+                )
+              }
+            )}}
+            :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) }}
+          >
+            <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
+            {{ gettext("Send Email Quarantine Confirmation") }}
+          </LiveRedirect>
+        </div>
+        <div :if={{ authorized?(Case, :create, auth) }}>
+          <div class="dropdown-divider"></div>
+          <LiveRedirect
+            class="dropdown-item"
+            to={{ Routes.case_create_possible_index_path(@socket, :create, propagator_internal: true, propagator_case_uuid: @case.uuid, default_tenant_uuid: @case.tenant_uuid) }}
+          >
+            <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+            {{ gettext("Create Contact Cases") }}
+          </LiveRedirect>
+        </div>
+        <div :if={{ authorized?(@case, :update, auth) and not match?(%{details: %Phase.Index{}}, List.last(@case.phases)) }}>
+          <div class="dropdown-divider"></div>
+          <Link
+            class="dropdown-item"
+            to="#"
+            click="convert_to_index" 
+            opts={{
+              title: gettext("Convert To Index"),
+              data: [confirm: gettext("Are you sure?")]
+            }}
+          >
+            <span class="oi oi-beaker mr-1" aria-hidden="true"></span>
+            {{ gettext("Convert to Index") }}
+          </Link>
+        </div>
+        <div :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) }}>
+          <div class="dropdown-divider"></div>
+          <LiveRedirect
+            class="dropdown-item"
+            to={{ Routes.case_protocol_path(@socket, :show, @case, type: "note") }}
+          >
+            <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+            {{ gettext("Create Note") }}
+          </LiveRedirect>
+          <LiveRedirect
+            class="dropdown-item"
+            to={{ Routes.case_protocol_path(@socket, :show, @case, type: "sms") }}
+            :if={{ CaseContext.person_has_mobile_number?(@case.person) }}
+          >
+            <span class="oi oi-phone mr-1" aria-hidden="true"></span>
+            {{ gettext("Send SMS") }}
+          </LiveRedirect>
+          <LiveRedirect
+            class="dropdown-item"
+            to={{ Routes.case_protocol_path(@socket, :show, @case, type: "email") }}
+            :if={{ CaseContext.person_has_email?(@case.person) }}
+          >
+            <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
+            {{ gettext("Send Email") }}
+          </LiveRedirect>
+        </div>
+        <div :if={{ authorized?(@case, :delete, auth) }}>
+          <div class="dropdown-divider"></div>
+          <Link 
+            to="#" 
+            click="delete"
+            class="dropdown-item"
+            opts={{
+              title: gettext("Delete"),
+              data: [confirm: gettext("Are you sure?")]
+            }}
+          >
+            <span class="oi oi-trash mr-1" aria-hidden="true"></span>
+            {{ gettext("Delete") }}
+          </Link>
+        </div>
       </div>
     </li>
   </Context>

@@ -44,7 +44,10 @@
                 </Field>
                 <Field name={{ :propagator_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}>
                   <Label>{{ gettext("Propagator Case UUID") }}</Label>
-                  <!-- TODO: Select Pattern... -->
+                  <!-- TODO: Convert field to a choose pattern and remove this notice-->
+                  <div class="alert alert-danger" role="alert">
+                    {{ gettext("TTHis field will be converted to a choose pattern") }}
+                  </div>
                   <TextInput class="form-control" />
                   <FormError />
                 </Field>

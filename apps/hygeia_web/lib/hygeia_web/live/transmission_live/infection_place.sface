@@ -58,7 +58,10 @@
             </Field>
             <Field name={{ :type }} class="form-group">
               <Label>{{ gettext("Type") }}</Label>
-              <!-- TODO: Make Type an enum -->
+              <!-- TODO: Make Type ENUM and remove this notice-->
+              <div class="alert alert-danger" role="alert">
+                {{ gettext("Type will be converted to a Select Field") }}
+              </div>
               <TextInput
                 class="form-control"
                 opts={{ disabled: @disabled }}

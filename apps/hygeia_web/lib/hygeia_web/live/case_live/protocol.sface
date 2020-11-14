@@ -2,11 +2,6 @@
   <Context get={{ HygeiaWeb, auth: auth }}>
     <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
 
-    <!-- TODO: implement real email sending frontend -->
-    <button :on-click="send_email" phx-value-body="body 1" phx-value-subject="subject">
-      {{gettext("send email")}}
-    </button>
-
     <div class="card">
       <div class="card-header">
         <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
@@ -29,9 +24,18 @@
             </thead>
             <tbody>
               <tr :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) }}>
-                <td>
+                <td class="align-middle">
                   <Field name={{ :type }}>
-                    <Select class="form-control" opts={{ prompt: gettext("Choose Type") }} field={{ :type }} options={{ [{gettext("Note"), "note"}] }} />
+                    <Select
+                      class="form-control"
+                      opts={{ prompt: gettext("Choose Type") }}
+                      field={{ :type }}
+                      options={{ List.flatten([
+                        [{gettext("Note"), "note"}],
+                        (if CaseContext.person_has_mobile_number?(@case.person), do: [{gettext("SMS"), "sms"}], else: []),
+                        (if CaseContext.person_has_email?(@case.person), do: [{gettext("Email"), "email"}], else: []),
+                      ]) }}
+                    />
                     <FormError />
                   </Field>
                 </td>
@@ -41,22 +45,53 @@
                 <td class="align-middle">
                   {{ unless is_nil(auth), do: auth.display_name }}
                 </td>
-                <td>
+                <td class="align-middle">
                   <InputContext assigns={{ assigns }} :let={{ form: form }}>
                     <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "note" }} field={{ :entry }} type={{ :note }} id="poly-inputs">
-                      <Field name={{ :place }}>
+                      <Field name={{ :note }}>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <Label class="input-group-text">{{ gettext("Note") }}</Label>
                           </div>
-                          <TextInput class="form-control" field={{ :note }} />
+                          <TextInput class="form-control" />
+                        </div>
+                        <FormError />
+                      </Field>
+                    </PolimorphicInputs>
+                    <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "sms" }} field={{ :entry }} type={{ :sms }} id="poly-inputs">
+                      <Field name={{ :text }}>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <Label class="input-group-text">{{ gettext("Text") }}</Label>
+                          </div>
+                          <TextArea class="form-control" rows="10" />
+                        </div>
+                        <FormError />
+                      </Field>
+                    </PolimorphicInputs>
+                    <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "email" }} field={{ :entry }} type={{ :email }} id="poly-inputs">
+                      <Field name={{ :subject }}>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <Label class="input-group-text">{{ gettext("Subject") }}</Label>
+                          </div>
+                          <TextInput class="form-control" />
+                        </div>
+                        <FormError />
+                      </Field>
+                      <Field name={{ :body }}>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <Label class="input-group-text">{{ gettext("Body") }}</Label>
+                          </div>
+                          <TextArea class="form-control" rows="10" />
                         </div>
                         <FormError />
                       </Field>
                     </PolimorphicInputs>
                   </InputContext>
                 </td>
-                <td>
+                <td class="align-middle">
                   <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} diabled={{ @protocol_entry_changeset.valid? }}>
                     <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
                     {{ gettext("Save") }}

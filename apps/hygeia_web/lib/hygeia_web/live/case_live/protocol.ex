@@ -14,6 +14,7 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
 
@@ -33,7 +34,7 @@ defmodule HygeiaWeb.CaseLive.Protocol do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "protocol_entries:case:#{id}")
 
-        load_data(socket, case)
+        load_data(socket, case, params)
       else
         socket
         |> push_redirect(to: Routes.page_path(socket, :index))
@@ -73,39 +74,87 @@ defmodule HygeiaWeb.CaseLive.Protocol do
      |> maybe_block_navigation()}
   end
 
-  def handle_event("send_email", %{"subject" => subject, "body" => body}, socket) do
-    CaseContext.case_send_email(socket.assigns.case, subject, body)
-
-    {:noreply, socket}
-  end
-
-  def handle_event("save", %{"protocol_entry" => protocol_entry_params}, socket) do
+  def handle_event(
+        "save",
+        %{"protocol_entry" => %{"type" => type} = protocol_entry_params},
+        socket
+      )
+      when not (type in ["email", "sms"]) do
     true = authorized?(ProtocolEntry, :create, get_auth(socket), %{case: socket.assigns.case})
 
     socket.assigns.case
     |> CaseContext.create_protocol_entry(protocol_entry_params)
-    |> case do
-      {:ok, _protocol_entry} ->
-        {:noreply,
-         socket
-         |> load_data(CaseContext.get_case!(socket.assigns.case.uuid))
-         |> put_flash(:info, gettext("Protocol Entry updated successfully"))}
-
-      {:error, changeset} ->
-        {:noreply,
-         socket
-         |> assign(protocol_entry_changeset: changeset)
-         |> maybe_block_navigation()}
-    end
+    |> handle_save_response(socket)
   end
 
-  defp load_data(socket, case) do
+  def handle_event(
+        "save",
+        %{"protocol_entry" => %{"type" => "email"} = protocol_entry_params},
+        socket
+      ) do
+    true = authorized?(ProtocolEntry, :create, get_auth(socket), %{case: socket.assigns.case})
+
+    socket.assigns.case
+    |> Ecto.build_assoc(:protocol_entries)
+    |> CaseContext.change_protocol_entry(protocol_entry_params)
+    |> case do
+      %Ecto.Changeset{valid?: true} = changeset ->
+        CaseContext.case_send_email(
+          socket.assigns.case,
+          Ecto.Changeset.fetch_field!(changeset, :entry).subject,
+          Ecto.Changeset.fetch_field!(changeset, :entry).body
+        )
+
+      %Ecto.Changeset{valid?: false} = changeset ->
+        {:error, changeset}
+    end
+    |> handle_save_response(socket)
+  end
+
+  def handle_event(
+        "save",
+        %{"protocol_entry" => %{"type" => "sms"} = protocol_entry_params},
+        socket
+      ) do
+    true = authorized?(ProtocolEntry, :create, get_auth(socket), %{case: socket.assigns.case})
+
+    socket.assigns.case
+    |> Ecto.build_assoc(:protocol_entries)
+    |> CaseContext.change_protocol_entry(protocol_entry_params)
+    |> case do
+      %Ecto.Changeset{valid?: true} = changeset ->
+        CaseContext.case_send_sms(
+          socket.assigns.case,
+          Ecto.Changeset.fetch_field!(changeset, :entry).text
+        )
+
+      %Ecto.Changeset{valid?: false} = changeset ->
+        {:error, changeset}
+    end
+    |> handle_save_response(socket)
+  end
+
+  defp handle_save_response({:ok, _protocol_entry}, socket),
+    do:
+      {:noreply,
+       socket
+       |> load_data(CaseContext.get_case!(socket.assigns.case.uuid))
+       |> put_flash(:info, gettext("Protocol Entry created successfully"))}
+
+  defp handle_save_response({:error, %Ecto.Changeset{} = changeset}, socket),
+    do:
+      {:noreply,
+       socket
+       |> assign(protocol_entry_changeset: changeset)
+       |> maybe_block_navigation()}
+
+  defp load_data(socket, case, params \\ %{}) do
     case = Repo.preload(case, protocol_entries: [], person: [])
 
     assign(socket,
       case: case,
       protocol_entry_changeset:
-        case |> Ecto.build_assoc(:protocol_entries) |> CaseContext.change_protocol_entry()
+        case |> Ecto.build_assoc(:protocol_entries) |> CaseContext.change_protocol_entry(params)
     )
   end
 
