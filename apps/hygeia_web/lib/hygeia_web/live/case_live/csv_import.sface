@@ -16,7 +16,7 @@
       <dd>
         {{ HygeiaCldr.List.to_string!(
           [
-            gettext("Firstname"),
+            gettext("First name"),
             gettext("Lastname"),
             gettext("Mobile Phone"),
             gettext("Landline"),

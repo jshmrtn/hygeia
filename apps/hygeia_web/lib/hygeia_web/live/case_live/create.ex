@@ -274,10 +274,10 @@ defmodule HygeiaWeb.CaseLive.Create do
   @spec get_csv_key_mapping() :: map
   def get_csv_key_mapping,
     do: %{
-      "firstname" => :first_name,
-      gettext("Firstname") => :first_name,
-      "lastname" => :last_name,
-      gettext("Lastname") => :last_name,
+      "first name" => :first_name,
+      gettext("First name") => :first_name,
+      "last name" => :last_name,
+      gettext("Last name") => :last_name,
       "mobile" => :mobile,
       "mobile_phone" => :mobile,
       gettext("Mobile Phone") => :mobile,

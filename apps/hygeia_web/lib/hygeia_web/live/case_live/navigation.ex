@@ -40,7 +40,7 @@ defmodule HygeiaWeb.CaseLive.Navigation do
     {:noreply,
      socket
      |> push_redirect(to: Routes.case_base_data_path(socket, :show, case))
-     |> put_flash(:info, gettext("Created Index Phase."))}
+     |> put_flash(:info, gettext("Created Index Phase"))}
   end
 
   def handle_event("delete", _params, %{assigns: %{case: case}} = socket) do

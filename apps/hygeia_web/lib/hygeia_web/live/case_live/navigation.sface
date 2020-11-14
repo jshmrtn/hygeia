@@ -179,7 +179,7 @@
             to="#"
             click="convert_to_index" 
             opts={{
-              title: gettext("Convert To Index"),
+              title: gettext("Convert to Index"),
               data: [confirm: gettext("Are you sure?")]
             }}
           >

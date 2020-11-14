@@ -2,7 +2,7 @@
   <table class="person-table table table-sm no-autofill-background">
     <thead>
       <tr>
-        <th scope="col">{{ gettext("Firstname") }}</th>
+        <th scope="col">{{ gettext("First name") }}</th>
         <th scope="col">{{ gettext("Lastname") }}</th>
         <th scope="col">{{ gettext("Mobile Phone") }}</th>
         <th scope="col">{{ gettext("Landline") }}</th>
