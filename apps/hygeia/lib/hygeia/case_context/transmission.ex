@@ -11,6 +11,7 @@ defmodule Hygeia.CaseContext.Transmission do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.InfectionPlace
+  alias Hygeia.CaseContext.Person
 
   @type t :: %__MODULE__{
           uuid: String.t(),
@@ -35,10 +36,12 @@ defmodule Hygeia.CaseContext.Transmission do
           propagator_ims_id: String.t() | nil,
           propagator_case: Ecto.Schema.belongs_to(Case.t()) | nil,
           propagator_case_uuid: String.t() | nil,
+          propagator: Ecto.Schema.has_one(Person.t()) | nil,
           recipient_internal: boolean | nil,
           recipient_ims_id: String.t() | nil,
           recipient_case: Ecto.Schema.belongs_to(Case.t()) | nil,
           recipient_case_uuid: String.t() | nil,
+          recipient: Ecto.Schema.has_one(Person.t()) | nil,
           infection_place: InfectionPlace.t(),
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
@@ -54,9 +57,11 @@ defmodule Hygeia.CaseContext.Transmission do
     field :recipient_internal, :boolean
 
     belongs_to :propagator_case, Case, references: :uuid, foreign_key: :propagator_case_uuid
+    has_one :propagator, through: [:propagator_case, :person]
     belongs_to :recipient_case, Case, references: :uuid, foreign_key: :recipient_case_uuid
+    has_one :recipient, through: [:recipient_case, :person]
 
-    embeds_one :infection_place, InfectionPlace
+    embeds_one :infection_place, InfectionPlace, on_replace: :update
 
     timestamps()
   end
@@ -75,7 +80,7 @@ defmodule Hygeia.CaseContext.Transmission do
       :recipient_case_uuid
     ])
     |> cast_embed(:infection_place)
-    |> validate_required([])
+    |> validate_required([:date])
     |> validate_case(:propagator_internal, :propagator_ims_id, :propagator_case_uuid)
     |> validate_case(:recipient_internal, :recipient_ims_id, :recipient_case_uuid)
     |> validate_propagator_or_recipient_required

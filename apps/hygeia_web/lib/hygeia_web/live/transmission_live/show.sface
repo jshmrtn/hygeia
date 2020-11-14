@@ -1,0 +1,162 @@
+<div class="component-transmission-base-data container">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <Form 
+      for={{ @changeset }} 
+      change="validate" 
+      submit="save" 
+      opts={{ autocomplete: "off", id: "transmission-form", "phx-hook": "BlockNavigation" }}
+    >
+      <h1>
+        <Inputs for={{ :infection_place }}>
+          <InputContext assigns={{ assigns }} :let={{ form: form }}>
+            {{ Ecto.Changeset.get_field(form.source, :type) }}
+          </InputContext>
+        </Inputs>
+        /
+        {{
+          @changeset
+          |> Ecto.Changeset.get_field(:date)
+          |> case do
+            nil -> nil
+            date -> Cldr.Date.to_string!(date, HygeiaCldr)
+          end
+        }}
+      </h1>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="mb-3" :if={{ @live_action == :show }}>
+            <LivePatch
+              :if={{ authorized?(@transmission, :update, auth) }}
+              to={{ Routes.transmission_show_path(@socket, :edit, @transmission) }}
+            >
+              <button class="btn btn-primary mb-3" id="transmission-edit">
+                <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                {{ gettext("Edit") }}
+              </button>
+            </LivePatch>
+            <Link 
+              to="#" 
+              click="delete" 
+              opts={{
+                title: gettext("Delete"),
+                data: [confirm: gettext("Are you sure?")]
+              }}
+              :if={{ authorized?(@transmission, :delete, auth) }}
+            >
+              <button class="btn btn-danger mb-3">
+                <span class="oi oi-trash" aria-hidden="true"></span>
+                {{ gettext("Delete") }}
+              </button>
+            </Link>
+          </div>
+
+          <div :if={{ @live_action == :edit }}>
+            <div class="mb-3" :if={{ @live_action == :edit }}>
+              <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
+                <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+                {{ gettext("Save") }}
+              </button>
+              <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
+                <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+                {{ gettext("Discard") }}
+              </button>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Base Data") }}</h4>
+                <div class="row">
+                  <div class="from-group col">
+                    <label>{{ gettext("Recipient") }}</label>
+                    <div :if={{ @transmission.recipient_internal == true }}>
+                      <Link
+                        to={{ Routes.person_base_data_path(@socket, :show, @transmission.recipient) }}
+                        :if={{ authorized?(@transmission.recipient, :details, auth) }}
+                      >
+                        {{ @transmission.recipient.first_name }} {{ @transmission.recipient.last_name }}
+                      </Link>
+                      <span
+                        :if={{ not authorized?(@transmission.recipient, :details, auth) }}
+                      >
+                        {{ @transmission.recipient.human_readable_id }}
+                      </span>
+                      /
+                      <Link
+                        to={{ Routes.case_base_data_path(@socket, :show, @transmission.recipient_case) }}
+                        :if={{ authorized?(@transmission.recipient_case, :details, auth) }}
+                      >
+                        {{ case_display_name(@transmission.recipient_case) }}
+                      </Link>
+                      <span
+                        :if={{ not authorized?(@transmission.recipient_case, :details, auth) }}
+                      >
+                        {{ @transmission.recipient_case.human_readable_id }}
+                      </span>
+                    </div>
+                    <div :if={{ @transmission.recipient_internal == false }}>
+                      {{ gettext("ISM-ID: %{id}", id: @transmission.recipient_ims_id) }}
+                    </div>
+                  </div>
+                  <div class="from-group col">
+                    <label>{{ gettext("Propagator") }}</label>
+                    <div :if={{ @transmission.propagator_internal == true }}>
+                      <Link
+                        to={{ Routes.person_base_data_path(@socket, :show, @transmission.propagator) }}
+                        :if={{ authorized?(@transmission.propagator, :details, auth) }}
+                      >
+                        {{ @transmission.propagator.first_name }} {{ @transmission.propagator.last_name }}
+                      </Link>
+                      <span
+                        :if={{ not authorized?(@transmission.propagator, :details, auth) }}
+                      >
+                        {{ @transmission.propagator.human_readable_id }}
+                      </span>
+                      /
+                      <Link
+                        to={{ Routes.case_base_data_path(@socket, :show, @transmission.propagator_case) }}
+                        :if={{ authorized?(@transmission.propagator_case, :details, auth) }}
+                      >
+                        {{ case_display_name(@transmission.propagator_case) }}
+                      </Link>
+                      <span
+                        :if={{ not authorized?(@transmission.propagator_case, :details, auth) }}
+                      >
+                        {{ @transmission.propagator_case.human_readable_id }}
+                      </span>
+                    </div>
+                    <div :if={{ @transmission.propagator_internal == false }}>
+                      {{ gettext("ISM-ID: %{id}", id: @transmission.propagator_ims_id) }}
+                    </div>
+                  </div>
+                </div>
+                <Field name={{ :date }} class="form-group">
+                  <Label>{{ gettext("Date") }}</Label>
+                  <DateInput 
+                    class="form-control" 
+                    opts={{ disabled: @live_action == :show }}
+                  />
+                  <FormError />
+                </Field>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Infection Place") }}</h4>
+
+                <Inputs for={{ :infection_place }}>
+                  <HygeiaWeb.TransmissionLive.InfectionPlace
+                    id="infection_place"
+                    disabled={{ @live_action == :show }}
+                  />
+                </Inputs>
+              </div>
+            </div>
+          </div>       
+        </div>
+      </div>
+    </Form>
+  </Context>
+</div>

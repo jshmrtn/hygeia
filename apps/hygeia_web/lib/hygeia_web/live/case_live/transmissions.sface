@@ -6,13 +6,19 @@
       <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
     </div>
     <div class="card-body">
-      TODO: Display / Edit Transmissions
-
       <h2>{{ gettext("Received") }}</h2>
-      <pre>{{ inspect(@case.received_transmissions) }}</pre>
+      <HygeiaWeb.CaseLive.TransmissionTable
+        transmissions={{ @case.received_transmissions }}
+        show_recipient={{ false }}
+        id="received_transmissions"
+      />
 
       <h2>{{ gettext("Propagated") }}</h2>
-      <pre>{{ inspect(@case.propagated_transmissions) }}</pre>
+      <HygeiaWeb.CaseLive.TransmissionTable
+        transmissions={{ @case.propagated_transmissions }}
+        show_propagator={{ false }}
+        id="propagated_transmissions"
+      />
     </div>
   </div>
 </div>

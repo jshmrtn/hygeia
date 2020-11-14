@@ -1,0 +1,139 @@
+<div>
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <table class="table">
+      <thead>
+        <tr>
+          <th :if={{ @show_recipient }}>
+            {{ gettext("Recipient") }}
+          </th>
+          <th :if={{ @show_propagator }}>
+            {{ gettext("Propagator") }}
+          </th>
+          <th>
+            {{ gettext("Date") }}
+          </th>
+          <th>
+            {{ gettext("Infection Place Known") }}
+          </th>
+          <th>
+            {{ gettext("Infection Place Type") }}
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr :for={{ transmission <- @transmissions }}>
+          <td :if={{ @show_recipient }}>
+            <div :if={{ transmission.recipient_internal == true }}>
+              <Link
+                to={{ Routes.person_base_data_path(@socket, :show, transmission.recipient) }}
+                :if={{ authorized?(transmission.recipient, :details, auth) }}
+              >
+                {{ transmission.recipient.first_name }} {{ transmission.recipient.last_name }}
+              </Link>
+              <span
+                :if={{ not authorized?(transmission.recipient, :details, auth) }}
+              >
+                {{ transmission.recipient.human_readable_id }}
+              </span>
+              /
+              <Link
+                to={{ Routes.case_base_data_path(@socket, :show, transmission.recipient_case) }}
+                :if={{ authorized?(transmission.recipient_case, :details, auth) }}
+              >
+                {{ case_display_name(transmission.recipient_case) }}
+              </Link>
+              <span
+                :if={{ not authorized?(transmission.recipient_case, :details, auth) }}
+              >
+                {{ transmission.recipient_case.human_readable_id }}
+              </span>
+            </div>
+            <div :if={{ transmission.recipient_internal == false }}>
+              {{ gettext("ISM-ID: %{id}", id: transmission.recipient_ims_id) }}
+            </div>
+          </td>
+          <td :if={{ @show_propagator }}>
+            <div :if={{ transmission.propagator_internal == true }}>
+              <Link
+                to={{ Routes.person_base_data_path(@socket, :show, transmission.propagator) }}
+                :if={{ authorized?(transmission.propagator, :details, auth) }}
+              >
+                {{ transmission.propagator.first_name }} {{ transmission.propagator.last_name }}
+              </Link>
+              <span
+                :if={{ not authorized?(transmission.propagator, :details, auth) }}
+              >
+                {{ transmission.propagator.human_readable_id }}
+              </span>
+              /
+              <Link
+                to={{ Routes.case_base_data_path(@socket, :show, transmission.propagator_case) }}
+                :if={{ authorized?(transmission.propagator_case, :details, auth) }}
+              >
+                {{ case_display_name(transmission.propagator_case) }}
+              </Link>
+              <span
+                :if={{ not authorized?(transmission.propagator_case, :details, auth) }}
+              >
+                {{ transmission.propagator_case.human_readable_id }}
+              </span>
+            </div>
+            <div :if={{ transmission.propagator_internal == false }}>
+              {{ gettext("ISM-ID: %{id}", id: transmission.propagator_ims_id) }}
+            </div>
+          </td>
+          <td>
+            {{ case transmission.date do
+              nil -> nil
+              date -> Cldr.Date.to_string!(date, HygeiaCldr)
+            end }}
+          </td>
+          <td>
+            {{ case transmission.infection_place.known do
+              nil -> nil
+              true -> gettext("Yes")
+              false -> gettext("No")
+            end }}
+          </td>
+          <td>
+            {{ transmission.infection_place.type }}
+          </td>
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LivePatch
+                to={{ Routes.transmission_show_path(@socket, :show, transmission) }}
+                :if={{ authorized?(transmission, :details, auth) }}
+              >
+                <button class="ml-auto btn btn-sm btn-secondary">{{ gettext("Show") }}</button>
+              </LivePatch>
+              <LivePatch
+                to={{ Routes.transmission_show_path(@socket, :edit, transmission) }}
+                :if={{ authorized?(transmission, :update, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-secondary">
+                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                </button>
+              </LivePatch>
+              <Link 
+                to="#" 
+                click="delete"
+                opts={{
+                  title: gettext("Delete"),
+                  data: [confirm: gettext("Are you sure?")],
+                  phx_value_id: transmission.uuid,
+                  class: "delete"
+                }}
+                :if={{ authorized?(transmission, :delete, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-danger">
+                  <span class="oi oi-trash" aria-hidden="true"></span>
+                </button>
+              </Link>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </Context>
+</div>

@@ -17,12 +17,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
-  alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView

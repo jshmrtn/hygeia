@@ -1,0 +1,98 @@
+<InputContext assigns={{ assigns }} :let={{ form: form }}>
+  <div class="row">
+    <div class="col">
+      <Field name={{ :known }} class="form-group">
+        <div class="btn-group btn-group-toggle btn-radio-group">
+          <label class="input-group-text input-sm">{{ gettext("Infection place") }}:</label>
+          <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :known) == true, do: "active" }}">
+            <RadioButton
+              value="true"
+              opts={{ disabled: @disabled }}
+            />
+            {{ gettext("Known") }}
+          </label>
+          <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :known) == false, do: "active" }}">
+            <RadioButton
+              value="false"
+              opts={{ disabled: @disabled }}
+            />
+            {{ gettext("Unknown") }}
+          </label>
+        </div>
+        <FormError />
+      </Field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <div :if={{ Ecto.Changeset.get_field(form.source, :known) == true }}>
+        <div class="card">
+          <div class="card-body">
+            <Field name={{ :activity_mapping_executed }} class="form-group">
+              <div class="btn-group btn-group-toggle btn-radio-group">
+                <label class="input-group-text input-sm">{{ gettext("Activity Mapping Executed") }}:</label>
+                <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :activity_mapping_executed) == true, do: "active" }}">
+                  <RadioButton
+                    value="true"
+                    opts={{ disabled: @disabled }}
+                  />
+                  {{ gettext("Yes") }}
+                </label>
+                <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :activity_mapping_executed) == false, do: "active" }}">
+                  <RadioButton
+                    value="false"
+                    opts={{ disabled: @disabled }}
+                  />
+                  {{ gettext("No") }}
+                </label>
+              </div>
+              <FormError />
+            </Field>
+            <Field name={{ :activity_mapping }} class="form-group" :if={{ Ecto.Changeset.get_field(form.source, :activity_mapping_executed) == true }}>
+              <Label>{{ gettext("Activity Mapping") }}</Label>
+              <TextArea
+                class="form-control"
+                opts={{ disabled: @disabled }}
+              />
+              <FormError />
+            </Field>
+            <Field name={{ :type }} class="form-group">
+              <Label>{{ gettext("Type") }}</Label>
+              <!-- TODO: Make Type an enum -->
+              <TextInput
+                class="form-control"
+                opts={{ disabled: @disabled }}
+              />
+              <FormError />
+            </Field>
+            <Field name={{ :name }} class="form-group">
+              <Label>{{ gettext("Name") }}</Label>
+              <TextInput
+                class="form-control"
+                opts={{ disabled: @disabled }}
+              />
+              <FormError />
+            </Field>
+            <Field name={{ :flight_information }} class="form-group">
+              <Label>{{ gettext("Flight Information") }}</Label>
+              <TextInput
+                class="form-control"
+                opts={{ disabled: @disabled }}
+              />
+              <FormError />
+            </Field>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6" :if={{ Ecto.Changeset.get_field(form.source, :known) == true }}>
+      <div class="card">
+        <div class="card-body">
+          <Inputs for={{ :address }}>
+            <HygeiaWeb.AddressForm disabled={{ @disabled }} id="infection-place-address" />
+          </Inputs>
+        </div>
+      </div>
+    </div>
+  </div>
+</InputContext>

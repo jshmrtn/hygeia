@@ -41,6 +41,10 @@ defmodule HygeiaWeb.CaseLive.Transmissions do
     {:noreply, redirect(socket, to: Routes.case_index_path(socket, :index))}
   end
 
+  def handle_info(:reload, socket) do
+    {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
+  end
+
   def handle_info(_other, socket), do: {:noreply, socket}
 
   defp load_data(socket, case) do
@@ -48,8 +52,8 @@ defmodule HygeiaWeb.CaseLive.Transmissions do
       case:
         Repo.preload(
           case,
-          received_transmissions: [propagator_case: [person: []]],
-          propagated_transmissions: [recipient_case: [person: []]],
+          received_transmissions: [propagator_case: [], propagator: []],
+          propagated_transmissions: [recipient_case: [], recipient: []],
           person: []
         )
     )

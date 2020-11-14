@@ -18,6 +18,7 @@
     <li class="nav-item">
       <UriActiveContext
         to={{ Routes.case_transmissions_path(@socket, :show, @case) }}
+        opts={{ active: :inclusive }}
         :let={{ to: to, active: active }}
       >
         <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active"}}">

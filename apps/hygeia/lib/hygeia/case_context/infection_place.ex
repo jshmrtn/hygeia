@@ -28,7 +28,7 @@ defmodule Hygeia.CaseContext.InfectionPlace do
     field :name, :string
     field :flight_information, :string
 
-    embeds_one :address, Address
+    embeds_one :address, Address, on_replace: :update
   end
 
   @doc false
