@@ -77,32 +77,14 @@ defmodule HygeiaWeb.Router do
     plug HygeiaWeb.Plug.HasRole, :webmaster
   end
 
-  scope "/auth", HygeiaWeb do
-    pipe_through [:browser, :csrf]
-
-    get "/:provider", AuthController, :request
-    get "/:provider/callback", AuthController, :callback
-    post "/:provider/callback", AuthController, :callback
-
-    delete "/", AuthController, :delete
-    # This route also exists as get because of this issue
-    # https://github.com/w3c/webappsec-csp/issues/8
-    get "/", AuthController, :delete
-  end
-
   scope "/", HygeiaWeb do
     pipe_through [:browser, :csrf, :protected]
 
-    live "/", PageLive, :index
-
-    live "/tenants", TenantLive.Index, :index
     live "/tenants/new", TenantLive.Create, :create
     live "/tenants/:id", TenantLive.Show, :show
     live "/tenants/:id/edit", TenantLive.Show, :edit
 
-    live "/professions", ProfessionLive.Index, :index
     live "/professions/new", ProfessionLive.Create, :create
-    live "/professions/:id", ProfessionLive.Show, :show
     live "/professions/:id/edit", ProfessionLive.Show, :edit
 
     live "/users", UserLive.Index, :index
@@ -132,23 +114,47 @@ defmodule HygeiaWeb.Router do
     live "/organisations/:id", OrganisationLive.Show, :show
     live "/organisations/:id/edit", OrganisationLive.Show, :edit
 
-    live "/statistics", StatisticsLive.ChooseTenant, :index
-    live "/statistics/:tenant_uuid", StatisticsLive.Statistics, :show
-    live "/statistics/:tenant_uuid/:from/:to", StatisticsLive.Statistics, :show
-
     live "/organisations/:id/positions/new", OrganisationLive.Show, :position_new
 
     live "/organisations/:id/positions/:position_id/edit",
          OrganisationLive.Show,
          :position_edit
+  end
+
+  scope "/", HygeiaWeb do
+    pipe_through [:browser, :csrf]
+
+    get "/", HomeController, :index
+
+    live "/tenants", TenantLive.Index, :index
+
+    live "/professions", ProfessionLive.Index, :index
+    live "/professions/:id", ProfessionLive.Show, :show
+
+    live "/statistics", StatisticsLive.ChooseTenant, :index
+    live "/statistics/:tenant_uuid", StatisticsLive.Statistics, :show
+    live "/statistics/:tenant_uuid/:from/:to", StatisticsLive.Statistics, :show
 
     get "/pdf/isolation/:case_uuid/:phase_uuid", PdfController, :isolation_confirmation
     get "/pdf/quarantine/:case_uuid/:phase_uuid", PdfController, :quarantine_confirmation
   end
 
-  scope "/", HygeiaWeb do
+  scope "/auth", HygeiaWeb do
+    pipe_through [:browser, :csrf]
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+    post "/:provider/callback", AuthController, :callback
+
+    delete "/", AuthController, :delete
+    # This route also exists as get because of this issue
+    # https://github.com/w3c/webappsec-csp/issues/8
+    get "/", AuthController, :delete
+  end
+
+  scope "/uploads", HygeiaWeb do
     pipe_through [:browser]
-    put "/uploads/:id", UploadController, :upload
+    put "/:id", UploadController, :upload
   end
 
   scope "/dashboard" do

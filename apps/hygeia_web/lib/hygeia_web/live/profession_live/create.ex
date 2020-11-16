@@ -18,7 +18,7 @@ defmodule HygeiaWeb.ProfessionLive.Create do
         assign(socket, changeset: CaseContext.change_profession(%Profession{}))
       else
         socket
-        |> push_redirect(to: Routes.page_path(socket, :index))
+        |> push_redirect(to: Routes.home_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 

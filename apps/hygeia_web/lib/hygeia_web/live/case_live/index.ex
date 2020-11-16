@@ -43,7 +43,7 @@ defmodule HygeiaWeb.CaseLive.Index do
         |> list_cases()
       else
         socket
-        |> push_redirect(to: Routes.page_path(socket, :index))
+        |> push_redirect(to: Routes.home_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 

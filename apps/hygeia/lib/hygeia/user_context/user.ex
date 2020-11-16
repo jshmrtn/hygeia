@@ -55,6 +55,9 @@ defmodule Hygeia.UserContext.User do
   @spec has_role?(user :: t, role :: Role.t()) :: boolean
   def has_role?(%__MODULE__{roles: roles}, role) when role in @role_map, do: role in roles
 
+  @spec has_role?(user :: :anonymous, role :: Role.t()) :: false
+  def has_role?(:anonymous, _role), do: false
+
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.UserContext.User
 
