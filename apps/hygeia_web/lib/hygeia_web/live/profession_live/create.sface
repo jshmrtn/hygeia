@@ -4,15 +4,21 @@
   submit="save" 
   opts={{ autocomplete: "off", id: "profession-form", class: "container" }}
 >
-  <h1 class="mb-4">
+  <h1 class="mb-3">
     {{ gettext("New profession") }}
   </h1>
 
-  <Field name={{ :name }} class="form-group">
-    <Label>{{ gettext("Name") }}</Label>
-    <TextInput class="form-control" />
-    <FormError />
-  </Field>
+  <div class="hy-card-grid-2-cols">
+    <div class="card mb-3">
+      <div class="card-body">
+        <Field name={{ :name }} class="form-group">
+          <Label>{{ gettext("Name") }}</Label>
+          <TextInput class="form-control" />
+          <FormError />
+        </Field>
+      </div>
+    </div>
+  </div>
 
   <button
     class="btn btn-primary"

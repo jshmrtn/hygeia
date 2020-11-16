@@ -6,14 +6,14 @@
       <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
     </div>
     <div class="card-body">
-      <h2>{{ gettext("Received") }}</h2>
+      <h3>{{ gettext("Received") }}</h3>
       <HygeiaWeb.CaseLive.TransmissionTable
         transmissions={{ @case.received_transmissions }}
         show_recipient={{ false }}
         id="received_transmissions"
       />
 
-      <h2>{{ gettext("Propagated") }}</h2>
+      <h3>{{ gettext("Propagated") }}</h3>
       <HygeiaWeb.CaseLive.TransmissionTable
         transmissions={{ @case.propagated_transmissions }}
         show_propagator={{ false }}

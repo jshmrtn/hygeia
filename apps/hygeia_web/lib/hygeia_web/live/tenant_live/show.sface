@@ -1,156 +1,152 @@
 <div class="component-tenant-base-data container">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1>
+    <h1 class="mb-3">
       {{ Ecto.Changeset.get_field(@changeset, :name) }}
     </h1>
 
-    <div class="card">
-      <div class="card-body">
-        <div class="mb-3" :if={{ @live_action == :show }}>
-          <LivePatch
-            :if={{ authorized?(@tenant, :update, auth) }}
-            to={{ Routes.tenant_show_path(@socket, :edit, @tenant) }}
-          >
-            <button class="btn btn-primary mb-3" id="tenant-edit">
-              <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
-              {{ gettext("Edit") }}
-            </button>
-          </LivePatch>
-          <Link 
-            to="#" 
-            click="delete" 
-            opts={{
-              title: gettext("Delete"),
-              data: [confirm: gettext("Are you sure?")]
-            }}
-            :if={{ authorized?(@tenant, :delete, auth) }}
-          >
-            <button class="btn btn-danger mb-3">
-              <span class="oi oi-trash" aria-hidden="true"></span>
-              {{ gettext("Delete") }}
-            </button>
-          </Link>
+    <div class="mb-4" :if={{ @live_action == :show }}>
+      <LivePatch
+        :if={{ authorized?(@tenant, :update, auth) }}
+        to={{ Routes.tenant_show_path(@socket, :edit, @tenant) }}
+      >
+        <button class="btn btn-primary mr-2" id="tenant-edit">
+          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+          {{ gettext("Edit") }}
+        </button>
+      </LivePatch>
+      <Link 
+        to="#" 
+        click="delete" 
+        opts={{
+          title: gettext("Delete"),
+          data: [confirm: gettext("Are you sure?")]
+        }}
+        :if={{ authorized?(@tenant, :delete, auth) }}
+      >
+        <button class="btn btn-danger">
+          <span class="oi oi-trash" aria-hidden="true"></span>
+          {{ gettext("Delete") }}
+        </button>
+      </Link>
+    </div>
+
+    <Form
+      for={{ @changeset }} 
+      change="validate" 
+      submit="save" 
+      opts={{ autocomplete: "off", id: "tenant-form", "phx-hook": "BlockNavigation" }}
+    >
+      <div :if={{ @live_action == :edit }}>
+        <div class="mb-4" :if={{ @live_action == :edit }}>
+          <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
+            <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+            {{ gettext("Save") }}
+          </button>
+          <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
+            <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+            {{ gettext("Discard") }}
+          </button>
+        </div>
+      </div>
+
+      <div class="hy-card-grid-2-cols hy-readonly-form">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{ gettext("Name") }}</h4>
+            <Field name={{ :name }} class="form-group">
+              <Label>{{ gettext("Name") }}</Label>
+              <TextInput 
+                class="form-control"
+                opts={{ disabled: @live_action == :show }}
+              />
+              <FormError />
+            </Field>
+
+            <Field name={{ :public_statistics }} class="form-group">
+              <Label>{{ gettext("Public Statistics") }}</Label>
+              <Checkbox 
+                class="form-control"
+                opts={{ disabled: @live_action == :show }}
+              />
+              <FormError />
+            </Field>
+          </div>
         </div>
 
-        <Form 
-          for={{ @changeset }} 
-          change="validate" 
-          submit="save" 
-          opts={{ autocomplete: "off", id: "tenant-form", "phx-hook": "BlockNavigation" }}
-        >
-          <div :if={{ @live_action == :edit }}>
-            <div class="mb-3" :if={{ @live_action == :edit }}>
-              <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
-                <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
-                {{ gettext("Save") }}
-              </button>
-              <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
-                <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
-                {{ gettext("Discard") }}
-              </button>
-            </div>
-          </div>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{ gettext("Outgoing Email Configuration") }}</h4>
 
-          <div class="form-grid">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">{{ gettext("Name") }}</h4>
-                <Field name={{ :name }} class="form-group">
-                  <Label>{{ gettext("Name") }}</Label>
-                  <TextInput 
+            <Field name={{ :outgoing_mail_configuration_type }}>
+              <Label>{{ gettext("Type") }}</Label>
+              <Select
+                class="form-control"
+                opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
+                options={{ [{gettext("Smtp"), "smtp"}] }}
+              />
+              <FormError />
+            </Field>
+
+            <InputContext assigns={{ assigns }} :let={{ form: form }}>
+              <PolimorphicInputs
+                :if={{ Ecto.Changeset.get_field(form.source, :outgoing_mail_configuration_type) == "smtp" }}
+                field={{ :outgoing_mail_configuration }}
+                type={{ :smtp }}
+                id="poly-inputs"
+              >
+                <Field name={{ :server }} class="form-group">
+                  <Label>{{ gettext("server") }}</Label>
+                  <TextInput
                     class="form-control"
                     opts={{ disabled: @live_action == :show }}
                   />
                   <FormError />
                 </Field>
-
-                <Field name={{ :public_statistics }} class="form-group">
-                  <Label>{{ gettext("Public Statistics") }}</Label>
-                  <Checkbox 
+                <Field name={{ :hostname }} class="form-group">
+                  <Label>{{ gettext("hostname") }}</Label>
+                  <TextInput
                     class="form-control"
                     opts={{ disabled: @live_action == :show }}
                   />
                   <FormError />
                 </Field>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">{{ gettext("Outgoing Email Configuration") }}</h4>
-
-                <Field name={{ :outgoing_mail_configuration_type }}>
-                  <Label>{{ gettext("type") }}</Label>
-                  <Select
+                <Field name={{ :port }} class="form-group">
+                  <Label>{{ gettext("port") }}</Label>
+                  <TextInput
                     class="form-control"
-                    opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
-                    options={{ [{gettext("Smtp"), "smtp"}] }}
+                    opts={{ disabled: @live_action == :show }}
                   />
                   <FormError />
                 </Field>
-
-                <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                  <PolimorphicInputs
-                    :if={{ Ecto.Changeset.get_field(form.source, :outgoing_mail_configuration_type) == "smtp" }}
-                    field={{ :outgoing_mail_configuration }}
-                    type={{ :smtp }}
-                    id="poly-inputs"
-                  >
-                    <Field name={{ :server }} class="form-group">
-                      <Label>{{ gettext("server") }}</Label>
-                      <TextInput
-                        class="form-control"
-                        opts={{ disabled: @live_action == :show }}
-                      />
-                      <FormError />
-                    </Field>
-                    <Field name={{ :hostname }} class="form-group">
-                      <Label>{{ gettext("hostname") }}</Label>
-                      <TextInput
-                        class="form-control"
-                        opts={{ disabled: @live_action == :show }}
-                      />
-                      <FormError />
-                    </Field>
-                    <Field name={{ :port }} class="form-group">
-                      <Label>{{ gettext("port") }}</Label>
-                      <TextInput
-                        class="form-control"
-                        opts={{ disabled: @live_action == :show }}
-                      />
-                      <FormError />
-                    </Field>
-                    <Field name={{ :from_email }} class="form-group">
-                      <Label>{{ gettext("sender email address") }}</Label>
-                      <TextInput
-                        class="form-control"
-                        opts={{ disabled: @live_action == :show }}
-                      />
-                      <FormError />
-                    </Field>
-                    <Field name={{ :username }} class="form-group">
-                      <Label>{{ gettext("username") }}</Label>
-                      <TextInput
-                        class="form-control"
-                        opts={{ disabled: @live_action == :show }}
-                      />
-                      <FormError />
-                    </Field>
-                    <Field name={{ :password }} class="form-group">
-                      <Label>{{ gettext("password") }}</Label>
-                      <PasswordInput
-                        class="form-control"
-                        opts={{ disabled: @live_action == :show, placeholder: "password" }}
-                      />
-                      <FormError />
-                    </Field>
-                  </PolimorphicInputs>
-                </InputContext>
-              </div>
-            </div>
+                <Field name={{ :from_email }} class="form-group">
+                  <Label>{{ gettext("sender email address") }}</Label>
+                  <TextInput
+                    class="form-control"
+                    opts={{ disabled: @live_action == :show }}
+                  />
+                  <FormError />
+                </Field>
+                <Field name={{ :username }} class="form-group">
+                  <Label>{{ gettext("username") }}</Label>
+                  <TextInput
+                    class="form-control"
+                    opts={{ disabled: @live_action == :show }}
+                  />
+                  <FormError />
+                </Field>
+                <Field name={{ :password }} class="form-group">
+                  <Label>{{ gettext("password") }}</Label>
+                  <PasswordInput
+                    class="form-control"
+                    opts={{ disabled: @live_action == :show, placeholder: "password" }}
+                  />
+                  <FormError />
+                </Field>
+              </PolimorphicInputs>
+            </InputContext>
           </div>
-        </Form>
+        </div>
       </div>
-    </div>
+    </Form>
   </Context>
 </div>

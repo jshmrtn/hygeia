@@ -1,6 +1,6 @@
 <div class="component-user-index container">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1>
+    <h1 class="mb-3">
       {{ gettext("Listing Users") }}
     </h1>
 

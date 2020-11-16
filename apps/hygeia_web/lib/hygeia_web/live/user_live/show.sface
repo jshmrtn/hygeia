@@ -1,44 +1,40 @@
 <div class="component-user-base-data container">
-  <h1>
+  <h1 class="mb-3">
     {{ @user.display_name }}
   </h1>
 
-  <p class="text-info">
-    {{ gettext("Users can not be edited here since they are synchronized with the IAM.") }}
-  </p>
-
-  <div class="card">
-    <div class="card-body">
-      <div class="form-grid">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">{{ gettext("Base Data") }}</h4>
-            <div class="row">
-              <div class="col">
-                <Label>{{ gettext("Display Name") }}</Label>
-                <span class="form-control">{{ @user.display_name }}</span>
-              </div>
-              <div class="col">
-                <Label>{{ gettext("Email") }}</Label>
-                <span class="form-control">{{ @user.email }}</span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <Label>{{ gettext("IAM Subject") }}</Label>
-                <span class="form-control">{{ @user.iam_sub }}</span>
-              </div>
-              <div class="col">
-                <Label>{{ gettext("Roles") }}</Label>
-                <span class="form-control">
-                  <span :for={{ role <- @user.roles }}>
-                    <span class="badge badge-secondary">
-                    {{ role }}
-                    </span>
-                  </span>
+  <div class="hy-readonly-form">
+    <div class="alert alert-info" role="alert">
+      <span class="oi oi-info mr-2" aria-hidden="true"></span>
+      {{ gettext("Users can not be edited here since they are synchronized with the IAM.") }}
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{{ gettext("Base Data") }}</h4>
+        <div class="row">
+          <div class="col form-group">
+            <Label>{{ gettext("Display Name") }}</Label>
+            <span class="value form-control">{{ @user.display_name }}</span>
+          </div>
+          <div class="col form-group">
+            <Label>{{ gettext("Email") }}</Label>
+            <span class="value form-control">{{ @user.email }}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col form-group">
+            <Label>{{ gettext("IAM Subject") }}</Label>
+            <span class="value form-control">{{ @user.iam_sub }}</span>
+          </div>
+          <div class="col form-group">
+            <Label>{{ gettext("Roles") }}</Label>
+            <span class="value form-control">
+              <span :for={{ role <- @user.roles }}>
+                <span class="badge badge-secondary">
+                {{ role }}
                 </span>
-              </div>
-            </div>
+              </span>
+            </span>
           </div>
         </div>
       </div>

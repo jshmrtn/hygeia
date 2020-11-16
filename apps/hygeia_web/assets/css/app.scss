@@ -129,3 +129,25 @@ a:hover {
 
 @import "./mixins.scss";
 @import "../../lib/**/*.scss";
+
+.hy-readonly-form {
+  @include readonly-form;
+}
+
+.hy-card-grid-1-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-gap: 1.5rem;
+}
+
+.hy-card-grid-2-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-gap: 1.5rem;
+
+  @include media-breakpoint-down(md) {
+    grid-template-columns: 1fr;
+  }
+}

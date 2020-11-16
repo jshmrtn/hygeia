@@ -1,6 +1,7 @@
 <div class="component-case-related_organisations">
   <InputContext assigns={{ assigns }} :let={{ form: form }}>
     <div :if={{ @disabled and length(Ecto.Changeset.get_field(form.source, :related_organisations, [])) == 0 }} class="alert alert-info">
+      <span class="oi oi-info mr-2" aria-hidden="true"></span>
       {{ gettext("No related organisations") }}
     </div>
   </InputContext>

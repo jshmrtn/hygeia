@@ -6,7 +6,7 @@
       :if={{ @live_action == :show and authorized?(@person, :update, auth) }}
       to={{ Routes.person_base_data_path(@socket, :edit, @person) }}
     >
-      <button class="btn btn-primary mb-3" id="person-edit">
+      <button class="btn btn-primary mb-4" id="person-edit">
         <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
         {{ gettext("Edit") }}
       </button>
@@ -18,7 +18,7 @@
       submit="save" 
       opts={{ autocomplete: "off", id: "person-form", "phx-hook": "BlockNavigation" }}
     >
-      <div class="mb-3" :if={{ @live_action == :edit }}>
+      <div class="mb-4" :if={{ @live_action == :edit }}>
         <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
           <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
           {{ gettext("Save") }}

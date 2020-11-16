@@ -1,6 +1,6 @@
 <div>
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <table class="table">
+    <table class="table table-sm">
       <thead>
         <tr>
           <th :if={{ @show_recipient }}>
@@ -130,6 +130,13 @@
                   <span class="oi oi-trash" aria-hidden="true"></span>
                 </button>
               </Link>
+            </div>
+          </td>
+        </tr>
+        <tr :if={{ length(@transmissions) == 0 }}>
+          <td colspan="4">
+            <div class="d-flex justify-content-center py-3">
+              {{ "No data to display" |> gettext }}
             </div>
           </td>
         </tr>

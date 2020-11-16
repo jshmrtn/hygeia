@@ -7,12 +7,12 @@
         <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
       </div>
       <div class="card-body">
-        <div class="mb-3" :if={{ @live_action == :show }}>
+        <div class="mb-4" :if={{ @live_action == :show }}>
           <LivePatch
             :if={{ authorized?(@case, :update, auth) }}
             to={{ Routes.case_base_data_path(@socket, :edit, @case) }}
           >
-            <button class="btn btn-primary mb-3" id="case-edit">
+            <button class="btn btn-primary" id="case-edit">
               <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
               {{ gettext("Edit") }}
             </button>
@@ -26,7 +26,7 @@
           opts={{ autocomplete: "off", id: "case-form", "phx-hook": "BlockNavigation" }}
         >
           <div :if={{ @live_action == :edit }}>
-            <div class="mb-3" :if={{ @live_action == :edit }}>
+            <div class="mb-4" :if={{ @live_action == :edit }}>
               <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
                 <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
                 {{ gettext("Save") }}

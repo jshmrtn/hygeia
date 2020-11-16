@@ -13,7 +13,7 @@
           submit="save" 
           opts={{ autocomplete: "off", id: "protocol-form", "phx-hook": "BlockNavigation" }}
         >
-          <table class="table">
+          <table class="table table-sm">
             <thead>
               <tr>
                 <th scope="col">{{ gettext("Type") }}</th>
@@ -71,7 +71,7 @@
                     </PolimorphicInputs>
                     <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "email" }} field={{ :entry }} type={{ :email }} id="poly-inputs">
                       <Field name={{ :subject }}>
-                        <div class="input-group">
+                        <div class="input-group mb-1">
                           <div class="input-group-prepend">
                             <Label class="input-group-text">{{ gettext("Subject") }}</Label>
                           </div>

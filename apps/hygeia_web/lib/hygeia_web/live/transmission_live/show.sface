@@ -25,7 +25,7 @@
 
       <div class="card">
         <div class="card-body">
-          <div class="mb-3" :if={{ @live_action == :show }}>
+          <div class="mb-4" :if={{ @live_action == :show }}>
             <LivePatch
               :if={{ authorized?(@transmission, :update, auth) }}
               to={{ Routes.transmission_show_path(@socket, :edit, @transmission) }}
@@ -52,7 +52,7 @@
           </div>
 
           <div :if={{ @live_action == :edit }}>
-            <div class="mb-3" :if={{ @live_action == :edit }}>
+            <div class="mb-4" :if={{ @live_action == :edit }}>
               <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
                 <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
                 {{ gettext("Save") }}
