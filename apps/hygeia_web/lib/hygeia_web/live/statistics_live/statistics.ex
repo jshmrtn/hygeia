@@ -3,14 +3,18 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
 
   use HygeiaWeb, :surface_view
 
-  alias Contex.BarChart
-  alias Contex.Dataset
-  alias Contex.Plot
-  alias Hygeia.CaseContext
+  alias Hygeia.StatisticsContext
   alias Hygeia.TenantContext
   alias HygeiaWeb.StatisticsLive.StatPanel
   alias Surface.Components.Form
   alias Surface.Components.Form.DateInput
+
+  @impl Phoenix.LiveView
+  def mount(params, session, socket) do
+    {:ok, socket} = super(params, session, socket)
+
+    {:ok, socket, temporary_assigns: [active_isolation_cases_per_day: []]}
+  end
 
   @impl Phoenix.LiveView
   def handle_params(%{"tenant_uuid" => tenant_uuid} = params, uri, socket) do
@@ -18,6 +22,8 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
 
     socket =
       if authorized?(tenant, :statistics, get_auth(socket)) do
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "statistics_active_isolation_cases_per_day")
+
         socket = assign(socket, :tenant, tenant)
 
         if is_nil(params["from"]) or is_nil(params["to"]) do
@@ -52,21 +58,17 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
      )}
   end
 
-  defp load_data(%{assigns: %{tenant: tenant, from: from, to: to}} = socket) do
-    assign(socket,
-      active_isolation_cases_per_day: CaseContext.active_isolation_cases_per_day(tenant, from, to)
-    )
+  @impl Phoenix.LiveView
+  def handle_info(:refresh, socket) do
+    {:noreply, load_data(socket)}
   end
 
-  defp basic_plot(data) do
-    data
-    |> Enum.map(fn {date, count} ->
-      {Date.to_iso8601(date), count}
-    end)
-    |> Dataset.new(["date", "count"])
-    |> Plot.new(BarChart, 500, 400)
-    |> Plot.titles("Isolations", "per day")
-    |> Plot.axis_labels("date", "isolations")
-    |> Plot.to_svg()
+  def handle_info(_other, socket), do: {:noreply, socket}
+
+  defp load_data(%{assigns: %{tenant: tenant, from: from, to: to}} = socket) do
+    assign(socket,
+      active_isolation_cases_per_day:
+        StatisticsContext.list_active_isolation_cases_per_day(tenant, from, to)
+    )
   end
 end

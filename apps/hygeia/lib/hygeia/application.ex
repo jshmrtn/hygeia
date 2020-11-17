@@ -5,21 +5,37 @@ defmodule Hygeia.Application do
 
   use Application
 
+  alias Hygeia.Jobs.RefreshMaterializedView
+
+  case Mix.env() do
+    :test ->
+      @jobs []
+
+    _env ->
+      @jobs [
+        # Refresh Stats Periodically
+        {RefreshMaterializedView,
+         view: :statistics_active_isolation_cases_per_day,
+         name: {:global, RefreshMaterializedView.ActiveIsolationCasesPerDay}}
+      ]
+  end
+
   @impl Application
   @spec start(start_type :: Application.start_type(), start_args :: term()) ::
           {:ok, pid()} | {:ok, pid(), Application.state()} | {:error, reason :: term()}
   def start(_type, _args) do
     {:ok, _} = EctoBootMigration.migrate(:hygeia)
 
-    children = [
-      # Start the Ecto repository
-      Hygeia.Repo,
-      # Start the PubSub system
-      {Phoenix.PubSub, name: Hygeia.PubSub}
-      # Start a worker by calling: Hygeia.Worker.start_link(arg)
-      # {Hygeia.Worker, arg}
-    ]
-
-    Supervisor.start_link(children, strategy: :one_for_one, name: Hygeia.Supervisor)
+    Supervisor.start_link(
+      [
+        # Start the Ecto repository
+        Hygeia.Repo,
+        # Start the PubSub system
+        {Phoenix.PubSub, name: Hygeia.PubSub}
+        | @jobs
+      ],
+      strategy: :one_for_one,
+      name: Hygeia.Supervisor
+    )
   end
 end

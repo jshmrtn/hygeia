@@ -1,4 +1,7 @@
 <div class="component-statistics-index pt-5 container">
+  <h1>
+    {{ gettext("Statistics for %{tenant}", tenant: @tenant.name)}}
+  </h1>
   <!-- TODO: Remove this warning & complete / style view -->
   <div class="alert alert-danger" role="alert">
     {{ gettext("This view is not finished, do not report any issues about it yet...") }}
@@ -9,13 +12,54 @@
     <DateInput field={{ :to }} />
   </Form>
 
+  <div class="row">
+    <div class="col">
+      <HygeiaWeb.Chart
+        dom_id="active_isolation_cases_per_day"
+        config={{ %{
+          id: "active_isolation_cases_per_day_chart",
+          chart: %{
+            type: "line",
+            styledMode: true
+          },
+          title: %{
+            text: gettext("IF im Tracing / Isolation")
+          },
+          xAxis: %{
+            title: %{
+              text: gettext("Date")
+            },
+            type: "datetime"
+          },
+          yAxis: %{
+            title: %{
+              text: gettext("People")
+            },
+            allowDecimals: false
+          },
+          series: [
+            %{
+              name: gettext("Count"),
+              data: Enum.map(@active_isolation_cases_per_day, &(%{
+                x: &1.date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                y: &1.count
+              }))
+            }
+          ]
+        } }}
+      />
+    </div>
+    <div class="col">
+
+    </div>
+  </div>
+
   <div class="stat-grid">
     <StatPanel
       header={{ "IF im Tracing / Isolation" |> gettext }}
       value={{ 109 }}
       label={{ "Total IF - Bestätigt" |> gettext }}
     />
-    {{ basic_plot(@active_isolation_cases_per_day) }}
     <StatPanel
       header={{ "IF im Tracing / Isolation" |> gettext }}
       value={{ 109 }}

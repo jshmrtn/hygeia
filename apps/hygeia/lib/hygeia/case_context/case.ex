@@ -123,7 +123,8 @@ defmodule Hygeia.CaseContext.Case do
       :tracer_uuid,
       :supervisor_uuid,
       :tenant_uuid,
-      :person_uuid
+      :person_uuid,
+      :inserted_at
     ])
     |> fill_uuid
     |> fill_human_readable_id

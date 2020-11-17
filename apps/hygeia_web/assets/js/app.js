@@ -18,12 +18,13 @@ import NProgress from "nprogress";
 import { LiveSocket } from "phoenix_live_view";
 import BSN from "bootstrap.native";
 import BlockNavigation from "./block-navigation.hook";
+import Chart from "./chart.hook";
 import { PhoenixLiveViewDropzone } from "phoenix_live_view_drop_zone";
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
-  hooks: { BlockNavigation, PhoenixLiveViewDropzone: new PhoenixLiveViewDropzone() },
+  hooks: { BlockNavigation, PhoenixLiveViewDropzone: new PhoenixLiveViewDropzone(), Chart },
 });
 
 // Show progress bar on live navigation and form submits
