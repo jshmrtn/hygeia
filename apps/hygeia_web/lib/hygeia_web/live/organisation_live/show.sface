@@ -59,7 +59,7 @@
                 class="form-control" 
                 opts={{ disabled: @live_action == :show }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
         </div>
@@ -72,7 +72,7 @@
                 class="form-control"
                 opts={{ disabled: @live_action == :show }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
         </div>
@@ -111,7 +111,7 @@
                             opts={{ prompt: gettext("Chose person"), disabled: @live_action == :show }}
                             options={{ Enum.map(@people, &({person_display_name(&1), &1.uuid}))}}
                           />
-                          <FormError />
+                          <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                       </td>
                       <td :if={{ @live_action == :show }}>
@@ -131,7 +131,7 @@
                             class="form-control" 
                             opts={{ disabled: @live_action == :show }} 
                           />
-                          <FormError />
+                          <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                       </td>
                       <td :if={{ @live_action == :edit }}>

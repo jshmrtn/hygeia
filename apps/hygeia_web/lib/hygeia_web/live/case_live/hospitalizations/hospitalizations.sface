@@ -13,14 +13,14 @@
             <Field class="form-group" name={{ :start }}>
               <Label>{{ gettext("Start date") }}</Label>
               <DateInput class="form-control" opts={{ disabled: @disabled }}/>
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
           <div class="col">
             <Field class="form-group" name={{ :end }}>
               <Label>{{ gettext("End date") }}</Label>
               <DateInput class="form-control" opts={{ disabled: @disabled }}/>
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
         </div>
@@ -29,7 +29,7 @@
             <Field class="form-group" name={{ :organisation_uuid }}>
               <Label>{{ gettext("Organisation") }}</Label>
               <Select class="form-control" opts={{ prompt: gettext("Choose organisation"), disabled: @disabled }} options={{ Enum.map(@organisations, &({&1.name, &1.uuid})) }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
         </div>

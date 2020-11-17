@@ -3,8 +3,8 @@ defmodule HygeiaWeb.CaseLive.Hospitalizations do
 
   use HygeiaWeb, :surface_live_component
 
-  alias HygeiaWeb.FormError
   alias Surface.Components.Form.DateInput
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext

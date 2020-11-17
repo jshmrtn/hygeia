@@ -5,8 +5,8 @@ defmodule HygeiaWeb.OrganisationLive.Create do
 
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
-  alias HygeiaWeb.FormError
   alias Surface.Components.Form
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label

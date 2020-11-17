@@ -49,7 +49,7 @@
                     opts={{ prompt: "Select tenant" |> gettext, disabled: @live_action == :show }} 
                     options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
                   />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
 
                 <div class="row">
@@ -61,7 +61,7 @@
                         opts={{ prompt: "Select user" |> gettext,  disabled: @live_action == :show }} 
                         options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
                       />
-                      <FormError />
+                      <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                   </div>
                   <div class="col">
@@ -72,7 +72,7 @@
                         opts={{ prompt: "Select user" |> gettext, disabled: @live_action == :show }} 
                         options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
                       />
-                      <FormError />
+                      <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                   </div>
                 </div>
@@ -86,7 +86,7 @@
                         opts={{ prompt: "Select complexity" |> gettext, disabled: @live_action == :show }} 
                         options={{ case_complexity_map() }}
                       />
-                      <FormError />
+                      <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                   </div>
                   <div class="col">
@@ -97,7 +97,7 @@
                         opts={{ prompt: "Select status" |> gettext, disabled: @live_action == :show }} 
                         options={{ case_status_map() }}
                       />
-                      <FormError />
+                      <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                   </div>
                 </div>
@@ -136,14 +136,14 @@
                             <Field name={{ :start }} class="form-group">
                               <Label>{{ "Start" |> gettext }}</Label>
                               <DateInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                              <FormError />
+                              <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                           </div>
                           <div class="col">
                             <Field name={{ :end }} class="form-group">
                               <Label>{{ "End" |> gettext }}</Label>
                               <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                              <FormError />
+                              <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                           </div>
                         </div>
@@ -161,7 +161,7 @@
                               opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
                               options={{ case_phase_index_end_reason_map() }}
                             />
-                            <FormError />
+                            <ErrorTag class="d-block invalid-feedback" />
                           </Field>
                         </PolimorphicInputs>
                         <PolimorphicInputs
@@ -190,7 +190,7 @@
                                 opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
                                 options={{ case_phase_possible_index_end_reason_map() }}
                               />
-                              <FormError />
+                              <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                           </InputContext>
                         </PolimorphicInputs>
@@ -225,7 +225,7 @@
                               />
                               {{ name }}
                             </label>
-                            <FormError />
+                            <ErrorTag class="d-block invalid-feedback" />
                           </Field>
                         </InputContext>
                       </div>
@@ -249,7 +249,7 @@
                               />
                               {{ name }}
                             </label>
-                            <FormError />
+                            <ErrorTag class="d-block invalid-feedback" />
                           </Field>
                         </InputContext>
                       </div>
@@ -260,14 +260,14 @@
                       <Field name={{ :symptom_start }} class="form-group">
                         <Label>{{ gettext("Symptoms start date") }}</Label>
                         <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                        <FormError />
+                        <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </div>
                     <div class="col">
                       <Field name={{ :test }} class="form-group">
                         <Label>{{ gettext("Test date") }}</Label>
                         <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                        <FormError />
+                        <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </div>
                   </div>
@@ -276,7 +276,7 @@
                       <Field name={{ :laboratory_report }} class="form-group">
                         <Label>{{ gettext("Laboratory report date") }}</Label>
                         <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                        <FormError />
+                        <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </div>
                   </div>
@@ -285,14 +285,14 @@
                       <Field name={{ :test_kind }} class="form-group">
                         <Label>{{ gettext("Test kind") }}</Label>
                         <Select class="form-control" opts={{ prompt: gettext("Choose test kind"), disabled: @live_action == :show }} options={{ test_kinds() }} />
-                        <FormError />
+                        <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </div>
                     <div class="col">
                       <Field name={{ :result }} class="form-group">
                         <Label>{{ gettext("Test result") }}</Label>
                         <Select class="form-control" opts={{ prompt: gettext("Choose test result"), disabled: @live_action == :show }} options={{ test_results() }} />
-                        <FormError />
+                        <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </div>
                   </div>

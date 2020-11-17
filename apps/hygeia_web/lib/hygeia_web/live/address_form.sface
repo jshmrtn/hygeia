@@ -2,7 +2,7 @@
   <Field name={{ :address }} class="form-group">
     <Label>{{ "Address" |> gettext }}</Label>
     <TextInput opts={{ disabled: @disabled }} class="form-control" field={{ :address }}/>
-    <FormError />
+    <ErrorTag class="d-block invalid-feedback" />
   </Field>
 
   <div class="row">
@@ -10,14 +10,14 @@
       <Field name={{ :zip }} class="form-group">
         <Label>{{ "ZIP" |> gettext }}</Label>
         <TextInput opts={{ disabled: @disabled }} class="form-control" field={{ :zip }}/>
-        <FormError />
+        <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
     <div class="col">
       <Field name={{ :place }} class="form-group">
         <Label>{{ "Place" |> gettext }}</Label>
         <TextInput opts={{ foo: :bar, disabled: @disabled }} class="form-control" field={{ :place }} />
-        <FormError />
+        <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
   </div>
@@ -27,7 +27,7 @@
       <Field name={{ :country }} class="form-group">
         <Label>{{ "Country" |> gettext }}</Label>
         <Select class="form-control" opts={{ prompt: gettext("Choose country"), disabled: @disabled }} field={{ :country }} options={{ countries() }} />
-        <FormError />
+        <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
     <div class="col">
@@ -36,7 +36,7 @@
         <InputContext assigns={{ assigns }} :let={{ form: form }}>
           <Select class="form-control" opts={{ prompt: gettext("Choose subdivision"), disabled: @disabled }} field={{ :subdivision }} options={{ subdivisions(form.source) }} />
         </InputContext>
-        <FormError />
+        <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
   </div>

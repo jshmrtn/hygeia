@@ -7,7 +7,7 @@ defmodule HygeiaWeb.PersonLive.Create do
   alias Hygeia.CaseContext.Person
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
-  alias HygeiaWeb.FormError
+  alias Surface.Components.Form.ErrorTag
 
   alias Surface.Components.Form
   alias Surface.Components.Form.Field

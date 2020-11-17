@@ -24,35 +24,35 @@
             <HiddenInput field={{ :first_name }} />
             <Field class="fill-cell" name={{ :first_name }}>
               <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
             <HiddenInput field={{ :last_name }} />
             <Field class="fill-cell" name={{ :last_name }}>
               <TextInput field={{ :last_name }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
             <HiddenInput field={{ :mobile }} />
             <Field class="fill-cell" name={{ :mobile }}>
               <TextInput field={{ :mobile }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
             <HiddenInput field={{ :landline }} />
             <Field class="fill-cell" name={{ :landline }}>
               <TextInput field={{ :landline }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
             <HiddenInput field={{ :email }} />
             <Field class="fill-cell" name={{ :email }}>
               <TextInput field={{ :email }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td class="table-col-border">
@@ -63,7 +63,7 @@
                 options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
                 opts={{ prompt: gettext("Default Tenant"), disabled: form.source.changes[:accepted_duplicate] == true }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <slot name="additional_row" :props={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
@@ -75,7 +75,7 @@
                 options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
                 opts={{ prompt: gettext("Default Supervisor") }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td class="table-col-border">
@@ -86,7 +86,7 @@
                 options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
                 opts={{ prompt: gettext("Default Tracer") }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td class="table-col-border">
@@ -95,7 +95,7 @@
                 class="form-control"
                 opts={{ disabled: form.source.changes[:accepted_duplicate] == true }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>

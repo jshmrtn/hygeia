@@ -59,7 +59,7 @@
                 class="form-control" 
                 opts={{ disabled: @live_action == :show }} 
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
         </div>

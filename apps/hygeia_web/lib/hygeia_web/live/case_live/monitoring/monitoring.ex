@@ -3,8 +3,8 @@ defmodule HygeiaWeb.CaseLive.Monitoring do
 
   use HygeiaWeb, :surface_live_component
 
-  alias HygeiaWeb.FormError
   alias Surface.Components.Form.DateInput
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label

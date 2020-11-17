@@ -9,7 +9,7 @@
   <Field name={{ :tenant_uuid }} class="form-group">
     <Label>{{ "Tenant" |> gettext }}</Label>
     <Select class="form-control" opts={{ prompt: "Select tenant" |> gettext }} field={{ :tenant_uuid }} options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }} />
-    <FormError />
+    <ErrorTag class="d-block invalid-feedback" />
   </Field>
 
   <div class="row">
@@ -17,14 +17,14 @@
       <Field name={{ :first_name }} class="form-group">
         <Label>{{ "First Name" |> gettext }}</Label>
         <TextInput field={{ :first_name }} class="form-control" />
-        <FormError />
+        <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
     <div class="col">
       <Field name={{ :last_name }} class="form-group">
         <Label>{{ "Last Name" |> gettext }}</Label>
         <TextInput class="form-control" field={{ :last_name }}/>
-        <FormError />
+        <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
   </div>
@@ -48,19 +48,19 @@
           <td>
             <Field name={{ :type }}>
               <Select class="form-control" opts={{ prompt: gettext("Choose Type") }} field={{ :type }} options={{ contact_method_options() }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
             <Field name={{ :value }}>
               <TextInput class="form-control" field={{ :value }}/>
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
             <Field name={{ :comment }}>
               <TextInput class="form-control" field={{ :comment }}/>
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
         </tr>

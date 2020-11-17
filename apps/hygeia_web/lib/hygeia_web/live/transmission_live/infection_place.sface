@@ -19,7 +19,7 @@
             {{ gettext("Unknown") }}
           </label>
         </div>
-        <FormError />
+        <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
   </div>
@@ -46,7 +46,7 @@
                   {{ gettext("No") }}
                 </label>
               </div>
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
             <Field name={{ :activity_mapping }} class="form-group" :if={{ Ecto.Changeset.get_field(form.source, :activity_mapping_executed) == true }}>
               <Label>{{ gettext("Activity Mapping") }}</Label>
@@ -54,7 +54,7 @@
                 class="form-control"
                 opts={{ disabled: @disabled }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
             <Field name={{ :type_uuid }} class="form-group">
               <Label>{{ gettext("Type") }}</Label>
@@ -63,7 +63,7 @@
                 opts={{ disabled: @disabled }}
                 options={{ Enum.map(@types, &({&1.name, &1.uuid})) }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
             <Field name={{ :name }} class="form-group">
               <Label>{{ gettext("Name") }}</Label>
@@ -71,7 +71,7 @@
                 class="form-control"
                 opts={{ disabled: @disabled }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
             <Field name={{ :flight_information }} class="form-group">
               <Label>{{ gettext("Flight Information") }}</Label>
@@ -79,7 +79,7 @@
                 class="form-control"
                 opts={{ disabled: @disabled }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
         </div>

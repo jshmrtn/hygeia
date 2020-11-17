@@ -18,19 +18,19 @@
     <div :if={{ !@disabled }}>
       <Field name={{ :type }}>
         <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @disabled }} field={{ :type }} options={{ external_reference_options() }} />
-        <FormError />
+        <ErrorTag class="d-block invalid-feedback" />
       </Field>
       <InputContext assigns={{ assigns }} :let={{ form: form }}>
         <Field class="mt-1" name={{ :type_name }} :if={{ Ecto.Changeset.get_field(form.source, :type) == :other }}>
           <TextInput class="form-control" field={{ :type_name }} opts={{ disabled: @disabled }} />
-          <FormError />
+          <ErrorTag class="d-block invalid-feedback" />
         </Field>
       </InputContext>
     </div>
     <div>
       <Field name={{ :value }}>
         <TextInput class="form-control" field={{ :value }} opts={{ disabled: @disabled }} />
-        <FormError />
+        <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
   </Inputs>

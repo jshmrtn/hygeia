@@ -14,7 +14,7 @@
             <Field class="form-group" name={{ :uuid }}>
               <Label>{{ gettext("Organisation") }}</Label>
               <Select class="form-control" opts={{ prompt: gettext("Choose organisation"), disabled: @disabled }} options={{ Enum.map(@organisations, &({&1.name, &1.uuid})) }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
         </div>

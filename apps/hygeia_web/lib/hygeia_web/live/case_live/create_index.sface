@@ -21,7 +21,7 @@
               options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
               opts={{ prompt: gettext("Select Tenant") }}
             />
-            <FormError />
+            <ErrorTag class="d-block invalid-feedback" />
           </Field>
         </div>
         <div class="col">
@@ -38,7 +38,7 @@
               options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
               opts={{ prompt: gettext("Default Supervisor") }}
             />
-            <FormError />
+            <ErrorTag class="d-block invalid-feedback" />
           </Field>
         </div>
         <div class="col">
@@ -55,7 +55,7 @@
               options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
               opts={{ prompt: gettext("Default Tracer") }}
             />
-            <FormError />
+            <ErrorTag class="d-block invalid-feedback" />
           </Field>
         </div>
       </div>
@@ -81,25 +81,25 @@
           <td>
             <Field class="fill-cell" name={{ :test_date }}>
               <DateInput class="form-control" />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
             <Field class="fill-cell" name={{ :test_laboratory_report }}>
               <DateInput class="form-control" />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
             <Field class="fill-cell" name={{ :test_kind }}>
               <Select class="form-control" opts={{ prompt: gettext("Choose test kind") }} options={{ test_kinds() }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td class="table-col-border">
             <Field class="fill-cell" name={{ :test_result }}>
               <Select class="form-control" opts={{ prompt: gettext("Choose test result") }} options={{ test_results() }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
         </template>

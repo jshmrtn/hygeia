@@ -3,7 +3,7 @@ defmodule HygeiaWeb.TransmissionLive.InfectionPlace do
 
   use HygeiaWeb, :surface_live_component
 
-  alias HygeiaWeb.FormError
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs

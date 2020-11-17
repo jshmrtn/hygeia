@@ -5,8 +5,8 @@ defmodule HygeiaWeb.InfectionPlaceTypeLive.Create do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.InfectionPlaceType
-  alias HygeiaWeb.FormError
   alias Surface.Components.Form
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.TextInput

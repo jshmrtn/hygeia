@@ -6,9 +6,9 @@ defmodule HygeiaWeb.TransmissionLive.Show do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.Repo
-  alias HygeiaWeb.FormError
   alias Surface.Components.Form
   alias Surface.Components.Form.DateInput
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs

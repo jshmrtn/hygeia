@@ -37,7 +37,7 @@
             <Field name={{ :tenant_uuid }} class="form-group">
               <Label>{{ "Tenant" |> gettext }}</Label>
               <Select class="form-control" opts={{ prompt: gettext("Select tenant"), disabled: @live_action == :show }} field={{ :tenant_uuid }} options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }} />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
 
             <div class="row">
@@ -45,14 +45,14 @@
                 <Field name={{ :first_name }} class="form-group">
                   <Label>{{ "First Name" |> gettext }}</Label>
                   <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: @live_action == :show }} />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
               <div class="col">
                 <Field name={{ :last_name }} class="form-group">
                   <Label>{{ "Last Name" |> gettext }}</Label>
                   <TextInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :last_name }}/>
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
             </div>
@@ -62,14 +62,14 @@
                 <Field name={{ :sex }} class="form-group">
                   <Label>{{ "Sex" |> gettext }}</Label>
                   <Select opts={{ disabled: @live_action == :show }} class="form-control" field={{ :sex }} options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }} />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
               <div class="col">
                 <Field name={{ :birth_date }} class="form-group">
                   <Label>{{ "Birth Date" |> gettext }}</Label>
                   <DateInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :birth_date }}/>
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
             </div>
@@ -106,15 +106,15 @@
               <Inputs for={{ :contact_methods }}>
                 <Field name={{ :type }}>
                   <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }} field={{ :type }} options={{ contact_method_options() }} />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :value }}>
                   <TextInput class="form-control" field={{ :value }} opts={{ disabled: @live_action == :show }} />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :comment }}>
                   <TextInput class="form-control" field={{ :comment }} opts={{ disabled: @live_action == :show }} />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </Inputs>
 
@@ -137,7 +137,7 @@
                 <Field name={{ :profession_uuid }} class="form-group">
                   <Label>{{ "Profession" |> gettext }}</Label>
                   <Select  class="form-control" opts={{ prompt: gettext("Choose profession"), disabled: @live_action == :show }} field={{ :profession_uuid }} options={{ Enum.map(@professions, &({&1.name, &1.uuid})) }} />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
             </div>
@@ -149,7 +149,7 @@
                     <Field name={{ :name }} class="form-group">
                       <Label>{{ gettext("Name") }}</Label>
                       <TextInput class="form-control" field={{ :name }} opts={{ disabled: @live_action == :show }} />
-                      <FormError />
+                      <ErrorTag class="d-block invalid-feedback" />
                     </Field>
 
                     <Inputs for={{ :address }}>

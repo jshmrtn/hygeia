@@ -36,7 +36,7 @@
                         (if CaseContext.person_has_email?(@case.person), do: [{gettext("Email"), "email"}], else: []),
                       ]) }}
                     />
-                    <FormError />
+                    <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </td>
                 <td class="align-middle">
@@ -55,7 +55,7 @@
                           </div>
                           <TextInput class="form-control" />
                         </div>
-                        <FormError />
+                        <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </PolimorphicInputs>
                     <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "sms" }} field={{ :entry }} type={{ :sms }} id="poly-inputs">
@@ -66,7 +66,7 @@
                           </div>
                           <TextArea class="form-control" rows="10" />
                         </div>
-                        <FormError />
+                        <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </PolimorphicInputs>
                     <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "email" }} field={{ :entry }} type={{ :email }} id="poly-inputs">
@@ -77,7 +77,7 @@
                           </div>
                           <TextInput class="form-control" />
                         </div>
-                        <FormError />
+                        <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                       <Field name={{ :body }}>
                         <div class="input-group">
@@ -86,7 +86,7 @@
                           </div>
                           <TextArea class="form-control" rows="10" />
                         </div>
-                        <FormError />
+                        <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </PolimorphicInputs>
                   </InputContext>

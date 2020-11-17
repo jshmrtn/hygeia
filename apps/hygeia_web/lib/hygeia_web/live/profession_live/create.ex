@@ -5,8 +5,8 @@ defmodule HygeiaWeb.ProfessionLive.Create do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Profession
-  alias HygeiaWeb.FormError
   alias Surface.Components.Form
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.TextInput

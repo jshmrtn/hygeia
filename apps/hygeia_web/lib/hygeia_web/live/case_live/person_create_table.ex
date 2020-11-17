@@ -6,7 +6,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.TenantContext
-  alias HygeiaWeb.FormError
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext

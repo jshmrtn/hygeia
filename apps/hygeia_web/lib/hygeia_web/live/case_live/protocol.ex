@@ -7,9 +7,9 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.Repo
-  alias HygeiaWeb.FormError
   alias HygeiaWeb.PolimorphicInputs
   alias Surface.Components.Form
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Label

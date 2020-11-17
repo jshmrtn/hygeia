@@ -14,7 +14,7 @@
         <Field name={{ :name }} class="form-group">
           <Label>{{ gettext("Name") }}</Label>
           <TextInput class="form-control" />
-          <FormError />
+          <ErrorTag class="d-block invalid-feedback" />
         </Field>
       </div>
     </div>

@@ -19,7 +19,7 @@
                   options={{ case_phase_possible_index_type_map() }}
                   opts={{ prompt: gettext("Select Type") }}
                 />
-                <FormError />
+                <ErrorTag class="d-block invalid-feedback" />
               </Field>
               <div :if={{ Ecto.Changeset.get_field(@changeset, :type) != :travel }}>
                 <Field name={{ :propagator_internal }} class="form-group">
@@ -35,12 +35,12 @@
                       <RadioButton value="false" /> {{ gettext("External") }}
                     </label>
                   </div>
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :propagator_ims_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
                   <Label>{{ gettext("Propagator IMS ID") }}</Label>
                   <TextInput class="form-control" />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :propagator_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}>
                   <Label>{{ gettext("Propagator Case UUID") }}</Label>
@@ -49,14 +49,14 @@
                     {{ gettext("TTHis field will be converted to a choose pattern") }}
                   </div>
                   <TextInput class="form-control" />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
 
               <Field name={{ :date }} class="form-group">
                 <Label>{{ gettext("Date") }}</Label>
                 <DateInput class="form-control" />
-                <FormError />
+                <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
           </div>
@@ -85,7 +85,7 @@
               options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
               opts={{ prompt: gettext("Select Tenant") }}
             />
-            <FormError />
+            <ErrorTag class="d-block invalid-feedback" />
           </Field>
         </div>
         <div class="col">
@@ -102,7 +102,7 @@
               options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
               opts={{ prompt: gettext("Default Supervisor") }}
             />
-            <FormError />
+            <ErrorTag class="d-block invalid-feedback" />
           </Field>
         </div>
         <div class="col">
@@ -119,7 +119,7 @@
               options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
               opts={{ prompt: gettext("Default Tracer") }}
             />
-            <FormError />
+            <ErrorTag class="d-block invalid-feedback" />
           </Field>
         </div>
       </div>

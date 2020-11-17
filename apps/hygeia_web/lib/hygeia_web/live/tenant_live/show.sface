@@ -59,7 +59,7 @@
                 class="form-control"
                 opts={{ disabled: @live_action == :show }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
 
             <Field name={{ :public_statistics }} class="form-group">
@@ -68,7 +68,7 @@
                 class="form-control"
                 opts={{ disabled: @live_action == :show }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
         </div>
@@ -84,7 +84,7 @@
                 opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
                 options={{ [{gettext("Smtp"), "smtp"}] }}
               />
-              <FormError />
+              <ErrorTag class="d-block invalid-feedback" />
             </Field>
 
             <InputContext assigns={{ assigns }} :let={{ form: form }}>
@@ -100,7 +100,7 @@
                     class="form-control"
                     opts={{ disabled: @live_action == :show }}
                   />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :hostname }} class="form-group">
                   <Label>{{ gettext("hostname") }}</Label>
@@ -108,7 +108,7 @@
                     class="form-control"
                     opts={{ disabled: @live_action == :show }}
                   />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :port }} class="form-group">
                   <Label>{{ gettext("port") }}</Label>
@@ -116,7 +116,7 @@
                     class="form-control"
                     opts={{ disabled: @live_action == :show }}
                   />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :from_email }} class="form-group">
                   <Label>{{ gettext("sender email address") }}</Label>
@@ -124,7 +124,7 @@
                     class="form-control"
                     opts={{ disabled: @live_action == :show }}
                   />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :username }} class="form-group">
                   <Label>{{ gettext("username") }}</Label>
@@ -132,7 +132,7 @@
                     class="form-control"
                     opts={{ disabled: @live_action == :show }}
                   />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :password }} class="form-group">
                   <Label>{{ gettext("password") }}</Label>
@@ -140,7 +140,7 @@
                     class="form-control"
                     opts={{ disabled: @live_action == :show, placeholder: "password" }}
                   />
-                  <FormError />
+                  <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </PolimorphicInputs>
             </InputContext>
