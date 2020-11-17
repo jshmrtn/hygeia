@@ -73,6 +73,16 @@ Versioning.put_originator(:noone)
 {:ok, _profession_unemployed} = create_profession(%{name: "Arbeitssuchend"})
 {:ok, _profession_other} = create_profession(%{name: "Sonstiges"})
 
+{:ok, infection_place_home} = create_infection_place_type(%{name: "Eigener Haushalt"})
+
+{:ok, _infection_place_social_medical_facility} =
+  create_infection_place_type(%{name: "Sozial-medizinische Einrichtung"})
+
+{:ok, _infection_place_hospital} = create_infection_place_type(%{name: "Spital"})
+{:ok, _infection_place_hotel} = create_infection_place_type(%{name: "Hotel"})
+{:ok, _infection_place_asylum_center} = create_infection_place_type(%{name: "Asylzentrum"})
+{:ok, infection_place_other} = create_infection_place_type(%{name: "Anderer"})
+
 {:ok, organisation_jm} =
   create_organisation(%{
     address: %{
@@ -299,7 +309,7 @@ Versioning.put_originator(:noone)
       known: true,
       activity_mapping_executed: true,
       activity_mapping: "Drank beer, kept distance to other people",
-      type: "Pub",
+      type_uuid: infection_place_other.uuid,
       name: "BrüW",
       flight_information: nil
     }
@@ -315,7 +325,7 @@ Versioning.put_originator(:noone)
       known: true,
       activity_mapping_executed: false,
       activity_mapping: nil,
-      type: "Flight",
+      type_uuid: infection_place_other.uuid,
       name: "Swiss International Airlines",
       flight_information: "LX-332"
     }
@@ -340,7 +350,7 @@ Versioning.put_originator(:noone)
       activity_mapping_executed: true,
       activity_mapping:
         "stayed at brothers place, were in contact for more than 15 minutes while not keeping save distance",
-      type: "Home",
+      type_uuid: infection_place_home.uuid,
       name: nil,
       flight_information: nil
     }

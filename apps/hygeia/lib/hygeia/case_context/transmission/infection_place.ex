@@ -6,13 +6,15 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
   use Hygeia, :model
 
   alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.InfectionPlaceType
 
   @type empty :: %__MODULE__{
           address: Address.t() | nil,
           known: boolean() | nil,
           activity_mapping_executed: boolean() | nil,
           activity_mapping: String.t() | nil,
-          type: String.t() | nil,
+          type: Ecto.Schema.belongs_to(InfectionPlaceType.t()) | nil,
+          type_uuid: String.t() | nil,
           name: String.t() | nil,
           flight_information: String.t() | nil
         }
@@ -23,12 +25,12 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
     field :known, :boolean, default: false
     field :activity_mapping_executed, :boolean, default: false
     field :activity_mapping, :string
-    # TODO: Make place an enum / relation
-    field :type, :string
     field :name, :string
     field :flight_information, :string
 
     embeds_one :address, Address, on_replace: :update
+
+    belongs_to :type, InfectionPlaceType, references: :uuid, foreign_key: :type_uuid
   end
 
   @doc false
@@ -40,7 +42,7 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
       :known,
       :activity_mapping_executed,
       :activity_mapping,
-      :type,
+      :type_uuid,
       :name,
       :flight_information
     ])

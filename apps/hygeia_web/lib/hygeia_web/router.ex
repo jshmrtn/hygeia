@@ -87,6 +87,9 @@ defmodule HygeiaWeb.Router do
     live "/professions/new", ProfessionLive.Create, :create
     live "/professions/:id/edit", ProfessionLive.Show, :edit
 
+    live "/infection-place-types/new", InfectionPlaceTypeLive.Create, :create
+    live "/infection-place-types/:id/edit", InfectionPlaceTypeLive.Show, :edit
+
     live "/users", UserLive.Index, :index
     live "/users/:id", UserLive.Show, :show
 
@@ -130,6 +133,9 @@ defmodule HygeiaWeb.Router do
 
     live "/professions", ProfessionLive.Index, :index
     live "/professions/:id", ProfessionLive.Show, :show
+
+    live "/infection-place-types", InfectionPlaceTypeLive.Index, :index
+    live "/infection-place-types/:id", InfectionPlaceTypeLive.Show, :show
 
     live "/statistics", StatisticsLive.ChooseTenant, :index
     live "/statistics/:tenant_uuid", StatisticsLive.Statistics, :show

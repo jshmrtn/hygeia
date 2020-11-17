@@ -8,6 +8,7 @@ defmodule Hygeia.CaseContextTest do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.CaseContext.Case.Employer
@@ -15,12 +16,14 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.ExternalReference
+  alias Hygeia.CaseContext.InfectionPlaceType
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.ProtocolEntry.Email
   alias Hygeia.CaseContext.ProtocolEntry.Note
   alias Hygeia.CaseContext.ProtocolEntry.Sms
+  alias Hygeia.CaseContext.Transmission
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
@@ -83,8 +86,6 @@ defmodule Hygeia.CaseContextTest do
   end
 
   describe "people" do
-    alias Hygeia.CaseContext.Person
-
     @valid_attrs %{
       address: %{
         address: "Neugasse 51",
@@ -355,8 +356,6 @@ defmodule Hygeia.CaseContextTest do
   end
 
   describe "cases" do
-    alias Hygeia.CaseContext.Case
-
     @valid_attrs %{
       complexity: :high,
       status: :first_contact,
@@ -663,8 +662,6 @@ defmodule Hygeia.CaseContextTest do
   end
 
   describe "transmissions" do
-    alias Hygeia.CaseContext.Transmission
-
     @valid_attrs %{
       date: ~D[2010-04-17]
     }
@@ -778,8 +775,6 @@ defmodule Hygeia.CaseContextTest do
   end
 
   describe "protocol_entries" do
-    alias Hygeia.CaseContext.ProtocolEntry
-
     @valid_attrs %{entry: %{__type__: "note", note: "some note"}}
     @update_attrs %{entry: %{__type__: "note", note: "some other note"}}
     @invalid_attrs %{entry: %{__type__: :invalid}}
@@ -834,6 +829,70 @@ defmodule Hygeia.CaseContextTest do
     test "change_protocol_entry/1 returns a protocol_entry changeset" do
       protocol_entry = protocol_entry_fixture()
       assert %Ecto.Changeset{} = CaseContext.change_protocol_entry(protocol_entry)
+    end
+  end
+
+  describe "infection_place_types" do
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    test "list_infection_place_types/0 returns all infection_place_types" do
+      infection_place_type = infection_place_type_fixture()
+      assert CaseContext.list_infection_place_types() == [infection_place_type]
+    end
+
+    test "get_infection_place_type!/1 returns the infection_place_type with given id" do
+      infection_place_type = infection_place_type_fixture()
+
+      assert CaseContext.get_infection_place_type!(infection_place_type.uuid) ==
+               infection_place_type
+    end
+
+    test "create_infection_place_type/1 with valid data creates a infection_place_type" do
+      assert {:ok, %InfectionPlaceType{} = infection_place_type} =
+               CaseContext.create_infection_place_type(@valid_attrs)
+
+      assert infection_place_type.name == "some name"
+    end
+
+    test "create_infection_place_type/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = CaseContext.create_infection_place_type(@invalid_attrs)
+    end
+
+    test "update_infection_place_type/2 with valid data updates the infection_place_type" do
+      infection_place_type = infection_place_type_fixture()
+
+      assert {:ok, %InfectionPlaceType{} = infection_place_type} =
+               CaseContext.update_infection_place_type(infection_place_type, @update_attrs)
+
+      assert infection_place_type.name == "some updated name"
+    end
+
+    test "update_infection_place_type/2 with invalid data returns error changeset" do
+      infection_place_type = infection_place_type_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               CaseContext.update_infection_place_type(infection_place_type, @invalid_attrs)
+
+      assert infection_place_type ==
+               CaseContext.get_infection_place_type!(infection_place_type.uuid)
+    end
+
+    test "delete_infection_place_type/1 deletes the infection_place_type" do
+      infection_place_type = infection_place_type_fixture()
+
+      assert {:ok, %InfectionPlaceType{}} =
+               CaseContext.delete_infection_place_type(infection_place_type)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        CaseContext.get_infection_place_type!(infection_place_type.uuid)
+      end
+    end
+
+    test "change_infection_place_type/1 returns a infection_place_type changeset" do
+      infection_place_type = infection_place_type_fixture()
+      assert %Ecto.Changeset{} = CaseContext.change_infection_place_type(infection_place_type)
     end
   end
 end

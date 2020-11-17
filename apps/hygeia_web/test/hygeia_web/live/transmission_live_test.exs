@@ -21,7 +21,6 @@ defmodule HygeiaWeb.TransmissionLiveTest do
         country: "CH"
       },
       name: "BrüW",
-      type: "Pub",
       known: true,
       activity_mapping_executed: true,
       activity_mapping: "Drank beer, kept distance to other people",

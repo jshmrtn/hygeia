@@ -82,6 +82,13 @@
               >
                 {{ gettext("Organisations") }}
               </Link>
+              <Link
+                to={{ Routes.infection_place_type_index_path(@socket, :index) }}
+                class="dropdown-item"
+                :if={{ authorized?(Hygeia.CaseContext.InfectionPlaceType, :list, auth) }}
+              >
+                {{ gettext("Infection Place Types") }}
+              </Link>
             </div>
           </li>
         </ul>

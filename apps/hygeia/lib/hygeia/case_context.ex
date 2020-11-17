@@ -7,6 +7,7 @@ defmodule Hygeia.CaseContext do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.ContactMethod
+  alias Hygeia.CaseContext.InfectionPlaceType
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
@@ -857,4 +858,117 @@ defmodule Hygeia.CaseContext do
         ) :: Ecto.Changeset.t(ProtocolEntry.t())
   def change_protocol_entry(%ProtocolEntry{} = protocol_entry, attrs \\ %{}),
     do: ProtocolEntry.changeset(protocol_entry, attrs)
+
+  @doc """
+  Returns the list of infection_place_types.
+
+  ## Examples
+
+      iex> list_infection_place_types()
+      [%InfectionPlaceType{}, ...]
+
+  """
+  @spec list_infection_place_types :: [InfectionPlaceType.t()]
+  def list_infection_place_types,
+    do:
+      Repo.all(
+        from(infection_place_type in InfectionPlaceType, order_by: infection_place_type.name)
+      )
+
+  @doc """
+  Gets a single infection_place_type.
+
+  Raises `Ecto.NoResultsError` if the Infection place type does not exist.
+
+  ## Examples
+
+      iex> get_infection_place_type!(123)
+      %InfectionPlaceType{}
+
+      iex> get_infection_place_type!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_infection_place_type!(id :: String.t()) :: InfectionPlaceType.t()
+  def get_infection_place_type!(id), do: Repo.get!(InfectionPlaceType, id)
+
+  @doc """
+  Creates a infection_place_type.
+
+  ## Examples
+
+      iex> create_infection_place_type(%{field: value})
+      {:ok, %InfectionPlaceType{}}
+
+      iex> create_infection_place_type(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_infection_place_type(attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, InfectionPlaceType.t()} | {:error, Ecto.Changeset.t(InfectionPlaceType.t())}
+  def create_infection_place_type(attrs \\ %{}),
+    do:
+      %InfectionPlaceType{}
+      |> change_infection_place_type(attrs)
+      |> versioning_insert()
+      |> broadcast("infection_place_types", :create)
+      |> versioning_extract()
+
+  @doc """
+  Updates a infection_place_type.
+
+  ## Examples
+
+      iex> update_infection_place_type(infection_place_type, %{field: new_value})
+      {:ok, %InfectionPlaceType{}}
+
+      iex> update_infection_place_type(infection_place_type, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_infection_place_type(
+          infection_place_type :: InfectionPlaceType.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: {:ok, InfectionPlaceType.t()} | {:error, Ecto.Changeset.t(InfectionPlaceType.t())}
+  def update_infection_place_type(%InfectionPlaceType{} = infection_place_type, attrs),
+    do:
+      infection_place_type
+      |> InfectionPlaceType.changeset(attrs)
+      |> versioning_update()
+      |> broadcast("infection_place_types", :update)
+      |> versioning_extract()
+
+  @doc """
+  Deletes a infection_place_type.
+
+  ## Examples
+
+      iex> delete_infection_place_type(infection_place_type)
+      {:ok, %InfectionPlaceType{}}
+
+      iex> delete_infection_place_type(infection_place_type)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_infection_place_type(infection_place_type :: InfectionPlaceType.t()) ::
+          {:ok, InfectionPlaceType.t()} | {:error, Ecto.Changeset.t(InfectionPlaceType.t())}
+  def delete_infection_place_type(%InfectionPlaceType{} = infection_place_type),
+    do: Repo.delete(infection_place_type)
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking infection_place_type changes.
+
+  ## Examples
+
+      iex> change_infection_place_type(infection_place_type)
+      %Ecto.Changeset{data: %InfectionPlaceType{}}
+
+  """
+  @spec change_infection_place_type(
+          user :: InfectionPlaceType.t() | InfectionPlaceType.empty(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          Ecto.Changeset.t()
+  def change_infection_place_type(%InfectionPlaceType{} = infection_place_type, attrs \\ %{}),
+    do: InfectionPlaceType.changeset(infection_place_type, attrs)
 end

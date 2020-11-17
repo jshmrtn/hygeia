@@ -1,0 +1,74 @@
+<div class="component-infection-place-type-index container">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <h1>
+      {{ gettext("Infection place types") }}
+    </h1>
+
+    <div class="d-flex">
+      <LiveRedirect class="mr-2" to={{ Routes.infection_place_type_create_path(@socket, :create) }}>
+        <button type="button" class="mb-2 mt-3 btn btn-primary">
+          <span class="oi oi-plus" aria-hidden="true"></span>
+          {{ gettext("New Infection place type") }}
+        </button>
+      </LiveRedirect>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            {{ gettext("Name") }}
+          </th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="infection_place_types">
+        <tr
+          :for={{ infection_place_type <- @infection_place_types  }}
+          id="infection_place_type-{{ infection_place_type.uuid }}"
+        >
+          <td>
+            {{ infection_place_type.name }}
+          </td>
+
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LiveRedirect
+                to={{ Routes.infection_place_type_show_path(@socket, :show, infection_place_type) }}
+                :if={{ authorized?(infection_place_type, :details, auth) }}
+              >
+                <button class="ml-auto btn btn-sm btn-secondary">
+                  {{ gettext("Show") }}
+                </button>
+              </LiveRedirect>
+              <LiveRedirect
+                to={{ Routes.infection_place_type_show_path(@socket, :edit, infection_place_type) }}
+                :if={{ authorized?(infection_place_type, :update, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-secondary">
+                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                </button>
+              </LiveRedirect>
+              <Link 
+                to="#" 
+                click="delete" 
+                opts={{
+                  title: gettext("Delete"),
+                  data: [confirm: gettext("Are you sure?")],
+                  phx_value_id: infection_place_type.uuid,
+                  class: "delete"
+                }}
+                :if={{ authorized?(infection_place_type, :delete, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-danger">
+                  <span class="oi oi-trash" aria-hidden="true"></span>
+                </button>
+              </Link>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </Context>
+</div>

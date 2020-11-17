@@ -56,15 +56,12 @@
               />
               <FormError />
             </Field>
-            <Field name={{ :type }} class="form-group">
+            <Field name={{ :type_uuid }} class="form-group">
               <Label>{{ gettext("Type") }}</Label>
-              <!-- TODO: Make Type ENUM and remove this notice-->
-              <div class="alert alert-danger" role="alert">
-                {{ gettext("Type will be converted to a Select Field") }}
-              </div>
-              <TextInput
+              <Select
                 class="form-control"
                 opts={{ disabled: @disabled }}
+                options={{ Enum.map(@types, &({&1.name, &1.uuid})) }}
               />
               <FormError />
             </Field>

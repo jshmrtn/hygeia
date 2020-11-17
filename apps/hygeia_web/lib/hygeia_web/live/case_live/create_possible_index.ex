@@ -31,6 +31,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         tenants = TenantContext.list_tenants()
         supervisor_users = UserContext.list_users_with_role(:supervisor)
         tracer_users = UserContext.list_users_with_role(:tracer)
+        infection_place_types = CaseContext.list_infection_place_types()
         auth_user = get_auth(socket)
 
         assign(socket,
@@ -42,6 +43,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           tenants: tenants,
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
+          infection_place_types: infection_place_types,
           suspected_duplicate_changeset_uuid: nil,
           file: nil
         )

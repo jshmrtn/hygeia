@@ -9,7 +9,13 @@
       <h1>
         <Inputs for={{ :infection_place }}>
           <InputContext assigns={{ assigns }} :let={{ form: form }}>
-            {{ Ecto.Changeset.get_field(form.source, :type) }}
+            {{
+              form.source
+              |> Ecto.Changeset.get_field(:type)
+              |> case do
+                nil -> nil
+                %{name: name} -> name
+              end }}
           </InputContext>
         </Inputs>
         /
@@ -150,6 +156,7 @@
                   <HygeiaWeb.TransmissionLive.InfectionPlace
                     id="infection_place"
                     disabled={{ @live_action == :show }}
+                    types={{ @types }}
                   />
                 </Inputs>
               </div>

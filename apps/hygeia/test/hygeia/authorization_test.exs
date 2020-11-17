@@ -358,5 +358,52 @@ defmodule Hygeia.AuthorizationTest do
         assert authorized?(profession, unquote(action), user)
       end
     end
+
+    test "should allow infection_place_type list for anyone" do
+      user = user_fixture(roles: [])
+
+      assert authorized?(Hygeia.CaseContext.InfectionPlaceType, :list, :anonymous)
+      assert authorized?(Hygeia.CaseContext.InfectionPlaceType, :list, user)
+    end
+
+    test "should allow infection_place_type details for anyone" do
+      infection_place_type = infection_place_type_fixture()
+      user = user_fixture(roles: [])
+
+      assert authorized?(infection_place_type, :details, :anonymous)
+      assert authorized?(infection_place_type, :details, user)
+    end
+
+    test "should deny infection_place_type create for anyone" do
+      user = user_fixture(roles: [])
+
+      refute authorized?(Hygeia.CaseContext.InfectionPlaceType, :create, :anonymous)
+      refute authorized?(Hygeia.CaseContext.InfectionPlaceType, :create, user)
+    end
+
+    for action <- [:update, :delete] do
+      test "should deny infection_place_type #{action} for non-admin" do
+        infection_place_type = infection_place_type_fixture()
+        user = user_fixture(roles: [])
+
+        refute authorized?(infection_place_type, unquote(action), :anonymous)
+        refute authorized?(infection_place_type, unquote(action), user)
+      end
+    end
+
+    test "should allow infection_place_type create for admin" do
+      user = user_fixture(roles: [:admin])
+
+      assert authorized?(Hygeia.CaseContext.InfectionPlaceType, :create, user)
+    end
+
+    for action <- [:details, :update, :delete] do
+      test "should allow infection_place_type #{action} for admin" do
+        infection_place_type = infection_place_type_fixture()
+        user = user_fixture(roles: [:admin])
+
+        assert authorized?(infection_place_type, unquote(action), user)
+      end
+    end
   end
 end

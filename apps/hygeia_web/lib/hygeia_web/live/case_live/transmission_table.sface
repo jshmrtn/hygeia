@@ -97,7 +97,7 @@
             end }}
           </td>
           <td>
-            {{ transmission.infection_place.type }}
+            {{ Repo.preload(transmission.infection_place, :type).type.name }}
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">

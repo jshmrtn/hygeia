@@ -5,6 +5,7 @@ defmodule HygeiaWeb.CaseLive.TransmissionTable do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.Repo
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
 

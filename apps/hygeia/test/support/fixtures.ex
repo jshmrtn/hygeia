@@ -4,6 +4,8 @@ defmodule Hygeia.Fixtures do
   """
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.InfectionPlaceType
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
@@ -271,5 +273,18 @@ defmodule Hygeia.Fixtures do
       CaseContext.create_protocol_entry(case, Enum.into(attrs, @valid_attrs))
 
     protocol_entry
+  end
+
+  @valid_attrs %{name: "some name"}
+
+  @spec infection_place_type_fixture(attrs :: Hygeia.ecto_changeset_params()) ::
+          InfectionPlaceType.t()
+  def infection_place_type_fixture(attrs \\ %{}) do
+    {:ok, infection_place_type} =
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> CaseContext.create_infection_place_type()
+
+    infection_place_type
   end
 end
