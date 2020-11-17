@@ -10,6 +10,7 @@ defmodule Hygeia.StatisticsContext do
   alias Hygeia.StatisticsContext.ActiveQuarantineCasesPerDay
   alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
   alias Hygeia.StatisticsContext.CumulativePossibleIndexCaseEndReasons
+  alias Hygeia.StatisticsContext.NewCasesPerDay
   alias Hygeia.TenantContext.Tenant
 
   @doc """
@@ -184,6 +185,53 @@ defmodule Hygeia.StatisticsContext do
       do:
         Repo.all(
           from(cases_per_day in CumulativePossibleIndexCaseEndReasons,
+            where:
+              cases_per_day.tenant_uuid == ^tenant_uuid and
+                fragment(
+                  "? BETWEEN ?::date AND ?::date",
+                  cases_per_day.date,
+                  ^from,
+                  ^to
+                )
+          )
+        )
+
+  @doc """
+  Returns the list of new_cases_per_day.
+
+  ## Examples
+
+      iex> list_new_cases_per_day()
+      [%NewCasesPerDay{}, ...]
+
+  """
+  @spec list_new_cases_per_day :: [NewCasesPerDay.t()]
+  def list_new_cases_per_day, do: Repo.all(NewCasesPerDay)
+
+  @spec list_new_cases_per_day(tenant :: Tenant.t()) :: [
+          NewCasesPerDay.t()
+        ]
+  def list_new_cases_per_day(%Tenant{uuid: tenant_uuid} = _tenant),
+    do:
+      Repo.all(
+        from(cases_per_day in NewCasesPerDay,
+          where: cases_per_day.tenant_uuid == ^tenant_uuid
+        )
+      )
+
+  @spec list_new_cases_per_day(
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: [NewCasesPerDay.t()]
+  def list_new_cases_per_day(
+        %Tenant{uuid: tenant_uuid} = _tenant,
+        from,
+        to
+      ),
+      do:
+        Repo.all(
+          from(cases_per_day in NewCasesPerDay,
             where:
               cases_per_day.tenant_uuid == ^tenant_uuid and
                 fragment(

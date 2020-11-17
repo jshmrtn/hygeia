@@ -1,9 +1,4 @@
 <div class="container">
-  <!-- TODO: Remove this warning & complete / style view -->
-  <div class="alert alert-danger" role="alert">
-    {{ gettext("This view is not finished, do not report any issues about it yet...") }}
-  </div>
-  
   <Context get={{ HygeiaWeb, auth: auth }}>
     <h1>
       {{ gettext("Choose Tenant") }}

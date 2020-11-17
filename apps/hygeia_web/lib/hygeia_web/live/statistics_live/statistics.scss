@@ -1,15 +1,1 @@
-.component-statistics-index {
-  .stat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto;
-
-    @include media-breakpoint-down(sm) {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    @include media-breakpoint-down(xs) {
-      grid-template-columns: 1fr;
-    }
-  }
-}
+.component-statistics-index {}

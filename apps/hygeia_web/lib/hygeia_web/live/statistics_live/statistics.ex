@@ -51,6 +51,14 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
   end
 
   @impl Phoenix.LiveView
+  def handle_event("params_change", %{"from" => ""}, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_event("params_change", %{"to" => ""}, socket) do
+    {:noreply, socket}
+  end
+
   def handle_event("params_change", %{"from" => from, "to" => to}, socket) do
     {:noreply,
      push_patch(socket,
@@ -74,7 +82,8 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
       cumulative_index_case_end_reasons:
         StatisticsContext.list_cumulative_index_case_end_reasons(tenant, from, to),
       cumulative_possible_index_case_end_reasons:
-        StatisticsContext.list_cumulative_possible_index_case_end_reasons(tenant, from, to)
+        StatisticsContext.list_cumulative_possible_index_case_end_reasons(tenant, from, to),
+      new_cases_per_day: StatisticsContext.list_new_cases_per_day(tenant, from, to)
     )
   end
 end

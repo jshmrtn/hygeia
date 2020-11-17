@@ -18,7 +18,8 @@ defmodule HygeiaWeb.Chart do
       data: [
         chart: @config
         |> Map.put(:id, @dom_id <> "_chart")
-        |> Map.put_new(:credits, %{enabled: false})
+        |> Map.update(:credits, %{enabled: false}, &Map.put_new(&1, :enabled, false))
+        |> Map.update(:chart, %{height: "60%"}, &Map.put_new(&1, :height, "50%"))
         |> Jason.encode!()
       ]
     ) }}

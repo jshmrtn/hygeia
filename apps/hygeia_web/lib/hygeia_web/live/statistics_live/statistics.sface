@@ -1,18 +1,16 @@
-<div class="component-statistics-index pt-5 container">
-  <h1>
-    {{ gettext("Statistics for %{tenant}", tenant: @tenant.name)}}
-  </h1>
-  <!-- TODO: Remove this warning & complete / style view -->
-  <div class="alert alert-danger" role="alert">
-    {{ gettext("This view is not finished, do not report any issues about it yet...") }}
+<div class="component-statistics-index pt-5">
+  <div class="container">
+    <h1>
+      {{ gettext("Statistics for %{tenant}", tenant: @tenant.name)}}
+    </h1>
+
+    <Form for={{ assigns }} change="params_change" opts={{ class: "mt-3" }}>
+      <DateInput field={{ :from }} />
+      <DateInput field={{ :to }} />
+    </Form>
   </div>
 
-  <Form for={{ assigns }} change="params_change">
-    <DateInput field={{ :from }} />
-    <DateInput field={{ :to }} />
-  </Form>
-
-  <div class="row">
+  <div class="row mt-3">
     <div class="col">
       <HygeiaWeb.Chart
         id="active_isolation_cases_per_day"
@@ -103,7 +101,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mt-3">
     <div class="col">
       <HygeiaWeb.Chart
         id="active_quarantine_cases_per_day"
@@ -205,31 +203,85 @@
     </div>
   </div>
 
-  <div class="stat-grid">
-    <StatPanel
-      header={{ "IF im Tracing / Isolation" |> gettext }}
-      value={{ 109 }}
-      label={{ "Total IF - Bestätigt" |> gettext }}
-    />
-    <StatPanel
-      header={{ "IF im Tracing / Isolation" |> gettext }}
-      value={{ 109 }}
-      label={{ "Total IF - Bestätigt" |> gettext }}
-    />
-    <StatPanel
-      header={{ "IF im Tracing / Isolation" |> gettext }}
-      value={{ 31.35 }}
-      label={{ "Total IF - Bestätigt" |> gettext }}
-    />
-    <StatPanel
-      header={{ "KP abgeschlossene (IES)" |> gettext }}
-      value={{ 3186 }}
-      label={{ "Total KP - Abgeschlossen" |> gettext }}
-    />
-    <StatPanel
-      header={{ "IF im Tracing / Isolation" |> gettext }}
-      value={{ 109 }}
-      label={{ "Total IF - Bestätigt" |> gettext }}
-    />
+  <div class="row mt-3">
+    <div class="col">
+      <HygeiaWeb.Chart
+        id="new_cases_per_day"
+        dom_id="new_cases_per_day"
+        config={{ %{
+          chart: %{
+            type: "area",
+            styledMode: true
+          },
+          title: %{
+            text: gettext("New Cases per Day")
+          },
+          plotOptions: %{
+            area: %{
+              stacking: "normal"
+            }
+          },
+          xAxis: %{
+            title: %{
+              text: gettext("Date")
+            },
+            type: "datetime"
+          },
+          yAxis: %{
+            title: %{
+              text: gettext("Cases")
+            },
+            allowDecimals: false,
+            min: 0
+          },
+          series: @new_cases_per_day
+          |> Enum.reduce(%{}, fn %{date: date, count: count, type: type, sub_type: sub_type}, acc ->
+            entry = %{
+              x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+              y: count
+            }
+            Map.update(acc, {type, sub_type}, [entry], &([entry | &1]))
+          end)
+          |> Enum.map(fn
+            {{:index, nil}, entries} ->
+              %{
+                name: gettext("Index"),
+                data: entries
+              }
+            {{:possible_index, sub_type}, entries} ->
+              %{
+                name: case_phase_possible_index_type_translation(sub_type),
+                data: entries
+              }
+          end)
+        } }}
+      />
+    </div>
+    <div class="col">
+      <!-- TODO: Add Hospitalisations (@Jan) -->
+      <div class="alert alert-danger mt-3" role="alert">
+        {{ gettext("Hospitalization Chart") }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col">
+      <!-- TODO: Add Complexity (@Jan) -->
+      <div class="alert alert-danger mt-3" role="alert">
+        {{ gettext("Complexity Chart") }}
+      </div>
+    </div>
+    <div class="col">
+      <!-- TODO: Add Infection Place Type -->
+      <div class="alert alert-danger mt-3" role="alert">
+        {{ gettext("Infection Place Type Chart") }}
+      </div>
+    </div>
+  </div>
+
+  <!-- TODO: Add Transmission Country -->
+  <div class="alert alert-danger mt-3" role="alert">
+    {{ gettext("Transmission Country Chart") }}
   </div>
 </div>

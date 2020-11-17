@@ -9,6 +9,7 @@ defmodule Hygeia.StatisticsContextTest do
   alias Hygeia.StatisticsContext.ActiveQuarantineCasesPerDay
   alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
   alias Hygeia.StatisticsContext.CumulativePossibleIndexCaseEndReasons
+  alias Hygeia.StatisticsContext.NewCasesPerDay
 
   @moduletag origin: :test
   @moduletag originator: :noone
@@ -467,6 +468,125 @@ defmodule Hygeia.StatisticsContextTest do
       assert length(entries) == 30
 
       assert Enum.all?(entries, &match?(%CumulativePossibleIndexCaseEndReasons{count: 0}, &1))
+    end
+  end
+
+  describe "new_cases_per_day" do
+    test "counts index phase" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :index
+            },
+            start: ~D[2020-10-12]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_new_cases_per_day)
+
+      assert entries =
+               StatisticsContext.list_new_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-13]
+               )
+
+      assert length(entries) == 9
+
+      assert Enum.all?(
+               entries,
+               &(match?(%NewCasesPerDay{count: 0}, &1) or
+                   match?(
+                     %NewCasesPerDay{count: 1, type: :index, sub_type: nil, date: ~D[2020-10-12]},
+                     &1
+                   ))
+             )
+    end
+
+    test "counts with inserted at" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        inserted_at: ~U[2020-10-12 13:16:00Z],
+        phases: [
+          %{
+            details: %{
+              __type__: :index
+            }
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_new_cases_per_day)
+
+      assert entries =
+               StatisticsContext.list_new_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-13]
+               )
+
+      assert length(entries) == 9
+
+      assert Enum.all?(
+               entries,
+               &(match?(%NewCasesPerDay{count: 0}, &1) or
+                   match?(
+                     %NewCasesPerDay{count: 1, type: :index, sub_type: nil, date: ~D[2020-10-12]},
+                     &1
+                   ))
+             )
+    end
+
+    test "counts possible index phase" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :possible_index,
+              type: :travel
+            },
+            start: ~D[2020-10-12]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_new_cases_per_day)
+
+      assert entries =
+               StatisticsContext.list_new_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-13]
+               )
+
+      assert length(entries) == 9
+
+      assert Enum.all?(
+               entries,
+               &(match?(%NewCasesPerDay{count: 0}, &1) or
+                   match?(
+                     %NewCasesPerDay{
+                       count: 1,
+                       type: :possible_index,
+                       sub_type: :travel,
+                       date: ~D[2020-10-12]
+                     },
+                     &1
+                   ))
+             )
     end
   end
 end

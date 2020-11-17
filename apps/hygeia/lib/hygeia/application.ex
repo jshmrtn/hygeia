@@ -25,7 +25,10 @@ defmodule Hygeia.Application do
          name: {:global, RefreshMaterializedView.ActiveQuarantineCasesPerDay}},
         {RefreshMaterializedView,
          view: :statistics_cumulative_possible_index_case_end_reasons,
-         name: {:global, RefreshMaterializedView.CumulativePossibleIndexCaseEndReasons}}
+         name: {:global, RefreshMaterializedView.CumulativePossibleIndexCaseEndReasons}},
+        {RefreshMaterializedView,
+         view: :statistics_new_cases_per_day,
+         name: {:global, RefreshMaterializedView.NewCasesPerDay}}
       ]
   end
 
