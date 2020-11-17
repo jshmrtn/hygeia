@@ -69,8 +69,12 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
     assign(socket,
       active_isolation_cases_per_day:
         StatisticsContext.list_active_isolation_cases_per_day(tenant, from, to),
+      active_quarantine_cases_per_day:
+        StatisticsContext.list_active_quarantine_cases_per_day(tenant, from, to),
       cumulative_index_case_end_reasons:
-        StatisticsContext.list_cumulative_index_case_end_reasons(tenant, from, to)
+        StatisticsContext.list_cumulative_index_case_end_reasons(tenant, from, to),
+      cumulative_possible_index_case_end_reasons:
+        StatisticsContext.list_cumulative_possible_index_case_end_reasons(tenant, from, to)
     )
   end
 end

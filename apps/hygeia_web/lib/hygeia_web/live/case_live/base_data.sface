@@ -209,18 +209,18 @@
                     <div class="col">
                       <div class="form-group">
                         <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                          <Field name={{ :reasons_for_pcr_test }}>
-                            <Label>{{ gettext("Reasons for PCR test") }}</Label>
+                          <Field name={{ :reasons_for_test }}>
+                            <Label>{{ gettext("Reasons for test") }}</Label>
                             <label
-                              :for={{ {name, key} <- pcr_test_reasons() }}
+                              :for={{ {name, key} <- test_reasons() }}
                               class="d-block checkbox-label"
                               data-disabled={{ @live_action == :show }}
                             >
                               <input
                                 type="checkbox"
-                                name={{ input_name(form, :reasons_for_pcr_test) <> "[]" }}
+                                name={{ input_name(form, :reasons_for_test) <> "[]" }}
                                 disabled={{ @live_action == :show }}
-                                checked={{ key in (Ecto.Changeset.get_field(form.source, :reasons_for_pcr_test, []) || []) }}
+                                checked={{ key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || []) }}
                                 value={{ key }}
                               />
                               {{ name }}

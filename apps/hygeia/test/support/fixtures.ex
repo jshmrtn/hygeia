@@ -117,7 +117,7 @@ defmodule Hygeia.Fixtures do
       %{start: ~D[2020-10-16], end: nil}
     ],
     clinical: %{
-      reasons_for_pcr_test: [:symptoms, :outbreak_examination],
+      reasons_for_test: [:symptoms, :outbreak_examination],
       symptoms: [:fever],
       symptom_start: ~D[2020-10-10],
       test: ~D[2020-10-11],

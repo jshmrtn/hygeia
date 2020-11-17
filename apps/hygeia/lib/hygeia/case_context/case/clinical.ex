@@ -7,7 +7,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
   import EctoEnum
 
-  defenum PcrTestReason, :pcr_test_reason, [
+  defenum TestReason, :test_reason, [
     "symptoms",
     "outbreak_examination",
     "screening",
@@ -19,12 +19,12 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
   defenum Symptom, :symptom, ["fever", "cough", "loss_of_smell", "loss_of_taste"]
 
-  defenum TestKind, :test_kind, ["pcr", "serology"]
+  defenum TestKind, :test_kind, ["pcr", "serology", "quick"]
 
   defenum Result, :test_result, ["positive", "negative"]
 
   @type empty :: %__MODULE__{
-          reasons_for_pcr_test: [PcrTestReason.t()] | nil,
+          reasons_for_test: [TestReason.t()] | nil,
           symptoms: [Symptom.t()] | nil,
           symptom_start: Date.t() | nil,
           test: Date.t() | nil,
@@ -34,7 +34,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
         }
 
   @type t :: %__MODULE__{
-          reasons_for_pcr_test: [PcrTestReason.t()],
+          reasons_for_test: [TestReason.t()],
           symptoms: [Symptom.t()],
           symptom_start: Date.t() | nil,
           test: Date.t() | nil,
@@ -44,7 +44,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
         }
 
   embedded_schema do
-    field :reasons_for_pcr_test, {:array, PcrTestReason}
+    field :reasons_for_test, {:array, TestReason}
     field :symptoms, {:array, Symptom}
     field :symptom_start, :date
     field :test, :date
@@ -58,7 +58,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
   def changeset(clinical, attrs) do
     clinical
     |> cast(attrs, [
-      :reasons_for_pcr_test,
+      :reasons_for_test,
       :symptoms,
       :symptom_start,
       :test,

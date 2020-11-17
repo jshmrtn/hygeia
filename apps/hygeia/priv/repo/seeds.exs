@@ -34,7 +34,7 @@ Versioning.put_originator(:noone)
     }
   })
 
-{:ok, _tenant_ai} = create_tenant(%{name: "Kanton Appenzell Innerrhoden"})
+{:ok, tenant_ai} = create_tenant(%{name: "Kanton Appenzell Innerrhoden"})
 
 {:ok, tenant_ar} =
   create_tenant(%{
@@ -50,28 +50,55 @@ Versioning.put_originator(:noone)
     }
   })
 
-{:ok, _profession_hospital} = create_profession(%{name: "Spital"})
-{:ok, _profession_doctor} = create_profession(%{name: "Praxis"})
-{:ok, _profession_nursing_home} = create_profession(%{name: "Heim"})
-{:ok, _profession_pharmacy} = create_profession(%{name: "Apotheke"})
-{:ok, _profession_spitex} = create_profession(%{name: "Spitex"})
-{:ok, _profession_day_care} = create_profession(%{name: "Kindertagesstätte"})
-{:ok, _profession_school} = create_profession(%{name: "Volksschule"})
-{:ok, _profession_high_school} = create_profession(%{name: "Oberstufe"})
-{:ok, _profession_gymnasium} = create_profession(%{name: "Gymnasium / Berufsschule"})
-{:ok, _porfession_security} = create_profession(%{name: "Sicherheit: Polizei, Securitas"})
+tenants = [
+  tenant_sg,
+  tenant_ai,
+  tenant_ar
+]
 
-{:ok, _porfession_public_transport} =
-  create_profession(%{name: "ÖV: Bus, Bahn, Schiff, Bergbahn"})
+{:ok, profession_hospital} = create_profession(%{name: "Spital"})
+{:ok, profession_doctor} = create_profession(%{name: "Praxis"})
+{:ok, profession_nursing_home} = create_profession(%{name: "Heim"})
+{:ok, profession_pharmacy} = create_profession(%{name: "Apotheke"})
+{:ok, profession_spitex} = create_profession(%{name: "Spitex"})
+{:ok, profession_day_care} = create_profession(%{name: "Kindertagesstätte"})
+{:ok, profession_school} = create_profession(%{name: "Volksschule"})
+{:ok, profession_high_school} = create_profession(%{name: "Oberstufe"})
+{:ok, profession_gymnasium} = create_profession(%{name: "Gymnasium / Berufsschule"})
+{:ok, profession_security} = create_profession(%{name: "Sicherheit: Polizei, Securitas"})
 
-{:ok, _porfession_sales} = create_profession(%{name: "Verkauf"})
-{:ok, _porfession_restaurants} = create_profession(%{name: "Gastronomie / Veranstaltungen"})
-{:ok, _profession_public_administration} = create_profession(%{name: "Öffentliche Verwaltung"})
+{:ok, profession_public_transport} = create_profession(%{name: "ÖV: Bus, Bahn, Schiff, Bergbahn"})
+
+{:ok, profession_sales} = create_profession(%{name: "Verkauf"})
+{:ok, profession_restaurants} = create_profession(%{name: "Gastronomie / Veranstaltungen"})
+{:ok, profession_public_administration} = create_profession(%{name: "Öffentliche Verwaltung"})
 {:ok, profession_office} = create_profession(%{name: "Büro"})
-{:ok, _profession_construction} = create_profession(%{name: "Bau"})
-{:ok, _profession_pension} = create_profession(%{name: "Rentner"})
-{:ok, _profession_unemployed} = create_profession(%{name: "Arbeitssuchend"})
-{:ok, _profession_other} = create_profession(%{name: "Sonstiges"})
+{:ok, profession_construction} = create_profession(%{name: "Bau"})
+{:ok, profession_pension} = create_profession(%{name: "Rentner"})
+{:ok, profession_unemployed} = create_profession(%{name: "Arbeitssuchend"})
+{:ok, profession_other} = create_profession(%{name: "Sonstiges"})
+
+professions = [
+  profession_hospital,
+  profession_doctor,
+  profession_nursing_home,
+  profession_pharmacy,
+  profession_spitex,
+  profession_day_care,
+  profession_school,
+  profession_high_school,
+  profession_gymnasium,
+  profession_security,
+  profession_public_transport,
+  profession_sales,
+  profession_restaurants,
+  profession_public_administration,
+  profession_office,
+  profession_construction,
+  profession_pension,
+  profession_unemployed,
+  profession_other
+]
 
 {:ok, infection_place_home} = create_infection_place_type(%{name: "Eigener Haushalt"})
 
@@ -194,7 +221,7 @@ Versioning.put_originator(:noone)
       %{start: ~D[2020-10-16], end: nil}
     ],
     clinical: %{
-      reasons_for_pcr_test: [:symptoms, :outbreak_examination],
+      reasons_for_test: [:symptoms, :outbreak_examination],
       symptoms: [:fever],
       symptom_start: ~D[2020-10-10],
       test: ~D[2020-10-11],
@@ -245,6 +272,55 @@ Versioning.put_originator(:noone)
       }
     ]
   })
+
+random_start_date_range = Date.range(Date.add(Date.utc_today(), -356), Date.utc_today())
+
+for i <- 1..1000 do
+  {:ok, person} =
+    create_person(Enum.random(tenants), %{
+      profession_uuid: Enum.random(professions).uuid,
+      first_name: "Test #{i}",
+      last_name: "Test",
+      sex: Enum.random(Hygeia.CaseContext.Person.Sex.__enum_map__())
+    })
+
+  start_date = Enum.random(random_start_date_range)
+  end_date = Date.add(start_date, 10)
+
+  phase =
+    Enum.random([
+      %{
+        details: %{
+          __type__: "index",
+          end_reason:
+            Enum.random([nil | Hygeia.CaseContext.Case.Phase.Index.EndReason.__enum_map__()])
+        },
+        start: start_date,
+        end: end_date
+      },
+      %{
+        details: %{
+          __type__: "possible_index",
+          type: Enum.random(Hygeia.CaseContext.Case.Phase.PossibleIndex.Type.__enum_map__()),
+          end_reason:
+            Enum.random([
+              nil | Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason.__enum_map__()
+            ])
+        },
+        start: start_date,
+        end: end_date
+      }
+    ])
+
+  {:ok, _index_case} =
+    create_case(person, %{
+      complexity: Enum.random(Hygeia.CaseContext.Case.Complexity.__enum_map__()),
+      status: Enum.random(Hygeia.CaseContext.Case.Status.__enum_map__()),
+      tracer_uuid: user_1.uuid,
+      supervisor_uuid: user_1.uuid,
+      phases: [phase]
+    })
+end
 
 {:ok, case_jony} = relate_case_to_organisation(case_jony, organisation_jm)
 

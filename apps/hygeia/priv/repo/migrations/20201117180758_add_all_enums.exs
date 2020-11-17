@@ -6,7 +6,7 @@ defmodule Hygeia.Repo.Migrations.AddAllEnums do
   use Hygeia, :migration
 
   def change do
-    Hygeia.CaseContext.Case.Clinical.PcrTestReason.create_type()
+    Hygeia.CaseContext.Case.Clinical.TestReason.create_type()
     Hygeia.CaseContext.Case.Clinical.Symptom.create_type()
     Hygeia.CaseContext.Case.Clinical.TestKind.create_type()
     Hygeia.CaseContext.Case.Clinical.Result.create_type()

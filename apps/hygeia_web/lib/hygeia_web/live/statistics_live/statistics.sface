@@ -23,7 +23,7 @@
             styledMode: true
           },
           title: %{
-            text: gettext("Active Isolations")
+            text: gettext("People in Isolation")
           },
           xAxis: %{
             title: %{
@@ -59,7 +59,12 @@
             styledMode: true
           },
           title: %{
-            text: gettext("Done Isolations")
+            text: gettext("Finished Isolations")
+          },
+          plotOptions: %{
+            area: %{
+              stacking: "normal"
+            }
           },
           xAxis: %{
             title: %{
@@ -69,7 +74,7 @@
           },
           yAxis: %{
             title: %{
-              text: gettext("People")
+              text: gettext("Cases")
             },
             allowDecimals: false
           },
@@ -81,11 +86,119 @@
             }
             Map.update(acc, end_reason, [entry], &([entry | &1]))
           end)
-          |> Enum.map(fn {end_reason, entries} ->
+          |> Enum.map(fn
+            {nil, entries} ->
+              %{
+                name: gettext("unknown"),
+                data: entries
+              }
+            {end_reason, entries} ->
+              %{
+                name: case_phase_index_end_reason_translation(end_reason),
+                data: entries
+              }
+          end)
+        } }}
+      />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <HygeiaWeb.Chart
+        id="active_quarantine_cases_per_day"
+        dom_id="active_quarantine_cases_per_day"
+        config={{ %{
+          chart: %{
+            type: "area",
+            styledMode: true
+          },
+          title: %{
+            text: gettext("People in Quarantine")
+          },
+          plotOptions: %{
+            area: %{
+              stacking: "normal"
+            }
+          },
+          xAxis: %{
+            title: %{
+              text: gettext("Date")
+            },
+            type: "datetime"
+          },
+          yAxis: %{
+            title: %{
+              text: gettext("People")
+            },
+            allowDecimals: false,
+            min: 0
+          },
+          series: @active_quarantine_cases_per_day
+          |> Enum.reduce(%{}, fn %{date: date, count: count, type: type}, acc ->
+            entry = %{
+              x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+              y: count
+            }
+            Map.update(acc, type, [entry], &([entry | &1]))
+          end)
+          |> Enum.map(fn {type, entries} ->
             %{
-              name: case_phase_index_end_reason_translation(end_reason),
+              name: case_phase_possible_index_type_translation(type),
               data: entries
             }
+          end)
+        } }}
+      />
+    </div>
+    <div class="col">
+      <HygeiaWeb.Chart
+        id="cumulative_possible_index_case_end_reasons"
+        dom_id="cumulative_possible_index_case_end_reasons"
+        config={{ %{
+          chart: %{
+            type: "area",
+            styledMode: true
+          },
+          title: %{
+            text: gettext("Finished Quarantines")
+          },
+          plotOptions: %{
+            area: %{
+              stacking: "normal"
+            }
+          },
+          xAxis: %{
+            title: %{
+              text: gettext("Date")
+            },
+            type: "datetime"
+          },
+          yAxis: %{
+            title: %{
+              text: gettext("Cases")
+            },
+            allowDecimals: false
+          },
+          series: @cumulative_possible_index_case_end_reasons
+          |> Enum.reduce(%{}, fn %{date: date, count: count, type: type, end_reason: end_reason}, acc ->
+            entry = %{
+              x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+              y: count
+            }
+            Map.update(acc, {type, end_reason}, [entry], &([entry | &1]))
+          end)
+          |> Enum.map(fn
+            {{type, nil}, entries} ->
+              %{
+                name: case_phase_possible_index_type_translation(type) <> " / " <> gettext("unknown"),
+                data: entries
+              }
+            {{type, end_reason}, entries} ->
+              %{
+                name: case_phase_possible_index_type_translation(type) <> " / " <> case_phase_possible_index_end_reason_translation(end_reason),
+                data: entries
+              }
           end)
         } }}
       />

@@ -148,8 +148,10 @@ defmodule HygeiaWeb.CaseLive.Create do
         {:test_kind,
          cond do
            String.downcase(kind) == String.downcase("PCR") -> :pcr
+           String.downcase(kind) == String.downcase("Quick") -> :quick
            String.downcase(kind) == String.downcase("Serology") -> :serology
            String.downcase(kind) == String.downcase(gettext("PCR")) -> :pcr
+           String.downcase(kind) == String.downcase(gettext("Quick")) -> :quick
            String.downcase(kind) == String.downcase(gettext("Serology")) -> :serology
            true -> nil
          end}

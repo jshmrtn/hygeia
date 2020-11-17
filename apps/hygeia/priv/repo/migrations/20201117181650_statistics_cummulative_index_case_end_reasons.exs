@@ -20,14 +20,19 @@ defmodule Hygeia.Repo.Migrations.StatisticsCumulativeIndexCaseEndReasons do
             interval '1 day'
           ) AS date
           CROSS JOIN tenants
-          CROSS JOIN UNNEST(ENUM_RANGE(NULL::case_phase_index_end_reason)) AS end_reason
+          CROSS JOIN UNNEST(ENUM_RANGE(NULL::case_phase_index_end_reason) || ARRAY[NULL::case_phase_index_end_reason]) AS end_reason
           LEFT JOIN cases ON cases.tenant_uuid = tenants.uuid
           LEFT JOIN people ON people.uuid = cases.person_uuid
           LEFT JOIN UNNEST(cases.phases) AS phase
             ON (
               '{"details": {"__type__": "index"}}'::jsonb <@ (phase) AND
               (phase->>'end')::date <= date AND
-              (phase->'details'->>'end_reason')::case_phase_index_end_reason = end_reason
+              (
+                (phase->'details'->>'end_reason')::case_phase_index_end_reason = end_reason OR
+                (
+                  end_reason IS NULL AND (phase->'details'->>'end_reason') IS NULL
+                )
+              )
             )
           GROUP BY date, tenants.uuid, end_reason
           ORDER BY date, tenants.uuid, end_reason
