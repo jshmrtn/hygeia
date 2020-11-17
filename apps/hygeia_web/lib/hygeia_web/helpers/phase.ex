@@ -3,8 +3,6 @@ defmodule HygeiaWeb.Helpers.Phase do
 
   import HygeiaGettext
 
-  alias Hygeia.CaseContext.Case.Phase
-
   @spec phase_type_translation(phase_type :: :phase_type) :: :string
   def phase_type_translation(phase_type) do
     case phase_type do
@@ -25,10 +23,5 @@ defmodule HygeiaWeb.Helpers.Phase do
       :other -> gettext("Other")
       _default -> phase_end_reason
     end
-  end
-
-  @spec phase_end_reason_map :: [{String.t(), atom}]
-  def phase_end_reason_map do
-    Enum.map(Phase.EndReason.__enum_map__(), &{phase_end_reason_translation(&1), &1})
   end
 end

@@ -16,7 +16,9 @@ defmodule HygeiaWeb.Chart do
       "phx-hook": "Chart",
       hidden: true,
       data: [
-        chart: Jason.encode!(@config)
+        chart: @config
+        |> Map.put(:id, @dom_id <> "_chart")
+        |> Jason.encode!()
       ]
     ) }}
     <div phx-update="ignore" id={{ @dom_id <> "_ignore" }}>

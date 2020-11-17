@@ -37,6 +37,12 @@ defmodule Hygeia.Jobs.RefreshMaterializedView do
     end
   end
 
+  @spec child_spec(opts :: Keyword.t()) :: Supervisor.child_spec()
+  def child_spec(opts) do
+    # credo:disable-for-next-line Credo.Check.Warning.UnsafeToAtom
+    %{super(opts) | id: Module.concat(__MODULE__, Keyword.fetch!(opts, :view))}
+  end
+
   @impl GenServer
   def init(opts) do
     :timer.send_interval(Keyword.get(opts, :interval_ms, @default_refresh_interval_ms), :refresh)

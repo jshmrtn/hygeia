@@ -16,6 +16,7 @@ defmodule Hygeia.DataCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL
   alias Ecto.Adapters.SQL.Sandbox
 
   alias Hygeia.Helpers.Versioning
@@ -67,5 +68,12 @@ defmodule Hygeia.DataCase do
         opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
       end)
     end)
+  end
+
+  @spec execute_materialized_view_refresh(view :: atom) :: :ok
+  def execute_materialized_view_refresh(view) do
+    SQL.query!(Hygeia.Repo, "REFRESH MATERIALIZED VIEW CONCURRENTLY #{view}")
+
+    :ok
   end
 end

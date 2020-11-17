@@ -7,6 +7,7 @@ defmodule Hygeia.StatisticsContext do
   alias Hygeia.Repo
 
   alias Hygeia.StatisticsContext.ActiveIsolationCasesPerDay
+  alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
   alias Hygeia.TenantContext.Tenant
 
   @doc """
@@ -46,4 +47,52 @@ defmodule Hygeia.StatisticsContext do
               fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to)
         )
       )
+
+  @doc """
+  Returns the list of statistics_cumulative_index_case_end_reasons.
+
+  ## Examples
+
+      iex> list_statistics_cumulative_index_case_end_reasons()
+      [%CumulativeIndexCaseEndReasons{}, ...]
+
+  """
+  @spec list_cumulative_index_case_end_reasons :: [CumulativeIndexCaseEndReasons.t()]
+  def list_cumulative_index_case_end_reasons,
+    do: Repo.all(CumulativeIndexCaseEndReasons)
+
+  @spec list_cumulative_index_case_end_reasons(tenant :: Tenant.t()) :: [
+          CumulativeIndexCaseEndReasons.t()
+        ]
+  def list_cumulative_index_case_end_reasons(%Tenant{uuid: tenant_uuid} = _tenant),
+    do:
+      Repo.all(
+        from(cumulative_index_case_end_reasons in CumulativeIndexCaseEndReasons,
+          where: cumulative_index_case_end_reasons.tenant_uuid == ^tenant_uuid
+        )
+      )
+
+  @spec list_cumulative_index_case_end_reasons(
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: [CumulativeIndexCaseEndReasons.t()]
+  def list_cumulative_index_case_end_reasons(
+        %Tenant{uuid: tenant_uuid} = _tenant,
+        from,
+        to
+      ),
+      do:
+        Repo.all(
+          from(cumulative_index_case_end_reasons in CumulativeIndexCaseEndReasons,
+            where:
+              cumulative_index_case_end_reasons.tenant_uuid == ^tenant_uuid and
+                fragment(
+                  "? BETWEEN ?::date AND ?::date",
+                  cumulative_index_case_end_reasons.date,
+                  ^from,
+                  ^to
+                )
+          )
+        )
 end

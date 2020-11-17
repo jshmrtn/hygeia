@@ -5,19 +5,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
 
   use Hygeia, :model
 
-  import EctoEnum
-
   alias Hygeia.CaseContext.Case.Phase.Index
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex
-
-  defenum EndReason, :isolation_location, [
-    "healed",
-    "death",
-    "no_follow_up",
-    "asymptomatic",
-    "converted_to_index",
-    "other"
-  ]
 
   @type empty :: %__MODULE__{
           start: Date.t() | nil,

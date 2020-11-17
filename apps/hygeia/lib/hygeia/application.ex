@@ -16,7 +16,10 @@ defmodule Hygeia.Application do
         # Refresh Stats Periodically
         {RefreshMaterializedView,
          view: :statistics_active_isolation_cases_per_day,
-         name: {:global, RefreshMaterializedView.ActiveIsolationCasesPerDay}}
+         name: {:global, RefreshMaterializedView.ActiveIsolationCasesPerDay}},
+        {RefreshMaterializedView,
+         view: :statistics_cumulative_index_case_end_reasons,
+         name: {:global, RefreshMaterializedView.CumulativeIndexCaseEndReasons}}
       ]
   end
 

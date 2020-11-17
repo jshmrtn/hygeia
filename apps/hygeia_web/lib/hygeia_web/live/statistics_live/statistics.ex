@@ -68,7 +68,9 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
   defp load_data(%{assigns: %{tenant: tenant, from: from, to: to}} = socket) do
     assign(socket,
       active_isolation_cases_per_day:
-        StatisticsContext.list_active_isolation_cases_per_day(tenant, from, to)
+        StatisticsContext.list_active_isolation_cases_per_day(tenant, from, to),
+      cumulative_index_case_end_reasons:
+        StatisticsContext.list_cumulative_index_case_end_reasons(tenant, from, to)
     )
   end
 end

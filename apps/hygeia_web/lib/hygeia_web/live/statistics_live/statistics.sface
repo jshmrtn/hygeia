@@ -18,13 +18,12 @@
         id="active_isolation_cases_per_day"
         dom_id="active_isolation_cases_per_day"
         config={{ %{
-          id: "active_isolation_cases_per_day_chart",
           chart: %{
-            type: "line",
+            type: "area",
             styledMode: true
           },
           title: %{
-            text: gettext("IF im Tracing / Isolation")
+            text: gettext("Active Isolations")
           },
           xAxis: %{
             title: %{
@@ -51,7 +50,45 @@
       />
     </div>
     <div class="col">
-
+      <HygeiaWeb.Chart
+        id="cumulative_index_case_end_reasons"
+        dom_id="cumulative_index_case_end_reasons"
+        config={{ %{
+          chart: %{
+            type: "area",
+            styledMode: true
+          },
+          title: %{
+            text: gettext("Done Isolations")
+          },
+          xAxis: %{
+            title: %{
+              text: gettext("Date")
+            },
+            type: "datetime"
+          },
+          yAxis: %{
+            title: %{
+              text: gettext("People")
+            },
+            allowDecimals: false
+          },
+          series: @cumulative_index_case_end_reasons
+          |> Enum.reduce(%{}, fn %{date: date, count: count, end_reason: end_reason}, acc ->
+            entry = %{
+              x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+              y: count
+            }
+            Map.update(acc, end_reason, [entry], &([entry | &1]))
+          end)
+          |> Enum.map(fn {end_reason, entries} ->
+            %{
+              name: case_phase_index_end_reason_translation(end_reason),
+              data: entries
+            }
+          end)
+        } }}
+      />
     </div>
   </div>
 
