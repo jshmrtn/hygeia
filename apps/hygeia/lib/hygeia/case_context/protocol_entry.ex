@@ -6,9 +6,9 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
   use Hygeia, :model
 
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Email
-  alias Hygeia.CaseContext.Note
-  alias Hygeia.CaseContext.Sms
+  alias Hygeia.CaseContext.ProtocolEntry.Email
+  alias Hygeia.CaseContext.ProtocolEntry.Note
+  alias Hygeia.CaseContext.ProtocolEntry.Sms
 
   @type t :: %__MODULE__{
           uuid: String.t(),

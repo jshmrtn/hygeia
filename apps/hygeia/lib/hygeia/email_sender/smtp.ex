@@ -1,4 +1,4 @@
-defmodule Hygeia.EmailSender.MailSender do
+defmodule Hygeia.EmailSender.Smtp do
   @moduledoc false
 
   use Bamboo.Mailer, otp_app: :hygeia

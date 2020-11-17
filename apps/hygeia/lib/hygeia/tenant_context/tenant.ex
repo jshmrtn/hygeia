@@ -7,7 +7,7 @@ defmodule Hygeia.TenantContext.Tenant do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
-  alias Hygeia.TenantContext.Smtp
+  alias Hygeia.TenantContext.Tenant.Smtp
 
   @derive {Phoenix.Param, key: :uuid}
 

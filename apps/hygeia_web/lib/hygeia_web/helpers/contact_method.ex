@@ -3,7 +3,7 @@ defmodule HygeiaWeb.Helpers.ContactMethod do
 
   import HygeiaGettext
 
-  alias Hygeia.CaseContext.ContactMethod
+  alias Hygeia.CaseContext.Case.ContactMethod
 
   @spec contact_method_options :: [{String.t(), ContactMethod.Type.t()}]
   def contact_method_options,

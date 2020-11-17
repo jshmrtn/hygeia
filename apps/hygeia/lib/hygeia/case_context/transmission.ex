@@ -10,8 +10,8 @@ defmodule Hygeia.CaseContext.Transmission do
   use Hygeia, :model
 
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.InfectionPlace
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.Transmission.InfectionPlace
 
   @type t :: %__MODULE__{
           uuid: String.t(),

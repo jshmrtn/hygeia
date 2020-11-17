@@ -8,19 +8,19 @@ defmodule Hygeia.CaseContextTest do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
-  alias Hygeia.CaseContext.Clinical
-  alias Hygeia.CaseContext.ContactMethod
-  alias Hygeia.CaseContext.Email
-  alias Hygeia.CaseContext.Employer
+  alias Hygeia.CaseContext.Case.Clinical
+  alias Hygeia.CaseContext.Case.ContactMethod
+  alias Hygeia.CaseContext.Case.Employer
+  alias Hygeia.CaseContext.Case.Hospitalization
+  alias Hygeia.CaseContext.Case.Monitoring
+  alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.ExternalReference
-  alias Hygeia.CaseContext.Hospitalization
-  alias Hygeia.CaseContext.Monitoring
-  alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
-  alias Hygeia.CaseContext.Phase
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
-  alias Hygeia.CaseContext.Sms
+  alias Hygeia.CaseContext.ProtocolEntry.Email
+  alias Hygeia.CaseContext.ProtocolEntry.Note
+  alias Hygeia.CaseContext.ProtocolEntry.Sms
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User

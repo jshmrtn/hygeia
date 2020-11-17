@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.Note do
+defmodule Hygeia.CaseContext.ProtocolEntry.Note do
   @moduledoc """
   Model for Note Schema
   """

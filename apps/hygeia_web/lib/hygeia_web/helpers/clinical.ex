@@ -3,7 +3,7 @@ defmodule HygeiaWeb.Helpers.Clinical do
 
   import HygeiaGettext
 
-  alias Hygeia.CaseContext.Clinical
+  alias Hygeia.CaseContext.Case.Clinical
 
   @spec pcr_test_reasons :: [{String.t(), Clinical.PcrTestReason.t()}]
   def pcr_test_reasons,

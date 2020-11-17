@@ -6,7 +6,7 @@ defmodule HygeiaPdfConfirmation.Isolation do
   import HygeiaPdfConfirmation.IsolationView
 
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Phase
+  alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.Repo
 
   @spec render_pdf(case :: Case.t(), phase :: Phase.t()) :: binary

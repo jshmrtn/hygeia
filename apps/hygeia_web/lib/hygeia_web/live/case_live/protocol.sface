@@ -109,10 +109,10 @@
                     {{ protocol_entry |> get_protocol_user() |> Map.fetch!(:display_name) }}
                   </Link>
                 </td>
-                <td colspan="2" :if={{ type == Hygeia.CaseContext.Note }}>
+                <td colspan="2" :if={{ type == Hygeia.CaseContext.ProtocolEntry.Note }}>
                   {{ entry.note }}
                 </td>
-                <td colspan="2" :if={{ type == Hygeia.CaseContext.Email }}>
+                <td colspan="2" :if={{ type == Hygeia.CaseContext.ProtocolEntry.Email }}>
                   subject: {{ entry.subject }}
                   body: {{ entry.body }}
                 </td>

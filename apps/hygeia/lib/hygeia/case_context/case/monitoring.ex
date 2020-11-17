@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.Monitoring do
+defmodule Hygeia.CaseContext.Case.Monitoring do
   @moduledoc """
   Model for Monitoring Schema
   """

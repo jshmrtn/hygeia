@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.Clinical do
+defmodule Hygeia.CaseContext.Case.Clinical do
   @moduledoc """
   Model for Clinical Schema
   """

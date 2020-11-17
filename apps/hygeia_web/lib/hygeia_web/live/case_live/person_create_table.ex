@@ -4,7 +4,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   use HygeiaWeb, :surface_live_component
 
   alias Hygeia.CaseContext
-  alias Hygeia.CaseContext.ContactMethod
+  alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.TenantContext
   alias HygeiaWeb.FormError
   alias Surface.Components.Form.Field

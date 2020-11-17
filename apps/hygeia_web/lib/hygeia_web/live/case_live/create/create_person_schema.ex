@@ -20,8 +20,8 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
     field :employer, :string
     field :test_date, :date
     field :test_laboratory_report, :date
-    field :test_kind, Hygeia.CaseContext.Clinical.TestKind
-    field :test_result, Hygeia.CaseContext.Clinical.Result
+    field :test_kind, Hygeia.CaseContext.Case.Clinical.TestKind
+    field :test_result, Hygeia.CaseContext.Case.Clinical.Result
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     belongs_to :supervisor, User, references: :uuid, foreign_key: :supervisor_uuid

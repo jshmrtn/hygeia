@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.Phase do
+defmodule Hygeia.CaseContext.Case.Phase do
   @moduledoc """
   Model for Phase Schema
   """
@@ -7,8 +7,8 @@ defmodule Hygeia.CaseContext.Phase do
 
   import EctoEnum
 
-  alias Hygeia.CaseContext.Phase.Index
-  alias Hygeia.CaseContext.Phase.PossibleIndex
+  alias Hygeia.CaseContext.Case.Phase.Index
+  alias Hygeia.CaseContext.Case.Phase.PossibleIndex
 
   defenum EndReason, :isolation_location, [
     "healed",

@@ -3,7 +3,7 @@ defmodule HygeiaWeb.Helpers.Monitoring do
 
   import HygeiaGettext
 
-  alias Hygeia.CaseContext.Monitoring
+  alias Hygeia.CaseContext.Case.Monitoring
 
   @spec isolation_locations :: [{String.t(), Monitoring.IsolationLocation.t()}]
   def isolation_locations,

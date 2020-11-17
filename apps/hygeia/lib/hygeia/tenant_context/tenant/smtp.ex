@@ -1,4 +1,4 @@
-defmodule Hygeia.TenantContext.Smtp do
+defmodule Hygeia.TenantContext.Tenant.Smtp do
   @moduledoc """
   Model for Smtp Outgoing Mail Configuration Schema
   """

@@ -172,6 +172,6 @@ defmodule HygeiaWeb.CaseLive.Protocol do
     end
   end
 
-  defp protocol_type_type_name(Hygeia.CaseContext.Note), do: gettext("Note")
-  defp protocol_type_type_name(Hygeia.CaseContext.Email), do: gettext("Email")
+  defp protocol_type_type_name(Hygeia.CaseContext.ProtocolEntry.Note), do: gettext("Note")
+  defp protocol_type_type_name(Hygeia.CaseContext.ProtocolEntry.Email), do: gettext("Email")
 end

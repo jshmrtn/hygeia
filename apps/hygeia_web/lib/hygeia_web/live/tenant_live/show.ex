@@ -4,8 +4,8 @@ defmodule HygeiaWeb.TenantLive.Show do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.TenantContext
-  alias Hygeia.TenantContext.Smtp
   alias Hygeia.TenantContext.Tenant
+  alias Hygeia.TenantContext.Tenant.Smtp
   alias HygeiaWeb.FormError
   alias HygeiaWeb.PolimorphicInputs
   alias Surface.Components.Form

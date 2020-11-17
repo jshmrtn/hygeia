@@ -76,7 +76,7 @@ config :ueberauth, Ueberauth,
   ]
 
 # Bamboo Mailer
-config :hygeia, Hygeia.EmailSender.MailSender, adapter: Bamboo.SMTPAdapter
+config :hygeia, Hygeia.EmailSender.Smtp, adapter: Bamboo.SMTPAdapter
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.InfectionPlace do
+defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
   @moduledoc """
   Model for InfectionPlace Schema
   """

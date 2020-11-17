@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.Email do
+defmodule Hygeia.CaseContext.ProtocolEntry.Email do
   @moduledoc """
   Model for Email Schema
   """

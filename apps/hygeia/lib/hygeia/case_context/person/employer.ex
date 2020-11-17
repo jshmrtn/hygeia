@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.Employer do
+defmodule Hygeia.CaseContext.Case.Employer do
   @moduledoc """
   Model for Employer Schema
   """

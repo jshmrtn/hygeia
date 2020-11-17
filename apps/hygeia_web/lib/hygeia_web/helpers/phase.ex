@@ -3,7 +3,7 @@ defmodule HygeiaWeb.Helpers.Phase do
 
   import HygeiaGettext
 
-  alias Hygeia.CaseContext.Phase
+  alias Hygeia.CaseContext.Case.Phase
 
   @spec phase_type_translation(phase_type :: :phase_type) :: :string
   def phase_type_translation(phase_type) do

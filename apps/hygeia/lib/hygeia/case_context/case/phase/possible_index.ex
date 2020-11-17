@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.Phase.PossibleIndex do
+defmodule Hygeia.CaseContext.Case.Phase.PossibleIndex do
   @moduledoc """
   Model for Phase / PossibleIndex Schema
   """
@@ -42,7 +42,8 @@ defmodule Hygeia.CaseContext.Phase.PossibleIndex do
 
   # Fix for polymorphic embed inside embed
   defimpl Jason.Encoder do
-    @spec encode(Hygeia.CaseContext.Phase.PossibleIndex.t(), Jason.Encoder.opts()) :: iodata()
+    @spec encode(Hygeia.CaseContext.Case.Phase.PossibleIndex.t(), Jason.Encoder.opts()) ::
+            iodata()
     def encode(value, opts) do
       value
       |> Map.from_struct()

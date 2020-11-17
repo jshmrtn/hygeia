@@ -75,6 +75,6 @@ config :phoenix, :plug_init_mode, :runtime
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
-config :hygeia, Hygeia.EmailSender.MailSender,
+config :hygeia, Hygeia.EmailSender.Smtp,
   adapter: Bamboo.LocalAdapter,
   open_email_in_browser_url: "http://localhost:4000/sent_emails"

@@ -4,9 +4,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
   use Hygeia, :model
 
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.InfectionPlace
-  alias Hygeia.CaseContext.Phase.PossibleIndex.Type
+  alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.CaseContext.Transmission.InfectionPlace
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
   alias HygeiaWeb.CaseLive.Create.CreatePersonSchema

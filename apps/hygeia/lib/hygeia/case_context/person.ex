@@ -9,8 +9,8 @@ defmodule Hygeia.CaseContext.Person do
 
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.ContactMethod
-  alias Hygeia.CaseContext.Employer
+  alias Hygeia.CaseContext.Case.ContactMethod
+  alias Hygeia.CaseContext.Case.Employer
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Profession
   alias Hygeia.OrganisationContext.Position

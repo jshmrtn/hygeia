@@ -6,12 +6,12 @@ defmodule Hygeia.CaseContext do
   use Hygeia, :context
 
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.ContactMethod
+  alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
-  alias Hygeia.EmailSender.MailSender
+  alias Hygeia.EmailSender.Smtp
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
@@ -572,7 +572,7 @@ defmodule Hygeia.CaseContext do
 
         recipient_name = person.last_name
 
-        case MailSender.send(recipient_name, recipient_email, subject, body, tenant) do
+        case Smtp.send(recipient_name, recipient_email, subject, body, tenant) do
           :ok ->
             create_protocol_entry(case, %{
               entry: %{__type__: "email", subject: subject, body: body}

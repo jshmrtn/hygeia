@@ -4,7 +4,7 @@ defmodule HygeiaWeb.CaseLive.Create do
   import HygeiaGettext
 
   alias Hygeia.CaseContext
-  alias Hygeia.CaseContext.ContactMethod
+  alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.CaseContext.Person
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User

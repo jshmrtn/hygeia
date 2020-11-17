@@ -20,4 +20,4 @@ config :hygeia_telemetry, server: false
 config :logger, level: :warn
 
 # Bamboo Mailer
-config :hygeia, Hygeia.EmailSender.MailSender, adapter: Bamboo.TestAdapter
+config :hygeia, Hygeia.EmailSender.Smtp, adapter: Bamboo.TestAdapter

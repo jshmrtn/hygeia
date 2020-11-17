@@ -7,12 +7,12 @@ defmodule Hygeia.CaseContext.Case do
   import Ecto.Query
   import EctoEnum
 
-  alias Hygeia.CaseContext.Clinical
+  alias Hygeia.CaseContext.Case.Clinical
+  alias Hygeia.CaseContext.Case.Hospitalization
+  alias Hygeia.CaseContext.Case.Monitoring
+  alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.ExternalReference
-  alias Hygeia.CaseContext.Hospitalization
-  alias Hygeia.CaseContext.Monitoring
   alias Hygeia.CaseContext.Person
-  alias Hygeia.CaseContext.Phase
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.OrganisationContext.Organisation

@@ -3,7 +3,7 @@ defmodule HygeiaWeb.PdfController do
 
   import Hygeia.CaseContext
 
-  alias Hygeia.CaseContext.Phase
+  alias Hygeia.CaseContext.Case.Phase
   alias HygeiaPdfConfirmation.Isolation
   alias HygeiaPdfConfirmation.Quarantine
 

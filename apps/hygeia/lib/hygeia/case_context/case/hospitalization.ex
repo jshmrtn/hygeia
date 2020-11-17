@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.Hospitalization do
+defmodule Hygeia.CaseContext.Case.Hospitalization do
   @moduledoc """
   Model for Hospitalization Schema
   """

@@ -4,9 +4,9 @@ defmodule HygeiaWeb.Helpers.Case do
   import HygeiaGettext
 
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Phase
-  alias Hygeia.CaseContext.Phase.Index
-  alias Hygeia.CaseContext.Phase.PossibleIndex
+  alias Hygeia.CaseContext.Case.Phase
+  alias Hygeia.CaseContext.Case.Phase.Index
+  alias Hygeia.CaseContext.Case.Phase.PossibleIndex
 
   @spec case_complexity_translation(complexity :: Case.Complexity.t()) :: String.t()
   def case_complexity_translation(:low), do: gettext("Low")

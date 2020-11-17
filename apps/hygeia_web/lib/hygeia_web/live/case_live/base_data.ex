@@ -5,8 +5,8 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Hospitalization
-  alias Hygeia.CaseContext.Phase
+  alias Hygeia.CaseContext.Case.Hospitalization
+  alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo

@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.Sms do
+defmodule Hygeia.CaseContext.ProtocolEntry.Sms do
   @moduledoc """
   Model for Sms Schema
   """
