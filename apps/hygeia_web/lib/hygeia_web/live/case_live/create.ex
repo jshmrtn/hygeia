@@ -80,9 +80,10 @@ defmodule HygeiaWeb.CaseLive.Create do
 
     tenant = Enum.find(socket.assigns.tenants, &match?(%Tenant{uuid: ^tenant_uuid}, &1))
 
-    tracer = Enum.find(socket.assigns.users, &match?(%User{uuid: ^tracer_uuid}, &1))
+    tracer = Enum.find(socket.assigns.tracer_users, &match?(%User{uuid: ^tracer_uuid}, &1))
 
-    supervisor = Enum.find(socket.assigns.users, &match?(%User{uuid: ^supervisor_uuid}, &1))
+    supervisor =
+      Enum.find(socket.assigns.supervisor_users, &match?(%User{uuid: ^supervisor_uuid}, &1))
 
     person_attrs = CreatePersonSchema.to_person_attrs(schema)
 

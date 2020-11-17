@@ -15,6 +15,7 @@
   <div class="row">
     <div class="col">
       <HygeiaWeb.Chart
+        id="active_isolation_cases_per_day"
         dom_id="active_isolation_cases_per_day"
         config={{ %{
           id: "active_isolation_cases_per_day_chart",

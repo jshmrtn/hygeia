@@ -190,6 +190,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   defp create_transmission(case, changeset) do
     {:ok, transmission} =
       CaseContext.create_transmission(%{
+        date: Ecto.Changeset.get_field(changeset, :date),
         recipient_internal: true,
         recipient_case_uuid: case.uuid,
         infection_place: changeset |> Ecto.Changeset.fetch_field!(:infection_place) |> unpack,
