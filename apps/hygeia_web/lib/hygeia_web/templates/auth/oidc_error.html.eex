@@ -1,5 +1,5 @@
 <!-- TODO: Make error nice and remove this notice-->
 <div class="alert alert-danger" role="alert">
-  {{ gettext("The error is currently not formatted correctly") }}
+  <%= gettext("The error is currently not formatted correctly") %>
 </div>
 <%= inspect(@reason, pretty: true) %>

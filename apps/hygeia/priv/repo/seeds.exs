@@ -275,51 +275,53 @@ professions = [
 
 random_start_date_range = Date.range(Date.add(Date.utc_today(), -100), Date.utc_today())
 
-for i <- 1..1000 do
-  {:ok, person} =
-    create_person(Enum.random(tenants), %{
-      profession_uuid: Enum.random(professions).uuid,
-      first_name: "Test #{i}",
-      last_name: "Test",
-      sex: Enum.random(Hygeia.CaseContext.Person.Sex.__enum_map__())
-    })
+if System.get_env("LOAD_STATISTICS_SEEDS", "false") in ["1", "true"] do
+  for i <- 1..1000 do
+    {:ok, person} =
+      create_person(Enum.random(tenants), %{
+        profession_uuid: Enum.random(professions).uuid,
+        first_name: "Test #{i}",
+        last_name: "Test",
+        sex: Enum.random(Hygeia.CaseContext.Person.Sex.__enum_map__())
+      })
 
-  start_date = Enum.random(random_start_date_range)
-  end_date = Date.add(start_date, 10)
+    start_date = Enum.random(random_start_date_range)
+    end_date = Date.add(start_date, 10)
 
-  phase =
-    Enum.random([
-      %{
-        details: %{
-          __type__: "index",
-          end_reason:
-            Enum.random([nil | Hygeia.CaseContext.Case.Phase.Index.EndReason.__enum_map__()])
+    phase =
+      Enum.random([
+        %{
+          details: %{
+            __type__: "index",
+            end_reason:
+              Enum.random([nil | Hygeia.CaseContext.Case.Phase.Index.EndReason.__enum_map__()])
+          },
+          start: start_date,
+          end: end_date
         },
-        start: start_date,
-        end: end_date
-      },
-      %{
-        details: %{
-          __type__: "possible_index",
-          type: Enum.random(Hygeia.CaseContext.Case.Phase.PossibleIndex.Type.__enum_map__()),
-          end_reason:
-            Enum.random([
-              nil | Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason.__enum_map__()
-            ])
-        },
-        start: start_date,
-        end: end_date
-      }
-    ])
+        %{
+          details: %{
+            __type__: "possible_index",
+            type: Enum.random(Hygeia.CaseContext.Case.Phase.PossibleIndex.Type.__enum_map__()),
+            end_reason:
+              Enum.random([
+                nil | Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason.__enum_map__()
+              ])
+          },
+          start: start_date,
+          end: end_date
+        }
+      ])
 
-  {:ok, _index_case} =
-    create_case(person, %{
-      complexity: Enum.random(Hygeia.CaseContext.Case.Complexity.__enum_map__()),
-      status: Enum.random(Hygeia.CaseContext.Case.Status.__enum_map__()),
-      tracer_uuid: user_1.uuid,
-      supervisor_uuid: user_1.uuid,
-      phases: [phase]
-    })
+    {:ok, _index_case} =
+      create_case(person, %{
+        complexity: Enum.random(Hygeia.CaseContext.Case.Complexity.__enum_map__()),
+        status: Enum.random(Hygeia.CaseContext.Case.Status.__enum_map__()),
+        tracer_uuid: user_1.uuid,
+        supervisor_uuid: user_1.uuid,
+        phases: [phase]
+      })
+  end
 end
 
 {:ok, case_jony} = relate_case_to_organisation(case_jony, organisation_jm)
