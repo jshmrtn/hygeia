@@ -36,10 +36,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
         assign(socket,
           changeset:
-            CreateSchema.changeset(%CreateSchema{people: []}, %{
-              default_tracer_uuid: auth_user.uuid,
-              default_supervisor_uuid: auth_user.uuid
-            }),
+            CreateSchema.changeset(
+              %CreateSchema{people: []},
+              params
+              |> Map.put_new("default_tracer_uuid", auth_user.uuid)
+              |> Map.put_new("default_supervisor_uuid", auth_user.uuid)
+            ),
           tenants: tenants,
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
@@ -113,6 +115,19 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
          )
          |> maybe_block_navigation()}
     end
+  end
+
+  def handle_event("change_propagator_case", params, socket) do
+    {:noreply,
+     socket
+     |> assign(:changeset, %{
+       CreateSchema.changeset(
+         %CreateSchema{people: []},
+         Map.put(socket.assigns.changeset.params, "propagator_case_uuid", params["uuid"])
+       )
+       | action: :validate
+     })
+     |> maybe_block_navigation()}
   end
 
   @impl Phoenix.LiveView

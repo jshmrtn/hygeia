@@ -1,0 +1,82 @@
+defmodule HygeiaWeb.TransmissionLive.Create do
+  @moduledoc false
+
+  use HygeiaWeb, :surface_view
+
+  alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Transmission
+  alias Surface.Components.Form
+  alias Surface.Components.Form.DateInput
+  alias Surface.Components.Form.ErrorTag
+  alias Surface.Components.Form.Field
+  alias Surface.Components.Form.Inputs
+  alias Surface.Components.Form.Label
+  alias Surface.Components.Form.RadioButton
+  alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextInput
+
+  @impl Phoenix.LiveView
+  def mount(params, session, socket) do
+    socket =
+      if authorized?(Transmission, :create, get_auth(socket)) do
+        infection_place_types = CaseContext.list_infection_place_types()
+
+        assign(socket,
+          changeset: CaseContext.change_transmission(%Transmission{}, params),
+          infection_place_types: infection_place_types
+        )
+      else
+        socket
+        |> push_redirect(to: Routes.home_path(socket, :index))
+        |> put_flash(:error, gettext("You are not authorized to do this action."))
+      end
+
+    super(params, session, socket)
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event("validate", %{"transmission" => transmission_params}, socket) do
+    {:noreply,
+     assign(socket, :changeset, %{
+       CaseContext.change_transmission(%Transmission{}, transmission_params)
+       | action: :validate
+     })}
+  end
+
+  def handle_event("save", %{"transmission" => transmission_params}, socket) do
+    transmission_params
+    |> CaseContext.create_transmission()
+    |> case do
+      {:ok, transmission} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, gettext("Transmission created successfully"))
+         |> push_redirect(to: Routes.transmission_show_path(socket, :show, transmission))}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, :changeset, changeset)}
+    end
+  end
+
+  def handle_event("change_propagator_case", params, socket) do
+    {:noreply,
+     assign(socket, :changeset, %{
+       CaseContext.change_transmission(
+         %Transmission{},
+         Map.put(socket.assigns.changeset.params, "propagator_case_uuid", params["uuid"])
+       )
+       | action: :validate
+     })}
+  end
+
+  def handle_event("change_recipient_case", params, socket) do
+    {:noreply,
+     assign(socket, :changeset, %{
+       CaseContext.change_transmission(
+         %Transmission{},
+         Map.put(socket.assigns.changeset.params, "recipient_case_uuid", params["uuid"])
+       )
+       | action: :validate
+     })}
+  end
+end

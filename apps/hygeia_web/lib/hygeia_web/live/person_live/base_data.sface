@@ -105,6 +105,7 @@
               <h6>{{ gettext("Comment") }}</h6>
 
               <!-- TODO: Add notice with link to detected duplicated of person -->
+              <!-- TODO: Add Link if Valuue is shown (tel: / mailto:) -->
               <Inputs for={{ :contact_methods }}>
                 <Field name={{ :type }}>
                   <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }} field={{ :type }} options={{ contact_method_options() }} />
@@ -136,6 +137,7 @@
 
             <div class="row">
               <div class="col">
+                <!-- TODO: Change Label / Translation to Berufsfeld -->
                 <Field name={{ :profession_uuid }} class="form-group">
                   <Label>{{ "Profession" |> gettext }}</Label>
                   <Select  class="form-control" opts={{ prompt: gettext("Choose profession"), disabled: @live_action == :show }} field={{ :profession_uuid }} options={{ Enum.map(@professions, &({&1.name, &1.uuid})) }} />
@@ -155,7 +157,8 @@
                     </Field>
 
                     <Inputs for={{ :address }}>
-                      <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="addredd-form" />
+                      <!-- TODO: Fix form id to be unique with multiple entries -->
+                      <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address-form" />
                     </Inputs>
                   </div>
                 </div>
@@ -164,7 +167,7 @@
 
             <button :if={{ @live_action == :edit }} type="button" class="btn btn-secondary" :on-click="add_employer">
               <span class="oi oi-plus" aria-hidden="true"></span>
-              {{ gettext("New employment") }}
+              {{ gettext("New employer / employment") }}
             </button>
           </div>
         </div>

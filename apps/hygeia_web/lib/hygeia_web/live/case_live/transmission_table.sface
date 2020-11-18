@@ -97,7 +97,14 @@
             end }}
           </td>
           <td>
-            {{ Repo.preload(transmission.infection_place, :type).type.name }}
+            {{ 
+              transmission.infection_place
+              |> Repo.preload(:type)
+              |> case do
+                %{type: %{name: name}} -> name
+                nil -> nil
+              end
+            }}
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">

@@ -10,6 +10,32 @@ defmodule HygeiaWeb.TransmissionLiveTest do
   @moduletag originator: :noone
   @moduletag log_in: [roles: [:admin]]
 
+  @invalid_attrs %{
+    type: nil,
+    date: nil,
+    propagator_internal: nil,
+    recipient_internal: nil
+  }
+  @create_attrs %{
+    type: :travel,
+    date: "2020-10-17",
+    propagator_internal: true,
+    recipient_internal: true,
+    infection_place: %{
+      address: %{
+        address: "new address",
+        zip: "new zip",
+        place: "new place",
+        subdivision: "SG",
+        country: "CH"
+      },
+      name: "BrüW",
+      known: true,
+      activity_mapping_executed: true,
+      activity_mapping: "Drank beer, kept distance to other people",
+      flight_information: "xyz"
+    }
+  }
   @update_attrs %{
     date: "2020-01-01",
     infection_place: %{
@@ -39,6 +65,50 @@ defmodule HygeiaWeb.TransmissionLiveTest do
           propagator_case_uuid: index_case.uuid
         })
     }
+  end
+
+  describe "Create" do
+    test "saves new transmission", %{conn: conn} do
+      recipient_case = case_fixture()
+      propagator_case = case_fixture()
+
+      {:ok, create_live, _html} =
+        live(
+          conn,
+          Routes.transmission_create_path(conn, :create,
+            propagator_internal: true,
+            recipient_internal: true,
+            propagator_case_uuid: propagator_case.uuid,
+            recipient_case_uuid: recipient_case.uuid
+          )
+        )
+
+      assert create_live
+             |> form("#transmission-form", transmission: @invalid_attrs)
+             |> render_change() =~ "can&apos;t be blank"
+
+      create_live
+      |> form("#transmission-form",
+        transmission: %{infection_place: %{known: true}}
+      )
+      |> render_change()
+
+      create_live
+      |> form("#transmission-form",
+        transmission: %{infection_place: %{known: true, activity_mapping_executed: true}}
+      )
+      |> render_change()
+
+      {:ok, _, html} =
+        create_live
+        |> form("#transmission-form",
+          transmission: @create_attrs
+        )
+        |> render_submit()
+        |> follow_redirect(conn)
+
+      assert html =~ "BrüW"
+    end
   end
 
   describe "Show" do

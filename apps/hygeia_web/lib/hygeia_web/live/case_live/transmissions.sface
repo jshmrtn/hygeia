@@ -1,24 +1,75 @@
 <div class="component-case-transmission container">
-  <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
 
-  <div class="card">
-    <div class="card-header">
-      <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
-    </div>
-    <div class="card-body">
-      <h3>{{ gettext("Received") }}</h3>
-      <HygeiaWeb.CaseLive.TransmissionTable
-        transmissions={{ @case.received_transmissions }}
-        show_recipient={{ false }}
-        id="received_transmissions"
-      />
+    <div class="card">
+      <div class="card-header">
+        <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <h3 class="col">{{ gettext("Received") }}</h3>
+          <div class="col align-right" :if={{ authorized?(Transmission, :create, auth) }}>
+            <!-- TODO: Styling -->
+            <LiveRedirect
+              to={{ Routes.transmission_create_path(
+                @socket,
+                :create,
+                recipient_internal: true,
+                recipient_case_uuid: @case.uuid
+              ) }}
+              class="float-right"
+            >
+              <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+              {{ gettext("New Transmission") }}
+            </LiveRedirect>
+          </div>
+        </div>
+        <HygeiaWeb.CaseLive.TransmissionTable
+          transmissions={{ @case.received_transmissions }}
+          show_recipient={{ false }}
+          id="received_transmissions"
+        />
 
-      <h3>{{ gettext("Propagated") }}</h3>
-      <HygeiaWeb.CaseLive.TransmissionTable
-        transmissions={{ @case.propagated_transmissions }}
-        show_propagator={{ false }}
-        id="propagated_transmissions"
-      />
+        <div class="row">
+          <h3 class="col">
+            {{ gettext("Propagated") }}
+          </h3>
+          <div class="col align-right" :if={{ authorized?(Case, :create, auth) }}>
+            <!-- TODO: Styling -->
+            <LiveRedirect
+              to={{ Routes.case_create_possible_index_path(
+                @socket,
+                :create,
+                propagator_internal: true,
+                propagator_case_uuid: @case.uuid,
+                default_tenant_uuid: @case.tenant_uuid
+              ) }}
+              class="float-right"
+            >
+              <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+              {{ gettext("New Possible Index") }}
+            </LiveRedirect>
+            <LiveRedirect
+              to={{ Routes.transmission_create_path(
+                @socket,
+                :create,
+                propagator_internal: true,
+                propagator_case_uuid: @case.uuid
+              ) }}
+              class="float-right"
+            >
+              <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+              {{ gettext("New Transmission") }}
+            </LiveRedirect>
+          </div>
+        </div>
+        <HygeiaWeb.CaseLive.TransmissionTable
+          transmissions={{ @case.propagated_transmissions }}
+          show_propagator={{ false }}
+          id="propagated_transmissions"
+        />
+      </div>
     </div>
-  </div>
+  </Context>
 </div>

@@ -166,7 +166,13 @@
           <div class="dropdown-divider"></div>
           <LiveRedirect
             class="dropdown-item"
-            to={{ Routes.case_create_possible_index_path(@socket, :create, propagator_internal: true, propagator_case_uuid: @case.uuid, default_tenant_uuid: @case.tenant_uuid) }}
+            to={{ Routes.case_create_possible_index_path(
+              @socket,
+              :create,
+              propagator_internal: true,
+              propagator_case_uuid: @case.uuid,
+              default_tenant_uuid: @case.tenant_uuid
+            ) }}
           >
             <span class="oi oi-plus mr-1" aria-hidden="true"></span>
             {{ gettext("Create Contact Cases") }}

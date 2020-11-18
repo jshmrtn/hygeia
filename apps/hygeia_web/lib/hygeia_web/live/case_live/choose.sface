@@ -1,0 +1,50 @@
+<div class="form-control">
+  <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
+    <HiddenInput />
+
+    <div :if={{ not(Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""]) }}>
+      {{
+        form.source
+        |> Phoenix.HTML.FormData.input_value(form, field)
+        |> load_case()
+        |> case do
+          case_model -> "#{case_model.person.first_name} #{case_model.person.last_name} / #{case_display_name(case_model)}"
+        end
+      }}
+      <button :on-click={{ @change }} type="button">X</button>
+    </div>
+
+    <div :if={{ Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""] }}>
+      <button :on-click="open_modal" type="button">
+        {{ gettext("choose tenant") }}
+      </button>
+
+      <HygeiaWeb.Modal
+        id={{ {:choose_case, field} }}
+        :if={{ @modal_open }}
+        title={{ gettext("Select Case") }}
+        close="close_modal"
+      >
+        <!-- TODO: Style -->
+        <div class="alert alert-danger" role="alert">
+          {{ gettext("This modal will be styled properly") }}
+        </div>
+
+        <input type="search" value={{ @query }} :on-keyup="query" />
+
+        <ul>
+          <li :for={{ case <- @cases }}>
+            {{ case.person.first_name }} {{ case.person.last_name }} /
+            {{ case_display_name(case) }}
+
+            <div :on-click="close_modal">
+              <button :on-click={{ @change }} phx-value-uuid={{ case.uuid }} type="button">
+                {{ gettext("choose") }}
+              </button>
+            </div>
+          </li>
+        </ul>
+      </HygeiaWeb.Modal>
+    </div>
+  </InputContext>
+</div>
