@@ -32,7 +32,8 @@ defmodule Hygeia.CaseContext.ExternalReference do
           Changeset.t()
   def changeset(external_reference, attrs) do
     external_reference
-    |> cast(attrs, [:type, :type_name, :value])
+    |> cast(attrs, [:uuid, :type, :type_name, :value])
+    |> fill_uuid
     |> validate_required([:type, :value])
     |> validate_other_type
   end

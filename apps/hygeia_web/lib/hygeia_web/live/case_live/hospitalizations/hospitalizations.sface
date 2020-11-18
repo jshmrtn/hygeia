@@ -39,7 +39,7 @@
               <button
                 class="btn btn-sm btn-danger"
                 type="button"
-                phx-value-changeset-uuid={{ Ecto.Changeset.get_field(form.source, :uuid, []) }}
+                phx-value-changeset-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
                 :on-click={{ @remove_hospitalization }}
                 title={{ gettext("Remove") }}
               >

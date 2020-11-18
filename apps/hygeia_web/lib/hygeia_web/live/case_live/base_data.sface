@@ -107,7 +107,13 @@
             <div class="card">
               <div class="card-body">
                 <h4 class="card-title">{{ gettext("References") }}</h4>
-                <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @case }} id="references" add_external_reference="add_external_reference" />
+                <HygeiaWeb.References 
+                  disabled={{ @live_action == :show }}
+                  source={{ @case }}
+                  id="references"
+                  add="add_external_reference"
+                  remove="remove_external_reference"
+                />
               </div>
             </div>
 

@@ -1,8 +1,14 @@
 .component-references {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto auto;
   grid-template-rows: auto;
   grid-gap: $grid-gutter-width;
+
+  h6,
+  .label,
+  .value {
+    grid-column: span 2;
+  }
 
   .type-label {
     display: block;

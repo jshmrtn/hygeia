@@ -81,7 +81,13 @@
           <div class="card-body">
             <h4 class="card-title">{{ gettext("References") }}</h4>
 
-            <HygeiaWeb.References disabled={{ @live_action == :show }} source={{ @person }} id="references" add_external_reference="add_external_reference" />
+            <HygeiaWeb.References
+              disabled={{ @live_action == :show }}
+              source={{ @person }}
+              id="references"
+              add="add_external_reference"
+              remove="remove_external_reference"
+            />
           </div>
         </div>
 
@@ -107,18 +113,31 @@
               <!-- TODO: Add notice with link to detected duplicated of person -->
               <!-- TODO: Add Link if Valuue is shown (tel: / mailto:) -->
               <Inputs for={{ :contact_methods }}>
-                <Field name={{ :type }}>
-                  <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }} field={{ :type }} options={{ contact_method_options() }} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-                <Field name={{ :value }}>
-                  <TextInput class="form-control" field={{ :value }} opts={{ disabled: @live_action == :show }} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-                <Field name={{ :comment }}>
-                  <TextInput class="form-control" field={{ :comment }} opts={{ disabled: @live_action == :show }} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
+                <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                  <Field name={{ :type }}>
+                    <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }} field={{ :type }} options={{ contact_method_options() }} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                  <Field name={{ :value }}>
+                    <TextInput class="form-control" field={{ :value }} opts={{ disabled: @live_action == :show }} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                  <Field name={{ :comment }}>
+                    <TextInput class="form-control" field={{ :comment }} opts={{ disabled: @live_action == :show }} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                  <!-- TODO: Style -->
+                  <div :if={{ @live_action == :edit }}>
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      :on-click="remove_contact_method"
+                      phx-value-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
+                    >
+                      <span class="oi oi-delete" aria-hidden="true"></span>
+                    </button>
+                  </div>
+                </InputContext>
               </Inputs>
 
               <div class="add-button mt-2" :if={{ @live_action == :edit }}>
@@ -148,20 +167,33 @@
 
             <div class="employment-grid mb-3">
               <Inputs for={{ :employers }}>
-                <div class="card">
-                  <div class="card-body">
-                    <Field name={{ :name }} class="form-group">
-                      <Label>{{ gettext("Name") }}</Label>
-                      <TextInput class="form-control" field={{ :name }} opts={{ disabled: @live_action == :show }} />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+                <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                  <div class="card">
+                    <div class="card-body">
+                      <Field name={{ :name }} class="form-group">
+                        <Label>{{ gettext("Name") }}</Label>
+                        <TextInput class="form-control" field={{ :name }} opts={{ disabled: @live_action == :show }} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
 
-                    <Inputs for={{ :address }}>
-                      <!-- TODO: Fix form id to be unique with multiple entries -->
-                      <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address-form" />
-                    </Inputs>
+                      <Inputs for={{ :address }}>
+                        <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id={{ {Ecto.Changeset.fetch_field!(form.source, :uuid), :address} }} />
+                      </Inputs>
+
+                      <!-- TODO: Style -->
+                      <div :if={{ @live_action == :edit }}>
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          :on-click="remove_employer"
+                          phx-value-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
+                        >
+                          <span class="oi oi-delete" aria-hidden="true"></span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </InputContext>
               </Inputs>
             </div>
 

@@ -27,7 +27,8 @@ defmodule Hygeia.CaseContext.Case.Employer do
   @spec changeset(employer :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(employer, attrs) do
     employer
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:uuid, :name])
+    |> fill_uuid
     |> validate_required([])
     |> cast_embed(:address)
   end

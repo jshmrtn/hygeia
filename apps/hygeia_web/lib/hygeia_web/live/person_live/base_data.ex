@@ -12,6 +12,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Surface.Components.Form
   alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.Field
+  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.Select
@@ -85,54 +86,105 @@ defmodule HygeiaWeb.PersonLive.BaseData do
      |> maybe_block_navigation()}
   end
 
-  # TODO: Implement Contact Method Remove
-
-  def handle_event("add_contact_method", _params, socket) do
-    contact_methods = Ecto.Changeset.get_field(socket.assigns.changeset, :contact_methods, [])
-
-    changeset =
-      Ecto.Changeset.put_change(
-        socket.assigns.changeset,
-        :contact_methods,
-        contact_methods ++ [%{}]
-      )
-
+  def handle_event(
+        "add_contact_method",
+        _params,
+        %{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
     {:noreply,
      socket
-     |> assign(:changeset, changeset)
+     |> assign(
+       :changeset,
+       CaseContext.change_person(
+         person,
+         changeset_add_to_params(changeset, :contact_methods, %{uuid: Ecto.UUID.generate()})
+       )
+     )
      |> maybe_block_navigation()}
   end
 
-  def handle_event("add_external_reference", _params, socket) do
-    external_references =
-      Ecto.Changeset.get_field(socket.assigns.changeset, :external_references, [])
-
-    changeset =
-      Ecto.Changeset.put_change(
-        socket.assigns.changeset,
-        :external_references,
-        external_references ++ [%{}]
-      )
-
+  def handle_event(
+        "remove_contact_method",
+        %{"uuid" => uuid} = _params,
+        %{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
     {:noreply,
      socket
-     |> assign(:changeset, changeset)
+     |> assign(
+       :changeset,
+       CaseContext.change_person(
+         person,
+         changeset_remove_from_params_by_id(changeset, :contact_methods, %{uuid: uuid})
+       )
+     )
      |> maybe_block_navigation()}
   end
 
-  def handle_event("add_employer", _params, socket) do
-    employers = Ecto.Changeset.get_field(socket.assigns.changeset, :employers, [])
-
-    changeset =
-      Ecto.Changeset.put_change(
-        socket.assigns.changeset,
-        :employers,
-        employers ++ [%{}]
-      )
-
+  def handle_event(
+        "add_external_reference",
+        _params,
+        %{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
     {:noreply,
      socket
-     |> assign(:changeset, changeset)
+     |> assign(
+       :changeset,
+       CaseContext.change_person(
+         person,
+         changeset_add_to_params(changeset, :external_references, %{uuid: Ecto.UUID.generate()})
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event(
+        "remove_external_reference",
+        %{"uuid" => uuid} = _params,
+        %{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_person(
+         person,
+         changeset_remove_from_params_by_id(changeset, :external_references, %{uuid: uuid})
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event(
+        "add_employer",
+        _params,
+        %{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_person(
+         person,
+         changeset_add_to_params(changeset, :employers, %{uuid: Ecto.UUID.generate()})
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event(
+        "remove_employer",
+        %{"uuid" => uuid} = _params,
+        %{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_person(
+         person,
+         changeset_remove_from_params_by_id(changeset, :employers, %{uuid: uuid})
+       )
+     )
      |> maybe_block_navigation()}
   end
 

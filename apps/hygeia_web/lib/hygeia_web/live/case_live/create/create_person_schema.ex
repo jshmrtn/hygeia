@@ -7,6 +7,8 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
+  # TODO: Add additional fields
+
   embedded_schema do
     field :first_name, :string
     field :last_name, :string

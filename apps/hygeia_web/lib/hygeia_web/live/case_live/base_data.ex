@@ -5,7 +5,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Case.Hospitalization
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
@@ -125,60 +124,71 @@ defmodule HygeiaWeb.CaseLive.BaseData do
     end
   end
 
-  def handle_event("add_external_reference", _params, socket) do
-    external_references =
-      Ecto.Changeset.get_field(socket.assigns.changeset, :external_references, [])
-
-    changeset =
-      Ecto.Changeset.put_change(
-        socket.assigns.changeset,
-        :external_references,
-        external_references ++ [%{}]
-      )
-
+  def handle_event(
+        "add_external_reference",
+        _params,
+        %{assigns: %{changeset: changeset, case: case}} = socket
+      ) do
     {:noreply,
      socket
-     |> assign(:changeset, changeset)
+     |> assign(
+       :changeset,
+       CaseContext.change_case(
+         case,
+         changeset_add_to_params(changeset, :external_references, %{uuid: Ecto.UUID.generate()})
+       )
+     )
      |> maybe_block_navigation()}
   end
 
-  def handle_event("add_hospitalization", _params, socket) do
-    hospitalizations = Ecto.Changeset.get_field(socket.assigns.changeset, :hospitalizations, [])
-
-    changeset =
-      Ecto.Changeset.put_change(
-        socket.assigns.changeset,
-        :hospitalizations,
-        hospitalizations ++ [Hospitalization.changeset(%Hospitalization{}, %{})]
-      )
-
+  def handle_event(
+        "remove_external_reference",
+        %{"uuid" => uuid} = _params,
+        %{assigns: %{changeset: changeset, case: case}} = socket
+      ) do
     {:noreply,
      socket
-     |> assign(:changeset, changeset)
+     |> assign(
+       :changeset,
+       CaseContext.change_case(
+         case,
+         changeset_remove_from_params_by_id(changeset, :external_references, %{uuid: uuid})
+       )
+     )
      |> maybe_block_navigation()}
   end
 
-  def handle_event("remove_hospitalization", %{"changeset-uuid" => uuid}, socket) do
-    hospitalizations =
-      socket.assigns.changeset
-      |> Ecto.Changeset.get_field(:hospitalizations, [])
-      |> Enum.map(&Hospitalization.changeset(&1, %{}))
-      |> Enum.map(fn changeset ->
-        if Ecto.Changeset.get_field(changeset, :uuid) == uuid,
-          do: %{changeset | action: :delete},
-          else: changeset
-      end)
-
-    changeset =
-      Ecto.Changeset.put_embed(
-        socket.assigns.changeset,
-        :hospitalizations,
-        hospitalizations
-      )
-
+  def handle_event(
+        "add_hospitalization",
+        _params,
+        %{assigns: %{changeset: changeset, case: case}} = socket
+      ) do
     {:noreply,
      socket
-     |> assign(:changeset, changeset)
+     |> assign(
+       :changeset,
+       CaseContext.change_case(
+         case,
+         changeset_add_to_params(changeset, :hospitalizations, %{uuid: Ecto.UUID.generate()})
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event(
+        "remove_hospitalization",
+        %{"changeset-uuid" => uuid} = _params,
+        %{assigns: %{changeset: changeset, case: case}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_case(
+         case,
+         changeset_remove_from_params_by_id(changeset, :hospitalizations, %{uuid: uuid})
+       )
+     )
      |> maybe_block_navigation()}
   end
 

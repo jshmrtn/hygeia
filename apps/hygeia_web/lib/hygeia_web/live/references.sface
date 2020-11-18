@@ -2,41 +2,53 @@
   <h6>{{ gettext("Type") }}</h6>
   <h6>{{ gettext("Value") }}</h6>
 
-  <div>{{ gettext("UUID") }}</div>
+  <div class="label">{{ gettext("UUID") }}</div>
   <div class="value">{{ @source.uuid }}</div>
 
 
-  <div>{{ gettext("Human Readable ID") }}</div>
+  <div class="label">{{ gettext("Human Readable ID") }}</div>
   <div class="value">{{ @source.human_readable_id }}</div>
 
   <Inputs for={{ :external_references }}>
-    <div :if={{ @disabled }}>
-      <InputContext assigns={{ assigns }} :let={{ form: form }}>
+    <HiddenInput field={{ :uuid }} />
+    <InputContext assigns={{ assigns }} :let={{ form: form }}>
+      <div class="label" :if={{ @disabled }}>
         <label class="type-label d-flex align-items-center">{{ Ecto.Changeset.get_field(form.source, :type) }}<span :if={{ Ecto.Changeset.get_field(form.source, :type) == :other }}>: {{ Ecto.Changeset.get_field(form.source, :type_name) }}</span></label>
-      </InputContext>
-    </div>
-    <div :if={{ !@disabled }}>
-      <Field name={{ :type }}>
-        <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @disabled }} field={{ :type }} options={{ external_reference_options() }} />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-      <InputContext assigns={{ assigns }} :let={{ form: form }}>
-        <Field class="mt-1" name={{ :type_name }} :if={{ Ecto.Changeset.get_field(form.source, :type) == :other }}>
+      </div>
+      <div :if={{ !@disabled }} class="{{ if Ecto.Changeset.get_field(form.source, :type) != :other, do: "label" }}">
+        <Field name={{ :type }}>
+          <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @disabled }} field={{ :type }} options={{ external_reference_options() }} />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+      </div>
+      <div :if={{ !@disabled and Ecto.Changeset.get_field(form.source, :type) == :other }}>
+        <Field class="mt-1" name={{ :type_name }}>
           <TextInput class="form-control" field={{ :type_name }} opts={{ disabled: @disabled }} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
-      </InputContext>
-    </div>
-    <div>
-      <Field name={{ :value }}>
-        <TextInput class="form-control" field={{ :value }} opts={{ disabled: @disabled }} />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
+      </div>
+      <div>
+        <Field name={{ :value }}>
+          <TextInput class="form-control" field={{ :value }} opts={{ disabled: @disabled }} />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+      </div>
+      <!--  TODO: Style -->
+      <div :if={{ !@disabled }}>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          :on-click={{ @remove }}
+          phx-value-uuid={{ Ecto.Changeset.get_field(form.source, :uuid) }}
+        >
+          <span class="oi oi-delete mr-1" aria-hidden="true"></span>
+        </button>
+      </div>
+    </InputContext>
   </Inputs>
     
   <div class="add-button mt-2" :if={{ not(@disabled) }}>
-    <button type="button" class="btn btn-secondary" :on-click={{ @add_external_reference }}>
+    <button type="button" class="btn btn-secondary" :on-click={{ @add }}>
       <span class="oi oi-plus mr-1" aria-hidden="true"></span>
       {{ gettext("New reference") }}
     </button>
