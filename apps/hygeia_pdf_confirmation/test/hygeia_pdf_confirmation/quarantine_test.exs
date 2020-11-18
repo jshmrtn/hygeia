@@ -18,7 +18,6 @@ defmodule HygeiaPdfConfirmation.QuarantineTest do
 
       assert text_string = pdf_string(pdf_binary)
 
-      assert text_string =~ "Quarantine"
       assert text_string =~ person.first_name
       assert text_string =~ person.last_name
     end

@@ -5,7 +5,6 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
 
   alias Hygeia.StatisticsContext
   alias Hygeia.TenantContext
-  alias HygeiaWeb.StatisticsLive.StatPanel
   alias Surface.Components.Form
   alias Surface.Components.Form.DateInput
 

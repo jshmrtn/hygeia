@@ -38,4 +38,45 @@ defmodule Hygeia.CaseContext.Address do
     |> validate_country(:country)
     |> validate_subdivision(:subdivision, :country)
   end
+
+  @spec to_string(address :: t, format :: :short | :long) :: String.t()
+  def to_string(address, format \\ :short)
+
+  def to_string(address, :short) do
+    address
+    |> address_parts
+    |> Enum.join(", ")
+  end
+
+  def to_string(address, :long) do
+    address
+    |> address_parts
+    |> Enum.join("\n")
+  end
+
+  defp address_parts(address) do
+    locale = HygeiaCldr.get_locale().language
+
+    [
+      address.address,
+      [address.zip, address.place]
+      |> Enum.reject(&is_nil/1)
+      |> Enum.join(" "),
+      case address.subdivision do
+        nil ->
+          nil
+
+        other ->
+          address.country
+          |> Cadastre.Subdivision.new(other)
+          |> Cadastre.Subdivision.name(locale)
+      end,
+      case address.country do
+        nil -> nil
+        other -> other |> Cadastre.Country.new() |> Cadastre.Country.name(locale)
+      end
+    ]
+    |> Enum.reject(&is_nil/1)
+    |> Enum.reject(&(&1 == ""))
+  end
 end

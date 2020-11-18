@@ -3,19 +3,21 @@ defmodule HygeiaPdfConfirmation.Isolation do
   Create Isolation Confirmation PDF
   """
 
-  import HygeiaPdfConfirmation.IsolationView
+  import HygeiaGettext
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.Repo
+  alias HygeiaPdfConfirmation.IsolationView
 
   @spec render_pdf(case :: Case.t(), phase :: Phase.t()) :: binary
   def render_pdf(%Case{} = case, %Phase{} = phase) do
     case = Repo.preload(case, person: [])
 
-    "confirmation.html"
-    |> render(case: case, phase: phase)
-    |> Phoenix.HTML.safe_to_string()
-    |> PdfGenerator.generate_binary!(delete_temporary: true)
+    HygeiaPdfConfirmation.render_pdf(IsolationView, "confirmation.html",
+      case: case,
+      phase: phase,
+      document_name: gettext("Isolation Order")
+    )
   end
 end
