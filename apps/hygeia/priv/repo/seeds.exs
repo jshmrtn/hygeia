@@ -273,7 +273,7 @@ professions = [
     ]
   })
 
-random_start_date_range = Date.range(Date.add(Date.utc_today(), -356), Date.utc_today())
+random_start_date_range = Date.range(Date.add(Date.utc_today(), -100), Date.utc_today())
 
 for i <- 1..1000 do
   {:ok, person} =

@@ -11,253 +11,301 @@
   </div>
 
   <div class="row mt-3">
-    <div class="col">
+    <div class="col-12 col-xl-6">
       <HygeiaWeb.Chart
         id="active_isolation_cases_per_day"
         dom_id="active_isolation_cases_per_day"
         config={{ %{
-          chart: %{
-            type: "area",
-            styledMode: true
+          type: "line",
+          data: %{
+            datasets: [
+              %{
+                label: gettext("Count"),
+                data: Enum.map(@active_isolation_cases_per_day, &(%{
+                  x: &1.date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                  y: &1.count
+                }))
+              }
+            ]
           },
-          title: %{
-            text: gettext("People in Isolation")
-          },
-          xAxis: %{
+          options: %{
             title: %{
-              text: gettext("Date")
+              display: true,
+              text: gettext("People in Isolation")
             },
-            type: "datetime"
-          },
-          yAxis: %{
-            title: %{
-              text: gettext("People")
-            },
-            allowDecimals: false
-          },
-          series: [
-            %{
-              name: gettext("Count"),
-              data: Enum.map(@active_isolation_cases_per_day, &(%{
-                x: &1.date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
-                y: &1.count
-              }))
+            scales: %{
+              xAxes: [
+                %{
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("Date")
+                  },
+                  type: "time",
+                  time: %{
+                    unit: "day",
+                    tooltipFormat: "LL"
+                  }
+                }
+              ],
+              yAxes: [
+                %{
+                  stacked: true,
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("People")
+                  }
+                }
+              ]
             }
-          ]
+          }
         } }}
       />
     </div>
-    <div class="col">
+    <div class="col-12 col-xl-6">
       <HygeiaWeb.Chart
         id="cumulative_index_case_end_reasons"
         dom_id="cumulative_index_case_end_reasons"
         config={{ %{
-          chart: %{
-            type: "area",
-            styledMode: true
-          },
-          title: %{
-            text: gettext("Finished Isolations")
-          },
-          plotOptions: %{
-            area: %{
-              stacking: "normal"
-            }
-          },
-          xAxis: %{
-            title: %{
-              text: gettext("Date")
-            },
-            type: "datetime"
-          },
-          yAxis: %{
-            title: %{
-              text: gettext("Cases")
-            },
-            allowDecimals: false
-          },
-          series: @cumulative_index_case_end_reasons
-          |> Enum.reduce(%{}, fn %{date: date, count: count, end_reason: end_reason}, acc ->
-            entry = %{
-              x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
-              y: count
-            }
-            Map.update(acc, end_reason, [entry], &([entry | &1]))
-          end)
-          |> Enum.map(fn
-            {nil, entries} ->
-              %{
-                name: gettext("unknown"),
-                data: entries
+          type: "line",
+          data: %{
+            datasets: @cumulative_index_case_end_reasons
+            |> Enum.reduce(%{}, fn %{date: date, count: count, end_reason: end_reason}, acc ->
+              entry = %{
+                x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                y: count
               }
-            {end_reason, entries} ->
-              %{
-                name: case_phase_index_end_reason_translation(end_reason),
-                data: entries
-              }
-          end)
+              Map.update(acc, end_reason, [entry], &([entry | &1]))
+            end)
+            |> Enum.map(fn
+              {nil, entries} ->
+                %{
+                  label: gettext("unknown"),
+                  data: entries
+                }
+              {end_reason, entries} ->
+                %{
+                  label: case_phase_index_end_reason_translation(end_reason),
+                  data: entries
+                }
+            end)
+          },
+          options: %{
+            title: %{
+              display: true,
+              text: gettext("Finished Isolations")
+            },
+            scales: %{
+              xAxes: [
+                %{
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("Date")
+                  },
+                  type: "time",
+                  time: %{
+                    unit: "day",
+                    tooltipFormat: "LL"
+                  }
+                }
+              ],
+              yAxes: [
+                %{
+                  stacked: true,
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("Cases")
+                  }
+                }
+              ]
+            }
+          }
         } }}
       />
     </div>
   </div>
 
   <div class="row mt-3">
-    <div class="col">
+    <div class="col-12 col-xl-6">
       <HygeiaWeb.Chart
         id="active_quarantine_cases_per_day"
         dom_id="active_quarantine_cases_per_day"
         config={{ %{
-          chart: %{
-            type: "area",
-            styledMode: true
+          type: "line",
+          data: %{
+            datasets: @active_quarantine_cases_per_day
+            |> Enum.reduce(%{}, fn %{date: date, count: count, type: type}, acc ->
+              entry = %{
+                x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                y: count
+              }
+              Map.update(acc, type, [entry], &([entry | &1]))
+            end)
+            |> Enum.map(fn {type, entries} ->
+              %{
+                label: case_phase_possible_index_type_translation(type),
+                data: entries
+              }
+            end)
           },
-          title: %{
-            text: gettext("People in Quarantine")
-          },
-          plotOptions: %{
-            area: %{
-              stacking: "normal"
-            }
-          },
-          xAxis: %{
+          options: %{
             title: %{
-              text: gettext("Date")
+              display: true,
+              text: gettext("People in Quarantine")
             },
-            type: "datetime"
-          },
-          yAxis: %{
-            title: %{
-              text: gettext("People")
-            },
-            allowDecimals: false,
-            min: 0
-          },
-          series: @active_quarantine_cases_per_day
-          |> Enum.reduce(%{}, fn %{date: date, count: count, type: type}, acc ->
-            entry = %{
-              x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
-              y: count
+            scales: %{
+              xAxes: [
+                %{
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("Date")
+                  },
+                  type: "time",
+                  time: %{
+                    unit: "day",
+                    tooltipFormat: "LL"
+                  }
+                }
+              ],
+              yAxes: [
+                %{
+                  stacked: true,
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("People")
+                  }
+                }
+              ]
             }
-            Map.update(acc, type, [entry], &([entry | &1]))
-          end)
-          |> Enum.map(fn {type, entries} ->
-            %{
-              name: case_phase_possible_index_type_translation(type),
-              data: entries
-            }
-          end)
+          }
         } }}
       />
     </div>
-    <div class="col">
+    <div class="col-12 col-xl-6">
       <HygeiaWeb.Chart
         id="cumulative_possible_index_case_end_reasons"
         dom_id="cumulative_possible_index_case_end_reasons"
         config={{ %{
-          chart: %{
-            type: "area",
-            styledMode: true
-          },
-          title: %{
-            text: gettext("Finished Quarantines")
-          },
-          plotOptions: %{
-            area: %{
-              stacking: "normal"
-            }
-          },
-          xAxis: %{
-            title: %{
-              text: gettext("Date")
-            },
-            type: "datetime"
-          },
-          yAxis: %{
-            title: %{
-              text: gettext("Cases")
-            },
-            allowDecimals: false
-          },
-          series: @cumulative_possible_index_case_end_reasons
-          |> Enum.reduce(%{}, fn %{date: date, count: count, type: type, end_reason: end_reason}, acc ->
-            entry = %{
-              x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
-              y: count
-            }
-            Map.update(acc, {type, end_reason}, [entry], &([entry | &1]))
-          end)
-          |> Enum.map(fn
-            {{type, nil}, entries} ->
-              %{
-                name: case_phase_possible_index_type_translation(type) <> " / " <> gettext("unknown"),
-                data: entries
+          type: "line",
+          data: %{
+            datasets: @cumulative_possible_index_case_end_reasons
+            |> Enum.reduce(%{}, fn %{date: date, count: count, type: type, end_reason: end_reason}, acc ->
+              entry = %{
+                x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                y: count
               }
-            {{type, end_reason}, entries} ->
-              %{
-                name: case_phase_possible_index_type_translation(type) <> " / " <> case_phase_possible_index_end_reason_translation(end_reason),
-                data: entries
-              }
-          end)
+              Map.update(acc, {type, end_reason}, [entry], &([entry | &1]))
+            end)
+            |> Enum.map(fn
+              {{type, nil}, entries} ->
+                %{
+                  label: case_phase_possible_index_type_translation(type) <> " / " <> gettext("unknown"),
+                  data: entries
+                }
+              {{type, end_reason}, entries} ->
+                %{
+                  label: case_phase_possible_index_type_translation(type) <> " / " <> case_phase_possible_index_end_reason_translation(end_reason),
+                  data: entries
+                }
+            end)
+          },
+          options: %{
+            title: %{
+              display: true,
+              text: gettext("People in Quarantine")
+            },
+            scales: %{
+              xAxes: [
+                %{
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("Date")
+                  },
+                  type: "time",
+                  time: %{
+                    unit: "day",
+                    tooltipFormat: "LL"
+                  }
+                }
+              ],
+              yAxes: [
+                %{
+                  stacked: true,
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("Cases")
+                  }
+                }
+              ]
+            }
+          }
         } }}
       />
     </div>
   </div>
 
   <div class="row mt-3">
-    <div class="col">
+    <div class="col-12 col-xl-6">
       <HygeiaWeb.Chart
         id="new_cases_per_day"
         dom_id="new_cases_per_day"
         config={{ %{
-          chart: %{
-            type: "area",
-            styledMode: true
-          },
-          title: %{
-            text: gettext("New Cases per Day")
-          },
-          plotOptions: %{
-            area: %{
-              stacking: "normal"
-            }
-          },
-          xAxis: %{
-            title: %{
-              text: gettext("Date")
-            },
-            type: "datetime"
-          },
-          yAxis: %{
-            title: %{
-              text: gettext("Cases")
-            },
-            allowDecimals: false,
-            min: 0
-          },
-          series: @new_cases_per_day
-          |> Enum.reduce(%{}, fn %{date: date, count: count, type: type, sub_type: sub_type}, acc ->
-            entry = %{
-              x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
-              y: count
-            }
-            Map.update(acc, {type, sub_type}, [entry], &([entry | &1]))
-          end)
-          |> Enum.map(fn
-            {{:index, nil}, entries} ->
-              %{
-                name: gettext("Index"),
-                data: entries
+          type: "line",
+          data: %{
+            datasets: @new_cases_per_day
+            |> Enum.reduce(%{}, fn %{date: date, count: count, type: type, sub_type: sub_type}, acc ->
+              entry = %{
+                x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                y: count
               }
-            {{:possible_index, sub_type}, entries} ->
-              %{
-                name: case_phase_possible_index_type_translation(sub_type),
-                data: entries
-              }
-          end)
+              Map.update(acc, {type, sub_type}, [entry], &([entry | &1]))
+            end)
+            |> Enum.map(fn
+              {{:index, nil}, entries} ->
+                %{
+                  label: gettext("Index"),
+                  data: entries
+                }
+              {{:possible_index, sub_type}, entries} ->
+                %{
+                  label: case_phase_possible_index_type_translation(sub_type),
+                  data: entries
+                }
+            end)
+          },
+          options: %{
+            title: %{
+              display: true,
+              text: gettext("New Cases")
+            },
+            scales: %{
+              xAxes: [
+                %{
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("Date")
+                  },
+                  type: "time",
+                  time: %{
+                    unit: "day",
+                    tooltipFormat: "LL"
+                  }
+                }
+              ],
+              yAxes: [
+                %{
+                  stacked: true,
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("Cases")
+                  }
+                }
+              ]
+            }
+          }
         } }}
       />
     </div>
-    <div class="col">
+    <div class="col-12 col-xl-6">
       <!-- TODO: Add Hospitalisations (@Jan) -->
       <div class="alert alert-danger mt-3" role="alert">
         {{ gettext("Hospitalization Chart") }}
@@ -266,13 +314,13 @@
   </div>
 
   <div class="row mt-3">
-    <div class="col">
+    <div class="col-12 col-xl-6">
       <!-- TODO: Add Complexity (@Jan) -->
       <div class="alert alert-danger mt-3" role="alert">
         {{ gettext("Complexity Chart") }}
       </div>
     </div>
-    <div class="col">
+    <div class="col-12 col-xl-6">
       <!-- TODO: Add Infection Place Type -->
       <div class="alert alert-danger mt-3" role="alert">
         {{ gettext("Infection Place Type Chart") }}
