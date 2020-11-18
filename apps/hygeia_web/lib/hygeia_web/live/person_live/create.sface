@@ -13,6 +13,7 @@
   </Field>
 
   <div class="row">
+    <!-- TODO: Add notice with link to detected duplicated of person -->
     <div class="col">
       <Field name={{ :first_name }} class="form-group">
         <Label>{{ "First Name" |> gettext }}</Label>
@@ -44,6 +45,7 @@
     </thead>
     <tbody>
       <Inputs for={{ :contact_methods }}>
+      <!-- TODO: Add notice with link to detected duplicated of person -->
         <tr>
           <td>
             <Field name={{ :type }}>

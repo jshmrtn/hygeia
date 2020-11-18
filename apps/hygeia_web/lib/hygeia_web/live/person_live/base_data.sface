@@ -41,6 +41,7 @@
             </Field>
 
             <div class="row">
+              <!-- TODO: Add notice with link to detected duplicated of person -->
               <div class="col">
                 <Field name={{ :first_name }} class="form-group">
                   <Label>{{ "First Name" |> gettext }}</Label>
@@ -103,6 +104,7 @@
               <h6>{{ gettext("Value") }}</h6>
               <h6>{{ gettext("Comment") }}</h6>
 
+              <!-- TODO: Add notice with link to detected duplicated of person -->
               <Inputs for={{ :contact_methods }}>
                 <Field name={{ :type }}>
                   <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }} field={{ :type }} options={{ contact_method_options() }} />

@@ -13,4 +13,6 @@ defmodule HygeiaWeb.References do
   prop source, :map, required: true
   prop add_external_reference, :event, required: true
   prop disabled, :boolean, default: false
+
+  # TODO: Implement Reference Remove
 end

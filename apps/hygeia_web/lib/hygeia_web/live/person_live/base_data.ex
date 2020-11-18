@@ -85,6 +85,8 @@ defmodule HygeiaWeb.PersonLive.BaseData do
      |> maybe_block_navigation()}
   end
 
+  # TODO: Implement Contact Method Remove
+
   def handle_event("add_contact_method", _params, socket) do
     contact_methods = Ecto.Changeset.get_field(socket.assigns.changeset, :contact_methods, [])
 
