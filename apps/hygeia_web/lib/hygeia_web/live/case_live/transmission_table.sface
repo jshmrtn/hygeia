@@ -102,7 +102,7 @@
               |> Repo.preload(:type)
               |> case do
                 %{type: %{name: name}} -> name
-                nil -> nil
+                _ -> nil
               end
             }}
           </td>
