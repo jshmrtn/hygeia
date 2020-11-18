@@ -53,6 +53,10 @@
                   scaleLabel: %{
                     display: true,
                     labelString: gettext("People")
+                  },
+                  ticks: %{
+                    stepSize: 1,
+                    beginAtZero: true
                   }
                 }
               ]
@@ -114,6 +118,10 @@
                   scaleLabel: %{
                     display: true,
                     labelString: gettext("Cases")
+                  },
+                  ticks: %{
+                    stepSize: 1,
+                    beginAtZero: true
                   }
                 }
               ]
@@ -172,6 +180,10 @@
                   scaleLabel: %{
                     display: true,
                     labelString: gettext("People")
+                  },
+                  ticks: %{
+                    stepSize: 1,
+                    beginAtZero: true
                   }
                 }
               ]
@@ -233,6 +245,10 @@
                   scaleLabel: %{
                     display: true,
                     labelString: gettext("Cases")
+                  },
+                  ticks: %{
+                    stepSize: 1,
+                    beginAtZero: true
                   }
                 }
               ]
@@ -297,6 +313,10 @@
                   scaleLabel: %{
                     display: true,
                     labelString: gettext("Cases")
+                  },
+                  ticks: %{
+                    stepSize: 1,
+                    beginAtZero: true
                   }
                 }
               ]
