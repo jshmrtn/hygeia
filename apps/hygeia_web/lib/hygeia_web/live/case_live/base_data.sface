@@ -334,11 +334,7 @@
                 <h4 class="card-title">{{ gettext("Related Organisations") }}</h4>
                 <HygeiaWeb.CaseLive.RelatedOrganisations
                   disabled={{ @live_action == :show }}
-                  source={{ @case }}
-                  organisations={{ @organisations }}
                   id="related_organisations"
-                  add="add_related_organisation"
-                  remove="remove_related_organisation"
                 />
               </div>
             </div>

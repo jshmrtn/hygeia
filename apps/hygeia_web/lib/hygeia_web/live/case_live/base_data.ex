@@ -70,6 +70,59 @@ defmodule HygeiaWeb.CaseLive.BaseData do
     {:noreply, redirect(socket, to: Routes.case_index_path(socket, :index))}
   end
 
+  def handle_info(
+        {:remove_related_organisation, uuid},
+        %{assigns: %{changeset: changeset, case: case}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_case(
+         case,
+         changeset_remove_from_params_by_id(changeset, :related_organisations, %{uuid: uuid})
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_info(
+        {:add_related_organisation, uuid},
+        %{assigns: %{changeset: changeset, case: case}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_case(
+         case,
+         changeset_add_to_params(changeset, :related_organisations, %{uuid: uuid})
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_info(
+        {:hospitalisation_change_organisation, uuid, organisation_uuid},
+        %{assigns: %{changeset: changeset, case: case}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_case(
+         case,
+         changeset_update_params_by_id(
+           changeset,
+           :hospitalizations,
+           %{uuid: uuid},
+           &Map.put(&1, "organisation_uuid", organisation_uuid)
+         )
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
   def handle_info(_other, socket), do: {:noreply, socket}
 
   @impl Phoenix.LiveView

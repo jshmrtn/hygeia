@@ -98,7 +98,7 @@ defmodule HygeiaUserSync do
 
     for %UserGrantView{
           email: email,
-          id: sub,
+          user_id: sub,
           display_name: display_name,
           role_keys: roles
         } <- grants do
@@ -131,7 +131,7 @@ defmodule HygeiaUserSync do
 
     for %User{iam_sub: sub} = user <- db_users do
       grants
-      |> Enum.find(&match?(%UserGrantView{id: ^sub}, &1))
+      |> Enum.find(&match?(%UserGrantView{user_id: ^sub}, &1))
       |> case do
         nil ->
           {:ok, _user} = UserContext.delete_user(user)

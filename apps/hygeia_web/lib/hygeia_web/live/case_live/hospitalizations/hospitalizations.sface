@@ -5,52 +5,58 @@
     </div>
   </InputContext>
   <Inputs for={{ :hospitalizations }}>
-    <div class="card mb-2">
-      <div class="card-body">
-        <div class="row">
-          <HiddenInput field={{ :uuid }} />
-          <div class="col">
-            <Field class="form-group" name={{ :start }}>
-              <Label>{{ gettext("Start date") }}</Label>
-              <DateInput class="form-control" opts={{ disabled: @disabled }}/>
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
+    <InputContext assigns={{ assigns }} :let={{ form: form }}>
+      <div class="card mb-2">
+        <div class="card-body">
+          <div class="row">
+            <HiddenInput field={{ :uuid }} />
+            <div class="col">
+              <Field class="form-group" name={{ :start }}>
+                <Label>{{ gettext("Start date") }}</Label>
+                <DateInput class="form-control" opts={{ disabled: @disabled }}/>
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+            <div class="col">
+              <Field class="form-group" name={{ :end }}>
+                <Label>{{ gettext("End date") }}</Label>
+                <DateInput class="form-control" opts={{ disabled: @disabled }}/>
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
           </div>
-          <div class="col">
-            <Field class="form-group" name={{ :end }}>
-              <Label>{{ gettext("End date") }}</Label>
-              <DateInput class="form-control" opts={{ disabled: @disabled }}/>
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
+          <div class="row">
+            <div class="col">
+              <Field class="form-group" name={{ :organisation_uuid }}>
+                <Label>{{ gettext("Organisation") }}</Label>
+                <HygeiaWeb.OrganisationLive.Choose
+                  id={{ {:hospitalisations, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid) } }}
+                  change={{ "change_organisation_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+                  disabled={{ @disabled }}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <Field class="form-group" name={{ :organisation_uuid }}>
-              <Label>{{ gettext("Organisation") }}</Label>
-              <Select class="form-control" opts={{ prompt: gettext("Choose organisation"), disabled: @disabled }} options={{ Enum.map(@organisations, &({&1.name, &1.uuid})) }} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-        </div>
-        <div :if={{ !@disabled }} class="row">
-          <div class="col d-flex justify-content-end">
-            <InputContext assigns={{ assigns }} :let={{ form: form }}>
-              <button
-                class="btn btn-sm btn-danger"
-                type="button"
-                phx-value-changeset-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
-                :on-click={{ @remove_hospitalization }}
-                title={{ gettext("Remove") }}
-              >
-                {{ gettext("Remove") }}
-                <span class="oi oi-trash" aria-hidden="true"></span>
-              </button>
-            </InputContext>
+          <div :if={{ !@disabled }} class="row">
+            <div class="col d-flex justify-content-end">
+              <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                <button
+                  class="btn btn-sm btn-danger"
+                  type="button"
+                  phx-value-changeset-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
+                  :on-click={{ @remove_hospitalization }}
+                  title={{ gettext("Remove") }}
+                >
+                  {{ gettext("Remove") }}
+                  <span class="oi oi-trash" aria-hidden="true"></span>
+                </button>
+              </InputContext>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </InputContext>
   </Inputs>
     
   <div class="add-button mt-2" :if={{ not(@disabled) }}>
