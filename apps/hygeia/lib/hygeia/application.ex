@@ -28,7 +28,10 @@ defmodule Hygeia.Application do
          name: {:global, RefreshMaterializedView.CumulativePossibleIndexCaseEndReasons}},
         {RefreshMaterializedView,
          view: :statistics_new_cases_per_day,
-         name: {:global, RefreshMaterializedView.NewCasesPerDay}}
+         name: {:global, RefreshMaterializedView.NewCasesPerDay}},
+        {RefreshMaterializedView,
+         view: :statistics_active_hospitalization_cases_per_day,
+         name: {:global, RefreshMaterializedView.ActiveHospitalizationCasesPerDay}}
       ]
   end
 

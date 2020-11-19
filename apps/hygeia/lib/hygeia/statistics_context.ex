@@ -6,6 +6,7 @@ defmodule Hygeia.StatisticsContext do
   import Ecto.Query, warn: false
   alias Hygeia.Repo
 
+  alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveIsolationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveQuarantineCasesPerDay
   alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
@@ -242,4 +243,42 @@ defmodule Hygeia.StatisticsContext do
                 )
           )
         )
+
+  @doc """
+  Returns the list of active_hospitalization_cases_per_day.
+
+  ## Examples
+
+      iex> list_active_hospitalization_cases_per_day()
+      [%ActiveHospitalizationCasesPerDay{}, ...]
+
+  """
+  @spec list_active_hospitalization_cases_per_day :: [ActiveHospitalizationCasesPerDay.t()]
+  def list_active_hospitalization_cases_per_day, do: Repo.all(ActiveHospitalizationCasesPerDay)
+
+  @spec list_active_hospitalization_cases_per_day(tenant :: Tenant.t()) :: [
+          ActiveHospitalizationCasesPerDay.t()
+        ]
+  def list_active_hospitalization_cases_per_day(%Tenant{uuid: tenant_uuid} = _tenant),
+    do:
+      Repo.all(
+        from(cases_per_day in ActiveHospitalizationCasesPerDay,
+          where: cases_per_day.tenant_uuid == ^tenant_uuid
+        )
+      )
+
+  @spec list_active_hospitalization_cases_per_day(
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: [ActiveHospitalizationCasesPerDay.t()]
+  def list_active_hospitalization_cases_per_day(%Tenant{uuid: tenant_uuid} = _tenant, from, to),
+    do:
+      Repo.all(
+        from(cases_per_day in ActiveHospitalizationCasesPerDay,
+          where:
+            cases_per_day.tenant_uuid == ^tenant_uuid and
+              fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to)
+        )
+      )
 end

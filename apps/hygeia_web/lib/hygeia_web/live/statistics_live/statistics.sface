@@ -326,10 +326,58 @@
       />
     </div>
     <div class="col-12 col-xl-6">
-      <!-- TODO: Add Hospitalisations (@Jan) -->
-      <div class="alert alert-danger mt-3" role="alert">
-        {{ gettext("Hospitalization Chart") }}
-      </div>
+      <HygeiaWeb.Chart
+        id="active_hospitalization_cases_per_day"
+        dom_id="active_hospitalization_cases_per_day"
+        config={{ %{
+          type: "line",
+          data: %{
+            datasets: [
+              %{
+                label: gettext("Count"),
+                data: Enum.map(@active_hospitalization_cases_per_day, &(%{
+                  x: &1.date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                  y: &1.count
+                }))
+              }
+            ]
+          },
+          options: %{
+            title: %{
+              display: true,
+              text: gettext("People in Hospital")
+            },
+            scales: %{
+              xAxes: [
+                %{
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("Date")
+                  },
+                  type: "time",
+                  time: %{
+                    unit: "day",
+                    tooltipFormat: "LL"
+                  }
+                }
+              ],
+              yAxes: [
+                %{
+                  stacked: true,
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("People")
+                  },
+                  ticks: %{
+                    stepSize: 1,
+                    beginAtZero: true
+                  }
+                }
+              ]
+            }
+          }
+        } }}
+      />
     </div>
   </div>
 

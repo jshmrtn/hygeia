@@ -5,6 +5,7 @@ defmodule Hygeia.StatisticsContextTest do
   use Hygeia.DataCase
 
   alias Hygeia.StatisticsContext
+  alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveIsolationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveQuarantineCasesPerDay
   alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
@@ -587,6 +588,58 @@ defmodule Hygeia.StatisticsContextTest do
                      &1
                    ))
              )
+    end
+  end
+
+  describe "active_hospitalization_cases_per_day" do
+    test "lists hospitalization case with date" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        hospitalizations: [
+          %{start: ~D[2020-10-12], end: ~D[2020-10-13]}
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_hospitalization_cases_per_day)
+
+      assert [
+               %ActiveHospitalizationCasesPerDay{count: 0, date: ~D[2020-10-11]},
+               %ActiveHospitalizationCasesPerDay{count: 1, date: ~D[2020-10-12]},
+               %ActiveHospitalizationCasesPerDay{count: 1, date: ~D[2020-10-13]},
+               %ActiveHospitalizationCasesPerDay{count: 0, date: ~D[2020-10-14]}
+             ] =
+               StatisticsContext.list_active_hospitalization_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-14]
+               )
+    end
+
+    test "does not list case without hospitalization" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        hospitalizations: []
+      })
+
+      execute_materialized_view_refresh(:statistics_active_hospitalization_cases_per_day)
+
+      assert [
+               %ActiveHospitalizationCasesPerDay{count: 0, date: ~D[2020-10-11]},
+               %ActiveHospitalizationCasesPerDay{count: 0, date: ~D[2020-10-12]},
+               %ActiveHospitalizationCasesPerDay{count: 0, date: ~D[2020-10-13]},
+               %ActiveHospitalizationCasesPerDay{count: 0, date: ~D[2020-10-14]}
+             ] =
+               StatisticsContext.list_active_hospitalization_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-14]
+               )
     end
   end
 end
