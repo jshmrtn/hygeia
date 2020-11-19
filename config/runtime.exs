@@ -93,7 +93,8 @@ iam_config = [
       scheme: System.get_env("WEB_EXTERNAL_SCHEME", "http"),
       port: "WEB_EXTERNAL_PORT" |> System.get_env("#{web_port}") |> String.to_integer(),
       path: "/auth/oidc/callback"
-    })
+    }),
+  request_scopes: ["openid", "profile", "email"]
 ]
 
 config :hygeia_iam, :providers, zitadel: iam_config
@@ -115,8 +116,7 @@ config :hygeia_iam,
   organisation_id: System.get_env("IAM_ORGANISATION_ID", "***REMOVED***"),
   project_id: System.get_env("IAM_PROJECT_ID", "***REMOVED***")
 
-config :ueberauth, UeberauthOIDC,
-  zitadel: [request_scopes: ["openid", "profile", "email"]] ++ iam_config
+config :ueberauth, UeberauthOIDC, zitadel: iam_config
 
 # Sms
 config :hygeia, Hygeia.SmsSender.WebSms,

@@ -128,12 +128,18 @@
           <td>{{ case.status |> case_status_translation }}</td>
           <td>{{ case.phases |> List.last() |> case_phase_type_translation }}</td>
           <td>
-            <Link to={{ Routes.user_show_path(@socket, :show, case.tracer) }}>
+            <Link
+              to={{ Routes.user_show_path(@socket, :show, case.tracer) }}
+              :if={{ case.tracer }}
+            >
               {{ case.tracer.display_name }}
             </Link>
           </td>
           <td>
-            <Link to={{ Routes.user_show_path(@socket, :show, case.supervisor) }}>
+            <Link
+              to={{ Routes.user_show_path(@socket, :show, case.supervisor) }}
+              :if={{ case.supervisor }}
+            >
               {{ case.supervisor.display_name }}
             </Link>
           </td>

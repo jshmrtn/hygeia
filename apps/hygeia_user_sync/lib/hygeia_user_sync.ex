@@ -25,8 +25,6 @@ defmodule HygeiaUserSync do
 
   @grpc_server "api.zitadel.ch:443"
 
-  @typep state :: %__MODULE__{access_token: String.t(), channel: GRPC.Channel.t()}
-
   defstruct [:channel, :access_token]
 
   @spec start_link(opts :: Keyword.t()) :: GenServer.on_start()
