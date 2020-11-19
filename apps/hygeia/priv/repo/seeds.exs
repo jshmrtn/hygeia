@@ -9,15 +9,17 @@ import Hygeia.TenantContext
 import Hygeia.UserContext
 
 alias Hygeia.Helpers.Versioning
+alias Hygeia.OrganisationContext.Organisation
+alias Hygeia.Repo
 
 Versioning.put_origin(:web)
 Versioning.put_originator(:noone)
 
-{:ok, user_1} =
+{:ok, user_jony} =
   create_user(%{
-    email: "user@example.com",
-    display_name: "Test User",
-    iam_sub: "8fe86005-b3c6-4d7c-9746-53e090d05e48"
+    email: "maennchen@joshmartin.ch",
+    display_name: "Jonatan Männchen",
+    iam_sub: "78810359875562479"
   })
 
 {:ok, tenant_sg} =
@@ -110,6 +112,27 @@ professions = [
 {:ok, _infection_place_asylum_center} = create_infection_place_type(%{name: "Asylzentrum"})
 {:ok, infection_place_other} = create_infection_place_type(%{name: "Anderer"})
 
+[] =
+  :hygeia
+  |> Application.app_dir("priv/repo/seeds/hospitals.csv")
+  |> File.stream!()
+  |> CSV.decode!(headers: true)
+  |> Stream.map(
+    &%{
+      name: &1["name"],
+      address: %{
+        address: &1["address"],
+        zip: &1["zip"],
+        place: &1["place"],
+        country: &1["country"],
+        subdivision: &1["subdivision"]
+      }
+    }
+  )
+  |> Stream.map(&create_organisation/1)
+  |> Stream.reject(&match?({:ok, _organisation}, &1))
+  |> Enum.to_list()
+
 {:ok, organisation_jm} =
   create_organisation(%{
     address: %{
@@ -123,10 +146,7 @@ professions = [
     notes: "Coole Astronauten"
   })
 
-{:ok, organisation_kssg} =
-  create_organisation(%{
-    name: "Kantonsspital St. Gallen"
-  })
+organisation_kssg = Repo.get_by!(Organisation, name: "Kantonsspital St. Gallen")
 
 {:ok, person_jony} =
   create_person(tenant_ar, %{
@@ -214,8 +234,8 @@ professions = [
   create_case(person_jony, %{
     complexity: :medium,
     status: :first_contact,
-    tracer_uuid: user_1.uuid,
-    supervisor_uuid: user_1.uuid,
+    tracer_uuid: user_jony.uuid,
+    supervisor_uuid: user_jony.uuid,
     hospitalizations: [
       %{start: ~D[2020-10-13], end: ~D[2020-10-15], organisation_uuid: organisation_kssg.uuid},
       %{start: ~D[2020-10-16], end: nil}
@@ -317,8 +337,8 @@ if System.get_env("LOAD_STATISTICS_SEEDS", "false") in ["1", "true"] do
       create_case(person, %{
         complexity: Enum.random(Hygeia.CaseContext.Case.Complexity.__enum_map__()),
         status: Enum.random(Hygeia.CaseContext.Case.Status.__enum_map__()),
-        tracer_uuid: user_1.uuid,
-        supervisor_uuid: user_1.uuid,
+        tracer_uuid: user_jony.uuid,
+        supervisor_uuid: user_jony.uuid,
         phases: [phase]
       })
   end
@@ -335,8 +355,8 @@ end
   create_case(person_jay, %{
     complexity: :medium,
     status: :first_contact,
-    tracer_uuid: user_1.uuid,
-    supervisor_uuid: user_1.uuid,
+    tracer_uuid: user_jony.uuid,
+    supervisor_uuid: user_jony.uuid,
     external_references: [
       %{
         type: :ism,

@@ -11,6 +11,35 @@
           {{ gettext("New Organisation") }}
         </button>
       </LiveRedirect>
+      
+      <HygeiaWeb.Dropdown class="ml-auto" trigger_class="mt-3" dropdown_class="dropdown-menu-right p-3 filter-dropdown" id="filter-dropdown">
+        <template slot="trigger">
+          <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="oi oi-cog" aria-hidden="true"></span>
+            {{ gettext("Filter") }}
+          </button>
+        </template>
+        <template slot="default">
+          <h4>{{ gettext("Filter") }}</h4>
+          <Form for={{ @filters }} change="filter" submit="filter" opts={{ autocomplete: "off", id: "filter-form", as: :filter }}>
+            <div class="form-group">
+              <Field class="form-group" name="country">
+                <Label>{{ "Country" |> gettext }}</Label>
+                <Select class="form-control" opts={{ prompt: "Any" |> gettext }} options={{ countries() }} />
+              </Field>
+            </div>
+
+            <div class="form-group">
+              <Field name={{ :subdivision }} class="form-group">
+                <Label>{{ gettext("Subdivision") }}</Label>
+                <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                  <Select class="form-control" opts={{ prompt: gettext("Choose subdivision") }} field={{ :subdivision }} options={{ subdivisions(form.source) }} />
+                </InputContext>
+              </Field>
+            </div>
+          </Form>
+        </template>
+      </HygeiaWeb.Dropdown>
     </div>
 
     <table class="table">
@@ -76,5 +105,11 @@
         </tr>
       </tbody>
     </table>
+
+    <Hygeia.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }} id="pagination">
+        <LiveRedirect class="page-link" to={{ Routes.organisation_index_path(@socket, :index, cursor_direction, cursor) }}>
+          {{ text }}
+        </LiveRedirect>
+    </Hygeia.Pagination>
   </Context>
 </div>

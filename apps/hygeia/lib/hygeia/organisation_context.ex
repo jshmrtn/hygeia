@@ -18,7 +18,11 @@ defmodule Hygeia.OrganisationContext do
 
   """
   @spec list_organisations :: [Organisation.t()]
-  def list_organisations, do: Repo.all(Organisation)
+  def list_organisations, do: Repo.all(list_organisations_query())
+
+  @spec list_organisations_query :: Ecto.Queryable.t()
+  def list_organisations_query,
+    do: from(organisation in Organisation, order_by: organisation.name)
 
   @spec fulltext_organisation_search(query :: String.t(), limit :: pos_integer()) :: [
           Organisation.t()

@@ -118,6 +118,7 @@ defmodule HygeiaWeb.Router do
     live "/organisations/new", OrganisationLive.Create, :create
     live "/organisations/:id", OrganisationLive.Show, :show
     live "/organisations/:id/edit", OrganisationLive.Show, :edit
+    live "/organisations/:cursor_direction/:cursor", OrganisationLive.Index, :index
 
     live "/organisations/:id/positions/new", OrganisationLive.Show, :position_new
 
