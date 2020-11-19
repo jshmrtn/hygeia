@@ -63,6 +63,8 @@ defmodule HygeiaWeb.Router do
 
     plug :store_locale
 
+    plug HygeiaWeb.Plug.CheckAndRefreshAuthentication
+
     plug HygeiaWeb.Plug.SetupVersioning
   end
 

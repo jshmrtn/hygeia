@@ -66,6 +66,8 @@ config :cadastre, Cadastre.I18n,
 config :hygeia_telemetry, server: true
 
 # OIDC
+config :oidcc, http_request_timeout: 15
+
 config :ueberauth, Ueberauth,
   providers: [
     oidc:

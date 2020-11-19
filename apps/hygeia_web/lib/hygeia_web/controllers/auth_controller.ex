@@ -1,9 +1,7 @@
 defmodule HygeiaWeb.AuthController do
   use HygeiaWeb, :controller
 
-  alias Hygeia.Helpers.Versioning
-  alias Hygeia.UserContext
-  alias Hygeia.UserContext.User.Role
+  alias HygeiaWeb.Plug.CheckAndRefreshAuthentication
 
   plug Ueberauth
 
@@ -57,17 +55,13 @@ defmodule HygeiaWeb.AuthController do
         _params
       ) do
     tokens
-    |> :oidcc.retrieve_user_info(provider)
+    |> CheckAndRefreshAuthentication.upsert_user_with_tokens(provider)
     |> case do
-      {:ok, user_info} ->
-        Versioning.put_origin(:web)
-        Versioning.put_originator(:noone)
-
-        user = upsert_user(user_info)
-
+      {:ok, user} ->
         conn
         |> put_flash(:info, gettext("Successfully authenticated."))
         |> put_session(:auth, user)
+        |> put_session(:auth_tokens, {tokens, provider})
         |> configure_session(renew: true)
         |> redirect(to: "/")
 
@@ -75,49 +69,6 @@ defmodule HygeiaWeb.AuthController do
         conn
         |> put_status(:unauthorized)
         |> render("oidc_error.html", reason: reason)
-    end
-  end
-
-  defp upsert_user(%{
-         email: email,
-         name: name,
-         sub: sub,
-         "urn:zitadel:iam:org:project:roles": roles
-       }) do
-    roles =
-      roles
-      |> Map.keys()
-      |> MapSet.new()
-      |> MapSet.intersection(MapSet.new(Role.__enum_map__()))
-      |> MapSet.to_list()
-
-    %{
-      email: email,
-      display_name: name,
-      iam_sub: sub,
-      roles: roles
-    }
-    |> UserContext.create_user()
-    |> case do
-      {:ok, user} ->
-        user
-
-      {:error,
-       %Ecto.Changeset{
-         errors: [
-           iam_sub: {_message, [constraint: :unique, constraint_name: "users_iam_sub_index"]}
-         ]
-       }} ->
-        {:ok, user} =
-          sub
-          |> UserContext.get_user_by_sub!()
-          |> UserContext.update_user(%{
-            email: email,
-            display_name: name,
-            roles: roles
-          })
-
-        user
     end
   end
 end

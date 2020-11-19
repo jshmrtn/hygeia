@@ -78,6 +78,34 @@ defmodule Hygeia.UserContext do
       |> broadcast("users", :create)
       |> versioning_extract()
 
+  @spec upsert_user(attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, User.t()} | {:error, Ecto.Changeset.t(User.t())}
+  def upsert_user(%{iam_sub: sub} = attrs) do
+    attrs
+    |> create_user()
+    |> case do
+      {:ok, user} ->
+        {:ok, user}
+
+      {:error,
+       %Ecto.Changeset{
+         errors: [
+           iam_sub: {_message, [constraint: :unique, constraint_name: "users_iam_sub_index"]}
+         ]
+       }} ->
+        user = get_user_by_sub!(sub)
+
+        if Map.take(user, Map.keys(attrs)) == attrs do
+          {:ok, user}
+        else
+          update_user(user, attrs)
+        end
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
   @doc """
   Updates a user.
 
