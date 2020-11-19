@@ -7,10 +7,9 @@
         <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
       </div>
       <div class="card-body">
-        <div class="row">
-          <h3 class="col">{{ gettext("Received") }}</h3>
-          <div class="col align-right" :if={{ authorized?(Transmission, :create, auth) }}>
-            <!-- TODO: Styling -->
+        <div class="d-flex justify-content-between mb-1">
+          <h3>{{ gettext("Received") }}</h3>
+          <div :if={{ authorized?(Transmission, :create, auth) }}>
             <LiveRedirect
               to={{ Routes.transmission_create_path(
                 @socket,
@@ -18,7 +17,7 @@
                 recipient_internal: true,
                 recipient_case_uuid: @case.uuid
               ) }}
-              class="float-right"
+              class="btn btn-primary"
             >
               <span class="oi oi-plus mr-1" aria-hidden="true"></span>
               {{ gettext("New Transmission") }}
@@ -31,12 +30,11 @@
           id="received_transmissions"
         />
 
-        <div class="row">
-          <h3 class="col">
+        <div class="d-flex justify-content-between mb-1">
+          <h3>
             {{ gettext("Propagated") }}
           </h3>
-          <div class="col align-right" :if={{ authorized?(Case, :create, auth) }}>
-            <!-- TODO: Styling -->
+          <div :if={{ authorized?(Case, :create, auth) }}>
             <LiveRedirect
               to={{ Routes.case_create_possible_index_path(
                 @socket,
@@ -45,7 +43,7 @@
                 propagator_case_uuid: @case.uuid,
                 default_tenant_uuid: @case.tenant_uuid
               ) }}
-              class="float-right"
+              class="btn btn-primary mr-1"
             >
               <span class="oi oi-plus mr-1" aria-hidden="true"></span>
               {{ gettext("New Possible Index") }}
@@ -57,7 +55,7 @@
                 propagator_internal: true,
                 propagator_case_uuid: @case.uuid
               ) }}
-              class="float-right"
+              class="btn btn-primary"
             >
               <span class="oi oi-plus mr-1" aria-hidden="true"></span>
               {{ gettext("New Transmission") }}

@@ -152,3 +152,10 @@ a:hover {
     grid-template-columns: 1fr;
   }
 }
+
+.hy-button-card {
+  &:hover {
+    cursor: pointer;
+    background-color: $gray-100;
+  }
+}

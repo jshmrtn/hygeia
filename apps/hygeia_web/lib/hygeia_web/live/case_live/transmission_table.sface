@@ -24,7 +24,7 @@
       <tbody>
         <tr :for={{ transmission <- @transmissions }}>
           <td :if={{ @show_recipient }}>
-            <div :if={{ transmission.recipient_internal == true }}>
+            <div :if={{ transmission.recipient_internal == true }} class="d-flex align-items-center">
               <Link
                 to={{ Routes.person_base_data_path(@socket, :show, transmission.recipient) }}
                 :if={{ authorized?(transmission.recipient, :details, auth) }}
@@ -36,12 +36,14 @@
               >
                 {{ transmission.recipient.human_readable_id }}
               </span>
-              /
+              <span class="mx-2">|</span>
               <Link
+                class="d-flex align-items-center"
                 to={{ Routes.case_base_data_path(@socket, :show, transmission.recipient_case) }}
                 :if={{ authorized?(transmission.recipient_case, :details, auth) }}
               >
-                {{ case_display_name(transmission.recipient_case) }}
+                {{ case_phase_type_translation(List.last(transmission.recipient_case.phases)) }}
+                <small class="ml-1">({{ case_display_date(transmission.recipient_case) }})</small>
               </Link>
               <span
                 :if={{ not authorized?(transmission.recipient_case, :details, auth) }}
@@ -54,7 +56,7 @@
             </div>
           </td>
           <td :if={{ @show_propagator }}>
-            <div :if={{ transmission.propagator_internal == true }}>
+            <div :if={{ transmission.propagator_internal == true }} class="d-flex align-items-center">
               <Link
                 to={{ Routes.person_base_data_path(@socket, :show, transmission.propagator) }}
                 :if={{ authorized?(transmission.propagator, :details, auth) }}
@@ -66,12 +68,14 @@
               >
                 {{ transmission.propagator.human_readable_id }}
               </span>
-              /
+              <span class="mx-2">|</span>
               <Link
+                class="d-flex align-items-center"
                 to={{ Routes.case_base_data_path(@socket, :show, transmission.propagator_case) }}
                 :if={{ authorized?(transmission.propagator_case, :details, auth) }}
               >
-                {{ case_display_name(transmission.propagator_case) }}
+                {{ case_phase_type_translation(List.last(transmission.propagator_case.phases)) }}
+                <small class="ml-1">({{ case_display_date(transmission.propagator_case) }})</small>
               </Link>
               <span
                 :if={{ not authorized?(transmission.propagator_case, :details, auth) }}
@@ -141,7 +145,7 @@
           </td>
         </tr>
         <tr :if={{ length(@transmissions) == 0 }}>
-          <td colspan="4">
+          <td colspan="5">
             <div class="d-flex justify-content-center py-3">
               {{ "No data to display" |> gettext }}
             </div>

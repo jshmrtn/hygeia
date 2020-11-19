@@ -22,7 +22,7 @@
         </Field>
       </div>
       <div :if={{ !@disabled and Ecto.Changeset.get_field(form.source, :type) == :other }}>
-        <Field class="mt-1" name={{ :type_name }}>
+        <Field name={{ :type_name }}>
           <TextInput class="form-control" field={{ :type_name }} opts={{ disabled: @disabled }} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
@@ -33,15 +33,14 @@
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
       </div>
-      <!--  TODO: Style -->
       <div :if={{ !@disabled }}>
         <button
           type="button"
-          class="btn btn-secondary"
+          class="btn btn-danger"
           :on-click={{ @remove }}
           phx-value-uuid={{ Ecto.Changeset.get_field(form.source, :uuid) }}
         >
-          <span class="oi oi-delete mr-1" aria-hidden="true"></span>
+          <span class="oi oi-trash" aria-hidden="true"></span>
         </button>
       </div>
     </InputContext>

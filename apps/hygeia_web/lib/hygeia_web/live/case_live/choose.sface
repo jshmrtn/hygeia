@@ -1,22 +1,32 @@
-<div class="form-control">
+<div>
   <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
     <HiddenInput />
 
     <div :if={{ not(Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""]) }}>
-      {{
-        form.source
+      <Context put={{ case: form.source
         |> Phoenix.HTML.FormData.input_value(form, field)
-        |> load_case()
-        |> case do
-          case_model -> "#{case_model.person.first_name} #{case_model.person.last_name} / #{case_display_name(case_model)}"
-        end
-      }}
-      <button :on-click={{ @change }} type="button">X</button>
+        |> load_case() }} get={{ case: case }}>
+
+        <div class="card">
+          <div class="card-body py-2 px-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                {{ case.person.first_name }} {{ case.person.last_name }}
+                <small class="d-block text-muted">{{ case_phase_type_translation(List.last(case.phases)) }}</small>
+                <small class="d-block text-muted">{{ case_display_date(case) }}</small>
+              </div>
+              <button class="btn btn-danger" :on-click={{ @change }} type="button">
+                <span class="oi oi-trash" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </Context>
     </div>
 
     <div :if={{ Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""] }}>
-      <button :on-click="open_modal" type="button">
-        {{ gettext("choose tenant") }}
+      <button class="btn btn-secondary" :on-click="open_modal" type="button">
+        {{ gettext("Choose propagator") }}
       </button>
 
       <HygeiaWeb.Modal
@@ -25,25 +35,31 @@
         title={{ gettext("Select Case") }}
         close="close_modal"
       >
-        <!-- TODO: Style -->
-        <div class="alert alert-danger" role="alert">
-          {{ gettext("This modal will be styled properly") }}
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">
+              <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+            </span>
+          </div>
+          <input class="form-control" type="search" value={{ @query }} :on-keyup="query" placeholder={{ gettext("Search") }} />
         </div>
 
-        <input type="search" value={{ @query }} :on-keyup="query" />
-
-        <ul>
-          <li :for={{ case <- @cases }}>
-            {{ case.person.first_name }} {{ case.person.last_name }} /
-            {{ case_display_name(case) }}
-
-            <div :on-click="close_modal">
-              <button :on-click={{ @change }} phx-value-uuid={{ case.uuid }} type="button">
-                {{ gettext("choose") }}
-              </button>
+        <div>
+          <div role="button" class="card hy-button-card mt-2" :for={{ case <- @cases }} :on-click={{ @change }} phx-value-uuid={{ case.uuid }}>
+            <div class="card-body py-2 px-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  {{ case.person.first_name }} {{ case.person.last_name }}
+                  <small class="d-block text-muted">{{ case_phase_type_translation(List.last(case.phases)) }}</small>
+                  <small class="d-block text-muted">{{ case_display_date(case) }}</small>
+                </div>
+                <button class="btn btn-primary" type="button">
+                  {{ gettext("choose") }}
+                </button>
+              </div>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
       </HygeiaWeb.Modal>
     </div>
   </InputContext>

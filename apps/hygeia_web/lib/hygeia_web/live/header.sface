@@ -3,17 +3,6 @@
     <section class="container">
       <div class="d-flex justify-content-between">
         <ul class="nav nav-pills" role="navigation">
-          <li class="nav-item" :if={{ authorized?(Hygeia.CaseContext.Person, :list, auth) }}>
-            <UriActiveContext
-              to={{ Routes.person_index_path(@socket, :index) }}
-              :let={{ to: to, active: active }}
-              opts={{ active: :inclusive }}
-            >
-              <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
-                {{ gettext("People") }}
-              </LiveRedirect>
-            </UriActiveContext>
-          </li>
           <li class="nav-item" :if={{ authorized?(Hygeia.CaseContext.Case, :list, auth) }}>
             <UriActiveContext
               to={{ Routes.case_index_path(@socket, :index) }}
@@ -22,6 +11,17 @@
             >
               <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
                 {{ gettext("Cases") }}
+              </LiveRedirect>
+            </UriActiveContext>
+          </li>
+          <li class="nav-item" :if={{ authorized?(Hygeia.CaseContext.Person, :list, auth) }}>
+            <UriActiveContext
+              to={{ Routes.person_index_path(@socket, :index) }}
+              :let={{ to: to, active: active }}
+              opts={{ active: :inclusive }}
+            >
+              <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+                {{ gettext("People") }}
               </LiveRedirect>
             </UriActiveContext>
           </li>
