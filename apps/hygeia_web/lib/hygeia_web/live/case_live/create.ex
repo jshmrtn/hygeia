@@ -113,9 +113,10 @@ defmodule HygeiaWeb.CaseLive.Create do
         other -> other
       end
 
-    tracer = Enum.find(socket.assigns.users, &match?(%User{uuid: ^tracer_uuid}, &1))
+    tracer = Enum.find(socket.assigns.tracer_users, &match?(%User{uuid: ^tracer_uuid}, &1))
 
-    supervisor = Enum.find(socket.assigns.users, &match?(%User{uuid: ^supervisor_uuid}, &1))
+    supervisor =
+      Enum.find(socket.assigns.supervisor_users, &match?(%User{uuid: ^supervisor_uuid}, &1))
 
     person = CaseContext.get_person!(person_uuid)
 

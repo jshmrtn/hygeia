@@ -55,7 +55,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       :default_tenant_uuid,
       :default_supervisor_uuid,
       :default_tracer_uuid,
-      :type
+      :type,
+      :date
     ])
     |> Transmission.validate_case(:propagator_internal, :propagator_ims_id, :propagator_case_uuid)
     |> drop_empty_rows()
