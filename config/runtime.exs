@@ -17,6 +17,7 @@ database_ssl =
 
 config :hygeia, Hygeia.Repo,
   ssl: database_ssl,
+  port: System.get_env("DATABASE_PORT", "5432"),
   username: System.get_env("DATABASE_USER", "root"),
   password: System.get_env("DATABASE_PASSWORD", ""),
   database: System.get_env("DATABASE_NAME", "hygeia_#{config_env()}"),
