@@ -13,7 +13,6 @@
         autocomplete: "off",
         "phx-target": @myself,
         "phx-focus": "open",
-        "phx-blur": "close"
       }}
       value={{ @query }}
     />

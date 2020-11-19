@@ -19,10 +19,6 @@ defmodule HygeiaWeb.Search do
     {:noreply, assign(socket, :open, true)}
   end
 
-  def handle_event("close", _params, socket) do
-    {:noreply, assign(socket, :open, false)}
-  end
-
   def handle_event("search", %{"query" => query} = _params, socket) do
     {:noreply, search_results(socket, query)}
   end

@@ -1,5 +1,11 @@
-<!-- TODO: Make error nice and remove this notice-->
-<div class="alert alert-danger" role="alert">
-  <%= gettext("The error is currently not formatted correctly") %>
-</div>
-<%= inspect(@reason, pretty: true) %>
+<!-- TODO: Add conditions for other errors -->
+<%= case @reason do %>
+  <% _ -> %>
+    <h1>
+      <%= gettext("Unknown Error") %>
+    </h1>
+
+    <p>
+      <%= gettext("An unknown error happened during registration. Report this to your webmaster.") %>
+    </p>
+<% end %>

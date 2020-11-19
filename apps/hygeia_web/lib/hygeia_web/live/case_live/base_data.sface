@@ -263,7 +263,6 @@
                   </div>
                   <div class="row">
                     <div class="col">
-                      <!-- TODO: Change Translation to Startdatum Symptome -->
                       <Field name={{ :symptom_start }} class="form-group">
                         <Label>{{ gettext("Symptoms start date") }}</Label>
                         <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
