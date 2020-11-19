@@ -60,14 +60,16 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
     FunctionClauseError -> {:error, :timeout}
   end
 
-  defp upsert_user(%{
-         email: email,
-         name: name,
-         sub: sub,
-         "urn:zitadel:iam:org:project:roles": roles
-       }) do
+  defp upsert_user(
+         %{
+           email: email,
+           name: name,
+           sub: sub
+         } = attrs
+       ) do
     roles =
-      roles
+      attrs
+      |> Map.get(:"urn:zitadel:iam:org:project:roles", %{})
       |> Map.keys()
       |> MapSet.new()
       |> MapSet.intersection(MapSet.new(Role.__enum_map__()))

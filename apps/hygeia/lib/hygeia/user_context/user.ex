@@ -71,7 +71,11 @@ defmodule Hygeia.UserContext.User do
         when action in [:list, :details],
         do: false
 
-    def authorized?(_resource_user, action, _user, _meta)
+    def authorized?(_resource_user, action, %User{roles: []}, _meta)
+        when action in [:list, :details],
+        do: false
+
+    def authorized?(_resource_user, action, %User{roles: [_ | _]}, _meta)
         when action in [:list, :details],
         do: true
   end

@@ -93,7 +93,7 @@
           </li>
         </ul>
         <div class="nav nav-pills">
-          <li class="nav-item mr-3" :if={{ auth != :anonymous }}>
+          <li class="nav-item mr-3">
             <HygeiaWeb.Search id="search" />
           </li>
           <li class="nav-item">
@@ -115,6 +115,7 @@
                 <UriActiveContext
                   to={{ Routes.user_show_path(@socket, :show, auth.uuid) }}
                   :let={{ to: to, active: active }}
+                  :if={{ authorized?(auth, :details, auth) }}
                 >
                   <LiveRedirect to={{ to }} class="dropdown-item {{ if active, do: "active" }}">
                     {{ gettext("Profile") }}
