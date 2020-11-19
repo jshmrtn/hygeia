@@ -7,7 +7,6 @@ defmodule HygeiaWeb.OrganisationLive.Show do
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
-  alias Hygeia.OrganisationContext.Position
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
@@ -16,7 +15,6 @@ defmodule HygeiaWeb.OrganisationLive.Show do
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label
-  alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
@@ -95,7 +93,31 @@ defmodule HygeiaWeb.OrganisationLive.Show do
      |> redirect(to: Routes.organisation_index_path(socket, :index))}
   end
 
+  def handle_event(
+        "change_position_person_" <> uuid,
+        params,
+        %{assigns: %{changeset: changeset, organisation: organisation}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       OrganisationContext.change_organisation(
+         organisation,
+         changeset_update_params_by_id(
+           changeset,
+           :positions,
+           %{uuid: uuid},
+           &Map.put(&1, "person_uuid", params["uuid"])
+         )
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
   def handle_event("save", %{"organisation" => organisation_params}, socket) do
+    organisation_params = Map.put_new(organisation_params, "positions", [])
+
     true = authorized?(socket.assigns.organisation, :update, get_auth(socket))
 
     socket.assigns.organisation
@@ -116,46 +138,41 @@ defmodule HygeiaWeb.OrganisationLive.Show do
     end
   end
 
-  def handle_event("remove_position", %{"uuid" => position_uuid}, socket) do
+  def handle_event(
+        "remove_position",
+        %{"uuid" => uuid},
+        %{assigns: %{changeset: changeset, organisation: organisation}} = socket
+      ) do
     {:noreply,
-     assign(socket,
-       changeset:
-         Ecto.Changeset.put_assoc(
-           socket.assigns.changeset,
-           :positions,
-           socket.assigns.changeset
-           |> Ecto.Changeset.get_change(
-             :positions,
-             socket.assigns.changeset
-             |> Ecto.Changeset.get_field(:positions, [])
-             |> Enum.map(&OrganisationContext.change_position/1)
-           )
-           |> Enum.reject(&(Ecto.Changeset.get_field(&1, :uuid) == position_uuid))
-         )
-     )}
+     socket
+     |> assign(
+       :changeset,
+       OrganisationContext.change_organisation(
+         organisation,
+         changeset_remove_from_params_by_id(changeset, :positions, %{uuid: uuid})
+       )
+     )
+     |> maybe_block_navigation()}
   end
 
-  def handle_event("add_position", _params, socket) do
+  def handle_event(
+        "add_position",
+        _params,
+        %{assigns: %{changeset: changeset, organisation: organisation}} = socket
+      ) do
     {:noreply,
-     assign(socket,
-       changeset:
-         Ecto.Changeset.put_assoc(
-           socket.assigns.changeset,
-           :positions,
-           socket.assigns.changeset
-           |> Ecto.Changeset.get_change(
-             :positions,
-             socket.assigns.changeset
-             |> Ecto.Changeset.get_field(:positions, [])
-             |> Enum.map(&OrganisationContext.change_position/1)
-           )
-           |> Kernel.++([
-             OrganisationContext.change_position(%Position{
-               organisation_uuid: socket.assigns.organisation.uuid
-             })
-           ])
-         )
-     )}
+     socket
+     |> assign(
+       :changeset,
+       OrganisationContext.change_organisation(
+         organisation,
+         changeset_add_to_params(changeset, :positions, %{
+           uuid: Ecto.UUID.generate(),
+           organisation_uuid: socket.assigns.organisation.uuid
+         })
+       )
+     )
+     |> maybe_block_navigation()}
   end
 
   defp load_data(socket, organisation) do

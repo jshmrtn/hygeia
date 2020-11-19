@@ -102,14 +102,17 @@
               <tbody>
                 <Inputs for={{ :positions }}>
                   <HiddenInput field={{ :organisation_uuid }} />
+                  <HiddenInput field={{ :uuid }} />
+
                   <InputContext assigns={{ assigns }} :let={{ form: form }}>
                     <tr>
                       <td :if={{ @live_action == :edit }}>
                         <Field name={{ :person_uuid }}>
-                          <Select 
-                            class="form-control" 
-                            opts={{ prompt: gettext("Chose person"), disabled: @live_action == :show }}
-                            options={{ Enum.map(@people, &({person_display_name(&1), &1.uuid}))}}
+                          <!-- TODO: Style -->
+                          <HygeiaWeb.PersonLive.Choose
+                            id={{ {:position, Ecto.Changeset.fetch_field!(form.source, :uuid) } }}
+                            change={{ "change_position_person_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+                            disabled={{ @live_action != :edit }}
                           />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
