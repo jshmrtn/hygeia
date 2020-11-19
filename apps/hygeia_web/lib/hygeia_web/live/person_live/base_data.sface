@@ -207,7 +207,6 @@
 
             <div class="row">
               <div class="col">
-                <!-- TODO: Change Label / Translation to Berufsfeld -->
                 <Field name={{ :profession_uuid }} class="form-group">
                   <Label>{{ "Profession" |> gettext }}</Label>
                   <Select  class="form-control" opts={{ prompt: gettext("Choose profession"), disabled: @live_action == :show }} field={{ :profession_uuid }} options={{ Enum.map(@professions, &({&1.name, &1.uuid})) }} />
@@ -256,6 +255,7 @@
       </div>
     </Form>
 
+    <!-- TODO: Style -->
     <div :if={{ @person.positions != [] }}>
       <h2>{{ gettext("Organisation Positions") }}</h2>
 

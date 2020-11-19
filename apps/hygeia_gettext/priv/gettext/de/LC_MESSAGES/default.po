@@ -196,7 +196,7 @@ msgstr "Organisation wählen"
 
 #: lib/hygeia_web/live/person_live/base_data.sface:182
 msgid "Choose profession"
-msgstr "Beruf wählen"
+msgstr "Berufsfeld wählen"
 
 #: lib/hygeia_web/live/address_form.sface:37
 #: lib/hygeia_web/live/person_live/index.sface:73
@@ -658,7 +658,7 @@ msgstr "Personenliste"
 
 #: lib/hygeia_web/live/profession_live/index.sface:4
 msgid "Listing Professions"
-msgstr "Berufsliste"
+msgstr "Berufsfeldliste"
 
 #: lib/hygeia_web/live/tenant_live/index.sface:4
 msgid "Listing Tenants"
@@ -776,7 +776,7 @@ msgstr "Neuer Möglichex Indexfall"
 
 #: lib/hygeia_web/live/profession_live/index.sface:11
 msgid "New Profession"
-msgstr "Neuer Beruf"
+msgstr "Neues Berufsfeld"
 
 #: lib/hygeia_web/live/tenant_live/index.sface:15
 msgid "New Tenant"
@@ -797,7 +797,7 @@ msgstr "Neue Person"
 
 #: lib/hygeia_web/live/profession_live/create.sface:8
 msgid "New profession"
-msgstr "Neuer Beruf"
+msgstr "Neues Berufsfeld"
 
 #: lib/hygeia_web/live/references.sface:53
 msgid "New reference"
@@ -969,23 +969,23 @@ msgstr "Zurück"
 
 #: lib/hygeia_web/live/person_live/base_data.sface:181
 msgid "Profession"
-msgstr "Beruf"
+msgstr "Berufsfeld"
 
 #: lib/hygeia_web/live/profession_live/create.ex:44
 msgid "Profession created successfully"
-msgstr "Mandant wurde erfolgreich erstellt"
+msgstr "Berufsfeld wurde erfolgreich erstellt"
 
 #: lib/hygeia_web/live/profession_live/show.ex:80
 msgid "Profession deleted successfully"
-msgstr "Beruf erfolgreich gelöscht"
+msgstr "Berufsfeld erfolgreich gelöscht"
 
 #: lib/hygeia_web/live/profession_live/show.ex:94
 msgid "Profession updated successfully"
-msgstr "Mandant wurde erfolgreich aktualisiert"
+msgstr "Berufsfeld wurde erfolgreich aktualisiert"
 
 #: lib/hygeia_web/live/header.sface:76
 msgid "Professions"
-msgstr "Berufe"
+msgstr "Berufsfelder"
 
 #: lib/hygeia_web/live/header.sface:102 lib/hygeia_web/live/header.sface:106
 msgid "Profile"
