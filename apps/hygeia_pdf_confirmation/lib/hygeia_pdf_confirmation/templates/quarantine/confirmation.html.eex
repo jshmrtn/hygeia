@@ -1,26 +1,104 @@
-<small>Gesundheitsdepartement, Oberer Graben 32, 9001 St.Gallen</small>
+<style>
+  hr {
+    height: 100px;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    display: block;
+    color: #000;
+    font-size: 14pt;
+    line-height: 1.2;
+  }
+
+  .very-small {
+    font-size: 8pt;
+  }
+
+  hr {
+    border-color: #000;
+    margin-top: 0;
+    width: 50%;
+    margin-right: 50%;
+  }
+
+  h1 {
+    font-weight: bold;
+    font-size: 14pt;
+  }
+
+  h2 {
+    font-size: 14pt;
+    text-decoration: underline;
+  }
+
+  p {
+    font-size: 14pt;
+  }
+
+  ul {
+    list-style-type: none;
+    font-size: 14pt;
+  }
+
+  ul > li {
+    margin-left: 6mm;
+    position: relative;
+  }
+
+  ul > li:before {
+    content: "-";
+    position: absolute;
+    left: -7mm;
+  }
+
+  .p-2x-margin {
+    margin-bottom: 3mm;
+  }
+
+  .p-4x-margin {
+    margin-bottom: 6mm;
+  }
+
+  .additional-information {
+    line-height: 1.5;
+  }
+
+  .additional-information h2,
+  .additional-information ol > li {
+    color: #e46c0a;
+    text-decoration: none;
+  }
+
+  .additional-information ul > li {
+    margin-left: 0mm;
+    color: #000;
+  }
+</style>
+
+<small class="very-small">Gesundheitsdepartement, Oberer Graben 32, 9001 St.Gallen</small>
 <hr />
 
 <div class="row">
   <div class="col-xs-7">
     <%= @case.person.first_name %> <%= @case.person.last_name %><br />
-    <%= @case.person.address |> Address.to_string(:long) |> String.split("\n") |> Enum.intersperse(tag(:br)) %>
+    <%= if @case.person.address, do: @case.person.address |> Address.to_string(:long) |> String.split("\n") |> Enum.intersperse(tag(:br)) %>
   </div>
   <div class="col-xs-5">
     <p>
-      <large>Dr. Danuta Zemp</large><br />
-      Kantonsärztin
+      <div style="margin-bottom: -1mm; font-size: 14pt;">Dr. Danuta Zemp</div>
+      <div style="font-size: 12pt;">Kantonsärztin</div>
     </p>
-    <p>
+    <p style="font-size: 12pt;">
       Gesundheitsdepartement<br />
       Oberer Graben 32<br />
       9001 St.Gallen<br />
-      <a href="https://www.sg.ch/gesundheit-soziales/gesundheit.html">www.gesundheit.sg.ch</a>
+      <a style="color: #000;" href="https://www.sg.ch/gesundheit-soziales/gesundheit.html">www.gesundheit.sg.ch</a>
     </p>
   </div>
 </div>
 
-<p>
+<p style="margin-bottom: 20mm; margin-top: 5mm;">
   St. Gallen, <%= Cldr.Date.to_string!(Date.utc_today(), HygeiaCldr) %>
 </p>
 
@@ -88,19 +166,19 @@
   Coronavirus durchgemacht hat, die mittels eines positiven PCR-Tests oder Schnelltest nachgewiesen wurde.</em>
 </p>
 
-<p>
+<p class="p-2x-margin">
   Häufig gestellte Fragen (FAQs) und deren Beantwortung finden Sie
   <a href="https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/haeufig-gestellte-fragen.html">hier</a>.
   Bei dringenden Fragen oder Unklarheiten erreichen sie uns wie folgt:
 </p>
 
-<p>
+<p class="p-2x-margin">
   <a href="mailto:infoline@sg.ch">infoline@sg.ch</a> oder
   <a href="https://www.sg.ch/tools/informationen-coronavirus/Kontaktformular_Corona_Virus/">Kontaktformular</a>
   oder per Telefon <a href="tel:+41-58-229-22-33">058 229 22 33</a>
 </p>
 
-<p>
+<p class="p-2x-margin">
   Wir werden Ihre Anfragen schnellstmöglich beantworten. Bei medizinischen Notfällen wenden Sie sich bitte an Ihren
   Hausarzt oder den diensthabenden Notfallarzt.
 </p>
@@ -112,23 +190,25 @@
   gegenüber der Arbeitgeberin/dem Arbeitgeber, der SVA und/oder einer allfälligen Versicherung.
 </p>
 
-<p>Arbeitgeber:</p>
+<%= if length(@case.person.employers) > 0 do %>
+  <p>Arbeitgeber:</p>
 
-<ul>
-  <%= for %{name: name, address: address} <- @case.person.employers do %>
-    <li>
-      <%= name %>
-      <%= Address.to_string(address, :short) %>
-    </li>
-  <% end %>
-</ul>
+  <ul class="p-4x-margin">
+    <%= for %{name: name, address: address} <- @case.person.employers do %>
+      <li>
+        <%= name %>
+        <%= Address.to_string(address, :short) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
 
-<p>
+<p class="p-4x-margin">
   Bitte nehmen Sie zur Kenntnis, dass grundsätzlich mit Busse bestraft werden kann, wer der Quarantäneanordnung vorsätzlich
-  oder fahrlässig zuwiderhandelt (Art. 83 Abs. 1 lit. h und Abs. 2 EpG). 
+  oder fahrlässig zuwiderhandelt (Art. 83 Abs. 1 lit. h und Abs. 2 EpG).
 </p>
 
-<p>
+<p class="p-2x-margin">
   Freundliche Grüsse
 </p>
 
@@ -136,59 +216,61 @@
 
 <div style="page-break-before: always;"></div>
 
-<h2>Sie benötigen weiterführende Informationen?</h2>
+<div class="additional-information">
+  <h2 class="p-4x-margin">Sie benötigen weiterführende Informationen?</h2>
 
-<ol>
-  <li>
-    Aktuelle Informationen finden sich stets auf
+  <ol>
+    <li>
+      Aktuelle Informationen finden sich stets auf
 
-    <ul>
-      <li>BAG Homepage: www.bag-coronavirus.ch</li>
-      <li>Kanton St.Gallen: www.sg.ch/tools/informationen-coronavirus.html</li>
-      <li>Reiseinformationen www.safetravel.ch</li>
-      <li>Science Task Force https://ncs-tf.ch/de/</li>
-      <li>Informationen Bildungsbereich (EDK) https://www.edk.ch/dyn/32928.php</li>
-    </ul>
-  </li>
-  <li>
-    Wichtige Telefonnummern
-    
-    <ol type="a">
-      <li>
-        Informationen zum Coronavirus
+      <ul>
+        <li>BAG Homepage: www.bag-coronavirus.ch</li>
+        <li>Kanton St.Gallen: www.sg.ch/tools/informationen-coronavirus.html</li>
+        <li>Reiseinformationen www.safetravel.ch</li>
+        <li>Science Task Force https://ncs-tf.ch/de/</li>
+        <li>Informationen Bildungsbereich (EDK) https://www.edk.ch/dyn/32928.php</li>
+      </ul>
+    </li>
+    <li>
+      Wichtige Telefonnummern
 
-        <ul>
-          <li>BAG Hotline für die Bevölkerung: 058 463 00 00 (täglich 6 – 23 Uhr)</li>
-          <li>BAG Hotline für Reiserückkehrer 058 464 44 88 (täglich 6 – 23 Uhr)</li>
-          <li>BAG Hotline für Gesundheitsfachpersonen 058 462 21 00 (täglich 7 - 20 Uhr)</li>
-          <li>BAG Whatsapp Infokanal 079 155 11 05</li>
-          <li>Kanton St.Gallen Infoline 058 229 22 33 (täglich von 8 – 12 Uhr und 13 – 17 Uhr)</li>
-        </ul>
-      </li>
-      <li>
-        Testanmeldung und medizinische Hilfe
+      <ol type="a">
+        <li class="p-4x-margin">
+          Informationen zum Coronavirus
 
-        <ul>
-          <li>
-            Bei medizinischen Fragen melden Sie sich bitte bei Ihrem Hausarzt (insbesondere bei
-            starken Symptomen oder Risikofaktoren ist eine Untersuchung beim Arzt empfohlen)
-          </li>
-          <li>Allgemeiner Notruf: 144 (täglich 24 Stunden)</li>
-        </ul>
-      </li>
-      <li>
-        Unterstützung bei Sorgen und Problemen in der Familie
+          <ul>
+            <li>BAG Hotline für die Bevölkerung: 058 463 00 00 (täglich 6 – 23 Uhr)</li>
+            <li>BAG Hotline für Reiserückkehrer 058 464 44 88 (täglich 6 – 23 Uhr)</li>
+            <li>BAG Hotline für Gesundheitsfachpersonen 058 462 21 00 (täglich 7 - 20 Uhr)</li>
+            <li>BAG Whatsapp Infokanal 079 155 11 05</li>
+            <li>Kanton St.Gallen Infoline 058 229 22 33 (täglich von 8 – 12 Uhr und 13 – 17 Uhr)</li>
+          </ul>
+        </li>
+        <li class="p-4x-margin">
+          Testanmeldung und medizinische Hilfe
 
-        <ul>
-          <li>Tipps und Tricks für die Zeit in Quarantäne und Isolation: www.dureschnufe.ch</li>
-          <li>Informationskampagne zur psychischen Gesundheit: www.wie-gehts-dir.ch</li>
-          <li>Telefonische Beratung unter 143, Die Dargebotene Hand</li>
-          <li>Pro Mente Sana Beratungstelefon 0848 800 858</li>
-          <li>Pro Juventute Notrufnummer für Kinder und Jugendliche: 147</li>
-          <li>Pro Juventute Elternberatung: Telefon 058 261 61 61</li>
-          <li>Bedrohungssituation zu Hause www.opferhilfe-schweiz.ch, oder im Notfall 117 (Polizei)</li>
-        </ul>
-      </li>
-    </ol>
-  </li>
-</ol>
+          <ul>
+            <li>
+              Bei medizinischen Fragen melden Sie sich bitte bei Ihrem Hausarzt (insbesondere bei
+              starken Symptomen oder Risikofaktoren ist eine Untersuchung beim Arzt empfohlen)
+            </li>
+            <li>Allgemeiner Notruf: 144 (täglich 24 Stunden)</li>
+          </ul>
+        </li>
+        <li class="p-4x-margin">
+          Unterstützung bei Sorgen und Problemen in der Familie
+
+          <ul>
+            <li>Tipps und Tricks für die Zeit in Quarantäne und Isolation: www.dureschnufe.ch</li>
+            <li>Informationskampagne zur psychischen Gesundheit: www.wie-gehts-dir.ch</li>
+            <li>Telefonische Beratung unter 143, Die Dargebotene Hand</li>
+            <li>Pro Mente Sana Beratungstelefon 0848 800 858</li>
+            <li>Pro Juventute Notrufnummer für Kinder und Jugendliche: 147</li>
+            <li>Pro Juventute Elternberatung: Telefon 058 261 61 61</li>
+            <li>Bedrohungssituation zu Hause www.opferhilfe-schweiz.ch, oder im Notfall 117 (Polizei)</li>
+          </ul>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</div>

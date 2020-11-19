@@ -1,12 +1,27 @@
 <%# TODO: Dynamic #%>
 <div>
-  <img class="pull-right" src="https://www.sg.ch/apps/core/docroot/images/design/sgch/logo-sg-wappen.png" />
-  <p>
+  <img style="width: 1.5cm" class="pull-right" src="https://www.sg.ch/apps/core/docroot/images/design/sgch/logo-sg-wappen.png" />
+  <p class="page-1-header">
     Kanton St.Gallen<br />
     Gesundheitsdepartement
   </p>
-  <p>
+  <p class="page-1-header" style="margin-top: 5mm;">
     <strong>Kantonsarztamt</strong>
   </p>
 </div>
 <div class="clearfix"></div>
+<script>
+  // show certain elements only on the first page (https://stackoverflow.com/a/11950452)
+  var vars = {};
+  var x = document.location.search.substring(1).split('&');
+  for (var i in x) {
+    var z = x[i].split('=', 2);
+    vars[z[0]] = unescape(z[1]);
+  }
+  if(vars['page'] != 1){
+    var page1Headers = document.getElementsByClassName("page-1-header");
+    for (var e in page1Headers) {
+      page1Headers[e].style.display = 'none';
+    }
+  }
+</script>
