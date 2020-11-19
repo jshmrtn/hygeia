@@ -19,7 +19,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     field :type, Type
 
     field :date, :date
-    field :propagator_ims_id, :string
+    field :propagator_ism_id, :string
     field :propagator_internal, :boolean
 
     belongs_to :propagator_case, Case, references: :uuid, foreign_key: :propagator_case_uuid
@@ -41,7 +41,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       :date,
       :propagator_case_uuid,
       :propagator_internal,
-      :propagator_ims_id
+      :propagator_ism_id
     ])
     |> cast_embed(:people, required: true)
     |> cast_embed(:infection_place, required: true)
@@ -58,7 +58,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       :type,
       :date
     ])
-    |> Transmission.validate_case(:propagator_internal, :propagator_ims_id, :propagator_case_uuid)
+    |> Transmission.validate_case(:propagator_internal, :propagator_ism_id, :propagator_case_uuid)
     |> drop_empty_rows()
     |> add_one_person()
   end

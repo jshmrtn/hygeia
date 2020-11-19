@@ -38,8 +38,8 @@
                   </div>
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
-                <Field name={{ :propagator_ims_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
-                  <Label>{{ gettext("Propagator IMS ID") }}</Label>
+                <Field name={{ :propagator_ism_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
+                  <Label>{{ gettext("Propagator ISM ID") }}</Label>
                   <TextInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
@@ -65,8 +65,8 @@
                 </div>
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
-              <Field name={{ :recipient_ims_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :recipient_internal) == false }}>
-                <Label>{{ gettext("Recipient IMS ID") }}</Label>
+              <Field name={{ :recipient_ism_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :recipient_internal) == false }}>
+                <Label>{{ gettext("Recipient ISM ID") }}</Label>
                 <TextInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>

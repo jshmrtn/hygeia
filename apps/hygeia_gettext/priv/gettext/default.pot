@@ -958,7 +958,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/helpers/case.ex:67 lib/hygeia_web/helpers/contact_method.ex:16
-#: lib/hygeia_web/helpers/external_reference.ex:18 lib/hygeia_web/helpers/monitoring.ex:25 lib/hygeia_web/helpers/phase.ex:23
+#: lib/hygeia_web/helpers/external_reference.ex:19 lib/hygeia_web/helpers/monitoring.ex:25 lib/hygeia_web/helpers/phase.ex:23
 #: lib/hygeia_web/live/person_live/base_data.sface:84
 msgid "Other"
 msgstr ""
@@ -1092,7 +1092,7 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:41
 #: lib/hygeia_web/live/transmission_live/create.sface:42
-msgid "Propagator IMS ID"
+msgid "Propagator ISM ID"
 msgstr ""
 
 #, elixir-format
@@ -1778,7 +1778,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/transmission_live/create.sface:69
-msgid "Recipient IMS ID"
+msgid "Recipient ISM ID"
 msgstr ""
 
 #, elixir-format
@@ -1932,11 +1932,16 @@ msgid "An unknown error happened during registration. Report this to your webmas
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/search.sface:28
+#: lib/hygeia_web/live/search.sface:27
 msgid "Found no results"
 msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/templates/auth/oidc_error.html.eex:5
 msgid "Unknown Error"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/helpers/external_reference.ex:18
+msgid "ISM Report"
 msgstr ""

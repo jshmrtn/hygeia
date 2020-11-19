@@ -876,7 +876,7 @@ msgstr "Organisationen"
 
 #: lib/hygeia_web/helpers/case.ex:67
 #: lib/hygeia_web/helpers/contact_method.ex:16
-#: lib/hygeia_web/helpers/external_reference.ex:18
+#: lib/hygeia_web/helpers/external_reference.ex:19
 #: lib/hygeia_web/helpers/monitoring.ex:25 lib/hygeia_web/helpers/phase.ex:23
 #: lib/hygeia_web/live/person_live/base_data.sface:84
 msgid "Other"
@@ -989,8 +989,8 @@ msgstr "Anstecker"
 
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:41
 #: lib/hygeia_web/live/transmission_live/create.sface:42
-msgid "Propagator IMS ID"
-msgstr "Anstecker IMS IS"
+msgid "Propagator ISM ID"
+msgstr "Anstecker ISM IS"
 
 #: lib/hygeia_web/live/case_live/navigation.sface:35
 msgid "Protocol"
@@ -1620,8 +1620,8 @@ msgid "Recipient Case"
 msgstr "Empfängerfall"
 
 #: lib/hygeia_web/live/transmission_live/create.sface:69
-msgid "Recipient IMS ID"
-msgstr "Empfänger-IMS-ID"
+msgid "Recipient ISM ID"
+msgstr "Empfänger-ISM-ID"
 
 #: lib/hygeia_web/live/case_live/choose.sface:35
 msgid "Select Case"
@@ -1745,10 +1745,14 @@ msgstr "Um eine Organisation zu erstellen welche mit Fällen zusammenhängt wie 
 msgid "An unknown error happened during registration. Report this to your webmaster."
 msgstr "Bei der Registrierung ist ein unbekannter Fehler aufgetreten. Melden Sie dies Ihrem Webmaster."
 
-#: lib/hygeia_web/live/search.sface:28
+#: lib/hygeia_web/live/search.sface:27
 msgid "Found no results"
 msgstr "Keine Ergebnisse gefunden"
 
 #: lib/hygeia_web/templates/auth/oidc_error.html.eex:5
 msgid "Unknown Error"
 msgstr "Unbekannter Fehler"
+
+#: lib/hygeia_web/helpers/external_reference.ex:18
+msgid "ISM Report"
+msgstr "ISM Meldung"

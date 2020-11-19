@@ -14,6 +14,7 @@ defmodule HygeiaWeb.Helpers.ExternalReference do
       )
 
   @spec translate_external_referecne_type(type :: ExternalReference.Type.t()) :: String.t()
-  def translate_external_referecne_type(:ism), do: gettext("ISM")
+  def translate_external_referecne_type(:ism_case), do: gettext("ISM")
+  def translate_external_referecne_type(:ism_report), do: gettext("ISM Report")
   def translate_external_referecne_type(:other), do: gettext("Other")
 end

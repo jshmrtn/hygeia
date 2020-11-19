@@ -8,9 +8,9 @@ defmodule Hygeia.Repo.Migrations.CreateTransmissions do
     create table(:transmissions) do
       add :date, :date
       add :recipient_internal, :boolean
-      add :recipient_ims_id, :string
+      add :recipient_ism_id, :string
       add :propagator_internal, :boolean
-      add :propagator_ims_id, :string
+      add :propagator_ism_id, :string
       add :recipient_case_uuid, references(:cases, on_delete: :nilify_all)
       add :propagator_case_uuid, references(:cases, on_delete: :nilify_all)
 

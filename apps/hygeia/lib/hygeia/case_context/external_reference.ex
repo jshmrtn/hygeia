@@ -7,7 +7,7 @@ defmodule Hygeia.CaseContext.ExternalReference do
 
   import EctoEnum
 
-  defenum Type, :external_reference_type, ["ism", "other"]
+  defenum Type, :external_reference_type, ["ism_case", "ism_report", "other"]
 
   @type empty :: %__MODULE__{
           type: Type.t() | nil,

@@ -37,8 +37,8 @@
                   </div>
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
-                <Field name={{ :propagator_ims_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
-                  <Label>{{ gettext("Propagator IMS ID") }}</Label>
+                <Field name={{ :propagator_ism_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
+                  <Label>{{ gettext("Propagator ISM ID") }}</Label>
                   <TextInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>

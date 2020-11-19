@@ -273,7 +273,7 @@ defmodule Hygeia.CaseContextTest do
                 ],
                 external_references: [
                   %Hygeia.CaseContext.ExternalReference{
-                    type: :ism,
+                    type: :ism_case,
                     type_name: nil,
                     uuid: _,
                     value: "7000"
@@ -376,7 +376,7 @@ defmodule Hygeia.CaseContextTest do
       },
       external_references: [
         %{
-          type: :ism,
+          type: :ism_case,
           value: "7000"
         },
         %{
@@ -456,7 +456,7 @@ defmodule Hygeia.CaseContextTest do
                 },
                 complexity: :high,
                 external_references: [
-                  %ExternalReference{type: :ism, type_name: nil, uuid: _, value: "7000"},
+                  %ExternalReference{type: :ism_case, type_name: nil, uuid: _, value: "7000"},
                   %ExternalReference{type: :other, type_name: "foo", uuid: _, value: "7000"}
                 ],
                 hospitalizations: [
@@ -672,9 +672,9 @@ defmodule Hygeia.CaseContextTest do
     }
     @invalid_attrs %{
       date: nil,
-      propagator_ims_id: "00000",
+      propagator_ism_id: "00000",
       propagator_internal: true,
-      recipient_ims_id: nil,
+      recipient_ism_id: nil,
       recipient_internal: nil
     }
 

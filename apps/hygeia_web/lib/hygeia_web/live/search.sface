@@ -12,7 +12,7 @@
         name: "query",
         autocomplete: "off",
         "phx-target": @myself,
-        "phx-focus": "open",
+        "phx-focus": "open"
       }}
       value={{ @query }}
     />

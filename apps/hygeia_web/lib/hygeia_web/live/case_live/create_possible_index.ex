@@ -212,7 +212,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         recipient_case_uuid: case.uuid,
         infection_place: changeset |> Ecto.Changeset.fetch_field!(:infection_place) |> unpack,
         propagator_internal: Ecto.Changeset.fetch_field!(changeset, :propagator_internal),
-        propagator_ims_id: Ecto.Changeset.get_field(changeset, :propagator_ims_id),
+        propagator_ism_id: Ecto.Changeset.get_field(changeset, :propagator_ism_id),
         propagator_case_uuid: Ecto.Changeset.get_field(changeset, :propagator_case_uuid)
       })
 

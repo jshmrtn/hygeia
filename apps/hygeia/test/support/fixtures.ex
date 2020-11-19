@@ -87,7 +87,7 @@ defmodule Hygeia.Fixtures do
     ],
     external_references: [
       %{
-        type: :ism,
+        type: :ism_case,
         value: "7000"
       },
       %{
@@ -127,7 +127,7 @@ defmodule Hygeia.Fixtures do
     },
     external_references: [
       %{
-        type: :ism,
+        type: :ism_case,
         value: "7000"
       },
       %{

@@ -187,7 +187,7 @@ organisation_kssg = Repo.get_by!(Organisation, name: "Kantonsspital St. Gallen")
     ],
     external_references: [
       %{
-        type: :ism,
+        type: :ism_case,
         value: "7000"
       },
       %{
@@ -220,7 +220,7 @@ organisation_kssg = Repo.get_by!(Organisation, name: "Kantonsspital St. Gallen")
     ],
     external_references: [
       %{
-        type: :ism,
+        type: :ism_case,
         value: "7002"
       }
     ],
@@ -251,7 +251,7 @@ organisation_kssg = Repo.get_by!(Organisation, name: "Kantonsspital St. Gallen")
     },
     external_references: [
       %{
-        type: :ism,
+        type: :ism_case,
         value: "7000"
       },
       %{
@@ -359,7 +359,7 @@ end
     supervisor_uuid: user_jony.uuid,
     external_references: [
       %{
-        type: :ism,
+        type: :ism_case,
         value: "7002"
       }
     ],
@@ -435,7 +435,7 @@ end
     propagator_internal: true,
     propagator_case_uuid: case_jony.uuid,
     recipient_internal: false,
-    recipient_ims_id: "94327",
+    recipient_ism_id: "94327",
     infection_place: %{
       address: %{
         address: "Sunnehof 1",

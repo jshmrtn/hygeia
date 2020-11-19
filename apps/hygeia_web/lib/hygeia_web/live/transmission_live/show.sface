@@ -103,7 +103,7 @@
                       </span>
                     </div>
                     <div :if={{ @transmission.recipient_internal == false }}>
-                      {{ gettext("ISM-ID: %{id}", id: @transmission.recipient_ims_id) }}
+                      {{ gettext("ISM-ID: %{id}", id: @transmission.recipient_ism_id) }}
                     </div>
                   </div>
                   <div class="from-group col">
@@ -134,7 +134,7 @@
                       </span>
                     </div>
                     <div :if={{ @transmission.propagator_internal == false }}>
-                      {{ gettext("ISM-ID: %{id}", id: @transmission.propagator_ims_id) }}
+                      {{ gettext("ISM-ID: %{id}", id: @transmission.propagator_ism_id) }}
                     </div>
                   </div>
                 </div>
