@@ -19,12 +19,14 @@
         </button>
       </LivePatch>
 
-      <div class="dropdown mt-3 mb-2 ml-auto" phx-update="ignore" id="filter-dropdown">
-        <button class="btn btn-secondary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <span class="oi oi-cog" aria-hidden="true"></span>
-          {{ gettext("Filter") }}
-        </button>
-        <div class="dropdown-menu dropdown-menu-right p-3 filter-dropdown stop-propagation">
+      <HygeiaWeb.Dropdown class="ml-auto" trigger_class="mt-3" dropdown_class="dropdown-menu-right p-3 filter-dropdown" id="filter-dropdown">
+        <template slot="trigger">
+          <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="oi oi-cog" aria-hidden="true"></span>
+            {{ gettext("Filter") }}
+          </button>
+        </template>
+        <template slot="default">
           <h4>{{ gettext("Filter") }}</h4>
           <Form for={{ @filters }} change="filter" submit="filter" opts={{ autocomplete: "off", id: "filter-form", as: :filter }}>
             <InputContext assigns={{ assigns }} :let={{ form: form }}>
@@ -86,8 +88,8 @@
               </div>
             </InputContext>
           </Form>
-        </div>
-      </div>
+        </template>
+      </HygeiaWeb.Dropdown>
     </div>
 
     <table class="table">
