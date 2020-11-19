@@ -345,13 +345,15 @@ defmodule Hygeia.CaseContextTest do
     test "list_people_by_name/2 finds relevant people" do
       tenant = tenant_fixture()
 
-      person_matching = person_fixture(tenant, %{first_name: "Max", last_name: "Muster"})
-      person_little_matching = person_fixture(tenant, %{first_name: "Maxi", last_name: "Muster"})
+      _person_matching = person_fixture(tenant, %{first_name: "Max", last_name: "Muster"})
+      _person_little_matching = person_fixture(tenant, %{first_name: "Maxi", last_name: "Muster"})
 
       _person_not_matching = person_fixture(tenant, %{first_name: "Peter", last_name: "Muster"})
 
-      assert [^person_matching, ^person_little_matching] =
-               CaseContext.list_people_by_name("Max", "Muster")
+      assert [
+               %Person{first_name: "Max", last_name: "Muster"},
+               %Person{first_name: "Maxi", last_name: "Muster"}
+             ] = CaseContext.list_people_by_name("Max", "Muster")
     end
   end
 

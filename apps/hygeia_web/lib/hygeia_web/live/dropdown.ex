@@ -9,14 +9,12 @@ defmodule HygeiaWeb.Dropdown do
   prop trigger_class, :string, default: ""
   prop dropdown_class, :string, default: ""
 
+  data container_id, :string
+  data dropdown_open, :boolean, default: false
+
   @impl Phoenix.LiveComponent
   def mount(socket) do
-    socket =
-      socket
-      |> assign(dropdown_open: false)
-      |> assign(container_id: "dropdown_" <> UUID.generate())
-
-    {:ok, socket}
+    {:ok, assign(socket, container_id: "dropdown_" <> UUID.generate())}
   end
 
   @impl Phoenix.LiveComponent

@@ -7,6 +7,7 @@ defmodule Hygeia.CaseContext.Person do
 
   import EctoEnum
 
+  alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.ContactMethod
@@ -79,6 +80,8 @@ defmodule Hygeia.CaseContext.Person do
     has_many :cases, Case
     has_many :positions, Position, foreign_key: :person_uuid
 
+    field :suspected_duplicates_uuid, {:array, :binary_id}, virtual: true, default: []
+
     timestamps()
   end
 
@@ -104,6 +107,47 @@ defmodule Hygeia.CaseContext.Person do
     |> cast_embed(:employers)
     |> foreign_key_constraint(:tenant_uuid)
     |> foreign_key_constraint(:profession_uuid)
+    |> detect_name_duplicates
+    |> detect_duplicates(:mobile)
+    |> detect_duplicates(:landline)
+    |> detect_duplicates(:email)
+  end
+
+  defp detect_duplicates(changeset, contact_method_type) do
+    with contact_methods <- get_field(changeset, :contact_methods, []),
+         %ContactMethod{type: ^contact_method_type, value: value} <-
+           Enum.find(contact_methods, &match?(%ContactMethod{type: ^contact_method_type}, &1)),
+         [_ | _] = suspected_duplicates <-
+           CaseContext.list_people_by_contact_method(contact_method_type, value) do
+      add_suspected_duplicates(changeset, Enum.map(suspected_duplicates, & &1.uuid))
+    else
+      nil -> changeset
+      [] -> changeset
+      _id -> changeset
+    end
+  end
+
+  defp detect_name_duplicates(changeset) do
+    with first_name when is_binary(first_name) <- get_field(changeset, :first_name),
+         last_name when is_binary(last_name) <- get_field(changeset, :last_name),
+         [_ | _] = suspected_duplicates <-
+           CaseContext.list_people_by_name(first_name, last_name) do
+      add_suspected_duplicates(changeset, Enum.map(suspected_duplicates, & &1.uuid))
+    else
+      nil -> changeset
+      [] -> changeset
+    end
+  end
+
+  defp add_suspected_duplicates(changeset, ids) do
+    put_change(
+      changeset,
+      :suspected_duplicates_uuid,
+      ids
+      |> Kernel.++(get_field(changeset, :suspected_duplicates_uuid) || [])
+      |> Enum.uniq()
+      |> Kernel.--([get_field(changeset, :uuid)])
+    )
   end
 
   defimpl Hygeia.Authorization.Resource do

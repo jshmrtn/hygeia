@@ -144,6 +144,9 @@ defmodule Hygeia.CaseContext do
   @spec list_people :: [Person.t()]
   def list_people, do: Repo.all(Person)
 
+  @spec list_people_by_ids(ids :: [String.t()]) :: [Person.t()]
+  def list_people_by_ids(ids), do: Repo.all(from(person in Person, where: person.uuid in ^ids))
+
   @spec list_people_query :: Ecto.Queryable.t()
   def list_people_query, do: Person
 

@@ -85,4 +85,8 @@ defmodule HygeiaWeb.PersonLive.Create do
         {:noreply, assign(socket, :changeset, invalid_changeset)}
     end
   end
+
+  defp load_people_by_id(ids) do
+    CaseContext.list_people_by_ids(ids)
+  end
 end

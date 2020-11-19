@@ -63,7 +63,7 @@ msgstr "Hinzufügen verwandter Organisationen"
 #: lib/hygeia_web/live/address_form.sface:3
 #: lib/hygeia_web/live/organisation_live/index.sface:23
 #: lib/hygeia_web/live/organisation_live/show.sface:82
-#: lib/hygeia_web/live/person_live/base_data.sface:96
+#: lib/hygeia_web/live/person_live/base_data.sface:116
 msgid "Address"
 msgstr "Adresse"
 
@@ -122,14 +122,14 @@ msgid "Available Column Headers"
 msgstr "Verfügbare Spaltenüberschriften"
 
 #: lib/hygeia_web/live/case_live/navigation.sface:13
-#: lib/hygeia_web/live/person_live/base_data.sface:35
+#: lib/hygeia_web/live/person_live/base_data.sface:55
 #: lib/hygeia_web/live/person_live/header.sface:18
 #: lib/hygeia_web/live/transmission_live/show.sface:76
 #: lib/hygeia_web/live/user_live/show.sface:13
 msgid "Base Data"
 msgstr "Basisdaten"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:71
+#: lib/hygeia_web/live/person_live/base_data.sface:91
 #: lib/hygeia_web/live/person_live/index.sface:92
 msgid "Birth Date"
 msgstr "Geburtsdatum"
@@ -174,8 +174,8 @@ msgid "Choose Tenant"
 msgstr "Mandant wählen"
 
 #: lib/hygeia_web/live/case_live/protocol.sface:31
-#: lib/hygeia_web/live/person_live/base_data.sface:118
-#: lib/hygeia_web/live/person_live/create.sface:52
+#: lib/hygeia_web/live/person_live/base_data.sface:138
+#: lib/hygeia_web/live/person_live/create.sface:72
 #: lib/hygeia_web/live/references.sface:20
 #: lib/hygeia_web/live/tenant_live/show.sface:84
 msgid "Choose Type"
@@ -194,7 +194,7 @@ msgstr "Standort wählen"
 msgid "Choose organisation"
 msgstr "Organisation wählen"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:162
+#: lib/hygeia_web/live/person_live/base_data.sface:182
 msgid "Choose profession"
 msgstr "Beruf wählen"
 
@@ -225,8 +225,8 @@ msgstr "Klinische Informationen"
 msgid "Comma (,)"
 msgstr "Komma (,)"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:111
-#: lib/hygeia_web/live/person_live/create.sface:43
+#: lib/hygeia_web/live/person_live/base_data.sface:131
+#: lib/hygeia_web/live/person_live/create.sface:63
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -236,8 +236,8 @@ msgstr "Kommentar"
 msgid "Complexity"
 msgstr "Komplexität"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:106
-#: lib/hygeia_web/live/person_live/create.sface:37
+#: lib/hygeia_web/live/person_live/base_data.sface:126
+#: lib/hygeia_web/live/person_live/create.sface:57
 msgid "Contact Methods"
 msgstr "Kontaktmethoden"
 
@@ -366,8 +366,8 @@ msgstr "Löschen"
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:47
 #: lib/hygeia_web/live/organisation_live/show.sface:46
 #: lib/hygeia_web/live/organisation_live/show.sface:47
-#: lib/hygeia_web/live/person_live/base_data.sface:27
-#: lib/hygeia_web/live/person_live/base_data.sface:28
+#: lib/hygeia_web/live/person_live/base_data.sface:47
+#: lib/hygeia_web/live/person_live/base_data.sface:48
 #: lib/hygeia_web/live/profession_live/show.sface:46
 #: lib/hygeia_web/live/profession_live/show.sface:47
 #: lib/hygeia_web/live/tenant_live/show.sface:46
@@ -385,7 +385,7 @@ msgstr "Anzeigename"
 #: lib/hygeia_web/live/case_live/base_data.sface:34
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:45
 #: lib/hygeia_web/live/organisation_live/show.sface:45
-#: lib/hygeia_web/live/person_live/base_data.sface:26
+#: lib/hygeia_web/live/person_live/base_data.sface:46
 #: lib/hygeia_web/live/profession_live/show.sface:45
 #: lib/hygeia_web/live/tenant_live/show.sface:45
 #: lib/hygeia_web/live/transmission_live/show.sface:66
@@ -407,8 +407,8 @@ msgstr "Erledigt"
 #: lib/hygeia_web/live/organisation_live/index.sface:56
 #: lib/hygeia_web/live/organisation_live/show.sface:13
 #: lib/hygeia_web/live/organisation_live/show.sface:14
-#: lib/hygeia_web/live/person_live/base_data.sface:10
-#: lib/hygeia_web/live/person_live/base_data.sface:11
+#: lib/hygeia_web/live/person_live/base_data.sface:30
+#: lib/hygeia_web/live/person_live/base_data.sface:31
 #: lib/hygeia_web/live/person_live/index.sface:124
 #: lib/hygeia_web/live/profession_live/index.sface:50
 #: lib/hygeia_web/live/profession_live/show.sface:13
@@ -439,7 +439,7 @@ msgstr "E-Mail"
 msgid "Employer"
 msgstr "Arbeitgeber"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:155
+#: lib/hygeia_web/live/person_live/base_data.sface:175
 msgid "Employment"
 msgstr "Anstellung"
 
@@ -470,7 +470,7 @@ msgstr "Extern"
 msgid "Extreme"
 msgstr "Extrem"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:65
+#: lib/hygeia_web/live/person_live/base_data.sface:85
 msgid "Female"
 msgstr "Weiblich"
 
@@ -488,8 +488,8 @@ msgstr "Dateityp"
 msgid "Filter"
 msgstr "Filter"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:47
-#: lib/hygeia_web/live/person_live/create.sface:19
+#: lib/hygeia_web/live/person_live/base_data.sface:67
+#: lib/hygeia_web/live/person_live/create.sface:39
 msgid "First Name"
 msgstr "Vorname"
 
@@ -625,8 +625,8 @@ msgstr "Datum des Laborberichts"
 msgid "Landline"
 msgstr "Festnetz"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:54
-#: lib/hygeia_web/live/person_live/create.sface:26
+#: lib/hygeia_web/live/person_live/base_data.sface:74
+#: lib/hygeia_web/live/person_live/create.sface:46
 msgid "Last Name"
 msgstr "Nachname"
 
@@ -696,7 +696,7 @@ msgstr "Geschmacksverlust"
 msgid "Low"
 msgstr "Niedrig"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:65
+#: lib/hygeia_web/live/person_live/base_data.sface:85
 msgid "Male"
 msgstr "Männlich"
 
@@ -736,7 +736,7 @@ msgstr "Mehr"
 #: lib/hygeia_web/live/organisation_live/index.sface:20
 #: lib/hygeia_web/live/organisation_live/show.sface:55
 #: lib/hygeia_web/live/organisation_live/show.sface:57
-#: lib/hygeia_web/live/person_live/base_data.sface:174
+#: lib/hygeia_web/live/person_live/base_data.sface:194
 #: lib/hygeia_web/live/profession_live/create.sface:15
 #: lib/hygeia_web/live/profession_live/index.sface:20
 #: lib/hygeia_web/live/profession_live/show.sface:55
@@ -782,8 +782,8 @@ msgstr "Neuer Beruf"
 msgid "New Tenant"
 msgstr "Neuer Mandant"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:146
-#: lib/hygeia_web/live/person_live/create.sface:74
+#: lib/hygeia_web/live/person_live/base_data.sface:166
+#: lib/hygeia_web/live/person_live/create.sface:94
 msgid "New contact method"
 msgstr "Neue Kontaktmethode"
 
@@ -870,7 +870,7 @@ msgstr "Nur aktive Fälle"
 msgid "Organisation"
 msgstr "Organisation"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:210
+#: lib/hygeia_web/live/person_live/base_data.sface:230
 msgid "Organisation Positions"
 msgstr "Organisationspositionen"
 
@@ -894,7 +894,7 @@ msgstr "Organisationen"
 #: lib/hygeia_web/helpers/contact_method.ex:16
 #: lib/hygeia_web/helpers/external_reference.ex:18
 #: lib/hygeia_web/helpers/monitoring.ex:25 lib/hygeia_web/helpers/phase.ex:23
-#: lib/hygeia_web/live/person_live/base_data.sface:65
+#: lib/hygeia_web/live/person_live/base_data.sface:85
 msgid "Other"
 msgstr "Andere"
 
@@ -967,7 +967,7 @@ msgstr "Möglicher Index"
 msgid "Previous"
 msgstr "Zurück"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:161
+#: lib/hygeia_web/live/person_live/base_data.sface:181
 msgid "Profession"
 msgstr "Beruf"
 
@@ -1044,7 +1044,7 @@ msgid "Recipient"
 msgstr "Empfänger"
 
 #: lib/hygeia_web/live/case_live/base_data.sface:109
-#: lib/hygeia_web/live/person_live/base_data.sface:82
+#: lib/hygeia_web/live/person_live/base_data.sface:102
 msgid "References"
 msgstr "Referenzen"
 
@@ -1086,9 +1086,9 @@ msgstr "SMS"
 #: lib/hygeia_web/live/organisation_live/create.sface:39
 #: lib/hygeia_web/live/organisation_live/show.sface:42
 #: lib/hygeia_web/live/organisation_live/show.sface:43
-#: lib/hygeia_web/live/person_live/base_data.sface:23
-#: lib/hygeia_web/live/person_live/base_data.sface:24
-#: lib/hygeia_web/live/person_live/create.sface:78
+#: lib/hygeia_web/live/person_live/base_data.sface:43
+#: lib/hygeia_web/live/person_live/base_data.sface:44
+#: lib/hygeia_web/live/person_live/create.sface:98
 #: lib/hygeia_web/live/profession_live/create.sface:29
 #: lib/hygeia_web/live/profession_live/show.sface:42
 #: lib/hygeia_web/live/profession_live/show.sface:43
@@ -1109,8 +1109,8 @@ msgstr "Speichern"
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:41
 #: lib/hygeia_web/live/organisation_live/create.sface:36
 #: lib/hygeia_web/live/organisation_live/show.sface:41
-#: lib/hygeia_web/live/person_live/base_data.sface:22
-#: lib/hygeia_web/live/person_live/create.sface:77
+#: lib/hygeia_web/live/person_live/base_data.sface:42
+#: lib/hygeia_web/live/person_live/create.sface:97
 #: lib/hygeia_web/live/profession_live/create.sface:26
 #: lib/hygeia_web/live/profession_live/show.sface:41
 #: lib/hygeia_web/live/tenant_live/create.sface:26
@@ -1160,8 +1160,8 @@ msgid "Select status"
 msgstr "Status wählen"
 
 #: lib/hygeia_web/live/case_live/base_data.sface:49
-#: lib/hygeia_web/live/person_live/base_data.sface:39
-#: lib/hygeia_web/live/person_live/create.sface:11
+#: lib/hygeia_web/live/person_live/base_data.sface:59
+#: lib/hygeia_web/live/person_live/create.sface:31
 msgid "Select tenant"
 msgstr "Mandant wählen"
 
@@ -1203,7 +1203,7 @@ msgstr "Trennzeichen"
 msgid "Serology"
 msgstr "Serologie"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:64
+#: lib/hygeia_web/live/person_live/base_data.sface:84
 msgid "Sex"
 msgstr "Biologisches Geschlecht"
 
@@ -1292,8 +1292,8 @@ msgstr "Symptome Startdatum"
 #: lib/hygeia_web/live/case_live/csv_import.sface:24
 #: lib/hygeia_web/live/case_live/person_create_table.sface:10
 #: lib/hygeia_web/live/case_live/person_create_table.sface:145
-#: lib/hygeia_web/live/person_live/base_data.sface:38
-#: lib/hygeia_web/live/person_live/create.sface:10
+#: lib/hygeia_web/live/person_live/base_data.sface:58
+#: lib/hygeia_web/live/person_live/create.sface:30
 msgid "Tenant"
 msgstr "Mandant"
 
@@ -1379,8 +1379,8 @@ msgstr "Reisen"
 #: lib/hygeia_web/live/case_live/base_data.sface:131
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:16
 #: lib/hygeia_web/live/case_live/protocol.sface:19
-#: lib/hygeia_web/live/person_live/base_data.sface:109
-#: lib/hygeia_web/live/person_live/create.sface:41
+#: lib/hygeia_web/live/person_live/base_data.sface:129
+#: lib/hygeia_web/live/person_live/create.sface:61
 #: lib/hygeia_web/live/references.sface:2
 #: lib/hygeia_web/live/tenant_live/show.sface:81
 #: lib/hygeia_web/live/transmission_live/create.sface:17
@@ -1412,8 +1412,8 @@ msgstr "Benutzer"
 msgid "Users can not be edited here since they are synchronized with the IAM."
 msgstr "Benutzer können hier nicht bearbeitet werden, da sie mit dem IAM synchronisiert werden."
 
-#: lib/hygeia_web/live/person_live/base_data.sface:110
-#: lib/hygeia_web/live/person_live/create.sface:42
+#: lib/hygeia_web/live/person_live/base_data.sface:130
+#: lib/hygeia_web/live/person_live/create.sface:62
 #: lib/hygeia_web/live/references.sface:3
 msgid "Value"
 msgstr "Wert"
@@ -1593,7 +1593,7 @@ msgstr "Neue Fälle"
 msgid "New Transmission"
 msgstr "Neue Übertragung"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:202
+#: lib/hygeia_web/live/person_live/base_data.sface:222
 msgid "New employer / employment"
 msgstr "Neuer Arbeitgeber / Beschäftigung"
 
@@ -1668,3 +1668,8 @@ msgstr "Mandant wählen"
 #: lib/hygeia_web/live/statistics_live/statistics.sface:213
 msgid "unknown"
 msgstr "unbekannt"
+
+#: lib/hygeia_web/live/person_live/base_data.sface:16
+#: lib/hygeia_web/live/person_live/create.sface:20
+msgid "This person is possibly a duplicate of %{name_link}, please check."
+msgstr "Diese Person ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie dies bitte."

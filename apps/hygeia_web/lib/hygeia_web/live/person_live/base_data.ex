@@ -227,6 +227,10 @@ defmodule HygeiaWeb.PersonLive.BaseData do
     |> maybe_block_navigation()
   end
 
+  defp load_people_by_id(ids) do
+    CaseContext.list_people_by_ids(ids)
+  end
+
   defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do
     if changes == %{} do
       push_event(socket, "unblock_navigation", %{})

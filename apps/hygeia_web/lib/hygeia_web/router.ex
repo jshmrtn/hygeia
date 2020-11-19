@@ -55,7 +55,8 @@ defmodule HygeiaWeb.Router do
         form_action: ~w('self'),
         upgrade_insecure_requests: ~w(),
         block_all_mixed_content: ~w(),
-        sandbox: ~w(allow-forms allow-scripts allow-modals allow-same-origin allow-downloads),
+        sandbox:
+          ~w(allow-forms allow-scripts allow-modals allow-same-origin allow-downloads allow-popups),
         base_uri: ~w('none'),
         manifest_src: ~w('none')
       }
