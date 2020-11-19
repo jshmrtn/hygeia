@@ -24,6 +24,8 @@ defmodule HygeiaWeb.PersonLive.Index do
       if authorized?(Person, :list, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "people")
 
+        professions = CaseContext.list_professions()
+
         pagination_params =
           case params do
             %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
@@ -32,7 +34,7 @@ defmodule HygeiaWeb.PersonLive.Index do
           end
 
         socket
-        |> assign(pagination_params: pagination_params, filters: %{})
+        |> assign(pagination_params: pagination_params, filters: %{}, professions: professions)
         |> list_people()
       else
         socket
@@ -67,6 +69,8 @@ defmodule HygeiaWeb.PersonLive.Index do
   def handle_info(_other, socket), do: {:noreply, socket}
 
   @allowed_filter_fields %{
+    "profession_uuid" => :profession_uuid,
+    "sex" => :sex,
     "country" => :country,
     "subdivision" => :subdivision
   }
