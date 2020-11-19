@@ -61,7 +61,6 @@
             </Field>
 
             <div class="row">
-              <!-- TODO: Add notice with link to detected duplicated of person -->
               <div class="col">
                 <Field name={{ :first_name }} class="form-group">
                   <Label>{{ "First Name" |> gettext }}</Label>
@@ -131,8 +130,6 @@
               <h6>{{ gettext("Comment") }}</h6>
               <div aria-hidden="true"></div>
 
-              <!-- TODO: Add notice with link to detected duplicated of person -->
-              <!-- TODO: Add Link if Valuue is shown (tel: / mailto:) -->
               <Inputs for={{ :contact_methods }}>
                 <InputContext assigns={{ assigns }} :let={{ form: form }}>
                   <Field name={{ :type }}>
@@ -140,7 +137,40 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <Field name={{ :value }}>
-                    <TextInput class="form-control" field={{ :value }} opts={{ disabled: @live_action == :show }} />
+                    <TextInput
+                      class="form-control"
+                      field={{ :value }}
+                      opts={{ disabled: @live_action == :show }}
+                      :if={{ @live_action == :edit or Ecto.Changeset.fetch_field!(form.source, :type) == :other }}
+                    />
+                    <Link
+                      :if={{ @live_action == :show  and Ecto.Changeset.fetch_field!(form.source, :type) in [:mobile, :landline] }}
+                      to={{
+                        form.source
+                        |> Ecto.Changeset.fetch_field!(:value)
+                        |> ExPhoneNumber.parse("CH")
+                        |> case do
+                          {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
+                          _ -> nil
+                        end
+                      }}
+                    >
+                      {{
+                        form.source
+                        |> Ecto.Changeset.fetch_field!(:value)
+                        |> ExPhoneNumber.parse("CH")
+                        |> case do
+                          {:ok, number} -> ExPhoneNumber.format(number, :international)
+                          _ -> nil
+                        end
+                      }}
+                    </Link>
+                    <Link
+                      :if={{ @live_action == :show  and Ecto.Changeset.fetch_field!(form.source, :type) in [:email] }}
+                      to={{ "mailto:#{Ecto.Changeset.fetch_field!(form.source, :value)}" }}
+                    >
+                      {{ Ecto.Changeset.fetch_field!(form.source, :value) }}
+                    </Link>
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <Field name={{ :comment }}>
