@@ -1,0 +1,94 @@
+<div class="component-help container">
+  <h1>{{ gettext("Help") }}</h1>
+
+  <details>
+    <summary>
+      <h2>
+        {{ gettext("How do I create an organisation?") }}
+      </h2>
+    </summary>
+
+    <h3>
+      {{ gettext("Reasons") }}
+    </h3>
+
+    <p>
+      {{ gettext("It makes sense to create an organisation for the following reasons:")}}
+    </p>
+
+    <ul>
+      <li>{{ gettext("To save a hospitalisation of a case that does not yet exist.") }}</li>
+      <li>{{ gettext("To save related organisations of a case that does not yet exist. (For example a school)") }}</li>
+      <li>{{ gettext("To save an organisation and their contacts for regularly used contacts of tracers.") }}</li>
+    </ul>
+
+    <h3>
+      {{ gettext("Steps") }}
+    </h3>
+
+    <ul>
+      <li>
+        {{
+          "Head to %{link}"
+          |> gettext(
+            link: "Create Organisation"
+            |> gettext()
+            |> live_redirect(to: Routes.organisation_create_path(@socket, :create))
+            |> safe_to_string
+          )
+          |> raw()
+        }}
+      </li>
+      <li>
+        {{ gettext("Fill in form") }}
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/create-organisation.png") }}
+        />
+      </li>
+      <li>{{ gettext("Click \"Save\"") }}</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>{{ gettext("How do I log in?") }}</summary>
+
+    <!-- TODO: Add Text / Screenshots / Videos -->
+  </details>
+
+  <details>
+    <summary>{{ gettext("How do I find cases I've been assigned to?") }}</summary>
+
+    <!-- TODO: Add Text / Screenshots / Videos -->
+  </details>
+
+  <details>
+    <summary>{{ gettext("How do I find my active cases?") }}</summary>
+
+    <!-- TODO: Add Text / Screenshots / Videos -->
+  </details>
+
+  <details>
+    <summary>{{ gettext("How do I add information to cases?") }}</summary>
+
+    <!-- TODO: Add Text / Screenshots / Videos -->
+  </details>
+
+  <details>
+    <summary>{{ gettext("How do I create contact people for an index case?") }}</summary>
+
+    <!-- TODO: Add Text / Screenshots / Videos -->
+  </details>
+
+  <details>
+    <summary>{{ gettext("How do I send an email of sms message to a case?") }}</summary>
+
+    <!-- TODO: Add Text / Screenshots / Videos -->
+  </details>
+
+  <details>
+    <summary>{{ gettext("How do I close a case?") }}</summary>
+
+    <!-- TODO: Add Text / Screenshots / Videos -->
+  </details>
+</div>

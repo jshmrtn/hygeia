@@ -131,6 +131,8 @@ defmodule HygeiaWeb.Router do
 
     get "/", HomeController, :index
 
+    live "/help", HelpLive.Index, :index
+
     live "/tenants", TenantLive.Index, :index
 
     live "/professions", ProfessionLive.Index, :index

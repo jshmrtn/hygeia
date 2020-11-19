@@ -96,15 +96,30 @@
           <li class="nav-item mr-3" :if={{ auth != :anonymous }}>
             <HygeiaWeb.Search id="search" />
           </li>
+          <li class="nav-item">
+            <UriActiveContext
+              to={{ Routes.help_index_path(@socket, :index) }}
+              :let={{ to: to, active: active }}
+            >
+              <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+                <span class="oi oi-question-mark" title={{ gettext("Help") }} aria-hidden="true"></span>
+              </LiveRedirect>
+            </UriActiveContext>
+          </li>
           <li class="nav-item" :if={{ auth != :anonymous }}>
             <div class="dropdown" id="profile" phx-update="ignore">
               <a class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="oi oi-person" title={{ gettext("Profile") }} aria-hidden="true"></span>
               </a>
               <div class="nav-dropdown dropdown-menu dropdown-menu-right">
-                <LiveRedirect to={{ Routes.user_show_path(@socket, :show, auth.uuid) }} class="dropdown-item">
-                  {{ gettext("Profile") }}
-                </LiveRedirect>
+                <UriActiveContext
+                  to={{ Routes.user_show_path(@socket, :show, auth.uuid) }}
+                  :let={{ to: to, active: active }}
+                >
+                  <LiveRedirect to={{ to }} class="dropdown-item {{ if active, do: "active" }}">
+                    {{ gettext("Profile") }}
+                  </LiveRedirect>
+                </UriActiveContext>
                 <!-- TODO: Put method DELETE when https://github.com/w3c/webappsec-csp/issues/8 is resolved -->
                 <Link to={{ Routes.auth_path(@socket, :delete) }} class="dropdown-item">
                   {{ gettext("Logout") }}
