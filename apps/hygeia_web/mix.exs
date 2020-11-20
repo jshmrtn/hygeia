@@ -58,17 +58,13 @@ defmodule HygeiaWeb.MixProject do
       {:hygeia_iam, in_umbrella: true},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_ecto, "~> 4.0"},
-      # TODO: Switch back to released version when surface works with it
-      {:phoenix_live_view,
-       github: "phoenixframework/phoenix_live_view",
-       ref: "30cb45037c340570d4612926cf9111498e22315a",
-       override: true},
+      # TODO: Remove override when Surface is released
+      {:phoenix_live_view, "~> 0.15", override: true},
       {:floki, ">= 0.27.0", only: :test},
       {:phoenix_active_link, "~> 0.3.1"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      # TODO: Replace with released version as soon as it is compatible with LiveView 0.15
-      {:phoenix_live_dashboard, github: "maennchen/phoenix_live_dashboard", branch: "master"},
+      {:phoenix_live_dashboard, "~> 0.4.0"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:jason, "~> 1.0"},

@@ -64,8 +64,7 @@ defmodule HygeiaApi.MixProject do
       {:dataloader, "~> 1.0"},
       {:remote_ip, "~> 0.1"},
       {:hygeia, in_umbrella: true},
-      # TODO: Replace with released version as soon as it is compatible with LiveView 0.15
-      {:phoenix_live_dashboard, github: "maennchen/phoenix_live_dashboard", branch: "master"},
+      {:phoenix_live_dashboard, "~> 0.4.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end
