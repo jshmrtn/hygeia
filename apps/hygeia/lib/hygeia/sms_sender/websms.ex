@@ -11,14 +11,14 @@ defmodule Hygeia.SmsSender.WebSms do
   end
 
   @impl Hygeia.SmsSender
-  def send(_message_id, number, text) do
+  def send(_message_id, number, text, access_token) do
     %{
       body: %{
         messageContent: text,
         test: @test_mode,
         recipientAddressList: [number]
       },
-      headers: %{"authorization" => "Bearer #{auth_token()}"}
+      headers: %{"authorization" => "Bearer #{access_token}"}
     }
     |> Websms.post_smsmessaging_text()
     |> case do
@@ -35,7 +35,4 @@ defmodule Hygeia.SmsSender.WebSms do
         {:error, reason}
     end
   end
-
-  defp auth_token,
-    do: :hygeia |> Application.fetch_env!(__MODULE__) |> Keyword.fetch!(:access_token)
 end

@@ -8,6 +8,7 @@ defmodule Hygeia.TenantContext.Tenant do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.TenantContext.Tenant.Smtp
+  alias Hygeia.TenantContext.Websms
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -16,6 +17,7 @@ defmodule Hygeia.TenantContext.Tenant do
           name: String.t() | nil,
           public_statistics: boolean | nil,
           outgoing_mail_configuration: Smtp.t() | nil,
+          outgoing_sms_configuration: Websms.t() | nil,
           people: Ecto.Schema.has_many(Person.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
@@ -27,6 +29,7 @@ defmodule Hygeia.TenantContext.Tenant do
           name: String.t(),
           public_statistics: boolean,
           outgoing_mail_configuration: Smtp.t() | nil,
+          outgoing_sms_configuration: Websms.t() | nil,
           people: Ecto.Schema.has_many(Person.t()),
           cases: Ecto.Schema.has_many(Case.t()),
           inserted_at: NaiveDateTime.t(),
@@ -47,19 +50,33 @@ defmodule Hygeia.TenantContext.Tenant do
         smtp: Smtp
       ]
 
+    field :outgoing_sms_configuration, PolymorphicEmbed,
+      types: [
+        websms: Websms
+      ]
+
     # Use in Protocol Creation Form
     field :outgoing_mail_configuration_type, :string, virtual: true, default: "smtp"
+    field :outgoing_sms_configuration_type, :string, virtual: true
   end
 
   @doc false
   @spec changeset(tenant :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(tenant, attrs) do
     tenant
-    |> cast(attrs, [:name, :public_statistics, :outgoing_mail_configuration_type],
+    |> cast(
+      attrs,
+      [
+        :name,
+        :public_statistics,
+        :outgoing_mail_configuration_type,
+        :outgoing_sms_configuration_type
+      ],
       empty_values: []
     )
     |> validate_required([:name, :public_statistics])
     |> cast_polymorphic_embed(:outgoing_mail_configuration)
+    |> cast_polymorphic_embed(:outgoing_sms_configuration)
     |> foreign_key_constraint(:people,
       name: :cases_tenant_uuid_fkey,
       message: "has assigned relations"

@@ -74,7 +74,7 @@
                   )
                 }
               )}}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) }}
+              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
               {{ gettext("Send SMS Isolation Confirmation") }}
@@ -98,7 +98,7 @@
                   )
                 }
               )}}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) }}
+              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Isolation Confirmation") }}
@@ -137,7 +137,7 @@
                   )
                 }
               )}}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) }}
+              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
               {{ gettext("Send SMS Quarantine Confirmation") }}
@@ -161,7 +161,7 @@
                   )
                 }
               )}}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) }}
+              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Quarantine Confirmation") }}
@@ -212,7 +212,7 @@
           <LiveRedirect
             class="dropdown-item"
             to={{ Routes.case_protocol_path(@socket, :show, @case, type: "sms") }}
-            :if={{ CaseContext.person_has_mobile_number?(@case.person) }}
+            :if={{ CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
           >
             <span class="oi oi-phone mr-1" aria-hidden="true"></span>
             {{ gettext("Send SMS") }}
@@ -220,7 +220,7 @@
           <LiveRedirect
             class="dropdown-item"
             to={{ Routes.case_protocol_path(@socket, :show, @case, type: "email") }}
-            :if={{ CaseContext.person_has_email?(@case.person) }}
+            :if={{ CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
           >
             <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
             {{ gettext("Send Email") }}

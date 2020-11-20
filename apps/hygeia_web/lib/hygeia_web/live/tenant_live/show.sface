@@ -140,7 +140,40 @@
                     class="form-control"
                     opts={{ disabled: @live_action == :show, placeholder: "password" }}
                   />
-                  <ErrorTag class="d-block invalid-feedback" />
+                  <FormError />
+                </Field>
+              </PolimorphicInputs>
+            </InputContext>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{ gettext("Outgoing SMS Configuration") }}</h4>
+            <Field name={{ :outgoing_sms_configuration_type }} class="form-group">
+              <Label>{{ gettext("Type") }}</Label>
+              <Select
+                class="form-control"
+                opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
+                options={{ [{gettext("Web-SMS"), "websms"}] }}
+              />
+              <FormError />
+            </Field>
+
+            <InputContext assigns={{ assigns }} :let={{ form: form }}>
+              <PolimorphicInputs
+                field={{ :outgoing_sms_configuration }}
+                type={{ :websms }}
+                :if={{ Ecto.Changeset.get_field(form.source, :outgoing_sms_configuration_type) == "websms" }}
+                id="poly-inputs-sms"
+              >
+                <Field name={{ :access_token }} class="form-group">
+                  <Label>{{ gettext("Access Token") }}</Label>
+                  <TextInput
+                    class="form-control"
+                    opts={{ disabled: @live_action == :show }}
+                  />
+                  <FormError />
                 </Field>
               </PolimorphicInputs>
             </InputContext>

@@ -33,6 +33,10 @@ Versioning.put_originator(:noone)
       from_email: "hygeia@joshmartin.ch",
       username: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3",
       password: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3"
+    },
+    outgoing_sms_configuration: %{
+      __type__: "websms",
+      access_token: "***REMOVED***"
     }
   })
 
@@ -49,6 +53,10 @@ Versioning.put_originator(:noone)
       from_email: "hygeia@joshmartin.ch",
       username: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3",
       password: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3"
+    },
+    outgoing_sms_configuration: %{
+      __type__: "websms",
+      access_token: "***REMOVED***"
     }
   })
 

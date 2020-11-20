@@ -16,6 +16,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
+  alias Hygeia.TenantContext.Websms
 
   @sms_sender Application.compile_env!(:hygeia, [:sms_sender])
 
@@ -528,29 +529,35 @@ defmodule Hygeia.CaseContext do
   @spec case_send_sms(case :: Case.t(), text :: String.t()) ::
           {:ok, ProtocolEntry.t()} | {:error, :no_mobile_number | term}
   def case_send_sms(%Case{} = case, text) do
-    %Case{person: %Person{contact_methods: contact_methods} = person} =
-      Repo.preload(case, :person)
+    %Case{person: %Person{contact_methods: contact_methods} = person, tenant: %Tenant{} = tenant} =
+      Repo.preload(case, person: [], tenant: [])
 
-    if person_has_mobile_number?(person) do
-      phone_number =
-        Enum.find_value(contact_methods, fn
-          %{type: :mobile, value: value} -> value
-          _contact_method -> false
-        end)
+    case tenant.outgoing_sms_configuration do
+      %Websms{access_token: access_token} ->
+        if person_has_mobile_number?(person) do
+          phone_number =
+            Enum.find_value(contact_methods, fn
+              %{type: :mobile, value: value} -> value
+              _contact_method -> false
+            end)
 
-      message_id = Ecto.UUID.generate()
+          message_id = Ecto.UUID.generate()
 
-      case @sms_sender.send(message_id, phone_number, text) do
-        {:ok, delivery_receipt_id} ->
-          create_protocol_entry(case, %{
-            entry: %{__type__: "sms", text: text, delivery_receipt_id: delivery_receipt_id}
-          })
+          case @sms_sender.send(message_id, phone_number, text, access_token) do
+            {:ok, delivery_receipt_id} ->
+              create_protocol_entry(case, %{
+                entry: %{__type__: "sms", text: text, delivery_receipt_id: delivery_receipt_id}
+              })
 
-        {:error, reason} ->
-          {:error, reason}
-      end
-    else
-      {:error, :no_mobile_number}
+            {:error, reason} ->
+              {:error, reason}
+          end
+        else
+          {:error, :no_mobile_number}
+        end
+
+      nil ->
+        {:error, :sms_config_missing}
     end
   end
 

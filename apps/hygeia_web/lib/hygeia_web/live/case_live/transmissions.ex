@@ -56,7 +56,8 @@ defmodule HygeiaWeb.CaseLive.Transmissions do
           case,
           received_transmissions: [propagator_case: [], propagator: []],
           propagated_transmissions: [recipient_case: [], recipient: []],
-          person: []
+          person: [],
+          tenant: []
         )
     )
   end

@@ -116,6 +116,9 @@
                   subject: {{ entry.subject }}
                   body: {{ entry.body }}
                 </td>
+                <td colspan="2" :if={{ type == Hygeia.CaseContext.ProtocolEntry.Sms }}>
+                  {{ entry.text }}
+                </td>
               </tr>
             </tbody>
           </table>

@@ -46,7 +46,7 @@ defmodule HygeiaWeb.CaseLive.Protocol do
 
   @impl Phoenix.LiveView
   def handle_info({_action, %ProtocolEntry{} = _protocol_entry, _version}, socket) do
-    {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.id))}
+    {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
   end
 
   def handle_info({:updated, %Case{} = case, _version}, socket) do
@@ -120,7 +120,14 @@ defmodule HygeiaWeb.CaseLive.Protocol do
 
     socket.assigns.case
     |> Ecto.build_assoc(:protocol_entries)
-    |> CaseContext.change_protocol_entry(protocol_entry_params)
+    |> CaseContext.change_protocol_entry(
+      Map.update(
+        protocol_entry_params,
+        "entry",
+        %{"delivery_receipt_id" => "empty"},
+        &Map.put(&1, "delivery_receipt_id", "empty")
+      )
+    )
     |> case do
       %Ecto.Changeset{valid?: true} = changeset ->
         CaseContext.case_send_sms(
@@ -149,7 +156,7 @@ defmodule HygeiaWeb.CaseLive.Protocol do
        |> maybe_block_navigation()}
 
   defp load_data(socket, case, params \\ %{}) do
-    case = Repo.preload(case, protocol_entries: [], person: [])
+    case = Repo.preload(case, protocol_entries: [], person: [], tenant: [])
 
     assign(socket,
       case: case,
@@ -174,4 +181,5 @@ defmodule HygeiaWeb.CaseLive.Protocol do
 
   defp protocol_type_type_name(Hygeia.CaseContext.ProtocolEntry.Note), do: gettext("Note")
   defp protocol_type_type_name(Hygeia.CaseContext.ProtocolEntry.Email), do: gettext("Email")
+  defp protocol_type_type_name(Hygeia.CaseContext.ProtocolEntry.Sms), do: gettext("SMS")
 end

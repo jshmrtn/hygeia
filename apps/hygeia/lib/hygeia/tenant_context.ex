@@ -126,4 +126,13 @@ defmodule Hygeia.TenantContext do
         outgoing_mail_configuration: _outgoing_mail_configuration
       }),
       do: true
+
+  @spec tenant_has_outgoing_sms_configuration?(tenant :: Tenant.t()) :: boolean
+  def tenant_has_outgoing_sms_configuration?(%Tenant{outgoing_sms_configuration: nil}),
+    do: false
+
+  def tenant_has_outgoing_sms_configuration?(%Tenant{
+        outgoing_sms_configuration: _outgoing_mail_configuration
+      }),
+      do: true
 end

@@ -566,11 +566,30 @@ defmodule Hygeia.CaseContextTest do
     test "case_send_sms/2 sends sms" do
       delivery_receipt_id = Ecto.UUID.generate()
 
-      expect(Hygeia.SmsSenderMock, :send, fn _message_id, _number, _text ->
+      expect(Hygeia.SmsSenderMock, :send, fn _message_id, _number, _text, _access_token ->
         {:ok, delivery_receipt_id}
       end)
 
-      case = case_fixture()
+      tenant =
+        tenant_fixture(%{
+          name: "Kanton",
+          outgoing_sms_configuration: %{
+            __type__: "websms",
+            access_token: "test"
+          }
+        })
+
+      person =
+        person_fixture(tenant, %{
+          contact_methods: [
+            %{
+              type: :mobile,
+              value: "+41781234567"
+            }
+          ]
+        })
+
+      case = case_fixture(person)
 
       assert {:ok,
               %ProtocolEntry{entry: %Sms{text: "Text", delivery_receipt_id: ^delivery_receipt_id}}} =
@@ -578,17 +597,49 @@ defmodule Hygeia.CaseContextTest do
     end
 
     test "case_send_sms/2 gives error when transport fails" do
-      expect(Hygeia.SmsSenderMock, :send, fn _message_id, _number, _text ->
+      expect(Hygeia.SmsSenderMock, :send, fn _message_id, _number, _text, _access_token ->
         {:error, "reason"}
       end)
 
-      case = case_fixture()
+      tenant =
+        tenant_fixture(%{
+          name: "Kanton",
+          outgoing_sms_configuration: %{
+            __type__: "websms",
+            access_token: "test"
+          }
+        })
+
+      person =
+        person_fixture(tenant, %{
+          contact_methods: [
+            %{
+              type: :mobile,
+              value: "+41781234567"
+            }
+          ]
+        })
+
+      case = case_fixture(person)
 
       assert {:error, "reason"} = CaseContext.case_send_sms(case, "Text")
     end
 
     test "case_send_sms/2 gives error when no mobile number present" do
-      person = person_fixture(tenant_fixture(), %{contact_methods: []})
+      tenant =
+        tenant_fixture(%{
+          name: "Kanton",
+          outgoing_sms_configuration: %{
+            __type__: "websms",
+            access_token: "test"
+          }
+        })
+
+      person =
+        person_fixture(tenant, %{
+          contact_methods: []
+        })
+
       case = case_fixture(person)
 
       assert {:error, :no_mobile_number} = CaseContext.case_send_sms(case, "Text")

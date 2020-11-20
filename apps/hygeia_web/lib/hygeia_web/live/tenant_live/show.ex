@@ -6,6 +6,8 @@ defmodule HygeiaWeb.TenantLive.Show do
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.TenantContext.Tenant.Smtp
+  alias Hygeia.TenantContext.Websms
+  alias HygeiaWeb.FormError
   alias HygeiaWeb.PolimorphicInputs
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
@@ -123,6 +125,11 @@ defmodule HygeiaWeb.TenantLive.Show do
       | outgoing_mail_configuration_type:
           case tenant.outgoing_mail_configuration do
             %Smtp{} -> "smtp"
+            nil -> nil
+          end,
+        outgoing_sms_configuration_type:
+          case tenant.outgoing_sms_configuration do
+            %Websms{} -> "websms"
             nil -> nil
           end
     }

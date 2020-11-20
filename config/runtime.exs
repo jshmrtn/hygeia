@@ -118,7 +118,3 @@ config :hygeia_iam,
   project_id: System.get_env("IAM_PROJECT_ID", "***REMOVED***")
 
 config :ueberauth, UeberauthOIDC, zitadel: iam_config
-
-# Sms
-config :hygeia, Hygeia.SmsSender.WebSms,
-  access_token: System.get_env("WEBSMS_ACCESS_TOKEN", "***REMOVED***")
