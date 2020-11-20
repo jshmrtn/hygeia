@@ -17,7 +17,18 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     "contact_tracing"
   ]
 
-  defenum Symptom, :symptom, ["fever", "cough", "loss_of_smell", "loss_of_taste"]
+  defenum Symptom, :symptom, [
+    "fever",
+    "cough",
+    "sore_throat",
+    "loss_of_smell",
+    "loss_of_taste",
+    "body_aches",
+    "headaches",
+    "fatigue",
+    "difficulty_breathing",
+    "other"
+  ]
 
   defenum TestKind, :test_kind, ["pcr", "serology", "quick"]
 

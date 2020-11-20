@@ -34,6 +34,12 @@ defmodule HygeiaWeb.Helpers.Clinical do
   def translate_symptom(:cough), do: gettext("Cough")
   def translate_symptom(:loss_of_smell), do: gettext("Loss of smell")
   def translate_symptom(:loss_of_taste), do: gettext("Loss of taste")
+  def translate_symptom(:sore_throat), do: gettext("Sore Throat")
+  def translate_symptom(:body_aches), do: gettext("Body Aches")
+  def translate_symptom(:headaches), do: gettext("Headaches")
+  def translate_symptom(:fatigue), do: gettext("Fatigue")
+  def translate_symptom(:difficulty_breathing), do: gettext("Diificulty Breathing")
+  def translate_symptom(:other), do: gettext("Other")
 
   @spec test_kinds :: [{String.t(), Clinical.TestKind.t()}]
   def test_kinds,

@@ -20,12 +20,18 @@ defmodule HygeiaWeb.Helpers.Case do
   end
 
   @spec case_status_translation(status :: Case.Status.t()) :: String.t()
-  def case_status_translation(:new), do: gettext("New")
   def case_status_translation(:first_contact), do: gettext("First contact")
-  def case_status_translation(:first_check), do: gettext("First check")
-  def case_status_translation(:tracing), do: gettext("Tracing")
-  def case_status_translation(:care), do: gettext("Care")
-  def case_status_translation(:second_check), do: gettext("Second check")
+
+  def case_status_translation(:first_contact_unreachable),
+    do: gettext("First contact, unreachable")
+
+  def case_status_translation(:code_pending), do: gettext("Code Pending")
+
+  def case_status_translation(:waiting_for_contact_person_list),
+    do: gettext("Wainting for Contact Person List")
+
+  def case_status_translation(:other_actions_todo), do: gettext("Other Actions To Do")
+  def case_status_translation(:next_contact_agreed), do: gettext("Next Contact Agreed")
   def case_status_translation(:done), do: gettext("Done")
 
   @spec case_status_map :: [{String.t(), Case.Status.t()}]

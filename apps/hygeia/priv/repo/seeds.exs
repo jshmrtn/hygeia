@@ -8,6 +8,7 @@ import Hygeia.OrganisationContext
 import Hygeia.TenantContext
 import Hygeia.UserContext
 
+alias Hygeia.CaseContext.InfectionPlaceType
 alias Hygeia.Helpers.Versioning
 alias Hygeia.OrganisationContext.Organisation
 alias Hygeia.Repo
@@ -27,12 +28,10 @@ Versioning.put_originator(:noone)
     name: "Kanton St. Gallen",
     outgoing_mail_configuration: %{
       __type__: "smtp",
-      server: "smtp.postmarkapp.com",
-      hostname: "joshmartin.ch",
-      port: 2525,
-      from_email: "hygeia@joshmartin.ch",
-      username: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3",
-      password: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3"
+      server: "postfix-relay.postfix-relay",
+      hostname: "smtp.covid19-tracing.ch",
+      port: 25,
+      from_email: "test@covid19-tracing.ch"
     },
     outgoing_sms_configuration: %{
       __type__: "websms",
@@ -40,19 +39,31 @@ Versioning.put_originator(:noone)
     }
   })
 
-{:ok, tenant_ai} = create_tenant(%{name: "Kanton Appenzell Innerrhoden"})
+{:ok, tenant_ai} =
+  create_tenant(%{
+    name: "Kanton Appenzell Innerrhoden",
+    outgoing_mail_configuration: %{
+      __type__: "smtp",
+      server: "postfix-relay.postfix-relay",
+      hostname: "smtp.covid19-tracing.ch",
+      port: 25,
+      from_email: "test@covid19-tracing.ch"
+    },
+    outgoing_sms_configuration: %{
+      __type__: "websms",
+      access_token: "***REMOVED***"
+    }
+  })
 
 {:ok, tenant_ar} =
   create_tenant(%{
     name: "Kanton Appenzell Ausserrhoden",
     outgoing_mail_configuration: %{
       __type__: "smtp",
-      server: "smtp.postmarkapp.com",
-      hostname: "joshmartin.ch",
-      port: 2525,
-      from_email: "hygeia@joshmartin.ch",
-      username: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3",
-      password: "cc6b1d73-97ac-4a84-94c9-a729a8367ee3"
+      server: "postfix-relay.postfix-relay",
+      hostname: "smtp.covid19-tracing.ch",
+      port: 25,
+      from_email: "test@covid19-tracing.ch"
     },
     outgoing_sms_configuration: %{
       __type__: "websms",
@@ -110,15 +121,22 @@ professions = [
   profession_other
 ]
 
-{:ok, infection_place_home} = create_infection_place_type(%{name: "Eigener Haushalt"})
+[] =
+  :hygeia
+  |> Application.app_dir("priv/repo/seeds/infection_place_type.csv")
+  |> File.stream!()
+  |> CSV.decode!(headers: true)
+  |> Stream.map(
+    &%{
+      name: &1["name"]
+    }
+  )
+  |> Stream.map(&create_infection_place_type/1)
+  |> Stream.reject(&match?({:ok, _infection_place_type}, &1))
+  |> Enum.to_list()
 
-{:ok, _infection_place_social_medical_facility} =
-  create_infection_place_type(%{name: "Sozial-medizinische Einrichtung"})
-
-{:ok, _infection_place_hospital} = create_infection_place_type(%{name: "Spital"})
-{:ok, _infection_place_hotel} = create_infection_place_type(%{name: "Hotel"})
-{:ok, _infection_place_asylum_center} = create_infection_place_type(%{name: "Asylzentrum"})
-{:ok, infection_place_other} = create_infection_place_type(%{name: "Anderer"})
+infection_place_home = Repo.get_by!(InfectionPlaceType, name: "Eigener Haushalt")
+infection_place_other = Repo.get_by!(InfectionPlaceType, name: "anderer Ort")
 
 [] =
   :hygeia

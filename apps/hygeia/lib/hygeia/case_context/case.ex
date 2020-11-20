@@ -20,15 +20,15 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
-  defenum Complexity, :complexity, ["low", "medium", "high", "extreme"]
+  defenum Complexity, :case_complexity, ["low", "medium", "high", "extreme"]
 
-  defenum Status, :complexity, [
-    "new",
+  defenum Status, :case_status, [
     "first_contact",
-    "first_check",
-    "tracing",
-    "care",
-    "second_check",
+    "first_contact_unreachable",
+    "code_pending",
+    "waiting_for_contact_person_list",
+    "other_actions_todo",
+    "next_contact_agreed",
     "done"
   ]
 
@@ -85,7 +85,7 @@ defmodule Hygeia.CaseContext.Case do
   schema "cases" do
     field :complexity, Complexity
     field :human_readable_id, :string
-    field :status, Status, default: :new
+    field :status, Status, default: :first_contact
 
     embeds_one :clinical, Clinical, on_replace: :update
     embeds_many :external_references, ExternalReference, on_replace: :delete
