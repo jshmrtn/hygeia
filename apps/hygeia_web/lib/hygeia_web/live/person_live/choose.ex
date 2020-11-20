@@ -16,6 +16,7 @@ defmodule HygeiaWeb.PersonLive.Choose do
   prop change, :event
 
   prop disabled, :boolean, default: false
+  prop small, :boolean, default: false
 
   @impl Phoenix.LiveComponent
   def mount(socket) do

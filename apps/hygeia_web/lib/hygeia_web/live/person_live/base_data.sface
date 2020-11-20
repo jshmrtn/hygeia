@@ -253,20 +253,56 @@
           </div>
         </div>
       </div>
+
+      <div class="mt-4" :if={{ @live_action == :edit }}>
+        <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
+          <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+          {{ gettext("Save") }}
+        </button>
+        <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
+          <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+          {{ gettext("Discard") }}
+        </button>
+      </div>
+
+      <LivePatch
+        class="d-block mt-4"
+        :if={{ @live_action == :show and authorized?(@person, :update, auth) }}
+        to={{ Routes.person_base_data_path(@socket, :edit, @person) }}
+      >
+        <button class="btn btn-primary mb-4" id="person-edit">
+          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+          {{ gettext("Edit") }}
+        </button>
+      </LivePatch>
     </Form>
 
-    <!-- TODO: Style -->
-    <div :if={{ @person.positions != [] }}>
-      <h2>{{ gettext("Organisation Positions") }}</h2>
+    <hr :if={{ @person.positions != [] }} class="my-5">
+    <div :if={{ @person.positions != [] }} class="hy-card-grid-2-cols">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ gettext("Organisation Positions") }}</h4>
 
-      <ul>
-        <li :for={{ position <- @person.positions }}>
-          {{ position.position }} -
-          <Link to={{ Routes.organisation_show_path(@socket, :show, position.organisation) }}>
-            {{ position.organisation.name }}
-          </Link>
-        </li>
-      </ul>
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>{{ gettext("Organisation") }}</th>
+                <th>{{ gettext("Position") }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr :for={{ position <- @person.positions }}>
+                <td>
+                  <Link to={{ Routes.organisation_show_path(@socket, :show, position.organisation) }}>
+                    {{ position.organisation.name }}
+                  </Link>
+                </td>
+                <td>{{ position.position }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </Context>
 </div>

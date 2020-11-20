@@ -7,23 +7,14 @@
   </InputContext>
   <Inputs for={{ :related_organisations }}>
     <InputContext assigns={{ assigns }} :let={{ form: form }}>
-      <div class="card mb-2">
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <Field class="form-group" name={{ :uuid }}>
-                <Label>{{ gettext("Organisation") }}</Label>
-                <HygeiaWeb.OrganisationLive.Choose
-                  id={{ {:related_organisation, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid) } }}
-                  change="change"
-                  disabled={{ @disabled }}
-                />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Field class="form-group" name={{ :uuid }}>
+        <HygeiaWeb.OrganisationLive.Choose
+          id={{ {:related_organisation, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid) } }}
+          change="change"
+          disabled={{ @disabled }}
+        />
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
     </InputContext>
   </Inputs>
     

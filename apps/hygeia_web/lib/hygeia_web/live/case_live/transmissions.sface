@@ -30,7 +30,7 @@
           id="received_transmissions"
         />
 
-        <div class="d-flex justify-content-between mb-1">
+        <div class="d-flex justify-content-between mb-1 mt-5">
           <h3>
             {{ gettext("Propagated") }}
           </h3>

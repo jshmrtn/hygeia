@@ -108,9 +108,9 @@
                     <tr>
                       <td :if={{ @live_action == :edit }}>
                         <Field name={{ :person_uuid }}>
-                          <!-- TODO: Style -->
                           <HygeiaWeb.PersonLive.Choose
                             id={{ {:position, Ecto.Changeset.fetch_field!(form.source, :uuid) } }}
+                            small={{ true }}
                             change={{ "change_position_person_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
                             disabled={{ @live_action != :edit }}
                           />
@@ -140,7 +140,7 @@
                       <td :if={{ @live_action == :edit }}>
                         <button
                           :if={{ Ecto.Changeset.get_field(form.source, :person_uuid) != nil or Ecto.Changeset.get_field(form.source, :position) != nil }}
-                          class="ml-1 btn btn-secondary btn-sm btn-danger"
+                          class="ml-1 btn btn-secondary btn-danger"
                           type="button"
                           phx-value-uuid={{ Ecto.Changeset.get_field(form.source, :uuid) }}
                           phx-click="remove_position"

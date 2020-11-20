@@ -333,6 +333,31 @@
               </div>
             </div>
           </div>
+
+          <div :if={{ @live_action == :edit }}>
+            <div class="mt-4" :if={{ @live_action == :edit }}>
+              <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
+                <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+                {{ gettext("Save") }}
+              </button>
+              <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
+                <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+                {{ gettext("Discard") }}
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-4" :if={{ @live_action == :show }}>
+            <LivePatch
+              :if={{ authorized?(@case, :update, auth) }}
+              to={{ Routes.case_base_data_path(@socket, :edit, @case) }}
+            >
+              <button class="btn btn-primary" id="case-edit">
+                <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                {{ gettext("Edit") }}
+              </button>
+            </LivePatch>
+          </div>
         </Form>
       </div>
     </div>

@@ -1,4 +1,4 @@
-<div>
+<div class="component-person-choose">
   <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
     <HiddenInput />
 
@@ -12,16 +12,16 @@
         get={{ person: person }}
       >
 
-        <div class="card">
+        <div class={{ "card" <> if @small, do: " card-small", else: "" }}>
           <div class="card-body py-2 px-3">
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 {{ person.first_name }} {{ person.last_name }}
-                <small class="d-block text-muted">{{ format_address(person.address) }}</small>
+                <small :if={{ !@small }} class="d-block text-muted">{{ format_address(person.address) }}</small>
               </div>
               <button
                 :if={{ not(@disabled) }}
-                class="btn btn-danger"
+                class={{ "btn btn-danger" <> if @small, do: " btn-sm", else: "" }}
                 :on-click={{ @change }}
                 type="button"
                 phx-value-from-uuid={{ person.uuid }}
@@ -42,7 +42,7 @@
       <HygeiaWeb.Modal
         id={{ {:choose_person, field} }}
         :if={{ @modal_open }}
-        title={{ gettext("Select Organisation") }}
+        title={{ gettext("Select Person") }}
         close="close_modal"
       >
         <div class="input-group">
