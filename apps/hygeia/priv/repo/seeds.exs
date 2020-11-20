@@ -31,7 +31,7 @@ Versioning.put_originator(:noone)
       server: "postfix-relay.postfix-relay",
       hostname: "smtp.covid19-tracing.ch",
       port: 25,
-      from_email: "test@covid19-tracing.ch"
+      from_email: "Info.ContactTracing@sg.ch"
     },
     outgoing_sms_configuration: %{
       __type__: "websms",
@@ -47,7 +47,7 @@ Versioning.put_originator(:noone)
       server: "postfix-relay.postfix-relay",
       hostname: "smtp.covid19-tracing.ch",
       port: 25,
-      from_email: "test@covid19-tracing.ch"
+      from_email: "Info.ContactTracing@sg.ch"
     },
     outgoing_sms_configuration: %{
       __type__: "websms",
@@ -63,7 +63,7 @@ Versioning.put_originator(:noone)
       server: "postfix-relay.postfix-relay",
       hostname: "smtp.covid19-tracing.ch",
       port: 25,
-      from_email: "test@covid19-tracing.ch"
+      from_email: "Info.ContactTracing@sg.ch"
     },
     outgoing_sms_configuration: %{
       __type__: "websms",
