@@ -32,7 +32,8 @@ defmodule Hygeia.CaseContext.Case.ContactMethod do
           Changeset.t()
   def changeset(contact_method, attrs) do
     contact_method
-    |> cast(attrs, [:type, :comment, :value])
+    |> cast(attrs, [:uuid, :type, :comment, :value])
+    |> fill_uuid
     |> validate_required([:type, :value])
     |> switch_type(fn
       :email, changeset ->
