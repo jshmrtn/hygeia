@@ -243,7 +243,6 @@ organisation_kssg = Repo.get_by!(Organisation, name: "Kantonsspital St. Gallen")
     clinical: %{
       reasons_for_test: [:symptoms, :outbreak_examination],
       symptoms: [:fever],
-      symptom_start: ~D[2020-10-10],
       test: ~D[2020-10-11],
       laboratory_report: ~D[2020-10-12],
       test_kind: :pcr,

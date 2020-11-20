@@ -7,7 +7,6 @@ defmodule HygeiaWeb.CaseLive.RelatedOrganisations do
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
-  alias Surface.Components.Form.Label
 
   prop disabled, :boolean, default: false
 

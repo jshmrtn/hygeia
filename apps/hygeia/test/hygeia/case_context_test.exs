@@ -368,7 +368,6 @@ defmodule Hygeia.CaseContextTest do
       clinical: %{
         reasons_for_test: [:symptoms, :outbreak_examination],
         symptoms: [:fever],
-        symptom_start: ~D[2020-10-10],
         test: ~D[2020-10-11],
         laboratory_report: ~D[2020-10-12],
         test_kind: :pcr,
@@ -448,7 +447,6 @@ defmodule Hygeia.CaseContextTest do
                   laboratory_report: ~D[2020-10-12],
                   reasons_for_test: [:symptoms, :outbreak_examination],
                   result: :positive,
-                  symptom_start: ~D[2020-10-10],
                   symptoms: [:fever],
                   test: ~D[2020-10-11],
                   test_kind: :pcr,

@@ -26,7 +26,6 @@ defmodule Hygeia.CaseContext.Case.Clinical do
   @type empty :: %__MODULE__{
           reasons_for_test: [TestReason.t()] | nil,
           symptoms: [Symptom.t()] | nil,
-          symptom_start: Date.t() | nil,
           test: Date.t() | nil,
           laboratory_report: Date.t() | nil,
           test_kind: TestKind.t() | nil,
@@ -36,7 +35,6 @@ defmodule Hygeia.CaseContext.Case.Clinical do
   @type t :: %__MODULE__{
           reasons_for_test: [TestReason.t()],
           symptoms: [Symptom.t()],
-          symptom_start: Date.t() | nil,
           test: Date.t() | nil,
           laboratory_report: Date.t() | nil,
           test_kind: TestKind.t() | nil,
@@ -46,7 +44,6 @@ defmodule Hygeia.CaseContext.Case.Clinical do
   embedded_schema do
     field :reasons_for_test, {:array, TestReason}
     field :symptoms, {:array, Symptom}
-    field :symptom_start, :date
     field :test, :date
     field :laboratory_report, :date
     field :test_kind, TestKind
@@ -60,7 +57,6 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     |> cast(attrs, [
       :reasons_for_test,
       :symptoms,
-      :symptom_start,
       :test,
       :laboratory_report,
       :test_kind,

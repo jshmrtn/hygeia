@@ -177,7 +177,8 @@
               :create,
               propagator_internal: true,
               propagator_case_uuid: @case.uuid,
-              default_tenant_uuid: @case.tenant_uuid
+              default_tenant_uuid: @case.tenant_uuid,
+              type: :contact_person
             ) }}
           >
             <span class="oi oi-plus mr-1" aria-hidden="true"></span>
