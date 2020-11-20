@@ -17,8 +17,10 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
+  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView
   # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
@@ -34,7 +36,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
           changeset:
             CreateSchema.changeset(%CreateSchema{people: []}, %{
               default_tracer_uuid: auth_user.uuid,
-              default_supervisor_uuid: auth_user.uuid
+              default_supervisor_uuid: auth_user.uuid,
+              default_country: "CH"
             }),
           tenants: tenants,
           supervisor_users: supervisor_users,
@@ -108,8 +111,12 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:upload, data}, socket) do
-    send_update(HygeiaWeb.CaseLive.CSVImport, id: "csv-import", data: data)
+  def handle_info({:upload, data, content_type}, socket) do
+    send_update(HygeiaWeb.CaseLive.CSVImport,
+      id: "csv-import",
+      data: data,
+      content_type: content_type
+    )
 
     {:noreply, socket}
   end
@@ -146,18 +153,40 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   def handle_info(_other, socket), do: {:noreply, socket}
 
   defp create_case({person_schema, {person, supervisor, tracer}}) do
-    {:ok, case} =
-      CaseContext.create_case(person, %{
-        phases: [%{details: %{__type__: :index}}],
-        supervisor_uuid: supervisor.uuid,
-        tracer_uuid: tracer.uuid,
-        clinical: %{
-          test: person_schema.test_date,
-          laboratory_report: person_schema.test_laboratory_report,
-          test_kind: person_schema.test_kind,
-          result: person_schema.test_result
-        }
-      })
+    attrs = %{
+      external_references: [],
+      phases: [%{details: %{__type__: :index}}],
+      supervisor_uuid: supervisor.uuid,
+      tracer_uuid: tracer.uuid,
+      clinical: %{
+        test: person_schema.test_date,
+        laboratory_report: person_schema.test_laboratory_report,
+        test_kind: person_schema.test_kind,
+        result: person_schema.test_result
+      }
+    }
+
+    attrs =
+      if is_nil(person_schema.ism_case_id),
+        do: attrs,
+        else:
+          Map.update!(
+            attrs,
+            :external_references,
+            &[%{type: :ism_case, value: person_schema.ism_case_id} | &1]
+          )
+
+    attrs =
+      if is_nil(person_schema.ism_report_id),
+        do: attrs,
+        else:
+          Map.update!(
+            attrs,
+            :external_references,
+            &[%{type: :ism_report, value: person_schema.ism_report_id} | &1]
+          )
+
+    {:ok, case} = CaseContext.create_case(person, attrs)
 
     case
   end

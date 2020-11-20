@@ -16,6 +16,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     belongs_to :default_supervisor, User, references: :uuid, foreign_key: :default_supervisor_uuid
     belongs_to :default_tracer, User, references: :uuid, foreign_key: :default_tracer_uuid
 
+    field :default_country, :string
+
     field :type, Type
 
     field :date, :date
@@ -37,6 +39,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       :default_tenant_uuid,
       :default_supervisor_uuid,
       :default_tracer_uuid,
+      :default_country,
       :type,
       :date,
       :propagator_case_uuid,

@@ -41,7 +41,34 @@ defmodule HygeiaWeb.CaseLive.Create do
         Enum.find_value(person.contact_methods, fn
           %ContactMethod{type: :email, value: value} -> value
           _other -> false
-        end)
+        end),
+      sex: person.sex,
+      birth_date: person.birth_date,
+      employer:
+        case person.employers do
+          [%{name: name}] -> name
+          _other -> nil
+        end,
+      address:
+        case person.address do
+          %{address: address} -> address
+        end,
+      zip:
+        case person.address do
+          %{zip: zip} -> zip
+        end,
+      place:
+        case person.address do
+          %{place: place} -> place
+        end,
+      subdivision:
+        case person.address do
+          %{subdivision: subdivision} -> subdivision
+        end,
+      country:
+        case person.address do
+          %{country: country} -> country
+        end
     })
   end
 
@@ -85,7 +112,11 @@ defmodule HygeiaWeb.CaseLive.Create do
     supervisor =
       Enum.find(socket.assigns.supervisor_users, &match?(%User{uuid: ^supervisor_uuid}, &1))
 
-    person_attrs = CreatePersonSchema.to_person_attrs(schema)
+    person_attrs =
+      CreatePersonSchema.to_person_attrs(
+        schema,
+        Ecto.Changeset.fetch_field!(global_changeset, :default_country)
+      )
 
     {:ok, person} = CaseContext.create_person(tenant, person_attrs)
 
@@ -199,6 +230,7 @@ defmodule HygeiaWeb.CaseLive.Create do
          |> Stream.map(&fetch_tenant(&1, tenants))
          |> Stream.map(&fetch_test_kind/1)
          |> Stream.map(&fetch_test_result/1)
+         |> Stream.map(&normalize_date/1)
          |> Stream.map(&CreatePersonSchema.changeset(%CreatePersonSchema{}, &1))
          |> Enum.to_list())
     )
@@ -301,6 +333,35 @@ defmodule HygeiaWeb.CaseLive.Create do
       "test_kind" => :test_kind,
       gettext("Test Kind") => :test_kind,
       "test_result" => :test_result,
-      gettext("Test Result") => :test_result
+      gettext("Test Result") => :test_result,
+
+      # Laboratory Report Names
+      "Fall ID" => :ism_case_id,
+      "Meldung ID" => :ism_report_id,
+      "Patient Nachname" => :last_name,
+      "Patient Vorname" => :first_name,
+      "Patient Geburtsdatum" => :birth_date,
+      "Patient Geschlecht" => :sex,
+      "Patient Telefon" => :mobile,
+      "Patient Strasse" => :address,
+      "Patient PLZ" => :zip,
+      "Patient Wohnort" => :place,
+      "Patient Kanton" => :subdivision,
+      "Entnahmedatum" => :test_date,
+      "Meldungseingang" => :test_laboratory_report,
+      "Testresultat" => :test_result
     }
+
+  defp normalize_date(row) do
+    Map.new(row, fn
+      {key, {year, month, day}} ->
+        case Date.new(year, month, day) do
+          {:ok, date} -> {key, date}
+          {:error, _reason} -> {key, nil}
+        end
+
+      {key, value} ->
+        {key, value}
+    end)
+  end
 end

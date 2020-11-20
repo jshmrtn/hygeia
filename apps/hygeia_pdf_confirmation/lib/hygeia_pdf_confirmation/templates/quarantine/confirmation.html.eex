@@ -197,7 +197,10 @@
     <%= for %{name: name, address: address} <- @case.person.employers do %>
       <li>
         <%= name %>
-        <%= Address.to_string(address, :short) %>
+        <%= case address do
+          nil -> nil
+          address -> Address.to_string(address, :short)
+        end %>
       </li>
     <% end %>
   </ul>

@@ -7,111 +7,155 @@
     submit="save" 
     opts={{ autocomplete: "off", id: "case-create-form", "phx-hook": "BlockNavigation" }}
   >
-    <div class="container mt-5">
-      <div class="row mb-2">
-        <div class="col">
-          <Field name={{ :default_tenant_uuid }} class="input-group">
-            <Label class="input-group-prepend mb-0">
-              <span class="input-group-text">
-                {{ gettext("Default Tenant") }}
-              </span>
-            </Label>
-            <Select 
-              class="form-control"
-              options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
-              opts={{ prompt: gettext("Select Tenant") }}
-            />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </div>
-        <div class="col">
-          <HiddenInput field={{ :default_supervisor_uuid }} />
+    <InputContext assigns={{ assigns }} :let={{ form: form }}>
+      <div class="container mt-5">
+        <div class="row mb-2">
+          <div class="col">
+            <Field name={{ :default_tenant_uuid }} class="input-group">
+              <Label class="input-group-prepend mb-0">
+                <span class="input-group-text">
+                  {{ gettext("Default Tenant") }}
+                </span>
+              </Label>
+              <Select 
+                class="form-control"
+                options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
+                opts={{ prompt: gettext("Select Tenant") }}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <HiddenInput field={{ :default_supervisor_uuid }} />
 
-          <Field name={{ :default_supervisor_uuid }} class="input-group">
-            <Label class="input-group-prepend mb-0">
-              <span class="input-group-text">
-                {{ gettext("Default Supervisor") }}
-              </span>
-            </Label>
-            <Select 
-              class="form-control"
-              options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
-              opts={{ prompt: gettext("Default Supervisor") }}
-            />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
+            <Field name={{ :default_supervisor_uuid }} class="input-group">
+              <Label class="input-group-prepend mb-0">
+                <span class="input-group-text">
+                  {{ gettext("Default Supervisor") }}
+                </span>
+              </Label>
+              <Select 
+                class="form-control"
+                options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
+                opts={{ prompt: gettext("Default Supervisor") }}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
         </div>
-        <div class="col">
-          <HiddenInput field={{ :default_tracer_uuid }} />
+        <div class="row mb-2">
+          <div class="col">
+            <HiddenInput field={{ :default_tracer_uuid }} />
 
-          <Field name={{ :default_tracer_uuid }} class="input-group">
-            <Label class="input-group-prepend mb-0">
-              <span class="input-group-text">
-                {{ gettext("Default Tracer") }}
-              </span>
-            </Label>
-            <Select 
-              class="form-control"
-              options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
-              opts={{ prompt: gettext("Default Tracer") }}
-            />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
+            <Field name={{ :default_tracer_uuid }} class="input-group">
+              <Label class="input-group-prepend mb-0">
+                <span class="input-group-text">
+                  {{ gettext("Default Tracer") }}
+                </span>
+              </Label>
+              <Select 
+                class="form-control"
+                options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
+                opts={{ prompt: gettext("Default Tracer") }}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <HiddenInput field={{ :default_country }} />
+
+            <Field name={{ :default_country }} class="input-group">
+              <Label class="input-group-prepend mb-0">
+                <span class="input-group-text">
+                  {{ gettext("Default Country") }}
+                </span>
+              </Label>
+              <Select class="form-control"
+                opts={{ prompt: gettext("Default country") }}
+                options={{ countries() }}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="mx-auto person-table">
-      <HygeiaWeb.CaseLive.PersonCreateTable id="person-table" tenants={{ @tenants }} supervisor_users={{ @supervisor_users }} tracer_users={{ @tracer_users }}>
-        <template slot="additional_header">
-          <th>
-            {{ gettext("Test Date") }}
-          </th>
-          <th>
-            {{ gettext("Laboratory report date") }}
-          </th>
-          <th>
-            {{ gettext("Test kind") }}
-          </th>
-          <th class="table-col-border">
-            {{ gettext("Test result") }}
-          </th>
-        </template>
-        <template slot="additional_row">
-          <td>
-            <Field class="fill-cell" name={{ :test_date }}>
-              <DateInput class="form-control" />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td>
-            <Field class="fill-cell" name={{ :test_laboratory_report }}>
-              <DateInput class="form-control" />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td>
-            <Field class="fill-cell" name={{ :test_kind }}>
-              <Select class="form-control" opts={{ prompt: gettext("Choose test kind") }} options={{ test_kinds() }} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td class="table-col-border">
-            <Field class="fill-cell" name={{ :test_result }}>
-              <Select class="form-control" opts={{ prompt: gettext("Choose test result") }} options={{ test_results() }} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-        </template>
-      </HygeiaWeb.CaseLive.PersonCreateTable>
-    </div>
+      <div class="mx-auto person-table">
+        <HygeiaWeb.CaseLive.PersonCreateTable
+          id="person-table"
+          tenants={{ @tenants }}
+          supervisor_users={{ @supervisor_users }}
+          tracer_users={{ @tracer_users }}
+          default_country={{ Phoenix.HTML.FormData.input_value(form.source, form, :default_country) }}
+        >
+          <template slot="additional_header">
+            <th>
+              {{ gettext("ISM Case ID") }}
+            </th>
+            <th>
+              {{ gettext("ISM Report ID") }}
+            </th>
+            <th>
+              {{ gettext("Test Date") }}
+            </th>
+            <th>
+              {{ gettext("Laboratory report date") }}
+            </th>
+            <th>
+              {{ gettext("Test kind") }}
+            </th>
+            <th class="table-col-border">
+              {{ gettext("Test result") }}
+            </th>
+          </template>
+          <template slot="additional_row">
+            <td>
+              <Field class="fill-cell" name={{ :ism_case_id }}>
+                <TextInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <Field class="fill-cell" name={{ :ism_report_id }}>
+                <TextInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <Field class="fill-cell" name={{ :test_date }}>
+                <DateInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <Field class="fill-cell" name={{ :test_laboratory_report }}>
+                <DateInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <Field class="fill-cell" name={{ :test_kind }}>
+                <Select class="form-control" opts={{ prompt: gettext("Choose test kind") }} options={{ test_kinds() }} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td class="table-col-border">
+              <Field class="fill-cell" name={{ :test_result }}>
+                <Select class="form-control" opts={{ prompt: gettext("Choose test result") }} options={{ test_results() }} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+          </template>
+        </HygeiaWeb.CaseLive.PersonCreateTable>
+      </div>
 
-    <div class="container">
-      <HygeiaWeb.CaseLive.CSVImport id="csv-import" mapping={{ get_csv_key_mapping() }} />
+      <div class="container">
+        <HygeiaWeb.CaseLive.CSVImport id="csv-import" mapping={{ get_csv_key_mapping() }} />
 
-      <button class="btn btn-primary mt-5" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
-        {{ gettext("Save") }}
-      </button>
-    </div>
+        <button class="btn btn-primary mt-5" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
+          {{ gettext("Save") }}
+        </button>
+      </div>
+    </InputContext>
   </Form>
 </div>

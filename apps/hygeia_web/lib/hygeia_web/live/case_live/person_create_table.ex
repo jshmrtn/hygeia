@@ -6,6 +6,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.TenantContext
+  alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
@@ -17,6 +18,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   prop tenants, :list, required: true
   prop supervisor_users, :list, required: true
   prop tracer_users, :list, required: true
+  prop default_country, :string, default: nil
 
   slot additional_header, required: false
   slot additional_row, required: false, props: [:disabled]

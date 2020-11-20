@@ -5,7 +5,11 @@ defmodule HygeiaWeb.UploadController do
   def upload(conn, %{"id" => id}) do
     {:ok, data, conn} = read_body(conn)
 
-    Phoenix.PubSub.broadcast!(Hygeia.PubSub, "uploads:#{id}", {:upload, data})
+    Phoenix.PubSub.broadcast!(
+      Hygeia.PubSub,
+      "uploads:#{id}",
+      {:upload, data, get_req_header(conn, "content-type")}
+    )
 
     send_resp(conn, :no_content, "")
   end

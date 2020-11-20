@@ -17,6 +17,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
+  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.RadioButton
@@ -41,6 +42,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
               params
               |> Map.put_new("default_tracer_uuid", auth_user.uuid)
               |> Map.put_new("default_supervisor_uuid", auth_user.uuid)
+              |> Map.put_new("default_country", "CH")
             ),
           tenants: tenants,
           supervisor_users: supervisor_users,
@@ -131,8 +133,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:upload, data}, socket) do
-    send_update(HygeiaWeb.CaseLive.CSVImport, id: "csv-import", data: data)
+  def handle_info({:upload, data, content_type}, socket) do
+    send_update(HygeiaWeb.CaseLive.CSVImport,
+      id: "csv-import",
+      data: data,
+      content_type: content_type
+    )
 
     {:noreply, socket}
   end

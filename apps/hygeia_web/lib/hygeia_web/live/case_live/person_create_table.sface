@@ -4,9 +4,16 @@
       <tr>
         <th scope="col">{{ gettext("First name") }}</th>
         <th scope="col">{{ gettext("Lastname") }}</th>
+        <th scope="col">{{ gettext("Sex") }}</th>
+        <th scope="col">{{ gettext("Birthdate") }}</th>
         <th scope="col">{{ gettext("Mobile Phone") }}</th>
         <th scope="col">{{ gettext("Landline") }}</th>
         <th scope="col">{{ gettext("Email") }}</th>
+        <th scope="col" class="table-col-border">{{ gettext("Address") }}</th>
+        <th scope="col">{{ gettext("ZIP") }}</th>
+        <th scope="col">{{ gettext("Place") }}</th>
+        <th scope="col">{{ gettext("Country") }}</th>
+        <th scope="col">{{ gettext("Subdivision") }}</th>
         <th scope="col" class="table-col-border">{{ gettext("Tenant") }}</th>
         <slot name="additional_header" />
         <th scope="col">{{ gettext("Supervisor") }}</th>
@@ -35,6 +42,24 @@
             </Field>
           </td>
           <td>
+            <HiddenInput field={{ :sex }} />
+            <Field class="fill-cell" name={{ :sex }}>
+              <Select
+                opts={{ prompt: gettext("choose sex"), disabled: form.source.changes[:accepted_duplicate] == true }}
+                class="form-control"
+                options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :birth_date }} />
+            <Field class="fill-cell" name={{ :birth_date }}>
+              <DateInput field={{ :birth_date }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </td>
+          <td>
             <HiddenInput field={{ :mobile }} />
             <Field class="fill-cell" name={{ :mobile }}>
               <TextInput field={{ :mobile }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
@@ -52,6 +77,48 @@
             <HiddenInput field={{ :email }} />
             <Field class="fill-cell" name={{ :email }}>
               <TextInput field={{ :email }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </td>
+          <td class="table-col-border">
+            <HiddenInput field={{ :address }} />
+            <Field class="fill-cell" name={{ :address }}>
+              <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :zip }} />
+            <Field class="fill-cell" name={{ :zip }}>
+              <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :place }} />
+            <Field class="fill-cell" name={{ :place }}>
+              <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :country }} />
+            <Field class="fill-cell" name={{ :country }}>
+              <Select class="form-control"
+                opts={{ prompt: gettext("Default country"), disabled: form.source.changes[:accepted_duplicate] == true }}
+                options={{ countries() }}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </td>
+          <td>
+            <HiddenInput field={{ :subdivision }} />
+            <Field class="fill-cell" name={{ :subdivision }}>
+              <Select
+                class="form-control"
+                opts={{ prompt: gettext("Choose subdivision"), disabled: form.source.changes[:accepted_duplicate] == true }}
+                field={{ :subdivision }} options={{ subdivisions(form.source, @default_country) }}
+              />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>

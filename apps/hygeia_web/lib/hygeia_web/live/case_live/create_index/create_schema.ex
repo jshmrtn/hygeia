@@ -11,6 +11,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
     belongs_to :default_tenant, Tenant, references: :uuid, foreign_key: :default_tenant_uuid
     belongs_to :default_supervisor, User, references: :uuid, foreign_key: :default_supervisor_uuid
     belongs_to :default_tracer, User, references: :uuid, foreign_key: :default_tracer_uuid
+    field :default_country, :string
 
     embeds_many :people, CreatePersonSchema, on_replace: :delete
   end
@@ -19,7 +20,12 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
           Ecto.Changeset.t()
   def changeset(schema, attrs \\ %{}) do
     schema
-    |> cast(attrs, [:default_tenant_uuid, :default_supervisor_uuid, :default_tracer_uuid])
+    |> cast(attrs, [
+      :default_tenant_uuid,
+      :default_supervisor_uuid,
+      :default_tracer_uuid,
+      :default_country
+    ])
     |> cast_embed(:people, required: true)
     |> validate_changeset()
   end

@@ -1,15 +1,15 @@
 <div class="d-flex">
-  {{ live_component @socket, PhoenixLiveViewDropzone, file_data: @file, file_types: ["application/csv", "text/csv"], target: @myself, button_class: "btn btn-secondary", button_text: gettext("Import CSV") }}
+  {{ live_component @socket, PhoenixLiveViewDropzone, file_data: @file, file_types: ["application/csv", "text/csv"], target: @myself, button_class: "btn btn-secondary", button_text: gettext("Import CSV / XLSX") }}
 
   <button type="button" class="ml-1 btn btn-info" data-trigger="click" data-toggle="popover" data-content="
     <dl>
       <dt>{{ gettext("File Type") }}</dt>
-      <dd>{{ gettext(".csv") }}</dd>
+      <dd>{{ gettext(".csv or .xlsx") }}</dd>
 
-      <dt>{{ gettext("Encoding") }}</dt>
+      <dt>{{ gettext("Encoding (CSV only)") }}</dt>
       <dd>{{ gettext("UTF-8") }}</dd>
 
-      <dt>{{ gettext("Separator") }}</dt>
+      <dt>{{ gettext("Separator (CSV only)") }}</dt>
       <dd>{{ gettext("Comma (,)") }}</dd>
 
       <dt>{{ gettext("Available Column Headers") }}</dt>

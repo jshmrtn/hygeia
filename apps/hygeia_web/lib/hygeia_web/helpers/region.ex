@@ -12,15 +12,24 @@ defmodule HygeiaWeb.Helpers.Region do
     |> Enum.sort_by(&elem(&1, 0))
   end
 
-  @spec subdivisions(form_source :: Phoenix.HTML.FormData.t()) :: [{String.t(), String.t()}]
-  def subdivisions(%Ecto.Changeset{} = changeset) do
+  @spec subdivisions(form_source :: Phoenix.HTML.FormData.t(), default :: String.t() | nil) :: [
+          {String.t(), String.t()}
+        ]
+  def subdivisions(form_source, default \\ nil)
+
+  def subdivisions(%Ecto.Changeset{} = changeset, default) do
     changeset
     |> Ecto.Changeset.fetch_field!(:country)
+    |> case do
+      nil -> default
+      "" -> default
+      other -> other
+    end
     |> _subdivisions()
   end
 
-  def subdivisions(%{} = form_data) do
-    _subdivisions(form_data[:country] || form_data["country"])
+  def subdivisions(%{} = form_data, default) do
+    _subdivisions(form_data[:country] || form_data["country"] || default)
   end
 
   defp _subdivisions(nil), do: []

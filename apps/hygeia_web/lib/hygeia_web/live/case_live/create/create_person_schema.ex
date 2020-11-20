@@ -4,10 +4,9 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
   use Hygeia, :model
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Person.Sex
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
-
-  # TODO: Add additional fields
 
   embedded_schema do
     field :first_name, :string
@@ -24,6 +23,15 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
     field :test_laboratory_report, :date
     field :test_kind, Hygeia.CaseContext.Case.Clinical.TestKind
     field :test_result, Hygeia.CaseContext.Case.Clinical.Result
+    field :ism_case_id, :string
+    field :ism_report_id, :string
+    field :birth_date, :date
+    field :sex, Sex
+    field :address, :string
+    field :zip, :string
+    field :place, :string
+    field :country, :string
+    field :subdivision, :string
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     belongs_to :supervisor, User, references: :uuid, foreign_key: :supervisor_uuid
@@ -55,7 +63,16 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
         :test_date,
         :test_laboratory_report,
         :test_kind,
-        :test_result
+        :test_result,
+        :ism_case_id,
+        :ism_report_id,
+        :birth_date,
+        :sex,
+        :address,
+        :zip,
+        :place,
+        :country,
+        :subdivision
       ])
 
     if Map.drop(changes, [:uuid]) == %{} do
@@ -161,20 +178,40 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
     end
   end
 
-  @spec to_person_attrs(schema :: %__MODULE__{}) :: Hygeia.ecto_changeset_params()
-  def to_person_attrs(%__MODULE__{
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        mobile: mobile,
-        landline: landline,
-        employer: employer
-      }) do
+  @spec to_person_attrs(schema :: %__MODULE__{}, default_country :: String.t() | nil) ::
+          Hygeia.ecto_changeset_params()
+  def to_person_attrs(
+        %__MODULE__{
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          mobile: mobile,
+          landline: landline,
+          employer: employer,
+          country: country,
+          sex: sex,
+          address: address,
+          birth_date: birth_date,
+          zip: zip,
+          place: place,
+          subdivision: subdivision
+        },
+        default_country
+      ) do
     attrs = %{
       first_name: first_name,
       last_name: last_name,
       contact_methods: [],
-      employers: []
+      birth_date: birth_date,
+      employers: [],
+      sex: sex,
+      address: %{
+        address: address,
+        zip: zip,
+        place: place,
+        subdivision: subdivision,
+        country: country || default_country
+      }
     }
 
     attrs =

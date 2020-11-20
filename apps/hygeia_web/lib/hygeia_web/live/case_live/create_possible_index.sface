@@ -7,130 +7,156 @@
     submit="save"
     opts={{ autocomplete: "off", id: "case-create-form", "phx-hook": "BlockNavigation" }}
   >
-    <div class="container">
-      <div class="row mb-3">
-        <div class="col-12 col-lg-6">
-          <div class="card">
-            <div class="card-body">
-              <Field name={{ :type }} class="form-group">
-                <Label>{{ gettext("Type") }}</Label>
-                <Select
-                  class="form-control"
-                  options={{ case_phase_possible_index_type_map() }}
-                  opts={{ prompt: gettext("Select Type") }}
-                />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-              <div :if={{ Ecto.Changeset.get_field(@changeset, :type) != :travel }}>
-                <Field name={{ :propagator_internal }} class="form-group">
-                  <div class="btn-group btn-group-toggle btn-radio-group">
-                    <label class="input-group-text input-sm">{{ gettext("Propagator") }}:</label>
-                    <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil, do: "active" }}">
-                      <RadioButton value="" /> {{ gettext("No propagator") }}
-                    </label>
-                    <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == true, do: "active" }}">
-                      <RadioButton value="true" /> {{ gettext("Internal") }}
-                    </label>
-                    <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == false, do: "active" }}">
-                      <RadioButton value="false" /> {{ gettext("External") }}
-                    </label>
-                  </div>
+    <InputContext assigns={{ assigns }} :let={{ form: form }}>
+      <div class="container">
+        <div class="row mb-3">
+          <div class="col-12 col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <Field name={{ :type }} class="form-group">
+                  <Label>{{ gettext("Type") }}</Label>
+                  <Select
+                    class="form-control"
+                    options={{ case_phase_possible_index_type_map() }}
+                    opts={{ prompt: gettext("Select Type") }}
+                  />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
-                <Field name={{ :propagator_ism_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
-                  <Label>{{ gettext("Propagator ISM ID") }}</Label>
-                  <TextInput class="form-control" />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-                <Field name={{ :propagator_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}>
-                  <Label>{{ gettext("Propagator Case") }}</Label>
-                  <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
+                <div :if={{ Ecto.Changeset.get_field(@changeset, :type) != :travel }}>
+                  <Field name={{ :propagator_internal }} class="form-group">
+                    <div class="btn-group btn-group-toggle btn-radio-group">
+                      <label class="input-group-text input-sm">{{ gettext("Propagator") }}:</label>
+                      <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil, do: "active" }}">
+                        <RadioButton value="" /> {{ gettext("No propagator") }}
+                      </label>
+                      <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == true, do: "active" }}">
+                        <RadioButton value="true" /> {{ gettext("Internal") }}
+                      </label>
+                      <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == false, do: "active" }}">
+                        <RadioButton value="false" /> {{ gettext("External") }}
+                      </label>
+                    </div>
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                  <Field name={{ :propagator_ism_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
+                    <Label>{{ gettext("Propagator ISM ID") }}</Label>
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                  <Field name={{ :propagator_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}>
+                    <Label>{{ gettext("Propagator Case") }}</Label>
+                    <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+
+                <Field name={{ :date }} class="form-group">
+                  <Label>{{ gettext("Date") }}</Label>
+                  <DateInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
-
-              <Field name={{ :date }} class="form-group">
-                <Label>{{ gettext("Date") }}</Label>
-                <DateInput class="form-control" />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
             </div>
+          </div>
+        </div>
+
+        <Inputs for={{ :infection_place }}>
+          <HygeiaWeb.TransmissionLive.InfectionPlace
+            id="infection_place"
+            types={{ @infection_place_types }}
+          />
+        </Inputs>
+      </div>
+
+      <div class="container mt-5">
+        <div class="row mb-2">
+          <div class="col">
+            <Field name={{ :default_tenant_uuid }} class="input-group">
+              <Label class="input-group-prepend mb-0">
+                <span class="input-group-text">
+                  {{ gettext("Default Tenant") }}
+                </span>
+              </Label>
+              <Select 
+                class="form-control"
+                options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
+                opts={{ prompt: gettext("Select Tenant") }}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <HiddenInput field={{ :default_supervisor_uuid }} />
+
+            <Field name={{ :default_supervisor_uuid }} class="input-group">
+              <Label class="input-group-prepend mb-0">
+                <span class="input-group-text">
+                  {{ gettext("Default Supervisor") }}
+                </span>
+              </Label>
+              <Select 
+                class="form-control"
+                options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
+                opts={{ prompt: gettext("Default Supervisor") }}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">
+            <HiddenInput field={{ :default_tracer_uuid }} />
+
+            <Field name={{ :default_tracer_uuid }} class="input-group">
+              <Label class="input-group-prepend mb-0">
+                <span class="input-group-text">
+                  {{ gettext("Default Tracer") }}
+                </span>
+              </Label>
+              <Select 
+                class="form-control"
+                options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
+                opts={{ prompt: gettext("Default Tracer") }}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <HiddenInput field={{ :default_country }} />
+
+            <Field name={{ :default_country }} class="input-group">
+              <Label class="input-group-prepend mb-0">
+                <span class="input-group-text">
+                  {{ gettext("Default Country") }}
+                </span>
+              </Label>
+              <Select class="form-control"
+                opts={{ prompt: gettext("Default country") }}
+                options={{ countries() }}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
           </div>
         </div>
       </div>
 
-      <Inputs for={{ :infection_place }}>
-        <HygeiaWeb.TransmissionLive.InfectionPlace
-          id="infection_place"
-          types={{ @infection_place_types }}
+      <div class="mx-auto person-table">
+        <HygeiaWeb.CaseLive.PersonCreateTable
+          id="person-table"
+          tenants={{ @tenants }}
+          supervisor_users={{ @supervisor_users }}
+          tracer_users={{ @tracer_users }}
+          default_country={{ Phoenix.HTML.FormData.input_value(form.source, form, :default_country) }}
         />
-      </Inputs>
-    </div>
-
-    <div class="container mt-5">
-      <div class="row mb-2">
-        <div class="col">
-          <Field name={{ :default_tenant_uuid }} class="input-group">
-            <Label class="input-group-prepend mb-0">
-              <span class="input-group-text">
-                {{ gettext("Default Tenant") }}
-              </span>
-            </Label>
-            <Select 
-              class="form-control"
-              options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
-              opts={{ prompt: gettext("Select Tenant") }}
-            />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </div>
-        <div class="col">
-          <HiddenInput field={{ :default_supervisor_uuid }} />
-
-          <Field name={{ :default_supervisor_uuid }} class="input-group">
-            <Label class="input-group-prepend mb-0">
-              <span class="input-group-text">
-                {{ gettext("Default Supervisor") }}
-              </span>
-            </Label>
-            <Select 
-              class="form-control"
-              options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
-              opts={{ prompt: gettext("Default Supervisor") }}
-            />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </div>
-        <div class="col">
-          <HiddenInput field={{ :default_tracer_uuid }} />
-
-          <Field name={{ :default_tracer_uuid }} class="input-group">
-            <Label class="input-group-prepend mb-0">
-              <span class="input-group-text">
-                {{ gettext("Default Tracer") }}
-              </span>
-            </Label>
-            <Select 
-              class="form-control"
-              options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
-              opts={{ prompt: gettext("Default Tracer") }}
-            />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </div>
       </div>
-    </div>
 
-    <div class="mx-auto person-table">
-      <HygeiaWeb.CaseLive.PersonCreateTable id="person-table" tenants={{ @tenants }} supervisor_users={{ @supervisor_users }} tracer_users={{ @tracer_users }} />
-    </div>
+      <div class="container">
+        <HygeiaWeb.CaseLive.CSVImport id="csv-import" mapping={{ get_csv_key_mapping() }} />
 
-    <div class="container">
-      <HygeiaWeb.CaseLive.CSVImport id="csv-import" mapping={{ get_csv_key_mapping() }} />
-
-      <button class="btn btn-primary mt-5" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
-        {{ gettext("Save") }}
-      </button>
-    </div>
+        <button class="btn btn-primary mt-5" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
+          {{ gettext("Save") }}
+        </button>
+      </div>
+    </InputContext>
   </Form>
 </div>
