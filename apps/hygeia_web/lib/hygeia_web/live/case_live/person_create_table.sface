@@ -113,7 +113,7 @@
                 phx-target={{ @myself }}
                 title={{ gettext("Check Duplicates") }}
               >
-                <span class="oi oi-person" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                <span class="oi oi-person" aria-hidden="true"></span>
               </button>
 
               <HygeiaWeb.Modal
