@@ -176,17 +176,12 @@
                           type={{ :possible_index }}
                           id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
                         >
-                          <p>
-                            <Link to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, Ecto.Changeset.fetch_field!(form.source, :uuid)) }}>
-                              {{ gettext("Quarantine Confirmation") }}
-                            </Link>
-                          </p>
                           <InputContext assigns={{ assigns }} :let={{ form: form }}>
                             <div class="form-group">
                               <Label>{{ gettext("Sub Type") }}</Label>
-                              <span class="form-control">
+                              <div class="value">
                                 {{ form.source |> Ecto.Changeset.fetch_field!(:type) |> case_phase_possible_index_type_translation() }}
-                              </span>
+                              </div>
                             </div>
 
                             <Field name={{ :end_reason }} class="form-group">

@@ -1,5 +1,203 @@
-Isolation
+<style>
+  hr {
+    height: 100px;
+  }
 
-<pre><%= inspect(@phase, pretty: true) %></pre>
+  body {
+    font-family: Arial, sans-serif;
+    display: block;
+    color: #000;
+    font-size: 14pt;
+    line-height: 1.2;
+  }
 
-<pre><%= inspect(@case, pretty: true) %></pre>
+  .very-small {
+    font-size: 8pt;
+  }
+
+  hr {
+    border-color: #000;
+    margin-top: 0;
+    width: 50%;
+    margin-right: 50%;
+  }
+
+  h1 {
+    font-weight: bold;
+    font-size: 14pt;
+  }
+
+  h2 {
+    font-size: 14pt;
+    text-decoration: underline;
+  }
+
+  p {
+    font-size: 14pt;
+  }
+
+  ul {
+    list-style-type: none;
+    font-size: 14pt;
+  }
+
+  ul > li {
+    margin-left: 6mm;
+    position: relative;
+  }
+
+  ul > li:before {
+    content: "-";
+    position: absolute;
+    left: -7mm;
+  }
+
+  .p-2x-margin {
+    margin-bottom: 3mm;
+  }
+
+  .p-4x-margin {
+    margin-bottom: 6mm;
+  }
+
+  .additional-information {
+    line-height: 1.5;
+  }
+
+  .additional-information h2,
+  .additional-information ol > li {
+    color: #e46c0a;
+    text-decoration: none;
+  }
+
+  .additional-information ul > li {
+    margin-left: 0mm;
+    color: #000;
+  }
+</style>
+
+<small class="very-small">Gesundheitsdepartement, Oberer Graben 32, 9001 St.Gallen</small>
+<hr />
+
+<div class="row">
+  <div class="col-xs-7">
+    <%= @case.person.first_name %> <%= @case.person.last_name %><br />
+    <%= if @case.person.address, do: @case.person.address |> Address.to_string(:long) |> String.split("\n") |> Enum.intersperse(tag(:br)) %>
+  </div>
+  <div class="col-xs-5">
+    <p>
+      <div style="margin-bottom: -1mm; font-size: 14pt;">Dr. Danuta Zemp</div>
+      <div style="font-size: 12pt;">Kantonsärztin</div>
+    </p>
+    <p style="font-size: 12pt;">
+      Gesundheitsdepartement<br />
+      Oberer Graben 32<br />
+      9001 St.Gallen<br />
+      <a style="color: #000;" href="https://www.sg.ch/gesundheit-soziales/gesundheit.html">www.gesundheit.sg.ch</a>
+    </p>
+  </div>
+</div>
+
+<p style="margin-bottom: 20mm; margin-top: 5mm;">
+  St. Gallen, <%= Cldr.Date.to_string!(Date.utc_today(), HygeiaCldr) %>
+</p>
+
+<h1>Bestätigung zur Isolation</h1>
+
+<p>Wie Ihnen bereits durch Ihren Hausarzt, bzw. durch das Contact Tracing mitgeteilt wurde, wurden Sie positiv auf das neue Coronavirus (Sars-CoV-2) getestet.</p>
+
+<p class="p-4x-margin">Gestützt auf das Epidemiengesetz (EpG) werden Sie deshalb <strong>einer 10-tägigen Isolation unterstellt</strong> (Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG). Ziel dieser Isolation ist es, die Ausbreitung des Coronavirus einzudämmen.</p>
+
+<p class="p-4x-margin">
+  Ihre Isolation dauert somit vom <%= Cldr.Date.to_string!(@phase.start, HygeiaCldr) %> bis
+  <%= Cldr.Date.to_string!(@phase.end, HygeiaCldr) %>.
+</p>
+
+<p class="p-4x-margin">
+  Hier finden Sie das
+  <a href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/merkblatt-selbstisolation-covid-19.pdf.download.pdf/covid-19_anweisungen_isolation.pdf">Merkblatt</a>
+  vom Bundesamt für Gesundheit (BAG) zur <strong>Isolation</strong>.
+  Bitte befolgen Sie die entsprechenden Verhaltensanweisungen.<br>
+  <%# TODO: bag link %>
+  Häufig gestellte Fragen (FAQs) und deren Beantwortung finden Sie auf der Webseite des <a href="https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/haeufig-gestellte-fragen.html">BAG</a>.
+  Alles über das Contact Tracing im Kanton St.Gallen finden Sie <a href="https://www.sg.ch/tools/informationen-coronavirus/contact-tracing.html">hier</a>.
+  Bei dringenden Fragen oder Unklarheiten erreichen sie uns wie folgt:
+</p>
+
+<p class="p-4x-margin">
+  <a href="mailto:infoline@sg.ch">infoline@sg.ch</a> oder
+  <a href="https://www.sg.ch/tools/informationen-coronavirus/Kontaktformular_Corona_Virus/">Kontaktformular</a>
+  oder per Telefon <a href="tel:+41-58-229-22-33">058 229 22 33</a>
+</p>
+
+<p class="p-4x-margin">
+  Wir werden Ihre Anfragen schnellstmöglich beantworten. Bei medizinischen Notfällen wenden Sie sich bitte an Ihren
+  Hausarzt oder den diensthabenden Notfallarzt.
+</p>
+
+<p class="p-2x-margin">
+  Freundliche Grüsse
+</p>
+
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALYAAACRCAMAAABZh7K4AAADAFBMVEX9/f7///////3//v/9/fz9///9/f/+//3//f3///v7/Pz5+fr//fv+//v9/fv7+vr//P///fn4+Pj8+/v8/P77/Pj7+ff5+vj++/z8//////n9/Pn//P79/Pf19fb8+//6+/9FRUX///b39/b8//37+v0vLy/3+PIzMzT09PR+fXz5+PX7/vQqKSk3Nzf7/Pr4+/f6+vSysrJiYmFWVVb5+fz++vn9/vj39viqqqo/Pz3y8vNlZWdaWVo5ODr4/PtubW73+f7///L29PKfn56FhIVqamj6/v3u7exeXV5JSUpAQEL++/Tq6uvAwL+5ubmnp6aWl5VTUlE8Ozz/+v/7+fHm5ubDw8O1trZ5eXn8+Pv39vvV1tTHxsejo6Kbmpp1dXXS0tP59//v7+/f396CgYFycnDp6ejb29vY19iIkdjKysv4++3h4OJQT1H9//vZ3e29vbyNjIr69fvU2+jP0M+JiYn3+vro8Pb6/vHy8fDj5/D09e7Gzeh4g9aVm9WTkpPj6vj69fXq6vTN0uni5OORlN2qsdx2g81ueMWurq72/f/v8Pj/+fZDQz/6//hweNNOTU0iIiH0+fz3/vLHy999itV/i8+Qj5Dv9vixuem6wuOnrOL99//f4fHq7euCiNyfptSJjM7z/fjb5PbV2vLu9/G7xOy5vOCVodt3fNuNlNNDRFI5OEf3//vz9/jq8vHa5OyusuaXm+KxueCbp9qmqNesstZ/fdN7fMZvcIkxMyzBxO22vezAyuri4ummsuWbpeXK0uPT0+JmdtWBhslja8hiabY+O2Dt9P7O1/CAjeOcpN9rbcxfXlUvMD3T3PfJ0PTj7e/T1e/+/u3z/O3Axt2gr9yxuNllc8NhZXROTUPz9P3z8vjx+vT29+aNlORaYbuRlrm0s6xERW48PDJYZMqbocnP0cigoamamKBOUmPe39SoqspRWsKAhbtVWJJKSoi9vtGGmMq5uL+trrt3drBeXqWJi6M6PJd6eomTlsliYMlOUbFZXIJVVHsNwoK/AAApV0lEQVR42sTV0W6DMAwF0NgXF5CYxKQ9VZX2/385cGNCMIG0XdX71BQrOXUNhOPQErZ1ugi2D2JFmrjAfAUgS76nOyk708fVvcCGfYxuM1ewyR1UyabTonp2aP1WevGY7c6sFZ01mYA7EVEBsjkQu5SMlKWw52rtCk5JweVwC0yRTYcwR8Ra693MQNrhU2zaZdOaLc5d3DNVvY1tQwrHNvUum9ds/B8bL7EFC9NqtmiU2c57yEbej3q2rTmxF3XEQXyvD9jhaTZ58Bk7JHaSODZA3Lat68RLbOalhlwKc2ZrJLYp4VqCKcGx39rt7RNEcYCVUwo2k2a/BlMul4BdLuv4cDY17jjOM/dAnDdP4Y0Vj0xhBmvuPW1Jo+Q5vxcmiBy85zxb4bQTjiOIp9iIXntOrNhsz2lla0AQ+jCbzaZimrmI7tRr/S6xIY+zg2dbjZA8zuaFrVrSZvf9MHzNhfYPdIjR9kC8Oti6dH8Vuq37RTZq2dpdVhww4ouJApgn9dAkdt93HZPej10/dK3UsKWWHaLasanMthBhHMcm6IR0t9utaX5C0zJbUT989zz01+sAKbDz4Izt55/yIseWxI6w9o8UuwltIogCADzz3uzMbrOzzTZN89e4wR+KKNge2goeQurBS4560ZtHURpQMEVQ/FesWPAPrIoKVkTwv+pBFLRaEAV/UUEPvXjUg+BNcDLpupu1aRUfJCEbsvORvH3vzSKPx7129YRoE8/jJGBTw7ZMr+AVent72/rinNNZ2OS/2I3R0C/CZwTw/YRz3o68haXtznTOsRNMhdDZzrLaCdc+7x6mVjLGSfSSBBBAMXA0nHqua7J5NL/IQ1m2ahkvFIqppJtu3xqLpV0QssYmDPKweM/NfecOnDx54MCGl8kONARVytnHIIjuh7B5KUFsyoYoWzfpoKB4xZZjmWJba7mvowwWHWKmaQMFYDg0fPfypS2713EDsp+e/ThvsIxBqREBzMrGWuh1Zhw5DMS/ZYtaEoTYhYULDn2otKY6Ng9sG7+yo1qM19gUsl736W3z5y+KpXryrUdTXnbk+D+yDb92AkDUjXUVIv4D25w+gvFOdrVnbHRPJdZz8fb+0YcP90wOxxHAIMTNPq625xxHStetPdoqT5MUAQ1jrjEocPu71j+bFWLQi5sVvz/Zwj/CCqWxW9XhI6/vjR85XF692TpZSQNQgxPZ7yVZKIc/zf8yj1IxY5Y2/GjRJo7cDyOQI2LQphu+8zdskijI/c+XXn00cnZgV4+d7oJv2zprbCGcnGMiItVLIdKSfLo2o9803kTR6Gbs2uGAzYPSjxgeisJfRorqBWZiCwSqs7Tl0JqdT96N7bh1bWO5zwW2pHSwVDuRECAdy9a9nVOKPE5T1RHGedgUrtNAAf5Q+xOOP9LUoslEM+udoXodYYJotqDoHG3dcHzehlOHxpIJN5FL9B0/4WJ9QSFtW7lJnd0ZH7h9z1HsYMMZzdJoABL8zUb0d0k6gDE2Nxsb2MJvghRb1m0ZuX7v/rF3nJvAXUYvPMgadbZkUrEJQcMARfcGTt7Pcz0PhhMlwg73YNCrMdau2SpCbMJU+DhsylYRZIkItgDr3AOjBytDvZ63CHlGpqsv8mn1KdTZQii2YQip2Ge6RoYTnlI3sqHOxghbx3RKtih2vDOu5WigDhFm0ybswG0oc3A1A3l76emLG4vTZZtxxW633p/O5uqznyWZUGxRW1r5Gb20g7Z6SDFggz9C+uxo+9RA3e+VHKcX5XxazYJRYBrchB3ZN/Js96eJib1d693VKAnPOKXlEwtirmYrtWKrLFFiJt18jG7f0rdKsQ2OPtlvIlG2YWiKqUIva1pSNyoKdbapzQGaBt4Im0TYBqJgC/v46NcthaWin9mSc9Zx9f34/LRbM1lSMMIU2xYmkTLvlF9uH1qS+V16AcLLYkNqI5+umQiKTZh0bQSQTrFUKJRKvSnbymk2IkBkfIyyo/MM51wkl252fu5fE+ODg/0OI+1u7PVIWxdKNE3bkjo7FJuZxJblmLthz/JkC/p1BJCE3A1nN3Rf0YeQcMJy+UTb1mUA1uC1o7urK/qzsLl3GUtrNcx+r1zPodH/MRc79OTbYGlA9jPGHJbp4eN3aB6YZiu1kpk6S8DKtVaeHFsvmM+OtOTIj63USmwCciH7e7pjy2DFm1O3th+cnJycmpr6eKc65LQgBds052br8NFILZN2mO+/xlYW83nGOXGc4q7rE2tapWCh0QcATVMApJae29TNHBFJtZnYiEQAUMIcm3nG1u4khQcHv3z8/uHN7nnphJuaV9kx9apLcrQsKWDmLQfOyEaOdBDdo78oNQ+4Ju4ojt///v/cJbnkMiCLEEYGgYS9AgjIjgyRKXsqVoEqQ0QRlKJVEQVFRXHP1uK2WkertdaqtY4Oa6u2amtt7d57XgIIiNX2PsAnn+Ny983Le//3e+/9V3y1lqMieKRlreDb55p2rEEMKSJY5L1LrbZFnI6nN5kliOYMq78ehI1IyBxskR1/pAw3b3vmVPk2DQ7wDnNpJBUQ6aZXrPiZZyNkilOSxODQ4nNQUTMYG7+3BCGhz76Vp8bZ0mwhVGj5JpNQ1LQyw9tOCEkm6vqo+7AdpU/1LBI7avm92IOWbatSQEOxmQhmvFso1znRnK2zW7uOzcHdvb29EJvUMoeChb0/6quWXEuPoF+P9wI/CLt/yeo7KbS317/adf4TQCO2EDCUNJ6558LMTMCGEBHEUE9gqRTnD/AkSMvnDS93yfuxAYRylYr2qp/y1LHWq5ueUKsFNN/6cJKlNZu1U7SBJz9QCazCAcKHY2ODsK1X2ue2lR+/8JRGrSUxnDEix5tYu0mUIYc4acGGgyhoL+XrXUaKx0GIjw/ntmCT+OCWnJCXZJSRc06cKn8L8mWl9iIS4AAKrfmcnmLnlfH973YqezbHCtPHDR6MPVhpstmYPLBt/vZ3ntOK+azes2rV1iXd6yC0OBoxNPBQaXfP65lRIpzESDa8v0wZig0hgDyRj2bK3oMfH9zAGanxVjJvsHiVlRpDfBMobfjgyfd5ELdi92XCf8GGrAFsnEdzRYFby/VXG5eZFb1ujEuTlkxdF4hDyEBjEA74MAQSu/0HOUKViQ8g6m8Vw2HYfZmRYEJRSs+cfXrTCGFpkIQmWArLI6zZnMslAN+dito8233dALaFmzWkMULiFuxheZ3HE9nXb957fr7JW9u7ZgjtzNvnzRAx12NoKBWArBmvv/K2Tq1SIghJHGPALSJpwClIi3hnsC02suWqlA4jX519en4mJ1Joz+PQfarcel+ESEAJlh9Y0uEtUvalSHJAAT58lsn4njxQvO147dURyyQ2fA4DoYWCN1uDchmLMVS9AdKX+TCtrt7ctVVlUnAR8wQ2wC3YzN8BMcXILdyKjbO5XK5G7P3u1fmNojwxLcwQWmIB78/KCu0UGkhkb301fXEUgVubdAy7RUWD+7Hx4dRsSAjklfu3HNoEzBI+YkQTba5sO3xSzYYMNptEFlPaAgxayyMU2LZ2/oxaAnJJhEEuYzQuTjLPGrgdyeQ6CBkGAiOIm6Km1h2NogCd1IYFhYO+ZsIW07KmkCZq6sdVlXIRgnBAjj0amwXZTMdMmadf/f7VDZEA57CZZV/to1yzIEnKBtASc8hiUG4QERCkC6AQXVvVc9lJGySFbFsC4woAl8QQjkh4D7u3LQsIR4UiQLWlq7Wqw00id3RyYhI7FDLk1gBjsBGtVXiLqz6ukqkgY2oFwRoAH4Y9fMVik3Cx+fyPH34PKpJJvpSNaFPeq6f3luo4fAHiWiLHouyfrKgYG6QJlNZ2H3ni8ezg8bgNl6KoSaODxyMbAbJBNhSF3dOvDAWOdD5Bu5tOH9wdqbRn2xNOBCRJTAj7D4Kg+RK+Zv3HK1CSnM2cVwzWv4/GBhjOXzd1Qeqv+z7z+JTCAY2A3q780PgIEE0DLzHiAi/ghcZ4JHq6lPiGgsYdB1LaE9ufL0QOAIiLKpzHUBTAZRbnRhgAZF8eAzxRZP30eUu26vN4vEAeJBwJCLE+ZEYSYgqC5iTlrT+9wsnIE+FwoLjsZX80Ni0M2LJ5avPXMZ0xQQ6+q7JARUHRt0/+llinSY4ZA8ZU+1ZwZaC4GIxy9luakDK15807hgYQ0e5WYoj1LSzxrw4qCPYVJy+MzamDAEN4b8mEQZvdx0+tDtDXO7HlNHugLWKt4TBbBWYPVLYvn64SC2gRzbovD4NHYLMAYEsc3Vdvqq0J8/jUTTbBJa6zIi59552ICenJZa45Hqlhrn6hwAHkhPtlTxoV7xFz+slsl/F1sVkx41zC4jrLJi7NjnHJcQmu8YhPCwNUr7xnKVikcOSOw2OjND7ulnID68cGDKATc4LrpGOX2l25MEcsYis5GKFgDZ0oWnt7D8VGWOUTG7tvHvUMiXdwy08p8qgu3nWlOeJuIuY5BkxzTgsF0wDFdcvx93AJvp2w8Yp+YaJbcHu7x3jf7Gku00oSs/0jKtLCavxBqh8Q41aNJqe9SrdsOmDSV+Zi7hwhYaGGfb0cK74tTbsvWz77yN5KJvAhtDj+EGzWMKE9pJpmWbCp6eXrW9b/5Ts+LSI/JC7VI/taDiiKyHJ9zDP1seL40FUgFrihiKKxk8KKU3ZdKXi8zrVo0vic8BTX5gjXmhLPgjT/GL+caWWgKA5IcAj5OEoK7F7z0txM/ai5M5UmnhW7L8dZky4kbL29nzj2+/FlKpWIZ4lOhP13bGAdHxGRgV0z30ta+Vld9Gj/VcUhzhc/OhqDZ9WMSkitSHBOeLy5EDQDsSA/wdm5+OQ3d4IjisCPl8Lv+Bvy09Lj/Isn+dVNDHOenB8TA3wnAAnDyFLnLm+6cHx5nvvJeV1rRGYaQnavEMetE2+EmRWS5ccOv5ghdSdoHAeDI7H/1UOxIWQ8jbPmJdPNbQtowJbjwHEE59hmIHJEtJJZ1gDwYn4FmM5GxGuROm658HItHjl/5ZFDJXOP2GkcKSDg6mQairmpDQAICQBg22Cm+uUvXXjTZp3Pmnkzvp8ZyLWxZnqIWXInBgFUMtmy+9ZzHToRR8rChpSdA2XLsLJm8AYzBhtG1i/YG2S3skkaoBMEifMap74yMlqq4EqVDRqBzEHMQCMBUoqk0Ysaj5zMO/fJggNzRN5RKzfRgjxKbEPp9AE6sZhCSEbSMphhz8306e6ZLS4dGV31zo3RVxc7yJElnghL8WxRTzCDo4vsOL8NtIhE9hBnDR8tDFKog3Y+DdpzY6kNkOLE014t+1qnUABglCzT4fD0ykA5ZGoc5jJZr+LD5SKVfo/22Y3zDx/ctlitb4mc2tqm8SEs0jtT+vZlWyESC0ic5vPsAxzaqv7YvjuIFm85YH77wAk7AUZAS+1O8tgEpuXyIb7u8r7yphlyEc7DLVCP3nsGYH/bG5K93RSeSLJoSYODumtF6aTCmMJ8yRd/r0gyim3s7QX5qaTsscKxiEshpdSoNe39/avZc7s5RjejT8tTr0wdYct9PLi5QtqQNHtcdKZmLFXgC2QSaZDmyh/bqEaJeMaac42cZ0YLaAVh7atyGAlBcLUdpbwba3tOytlTkEWow2HUrPs6aEM/Eeq1tkgwZf9aXDV91siGQr9p/ncKPvSLbAAWP8V9J2NZnqEaAQiy4YP12w9/dG2fO44blYADwJfngYmIzPKfXKjkrFmgFS4G7RN9ywACEDzXOl0vNoo7tu+vbKnaBGQ4yzopxnHE9dLp9I43TvRsMmfwoIlj8dRHz8vu/x+BIQab6p4VvQc8sx2KU8YAod/nf+aI60KLsyUykBpf4GKwpeoMEcHVxWf/+jAkYWJwTkS1W45hcvHprPj4ZKfqsLjCMTm7nCdfD0tzjR8TU2Eovnj08BYH40ifpLlrtbV2XTMpy5qGSAu22TwyT9L29JJbb8K8TNoqj3Hw/7CtS7/F2sjuxAvyoC2t79lLU5pFLT+G/9g+ysOQE/KYGyhMb186riHIJTbOs8y5rPPn62EFnYayztvPT07t/K49dJrnOI9QQ2dR4tHmaWkhNR7NsRNidl37KKH75roMaeXMeW36xU1dHB9g7btD3A4Q8nXuc3vKq5LW+SiVNIfzYGr8odiQYH4UECtt7LnpoF79UpRQGhxjbDl6vcg/2zMuwqPOASz0DE0vIojsFP+Emuotl+6WlfkmOAQlxj1/e75rRXxiajKoLgp9Pvba+27jXWKjPcam5nya/sHRyY15PrUtN2bPFCOvBU0SE8EiGW4taXIU7T63cuPruGOAyRZzJB9ka4svPWSm2TdoIxyhzm7+WrX+Rg/TV5AuXNjx0l/+KWnVrmUxcRPFWHa7zOBSV+Eamhpek39hV1ZsWXYa4revCvny653JMSl+rhM6J8e6/FYYPTrBABrSx0+7FrzreMF1H42osXtelbe3bk5rB8VhSJDS1jYwt6Np46w37CptIS5CLAJ7EDYk8UdgWyd5TmiZ+6wGceCxd9SlfGNw3E/fuPoWLB3nsarI43EHFBxPjUv0D/b0jQuP/emQc0lxWnWnodmjJOTMi3cKOmObXWLDDfGuZ5tF8c45hrrwz377/JuwwOTJpZWBioNza6mR3sevKNynAMAGdJ5dx9xZs5rUUfUB9kKhEIMsDD7A2BZI7FHYgHCUub+xw66lbeWGQN2U3LtnI2KT0aQiWBAX5ouJUV0qcpsYkRWXlhr6yyeKzyYl+5UsDAtbeOObQ5yasb6G+JToCWm/JRz1NRomGCbUGT7/+9svP1ONT1XXSrY/11GqlPms5bqbJQDaq6Uda2bd2hcVZWOys4EA9k6bhu1PHk78YKFN2Iov31oRsPjKeXWgWqKbs1ERmEtBQHEBwEiSiwMbrsCSbNyF8931HJnCqklNb5Wrdb13klKOJ/5YBJDltS7j+z9fdmQLcoHcfeozUo1E7QPWSiRmLx7lrnhj1rwnogIpnbX5QSLM0cpt9eR+q8NhQfiv1kaKxU8sWNYgW7m+0paj0u/fcLMlAwdySNggDEckogFpy6VN4vefPPQeivY2U3K5tMH7SFXtDB/IW5xL6bs3n/rdOwDaSGWNAS/8enKPXiNxuKnfd6SbUotUgee2lyKFac/upvLy9SBKJLLjQcAw4lqMGMCGDPZ91PAR2CazaPUz6rymHVFGs6rlxn7mlFLFYfa9CCEGEIlbNhvpBBJpUtccbwnkahGtWszZ/g4ARgFiL6713tZzsnW0D9NEwPXvTf31O73ZiaYBa0PPzGWYnCdVt67HMELw1LyN56Kk3l694o/Tv12sd3CNDwyi/jM2tJOB8q0OyxfMkcrZy9vmfeoXl1OgMYoFQY4ChLwkRqNEJEWovu3QWtkekJrFQphIWb3z84s1o7yNlXTlC4cnbjtD+ghtgjLzp/76teamWWccFXrt7Ofxd5Gx1qvpiJjKpLaeOpZZGa000eS9/WLkvclRPzf5MGxsqKCFBC933wJac7JLVJ8U2HZwzcK45FiPQsAC4vXeAkaGgGgOzqE0pVtfi9IAUNwMRiItyk6/Hey8dJR+0fZX5jupV7+CRUvlI0Z7/vrnuOjcAEowqvCbXy5emiTlBIAz66UAEyx42cfRAVBOBKJpBCFpaahYSfsnXsOoh41TWUOwAeRyTqy+POPW3ExT7pbja2csLOSDaf6PTd557d1FAVR0fLxLWVrIGP3ts7um5fsvTUwFXnwajbmzyH2Dy6c/Jl669naNYefOu6msrLSL4bt+uug5uSCzcfeznxSEG/DkixePnrm4tCzM/+es66EJBjcxibRahnTQjshebGtYPhybSVdDKpvI+temZ24rV5UGXX76vHvLwhRRdEXieNe4xzMkXtTY9thCl+YJTKqPTfGYUJPlwmDbifCFu37+8MtLf5+NT/b4YVV4TLih+NVfdn2U/u1vO3/wj4PjNj+3IcGvYWx6TY1HVkKOqyFn10/pObc9g2mai+6vzS1e8gjs4dxsyBa+MZuO3DHT6BW5dd4WQWZ2UWBDyc4P08dGa2RIPDokv8S5PjmkxMX5uktIHRFaCKNpG+qu84uffOnZXBeX6DnG4AcMZ8+eOXPpa+efv8jx75ywfvOxxviQJ8dVhMSHPl/onO/sFnM9vz3a6JwKKFtbCIdvNsMfgA2HYZP92BDyhRQoP2fcesvO3WnmsyM0UD6mCKhz0g+FjDICxA1ycH6sxHlEdvt3rsHVfn7JIKwIUDZIkBUiUn8RHuwckZxeUFbzD+lmHtRGHcXx35XdzS7Jwm5IKNBISAkJbYJNUgVygFwGaLgNlHLKkWALSm2p9rLV4lGtI/VCx7FaHbW2jsc4XtWp2nG0Ot5XPf7wvp1Rxz/8w1F3F0IOQ2n1JbNkwpL55PH2997v7ffBlh9rs/9oi7z5ha+hyfXVSxtVG440Qbiu7I9fW3uu764PNZkGrFNCWTPk5D1wlCiVLF61YAmokix2V4IRPr3aU3Bw+3qzpHkpWIG1zk/WuOzNHxzZb3SXAiNvCnU7PB31XxwZr903aVpjr3ZOYzNpcrzhK5sOXD/idaypKYIt3pGaN8tCDm/rJyP7Dt9333f++v4i75dHDv945KgpUib5vdnhLvKP8ngBbIzxgthYskTpBkxvz8h59YL8jTsuNaMPN3ZlakjWUMszv3ZGAl9Wrd0zptNBpy3gXBX+/dBPRcOjtsmalp5QKeT5SPPMBmeQNNXuLC3qmYC/V39/uKKvq+iVX1/x7lkzWDW0YcNk0fDYF3+PNBbU7O8zDgxP+EdcTQaR6Kg5PUOSjCeKTSdhp9avpacbsg/dn33Zs+tv3H2zajUhabnlb9311vaVq9VEJ5cNAFJ5NKJ3352vVdI9JAIGhIhyKhd46cBAoCL57U88m0GtBVecOEYxUJ+lrFPtD79+CcwogDQEDOxpg5Bk0kofRJWwS8cJmlZwSjNFOLd8xYNXPHKDcPmjj5VnUghlMJdcfeLYNi5HrwUcJTV1WZyXkwkf/yBneXkx4jiBlHgEQceLBp7FEOuELB6UU1VdB/I5nlq79tzMQoNAQG6WoXDt3id/XiHv/RELRSHYCMwSNY6TTM6nRoxTYUZvkqXcRGD9rh35tz+ff94La7eRJSQtI//YDc+uPVvUaw1y7s0rAJhCOvTkdpSpWkYwhiLkCSQsI/fhJWwIqWXLVnOPP3Ax0hEKZGZmGiA0M3oIt+16evP6s0TZtfITY6ghKK6ZgBVoDE6Grfw2qSLHGGK1oH7h/kduva392MYcRgVopF465SqarKgIuzoGbau4VTZjCbflivNufqxKz9oErBM7fcOTdS3cYImNlNg8sMLpsRmuu/tWj8gX2Aw6nW6spqaiVKzur5h86WhXe4aWBVEopFhcBCiunsNW4VTYIBU2wJSau3HHmS+8Kmqnzi+evUzE6l7oEVv7fWV+/7qA12FpHi2zO2fe9PsGfW4oDLWtIzBUZB5v9XWaGhrG6uqtDuc1rxypHXXXW7zGEtjcD5sbNjnCU22N57XjHDJbUwNCExoiGsUzzVV8Uc12amEvQMlNVpCbq+aPHoBXezYbNp+hUrCxWN2RZcTDrjpf2O2dcYzW+HsszqOmZ5r2Ndb28sKoNdzd6q0L+SoCRS6nv7SiftRl+eXrsfE+a/WEJSIA46CrwW0YWl5jHT0vl9GS+XuZAEl4CdgYx2PDf2Gnbg2rME5L0x/dftFnlTdq885Ix0jxdm+jfguuHXGVehrH+61WS1ujPdjT9pDdUeoeBayUNgITTdaQqUOYmC7zO70b8va8+bHdb+2zjI21hTgY9EzUtQ11tFpaGDEtDdMExJYNpNhi2EmWDE1RmMnJvHfrwbfPzmMpKh0rypLizmk97G5rrpiENe4iH5xwd5d5uh0dYw1Drgjh9kupDu6xBn3dUw0zkdZO78iFz5h2tg1u6HMEBhvCRlgxA7stnf6vfoOZmekA0YRWsKPcND2fEudvjKJTxlYp8nzAiJong68V5olk9kMQ0qDgtMlV1irUWaYtpRFLvb0i1OYZdFmsfo97iIhsr9VdZ7WEW3sC9aYGq9dtPWz/odvuLuuwDIYtYQE22+v8vskjh8fLOrUFCicd30mPZ4lVHfG8i/V1KB2VW2x8/u2DkGRrKJmapjUaxBobOzsCzMBA0zqemyptshmDhDc2NgZJSOmnjnU2hcb4IQ83WtrR/fum375qtBWO9vUMDhgMm3iC9I293w/+9FfpRON+SGGlvxfn7ST1+H/AxjodpoqDH75wbEl+tlpZ/zUaGhFgJkA08gaOCDwrQNbACzpiFlmeCGIxhKIIIctCguU9piFvxaEnygsvLICEGKCKksAyz4KwcOPTyLAUy1klMQJQUk2KTxObWkLJbR2Qt/W1C87fnK1GEGOkRgymIeBlMT9vFgngWVmDhkTMUTrAcTItAhCDVatYjvBIm75cv/2jkm0XaiGh8eytCw2ddfHec5/ael4xUaSkADFxC0KKPKjYKWNTSqOCFNju2p1TjjQSNqNWK/9QpfAQ5YP8igM8ATrpdA5MRcw8BBBgDnuMAk/TTG6h8fObA1VL1fIXhlBRL1JpdPsD3+bnKQo0DAA9Z8o1eNIp0NQFyL+CRMbWrDj+fiVQBEzRe9zhWlffFmNNa8UY21m3JmyGExWQowr4WoulyFxjhJCzjfgbTKWEZwu6nviqprQfVml5wvFg1Sx3101PP8LnxbJ4lDqKDU5rVjWx3SZ/xDI6S2SFPFUWhphm5nakfO/IQENv874mU03I7nT54LDJR3hdScQRGavrtnTwPJwxDQSr7UHjwLrRa2pG+irg8kjEHA70DLKUigLplc9fVXmtHOcQJ2y2MEyBDdGiEyCz3zmW21U0ICxapWOwLDBRsAngqjdx1b7aSdg8vtMHI9awc8QHecL22Gc2jfU76vktNv8eELbt8fTtu97+7Yba3lpba4OlydHgqLfJ3avVx+/SvyclguTl43RjO9liGkiVJKChKKxO02oUaiBjN89MTXvd1dy6huE1IOAYYpvqoYEYzNUm+8gWa7do9FjXDU5Le8jOlputzS1rqvud9sDkiL1jyDKkTcvOyr7yREa7hhBKFZdkZqlj7k5c+U4JG+Mot2QUprAsW6WjbSG431Vv6vc2GwdMO/vFgGNM7DBBjsABJztaF7BEeMHjb+oKekydfSarf7ilv7eius1RX9TgmfKH0tQZXVtvLc/CaoTxwtgoARvEsBcBj2lOlQ9XUu6c6ITtHILTzb1ubtjV3Qac1iA7MQ5FAp2WUeOwzREJDMD+8fCWDqtz/Jk/x3+YKSqt2NMWato5bTabxvQZS7MP7G7XojSMcVIPNQ4bnA52dCwvRq74O6FCBywYNbndwWBrmXWd0TveNgNBjwuyhPd4rfVecdzlLBMjraZ6v790xPqQqXW4aI8rUOZwlJYFqkxBfcaKdw/AvRAzuXHYcb5KMWO1WLpBKP4KUcUiBSfI0Yk5yBmNwlSQtXGhkFGEnIclBPJkKlQCB4PIhgg3NmQrrLr35Z+u2BQKe4KCp3vAOMTrw7rslUsO7e9KO4OSFfDz11B08Uultl1sMA4mJdiYM+awCSEKNstxPCsdOBZwvEgDiZklknEsJ0KWpfU0w5sFoQodOLHeZijhBBtrEwSBE3OWU2m6F+8m+rR0yWRshGKTQXHc8U5a1FJix9whkylhIv0gIssSAFggAcPZ70OUGJRPYwhmeV68fOsNhQaplpHPwZR0KtEyZO/mHeYMJpdKj1ak8eM3mP439qLkJxNmxLCVF8pzNuYIkWklbPkhGyIMI4v6lmccekxSACKGSWMYHaUCiGbwWcuuukotxTUACdjR7uSCkmx0kgeAGC+EHTUS5YeAlQ9Edjqcl8diWZJIMFYtWb182zf7S1YQiVpLGJ2OIlpC0rPe2dElYOlNQEW7v7HCeuEp0JPb3JRICmw0j02iBzDLS2KhFb3eaVmZtbLy/itRyVKCkKL1pyhAii/cm33l7pW6M2KpIVpMJCnST8/b+CQDXrECIAodPSkBW15/lCg9s/KWdxmWaNSIkQzLW7wzb+q66Ol8PkFZFqVWbEHsUzc0xxGzZIcnFxBKVlD4KJWGWrrranwWZiRshBUFLQTF51z60kXFhPq3MiSG+b+wccrydh57fk1J5sYQKtS0WocOPleZkY7lEh1i5T3tyuzbH6s0ZFIUStKGoDhMnKLLB09qqfrdKJW7k1JBwlieSjaIyPFrjhdmQKiOzgYAQtYfv+Ce81folwFaqtEWwl6kvl7c2Si5dYIWn+WGWKYGZCk6eHt+QfZ8AS8PrAqXXLarGOUyRCPHTCyqEcaxNSH5Ulz8kVwB4ij2ohY/3iIrEtni1btuOPPaHE2csJ9aji44fqZGrVFmrhbbvpyOp1Njo1PBjp6pYFPsOZXP36FZoqXj/pZoTzxQvpLQmuSwWzAqEED/3duJ3Di1Gh0AWqnHFWycx59TuePOe5YknKm+7jK8MhskyEPmU0SqGF/ckkMLxz4jYb5pgaBWNj1E5p7z9j/FnMuL01AUxm/uvc29qUmbVKttk2IpiosW1IWPXdGNG5e60Z0bQQQXulDwQVHqZkTBB/gYEfGBG19VVz4QXVkXPpeKf4pzmt6mmZOYhob6BWaGmSn95cyZ5J6Te76Vje7pRomvy43z160tnjru1MtAHRh/hWZNFG76HAlAxLLlb8jFBGEzITlwj4YjdK69+aw1LB+bgaTdfPGDmRKYJQPs8Q0mzpNHm1aR2FgRORLGZnkx+MQZBWwYkRQ5QtffvlpijEK/REysnxQ1S317wUAqBNNjE64mskG0c/ZjqyHhHKAWzVFeLNV6v7YZtmdZAn4NWQeFOmrwjRQHwS4fbBlwHLbgXJIRD9WMG+8NDtC+aHHFkfOvXW55wz8KwdihdwXoVMLY4R/HY5PRcBgkVk03Bue4VWWaz72q2m5/7+0sEyKHy9wEbNCs0UZnFYUdTC/52KsWTj8pOTDxVM3l1nGd/Dx+9/r6dkXC4vHf2AolhdJi4wT1+76mvdQQX+H4k/XULVtbfh/qrna4ydHbzC3aWLlQ+595jkvf3zSXMDlge257/+OXV/MtIvm4Fsk02jGRxR5KSGMfDspsXi/VBgsrtjoWJ1DnrNqx++H55uYOIav0oIRST85H+82UM5zyO0ulSGwsTB1gezbnre41u+RahljH7Yp2+PGXV1cWK0UIfYCtXhZU6mz0hmQmRfjuJGLDHdAr6M3XZ7RWgVOY3iKdzc/69gHhQ+Oyj4VLSZzXyUcMNq4GEDZw+9SS1LcY/VPlYsEypOVuPtG513uw39GHXX7q7/pQ9bSgaIZeYcwqBTkdtkElq6/fdOfsJj1/pFbghc2Xu/2zBwoC9ojolFK4kCvjEf+TWprMGG0c8kRsNoFNRX39tzsn1hh5g3r24er9/sKvE5xD3wzYJrEZpQxhZxdtbSps3xiSCl7ecuzMzi01bnq7j1583b98AfIiKB39ZKJqmZx9tJOx/b53MLktuFi3q+w8+2rkLLpna+fKjVs/d5g6gTWVkk9Il5+yEkCn1bRelxG+mKolu4S9t3uwSri16D4dvKltr+/Rh1BBxYCqMYoA0olgRWNjMcWtbSqfOdlg9p4rD/98b6+GObAU2JlqimhTwNZ17spN7wYnNuzLfev1upVFaqpLshLGhq/pDEca7FDMVcR0JgqVHR+uNdvdR4O3a/c6ktMgrSfCzVgIO8NwJ2eLwhhXcVAymmL/wqUbh04/bNpFxvnkNUR5QIBIhtFOenkUNlPYQ25dCm1l6/mr+0+KR6VREUNvl/DMnaJG0Z6DtDi7QM7za9fCLsSNjNk2UQMRCnwiPUSW0U6zMMepA9R5QiqyIj24BwbUyIAT7dSag7AFpuKWUAlLacNovXqkGRjTxdmGa7OFe+pXx2IvIUtqQDPEhAIY2bph7HkqFttfIUlYwTKWUIWgVvB/jDZhgbDTYxg7OannF201tRHCpjHYmQQ7i2iryzho2XB3hNnq/8zthMdDTG2cIFE9ykzCrU0rZKo7Cjt8TPg3DO8Y1zJQ6ohjQyQYx/Bbf/ghFcOzHRmJpjjQFUID5cZC2IThEp1mcKQSwmYTJviBm31M+ZTlTf0vjzwFNlTdtbsAAAAASUVORK5CYII=" />
+
+<div style="page-break-before: always;"></div>
+
+<div class="additional-information">
+  <h2 class="p-4x-margin">Sie benötigen weiterführende Informationen?</h2>
+
+  <ol>
+    <li>
+      Aktuelle Informationen finden sich stets auf
+
+      <ul>
+        <li>BAG Homepage: www.bag-coronavirus.ch</li>
+        <li>Kanton St.Gallen: www.sg.ch/tools/informationen-coronavirus.html</li>
+        <li>Reiseinformationen www.safetravel.ch</li>
+        <li>Science Task Force https://ncs-tf.ch/de/</li>
+        <li>Informationen Bildungsbereich (EDK) https://www.edk.ch/dyn/32928.php</li>
+      </ul>
+    </li>
+    <li>
+      Wichtige Telefonnummern
+
+      <ol type="a">
+        <li class="p-4x-margin">
+          Informationen zum Coronavirus
+
+          <ul>
+            <li>BAG Hotline für die Bevölkerung: 058 463 00 00 (täglich 6 – 23 Uhr)</li>
+            <li>BAG Hotline für Reiserückkehrer 058 464 44 88 (täglich 6 – 23 Uhr)</li>
+            <li>BAG Hotline für Gesundheitsfachpersonen 058 462 21 00 (täglich 7 - 20 Uhr)</li>
+            <li>BAG Whatsapp Infokanal 079 155 11 05</li>
+            <li>Kanton St.Gallen Infoline 058 229 22 33 (täglich von 8 – 12 Uhr und 13 – 17 Uhr)</li>
+          </ul>
+        </li>
+        <li class="p-4x-margin">
+          Testanmeldung und medizinische Hilfe
+
+          <ul>
+            <li>
+              Bei medizinischen Fragen melden Sie sich bitte bei Ihrem Hausarzt (insbesondere bei
+              starken Symptomen oder Risikofaktoren ist eine Untersuchung beim Arzt empfohlen)
+            </li>
+            <li>Allgemeiner Notruf: 144 (täglich 24 Stunden)</li>
+          </ul>
+        </li>
+        <li class="p-4x-margin">
+          Unterstützung bei Sorgen und Problemen in der Familie
+
+          <ul>
+            <li>Tipps und Tricks für die Zeit in Quarantäne und Isolation: www.dureschnufe.ch</li>
+            <li>Informationskampagne zur psychischen Gesundheit: www.wie-gehts-dir.ch</li>
+            <li>Telefonische Beratung unter 143, Die Dargebotene Hand</li>
+            <li>Pro Mente Sana Beratungstelefon 0848 800 858</li>
+            <li>Pro Juventute Notrufnummer für Kinder und Jugendliche: 147</li>
+            <li>Pro Juventute Elternberatung: Telefon 058 261 61 61</li>
+            <li>Bedrohungssituation zu Hause www.opferhilfe-schweiz.ch, oder im Notfall 117 (Polizei)</li>
+          </ul>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</div>

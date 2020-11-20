@@ -53,4 +53,12 @@ defmodule HygeiaWeb.CaseLive.Navigation do
      |> put_flash(:info, gettext("Case deleted successfully"))
      |> redirect(to: Routes.case_index_path(socket, :index))}
   end
+
+  defp can_generate_isolation_confirmation(phase) do
+    phase.start != nil and phase.end != nil
+  end
+
+  defp can_generate_quarantine_confirmation(phase) do
+    phase.details.type == :contact_person and phase.start != nil and phase.end != nil
+  end
 end
