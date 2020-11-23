@@ -1,11 +1,12 @@
+import {translate} from "./translation";
+
 const Hook = {
   mounted() {
     this.locked = false;
 
-    const confirmationMessage = this.el.dataset.blockMessage || "Do you really want to continue without saving?";
+    const confirmationMessage = translate("Do you really want to continue without saving?");
 
     this.preventNavigation = (event) => {
-      console.log(event);
       if (!this.locked) return;
 
       event.preventDefault()

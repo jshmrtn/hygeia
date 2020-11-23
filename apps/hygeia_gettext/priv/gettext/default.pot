@@ -100,12 +100,12 @@ msgid "Asymptomatic"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/protocol.sface:84
+#: lib/hygeia_web/live/case_live/protocol.sface:74
 msgid "Author"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:15
+#: lib/hygeia_web/live/case_live/csv_import.sface:27
 msgid "Available Column Headers"
 msgstr ""
 
@@ -123,8 +123,8 @@ msgid "Birth Date"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/protocol.sface:52
-#: lib/hygeia_web/live/case_live/protocol.sface:106
+#: lib/hygeia_web/live/case_live/protocol.sface:51
+#: lib/hygeia_web/live/case_live/protocol.sface:96
 msgid "Body"
 msgstr ""
 
@@ -166,7 +166,7 @@ msgid "Choose Tenant"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/protocol.sface:20
+#: lib/hygeia_web/live/case_live/protocol.sface:19
 #: lib/hygeia_web/live/person_live/base_data.sface:136 lib/hygeia_web/live/person_live/create.sface:70
 #: lib/hygeia_web/live/references.sface:20 lib/hygeia_web/live/tenant_live/show.sface:84
 #: lib/hygeia_web/live/tenant_live/show.sface:157
@@ -218,7 +218,7 @@ msgid "Clinical Information"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:13
+#: lib/hygeia_web/live/case_live/csv_import.sface:25
 msgid "Comma (,)"
 msgstr ""
 
@@ -310,7 +310,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:54
-#: lib/hygeia_web/live/case_live/protocol.sface:83 lib/hygeia_web/live/case_live/transmission_table.sface:13
+#: lib/hygeia_web/live/case_live/protocol.sface:73 lib/hygeia_web/live/case_live/transmission_table.sface:13
 #: lib/hygeia_web/live/statistics_live/statistics.sface:41 lib/hygeia_web/live/statistics_live/statistics.sface:106
 #: lib/hygeia_web/live/statistics_live/statistics.sface:168 lib/hygeia_web/live/statistics_live/statistics.sface:233
 #: lib/hygeia_web/live/statistics_live/statistics.sface:301 lib/hygeia_web/live/statistics_live/statistics.sface:355
@@ -319,7 +319,7 @@ msgid "Date"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:36
+#: lib/hygeia_web/live/case_live/csv_import.sface:48
 msgid "Date Format"
 msgstr ""
 
@@ -415,16 +415,16 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/helpers/contact_method.ex:15
-#: lib/hygeia_web/live/case_live/create.ex:324 lib/hygeia_web/live/case_live/csv_import.sface:23
+#: lib/hygeia_web/live/case_live/create.ex:324 lib/hygeia_web/live/case_live/csv_import.sface:35
 #: lib/hygeia_web/live/case_live/person_create_table.sface:11 lib/hygeia_web/live/case_live/person_create_table.sface:208
-#: lib/hygeia_web/live/case_live/protocol.ex:196 lib/hygeia_web/live/case_live/protocol.sface:25
+#: lib/hygeia_web/live/case_live/protocol.ex:196 lib/hygeia_web/live/case_live/protocol.sface:24
 #: lib/hygeia_web/live/user_live/index.sface:14 lib/hygeia_web/live/user_live/show.sface:20
 msgid "Email"
 msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:328
-#: lib/hygeia_web/live/case_live/csv_import.sface:27 lib/hygeia_web/live/case_live/person_create_table.sface:21
+#: lib/hygeia_web/live/case_live/csv_import.sface:39 lib/hygeia_web/live/case_live/person_create_table.sface:21
 msgid "Employer"
 msgstr ""
 
@@ -472,7 +472,7 @@ msgid "Fever"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:6
+#: lib/hygeia_web/live/case_live/csv_import.sface:18
 msgid "File Type"
 msgstr ""
 
@@ -498,7 +498,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:314
-#: lib/hygeia_web/live/case_live/csv_import.sface:19 lib/hygeia_web/live/case_live/person_create_table.sface:5
+#: lib/hygeia_web/live/case_live/csv_import.sface:31 lib/hygeia_web/live/case_live/person_create_table.sface:5
 #: lib/hygeia_web/live/person_live/index.sface:105
 msgid "First name"
 msgstr ""
@@ -587,8 +587,8 @@ msgid "Infection place"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:45
-#: lib/hygeia_web/live/case_live/csv_import.sface:46
+#: lib/hygeia_web/live/case_live/csv_import.sface:57
+#: lib/hygeia_web/live/case_live/csv_import.sface:58
 msgid "Info"
 msgstr ""
 
@@ -622,13 +622,13 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:269
 #: lib/hygeia_web/live/case_live/create.ex:332 lib/hygeia_web/live/case_live/create_index.sface:102
-#: lib/hygeia_web/live/case_live/csv_import.sface:29
+#: lib/hygeia_web/live/case_live/csv_import.sface:41
 msgid "Laboratory report date"
 msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/helpers/contact_method.ex:14
-#: lib/hygeia_web/live/case_live/create.ex:322 lib/hygeia_web/live/case_live/csv_import.sface:22
+#: lib/hygeia_web/live/case_live/create.ex:322 lib/hygeia_web/live/case_live/csv_import.sface:34
 #: lib/hygeia_web/live/case_live/person_create_table.sface:10 lib/hygeia_web/live/case_live/person_create_table.sface:204
 msgid "Landline"
 msgstr ""
@@ -646,7 +646,7 @@ msgid "Last name"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:20
+#: lib/hygeia_web/live/case_live/csv_import.sface:32
 #: lib/hygeia_web/live/case_live/person_create_table.sface:6
 msgid "Lastname"
 msgstr ""
@@ -733,7 +733,7 @@ msgid "Medium"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/protocol.sface:85
+#: lib/hygeia_web/live/case_live/protocol.sface:75
 msgid "Meta"
 msgstr ""
 
@@ -745,7 +745,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:319
-#: lib/hygeia_web/live/case_live/csv_import.sface:21 lib/hygeia_web/live/case_live/person_create_table.sface:9
+#: lib/hygeia_web/live/case_live/csv_import.sface:33 lib/hygeia_web/live/case_live/person_create_table.sface:9
 msgid "Mobile Phone"
 msgstr ""
 
@@ -886,7 +886,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/protocol.ex:195
-#: lib/hygeia_web/live/case_live/protocol.sface:23 lib/hygeia_web/live/case_live/protocol.sface:33
+#: lib/hygeia_web/live/case_live/protocol.sface:22 lib/hygeia_web/live/case_live/protocol.sface:32
 msgid "Note"
 msgstr ""
 
@@ -1076,7 +1076,7 @@ msgid "Protocol"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/protocol.ex:161
+#: lib/hygeia_web/live/case_live/protocol.ex:159
 msgid "Protocol Entry created successfully"
 msgstr ""
 
@@ -1143,7 +1143,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/protocol.ex:197
-#: lib/hygeia_web/live/case_live/protocol.sface:24
+#: lib/hygeia_web/live/case_live/protocol.sface:23
 msgid "SMS"
 msgstr ""
 
@@ -1151,8 +1151,8 @@ msgstr ""
 #: lib/hygeia_web/live/case_live/base_data.sface:31
 #: lib/hygeia_web/live/case_live/base_data.sface:32 lib/hygeia_web/live/case_live/base_data.sface:331
 #: lib/hygeia_web/live/case_live/base_data.sface:332 lib/hygeia_web/live/case_live/create_index.sface:156
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:157 lib/hygeia_web/live/case_live/protocol.sface:59
-#: lib/hygeia_web/live/case_live/protocol.sface:60 lib/hygeia_web/live/infection_place_type_live/create.sface:29
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:157 lib/hygeia_web/live/case_live/protocol.sface:58
+#: lib/hygeia_web/live/case_live/protocol.sface:59 lib/hygeia_web/live/infection_place_type_live/create.sface:29
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:42 lib/hygeia_web/live/infection_place_type_live/show.sface:43
 #: lib/hygeia_web/live/organisation_live/create.sface:39 lib/hygeia_web/live/organisation_live/show.sface:42
 #: lib/hygeia_web/live/organisation_live/show.sface:43 lib/hygeia_web/live/person_live/base_data.sface:43
@@ -1169,7 +1169,7 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:30
 #: lib/hygeia_web/live/case_live/base_data.sface:330 lib/hygeia_web/live/case_live/create_index.sface:155
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:156 lib/hygeia_web/live/case_live/protocol.sface:58
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:156 lib/hygeia_web/live/case_live/protocol.sface:57
 #: lib/hygeia_web/live/infection_place_type_live/create.sface:26 lib/hygeia_web/live/infection_place_type_live/show.sface:41
 #: lib/hygeia_web/live/organisation_live/create.sface:36 lib/hygeia_web/live/organisation_live/show.sface:41
 #: lib/hygeia_web/live/person_live/base_data.sface:42 lib/hygeia_web/live/person_live/base_data.sface:258
@@ -1342,8 +1342,8 @@ msgid "Subdivision"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/protocol.sface:47
-#: lib/hygeia_web/live/case_live/protocol.sface:103
+#: lib/hygeia_web/live/case_live/protocol.sface:46
+#: lib/hygeia_web/live/case_live/protocol.sface:93
 msgid "Subject"
 msgstr ""
 
@@ -1354,7 +1354,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:69
-#: lib/hygeia_web/live/case_live/csv_import.sface:25 lib/hygeia_web/live/case_live/index.sface:84
+#: lib/hygeia_web/live/case_live/csv_import.sface:37 lib/hygeia_web/live/case_live/index.sface:84
 #: lib/hygeia_web/live/case_live/index.sface:114 lib/hygeia_web/live/case_live/person_create_table.sface:19
 msgid "Supervisor"
 msgstr ""
@@ -1367,7 +1367,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:46
-#: lib/hygeia_web/live/case_live/create.ex:326 lib/hygeia_web/live/case_live/csv_import.sface:24
+#: lib/hygeia_web/live/case_live/create.ex:326 lib/hygeia_web/live/case_live/csv_import.sface:36
 #: lib/hygeia_web/live/case_live/person_create_table.sface:17 lib/hygeia_web/live/case_live/person_create_table.sface:212
 #: lib/hygeia_web/live/person_live/base_data.sface:58 lib/hygeia_web/live/person_live/create.sface:30
 msgid "Tenant"
@@ -1395,7 +1395,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:99
-#: lib/hygeia_web/live/case_live/csv_import.sface:28
+#: lib/hygeia_web/live/case_live/csv_import.sface:40
 msgid "Test Date"
 msgstr ""
 
@@ -1417,24 +1417,24 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:278
-#: lib/hygeia_web/live/case_live/create_index.sface:105 lib/hygeia_web/live/case_live/csv_import.sface:30
+#: lib/hygeia_web/live/case_live/create_index.sface:105 lib/hygeia_web/live/case_live/csv_import.sface:42
 msgid "Test kind"
 msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:285
-#: lib/hygeia_web/live/case_live/create_index.sface:108 lib/hygeia_web/live/case_live/csv_import.sface:31
+#: lib/hygeia_web/live/case_live/create_index.sface:108 lib/hygeia_web/live/case_live/csv_import.sface:43
 msgid "Test result"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/protocol.sface:40
+#: lib/hygeia_web/live/case_live/protocol.sface:39
 msgid "Text"
 msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:58
-#: lib/hygeia_web/live/case_live/csv_import.sface:26 lib/hygeia_web/live/case_live/index.sface:77
+#: lib/hygeia_web/live/case_live/csv_import.sface:38 lib/hygeia_web/live/case_live/index.sface:77
 #: lib/hygeia_web/live/case_live/index.sface:111 lib/hygeia_web/live/case_live/person_create_table.sface:20
 msgid "Tracer"
 msgstr ""
@@ -1466,7 +1466,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:131
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:17 lib/hygeia_web/live/case_live/protocol.sface:82
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:17 lib/hygeia_web/live/case_live/protocol.sface:72
 #: lib/hygeia_web/live/person_live/base_data.sface:128 lib/hygeia_web/live/person_live/create.sface:60
 #: lib/hygeia_web/live/references.sface:2 lib/hygeia_web/live/tenant_live/show.sface:81
 #: lib/hygeia_web/live/tenant_live/show.sface:154 lib/hygeia_web/live/transmission_live/create.sface:17
@@ -1475,7 +1475,7 @@ msgid "Type"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:10
+#: lib/hygeia_web/live/case_live/csv_import.sface:22
 msgid "UTF-8"
 msgstr ""
 
@@ -1524,7 +1524,7 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.ex:57
 #: lib/hygeia_web/live/case_live/create_index.ex:51 lib/hygeia_web/live/case_live/create_possible_index.ex:57
-#: lib/hygeia_web/live/case_live/index.ex:47 lib/hygeia_web/live/case_live/protocol.ex:41
+#: lib/hygeia_web/live/case_live/index.ex:47 lib/hygeia_web/live/case_live/protocol.ex:43
 #: lib/hygeia_web/live/case_live/transmissions.ex:31 lib/hygeia_web/live/infection_place_type_live/create.ex:22
 #: lib/hygeia_web/live/infection_place_type_live/index.ex:22 lib/hygeia_web/live/infection_place_type_live/show.ex:35
 #: lib/hygeia_web/live/organisation_live/create.ex:24 lib/hygeia_web/live/organisation_live/index.ex:39
@@ -1604,7 +1604,7 @@ msgstr ""
 
 #. Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:40
+#: lib/hygeia_web/live/case_live/csv_import.sface:52
 msgid "yyyy-mm-dd"
 msgstr ""
 
@@ -1903,7 +1903,7 @@ msgid "Web-SMS"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:7
+#: lib/hygeia_web/live/case_live/csv_import.sface:19
 msgid ".csv or .xlsx"
 msgstr ""
 
@@ -1925,7 +1925,7 @@ msgid "Default country"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:9
+#: lib/hygeia_web/live/case_live/csv_import.sface:21
 msgid "Encoding (CSV only)"
 msgstr ""
 
@@ -1940,12 +1940,12 @@ msgid "ISM Report ID"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:2
+#: lib/hygeia_web/live/case_live/csv_import.sface:13
 msgid "Import CSV / XLSX"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/csv_import.sface:12
+#: lib/hygeia_web/live/case_live/csv_import.sface:24
 msgid "Separator (CSV only)"
 msgstr ""
 
@@ -1955,7 +1955,11 @@ msgid "choose sex"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/case_live/protocol.sface:8
-#: lib/hygeia_web/live/case_live/protocol.sface:76
+#: lib/hygeia_web/live/case_live/protocol.sface:7
 msgid "New entry"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/templates/layout/root.html.leex:31
+msgid "Do you really want to continue without saving?"
 msgstr ""

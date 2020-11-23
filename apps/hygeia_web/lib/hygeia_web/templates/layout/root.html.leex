@@ -25,6 +25,14 @@
       nonce="<%= nonce(@conn, :script) %>"
       crossorigin="anonymous"
     ></script>
+
+    <meta name="hygeia-translations" content="<%=
+      [
+        gettext_noop("Do you really want to continue without saving?")
+      ]
+      |> Map.new(&({&1, Gettext.gettext(HygeiaGettext, &1)}))
+      |> Jason.encode!()
+    %>" />
   </head>
   <body class="layout-root">
     <%= @inner_content %>
