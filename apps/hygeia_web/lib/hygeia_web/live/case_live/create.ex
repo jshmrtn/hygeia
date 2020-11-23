@@ -2,6 +2,7 @@ defmodule HygeiaWeb.CaseLive.Create do
   @moduledoc false
 
   import HygeiaGettext
+  import Phoenix.LiveView
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case.ContactMethod
@@ -49,26 +50,7 @@ defmodule HygeiaWeb.CaseLive.Create do
           [%{name: name}] -> name
           _other -> nil
         end,
-      address:
-        case person.address do
-          %{address: address} -> address
-        end,
-      zip:
-        case person.address do
-          %{zip: zip} -> zip
-        end,
-      place:
-        case person.address do
-          %{place: place} -> place
-        end,
-      subdivision:
-        case person.address do
-          %{subdivision: subdivision} -> subdivision
-        end,
-      country:
-        case person.address do
-          %{country: country} -> country
-        end
+      address: Map.from_struct(person.address)
     })
   end
 
@@ -154,89 +136,70 @@ defmodule HygeiaWeb.CaseLive.Create do
     {person, supervisor, tracer}
   end
 
-  @spec fetch_tenant(row :: map, tenants :: [Tenant.t()]) :: map
-  def fetch_tenant(row, tenants) do
-    row
-    |> Enum.map(fn
-      {:tenant, tenant_name} ->
-        {:tenant, Enum.find(tenants, &match?(%Tenant{name: ^tenant_name}, &1))}
+  @spec fetch_tenant(field :: {key :: [atom], value :: term}, tenants :: [Tenant.t()]) ::
+          {key :: [atom], value :: term}
+  def fetch_tenant({[:tenant], tenant_name}, tenants),
+    do: {:tenant, Enum.find(tenants, &match?(%Tenant{name: ^tenant_name}, &1))}
 
-      other ->
-        other
-    end)
-    |> Enum.reject(&match?({:tenant, nil}, &1))
-    |> Enum.map(fn
-      {:tenant, %Tenant{uuid: tenant_uuid}} -> {:tenant_uuid, tenant_uuid}
-      other -> other
-    end)
-    |> Map.new()
+  def fetch_tenant(field, _tenants), do: field
+
+  @spec fetch_test_result(field :: {key :: [atom], value :: term}) ::
+          {key :: [atom], value :: term}
+  def fetch_test_result({[:clinical, :result], kind}) do
+    {[:clinical, :result],
+     cond do
+       String.downcase(kind) == String.downcase("positive") -> :positive
+       String.downcase(kind) == String.downcase("negative") -> :negative
+       String.downcase(kind) == String.downcase(gettext("positive")) -> :positive
+       String.downcase(kind) == String.downcase(gettext("negative")) -> :negative
+       true -> nil
+     end}
   end
 
-  @spec fetch_test_kind(row :: map) :: map
-  def fetch_test_kind(row) do
-    row
-    |> Enum.map(fn
-      {:test_kind, kind} ->
-        {:test_kind,
-         cond do
-           String.downcase(kind) == String.downcase("PCR") -> :pcr
-           String.downcase(kind) == String.downcase("Quick") -> :quick
-           String.downcase(kind) == String.downcase("Serology") -> :serology
-           String.downcase(kind) == String.downcase(gettext("PCR")) -> :pcr
-           String.downcase(kind) == String.downcase(gettext("Quick")) -> :quick
-           String.downcase(kind) == String.downcase(gettext("Serology")) -> :serology
-           true -> nil
-         end}
+  def fetch_test_result(field), do: field
 
-      other ->
-        other
-    end)
-    |> Enum.reject(&match?({:test_kind, nil}, &1))
-    |> Map.new()
+  @spec fetch_test_kind(field :: {key :: [atom], value :: term}) :: {key :: [atom], value :: term}
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
+  def fetch_test_kind({[:clinical, :test_kind], kind}) do
+    {[:clinical, :test_kind],
+     cond do
+       String.downcase(kind) == String.downcase("Antigen ++ Schnelltest") -> :quick
+       String.downcase(kind) == String.downcase("quick") -> :quick
+       String.downcase(kind) == String.downcase(gettext("quick")) -> :quick
+       String.downcase(kind) == String.downcase("Nukleinsäure ++ PCR") -> :pcr
+       String.downcase(kind) == String.downcase("pcr") -> :pcr
+       String.downcase(kind) == String.downcase(gettext("PCR")) -> :pcr
+       String.downcase(kind) == String.downcase(gettext("serology")) -> :serology
+       String.downcase(kind) == String.downcase("serology") -> :serology
+       true -> nil
+     end}
   end
 
-  @spec fetch_test_result(row :: map) :: map
-  def fetch_test_result(row) do
-    row
-    |> Enum.map(fn
-      {:test_result, kind} ->
-        {:test_result,
-         cond do
-           String.downcase(kind) == String.downcase("positive") -> :positive
-           String.downcase(kind) == String.downcase("negative") -> :negative
-           String.downcase(kind) == String.downcase(gettext("positive")) -> :positive
-           String.downcase(kind) == String.downcase(gettext("negative")) -> :negative
-           true -> nil
-         end}
+  def fetch_test_kind(field), do: field
 
-      other ->
-        other
-    end)
-    |> Enum.reject(&match?({:test_result, nil}, &1))
-    |> Map.new()
-  end
-
-  @spec import_into_changeset(
-          changeset :: Ecto.Changeset.t(),
-          data :: [map],
-          tenants :: [Tenant.t()]
-        ) :: Ecto.Changeset.t()
-  def import_into_changeset(changeset, data, tenants) do
+  @spec import_into_changeset(changeset :: Ecto.Changeset.t(), data :: [map]) ::
+          Ecto.Changeset.t()
+  def import_into_changeset(changeset, data) do
     changeset
     |> Ecto.Changeset.put_embed(
       :people,
       Ecto.Changeset.get_change(changeset, :people, []) ++
         (data
-         |> Stream.map(&fetch_tenant(&1, tenants))
-         |> Stream.map(&fetch_test_kind/1)
-         |> Stream.map(&fetch_test_result/1)
-         |> Stream.map(&normalize_date/1)
          |> Stream.map(&CreatePersonSchema.changeset(%CreatePersonSchema{}, &1))
          |> Enum.to_list())
     )
     |> Map.put(:errors, [])
     |> Map.put(:valid?, true)
     |> CreateSchema.validate_changeset()
+  end
+
+  @spec normalize_import_field({key :: [atom], value :: term}, [Tenant.t()]) ::
+          {key :: [atom], value :: term}
+  def normalize_import_field(field, tenants) do
+    field
+    |> fetch_tenant(tenants)
+    |> fetch_test_kind()
+    |> fetch_test_result()
   end
 
   @spec decline_duplicate(changeset :: Ecto.Changeset.t(), person_changeset_uuid :: String.t()) ::
@@ -307,61 +270,84 @@ defmodule HygeiaWeb.CaseLive.Create do
     |> CreateSchema.validate_changeset()
   end
 
+  @spec handle_save_success(socket :: Phoenix.LiveView.Socket.t(), schema :: atom) ::
+          Phoenix.LiveView.Socket.t()
+  def handle_save_success(socket, schema) do
+    case socket.assigns.return_to do
+      nil ->
+        assign(socket,
+          changeset:
+            socket.assigns.changeset
+            |> Ecto.Changeset.put_embed(:people, [])
+            |> Map.put(:errors, [])
+            |> Map.put(:valid?, true)
+            |> schema.validate_changeset(),
+          suspected_duplicate_changeset_uuid: nil,
+          file: nil
+        )
+
+      uri ->
+        push_redirect(socket, to: uri)
+    end
+  end
+
   @spec get_csv_key_mapping() :: map
   def get_csv_key_mapping,
     do: %{
-      "first name" => :first_name,
-      gettext("First name") => :first_name,
-      "last name" => :last_name,
-      gettext("Last name") => :last_name,
-      "mobile" => :mobile,
-      "mobile_phone" => :mobile,
-      gettext("Mobile Phone") => :mobile,
-      "landline" => :landline,
-      "landline phone" => :landline,
-      gettext("Landline") => :landline,
-      "email" => :email,
-      gettext("Email") => :email,
-      "tenant" => :tenant,
-      gettext("Tenant") => :tenant,
-      "employer" => :employer,
-      gettext("Employer") => :employer,
-      "test_date" => :test_date,
-      gettext("Test date") => :test_date,
-      "test_laboratory_report" => :test_laboratory_report,
-      gettext("Laboratory report date") => :test_laboratory_report,
-      "test_kind" => :test_kind,
-      gettext("Test Kind") => :test_kind,
-      "test_result" => :test_result,
-      gettext("Test Result") => :test_result,
+      "first name" => [:first_name],
+      gettext("First name") => [:first_name],
+      "last name" => [:last_name],
+      gettext("Last name") => [:last_name],
+      "mobile" => [:mobile],
+      "mobile_phone" => [:mobile],
+      gettext("Mobile Phone") => [:mobile],
+      "landline" => [:landline],
+      "landline phone" => [:landline],
+      gettext("Landline") => [:landline],
+      "email" => [:email],
+      gettext("Email") => [:email],
+      "tenant" => [:tenant],
+      gettext("Tenant") => [:tenant],
+      "employer" => [:employer],
+      gettext("Employer") => [:employer],
+      "test_date" => [:clinical, :test],
+      gettext("Test date") => [:clinical, :test],
+      "test_laboratory_report" => [:clinical, :laboratory_report],
+      gettext("Laboratory report date") => [:clinical, :laboratory_report],
+      "test_kind" => [:clinical, :test_kind],
+      gettext("Test Kind") => [:clinical, :test_kind],
+      "test_result" => [:clinical, :result],
+      gettext("Test Result") => [:clinical, :result],
 
       # Laboratory Report Names
-      "Fall ID" => :ism_case_id,
-      "Meldung ID" => :ism_report_id,
-      "Patient Nachname" => :last_name,
-      "Patient Vorname" => :first_name,
-      "Patient Geburtsdatum" => :birth_date,
-      "Patient Geschlecht" => :sex,
-      "Patient Telefon" => :mobile,
-      "Patient Strasse" => :address,
-      "Patient PLZ" => :zip,
-      "Patient Wohnort" => :place,
-      "Patient Kanton" => :subdivision,
-      "Entnahmedatum" => :test_date,
-      "Meldungseingang" => :test_laboratory_report,
-      "Testresultat" => :test_result
+      "Fall ID" => [:ism_case_id],
+      "Meldung ID" => [:ism_report_id],
+      "Patient Nachname" => [:last_name],
+      "Patient Vorname" => [:first_name],
+      "Patient Geburtsdatum" => [:birth_date],
+      "Patient Geschlecht" => [:sex],
+      "Patient Telefon" => [:mobile],
+      "Patient Strasse" => [:address, :address],
+      "Patient PLZ" => [:address, :zip],
+      "Patient Wohnort" => [:address, :place],
+      "Patient Kanton" => [:address, :subdivision],
+      "Entnahmedatum" => [:clinical, :test],
+      "Nachweismethode" => [:clinical, :test_kind],
+      "Meldungseingang" => [:clinical, :laboratory_report],
+      "Testresultat" => [:clinical, :result],
+      "Meldeeinheit Institution" => [:clinical, :reporting_unit, :name],
+      "Meldeeinheit Abteilung/Institut" => [:clinical, :reporting_unit, :name],
+      "Meldeeinheit Vorname" => [:clinical, :reporting_unit, :name],
+      "Meldeeinheit Nachname" => [:clinical, :reporting_unit, :name],
+      "Meldeeinheit Strasse" => [:clinical, :reporting_unit, :address, :address],
+      "Meldeeinheit PLZ" => [:clinical, :reporting_unit, :address, :zip],
+      "Meldeeinheit Ort" => [:clinical, :reporting_unit, :address, :place],
+      "Auftraggeber Institution" => [:clinical, :sponsor, :name],
+      "Auftraggeber Abteilung/Institut" => [:clinical, :sponsor, :name],
+      "Auftraggeber Nachname" => [:clinical, :sponsor, :name],
+      "Auftraggeber Vorname" => [:clinical, :sponsor, :name],
+      "Auftraggeber Strasse" => [:clinical, :sponsor, :address, :address],
+      "Auftraggeber PLZ" => [:clinical, :sponsor, :address, :zip],
+      "Auftraggeber Ort" => [:clinical, :sponsor, :address, :place]
     }
-
-  defp normalize_date(row) do
-    Map.new(row, fn
-      {key, {year, month, day}} ->
-        case Date.new(year, month, day) do
-          {:ok, date} -> {key, date}
-          {:error, _reason} -> {key, nil}
-        end
-
-      {key, value} ->
-        {key, value}
-    end)
-  end
 end

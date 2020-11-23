@@ -40,6 +40,7 @@ defmodule Hygeia do
 
       import Hygeia.Helpers.Country
       import Hygeia.Helpers.Email
+      import Hygeia.Helpers.Empty
       import Hygeia.Helpers.Id
       import Hygeia.Helpers.Phone
 

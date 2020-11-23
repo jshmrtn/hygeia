@@ -6,6 +6,7 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
   alias Surface.Components.Link
 
   prop mapping, :map, required: true
+  prop normalize_row_callback, :fun, required: true
 
   data show_help, :boolean, default: false
 
@@ -16,7 +17,12 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
 
   @impl Phoenix.LiveComponent
   def update(%{data: data, content_type: ["text/csv"]} = assigns, socket) do
-    extract_data(:csv, data, assigns[:mapping] || socket.assigns.mapping)
+    extract_data(
+      :csv,
+      data,
+      assigns[:mapping] || socket.assigns.mapping,
+      assigns[:normalize_row_callback] || socket.assigns.normalize_row_callback
+    )
 
     {:ok, assign(socket, assigns)}
   end
@@ -28,7 +34,12 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
         } = assigns,
         socket
       ) do
-    extract_data(:xlsx, data, assigns[:mapping] || socket.assigns.mapping)
+    extract_data(
+      :xlsx,
+      data,
+      assigns[:mapping] || socket.assigns.mapping,
+      assigns[:normalize_row_callback] || socket.assigns.normalize_row_callback
+    )
 
     {:ok, assign(socket, assigns)}
   end
@@ -69,7 +80,7 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
     {:noreply, assign(socket, show_help: false)}
   end
 
-  defp extract_data(:csv, data, mapping) do
+  defp extract_data(:csv, data, mapping, normalize_row_callback) do
     mapping =
       mapping
       |> Enum.map(fn {key, value} -> {normalize_key(key), value} end)
@@ -81,14 +92,14 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
       |> String.split("\n")
       |> Enum.reject(&match?("", &1))
       |> CSV.decode!(headers: true)
-      |> Stream.map(&normalize_row(&1, mapping))
+      |> Stream.map(&normalize_row(&1, mapping, normalize_row_callback))
 
     send(self(), {:csv_import, {:ok, normalized_rows}})
   rescue
     e in FunctionClauseError -> send(self(), {:csv_import, {:error, e}})
   end
 
-  defp extract_data(:xlsx, data, mapping) do
+  defp extract_data(:xlsx, data, mapping, normalize_row_callback) do
     mapping =
       mapping
       |> Enum.map(fn {key, value} -> {normalize_key(key), value} end)
@@ -102,19 +113,38 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
       path
       |> Xlsxir.stream_list(0)
       |> Stream.transform(false, &add_headers/2)
-      |> Stream.map(&normalize_row(&1, mapping))
+      |> Stream.map(&normalize_row(&1, mapping, normalize_row_callback))
 
     send(self(), {:csv_import, {:ok, normalized_rows}})
   rescue
     e in FunctionClauseError -> send(self(), {:csv_import, {:error, e}})
   end
 
-  defp normalize_row(%{} = row, key_mapping) do
+  defp normalize_row(%{} = row, key_mapping, normalize_row_callback) do
     row
     |> Enum.map(fn {key, value} -> {normalize_key(key), value} end)
     |> Enum.filter(fn {key, _value} -> Map.has_key?(key_mapping, key) end)
     |> Enum.map(fn {key, value} -> {key_mapping[key], value} end)
-    |> Map.new()
+    |> Enum.map(&normalize_date/1)
+    |> Enum.map(&normalize_integer/1)
+    |> Enum.reject(&match?({_keys, nil}, &1))
+    |> Enum.map(&normalize_row_callback.(&1))
+    |> Enum.reject(&match?({_keys, nil}, &1))
+    |> Enum.map(fn {keys, value} ->
+      {Enum.map(keys, &Access.key(&1, %{})), value}
+    end)
+    |> Enum.reduce(%{}, fn {keys, value_new}, acc ->
+      update_in(acc, keys, fn
+        value_old when value_old == %{} ->
+          value_new
+
+        value_old when is_binary(value_old) and is_binary(value_new) ->
+          value_old <> " / " <> value_new
+
+        _value_old ->
+          value_new
+      end)
+    end)
   end
 
   defp normalize_key(key),
@@ -127,4 +157,16 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
   defp add_headers(row, headers) do
     {[headers |> Enum.zip(row) |> Map.new()], headers}
   end
+
+  defp normalize_date({key, {year, month, day}}) do
+    case Date.new(year, month, day) do
+      {:ok, date} -> {key, date}
+      {:error, _reason} -> {key, nil}
+    end
+  end
+
+  defp normalize_date(field), do: field
+
+  defp normalize_integer({key, value}) when is_integer(value), do: {key, Integer.to_string(value)}
+  defp normalize_integer(field), do: field
 end

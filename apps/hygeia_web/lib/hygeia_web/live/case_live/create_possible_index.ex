@@ -107,25 +107,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             )
           )
 
-        case socket.assigns.return_to do
-          nil ->
-            {:noreply,
-             socket
-             |> assign(
-               changeset:
-                 changeset
-                 |> Ecto.Changeset.put_embed(:people, [])
-                 |> Map.put(:errors, [])
-                 |> Map.put(:valid?, true)
-                 |> CreateSchema.validate_changeset(),
-               suspected_duplicate_changeset_uuid: nil,
-               file: nil
-             )
-             |> maybe_block_navigation()}
-
-          uri ->
-            {:noreply, push_redirect(socket, to: uri)}
-        end
+        {:noreply, socket |> handle_save_success(CreateSchema) |> maybe_block_navigation()}
     end
   end
 
@@ -156,9 +138,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   def handle_info({:csv_import, {:ok, data}}, socket) do
     {:noreply,
      socket
-     |> assign(
-       changeset: import_into_changeset(socket.assigns.changeset, data, socket.assigns.tenants)
-     )
+     |> assign(changeset: import_into_changeset(socket.assigns.changeset, data))
      |> maybe_block_navigation()}
   end
 
@@ -186,7 +166,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp create_case({person_schema, {person, supervisor, tracer}}, changeset) do
+  defp create_case({_person_schema, {person, supervisor, tracer}}, changeset) do
     {start_date, end_date} =
       changeset
       |> Ecto.Changeset.get_field(:date, nil)
@@ -208,13 +188,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           }
         ],
         supervisor_uuid: supervisor.uuid,
-        tracer_uuid: tracer.uuid,
-        clinical: %{
-          test: person_schema.test_date,
-          laboratory_report: person_schema.test_laboratory_report,
-          test_kind: person_schema.test_kind,
-          result: person_schema.test_result
-        }
+        tracer_uuid: tracer.uuid
       })
 
     case

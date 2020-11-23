@@ -44,9 +44,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
       :people,
       changeset
       |> get_change(:people, [])
-      |> Enum.reject(fn %Changeset{changes: changes} ->
-        Map.drop(changes, [:uuid]) == %{}
-      end)
+      |> Enum.reject(&is_empty?/1)
     )
   end
 

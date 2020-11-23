@@ -107,6 +107,42 @@
             <th class="table-col-border">
               {{ gettext("Test result") }}
             </th>
+            <th>
+              {{ gettext("Reporting Unit") }}
+            </th>
+            <th>
+              {{ gettext("Address") }}
+            </th>
+            <th>
+              {{ gettext("ZIP") }}
+            </th>
+            <th>
+              {{ gettext("Place") }}
+            </th>
+            <th>
+              {{ gettext("Country") }}
+            </th>
+            <th class="table-col-border">
+              {{ gettext("Subdivision") }}
+            </th>
+            <th>
+              {{ gettext("Sponsor") }}
+            </th>
+            <th>
+              {{ gettext("Address") }}
+            </th>
+            <th>
+              {{ gettext("ZIP") }}
+            </th>
+            <th>
+              {{ gettext("Place") }}
+            </th>
+            <th>
+              {{ gettext("Country") }}
+            </th>
+            <th class="table-col-border">
+              {{ gettext("Subdivision") }}
+            </th>
           </template>
           <template slot="additional_row">
             <td>
@@ -121,36 +157,152 @@
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
-            <td>
-              <Field class="fill-cell" name={{ :test_date }}>
-                <DateInput class="form-control" />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </td>
-            <td>
-              <Field class="fill-cell" name={{ :test_laboratory_report }}>
-                <DateInput class="form-control" />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </td>
-            <td>
-              <Field class="fill-cell" name={{ :test_kind }}>
-                <Select class="form-control" opts={{ prompt: gettext("Choose test kind") }} options={{ test_kinds() }} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </td>
-            <td class="table-col-border">
-              <Field class="fill-cell" name={{ :test_result }}>
-                <Select class="form-control" opts={{ prompt: gettext("Choose test result") }} options={{ test_results() }} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </td>
+            <Inputs for={{ :clinical }}>
+              <td>
+                <Field class="fill-cell" name={{ :test }}>
+                  <DateInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </td>
+              <td>
+                <Field class="fill-cell" name={{ :laboratory_report }}>
+                  <DateInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </td>
+              <td>
+                <Field class="fill-cell" name={{ :test_kind }}>
+                  <Select class="form-control" opts={{ prompt: gettext("Choose test kind") }} options={{ test_kinds() }} />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </td>
+              <td class="table-col-border">
+                <Field class="fill-cell" name={{ :result }}>
+                  <Select class="form-control" opts={{ prompt: gettext("Choose test result") }} options={{ test_results() }} />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </td>
+              <Inputs for={{ :reporting_unit }}>
+                <td>
+                  <Field class="fill-cell" name={{ :name }}>
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </td>
+                <Inputs for={{ :address }}>
+                  <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                    <td>
+                      <HiddenInput field={{ :address }} />
+                      <Field class="fill-cell" name={{ :address }}>
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </td>
+                    <td>
+                      <HiddenInput field={{ :zip }} />
+                      <Field class="fill-cell" name={{ :zip }}>
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </td>
+                    <td>
+                      <HiddenInput field={{ :place }} />
+                      <Field class="fill-cell" name={{ :place }}>
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </td>
+                    <td>
+                      <HiddenInput field={{ :country }} />
+                      <Field class="fill-cell" name={{ :country }}>
+                        <Select class="form-control"
+                          opts={{ prompt: gettext("Default country") }}
+                          options={{ countries() }}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </td>
+                    <td class="table-col-border">
+                      <HiddenInput field={{ :subdivision }} />
+                      <Field class="fill-cell" name={{ :subdivision }}>
+                        <Select
+                          class="form-control"
+                          opts={{ prompt: gettext("Choose subdivision") }}
+                          field={{ :subdivision }}
+                          options={{ subdivisions(form.source, Phoenix.HTML.FormData.input_value(form.source, form, :default_country)) }}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </td>
+                  </InputContext>
+                </Inputs>
+              </Inputs>
+              <Inputs for={{ :sponsor }}>
+                <td>
+                  <Field class="fill-cell" name={{ :name }}>
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </td>
+                <Inputs for={{ :address }}>
+                  <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                    <td>
+                      <HiddenInput field={{ :address }} />
+                      <Field class="fill-cell" name={{ :address }}>
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </td>
+                    <td>
+                      <HiddenInput field={{ :zip }} />
+                      <Field class="fill-cell" name={{ :zip }}>
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </td>
+                    <td>
+                      <HiddenInput field={{ :place }} />
+                      <Field class="fill-cell" name={{ :place }}>
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </td>
+                    <td>
+                      <HiddenInput field={{ :country }} />
+                      <Field class="fill-cell" name={{ :country }}>
+                        <Select class="form-control"
+                          opts={{ prompt: gettext("Default country") }}
+                          options={{ countries() }}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </td>
+                    <td class="table-col-border">
+                      <HiddenInput field={{ :subdivision }} />
+                      <Field class="fill-cell" name={{ :subdivision }}>
+                        <Select
+                          class="form-control"
+                          opts={{ prompt: gettext("Choose subdivision") }}
+                          field={{ :subdivision }}
+                          options={{ subdivisions(form.source, Phoenix.HTML.FormData.input_value(form.source, form, :default_country)) }}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </td>
+                  </InputContext>
+                </Inputs>
+              </Inputs>
+            </Inputs>
           </template>
         </HygeiaWeb.CaseLive.PersonCreateTable>
       </div>
 
       <div class="container">
-        <HygeiaWeb.CaseLive.CSVImport id="csv-import" mapping={{ get_csv_key_mapping() }} />
+        <HygeiaWeb.CaseLive.CSVImport
+          id="csv-import"
+          mapping={{ get_csv_key_mapping() }}
+          normalize_row_callback={{ &normalize_import_field(&1, @tenants) }}
+        />
 
         <button class="btn btn-primary mt-5" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
           {{ gettext("Save") }}

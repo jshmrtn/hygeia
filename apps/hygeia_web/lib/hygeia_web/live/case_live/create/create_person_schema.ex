@@ -4,6 +4,8 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
   use Hygeia, :model
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Person.Sex
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
@@ -19,19 +21,13 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
     field :accepted_duplicate_uuid, :binary_id
     field :accepted_duplicate_human_readable_id, :string
     field :employer, :string
-    field :test_date, :date
-    field :test_laboratory_report, :date
-    field :test_kind, Hygeia.CaseContext.Case.Clinical.TestKind
-    field :test_result, Hygeia.CaseContext.Case.Clinical.Result
     field :ism_case_id, :string
     field :ism_report_id, :string
     field :birth_date, :date
     field :sex, Sex
-    field :address, :string
-    field :zip, :string
-    field :place, :string
-    field :country, :string
-    field :subdivision, :string
+
+    embeds_one :clinical, Clinical, on_replace: :update
+    embeds_one :address, Address, on_replace: :update
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     belongs_to :supervisor, User, references: :uuid, foreign_key: :supervisor_uuid
@@ -45,8 +41,8 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
           Ecto.Changeset.t()
   def changeset(person \\ %__MODULE__{}, attrs \\ %{}) do
     changeset =
-      %Changeset{changes: changes} =
-      cast(person, attrs, [
+      person
+      |> cast(attrs, [
         :uuid,
         :first_name,
         :last_name,
@@ -60,22 +56,15 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
         :tracer_uuid,
         :supervisor_uuid,
         :employer,
-        :test_date,
-        :test_laboratory_report,
-        :test_kind,
-        :test_result,
         :ism_case_id,
         :ism_report_id,
         :birth_date,
-        :sex,
-        :address,
-        :zip,
-        :place,
-        :country,
-        :subdivision
+        :sex
       ])
+      |> cast_embed(:address)
+      |> cast_embed(:clinical)
 
-    if Map.drop(changes, [:uuid]) == %{} do
+    if is_empty?(changeset) do
       changeset
     else
       validate_changeset(changeset)
@@ -188,13 +177,9 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
           mobile: mobile,
           landline: landline,
           employer: employer,
-          country: country,
           sex: sex,
           address: address,
-          birth_date: birth_date,
-          zip: zip,
-          place: place,
-          subdivision: subdivision
+          birth_date: birth_date
         },
         default_country
       ) do
@@ -205,13 +190,13 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
       birth_date: birth_date,
       employers: [],
       sex: sex,
-      address: %{
-        address: address,
-        zip: zip,
-        place: place,
-        subdivision: subdivision,
-        country: country || default_country
-      }
+      address:
+        address
+        |> Map.from_struct()
+        |> Map.update!(:country, fn
+          nil -> default_country
+          other -> other
+        end)
     }
 
     attrs =

@@ -1,6 +1,6 @@
-defmodule Hygeia.CaseContext.Case.Employer do
+defmodule Hygeia.CaseContext.Entity do
   @moduledoc """
-  Model for Employer Schema
+  Model for Entity Schema
   """
 
   use Hygeia, :model
@@ -24,9 +24,9 @@ defmodule Hygeia.CaseContext.Case.Employer do
   end
 
   @doc false
-  @spec changeset(employer :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
-  def changeset(employer, attrs) do
-    employer
+  @spec changeset(entity :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
+  def changeset(entity, attrs) do
+    entity
     |> cast(attrs, [:uuid, :name])
     |> fill_uuid
     |> validate_required([])

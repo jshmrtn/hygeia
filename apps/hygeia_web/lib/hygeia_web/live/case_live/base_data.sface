@@ -288,6 +288,40 @@
                       </Field>
                     </div>
                   </div>
+
+                  <!-- TODO: Style -->
+                  <Inputs for={{ :reporting_unit }}>
+                    <h4>{{ gettext("Reporting unit") }}</h4>
+                    <Field name={{ :name }} class="form-group">
+                      <Label>{{ gettext("Name") }}</Label>
+                      <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <Inputs for={{ :address }}>
+                      <HygeiaWeb.AddressForm
+                        disabled={{ @live_action == :show }}
+                        id="reporting_unit_address"
+                      />
+                    </Inputs>
+                  </Inputs>
+
+                  <!-- TODO: Style -->
+                  <Inputs for={{ :sponsor }}>
+                    <h4>{{ gettext("Sponsor") }}</h4>
+                    <Field name={{ :name }} class="form-group">
+                      <Label>{{ gettext("Name") }}</Label>
+                      <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <Inputs for={{ :address }}>
+                      <HygeiaWeb.AddressForm
+                        disabled={{ @live_action == :show }}
+                        id="sponsor_address"
+                      />
+                    </Inputs>
+                  </Inputs>
                 </Inputs>
               </div>
             </div>

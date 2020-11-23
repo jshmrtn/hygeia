@@ -18,6 +18,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
+  alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
@@ -88,7 +89,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
             |> Ecto.Changeset.fetch_field!(:people)
             |> Enum.reject(&match?(%CreatePersonSchema{uuid: nil}, &1))
             |> Enum.map(&{&1, save_or_load_person_schema(&1, socket, changeset)})
-            |> Enum.map(&create_case/1)
+            |> Enum.map(&create_case(&1, changeset))
           end)
 
         socket =
@@ -98,25 +99,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
             ngettext("Created Case", "Created %{n} Cases", length(cases), n: length(cases))
           )
 
-        case socket.assigns.return_to do
-          nil ->
-            {:noreply,
-             socket
-             |> assign(
-               changeset:
-                 changeset
-                 |> Ecto.Changeset.put_embed(:people, [])
-                 |> Map.put(:errors, [])
-                 |> Map.put(:valid?, true)
-                 |> CreateSchema.validate_changeset(),
-               suspected_duplicate_changeset_uuid: nil,
-               file: nil
-             )
-             |> maybe_block_navigation()}
-
-          uri ->
-            {:noreply, push_redirect(socket, to: uri)}
-        end
+        {:noreply, socket |> handle_save_success(CreateSchema) |> maybe_block_navigation()}
     end
   end
 
@@ -132,10 +115,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   end
 
   def handle_info({:csv_import, {:ok, data}}, socket) do
-    {:noreply,
-     assign(socket,
-       changeset: import_into_changeset(socket.assigns.changeset, data, socket.assigns.tenants)
-     )}
+    {:noreply, assign(socket, changeset: import_into_changeset(socket.assigns.changeset, data))}
   end
 
   def handle_info({:csv_import, {:error, _reason}}, socket) do
@@ -162,18 +142,30 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp create_case({person_schema, {person, supervisor, tracer}}) do
+  defp create_case({person_schema, {person, supervisor, tracer}}, global_changeset) do
     attrs = %{
       external_references: [],
       phases: [%{details: %{__type__: :index}}],
       supervisor_uuid: supervisor.uuid,
       tracer_uuid: tracer.uuid,
-      clinical: %{
-        test: person_schema.test_date,
-        laboratory_report: person_schema.test_laboratory_report,
-        test_kind: person_schema.test_kind,
-        result: person_schema.test_result
-      }
+      clinical:
+        person_schema.clinical
+        |> Map.from_struct()
+        |> update_in([Access.key!(:sponsor)], &Map.from_struct/1)
+        |> update_in([Access.key!(:sponsor), Access.key!(:address)], &Map.from_struct/1)
+        |> update_in([Access.key!(:sponsor), Access.key!(:address), Access.key!(:country)], fn
+          nil -> Ecto.Changeset.get_field(global_changeset, :default_country)
+          other -> other
+        end)
+        |> update_in([Access.key!(:reporting_unit)], &Map.from_struct/1)
+        |> update_in([Access.key!(:reporting_unit), Access.key!(:address)], &Map.from_struct/1)
+        |> update_in(
+          [Access.key!(:reporting_unit), Access.key!(:address), Access.key!(:country)],
+          fn
+            nil -> Ecto.Changeset.get_field(global_changeset, :default_country)
+            other -> other
+          end
+        )
     }
 
     attrs =

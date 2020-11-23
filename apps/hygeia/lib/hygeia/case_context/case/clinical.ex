@@ -7,6 +7,8 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
   import EctoEnum
 
+  alias Hygeia.CaseContext.Entity
+
   defenum TestReason, :test_reason, [
     "symptoms",
     "outbreak_examination",
@@ -40,7 +42,9 @@ defmodule Hygeia.CaseContext.Case.Clinical do
           test: Date.t() | nil,
           laboratory_report: Date.t() | nil,
           test_kind: TestKind.t() | nil,
-          result: Result.t() | nil
+          result: Result.t() | nil,
+          sponsor: Entity.t() | nil,
+          reporting_unit: Entity.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -49,7 +53,9 @@ defmodule Hygeia.CaseContext.Case.Clinical do
           test: Date.t() | nil,
           laboratory_report: Date.t() | nil,
           test_kind: TestKind.t() | nil,
-          result: Result.t() | nil
+          result: Result.t() | nil,
+          sponsor: Entity.t() | nil,
+          reporting_unit: Entity.t() | nil
         }
 
   embedded_schema do
@@ -59,6 +65,9 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     field :laboratory_report, :date
     field :test_kind, TestKind
     field :result, Result
+
+    embeds_one :sponsor, Entity, on_replace: :update
+    embeds_one :reporting_unit, Entity, on_replace: :update
   end
 
   @doc false
@@ -73,6 +82,8 @@ defmodule Hygeia.CaseContext.Case.Clinical do
       :test_kind,
       :result
     ])
+    |> cast_embed(:sponsor)
+    |> cast_embed(:reporting_unit)
     |> validate_required([])
   end
 end

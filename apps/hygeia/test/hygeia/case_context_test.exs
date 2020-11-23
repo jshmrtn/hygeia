@@ -11,10 +11,10 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.ContactMethod
-  alias Hygeia.CaseContext.Case.Employer
   alias Hygeia.CaseContext.Case.Hospitalization
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
+  alias Hygeia.CaseContext.Entity
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.InfectionPlaceType
   alias Hygeia.CaseContext.Person
@@ -167,7 +167,7 @@ defmodule Hygeia.CaseContextTest do
                   }
                 ],
                 employers: [
-                  %Employer{
+                  %Entity{
                     name: "JOSHMARTIN GmbH",
                     address: %Address{
                       address: "Neugasse 51",
@@ -260,7 +260,7 @@ defmodule Hygeia.CaseContextTest do
                   }
                 ],
                 employers: [
-                  %Employer{
+                  %Entity{
                     name: "JOSHMARTIN GmbH",
                     address: %Address{
                       address: "Neugasse 51",

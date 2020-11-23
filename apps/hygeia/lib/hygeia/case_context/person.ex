@@ -11,7 +11,7 @@ defmodule Hygeia.CaseContext.Person do
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.ContactMethod
-  alias Hygeia.CaseContext.Case.Employer
+  alias Hygeia.CaseContext.Entity
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Profession
   alias Hygeia.OrganisationContext.Position
@@ -31,7 +31,7 @@ defmodule Hygeia.CaseContext.Person do
           address: Address.t() | nil,
           contact_methods: [ContactMethod.t()] | nil,
           external_references: [ExternalReference.t()] | nil,
-          employers: [Employer.t()] | nil,
+          employers: [Entity.t()] | nil,
           profession_uuid: String.t() | nil,
           profession: Ecto.Schema.belongs_to(Profession.t()) | nil,
           tenant_uuid: String.t() | nil,
@@ -52,7 +52,7 @@ defmodule Hygeia.CaseContext.Person do
           address: Address.t(),
           contact_methods: [ContactMethod.t()],
           external_references: [ExternalReference.t()],
-          employers: [Employer.t()],
+          employers: [Entity.t()],
           profession_uuid: String.t() | nil,
           profession: Ecto.Schema.belongs_to(Profession.t()),
           tenant_uuid: String.t(),
@@ -73,7 +73,7 @@ defmodule Hygeia.CaseContext.Person do
     embeds_one :address, Address, on_replace: :update
     embeds_many :contact_methods, ContactMethod, on_replace: :delete
     embeds_many :external_references, ExternalReference, on_replace: :delete
-    embeds_many :employers, Employer, on_replace: :delete
+    embeds_many :employers, Entity, on_replace: :delete
 
     belongs_to :profession, Profession, references: :uuid, foreign_key: :profession_uuid
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
