@@ -21,15 +21,13 @@ defmodule HygeiaUserSync do
     _env -> @default_refresh_interval_ms :timer.minutes(5)
   end
 
-  @server {:global, __MODULE__}
-
   @grpc_server "api.zitadel.ch:443"
 
   defstruct [:channel, :access_token]
 
   @spec start_link(opts :: Keyword.t()) :: GenServer.on_start()
   def start_link(opts),
-    do: GenServer.start_link(__MODULE__, [], name: Keyword.get(opts, :name, @server))
+    do: GenServer.start_link(__MODULE__, [], name: Keyword.get(opts, :name, __MODULE__))
 
   @impl GenServer
   def init(_opts) do

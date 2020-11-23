@@ -11,7 +11,7 @@ defmodule HygeiaUserSync.Application do
 
     _env ->
       @jobs [
-        HygeiaUserSync
+        {Highlander, HygeiaUserSync}
       ]
   end
 

@@ -143,12 +143,10 @@ defmodule HygeiaWeb.CaseLive.Protocol do
     |> handle_save_response(socket)
   end
 
-  @impl Phoenix.LiveComponent
   def handle_event("open_modal", _params, socket) do
     {:noreply, assign(socket, modal_open: true)}
   end
 
-  @impl Phoenix.LiveComponent
   def handle_event("close_modal", _params, socket) do
     {:noreply, assign(socket, modal_open: false)}
   end

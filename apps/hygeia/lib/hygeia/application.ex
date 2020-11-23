@@ -5,36 +5,6 @@ defmodule Hygeia.Application do
 
   use Application
 
-  alias Hygeia.Jobs.RefreshMaterializedView
-
-  case Mix.env() do
-    :test ->
-      @jobs []
-
-    _env ->
-      @jobs [
-        # Refresh Stats Periodically
-        {RefreshMaterializedView,
-         view: :statistics_active_isolation_cases_per_day,
-         name: {:global, RefreshMaterializedView.ActiveIsolationCasesPerDay}},
-        {RefreshMaterializedView,
-         view: :statistics_cumulative_index_case_end_reasons,
-         name: {:global, RefreshMaterializedView.CumulativeIndexCaseEndReasons}},
-        {RefreshMaterializedView,
-         view: :statistics_active_quarantine_cases_per_day,
-         name: {:global, RefreshMaterializedView.ActiveQuarantineCasesPerDay}},
-        {RefreshMaterializedView,
-         view: :statistics_cumulative_possible_index_case_end_reasons,
-         name: {:global, RefreshMaterializedView.CumulativePossibleIndexCaseEndReasons}},
-        {RefreshMaterializedView,
-         view: :statistics_new_cases_per_day,
-         name: {:global, RefreshMaterializedView.NewCasesPerDay}},
-        {RefreshMaterializedView,
-         view: :statistics_active_hospitalization_cases_per_day,
-         name: {:global, RefreshMaterializedView.ActiveHospitalizationCasesPerDay}}
-      ]
-  end
-
   @impl Application
   @spec start(start_type :: Application.start_type(), start_args :: term()) ::
           {:ok, pid()} | {:ok, pid(), Application.state()} | {:error, reason :: term()}
@@ -46,8 +16,8 @@ defmodule Hygeia.Application do
         # Start the Ecto repository
         Hygeia.Repo,
         # Start the PubSub system
-        {Phoenix.PubSub, name: Hygeia.PubSub}
-        | @jobs
+        {Phoenix.PubSub, name: Hygeia.PubSub},
+        Hygeia.Jobs.Supervisor
       ],
       strategy: :one_for_one,
       name: Hygeia.Supervisor
