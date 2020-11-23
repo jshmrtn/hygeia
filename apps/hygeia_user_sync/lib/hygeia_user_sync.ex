@@ -16,6 +16,8 @@ defmodule HygeiaUserSync do
   alias Hygeia.UserContext
   alias Hygeia.UserContext.User
 
+  require Logger
+
   case Mix.env() do
     :dev -> @default_refresh_interval_ms :timer.seconds(30)
     _env -> @default_refresh_interval_ms :timer.minutes(5)
@@ -106,24 +108,22 @@ defmodule HygeiaUserSync do
       |> Enum.find(&match?(%User{iam_sub: ^sub}, &1))
       |> case do
         nil ->
-          {:ok, _user} =
-            UserContext.create_user(%{
-              email: email,
-              display_name: display_name,
-              iam_sub: sub,
-              roles: roles
-            })
+          create_user(%{
+            email: email,
+            display_name: display_name,
+            iam_sub: sub,
+            roles: roles
+          })
 
         %User{email: ^email, display_name: ^display_name, roles: ^roles} ->
           :ok
 
         user ->
-          {:ok, _user} =
-            UserContext.update_user(user, %{
-              email: email,
-              display_name: display_name,
-              roles: roles
-            })
+          update_user(user, %{
+            email: email,
+            display_name: display_name,
+            roles: roles
+          })
       end
     end
 
@@ -132,11 +132,80 @@ defmodule HygeiaUserSync do
       |> Enum.find(&match?(%UserGrantView{user_id: ^sub}, &1))
       |> case do
         nil ->
-          {:ok, _user} = UserContext.delete_user(user)
+          delete_user(user)
 
         _grant ->
           :ok
       end
+    end
+  end
+
+  defp create_user(attrs) do
+    attrs
+    |> UserContext.create_user()
+    |> case do
+      {:ok, user} ->
+        Logger.info("Created User #{user.email}", user: user)
+
+        :ok
+
+      {:error, reason} ->
+        Logger.warn(
+          """
+          Could not create user:
+
+          #{inspect(reason, pretty: true)}
+          """,
+          reason: reason
+        )
+
+        {:error, reason}
+    end
+  end
+
+  defp update_user(user, attrs) do
+    user
+    |> UserContext.update_user(attrs)
+    |> case do
+      {:ok, user} ->
+        Logger.info("Updated User #{user.email}", user: user)
+
+        :ok
+
+      {:error, reason} ->
+        Logger.warn(
+          """
+          Could not update user #{user.email}:
+
+          #{inspect(reason, pretty: true)}
+          """,
+          reason: reason
+        )
+
+        {:error, reason}
+    end
+  end
+
+  defp delete_user(user) do
+    user
+    |> UserContext.delete_user()
+    |> case do
+      {:ok, user} ->
+        Logger.info("Deleted User #{user.email}", user: user)
+
+        :ok
+
+      {:error, reason} ->
+        Logger.warn(
+          """
+          Could not delete user #{user.email}:
+
+          #{inspect(reason, pretty: true)}
+          """,
+          reason: reason
+        )
+
+        {:error, reason}
     end
   end
 end
