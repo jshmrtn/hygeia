@@ -27,7 +27,7 @@ const Hook = {
     this.handleEvent("block_navigation", () => this.locked = true);
     this.handleEvent("unblock_navigation", () => this.locked = false);
   },
-  beforeDestroy() {
+  destroyed() {
     document.removeEventListener('click', this.preventLink);
     window.removeEventListener("beforeunload", this.preventNavigation);
   },

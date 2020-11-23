@@ -34,14 +34,14 @@ defmodule HygeiaWeb.CaseLive.Protocol do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "protocol_entries:case:#{id}")
 
-        load_data(socket, case, params)
+        socket
+        |> assign(modal_open: Map.drop(params, ["id"]) != %{})
+        |> load_data(case, params)
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
-
-    socket = assign(socket, modal_open: false)
 
     super(params, uri, socket)
   end
@@ -157,7 +157,9 @@ defmodule HygeiaWeb.CaseLive.Protocol do
        socket
        |> load_data(CaseContext.get_case!(socket.assigns.case.uuid))
        |> put_flash(:info, gettext("Protocol Entry created successfully"))
-       |> assign(modal_open: false)}
+       |> assign(modal_open: false)
+       |> push_patch(to: Routes.case_protocol_path(socket, :show, socket.assigns.case))
+       |> maybe_block_navigation()}
 
   defp handle_save_response({:error, %Ecto.Changeset{} = changeset}, socket),
     do:
