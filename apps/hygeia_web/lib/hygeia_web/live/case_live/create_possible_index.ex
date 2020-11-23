@@ -49,7 +49,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           tracer_users: tracer_users,
           infection_place_types: infection_place_types,
           suspected_duplicate_changeset_uuid: nil,
-          file: nil
+          file: nil,
+          return_to: params["return_to"]
         )
       else
         socket
@@ -97,25 +98,34 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             |> Enum.map(&create_transmission(&1, changeset))
           end)
 
-        {:noreply,
-         socket
-         |> put_flash(
-           :info,
-           ngettext("Created Case", "Created %{n} Cases", length(transmissions),
-             n: length(transmissions)
-           )
-         )
-         |> assign(
-           changeset:
-             changeset
-             |> Ecto.Changeset.put_embed(:people, [])
-             |> Map.put(:errors, [])
-             |> Map.put(:valid?, true)
-             |> CreateSchema.validate_changeset(),
-           suspected_duplicate_changeset_uuid: nil,
-           file: nil
-         )
-         |> maybe_block_navigation()}
+        socket =
+          put_flash(
+            socket,
+            :info,
+            ngettext("Created Case", "Created %{n} Cases", length(transmissions),
+              n: length(transmissions)
+            )
+          )
+
+        case socket.assigns.return_to do
+          nil ->
+            {:noreply,
+             socket
+             |> assign(
+               changeset:
+                 changeset
+                 |> Ecto.Changeset.put_embed(:people, [])
+                 |> Map.put(:errors, [])
+                 |> Map.put(:valid?, true)
+                 |> CreateSchema.validate_changeset(),
+               suspected_duplicate_changeset_uuid: nil,
+               file: nil
+             )
+             |> maybe_block_navigation()}
+
+          uri ->
+            {:noreply, push_redirect(socket, to: uri)}
+        end
     end
   end
 

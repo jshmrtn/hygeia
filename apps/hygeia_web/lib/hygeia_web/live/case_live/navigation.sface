@@ -170,20 +170,23 @@
         </div>
         <div :if={{ authorized?(Case, :create, auth) }}>
           <div class="dropdown-divider"></div>
-          <LiveRedirect
-            class="dropdown-item"
-            to={{ Routes.case_create_possible_index_path(
-              @socket,
-              :create,
-              propagator_internal: true,
-              propagator_case_uuid: @case.uuid,
-              default_tenant_uuid: @case.tenant_uuid,
-              type: :contact_person
-            ) }}
-          >
-            <span class="oi oi-plus mr-1" aria-hidden="true"></span>
-            {{ gettext("Create Contact Cases") }}
-          </LiveRedirect>
+          <Context get={{ HygeiaWeb, uri: uri }}>
+            <LiveRedirect
+              class="dropdown-item"
+              to={{ Routes.case_create_possible_index_path(
+                @socket,
+                :create,
+                propagator_internal: true,
+                propagator_case_uuid: @case.uuid,
+                default_tenant_uuid: @case.tenant_uuid,
+                type: :contact_person,
+                return_to: URI.parse(uri).path
+              ) }}
+            >
+              <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+              {{ gettext("Create Contact Cases") }}
+            </LiveRedirect>
+          </Context>
         </div>
         <div :if={{ authorized?(@case, :update, auth) and not match?(%{details: %Phase.Index{}}, List.last(@case.phases)) }}>
           <div class="dropdown-divider"></div>

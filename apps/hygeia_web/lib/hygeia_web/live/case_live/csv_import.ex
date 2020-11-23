@@ -33,6 +33,18 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
     {:ok, assign(socket, assigns)}
   end
 
+  def update(
+        %{
+          data: _data,
+          content_type: [_mime]
+        } = assigns,
+        socket
+      ) do
+    send(self(), {:csv_import, {:error, :not_supported}})
+
+    {:ok, assign(socket, assigns)}
+  end
+
   def update(assigns, socket) do
     {:ok, assign(socket, assigns)}
   end

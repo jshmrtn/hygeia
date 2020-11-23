@@ -5,14 +5,20 @@
     </h1>
 
     <div class="d-flex">
-      <LivePatch class="mr-2" to={{ Routes.case_create_index_path(@socket, :create) }}>
+      <LivePatch
+        class="mr-2"
+        to={{ Routes.case_create_index_path(@socket, :create, return_to: Routes.case_index_path(@socket, :index)) }}
+      >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
           <span class="oi oi-plus" aria-hidden="true"></span>
           {{ gettext("New Index") }}
         </button>
       </LivePatch>
 
-      <LivePatch class="mr-2" to={{ Routes.case_create_possible_index_path(@socket, :create) }}>
+      <LivePatch
+        class="mr-2"
+        to={{ Routes.case_create_possible_index_path(@socket, :create, return_to: Routes.case_index_path(@socket, :index)) }}
+      >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
           <span class="oi oi-plus" aria-hidden="true"></span>
           {{ gettext("New Possible Index") }}
