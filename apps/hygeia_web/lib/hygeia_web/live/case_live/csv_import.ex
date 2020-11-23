@@ -3,7 +3,11 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
 
   use HygeiaWeb, :surface_live_component
 
+  alias Surface.Components.Link
+
   prop mapping, :map, required: true
+
+  data show_help, :boolean, default: false
 
   @impl Phoenix.LiveComponent
   def mount(socket) do
@@ -43,6 +47,14 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
 
   def handle_event("phx-dropzone", ["file-status", _payload], socket) do
     {:noreply, socket}
+  end
+
+  def handle_event("show_help", _params, socket) do
+    {:noreply, assign(socket, show_help: true)}
+  end
+
+  def handle_event("hide_help", _params, socket) do
+    {:noreply, assign(socket, show_help: false)}
   end
 
   defp extract_data(:csv, data, mapping) do

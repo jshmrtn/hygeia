@@ -207,6 +207,78 @@
 
       <p>Zur Zeit muss der Code wie bisher beim Senior-Tracer angefordert werden. Nach erhalt des Codes kann mit Klick auf den Button “Aktion” der Eintrag “SMS senden” ausgewählt werden. Damit öffnet sich im Bereich “Protokoll” der Eingabe-Typ “SMS”. Der Code kann mit einem kurzen Beschrieb direkt in das Textfeld übertragen werden. Mit dem Klick auf “Speichern” wird das SMS versendet, der Text bleibt beim Index ersichtlich.</p>
     </details>
+
+    <details id="import">
+      <summary>
+        <h3>Wie importiere ich eine Fall-Liste?</h3>
+      </summary>
+  
+      <p>Es können zwei Arten von Dateien importiert werden: <code>.xlsx</code> und <code>.csv</code>.</p>
+
+      <h4>CSV</h4>
+
+      <p>Ein CSV muss folgende Attribute aufweisen um importiert werden zu können:</p>
+
+      <dl>
+        <dt>{{ gettext("Encoding") }}</dt>
+        <dd>{{ gettext("UTF-8") }}</dd>
+
+        <dt>{{ gettext("Separator") }}</dt>
+        <dd>{{ gettext("Comma (,)") }}</dd>
+      </dl>
+
+      <p>Falls die Datei nich zu 100% mit dieser Vorgabe übereinstimmt, kann sie nicht importiert werden.</p>
+
+      <p>
+        <Link
+          class="btn btn-primary"
+          to={{ Routes.static_path(@socket, "/downloads/help/03-Fälle/example.csv") }}
+        >
+          <span class="oi oi-data-transfer-download"></span>
+          Beispiel CSV Download
+        </Link>
+      </p>
+
+      <h4>XLSX (Excel)</h4>
+
+      <p>Ein XLSX muss als XLSX abgespeichert werden, XLS wird nicht unterstützt.</p>
+
+      <p>Falls mehrere Arbeitsmappen in der Datei sind, wird immer nur die erste geladen.</p>
+
+      <p>
+        <Link
+          class="btn btn-primary"
+          to={{ Routes.static_path(@socket, "/downloads/help/03-Fälle/example.xlsx") }}
+        >
+          <span class="oi oi-data-transfer-download"></span>
+          Beispiel XLSX Download
+        </Link>
+      </p>
+
+      <h4>Inhalte</h4>
+
+      <p>Die erste Zeile der Datei muss die Spaltennamen enthalten, die darauf folgenden Zeilen sind die zu importierenden Inhalte.</p>
+
+      <p>Die auf der Import unter "info" erwähnten Spaltennamen werden unterstützt.</p>
+
+      <p>Spaltennamen die nicht bekannt sind, werden einfach ignoriert.</p>
+
+      <h5>Mandant</h5>
+
+      <p>Der Feldinhalt für Mandant muss der volle ausgeschriebene Name des Mandanten sein. Also zB. <samp>Kanton St. Gallen</samp>.</p>
+
+      <h5>Datum</h5>
+
+      <p>Ein Datum muss wie gefolgt formatiert sein um importiert weren zu können: <samp>JJJJ-MM-dd</samp> (<samp>2020-12-16</samp>)</p>
+
+      <h5>Biologisches Geschlecht</h5>
+
+      <p><samp>male</samp>, <samp>female</samp> oder <samp>other</samp></p>
+
+      <h5>Testresultat</h5>
+
+      <p><samp>positiv</samp> oder <samp>negativ</samp></p>
+    </details>
   </details>
 
   <details>

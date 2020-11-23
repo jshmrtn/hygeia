@@ -100,7 +100,7 @@ msgstr "Asymptomatisch"
 msgid "Author"
 msgstr "Autor"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:27
+#: lib/hygeia_web/live/case_live/csv_import.sface:48
 msgid "Available Column Headers"
 msgstr "Verfügbare Spaltenüberschriften"
 
@@ -156,7 +156,7 @@ msgstr "Mandant wählen"
 #: lib/hygeia_web/live/case_live/protocol.sface:19
 #: lib/hygeia_web/live/person_live/base_data.sface:136
 #: lib/hygeia_web/live/person_live/create.sface:70
-#: lib/hygeia_web/live/references.sface:20
+#: lib/hygeia_web/live/references.sface:25
 #: lib/hygeia_web/live/tenant_live/show.sface:84
 #: lib/hygeia_web/live/tenant_live/show.sface:157
 msgid "Choose Type"
@@ -199,7 +199,8 @@ msgstr "Testergebnis wählen"
 msgid "Clinical Information"
 msgstr "Klinische Informationen"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:25
+#: lib/hygeia_web/live/case_live/csv_import.sface:46
+#: lib/hygeia_web/live/help_live/index.sface:227
 msgid "Comma (,)"
 msgstr "Komma (,)"
 
@@ -289,7 +290,7 @@ msgstr "Erstellt am %{created_at}"
 msgid "Date"
 msgstr "Datum"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:48
+#: lib/hygeia_web/live/case_live/csv_import.sface:61
 msgid "Date Format"
 msgstr "Datumsformat"
 
@@ -413,7 +414,6 @@ msgstr "Bearbeiten"
 
 #: lib/hygeia_web/helpers/contact_method.ex:15
 #: lib/hygeia_web/live/case_live/create.ex:324
-#: lib/hygeia_web/live/case_live/csv_import.sface:35
 #: lib/hygeia_web/live/case_live/person_create_table.sface:11
 #: lib/hygeia_web/live/case_live/person_create_table.sface:208
 #: lib/hygeia_web/live/case_live/protocol.ex:196
@@ -424,7 +424,6 @@ msgid "Email"
 msgstr "E-Mail"
 
 #: lib/hygeia_web/live/case_live/create.ex:328
-#: lib/hygeia_web/live/case_live/csv_import.sface:39
 #: lib/hygeia_web/live/case_live/person_create_table.sface:21
 msgid "Employer"
 msgstr "Arbeitgeber"
@@ -466,7 +465,7 @@ msgstr "Weiblich"
 msgid "Fever"
 msgstr "Fieber"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:18
+#: lib/hygeia_web/live/case_live/csv_import.sface:31
 msgid "File Type"
 msgstr "Dateityp"
 
@@ -490,7 +489,6 @@ msgid "First contact"
 msgstr "Erster Kontakt"
 
 #: lib/hygeia_web/live/case_live/create.ex:314
-#: lib/hygeia_web/live/case_live/csv_import.sface:31
 #: lib/hygeia_web/live/case_live/person_create_table.sface:5
 #: lib/hygeia_web/live/person_live/index.sface:105
 msgid "First name"
@@ -565,8 +563,8 @@ msgstr "Infektionsort Typ"
 msgid "Infection place"
 msgstr "Infektionsort"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:57
-#: lib/hygeia_web/live/case_live/csv_import.sface:58
+#: lib/hygeia_web/live/case_live/csv_import.sface:20
+#: lib/hygeia_web/live/case_live/csv_import.sface:21
 msgid "Info"
 msgstr "Info"
 
@@ -596,13 +594,11 @@ msgstr "Bekannt"
 #: lib/hygeia_web/live/case_live/base_data.sface:269
 #: lib/hygeia_web/live/case_live/create.ex:332
 #: lib/hygeia_web/live/case_live/create_index.sface:102
-#: lib/hygeia_web/live/case_live/csv_import.sface:41
 msgid "Laboratory report date"
 msgstr "Datum des Laborberichts"
 
 #: lib/hygeia_web/helpers/contact_method.ex:14
 #: lib/hygeia_web/live/case_live/create.ex:322
-#: lib/hygeia_web/live/case_live/csv_import.sface:34
 #: lib/hygeia_web/live/case_live/person_create_table.sface:10
 #: lib/hygeia_web/live/case_live/person_create_table.sface:204
 msgid "Landline"
@@ -618,7 +614,6 @@ msgstr "Nachname"
 msgid "Last name"
 msgstr "Nachname"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:32
 #: lib/hygeia_web/live/case_live/person_create_table.sface:6
 msgid "Lastname"
 msgstr "Nachname"
@@ -699,7 +694,6 @@ msgid "Mobile"
 msgstr "Mobiltelefon"
 
 #: lib/hygeia_web/live/case_live/create.ex:319
-#: lib/hygeia_web/live/case_live/csv_import.sface:33
 #: lib/hygeia_web/live/case_live/person_create_table.sface:9
 msgid "Mobile Phone"
 msgstr "Mobiltelefon"
@@ -780,7 +774,7 @@ msgstr "Neue Person"
 msgid "New profession"
 msgstr "Neues Berufsfeld"
 
-#: lib/hygeia_web/live/references.sface:52
+#: lib/hygeia_web/live/references.sface:57
 msgid "New reference"
 msgstr "Neue Referenz"
 
@@ -1252,7 +1246,6 @@ msgid "Successfully authenticated."
 msgstr "Erfolgreich angemeldet."
 
 #: lib/hygeia_web/live/case_live/base_data.sface:69
-#: lib/hygeia_web/live/case_live/csv_import.sface:37
 #: lib/hygeia_web/live/case_live/index.sface:84
 #: lib/hygeia_web/live/case_live/index.sface:114
 #: lib/hygeia_web/live/case_live/person_create_table.sface:19
@@ -1266,7 +1259,6 @@ msgstr "Symptome"
 
 #: lib/hygeia_web/live/case_live/base_data.sface:46
 #: lib/hygeia_web/live/case_live/create.ex:326
-#: lib/hygeia_web/live/case_live/csv_import.sface:36
 #: lib/hygeia_web/live/case_live/person_create_table.sface:17
 #: lib/hygeia_web/live/case_live/person_create_table.sface:212
 #: lib/hygeia_web/live/person_live/base_data.sface:58
@@ -1291,7 +1283,6 @@ msgid "Tenants"
 msgstr "Mandanten"
 
 #: lib/hygeia_web/live/case_live/create_index.sface:99
-#: lib/hygeia_web/live/case_live/csv_import.sface:40
 msgid "Test Date"
 msgstr "Testdatum"
 
@@ -1310,13 +1301,11 @@ msgstr "Testdatum"
 
 #: lib/hygeia_web/live/case_live/base_data.sface:278
 #: lib/hygeia_web/live/case_live/create_index.sface:105
-#: lib/hygeia_web/live/case_live/csv_import.sface:42
 msgid "Test kind"
 msgstr "Testart"
 
 #: lib/hygeia_web/live/case_live/base_data.sface:285
 #: lib/hygeia_web/live/case_live/create_index.sface:108
-#: lib/hygeia_web/live/case_live/csv_import.sface:43
 msgid "Test result"
 msgstr "Testresultat"
 
@@ -1325,7 +1314,6 @@ msgid "Text"
 msgstr "Text"
 
 #: lib/hygeia_web/live/case_live/base_data.sface:58
-#: lib/hygeia_web/live/case_live/csv_import.sface:38
 #: lib/hygeia_web/live/case_live/index.sface:77
 #: lib/hygeia_web/live/case_live/index.sface:111
 #: lib/hygeia_web/live/case_live/person_create_table.sface:20
@@ -1365,7 +1353,8 @@ msgstr "Reisen"
 msgid "Type"
 msgstr "Typ"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:22
+#: lib/hygeia_web/live/case_live/csv_import.sface:43
+#: lib/hygeia_web/live/help_live/index.sface:224
 msgid "UTF-8"
 msgstr "UTF-8"
 
@@ -1510,7 +1499,7 @@ msgid "username"
 msgstr "Benutzername"
 
 #. Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj
-#: lib/hygeia_web/live/case_live/csv_import.sface:52
+#: lib/hygeia_web/live/case_live/csv_import.sface:66
 msgid "yyyy-mm-dd"
 msgstr "JJJJ-MM-TT"
 
@@ -1752,10 +1741,6 @@ msgstr "Warten auf KP-Liste"
 msgid "Web-SMS"
 msgstr "Web-SMS"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:19
-msgid ".csv or .xlsx"
-msgstr ".csv oder .xlsx"
-
 #: lib/hygeia_web/live/case_live/person_create_table.sface:8
 msgid "Birthdate"
 msgstr "Geburtsdatum"
@@ -1771,7 +1756,7 @@ msgstr "Standard Land"
 msgid "Default country"
 msgstr "Standard Land"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:21
+#: lib/hygeia_web/live/case_live/csv_import.sface:42
 msgid "Encoding (CSV only)"
 msgstr "Codierung (nur CSV)"
 
@@ -1787,7 +1772,7 @@ msgstr "ISM-Meldung-ID"
 msgid "Import CSV / XLSX"
 msgstr ".csv / .xlsx importieren"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:24
+#: lib/hygeia_web/live/case_live/csv_import.sface:45
 msgid "Separator (CSV only)"
 msgstr "Separator (nur CSV)"
 
@@ -1802,3 +1787,23 @@ msgstr "Neuer Eintrag"
 #: lib/hygeia_web/templates/layout/root.html.leex:31
 msgid "Do you really want to continue without saving?"
 msgstr "Möchten Sie fortfahren ohne die Änderungen zu speichern?"
+
+#: lib/hygeia_web/live/case_live/csv_import.sface:71
+msgid "Detailed Instructions"
+msgstr "Detaillierte Anleitung"
+
+#: lib/hygeia_web/live/help_live/index.sface:223
+msgid "Encoding"
+msgstr "Codierung"
+
+#: lib/hygeia_web/live/case_live/csv_import.sface:27
+msgid "Import Help"
+msgstr "Hilfe"
+
+#: lib/hygeia_web/live/case_live/csv_import.sface:73
+msgid "On the Help Page"
+msgstr "Auf der Hilfeseite"
+
+#: lib/hygeia_web/live/help_live/index.sface:226
+msgid "Separator"
+msgstr "Trennzeichen"
