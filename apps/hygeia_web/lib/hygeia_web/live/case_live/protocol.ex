@@ -41,6 +41,8 @@ defmodule HygeiaWeb.CaseLive.Protocol do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
+    socket = assign(socket, modal_open: false)
+
     super(params, uri, socket)
   end
 
@@ -141,12 +143,23 @@ defmodule HygeiaWeb.CaseLive.Protocol do
     |> handle_save_response(socket)
   end
 
+  @impl Phoenix.LiveComponent
+  def handle_event("open_modal", _params, socket) do
+    {:noreply, assign(socket, modal_open: true)}
+  end
+
+  @impl Phoenix.LiveComponent
+  def handle_event("close_modal", _params, socket) do
+    {:noreply, assign(socket, modal_open: false)}
+  end
+
   defp handle_save_response({:ok, _protocol_entry}, socket),
     do:
       {:noreply,
        socket
        |> load_data(CaseContext.get_case!(socket.assigns.case.uuid))
-       |> put_flash(:info, gettext("Protocol Entry created successfully"))}
+       |> put_flash(:info, gettext("Protocol Entry created successfully"))
+       |> assign(modal_open: false)}
 
   defp handle_save_response({:error, %Ecto.Changeset{} = changeset}, socket),
     do:

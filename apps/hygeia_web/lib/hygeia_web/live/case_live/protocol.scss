@@ -1,0 +1,19 @@
+.component-case-protocol {
+  .protocol-table {
+    table-layout: fixed;
+
+    .col-type {
+      width: 7ch;
+    }
+    .col-date {
+      width: 11ch;
+    }
+    .col-meta {
+      min-width: 70%;
+    }
+
+    .preserve-linebreaks {
+      white-space: pre-wrap;
+    }
+  }
+}
