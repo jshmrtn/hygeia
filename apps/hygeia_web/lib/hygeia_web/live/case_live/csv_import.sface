@@ -1,5 +1,17 @@
 <div class="d-flex">
-  {{ live_component @socket, PhoenixLiveViewDropzone, file_data: @file, file_types: ["application/csv", "text/csv"], target: @myself, button_class: "btn btn-secondary", button_text: gettext("Import CSV / XLSX") }}
+  {{ live_component(
+    @socket,
+    PhoenixLiveViewDropzone,
+    file_data: @file,
+    file_types: [
+      "application/csv",
+      "text/csv",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ],
+    target: @myself,
+    button_class: "btn btn-secondary",
+    button_text: gettext("Import CSV / XLSX")
+  ) }}
 
   <button type="button" class="ml-1 btn btn-info" data-trigger="click" data-toggle="popover" data-content="
     <dl>
