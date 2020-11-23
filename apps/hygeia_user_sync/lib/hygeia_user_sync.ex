@@ -72,7 +72,7 @@ defmodule HygeiaUserSync do
       Stub.search_user_grants(
         channel,
         UserGrantSearchRequest.new(
-          limit: 10,
+          limit: 1000,
           queries: [
             UserGrantSearchQuery.new(
               key: UserGrantSearchKey.value(:USERGRANTSEARCHKEY_PROJECT_ID),
