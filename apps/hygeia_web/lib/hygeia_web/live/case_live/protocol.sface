@@ -78,8 +78,18 @@
         <tbody>
           <tr :for={{ %ProtocolEntry{entry: %type{} = entry, inserted_at: inserted_at} = protocol_entry <- Enum.reverse(@case.protocol_entries) }}>
             <td>{{ protocol_type_type_name(type) }}</td>
-            <td title={{ Cldr.DateTime.to_string!(inserted_at, HygeiaCldr) }}>
-              {{ Cldr.DateTime.Relative.to_string!(DateTime.from_naive!(inserted_at, "Etc/UTC"), HygeiaCldr, format: :short) }}
+            <td>
+              <time
+                datetime={{ NaiveDateTime.to_iso8601(inserted_at) }}
+                title={{ Cldr.DateTime.to_string!(inserted_at, HygeiaCldr) }}
+              >
+                {{ Cldr.DateTime.Relative.to_string!(
+                  DateTime.from_naive!(inserted_at, "Etc/UTC"),
+                  HygeiaCldr,
+                  format: :short,
+                  relative_to: @now
+                ) }}
+              </time>
             </td>
             <td>
               <Link to={{ Routes.user_show_path(@socket, :show, get_protocol_user(protocol_entry)) }} :if={{ get_protocol_user(protocol_entry) != nil }}>

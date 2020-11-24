@@ -19,6 +19,15 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   alias Surface.Components.Link
 
   @impl Phoenix.LiveView
+  def mount(params, session, socket) do
+    socket = assign(socket, now: DateTime.utc_now())
+
+    :timer.send_interval(:timer.seconds(1), :tick)
+
+    super(params, session, socket)
+  end
+
+  @impl Phoenix.LiveView
   def handle_params(%{"id" => id} = params, uri, socket) do
     case = CaseContext.get_case!(id)
 
@@ -57,6 +66,10 @@ defmodule HygeiaWeb.CaseLive.Protocol do
 
   def handle_info({:deleted, %Case{}, _version}, socket) do
     {:noreply, redirect(socket, to: Routes.case_index_path(socket, :index))}
+  end
+
+  def handle_info(:tick, socket) do
+    {:noreply, assign(socket, now: DateTime.utc_now())}
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
