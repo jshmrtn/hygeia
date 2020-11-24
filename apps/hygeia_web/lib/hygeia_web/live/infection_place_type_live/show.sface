@@ -36,34 +36,40 @@
       submit="save" 
       opts={{ autocomplete: "off", id: "infection_place_type-form", "phx-hook": "BlockNavigation" }}
     >
-      <div :if={{ @live_action == :edit }}>
-        <div class="mb-4" :if={{ @live_action == :edit }}>
-          <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
-            <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
-            {{ gettext("Save") }}
-          </button>
-          <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
-            <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
-            {{ gettext("Discard") }}
-          </button>
-        </div>
-      </div>
-
-      <div class="hy-readonly-form">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">{{ gettext("Name") }}</h4>
-            <Field name={{ :name }} class="form-group">
-              <Label>{{ gettext("Name") }}</Label>
-              <TextInput 
-                class="form-control" 
-                opts={{ disabled: @live_action == :show }} 
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
+      <HygeiaWeb.Lock
+        id={{ {:lock, InfectionPlaceType, @infection_place_type.uuid} }}
+        resource={{ {InfectionPlaceType, @infection_place_type.uuid} }}
+        lock={{ @live_action == :edit }}
+      >
+        <div :if={{ @live_action == :edit }}>
+          <div class="mb-4" :if={{ @live_action == :edit }}>
+            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
+              <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+              {{ gettext("Save") }}
+            </button>
+            <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
+              <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+              {{ gettext("Discard") }}
+            </button>
           </div>
         </div>
-      </div>
+
+        <div class="hy-readonly-form">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">{{ gettext("Name") }}</h4>
+              <Field name={{ :name }} class="form-group">
+                <Label>{{ gettext("Name") }}</Label>
+                <TextInput 
+                  class="form-control" 
+                  opts={{ disabled: @live_action == :show }} 
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+          </div>
+        </div>
+      </HygeiaWeb.Lock>
     </Form>
   </Context>
 </div>

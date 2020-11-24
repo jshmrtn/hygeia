@@ -7,7 +7,6 @@ defmodule HygeiaWeb.TenantLive.Show do
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.TenantContext.Tenant.Smtp
   alias Hygeia.TenantContext.Websms
-  alias HygeiaWeb.FormError
   alias HygeiaWeb.PolimorphicInputs
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
