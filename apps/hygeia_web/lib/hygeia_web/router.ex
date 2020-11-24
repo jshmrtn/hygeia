@@ -12,7 +12,7 @@ defmodule HygeiaWeb.Router do
                     [HygeiaWeb.Endpoint, :code_reloader],
                     false
                   )
-  @frame_src if(@code_reloading, do: ~w('self'), else: ~w('none'))
+  @frame_src if(@code_reloading, do: ~w('self'), else: ~w())
   @style_src if(@debug_errors, do: ~w('unsafe-inline'), else: ~w())
 
   if Mix.env() == :dev do
@@ -49,7 +49,7 @@ defmodule HygeiaWeb.Router do
         object_src: ~w('none'),
         prefetch_src: ~w('none'),
         child_src: ~w('none'),
-        frame_src: ["http://player.vimeo.com" | @frame_src],
+        frame_src: ["https://player.vimeo.com" | @frame_src],
         worker_src: ~w('none'),
         frame_ancestors: ~w('none'),
         form_action: ~w('self'),
