@@ -1,7 +1,21 @@
 <div class="component-help container">
   <h1 class="mb-4">{{ gettext("Help") }}</h1>
 
-  <details>
+  <h2>Intro</h2>
+
+  <div class="embed-responsive embed-responsive-16by9 mt-3">
+    <iframe
+      class="embed-responsive-item"
+      src="https://player.vimeo.com/video/483233691"
+      frameborder="0"
+      allow="autoplay; fullscreen"
+      allowfullscreen
+    >
+      Intro Video
+    </iframe>
+  </div>
+
+  <details class="mt-5">
     <summary>
       <h2>Registrierung</h2>
     </summary>
@@ -208,7 +222,7 @@
       <p>Zur Zeit muss der Code wie bisher beim Senior-Tracer angefordert werden. Nach erhalt des Codes kann mit Klick auf den Button “Aktion” der Eintrag “SMS senden” ausgewählt werden. Damit öffnet sich im Bereich “Protokoll” der Eingabe-Typ “SMS”. Der Code kann mit einem kurzen Beschrieb direkt in das Textfeld übertragen werden. Mit dem Klick auf “Speichern” wird das SMS versendet, der Text bleibt beim Index ersichtlich.</p>
     </details>
 
-    <details id="import">
+    <details>
       <summary>
         <h3>Wie importiere ich eine Fall-Liste?</h3>
       </summary>

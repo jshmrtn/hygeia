@@ -49,7 +49,7 @@ defmodule HygeiaWeb.Router do
         object_src: ~w('none'),
         prefetch_src: ~w('none'),
         child_src: ~w('none'),
-        frame_src: @frame_src,
+        frame_src: ["http://player.vimeo.com" | @frame_src],
         worker_src: ~w('none'),
         frame_ancestors: ~w('none'),
         form_action: ~w('self'),
