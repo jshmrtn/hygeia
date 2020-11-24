@@ -141,7 +141,7 @@ defmodule HygeiaWeb.CaseLive.Create do
   @spec fetch_tenant(field :: {key :: [atom], value :: term}, tenants :: [Tenant.t()]) ::
           {key :: [atom], value :: term}
   def fetch_tenant({[:tenant], tenant_name}, tenants),
-    do: {:tenant, Enum.find(tenants, &match?(%Tenant{name: ^tenant_name}, &1))}
+    do: {[:tenant], Enum.find(tenants, &match?(%Tenant{name: ^tenant_name}, &1))}
 
   def fetch_tenant(field, _tenants), do: field
 

@@ -151,16 +151,17 @@
       </div>
 
       <div class="container">
-        <HygeiaWeb.CaseLive.CSVImport
-          id="csv-import"
-          mapping={{ get_csv_key_mapping() }}
-          normalize_row_callback={{ &normalize_import_field(&1, @tenants) }}
-        />
-
         <button class="btn btn-primary mt-5" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
           {{ gettext("Save") }}
         </button>
       </div>
     </InputContext>
   </Form>
+  <div class="container mt-5">
+    <HygeiaWeb.CaseLive.CSVImport
+      id="csv-import"
+      mapping={{ get_csv_key_mapping() }}
+      normalize_row_callback={{ &normalize_import_field(&1, @tenants) }}
+    />
+  </div>
 </div>

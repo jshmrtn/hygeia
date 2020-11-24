@@ -165,11 +165,6 @@ defmodule HygeiaWeb.Router do
     get "/", AuthController, :delete
   end
 
-  scope "/uploads", HygeiaWeb do
-    pipe_through [:browser]
-    put "/:id", UploadController, :upload
-  end
-
   scope "/dashboard" do
     pipe_through [:browser, :csrf, :protected, :protected_webmaster]
 

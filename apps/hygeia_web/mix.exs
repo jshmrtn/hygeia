@@ -58,8 +58,7 @@ defmodule HygeiaWeb.MixProject do
       {:hygeia_iam, in_umbrella: true},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_ecto, "~> 4.0"},
-      # TODO: Remove override when Surface is released
-      {:phoenix_live_view, "~> 0.15", override: true},
+      {:phoenix_live_view, "~> 0.15"},
       {:floki, ">= 0.27.0", only: :test},
       {:phoenix_active_link, "~> 0.3.1"},
       {:phoenix_html, "~> 2.11"},
@@ -75,7 +74,6 @@ defmodule HygeiaWeb.MixProject do
       {:jsone, "~> 1.5", override: true},
       {:ueberauth_oidc, github: "rng2/ueberauth_oidc", tag: "0.0.1"},
       {:oidcc, github: "jshmrtn/oidcc", branch: "master", override: true},
-      {:phoenix_live_view_dropzone, "~> 0.0"},
       {:csv, "~> 2.4"},
       {:plug_content_security_policy, "~> 0.2.1"},
       {:remote_ip, "~> 0.1"},

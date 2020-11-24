@@ -104,16 +104,6 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:upload, data, content_type}, socket) do
-    send_update(HygeiaWeb.CaseLive.CSVImport,
-      id: "csv-import",
-      data: data,
-      content_type: content_type
-    )
-
-    {:noreply, socket}
-  end
-
   def handle_info({:csv_import, {:ok, data}}, socket) do
     {:noreply, assign(socket, changeset: import_into_changeset(socket.assigns.changeset, data))}
   end

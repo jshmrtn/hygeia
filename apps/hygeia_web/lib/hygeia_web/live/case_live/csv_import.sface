@@ -1,13 +1,16 @@
 <div class="d-flex">
-  {{ live_component(
-    @socket,
-    PhoenixLiveViewDropzone,
-    file_data: @file,
-    file_types: accepted_mime_types(),
-    target: @myself,
-    button_class: "btn btn-secondary",
-    button_text: gettext("Import CSV / XLSX")
-  ) }}
+  <form phx-target={{ @myself }} :on-change="import">
+    <label for="list_import">
+      {{ gettext("Import CSV / XLSX") }}
+    </label>
+    <div class="form-group">
+      {{ live_file_input(
+        @uploads.list,
+        class: "form-control-file",
+        id: "list_import"
+      ) }}
+    </div>
+  </form>
 
   <button
     type="button"

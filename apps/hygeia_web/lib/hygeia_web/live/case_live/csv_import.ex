@@ -15,58 +15,18 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
 
   @impl Phoenix.LiveComponent
   def mount(socket) do
-    {:ok, assign(socket, file: nil)}
+    {:ok,
+     allow_upload(socket, :list,
+       accept: ~w(.csv .xlsx),
+       max_entries: 1,
+       auto_upload: true,
+       progress: &handle_progress/3
+     )}
   end
 
   @impl Phoenix.LiveComponent
-  def update(%{data: data, content_type: [mime]} = assigns, socket) when mime == @mime_type_csv do
-    extract_data(
-      :csv,
-      data,
-      assigns[:mapping] || socket.assigns.mapping,
-      assigns[:normalize_row_callback] || socket.assigns.normalize_row_callback
-    )
 
-    {:ok, assign(socket, assigns)}
-  end
-
-  def update(%{data: data, content_type: [mime]} = assigns, socket)
-      when mime == @mime_type_xlsx do
-    extract_data(
-      :xlsx,
-      data,
-      assigns[:mapping] || socket.assigns.mapping,
-      assigns[:normalize_row_callback] || socket.assigns.normalize_row_callback
-    )
-
-    {:ok, assign(socket, assigns)}
-  end
-
-  def update(
-        %{
-          data: _data,
-          content_type: [_mime]
-        } = assigns,
-        socket
-      ) do
-    send(self(), {:csv_import, {:error, :not_supported}})
-
-    {:ok, assign(socket, assigns)}
-  end
-
-  def update(assigns, socket) do
-    {:ok, assign(socket, assigns)}
-  end
-
-  @impl Phoenix.LiveComponent
-  @dialyzer {:nowarn_function, {:handle_event, 3}}
-  def handle_event("phx-dropzone", ["generate-url", %{"id" => id} = _payload], socket) do
-    Phoenix.PubSub.subscribe(Hygeia.PubSub, "uploads:#{id}")
-
-    {:noreply, assign(socket, file: %{id: id, url: Routes.upload_url(socket, :upload, id)})}
-  end
-
-  def handle_event("phx-dropzone", ["file-status", _payload], socket) do
+  def handle_event("import", _params, socket) do
     {:noreply, socket}
   end
 
@@ -78,44 +38,50 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
     {:noreply, assign(socket, show_help: false)}
   end
 
-  defp extract_data(:csv, data, mapping, normalize_row_callback) do
-    mapping =
-      mapping
-      |> Enum.map(fn {key, value} -> {normalize_key(key), value} end)
-      |> Enum.uniq()
-      |> Map.new()
+  defp handle_progress(
+         :list,
+         %Phoenix.LiveView.UploadEntry{done?: true, client_type: mime, client_name: client_name} =
+           entry,
+         socket
+       ) do
+    result =
+      consume_uploaded_entry(socket, entry, fn %{path: path} ->
+        new_path = Briefly.create!(extname: client_name)
+        File.cp!(path, new_path)
 
-    normalized_rows =
-      data
-      |> String.split("\n")
-      |> Enum.reject(&match?("", &1))
-      |> CSV.decode!(headers: true)
-      |> Stream.map(&normalize_row(&1, mapping, normalize_row_callback))
+        extract_data(
+          new_path,
+          Map.fetch!(%{@mime_type_csv => :csv, @mime_type_xlsx => :xlsx}, mime),
+          socket.assigns.mapping
+          |> Enum.map(fn {key, value} -> {normalize_key(key), value} end)
+          |> Enum.uniq()
+          |> Map.new(),
+          socket.assigns.normalize_row_callback
+        )
+      end)
 
-    send(self(), {:csv_import, {:ok, normalized_rows}})
-  rescue
-    e in FunctionClauseError -> send(self(), {:csv_import, {:error, e}})
+    send(self(), {:csv_import, {:ok, result}})
+
+    {:noreply, socket}
   end
 
-  defp extract_data(:xlsx, data, mapping, normalize_row_callback) do
-    mapping =
-      mapping
-      |> Enum.map(fn {key, value} -> {normalize_key(key), value} end)
-      |> Enum.uniq()
-      |> Map.new()
+  defp handle_progress(:list, _entry, socket), do: {:noreply, socket}
 
-    path = Briefly.create!(extname: ".xlsx")
-    File.write!(path, data)
+  defp extract_data(path, :csv, mapping, normalize_row_callback) do
+    path
+    |> File.stream!()
+    |> Stream.reject(&match?("", &1))
+    |> CSV.decode!(headers: true)
+    |> Stream.map(&normalize_row(&1, mapping, normalize_row_callback))
+    |> Enum.to_list()
+  end
 
-    normalized_rows =
-      path
-      |> Xlsxir.stream_list(0)
-      |> Stream.transform(false, &add_headers/2)
-      |> Stream.map(&normalize_row(&1, mapping, normalize_row_callback))
-
-    send(self(), {:csv_import, {:ok, normalized_rows}})
-  rescue
-    e in FunctionClauseError -> send(self(), {:csv_import, {:error, e}})
+  defp extract_data(path, :xlsx, mapping, normalize_row_callback) do
+    path
+    |> Xlsxir.stream_list(0)
+    |> Stream.transform(false, &add_headers/2)
+    |> Stream.map(&normalize_row(&1, mapping, normalize_row_callback))
+    |> Enum.to_list()
   end
 
   defp normalize_row(row, key_mapping, normalize_row_callback) do
@@ -167,6 +133,4 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
 
   defp normalize_integer({key, value}) when is_integer(value), do: {key, Integer.to_string(value)}
   defp normalize_integer(field), do: field
-
-  defp accepted_mime_types, do: [@mime_type_csv, @mime_type_xlsx]
 end
