@@ -120,7 +120,7 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
     e in FunctionClauseError -> send(self(), {:csv_import, {:error, e}})
   end
 
-  defp normalize_row(%{} = row, key_mapping, normalize_row_callback) do
+  defp normalize_row(row, key_mapping, normalize_row_callback) do
     row
     |> Enum.map(fn {key, value} -> {normalize_key(key), value} end)
     |> Enum.filter(fn {key, _value} -> Map.has_key?(key_mapping, key) end)
@@ -155,7 +155,7 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
   end
 
   defp add_headers(row, headers) do
-    {[headers |> Enum.zip(row) |> Map.new()], headers}
+    {[Enum.zip(headers, row)], headers}
   end
 
   defp normalize_date({key, {year, month, day}}) do
