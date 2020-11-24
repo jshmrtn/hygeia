@@ -5,6 +5,9 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
 
   alias Surface.Components.Link
 
+  @mime_type_csv MIME.type("csv")
+  @mime_type_xlsx MIME.type("xlsx")
+
   prop mapping, :map, required: true
   prop normalize_row_callback, :fun, required: true
 
@@ -16,7 +19,7 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
   end
 
   @impl Phoenix.LiveComponent
-  def update(%{data: data, content_type: ["text/csv"]} = assigns, socket) do
+  def update(%{data: data, content_type: [mime]} = assigns, socket) when mime == @mime_type_csv do
     extract_data(
       :csv,
       data,
@@ -27,13 +30,8 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
     {:ok, assign(socket, assigns)}
   end
 
-  def update(
-        %{
-          data: data,
-          content_type: ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
-        } = assigns,
-        socket
-      ) do
+  def update(%{data: data, content_type: [mime]} = assigns, socket)
+      when mime == @mime_type_xlsx do
     extract_data(
       :xlsx,
       data,
@@ -169,4 +167,6 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
 
   defp normalize_integer({key, value}) when is_integer(value), do: {key, Integer.to_string(value)}
   defp normalize_integer(field), do: field
+
+  defp accepted_mime_types, do: [@mime_type_csv, @mime_type_xlsx]
 end

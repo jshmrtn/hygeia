@@ -80,7 +80,8 @@ defmodule HygeiaWeb.MixProject do
       {:plug_content_security_policy, "~> 0.2.1"},
       {:remote_ip, "~> 0.1"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
-      {:xlsxir, "~> 1.6.4"}
+      {:xlsxir, "~> 1.6.4"},
+      {:mime, "~> 1.5"}
     ]
   end
 
