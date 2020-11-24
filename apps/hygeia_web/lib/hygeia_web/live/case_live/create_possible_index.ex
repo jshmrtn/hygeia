@@ -162,7 +162,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       |> Ecto.Changeset.get_field(:date, nil)
       |> case do
         nil -> {nil, nil}
-        %Date{} = start -> {start, Date.add(start, 10)}
+        %Date{} = start -> {start, Date.add(start, 9)}
       end
 
     {:ok, case} =
