@@ -3,6 +3,8 @@ defmodule HygeiaWeb.AuthController do
 
   alias HygeiaWeb.Plug.CheckAndRefreshAuthentication
 
+  require Logger
+
   plug Ueberauth
 
   @spec delete(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) :: Plug.Conn.t()
@@ -30,6 +32,11 @@ defmodule HygeiaWeb.AuthController do
   @spec callback(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) :: Plug.Conn.t()
 
   def callback(%{assigns: %{ueberauth_failure: fails}} = conn, _params) do
+    Logger.warn("""
+    Login failed, reason:
+    #{inspect(fails, pretty: true)}
+    """)
+
     conn
     |> put_status(:unauthorized)
     |> render("oidc_error.html", reason: fails)
@@ -66,6 +73,11 @@ defmodule HygeiaWeb.AuthController do
         |> redirect(to: "/")
 
       {:error, reason} ->
+        Logger.warn("""
+        Login failed, reason:
+        #{inspect(reason, pretty: true)}
+        """)
+
         conn
         |> put_status(:unauthorized)
         |> render("oidc_error.html", reason: reason)
