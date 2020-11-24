@@ -12,6 +12,8 @@ defmodule HygeiaWeb.CaseLive.Create do
   alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
   alias HygeiaWeb.CaseLive.CreateIndex.CreateSchema
 
+  @origin_country Application.compile_env!(:hygeia, [:phone_number_parsing_origin_country])
+
   @spec update_person_changeset(
           changeset :: Ecto.Changeset.t(),
           person :: Person.t()
@@ -177,6 +179,23 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   def fetch_test_kind(field), do: field
 
+  @spec decide_phone_kind(field :: {key :: [atom], value :: term}) ::
+          {key :: [atom], value :: term}
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
+  def decide_phone_kind({[:phone], value}) do
+    with {:ok, parsed_number} <-
+           ExPhoneNumber.parse(value, @origin_country),
+         true <- ExPhoneNumber.is_valid_number?(parsed_number),
+         phone_number_type when phone_number_type in [:fixed_line, :voip] <-
+           ExPhoneNumber.Validation.get_number_type(parsed_number) do
+      {[:landline], value}
+    else
+      _other -> {[:mobile], value}
+    end
+  end
+
+  def decide_phone_kind(field), do: field
+
   @spec import_into_changeset(changeset :: Ecto.Changeset.t(), data :: [map]) ::
           Ecto.Changeset.t()
   def import_into_changeset(changeset, data) do
@@ -200,6 +219,7 @@ defmodule HygeiaWeb.CaseLive.Create do
     |> fetch_tenant(tenants)
     |> fetch_test_kind()
     |> fetch_test_result()
+    |> decide_phone_kind()
   end
 
   @spec decline_duplicate(changeset :: Ecto.Changeset.t(), person_changeset_uuid :: String.t()) ::
@@ -326,7 +346,7 @@ defmodule HygeiaWeb.CaseLive.Create do
       "Patient Vorname" => [:first_name],
       "Patient Geburtsdatum" => [:birth_date],
       "Patient Geschlecht" => [:sex],
-      "Patient Telefon" => [:mobile],
+      "Patient Telefon" => [:phone],
       "Patient Strasse" => [:address, :address],
       "Patient PLZ" => [:address, :zip],
       "Patient Wohnort" => [:address, :place],
