@@ -18,61 +18,68 @@ defmodule HygeiaWeb.Lock do
     {:ok, assign(socket, lock_acquired: true)}
   end
 
-  def update(assigns, socket) do
-    socket =
-      socket
-      |> assign(assigns)
-      |> assign(lock_acquired: false)
-
-    socket =
-      case socket.assigns.lock_task do
-        nil ->
-          socket
-
-        task ->
-          Task.shutdown(task)
-
-          assign(socket, lock_task: nil)
+  case Mix.env() do
+    :test ->
+      def update(assigns, socket) do
+        {:ok,
+         socket
+         |> assign(assigns)
+         |> assign(lock_acquired: true)}
       end
 
-    pid = self()
-
-    socket =
-      cond do
-        !socket.connected? ->
-          # Not connected can not handle locks, therefore we're just giving it access
-          assign(socket, lock_acquired: true)
-
-        Mix.env() in [:test] ->
-          # Tests for some reason spawn new live views all the time that conflict
-          assign(socket, lock_acquired: true)
-
-        !socket.assigns.lock ->
+    _env ->
+      def update(assigns, socket) do
+        socket =
           socket
+          |> assign(assigns)
+          |> assign(lock_acquired: false)
 
-        socket.assigns.lock ->
-          assign(socket,
-            lock_task:
-              Task.async(fn ->
-                if :global.set_lock({socket.assigns.resource, socket.root_pid}) do
-                  # TODO: Replace with solution of https://github.com/phoenixframework/phoenix_live_view/issues/1244
-                  send(
-                    pid,
-                    {:phoenix, :send_update,
-                     {__MODULE__, socket.assigns.id,
-                      %{
-                        __lock_acquired__: true
-                      }}}
-                  )
+        socket =
+          case socket.assigns.lock_task do
+            nil ->
+              socket
 
-                  # Max Lock Time
-                  Process.sleep(:timer.minutes(15))
-                end
-              end)
-          )
+            task ->
+              Task.shutdown(task)
+
+              assign(socket, lock_task: nil)
+          end
+
+        pid = self()
+
+        socket =
+          cond do
+            !socket.connected? ->
+              # Not connected can not handle locks, therefore we're just giving it access
+              assign(socket, lock_acquired: true)
+
+            !socket.assigns.lock ->
+              socket
+
+            socket.assigns.lock ->
+              assign(socket,
+                lock_task:
+                  Task.async(fn ->
+                    if :global.set_lock({socket.assigns.resource, socket.root_pid}) do
+                      # TODO: Replace with solution of https://github.com/phoenixframework/phoenix_live_view/issues/1244
+                      send(
+                        pid,
+                        {:phoenix, :send_update,
+                         {__MODULE__, socket.assigns.id,
+                          %{
+                            __lock_acquired__: true
+                          }}}
+                      )
+
+                      # Max Lock Time
+                      Process.sleep(:timer.minutes(15))
+                    end
+                  end)
+              )
+          end
+
+        {:ok, socket}
       end
-
-    {:ok, socket}
   end
 
   @impl Phoenix.LiveComponent
