@@ -69,8 +69,7 @@ defmodule HygeiaWeb.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      # TODO: Replace to released version when https://github.com/msaraiva/surface/pull/193 is merged
-      {:surface, github: "msaraiva/surface", branch: "master"},
+      {:surface, "~> 0.1"},
       {:ecto_psql_extras, "~> 0.4"},
       {:ueberauth, "~> 0.6", override: true},
       {:jsone, "~> 1.5", override: true},
