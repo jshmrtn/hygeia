@@ -79,7 +79,8 @@ defmodule HygeiaWeb.MixProject do
       {:remote_ip, "~> 0.1"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
       {:xlsxir, "~> 1.6.4"},
-      {:mime, "~> 1.5"}
+      {:mime, "~> 1.5"},
+      {:plug_dynamic, "~> 1.0"}
     ]
   end
 

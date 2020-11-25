@@ -1,5 +1,6 @@
 defmodule HygeiaWeb.Router do
   use HygeiaWeb, :router
+  import PlugDynamic.Builder
 
   import Phoenix.LiveDashboard.Router
 
@@ -36,30 +37,47 @@ defmodule HygeiaWeb.Router do
       cldr: HygeiaCldr,
       session_key: "cldr_locale"
 
-    plug PlugContentSecurityPolicy,
-      nonces_for: [:script_src, :style_src],
-      directives: %{
-        default_src: ~w('none'),
-        script_src: ~w(),
-        style_src: @style_src,
-        img_src: ~w('self' data:),
-        font_src: ~w('self' data:),
-        connect_src: ~w('self'),
-        media_src: ~w('none'),
-        object_src: ~w('none'),
-        prefetch_src: ~w('none'),
-        child_src: ~w('none'),
-        frame_src: ["https://player.vimeo.com" | @frame_src],
-        worker_src: ~w('none'),
-        frame_ancestors: ~w('none'),
-        form_action: ~w('self'),
-        upgrade_insecure_requests: ~w(),
-        block_all_mixed_content: ~w(),
-        sandbox:
-          ~w(allow-forms allow-scripts allow-modals allow-same-origin allow-downloads allow-popups),
-        base_uri: ~w('none'),
-        manifest_src: ~w('none')
-      }
+    dynamic_plug PlugContentSecurityPolicy, reevaluate: :first_usage do
+      URI.default_port("wss", 443)
+      URI.default_port("ws", 80)
+
+      ws_url =
+        HygeiaWeb.Endpoint.url()
+        |> URI.parse()
+        |> Map.update!(:scheme, fn
+          "http" -> "ws"
+          "https" -> "wss"
+        end)
+        |> Map.put(:path, "")
+        |> URI.to_string()
+
+      [
+        nonces_for: [:script_src, :style_src],
+        directives: %{
+          default_src: ~w('none'),
+          script_src: ~w(),
+          style_src: @style_src,
+          img_src: ~w('self' data:),
+          font_src: ~w('self' data:),
+          # TODO: Remove when https://bugs.webkit.org/show_bug.cgi?id=201591 is fixed
+          connect_src: [ws_url | ~w('self')],
+          media_src: ~w('none'),
+          object_src: ~w('none'),
+          prefetch_src: ~w('none'),
+          child_src: ~w('none'),
+          frame_src: ["https://player.vimeo.com" | @frame_src],
+          worker_src: ~w('none'),
+          frame_ancestors: ~w('none'),
+          form_action: ~w('self'),
+          upgrade_insecure_requests: ~w(),
+          block_all_mixed_content: ~w(),
+          sandbox:
+            ~w(allow-forms allow-scripts allow-modals allow-same-origin allow-downloads allow-popups),
+          base_uri: ~w('none'),
+          manifest_src: ~w('none')
+        }
+      ]
+    end
 
     plug :store_locale
 
