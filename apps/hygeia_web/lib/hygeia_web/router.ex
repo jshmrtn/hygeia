@@ -41,9 +41,10 @@ defmodule HygeiaWeb.Router do
       URI.default_port("wss", 443)
       URI.default_port("ws", 80)
 
+      home_url = URI.parse(HygeiaWeb.Endpoint.url())
+
       ws_url =
-        HygeiaWeb.Endpoint.url()
-        |> URI.parse()
+        home_url
         |> Map.update!(:scheme, fn
           "http" -> "ws"
           "https" -> "wss"
@@ -51,31 +52,38 @@ defmodule HygeiaWeb.Router do
         |> Map.put(:path, "")
         |> URI.to_string()
 
+      directives = %{
+        default_src: ~w('none'),
+        script_src: ~w(),
+        style_src: @style_src,
+        img_src: ~w('self' data:),
+        font_src: ~w('self' data:),
+        # TODO: Remove when https://bugs.webkit.org/show_bug.cgi?id=201591 is fixed
+        connect_src: [ws_url | ~w('self')],
+        media_src: ~w('none'),
+        object_src: ~w('none'),
+        prefetch_src: ~w('none'),
+        child_src: ~w('none'),
+        frame_src: ["https://player.vimeo.com" | @frame_src],
+        worker_src: ~w('none'),
+        frame_ancestors: ~w('none'),
+        form_action: ~w('self'),
+        block_all_mixed_content: ~w(),
+        sandbox:
+          ~w(allow-forms allow-scripts allow-modals allow-same-origin allow-downloads allow-popups),
+        base_uri: ~w('none'),
+        manifest_src: ~w('none')
+      }
+
+      directives =
+        case home_url do
+          %URI{scheme: "http"} -> directives
+          %URI{scheme: "https"} -> Map.put(directives, :upgrade_insecure_requests, ~w())
+        end
+
       [
         nonces_for: [:script_src, :style_src],
-        directives: %{
-          default_src: ~w('none'),
-          script_src: ~w(),
-          style_src: @style_src,
-          img_src: ~w('self' data:),
-          font_src: ~w('self' data:),
-          # TODO: Remove when https://bugs.webkit.org/show_bug.cgi?id=201591 is fixed
-          connect_src: [ws_url | ~w('self')],
-          media_src: ~w('none'),
-          object_src: ~w('none'),
-          prefetch_src: ~w('none'),
-          child_src: ~w('none'),
-          frame_src: ["https://player.vimeo.com" | @frame_src],
-          worker_src: ~w('none'),
-          frame_ancestors: ~w('none'),
-          form_action: ~w('self'),
-          upgrade_insecure_requests: ~w(),
-          block_all_mixed_content: ~w(),
-          sandbox:
-            ~w(allow-forms allow-scripts allow-modals allow-same-origin allow-downloads allow-popups),
-          base_uri: ~w('none'),
-          manifest_src: ~w('none')
-        }
+        directives: directives
       ]
     end
 
