@@ -75,6 +75,15 @@
                 />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
+
+              <Field name={{ :override_url }} class="form-group">
+                <Label>{{ gettext("Override Url") }}</Label>
+                <TextInput 
+                  class="form-control"
+                  opts={{ disabled: @live_action == :show }}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
             </div>
           </div>
 

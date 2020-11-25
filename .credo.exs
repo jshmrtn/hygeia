@@ -37,7 +37,8 @@
         {Credo.Check.Refactor.VariableRebinding, false},
         {Credo.Check.Warning.LeakyEnvironment, []},
         {Credo.Check.Warning.MapGetUnsafePass, []},
-        {Credo.Check.Warning.UnsafeToAtom, []}
+        {Credo.Check.Warning.UnsafeToAtom, []},
+        {Credo.Check.Refactor.Nesting, max_nesting: 3}
       ]
     }
   ]

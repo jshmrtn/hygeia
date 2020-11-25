@@ -135,4 +135,16 @@ defmodule Hygeia.TenantContext do
         outgoing_sms_configuration: _outgoing_mail_configuration
       }),
       do: true
+
+  @doc """
+  Replaces base url for pdf link if tenant has override url.
+
+  """
+  @spec replace_base_url(tenant :: Tenant.t(), pdf_url :: String.t(), base_url :: String.t()) ::
+          String.t()
+  def replace_base_url(%Tenant{override_url: nil}, pdf_url, _base_url), do: pdf_url
+  def replace_base_url(%Tenant{override_url: ""}, pdf_url, _base_url), do: pdf_url
+
+  def replace_base_url(%Tenant{override_url: override_url}, pdf_url, base_url),
+    do: String.replace_prefix(pdf_url, base_url, override_url)
 end

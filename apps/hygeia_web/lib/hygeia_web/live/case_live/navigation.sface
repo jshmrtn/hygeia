@@ -70,7 +70,7 @@
                     Therefore you have to self isolate.
                     Details: %{isolation_confirmation_link}
                     """,
-                    isolation_confirmation_link: Routes.pdf_url(@socket, :isolation_confirmation, @case.uuid, uuid)
+                    isolation_confirmation_link: TenantContext.replace_base_url(@case.tenant, Routes.pdf_url(@socket, :isolation_confirmation, @case.uuid, uuid), HygeiaWeb.Endpoint.url)
                   )
                 }
               )}}
@@ -94,7 +94,7 @@
                     Therefore you have to self isolate.
                     Details: %{isolation_confirmation_link}
                     """,
-                    isolation_confirmation_link: Routes.pdf_url(@socket, :isolation_confirmation, @case.uuid, uuid)
+                    isolation_confirmation_link: TenantContext.replace_base_url(@case.tenant, Routes.pdf_url(@socket, :isolation_confirmation, @case.uuid, uuid), HygeiaWeb.Endpoint.url)
                   )
                 }
               )}}
@@ -133,7 +133,7 @@
                     Therefore you have to self quarantine.
                     Details: %{quarantine_confirmation_link}
                     """,
-                    quarantine_confirmation_link: Routes.pdf_url(@socket, :quarantine_confirmation, @case.uuid, uuid)
+                    quarantine_confirmation_link: TenantContext.replace_base_url(@case.tenant, Routes.pdf_url(@socket, :quarantine_confirmation, @case.uuid, uuid), HygeiaWeb.Endpoint.url)
                   )
                 }
               )}}
@@ -157,7 +157,7 @@
                     Therefore you have to self quarantine.
                     Details: %{quarantine_confirmation_link}
                     """,
-                    quarantine_confirmation_link: Routes.pdf_url(@socket, :quarantine_confirmation, @case.uuid, uuid)
+                    quarantine_confirmation_link: TenantContext.replace_base_url(@case.tenant, Routes.pdf_url(@socket, :quarantine_confirmation, @case.uuid, uuid), HygeiaWeb.Endpoint.url)
                   )
                 }
               )}}
