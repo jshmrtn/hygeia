@@ -18,68 +18,31 @@ defmodule HygeiaWeb.Lock do
     {:ok, assign(socket, lock_acquired: true)}
   end
 
-  case Mix.env() do
-    :test ->
-      def update(assigns, socket) do
-        {:ok,
-         socket
-         |> assign(assigns)
-         |> assign(lock_acquired: true)}
-      end
+  def update(
+        %{resource: new_resource} = assigns,
+        %Phoenix.LiveView.Socket{assigns: %{resource: old_resource}} = socket
+      )
+      when new_resource != old_resource do
+    {:ok, reset_lock(socket, assigns)}
+  end
 
-    _env ->
-      def update(assigns, socket) do
-        socket =
-          socket
-          |> assign(assigns)
-          |> assign(lock_acquired: false)
+  def update(
+        %{lock: new_lock} = assigns,
+        %Phoenix.LiveView.Socket{assigns: %{lock: old_lock}} = socket
+      )
+      when new_lock != old_lock do
+    {:ok, reset_lock(socket, assigns)}
+  end
 
-        socket =
-          case socket.assigns.lock_task do
-            nil ->
-              socket
+  def update(
+        %{lock: true} = assigns,
+        %Phoenix.LiveView.Socket{assigns: %{lock_acquired: false, lock_task: nil}} = socket
+      ) do
+    {:ok, reset_lock(socket, assigns)}
+  end
 
-            task ->
-              Task.shutdown(task)
-
-              assign(socket, lock_task: nil)
-          end
-
-        pid = self()
-
-        socket =
-          cond do
-            !socket.connected? ->
-              # Not connected can not handle locks, therefore we're just giving it access
-              assign(socket, lock_acquired: true)
-
-            !socket.assigns.lock ->
-              socket
-
-            socket.assigns.lock ->
-              assign(socket,
-                lock_task:
-                  Task.async(fn ->
-                    if :global.set_lock({socket.assigns.resource, socket.root_pid}) do
-                      # TODO: Replace with solution of https://github.com/phoenixframework/phoenix_live_view/issues/1244
-                      send(
-                        pid,
-                        {:phoenix, :send_update,
-                         {__MODULE__, socket.assigns.id,
-                          %{
-                            __lock_acquired__: true
-                          }}}
-                      )
-
-                      # Max Lock Time
-                      Process.sleep(:timer.minutes(15))
-                    end
-                  end)
-              )
-          end
-
-        {:ok, socket}
-      end
+  def update(assigns, socket) do
+    {:ok, assign(socket, assigns)}
   end
 
   @impl Phoenix.LiveComponent
@@ -101,5 +64,65 @@ defmodule HygeiaWeb.Lock do
       </div>
     </div>
     """
+  end
+
+  case Mix.env() do
+    :test ->
+      defp reset_lock(socket, assigns) do
+        socket
+        |> assign(assigns)
+        |> assign(lock_acquired: true)
+      end
+
+    _env ->
+      defp reset_lock(socket, assigns) do
+        socket =
+          socket
+          |> assign(assigns)
+          |> assign(lock_acquired: false)
+
+        socket =
+          case socket.assigns.lock_task do
+            nil ->
+              socket
+
+            task ->
+              Task.shutdown(task)
+
+              assign(socket, lock_task: nil)
+          end
+
+        pid = self()
+
+        cond do
+          !socket.connected? ->
+            # Not connected can not handle locks, therefore we're just giving it access
+            assign(socket, lock_acquired: true)
+
+          !socket.assigns.lock ->
+            socket
+
+          socket.assigns.lock ->
+            assign(socket,
+              lock_task:
+                Task.async(fn ->
+                  if :global.set_lock({socket.assigns.resource, socket.root_pid}) do
+                    # TODO: Replace with solution of https://github.com/phoenixframework/phoenix_live_view/issues/1244
+                    send(
+                      pid,
+                      {:phoenix, :send_update,
+                       {__MODULE__, socket.assigns.id,
+                        %{
+                          __lock_acquired__: true
+                        }}}
+                    )
+
+                    # Max Lock Time
+                    Process.sleep(:timer.minutes(15))
+                  end
+                end)
+            )
+        end
+      end
   end
 end
