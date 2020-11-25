@@ -1,15 +1,12 @@
 <div class="d-flex">
   <form phx-target={{ @myself }} :on-change="import">
-    <label for="list_import">
-      {{ gettext("Import CSV / XLSX") }}
-    </label>
-    <div class="form-group">
+    <label class="m-0 btn btn-secondary">
       {{ live_file_input(
         @uploads.list,
-        class: "form-control-file",
-        id: "list_import"
+        class: "d-none",
       ) }}
-    </div>
+      {{ gettext("Import CSV / XLSX") }}
+    </label>
   </form>
 
   <button
