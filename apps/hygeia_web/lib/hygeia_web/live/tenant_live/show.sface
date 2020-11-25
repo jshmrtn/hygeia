@@ -69,7 +69,7 @@
 
               <Field name={{ :public_statistics }} class="form-group">
                 <Label>{{ gettext("Public Statistics") }}</Label>
-                <Checkbox 
+                <Checkbox
                   class="form-control"
                   opts={{ disabled: @live_action == :show }}
                 />

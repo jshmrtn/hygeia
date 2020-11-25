@@ -64,14 +64,7 @@
                 @case,
                 type: "sms",
                 entry: %{
-                  text: gettext(
-                    """
-                    You have been tested positive for the corona virus.
-                    Therefore you have to self isolate.
-                    Details: %{isolation_confirmation_link}
-                    """,
-                    isolation_confirmation_link: TenantContext.replace_base_url(@case.tenant, Routes.pdf_url(@socket, :isolation_confirmation, @case.uuid, uuid), HygeiaWeb.Endpoint.url)
-                  )
+                  text: isolation_sms(@socket, @case, phase)
                 }
               )}}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
@@ -87,15 +80,8 @@
                 @case,
                 type: "email",
                 entry: %{
-                  subject: gettext("Isolation Order"),
-                  body: gettext(
-                    """
-                    You have been tested positive for the corona virus.
-                    Therefore you have to self isolate.
-                    Details: %{isolation_confirmation_link}
-                    """,
-                    isolation_confirmation_link: TenantContext.replace_base_url(@case.tenant, Routes.pdf_url(@socket, :isolation_confirmation, @case.uuid, uuid), HygeiaWeb.Endpoint.url)
-                  )
+                  subject: isolation_email_subject(),
+                  body: isolation_email_body(@socket, @case, phase)
                 }
               )}}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
@@ -114,7 +100,7 @@
           >
             <Link
               class={{ "dropdown-item" <> if !can_generate_quarantine_confirmation(phase), do: " disabled", else: "" }}
-              to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, List.last(@case.phases).uuid) }}
+              to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, uuid) }}
             >
               <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
               {{ gettext("Quarantine Confirmation") }}
@@ -127,14 +113,7 @@
                 @case,
                 type: "sms",
                 entry: %{
-                  text: gettext(
-                    """
-                    You have been identified as a contact person of a person with corona.
-                    Therefore you have to self quarantine.
-                    Details: %{quarantine_confirmation_link}
-                    """,
-                    quarantine_confirmation_link: TenantContext.replace_base_url(@case.tenant, Routes.pdf_url(@socket, :quarantine_confirmation, @case.uuid, uuid), HygeiaWeb.Endpoint.url)
-                  )
+                  text: quarantine_sms(@socket, @case, phase)
                 }
               )}}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
@@ -150,15 +129,8 @@
                 @case,
                 type: "email",
                 entry: %{
-                  subject: gettext("Quarantine Order"),
-                  body: gettext(
-                    """
-                    You have been identified as a contact person of a person with corona.
-                    Therefore you have to self quarantine.
-                    Details: %{quarantine_confirmation_link}
-                    """,
-                    quarantine_confirmation_link: TenantContext.replace_base_url(@case.tenant, Routes.pdf_url(@socket, :quarantine_confirmation, @case.uuid, uuid), HygeiaWeb.Endpoint.url)
-                  )
+                  subject: quarantine_email_subject(),
+                  body: quarantine_email_body(@socket, @case, phase)
                 }
               )}}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}

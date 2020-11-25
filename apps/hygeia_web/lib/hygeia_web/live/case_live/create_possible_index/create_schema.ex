@@ -24,6 +24,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     field :propagator_ism_id, :string
     field :propagator_internal, :boolean
 
+    field :send_confirmation_sms, :boolean, default: true
+    field :send_confirmation_email, :boolean, default: true
+    field :directly_close_cases, :boolean, default: true
+
     belongs_to :propagator_case, Case, references: :uuid, foreign_key: :propagator_case_uuid
 
     embeds_one :infection_place, InfectionPlace
@@ -44,7 +48,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       :date,
       :propagator_case_uuid,
       :propagator_internal,
-      :propagator_ism_id
+      :propagator_ism_id,
+      :send_confirmation_sms,
+      :send_confirmation_email,
+      :directly_close_cases
     ])
     |> cast_embed(:people, required: true)
     |> cast_embed(:infection_place, required: true)

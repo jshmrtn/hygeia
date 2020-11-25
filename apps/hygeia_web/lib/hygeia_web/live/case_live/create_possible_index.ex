@@ -13,6 +13,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema
   alias Surface.Components.Form
+  alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
@@ -89,15 +90,23 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
          |> maybe_block_navigation()}
 
       %Ecto.Changeset{valid?: true} = changeset ->
-        {:ok, transmissions} =
+        {:ok, {cases, transmissions}} =
           Repo.transaction(fn ->
-            changeset
-            |> Ecto.Changeset.fetch_field!(:people)
-            |> Enum.reject(&match?(%CreatePersonSchema{uuid: nil}, &1))
-            |> Enum.map(&{&1, save_or_load_person_schema(&1, socket, changeset)})
-            |> Enum.map(&create_case(&1, changeset))
-            |> Enum.map(&create_transmission(&1, changeset))
+            cases =
+              changeset
+              |> Ecto.Changeset.fetch_field!(:people)
+              |> Enum.reject(&match?(%CreatePersonSchema{uuid: nil}, &1))
+              |> Enum.map(&{&1, save_or_load_person_schema(&1, socket, changeset)})
+              |> Enum.map(&create_case(&1, changeset))
+
+            transmissions = Enum.map(cases, &create_transmission(&1, changeset))
+
+            {cases, transmissions}
           end)
+
+        send_confirmation_sms(socket, changeset, cases)
+
+        send_confirmation_emails(socket, changeset, cases)
 
         socket =
           put_flash(
@@ -195,6 +204,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
     {:ok, case} =
       CaseContext.create_case(person, %{
+        status:
+          if(Ecto.Changeset.fetch_field!(changeset, :directly_close_cases),
+            do: :done,
+            else: :first_contact
+          ),
         phases: [
           %{
             details: %{
@@ -210,6 +224,54 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       })
 
     case
+  end
+
+  defp send_confirmation_emails(socket, changeset, cases) do
+    locale = Gettext.get_locale(HygeiaGettext)
+
+    if Ecto.Changeset.fetch_field!(changeset, :send_confirmation_email) do
+      [] =
+        cases
+        |> Enum.map(
+          &Task.async(fn ->
+            %Case{phases: [phase]} = &1
+
+            Gettext.put_locale(HygeiaGettext, locale)
+
+            CaseContext.case_send_email(
+              &1,
+              quarantine_email_subject(),
+              quarantine_email_body(socket, &1, phase)
+            )
+          end)
+        )
+        |> Enum.map(&Task.await/1)
+        |> Enum.reject(&match?({:ok, _}, &1))
+        |> Enum.reject(&match?({:error, :no_email}, &1))
+        |> Enum.reject(&match?({:error, :no_outgoing_mail_configuration}, &1))
+    end
+  end
+
+  defp send_confirmation_sms(socket, changeset, cases) do
+    locale = Gettext.get_locale(HygeiaGettext)
+
+    if Ecto.Changeset.fetch_field!(changeset, :send_confirmation_sms) do
+      [] =
+        cases
+        |> Enum.map(
+          &Task.async(fn ->
+            %Case{phases: [phase]} = &1
+
+            Gettext.put_locale(HygeiaGettext, locale)
+
+            CaseContext.case_send_sms(&1, quarantine_sms(socket, &1, phase))
+          end)
+        )
+        |> Enum.map(&Task.await/1)
+        |> Enum.reject(&match?({:ok, _}, &1))
+        |> Enum.reject(&match?({:error, :no_mobile_number}, &1))
+        |> Enum.reject(&match?({:error, :sms_config_missing}, &1))
+    end
   end
 
   defp create_transmission(case, changeset) do

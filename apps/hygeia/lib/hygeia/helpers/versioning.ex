@@ -71,9 +71,33 @@ defmodule Hygeia.Helpers.Versioning do
     ]
   end
 
-  @spec get_origin :: origin | nil
-  defp get_origin, do: Process.get({__MODULE__, :origin})
+  @spec get_origin(pid :: pid()) :: origin | nil
+  defp get_origin(pid \\ self()), do: get_recursively([pid], {__MODULE__, :origin})
 
-  @spec get_originator :: originator | nil
-  defp get_originator, do: Process.get({__MODULE__, :originator})
+  @spec get_originator(pid :: pid()) :: originator | nil
+  defp get_originator(pid \\ self()), do: get_recursively([pid], {__MODULE__, :originator})
+
+  defp get_recursively(pids, key)
+
+  defp get_recursively([], _key), do: nil
+
+  defp get_recursively(pids, key) do
+    dictionarys =
+      pids
+      |> Enum.map(&Process.info(&1, :dictionary))
+      |> Enum.map(&elem(&1, 1))
+      |> Enum.map(&Map.new/1)
+
+    Enum.find_value(dictionarys, fn
+      %{^key => value} -> value
+      _other -> false
+    end) ||
+      dictionarys
+      |> Enum.flat_map(&Map.get(&1, :"$ancestors", []))
+      |> Enum.map(fn
+        pid when is_pid(pid) -> pid
+        atom when is_atom(atom) -> Process.whereis(atom)
+      end)
+      |> get_recursively(key)
+  end
 end

@@ -81,6 +81,40 @@
       </div>
 
       <div class="container mt-5">
+        <div class="row">
+          <div class="col">
+            <Field name={{ :send_confirmation_sms }} class="form-check">
+              <Checkbox class="form-check-input" />
+              <Label class="form-check-label">
+                {{ gettext("Send Confirmation SMS") }}
+              </Label>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <Field name={{ :send_confirmation_email }} class="form-check">
+              <Checkbox class="form-check-input" />
+              <Label class="form-check-label">
+                {{ gettext("Send Confirmation Email") }}
+              </Label>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <Field name={{ :directly_close_cases }} class="form-check">
+              <Checkbox class="form-check-input" />
+              <Label class="form-check-label">
+                {{ gettext("Directly set case status to done") }}
+              </Label>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-5">
         <div class="row mb-2">
           <div class="col">
             <Field name={{ :default_tenant_uuid }} class="input-group">

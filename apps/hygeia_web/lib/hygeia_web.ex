@@ -201,6 +201,7 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.Case
       import HygeiaWeb.Helpers.Changeset
       import HygeiaWeb.Helpers.Clinical
+      import HygeiaWeb.Helpers.Confirmation
       import HygeiaWeb.Helpers.ContactMethod
       import HygeiaWeb.Helpers.CSP
       import HygeiaWeb.Helpers.ExternalReference
