@@ -50,7 +50,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           infection_place_types: infection_place_types,
           suspected_duplicate_changeset_uuid: nil,
           file: nil,
-          return_to: params["return_to"]
+          return_to: params["return_to"],
+          loading: false
         )
       else
         socket
@@ -125,15 +126,22 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   @impl Phoenix.LiveView
+  def handle_info({:csv_import, :start}, socket) do
+    {:noreply, assign(socket, loading: true)}
+  end
+
   def handle_info({:csv_import, {:ok, data}}, socket) do
     {:noreply,
      socket
-     |> assign(changeset: import_into_changeset(socket.assigns.changeset, data))
+     |> assign(changeset: import_into_changeset(socket.assigns.changeset, data), loading: false)
      |> maybe_block_navigation()}
   end
 
   def handle_info({:csv_import, {:error, _reason}}, socket) do
-    {:noreply, put_flash(socket, :error, gettext("Could not parse CSV"))}
+    {:noreply,
+     socket
+     |> put_flash(:error, gettext("Could not parse CSV"))
+     |> assign(loading: false)}
   end
 
   def handle_info({:accept_duplicate, uuid, person}, socket) do

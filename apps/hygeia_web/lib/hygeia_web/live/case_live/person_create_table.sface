@@ -171,13 +171,14 @@
             </Field>
           </td>
           <td>
-            <HiddenInput field={{ :suspected_duplicates_uuid }} />
+            <HiddenInput field={{ :search_params_hash }} />
+            <HiddenInput field={{ :suspected_duplicate_uuids }} />
             <HiddenInput field={{ :accepted_duplicate }} />
             <HiddenInput field={{ :accepted_duplicate_uuid }} />
 
             <div class="d-flex justify-content-end p-1">
               <button
-                :if={{ not(form.source.changes[:suspected_duplicates_uuid] in [[], nil]) and form.source.changes[:accepted_duplicate] != true }}
+                :if={{ not(form.source.changes[:suspected_duplicate_uuids] in ["", nil]) and form.source.changes[:accepted_duplicate] != true }}
                 class="btn btn-secondary btn-sm"
                 type="button"
                 phx-value-changeset-uuid={{ form.source.changes[:uuid] }}
@@ -235,7 +236,7 @@
                   <div class="card-body">
                     <div class="candidates">
                       <div
-                        :for={{ person_uuid <- form.source.changes[:suspected_duplicates_uuid] }}
+                        :for={{ person_uuid <- String.split(form.source.changes[:suspected_duplicate_uuids], ",") }}
                         class="candidate"
                       >
                         <Context put={{ person: get_person(person_uuid) }} get={{ person: person }}>

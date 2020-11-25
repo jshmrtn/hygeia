@@ -63,6 +63,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     ])
     |> Transmission.validate_case(:propagator_internal, :propagator_ism_id, :propagator_case_uuid)
     |> drop_empty_rows()
+    |> CreatePersonSchema.detect_duplicates()
     |> add_one_person()
   end
 

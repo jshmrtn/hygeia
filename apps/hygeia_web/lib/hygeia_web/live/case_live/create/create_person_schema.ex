@@ -16,10 +16,11 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
     field :email, :string
     field :mobile, :string
     field :landline, :string
-    field :suspected_duplicates_uuid, {:array, :binary_id}
+    field :suspected_duplicate_uuids, :string
     field :accepted_duplicate, :boolean
     field :accepted_duplicate_uuid, :binary_id
     field :accepted_duplicate_human_readable_id, :string
+    field :search_params_hash, :integer
     field :employer, :string
     field :ism_case_id, :string
     field :ism_report_id, :string
@@ -52,6 +53,8 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
         :accepted_duplicate,
         :accepted_duplicate_uuid,
         :accepted_duplicate_human_readable_id,
+        :suspected_duplicate_uuids,
+        :search_params_hash,
         :tenant_uuid,
         :tracer_uuid,
         :supervisor_uuid,
@@ -92,59 +95,14 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
       :unknown -> :ok
       _other -> {:error, "not a landline number"}
     end)
-    |> detect_duplicates(:mobile)
-    |> detect_duplicates(:landline)
-    |> detect_duplicates(:email)
-    |> detect_name_duplicates
-    |> check_duplicate_acceptance
-    |> check_duplicate_acceptance_uuid
-  end
-
-  defp detect_duplicates(changeset, field) do
-    with nil <- get_field(changeset, :accepted_duplicate_uuid),
-         value when is_binary(value) <- get_field(changeset, field),
-         [_ | _] = suspected_duplicates <-
-           CaseContext.list_people_by_contact_method(field, value) do
-      put_change(
-        changeset,
-        :suspected_duplicates_uuid,
-        suspected_duplicates
-        |> Enum.map(& &1.uuid)
-        |> Kernel.++(get_field(changeset, :suspected_duplicates_uuid) || [])
-        |> Enum.uniq()
-      )
-    else
-      nil -> changeset
-      [] -> changeset
-      _id -> changeset
-    end
-  end
-
-  defp detect_name_duplicates(changeset) do
-    with first_name when is_binary(first_name) <- get_field(changeset, :first_name),
-         last_name when is_binary(last_name) <- get_field(changeset, :last_name),
-         [_ | _] = suspected_duplicates <-
-           CaseContext.list_people_by_name(first_name, last_name) do
-      put_change(
-        changeset,
-        :suspected_duplicates_uuid,
-        suspected_duplicates
-        |> Enum.map(& &1.uuid)
-        |> Kernel.++(get_field(changeset, :suspected_duplicates_uuid) || [])
-        |> Enum.uniq()
-      )
-    else
-      nil -> changeset
-      [] -> changeset
-    end
   end
 
   defp check_duplicate_acceptance(changeset) do
     changeset
-    |> get_field(:suspected_duplicates_uuid)
+    |> get_field(:suspected_duplicate_uuids)
     |> case do
       nil -> changeset
-      [] -> changeset
+      "" -> changeset
       _other -> validate_required(changeset, [:accepted_duplicate])
     end
   end
@@ -217,5 +175,57 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
     if is_nil(employer),
       do: attrs,
       else: update_in(attrs.employers, &[%{name: employer} | &1])
+  end
+
+  @spec detect_duplicates(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def detect_duplicates(changeset) do
+    {people, search} =
+      changeset
+      |> get_change(:people, [])
+      |> Enum.map(
+        &{&1,
+         %{
+           uuid: fetch_field!(&1, :uuid),
+           first_name: fetch_field!(&1, :first_name),
+           last_name: fetch_field!(&1, :last_name),
+           mobile: fetch_field!(&1, :mobile),
+           landline: fetch_field!(&1, :landline),
+           email: fetch_field!(&1, :email)
+         }}
+      )
+      |> Enum.map(fn {changeset, search_params} ->
+        {changeset, search_params, :erlang.crc32(:erlang.term_to_binary(search_params))}
+      end)
+      |> Enum.reduce({[], []}, fn {person_changeset, person_search_params,
+                                   person_search_params_hash},
+                                  {people_acc, search_params_acc} ->
+        if get_field(person_changeset, :search_params_hash) == person_search_params_hash do
+          {[person_changeset | people_acc], search_params_acc}
+        else
+          {[
+             put_change(person_changeset, :search_params_hash, person_search_params_hash)
+             | people_acc
+           ], [person_search_params | search_params_acc]}
+        end
+      end)
+
+    people = Enum.reverse(people)
+
+    duplicates = CaseContext.find_duplicates(search)
+
+    new_people =
+      people
+      |> Enum.map(&{&1, Map.fetch(duplicates, fetch_field!(&1, :uuid))})
+      |> Enum.map(fn
+        {changeset, {:ok, duplicates}} ->
+          put_change(changeset, :suspected_duplicate_uuids, Enum.join(duplicates, ","))
+
+        {changeset, :error} ->
+          changeset
+      end)
+      |> Enum.map(&check_duplicate_acceptance/1)
+      |> Enum.map(&check_duplicate_acceptance_uuid/1)
+
+    put_change(changeset, :people, new_people)
   end
 end

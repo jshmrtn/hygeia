@@ -35,6 +35,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
     changeset
     |> validate_required([:default_tenant_uuid, :default_supervisor_uuid, :default_tracer_uuid])
     |> drop_empty_rows()
+    |> CreatePersonSchema.detect_duplicates()
     |> add_one_person()
   end
 

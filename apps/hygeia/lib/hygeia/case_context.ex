@@ -154,6 +154,52 @@ defmodule Hygeia.CaseContext do
   @spec list_people(tenant :: Tenant.t()) :: [Person.t()]
   def list_people(tenant), do: tenant |> Ecto.assoc(:people) |> Repo.all()
 
+  @spec find_duplicates(
+          search :: [
+            %{
+              uuid: String.t(),
+              first_name: String.t() | nil,
+              last_name: String.t(),
+              mobile: String.t() | nil,
+              email: String.t() | nil
+            }
+          ]
+        ) :: %{required(uuid :: String.t()) => [person_id :: String.t()]}
+  def find_duplicates([]), do: %{}
+
+  def find_duplicates(search) when is_list(search) do
+    "search"
+    |> with_cte("search",
+      as:
+        fragment(
+          """
+          SELECT search->>'uuid' AS uuid, duplicate.uuid AS person_uuid
+          FROM JSONB_ARRAY_ELEMENTS(?::jsonb) AS search
+          LEFT JOIN people AS duplicate ON
+              (
+                  SIMILARITY(duplicate.first_name, search->>first_name) > 0.4 AND
+                  SIMILARITY(duplicate.last_name, search->>last_name) > 0.4
+              ) OR
+              JSONB_BUILD_OBJECT('type', 'mobile', 'value', search->>'mobile') <@ ANY (duplicate.contact_methods) OR
+              JSONB_BUILD_OBJECT('type', 'landline', 'value', search->>'landline') <@ ANY (duplicate.contact_methods) OR
+              JSONB_BUILD_OBJECT('type', 'email', 'value', search->>'email') <@ ANY (duplicate.contact_methods)
+          GROUP BY search->>'uuid', duplicate.uuid
+          """,
+          ^search
+        )
+    )
+    |> select([s], {s.uuid, s.person_uuid})
+    |> Repo.all()
+    |> Enum.reduce(%{}, fn
+      {search_uuid, nil}, acc ->
+        Map.update(acc, search_uuid, [], & &1)
+
+      {search_uuid, person_uuid}, acc ->
+        {:ok, person_uuid} = Ecto.UUID.load(person_uuid)
+        Map.update(acc, search_uuid, [person_uuid], &[person_uuid | &1])
+    end)
+  end
+
   @spec list_people_by_contact_method(type :: ContactMethod.Type.t(), value :: String.t()) :: [
           Person.t()
         ]

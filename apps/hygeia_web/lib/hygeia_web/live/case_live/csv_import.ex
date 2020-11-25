@@ -44,6 +44,8 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
            entry,
          socket
        ) do
+    send(self(), {:csv_import, :start})
+
     result =
       consume_uploaded_entry(socket, entry, fn %{path: path} ->
         new_path = Briefly.create!(extname: client_name)

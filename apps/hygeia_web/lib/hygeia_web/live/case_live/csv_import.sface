@@ -3,7 +3,7 @@
     <label class="m-0 btn btn-secondary">
       {{ live_file_input(
         @uploads.list,
-        class: "d-none",
+        class: "d-none"
       ) }}
       {{ gettext("Import CSV / XLSX") }}
     </label>

@@ -11,13 +11,13 @@
     >
       <div class="input-group w-auto">
         <div class="input-group-prepend">
-          <span class="input-group-text">{{ gettext("Von") }}</span>
+          <span class="input-group-text">{{ gettext("From") }}</span>
         </div>
         <DateInput class="form-control" field={{ :from }} />
       </div>
       <div class="ml-2 input-group w-auto">
         <div class="input-group-prepend">
-          <span class="input-group-text">{{ gettext("Bis") }}</span>
+          <span class="input-group-text">{{ gettext("To") }}</span>
         </div>
         <DateInput class="form-control" field={{ :to }} />
       </div>
