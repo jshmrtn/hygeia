@@ -122,9 +122,9 @@
                 </div>
               </div>
 
-              <div class="card phases-card">
-                <div class="card-header mb-0">
-                  <h4 class="card-title">{{ gettext("Phases") }}</h4>
+              <div class="card full-width">
+                <div class="card-header">
+                  <h4 class="card-title mb-0">{{ gettext("Phases") }}</h4>
                 </div>
                 <div class="card-body form-grid">
                   <Inputs for={{ :phases }}>
@@ -207,129 +207,142 @@
                 </div>
               </div>
 
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">{{ gettext("Clinical Information") }}</h4>
+              <div class="card full-width">
+                <div class="card-header">
+                  <h4 class="card-title mb-0">{{ gettext("Clinical Information") }}</h4>
+                </div>
+                <div class="card-body form-grid">
                   <Inputs for={{ :clinical }}>
-                    <div class="row">
-                      <div class="col">
-                        <div class="form-group">
-                          <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                            <Field name={{ :reasons_for_test }}>
-                              <Label>{{ gettext("Reasons for test") }}</Label>
-                              <label
-                                :for={{ {name, key} <- test_reasons() }}
-                                class="d-block checkbox-label"
-                                data-disabled={{ @live_action == :show }}
-                              >
-                                <input
-                                  type="checkbox"
-                                  name={{ input_name(form, :reasons_for_test) <> "[]" }}
-                                  disabled={{ @live_action == :show }}
-                                  checked={{ key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || []) }}
-                                  value={{ key }}
-                                />
-                                {{ name }}
-                              </label>
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                                <Field name={{ :reasons_for_test }}>
+                                  <Label>{{ gettext("Reasons for test") }}</Label>
+                                  <label
+                                    :for={{ {name, key} <- test_reasons() }}
+                                    class="d-block checkbox-label"
+                                    data-disabled={{ @live_action == :show }}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      name={{ input_name(form, :reasons_for_test) <> "[]" }}
+                                      disabled={{ @live_action == :show }}
+                                      checked={{ key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || []) }}
+                                      value={{ key }}
+                                    />
+                                    {{ name }}
+                                  </label>
+                                  <ErrorTag class="d-block invalid-feedback" />
+                                </Field>
+                              </InputContext>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-group">
+                              <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                                <Field name={{ :symptoms }}>
+                                  <Label>{{ gettext("Symptoms") }}</Label>
+                                  <label
+                                    :for={{ {name, key} <- symptoms() }}
+                                    class="d-block checkbox-label"
+                                    data-disabled={{ @live_action == :show }}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      name={{ input_name(form, :symptoms) <> "[]" }}
+                                      disabled={{ @live_action == :show }}
+                                      checked={{ key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || []) }}
+                                      value={{ key }}
+                                    />
+                                    {{ name }}
+                                  </label>
+                                  <ErrorTag class="d-block invalid-feedback" />
+                                </Field>
+                              </InputContext>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <Field name={{ :test }} class="form-group">
+                              <Label>{{ gettext("Test date") }}</Label>
+                              <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
-                          </InputContext>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-group">
-                          <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                            <Field name={{ :symptoms }}>
-                              <Label>{{ gettext("Symptoms") }}</Label>
-                              <label
-                                :for={{ {name, key} <- symptoms() }}
-                                class="d-block checkbox-label"
-                                data-disabled={{ @live_action == :show }}
-                              >
-                                <input
-                                  type="checkbox"
-                                  name={{ input_name(form, :symptoms) <> "[]" }}
-                                  disabled={{ @live_action == :show }}
-                                  checked={{ key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || []) }}
-                                  value={{ key }}
-                                />
-                                {{ name }}
-                              </label>
+                          </div>
+                          <div class="col">
+                            <Field name={{ :laboratory_report }} class="form-group">
+                              <Label>{{ gettext("Laboratory report date") }}</Label>
+                              <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
-                          </InputContext>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <Field name={{ :test_kind }} class="form-group">
+                              <Label>{{ gettext("Test kind") }}</Label>
+                              <Select class="form-control" opts={{ prompt: gettext("Choose test kind"), disabled: @live_action == :show }} options={{ test_kinds() }} />
+                              <ErrorTag class="d-block invalid-feedback" />
+                            </Field>
+                          </div>
+                          <div class="col">
+                            <Field name={{ :result }} class="form-group">
+                              <Label>{{ gettext("Test result") }}</Label>
+                              <Select class="form-control" opts={{ prompt: gettext("Choose test result"), disabled: @live_action == :show }} options={{ test_results() }} />
+                              <ErrorTag class="d-block invalid-feedback" />
+                            </Field>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col">
-                        <Field name={{ :test }} class="form-group">
-                          <Label>{{ gettext("Test date") }}</Label>
-                          <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                      </div>
-                      <div class="col">
-                        <Field name={{ :laboratory_report }} class="form-group">
-                          <Label>{{ gettext("Laboratory report date") }}</Label>
-                          <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col">
-                        <Field name={{ :test_kind }} class="form-group">
-                          <Label>{{ gettext("Test kind") }}</Label>
-                          <Select class="form-control" opts={{ prompt: gettext("Choose test kind"), disabled: @live_action == :show }} options={{ test_kinds() }} />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                      </div>
-                      <div class="col">
-                        <Field name={{ :result }} class="form-group">
-                          <Label>{{ gettext("Test result") }}</Label>
-                          <Select class="form-control" opts={{ prompt: gettext("Choose test result"), disabled: @live_action == :show }} options={{ test_results() }} />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
+
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">{{ gettext("Reporting unit") }}</h4>
+                        <Inputs for={{ :reporting_unit }}>
+                          <Field name={{ :name }} class="form-group">
+                            <Label>{{ gettext("Name") }}</Label>
+                            <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+
+                          <Inputs for={{ :address }}>
+                            <HygeiaWeb.AddressForm
+                              disabled={{ @live_action == :show }}
+                              id="reporting_unit_address"
+                            />
+                          </Inputs>
+                        </Inputs>
                       </div>
                     </div>
+                    
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">{{ gettext("Sponsor") }}</h4>
+                        <Inputs for={{ :sponsor }}>
+                          <Field name={{ :name }} class="form-group">
+                            <Label>{{ gettext("Name") }}</Label>
+                            <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
 
-                    <!-- TODO: Style -->
-                    <Inputs for={{ :reporting_unit }}>
-                      <h4>{{ gettext("Reporting unit") }}</h4>
-                      <Field name={{ :name }} class="form-group">
-                        <Label>{{ gettext("Name") }}</Label>
-                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-
-                      <Inputs for={{ :address }}>
-                        <HygeiaWeb.AddressForm
-                          disabled={{ @live_action == :show }}
-                          id="reporting_unit_address"
-                        />
-                      </Inputs>
-                    </Inputs>
-
-                    <!-- TODO: Style -->
-                    <Inputs for={{ :sponsor }}>
-                      <h4>{{ gettext("Sponsor") }}</h4>
-                      <Field name={{ :name }} class="form-group">
-                        <Label>{{ gettext("Name") }}</Label>
-                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-
-                      <Inputs for={{ :address }}>
-                        <HygeiaWeb.AddressForm
-                          disabled={{ @live_action == :show }}
-                          id="sponsor_address"
-                        />
-                      </Inputs>
-                    </Inputs>
+                          <Inputs for={{ :address }}>
+                            <HygeiaWeb.AddressForm
+                              disabled={{ @live_action == :show }}
+                              id="sponsor_address"
+                            />
+                          </Inputs>
+                        </Inputs>
+                      </div>
+                    </div>
                   </Inputs>
                 </div>
               </div>
+              
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">{{ gettext("Monitoring") }}</h4>
