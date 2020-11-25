@@ -112,6 +112,13 @@
               <div class="preserve-linebreaks">{{ entry.text }}</div>
             </td>
           </tr>
+          <tr :if={{ length(@case.protocol_entries) == 0 }}>
+            <td colspan="5">
+              <div class="d-flex justify-content-center py-3">
+                {{ "No data to display" |> gettext }}
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
