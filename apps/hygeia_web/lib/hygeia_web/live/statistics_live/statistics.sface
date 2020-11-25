@@ -98,12 +98,12 @@
               {nil, entries} ->
                 %{
                   label: gettext("unknown"),
-                  data: entries
+                  data: Enum.reverse(entries)
                 }
               {end_reason, entries} ->
                 %{
                   label: case_phase_index_end_reason_translation(end_reason),
-                  data: entries
+                  data: Enum.reverse(entries)
                 }
             end)
           },
@@ -165,7 +165,7 @@
             |> Enum.map(fn {type, entries} ->
               %{
                 label: case_phase_possible_index_type_translation(type),
-                data: entries
+                data: Enum.reverse(entries)
               }
             end)
           },
@@ -225,12 +225,12 @@
               {{type, nil}, entries} ->
                 %{
                   label: case_phase_possible_index_type_translation(type) <> " / " <> gettext("unknown"),
-                  data: entries
+                  data: Enum.reverse(entries)
                 }
               {{type, end_reason}, entries} ->
                 %{
                   label: case_phase_possible_index_type_translation(type) <> " / " <> case_phase_possible_index_end_reason_translation(end_reason),
-                  data: entries
+                  data: Enum.reverse(entries)
                 }
             end)
           },
@@ -293,12 +293,12 @@
               {{:index, nil}, entries} ->
                 %{
                   label: gettext("Index"),
-                  data: entries
+                  data: Enum.reverse(entries)
                 }
               {{:possible_index, sub_type}, entries} ->
                 %{
                   label: case_phase_possible_index_type_translation(sub_type),
-                  data: entries
+                  data: Enum.reverse(entries)
                 }
             end)
           },

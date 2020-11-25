@@ -24,7 +24,13 @@ defmodule Hygeia.StatisticsContext do
 
   """
   @spec list_active_isolation_cases_per_day :: [ActiveIsolationCasesPerDay.t()]
-  def list_active_isolation_cases_per_day, do: Repo.all(ActiveIsolationCasesPerDay)
+  def list_active_isolation_cases_per_day,
+    do:
+      Repo.all(
+        from(cases_per_day in ActiveIsolationCasesPerDay,
+          order_by: cases_per_day.date
+        )
+      )
 
   @spec list_active_isolation_cases_per_day(tenant :: Tenant.t()) :: [
           ActiveIsolationCasesPerDay.t()
@@ -33,7 +39,8 @@ defmodule Hygeia.StatisticsContext do
     do:
       Repo.all(
         from(cases_per_day in ActiveIsolationCasesPerDay,
-          where: cases_per_day.tenant_uuid == ^tenant_uuid
+          where: cases_per_day.tenant_uuid == ^tenant_uuid,
+          order_by: cases_per_day.date
         )
       )
 
@@ -48,7 +55,8 @@ defmodule Hygeia.StatisticsContext do
         from(cases_per_day in ActiveIsolationCasesPerDay,
           where:
             cases_per_day.tenant_uuid == ^tenant_uuid and
-              fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to)
+              fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to),
+          order_by: cases_per_day.date
         )
       )
 
@@ -63,7 +71,12 @@ defmodule Hygeia.StatisticsContext do
   """
   @spec list_cumulative_index_case_end_reasons :: [CumulativeIndexCaseEndReasons.t()]
   def list_cumulative_index_case_end_reasons,
-    do: Repo.all(CumulativeIndexCaseEndReasons)
+    do:
+      Repo.all(
+        from(cumulative_index_case_end_reasons in CumulativeIndexCaseEndReasons,
+          order_by: cumulative_index_case_end_reasons.date
+        )
+      )
 
   @spec list_cumulative_index_case_end_reasons(tenant :: Tenant.t()) :: [
           CumulativeIndexCaseEndReasons.t()
@@ -72,7 +85,8 @@ defmodule Hygeia.StatisticsContext do
     do:
       Repo.all(
         from(cumulative_index_case_end_reasons in CumulativeIndexCaseEndReasons,
-          where: cumulative_index_case_end_reasons.tenant_uuid == ^tenant_uuid
+          where: cumulative_index_case_end_reasons.tenant_uuid == ^tenant_uuid,
+          order_by: cumulative_index_case_end_reasons.date
         )
       )
 
@@ -96,7 +110,8 @@ defmodule Hygeia.StatisticsContext do
                   cumulative_index_case_end_reasons.date,
                   ^from,
                   ^to
-                )
+                ),
+            order_by: cumulative_index_case_end_reasons.date
           )
         )
 
@@ -110,7 +125,13 @@ defmodule Hygeia.StatisticsContext do
 
   """
   @spec list_active_quarantine_cases_per_day :: [ActiveQuarantineCasesPerDay.t()]
-  def list_active_quarantine_cases_per_day, do: Repo.all(ActiveQuarantineCasesPerDay)
+  def list_active_quarantine_cases_per_day,
+    do:
+      Repo.all(
+        from(cases_per_day in ActiveQuarantineCasesPerDay,
+          order_by: cases_per_day.date
+        )
+      )
 
   @spec list_active_quarantine_cases_per_day(tenant :: Tenant.t()) :: [
           ActiveQuarantineCasesPerDay.t()
@@ -119,7 +140,8 @@ defmodule Hygeia.StatisticsContext do
     do:
       Repo.all(
         from(cases_per_day in ActiveQuarantineCasesPerDay,
-          where: cases_per_day.tenant_uuid == ^tenant_uuid
+          where: cases_per_day.tenant_uuid == ^tenant_uuid,
+          order_by: cases_per_day.date
         )
       )
 
@@ -143,7 +165,8 @@ defmodule Hygeia.StatisticsContext do
                   cases_per_day.date,
                   ^from,
                   ^to
-                )
+                ),
+            order_by: cases_per_day.date
           )
         )
 
@@ -160,7 +183,12 @@ defmodule Hygeia.StatisticsContext do
           CumulativePossibleIndexCaseEndReasons.t()
         ]
   def list_cumulative_possible_index_case_end_reasons,
-    do: Repo.all(CumulativePossibleIndexCaseEndReasons)
+    do:
+      Repo.all(
+        from(cases_per_day in CumulativePossibleIndexCaseEndReasons,
+          order_by: cases_per_day.date
+        )
+      )
 
   @spec list_cumulative_possible_index_case_end_reasons(tenant :: Tenant.t()) :: [
           CumulativePossibleIndexCaseEndReasons.t()
@@ -169,7 +197,8 @@ defmodule Hygeia.StatisticsContext do
     do:
       Repo.all(
         from(cases_per_day in CumulativePossibleIndexCaseEndReasons,
-          where: cases_per_day.tenant_uuid == ^tenant_uuid
+          where: cases_per_day.tenant_uuid == ^tenant_uuid,
+          order_by: cases_per_day.date
         )
       )
 
@@ -193,7 +222,8 @@ defmodule Hygeia.StatisticsContext do
                   cases_per_day.date,
                   ^from,
                   ^to
-                )
+                ),
+            order_by: cases_per_day.date
           )
         )
 
@@ -207,7 +237,13 @@ defmodule Hygeia.StatisticsContext do
 
   """
   @spec list_new_cases_per_day :: [NewCasesPerDay.t()]
-  def list_new_cases_per_day, do: Repo.all(NewCasesPerDay)
+  def list_new_cases_per_day,
+    do:
+      Repo.all(
+        from(cases_per_day in NewCasesPerDay,
+          order_by: cases_per_day.date
+        )
+      )
 
   @spec list_new_cases_per_day(tenant :: Tenant.t()) :: [
           NewCasesPerDay.t()
@@ -216,7 +252,8 @@ defmodule Hygeia.StatisticsContext do
     do:
       Repo.all(
         from(cases_per_day in NewCasesPerDay,
-          where: cases_per_day.tenant_uuid == ^tenant_uuid
+          where: cases_per_day.tenant_uuid == ^tenant_uuid,
+          order_by: cases_per_day.date
         )
       )
 
@@ -240,7 +277,8 @@ defmodule Hygeia.StatisticsContext do
                   cases_per_day.date,
                   ^from,
                   ^to
-                )
+                ),
+            order_by: cases_per_day.date
           )
         )
 
@@ -254,7 +292,13 @@ defmodule Hygeia.StatisticsContext do
 
   """
   @spec list_active_hospitalization_cases_per_day :: [ActiveHospitalizationCasesPerDay.t()]
-  def list_active_hospitalization_cases_per_day, do: Repo.all(ActiveHospitalizationCasesPerDay)
+  def list_active_hospitalization_cases_per_day,
+    do:
+      Repo.all(
+        from(cases_per_day in ActiveHospitalizationCasesPerDay,
+          order_by: cases_per_day.date
+        )
+      )
 
   @spec list_active_hospitalization_cases_per_day(tenant :: Tenant.t()) :: [
           ActiveHospitalizationCasesPerDay.t()
@@ -263,7 +307,8 @@ defmodule Hygeia.StatisticsContext do
     do:
       Repo.all(
         from(cases_per_day in ActiveHospitalizationCasesPerDay,
-          where: cases_per_day.tenant_uuid == ^tenant_uuid
+          where: cases_per_day.tenant_uuid == ^tenant_uuid,
+          order_by: cases_per_day.date
         )
       )
 
@@ -278,7 +323,8 @@ defmodule Hygeia.StatisticsContext do
         from(cases_per_day in ActiveHospitalizationCasesPerDay,
           where:
             cases_per_day.tenant_uuid == ^tenant_uuid and
-              fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to)
+              fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to),
+          order_by: cases_per_day.date
         )
       )
 end
