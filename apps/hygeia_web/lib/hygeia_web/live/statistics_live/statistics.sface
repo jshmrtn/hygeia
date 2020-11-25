@@ -1,12 +1,26 @@
-<div class="component-statistics-index pt-5">
+<div class="component-statistics-index container pt-3">
   <div class="container">
-    <h1>
+    <h1 class="mb-4">
       {{ gettext("Statistics for %{tenant}", tenant: @tenant.name)}}
     </h1>
 
-    <Form for={{ assigns }} change="params_change" opts={{ class: "mt-3" }}>
-      <DateInput field={{ :from }} />
-      <DateInput field={{ :to }} />
+    <Form
+      for={{ assigns }}
+      change="params_change"
+      opts={{ class: "mt-3 d-flex" }}
+    >
+      <div class="input-group w-auto">
+        <div class="input-group-prepend">
+          <span class="input-group-text">{{ gettext("Von") }}</span>
+        </div>
+        <DateInput class="form-control" field={{ :from }} />
+      </div>
+      <div class="ml-2 input-group w-auto">
+        <div class="input-group-prepend">
+          <span class="input-group-text">{{ gettext("Bis") }}</span>
+        </div>
+        <DateInput class="form-control" field={{ :to }} />
+      </div>
     </Form>
   </div>
 
