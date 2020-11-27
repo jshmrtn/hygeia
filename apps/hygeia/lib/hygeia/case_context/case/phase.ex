@@ -5,6 +5,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
 
   use Hygeia, :model
 
+  import HygeiaGettext
+
   alias Hygeia.CaseContext.Case.Phase.Index
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex
 
@@ -38,5 +40,37 @@ defmodule Hygeia.CaseContext.Case.Phase do
     |> cast(attrs, [:start, :end])
     |> cast_polymorphic_embed(:details)
     |> validate_required([:details])
+    |> validate_date_relative(
+      :start,
+      [:lt, :eq],
+      :end,
+      dgettext("errors", "start must be before end")
+    )
+    |> validate_date_relative(
+      :end,
+      [:gt, :eq],
+      :start,
+      dgettext("errors", "end must be after start")
+    )
+  end
+
+  defp validate_date_relative(changeset, field, cmp_equality, cmp_field, message) do
+    case get_field(changeset, cmp_field) do
+      nil ->
+        changeset
+
+      cmp_value ->
+        validate_change(changeset, field, fn
+          ^field, nil ->
+            []
+
+          ^field, value ->
+            if Date.compare(value, cmp_value) in cmp_equality do
+              []
+            else
+              [{field, message}]
+            end
+        end)
+    end
   end
 end

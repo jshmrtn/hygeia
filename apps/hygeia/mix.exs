@@ -72,7 +72,8 @@ defmodule Hygeia.MixProject do
       {:hygeia_gettext, in_umbrella: true},
       {:hygeia_cldr, in_umbrella: true},
       {:csv, "~> 2.4"},
-      {:highlander, "~> 0.2"}
+      {:highlander, "~> 0.2"},
+      {:hygeia_gettext, in_umbrella: true}
     ]
   end
 

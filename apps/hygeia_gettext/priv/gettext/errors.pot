@@ -105,3 +105,13 @@ msgstr ""
 
 msgid "must be equal to %{number}"
 msgstr ""
+
+#, elixir-format
+#: lib/hygeia/case_context/case/phase.ex:44
+msgid "end must be after start"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia/case_context/case/phase.ex:43
+msgid "start must be before end"
+msgstr ""
