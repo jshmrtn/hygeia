@@ -23,24 +23,10 @@ defmodule HygeiaWeb.CaseLive.Index do
       if authorized?(Case, :list, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases")
 
-        pagination_params =
-          case params do
-            %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
-            %{"cursor" => cursor, "cursor_direction" => "before"} -> [before: cursor]
-            _other -> []
-          end
-
         supervisor_users = UserContext.list_users_with_role(:supervisor)
         tracer_users = UserContext.list_users_with_role(:tracer)
 
-        socket
-        |> assign(
-          pagination_params: pagination_params,
-          filters: %{},
-          supervisor_users: supervisor_users,
-          tracer_users: tracer_users
-        )
-        |> list_cases()
+        assign(socket, supervisor_users: supervisor_users, tracer_users: tracer_users)
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))
@@ -51,11 +37,47 @@ defmodule HygeiaWeb.CaseLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("filter", params, socket) do
-    {:noreply, socket |> assign(filters: params["filter"] || %{}) |> list_cases()}
+  def handle_params(params, uri, socket) do
+    pagination_params =
+      case params do
+        %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
+        %{"cursor" => cursor, "cursor_direction" => "before"} -> [before: cursor]
+        _other -> []
+      end
+
+    socket =
+      case params["filter"] do
+        nil ->
+          push_patch(socket,
+            to:
+              page_url(socket, pagination_params, %{
+                "status" => Enum.map(Case.Status.__enum_map__() -- [:done], &Atom.to_string/1),
+                "tracer_uuid" => [get_auth(socket).uuid]
+              })
+          )
+
+        %{} ->
+          socket
+      end
+
+    filter = params["filter"] || %{}
+
+    socket =
+      socket
+      |> assign(pagination_params: pagination_params, filters: filter)
+      |> list_cases()
+
+    super(params, uri, socket)
   end
 
   @impl Phoenix.LiveView
+  def handle_event("filter", params, socket) do
+    {:noreply,
+     push_patch(socket,
+       to: page_url(socket, socket.assigns.pagination_params, params["filter"] || %{})
+     )}
+  end
+
   def handle_event("delete", %{"id" => id}, socket) do
     case = CaseContext.get_case!(id)
 
@@ -98,9 +120,24 @@ defmodule HygeiaWeb.CaseLive.Index do
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: [inserted_at: :asc])
       )
 
+    entries =
+      if Keyword.has_key?(socket.assigns.pagination_params, :before) do
+        Enum.reverse(entries)
+      else
+        entries
+      end
+
     assign(socket,
       pagination: metadata,
       cases: Repo.preload(entries, person: [], tracer: [], supervisor: [])
     )
   end
+
+  defp page_url(socket, pagination_params, filters)
+
+  defp page_url(socket, [], filters),
+    do: Routes.case_index_path(socket, :index, filter: filters || %{})
+
+  defp page_url(socket, [{cursor_direction, cursor}], filters),
+    do: Routes.case_index_path(socket, :index, cursor_direction, cursor, filter: filters || %{})
 end

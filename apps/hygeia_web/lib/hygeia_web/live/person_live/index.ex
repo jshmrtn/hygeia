@@ -26,16 +26,7 @@ defmodule HygeiaWeb.PersonLive.Index do
 
         professions = CaseContext.list_professions()
 
-        pagination_params =
-          case params do
-            %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
-            %{"cursor" => cursor, "cursor_direction" => "before"} -> [before: cursor]
-            _other -> []
-          end
-
-        socket
-        |> assign(pagination_params: pagination_params, filters: %{}, professions: professions)
-        |> list_people()
+        assign(socket, professions: professions)
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))
@@ -46,11 +37,32 @@ defmodule HygeiaWeb.PersonLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("filter", params, socket) do
-    {:noreply, socket |> assign(filters: params["filter"] || %{}) |> list_people()}
+  def handle_params(params, uri, socket) do
+    pagination_params =
+      case params do
+        %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
+        %{"cursor" => cursor, "cursor_direction" => "before"} -> [before: cursor]
+        _other -> []
+      end
+
+    filter = params["filter"] || %{}
+
+    socket =
+      socket
+      |> assign(pagination_params: pagination_params, filters: filter)
+      |> list_people()
+
+    super(params, uri, socket)
   end
 
   @impl Phoenix.LiveView
+  def handle_event("filter", params, socket) do
+    {:noreply,
+     push_patch(socket,
+       to: page_url(socket, socket.assigns.pagination_params, params["filter"] || %{})
+     )}
+  end
+
   def handle_event("delete", %{"id" => id}, socket) do
     person = CaseContext.get_person!(id)
 
@@ -105,9 +117,24 @@ defmodule HygeiaWeb.PersonLive.Index do
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: [inserted_at: :asc])
       )
 
+    entries =
+      if Keyword.has_key?(socket.assigns.pagination_params, :before) do
+        Enum.reverse(entries)
+      else
+        entries
+      end
+
     assign(socket,
       pagination: metadata,
       people: entries
     )
   end
+
+  defp page_url(socket, pagination_params, filters)
+
+  defp page_url(socket, [], filters),
+    do: Routes.person_index_path(socket, :index, filter: filters || %{})
+
+  defp page_url(socket, [{cursor_direction, cursor}], filters),
+    do: Routes.person_index_path(socket, :index, cursor_direction, cursor, filter: filters || %{})
 end

@@ -22,7 +22,8 @@ defmodule HygeiaWeb.CaseLiveTest do
     setup [:create_case]
 
     test "lists all cases", %{conn: conn, case_model: case} do
-      {:ok, _index_live, html} = live(conn, Routes.case_index_path(conn, :index))
+      {:ok, _index_live, html} =
+        live(conn, Routes.case_index_path(conn, :index, filter: %{does_not: "matter"}))
 
       assert html =~ "Listing Cases"
       assert html =~ case_complexity_translation(case.complexity)

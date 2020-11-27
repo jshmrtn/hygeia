@@ -171,9 +171,9 @@
     </table>
 
     <Hygeia.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }} id="pagination">
-        <LiveRedirect class="page-link" to={{ Routes.person_index_path(@socket, :index, cursor_direction, cursor) }}>
+        <LivePatch class="page-link" to={{ page_url(@socket, [{cursor_direction, cursor}], @filters) }}>
           {{ text }}
-        </LiveRedirect>
+        </LivePatch>
     </Hygeia.Pagination>
   </Context>
 </div>
