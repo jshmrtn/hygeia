@@ -16,8 +16,9 @@ defmodule Hygeia.Application do
         # Start the Ecto repository
         Hygeia.Repo,
         # Start the PubSub system
-        {Phoenix.PubSub, name: Hygeia.PubSub},
-        Hygeia.Jobs.Supervisor
+        {Phoenix.PubSub, name: Hygeia.PubSub}
+        # TODO: Re-enable
+        # Hygeia.Jobs.Supervisor
       ],
       strategy: :one_for_one,
       name: Hygeia.Supervisor
