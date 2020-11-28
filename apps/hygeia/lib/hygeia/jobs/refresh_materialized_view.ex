@@ -6,7 +6,7 @@ defmodule Hygeia.Jobs.RefreshMaterializedView do
 
   * `name` (`required`) - GenServer Name
   * `view` (`required`) - `atom` name of the view to be refreshed
-  * `interval_ms` (default 1 hour) - refresh interval in ms
+  * `interval_ms` (default 5 minutes) - refresh interval in ms
   """
 
   use GenServer
@@ -15,7 +15,7 @@ defmodule Hygeia.Jobs.RefreshMaterializedView do
 
   case Mix.env() do
     :dev -> @default_refresh_interval_ms :timer.seconds(30)
-    _env -> @default_refresh_interval_ms :timer.hours(1)
+    _env -> @default_refresh_interval_ms :timer.minutes(5)
   end
 
   @spec start_link(opts :: Keyword.t()) :: GenServer.on_start()
@@ -67,7 +67,7 @@ defmodule Hygeia.Jobs.RefreshMaterializedView do
   end
 
   defp execute_refresh(view) do
-    Repo.query!("REFRESH MATERIALIZED VIEW CONCURRENTLY #{view}", [], timeout: :timer.minutes(15))
+    Repo.query!("REFRESH MATERIALIZED VIEW CONCURRENTLY #{view}", [], timeout: :timer.minutes(5))
 
     Phoenix.PubSub.broadcast!(Hygeia.PubSub, Atom.to_string(view), :refresh)
   end
