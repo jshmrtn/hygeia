@@ -40,6 +40,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
     |> cast(attrs, [:start, :end])
     |> cast_polymorphic_embed(:details)
     |> validate_required([:details])
+    |> validate_date_recent(:start)
+    |> validate_date_recent(:end)
     |> validate_date_relative(
       :start,
       [:lt, :eq],
@@ -72,5 +74,15 @@ defmodule Hygeia.CaseContext.Case.Phase do
             end
         end)
     end
+  end
+
+  defp validate_date_recent(changeset, field) do
+    validate_change(changeset, field, fn ^field, value ->
+      if Kernel.abs(Date.diff(Date.utc_today(), value)) > 356 do
+        [{field, dgettext("errors", "date is to far away from today")}]
+      else
+        []
+      end
+    end)
   end
 end
