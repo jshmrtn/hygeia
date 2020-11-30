@@ -10,9 +10,11 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Hygeia.Repo
   alias Hygeia.UserContext
   alias Surface.Components.Form
+  alias Surface.Components.Form.Field
   alias Surface.Components.Form.FieldContext
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.MultipleSelect
+  alias Surface.Components.Form.RadioButton
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
   alias Surface.Components.LiveRedirect
@@ -99,7 +101,8 @@ defmodule HygeiaWeb.CaseLive.Index do
     "status" => :status,
     "complexity" => :complexity,
     "tracer_uuid" => :tracer_uuid,
-    "supervisor_uuid" => :supervisor_uuid
+    "supervisor_uuid" => :supervisor_uuid,
+    "phase_type" => :phase_type
   }
 
   defp list_cases(socket) do
@@ -113,8 +116,15 @@ defmodule HygeiaWeb.CaseLive.Index do
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
       |> Enum.reduce(CaseContext.list_cases_query(), fn
+        {_key, value}, query when value in ["", nil] ->
+          query
+
         {key, value}, query when is_list(value) ->
           where(query, [case], field(case, ^key) in ^value)
+
+        {:phase_type, phase_type}, query ->
+          phase_match = %{details: %{__type__: phase_type}}
+          where(query, [case], fragment("? <@ ANY (?)", ^phase_match, case.phases))
       end)
       |> Repo.paginate(
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: [inserted_at: :asc])
