@@ -84,7 +84,9 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
         StatisticsContext.list_cumulative_possible_index_case_end_reasons(tenant, from, to),
       new_cases_per_day: StatisticsContext.list_new_cases_per_day(tenant, from, to),
       active_hospitalization_cases_per_day:
-        StatisticsContext.list_active_hospitalization_cases_per_day(tenant, from, to)
+        StatisticsContext.list_active_hospitalization_cases_per_day(tenant, from, to),
+      active_complexity_cases_per_day:
+        StatisticsContext.list_active_complexity_cases_per_day(tenant, from, to)
     )
   end
 end

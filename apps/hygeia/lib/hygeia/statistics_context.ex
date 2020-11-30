@@ -6,6 +6,7 @@ defmodule Hygeia.StatisticsContext do
   import Ecto.Query, warn: false
   alias Hygeia.Repo
 
+  alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
   alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveIsolationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveQuarantineCasesPerDay
@@ -327,4 +328,59 @@ defmodule Hygeia.StatisticsContext do
           order_by: cases_per_day.date
         )
       )
+
+  @doc """
+  Returns the list of active_complexity_cases_per_day.
+
+  ## Examples
+
+      iex> list_active_complexity_cases_per_day()
+      [%ActiveComplexityCasesPerDay{}, ...]
+
+  """
+  @spec list_active_complexity_cases_per_day :: [ActiveComplexityCasesPerDay.t()]
+  def list_active_complexity_cases_per_day,
+    do:
+      Repo.all(
+        from(active_complexity_cases_per_day in ActiveComplexityCasesPerDay,
+          order_by: active_complexity_cases_per_day.date
+        )
+      )
+
+  @spec list_active_complexity_cases_per_day(tenant :: Tenant.t()) :: [
+          ActiveComplexityCasesPerDay.t()
+        ]
+  def list_active_complexity_cases_per_day(%Tenant{uuid: tenant_uuid} = _tenant),
+    do:
+      Repo.all(
+        from(active_complexity_cases_per_day in ActiveComplexityCasesPerDay,
+          where: active_complexity_cases_per_day.tenant_uuid == ^tenant_uuid,
+          order_by: active_complexity_cases_per_day.date
+        )
+      )
+
+  @spec list_active_complexity_cases_per_day(
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: [ActiveComplexityCasesPerDay.t()]
+  def list_active_complexity_cases_per_day(
+        %Tenant{uuid: tenant_uuid} = _tenant,
+        from,
+        to
+      ),
+      do:
+        Repo.all(
+          from(active_complexity_cases_per_day in ActiveComplexityCasesPerDay,
+            where:
+              active_complexity_cases_per_day.tenant_uuid == ^tenant_uuid and
+                fragment(
+                  "? BETWEEN ?::date AND ?::date",
+                  active_complexity_cases_per_day.date,
+                  ^from,
+                  ^to
+                ),
+            order_by: active_complexity_cases_per_day.date
+          )
+        )
 end

@@ -5,6 +5,7 @@ defmodule Hygeia.StatisticsContextTest do
   use Hygeia.DataCase
 
   alias Hygeia.StatisticsContext
+  alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
   alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveIsolationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveQuarantineCasesPerDay
@@ -640,6 +641,124 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-11],
                  ~D[2020-10-14]
                )
+    end
+  end
+
+  describe "active_complexity_cases_per_day" do
+    test "counts high complexity cases from the end date" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        complexity: :high,
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-12]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_complexity_cases_per_day)
+
+      assert entries =
+               StatisticsContext.list_active_complexity_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-13]
+               )
+
+      assert length(entries) == 15
+
+      assert Enum.all?(
+               entries,
+               &(match?(%ActiveComplexityCasesPerDay{count: 0}, &1) or
+                   match?(
+                     %ActiveComplexityCasesPerDay{count: 1, case_complexity: :high, date: date}
+                     when date in [~D[2020-10-12], ~D[2020-10-13]],
+                     &1
+                   ))
+             )
+    end
+
+    test "does count complexity nil" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        complexity: nil,
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: nil
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-12]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_complexity_cases_per_day)
+
+      assert entries =
+               StatisticsContext.list_active_complexity_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-13]
+               )
+
+      assert length(entries) == 15
+
+      assert Enum.all?(
+               entries,
+               &(match?(%ActiveComplexityCasesPerDay{count: 0}, &1) or
+                   match?(
+                     %ActiveComplexityCasesPerDay{count: 1, case_complexity: nil, date: date}
+                     when date in [~D[2020-10-12], ~D[2020-10-13]],
+                     &1
+                   ))
+             )
+    end
+
+    test "does not count possible index" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        complexity: :medium,
+        phases: [
+          %{
+            details: %{
+              __type__: :possible_index,
+              type: :contact_person,
+              end_reason: :asymptomatic
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-12]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_complexity_cases_per_day)
+
+      assert entries =
+               StatisticsContext.list_active_complexity_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-13]
+               )
+
+      assert length(entries) == 15
+
+      assert Enum.all?(entries, &match?(%ActiveComplexityCasesPerDay{count: 0}, &1))
     end
   end
 end

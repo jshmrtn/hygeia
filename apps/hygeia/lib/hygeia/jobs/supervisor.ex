@@ -36,7 +36,11 @@ defmodule Hygeia.Jobs.Supervisor do
         {Highlander,
          {RefreshMaterializedView,
           view: :statistics_active_hospitalization_cases_per_day,
-          name: RefreshMaterializedView.ActiveHospitalizationCasesPerDay}}
+          name: RefreshMaterializedView.ActiveHospitalizationCasesPerDay}},
+        {Highlander,
+         {RefreshMaterializedView,
+          view: :statistics_active_complexity_cases_per_day,
+          name: RefreshMaterializedView.ActiveComplexityCasesPerDay}}
       ]
   end
 
