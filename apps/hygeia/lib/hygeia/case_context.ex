@@ -142,17 +142,14 @@ defmodule Hygeia.CaseContext do
       [%Person{}, ...]
 
   """
-  @spec list_people :: [Person.t()]
-  def list_people, do: Repo.all(Person)
+  @spec list_people(limit :: pos_integer()) :: [Person.t()]
+  def list_people(limit \\ 20), do: Repo.all(from(person in Person, limit: ^limit))
 
   @spec list_people_by_ids(ids :: [String.t()]) :: [Person.t()]
   def list_people_by_ids(ids), do: Repo.all(from(person in Person, where: person.uuid in ^ids))
 
   @spec list_people_query :: Ecto.Queryable.t()
   def list_people_query, do: Person
-
-  @spec list_people(tenant :: Tenant.t()) :: [Person.t()]
-  def list_people(tenant), do: tenant |> Ecto.assoc(:people) |> Repo.all()
 
   @spec find_duplicates(
           search :: [
@@ -388,8 +385,8 @@ defmodule Hygeia.CaseContext do
       [%Case{}, ...]
 
   """
-  @spec list_cases :: [Case.t()]
-  def list_cases, do: Repo.all(list_cases_query())
+  @spec list_cases(limit :: pos_integer()) :: [Case.t()]
+  def list_cases(limit \\ 20), do: Repo.all(from(c in list_cases_query(), limit: ^limit))
 
   @spec list_cases_query :: Ecto.Queryable.t()
   def list_cases_query, do: Case

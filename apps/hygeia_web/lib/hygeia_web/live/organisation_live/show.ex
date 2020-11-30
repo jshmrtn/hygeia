@@ -3,7 +3,6 @@ defmodule HygeiaWeb.OrganisationLive.Show do
 
   use HygeiaWeb, :surface_view
 
-  alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
@@ -183,7 +182,6 @@ defmodule HygeiaWeb.OrganisationLive.Show do
     |> assign(
       organisation: organisation,
       changeset: changeset,
-      people: CaseContext.list_people(),
       versions: PaperTrail.get_versions(organisation)
     )
     |> maybe_block_navigation()
