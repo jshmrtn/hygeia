@@ -237,7 +237,7 @@
           options: %{
             title: %{
               display: true,
-              text: gettext("People in Quarantine")
+              text: gettext("Quarantine End Reasons")
             },
             scales: %{
               xAxes: [

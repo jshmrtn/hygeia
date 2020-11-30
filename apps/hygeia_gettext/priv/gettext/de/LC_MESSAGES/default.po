@@ -161,6 +161,7 @@ msgstr "Fall erfolgreich aktualisiert"
 #: lib/hygeia_web/live/statistics_live/statistics.sface:134
 #: lib/hygeia_web/live/statistics_live/statistics.sface:261
 #: lib/hygeia_web/live/statistics_live/statistics.sface:329
+#: lib/hygeia_web/live/statistics_live/statistics.sface:451
 msgid "Cases"
 msgstr "Fälle"
 
@@ -249,12 +250,9 @@ msgstr "Kommentar"
 #: lib/hygeia_web/live/case_live/base_data.sface:88
 #: lib/hygeia_web/live/case_live/index.sface:61
 #: lib/hygeia_web/live/case_live/index.sface:128
+#: lib/hygeia_web/live/statistics_live/statistics.sface:430
 msgid "Complexity"
 msgstr "Komplexität"
-
-#: lib/hygeia_web/live/statistics_live/statistics.sface:402
-msgid "Complexity Chart"
-msgstr "Komplexitätsdiagramm"
 
 #: lib/hygeia_web/live/person_live/base_data.sface:130
 #: lib/hygeia_web/live/person_live/create.sface:56
@@ -337,6 +335,7 @@ msgstr "Erstellt am %{created_at}"
 #: lib/hygeia_web/live/statistics_live/statistics.sface:247
 #: lib/hygeia_web/live/statistics_live/statistics.sface:315
 #: lib/hygeia_web/live/statistics_live/statistics.sface:369
+#: lib/hygeia_web/live/statistics_live/statistics.sface:437
 #: lib/hygeia_web/live/transmission_live/create.sface:80
 #: lib/hygeia_web/live/transmission_live/show.sface:147
 msgid "Date"
@@ -703,7 +702,7 @@ msgstr "Infektionsort bekannt"
 msgid "Infection Place Type"
 msgstr "Infektionsort Typ"
 
-#: lib/hygeia_web/live/statistics_live/statistics.sface:408
+#: lib/hygeia_web/live/statistics_live/statistics.sface:467
 msgid "Infection Place Type Chart"
 msgstr "Infektionsorttypdiagramm"
 
@@ -929,7 +928,7 @@ msgstr "Neue Person"
 #: lib/hygeia_web/live/case_live/index.sface:24
 #: lib/hygeia_web/live/case_live/transmissions.sface:51
 msgid "New Possible Index"
-msgstr "Neuer Möglichex Indexfall"
+msgstr "Neuer Möglicher Indexfall"
 
 #: lib/hygeia_web/live/profession_live/index.sface:11
 msgid "New Profession"
@@ -1123,7 +1122,6 @@ msgid "People in Isolation"
 msgstr "Personen in Isolation"
 
 #: lib/hygeia_web/live/statistics_live/statistics.sface:175
-#: lib/hygeia_web/live/statistics_live/statistics.sface:240
 msgid "People in Quarantine"
 msgstr "Personen in Quarantäne"
 
@@ -1665,7 +1663,7 @@ msgstr "Tracer"
 msgid "Tracing"
 msgstr "Tracing"
 
-#: lib/hygeia_web/live/statistics_live/statistics.sface:415
+#: lib/hygeia_web/live/statistics_live/statistics.sface:474
 msgid "Transmission Country Chart"
 msgstr "Übertragungslanddiagramm"
 
@@ -1877,6 +1875,7 @@ msgstr "Server"
 
 #: lib/hygeia_web/live/statistics_live/statistics.sface:100
 #: lib/hygeia_web/live/statistics_live/statistics.sface:227
+#: lib/hygeia_web/live/statistics_live/statistics.sface:417
 msgid "unknown"
 msgstr "unbekannt"
 
@@ -1888,3 +1887,7 @@ msgstr "Benutzername"
 #: lib/hygeia_web/live/case_live/csv_import.sface:62
 msgid "yyyy-mm-dd"
 msgstr "JJJJ-MM-TT"
+
+#: lib/hygeia_web/live/statistics_live/statistics.sface:240
+msgid "Quarantine End Reasons"
+msgstr "Quarantäne-Endgründe"

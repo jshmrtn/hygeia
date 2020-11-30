@@ -173,7 +173,7 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia_web/live/header.sface:13
 #: lib/hygeia_web/live/statistics_live/statistics.sface:134 lib/hygeia_web/live/statistics_live/statistics.sface:261
-#: lib/hygeia_web/live/statistics_live/statistics.sface:329
+#: lib/hygeia_web/live/statistics_live/statistics.sface:329 lib/hygeia_web/live/statistics_live/statistics.sface:451
 msgid "Cases"
 msgstr ""
 
@@ -275,12 +275,8 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:88
 #: lib/hygeia_web/live/case_live/index.sface:61 lib/hygeia_web/live/case_live/index.sface:128
+#: lib/hygeia_web/live/statistics_live/statistics.sface:430
 msgid "Complexity"
-msgstr ""
-
-#, elixir-format
-#: lib/hygeia_web/live/statistics_live/statistics.sface:402
-msgid "Complexity Chart"
 msgstr ""
 
 #, elixir-format
@@ -375,7 +371,8 @@ msgstr ""
 #: lib/hygeia_web/live/statistics_live/statistics.sface:55 lib/hygeia_web/live/statistics_live/statistics.sface:120
 #: lib/hygeia_web/live/statistics_live/statistics.sface:182 lib/hygeia_web/live/statistics_live/statistics.sface:247
 #: lib/hygeia_web/live/statistics_live/statistics.sface:315 lib/hygeia_web/live/statistics_live/statistics.sface:369
-#: lib/hygeia_web/live/transmission_live/create.sface:80 lib/hygeia_web/live/transmission_live/show.sface:147
+#: lib/hygeia_web/live/statistics_live/statistics.sface:437 lib/hygeia_web/live/transmission_live/create.sface:80
+#: lib/hygeia_web/live/transmission_live/show.sface:147
 msgid "Date"
 msgstr ""
 
@@ -725,7 +722,7 @@ msgstr ""
 msgid "Import is currently running."
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/hygeia_web/live/case_live/index.sface:95
 msgid "Includes Phase Type"
 msgstr ""
@@ -753,7 +750,7 @@ msgid "Infection Place Type"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/statistics_live/statistics.sface:408
+#: lib/hygeia_web/live/statistics_live/statistics.sface:467
 msgid "Infection Place Type Chart"
 msgstr ""
 
@@ -1241,7 +1238,6 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:175
-#: lib/hygeia_web/live/statistics_live/statistics.sface:240
 msgid "People in Quarantine"
 msgstr ""
 
@@ -1852,7 +1848,7 @@ msgid "Tracing"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/statistics_live/statistics.sface:415
+#: lib/hygeia_web/live/statistics_live/statistics.sface:474
 msgid "Transmission Country Chart"
 msgstr ""
 
@@ -2054,7 +2050,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:100
-#: lib/hygeia_web/live/statistics_live/statistics.sface:227
+#: lib/hygeia_web/live/statistics_live/statistics.sface:227 lib/hygeia_web/live/statistics_live/statistics.sface:417
 msgid "unknown"
 msgstr ""
 
@@ -2067,4 +2063,9 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:62
 msgid "yyyy-mm-dd"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/statistics_live/statistics.sface:240
+msgid "Quarantine End Reasons"
 msgstr ""
