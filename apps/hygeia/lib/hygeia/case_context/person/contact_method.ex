@@ -54,6 +54,7 @@ defmodule Hygeia.CaseContext.Case.ContactMethod do
           :fixed_line_or_mobile -> :ok
           :voip -> :ok
           :personal_number -> :ok
+          :uan -> :ok
           :unknown -> :ok
           _other -> {:error, "not a landline number"}
         end)
