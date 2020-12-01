@@ -67,8 +67,9 @@ defmodule HygeiaWeb.MixProject do
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
-      {:surface, "~> 0.1"},
+      {:plug_cowboy, "~> 2.4.1"},
+      # TODO: Make constraint ~> 0.1 as soon as https://github.com/msaraiva/surface/issues/220 is resolved
+      {:surface, "0.1.0"},
       {:ecto_psql_extras, "~> 0.4"},
       {:ueberauth, "~> 0.6", override: true},
       {:jsone, "~> 1.5", override: true},

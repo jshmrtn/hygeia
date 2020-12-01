@@ -99,7 +99,7 @@
 </div>
 
 <p style="margin-bottom: 20mm; margin-top: 5mm;">
-  St. Gallen, <%= Cldr.Date.to_string!(Date.utc_today(), HygeiaCldr) %>
+  St. Gallen, <%= HygeiaCldr.Date.to_string!(Date.utc_today()) %>
 </p>
 
 <h1>Bestätigung zur Isolation</h1>
@@ -109,8 +109,8 @@
 <p class="p-4x-margin">Gestützt auf das Epidemiengesetz (EpG) werden Sie deshalb <strong>einer 10-tägigen Isolation unterstellt</strong> (Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG). Ziel dieser Isolation ist es, die Ausbreitung des Coronavirus einzudämmen.</p>
 
 <p class="p-4x-margin">
-  Ihre Isolation dauert somit vom <%= Cldr.Date.to_string!(@phase.start, HygeiaCldr) %> bis
-  <%= Cldr.Date.to_string!(@phase.end, HygeiaCldr) %>.
+  Ihre Isolation dauert somit vom <%= HygeiaCldr.Date.to_string!(@phase.start) %> bis
+  <%= HygeiaCldr.Date.to_string!(@phase.end) %>.
 </p>
 
 <p class="p-4x-margin">

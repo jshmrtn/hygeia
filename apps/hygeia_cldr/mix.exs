@@ -42,7 +42,8 @@ defmodule HygeiaCldr.MixProject do
       {:ex_cldr, "~> 2.17"},
       {:ex_cldr_numbers, "~> 2.15"},
       {:ex_cldr_lists, "~> 2.6"},
-      {:ex_cldr_dates_times, "~> 2.5"},
+      # Change to ~> 2.6 as soon as https://github.com/elixir-cldr/cldr_dates_times/issues/18 is resolved
+      {:ex_cldr_dates_times, "2.6.0"},
       {:ex_cldr_calendars, "~> 1.10"},
       {:ex_cldr_units, "~> 3.2"},
       {:ex_cldr_languages, "~> 0.2.1"},

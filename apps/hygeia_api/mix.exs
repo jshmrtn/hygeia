@@ -54,10 +54,9 @@ defmodule HygeiaApi.MixProject do
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
+      {:plug_cowboy, "~> 2.4"},
       {:cors_plug, "~> 2.0"},
-      # TODO: Use released version when https://github.com/absinthe-graphql/absinthe/pull/988 is released
-      {:absinthe, github: "absinthe-graphql/absinthe", branch: "master", override: true},
+      {:absinthe, "~> 1.5"},
       {:absinthe_phoenix, "~> 2.0"},
       {:absinthe_relay, "~> 1.5"},
       {:absinthe_error_payload, "1.0.1"},

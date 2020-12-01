@@ -68,7 +68,7 @@ defmodule Hygeia.MixProject do
       {:paginator, "~> 1.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
       {:bamboo, "~> 1.6"},
-      {:bamboo_smtp, "~> 3.0.0"},
+      {:bamboo_smtp, "~> 3.0"},
       {:hygeia_gettext, in_umbrella: true},
       {:hygeia_cldr, in_umbrella: true},
       {:csv, "~> 2.4"},

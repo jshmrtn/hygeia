@@ -99,7 +99,7 @@
 </div>
 
 <p style="margin-bottom: 20mm; margin-top: 5mm;">
-  St. Gallen, <%= Cldr.Date.to_string!(Date.utc_today(), HygeiaCldr) %>
+  St. Gallen, <%= HygeiaCldr.Date.to_string!(Date.utc_today()) %>
 </p>
 
 <h1>Anordnung zur Quarantäne</h1>
