@@ -169,8 +169,28 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       changeset
       |> Ecto.Changeset.get_field(:date, nil)
       |> case do
-        nil -> {nil, nil}
-        %Date{} = start -> {start, Date.add(start, 9)}
+        nil ->
+          {nil, nil}
+
+        %Date{} = contact_date ->
+          start_date = Date.add(contact_date, 1)
+          end_date = Date.add(start_date, 9)
+
+          start_date =
+            if Date.compare(start_date, Date.utc_today()) == :lt do
+              Date.utc_today()
+            else
+              start_date
+            end
+
+          end_date =
+            if Date.compare(end_date, Date.utc_today()) == :lt do
+              Date.utc_today()
+            else
+              end_date
+            end
+
+          {start_date, end_date}
       end
 
     {:ok, case} =
