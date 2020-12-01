@@ -98,20 +98,59 @@
       </HygeiaWeb.Dropdown>
     </div>
 
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>
-            {{ gettext("First name") }}
+            <HygeiaWeb.Sort
+              params={{ ["first_name", "last_name"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :first_name} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("First name") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
           </th>
           <th>
-            {{ gettext("Last name") }}
+            <HygeiaWeb.Sort
+              params={{ ["last_name", "first_name"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :last_name} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("Last name") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
           </th>
           <th>
-            {{ gettext("Birth Date") }}
+            <HygeiaWeb.Sort
+              params={{ ["birth_date"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :birth_date} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("Birth date") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
           </th>
           <th>
             {{ gettext("Residency Address") }}
+          </th>
+          <th>
+            <HygeiaWeb.Sort
+              params={{ ["inserted_at"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :inserted_at} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("Inserted At") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
           </th>
           <th></th>
         </tr>
@@ -127,6 +166,14 @@
             end
           }}</td>
           <td>{{ format_address(person.address) }}</td>
+          <td>
+            {{
+              HygeiaCldr.DateTime.to_string!(
+                DateTime.from_naive!(person.inserted_at, "Europe/Zurich"),
+                format: :short
+              )
+            }}
+          </td>
           <td>
             <div class="d-flex justify-content-end w-100">
               <LiveRedirect
@@ -163,17 +210,17 @@
         <tr :if={{ length(@people) == 0 }}>
           <td colspan="5">
             <div class="d-flex justify-content-center py-3">
-              {{ "No data to display" |> gettext }}
+              {{ gettext("No data to display") }}
             </div>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <Hygeia.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }} id="pagination">
-        <LivePatch class="page-link" to={{ page_url(@socket, [{cursor_direction, cursor}], @filters) }}>
+    <HygeiaWeb.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }} id="pagination">
+        <LivePatch class="page-link" to={{ page_url(@socket, [{cursor_direction, cursor}], @filters, @sort) }}>
           {{ text }}
         </LivePatch>
-    </Hygeia.Pagination>
+    </HygeiaWeb.Pagination>
   </Context>
 </div>

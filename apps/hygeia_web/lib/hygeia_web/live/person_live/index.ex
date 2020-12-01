@@ -48,9 +48,21 @@ defmodule HygeiaWeb.PersonLive.Index do
     filter = params["filter"] || %{}
 
     socket =
-      socket
-      |> assign(pagination_params: pagination_params, filters: filter)
-      |> list_people()
+      case params["sort"] do
+        nil ->
+          push_patch(socket,
+            to:
+              page_url(socket, pagination_params, filter, [
+                "asc_last_name",
+                "asc_first_name"
+              ])
+          )
+
+        sort ->
+          socket
+          |> assign(pagination_params: pagination_params, filters: filter, sort: sort)
+          |> list_people()
+      end
 
     super(params, uri, socket)
   end
@@ -59,7 +71,13 @@ defmodule HygeiaWeb.PersonLive.Index do
   def handle_event("filter", params, socket) do
     {:noreply,
      push_patch(socket,
-       to: page_url(socket, socket.assigns.pagination_params, params["filter"] || %{})
+       to:
+         page_url(
+           socket,
+           socket.assigns.pagination_params,
+           params["filter"] || %{},
+           socket.assigns.sort
+         )
      )}
   end
 
@@ -88,6 +106,8 @@ defmodule HygeiaWeb.PersonLive.Index do
   }
 
   defp list_people(socket) do
+    {cursor_fields, query} = sort_params(socket)
+
     %Paginator.Page{entries: entries, metadata: metadata} =
       socket.assigns.filters
       |> Enum.map(fn {key, value} ->
@@ -97,7 +117,7 @@ defmodule HygeiaWeb.PersonLive.Index do
       |> Enum.reject(&match?({_key, nil}, &1))
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
-      |> Enum.reduce(CaseContext.list_people_query(), fn
+      |> Enum.reduce(query, fn
         {_key, value}, query when value in ["", nil] ->
           query
 
@@ -114,7 +134,7 @@ defmodule HygeiaWeb.PersonLive.Index do
           where(query, [person], field(person, ^key) == ^value)
       end)
       |> Repo.paginate(
-        Keyword.merge(socket.assigns.pagination_params, cursor_fields: [inserted_at: :asc])
+        Keyword.merge(socket.assigns.pagination_params, cursor_fields: cursor_fields)
       )
 
     entries =
@@ -130,11 +150,46 @@ defmodule HygeiaWeb.PersonLive.Index do
     )
   end
 
-  defp page_url(socket, pagination_params, filters)
+  @sort_mapping %{
+    "last_name" => :last_name,
+    "first_name" => :first_name,
+    "inserted_at" => :inserted_at,
+    "birth_date" => :birth_date
+  }
+  @sort_allowed_fields Map.keys(@sort_mapping)
 
-  defp page_url(socket, [], filters),
-    do: Routes.person_index_path(socket, :index, filter: filters || %{})
+  defp sort_params(socket) do
+    {cursor_fields, query} =
+      socket.assigns.sort
+      |> Enum.map(fn
+        "asc_" <> field when field in @sort_allowed_fields ->
+          {@sort_mapping[field], :asc}
 
-  defp page_url(socket, [{cursor_direction, cursor}], filters),
-    do: Routes.person_index_path(socket, :index, cursor_direction, cursor, filter: filters || %{})
+        "desc_" <> field when field in @sort_allowed_fields ->
+          {@sort_mapping[field], :desc}
+      end)
+      |> Enum.reduce(
+        {[], CaseContext.list_people_query()},
+        fn {field, direction} = cursor, {cursor_params, query} ->
+          {[cursor | cursor_params],
+           from(person in query, order_by: [{^direction, field(person, ^field)}])}
+        end
+      )
+
+    cursor_fields = Enum.reverse(cursor_fields)
+
+    {cursor_fields, query}
+  end
+
+  defp page_url(socket, pagination_params, filters, sort)
+
+  defp page_url(socket, [], filters, sort),
+    do: Routes.person_index_path(socket, :index, filter: filters || %{}, sort: sort || %{})
+
+  defp page_url(socket, [{cursor_direction, cursor}], filters, sort),
+    do:
+      Routes.person_index_path(socket, :index, cursor_direction, cursor,
+        filter: filters || %{},
+        sort: sort || %{}
+      )
 end

@@ -1,4 +1,4 @@
-defmodule Hygeia.Pagination do
+defmodule HygeiaWeb.Pagination do
   @moduledoc """
   Pagination Component
   """

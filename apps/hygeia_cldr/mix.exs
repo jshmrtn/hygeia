@@ -46,7 +46,8 @@ defmodule HygeiaCldr.MixProject do
       {:ex_cldr_calendars, "~> 1.10"},
       {:ex_cldr_units, "~> 3.2"},
       {:ex_cldr_languages, "~> 0.2.1"},
-      {:hygeia_gettext, in_umbrella: true}
+      {:hygeia_gettext, in_umbrella: true},
+      {:tzdata, "~> 1.0"}
     ]
   end
 end

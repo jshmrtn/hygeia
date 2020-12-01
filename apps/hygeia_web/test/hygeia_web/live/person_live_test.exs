@@ -31,14 +31,16 @@ defmodule HygeiaWeb.PersonLiveTest do
     setup [:create_person]
 
     test "lists all people", %{conn: conn, person: person} do
-      {:ok, _index_live, html} = live(conn, Routes.person_index_path(conn, :index))
+      {:ok, _index_live, html} =
+        live(conn, Routes.person_index_path(conn, :index, sort: ["asc_inserted_at"]))
 
       assert html =~ "Listing People"
       assert html =~ person.first_name
     end
 
     test "deletes person in listing", %{conn: conn, person: person} do
-      {:ok, index_live, _html} = live(conn, Routes.person_index_path(conn, :index))
+      {:ok, index_live, _html} =
+        live(conn, Routes.person_index_path(conn, :index, sort: ["asc_inserted_at"]))
 
       assert index_live |> element("#person-#{person.uuid} a[title=Delete]") |> render_click()
       refute has_element?(index_live, "#person-#{person.uuid}")

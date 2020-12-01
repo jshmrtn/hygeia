@@ -106,10 +106,10 @@
       </tbody>
     </table>
 
-    <Hygeia.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }} id="pagination">
+    <HygeiaWeb.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }} id="pagination">
         <LiveRedirect class="page-link" to={{ Routes.organisation_index_path(@socket, :index, cursor_direction, cursor) }}>
           {{ text }}
         </LiveRedirect>
-    </Hygeia.Pagination>
+    </HygeiaWeb.Pagination>
   </Context>
 </div>

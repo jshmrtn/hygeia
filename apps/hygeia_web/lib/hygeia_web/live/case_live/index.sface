@@ -118,41 +118,120 @@
       </HygeiaWeb.Dropdown>
     </div>
 
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>
-            {{ gettext("Person") }}
+            <HygeiaWeb.Sort
+              params={{ ["person_last_name", "person_first_name"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :person} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("Person") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
           </th>
           <th>
-            {{ gettext("Complexity") }}
+            <HygeiaWeb.Sort
+              params={{ ["complexity"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :complexity} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("Complexity") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
           </th>
           <th>
-            {{ gettext("Status") }}
+            <HygeiaWeb.Sort
+              params={{ ["status"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :status} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("Status") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
           </th>
           <th>
-            {{ gettext("Latest Phase") }}
+            <HygeiaWeb.Sort
+              params={{ ["phases"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :phases} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("Phases") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
           </th>
           <th>
-            {{ gettext("Tracer") }}
+            <HygeiaWeb.Sort
+              params={{ ["tracer"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :tracer} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("Tracer") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
           </th>
           <th>
-            {{ gettext("Supervisor") }}
+            <HygeiaWeb.Sort
+              params={{ ["supervisor"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :supervisor} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("Supervisor") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
+          </th>
+          <th>
+            <HygeiaWeb.Sort
+              params={{ ["inserted_at"] }}
+              current_params={{ @sort }}
+              id={{ {:sort, :inserted_at} }}
+              :let={{ sort_params: sort_params }}
+            >
+              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+                {{ gettext("Inserted At") }}
+              </LivePatch>
+            </HygeiaWeb.Sort>
           </th>
           <th></th>
         </tr>
       </thead>
       <tbody id="cases">
         <tr :for={{ case <- @cases }} id="case-{{ case.uuid }}">
-          <td>{{ case.person.first_name }} {{ case.person.last_name }}</td>
-          <td>{{
-            case case.complexity do
-              nil -> nil
-              other -> case_complexity_translation(other)
-            end
-          }}</td>
-          <td>{{ case.status |> case_status_translation }}</td>
-          <td>{{ case.phases |> List.last() |> case_phase_type_translation }}</td>
+          <td>
+            {{ case.person.first_name }}
+            {{ case.person.last_name }}
+          </td>
+          <td>
+            {{
+              case case.complexity do
+                nil -> nil
+                other -> case_complexity_translation(other)
+              end
+            }}
+          </td>
+          <td>
+            {{ case_status_translation(case.status) }}
+          </td>
+          <td>
+            {{
+              case.phases
+              |> Enum.map(&case_phase_type_translation/1)
+              |> HygeiaCldr.List.to_string!(format: :unit)
+            }}
+          </td>
           <td>
             <Link
               to={{ Routes.user_show_path(@socket, :show, case.tracer) }}
@@ -168,6 +247,14 @@
             >
               {{ case.supervisor.display_name }}
             </Link>
+          </td>
+          <td>
+            {{
+              HygeiaCldr.DateTime.to_string!(
+                DateTime.from_naive!(case.inserted_at, "Europe/Zurich"),
+                format: :short
+              )
+            }}
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">
@@ -213,10 +300,10 @@
       </tbody>
     </table>
 
-    <Hygeia.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }} id="pagination">
-        <LivePatch class="page-link" to={{ page_url(@socket, [{cursor_direction, cursor}], @filters) }}>
+    <HygeiaWeb.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }} id="pagination">
+        <LivePatch class="page-link" to={{ page_url(@socket, [{cursor_direction, cursor}], @filters, @sort) }}>
           {{ text }}
         </LivePatch>
-    </Hygeia.Pagination>
+    </HygeiaWeb.Pagination>
   </Context>
 </div>

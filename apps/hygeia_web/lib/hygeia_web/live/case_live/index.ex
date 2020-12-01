@@ -48,26 +48,35 @@ defmodule HygeiaWeb.CaseLive.Index do
       end
 
     socket =
-      case params["filter"] do
-        nil ->
+      case {params["filter"], params["sort"]} do
+        {nil, sort} ->
           push_patch(socket,
             to:
-              page_url(socket, pagination_params, %{
-                "status" => Enum.map(Case.Status.__enum_map__() -- [:done], &Atom.to_string/1),
-                "tracer_uuid" => [get_auth(socket).uuid]
-              })
+              page_url(
+                socket,
+                pagination_params,
+                %{
+                  "status" => Enum.map(Case.Status.__enum_map__() -- [:done], &Atom.to_string/1),
+                  "tracer_uuid" => [get_auth(socket).uuid]
+                },
+                sort
+              )
           )
 
-        %{} ->
+        {filter, nil} ->
+          push_patch(socket,
+            to:
+              page_url(socket, pagination_params, filter, [
+                "asc_person_last_name",
+                "asc_person_first_name"
+              ])
+          )
+
+        {filter, sort} ->
           socket
+          |> assign(pagination_params: pagination_params, filters: filter, sort: sort)
+          |> list_cases()
       end
-
-    filter = params["filter"] || %{}
-
-    socket =
-      socket
-      |> assign(pagination_params: pagination_params, filters: filter)
-      |> list_cases()
 
     super(params, uri, socket)
   end
@@ -76,7 +85,8 @@ defmodule HygeiaWeb.CaseLive.Index do
   def handle_event("filter", params, socket) do
     {:noreply,
      push_patch(socket,
-       to: page_url(socket, socket.assigns.pagination_params, params["filter"] || %{})
+       to:
+         page_url(socket, socket.assigns.pagination_params, params["filter"], socket.assigns.sort)
      )}
   end
 
@@ -106,6 +116,8 @@ defmodule HygeiaWeb.CaseLive.Index do
   }
 
   defp list_cases(socket) do
+    {cursor_fields, query} = sort_params(socket)
+
     %Paginator.Page{entries: entries, metadata: metadata} =
       socket.assigns.filters
       |> Enum.map(fn {key, value} ->
@@ -115,7 +127,7 @@ defmodule HygeiaWeb.CaseLive.Index do
       |> Enum.reject(&match?({_key, nil}, &1))
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
-      |> Enum.reduce(CaseContext.list_cases_query(), fn
+      |> Enum.reduce(query, fn
         {_key, value}, query when value in ["", nil] ->
           query
 
@@ -127,7 +139,7 @@ defmodule HygeiaWeb.CaseLive.Index do
           where(query, [case], fragment("? <@ ANY (?)", ^phase_match, case.phases))
       end)
       |> Repo.paginate(
-        Keyword.merge(socket.assigns.pagination_params, cursor_fields: [inserted_at: :asc])
+        Keyword.merge(socket.assigns.pagination_params, cursor_fields: cursor_fields)
       )
 
     entries =
@@ -143,11 +155,79 @@ defmodule HygeiaWeb.CaseLive.Index do
     )
   end
 
-  defp page_url(socket, pagination_params, filters)
+  defp base_query,
+    do:
+      from(case in CaseContext.list_cases_query(),
+        join: person in assoc(case, :person),
+        as: :person,
+        preload: [person: person],
+        left_join: tracer in assoc(case, :tracer),
+        as: :tracer,
+        preload: [tracer: tracer],
+        left_join: supervisor in assoc(case, :supervisor),
+        as: :supervisor,
+        preload: [supervisor: supervisor],
+        left_join: phase in fragment("UNNEST(?)", case.phases),
+        as: :phase
+      )
 
-  defp page_url(socket, [], filters),
-    do: Routes.case_index_path(socket, :index, filter: filters || %{})
+  @sort_mapping %{
+    "person_last_name" => {:person, :last_name},
+    "person_first_name" => {:person, :first_name},
+    "inserted_at" => :inserted_at,
+    "complexity" => :complexity,
+    "status" => :status,
+    "tracer" => {:tracer, :display_name},
+    "supervisor" => {:supervisor, :display_name},
+    "phases" => {:phase, :type}
+  }
+  @sort_allowed_fields Map.keys(@sort_mapping)
 
-  defp page_url(socket, [{cursor_direction, cursor}], filters),
-    do: Routes.case_index_path(socket, :index, cursor_direction, cursor, filter: filters || %{})
+  defp sort_params(socket) do
+    {cursor_fields, query} =
+      socket.assigns.sort
+      |> Enum.map(fn
+        "asc_" <> field when field in @sort_allowed_fields ->
+          {@sort_mapping[field], :asc}
+
+        "desc_" <> field when field in @sort_allowed_fields ->
+          {@sort_mapping[field], :desc}
+      end)
+      |> Enum.reduce(
+        {[], base_query()},
+        fn
+          {{:phase, :type}, direction} = cursor, {cursor_params, query} ->
+            {[cursor | cursor_params],
+             from([case, phase: phase] in query,
+               order_by: [{^direction, fragment("?->'details'->>'type'", phase)}]
+             )}
+
+          {{relation_name, field}, direction} = cursor, {cursor_params, query} ->
+            {[cursor | cursor_params],
+             from([case, {^relation_name, relation}] in query,
+               order_by: [{^direction, field(relation, ^field)}]
+             )}
+
+          {field, direction} = cursor, {cursor_params, query} ->
+            {[cursor | cursor_params],
+             from(case in query, order_by: [{^direction, field(case, ^field)}])}
+        end
+      )
+
+    cursor_fields = Enum.reverse(cursor_fields)
+
+    {cursor_fields, query}
+  end
+
+  defp page_url(socket, pagination_params, filters, sort)
+
+  defp page_url(socket, [], filters, sort),
+    do: Routes.case_index_path(socket, :index, filter: filters || %{}, sort: sort || %{})
+
+  defp page_url(socket, [{cursor_direction, cursor}], filters, sort),
+    do:
+      Routes.case_index_path(socket, :index, cursor_direction, cursor,
+        filter: filters || %{},
+        sort: sort || %{}
+      )
 end
