@@ -200,7 +200,11 @@ defmodule Hygeia.CaseContext.Case do
         do: false
 
     def authorized?(_case, action, %User{roles: roles}, _meta)
-        when action in [:list, :create, :details, :update, :delete],
+        when action in [:list, :create, :details, :update],
         do: :tracer in roles or :supervisor in roles or :admin in roles
+
+    def authorized?(_case, action, %User{roles: roles}, _meta)
+        when action in [:delete],
+        do: :supervisor in roles or :admin in roles
   end
 end

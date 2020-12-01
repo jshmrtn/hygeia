@@ -75,6 +75,22 @@ defmodule Hygeia.AuthorizationTest do
       end
     end
 
+    test "should deny person delete for tracer" do
+      person = person_fixture()
+      user = user_fixture(roles: [:tracer])
+
+      refute authorized?(person, :delete, user)
+    end
+
+    for role <- [:supervisor, :admin] do
+      test "should allow person delete for #{role}" do
+        person = person_fixture()
+        user = user_fixture(roles: [unquote(role)])
+
+        assert authorized?(person, :delete, user)
+      end
+    end
+
     for role <- [:tracer, :supervisor, :admin] do
       for action <- [:list, :create] do
         test "should allow person #{action} for #{role}" do
@@ -84,7 +100,7 @@ defmodule Hygeia.AuthorizationTest do
         end
       end
 
-      for action <- [:details, :update, :delete] do
+      for action <- [:details, :update] do
         test "should allow person #{action} for #{role}" do
           person = person_fixture()
           user = user_fixture(roles: [unquote(role)])
@@ -113,6 +129,22 @@ defmodule Hygeia.AuthorizationTest do
       end
     end
 
+    test "should deny case delete for tracer" do
+      case = case_fixture()
+      user = user_fixture(roles: [:tracer])
+
+      refute authorized?(case, :delete, user)
+    end
+
+    for role <- [:supervisor, :admin] do
+      test "should allow case delete for #{role}" do
+        case = case_fixture()
+        user = user_fixture(roles: [unquote(role)])
+
+        assert authorized?(case, :delete, user)
+      end
+    end
+
     for role <- [:tracer, :supervisor, :admin] do
       for action <- [:list, :create] do
         test "should allow case #{action} for #{role}" do
@@ -122,7 +154,7 @@ defmodule Hygeia.AuthorizationTest do
         end
       end
 
-      for action <- [:details, :update, :delete] do
+      for action <- [:details, :update] do
         test "should allow case #{action} for #{role}" do
           case = case_fixture()
           user = user_fixture(roles: [unquote(role)])
@@ -156,8 +188,38 @@ defmodule Hygeia.AuthorizationTest do
       refute authorized?(Hygeia.CaseContext.Transmission, :create, user)
     end
 
+    test "should deny transmission delete for tracer" do
+      index_case = case_fixture()
+
+      transmission =
+        transmission_fixture(%{
+          propagator_internal: true,
+          propagator_case_uuid: index_case.uuid
+        })
+
+      user = user_fixture(roles: [:tracer])
+
+      refute authorized?(transmission, :delete, user)
+    end
+
+    for role <- [:supervisor, :admin] do
+      test "should allow transmission delete for #{role}" do
+        index_case = case_fixture()
+
+        transmission =
+          transmission_fixture(%{
+            propagator_internal: true,
+            propagator_case_uuid: index_case.uuid
+          })
+
+        user = user_fixture(roles: [unquote(role)])
+
+        assert authorized?(transmission, :delete, user)
+      end
+    end
+
     for role <- [:tracer, :supervisor, :admin] do
-      for action <- [:details, :update, :delete] do
+      for action <- [:details, :update] do
         test "should allow transmission #{action} for #{role}" do
           index_case = case_fixture()
 
