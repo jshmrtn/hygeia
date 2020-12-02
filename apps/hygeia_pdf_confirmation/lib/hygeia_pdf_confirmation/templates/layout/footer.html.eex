@@ -1,4 +1,4 @@
-<div class="pull-right">
-  <small class="page"></small> / <small class="topage"></small>
+<div class="pull-right" style="font-size: 8pt;">
+  <span class="page"></span> / <span class="topage"></span>
 </div>
 <small style="font-size: 8pt;"><%= @document_name %></small>

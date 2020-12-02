@@ -1,0 +1,83 @@
+body {
+  font-size: 13pt;
+}
+* {
+  font-family: Arial;
+}
+
+hr {
+  height: 100px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  display: block;
+  color: #000;
+  font-size: 14pt;
+  line-height: 1.2;
+}
+
+.very-small {
+  font-size: 8pt;
+}
+
+hr {
+  border-color: #000;
+  margin-top: 0;
+  width: 50%;
+  margin-right: 50%;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 14pt;
+}
+
+h2 {
+  font-size: 14pt;
+  text-decoration: underline;
+}
+
+p {
+  font-size: 14pt;
+}
+
+ul {
+  list-style-type: none;
+  font-size: 14pt;
+}
+
+ul > li {
+  margin-left: 6mm;
+  position: relative;
+}
+
+ul > li:before {
+  content: "-";
+  position: absolute;
+  left: -7mm;
+}
+
+.p-2x-margin {
+  margin-bottom: 3mm;
+}
+
+.p-4x-margin {
+  margin-bottom: 6mm;
+}
+
+.additional-information {
+  line-height: 1.5;
+}
+
+.additional-information h2,
+.additional-information ol > li {
+  color: #e46c0a;
+  text-decoration: none;
+}
+
+.additional-information ul > li {
+  margin-left: 0mm;
+  color: #000;
+}
+
