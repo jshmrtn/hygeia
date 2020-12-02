@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- Using Bootstrap v3 because wkhtmltopdf currently does not support flexbox -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+      <%=
+        :hygeia_pdf_confirmation
+        |> Application.app_dir("priv/assets/style.css")
+        |> File.read!()
+        |> raw()
+      %>
+    </style>
+    <script>
+      <%=
+        :hygeia_pdf_confirmation
+        |> Application.app_dir("priv/assets/page.js")
+        |> File.read!()
+        |> raw()
+      %>
+    </script>
+  </head>
+  <body onload="subst()">
+    <%= @inner_content %>
+  </body>
+</html>

@@ -12,9 +12,14 @@ defmodule HygeiaPdfConfirmation.Quarantine do
 
   @spec render_pdf(case :: Case.t(), phase :: Phase.t()) :: binary
   def render_pdf(%Case{} = case, %Phase{} = phase) do
-    case = Repo.preload(case, person: [])
+    case = Repo.preload(case, person: [], tenant: [])
 
-    HygeiaPdfConfirmation.render_pdf(QuarantineView, "confirmation.html",
+    case.tenant.template_variation
+    |> case do
+      nil -> hd(HygeiaPdfConfirmation.available_variations())
+      other -> other
+    end
+    |> HygeiaPdfConfirmation.render_pdf(QuarantineView, "confirmation.html",
       case: case,
       phase: phase,
       document_name: gettext("Quarantine Order")

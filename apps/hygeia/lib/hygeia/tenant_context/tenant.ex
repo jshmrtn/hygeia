@@ -5,10 +5,14 @@ defmodule Hygeia.TenantContext.Tenant do
 
   use Hygeia, :model
 
+  import EctoEnum
+
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.TenantContext.Tenant.Smtp
   alias Hygeia.TenantContext.Websms
+
+  defenum TemplateVariation, :template_variation, [:sg, :ar, :ai]
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -20,9 +24,10 @@ defmodule Hygeia.TenantContext.Tenant do
           outgoing_sms_configuration: Websms.t() | nil,
           people: Ecto.Schema.has_many(Person.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
+          override_url: String.t() | nil,
+          template_variation: TemplateVariation.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil,
-          override_url: String.t() | nil
+          updated_at: NaiveDateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -33,15 +38,17 @@ defmodule Hygeia.TenantContext.Tenant do
           outgoing_sms_configuration: Websms.t() | nil,
           people: Ecto.Schema.has_many(Person.t()),
           cases: Ecto.Schema.has_many(Case.t()),
+          override_url: String.t() | nil,
+          template_variation: TemplateVariation.t() | nil,
           inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t(),
-          override_url: String.t() | nil
+          updated_at: NaiveDateTime.t()
         }
 
   schema "tenants" do
     field :name, :string
     field :public_statistics, :boolean, default: false
     field :override_url, :string
+    field :template_variation, TemplateVariation
 
     has_many :people, Person
     has_many :cases, Case
@@ -66,6 +73,14 @@ defmodule Hygeia.TenantContext.Tenant do
   @doc false
   @spec changeset(tenant :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(tenant, attrs) do
+    # Mapping "" to nil because of overridden empty_values
+    attrs =
+      case attrs do
+        %{template_variation: ""} -> Map.put(attrs, :template_variation, nil)
+        %{"template_variation" => ""} -> Map.put(attrs, "template_variation", nil)
+        _other -> attrs
+      end
+
     tenant
     |> cast(
       attrs,
@@ -74,7 +89,8 @@ defmodule Hygeia.TenantContext.Tenant do
         :public_statistics,
         :outgoing_mail_configuration_type,
         :outgoing_sms_configuration_type,
-        :override_url
+        :override_url,
+        :template_variation
       ],
       empty_values: []
     )

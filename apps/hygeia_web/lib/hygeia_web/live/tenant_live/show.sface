@@ -193,6 +193,21 @@
               </InputContext>
             </div>
           </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">{{ gettext("Confirmation PDF Template") }}</h4>
+              <Field name={{ :template_variation }} class="form-group">
+                <Label>{{ gettext("Variation") }}</Label>
+                <Select
+                  class="form-control"
+                  opts={{ prompt: gettext("Choose Variation"), disabled: @live_action == :show }}
+                  options={{ Tenant.TemplateVariation.__enum_map__() }}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+          </div>
         </div>
       </HygeiaWeb.Lock>
     </Form>

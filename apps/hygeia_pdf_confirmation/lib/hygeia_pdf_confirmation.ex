@@ -1,18 +1,29 @@
 defmodule HygeiaPdfConfirmation do
-  @moduledoc false
+  @moduledoc """
+  PDF Generation
+  """
 
   import Phoenix.View, only: [render_layout: 4]
 
   alias HygeiaPdfConfirmation.LayoutView
 
-  @spec render_pdf(view :: atom, template :: String.t(), assigns :: list) :: binary
-  def render_pdf(view, template, assigns) do
+  @available_variations Hygeia.TenantContext.Tenant.TemplateVariation.__enum_map__()
+
+  @type variation :: atom
+
+  @spec available_variations() :: [variation()]
+  def available_variations, do: @available_variations
+
+  @doc false
+  @spec render_pdf(variation :: variation, view :: atom, template :: String.t(), assigns :: list) ::
+          binary
+  def render_pdf(variation, view, template, assigns) when variation in @available_variations do
     {:ok, header_html_path} = Briefly.create(extname: ".html")
 
     header_html =
       LayoutView
-      |> render_layout "pdf.html", assigns do
-        LayoutView.render("header.html", assigns)
+      |> render_layout "#{variation}_pdf.html", assigns do
+        LayoutView.render("#{variation}_header.html", assigns)
       end
       |> Phoenix.HTML.safe_to_string()
 
@@ -22,16 +33,16 @@ defmodule HygeiaPdfConfirmation do
 
     footer_html =
       LayoutView
-      |> render_layout "pdf.html", assigns do
-        LayoutView.render("footer.html", assigns)
+      |> render_layout "#{variation}_pdf.html", assigns do
+        LayoutView.render("#{variation}_footer.html", assigns)
       end
       |> Phoenix.HTML.safe_to_string()
 
     File.write!(footer_html_path, footer_html)
 
     LayoutView
-    |> render_layout "pdf.html", assigns do
-      view.render(template, assigns)
+    |> render_layout "#{variation}_pdf.html", assigns do
+      view.render("#{variation}_#{template}", assigns)
     end
     |> Phoenix.HTML.safe_to_string()
     |> PdfGenerator.generate_binary!(
