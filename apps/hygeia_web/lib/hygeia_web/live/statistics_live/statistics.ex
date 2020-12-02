@@ -86,7 +86,9 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
       active_hospitalization_cases_per_day:
         StatisticsContext.list_active_hospitalization_cases_per_day(tenant, from, to),
       active_complexity_cases_per_day:
-        StatisticsContext.list_active_complexity_cases_per_day(tenant, from, to)
+        StatisticsContext.list_active_complexity_cases_per_day(tenant, from, to),
+      active_infection_place_cases_per_day:
+        StatisticsContext.list_active_infection_place_cases_per_day(tenant, from, to)
     )
   end
 end

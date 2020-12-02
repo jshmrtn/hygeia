@@ -7,6 +7,7 @@ defmodule Hygeia.StatisticsContextTest do
   alias Hygeia.StatisticsContext
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
   alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
+  alias Hygeia.StatisticsContext.ActiveInfectionPlaceCasesPerDay
   alias Hygeia.StatisticsContext.ActiveIsolationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveQuarantineCasesPerDay
   alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
@@ -759,6 +760,107 @@ defmodule Hygeia.StatisticsContextTest do
       assert length(entries) == 15
 
       assert Enum.all?(entries, &match?(%ActiveComplexityCasesPerDay{count: 0}, &1))
+    end
+  end
+
+  describe "active_infection_place_cases_per_day" do
+    test "counts infection place other cases from the end date" do
+      infection_place_other = infection_place_type_fixture(%{name: "anderer Ort"})
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      index_case =
+        case_fixture(person, user, user, %{
+          phases: [
+            %{
+              details: %{
+                __type__: :index,
+                end_reason: :healed
+              },
+              start: ~D[2020-10-12],
+              end: ~D[2020-10-12]
+            }
+          ]
+        })
+
+      transmission_fixture(%{
+        recipient_internal: true,
+        recipient_case_uuid: index_case.uuid,
+        infection_place: %{
+          known: true,
+          type_uuid: infection_place_other.uuid
+        }
+      })
+
+      execute_materialized_view_refresh(:statistics_active_infection_place_cases_per_day)
+
+      assert entries =
+               StatisticsContext.list_active_infection_place_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-13]
+               )
+
+      assert length(entries) == 6
+
+      assert Enum.all?(
+               entries,
+               &(match?(%ActiveInfectionPlaceCasesPerDay{count: 0}, &1) or
+                   match?(
+                     %ActiveInfectionPlaceCasesPerDay{
+                       count: 1,
+                       infection_place_type: "anderer Ort",
+                       date: date
+                     }
+                     when date in [~D[2020-10-12], ~D[2020-10-13]],
+                     &1
+                   ))
+             )
+    end
+
+    test "does count infection place nil" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: nil
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-12]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_infection_place_cases_per_day)
+
+      assert entries =
+               StatisticsContext.list_active_infection_place_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-13]
+               )
+
+      assert length(entries) == 3
+
+      assert Enum.all?(
+               entries,
+               &(match?(%ActiveInfectionPlaceCasesPerDay{count: 0}, &1) or
+                   match?(
+                     %ActiveInfectionPlaceCasesPerDay{
+                       count: 1,
+                       infection_place_type: nil,
+                       date: date
+                     }
+                     when date in [~D[2020-10-12], ~D[2020-10-13]],
+                     &1
+                   ))
+             )
     end
   end
 end

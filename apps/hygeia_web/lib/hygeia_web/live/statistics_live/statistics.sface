@@ -462,10 +462,72 @@
       />
     </div>
     <div class="col-12 col-xl-6">
-      <!-- TODO: Add Infection Place Type -->
-      <div class="alert alert-danger mt-3" role="alert">
-        {{ gettext("Infection Place Type Chart") }}
-      </div>
+      <HygeiaWeb.Chart
+        id="active_infection_place_cases_per_day"
+        dom_id="active_infection_place_cases_per_day"
+        config={{ %{
+          type: "line",
+          data: %{
+            datasets: @active_infection_place_cases_per_day
+            |> Enum.reduce(%{}, fn %{date: date, count: count, infection_place_type: infection_place_type}, acc ->
+              entry = %{
+                x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                y: count
+              }
+              Map.update(acc, infection_place_type, [entry], &([entry | &1]))
+            end)
+            |> Enum.map(fn
+              {nil, entries} ->
+                %{
+                  label: gettext("unknown"),
+                  data: Enum.reverse(entries)
+                }
+              {infection_place_type, entries} ->
+                %{
+                  label: infection_place_type,
+                  data: Enum.reverse(entries)
+                }
+            end)
+          },
+          options: %{
+            title: %{
+              display: true,
+              text: gettext("Infection Place")
+            },
+            legend: %{
+              display: false
+            },
+            scales: %{
+              xAxes: [
+                %{
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("Date")
+                  },
+                  type: "time",
+                  time: %{
+                    unit: "day",
+                    tooltipFormat: "LL"
+                  }
+                }
+              ],
+              yAxes: [
+                %{
+                  stacked: true,
+                  scaleLabel: %{
+                    display: true,
+                    labelString: gettext("People")
+                  },
+                  ticks: %{
+                    stepSize: 1,
+                    beginAtZero: true
+                  }
+                }
+              ]
+            }
+          }
+        } }}
+      />
     </div>
   </div>
 
