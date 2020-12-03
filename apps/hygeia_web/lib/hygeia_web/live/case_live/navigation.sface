@@ -89,6 +89,39 @@
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Isolation Confirmation") }}
             </LiveRedirect>
+            <LiveRedirect
+              class={{ "dropdown-item" }}
+              to={{ Routes.case_protocol_path(
+                @socket,
+                :show,
+                @case,
+                type: "sms",
+                entry: %{
+                  text: Hygeia.Jobs.SendCaseClosedEmail.sms_text()
+                }
+              )}}
+              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
+            >
+              <span class="oi oi-phone mr-1" aria-hidden="true"></span>
+              {{ gettext("Send SMS Isolation End Confirmation") }}
+            </LiveRedirect>
+            <LiveRedirect
+              class={{ "dropdown-item" }}
+              to={{ Routes.case_protocol_path(
+                @socket,
+                :show,
+                @case,
+                type: "email",
+                entry: %{
+                  subject: Hygeia.Jobs.SendCaseClosedEmail.email_subject(),
+                  body: Hygeia.Jobs.SendCaseClosedEmail.email_body(),
+                }
+              )}}
+              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
+            >
+              <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
+              {{ gettext("Send Email Isolation End Confirmation") }}
+            </LiveRedirect>
           </div>
         </div>
         <div :if={{ Enum.any?(@case.phases, &match?(%{details: %Phase.PossibleIndex{}}, &1)) }}>
@@ -137,6 +170,39 @@
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Quarantine Confirmation") }}
+            </LiveRedirect>
+            <LiveRedirect
+              class={{ "dropdown-item" }}
+              to={{ Routes.case_protocol_path(
+                @socket,
+                :show,
+                @case,
+                type: "sms",
+                entry: %{
+                  text: Hygeia.Jobs.SendCaseClosedEmail.sms_text()
+                }
+              )}}
+              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
+            >
+              <span class="oi oi-phone mr-1" aria-hidden="true"></span>
+              {{ gettext("Send SMS Quarantine End Confirmation") }}
+            </LiveRedirect>
+            <LiveRedirect
+              class={{ "dropdown-item" }}
+              to={{ Routes.case_protocol_path(
+                @socket,
+                :show,
+                @case,
+                type: "email",
+                entry: %{
+                  subject: Hygeia.Jobs.SendCaseClosedEmail.email_subject(),
+                  body: Hygeia.Jobs.SendCaseClosedEmail.email_body(),
+                }
+              )}}
+              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
+            >
+              <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
+              {{ gettext("Send Email Quarantine End Confirmation") }}
             </LiveRedirect>
           </div>
         </div>

@@ -195,6 +195,10 @@ defmodule HygeiaWeb.CaseLive.Protocol do
     protocol_entry |> PaperTrail.get_version() |> Repo.preload(:user) |> Map.fetch!(:user)
   end
 
+  defp get_protocol_origin(protocol_entry) do
+    protocol_entry |> PaperTrail.get_version() |> Map.fetch!(:origin) |> String.to_existing_atom()
+  end
+
   defp maybe_block_navigation(
          %{assigns: %{protocol_entry_changeset: %{changes: changes}}} = socket
        ) do

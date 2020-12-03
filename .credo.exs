@@ -33,7 +33,7 @@
         {Credo.Check.Refactor.DoubleBooleanNegation, []},
         {Credo.Check.Refactor.ModuleDependencies, false},
         {Credo.Check.Refactor.NegatedIsNil, []},
-        {Credo.Check.Refactor.PipeChainStart, []},
+        {Credo.Check.Refactor.PipeChainStart, excluded_functions: ["from"]},
         {Credo.Check.Refactor.VariableRebinding, false},
         {Credo.Check.Warning.LeakyEnvironment, []},
         {Credo.Check.Warning.MapGetUnsafePass, []},

@@ -209,6 +209,7 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.Phase
       import HygeiaWeb.Helpers.Region
       import HygeiaWeb.Helpers.Search
+      import HygeiaWeb.Helpers.Versioning
 
       import PhoenixActiveLink
 

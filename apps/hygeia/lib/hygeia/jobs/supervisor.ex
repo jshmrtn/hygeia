@@ -48,7 +48,8 @@ defmodule Hygeia.Jobs.Supervisor do
         {Highlander,
          {RefreshMaterializedView,
           view: :statistics_transmission_country_cases_per_day,
-          name: RefreshMaterializedView.TransmissionCountryCasesPerDay}}
+          name: RefreshMaterializedView.TransmissionCountryCasesPerDay}},
+        {Highlander, Hygeia.Jobs.SendCaseClosedEmail}
       ]
   end
 
@@ -56,5 +57,6 @@ defmodule Hygeia.Jobs.Supervisor do
   def start_link(opts), do: Supervisor.start_link(__MODULE__, opts, name: __MODULE__)
 
   @impl Supervisor
-  def init(_opts), do: Supervisor.init(@jobs, strategy: :one_for_one, max_restarts: 15)
+  def init(_opts),
+    do: Supervisor.init(@jobs, strategy: :one_for_one, max_restarts: length(@jobs) * 2)
 end

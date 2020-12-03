@@ -71,6 +71,7 @@
           <tr>
             <th class="col-type" scope="col">{{ gettext("Type") }}</th>
             <th class="col-date" scope="col">{{ gettext("Date") }}</th>
+            <th scope="col">{{ gettext("Origin") }}</th>
             <th class="col-author" scope="col">{{ gettext("Author") }}</th>
             <th class="col-meta" scope="col" colspan="2">{{ gettext("Meta") }}</th>
           </tr>
@@ -90,6 +91,13 @@
                   relative_to: @now
                 ) }}
               </time>
+            </td>
+            <td>
+              {{
+                protocol_entry
+                |> get_protocol_origin()
+                |> translate_versioning_origin()
+              }}
             </td>
             <td>
               <Link to={{ Routes.user_show_path(@socket, :show, get_protocol_user(protocol_entry)) }} :if={{ get_protocol_user(protocol_entry) != nil }}>

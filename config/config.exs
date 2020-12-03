@@ -26,7 +26,7 @@ config :paper_trail,
   timestamps_type: :utc_datetime_usec,
   repo: Hygeia.Repo,
   originator: [name: :user, model: Hygeia.UserContext.User],
-  originator_options: [references: :uuid]
+  originator_relationship_options: [references: :uuid]
 
 config :hygeia_web,
   ecto_repos: [Hygeia.Repo],

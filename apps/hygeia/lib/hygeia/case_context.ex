@@ -391,6 +391,24 @@ defmodule Hygeia.CaseContext do
   @spec list_cases_query :: Ecto.Queryable.t()
   def list_cases_query, do: Case
 
+  @spec list_cases_for_automated_closed_email :: [{Case.t(), Case.Phase.t()}]
+  def list_cases_for_automated_closed_email do
+    from(case in Case,
+      join: phase in fragment("UNNEST(?)", case.phases),
+      where:
+        fragment("(?->>'end')::date", phase) < fragment("CURRENT_DATE") and
+          fragment("(?->'send_automated_close_email')::boolean", phase) and
+          is_nil(fragment("?->>'automated_close_email_sent'", phase)),
+      select: {case, fragment("(?->>'uuid')::uuid", phase)},
+      lock: "FOR UPDATE"
+    )
+    |> Repo.all()
+    |> Enum.map(fn {%Case{phases: phases} = case, phase_binary_uuid} ->
+      phase_uuid = Ecto.UUID.cast!(phase_binary_uuid)
+      {case, Enum.find(phases, &match?(%Case.Phase{uuid: ^phase_uuid}, &1))}
+    end)
+  end
+
   @spec fulltext_case_search(query :: String.t(), limit :: pos_integer()) :: [Case.t()]
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def fulltext_case_search(query, limit \\ 10),
@@ -441,6 +459,10 @@ defmodule Hygeia.CaseContext do
   """
   @spec get_case!(id :: String.t()) :: Case.t()
   def get_case!(id), do: Repo.get!(Case, id)
+
+  @spec get_case_with_lock!(id :: String.t()) :: Case.t()
+  def get_case_with_lock!(id),
+    do: Repo.one!(from case in Case, where: case.uuid == ^id, lock: "FOR UPDATE")
 
   @doc """
   Creates a case.
@@ -624,7 +646,10 @@ defmodule Hygeia.CaseContext do
             _contact_method -> false
           end)
 
-        recipient_name = person.last_name
+        recipient_name =
+          [person.first_name, person.last_name]
+          |> Enum.reject(&(&1 in ["", nil]))
+          |> Enum.join(" ")
 
         case Smtp.send(recipient_name, recipient_email, subject, body, tenant) do
           :ok ->
@@ -636,6 +661,26 @@ defmodule Hygeia.CaseContext do
             {:error, reason}
         end
     end
+  end
+
+  @spec case_phase_automated_email_sent(case :: Case.t(), phase :: Case.Phase.t()) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
+  def case_phase_automated_email_sent(%Case{phases: phases} = case, %Case.Phase{uuid: phase_uuid}) do
+    case
+    |> change_case()
+    |> Ecto.Changeset.put_embed(
+      :phases,
+      Enum.map(phases, fn
+        %Case.Phase{uuid: ^phase_uuid} = phase ->
+          Case.Phase.changeset(phase, %{automated_close_email_sent: DateTime.utc_now()})
+
+        %Case.Phase{} = phase ->
+          Case.Phase.changeset(phase, %{})
+      end)
+    )
+    |> versioning_update()
+    |> broadcast("cases", :update)
+    |> versioning_extract()
   end
 
   @doc """

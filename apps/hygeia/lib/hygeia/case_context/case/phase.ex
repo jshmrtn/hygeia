@@ -25,6 +25,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
   embedded_schema do
     field :start, :date
     field :end, :date
+    field :send_automated_close_email, :boolean, default: true
+    field :automated_close_email_sent, :utc_datetime_usec
 
     field :details, PolymorphicEmbed,
       types: [
@@ -37,7 +39,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
   @spec changeset(phase :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(phase, attrs) do
     phase
-    |> cast(attrs, [:start, :end])
+    |> cast(attrs, [:start, :end, :send_automated_close_email, :automated_close_email_sent])
     |> cast_polymorphic_embed(:details)
     |> validate_required([:details])
     |> validate_date_recent(:start)
