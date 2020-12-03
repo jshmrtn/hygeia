@@ -16,6 +16,8 @@ defmodule HygeiaUserSync do
   alias Hygeia.UserContext
   alias Hygeia.UserContext.User
 
+  alias HygeiaIam.ServiceUserToken
+
   require Logger
 
   case Mix.env() do
@@ -25,14 +27,17 @@ defmodule HygeiaUserSync do
 
   @grpc_server "api.zitadel.ch:443"
 
-  defstruct [:channel, :access_token]
+  defstruct [:channel, :user_sync_token_server_name]
 
   @spec start_link(opts :: Keyword.t()) :: GenServer.on_start()
   def start_link(opts),
-    do: GenServer.start_link(__MODULE__, [], name: Keyword.get(opts, :name, __MODULE__))
+    do:
+      GenServer.start_link(__MODULE__, Keyword.take(opts, [:user_sync_token_server_name]),
+        name: Keyword.get(opts, :name, __MODULE__)
+      )
 
   @impl GenServer
-  def init(_opts) do
+  def init(opts) do
     Versioning.put_originator(:noone)
     Versioning.put_origin(:user_sync_job)
 
@@ -40,12 +45,15 @@ defmodule HygeiaUserSync do
     |> GRPC.Stub.connect(cred: %{ssl: []}, metadata: %{})
     |> case do
       {:ok, channel} ->
-        send(self(), :login)
         send(self(), :sync)
 
         :timer.send_interval(@default_refresh_interval_ms, :sync)
 
-        {:ok, %__MODULE__{channel: channel}}
+        {:ok,
+         %__MODULE__{
+           channel: channel,
+           user_sync_token_server_name: Keyword.fetch!(opts, :user_sync_token_server_name)
+         }}
 
       {:error, reason} ->
         {:stop, {:error, reason}}
@@ -53,20 +61,14 @@ defmodule HygeiaUserSync do
   end
 
   @impl GenServer
-  def handle_info(:login, state) do
-    {:noreply, %__MODULE__{state | access_token: login()}}
-  end
-
-  def handle_info(:sync, %__MODULE__{channel: channel, access_token: access_token} = state) do
-    sync(channel, access_token)
+  def handle_info(
+        :sync,
+        %__MODULE__{channel: channel, user_sync_token_server_name: user_sync_token_server_name} =
+          state
+      ) do
+    sync(channel, ServiceUserToken.get_access_token(user_sync_token_server_name))
 
     {:noreply, state}
-  end
-
-  defp login do
-    {:ok, token, expiry} = HygeiaIam.service_login(:user_sync)
-    Process.send_after(self(), :login, (expiry - 1) * 1000)
-    token
   end
 
   defp sync(channel, access_token) do
