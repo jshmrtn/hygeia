@@ -111,6 +111,19 @@
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
+          <div class="col">
+            <Field
+              :if={{ Phoenix.HTML.FormData.input_value(form.source, form, :propagator_internal) }}
+              name={{ :copy_address_from_propagator }}
+              class="form-check"
+            >
+              <Checkbox class="form-check-input" />
+              <Label class="form-check-label">
+                {{ gettext("Copy Address from Propagator") }}
+              </Label>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
         </div>
       </div>
 
@@ -193,6 +206,7 @@
           supervisor_users={{ @supervisor_users }}
           tracer_users={{ @tracer_users }}
           default_country={{ Phoenix.HTML.FormData.input_value(form.source, form, :default_country) }}
+          show_address={{ Phoenix.HTML.FormData.input_value(form.source, form, :copy_address_from_propagator) != true }}
         />
       </div>
 

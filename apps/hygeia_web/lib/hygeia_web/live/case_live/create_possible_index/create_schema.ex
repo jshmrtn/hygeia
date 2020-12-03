@@ -27,6 +27,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     field :send_confirmation_sms, :boolean, default: true
     field :send_confirmation_email, :boolean, default: true
     field :directly_close_cases, :boolean, default: true
+    field :copy_address_from_propagator, :boolean, default: false
 
     belongs_to :propagator_case, Case, references: :uuid, foreign_key: :propagator_case_uuid
 
@@ -51,7 +52,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       :propagator_ism_id,
       :send_confirmation_sms,
       :send_confirmation_email,
-      :directly_close_cases
+      :directly_close_cases,
+      :copy_address_from_propagator
     ])
     |> cast_embed(:people, required: true)
     |> cast_embed(:infection_place, required: true)

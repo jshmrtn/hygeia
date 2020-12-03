@@ -174,8 +174,8 @@ defmodule Hygeia.CaseContext do
           FROM JSONB_ARRAY_ELEMENTS(?::jsonb) AS search
           LEFT JOIN people AS duplicate ON
               (
-                  SIMILARITY(duplicate.first_name, search->>first_name) > 0.4 AND
-                  SIMILARITY(duplicate.last_name, search->>last_name) > 0.4
+                  duplicate.first_name % (search->>'first_name')::text AND
+                  duplicate.last_name % (search->>'last_name')::text
               ) OR
               JSONB_BUILD_OBJECT('type', 'mobile', 'value', search->>'mobile') <@ ANY (duplicate.contact_methods) OR
               JSONB_BUILD_OBJECT('type', 'landline', 'value', search->>'landline') <@ ANY (duplicate.contact_methods) OR

@@ -5,8 +5,10 @@ defmodule HygeiaWeb.CaseLive.Create do
   import Phoenix.LiveView
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.CaseContext.Person
+  alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
   alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
@@ -59,8 +61,11 @@ defmodule HygeiaWeb.CaseLive.Create do
   @spec save_or_load_person_schema(
           schema :: %CreatePersonSchema{},
           socket :: Phoenix.LiveView.Socket.t(),
-          global_changeset :: Ecto.Changeset.t()
+          global_changeset :: Ecto.Changeset.t(),
+          propagator_case :: Case.t() | nil
         ) :: {Person.t(), User.t(), User.t()}
+  def save_or_load_person_schema(schema, socket, global_changeset, propagator_case \\ nil)
+
   def save_or_load_person_schema(
         %CreatePersonSchema{
           accepted_duplicate_uuid: nil,
@@ -69,7 +74,8 @@ defmodule HygeiaWeb.CaseLive.Create do
           supervisor_uuid: supervisor_uuid
         } = schema,
         socket,
-        global_changeset
+        global_changeset,
+        propagator_case
       ) do
     tenant_uuid =
       case tenant_uuid do
@@ -102,6 +108,15 @@ defmodule HygeiaWeb.CaseLive.Create do
         Ecto.Changeset.fetch_field!(global_changeset, :default_country)
       )
 
+    person_attrs =
+      if Ecto.Changeset.get_field(global_changeset, :copy_address_from_propagator, false) and
+           not is_nil(propagator_case) do
+        %Case{person: %Person{address: address}} = Repo.preload(propagator_case, person: [])
+        Map.put(person_attrs, :address, Ecto.embedded_dump(address, :json))
+      else
+        person_attrs
+      end
+
     {:ok, person} = CaseContext.create_person(tenant, person_attrs)
 
     {person, supervisor, tracer}
@@ -114,7 +129,8 @@ defmodule HygeiaWeb.CaseLive.Create do
           supervisor_uuid: supervisor_uuid
         },
         socket,
-        global_changeset
+        global_changeset,
+        _propagator_case
       ) do
     tracer_uuid =
       case tracer_uuid do

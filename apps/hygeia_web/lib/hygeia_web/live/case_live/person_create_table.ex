@@ -19,6 +19,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   prop supervisor_users, :list, required: true
   prop tracer_users, :list, required: true
   prop default_country, :string, default: nil
+  prop show_address, :boolean, default: true
 
   slot additional_header, required: false
   slot additional_row, required: false, props: [:disabled]

@@ -90,13 +90,21 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
          |> maybe_block_navigation()}
 
       %Ecto.Changeset{valid?: true} = changeset ->
+        propagator_case =
+          case Ecto.Changeset.fetch_field!(changeset, :propagator_case_uuid) do
+            nil -> nil
+            id -> CaseContext.get_case!(id)
+          end
+
         {:ok, {cases, transmissions}} =
           Repo.transaction(fn ->
             cases =
               changeset
               |> Ecto.Changeset.fetch_field!(:people)
               |> Enum.reject(&match?(%CreatePersonSchema{uuid: nil}, &1))
-              |> Enum.map(&{&1, save_or_load_person_schema(&1, socket, changeset)})
+              |> Enum.map(
+                &{&1, save_or_load_person_schema(&1, socket, changeset, propagator_case)}
+              )
               |> Enum.map(&create_case(&1, changeset))
 
             transmissions = Enum.map(cases, &create_transmission(&1, changeset))

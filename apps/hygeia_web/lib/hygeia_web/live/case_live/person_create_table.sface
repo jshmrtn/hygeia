@@ -85,21 +85,21 @@
               <td>
                 <HiddenInput field={{ :address }} />
                 <Field class="fill-cell" name={{ :address }}>
-                  <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+                  <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true or not(@show_address) }} />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </td>
               <td>
                 <HiddenInput field={{ :zip }} />
                 <Field class="fill-cell" name={{ :zip }}>
-                  <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+                  <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true or not(@show_address) }} />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </td>
               <td>
                 <HiddenInput field={{ :place }} />
                 <Field class="fill-cell" name={{ :place }}>
-                  <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
+                  <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true or not(@show_address) }} />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </td>
@@ -107,7 +107,7 @@
                 <HiddenInput field={{ :country }} />
                 <Field class="fill-cell" name={{ :country }}>
                   <Select class="form-control"
-                    opts={{ prompt: gettext("Default country"), disabled: form.source.changes[:accepted_duplicate] == true }}
+                    opts={{ prompt: gettext("Default country"), disabled: form.source.changes[:accepted_duplicate] == true or not(@show_address) }}
                     options={{ countries() }}
                   />
                   <ErrorTag class="d-block invalid-feedback" />
@@ -118,7 +118,7 @@
                 <Field class="fill-cell" name={{ :subdivision }}>
                   <Select
                     class="form-control"
-                    opts={{ prompt: gettext("Choose subdivision"), disabled: form.source.changes[:accepted_duplicate] == true }}
+                    opts={{ prompt: gettext("Choose subdivision"), disabled: form.source.changes[:accepted_duplicate] == true or not(@show_address) }}
                     field={{ :subdivision }}
                     options={{ subdivisions(form.source, Phoenix.HTML.FormData.input_value(form.source, form, :default_country)) }}
                   />
