@@ -71,6 +71,7 @@ defmodule Hygeia.MixProject do
       {:bamboo_smtp, "~> 3.0"},
       {:hygeia_gettext, in_umbrella: true},
       {:hygeia_cldr, in_umbrella: true},
+      {:hygeia_cluster, in_umbrella: true},
       {:csv, "~> 2.4"},
       {:highlander, "~> 0.2"}
     ]
