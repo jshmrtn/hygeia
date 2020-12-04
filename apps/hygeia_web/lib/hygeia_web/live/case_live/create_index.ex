@@ -10,7 +10,6 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
-  alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
   alias HygeiaWeb.CaseLive.CreateIndex.CreateSchema
   alias Surface.Components.Form
   alias Surface.Components.Form.DateInput
@@ -87,8 +86,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
         {:ok, cases} =
           Repo.transaction(fn ->
             changeset
+            |> CreateSchema.drop_empty_rows()
             |> Ecto.Changeset.fetch_field!(:people)
-            |> Enum.reject(&match?(%CreatePersonSchema{uuid: nil}, &1))
             |> Enum.map(&{&1, save_or_load_person_schema(&1, socket, changeset)})
             |> Enum.map(&create_case(&1, changeset))
           end)

@@ -66,8 +66,9 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
       ])
       |> cast_embed(:address)
       |> cast_embed(:clinical)
+      |> fill_uuid
 
-    if is_empty?(changeset) do
+    if is_empty?(changeset, [:search_params_hash, :suspected_duplicate_uuids]) do
       changeset
     else
       validate_changeset(changeset)
@@ -77,7 +78,6 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
   @spec validate_changeset(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_changeset(changeset) do
     changeset
-    |> fill_uuid
     |> validate_required([:uuid, :first_name, :last_name])
     |> validate_email(:email)
     |> validate_and_normalize_phone(:mobile, fn
@@ -149,12 +149,18 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
       employers: [],
       sex: sex,
       address:
-        address
-        |> Map.from_struct()
-        |> Map.update!(:country, fn
-          nil -> default_country
-          other -> other
-        end)
+        case address do
+          nil ->
+            %{country: default_country}
+
+          %{} ->
+            address
+            |> Map.from_struct()
+            |> Map.update!(:country, fn
+              nil -> default_country
+              other -> other
+            end)
+        end
     }
 
     attrs =

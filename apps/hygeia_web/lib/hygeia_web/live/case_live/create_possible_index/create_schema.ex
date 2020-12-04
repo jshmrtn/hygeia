@@ -71,27 +71,41 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       :date
     ])
     |> Transmission.validate_case(:propagator_internal, :propagator_ism_id, :propagator_case_uuid)
-    |> drop_empty_rows()
+    |> drop_multiple_empty_rows()
     |> CreatePersonSchema.detect_duplicates()
-    |> add_one_person()
   end
 
-  defp drop_empty_rows(changeset) do
+  @spec drop_empty_rows(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def drop_empty_rows(changeset) do
     put_embed(
       changeset,
       :people,
       changeset
       |> get_change(:people, [])
-      |> Enum.reject(&is_empty?/1)
+      |> Enum.reject(&is_empty?(&1, [:search_params_hash, :suspected_duplicate_uuids]))
     )
   end
 
-  defp add_one_person(changeset) do
+  # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
+  defp drop_multiple_empty_rows(changeset) do
     put_embed(
       changeset,
       :people,
-      get_change(changeset, :people, []) ++
-        [CreatePersonSchema.changeset(%CreatePersonSchema{}, %{})]
+      changeset
+      |> get_change(:people, [])
+      |> Enum.map(&{&1, is_empty?(&1, [:search_params_hash, :suspected_duplicate_uuids])})
+      |> Enum.chunk_every(2, 1)
+      |> Enum.map(fn
+        [{entry, false}] -> [entry, CreatePersonSchema.changeset(%CreatePersonSchema{}, %{})]
+        [{entry, true}] -> [entry]
+        [{_entry, true}, {_next_entry, true}] -> []
+        [{entry, _empty}, {_next_entry, _next_empty}] -> [entry]
+      end)
+      |> List.flatten()
+      |> case do
+        [] -> [CreatePersonSchema.changeset(%CreatePersonSchema{}, %{})]
+        [_entry | _other_entries] = other -> other
+      end
     )
   end
 end

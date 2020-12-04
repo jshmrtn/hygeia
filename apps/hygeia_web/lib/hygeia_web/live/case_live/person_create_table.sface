@@ -8,12 +8,8 @@
         <th scope="col">{{ gettext("Birthdate") }}</th>
         <th scope="col">{{ gettext("Mobile Phone") }}</th>
         <th scope="col">{{ gettext("Landline") }}</th>
-        <th scope="col" class="table-col-border">{{ gettext("Email") }}</th>
+        <th scope="col">{{ gettext("Email") }}</th>
         <th scope="col">{{ gettext("Address") }}</th>
-        <th scope="col">{{ gettext("ZIP") }}</th>
-        <th scope="col">{{ gettext("Place") }}</th>
-        <th scope="col">{{ gettext("Country") }}</th>
-        <th scope="col" class="table-col-border">{{ gettext("Subdivision") }}</th>
         <th scope="col" class="table-col-border">{{ gettext("Tenant") }}</th>
         <slot name="additional_header" />
         <th scope="col">{{ gettext("Supervisor") }}</th>
@@ -24,269 +20,257 @@
     </thead>
     <Inputs for={{ :people }}>
       <InputContext assigns={{ assigns }} :let={{ form: form }}>
-        <tr class={{ if form.source.changes[:accepted_duplicate] == true, do: "duplicate-accepted" }}>
-          <td>
-            <HiddenInput field={{ :uuid }} />
-            <HiddenInput field={{ :accepted_duplicate_human_readable_id }} />
-            <HiddenInput field={{ :first_name }} />
-            <Field class="fill-cell" name={{ :first_name }}>
-              <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td>
-            <HiddenInput field={{ :last_name }} />
-            <Field class="fill-cell" name={{ :last_name }}>
-              <TextInput field={{ :last_name }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td>
-            <HiddenInput field={{ :sex }} />
-            <Field class="fill-cell" name={{ :sex }}>
-              <Select
-                opts={{ prompt: gettext("choose sex"), disabled: form.source.changes[:accepted_duplicate] == true }}
-                class="form-control"
-                options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td>
-            <HiddenInput field={{ :birth_date }} />
-            <Field class="fill-cell" name={{ :birth_date }}>
-              <DateInput field={{ :birth_date }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td>
-            <HiddenInput field={{ :mobile }} />
-            <Field class="fill-cell" name={{ :mobile }}>
-              <TextInput field={{ :mobile }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td>
-            <HiddenInput field={{ :landline }} />
-            <Field class="fill-cell" name={{ :landline }}>
-              <TextInput field={{ :landline }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td class="table-col-border">
-            <HiddenInput field={{ :email }} />
-            <Field class="fill-cell" name={{ :email }}>
-              <TextInput field={{ :email }} class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <Inputs for={{ :address }}>
-            <InputContext assigns={{ assigns }} :let={{ form: form }}>
-              <td>
-                <HiddenInput field={{ :address }} />
-                <Field class="fill-cell" name={{ :address }}>
-                  <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true or not(@show_address) }} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td>
-                <HiddenInput field={{ :zip }} />
-                <Field class="fill-cell" name={{ :zip }}>
-                  <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true or not(@show_address) }} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td>
-                <HiddenInput field={{ :place }} />
-                <Field class="fill-cell" name={{ :place }}>
-                  <TextInput class="form-control" opts={{ disabled: form.source.changes[:accepted_duplicate] == true or not(@show_address) }} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td>
-                <HiddenInput field={{ :country }} />
-                <Field class="fill-cell" name={{ :country }}>
-                  <Select class="form-control"
-                    opts={{ prompt: gettext("Default country"), disabled: form.source.changes[:accepted_duplicate] == true or not(@show_address) }}
-                    options={{ countries() }}
-                  />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td class="table-col-border">
-                <HiddenInput field={{ :subdivision }} />
-                <Field class="fill-cell" name={{ :subdivision }}>
-                  <Select
-                    class="form-control"
-                    opts={{ prompt: gettext("Choose subdivision"), disabled: form.source.changes[:accepted_duplicate] == true or not(@show_address) }}
-                    field={{ :subdivision }}
-                    options={{ subdivisions(form.source, Phoenix.HTML.FormData.input_value(form.source, form, :default_country)) }}
-                  />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-            </InputContext>
-          </Inputs>
-          <td class="table-col-border">
-            <HiddenInput field={{ :tenant_uuid }} />
-            <Field class="fill-cell" name={{ :tenant_uuid }}>
-              <Select 
-                class="form-control"
-                options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
-                opts={{ prompt: gettext("Default Tenant"), disabled: form.source.changes[:accepted_duplicate] == true }}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <slot name="additional_row" :props={{ disabled: form.source.changes[:accepted_duplicate] == true }} />
-          <td>
-            <HiddenInput field={{ :supervisor_uuid }} />
-            <Field class="fill-cell" name={{ :supervisor_uuid }}>
-              <Select 
-                class="form-control"
-                options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
-                opts={{ prompt: gettext("Default Supervisor") }}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td class="table-col-border">
-            <HiddenInput field={{ :tracer_uuid }} />
-            <Field class="fill-cell" name={{ :tracer_uuid }}>
-              <Select 
-                class="form-control"
-                options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
-                opts={{ prompt: gettext("Default Tracer") }}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td class="table-col-border">
-            <Field class="fill-cell" name={{ :employer }}>
-              <TextInput 
-                class="form-control"
-                opts={{ disabled: form.source.changes[:accepted_duplicate] == true }}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td>
-            <HiddenInput field={{ :search_params_hash }} />
-            <HiddenInput field={{ :suspected_duplicate_uuids }} />
-            <HiddenInput field={{ :accepted_duplicate }} />
-            <HiddenInput field={{ :accepted_duplicate_uuid }} />
+        <Context
+          put={{
+            changeset_uuid: Ecto.Changeset.get_field(form.source, :uuid, nil),
+            accepted_duplicate: form.source.changes[:accepted_duplicate] == true
+          }}
+          get={{
+            changeset_uuid: changeset_uuid,
+            accepted_duplicate: accepted_duplicate
+          }}
+        >
+          <tr class={{ if form.source.changes[:accepted_duplicate] == true, do: "duplicate-accepted" }}>
+            <td>
+              <HiddenInput field={{ :uuid }} />
+              <HiddenInput field={{ :accepted_duplicate_human_readable_id }} />
+              <HiddenInput field={{ :first_name }} />
+              <Field class="fill-cell" name={{ :first_name }}>
+                <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <HiddenInput field={{ :last_name }} />
+              <Field class="fill-cell" name={{ :last_name }}>
+                <TextInput field={{ :last_name }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <HiddenInput field={{ :sex }} />
+              <Field class="fill-cell" name={{ :sex }}>
+                <Select
+                  opts={{ prompt: gettext("choose sex"), disabled: accepted_duplicate }}
+                  class="form-control"
+                  options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <HiddenInput field={{ :birth_date }} />
+              <Field class="fill-cell" name={{ :birth_date }}>
+                <DateInput field={{ :birth_date }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <HiddenInput field={{ :mobile }} />
+              <Field class="fill-cell" name={{ :mobile }}>
+                <TextInput field={{ :mobile }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <HiddenInput field={{ :landline }} />
+              <Field class="fill-cell" name={{ :landline }}>
+                <TextInput field={{ :landline }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <HiddenInput field={{ :email }} />
+              <Field class="fill-cell" name={{ :email }}>
+                <TextInput field={{ :email }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td class="p-1">
+              <Inputs for={{ :address }}>
+                <HygeiaWeb.CaseLive.AddressInput
+                  id={{ {:person_address, changeset_uuid} }}
+                  disabled={{ accepted_duplicate }}
+                />
+              </Inputs>
+            </td>
+            <td class="table-col-border">
+              <Field class="p-1" name={{ :tenant_uuid }}>
+                <HygeiaWeb.CaseLive.ModalSelect
+                  id={{ {:tenant, changeset_uuid} }}
+                  title={{ gettext("Tenant") }}
+                  disabled={{ accepted_duplicate }}
+                  options={{
+                    [{gettext("Default Tenant"), nil}]
+                      ++ Enum.map(@tenants, &({&1.name, &1.uuid}))
+                  }}
+                  :let={{ value: value }}
+                >
+                  <small>{{ elem(value, 0) }}</small>
+                </HygeiaWeb.CaseLive.ModalSelect>
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <slot name="additional_row" :props={{ disabled: accepted_duplicate }} />
+            <td>
+              <Field class="p-1" name={{ :supervisor_uuid }}>
+                <HygeiaWeb.CaseLive.ModalSelect
+                  id={{ {:supervisor, changeset_uuid} }}
+                  title={{ gettext("Supervisor") }}
+                  options={{
+                    [{gettext("Default Supervisor"), nil}]
+                      ++ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid}))
+                  }}
+                  :let={{ value: value }}
+                >
+                  <small>{{ elem(value, 0) }}</small>
+                </HygeiaWeb.CaseLive.ModalSelect>
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td class="table-col-border">
+              <Field class="p-1" name={{ :tracer_uuid }}>
+                <HygeiaWeb.CaseLive.ModalSelect
+                  id={{ {:tracer, changeset_uuid} }}
+                  title={{ gettext("Tracer") }}
+                  options={{
+                    [{gettext("Default Tracer"), nil}]
+                      ++ Enum.map(@tracer_users, &({&1.display_name, &1.uuid}))
+                  }}
+                  :let={{ value: value }}
+                >
+                  <small>{{ elem(value, 0) }}</small>
+                </HygeiaWeb.CaseLive.ModalSelect>
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td class="table-col-border">
+              <Field class="fill-cell" name={{ :employer }}>
+                <TextInput 
+                  class="form-control"
+                  opts={{ disabled: accepted_duplicate }}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <HiddenInput field={{ :search_params_hash }} />
+              <HiddenInput field={{ :suspected_duplicate_uuids }} />
+              <HiddenInput field={{ :accepted_duplicate }} />
+              <HiddenInput field={{ :accepted_duplicate_uuid }} />
 
-            <div class="d-flex justify-content-end p-1">
-              <button
-                :if={{ not(form.source.changes[:suspected_duplicate_uuids] in ["", nil]) and form.source.changes[:accepted_duplicate] != true }}
-                class="btn btn-secondary btn-sm"
-                type="button"
-                phx-value-changeset-uuid={{ form.source.changes[:uuid] }}
-                phx-click="check_duplicate"
-                phx-target={{ @myself }}
-                title={{ gettext("Check Duplicates") }}
-              >
-                <span class="oi oi-person" aria-hidden="true"></span>
-              </button>
+              <div class="d-flex justify-content-end p-1">
+                <button
+                  :if={{ not(form.source.changes[:suspected_duplicate_uuids] in ["", nil]) and form.source.changes[:accepted_duplicate] != true }}
+                  class="btn btn-secondary btn-sm"
+                  type="button"
+                  phx-value-changeset-uuid={{ form.source.changes[:uuid] }}
+                  phx-click="check_duplicate"
+                  phx-target={{ @myself }}
+                  title={{ gettext("Check Duplicates") }}
+                >
+                  <span class="oi oi-person" aria-hidden="true"></span>
+                </button>
 
-              <HygeiaWeb.Modal
-                :if={{ not(is_nil(@suspected_duplicate_changeset_uuid)) and @suspected_duplicate_changeset_uuid == form.source.changes[:uuid]}}
-                title={{ gettext("Select existing person") }}
-                id={{ "modal" }}
-                close="decline_duplicate"
-              >
-                <div class="candidate-card card flex-row">
-                  <div class="card-header card-vertical-header">
-                    <table class="candidate-table">
-                      <tr>
-                        <th>{{ gettext("Name") }}</th>
-                        <td>{{ form.source.changes[:first_name] || "" }} {{ form.source.changes[:last_name] || "" }}<br></td>
-                      </tr>
-                      <tr>
-                        <th>{{ gettext("Mobile") }}</th>
-                        <td>{{ form.source.changes[:mobile] || "" }}</td>
-                      </tr>
-                      <tr>
-                        <th>{{ gettext("Landline") }}</th>
-                        <td>{{ form.source.changes[:landline] || "" }}</td>
-                      </tr>
-                      <tr>
-                        <th>{{ gettext("Email") }}</th>
-                        <td>{{ form.source.changes[:email] || "" }}</td>
-                      </tr>
-                      <tr>
-                        <th>{{ gettext("Tenant") }}</th>
-                        <td>
-                          {{ case form.source.changes[:tenant_uuid] do
-                            nil -> nil
-                            uuid -> get_tenant(@tenants, uuid).name
-                          end }}
-                        </td>
-                      </tr>
-                    </table>
-                    <input
-                      type="button"
-                      class="btn btn-primary mt-3"
-                      checked={{ form.source.changes[:accepted_duplicate] == true and is_nil(form.source.changes[:accepted_duplicate_uuid]) }}
-                      phx-click="decline_duplicate"
-                      phx-target={{ @myself }}
-                      value={{ gettext("Keep") }}
-                    />
-                  </div>
-                  <div class="card-body">
-                    <div class="candidates">
-                      <div
-                        :for={{ person_uuid <- String.split(form.source.changes[:suspected_duplicate_uuids], ",") }}
-                        class="candidate"
-                      >
-                        <Context put={{ person: get_person(person_uuid) }} get={{ person: person }}>
-                          <table class="candidate-table">
-                            <tr>
-                              <td>{{ get_person_name(person) }}<br></td>
-                            </tr>
-                            <tr>
-                              <td>{{ get_contact_method(person, :mobile) }}</td>
-                            </tr>
-                            <tr>
-                              <td>{{ get_contact_method(person, :landline) }}</td>
-                            </tr>
-                            <tr>
-                              <td>{{ get_contact_method(person, :email) }}</td>
-                            </tr>
-                            <tr>
-                              <td>{{ get_tenant(@tenants, person.tenant_uuid).name }}</td>
-                            </tr>
-                          </table>
-                          <input
-                            type="button"
-                            class="btn btn-primary mt-3"
-                            checked={{ person_uuid == form.source.changes[:accepted_duplicate_uuid] }}
-                            phx-click="select_accepted_duplicate"
-                            phx-value-person-uuid={{ person_uuid }}
-                            phx-target={{ @myself }}
-                            value={{ gettext("Choose") }}
-                          />
-                        </Context>
+                <HygeiaWeb.Modal
+                  :if={{ not(is_nil(@suspected_duplicate_changeset_uuid)) and @suspected_duplicate_changeset_uuid == form.source.changes[:uuid]}}
+                  title={{ gettext("Select existing person") }}
+                  id={{ "modal" }}
+                  close="decline_duplicate"
+                >
+                  <div class="candidate-card card flex-row">
+                    <div class="card-header card-vertical-header">
+                      <table class="candidate-table">
+                        <tr>
+                          <th>{{ gettext("Name") }}</th>
+                          <td>{{ form.source.changes[:first_name] || "" }} {{ form.source.changes[:last_name] || "" }}<br></td>
+                        </tr>
+                        <tr>
+                          <th>{{ gettext("Mobile") }}</th>
+                          <td>{{ form.source.changes[:mobile] || "" }}</td>
+                        </tr>
+                        <tr>
+                          <th>{{ gettext("Landline") }}</th>
+                          <td>{{ form.source.changes[:landline] || "" }}</td>
+                        </tr>
+                        <tr>
+                          <th>{{ gettext("Email") }}</th>
+                          <td>{{ form.source.changes[:email] || "" }}</td>
+                        </tr>
+                        <tr>
+                          <th>{{ gettext("Tenant") }}</th>
+                          <td>
+                            {{ case form.source.changes[:tenant_uuid] do
+                              nil -> nil
+                              uuid -> get_tenant(@tenants, uuid).name
+                            end }}
+                          </td>
+                        </tr>
+                      </table>
+                      <input
+                        type="button"
+                        class="btn btn-primary mt-3"
+                        checked={{ accepted_duplicate and is_nil(form.source.changes[:accepted_duplicate_uuid]) }}
+                        phx-click="decline_duplicate"
+                        phx-target={{ @myself }}
+                        value={{ gettext("Keep") }}
+                      />
+                    </div>
+                    <div class="card-body">
+                      <div class="candidates">
+                        <div
+                          :for={{ person_uuid <- String.split(form.source.changes[:suspected_duplicate_uuids], ",") }}
+                          class="candidate"
+                        >
+                          <Context put={{ person: get_person(person_uuid) }} get={{ person: person }}>
+                            <table class="candidate-table">
+                              <tr>
+                                <td>{{ get_person_name(person) }}<br></td>
+                              </tr>
+                              <tr>
+                                <td>{{ get_contact_method(person, :mobile) }}</td>
+                              </tr>
+                              <tr>
+                                <td>{{ get_contact_method(person, :landline) }}</td>
+                              </tr>
+                              <tr>
+                                <td>{{ get_contact_method(person, :email) }}</td>
+                              </tr>
+                              <tr>
+                                <td>{{ get_tenant(@tenants, person.tenant_uuid).name }}</td>
+                              </tr>
+                            </table>
+                            <input
+                              type="button"
+                              class="btn btn-primary mt-3"
+                              checked={{ person_uuid == form.source.changes[:accepted_duplicate_uuid] }}
+                              phx-click="select_accepted_duplicate"
+                              phx-value-person-uuid={{ person_uuid }}
+                              phx-target={{ @myself }}
+                              value={{ gettext("Choose") }}
+                            />
+                          </Context>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </HygeiaWeb.Modal>
+                </HygeiaWeb.Modal>
 
-              <button
-                :if={{ Map.drop(form.source.changes,[:uuid]) != %{} }}
-                class="ml-1 btn btn-secondary btn-sm btn-danger"
-                type="button"
-                phx-value-changeset-uuid={{ form.source.changes[:uuid] }}
-                phx-click="remove_person"
-                phx-target={{ @myself }}
-                title={{ gettext("Remove") }}
-              >
-                <span class="oi oi-trash" aria-hidden="true"></span>
-              </button>
-            </div>
-          </td>
-        </tr>
+                <button
+                  :if={{ Map.drop(form.source.changes,[:uuid]) != %{} }}
+                  class="ml-1 btn btn-secondary btn-sm btn-danger"
+                  type="button"
+                  phx-value-changeset-uuid={{ form.source.changes[:uuid] }}
+                  phx-click="remove_person"
+                  phx-target={{ @myself }}
+                  title={{ gettext("Remove") }}
+                >
+                  <span class="oi oi-trash" aria-hidden="true"></span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </Context>
       </InputContext>
     </Inputs>
   </table>
