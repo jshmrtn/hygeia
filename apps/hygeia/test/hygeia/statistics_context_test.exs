@@ -13,6 +13,7 @@ defmodule Hygeia.StatisticsContextTest do
   alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
   alias Hygeia.StatisticsContext.CumulativePossibleIndexCaseEndReasons
   alias Hygeia.StatisticsContext.NewCasesPerDay
+  alias Hygeia.StatisticsContext.TransmissionCountryCasesPerDay
 
   @moduletag origin: :test
   @moduletag originator: :noone
@@ -855,6 +856,118 @@ defmodule Hygeia.StatisticsContextTest do
                      %ActiveInfectionPlaceCasesPerDay{
                        count: 1,
                        infection_place_type: nil,
+                       date: date
+                     }
+                     when date in [~D[2020-10-12], ~D[2020-10-13]],
+                     &1
+                   ))
+             )
+    end
+  end
+
+  describe "transmission_country_cases_per_day" do
+    test "counts transmission country cases from the end date" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      index_case =
+        case_fixture(person, user, user, %{
+          phases: [
+            %{
+              details: %{
+                __type__: :index,
+                end_reason: :healed
+              },
+              start: ~D[2020-10-12],
+              end: ~D[2020-10-12]
+            }
+          ]
+        })
+
+      transmission_fixture(%{
+        recipient_internal: true,
+        recipient_case_uuid: index_case.uuid,
+        infection_place: %{
+          address: %{
+            address: "Torstrasse 25",
+            zip: "9000",
+            place: "St. Gallen",
+            subdivision: "SG",
+            country: "CH"
+          },
+          known: true
+        }
+      })
+
+      execute_materialized_view_refresh(:statistics_transmission_country_cases_per_day)
+
+      assert entries =
+               StatisticsContext.list_transmission_country_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-13]
+               )
+
+      assert length(entries) == 3
+
+      assert Enum.all?(
+               entries,
+               &(match?(%TransmissionCountryCasesPerDay{count: 0}, &1) or
+                   match?(
+                     %TransmissionCountryCasesPerDay{
+                       count: 1,
+                       country: "CH",
+                       date: date
+                     }
+                     when date in [~D[2020-10-12], ~D[2020-10-13]],
+                     &1
+                   ))
+             )
+    end
+
+    test "does count transmission country nil" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      index_case =
+        case_fixture(person, user, user, %{
+          phases: [
+            %{
+              details: %{
+                __type__: :index,
+                end_reason: nil
+              },
+              start: ~D[2020-10-12],
+              end: ~D[2020-10-12]
+            }
+          ]
+        })
+
+      transmission_fixture(%{
+        recipient_internal: true,
+        recipient_case_uuid: index_case.uuid
+      })
+
+      execute_materialized_view_refresh(:statistics_transmission_country_cases_per_day)
+
+      assert entries =
+               StatisticsContext.list_transmission_country_cases_per_day(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-13]
+               )
+
+      assert length(entries) == 3
+
+      assert Enum.all?(
+               entries,
+               &(match?(%TransmissionCountryCasesPerDay{count: 0}, &1) or
+                   match?(
+                     %TransmissionCountryCasesPerDay{
+                       count: 1,
+                       country: nil,
                        date: date
                      }
                      when date in [~D[2020-10-12], ~D[2020-10-13]],

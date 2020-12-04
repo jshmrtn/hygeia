@@ -14,6 +14,7 @@ defmodule Hygeia.StatisticsContext do
   alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
   alias Hygeia.StatisticsContext.CumulativePossibleIndexCaseEndReasons
   alias Hygeia.StatisticsContext.NewCasesPerDay
+  alias Hygeia.StatisticsContext.TransmissionCountryCasesPerDay
   alias Hygeia.TenantContext.Tenant
 
   @doc """
@@ -437,6 +438,61 @@ defmodule Hygeia.StatisticsContext do
                   ^to
                 ),
             order_by: active_infection_place_cases_per_day.date
+          )
+        )
+
+  @doc """
+  Returns the list of transmission_country_cases_per_day.
+
+  ## Examples
+
+      iex> list_transmission_country_cases_per_day()
+      [%TransmissionCountryCasesPerDay{}, ...]
+
+  """
+  @spec list_transmission_country_cases_per_day :: [TransmissionCountryCasesPerDay.t()]
+  def list_transmission_country_cases_per_day,
+    do:
+      Repo.all(
+        from(transmission_country_cases_per_day in TransmissionCountryCasesPerDay,
+          order_by: transmission_country_cases_per_day.date
+        )
+      )
+
+  @spec list_transmission_country_cases_per_day(tenant :: Tenant.t()) :: [
+          TransmissionCountryCasesPerDay.t()
+        ]
+  def list_transmission_country_cases_per_day(%Tenant{uuid: tenant_uuid} = _tenant),
+    do:
+      Repo.all(
+        from(transmission_country_cases_per_day in TransmissionCountryCasesPerDay,
+          where: transmission_country_cases_per_day.tenant_uuid == ^tenant_uuid,
+          order_by: transmission_country_cases_per_day.date
+        )
+      )
+
+  @spec list_transmission_country_cases_per_day(
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: [TransmissionCountryCasesPerDay.t()]
+  def list_transmission_country_cases_per_day(
+        %Tenant{uuid: tenant_uuid} = _tenant,
+        from,
+        to
+      ),
+      do:
+        Repo.all(
+          from(transmission_country_cases_per_day in TransmissionCountryCasesPerDay,
+            where:
+              transmission_country_cases_per_day.tenant_uuid == ^tenant_uuid and
+                fragment(
+                  "? BETWEEN ?::date AND ?::date",
+                  transmission_country_cases_per_day.date,
+                  ^from,
+                  ^to
+                ),
+            order_by: transmission_country_cases_per_day.date
           )
         )
 end

@@ -42,4 +42,11 @@ defmodule HygeiaWeb.Helpers.Region do
     |> Enum.map(&{Cadastre.Subdivision.name(&1, locale), &1.id})
     |> Enum.sort_by(&elem(&1, 0))
   end
+
+  @spec country_name(country_code :: String.t()) :: String.t()
+  def country_name(country_code) do
+    locale = HygeiaCldr.get_locale().language
+
+    country_code |> Cadastre.Country.new() |> Cadastre.Country.name(locale)
+  end
 end
