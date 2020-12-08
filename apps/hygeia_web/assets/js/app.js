@@ -20,12 +20,11 @@ import BSN from "bootstrap.native";
 import BlockNavigation from "./block-navigation.hook";
 import Chart from "./chart.hook";
 import Dropdown from "./dropdown.hook";
-import { PhoenixLiveViewDropzone } from "phoenix_live_view_drop_zone";
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
-  hooks: { BlockNavigation, PhoenixLiveViewDropzone: new PhoenixLiveViewDropzone(), Chart, Dropdown },
+  hooks: { BlockNavigation, Chart, Dropdown },
 });
 
 // Show progress bar on live navigation and form submits
