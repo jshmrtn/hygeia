@@ -108,7 +108,7 @@
               id={{ {:sort, :first_name} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("First name") }}
               </LivePatch>
             </HygeiaWeb.Sort>
@@ -120,7 +120,7 @@
               id={{ {:sort, :last_name} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("Last name") }}
               </LivePatch>
             </HygeiaWeb.Sort>
@@ -132,7 +132,7 @@
               id={{ {:sort, :birth_date} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("Birth date") }}
               </LivePatch>
             </HygeiaWeb.Sort>
@@ -147,7 +147,7 @@
               id={{ {:sort, :inserted_at} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("Inserted At") }}
               </LivePatch>
             </HygeiaWeb.Sort>

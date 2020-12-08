@@ -128,7 +128,7 @@
               id={{ {:sort, :person} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("Person") }}
               </LivePatch>
             </HygeiaWeb.Sort>
@@ -140,7 +140,7 @@
               id={{ {:sort, :complexity} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("Complexity") }}
               </LivePatch>
             </HygeiaWeb.Sort>
@@ -152,7 +152,7 @@
               id={{ {:sort, :status} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("Status") }}
               </LivePatch>
             </HygeiaWeb.Sort>
@@ -164,7 +164,7 @@
               id={{ {:sort, :phases} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("Phases") }}
               </LivePatch>
             </HygeiaWeb.Sort>
@@ -176,7 +176,7 @@
               id={{ {:sort, :tracer} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("Tracer") }}
               </LivePatch>
             </HygeiaWeb.Sort>
@@ -188,7 +188,7 @@
               id={{ {:sort, :supervisor} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("Supervisor") }}
               </LivePatch>
             </HygeiaWeb.Sort>
@@ -200,7 +200,7 @@
               id={{ {:sort, :inserted_at} }}
               :let={{ sort_params: sort_params }}
             >
-              <LivePatch to={{ page_url(@socket, @pagination_params, @filters, sort_params) }}>
+              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
                 {{ gettext("Inserted At") }}
               </LivePatch>
             </HygeiaWeb.Sort>

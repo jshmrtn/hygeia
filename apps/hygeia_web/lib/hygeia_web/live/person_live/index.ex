@@ -70,15 +70,7 @@ defmodule HygeiaWeb.PersonLive.Index do
   @impl Phoenix.LiveView
   def handle_event("filter", params, socket) do
     {:noreply,
-     push_patch(socket,
-       to:
-         page_url(
-           socket,
-           socket.assigns.pagination_params,
-           params["filter"] || %{},
-           socket.assigns.sort
-         )
-     )}
+     push_patch(socket, to: page_url(socket, [], params["filter"] || %{}, socket.assigns.sort))}
   end
 
   def handle_event("delete", %{"id" => id}, socket) do

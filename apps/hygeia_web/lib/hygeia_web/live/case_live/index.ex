@@ -85,8 +85,7 @@ defmodule HygeiaWeb.CaseLive.Index do
   def handle_event("filter", params, socket) do
     {:noreply,
      push_patch(socket,
-       to:
-         page_url(socket, socket.assigns.pagination_params, params["filter"], socket.assigns.sort)
+       to: page_url(socket, [], params["filter"], socket.assigns.sort)
      )}
   end
 
@@ -149,10 +148,7 @@ defmodule HygeiaWeb.CaseLive.Index do
         entries
       end
 
-    assign(socket,
-      pagination: metadata,
-      cases: Repo.preload(entries, person: [], tracer: [], supervisor: [])
-    )
+    assign(socket, pagination: metadata, cases: entries)
   end
 
   defp base_query,
@@ -167,7 +163,8 @@ defmodule HygeiaWeb.CaseLive.Index do
         left_join: supervisor in assoc(case, :supervisor),
         as: :supervisor,
         preload: [supervisor: supervisor],
-        left_join: phase in fragment("UNNEST(?)", case.phases),
+        left_join:
+          phase in fragment("UNNEST(ARRAY[?[ARRAY_UPPER(?, 1)]])", case.phases, case.phases),
         as: :phase
       )
 

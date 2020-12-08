@@ -69,7 +69,9 @@ defmodule Hygeia.MixProject do
       {:ex_phone_number, "~> 0.2"},
       {:mox, "~> 1.0", only: :test},
       {:websms, "~> 1.0.0-alpha"},
-      {:paginator, "~> 1.0"},
+      # TODO: Replace with released version when the following PR is released:
+      # https://github.com/duffelhq/paginator/pull/93
+      {:paginator, github: "maennchen/paginator", branch: "cursor_validation_fix"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
       {:bamboo, "~> 1.6"},
       {:bamboo_smtp, "~> 3.0"},
