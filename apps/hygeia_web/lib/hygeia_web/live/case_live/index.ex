@@ -97,12 +97,12 @@ defmodule HygeiaWeb.CaseLive.Index do
 
     {:ok, _} = CaseContext.delete_case(case)
 
-    {:noreply, socket |> assign(pagination_params: []) |> list_cases()}
+    {:noreply, list_cases(socket)}
   end
 
   @impl Phoenix.LiveView
   def handle_info({_type, %Case{}, _version}, socket) do
-    {:noreply, socket |> assign(pagination_params: []) |> list_cases()}
+    {:noreply, list_cases(socket)}
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
