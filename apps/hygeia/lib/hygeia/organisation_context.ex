@@ -32,13 +32,15 @@ defmodule Hygeia.OrganisationContext do
       Repo.all(
         from(organisation in Organisation,
           where:
-            fragment("? % ?::text", ^query, organisation.uuid) or
-              fragment("? % ?", ^query, organisation.name) or
-              fragment("? % (?->'address')::text", ^query, organisation.address) or
-              fragment("? % (?->'zip')::text", ^query, organisation.address) or
-              fragment("? % (?->'place')::text", ^query, organisation.address) or
-              fragment("? % (?->'subdivision')::text", ^query, organisation.address) or
-              fragment("? % (?->'country')::text", ^query, organisation.address),
+            fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", organisation, ^query),
+          order_by: [
+            desc:
+              fragment(
+                "TS_RANK_CD(?.fulltext, WEBSEARCH_TO_TSQUERY('german', ?))",
+                organisation,
+                ^query
+              )
+          ],
           limit: ^limit
         )
       )

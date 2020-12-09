@@ -20,7 +20,7 @@ defmodule Hygeia.Helpers.Phone do
          true <- ExPhoneNumber.is_valid_number?(parsed_number),
          phone_number_type <- ExPhoneNumber.Validation.get_number_type(parsed_number),
          :ok <- type.(phone_number_type) do
-      put_change(changeset, field, ExPhoneNumber.Formatting.format(parsed_number, :e164))
+      put_change(changeset, field, ExPhoneNumber.Formatting.format(parsed_number, :international))
     else
       :error ->
         changeset

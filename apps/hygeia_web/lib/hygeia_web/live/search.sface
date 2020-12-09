@@ -21,7 +21,15 @@
   <ul :if={{ @open and not(@query in ["", nil]) }} class="d-block dropdown-menu dropdown-menu-right">
     <li
       class="dropdown-submenu"
-      :if={{ map_size(@results) == 0 and not(@query in ["", nil]) }}
+      :if={{ not(is_nil(@pending_search)) }}
+    >
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">{{ gettext("Waiting for results...") }}</span>
+      </div>
+    </li>
+    <li
+      class="dropdown-submenu"
+      :if={{ map_size(@results) == 0 and is_nil(@pending_search) }}
     >
       <span class="dropdown-item">
         {{ gettext("Found no results") }}

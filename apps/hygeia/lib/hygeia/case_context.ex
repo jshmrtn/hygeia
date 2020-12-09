@@ -19,6 +19,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.TenantContext.Websms
 
   @sms_sender Application.compile_env!(:hygeia, [:sms_sender])
+  @origin_country Application.compile_env!(:hygeia, [:phone_number_parsing_origin_country])
 
   @doc """
   Returns the list of professions.
@@ -200,7 +201,24 @@ defmodule Hygeia.CaseContext do
   @spec list_people_by_contact_method(type :: ContactMethod.Type.t(), value :: String.t()) :: [
           Person.t()
         ]
-  def list_people_by_contact_method(type, value),
+
+  def list_people_by_contact_method(type, value) when type in [:mobile, :landline] do
+    with {:ok, parsed_number} <-
+           ExPhoneNumber.parse(value, @origin_country),
+         true <- ExPhoneNumber.is_valid_number?(parsed_number) do
+      _list_people_by_contact_method(
+        type,
+        ExPhoneNumber.Formatting.format(parsed_number, :international)
+      )
+    else
+      false -> []
+      {:error, _reason} -> []
+    end
+  end
+
+  def list_people_by_contact_method(type, value), do: _list_people_by_contact_method(type, value)
+
+  defp _list_people_by_contact_method(type, value),
     do:
       Repo.all(
         from(person in Person,
@@ -225,28 +243,19 @@ defmodule Hygeia.CaseContext do
       )
 
   @spec fulltext_person_search(query :: String.t(), limit :: pos_integer()) :: [Person.t()]
-  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def fulltext_person_search(query, limit \\ 10),
     do:
       Repo.all(
         from(person in Person,
-          left_join: contact_method in fragment("unnest(?)", person.contact_methods),
-          left_join: external_reference in fragment("unnest(?)", person.external_references),
-          left_join: employer in fragment("unnest(?)", person.employers),
-          where:
-            fragment("? % ?::text", ^query, person.uuid) or
-              fragment("? % ?", ^query, person.human_readable_id) or
-              fragment("? % ?", ^query, person.first_name) or
-              fragment("? % ?", ^query, person.last_name) or
-              fragment("? % (?->'value')::text", ^query, contact_method) or
-              fragment("? % (?->'value')::text", ^query, external_reference) or
-              fragment("? % (?->'address')::text", ^query, person.address) or
-              fragment("? % (?->'zip')::text", ^query, person.address) or
-              fragment("? % (?->'place')::text", ^query, person.address) or
-              fragment("? % (?->'subdivision')::text", ^query, person.address) or
-              fragment("? % (?->'country')::text", ^query, person.address) or
-              fragment("? % (?->'name')::text", ^query, employer),
-          group_by: person.uuid,
+          where: fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", person, ^query),
+          order_by: [
+            desc:
+              fragment(
+                "TS_RANK_CD(?.fulltext, WEBSEARCH_TO_TSQUERY('german', ?))",
+                person,
+                ^query
+              )
+          ],
           limit: ^limit
         )
       )
@@ -410,34 +419,28 @@ defmodule Hygeia.CaseContext do
   end
 
   @spec fulltext_case_search(query :: String.t(), limit :: pos_integer()) :: [Case.t()]
-  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def fulltext_case_search(query, limit \\ 10),
     do:
       Repo.all(
         from(case in Case,
           join: person in assoc(case, :person),
           left_join: organisation in assoc(case, :related_organisations),
-          left_join: case_external_reference in fragment("unnest(?)", case.external_references),
-          left_join: person_contact_method in fragment("unnest(?)", person.contact_methods),
-          left_join:
-            person_external_reference in fragment("unnest(?)", person.external_references),
           where:
-            fragment("? % ?::text", ^query, case.uuid) or
-              fragment("? % ?", ^query, case.human_readable_id) or
-              fragment("? % (?->'value')::text", ^query, case_external_reference) or
-              fragment("? % ?::text", ^query, organisation.uuid) or
-              fragment("? % ?", ^query, organisation.name) or
-              fragment("? % (?->'address')::text", ^query, organisation.address) or
-              fragment("? % (?->'zip')::text", ^query, organisation.address) or
-              fragment("? % (?->'place')::text", ^query, organisation.address) or
-              fragment("? % (?->'subdivision')::text", ^query, organisation.address) or
-              fragment("? % (?->'country')::text", ^query, organisation.address) or
-              fragment("? % ?::text", ^query, person.uuid) or
-              fragment("? % ?", ^query, person.human_readable_id) or
-              fragment("? % ?", ^query, person.first_name) or
-              fragment("? % ?", ^query, person.last_name) or
-              fragment("? % (?->'value')::text", ^query, person_contact_method) or
-              fragment("? % (?->'value')::text", ^query, person_external_reference),
+            fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", person, ^query) or
+              fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", case, ^query) or
+              fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", organisation, ^query),
+          order_by: [
+            desc:
+              max(
+                fragment(
+                  "TS_RANK_CD((?.fulltext || ?.fulltext || ?.fulltext), WEBSEARCH_TO_TSQUERY('german', ?))",
+                  case,
+                  person,
+                  organisation,
+                  ^query
+                )
+              )
+          ],
           group_by: case.uuid,
           limit: ^limit
         )

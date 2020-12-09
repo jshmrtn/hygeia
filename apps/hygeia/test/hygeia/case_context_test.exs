@@ -162,7 +162,7 @@ defmodule Hygeia.CaseContextTest do
                 contact_methods: [
                   %ContactMethod{
                     type: :mobile,
-                    value: "+41787245790",
+                    value: "+41 78 724 57 90",
                     comment: "Call only between 7 and 9 am"
                   }
                 ],
@@ -194,15 +194,15 @@ defmodule Hygeia.CaseContextTest do
                 contact_methods: [
                   %ContactMethod{
                     type: :mobile,
-                    value: "+41787245790"
+                    value: "+41 78 724 57 90"
                   },
                   %ContactMethod{
                     type: :mobile,
-                    value: "+41787245790"
+                    value: "+41 78 724 57 90"
                   },
                   %ContactMethod{
                     type: :landline,
-                    value: "+41715117254"
+                    value: "+41 71 511 72 54"
                   },
                   %ContactMethod{
                     type: :email,
@@ -255,7 +255,7 @@ defmodule Hygeia.CaseContextTest do
                 contact_methods: [
                   %ContactMethod{
                     type: :mobile,
-                    value: "+41787245790",
+                    value: "+41 78 724 57 90",
                     comment: "Call only between 7 and 9 am"
                   }
                 ],
@@ -330,13 +330,13 @@ defmodule Hygeia.CaseContextTest do
       tenant = tenant_fixture()
 
       person_matching =
-        person_fixture(tenant, %{contact_methods: [%{type: :mobile, value: "+41878123456"}]})
+        person_fixture(tenant, %{contact_methods: [%{type: :mobile, value: "+41 87 812 34 56"}]})
 
       _person_not_matching_value =
-        person_fixture(tenant, %{contact_methods: [%{type: :mobile, value: "+41878123458"}]})
+        person_fixture(tenant, %{contact_methods: [%{type: :mobile, value: "+41 87 812 34 58"}]})
 
       _person_not_matching_type =
-        person_fixture(tenant, %{contact_methods: [%{type: :landline, value: "+41878123456"}]})
+        person_fixture(tenant, %{contact_methods: [%{type: :landline, value: "+41 878 123 456"}]})
 
       assert [^person_matching] =
                CaseContext.list_people_by_contact_method(:mobile, "+41878123456")

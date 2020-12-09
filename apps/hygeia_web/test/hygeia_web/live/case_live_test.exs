@@ -65,7 +65,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                      0 => %{
                        first_name: "Max",
                        last_name: "Muster",
-                       mobile: "+41787245790"
+                       mobile: "+41 78 724 57 90"
                      }
                    }
                  }
@@ -78,7 +78,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                %Person{
                  first_name: "Max",
                  last_name: "Muster",
-                 contact_methods: [%{type: :mobile, value: "+41787245790"}]
+                 contact_methods: [%{type: :mobile, value: "+41 78 724 57 90"}]
                }
              ] = CaseContext.list_people()
     end
@@ -91,7 +91,7 @@ defmodule HygeiaWeb.CaseLiveTest do
       person_fixture(tenant, %{
         first_name: "Max",
         last_name: "Muster",
-        contact_methods: [%{type: :mobile, value: "+41787245790"}]
+        contact_methods: [%{type: :mobile, value: "+41 78 724 57 90"}]
       })
 
       assert {:ok, create_live, _html} = live(conn, Routes.case_create_index_path(conn, :create))
@@ -107,7 +107,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                      0 => %{
                        first_name: "Max",
                        last_name: "Muster",
-                       mobile: "+41787245790"
+                       mobile: "+41 78 724 57 90"
                      }
                    }
                  }
@@ -142,7 +142,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                      0 => %{
                        first_name: "Max",
                        last_name: "Muster",
-                       mobile: "+41787245790"
+                       mobile: "+41 78 724 57 90"
                      }
                    }
                  }
@@ -155,7 +155,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                %Person{
                  first_name: "Max",
                  last_name: "Muster",
-                 contact_methods: [%{type: :mobile, value: "+41787245790"}]
+                 contact_methods: [%{type: :mobile, value: "+41 78 724 57 90"}]
                }
              ] = CaseContext.list_people()
     end

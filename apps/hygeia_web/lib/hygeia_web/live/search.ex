@@ -13,6 +13,18 @@ defmodule HygeiaWeb.Search do
   data open, :boolean, default: false
   data query, :string, default: ""
   data results, :map, default: %{}
+  data pending_search, :any, default: nil
+
+  @impl Phoenix.LiveComponent
+  def update(%{append_result: {key, result}} = assigns, socket) do
+    socket = assign(socket, Map.drop(assigns, [:append_result]))
+    socket = assign(socket, results: Map.put(socket.assigns.results, key, result))
+    {:ok, socket}
+  end
+
+  def update(assigns, socket) do
+    {:ok, assign(socket, assigns)}
+  end
 
   @impl Phoenix.LiveComponent
   def handle_event("open", _params, socket) do
@@ -24,56 +36,92 @@ defmodule HygeiaWeb.Search do
   end
 
   defp search_results(socket, "") do
-    assign(socket, results: %{}, query: "", task: nil)
+    if socket.assigns.pending_search do
+      Task.shutdown(socket.assigns.pending_search, :brutal_kill)
+    end
+
+    assign(socket, results: %{}, query: "", pending_search: nil)
   end
 
   defp search_results(socket, query) do
-    results =
-      %{
-        person:
-          if authorized?(CaseContext.Person, :list, get_auth(socket)) do
-            fn ->
-              socket.assigns.query
-              |> CaseContext.fulltext_person_search()
-              |> Enum.map(&{&1.uuid, &1})
-            end
-          end,
-        case:
-          if authorized?(CaseContext.Case, :list, get_auth(socket)) do
-            fn ->
-              socket.assigns.query
-              |> CaseContext.fulltext_case_search()
-              |> Repo.preload(:person)
-              |> Enum.map(&{&1.uuid, &1})
-            end
-          end,
-        organisation:
-          if authorized?(OrganisationContext.Organisation, :list, get_auth(socket)) do
-            fn ->
-              socket.assigns.query
-              |> OrganisationContext.fulltext_organisation_search()
-              |> Enum.map(&{&1.uuid, &1.name})
-            end
-          end,
-        user:
-          if authorized?(UserContext.User, :list, get_auth(socket)) do
-            fn ->
-              socket.assigns.query
-              |> UserContext.fulltext_user_search()
-              |> Enum.map(&{&1.uuid, &1.display_name})
-            end
-          end
-      }
-      |> Enum.reject(&match?({_key, nil}, &1))
-      |> Enum.map(fn {key, callback} ->
-        Task.async(fn ->
-          {key, callback.()}
-        end)
-      end)
-      |> Enum.map(&Task.await(&1))
-      |> Enum.reject(&match?({_key, []}, &1))
-      |> Map.new()
+    if socket.assigns.pending_search do
+      Task.shutdown(socket.assigns.pending_search, :brutal_kill)
+    end
 
-    assign(socket, query: query, results: results)
+    pid = self()
+
+    task =
+      Task.async(fn ->
+        query
+        |> search_fns(socket)
+        |> Enum.reject(&match?({_key, nil}, &1))
+        |> Enum.map(fn {key, callback} ->
+          Task.async(fn -> run_search(key, callback, pid, socket) end)
+        end)
+        |> Enum.each(&Task.await/1)
+
+        send_update(socket, pid, %{pending_search: nil})
+      end)
+
+    assign(socket, query: query, results: %{}, pending_search: task)
+  end
+
+  defp run_search(key, callback, pid, socket) do
+    case callback.() do
+      nil ->
+        :ok
+
+      [] ->
+        :ok
+
+      [_ | _] = results ->
+        send_update(socket, pid, %{append_result: {key, results}})
+
+        :ok
+    end
+  end
+
+  defp search_fns(query, socket) do
+    %{
+      person:
+        if authorized?(CaseContext.Person, :list, get_auth(socket)) do
+          fn ->
+            query
+            |> CaseContext.fulltext_person_search()
+            |> Enum.map(&{&1.uuid, &1})
+          end
+        end,
+      case:
+        if authorized?(CaseContext.Case, :list, get_auth(socket)) do
+          fn ->
+            query
+            |> CaseContext.fulltext_case_search()
+            |> Repo.preload(:person)
+            |> Enum.map(&{&1.uuid, &1})
+          end
+        end,
+      organisation:
+        if authorized?(OrganisationContext.Organisation, :list, get_auth(socket)) do
+          fn ->
+            query
+            |> OrganisationContext.fulltext_organisation_search()
+            |> Enum.map(&{&1.uuid, &1.name})
+          end
+        end,
+      user:
+        if authorized?(UserContext.User, :list, get_auth(socket)) do
+          fn ->
+            query
+            |> UserContext.fulltext_user_search()
+            |> Enum.map(&{&1.uuid, &1.display_name})
+          end
+        end
+    }
+  end
+
+  defp send_update(socket, pid, data) do
+    # TODO: Replace with solution of https://github.com/phoenixframework/phoenix_live_view/issues/1244
+    send(pid, {:phoenix, :send_update, {__MODULE__, socket.assigns.id, data}})
+    :ok
   end
 end
