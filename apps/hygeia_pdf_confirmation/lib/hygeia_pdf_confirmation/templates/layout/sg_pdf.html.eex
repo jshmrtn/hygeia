@@ -12,14 +12,6 @@
         |> raw()
       %>
     </style>
-    <script>
-      <%=
-        :hygeia_pdf_confirmation
-        |> Application.app_dir("priv/assets/page.js")
-        |> File.read!()
-        |> raw()
-      %>
-    </script>
   </head>
   <body onload="subst()">
     <%= @inner_content %>

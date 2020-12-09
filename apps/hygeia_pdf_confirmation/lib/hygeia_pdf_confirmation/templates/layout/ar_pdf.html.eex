@@ -12,14 +12,14 @@
         |> raw()
       %>
     </style>
-    <script>
+    <style>
       <%=
         :hygeia_pdf_confirmation
-        |> Application.app_dir("priv/assets/page.js")
+        |> Application.app_dir("priv/assets/style_ar.css")
         |> File.read!()
         |> raw()
       %>
-    </script>
+    </style>
   </head>
   <body onload="subst()">
     <%= @inner_content %>
