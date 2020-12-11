@@ -61,10 +61,14 @@ defmodule HygeiaWeb.AuthController do
         } = conn,
         _params
       ) do
+    Logger.info("Before Upsert")
+
     tokens
     |> CheckAndRefreshAuthentication.upsert_user_with_tokens(provider)
     |> case do
       {:ok, user} ->
+        Logger.info("Upsert Successful")
+
         conn
         |> put_flash(:info, gettext("Successfully authenticated."))
         |> put_session(:auth, user)

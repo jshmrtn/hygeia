@@ -14,6 +14,8 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
   alias Hygeia.UserContext.User.Role
   alias HygeiaWeb.Router.Helpers
 
+  require Logger
+
   @impl Plug
   def init(_opts) do
     nil
@@ -48,8 +50,12 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
   @spec upsert_user_with_tokens(tokens :: map, provider :: String.t()) ::
           {:ok, User.t()} | {:error, term}
   def upsert_user_with_tokens(tokens, provider) do
-    with {:ok, user_info} <- :oidcc.retrieve_user_info(tokens, provider),
-         {:ok, user} <- upsert_user(user_info) do
+    with :ok <- Logger.info("Retrieve UserInfo Start"),
+         {:ok, user_info} <- :oidcc.retrieve_user_info(tokens, provider),
+         :ok <- Logger.info("Retrieve UserInfo End"),
+         :ok <- Logger.info("Upsert User Start"),
+         {:ok, user} <- upsert_user(user_info),
+         :ok <- Logger.info("Upsert User End") do
       {:ok, user}
     else
       {:error, reason} -> {:error, reason}
