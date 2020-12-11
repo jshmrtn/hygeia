@@ -122,7 +122,7 @@ defmodule HygeiaIam do
       pkce:
         case config do
           %{code_challenge_methods_supported: methods} -> generate_pkce(methods)
-          %{} -> nil
+          %{} -> :undefined
         end,
       state: state,
       expiry: NaiveDateTime.add(NaiveDateTime.utc_now(), :timer.minutes(5), :millisecond),

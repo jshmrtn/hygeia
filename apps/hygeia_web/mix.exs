@@ -81,7 +81,8 @@ defmodule HygeiaWeb.MixProject do
       {:xlsxir, "~> 1.6.4"},
       {:mime, "~> 1.5"},
       {:plug_dynamic, "~> 1.0"},
-      {:plug_checkup, "~> 0.6"}
+      {:plug_checkup, "~> 0.6"},
+      {:nebulex, "~> 1.2"}
     ]
   end
 

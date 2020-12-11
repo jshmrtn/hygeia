@@ -7,7 +7,12 @@ defmodule HygeiaWeb.Application do
 
   @impl Application
   def start(_type, _args) do
-    Supervisor.start_link([HygeiaWeb.Endpoint],
+    Supervisor.start_link(
+      [
+        HygeiaWeb.SessionStorage.Storage,
+        HygeiaWeb.SessionStorage.Storage.Primary,
+        HygeiaWeb.Endpoint
+      ],
       strategy: :one_for_one,
       name: HygeiaWeb.Supervisor
     )
