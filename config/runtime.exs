@@ -117,5 +117,3 @@ config :hygeia_iam, :service_accounts,
 config :hygeia_iam,
   organisation_id: System.get_env("IAM_ORGANISATION_ID", "***REMOVED***"),
   project_id: System.get_env("IAM_PROJECT_ID", "***REMOVED***")
-
-config :ueberauth, UeberauthOIDC, zitadel: iam_config

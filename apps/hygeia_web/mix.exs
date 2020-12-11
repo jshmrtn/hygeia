@@ -72,9 +72,7 @@ defmodule HygeiaWeb.MixProject do
       # TODO: Make constraint ~> 0.1 as soon as https://github.com/msaraiva/surface/issues/220 is resolved
       {:surface, "0.1.0"},
       {:ecto_psql_extras, "~> 0.4"},
-      {:ueberauth, "~> 0.6", override: true},
       {:jsone, "~> 1.5", override: true},
-      {:ueberauth_oidc, github: "rng2/ueberauth_oidc", tag: "0.0.1"},
       {:oidcc, github: "jshmrtn/oidcc", branch: "master", override: true},
       {:csv, "~> 2.4"},
       {:plug_content_security_policy, "~> 0.2.1"},

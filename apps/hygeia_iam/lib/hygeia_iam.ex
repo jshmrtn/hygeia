@@ -3,6 +3,10 @@ defmodule HygeiaIam do
   IAM
   """
 
+  defmodule OidcError do
+    defexception [:message]
+  end
+
   @spec organisation_id :: String.t()
   def organisation_id, do: Application.fetch_env!(:hygeia_iam, :organisation_id)
 
@@ -87,4 +91,164 @@ defmodule HygeiaIam do
   end
 
   defp client_credential_claims(_config, _login, _oidc_config), do: {:error, :missing_config}
+
+  @opaque session(state) :: %{
+            id: String.t(),
+            provider: String.t(),
+            scopes: [String.t()],
+            pkce: %{
+              verifier: String.t(),
+              challenge: String.t(),
+              method: :plain | :S256
+            },
+            state: state,
+            expiry: NaiveDateTime.t(),
+            nonce: String.t()
+          }
+
+  @spec generate_session_info(provider :: String.t(), state :: state) :: session(state)
+        when state: term
+  def generate_session_info(provider \\ "zitadel", state \\ nil) do
+    {:ok, %{request_scopes: request_scopes} = config} = :oidcc.get_openid_provider_info("zitadel")
+
+    %{
+      id: random_string(),
+      provider: provider,
+      scopes:
+        case request_scopes do
+          :undefined -> Application.get_env(:oidcc, :scopes, [:openid])
+          list when is_list(list) -> list
+        end,
+      pkce:
+        case config do
+          %{code_challenge_methods_supported: methods} -> generate_pkce(methods)
+          %{} -> nil
+        end,
+      state: state,
+      expiry: NaiveDateTime.add(NaiveDateTime.utc_now(), :timer.minutes(5), :millisecond),
+      nonce: random_string(64)
+    }
+  end
+
+  @spec generate_redirect_url!(session :: session(term())) :: String.t()
+  def generate_redirect_url!(%{
+        provider: provider,
+        scopes: scopes,
+        id: id,
+        nonce: nonce,
+        pkce: pkce
+      }) do
+    provider
+    |> :oidcc.create_redirect_url(%{scopes: scopes, state: id, nonce: nonce, pkce: pkce})
+    |> case do
+      {:ok, url} -> url
+      {:error, :provider_not_ready} -> raise OidcError, "provider not ready"
+    end
+  end
+
+  @spec clean_sessions(sessions :: [session(state)]) :: [session(state)] when state: term
+  def clean_sessions(sessions) do
+    sessions
+    |> Enum.filter(&(NaiveDateTime.compare(&1.expiry, NaiveDateTime.utc_now()) == :gt))
+    |> Enum.take(2)
+  end
+
+  @spec retrieve_and_validate_token!(sessions :: [session(state)], params :: map) ::
+          %{
+            id: map(),
+            access: map(),
+            provider: String.t(),
+            state: state,
+            remaining_sessions: [session(state)]
+          }
+        when state: term
+
+  def retrieve_and_validate_token!(sessions, params) do
+    {state, code} = gather_callback_params!(params)
+
+    %{provider: provider, pkce: pkce, nonce: nonce, scopes: scopes, state: state} =
+      session = find_session(sessions, state)
+
+    remaining_sessions = Enum.reject(sessions, &(&1 == session))
+
+    tokens =
+      code
+      |> :oidcc.retrieve_and_validate_token(provider, %{nonce: nonce, pkce: pkce, scope: scopes})
+      |> case do
+        {:ok, tokens} ->
+          tokens
+
+        {:error, reason} when is_atom(reason) or is_binary(reason) ->
+          raise OidcError, "oidc_error: #{inspect(reason)}"
+
+        {:error, _reason} ->
+          raise OidcError, "oidc_error: Failed to retrieve and validate tokens"
+      end
+
+    Map.merge(tokens, %{
+      state: state,
+      remaining_sessions: remaining_sessions,
+      provider: provider
+    })
+  end
+
+  defp gather_callback_params!(%{"error" => error}) do
+    raise OidcError, "oidc_provider_error: #{inspect(error)}"
+  end
+
+  defp gather_callback_params!(params) do
+    state =
+      case params["state"] do
+        nil -> raise OidcError, "Query string does not contain field 'state'"
+        other -> other
+      end
+
+    code =
+      case params["code"] do
+        nil -> raise OidcError, "Query string does not contain field 'code'"
+        other -> other
+      end
+
+    {state, code}
+  end
+
+  defp find_session(sessions, state) do
+    session =
+      %{expiry: expiry} =
+      sessions
+      |> Enum.find(&(&1.id == state))
+      |> case do
+        nil -> raise OidcError, "session not found"
+        %{} = session -> session
+      end
+
+    case NaiveDateTime.compare(expiry, NaiveDateTime.utc_now()) do
+      :gt -> :ok
+      :eq -> :ok
+      :lt -> raise OidcError, "session expired"
+    end
+
+    session
+  end
+
+  defp generate_pkce(methods) do
+    pkce_key = random_string()
+
+    if Enum.member?(methods, "S256") do
+      %{
+        verifier: pkce_key,
+        challenge: :sha256 |> :crypto.hash(pkce_key) |> Base.encode64(),
+        method: :S256
+      }
+    else
+      %{
+        verifier: pkce_key,
+        challenge: pkce_key,
+        method: :plain
+      }
+    end
+  end
+
+  defp random_string(length \\ 32),
+    do: length |> :crypto.strong_rand_bytes() |> Base.url_encode64(padding: false)
 end

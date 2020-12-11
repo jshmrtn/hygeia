@@ -73,17 +73,6 @@ config :hygeia_telemetry, server: true
 # OIDC
 config :oidcc, http_request_timeout: 15
 
-config :ueberauth, Ueberauth,
-  providers: [
-    oidc:
-      {Ueberauth.Strategy.OIDC,
-       [
-         default: [
-           provider: :zitadel
-         ]
-       ]}
-  ]
-
 # Bamboo Mailer
 config :hygeia, Hygeia.EmailSender.Smtp, adapter: Bamboo.SMTPAdapter
 
