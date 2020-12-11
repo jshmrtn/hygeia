@@ -202,20 +202,16 @@
                           </PolimorphicInputs>
 
                           <div class="row">
-                            <!-- TODO: Style -->
                             <div class="col">
-                              <Label>{{ gettext("Automated Close Email") }}</Label>
-
                               <Field
                                 :if={{ Ecto.Changeset.get_field(form.source, :automated_close_email_sent) == nil }}
                                 name={{ :send_automated_close_email }}
                                 class="form-check"
                               >
-                                <Checkbox class="form-check-input" opts={{ disabled: @live_action == :show }} />
-                                <Label class="form-check-label">
-                                  {{ gettext("enable") }}
-                                </Label>
-                                
+                                <label class="checkbox-label">
+                                  <Checkbox  class="form-check-input" opts={{ disabled: @live_action == :show }} />
+                                  {{ gettext("Automated Close Email") }}
+                                </label>
                                 <ErrorTag class="d-block invalid-feedback" />
                               </Field>
 
