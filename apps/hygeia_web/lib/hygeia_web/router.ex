@@ -229,6 +229,16 @@ defmodule HygeiaWeb.Router do
       }
   end
 
+  forward(
+    "/health",
+    PlugCheckup,
+    PlugCheckup.Options.new(
+      json_encoder: Jason,
+      checks: HygeiaHealth.checks(),
+      timeout: :timer.seconds(15)
+    )
+  )
+
   defp store_locale(conn, _params) do
     Plug.Conn.put_session(conn, "cldr_locale", conn.private.cldr_locale.requested_locale_name)
   end

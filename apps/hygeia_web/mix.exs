@@ -56,6 +56,7 @@ defmodule HygeiaWeb.MixProject do
       {:hygeia_gettext, in_umbrella: true},
       {:hygeia_cldr, in_umbrella: true},
       {:hygeia_iam, in_umbrella: true},
+      {:hygeia_health, in_umbrella: true},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_live_view, "~> 0.15"},
@@ -81,7 +82,8 @@ defmodule HygeiaWeb.MixProject do
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
       {:xlsxir, "~> 1.6.4"},
       {:mime, "~> 1.5"},
-      {:plug_dynamic, "~> 1.0"}
+      {:plug_dynamic, "~> 1.0"},
+      {:plug_checkup, "~> 0.6"}
     ]
   end
 
