@@ -74,12 +74,11 @@ config :hygeia_telemetry, server: true
 config :oidcc, http_request_timeout: 15
 
 # Nebulex Sessions
-config :hygeia_web, HygeiaWeb.SessionStorage.Storage.Primary,
-  n_shards: 2,
-  gc_interval: 86_400
-
 config :hygeia_web, HygeiaWeb.SessionStorage.Storage,
-  primary: HygeiaWeb.SessionStorage.Storage.Primary
+  primary: [
+    n_shards: 2,
+    gc_interval: 86_400
+  ]
 
 # Bamboo Mailer
 config :hygeia, Hygeia.EmailSender.Smtp, adapter: Bamboo.SMTPAdapter

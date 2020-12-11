@@ -10,7 +10,6 @@ defmodule HygeiaWeb.Application do
     Supervisor.start_link(
       [
         HygeiaWeb.SessionStorage.Storage,
-        HygeiaWeb.SessionStorage.Storage.Primary,
         HygeiaWeb.Endpoint
       ],
       strategy: :one_for_one,

@@ -82,7 +82,8 @@ defmodule HygeiaWeb.MixProject do
       {:mime, "~> 1.5"},
       {:plug_dynamic, "~> 1.0"},
       {:plug_checkup, "~> 0.6"},
-      {:nebulex, "~> 1.2"}
+      {:nebulex, "~> 2.0-rc"},
+      {:shards, "~> 1.0"}
     ]
   end
 
