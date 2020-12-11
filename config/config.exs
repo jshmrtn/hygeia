@@ -38,7 +38,12 @@ config :hygeia_api,
 
 # Configures the endpoint
 config :hygeia_web, HygeiaWeb.Endpoint,
-  render_errors: [view: HygeiaWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    view: HygeiaWeb.ErrorView,
+    accepts: ~w(html json),
+    layout: {HygeiaWeb.LayoutView, "error.html"},
+    root_layout: {HygeiaWeb.LayoutView, "root.html"}
+  ],
   pubsub_server: Hygeia.PubSub,
   live_view: [signing_salt: "S3zkaQcW"]
 

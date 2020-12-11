@@ -25,6 +25,6 @@ defmodule HygeiaWeb.Helpers.CSP do
 
   @spec nonce(conn :: Plug.Conn.t(), type :: atom) :: String.t()
   def nonce(conn, type) do
-    Map.fetch!(conn.assigns, String.to_existing_atom("#{type}_src_nonce"))
+    conn.assigns[String.to_existing_atom("#{type}_src_nonce")]
   end
 end
