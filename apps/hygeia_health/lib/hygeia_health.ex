@@ -10,7 +10,7 @@ defmodule HygeiaHealth do
   @checks %PlugCheckup.Check{name: "DB", module: __MODULE__, function: :check_db}
   @spec check_db :: check_result
   def check_db do
-    Hygeia.Repo.query("select 1", [])
+    Hygeia.Repo.query!("select 1", [])
     :ok
   rescue
     DBConnection.ConnectionError -> {:error, "connection error"}
@@ -98,6 +98,8 @@ defmodule HygeiaHealth do
       [] -> :ok
       [{tenant, {:error, reason}}] -> {:error, "#{tenant}: #{inspect(reason)}"}
     end
+  rescue
+    DBConnection.ConnectionError -> {:error, "connection error"}
   end
 
   defp smtp_reply({tenant_name, server, hostname}) do
