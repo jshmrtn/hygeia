@@ -609,6 +609,9 @@ defmodule Hygeia.CaseContext do
               _contact_method -> false
             end)
 
+          {:ok, parsed_number} = ExPhoneNumber.parse(phone_number, @origin_country)
+          phone_number = ExPhoneNumber.Formatting.format(parsed_number, :e164)
+
           message_id = Ecto.UUID.generate()
 
           case @sms_sender.send(message_id, phone_number, text, access_token) do
