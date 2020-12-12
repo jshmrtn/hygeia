@@ -181,8 +181,8 @@ defmodule HygeiaIam do
         {:error, reason} when is_atom(reason) or is_binary(reason) ->
           raise OidcError, "oidc_error: #{inspect(reason)}"
 
-        {:error, _reason} ->
-          raise OidcError, "oidc_error: Failed to retrieve and validate tokens"
+        {:error, reason} ->
+          raise OidcError, "oidc_error: #{inspect(reason, pretty: true)}"
       end
 
     Map.merge(tokens, %{
