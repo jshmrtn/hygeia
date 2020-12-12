@@ -75,9 +75,14 @@ config :oidcc, http_request_timeout: 15
 
 # Nebulex Sessions
 config :hygeia_web, HygeiaWeb.SessionStorage.Storage,
+  stats: true,
   primary: [
-    n_shards: 2,
-    gc_interval: 86_400
+    # 100Mb
+    allocated_memory: 100_000_000,
+    gc_interval: :timer.hours(24),
+    gc_cleanup_min_timeout: :timer.seconds(10),
+    gc_cleanup_max_timeout: :timer.seconds(30),
+    max_size: 1_000_000
   ]
 
 # Bamboo Mailer

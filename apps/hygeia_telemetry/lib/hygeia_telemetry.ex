@@ -113,6 +113,13 @@ defmodule HygeiaTelemetry do
         unit: {:native, :millisecond}
       ),
 
+      # Nebulex Stats Metrics
+      last_value("nebulex.cache.stats.hits", tags: [:cache]),
+      last_value("nebulex.cache.stats.misses", tags: [:cache]),
+      last_value("nebulex.cache.stats.writes", tags: [:cache]),
+      last_value("nebulex.cache.stats.evictions", tags: [:cache]),
+      last_value("nebulex.cache.stats.expirations", tags: [:cache]),
+
       # VM Metrics
       summary("vm.memory.total", unit: {:byte, :kilobyte}),
       last_value("vm.memory.total", unit: :byte),
@@ -133,10 +140,24 @@ defmodule HygeiaTelemetry do
 
   defp periodic_measurements do
     [
-      # A module, function and arguments to be invoked periodically.
-      # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {HygeiaWeb, :count_users, []}
+      {__MODULE__, :trigger_session_storage_dispatch_stats, []}
     ]
+  end
+
+  @spec trigger_session_storage_dispatch_stats :: :ok
+  def trigger_session_storage_dispatch_stats do
+    module = HygeiaWeb.SessionStorage.Storage
+
+    module
+    |> GenServer.whereis()
+    |> case do
+      nil ->
+        :ok
+
+      _pid ->
+        module.dispatch_stats()
+        :ok
+    end
   end
 
   @spec power_two_durations(from :: integer(), to :: integer()) :: [float]
