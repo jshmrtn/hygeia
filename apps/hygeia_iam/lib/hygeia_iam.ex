@@ -128,6 +128,7 @@ defmodule HygeiaIam do
       expiry: NaiveDateTime.add(NaiveDateTime.utc_now(), :timer.minutes(5), :millisecond),
       nonce: random_string(64)
     }
+    |> IO.inspect(label: "generated session")
   end
 
   @spec generate_redirect_url!(session :: session(term())) :: String.t()
@@ -168,6 +169,7 @@ defmodule HygeiaIam do
 
     %{provider: provider, pkce: pkce, nonce: nonce, scopes: scopes, state: state} =
       session = find_session(sessions, state)
+      |> IO.inspect(label: "loaded session")
 
     remaining_sessions = Enum.reject(sessions, &(&1 == session))
 
