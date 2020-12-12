@@ -21,5 +21,8 @@ defmodule HygeiaWeb.StatisticsLive.ChooseTenant do
     super(params, session, socket)
   end
 
+  @impl Phoenix.LiveView
+  def handle_info(_other, socket), do: {:noreply, socket}
+
   defp list_tenants, do: TenantContext.list_tenants()
 end
