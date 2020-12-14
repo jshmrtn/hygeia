@@ -22,15 +22,32 @@
       }}
     </div>
 
-    <LivePatch
-      :if={{ @live_action == :show and authorized?(@person, :update, auth) }}
-      to={{ Routes.person_base_data_path(@socket, :edit, @person) }}
-    >
-      <button class="btn btn-primary mb-4" id="person-edit">
-        <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
-        {{ gettext("Edit") }}
-      </button>
-    </LivePatch>
+    <div class="mb-4" :if={{ @live_action == :show }}>
+      <LivePatch
+        :if={{ authorized?(@person, :update, auth) }}
+        to={{ Routes.person_base_data_path(@socket, :edit, @person) }}
+      >
+        <button class="btn btn-primary" id="person-edit">
+          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+          {{ gettext("Edit") }}
+        </button>
+      </LivePatch>
+
+      <Link 
+        to="#" 
+        click="delete" 
+        opts={{
+          title: gettext("Delete"),
+          data: [confirm: gettext("Are you sure?")]
+        }}
+        :if={{ authorized?(@person, :delete, auth) }}
+      >
+        <button class="btn btn-danger">
+          <span class="oi oi-trash" aria-hidden="true"></span>
+          {{ gettext("Delete") }}
+        </button>
+      </Link>
+    </div>
 
     <Form 
       for={{ @changeset }} 

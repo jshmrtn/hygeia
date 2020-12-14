@@ -213,6 +213,17 @@ defmodule HygeiaWeb.PersonLive.BaseData do
     end
   end
 
+  def handle_event("delete", _params, %{assigns: %{person: person}} = socket) do
+    true = authorized?(person, :delete, get_auth(socket))
+
+    {:ok, _} = CaseContext.delete_person(person)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, gettext("Person deleted successfully"))
+     |> redirect(to: Routes.person_index_path(socket, :index))}
+  end
+
   defp load_data(socket, person) do
     person = Repo.preload(person, positions: [organisation: []])
 
