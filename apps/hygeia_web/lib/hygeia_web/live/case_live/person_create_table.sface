@@ -186,6 +186,10 @@
                           <td>{{ form.source.changes[:first_name] || "" }} {{ form.source.changes[:last_name] || "" }}<br></td>
                         </tr>
                         <tr>
+                          <th>{{ gettext("Birthdate") }}</th>
+                          <td>{{ format_date(form.source.changes[:birth_date]) }}</td>
+                        </tr>
+                        <tr>
                           <th>{{ gettext("Mobile") }}</th>
                           <td>{{ form.source.changes[:mobile] || "" }}</td>
                         </tr>
@@ -226,6 +230,9 @@
                             <table class="candidate-table">
                               <tr>
                                 <td>{{ get_person_name(person) }}<br></td>
+                              </tr>
+                              <tr>
+                                <td>{{ format_date(person.birth_date) }}<br></td>
                               </tr>
                               <tr>
                                 <td>{{ get_contact_method(person, :mobile) }}</td>

@@ -69,6 +69,9 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
     "#{person.first_name} #{person.last_name}"
   end
 
+  defp format_date(nil), do: nil
+  defp format_date(date), do: HygeiaCldr.Date.to_string!(date)
+
   defp get_contact_method(person, type) do
     person.contact_methods
     |> Enum.find(&match?(^type, &1.type))
