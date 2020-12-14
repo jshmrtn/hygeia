@@ -1,18 +1,21 @@
 <div class="component-help container">
+  <Context get={{ HygeiaWeb, logged_in: logged_in }}>
   <h1 class="mb-4">{{ gettext("Help") }}</h1>
 
-  <h2>Intro</h2>
+  <div :if={{ logged_in }}>
+    <h2>Intro</h2>
 
-  <div class="embed-responsive embed-responsive-16by9 mt-3">
-    <iframe
-      class="embed-responsive-item"
-      src="https://player.vimeo.com/video/483233691"
-      frameborder="0"
-      allow="autoplay; fullscreen"
-      allowfullscreen
-    >
-      Intro Video
-    </iframe>
+    <div class="embed-responsive embed-responsive-16by9 mt-3">
+      <iframe
+        class="embed-responsive-item"
+        src="https://player.vimeo.com/video/483233691"
+        frameborder="0"
+        allow="autoplay; fullscreen"
+        allowfullscreen
+      >
+        Intro Video
+      </iframe>
+    </div>
   </div>
 
   <details class="mt-5">
@@ -79,7 +82,7 @@
     <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/02-Login/04-app.png") }} />
   </details>
 
-  <details>
+  <details :if={{ logged_in }}>
     <summary>
       <h2>Fälle</h2>
     </summary>
@@ -295,7 +298,7 @@
     </details>
   </details>
 
-  <details>
+  <details :if={{ logged_in }}>
     <summary>
       <h2>Aktionen</h2>
     </summary>
@@ -413,4 +416,5 @@
       <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/13-phase-index.png") }} />
     </details>
   </details>
+  </Context>
 </div>

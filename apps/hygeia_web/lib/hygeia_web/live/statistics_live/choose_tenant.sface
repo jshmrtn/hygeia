@@ -1,19 +1,24 @@
 <div class="container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1>
-      {{ gettext("Choose Tenant") }}
-    </h1>
-
-    <ul>
-      <li :for={{ tenant <- @tenants }}>
-        {{ tenant.name }}
-        <LiveRedirect
-          to={{ Routes.statistics_statistics_path(@socket, :show, tenant) }}
-          :if={{ authorized?(tenant, :statistics, auth) }}
-        >
-          {{ gettext("Show Statistics") }}
-        </LiveRedirect>
-      </li>
-    </ul>
-  </Context>
+  <h1>
+    {{ gettext("Choose Tenant") }}
+  </h1>
+  
+  <ul>
+    <li :for={{ tenant <- @tenants }}>
+      {{ tenant.name }}
+    
+      <LiveRedirect
+        to={{ Routes.statistics_statistics_path(@socket, :show, tenant) }}
+      >
+        {{ gettext("Show Statistics") }}
+      </LiveRedirect>
+    </li>
+  </ul>
+  
+  <div
+    :if={{ @tenants == [] }}
+    class="alert alert-info"
+  >
+    {{ gettext("No data to display") }}
+  </div>
 </div>

@@ -1,5 +1,5 @@
 <header class="layout-header py-3 bg-dark mb-5">
-  <Context get={{ HygeiaWeb, auth: auth }}>
+  <Context get={{ HygeiaWeb, auth: auth, logged_in: logged_in }}>
     <section class="container">
       <div class="d-flex justify-content-between">
         <ul class="nav nav-pills" role="navigation">
@@ -43,6 +43,7 @@
               role="button"
               aria-haspopup="true"
               aria-expanded="false"
+              :if={{ logged_in }}
             >
               {{ gettext("More") }}
             </a>
@@ -93,7 +94,10 @@
           </li>
         </ul>
         <div class="nav nav-pills">
-          <li class="nav-item mr-3">
+          <li
+            class="nav-item mr-3"
+            :if={{ logged_in }}
+          >
             <HygeiaWeb.Search id="search" />
           </li>
           <li class="nav-item">

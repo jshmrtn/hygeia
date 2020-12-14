@@ -11,7 +11,7 @@ defmodule HygeiaWeb.StatisticsLive.ChooseTenant do
   def mount(params, session, socket) do
     socket =
       if authorized?(Tenant, :list, get_auth(socket)) do
-        assign(socket, :tenants, list_tenants())
+        assign(socket, tenants: list_tenants(socket))
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))
@@ -24,5 +24,9 @@ defmodule HygeiaWeb.StatisticsLive.ChooseTenant do
   @impl Phoenix.LiveView
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp list_tenants, do: TenantContext.list_tenants()
+  defp list_tenants(socket) do
+    auth = get_auth(socket)
+
+    Enum.filter(TenantContext.list_tenants(), &authorized?(&1, :statistics, auth))
+  end
 end

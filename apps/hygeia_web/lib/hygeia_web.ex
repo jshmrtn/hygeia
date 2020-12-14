@@ -17,6 +17,8 @@ defmodule HygeiaWeb do
   and import those modules here.
   """
 
+  import HygeiaWeb.Helpers.Auth
+
   alias Hygeia.Helpers.Versioning
 
   @doc false
@@ -69,6 +71,7 @@ defmodule HygeiaWeb do
            assigns
            |> Map.get(:__context__, %{})
            |> Map.put({unquote(__MODULE__), :auth}, get_auth(socket))
+           |> Map.put({unquote(__MODULE__), :logged_in}, is_logged_in?(socket))
          )}
       end
 
@@ -109,6 +112,7 @@ defmodule HygeiaWeb do
            assigns
            |> Map.get(:__context__, %{})
            |> Map.put({unquote(__MODULE__), :auth}, get_auth(socket))
+           |> Map.put({unquote(__MODULE__), :logged_in}, is_logged_in?(socket))
          )}
       end
 
