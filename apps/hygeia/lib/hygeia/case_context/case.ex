@@ -13,6 +13,7 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.OrganisationContext.Organisation
@@ -52,6 +53,7 @@ defmodule Hygeia.CaseContext.Case do
           supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
           protocol_entries: Ecto.Schema.has_many(ProtocolEntry.t()) | nil,
           related_organisations: Ecto.Schema.many_to_many(Organisation.t()) | nil,
+          possible_index_submissions: Ecto.Schema.many_to_many(PossibleIndexSubmission.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -76,6 +78,7 @@ defmodule Hygeia.CaseContext.Case do
           supervisor: Ecto.Schema.belongs_to(User.t()),
           protocol_entries: Ecto.Schema.has_many(ProtocolEntry.t()),
           related_organisations: Ecto.Schema.many_to_many(Organisation.t()),
+          possible_index_submissions: Ecto.Schema.many_to_many(PossibleIndexSubmission.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -102,6 +105,7 @@ defmodule Hygeia.CaseContext.Case do
     # , references: :propagator_case
     has_many :propagated_transmissions, Transmission, foreign_key: :propagator_case_uuid
     has_many :protocol_entries, ProtocolEntry, foreign_key: :case_uuid
+    has_many :possible_index_submissions, PossibleIndexSubmission, foreign_key: :case_uuid
 
     many_to_many :related_organisations, Organisation,
       join_through: "case_related_organisations",

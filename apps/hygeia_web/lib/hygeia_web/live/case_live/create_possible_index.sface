@@ -19,6 +19,8 @@
     submit="save"
     opts={{ autocomplete: "off", id: "case-create-form", "phx-hook": "BlockNavigation" }}
   >
+    <HiddenInput field={{ :possible_index_submission_uuid }} />
+
     <InputContext assigns={{ assigns }} :let={{ form: form }}>
       <div class="container">
         <div class="row mb-3">

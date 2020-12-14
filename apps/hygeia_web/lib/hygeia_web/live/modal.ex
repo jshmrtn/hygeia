@@ -5,4 +5,6 @@ defmodule HygeiaWeb.Modal do
 
   prop title, :string, default: ""
   prop close, :event, default: nil
+
+  slot default, required: true
 end

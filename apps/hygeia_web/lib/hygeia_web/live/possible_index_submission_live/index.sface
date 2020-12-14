@@ -1,0 +1,165 @@
+<div class="component-possible-index-submissions-index container">
+  <!-- TODO: Style -->
+
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <div :if={{ auth == :anonymous }}>
+      <h2>{{ gettext("Enter Possible Transmissions") }}</h2>
+
+      <p>{{ gettext("You should report all people that you met one week before you started feeling symptoms.") }}</p>
+
+      <p>{{ gettext("If you had contact with people you do not know, please talk to your tracer with further details.") }}</p>
+
+      <p>{{ gettext("If you're having trouble recalling what you did since then, here are some examples:") }}</p>
+
+      <ul>
+        <li>
+          <strong>{{ gettext("Vacation") }}</strong>
+          {{ gettext("How did you travel there and back?") }}
+        </li>
+        <li>
+          <strong>{{ gettext("Association") }}</strong>
+          {{ gettext("Are you working in an association?") }}
+        </li>
+        <li>
+          <strong>{{ gettext("Employment") }}</strong>
+          {{ gettext("Did you meet any colleages?") }}
+        </li>
+        <li>
+          <strong>{{ gettext("Family / Friends") }}</strong>
+          {{ gettext("Did you meet your family or friends recently?") }}
+        </li>
+        <li>
+          <strong>{{ gettext("Events") }}</strong>
+          {{ gettext("Did you visit a pub / restaurant / event recently?") }}
+        </li>
+        <li>
+          <strong>{{ gettext("Gym") }}</strong>
+          {{ gettext("Did you visit a gym recently?") }}
+        </li>
+      </ul>
+    </div>
+
+    <HygeiaWeb.PersonLive.Header
+      person={{ @case.person }}
+      id="header"
+      :if={{ authorized?(@case.person, :details, auth) }}
+    />
+
+    <div class="card">
+      <div
+        class="card-header"
+        :if={{ authorized?(@case, :details, auth) }}
+      >
+        <HygeiaWeb.CaseLive.Navigation
+          case={{ @case }}
+          id="navigation"
+        />
+      </div>
+      <div
+        :if={{ not @has_index_phase? }}
+        class="card-body"
+      >
+        <div class="alert alert-warning">
+          <strong>{{ gettext("This case is not in an index phase.") }}</strong>
+          <p>{{ gettext("Possible index submissions can only be managed for cases with an index phase.") }}</p>
+        </div>
+      </div>
+      <div
+        :if={{ @has_index_phase? }}
+        class="card-body"
+      >
+        <div class="d-flex">
+          <LiveRedirect class="mr-2" to={{ Routes.possible_index_submission_create_path(@socket, :create, @case) }}>
+            <button type="button" class="mb-2 mt-3 btn btn-primary">
+              <span class="oi oi-plus" aria-hidden="true"></span>
+              {{ gettext("New Possible Index Submission") }}
+            </button>
+          </LiveRedirect>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                {{ gettext("First Name") }}
+              </th>
+              <th>
+                {{ gettext("Last Name") }}
+              </th>
+              <th>
+                {{ gettext("Address") }}
+              </th>
+
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="professions">
+            <tr
+              :for={{ possible_index_submission <- @case.possible_index_submissions  }}
+              id="profession-{{ possible_index_submission.uuid }}"
+            >
+              <td>
+                {{ possible_index_submission.first_name }}
+              </td>
+              <td>
+                {{ possible_index_submission.last_name }}
+              </td>
+              <td>
+                {{ format_address(possible_index_submission.address) }}
+              </td>
+
+              <td>
+                <div class="d-flex justify-content-end w-100">
+                  <LiveRedirect
+                    to={{ Routes.possible_index_submission_show_path(@socket, :show, possible_index_submission) }}
+                    :if={{ authorized?(possible_index_submission, :details, auth) }}
+                  >
+                    <button class="ml-auto btn btn-sm btn-secondary">
+                      {{ gettext("Show") }}
+                    </button>
+                  </LiveRedirect>
+                  <LiveRedirect
+                    to={{ Routes.possible_index_submission_show_path(@socket, :edit, possible_index_submission) }}
+                    :if={{ authorized?(possible_index_submission, :update, auth) }}
+                  >
+                    <button class="ml-1 btn btn-sm btn-secondary">
+                      <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                    </button>
+                  </LiveRedirect>
+                  <Link 
+                    to="#" 
+                    click="delete" 
+                    opts={{
+                      title: gettext("Delete"),
+                      data: [confirm: gettext("Are you sure?")],
+                      phx_value_id: possible_index_submission.uuid,
+                      class: "delete"
+                    }}
+                    :if={{ authorized?(possible_index_submission, :delete, auth) }}
+                  >
+                    <button class="ml-1 btn btn-sm btn-danger">
+                      <span class="oi oi-trash" aria-hidden="true"></span>
+                    </button>
+                  </Link>
+                  <LiveRedirect 
+                    to={{ Routes.case_create_possible_index_path(
+                      @socket,
+                      :create,
+                      possible_index_submission_uuid: possible_index_submission,
+                      return_to: Routes.possible_index_submission_index_path(@socket, :index, @case)
+                    ) }} 
+                    :if={{ authorized?(Case, :create, auth) }}
+                  >
+                    <button class="ml-1 btn btn-sm btn-secondary">
+                      <span class="oi oi-check" title={{ gettext("Accept") }} aria-hidden="true"></span>
+                    </button>
+                  </LiveRedirect>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </Context>
+</div>

@@ -7,6 +7,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
@@ -35,15 +36,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         infection_place_types = CaseContext.list_infection_place_types()
         auth_user = get_auth(socket)
 
+        changeset_attrs =
+          params
+          |> Map.put_new("default_tracer_uuid", auth_user.uuid)
+          |> Map.put_new("default_supervisor_uuid", auth_user.uuid)
+          |> Map.put_new("default_country", "CH")
+
+        changeset_attrs =
+          case params["possible_index_submission_uuid"] do
+            nil -> changeset_attrs
+            uuid -> Map.merge(changeset_attrs, possible_index_submission_attrs(uuid))
+          end
+
         assign(socket,
-          changeset:
-            CreateSchema.changeset(
-              %CreateSchema{people: []},
-              params
-              |> Map.put_new("default_tracer_uuid", auth_user.uuid)
-              |> Map.put_new("default_supervisor_uuid", auth_user.uuid)
-              |> Map.put_new("default_country", "CH")
-            ),
+          changeset: CreateSchema.changeset(%CreateSchema{people: []}, changeset_attrs),
           tenants: tenants,
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
@@ -107,6 +113,21 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
               |> Enum.map(&create_case(&1, changeset))
 
             transmissions = Enum.map(cases, &create_transmission(&1, changeset))
+
+            changeset
+            |> Ecto.Changeset.fetch_field!(:possible_index_submission_uuid)
+            |> case do
+              nil ->
+                :ok
+
+              uuid ->
+                {:ok, _possible_index_submission} =
+                  uuid
+                  |> CaseContext.get_possible_index_submission!()
+                  |> CaseContext.delete_possible_index_submission()
+
+                :ok
+            end
 
             {cases, transmissions}
           end)
@@ -179,6 +200,44 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
+
+  defp possible_index_submission_attrs(uuid) do
+    %PossibleIndexSubmission{
+      case_uuid: case_uuid,
+      transmission_date: transmission_date,
+      infection_place: infection_place,
+      first_name: first_name,
+      last_name: last_name,
+      sex: sex,
+      mobile: mobile,
+      landline: landline,
+      email: email,
+      address: address
+    } = CaseContext.get_possible_index_submission!(uuid)
+
+    %{
+      "propagator_internal" => true,
+      "propagator_case_uuid" => case_uuid,
+      "type" => :contact_person,
+      "date" => Date.to_iso8601(transmission_date),
+      "infection_place" =>
+        infection_place
+        |> Map.from_struct()
+        |> Map.put(:address, Map.from_struct(infection_place.address))
+        |> Map.drop([:type]),
+      "people" => [
+        %{
+          first_name: first_name,
+          last_name: last_name,
+          sex: sex,
+          mobile: mobile,
+          landline: landline,
+          email: email,
+          address: Map.from_struct(address)
+        }
+      ]
+    }
+  end
 
   defp create_case({_person_schema, {person, supervisor, tracer}}, changeset) do
     {start_date, end_date} =

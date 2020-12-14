@@ -9,6 +9,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.CaseContext.InfectionPlaceType
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
@@ -1075,4 +1076,134 @@ defmodule Hygeia.CaseContext do
           Ecto.Changeset.t()
   def change_infection_place_type(%InfectionPlaceType{} = infection_place_type, attrs \\ %{}),
     do: InfectionPlaceType.changeset(infection_place_type, attrs)
+
+  @doc """
+  Returns the list of possible_index_submissions.
+
+  ## Examples
+
+      iex> list_possible_index_submissions()
+      [%PossibleIndexSubmission{}, ...]
+
+  """
+  @spec list_possible_index_submissions :: [PossibleIndexSubmission.t()]
+  def list_possible_index_submissions, do: Repo.all(PossibleIndexSubmission)
+
+  @doc """
+  Gets a single possible_index_submission.
+
+  Raises `Ecto.NoResultsError` if the Possible index submission does not exist.
+
+  ## Examples
+
+      iex> get_possible_index_submission!(123)
+      %PossibleIndexSubmission{}
+
+      iex> get_possible_index_submission!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_possible_index_submission!(id :: String.t()) :: PossibleIndexSubmission.t()
+  def get_possible_index_submission!(id), do: Repo.get!(PossibleIndexSubmission, id)
+
+  @doc """
+  Creates a possible_index_submission.
+
+  ## Examples
+
+      iex> create_possible_index_submission(%{field: value})
+      {:ok, %PossibleIndexSubmission{}}
+
+      iex> create_possible_index_submission(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_possible_index_submission(
+          case :: Case.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          {:ok, PossibleIndexSubmission.t()}
+          | {:error, Ecto.Changeset.t(PossibleIndexSubmission.t())}
+  def create_possible_index_submission(case, attrs \\ %{}),
+    do:
+      case
+      |> Ecto.build_assoc(:possible_index_submissions)
+      |> change_possible_index_submission(attrs)
+      |> versioning_insert()
+      |> broadcast("possible_index_submissions", :create, & &1.uuid, &["cases:#{&1.case_uuid}"])
+      |> versioning_extract()
+
+  @doc """
+  Updates a possible_index_submission.
+
+  ## Examples
+
+      iex> update_possible_index_submission(possible_index_submission, %{field: new_value})
+      {:ok, %PossibleIndexSubmission{}}
+
+      iex> update_possible_index_submission(possible_index_submission, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_possible_index_submission(
+          possible_index_submission :: PossibleIndexSubmission.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          {:ok, PossibleIndexSubmission.t()}
+          | {:error, Ecto.Changeset.t(PossibleIndexSubmission.t())}
+  def update_possible_index_submission(
+        %PossibleIndexSubmission{} = possible_index_submission,
+        attrs
+      ),
+      do:
+        possible_index_submission
+        |> change_possible_index_submission(attrs)
+        |> versioning_update()
+        |> broadcast("possible_index_submissions", :update, & &1.uuid, &["cases:#{&1.case_uuid}"])
+        |> versioning_extract()
+
+  @doc """
+  Deletes a possible_index_submission.
+
+  ## Examples
+
+      iex> delete_possible_index_submission(possible_index_submission)
+      {:ok, %PossibleIndexSubmission{}}
+
+      iex> delete_possible_index_submission(possible_index_submission)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_possible_index_submission(possible_index_submission :: PossibleIndexSubmission.t()) ::
+          {:ok, PossibleIndexSubmission.t()}
+          | {:error, Ecto.Changeset.t(PossibleIndexSubmission.t())}
+  def delete_possible_index_submission(%PossibleIndexSubmission{} = possible_index_submission),
+    do:
+      possible_index_submission
+      |> change_possible_index_submission()
+      |> versioning_delete()
+      |> broadcast("possible_index_submissions", :delete, & &1.uuid, &["cases:#{&1.case_uuid}"])
+      |> versioning_extract()
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking possible_index_submission changes.
+
+  ## Examples
+
+      iex> change_possible_index_submission(possible_index_submission)
+      %Ecto.Changeset{data: %PossibleIndexSubmission{}}
+
+  """
+  @spec change_possible_index_submission(
+          possible_index_submission ::
+            PossibleIndexSubmission.t() | PossibleIndexSubmission.empty(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          Ecto.Changeset.t(PossibleIndexSubmission.t())
+  def change_possible_index_submission(
+        %PossibleIndexSubmission{} = possible_index_submission,
+        attrs \\ %{}
+      ) do
+    PossibleIndexSubmission.changeset(possible_index_submission, attrs)
+  end
 end

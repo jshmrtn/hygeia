@@ -7,6 +7,7 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.InfectionPlaceType
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
@@ -285,5 +286,49 @@ defmodule Hygeia.Fixtures do
       |> CaseContext.create_infection_place_type()
 
     infection_place_type
+  end
+
+  @valid_attrs %{
+    address: %{
+      address: "Helmweg 481",
+      zip: "8045",
+      place: "Winterthur",
+      subdivision: "ZH",
+      country: "CH"
+    },
+    birth_date: ~D[1975-07-11],
+    email: "corinne.weber@gmx.ch",
+    first_name: "Corinne",
+    infection_place: %{
+      address: %{
+        address: "Torstrasse 25",
+        zip: "9000",
+        place: "St. Gallen",
+        subdivision: "SG",
+        country: "CH"
+      },
+      known: true,
+      activity_mapping_executed: true,
+      activity_mapping: "Drank beer, kept distance to other people",
+      type: "Pub",
+      name: "BrüW",
+      flight_information: nil
+    },
+    landline: "+41 52 233 06 89",
+    last_name: "Weber",
+    mobile: "+41 78 898 04 51",
+    sex: :female,
+    transmission_date: ~D[2020-01-25]
+  }
+
+  @spec possible_index_submission_fixture(
+          case :: Case.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: PossibleIndexSubmission.t()
+  def possible_index_submission_fixture(case \\ case_fixture(), attrs \\ %{}) do
+    {:ok, possible_index_submission} =
+      CaseContext.create_possible_index_submission(case, Enum.into(attrs, @valid_attrs))
+
+    possible_index_submission
   end
 end

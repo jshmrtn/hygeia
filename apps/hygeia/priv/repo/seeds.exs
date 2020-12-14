@@ -152,14 +152,14 @@ infection_place_other = Repo.get_by!(InfectionPlaceType, name: "anderer Ort")
   |> Stream.reject(&match?({:ok, _organisation}, &1))
   |> Enum.to_list()
 
-{:ok, user_jony} =
-  create_user(%{
-    email: "maennchen@joshmartin.ch",
-    display_name: "Jonatan Männchen",
-    iam_sub: "76605809181649894"
-  })
-
 if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
+  {:ok, user_jony} =
+    create_user(%{
+      email: "maennchen@joshmartin.ch",
+      display_name: "Jonatan Männchen",
+      iam_sub: "76605809181649894"
+    })
+
   {:ok, organisation_jm} =
     create_organisation(%{
       address: %{
@@ -317,6 +317,40 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           end: ~D[2020-10-22]
         }
       ]
+    })
+
+  {:ok, _possible_index_submission_corinne} =
+    create_possible_index_submission(case_jony, %{
+      address: %{
+        address: "Helmweg 481",
+        zip: "8045",
+        place: "Winterthur",
+        subdivision: "ZH",
+        country: "CH"
+      },
+      birth_date: ~D[1975-07-11],
+      email: "corinne.weber@gmx.ch",
+      first_name: "Corinne",
+      infection_place: %{
+        address: %{
+          address: "Torstrasse 25",
+          zip: "9000",
+          place: "St. Gallen",
+          subdivision: "SG",
+          country: "CH"
+        },
+        known: true,
+        activity_mapping_executed: true,
+        activity_mapping: "Drank beer, kept distance to other people",
+        type: "Pub",
+        name: "BrüW",
+        flight_information: nil
+      },
+      landline: "+41 52 233 06 89",
+      last_name: "Weber",
+      mobile: "+41 78 898 04 51",
+      sex: :female,
+      transmission_date: ~D[2020-01-25]
     })
 
   random_start_date_range = Date.range(Date.add(Date.utc_today(), -100), Date.utc_today())

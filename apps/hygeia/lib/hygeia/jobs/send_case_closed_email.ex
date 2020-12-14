@@ -86,7 +86,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
     [] =
       CaseContext.list_cases_for_automated_closed_email()
       |> Enum.map(&send_close_email/1)
-      |> Enum.reject(&match?(:ok, &1))
+      |> Enum.reject(&match?({:ok, _case}, &1))
   end
 
   defp send_close_email({case, phase}) do
@@ -96,8 +96,8 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
       Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name)
 
       with case <- CaseContext.get_case_with_lock!(case.uuid),
-           :ok = send_sms(case),
-           :ok = send_email(case),
+           :ok <- send_sms(case),
+           :ok <- send_email(case),
            {:ok, case} <- CaseContext.case_phase_automated_email_sent(case, phase) do
         case
       else

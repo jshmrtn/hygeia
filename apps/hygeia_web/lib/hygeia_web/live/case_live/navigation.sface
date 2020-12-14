@@ -36,6 +36,20 @@
         </LiveRedirect>
       </UriActiveContext>
     </li>
+    <li
+      :if={{ has_index_phase?(@case) }}
+      class="nav-item"
+    >
+      <UriActiveContext
+        to={{ Routes.possible_index_submission_index_path(@socket, :index, @case) }}
+        opts={{ active: :inclusive }}
+        :let={{ to: to, active: active }}
+      >
+        <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active"}}">
+          {{ gettext("Possible Index Submissions") }}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
     <li class="nav-item">
       <UriActiveContext
         to={{ Routes.case_protocol_path(@socket, :show, @case) }}

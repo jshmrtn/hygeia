@@ -107,6 +107,16 @@ defmodule HygeiaWeb.Router do
   end
 
   scope "/", HygeiaWeb do
+    pipe_through [:browser, :csrf]
+
+    live "/cases/:case_uuid/possible-index-submissions", PossibleIndexSubmissionLive.Index, :index
+
+    live "/cases/:case_uuid/possible-index-submissions/new",
+         PossibleIndexSubmissionLive.Create,
+         :create
+  end
+
+  scope "/", HygeiaWeb do
     pipe_through [:browser, :csrf, :protected]
 
     live "/tenants/new", TenantLive.Create, :create
@@ -169,6 +179,14 @@ defmodule HygeiaWeb.Router do
 
     live "/infection-place-types", InfectionPlaceTypeLive.Index, :index
     live "/infection-place-types/:id", InfectionPlaceTypeLive.Show, :show
+
+    live "/possible-index-submissions/:id",
+         PossibleIndexSubmissionLive.Show,
+         :show
+
+    live "/possible-index-submissions/:id/edit",
+         PossibleIndexSubmissionLive.Show,
+         :edit
 
     live "/statistics", StatisticsLive.ChooseTenant, :index
     live "/statistics/:tenant_uuid", StatisticsLive.Statistics, :show

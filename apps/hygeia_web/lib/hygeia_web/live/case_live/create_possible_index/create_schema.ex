@@ -5,6 +5,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
+  alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CaseContext.Transmission.InfectionPlace
   alias Hygeia.TenantContext.Tenant
@@ -31,6 +32,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
 
     belongs_to :propagator_case, Case, references: :uuid, foreign_key: :propagator_case_uuid
 
+    belongs_to :possible_index_submission, PossibleIndexSubmission,
+      references: :uuid,
+      foreign_key: :possible_index_submission_uuid
+
     embeds_one :infection_place, InfectionPlace
 
     embeds_many :people, CreatePersonSchema, on_replace: :delete
@@ -53,7 +58,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       :send_confirmation_sms,
       :send_confirmation_email,
       :directly_close_cases,
-      :copy_address_from_propagator
+      :copy_address_from_propagator,
+      :possible_index_submission_uuid
     ])
     |> cast_embed(:people, required: true)
     |> cast_embed(:infection_place, required: true)

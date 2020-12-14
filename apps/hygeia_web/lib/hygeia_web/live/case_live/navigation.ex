@@ -96,4 +96,8 @@ defmodule HygeiaWeb.CaseLive.Navigation do
   defp can_generate_quarantine_confirmation(phase) do
     phase.details.type == :contact_person and phase.start != nil and phase.end != nil
   end
+
+  defp has_index_phase?(case) do
+    Enum.any?(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1))
+  end
 end

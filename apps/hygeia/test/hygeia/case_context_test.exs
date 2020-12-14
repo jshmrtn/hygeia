@@ -18,6 +18,7 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.InfectionPlaceType
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.ProtocolEntry.Email
@@ -944,6 +945,170 @@ defmodule Hygeia.CaseContextTest do
     test "change_infection_place_type/1 returns a infection_place_type changeset" do
       infection_place_type = infection_place_type_fixture()
       assert %Ecto.Changeset{} = CaseContext.change_infection_place_type(infection_place_type)
+    end
+  end
+
+  describe "possible_index_submissions" do
+    @valid_attrs %{
+      address: %{
+        address: "Helmweg 481",
+        zip: "8045",
+        place: "Winterthur",
+        subdivision: "ZH",
+        country: "CH"
+      },
+      birth_date: ~D[1975-07-11],
+      email: "corinne.weber@gmx.ch",
+      first_name: "Corinne",
+      infection_place: %{
+        address: %{
+          address: "Torstrasse 25",
+          zip: "9000",
+          place: "St. Gallen",
+          subdivision: "SG",
+          country: "CH"
+        },
+        known: true,
+        activity_mapping_executed: true,
+        activity_mapping: "Drank beer, kept distance to other people",
+        type: "Pub",
+        name: "BrüW",
+        flight_information: nil
+      },
+      landline: "+41 52 233 06 89",
+      last_name: "Weber",
+      mobile: "+41 78 898 04 51",
+      sex: :female,
+      transmission_date: ~D[2020-01-25]
+    }
+
+    @update_attrs %{
+      address: %{
+        address: "somewhere else"
+      },
+      birth_date: ~D[2011-05-18],
+      email: "foo@gmx.net",
+      first_name: "some updated first_name",
+      infection_place: %{
+        known: false
+      },
+      landline: "+41 52 123 45 67",
+      last_name: "some updated last_name",
+      mobile: "+41 78 123 45 67",
+      sex: :male,
+      transmission_date: ~D[2011-05-18]
+    }
+    @invalid_attrs %{
+      address: nil,
+      birth_date: nil,
+      email: nil,
+      first_name: nil,
+      infection_place: nil,
+      landline: nil,
+      last_name: nil,
+      mobile: nil,
+      sex: nil,
+      transmission_date: nil
+    }
+
+    test "list_possible_index_submissions/0 returns all possible_index_submissions" do
+      possible_index_submission = possible_index_submission_fixture()
+      assert CaseContext.list_possible_index_submissions() == [possible_index_submission]
+    end
+
+    test "get_possible_index_submission!/1 returns the possible_index_submission with given id" do
+      possible_index_submission = possible_index_submission_fixture()
+
+      assert CaseContext.get_possible_index_submission!(possible_index_submission.uuid) ==
+               possible_index_submission
+    end
+
+    test "create_possible_index_submission/1 with valid data creates a possible_index_submission" do
+      assert {:ok, %PossibleIndexSubmission{} = possible_index_submission} =
+               CaseContext.create_possible_index_submission(case_fixture(), @valid_attrs)
+
+      assert %{address: "Helmweg 481"} = possible_index_submission.address
+      assert possible_index_submission.birth_date == ~D[1975-07-11]
+      assert possible_index_submission.email == "corinne.weber@gmx.ch"
+      assert possible_index_submission.first_name == "Corinne"
+
+      assert %{
+               activity_mapping: "Drank beer, kept distance to other people",
+               activity_mapping_executed: true,
+               address: %{
+                 address: "Torstrasse 25",
+                 country: "CH",
+                 place: "St. Gallen",
+                 subdivision: "SG",
+                 zip: "9000"
+               },
+               flight_information: nil,
+               known: true,
+               name: "BrüW"
+             } = possible_index_submission.infection_place
+
+      assert possible_index_submission.landline == "+41 52 233 06 89"
+      assert possible_index_submission.last_name == "Weber"
+      assert possible_index_submission.mobile == "+41 78 898 04 51"
+      assert possible_index_submission.sex == :female
+      assert possible_index_submission.transmission_date == ~D[2020-01-25]
+    end
+
+    test "create_possible_index_submission/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               CaseContext.create_possible_index_submission(case_fixture(), @invalid_attrs)
+    end
+
+    test "update_possible_index_submission/2 with valid data updates the possible_index_submission" do
+      possible_index_submission = possible_index_submission_fixture()
+
+      assert {:ok, %PossibleIndexSubmission{} = possible_index_submission} =
+               CaseContext.update_possible_index_submission(
+                 possible_index_submission,
+                 @update_attrs
+               )
+
+      assert %{address: "somewhere else"} = possible_index_submission.address
+      assert possible_index_submission.birth_date == ~D[2011-05-18]
+      assert possible_index_submission.email == "foo@gmx.net"
+      assert possible_index_submission.first_name == "some updated first_name"
+      assert %{known: false} = possible_index_submission.infection_place
+      assert possible_index_submission.landline == "+41 52 123 45 67"
+      assert possible_index_submission.last_name == "some updated last_name"
+      assert possible_index_submission.mobile == "+41 78 123 45 67"
+      assert possible_index_submission.sex == :male
+      assert possible_index_submission.transmission_date == ~D[2011-05-18]
+    end
+
+    test "update_possible_index_submission/2 with invalid data returns error changeset" do
+      possible_index_submission = possible_index_submission_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               CaseContext.update_possible_index_submission(
+                 possible_index_submission,
+                 @invalid_attrs
+               )
+
+      assert possible_index_submission ==
+               CaseContext.get_possible_index_submission!(possible_index_submission.uuid)
+    end
+
+    test "delete_possible_index_submission/1 deletes the possible_index_submission" do
+      possible_index_submission = possible_index_submission_fixture()
+
+      assert {:ok, %PossibleIndexSubmission{}} =
+               CaseContext.delete_possible_index_submission(possible_index_submission)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        CaseContext.get_possible_index_submission!(possible_index_submission.uuid)
+      end
+    end
+
+    test "change_possible_index_submission/1 returns a possible_index_submission changeset" do
+      possible_index_submission = possible_index_submission_fixture()
+
+      assert %Ecto.Changeset{} =
+               CaseContext.change_possible_index_submission(possible_index_submission)
     end
   end
 end

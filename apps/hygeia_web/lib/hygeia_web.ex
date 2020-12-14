@@ -226,10 +226,7 @@ defmodule HygeiaWeb do
     end
 
     Versioning.put_origin(:web)
-
-    unless is_nil(session["auth"]) do
-      Versioning.put_originator(session["auth"])
-    end
+    Versioning.put_originator(session["auth"] || :noone)
 
     :ok
   end
