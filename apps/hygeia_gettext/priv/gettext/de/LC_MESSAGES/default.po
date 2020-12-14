@@ -18,7 +18,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 1.8.12\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: lib/hygeia_web/live/case_live/create_index.ex:99 lib/hygeia_web/live/case_live/create_possible_index.ex:122
@@ -1762,3 +1762,11 @@ msgstr "Warten auf Ergebnisse..."
 #: lib/hygeia_web/templates/error/502.html.eex:3
 msgid "We're having difficulty connecting to the database."
 msgstr "Wir haben Schwierigkeiten, eine Verbindung mit der Datenbank herzustellen."
+
+#: lib/hygeia_web/live/case_live/person_create_table.sface:250
+msgid "Choose existing person"
+msgstr "Bestehende Person wählen"
+
+#: lib/hygeia_web/live/case_live/person_create_table.sface:216
+msgid "Create new person"
+msgstr "Neue Person erstellen"

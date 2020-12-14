@@ -1806,7 +1806,7 @@ msgstr ""
 msgid "Oops!"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/hygeia_web/templates/layout/error.html.eex:17
 msgid "Status Page"
 msgstr ""
@@ -1824,4 +1824,14 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia_web/templates/error/502.html.eex:3
 msgid "We're having difficulty connecting to the database."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/person_create_table.sface:250
+msgid "Choose existing person"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/person_create_table.sface:216
+msgid "Create new person"
 msgstr ""

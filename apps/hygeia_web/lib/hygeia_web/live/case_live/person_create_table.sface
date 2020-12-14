@@ -213,7 +213,7 @@
                         checked={{ accepted_duplicate and is_nil(form.source.changes[:accepted_duplicate_uuid]) }}
                         phx-click="decline_duplicate"
                         phx-target={{ @myself }}
-                        value={{ gettext("Keep") }}
+                        value={{ gettext("Create new person") }}
                       />
                     </div>
                     <div class="card-body">
@@ -247,7 +247,7 @@
                               phx-click="select_accepted_duplicate"
                               phx-value-person-uuid={{ person_uuid }}
                               phx-target={{ @myself }}
-                              value={{ gettext("Choose") }}
+                              value={{ gettext("Choose existing person") }}
                             />
                           </Context>
                         </div>
