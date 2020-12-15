@@ -1,5 +1,15 @@
 <ul class="nav nav-tabs card-header-tabs">
   <Context get={{ HygeiaWeb, auth: auth }}>
+    <HygeiaWeb.CaseLive.ProtocolModal 
+      case={{ @case }} 
+      id={{ {:navigation, :protocol_modal} }}
+      :if={{ not is_nil(@protocol_entry_modal) }}
+      params={{ @protocol_entry_modal }}
+      close="close_protocol_entry_modal"
+      caller_id={{ @id }}
+      caller_module={{ __MODULE__ }}
+    />
+
     <li class="nav-item">
       <UriActiveContext
         to={{ Routes.case_base_data_path(@socket, :show, @case) }}
@@ -56,72 +66,52 @@
               <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
               {{ gettext("Isolation Confirmation") }}
             </Link>
-            <LiveRedirect
+            <a
               class={{ "dropdown-item" <> if !can_generate_isolation_confirmation(phase), do: " disabled", else: "" }}
-              to={{ Routes.case_protocol_path(
-                @socket,
-                :show,
-                @case,
-                type: "sms",
-                entry: %{
-                  text: isolation_sms(@socket, @case, phase)
-                }
-              )}}
+              href="#"
+              :on-click="open_protocol_entry_modal"
+              phx-value-type="sms"
+              phx-value-entry-text={{ isolation_sms(@socket, @case, phase) }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
               {{ gettext("Send SMS Isolation Confirmation") }}
-            </LiveRedirect>
-            <LiveRedirect
+            </a>
+            <a
               class={{ "dropdown-item" <> if !can_generate_isolation_confirmation(phase), do: " disabled", else: "" }}
-              to={{ Routes.case_protocol_path(
-                @socket,
-                :show,
-                @case,
-                type: "email",
-                entry: %{
-                  subject: isolation_email_subject(),
-                  body: isolation_email_body(@socket, @case, phase)
-                }
-              )}}
+              href="#"
+              :on-click="open_protocol_entry_modal"
+              phx-value-type="email"
+              phx-value-entry-subject={{ isolation_email_subject() }}
+              phx-value-entry-body={{ isolation_email_body(@socket, @case, phase) }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Isolation Confirmation") }}
-            </LiveRedirect>
-            <LiveRedirect
+            </a>
+            <a
               class={{ "dropdown-item" }}
-              to={{ Routes.case_protocol_path(
-                @socket,
-                :show,
-                @case,
-                type: "sms",
-                entry: %{
-                  text: Hygeia.Jobs.SendCaseClosedEmail.sms_text()
-                }
-              )}}
+              href="#"
+              :on-click="open_protocol_entry_modal"
+              phx-value-type="sms"
+              phx-value-entry-text={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text() }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
               {{ gettext("Send SMS Isolation End Confirmation") }}
-            </LiveRedirect>
-            <LiveRedirect
+            </a>
+            <a
               class={{ "dropdown-item" }}
-              to={{ Routes.case_protocol_path(
-                @socket,
-                :show,
-                @case,
-                type: "email",
-                entry: %{
-                  subject: Hygeia.Jobs.SendCaseClosedEmail.email_subject(),
-                  body: Hygeia.Jobs.SendCaseClosedEmail.email_body(),
-                }
-              )}}
+              href="#"
+              :on-click="open_protocol_entry_modal"
+              phx-value-type="email"
+              phx-value-entry-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject() }}
+              phx-value-entry-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body() }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Isolation End Confirmation") }}
-            </LiveRedirect>
+            </a>
           </div>
         </div>
         <div :if={{ Enum.any?(@case.phases, &match?(%{details: %Phase.PossibleIndex{}}, &1)) }}>
@@ -138,72 +128,52 @@
               <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
               {{ gettext("Quarantine Confirmation") }}
             </Link>
-            <LiveRedirect
+            <a
               class={{ "dropdown-item" <> if !can_generate_quarantine_confirmation(phase), do: " disabled", else: "" }}
-              to={{ Routes.case_protocol_path(
-                @socket,
-                :show,
-                @case,
-                type: "sms",
-                entry: %{
-                  text: quarantine_sms(@socket, @case, phase)
-                }
-              )}}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
+              href="#"
+              :on-click="open_protocol_entry_modal"
+              phx-value-type="sms"
+              phx-value-entry-text={{ quarantine_sms(@socket, @case, phase) }}
+             :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
               {{ gettext("Send SMS Quarantine Confirmation") }}
-            </LiveRedirect>
-            <LiveRedirect
+            </a>
+            <a
               class={{ "dropdown-item" <> if !can_generate_quarantine_confirmation(phase), do: " disabled", else: "" }}
-              to={{ Routes.case_protocol_path(
-                @socket,
-                :show,
-                @case,
-                type: "email",
-                entry: %{
-                  subject: quarantine_email_subject(),
-                  body: quarantine_email_body(@socket, @case, phase)
-                }
-              )}}
+              href="#"
+              :on-click="open_protocol_entry_modal"
+              phx-value-type="email"
+              phx-value-entry-subject={{ quarantine_email_subject() }}
+              phx-value-entry-body={{ quarantine_email_body(@socket, @case, phase) }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Quarantine Confirmation") }}
-            </LiveRedirect>
-            <LiveRedirect
+            </a>
+            <a
               class={{ "dropdown-item" }}
-              to={{ Routes.case_protocol_path(
-                @socket,
-                :show,
-                @case,
-                type: "sms",
-                entry: %{
-                  text: Hygeia.Jobs.SendCaseClosedEmail.sms_text()
-                }
-              )}}
+              href="#"
+              :on-click="open_protocol_entry_modal"
+              phx-value-type="sms"
+              phx-value-entry-text={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text() }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
               {{ gettext("Send SMS Quarantine End Confirmation") }}
-            </LiveRedirect>
-            <LiveRedirect
+            </a>
+            <a
               class={{ "dropdown-item" }}
-              to={{ Routes.case_protocol_path(
-                @socket,
-                :show,
-                @case,
-                type: "email",
-                entry: %{
-                  subject: Hygeia.Jobs.SendCaseClosedEmail.email_subject(),
-                  body: Hygeia.Jobs.SendCaseClosedEmail.email_body(),
-                }
-              )}}
+              href="#"
+              :on-click="open_protocol_entry_modal"
+              phx-value-type="email"
+              phx-value-entry-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject() }}
+              phx-value-entry-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body() }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Quarantine End Confirmation") }}
-            </LiveRedirect>
+            </a>
           </div>
         </div>
         <div :if={{ authorized?(Case, :create, auth) }}>
@@ -243,29 +213,35 @@
         </div>
         <div :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) }}>
           <div class="dropdown-divider"></div>
-          <LiveRedirect
+          <a
             class="dropdown-item"
-            to={{ Routes.case_protocol_path(@socket, :show, @case, type: "note") }}
+            href="#"
+            :on-click="open_protocol_entry_modal"
+            phx-value-type="note"
           >
             <span class="oi oi-plus mr-1" aria-hidden="true"></span>
             {{ gettext("Create Note") }}
-          </LiveRedirect>
-          <LiveRedirect
+          </a>
+          <a
             class="dropdown-item"
-            to={{ Routes.case_protocol_path(@socket, :show, @case, type: "sms") }}
+            href="#"
+            :on-click="open_protocol_entry_modal"
+            phx-value-type="sms"
             :if={{ CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
           >
             <span class="oi oi-phone mr-1" aria-hidden="true"></span>
             {{ gettext("Send SMS") }}
-          </LiveRedirect>
-          <LiveRedirect
+          </a>
+          <a
             class="dropdown-item"
-            to={{ Routes.case_protocol_path(@socket, :show, @case, type: "email") }}
+            href="#"
+            :on-click="open_protocol_entry_modal"
+            phx-value-type="email"
             :if={{ CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
           >
             <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
             {{ gettext("Send Email") }}
-          </LiveRedirect>
+          </a>
         </div>
         <div :if={{ authorized?(@case, :delete, auth) }}>
           <div class="dropdown-divider"></div>

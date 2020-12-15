@@ -13,6 +13,20 @@ defmodule HygeiaWeb.CaseLive.Navigation do
   alias Surface.Components.LiveRedirect
 
   prop case, :map, required: true
+  data protocol_entry_modal, :map, default: nil
+
+  @impl Phoenix.LiveComponent
+  def update(assigns, socket) do
+    socket =
+      if assigns[:__close_protocol_entry_modal__] do
+        assign(socket, protocol_entry_modal: nil)
+      else
+        socket
+      end
+
+    assigns = Map.drop(assigns, [:__close_protocol_entry_modal__])
+    {:ok, assign(socket, assigns)}
+  end
 
   @impl Phoenix.LiveComponent
   def handle_event(
@@ -53,6 +67,26 @@ defmodule HygeiaWeb.CaseLive.Navigation do
      socket
      |> put_flash(:info, gettext("Case deleted successfully"))
      |> redirect(to: Routes.case_index_path(socket, :index))}
+  end
+
+  def handle_event("open_protocol_entry_modal", params, socket) do
+    params =
+      params
+      |> Enum.map(fn {key, value} ->
+        key =
+          key
+          |> String.split("-")
+          |> Enum.map(&Access.key(&1, %{}))
+
+        {key, value}
+      end)
+      |> Enum.reduce(%{}, fn {path, value}, acc -> put_in(acc, path, value) end)
+
+    {:noreply, assign(socket, protocol_entry_modal: params)}
+  end
+
+  def handle_event("close_protocol_entry_modal", _params, socket) do
+    {:noreply, assign(socket, protocol_entry_modal: nil)}
   end
 
   defp can_generate_isolation_confirmation(phase) do

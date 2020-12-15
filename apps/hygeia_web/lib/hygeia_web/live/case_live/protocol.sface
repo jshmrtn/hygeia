@@ -1,66 +1,6 @@
 <div class="component-case-protocol container">
   <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
 
-  <HygeiaWeb.Modal
-    id="protocol_modal"
-    :if={{ @modal_open }}
-    title={{ gettext("New entry") }}
-    close="close_modal"
-  >
-    <Form
-      for={{ @protocol_entry_changeset }}
-      change="validate"
-      submit="save"
-      opts={{ autocomplete: "off", id: "protocol-form", "phx-hook": "BlockNavigation" }}
-    >
-      <Field class="form-group" name={{ :type }}>
-        <Select
-          class="form-control"
-          opts={{ prompt: gettext("Choose Type") }}
-          field={{ :type }}
-          options={{ List.flatten([
-            [{gettext("Note"), "note"}],
-            (if CaseContext.person_has_mobile_number?(@case.person), do: [{gettext("SMS"), "sms"}], else: []),
-            (if CaseContext.person_has_email?(@case.person), do: [{gettext("Email"), "email"}], else: []),
-          ]) }}
-        />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-      <InputContext assigns={{ assigns }} :let={{ form: form }}>
-        <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "note" }} field={{ :entry }} type={{ :note }} id="poly-inputs">
-          <Field class="form-group" name={{ :note }}>
-            <Label>{{ gettext("Note") }}</Label>
-            <TextArea class="form-control" />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </PolimorphicInputs>
-        <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "sms" }} field={{ :entry }} type={{ :sms }} id="poly-inputs">
-          <Field class="form-group" name={{ :text }}>
-            <Label >{{ gettext("Text") }}</Label>
-            <TextArea class="form-control" rows="10" />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </PolimorphicInputs>
-        <PolimorphicInputs :if={{ Ecto.Changeset.get_field(form.source, :type) == "email" }} field={{ :entry }} type={{ :email }} id="poly-inputs">
-          <Field class="form-group" name={{ :subject }}>
-            <Label>{{ gettext("Subject") }}</Label>
-            <TextInput class="form-control" />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-          <Field class="form-group" name={{ :body }}>
-            <Label>{{ gettext("Body") }}</Label>
-            <TextArea class="form-control" rows="10" />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </PolimorphicInputs>
-      </InputContext>
-      <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} diabled={{ @protocol_entry_changeset.valid? }}>
-        <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
-        {{ gettext("Save") }}
-      </button>
-    </Form>
-  </HygeiaWeb.Modal>
-
   <div class="card">
     <div class="card-header">
       <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
