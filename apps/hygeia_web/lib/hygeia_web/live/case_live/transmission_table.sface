@@ -25,31 +25,41 @@
         <tr :for={{ transmission <- @transmissions }}>
           <td :if={{ @show_recipient }}>
             <div :if={{ transmission.recipient_internal == true }} class="d-flex align-items-center">
-              <Link
-                to={{ Routes.person_base_data_path(@socket, :show, transmission.recipient) }}
-                :if={{ authorized?(transmission.recipient, :details, auth) }}
-              >
-                {{ transmission.recipient.first_name }} {{ transmission.recipient.last_name }}
-              </Link>
-              <span
-                :if={{ not authorized?(transmission.recipient, :details, auth) }}
-              >
-                {{ transmission.recipient.human_readable_id }}
-              </span>
+              <em :if={{ is_nil(transmission.recipient) }}>
+                {{ gettext("deleted") }}
+              </em>
+              <div :if={{ not(is_nil(transmission.recipient)) }}>
+                <Link
+                  to={{ Routes.person_base_data_path(@socket, :show, transmission.recipient) }}
+                  :if={{ authorized?(transmission.recipient, :details, auth) }}
+                >
+                  {{ transmission.recipient.first_name }} {{ transmission.recipient.last_name }}
+                </Link>
+                <span
+                  :if={{ not authorized?(transmission.recipient, :details, auth) }}
+                >
+                  {{ transmission.recipient.human_readable_id }}
+                </span>
+              </div>
               <span class="mx-2">|</span>
-              <Link
-                class="d-flex align-items-center"
-                to={{ Routes.case_base_data_path(@socket, :show, transmission.recipient_case) }}
-                :if={{ authorized?(transmission.recipient_case, :details, auth) }}
-              >
-                {{ case_phase_type_translation(List.last(transmission.recipient_case.phases)) }}
-                <small class="ml-1">({{ case_display_date(transmission.recipient_case) }})</small>
-              </Link>
-              <span
-                :if={{ not authorized?(transmission.recipient_case, :details, auth) }}
-              >
-                {{ transmission.recipient_case.human_readable_id }}
-              </span>
+              <em :if={{ is_nil(transmission.recipient_case) }}>
+                {{ gettext("deleted") }}
+              </em>
+              <div :if={{ not(is_nil(transmission.recipient_case)) }}>
+                <Link
+                  class="d-flex align-items-center"
+                  to={{ Routes.case_base_data_path(@socket, :show, transmission.recipient_case) }}
+                  :if={{ authorized?(transmission.recipient_case, :details, auth) }}
+                >
+                  {{ case_phase_type_translation(List.last(transmission.recipient_case.phases)) }}
+                  <small class="ml-1">({{ case_display_date(transmission.recipient_case) }})</small>
+                </Link>
+                <span
+                  :if={{ not authorized?(transmission.recipient_case, :details, auth) }}
+                >
+                  {{ transmission.recipient_case.human_readable_id }}
+                </span>
+              </div>
             </div>
             <div :if={{ transmission.recipient_internal == false }}>
               {{ gettext("ISM-ID: %{id}", id: transmission.recipient_ism_id) }}
@@ -57,31 +67,41 @@
           </td>
           <td :if={{ @show_propagator }}>
             <div :if={{ transmission.propagator_internal == true }} class="d-flex align-items-center">
-              <Link
-                to={{ Routes.person_base_data_path(@socket, :show, transmission.propagator) }}
-                :if={{ authorized?(transmission.propagator, :details, auth) }}
-              >
-                {{ transmission.propagator.first_name }} {{ transmission.propagator.last_name }}
-              </Link>
-              <span
-                :if={{ not authorized?(transmission.propagator, :details, auth) }}
-              >
-                {{ transmission.propagator.human_readable_id }}
-              </span>
+              <em :if={{ is_nil(transmission.propagator) }}>
+                {{ gettext("deleted") }}
+              </em>
+              <div :if={{ not(is_nil(transmission.propagator)) }}>
+                <Link
+                  to={{ Routes.person_base_data_path(@socket, :show, transmission.propagator) }}
+                  :if={{ authorized?(transmission.propagator, :details, auth) }}
+                >
+                  {{ transmission.propagator.first_name }} {{ transmission.propagator.last_name }}
+                </Link>
+                <span
+                  :if={{ not authorized?(transmission.propagator, :details, auth) }}
+                >
+                  {{ transmission.propagator.human_readable_id }}
+                </span>
+              </div>
               <span class="mx-2">|</span>
-              <Link
-                class="d-flex align-items-center"
-                to={{ Routes.case_base_data_path(@socket, :show, transmission.propagator_case) }}
-                :if={{ authorized?(transmission.propagator_case, :details, auth) }}
-              >
-                {{ case_phase_type_translation(List.last(transmission.propagator_case.phases)) }}
-                <small class="ml-1">({{ case_display_date(transmission.propagator_case) }})</small>
-              </Link>
-              <span
-                :if={{ not authorized?(transmission.propagator_case, :details, auth) }}
-              >
-                {{ transmission.propagator_case.human_readable_id }}
-              </span>
+              <em :if={{ is_nil(transmission.propagator_case) }}>
+                {{ gettext("deleted") }}
+              </em>
+              <div :if={{ not(is_nil(transmission.propagator_case)) }}>
+                <Link
+                  class="d-flex align-items-center"
+                  to={{ Routes.case_base_data_path(@socket, :show, transmission.propagator_case) }}
+                  :if={{ authorized?(transmission.propagator_case, :details, auth) }}
+                >
+                  {{ case_phase_type_translation(List.last(transmission.propagator_case.phases)) }}
+                  <small class="ml-1">({{ case_display_date(transmission.propagator_case) }})</small>
+                </Link>
+                <span
+                  :if={{ not authorized?(transmission.propagator_case, :details, auth) }}
+                >
+                  {{ transmission.propagator_case.human_readable_id }}
+                </span>
+              </div>
             </div>
             <div :if={{ transmission.propagator_internal == false }}>
               {{ gettext("ISM-ID: %{id}", id: transmission.propagator_ism_id) }}
