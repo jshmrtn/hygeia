@@ -14,19 +14,20 @@
 <p class="p-4x-margin">Sie wurden uns von einer auf das neue Coronavirus (Sars-CoV-2) positiv getesteten oder an COVID-19 erkrankten Person als Kontaktperson gemeldet. Sie hatten ohne ausreichende Schutzmassnahmen einen engen Kontakt zur erwähnten Person (kumulativ mehr als 15 Minuten während der gesamten Ansteckungszeit mit einer Distanz von weniger als 1.5 Meter ohne Schutzmassnahmen wie Mundschutz bei beiden Personen). Es kann deshalb nicht ausgeschlossen werden, dass Sie sich selber angesteckt haben.</p>
 
 <p class="p-4x-margin">Gestützt auf das Epidemiengesetz (EpG) werden Sie deshalb einer 10-tägigen Quarantäne (zehn volle Tage ab dem letzten Kontakt zur infizierten/erkrankten Person) unterstellt (Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG).</p>
-<p class="p-4x-margin">Ihre Quarantäne dauert somit vom <%= HygeiaCldr.Date.to_string!(@phase.start) %> bis
-  <%= HygeiaCldr.Date.to_string!(@phase.end) %>.</p>
+<p class="p-4x-margin">Ihre Quarantäne dauert somit vom <%= HygeiaCldr.Date.to_string!(@phase.start) %> bis und mit <%= HygeiaCldr.Date.to_string!(@phase.end) %>.</p>
 <p class="p-2x-margin">Hier finden Sie das <a href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/merkblatt-selbstquarantaene.pdf.download.pdf/covid-19_anweisungen_quarantaene.pdf">Merkblatt</a> vom Bundesamt für Gesundheit (BAG) zur Quarantäne auf Deutsch und in weiteren Sprachen <a href="https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/faq-kontakte-downloads/downloads-in-verschiedenen-sprachen.html">hier</a>.</p>
 <p class="p-2x-margin">Ziel dieser Quarantäne ist es, die Ausbreitung des Coronavirus einzudämmen und weitere Personen vor einer Ansteckung zu schützen.</p>
 
 <p class="p-2x-margin">Das Contact Tracing Sankt Gallen, welches bisher auch die Kontaktpersonennachverfolgung für Appenzell Ausserrhoden durchgeführt hat, kann bei hohen Fallzahlen vorübergehend nur die zeitnahe telefonische Kontaktaufnahme mit den erkrankten Personen und den im gleichen Haushalt lebenden Familienangehörigen sicherstellen. Da es jedoch gerade jetzt besonders wichtig ist, eine ungebremste Weiterverbreitung des Virus einzudämmen, haben wir alle neu diagnostizieren Personen in unserem Kantonen darum gebeten alle ihre engen Kontaktpersonen selbstständig möglichst rasch darüber zu informieren, dass sie sich in Quarantäne begeben müssen. Auch wenn es die hohen Fallzahlen dem Tracing Team allenfalls nicht erlauben Sie persönlich telefonisch zu kontaktieren, möchten wir Ihnen aber auf diesem Weg dafür danken, dass Sie durch Ihr Verhalten im Alltag und durch die Befolgung der Quarantäneanordnung die Eindämmung der Pandemie in Appenzell Ausserrhoden unterstützen.</p>
 
-<p class="p-2x-margin">Überwachen Sie während der gesamten Quarantäne-Zeit Ihren Gesundheitszustand und lassen Sie sich beim Auftreten von Symptomen testen. Melden Sie sich immer zuerst telefonisch in der Arztpraxis, über die Hotline des Kantons für das Testzentrum in Teufen (+41 71 353 67 97 Montag bis Freitag, 8.30 bis 12.15 und von 13.30 bis 17 Uhr, Samstag von 8.30 bis 11 Uhr) oder bei schweren Symptomen über die Testhotline des SVAR (071 353 26 54, täglich 09.00 – 11.30 Uhr und 13.30 – 16.30 Uhr) an. Das kantonale Testzentrum ist von Montag bis Freitag geöffnet und steht ausschliesslich Bewohnerinnen und Bewohnern der Kantone Appenzell Ausserrhoden und Appenzell Innerrhoden sowie Berufstätigen in diesem Gebiet zur Verfügung. Das Testzentrum bietet insbesondere Personen mit nur leichten Symptomen, die keine ärztliche Untersuchung benötigen, eine Testmöglichkeit.</p>
+<div style="page-break-before: always;"></div>
+
+<p class="p-4x-margin">Überwachen Sie während der gesamten Quarantäne-Zeit Ihren Gesundheitszustand und lassen Sie sich beim Auftreten von Symptomen testen. Melden Sie sich immer zuerst telefonisch in der Arztpraxis, über die Hotline des Kantons für das Testzentrum in Teufen (+41 71 353 67 97 Montag bis Freitag, 8.30 bis 12.15 und von 13.30 bis 17 Uhr, Samstag von 8.30 bis 11 Uhr) oder bei schweren Symptomen über die Testhotline des SVAR (071 353 26 54, täglich 09.00 – 11.30 Uhr und 13.30 – 16.30 Uhr) an. Das kantonale Testzentrum ist von Montag bis Freitag geöffnet und steht ausschliesslich Bewohnerinnen und Bewohnern der Kantone Appenzell Ausserrhoden und Appenzell Innerrhoden sowie Berufstätigen in diesem Gebiet zur Verfügung. Das Testzentrum bietet insbesondere Personen mit nur leichten Symptomen, die keine ärztliche Untersuchung benötigen, eine Testmöglichkeit.</p>
 
 Wichtig:
-<ul class="p-2x-margin">
+<ul class="p-4x-margin">
   <li>Wenn ein Besuch in der Arztpraxis nötig ist und Sie das Haus verlassen müssen: Tragen Sie eine Hygienemaske und halten Sie Abstand zu allen Personen. Nutzen Sie dafür nicht den öffentlichen Verkehr.</li>
-  <li>Auch bei negativem Ergebnis müssen Sie die vollen 10 Tage in Quarantäne bleiben. </li>
+  <li>Auch bei negativem Ergebnis müssen Sie die vollen 10 Tage in Quarantäne bleiben.</li>
 </ul>
 
 Symptome des neuen Coronavirus:
@@ -51,6 +52,8 @@ Die Informationshotline des BAG erreichen sie unter 058 463 00 00 (täglich 06.0
 
 <p class="p-4x-margin">Nach Ende der Quarantäne befolgen Sie bitte für mindestens 4 weitere Tage besondere Vorsichtsmassnahmen: achten Sie gut auf Ihren Gesundheitszustand, halten Sie die Hygieneregeln ein, tragen Sie eine Maske wenn Sie Kontakt zu anderen Menschen haben, meiden Sie Menschenansammlungen und verzichten Sie wenn möglich auf Kontakte zu Personen die der Risikogruppe angehören.</p>
 
+<div style="page-break-before: always;"></div>
+
 <p class="p-4x-margin"><i>Bitte nehmen Sie zur Kenntnis, dass grundsätzlich mit Busse bestraft werden kann, wer der Quarantäneanordnung vorsätzlich oder fahrlässig zuwiderhandelt (Art. 83 Abs. 1 lit. h und Abs. 2 EpG).</i></p>
 
 <%= if length(@case.person.employers) > 0 do %>
@@ -73,7 +76,7 @@ Die Informationshotline des BAG erreichen sie unter 058 463 00 00 (täglich 06.0
   </div>
 <% end %>
 
-<p class="p-4x-margin">Ich wünsche Ihnen in dieser heraufordernden Zeit alles Gute. Geben Sie auf sich und Ihre Nächsten Acht.</p>
+<p class="p-4x-margin">Ich wünsche Ihnen in dieser heraufordernden Zeit alles Gute. Geben Sie auf sich und Ihre Nächsten acht.</p>
 
 <p class="p-4x-margin">Freundliche Grüsse,</p>
 
@@ -83,25 +86,26 @@ Die Informationshotline des BAG erreichen sie unter 058 463 00 00 (täglich 06.0
 <div style="page-break-before: always;"></div>
 
 <div class="additional-information">
-  <h2 class="p-4x-margin">Sie benötigen weiterführende Informationen?</h2>
+  <h2 class="p-2x-margin">Sie benötigen weiterführende Informationen?</h2>
 
   <ol>
-    <li>
+    <li class="p-2x-margin">
       Aktuelle Informationen finden sich stets auf
 
       <ul>
-        <li>BAG Homepage: www.bag-coronavirus.ch</li>
-        <li>Kanton St.Gallen: www.sg.ch/tools/informationen-coronavirus.html</li>
-        <li>Reiseinformationen www.safetravel.ch</li>
-        <li>Science Task Force https://ncs-tf.ch/de/</li>
-        <li>Informationen Bildungsbereich (EDK) https://www.edk.ch/dyn/32928.php</li>
+        <li>BAG Homepage: <a href="www.bag-coronavirus.ch">www.bag-coronavirus.ch</a></li>
+        <li>Kantonale Homepage: <a href="www.ar.ch/corona">www.ar.ch/corona</a></li>
+        <li>SVAR Homepage: <a href="www.spitalverbund.ch/coronavirus">www.spitalverbund.ch/coronavirus</a></li>
+        <li>Reiseinformationen <a href="www.safetravel.ch">www.safetravel.ch</a></li>
+        <li>Science Task Force <a href="https://ncs-tf.ch/de/">https://ncs-tf.ch/de</a></li>
+        <li>Informationen Bildungsbereich (EDK) <a href="https://www.edk.ch/dyn/32928.php">https://www.edk.ch/dyn/32928.php</a></li>
       </ul>
     </li>
     <li>
       Wichtige Telefonnummern
 
       <ol type="a">
-        <li class="p-4x-margin">
+        <li class="p-2x-margin">
           Informationen zum Coronavirus
 
           <ul>
@@ -109,21 +113,22 @@ Die Informationshotline des BAG erreichen sie unter 058 463 00 00 (täglich 06.0
             <li>BAG Hotline für Reiserückkehrer 058 464 44 88 (täglich 6 – 23 Uhr)</li>
             <li>BAG Hotline für Gesundheitsfachpersonen 058 462 21 00 (täglich 7 - 20 Uhr)</li>
             <li>BAG Whatsapp Infokanal 079 155 11 05</li>
-            <li>Kanton St.Gallen Infoline 058 229 22 33 (täglich von 8 – 12 Uhr und 13 – 17 Uhr)</li>
           </ul>
         </li>
-        <li class="p-4x-margin">
-          Testanmeldung und medizinische Hilfe
+        <li class="p-2x-margin">
+          Testanmeldung und medizinische Hilfe in Appenzell Ausserrhoden
 
           <ul>
             <li>
-              Bei medizinischen Fragen melden Sie sich bitte bei Ihrem Hausarzt (insbesondere bei
-              starken Symptomen oder Risikofaktoren ist eine Untersuchung beim Arzt empfohlen)
+              Bei medizinischen Fragen melden Sie sich bitte bei Ihrem Hausarzt, mehrere Praxen führen auch Tests durch (insbesondere bei starken Symptomen oder Risikofaktoren ist eine Untersuchung beim Arzt empfohlen)
             </li>
+            <li>Anmeldung für das Testzentrum Teufen 071 353 67 97 (Mo bis Fr 8:30–12:15 und 13:30–17.00, Sa 08:30-11:00 Uhr)</li>
+            <li>Anmeldung für Tests SVAR 071 353 26 54 (täglich 9.00 - 11.30 Uhr und 13.30 –16.30 Uhr)</li>
+            <li>Notfall Hotline des SVAR: 0844 55 00 55 (täglich 24 Stunden)</li>
             <li>Allgemeiner Notruf: 144 (täglich 24 Stunden)</li>
           </ul>
         </li>
-        <li class="p-4x-margin">
+        <li class="p-2x-margin">
           Unterstützung bei Sorgen und Problemen in der Familie
 
           <ul>
