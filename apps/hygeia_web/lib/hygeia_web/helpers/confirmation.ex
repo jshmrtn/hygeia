@@ -14,23 +14,8 @@ defmodule HygeiaWeb.Helpers.Confirmation do
           case :: Case.t(),
           phase :: Phase.t()
         ) :: String.t()
-  def isolation_sms(conn_or_socket, case, phase) do
-    case = Repo.preload(case, :tenant)
-
-    gettext(
-      """
-      You have been tested positive for the corona virus.
-      Therefore you have to self isolate.
-      Details: %{isolation_confirmation_link}
-      """,
-      isolation_confirmation_link:
-        TenantContext.replace_base_url(
-          case.tenant,
-          Routes.pdf_url(conn_or_socket, :isolation_confirmation, case, phase),
-          HygeiaWeb.Endpoint.url()
-        )
-    )
-  end
+  def isolation_sms(conn_or_socket, case, phase),
+    do: isolation_email_body(conn_or_socket, case, phase)
 
   @spec isolation_email_subject() :: String.t()
   def isolation_email_subject, do: gettext("Isolation Order")
@@ -48,11 +33,19 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       You have been tested positive for the corona virus.
       Therefore you have to self isolate.
       Details: %{isolation_confirmation_link}
+      To ensure the contact tracing we need to record personal details of your contacts.
+      You can enter persons you had contact with here: %{possible_index_submission_link}
       """,
       isolation_confirmation_link:
         TenantContext.replace_base_url(
           case.tenant,
           Routes.pdf_url(conn_or_socket, :isolation_confirmation, case, phase),
+          HygeiaWeb.Endpoint.url()
+        ),
+      possible_index_submission_link:
+        TenantContext.replace_base_url(
+          case.tenant,
+          Routes.possible_index_submission_index_path(conn_or_socket, :index, case),
           HygeiaWeb.Endpoint.url()
         )
     )
@@ -63,23 +56,8 @@ defmodule HygeiaWeb.Helpers.Confirmation do
           case :: Case.t(),
           phase :: Phase.t()
         ) :: String.t()
-  def quarantine_sms(conn_or_socket, case, phase) do
-    case = Repo.preload(case, :tenant)
-
-    gettext(
-      """
-      You have been identified as a contact person of a person with corona.
-      Therefore you have to self quarantine.
-      Details: %{quarantine_confirmation_link}
-      """,
-      quarantine_confirmation_link:
-        TenantContext.replace_base_url(
-          case.tenant,
-          Routes.pdf_url(conn_or_socket, :quarantine_confirmation, case, phase),
-          HygeiaWeb.Endpoint.url()
-        )
-    )
-  end
+  def quarantine_sms(conn_or_socket, case, phase),
+    do: quarantine_email_body(conn_or_socket, case, phase)
 
   @spec quarantine_email_subject() :: String.t()
   def quarantine_email_subject, do: gettext("Quarantine Order")
