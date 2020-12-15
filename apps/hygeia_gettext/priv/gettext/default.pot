@@ -44,7 +44,7 @@ msgid "Actions"
 msgstr ""
 
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:20
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:239 lib/hygeia_web/live/transmission_live/infection_place.sface:52
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:244 lib/hygeia_web/live/transmission_live/infection_place.sface:52
 msgid "Activity Mapping"
 msgstr ""
 
@@ -432,7 +432,7 @@ msgstr ""
 #: lib/hygeia_web/helpers/contact_method.ex:15
 #: lib/hygeia_web/live/case_live/create.ex:344 lib/hygeia_web/live/case_live/person_create_table.sface:11
 #: lib/hygeia_web/live/case_live/person_create_table.sface:201 lib/hygeia_web/live/case_live/protocol.ex:213
-#: lib/hygeia_web/live/case_live/protocol.sface:24 lib/hygeia_web/live/possible_index_submission_live/create.sface:328
+#: lib/hygeia_web/live/case_live/protocol.sface:24 lib/hygeia_web/live/possible_index_submission_live/create.sface:333
 #: lib/hygeia_web/live/user_live/index.sface:14 lib/hygeia_web/live/user_live/show.sface:20
 msgid "Email"
 msgstr ""
@@ -483,7 +483,7 @@ msgstr ""
 
 #: lib/hygeia_web/live/case_live/person_create_table.sface:56
 #: lib/hygeia_web/live/person_live/base_data.sface:106 lib/hygeia_web/live/person_live/index.sface:54
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:83
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:88
 msgid "Female"
 msgstr ""
 
@@ -507,7 +507,7 @@ msgid "Finished Isolations"
 msgstr ""
 
 #: lib/hygeia_web/live/person_live/base_data.sface:88
-#: lib/hygeia_web/live/person_live/create.sface:38 lib/hygeia_web/live/possible_index_submission_live/create.sface:61
+#: lib/hygeia_web/live/person_live/create.sface:38 lib/hygeia_web/live/possible_index_submission_live/create.sface:66
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:84 lib/hygeia_web/live/possible_index_submission_live/show.sface:105
 msgid "First Name"
 msgstr ""
@@ -696,12 +696,12 @@ msgstr ""
 
 #: lib/hygeia_web/helpers/contact_method.ex:14
 #: lib/hygeia_web/live/case_live/create.ex:342 lib/hygeia_web/live/case_live/person_create_table.sface:10
-#: lib/hygeia_web/live/case_live/person_create_table.sface:197
+#: lib/hygeia_web/live/case_live/person_create_table.sface:197 lib/hygeia_web/live/possible_index_submission_live/create.sface:323
 msgid "Landline"
 msgstr ""
 
 #: lib/hygeia_web/live/person_live/base_data.sface:95
-#: lib/hygeia_web/live/person_live/create.sface:45 lib/hygeia_web/live/possible_index_submission_live/create.sface:68
+#: lib/hygeia_web/live/person_live/create.sface:45 lib/hygeia_web/live/possible_index_submission_live/create.sface:73
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:87 lib/hygeia_web/live/possible_index_submission_live/show.sface:114
 msgid "Last Name"
 msgstr ""
@@ -773,7 +773,7 @@ msgstr ""
 
 #: lib/hygeia_web/live/case_live/person_create_table.sface:56
 #: lib/hygeia_web/live/person_live/base_data.sface:106 lib/hygeia_web/live/person_live/index.sface:48
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:82
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:87
 msgid "Male"
 msgstr ""
 
@@ -786,7 +786,7 @@ msgid "Meta"
 msgstr ""
 
 #: lib/hygeia_web/helpers/contact_method.ex:13
-#: lib/hygeia_web/live/case_live/person_create_table.sface:193 lib/hygeia_web/live/possible_index_submission_live/create.sface:311
+#: lib/hygeia_web/live/case_live/person_create_table.sface:193 lib/hygeia_web/live/possible_index_submission_live/create.sface:316
 msgid "Mobile"
 msgstr ""
 
@@ -987,7 +987,7 @@ msgstr ""
 #: lib/hygeia_web/helpers/contact_method.ex:16 lib/hygeia_web/helpers/external_reference.ex:19
 #: lib/hygeia_web/helpers/monitoring.ex:25 lib/hygeia_web/helpers/phase.ex:23
 #: lib/hygeia_web/live/case_live/person_create_table.sface:56 lib/hygeia_web/live/person_live/base_data.sface:106
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:84
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:89
 msgid "Other"
 msgstr ""
 
@@ -1243,7 +1243,7 @@ msgstr ""
 #: lib/hygeia_web/live/organisation_live/show.sface:48 lib/hygeia_web/live/person_live/base_data.sface:65
 #: lib/hygeia_web/live/person_live/base_data.sface:66 lib/hygeia_web/live/person_live/base_data.sface:325
 #: lib/hygeia_web/live/person_live/base_data.sface:326 lib/hygeia_web/live/person_live/create.sface:96
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:373 lib/hygeia_web/live/possible_index_submission_live/show.sface:87
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:380 lib/hygeia_web/live/possible_index_submission_live/show.sface:87
 #: lib/hygeia_web/live/possible_index_submission_live/show.sface:88 lib/hygeia_web/live/profession_live/create.sface:29
 #: lib/hygeia_web/live/profession_live/show.sface:47 lib/hygeia_web/live/profession_live/show.sface:48
 #: lib/hygeia_web/live/tenant_live/create.sface:29 lib/hygeia_web/live/tenant_live/show.sface:47
@@ -1258,11 +1258,11 @@ msgstr ""
 #: lib/hygeia_web/live/infection_place_type_live/create.sface:26 lib/hygeia_web/live/infection_place_type_live/show.sface:46
 #: lib/hygeia_web/live/organisation_live/create.sface:36 lib/hygeia_web/live/organisation_live/show.sface:46
 #: lib/hygeia_web/live/person_live/base_data.sface:64 lib/hygeia_web/live/person_live/base_data.sface:324
-#: lib/hygeia_web/live/person_live/create.sface:95 lib/hygeia_web/live/possible_index_submission_live/create.sface:370
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:86 lib/hygeia_web/live/profession_live/create.sface:26
-#: lib/hygeia_web/live/profession_live/show.sface:46 lib/hygeia_web/live/tenant_live/create.sface:26
-#: lib/hygeia_web/live/tenant_live/show.sface:46 lib/hygeia_web/live/transmission_live/create.sface:100
-#: lib/hygeia_web/live/transmission_live/show.sface:67
+#: lib/hygeia_web/live/person_live/create.sface:95 lib/hygeia_web/live/possible_index_submission_live/create.sface:377
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:388 lib/hygeia_web/live/possible_index_submission_live/show.sface:86
+#: lib/hygeia_web/live/profession_live/create.sface:26 lib/hygeia_web/live/profession_live/show.sface:46
+#: lib/hygeia_web/live/tenant_live/create.sface:26 lib/hygeia_web/live/tenant_live/show.sface:46
+#: lib/hygeia_web/live/transmission_live/create.sface:100 lib/hygeia_web/live/transmission_live/show.sface:67
 msgid "Saving..."
 msgstr ""
 
@@ -1363,7 +1363,7 @@ msgstr ""
 
 #: lib/hygeia_web/live/case_live/person_create_table.sface:7
 #: lib/hygeia_web/live/person_live/base_data.sface:105 lib/hygeia_web/live/person_live/index.sface:38
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:78
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:83
 msgid "Sex"
 msgstr ""
 
@@ -1560,10 +1560,9 @@ msgstr ""
 #: lib/hygeia_web/live/case_live/base_data.sface:136
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:31 lib/hygeia_web/live/case_live/protocol.sface:72
 #: lib/hygeia_web/live/person_live/base_data.sface:150 lib/hygeia_web/live/person_live/create.sface:60
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:179 lib/hygeia_web/live/possible_index_submission_live/create.sface:318
-#: lib/hygeia_web/live/references.sface:2 lib/hygeia_web/live/tenant_live/show.sface:95
-#: lib/hygeia_web/live/tenant_live/show.sface:168 lib/hygeia_web/live/transmission_live/create.sface:17
-#: lib/hygeia_web/live/transmission_live/infection_place.sface:60
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:184 lib/hygeia_web/live/references.sface:2
+#: lib/hygeia_web/live/tenant_live/show.sface:95 lib/hygeia_web/live/tenant_live/show.sface:168
+#: lib/hygeia_web/live/transmission_live/create.sface:17 lib/hygeia_web/live/transmission_live/infection_place.sface:60
 msgid "Type"
 msgstr ""
 
@@ -1626,7 +1625,7 @@ msgstr ""
 #: lib/hygeia_web/live/organisation_live/create.ex:24 lib/hygeia_web/live/organisation_live/index.ex:39
 #: lib/hygeia_web/live/organisation_live/show.ex:42 lib/hygeia_web/live/person_live/base_data.ex:45
 #: lib/hygeia_web/live/person_live/create.ex:32 lib/hygeia_web/live/person_live/index.ex:33
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:51 lib/hygeia_web/live/possible_index_submission_live/index.ex:25
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:53 lib/hygeia_web/live/possible_index_submission_live/index.ex:25
 #: lib/hygeia_web/live/possible_index_submission_live/show.ex:41 lib/hygeia_web/live/profession_live/create.ex:22
 #: lib/hygeia_web/live/profession_live/index.ex:22 lib/hygeia_web/live/profession_live/show.ex:35
 #: lib/hygeia_web/live/statistics_live/choose_tenant.ex:18 lib/hygeia_web/live/statistics_live/statistics.ex:46
@@ -1881,15 +1880,15 @@ msgid "Back to List"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:102
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:148 lib/hygeia_web/live/possible_index_submission_live/create.sface:199
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:253 lib/hygeia_web/live/possible_index_submission_live/create.sface:290
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:345
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:107
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:153 lib/hygeia_web/live/possible_index_submission_live/create.sface:204
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:258 lib/hygeia_web/live/possible_index_submission_live/create.sface:295
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:350
 msgid "Continue"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:221
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:226
 msgid "Describe your encounter with %{first_name} %{last_name}."
 msgstr ""
 
@@ -1899,7 +1898,7 @@ msgid "Did you meet any colleages?"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:233
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:238
 msgid "Did you meet other unknown people?"
 msgstr ""
 
@@ -1919,12 +1918,12 @@ msgid "Did you visit a pub / restaurant / event recently?"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:230
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:235
 msgid "Did you wear a mask?"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:266
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:271
 msgid "Do you know the address where you met with %{first_name} %{last_name}?"
 msgstr ""
 
@@ -1949,7 +1948,7 @@ msgid "Gym"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:300
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:305
 msgid "How can we contact %{first_name} %{last_name}?"
 msgstr ""
 
@@ -1959,12 +1958,12 @@ msgid "How did you travel there and back?"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:194
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:216
 msgid "How did your encounter with %{first_name} %{last_name} happen?"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:231
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:236
 msgid "How much time did you spend together?"
 msgstr ""
 
@@ -1979,7 +1978,7 @@ msgid "If you're having trouble recalling what you did since then, here are some
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:232
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:237
 msgid "In how close proximity to each other were you?"
 msgstr ""
 
@@ -1994,7 +1993,7 @@ msgid "New Possible Index Submission"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:11
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:10
 msgid "New possible index submission"
 msgstr ""
 
@@ -2009,7 +2008,7 @@ msgid "Person deleted successfully"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:172
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:177
 msgid "Place Name"
 msgstr ""
 
@@ -2019,7 +2018,7 @@ msgid "Possible Index Submissions"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:83
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:94
 msgid "Possible index submission created successfully"
 msgstr ""
 
@@ -2045,7 +2044,7 @@ msgstr ""
 
 #, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:18
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:133
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:138
 msgid "Transmission Date"
 msgstr ""
 
@@ -2055,61 +2054,62 @@ msgid "Vacation"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:112
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:117
 msgid "When did you meet %{first_name} %{last_name}?"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:159
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:164
 msgid "Where did you meet %{first_name} %{last_name}?"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:355
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:360
 msgid "Where does %{first_name} %{last_name} live?"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:36
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:41
 msgid "Who did you meet?"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/index.sface:8
-msgid "You should report all people that you met one week before you started feeling symptoms."
-msgstr ""
-
-#, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:51
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:56
 msgid "Either you or the other person did not weark a mask."
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:46
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:51
 msgid "Relevant will be all contacts you have where ALL of the following is true:"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:43
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:48
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:8
 msgid "To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious."
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:52
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:57
 msgid "You did not keep a safe distance of at least 1.5 meters."
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:49
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:54
 msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:50
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:55
 msgid "You had contact for more than 15 minutes on the same day."
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:122
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:127
 msgid "If you met %{first_name} %{last_name} multiple times, select the earliest date after 48 hours before your symptom start date or before the test (if you don't have symptoms)."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:391
+msgid "Save & add next contact"
 msgstr ""

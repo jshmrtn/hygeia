@@ -372,11 +372,25 @@
           <button
             class="btn btn-primary"
             type="submit"
+            phx-value-action="finish"
+            :on-click="set_action"
             phx-disable-with={{ gettext("Saving...") }}
             disabled={{ not @changeset.valid? }}
           >
             {{ gettext("Save") }}
           </button>
+
+          <button
+            class="btn btn-primary"
+            type="submit"
+            phx-value-action="create_next"
+            :on-click="set_action"
+            phx-disable-with={{ gettext("Saving...") }}
+            disabled={{ not @changeset.valid? }}
+          >
+            {{ gettext("Save & add next contact") }}
+          </button>
+
         </div>
       </div>
     </div>

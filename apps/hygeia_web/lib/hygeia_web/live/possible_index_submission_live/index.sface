@@ -5,7 +5,7 @@
     <div :if={{ auth == :anonymous }}>
       <h2>{{ gettext("Enter Possible Transmissions") }}</h2>
 
-      <p>{{ gettext("You should report all people that you met one week before you started feeling symptoms.") }}</p>
+      <p>{{ gettext("To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious.") }}</p>
 
       <p>{{ gettext("If you had contact with people you do not know, please talk to your tracer with further details.") }}</p>
 

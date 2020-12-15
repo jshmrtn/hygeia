@@ -31,6 +31,8 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
 
   data step, :atom, default: :base
 
+  data action, :string, default: "finish"
+
   @impl Phoenix.LiveView
   def mount(%{"case_uuid" => case_uuid} = params, session, socket) do
     case = CaseContext.get_case!(case_uuid)
@@ -77,14 +79,20 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
     socket.assigns.case
     |> CaseContext.create_possible_index_submission(possible_index_submission_params)
     |> case do
-      {:ok, possible_index_submission} ->
+      {:ok, _possible_index_submission} ->
+        redirect_url =
+          case socket.assigns.action do
+            "finish" ->
+              Routes.possible_index_submission_index_path(socket, :index, socket.assigns.case)
+
+            "create_next" ->
+              Routes.possible_index_submission_create_path(socket, :create, socket.assigns.case)
+          end
+
         {:noreply,
          socket
          |> put_flash(:info, gettext("Possible index submission created successfully"))
-         |> push_redirect(
-           to:
-             Routes.possible_index_submission_show_path(socket, :show, possible_index_submission)
-         )}
+         |> push_redirect(to: redirect_url)}
 
       {:error, changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
@@ -96,6 +104,10 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
     new_step = Enum.at(@steps, index + 1)
 
     {:noreply, assign(socket, step: new_step)}
+  end
+
+  def handle_event("set_action", %{"action" => action}, socket) do
+    {:noreply, assign(socket, action: action)}
   end
 
   defp step_index(step) do
