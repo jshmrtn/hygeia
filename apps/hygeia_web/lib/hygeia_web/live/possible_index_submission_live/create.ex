@@ -92,10 +92,14 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
   end
 
   def handle_event("advance", _params, socket) do
-    index = Enum.find_index(@steps, &(&1 == socket.assigns.step))
+    index = step_index(socket.assigns.step)
     new_step = Enum.at(@steps, index + 1)
 
     {:noreply, assign(socket, step: new_step)}
+  end
+
+  defp step_index(step) do
+    Enum.find_index(@steps, &(&1 == step))
   end
 
   defp errors_in?(changeset, paths) do

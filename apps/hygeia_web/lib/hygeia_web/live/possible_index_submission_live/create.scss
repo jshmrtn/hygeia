@@ -1,0 +1,57 @@
+.component-possible-index-submission-create {
+  .progress-steps {
+    --items: 7;
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    padding: 0;
+    position: relative;
+
+    .progress-bar {
+      position: absolute;
+      border-top: 3px solid $gray-200;
+      left: calc(100% / var(--items) / 2);
+      right: calc(100% / var(--items) / 2);
+      top: 1rem;
+    }
+
+    li {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+      flex-basis: 0;
+      z-index: 1;
+
+      &:before {
+        content: "";
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Icons";
+        color: $white;
+        font-size: 1rem;
+        width: 2rem;
+        height: 2rem;
+        margin-bottom: 0.5rem;
+        border-radius: 10000px;
+        background-color: theme-color("secondary");
+      }
+
+      &.completed {
+        &:before {
+          content: "\e033";
+          background-color: theme-color("primary");
+        }
+      }
+
+      &.active {
+        color: theme-color("primary");
+        &:before {
+          background-color: theme-color("primary");
+        }
+      }
+    }
+  }
+}

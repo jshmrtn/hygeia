@@ -1,19 +1,19 @@
-<!-- TODO: Style -->
 <Form
   for={{ @changeset }} 
   change="validate" 
   submit="save" 
-  opts={{ autocomplete: "off", id: "possible-index-submission-form", class: "container" }}
+  opts={{ autocomplete: "off", id: "possible-index-submission-form", class: "container component-possible-index-submission-create" }}
 >
   <InputContext assigns={{ assigns }} :let={{ form: form }}>
 
-    <h1 class="mb-3">
+    <h1 class="mb-5">
       {{ gettext("New possible index submission") }}
     </h1>
 
-    <ul id="progressbar">
+    <ul class="mb-4 progress-steps" id="progressbar">
+      <div class="progress-bar"></div>
       <li
-        :for={{ {step, name} <- [
+        :for={{ {{step, name}, index} <- Enum.with_index([
           base: gettext("Person Base Data"),
           transmission_date: gettext("Transmission Date"),
           infection_place: gettext("Infection Place"),
@@ -21,9 +21,14 @@
           infection_place_address: gettext("Meet Address"),
           contact_methods: gettext("Contact Methods"),
           address: gettext("Address")
-        ] }}
-        class={{ if step == @step, do: "active" }}
-      >{{ name }}</li>
+        ]) }}
+        class={{
+          if step == @step, do: "active", else: "" <>
+          if index < step_index(@step), do: " completed", else: ""
+        }}
+      >
+        <small>{{ name }}</small>
+      </li>
     </ul>
 
     <div class="card mb-3">
@@ -190,7 +195,7 @@
             <h2>
               {{
                 gettext(
-                  "How did your encounter with %{first_name} %{last_name} happend?",
+                  "How did your encounter with %{first_name} %{last_name} happen?",
                   first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
                   last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
                 )
@@ -296,7 +301,7 @@
             </div>
             <div class="col">
               <Field name={{ :landline }} class="form-group">
-                <Label>{{ gettext("Type") }}</Label>
+                <Label>{{ gettext("Landline") }}</Label>
                 <TelephoneInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
