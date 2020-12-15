@@ -90,6 +90,12 @@ config :hygeia, Hygeia.EmailSender.Smtp, adapter: Bamboo.SMTPAdapter
 
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
+# Surface
+config :surface, :components, [
+  {Surface.Components.Form.ErrorTag,
+   default_translator: {HygeiaWeb.ErrorHelpers, :translate_error}}
+]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
