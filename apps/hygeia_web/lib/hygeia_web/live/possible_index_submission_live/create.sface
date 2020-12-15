@@ -41,6 +41,25 @@
             {{ gettext("Who did you meet?") }}
           </h2>
 
+          <hr>
+
+          <section>
+            <p>
+              {{ gettext("To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious.") }}
+            </p>
+            <p>
+              {{ gettext("Relevant will be all contacts you have where ALL of the following is true:") }}
+            </p>
+            <ul>
+              <li>{{ gettext("You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test.") }}</li>
+              <li>{{ gettext("You had contact for more than 15 minutes on the same day.") }}</li>
+              <li>{{ gettext("Either you or the other person did not weark a mask.") }}</li>
+              <li>{{ gettext("You did not keep a safe distance of at least 1.5 meters.") }}</li>
+            </ul>
+          </section>
+
+          <hr>
+
           <div class="row">
             <div class="col">
               <Field name={{ :first_name }} class="form-group">
@@ -106,7 +125,7 @@
           <p>
             {{
               gettext(
-                "If you met %{first_name} %{last_name} multiple times, select the earliest date after your symptom start date.",
+                "If you met %{first_name} %{last_name} multiple times, select the earliest date after 48 hours before your symptom start date or before the test (if you don't have symptoms).",
                 first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
                 last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
               )
