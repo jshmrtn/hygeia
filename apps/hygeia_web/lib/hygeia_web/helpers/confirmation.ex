@@ -26,7 +26,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       isolation_confirmation_link:
         TenantContext.replace_base_url(
           case.tenant,
-          Routes.pdf_url(conn_or_socket, :isolation_confirmation, case.uuid, phase.uuid),
+          Routes.pdf_url(conn_or_socket, :isolation_confirmation, case, phase),
           HygeiaWeb.Endpoint.url()
         )
     )
@@ -52,7 +52,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       isolation_confirmation_link:
         TenantContext.replace_base_url(
           case.tenant,
-          Routes.pdf_url(conn_or_socket, :isolation_confirmation, case.uuid, phase.uuid),
+          Routes.pdf_url(conn_or_socket, :isolation_confirmation, case, phase),
           HygeiaWeb.Endpoint.url()
         )
     )
@@ -75,7 +75,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       quarantine_confirmation_link:
         TenantContext.replace_base_url(
           case.tenant,
-          Routes.pdf_url(conn_or_socket, :quarantine_confirmation, case.uuid, phase.uuid),
+          Routes.pdf_url(conn_or_socket, :quarantine_confirmation, case, phase),
           HygeiaWeb.Endpoint.url()
         )
     )
@@ -101,7 +101,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       quarantine_confirmation_link:
         TenantContext.replace_base_url(
           case.tenant,
-          Routes.pdf_url(conn_or_socket, :quarantine_confirmation, case.uuid, phase.uuid),
+          Routes.pdf_url(conn_or_socket, :quarantine_confirmation, case, phase),
           HygeiaWeb.Endpoint.url()
         )
     )

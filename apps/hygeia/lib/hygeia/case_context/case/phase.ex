@@ -22,6 +22,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
           details: Index.t() | PossibleIndex.t()
         }
 
+  @derive {Phoenix.Param, key: :uuid}
+
   embedded_schema do
     field :start, :date
     field :end, :date
