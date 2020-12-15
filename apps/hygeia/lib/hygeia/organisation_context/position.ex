@@ -66,8 +66,8 @@ defmodule Hygeia.OrganisationContext.Position do
 
     def authorized?(_position, :list, %User{}, _meta), do: true
 
-    def authorized?(_position, action, %User{roles: roles}, _meta)
+    def authorized?(_position, action, user, _meta)
         when action in [:create, :delete],
-        do: :tracer in roles or :supervisor in roles or :admin in roles
+        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, :any))
   end
 end

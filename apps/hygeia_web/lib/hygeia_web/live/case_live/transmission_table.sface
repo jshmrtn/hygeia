@@ -38,7 +38,7 @@
                 <span
                   :if={{ not authorized?(transmission.recipient, :details, auth) }}
                 >
-                  {{ transmission.recipient.human_readable_id }}
+                  {{ transmission.recipient.tenant.short_name }} / {{ transmission.recipient.human_readable_id }}
                 </span>
               </div>
               <span class="mx-2">|</span>
@@ -57,7 +57,7 @@
                 <span
                   :if={{ not authorized?(transmission.recipient_case, :details, auth) }}
                 >
-                  {{ transmission.recipient_case.human_readable_id }}
+                  {{ transmission.recipient_case.tenant.short_name }} / {{ transmission.recipient_case.human_readable_id }}
                 </span>
               </div>
             </div>
@@ -80,7 +80,7 @@
                 <span
                   :if={{ not authorized?(transmission.propagator, :details, auth) }}
                 >
-                  {{ transmission.propagator.human_readable_id }}
+                  {{ transmission.propagator.tenant.short_name }} / {{ transmission.propagator.human_readable_id }}
                 </span>
               </div>
               <span class="mx-2">|</span>
@@ -99,7 +99,7 @@
                 <span
                   :if={{ not authorized?(transmission.propagator_case, :details, auth) }}
                 >
-                  {{ transmission.propagator_case.human_readable_id }}
+                  {{ transmission.propagator_case.tenant.short_name }} / {{ transmission.propagator_case.human_readable_id }}
                 </span>
               </div>
             </div>

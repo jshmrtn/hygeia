@@ -19,12 +19,14 @@ defmodule HygeiaWeb.PersonLive.Create do
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
     socket =
-      if authorized?(Person, :create, get_auth(socket)) do
-        tenants = TenantContext.list_tenants()
-
+      if authorized?(Person, :create, get_auth(socket), tenant: :any) do
         assign(socket,
           changeset: CaseContext.change_person(%Person{}),
-          tenants: tenants
+          tenants:
+            Enum.filter(
+              TenantContext.list_tenants(),
+              &authorized?(Person, :create, get_auth(socket), tenant: &1)
+            )
         )
       else
         socket

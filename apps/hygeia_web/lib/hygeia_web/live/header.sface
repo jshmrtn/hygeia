@@ -3,7 +3,7 @@
     <section class="container">
       <div class="d-flex justify-content-between">
         <ul class="nav nav-pills" role="navigation">
-          <li class="nav-item" :if={{ authorized?(Hygeia.CaseContext.Case, :list, auth) }}>
+          <li class="nav-item" :if={{ authorized?(Hygeia.CaseContext.Case, :list, auth, tenant: :any) }}>
             <UriActiveContext
               to={{ Routes.case_index_path(@socket, :index) }}
               :let={{ to: to, active: active }}
@@ -14,7 +14,7 @@
               </LiveRedirect>
             </UriActiveContext>
           </li>
-          <li class="nav-item" :if={{ authorized?(Hygeia.CaseContext.Person, :list, auth) }}>
+          <li class="nav-item" :if={{ authorized?(Hygeia.CaseContext.Person, :list, auth, tenant: :any) }}>
             <UriActiveContext
               to={{ Routes.person_index_path(@socket, :index) }}
               :let={{ to: to, active: active }}
@@ -51,7 +51,7 @@
               <Link
                 to={{ Routes.live_dashboard_path(@socket, :home) }}
                 class="dropdown-item"
-                :if={{ User.has_role?(auth, :webmaster) }}
+                :if={{ User.has_role?(auth, :webmaster, :any) }}
               >
                 {{ gettext("Phoenix Dashboard") }}
               </Link>

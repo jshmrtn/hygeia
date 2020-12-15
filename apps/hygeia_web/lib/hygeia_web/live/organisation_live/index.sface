@@ -5,7 +5,11 @@
     </h1>
 
     <div class="d-flex">
-      <LiveRedirect class="mr-2" to={{ Routes.organisation_create_path(@socket, :create) }}>
+      <LiveRedirect
+        class="mr-2"
+        to={{ Routes.organisation_create_path(@socket, :create) }}
+        :if={{ authorized?(Organisation, :create, auth) }}
+      >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
           <span class="oi oi-plus" aria-hidden="true"></span>
           {{ gettext("New Organisation") }}

@@ -31,20 +31,24 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   def handle_params(%{"id" => id} = params, uri, socket) do
     case = CaseContext.get_case!(id)
 
+    auth_action =
+      case socket.assigns.live_action do
+        :edit -> :update
+        :show -> :details
+      end
+
     socket =
-      if authorized?(
-           case,
-           case socket.assigns.live_action do
-             :edit -> :update
-             :show -> :details
-           end,
-           get_auth(socket)
-         ) do
+      if authorized?(case, auth_action, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
 
-        tenants = TenantContext.list_tenants()
-        supervisor_users = UserContext.list_users_with_role(:supervisor)
-        tracer_users = UserContext.list_users_with_role(:tracer)
+        tenants =
+          Enum.filter(
+            TenantContext.list_tenants(),
+            &authorized?(case, auth_action, get_auth(socket), tenant: &1)
+          )
+
+        supervisor_users = UserContext.list_users_with_role(:supervisor, tenants)
+        tracer_users = UserContext.list_users_with_role(:tracer, tenants)
         organisations = OrganisationContext.list_organisations()
 
         socket
@@ -299,7 +303,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   end
 
   defp load_data(socket, case) do
-    case = Repo.preload(case, person: [], related_organisations: [], tenant: [])
+    case = Repo.preload(case, person: [tenant: []], related_organisations: [], tenant: [])
 
     changeset = CaseContext.change_case(case)
 

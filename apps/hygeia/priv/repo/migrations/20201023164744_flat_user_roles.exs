@@ -4,7 +4,9 @@ defmodule Hygeia.Repo.Migrations.FlatUserRoles do
 
   use Hygeia, :migration
 
-  alias Hygeia.UserContext.User.Role
+  import EctoEnum
+
+  defenum(Role, :user_role, ["tracer", "supervisor", "admin", "webmaster", "statistics_viewer"])
 
   def change do
     Role.create_type()

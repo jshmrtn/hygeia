@@ -8,11 +8,11 @@ defmodule HygeiaWeb.StatisticsLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
-  @moduletag log_in: [roles: [:admin]]
+  @moduletag log_in: [roles: [:statistics_viewer]]
 
   describe "ChooseTenant" do
-    test "lists all tenants", %{conn: conn} do
-      tenant = tenant_fixture()
+    test "lists all tenants", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
 
       {:ok, _index_live, html} = live(conn, Routes.statistics_choose_tenant_path(conn, :index))
 
@@ -21,8 +21,8 @@ defmodule HygeiaWeb.StatisticsLiveTest do
   end
 
   describe "Show" do
-    test "redirect to dates", %{conn: conn} do
-      tenant = tenant_fixture()
+    test "redirect to dates", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
 
       assert {:error, {:live_redirect, %{to: path}}} =
                live(conn, Routes.statistics_statistics_path(conn, :show, tenant))
@@ -37,8 +37,8 @@ defmodule HygeiaWeb.StatisticsLiveTest do
                )
     end
 
-    test "renders successfully", %{conn: conn} do
-      tenant = tenant_fixture()
+    test "renders successfully", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
 
       assert {:ok, _live_view, html} =
                live(

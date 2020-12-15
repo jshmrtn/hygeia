@@ -8,6 +8,7 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.Repo
+  alias Hygeia.TenantContext
   alias Hygeia.UserContext
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
@@ -22,13 +23,21 @@ defmodule HygeiaWeb.CaseLive.Index do
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
     socket =
-      if authorized?(Case, :list, get_auth(socket)) do
+      if authorized?(Case, :list, get_auth(socket), tenant: :any) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases")
 
-        supervisor_users = UserContext.list_users_with_role(:supervisor)
-        tracer_users = UserContext.list_users_with_role(:tracer)
+        supervisor_users = UserContext.list_users_with_role(:supervisor, :any)
+        tracer_users = UserContext.list_users_with_role(:tracer, :any)
 
-        assign(socket, supervisor_users: supervisor_users, tracer_users: tracer_users)
+        assign(socket,
+          supervisor_users: supervisor_users,
+          tracer_users: tracer_users,
+          authorized_tenants:
+            Enum.filter(
+              TenantContext.list_tenants(),
+              &authorized?(Case, :list, get_auth(socket), tenant: &1)
+            )
+        )
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))
@@ -148,12 +157,13 @@ defmodule HygeiaWeb.CaseLive.Index do
         entries
       end
 
-    assign(socket, pagination: metadata, cases: entries)
+    assign(socket, pagination: metadata, cases: Repo.preload(entries, person: [tenant: []]))
   end
 
-  defp base_query,
+  defp base_query(socket),
     do:
       from(case in CaseContext.list_cases_query(),
+        where: case.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid),
         join: person in assoc(case, :person),
         as: :person,
         preload: [person: person],
@@ -191,7 +201,7 @@ defmodule HygeiaWeb.CaseLive.Index do
           {@sort_mapping[field], :desc}
       end)
       |> Enum.reduce(
-        {[], base_query()},
+        {[], base_query(socket)},
         fn
           {{:phase, :type}, direction} = cursor, {cursor_params, query} ->
             {[cursor | cursor_params],

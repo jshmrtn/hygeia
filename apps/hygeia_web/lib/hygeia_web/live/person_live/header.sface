@@ -1,7 +1,16 @@
 <div class="component-person-header mb-4">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1 class="mb-4">
+    <h1
+      class="mb-4"
+      :if={{ authorized?(@person, :details, auth) }}
+    >
       {{ @person_display_name }}
+    </h1>
+    <h1
+      class="mb-4"
+      :if={{ not authorized?(@person, :details, auth) }}
+    >
+      {{ @person.tenant.short_name }} / {{ @person.human_readable_id }}
     </h1>
 
     <ul class="nav nav-tabs">

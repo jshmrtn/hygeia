@@ -2,13 +2,19 @@ defmodule HygeiaWeb.UserLive.Show do
   @moduledoc false
   use HygeiaWeb, :surface_view
 
+  alias Hygeia.Repo
   alias Hygeia.UserContext
+  alias Hygeia.UserContext.Grant
   alias Hygeia.UserContext.User
   alias Surface.Components.Form.Label
+  alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id} = params, uri, socket) do
-    user = UserContext.get_user!(id)
+    user =
+      id
+      |> UserContext.get_user!()
+      |> Repo.preload(grants: [tenant: []])
 
     socket =
       if authorized?(user, :details, get_auth(socket)) do

@@ -53,8 +53,8 @@ defmodule Hygeia.CaseContext.InfectionPlaceType do
         when action in [:create, :update, :delete],
         do: false
 
-    def authorized?(_infection_place_type, action, %User{roles: roles}, _meta)
+    def authorized?(_infection_place_type, action, user, _meta)
         when action in [:create, :update, :delete],
-        do: :admin in roles
+        do: User.has_role?(user, :admin, :any)
   end
 end

@@ -203,12 +203,20 @@ defmodule Hygeia.CaseContext.Case do
         when action in [:list, :create, :details, :update, :delete],
         do: false
 
-    def authorized?(_case, action, %User{roles: roles}, _meta)
-        when action in [:list, :create, :details, :update],
-        do: :tracer in roles or :supervisor in roles or :admin in roles
+    def authorized?(%Case{}, action, user, %{tenant: tenant})
+        when action in [:details, :update],
+        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant))
 
-    def authorized?(_case, action, %User{roles: roles}, _meta)
+    def authorized?(%Case{tenant_uuid: tenant_uuid}, action, user, _meta)
+        when action in [:details, :update],
+        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
+
+    def authorized?(_module, action, user, %{tenant: tenant})
+        when action in [:list, :create],
+        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant))
+
+    def authorized?(%Case{tenant_uuid: tenant_uuid}, action, user, _meta)
         when action in [:delete],
-        do: :supervisor in roles or :admin in roles
+        do: Enum.any?([:supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
   end
 end

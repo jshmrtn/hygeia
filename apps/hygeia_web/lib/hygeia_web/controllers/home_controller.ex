@@ -15,10 +15,10 @@ defmodule HygeiaWeb.HomeController do
       end
 
     cond do
-      authorized?(Hygeia.CaseContext.Case, :list, auth) ->
+      authorized?(Hygeia.CaseContext.Case, :list, auth, tenant: :any) ->
         redirect(conn, to: Routes.case_index_path(conn, :index))
 
-      authorized?(Hygeia.CaseContext.Person, :list, auth) ->
+      authorized?(Hygeia.CaseContext.Person, :list, auth, tenant: :any) ->
         redirect(conn, to: Routes.person_index_path(conn, :index))
 
       authorized?(Hygeia.TenantContext.Tenant, :list, auth) ->

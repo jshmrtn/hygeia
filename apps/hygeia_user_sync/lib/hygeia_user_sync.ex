@@ -12,13 +12,18 @@ defmodule HygeiaUserSync do
   alias Caos.Zitadel.Management.Api.V1.UserGrantSearchRequest
   alias Caos.Zitadel.Management.Api.V1.UserGrantSearchResponse
   alias Caos.Zitadel.Management.Api.V1.UserGrantView
+  alias Ecto.Multi
   alias Hygeia.Helpers.Versioning
+  alias Hygeia.Repo
+  alias Hygeia.TenantContext
   alias Hygeia.UserContext
   alias Hygeia.UserContext.User
 
   alias HygeiaIam.ServiceUserToken
 
   require Logger
+
+  @limit 250
 
   case Mix.env() do
     :dev -> @default_refresh_interval_ms :timer.seconds(30)
@@ -72,142 +77,146 @@ defmodule HygeiaUserSync do
   end
 
   defp sync(channel, access_token) do
-    {:ok, %UserGrantSearchResponse{result: grants}} =
-      Stub.search_user_grants(
-        channel,
-        UserGrantSearchRequest.new(
-          limit: 1000,
-          queries: [
-            UserGrantSearchQuery.new(
-              key: UserGrantSearchKey.value(:USERGRANTSEARCHKEY_PROJECT_ID),
-              method: SearchMethod.value(:SEARCHMETHOD_EQUALS),
-              value: HygeiaIam.project_id()
-            ),
-            UserGrantSearchQuery.new(
-              key: UserGrantSearchKey.value(:USERGRANTSEARCHKEY_WITH_GRANTED),
-              method: SearchMethod.value(:SEARCHMETHOD_EQUALS),
-              value: "true"
-            )
-          ]
-        ),
-        metadata: %{
-          "authorization" => "Bearer #{access_token}",
-          "x-zitadel-orgid" => HygeiaIam.organisation_id()
-        }
-      )
+    tenants = Map.new(TenantContext.list_tenants(), &{&1.iam_domain, &1})
 
-    db_users = UserContext.list_users()
+    db_users =
+      UserContext.list_users()
+      |> Repo.preload(:grants)
+      |> Map.new(&{&1.iam_sub, {&1, []}})
 
-    for %UserGrantView{
-          email: email,
-          user_id: sub,
-          display_name: display_name,
-          role_keys: roles
-        } <- grants do
-      roles = Enum.map(roles, &String.to_existing_atom/1)
+    {:ok, results} =
+      channel
+      |> list_users(access_token)
+      |> Enum.reduce(db_users, fn %UserGrantView{user_id: sub} = grant, acc ->
+        Map.update(acc, sub, {nil, [grant]}, &{elem(&1, 0), [grant | elem(&1, 1)]})
+      end)
+      |> Map.values()
+      |> Enum.reduce(Multi.new(), &merge(elem(&1, 0), elem(&1, 1), &2, tenants))
+      |> Repo.transaction()
 
-      db_users
-      |> Enum.find(&match?(%User{iam_sub: ^sub}, &1))
+    stats =
+      results
+      |> Map.keys()
+      |> Enum.reduce(%{insert: 0, update: 0, delete: 0}, fn {type, _sub}, acc ->
+        Map.update!(acc, type, &(&1 + 1))
+      end)
+
+    Logger.info("Synced Users with IAM (#{inspect(stats)}")
+  end
+
+  defp merge(nil, [%UserGrantView{user_id: sub} | _other_grants] = grants, multi, tenants) do
+    Logger.debug("Creating user #{sub}")
+
+    Multi.insert(
+      multi,
+      {:insert, sub},
+      UserContext.change_user(%User{}, to_user_attrs(grants, tenants))
+    )
+  end
+
+  defp merge(
+         %User{iam_sub: sub} = user,
+         [%UserGrantView{user_id: sub} | _other_grants] = grants,
+         multi,
+         tenants
+       ) do
+    attrs = to_user_attrs(grants, tenants)
+
+    if UserContext.user_identical_after_update?(user, attrs) do
+      Logger.debug("No changes for user #{sub}")
+
+      multi
+    else
+      Logger.debug("Updating user #{sub}")
+
+      changeset = UserContext.change_user(user, attrs)
+      Ecto.Multi.update(multi, {:update, sub}, changeset)
+    end
+  end
+
+  defp merge(%User{iam_sub: sub} = user, [], multi, _tenants) do
+    Logger.debug("Deleting user #{sub}")
+
+    Multi.delete(multi, {:delete, sub}, user)
+  end
+
+  defp to_user_attrs(
+         [%UserGrantView{user_id: sub, email: email, display_name: display_name} | _other_grants] =
+           iam_grants,
+         tenants
+       ) do
+    %{
+      iam_sub: sub,
+      email: email,
+      display_name: display_name,
+      grants: to_grant_attrs(iam_grants, tenants)
+    }
+  end
+
+  defp to_grant_attrs(iam_grants, tenants) do
+    iam_grants
+    |> Enum.flat_map(fn %UserGrantView{role_keys: roles, org_domain: domain} ->
+      tenants
+      |> Map.fetch(domain)
       |> case do
-        nil ->
-          create_user(%{
-            email: email,
-            display_name: display_name,
-            iam_sub: sub,
-            roles: roles
-          })
+        :error ->
+          Logger.warn("Tenant for domain #{domain} does not exist, skipping grants.")
+          []
 
-        %User{email: ^email, display_name: ^display_name, roles: ^roles} ->
-          :ok
-
-        user ->
-          update_user(user, %{
-            email: email,
-            display_name: display_name,
-            roles: roles
-          })
+        {:ok, tenant} ->
+          Enum.map(roles, &{&1, tenant})
       end
-    end
-
-    for %User{iam_sub: sub} = user <- db_users do
-      grants
-      |> Enum.find(&match?(%UserGrantView{user_id: ^sub}, &1))
-      |> case do
-        nil ->
-          delete_user(user)
-
-        _grant ->
-          :ok
-      end
-    end
+    end)
+    |> Enum.map(
+      &%{
+        role: elem(&1, 0),
+        tenant_uuid: elem(&1, 1).uuid
+      }
+    )
   end
 
-  defp create_user(attrs) do
-    attrs
-    |> UserContext.create_user()
-    |> case do
-      {:ok, user} ->
-        Logger.info("Created User #{user.email}", user: user)
+  defp list_users(channel, access_token) do
+    Stream.resource(
+      fn -> 0 end,
+      fn
+        false ->
+          {:halt, nil}
 
-        :ok
-
-      {:error, reason} ->
-        Logger.warn(
-          """
-          Could not create user:
-
-          #{inspect(reason, pretty: true)}
-          """,
-          reason: reason
-        )
-
-        {:error, reason}
-    end
+        offset ->
+          channel
+          |> load_page(access_token, offset)
+          |> case do
+            {:ok, %UserGrantSearchResponse{result: []}} -> {:halt, offset}
+            {:ok, %UserGrantSearchResponse{result: grants}} -> {grants, offset + length(grants)}
+          end
+      end,
+      fn _acc -> :ok end
+    )
   end
 
-  defp update_user(user, attrs) do
-    user
-    |> UserContext.update_user(attrs)
-    |> case do
-      {:ok, user} ->
-        Logger.info("Updated User #{user.email}", user: user)
-
-        :ok
-
-      {:error, reason} ->
-        Logger.warn(
-          """
-          Could not update user #{user.email}:
-
-          #{inspect(reason, pretty: true)}
-          """,
-          reason: reason
-        )
-
-        {:error, reason}
-    end
-  end
-
-  defp delete_user(user) do
-    user
-    |> UserContext.delete_user()
-    |> case do
-      {:ok, user} ->
-        Logger.info("Deleted User #{user.email}", user: user)
-
-        :ok
-
-      {:error, reason} ->
-        Logger.warn(
-          """
-          Could not delete user #{user.email}:
-
-          #{inspect(reason, pretty: true)}
-          """,
-          reason: reason
-        )
-
-        {:error, reason}
-    end
+  defp load_page(channel, access_token, offset) do
+    Stub.search_user_grants(
+      channel,
+      UserGrantSearchRequest.new(
+        offset: offset,
+        limit: @limit,
+        queries: [
+          UserGrantSearchQuery.new(
+            key: UserGrantSearchKey.value(:USERGRANTSEARCHKEY_PROJECT_ID),
+            method: SearchMethod.value(:SEARCHMETHOD_EQUALS),
+            value: HygeiaIam.project_id()
+          ),
+          UserGrantSearchQuery.new(
+            key: UserGrantSearchKey.value(:USERGRANTSEARCHKEY_WITH_GRANTED),
+            method: SearchMethod.value(:SEARCHMETHOD_EQUALS),
+            value: "true"
+          )
+        ]
+      ),
+      metadata: %{
+        "authorization" => "Bearer #{access_token}",
+        "x-zitadel-orgid" => HygeiaIam.organisation_id()
+      }
+    )
   end
 end

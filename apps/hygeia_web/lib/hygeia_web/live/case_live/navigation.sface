@@ -190,7 +190,7 @@
             </a>
           </div>
         </div>
-        <div :if={{ authorized?(Case, :create, auth) }}>
+        <div :if={{ authorized?(Case, :create, auth, tenant: :any) }}>
           <div class="dropdown-divider"></div>
           <Context get={{ HygeiaWeb, uri: uri }}>
             <LiveRedirect

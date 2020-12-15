@@ -29,10 +29,16 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
   def mount(params, session, socket) do
     socket =
-      if authorized?(Case, :create, get_auth(socket)) do
-        tenants = TenantContext.list_tenants()
-        supervisor_users = UserContext.list_users_with_role(:supervisor)
-        tracer_users = UserContext.list_users_with_role(:tracer)
+      if authorized?(Case, :create, get_auth(socket), tenant: :any) do
+        tenants =
+          Enum.filter(
+            TenantContext.list_tenants(),
+            &authorized?(Case, :create, get_auth(socket), tenant: &1)
+          )
+
+        supervisor_users = UserContext.list_users_with_role(:supervisor, tenants)
+        tracer_users = UserContext.list_users_with_role(:tracer, tenants)
+
         infection_place_types = CaseContext.list_infection_place_types()
         auth_user = get_auth(socket)
 

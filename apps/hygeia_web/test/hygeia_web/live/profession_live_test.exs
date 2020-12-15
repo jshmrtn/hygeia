@@ -8,7 +8,7 @@ defmodule HygeiaWeb.ProfessionLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
-  @moduletag log_in: [roles: [:admin]]
+  @moduletag log_in: [roles: [:webmaster]]
 
   @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}

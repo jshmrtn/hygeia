@@ -56,9 +56,9 @@ defmodule HygeiaWeb.CaseLive.Transmissions do
       case:
         Repo.preload(
           case,
-          received_transmissions: [propagator_case: [], propagator: []],
-          propagated_transmissions: [recipient_case: [], recipient: []],
-          person: [],
+          received_transmissions: [propagator_case: [tenant: []], propagator: [tenant: []]],
+          propagated_transmissions: [recipient_case: [tenant: []], recipient: [tenant: []]],
+          person: [tenant: []],
           tenant: []
         )
     )

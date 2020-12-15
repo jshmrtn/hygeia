@@ -146,7 +146,7 @@ defmodule Hygeia.CaseContext.Transmission do
 
     def authorized?(_transmission, :create, :anonymous, _meta), do: false
 
-    def authorized?(_transmission, :create, %User{roles: roles}, _meta),
-      do: :tracer in roles or :supervisor in roles or :admin in roles
+    def authorized?(_transmission, :create, user, _meta),
+      do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, :any))
   end
 end

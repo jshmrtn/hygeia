@@ -3,6 +3,7 @@ defmodule HygeiaWeb.UserLive.Index do
 
   use HygeiaWeb, :surface_view
 
+  alias Hygeia.Repo
   alias Hygeia.UserContext
   alias Hygeia.UserContext.User
   alias Surface.Components.Context
@@ -42,5 +43,5 @@ defmodule HygeiaWeb.UserLive.Index do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp list_users, do: UserContext.list_users()
+  defp list_users, do: Repo.preload(UserContext.list_users(), :grants)
 end

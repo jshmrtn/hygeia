@@ -84,6 +84,15 @@
                 />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
+
+              <Field name={{ :short_name }} class="form-group">
+                <Label>{{ gettext("Short Name") }}</Label>
+                <TextInput 
+                  class="form-control"
+                  opts={{ disabled: @live_action == :show }}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
             </div>
           </div>
 
@@ -203,6 +212,20 @@
                   class="form-control"
                   opts={{ prompt: gettext("Choose Variation"), disabled: @live_action == :show }}
                   options={{ Tenant.TemplateVariation.__enum_map__() }}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">{{ gettext("IAM Configuration") }}</h4>
+              <Field name={{ :iam_domain }} class="form-group">
+                <Label>{{ gettext("Domain") }}</Label>
+                <TextInput
+                  class="form-control"
+                  opts={{ disabled: @live_action == :show }}
                 />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>

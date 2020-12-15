@@ -8,7 +8,7 @@ defmodule HygeiaWeb.TenantLiveTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
-  @moduletag log_in: [roles: [:admin]]
+  @moduletag log_in: [roles: [:webmaster]]
 
   @create_attrs %{
     name: "some name"
@@ -27,8 +27,10 @@ defmodule HygeiaWeb.TenantLiveTest do
   }
   @invalid_attrs %{name: nil}
 
-  defp create_tenant(_tags) do
-    %{tenant: tenant_fixture()}
+  defp create_tenant(tags) do
+    [%{tenant: tenant} | _other_grants] = tags.user.grants
+
+    %{tenant: tenant}
   end
 
   describe "Index" do

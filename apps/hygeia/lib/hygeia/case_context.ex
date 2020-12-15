@@ -245,20 +245,23 @@ defmodule Hygeia.CaseContext do
 
   @spec fulltext_person_search(query :: String.t(), limit :: pos_integer()) :: [Person.t()]
   def fulltext_person_search(query, limit \\ 10),
+    do: Repo.all(fulltext_person_search_query(query, limit))
+
+  @spec fulltext_person_search_query(query :: String.t(), limit :: pos_integer()) ::
+          Ecto.Query.t()
+  def fulltext_person_search_query(query, limit \\ 10),
     do:
-      Repo.all(
-        from(person in Person,
-          where: fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", person, ^query),
-          order_by: [
-            desc:
-              fragment(
-                "TS_RANK_CD(?.fulltext, WEBSEARCH_TO_TSQUERY('german', ?))",
-                person,
-                ^query
-              )
-          ],
-          limit: ^limit
-        )
+      from(person in Person,
+        where: fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", person, ^query),
+        order_by: [
+          desc:
+            fragment(
+              "TS_RANK_CD(?.fulltext, WEBSEARCH_TO_TSQUERY('german', ?))",
+              person,
+              ^query
+            )
+        ],
+        limit: ^limit
       )
 
   @doc """
@@ -421,30 +424,32 @@ defmodule Hygeia.CaseContext do
 
   @spec fulltext_case_search(query :: String.t(), limit :: pos_integer()) :: [Case.t()]
   def fulltext_case_search(query, limit \\ 10),
+    do: Repo.all(fulltext_case_search_query(query, limit))
+
+  @spec fulltext_case_search_query(query :: String.t(), limit :: pos_integer()) :: Ecto.Query.t()
+  def fulltext_case_search_query(query, limit \\ 10),
     do:
-      Repo.all(
-        from(case in Case,
-          join: person in assoc(case, :person),
-          left_join: organisation in assoc(case, :related_organisations),
-          where:
-            fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", person, ^query) or
-              fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", case, ^query) or
-              fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", organisation, ^query),
-          order_by: [
-            desc:
-              max(
-                fragment(
-                  "TS_RANK_CD((?.fulltext || ?.fulltext || ?.fulltext), WEBSEARCH_TO_TSQUERY('german', ?))",
-                  case,
-                  person,
-                  organisation,
-                  ^query
-                )
+      from(case in Case,
+        join: person in assoc(case, :person),
+        left_join: organisation in assoc(case, :related_organisations),
+        where:
+          fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", person, ^query) or
+            fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", case, ^query) or
+            fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", organisation, ^query),
+        order_by: [
+          desc:
+            max(
+              fragment(
+                "TS_RANK_CD((?.fulltext || ?.fulltext || ?.fulltext), WEBSEARCH_TO_TSQUERY('german', ?))",
+                case,
+                person,
+                organisation,
+                ^query
               )
-          ],
-          group_by: case.uuid,
-          limit: ^limit
-        )
+            )
+        ],
+        group_by: case.uuid,
+        limit: ^limit
       )
 
   @doc """

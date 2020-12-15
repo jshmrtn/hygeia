@@ -32,14 +32,17 @@ defmodule Hygeia.Authorization do
           resource :: term | atom,
           action :: atom,
           user_context :: term,
-          meta :: %{atom() => term}
+          meta :: %{atom() => term} | [{atom, term}]
         ) :: boolean
   def authorized?(resource, action, user_context \\ :anonymous, meta \\ %{})
 
-  def authorized?(resource, action, user_context, meta) when is_atom(resource),
+  def authorized?(resource, action, user_context, meta) when is_list(meta),
+    do: authorized?(resource, action, user_context, Map.new(meta))
+
+  def authorized?(resource, action, user_context, %{} = meta) when is_atom(resource),
     do: authorized?(struct(resource), action, user_context, meta)
 
-  def authorized?(resource, action, user_context, meta) when is_atom(action) do
+  def authorized?(resource, action, user_context, %{} = meta) when is_atom(action) do
     Resource.authorized?(resource, action, UserContext.user(user_context), meta)
   end
 end

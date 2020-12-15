@@ -68,8 +68,8 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
         when action in [:list, :create],
         do: false
 
-    def authorized?(_protocol_entry, action, %User{roles: roles}, _meta)
+    def authorized?(_protocol_entry, action, user, %{case: %Case{tenant_uuid: tenant_uuid}})
         when action in [:list, :create],
-        do: :tracer in roles or :supervisor in roles or :admin in roles
+        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
   end
 end

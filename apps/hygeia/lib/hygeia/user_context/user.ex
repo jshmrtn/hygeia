@@ -5,10 +5,11 @@ defmodule Hygeia.UserContext.User do
 
   use Hygeia, :model
 
-  import EctoEnum
+  alias Hygeia.TenantContext.Tenant
+  alias Hygeia.UserContext.Grant
+  alias Hygeia.UserContext.Grant.Role
 
-  defenum Role, :user_role, ["tracer", "supervisor", "admin", "webmaster", "statistics_viewer"]
-  @role_map Role.__enum_map__()
+  @role_map Grant.Role.__enum_map__()
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -17,7 +18,8 @@ defmodule Hygeia.UserContext.User do
           email: String.t() | nil,
           display_name: String.t() | nil,
           iam_sub: String.t() | nil,
-          roles: [Role.t()] | nil,
+          grants: Ecto.Schema.has_many(Grant.t()) | nil,
+          tenants: Ecto.Schema.has_many(Tenant.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -27,7 +29,8 @@ defmodule Hygeia.UserContext.User do
           email: String.t(),
           display_name: String.t(),
           iam_sub: String.t(),
-          roles: [Role.t()],
+          grants: Ecto.Schema.has_many(Grant.t()),
+          tenants: Ecto.Schema.has_many(Tenant.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -37,26 +40,40 @@ defmodule Hygeia.UserContext.User do
     field :email, :string
     field :iam_sub, :string
     # TODO: Replace with Relation to Tenant to scope roles to tenant
-    field :roles, {:array, Role}, default: []
+
+    has_many :grants, Grant, foreign_key: :user_uuid, on_replace: :delete
+    has_many :tenants, through: [:grants, :tenant]
 
     timestamps()
   end
 
-  @doc false
   @spec changeset(user :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :display_name, :iam_sub, :roles])
-    |> validate_required([:email, :display_name, :iam_sub, :roles])
+    |> cast(attrs, [:email, :display_name, :iam_sub])
+    |> cast_assoc(:grants)
+    |> validate_required([:email, :display_name, :iam_sub])
     |> unique_constraint(:iam_sub)
     |> validate_email(:email)
   end
 
-  @spec has_role?(user :: t, role :: Role.t()) :: boolean
-  def has_role?(%__MODULE__{roles: roles}, role) when role in @role_map, do: role in roles
+  @spec has_role?(user :: t, role :: Role.t(), tenant :: :any) :: boolean
+  def has_role?(%__MODULE__{grants: grants}, role, :any)
+      when role in @role_map and is_list(grants),
+      do: Enum.any?(grants, &match?(%Grant{role: ^role}, &1))
 
-  @spec has_role?(user :: :anonymous, role :: Role.t()) :: false
-  def has_role?(:anonymous, _role), do: false
+  @spec has_role?(user :: t, role :: Role.t(), tenant :: Tenant.t()) :: boolean
+  def has_role?(%__MODULE__{grants: grants}, role, %Tenant{uuid: tenant_uuid} = _tenant)
+      when role in @role_map and is_list(grants),
+      do: Enum.any?(grants, &match?(%Grant{role: ^role, tenant_uuid: ^tenant_uuid}, &1))
+
+  @spec has_role?(user :: t, role :: Role.t(), tenant :: String.t()) :: boolean
+  def has_role?(%__MODULE__{grants: grants}, role, tenant_uuid)
+      when role in @role_map and is_list(grants) and is_binary(tenant_uuid),
+      do: Enum.any?(grants, &match?(%Grant{role: ^role, tenant_uuid: ^tenant_uuid}, &1))
+
+  @spec has_role?(user :: :anonymous, role :: Role.t(), tenant :: Tenant.t() | :any) :: false
+  def has_role?(:anonymous, _role, _tenant), do: false
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.UserContext.User
@@ -71,12 +88,8 @@ defmodule Hygeia.UserContext.User do
         when action in [:list, :details],
         do: false
 
-    def authorized?(_resource_user, action, %User{roles: []}, _meta)
+    def authorized?(_resource_user, action, user, _meta)
         when action in [:list, :details],
-        do: false
-
-    def authorized?(_resource_user, action, %User{roles: [_ | _]}, _meta)
-        when action in [:list, :details],
-        do: true
+        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, :any))
   end
 end

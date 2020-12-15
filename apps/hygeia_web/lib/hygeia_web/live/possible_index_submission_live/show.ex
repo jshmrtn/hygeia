@@ -143,7 +143,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
 
   defp load_data(socket, possible_index_submission) do
     possible_index_submission =
-      Repo.preload(possible_index_submission, case: [person: [], tenant: []])
+      Repo.preload(possible_index_submission, case: [person: [tenant: []], tenant: []])
 
     changeset = CaseContext.change_possible_index_submission(possible_index_submission)
 

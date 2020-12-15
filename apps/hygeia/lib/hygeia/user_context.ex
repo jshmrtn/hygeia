@@ -5,6 +5,8 @@ defmodule Hygeia.UserContext do
 
   use Hygeia, :context
 
+  alias Hygeia.TenantContext.Tenant
+  alias Hygeia.UserContext.Grant.Role
   alias Hygeia.UserContext.User
 
   @doc """
@@ -19,9 +21,41 @@ defmodule Hygeia.UserContext do
   @spec list_users :: [User.t()]
   def list_users, do: Repo.all(from(user in User, order_by: user.display_name))
 
-  @spec list_users_with_role(role :: User.Role.t()) :: [User.t()]
-  def list_users_with_role(role),
-    do: Repo.all(from(user in User, where: ^role in user.roles, order_by: user.display_name))
+  @spec list_users_with_role(role :: Role.t(), tenant :: :any) :: [User.t()]
+  def list_users_with_role(role, :any),
+    do:
+      Repo.all(
+        from(user in User,
+          join: grant in assoc(user, :grants),
+          preload: [grants: grant],
+          where: grant.role == ^role,
+          order_by: user.display_name
+        )
+      )
+
+  @spec list_users_with_role(role :: Role.t(), tenants :: [Tenant.t()]) :: [User.t()]
+  def list_users_with_role(role, tenants) when is_list(tenants),
+    do:
+      Repo.all(
+        from(user in User,
+          join: grant in assoc(user, :grants),
+          preload: [grants: grant],
+          where: grant.role == ^role and grant.tenant_uuid in ^Enum.map(tenants, & &1.uuid),
+          order_by: user.display_name
+        )
+      )
+
+  @spec list_users_with_role(role :: Role.t(), tenant :: Tenant.t()) :: [User.t()]
+  def list_users_with_role(role, %Tenant{uuid: tenant_uuid} = _tenant),
+    do:
+      Repo.all(
+        from(user in User,
+          join: grant in assoc(user, :grants),
+          preload: [grants: grant],
+          where: grant.role == ^role and grant.tenant_uuid == ^tenant_uuid,
+          order_by: user.display_name
+        )
+      )
 
   @spec fulltext_user_search(query :: String.t(), limit :: pos_integer()) :: [User.t()]
   def fulltext_user_search(query, limit \\ 10),
@@ -85,7 +119,7 @@ defmodule Hygeia.UserContext do
     |> create_user()
     |> case do
       {:ok, user} ->
-        {:ok, user}
+        {:ok, Repo.preload(user, :grants)}
 
       {:error,
        %Ecto.Changeset{
@@ -93,9 +127,12 @@ defmodule Hygeia.UserContext do
            iam_sub: {_message, [constraint: :unique, constraint_name: "users_iam_sub_index"]}
          ]
        }} ->
-        user = get_user_by_sub!(sub)
+        user =
+          sub
+          |> get_user_by_sub!()
+          |> Repo.preload(:grants)
 
-        if Map.take(user, Map.keys(attrs)) == attrs do
+        if user_identical_after_update?(user, attrs) do
           {:ok, user}
         else
           update_user(user, attrs)
@@ -104,6 +141,26 @@ defmodule Hygeia.UserContext do
       {:error, changeset} ->
         {:error, changeset}
     end
+  end
+
+  @spec user_identical_after_update?(
+          user_before :: User.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: boolean
+  def user_identical_after_update?(user_before, attrs),
+    do:
+      cmp_user_fields(user_before) ==
+        user_before
+        |> change_user(attrs)
+        |> Ecto.Changeset.apply_changes()
+        |> cmp_user_fields()
+
+  @abnormal_fields [:__meta__, :grants, :inserted_at, :updated_at, :tenants, :uuid]
+  defp cmp_user_fields(%User{grants: grants} = user) do
+    user
+    |> Map.from_struct()
+    |> Map.drop(@abnormal_fields)
+    |> Map.put(:grants, grants |> Enum.map(&{&1.role, &1.tenant_uuid}) |> Enum.sort())
   end
 
   @doc """

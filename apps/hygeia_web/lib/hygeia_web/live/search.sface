@@ -1,65 +1,72 @@
 <form class="component-search" :on-change="search">
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <span class="input-group-text border-0">
-        <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
-      </span>
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text border-0">
+          <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+        </span>
+      </div>
+      <SearchInput
+        class="form-control border-0"
+        opts={{
+          placeholder: gettext("Search"),
+          name: "query",
+          autocomplete: "off",
+          "phx-target": @myself,
+          "phx-focus": "open"
+        }}
+        value={{ @query }}
+      />
     </div>
-    <SearchInput
-      class="form-control border-0"
-      opts={{
-        placeholder: gettext("Search"),
-        name: "query",
-        autocomplete: "off",
-        "phx-target": @myself,
-        "phx-focus": "open"
-      }}
-      value={{ @query }}
-    />
-  </div>
 
-  <ul :if={{ @open and not(@query in ["", nil]) }} class="d-block dropdown-menu dropdown-menu-right">
-    <li
-      class="dropdown-submenu"
-      :if={{ not(is_nil(@pending_search)) }}
-    >
-      <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">{{ gettext("Waiting for results...") }}</span>
-      </div>
-    </li>
-    <li
-      class="dropdown-submenu"
-      :if={{ map_size(@results) == 0 and is_nil(@pending_search) }}
-    >
-      <span class="dropdown-item">
-        {{ gettext("Found no results") }}
-      </span>
-    </li>
-    <li
-      class="dropdown-submenu"
-      :for={{ {group, items} <- @results }}
-    >
-      <h6 :if={{ length(items) > 0 }} class="submenu-label">{{ translate_group(group) }}</h6>
-
-      <div class="items">
-        <div :for={{ {id, item} <- items }}>
-          <Link class="dropdown-item" :if={{ group == :organisation }} to={{ Routes.organisation_show_path(@socket, :show, id) }}>
-            {{ item }}
-          </Link>
-          <Link class="dropdown-item" :if={{ group == :case }} to={{ Routes.case_base_data_path(@socket, :show, id) }}>
-            {{ case_phase_type_translation(List.last(item.phases)) }}
-            <small class="d-block text-muted">{{ item.person.first_name }} {{ item.person.last_name }}</small>
-            <small class="d-block text-muted">{{ case_display_date(item) }}</small>
-          </Link>
-          <Link class="dropdown-item" :if={{ group == :person }} to={{ Routes.person_base_data_path(@socket, :show, id) }}>
-            {{ item.first_name }} {{ item.last_name }}
-            <small class="d-block text-muted">{{ format_address(item.address) }}</small>
-          </Link>
-          <Link class="dropdown-item" :if={{ group == :user }} to={{ Routes.user_show_path(@socket, :show, id) }}>
-            {{ item }}
-          </Link>
+    <ul :if={{ @open and not(@query in ["", nil]) }} class="d-block dropdown-menu dropdown-menu-right">
+      <li
+        class="dropdown-submenu"
+        :if={{ not(is_nil(@pending_search)) }}
+      >
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">{{ gettext("Waiting for results...") }}</span>
         </div>
-      </div>
-    </li>
-  </ul>
+      </li>
+      <li
+        class="dropdown-submenu"
+        :if={{ map_size(@results) == 0 and is_nil(@pending_search) }}
+      >
+        <span class="dropdown-item">
+          {{ gettext("Found no results") }}
+        </span>
+      </li>
+      <li
+        class="dropdown-submenu"
+        :for={{ {group, items} <- @results }}
+      >
+        <h6 :if={{ length(items) > 0 }} class="submenu-label">{{ translate_group(group) }}</h6>
+
+        <div class="items">
+          <div :for={{ {id, item} <- items }}>
+            <Link class="dropdown-item" :if={{ group == :organisation }} to={{ Routes.organisation_show_path(@socket, :show, id) }}>
+              {{ item }}
+            </Link>
+            <Link class="dropdown-item" :if={{ group == :case }} to={{ Routes.case_base_data_path(@socket, :show, id) }}>
+              {{ case_phase_type_translation(List.last(item.phases)) }}
+              <small
+                class="d-block text-muted"
+                :if={{ authorized?(item.person, :details, auth) }}
+              >
+                {{ item.person.first_name }} {{ item.person.last_name }}
+              </small>
+              <small class="d-block text-muted">{{ case_display_date(item) }}</small>
+            </Link>
+            <Link class="dropdown-item" :if={{ group == :person }} to={{ Routes.person_base_data_path(@socket, :show, id) }}>
+              {{ item.first_name }} {{ item.last_name }}
+              <small class="d-block text-muted">{{ format_address(item.address) }}</small>
+            </Link>
+            <Link class="dropdown-item" :if={{ group == :user }} to={{ Routes.user_show_path(@socket, :show, id) }}>
+              {{ item }}
+            </Link>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </Context>
 </form>

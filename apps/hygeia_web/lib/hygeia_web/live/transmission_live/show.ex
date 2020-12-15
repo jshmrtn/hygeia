@@ -115,10 +115,10 @@ defmodule HygeiaWeb.TransmissionLive.Show do
     transmission =
       transmission
       |> Repo.preload(
-        recipient: [],
-        recipient_case: [],
-        propagator: [],
-        propagator_case: []
+        recipient: [tenant: []],
+        recipient_case: [tenant: []],
+        propagator: [tenant: []],
+        propagator_case: [tenant: []]
       )
       |> update_in([Access.key!(:infection_place)], &Repo.preload(&1, :type))
 

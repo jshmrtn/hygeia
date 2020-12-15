@@ -26,6 +26,8 @@ defmodule Hygeia.TenantContext.Tenant do
           cases: Ecto.Schema.has_many(Case.t()) | nil,
           override_url: String.t() | nil,
           template_variation: TemplateVariation.t() | nil,
+          iam_domain: String.t() | nil,
+          short_name: String.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -40,6 +42,8 @@ defmodule Hygeia.TenantContext.Tenant do
           cases: Ecto.Schema.has_many(Case.t()),
           override_url: String.t() | nil,
           template_variation: TemplateVariation.t() | nil,
+          iam_domain: String.t() | nil,
+          short_name: String.t() | nil,
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -49,6 +53,8 @@ defmodule Hygeia.TenantContext.Tenant do
     field :public_statistics, :boolean, default: false
     field :override_url, :string
     field :template_variation, TemplateVariation
+    field :iam_domain, :string
+    field :short_name, :string
 
     has_many :people, Person
     has_many :cases, Case
@@ -90,7 +96,9 @@ defmodule Hygeia.TenantContext.Tenant do
         :outgoing_mail_configuration_type,
         :outgoing_sms_configuration_type,
         :override_url,
-        :template_variation
+        :template_variation,
+        :iam_domain,
+        :short_name
       ],
       empty_values: []
     )
@@ -106,6 +114,8 @@ defmodule Hygeia.TenantContext.Tenant do
       name: :people_tenant_uuid_fkey,
       message: "has assigned relations"
     )
+    |> unique_constraint(:iam_domain)
+    |> unique_constraint(:short_name)
   end
 
   @spec validate_url(changeset :: Changeset.t(), field :: atom, opts :: [atom]) :: Changeset.t()
@@ -149,22 +159,25 @@ defmodule Hygeia.TenantContext.Tenant do
           ) :: boolean
     def authorized?(_tenant, :list, _user, _meta), do: true
 
+    def authorized?(%Tenant{public_statistics: true} = _tenant, :statistics, _user, _meta),
+      do: true
+
     def authorized?(_tenant, action, :anonymous, _meta)
-        when action in [:create, :details, :update, :delete],
+        when action in [:create, :details, :update, :delete, :statistics],
         do: false
 
-    def authorized?(
-          %Tenant{public_statistics: public_statistics} = _tenant,
-          :statistics,
-          :anonymous,
-          _meta
-        ),
-        do: public_statistics
+    def authorized?(tenant, :statistics, user, _meta),
+      do:
+        Enum.any?(
+          [:statistics_viewer, :tracer, :supervisor, :admin],
+          &User.has_role?(user, &1, tenant)
+        )
 
-    def authorized?(_tenant, :statistics, %User{}, _meta), do: true
+    def authorized?(tenant, action, user, _meta)
+        when action in [:details, :update, :delete],
+        do: User.has_role?(user, :admin, tenant) or User.has_role?(user, :webmaster, :any)
 
-    def authorized?(_tenant, action, %User{roles: roles}, _meta)
-        when action in [:create, :details, :update, :delete],
-        do: :admin in roles
+    def authorized?(_tenant, :create, user, _meta),
+      do: User.has_role?(user, :webmaster, :any)
   end
 end

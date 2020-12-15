@@ -106,7 +106,14 @@ config :hygeia_iam, :service_accounts,
     login:
       System.get_env(
         "IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN",
-        ~S({"type":"serviceaccount","keyId":"***REMOVED***","key":"-----BEGIN RSA PRIVATE KEY-----\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n-----END RSA PRIVATE KEY-----\n","userId":"***REMOVED***"})
+        ~S"""
+        {
+          "type": "serviceaccount",
+          "keyId": "***REMOVED***",
+          "key": "-----BEGIN RSA PRIVATE KEY-----\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n-----END RSA PRIVATE KEY-----\n",
+          "userId": "***REMOVED***"
+        }
+        """
       ),
     audience: [
       "https://api.zitadel.ch/oauth/v2/token",

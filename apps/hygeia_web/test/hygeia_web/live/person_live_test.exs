@@ -23,8 +23,10 @@ defmodule HygeiaWeb.PersonLiveTest do
     last_name: nil
   }
 
-  defp create_person(_tags) do
-    %{person: person_fixture()}
+  defp create_person(tags) do
+    [%{tenant: tenant} | _other_grants] = tags.user.grants
+
+    %{person: person_fixture(tenant)}
   end
 
   describe "Index" do
@@ -48,8 +50,9 @@ defmodule HygeiaWeb.PersonLiveTest do
   end
 
   describe "Create" do
-    test "saves new person", %{conn: conn} do
-      tenant = tenant_fixture()
+    test "saves new person", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
+
       {:ok, create_live, _html} = live(conn, Routes.person_create_path(conn, :create))
 
       assert create_live

@@ -19,6 +19,8 @@ defmodule HygeiaWeb.ConnCase do
 
   import Phoenix.ConnTest
 
+  alias Hygeia.Repo
+
   using do
     quote do
       # Import conveniences for testing with connections
@@ -41,12 +43,39 @@ defmodule HygeiaWeb.ConnCase do
         {:ok, conn: conn}
 
       true ->
-        user = Hygeia.Fixtures.user_fixture(%{iam_sub: Ecto.UUID.generate()})
+        user =
+          %{iam_sub: Ecto.UUID.generate()}
+          |> Hygeia.Fixtures.user_fixture()
+          |> Repo.preload(grants: [tenant: []])
 
         {:ok, conn: init_test_session(conn, auth: user), user: user}
 
       params ->
-        user = Hygeia.Fixtures.user_fixture(Enum.into(params, %{iam_sub: Ecto.UUID.generate()}))
+        user =
+          params
+          |> Enum.into(%{iam_sub: Ecto.UUID.generate()})
+          |> case do
+            %{roles: [_ | _] = roles} = attrs ->
+              tenant = Hygeia.Fixtures.tenant_fixture()
+
+              attrs
+              |> Map.drop([:roles])
+              |> Map.put_new(
+                :grants,
+                Enum.map(
+                  roles,
+                  &%{
+                    role: &1,
+                    tenant_uuid: tenant.uuid
+                  }
+                )
+              )
+
+            %{} = attrs ->
+              attrs
+          end
+          |> Hygeia.Fixtures.user_fixture()
+          |> Repo.preload(grants: [tenant: []])
 
         {:ok, conn: init_test_session(conn, auth: user), user: user}
     end

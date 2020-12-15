@@ -14,8 +14,10 @@ defmodule HygeiaWeb.CaseLiveTest do
   @moduletag originator: :noone
   @moduletag log_in: [roles: [:admin]]
 
-  defp create_case(_tags) do
-    %{case_model: case_fixture()}
+  defp create_case(tags) do
+    [%{tenant: tenant} | _other_grants] = tags.user.grants
+
+    %{case_model: case_fixture(person_fixture(tenant))}
   end
 
   describe "Index" do
@@ -47,10 +49,20 @@ defmodule HygeiaWeb.CaseLiveTest do
   end
 
   describe "CreateIndex" do
-    test "creates case without duplicate", %{conn: conn} do
-      tenant = tenant_fixture()
-      tracer_user = user_fixture(%{iam_sub: Ecto.UUID.generate(), roles: [:tracer]})
-      supervisor_user = user_fixture(%{iam_sub: Ecto.UUID.generate(), roles: [:supervisor]})
+    test "creates case without duplicate", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      tracer_user =
+        user_fixture(%{
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
+        })
+
+      supervisor_user =
+        user_fixture(%{
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+        })
 
       assert {:ok, create_live, _html} = live(conn, Routes.case_create_index_path(conn, :create))
 
@@ -83,10 +95,20 @@ defmodule HygeiaWeb.CaseLiveTest do
              ] = CaseContext.list_people()
     end
 
-    test "blocks create case with duplicate", %{conn: conn} do
-      tenant = tenant_fixture()
-      tracer_user = user_fixture(%{iam_sub: Ecto.UUID.generate(), roles: [:tracer]})
-      supervisor_user = user_fixture(%{iam_sub: Ecto.UUID.generate(), roles: [:supervisor]})
+    test "blocks create case with duplicate", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      tracer_user =
+        user_fixture(%{
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
+        })
+
+      supervisor_user =
+        user_fixture(%{
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+        })
 
       person_fixture(tenant, %{
         first_name: "Max",
@@ -121,10 +143,20 @@ defmodule HygeiaWeb.CaseLiveTest do
   end
 
   describe "CreatePossibleIndex" do
-    test "creates case without duplicate", %{conn: conn} do
-      tenant = tenant_fixture()
-      tracer_user = user_fixture(%{iam_sub: Ecto.UUID.generate(), roles: [:tracer]})
-      supervisor_user = user_fixture(%{iam_sub: Ecto.UUID.generate(), roles: [:supervisor]})
+    test "creates case without duplicate", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      tracer_user =
+        user_fixture(%{
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
+        })
+
+      supervisor_user =
+        user_fixture(%{
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+        })
 
       assert {:ok, create_live, _html} =
                live(conn, Routes.case_create_possible_index_path(conn, :create))
@@ -160,10 +192,20 @@ defmodule HygeiaWeb.CaseLiveTest do
              ] = CaseContext.list_people()
     end
 
-    test "blocks create case with duplicate", %{conn: conn} do
-      tenant = tenant_fixture()
-      tracer_user = user_fixture(%{iam_sub: Ecto.UUID.generate(), roles: [:tracer]})
-      supervisor_user = user_fixture(%{iam_sub: Ecto.UUID.generate(), roles: [:supervisor]})
+    test "blocks create case with duplicate", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      tracer_user =
+        user_fixture(%{
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
+        })
+
+      supervisor_user =
+        user_fixture(%{
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+        })
 
       person_fixture(tenant, %{
         first_name: "Max",

@@ -20,7 +20,7 @@ defmodule HygeiaWeb.Plug.HasRole do
   def call(conn, role) do
     %User{} = user = get_session(conn, :auth)
 
-    if User.has_role?(user, role) do
+    if User.has_role?(user, role, :any) do
       conn
     else
       conn

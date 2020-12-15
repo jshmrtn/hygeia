@@ -9,9 +9,11 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
   import Phoenix.Controller
 
   alias Hygeia.Helpers.Versioning
+  alias Hygeia.Repo
+  alias Hygeia.TenantContext
   alias Hygeia.UserContext
+  alias Hygeia.UserContext.Grant.Role
   alias Hygeia.UserContext.User
-  alias Hygeia.UserContext.User.Role
   alias HygeiaWeb.Router.Helpers
 
   require Logger
@@ -22,7 +24,7 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
   end
 
   @impl Plug
-  def call(conn, _opts) do
+  def call(%Plug.Conn{request_path: request_path} = conn, _opts) do
     conn
     |> get_session(:auth_tokens)
     |> case do
@@ -39,7 +41,7 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
           {:error, _reason} ->
             conn
             |> configure_session(drop: true)
-            |> redirect(to: Helpers.auth_path(conn, :request, "oidc"))
+            |> redirect(to: Helpers.auth_path(conn, :request, "oidc", return_url: request_path))
             |> halt
 
             # TODO: Refresh token if expired as soon as Zitadel is ready
@@ -55,7 +57,8 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
          :ok <- Logger.info("Retrieve UserInfo End"),
          :ok <- Logger.info("Upsert User Start"),
          {:ok, user} <- upsert_user(user_info),
-         :ok <- Logger.info("Upsert User End") do
+         :ok <- Logger.info("Upsert User End"),
+         user <- Repo.preload(user, :grants) do
       {:ok, user}
     else
       {:error, reason} -> {:error, reason}
@@ -73,13 +76,19 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
            sub: sub
          } = attrs
        ) do
-    roles =
+    tenants = Map.new(TenantContext.list_tenants(), &{&1.iam_domain, &1})
+
+    grants =
       attrs
       |> Map.get(:"urn:zitadel:iam:org:project:roles", %{})
-      |> Map.keys()
-      |> MapSet.new()
-      |> MapSet.intersection(MapSet.new(Role.__enum_map__()))
-      |> MapSet.to_list()
+      |> Enum.flat_map(fn {role, grants} ->
+        grants
+        |> Map.values()
+        |> Enum.map(&{role, tenants[&1]})
+      end)
+      |> Enum.reject(&match?({_role, nil}, &1))
+      |> Enum.map(fn {role, tenant} -> %{role: role, tenant_uuid: tenant.uuid} end)
+      |> Enum.filter(&Role.valid_value?(&1.role))
 
     Versioning.put_origin(:web)
     Versioning.put_originator(:noone)
@@ -88,7 +97,7 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
       email: email,
       display_name: name,
       iam_sub: sub,
-      roles: roles
+      grants: grants
     })
   end
 end

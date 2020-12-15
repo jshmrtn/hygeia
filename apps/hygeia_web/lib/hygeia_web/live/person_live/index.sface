@@ -8,7 +8,7 @@
       <LiveRedirect
         class="mr-2"
         to={{ Routes.person_create_path(@socket, :create) }}
-        :if={{ authorized?(Person, :create, auth) }}
+        :if={{ authorized?(Person, :create, auth, tenant: :any) }}
       >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
           <span class="oi oi-plus" aria-hidden="true"></span>

@@ -55,8 +55,10 @@ defmodule HygeiaWeb.TransmissionLiveTest do
   }
   @invalid_attrs %{date: nil}
 
-  defp create_transmission(_tags) do
-    index_case = case_fixture()
+  defp create_transmission(tags) do
+    [%{tenant: tenant} | _other_grants] = tags.user.grants
+
+    index_case = case_fixture(person_fixture(tenant))
 
     %{
       transmission:
@@ -68,9 +70,11 @@ defmodule HygeiaWeb.TransmissionLiveTest do
   end
 
   describe "Create" do
-    test "saves new transmission", %{conn: conn} do
-      recipient_case = case_fixture()
-      propagator_case = case_fixture()
+    test "saves new transmission", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      recipient_case = case_fixture(person_fixture(tenant))
+      propagator_case = case_fixture(person_fixture(tenant))
 
       {:ok, create_live, _html} =
         live(

@@ -55,7 +55,7 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   def handle_info(_other, socket), do: {:noreply, socket}
 
   defp load_data(socket, case) do
-    case = Repo.preload(case, protocol_entries: [], person: [], tenant: [])
+    case = Repo.preload(case, protocol_entries: [], person: [tenant: []], tenant: [])
     assign(socket, case: case)
   end
 

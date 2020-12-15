@@ -1,12 +1,12 @@
-## This file is a PO Template file.
-##
-## "msgid"s here are often extracted from source code.
-## Add new translations manually only if they're dynamic
-## translations that can't be statically extracted.
-##
-## Run "mix gettext.extract" to bring this file up to
-## date. Leave "msgstr"s empty as changing them here as no
-## effect: edit them in PO (.po) files instead.
+# # This file is a PO Template file.
+# #
+# # "msgid"s here are often extracted from source code.
+# # Add new translations manually only if they're dynamic
+# # translations that can't be statically extracted.
+# #
+# # Run "mix gettext.extract" to bring this file up to
+# # date. Leave "msgstr"s empty as changing them here as no
+# # effect: edit them in PO (.po) files instead.
 msgid ""
 msgstr ""
 "Project-Id-Version: Hygeia\n"
@@ -20,286 +20,240 @@ msgstr ""
 "X-Generator: Poedit 2.4.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/create_index.ex:99
-#: lib/hygeia_web/live/case_live/create_possible_index.ex:143
+#: lib/hygeia_web/live/case_live/create_index.ex:104
+#: lib/hygeia_web/live/case_live/create_possible_index.ex:149
 msgid "Created Case"
 msgid_plural "Created %{n} Cases"
 msgstr[0] ""
 msgstr[1] ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:97
 msgid "%{phase_type} (%{date})"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:131
 #: lib/hygeia_web/live/case_live/base_data.sface:132
 msgid "0-1 contact person"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:130
 msgid "1 call"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:142
 #: lib/hygeia_web/live/case_live/base_data.sface:143
 msgid "2-5 contact persons"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:153
 #: lib/hygeia_web/live/case_live/base_data.sface:154
 msgid "6 or more contact persons"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:136
 msgid "< 15 Min."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:158
 msgid "< 30 Min."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:147
 msgid "> 15 Min."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:169
 msgid "> 30 Min."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:164
-msgid "A lot of contact persons from different places, clubs affected, gastronomy affected, hospital/nursing home affected"
+msgid ""
+"A lot of contact persons from different places, clubs affected, gastronomy "
+"affected, hospital/nursing home affected"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:167
-msgid "A lot of contact persons/places that must be determined / assignment to team lead"
+msgid ""
+"A lot of contact persons/places that must be determined / assignment to team "
+"lead"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:148
 msgid "A minimum of 2 points must be fulfilled"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:159
 #: lib/hygeia_web/live/case_live/base_data.sface:170
 msgid "A minimum of 3 points must be fulfilled"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/versioning.ex:15
 msgid "API"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:154
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:68
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:67
 msgid "Accept"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:185
+#: lib/hygeia_web/live/tenant_live/show.sface:194
 msgid "Access Token"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/lock.ex:62
 msgid "Acquiring Lock..."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:66
 msgid "Actions"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:20
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:244 lib/hygeia_web/live/transmission_live/infection_place.sface:52
 msgid "Activity Mapping"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/infection_place.sface:33
 msgid "Activity Mapping Executed"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/show.sface:176
 msgid "Add"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:65
 msgid "Add hospitalization"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:121
 msgid "Additional inquiries"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/address_form.sface:3
 #: lib/hygeia_web/live/case_live/address_input.sface:20 lib/hygeia_web/live/case_live/create_index.sface:126
 #: lib/hygeia_web/live/case_live/create_index.sface:132 lib/hygeia_web/live/case_live/person_create_table.sface:12
-#: lib/hygeia_web/live/organisation_live/index.sface:52 lib/hygeia_web/live/organisation_live/show.sface:87
+#: lib/hygeia_web/live/organisation_live/index.sface:56 lib/hygeia_web/live/organisation_live/show.sface:87
 #: lib/hygeia_web/live/person_live/base_data.sface:137 lib/hygeia_web/live/possible_index_submission_live/create.sface:23
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:90
 msgid "Address"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:127
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:126
 msgid "Adress"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:137
 msgid "All points must be fulfilled"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/templates/auth/oidc_error.html.eex:9
-msgid "An unknown error happened during registration. Report this to your webmaster."
+msgid ""
+"An unknown error happened during registration. Report this to your webmaster."
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/index.sface:99
-#: lib/hygeia_web/live/organisation_live/index.sface:28 lib/hygeia_web/live/person_live/index.sface:42
+#: lib/hygeia_web/live/case_live/index.sface:101
+#: lib/hygeia_web/live/organisation_live/index.sface:32 lib/hygeia_web/live/person_live/index.sface:42
 #: lib/hygeia_web/live/person_live/index.sface:64 lib/hygeia_web/live/person_live/index.sface:75
 msgid "Any"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:25
 msgid "App report"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/index.sface:280
+#: lib/hygeia_web/live/case_live/index.sface:285
 #: lib/hygeia_web/live/case_live/navigation.sface:221 lib/hygeia_web/live/case_live/navigation.sface:268
-#: lib/hygeia_web/live/case_live/transmission_table.sface:154 lib/hygeia_web/live/infection_place_type_live/index.sface:58
-#: lib/hygeia_web/live/infection_place_type_live/show.sface:22 lib/hygeia_web/live/organisation_live/index.sface:93
+#: lib/hygeia_web/live/case_live/transmission_table.sface:154 lib/hygeia_web/live/infection_place_type_live/index.sface:62
+#: lib/hygeia_web/live/infection_place_type_live/show.sface:22 lib/hygeia_web/live/organisation_live/index.sface:97
 #: lib/hygeia_web/live/organisation_live/show.sface:22 lib/hygeia_web/live/person_live/base_data.sface:41
 #: lib/hygeia_web/live/person_live/index.sface:198 lib/hygeia_web/live/possible_index_submission_live/index.sface:134
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:50 lib/hygeia_web/live/profession_live/index.sface:58
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:49 lib/hygeia_web/live/profession_live/index.sface:62
 #: lib/hygeia_web/live/profession_live/show.sface:22 lib/hygeia_web/live/tenant_live/index.sface:58
 #: lib/hygeia_web/live/tenant_live/show.sface:22 lib/hygeia_web/live/transmission_live/show.sface:54
 msgid "Are you sure?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:21
 msgid "Are you working in an association?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:20
 msgid "Association"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/monitoring.ex:24
 msgid "Asylum center"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:67 lib/hygeia_web/helpers/phase.ex:21
 msgid "Asymptomatic"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol.sface:15
 msgid "Author"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/versioning.ex:12
 msgid "Automated Case Close Email"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:292
 msgid "Automated Close Email"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:44
 msgid "Available Column Headers"
 msgstr ""
 
-#, elixir-format
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:31
 #: lib/hygeia_web/live/possible_index_submission_live/show.sface:32
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:33
 msgid "Back to List"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:23
-#: lib/hygeia_web/live/person_live/base_data.sface:77 lib/hygeia_web/live/person_live/header.sface:18
-#: lib/hygeia_web/live/transmission_live/show.sface:81 lib/hygeia_web/live/user_live/show.sface:13
+#: lib/hygeia_web/live/person_live/base_data.sface:77 lib/hygeia_web/live/person_live/header.sface:27
+#: lib/hygeia_web/live/transmission_live/show.sface:81 lib/hygeia_web/live/user_live/show.sface:14
 msgid "Base Data"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:112
 msgid "Birth Date"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/index.sface:136
 msgid "Birth date"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/person_create_table.sface:8
 #: lib/hygeia_web/live/case_live/person_create_table.sface:189
 msgid "Birthdate"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol.sface:54
 #: lib/hygeia_web/live/case_live/protocol_modal.sface:63
 msgid "Body"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:38
 msgid "Body Aches"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:117
 msgid "Call"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/search.ex:8
 msgid "Case"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.ex:68
 msgid "Case deleted successfully"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/base_data.ex:174
+#: lib/hygeia_web/live/case_live/base_data.ex:178
 msgid "Case updated successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:13
 #: lib/hygeia_web/live/statistics_live/statistics.sface:134 lib/hygeia_web/live/statistics_live/statistics.sface:261
 #: lib/hygeia_web/live/statistics_live/statistics.sface:329 lib/hygeia_web/live/statistics_live/statistics.sface:451
@@ -307,143 +261,117 @@ msgstr ""
 msgid "Cases"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/person_create_table.sface:170
 msgid "Check Duplicates"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/choose_tenant.sface:3
 msgid "Choose Tenant"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol_modal.sface:16
 #: lib/hygeia_web/live/person_live/base_data.sface:158 lib/hygeia_web/live/person_live/create.sface:70
-#: lib/hygeia_web/live/references.sface:25 lib/hygeia_web/live/tenant_live/show.sface:98
-#: lib/hygeia_web/live/tenant_live/show.sface:171
+#: lib/hygeia_web/live/references.sface:25 lib/hygeia_web/live/tenant_live/show.sface:107
+#: lib/hygeia_web/live/tenant_live/show.sface:180
 msgid "Choose Type"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:204
+#: lib/hygeia_web/live/tenant_live/show.sface:213
 msgid "Choose Variation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/address_form.sface:29
 msgid "Choose country"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/person_create_table.sface:257
 msgid "Choose existing person"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/monitoring/monitoring.sface:14
 msgid "Choose location"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/choose.sface:39
 msgid "Choose organisation"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/person_live/choose.sface:39
+#: lib/hygeia_web/live/person_live/choose.sface:43
 msgid "Choose person"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:234
 msgid "Choose profession"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/choose.sface:29
+#: lib/hygeia_web/live/case_live/choose.sface:40
 msgid "Choose propagator"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/address_form.sface:37
-#: lib/hygeia_web/live/organisation_live/index.sface:36 lib/hygeia_web/live/person_live/index.sface:89
+#: lib/hygeia_web/live/organisation_live/index.sface:40 lib/hygeia_web/live/person_live/index.sface:89
 msgid "Choose subdivision"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:392
 #: lib/hygeia_web/live/case_live/create_index.sface:164
 msgid "Choose test kind"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:399
 #: lib/hygeia_web/live/case_live/create_index.sface:170
 msgid "Choose test result"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:316
 msgid "Clinical Information"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:28
 msgid "Code Pending"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:42
 #: lib/hygeia_web/live/help_live/index.sface:244
 msgid "Comma (,)"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:152
 #: lib/hygeia_web/live/person_live/create.sface:62
 msgid "Comment"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:88
-#: lib/hygeia_web/live/case_live/base_data.sface:109 lib/hygeia_web/live/case_live/index.sface:61
-#: lib/hygeia_web/live/case_live/index.sface:144 lib/hygeia_web/live/statistics_live/statistics.sface:430
+#: lib/hygeia_web/live/case_live/base_data.sface:109 lib/hygeia_web/live/case_live/index.sface:63
+#: lib/hygeia_web/live/case_live/index.sface:146 lib/hygeia_web/live/statistics_live/statistics.sface:430
 msgid "Complexity"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:124
 msgid "Condition"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:199
+#: lib/hygeia_web/live/tenant_live/show.sface:208
 msgid "Confirmation PDF Template"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:147
 #: lib/hygeia_web/live/person_live/create.sface:56 lib/hygeia_web/live/possible_index_submission_live/create.sface:22
 msgid "Contact Methods"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:86 lib/hygeia_web/helpers/case.ex:131
 msgid "Contact Person"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:118
 msgid "Contact persons"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:26
 msgid "Contact tracing"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:107
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:153 lib/hygeia_web/live/possible_index_submission_live/create.sface:204
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:258 lib/hygeia_web/live/possible_index_submission_live/create.sface:295
@@ -451,91 +379,74 @@ msgstr ""
 msgid "Continue"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:220
 #: lib/hygeia_web/live/case_live/navigation.sface:225
 msgid "Convert to Index"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:70 lib/hygeia_web/helpers/phase.ex:22
 msgid "Converted to Index"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:124
 msgid "Copy Address from Propagator"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:133
 msgid "Correct phone number available"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:34
 msgid "Cough"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/create_index.ex:122
-#: lib/hygeia_web/live/case_live/create_possible_index.ex:180
+#: lib/hygeia_web/live/case_live/create_index.ex:127
+#: lib/hygeia_web/live/case_live/create_possible_index.ex:186
 msgid "Could not parse CSV"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:37
 #: lib/hygeia_web/live/statistics_live/statistics.sface:351
 msgid "Count"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/address_form.sface:28
-#: lib/hygeia_web/live/organisation_live/index.sface:27 lib/hygeia_web/live/statistics_live/statistics.sface:566
+#: lib/hygeia_web/live/organisation_live/index.sface:31 lib/hygeia_web/live/statistics_live/statistics.sface:566
 msgid "Country"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/index.sface:72
 msgid "Country of residence"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:209
 msgid "Create Contact Cases"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:2
 msgid "Create Index Cases"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:237
 msgid "Create Note"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:2
 msgid "Create Possible Index Cases"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/person_create_table.sface:220
 msgid "Create new person"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.ex:58
 msgid "Created Index Phase"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:112 lib/hygeia_web/helpers/case.ex:117
 msgid "Created at %{created_at}"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:68
 #: lib/hygeia_web/live/case_live/protocol.sface:13 lib/hygeia_web/live/case_live/transmission_table.sface:13
 #: lib/hygeia_web/live/statistics_live/statistics.sface:55 lib/hygeia_web/live/statistics_live/statistics.sface:120
@@ -547,182 +458,156 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:57
 msgid "Date Format"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:52 lib/hygeia_web/helpers/phase.ex:19
 msgid "Death"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:82
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:191
 msgid "Default Country"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:46
 #: lib/hygeia_web/live/case_live/create_index.sface:52 lib/hygeia_web/live/case_live/create_possible_index.sface:155
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:161 lib/hygeia_web/live/case_live/person_create_table.sface:121
 msgid "Default Supervisor"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:29
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:138 lib/hygeia_web/live/case_live/person_create_table.sface:104
 msgid "Default Tenant"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:65
 #: lib/hygeia_web/live/case_live/create_index.sface:71 lib/hygeia_web/live/case_live/create_possible_index.sface:174
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:180 lib/hygeia_web/live/case_live/person_create_table.sface:137
 msgid "Default Tracer"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:86
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:195
 msgid "Default country"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/index.sface:279
+#: lib/hygeia_web/live/case_live/index.sface:284
 #: lib/hygeia_web/live/case_live/navigation.sface:267 lib/hygeia_web/live/case_live/navigation.sface:272
-#: lib/hygeia_web/live/case_live/transmission_table.sface:153 lib/hygeia_web/live/infection_place_type_live/index.sface:57
+#: lib/hygeia_web/live/case_live/transmission_table.sface:153 lib/hygeia_web/live/infection_place_type_live/index.sface:61
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:21 lib/hygeia_web/live/infection_place_type_live/show.sface:28
-#: lib/hygeia_web/live/organisation_live/index.sface:92 lib/hygeia_web/live/organisation_live/show.sface:21
+#: lib/hygeia_web/live/organisation_live/index.sface:96 lib/hygeia_web/live/organisation_live/show.sface:21
 #: lib/hygeia_web/live/organisation_live/show.sface:28 lib/hygeia_web/live/person_live/base_data.sface:40
 #: lib/hygeia_web/live/person_live/base_data.sface:47 lib/hygeia_web/live/person_live/index.sface:197
-#: lib/hygeia_web/live/possible_index_submission_live/index.sface:133 lib/hygeia_web/live/possible_index_submission_live/show.sface:49
-#: lib/hygeia_web/live/profession_live/index.sface:57 lib/hygeia_web/live/profession_live/show.sface:21
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:133 lib/hygeia_web/live/possible_index_submission_live/show.sface:48
+#: lib/hygeia_web/live/profession_live/index.sface:61 lib/hygeia_web/live/profession_live/show.sface:21
 #: lib/hygeia_web/live/profession_live/show.sface:28 lib/hygeia_web/live/tenant_live/index.sface:57
 #: lib/hygeia_web/live/tenant_live/show.sface:21 lib/hygeia_web/live/tenant_live/show.sface:28
 #: lib/hygeia_web/live/transmission_live/show.sface:53 lib/hygeia_web/live/transmission_live/show.sface:60
 msgid "Delete"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:226
 msgid "Describe your encounter with %{first_name} %{last_name}."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:163
-msgid "Despite multiple calls and inquiries regarding the phone number unavailable"
+msgid ""
+"Despite multiple calls and inquiries regarding the phone number unavailable"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:67
 msgid "Detailed Instructions"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:25
 msgid "Did you meet any colleages?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:238
 msgid "Did you meet other unknown people?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:29
 msgid "Did you meet your family or friends recently?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:37
 msgid "Did you visit a gym recently?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:33
 msgid "Did you visit a pub / restaurant / event recently?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:235
 msgid "Did you wear a mask?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:156
 msgid "Difficult living situation, further inquiries necessary"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:41
 msgid "Diificulty Breathing"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:111
 msgid "Directly set case status to done"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:40
 #: lib/hygeia_web/live/case_live/base_data.sface:41 lib/hygeia_web/live/case_live/base_data.sface:491
 #: lib/hygeia_web/live/case_live/base_data.sface:492 lib/hygeia_web/live/infection_place_type_live/show.sface:51
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:52 lib/hygeia_web/live/organisation_live/show.sface:51
 #: lib/hygeia_web/live/organisation_live/show.sface:52 lib/hygeia_web/live/person_live/base_data.sface:69
 #: lib/hygeia_web/live/person_live/base_data.sface:70 lib/hygeia_web/live/person_live/base_data.sface:329
-#: lib/hygeia_web/live/person_live/base_data.sface:330 lib/hygeia_web/live/possible_index_submission_live/show.sface:91
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:92 lib/hygeia_web/live/profession_live/show.sface:51
+#: lib/hygeia_web/live/person_live/base_data.sface:330 lib/hygeia_web/live/possible_index_submission_live/show.sface:90
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:91 lib/hygeia_web/live/profession_live/show.sface:51
 #: lib/hygeia_web/live/profession_live/show.sface:52 lib/hygeia_web/live/tenant_live/show.sface:51
 #: lib/hygeia_web/live/tenant_live/show.sface:52 lib/hygeia_web/live/transmission_live/show.sface:72
 #: lib/hygeia_web/live/transmission_live/show.sface:73
 msgid "Discard"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/user_live/index.sface:11
-#: lib/hygeia_web/live/user_live/show.sface:16
+#: lib/hygeia_web/live/user_live/show.sface:17
 msgid "Display Name"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:271
 msgid "Do you know the address where you met with %{first_name} %{last_name}?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/templates/layout/root.html.leex:31
 msgid "Do you really want to continue without saving?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:39
 #: lib/hygeia_web/live/case_live/base_data.sface:490 lib/hygeia_web/live/infection_place_type_live/show.sface:50
 #: lib/hygeia_web/live/organisation_live/show.sface:50 lib/hygeia_web/live/person_live/base_data.sface:68
-#: lib/hygeia_web/live/person_live/base_data.sface:328 lib/hygeia_web/live/possible_index_submission_live/show.sface:90
+#: lib/hygeia_web/live/person_live/base_data.sface:328 lib/hygeia_web/live/possible_index_submission_live/show.sface:89
 #: lib/hygeia_web/live/profession_live/show.sface:50 lib/hygeia_web/live/tenant_live/show.sface:50
 #: lib/hygeia_web/live/transmission_live/show.sface:71
 msgid "Do you really want to discard your changes?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:35
 msgid "Done"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:16
 #: lib/hygeia_web/live/case_live/base_data.sface:17 lib/hygeia_web/live/case_live/base_data.sface:503
-#: lib/hygeia_web/live/case_live/base_data.sface:504 lib/hygeia_web/live/case_live/index.sface:272
-#: lib/hygeia_web/live/case_live/transmission_table.sface:146 lib/hygeia_web/live/infection_place_type_live/index.sface:50
+#: lib/hygeia_web/live/case_live/base_data.sface:504 lib/hygeia_web/live/case_live/index.sface:277
+#: lib/hygeia_web/live/case_live/transmission_table.sface:146 lib/hygeia_web/live/infection_place_type_live/index.sface:54
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:13 lib/hygeia_web/live/infection_place_type_live/show.sface:14
-#: lib/hygeia_web/live/organisation_live/index.sface:85 lib/hygeia_web/live/organisation_live/show.sface:13
+#: lib/hygeia_web/live/organisation_live/index.sface:89 lib/hygeia_web/live/organisation_live/show.sface:13
 #: lib/hygeia_web/live/organisation_live/show.sface:14 lib/hygeia_web/live/person_live/base_data.sface:31
 #: lib/hygeia_web/live/person_live/base_data.sface:32 lib/hygeia_web/live/person_live/base_data.sface:340
 #: lib/hygeia_web/live/person_live/base_data.sface:341 lib/hygeia_web/live/person_live/index.sface:190
-#: lib/hygeia_web/live/possible_index_submission_live/index.sface:126 lib/hygeia_web/live/possible_index_submission_live/show.sface:41
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:42 lib/hygeia_web/live/profession_live/index.sface:50
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:126 lib/hygeia_web/live/possible_index_submission_live/show.sface:40
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:41 lib/hygeia_web/live/profession_live/index.sface:54
 #: lib/hygeia_web/live/profession_live/show.sface:13 lib/hygeia_web/live/profession_live/show.sface:14
 #: lib/hygeia_web/live/tenant_live/index.sface:50 lib/hygeia_web/live/tenant_live/show.sface:13
 #: lib/hygeia_web/live/tenant_live/show.sface:14 lib/hygeia_web/live/transmission_live/show.sface:45
@@ -730,833 +615,690 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:56
 msgid "Either you or the other person did not weark a mask."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/contact_method.ex:15
 #: lib/hygeia_web/live/case_live/create.ex:344 lib/hygeia_web/live/case_live/person_create_table.sface:11
 #: lib/hygeia_web/live/case_live/person_create_table.sface:201 lib/hygeia_web/live/case_live/protocol.ex:71
 #: lib/hygeia_web/live/case_live/protocol_modal.sface:21 lib/hygeia_web/live/possible_index_submission_live/create.sface:333
-#: lib/hygeia_web/live/user_live/index.sface:14 lib/hygeia_web/live/user_live/show.sface:20
+#: lib/hygeia_web/live/user_live/index.sface:14 lib/hygeia_web/live/user_live/show.sface:21
 msgid "Email"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:348
 #: lib/hygeia_web/live/case_live/person_create_table.sface:17
 msgid "Employer"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:228
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:24
 msgid "Employment"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/help_live/index.sface:240
 msgid "Encoding"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:38
 msgid "Encoding (CSV only)"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:234
 msgid "End"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:248
 #: lib/hygeia_web/live/case_live/base_data.sface:272
 msgid "End Reason"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:22
 msgid "End date"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:6
 msgid "Enter Possible Transmissions"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:32
 msgid "Events"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:50
 #: lib/hygeia_web/live/transmission_live/create.sface:36 lib/hygeia_web/live/transmission_live/create.sface:63
 msgid "External"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:15
 #: lib/hygeia_web/live/case_live/base_data.sface:162
 msgid "Extreme"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:119
 msgid "Families in the same household"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:28
 msgid "Family / Friends"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:40
 msgid "Fatigue"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/person_create_table.sface:56
 #: lib/hygeia_web/live/person_live/base_data.sface:106 lib/hygeia_web/live/person_live/index.sface:54
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:88
 msgid "Female"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:33
 msgid "Fever"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:27
 msgid "File Type"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/index.sface:32
-#: lib/hygeia_web/live/case_live/index.sface:36 lib/hygeia_web/live/organisation_live/index.sface:19
-#: lib/hygeia_web/live/organisation_live/index.sface:23 lib/hygeia_web/live/person_live/index.sface:23
+#: lib/hygeia_web/live/case_live/index.sface:34
+#: lib/hygeia_web/live/case_live/index.sface:38 lib/hygeia_web/live/organisation_live/index.sface:23
+#: lib/hygeia_web/live/organisation_live/index.sface:27 lib/hygeia_web/live/person_live/index.sface:23
 #: lib/hygeia_web/live/person_live/index.sface:28
 msgid "Filter"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:113
 msgid "Finished Isolations"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:88
 #: lib/hygeia_web/live/person_live/create.sface:38 lib/hygeia_web/live/possible_index_submission_live/create.sface:66
-#: lib/hygeia_web/live/possible_index_submission_live/index.sface:84 lib/hygeia_web/live/possible_index_submission_live/show.sface:105
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:84 lib/hygeia_web/live/possible_index_submission_live/show.sface:104
 msgid "First Name"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:23
 #: lib/hygeia_web/live/case_live/monitoring/monitoring.sface:6
 msgid "First contact"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:26
 msgid "First contact, unreachable"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:334
 #: lib/hygeia_web/live/case_live/person_create_table.sface:5 lib/hygeia_web/live/person_live/index.sface:112
 msgid "First name"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/infection_place.sface:77
 msgid "Flight Information"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/search.sface:35
+#: lib/hygeia_web/live/search.sface:36
 msgid "Found no results"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:14
 msgid "From"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:36
 msgid "Gym"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:39
 msgid "Headaches"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:51 lib/hygeia_web/helpers/phase.ex:18
 msgid "Healed"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:109
 #: lib/hygeia_web/live/help_live/index.sface:3
 msgid "Help"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:14
 #: lib/hygeia_web/live/case_live/base_data.sface:151
 msgid "High"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/monitoring.ex:17
 msgid "Home"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/monitoring.ex:22
 msgid "Hospital"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:462
 msgid "Hospitalizations"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/monitoring.ex:23
 msgid "Hotel"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:305
 msgid "How can we contact %{first_name} %{last_name}?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:17
 msgid "How did you travel there and back?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:216
 msgid "How did your encounter with %{first_name} %{last_name} happen?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:236
 msgid "How much time did you spend together?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/references.sface:9
 msgid "Human Readable ID"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/user_live/show.sface:26
+#: lib/hygeia_web/live/user_live/show.sface:27
 msgid "IAM Subject"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/external_reference.ex:17
 msgid "ISM"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:105
 msgid "ISM Case ID"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/external_reference.ex:18
 msgid "ISM Report"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:108
 msgid "ISM Report ID"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/transmission_table.sface:65
 #: lib/hygeia_web/live/case_live/transmission_table.sface:107 lib/hygeia_web/live/transmission_live/show.sface:123
 #: lib/hygeia_web/live/transmission_live/show.sface:166
 msgid "ISM-ID: %{id}"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:10
-msgid "If you had contact with people you do not know, please talk to your tracer with further details."
+msgid ""
+"If you had contact with people you do not know, please talk to your tracer "
+"with further details."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:127
-msgid "If you met %{first_name} %{last_name} multiple times, select the earliest date after 48 hours before your symptom start date or before the test (if you don't have symptoms)."
+msgid ""
+"If you met %{first_name} %{last_name} multiple times, select the earliest "
+"date after 48 hours before your symptom start date or before the test (if "
+"you don't have symptoms)."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:12
-msgid "If you're having trouble recalling what you did since then, here are some examples:"
+msgid ""
+"If you're having trouble recalling what you did since then, here are some "
+"examples:"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:8
 msgid "Import CSV / XLSX"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:23
 msgid "Import Help"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:8
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:8
 msgid "Import is currently running."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:237
 msgid "In how close proximity to each other were you?"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/index.sface:95
+#: lib/hygeia_web/live/case_live/index.sface:97
 msgid "Includes Phase Type"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:133 lib/hygeia_web/helpers/phase.ex:9
-#: lib/hygeia_web/live/case_live/base_data.sface:218 lib/hygeia_web/live/case_live/index.sface:105
+#: lib/hygeia_web/live/case_live/base_data.sface:218 lib/hygeia_web/live/case_live/index.sface:107
 #: lib/hygeia_web/live/statistics_live/statistics.sface:295
 msgid "Index"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:168
-msgid "Index doesn't understand English and can't express themselves in a European language. No communication without translator possible."
+msgid ""
+"Index doesn't understand English and can't express themselves in a European "
+"language. No communication without translator possible."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:135
 msgid "Index understands and speaks English"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:146
-msgid "Index understands and speaks English, but several explanations are necessary"
+msgid ""
+"Index understands and speaks English, but several explanations are necessary"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:19
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:138 lib/hygeia_web/live/statistics_live/statistics.sface:495
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:137 lib/hygeia_web/live/statistics_live/statistics.sface:495
 #: lib/hygeia_web/live/transmission_live/show.sface:182
 msgid "Infection Place"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/transmission_table.sface:16
 msgid "Infection Place Known"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/transmission_table.sface:19
 msgid "Infection Place Type"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/infection_place_type_live/show.ex:84
 msgid "Infection Place Type deleted successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:91
 msgid "Infection Place Types"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/infection_place.sface:6
 msgid "Infection place"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/infection_place_type_live/create.ex:44
 msgid "Infection place type created successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/infection_place_type_live/show.ex:98
 msgid "Infection place type updated successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/infection_place_type_live/index.sface:4
 msgid "Infection place types"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:102
 #: lib/hygeia_web/live/case_live/csv_import.sface:16 lib/hygeia_web/live/case_live/csv_import.sface:17
 msgid "Info"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/index.sface:204
+#: lib/hygeia_web/live/case_live/index.sface:206
 #: lib/hygeia_web/live/person_live/index.sface:151
 msgid "Inserted At"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:47
 #: lib/hygeia_web/live/transmission_live/create.sface:33 lib/hygeia_web/live/transmission_live/create.sface:60
 msgid "Internal"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:81
 msgid "Isolation Confirmation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_pdf_confirmation/isolation.ex:25
 #: lib/hygeia_web/helpers/confirmation.ex:21
 msgid "Isolation Order"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia/jobs/send_case_closed_email.ex:96
 msgid "Isolation Period End"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:157
 msgid "It's difficult speaking in English. A translator is required"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/infection_place.sface:12
 msgid "Known"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:382
 #: lib/hygeia_web/live/case_live/create.ex:352 lib/hygeia_web/live/case_live/create_index.sface:114
 msgid "Laboratory report date"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/contact_method.ex:14
 #: lib/hygeia_web/live/case_live/create.ex:342 lib/hygeia_web/live/case_live/person_create_table.sface:10
 #: lib/hygeia_web/live/case_live/person_create_table.sface:197 lib/hygeia_web/live/possible_index_submission_live/create.sface:323
 msgid "Landline"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:122
 msgid "Language"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:95
 #: lib/hygeia_web/live/person_live/create.sface:45 lib/hygeia_web/live/possible_index_submission_live/create.sface:73
-#: lib/hygeia_web/live/possible_index_submission_live/index.sface:87 lib/hygeia_web/live/possible_index_submission_live/show.sface:114
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:87 lib/hygeia_web/live/possible_index_submission_live/show.sface:113
 msgid "Last Name"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:336
 #: lib/hygeia_web/live/person_live/index.sface:124
 msgid "Last name"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/person_create_table.sface:6
 msgid "Lastname"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/index.sface:4
 msgid "Listing Cases"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/index.sface:4
 msgid "Listing Organisations"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/index.sface:4
 msgid "Listing People"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/profession_live/index.sface:4
 msgid "Listing Professions"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/tenant_live/index.sface:4
 msgid "Listing Tenants"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/user_live/index.ex:34
+#: lib/hygeia_web/live/user_live/index.ex:35
 msgid "Listing User"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/user_live/index.sface:4
 msgid "Listing Users"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/monitoring/monitoring.sface:13
 msgid "Location"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/monitoring/monitoring.sface:22
 msgid "Location details"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:138
 msgid "Login"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:130
 msgid "Logout"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:35
 msgid "Loss of smell"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:36
 msgid "Loss of taste"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:12
 #: lib/hygeia_web/live/case_live/base_data.sface:129
 msgid "Low"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/person_create_table.sface:56
 #: lib/hygeia_web/live/person_live/base_data.sface:106 lib/hygeia_web/live/person_live/index.sface:48
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:87
 msgid "Male"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:13
 #: lib/hygeia_web/live/case_live/base_data.sface:140
 msgid "Medium"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:21
 msgid "Meet Address"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol.sface:16
 msgid "Meta"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:120
 msgid "Missing phone number"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/contact_method.ex:13
 #: lib/hygeia_web/live/case_live/person_create_table.sface:193 lib/hygeia_web/live/possible_index_submission_live/create.sface:316
 msgid "Mobile"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:339
 #: lib/hygeia_web/live/case_live/person_create_table.sface:9
 msgid "Mobile Phone"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:452
 msgid "Monitoring"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:48
 msgid "More"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:141
 #: lib/hygeia_web/live/case_live/base_data.sface:152
 msgid "Multiple calls for first contact"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:412
 #: lib/hygeia_web/live/case_live/base_data.sface:432 lib/hygeia_web/live/case_live/person_create_table.sface:185
-#: lib/hygeia_web/live/infection_place_type_live/create.sface:15 lib/hygeia_web/live/infection_place_type_live/index.sface:20
+#: lib/hygeia_web/live/infection_place_type_live/create.sface:15 lib/hygeia_web/live/infection_place_type_live/index.sface:24
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:60 lib/hygeia_web/live/infection_place_type_live/show.sface:62
-#: lib/hygeia_web/live/organisation_live/create.sface:15 lib/hygeia_web/live/organisation_live/index.sface:49
+#: lib/hygeia_web/live/organisation_live/create.sface:15 lib/hygeia_web/live/organisation_live/index.sface:53
 #: lib/hygeia_web/live/organisation_live/show.sface:60 lib/hygeia_web/live/organisation_live/show.sface:62
 #: lib/hygeia_web/live/person_live/base_data.sface:246 lib/hygeia_web/live/profession_live/create.sface:15
-#: lib/hygeia_web/live/profession_live/index.sface:20 lib/hygeia_web/live/profession_live/show.sface:60
+#: lib/hygeia_web/live/profession_live/index.sface:24 lib/hygeia_web/live/profession_live/show.sface:60
 #: lib/hygeia_web/live/profession_live/show.sface:62 lib/hygeia_web/live/tenant_live/create.sface:15
 #: lib/hygeia_web/live/tenant_live/index.sface:24 lib/hygeia_web/live/tenant_live/show.sface:60
 #: lib/hygeia_web/live/tenant_live/show.sface:62 lib/hygeia_web/live/transmission_live/infection_place.sface:69
 msgid "Name"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:59
 msgid "Negative"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:308
 msgid "New Cases"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/index.sface:14
+#: lib/hygeia_web/live/case_live/index.sface:15
 msgid "New Index"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/infection_place_type_live/index.sface:11
+#: lib/hygeia_web/live/infection_place_type_live/index.sface:15
 msgid "New Infection place type"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/organisation_live/index.sface:11
+#: lib/hygeia_web/live/organisation_live/index.sface:15
 msgid "New Organisation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/index.sface:15
 msgid "New Person"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/index.sface:24
+#: lib/hygeia_web/live/case_live/index.sface:26
 #: lib/hygeia_web/live/case_live/transmissions.sface:51
 msgid "New Possible Index"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:75
 msgid "New Possible Index Submission"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/profession_live/index.sface:11
+#: lib/hygeia_web/live/profession_live/index.sface:15
 msgid "New Profession"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/tenant_live/index.sface:15
 msgid "New Tenant"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/transmissions.sface:23
 #: lib/hygeia_web/live/case_live/transmissions.sface:64
 msgid "New Transmission"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:219
 #: lib/hygeia_web/live/person_live/create.sface:92
 msgid "New contact method"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:317
 msgid "New employer / employment"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol_modal.sface:4
 msgid "New entry"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/infection_place_type_live/create.sface:8
 msgid "New infection place type"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/create.sface:8
 msgid "New organisation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/create.sface:7
 msgid "New person"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:10
 msgid "New possible index submission"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/profession_live/create.sface:8
 msgid "New profession"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/references.sface:57
 msgid "New reference"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/tenant_live/create.sface:8
 msgid "New tenant"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/create.sface:8
 msgid "New transmission"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/pagination.ex:28 lib/hygeia_web/live/pagination.ex:31
 msgid "Next"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:34
 msgid "Next Contact Agreed"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/transmission_table.sface:120
 #: lib/hygeia_web/live/transmission_live/infection_place.sface:46
 msgid "No"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:53 lib/hygeia_web/helpers/case.ex:72
 msgid "No Follow Up"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/index.sface:296
+#: lib/hygeia_web/live/case_live/index.sface:301
 #: lib/hygeia_web/live/case_live/protocol.sface:66 lib/hygeia_web/live/case_live/transmission_table.sface:170
 #: lib/hygeia_web/live/organisation_live/show.sface:164 lib/hygeia_web/live/person_live/index.sface:213
 #: lib/hygeia_web/live/statistics_live/choose_tenant.sface:22
 msgid "No data to display"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/phase.ex:20
 msgid "No follow up"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:134
 #: lib/hygeia_web/live/case_live/base_data.sface:145
 msgid "No further inquiries"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:4
 msgid "No hospitalizations"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:44
 #: lib/hygeia_web/live/transmission_live/create.sface:30
 msgid "No propagator"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/create.sface:57
 msgid "No recipient"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/related_organisations/related_organisations.sface:5
 msgid "No related organisations"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol.ex:70
 #: lib/hygeia_web/live/case_live/protocol_modal.sface:19 lib/hygeia_web/live/case_live/protocol_modal.sface:34
 msgid "Note"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/create.sface:25
 #: lib/hygeia_web/live/organisation_live/show.sface:73 lib/hygeia_web/live/organisation_live/show.sface:75
 msgid "Notes"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:69
 msgid "On the Help Page"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/templates/layout/error.html.eex:5
 msgid "Oops!"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/search.ex:9
 #: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:31 lib/hygeia_web/live/person_live/base_data.sface:356
 msgid "Organisation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:351
 msgid "Organisation Positions"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/create.ex:46
 msgid "Organisation created successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/show.ex:91
 msgid "Organisation deleted successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/show.ex:129
 msgid "Organisation updated successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:84
 msgid "Organisations"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol.sface:14
 msgid "Origin"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:73 lib/hygeia_web/helpers/clinical.ex:42
 #: lib/hygeia_web/helpers/contact_method.ex:16 lib/hygeia_web/helpers/external_reference.ex:19
 #: lib/hygeia_web/helpers/monitoring.ex:25 lib/hygeia_web/helpers/phase.ex:23
@@ -1565,368 +1307,303 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:33
 msgid "Other Actions To Do"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:20
 msgid "Outbreak examination"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:92
+#: lib/hygeia_web/live/tenant_live/show.sface:101
 msgid "Outgoing Email Configuration"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:166
+#: lib/hygeia_web/live/tenant_live/show.sface:175
 msgid "Outgoing SMS Configuration"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/tenant_live/show.sface:80
 msgid "Override Url"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:49
 #: lib/hygeia_web/live/case_live/create.ex:189
 msgid "PCR"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:24
 #: lib/hygeia_web/live/statistics_live/statistics.sface:69 lib/hygeia_web/live/statistics_live/statistics.sface:196
 #: lib/hygeia_web/live/statistics_live/statistics.sface:383 lib/hygeia_web/live/statistics_live/statistics.sface:519
 msgid "People"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:362
 msgid "People in Hospital"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:48
 msgid "People in Isolation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:175
 msgid "People in Quarantine"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/search.ex:7
-#: lib/hygeia_web/live/case_live/index.sface:132 lib/hygeia_web/live/organisation_live/show.sface:102
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:102
+#: lib/hygeia_web/live/case_live/index.sface:134 lib/hygeia_web/live/organisation_live/show.sface:102
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:101
 msgid "Person"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:17
 msgid "Person Base Data"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/person_live/create.ex:77
+#: lib/hygeia_web/live/person_live/create.ex:79
 msgid "Person created successfully"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/person_live/base_data.ex:223
+#: lib/hygeia_web/live/person_live/base_data.ex:227
 msgid "Person deleted successfully"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/person_live/base_data.ex:205
+#: lib/hygeia_web/live/person_live/base_data.ex:209
 msgid "Person updated successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:74
-msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
+msgid ""
+"Phase start- and end-dates must be set to create Isolation Confirmations."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:206
-#: lib/hygeia_web/live/case_live/index.sface:168
+#: lib/hygeia_web/live/case_live/index.sface:170
 msgid "Phases"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:56
 msgid "Phoenix Dashboard"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:166
-msgid "Phone number can only be obtained at the residents' registration office, index doesn't own a phone, no E-Mail address"
+msgid ""
+"Phone number can only be obtained at the residents' registration office, "
+"index doesn't own a phone, no E-Mail address"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:155
 msgid "Phone number incorrect or missing, multiple calls required"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:144
 msgid "Phone number must be requested from the doctor"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/address_form.sface:18
 msgid "Place"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:177
 msgid "Place Name"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:11
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:11
 msgid "Please Wait..."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/show.sface:103
 #: lib/hygeia_web/live/person_live/base_data.sface:357
 msgid "Position"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/show.sface:97
 msgid "Positions"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:58
 msgid "Positive"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:219
-#: lib/hygeia_web/live/case_live/index.sface:111
+#: lib/hygeia_web/live/case_live/index.sface:113
 msgid "Possible Index"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:49
 msgid "Possible Index Submissions"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/phase.ex:10
 msgid "Possible index"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.ex:94
 msgid "Possible index submission created successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:64
-msgid "Possible index submissions can only be managed for cases with an index phase."
+msgid ""
+"Possible index submissions can only be managed for cases with an index phase."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/show.ex:105
 msgid "PossibleIndexSubmission deleted successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/show.ex:130
 msgid "PossibleIndexSubmission updated successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/pagination.ex:17 lib/hygeia_web/live/pagination.ex:20
 msgid "Previous"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:233
 #: lib/hygeia_web/live/person_live/index.sface:61
 msgid "Profession"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/profession_live/create.ex:44
 msgid "Profession created successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/profession_live/show.ex:80
 msgid "Profession deleted successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/profession_live/show.ex:94
 msgid "Profession updated successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:77
 msgid "Professions"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:116 lib/hygeia_web/live/header.sface:125
 msgid "Profile"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/transmissions.sface:35
 msgid "Propagated"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:42
 #: lib/hygeia_web/live/case_live/transmission_table.sface:10 lib/hygeia_web/live/transmission_live/create.sface:28
 #: lib/hygeia_web/live/transmission_live/show.sface:127
 msgid "Propagator"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:61
 #: lib/hygeia_web/live/transmission_live/create.sface:47
 msgid "Propagator Case"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:56
 #: lib/hygeia_web/live/transmission_live/create.sface:42
 msgid "Propagator ISM ID"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:59
 msgid "Protocol"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol_modal.ex:123
 msgid "Protocol Entry created successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/tenant_live/show.sface:71
 msgid "Public Statistics"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:24
 msgid "Quarantine"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:143
 msgid "Quarantine Confirmation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:136
 msgid "Quarantine Confirmations are only available for contact persons."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:240
 msgid "Quarantine End Reasons"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_pdf_confirmation/quarantine.ex:25
 #: lib/hygeia_web/helpers/confirmation.ex:63
 msgid "Quarantine Order"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:50
 msgid "Quick"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:327
 msgid "Reasons for test"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/transmissions.sface:11
 msgid "Received"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/transmission_table.sface:7
 #: lib/hygeia_web/live/transmission_live/create.sface:55 lib/hygeia_web/live/transmission_live/show.sface:84
 msgid "Recipient"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/create.sface:74
 msgid "Recipient Case"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/create.sface:69
 msgid "Recipient ISM ID"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:193
 #: lib/hygeia_web/live/person_live/base_data.sface:123
 msgid "References"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:475
 msgid "Related Organisations"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:51
-msgid "Relevant will be all contacts you have where ALL of the following is true:"
+msgid ""
+"Relevant will be all contacts you have where ALL of the following is true:"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:49
 #: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:51 lib/hygeia_web/live/case_live/person_create_table.sface:273
 #: lib/hygeia_web/live/organisation_live/show.sface:152
 msgid "Remove"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:123
 msgid "Reporting Unit"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:409
 msgid "Reporting unit"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/index.sface:141
 msgid "Residency Address"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/user_live/index.sface:17
-#: lib/hygeia_web/live/user_live/show.sface:30
 msgid "Roles"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol.ex:72
 #: lib/hygeia_web/live/case_live/protocol_modal.sface:20
 msgid "SMS"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:36
 #: lib/hygeia_web/live/case_live/base_data.sface:37 lib/hygeia_web/live/case_live/base_data.sface:487
 #: lib/hygeia_web/live/case_live/base_data.sface:488 lib/hygeia_web/live/case_live/create_index.sface:209
@@ -1937,8 +1614,8 @@ msgstr ""
 #: lib/hygeia_web/live/organisation_live/show.sface:48 lib/hygeia_web/live/person_live/base_data.sface:65
 #: lib/hygeia_web/live/person_live/base_data.sface:66 lib/hygeia_web/live/person_live/base_data.sface:325
 #: lib/hygeia_web/live/person_live/base_data.sface:326 lib/hygeia_web/live/person_live/create.sface:96
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:380 lib/hygeia_web/live/possible_index_submission_live/show.sface:87
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:88 lib/hygeia_web/live/profession_live/create.sface:29
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:380 lib/hygeia_web/live/possible_index_submission_live/show.sface:86
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:87 lib/hygeia_web/live/profession_live/create.sface:29
 #: lib/hygeia_web/live/profession_live/show.sface:47 lib/hygeia_web/live/profession_live/show.sface:48
 #: lib/hygeia_web/live/tenant_live/create.sface:29 lib/hygeia_web/live/tenant_live/show.sface:47
 #: lib/hygeia_web/live/tenant_live/show.sface:48 lib/hygeia_web/live/transmission_live/create.sface:103
@@ -1946,12 +1623,10 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:391
 msgid "Save & add next contact"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:35
 #: lib/hygeia_web/live/case_live/base_data.sface:486 lib/hygeia_web/live/case_live/create_index.sface:208
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:216 lib/hygeia_web/live/case_live/protocol_modal.sface:69
@@ -1959,294 +1634,243 @@ msgstr ""
 #: lib/hygeia_web/live/organisation_live/create.sface:36 lib/hygeia_web/live/organisation_live/show.sface:46
 #: lib/hygeia_web/live/person_live/base_data.sface:64 lib/hygeia_web/live/person_live/base_data.sface:324
 #: lib/hygeia_web/live/person_live/create.sface:95 lib/hygeia_web/live/possible_index_submission_live/create.sface:377
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:388 lib/hygeia_web/live/possible_index_submission_live/show.sface:86
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:388 lib/hygeia_web/live/possible_index_submission_live/show.sface:85
 #: lib/hygeia_web/live/profession_live/create.sface:26 lib/hygeia_web/live/profession_live/show.sface:46
 #: lib/hygeia_web/live/tenant_live/create.sface:26 lib/hygeia_web/live/tenant_live/show.sface:46
 #: lib/hygeia_web/live/transmission_live/create.sface:100 lib/hygeia_web/live/transmission_live/show.sface:67
 msgid "Saving..."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:22
 msgid "Screening"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/choose.sface:44
+#: lib/hygeia_web/live/case_live/choose.sface:55
 #: lib/hygeia_web/live/case_live/modal_select.sface:28 lib/hygeia_web/live/organisation_live/choose.sface:54
-#: lib/hygeia_web/live/person_live/choose.sface:54 lib/hygeia_web/live/search.sface:11
+#: lib/hygeia_web/live/person_live/choose.sface:58 lib/hygeia_web/live/search.sface:12
 msgid "Search"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/choose.sface:35
+#: lib/hygeia_web/live/case_live/choose.sface:46
 msgid "Select Case"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/organisation_live/choose.sface:45
 msgid "Select Organisation"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/person_live/choose.sface:45
+#: lib/hygeia_web/live/person_live/choose.sface:49
 msgid "Select Person"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:35
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:144
 msgid "Select Tenant"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:35
 #: lib/hygeia_web/live/transmission_live/create.sface:21
 msgid "Select Type"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:91
 msgid "Select complexity"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:251
 #: lib/hygeia_web/live/case_live/base_data.sface:275
 msgid "Select end reason"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/person_create_table.sface:177
 msgid "Select existing person"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:181
 msgid "Select status"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:54
 #: lib/hygeia_web/live/person_live/base_data.sface:81 lib/hygeia_web/live/person_live/create.sface:31
 msgid "Select tenant"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:66
 #: lib/hygeia_web/live/case_live/base_data.sface:77
 msgid "Select user"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:100
 msgid "Send Confirmation Email"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:91
 msgid "Send Confirmation SMS"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:257
 msgid "Send Email"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:104
 msgid "Send Email Isolation Confirmation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:127
 msgid "Send Email Isolation End Confirmation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:166
 msgid "Send Email Quarantine Confirmation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:189
 msgid "Send Email Quarantine End Confirmation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:247
 msgid "Send SMS"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:92
 msgid "Send SMS Isolation Confirmation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:115
 msgid "Send SMS Isolation End Confirmation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:154
 msgid "Send SMS Quarantine Confirmation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:177
 msgid "Send SMS Quarantine End Confirmation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/help_live/index.sface:243
 msgid "Separator"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:41
 msgid "Separator (CSV only)"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:51
 msgid "Serology"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/person_create_table.sface:7
 #: lib/hygeia_web/live/person_live/base_data.sface:105 lib/hygeia_web/live/person_live/index.sface:38
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:83
 msgid "Sex"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/index.sface:265
-#: lib/hygeia_web/live/case_live/transmission_table.sface:139 lib/hygeia_web/live/infection_place_type_live/index.sface:42
-#: lib/hygeia_web/live/organisation_live/index.sface:77 lib/hygeia_web/live/person_live/index.sface:183
-#: lib/hygeia_web/live/possible_index_submission_live/index.sface:118 lib/hygeia_web/live/profession_live/index.sface:42
+#: lib/hygeia_web/live/case_live/index.sface:270
+#: lib/hygeia_web/live/case_live/transmission_table.sface:139 lib/hygeia_web/live/infection_place_type_live/index.sface:46
+#: lib/hygeia_web/live/organisation_live/index.sface:81 lib/hygeia_web/live/person_live/index.sface:183
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:118 lib/hygeia_web/live/profession_live/index.sface:46
 #: lib/hygeia_web/live/tenant_live/index.sface:43 lib/hygeia_web/live/user_live/index.sface:49
 msgid "Show"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/choose_tenant.sface:13
 msgid "Show Statistics"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/pagination.ex:24
 msgid "Showing %{count} of %{total} entries"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:99
+#: lib/hygeia_web/live/tenant_live/show.sface:108
 msgid "Smtp"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/monitoring.ex:20
 msgid "Social medical facility"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/lock.ex:59
-msgid "Someone else is currently editing this resource. Wait until they finished their work."
+msgid ""
+"Someone else is currently editing this resource. Wait until they finished "
+"their work."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:37
 msgid "Sore Throat"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:429
 #: lib/hygeia_web/live/case_live/create_index.sface:129
 msgid "Sponsor"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:227
 msgid "Start"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:15
 msgid "Start date"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:34
 msgid "Statistics"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:4
 msgid "Statistics for %{tenant}"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:178
-#: lib/hygeia_web/live/case_live/index.sface:42 lib/hygeia_web/live/case_live/index.sface:156
+#: lib/hygeia_web/live/case_live/index.sface:44 lib/hygeia_web/live/case_live/index.sface:158
 msgid "Status"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/templates/layout/error.html.eex:17
 msgid "Status Page"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:265
 msgid "Sub Type"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/address_form.sface:35
-#: lib/hygeia_web/live/organisation_live/index.sface:34 lib/hygeia_web/live/person_live/index.sface:86
+#: lib/hygeia_web/live/organisation_live/index.sface:38 lib/hygeia_web/live/person_live/index.sface:86
 msgid "Subdivision"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol.sface:51
 #: lib/hygeia_web/live/case_live/protocol_modal.sface:58
 msgid "Subject"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/controllers/auth_controller.ex:63
 msgid "Successfully authenticated."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:74
-#: lib/hygeia_web/live/case_live/index.sface:88 lib/hygeia_web/live/case_live/index.sface:192
+#: lib/hygeia_web/live/case_live/index.sface:90 lib/hygeia_web/live/case_live/index.sface:194
 #: lib/hygeia_web/live/case_live/person_create_table.sface:15 lib/hygeia_web/live/case_live/person_create_table.sface:119
 msgid "Supervisor"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:258
 msgid "Supervisor Name"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:265
 msgid "Supervisor Phone"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:17
 #: lib/hygeia_web/live/case_live/base_data.sface:351
 msgid "Symptoms"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/templates/layout/error.html.eex:13
 msgid "Take Me Home"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:51
 #: lib/hygeia_web/live/case_live/create.ex:346 lib/hygeia_web/live/case_live/person_create_table.sface:13
 #: lib/hygeia_web/live/case_live/person_create_table.sface:101 lib/hygeia_web/live/case_live/person_create_table.sface:205
@@ -2254,325 +1878,281 @@ msgstr ""
 msgid "Tenant"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/tenant_live/create.ex:44
 msgid "Tenant created successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/tenant_live/show.ex:92
 msgid "Tenant deleted successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/tenant_live/show.ex:110
 msgid "Tenant updated successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:70
 msgid "Tenants"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create_index.sface:111
 msgid "Test Date"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:354
 msgid "Test Kind"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:356
 msgid "Test Result"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:375
 #: lib/hygeia_web/live/case_live/create.ex:350
 msgid "Test date"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:391
 #: lib/hygeia_web/live/case_live/create_index.sface:117
 msgid "Test kind"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:398
 #: lib/hygeia_web/live/case_live/create_index.sface:120
 msgid "Test result"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/protocol_modal.sface:46
 msgid "Text"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:63
 msgid "This case is not in an index phase."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:16
 #: lib/hygeia_web/live/person_live/create.sface:20
 msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:123
 msgid "Time expenditure"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:20
 msgid "To"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:48
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:8
-msgid "To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious."
+msgid ""
+"To fulfill all needs regarding the tracing of contacts you will need to "
+"enter personal details of people you met while being potentially infectious."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:63
-#: lib/hygeia_web/live/case_live/index.sface:81 lib/hygeia_web/live/case_live/index.sface:180
+#: lib/hygeia_web/live/case_live/index.sface:83 lib/hygeia_web/live/case_live/index.sface:182
 #: lib/hygeia_web/live/case_live/person_create_table.sface:16 lib/hygeia_web/live/case_live/person_create_table.sface:135
 msgid "Tracer"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:49
 msgid "Tracing"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:18
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:138
 msgid "Transmission Date"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/create.ex:53
 msgid "Transmission created successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/show.ex:89
 msgid "Transmission deleted successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/show.ex:103
 msgid "Transmission updated successfully"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/navigation.sface:35
 msgid "Transmissions"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:87 lib/hygeia_web/helpers/case.ex:128
 msgid "Travel"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:215
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:31 lib/hygeia_web/live/case_live/protocol.sface:12
 #: lib/hygeia_web/live/person_live/base_data.sface:150 lib/hygeia_web/live/person_live/create.sface:60
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:184 lib/hygeia_web/live/references.sface:2
-#: lib/hygeia_web/live/tenant_live/show.sface:95 lib/hygeia_web/live/tenant_live/show.sface:168
+#: lib/hygeia_web/live/tenant_live/show.sface:104 lib/hygeia_web/live/tenant_live/show.sface:177
 #: lib/hygeia_web/live/transmission_live/create.sface:17 lib/hygeia_web/live/transmission_live/infection_place.sface:60
 msgid "Type"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:39
 #: lib/hygeia_web/live/help_live/index.sface:241
 msgid "UTF-8"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/references.sface:5
 msgid "UUID"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/transmission_live/infection_place.sface:19
 msgid "Unknown"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/templates/auth/oidc_error.html.eex:5
 msgid "Unknown Error"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/search.ex:10
 msgid "User"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/versioning.ex:14
 msgid "User Sync"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/header.sface:63
 msgid "Users"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/user_live/show.sface:9
+#: lib/hygeia_web/live/user_live/show.sface:10
 msgid "Users can not be edited here since they are synchronized with the IAM."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:16
 msgid "Vacation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/person_live/base_data.sface:151
 #: lib/hygeia_web/live/person_live/create.sface:61 lib/hygeia_web/live/references.sface:3
 msgid "Value"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:201
+#: lib/hygeia_web/live/tenant_live/show.sface:210
 msgid "Variation"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/case.ex:31
 msgid "Wainting for Contact Person List"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/search.sface:27
+#: lib/hygeia_web/live/search.sface:28
 msgid "Waiting for results..."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/templates/error/502.html.eex:3
 msgid "We're having difficulty connecting to the database."
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:172
+#: lib/hygeia_web/live/tenant_live/show.sface:181
 msgid "Web-SMS"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/versioning.ex:9
 msgid "Website"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:117
 msgid "When did you meet %{first_name} %{last_name}?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:164
 msgid "Where did you meet %{first_name} %{last_name}?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:360
 msgid "Where does %{first_name} %{last_name} live?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:41
 msgid "Who did you meet?"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/clinical.ex:23
 msgid "Work related"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/transmission_table.sface:119
 #: lib/hygeia_web/live/transmission_live/infection_place.sface:39
 msgid "Yes"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/base_data.ex:61
-#: lib/hygeia_web/live/case_live/create_index.ex:53 lib/hygeia_web/live/case_live/create_possible_index.ex:65
-#: lib/hygeia_web/live/case_live/index.ex:35 lib/hygeia_web/live/case_live/protocol.ex:42
+#: lib/hygeia_web/live/case_live/base_data.ex:65
+#: lib/hygeia_web/live/case_live/create_index.ex:58 lib/hygeia_web/live/case_live/create_possible_index.ex:71
+#: lib/hygeia_web/live/case_live/index.ex:44 lib/hygeia_web/live/case_live/protocol.ex:42
 #: lib/hygeia_web/live/case_live/transmissions.ex:31 lib/hygeia_web/live/infection_place_type_live/create.ex:22
 #: lib/hygeia_web/live/infection_place_type_live/index.ex:22 lib/hygeia_web/live/infection_place_type_live/show.ex:35
 #: lib/hygeia_web/live/organisation_live/create.ex:24 lib/hygeia_web/live/organisation_live/index.ex:39
-#: lib/hygeia_web/live/organisation_live/show.ex:42 lib/hygeia_web/live/person_live/base_data.ex:45
-#: lib/hygeia_web/live/person_live/create.ex:32 lib/hygeia_web/live/person_live/index.ex:33
+#: lib/hygeia_web/live/organisation_live/show.ex:42 lib/hygeia_web/live/person_live/base_data.ex:49
+#: lib/hygeia_web/live/person_live/create.ex:34 lib/hygeia_web/live/person_live/index.ex:41
 #: lib/hygeia_web/live/possible_index_submission_live/create.ex:53 lib/hygeia_web/live/possible_index_submission_live/index.ex:26
 #: lib/hygeia_web/live/possible_index_submission_live/show.ex:41 lib/hygeia_web/live/profession_live/create.ex:22
 #: lib/hygeia_web/live/profession_live/index.ex:22 lib/hygeia_web/live/profession_live/show.ex:35
 #: lib/hygeia_web/live/statistics_live/choose_tenant.ex:18 lib/hygeia_web/live/statistics_live/statistics.ex:46
 #: lib/hygeia_web/live/tenant_live/create.ex:22 lib/hygeia_web/live/tenant_live/index.ex:22
 #: lib/hygeia_web/live/tenant_live/show.ex:42 lib/hygeia_web/live/transmission_live/create.ex:31
-#: lib/hygeia_web/live/transmission_live/show.ex:42 lib/hygeia_web/live/user_live/index.ex:21
-#: lib/hygeia_web/live/user_live/show.ex:21
+#: lib/hygeia_web/live/transmission_live/show.ex:42 lib/hygeia_web/live/user_live/index.ex:22
+#: lib/hygeia_web/live/user_live/show.ex:27
 msgid "You are not authorized to do this action."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:57
 msgid "You did not keep a safe distance of at least 1.5 meters."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:54
-msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
+msgid ""
+"You had contact between now and 48 hours before your symptoms started or (if "
+"you don't have symptoms) before the test."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:55
 msgid "You had contact for more than 15 minutes on the same day."
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/confirmation.ex:73
-msgid "You have been identified as a contact person of a person with corona.\nTherefore you have to self quarantine.\nDetails: %{quarantine_confirmation_link}\n"
+msgid ""
+"You have been identified as a contact person of a person with corona.\n"
+"Therefore you have to self quarantine.\n"
+"Details: %{quarantine_confirmation_link}\n"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/controllers/auth_controller.ex:25
 msgid "You have been logged out!"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/helpers/confirmation.ex:31
-msgid "You have been tested positive for the corona virus.\nTherefore you have to self isolate.\nDetails: %{isolation_confirmation_link}\nTo ensure the contact tracing we need to record personal details of your contacts.\nYou can enter persons you had contact with here: %{possible_index_submission_link}\n"
+msgid ""
+"You have been tested positive for the corona virus.\n"
+"Therefore you have to self isolate.\n"
+"Details: %{isolation_confirmation_link}\n"
+"To ensure the contact tracing we need to record personal details of your "
+"contacts.\n"
+"You can enter persons you had contact with here: "
+"%{possible_index_submission_link}\n"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/address_form.sface:11
 msgid "ZIP"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/case_live/choose.sface:57
+#: lib/hygeia_web/live/case_live/choose.sface:73
 #: lib/hygeia_web/live/case_live/modal_select.sface:35 lib/hygeia_web/live/organisation_live/choose.sface:72
-#: lib/hygeia_web/live/person_live/choose.sface:72
+#: lib/hygeia_web/live/person_live/choose.sface:76
 msgid "choose"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/person_create_table.sface:54
 msgid "choose sex"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/transmission_table.sface:29
 #: lib/hygeia_web/live/case_live/transmission_table.sface:46 lib/hygeia_web/live/case_live/transmission_table.sface:71
 #: lib/hygeia_web/live/case_live/transmission_table.sface:88 lib/hygeia_web/live/transmission_live/show.sface:87
@@ -2581,80 +2161,115 @@ msgstr ""
 msgid "deleted"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:120
+#: lib/hygeia_web/live/tenant_live/show.sface:129
 msgid "hostname"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:172
 msgid "negative"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:152
+#: lib/hygeia_web/live/tenant_live/show.sface:161
 msgid "password"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:128
+#: lib/hygeia_web/live/tenant_live/show.sface:137
 msgid "port"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:171
 msgid "positive"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:186
 msgid "quick"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:136
+#: lib/hygeia_web/live/tenant_live/show.sface:145
 msgid "sender email address"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/case_live/create.ex:190
 msgid "serology"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:112
+#: lib/hygeia_web/live/tenant_live/show.sface:121
 msgid "server"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia_web/live/statistics_live/statistics.sface:100
 #: lib/hygeia_web/live/statistics_live/statistics.sface:227 lib/hygeia_web/live/statistics_live/statistics.sface:417
 #: lib/hygeia_web/live/statistics_live/statistics.sface:482 lib/hygeia_web/live/statistics_live/statistics.sface:553
 msgid "unknown"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia_web/live/tenant_live/show.sface:144
+#: lib/hygeia_web/live/tenant_live/show.sface:153
 msgid "username"
 msgstr ""
 
 #. Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj
-#, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:62
 msgid "yyyy-mm-dd"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia/jobs/send_case_closed_email.ex:70
-msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\nContact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+msgid ""
+"Dear Sir / Madam,\n"
+"\n"
+"Your isolation period ends tomorrow. If you did not experience any fever or "
+"coughs with sputum, you're allowed to leave isolation.\n"
+"\n"
+"Should you continue to feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
 msgstr ""
 
-#, elixir-format
-#: lib/hygeia/jobs/send_case_closed_email.ex:82
-msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\nContact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+#: lib/hygeia/jobs/send_case_closed_email.ex:83
+msgid ""
+"Dear Sir / Madam,\n"
+"\n"
+"Your quarantine period ends tomorrow. If you do not currently experience any "
+"symptoms, you're allowed to leave quarantine.\n"
+"\n"
+"Should you feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
 msgstr ""
 
-#, elixir-format
 #: lib/hygeia/jobs/send_case_closed_email.ex:99
 msgid "Quarantine Period End"
+msgstr ""
+
+#: lib/hygeia/jobs/send_case_closed_email.ex:69
+msgid ""
+"Dear Sir / Madam,\n"
+"\n"
+"Your isolation period ends tomorrow. If you did not experience any fever or "
+"coughs with sputum, you're allowed to leave isolation.\n"
+"Should you continue to feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
+msgstr ""
+
+#: lib/hygeia_web/live/tenant_live/show.sface:225
+msgid "Domain"
+msgstr ""
+
+#: lib/hygeia_web/live/user_live/show.sface:31
+msgid "Grants"
+msgstr ""
+
+#: lib/hygeia_web/live/tenant_live/show.sface:223
+msgid "IAM Configuration"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/tenant_live/show.sface:89
+msgid "Short Name"
 msgstr ""

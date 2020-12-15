@@ -54,8 +54,8 @@ defmodule Hygeia.CaseContext.Profession do
         when action in [:create, :update, :delete],
         do: false
 
-    def authorized?(_profession, action, %User{roles: roles}, _meta)
+    def authorized?(_profession, action, user, _meta)
         when action in [:create, :update, :delete],
-        do: :admin in roles
+        do: User.has_role?(user, :webmaster, :any)
   end
 end

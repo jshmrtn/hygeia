@@ -3,9 +3,12 @@ defmodule HygeiaWeb.Search do
 
   use HygeiaWeb, :surface_live_component
 
+  import Ecto.Query
+
   alias Hygeia.CaseContext
   alias Hygeia.OrganisationContext
   alias Hygeia.Repo
+  alias Hygeia.TenantContext
   alias Hygeia.UserContext
   alias Surface.Components.Form.SearchInput
   alias Surface.Components.Link
@@ -14,6 +17,11 @@ defmodule HygeiaWeb.Search do
   data query, :string, default: ""
   data results, :map, default: %{}
   data pending_search, :any, default: nil
+
+  @impl Phoenix.LiveComponent
+  def mount(socket) do
+    {:ok, assign(socket, tenants: TenantContext.list_tenants())}
+  end
 
   @impl Phoenix.LiveComponent
   def update(%{append_result: {key, result}} = assigns, socket) do
@@ -84,18 +92,34 @@ defmodule HygeiaWeb.Search do
   defp search_fns(query, socket) do
     %{
       person:
-        if authorized?(CaseContext.Person, :list, get_auth(socket)) do
+        if authorized?(CaseContext.Person, :list, get_auth(socket), tenant: :any) do
+          tenants =
+            Enum.filter(
+              socket.assigns.tenants,
+              &authorized?(CaseContext.Person, :list, get_auth(socket), tenant: &1)
+            )
+
           fn ->
-            query
-            |> CaseContext.fulltext_person_search()
+            from(case in CaseContext.fulltext_person_search_query(query),
+              where: case.tenant_uuid in ^Enum.map(tenants, & &1.uuid)
+            )
+            |> Repo.all()
             |> Enum.map(&{&1.uuid, &1})
           end
         end,
       case:
-        if authorized?(CaseContext.Case, :list, get_auth(socket)) do
+        if authorized?(CaseContext.Case, :list, get_auth(socket), tenant: :any) do
+          tenants =
+            Enum.filter(
+              socket.assigns.tenants,
+              &authorized?(CaseContext.Case, :list, get_auth(socket), tenant: &1)
+            )
+
           fn ->
-            query
-            |> CaseContext.fulltext_case_search()
+            from(case in CaseContext.fulltext_case_search_query(query),
+              where: case.tenant_uuid in ^Enum.map(tenants, & &1.uuid)
+            )
+            |> Repo.all()
             |> Repo.preload(:person)
             |> Enum.map(&{&1.uuid, &1})
           end

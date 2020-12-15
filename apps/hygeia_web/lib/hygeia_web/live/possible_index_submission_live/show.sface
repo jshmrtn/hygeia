@@ -1,10 +1,9 @@
 <div class="component-possible-index-submission-base-data container">
-  <!-- TODO: Style -->
-  <Context get={{ HygeiaWeb, auth: auth }}>
+  <Context get={{ HygeiaWeb, auth: auth, logged_in: logged_in }}>
     <HygeiaWeb.PersonLive.Header
       person={{ @possible_index_submission.case.person }}
       id="header"
-      :if={{ authorized?(@possible_index_submission.case.person, :details, auth) }}
+      :if={{ logged_in }}
     />
 
     <div class="card">
@@ -62,7 +61,7 @@
               possible_index_submission_uuid: @possible_index_submission,
               return_to: Routes.possible_index_submission_index_path(@socket, :index, @possible_index_submission.case)
             ) }} 
-            :if={{ authorized?(Case, :create, auth) }}
+            :if={{ authorized?(Case, :create, auth, tenant: :any) }}
           >
             <button class="btn btn-secondary">
               <span class="oi oi-check" title={{ gettext("Accept") }} aria-hidden="true"></span>

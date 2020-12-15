@@ -8,6 +8,7 @@
       <LivePatch
         class="mr-2"
         to={{ Routes.case_create_index_path(@socket, :create, return_to: Routes.case_index_path(@socket, :index)) }}
+        :if={{ authorized?(Case, :create, auth, tenant: :any) }}
       >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
           <span class="oi oi-plus" aria-hidden="true"></span>
@@ -18,6 +19,7 @@
       <LivePatch
         class="mr-2"
         to={{ Routes.case_create_possible_index_path(@socket, :create, return_to: Routes.case_index_path(@socket, :index)) }}
+        :if={{ authorized?(Case, :create, auth, tenant: :any) }}
       >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
           <span class="oi oi-plus" aria-hidden="true"></span>
@@ -210,9 +212,12 @@
       </thead>
       <tbody id="cases">
         <tr :for={{ case <- @cases }} id="case-{{ case.uuid }}">
-          <td>
+          <td :if={{ authorized?(case.person, :details, auth) }}>
             {{ case.person.first_name }}
             {{ case.person.last_name }}
+          </td>
+          <td :if={{ not authorized?(case.person, :details, auth) }}>
+            {{ case.person.tenant.short_name }} / {{ case.person.human_readable_id }}
           </td>
           <td>
             {{

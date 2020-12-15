@@ -8,6 +8,7 @@ defmodule HygeiaWeb.PersonLive.Index do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
   alias Hygeia.Repo
+  alias Hygeia.TenantContext
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
@@ -21,12 +22,19 @@ defmodule HygeiaWeb.PersonLive.Index do
   @impl Phoenix.LiveView
   def mount(params, session, socket) do
     socket =
-      if authorized?(Person, :list, get_auth(socket)) do
+      if authorized?(Person, :list, get_auth(socket), tenant: :any) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "people")
 
         professions = CaseContext.list_professions()
 
-        assign(socket, professions: professions)
+        assign(socket,
+          professions: professions,
+          authorized_tenants:
+            Enum.filter(
+              TenantContext.list_tenants(),
+              &authorized?(Person, :list, get_auth(socket), tenant: &1)
+            )
+        )
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))
@@ -161,7 +169,7 @@ defmodule HygeiaWeb.PersonLive.Index do
           {@sort_mapping[field], :desc}
       end)
       |> Enum.reduce(
-        {[], CaseContext.list_people_query()},
+        {[], base_query(socket)},
         fn {field, direction} = cursor, {cursor_params, query} ->
           {[cursor | cursor_params],
            from(person in query, order_by: [{^direction, field(person, ^field)}])}
@@ -171,6 +179,12 @@ defmodule HygeiaWeb.PersonLive.Index do
     cursor_fields = Enum.reverse(cursor_fields)
 
     {cursor_fields, query}
+  end
+
+  defp base_query(socket) do
+    from(person in CaseContext.list_people_query(),
+      where: person.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid)
+    )
   end
 
   defp page_url(socket, pagination_params, filters, sort)

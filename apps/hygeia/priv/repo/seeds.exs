@@ -16,9 +16,16 @@ alias Hygeia.Repo
 Versioning.put_origin(:web)
 Versioning.put_originator(:noone)
 
+{:ok, tenant_root} =
+  create_tenant(%{
+    name: "Hygeia - Covid19 Tracing",
+    iam_domain: "covid19-tracing.ch"
+  })
+
 {:ok, tenant_sg} =
   create_tenant(%{
     name: "Kanton St. Gallen",
+    short_name: "SG",
     outgoing_mail_configuration: %{
       __type__: "smtp",
       server: "postfix-relay.postfix-relay",
@@ -29,12 +36,15 @@ Versioning.put_originator(:noone)
     outgoing_sms_configuration: %{
       __type__: "websms",
       access_token: "***REMOVED***"
-    }
+    },
+    iam_domain: "kfssg.ch",
+    template_variation: :sg
   })
 
 {:ok, tenant_ai} =
   create_tenant(%{
     name: "Kanton Appenzell Innerrhoden",
+    short_name: "AI",
     outgoing_mail_configuration: %{
       __type__: "smtp",
       server: "postfix-relay.postfix-relay",
@@ -45,12 +55,15 @@ Versioning.put_originator(:noone)
     outgoing_sms_configuration: %{
       __type__: "websms",
       access_token: "***REMOVED***"
-    }
+    },
+    iam_domain: "ai.covid19-tracing.ch",
+    template_variation: :ai
   })
 
 {:ok, tenant_ar} =
   create_tenant(%{
     name: "Kanton Appenzell Ausserrhoden",
+    short_name: "AR",
     outgoing_mail_configuration: %{
       __type__: "smtp",
       server: "postfix-relay.postfix-relay",
@@ -61,7 +74,9 @@ Versioning.put_originator(:noone)
     outgoing_sms_configuration: %{
       __type__: "websms",
       access_token: "***REMOVED***"
-    }
+    },
+    iam_domain: "ar.covid19-tracing.ch",
+    template_variation: :ar
   })
 
 tenants = [
@@ -157,7 +172,61 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
     create_user(%{
       email: "maennchen@joshmartin.ch",
       display_name: "Jonatan Männchen",
-      iam_sub: "76605809181649894"
+      iam_sub: "76605809181649894",
+      grants: [
+        %{
+          role: :webmaster,
+          tenant_uuid: tenant_root.uuid
+        },
+        %{
+          role: :tracer,
+          tenant_uuid: tenant_sg.uuid
+        },
+        %{
+          role: :supervisor,
+          tenant_uuid: tenant_sg.uuid
+        },
+        %{
+          role: :admin,
+          tenant_uuid: tenant_sg.uuid
+        },
+        %{
+          role: :statistics_viewer,
+          tenant_uuid: tenant_sg.uuid
+        },
+        %{
+          role: :tracer,
+          tenant_uuid: tenant_ar.uuid
+        },
+        %{
+          role: :supervisor,
+          tenant_uuid: tenant_ar.uuid
+        },
+        %{
+          role: :admin,
+          tenant_uuid: tenant_ar.uuid
+        },
+        %{
+          role: :statistics_viewer,
+          tenant_uuid: tenant_ar.uuid
+        },
+        %{
+          role: :tracer,
+          tenant_uuid: tenant_ai.uuid
+        },
+        %{
+          role: :supervisor,
+          tenant_uuid: tenant_ai.uuid
+        },
+        %{
+          role: :admin,
+          tenant_uuid: tenant_ai.uuid
+        },
+        %{
+          role: :statistics_viewer,
+          tenant_uuid: tenant_ai.uuid
+        }
+      ]
     })
 
   {:ok, organisation_jm} =

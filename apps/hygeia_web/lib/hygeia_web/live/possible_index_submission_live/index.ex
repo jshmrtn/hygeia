@@ -50,7 +50,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], possible_index_submissions: [], tenant: [])
+      |> Repo.preload(person: [tenant: []], possible_index_submissions: [], tenant: [])
 
     has_index_phase? = Enum.any?(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1))
 

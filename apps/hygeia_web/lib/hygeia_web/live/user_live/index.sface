@@ -32,7 +32,7 @@
             {{ user.email }}
           </td>
           <td>
-            <span :for={{ role <- user.roles }}>
+            <span :for={{ role <- user.grants |> Enum.map(& &1.role) |> Enum.uniq() |> Enum.sort() }}>
               <span class="badge badge-secondary">
               {{ role }}
               </span>
