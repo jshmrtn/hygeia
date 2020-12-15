@@ -17,8 +17,6 @@ defmodule HygeiaWeb do
   and import those modules here.
   """
 
-  import HygeiaWeb.Helpers.Auth
-
   alias Hygeia.Helpers.Versioning
 
   @doc false
@@ -58,37 +56,9 @@ defmodule HygeiaWeb do
       use Phoenix.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
+      use HygeiaWeb.LiveView
+
       unquote(view_helpers())
-
-      @impl Phoenix.LiveView
-      def mount(_params, session, %{assigns: assigns} = socket) do
-        HygeiaWeb.setup_live_view(session)
-
-        {:ok,
-         assign(
-           socket,
-           :__context__,
-           assigns
-           |> Map.get(:__context__, %{})
-           |> Map.put({unquote(__MODULE__), :auth}, get_auth(socket))
-           |> Map.put({unquote(__MODULE__), :logged_in}, is_logged_in?(socket))
-         )}
-      end
-
-      @impl Phoenix.LiveView
-      def handle_params(params, uri, %{assigns: assigns} = socket) do
-        {:noreply,
-         assign(
-           socket,
-           :__context__,
-           assigns
-           |> Map.get(:__context__, %{})
-           |> Map.put({unquote(__MODULE__), :params}, params)
-           |> Map.put({unquote(__MODULE__), :uri}, uri)
-         )}
-      end
-
-      defoverridable mount: 3, handle_params: 3
     end
   end
 
@@ -99,37 +69,9 @@ defmodule HygeiaWeb do
       use Surface.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
+      use HygeiaWeb.LiveView
+
       unquote(view_helpers())
-
-      @impl Phoenix.LiveView
-      def mount(_params, session, %{assigns: assigns} = socket) do
-        HygeiaWeb.setup_live_view(session)
-
-        {:ok,
-         assign(
-           socket,
-           :__context__,
-           assigns
-           |> Map.get(:__context__, %{})
-           |> Map.put({unquote(__MODULE__), :auth}, get_auth(socket))
-           |> Map.put({unquote(__MODULE__), :logged_in}, is_logged_in?(socket))
-         )}
-      end
-
-      @impl Phoenix.LiveView
-      def handle_params(params, uri, %{assigns: assigns} = socket) do
-        {:noreply,
-         assign(
-           socket,
-           :__context__,
-           assigns
-           |> Map.get(:__context__, %{})
-           |> Map.put({unquote(__MODULE__), :params}, params)
-           |> Map.put({unquote(__MODULE__), :uri}, uri)
-         )}
-      end
-
-      defoverridable mount: 3, handle_params: 3
     end
   end
 
