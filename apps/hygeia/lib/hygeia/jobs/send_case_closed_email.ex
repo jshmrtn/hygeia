@@ -8,6 +8,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
   import HygeiaGettext
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
 
@@ -63,24 +64,45 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
     GenServer.cast(server, :refresh)
   end
 
-  @spec sms_text :: String.t()
-  def sms_text,
+  @spec text(phase :: Phase.t()) :: String.t()
+  defp text(%Phase{details: %Phase.Index{}}),
     do:
       gettext("""
       Dear Sir / Madam,
 
       Your isolation period ends tomorrow. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
+
       Should you continue to feel ill, please contact your general practitioner.
 
       Kind Regards,
       Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS
       """)
 
-  @spec email_subject :: String.t()
-  def email_subject, do: gettext("Isolation Period End")
+  defp text(%Phase{details: %Phase.PossibleIndex{}}),
+    do:
+      gettext("""
+      Dear Sir / Madam,
 
-  @spec email_body :: String.t()
-  def email_body, do: sms_text()
+      Your quarantine period ends tomorrow. If you do not currently experience any symptoms, you're allowed to leave quarantine.
+
+      Should you feel ill, please contact your general practitioner.
+
+      Kind Regards,
+      Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS
+      """)
+
+  @spec email_subject(phase :: Phase.t()) :: String.t()
+  def email_subject(%Phase{details: %Phase.Index{}}),
+    do: gettext("Isolation Period End")
+
+  def email_subject(%Phase{details: %Phase.PossibleIndex{}}),
+    do: gettext("Quarantine Period End")
+
+  @spec email_body(phase :: Phase.t()) :: String.t()
+  def email_body(phase), do: text(phase)
+
+  @spec sms_text(phase :: Phase.t()) :: String.t()
+  def sms_text(phase), do: text(phase)
 
   defp send_emails do
     [] =
@@ -96,8 +118,8 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
       Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name)
 
       with case <- CaseContext.get_case_with_lock!(case.uuid),
-           :ok <- send_sms(case),
-           :ok <- send_email(case),
+           :ok <- send_sms(case, phase),
+           :ok <- send_email(case, phase),
            {:ok, case} <- CaseContext.case_phase_automated_email_sent(case, phase) do
         case
       else
@@ -106,9 +128,9 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
     end)
   end
 
-  defp send_sms(case) do
+  defp send_sms(case, phase) do
     case
-    |> CaseContext.case_send_sms(sms_text())
+    |> CaseContext.case_send_sms(sms_text(phase))
     |> case do
       {:ok, _protocol_entry} -> :ok
       {:error, :no_mobile_number} -> :ok
@@ -117,9 +139,9 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
     end
   end
 
-  defp send_email(case) do
+  defp send_email(case, phase) do
     case
-    |> CaseContext.case_send_email(email_subject(), email_body())
+    |> CaseContext.case_send_email(email_subject(phase), email_body(phase))
     |> case do
       {:ok, _protocol_entry} -> :ok
       {:error, :no_email} -> :ok

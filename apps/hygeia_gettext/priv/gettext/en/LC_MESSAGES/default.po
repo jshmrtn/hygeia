@@ -413,7 +413,7 @@ msgstr ""
 msgid "Complexity"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:124
 msgid "Condition"
 msgstr ""
@@ -434,7 +434,7 @@ msgstr ""
 msgid "Contact Person"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:118
 msgid "Contact persons"
 msgstr ""
@@ -551,11 +551,6 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:57
 msgid "Date Format"
-msgstr ""
-
-#, elixir-format
-#: lib/hygeia/jobs/send_case_closed_email.ex:69
-msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\nContact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
 msgstr ""
 
 #, elixir-format
@@ -1138,7 +1133,7 @@ msgid "Isolation Order"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia/jobs/send_case_closed_email.ex:80
+#: lib/hygeia/jobs/send_case_closed_email.ex:96
 msgid "Isolation Period End"
 msgstr ""
 
@@ -2648,4 +2643,19 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia_web/live/case_live/csv_import.sface:62
 msgid "yyyy-mm-dd"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/hygeia/jobs/send_case_closed_email.ex:70
+msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\nContact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/hygeia/jobs/send_case_closed_email.ex:82
+msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\nContact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/hygeia/jobs/send_case_closed_email.ex:99
+msgid "Quarantine Period End"
 msgstr ""

@@ -18,7 +18,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 1.8.12\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: lib/hygeia_web/live/case_live/create_index.ex:99 lib/hygeia_web/live/case_live/create_possible_index.ex:143
@@ -422,24 +422,6 @@ msgstr "Datum"
 #: lib/hygeia_web/live/case_live/csv_import.sface:57
 msgid "Date Format"
 msgstr "Datumsformat"
-
-#: lib/hygeia/jobs/send_case_closed_email.ex:69
-msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"Your isolation period ends tomorrow. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n"
-"Should you continue to feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
-msgstr ""
-"Sehr geehrte Damen und Herren\n"
-"\n"
-"Ihre Isolation endet morgen. Sofern Sie seit 48h kein Fieber und keinen Husten mit Auswurf mehr haben, dürfen Sie die Isolation verlassen. \n"
-"Sollten Sie sich weiter krank fühlen, kontaktieren Sie bitte ihren Hausarzt.  \n"
-"\n"
-"Freundliche Grüsse\n"
-"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
 
 #: lib/hygeia_web/helpers/case.ex:52 lib/hygeia_web/helpers/phase.ex:19
 msgid "Death"
@@ -878,7 +860,7 @@ msgstr "Isolationsbestätigung"
 msgid "Isolation Order"
 msgstr "Isolationsverordnung"
 
-#: lib/hygeia/jobs/send_case_closed_email.ex:80
+#: lib/hygeia/jobs/send_case_closed_email.ex:96
 msgid "Isolation Period End"
 msgstr "Isolationsperiode Ende"
 
@@ -2060,3 +2042,45 @@ msgstr "Benutzername"
 #: lib/hygeia_web/live/case_live/csv_import.sface:62
 msgid "yyyy-mm-dd"
 msgstr "JJJJ-MM-TT"
+
+#: lib/hygeia/jobs/send_case_closed_email.ex:70
+msgid ""
+"Dear Sir / Madam,\n"
+"\n"
+"Your isolation period ends tomorrow. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n"
+"\n"
+"Should you continue to feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+msgstr ""
+"Sehr geehrte Damen und Herren\n"
+"\n"
+"Ihre Isolation endet morgen. Sofern Sie seit 48h kein Fieber und keinen Husten mit Auswurf mehr haben, dürfen Sie die Isolation verlassen. \n"
+"Sollten Sie sich weiter krank fühlen, kontaktieren Sie bitte ihren Hausarzt.  \n"
+"\n"
+"Freundliche Grüsse\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+
+#: lib/hygeia/jobs/send_case_closed_email.ex:82
+msgid ""
+"Dear Sir / Madam,\n"
+"\n"
+"Your quarantine period ends tomorrow. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n"
+"\n"
+"Should you feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+msgstr ""
+"Sehr geehrte Damen und Herren\n"
+"\n"
+"Ihre Quarantäne endet morgen. Sofern Sie aktuell keine Symptome haben, dürfen Sie die Quarantäne verlassen. \n"
+"Sollten Sie sich krank fühlen, kontaktieren Sie bitte ihren Hausarzt.  \n"
+"\n"
+"Freundliche Grüsse\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+
+#: lib/hygeia/jobs/send_case_closed_email.ex:99
+msgid "Quarantine Period End"
+msgstr "Quarantäneperiode Ende"

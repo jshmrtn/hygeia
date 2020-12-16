@@ -108,7 +108,7 @@
               href="#"
               :on-click="open_protocol_entry_modal"
               phx-value-type="sms"
-              phx-value-entry-text={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text() }}
+              phx-value-entry-text={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase) }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
@@ -119,8 +119,8 @@
               href="#"
               :on-click="open_protocol_entry_modal"
               phx-value-type="email"
-              phx-value-entry-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject() }}
-              phx-value-entry-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body() }}
+              phx-value-entry-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
+              phx-value-entry-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase) }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
@@ -170,7 +170,7 @@
               href="#"
               :on-click="open_protocol_entry_modal"
               phx-value-type="sms"
-              phx-value-entry-text={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text() }}
+              phx-value-entry-text={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase) }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
@@ -181,8 +181,8 @@
               href="#"
               :on-click="open_protocol_entry_modal"
               phx-value-type="email"
-              phx-value-entry-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject() }}
-              phx-value-entry-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body() }}
+              phx-value-entry-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
+              phx-value-entry-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase) }}
               :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
