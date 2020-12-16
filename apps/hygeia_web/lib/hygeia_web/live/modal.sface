@@ -7,7 +7,7 @@
   phx-key="escape"
   phx-page-loading
 >
-  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+  <div class={{ "modal-dialog modal-dialog-scrollable modal-" <> @size }} role="document">
     <div class="modal-content">
       <div class="modal-header">
         <div class="modal-title">

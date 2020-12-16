@@ -25,6 +25,8 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Surface.Components.Form.TextInput
   alias Surface.Components.LivePatch
 
+  data show_complexity_help, :boolean, default: false
+
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id} = params, uri, socket) do
     case = CaseContext.get_case!(id)
@@ -286,6 +288,14 @@ defmodule HygeiaWeb.CaseLive.BaseData do
      socket
      |> assign(:changeset, changeset)
      |> maybe_block_navigation()}
+  end
+
+  def handle_event("show_complexity_help", _params, socket) do
+    {:noreply, assign(socket, show_complexity_help: true)}
+  end
+
+  def handle_event("hide_complexity_help", _params, socket) do
+    {:noreply, assign(socket, show_complexity_help: false)}
   end
 
   defp load_data(socket, case) do

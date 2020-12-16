@@ -83,8 +83,8 @@
                   </div>
 
                   <div class="row">
-                    <div class="col">
-                      <Field name={{ :complexity }} class="form-group">
+                    <div class="col d-flex">
+                      <Field name={{ :complexity }} class="form-group flex-grow-1">
                         <Label>{{ "Complexity" |> gettext }}</Label>
                         <Select 
                           class="form-control" 
@@ -93,6 +93,85 @@
                         />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
+                      <div :if={{ @live_action != :show }} class="form-group">
+                        <label>&nbsp;</label>
+                        <button
+                          type="button"
+                          class="d-block ml-1 btn btn-info"
+                          :on-click="show_complexity_help">
+                          <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true"></span>
+                        </button>
+                      </div>
+
+                      <HygeiaWeb.Modal
+                        :if={{ @show_complexity_help }}
+                        id={{ :complexity_help }}
+                        title={{ gettext("Complexity") }}
+                        close="hide_complexity_help"
+                        size="xl"
+                      >
+                        <table class="table table-sm table-striped">
+                          <thead>
+                            <tr>
+                              <th></th>
+                              <th>{{ gettext("Call") }}</th>
+                              <th>{{ gettext("Contact persons") }}</th>
+                              <th>{{ gettext("Families in the same household") }}</th>
+                              <th>{{ gettext("Missing phone number") }}</th>
+                              <th>{{ gettext("Additional inquiries") }}</th>
+                              <th>{{ gettext("Language") }}</th>
+                              <th>{{ gettext("Time expenditure") }}</th>
+                              <th>{{ gettext("Condition") }}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><b>{{ gettext("Low") }}</b></td>
+                              <td>{{ gettext("1 call") }}</td>
+                              <td>{{ gettext("0-1 contact person") }}</td>
+                              <td>{{ gettext("0-1 contact person") }}</td>
+                              <td>{{ gettext("Correct phone number available") }}</td>
+                              <td>{{ gettext("No further inquiries") }}</td>
+                              <td>{{ gettext("Index understands and speaks English") }}</td>
+                              <td>{{ gettext("< 15 Min.") }}</td>
+                              <td>{{ gettext("All points must be fulfilled") }}</td>
+                            </tr>
+                            <tr>
+                              <td><b>{{ gettext("Medium") }}</b></td>
+                              <td>{{ gettext("Multiple calls for first contact") }}</td>
+                              <td>{{ gettext("2-5 contact persons") }}</td>
+                              <td>{{ gettext("2-5 contact persons") }}</td>
+                              <td>{{ gettext("Phone number must be requested from the doctor") }}</td>
+                              <td>{{ gettext("No further inquiries") }}</td>
+                              <td>{{ gettext("Index understands and speaks English, but several explanations are necessary") }}</td>
+                              <td>{{ gettext("> 15 Min.") }}</td>
+                              <td>{{ gettext("A minimum of 2 points must be fulfilled") }}</td>
+                            </tr>
+                            <tr>
+                              <td><b>{{ gettext("High") }}</b></td>
+                              <td>{{ gettext("Multiple calls for first contact") }}</td>
+                              <td>{{ gettext("6 or more contact persons") }}</td>
+                              <td>{{ gettext("6 or more contact persons") }}</td>
+                              <td>{{ gettext("Phone number incorrect or missing, multiple calls required") }}</td>
+                              <td>{{ gettext("Difficult living situation, further inquiries necessary") }}</td>
+                              <td>{{ gettext("It's difficult speaking in English. A translator is required") }}</td>
+                              <td>{{ gettext("< 30 Min.") }}</td>
+                              <td>{{ gettext("A minimum of 3 points must be fulfilled") }}</td>
+                            </tr>
+                            <tr>
+                              <td><b>{{ gettext("Extreme") }}</b></td>
+                              <td>{{ gettext("Despite multiple calls and inquiries regarding the phone number unavailable") }}</td>
+                              <td>{{ gettext("A lot of contact persons from different places, clubs affected, gastronomy affected, hospital/nursing home affected") }}</td>
+                              <td></td>
+                              <td>{{ gettext("Phone number can only be obtained at the residents' registration office, index doesn't own a phone, no E-Mail address") }}</td>
+                              <td>{{ gettext("A lot of contact persons/places that must be determined / assignment to team lead") }}</td>
+                              <td>{{ gettext("Index doesn't understand English and can't express themselves in a European language. No communication without translator possible.") }}</td>
+                              <td>{{ gettext("> 30 Min.") }}</td>
+                              <td>{{ gettext("A minimum of 3 points must be fulfilled") }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </HygeiaWeb.Modal>
                     </div>
                     <div class="col">
                       <Field name={{ :status }} class="form-group">
