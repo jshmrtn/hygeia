@@ -72,7 +72,8 @@ defmodule Hygeia.UserContext.User do
       when role in @role_map and is_list(grants) and is_binary(tenant_uuid),
       do: Enum.any?(grants, &match?(%Grant{role: ^role, tenant_uuid: ^tenant_uuid}, &1))
 
-  @spec has_role?(user :: :anonymous, role :: Role.t(), tenant :: Tenant.t() | :any) :: false
+  @spec has_role?(user :: :anonymous, role :: Role.t(), tenant :: Tenant.t() | :any | String.t()) ::
+          false
   def has_role?(:anonymous, _role, _tenant), do: false
 
   defimpl Hygeia.Authorization.Resource do
@@ -90,6 +91,6 @@ defmodule Hygeia.UserContext.User do
 
     def authorized?(_resource_user, action, user, _meta)
         when action in [:list, :details],
-        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, :any))
+        do: Enum.any?([:viewer, :tracer, :supervisor, :admin], &User.has_role?(user, &1, :any))
   end
 end

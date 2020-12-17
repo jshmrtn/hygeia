@@ -169,7 +169,7 @@ defmodule Hygeia.TenantContext.Tenant do
     def authorized?(tenant, :statistics, user, _meta),
       do:
         Enum.any?(
-          [:statistics_viewer, :tracer, :supervisor, :admin],
+          [:statistics_viewer, :viewer, :tracer, :supervisor, :admin],
           &User.has_role?(user, &1, tenant)
         )
 

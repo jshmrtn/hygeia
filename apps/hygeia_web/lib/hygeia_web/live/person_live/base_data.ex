@@ -37,7 +37,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
         tenants =
           Enum.filter(
             TenantContext.list_tenants(),
-            &authorized?(Person, action, get_auth(socket), tenant: &1)
+            &authorized?(person, action, get_auth(socket), tenant: &1)
           )
 
         professions = CaseContext.list_professions()

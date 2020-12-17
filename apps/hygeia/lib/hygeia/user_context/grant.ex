@@ -10,7 +10,14 @@ defmodule Hygeia.UserContext.Grant do
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
-  defenum Role, :grant_role, ["tracer", "supervisor", "admin", "webmaster", "statistics_viewer"]
+  defenum Role, :grant_role, [
+    "tracer",
+    "supervisor",
+    "admin",
+    "webmaster",
+    "viewer",
+    "statistics_viewer"
+  ]
 
   @type empty :: %__MODULE__{
           user: Ecto.Schema.belongs_to(User.t()) | nil,

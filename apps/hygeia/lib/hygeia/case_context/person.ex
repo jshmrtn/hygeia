@@ -126,20 +126,23 @@ defmodule Hygeia.CaseContext.Person do
         when action in [:list, :create, :details, :update, :delete],
         do: false
 
-    def authorized?(%Person{}, action, user, %{tenant: tenant})
-        when action in [:details, :update],
-        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant))
+    def authorized?(%Person{tenant_uuid: tenant_uuid}, :details, user, _meta),
+      do:
+        Enum.any?([:viewer, :tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
 
-    def authorized?(%Person{tenant_uuid: tenant_uuid}, action, user, _meta)
-        when action in [:details, :update],
-        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
+    def authorized?(%Person{}, :update, user, %{tenant: tenant}),
+      do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant))
 
-    def authorized?(_module, action, user, %{tenant: tenant})
-        when action in [:list, :create],
-        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant))
+    def authorized?(%Person{tenant_uuid: tenant_uuid}, :update, user, _meta),
+      do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
 
-    def authorized?(%Person{tenant_uuid: tenant_uuid}, action, user, _meta)
-        when action in [:delete],
-        do: Enum.any?([:supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
+    def authorized?(_module, :list, user, %{tenant: tenant}),
+      do: Enum.any?([:viewer, :tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant))
+
+    def authorized?(_module, :create, user, %{tenant: tenant}),
+      do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant))
+
+    def authorized?(%Person{tenant_uuid: tenant_uuid}, :delete, user, _meta),
+      do: Enum.any?([:supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
   end
 end

@@ -305,10 +305,10 @@ defmodule Hygeia.AuthorizationTest do
       end
     end
 
-    test "should allow organisation list for logged in user" do
+    test "should deny organisation list for logged in user" do
       user = user_fixture(grants: [])
 
-      assert authorized?(Hygeia.OrganisationContext.Organisation, :list, user)
+      refute authorized?(Hygeia.OrganisationContext.Organisation, :list, user)
     end
 
     test "should deny organisation create for logged in non-tracer / non-supervisor / non-admin" do
@@ -355,8 +355,9 @@ defmodule Hygeia.AuthorizationTest do
       refute authorized?(organisation, :delete, :anonymous, %{organisation: organisation})
     end
 
-    test "should allow position list for logged in user" do
-      user = user_fixture(grants: [])
+    test "should allow position list for viewer" do
+      tenant = tenant_fixture()
+      user = user_fixture(grants: [%{role: :viewer, tenant_uuid: tenant.uuid}])
       organisation = organisation_fixture()
 
       assert authorized?(Hygeia.OrganisationContext.Position, :list, user, %{
