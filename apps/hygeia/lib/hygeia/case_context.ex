@@ -239,7 +239,12 @@ defmodule Hygeia.CaseContext do
         from(person in Person,
           where:
             fragment("SIMILARITY(?, ?) > 0.4", person.first_name, ^first_name) and
-              fragment("SIMILARITY(?, ?) > 0.4", person.last_name, ^last_name)
+              fragment("SIMILARITY(?, ?) > 0.4", person.last_name, ^last_name),
+          order_by: [
+            desc:
+              fragment("SIMILARITY(?, ?)", person.first_name, ^first_name) +
+                fragment("SIMILARITY(?, ?)", person.last_name, ^last_name)
+          ]
         )
       )
 
