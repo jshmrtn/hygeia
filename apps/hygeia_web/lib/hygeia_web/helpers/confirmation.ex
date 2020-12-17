@@ -45,7 +45,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       possible_index_submission_link:
         TenantContext.replace_base_url(
           case.tenant,
-          Routes.possible_index_submission_index_path(conn_or_socket, :index, case),
+          Routes.possible_index_submission_index_url(conn_or_socket, :index, case),
           HygeiaWeb.Endpoint.url()
         )
     )
