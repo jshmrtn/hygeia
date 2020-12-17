@@ -4,6 +4,7 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.Repo
   alias Surface.Components.Link
@@ -51,6 +52,18 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   end
 
   def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
+
+  def handle_info({_action, %ProtocolEntry{} = _protocol_entry, _version}, socket) do
+    {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
+  end
+
+  def handle_info({:updated, %Case{} = case, _version}, socket) do
+    {:noreply, load_data(socket, case)}
+  end
+
+  def handle_info({:deleted, %Case{}, _version}, socket) do
+    {:noreply, redirect(socket, to: Routes.case_index_path(socket, :index))}
+  end
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
