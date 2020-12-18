@@ -13,21 +13,18 @@
     <ul class="mb-4 progress-steps" id="progressbar">
       <div class="progress-bar"></div>
       <li
-        :for={{ {{step, name}, index} <- Enum.with_index([
-          base: gettext("Person Base Data"),
-          transmission_date: gettext("Transmission Date"),
-          infection_place: gettext("Infection Place"),
-          infection_place_activity_mapping: gettext("Activity Mapping"),
-          infection_place_address: gettext("Meet Address"),
-          contact_methods: gettext("Contact Methods"),
-          address: gettext("Address")
-        ]) }}
+        :for={{ {step, {name, active, completed}} <- steps(@step) }}
         class={{
-          if step == @step, do: "active", else: "" <>
-          if index < step_index(@step), do: " completed", else: ""
+          active: active,
+          completed: completed
         }}
+        :on-click="goto_step"
+        phx-value-step={{ step }}
+        phx-value-active={{ if completed, do: "1", else: "0" }}
       >
-        <small>{{ name }}</small>
+        <small>
+          {{ name }}
+        </small>
       </li>
     </ul>
 
@@ -372,25 +369,11 @@
           <button
             class="btn btn-primary"
             type="submit"
-            phx-value-action="finish"
-            :on-click="set_action"
             phx-disable-with={{ gettext("Saving...") }}
             disabled={{ not @changeset.valid? }}
           >
             {{ gettext("Save") }}
           </button>
-
-          <button
-            class="btn btn-primary"
-            type="submit"
-            phx-value-action="create_next"
-            :on-click="set_action"
-            phx-disable-with={{ gettext("Saving...") }}
-            disabled={{ not @changeset.valid? }}
-          >
-            {{ gettext("Save & add next contact") }}
-          </button>
-
         </div>
       </div>
     </div>

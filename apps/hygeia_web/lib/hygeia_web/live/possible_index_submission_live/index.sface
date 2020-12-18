@@ -157,6 +157,13 @@
                 </div>
               </td>
             </tr>
+            <tr :if={{ @case.possible_index_submissions == [] }}>
+              <td colspan="5">
+                <div class="d-flex justify-content-center py-3">
+                  {{ gettext("No submissions have been entered yet. Please submit all relevant people.") }}
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
