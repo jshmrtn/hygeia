@@ -414,7 +414,7 @@ defmodule Hygeia.CaseContext do
     from(case in Case,
       join: phase in fragment("UNNEST(?)", case.phases),
       where:
-        fragment("(?->>'end')::date", phase) < fragment("CURRENT_DATE") and
+        fragment("(?->>'end')::date", phase) <= fragment("CURRENT_DATE") and
           fragment("(?->'send_automated_close_email')::boolean", phase) and
           is_nil(fragment("?->>'automated_close_email_sent'", phase)),
       select: {case, fragment("(?->>'uuid')::uuid", phase)},
