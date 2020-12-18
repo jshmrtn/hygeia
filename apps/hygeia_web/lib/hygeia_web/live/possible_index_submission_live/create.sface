@@ -35,7 +35,7 @@
           id="step_base"
         >
           <h2>
-            {{ gettext("Who did you meet?") }}
+            {{ gettext("Who did you meet or who do you live with?") }}
           </h2>
 
           <hr>
@@ -112,7 +112,7 @@
           <h2>
             {{
               gettext(
-                "When did you meet %{first_name} %{last_name}?",
+                "When did you meet %{first_name} %{last_name} last?",
                 first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
                 last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
               )
@@ -122,7 +122,7 @@
           <p>
             {{
               gettext(
-                "If you met %{first_name} %{last_name} multiple times, select the earliest date after 48 hours before your symptom start date or before the test (if you don't have symptoms).",
+                "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test.",
                 first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
                 last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
               )
@@ -159,7 +159,7 @@
             <h2>
               {{
                 gettext(
-                  "Where did you meet %{first_name} %{last_name}?",
+                  "Where did you meet %{first_name} %{last_name} last?",
                   first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
                   last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
                 )

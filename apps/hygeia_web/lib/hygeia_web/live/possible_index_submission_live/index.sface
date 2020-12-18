@@ -5,9 +5,9 @@
     <div :if={{ not logged_in }}>
       <h2>{{ gettext("Enter Possible Transmissions") }}</h2>
 
-      <p>{{ gettext("To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious.") }}</p>
+      <p>{{ gettext("You have been requested to enter personal data from all persons with which you have had contact with for more than 15 minutes without wearing a mask.") }}</p>
 
-      <p>{{ gettext("If you had contact with people you do not know, please talk to your tracer with further details.") }}</p>
+      <p>{{ gettext("If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact.") }}</p>
 
       <p>{{ gettext("If you're having trouble recalling what you did since then, here are some examples:") }}</p>
 
@@ -160,7 +160,7 @@
             <tr :if={{ @case.possible_index_submissions == [] }}>
               <td colspan="5">
                 <div class="d-flex justify-content-center py-3">
-                  {{ gettext("No submissions have been entered yet. Please submit all relevant people.") }}
+                  {{ gettext("No submissions have been entered yet. Please submit all relevant people. Previous submissions can also be viewed, edited and deleted later.") }}
                 </div>
               </td>
             </tr>
