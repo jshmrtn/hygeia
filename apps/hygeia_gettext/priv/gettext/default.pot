@@ -1805,7 +1805,6 @@ msgid "To"
 msgstr ""
 
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:45
-#: lib/hygeia_web/live/possible_index_submission_live/index.sface:8
 msgid ""
 "To fulfill all needs regarding the tracing of contacts you will need to "
 "enter personal details of people you met while being potentially infectious."
@@ -2273,4 +2272,43 @@ msgstr ""
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:163
 msgid ""
 "No submissions have been entered yet. Please submit all relevant people."
+msgstr ""
+
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:10
+msgid ""
+"If you had close contact with people you do not know (e.g. in a restaurant "
+"or a church), please talk to your tracer for the best procedure and more "
+"measures of contact."
+msgstr ""
+
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:124
+msgid ""
+"If you met %{first_name} %{last_name} multiple times, select the last date "
+"you have had close, unprotected contact. Consider, that you may have been "
+"infectious 48 hours before your symptoms started. If you don't have "
+"symptoms, consider 48 hours before the test."
+msgstr ""
+
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:114
+msgid "When did you meet %{first_name} %{last_name} last?"
+msgstr ""
+
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:161
+msgid "Where did you meet %{first_name} %{last_name} last?"
+msgstr ""
+
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:38
+msgid "Who did you meet or who do you live with?"
+msgstr ""
+
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:8
+msgid ""
+"You have been requested to enter personal data from all persons with which "
+"you have had contact with for more than 15 minutes without wearing a mask."
+msgstr ""
+
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:163
+msgid ""
+"No submissions have been entered yet. Please submit all relevant people. "
+"Previous submissions can also be viewed, edited and deleted later."
 msgstr ""
