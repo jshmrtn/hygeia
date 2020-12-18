@@ -21,7 +21,8 @@ msgstr ""
 "X-Generator: Poedit 2.4.2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: lib/hygeia_web/live/case_live/create_index.ex:99 lib/hygeia_web/live/case_live/create_possible_index.ex:143
+#: lib/hygeia_web/live/case_live/create_index.ex:99
+#: lib/hygeia_web/live/case_live/create_possible_index.ex:143
 msgid "Created Case"
 msgid_plural "Created %{n} Cases"
 msgstr[0] "Fall erstellt"
@@ -35,7 +36,8 @@ msgstr "%{phase_type} (%{date})"
 msgid "API"
 msgstr "Schnittstelle"
 
-#: lib/hygeia_web/live/possible_index_submission_live/index.sface:154 lib/hygeia_web/live/possible_index_submission_live/show.sface:68
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:154
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:68
 msgid "Accept"
 msgstr "Akzeptieren"
 
@@ -51,8 +53,8 @@ msgstr "Exklusive Bearbeitungsrechte werden angefordert..."
 msgid "Actions"
 msgstr "Aktionen"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:20 lib/hygeia_web/live/possible_index_submission_live/create.sface:244
-#: lib/hygeia_web/live/transmission_live/infection_place.sface:52
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:133
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:241 lib/hygeia_web/live/transmission_live/infection_place.sface:52
 msgid "Activity Mapping"
 msgstr "Aktivitätskartierung"
 
@@ -68,9 +70,11 @@ msgstr "Hinzufügen"
 msgid "Add hospitalization"
 msgstr "Krankenhausaufenthalt hinzufügen"
 
-#: lib/hygeia_web/live/address_form.sface:3 lib/hygeia_web/live/case_live/address_input.sface:20 lib/hygeia_web/live/case_live/create_index.sface:126
-#: lib/hygeia_web/live/case_live/create_index.sface:132 lib/hygeia_web/live/case_live/person_create_table.sface:12 lib/hygeia_web/live/organisation_live/index.sface:52
-#: lib/hygeia_web/live/organisation_live/show.sface:87 lib/hygeia_web/live/person_live/base_data.sface:137 lib/hygeia_web/live/possible_index_submission_live/create.sface:23
+#: lib/hygeia_web/live/address_form.sface:3
+#: lib/hygeia_web/live/case_live/address_input.sface:20 lib/hygeia_web/live/case_live/create_index.sface:126
+#: lib/hygeia_web/live/case_live/create_index.sface:132 lib/hygeia_web/live/case_live/person_create_table.sface:12
+#: lib/hygeia_web/live/organisation_live/index.sface:52 lib/hygeia_web/live/organisation_live/show.sface:87
+#: lib/hygeia_web/live/person_live/base_data.sface:137 lib/hygeia_web/live/possible_index_submission_live/create.ex:136
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:90
 msgid "Address"
 msgstr "Adresse"
@@ -80,10 +84,14 @@ msgid "Adress"
 msgstr "Adresse"
 
 #: lib/hygeia_web/templates/auth/oidc_error.html.eex:9
-msgid "An unknown error happened during registration. Report this to your webmaster."
-msgstr "Bei der Registrierung ist ein unbekannter Fehler aufgetreten. Melden Sie dies Ihrem Webmaster."
+msgid ""
+"An unknown error happened during registration. Report this to your webmaster."
+msgstr ""
+"Bei der Registrierung ist ein unbekannter Fehler aufgetreten. Melden Sie "
+"dies Ihrem Webmaster."
 
-#: lib/hygeia_web/live/case_live/index.sface:99 lib/hygeia_web/live/organisation_live/index.sface:28 lib/hygeia_web/live/person_live/index.sface:42
+#: lib/hygeia_web/live/case_live/index.sface:99
+#: lib/hygeia_web/live/organisation_live/index.sface:28 lib/hygeia_web/live/person_live/index.sface:42
 #: lib/hygeia_web/live/person_live/index.sface:64 lib/hygeia_web/live/person_live/index.sface:75
 msgid "Any"
 msgstr "Beliebig"
@@ -92,12 +100,15 @@ msgstr "Beliebig"
 msgid "App report"
 msgstr "Swiss-Covid-App Meldung"
 
-#: lib/hygeia_web/live/case_live/index.sface:280 lib/hygeia_web/live/case_live/navigation.sface:221 lib/hygeia_web/live/case_live/navigation.sface:268
+#: lib/hygeia_web/live/case_live/index.sface:280
+#: lib/hygeia_web/live/case_live/navigation.sface:221 lib/hygeia_web/live/case_live/navigation.sface:268
 #: lib/hygeia_web/live/case_live/transmission_table.sface:154 lib/hygeia_web/live/infection_place_type_live/index.sface:58
-#: lib/hygeia_web/live/infection_place_type_live/show.sface:22 lib/hygeia_web/live/organisation_live/index.sface:93 lib/hygeia_web/live/organisation_live/show.sface:22
-#: lib/hygeia_web/live/person_live/base_data.sface:41 lib/hygeia_web/live/person_live/index.sface:198 lib/hygeia_web/live/possible_index_submission_live/index.sface:134
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:50 lib/hygeia_web/live/profession_live/index.sface:58 lib/hygeia_web/live/profession_live/show.sface:22
-#: lib/hygeia_web/live/tenant_live/index.sface:58 lib/hygeia_web/live/tenant_live/show.sface:22 lib/hygeia_web/live/transmission_live/show.sface:54
+#: lib/hygeia_web/live/infection_place_type_live/show.sface:22 lib/hygeia_web/live/organisation_live/index.sface:93
+#: lib/hygeia_web/live/organisation_live/show.sface:22 lib/hygeia_web/live/person_live/base_data.sface:41
+#: lib/hygeia_web/live/person_live/index.sface:198 lib/hygeia_web/live/possible_index_submission_live/index.sface:134
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:50 lib/hygeia_web/live/profession_live/index.sface:58
+#: lib/hygeia_web/live/profession_live/show.sface:22 lib/hygeia_web/live/tenant_live/index.sface:58
+#: lib/hygeia_web/live/tenant_live/show.sface:22 lib/hygeia_web/live/transmission_live/show.sface:54
 msgid "Are you sure?"
 msgstr "Sind Sie sicher?"
 
@@ -133,11 +144,13 @@ msgstr "Automatisches Fall-Abschluss-Email"
 msgid "Available Column Headers"
 msgstr "Verfügbare Spaltenüberschriften"
 
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:32 lib/hygeia_web/live/possible_index_submission_live/show.sface:33
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:32
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:33
 msgid "Back to List"
 msgstr "Zurück zur Liste"
 
-#: lib/hygeia_web/live/case_live/navigation.sface:23 lib/hygeia_web/live/person_live/base_data.sface:77 lib/hygeia_web/live/person_live/header.sface:18
+#: lib/hygeia_web/live/case_live/navigation.sface:23
+#: lib/hygeia_web/live/person_live/base_data.sface:77 lib/hygeia_web/live/person_live/header.sface:18
 #: lib/hygeia_web/live/transmission_live/show.sface:81 lib/hygeia_web/live/user_live/show.sface:13
 msgid "Base Data"
 msgstr "Basisdaten"
@@ -150,11 +163,13 @@ msgstr "Geburtsdatum"
 msgid "Birth date"
 msgstr "Geburtsdatum"
 
-#: lib/hygeia_web/live/case_live/person_create_table.sface:8 lib/hygeia_web/live/case_live/person_create_table.sface:189
+#: lib/hygeia_web/live/case_live/person_create_table.sface:8
+#: lib/hygeia_web/live/case_live/person_create_table.sface:189
 msgid "Birthdate"
 msgstr "Geburtsdatum"
 
-#: lib/hygeia_web/live/case_live/protocol.sface:54 lib/hygeia_web/live/case_live/protocol_modal.sface:63
+#: lib/hygeia_web/live/case_live/protocol.sface:54
+#: lib/hygeia_web/live/case_live/protocol_modal.sface:63
 msgid "Body"
 msgstr "Inhalt"
 
@@ -174,8 +189,10 @@ msgstr "Fall erfolgreich gelöscht"
 msgid "Case updated successfully"
 msgstr "Fall erfolgreich aktualisiert"
 
-#: lib/hygeia_web/live/header.sface:13 lib/hygeia_web/live/statistics_live/statistics.sface:134 lib/hygeia_web/live/statistics_live/statistics.sface:261
-#: lib/hygeia_web/live/statistics_live/statistics.sface:329 lib/hygeia_web/live/statistics_live/statistics.sface:451 lib/hygeia_web/live/statistics_live/statistics.sface:590
+#: lib/hygeia_web/live/header.sface:13
+#: lib/hygeia_web/live/statistics_live/statistics.sface:134 lib/hygeia_web/live/statistics_live/statistics.sface:261
+#: lib/hygeia_web/live/statistics_live/statistics.sface:329 lib/hygeia_web/live/statistics_live/statistics.sface:451
+#: lib/hygeia_web/live/statistics_live/statistics.sface:590
 msgid "Cases"
 msgstr "Fälle"
 
@@ -183,12 +200,14 @@ msgstr "Fälle"
 msgid "Check Duplicates"
 msgstr "Überprüfen von Duplikaten"
 
-#: lib/hygeia_web/live/statistics_live/choose_tenant.sface:4
+#: lib/hygeia_web/live/statistics_live/choose_tenant.sface:3
 msgid "Choose Tenant"
 msgstr "Mandant wählen"
 
-#: lib/hygeia_web/live/case_live/protocol_modal.sface:16 lib/hygeia_web/live/person_live/base_data.sface:158 lib/hygeia_web/live/person_live/create.sface:70
-#: lib/hygeia_web/live/references.sface:25 lib/hygeia_web/live/tenant_live/show.sface:98 lib/hygeia_web/live/tenant_live/show.sface:171
+#: lib/hygeia_web/live/case_live/protocol_modal.sface:16
+#: lib/hygeia_web/live/person_live/base_data.sface:158 lib/hygeia_web/live/person_live/create.sface:70
+#: lib/hygeia_web/live/references.sface:25 lib/hygeia_web/live/tenant_live/show.sface:98
+#: lib/hygeia_web/live/tenant_live/show.sface:171
 msgid "Choose Type"
 msgstr "Typ wählen"
 
@@ -224,15 +243,18 @@ msgstr "Berufsfeld wählen"
 msgid "Choose propagator"
 msgstr "Anstecker wählen"
 
-#: lib/hygeia_web/live/address_form.sface:37 lib/hygeia_web/live/organisation_live/index.sface:36 lib/hygeia_web/live/person_live/index.sface:89
+#: lib/hygeia_web/live/address_form.sface:37
+#: lib/hygeia_web/live/organisation_live/index.sface:36 lib/hygeia_web/live/person_live/index.sface:89
 msgid "Choose subdivision"
 msgstr "Kanton wählen"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:313 lib/hygeia_web/live/case_live/create_index.sface:164
+#: lib/hygeia_web/live/case_live/base_data.sface:313
+#: lib/hygeia_web/live/case_live/create_index.sface:164
 msgid "Choose test kind"
 msgstr "Testart wählen"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:320 lib/hygeia_web/live/case_live/create_index.sface:170
+#: lib/hygeia_web/live/case_live/base_data.sface:320
+#: lib/hygeia_web/live/case_live/create_index.sface:170
 msgid "Choose test result"
 msgstr "Testergebnis wählen"
 
@@ -244,15 +266,18 @@ msgstr "Klinische Informationen"
 msgid "Code Pending"
 msgstr "Versand Code noch offen"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:42 lib/hygeia_web/live/help_live/index.sface:241
+#: lib/hygeia_web/live/case_live/csv_import.sface:42
+#: lib/hygeia_web/live/help_live/index.sface:244
 msgid "Comma (,)"
 msgstr "Komma (,)"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:152 lib/hygeia_web/live/person_live/create.sface:62
+#: lib/hygeia_web/live/person_live/base_data.sface:152
+#: lib/hygeia_web/live/person_live/create.sface:62
 msgid "Comment"
 msgstr "Kommentar"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:88 lib/hygeia_web/live/case_live/index.sface:61 lib/hygeia_web/live/case_live/index.sface:144
+#: lib/hygeia_web/live/case_live/base_data.sface:88
+#: lib/hygeia_web/live/case_live/index.sface:61 lib/hygeia_web/live/case_live/index.sface:144
 #: lib/hygeia_web/live/statistics_live/statistics.sface:430
 msgid "Complexity"
 msgstr "Komplexität"
@@ -261,7 +286,8 @@ msgstr "Komplexität"
 msgid "Confirmation PDF Template"
 msgstr "Bestätigung PDF Vorlage"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:147 lib/hygeia_web/live/person_live/create.sface:56 lib/hygeia_web/live/possible_index_submission_live/create.sface:22
+#: lib/hygeia_web/live/person_live/base_data.sface:147
+#: lib/hygeia_web/live/person_live/create.sface:56 lib/hygeia_web/live/possible_index_submission_live/create.ex:135
 msgid "Contact Methods"
 msgstr "Kontaktmethoden"
 
@@ -273,13 +299,15 @@ msgstr "Kontaktpersonen"
 msgid "Contact tracing"
 msgstr "Kontakt Tracing"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:107 lib/hygeia_web/live/possible_index_submission_live/create.sface:153
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:204 lib/hygeia_web/live/possible_index_submission_live/create.sface:258
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:295 lib/hygeia_web/live/possible_index_submission_live/create.sface:350
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:104
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:150 lib/hygeia_web/live/possible_index_submission_live/create.sface:201
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:255 lib/hygeia_web/live/possible_index_submission_live/create.sface:292
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:347
 msgid "Continue"
 msgstr "Weiter"
 
-#: lib/hygeia_web/live/case_live/navigation.sface:220 lib/hygeia_web/live/case_live/navigation.sface:225
+#: lib/hygeia_web/live/case_live/navigation.sface:220
+#: lib/hygeia_web/live/case_live/navigation.sface:225
 msgid "Convert to Index"
 msgstr "Zu Indexfall umwandeln"
 
@@ -295,15 +323,18 @@ msgstr "Adresse vom Anstecker kopieren"
 msgid "Cough"
 msgstr "Husten"
 
-#: lib/hygeia_web/live/case_live/create_index.ex:122 lib/hygeia_web/live/case_live/create_possible_index.ex:180
+#: lib/hygeia_web/live/case_live/create_index.ex:122
+#: lib/hygeia_web/live/case_live/create_possible_index.ex:180
 msgid "Could not parse CSV"
 msgstr "CSV konnte nicht importiert werden"
 
-#: lib/hygeia_web/live/statistics_live/statistics.sface:37 lib/hygeia_web/live/statistics_live/statistics.sface:351
+#: lib/hygeia_web/live/statistics_live/statistics.sface:37
+#: lib/hygeia_web/live/statistics_live/statistics.sface:351
 msgid "Count"
 msgstr "Anzahl"
 
-#: lib/hygeia_web/live/address_form.sface:28 lib/hygeia_web/live/organisation_live/index.sface:27 lib/hygeia_web/live/statistics_live/statistics.sface:566
+#: lib/hygeia_web/live/address_form.sface:28
+#: lib/hygeia_web/live/organisation_live/index.sface:27 lib/hygeia_web/live/statistics_live/statistics.sface:566
 msgid "Country"
 msgstr "Land"
 
@@ -339,11 +370,14 @@ msgstr "Erstellte Indexphase"
 msgid "Created at %{created_at}"
 msgstr "Erstellt am %{created_at}"
 
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:68 lib/hygeia_web/live/case_live/protocol.sface:13 lib/hygeia_web/live/case_live/transmission_table.sface:13
-#: lib/hygeia_web/live/statistics_live/statistics.sface:55 lib/hygeia_web/live/statistics_live/statistics.sface:120 lib/hygeia_web/live/statistics_live/statistics.sface:182
-#: lib/hygeia_web/live/statistics_live/statistics.sface:247 lib/hygeia_web/live/statistics_live/statistics.sface:315 lib/hygeia_web/live/statistics_live/statistics.sface:369
-#: lib/hygeia_web/live/statistics_live/statistics.sface:437 lib/hygeia_web/live/statistics_live/statistics.sface:505 lib/hygeia_web/live/statistics_live/statistics.sface:576
-#: lib/hygeia_web/live/transmission_live/create.sface:80 lib/hygeia_web/live/transmission_live/show.sface:171
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:68
+#: lib/hygeia_web/live/case_live/protocol.sface:13 lib/hygeia_web/live/case_live/transmission_table.sface:13
+#: lib/hygeia_web/live/statistics_live/statistics.sface:55 lib/hygeia_web/live/statistics_live/statistics.sface:120
+#: lib/hygeia_web/live/statistics_live/statistics.sface:182 lib/hygeia_web/live/statistics_live/statistics.sface:247
+#: lib/hygeia_web/live/statistics_live/statistics.sface:315 lib/hygeia_web/live/statistics_live/statistics.sface:369
+#: lib/hygeia_web/live/statistics_live/statistics.sface:437 lib/hygeia_web/live/statistics_live/statistics.sface:505
+#: lib/hygeia_web/live/statistics_live/statistics.sface:576 lib/hygeia_web/live/transmission_live/create.sface:80
+#: lib/hygeia_web/live/transmission_live/show.sface:171
 msgid "Date"
 msgstr "Datum"
 
@@ -355,58 +389,72 @@ msgstr "Datumsformat"
 msgid ""
 "Dear Sir / Madam,\n"
 "\n"
-"Your isolation period ends tomorrow. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n"
+"Your isolation period ends tomorrow. If you did not experience any fever or "
+"coughs with sputum, you're allowed to leave isolation.\n"
 "Should you continue to feel ill, please contact your general practitioner.\n"
 "\n"
 "Kind Regards,\n"
-"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
 msgstr ""
 "Sehr geehrte Damen und Herren\n"
 "\n"
-"Ihre Isolation endet morgen. Sofern Sie seit 48h kein Fieber und keinen Husten mit Auswurf mehr haben, dürfen Sie die Isolation verlassen. \n"
-"Sollten Sie sich weiter krank fühlen, kontaktieren Sie bitte ihren Hausarzt.  \n"
+"Ihre Isolation endet morgen. Sofern Sie seit 48h kein Fieber und keinen "
+"Husten mit Auswurf mehr haben, dürfen Sie die Isolation verlassen. \n"
+"Sollten Sie sich weiter krank fühlen, kontaktieren Sie bitte ihren "
+"Hausarzt.  \n"
 "\n"
 "Freundliche Grüsse\n"
-"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
 
 #: lib/hygeia_web/helpers/case.ex:52 lib/hygeia_web/helpers/phase.ex:19
 msgid "Death"
 msgstr "Tod"
 
-#: lib/hygeia_web/live/case_live/create_index.sface:82 lib/hygeia_web/live/case_live/create_possible_index.sface:191
+#: lib/hygeia_web/live/case_live/create_index.sface:82
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:191
 msgid "Default Country"
 msgstr "Standard Land"
 
-#: lib/hygeia_web/live/case_live/create_index.sface:46 lib/hygeia_web/live/case_live/create_index.sface:52 lib/hygeia_web/live/case_live/create_possible_index.sface:155
+#: lib/hygeia_web/live/case_live/create_index.sface:46
+#: lib/hygeia_web/live/case_live/create_index.sface:52 lib/hygeia_web/live/case_live/create_possible_index.sface:155
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:161 lib/hygeia_web/live/case_live/person_create_table.sface:121
 msgid "Default Supervisor"
 msgstr "Standard-Teamleiter"
 
-#: lib/hygeia_web/live/case_live/create_index.sface:29 lib/hygeia_web/live/case_live/create_possible_index.sface:138 lib/hygeia_web/live/case_live/person_create_table.sface:104
+#: lib/hygeia_web/live/case_live/create_index.sface:29
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:138 lib/hygeia_web/live/case_live/person_create_table.sface:104
 msgid "Default Tenant"
 msgstr "Standard-Mandant"
 
-#: lib/hygeia_web/live/case_live/create_index.sface:65 lib/hygeia_web/live/case_live/create_index.sface:71 lib/hygeia_web/live/case_live/create_possible_index.sface:174
+#: lib/hygeia_web/live/case_live/create_index.sface:65
+#: lib/hygeia_web/live/case_live/create_index.sface:71 lib/hygeia_web/live/case_live/create_possible_index.sface:174
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:180 lib/hygeia_web/live/case_live/person_create_table.sface:137
 msgid "Default Tracer"
 msgstr "Standard-Tracer"
 
-#: lib/hygeia_web/live/case_live/create_index.sface:86 lib/hygeia_web/live/case_live/create_possible_index.sface:195
+#: lib/hygeia_web/live/case_live/create_index.sface:86
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:195
 msgid "Default country"
 msgstr "Standard Land"
 
-#: lib/hygeia_web/live/case_live/index.sface:279 lib/hygeia_web/live/case_live/navigation.sface:267 lib/hygeia_web/live/case_live/navigation.sface:272
+#: lib/hygeia_web/live/case_live/index.sface:279
+#: lib/hygeia_web/live/case_live/navigation.sface:267 lib/hygeia_web/live/case_live/navigation.sface:272
 #: lib/hygeia_web/live/case_live/transmission_table.sface:153 lib/hygeia_web/live/infection_place_type_live/index.sface:57
-#: lib/hygeia_web/live/infection_place_type_live/show.sface:21 lib/hygeia_web/live/infection_place_type_live/show.sface:28 lib/hygeia_web/live/organisation_live/index.sface:92
-#: lib/hygeia_web/live/organisation_live/show.sface:21 lib/hygeia_web/live/organisation_live/show.sface:28 lib/hygeia_web/live/person_live/base_data.sface:40
-#: lib/hygeia_web/live/person_live/base_data.sface:47 lib/hygeia_web/live/person_live/index.sface:197 lib/hygeia_web/live/possible_index_submission_live/index.sface:133
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:49 lib/hygeia_web/live/profession_live/index.sface:57 lib/hygeia_web/live/profession_live/show.sface:21
-#: lib/hygeia_web/live/profession_live/show.sface:28 lib/hygeia_web/live/tenant_live/index.sface:57 lib/hygeia_web/live/tenant_live/show.sface:21
-#: lib/hygeia_web/live/tenant_live/show.sface:28 lib/hygeia_web/live/transmission_live/show.sface:53 lib/hygeia_web/live/transmission_live/show.sface:60
+#: lib/hygeia_web/live/infection_place_type_live/show.sface:21 lib/hygeia_web/live/infection_place_type_live/show.sface:28
+#: lib/hygeia_web/live/organisation_live/index.sface:92 lib/hygeia_web/live/organisation_live/show.sface:21
+#: lib/hygeia_web/live/organisation_live/show.sface:28 lib/hygeia_web/live/person_live/base_data.sface:40
+#: lib/hygeia_web/live/person_live/base_data.sface:47 lib/hygeia_web/live/person_live/index.sface:197
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:133 lib/hygeia_web/live/possible_index_submission_live/show.sface:49
+#: lib/hygeia_web/live/profession_live/index.sface:57 lib/hygeia_web/live/profession_live/show.sface:21
+#: lib/hygeia_web/live/profession_live/show.sface:28 lib/hygeia_web/live/tenant_live/index.sface:57
+#: lib/hygeia_web/live/tenant_live/show.sface:21 lib/hygeia_web/live/tenant_live/show.sface:28
+#: lib/hygeia_web/live/transmission_live/show.sface:53 lib/hygeia_web/live/transmission_live/show.sface:60
 msgid "Delete"
 msgstr "Löschen"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:226
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:223
 msgid "Describe your encounter with %{first_name} %{last_name}."
 msgstr "Beschreiben Sie Ihre Begegnung mit %{first_name} %{last_name}."
 
@@ -418,7 +466,7 @@ msgstr "Detaillierte Anleitung"
 msgid "Did you meet any colleages?"
 msgstr "Haben Sie Arbeitskollegen getroffen?"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:238
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:235
 msgid "Did you meet other unknown people?"
 msgstr "Sind Sie anderen unbekannten Personen begegnet?"
 
@@ -434,7 +482,7 @@ msgstr "Haben Sie vor kurzem ein Fitnessstudio besucht?"
 msgid "Did you visit a pub / restaurant / event recently?"
 msgstr "Haben Sie vor kurzem eine Kneipe / Restaurant / Veranstaltung besucht?"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:235
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:232
 msgid "Did you wear a mask?"
 msgstr "Haben Sie eine Maske getragen?"
 
@@ -446,31 +494,40 @@ msgstr "Atembeschwerden"
 msgid "Directly set case status to done"
 msgstr "Den Fallstatus direkt auf \"Tracing abgeschlossen\" setzen"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:40 lib/hygeia_web/live/case_live/base_data.sface:41 lib/hygeia_web/live/case_live/base_data.sface:412
-#: lib/hygeia_web/live/case_live/base_data.sface:413 lib/hygeia_web/live/infection_place_type_live/show.sface:51 lib/hygeia_web/live/infection_place_type_live/show.sface:52
-#: lib/hygeia_web/live/organisation_live/show.sface:51 lib/hygeia_web/live/organisation_live/show.sface:52 lib/hygeia_web/live/person_live/base_data.sface:69
-#: lib/hygeia_web/live/person_live/base_data.sface:70 lib/hygeia_web/live/person_live/base_data.sface:329 lib/hygeia_web/live/person_live/base_data.sface:330
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:91 lib/hygeia_web/live/possible_index_submission_live/show.sface:92
-#: lib/hygeia_web/live/profession_live/show.sface:51 lib/hygeia_web/live/profession_live/show.sface:52 lib/hygeia_web/live/tenant_live/show.sface:51
-#: lib/hygeia_web/live/tenant_live/show.sface:52 lib/hygeia_web/live/transmission_live/show.sface:72 lib/hygeia_web/live/transmission_live/show.sface:73
+#: lib/hygeia_web/live/case_live/base_data.sface:40
+#: lib/hygeia_web/live/case_live/base_data.sface:41 lib/hygeia_web/live/case_live/base_data.sface:412
+#: lib/hygeia_web/live/case_live/base_data.sface:413 lib/hygeia_web/live/infection_place_type_live/show.sface:51
+#: lib/hygeia_web/live/infection_place_type_live/show.sface:52 lib/hygeia_web/live/organisation_live/show.sface:51
+#: lib/hygeia_web/live/organisation_live/show.sface:52 lib/hygeia_web/live/person_live/base_data.sface:69
+#: lib/hygeia_web/live/person_live/base_data.sface:70 lib/hygeia_web/live/person_live/base_data.sface:329
+#: lib/hygeia_web/live/person_live/base_data.sface:330 lib/hygeia_web/live/possible_index_submission_live/show.sface:91
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:92 lib/hygeia_web/live/profession_live/show.sface:51
+#: lib/hygeia_web/live/profession_live/show.sface:52 lib/hygeia_web/live/tenant_live/show.sface:51
+#: lib/hygeia_web/live/tenant_live/show.sface:52 lib/hygeia_web/live/transmission_live/show.sface:72
+#: lib/hygeia_web/live/transmission_live/show.sface:73
 msgid "Discard"
 msgstr "Verwerfen"
 
-#: lib/hygeia_web/live/user_live/index.sface:11 lib/hygeia_web/live/user_live/show.sface:16
+#: lib/hygeia_web/live/user_live/index.sface:11
+#: lib/hygeia_web/live/user_live/show.sface:16
 msgid "Display Name"
 msgstr "Anzeigename"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:271
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:268
 msgid "Do you know the address where you met with %{first_name} %{last_name}?"
-msgstr "Kennen Sie die Adresse, an der Sie sich mit %{first_name} %{last_name} getroffen haben?"
+msgstr ""
+"Kennen Sie die Adresse, an der Sie sich mit %{first_name} %{last_name} "
+"getroffen haben?"
 
 #: lib/hygeia_web/templates/layout/root.html.leex:31
 msgid "Do you really want to continue without saving?"
 msgstr "Möchten Sie fortfahren ohne die Änderungen zu speichern?"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:39 lib/hygeia_web/live/case_live/base_data.sface:411 lib/hygeia_web/live/infection_place_type_live/show.sface:50
-#: lib/hygeia_web/live/organisation_live/show.sface:50 lib/hygeia_web/live/person_live/base_data.sface:68 lib/hygeia_web/live/person_live/base_data.sface:328
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:90 lib/hygeia_web/live/profession_live/show.sface:50 lib/hygeia_web/live/tenant_live/show.sface:50
+#: lib/hygeia_web/live/case_live/base_data.sface:39
+#: lib/hygeia_web/live/case_live/base_data.sface:411 lib/hygeia_web/live/infection_place_type_live/show.sface:50
+#: lib/hygeia_web/live/organisation_live/show.sface:50 lib/hygeia_web/live/person_live/base_data.sface:68
+#: lib/hygeia_web/live/person_live/base_data.sface:328 lib/hygeia_web/live/possible_index_submission_live/show.sface:90
+#: lib/hygeia_web/live/profession_live/show.sface:50 lib/hygeia_web/live/tenant_live/show.sface:50
 #: lib/hygeia_web/live/transmission_live/show.sface:71
 msgid "Do you really want to discard your changes?"
 msgstr "Möchten Sie Ihre Änderungen wirklich verwerfen?"
@@ -479,38 +536,47 @@ msgstr "Möchten Sie Ihre Änderungen wirklich verwerfen?"
 msgid "Done"
 msgstr "Tracing abgeschlossen"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:16 lib/hygeia_web/live/case_live/base_data.sface:17 lib/hygeia_web/live/case_live/base_data.sface:424
-#: lib/hygeia_web/live/case_live/base_data.sface:425 lib/hygeia_web/live/case_live/index.sface:272 lib/hygeia_web/live/case_live/transmission_table.sface:146
-#: lib/hygeia_web/live/infection_place_type_live/index.sface:50 lib/hygeia_web/live/infection_place_type_live/show.sface:13
-#: lib/hygeia_web/live/infection_place_type_live/show.sface:14 lib/hygeia_web/live/organisation_live/index.sface:85 lib/hygeia_web/live/organisation_live/show.sface:13
-#: lib/hygeia_web/live/organisation_live/show.sface:14 lib/hygeia_web/live/person_live/base_data.sface:31 lib/hygeia_web/live/person_live/base_data.sface:32
-#: lib/hygeia_web/live/person_live/base_data.sface:340 lib/hygeia_web/live/person_live/base_data.sface:341 lib/hygeia_web/live/person_live/index.sface:190
+#: lib/hygeia_web/live/case_live/base_data.sface:16
+#: lib/hygeia_web/live/case_live/base_data.sface:17 lib/hygeia_web/live/case_live/base_data.sface:424
+#: lib/hygeia_web/live/case_live/base_data.sface:425 lib/hygeia_web/live/case_live/index.sface:272
+#: lib/hygeia_web/live/case_live/transmission_table.sface:146 lib/hygeia_web/live/infection_place_type_live/index.sface:50
+#: lib/hygeia_web/live/infection_place_type_live/show.sface:13 lib/hygeia_web/live/infection_place_type_live/show.sface:14
+#: lib/hygeia_web/live/organisation_live/index.sface:85 lib/hygeia_web/live/organisation_live/show.sface:13
+#: lib/hygeia_web/live/organisation_live/show.sface:14 lib/hygeia_web/live/person_live/base_data.sface:31
+#: lib/hygeia_web/live/person_live/base_data.sface:32 lib/hygeia_web/live/person_live/base_data.sface:340
+#: lib/hygeia_web/live/person_live/base_data.sface:341 lib/hygeia_web/live/person_live/index.sface:190
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:126 lib/hygeia_web/live/possible_index_submission_live/show.sface:41
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:42 lib/hygeia_web/live/profession_live/index.sface:50 lib/hygeia_web/live/profession_live/show.sface:13
-#: lib/hygeia_web/live/profession_live/show.sface:14 lib/hygeia_web/live/tenant_live/index.sface:50 lib/hygeia_web/live/tenant_live/show.sface:13
-#: lib/hygeia_web/live/tenant_live/show.sface:14 lib/hygeia_web/live/transmission_live/show.sface:45 lib/hygeia_web/live/transmission_live/show.sface:46
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:42 lib/hygeia_web/live/profession_live/index.sface:50
+#: lib/hygeia_web/live/profession_live/show.sface:13 lib/hygeia_web/live/profession_live/show.sface:14
+#: lib/hygeia_web/live/tenant_live/index.sface:50 lib/hygeia_web/live/tenant_live/show.sface:13
+#: lib/hygeia_web/live/tenant_live/show.sface:14 lib/hygeia_web/live/transmission_live/show.sface:45
+#: lib/hygeia_web/live/transmission_live/show.sface:46
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:56
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:53
 msgid "Either you or the other person did not weark a mask."
 msgstr "Entweder Sie oder die andere Person haben keine Maske getragen."
 
-#: lib/hygeia_web/helpers/contact_method.ex:15 lib/hygeia_web/live/case_live/create.ex:344 lib/hygeia_web/live/case_live/person_create_table.sface:11
-#: lib/hygeia_web/live/case_live/person_create_table.sface:201 lib/hygeia_web/live/case_live/protocol.ex:71 lib/hygeia_web/live/case_live/protocol_modal.sface:21
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:333 lib/hygeia_web/live/user_live/index.sface:14 lib/hygeia_web/live/user_live/show.sface:20
+#: lib/hygeia_web/helpers/contact_method.ex:15
+#: lib/hygeia_web/live/case_live/create.ex:344 lib/hygeia_web/live/case_live/person_create_table.sface:11
+#: lib/hygeia_web/live/case_live/person_create_table.sface:201 lib/hygeia_web/live/case_live/protocol.ex:84
+#: lib/hygeia_web/live/case_live/protocol_modal.sface:21 lib/hygeia_web/live/possible_index_submission_live/create.sface:330
+#: lib/hygeia_web/live/user_live/index.sface:14 lib/hygeia_web/live/user_live/show.sface:20
 msgid "Email"
 msgstr "E-Mail"
 
-#: lib/hygeia_web/live/case_live/create.ex:348 lib/hygeia_web/live/case_live/person_create_table.sface:17
+#: lib/hygeia_web/live/case_live/create.ex:348
+#: lib/hygeia_web/live/case_live/person_create_table.sface:17
 msgid "Employer"
 msgstr "Arbeitgeber"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:228 lib/hygeia_web/live/possible_index_submission_live/index.sface:24
+#: lib/hygeia_web/live/person_live/base_data.sface:228
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:24
 msgid "Employment"
 msgstr "Anstellung"
 
-#: lib/hygeia_web/live/help_live/index.sface:237
+#: lib/hygeia_web/live/help_live/index.sface:240
 msgid "Encoding"
 msgstr "Codierung"
 
@@ -522,7 +588,8 @@ msgstr "Codierung (nur CSV)"
 msgid "End"
 msgstr "Ende"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:169 lib/hygeia_web/live/case_live/base_data.sface:193
+#: lib/hygeia_web/live/case_live/base_data.sface:169
+#: lib/hygeia_web/live/case_live/base_data.sface:193
 msgid "End Reason"
 msgstr "Grund für Ende"
 
@@ -538,7 +605,8 @@ msgstr "Mögliche Übertragungen eingeben"
 msgid "Events"
 msgstr "Veranstaltungen"
 
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:50 lib/hygeia_web/live/transmission_live/create.sface:36 lib/hygeia_web/live/transmission_live/create.sface:63
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:50
+#: lib/hygeia_web/live/transmission_live/create.sface:36 lib/hygeia_web/live/transmission_live/create.sface:63
 msgid "External"
 msgstr "Extern"
 
@@ -554,8 +622,9 @@ msgstr "Familie / Freunde"
 msgid "Fatigue"
 msgstr "Müdigkeit"
 
-#: lib/hygeia_web/live/case_live/person_create_table.sface:56 lib/hygeia_web/live/person_live/base_data.sface:106 lib/hygeia_web/live/person_live/index.sface:54
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:88
+#: lib/hygeia_web/live/case_live/person_create_table.sface:56
+#: lib/hygeia_web/live/person_live/base_data.sface:106 lib/hygeia_web/live/person_live/index.sface:54
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:85
 msgid "Female"
 msgstr "Weiblich"
 
@@ -567,8 +636,10 @@ msgstr "Fieber"
 msgid "File Type"
 msgstr "Dateityp"
 
-#: lib/hygeia_web/live/case_live/index.sface:32 lib/hygeia_web/live/case_live/index.sface:36 lib/hygeia_web/live/organisation_live/index.sface:19
-#: lib/hygeia_web/live/organisation_live/index.sface:23 lib/hygeia_web/live/person_live/index.sface:23 lib/hygeia_web/live/person_live/index.sface:28
+#: lib/hygeia_web/live/case_live/index.sface:32
+#: lib/hygeia_web/live/case_live/index.sface:36 lib/hygeia_web/live/organisation_live/index.sface:19
+#: lib/hygeia_web/live/organisation_live/index.sface:23 lib/hygeia_web/live/person_live/index.sface:23
+#: lib/hygeia_web/live/person_live/index.sface:28
 msgid "Filter"
 msgstr "Filter"
 
@@ -576,12 +647,14 @@ msgstr "Filter"
 msgid "Finished Isolations"
 msgstr "Abgeschlossene Isolierungen"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:88 lib/hygeia_web/live/person_live/create.sface:38 lib/hygeia_web/live/possible_index_submission_live/create.sface:66
+#: lib/hygeia_web/live/person_live/base_data.sface:88
+#: lib/hygeia_web/live/person_live/create.sface:38 lib/hygeia_web/live/possible_index_submission_live/create.sface:63
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:84 lib/hygeia_web/live/possible_index_submission_live/show.sface:105
 msgid "First Name"
 msgstr "Vorname"
 
-#: lib/hygeia_web/helpers/case.ex:23 lib/hygeia_web/live/case_live/monitoring/monitoring.sface:6
+#: lib/hygeia_web/helpers/case.ex:23
+#: lib/hygeia_web/live/case_live/monitoring/monitoring.sface:6
 msgid "First contact"
 msgstr "Erster Kontakt"
 
@@ -589,7 +662,8 @@ msgstr "Erster Kontakt"
 msgid "First contact, unreachable"
 msgstr "Erster Kontakt, tel. nicht erreicht"
 
-#: lib/hygeia_web/live/case_live/create.ex:334 lib/hygeia_web/live/case_live/person_create_table.sface:5 lib/hygeia_web/live/person_live/index.sface:112
+#: lib/hygeia_web/live/case_live/create.ex:334
+#: lib/hygeia_web/live/case_live/person_create_table.sface:5 lib/hygeia_web/live/person_live/index.sface:112
 msgid "First name"
 msgstr "Vorname"
 
@@ -617,7 +691,8 @@ msgstr "Kopfschmerzen"
 msgid "Healed"
 msgstr "Geheilt"
 
-#: lib/hygeia_web/live/header.sface:105 lib/hygeia_web/live/help_live/index.sface:2
+#: lib/hygeia_web/live/header.sface:109
+#: lib/hygeia_web/live/help_live/index.sface:3
 msgid "Help"
 msgstr "Hilfe"
 
@@ -641,7 +716,7 @@ msgstr "Krankenhausaufenthalte"
 msgid "Hotel"
 msgstr "Hotel"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:305
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:302
 msgid "How can we contact %{first_name} %{last_name}?"
 msgstr "Wie können wir %{first_name} %{last_name} kontaktieren?"
 
@@ -649,11 +724,11 @@ msgstr "Wie können wir %{first_name} %{last_name} kontaktieren?"
 msgid "How did you travel there and back?"
 msgstr "Wie sind Sie hin- und zurück gereist?"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:216
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:213
 msgid "How did your encounter with %{first_name} %{last_name} happen?"
 msgstr "Wie lief Ihre Begegnung mit %{first_name} %{last_name} ab?"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:236
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:233
 msgid "How much time did you spend together?"
 msgstr "Wie viel Zeit haben Sie zusammen verbracht?"
 
@@ -681,24 +756,37 @@ msgstr "ISM Meldung"
 msgid "ISM Report ID"
 msgstr "ISM-Meldung-ID"
 
-#: lib/hygeia_web/live/case_live/transmission_table.sface:65 lib/hygeia_web/live/case_live/transmission_table.sface:107 lib/hygeia_web/live/transmission_live/show.sface:123
+#: lib/hygeia_web/live/case_live/transmission_table.sface:65
+#: lib/hygeia_web/live/case_live/transmission_table.sface:107 lib/hygeia_web/live/transmission_live/show.sface:123
 #: lib/hygeia_web/live/transmission_live/show.sface:166
 msgid "ISM-ID: %{id}"
 msgstr "ISM-ID: %{id}"
 
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:10
-msgid "If you had contact with people you do not know, please talk to your tracer with further details."
-msgstr "Wenn Sie Kontakt mit Personen hatten, die Sie nicht kennen, sprechen Sie bitte mit Ihrem Tracer mit weiteren Details."
-
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:127
-msgid "If you met %{first_name} %{last_name} multiple times, select the earliest date after 48 hours before your symptom start date or before the test (if you don't have symptoms)."
+msgid ""
+"If you had contact with people you do not know, please talk to your tracer "
+"with further details."
 msgstr ""
-"Wenn Sie %{first_name} %{last_name} mehrmals getroffen haben, wählen Sie das früheste Datum nach 48 vor dem Beginn Ihrer Symptome oder vor dem Test (falls Sie keine Symptome "
-"haben) aus."
+"Wenn Sie Kontakt mit Personen hatten, die Sie nicht kennen, sprechen Sie "
+"bitte mit Ihrem Tracer mit weiteren Details."
+
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:124
+msgid ""
+"If you met %{first_name} %{last_name} multiple times, select the earliest "
+"date after 48 hours before your symptom start date or before the test (if "
+"you don't have symptoms)."
+msgstr ""
+"Wenn Sie %{first_name} %{last_name} mehrmals getroffen haben, wählen Sie das "
+"früheste Datum nach 48 vor dem Beginn Ihrer Symptome oder vor dem Test "
+"(falls Sie keine Symptome haben) aus."
 
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:12
-msgid "If you're having trouble recalling what you did since then, here are some examples:"
-msgstr "Wenn Sie Schwierigkeiten haben, sich daran zu erinnern, was Sie seitdem getan haben, hier sind einige Beispiele:"
+msgid ""
+"If you're having trouble recalling what you did since then, here are some "
+"examples:"
+msgstr ""
+"Wenn Sie Schwierigkeiten haben, sich daran zu erinnern, was Sie seitdem "
+"getan haben, hier sind einige Beispiele:"
 
 #: lib/hygeia_web/live/case_live/csv_import.sface:8
 msgid "Import CSV / XLSX"
@@ -708,25 +796,38 @@ msgstr ".csv / .xlsx importieren"
 msgid "Import Help"
 msgstr "Hilfe"
 
-#: lib/hygeia_web/live/case_live/create_index.sface:8 lib/hygeia_web/live/case_live/create_possible_index.sface:8
+#: lib/hygeia_web/live/case_live/create_index.sface:8
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:8
 msgid "Import is currently running."
 msgstr "Der Import wird derzeit ausgeführt."
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:237
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:234
 msgid "In how close proximity to each other were you?"
 msgstr "Wie nah beieinander waren Sie?"
 
 #: lib/hygeia_web/live/case_live/index.sface:95
 msgid "Includes Phase Type"
-msgstr "beinhaltet Phase"
+msgstr ""
+"#-#-#-#-#  .merge_file_VrJqo6 (Hygeia)  #-#-#-#-#\n"
+"beinhaltet Phase\n"
+"#-#-#-#-#  .merge_file_mz0qD4 (Hygeia)  #-#-#-#-#\n"
+"#-#-#-#-#  .merge_file_RPCg53 (Hygeia)  #-#-#-#-#\n"
+"beinhaltet Phase\n"
+"#-#-#-#-#  .merge_file_8tRDq1 (Hygeia)  #-#-#-#-#\n"
+"#-#-#-#-#  .merge_file_ZduCec (Hygeia)  #-#-#-#-#\n"
+"beinhaltet Phase\n"
+"#-#-#-#-#  .merge_file_tCg8qe (Hygeia)  #-#-#-#-#\n"
+"Beinhaltet Phase"
 
-#: lib/hygeia_web/helpers/case.ex:133 lib/hygeia_web/helpers/phase.ex:9 lib/hygeia_web/live/case_live/base_data.sface:139 lib/hygeia_web/live/case_live/index.sface:105
+#: lib/hygeia_web/helpers/case.ex:133 lib/hygeia_web/helpers/phase.ex:9
+#: lib/hygeia_web/live/case_live/base_data.sface:139 lib/hygeia_web/live/case_live/index.sface:105
 #: lib/hygeia_web/live/statistics_live/statistics.sface:295
 msgid "Index"
 msgstr "Index"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:19 lib/hygeia_web/live/possible_index_submission_live/show.sface:138
-#: lib/hygeia_web/live/statistics_live/statistics.sface:495 lib/hygeia_web/live/transmission_live/show.sface:182
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:132
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:138 lib/hygeia_web/live/statistics_live/statistics.sface:495
+#: lib/hygeia_web/live/transmission_live/show.sface:182
 msgid "Infection Place"
 msgstr "Infektionsort"
 
@@ -742,7 +843,7 @@ msgstr "Infektionsort Typ"
 msgid "Infection Place Type deleted successfully"
 msgstr "Infektionsorttyp erfolgreich gelöscht"
 
-#: lib/hygeia_web/live/header.sface:90
+#: lib/hygeia_web/live/header.sface:91
 msgid "Infection Place Types"
 msgstr "Infektionsorttypen"
 
@@ -762,15 +863,18 @@ msgstr "Infektionsorttyp erfolgreich aktualisiert"
 msgid "Infection place types"
 msgstr "Infektionsorttypen"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:16 lib/hygeia_web/live/case_live/csv_import.sface:17
+#: lib/hygeia_web/live/case_live/csv_import.sface:16
+#: lib/hygeia_web/live/case_live/csv_import.sface:17
 msgid "Info"
 msgstr "Info"
 
-#: lib/hygeia_web/live/case_live/index.sface:204 lib/hygeia_web/live/person_live/index.sface:151
+#: lib/hygeia_web/live/case_live/index.sface:204
+#: lib/hygeia_web/live/person_live/index.sface:151
 msgid "Inserted At"
 msgstr "Erstellt Am"
 
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:47 lib/hygeia_web/live/transmission_live/create.sface:33 lib/hygeia_web/live/transmission_live/create.sface:60
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:47
+#: lib/hygeia_web/live/transmission_live/create.sface:33 lib/hygeia_web/live/transmission_live/create.sface:60
 msgid "Internal"
 msgstr "Intern"
 
@@ -778,7 +882,8 @@ msgstr "Intern"
 msgid "Isolation Confirmation"
 msgstr "Isolationsbestätigung"
 
-#: lib/hygeia_pdf_confirmation/isolation.ex:25 lib/hygeia_web/helpers/confirmation.ex:44
+#: lib/hygeia_pdf_confirmation/isolation.ex:25
+#: lib/hygeia_web/helpers/confirmation.ex:21
 msgid "Isolation Order"
 msgstr "Isolationsverordnung"
 
@@ -790,21 +895,25 @@ msgstr "Isolationsperiode Ende"
 msgid "Known"
 msgstr "Bekannt"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:303 lib/hygeia_web/live/case_live/create.ex:352 lib/hygeia_web/live/case_live/create_index.sface:114
+#: lib/hygeia_web/live/case_live/base_data.sface:303
+#: lib/hygeia_web/live/case_live/create.ex:352 lib/hygeia_web/live/case_live/create_index.sface:114
 msgid "Laboratory report date"
 msgstr "Datum des Laborberichts"
 
-#: lib/hygeia_web/helpers/contact_method.ex:14 lib/hygeia_web/live/case_live/create.ex:342 lib/hygeia_web/live/case_live/person_create_table.sface:10
-#: lib/hygeia_web/live/case_live/person_create_table.sface:197 lib/hygeia_web/live/possible_index_submission_live/create.sface:323
+#: lib/hygeia_web/helpers/contact_method.ex:14
+#: lib/hygeia_web/live/case_live/create.ex:342 lib/hygeia_web/live/case_live/person_create_table.sface:10
+#: lib/hygeia_web/live/case_live/person_create_table.sface:197 lib/hygeia_web/live/possible_index_submission_live/create.sface:320
 msgid "Landline"
 msgstr "Festnetz"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:95 lib/hygeia_web/live/person_live/create.sface:45 lib/hygeia_web/live/possible_index_submission_live/create.sface:73
+#: lib/hygeia_web/live/person_live/base_data.sface:95
+#: lib/hygeia_web/live/person_live/create.sface:45 lib/hygeia_web/live/possible_index_submission_live/create.sface:70
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:87 lib/hygeia_web/live/possible_index_submission_live/show.sface:114
 msgid "Last Name"
 msgstr "Nachname"
 
-#: lib/hygeia_web/live/case_live/create.ex:336 lib/hygeia_web/live/person_live/index.sface:124
+#: lib/hygeia_web/live/case_live/create.ex:336
+#: lib/hygeia_web/live/person_live/index.sface:124
 msgid "Last name"
 msgstr "Nachname"
 
@@ -848,11 +957,11 @@ msgstr "Standort"
 msgid "Location details"
 msgstr "Standort Details"
 
-#: lib/hygeia_web/live/header.sface:134
+#: lib/hygeia_web/live/header.sface:138
 msgid "Login"
 msgstr "Anmelden"
 
-#: lib/hygeia_web/live/header.sface:126
+#: lib/hygeia_web/live/header.sface:130
 msgid "Logout"
 msgstr "Abmelden"
 
@@ -868,8 +977,9 @@ msgstr "Geschmacksverlust"
 msgid "Low"
 msgstr "Niedrig"
 
-#: lib/hygeia_web/live/case_live/person_create_table.sface:56 lib/hygeia_web/live/person_live/base_data.sface:106 lib/hygeia_web/live/person_live/index.sface:48
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:87
+#: lib/hygeia_web/live/case_live/person_create_table.sface:56
+#: lib/hygeia_web/live/person_live/base_data.sface:106 lib/hygeia_web/live/person_live/index.sface:48
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:84
 msgid "Male"
 msgstr "Männlich"
 
@@ -877,7 +987,7 @@ msgstr "Männlich"
 msgid "Medium"
 msgstr "Mittel"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:21
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:134
 msgid "Meet Address"
 msgstr "Adresse Kontakt"
 
@@ -885,11 +995,13 @@ msgstr "Adresse Kontakt"
 msgid "Meta"
 msgstr "Meta"
 
-#: lib/hygeia_web/helpers/contact_method.ex:13 lib/hygeia_web/live/case_live/person_create_table.sface:193 lib/hygeia_web/live/possible_index_submission_live/create.sface:316
+#: lib/hygeia_web/helpers/contact_method.ex:13
+#: lib/hygeia_web/live/case_live/person_create_table.sface:193 lib/hygeia_web/live/possible_index_submission_live/create.sface:313
 msgid "Mobile"
 msgstr "Mobiltelefon"
 
-#: lib/hygeia_web/live/case_live/create.ex:339 lib/hygeia_web/live/case_live/person_create_table.sface:9
+#: lib/hygeia_web/live/case_live/create.ex:339
+#: lib/hygeia_web/live/case_live/person_create_table.sface:9
 msgid "Mobile Phone"
 msgstr "Mobiltelefon"
 
@@ -897,18 +1009,21 @@ msgstr "Mobiltelefon"
 msgid "Monitoring"
 msgstr "Monitoring"
 
-#: lib/hygeia_web/live/header.sface:47
+#: lib/hygeia_web/live/header.sface:48
 msgid "More"
 msgstr "Mehr"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:333 lib/hygeia_web/live/case_live/base_data.sface:353 lib/hygeia_web/live/case_live/person_create_table.sface:185
+#: lib/hygeia_web/live/case_live/base_data.sface:333
+#: lib/hygeia_web/live/case_live/base_data.sface:353 lib/hygeia_web/live/case_live/person_create_table.sface:185
 #: lib/hygeia_web/live/infection_place_type_live/create.sface:15 lib/hygeia_web/live/infection_place_type_live/index.sface:20
-#: lib/hygeia_web/live/infection_place_type_live/show.sface:60 lib/hygeia_web/live/infection_place_type_live/show.sface:62 lib/hygeia_web/live/organisation_live/create.sface:15
-#: lib/hygeia_web/live/organisation_live/index.sface:49 lib/hygeia_web/live/organisation_live/show.sface:60 lib/hygeia_web/live/organisation_live/show.sface:62
-#: lib/hygeia_web/live/person_live/base_data.sface:246 lib/hygeia_web/live/profession_live/create.sface:15 lib/hygeia_web/live/profession_live/index.sface:20
-#: lib/hygeia_web/live/profession_live/show.sface:60 lib/hygeia_web/live/profession_live/show.sface:62 lib/hygeia_web/live/tenant_live/create.sface:15
-#: lib/hygeia_web/live/tenant_live/index.sface:24 lib/hygeia_web/live/tenant_live/show.sface:60 lib/hygeia_web/live/tenant_live/show.sface:62
-#: lib/hygeia_web/live/transmission_live/infection_place.sface:69
+#: lib/hygeia_web/live/infection_place_type_live/show.sface:60 lib/hygeia_web/live/infection_place_type_live/show.sface:62
+#: lib/hygeia_web/live/organisation_live/create.sface:15 lib/hygeia_web/live/organisation_live/index.sface:49
+#: lib/hygeia_web/live/organisation_live/show.sface:60 lib/hygeia_web/live/organisation_live/show.sface:62
+#: lib/hygeia_web/live/person_live/base_data.sface:246 lib/hygeia_web/live/profession_live/create.sface:15
+#: lib/hygeia_web/live/profession_live/index.sface:20 lib/hygeia_web/live/profession_live/show.sface:60
+#: lib/hygeia_web/live/profession_live/show.sface:62 lib/hygeia_web/live/tenant_live/create.sface:15
+#: lib/hygeia_web/live/tenant_live/index.sface:24 lib/hygeia_web/live/tenant_live/show.sface:60
+#: lib/hygeia_web/live/tenant_live/show.sface:62 lib/hygeia_web/live/transmission_live/infection_place.sface:69
 msgid "Name"
 msgstr "Name"
 
@@ -936,7 +1051,8 @@ msgstr "Neue Organisation"
 msgid "New Person"
 msgstr "Neue Person"
 
-#: lib/hygeia_web/live/case_live/index.sface:24 lib/hygeia_web/live/case_live/transmissions.sface:51
+#: lib/hygeia_web/live/case_live/index.sface:24
+#: lib/hygeia_web/live/case_live/transmissions.sface:51
 msgid "New Possible Index"
 msgstr "Neuer Möglicher Indexfall"
 
@@ -952,11 +1068,13 @@ msgstr "Neues Berufsfeld"
 msgid "New Tenant"
 msgstr "Neuer Mandant"
 
-#: lib/hygeia_web/live/case_live/transmissions.sface:23 lib/hygeia_web/live/case_live/transmissions.sface:64
+#: lib/hygeia_web/live/case_live/transmissions.sface:23
+#: lib/hygeia_web/live/case_live/transmissions.sface:64
 msgid "New Transmission"
 msgstr "Neue Übertragung"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:219 lib/hygeia_web/live/person_live/create.sface:92
+#: lib/hygeia_web/live/person_live/base_data.sface:219
+#: lib/hygeia_web/live/person_live/create.sface:92
 msgid "New contact method"
 msgstr "Neue Kontaktmethode"
 
@@ -1008,7 +1126,8 @@ msgstr "Weiter"
 msgid "Next Contact Agreed"
 msgstr "Nächster Kontakt vereinbart"
 
-#: lib/hygeia_web/live/case_live/transmission_table.sface:120 lib/hygeia_web/live/transmission_live/infection_place.sface:46
+#: lib/hygeia_web/live/case_live/transmission_table.sface:120
+#: lib/hygeia_web/live/transmission_live/infection_place.sface:46
 msgid "No"
 msgstr "Nein"
 
@@ -1016,8 +1135,10 @@ msgstr "Nein"
 msgid "No Follow Up"
 msgstr "Kein erneuter Kontakt"
 
-#: lib/hygeia_web/live/case_live/index.sface:296 lib/hygeia_web/live/case_live/protocol.sface:66 lib/hygeia_web/live/case_live/transmission_table.sface:170
+#: lib/hygeia_web/live/case_live/index.sface:296
+#: lib/hygeia_web/live/case_live/protocol.sface:66 lib/hygeia_web/live/case_live/transmission_table.sface:170
 #: lib/hygeia_web/live/organisation_live/show.sface:164 lib/hygeia_web/live/person_live/index.sface:213
+#: lib/hygeia_web/live/statistics_live/choose_tenant.sface:22
 msgid "No data to display"
 msgstr "Keine Daten anzuzeigen"
 
@@ -1029,7 +1150,8 @@ msgstr "Kein erneuter Kontakt"
 msgid "No hospitalizations"
 msgstr "Keine Krankenhausaufenthalte"
 
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:44 lib/hygeia_web/live/transmission_live/create.sface:30
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:44
+#: lib/hygeia_web/live/transmission_live/create.sface:30
 msgid "No propagator"
 msgstr "Kein Anstecker"
 
@@ -1041,11 +1163,13 @@ msgstr "Kein Empfänger"
 msgid "No related organisations"
 msgstr "Keine verwandten Organisationen"
 
-#: lib/hygeia_web/live/case_live/protocol.ex:70 lib/hygeia_web/live/case_live/protocol_modal.sface:19 lib/hygeia_web/live/case_live/protocol_modal.sface:34
+#: lib/hygeia_web/live/case_live/protocol.ex:83
+#: lib/hygeia_web/live/case_live/protocol_modal.sface:19 lib/hygeia_web/live/case_live/protocol_modal.sface:34
 msgid "Note"
 msgstr "Notiz"
 
-#: lib/hygeia_web/live/organisation_live/create.sface:25 lib/hygeia_web/live/organisation_live/show.sface:73 lib/hygeia_web/live/organisation_live/show.sface:75
+#: lib/hygeia_web/live/organisation_live/create.sface:25
+#: lib/hygeia_web/live/organisation_live/show.sface:73 lib/hygeia_web/live/organisation_live/show.sface:75
 msgid "Notes"
 msgstr "Notizen"
 
@@ -1057,7 +1181,8 @@ msgstr "Auf der Hilfeseite"
 msgid "Oops!"
 msgstr "Hoppla!"
 
-#: lib/hygeia_web/helpers/search.ex:9 lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:31 lib/hygeia_web/live/person_live/base_data.sface:356
+#: lib/hygeia_web/helpers/search.ex:9
+#: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:31 lib/hygeia_web/live/person_live/base_data.sface:356
 msgid "Organisation"
 msgstr "Organisation"
 
@@ -1077,7 +1202,7 @@ msgstr "Organisation erfolgreich gelöscht"
 msgid "Organisation updated successfully"
 msgstr "Mandant wurde erfolgreich aktualisiert"
 
-#: lib/hygeia_web/live/header.sface:83
+#: lib/hygeia_web/live/header.sface:84
 msgid "Organisations"
 msgstr "Organisationen"
 
@@ -1085,9 +1210,11 @@ msgstr "Organisationen"
 msgid "Origin"
 msgstr "Herkunft"
 
-#: lib/hygeia_web/helpers/case.ex:73 lib/hygeia_web/helpers/clinical.ex:42 lib/hygeia_web/helpers/contact_method.ex:16 lib/hygeia_web/helpers/external_reference.ex:19
-#: lib/hygeia_web/helpers/monitoring.ex:25 lib/hygeia_web/helpers/phase.ex:23 lib/hygeia_web/live/case_live/person_create_table.sface:56
-#: lib/hygeia_web/live/person_live/base_data.sface:106 lib/hygeia_web/live/possible_index_submission_live/create.sface:89
+#: lib/hygeia_web/helpers/case.ex:73 lib/hygeia_web/helpers/clinical.ex:42
+#: lib/hygeia_web/helpers/contact_method.ex:16 lib/hygeia_web/helpers/external_reference.ex:19
+#: lib/hygeia_web/helpers/monitoring.ex:25 lib/hygeia_web/helpers/phase.ex:23
+#: lib/hygeia_web/live/case_live/person_create_table.sface:56 lib/hygeia_web/live/person_live/base_data.sface:106
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:86
 msgid "Other"
 msgstr "Andere"
 
@@ -1111,11 +1238,13 @@ msgstr "Ausgehende SMS-Konfiguration"
 msgid "Override Url"
 msgstr "Externe Url"
 
-#: lib/hygeia_web/helpers/clinical.ex:49 lib/hygeia_web/live/case_live/create.ex:189
+#: lib/hygeia_web/helpers/clinical.ex:49
+#: lib/hygeia_web/live/case_live/create.ex:189
 msgid "PCR"
 msgstr "PCR"
 
-#: lib/hygeia_web/live/header.sface:24 lib/hygeia_web/live/statistics_live/statistics.sface:69 lib/hygeia_web/live/statistics_live/statistics.sface:196
+#: lib/hygeia_web/live/header.sface:24
+#: lib/hygeia_web/live/statistics_live/statistics.sface:69 lib/hygeia_web/live/statistics_live/statistics.sface:196
 #: lib/hygeia_web/live/statistics_live/statistics.sface:383 lib/hygeia_web/live/statistics_live/statistics.sface:519
 msgid "People"
 msgstr "Personen"
@@ -1132,12 +1261,13 @@ msgstr "Personen in Isolation"
 msgid "People in Quarantine"
 msgstr "Personen in Quarantäne"
 
-#: lib/hygeia_web/helpers/search.ex:7 lib/hygeia_web/live/case_live/index.sface:132 lib/hygeia_web/live/organisation_live/show.sface:102
+#: lib/hygeia_web/helpers/search.ex:7
+#: lib/hygeia_web/live/case_live/index.sface:132 lib/hygeia_web/live/organisation_live/show.sface:102
 #: lib/hygeia_web/live/possible_index_submission_live/show.sface:102
 msgid "Person"
 msgstr "Person"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:17
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:130
 msgid "Person Base Data"
 msgstr "Basisdaten Person"
 
@@ -1154,14 +1284,18 @@ msgid "Person updated successfully"
 msgstr "Person wurde erfolgreich aktualisiert"
 
 #: lib/hygeia_web/live/case_live/navigation.sface:74
-msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
-msgstr "Phasenanfangs- und Enddatum müssen festgelegt werden, um Isolationsbestätigungen zu erstellen."
+msgid ""
+"Phase start- and end-dates must be set to create Isolation Confirmations."
+msgstr ""
+"Phasenanfangs- und Enddatum müssen festgelegt werden, um "
+"Isolationsbestätigungen zu erstellen."
 
-#: lib/hygeia_web/live/case_live/base_data.sface:127 lib/hygeia_web/live/case_live/index.sface:168
+#: lib/hygeia_web/live/case_live/base_data.sface:127
+#: lib/hygeia_web/live/case_live/index.sface:168
 msgid "Phases"
 msgstr "Phasen"
 
-#: lib/hygeia_web/live/header.sface:55
+#: lib/hygeia_web/live/header.sface:56
 msgid "Phoenix Dashboard"
 msgstr "Phoenix Dashboard"
 
@@ -1169,15 +1303,17 @@ msgstr "Phoenix Dashboard"
 msgid "Place"
 msgstr "Ort"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:177
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:174
 msgid "Place Name"
 msgstr "Ort Name"
 
-#: lib/hygeia_web/live/case_live/create_index.sface:11 lib/hygeia_web/live/case_live/create_possible_index.sface:11
+#: lib/hygeia_web/live/case_live/create_index.sface:11
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:11
 msgid "Please Wait..."
 msgstr "Bitte warten ..."
 
-#: lib/hygeia_web/live/organisation_live/show.sface:103 lib/hygeia_web/live/person_live/base_data.sface:357
+#: lib/hygeia_web/live/organisation_live/show.sface:103
+#: lib/hygeia_web/live/person_live/base_data.sface:357
 msgid "Position"
 msgstr "Position"
 
@@ -1189,7 +1325,8 @@ msgstr "Positionen"
 msgid "Positive"
 msgstr "Positiv"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:140 lib/hygeia_web/live/case_live/index.sface:111
+#: lib/hygeia_web/live/case_live/base_data.sface:140
+#: lib/hygeia_web/live/case_live/index.sface:111
 msgid "Possible Index"
 msgstr "Möglicher Index"
 
@@ -1201,13 +1338,16 @@ msgstr "Möglicher-Index Einsendungen"
 msgid "Possible index"
 msgstr "Möglicher Index"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:94
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:88
 msgid "Possible index submission created successfully"
 msgstr "Mögliche Indexübermittlung erfolgreich erstellt"
 
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:64
-msgid "Possible index submissions can only be managed for cases with an index phase."
-msgstr "Mögliche Indexübermittlungen können nur für Fälle mit einer Indexphase verwaltet werden."
+msgid ""
+"Possible index submissions can only be managed for cases with an index phase."
+msgstr ""
+"Mögliche Indexübermittlungen können nur für Fälle mit einer Indexphase "
+"verwaltet werden."
 
 #: lib/hygeia_web/live/possible_index_submission_live/show.ex:105
 msgid "PossibleIndexSubmission deleted successfully"
@@ -1221,7 +1361,8 @@ msgstr "Mögliche Indexübermittlung erfolgreich bearbeitet"
 msgid "Previous"
 msgstr "Zurück"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:233 lib/hygeia_web/live/person_live/index.sface:61
+#: lib/hygeia_web/live/person_live/base_data.sface:233
+#: lib/hygeia_web/live/person_live/index.sface:61
 msgid "Profession"
 msgstr "Berufsfeld"
 
@@ -1237,11 +1378,11 @@ msgstr "Berufsfeld erfolgreich gelöscht"
 msgid "Profession updated successfully"
 msgstr "Berufsfeld wurde erfolgreich aktualisiert"
 
-#: lib/hygeia_web/live/header.sface:76
+#: lib/hygeia_web/live/header.sface:77
 msgid "Professions"
 msgstr "Berufsfelder"
 
-#: lib/hygeia_web/live/header.sface:112 lib/hygeia_web/live/header.sface:121
+#: lib/hygeia_web/live/header.sface:116 lib/hygeia_web/live/header.sface:125
 msgid "Profile"
 msgstr "Profil"
 
@@ -1249,16 +1390,19 @@ msgstr "Profil"
 msgid "Propagated"
 msgstr "Weitergegeben"
 
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:42 lib/hygeia_web/live/case_live/transmission_table.sface:10 lib/hygeia_web/live/transmission_live/create.sface:28
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:42
+#: lib/hygeia_web/live/case_live/transmission_table.sface:10 lib/hygeia_web/live/transmission_live/create.sface:28
 #: lib/hygeia_web/live/transmission_live/show.sface:127
 msgid "Propagator"
 msgstr "Anstecker"
 
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:61 lib/hygeia_web/live/transmission_live/create.sface:47
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:61
+#: lib/hygeia_web/live/transmission_live/create.sface:47
 msgid "Propagator Case"
 msgstr "Anstecker Fall"
 
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:56 lib/hygeia_web/live/transmission_live/create.sface:42
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:56
+#: lib/hygeia_web/live/transmission_live/create.sface:42
 msgid "Propagator ISM ID"
 msgstr "Anstecker ISM IS"
 
@@ -1290,7 +1434,8 @@ msgstr "Quarantänebestätigungen sind nur für Kontaktpersonen verfügbar."
 msgid "Quarantine End Reasons"
 msgstr "Quarantäne-Endgründe"
 
-#: lib/hygeia_pdf_confirmation/quarantine.ex:25 lib/hygeia_web/helpers/confirmation.ex:101
+#: lib/hygeia_pdf_confirmation/quarantine.ex:25
+#: lib/hygeia_web/helpers/confirmation.ex:63
 msgid "Quarantine Order"
 msgstr "Quarantäneverordnung"
 
@@ -1306,7 +1451,8 @@ msgstr "Gründe für Test"
 msgid "Received"
 msgstr "Erhalten"
 
-#: lib/hygeia_web/live/case_live/transmission_table.sface:7 lib/hygeia_web/live/transmission_live/create.sface:55 lib/hygeia_web/live/transmission_live/show.sface:84
+#: lib/hygeia_web/live/case_live/transmission_table.sface:7
+#: lib/hygeia_web/live/transmission_live/create.sface:55 lib/hygeia_web/live/transmission_live/show.sface:84
 msgid "Recipient"
 msgstr "Empfänger"
 
@@ -1318,7 +1464,8 @@ msgstr "Empfängerfall"
 msgid "Recipient ISM ID"
 msgstr "Empfänger-ISM-ID"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:114 lib/hygeia_web/live/person_live/base_data.sface:123
+#: lib/hygeia_web/live/case_live/base_data.sface:114
+#: lib/hygeia_web/live/person_live/base_data.sface:123
 msgid "References"
 msgstr "Referenzen"
 
@@ -1326,12 +1473,16 @@ msgstr "Referenzen"
 msgid "Related Organisations"
 msgstr "Verwandte Organisationen"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:51
-msgid "Relevant will be all contacts you have where ALL of the following is true:"
-msgstr "Relevant sind alle Kontakte bei denen ALLE der folgenden Bedingungen zutreffen:"
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:48
+msgid ""
+"Relevant will be all contacts you have where ALL of the following is true:"
+msgstr ""
+"Relevant sind alle Kontakte bei denen ALLE der folgenden Bedingungen "
+"zutreffen:"
 
-#: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:49 lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:51
-#: lib/hygeia_web/live/case_live/person_create_table.sface:273 lib/hygeia_web/live/organisation_live/show.sface:152
+#: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:49
+#: lib/hygeia_web/live/case_live/hospitalizations/hospitalizations.sface:51 lib/hygeia_web/live/case_live/person_create_table.sface:273
+#: lib/hygeia_web/live/organisation_live/show.sface:152
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -1347,25 +1498,32 @@ msgstr "Meldeeinheit"
 msgid "Residency Address"
 msgstr "Heimadresse"
 
-#: lib/hygeia_web/live/user_live/index.sface:17 lib/hygeia_web/live/user_live/show.sface:30
+#: lib/hygeia_web/live/user_live/index.sface:17
+#: lib/hygeia_web/live/user_live/show.sface:30
 msgid "Roles"
 msgstr "Rollen"
 
-#: lib/hygeia_web/live/case_live/protocol.ex:72 lib/hygeia_web/live/case_live/protocol_modal.sface:20
+#: lib/hygeia_web/live/case_live/protocol.ex:85
+#: lib/hygeia_web/live/case_live/protocol_modal.sface:20
 msgid "SMS"
 msgstr "SMS"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:36 lib/hygeia_web/live/case_live/base_data.sface:37 lib/hygeia_web/live/case_live/base_data.sface:408
-#: lib/hygeia_web/live/case_live/base_data.sface:409 lib/hygeia_web/live/case_live/create_index.sface:209 lib/hygeia_web/live/case_live/create_possible_index.sface:217
-#: lib/hygeia_web/live/case_live/protocol_modal.sface:70 lib/hygeia_web/live/case_live/protocol_modal.sface:71 lib/hygeia_web/live/infection_place_type_live/create.sface:29
-#: lib/hygeia_web/live/infection_place_type_live/show.sface:47 lib/hygeia_web/live/infection_place_type_live/show.sface:48 lib/hygeia_web/live/organisation_live/create.sface:39
-#: lib/hygeia_web/live/organisation_live/show.sface:47 lib/hygeia_web/live/organisation_live/show.sface:48 lib/hygeia_web/live/person_live/base_data.sface:65
-#: lib/hygeia_web/live/person_live/base_data.sface:66 lib/hygeia_web/live/person_live/base_data.sface:325 lib/hygeia_web/live/person_live/base_data.sface:326
-#: lib/hygeia_web/live/person_live/create.sface:96 lib/hygeia_web/live/possible_index_submission_live/create.sface:380
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:87 lib/hygeia_web/live/possible_index_submission_live/show.sface:88
-#: lib/hygeia_web/live/profession_live/create.sface:29 lib/hygeia_web/live/profession_live/show.sface:47 lib/hygeia_web/live/profession_live/show.sface:48
-#: lib/hygeia_web/live/tenant_live/create.sface:29 lib/hygeia_web/live/tenant_live/show.sface:47 lib/hygeia_web/live/tenant_live/show.sface:48
-#: lib/hygeia_web/live/transmission_live/create.sface:103 lib/hygeia_web/live/transmission_live/show.sface:68 lib/hygeia_web/live/transmission_live/show.sface:69
+#: lib/hygeia_web/live/case_live/base_data.sface:36
+#: lib/hygeia_web/live/case_live/base_data.sface:37 lib/hygeia_web/live/case_live/base_data.sface:408
+#: lib/hygeia_web/live/case_live/base_data.sface:409 lib/hygeia_web/live/case_live/create_index.sface:209
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:217 lib/hygeia_web/live/case_live/protocol_modal.sface:70
+#: lib/hygeia_web/live/case_live/protocol_modal.sface:71 lib/hygeia_web/live/infection_place_type_live/create.sface:29
+#: lib/hygeia_web/live/infection_place_type_live/show.sface:47 lib/hygeia_web/live/infection_place_type_live/show.sface:48
+#: lib/hygeia_web/live/organisation_live/create.sface:39 lib/hygeia_web/live/organisation_live/show.sface:47
+#: lib/hygeia_web/live/organisation_live/show.sface:48 lib/hygeia_web/live/person_live/base_data.sface:65
+#: lib/hygeia_web/live/person_live/base_data.sface:66 lib/hygeia_web/live/person_live/base_data.sface:325
+#: lib/hygeia_web/live/person_live/base_data.sface:326 lib/hygeia_web/live/person_live/create.sface:96
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:375 lib/hygeia_web/live/possible_index_submission_live/show.sface:87
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:88 lib/hygeia_web/live/profession_live/create.sface:29
+#: lib/hygeia_web/live/profession_live/show.sface:47 lib/hygeia_web/live/profession_live/show.sface:48
+#: lib/hygeia_web/live/tenant_live/create.sface:29 lib/hygeia_web/live/tenant_live/show.sface:47
+#: lib/hygeia_web/live/tenant_live/show.sface:48 lib/hygeia_web/live/transmission_live/create.sface:103
+#: lib/hygeia_web/live/transmission_live/show.sface:68 lib/hygeia_web/live/transmission_live/show.sface:69
 msgid "Save"
 msgstr "Speichern"
 
@@ -1373,13 +1531,16 @@ msgstr "Speichern"
 msgid "Save & add next contact"
 msgstr "Speichern & nächsten Kontakt erfassen"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:35 lib/hygeia_web/live/case_live/base_data.sface:407 lib/hygeia_web/live/case_live/create_index.sface:208
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:216 lib/hygeia_web/live/case_live/protocol_modal.sface:69 lib/hygeia_web/live/infection_place_type_live/create.sface:26
-#: lib/hygeia_web/live/infection_place_type_live/show.sface:46 lib/hygeia_web/live/organisation_live/create.sface:36 lib/hygeia_web/live/organisation_live/show.sface:46
-#: lib/hygeia_web/live/person_live/base_data.sface:64 lib/hygeia_web/live/person_live/base_data.sface:324 lib/hygeia_web/live/person_live/create.sface:95
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:377 lib/hygeia_web/live/possible_index_submission_live/create.sface:388
-#: lib/hygeia_web/live/possible_index_submission_live/show.sface:86 lib/hygeia_web/live/profession_live/create.sface:26 lib/hygeia_web/live/profession_live/show.sface:46
-#: lib/hygeia_web/live/tenant_live/create.sface:26 lib/hygeia_web/live/tenant_live/show.sface:46 lib/hygeia_web/live/transmission_live/create.sface:100
+#: lib/hygeia_web/live/case_live/base_data.sface:35
+#: lib/hygeia_web/live/case_live/base_data.sface:407 lib/hygeia_web/live/case_live/create_index.sface:208
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:216 lib/hygeia_web/live/case_live/protocol_modal.sface:69
+#: lib/hygeia_web/live/infection_place_type_live/create.sface:26 lib/hygeia_web/live/infection_place_type_live/show.sface:46
+#: lib/hygeia_web/live/organisation_live/create.sface:36 lib/hygeia_web/live/organisation_live/show.sface:46
+#: lib/hygeia_web/live/person_live/base_data.sface:64 lib/hygeia_web/live/person_live/base_data.sface:324
+#: lib/hygeia_web/live/person_live/create.sface:95 lib/hygeia_web/live/possible_index_submission_live/create.sface:372
+#: lib/hygeia_web/live/possible_index_submission_live/show.sface:86 lib/hygeia_web/live/profession_live/create.sface:26
+#: lib/hygeia_web/live/profession_live/show.sface:46 lib/hygeia_web/live/tenant_live/create.sface:26
+#: lib/hygeia_web/live/tenant_live/show.sface:46 lib/hygeia_web/live/transmission_live/create.sface:100
 #: lib/hygeia_web/live/transmission_live/show.sface:67
 msgid "Saving..."
 msgstr "Speichern..."
@@ -1388,7 +1549,8 @@ msgstr "Speichern..."
 msgid "Screening"
 msgstr "Screening"
 
-#: lib/hygeia_web/live/case_live/choose.sface:44 lib/hygeia_web/live/case_live/modal_select.sface:28 lib/hygeia_web/live/organisation_live/choose.sface:54
+#: lib/hygeia_web/live/case_live/choose.sface:44
+#: lib/hygeia_web/live/case_live/modal_select.sface:28 lib/hygeia_web/live/organisation_live/choose.sface:54
 #: lib/hygeia_web/live/person_live/choose.sface:54 lib/hygeia_web/live/search.sface:11
 msgid "Search"
 msgstr "Suche"
@@ -1405,11 +1567,13 @@ msgstr "Organisation wählen"
 msgid "Select Person"
 msgstr "Person wählen"
 
-#: lib/hygeia_web/live/case_live/create_index.sface:35 lib/hygeia_web/live/case_live/create_possible_index.sface:144
+#: lib/hygeia_web/live/case_live/create_index.sface:35
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:144
 msgid "Select Tenant"
 msgstr "Mandant wählen"
 
-#: lib/hygeia_web/live/case_live/create_possible_index.sface:35 lib/hygeia_web/live/transmission_live/create.sface:21
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:35
+#: lib/hygeia_web/live/transmission_live/create.sface:21
 msgid "Select Type"
 msgstr "Typ wählen"
 
@@ -1417,7 +1581,8 @@ msgstr "Typ wählen"
 msgid "Select complexity"
 msgstr "Komplexität wählen"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:172 lib/hygeia_web/live/case_live/base_data.sface:196
+#: lib/hygeia_web/live/case_live/base_data.sface:172
+#: lib/hygeia_web/live/case_live/base_data.sface:196
 msgid "Select end reason"
 msgstr "Endgrund auswählen"
 
@@ -1429,11 +1594,13 @@ msgstr "Vorhandene Person auswählen"
 msgid "Select status"
 msgstr "Status wählen"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:54 lib/hygeia_web/live/person_live/base_data.sface:81 lib/hygeia_web/live/person_live/create.sface:31
+#: lib/hygeia_web/live/case_live/base_data.sface:54
+#: lib/hygeia_web/live/person_live/base_data.sface:81 lib/hygeia_web/live/person_live/create.sface:31
 msgid "Select tenant"
 msgstr "Mandant wählen"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:66 lib/hygeia_web/live/case_live/base_data.sface:77
+#: lib/hygeia_web/live/case_live/base_data.sface:66
+#: lib/hygeia_web/live/case_live/base_data.sface:77
 msgid "Select user"
 msgstr "Benutzer wählen"
 
@@ -1485,7 +1652,7 @@ msgstr "SMS-Quarantänebestätigung senden"
 msgid "Send SMS Quarantine End Confirmation"
 msgstr "SMS-Quarantäne-Endbestätigung senden"
 
-#: lib/hygeia_web/live/help_live/index.sface:240
+#: lib/hygeia_web/live/help_live/index.sface:243
 msgid "Separator"
 msgstr "Trennzeichen"
 
@@ -1497,18 +1664,21 @@ msgstr "Separator (nur CSV)"
 msgid "Serology"
 msgstr "Serologie"
 
-#: lib/hygeia_web/live/case_live/person_create_table.sface:7 lib/hygeia_web/live/person_live/base_data.sface:105 lib/hygeia_web/live/person_live/index.sface:38
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:83
+#: lib/hygeia_web/live/case_live/person_create_table.sface:7
+#: lib/hygeia_web/live/person_live/base_data.sface:105 lib/hygeia_web/live/person_live/index.sface:38
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:80
 msgid "Sex"
 msgstr "Biologisches Geschlecht"
 
-#: lib/hygeia_web/live/case_live/index.sface:265 lib/hygeia_web/live/case_live/transmission_table.sface:139 lib/hygeia_web/live/infection_place_type_live/index.sface:42
-#: lib/hygeia_web/live/organisation_live/index.sface:77 lib/hygeia_web/live/person_live/index.sface:183 lib/hygeia_web/live/possible_index_submission_live/index.sface:118
-#: lib/hygeia_web/live/profession_live/index.sface:42 lib/hygeia_web/live/tenant_live/index.sface:43 lib/hygeia_web/live/user_live/index.sface:49
+#: lib/hygeia_web/live/case_live/index.sface:265
+#: lib/hygeia_web/live/case_live/transmission_table.sface:139 lib/hygeia_web/live/infection_place_type_live/index.sface:42
+#: lib/hygeia_web/live/organisation_live/index.sface:77 lib/hygeia_web/live/person_live/index.sface:183
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:118 lib/hygeia_web/live/profession_live/index.sface:42
+#: lib/hygeia_web/live/tenant_live/index.sface:43 lib/hygeia_web/live/user_live/index.sface:49
 msgid "Show"
 msgstr "Anzeigen"
 
-#: lib/hygeia_web/live/statistics_live/choose_tenant.sface:14
+#: lib/hygeia_web/live/statistics_live/choose_tenant.sface:13
 msgid "Show Statistics"
 msgstr "Statistiken anzeigen"
 
@@ -1525,14 +1695,19 @@ msgid "Social medical facility"
 msgstr "Sozialmedizinische Einrichtung"
 
 #: lib/hygeia_web/live/lock.ex:59
-msgid "Someone else is currently editing this resource. Wait until they finished their work."
-msgstr "Eine andere Person bearbeitet diese Ressource derzeit. Warten Sie, bis diese ihre Arbeit beendet haben."
+msgid ""
+"Someone else is currently editing this resource. Wait until they finished "
+"their work."
+msgstr ""
+"Eine andere Person bearbeitet diese Ressource derzeit. Warten Sie, bis diese "
+"ihre Arbeit beendet haben."
 
 #: lib/hygeia_web/helpers/clinical.ex:37
 msgid "Sore Throat"
 msgstr "Halsschmerzen"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:350 lib/hygeia_web/live/case_live/create_index.sface:129
+#: lib/hygeia_web/live/case_live/base_data.sface:350
+#: lib/hygeia_web/live/case_live/create_index.sface:129
 msgid "Sponsor"
 msgstr "Auftraggeber"
 
@@ -1552,7 +1727,8 @@ msgstr "Statistiken"
 msgid "Statistics for %{tenant}"
 msgstr "Statistiken für %{tenant}"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:99 lib/hygeia_web/live/case_live/index.sface:42 lib/hygeia_web/live/case_live/index.sface:156
+#: lib/hygeia_web/live/case_live/base_data.sface:99
+#: lib/hygeia_web/live/case_live/index.sface:42 lib/hygeia_web/live/case_live/index.sface:156
 msgid "Status"
 msgstr "Status"
 
@@ -1564,11 +1740,13 @@ msgstr "Statusseite"
 msgid "Sub Type"
 msgstr "Untertyp"
 
-#: lib/hygeia_web/live/address_form.sface:35 lib/hygeia_web/live/organisation_live/index.sface:34 lib/hygeia_web/live/person_live/index.sface:86
+#: lib/hygeia_web/live/address_form.sface:35
+#: lib/hygeia_web/live/organisation_live/index.sface:34 lib/hygeia_web/live/person_live/index.sface:86
 msgid "Subdivision"
 msgstr "Kanton"
 
-#: lib/hygeia_web/live/case_live/protocol.sface:51 lib/hygeia_web/live/case_live/protocol_modal.sface:58
+#: lib/hygeia_web/live/case_live/protocol.sface:51
+#: lib/hygeia_web/live/case_live/protocol_modal.sface:58
 msgid "Subject"
 msgstr "Betreff"
 
@@ -1576,7 +1754,8 @@ msgstr "Betreff"
 msgid "Successfully authenticated."
 msgstr "Erfolgreich angemeldet."
 
-#: lib/hygeia_web/live/case_live/base_data.sface:74 lib/hygeia_web/live/case_live/index.sface:88 lib/hygeia_web/live/case_live/index.sface:192
+#: lib/hygeia_web/live/case_live/base_data.sface:74
+#: lib/hygeia_web/live/case_live/index.sface:88 lib/hygeia_web/live/case_live/index.sface:192
 #: lib/hygeia_web/live/case_live/person_create_table.sface:15 lib/hygeia_web/live/case_live/person_create_table.sface:119
 msgid "Supervisor"
 msgstr "Teamleiter"
@@ -1589,7 +1768,8 @@ msgstr "Name des Vorgesetzen"
 msgid "Supervisor Phone"
 msgstr "Telefon"
 
-#: lib/hygeia_web/helpers/clinical.ex:17 lib/hygeia_web/live/case_live/base_data.sface:272
+#: lib/hygeia_web/helpers/clinical.ex:17
+#: lib/hygeia_web/live/case_live/base_data.sface:272
 msgid "Symptoms"
 msgstr "Symptome"
 
@@ -1597,9 +1777,10 @@ msgstr "Symptome"
 msgid "Take Me Home"
 msgstr "Zurück zur Startseite"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:51 lib/hygeia_web/live/case_live/create.ex:346 lib/hygeia_web/live/case_live/person_create_table.sface:13
-#: lib/hygeia_web/live/case_live/person_create_table.sface:101 lib/hygeia_web/live/case_live/person_create_table.sface:205 lib/hygeia_web/live/person_live/base_data.sface:80
-#: lib/hygeia_web/live/person_live/create.sface:30
+#: lib/hygeia_web/live/case_live/base_data.sface:51
+#: lib/hygeia_web/live/case_live/create.ex:346 lib/hygeia_web/live/case_live/person_create_table.sface:13
+#: lib/hygeia_web/live/case_live/person_create_table.sface:101 lib/hygeia_web/live/case_live/person_create_table.sface:205
+#: lib/hygeia_web/live/person_live/base_data.sface:80 lib/hygeia_web/live/person_live/create.sface:30
 msgid "Tenant"
 msgstr "Mandant"
 
@@ -1615,7 +1796,7 @@ msgstr "Mandant wurde erfolgreich aktualisiert"
 msgid "Tenant updated successfully"
 msgstr "Mandant wurde erfolgreich aktualisiert"
 
-#: lib/hygeia_web/live/header.sface:69
+#: lib/hygeia_web/live/header.sface:70
 msgid "Tenants"
 msgstr "Mandanten"
 
@@ -1631,15 +1812,18 @@ msgstr "Testart"
 msgid "Test Result"
 msgstr "Testresultat"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:296 lib/hygeia_web/live/case_live/create.ex:350
+#: lib/hygeia_web/live/case_live/base_data.sface:296
+#: lib/hygeia_web/live/case_live/create.ex:350
 msgid "Test date"
 msgstr "Testdatum"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:312 lib/hygeia_web/live/case_live/create_index.sface:117
+#: lib/hygeia_web/live/case_live/base_data.sface:312
+#: lib/hygeia_web/live/case_live/create_index.sface:117
 msgid "Test kind"
 msgstr "Testart"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:319 lib/hygeia_web/live/case_live/create_index.sface:120
+#: lib/hygeia_web/live/case_live/base_data.sface:319
+#: lib/hygeia_web/live/case_live/create_index.sface:120
 msgid "Test result"
 msgstr "Testresultat"
 
@@ -1651,19 +1835,29 @@ msgstr "Text"
 msgid "This case is not in an index phase."
 msgstr "Dieser Fall befindet sich nicht in einer Indexphase."
 
-#: lib/hygeia_web/live/person_live/base_data.sface:16 lib/hygeia_web/live/person_live/create.sface:20
+#: lib/hygeia_web/live/person_live/base_data.sface:16
+#: lib/hygeia_web/live/person_live/create.sface:20
 msgid "This person is possibly a duplicate of %{name_link}, please check."
-msgstr "Diese Person ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie dies bitte."
+msgstr ""
+"Diese Person ist möglicherweise ein Duplikat von %{name_link}, überprüfen "
+"Sie dies bitte."
 
 #: lib/hygeia_web/live/statistics_live/statistics.sface:20
 msgid "To"
 msgstr "Bis"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:48 lib/hygeia_web/live/possible_index_submission_live/index.sface:8
-msgid "To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious."
-msgstr "Um das Contact Racing zu ermöglichen müssen sie die persönlichen Details aller Kontakte erfassen die Sie hatten während Sie möglicherweise ansteckend waren."
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:45
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:8
+msgid ""
+"To fulfill all needs regarding the tracing of contacts you will need to "
+"enter personal details of people you met while being potentially infectious."
+msgstr ""
+"Um das Contact Racing zu ermöglichen müssen sie die persönlichen Details "
+"aller Kontakte erfassen die Sie hatten während Sie möglicherweise ansteckend "
+"waren."
 
-#: lib/hygeia_web/live/case_live/base_data.sface:63 lib/hygeia_web/live/case_live/index.sface:81 lib/hygeia_web/live/case_live/index.sface:180
+#: lib/hygeia_web/live/case_live/base_data.sface:63
+#: lib/hygeia_web/live/case_live/index.sface:81 lib/hygeia_web/live/case_live/index.sface:180
 #: lib/hygeia_web/live/case_live/person_create_table.sface:16 lib/hygeia_web/live/case_live/person_create_table.sface:135
 msgid "Tracer"
 msgstr "Tracer"
@@ -1672,7 +1866,8 @@ msgstr "Tracer"
 msgid "Tracing"
 msgstr "Tracing"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:18 lib/hygeia_web/live/possible_index_submission_live/create.sface:138
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:131
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:135
 msgid "Transmission Date"
 msgstr "Übertragungsdatum"
 
@@ -1696,14 +1891,17 @@ msgstr "Übertragungen"
 msgid "Travel"
 msgstr "Reisen"
 
-#: lib/hygeia_web/live/case_live/base_data.sface:136 lib/hygeia_web/live/case_live/create_possible_index.sface:31 lib/hygeia_web/live/case_live/protocol.sface:12
-#: lib/hygeia_web/live/person_live/base_data.sface:150 lib/hygeia_web/live/person_live/create.sface:60 lib/hygeia_web/live/possible_index_submission_live/create.sface:184
-#: lib/hygeia_web/live/references.sface:2 lib/hygeia_web/live/tenant_live/show.sface:95 lib/hygeia_web/live/tenant_live/show.sface:168
+#: lib/hygeia_web/live/case_live/base_data.sface:136
+#: lib/hygeia_web/live/case_live/create_possible_index.sface:31 lib/hygeia_web/live/case_live/protocol.sface:12
+#: lib/hygeia_web/live/person_live/base_data.sface:150 lib/hygeia_web/live/person_live/create.sface:60
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:181 lib/hygeia_web/live/references.sface:2
+#: lib/hygeia_web/live/tenant_live/show.sface:95 lib/hygeia_web/live/tenant_live/show.sface:168
 #: lib/hygeia_web/live/transmission_live/create.sface:17 lib/hygeia_web/live/transmission_live/infection_place.sface:60
 msgid "Type"
 msgstr "Typ"
 
-#: lib/hygeia_web/live/case_live/csv_import.sface:39 lib/hygeia_web/live/help_live/index.sface:238
+#: lib/hygeia_web/live/case_live/csv_import.sface:39
+#: lib/hygeia_web/live/help_live/index.sface:241
 msgid "UTF-8"
 msgstr "UTF-8"
 
@@ -1727,19 +1925,22 @@ msgstr "Benutzer"
 msgid "User Sync"
 msgstr "Benutzersynchronisierung"
 
-#: lib/hygeia_web/live/header.sface:62
+#: lib/hygeia_web/live/header.sface:63
 msgid "Users"
 msgstr "Benutzer"
 
 #: lib/hygeia_web/live/user_live/show.sface:9
 msgid "Users can not be edited here since they are synchronized with the IAM."
-msgstr "Benutzer können hier nicht bearbeitet werden, da sie mit dem IAM synchronisiert werden."
+msgstr ""
+"Benutzer können hier nicht bearbeitet werden, da sie mit dem IAM "
+"synchronisiert werden."
 
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:16
 msgid "Vacation"
 msgstr "Urlaub"
 
-#: lib/hygeia_web/live/person_live/base_data.sface:151 lib/hygeia_web/live/person_live/create.sface:61 lib/hygeia_web/live/references.sface:3
+#: lib/hygeia_web/live/person_live/base_data.sface:151
+#: lib/hygeia_web/live/person_live/create.sface:61 lib/hygeia_web/live/references.sface:3
 msgid "Value"
 msgstr "Wert"
 
@@ -1757,7 +1958,8 @@ msgstr "Warten auf Ergebnisse..."
 
 #: lib/hygeia_web/templates/error/502.html.eex:3
 msgid "We're having difficulty connecting to the database."
-msgstr "Wir haben Schwierigkeiten, eine Verbindung mit der Datenbank herzustellen."
+msgstr ""
+"Wir haben Schwierigkeiten, eine Verbindung mit der Datenbank herzustellen."
 
 #: lib/hygeia_web/live/tenant_live/show.sface:172
 msgid "Web-SMS"
@@ -1767,19 +1969,19 @@ msgstr "Web-SMS"
 msgid "Website"
 msgstr "Webseite"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:117
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:114
 msgid "When did you meet %{first_name} %{last_name}?"
 msgstr "Wann haben Sie %{first_name} %{last_name} getroffen?"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:164
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:161
 msgid "Where did you meet %{first_name} %{last_name}?"
 msgstr "Wo haben Sie %{first_name} %{last_name} getroffen?"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:360
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:357
 msgid "Where does %{first_name} %{last_name} live?"
 msgstr "Wo lebt %{first_name} %{last_name}?"
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:41
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:38
 msgid "Who did you meet?"
 msgstr "Wen haben Sie getroffen?"
 
@@ -1787,37 +1989,48 @@ msgstr "Wen haben Sie getroffen?"
 msgid "Work related"
 msgstr "Arbeitsbezogen"
 
-#: lib/hygeia_web/live/case_live/transmission_table.sface:119 lib/hygeia_web/live/transmission_live/infection_place.sface:39
+#: lib/hygeia_web/live/case_live/transmission_table.sface:119
+#: lib/hygeia_web/live/transmission_live/infection_place.sface:39
 msgid "Yes"
 msgstr "Ja"
 
-#: lib/hygeia_web/live/case_live/base_data.ex:59 lib/hygeia_web/live/case_live/create_index.ex:53 lib/hygeia_web/live/case_live/create_possible_index.ex:65
-#: lib/hygeia_web/live/case_live/index.ex:35 lib/hygeia_web/live/case_live/protocol.ex:42 lib/hygeia_web/live/case_live/transmissions.ex:31
-#: lib/hygeia_web/live/infection_place_type_live/create.ex:22 lib/hygeia_web/live/infection_place_type_live/index.ex:22 lib/hygeia_web/live/infection_place_type_live/show.ex:35
-#: lib/hygeia_web/live/organisation_live/create.ex:24 lib/hygeia_web/live/organisation_live/index.ex:39 lib/hygeia_web/live/organisation_live/show.ex:42
-#: lib/hygeia_web/live/person_live/base_data.ex:45 lib/hygeia_web/live/person_live/create.ex:32 lib/hygeia_web/live/person_live/index.ex:33
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:53 lib/hygeia_web/live/possible_index_submission_live/index.ex:26
-#: lib/hygeia_web/live/possible_index_submission_live/show.ex:41 lib/hygeia_web/live/profession_live/create.ex:22 lib/hygeia_web/live/profession_live/index.ex:22
-#: lib/hygeia_web/live/profession_live/show.ex:35 lib/hygeia_web/live/statistics_live/choose_tenant.ex:18 lib/hygeia_web/live/statistics_live/statistics.ex:46
-#: lib/hygeia_web/live/tenant_live/create.ex:22 lib/hygeia_web/live/tenant_live/index.ex:22 lib/hygeia_web/live/tenant_live/show.ex:42
-#: lib/hygeia_web/live/transmission_live/create.ex:31 lib/hygeia_web/live/transmission_live/show.ex:42 lib/hygeia_web/live/user_live/index.ex:21
+#: lib/hygeia_web/live/case_live/base_data.ex:59
+#: lib/hygeia_web/live/case_live/create_index.ex:53 lib/hygeia_web/live/case_live/create_possible_index.ex:65
+#: lib/hygeia_web/live/case_live/index.ex:35 lib/hygeia_web/live/case_live/protocol.ex:43
+#: lib/hygeia_web/live/case_live/transmissions.ex:31 lib/hygeia_web/live/infection_place_type_live/create.ex:22
+#: lib/hygeia_web/live/infection_place_type_live/index.ex:22 lib/hygeia_web/live/infection_place_type_live/show.ex:35
+#: lib/hygeia_web/live/organisation_live/create.ex:24 lib/hygeia_web/live/organisation_live/index.ex:39
+#: lib/hygeia_web/live/organisation_live/show.ex:42 lib/hygeia_web/live/person_live/base_data.ex:45
+#: lib/hygeia_web/live/person_live/create.ex:32 lib/hygeia_web/live/person_live/index.ex:33
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:51 lib/hygeia_web/live/possible_index_submission_live/index.ex:26
+#: lib/hygeia_web/live/possible_index_submission_live/show.ex:41 lib/hygeia_web/live/profession_live/create.ex:22
+#: lib/hygeia_web/live/profession_live/index.ex:22 lib/hygeia_web/live/profession_live/show.ex:35
+#: lib/hygeia_web/live/statistics_live/choose_tenant.ex:18 lib/hygeia_web/live/statistics_live/statistics.ex:46
+#: lib/hygeia_web/live/tenant_live/create.ex:22 lib/hygeia_web/live/tenant_live/index.ex:22
+#: lib/hygeia_web/live/tenant_live/show.ex:42 lib/hygeia_web/live/transmission_live/create.ex:31
+#: lib/hygeia_web/live/transmission_live/show.ex:42 lib/hygeia_web/live/user_live/index.ex:21
 #: lib/hygeia_web/live/user_live/show.ex:21
 msgid "You are not authorized to do this action."
 msgstr "Sie sind nicht berechtigt, diese Aktion auszuführen."
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:57
-msgid "You did not keep a safe distance of at least 1.5 meters."
-msgstr "Sie haben den Sicherheitsabstand von mehr als 1.5 Metern nicht eingehalten."
-
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:54
-msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
-msgstr "Sie hatten Kontakt zwischen jetzt und 48 Stunden vor Beginn der Symptome oder (falls Sie keine Symptome haben) vor dem Test."
+msgid "You did not keep a safe distance of at least 1.5 meters."
+msgstr ""
+"Sie haben den Sicherheitsabstand von mehr als 1.5 Metern nicht eingehalten."
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:55
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:51
+msgid ""
+"You had contact between now and 48 hours before your symptoms started or (if "
+"you don't have symptoms) before the test."
+msgstr ""
+"Sie hatten Kontakt zwischen jetzt und 48 Stunden vor Beginn der Symptome "
+"oder (falls Sie keine Symptome haben) vor dem Test."
+
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:52
 msgid "You had contact for more than 15 minutes on the same day."
 msgstr "Sie hatten am selben Tag für mehr als 15 Minuten Kontakt."
 
-#: lib/hygeia_web/helpers/confirmation.ex:85 lib/hygeia_web/helpers/confirmation.ex:111
+#: lib/hygeia_web/helpers/confirmation.ex:73
 msgid ""
 "You have been identified as a contact person of a person with corona.\n"
 "Therefore you have to self quarantine.\n"
@@ -1825,46 +2038,75 @@ msgid ""
 msgstr ""
 "Sehr geehrte Damen und Herren\n"
 "\n"
-"Sie hatten engen Kontakt zu einer auf Covid-19 positiv getesteten Person. Aus diesem Grund müssen Sie für 10 Tage in Quarantäne. Bitte beachten Sie die Anweisungen und "
-"Informationen unter folgendem Link. \n"
+"Sie hatten engen Kontakt zu einer auf Covid-19 positiv getesteten Person. "
+"Aus diesem Grund müssen Sie für 10 Tage in Quarantäne. Bitte beachten Sie "
+"die Anweisungen und Informationen unter folgendem Link. \n"
 "%{quarantine_confirmation_link}\n"
 "\n"
 "Freundliche Grüsse\n"
 "\n"
-"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
 
 #: lib/hygeia_web/controllers/auth_controller.ex:25
 msgid "You have been logged out!"
 msgstr "Sie wurden abgemeldet!"
 
-#: lib/hygeia_web/helpers/confirmation.ex:20 lib/hygeia_web/helpers/confirmation.ex:54
+#: lib/hygeia_web/helpers/confirmation.ex:31
 msgid ""
 "You have been tested positive for the corona virus.\n"
 "Therefore you have to self isolate.\n"
 "Details: %{isolation_confirmation_link}\n"
-"To ensure the contact tracing we need to record personal details of your contacts.\n"
-"You can enter persons you had contact with here: %{possible_index_submission_link}\n"
+"To ensure the contact tracing we need to record personal details of your "
+"contacts.\n"
+"You can enter persons you had contact with here: "
+"%{possible_index_submission_link}\n"
 msgstr ""
+"#-#-#-#-#  .merge_file_VrJqo6 (Hygeia)  #-#-#-#-#\n"
 "Sehr geehrte Damen und Herren\n"
 "\n"
-"Wie soeben telefonisch besprochen, erhalten Sie im Unter folgendem Link die Informationen zur Isolation:\n"
+"Wie soeben telefonisch besprochen, erhalten Sie im Unter folgendem Link die "
+"Informationen zur Isolation:\n"
 "%{isolation_confirmation_link}\n"
-"Bitte lesen Sie das Dokument vollständig durch und beachten Sie die angegebenen Links für weitere Informationen. \n"
+"Bitte lesen Sie das Dokument vollständig durch und beachten Sie die "
+"angegebenen Links für weitere Informationen. \n"
 "\n"
-"Damit das Contact Tracing sichergestellt werden kann, benötigen wir alle Angaben Ihrer Kontaktpersonen.\n"
+"Damit das Contact Tracing sichergestellt werden kann, benötigen wir alle "
+"Angaben Ihrer Kontaktpersonen.\n"
 "Sie können Ihre Kontaktpersonen hier selbst erfassen:\n"
 "%{possible_index_submission_link}\n"
 "\n"
 "\n"
 "Besten Dank und freundliche Grüsse\n"
 "\n"
-"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
+"#-#-#-#-#  .merge_file_mz0qD4 (Hygeia)  #-#-#-#-#\n"
+"Sehr geehrte Damen und Herren\n"
+"\n"
+"Wie soeben telefonisch besprochen, erhalten Sie unter folgendem Link die "
+"Informationen zur Isolation:\n"
+"%{isolation_confirmation_link}\n"
+"Bitte lesen Sie das Dokument vollständig durch und beachten Sie die "
+"angegebenen Links für weitere Informationen. \n"
+"\n"
+"Damit das Contact Tracing sichergestellt werden kann, benötigen wir alle "
+"Angaben Ihrer Kontaktpersonen.\n"
+"Sie können Ihre Kontaktpersonen hier selbst erfassen:\n"
+"%{possible_index_submission_link}\n"
+"\n"
+"\n"
+"Besten Dank und freundliche Grüsse\n"
+"\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
 
 #: lib/hygeia_web/live/address_form.sface:11
 msgid "ZIP"
 msgstr "PLZ"
 
-#: lib/hygeia_web/live/case_live/choose.sface:57 lib/hygeia_web/live/case_live/modal_select.sface:35 lib/hygeia_web/live/organisation_live/choose.sface:72
+#: lib/hygeia_web/live/case_live/choose.sface:57
+#: lib/hygeia_web/live/case_live/modal_select.sface:35 lib/hygeia_web/live/organisation_live/choose.sface:72
 #: lib/hygeia_web/live/person_live/choose.sface:72
 msgid "choose"
 msgstr "Auswählen"
@@ -1873,9 +2115,11 @@ msgstr "Auswählen"
 msgid "choose sex"
 msgstr "Geschlecht wählen"
 
-#: lib/hygeia_web/live/case_live/transmission_table.sface:29 lib/hygeia_web/live/case_live/transmission_table.sface:46 lib/hygeia_web/live/case_live/transmission_table.sface:71
-#: lib/hygeia_web/live/case_live/transmission_table.sface:88 lib/hygeia_web/live/transmission_live/show.sface:87 lib/hygeia_web/live/transmission_live/show.sface:104
-#: lib/hygeia_web/live/transmission_live/show.sface:130 lib/hygeia_web/live/transmission_live/show.sface:147
+#: lib/hygeia_web/live/case_live/transmission_table.sface:29
+#: lib/hygeia_web/live/case_live/transmission_table.sface:46 lib/hygeia_web/live/case_live/transmission_table.sface:71
+#: lib/hygeia_web/live/case_live/transmission_table.sface:88 lib/hygeia_web/live/transmission_live/show.sface:87
+#: lib/hygeia_web/live/transmission_live/show.sface:104 lib/hygeia_web/live/transmission_live/show.sface:130
+#: lib/hygeia_web/live/transmission_live/show.sface:147
 msgid "deleted"
 msgstr "Gelöscht"
 
@@ -1915,7 +2159,8 @@ msgstr "Serologie"
 msgid "server"
 msgstr "Server"
 
-#: lib/hygeia_web/live/statistics_live/statistics.sface:100 lib/hygeia_web/live/statistics_live/statistics.sface:227 lib/hygeia_web/live/statistics_live/statistics.sface:417
+#: lib/hygeia_web/live/statistics_live/statistics.sface:100
+#: lib/hygeia_web/live/statistics_live/statistics.sface:227 lib/hygeia_web/live/statistics_live/statistics.sface:417
 #: lib/hygeia_web/live/statistics_live/statistics.sface:482 lib/hygeia_web/live/statistics_live/statistics.sface:553
 msgid "unknown"
 msgstr "unbekannt"
@@ -1928,3 +2173,246 @@ msgstr "Benutzername"
 #: lib/hygeia_web/live/case_live/csv_import.sface:62
 msgid "yyyy-mm-dd"
 msgstr "JJJJ-MM-TT"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:131
+#: lib/hygeia_web/live/case_live/base_data.sface:132
+msgid "0-1 contact person"
+msgstr "0-1 Kontaktperson"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:130
+msgid "1 call"
+msgstr "1 Telefonanruf"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:142
+#: lib/hygeia_web/live/case_live/base_data.sface:143
+msgid "2-5 contact persons"
+msgstr "2-5 Kontaktpersonen"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:153
+#: lib/hygeia_web/live/case_live/base_data.sface:154
+msgid "6 or more contact persons"
+msgstr "6 und mehr Kontaktpersonen"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:136
+msgid "< 15 Min."
+msgstr "< 15 Min."
+
+#: lib/hygeia_web/live/case_live/base_data.sface:158
+msgid "< 30 Min."
+msgstr "< 30 Min."
+
+#: lib/hygeia_web/live/case_live/base_data.sface:147
+msgid "> 15 Min."
+msgstr "> 15 Min."
+
+#: lib/hygeia_web/live/case_live/base_data.sface:169
+msgid "> 30 Min."
+msgstr "> 30 Min."
+
+#: lib/hygeia_web/live/case_live/base_data.sface:164
+msgid ""
+"A lot of contact persons from different places, clubs affected, gastronomy "
+"affected, hospital/nursing home affected"
+msgstr ""
+"Viele Kontaktpersonen aus unterschiedlichen Orten, Vereine betroffen, "
+"Gastronomie betroffen, Spital/Heim betroffen"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:167
+msgid ""
+"A lot of contact persons/places that must be determined / assignment to team "
+"lead"
+msgstr ""
+"Viele verschiedene Kontaktpersonen/ Orte, die abgeklärt werden müssen / "
+"Übergabe an die Teamleitung"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:148
+msgid "A minimum of 2 points must be fulfilled"
+msgstr "Mind. 2 Punkte müssen erfüllt sein"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:159
+#: lib/hygeia_web/live/case_live/base_data.sface:170
+msgid "A minimum of 3 points must be fulfilled"
+msgstr "Mind. 3 Punkte müssen erfüllt sein"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:121
+msgid "Additional inquiries"
+msgstr "Weitere Abklärungen"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:137
+msgid "All points must be fulfilled"
+msgstr "Alle Punkte müssen erfüllt sein"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:117
+msgid "Call"
+msgstr "Anruf"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:124
+msgid "Condition"
+msgstr "Bedingung"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:118
+msgid "Contact persons"
+msgstr "Kontaktpersonen"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:133
+msgid "Correct phone number available"
+msgstr "Telefonnummer korrekt vorhanden"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:163
+msgid ""
+"Despite multiple calls and inquiries regarding the phone number unavailable"
+msgstr ""
+"Trotz mehrfachen Anrufe und Abklärungen zur Telefonnummer nicht erreichbar"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:156
+msgid "Difficult living situation, further inquiries necessary"
+msgstr "Schwierige Wohnsituation, weitere Abklärungen nötig"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:119
+msgid "Families in the same household"
+msgstr "Familien im gleichen Haushalt"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:168
+msgid ""
+"Index doesn't understand English and can't express themselves in a European "
+"language. No communication without translator possible."
+msgstr ""
+"#-#-#-#-#  .merge_file_RPCg53 (Hygeia)  #-#-#-#-#\n"
+"Index versteht kein Deutsch. Kann sich auch nicht in einer europäischen "
+"Sprache ausdrücken. Ohne Übersetzung kann nicht kommuniziert werden. \n"
+"#-#-#-#-#  .merge_file_8tRDq1 (Hygeia)  #-#-#-#-#\n"
+"Index versteht kein Deutsch. Kann sich auch nicht in einer europäischen "
+"Sprache ausdrücken. Ohne Übersetzung kann nicht kommuniziert werden."
+
+#: lib/hygeia_web/live/case_live/base_data.sface:135
+msgid "Index understands and speaks English"
+msgstr "Index versteht und spricht Deutsch"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:146
+msgid ""
+"Index understands and speaks English, but several explanations are necessary"
+msgstr ""
+"Index versteht und spricht Deutsch, doch braucht es etliche Erklärungen"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:157
+msgid "It's difficult speaking in English. A translator is required"
+msgstr ""
+"Es ist schwierig das Gespräch auf Deutsch zu führen. Es braucht eine "
+"Übersetzungsperson"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:122
+msgid "Language"
+msgstr "Sprache"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:120
+msgid "Missing phone number"
+msgstr "Fehlende Telefonnummer"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:141
+#: lib/hygeia_web/live/case_live/base_data.sface:152
+msgid "Multiple calls for first contact"
+msgstr "Mehrfach Anruf für Erstkontakt"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:134
+#: lib/hygeia_web/live/case_live/base_data.sface:145
+msgid "No further inquiries"
+msgstr ""
+"#-#-#-#-#  .merge_file_RPCg53 (Hygeia)  #-#-#-#-#\n"
+"keine weiteren Abklärungen\n"
+"#-#-#-#-#  .merge_file_8tRDq1 (Hygeia)  #-#-#-#-#\n"
+"Keine weiteren Abklärungen"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:166
+msgid ""
+"Phone number can only be obtained at the residents' registration office, "
+"index doesn't own a phone, no E-Mail address"
+msgstr ""
+"Telefonnummer kann nur über die Einwohnerkontrolle eingeholt werden, Index "
+"besitzt kein Telefon, keine E-Mail-Adresse"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:155
+msgid "Phone number incorrect or missing, multiple calls required"
+msgstr ""
+"Telefonnummer nicht korrekt oder nicht vorhanden, es braucht mehrere Rückrufe"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:144
+msgid "Phone number must be requested from the doctor"
+msgstr "Telefonnummer muss beim Arzt erfragt werden"
+
+#: lib/hygeia_web/live/case_live/base_data.sface:123
+msgid "Time expenditure"
+msgstr "Zeitaufwand"
+
+#: lib/hygeia/jobs/send_case_closed_email.ex:70
+msgid ""
+"Dear Sir / Madam,\n"
+"\n"
+"Your isolation period ends tomorrow. If you did not experience any fever or "
+"coughs with sputum, you're allowed to leave isolation.\n"
+"\n"
+"Should you continue to feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
+msgstr ""
+"Sehr geehrte Damen und Herren\n"
+"\n"
+"Ihre Isolation endet morgen. Sofern Sie seit 48h kein Fieber und keinen "
+"Husten mit Auswurf mehr haben, dürfen Sie die Isolation verlassen. \n"
+"Sollten Sie sich weiter krank fühlen, kontaktieren Sie bitte ihren "
+"Hausarzt.  \n"
+"\n"
+"Freundliche Grüsse\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
+
+#: lib/hygeia/jobs/send_case_closed_email.ex:83
+msgid ""
+"Dear Sir / Madam,\n"
+"\n"
+"Your quarantine period ends tomorrow. If you do not currently experience any "
+"symptoms, you're allowed to leave quarantine.\n"
+"\n"
+"Should you feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
+msgstr ""
+"Sehr geehrte Damen und Herren\n"
+"\n"
+"Ihre Quarantäne endet morgen. Sofern Sie aktuell keine Symptome haben, "
+"dürfen Sie die Quarantäne verlassen. \n"
+"Sollten Sie sich krank fühlen, kontaktieren Sie bitte ihren Hausarzt.  \n"
+"\n"
+"Freundliche Grüsse\n"
+"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
+"Kantonaler Führungsstab: KFS\n"
+
+#: lib/hygeia/jobs/send_case_closed_email.ex:99
+msgid "Quarantine Period End"
+msgstr "Quarantäneperiode Ende"
+
+#: lib/hygeia_web/live/tenant_live/show.sface:225
+msgid "Domain"
+msgstr "Domain"
+
+#: lib/hygeia_web/live/user_live/show.sface:31
+msgid "Grants"
+msgstr "Authorisierungen"
+
+#: lib/hygeia_web/live/tenant_live/show.sface:223
+msgid "IAM Configuration"
+msgstr "IAM-Konfiguration"
+
+#: lib/hygeia_web/live/tenant_live/show.sface:89
+msgid "Short Name"
+msgstr "Kurzname"
+
+#: lib/hygeia_web/live/possible_index_submission_live/index.sface:163
+msgid ""
+"No submissions have been entered yet. Please submit all relevant people."
+msgstr ""
+"Es wurden noch keine Einsendungen erfasst. Bitte reichen Sie alle relevanten "
+"Personen ein."

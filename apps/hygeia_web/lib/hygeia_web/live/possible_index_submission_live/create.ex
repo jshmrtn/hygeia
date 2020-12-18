@@ -31,8 +31,6 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
 
   data step, :atom, default: :base
 
-  data action, :string, default: "finish"
-
   @impl Phoenix.LiveView
   def mount(%{"case_uuid" => case_uuid} = params, session, socket) do
     case = CaseContext.get_case!(case_uuid)
@@ -71,6 +69,11 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
      })}
   end
 
+  def handle_event("goto_step", %{"active" => "1", "step" => step}, socket),
+    do: {:noreply, assign(socket, step: String.to_existing_atom(step))}
+
+  def handle_event("goto_step", _params, socket), do: {:noreply, socket}
+
   def handle_event(
         "save",
         %{"possible_index_submission" => possible_index_submission_params},
@@ -80,19 +83,12 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
     |> CaseContext.create_possible_index_submission(possible_index_submission_params)
     |> case do
       {:ok, _possible_index_submission} ->
-        redirect_url =
-          case socket.assigns.action do
-            "finish" ->
-              Routes.possible_index_submission_index_path(socket, :index, socket.assigns.case)
-
-            "create_next" ->
-              Routes.possible_index_submission_create_path(socket, :create, socket.assigns.case)
-          end
-
         {:noreply,
          socket
          |> put_flash(:info, gettext("Possible index submission created successfully"))
-         |> push_redirect(to: redirect_url)}
+         |> push_redirect(
+           to: Routes.possible_index_submission_index_path(socket, :index, socket.assigns.case)
+         )}
 
       {:error, changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
@@ -104,10 +100,6 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
     new_step = Enum.at(@steps, index + 1)
 
     {:noreply, assign(socket, step: new_step)}
-  end
-
-  def handle_event("set_action", %{"action" => action}, socket) do
-    {:noreply, assign(socket, action: action)}
   end
 
   defp step_index(step) do
@@ -131,5 +123,28 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
       changeset
       |> Ecto.Changeset.get_change(relation_or_embed)
       |> has_error?(path_tail)
+  end
+
+  defp steps(current_step) do
+    steps = [
+      base: gettext("Person Base Data"),
+      transmission_date: gettext("Transmission Date"),
+      infection_place: gettext("Infection Place"),
+      infection_place_activity_mapping: gettext("Activity Mapping"),
+      infection_place_address: gettext("Meet Address"),
+      contact_methods: gettext("Contact Methods"),
+      address: gettext("Address")
+    ]
+
+    current_index =
+      steps
+      |> Keyword.keys()
+      |> Enum.find_index(&(&1 == current_step))
+
+    steps
+    |> Enum.with_index()
+    |> Enum.map(fn {{step, name}, index} ->
+      {step, {name, index == current_index, index < current_index}}
+    end)
   end
 end

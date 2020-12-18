@@ -40,6 +40,8 @@
       }
 
       &.completed {
+        cursor: pointer;
+        
         &:before {
           content: "\e033";
           background-color: theme-color("primary");
