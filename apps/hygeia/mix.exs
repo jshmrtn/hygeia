@@ -56,10 +56,7 @@ defmodule Hygeia.MixProject do
       {:jason, "~> 1.0"},
       {:ecto_boot_migration, "~> 0.2"},
       {:email_checker, "~> 0.1"},
-      # TODO: Replace with released version when the following PRs are released:
-      # https://github.com/izelnakri/paper_trail/pull/112
-      # https://github.com/izelnakri/paper_trail/pull/120
-      {:paper_trail, github: "jshmrtn/paper_trail", branch: "dev"},
+      {:paper_trail, "~> 0.12"},
       {:ecto_enum, "~> 1.4"},
       {:cadastre, "~> 0.1.4"},
       {:human_readable_identifier_generator, "~> 1.0"},
