@@ -166,6 +166,16 @@
               }}
             </h2>
 
+             <p>
+              {{
+                gettext(
+                  "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field.",
+                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+                )
+              }}
+            </p>
+
             <HiddenInput field={{ :known }} value={{ true }} />
 
             <div class="row">
