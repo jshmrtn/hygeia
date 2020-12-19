@@ -221,24 +221,17 @@
             <p>
               {{
                 gettext(
-                  "Describe your encounter with %{first_name} %{last_name}.",
+                  "Describe your encounter with %{first_name} %{last_name}. Under which circumstances did you meet? What kind of activity happened during your encounter (e.g. «wedding with lunch, sat at same table next to each other» or «living in same household, sharing kitchen and bathroom»).",
                   first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
                   last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
                 )
               }}
             </p>
 
-            <ul>
-              <li>{{ gettext("Did you wear a mask?") }}</li>
-              <li>{{ gettext("How much time did you spend together?") }}</li>
-              <li>{{ gettext("In how close proximity to each other were you?") }}</li>
-              <li>{{ gettext("Did you meet other unknown people?") }}</li>
-            </ul>
-
             <HiddenInput field={{ :activity_mapping_executed }} value={{ true }} />
 
             <Field name={{ :activity_mapping }} class="form-group">
-              <Label>{{ gettext("Activity Mapping") }}</Label>
+              <Label>{{ gettext("Description of encounter") }}</Label>
               <TextArea class="form-control" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
