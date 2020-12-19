@@ -109,7 +109,7 @@ msgid "Actions"
 msgstr ""
 
 #: lib/hygeia_web/live/possible_index_submission_live/create.ex:133
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:241 lib/hygeia_web/live/transmission_live/infection_place.sface:52
+#: lib/hygeia_web/live/transmission_live/infection_place.sface:52
 msgid "Activity Mapping"
 msgstr ""
 
@@ -374,8 +374,8 @@ msgstr ""
 
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:104
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:150 lib/hygeia_web/live/possible_index_submission_live/create.sface:201
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:255 lib/hygeia_web/live/possible_index_submission_live/create.sface:292
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:347
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:248 lib/hygeia_web/live/possible_index_submission_live/create.sface:285
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:340
 msgid "Continue"
 msgstr ""
 
@@ -576,7 +576,7 @@ msgstr ""
 msgid "Display Name"
 msgstr ""
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:268
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:261
 msgid "Do you know the address where you met with %{first_name} %{last_name}?"
 msgstr ""
 
@@ -622,7 +622,7 @@ msgstr ""
 #: lib/hygeia_web/helpers/contact_method.ex:15
 #: lib/hygeia_web/live/case_live/create.ex:344 lib/hygeia_web/live/case_live/person_create_table.sface:11
 #: lib/hygeia_web/live/case_live/person_create_table.sface:201 lib/hygeia_web/live/case_live/protocol.ex:84
-#: lib/hygeia_web/live/case_live/protocol_modal.sface:21 lib/hygeia_web/live/possible_index_submission_live/create.sface:330
+#: lib/hygeia_web/live/case_live/protocol_modal.sface:21 lib/hygeia_web/live/possible_index_submission_live/create.sface:323
 #: lib/hygeia_web/live/user_live/index.sface:14 lib/hygeia_web/live/user_live/show.sface:21
 msgid "Email"
 msgstr ""
@@ -783,7 +783,7 @@ msgstr ""
 msgid "Hotel"
 msgstr ""
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:302
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:295
 msgid "How can we contact %{first_name} %{last_name}?"
 msgstr ""
 
@@ -971,7 +971,7 @@ msgstr ""
 
 #: lib/hygeia_web/helpers/contact_method.ex:14
 #: lib/hygeia_web/live/case_live/create.ex:342 lib/hygeia_web/live/case_live/person_create_table.sface:10
-#: lib/hygeia_web/live/case_live/person_create_table.sface:197 lib/hygeia_web/live/possible_index_submission_live/create.sface:320
+#: lib/hygeia_web/live/case_live/person_create_table.sface:197 lib/hygeia_web/live/possible_index_submission_live/create.sface:313
 msgid "Landline"
 msgstr ""
 
@@ -1075,7 +1075,7 @@ msgid "Missing phone number"
 msgstr ""
 
 #: lib/hygeia_web/helpers/contact_method.ex:13
-#: lib/hygeia_web/live/case_live/person_create_table.sface:193 lib/hygeia_web/live/possible_index_submission_live/create.sface:313
+#: lib/hygeia_web/live/case_live/person_create_table.sface:193 lib/hygeia_web/live/possible_index_submission_live/create.sface:306
 msgid "Mobile"
 msgstr ""
 
@@ -1614,7 +1614,7 @@ msgstr ""
 #: lib/hygeia_web/live/organisation_live/show.sface:48 lib/hygeia_web/live/person_live/base_data.sface:65
 #: lib/hygeia_web/live/person_live/base_data.sface:66 lib/hygeia_web/live/person_live/base_data.sface:325
 #: lib/hygeia_web/live/person_live/base_data.sface:326 lib/hygeia_web/live/person_live/create.sface:96
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:375 lib/hygeia_web/live/possible_index_submission_live/show.sface:86
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:368 lib/hygeia_web/live/possible_index_submission_live/show.sface:86
 #: lib/hygeia_web/live/possible_index_submission_live/show.sface:87 lib/hygeia_web/live/profession_live/create.sface:29
 #: lib/hygeia_web/live/profession_live/show.sface:47 lib/hygeia_web/live/profession_live/show.sface:48
 #: lib/hygeia_web/live/tenant_live/create.sface:29 lib/hygeia_web/live/tenant_live/show.sface:47
@@ -1633,7 +1633,7 @@ msgstr ""
 #: lib/hygeia_web/live/infection_place_type_live/create.sface:26 lib/hygeia_web/live/infection_place_type_live/show.sface:46
 #: lib/hygeia_web/live/organisation_live/create.sface:36 lib/hygeia_web/live/organisation_live/show.sface:46
 #: lib/hygeia_web/live/person_live/base_data.sface:64 lib/hygeia_web/live/person_live/base_data.sface:324
-#: lib/hygeia_web/live/person_live/create.sface:95 lib/hygeia_web/live/possible_index_submission_live/create.sface:372
+#: lib/hygeia_web/live/person_live/create.sface:95 lib/hygeia_web/live/possible_index_submission_live/create.sface:365
 #: lib/hygeia_web/live/possible_index_submission_live/show.sface:85 lib/hygeia_web/live/profession_live/create.sface:26
 #: lib/hygeia_web/live/profession_live/show.sface:46 lib/hygeia_web/live/tenant_live/create.sface:26
 #: lib/hygeia_web/live/tenant_live/show.sface:46 lib/hygeia_web/live/transmission_live/create.sface:100
@@ -2066,7 +2066,7 @@ msgstr ""
 msgid "Where did you meet %{first_name} %{last_name}?"
 msgstr ""
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.sface:357
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:350
 msgid "Where does %{first_name} %{last_name} live?"
 msgstr ""
 
@@ -2314,4 +2314,14 @@ msgstr ""
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:163
 msgid ""
 "No submissions have been entered yet. Please submit all relevant people."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:223
+msgid "Describe your encounter with %{first_name} %{last_name}. Under which circumstances did you meet? What kind of activity happened during your encounter (e.g. «wedding with lunch, sat at same table next to each other» or «living in same household, sharing kitchen and bathroom»)."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/possible_index_submission_live/create.sface:234
+msgid "Description of encounter"
 msgstr ""
