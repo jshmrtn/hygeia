@@ -1725,7 +1725,7 @@ msgstr "Bis"
 
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:45
 msgid "To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious."
-msgstr "Um das Contact Racing zu ermöglichen müssen sie die persönlichen Details aller Kontakte erfassen die Sie hatten während Sie möglicherweise ansteckend waren."
+msgstr "Um das Contact Tacing zu ermöglichen, müssen Sie die persönlichen Details aller Kontakte erfassen, die Sie hatten, während Sie möglicherweise ansteckend waren."
 
 #: lib/hygeia_web/live/case_live/base_data.sface:63 lib/hygeia_web/live/case_live/index.sface:83 lib/hygeia_web/live/case_live/index.sface:182 lib/hygeia_web/live/case_live/person_create_table.sface:16 lib/hygeia_web/live/case_live/person_create_table.sface:135
 msgid "Tracer"
@@ -1864,15 +1864,15 @@ msgstr "Sie sind nicht berechtigt, diese Aktion auszuführen."
 
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:54
 msgid "You did not keep a safe distance of at least 1.5 meters."
-msgstr "Sie haben den Sicherheitsabstand von mehr als 1.5 Metern nicht eingehalten."
+msgstr "Sie waren sich näher als 1.5 Meter."
 
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:51
 msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
-msgstr "Sie hatten Kontakt zwischen jetzt und 48 Stunden vor Beginn der Symptome oder (falls Sie keine Symptome haben) vor dem Test."
+msgstr "Kontakt zwischen jetzt und 48 Stunden vor Beginn der Symptome (falls Sie keine Symptome haben 48 Stunden vor dem Test)."
 
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:52
 msgid "You had contact for more than 15 minutes on the same day."
-msgstr "Sie hatten am selben Tag für mehr als 15 Minuten Kontakt."
+msgstr "Der Kontakt dauerte länger als 15 Minuten."
 
 #: lib/hygeia_web/helpers/confirmation.ex:73
 msgid ""
