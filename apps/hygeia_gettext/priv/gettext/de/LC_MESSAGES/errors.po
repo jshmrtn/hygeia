@@ -130,3 +130,8 @@ msgstr "Ende muss nach dem Start sein"
 #: lib/hygeia/case_context/case/phase.ex:53
 msgid "start must be before end"
 msgstr "Start muss vor dem Ende sein"
+
+#, elixir-format
+#: lib/hygeia/case_context/possible_index_submission.ex:122
+msgid "at least one contact method must be provided"
+msgstr "Mindestens eine Kontaktmethode muss angegeben werden"
