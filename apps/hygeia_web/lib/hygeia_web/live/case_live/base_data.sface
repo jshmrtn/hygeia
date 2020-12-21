@@ -441,24 +441,39 @@
                           <div class="col">
                             <div class="form-group">
                               <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                                <Field name={{ :symptoms }}>
-                                  <Label>{{ gettext("Symptoms") }}</Label>
-                                  <label
-                                    :for={{ {name, key} <- symptoms() }}
-                                    class="d-block checkbox-label"
-                                    data-disabled={{ @live_action == :show }}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      name={{ input_name(form, :symptoms) <> "[]" }}
-                                      disabled={{ @live_action == :show }}
-                                      checked={{ key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || []) }}
-                                      value={{ key }}
-                                    />
-                                    {{ name }}
-                                  </label>
+                                <Field name={{ :has_symptoms }} class="form-group">
+                                  <div class="btn-group btn-group-toggle btn-radio-group">
+                                    <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :has_symptoms) == nil, do: "active" }}">
+                                      <RadioButton value="" opts={{ disabled: @live_action == :show }} /> {{ gettext("Undocumented") }}
+                                    </label>
+                                    <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :has_symptoms) == true, do: "active" }}">
+                                      <RadioButton value="true" opts={{ disabled: @live_action == :show }} /> {{ gettext("Has Symptoms") }}
+                                    </label>
+                                    <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :has_symptoms) == false, do: "active" }}">
+                                      <RadioButton value="false" opts={{ disabled: @live_action == :show }} /> {{ gettext("No Symptoms") }}
+                                    </label>
+                                  </div>
                                   <ErrorTag class="d-block invalid-feedback" />
                                 </Field>
+                                <div :if={{ Ecto.Changeset.get_field(form.source, :has_symptoms) == true }}>
+                                  <Field name={{ :symptoms }}>
+                                    <label
+                                      :for={{ {name, key} <- symptoms() }}
+                                      class="d-block checkbox-label"
+                                      data-disabled={{ @live_action == :show }}
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        name={{ input_name(form, :symptoms) <> "[]" }}
+                                        disabled={{ @live_action == :show }}
+                                        checked={{ key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || []) }}
+                                        value={{ key }}
+                                      />
+                                      {{ name }}
+                                    </label>
+                                    <ErrorTag class="d-block invalid-feedback" />
+                                  </Field>
+                                </div>
                               </InputContext>
                             </div>
                           </div>

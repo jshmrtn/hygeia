@@ -29,6 +29,10 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     "headaches",
     "fatigue",
     "difficulty_breathing",
+    "muscle_pain",
+    "general_weakness",
+    "gastrointestinal",
+    "skin_rash",
     "other"
   ]
 
@@ -38,6 +42,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
   @type empty :: %__MODULE__{
           reasons_for_test: [TestReason.t()] | nil,
+          has_symptoms: boolean() | nil,
           symptoms: [Symptom.t()] | nil,
           test: Date.t() | nil,
           laboratory_report: Date.t() | nil,
@@ -49,6 +54,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
   @type t :: %__MODULE__{
           reasons_for_test: [TestReason.t()],
+          has_symptoms: boolean() | nil,
           symptoms: [Symptom.t()],
           test: Date.t() | nil,
           laboratory_report: Date.t() | nil,
@@ -60,6 +66,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
   embedded_schema do
     field :reasons_for_test, {:array, TestReason}
+    field :has_symptoms, :boolean
     field :symptoms, {:array, Symptom}
     field :test, :date
     field :laboratory_report, :date
@@ -76,6 +83,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     clinical
     |> cast(attrs, [
       :reasons_for_test,
+      :has_symptoms,
       :symptoms,
       :test,
       :laboratory_report,
@@ -85,5 +93,14 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     |> cast_embed(:sponsor)
     |> cast_embed(:reporting_unit)
     |> validate_required([])
+    |> clear_symptoms()
+  end
+
+  defp clear_symptoms(changeset) do
+    if Ecto.Changeset.get_field(changeset, :has_symptoms) == false do
+      Ecto.Changeset.put_change(changeset, :symptoms, [])
+    else
+      changeset
+    end
   end
 end

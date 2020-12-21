@@ -40,6 +40,10 @@ defmodule HygeiaWeb.Helpers.Clinical do
   def translate_symptom(:fatigue), do: gettext("Fatigue")
   def translate_symptom(:difficulty_breathing), do: gettext("Diificulty Breathing")
   def translate_symptom(:other), do: gettext("Other")
+  def translate_symptom(:muscle_pain), do: gettext("Muscle Pain")
+  def translate_symptom(:general_weakness), do: gettext("General Weakness")
+  def translate_symptom(:gastrointestinal), do: gettext("Gastrointestinal")
+  def translate_symptom(:skin_rash), do: gettext("Skin Rash")
 
   @spec test_kinds :: [{String.t(), Clinical.TestKind.t()}]
   def test_kinds,
