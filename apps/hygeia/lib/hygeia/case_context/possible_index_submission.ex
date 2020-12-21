@@ -5,6 +5,8 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
 
   use Hygeia, :model
 
+  import HygeiaGettext
+
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person.Sex
@@ -96,7 +98,7 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
       :unknown -> :ok
       _other -> {:error, "not a mobile number"}
     end)
-    |> validate_and_normalize_phone(:value, fn
+    |> validate_and_normalize_phone(:landline, fn
       :fixed_line -> :ok
       :fixed_line_or_mobile -> :ok
       :voip -> :ok
@@ -105,10 +107,23 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
       :unknown -> :ok
       _other -> {:error, "not a landline number"}
     end)
+    |> validate_contact_methods()
     |> detect_name_duplicates
     |> detect_duplicates(:mobile)
     |> detect_duplicates(:landline)
     |> detect_duplicates(:email)
+  end
+
+  defp validate_contact_methods(changeset) do
+    with nil <- get_field(changeset, :mobile),
+         nil <- get_field(changeset, :email),
+         nil <- get_field(changeset, :landline) do
+      validate_required(changeset, [:mobile],
+        message: dgettext("errors", "at least one contact method must be provided")
+      )
+    else
+      _other_value -> changeset
+    end
   end
 
   defimpl Hygeia.Authorization.Resource do

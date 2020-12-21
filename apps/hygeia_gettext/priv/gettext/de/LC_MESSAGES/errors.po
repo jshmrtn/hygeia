@@ -116,17 +116,18 @@ msgstr "muss grösser oder gleich wie %{number} sein"
 msgid "must be equal to %{number}"
 msgstr "muss kleiner als %{number} sein"
 
-#, elixir-format
 #: lib/hygeia/case_context/case/phase.ex:86
 msgid "date is to far away from today"
 msgstr "Datum ist zu weit entfernt von Heute"
 
-#, elixir-format
 #: lib/hygeia/case_context/case/phase.ex:59
 msgid "end must be after start"
 msgstr "Ende muss nach dem Start sein"
 
-#, elixir-format
 #: lib/hygeia/case_context/case/phase.ex:53
 msgid "start must be before end"
 msgstr "Start muss vor dem Ende sein"
+
+#: lib/hygeia/case_context/possible_index_submission.ex:122
+msgid "at least one contact method must be provided"
+msgstr "Mindestens eine Kontaktmethode muss angegeben werden"
