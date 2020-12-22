@@ -540,11 +540,7 @@ msgstr "Haben Sie vor kurzem ein Fitnessstudio besucht?"
 
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:33
 msgid "Did you visit a pub / restaurant / event recently?"
-msgstr ""
-"#-#-#-#-#  .merge_file_9NWBg8 (Hygeia)  #-#-#-#-#\n"
-"Haben Sie vor kurzem eine Bar / Restaurant / Veranstaltung besucht?\n"
-"#-#-#-#-#  .merge_file_thmxXa (Hygeia)  #-#-#-#-#\n"
-"Haben Sie vor kurzem eine Kneipe / Restaurant / Veranstaltung besucht?"
+msgstr "Haben Sie vor kurzem eine Bar / Restaurant / Veranstaltung besucht?"
 
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:232
 msgid "Did you wear a mask?"
@@ -640,11 +636,7 @@ msgstr "Arbeitgeber"
 #: lib/hygeia_web/live/person_live/base_data.sface:228
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:24
 msgid "Employment"
-msgstr ""
-"#-#-#-#-#  .merge_file_9NWBg8 (Hygeia)  #-#-#-#-#\n"
-"Arbeit\n"
-"#-#-#-#-#  .merge_file_thmxXa (Hygeia)  #-#-#-#-#\n"
-"Anstellung"
+msgstr "Arbeit"
 
 #: lib/hygeia_web/live/help_live/index.sface:240
 msgid "Encoding"
@@ -1152,11 +1144,7 @@ msgstr "Neuer Möglicher Indexfall"
 
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:75
 msgid "New Possible Index Submission"
-msgstr ""
-"#-#-#-#-#  .merge_file_9NWBg8 (Hygeia)  #-#-#-#-#\n"
-"Neue Kontaktperson einsenden\n"
-"#-#-#-#-#  .merge_file_thmxXa (Hygeia)  #-#-#-#-#\n"
-"Neuer Möglicher Indexfall einsenden"
+msgstr "Neue Kontaktperson einsenden"
 
 #: lib/hygeia_web/live/profession_live/index.sface:15
 msgid "New Profession"
@@ -1959,11 +1947,7 @@ msgstr "Bis"
 msgid ""
 "To fulfill all needs regarding the tracing of contacts you will need to "
 "enter personal details of people you met while being potentially infectious."
-msgstr ""
-"#-#-#-#-#  .merge_file_9NWBg8 (Hygeia)  #-#-#-#-#\n"
-"Um das Contact Tracing zu ermöglichen, müssen Sie die persönlichen Daten aller Kontakte erfassen, die Sie hatten, während Sie möglicherweise ansteckend waren.\n"
-"#-#-#-#-#  .merge_file_thmxXa (Hygeia)  #-#-#-#-#\n"
-"Um das Contact Tacing zu ermöglichen, müssen Sie die persönlichen Details aller Kontakte erfassen, die Sie hatten, während Sie möglicherweise ansteckend waren."
+msgstr "Um das Contact Tracing zu ermöglichen, müssen Sie die persönlichen Daten aller Kontakte erfassen, die Sie hatten, während Sie möglicherweise ansteckend waren."
 
 #: lib/hygeia_web/live/case_live/base_data.sface:63
 #: lib/hygeia_web/live/case_live/index.sface:83 lib/hygeia_web/live/case_live/index.sface:182
@@ -2044,11 +2028,7 @@ msgstr "Benutzer können hier nicht bearbeitet werden, da sie mit dem IAM synchr
 
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:16
 msgid "Vacation"
-msgstr ""
-"#-#-#-#-#  .merge_file_9NWBg8 (Hygeia)  #-#-#-#-#\n"
-"Ferien\n"
-"#-#-#-#-#  .merge_file_thmxXa (Hygeia)  #-#-#-#-#\n"
-"Urlaub"
+msgstr "Ferien"
 
 #: lib/hygeia_web/live/person_live/base_data.sface:151
 #: lib/hygeia_web/live/person_live/create.sface:61 lib/hygeia_web/live/references.sface:3
@@ -2401,12 +2381,8 @@ msgid ""
 "leave the left field empty. If you met at a restaurant, choose «restaurant, "
 "bar» as type and enter the name of the restaurant in the left field."
 msgstr ""
-"#-#-#-#-#  .merge_file_9NWBg8 (Hygeia)  #-#-#-#-#\n"
 "Geben Sie an, wo genau Sie sich mit %{first_name} %{last_name} getroffen haben. Falls der Kontakt in ihrem Haushalt stattgefunden hat, lassen sie das linke Feld leer und wählen unter Typ «Eigener Haushalt». Falls Sie sich im Restaurant getroffen haben, wählen Sie «Restaurant, Bar» als Typ und "
-"schreiben den Namen des Restaurants in das linke Feld.\n"
-"#-#-#-#-#  .merge_file_thmxXa (Hygeia)  #-#-#-#-#\n"
-"Geben Sie an wo genau Sie sich mit %{first_name} %{last_name} getroffen haben. Wählen Sie einen Typ des Ortes aus. Für zu Hause im selben Haushalt z.B. wählen Sie «Eigener Haushalt» und lassen linke Feld leer. Falls es sich um ein Restaurant handelt wählen Sie «Restaurant, Bar» als Typ und "
-"schreiben Sie den Namen des Restaurants in das linke Feld."
+"schreiben den Namen des Restaurants in das linke Feld."
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:354
@@ -2434,11 +2410,7 @@ msgstr ""
 #: lib/hygeia_web/helpers/case.ex:36
 #: lib/hygeia_web/live/case_live/base_data.sface:349
 msgid "Hospitalization"
-msgstr ""
-"#-#-#-#-#  .merge_file_9NWBg8 (Hygeia)  #-#-#-#-#\n"
-"Spitalaufenthalt\n"
-"#-#-#-#-#  .merge_file_thmxXa (Hygeia)  #-#-#-#-#\n"
-"Krankenhausaufenthalt"
+msgstr "Spitalaufenthalt"
 
 #, elixir-format
 #: lib/hygeia_web/live/case_live/base_data.sface:366
