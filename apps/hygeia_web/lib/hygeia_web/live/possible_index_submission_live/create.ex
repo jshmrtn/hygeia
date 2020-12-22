@@ -19,16 +19,6 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
   alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
 
-  @steps [
-    :base,
-    :transmission_date,
-    :infection_place,
-    :infection_place_activity_mapping,
-    :infection_place_address,
-    :contact_methods,
-    :address
-  ]
-
   data step, :atom, default: :base
 
   @impl Phoenix.LiveView
@@ -96,14 +86,15 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
   end
 
   def handle_event("advance", _params, socket) do
-    index = step_index(socket.assigns.step)
-    new_step = Enum.at(@steps, index + 1)
+    new_step =
+      socket.assigns.step
+      |> steps()
+      |> Enum.find_value(fn
+        {step, {_name, false, false}} -> step
+        _other -> false
+      end)
 
     {:noreply, assign(socket, step: new_step)}
-  end
-
-  defp step_index(step) do
-    Enum.find_index(@steps, &(&1 == step))
   end
 
   defp errors_in?(changeset, paths) do
@@ -112,11 +103,14 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
       field when is_atom(field) -> [field]
       tuple when is_tuple(tuple) -> Tuple.to_list(tuple)
     end)
-    |> Enum.all?(&has_error?(changeset, &1))
+    |> Enum.any?(&has_error?(changeset, &1))
   end
 
   defp has_error?(nil, _path), do: false
-  defp has_error?(%Ecto.Changeset{errors: errors}, [field]), do: Keyword.has_key?(errors, field)
+
+  defp has_error?(%Ecto.Changeset{errors: errors}, [field]) do
+    Keyword.has_key?(errors, field)
+  end
 
   defp has_error?(%Ecto.Changeset{errors: errors} = changeset, [relation_or_embed | path_tail]) do
     Keyword.has_key?(errors, relation_or_embed) ||
@@ -130,8 +124,8 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
       base: gettext("Person Base Data"),
       transmission_date: gettext("Transmission Date"),
       infection_place: gettext("Infection Place"),
-      infection_place_activity_mapping: gettext("Activity Mapping"),
       infection_place_address: gettext("Meet Address"),
+      infection_place_activity_mapping: gettext("Activity Mapping"),
       contact_methods: gettext("Contact Methods"),
       address: gettext("Address")
     ]

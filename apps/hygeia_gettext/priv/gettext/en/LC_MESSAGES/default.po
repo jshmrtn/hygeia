@@ -109,7 +109,7 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:133
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:128
 #: lib/hygeia_web/live/transmission_live/infection_place.sface:52
 msgid "Activity Mapping"
 msgstr ""
@@ -134,7 +134,7 @@ msgstr ""
 #: lib/hygeia_web/live/case_live/address_input.sface:20 lib/hygeia_web/live/case_live/create_index.sface:126
 #: lib/hygeia_web/live/case_live/create_index.sface:132 lib/hygeia_web/live/case_live/person_create_table.sface:12
 #: lib/hygeia_web/live/organisation_live/index.sface:56 lib/hygeia_web/live/organisation_live/show.sface:87
-#: lib/hygeia_web/live/person_live/base_data.sface:137 lib/hygeia_web/live/possible_index_submission_live/create.ex:136
+#: lib/hygeia_web/live/person_live/base_data.sface:137 lib/hygeia_web/live/possible_index_submission_live/create.ex:130
 #: lib/hygeia_web/live/possible_index_submission_live/index.sface:90
 msgid "Address"
 msgstr ""
@@ -357,7 +357,7 @@ msgid "Confirmation PDF Template"
 msgstr ""
 
 #: lib/hygeia_web/live/person_live/base_data.sface:147
-#: lib/hygeia_web/live/person_live/create.sface:56 lib/hygeia_web/live/possible_index_submission_live/create.ex:135
+#: lib/hygeia_web/live/person_live/create.sface:56 lib/hygeia_web/live/possible_index_submission_live/create.ex:129
 msgid "Contact Methods"
 msgstr ""
 
@@ -891,7 +891,7 @@ msgid ""
 "Index understands and speaks English, but several explanations are necessary"
 msgstr ""
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:132
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:126
 #: lib/hygeia_web/live/possible_index_submission_live/show.sface:137 lib/hygeia_web/live/statistics_live/statistics.sface:495
 #: lib/hygeia_web/live/transmission_live/show.sface:182
 msgid "Infection Place"
@@ -1063,7 +1063,7 @@ msgstr ""
 msgid "Medium"
 msgstr ""
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:134
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:127
 msgid "Meet Address"
 msgstr ""
 
@@ -1357,7 +1357,7 @@ msgstr ""
 msgid "Person"
 msgstr ""
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:130
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:124
 msgid "Person Base Data"
 msgstr ""
 
@@ -1440,7 +1440,7 @@ msgstr ""
 msgid "Possible index"
 msgstr ""
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:88
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:78
 msgid "Possible index submission created successfully"
 msgstr ""
 
@@ -1959,7 +1959,7 @@ msgstr ""
 msgid "Tracing"
 msgstr ""
 
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:131
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:125
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:135
 msgid "Transmission Date"
 msgstr ""
@@ -2092,7 +2092,7 @@ msgstr ""
 #: lib/hygeia_web/live/organisation_live/create.ex:24 lib/hygeia_web/live/organisation_live/index.ex:39
 #: lib/hygeia_web/live/organisation_live/show.ex:42 lib/hygeia_web/live/person_live/base_data.ex:49
 #: lib/hygeia_web/live/person_live/create.ex:34 lib/hygeia_web/live/person_live/index.ex:41
-#: lib/hygeia_web/live/possible_index_submission_live/create.ex:51 lib/hygeia_web/live/possible_index_submission_live/index.ex:26
+#: lib/hygeia_web/live/possible_index_submission_live/create.ex:41 lib/hygeia_web/live/possible_index_submission_live/index.ex:26
 #: lib/hygeia_web/live/possible_index_submission_live/show.ex:41 lib/hygeia_web/live/profession_live/create.ex:22
 #: lib/hygeia_web/live/profession_live/index.ex:22 lib/hygeia_web/live/profession_live/show.ex:35
 #: lib/hygeia_web/live/statistics_live/choose_tenant.ex:18 lib/hygeia_web/live/statistics_live/statistics.ex:46
