@@ -33,6 +33,8 @@ defmodule HygeiaWeb.Helpers.Case do
   def case_status_translation(:other_actions_todo), do: gettext("Other Actions To Do")
   def case_status_translation(:next_contact_agreed), do: gettext("Next Contact Agreed")
   def case_status_translation(:done), do: gettext("Done")
+  def case_status_translation(:hospitalization), do: gettext("Hospitalization")
+  def case_status_translation(:home_resident), do: gettext("Home Resident")
 
   @spec case_status_map :: [{String.t(), Case.Status.t()}]
   def case_status_map do

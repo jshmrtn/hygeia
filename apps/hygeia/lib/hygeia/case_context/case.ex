@@ -30,7 +30,9 @@ defmodule Hygeia.CaseContext.Case do
     "waiting_for_contact_person_list",
     "other_actions_todo",
     "next_contact_agreed",
-    "done"
+    "done",
+    "hospitalization",
+    "home_resident"
   ]
 
   @type empty :: %__MODULE__{
