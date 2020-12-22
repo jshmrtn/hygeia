@@ -173,8 +173,8 @@
                         </table>
                       </HygeiaWeb.Modal>
                     </div>
-                    <div class="col">
-                      <Field name={{ :status }} class="form-group">
+                    <div class="col d-flex">
+                      <Field name={{ :status }} class="form-group flex-grow-1">
                         <Label>{{ "Status" |> gettext }}</Label>
                         <Select 
                           class="form-control" 
@@ -183,6 +183,15 @@
                         />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
+                      <div :if={{ @live_action != :show }} class="form-group">
+                        <label>&nbsp;</label>
+                        <button
+                          type="button"
+                          class="d-block ml-1 btn btn-info"
+                          :on-click="show_case_status_help">
+                          <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true"></span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -244,15 +253,26 @@
                             type={{ :index }}
                             id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
                           >
-                            <Field name={{ :end_reason }} class="form-group">
-                              <Label>{{ gettext("End Reason") }}</Label>
-                              <Select 
-                                class="form-control" 
-                                opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
-                                options={{ case_phase_index_end_reason_map() }}
-                              />
-                              <ErrorTag class="d-block invalid-feedback" />
-                            </Field>
+                            <div class="d-flex">
+                              <Field name={{ :end_reason }} class="form-group flex-grow-1">
+                                <Label>{{ gettext("End Reason") }}</Label>
+                                <Select 
+                                  class="form-control" 
+                                  opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
+                                  options={{ case_phase_index_end_reason_map() }}
+                                />
+                                <ErrorTag class="d-block invalid-feedback" />
+                              </Field>
+                              <div :if={{ @live_action != :show }} class="form-group">
+                                <label>&nbsp;</label>
+                                <button
+                                  type="button"
+                                  class="d-block ml-1 btn btn-info"
+                                  :on-click="show_phase_end_reason_help">
+                                  <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true"></span>
+                                </button>
+                              </div>
+                            </div>
                           </PolimorphicInputs>
                           <PolimorphicInputs
                             :if={{ match?(%Phase.PossibleIndex{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
@@ -279,6 +299,80 @@
                               </Field>
                             </InputContext>
                           </PolimorphicInputs>
+
+                          <HygeiaWeb.Modal
+                            :if={{ @show_phase_end_reason_help }}
+                            id={{ :phase_end_reason_help }}
+                            title={{ gettext("End reason help") }}
+                            close="hide_phase_end_reason_help"
+                            size="xl"
+                          >
+                            <p>{{ gettext("You must provide a reason for completing a phase.") }}</p>
+                            <table class="table table-sm table-striped">
+                              <tbody>
+                                <tr>
+                                  <td><b>{{ phase_end_reason_translation(:healed) }}</b></td>
+                                  <td>{{ gettext("Index is completely healed and isolation is completed") }}</td>
+                                </tr>
+                                <tr>
+                                  <td><b>{{ phase_end_reason_translation(:death) }}</b></td>
+                                  <td>{{ gettext("Index died") }}</td>
+                                </tr>
+                                <tr>
+                                  <td><b>{{ phase_end_reason_translation(:no_follow_up) }}</b></td>
+                                  <td>{{ gettext("Agreed with index that no further contact is necessary") }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </HygeiaWeb.Modal>
+
+                          <HygeiaWeb.Modal
+                            :if={{ @show_case_status_help }}
+                            id={{ :case_status_help }}
+                            title={{ gettext("Status help") }}
+                            close="hide_case_status_help"
+                            size="xl"
+                          >
+                            <p>{{ gettext("The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted.") }}</p>
+                            <table class="table table-sm table-striped">
+                              <tbody>
+                                <tr>
+                                  <td><b>{{ case_status_translation(:first_contact) }}</b></td>
+                                  <td>{{ gettext("The case administraton sends cases like this. Index has not been contacted") }}</td>
+                                </tr>
+                                <tr>
+                                  <td><b>{{ case_status_translation(:first_contact_unreachable) }}</b></td>
+                                  <td>{{ gettext("Index could not be reached by phone. Always create a note in the protocol with all steps taken to reach the person. For example: Tried to call three times, asked about the number at their general practitioner, SMS sent to the index that we are CT and ask them to please answer the phone.") }}</td>
+                                </tr>
+                                <tr>
+                                  <!-- TODO: use enum translation when available -->
+                                  <td><b>{{ gettext("Hospitalization") }}</b></td>
+                                  <td>{{ gettext("Index is hospitalized because of Covid19. Set the \"Start Date\" at hospitalizations and choose an \"Organisation\", then create a note why the index is hospitalized and how they are, in the end inform the team lead.") }}</td>
+                                </tr>
+                                <tr>
+                                  <td><b>{{ case_status_translation(:waiting_for_contact_person_list) }}</b></td>
+                                  <td>{{ gettext("A contact person list has been sent to the Index, but it hasn't been returned yet") }}</td>
+                                </tr>
+                                <tr>
+                                  <td><b>{{ case_status_translation(:other_actions_todo) }}</b></td>
+                                  <td>{{ gettext("Maybe inform the team lead if not already done, create a protocol entry (status for exceptional cases)") }}</td>
+                                </tr>
+                                <tr>
+                                  <td><b>{{ case_status_translation(:next_contact_agreed) }}</b></td>
+                                  <td>{{ gettext("Generally there are no follow-up calls. If an index is for example very anxious and single or in a generally bad state, a next contact can be agreed. Always create a note in the protocol with the time of the next contact. If possible always set the date to a day when you will be working.") }}</td>
+                                </tr>
+                                <tr>
+                                  <td><b>{{ case_status_translation(:done) }}</b></td>
+                                  <td>{{ gettext("In this case there are no further actions necessary. \"Done\" should be set on the index and contact person.") }}</td>
+                                </tr>
+                                <tr>
+                                  <!-- TODO: use enum translation when available -->
+                                  <td><b>{{ gettext("Nursing home resident") }}</b></td>
+                                  <td>{{ gettext("Index is a nursing home resident, e.g. nursing home, home for the handicapped, etc... Always inform the team lead") }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </HygeiaWeb.Modal>
 
                           <div class="row">
                             <div class="col">

@@ -186,7 +186,7 @@ msgstr ""
 msgid "Asylum center"
 msgstr ""
 
-#: lib/hygeia_web/helpers/case.ex:67 lib/hygeia_web/helpers/phase.ex:21
+#: lib/hygeia_web/helpers/case.ex:67 lib/hygeia_web/helpers/phase.ex:23
 msgid "Asymptomatic"
 msgstr ""
 
@@ -198,7 +198,7 @@ msgstr ""
 msgid "Automated Case Close Email"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:292
+#: lib/hygeia_web/live/case_live/base_data.sface:386
 msgid "Automated Close Email"
 msgstr ""
 
@@ -251,7 +251,7 @@ msgstr ""
 msgid "Case deleted successfully"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.ex:178
+#: lib/hygeia_web/live/case_live/base_data.ex:180
 msgid "Case updated successfully"
 msgstr ""
 
@@ -314,17 +314,17 @@ msgstr ""
 msgid "Choose subdivision"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:392
+#: lib/hygeia_web/live/case_live/base_data.sface:486
 #: lib/hygeia_web/live/case_live/create_index.sface:164
 msgid "Choose test kind"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:399
+#: lib/hygeia_web/live/case_live/base_data.sface:493
 #: lib/hygeia_web/live/case_live/create_index.sface:170
 msgid "Choose test result"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:316
+#: lib/hygeia_web/live/case_live/base_data.sface:410
 msgid "Clinical Information"
 msgstr ""
 
@@ -385,7 +385,7 @@ msgstr ""
 msgid "Convert to Index"
 msgstr ""
 
-#: lib/hygeia_web/helpers/case.ex:70 lib/hygeia_web/helpers/phase.ex:22
+#: lib/hygeia_web/helpers/case.ex:70 lib/hygeia_web/helpers/phase.ex:24
 msgid "Converted to Index"
 msgstr ""
 
@@ -463,7 +463,7 @@ msgstr ""
 msgid "Date Format"
 msgstr ""
 
-#: lib/hygeia_web/helpers/case.ex:52 lib/hygeia_web/helpers/phase.ex:19
+#: lib/hygeia_web/helpers/case.ex:52 lib/hygeia_web/helpers/phase.ex:21
 msgid "Death"
 msgstr ""
 
@@ -559,8 +559,8 @@ msgid "Directly set case status to done"
 msgstr ""
 
 #: lib/hygeia_web/live/case_live/base_data.sface:40
-#: lib/hygeia_web/live/case_live/base_data.sface:41 lib/hygeia_web/live/case_live/base_data.sface:491
-#: lib/hygeia_web/live/case_live/base_data.sface:492 lib/hygeia_web/live/infection_place_type_live/show.sface:51
+#: lib/hygeia_web/live/case_live/base_data.sface:41 lib/hygeia_web/live/case_live/base_data.sface:585
+#: lib/hygeia_web/live/case_live/base_data.sface:586 lib/hygeia_web/live/infection_place_type_live/show.sface:51
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:52 lib/hygeia_web/live/organisation_live/show.sface:51
 #: lib/hygeia_web/live/organisation_live/show.sface:52 lib/hygeia_web/live/person_live/base_data.sface:69
 #: lib/hygeia_web/live/person_live/base_data.sface:70 lib/hygeia_web/live/person_live/base_data.sface:329
@@ -586,7 +586,7 @@ msgid "Do you really want to continue without saving?"
 msgstr ""
 
 #: lib/hygeia_web/live/case_live/base_data.sface:39
-#: lib/hygeia_web/live/case_live/base_data.sface:490 lib/hygeia_web/live/infection_place_type_live/show.sface:50
+#: lib/hygeia_web/live/case_live/base_data.sface:584 lib/hygeia_web/live/infection_place_type_live/show.sface:50
 #: lib/hygeia_web/live/organisation_live/show.sface:50 lib/hygeia_web/live/person_live/base_data.sface:68
 #: lib/hygeia_web/live/person_live/base_data.sface:328 lib/hygeia_web/live/possible_index_submission_live/show.sface:89
 #: lib/hygeia_web/live/profession_live/show.sface:50 lib/hygeia_web/live/tenant_live/show.sface:50
@@ -599,8 +599,8 @@ msgid "Done"
 msgstr ""
 
 #: lib/hygeia_web/live/case_live/base_data.sface:16
-#: lib/hygeia_web/live/case_live/base_data.sface:17 lib/hygeia_web/live/case_live/base_data.sface:503
-#: lib/hygeia_web/live/case_live/base_data.sface:504 lib/hygeia_web/live/case_live/index.sface:277
+#: lib/hygeia_web/live/case_live/base_data.sface:17 lib/hygeia_web/live/case_live/base_data.sface:597
+#: lib/hygeia_web/live/case_live/base_data.sface:598 lib/hygeia_web/live/case_live/index.sface:277
 #: lib/hygeia_web/live/case_live/transmission_table.sface:146 lib/hygeia_web/live/infection_place_type_live/index.sface:54
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:13 lib/hygeia_web/live/infection_place_type_live/show.sface:14
 #: lib/hygeia_web/live/organisation_live/index.sface:89 lib/hygeia_web/live/organisation_live/show.sface:13
@@ -646,12 +646,12 @@ msgstr ""
 msgid "Encoding (CSV only)"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:234
+#: lib/hygeia_web/live/case_live/base_data.sface:243
 msgid "End"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:248
-#: lib/hygeia_web/live/case_live/base_data.sface:272
+#: lib/hygeia_web/live/case_live/base_data.sface:258
+#: lib/hygeia_web/live/case_live/base_data.sface:292
 msgid "End Reason"
 msgstr ""
 
@@ -754,7 +754,7 @@ msgstr ""
 msgid "Headaches"
 msgstr ""
 
-#: lib/hygeia_web/helpers/case.ex:51 lib/hygeia_web/helpers/phase.ex:18
+#: lib/hygeia_web/helpers/case.ex:51 lib/hygeia_web/helpers/phase.ex:20
 msgid "Healed"
 msgstr ""
 
@@ -776,7 +776,7 @@ msgstr ""
 msgid "Hospital"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:462
+#: lib/hygeia_web/live/case_live/base_data.sface:556
 msgid "Hospitalizations"
 msgstr ""
 
@@ -871,7 +871,7 @@ msgid "Includes Phase Type"
 msgstr ""
 
 #: lib/hygeia_web/helpers/case.ex:133 lib/hygeia_web/helpers/phase.ex:9
-#: lib/hygeia_web/live/case_live/base_data.sface:218 lib/hygeia_web/live/case_live/index.sface:107
+#: lib/hygeia_web/live/case_live/base_data.sface:227 lib/hygeia_web/live/case_live/index.sface:107
 #: lib/hygeia_web/live/statistics_live/statistics.sface:295
 msgid "Index"
 msgstr ""
@@ -930,6 +930,7 @@ msgid "Infection place types"
 msgstr ""
 
 #: lib/hygeia_web/live/case_live/base_data.sface:102
+#: lib/hygeia_web/live/case_live/base_data.sface:192 lib/hygeia_web/live/case_live/base_data.sface:272
 #: lib/hygeia_web/live/case_live/csv_import.sface:16 lib/hygeia_web/live/case_live/csv_import.sface:17
 msgid "Info"
 msgstr ""
@@ -965,7 +966,7 @@ msgstr ""
 msgid "Known"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:382
+#: lib/hygeia_web/live/case_live/base_data.sface:476
 #: lib/hygeia_web/live/case_live/create.ex:352 lib/hygeia_web/live/case_live/create_index.sface:114
 msgid "Laboratory report date"
 msgstr ""
@@ -1085,7 +1086,7 @@ msgstr ""
 msgid "Mobile Phone"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:452
+#: lib/hygeia_web/live/case_live/base_data.sface:546
 msgid "Monitoring"
 msgstr ""
 
@@ -1098,8 +1099,8 @@ msgstr ""
 msgid "Multiple calls for first contact"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:412
-#: lib/hygeia_web/live/case_live/base_data.sface:432 lib/hygeia_web/live/case_live/person_create_table.sface:185
+#: lib/hygeia_web/live/case_live/base_data.sface:506
+#: lib/hygeia_web/live/case_live/base_data.sface:526 lib/hygeia_web/live/case_live/person_create_table.sface:185
 #: lib/hygeia_web/live/infection_place_type_live/create.sface:15 lib/hygeia_web/live/infection_place_type_live/index.sface:24
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:60 lib/hygeia_web/live/infection_place_type_live/show.sface:62
 #: lib/hygeia_web/live/organisation_live/create.sface:15 lib/hygeia_web/live/organisation_live/index.sface:53
@@ -1227,7 +1228,7 @@ msgstr ""
 msgid "No data to display"
 msgstr ""
 
-#: lib/hygeia_web/helpers/phase.ex:20
+#: lib/hygeia_web/helpers/phase.ex:22
 msgid "No follow up"
 msgstr ""
 
@@ -1302,7 +1303,7 @@ msgstr ""
 
 #: lib/hygeia_web/helpers/case.ex:73 lib/hygeia_web/helpers/clinical.ex:42
 #: lib/hygeia_web/helpers/contact_method.ex:16 lib/hygeia_web/helpers/external_reference.ex:19
-#: lib/hygeia_web/helpers/monitoring.ex:25 lib/hygeia_web/helpers/phase.ex:23
+#: lib/hygeia_web/helpers/monitoring.ex:25 lib/hygeia_web/helpers/phase.ex:25
 #: lib/hygeia_web/live/case_live/person_create_table.sface:56 lib/hygeia_web/live/person_live/base_data.sface:106
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:86
 msgid "Other"
@@ -1378,7 +1379,7 @@ msgid ""
 "Phase start- and end-dates must be set to create Isolation Confirmations."
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:206
+#: lib/hygeia_web/live/case_live/base_data.sface:215
 #: lib/hygeia_web/live/case_live/index.sface:170
 msgid "Phases"
 msgstr ""
@@ -1427,7 +1428,7 @@ msgstr ""
 msgid "Positive"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:219
+#: lib/hygeia_web/live/case_live/base_data.sface:228
 #: lib/hygeia_web/live/case_live/index.sface:113
 msgid "Possible Index"
 msgstr ""
@@ -1543,7 +1544,7 @@ msgstr ""
 msgid "Quick"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:327
+#: lib/hygeia_web/live/case_live/base_data.sface:421
 msgid "Reasons for test"
 msgstr ""
 
@@ -1564,12 +1565,12 @@ msgstr ""
 msgid "Recipient ISM ID"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:193
+#: lib/hygeia_web/live/case_live/base_data.sface:202
 #: lib/hygeia_web/live/person_live/base_data.sface:123
 msgid "References"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:475
+#: lib/hygeia_web/live/case_live/base_data.sface:569
 msgid "Related Organisations"
 msgstr ""
 
@@ -1588,7 +1589,7 @@ msgstr ""
 msgid "Reporting Unit"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:409
+#: lib/hygeia_web/live/case_live/base_data.sface:503
 msgid "Reporting unit"
 msgstr ""
 
@@ -1606,8 +1607,8 @@ msgid "SMS"
 msgstr ""
 
 #: lib/hygeia_web/live/case_live/base_data.sface:36
-#: lib/hygeia_web/live/case_live/base_data.sface:37 lib/hygeia_web/live/case_live/base_data.sface:487
-#: lib/hygeia_web/live/case_live/base_data.sface:488 lib/hygeia_web/live/case_live/create_index.sface:209
+#: lib/hygeia_web/live/case_live/base_data.sface:37 lib/hygeia_web/live/case_live/base_data.sface:581
+#: lib/hygeia_web/live/case_live/base_data.sface:582 lib/hygeia_web/live/case_live/create_index.sface:209
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:217 lib/hygeia_web/live/case_live/protocol_modal.sface:70
 #: lib/hygeia_web/live/case_live/protocol_modal.sface:71 lib/hygeia_web/live/infection_place_type_live/create.sface:29
 #: lib/hygeia_web/live/infection_place_type_live/show.sface:47 lib/hygeia_web/live/infection_place_type_live/show.sface:48
@@ -1629,7 +1630,7 @@ msgid "Save & add next contact"
 msgstr ""
 
 #: lib/hygeia_web/live/case_live/base_data.sface:35
-#: lib/hygeia_web/live/case_live/base_data.sface:486 lib/hygeia_web/live/case_live/create_index.sface:208
+#: lib/hygeia_web/live/case_live/base_data.sface:580 lib/hygeia_web/live/case_live/create_index.sface:208
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:216 lib/hygeia_web/live/case_live/protocol_modal.sface:69
 #: lib/hygeia_web/live/infection_place_type_live/create.sface:26 lib/hygeia_web/live/infection_place_type_live/show.sface:46
 #: lib/hygeia_web/live/organisation_live/create.sface:36 lib/hygeia_web/live/organisation_live/show.sface:46
@@ -1678,8 +1679,8 @@ msgstr ""
 msgid "Select complexity"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:251
-#: lib/hygeia_web/live/case_live/base_data.sface:275
+#: lib/hygeia_web/live/case_live/base_data.sface:261
+#: lib/hygeia_web/live/case_live/base_data.sface:295
 msgid "Select end reason"
 msgstr ""
 
@@ -1801,12 +1802,12 @@ msgstr ""
 msgid "Sore Throat"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:429
+#: lib/hygeia_web/live/case_live/base_data.sface:523
 #: lib/hygeia_web/live/case_live/create_index.sface:129
 msgid "Sponsor"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:227
+#: lib/hygeia_web/live/case_live/base_data.sface:236
 msgid "Start"
 msgstr ""
 
@@ -1831,7 +1832,7 @@ msgstr ""
 msgid "Status Page"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:265
+#: lib/hygeia_web/live/case_live/base_data.sface:285
 msgid "Sub Type"
 msgstr ""
 
@@ -1864,7 +1865,7 @@ msgid "Supervisor Phone"
 msgstr ""
 
 #: lib/hygeia_web/helpers/clinical.ex:17
-#: lib/hygeia_web/live/case_live/base_data.sface:351
+#: lib/hygeia_web/live/case_live/base_data.sface:445
 msgid "Symptoms"
 msgstr ""
 
@@ -1907,17 +1908,17 @@ msgstr ""
 msgid "Test Result"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:375
+#: lib/hygeia_web/live/case_live/base_data.sface:469
 #: lib/hygeia_web/live/case_live/create.ex:350
 msgid "Test date"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:391
+#: lib/hygeia_web/live/case_live/base_data.sface:485
 #: lib/hygeia_web/live/case_live/create_index.sface:117
 msgid "Test kind"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:398
+#: lib/hygeia_web/live/case_live/base_data.sface:492
 #: lib/hygeia_web/live/case_live/create_index.sface:120
 msgid "Test result"
 msgstr ""
@@ -1984,7 +1985,7 @@ msgstr ""
 msgid "Travel"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.sface:215
+#: lib/hygeia_web/live/case_live/base_data.sface:224
 #: lib/hygeia_web/live/case_live/create_possible_index.sface:31 lib/hygeia_web/live/case_live/protocol.sface:12
 #: lib/hygeia_web/live/person_live/base_data.sface:150 lib/hygeia_web/live/person_live/create.sface:60
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:191 lib/hygeia_web/live/references.sface:2
@@ -2084,7 +2085,7 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/base_data.ex:65
+#: lib/hygeia_web/live/case_live/base_data.ex:67
 #: lib/hygeia_web/live/case_live/create_index.ex:58 lib/hygeia_web/live/case_live/create_possible_index.ex:71
 #: lib/hygeia_web/live/case_live/index.ex:44 lib/hygeia_web/live/case_live/protocol.ex:43
 #: lib/hygeia_web/live/case_live/transmissions.ex:31 lib/hygeia_web/live/infection_place_type_live/create.ex:22
@@ -2335,4 +2336,89 @@ msgid ""
 "place, e.g. for living in the same household choose «own household» and "
 "leave the left field empty. If you met at a restaurant, choose «restaurant, "
 "bar» as type and enter the name of the restaurant in the left field."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:354
+msgid "A contact person list has been sent to the Index, but it hasn't been returned yet"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:323
+msgid "Agreed with index that no further contact is necessary"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:306
+msgid "End reason help"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:362
+msgid "Generally there are no follow-up calls. If an index is for example very anxious and single or in a generally bad state, a next contact can be agreed. Always create a note in the protocol with the time of the next contact. If possible always set the date to a day when you will be working."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:349
+msgid "Hospitalization"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:366
+msgid "In this case there are no further actions necessary. \"Done\" should be set on the index and contact person."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:345
+msgid "Index could not be reached by phone. Always create a note in the protocol with all steps taken to reach the person. For example: Tried to call three times, asked about the number at their general practitioner, SMS sent to the index that we are CT and ask them to please answer the phone."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:319
+msgid "Index died"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:371
+msgid "Index is a nursing home resident, e.g. nursing home, home for the handicapped, etc... Always inform the team lead"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:315
+msgid "Index is completely healed and isolation is completed"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:350
+msgid "Index is hospitalized because of Covid19. Set the \"Start Date\" at hospitalizations and choose an \"Organisation\", then create a note why the index is hospitalized and how they are, in the end inform the team lead."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:358
+msgid "Maybe inform the team lead if not already done, create a protocol entry (status for exceptional cases)"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:370
+msgid "Nursing home resident"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:332
+msgid "Status help"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:341
+msgid "The case administraton sends cases like this. Index has not been contacted"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:336
+msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/live/case_live/base_data.sface:310
+msgid "You must provide a reason for completing a phase."
 msgstr ""

@@ -26,6 +26,8 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Surface.Components.LivePatch
 
   data show_complexity_help, :boolean, default: false
+  data show_case_status_help, :boolean, default: false
+  data show_phase_end_reason_help, :boolean, default: false
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id} = params, uri, socket) do
@@ -300,6 +302,22 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
   def handle_event("hide_complexity_help", _params, socket) do
     {:noreply, assign(socket, show_complexity_help: false)}
+  end
+
+  def handle_event("show_phase_end_reason_help", _params, socket) do
+    {:noreply, assign(socket, show_phase_end_reason_help: true)}
+  end
+
+  def handle_event("hide_phase_end_reason_help", _params, socket) do
+    {:noreply, assign(socket, show_phase_end_reason_help: false)}
+  end
+
+  def handle_event("show_case_status_help", _params, socket) do
+    {:noreply, assign(socket, show_case_status_help: true)}
+  end
+
+  def handle_event("hide_case_status_help", _params, socket) do
+    {:noreply, assign(socket, show_case_status_help: false)}
   end
 
   defp load_data(socket, case) do

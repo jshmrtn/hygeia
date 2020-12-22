@@ -107,6 +107,11 @@ msgid "must be equal to %{number}"
 msgstr ""
 
 #, elixir-format
+#: lib/hygeia/case_context/possible_index_submission.ex:122
+msgid "at least one contact method must be provided"
+msgstr ""
+
+#, elixir-format
 #: lib/hygeia/case_context/case/phase.ex:86
 msgid "date is to far away from today"
 msgstr ""
@@ -119,9 +124,4 @@ msgstr ""
 #, elixir-format
 #: lib/hygeia/case_context/case/phase.ex:53
 msgid "start must be before end"
-msgstr ""
-
-#, elixir-format
-#: lib/hygeia/case_context/possible_index_submission.ex:122
-msgid "at least one contact method must be provided"
 msgstr ""
