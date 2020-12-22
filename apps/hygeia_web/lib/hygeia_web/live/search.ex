@@ -68,7 +68,7 @@ defmodule HygeiaWeb.Search do
         end)
         |> Enum.each(&Task.await/1)
 
-        send_update(socket, pid, %{pending_search: nil})
+        send_update(pid, __MODULE__, id: socket.assigns.id, pending_search: nil)
       end)
 
     assign(socket, query: query, results: %{}, pending_search: task)
@@ -83,7 +83,7 @@ defmodule HygeiaWeb.Search do
         :ok
 
       [_ | _] = results ->
-        send_update(socket, pid, %{append_result: {key, results}})
+        send_update(pid, __MODULE__, id: socket.assigns.id, append_result: {key, results})
 
         :ok
     end
@@ -141,11 +141,5 @@ defmodule HygeiaWeb.Search do
           end
         end
     }
-  end
-
-  defp send_update(socket, pid, data) do
-    # TODO: Replace with solution of https://github.com/phoenixframework/phoenix_live_view/issues/1244
-    send(pid, {:phoenix, :send_update, {__MODULE__, socket.assigns.id, data}})
-    :ok
   end
 end

@@ -107,15 +107,7 @@ defmodule HygeiaWeb.Lock do
               lock_task:
                 Task.async(fn ->
                   if :global.set_lock({socket.assigns.resource, socket.root_pid}) do
-                    # TODO: Replace with solution of https://github.com/phoenixframework/phoenix_live_view/issues/1244
-                    send(
-                      pid,
-                      {:phoenix, :send_update,
-                       {__MODULE__, socket.assigns.id,
-                        %{
-                          __lock_acquired__: true
-                        }}}
-                    )
+                    send_update(pid, __MODULE__, id: socket.assigns.id, __lock_acquired__: true)
 
                     # Max Lock Time
                     Process.sleep(:timer.minutes(15))
