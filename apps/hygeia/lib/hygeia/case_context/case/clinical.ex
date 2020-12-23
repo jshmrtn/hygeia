@@ -97,10 +97,31 @@ defmodule Hygeia.CaseContext.Case.Clinical do
   end
 
   defp clear_symptoms(changeset) do
-    if Ecto.Changeset.get_field(changeset, :has_symptoms) in [nil, false] do
-      Ecto.Changeset.put_change(changeset, :symptoms, [])
-    else
-      changeset
+    current_symptoms = Ecto.Changeset.get_field(changeset, :symptoms)
+
+    changeset
+    |> Ecto.Changeset.fetch_change(:has_symptoms)
+    |> case do
+      :error ->
+        changeset
+
+      {:ok, nil} when is_nil(current_symptoms) ->
+        changeset
+
+      {:ok, nil} ->
+        Ecto.Changeset.put_change(changeset, :symptoms, nil)
+
+      {:ok, false} when is_nil(current_symptoms) ->
+        changeset
+
+      {:ok, false} ->
+        Ecto.Changeset.put_change(changeset, :symptoms, nil)
+
+      {:ok, true} when is_nil(current_symptoms) ->
+        Ecto.Changeset.put_change(changeset, :symptoms, [])
+
+      {:ok, true} ->
+        changeset
     end
   end
 end
