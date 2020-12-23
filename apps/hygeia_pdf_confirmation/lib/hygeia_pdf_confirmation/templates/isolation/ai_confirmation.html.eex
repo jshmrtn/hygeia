@@ -21,11 +21,10 @@
 
 <h1 style="margin-bottom: 10mm;">Bestätigung zur Isolation</h1>
 
-<p class="p-2x-margin">Wie Ihnen bereits durch Ihre Ärztin / Ihren Arzt und/oder. durch das Contact Tracing mitgeteilt wurde, wurden Sie positiv auf das neue Coronavirus (Sars-CoV-2) getestet.</p>
+<p class="p-2x-margin">Wie Ihnen bereits durch Ihre Ärztin / Ihren Arzt und/oder durch das Contact Tracing mitgeteilt wurde, wurden Sie positiv auf das neue Coronavirus (Sars-CoV-2) getestet.</p>
 
-<p class="p-4x-margin">Gestützt auf das Epidemiengesetz (EpG) werden Sie deshalb <b>einer 10-tägigen Isolation</b> unterstellt (Art. 35 Abs. 1 lit. a in Verbindung mit Art. 31 Abs. 3 und 4 EpG). Ziel dieser Isolation ist es, die Ausbreitung des Coronavirus einzudämmen.</p>
-<p class="p-4x-margin">Ihre Quarantäne dauert somit vom <%= HygeiaCldr.Date.to_string!(@phase.start) %> bis
-  <%= HygeiaCldr.Date.to_string!(@phase.end) %>.</p>
+<p class="p-4x-margin">Gestützt auf das Epidemiengesetz (EpG) werden Sie deshalb <b>einer 10-tägigen Isolation unterstellt</b> (Art. 35 Abs. 1 lit. a in Verbindung mit Art. 31 Abs. 3 und 4 EpG). Ziel dieser Isolation ist es, die Ausbreitung des Coronavirus einzudämmen.</p>
+<p class="p-4x-margin">Ihre Isolation dauert vom <%= HygeiaCldr.Date.to_string!(@phase.start) %> bis und mit <%= HygeiaCldr.Date.to_string!(@phase.end) %>.</p>
 
 <p class="p-2x-margin">
   Via untenstehenden Link finden Sie das <a href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/merkblatt-selbstisolation-covid-19.pdf.download.pdf/covid-19_anweisungen_isolation.pdf">Merkblatt</a> (<a href="https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/faq-kontakte-downloads/downloads-in-verschiedenen-sprachen.html">Merkblatt in verschiedenen Sprachen</a>) des Bundesamts für Gesundheit (BAG) zur <b>Isolation</b>. Bitte befolgen Sie die entsprechenden Verhaltensanweisungen.
@@ -36,7 +35,7 @@ Informationen finden Sie auch auf der kantonalen Webseite <a href="http://www.ai
 </p>
 
 <p>Bei dringenden Fragen oder Unklarheiten wenden Sie sich bitte an die kantonale Covid-19-Hotline: Mo-Fr: <a href="mailto: info.hotline@ai.ch">info.hotline@ai.ch</a> oder per Telefon 071 788 75 57. Wir werden Ihre Anfragen schnellstmöglich beantworten.</p>
-<p class="p-4x-margin">Bei medizinischen Notfällen wenden Sie sich bitte an Ihre Hausärztin/Ihren Hausarzt oder den ambulanten Notfalldienst (Tel. 071 788 73 34).</p>
+<p class="p-4x-margin">Bei medizinischen Notfällen wenden Sie sich bitte an Ihren Hausarzt oder den diensthabenden Notfallarzt (Tel. 071 788 73 34).</p>
 
 <p>Freundliche Grüsse</p>
 
@@ -66,7 +65,7 @@ Informationen finden Sie auch auf der kantonalen Webseite <a href="http://www.ai
 
       <ul>
         <li>BAG Homepage: www.bag-coronavirus.ch</li>
-        <li>Kanton St.Gallen: www.sg.ch/tools/informationen-coronavirus.html</li>
+        <li>Kanton Appenzell I.Rh.: www.ai.ch/coronavirus</li>
         <li>Reiseinformationen www.safetravel.ch</li>
         <li>Science Task Force https://ncs-tf.ch/de/</li>
         <li>Informationen Bildungsbereich (EDK) https://www.edk.ch/dyn/32928.php</li>
@@ -84,7 +83,7 @@ Informationen finden Sie auch auf der kantonalen Webseite <a href="http://www.ai
             <li>BAG Hotline für Reiserückkehrer 058 464 44 88 (täglich 6 – 23 Uhr)</li>
             <li>BAG Hotline für Gesundheitsfachpersonen 058 462 21 00 (täglich 7 - 20 Uhr)</li>
             <li>BAG Whatsapp Infokanal 079 155 11 05</li>
-            <li>Kanton St.Gallen Infoline 058 229 22 33 (täglich von 8 – 12 Uhr und 13 – 17 Uhr)</li>
+            <li>Covid-19-Hotline Appenzell Innerrhoden 071 788 75 57 (Montag bis Freitag , 8.00 - 11.30 Uhr und 14.00 - 17.00 Uhr)</li>
           </ul>
         </li>
         <li class="p-4x-margin">
@@ -92,16 +91,17 @@ Informationen finden Sie auch auf der kantonalen Webseite <a href="http://www.ai
 
           <ul>
             <li>
-              Bei medizinischen Fragen melden Sie sich bitte bei Ihrem Hausarzt (insbesondere bei
-              starken Symptomen oder Risikofaktoren ist eine Untersuchung beim Arzt empfohlen)
+              Bei medizinischen Fragen melden Sie sich bitte bei Ihrem Hausarzt (insbesondere bei starken Symptomen oder Risikofaktoren ist eine Untersuchung beim Arzt empfohlen)
             </li>
             <li>Allgemeiner Notruf: 144 (täglich 24 Stunden)</li>
+            <li>Anmeldung beim Testzentrum Spital Appenzell: vgl. www.ai.ch/coronvirus ➔ Covid-19-Tests</li>
           </ul>
         </li>
         <li class="p-4x-margin">
           Unterstützung bei Sorgen und Problemen in der Familie
 
           <ul>
+            <li>Beratungsangebote auf www.ai.ch/coronvirus ➔ «Beratung und Hilfe» und «Appenzell hilft»</li>
             <li>Tipps und Tricks für die Zeit in Quarantäne und Isolation: www.dureschnufe.ch</li>
             <li>Informationskampagne zur psychischen Gesundheit: www.wie-gehts-dir.ch</li>
             <li>Telefonische Beratung unter 143, Die Dargebotene Hand</li>

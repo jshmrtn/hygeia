@@ -27,43 +27,26 @@
 <h1>Anordnung zur Quarantäne</h1>
 
 <p>
-  Sie wurden uns von einer auf das neue Coronavirus (Sars-CoV-2) positiv getesteten oder erkrankten
-  Person als <strong>Kontaktperson</strong> gemeldet. Sie hatten ohne entsprechende Schutzmassnahmen
-  einen engen Kontakt zur erwähnten Person (mehr als 15 Minuten/24h mit einer Distanz von weniger als
-  1,5 Meter ohne Schutzmassnahmen wie Mundschutz bei beiden Personen). Es kann deshalb nicht ausgeschlossen
-  werden, dass Sie sich selber angesteckt haben.
+  Sie hatten engen Kontakt mit einer Person, die positiv auf das Coronavirus getestet wurde. Sie haben damit eine grössere Wahrscheinlichkeit, dass Sie sich angesteckt haben und in den nächsten Tagen erkranken. Daher müssen Sie für 10 Tage in Quarantäne (gestützt auf Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG). Ziel dieser Quarantäne ist es, die Ausbreitung des Coronavirus einzudämmen..
+</p>
+
+<%= if length(@case.received_transmissions) > 0 && List.first(@case.received_transmissions).date != nil do %>
+  <p>
+    Der letzte Kontakt mit der erkrankten Person war am <%= Cldr.Date.to_string!(List.first(@case.received_transmissions).date, HygeiaCldr) %>. Die 10 Tage berechnen sich ab diesem Datum.
+  </p>
+<% end %>
+
+<p>
+  Wir haben seit heute Kenntnis von ihrem engen Kontakt, und sprechen darum eine Quarantäne aus von <%= Cldr.Date.to_string!(@phase.start, HygeiaCldr) %> bis und mit <%= Cldr.Date.to_string!(@phase.end, HygeiaCldr) %>.
 </p>
 
 <p>
-  Gestützt auf das Epidemiengesetz (EpG) werden Sie deshalb einer <strong>10-tägigen Quarantäne</strong>
-  (ab dem letzten Kontakt zur infizierten/erkrankten Person) <strong>unterstellt</strong>
-  (Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG).
-</p>
-
-<p>
-  Ihre Quarantäne dauert somit vom <%= Cldr.Date.to_string!(@phase.start, HygeiaCldr) %> bis
-  <%= Cldr.Date.to_string!(@phase.end, HygeiaCldr) %>.
-</p>
-
-<p>
-  Via untenstehenden Link finden Sie das
-  <a href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/merkblatt-selbstquarantaene.pdf.download.pdf/covid-19_anweisungen_quarantaene.pdf">Merkblatt</a>
-  vom Bundesamt für Gesundheit (BAG) zur <strong>Quarantäne</strong>. Alles über das Contact Tracing im
-  Kanton St.Gallen finden Sie <a href="https://www.sg.ch/tools/informationen-coronavirus/contact-tracing.html">hier</a>.
-  Bitte befolgen Sie die entsprechenden Verhaltensanweisungen. Ziel dieser Quarantäne ist es, die Ausbreitung
-  des Coronavirus einzudämmen.
-</p>
-
-<p>
-  Überwachen Sie während der gesamten Quarantäne-Zeit Ihren Gesundheitszustand und lassen Sie sich beim Auftreten
-  von Symptomen (siehe Auflistung unten) sofort testen. Melden Sie sich immer telefonisch in der Arztpraxis an
-  und nehmen Sie zur Bestätigung dieses PDF mit. Wichtig:
+  Via untenstehenden Link finden Sie das <a href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/merkblatt-selbstquarantaene.pdf.download.pdf/covid-19_anweisungen_quarantaene.pdf">Merkblatt</a> vom Bundesamt für Gesundheit (BAG) zur <strong>Quarantäne</strong>. Alles über das Contact Tracing im Kanton St.Gallen finden Sie <a href="https://www.sg.ch/tools/informationen-coronavirus/contact-tracing.html">hier</a>.Bitte befolgen Sie die entsprechenden Verhaltensanweisungen. Überwachen Sie während der gesamten Quarantäne-Zeit Ihren Gesundheitszustand und lassen Sie sich beim Auftreten von Symptomen (siehe Auflistung unten) sofort testen. Melden Sie sich immer telefonisch in der Arztpraxis an und nehmen Sie zur Bestätigung diese E-Mail mit. Wichtig:
 </p>
 
 <ul>
   <li>
-    Wenn ein Besuch in der Arztpraxis nötig ist und Sie das Haus verlassen müssen: Tragen Sie eine Hygienemaske
-    und halten Sie Abstand zu allen Personen. Nutzen sie dafür nicht den öffentlichen Verkehr.
+    Wenn ein Besuch in der Arztpraxis nötig ist und Sie das Haus verlassen müssen: Tragen Sie eine Hygienemaske und halten Sie Abstand zu allen Personen. Nutzen sie dafür nicht den öffentlichen Verkehr.
   </li>
   <li>
     Auch bei negativem Ergebnis müssen Sie die vollen 10 Tage in Quarantäne bleiben.
@@ -71,7 +54,7 @@
 </ul>
 
 <p>
-  Symptome des neuen Coronavirus:
+  Symptome die möglicherweise zum Coronavirus passen:
 </p>
 
 <ul>
@@ -80,12 +63,16 @@
   <li>Fieber, Fiebergefühl</li>
   <li>Muskelschmerzen</li>
   <li>Plötzlicher Verlust des Geruchs- und/oder Geschmackssinns</li>
-  <li>Selten Kopfschmerzen, Magen-Darmsymptome, Bindehautentzündung, Schnupfen</li>
+  <li>Kopfschmerzen</li>
+  <li>Allgemeine Schwäche, Unwohlsein</li>
+  <li>Muskelschmerzen</li>
+  <li>Schnupfen</li>
+  <li>Magen-Darm-Symptome (Übelkeit, Erbrechen, Durchfall, Bauchschmerzen)</li>
+  <li>Hautausschläge</li>
 </ul>
 
 <p>
-  Ausgenommen von der Quarantäne ist nur, wer <em>innert der letzten drei Monate eine Infektion mit dem neuen
-  Coronavirus durchgemacht hat, die mittels eines positiven PCR-Tests oder Schnelltest nachgewiesen wurde.</em>
+  Ausgenommen von der Quarantäne ist nur, wer <em>innert der letzten drei Monate eine Infektion mit dem neuen Coronavirus durchgemacht hat, die mittels eines positiven PCR oder Schnelltests (von einem Nasen-Rachen-Abstrich) nachgewiesen wurde.</em>
 </p>
 
 <p class="p-2x-margin">
