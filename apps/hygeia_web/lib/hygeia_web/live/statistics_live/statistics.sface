@@ -484,7 +484,7 @@
                 }
               {infection_place_type, entries} ->
                 %{
-                  label: infection_place_type,
+                  label: translate_infection_place_type(infection_place_type),
                   data: Enum.reverse(entries)
                 }
             end)

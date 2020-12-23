@@ -19,7 +19,7 @@
                 |> Ecto.Changeset.get_field(:type)
                 |> case do
                   nil -> nil
-                  %{name: name} -> name
+                  type -> translate_infection_place_type(type)
                 end }}
             </InputContext>
           </Inputs>
@@ -185,7 +185,6 @@
                     <HygeiaWeb.TransmissionLive.InfectionPlace
                       id="infection_place"
                       disabled={{ @live_action == :show }}
-                      types={{ @types }}
                     />
                   </Inputs>
                 </div>

@@ -32,8 +32,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
           changeset:
             case
             |> Ecto.build_assoc(:possible_index_submissions)
-            |> CaseContext.change_possible_index_submission(params),
-          types: CaseContext.list_infection_place_types()
+            |> CaseContext.change_possible_index_submission(params)
         )
       else
         socket

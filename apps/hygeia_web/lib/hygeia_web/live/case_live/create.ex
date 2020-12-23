@@ -6,8 +6,8 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User

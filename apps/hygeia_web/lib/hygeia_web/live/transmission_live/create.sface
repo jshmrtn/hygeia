@@ -87,10 +87,7 @@
       </div>
 
       <Inputs for={{ :infection_place }}>
-        <HygeiaWeb.TransmissionLive.InfectionPlace
-          id="infection_place"
-          types={{ @infection_place_types }}
-        />
+        <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
       </Inputs>
     </div>
 

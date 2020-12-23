@@ -1,4 +1,4 @@
-defmodule Hygeia.CaseContext.Case.ContactMethod do
+defmodule Hygeia.CaseContext.Person.ContactMethod do
   @moduledoc """
   Model for Contact Method Schema
   """

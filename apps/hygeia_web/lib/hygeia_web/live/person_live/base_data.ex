@@ -5,6 +5,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
+  alias Hygeia.EctoType.NOGA
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Surface.Components.Form.ErrorTag
@@ -15,6 +16,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label
+  alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
@@ -40,9 +42,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
             &authorized?(person, action, get_auth(socket), tenant: &1)
           )
 
-        professions = CaseContext.list_professions()
-
-        socket |> assign(tenants: tenants, professions: professions) |> load_data(person)
+        socket |> assign(tenants: tenants) |> load_data(person)
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))
@@ -189,6 +189,56 @@ defmodule HygeiaWeb.PersonLive.BaseData do
          changeset_remove_from_params_by_id(changeset, :employers, %{uuid: uuid})
        )
      )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event(
+        "add_vaccination_jab_date",
+        _params,
+        %{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
+    vaccination_params =
+      changeset
+      |> Ecto.Changeset.get_change(
+        :vaccination,
+        Person.Vaccination.changeset(
+          Ecto.Changeset.get_field(changeset, :vaccination, %Person.Vaccination{}),
+          %{}
+        )
+      )
+      |> update_changeset_param(:jab_dates, &Enum.concat(&1, [nil]))
+
+    params = update_changeset_param(changeset, :vaccination, fn _input -> vaccination_params end)
+
+    {:noreply,
+     socket
+     |> assign(:changeset, CaseContext.change_person(person, params))
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event(
+        "remove_vaccination_jab_date",
+        %{"index" => index} = _params,
+        %{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
+    index = String.to_integer(index)
+
+    vaccination_params =
+      changeset
+      |> Ecto.Changeset.get_change(
+        :vaccination,
+        Person.Vaccination.changeset(
+          Ecto.Changeset.get_field(changeset, :vaccination, %Person.Vaccination{}),
+          %{}
+        )
+      )
+      |> update_changeset_param(:jab_dates, &List.delete_at(&1, index))
+
+    params = update_changeset_param(changeset, :vaccination, fn _input -> vaccination_params end)
+
+    {:noreply,
+     socket
+     |> assign(:changeset, CaseContext.change_person(person, params))
      |> maybe_block_navigation()}
   end
 

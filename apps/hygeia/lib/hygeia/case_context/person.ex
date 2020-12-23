@@ -9,10 +9,11 @@ defmodule Hygeia.CaseContext.Person do
 
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.CaseContext.Employer
   alias Hygeia.CaseContext.ExternalReference
-  alias Hygeia.CaseContext.Profession
+  alias Hygeia.CaseContext.Person.ContactMethod
+  alias Hygeia.CaseContext.Person.Vaccination
+  alias Hygeia.EctoType.NOGA
   alias Hygeia.OrganisationContext.Position
   alias Hygeia.TenantContext.Tenant
 
@@ -31,12 +32,13 @@ defmodule Hygeia.CaseContext.Person do
           contact_methods: [ContactMethod.t()] | nil,
           external_references: [ExternalReference.t()] | nil,
           employers: [Employer.t()] | nil,
-          profession_uuid: String.t() | nil,
-          profession: Ecto.Schema.belongs_to(Profession.t()) | nil,
+          profession_category: NOGA.Code.t() | nil,
+          profession_category_main: NOGA.Section.t() | nil,
           tenant_uuid: String.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
           positions: Ecto.Schema.has_many(Position.t()) | nil,
+          vaccination: Vaccination.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -52,12 +54,13 @@ defmodule Hygeia.CaseContext.Person do
           contact_methods: [ContactMethod.t()],
           external_references: [ExternalReference.t()],
           employers: [Employer.t()],
-          profession_uuid: String.t() | nil,
-          profession: Ecto.Schema.belongs_to(Profession.t()),
+          profession_category: NOGA.Code.t() | nil,
+          profession_category_main: NOGA.Section.t() | nil,
           tenant_uuid: String.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
           cases: Ecto.Schema.has_many(Case.t()),
           positions: Ecto.Schema.has_many(Position.t()),
+          vaccination: Vaccination.t(),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -68,13 +71,15 @@ defmodule Hygeia.CaseContext.Person do
     field :human_readable_id, :string
     field :last_name, :string
     field :sex, Sex
+    field :profession_category, NOGA.Code
+    field :profession_category_main, NOGA.Section
 
     embeds_one :address, Address, on_replace: :update
     embeds_many :contact_methods, ContactMethod, on_replace: :delete
     embeds_many :external_references, ExternalReference, on_replace: :delete
     embeds_many :employers, Employer, on_replace: :delete
+    embeds_one :vaccination, Vaccination, on_replace: :update
 
-    belongs_to :profession, Profession, references: :uuid, foreign_key: :profession_uuid
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     has_many :cases, Case
     has_many :positions, Position, foreign_key: :person_uuid
@@ -95,21 +100,38 @@ defmodule Hygeia.CaseContext.Person do
       :sex,
       :birth_date,
       :tenant_uuid,
-      :profession_uuid
+      :profession_category_main,
+      :profession_category
     ])
     |> fill_uuid
     |> fill_human_readable_id
     |> validate_required([:uuid, :human_readable_id, :tenant_uuid, :first_name])
+    |> validate_profession_category()
     |> cast_embed(:external_references)
     |> cast_embed(:address)
     |> cast_embed(:contact_methods)
     |> cast_embed(:employers)
+    |> cast_embed(:vaccination)
     |> foreign_key_constraint(:tenant_uuid)
-    |> foreign_key_constraint(:profession_uuid)
     |> detect_name_duplicates
     |> detect_duplicates(:mobile)
     |> detect_duplicates(:landline)
     |> detect_duplicates(:email)
+  end
+
+  defp validate_profession_category(changeset) do
+    changeset
+    |> fetch_change(:profession_category)
+    |> case do
+      :error ->
+        changeset
+
+      {:ok, nil} ->
+        changeset
+
+      {:ok, code} ->
+        validate_inclusion(changeset, :profession_category_main, [NOGA.Code.section(code)])
+    end
   end
 
   defimpl Hygeia.Authorization.Resource do

@@ -32,9 +32,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
          ) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "possible_index_submissions:#{id}")
 
-        socket
-        |> load_data(possible_index_submission)
-        |> assign(infection_place_types: CaseContext.list_infection_place_types())
+        load_data(socket, possible_index_submission)
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))

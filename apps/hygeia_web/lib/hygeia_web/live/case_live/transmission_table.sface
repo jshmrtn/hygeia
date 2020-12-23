@@ -121,12 +121,10 @@
             end }}
           </td>
           <td>
-            {{ 
-              transmission.infection_place
-              |> Repo.preload(:type)
-              |> case do
-                %{type: %{name: name}} -> name
-                _ -> nil
+            {{
+              case transmission.infection_place.type do
+                nil -> nil
+                type -> translate_infection_place_type(type)
               end
             }}
           </td>

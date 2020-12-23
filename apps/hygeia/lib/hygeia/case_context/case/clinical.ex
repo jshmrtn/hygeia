@@ -16,6 +16,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     "work_related",
     "quarantine",
     "app_report",
+    "convenience",
     "contact_tracing"
   ]
 
@@ -36,7 +37,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     "other"
   ]
 
-  defenum TestKind, :test_kind, ["pcr", "serology", "quick"]
+  defenum TestKind, :test_kind, ["pcr", "serology", "quick", "antigen_quick", "antibody"]
 
   defenum Result, :test_result, ["positive", "negative"]
 

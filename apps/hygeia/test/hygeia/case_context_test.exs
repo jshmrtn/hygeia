@@ -4,22 +4,21 @@ defmodule Hygeia.CaseContextTest do
   use Hygeia.DataCase
   use Bamboo.Test
 
+  import AssertValue
   import Mox
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Clinical
-  alias Hygeia.CaseContext.Case.ContactMethod
   alias Hygeia.CaseContext.Case.Hospitalization
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.Employer
   alias Hygeia.CaseContext.ExternalReference
-  alias Hygeia.CaseContext.InfectionPlaceType
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
-  alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.ProtocolEntry.Email
   alias Hygeia.CaseContext.ProtocolEntry.Note
@@ -31,60 +30,6 @@ defmodule Hygeia.CaseContextTest do
 
   @moduletag origin: :test
   @moduletag originator: :noone
-
-  describe "professions" do
-    @valid_attrs %{name: "some name"}
-    @update_attrs %{name: "some updated name"}
-    @invalid_attrs %{name: nil}
-
-    test "list_professions/0 returns all professions" do
-      profession = profession_fixture()
-      assert CaseContext.list_professions() == [profession]
-    end
-
-    test "get_profession!/1 returns the profession with given id" do
-      profession = profession_fixture()
-      assert CaseContext.get_profession!(profession.uuid) == profession
-    end
-
-    test "create_profession/1 with valid data creates a profession" do
-      assert {:ok, %Profession{} = profession} = CaseContext.create_profession(@valid_attrs)
-      assert profession.name == "some name"
-    end
-
-    test "create_profession/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = CaseContext.create_profession(@invalid_attrs)
-    end
-
-    test "update_profession/2 with valid data updates the profession" do
-      profession = profession_fixture()
-
-      assert {:ok, %Profession{} = profession} =
-               CaseContext.update_profession(profession, @update_attrs)
-
-      assert profession.name == "some updated name"
-    end
-
-    test "update_profession/2 with invalid data returns error changeset" do
-      profession = profession_fixture()
-
-      assert {:error, %Ecto.Changeset{}} =
-               CaseContext.update_profession(profession, @invalid_attrs)
-
-      assert profession == CaseContext.get_profession!(profession.uuid)
-    end
-
-    test "delete_profession/1 deletes the profession" do
-      profession = profession_fixture()
-      assert {:ok, %Profession{}} = CaseContext.delete_profession(profession)
-      assert_raise Ecto.NoResultsError, fn -> CaseContext.get_profession!(profession.uuid) end
-    end
-
-    test "change_profession/1 returns a profession changeset" do
-      profession = profession_fixture()
-      assert %Ecto.Changeset{} = CaseContext.change_profession(profession)
-    end
-  end
 
   describe "people" do
     @valid_attrs %{
@@ -713,6 +658,754 @@ defmodule Hygeia.CaseContextTest do
 
       assert {:error, :no_email} = CaseContext.case_send_email(case, "Subject", "Body")
     end
+
+    test "case_export/1 exports :bag_med_16122020_case" do
+      Repo.transaction(fn ->
+        user = user_fixture()
+        tenant = tenant_fixture()
+
+        person_jony =
+          person_fixture(tenant, %{
+            first_name: "Jonatan",
+            last_name: "Männchen",
+            sex: :male,
+            birth_date: ~D[1993-01-30],
+            address: %{
+              address: "Erlen 4",
+              zip: "9042",
+              place: "Speicher",
+              subdivision: "AR",
+              country: "CH"
+            },
+            contact_methods: [
+              %{type: :mobile, value: "+41787245790"},
+              %{type: :landline, value: "+41522330689"}
+            ],
+            employers: [
+              %{
+                name: "JOSHMARTIN GmbH",
+                address: %{
+                  address: "Neugasse 51",
+                  zip: "9000",
+                  place: "St. Gallen",
+                  subdivision: "SG",
+                  country: "CH"
+                }
+              }
+            ],
+            vaccination: %{
+              done: true,
+              name: "Biontech",
+              jab_dates: [~D[2021-01-01], ~D[2021-02-03]]
+            },
+            profession_category: :"74",
+            profession_category_main: :M
+          })
+
+        person_jay =
+          person_fixture(tenant, %{
+            address: %{
+              address: "Hebelstrasse 20",
+              zip: "9000",
+              place: "St. Gallen",
+              subdivision: "SG",
+              country: "CH"
+            },
+            birth_date: ~D[1992-03-27],
+            contact_methods: [
+              %{
+                type: :mobile,
+                value: "+41 79 794 57 83"
+              }
+            ],
+            external_references: [
+              %{
+                type: :ism_case,
+                value: "7002"
+              }
+            ],
+            first_name: "Jeremy",
+            last_name: "Zahner",
+            profession_category: :"74",
+            profession_category_main: :M,
+            sex: :male
+          })
+
+        case_jony =
+          case_fixture(person_jony, user, user, %{
+            uuid: "ca98a59b-64c5-4476-9abd-d91d2d1d24e3",
+            external_references: [
+              %{type: :ism_case, value: "ISM ID"}
+            ],
+            monitoring: %{
+              location: :home,
+              location_details: "Bei Mutter zuhause"
+            },
+            phases: [
+              %{
+                details: %{
+                  __type__: :possible_index,
+                  type: :travel
+                },
+                start: ~D[2020-10-03],
+                end: ~D[2020-10-06]
+              },
+              %{
+                details: %{
+                  __type__: :index,
+                  type: :contact_person,
+                  end_reason: :healed
+                },
+                start: ~D[2020-10-06],
+                end: ~D[2020-10-16]
+              }
+            ],
+            clinical: %{
+              has_symptoms: true,
+              symptoms: [:fever],
+              reasons_for_test: [:symptoms],
+              test_kind: :serology,
+              result: :positive
+            }
+          })
+
+        _note_case_jony =
+          protocol_entry_fixture(case_jony, %{inserted_at: ~U[2021-01-05 11:55:10.783294Z]})
+
+        case_jay =
+          case_fixture(person_jay, user, user, %{
+            uuid: "dd1911a3-a79f-4594-8439-5b0455569e9e",
+            monitoring: %{
+              location: :home
+            },
+            phases: [
+              %{
+                details: %{
+                  __type__: :possible_index,
+                  type: :contact_person
+                },
+                start: ~D[2020-10-06],
+                end: ~D[2020-10-10]
+              },
+              %{
+                details: %{
+                  __type__: :index,
+                  type: :contact_person
+                },
+                start: ~D[2020-10-10],
+                end: ~D[2020-10-20]
+              }
+            ],
+            clinical: %{
+              has_symptoms: false,
+              reasons_for_test: [:contact_tracing]
+            }
+          })
+
+        _transmission_jony =
+          transmission_fixture(%{
+            date: ~D[2020-10-02],
+            propagator_internal: nil,
+            recipient_internal: true,
+            recipient_case_uuid: case_jony.uuid,
+            infection_place: %{
+              address: %{
+                country: "GB"
+              },
+              known: true,
+              activity_mapping_executed: true,
+              activity_mapping: "Seat 3A",
+              type: :flight,
+              name: "Swiss International Airlines",
+              flight_information: "LX332"
+            }
+          })
+
+        _transmission_jony_jay =
+          transmission_fixture(%{
+            date: ~D[2020-10-05],
+            propagator_internal: true,
+            propagator_case_uuid: case_jony.uuid,
+            recipient_internal: true,
+            recipient_case_uuid: case_jay.uuid,
+            infection_place: %{
+              address: %{
+                address: "Torstrasse 25",
+                zip: "9000",
+                place: "St. Gallen",
+                subdivision: "SG",
+                country: "CH"
+              },
+              known: true,
+              activity_mapping_executed: true,
+              activity_mapping: "Drank beer, kept distance to other people",
+              type: :flight,
+              name: "BrüW",
+              flight_information: nil
+            }
+          })
+
+        assert_value tenant
+                     |> CaseContext.case_export(:bag_med_16122020_case)
+                     |> CSV.decode!(headers: true)
+                     |> Enum.to_list() == [
+                       %{
+                         "exp_loc_type_high_school" => "0",
+                         "exp_loc_name" => "Swiss International Airlines",
+                         "test_type" => "5",
+                         "work_place_street_number" => "",
+                         "exp_loc_type_choir" => "0",
+                         "work_place_location" => "St. Gallen",
+                         "first_name" => "Jonatan",
+                         "iso_loc_street_number" => "",
+                         "test_reason_quarantine" => "0",
+                         "end_of_iso_dt" => "2020-10-16",
+                         "case_link_ktn_internal_id" => "",
+                         "test_reason_app" => "0",
+                         "lab_report_dt" => "",
+                         "exp_loc_type_cinema" => "0",
+                         "date_of_birth" => "1993-01-30",
+                         "exp_loc_type_asyl" => "0",
+                         "test_result" => "1",
+                         "symptom_onset_dt" => "2020-10-06",
+                         "work_place_postal_code" => "9000",
+                         "vacc_name" => "Biontech",
+                         "exp_loc_type_medical" => "0",
+                         "vacc_dose" => "2",
+                         "exp_loc_type_indoor_sport" => "0",
+                         "last_name" => "Männchen",
+                         "exp_loc_type_army" => "0",
+                         "exp_loc_type_shop" => "0",
+                         "exp_loc_dt" => "2020-10-02",
+                         "iso_loc_type" => "1",
+                         "country" => "CH",
+                         "test_reason_work_screening" => "0",
+                         "exp_type" => "2",
+                         "test_reason_convenience" => "0",
+                         "reason_end_of_iso" => "",
+                         "work_place_name" => "JOSHMARTIN GmbH",
+                         "exp_loc_type_yn" => "true",
+                         "test_reason_cohort" => "0",
+                         "exp_loc_type_work_place" => "0",
+                         "exp_loc_type_school_camp" => "0",
+                         "work_place_street" => "Neugasse 51",
+                         "exp_loc_type_gathering" => "0",
+                         "profession" => "M",
+                         "reason_quar" => "",
+                         "vacc_dt_first" => "2021-01-01",
+                         "exp_loc_flightdetail" => "LX332",
+                         "exp_loc_postal_code" => "",
+                         "vacc_yn" => "1",
+                         "corr_ct_dt" => "",
+                         "mobile_number" => "+41787245790",
+                         "street_name" => "Erlen 4",
+                         "case_link_contact_dt" => "2020-10-02",
+                         "exp_loc_type_club" => "0",
+                         "onset_iso_dt" => "2020-10-06",
+                         "test_reason_symptoms" => "1",
+                         "exp_loc_street" => "",
+                         "ktn_internal_id" => "ca98a59b-64c5-4476-9abd-d91d2d1d24e3",
+                         "work_place_country" => "CH",
+                         "phone_number" => "+41522330689",
+                         "exp_loc_type_nursing_home" => "0",
+                         "exp_loc_type_public_transp" => "0",
+                         "exp_loc_type_more_300" => "0",
+                         "exp_loc_type_child_home" => "0",
+                         "quar_yn" => "true",
+                         "exp_loc_type_religion" => "0",
+                         "activity_mapping_yn" => "",
+                         "exp_loc_type_restaurant" => "0",
+                         "location" => "Speicher",
+                         "symptoms_yn" => "true",
+                         "exp_loc_type_hotel" => "0",
+                         "exp_loc_type_childcare" => "0",
+                         "test_reason_outbreak" => "0",
+                         "other_exp_loc_type" => "0",
+                         "iso_loc_country" => "",
+                         "other_reason_end_of_iso" => "",
+                         "sex" => "1",
+                         "other_reason_quar" => "",
+                         "exp_loc_street_number" => "",
+                         "vacc_dt_last" => "2021-02-03",
+                         "exp_loc_type_erotica" => "0",
+                         "exp_loc_type_flight" => "1",
+                         "exp_loc_type_hh" => "0",
+                         "exp_loc_type_zoo" => "0",
+                         "other_iso_loc" => "Bei Mutter zuhause",
+                         "iso_loc_street" => "",
+                         "case_link_yn" => "true",
+                         "exp_loc_type_school" => "0",
+                         "follow_up_dt" => "2021-01-05",
+                         "case_link_fall_id_ism" => "",
+                         "iso_loc_postal_code" => "",
+                         "exp_loc_location" => "",
+                         "exp_loc_type_outdoor_sport" => "0",
+                         "exp_loc_type_massage" => "0",
+                         "exp_loc_type_less_300_detail" => "Swiss International Airlines",
+                         "sampling_dt" => "",
+                         "exp_loc_type_prison" => "0",
+                         "street_number" => "",
+                         "fall_id_ism" => "ISM ID",
+                         "postal_code" => "9042",
+                         "e_mail_address" => "",
+                         "iso_loc_location" => "",
+                         "onset_quar_dt" => "2020-10-03",
+                         "exp_loc_type_less_300" => "0",
+                         "exp_country" => "GB",
+                         "exp_loc_type_more_300_detail" => "Swiss International Airlines"
+                       },
+                       %{
+                         "exp_loc_type_high_school" => "0",
+                         "exp_loc_name" => "BrüW",
+                         "test_type" => "5",
+                         "work_place_street_number" => "",
+                         "exp_loc_type_choir" => "0",
+                         "work_place_location" => "St. Gallen",
+                         "first_name" => "Jeremy",
+                         "iso_loc_street_number" => "",
+                         "test_reason_quarantine" => "0",
+                         "end_of_iso_dt" => "2020-10-20",
+                         "case_link_ktn_internal_id" => "ca98a59b-64c5-4476-9abd-d91d2d1d24e3",
+                         "test_reason_app" => "0",
+                         "lab_report_dt" => "",
+                         "exp_loc_type_cinema" => "0",
+                         "date_of_birth" => "1992-03-27",
+                         "exp_loc_type_asyl" => "0",
+                         "test_result" => "3",
+                         "symptom_onset_dt" => "2020-10-10",
+                         "work_place_postal_code" => "9000",
+                         "vacc_name" => "",
+                         "exp_loc_type_medical" => "0",
+                         "vacc_dose" => "",
+                         "exp_loc_type_indoor_sport" => "0",
+                         "last_name" => "Zahner",
+                         "exp_loc_type_army" => "0",
+                         "exp_loc_type_shop" => "0",
+                         "exp_loc_dt" => "2020-10-05",
+                         "iso_loc_type" => "1",
+                         "country" => "CH",
+                         "test_reason_work_screening" => "0",
+                         "exp_type" => "1",
+                         "test_reason_convenience" => "0",
+                         "reason_end_of_iso" => "",
+                         "work_place_name" => "JOSHMARTIN GmbH",
+                         "exp_loc_type_yn" => "true",
+                         "test_reason_cohort" => "0",
+                         "exp_loc_type_work_place" => "0",
+                         "exp_loc_type_school_camp" => "0",
+                         "work_place_street" => "Neugasse 51",
+                         "exp_loc_type_gathering" => "0",
+                         "profession" => "M",
+                         "reason_quar" => "",
+                         "vacc_dt_first" => "",
+                         "exp_loc_flightdetail" => "",
+                         "exp_loc_postal_code" => "9000",
+                         "vacc_yn" => "3",
+                         "corr_ct_dt" => "",
+                         "mobile_number" => "+41797945783",
+                         "street_name" => "Hebelstrasse 20",
+                         "case_link_contact_dt" => "2020-10-05",
+                         "exp_loc_type_club" => "0",
+                         "onset_iso_dt" => "2020-10-10",
+                         "test_reason_symptoms" => "0",
+                         "exp_loc_street" => "Torstrasse 25",
+                         "ktn_internal_id" => "dd1911a3-a79f-4594-8439-5b0455569e9e",
+                         "work_place_country" => "CH",
+                         "phone_number" => "",
+                         "exp_loc_type_nursing_home" => "0",
+                         "exp_loc_type_public_transp" => "0",
+                         "exp_loc_type_more_300" => "0",
+                         "exp_loc_type_child_home" => "0",
+                         "quar_yn" => "true",
+                         "exp_loc_type_religion" => "0",
+                         "activity_mapping_yn" => "",
+                         "exp_loc_type_restaurant" => "0",
+                         "location" => "St. Gallen",
+                         "symptoms_yn" => "false",
+                         "exp_loc_type_hotel" => "0",
+                         "exp_loc_type_childcare" => "0",
+                         "test_reason_outbreak" => "0",
+                         "other_exp_loc_type" => "0",
+                         "iso_loc_country" => "",
+                         "other_reason_end_of_iso" => "",
+                         "sex" => "1",
+                         "other_reason_quar" => "",
+                         "exp_loc_street_number" => "",
+                         "vacc_dt_last" => "",
+                         "exp_loc_type_erotica" => "0",
+                         "exp_loc_type_flight" => "1",
+                         "exp_loc_type_hh" => "0",
+                         "exp_loc_type_zoo" => "0",
+                         "other_iso_loc" => "",
+                         "iso_loc_street" => "",
+                         "case_link_yn" => "true",
+                         "exp_loc_type_school" => "0",
+                         "follow_up_dt" => "",
+                         "case_link_fall_id_ism" => "ISM ID",
+                         "iso_loc_postal_code" => "",
+                         "exp_loc_location" => "St. Gallen",
+                         "exp_loc_type_outdoor_sport" => "0",
+                         "exp_loc_type_massage" => "0",
+                         "exp_loc_type_less_300_detail" => "BrüW",
+                         "sampling_dt" => "",
+                         "exp_loc_type_prison" => "0",
+                         "street_number" => "",
+                         "fall_id_ism" => "7000",
+                         "postal_code" => "9000",
+                         "e_mail_address" => "",
+                         "iso_loc_location" => "",
+                         "onset_quar_dt" => "2020-10-06",
+                         "exp_loc_type_less_300" => "0",
+                         "exp_country" => "CH",
+                         "exp_loc_type_more_300_detail" => "BrüW"
+                       }
+                     ]
+      end)
+    end
+
+    test "case_export/1 exports :bag_med_16122020_contact" do
+      Repo.transaction(fn ->
+        user = user_fixture()
+        tenant = tenant_fixture()
+
+        person_jony =
+          person_fixture(tenant, %{
+            first_name: "Jonatan",
+            last_name: "Männchen",
+            sex: :male,
+            birth_date: ~D[1993-01-30],
+            address: %{
+              address: "Erlen 4",
+              zip: "9042",
+              place: "Speicher",
+              subdivision: "AR",
+              country: "CH"
+            },
+            contact_methods: [
+              %{type: :mobile, value: "+41787245790"},
+              %{type: :landline, value: "+41522330689"}
+            ],
+            employers: [
+              %{
+                name: "JOSHMARTIN GmbH",
+                address: %{
+                  address: "Neugasse 51",
+                  zip: "9000",
+                  place: "St. Gallen",
+                  subdivision: "SG",
+                  country: "CH"
+                }
+              }
+            ]
+          })
+
+        person_jay =
+          person_fixture(tenant, %{
+            address: %{
+              address: "Hebelstrasse 20",
+              zip: "9000",
+              place: "St. Gallen",
+              subdivision: "SG",
+              country: "CH"
+            },
+            birth_date: ~D[1992-03-27],
+            contact_methods: [
+              %{
+                type: :mobile,
+                value: "+41 79 794 57 83"
+              }
+            ],
+            external_references: [
+              %{
+                type: :ism_case,
+                value: "7002"
+              }
+            ],
+            first_name: "Jeremy",
+            last_name: "Zahner",
+            sex: :male
+          })
+
+        case_jony =
+          case_fixture(person_jony, user, user, %{
+            uuid: "7c8004f3-d4bc-4042-8914-265761ffc49c",
+            external_references: [
+              %{type: :ism_case, value: "ISM ID"}
+            ],
+            monitoring: %{
+              location: :home,
+              location_details: "Bei Mutter zuhause"
+            },
+            phases: [
+              %{
+                details: %{
+                  __type__: :possible_index,
+                  type: :travel
+                },
+                start: ~D[2020-10-03],
+                end: ~D[2020-10-06]
+              },
+              %{
+                details: %{
+                  __type__: :index,
+                  type: :contact_person,
+                  end_reason: :healed
+                },
+                start: ~D[2020-10-06],
+                end: ~D[2020-10-16]
+              }
+            ],
+            clinical: %{
+              has_symptoms: true,
+              symptoms: [:fever],
+              reasons_for_test: [:symptoms],
+              test_kind: :serology,
+              result: :positive
+            }
+          })
+
+        case_jay =
+          case_fixture(person_jay, user, user, %{
+            uuid: "fc705b72-2911-46d8-93f2-5d70b982d4d8",
+            monitoring: %{
+              location: :home
+            },
+            phases: [
+              %{
+                details: %{
+                  __type__: :possible_index,
+                  type: :contact_person
+                },
+                start: ~D[2020-10-06],
+                end: ~D[2020-10-10]
+              },
+              %{
+                details: %{
+                  __type__: :index,
+                  type: :contact_person
+                },
+                start: ~D[2020-10-10],
+                end: ~D[2020-10-20]
+              }
+            ],
+            clinical: %{
+              has_symptoms: false,
+              reasons_for_test: [:contact_tracing]
+            }
+          })
+
+        _transmission_jony =
+          transmission_fixture(%{
+            date: ~D[2020-10-02],
+            propagator_internal: nil,
+            recipient_internal: true,
+            recipient_case_uuid: case_jony.uuid,
+            infection_place: %{
+              address: %{
+                country: "GB"
+              },
+              known: true,
+              activity_mapping_executed: true,
+              activity_mapping: "Seat 3A",
+              type: :flight,
+              name: "Swiss International Airlines",
+              flight_information: "LX332"
+            }
+          })
+
+        _transmission_jony_jay =
+          transmission_fixture(%{
+            date: ~D[2020-10-05],
+            propagator_internal: true,
+            propagator_case_uuid: case_jony.uuid,
+            recipient_internal: true,
+            recipient_case_uuid: case_jay.uuid,
+            infection_place: %{
+              address: %{
+                address: "Torstrasse 25",
+                zip: "9000",
+                place: "St. Gallen",
+                subdivision: "SG",
+                country: "CH"
+              },
+              known: true,
+              activity_mapping_executed: true,
+              activity_mapping: "Drank beer, kept distance to other people",
+              type: :flight,
+              name: "BrüW",
+              flight_information: nil
+            }
+          })
+
+        assert_value tenant
+                     |> CaseContext.case_export(:bag_med_16122020_contact)
+                     |> CSV.decode!(headers: true)
+                     |> Enum.to_list() == [
+                       %{
+                         "exp_loc_type_high_school" => "0",
+                         "exp_loc_name" => "Swiss International Airlines",
+                         "test_type" => "5",
+                         "exp_loc_type_choir" => "0",
+                         "first_name" => "Jonatan",
+                         "test_reason_quarantine" => "0",
+                         "case_link_ktn_internal_id" => "",
+                         "exp_loc_type_cinema" => "0",
+                         "date_of_birth" => "1993-01-30",
+                         "exp_loc_type_asyl" => "0",
+                         "test_result" => "1",
+                         "symptom_onset_dt" => "2020-10-06",
+                         "work_place_postal_code" => "9000",
+                         "vacc_name" => "",
+                         "exp_loc_type_medical" => "0",
+                         "vacc_dose" => "",
+                         "exp_loc_type_indoor_sport" => "0",
+                         "last_name" => "Männchen",
+                         "exp_loc_type_army" => "0",
+                         "exp_loc_type_shop" => "0",
+                         "exp_loc_dt" => "2020-10-02",
+                         "country" => "CH",
+                         "exp_type" => "2",
+                         "work_place_name" => "JOSHMARTIN GmbH",
+                         "exp_loc_type_work_place" => "0",
+                         "exp_loc_type_school_camp" => "0",
+                         "exp_loc_type_gathering" => "0",
+                         "profession" => "",
+                         "vacc_dt_first" => "",
+                         "exp_loc_flightdetail" => "LX332",
+                         "exp_loc_postal_code" => "",
+                         "vacc_yn" => "3",
+                         "mobile_number" => "+41787245790",
+                         "street_name" => "Erlen 4",
+                         "case_link_contact_dt" => "2020-10-02",
+                         "other_test_reason" => "0",
+                         "exp_loc_type_club" => "0",
+                         "test_reason_symptoms" => "1",
+                         "exp_loc_street" => "",
+                         "ktn_internal_id" => "7c8004f3-d4bc-4042-8914-265761ffc49c",
+                         "work_place_country" => "CH",
+                         "reason_end_quar" => "",
+                         "phone_number" => "+41522330689",
+                         "exp_loc_type_nursing_home" => "0",
+                         "exp_loc_type_public_transp" => "0",
+                         "exp_loc_type_more_300" => "0",
+                         "exp_loc_type_child_home" => "0",
+                         "exp_loc_type_religion" => "0",
+                         "exp_loc_type_restaurant" => "0",
+                         "location" => "Speicher",
+                         "exp_loc_type_hotel" => "0",
+                         "exp_loc_type_childcare" => "0",
+                         "other_exp_loc_type" => "0",
+                         "sex" => "1",
+                         "other_reason_end_quar" => "",
+                         "exp_loc_street_number" => "",
+                         "test_reason_quarantine_end" => "",
+                         "vacc_dt_last" => "",
+                         "exp_loc_type_erotica" => "0",
+                         "exp_loc_type_flight" => "1",
+                         "exp_loc_type_hh" => "0",
+                         "exp_loc_type_zoo" => "0",
+                         "other_quar_loc_type" => "Bei Mutter zuhause",
+                         "exp_loc_type_school" => "0",
+                         "case_link_fall_id_ism" => "",
+                         "end_quar_dt" => "2020-10-06",
+                         "exp_loc_location" => "",
+                         "exp_loc_type_outdoor_sport" => "0",
+                         "exp_loc_type_massage" => "0",
+                         "exp_loc_type_less_300_detail" => "Swiss International Airlines",
+                         "sampling_dt" => "",
+                         "exp_loc_type_prison" => "0",
+                         "street_number" => "",
+                         "postal_code" => "9042",
+                         "quar_loc_type" => "1",
+                         "onset_quar_dt" => "2020-10-03",
+                         "exp_loc_type_less_300" => "0",
+                         "exp_country" => "GB",
+                         "exp_loc_type_more_300_detail" => "Swiss International Airlines"
+                       },
+                       %{
+                         "exp_loc_type_high_school" => "0",
+                         "exp_loc_name" => "BrüW",
+                         "test_type" => "5",
+                         "exp_loc_type_choir" => "0",
+                         "first_name" => "Jeremy",
+                         "test_reason_quarantine" => "0",
+                         "case_link_ktn_internal_id" => "7c8004f3-d4bc-4042-8914-265761ffc49c",
+                         "exp_loc_type_cinema" => "0",
+                         "date_of_birth" => "1992-03-27",
+                         "exp_loc_type_asyl" => "0",
+                         "test_result" => "3",
+                         "symptom_onset_dt" => "2020-10-10",
+                         "work_place_postal_code" => "9000",
+                         "vacc_name" => "",
+                         "exp_loc_type_medical" => "0",
+                         "vacc_dose" => "",
+                         "exp_loc_type_indoor_sport" => "0",
+                         "last_name" => "Zahner",
+                         "exp_loc_type_army" => "0",
+                         "exp_loc_type_shop" => "0",
+                         "exp_loc_dt" => "2020-10-05",
+                         "country" => "CH",
+                         "exp_type" => "1",
+                         "work_place_name" => "JOSHMARTIN GmbH",
+                         "exp_loc_type_work_place" => "0",
+                         "exp_loc_type_school_camp" => "0",
+                         "exp_loc_type_gathering" => "0",
+                         "profession" => "",
+                         "vacc_dt_first" => "",
+                         "exp_loc_flightdetail" => "",
+                         "exp_loc_postal_code" => "9000",
+                         "vacc_yn" => "3",
+                         "mobile_number" => "+41797945783",
+                         "street_name" => "Hebelstrasse 20",
+                         "case_link_contact_dt" => "2020-10-05",
+                         "other_test_reason" => "1",
+                         "exp_loc_type_club" => "0",
+                         "test_reason_symptoms" => "0",
+                         "exp_loc_street" => "Torstrasse 25",
+                         "ktn_internal_id" => "fc705b72-2911-46d8-93f2-5d70b982d4d8",
+                         "work_place_country" => "CH",
+                         "reason_end_quar" => "",
+                         "phone_number" => "",
+                         "exp_loc_type_nursing_home" => "0",
+                         "exp_loc_type_public_transp" => "0",
+                         "exp_loc_type_more_300" => "0",
+                         "exp_loc_type_child_home" => "0",
+                         "exp_loc_type_religion" => "0",
+                         "exp_loc_type_restaurant" => "0",
+                         "location" => "St. Gallen",
+                         "exp_loc_type_hotel" => "0",
+                         "exp_loc_type_childcare" => "0",
+                         "other_exp_loc_type" => "0",
+                         "sex" => "1",
+                         "other_reason_end_quar" => "",
+                         "exp_loc_street_number" => "",
+                         "test_reason_quarantine_end" => "",
+                         "vacc_dt_last" => "",
+                         "exp_loc_type_erotica" => "0",
+                         "exp_loc_type_flight" => "1",
+                         "exp_loc_type_hh" => "0",
+                         "exp_loc_type_zoo" => "0",
+                         "other_quar_loc_type" => "",
+                         "exp_loc_type_school" => "0",
+                         "case_link_fall_id_ism" => "ISM ID",
+                         "end_quar_dt" => "2020-10-10",
+                         "exp_loc_location" => "St. Gallen",
+                         "exp_loc_type_outdoor_sport" => "0",
+                         "exp_loc_type_massage" => "0",
+                         "exp_loc_type_less_300_detail" => "BrüW",
+                         "sampling_dt" => "",
+                         "exp_loc_type_prison" => "0",
+                         "street_number" => "",
+                         "postal_code" => "9000",
+                         "quar_loc_type" => "1",
+                         "onset_quar_dt" => "2020-10-06",
+                         "exp_loc_type_less_300" => "0",
+                         "exp_country" => "CH",
+                         "exp_loc_type_more_300_detail" => "BrüW"
+                       }
+                     ]
+      end)
+    end
   end
 
   describe "transmissions" do
@@ -886,70 +1579,6 @@ defmodule Hygeia.CaseContextTest do
     end
   end
 
-  describe "infection_place_types" do
-    @valid_attrs %{name: "some name"}
-    @update_attrs %{name: "some updated name"}
-    @invalid_attrs %{name: nil}
-
-    test "list_infection_place_types/0 returns all infection_place_types" do
-      infection_place_type = infection_place_type_fixture()
-      assert CaseContext.list_infection_place_types() == [infection_place_type]
-    end
-
-    test "get_infection_place_type!/1 returns the infection_place_type with given id" do
-      infection_place_type = infection_place_type_fixture()
-
-      assert CaseContext.get_infection_place_type!(infection_place_type.uuid) ==
-               infection_place_type
-    end
-
-    test "create_infection_place_type/1 with valid data creates a infection_place_type" do
-      assert {:ok, %InfectionPlaceType{} = infection_place_type} =
-               CaseContext.create_infection_place_type(@valid_attrs)
-
-      assert infection_place_type.name == "some name"
-    end
-
-    test "create_infection_place_type/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = CaseContext.create_infection_place_type(@invalid_attrs)
-    end
-
-    test "update_infection_place_type/2 with valid data updates the infection_place_type" do
-      infection_place_type = infection_place_type_fixture()
-
-      assert {:ok, %InfectionPlaceType{} = infection_place_type} =
-               CaseContext.update_infection_place_type(infection_place_type, @update_attrs)
-
-      assert infection_place_type.name == "some updated name"
-    end
-
-    test "update_infection_place_type/2 with invalid data returns error changeset" do
-      infection_place_type = infection_place_type_fixture()
-
-      assert {:error, %Ecto.Changeset{}} =
-               CaseContext.update_infection_place_type(infection_place_type, @invalid_attrs)
-
-      assert infection_place_type ==
-               CaseContext.get_infection_place_type!(infection_place_type.uuid)
-    end
-
-    test "delete_infection_place_type/1 deletes the infection_place_type" do
-      infection_place_type = infection_place_type_fixture()
-
-      assert {:ok, %InfectionPlaceType{}} =
-               CaseContext.delete_infection_place_type(infection_place_type)
-
-      assert_raise Ecto.NoResultsError, fn ->
-        CaseContext.get_infection_place_type!(infection_place_type.uuid)
-      end
-    end
-
-    test "change_infection_place_type/1 returns a infection_place_type changeset" do
-      infection_place_type = infection_place_type_fixture()
-      assert %Ecto.Changeset{} = CaseContext.change_infection_place_type(infection_place_type)
-    end
-  end
-
   describe "possible_index_submissions" do
     @valid_attrs %{
       address: %{
@@ -973,7 +1602,7 @@ defmodule Hygeia.CaseContextTest do
         known: true,
         activity_mapping_executed: true,
         activity_mapping: "Drank beer, kept distance to other people",
-        type: "Pub",
+        type: :club,
         name: "BrüW",
         flight_information: nil
       },

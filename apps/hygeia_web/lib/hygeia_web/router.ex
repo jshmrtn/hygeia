@@ -121,13 +121,9 @@ defmodule HygeiaWeb.Router do
 
     live "/tenants/new", TenantLive.Create, :create
     live "/tenants/:id", TenantLive.Show, :show
+    live "/tenants/:id/export", TenantLive.Export, :export
+    get "/tenants/:id/export/:format", TenantController, :export
     live "/tenants/:id/edit", TenantLive.Show, :edit
-
-    live "/professions/new", ProfessionLive.Create, :create
-    live "/professions/:id/edit", ProfessionLive.Show, :edit
-
-    live "/infection-place-types/new", InfectionPlaceTypeLive.Create, :create
-    live "/infection-place-types/:id/edit", InfectionPlaceTypeLive.Show, :edit
 
     live "/users", UserLive.Index, :index
     live "/users/:id", UserLive.Show, :show
@@ -173,12 +169,6 @@ defmodule HygeiaWeb.Router do
     live "/help", HelpLive.Index, :index
 
     live "/tenants", TenantLive.Index, :index
-
-    live "/professions", ProfessionLive.Index, :index
-    live "/professions/:id", ProfessionLive.Show, :show
-
-    live "/infection-place-types", InfectionPlaceTypeLive.Index, :index
-    live "/infection-place-types/:id", InfectionPlaceTypeLive.Show, :show
 
     live "/possible-index-submissions/:id",
          PossibleIndexSubmissionLive.Show,

@@ -155,7 +155,7 @@ defmodule Hygeia.TenantContext.Tenant do
 
     @spec authorized?(
             resource :: Tenant.t(),
-            action :: :create | :details | :list | :update | :delete,
+            action :: :create | :details | :list | :update | :delete | :export_data,
             user :: :anonymous | User.t(),
             meta :: %{atom() => term}
           ) :: boolean
@@ -178,6 +178,9 @@ defmodule Hygeia.TenantContext.Tenant do
     def authorized?(tenant, action, user, _meta)
         when action in [:details, :update, :delete],
         do: User.has_role?(user, :admin, tenant) or User.has_role?(user, :webmaster, :any)
+
+    def authorized?(tenant, :export_data, user, _meta),
+      do: User.has_role?(user, :admin, tenant)
 
     def authorized?(_tenant, :create, user, _meta),
       do: User.has_role?(user, :webmaster, :any)

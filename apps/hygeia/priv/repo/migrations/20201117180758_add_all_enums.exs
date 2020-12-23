@@ -10,7 +10,7 @@ defmodule Hygeia.Repo.Migrations.AddAllEnums do
     Hygeia.CaseContext.Case.Clinical.Symptom.create_type()
     Hygeia.CaseContext.Case.Clinical.TestKind.create_type()
     Hygeia.CaseContext.Case.Clinical.Result.create_type()
-    Hygeia.CaseContext.Case.ContactMethod.Type.create_type()
+    Hygeia.CaseContext.Person.ContactMethod.Type.create_type()
     Hygeia.CaseContext.Case.Monitoring.IsolationLocation.create_type()
     Hygeia.CaseContext.Case.Phase.Index.EndReason.create_type()
     Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason.create_type()

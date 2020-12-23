@@ -24,6 +24,7 @@ defmodule HygeiaWeb.Helpers.Clinical do
   def translate_clinical_test_reason(:quarantine), do: gettext("Quarantine")
   def translate_clinical_test_reason(:app_report), do: gettext("App report")
   def translate_clinical_test_reason(:contact_tracing), do: gettext("Contact tracing")
+  def translate_clinical_test_reason(:convenience), do: gettext("Convenience")
 
   @spec symptoms :: [{String.t(), Clinical.Symptom.t()}]
   def symptoms,
@@ -51,8 +52,10 @@ defmodule HygeiaWeb.Helpers.Clinical do
 
   @spec translate_test_kind(type :: Clinical.TestKind.t()) :: String.t()
   def translate_test_kind(:pcr), do: gettext("PCR")
-  def translate_test_kind(:quick), do: gettext("Quick")
+  def translate_test_kind(:quick), do: gettext("PCR Quick")
   def translate_test_kind(:serology), do: gettext("Serology")
+  def translate_test_kind(:antigen_quick), do: gettext("Antigen Quick")
+  def translate_test_kind(:antibody), do: gettext("Antibody")
 
   @spec test_results :: [{String.t(), Clinical.Result.t()}]
   def test_results,

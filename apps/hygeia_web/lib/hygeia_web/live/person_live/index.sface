@@ -57,12 +57,12 @@
               </div>
 
               <div class="form-group">
-                <Field class="form-group" name="profession_uuid">
-                  <Label>{{ gettext("Profession") }}</Label>
+                <Field class="form-group" name={{ :profession_category_main }}>
+                  <Label>{{ gettext("Profession category") }}</Label>
                   <Select
                     class="form-control"
                     opts={{ prompt: gettext("Any") }}
-                    options={{ Enum.map(@professions, &({&1.name, &1.uuid})) }}
+                    options={{ NOGA.Section.select_options() }}
                   />
                 </Field>
               </div>

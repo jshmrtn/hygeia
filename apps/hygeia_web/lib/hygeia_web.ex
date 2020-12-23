@@ -27,6 +27,8 @@ defmodule HygeiaWeb do
 
       import Plug.Conn
       import HygeiaGettext
+      import Hygeia.Authorization
+      import HygeiaWeb.Helpers.Auth
 
       alias HygeiaWeb.Router.Helpers, as: Routes
     end
@@ -151,6 +153,7 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.ContactMethod
       import HygeiaWeb.Helpers.CSP
       import HygeiaWeb.Helpers.ExternalReference
+      import HygeiaWeb.Helpers.InfectionPlace
       import HygeiaWeb.Helpers.Monitoring
       import HygeiaWeb.Helpers.Phase
       import HygeiaWeb.Helpers.Region

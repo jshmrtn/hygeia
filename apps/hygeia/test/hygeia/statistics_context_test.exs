@@ -766,7 +766,6 @@ defmodule Hygeia.StatisticsContextTest do
 
   describe "active_infection_place_cases_per_day" do
     test "counts infection place other cases from the end date" do
-      infection_place_other = infection_place_type_fixture(%{name: "anderer Ort"})
       tenant = tenant_fixture()
       person = person_fixture(tenant)
       user = user_fixture()
@@ -790,7 +789,7 @@ defmodule Hygeia.StatisticsContextTest do
         recipient_case_uuid: index_case.uuid,
         infection_place: %{
           known: true,
-          type_uuid: infection_place_other.uuid
+          type: :other
         }
       })
 
@@ -803,7 +802,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 6
+      assert length(entries) == (30 + 1) * 3
 
       assert Enum.all?(
                entries,
@@ -811,7 +810,7 @@ defmodule Hygeia.StatisticsContextTest do
                    match?(
                      %ActiveInfectionPlaceCasesPerDay{
                        count: 1,
-                       infection_place_type: "anderer Ort",
+                       infection_place_type: :other,
                        date: date
                      }
                      when date in [~D[2020-10-12], ~D[2020-10-13]],
@@ -847,7 +846,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 3
+      assert length(entries) == (30 + 1) * 3
 
       assert Enum.all?(
                entries,

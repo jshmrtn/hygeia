@@ -187,11 +187,11 @@
                 </Field>
               </div>
               <div class="col">
-                <Field name={{ :type_uuid }} class="form-group">
+                <Field name={{ :type }} class="form-group">
                   <Label>{{ gettext("Type") }}</Label>
                   <Select
                     class="form-control"
-                    options={{ Enum.map(@types, &({&1.name, &1.uuid})) }}
+                    options={{ infection_place_type_options() }}
                   />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>

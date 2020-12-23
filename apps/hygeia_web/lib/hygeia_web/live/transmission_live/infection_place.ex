@@ -14,5 +14,4 @@ defmodule HygeiaWeb.TransmissionLive.InfectionPlace do
   alias Surface.Components.Form.TextInput
 
   prop disabled, :boolean, default: false
-  prop types, :list, required: true
 end

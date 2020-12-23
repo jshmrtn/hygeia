@@ -123,6 +123,7 @@ defmodule Hygeia.CaseContext.Case do
   def changeset(case, attrs) do
     case
     |> cast(attrs, [
+      :uuid,
       :human_readable_id,
       :complexity,
       :status,

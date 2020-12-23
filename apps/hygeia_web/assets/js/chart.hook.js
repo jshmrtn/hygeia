@@ -2,7 +2,7 @@ import Chart from 'chart.js';
 import 'chart.js/dist/Chart.min.css';
 import pattern from 'patternomaly';
 
-const backgrounds = pattern.generate([
+const colors = [
   '#01c5c4',
   '#47d0bc',
   '#6fdab4',
@@ -16,6 +16,11 @@ const backgrounds = pattern.generate([
   '#ea8251',
   '#e1614e',
   '#d43d51',
+]
+
+const backgrounds = pattern.generate([
+  ...colors,
+  ...colors,
 ]);
 
 Chart.platform.disableCSSInjection = true;
@@ -28,7 +33,7 @@ function addColorsToDataset({ data: { datasets, ...otherData }, ...config }) {
   return {
     data: {
       datasets: datasets.map((dataset, index) => ({
-        backgroundColor: backgrounds[index],
+        backgroundColor: backgrounds[index % backgrounds.length],
         ...dataset
       })), ...otherData
     }, ...config

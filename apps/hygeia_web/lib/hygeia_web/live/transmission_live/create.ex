@@ -19,12 +19,7 @@ defmodule HygeiaWeb.TransmissionLive.Create do
   def mount(params, session, socket) do
     socket =
       if authorized?(Transmission, :create, get_auth(socket)) do
-        infection_place_types = CaseContext.list_infection_place_types()
-
-        assign(socket,
-          changeset: CaseContext.change_transmission(%Transmission{}, params),
-          infection_place_types: infection_place_types
-        )
+        assign(socket, changeset: CaseContext.change_transmission(%Transmission{}, params))
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))

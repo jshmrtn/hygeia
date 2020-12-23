@@ -5,16 +5,49 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
 
   use Hygeia, :model
 
+  import EctoEnum
+
   alias Hygeia.CaseContext.Address
-  alias Hygeia.CaseContext.InfectionPlaceType
+
+  defenum Type, :infection_place_type, [
+    "work_place",
+    "army",
+    "asyl",
+    "choir",
+    "club",
+    "hh",
+    "high_school",
+    "childcare",
+    "erotica",
+    "flight",
+    "medical",
+    "hotel",
+    "child_home",
+    "cinema",
+    "shop",
+    "school",
+    "less_300",
+    "more_300",
+    "public_transp",
+    "massage",
+    "nursing_home",
+    "religion",
+    "restaurant",
+    "school_camp",
+    "indoor_sport",
+    "outdoor_sport",
+    "gathering",
+    "zoo",
+    "prison",
+    "other"
+  ]
 
   @type empty :: %__MODULE__{
           address: Address.t() | nil,
           known: boolean() | nil,
           activity_mapping_executed: boolean() | nil,
           activity_mapping: String.t() | nil,
-          type: Ecto.Schema.belongs_to(InfectionPlaceType.t()) | nil,
-          type_uuid: String.t() | nil,
+          type: Type.t() | nil,
           name: String.t() | nil,
           flight_information: String.t() | nil
         }
@@ -27,10 +60,9 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
     field :activity_mapping, :string
     field :name, :string
     field :flight_information, :string
+    field :type, Type
 
     embeds_one :address, Address, on_replace: :update
-
-    belongs_to :type, InfectionPlaceType, references: :uuid, foreign_key: :type_uuid
   end
 
   @doc false
@@ -42,9 +74,9 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
       :known,
       :activity_mapping_executed,
       :activity_mapping,
-      :type_uuid,
       :name,
-      :flight_information
+      :flight_information,
+      :type
     ])
     |> validate_required([])
     |> cast_embed(:address)

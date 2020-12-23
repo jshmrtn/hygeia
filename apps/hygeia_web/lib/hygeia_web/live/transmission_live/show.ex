@@ -31,11 +31,7 @@ defmodule HygeiaWeb.TransmissionLive.Show do
          ) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "transmission:#{id}")
 
-        types = CaseContext.list_infection_place_types()
-
-        socket
-        |> assign(types: types)
-        |> load_data(transmission)
+        load_data(socket, transmission)
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))
@@ -113,14 +109,12 @@ defmodule HygeiaWeb.TransmissionLive.Show do
 
   defp load_data(socket, transmission) do
     transmission =
-      transmission
-      |> Repo.preload(
+      Repo.preload(transmission,
         recipient: [tenant: []],
         recipient_case: [tenant: []],
         propagator: [tenant: []],
         propagator_case: [tenant: []]
       )
-      |> update_in([Access.key!(:infection_place)], &Repo.preload(&1, :type))
 
     changeset = CaseContext.change_transmission(transmission)
 

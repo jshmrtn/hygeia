@@ -8,7 +8,6 @@ import Hygeia.OrganisationContext
 import Hygeia.TenantContext
 import Hygeia.UserContext
 
-alias Hygeia.CaseContext.InfectionPlaceType
 alias Hygeia.Helpers.Versioning
 alias Hygeia.OrganisationContext.Organisation
 alias Hygeia.Repo
@@ -84,67 +83,6 @@ tenants = [
   tenant_ai,
   tenant_ar
 ]
-
-{:ok, profession_hospital} = create_profession(%{name: "Spital"})
-{:ok, profession_doctor} = create_profession(%{name: "Praxis"})
-{:ok, profession_nursing_home} = create_profession(%{name: "Heim"})
-{:ok, profession_pharmacy} = create_profession(%{name: "Apotheke"})
-{:ok, profession_spitex} = create_profession(%{name: "Spitex"})
-{:ok, profession_day_care} = create_profession(%{name: "Kindertagesstätte"})
-{:ok, profession_school} = create_profession(%{name: "Volksschule"})
-{:ok, profession_high_school} = create_profession(%{name: "Oberstufe"})
-{:ok, profession_gymnasium} = create_profession(%{name: "Gymnasium / Berufsschule"})
-{:ok, profession_security} = create_profession(%{name: "Sicherheit: Polizei, Securitas"})
-
-{:ok, profession_public_transport} = create_profession(%{name: "ÖV: Bus, Bahn, Schiff, Bergbahn"})
-
-{:ok, profession_sales} = create_profession(%{name: "Verkauf"})
-{:ok, profession_restaurants} = create_profession(%{name: "Gastronomie / Veranstaltungen"})
-{:ok, profession_public_administration} = create_profession(%{name: "Öffentliche Verwaltung"})
-{:ok, profession_office} = create_profession(%{name: "Büro"})
-{:ok, profession_construction} = create_profession(%{name: "Bau"})
-{:ok, profession_pension} = create_profession(%{name: "Rentner"})
-{:ok, profession_unemployed} = create_profession(%{name: "Arbeitssuchend"})
-{:ok, profession_other} = create_profession(%{name: "Sonstiges"})
-
-professions = [
-  profession_hospital,
-  profession_doctor,
-  profession_nursing_home,
-  profession_pharmacy,
-  profession_spitex,
-  profession_day_care,
-  profession_school,
-  profession_high_school,
-  profession_gymnasium,
-  profession_security,
-  profession_public_transport,
-  profession_sales,
-  profession_restaurants,
-  profession_public_administration,
-  profession_office,
-  profession_construction,
-  profession_pension,
-  profession_unemployed,
-  profession_other
-]
-
-[] =
-  :hygeia
-  |> Application.app_dir("priv/repo/seeds/infection_place_type.csv")
-  |> File.stream!()
-  |> CSV.decode!(headers: true)
-  |> Stream.map(
-    &%{
-      name: &1["name"]
-    }
-  )
-  |> Stream.map(&create_infection_place_type/1)
-  |> Stream.reject(&match?({:ok, _infection_place_type}, &1))
-  |> Enum.to_list()
-
-infection_place_home = Repo.get_by!(InfectionPlaceType, name: "Eigener Haushalt")
-infection_place_other = Repo.get_by!(InfectionPlaceType, name: "anderer Ort")
 
 [] =
   :hygeia
@@ -292,7 +230,8 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           value: "7000"
         }
       ],
-      profession_uuid: profession_office.uuid,
+      profession_category: :"74",
+      profession_category_main: :M,
       first_name: "Jonatan",
       last_name: "Männchen",
       sex: :male
@@ -320,7 +259,8 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           value: "7002"
         }
       ],
-      profession_uuid: profession_office.uuid,
+      profession_category: :"74",
+      profession_category_main: :M,
       first_name: "Jeremy",
       last_name: "Zahner",
       sex: :male
@@ -411,7 +351,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         known: true,
         activity_mapping_executed: true,
         activity_mapping: "Drank beer, kept distance to other people",
-        type: "Pub",
+        type: :club,
         name: "BrüW",
         flight_information: nil
       },
@@ -426,9 +366,13 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
 
   if System.get_env("LOAD_STATISTICS_SEEDS", "false") in ["1", "true"] do
     for i <- 1..1000 do
+      noga_code = Enum.random(Hygeia.EctoType.NOGA.Code.__enum_map__())
+      noga_section = Hygeia.EctoType.NOGA.Code.section(noga_code)
+
       {:ok, person} =
         create_person(Enum.random(tenants), %{
-          profession_uuid: Enum.random(professions).uuid,
+          profession_category: noga_code,
+          profession_category_main: noga_section,
           first_name: "Test #{i}",
           last_name: "Test",
           sex: Enum.random(Hygeia.CaseContext.Person.Sex.__enum_map__())
@@ -536,7 +480,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         known: true,
         activity_mapping_executed: true,
         activity_mapping: "Drank beer, kept distance to other people",
-        type_uuid: infection_place_other.uuid,
+        type: :club,
         name: "BrüW",
         flight_information: nil
       }
@@ -552,7 +496,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         known: true,
         activity_mapping_executed: false,
         activity_mapping: nil,
-        type_uuid: infection_place_other.uuid,
+        type: :flight,
         name: "Swiss International Airlines",
         flight_information: "LX-332"
       }
@@ -577,7 +521,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         activity_mapping_executed: true,
         activity_mapping:
           "stayed at brothers place, were in contact for more than 15 minutes while not keeping save distance",
-        type_uuid: infection_place_home.uuid,
+        type: :gathering,
         name: nil,
         flight_information: nil
       }

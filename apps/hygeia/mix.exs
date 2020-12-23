@@ -72,7 +72,8 @@ defmodule Hygeia.MixProject do
       {:hygeia_cldr, in_umbrella: true},
       {:hygeia_cluster, in_umbrella: true},
       {:csv, "~> 2.4"},
-      {:highlander, "~> 0.2"}
+      {:highlander, "~> 0.2"},
+      {:assert_value, "~> 0.9", only: [:dev, :test]}
     ]
   end
 

@@ -70,25 +70,11 @@
                 {{ gettext("Tenants") }}
               </Link>
               <Link
-                to={{ Routes.profession_index_path(@socket, :index) }}
-                class="dropdown-item"
-                :if={{ authorized?(Hygeia.CaseContext.Profession, :list, auth) }}
-              >
-                {{ gettext("Professions") }}
-              </Link>
-              <Link
                 to={{ Routes.organisation_index_path(@socket, :index) }}
                 class="dropdown-item"
                 :if={{ authorized?(Hygeia.OrganisationContext.Organisation, :list, auth) }}
               >
                 {{ gettext("Organisations") }}
-              </Link>
-              <Link
-                to={{ Routes.infection_place_type_index_path(@socket, :index) }}
-                class="dropdown-item"
-                :if={{ authorized?(Hygeia.CaseContext.InfectionPlaceType, :list, auth) }}
-              >
-                {{ gettext("Infection Place Types") }}
               </Link>
             </div>
           </li>

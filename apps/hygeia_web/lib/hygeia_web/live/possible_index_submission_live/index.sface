@@ -91,10 +91,10 @@
               <th></th>
             </tr>
           </thead>
-          <tbody id="professions">
+          <tbody id="possible_index_submissions">
             <tr
               :for={{ possible_index_submission <- @case.possible_index_submissions  }}
-              id="profession-{{ possible_index_submission.uuid }}"
+              id="possible_index_submission-{{ possible_index_submission.uuid }}"
             >
               <td>
                 {{ possible_index_submission.first_name }}

@@ -5,10 +5,8 @@ defmodule Hygeia.Fixtures do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.InfectionPlaceType
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
-  alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.OrganisationContext
@@ -28,18 +26,6 @@ defmodule Hygeia.Fixtures do
       |> TenantContext.create_tenant()
 
     tenant
-  end
-
-  @valid_attrs %{name: "some name"}
-
-  @spec profession_fixture(attrs :: Hygeia.ecto_changeset_params()) :: Profession.t()
-  def profession_fixture(attrs \\ %{}) do
-    {:ok, profession} =
-      attrs
-      |> Enum.into(@valid_attrs)
-      |> CaseContext.create_profession()
-
-    profession
   end
 
   @valid_attrs %{
@@ -227,7 +213,7 @@ defmodule Hygeia.Fixtures do
       known: true,
       activity_mapping_executed: true,
       activity_mapping: "Drank beer, kept distance to other people",
-      type: "Pub",
+      type: :club,
       name: "BrüW",
       flight_information: nil
     }
@@ -275,19 +261,6 @@ defmodule Hygeia.Fixtures do
     protocol_entry
   end
 
-  @valid_attrs %{name: "some name"}
-
-  @spec infection_place_type_fixture(attrs :: Hygeia.ecto_changeset_params()) ::
-          InfectionPlaceType.t()
-  def infection_place_type_fixture(attrs \\ %{}) do
-    {:ok, infection_place_type} =
-      attrs
-      |> Enum.into(@valid_attrs)
-      |> CaseContext.create_infection_place_type()
-
-    infection_place_type
-  end
-
   @valid_attrs %{
     address: %{
       address: "Helmweg 481",
@@ -310,7 +283,7 @@ defmodule Hygeia.Fixtures do
       known: true,
       activity_mapping_executed: true,
       activity_mapping: "Drank beer, kept distance to other people",
-      type: "Pub",
+      type: :club,
       name: "BrüW",
       flight_information: nil
     },

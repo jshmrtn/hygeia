@@ -7,6 +7,7 @@ defmodule HygeiaWeb.PersonLive.Index do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
+  alias Hygeia.EctoType.NOGA
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Surface.Components.Form
@@ -25,10 +26,7 @@ defmodule HygeiaWeb.PersonLive.Index do
       if authorized?(Person, :list, get_auth(socket), tenant: :any) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "people")
 
-        professions = CaseContext.list_professions()
-
         assign(socket,
-          professions: professions,
           authorized_tenants:
             Enum.filter(
               TenantContext.list_tenants(),
@@ -99,7 +97,7 @@ defmodule HygeiaWeb.PersonLive.Index do
   def handle_info(_other, socket), do: {:noreply, socket}
 
   @allowed_filter_fields %{
-    "profession_uuid" => :profession_uuid,
+    "profession_category_main" => :profession_category_main,
     "sex" => :sex,
     "country" => :country,
     "subdivision" => :subdivision

@@ -83,25 +83,34 @@ defmodule HygeiaWeb.Helpers.Changeset do
     )
   end
 
-  defp update_changeset_param_relation(
-         %Changeset{params: params} = changeset,
-         field,
-         id_fields,
-         callback
-       ) do
-    default =
-      changeset
-      |> Changeset.fetch_field!(field)
-      |> Enum.map(&Map.take(&1, id_fields))
-      |> Enum.map(fn map ->
-        Map.new(map, &{Atom.to_string(elem(&1, 0)), elem(&1, 1)})
-      end)
+  @spec update_changeset_param(
+          changeset :: Ecto.Changeset.t(),
+          field :: atom,
+          callback :: (term -> term),
+          default_map :: (term -> term)
+        ) :: %{optional(String.t()) => term}
+  def update_changeset_param(
+        %Changeset{params: params} = changeset,
+        field,
+        callback,
+        default_map \\ & &1
+      )
+      when is_atom(field) and is_function(callback, 1) do
+    default = Changeset.fetch_field!(changeset, field)
 
     params
-    |> Map.put_new(Atom.to_string(field), default)
-    |> Map.update!(
-      Atom.to_string(field),
+    |> Map.put_new(Atom.to_string(field), default_map.(default))
+    |> Map.update!(Atom.to_string(field), callback)
+  end
+
+  defp update_changeset_param_relation(changeset, field, id_fields, callback) do
+    update_changeset_param(
+      changeset,
+      field,
       fn
+        nil ->
+          nil
+
         list when is_list(list) ->
           callback.(list)
 
@@ -111,9 +120,13 @@ defmodule HygeiaWeb.Helpers.Changeset do
           |> callback.()
           |> Enum.with_index()
           |> Map.new(&{Integer.to_string(elem(&1, 1)), elem(&1, 0)})
-
-        nil ->
-          nil
+      end,
+      fn default ->
+        default
+        |> Enum.map(&Map.take(&1, id_fields))
+        |> Enum.map(fn map ->
+          Map.new(map, &{Atom.to_string(elem(&1, 0)), elem(&1, 1)})
+        end)
       end
     )
   end

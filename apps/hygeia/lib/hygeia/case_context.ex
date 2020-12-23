@@ -6,11 +6,9 @@ defmodule Hygeia.CaseContext do
   use Hygeia, :context
 
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Case.ContactMethod
-  alias Hygeia.CaseContext.InfectionPlaceType
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
-  alias Hygeia.CaseContext.Profession
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.EmailSender.Smtp
@@ -21,119 +19,6 @@ defmodule Hygeia.CaseContext do
 
   @sms_sender Application.compile_env!(:hygeia, [:sms_sender])
   @origin_country Application.compile_env!(:hygeia, [:phone_number_parsing_origin_country])
-
-  @doc """
-  Returns the list of professions.
-
-  ## Examples
-
-      iex> list_professions()
-      [%Profession{}, ...]
-
-  """
-  @spec list_professions :: [Profession.t()]
-  def list_professions, do: Repo.all(from profession in Profession, order_by: profession.name)
-
-  @doc """
-  Gets a single profession.
-
-  Raises `Ecto.NoResultsError` if the Profession does not exist.
-
-  ## Examples
-
-      iex> get_profession!(123)
-      %Profession{}
-
-      iex> get_profession!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  @spec get_profession!(id :: String.t()) :: Profession.t()
-  def get_profession!(id), do: Repo.get!(Profession, id)
-
-  @doc """
-  Creates a profession.
-
-  ## Examples
-
-      iex> create_profession(%{field: value})
-      {:ok, %Profession{}}
-
-      iex> create_profession(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec create_profession(attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Profession.t()} | {:error, Ecto.Changeset.t(Profession.t())}
-  def create_profession(attrs \\ %{}),
-    do:
-      %Profession{}
-      |> change_profession(attrs)
-      |> versioning_insert()
-      |> broadcast("professions", :create)
-      |> versioning_extract()
-
-  @doc """
-  Updates a profession.
-
-  ## Examples
-
-      iex> update_profession(profession, %{field: new_value})
-      {:ok, %Profession{}}
-
-      iex> update_profession(profession, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec update_profession(profession :: Profession.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Profession.t()} | {:error, Ecto.Changeset.t(Profession.t())}
-  def update_profession(%Profession{} = profession, attrs),
-    do:
-      profession
-      |> change_profession(attrs)
-      |> versioning_update()
-      |> broadcast("professions", :update)
-      |> versioning_extract()
-
-  @doc """
-  Deletes a profession.
-
-  ## Examples
-
-      iex> delete_profession(profession)
-      {:ok, %Profession{}}
-
-      iex> delete_profession(profession)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec delete_profession(profession :: Profession.t()) ::
-          {:ok, Profession.t()} | {:error, Ecto.Changeset.t(Profession.t())}
-  def delete_profession(%Profession{} = profession),
-    do:
-      profession
-      |> change_profession
-      |> versioning_delete()
-      |> broadcast("professions", :delete)
-      |> versioning_extract()
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking profession changes.
-
-  ## Examples
-
-      iex> change_profession(profession)
-      %Ecto.Changeset{data: %Profession{}}
-
-  """
-
-  @spec change_profession(
-          tenant :: Profession.t() | Profession.empty(),
-          attrs :: Hygeia.ecto_changeset_params()
-        ) ::
-          Ecto.Changeset.t(Profession.t())
-  def change_profession(%Profession{} = profession, attrs \\ %{}),
-    do: Profession.changeset(profession, attrs)
 
   @doc """
   Returns the list of people.
@@ -456,6 +341,1516 @@ defmodule Hygeia.CaseContext do
         group_by: case.uuid,
         limit: ^limit
       )
+
+  @bag_med_16122020_case_fields [
+    :fall_id_ism,
+    :ktn_internal_id,
+    :last_name,
+    :first_name,
+    :street_name,
+    :street_number,
+    :location,
+    :postal_code,
+    :country,
+    :phone_number,
+    :mobile_number,
+    :e_mail_address,
+    :sex,
+    :date_of_birth,
+    :profession,
+    :work_place_name,
+    :work_place_street,
+    :work_place_street_number,
+    :work_place_location,
+    :work_place_postal_code,
+    :work_place_country,
+    :symptoms_yn,
+    :test_reason_symptoms,
+    :test_reason_outbreak,
+    :test_reason_cohort,
+    :test_reason_work_screening,
+    :test_reason_quarantine,
+    :test_reason_app,
+    :test_reason_convenience,
+    :symptom_onset_dt,
+    :sampling_dt,
+    :lab_report_dt,
+    :test_type,
+    :test_result,
+    :exp_type,
+    :case_link_yn,
+    :case_link_contact_dt,
+    :case_link_fall_id_ism,
+    :case_link_ktn_internal_id,
+    :exp_loc_dt,
+    :exp_loc_type_yn,
+    :activity_mapping_yn,
+    :exp_country,
+    :exp_loc_type_work_place,
+    :exp_loc_type_army,
+    :exp_loc_type_asyl,
+    :exp_loc_type_choir,
+    :exp_loc_type_club,
+    :exp_loc_type_hh,
+    :exp_loc_type_high_school,
+    :exp_loc_type_childcare,
+    :exp_loc_type_erotica,
+    :exp_loc_type_flight,
+    :exp_loc_type_medical,
+    :exp_loc_type_hotel,
+    :exp_loc_type_child_home,
+    :exp_loc_type_cinema,
+    :exp_loc_type_shop,
+    :exp_loc_type_school,
+    :exp_loc_type_less_300,
+    :exp_loc_type_more_300,
+    :exp_loc_type_public_transp,
+    :exp_loc_type_massage,
+    :exp_loc_type_nursing_home,
+    :exp_loc_type_religion,
+    :exp_loc_type_restaurant,
+    :exp_loc_type_school_camp,
+    :exp_loc_type_indoor_sport,
+    :exp_loc_type_outdoor_sport,
+    :exp_loc_type_gathering,
+    :exp_loc_type_zoo,
+    :exp_loc_type_prison,
+    :other_exp_loc_type,
+    :exp_loc_type_less_300_detail,
+    :exp_loc_type_more_300_detail,
+    :exp_loc_name,
+    :exp_loc_street,
+    :exp_loc_street_number,
+    :exp_loc_location,
+    :exp_loc_postal_code,
+    :exp_loc_flightdetail,
+    :corr_ct_dt,
+    :quar_yn,
+    :onset_quar_dt,
+    :reason_quar,
+    :other_reason_quar,
+    :onset_iso_dt,
+    :iso_loc_type,
+    :other_iso_loc,
+    :iso_loc_street,
+    :iso_loc_street_number,
+    :iso_loc_location,
+    :iso_loc_postal_code,
+    :iso_loc_country,
+    :follow_up_dt,
+    :end_of_iso_dt,
+    :reason_end_of_iso,
+    :other_reason_end_of_iso,
+    :vacc_yn,
+    :vacc_name,
+    :vacc_dose,
+    :vacc_dt_first,
+    :vacc_dt_last
+  ]
+
+  @bag_med_16122020_case_fields_index @bag_med_16122020_case_fields
+                                      |> Enum.with_index()
+                                      |> Map.new()
+
+  @spec case_export(tenant :: Tenant.t(), format :: :bag_med_16122020_case) :: Enumerable.t()
+  # credo:disable-for-next-line Credo.Check.Refactor.ABCSize
+  def case_export(%Tenant{uuid: tenant_uuid} = _teant, :bag_med_16122020_case) do
+    first_transmission_query =
+      from(transmission in Transmission,
+        select: %{
+          uuid:
+            fragment(
+              """
+              FIRST_VALUE(?)
+              OVER(
+                PARTITION BY ?
+                ORDER BY ?
+              )
+              """,
+              transmission.uuid,
+              transmission.recipient_case_uuid,
+              transmission.inserted_at
+            ),
+          case_uuid: transmission.recipient_case_uuid
+        }
+      )
+
+    cases =
+      from(case in Case,
+        join: phase in fragment("UNNEST(?)", case.phases),
+        left_join: case_ism_id in fragment("UNNEST(?)", case.external_references),
+        on: fragment("?->>'type'", case_ism_id) == "ism_case",
+        left_join: possible_index_phase in fragment("UNNEST(?)", case.phases),
+        on:
+          fragment("?->'details'->>'__type__'", possible_index_phase) ==
+            "possible_index",
+        left_join: index_phase in fragment("UNNEST(?)", case.phases),
+        on:
+          fragment("?->'details'->>'__type__'", index_phase) ==
+            "index",
+        left_join: possible_index_phase_contact_person in fragment("UNNEST(?)", case.phases),
+        on:
+          fragment("?->'details'->>'__type__'", possible_index_phase_contact_person) ==
+            "possible_index" and
+            fragment("?->'details'->>'type'", possible_index_phase_contact_person) ==
+              "contact_person",
+        left_join: possible_index_phase_travel in fragment("UNNEST(?)", case.phases),
+        on:
+          fragment("?->'details'->>'__type__'", possible_index_phase_travel) == "possible_index" and
+            fragment("?->'details'->>'type'", possible_index_phase_travel) == "travel",
+        join: person in assoc(case, :person),
+        left_join: mobile_contact_method in fragment("UNNEST(?)", person.contact_methods),
+        on: fragment("?->>'type'", mobile_contact_method) == "mobile",
+        left_join: landline_contact_method in fragment("UNNEST(?)", person.contact_methods),
+        on: fragment("?->>'type'", landline_contact_method) == "landline",
+        left_join: email_contact_method in fragment("UNNEST(?)", person.contact_methods),
+        on: fragment("?->>'type'", email_contact_method) == "email",
+        left_join: received_transmission_id in subquery(first_transmission_query),
+        on: received_transmission_id.case_uuid == case.uuid,
+        left_join: received_transmission in assoc(case, :received_transmissions),
+        on: received_transmission.uuid == received_transmission_id.uuid,
+        left_join: received_transmission_case in assoc(received_transmission, :propagator_case),
+        left_join:
+          received_transmission_case_ism_id in fragment(
+            "UNNEST(?)",
+            received_transmission_case.external_references
+          ),
+        on: fragment("?->>'type'", received_transmission_case_ism_id) == "ism_case",
+        left_join: protocol_entry in assoc(case, :protocol_entries),
+        where:
+          case.tenant_uuid == ^tenant_uuid and
+            fragment("?->'details'->>'__type__'", phase) == "index",
+        group_by: [case.uuid, person.uuid],
+        order_by: [asc: case.inserted_at],
+        select: [
+          # fall_id_ism
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'value'", case_ism_id)),
+          # ktn_internal_id
+          type(case.uuid, Ecto.UUID),
+          # last_name
+          person.last_name,
+          # first_name
+          person.first_name,
+          # street_name
+          fragment("?->>'address'", person.address),
+          # street_number
+          nil,
+          # location
+          fragment("?->>'place'", person.address),
+          # postal_code
+          fragment("?->>'zip'", person.address),
+          # country
+          fragment("?->>'country'", person.address),
+          # phone_number
+          max(fragment("?->>'value'", landline_contact_method)),
+          # mobile_number
+          max(fragment("?->>'value'", mobile_contact_method)),
+          # e_mail_address
+          max(fragment("?->>'value'", email_contact_method)),
+          # sex
+          person.sex,
+          # date_of_birth
+          person.birth_date,
+          # profession
+          person.profession_category_main,
+          # work_place_name
+          fragment("?[1]->>'name'", person.employers),
+          # work_place_street
+          fragment("?[1]->'address'->>'address'", person.employers),
+          # work_place_street_number
+          nil,
+          # work_place_location
+          fragment("?[1]->'address'->>'place'", person.employers),
+          # work_place_postal_code
+          fragment("?[1]->'address'->>'zip'", person.employers),
+          # work_place_country
+          fragment("?[1]->'address'->>'country'", person.employers),
+          # symptoms_yn
+          fragment("?->'has_symptoms'", case.clinical),
+          # test_reason_symptoms
+          fragment("?->'reasons_for_test' \\? ?", case.clinical, "symptoms"),
+          # test_reason_outbreak
+          fragment("?->'reasons_for_test' \\? ?", case.clinical, "outbreak_examination"),
+          # test_reason_cohort
+          fragment("?->'reasons_for_test' \\? ?", case.clinical, "screening"),
+          # test_reason_work_screening
+          fragment("?->'reasons_for_test' \\? ?", case.clinical, "work_related"),
+          # test_reason_quarantine
+          fragment("?->'reasons_for_test' \\? ?", case.clinical, "quarantine"),
+          # test_reason_app
+          fragment("?->'reasons_for_test' \\? ?", case.clinical, "app_report"),
+          # test_reason_convenience
+          fragment("?->'reasons_for_test' \\? ?", case.clinical, "convenience"),
+          # symptom_onset_dt
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", phase)),
+          # sampling_dt
+          fragment("?->>'test'", case.clinical),
+          # lab_report_dt
+          fragment("(?->>'laboratory_report')", case.clinical),
+          # test_type
+          type(fragment("(?->>'test_kind')", case.clinical), Case.Clinical.TestKind),
+          # test_result
+          type(fragment("(?->>'result')", case.clinical), Case.Clinical.Result),
+          # exp_type
+          type(
+            fragment(
+              """
+              CASE
+                WHEN ? THEN ?
+                WHEN ? THEN ?
+              END
+              """,
+              count(fragment("?->>'uuid'", possible_index_phase_contact_person), :distinct) > 0,
+              "contact_person",
+              count(fragment("?->>'uuid'", possible_index_phase_travel), :distinct) > 0,
+              "travel"
+            ),
+            Case.Phase.PossibleIndex.Type
+          ),
+          # case_link_yn
+          count(received_transmission.uuid) > 0,
+          # case_link_contact_dt
+          fragment("(ARRAY_AGG(?))[1]", received_transmission.date),
+          # case_link_fall_id_ism
+          fragment(
+            "(ARRAY_AGG(?))[1]",
+            fragment(
+              """
+              CASE
+                WHEN ? THEN ?
+                WHEN ? THEN ?
+              END
+              """,
+              not received_transmission.propagator_internal,
+              received_transmission.propagator_ism_id,
+              received_transmission.propagator_internal,
+              fragment("?->>'value'", received_transmission_case_ism_id)
+            )
+          ),
+          # case_link_ktn_internal_id
+          type(
+            fragment("(ARRAY_AGG(?))[1]", received_transmission.propagator_case_uuid),
+            Ecto.UUID
+          ),
+          # exp_loc_dt
+          fragment("(ARRAY_AGG(?))[1]", received_transmission.date),
+          # exp_loc_type_yn
+          fragment("(ARRAY_AGG(?->>'known'))[1]", received_transmission.infection_place),
+          # activity_mapping_yn
+          nil,
+          # exp_country
+          fragment(
+            "(ARRAY_AGG(?))[1]",
+            fragment("?->'address'->'country'", received_transmission.infection_place)
+          ),
+          # exp_loc_type_work_place
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "work_place"
+          ),
+          # exp_loc_type_army
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "army"
+          ),
+          # exp_loc_type_asyl
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "asyl"
+          ),
+          # exp_loc_type_choir
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "choir"
+          ),
+          # exp_loc_type_club
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "club"
+          ),
+          # exp_loc_type_hh
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "hh"
+          ),
+          # exp_loc_type_high_school
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "high_school"
+          ),
+          # exp_loc_type_childcare
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "childcare"
+          ),
+          # exp_loc_type_erotica
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "erotica"
+          ),
+          # exp_loc_type_flight
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "flight"
+          ),
+          # exp_loc_type_medical
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "medical"
+          ),
+          # exp_loc_type_hotel
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "hotel"
+          ),
+          # exp_loc_type_child_home
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "child_home"
+          ),
+          # exp_loc_type_cinema
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "cinema"
+          ),
+          # exp_loc_type_shop
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "shop"
+          ),
+          # exp_loc_type_school
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "school"
+          ),
+          # exp_loc_type_less_300
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "less_300"
+          ),
+          # exp_loc_type_more_300
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "more_300"
+          ),
+          # exp_loc_type_public_transp
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "public_transp"
+          ),
+          # exp_loc_type_massage
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "massage"
+          ),
+          # exp_loc_type_nursing_home
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "nursing_home"
+          ),
+          # exp_loc_type_religion
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "religion"
+          ),
+          # exp_loc_type_restaurant
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "restaurant"
+          ),
+          # exp_loc_type_school_camp
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "school_camp"
+          ),
+          # exp_loc_type_indoor_sport
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "indoor_sport"
+          ),
+          # exp_loc_type_outdoor_sport
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "outdoor_sport"
+          ),
+          # exp_loc_type_gathering
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "gathering"
+          ),
+          # exp_loc_type_zoo
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "zoo"
+          ),
+          # exp_loc_type_prison
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "prison"
+          ),
+          # other_exp_loc_type
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "other"
+          ),
+          # exp_loc_type_less_300_detail
+          fragment("(ARRAY_AGG(?->>'name'))[1]", received_transmission.infection_place),
+          # exp_loc_type_more_300_detail
+          fragment("(ARRAY_AGG(?->>'name'))[1]", received_transmission.infection_place),
+          # exp_loc_name
+          fragment("(ARRAY_AGG(?->>'name'))[1]", received_transmission.infection_place),
+          # exp_loc_street
+          fragment(
+            "(ARRAY_AGG(?->'address'->'address'))[1]",
+            received_transmission.infection_place
+          ),
+          # exp_loc_street_number
+          nil,
+          # exp_loc_location
+          fragment(
+            "(ARRAY_AGG(?->'address'->>'place'))[1]",
+            received_transmission.infection_place
+          ),
+          # exp_loc_postal_code
+          fragment("(ARRAY_AGG(?->'address'->>'zip'))[1]", received_transmission.infection_place),
+          # exp_loc_flightdetail
+          fragment(
+            "(ARRAY_AGG(?->>'flight_information'))[1]",
+            received_transmission.infection_place
+          ),
+          # corr_ct_dt
+          # TODO: Where to find first contact date?
+          nil,
+          # quar_yn
+          count(fragment("?->>'uuid'", possible_index_phase), :distinct) > 0,
+          # onset_quar_dt
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", possible_index_phase)),
+          # reason_quar
+          # TODO: Where to get the values apart contact & travel?
+          nil,
+          # other_reason_quar
+          # TODO: Where to get the values apart contact & travel?
+          nil,
+          # onset_iso_dt
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", index_phase)),
+          # iso_loc_type
+          type(
+            fragment("(?->>'location')::isolation_location", case.monitoring),
+            Case.Monitoring.IsolationLocation
+          ),
+          # other_iso_loc
+          fragment("?->>'location_details'", case.monitoring),
+          # iso_loc_street
+          fragment("?->'address'->>'address'", case.monitoring),
+          # iso_loc_street_number
+          nil,
+          # iso_loc_location
+          fragment("?->'address'->>'place'", case.monitoring),
+          # iso_loc_postal_code
+          fragment("?->'address'->>'zip'", case.monitoring),
+          # iso_loc_country
+          fragment("?->'address'->>'country'", case.monitoring),
+          # follow_up_dt
+          fragment("(?)::date", max(protocol_entry.inserted_at)),
+          # end_of_iso_dt
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'end'", index_phase)),
+          # reason_end_of_iso
+          # TODO: Allow other
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->'detail'->>'end_reason'", index_phase)),
+          # other_reason_end_of_iso
+          # TODO: Text Field when other
+          nil,
+          # vacc_yn
+          fragment("(?->>'done')::boolean", person.vaccination),
+          # vacc_name
+          fragment("?->>'name'", person.vaccination),
+          # vacc_dose
+          fragment("JSONB_ARRAY_LENGTH(?->'jab_dates')", person.vaccination),
+          # vacc_dt_first
+          fragment("(?->'jab_dates'->>0)", person.vaccination),
+          # vacc_dt_last
+          fragment("(?->'jab_dates'->>-1)", person.vaccination)
+        ]
+      )
+      |> Repo.stream()
+      |> Stream.map(fn entry ->
+        entry
+        |> List.update_at(@bag_med_16122020_case_fields_index.phone_number, fn
+          nil ->
+            nil
+
+          phone_number ->
+            {:ok, parsed_number} = ExPhoneNumber.parse(phone_number, @origin_country)
+            ExPhoneNumber.Formatting.format(parsed_number, :e164)
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.mobile_number, fn
+          nil ->
+            nil
+
+          phone_number ->
+            {:ok, parsed_number} = ExPhoneNumber.parse(phone_number, @origin_country)
+            ExPhoneNumber.Formatting.format(parsed_number, :e164)
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.sex, fn
+          nil -> nil
+          :male -> 1
+          :female -> 2
+          :other -> 3
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.iso_loc_type, fn
+          nil -> 6
+          :home -> 1
+          :social_medical_facility -> 2
+          :hospital -> 3
+          :hotel -> 4
+          :asylum_center -> 5
+          :other -> 7
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_type, fn
+          nil -> nil
+          :contact_person -> 1
+          :travel -> 2
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_symptoms, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_outbreak, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_cohort, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_work_screening, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_quarantine, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_app, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_convenience, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_work_place, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_army, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_asyl, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_choir, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_club, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_hh, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_high_school, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_childcare, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_erotica, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_flight, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_medical, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_hotel, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_child_home, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_cinema, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_shop, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_school, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_less_300, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_more_300, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_public_transp, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_massage, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_nursing_home, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_religion, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_restaurant, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_school_camp, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_indoor_sport, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_outdoor_sport, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_gathering, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_zoo, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_prison, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.other_exp_loc_type, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.test_type, fn
+          nil -> 5
+          :pcr -> 1
+          :serology -> 5
+          :quick -> 2
+          :antigen_quick -> 3
+          :antigen -> 4
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.test_result, fn
+          :positive -> 1
+          :negative -> 2
+          nil -> 3
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.reason_end_of_iso, fn
+          # :other -> 4
+          nil -> nil
+          :healed -> 1
+          :death -> 2
+          :no_follow_up -> 3
+        end)
+        |> List.update_at(@bag_med_16122020_case_fields_index.vacc_yn, fn
+          true -> 1
+          false -> 2
+          nil -> 3
+        end)
+      end)
+
+    [@bag_med_16122020_case_fields]
+    |> Stream.concat(cases)
+    |> CSV.encode()
+  end
+
+  @bag_med_16122020_contact_fields [
+    :ktn_internal_id,
+    :last_name,
+    :first_name,
+    :street_name,
+    :street_number,
+    :location,
+    :postal_code,
+    :country,
+    :phone_number,
+    :mobile_number,
+    :sex,
+    :date_of_birth,
+    :profession,
+    :work_place_name,
+    :work_place_postal_code,
+    :work_place_country,
+    :quar_loc_type,
+    :other_quar_loc_type,
+    :exp_type,
+    :case_link_fall_id_ism,
+    :case_link_ktn_internal_id,
+    :case_link_contact_dt,
+    :exp_loc_dt,
+    :exp_country,
+    :exp_loc_type_work_place,
+    :exp_loc_type_army,
+    :exp_loc_type_asyl,
+    :exp_loc_type_choir,
+    :exp_loc_type_club,
+    :exp_loc_type_hh,
+    :exp_loc_type_high_school,
+    :exp_loc_type_childcare,
+    :exp_loc_type_erotica,
+    :exp_loc_type_flight,
+    :exp_loc_type_medical,
+    :exp_loc_type_hotel,
+    :exp_loc_type_child_home,
+    :exp_loc_type_cinema,
+    :exp_loc_type_shop,
+    :exp_loc_type_school,
+    :exp_loc_type_less_300,
+    :exp_loc_type_more_300,
+    :exp_loc_type_public_transp,
+    :exp_loc_type_massage,
+    :exp_loc_type_nursing_home,
+    :exp_loc_type_religion,
+    :exp_loc_type_restaurant,
+    :exp_loc_type_school_camp,
+    :exp_loc_type_indoor_sport,
+    :exp_loc_type_outdoor_sport,
+    :exp_loc_type_gathering,
+    :exp_loc_type_zoo,
+    :exp_loc_type_prison,
+    :other_exp_loc_type,
+    :exp_loc_type_less_300_detail,
+    :exp_loc_type_more_300_detail,
+    :exp_loc_name,
+    :exp_loc_street,
+    :exp_loc_street_number,
+    :exp_loc_location,
+    :exp_loc_postal_code,
+    :exp_loc_flightdetail,
+    :test_reason_symptoms,
+    :test_reason_quarantine,
+    :test_reason_quarantine_end,
+    :other_test_reason,
+    :symptom_onset_dt,
+    :test_type,
+    :sampling_dt,
+    :test_result,
+    :onset_quar_dt,
+    :end_quar_dt,
+    :reason_end_quar,
+    :other_reason_end_quar,
+    :vacc_yn,
+    :vacc_name,
+    :vacc_dose,
+    :vacc_dt_first,
+    :vacc_dt_last
+  ]
+
+  @bag_med_16122020_contact_fields_index @bag_med_16122020_contact_fields
+                                         |> Enum.with_index()
+                                         |> Map.new()
+
+  @spec case_export(tenant :: Tenant.t(), format :: :bag_med_16122020_contact) :: Enumerable.t()
+  # credo:disable-for-next-line Credo.Check.Refactor.ABCSize
+  def case_export(%Tenant{uuid: tenant_uuid} = _teant, :bag_med_16122020_contact) do
+    first_transmission_query =
+      from(transmission in Transmission,
+        select: %{
+          uuid:
+            fragment(
+              """
+              FIRST_VALUE(?)
+              OVER(
+                PARTITION BY ?
+                ORDER BY ?
+              )
+              """,
+              transmission.uuid,
+              transmission.recipient_case_uuid,
+              transmission.inserted_at
+            ),
+          case_uuid: transmission.recipient_case_uuid
+        }
+      )
+
+    cases =
+      from(case in Case,
+        join: phase in fragment("UNNEST(?)", case.phases),
+        left_join: phase_index in fragment("UNNEST(?)", case.phases),
+        on: fragment("?->'details'->>'__type__'", phase_index) == "index",
+        join: person in assoc(case, :person),
+        left_join: mobile_contact_method in fragment("UNNEST(?)", person.contact_methods),
+        on: fragment("?->>'type'", mobile_contact_method) == "mobile",
+        left_join: landline_contact_method in fragment("UNNEST(?)", person.contact_methods),
+        on: fragment("?->>'type'", landline_contact_method) == "landline",
+        left_join: received_transmission_id in subquery(first_transmission_query),
+        on: received_transmission_id.case_uuid == case.uuid,
+        left_join: received_transmission in assoc(case, :received_transmissions),
+        on: received_transmission.uuid == received_transmission_id.uuid,
+        left_join: received_transmission_case in assoc(received_transmission, :propagator_case),
+        left_join:
+          received_transmission_case_ism_id in fragment(
+            "UNNEST(?)",
+            received_transmission_case.external_references
+          ),
+        on: fragment("?->>'type'", received_transmission_case_ism_id) == "ism_case",
+        where:
+          case.tenant_uuid == ^tenant_uuid and
+            fragment("?->'details'->>'__type__'", phase) == "possible_index",
+        group_by: [case.uuid, person.uuid],
+        order_by: [asc: case.inserted_at],
+        select: [
+          # ktn_internal_id
+          type(case.uuid, Ecto.UUID),
+          # last_name
+          person.last_name,
+          # first_name
+          person.first_name,
+          # street_name
+          fragment("?->>'address'", person.address),
+          # street_number
+          nil,
+          # location
+          fragment("?->>'place'", person.address),
+          # postal_code
+          fragment("?->>'zip'", person.address),
+          # country
+          fragment("?->>'country'", person.address),
+          # phone_number
+          max(fragment("?->>'value'", landline_contact_method)),
+          # mobile_number
+          max(fragment("?->>'value'", mobile_contact_method)),
+          # sex
+          person.sex,
+          # date_of_birth
+          person.birth_date,
+          # profession
+          person.profession_category_main,
+          # work_place_name
+          fragment("?[1]->>'name'", person.employers),
+          # work_place_postal_code
+          fragment("?[1]->'address'->>'zip'", person.employers),
+          # work_place_country
+          fragment("?[1]->'address'->>'country'", person.employers),
+          # quar_loc_type
+          type(
+            fragment("(?->>'location')::isolation_location", case.monitoring),
+            Case.Monitoring.IsolationLocation
+          ),
+          # other_quar_loc_type
+          fragment("?->>'location_details'", case.monitoring),
+          # exp_type
+          type(
+            fragment("(ARRAY_AGG(?))[1]", fragment("(?->'details'->>'type')", phase)),
+            Case.Phase.PossibleIndex.Type
+          ),
+          # case_link_fall_id_ism
+          fragment(
+            "(ARRAY_AGG(?))[1]",
+            fragment(
+              """
+              CASE
+                WHEN ? THEN ?
+                WHEN ? THEN ?
+              END
+              """,
+              not received_transmission.propagator_internal,
+              received_transmission.propagator_ism_id,
+              received_transmission.propagator_internal,
+              fragment("?->>'value'", received_transmission_case_ism_id)
+            )
+          ),
+          # case_link_ktn_internal_id
+          type(
+            fragment("(ARRAY_AGG(?))[1]", received_transmission.propagator_case_uuid),
+            Ecto.UUID
+          ),
+          # case_link_contact_dt
+          fragment("(ARRAY_AGG(?))[1]", received_transmission.date),
+          # exp_loc_dt
+          fragment("(ARRAY_AGG(?))[1]", received_transmission.date),
+          # exp_country
+          fragment(
+            "(ARRAY_AGG(?))[1]",
+            fragment("?->'address'->'country'", received_transmission.infection_place)
+          ),
+          # exp_loc_type_work_place
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "work_place"
+          ),
+          # exp_loc_type_army
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "army"
+          ),
+          # exp_loc_type_asyl
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "asyl"
+          ),
+          # exp_loc_type_choir
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "choir"
+          ),
+          # exp_loc_type_club
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "club"
+          ),
+          # exp_loc_type_hh
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "hh"
+          ),
+          # exp_loc_type_high_school
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "high_school"
+          ),
+          # exp_loc_type_childcare
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "childcare"
+          ),
+          # exp_loc_type_erotica
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "erotica"
+          ),
+          # exp_loc_type_flight
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "flight"
+          ),
+          # exp_loc_type_medical
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "medical"
+          ),
+          # exp_loc_type_hotel
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "hotel"
+          ),
+          # exp_loc_type_child_home
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "child_home"
+          ),
+          # exp_loc_type_cinema
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "cinema"
+          ),
+          # exp_loc_type_shop
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "shop"
+          ),
+          # exp_loc_type_school
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "school"
+          ),
+          # exp_loc_type_less_300
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "less_300"
+          ),
+          # exp_loc_type_more_300
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "more_300"
+          ),
+          # exp_loc_type_public_transp
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "public_transp"
+          ),
+          # exp_loc_type_massage
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "massage"
+          ),
+          # exp_loc_type_nursing_home
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "nursing_home"
+          ),
+          # exp_loc_type_religion
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "religion"
+          ),
+          # exp_loc_type_restaurant
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "restaurant"
+          ),
+          # exp_loc_type_school_camp
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "school_camp"
+          ),
+          # exp_loc_type_indoor_sport
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "indoor_sport"
+          ),
+          # exp_loc_type_outdoor_sport
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "outdoor_sport"
+          ),
+          # exp_loc_type_gathering
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "gathering"
+          ),
+          # exp_loc_type_zoo
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "zoo"
+          ),
+          # exp_loc_type_prison
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "prison"
+          ),
+          # other_exp_loc_type
+          fragment(
+            "(ARRAY_AGG(?->'type' \\? ?))[1]",
+            received_transmission.infection_place,
+            "other"
+          ),
+          # exp_loc_type_less_300_detail
+          fragment("(ARRAY_AGG(?->>'name'))[1]", received_transmission.infection_place),
+          # exp_loc_type_more_300_detail
+          fragment("(ARRAY_AGG(?->>'name'))[1]", received_transmission.infection_place),
+          # exp_loc_name
+          fragment("(ARRAY_AGG(?->>'name'))[1]", received_transmission.infection_place),
+          # exp_loc_street
+          fragment(
+            "(ARRAY_AGG(?->'address'->'address'))[1]",
+            received_transmission.infection_place
+          ),
+          # exp_loc_street_number
+          nil,
+          # exp_loc_location
+          fragment(
+            "(ARRAY_AGG(?->'address'->>'place'))[1]",
+            received_transmission.infection_place
+          ),
+          # exp_loc_postal_code
+          fragment("(ARRAY_AGG(?->'address'->>'zip'))[1]", received_transmission.infection_place),
+          # exp_loc_flightdetail
+          fragment(
+            "(ARRAY_AGG(?->>'flight_information'))[1]",
+            received_transmission.infection_place
+          ),
+          # test_reason_symptoms
+          fragment("?->'reasons_for_test' \\? ?", case.clinical, "symptoms"),
+          # test_reason_quarantine
+          fragment("?->'reasons_for_test' \\? ?", case.clinical, "quarantine"),
+          # test_reason_quarantine_end
+          # TODO
+          nil,
+          # other_test_reason
+          fragment("?->'reasons_for_test' \\?| ?", case.clinical, [
+            "outbreak_examination",
+            "screening",
+            "work_related",
+            "app_report",
+            "contact_tracing",
+            "convenience"
+          ]),
+          # symptom_onset_dt
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", phase_index)),
+          # test_type
+          type(fragment("(?->>'test_kind')", case.clinical), Case.Clinical.TestKind),
+          # sampling_dt
+          fragment("?->>'test'", case.clinical),
+          # test_result
+          type(fragment("(?->>'result')", case.clinical), Case.Clinical.Result),
+          # onset_quar_dt
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", phase)),
+          # end_quar_dt
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'end'", phase)),
+          # reason_end_quar
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->'detail'->>'end_reason'", phase)),
+          # other_reason_end_quar
+          # TODO
+          nil,
+          # vacc_yn
+          fragment("(?->>'done')::boolean", person.vaccination),
+          # vacc_name
+          fragment("?->>'name'", person.vaccination),
+          # vacc_dose
+          fragment("JSONB_ARRAY_LENGTH(?->'jab_dates')", person.vaccination),
+          # vacc_dt_first
+          fragment("(?->'jab_dates'->>0)", person.vaccination),
+          # vacc_dt_last
+          fragment("(?->'jab_dates'->>-1)", person.vaccination)
+        ]
+      )
+      |> Repo.stream()
+      |> Stream.map(fn entry ->
+        entry
+        |> List.update_at(@bag_med_16122020_contact_fields_index.phone_number, fn
+          nil ->
+            nil
+
+          phone_number ->
+            {:ok, parsed_number} = ExPhoneNumber.parse(phone_number, @origin_country)
+            ExPhoneNumber.Formatting.format(parsed_number, :e164)
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.mobile_number, fn
+          nil ->
+            nil
+
+          phone_number ->
+            {:ok, parsed_number} = ExPhoneNumber.parse(phone_number, @origin_country)
+            ExPhoneNumber.Formatting.format(parsed_number, :e164)
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.sex, fn
+          nil -> nil
+          :male -> 1
+          :female -> 2
+          :other -> 3
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.quar_loc_type, fn
+          nil -> 6
+          :home -> 1
+          :social_medical_facility -> 2
+          :hospital -> 3
+          :hotel -> 4
+          :asylum_center -> 5
+          :other -> 7
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_type, fn
+          nil -> nil
+          :contact_person -> 1
+          :travel -> 2
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.test_reason_symptoms, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_work_place, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_army, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_asyl, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_choir, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_club, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_hh, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_high_school, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_childcare, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_erotica, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_flight, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_medical, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_hotel, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_child_home, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_cinema, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_shop, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_school, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_less_300, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_more_300, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_public_transp, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_massage, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_nursing_home, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_religion, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_restaurant, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_school_camp, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_indoor_sport, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_outdoor_sport, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_gathering, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_zoo, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_prison, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.other_exp_loc_type, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.test_reason_quarantine, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.test_reason_quarantine_end, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.other_test_reason, fn
+          nil -> nil
+          true -> 1
+          false -> 0
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.test_type, fn
+          nil -> 5
+          :pcr -> 1
+          :serology -> 5
+          :quick -> 2
+          :antigen_quick -> 3
+          :antigen -> 4
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.test_result, fn
+          :positive -> 1
+          :negative -> 2
+          nil -> 3
+        end)
+        |> List.update_at(@bag_med_16122020_contact_fields_index.vacc_yn, fn
+          true -> 1
+          false -> 2
+          nil -> 3
+        end)
+      end)
+
+    [@bag_med_16122020_contact_fields]
+    |> Stream.concat(cases)
+    |> CSV.encode()
+  end
 
   @doc """
   Gets a single case.
@@ -973,119 +2368,6 @@ defmodule Hygeia.CaseContext do
         ) :: Ecto.Changeset.t(ProtocolEntry.t())
   def change_protocol_entry(%ProtocolEntry{} = protocol_entry, attrs \\ %{}),
     do: ProtocolEntry.changeset(protocol_entry, attrs)
-
-  @doc """
-  Returns the list of infection_place_types.
-
-  ## Examples
-
-      iex> list_infection_place_types()
-      [%InfectionPlaceType{}, ...]
-
-  """
-  @spec list_infection_place_types :: [InfectionPlaceType.t()]
-  def list_infection_place_types,
-    do:
-      Repo.all(
-        from(infection_place_type in InfectionPlaceType, order_by: infection_place_type.name)
-      )
-
-  @doc """
-  Gets a single infection_place_type.
-
-  Raises `Ecto.NoResultsError` if the Infection place type does not exist.
-
-  ## Examples
-
-      iex> get_infection_place_type!(123)
-      %InfectionPlaceType{}
-
-      iex> get_infection_place_type!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  @spec get_infection_place_type!(id :: String.t()) :: InfectionPlaceType.t()
-  def get_infection_place_type!(id), do: Repo.get!(InfectionPlaceType, id)
-
-  @doc """
-  Creates a infection_place_type.
-
-  ## Examples
-
-      iex> create_infection_place_type(%{field: value})
-      {:ok, %InfectionPlaceType{}}
-
-      iex> create_infection_place_type(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec create_infection_place_type(attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, InfectionPlaceType.t()} | {:error, Ecto.Changeset.t(InfectionPlaceType.t())}
-  def create_infection_place_type(attrs \\ %{}),
-    do:
-      %InfectionPlaceType{}
-      |> change_infection_place_type(attrs)
-      |> versioning_insert()
-      |> broadcast("infection_place_types", :create)
-      |> versioning_extract()
-
-  @doc """
-  Updates a infection_place_type.
-
-  ## Examples
-
-      iex> update_infection_place_type(infection_place_type, %{field: new_value})
-      {:ok, %InfectionPlaceType{}}
-
-      iex> update_infection_place_type(infection_place_type, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec update_infection_place_type(
-          infection_place_type :: InfectionPlaceType.t(),
-          attrs :: Hygeia.ecto_changeset_params()
-        ) :: {:ok, InfectionPlaceType.t()} | {:error, Ecto.Changeset.t(InfectionPlaceType.t())}
-  def update_infection_place_type(%InfectionPlaceType{} = infection_place_type, attrs),
-    do:
-      infection_place_type
-      |> InfectionPlaceType.changeset(attrs)
-      |> versioning_update()
-      |> broadcast("infection_place_types", :update)
-      |> versioning_extract()
-
-  @doc """
-  Deletes a infection_place_type.
-
-  ## Examples
-
-      iex> delete_infection_place_type(infection_place_type)
-      {:ok, %InfectionPlaceType{}}
-
-      iex> delete_infection_place_type(infection_place_type)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec delete_infection_place_type(infection_place_type :: InfectionPlaceType.t()) ::
-          {:ok, InfectionPlaceType.t()} | {:error, Ecto.Changeset.t(InfectionPlaceType.t())}
-  def delete_infection_place_type(%InfectionPlaceType{} = infection_place_type),
-    do: Repo.delete(infection_place_type)
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking infection_place_type changes.
-
-  ## Examples
-
-      iex> change_infection_place_type(infection_place_type)
-      %Ecto.Changeset{data: %InfectionPlaceType{}}
-
-  """
-  @spec change_infection_place_type(
-          user :: InfectionPlaceType.t() | InfectionPlaceType.empty(),
-          attrs :: Hygeia.ecto_changeset_params()
-        ) ::
-          Ecto.Changeset.t()
-  def change_infection_place_type(%InfectionPlaceType{} = infection_place_type, attrs \\ %{}),
-    do: InfectionPlaceType.changeset(infection_place_type, attrs)
 
   @doc """
   Returns the list of possible_index_submissions.

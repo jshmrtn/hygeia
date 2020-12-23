@@ -49,7 +49,7 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
           Ecto.Changeset.t(t)
   def changeset(protocol_entry, attrs) do
     protocol_entry
-    |> cast(attrs, [:case_uuid, :type])
+    |> cast(attrs, [:case_uuid, :type, :inserted_at])
     |> cast_polymorphic_embed(:entry)
     |> validate_required([:case_uuid, :entry])
     |> assoc_constraint(:case)

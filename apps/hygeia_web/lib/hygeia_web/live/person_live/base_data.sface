@@ -229,9 +229,29 @@
 
               <div class="row">
                 <div class="col">
-                  <Field name={{ :profession_uuid }} class="form-group">
-                    <Label>{{ "Profession" |> gettext }}</Label>
-                    <Select  class="form-control" opts={{ prompt: gettext("Choose profession"), disabled: @live_action == :show }} field={{ :profession_uuid }} options={{ Enum.map(@professions, &({&1.name, &1.uuid})) }} />
+                  <Field name={{ :profession_category_main }} class="form-group">
+                    <Label>{{ gettext("Profession Category") }}</Label>
+                    <Select
+                      class="form-control"
+                      opts={{ prompt: gettext("Choose profession category"), disabled: @live_action == :show }}
+                      options={{ NOGA.Section.select_options() }}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+                <div class="col">
+                  <Field name={{ :profession_category }} class="form-group">
+                    <Label>{{ gettext("Profession") }}</Label>
+                    <Select
+                      class="form-control"
+                      opts={{ prompt: gettext("Choose profession category"), disabled: @live_action == :show }}
+                      options={{
+                        case Ecto.Changeset.get_field(@changeset, :profession_category_main) do
+                          nil -> []
+                          section -> NOGA.Code.select_options(section)
+                        end
+                      }}
+                    />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
@@ -316,6 +336,113 @@
                 <span class="oi oi-plus mr-1" aria-hidden="true"></span>
                 {{ gettext("New employer / employment") }}
               </button>
+            </div>
+          </div>
+
+          <div class="card vaccination">
+            <div class="card-body">
+              <h4 class="card-title">{{ gettext("Vaccination") }}</h4>
+
+              <Inputs for={{ :vaccination }}>
+                <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                  <div class="row">
+                    <div class="col">
+                      <Field name={{ :done }} class="form-group">
+                        <div class="btn-group-vertical disabled display-only btn-group-toggle btn-radio-group">
+                          <label
+                            class={{
+                              "btn",
+                              "btn-sm",
+                              "btn-secondary",
+                              disabled: @live_action == :show,
+                              active: Ecto.Changeset.get_field(form.source, :done) == nil
+                            }}
+                          >
+                            <RadioButton value={{ nil }} opts={{ disabled: @live_action == :show }} />
+                            {{ pgettext("vaccination_done", "Unknown") }}
+                          </label>
+                          <label
+                            class={{
+                              "btn",
+                              "btn-sm",
+                              "btn-secondary",
+                              disabled: @live_action == :show,
+                              active: Ecto.Changeset.get_field(form.source, :done) == true
+                            }}
+                          >
+                            <RadioButton value={{ true }} opts={{ disabled: @live_action == :show }} />
+                            {{ pgettext("vaccination_done", "Done") }}
+                          </label>
+                          <label
+                            class={{
+                              "btn",
+                              "btn-sm",
+                              "btn-secondary",
+                              disabled: @live_action == :show,
+                              active: Ecto.Changeset.get_field(form.source, :done) == false
+                            }}
+                          >
+                            <RadioButton value={{ false }} opts={{ disabled: @live_action == :show }} />
+                            {{ pgettext("vaccination_done", "Not Done") }}
+                          </label>
+                        </div>
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                    <div
+                      class="col"
+                      :if={{ Ecto.Changeset.get_field(form.source, :done) }}
+                    >
+                      <Field name={{ :name }} class="form-group">
+                        <Label>{{ gettext("Name") }}</Label>
+                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                    <div
+                      class="col"
+                      :if={{ Ecto.Changeset.get_field(form.source, :done) }}
+                    >
+                      <Field name={{ :jab_dates }} class="form-group">
+                        <Label>{{ gettext("Jab Dates") }}</Label>
+                        <div :for={{ {date, index} <- Enum.with_index(Ecto.Changeset.get_field(form.source, :jab_dates, [nil]) || [nil]) }}>
+                          <DateInput
+                            class="form-control"
+                            opts={{
+                              disabled: @live_action == :show,
+                              name: input_name(form, :jab_dates) <> "[]",
+                              value: case date do
+                                nil -> nil
+                                date -> Date.to_iso8601(date)
+                              end
+                            }}
+                          />
+                          <div :if={{ @live_action == :edit }}>
+                            <button
+                              type="button"
+                              class="btn btn-danger"
+                              :on-click="remove_vaccination_jab_date"
+                              phx-value-index={{ index }}
+                            >
+                              <span class="oi oi-trash" aria-hidden="true"></span>
+                            </button>
+                          </div>
+                        </div>
+                        <button
+                          :if={{ @live_action == :edit }}
+                          type="button"
+                          class="btn btn-secondary"
+                          :on-click="add_vaccination_jab_date"
+                        >
+                          <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+                          {{ gettext("New date") }}
+                        </button>
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                  </div>
+                </InputContext>
+              </Inputs>
             </div>
           </div>
         </div>

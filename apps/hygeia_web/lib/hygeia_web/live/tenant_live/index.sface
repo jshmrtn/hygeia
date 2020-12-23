@@ -42,6 +42,14 @@
               >
                 <button class="ml-auto btn btn-sm btn-secondary">{{ gettext("Show") }}</button>
               </LiveRedirect>
+              <LiveRedirect
+                to={{ Routes.tenant_export_path(@socket, :export, tenant) }}
+                :if={{ authorized?(tenant, :export_data, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-secondary">
+                  <span class="oi oi-data-transfer-download" title={{ gettext("Export Data") }} aria-hidden="true"></span>
+                </button>
+              </LiveRedirect>
               <LivePatch
                 to={{ Routes.tenant_show_path(@socket, :edit, tenant) }}
                 :if={{ authorized?(tenant, :update, auth) }}

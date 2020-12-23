@@ -5,7 +5,10 @@ import Config
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
-config :hygeia, Hygeia.Repo, pool: Ecto.Adapters.SQL.Sandbox
+config :hygeia, Hygeia.Repo,
+  pool: Ecto.Adapters.SQL.Sandbox,
+  timeout: :infinity,
+  ownership_timeout: :infinity
 
 config :hygeia, sms_sender: Hygeia.SmsSenderMock
 
@@ -21,3 +24,6 @@ config :logger, level: :warn
 
 # Bamboo Mailer
 config :hygeia, Hygeia.EmailSender.Smtp, adapter: Bamboo.TestAdapter
+
+# ExUnit
+config :ex_unit, timeout: :infinity
