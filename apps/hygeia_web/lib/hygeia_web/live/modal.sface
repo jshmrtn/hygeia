@@ -1,5 +1,5 @@
 <div
-  id="modal"
+  id={{ "#{@myself}_modal" }}
   class="modal fade show live-modal"
   tabindex="-1"
   :on-capture-click={{ @close }}
