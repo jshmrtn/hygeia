@@ -217,16 +217,26 @@
                                   {{ form.source |> Ecto.Changeset.fetch_field!(:type) |> case_phase_possible_index_type_translation() }}
                                 </div>
                               </div>
-
-                              <Field name={{ :end_reason }} class="form-group">
-                                <Label>{{ gettext("End Reason") }}</Label>
-                                <Select 
-                                  class="form-control" 
-                                  opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
-                                  options={{ case_phase_possible_index_end_reason_map() }}
-                                />
-                                <ErrorTag class="d-block invalid-feedback" />
-                              </Field>
+                              <div class="d-flex">
+                                <Field name={{ :end_reason }} class="form-group flex-grow-1">
+                                  <Label>{{ gettext("End Reason") }}</Label>
+                                  <Select 
+                                    class="form-control" 
+                                    opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
+                                    options={{ case_phase_possible_index_end_reason_map() }}
+                                  />
+                                  <ErrorTag class="d-block invalid-feedback" />
+                                </Field>
+                                <div :if={{ @live_action != :show }} class="form-group">
+                                  <label>&nbsp;</label>
+                                  <button
+                                    type="button"
+                                    class="d-block ml-1 btn btn-info"
+                                    :on-click="show_phase_end_reason_help">
+                                    <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true"></span>
+                                  </button>
+                                </div>
+                              </div>
                             </InputContext>
                           </PolimorphicInputs>
 
@@ -244,12 +254,12 @@
                                 <ErrorTag class="d-block invalid-feedback" />
                               </Field>
 
-                              <div class="form-group">
+                              <div :if={{ Ecto.Changeset.get_field(form.source, :automated_close_email_sent) != nil }} class="form-group">
                                 <label>
                                   {{ gettext("Automated Close Email") }}
                                 </label>
 
-                                <div :if={{ Ecto.Changeset.get_field(form.source, :automated_close_email_sent) != nil }} class="value">
+                                <div class="value">
                                   {{
                                     gettext(
                                       "Sent at %{date}",
