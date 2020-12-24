@@ -198,7 +198,7 @@
                                 <button
                                   type="button"
                                   class="d-block ml-1 btn btn-info"
-                                  :on-click="show_phase_end_reason_help">
+                                  :on-click="show_index_phase_end_reason_help">
                                   <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true"></span>
                                 </button>
                               </div>
@@ -232,55 +232,13 @@
                                   <button
                                     type="button"
                                     class="d-block ml-1 btn btn-info"
-                                    :on-click="show_phase_end_reason_help">
+                                    :on-click="show_possible_index_phase_end_reason_help">
                                     <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true"></span>
                                   </button>
                                 </div>
                               </div>
                             </InputContext>
                           </PolimorphicInputs>
-
-                          <HygeiaWeb.Modal
-                            :if={{ @show_phase_end_reason_help }}
-                            id={{ :phase_end_reason_help }}
-                            title={{ gettext("End reason help") }}
-                            close="hide_phase_end_reason_help"
-                            size="xl"
-                          >
-                            <p>{{ gettext("You must provide a reason for completing a phase.") }}</p>
-                            <table :if={{ match?(%Phase.Index{}, Ecto.Changeset.fetch_field!(form.source, :details)) }} class="table table-sm table-striped">
-                              <tbody>
-                                <tr>
-                                  <td><b>{{ phase_end_reason_translation(:healed) }}</b></td>
-                                  <td>{{ gettext("Index is completely healed and isolation is completed") }}</td>
-                                </tr>
-                                <tr>
-                                  <td><b>{{ phase_end_reason_translation(:death) }}</b></td>
-                                  <td>{{ gettext("Index died") }}</td>
-                                </tr>
-                                <tr>
-                                  <td><b>{{ phase_end_reason_translation(:no_follow_up) }}</b></td>
-                                  <td>{{ gettext("Agreed with index that no further contact is necessary") }}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <table :if={{ match?(%Phase.PossibleIndex{}, Ecto.Changeset.fetch_field!(form.source, :details)) }} class="table table-sm table-striped">
-                              <tbody>
-                                <tr>
-                                  <td><b>{{ phase_end_reason_translation(:asymptomatic) }}</b></td>
-                                  <td>{{ gettext("The contact person didn't develop any symptoms during quarantine") }}</td>
-                                </tr>
-                                <tr>
-                                  <td><b>{{ phase_end_reason_translation(:converted_to_index) }}</b></td>
-                                  <td>{{ gettext("The contact person has developed symptoms, did a test and became an index") }}</td>
-                                </tr>
-                                <tr>
-                                  <td><b>{{ phase_end_reason_translation(:no_follow_up) }}</b></td>
-                                  <td>{{ gettext("Agreed with index that had been in contact that no further contact is necessary") }}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </HygeiaWeb.Modal>
 
                           <div class="row">
                             <div class="col">
@@ -617,6 +575,58 @@
           <td>{{ gettext("Index doesn't understand English and can't express themselves in a European language. No communication without translator possible.") }}</td>
           <td>{{ gettext("> 30 Min.") }}</td>
           <td>{{ gettext("A minimum of 3 points must be fulfilled") }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </HygeiaWeb.Modal>
+
+  <HygeiaWeb.Modal
+    :if={{ @show_index_phase_end_reason_help }}
+    id={{ :index_phase_end_reason_help }}
+    title={{ gettext("End reason help") }}
+    close="hide_index_phase_end_reason_help"
+    size="xl"
+  >
+    <p>{{ gettext("You must provide a reason for completing a phase.") }}</p>
+    <table class="table table-sm table-striped">
+      <tbody>
+        <tr>
+          <td><b>{{ phase_end_reason_translation(:healed) }}</b></td>
+          <td>{{ gettext("Index is completely healed and isolation is completed") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ phase_end_reason_translation(:death) }}</b></td>
+          <td>{{ gettext("Index died") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ phase_end_reason_translation(:no_follow_up) }}</b></td>
+          <td>{{ gettext("Agreed with index that no further contact is necessary") }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </HygeiaWeb.Modal>
+
+  <HygeiaWeb.Modal
+    :if={{ @show_possible_index_phase_end_reason_help }}
+    id={{ :possible_index_phase_end_reason_help }}
+    title={{ gettext("End reason help") }}
+    close="hide_possible_index_phase_end_reason_help"
+    size="xl"
+  >
+    <p>{{ gettext("You must provide a reason for completing a phase.") }}</p>
+    <table class="table table-sm table-striped">
+      <tbody>
+        <tr>
+          <td><b>{{ phase_end_reason_translation(:asymptomatic) }}</b></td>
+          <td>{{ gettext("The contact person didn't develop any symptoms during quarantine") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ phase_end_reason_translation(:converted_to_index) }}</b></td>
+          <td>{{ gettext("The contact person has developed symptoms, did a test and became an index") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ phase_end_reason_translation(:no_follow_up) }}</b></td>
+          <td>{{ gettext("Agreed with index that had been in contact that no further contact is necessary") }}</td>
         </tr>
       </tbody>
     </table>

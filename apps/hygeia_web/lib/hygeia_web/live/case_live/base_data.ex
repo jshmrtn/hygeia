@@ -28,7 +28,8 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
   data show_complexity_help, :boolean, default: false
   data show_case_status_help, :boolean, default: false
-  data show_phase_end_reason_help, :boolean, default: false
+  data show_index_phase_end_reason_help, :boolean, default: false
+  data show_possible_index_phase_end_reason_help, :boolean, default: false
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id} = params, uri, socket) do
@@ -305,12 +306,20 @@ defmodule HygeiaWeb.CaseLive.BaseData do
     {:noreply, assign(socket, show_complexity_help: false)}
   end
 
-  def handle_event("show_phase_end_reason_help", _params, socket) do
-    {:noreply, assign(socket, show_phase_end_reason_help: true)}
+  def handle_event("show_index_phase_end_reason_help", _params, socket) do
+    {:noreply, assign(socket, show_index_phase_end_reason_help: true)}
   end
 
-  def handle_event("hide_phase_end_reason_help", _params, socket) do
-    {:noreply, assign(socket, show_phase_end_reason_help: false)}
+  def handle_event("hide_index_phase_end_reason_help", _params, socket) do
+    {:noreply, assign(socket, show_index_phase_end_reason_help: false)}
+  end
+
+  def handle_event("show_possible_index_phase_end_reason_help", _params, socket) do
+    {:noreply, assign(socket, show_possible_index_phase_end_reason_help: true)}
+  end
+
+  def handle_event("hide_possible_index_phase_end_reason_help", _params, socket) do
+    {:noreply, assign(socket, show_possible_index_phase_end_reason_help: false)}
   end
 
   def handle_event("show_case_status_help", _params, socket) do
