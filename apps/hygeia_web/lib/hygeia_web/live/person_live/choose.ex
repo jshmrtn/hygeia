@@ -72,7 +72,8 @@ defmodule HygeiaWeb.PersonLive.Choose do
     people =
       Repo.all(
         from(person in query,
-          where: person.tenant_uuid in ^Enum.map(socket.assigns.tenants, & &1.uuid)
+          where: person.tenant_uuid in ^Enum.map(socket.assigns.tenants, & &1.uuid),
+          limit: 25
         )
       )
 

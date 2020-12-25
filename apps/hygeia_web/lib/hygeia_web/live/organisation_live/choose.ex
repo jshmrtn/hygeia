@@ -3,7 +3,10 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
 
   use HygeiaWeb, :surface_live_component
 
+  import Ecto.Query
+
   alias Hygeia.OrganisationContext
+  alias Hygeia.Repo
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
 
@@ -46,12 +49,19 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   end
 
   defp load_organisations(socket) do
-    organisations =
+    query =
       if socket.assigns.query in [nil, ""] do
-        OrganisationContext.list_organisations()
+        OrganisationContext.list_organisations_query()
       else
-        OrganisationContext.fulltext_organisation_search(socket.assigns.query)
+        OrganisationContext.fulltext_organisation_search_query(socket.assigns.query)
       end
+
+    organisations =
+      Repo.all(
+        from(organisation in query,
+          limit: 25
+        )
+      )
 
     assign(socket, organisations: organisations)
   end

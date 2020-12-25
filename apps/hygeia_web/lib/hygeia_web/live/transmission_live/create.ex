@@ -35,6 +35,9 @@ defmodule HygeiaWeb.TransmissionLive.Create do
   end
 
   @impl Phoenix.LiveView
+  def handle_info(_other, socket), do: {:noreply, socket}
+
+  @impl Phoenix.LiveView
   def handle_event("validate", %{"transmission" => transmission_params}, socket) do
     {:noreply,
      assign(socket, :changeset, %{

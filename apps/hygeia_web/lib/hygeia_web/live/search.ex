@@ -24,9 +24,21 @@ defmodule HygeiaWeb.Search do
   end
 
   @impl Phoenix.LiveComponent
-  def update(%{append_result: {key, result}} = assigns, socket) do
+  def update(
+        %{append_result: {key, result, pid}} = assigns,
+        %{assigns: %{pending_search: %Task{pid: pid}}} = socket
+      ) do
     socket = assign(socket, Map.drop(assigns, [:append_result]))
     socket = assign(socket, results: Map.put(socket.assigns.results, key, result))
+    {:ok, socket}
+  end
+
+  # Result arrived too late
+  def update(
+        %{append_result: {_key, _result, result_pid}} = _assigns,
+        %{assigns: %{pending_search: %Task{pid: pending_pid}}} = socket
+      )
+      when result_pid != pending_pid do
     {:ok, socket}
   end
 
@@ -45,7 +57,7 @@ defmodule HygeiaWeb.Search do
 
   defp search_results(socket, "") do
     if socket.assigns.pending_search do
-      Task.shutdown(socket.assigns.pending_search, :brutal_kill)
+      Task.shutdown(socket.assigns.pending_search)
     end
 
     assign(socket, results: %{}, query: "", pending_search: nil)
@@ -53,18 +65,20 @@ defmodule HygeiaWeb.Search do
 
   defp search_results(socket, query) do
     if socket.assigns.pending_search do
-      Task.shutdown(socket.assigns.pending_search, :brutal_kill)
+      Task.shutdown(socket.assigns.pending_search)
     end
 
     pid = self()
 
     task =
       Task.async(fn ->
+        task_pid = self()
+
         query
         |> search_fns(socket)
         |> Enum.reject(&match?({_key, nil}, &1))
         |> Enum.map(fn {key, callback} ->
-          Task.async(fn -> run_search(key, callback, pid, socket) end)
+          Task.async(fn -> run_search(key, callback, pid, socket, task_pid) end)
         end)
         |> Enum.each(&Task.await/1)
 
@@ -74,7 +88,7 @@ defmodule HygeiaWeb.Search do
     assign(socket, query: query, results: %{}, pending_search: task)
   end
 
-  defp run_search(key, callback, pid, socket) do
+  defp run_search(key, callback, pid, socket, task_pid) do
     case callback.() do
       nil ->
         :ok
@@ -83,7 +97,10 @@ defmodule HygeiaWeb.Search do
         :ok
 
       [_ | _] = results ->
-        send_update(pid, __MODULE__, id: socket.assigns.id, append_result: {key, results})
+        send_update(pid, __MODULE__,
+          id: socket.assigns.id,
+          append_result: {key, results, task_pid}
+        )
 
         :ok
     end

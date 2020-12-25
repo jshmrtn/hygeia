@@ -24,26 +24,28 @@ defmodule Hygeia.OrganisationContext do
   def list_organisations_query,
     do: from(organisation in Organisation, order_by: organisation.name)
 
+  @spec fulltext_organisation_search_query(query :: String.t(), limit :: pos_integer()) ::
+          Ecto.Query.t()
+  def fulltext_organisation_search_query(query, limit \\ 10),
+    do:
+      from(organisation in Organisation,
+        where: fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", organisation, ^query),
+        order_by: [
+          desc:
+            fragment(
+              "TS_RANK_CD(?.fulltext, WEBSEARCH_TO_TSQUERY('german', ?))",
+              organisation,
+              ^query
+            )
+        ],
+        limit: ^limit
+      )
+
   @spec fulltext_organisation_search(query :: String.t(), limit :: pos_integer()) :: [
           Organisation.t()
         ]
   def fulltext_organisation_search(query, limit \\ 10),
-    do:
-      Repo.all(
-        from(organisation in Organisation,
-          where:
-            fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", organisation, ^query),
-          order_by: [
-            desc:
-              fragment(
-                "TS_RANK_CD(?.fulltext, WEBSEARCH_TO_TSQUERY('german', ?))",
-                organisation,
-                ^query
-              )
-          ],
-          limit: ^limit
-        )
-      )
+    do: Repo.all(fulltext_organisation_search_query(query, limit))
 
   @doc """
   Gets a single organisation.
