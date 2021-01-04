@@ -43,7 +43,12 @@ defmodule HygeiaWeb.CaseLive.Navigation do
       |> Enum.with_index()
       |> Enum.map(fn
         {phase, ^index_last} ->
-          %{uuid: phase.uuid, details: %{end_reason: :converted_to_index}, end: Date.utc_today()}
+          %{
+            uuid: phase.uuid,
+            details: %{end_reason: :converted_to_index},
+            end: Date.utc_today(),
+            send_automated_close_email: false
+          }
 
         {phase, _other_index} ->
           %{uuid: phase.uuid}
