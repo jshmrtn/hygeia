@@ -1,6 +1,4 @@
 <div class="component-possible-index-submissions-index container">
-  <!-- TODO: Style -->
-
   <Context get={{ HygeiaWeb, auth: auth, logged_in: logged_in }}>
     <div :if={{ not logged_in }}>
       <h2>{{ gettext("Enter Possible Transmissions") }}</h2>

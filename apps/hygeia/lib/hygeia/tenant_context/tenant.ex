@@ -64,12 +64,14 @@ defmodule Hygeia.TenantContext.Tenant do
     field :outgoing_mail_configuration, PolymorphicEmbed,
       types: [
         smtp: Smtp
-      ]
+      ],
+      on_replace: :update
 
     field :outgoing_sms_configuration, PolymorphicEmbed,
       types: [
         websms: Websms
-      ]
+      ],
+      on_replace: :update
 
     # Use in Protocol Creation Form
     field :outgoing_mail_configuration_type, :string, virtual: true, default: "smtp"

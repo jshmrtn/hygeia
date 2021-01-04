@@ -831,7 +831,7 @@ defmodule Hygeia.CaseContextTest do
   describe "protocol_entries" do
     @valid_attrs %{entry: %{__type__: "note", note: "some note"}}
     @update_attrs %{entry: %{__type__: "note", note: "some other note"}}
-    @invalid_attrs %{entry: %{__type__: :invalid}}
+    @invalid_attrs %{entry: %{__type__: "note", note: nil}}
 
     test "list_protocol_entries/0 returns all protocol_entries" do
       protocol_entry = protocol_entry_fixture()

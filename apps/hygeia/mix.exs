@@ -60,15 +60,11 @@ defmodule Hygeia.MixProject do
       {:ecto_enum, "~> 1.4"},
       {:cadastre, "~> 0.1.4"},
       {:human_readable_identifier_generator, "~> 1.0"},
-      # TODO: Replace with released version when the following PR is released:
-      # https://github.com/mathieuprog/polymorphic_embed/pull/22
-      {:polymorphic_embed, github: "maennchen/polymorphic_embed", branch: "nil_cast"},
+      {:polymorphic_embed, "~> 1.3"},
       {:ex_phone_number, "~> 0.2"},
       {:mox, "~> 1.0", only: :test},
       {:websms, "~> 1.0.0-alpha"},
-      # TODO: Replace with released version when the following PR is released:
-      # https://github.com/duffelhq/paginator/pull/93
-      {:paginator, github: "duffelhq/paginator", branch: "master"},
+      {:paginator, "~> 1.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
       {:bamboo, "~> 1.6"},
       {:bamboo_smtp, "~> 3.0"},

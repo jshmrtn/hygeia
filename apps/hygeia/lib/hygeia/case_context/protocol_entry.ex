@@ -34,7 +34,8 @@ defmodule Hygeia.CaseContext.ProtocolEntry do
         note: Note,
         sms: Sms,
         email: Email
-      ]
+      ],
+      on_replace: :update
 
     # Use in Protocol Creation Form
     field :type, :string, virtual: true, default: "note"

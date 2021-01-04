@@ -39,7 +39,6 @@ defmodule Hygeia.UserContext.User do
     field :display_name, :string
     field :email, :string
     field :iam_sub, :string
-    # TODO: Replace with Relation to Tenant to scope roles to tenant
 
     has_many :grants, Grant, foreign_key: :user_uuid, on_replace: :delete
     has_many :tenants, through: [:grants, :tenant]

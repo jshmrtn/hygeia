@@ -34,7 +34,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
       types: [
         index: Index,
         possible_index: PossibleIndex
-      ]
+      ],
+      on_replace: :update
   end
 
   @doc false
