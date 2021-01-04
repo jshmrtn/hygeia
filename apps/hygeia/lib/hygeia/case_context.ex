@@ -238,12 +238,12 @@ defmodule Hygeia.CaseContext do
       Repo.all(
         from(person in Person,
           where:
-            fragment("SIMILARITY(?, ?) > 0.4", person.first_name, ^first_name) and
-              fragment("SIMILARITY(?, ?) > 0.4", person.last_name, ^last_name),
+            fragment("(? % ?)", person.first_name, ^first_name) and
+              fragment("(? % ?)", person.last_name, ^last_name),
           order_by: [
-            desc:
-              fragment("SIMILARITY(?, ?)", person.first_name, ^first_name) +
-                fragment("SIMILARITY(?, ?)", person.last_name, ^last_name)
+            asc:
+              fragment("(? <-> ?)", person.first_name, ^first_name) +
+                fragment("(? <-> ?)", person.last_name, ^last_name)
           ]
         )
       )
