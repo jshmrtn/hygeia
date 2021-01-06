@@ -21,68 +21,87 @@ Versioning.put_originator(:noone)
     iam_domain: "covid19-tracing.ch"
   })
 
-{:ok, tenant_sg} =
-  create_tenant(%{
-    name: "Kanton St. Gallen",
-    short_name: "SG",
-    outgoing_mail_configuration: %{
-      __type__: "smtp",
-      server: "postfix-relay.postfix-relay",
-      hostname: "smtp.covid19-tracing.ch",
-      port: 25,
-      from_email: "Info.ContactTracing@sg.ch"
-    },
-    outgoing_sms_configuration: %{
-      __type__: "websms",
-      access_token: "***REMOVED***"
-    },
-    iam_domain: "kfssg.ch",
-    template_variation: :sg
-  })
+tenants =
+  "CH"
+  |> Cadastre.Country.new()
+  |> Cadastre.Subdivision.all()
+  |> Enum.map(fn
+    %Cadastre.Subdivision{id: "SG"} = subdivision ->
+      {subdivision,
+       %{
+         outgoing_mail_configuration: %{
+           __type__: "smtp",
+           server: "postfix-relay.postfix-relay",
+           hostname: "smtp.covid19-tracing.ch",
+           port: 25,
+           from_email: "Info.ContactTracing@sg.ch"
+         },
+         outgoing_sms_configuration: %{
+           __type__: "websms",
+           access_token: "***REMOVED***"
+         },
+         iam_domain: "kfssg.ch",
+         template_variation: :sg
+       }}
 
-{:ok, tenant_ai} =
-  create_tenant(%{
-    name: "Kanton Appenzell Innerrhoden",
-    short_name: "AI",
-    outgoing_mail_configuration: %{
-      __type__: "smtp",
-      server: "postfix-relay.postfix-relay",
-      hostname: "smtp.covid19-tracing.ch",
-      port: 25,
-      from_email: "Info.ContactTracing@sg.ch"
-    },
-    outgoing_sms_configuration: %{
-      __type__: "websms",
-      access_token: "***REMOVED***"
-    },
-    iam_domain: "ai.covid19-tracing.ch",
-    template_variation: :ai
-  })
+    %Cadastre.Subdivision{id: "AR"} = subdivision ->
+      {subdivision,
+       %{
+         outgoing_mail_configuration: %{
+           __type__: "smtp",
+           server: "postfix-relay.postfix-relay",
+           hostname: "smtp.covid19-tracing.ch",
+           port: 25,
+           from_email: "Info.ContactTracing@sg.ch"
+         },
+         outgoing_sms_configuration: %{
+           __type__: "websms",
+           access_token: "***REMOVED***"
+         },
+         iam_domain: "ar.covid19-tracing.ch",
+         template_variation: :ar
+       }}
 
-{:ok, tenant_ar} =
-  create_tenant(%{
-    name: "Kanton Appenzell Ausserrhoden",
-    short_name: "AR",
-    outgoing_mail_configuration: %{
-      __type__: "smtp",
-      server: "postfix-relay.postfix-relay",
-      hostname: "smtp.covid19-tracing.ch",
-      port: 25,
-      from_email: "Info.ContactTracing@sg.ch"
-    },
-    outgoing_sms_configuration: %{
-      __type__: "websms",
-      access_token: "***REMOVED***"
-    },
-    iam_domain: "ar.covid19-tracing.ch",
-    template_variation: :ar
-  })
+    %Cadastre.Subdivision{id: "AI"} = subdivision ->
+      {subdivision,
+       %{
+         outgoing_mail_configuration: %{
+           __type__: "smtp",
+           server: "postfix-relay.postfix-relay",
+           hostname: "smtp.covid19-tracing.ch",
+           port: 25,
+           from_email: "Info.ContactTracing@sg.ch"
+         },
+         outgoing_sms_configuration: %{
+           __type__: "websms",
+           access_token: "***REMOVED***"
+         },
+         iam_domain: "ai.covid19-tracing.ch",
+         template_variation: :ai
+       }}
 
-tenants = [
-  tenant_sg,
-  tenant_ai,
-  tenant_ar
-]
+    subdivision ->
+      {subdivision, %{}}
+  end)
+  |> Enum.map(fn {%Cadastre.Subdivision{id: id, name: name}, extra_args} ->
+    {:ok, tenant} =
+      create_tenant(
+        Map.merge(
+          %{
+            name: "Kanton #{name}",
+            short_name: id,
+            case_management_enabled: true
+          },
+          extra_args
+        )
+      )
+
+    tenant
+  end)
+
+tenant_sg = Enum.find(tenants, &match?(%{short_name: "SG"}, &1))
+tenant_ar = Enum.find(tenants, &match?(%{short_name: "AR"}, &1))
+tenant_ai = Enum.find(tenants, &match?(%{short_name: "AI"}, &1))
 
 [] =
   :hygeia

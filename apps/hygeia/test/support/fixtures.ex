@@ -16,7 +16,7 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.UserContext
   alias Hygeia.UserContext.User
 
-  @valid_attrs %{name: "some name"}
+  @valid_attrs %{name: "some name", case_management_enabled: true}
 
   @spec tenant_fixture(attrs :: Hygeia.ecto_changeset_params()) :: Tenant.t()
   def tenant_fixture(attrs \\ %{}) do

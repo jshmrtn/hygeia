@@ -90,6 +90,10 @@ defmodule Hygeia.UserContext.User do
 
     def authorized?(_resource_user, action, user, _meta)
         when action in [:list, :details],
-        do: Enum.any?([:viewer, :tracer, :supervisor, :admin], &User.has_role?(user, &1, :any))
+        do:
+          Enum.any?(
+            [:viewer, :tracer, :super_user, :supervisor, :admin],
+            &User.has_role?(user, &1, :any)
+          )
   end
 end

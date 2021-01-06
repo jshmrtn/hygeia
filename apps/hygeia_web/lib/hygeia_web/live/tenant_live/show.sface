@@ -67,36 +67,50 @@
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
-              <Field name={{ :public_statistics }} class="form-group">
-                <Label>{{ gettext("Public Statistics") }}</Label>
-                <Checkbox
+              <Field name={{ :case_management_enabled }} class="form-group">
+                <Label>{{ gettext("Case Management Enabled") }}</Label>
+                <Checkbox 
                   class="form-control"
                   opts={{ disabled: @live_action == :show }}
                 />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
-              <Field name={{ :override_url }} class="form-group">
-                <Label>{{ gettext("Override Url") }}</Label>
-                <TextInput 
-                  class="form-control"
-                  opts={{ disabled: @live_action == :show }}
-                />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
+              <div :if={{ Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) }}>
+                <Field name={{ :public_statistics }} class="form-group">
+                  <Label>{{ gettext("Public Statistics") }}</Label>
+                  <Checkbox
+                    class="form-control"
+                    opts={{ disabled: @live_action == :show }}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
 
-              <Field name={{ :short_name }} class="form-group">
-                <Label>{{ gettext("Short Name") }}</Label>
-                <TextInput 
-                  class="form-control"
-                  opts={{ disabled: @live_action == :show }}
-                />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
+                <Field name={{ :override_url }} class="form-group">
+                  <Label>{{ gettext("Override Url") }}</Label>
+                  <TextInput 
+                    class="form-control"
+                    opts={{ disabled: @live_action == :show }}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+
+                <Field name={{ :short_name }} class="form-group">
+                  <Label>{{ gettext("Short Name") }}</Label>
+                  <TextInput 
+                    class="form-control"
+                    opts={{ disabled: @live_action == :show }}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
             </div>
           </div>
 
-          <div class="card">
+          <div
+            class="card"
+            :if={{ Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) }}
+          >
             <div class="card-body">
               <h4 class="card-title">{{ gettext("Outgoing Email Configuration") }}</h4>
 
@@ -170,7 +184,10 @@
             </div>
           </div>
 
-          <div class="card">
+          <div
+            class="card"
+            :if={{ Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) }}
+          >
             <div class="card-body">
               <h4 class="card-title">{{ gettext("Outgoing SMS Configuration") }}</h4>
               <Field name={{ :outgoing_sms_configuration_type }} class="form-group">
@@ -203,7 +220,10 @@
             </div>
           </div>
 
-          <div class="card">
+          <div
+            class="card"
+            :if={{ Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) }}
+          >
             <div class="card-body">
               <h4 class="card-title">{{ gettext("Confirmation PDF Template") }}</h4>
               <Field name={{ :template_variation }} class="form-group">

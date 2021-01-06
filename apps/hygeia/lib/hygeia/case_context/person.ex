@@ -136,6 +136,7 @@ defmodule Hygeia.CaseContext.Person do
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person
+    alias Hygeia.TenantContext.Tenant
     alias Hygeia.UserContext.User
 
     @spec authorized?(
@@ -150,21 +151,45 @@ defmodule Hygeia.CaseContext.Person do
 
     def authorized?(%Person{tenant_uuid: tenant_uuid}, :details, user, _meta),
       do:
-        Enum.any?([:viewer, :tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
+        Enum.any?(
+          [:viewer, :tracer, :super_user, :supervisor, :admin],
+          &User.has_role?(user, &1, tenant_uuid)
+        )
 
     def authorized?(%Person{}, :update, user, %{tenant: tenant}),
-      do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant))
+      do:
+        Enum.any?([:tracer, :super_user, :supervisor, :admin], &User.has_role?(user, &1, tenant))
 
     def authorized?(%Person{tenant_uuid: tenant_uuid}, :update, user, _meta),
-      do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
+      do:
+        Enum.any?(
+          [:tracer, :super_user, :supervisor, :admin],
+          &User.has_role?(user, &1, tenant_uuid)
+        )
 
     def authorized?(_module, :list, user, %{tenant: tenant}),
-      do: Enum.any?([:viewer, :tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant))
+      do:
+        Enum.any?(
+          [:viewer, :tracer, :super_user, :supervisor, :admin],
+          &User.has_role?(user, &1, tenant)
+        )
 
-    def authorized?(_module, :create, user, %{tenant: tenant}),
-      do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, tenant))
+    def authorized?(_module, :create, user, %{
+          tenant: %Tenant{case_management_enabled: true} = tenant
+        }),
+        do:
+          Enum.any?(
+            [:tracer, :super_user, :supervisor, :admin],
+            &User.has_role?(user, &1, tenant)
+          )
+
+    def authorized?(_module, :create, _user, %{tenant: %Tenant{case_management_enabled: false}}),
+      do: false
+
+    def authorized?(_module, :create, user, %{tenant: :any}),
+      do: Enum.any?([:tracer, :super_user, :supervisor, :admin], &User.has_role?(user, &1, :any))
 
     def authorized?(%Person{tenant_uuid: tenant_uuid}, :delete, user, _meta),
-      do: Enum.any?([:supervisor, :admin], &User.has_role?(user, &1, tenant_uuid))
+      do: Enum.any?([:supervisor, :super_user, :admin], &User.has_role?(user, &1, tenant_uuid))
   end
 end

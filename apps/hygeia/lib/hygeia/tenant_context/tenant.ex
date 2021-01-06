@@ -19,6 +19,7 @@ defmodule Hygeia.TenantContext.Tenant do
   @type empty :: %__MODULE__{
           uuid: String.t() | nil,
           name: String.t() | nil,
+          case_management_enabled: boolean | nil,
           public_statistics: boolean | nil,
           outgoing_mail_configuration: Smtp.t() | nil,
           outgoing_sms_configuration: Websms.t() | nil,
@@ -35,6 +36,7 @@ defmodule Hygeia.TenantContext.Tenant do
   @type t :: %__MODULE__{
           uuid: String.t(),
           name: String.t(),
+          case_management_enabled: boolean,
           public_statistics: boolean,
           outgoing_mail_configuration: Smtp.t() | nil,
           outgoing_sms_configuration: Websms.t() | nil,
@@ -50,6 +52,7 @@ defmodule Hygeia.TenantContext.Tenant do
 
   schema "tenants" do
     field :name, :string
+    field :case_management_enabled, :boolean, default: false
     field :public_statistics, :boolean, default: false
     field :override_url, :string
     field :template_variation, TemplateVariation
@@ -94,6 +97,7 @@ defmodule Hygeia.TenantContext.Tenant do
       attrs,
       [
         :name,
+        :case_management_enabled,
         :public_statistics,
         :outgoing_mail_configuration_type,
         :outgoing_sms_configuration_type,
@@ -104,7 +108,7 @@ defmodule Hygeia.TenantContext.Tenant do
       ],
       empty_values: []
     )
-    |> validate_required([:name, :public_statistics])
+    |> validate_required([:name, :public_statistics, :case_management_enabled])
     |> validate_url(:override_url)
     |> cast_polymorphic_embed(:outgoing_mail_configuration)
     |> cast_polymorphic_embed(:outgoing_sms_configuration)
@@ -171,7 +175,7 @@ defmodule Hygeia.TenantContext.Tenant do
     def authorized?(tenant, :statistics, user, _meta),
       do:
         Enum.any?(
-          [:statistics_viewer, :viewer, :tracer, :supervisor, :admin],
+          [:statistics_viewer, :viewer, :tracer, :super_user, :supervisor, :admin],
           &User.has_role?(user, &1, tenant)
         )
 
@@ -180,7 +184,7 @@ defmodule Hygeia.TenantContext.Tenant do
         do: User.has_role?(user, :admin, tenant) or User.has_role?(user, :webmaster, :any)
 
     def authorized?(tenant, :export_data, user, _meta),
-      do: User.has_role?(user, :admin, tenant)
+      do: User.has_role?(user, :admin, tenant) or User.has_role?(user, :data_exporter, :any)
 
     def authorized?(_tenant, :create, user, _meta),
       do: User.has_role?(user, :webmaster, :any)

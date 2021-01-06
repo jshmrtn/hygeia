@@ -73,10 +73,15 @@ defmodule Hygeia.OrganisationContext.Organisation do
 
     def authorized?(_organisation, action, user, _meta)
         when action in [:details, :list],
-        do: Enum.any?([:viewer, :tracer, :supervisor, :admin], &User.has_role?(user, &1, :any))
+        do:
+          Enum.any?(
+            [:viewer, :tracer, :super_user, :supervisor, :admin],
+            &User.has_role?(user, &1, :any)
+          )
 
     def authorized?(_organisation, action, user, _meta)
         when action in [:create, :update, :delete],
-        do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, :any))
+        do:
+          Enum.any?([:tracer, :super_user, :supervisor, :admin], &User.has_role?(user, &1, :any))
   end
 end

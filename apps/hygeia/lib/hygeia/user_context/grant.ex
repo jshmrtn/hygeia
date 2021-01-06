@@ -16,7 +16,9 @@ defmodule Hygeia.UserContext.Grant do
     "admin",
     "webmaster",
     "viewer",
-    "statistics_viewer"
+    "statistics_viewer",
+    "data_exporter",
+    "super_user"
   ]
 
   @type empty :: %__MODULE__{
