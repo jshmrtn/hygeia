@@ -50,6 +50,11 @@ defmodule Hygeia.DataCase do
       originator -> Versioning.put_originator(originator)
     end
 
+    Phoenix.PubSub.subscribe(Hygeia.PubSub, "system_message_cache")
+    start_supervised!(Hygeia.SystemMessageContext.SystemMessageCache)
+    assert_receive :refresh
+    Phoenix.PubSub.unsubscribe(Hygeia.PubSub, "system_message_cache")
+
     :ok
   end
 

@@ -157,6 +157,9 @@ defmodule HygeiaWeb.Router do
          :position_edit
 
     live "/history/:resource/:id", VersionLive.Show, :show
+    live "/system_messages/new", SystemMessageLive.Create, :create
+    live "/system_messages/:id", SystemMessageLive.Show, :show
+    live "/system_messages/:id/edit", SystemMessageLive.Show, :edit
   end
 
   scope "/", HygeiaWeb do
@@ -179,6 +182,8 @@ defmodule HygeiaWeb.Router do
     live "/statistics", StatisticsLive.ChooseTenant, :index
     live "/statistics/:tenant_uuid", StatisticsLive.Statistics, :show
     live "/statistics/:tenant_uuid/:from/:to", StatisticsLive.Statistics, :show
+
+    live "/system_messages", SystemMessageLive.Index, :index
 
     get "/pdf/isolation/:case_uuid/:phase_uuid", PdfController, :isolation_confirmation
     get "/pdf/quarantine/:case_uuid/:phase_uuid", PdfController, :quarantine_confirmation

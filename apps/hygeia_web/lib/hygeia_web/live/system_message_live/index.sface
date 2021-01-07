@@ -1,0 +1,74 @@
+<div class="component-system-message-index container">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <h1 class="mb-3">
+      {{ gettext("Listing System Messages") }}
+    </h1>
+
+    <div class="d-flex">
+      <LiveRedirect
+        class="mr-2"
+        to={{ Routes.system_message_create_path(@socket, :create) }}
+        :if={{ authorized?(SystemMessage, :create, auth) }}
+      >
+        <button type="button" class="mb-2 mt-3 btn btn-primary">
+          <span class="oi oi-plus" aria-hidden="true"></span>
+          {{ gettext("New System Message") }}
+        </button>
+      </LiveRedirect>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            {{ schema_field_name(:text, SystemMessage) }}
+          </th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="system_messages">
+        <tr
+          :for={{ system_message <- @system_messages }}
+          id="system_message-{{ system_message.uuid }}"
+        >
+          <td>{{ raw(Earmark.as_html!(system_message.text)) }}</td>
+
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LiveRedirect
+                to={{ Routes.system_message_show_path(@socket, :show, system_message.uuid) }}
+                :if={{ authorized?(system_message, :details, auth) }}
+              >
+                <button class="ml-auto btn btn-sm btn-secondary">{{ gettext("Show") }}</button>
+              </LiveRedirect>
+              <LivePatch
+                to={{ Routes.system_message_show_path(@socket, :edit, system_message.uuid) }}
+                :if={{ authorized?(system_message, :update, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-secondary">
+                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                </button>
+              </LivePatch>
+              <Link 
+                to="#" 
+                click="delete" 
+                opts={{
+                  title: gettext("Delete"),
+                  data: [confirm: gettext("Are you sure?")],
+                  phx_value_id: system_message.uuid,
+                  class: "delete"
+                }}
+                :if={{ authorized?(system_message, :delete, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-danger">
+                  <span class="oi oi-trash" aria-hidden="true"></span>
+                </button>
+              </Link>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </Context>
+</div>

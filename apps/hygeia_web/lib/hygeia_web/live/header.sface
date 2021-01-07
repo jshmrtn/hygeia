@@ -76,6 +76,13 @@
               >
                 {{ gettext("Organisations") }}
               </Link>
+              <Link
+                to={{ Routes.system_message_index_path(@socket, :index) }}
+                class="dropdown-item"
+                :if={{ authorized?(Hygeia.SystemMessageContext.SystemMessage, :list, auth) }}
+              >
+                {{ gettext("System Messages") }}
+              </Link>
             </div>
           </li>
         </ul>

@@ -14,6 +14,8 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.CommunicationContext.SMS
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.SystemMessageContext
+  alias Hygeia.SystemMessageContext.SystemMessage
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext
@@ -335,5 +337,22 @@ defmodule Hygeia.Fixtures do
     {:ok, note} = CaseContext.create_note(case, Enum.into(attrs, @valid_attrs))
 
     note
+  end
+
+  @valid_attrs %{
+    end_date: ~D[2010-04-17],
+    text: "some message",
+    start_date: ~D[2010-04-17],
+    roles: ["admin"]
+  }
+
+  @spec system_message_fixture(attrs :: Hygeia.ecto_changeset_params()) :: SystemMessage.t()
+  def system_message_fixture(attrs \\ %{}) do
+    {:ok, system_message} =
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> SystemMessageContext.create_system_message()
+
+    system_message
   end
 end

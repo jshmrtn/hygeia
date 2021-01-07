@@ -1,0 +1,90 @@
+<Form
+  for={{ @changeset }} 
+  change="validate" 
+  submit="save" 
+  opts={{ autocomplete: "off", id: "system_message-form", class: "container" }}
+>
+  <h1 class="mb-3">
+    {{ gettext("New System Message") }}
+  </h1>
+
+  <div class="hy-card-grid-2-cols">
+    <div class="card mb-3">
+      <div class="card-body">
+        <Field name={{ :text }} class="form-group">
+          <HygeiaWeb.FieldLabel>{{ gettext("Text") }}</HygeiaWeb.FieldLabel>
+          <TextArea class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <div>
+          {{ gettext("Preview") }}
+          {{ raw(Earmark.as_html!(get_text(@changeset))) }}
+         </div>
+
+        <Field name={{ :start_date }} class="form-group">
+          <HygeiaWeb.FieldLabel>{{ "Start Date" }}</HygeiaWeb.FieldLabel>
+          <DateInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :start_date }}/>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={{ :end_date }} class="form-group">
+          <HygeiaWeb.FieldLabel>{{ "End Date" }}</HygeiaWeb.FieldLabel>
+          <DateInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :end_date }}/>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <InputContext assigns={{ assigns }} :let={{ form: form }}>
+          <Field name={{ :roles }}>
+            <HygeiaWeb.FieldLabel>{{ gettext("User Roles") }}</HygeiaWeb.FieldLabel>
+            <label
+              :for={{ {name, key} <- roles() }}
+              class="d-block checkbox-label"
+              data-disabled={{ @live_action == :show }}
+            >
+              <input
+                type="checkbox"
+                name={{ input_name(form, :roles) <> "[]" }}
+                disabled={{ @live_action == :show }}
+                checked={{ key in (Ecto.Changeset.get_field(form.source, :roles, []) || []) }}
+                value={{ key }}
+              />
+              {{ name }}
+            </label>
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </InputContext>
+
+        <InputContext assigns={{ assigns }} :let={{ form: form }}>
+          <Field name={{ :related_tenants }}>
+            <HygeiaWeb.FieldLabel>{{ gettext("Tenants") }}</HygeiaWeb.FieldLabel>
+            <label
+              :for={{ {name, key} <- tenants() }}
+              class="d-block checkbox-label"
+              data-disabled={{ @live_action == :show }}
+            >
+              <input
+                type="checkbox"
+                name={{ input_name(form, :related_tenants) <> "[]" }}
+                disabled={{ @live_action == :show }}
+                checked={{ key in (Enum.map(Ecto.Changeset.get_field(form.source, :related_tenants, []), &(&1.uuid))) }}
+                value={{ key }}
+              />
+              {{ name }}
+            </label>
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </InputContext>
+
+      </div>
+    </div>
+  </div>
+
+  <button
+    class="btn btn-primary"
+    type="submit"
+    phx-disable-with={{ gettext("Saving...") }}
+    disabled={{ not @changeset.valid? }}
+  >
+    {{ gettext("Save") }}
+  </button>
+</Form>
+ 

@@ -84,7 +84,8 @@ defmodule HygeiaWeb.MixProject do
       {:plug_dynamic, "~> 1.0"},
       {:plug_checkup, "~> 0.6"},
       {:nebulex, "~> 2.0-rc"},
-      {:shards, "~> 1.0"}
+      {:shards, "~> 1.0"},
+      {:earmark, "~> 1.1"}
     ]
   end
 

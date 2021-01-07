@@ -9,6 +9,7 @@ defmodule Hygeia.TenantContext.Tenant do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
+  alias Hygeia.SystemMessageContext.SystemMessage
   alias Hygeia.TenantContext.Tenant.Smtp
   alias Hygeia.TenantContext.Tenant.Websms
 
@@ -30,6 +31,7 @@ defmodule Hygeia.TenantContext.Tenant do
           iam_domain: String.t() | nil,
           from_email: String.t() | nil,
           short_name: String.t() | nil,
+          related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -48,6 +50,7 @@ defmodule Hygeia.TenantContext.Tenant do
           iam_domain: String.t() | nil,
           from_email: String.t() | nil,
           short_name: String.t() | nil,
+          related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -64,6 +67,10 @@ defmodule Hygeia.TenantContext.Tenant do
 
     has_many :people, Person
     has_many :cases, Case
+
+    many_to_many :related_system_messages, SystemMessage,
+      join_through: "system_message_tenants",
+      join_keys: [tenant_uuid: :uuid, system_message_uuid: :uuid]
 
     timestamps()
 

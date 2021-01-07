@@ -200,6 +200,13 @@ defmodule HygeiaWeb.Helpers.FieldName do
       iam_sub: "IAM Subject",
       roles: "Roles"
     },
+    Hygeia.SystemMessageContext.SystemMessage => %{
+      text: "Text",
+      start_date: "Start Date",
+      end_date: "End Date",
+      roles: "Roles",
+      related_tenants: "Related Tenants"
+    },
     HygeiaWeb.CaseLive.Create.CreatePersonSchema => %{
       address: "Address",
       birth_date: "Birth Date",

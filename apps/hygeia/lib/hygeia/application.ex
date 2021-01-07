@@ -5,6 +5,11 @@ defmodule Hygeia.Application do
 
   use Application
 
+  case Mix.env() do
+    :test -> @workers []
+    _others -> @workers [Hygeia.SystemMessageContext.SystemMessageCache]
+  end
+
   @impl Application
   @spec start(start_type :: Application.start_type(), start_args :: term()) ::
           {:ok, pid()} | {:ok, pid(), Application.state()} | {:error, reason :: term()}
@@ -17,7 +22,7 @@ defmodule Hygeia.Application do
         Hygeia.Repo,
         # Start the PubSub system
         {Phoenix.PubSub, name: Hygeia.PubSub},
-        Hygeia.Jobs.Supervisor
+        Hygeia.Jobs.Supervisor | @workers
       ],
       strategy: :one_for_one,
       name: Hygeia.Supervisor

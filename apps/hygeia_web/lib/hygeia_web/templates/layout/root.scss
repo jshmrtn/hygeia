@@ -11,4 +11,10 @@
       }
     }
   }
+
+  .system-messages {
+    .alert *:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
