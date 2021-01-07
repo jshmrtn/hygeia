@@ -9,9 +9,6 @@ defmodule HygeiaWeb.SessionStorage do
     use Nebulex.Cache,
       otp_app: :hygeia_web,
       adapter: Nebulex.Adapters.Replicated
-
-    # Use stats helpers
-    use Nebulex.Cache.Stats
   end
 
   @impl Plug.Session.Store
