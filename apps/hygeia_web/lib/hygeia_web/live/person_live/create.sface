@@ -27,7 +27,7 @@
   </div>
 
   <Field name={{ :tenant_uuid }} class="form-group">
-    <Label>{{ "Tenant" |> gettext }}</Label>
+    <HygeiaWeb.FieldLabel />
     <Select class="form-control" opts={{ prompt: "Select tenant" |> gettext }} field={{ :tenant_uuid }} options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }} />
     <ErrorTag class="d-block invalid-feedback" />
   </Field>
@@ -35,14 +35,14 @@
   <div class="row">
     <div class="col">
       <Field name={{ :first_name }} class="form-group">
-        <Label>{{ "First Name" |> gettext }}</Label>
+        <HygeiaWeb.FieldLabel />
         <TextInput field={{ :first_name }} class="form-control" />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
     <div class="col">
       <Field name={{ :last_name }} class="form-group">
-        <Label>{{ "Last Name" |> gettext }}</Label>
+        <HygeiaWeb.FieldLabel />
         <TextInput class="form-control" field={{ :last_name }}/>
         <ErrorTag class="d-block invalid-feedback" />
       </Field>

@@ -3,14 +3,14 @@
     <div class="row">
       <div class="col">
         <Field class="form-group" name={{ :first_contact }}>
-          <Label>{{ gettext("First contact") }}</Label>
+          <HygeiaWeb.FieldLabel />
           <DateInput class="form-control" field={{ :first_contact }} opts={{ disabled: @disabled }}/>
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
       </div>
       <div class="col">
         <Field class="form-group" name={{ :location }}>
-          <Label>{{ gettext("Location") }}</Label>
+          <HygeiaWeb.FieldLabel />
           <Select class="form-control" opts={{ prompt: gettext("Choose location"), disabled: @disabled }} field={{ :location }} options={{ isolation_locations() }} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
@@ -19,7 +19,7 @@
     <div class="row">
       <div class="col">
         <Field class="form-group" name={{ :location_details }}>
-          <Label>{{ gettext("Location details") }}</Label>
+          <HygeiaWeb.FieldLabel />
           <TextArea class="form-control" field={{ :location_details }} opts={{ disabled: @disabled }} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>

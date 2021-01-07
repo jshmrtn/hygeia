@@ -1,5 +1,7 @@
 <div class="component-transmission-base-data container">
   <Context get={{ HygeiaWeb, auth: auth }}>
+    <HygeiaWeb.TransmissionLive.Header transmission={{ @transmission }} id="header" />
+
     <Form 
       for={{ @changeset }} 
       change="validate" 
@@ -11,29 +13,6 @@
         resource={{ {Transmission, @transmission.uuid} }}
         lock={{ @live_action == :edit }}
       >
-        <h1>
-          <Inputs for={{ :infection_place }}>
-            <InputContext assigns={{ assigns }} :let={{ form: form }}>
-              {{
-                form.source
-                |> Ecto.Changeset.get_field(:type)
-                |> case do
-                  nil -> nil
-                  type -> translate_infection_place_type(type)
-                end }}
-            </InputContext>
-          </Inputs>
-          /
-          {{
-            @changeset
-            |> Ecto.Changeset.get_field(:date)
-            |> case do
-              nil -> nil
-              date -> Cldr.Date.to_string!(date, HygeiaCldr)
-            end
-          }}
-        </h1>
-
         <div class="card">
           <div class="card-body">
             <div class="mb-4" :if={{ @live_action == :show }}>
@@ -168,7 +147,7 @@
                     </div>
                   </div>
                   <Field name={{ :date }} class="form-group">
-                    <Label>{{ gettext("Date") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <DateInput 
                       class="form-control" 
                       opts={{ disabled: @live_action == :show }}

@@ -77,6 +77,16 @@ defmodule HygeiaWeb do
     end
   end
 
+  @spec surface_view_bare :: Macro.t()
+  def surface_view_bare do
+    quote do
+      use Surface.LiveView,
+        layout: {HygeiaWeb.LayoutView, "live.html"}
+
+      unquote(view_helpers())
+    end
+  end
+
   @doc false
   @spec live_component :: Macro.t()
   def live_component do
@@ -153,6 +163,7 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.ContactMethod
       import HygeiaWeb.Helpers.CSP
       import HygeiaWeb.Helpers.ExternalReference
+      import HygeiaWeb.Helpers.FieldName
       import HygeiaWeb.Helpers.InfectionPlace
       import HygeiaWeb.Helpers.Monitoring
       import HygeiaWeb.Helpers.Phase

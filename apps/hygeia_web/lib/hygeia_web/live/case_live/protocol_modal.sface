@@ -31,7 +31,7 @@
           id={{ {@myself, :poly} }}
         >
           <Field class="form-group" name={{ :note }}>
-            <Label>{{ gettext("Note") }}</Label>
+            <HygeiaWeb.FieldLabel />
             <TextArea class="form-control" />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
@@ -43,7 +43,7 @@
           id={{ {@myself, :poly} }}
         >
           <Field class="form-group" name={{ :text }}>
-            <Label >{{ gettext("Text") }}</Label>
+            <HygeiaWeb.FieldLabel />
             <TextArea class="form-control" rows="10" />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
@@ -55,12 +55,12 @@
           id={{ {@myself, :poly} }}
         >
           <Field class="form-group" name={{ :subject }}>
-            <Label>{{ gettext("Subject") }}</Label>
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
           <Field class="form-group" name={{ :body }}>
-            <Label>{{ gettext("Body") }}</Label>
+            <HygeiaWeb.FieldLabel />
             <TextArea class="form-control" rows="10" />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>

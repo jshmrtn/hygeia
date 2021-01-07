@@ -23,11 +23,14 @@
       <div class="row mb-2">
         <div class="col">
           <Field name={{ :default_tenant_uuid }} class="input-group">
-            <Label class="input-group-prepend mb-0">
+            <HygeiaWeb.FieldLabel
+              class="input-group-prepend mb-0"
+              :let={{ name: name }}
+            >
               <span class="input-group-text">
-                {{ gettext("Default Tenant") }}
+                {{ name }}
               </span>
-            </Label>
+            </HygeiaWeb.FieldLabel>
             <Select 
               class="form-control"
               options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
@@ -40,11 +43,14 @@
           <HiddenInput field={{ :default_supervisor_uuid }} />
 
           <Field name={{ :default_supervisor_uuid }} class="input-group">
-            <Label class="input-group-prepend mb-0">
+            <HygeiaWeb.FieldLabel
+              class="input-group-prepend mb-0"
+              :let={{ name: name }}
+            >
               <span class="input-group-text">
-                {{ gettext("Default Supervisor") }}
+                {{ name }}
               </span>
-            </Label>
+            </HygeiaWeb.FieldLabel>
             <Select 
               class="form-control"
               options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
@@ -59,11 +65,14 @@
           <HiddenInput field={{ :default_tracer_uuid }} />
 
           <Field name={{ :default_tracer_uuid }} class="input-group">
-            <Label class="input-group-prepend mb-0">
+            <HygeiaWeb.FieldLabel
+              class="input-group-prepend mb-0"
+              :let={{ name: name }}
+            >
               <span class="input-group-text">
-                {{ gettext("Default Tracer") }}
+                {{ name }}
               </span>
-            </Label>
+            </HygeiaWeb.FieldLabel>
             <Select 
               class="form-control"
               options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
@@ -84,34 +93,34 @@
       >
         <template slot="additional_header">
           <th>
-            {{ gettext("ISM Case ID") }}
+            {{ schema_field_name(:ism_case_id, CreatePersonSchema) }}
           </th>
           <th>
-            {{ gettext("ISM Report ID") }}
+            {{ schema_field_name(:ism_report_id, CreatePersonSchema) }}
           </th>
           <th>
-            {{ gettext("Test Date") }}
+            {{ schema_field_name(:test, Hygeia.CaseContext.Case.Clinical) }}
           </th>
           <th>
-            {{ gettext("Laboratory report date") }}
+            {{ schema_field_name(:laboratory_report, Hygeia.CaseContext.Case.Clinical) }}
           </th>
           <th>
-            {{ gettext("Test kind") }}
+            {{ schema_field_name(:test_kind, Hygeia.CaseContext.Case.Clinical) }}
           </th>
           <th class="table-col-border">
-            {{ gettext("Test result") }}
+            {{ schema_field_name(:result, Hygeia.CaseContext.Case.Clinical) }}
           </th>
           <th>
-            {{ gettext("Reporting Unit") }}
+            {{ schema_field_name(:reporting_unit, Hygeia.CaseContext.Case.Clinical) }}
           </th>
           <th class="table-col-border">
-            {{ gettext("Address") }}
+            {{ schema_field_name(:address, Hygeia.CaseContext.Entity) }}
           </th>
           <th>
-            {{ gettext("Sponsor") }}
+            {{ schema_field_name(:sponsor, Hygeia.CaseContext.Case.Clinical) }}
           </th>
           <th class="table-col-border">
-            {{ gettext("Address") }}
+            {{ schema_field_name(:address, Hygeia.CaseContext.Entity) }}
           </th>
         </template>
         <template slot="additional_row">

@@ -135,7 +135,7 @@ defmodule Hygeia.CaseContext.Transmission do
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(transmission, action, user, meta)
-        when action in [:details, :update, :delete] do
+        when action in [:details, :update, :delete, :versioning] do
       %Transmission{propagator_case: propagator_case, recipient_case: recipient_case} =
         Repo.preload(transmission, propagator_case: [], recipient_case: [])
 
@@ -143,6 +143,9 @@ defmodule Hygeia.CaseContext.Transmission do
       |> Enum.reject(&is_nil/1)
       |> Enum.any?(&Resource.authorized?(&1, action, user, meta))
     end
+
+    def authorized?(_module, :deleted_versioning, user, _meta),
+      do: User.has_role?(user, :admin, :any)
 
     def authorized?(_transmission, :create, :anonymous, _meta), do: false
 

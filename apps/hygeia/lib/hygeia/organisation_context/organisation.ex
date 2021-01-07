@@ -72,7 +72,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
         do: false
 
     def authorized?(_organisation, action, user, _meta)
-        when action in [:details, :list],
+        when action in [:details, :list, :versioning, :deleted_versioning],
         do:
           Enum.any?(
             [:viewer, :tracer, :super_user, :supervisor, :admin],

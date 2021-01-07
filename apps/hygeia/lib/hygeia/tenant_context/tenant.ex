@@ -169,7 +169,15 @@ defmodule Hygeia.TenantContext.Tenant do
       do: true
 
     def authorized?(_tenant, action, :anonymous, _meta)
-        when action in [:create, :details, :update, :delete, :statistics],
+        when action in [
+               :create,
+               :details,
+               :update,
+               :delete,
+               :statistics,
+               :versioning,
+               :deleted_versioning
+             ],
         do: false
 
     def authorized?(tenant, :statistics, user, _meta),
@@ -180,7 +188,7 @@ defmodule Hygeia.TenantContext.Tenant do
         )
 
     def authorized?(tenant, action, user, _meta)
-        when action in [:details, :update, :delete],
+        when action in [:details, :update, :delete, :versioning, :deleted_versioning],
         do: User.has_role?(user, :admin, tenant) or User.has_role?(user, :webmaster, :any)
 
     def authorized?(tenant, :export_data, user, _meta),

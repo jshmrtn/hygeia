@@ -1,8 +1,6 @@
 <div class="component-tenant-base-data container">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1 class="mb-3">
-      {{ Ecto.Changeset.get_field(@changeset, :name) }}
-    </h1>
+    <HygeiaWeb.TenantLive.Header tenant={{ @changeset }} id="header" />
 
     <div class="mb-4" :if={{ @live_action == :show }}>
       <LivePatch
@@ -59,7 +57,7 @@
             <div class="card-body">
               <h4 class="card-title">{{ gettext("Name") }}</h4>
               <Field name={{ :name }} class="form-group">
-                <Label>{{ gettext("Name") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <TextInput 
                   class="form-control"
                   opts={{ disabled: @live_action == :show }}
@@ -68,7 +66,7 @@
               </Field>
 
               <Field name={{ :case_management_enabled }} class="form-group">
-                <Label>{{ gettext("Case Management Enabled") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <Checkbox 
                   class="form-control"
                   opts={{ disabled: @live_action == :show }}
@@ -78,7 +76,7 @@
 
               <div :if={{ Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) }}>
                 <Field name={{ :public_statistics }} class="form-group">
-                  <Label>{{ gettext("Public Statistics") }}</Label>
+                  <HygeiaWeb.FieldLabel />
                   <Checkbox
                     class="form-control"
                     opts={{ disabled: @live_action == :show }}
@@ -87,7 +85,7 @@
                 </Field>
 
                 <Field name={{ :override_url }} class="form-group">
-                  <Label>{{ gettext("Override Url") }}</Label>
+                  <HygeiaWeb.FieldLabel />
                   <TextInput 
                     class="form-control"
                     opts={{ disabled: @live_action == :show }}
@@ -96,7 +94,7 @@
                 </Field>
 
                 <Field name={{ :short_name }} class="form-group">
-                  <Label>{{ gettext("Short Name") }}</Label>
+                  <HygeiaWeb.FieldLabel />
                   <TextInput 
                     class="form-control"
                     opts={{ disabled: @live_action == :show }}
@@ -115,7 +113,7 @@
               <h4 class="card-title">{{ gettext("Outgoing Email Configuration") }}</h4>
 
               <Field name={{ :outgoing_mail_configuration_type }}>
-                <Label>{{ gettext("Type") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <Select
                   class="form-control"
                   opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
@@ -132,7 +130,7 @@
                   id="poly-inputs"
                 >
                   <Field name={{ :server }} class="form-group">
-                    <Label>{{ gettext("server") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <TextInput
                       class="form-control"
                       opts={{ disabled: @live_action == :show }}
@@ -140,7 +138,7 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <Field name={{ :hostname }} class="form-group">
-                    <Label>{{ gettext("hostname") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <TextInput
                       class="form-control"
                       opts={{ disabled: @live_action == :show }}
@@ -148,7 +146,7 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <Field name={{ :port }} class="form-group">
-                    <Label>{{ gettext("port") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <TextInput
                       class="form-control"
                       opts={{ disabled: @live_action == :show }}
@@ -156,7 +154,7 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <Field name={{ :from_email }} class="form-group">
-                    <Label>{{ gettext("sender email address") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <TextInput
                       class="form-control"
                       opts={{ disabled: @live_action == :show }}
@@ -164,7 +162,7 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <Field name={{ :username }} class="form-group">
-                    <Label>{{ gettext("username") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <TextInput
                       class="form-control"
                       opts={{ disabled: @live_action == :show }}
@@ -172,7 +170,7 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <Field name={{ :password }} class="form-group">
-                    <Label>{{ gettext("password") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <PasswordInput
                       class="form-control"
                       opts={{ disabled: @live_action == :show, placeholder: "password" }}
@@ -191,7 +189,7 @@
             <div class="card-body">
               <h4 class="card-title">{{ gettext("Outgoing SMS Configuration") }}</h4>
               <Field name={{ :outgoing_sms_configuration_type }} class="form-group">
-                <Label>{{ gettext("Type") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <Select
                   class="form-control"
                   opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
@@ -208,7 +206,7 @@
                   id="poly-inputs-sms"
                 >
                   <Field name={{ :access_token }} class="form-group">
-                    <Label>{{ gettext("Access Token") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <TextInput
                       class="form-control"
                       opts={{ disabled: @live_action == :show }}
@@ -227,7 +225,7 @@
             <div class="card-body">
               <h4 class="card-title">{{ gettext("Confirmation PDF Template") }}</h4>
               <Field name={{ :template_variation }} class="form-group">
-                <Label>{{ gettext("Variation") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <Select
                   class="form-control"
                   opts={{ prompt: gettext("Choose Variation"), disabled: @live_action == :show }}
@@ -242,7 +240,7 @@
             <div class="card-body">
               <h4 class="card-title">{{ gettext("IAM Configuration") }}</h4>
               <Field name={{ :iam_domain }} class="form-group">
-                <Label>{{ gettext("Domain") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <TextInput
                   class="form-control"
                   opts={{ disabled: @live_action == :show }}

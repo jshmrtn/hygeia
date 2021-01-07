@@ -14,7 +14,7 @@
           <div class="card">
             <div class="card-body">
               <Field name={{ :type }} class="form-group">
-                <Label>{{ gettext("Type") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <Select
                   class="form-control"
                   options={{ case_phase_possible_index_type_map() }}
@@ -39,12 +39,12 @@
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :propagator_ism_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
-                  <Label>{{ gettext("Propagator ISM ID") }}</Label>
+                  <HygeiaWeb.FieldLabel />
                   <TextInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <Field name={{ :propagator_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}>
-                  <Label>{{ gettext("Propagator Case") }}</Label>
+                  <HygeiaWeb.FieldLabel />
                   <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
@@ -66,18 +66,18 @@
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
               <Field name={{ :recipient_ism_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :recipient_internal) == false }}>
-                <Label>{{ gettext("Recipient ISM ID") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <TextInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
               <Field name={{ :recipient_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :recipient_internal) == true }}>
-                <Label>{{ gettext("Recipient Case") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <HygeiaWeb.CaseLive.Choose id="recipient_case" change="change_recipient_case" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
               <Field name={{ :date }} class="form-group">
-                <Label>{{ gettext("Date") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <DateInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>

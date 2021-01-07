@@ -7,6 +7,7 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.Repo
+  alias PaperTrail.Version
   alias Surface.Components.Link
 
   @impl Phoenix.LiveView

@@ -77,7 +77,7 @@
               <h4 class="card-title">{{ gettext("Base Data") }}</h4>
 
               <Field name={{ :tenant_uuid }} class="form-group">
-                <Label>{{ "Tenant" |> gettext }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <Select class="form-control" opts={{ prompt: gettext("Select tenant"), disabled: @live_action == :show }} field={{ :tenant_uuid }} options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
@@ -85,14 +85,14 @@
               <div class="row">
                 <div class="col">
                   <Field name={{ :first_name }} class="form-group">
-                    <Label>{{ "First Name" |> gettext }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: @live_action == :show }} />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
                 <div class="col">
                   <Field name={{ :last_name }} class="form-group">
-                    <Label>{{ "Last Name" |> gettext }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <TextInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :last_name }}/>
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
@@ -102,14 +102,14 @@
               <div class="row">
                 <div class="col">
                   <Field name={{ :sex }} class="form-group">
-                    <Label>{{ "Sex" |> gettext }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <Select opts={{ disabled: @live_action == :show }} class="form-control" field={{ :sex }} options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }} />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
                 <div class="col">
                   <Field name={{ :birth_date }} class="form-group">
-                    <Label>{{ "Birth Date" |> gettext }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <DateInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :birth_date }}/>
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
@@ -230,7 +230,7 @@
               <div class="row">
                 <div class="col">
                   <Field name={{ :profession_category_main }} class="form-group">
-                    <Label>{{ gettext("Profession Category") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <Select
                       class="form-control"
                       opts={{ prompt: gettext("Choose profession category"), disabled: @live_action == :show }}
@@ -241,7 +241,7 @@
                 </div>
                 <div class="col">
                   <Field name={{ :profession_category }} class="form-group">
-                    <Label>{{ gettext("Profession") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <Select
                       class="form-control"
                       opts={{ prompt: gettext("Choose profession category"), disabled: @live_action == :show }}
@@ -263,7 +263,7 @@
                     <div class="card">
                       <div class="card-body">
                         <Field name={{ :name }} class="form-group">
-                          <Label>{{ gettext("Name") }}</Label>
+                          <HygeiaWeb.FieldLabel />
                           <TextInput class="form-control" field={{ :name }} opts={{ disabled: @live_action == :show }} />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
@@ -275,14 +275,14 @@
                         <div class="row">
                           <div class="col">
                             <Field name={{ :supervisor_name }} class="form-group">
-                              <Label>{{ gettext("Supervisor Name") }}</Label>
+                              <HygeiaWeb.FieldLabel />
                               <TextInput class="form-control" field={{ :supervisor_name }} opts={{ disabled: @live_action == :show }} />
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                           </div>
                           <div class="col">
                             <Field name={{ :supervisor_phone }} class="form-group">
-                              <Label>{{ gettext("Supervisor Phone") }}</Label>
+                              <HygeiaWeb.FieldLabel />
                               <TextInput
                                 class="form-control"
                                 field={{ :supervisor_phone }}
@@ -394,7 +394,7 @@
                       :if={{ Ecto.Changeset.get_field(form.source, :done) }}
                     >
                       <Field name={{ :name }} class="form-group">
-                        <Label>{{ gettext("Name") }}</Label>
+                        <HygeiaWeb.FieldLabel />
                         <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
@@ -404,7 +404,7 @@
                       :if={{ Ecto.Changeset.get_field(form.source, :done) }}
                     >
                       <Field name={{ :jab_dates }} class="form-group">
-                        <Label>{{ gettext("Jab Dates") }}</Label>
+                        <HygeiaWeb.FieldLabel />
                         <div :for={{ {date, index} <- Enum.with_index(Ecto.Changeset.get_field(form.source, :jab_dates, [nil]) || [nil]) }}>
                           <DateInput
                             class="form-control"

@@ -28,14 +28,14 @@
           <Form for={{ @filters }} change="filter" submit="filter" opts={{ autocomplete: "off", id: "filter-form", as: :filter }}>
             <div class="form-group">
               <Field class="form-group" name="country">
-                <Label>{{ "Country" |> gettext }}</Label>
+                <HygeiaWeb.FieldLabel schema={{ Hygeia.CaseContext.Address }} />
                 <Select class="form-control" opts={{ prompt: "Any" |> gettext }} options={{ countries() }} />
               </Field>
             </div>
 
             <div class="form-group">
               <Field name={{ :subdivision }} class="form-group">
-                <Label>{{ gettext("Subdivision") }}</Label>
+                <HygeiaWeb.FieldLabel schema={{ Hygeia.CaseContext.Address }} />
                 <InputContext assigns={{ assigns }} :let={{ form: form }}>
                   <Select class="form-control" opts={{ prompt: gettext("Choose subdivision") }} field={{ :subdivision }} options={{ subdivisions(form.source) }} />
                 </InputContext>
@@ -50,10 +50,10 @@
       <thead>
         <tr>
           <th>
-            {{ gettext("Name") }}
+            {{ schema_field_name(:name, Organisation) }}
           </th>
           <th>
-            {{ gettext("Address") }}
+            {{ schema_field_name(:address, Organisation) }}
           </th>
 
           <th></th>

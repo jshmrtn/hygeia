@@ -79,13 +79,13 @@
           <thead>
             <tr>
               <th>
-                {{ gettext("First Name") }}
+                {{ schema_field_name(:first_name, PossibleIndexSubmission) }}
               </th>
               <th>
-                {{ gettext("Last Name") }}
+                {{ schema_field_name(:last_name, PossibleIndexSubmission) }}
               </th>
               <th>
-                {{ gettext("Address") }}
+                {{ schema_field_name(:address, PossibleIndexSubmission) }}
               </th>
 
               <th></th>

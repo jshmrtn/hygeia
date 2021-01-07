@@ -20,7 +20,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
-  alias Surface.Components.Form.Label
+
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
@@ -336,11 +336,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
     changeset = CaseContext.change_case(case)
 
     socket
-    |> assign(
-      case: case,
-      changeset: changeset,
-      versions: PaperTrail.get_versions(case)
-    )
+    |> assign(case: case, changeset: changeset)
     |> maybe_block_navigation()
   end
 

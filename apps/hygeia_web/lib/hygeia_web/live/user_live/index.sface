@@ -8,13 +8,13 @@
       <thead>
         <tr>
           <th>
-            {{ gettext("Display Name") }}
+            {{ schema_field_name(:display_name, User) }}
           </th>
           <th>
-            {{ gettext("Email") }}
+            {{ schema_field_name(:email, User) }}
           </th>
           <th>
-            {{ gettext("Roles") }}
+            {{ schema_field_name(:roles, User) }}
           </th>
 
           <th></th>

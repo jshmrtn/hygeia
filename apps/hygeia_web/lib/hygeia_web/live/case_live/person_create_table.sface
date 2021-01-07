@@ -2,19 +2,43 @@
   <table class="person-table table table-sm no-autofill-background">
     <thead>
       <tr>
-        <th scope="col">{{ gettext("First name") }}</th>
-        <th scope="col">{{ gettext("Lastname") }}</th>
-        <th scope="col">{{ gettext("Sex") }}</th>
-        <th scope="col">{{ gettext("Birthdate") }}</th>
-        <th scope="col">{{ gettext("Mobile Phone") }}</th>
-        <th scope="col">{{ gettext("Landline") }}</th>
-        <th scope="col">{{ gettext("Email") }}</th>
-        <th scope="col">{{ gettext("Address") }}</th>
-        <th scope="col" class="table-col-border">{{ gettext("Tenant") }}</th>
+        <th scope="col">
+          {{ schema_field_name(:first_name, CreatePersonSchema) }}
+        </th>
+        <th scope="col">
+          {{ schema_field_name(:last_name, CreatePersonSchema) }}
+        </th>
+        <th scope="col">
+          {{ schema_field_name(:sex, CreatePersonSchema) }}
+        </th>
+        <th scope="col">
+          {{ schema_field_name(:birth_date, CreatePersonSchema) }}
+        </th>
+        <th scope="col">
+          {{ schema_field_name(:mobile, CreatePersonSchema) }}
+        </th>
+        <th scope="col">
+          {{ schema_field_name(:landline, CreatePersonSchema) }}
+        </th>
+        <th scope="col">
+          {{ schema_field_name(:email, CreatePersonSchema) }}
+        </th>
+        <th scope="col">
+          {{ schema_field_name(:address, CreatePersonSchema) }}
+        </th>
+        <th scope="col" class="table-col-border">
+          {{ schema_field_name(:tenant, CreatePersonSchema) }}
+        </th>
         <slot name="additional_header" />
-        <th scope="col">{{ gettext("Supervisor") }}</th>
-        <th scope="col" class="table-col-border">{{ gettext("Tracer") }}</th>
-        <th scope="col" class="table-col-border">{{ gettext("Employer") }}</th>
+        <th scope="col">
+          {{ schema_field_name(:supervisor, CreatePersonSchema) }}
+        </th>
+        <th scope="col" class="table-col-border">
+          {{ schema_field_name(:tracer, CreatePersonSchema) }}
+        </th>
+        <th scope="col" class="table-col-border">
+          {{ schema_field_name(:employer, CreatePersonSchema) }}
+        </th>
         <th scope="col" class="actions-col"></th>
       </tr>
     </thead>
@@ -186,23 +210,23 @@
                           </td>
                         </tr>
                         <tr>
-                          <th>{{ gettext("Birthdate") }}</th>
+                          <th>{{ schema_field_name(:birth_date, CreatePersonSchema) }}</th>
                           <td>{{ form.source |> Ecto.Changeset.fetch_field!(:birth_date) |> format_date() }}</td>
                         </tr>
                         <tr>
-                          <th>{{ gettext("Mobile") }}</th>
+                          <th>{{ schema_field_name(:mobile, CreatePersonSchema) }}</th>
                           <td>{{ Ecto.Changeset.fetch_field!(form.source, :mobile) }}</td>
                         </tr>
                         <tr>
-                          <th>{{ gettext("Landline") }}</th>
+                          <th>{{ schema_field_name(:landline, CreatePersonSchema) }}</th>
                           <td>{{ Ecto.Changeset.fetch_field!(form.source, :landline) }}</td>
                         </tr>
                         <tr>
-                          <th>{{ gettext("Email") }}</th>
+                          <th>{{ schema_field_name(:email, CreatePersonSchema) }}</th>
                           <td>{{ Ecto.Changeset.fetch_field!(form.source, :email) }}</td>
                         </tr>
                         <tr>
-                          <th>{{ gettext("Tenant") }}</th>
+                          <th>{{ schema_field_name(:tenant, CreatePersonSchema) }}</th>
                           <td>
                             {{
                               form.source

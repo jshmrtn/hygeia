@@ -8,7 +8,7 @@ defmodule HygeiaWeb.TenantLive.Create do
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
-  alias Surface.Components.Form.Label
+
   alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView

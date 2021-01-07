@@ -89,7 +89,7 @@ defmodule Hygeia.UserContext.User do
         do: false
 
     def authorized?(_resource_user, action, user, _meta)
-        when action in [:list, :details],
+        when action in [:list, :details, :versioning, :deleted_versioning],
         do:
           Enum.any?(
             [:viewer, :tracer, :super_user, :supervisor, :admin],

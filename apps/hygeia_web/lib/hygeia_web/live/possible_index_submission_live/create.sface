@@ -60,14 +60,14 @@
           <div class="row">
             <div class="col">
               <Field name={{ :first_name }} class="form-group">
-                <Label>{{ gettext("First Name") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <TextInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
             <div class="col">
               <Field name={{ :last_name }} class="form-group">
-                <Label>{{ gettext("Last Name") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <TextInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
@@ -77,7 +77,7 @@
           <div class="row">
             <div class="col">
               <Field name={{ :sex }} class="form-group">
-                <Label>{{ gettext("Sex") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <Select
                   class="form-control"
                   options={{ [
@@ -132,7 +132,7 @@
           <div class="row">
             <div class="col">
               <Field name={{ :transmission_date }} class="form-group">
-                <Label>{{ gettext("Transmission Date") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <DateInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
@@ -181,14 +181,14 @@
             <div class="row">
               <div class="col">
                 <Field name={{ :name }} class="form-group">
-                  <Label>{{ gettext("Place Name") }}</Label>
+                  <HygeiaWeb.FieldLabel />
                   <TextInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
               <div class="col">
                 <Field name={{ :type }} class="form-group">
-                  <Label>{{ gettext("Type") }}</Label>
+                  <HygeiaWeb.FieldLabel />
                   <Select
                     class="form-control"
                     options={{ infection_place_type_options() }}
@@ -241,7 +241,7 @@
             <HiddenInput field={{ :activity_mapping_executed }} value={{ true }} />
 
             <Field name={{ :activity_mapping }} class="form-group">
-              <Label>{{ gettext("Description of encounter") }}</Label>
+              <HygeiaWeb.FieldLabel />
               <TextArea class="form-control" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
@@ -313,14 +313,14 @@
           <div class="row">
             <div class="col">
               <Field name={{ :mobile }} class="form-group">
-                <Label>{{ gettext("Mobile") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <TelephoneInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
             <div class="col">
               <Field name={{ :landline }} class="form-group">
-                <Label>{{ gettext("Landline") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <TelephoneInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
@@ -330,7 +330,7 @@
           <div class="row">
             <div class="col">
               <Field name={{ :email }} class="form-group">
-                <Label>{{ gettext("Email") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <EmailInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>

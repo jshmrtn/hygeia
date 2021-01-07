@@ -1,8 +1,6 @@
 <div class="component-organisation-base-data container">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1 class="mb-3">
-      {{ Ecto.Changeset.get_field(@changeset, :name) }}
-    </h1>
+    <HygeiaWeb.OrganisationLive.Header organisation={{ @changeset }} id="header" />
 
     <div class="mb-4" :if={{ @live_action == :show }}>
       <LivePatch
@@ -59,7 +57,7 @@
             <div class="card-body">
               <h4 class="card-title">{{ gettext("Name") }}</h4>
               <Field name={{ :name }} class="form-group">
-                <Label>{{ gettext("Name") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <TextInput 
                   class="form-control" 
                   opts={{ disabled: @live_action == :show }}
@@ -72,7 +70,7 @@
             <div class="card-body">
               <h4 class="card-title">{{ gettext("Notes") }}</h4>
               <Field name={{ :notes }} class="form-group">
-                <Label>{{ gettext("Notes") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <TextArea
                   class="form-control"
                   opts={{ disabled: @live_action == :show }}

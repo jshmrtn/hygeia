@@ -4,19 +4,19 @@
       <thead>
         <tr>
           <th :if={{ @show_recipient }}>
-            {{ gettext("Recipient") }}
+            {{ schema_field_name(:recipient, Transmission) }}
           </th>
           <th :if={{ @show_propagator }}>
-            {{ gettext("Propagator") }}
+            {{ schema_field_name(:propagator, Transmission) }}
           </th>
           <th>
-            {{ gettext("Date") }}
+            {{ schema_field_name(:date, Transmission) }}
           </th>
           <th>
-            {{ gettext("Infection Place Known") }}
+            {{ schema_field_name(:known, Transmission.InfectionPlace) }}
           </th>
           <th>
-            {{ gettext("Infection Place Type") }}
+            {{ schema_field_name(:type, Transmission.InfectionPlace) }}
           </th>
           <th></th>
         </tr>

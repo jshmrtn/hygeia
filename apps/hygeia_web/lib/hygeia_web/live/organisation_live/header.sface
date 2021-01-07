@@ -1,0 +1,42 @@
+<div class="component-person-header mb-4">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <h1
+      class="mb-4"
+      :if={{ authorized?(@organisation, :details, auth) }}
+    >
+      {{ @display_name }}
+    </h1>
+    <h1
+      class="mb-4"
+      :if={{ not authorized?(@organisation, :details, auth) }}
+    >
+      {{ @organisation.uuid }}
+    </h1>
+
+    <ul class="nav nav-tabs">
+      <li
+        class="nav-item"
+        :if={{ authorized?(@organisation, :details, auth) }}
+      >
+        <UriActiveContext
+          to={{ Routes.organisation_show_path(@socket, :show, @organisation) }}
+          :let={{ to: to, active: active }}
+        >
+          <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+            {{ gettext("Base Data") }}
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class="nav-item">
+        <UriActiveContext
+          to={{ Routes.version_show_path(@socket, :show, "Organisation", @organisation) }}
+          :let={{ to: to, active: active }}
+        >
+          <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active"}}">
+            {{ gettext("History") }}
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+    </ul>
+  </Context>
+</div>

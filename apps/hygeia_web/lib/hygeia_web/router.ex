@@ -159,6 +159,8 @@ defmodule HygeiaWeb.Router do
     live "/organisations/:id/positions/:position_id/edit",
          OrganisationLive.Show,
          :position_edit
+
+    live "/history/:resource/:id", VersionLive.Show, :show
   end
 
   scope "/", HygeiaWeb do

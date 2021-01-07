@@ -1,6 +1,6 @@
 <div>
   <Field name={{ :address }} class="form-group">
-    <Label>{{ "Address" |> gettext }}</Label>
+    <HygeiaWeb.FieldLabel />
     <TextInput opts={{ disabled: @disabled }} class="form-control" field={{ :address }}/>
     <ErrorTag class="d-block invalid-feedback" />
   </Field>
@@ -8,14 +8,14 @@
   <div class="row">
     <div class="col">
       <Field name={{ :zip }} class="form-group">
-        <Label>{{ "ZIP" |> gettext }}</Label>
+        <HygeiaWeb.FieldLabel />
         <TextInput opts={{ disabled: @disabled }} class="form-control" field={{ :zip }}/>
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
     <div class="col">
       <Field name={{ :place }} class="form-group">
-        <Label>{{ "Place" |> gettext }}</Label>
+        <HygeiaWeb.FieldLabel />
         <TextInput opts={{ foo: :bar, disabled: @disabled }} class="form-control" field={{ :place }} />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
@@ -25,14 +25,14 @@
   <div class="row">
     <div class="col">
       <Field name={{ :country }} class="form-group">
-        <Label>{{ "Country" |> gettext }}</Label>
+        <HygeiaWeb.FieldLabel />
         <Select class="form-control" opts={{ prompt: gettext("Choose country"), disabled: @disabled }} field={{ :country }} options={{ countries() }} />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
     <div class="col">
       <Field name={{ :subdivision }} class="form-group">
-        <Label>{{ "Subdivision" |> gettext }}</Label>
+        <HygeiaWeb.FieldLabel />
         <InputContext assigns={{ assigns }} :let={{ form: form }}>
           <Select class="form-control" opts={{ prompt: gettext("Choose subdivision"), disabled: @disabled }} field={{ :subdivision }} options={{ subdivisions(form.source) }} />
         </InputContext>

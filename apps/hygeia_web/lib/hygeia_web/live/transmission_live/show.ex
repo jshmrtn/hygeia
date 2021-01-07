@@ -10,9 +10,8 @@ defmodule HygeiaWeb.TransmissionLive.Show do
   alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
-  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
-  alias Surface.Components.Form.Label
+
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
 

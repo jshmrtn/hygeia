@@ -13,7 +13,7 @@ defmodule HygeiaWeb.TenantLive.Show do
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
-  alias Surface.Components.Form.Label
+
   alias Surface.Components.Form.PasswordInput
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput

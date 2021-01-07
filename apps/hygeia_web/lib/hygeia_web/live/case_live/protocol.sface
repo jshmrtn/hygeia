@@ -9,11 +9,21 @@
       <table class="protocol-table table table-sm">
         <thead>
           <tr>
-            <th class="col-type" scope="col">{{ gettext("Type") }}</th>
-            <th class="col-date" scope="col">{{ gettext("Date") }}</th>
-            <th scope="col">{{ gettext("Origin") }}</th>
-            <th class="col-author" scope="col">{{ gettext("Author") }}</th>
-            <th class="col-meta" scope="col" colspan="2">{{ gettext("Meta") }}</th>
+            <th class="col-type" scope="col">
+              {{ schema_field_name(:type, ProtocolEntry) }}
+            </th>
+            <th class="col-date" scope="col">
+              {{ schema_field_name(:date, ProtocolEntry) }}
+            </th>
+            <th scope="col">
+              {{ schema_field_name(:origin, Version) }}
+            </th>
+            <th class="col-author" scope="col">
+              {{ schema_field_name(:originator, Version) }}
+            </th>
+            <th class="col-meta" scope="col" colspan="2">
+              {{ schema_field_name(:entry, ProtocolEntry) }}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -48,10 +58,11 @@
               <div class="preserve-linebreaks">{{ entry.note }}</div>
             </td>
             <td colspan="2" :if={{ type == Hygeia.CaseContext.ProtocolEntry.Email }}>
-              <b>{{ gettext("Subject") }}:</b> {{ entry.subject }}<br>
+              <b>{{ schema_field_name(:subject, Hygeia.CaseContext.ProtocolEntry.Email) }}:</b>
+              {{ entry.subject }}<br>
               <details>
                 <summary class="text-primary">
-                  <b>{{ gettext("Body") }}</b><br>
+                  <b>{{ schema_field_name(:body, Hygeia.CaseContext.ProtocolEntry.Email) }}</b><br>
                 </summary>
                 <div class="preserve-linebreaks">{{ entry.body }}</div>
               </details>
@@ -63,7 +74,7 @@
           <tr :if={{ length(@case.protocol_entries) == 0 }}>
             <td colspan="5">
               <div class="d-flex justify-content-center py-3">
-                {{ "No data to display" |> gettext }}
+                {{ gettext("No data to display") }}
               </div>
             </td>
           </tr>

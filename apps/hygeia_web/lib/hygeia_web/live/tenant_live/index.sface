@@ -21,7 +21,7 @@
       <thead>
         <tr>
           <th>
-            {{ gettext("Name") }}
+            {{ schema_field_name(:name, Tenant) }}
           </th>
 
           <th></th>

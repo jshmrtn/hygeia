@@ -9,7 +9,6 @@ defmodule HygeiaWeb.CaseLive.Hospitalizations do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
-  alias Surface.Components.Form.Label
 
   prop source, :map, required: true
   prop organisations, :list, required: true

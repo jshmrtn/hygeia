@@ -6,7 +6,7 @@ defmodule HygeiaWeb.UserLive.Show do
   alias Hygeia.UserContext
   alias Hygeia.UserContext.Grant
   alias Hygeia.UserContext.User
-  alias Surface.Components.Form.Label
+
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView

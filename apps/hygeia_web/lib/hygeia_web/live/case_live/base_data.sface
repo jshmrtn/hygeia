@@ -48,7 +48,7 @@
                 <div class="card-body">
                   <h4 class="card-title">{{ gettext("Tracing") }}</h4>
                   <Field name={{ :tenant_uuid }} class="form-group">
-                    <Label>{{ "Tenant" |> gettext }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <Select 
                       class="form-control" 
                       opts={{ prompt: "Select tenant" |> gettext, disabled: @live_action == :show }} 
@@ -60,7 +60,7 @@
                   <div class="row">
                     <div class="col">
                       <Field name={{ :tracer_uuid }} class="form-group">
-                        <Label>{{ "Tracer" |> gettext }}</Label>
+                        <HygeiaWeb.FieldLabel />
                         <Select 
                           class="form-control" 
                           opts={{ prompt: "Select user" |> gettext,  disabled: @live_action == :show }} 
@@ -71,7 +71,7 @@
                     </div>
                     <div class="col">
                       <Field name={{ :supervisor_uuid }} class="form-group">
-                        <Label>{{ "Supervisor" |> gettext }}</Label>
+                        <HygeiaWeb.FieldLabel />
                         <Select 
                           class="form-control" 
                           opts={{ prompt: "Select user" |> gettext, disabled: @live_action == :show }} 
@@ -85,7 +85,7 @@
                   <div class="row">
                     <div class="col d-flex">
                       <Field name={{ :complexity }} class="form-group flex-grow-1">
-                        <Label>{{ "Complexity" |> gettext }}</Label>
+                        <HygeiaWeb.FieldLabel />
                         <Select 
                           class="form-control" 
                           opts={{ prompt: "Select complexity" |> gettext, disabled: @live_action == :show }} 
@@ -105,7 +105,7 @@
                     </div>
                     <div class="col d-flex">
                       <Field name={{ :status }} class="form-group flex-grow-1">
-                        <Label>{{ "Status" |> gettext }}</Label>
+                        <HygeiaWeb.FieldLabel />
                         <Select 
                           class="form-control" 
                           opts={{ prompt: "Select status" |> gettext, disabled: @live_action == :show }} 
@@ -151,7 +151,7 @@
                       <div class="card-body">
                         <InputContext assigns={{ assigns }} :let={{ form: form }}>
                           <div class="form-group">
-                            <Label>{{ gettext("Type") }}</Label>
+                            <HygeiaWeb.FieldLabel field={{ :type }} />
                             <div class="value">{{
                               case Ecto.Changeset.fetch_field!(form.source, :details) do
                                 %Phase.Index{} -> gettext("Index")
@@ -163,14 +163,14 @@
                           <div class="row">
                             <div class="col">
                               <Field name={{ :start }} class="form-group">
-                                <Label>{{ "Start" |> gettext }}</Label>
+                                <HygeiaWeb.FieldLabel />
                                 <DateInput class="form-control" opts={{ disabled: @live_action == :show }} />
                                 <ErrorTag class="d-block invalid-feedback" />
                               </Field>
                             </div>
                             <div class="col">
                               <Field name={{ :end }} class="form-group">
-                                <Label>{{ "End" |> gettext }}</Label>
+                                <HygeiaWeb.FieldLabel />
                                 <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
                                 <ErrorTag class="d-block invalid-feedback" />
                               </Field>
@@ -185,7 +185,7 @@
                           >
                             <div class="d-flex">
                               <Field name={{ :end_reason }} class="form-group flex-grow-1">
-                                <Label>{{ gettext("End Reason") }}</Label>
+                                <HygeiaWeb.FieldLabel />
                                 <Select 
                                   class="form-control" 
                                   opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
@@ -212,14 +212,14 @@
                           >
                             <InputContext assigns={{ assigns }} :let={{ form: form }}>
                               <div class="form-group">
-                                <Label>{{ gettext("Sub Type") }}</Label>
+                                <HygeiaWeb.FieldLabel field={{ :type }} />
                                 <div class="value">
                                   {{ form.source |> Ecto.Changeset.fetch_field!(:type) |> case_phase_possible_index_type_translation() }}
                                 </div>
                               </div>
                               <div class="d-flex">
                                 <Field name={{ :end_reason }} class="form-group flex-grow-1">
-                                  <Label>{{ gettext("End Reason") }}</Label>
+                                  <HygeiaWeb.FieldLabel />
                                   <Select 
                                     class="form-control" 
                                     opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
@@ -293,7 +293,7 @@
                             <div class="form-group">
                               <InputContext assigns={{ assigns }} :let={{ form: form }}>
                                 <Field name={{ :reasons_for_test }}>
-                                  <Label>{{ gettext("Reasons for test") }}</Label>
+                                  <HygeiaWeb.FieldLabel />
                                   <label
                                     :for={{ {name, key} <- test_reasons() }}
                                     class="d-block checkbox-label"
@@ -371,14 +371,14 @@
                         <div class="row">
                           <div class="col">
                             <Field name={{ :test }} class="form-group">
-                              <Label>{{ gettext("Test date") }}</Label>
+                              <HygeiaWeb.FieldLabel />
                               <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                           </div>
                           <div class="col">
                             <Field name={{ :laboratory_report }} class="form-group">
-                              <Label>{{ gettext("Laboratory report date") }}</Label>
+                              <HygeiaWeb.FieldLabel />
                               <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
@@ -387,14 +387,14 @@
                         <div class="row">
                           <div class="col">
                             <Field name={{ :test_kind }} class="form-group">
-                              <Label>{{ gettext("Test kind") }}</Label>
+                              <HygeiaWeb.FieldLabel />
                               <Select class="form-control" opts={{ prompt: gettext("Choose test kind"), disabled: @live_action == :show }} options={{ test_kinds() }} />
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                           </div>
                           <div class="col">
                             <Field name={{ :result }} class="form-group">
-                              <Label>{{ gettext("Test result") }}</Label>
+                              <HygeiaWeb.FieldLabel />
                               <Select class="form-control" opts={{ prompt: gettext("Choose test result"), disabled: @live_action == :show }} options={{ test_results() }} />
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
@@ -408,7 +408,7 @@
                         <h4 class="card-title">{{ gettext("Reporting unit") }}</h4>
                         <Inputs for={{ :reporting_unit }}>
                           <Field name={{ :name }} class="form-group">
-                            <Label>{{ gettext("Name") }}</Label>
+                            <HygeiaWeb.FieldLabel />
                             <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
                             <ErrorTag class="d-block invalid-feedback" />
                           </Field>
@@ -428,7 +428,7 @@
                         <h4 class="card-title">{{ gettext("Sponsor") }}</h4>
                         <Inputs for={{ :sponsor }}>
                           <Field name={{ :name }} class="form-group">
-                            <Label>{{ gettext("Name") }}</Label>
+                            <HygeiaWeb.FieldLabel />
                             <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
                             <ErrorTag class="d-block invalid-feedback" />
                           </Field>

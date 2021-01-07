@@ -12,7 +12,7 @@
     <div class="card mb-3">
       <div class="card-body">
         <Field name={{ :name }} class="form-group">
-          <Label>{{ gettext("Name") }}</Label>
+          <HygeiaWeb.FieldLabel />
           <TextInput class="form-control" />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>

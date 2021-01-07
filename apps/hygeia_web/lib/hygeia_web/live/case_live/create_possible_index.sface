@@ -28,7 +28,7 @@
             <div class="card">
               <div class="card-body">
                 <Field name={{ :type }} class="form-group">
-                  <Label>{{ gettext("Type") }}</Label>
+                  <HygeiaWeb.FieldLabel />
                   <Select
                     class="form-control"
                     options={{ case_phase_possible_index_type_map() }}
@@ -53,19 +53,19 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <Field name={{ :propagator_ism_id }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}>
-                    <Label>{{ gettext("Propagator ISM ID") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <TextInput class="form-control" />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <Field name={{ :propagator_case_uuid }} class="form-group" :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}>
-                    <Label>{{ gettext("Propagator Case") }}</Label>
+                    <HygeiaWeb.FieldLabel />
                     <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
 
                 <Field name={{ :date }} class="form-group">
-                  <Label>{{ gettext("Date") }}</Label>
+                  <HygeiaWeb.FieldLabel />
                   <DateInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
@@ -84,18 +84,14 @@
           <div class="col">
             <Field name={{ :send_confirmation_sms }} class="form-check">
               <Checkbox class="form-check-input" />
-              <Label class="form-check-label">
-                {{ gettext("Send Confirmation SMS") }}
-              </Label>
+              <HygeiaWeb.FieldLabel class="form-check-label" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
           <div class="col">
             <Field name={{ :send_confirmation_email }} class="form-check">
               <Checkbox class="form-check-input" />
-              <Label class="form-check-label">
-                {{ gettext("Send Confirmation Email") }}
-              </Label>
+              <HygeiaWeb.FieldLabel class="form-check-label" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
@@ -104,9 +100,7 @@
           <div class="col">
             <Field name={{ :directly_close_cases }} class="form-check">
               <Checkbox class="form-check-input" />
-              <Label class="form-check-label">
-                {{ gettext("Directly set case status to done") }}
-              </Label>
+              <HygeiaWeb.FieldLabel class="form-check-label" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
@@ -117,9 +111,7 @@
               class="form-check"
             >
               <Checkbox class="form-check-input" />
-              <Label class="form-check-label">
-                {{ gettext("Copy Address from Propagator") }}
-              </Label>
+              <HygeiaWeb.FieldLabel class="form-check-label" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
@@ -130,11 +122,14 @@
         <div class="row mb-2">
           <div class="col">
             <Field name={{ :default_tenant_uuid }} class="input-group">
-              <Label class="input-group-prepend mb-0">
+              <HygeiaWeb.FieldLabel
+                class="input-group-prepend mb-0"
+                :let={{ name: name }}
+              >
                 <span class="input-group-text">
-                  {{ gettext("Default Tenant") }}
+                  {{ name }}
                 </span>
-              </Label>
+              </HygeiaWeb.FieldLabel>
               <Select 
                 class="form-control"
                 options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
@@ -147,11 +142,14 @@
             <HiddenInput field={{ :default_supervisor_uuid }} />
 
             <Field name={{ :default_supervisor_uuid }} class="input-group">
-              <Label class="input-group-prepend mb-0">
+              <HygeiaWeb.FieldLabel
+                class="input-group-prepend mb-0"
+                :let={{ name: name }}
+              >
                 <span class="input-group-text">
-                  {{ gettext("Default Supervisor") }}
+                  {{ name }}
                 </span>
-              </Label>
+              </HygeiaWeb.FieldLabel>
               <Select 
                 class="form-control"
                 options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
@@ -166,11 +164,14 @@
             <HiddenInput field={{ :default_tracer_uuid }} />
 
             <Field name={{ :default_tracer_uuid }} class="input-group">
-              <Label class="input-group-prepend mb-0">
+              <HygeiaWeb.FieldLabel
+                class="input-group-prepend mb-0"
+                :let={{ name: name }}
+              >
                 <span class="input-group-text">
-                  {{ gettext("Default Tracer") }}
+                  {{ name }}
                 </span>
-              </Label>
+              </HygeiaWeb.FieldLabel>
               <Select 
                 class="form-control"
                 options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}

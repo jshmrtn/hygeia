@@ -41,7 +41,7 @@
               <div class="row">
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label class="d-block">{{ gettext("Status") }}</label>
+                    <label class="d-block">{{ schema_field_name(:status, Case) }}</label>
                     <label
                       :for={{ {name, key} <- case_status_map() }}
                       class="d-block checkbox-label"
@@ -60,7 +60,7 @@
                 </div>
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
-                    <label class="d-block">{{ gettext("Complexity") }}</label>
+                    <label class="d-block">{{ schema_field_name(:complexity, Case) }}</label>
                     <label
                       :for={{ {name, key} <- case_complexity_map() }}
                       class="d-block checkbox-label"
@@ -80,14 +80,14 @@
               </div>
 
               <div class="form-group">
-                <label class="d-block">{{ gettext("Tracer") }}</label>
+                <label class="d-block">{{ schema_field_name(:tracer, Case) }}</label>
                 <FieldContext name={{ :tracer_uuid }}>
                   <MultipleSelect class="form-control" options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }} />
                 </FieldContext>
               </div>
 
               <div class="form-group">
-                <label class="d-block">{{ gettext("Supervisor") }}</label>
+                <label class="d-block">{{ schema_field_name(:supervisor, Case) }}</label>
                 <FieldContext name={{ :supervisor_uuid }}>
                   <MultipleSelect class="form-control" options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }} />
                 </FieldContext>
@@ -131,7 +131,7 @@
               :let={{ sort_params: sort_params }}
             >
               <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ gettext("Person") }}
+                {{ schema_field_name(:person, Case) }}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
@@ -143,7 +143,7 @@
               :let={{ sort_params: sort_params }}
             >
               <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ gettext("Complexity") }}
+                {{ schema_field_name(:complexity, Case) }}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
@@ -155,7 +155,7 @@
               :let={{ sort_params: sort_params }}
             >
               <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ gettext("Status") }}
+                {{ schema_field_name(:status, Case) }}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
@@ -167,7 +167,7 @@
               :let={{ sort_params: sort_params }}
             >
               <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ gettext("Phases") }}
+                {{ schema_field_name(:phases, Case) }}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
@@ -179,7 +179,7 @@
               :let={{ sort_params: sort_params }}
             >
               <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ gettext("Tracer") }}
+                {{ schema_field_name(:tracer, Case) }}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
@@ -191,7 +191,7 @@
               :let={{ sort_params: sort_params }}
             >
               <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ gettext("Supervisor") }}
+                {{ schema_field_name(:supervisor, Case) }}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
@@ -203,7 +203,7 @@
               :let={{ sort_params: sort_params }}
             >
               <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ gettext("Inserted At") }}
+                {{ schema_field_name(:inserted_at, Case) }}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>

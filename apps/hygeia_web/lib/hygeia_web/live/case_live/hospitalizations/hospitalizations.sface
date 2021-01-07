@@ -12,14 +12,14 @@
             <HiddenInput field={{ :uuid }} />
             <div class="col">
               <Field class="form-group" name={{ :start }}>
-                <Label>{{ gettext("Start date") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <DateInput class="form-control" opts={{ disabled: @disabled }}/>
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
             <div class="col">
               <Field class="form-group" name={{ :end }}>
-                <Label>{{ gettext("End date") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <DateInput class="form-control" opts={{ disabled: @disabled }}/>
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
@@ -28,7 +28,7 @@
           <div class="row">
             <div class="col">
               <Field class="form-group" name={{ :organisation_uuid }}>
-                <Label>{{ gettext("Organisation") }}</Label>
+                <HygeiaWeb.FieldLabel />
                 <HygeiaWeb.OrganisationLive.Choose
                   id={{ {:hospitalisations, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid) } }}
                   change={{ "change_organisation_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
