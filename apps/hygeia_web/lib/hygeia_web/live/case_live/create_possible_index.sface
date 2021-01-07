@@ -179,22 +179,6 @@
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
-          <div class="col">
-            <HiddenInput field={{ :default_country }} />
-
-            <Field name={{ :default_country }} class="input-group">
-              <Label class="input-group-prepend mb-0">
-                <span class="input-group-text">
-                  {{ gettext("Default Country") }}
-                </span>
-              </Label>
-              <Select class="form-control"
-                opts={{ prompt: gettext("Default country") }}
-                options={{ countries() }}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
         </div>
       </div>
 
@@ -204,7 +188,6 @@
           tenants={{ @tenants }}
           supervisor_users={{ @supervisor_users }}
           tracer_users={{ @tracer_users }}
-          default_country={{ Phoenix.HTML.FormData.input_value(form.source, form, :default_country) }}
           show_address={{ Phoenix.HTML.FormData.input_value(form.source, form, :copy_address_from_propagator) != true }}
         />
       </div>

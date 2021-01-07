@@ -5,6 +5,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person.ContactMethod
+  alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.ErrorTag
@@ -18,7 +19,6 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   prop tenants, :list, required: true
   prop supervisor_users, :list, required: true
   prop tracer_users, :list, required: true
-  prop default_country, :string, default: nil
   prop show_address, :boolean, default: true
 
   slot additional_header, required: false
@@ -43,12 +43,29 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
 
   def handle_event(
         "select_accepted_duplicate",
-        %{"person-uuid" => duplicate_uuid},
+        %{"person-uuid" => duplicate_uuid, "type" => "person"},
         %{assigns: %{suspected_duplicate_changeset_uuid: uuid}} = socket
       ) do
     person = CaseContext.get_person!(duplicate_uuid)
 
     send(self(), {:accept_duplicate, uuid, person})
+
+    {:noreply, assign(socket, suspected_duplicate_changeset_uuid: nil)}
+  end
+
+  def handle_event(
+        "select_accepted_duplicate",
+        %{
+          "person-uuid" => duplicate_person_uuid,
+          "type" => "case",
+          "case-uuid" => duplicate_case_uuid
+        },
+        %{assigns: %{suspected_duplicate_changeset_uuid: uuid}} = socket
+      ) do
+    person = CaseContext.get_person!(duplicate_person_uuid)
+    case = CaseContext.get_case!(duplicate_case_uuid)
+
+    send(self(), {:accept_duplicate, uuid, {case, person}})
 
     {:noreply, assign(socket, suspected_duplicate_changeset_uuid: nil)}
   end
@@ -63,7 +80,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
     {:noreply, assign(socket, suspected_duplicate_changeset_uuid: nil)}
   end
 
-  defp get_person(uuid), do: CaseContext.get_person!(uuid)
+  defp get_person(uuid), do: uuid |> CaseContext.get_person!() |> Repo.preload(:cases)
 
   defp get_person_name(person) do
     "#{person.first_name} #{person.last_name}"

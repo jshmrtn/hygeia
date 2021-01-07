@@ -42,6 +42,7 @@ defmodule Hygeia do
       import Hygeia.Helpers.Email
       import Hygeia.Helpers.Empty
       import Hygeia.Helpers.Id
+      import Hygeia.Helpers.Merge
       import Hygeia.Helpers.PersonDuplicates
       import Hygeia.Helpers.Phone
 

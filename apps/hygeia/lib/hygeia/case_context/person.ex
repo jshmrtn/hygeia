@@ -90,7 +90,10 @@ defmodule Hygeia.CaseContext.Person do
   end
 
   @doc false
-  @spec changeset(person :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
+  @spec changeset(
+          person :: t | empty | Changeset.t(t | empty),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Changeset.t()
   def changeset(person, attrs) do
     person
     |> cast(attrs, [

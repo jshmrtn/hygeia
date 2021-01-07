@@ -79,4 +79,9 @@ defmodule Hygeia.CaseContext.Address do
     |> Enum.reject(&is_nil/1)
     |> Enum.reject(&(&1 == ""))
   end
+
+  @spec merge(t(), t()) :: t()
+  def merge(old, new) do
+    merge(old, new, __MODULE__)
+  end
 end

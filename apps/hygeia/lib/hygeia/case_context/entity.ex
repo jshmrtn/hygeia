@@ -32,4 +32,11 @@ defmodule Hygeia.CaseContext.Entity do
     |> validate_required([])
     |> cast_embed(:address)
   end
+
+  @spec merge(t(), t()) :: t()
+  def merge(old, new) do
+    merge(old, new, __MODULE__, fn embed, old_embed, new_embed when embed in [:address] ->
+      Address.merge(old_embed, new_embed)
+    end)
+  end
 end

@@ -3,6 +3,11 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
 
   use Hygeia, :model
 
+  import HygeiaWeb.CaseLive.Create.CreateSchema
+
+  alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Person
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
   alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
@@ -11,7 +16,6 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
     belongs_to :default_tenant, Tenant, references: :uuid, foreign_key: :default_tenant_uuid
     belongs_to :default_supervisor, User, references: :uuid, foreign_key: :default_supervisor_uuid
     belongs_to :default_tracer, User, references: :uuid, foreign_key: :default_tracer_uuid
-    field :default_country, :string
 
     embeds_many :people, CreatePersonSchema, on_replace: :delete
   end
@@ -23,8 +27,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
     |> cast(attrs, [
       :default_tenant_uuid,
       :default_supervisor_uuid,
-      :default_tracer_uuid,
-      :default_country
+      :default_tracer_uuid
     ])
     |> cast_embed(:people, required: true)
     |> validate_changeset()
@@ -69,6 +72,88 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
         [] -> [CreatePersonSchema.changeset(%CreatePersonSchema{}, %{})]
         [_entry | _other_entries] = other -> other
       end
+    )
+  end
+
+  @spec upsert_case(
+          {create_person_schema :: %CreatePersonSchema{}, person :: Person.t()},
+          schema :: %__MODULE__{}
+        ) :: Case.t()
+  def upsert_case(
+        {%CreatePersonSchema{
+           accepted_duplicate_case_uuid: duplicate_case_uuid,
+           tracer_uuid: tracer_uuid,
+           supervisor_uuid: supervisor_uuid,
+           clinical: clinical,
+           ism_case_id: ism_case_id,
+           ism_report_id: ism_report_id
+         }, person},
+        %__MODULE__{
+          default_tracer_uuid: default_tracer_uuid,
+          default_supervisor_uuid: default_supervisor_uuid
+        }
+      ) do
+    changeset =
+      duplicate_case_uuid
+      |> case do
+        nil ->
+          person
+          |> CaseContext.create_case_changeset(%{})
+          |> Map.put(:errors, [])
+          |> Map.put(:valid?, true)
+
+        uuid ->
+          uuid |> CaseContext.get_case!() |> CaseContext.change_case()
+      end
+      |> merge_phases()
+      |> merge_clinical(clinical)
+      |> merge_assignee(:tracer_uuid, tracer_uuid, default_tracer_uuid)
+      |> merge_assignee(:supervisor_uuid, supervisor_uuid, default_supervisor_uuid)
+      |> merge_external_reference(:ism_case, ism_case_id)
+      |> merge_external_reference(:ism_report, ism_report_id)
+
+    {:ok, case} =
+      case duplicate_case_uuid do
+        nil -> CaseContext.create_case(changeset)
+        _id -> CaseContext.update_case(changeset)
+      end
+
+    case
+  end
+
+  defp merge_phases(changeset) do
+    existing_phases =
+      changeset
+      |> Ecto.Changeset.fetch_field!(:phases)
+      # Drop Empty Phases for Create Form
+      |> Enum.reject(&match?(%Case.Phase{details: nil}, &1))
+
+    existing_phases
+    |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
+    |> case do
+      nil ->
+        Ecto.Changeset.put_embed(
+          changeset,
+          :phases,
+          existing_phases ++ [%Case.Phase{details: %Case.Phase.Index{}}]
+        )
+
+      %Case.Phase{} ->
+        changeset
+    end
+  end
+
+  defp merge_clinical(changeset, clinical) do
+    Ecto.Changeset.put_embed(
+      changeset,
+      :clinical,
+      changeset
+      |> Ecto.Changeset.fetch_field!(:clinical)
+      |> case do
+        nil -> %Case.Clinical{}
+        %Case.Clinical{} = clinical -> clinical
+      end
+      |> Case.Clinical.merge(clinical)
     )
   end
 end

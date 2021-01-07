@@ -4,13 +4,11 @@ defmodule HygeiaWeb.CaseLive.Create do
   import HygeiaGettext
   import Phoenix.LiveView
 
-  alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
-  alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
-  alias Hygeia.UserContext.User
   alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
   alias HygeiaWeb.CaseLive.CreateIndex.CreateSchema
 
@@ -23,136 +21,84 @@ defmodule HygeiaWeb.CaseLive.Create do
           Ecto.Changeset.t()
   def update_person_changeset(changeset, person) do
     changeset
-    |> Map.put(:errors, [])
-    |> Map.put(:valid?, true)
-    |> CreatePersonSchema.changeset(%{
-      accepted_duplicate: true,
-      accepted_duplicate_uuid: person.uuid,
-      accepted_duplicate_human_readable_id: person.human_readable_id,
-      first_name: person.first_name,
-      last_name: person.last_name,
-      tenant_uuid: person.tenant_uuid,
-      mobile:
-        Enum.find_value(person.contact_methods, fn
-          %ContactMethod{type: :mobile, value: value} -> value
-          _other -> false
-        end),
-      landline:
-        Enum.find_value(person.contact_methods, fn
-          %ContactMethod{type: :landline, value: value} -> value
-          _other -> false
-        end),
-      email:
-        Enum.find_value(person.contact_methods, fn
-          %ContactMethod{type: :email, value: value} -> value
-          _other -> false
-        end),
-      sex: person.sex,
-      birth_date: person.birth_date,
-      employer:
-        case person.employers do
-          [%{name: name}] -> name
-          _other -> nil
-        end,
-      address: Map.from_struct(person.address)
-    })
+    |> Ecto.Changeset.apply_changes()
+    |> CreatePersonSchema.changeset(
+      drop_empty_recursively_and_remove_uuid(%{
+        accepted_duplicate: true,
+        accepted_duplicate_uuid: person.uuid,
+        accepted_duplicate_human_readable_id: person.human_readable_id,
+        first_name: person.first_name,
+        last_name: person.last_name,
+        tenant_uuid: person.tenant_uuid,
+        mobile:
+          Enum.find_value(person.contact_methods, fn
+            %ContactMethod{type: :mobile, value: value} -> value
+            _other -> false
+          end),
+        landline:
+          Enum.find_value(person.contact_methods, fn
+            %ContactMethod{type: :landline, value: value} -> value
+            _other -> false
+          end),
+        email:
+          Enum.find_value(person.contact_methods, fn
+            %ContactMethod{type: :email, value: value} -> value
+            _other -> false
+          end),
+        sex: person.sex,
+        birth_date: person.birth_date,
+        employer:
+          case person.employers do
+            [%{name: name}] -> name
+            _other -> nil
+          end,
+        address: Map.from_struct(person.address)
+      })
+    )
   end
 
-  @spec save_or_load_person_schema(
-          schema :: %CreatePersonSchema{},
-          socket :: Phoenix.LiveView.Socket.t(),
-          global_changeset :: Ecto.Changeset.t(),
-          propagator_case :: Case.t() | nil
-        ) :: {Person.t(), User.t(), User.t()}
-  def save_or_load_person_schema(schema, socket, global_changeset, propagator_case \\ nil)
-
-  def save_or_load_person_schema(
-        %CreatePersonSchema{
-          accepted_duplicate_uuid: nil,
-          tenant_uuid: tenant_uuid,
-          tracer_uuid: tracer_uuid,
-          supervisor_uuid: supervisor_uuid
-        } = schema,
-        socket,
-        global_changeset,
-        propagator_case
-      ) do
-    tenant_uuid =
-      case tenant_uuid do
-        nil -> Ecto.Changeset.fetch_field!(global_changeset, :default_tenant_uuid)
-        other -> other
-      end
-
-    tracer_uuid =
-      case tracer_uuid do
-        nil -> Ecto.Changeset.fetch_field!(global_changeset, :default_tracer_uuid)
-        other -> other
-      end
-
-    supervisor_uuid =
-      case supervisor_uuid do
-        nil -> Ecto.Changeset.fetch_field!(global_changeset, :default_supervisor_uuid)
-        other -> other
-      end
-
-    tenant = Enum.find(socket.assigns.tenants, &match?(%Tenant{uuid: ^tenant_uuid}, &1))
-
-    tracer = Enum.find(socket.assigns.tracer_users, &match?(%User{uuid: ^tracer_uuid}, &1))
-
-    supervisor =
-      Enum.find(socket.assigns.supervisor_users, &match?(%User{uuid: ^supervisor_uuid}, &1))
-
-    person_attrs =
-      CreatePersonSchema.to_person_attrs(
-        schema,
-        Ecto.Changeset.fetch_field!(global_changeset, :default_country)
-      )
-
-    person_attrs =
-      if Ecto.Changeset.get_field(global_changeset, :copy_address_from_propagator, false) and
-           not is_nil(propagator_case) do
-        %Case{person: %Person{address: address}} = Repo.preload(propagator_case, person: [])
-        Map.put(person_attrs, :address, Ecto.embedded_dump(address, :json))
-      else
-        person_attrs
-      end
-
-    {:ok, person} = CaseContext.create_person(tenant, person_attrs)
-
-    {person, supervisor, tracer}
+  @spec update_case_changeset(
+          changeset :: Ecto.Changeset.t(),
+          person :: Case.t()
+        ) ::
+          Ecto.Changeset.t()
+  def update_case_changeset(changeset, case) do
+    changeset
+    |> Ecto.Changeset.apply_changes()
+    |> CreatePersonSchema.changeset(
+      drop_empty_recursively_and_remove_uuid(%{
+        accepted_duplicate: true,
+        accepted_duplicate_case_uuid: case.uuid,
+        clinical: Ecto.embedded_dump(case.clinical, :json),
+        tracer_uuid: case.tracer_uuid,
+        supervisor_uuid: case.supervisor_uuid,
+        ism_case_id:
+          Enum.find_value(case.external_references, fn
+            %ExternalReference{type: :ism_case, value: value} -> value
+            _other -> false
+          end),
+        ism_report_id:
+          Enum.find_value(case.external_references, fn
+            %ExternalReference{type: :ism_report, value: value} -> value
+            _other -> false
+          end)
+      })
+    )
   end
 
-  def save_or_load_person_schema(
-        %CreatePersonSchema{
-          accepted_duplicate_uuid: person_uuid,
-          tracer_uuid: tracer_uuid,
-          supervisor_uuid: supervisor_uuid
-        },
-        socket,
-        global_changeset,
-        _propagator_case
-      ) do
-    tracer_uuid =
-      case tracer_uuid do
-        nil -> Ecto.Changeset.fetch_field!(global_changeset, :default_tracer_uuid)
-        other -> other
-      end
+  @spec drop_empty_recursively_and_remove_uuid(input :: term) :: term
+  def drop_empty_recursively_and_remove_uuid(map) when is_map(map) and not is_struct(map),
+    do:
+      map
+      |> Enum.reject(&match?({:uuid, _value}, &1))
+      |> Enum.reject(&match?({_key, nil}, &1))
+      |> Enum.map(&{elem(&1, 0), drop_empty_recursively_and_remove_uuid(elem(&1, 1))})
+      |> Map.new()
 
-    supervisor_uuid =
-      case supervisor_uuid do
-        nil -> Ecto.Changeset.fetch_field!(global_changeset, :default_supervisor_uuid)
-        other -> other
-      end
+  def drop_empty_recursively_and_remove_uuid(list) when is_list(list),
+    do: list |> Enum.reject(&is_nil/1) |> Enum.map(&drop_empty_recursively_and_remove_uuid/1)
 
-    tracer = Enum.find(socket.assigns.tracer_users, &match?(%User{uuid: ^tracer_uuid}, &1))
-
-    supervisor =
-      Enum.find(socket.assigns.supervisor_users, &match?(%User{uuid: ^supervisor_uuid}, &1))
-
-    person = CaseContext.get_person!(person_uuid)
-
-    {person, supervisor, tracer}
-  end
+  def drop_empty_recursively_and_remove_uuid(other), do: other
 
   @spec fetch_tenant(field :: {key :: [atom], value :: term}, tenants :: [Tenant.t()]) ::
           {key :: [atom], value :: term}
@@ -249,8 +195,7 @@ defmodule HygeiaWeb.CaseLive.Create do
       |> Enum.map(fn
         %Ecto.Changeset{changes: %{uuid: ^person_changeset_uuid}} = changeset ->
           changeset
-          |> Map.put(:errors, [])
-          |> Map.put(:valid?, true)
+          |> Ecto.Changeset.apply_changes()
           |> CreatePersonSchema.changeset(%{
             accepted_duplicate: false,
             accepted_duplicate_uuid: nil
@@ -268,9 +213,9 @@ defmodule HygeiaWeb.CaseLive.Create do
   @spec accept_duplicate(
           changeset :: Ecto.Changeset.t(),
           person_changeset_uuid :: String.t(),
-          person :: Person.t()
+          person :: Person.t() | {Case.t(), Person.t()}
         ) :: Ecto.Changeset.t()
-  def accept_duplicate(changeset, person_changeset_uuid, person) do
+  def accept_duplicate(changeset, person_changeset_uuid, person_or_changeset) do
     changeset
     |> Ecto.Changeset.put_embed(
       :people,
@@ -278,7 +223,13 @@ defmodule HygeiaWeb.CaseLive.Create do
       |> Ecto.Changeset.get_change(:people, [])
       |> Enum.map(fn
         %Ecto.Changeset{changes: %{uuid: ^person_changeset_uuid}} = changeset ->
-          update_person_changeset(changeset, person)
+          case person_or_changeset do
+            {case, person} ->
+              changeset |> update_person_changeset(person) |> update_case_changeset(case)
+
+            person ->
+              update_person_changeset(changeset, person)
+          end
 
         changeset ->
           changeset

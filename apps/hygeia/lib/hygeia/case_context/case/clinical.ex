@@ -125,4 +125,12 @@ defmodule Hygeia.CaseContext.Case.Clinical do
         changeset
     end
   end
+
+  @spec merge(t(), t()) :: t()
+  def merge(old, new) do
+    merge(old, new, __MODULE__, fn embed, old_embed, new_embed
+                                   when embed in [:sponsor, :reporting_unit] ->
+      Entity.merge(old_embed, new_embed)
+    end)
+  end
 end

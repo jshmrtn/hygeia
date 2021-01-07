@@ -118,7 +118,10 @@ defmodule Hygeia.CaseContext.Case do
   end
 
   @doc false
-  @spec changeset(case :: empty | t, attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec changeset(
+          case :: empty | t | Ecto.Changeset.t(t | empty),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
           Ecto.Changeset.t(t)
   def changeset(case, attrs) do
     case

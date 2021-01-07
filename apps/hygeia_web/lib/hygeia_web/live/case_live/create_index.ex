@@ -5,11 +5,11 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
 
   import HygeiaWeb.CaseLive.Create
 
-  alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
+  alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
   alias HygeiaWeb.CaseLive.CreateIndex.CreateSchema
   alias Surface.Components.Form
   alias Surface.Components.Form.DateInput
@@ -41,8 +41,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
           changeset:
             CreateSchema.changeset(%CreateSchema{people: []}, %{
               default_tracer_uuid: auth_user.uuid,
-              default_supervisor_uuid: auth_user.uuid,
-              default_country: "CH"
+              default_supervisor_uuid: auth_user.uuid
             }),
           tenants: tenants,
           supervisor_users: supervisor_users,
@@ -88,13 +87,15 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
          |> maybe_block_navigation()}
 
       %Ecto.Changeset{valid?: true} = changeset ->
+        global = Ecto.Changeset.apply_changes(changeset)
+
         {:ok, cases} =
           Repo.transaction(fn ->
             changeset
             |> CreateSchema.drop_empty_rows()
             |> Ecto.Changeset.fetch_field!(:people)
-            |> Enum.map(&{&1, save_or_load_person_schema(&1, socket, changeset)})
-            |> Enum.map(&create_case(&1, changeset))
+            |> Enum.map(&{&1, CreatePersonSchema.upsert(&1, socket, global)})
+            |> Enum.map(&CreateSchema.upsert_case(&1, global))
           end)
 
         socket =
@@ -128,10 +129,10 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
      |> assign(loading: false)}
   end
 
-  def handle_info({:accept_duplicate, uuid, person}, socket) do
+  def handle_info({:accept_duplicate, uuid, case_or_person}, socket) do
     {:noreply,
      assign(socket,
-       changeset: accept_duplicate(socket.assigns.changeset, uuid, person)
+       changeset: accept_duplicate(socket.assigns.changeset, uuid, case_or_person)
      )}
   end
 
@@ -147,57 +148,6 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
-
-  defp create_case({person_schema, {person, supervisor, tracer}}, global_changeset) do
-    attrs = %{
-      external_references: [],
-      phases: [%{details: %{__type__: :index}}],
-      supervisor_uuid: supervisor.uuid,
-      tracer_uuid: tracer.uuid,
-      clinical:
-        person_schema.clinical
-        |> Map.from_struct()
-        |> update_in([Access.key!(:sponsor)], &Map.from_struct/1)
-        |> update_in([Access.key!(:sponsor), Access.key!(:address)], &Map.from_struct/1)
-        |> update_in([Access.key!(:sponsor), Access.key!(:address), Access.key!(:country)], fn
-          nil -> Ecto.Changeset.get_field(global_changeset, :default_country)
-          other -> other
-        end)
-        |> update_in([Access.key!(:reporting_unit)], &Map.from_struct/1)
-        |> update_in([Access.key!(:reporting_unit), Access.key!(:address)], &Map.from_struct/1)
-        |> update_in(
-          [Access.key!(:reporting_unit), Access.key!(:address), Access.key!(:country)],
-          fn
-            nil -> Ecto.Changeset.get_field(global_changeset, :default_country)
-            other -> other
-          end
-        )
-    }
-
-    attrs =
-      if is_nil(person_schema.ism_case_id),
-        do: attrs,
-        else:
-          Map.update!(
-            attrs,
-            :external_references,
-            &[%{type: :ism_case, value: person_schema.ism_case_id} | &1]
-          )
-
-    attrs =
-      if is_nil(person_schema.ism_report_id),
-        do: attrs,
-        else:
-          Map.update!(
-            attrs,
-            :external_references,
-            &[%{type: :ism_report, value: person_schema.ism_report_id} | &1]
-          )
-
-    {:ok, case} = CaseContext.create_case(person, attrs)
-
-    case
-  end
 
   defp maybe_block_navigation(%{assigns: %{changeset: changeset}} = socket) do
     changeset

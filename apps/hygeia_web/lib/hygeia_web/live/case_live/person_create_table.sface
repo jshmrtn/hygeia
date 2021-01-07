@@ -36,14 +36,14 @@
               <HiddenInput field={{ :accepted_duplicate_human_readable_id }} />
               <HiddenInput field={{ :first_name }} />
               <Field class="fill-cell" name={{ :first_name }}>
-                <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <TextInput field={{ :first_name }} class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
             <td>
               <HiddenInput field={{ :last_name }} />
               <Field class="fill-cell" name={{ :last_name }}>
-                <TextInput field={{ :last_name }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <TextInput field={{ :last_name }} class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
@@ -51,7 +51,7 @@
               <HiddenInput field={{ :sex }} />
               <Field class="fill-cell" name={{ :sex }}>
                 <Select
-                  opts={{ prompt: gettext("choose sex"), disabled: accepted_duplicate }}
+                  opts={{ prompt: gettext("choose sex") }}
                   class="form-control"
                   options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }}
                 />
@@ -61,37 +61,34 @@
             <td>
               <HiddenInput field={{ :birth_date }} />
               <Field class="fill-cell" name={{ :birth_date }}>
-                <DateInput field={{ :birth_date }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <DateInput field={{ :birth_date }} class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
             <td>
               <HiddenInput field={{ :mobile }} />
               <Field class="fill-cell" name={{ :mobile }}>
-                <TextInput field={{ :mobile }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <TextInput field={{ :mobile }} class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
             <td>
               <HiddenInput field={{ :landline }} />
               <Field class="fill-cell" name={{ :landline }}>
-                <TextInput field={{ :landline }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <TextInput field={{ :landline }} class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
             <td>
               <HiddenInput field={{ :email }} />
               <Field class="fill-cell" name={{ :email }}>
-                <TextInput field={{ :email }} class="form-control" opts={{ disabled: accepted_duplicate }} />
+                <TextInput field={{ :email }} class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
             <td class="p-1">
               <Inputs for={{ :address }}>
-                <HygeiaWeb.CaseLive.AddressInput
-                  id={{ {:person_address, changeset_uuid} }}
-                  disabled={{ accepted_duplicate }}
-                />
+                <HygeiaWeb.CaseLive.AddressInput id={{ {:person_address, changeset_uuid} }} />
               </Inputs>
             </td>
             <td class="table-col-border">
@@ -99,7 +96,6 @@
                 <HygeiaWeb.CaseLive.ModalSelect
                   id={{ {:tenant, changeset_uuid} }}
                   title={{ gettext("Tenant") }}
-                  disabled={{ accepted_duplicate }}
                   options={{
                     [{gettext("Default Tenant"), nil}]
                       ++ Enum.map(@tenants, &({&1.name, &1.uuid}))
@@ -111,7 +107,7 @@
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
-            <slot name="additional_row" :props={{ disabled: accepted_duplicate }} />
+            <slot name="additional_row" />
             <td>
               <Field class="p-1" name={{ :supervisor_uuid }}>
                 <HygeiaWeb.CaseLive.ModalSelect
@@ -146,10 +142,7 @@
             </td>
             <td class="table-col-border">
               <Field class="fill-cell" name={{ :employer }}>
-                <TextInput 
-                  class="form-control"
-                  opts={{ disabled: accepted_duplicate }}
-                />
+                <TextInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
@@ -157,6 +150,7 @@
               <HiddenInput field={{ :search_params_hash }} />
               <HiddenInput field={{ :suspected_duplicate_uuids }} />
               <HiddenInput field={{ :accepted_duplicate }} />
+              <HiddenInput field={{ :accepted_duplicate_case_uuid }} />
               <HiddenInput field={{ :accepted_duplicate_uuid }} />
 
               <div class="d-flex justify-content-end p-1">
@@ -247,12 +241,31 @@
                                 <td>{{ get_tenant(@tenants, person.tenant_uuid).name }}</td>
                               </tr>
                             </table>
+                            
                             <input
                               type="button"
-                              class="btn btn-primary mt-3"
-                              checked={{ person_uuid == form.source.changes[:accepted_duplicate_uuid] }}
+                              :for={{ case <- person.cases }}
+                              class="btn btn-primary mt-3 d-block"
                               phx-click="select_accepted_duplicate"
                               phx-value-person-uuid={{ person_uuid }}
+                              phx-value-case-uuid={{ case.uuid }}
+                              phx-value-type="case"
+                              phx-target={{ @myself }}
+                              value={{ gettext("Choose %{case}", case: case_display_name(case)) }}
+                            />
+                            
+                            <input
+                              type="button"
+                              class={{
+                                "btn",
+                                "mt-3",
+                                "d-block",
+                                "btn-primary": match?([], person.cases),
+                                "btn-secondary": match?([_ | _], person.cases)
+                              }}
+                              phx-click="select_accepted_duplicate"
+                              phx-value-person-uuid={{ person_uuid }}
+                              phx-value-type="person"
                               phx-target={{ @myself }}
                               value={{ gettext("Choose existing person") }}
                             />

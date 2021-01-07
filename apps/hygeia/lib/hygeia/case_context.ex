@@ -72,15 +72,11 @@ defmodule Hygeia.CaseContext do
           ^search
         )
     )
-    |> select([s], {s.uuid, s.person_uuid})
+    |> select([s], {type(s.uuid, Ecto.UUID), type(s.person_uuid, Ecto.UUID)})
     |> Repo.all()
-    |> Enum.reduce(%{}, fn
-      {search_uuid, nil}, acc ->
-        Map.update(acc, search_uuid, [], & &1)
-
-      {search_uuid, person_uuid}, acc ->
-        {:ok, person_uuid} = Ecto.UUID.load(person_uuid)
-        Map.update(acc, search_uuid, [person_uuid], &[person_uuid | &1])
+    |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
+    |> Map.new(fn {key, duplicates} ->
+      {key, Enum.reject(duplicates, &is_nil/1)}
     end)
   end
 
@@ -185,11 +181,18 @@ defmodule Hygeia.CaseContext do
   """
   @spec create_person(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
-  def create_person(%Tenant{} = tenant, attrs \\ %{}),
+  def create_person(%Tenant{} = tenant, attrs),
     do:
       tenant
-      |> Ecto.build_assoc(:people)
-      |> change_person(attrs)
+      |> create_person_changeset(attrs)
+      |> create_person()
+
+  @spec create_person(changeset :: Ecto.Changeset.t(Person.t())) ::
+          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
+  def create_person(%Ecto.Changeset{data: %Person{}} = changeset),
+    do:
+      changeset
+      |> Person.changeset(%{})
       |> versioning_insert()
       |> broadcast("people", :create)
       |> versioning_extract()
@@ -220,6 +223,14 @@ defmodule Hygeia.CaseContext do
     do:
       person
       |> change_person(attrs)
+      |> update_person()
+
+  @spec update_person(changeset :: Ecto.Changeset.t(Person.t())) ::
+          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
+  def update_person(%Ecto.Changeset{data: %Person{}} = changeset),
+    do:
+      changeset
+      |> Person.changeset(%{})
       |> versioning_update()
       |> broadcast("people", :update)
       |> versioning_extract()
@@ -277,6 +288,14 @@ defmodule Hygeia.CaseContext do
           Ecto.Changeset.t(Person.t())
   def change_person(%Person{} = person, attrs \\ %{}) do
     Person.changeset(person, attrs)
+  end
+
+  @spec create_person_changeset(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          Ecto.Changeset.t(Person.t())
+  def create_person_changeset(tenant, attrs \\ %{}) do
+    tenant
+    |> Ecto.build_assoc(:people)
+    |> change_person(attrs)
   end
 
   @doc """
@@ -1887,10 +1906,21 @@ defmodule Hygeia.CaseContext do
   """
   @spec create_case(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
-  def create_case(%Person{} = person, attrs \\ %{}) do
-    tenant = Repo.preload(person, :tenant).tenant
-    create_case(person, tenant, attrs)
-  end
+  def create_case(%Person{} = person, attrs),
+    do:
+      person
+      |> create_case_changeset(attrs)
+      |> create_case()
+
+  @spec create_case(changeset :: Ecto.Changeset.t(Case.t())) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
+  def create_case(%Ecto.Changeset{data: %Case{}} = changeset),
+    do:
+      changeset
+      |> Case.changeset(%{})
+      |> versioning_insert()
+      |> broadcast("cases", :create)
+      |> versioning_extract()
 
   @spec create_case(
           person :: Person.t(),
@@ -1901,20 +1931,8 @@ defmodule Hygeia.CaseContext do
   def create_case(%Person{} = person, %Tenant{} = tenant, attrs),
     do:
       person
-      |> Ecto.build_assoc(:cases)
-      |> change_case(
-        Map.put(
-          attrs,
-          case Enum.to_list(attrs) do
-            [{key, _value} | _] when is_binary(key) -> "tenant_uuid"
-            _other -> :tenant_uuid
-          end,
-          tenant.uuid
-        )
-      )
-      |> versioning_insert()
-      |> broadcast("cases", :create)
-      |> versioning_extract()
+      |> create_case_changeset(tenant, attrs)
+      |> create_case()
 
   @spec relate_case_to_organisation(case :: Case.t(), organisation :: Organisation.t()) ::
           {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
@@ -1949,6 +1967,14 @@ defmodule Hygeia.CaseContext do
     do:
       case
       |> change_case(attrs)
+      |> update_case()
+
+  @spec update_case(changeset :: Ecto.Changeset.t(Case.t())) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
+  def update_case(%Ecto.Changeset{data: %Case{}} = changeset),
+    do:
+      changeset
+      |> Case.changeset(%{})
       |> versioning_update()
       |> broadcast("cases", :update)
       |> versioning_extract()
@@ -2110,6 +2136,35 @@ defmodule Hygeia.CaseContext do
         ) ::
           Ecto.Changeset.t(Case.t())
   def change_case(%Case{} = case, attrs \\ %{}), do: Case.changeset(case, attrs)
+
+  @spec create_case_changeset(
+          person :: Person.t(),
+          tenant :: Tenant.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Ecto.Changeset.t(Case.t())
+  def create_case_changeset(person, tenant, attrs) do
+    person
+    |> Ecto.build_assoc(:cases)
+    |> change_case(
+      Map.put(
+        attrs,
+        case Enum.to_list(attrs) do
+          [{key, _value} | _] when is_binary(key) -> "tenant_uuid"
+          _other -> :tenant_uuid
+        end,
+        tenant.uuid
+      )
+    )
+  end
+
+  @spec create_case_changeset(
+          person :: Person.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Ecto.Changeset.t(Case.t())
+  def create_case_changeset(person, attrs) do
+    tenant = Repo.preload(person, :tenant).tenant
+    create_case_changeset(person, tenant, attrs)
+  end
 
   @doc """
   Returns the list of transmissions.
