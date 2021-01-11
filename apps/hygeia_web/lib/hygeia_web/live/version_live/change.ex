@@ -10,7 +10,7 @@ defmodule HygeiaWeb.VersionLive.Change do
   @impl Phoenix.LiveComponent
   def render(assigns) do
     ~H"""
-    <div>
+    <div class="component-version-live-change">
       {{ render_tree(@version.item_changes, item_type_to_module(@version.item_type), assigns) }}
     </div>
     """
@@ -26,13 +26,11 @@ defmodule HygeiaWeb.VersionLive.Change do
         field_schema = field_schema(schema, field_key(key), value)
       }}>
         <details :if={{ is_complex?(value) }}>
-          <summary>
-            <strong>{{ field_name }}</strong>
-          </summary>
+          <summary><strong>{{ field_name }}</strong></summary>
           {{ render_tree(value, field_schema, assigns) }}
         </details>
         <span :if={{ not is_complex?(value) }}>
-          <strong>{{ field_name }}</strong>
+          <strong class="field-name">{{ field_name }}</strong>
           <LiveRedirect
             :if={{ is_foregin_key?(schema, field_key) }}
             to={{
@@ -55,16 +53,26 @@ defmodule HygeiaWeb.VersionLive.Change do
     """
   end
 
-  defp render_tree(nil, _schema, _assigns), do: "-"
-  defp render_tree([], _schema, _assigns), do: "-"
+  defp render_tree(nil, _schema, assigns) do
+    ~H"""
+    <span class="nil"></span>
+    """
+  end
+
+  # credo:disable-for-next-line Credo.Check.Consistency.UnusedVariableNames
+  defp render_tree([], _schema, assigns) do
+    ~H"""
+    <span class="empty-list"></span>
+    """
+  end
 
   defp render_tree(list, schema, assigns) when is_list(list) do
     ~H"""
-    <ul>
-      <li :for={{ value <- list }}>
+    <div>
+      <div :for={{ value <- list }}>
         {{ render_tree(value, schema, assigns) }}
-      </li>
-    </ul>
+      </div>
+    </div>
     """
   end
 

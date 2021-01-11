@@ -1,0 +1,38 @@
+.component-version-live-change {
+  ul {
+    list-style-type: none;
+    padding-inline-start: 24px;
+
+    details {
+      summary {
+        margin-left: -20px;
+
+        &::-webkit-details-marker {
+          display: none;
+        }
+
+        &:before {
+          display: inline-block;
+          content: "▶";
+          height: 18px;
+          width: 20px;
+        }
+      }
+      &[open] > summary:before {
+        content: "▼";
+      }
+    }
+
+    .field-name::after {
+      content: ":";
+    }
+
+    .nil,
+    .empty-list {
+      &::after {
+        color: $gray-500;
+        content: "-";
+      }
+    }
+  }
+}
