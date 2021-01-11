@@ -69,7 +69,11 @@ defmodule HygeiaWeb.CaseLive.Create do
       drop_empty_recursively_and_remove_uuid(%{
         accepted_duplicate: true,
         accepted_duplicate_case_uuid: case.uuid,
-        clinical: Ecto.embedded_dump(case.clinical, :json),
+        clinical:
+          case case.clinical do
+            nil -> nil
+            other -> Ecto.embedded_dump(other, :json)
+          end,
         tracer_uuid: case.tracer_uuid,
         supervisor_uuid: case.supervisor_uuid,
         ism_case_id:
