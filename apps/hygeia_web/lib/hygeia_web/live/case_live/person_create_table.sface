@@ -22,15 +22,18 @@
       <InputContext assigns={{ assigns }} :let={{ form: form }}>
         <Context
           put={{
-            changeset_uuid: Ecto.Changeset.get_field(form.source, :uuid, nil),
-            accepted_duplicate: form.source.changes[:accepted_duplicate] == true
+            changeset_uuid: Ecto.Changeset.fetch_field!(form.source, :uuid),
+            accepted_duplicate: Ecto.Changeset.fetch_field!(form.source, :accepted_duplicate) == true
           }}
           get={{
             changeset_uuid: changeset_uuid,
             accepted_duplicate: accepted_duplicate
           }}
         >
-          <tr class={{ if form.source.changes[:accepted_duplicate] == true, do: "duplicate-accepted" }}>
+          <tr
+            class={{ "duplicate-accepted": accepted_duplicate }}
+            id={{ "person_create_#{ changeset_uuid }" }}
+          >
             <td>
               <HiddenInput field={{ :uuid }} />
               <HiddenInput field={{ :accepted_duplicate_human_readable_id }} />
@@ -155,10 +158,10 @@
 
               <div class="d-flex justify-content-end p-1">
                 <button
-                  :if={{ not(form.source.changes[:suspected_duplicate_uuids] in ["", nil]) and form.source.changes[:accepted_duplicate] != true }}
+                  :if={{ not(Ecto.Changeset.fetch_field!(form.source, :suspected_duplicate_uuids) in ["", nil]) and accepted_duplicate != true }}
                   class="btn btn-secondary btn-sm"
                   type="button"
-                  phx-value-changeset-uuid={{ form.source.changes[:uuid] }}
+                  phx-value-changeset-uuid={{ changeset_uuid }}
                   phx-click="check_duplicate"
                   phx-target={{ @myself }}
                   title={{ gettext("Check Duplicates") }}
@@ -167,7 +170,7 @@
                 </button>
 
                 <HygeiaWeb.Modal
-                  :if={{ not(is_nil(@suspected_duplicate_changeset_uuid)) and @suspected_duplicate_changeset_uuid == form.source.changes[:uuid]}}
+                  :if={{ not(is_nil(@suspected_duplicate_changeset_uuid)) and @suspected_duplicate_changeset_uuid == changeset_uuid }}
                   title={{ gettext("Select existing person") }}
                   id={{ "modal" }}
                   close="decline_duplicate"
@@ -177,38 +180,45 @@
                       <table class="candidate-table">
                         <tr>
                           <th>{{ gettext("Name") }}</th>
-                          <td>{{ form.source.changes[:first_name] || "" }} {{ form.source.changes[:last_name] || "" }}<br></td>
+                          <td>
+                            {{ Ecto.Changeset.fetch_field!(form.source, :first_name) }} {{ Ecto.Changeset.fetch_field!(form.source, :last_name) }}
+                            <br />
+                          </td>
                         </tr>
                         <tr>
                           <th>{{ gettext("Birthdate") }}</th>
-                          <td>{{ format_date(form.source.changes[:birth_date]) }}</td>
+                          <td>{{ form.source |> Ecto.Changeset.fetch_field!(:birth_date) |> format_date() }}</td>
                         </tr>
                         <tr>
                           <th>{{ gettext("Mobile") }}</th>
-                          <td>{{ form.source.changes[:mobile] || "" }}</td>
+                          <td>{{ Ecto.Changeset.fetch_field!(form.source, :mobile) }}</td>
                         </tr>
                         <tr>
                           <th>{{ gettext("Landline") }}</th>
-                          <td>{{ form.source.changes[:landline] || "" }}</td>
+                          <td>{{ Ecto.Changeset.fetch_field!(form.source, :landline) }}</td>
                         </tr>
                         <tr>
                           <th>{{ gettext("Email") }}</th>
-                          <td>{{ form.source.changes[:email] || "" }}</td>
+                          <td>{{ Ecto.Changeset.fetch_field!(form.source, :email) }}</td>
                         </tr>
                         <tr>
                           <th>{{ gettext("Tenant") }}</th>
                           <td>
-                            {{ case form.source.changes[:tenant_uuid] do
-                              nil -> nil
-                              uuid -> get_tenant(@tenants, uuid).name
-                            end }}
+                            {{
+                              form.source
+                              |> Ecto.Changeset.fetch_field!(:tenant_uuid)
+                              |> case do
+                                nil -> nil
+                                uuid -> get_tenant(@tenants, uuid).name
+                              end
+                            }}
                           </td>
                         </tr>
                       </table>
                       <input
                         type="button"
                         class="btn btn-primary mt-3"
-                        checked={{ accepted_duplicate and is_nil(form.source.changes[:accepted_duplicate_uuid]) }}
+                        checked={{ accepted_duplicate and is_nil(Ecto.Changeset.fetch_field!(form.source, :accepted_duplicate_uuid)) }}
                         phx-click="decline_duplicate"
                         phx-target={{ @myself }}
                         value={{ gettext("Create new person") }}
@@ -217,7 +227,7 @@
                     <div class="card-body">
                       <div class="candidates">
                         <div
-                          :for={{ person_uuid <- String.split(form.source.changes[:suspected_duplicate_uuids], ",") }}
+                          :for={{ person_uuid <- String.split(Ecto.Changeset.fetch_field!(form.source, :suspected_duplicate_uuids), ",") }}
                           class="candidate"
                         >
                           <Context put={{ person: get_person(person_uuid) }} get={{ person: person }}>
@@ -280,7 +290,7 @@
                   :if={{ Map.drop(form.source.changes,[:uuid]) != %{} }}
                   class="ml-1 btn btn-secondary btn-sm btn-danger"
                   type="button"
-                  phx-value-changeset-uuid={{ form.source.changes[:uuid] }}
+                  phx-value-changeset-uuid={{ changeset_uuid }}
                   phx-click="remove_person"
                   phx-target={{ @myself }}
                   title={{ gettext("Remove") }}
