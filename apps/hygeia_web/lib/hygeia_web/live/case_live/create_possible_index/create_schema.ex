@@ -69,17 +69,44 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
 
   @spec validate_changeset(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_changeset(changeset) do
-    changeset
-    |> validate_required([
-      :default_tenant_uuid,
-      :default_supervisor_uuid,
-      :default_tracer_uuid,
-      :type,
-      :date
-    ])
-    |> Transmission.validate_case(:propagator_internal, :propagator_ism_id, :propagator_case_uuid)
-    |> drop_multiple_empty_rows()
-    |> CreatePersonSchema.detect_duplicates()
+    people =
+      changeset
+      |> drop_empty_rows()
+      |> fetch_field!(:people)
+
+    changeset =
+      changeset
+      |> validate_required([
+        :type,
+        :date
+      ])
+      |> Transmission.validate_case(
+        :propagator_internal,
+        :propagator_ism_id,
+        :propagator_case_uuid
+      )
+      |> drop_multiple_empty_rows()
+      |> CreatePersonSchema.detect_duplicates()
+
+    changeset =
+      if Enum.any?(people, &match?(%CreatePersonSchema{tenant_uuid: nil}, &1)) do
+        validate_required(changeset, [:default_tenant_uuid])
+      else
+        changeset
+      end
+
+    changeset =
+      if Enum.any?(people, &match?(%CreatePersonSchema{supervisor_uuid: nil}, &1)) do
+        validate_required(changeset, [:default_supervisor_uuid])
+      else
+        changeset
+      end
+
+    if Enum.any?(people, &match?(%CreatePersonSchema{tracer_uuid: nil}, &1)) do
+      validate_required(changeset, [:default_tracer_uuid])
+    else
+      changeset
+    end
   end
 
   @spec drop_empty_rows(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
