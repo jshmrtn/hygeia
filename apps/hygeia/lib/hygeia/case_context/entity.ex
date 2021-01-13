@@ -33,7 +33,7 @@ defmodule Hygeia.CaseContext.Entity do
     |> cast_embed(:address)
   end
 
-  @spec merge(t(), t()) :: t()
+  @spec merge(old :: t() | Changeset.t(t()), new :: t() | Changeset.t(t())) :: Changeset.t(t())
   def merge(old, new) do
     merge(old, new, __MODULE__, fn embed, old_embed, new_embed when embed in [:address] ->
       Address.merge(old_embed, new_embed)

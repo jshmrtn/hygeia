@@ -1,14 +1,25 @@
 defmodule Hygeia.Helpers.Merge do
   @moduledoc false
 
+  import Ecto.Changeset
+
+  alias Ecto.Changeset
+
   @spec merge(
-          old :: schema,
-          new :: schema,
+          old :: Changeset.t(schema) | schema,
+          new :: Changeset.t(schema) | schema,
           module :: module,
-          embed_callback :: (embed :: atom, old_embed :: embed, new_embed :: embed -> embed)
-        ) :: schema
+          embed_callback ::
+            (embed :: atom, old_embed :: embed | [embed], new_embed :: embed | [embed] ->
+               Changeset.t(embed) | [Changeset.t(embed)])
+        ) :: Changeset.t(schema)
         when schema: Ecto.Schema.t(), embed: Ecto.Schema.t()
-  def merge(old, new, module, embed_callback \\ &embed_merge_raise/3) do
+  def merge(old, new, module, embed_callback \\ &embed_merge_raise/3)
+
+  def merge(old, %Changeset{} = new, module, embed_callback),
+    do: merge(old, apply_changes(new), module, embed_callback)
+
+  def merge(%Changeset{} = old, new, module, embed_callback) do
     result =
       :fields
       |> module.__schema__()
@@ -16,7 +27,7 @@ defmodule Hygeia.Helpers.Merge do
       |> Enum.map(&{&1, Map.fetch!(new, &1)})
       |> Enum.reduce(old, fn
         {_key, nil}, acc -> acc
-        {key, value}, acc -> Map.put(acc, key, value)
+        {key, value}, acc -> put_change(acc, key, value)
       end)
 
     :embeds
@@ -29,15 +40,22 @@ defmodule Hygeia.Helpers.Merge do
       {embed, new_embed}, acc ->
         result_embed =
           acc
-          |> Map.fetch!(embed)
+          |> fetch_field!(embed)
           |> case do
             nil -> new_embed
             old_embed -> embed_callback.(embed, old_embed, new_embed)
           end
 
-        Map.put(acc, embed, result_embed)
+        put_embed(acc, embed, result_embed)
     end)
+    |> module.changeset(%{})
   end
+
+  def merge(old, new, module, embed_callback),
+    do:
+      old
+      |> change()
+      |> merge(new, module, embed_callback)
 
   @spec embed_merge_raise(embed :: atom, old_embed :: struct, new_embed :: struct) :: no_return
   defp embed_merge_raise(_embed, _old_embed, _new_embed), do: raise("No Callback Supplied")

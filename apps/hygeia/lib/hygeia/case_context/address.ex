@@ -80,7 +80,8 @@ defmodule Hygeia.CaseContext.Address do
     |> Enum.reject(&(&1 == ""))
   end
 
-  @spec merge(t(), t()) :: t()
+  @spec merge(old :: t() | Ecto.Changeset.t(t()), new :: t() | Ecto.Changeset.t(t())) ::
+          Ecto.Changeset.t(t())
   def merge(old, new) do
     merge(old, new, __MODULE__)
   end
