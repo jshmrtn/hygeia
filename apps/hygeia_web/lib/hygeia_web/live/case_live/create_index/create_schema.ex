@@ -132,10 +132,23 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
     |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
     |> case do
       nil ->
+        status_changed_phases =
+          Enum.map(existing_phases, fn
+            %Case.Phase{details: %Case.Phase.PossibleIndex{} = possible_index} = phase ->
+              %Case.Phase{
+                phase
+                | details: %Case.Phase.PossibleIndex{
+                    possible_index
+                    | end_reason: :converted_to_index
+                  },
+                  send_automated_close_email: false
+              }
+          end)
+
         Ecto.Changeset.put_embed(
           changeset,
           :phases,
-          existing_phases ++ [%Case.Phase{details: %Case.Phase.Index{}}]
+          status_changed_phases ++ [%Case.Phase{details: %Case.Phase.Index{}}]
         )
 
       %Case.Phase{} ->
