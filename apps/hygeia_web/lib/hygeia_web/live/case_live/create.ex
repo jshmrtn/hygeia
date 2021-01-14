@@ -20,9 +20,8 @@ defmodule HygeiaWeb.CaseLive.Create do
         ) ::
           Ecto.Changeset.t()
   def update_person_changeset(changeset, person) do
-    changeset
-    |> Ecto.Changeset.apply_changes()
-    |> CreatePersonSchema.changeset(
+    Ecto.Changeset.change(
+      changeset,
       drop_empty_recursively_and_remove_uuid(%{
         accepted_duplicate: true,
         accepted_duplicate_uuid: person.uuid,
@@ -63,9 +62,8 @@ defmodule HygeiaWeb.CaseLive.Create do
         ) ::
           Ecto.Changeset.t()
   def update_case_changeset(changeset, case) do
-    changeset
-    |> Ecto.Changeset.apply_changes()
-    |> CreatePersonSchema.changeset(
+    Ecto.Changeset.change(
+      changeset,
       drop_empty_recursively_and_remove_uuid(%{
         accepted_duplicate: true,
         accepted_duplicate_case_uuid: case.uuid,
