@@ -96,10 +96,11 @@ defmodule HygeiaWeb.Helpers.Changeset do
         default_map \\ & &1
       )
       when is_atom(field) and is_function(callback, 1) do
-    default = Changeset.fetch_field!(changeset, field)
-
     params
-    |> Map.put_new(Atom.to_string(field), default_map.(default))
+    |> Map.put_new_lazy(Atom.to_string(field), fn ->
+      default = Changeset.fetch_field!(changeset, field)
+      default_map.(default)
+    end)
     |> Map.update!(Atom.to_string(field), callback)
   end
 
