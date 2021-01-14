@@ -154,6 +154,7 @@
 
                 <Inputs for={{ :contact_methods }}>
                   <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                    <HiddenInput field={{ :uuid }} />
                     <Field name={{ :type }}>
                       <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }} field={{ :type }} options={{ contact_method_options() }} />
                       <ErrorTag class="d-block invalid-feedback" />

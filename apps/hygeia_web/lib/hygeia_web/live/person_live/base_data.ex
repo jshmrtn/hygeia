@@ -8,14 +8,13 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Hygeia.EctoType.NOGA
   alias Hygeia.Repo
   alias Hygeia.TenantContext
-  alias Surface.Components.Form.ErrorTag
-
   alias Surface.Components.Form
   alias Surface.Components.Form.DateInput
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
+  alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
-
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
