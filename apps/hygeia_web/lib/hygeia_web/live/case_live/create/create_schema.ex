@@ -12,16 +12,11 @@ defmodule HygeiaWeb.CaseLive.Create.CreateSchema do
   def merge_assignee(changeset, type, uuid, default_uuid)
   def merge_assignee(changeset, _type, nil, nil), do: changeset
 
-  def merge_assignee(changeset, type, nil, default_uuid) do
-    case Ecto.Changeset.fetch_field!(changeset, type) do
-      nil -> Ecto.Changeset.put_change(changeset, type, default_uuid)
-      _other -> changeset
-    end
-  end
+  def merge_assignee(changeset, type, nil, default_uuid),
+    do: Ecto.Changeset.put_change(changeset, type, default_uuid)
 
-  def merge_assignee(changeset, type, uuid, _default_uuid) do
-    Ecto.Changeset.put_change(changeset, type, uuid)
-  end
+  def merge_assignee(changeset, type, uuid, _default_uuid),
+    do: Ecto.Changeset.put_change(changeset, type, uuid)
 
   @spec merge_external_reference(changeset :: Ecto.Changeset.t(), type :: atom, id :: String.t()) ::
           Ecto.Changeset.t()
