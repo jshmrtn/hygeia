@@ -25,6 +25,9 @@ defmodule HygeiaWeb.CaseLive.Create.CreateSchema do
 
   @spec merge_external_reference(changeset :: Ecto.Changeset.t(), type :: atom, id :: String.t()) ::
           Ecto.Changeset.t()
+  def merge_external_reference(changeset, type, id)
+  def merge_external_reference(changeset, _type, nil), do: changeset
+
   def merge_external_reference(changeset, type, id) do
     existing_external_references = Ecto.Changeset.fetch_field!(changeset, :external_references)
 
