@@ -112,10 +112,12 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   @impl Phoenix.LiveView
   def handle_info({:csv_import, {:ok, data}}, socket) do
     {:noreply,
-     assign(socket,
-       changeset: import_into_changeset(socket.assigns.changeset, data),
+     socket
+     |> assign(
+       changeset: import_into_changeset(socket.assigns.changeset, data, CreateSchema),
        loading: false
-     )}
+     )
+     |> maybe_block_navigation()}
   end
 
   def handle_info({:csv_import, :start}, socket) do
@@ -131,20 +133,23 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
 
   def handle_info({:accept_duplicate, uuid, case_or_person}, socket) do
     {:noreply,
-     assign(socket,
-       changeset: accept_duplicate(socket.assigns.changeset, uuid, case_or_person)
-     )}
+     socket
+     |> assign(
+       changeset: accept_duplicate(socket.assigns.changeset, uuid, case_or_person, CreateSchema)
+     )
+     |> maybe_block_navigation()}
   end
 
   def handle_info({:declined_duplicate, uuid}, socket) do
-    {:noreply, assign(socket, changeset: decline_duplicate(socket.assigns.changeset, uuid))}
+    {:noreply,
+     assign(socket, changeset: decline_duplicate(socket.assigns.changeset, uuid, CreateSchema))}
   end
 
   def handle_info({:remove_person, uuid}, socket) do
     {:noreply,
-     assign(socket,
-       changeset: remove_person(socket.assigns.changeset, uuid)
-     )}
+     socket
+     |> assign(changeset: remove_person(socket.assigns.changeset, uuid, CreateSchema))
+     |> maybe_block_navigation()}
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}

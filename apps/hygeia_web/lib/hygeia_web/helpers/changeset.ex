@@ -104,7 +104,13 @@ defmodule HygeiaWeb.Helpers.Changeset do
     |> Map.update!(Atom.to_string(field), callback)
   end
 
-  defp update_changeset_param_relation(changeset, field, id_fields, callback) do
+  @spec update_changeset_param_relation(
+          changeset :: Changeset.t(),
+          field :: atom,
+          id_fields :: [atom],
+          callback :: (term -> term)
+        ) :: %{optional(String.t()) => term}
+  def update_changeset_param_relation(changeset, field, id_fields, callback) do
     update_changeset_param(
       changeset,
       field,
