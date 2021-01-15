@@ -55,7 +55,10 @@ defmodule HygeiaWeb.Helpers.Changeset do
       field,
       Map.keys(ids),
       fn list ->
-        Enum.reject(list, &(Map.take(&1, Map.keys(string_ids)) == string_ids))
+        Enum.reject(
+          list,
+          &(Map.take(&1, Map.keys(string_ids)) == string_ids or Map.take(&1, Map.keys(ids)) == ids)
+        )
       end
     )
   end
@@ -74,7 +77,8 @@ defmodule HygeiaWeb.Helpers.Changeset do
       field,
       Map.keys(ids),
       &Enum.map(&1, fn entry ->
-        if Map.take(entry, Map.keys(string_ids)) == string_ids do
+        if Map.take(entry, Map.keys(string_ids)) == string_ids or
+             Map.take(entry, Map.keys(ids)) == ids do
           update_fn.(entry)
         else
           entry

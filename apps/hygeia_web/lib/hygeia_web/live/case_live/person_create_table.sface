@@ -287,7 +287,7 @@
                 </HygeiaWeb.Modal>
 
                 <button
-                  :if={{ Map.drop(form.source.changes,[:uuid]) != %{} }}
+                  :if={{ not CreatePersonSchema.is_person_empty?(form.source) }}
                   class="ml-1 btn btn-secondary btn-sm btn-danger"
                   type="button"
                   phx-value-changeset-uuid={{ changeset_uuid }}
