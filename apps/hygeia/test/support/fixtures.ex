@@ -5,10 +5,13 @@ defmodule Hygeia.Fixtures do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
-  alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.CommunicationContext
+  alias Hygeia.CommunicationContext.Email
+  alias Hygeia.CommunicationContext.SMS
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext
@@ -250,17 +253,6 @@ defmodule Hygeia.Fixtures do
     position
   end
 
-  @valid_attrs %{entry: %{__type__: "note", note: "some note"}}
-
-  @spec protocol_entry_fixture(case :: Cate.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          ProtocolEntry.t()
-  def protocol_entry_fixture(case \\ case_fixture(), attrs \\ %{}) do
-    {:ok, protocol_entry} =
-      CaseContext.create_protocol_entry(case, Enum.into(attrs, @valid_attrs))
-
-    protocol_entry
-  end
-
   @valid_attrs %{
     address: %{
       address: "Helmweg 481",
@@ -303,5 +295,45 @@ defmodule Hygeia.Fixtures do
       CaseContext.create_possible_index_submission(case, Enum.into(attrs, @valid_attrs))
 
     possible_index_submission
+  end
+
+  @valid_attrs %{
+    direction: :outgoing,
+    last_try: ~N[2010-04-17 14:00:00],
+    message: "some message",
+    status: :success
+  }
+
+  @spec email_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) :: Email.t()
+  def email_fixture(case \\ case_fixture(), attrs \\ %{}) do
+    {:ok, email} = CommunicationContext.create_email(case, Enum.into(attrs, @valid_attrs))
+
+    email
+  end
+
+  @valid_attrs %{
+    direction: :outgoing,
+    last_try: ~N[2010-04-17 14:00:00],
+    message: "some message",
+    number: "+41 78 724 57 90",
+    status: :success
+  }
+
+  @spec sms_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) :: SMS.t()
+  def sms_fixture(case \\ case_fixture(), attrs \\ %{}) do
+    {:ok, sms} = CommunicationContext.create_sms(case, Enum.into(attrs, @valid_attrs))
+
+    sms
+  end
+
+  @valid_attrs %{
+    note: "some note"
+  }
+
+  @spec note_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) :: Note.t()
+  def note_fixture(case \\ case_fixture(), attrs \\ %{}) do
+    {:ok, note} = CaseContext.create_note(case, Enum.into(attrs, @valid_attrs))
+
+    note
   end
 end

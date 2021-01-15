@@ -1,0 +1,27 @@
+<div class="component-case-note container">
+  <HygeiaWeb.Modal
+    id={{ {@myself, :modal} }}
+    title={{ gettext("New note") }}
+    close={{ @close }}
+  >
+    <Form
+      for={{ @changeset }}
+      change="validate"
+      submit="save"
+      opts={{ autocomplete: "off", id: "note-form", "phx-hook": "BlockNavigation" }}
+    >
+      <Field
+        class="form-group"
+        name={{ :note }}
+      >
+        <HygeiaWeb.FieldLabel />
+        <TextArea class="form-control" />
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
+      <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} diabled={{ @changeset.valid? }}>
+        <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+        {{ gettext("Save") }}
+      </button>
+    </Form>
+  </HygeiaWeb.Modal>
+</div>

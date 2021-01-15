@@ -6,14 +6,14 @@ defmodule HygeiaWeb.TenantLive.Show do
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.TenantContext.Tenant.Smtp
-  alias Hygeia.TenantContext.Websms
+  alias Hygeia.TenantContext.Tenant.Websms
   alias HygeiaWeb.PolimorphicInputs
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
-
+  alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.PasswordInput
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput

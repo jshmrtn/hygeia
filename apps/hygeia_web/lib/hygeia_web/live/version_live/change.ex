@@ -32,7 +32,7 @@ defmodule HygeiaWeb.VersionLive.Change do
         <span :if={{ not is_complex?(value) }}>
           <strong class="field-name">{{ field_name }}</strong>
           <LiveRedirect
-            :if={{ is_foregin_key?(schema, field_key) }}
+            :if={{ is_foregin_key?(schema, field_key) and not(is_nil(value)) }}
             to={{
               Routes.version_show_path(
                 @socket,

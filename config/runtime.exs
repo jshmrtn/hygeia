@@ -121,6 +121,11 @@ config :hygeia_iam, :service_accounts,
     ]
   ]
 
+case System.fetch_env("DKIM_PATH") do
+  {:ok, path} -> config :hygeia, dkim_certificate_directory: path
+  :error -> nil
+end
+
 config :hygeia_iam,
   organisation_id: System.get_env("IAM_ORGANISATION_ID", "***REMOVED***"),
   project_id: System.get_env("IAM_PROJECT_ID", "***REMOVED***")

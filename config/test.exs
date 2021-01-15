@@ -10,8 +10,6 @@ config :hygeia, Hygeia.Repo,
   timeout: :infinity,
   ownership_timeout: :infinity
 
-config :hygeia, sms_sender: Hygeia.SmsSenderMock
-
 # DO not check emails MX in test
 config :email_checker,
   validations: [EmailChecker.Check.Format]

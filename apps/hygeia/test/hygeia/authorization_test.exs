@@ -254,44 +254,6 @@ defmodule Hygeia.AuthorizationTest do
       end
     end
 
-    test "should deny protocol entry list for non-tracer / non-supervisor / non-admin" do
-      case = case_fixture()
-      user = user_fixture(grants: [])
-
-      refute authorized?(Hygeia.CaseContext.ProtocolEntry, :list, :anonymous, %{case: case})
-      refute authorized?(Hygeia.CaseContext.ProtocolEntry, :list, user, %{case: case})
-    end
-
-    for role <- [:tracer, :supervisor, :admin] do
-      test "should allow protocol entry list for #{role}" do
-        tenant = tenant_fixture()
-        user = user_fixture(grants: [%{role: unquote(role), tenant_uuid: tenant.uuid}])
-
-        case = case_fixture(person_fixture(tenant))
-
-        assert authorized?(Hygeia.CaseContext.ProtocolEntry, :list, user, %{case: case})
-      end
-    end
-
-    test "should deny protocol entry create for non-tracer / non-supervisor / non-admin" do
-      case = case_fixture()
-      user = user_fixture(grants: [])
-
-      refute authorized?(Hygeia.CaseContext.ProtocolEntry, :create, :anonymous, %{case: case})
-      refute authorized?(Hygeia.CaseContext.ProtocolEntry, :create, user, %{case: case})
-    end
-
-    for role <- [:tracer, :supervisor, :admin] do
-      test "should allow protocol entry create for #{role}" do
-        tenant = tenant_fixture()
-        user = user_fixture(grants: [%{role: unquote(role), tenant_uuid: tenant.uuid}])
-
-        case = case_fixture(person_fixture(tenant))
-
-        assert authorized?(Hygeia.CaseContext.ProtocolEntry, :create, user, %{case: case})
-      end
-    end
-
     for action <- [:list, :create] do
       test "should deny organisation #{action} for anonymous" do
         refute authorized?(Hygeia.OrganisationContext.Organisation, unquote(action), :anonymous)

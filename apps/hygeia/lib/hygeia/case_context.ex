@@ -6,18 +6,17 @@ defmodule Hygeia.CaseContext do
   use Hygeia, :context
 
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
-  alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
-  alias Hygeia.EmailSender.Smtp
+  alias Hygeia.CommunicationContext
+  alias Hygeia.CommunicationContext.Email
+  alias Hygeia.CommunicationContext.SMS
   alias Hygeia.OrganisationContext.Organisation
-  alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
-  alias Hygeia.TenantContext.Websms
 
-  @sms_sender Application.compile_env!(:hygeia, [:sms_sender])
   @origin_country Application.compile_env!(:hygeia, [:phone_number_parsing_origin_country])
 
   @doc """
@@ -535,7 +534,8 @@ defmodule Hygeia.CaseContext do
             received_transmission_case.external_references
           ),
         on: fragment("?->>'type'", received_transmission_case_ism_id) == "ism_case",
-        left_join: protocol_entry in assoc(case, :protocol_entries),
+        left_join: email in assoc(case, :emails),
+        left_join: sms in assoc(case, :sms),
         where:
           case.tenant_uuid == ^tenant_uuid and
             fragment("?->'details'->>'__type__'", phase) == "index",
@@ -900,7 +900,11 @@ defmodule Hygeia.CaseContext do
           # iso_loc_country
           fragment("?->'address'->>'country'", case.monitoring),
           # follow_up_dt
-          fragment("(?)::date", max(protocol_entry.inserted_at)),
+          fragment(
+            "GREATEST(?, ?)",
+            fragment("(?)::date", max(sms.inserted_at)),
+            fragment("(?)::date", max(email.inserted_at))
+          ),
           # end_of_iso_dt
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'end'", index_phase)),
           # reason_end_of_iso
@@ -1993,14 +1997,28 @@ defmodule Hygeia.CaseContext do
   """
   @spec delete_case(case :: Case.t()) :: {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
   def delete_case(%Case{} = case) do
-    case = Repo.preload(case, protocol_entries: [], related_organisations: [])
-    protocol_entries = case.protocol_entries
+    %Case{notes: notes, sms: sms, emails: emails} =
+      case = Repo.preload(case, notes: [], related_organisations: [], sms: [], emails: [])
 
     Repo.transaction(fn ->
-      protocol_entries
-      |> Enum.map(&delete_protocol_entry/1)
+      notes
+      |> Enum.map(&delete_note/1)
       |> Enum.each(fn
-        {:ok, _protocol_entry} -> :ok
+        {:ok, _note} -> :ok
+        {:error, reason} -> Repo.rollback(reason)
+      end)
+
+      sms
+      |> Enum.map(&CommunicationContext.delete_sms/1)
+      |> Enum.each(fn
+        {:ok, _sms} -> :ok
+        {:error, reason} -> Repo.rollback(reason)
+      end)
+
+      emails
+      |> Enum.map(&CommunicationContext.delete_email/1)
+      |> Enum.each(fn
+        {:ok, _email} -> :ok
         {:error, reason} -> Repo.rollback(reason)
       end)
 
@@ -2024,81 +2042,6 @@ defmodule Hygeia.CaseContext do
         {:error, reason} -> Repo.rollback(reason)
       end
     end)
-  end
-
-  @spec case_send_sms(case :: Case.t(), text :: String.t()) ::
-          {:ok, ProtocolEntry.t()} | {:error, :no_mobile_number | term}
-  def case_send_sms(%Case{} = case, text) do
-    %Case{person: %Person{contact_methods: contact_methods} = person, tenant: %Tenant{} = tenant} =
-      Repo.preload(case, person: [], tenant: [])
-
-    case tenant.outgoing_sms_configuration do
-      %Websms{access_token: access_token} ->
-        if person_has_mobile_number?(person) do
-          phone_number =
-            Enum.find_value(contact_methods, fn
-              %{type: :mobile, value: value} -> value
-              _contact_method -> false
-            end)
-
-          {:ok, parsed_number} = ExPhoneNumber.parse(phone_number, @origin_country)
-          phone_number = ExPhoneNumber.Formatting.format(parsed_number, :e164)
-
-          message_id = Ecto.UUID.generate()
-
-          case @sms_sender.send(message_id, phone_number, text, access_token) do
-            {:ok, delivery_receipt_id} ->
-              create_protocol_entry(case, %{
-                entry: %{__type__: "sms", text: text, delivery_receipt_id: delivery_receipt_id}
-              })
-
-            {:error, reason} ->
-              {:error, reason}
-          end
-        else
-          {:error, :no_mobile_number}
-        end
-
-      nil ->
-        {:error, :sms_config_missing}
-    end
-  end
-
-  @spec case_send_email(case :: Case.t(), subject :: String.t(), body :: String.t()) ::
-          {:ok, ProtocolEntry.t()} | {:error, :no_email | :no_outgoing_mail_configuration | term}
-  def case_send_email(%Case{} = case, subject, body) do
-    %Case{person: %Person{contact_methods: contact_methods} = person, tenant: %Tenant{} = tenant} =
-      Repo.preload(case, person: [], tenant: [])
-
-    cond do
-      !person_has_email?(person) ->
-        {:error, :no_email}
-
-      !TenantContext.tenant_has_outgoing_mail_configuration?(tenant) ->
-        {:error, :no_outgoing_mail_configuration}
-
-      true ->
-        recipient_email =
-          Enum.find_value(contact_methods, fn
-            %{type: :email, value: value} -> value
-            _contact_method -> false
-          end)
-
-        recipient_name =
-          [person.first_name, person.last_name]
-          |> Enum.reject(&(&1 in ["", nil]))
-          |> Enum.join(" ")
-
-        case Smtp.send(recipient_name, recipient_email, subject, body, tenant) do
-          :ok ->
-            create_protocol_entry(case, %{
-              entry: %{__type__: "email", subject: subject, body: body}
-            })
-
-          {:error, reason} ->
-            {:error, reason}
-        end
-    end
   end
 
   @spec case_phase_automated_email_sent(case :: Case.t(), phase :: Case.Phase.t()) ::
@@ -2296,133 +2239,133 @@ defmodule Hygeia.CaseContext do
     do: Transmission.changeset(transmission, attrs)
 
   @doc """
-  Returns the list of protocol_entries.
+  Returns the list of notes.
 
   ## Examples
 
-      iex> list_protocol_entries()
-      [%ProtocolEntry{}, ...]
+      iex> list_notes()
+      [%Note{}, ...]
 
   """
-  @spec list_protocol_entries :: [ProtocolEntry.t()]
-  def list_protocol_entries, do: Repo.all(ProtocolEntry)
+  @spec list_notes :: [Note.t()]
+  def list_notes, do: Repo.all(Note)
 
   @doc """
-  Gets a single protocol_entry.
+  Gets a single note.
 
   Raises `Ecto.NoResultsError` if the Protocol entry does not exist.
 
   ## Examples
 
-      iex> get_protocol_entry!(123)
-      %ProtocolEntry{}
+      iex> get_note!(123)
+      %Note{}
 
-      iex> get_protocol_entry!(456)
+      iex> get_note!(456)
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_protocol_entry!(id :: String.t()) :: ProtocolEntry.t()
-  def get_protocol_entry!(id), do: Repo.get!(ProtocolEntry, id)
+  @spec get_note!(id :: String.t()) :: Note.t()
+  def get_note!(id), do: Repo.get!(Note, id)
 
   @doc """
-  Creates a protocol_entry.
+  Creates a note.
 
   ## Examples
 
-      iex> create_protocol_entry(%{field: value})
-      {:ok, %ProtocolEntry{}}
+      iex> create_note(%{field: value})
+      {:ok, %Note{}}
 
-      iex> create_protocol_entry(%{field: bad_value})
+      iex> create_note(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_protocol_entry(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t(ProtocolEntry.t())}
-  def create_protocol_entry(%Case{} = case, attrs \\ %{}),
+  @spec create_note(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Note.t()} | {:error, Ecto.Changeset.t(Note.t())}
+  def create_note(%Case{} = case, attrs \\ %{}),
     do:
       case
-      |> Ecto.build_assoc(:protocol_entries)
-      |> change_protocol_entry(attrs)
+      |> Ecto.build_assoc(:notes)
+      |> change_note(attrs)
       |> versioning_insert()
       |> broadcast(
-        "protocol_entries",
+        "notes",
         :create,
         & &1.uuid,
-        &["protocol_entries:case:#{&1.case_uuid}"]
+        &["notes:case:#{&1.case_uuid}"]
       )
       |> versioning_extract()
 
   @doc """
-  Updates a protocol_entry.
+  Updates a note.
 
   ## Examples
 
-      iex> update_protocol_entry(protocol_entry, %{field: new_value})
-      {:ok, %ProtocolEntry{}}
+      iex> update_note(note, %{field: new_value})
+      {:ok, %Note{}}
 
-      iex> update_protocol_entry(protocol_entry, %{field: bad_value})
+      iex> update_note(note, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_protocol_entry(
-          protocol_entry :: ProtocolEntry.t(),
+  @spec update_note(
+          note :: Note.t(),
           attrs :: Hygeia.ecto_changeset_params()
-        ) :: {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t(ProtocolEntry.t())}
-  def update_protocol_entry(%ProtocolEntry{} = protocol_entry, attrs),
+        ) :: {:ok, Note.t()} | {:error, Ecto.Changeset.t(Note.t())}
+  def update_note(%Note{} = note, attrs),
     do:
-      protocol_entry
-      |> change_protocol_entry(attrs)
+      note
+      |> change_note(attrs)
       |> versioning_update()
       |> broadcast(
-        "protocol_entries",
+        "notes",
         :update,
         & &1.uuid,
-        &["protocol_entries:case:#{&1.case_uuid}"]
+        &["notes:case:#{&1.case_uuid}"]
       )
       |> versioning_extract()
 
   @doc """
-  Deletes a protocol_entry.
+  Deletes a note.
 
   ## Examples
 
-      iex> delete_protocol_entry(protocol_entry)
-      {:ok, %ProtocolEntry{}}
+      iex> delete_note(note)
+      {:ok, %Note{}}
 
-      iex> delete_protocol_entry(protocol_entry)
+      iex> delete_note(note)
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec delete_protocol_entry(protocol_entry :: ProtocolEntry.t()) ::
-          {:ok, ProtocolEntry.t()} | {:error, Ecto.Changeset.t(ProtocolEntry.t())}
-  def delete_protocol_entry(%ProtocolEntry{} = protocol_entry),
+  @spec delete_note(note :: Note.t()) ::
+          {:ok, Note.t()} | {:error, Ecto.Changeset.t(Note.t())}
+  def delete_note(%Note{} = note),
     do:
-      protocol_entry
-      |> change_protocol_entry()
+      note
+      |> change_note()
       |> versioning_delete()
       |> broadcast(
-        "protocol_entries",
+        "notes",
         :delete,
         & &1.uuid,
-        &["protocol_entries:case:#{&1.case_uuid}"]
+        &["notes:case:#{&1.case_uuid}"]
       )
       |> versioning_extract()
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking protocol_entry changes.
+  Returns an `%Ecto.Changeset{}` for tracking note changes.
 
   ## Examples
 
-      iex> change_protocol_entry(protocol_entry)
-      %Ecto.Changeset{data: %ProtocolEntry{}}
+      iex> change_note(note)
+      %Ecto.Changeset{data: %Note{}}
 
   """
-  @spec change_protocol_entry(
-          protocol_entry :: ProtocolEntry.t() | ProtocolEntry.empty(),
+  @spec change_note(
+          note :: Note.t() | Note.empty(),
           attrs :: Hygeia.ecto_changeset_params()
-        ) :: Ecto.Changeset.t(ProtocolEntry.t())
-  def change_protocol_entry(%ProtocolEntry{} = protocol_entry, attrs \\ %{}),
-    do: ProtocolEntry.changeset(protocol_entry, attrs)
+        ) :: Ecto.Changeset.t(Note.t())
+  def change_note(%Note{} = note, attrs \\ %{}),
+    do: Note.changeset(note, attrs)
 
   @doc """
   Returns the list of possible_index_submissions.
@@ -2553,4 +2496,87 @@ defmodule Hygeia.CaseContext do
       ) do
     PossibleIndexSubmission.changeset(possible_index_submission, attrs)
   end
+
+  @spec list_protocol_entries(case :: Case.t(), limit :: pos_integer()) :: [
+          %{
+            version: PaperTrail.Version.t(),
+            entry: Note.t() | Email.t() | SMS.t(),
+            inserted_at: DateTime.t()
+          }
+        ]
+  def list_protocol_entries(case, limit \\ 100) do
+    note_query =
+      from(note in Ecto.assoc(case, :notes),
+        select: {note.inserted_at, "note", note.uuid},
+        limit: ^limit
+      )
+
+    note_sms_query =
+      from(sms in Ecto.assoc(case, :sms),
+        select: {sms.inserted_at, "sms", sms.uuid},
+        union_all: ^note_query
+      )
+
+    note_sms_email_query =
+      from(email in Ecto.assoc(case, :emails),
+        select: {email.inserted_at, "email", email.uuid},
+        order_by: fragment("inserted_at"),
+        union_all: ^note_sms_query
+      )
+
+    protocol_entries = Repo.all(note_sms_email_query)
+
+    resources =
+      protocol_entries
+      |> Enum.group_by(&elem(&1, 1), &elem(&1, 2))
+      |> Enum.flat_map(&load_protocol_entries(case, &1))
+      |> Map.new()
+
+    Enum.map(protocol_entries, fn {inserted_at, _type, uuid} ->
+      {resource, version} = Map.fetch!(resources, uuid)
+      {uuid, inserted_at, resource, version}
+    end)
+  end
+
+  defp load_protocol_entries(case, {"sms", ids}),
+    do:
+      Repo.all(
+        from(version in PaperTrail.Version,
+          join: sms in ^Ecto.assoc(case, :sms),
+          on:
+            version.item_id == sms.uuid and version.item_type == "SMS" and
+              version.event == "insert",
+          select: {sms.uuid, {sms, version}},
+          where: version.item_id in ^ids,
+          preload: [:user]
+        )
+      )
+
+  defp load_protocol_entries(case, {"email", ids}),
+    do:
+      Repo.all(
+        from(version in PaperTrail.Version,
+          join: email in ^Ecto.assoc(case, :emails),
+          on:
+            version.item_id == email.uuid and version.item_type == "Email" and
+              version.event == "insert",
+          select: {email.uuid, {email, version}},
+          where: version.item_id in ^ids,
+          preload: [:user]
+        )
+      )
+
+  defp load_protocol_entries(case, {"note", ids}),
+    do:
+      Repo.all(
+        from(version in PaperTrail.Version,
+          join: note in ^Ecto.assoc(case, :notes),
+          on:
+            version.item_id == note.uuid and version.item_type == "Note" and
+              version.event == "insert",
+          select: {note.uuid, {note, version}},
+          where: version.item_id in ^ids,
+          preload: [:user]
+        )
+      )
 end

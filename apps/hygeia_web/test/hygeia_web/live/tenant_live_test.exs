@@ -16,13 +16,16 @@ defmodule HygeiaWeb.TenantLiveTest do
   @update_attrs %{
     name: "some updated name",
     outgoing_mail_configuration_type: "smtp",
+    from_email: "info@kanton.com",
     outgoing_mail_configuration: %{
       __type__: "smtp",
-      server: "kanton.com",
-      port: 2525,
-      from_email: "info@kanton.com",
-      username: "test1",
-      password: "test1"
+      enable_relay: true,
+      relay: %{
+        server: "kanton.com",
+        port: 2525,
+        username: "test1",
+        password: "test1"
+      }
     }
   }
   @invalid_attrs %{name: nil}
@@ -92,6 +95,13 @@ defmodule HygeiaWeb.TenantLiveTest do
       assert show_live
              |> form("#tenant-form",
                tenant: Map.drop(@update_attrs, [:outgoing_mail_configuration])
+             )
+             |> render_change()
+
+      assert show_live
+             |> form("#tenant-form",
+               tenant:
+                 Map.update!(@update_attrs, :outgoing_mail_configuration, &Map.drop(&1, [:relay]))
              )
              |> render_change()
 

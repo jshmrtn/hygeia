@@ -135,3 +135,8 @@ msgstr "Ende muss nach dem Start sein"
 #: lib/hygeia/case_context/case/phase.ex:54
 msgid "start must be before end"
 msgstr "Start muss vor dem Ende sein"
+
+#, elixir-format
+#: lib/hygeia/helpers/dns.ex:23
+msgid "is not a valid hostname"
+msgstr "ist kein gültiger Hostname"

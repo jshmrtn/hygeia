@@ -3,7 +3,8 @@ defmodule Hygeia.Helpers.Versioning do
 
   alias Hygeia.UserContext.User
 
-  @typep origin_base :: :web | :api | :user_sync_job | :case_close_email_job
+  @typep origin_base ::
+           :web | :api | :user_sync_job | :case_close_email_job | :email_sender | :sms_sender
 
   case Mix.env() do
     :test -> @type origin :: origin_base | :test

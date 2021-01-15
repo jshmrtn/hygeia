@@ -16,10 +16,6 @@ defmodule HygeiaWeb.Router do
   @frame_src if(@code_reloading, do: ~w('self'), else: ~w())
   @style_src if(@debug_errors, do: ~w('unsafe-inline'), else: ~w())
 
-  if Mix.env() == :dev do
-    forward "/sent_emails", Bamboo.SentEmailViewerPlug
-  end
-
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session

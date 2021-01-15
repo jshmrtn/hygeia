@@ -12,10 +12,12 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.ExternalReference
+  alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
-  alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.CommunicationContext.Email
+  alias Hygeia.CommunicationContext.SMS
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
@@ -53,9 +55,11 @@ defmodule Hygeia.CaseContext.Case do
           tracer: Ecto.Schema.belongs_to(User.t()) | nil,
           supervisor_uuid: String.t() | nil,
           supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
-          protocol_entries: Ecto.Schema.has_many(ProtocolEntry.t()) | nil,
           related_organisations: Ecto.Schema.many_to_many(Organisation.t()) | nil,
           possible_index_submissions: Ecto.Schema.many_to_many(PossibleIndexSubmission.t()) | nil,
+          emails: Ecto.Schema.has_many(Email.t()) | nil,
+          sms: Ecto.Schema.has_many(SMS.t()) | nil,
+          notes: Ecto.Schema.has_many(Note.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -78,9 +82,11 @@ defmodule Hygeia.CaseContext.Case do
           tracer: Ecto.Schema.belongs_to(User.t()),
           supervisor_uuid: String.t(),
           supervisor: Ecto.Schema.belongs_to(User.t()),
-          protocol_entries: Ecto.Schema.has_many(ProtocolEntry.t()),
           related_organisations: Ecto.Schema.many_to_many(Organisation.t()),
           possible_index_submissions: Ecto.Schema.many_to_many(PossibleIndexSubmission.t()),
+          emails: Ecto.Schema.has_many(Email.t()),
+          sms: Ecto.Schema.has_many(SMS.t()),
+          notes: Ecto.Schema.has_many(Note.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -106,8 +112,10 @@ defmodule Hygeia.CaseContext.Case do
     has_many :received_transmissions, Transmission, foreign_key: :recipient_case_uuid
     # , references: :propagator_case
     has_many :propagated_transmissions, Transmission, foreign_key: :propagator_case_uuid
-    has_many :protocol_entries, ProtocolEntry, foreign_key: :case_uuid
     has_many :possible_index_submissions, PossibleIndexSubmission, foreign_key: :case_uuid
+    has_many :emails, Email, foreign_key: :case_uuid
+    has_many :sms, SMS, foreign_key: :case_uuid
+    has_many :notes, Note, foreign_key: :case_uuid
 
     many_to_many :related_organisations, Organisation,
       join_through: "case_related_organisations",

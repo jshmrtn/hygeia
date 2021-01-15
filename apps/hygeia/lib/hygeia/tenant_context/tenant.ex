@@ -10,7 +10,7 @@ defmodule Hygeia.TenantContext.Tenant do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.TenantContext.Tenant.Smtp
-  alias Hygeia.TenantContext.Websms
+  alias Hygeia.TenantContext.Tenant.Websms
 
   defenum TemplateVariation, :template_variation, [:sg, :ar, :ai]
 
@@ -28,6 +28,7 @@ defmodule Hygeia.TenantContext.Tenant do
           override_url: String.t() | nil,
           template_variation: TemplateVariation.t() | nil,
           iam_domain: String.t() | nil,
+          from_email: String.t() | nil,
           short_name: String.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
@@ -45,6 +46,7 @@ defmodule Hygeia.TenantContext.Tenant do
           override_url: String.t() | nil,
           template_variation: TemplateVariation.t() | nil,
           iam_domain: String.t() | nil,
+          from_email: String.t() | nil,
           short_name: String.t() | nil,
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
@@ -58,6 +60,7 @@ defmodule Hygeia.TenantContext.Tenant do
     field :template_variation, TemplateVariation
     field :iam_domain, :string
     field :short_name, :string
+    field :from_email, :string
 
     has_many :people, Person
     has_many :cases, Case
@@ -104,7 +107,8 @@ defmodule Hygeia.TenantContext.Tenant do
         :override_url,
         :template_variation,
         :iam_domain,
-        :short_name
+        :short_name,
+        :from_email
       ],
       empty_values: []
     )

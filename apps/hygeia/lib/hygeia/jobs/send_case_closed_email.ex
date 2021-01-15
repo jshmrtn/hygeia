@@ -9,6 +9,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case.Phase
+  alias Hygeia.CommunicationContext
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
 
@@ -130,9 +131,9 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
 
   defp send_sms(case, phase) do
     case
-    |> CaseContext.case_send_sms(sms_text(phase))
+    |> CommunicationContext.create_outgoing_sms(sms_text(phase))
     |> case do
-      {:ok, _protocol_entry} -> :ok
+      {:ok, _sms} -> :ok
       {:error, :no_mobile_number} -> :ok
       {:error, :sms_config_missing} -> :ok
       {:error, reason} -> {:error, reason}
@@ -141,9 +142,9 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
 
   defp send_email(case, phase) do
     case
-    |> CaseContext.case_send_email(email_subject(phase), email_body(phase))
+    |> CommunicationContext.create_outgoing_email(email_subject(phase), email_body(phase))
     |> case do
-      {:ok, _protocol_entry} -> :ok
+      {:ok, _email} -> :ok
       {:error, :no_email} -> :ok
       {:error, :no_outgoing_mail_configuration} -> :ok
       {:error, reason} -> {:error, reason}

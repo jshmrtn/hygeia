@@ -4,6 +4,7 @@
 #
 
 import Hygeia.CaseContext
+import Hygeia.CommunicationContext
 import Hygeia.OrganisationContext
 import Hygeia.TenantContext
 import Hygeia.UserContext
@@ -29,12 +30,15 @@ tenants =
     %Cadastre.Subdivision{id: "SG"} = subdivision ->
       {subdivision,
        %{
+         from_email: "Info.ContactTracing@sg.ch",
          outgoing_mail_configuration: %{
            __type__: "smtp",
-           server: "postfix-relay.postfix-relay",
-           hostname: "smtp.covid19-tracing.ch",
-           port: 25,
-           from_email: "Info.ContactTracing@sg.ch"
+           enable_relay: true,
+           relay: %{
+             server: "postfix-relay.postfix-relay",
+             hostname: "smtp.covid19-tracing.ch",
+             port: 25
+           }
          },
          outgoing_sms_configuration: %{
            __type__: "websms",
@@ -47,12 +51,15 @@ tenants =
     %Cadastre.Subdivision{id: "AR"} = subdivision ->
       {subdivision,
        %{
+         from_email: "Info.ContactTracing@sg.ch",
          outgoing_mail_configuration: %{
            __type__: "smtp",
-           server: "postfix-relay.postfix-relay",
-           hostname: "smtp.covid19-tracing.ch",
-           port: 25,
-           from_email: "Info.ContactTracing@sg.ch"
+           enable_relay: true,
+           relay: %{
+             server: "postfix-relay.postfix-relay",
+             hostname: "smtp.covid19-tracing.ch",
+             port: 25
+           }
          },
          outgoing_sms_configuration: %{
            __type__: "websms",
@@ -65,12 +72,14 @@ tenants =
     %Cadastre.Subdivision{id: "AI"} = subdivision ->
       {subdivision,
        %{
+         from_email: "Info.ContactTracing@sg.ch",
          outgoing_mail_configuration: %{
            __type__: "smtp",
-           server: "postfix-relay.postfix-relay",
-           hostname: "smtp.covid19-tracing.ch",
-           port: 25,
-           from_email: "Info.ContactTracing@sg.ch"
+           relay: %{
+             server: "postfix-relay.postfix-relay",
+             hostname: "smtp.covid19-tracing.ch",
+             port: 25
+           }
          },
          outgoing_sms_configuration: %{
            __type__: "websms",
@@ -438,10 +447,11 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
 
   {:ok, case_jony} = relate_case_to_organisation(case_jony, organisation_jm)
 
-  {:ok, _protocol_entry_jony} =
-    create_protocol_entry(case_jony, %{
-      entry: %{__type__: "note", note: "zeigt symptome, geht an PCR test"}
-    })
+  {:ok, _note_jony} = create_note(case_jony, %{note: "zeigt symptome, geht an PCR test"})
+
+  {:ok, _email_jony} = create_outgoing_email(case_jony, "Bleib Zuhause", "No Joke")
+
+  {:ok, _sms_jony} = create_outgoing_sms(case_jony, "Bleib Zuhause")
 
   {:ok, case_jay} =
     create_case(person_jay, %{

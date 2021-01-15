@@ -54,6 +54,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       start: "Start"
     },
     Hygeia.CaseContext.Case.Monitoring => %{
+      address: "Address",
       first_contact: "First Contact",
       location: "Location",
       location_details: "Location Details"
@@ -83,6 +84,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type_name: "Type name",
       value: "Value"
     },
+    Hygeia.CaseContext.Note => %{note: "Note"},
     Hygeia.CaseContext.Person => %{
       address: "Address",
       birth_date: "Birth Date",
@@ -121,14 +123,6 @@ defmodule HygeiaWeb.Helpers.FieldName do
       sex: "Sex",
       transmission_date: "Transmission Date"
     },
-    Hygeia.CaseContext.ProtocolEntry => %{
-      date: "Date",
-      entry: "Entry",
-      type: "Type"
-    },
-    Hygeia.CaseContext.ProtocolEntry.Email => %{body: "Body", subject: "Subject"},
-    Hygeia.CaseContext.ProtocolEntry.Note => %{note: "Note"},
-    Hygeia.CaseContext.ProtocolEntry.Sms => %{text: "Text"},
     Hygeia.CaseContext.Transmission => %{
       date: "Date",
       infection_place: "Infection Place",
@@ -153,6 +147,14 @@ defmodule HygeiaWeb.Helpers.FieldName do
       name: "Name",
       type: "Type"
     },
+    Hygeia.CommunicationContext.Email => %{
+      body: "Body",
+      subject: "Subject",
+      status: "Status",
+      recipient: "Recipient",
+      to: "To"
+    },
+    Hygeia.CommunicationContext.SMS => %{number: "Number", message: "Message", status: "Status"},
     Hygeia.OrganisationContext.Organisation => %{
       address: "Address",
       name: "Name",
@@ -160,6 +162,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
     },
     Hygeia.TenantContext.Tenant => %{
       case_management_enabled: "Case Management Enabled",
+      from_email: "From Email",
       iam_domain: "IAM Domain",
       name: "Name",
       outgoing_mail_configuration: "Outgoing Mail Configuration",
@@ -172,14 +175,24 @@ defmodule HygeiaWeb.Helpers.FieldName do
       template_variation: "Template Variation"
     },
     Hygeia.TenantContext.Tenant.Smtp => %{
-      from_email: "From Email",
+      dkim: "DKIM",
+      enable_dkim: "Enable DKIM",
+      enable_relay: "Enable Relay",
+      relay: "Relay"
+    },
+    Hygeia.TenantContext.Tenant.Smtp.DKIM => %{
+      signing_domain_identifier: "Signing Domain Identifier",
+      domain: "Domain",
+      private_key: "Private Key"
+    },
+    Hygeia.TenantContext.Tenant.Smtp.Relay => %{
       hostname: "Hostname",
       password: "Password",
       port: "Port",
       server: "Server",
       username: "Username"
     },
-    Hygeia.TenantContext.Websms => %{access_token: "Access Token"},
+    Hygeia.TenantContext.Tenant.Websms => %{access_token: "Access Token"},
     Hygeia.UserContext.User => %{
       display_name: "Display Name",
       email: "Email",

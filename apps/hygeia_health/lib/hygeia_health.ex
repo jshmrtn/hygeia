@@ -85,10 +85,12 @@ defmodule HygeiaHealth do
     alias Hygeia.TenantContext.Tenant.Smtp
 
     TenantContext.list_tenants()
-    |> Enum.filter(&match?(%Tenant{outgoing_mail_configuration: %Smtp{}}, &1))
+    |> Enum.filter(&match?(%Tenant{outgoing_mail_configuration: %Smtp{relay: %Smtp.Relay{}}}, &1))
     |> Enum.map(fn %Tenant{
                      name: name,
-                     outgoing_mail_configuration: %Smtp{server: server, hostname: hostname}
+                     outgoing_mail_configuration: %Smtp{
+                       relay: %Smtp.Relay{server: server, hostname: hostname}
+                     }
                    } ->
       {name, server, hostname || server}
     end)

@@ -1,11 +1,29 @@
 <ul class="nav nav-tabs card-header-tabs">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <HygeiaWeb.CaseLive.ProtocolModal 
+    <HygeiaWeb.NoteLive.CreateModal 
       case={{ @case }} 
-      id={{ {:navigation, :protocol_modal} }}
-      :if={{ not is_nil(@protocol_entry_modal) }}
-      params={{ @protocol_entry_modal }}
-      close="close_protocol_entry_modal"
+      id={{ {:navigation, :note_modal} }}
+      :if={{ not is_nil(@note_modal) }}
+      params={{ @note_modal }}
+      close="close_note_modal"
+      caller_id={{ @id }}
+      caller_module={{ __MODULE__ }}
+    />
+    <HygeiaWeb.SMSLive.CreateModal 
+      case={{ @case }} 
+      id={{ {:navigation, :sms_modal} }}
+      :if={{ not is_nil(@sms_modal) }}
+      params={{ @sms_modal }}
+      close="close_sms_modal"
+      caller_id={{ @id }}
+      caller_module={{ __MODULE__ }}
+    />
+    <HygeiaWeb.EmailLive.CreateModal 
+      case={{ @case }} 
+      id={{ {:navigation, :email_modal} }}
+      :if={{ not is_nil(@email_modal) }}
+      params={{ @email_modal }}
+      close="close_email_modal"
       caller_id={{ @id }}
       caller_module={{ __MODULE__ }}
     />
@@ -93,10 +111,9 @@
             <a
               class={{ "dropdown-item" <> if !can_generate_isolation_confirmation(phase), do: " disabled", else: "" }}
               href="#"
-              :on-click="open_protocol_entry_modal"
-              phx-value-type="sms"
-              phx-value-entry-text={{ isolation_sms(@socket, @case, phase) }}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
+              :on-click="open_sms_modal"
+              phx-value-message={{ isolation_sms(@socket, @case, phase) }}
+              :if={{ authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
               {{ gettext("Send SMS Isolation Confirmation") }}
@@ -104,11 +121,10 @@
             <a
               class={{ "dropdown-item" <> if !can_generate_isolation_confirmation(phase), do: " disabled", else: "" }}
               href="#"
-              :on-click="open_protocol_entry_modal"
-              phx-value-type="email"
-              phx-value-entry-subject={{ isolation_email_subject() }}
-              phx-value-entry-body={{ isolation_email_body(@socket, @case, phase) }}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
+              :on-click="open_email_modal"
+              phx-value-subject={{ isolation_email_subject() }}
+              phx-value-body={{ isolation_email_body(@socket, @case, phase) }}
+              :if={{ authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Isolation Confirmation") }}
@@ -116,10 +132,9 @@
             <a
               class={{ "dropdown-item" }}
               href="#"
-              :on-click="open_protocol_entry_modal"
-              phx-value-type="sms"
-              phx-value-entry-text={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase) }}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
+              :on-click="open_sms_modal"
+              phx-value-message={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase) }}
+              :if={{ authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
               {{ gettext("Send SMS Isolation End Confirmation") }}
@@ -127,11 +142,10 @@
             <a
               class={{ "dropdown-item" }}
               href="#"
-              :on-click="open_protocol_entry_modal"
-              phx-value-type="email"
-              phx-value-entry-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
-              phx-value-entry-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase) }}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
+              :on-click="open_email_modal"
+              phx-value-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
+              phx-value-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase) }}
+              :if={{ authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Isolation End Confirmation") }}
@@ -155,10 +169,9 @@
             <a
               class={{ "dropdown-item" <> if !can_generate_quarantine_confirmation(phase), do: " disabled", else: "" }}
               href="#"
-              :on-click="open_protocol_entry_modal"
-              phx-value-type="sms"
-              phx-value-entry-text={{ quarantine_sms(@socket, @case, phase) }}
-             :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
+              :on-click="open_sms_modal"
+              phx-value-message={{ quarantine_sms(@socket, @case, phase) }}
+             :if={{ authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
               {{ gettext("Send SMS Quarantine Confirmation") }}
@@ -166,11 +179,10 @@
             <a
               class={{ "dropdown-item" <> if !can_generate_quarantine_confirmation(phase), do: " disabled", else: "" }}
               href="#"
-              :on-click="open_protocol_entry_modal"
-              phx-value-type="email"
-              phx-value-entry-subject={{ quarantine_email_subject() }}
-              phx-value-entry-body={{ quarantine_email_body(@socket, @case, phase) }}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
+              :on-click="open_email_modal"
+              phx-value-subject={{ quarantine_email_subject() }}
+              phx-value-body={{ quarantine_email_body(@socket, @case, phase) }}
+              :if={{ authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Quarantine Confirmation") }}
@@ -178,10 +190,9 @@
             <a
               class={{ "dropdown-item" }}
               href="#"
-              :on-click="open_protocol_entry_modal"
-              phx-value-type="sms"
-              phx-value-entry-text={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase) }}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
+              :on-click="open_sms_modal"
+              phx-value-message={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase) }}
+              :if={{ authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
             >
               <span class="oi oi-phone mr-1" aria-hidden="true"></span>
               {{ gettext("Send SMS Quarantine End Confirmation") }}
@@ -189,11 +200,10 @@
             <a
               class={{ "dropdown-item" }}
               href="#"
-              :on-click="open_protocol_entry_modal"
-              phx-value-type="email"
-              phx-value-entry-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
-              phx-value-entry-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase) }}
-              :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
+              :on-click="open_email_modal"
+              phx-value-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
+              phx-value-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase) }}
+              :if={{ authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
             >
               <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>
               {{ gettext("Send Email Quarantine End Confirmation") }}
@@ -235,13 +245,12 @@
             {{ gettext("Convert to Index") }}
           </Link>
         </div>
-        <div :if={{ authorized?(ProtocolEntry, :create, auth, %{case: @case}) }}>
+        <div :if={{ authorized?(Hygeia.CaseContext.Note, :create, auth, %{case: @case}) }}>
           <div class="dropdown-divider"></div>
           <a
             class="dropdown-item"
             href="#"
-            :on-click="open_protocol_entry_modal"
-            phx-value-type="note"
+            :on-click="open_note_modal"
           >
             <span class="oi oi-plus mr-1" aria-hidden="true"></span>
             {{ gettext("Create Note") }}
@@ -249,8 +258,7 @@
           <a
             class="dropdown-item"
             href="#"
-            :on-click="open_protocol_entry_modal"
-            phx-value-type="sms"
+            :on-click="open_sms_modal"
             :if={{ CaseContext.person_has_mobile_number?(@case.person) and TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant) }}
           >
             <span class="oi oi-phone mr-1" aria-hidden="true"></span>
@@ -259,8 +267,7 @@
           <a
             class="dropdown-item"
             href="#"
-            :on-click="open_protocol_entry_modal"
-            phx-value-type="email"
+            :on-click="open_email_modal"
             :if={{ CaseContext.person_has_email?(@case.person) and TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant) }}
           >
             <span class="oi oi-envelope-closed mr-1" aria-hidden="true"></span>

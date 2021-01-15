@@ -8,6 +8,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.CommunicationContext
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
@@ -273,7 +274,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
           Gettext.put_locale(HygeiaGettext, locale)
 
-          CaseContext.case_send_email(
+          CommunicationContext.create_outgoing_email(
             &1,
             quarantine_email_subject(),
             quarantine_email_body(socket, &1, phase)
@@ -304,7 +305,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
           Gettext.put_locale(HygeiaGettext, locale)
 
-          CaseContext.case_send_sms(&1, quarantine_sms(socket, &1, phase))
+          CommunicationContext.create_outgoing_sms(&1, quarantine_sms(socket, &1, phase))
         end)
       )
       |> Enum.map(&Task.await/1)
