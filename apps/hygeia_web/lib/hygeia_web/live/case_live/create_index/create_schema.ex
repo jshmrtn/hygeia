@@ -84,6 +84,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
       :people,
       changeset
       |> get_change(:people, [])
+      |> Enum.sort_by(&is_empty?(&1, [:search_params_hash, :suspected_duplicate_uuids]))
       |> Enum.map(&{&1, is_empty?(&1, [:search_params_hash, :suspected_duplicate_uuids])})
       |> Enum.chunk_every(2, 1)
       |> Enum.map(fn

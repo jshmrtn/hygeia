@@ -72,12 +72,16 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
       |> cast_embed(:clinical)
       |> fill_uuid
 
-    if is_empty?(changeset, [:search_params_hash, :suspected_duplicate_uuids]) do
+    if is_person_empty?(changeset) do
       changeset
     else
       validate_changeset(changeset)
     end
   end
+
+  @spec is_person_empty?(changeset :: Changeset.t()) :: boolean
+  def is_person_empty?(changeset),
+    do: is_empty?(changeset, [:search_params_hash, :suspected_duplicate_uuids])
 
   @spec validate_changeset(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_changeset(changeset) do

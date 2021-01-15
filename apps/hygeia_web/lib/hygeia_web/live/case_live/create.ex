@@ -151,12 +151,14 @@ defmodule HygeiaWeb.CaseLive.Create do
           schema_module :: atom
         ) ::
           Ecto.Changeset.t()
-  def import_into_changeset(changeset, data, schema_module),
-    do:
-      schema_module.changeset(
-        changeset.data,
-        update_changeset_param_relation(changeset, :people, [:uuid], &Enum.concat(&1, data))
-      )
+  def import_into_changeset(changeset, data, schema_module) do
+    data = Enum.map(data, &Map.put(&1, :uuid, Ecto.UUID.generate()))
+
+    schema_module.changeset(
+      changeset.data,
+      update_changeset_param_relation(changeset, :people, [:uuid], &Enum.concat(&1, data))
+    )
+  end
 
   @spec normalize_import_field({key :: [atom], value :: term}, [Tenant.t()]) ::
           {key :: [atom], value :: term}
