@@ -2,10 +2,8 @@ defmodule Hygeia.CaseContextTest do
   @moduledoc false
 
   use Hygeia.DataCase
-  use Bamboo.Test
 
   import AssertValue
-  import Mox
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
@@ -19,10 +17,6 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
-  alias Hygeia.CaseContext.ProtocolEntry
-  alias Hygeia.CaseContext.ProtocolEntry.Email
-  alias Hygeia.CaseContext.ProtocolEntry.Note
-  alias Hygeia.CaseContext.ProtocolEntry.Sms
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
@@ -511,154 +505,6 @@ defmodule Hygeia.CaseContextTest do
         CaseContext.relate_case_to_organisation(case, organisation)
     end
 
-    test "case_send_sms/2 sends sms" do
-      delivery_receipt_id = Ecto.UUID.generate()
-
-      expect(Hygeia.SmsSenderMock, :send, fn _message_id, _number, _text, _access_token ->
-        {:ok, delivery_receipt_id}
-      end)
-
-      tenant =
-        tenant_fixture(%{
-          name: "Kanton",
-          outgoing_sms_configuration: %{
-            __type__: "websms",
-            access_token: "test"
-          }
-        })
-
-      person =
-        person_fixture(tenant, %{
-          contact_methods: [
-            %{
-              type: :mobile,
-              value: "+41781234567"
-            }
-          ]
-        })
-
-      case = case_fixture(person)
-
-      assert {:ok,
-              %ProtocolEntry{entry: %Sms{text: "Text", delivery_receipt_id: ^delivery_receipt_id}}} =
-               CaseContext.case_send_sms(case, "Text")
-    end
-
-    test "case_send_sms/2 gives error when transport fails" do
-      expect(Hygeia.SmsSenderMock, :send, fn _message_id, _number, _text, _access_token ->
-        {:error, "reason"}
-      end)
-
-      tenant =
-        tenant_fixture(%{
-          name: "Kanton",
-          outgoing_sms_configuration: %{
-            __type__: "websms",
-            access_token: "test"
-          }
-        })
-
-      person =
-        person_fixture(tenant, %{
-          contact_methods: [
-            %{
-              type: :mobile,
-              value: "+41781234567"
-            }
-          ]
-        })
-
-      case = case_fixture(person)
-
-      assert {:error, "reason"} = CaseContext.case_send_sms(case, "Text")
-    end
-
-    test "case_send_sms/2 gives error when no mobile number present" do
-      tenant =
-        tenant_fixture(%{
-          name: "Kanton",
-          outgoing_sms_configuration: %{
-            __type__: "websms",
-            access_token: "test"
-          }
-        })
-
-      person =
-        person_fixture(tenant, %{
-          contact_methods: []
-        })
-
-      case = case_fixture(person)
-
-      assert {:error, :no_mobile_number} = CaseContext.case_send_sms(case, "Text")
-    end
-
-    test "case_send_email/3 sends email" do
-      tenant =
-        tenant_fixture(%{
-          name: "Kanton",
-          outgoing_mail_configuration: %{
-            __type__: "smtp",
-            server: "kanton.com",
-            port: 2525,
-            from_email: "info@kanton.com",
-            username: "test1",
-            password: "test1"
-          }
-        })
-
-      person =
-        person_fixture(tenant, %{
-          contact_methods: [
-            %{
-              type: :email,
-              value: "example@example.com"
-            }
-          ]
-        })
-
-      case = case_fixture(person)
-
-      assert {:ok, %ProtocolEntry{entry: %Email{subject: "Subject", body: "Body"}}} =
-               CaseContext.case_send_email(case, "Subject", "Body")
-
-      assert_delivered_email_matches(%{
-        to: [{_, "example@example.com"}],
-        text_body: "Body",
-        subject: "Subject"
-      })
-    end
-
-    test "case_send_email/3 returns error if tenant has no outgoing mail configuration" do
-      tenant =
-        tenant_fixture(%{
-          name: "Kanton",
-          outgoing_mail_configuration: nil
-        })
-
-      person =
-        person_fixture(tenant, %{
-          contact_methods: [
-            %{
-              type: :email,
-              value: "example@example.com"
-            }
-          ]
-        })
-
-      case = case_fixture(person)
-
-      assert {:error, :no_outgoing_mail_configuration} =
-               CaseContext.case_send_email(case, "Subject", "Body")
-    end
-
-    test "case_send_email/3 gives error when no email present" do
-      person = person_fixture(tenant_fixture(), %{contact_methods: []})
-      case = case_fixture(person)
-
-      assert {:error, :no_email} = CaseContext.case_send_email(case, "Subject", "Body")
-    end
-
     test "case_export/1 exports :bag_med_16122020_case" do
       Repo.transaction(fn ->
         user = user_fixture()
@@ -769,8 +615,7 @@ defmodule Hygeia.CaseContextTest do
             }
           })
 
-        _note_case_jony =
-          protocol_entry_fixture(case_jony, %{inserted_at: ~U[2021-01-05 11:55:10.783294Z]})
+        _note_case_jony = sms_fixture(case_jony, %{inserted_at: ~U[2021-01-05 11:55:10.783294Z]})
 
         case_jay =
           case_fixture(person_jay, user, user, %{
@@ -1518,64 +1363,6 @@ defmodule Hygeia.CaseContextTest do
         })
 
       assert %Ecto.Changeset{} = CaseContext.change_transmission(transmission)
-    end
-  end
-
-  describe "protocol_entries" do
-    @valid_attrs %{entry: %{__type__: "note", note: "some note"}}
-    @update_attrs %{entry: %{__type__: "note", note: "some other note"}}
-    @invalid_attrs %{entry: %{__type__: "note", note: nil}}
-
-    test "list_protocol_entries/0 returns all protocol_entries" do
-      protocol_entry = protocol_entry_fixture()
-      assert CaseContext.list_protocol_entries() == [protocol_entry]
-    end
-
-    test "get_protocol_entry!/1 returns the protocol_entry with given id" do
-      protocol_entry = protocol_entry_fixture()
-      assert CaseContext.get_protocol_entry!(protocol_entry.uuid) == protocol_entry
-    end
-
-    test "create_protocol_entry/1 with valid data creates a protocol_entry" do
-      case = case_fixture()
-
-      assert {:ok, %ProtocolEntry{entry: %Note{note: "some note"}}} =
-               CaseContext.create_protocol_entry(case, @valid_attrs)
-    end
-
-    test "create_protocol_entry/1 with invalid data returns error changeset" do
-      case = case_fixture()
-      assert {:error, %Ecto.Changeset{}} = CaseContext.create_protocol_entry(case, @invalid_attrs)
-    end
-
-    test "update_protocol_entry/2 with valid data updates the protocol_entry" do
-      protocol_entry = protocol_entry_fixture()
-
-      assert {:ok, %ProtocolEntry{entry: %Note{note: "some other note"}}} =
-               CaseContext.update_protocol_entry(protocol_entry, @update_attrs)
-    end
-
-    test "update_protocol_entry/2 with invalid data returns error changeset" do
-      protocol_entry = protocol_entry_fixture()
-
-      assert {:error, %Ecto.Changeset{}} =
-               CaseContext.update_protocol_entry(protocol_entry, @invalid_attrs)
-
-      assert protocol_entry == CaseContext.get_protocol_entry!(protocol_entry.uuid)
-    end
-
-    test "delete_protocol_entry/1 deletes the protocol_entry" do
-      protocol_entry = protocol_entry_fixture()
-      assert {:ok, %ProtocolEntry{}} = CaseContext.delete_protocol_entry(protocol_entry)
-
-      assert_raise Ecto.NoResultsError, fn ->
-        CaseContext.get_protocol_entry!(protocol_entry.uuid)
-      end
-    end
-
-    test "change_protocol_entry/1 returns a protocol_entry changeset" do
-      protocol_entry = protocol_entry_fixture()
-      assert %Ecto.Changeset{} = CaseContext.change_protocol_entry(protocol_entry)
     end
   end
 

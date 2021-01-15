@@ -3,8 +3,7 @@ defmodule Hygeia.StatisticsContext do
   The StatisticsContext context.
   """
 
-  import Ecto.Query, warn: false
-  alias Hygeia.Repo
+  use Hygeia, :context
 
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
   alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay

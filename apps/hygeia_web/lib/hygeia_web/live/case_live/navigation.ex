@@ -6,25 +6,42 @@ defmodule HygeiaWeb.CaseLive.Navigation do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
-  alias Hygeia.CaseContext.ProtocolEntry
   alias Hygeia.TenantContext
   alias HygeiaWeb.UriActiveContext
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
   prop case, :map, required: true
-  data protocol_entry_modal, :map, default: nil
+  data note_modal, :map, default: nil
+  data sms_modal, :map, default: nil
+  data email_modal, :map, default: nil
 
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
     socket =
-      if assigns[:__close_protocol_entry_modal__] do
-        assign(socket, protocol_entry_modal: nil)
+      if assigns[:__close_note_modal__] do
+        assign(socket, note_modal: nil)
       else
         socket
       end
 
-    assigns = Map.drop(assigns, [:__close_protocol_entry_modal__])
+    socket =
+      if assigns[:__close_sms_modal__] do
+        assign(socket, sms_modal: nil)
+      else
+        socket
+      end
+
+    socket =
+      if assigns[:__close_email_modal__] do
+        assign(socket, email_modal: nil)
+      else
+        socket
+      end
+
+    assigns =
+      Map.drop(assigns, [:__close_note_modal__, :__close_sms_modal__, :__close_email_modal__])
+
     {:ok, assign(socket, assigns)}
   end
 
@@ -74,24 +91,28 @@ defmodule HygeiaWeb.CaseLive.Navigation do
      |> redirect(to: Routes.case_index_path(socket, :index))}
   end
 
-  def handle_event("open_protocol_entry_modal", params, socket) do
-    params =
-      params
-      |> Enum.map(fn {key, value} ->
-        key =
-          key
-          |> String.split("-")
-          |> Enum.map(&Access.key(&1, %{}))
-
-        {key, value}
-      end)
-      |> Enum.reduce(%{}, fn {path, value}, acc -> put_in(acc, path, value) end)
-
-    {:noreply, assign(socket, protocol_entry_modal: params)}
+  def handle_event("open_note_modal", params, socket) do
+    {:noreply, assign(socket, note_modal: params)}
   end
 
-  def handle_event("close_protocol_entry_modal", _params, socket) do
-    {:noreply, assign(socket, protocol_entry_modal: nil)}
+  def handle_event("open_sms_modal", params, socket) do
+    {:noreply, assign(socket, sms_modal: params)}
+  end
+
+  def handle_event("open_email_modal", params, socket) do
+    {:noreply, assign(socket, email_modal: params)}
+  end
+
+  def handle_event("close_note_modal", _params, socket) do
+    {:noreply, assign(socket, note_modal: nil)}
+  end
+
+  def handle_event("close_sms_modal", _params, socket) do
+    {:noreply, assign(socket, sms_modal: nil)}
+  end
+
+  def handle_event("close_email_modal", _params, socket) do
+    {:noreply, assign(socket, email_modal: nil)}
   end
 
   defp can_generate_isolation_confirmation(phase) do

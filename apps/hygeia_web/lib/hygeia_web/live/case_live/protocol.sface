@@ -10,10 +10,10 @@
         <thead>
           <tr>
             <th class="col-type" scope="col">
-              {{ schema_field_name(:type, ProtocolEntry) }}
+              {{ pgettext("Protocol Entry", "Type") }}
             </th>
             <th class="col-date" scope="col">
-              {{ schema_field_name(:date, ProtocolEntry) }}
+              {{ pgettext("Protocol Entry", "Date") }}
             </th>
             <th scope="col">
               {{ schema_field_name(:origin, Version) }}
@@ -22,13 +22,13 @@
               {{ schema_field_name(:originator, Version) }}
             </th>
             <th class="col-meta" scope="col" colspan="2">
-              {{ schema_field_name(:entry, ProtocolEntry) }}
+              {{ pgettext("Protocol Entry", "Entry") }}
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr :for={{ %ProtocolEntry{entry: %type{} = entry, inserted_at: inserted_at} = protocol_entry <- Enum.reverse(@case.protocol_entries) }}>
-            <td>{{ protocol_type_type_name(type) }}</td>
+          <tr :for={{ {uuid, inserted_at, entry, version} <- Enum.reverse(@protocol_entries) }} id={{ "protocol_entry_#{uuid}" }}>
+            <td>{{ module_translation(entry.__struct__) }}</td>
             <td>
               <time
                 datetime={{ NaiveDateTime.to_iso8601(inserted_at) }}
@@ -43,35 +43,53 @@
               </time>
             </td>
             <td>
-              {{
-                protocol_entry
-                |> get_protocol_origin()
-                |> translate_versioning_origin()
-              }}
+              {{ translate_versioning_origin(version.origin) }}
             </td>
             <td>
-              <Link to={{ Routes.user_show_path(@socket, :show, get_protocol_user(protocol_entry)) }} :if={{ get_protocol_user(protocol_entry) != nil }}>
-                {{ protocol_entry |> get_protocol_user() |> Map.fetch!(:display_name) }}
+              <Link to={{ Routes.user_show_path(@socket, :show, version.user) }} :if={{ version.user != nil }}>
+                {{ version.user.display_name }}
               </Link>
             </td>
-            <td colspan="2" :if={{ type == Hygeia.CaseContext.ProtocolEntry.Note }}>
+            <td colspan="2" :if={{ match?(%Hygeia.CaseContext.Note{}, entry) }}>
               <div class="preserve-linebreaks">{{ entry.note }}</div>
             </td>
-            <td colspan="2" :if={{ type == Hygeia.CaseContext.ProtocolEntry.Email }}>
-              <b>{{ schema_field_name(:subject, Hygeia.CaseContext.ProtocolEntry.Email) }}:</b>
-              {{ entry.subject }}<br>
-              <details>
-                <summary class="text-primary">
-                  <b>{{ schema_field_name(:body, Hygeia.CaseContext.ProtocolEntry.Email) }}</b><br>
-                </summary>
-                <div class="preserve-linebreaks">{{ entry.body }}</div>
-              </details>
+            <td colspan="2" :if={{ match?(%Hygeia.CommunicationContext.Email{}, entry) }}>
+              <Context
+                put={{ __MODULE__, message: RFC2822.parse(entry.message) }}
+                get={{ __MODULE__, message: message }}
+              >
+                <b>{{ schema_field_name(:subject, Hygeia.CommunicationContext.Email) }}:</b>
+                {{ Message.get_header(message, "subject") }}<br />
+
+                <b>{{ schema_field_name(:to, Hygeia.CommunicationContext.Email) }}:</b>
+                {{ format_recipients(Message.get_header(message, "to")) }}<br />
+
+                <b>{{ schema_field_name(:status, Hygeia.CommunicationContext.Email) }}:</b>
+                {{ email_status(entry.status) }}<br />
+
+                <details
+                  if={{ Message.is_text_part?(message) }}
+                  id={{ "protocol_entry_#{uuid}_summary" }}
+                  phx-update="ignore"
+                >
+                  <summary class="text-primary">
+                    <b>{{ schema_field_name(:body, Hygeia.CommunicationContext.Email) }}</b><br>
+                  </summary>
+                  <div class="preserve-linebreaks">{{ message.body }}</div>
+                </details>
+              </Context>
             </td>
-            <td colspan="2" :if={{ type == Hygeia.CaseContext.ProtocolEntry.Sms }}>
-              <div class="preserve-linebreaks">{{ entry.text }}</div>
+            <td colspan="2" :if={{ match?(%Hygeia.CommunicationContext.SMS{}, entry) }}>
+              <b>{{ schema_field_name(:number, Hygeia.CommunicationContext.SMS) }}:</b>
+              {{ entry.number }}<br />
+
+              <b>{{ schema_field_name(:status, Hygeia.CommunicationContext.SMS) }}:</b>
+              {{ sms_status(entry.status) }}<br />
+
+              <div class="preserve-linebreaks">{{ entry.message }}</div>
             </td>
           </tr>
-          <tr :if={{ length(@case.protocol_entries) == 0 }}>
+          <tr :if={{ length(@protocol_entries) == 0 }}>
             <td colspan="5">
               <div class="d-flex justify-content-center py-3">
                 {{ gettext("No data to display") }}

@@ -11,23 +11,12 @@ defmodule HygeiaWeb.VersionLive.Table do
   prop now, :map, required: true
 
   @impl Phoenix.LiveComponent
-  def preload(assign_list) do
-    all_version_preloaded =
-      assign_list
-      |> Enum.flat_map(&(&1[:versions] || []))
-      |> Enum.uniq_by(& &1.id)
-      |> Repo.preload(:user)
-      |> Map.new(&{&1.id, &1})
-
-    Enum.map(assign_list, fn
+  def preload(assigns_list) do
+    assigns_list
+    |> preload_assigns_many(:versions, &Repo.preload(&1, :user), & &1.id)
+    |> Enum.map(fn
       %{versions: versions} = assigns ->
-        %{
-          assigns
-          | versions:
-              versions
-              |> Enum.map(&Map.fetch!(all_version_preloaded, &1.id))
-              |> Enum.reject(&(map_size(&1.item_changes) == 0))
-        }
+        %{assigns | versions: Enum.reject(versions, &(map_size(&1.item_changes) == 0))}
 
       other ->
         other

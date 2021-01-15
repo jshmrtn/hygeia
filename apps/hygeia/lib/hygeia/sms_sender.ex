@@ -1,13 +1,10 @@
-defmodule Hygeia.SmsSender do
+defprotocol Hygeia.SmsSender do
   @moduledoc """
-  SMS Sender Behaviour
+  SMS Sender Protocol
   """
 
-  @callback send(
-              message_id :: String.t(),
-              number :: String.t(),
-              text :: String.t(),
-              access_token :: String.t()
-            ) ::
-              {:ok, delivery_receipt_id :: String.t()} | {:error, reason :: term}
+  @spec send(configuration :: t, sms :: Hygeia.CommunicationContext.SMS.t()) ::
+          {status :: Hygeia.CommunicationContext.SMS.Status.t(),
+           delivery_receipt_id :: String.t() | nil}
+  def send(configuration, sms)
 end

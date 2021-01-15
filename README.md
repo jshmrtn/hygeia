@@ -64,3 +64,5 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   * `IAM_ORGANISATION_ID` (default `***REMOVED***`) - IAM Organisation to sync users from
   * `IAM_PROJECT_ID` (default `***REMOVED***`) - IAM Project to sync users from
   * `IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN` (default: json) - IAM Login for User Sync
+* Email
+  * `DKIM_PATH` (default `apps/hygeia/priv/test/dkim`) - Base Path for DKIM Certificates

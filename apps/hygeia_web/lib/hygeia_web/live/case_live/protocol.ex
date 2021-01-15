@@ -5,8 +5,12 @@ defmodule HygeiaWeb.CaseLive.Protocol do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.ProtocolEntry
+  alias Hygeia.CaseContext.Note
+  alias Hygeia.CommunicationContext.Email
+  alias Hygeia.CommunicationContext.SMS
   alias Hygeia.Repo
+  alias Mail.Message
+  alias Mail.Parsers.RFC2822
   alias PaperTrail.Version
   alias Surface.Components.Link
 
@@ -24,20 +28,13 @@ defmodule HygeiaWeb.CaseLive.Protocol do
     case = CaseContext.get_case!(id)
 
     socket =
-      if authorized?(
-           case,
-           case socket.assigns.live_action do
-             :edit -> :update
-             :show -> :details
-           end,
-           get_auth(socket)
-         ) do
+      if authorized?(case, :details, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
-        Phoenix.PubSub.subscribe(Hygeia.PubSub, "protocol_entries:case:#{id}")
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "notes:case:#{id}")
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "sms:case:#{id}")
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "emails:case:#{id}")
 
-        socket
-        |> assign(modal_open: Map.drop(params, ["id"]) != %{})
-        |> load_data(case)
+        load_data(socket, case)
       else
         socket
         |> push_redirect(to: Routes.home_path(socket, :index))
@@ -54,10 +51,6 @@ defmodule HygeiaWeb.CaseLive.Protocol do
 
   def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
 
-  def handle_info({_action, %ProtocolEntry{} = _protocol_entry, _version}, socket) do
-    {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
-  end
-
   def handle_info({:updated, %Case{} = case, _version}, socket) do
     {:noreply, load_data(socket, case)}
   end
@@ -66,22 +59,22 @@ defmodule HygeiaWeb.CaseLive.Protocol do
     {:noreply, redirect(socket, to: Routes.case_index_path(socket, :index))}
   end
 
+  def handle_info({_event, %Note{}, _version}, socket) do
+    {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
+  end
+
+  def handle_info({_event, %SMS{}, _version}, socket) do
+    {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
+  end
+
+  def handle_info({_event, %Email{}, _version}, socket) do
+    {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
+  end
+
   def handle_info(_other, socket), do: {:noreply, socket}
 
   defp load_data(socket, case) do
-    case = Repo.preload(case, protocol_entries: [], person: [tenant: []], tenant: [])
-    assign(socket, case: case)
+    case = Repo.preload(case, person: [tenant: []], tenant: [])
+    assign(socket, case: case, protocol_entries: CaseContext.list_protocol_entries(case))
   end
-
-  defp get_protocol_user(protocol_entry) do
-    protocol_entry |> PaperTrail.get_version() |> Repo.preload(:user) |> Map.fetch!(:user)
-  end
-
-  defp get_protocol_origin(protocol_entry) do
-    protocol_entry |> PaperTrail.get_version() |> Map.fetch!(:origin) |> String.to_existing_atom()
-  end
-
-  defp protocol_type_type_name(Hygeia.CaseContext.ProtocolEntry.Note), do: gettext("Note")
-  defp protocol_type_type_name(Hygeia.CaseContext.ProtocolEntry.Email), do: gettext("Email")
-  defp protocol_type_type_name(Hygeia.CaseContext.ProtocolEntry.Sms), do: gettext("SMS")
 end

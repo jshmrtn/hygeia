@@ -13,6 +13,9 @@ defmodule Hygeia.Jobs.Supervisor do
 
     _env ->
       @jobs [
+        # Task Supervisor
+        {Task.Supervisor, name: Hygeia.Jobs.TaskSupervisor},
+
         # Refresh Stats Periodically
         {Highlander,
          {RefreshMaterializedView,
@@ -49,7 +52,15 @@ defmodule Hygeia.Jobs.Supervisor do
          {RefreshMaterializedView,
           view: :statistics_transmission_country_cases_per_day,
           name: RefreshMaterializedView.TransmissionCountryCasesPerDay}},
-        {Highlander, Hygeia.Jobs.SendCaseClosedEmail}
+
+        # Message Triggers
+        {Highlander, Hygeia.Jobs.SendCaseClosedEmail},
+
+        # Email Spooling
+        {Highlander, Hygeia.Jobs.SendEmails},
+
+        # SMS Spooling
+        {Highlander, Hygeia.Jobs.SendSMS}
       ]
   end
 
