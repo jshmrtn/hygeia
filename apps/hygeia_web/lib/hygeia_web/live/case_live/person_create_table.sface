@@ -34,68 +34,110 @@
             class={{ "duplicate-accepted": accepted_duplicate }}
             id={{ "person_create_#{ changeset_uuid }" }}
           >
-            <td>
+            <td id={{ "person_create_#{ changeset_uuid }_first_name" }}>
               <HiddenInput field={{ :uuid }} />
               <HiddenInput field={{ :accepted_duplicate_human_readable_id }} />
-              <HiddenInput field={{ :first_name }} />
-              <Field class="fill-cell" name={{ :first_name }}>
-                <TextInput field={{ :first_name }} class="form-control" />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </td>
-            <td>
-              <HiddenInput field={{ :last_name }} />
-              <Field class="fill-cell" name={{ :last_name }}>
-                <TextInput field={{ :last_name }} class="form-control" />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </td>
-            <td>
-              <HiddenInput field={{ :sex }} />
-              <Field class="fill-cell" name={{ :sex }}>
-                <Select
-                  opts={{ prompt: gettext("choose sex") }}
+              <Field
+                class="fill-cell"
+                name={{ :first_name }}
+              >
+                <TextInput
                   class="form-control"
-                  options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }}
+                  id={{ "person_create_#{ changeset_uuid }_first_name_input" }}
                 />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
-            <td>
-              <HiddenInput field={{ :birth_date }} />
-              <Field class="fill-cell" name={{ :birth_date }}>
-                <DateInput field={{ :birth_date }} class="form-control" />
+            <td id={{ "person_create_#{ changeset_uuid }_last_name" }}>
+              <Field
+                class="fill-cell"
+                name={{ :last_name }}
+              >
+                <TextInput
+                  class="form-control"
+                  id={{ "person_create_#{ changeset_uuid }_last_name_input" }}
+                />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
-            <td>
-              <HiddenInput field={{ :mobile }} />
-              <Field class="fill-cell" name={{ :mobile }}>
-                <TextInput field={{ :mobile }} class="form-control" />
+            <td id={{ "person_create_#{ changeset_uuid }_sex" }}>
+              <Field
+                class="fill-cell"
+                name={{ :sex }}
+              >
+                <Select
+                  opts={{ prompt: gettext("choose sex") }}
+                  class="form-control"
+                  options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }}
+                  id={{ "person_create_#{ changeset_uuid }_sex_input" }}
+                />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
-            <td>
-              <HiddenInput field={{ :landline }} />
-              <Field class="fill-cell" name={{ :landline }}>
-                <TextInput field={{ :landline }} class="form-control" />
+            <td id={{ "person_create_#{ changeset_uuid }_birth_date" }}>
+              <Field
+                class="fill-cell"
+                name={{ :birth_date }}
+              >
+                <DateInput
+                  class="form-control"
+                  id={{ "person_create_#{ changeset_uuid }_birth_date_input" }}
+                />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
-            <td>
-              <HiddenInput field={{ :email }} />
-              <Field class="fill-cell" name={{ :email }}>
-                <TextInput field={{ :email }} class="form-control" />
+            <td id={{ "person_create_#{ changeset_uuid }_mobile" }}>
+              <Field
+                class="fill-cell"
+                name={{ :mobile }}
+              >
+                <TextInput
+                  class="form-control"
+                  id={{ "person_create_#{ changeset_uuid }_mobile_input" }}
+                />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
-            <td class="p-1">
+            <td id={{ "person_create_#{ changeset_uuid }_landline" }}>
+              <Field
+                class="fill-cell"
+                name={{ :landline }}
+              >
+                <TextInput
+                  class="form-control"
+                  id={{ "person_create_#{ changeset_uuid }_landline_input" }}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td id={{ "person_create_#{ changeset_uuid }_email" }}>
+              <Field
+                class="fill-cell"
+                name={{ :email }}
+              >
+                <TextInput
+                  class="form-control"
+                  id={{ "person_create_#{ changeset_uuid }_email_input" }}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td
+              class="p-1"
+              id={{ "person_create_#{ changeset_uuid }_address" }}
+            >
               <Inputs for={{ :address }}>
                 <HygeiaWeb.CaseLive.AddressInput id={{ {:person_address, changeset_uuid} }} />
               </Inputs>
             </td>
-            <td class="table-col-border">
-              <Field class="p-1" name={{ :tenant_uuid }}>
+            <td
+              class="table-col-border"
+              id={{ "person_create_#{ changeset_uuid }_tenant" }}
+            >
+              <Field
+                class="p-1"
+                name={{ :tenant_uuid }}
+              >
                 <HygeiaWeb.CaseLive.ModalSelect
                   id={{ {:tenant, changeset_uuid} }}
                   title={{ gettext("Tenant") }}
@@ -104,6 +146,7 @@
                       ++ Enum.map(@tenants, &({&1.name, &1.uuid}))
                   }}
                   :let={{ value: value }}
+                  id={{ "person_create_#{ changeset_uuid }_tenant_iinput" }}
                 >
                   <small>{{ elem(value, 0) }}</small>
                 </HygeiaWeb.CaseLive.ModalSelect>
@@ -111,8 +154,11 @@
               </Field>
             </td>
             <slot name="additional_row" />
-            <td>
-              <Field class="p-1" name={{ :supervisor_uuid }}>
+            <td id={{ "person_create_#{ changeset_uuid }_supervisor" }}>
+              <Field
+                class="p-1"
+                name={{ :supervisor_uuid }}
+              >
                 <HygeiaWeb.CaseLive.ModalSelect
                   id={{ {:supervisor, changeset_uuid} }}
                   title={{ gettext("Supervisor") }}
@@ -121,14 +167,21 @@
                       ++ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid}))
                   }}
                   :let={{ value: value }}
+                  id={{ "person_create_#{ changeset_uuid }_supervisor_input" }}
                 >
                   <small>{{ elem(value, 0) }}</small>
                 </HygeiaWeb.CaseLive.ModalSelect>
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
-            <td class="table-col-border">
-              <Field class="p-1" name={{ :tracer_uuid }}>
+            <td
+              class="table-col-border"
+              id={{ "person_create_#{ changeset_uuid }_tracer" }}
+            >
+              <Field
+                class="p-1"
+                name={{ :tracer_uuid }}
+              >
                 <HygeiaWeb.CaseLive.ModalSelect
                   id={{ {:tracer, changeset_uuid} }}
                   title={{ gettext("Tracer") }}
@@ -137,19 +190,23 @@
                       ++ Enum.map(@tracer_users, &({&1.display_name, &1.uuid}))
                   }}
                   :let={{ value: value }}
+                  id={{ "person_create_#{ changeset_uuid }_tracer_input" }}
                 >
                   <small>{{ elem(value, 0) }}</small>
                 </HygeiaWeb.CaseLive.ModalSelect>
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
-            <td class="table-col-border">
+            <td
+              class="table-col-border"
+              id={{ "person_create_#{ changeset_uuid }_employer" }}
+            >
               <Field class="fill-cell" name={{ :employer }}>
                 <TextInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </td>
-            <td>
+            <td id={{ "person_create_#{ changeset_uuid }_actions" }}>
               <HiddenInput field={{ :search_params_hash }} />
               <HiddenInput field={{ :suspected_duplicate_uuids }} />
               <HiddenInput field={{ :accepted_duplicate }} />
