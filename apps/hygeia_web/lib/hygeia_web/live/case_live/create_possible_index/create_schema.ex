@@ -233,8 +233,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
         {nil, nil}
 
       %Date{} = contact_date ->
-        start_date = Date.add(contact_date, 1)
-        end_date = Date.add(start_date, 8)
+        start_date = contact_date
+        end_date = Date.add(start_date, 9)
 
         start_date =
           if Date.compare(start_date, Date.utc_today()) == :lt do
