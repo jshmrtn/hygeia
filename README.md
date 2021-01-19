@@ -22,6 +22,28 @@ $ docker run \
     postgres:latest
 ```
 
+```console
+$ docker volume create sedex
+$ docker run \
+    --restart always \
+    --name minio-sedex \
+    -v sedex:/sedex-data \
+    -p 9000:9000 \
+    -d \
+    -e MINIO_ROOT_USER="root" \
+    -e MINIO_ROOT_PASSWORD="rootroot" \
+    --entrypoint=sh \
+    minio/minio:RELEASE.2021-01-16T02-19-44Z \
+    -c " \
+    ls -al / && \
+    mkdir -p /sedex-data/interface/inbox && \
+    mkdir -p /sedex-data/interface/outbox && \
+    mkdir -p /sedex-data/interface/processed && \
+    mkdir -p /sedex-data/interface/receipts && \
+    mkdir -p /sedex-data/interface/working && \
+    /usr/bin/docker-entrypoint.sh minio server /sedex-data"
+```
+
   * Install dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.setup` inside the `apps/hygeia` directory
   * Install Node.js dependencies with `npm install` inside the `apps/hygeia_web/assets` directory
