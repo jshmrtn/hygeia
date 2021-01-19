@@ -1,0 +1,465 @@
+<?xml version="1.0"?>
+<!-- 
+  sedex Envelope.
+
+  2007-08-08 Envelope, Receipt und Error sind nun in einem Namespace 
+             zusammengefasst.(Igor Metz, Glue AG).
+  2007-08-03 Erste Version nach Review mit W. Grolimund. (Igor Metz, Glue AG).
+  2007-09-04 Das Element messageType ist nicht mehr über den Typ mit den
+             eCH-0020 Meldegründen gekoppelt, sondern ist als int ausgelegt.
+             Den Kantonen werden eigene Nummernbereiche zugeteilt. (Igor Metz, Glue AG).
+  2007-09-06 Element errors und seinen Typ entfernt; die bisher vorhandenen 3
+             Schema Files zu einem einzigen zusammengefasst. (Igor Metz, Glue AG).
+  2007-09-12 Korrektur an participantIdType: Pattern hat 0-sedex-0 nicht
+             erkannt. (Igor Metz, Glue AG).
+  2007-09-20 Typ des Status Code an die Dokumentation angepasst; in der Dok vorhandene,
+             noch fehlende Status Code Werte aufgenommen. (Igor Metz, Glue AG).
+  2007-10-04 Definition von participantIdType an Inhalt des Kap. 5.9 des sedex
+             Handbuchs angepasst. (Igor Metz, Glue AG).
+  2007-11-16 Neuer Statuscode 202. (Igor Metz, Glue AG)
+  2007-12-17 Neuer Statuscode 312. (Igor Metz, Glue AG)
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eCH-0090="http://www.ech.ch/xmlns/eCH-0090/1"
+	targetNamespace="http://www.ech.ch/xmlns/eCH-0090/1"
+	elementFormDefault="qualified">
+
+  <xs:simpleType name="messageIdType">
+    <xs:annotation>
+      <xs:documentation xml:lang="de">
+        Datentyp der Meldungs ID. Zeichenkette mit max. 36 Zeichen, die Ziffern, Buchstaben 
+        oder Bindestriche enthalten kann. Die Zeichenkette ist lang genug, um eine UUID 
+        (vgl. RFC 4122), einen 64 Bit Integer oder eine Art von Schlüssel darzustellen.
+        Beispiele: f81d4fae-7dec-11d0-a765-00a0c91e6bf6, 7F454C4601020100
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([a-zA-Z]|[0-9]|-){1,36}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="participantIdType">
+    <xs:annotation>
+      <xs:documentation xml:lang="de">
+        Datentyp der sedex Teilnehmer ID.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="T?[1-9]-[0-9A-Z]+-[0-9]+|T?0-sedex-0"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="messageTypeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="de">
+        Typ des Meldungstyp. 
+        Der Meldungstyp definiert die Funktion eines Datenpakets.
+        Der Wertebereich ist in Nummerierungsbereiche unterteilt. 
+        Der Bereich 0000000 -	0099999 liegt in der Hoheit von eCH und BFS,
+        die Bereiche nn00000 - nn99999 in der Hoheit des jeweiligen Kantons,
+        wo nn die BFS Nummer des Kantons gemäss historisiertem Gemeindeverzeichnis
+        bezeichnet. Der Meldungstyp definiert 
+        zusammen mit der Meldungsklasse (messageClass) implizit, welcher Art 
+        (Dateityp bzw. XML Schema) die Nutzdaten der Meldung sind. Der Meldungstyp 
+        ist zusammen mit senderId und recipientId für das Routing der Meldung relevant.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="2699999"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="nameValuePairType">
+    <xs:annotation>
+      <xs:documentation xml:lang="de">
+        Datentyp der die Übergabe von Daten für Testzwecke.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  
+	<xs:complexType name="envelopeType">
+		<xs:sequence>
+		  <xs:element name="messageId" type="eCH-0090:messageIdType" >
+		    <xs:annotation>
+		      <xs:documentation xml:lang="de">
+		        Eindeutige ID der Meldung. Diese ID wird von der sendenden Anwendung vergeben. 
+		        Die messageId muss im Kontext der sendenden Anwendung eindeutig sein. Sie dient 
+		        der sendenden Anwendung dazu, eine Meldung und eine Antwort auf diese Meldung zu 
+		        korrelieren. Im Kontext des sedex Systems ist das Paar (senderId, messageId) eindeutig.
+		      </xs:documentation>
+		    </xs:annotation>
+		  </xs:element>
+		  <xs:element name="messageType" type="eCH-0090:messageTypeType">
+		    <xs:annotation>
+		      <xs:documentation xml:lang="de">
+		        Meldungstyp. Der Meldungstyp definiert die Funktion eines Datenpakets.
+		      </xs:documentation>
+		    </xs:annotation>
+		  </xs:element>
+		  <xs:element name="messageClass" type="xs:int">
+		    <xs:annotation>
+		      <xs:documentation xml:lang="de">
+		        Meldungsklasse. Definiert innerhalb eines Meldungstyps die Bedeutung der Meldung. 
+		        Die folgenden Werte sind vordefiniert:·	0 = Message. Kennzeichnung der initialen Meldung;
+		        1 = Response. Kennzeichnet die Antwort auf eine Meldung;
+		        2 = Receipt. Kennzeichnet eine applikatorische Quittung (Empfangsbestätigung), welche 
+		        eine empfangende Anwendung der sendenden Anwendung schickt. Eine solche Quittung wird ggf. 
+		        geschickt, wenn bis zur Lieferung einer Antwort ein längerer Zeitraum vergehen kann, oder 
+		        wenn der Empfänger gar keine Antwort senden wird.; 
+		        3 = Error. Kennzeichnet eine Fehlermeldung, welche eine empfangende 
+		        Anwendung der sendenden Anwendung schickt;·	4 – 9 = Reserviert für spätere Erweiterungen; 
+		        71 – 77 = Reserviert für spätere Erweiterungen. Alle anderen Werte können für spezifische 
+		        Bedürfnisse der Anwendungen genutzt werden.
+		      </xs:documentation>
+		    </xs:annotation>
+		  </xs:element>
+			  <xs:element name="referenceMessageId" type="eCH-0090:messageIdType" minOccurs="0" >
+			    <xs:annotation>
+			      <xs:documentation xml:lang="de">
+			        Dieses Element wird von einer Anwendung gesetzt, wenn sie einer anderen Anwendung 
+			        eine Antwort oder eine Fehlermeldung auf eine Meldung sendet. Das Element enthält 
+			        die ID der ursprünglich gesendeten Meldung. Muss gesetzt werden, wenn 
+			        messageClass = 1 (Response), = 2 (Receipt) oder 3 (Error) ist.
+			      </xs:documentation>
+			    </xs:annotation>
+			  </xs:element>
+		  <xs:element name="senderId" type="eCH-0090:participantIdType">
+		    <xs:annotation>
+		      <xs:documentation xml:lang="de">
+		        Absender der Meldung. Bezeichnet eindeutig die Amtsstelle, welche die Meldung sendet.
+		      </xs:documentation>
+		    </xs:annotation>
+		  </xs:element>
+		  <xs:element name="recipientId" type="eCH-0090:participantIdType" maxOccurs="unbounded" >
+		    <xs:annotation>
+		      <xs:documentation xml:lang="de">
+		        Empfänger der Meldung. Bezeichnet eindeutig die Amtsstelle, welche die Meldung empfangen soll.
+		      </xs:documentation>
+		    </xs:annotation>
+		  </xs:element>
+		  <xs:element name="eventDate" type="xs:dateTime" >
+		    <xs:annotation>
+		      <xs:documentation xml:lang="de">
+		        Ereignisdatum.Datum, an dem das Ereignis, auf welches sich die Nutzdaten beziehen, 
+		        geschah. Das Ereignisdatum kann von der empfangenden Anwendung als Bestandteil der 
+		        Nutzdaten (z.B. Wegzug, Zuzug, Stichtag Datenlieferung für die Statistik, etc.) 
+		        betrachtet werden.
+		      </xs:documentation>
+		    </xs:annotation>
+		  </xs:element>
+		  <xs:element name="messageDate" type="xs:dateTime" >
+		    <xs:annotation>
+		      <xs:documentation xml:lang="de">
+		        Versanddatum.Datum (Zeitstempel), an dem die sendende Anwendung die Meldung dem 
+		        Adapter in den Ausgangsorder gelegt hat.
+		      </xs:documentation>
+		    </xs:annotation>
+		  </xs:element>
+		  <xs:element name="loopback" minOccurs="0">
+		    <xs:annotation>
+		      <xs:documentation xml:lang="de">
+		        Markiert die Meldung als eine Loopbackmeldung, also eine Meldung, die der empfangende 
+		        Adapter für den Empfang wie eine herkömmliche Meldung behandelt, sie aber nicht der 
+		        empfangenden Anwendung zur Verarbeitung weiterleitet. Dient dazu, Loopback-Test 
+		        durchzuführen.
+		      </xs:documentation>
+		    </xs:annotation>
+		    <xs:complexType>
+		      <xs:attribute name="authorise" type="xs:boolean" use="required">
+		        <xs:annotation>
+		          <xs:documentation xml:lang="de">
+		            Das Attribut definiert, ob die sedex Berechtigungsprüfung für diese Loopback 
+		            Meldung geprüft werden soll. Wird der Wert auf true gesetzt, so kann die
+		            Meldung verwendet werden, um zu prüfen, ob ein Sender einem Empfänger eine
+		            Meldung eines bestimmten Typs senden darf. Wird der Wert auf false gesetzt,
+		            so kann die Meldung für einen reinen Verbindungstest zwischen Adaptern
+		            verwendet werden (Ping).
+		          </xs:documentation>
+		        </xs:annotation>
+		      </xs:attribute>
+		    </xs:complexType>
+		  </xs:element>
+		  <xs:element name="testData" type="eCH-0090:nameValuePairType" minOccurs="0" maxOccurs="unbounded">
+		    <xs:annotation>
+		      <xs:documentation xml:lang="de">
+		        Kann von einer sendenden Anwendung für Testzwecke verwendet werden, um den empfangenden 
+		        Simulator zu steuern. Die Semantik der übergebenen Wert ist  Sache des empfangenden 
+		        Simulators.
+		      </xs:documentation>
+		    </xs:annotation>
+		  </xs:element>
+		</xs:sequence>
+	  <xs:attribute name="version" use="required">
+	    <xs:annotation>
+	      <xs:documentation xml:lang="de">
+	        Versionsnummer des XML Schemas, welches dieses Element beschreibt.
+	      </xs:documentation>
+	    </xs:annotation>
+	    <xs:simpleType>
+	      <xs:restriction base="xs:string">
+	        <xs:enumeration value="1.0"/>
+	      </xs:restriction>
+	    </xs:simpleType>
+	  </xs:attribute>
+	</xs:complexType>
+
+  <xs:simpleType name="string255Type">
+    <xs:annotation>
+      <xs:documentation xml:lang="de">
+        String mit maximaler Länge 255.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="255"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="statusCodeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="de">
+        Aufzählung der möglichen Statuscodes, wie sie in der Quittung vorkommen können.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="100">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            OK. Meldung ist korrekt und vollständig übermittelt worden.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="200">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Invalid envelope syntax.	Der Umschlag entspricht nicht dem erwarteten 
+            XML Schema für Umschläge, bzw. liegt in einer nicht erwarteten Version vor.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="201">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Duplicate message ID.	Der Umschlag enthält eine Meldungs-ID, die der 
+            Adapter schon in seiner Status Datenbank schon führt. 
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="202">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            No payload found.	Eine sedex Meldung besteht immer aus zwei Dateien: Umschlag und Nutzdaten 
+            (siehe Sedex Handbuch). Die sendende Anwendung hat nur einen Umschlag, aber keine Nutzdaten 
+            bereitgestellt.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="300">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Unknown address.	Die im Umschlag angegebene senderId oder recipientId 
+            ist im sedex TV nicht bekannt.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="301">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Die im Umschlag angegebene recipientId ist im sedex TV nicht bekannt.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="302">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Die im Adapter konfigurierte ID des Adapters ist im sedex TV nicht bekannt. 
+            (Kann nur bei zentralisierten Infrastrukturen auftreten.)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="303">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Der im Umschlag aufgeführte Meldungstyp ist nicht bekannt.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="304">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Die im Umschlag aufgeführte Meldungsklasse ist nicht bekannt.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="310">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Not allowed to send.	Dieser Absender darf diese Meldung nicht an diesen Empfänger senden.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="311">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Not allowed to receive.	Dieser Empfänger darf diese Meldung nicht von diesem 
+            Absender empfangen.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="312">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            User certificate not valid. Das Zertifikat des Teilnehmers ist entweder annulliert worden,
+            oder es ist ungültig.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="320">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Message expired.	Der Empfänger hat die Meldung nicht innerhalb des von sedex 
+            geforderten Zeitraumes von einem Monat abgeholt.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="400">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Network error.	Allgemeines Netzwerkproblem.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="401">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            OSCI hub not reachable.	Keine Verbindung zum OSCI Intermediär möglich.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="402">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Das sedex TV ist nicht erreichbar.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="403">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Das sedex Logging ist nicht erreichbar. 
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="500">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Internal error.	Der Adapter kann die Daten nicht senden, weil ein interner 
+            Fehler aufgetreten ist. Weitere Informationen stehen im Element
+            statusInfo angefügt. 
+            Details zu dem Fehler sind dem Log des Adapters zu entnehmen.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="receiptType">
+    <xs:sequence>
+      <xs:element name="eventDate" type="xs:dateTime" >
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Zeitpunkt des Ereignisses, welches zu der Quittung führt. Z.B. Zeitpunkt, wann 
+            die Meldung beim empfangenden Adapter ange-kommen ist, oder wann der 
+            Übermittlungsfehler aufgetreten ist.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="statusCode" type="eCH-0090:statusCodeType" >
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Status der Meldung: OK oder Fehlercode.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="statusInfo" type="eCH-0090:string255Type" >
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Infotext zum Statuscode. Enthält allfällige weitere Informationen, die für den 
+            Systemmenschen interessant sein könnten.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="messageId" type="eCH-0090:messageIdType" >
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            ID der Meldung, auf die sich die Quittung bezieht.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="messageType" type="eCH-0090:messageTypeType" >
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Meldetyp der Meldung, auf die sich die Quittung bezieht.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="messageClass" type="xs:int">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Meldungsklasse der Meldung, auf die sich die Quittung bezieht.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="senderId" type="eCH-0090:participantIdType">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Absender der Meldung, auf die sich die Quittung bezieht.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="recipientId" type="eCH-0090:participantIdType">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">
+            Empfänger der Meldung, auf die sich die Quittung bezieht.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="version" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="de">
+          Versionsnummer des XML Schemas, welches dieses Element beschreibt.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="1.0"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  
+  <xs:element name="envelope" type="eCH-0090:envelopeType" >
+    <xs:annotation>
+      <xs:documentation xml:lang="de">
+        Umschlag einer sedex Meldung.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  
+  <xs:element name="receipt" type="eCH-0090:receiptType" >
+    <xs:annotation>
+      <xs:documentation xml:lang="de">
+        Versandquittung einer sedex Meldung. Versandquittungen werden vom sedex Adapter
+        ausgestellt. Sie bestätigen, das eine Meldung auf der Gegenseite angekommen ist,
+        oder ob die Meldung nicht ausgeliefert werden konnte. Sie bestätigen aber in
+        keinem Fall, dass die Gegenseite die Meldung verarbeitet hat.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  
+</xs:schema>

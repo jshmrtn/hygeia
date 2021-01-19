@@ -41,7 +41,7 @@ $ docker run \
     mkdir -p /sedex-data/interface/processed && \
     mkdir -p /sedex-data/interface/receipts && \
     mkdir -p /sedex-data/interface/working && \
-    /usr/bin/docker-entrypoint.sh minio server /sedex-data"
+    /usr/bin/docker-entrypoint.sh minio server /sedex-data/interface"
 ```
 
   * Install dependencies with `mix deps.get`
@@ -88,3 +88,12 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   * `IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN` (default: json) - IAM Login for User Sync
 * Email
   * `DKIM_PATH` (default `apps/hygeia/priv/test/dkim`) - Base Path for DKIM Certificates
+* Sedex
+  * `SEDEX_FILESYSTEM_ADAPTER` (default `filesystem`) - Filesystem Adapter for the resulting files
+    * `filesystem` - Store on local Filesystem
+    * `minio` - Store via Minio
+  * `SEDEX_FILESYSTEM_MINIO_USER` (default `root`) - Minio Username
+  * `SEDEX_FILESYSTEM_MINIO_PASSWORD` (default `rootroot`) - Minio Password
+  * `SEDEX_FILESYSTEM_MINIO_SCHEME` (default `http`) - Mini Access Scheme
+  * `SEDEX_FILESYSTEM_MINIO_PORT` (default `9000`) - Minio Port
+  * `SEDEX_FILESYSTEM_MINIO_HOST` (default `localhost`) - Minio Host

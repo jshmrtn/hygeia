@@ -126,6 +126,24 @@ case System.fetch_env("DKIM_PATH") do
   :error -> nil
 end
 
+case System.get_env("SEDEX_FILESYSTEM_ADAPTER", "filesystem") do
+  "filesystem" ->
+    config :sedex, Sedex.Storage, adapter: Sedex.Storage.Filesystem
+
+  "minio" ->
+    config :sedex, Sedex.Storage, adapter: Sedex.Storage.Minio
+
+    config :sedex, Sedex.Storage.Minio,
+      access_key_id: System.get_env("SEDEX_FILESYSTEM_MINIO_USER", "root"),
+      secret_access_key: System.get_env("SEDEX_FILESYSTEM_MINIO_PASSWORD", "rootroot"),
+      scheme: System.get_env("SEDEX_FILESYSTEM_MINIO_SCHEME", "http") <> "://",
+      port: "SEDEX_FILESYSTEM_MINIO_PORT" |> System.get_env("9000") |> String.to_integer(),
+      host: System.get_env("SEDEX_FILESYSTEM_MINIO_HOST", "localhost")
+
+  other ->
+    raise "#{other} is not a valid value for SEDEX_FILESYSTEM_ADAPTER"
+end
+
 config :hygeia, Hygeia.TenantContext.Tenant.Smtp,
   sender_hostname: System.get_env("SMTP_SENDER_HOSTNAME", "smtp.covid19-tracing.ch")
 
