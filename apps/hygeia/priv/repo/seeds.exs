@@ -33,12 +33,7 @@ tenants =
          from_email: "Info.ContactTracing@sg.ch",
          outgoing_mail_configuration: %{
            __type__: "smtp",
-           enable_relay: true,
-           relay: %{
-             server: "postfix-relay.postfix-relay",
-             hostname: "smtp.covid19-tracing.ch",
-             port: 25
-           }
+           enable_relay: false
          },
          outgoing_sms_configuration: %{
            __type__: "websms",
@@ -54,12 +49,7 @@ tenants =
          from_email: "Info.ContactTracing@sg.ch",
          outgoing_mail_configuration: %{
            __type__: "smtp",
-           enable_relay: true,
-           relay: %{
-             server: "postfix-relay.postfix-relay",
-             hostname: "smtp.covid19-tracing.ch",
-             port: 25
-           }
+           enable_relay: false
          },
          outgoing_sms_configuration: %{
            __type__: "websms",
@@ -75,11 +65,7 @@ tenants =
          from_email: "Info.ContactTracing@sg.ch",
          outgoing_mail_configuration: %{
            __type__: "smtp",
-           relay: %{
-             server: "postfix-relay.postfix-relay",
-             hostname: "smtp.covid19-tracing.ch",
-             port: 25
-           }
+           enable_relay: false
          },
          outgoing_sms_configuration: %{
            __type__: "websms",

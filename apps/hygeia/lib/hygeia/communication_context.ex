@@ -122,7 +122,7 @@ defmodule Hygeia.CommunicationContext do
           end)
 
         create_email(case, %{
-          resipient: to_email,
+          recipient: to_email,
           subject: subject,
           body: body,
           status: :in_progress,
