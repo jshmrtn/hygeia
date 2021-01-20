@@ -30,9 +30,10 @@
   Sie hatten engen Kontakt mit einer Person, die positiv auf das Coronavirus getestet wurde. Sie haben damit eine grössere Wahrscheinlichkeit, dass Sie sich angesteckt haben und in den nächsten Tagen erkranken. Daher müssen Sie für 10 Tage in Quarantäne (gestützt auf Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG). Ziel dieser Quarantäne ist es, die Ausbreitung des Coronavirus einzudämmen..
 </p>
 
-<%= if length(@case.received_transmissions) > 0 && List.first(@case.received_transmissions).date != nil do %>
+<% last_contact_date = Enum.max(Enum.map(@case.received_transmissions, &(&1.date)), Date, fn -> nil end) %>
+<%= if last_contact_date != nil do %>
   <p>
-    Der letzte Kontakt mit der erkrankten Person war am <%= Cldr.Date.to_string!(List.first(@case.received_transmissions).date, HygeiaCldr) %>. Die 10 Tage berechnen sich ab diesem Datum.
+    Der letzte Kontakt mit der erkrankten Person war am <%= Cldr.Date.to_string!(last_contact_date, HygeiaCldr) %>. Die 10 Tage berechnen sich ab diesem Datum.
   </p>
 <% end %>
 
