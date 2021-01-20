@@ -97,7 +97,7 @@ defmodule HygeiaUserSync do
     stats =
       results
       |> Map.keys()
-      |> Enum.reduce(%{insert: 0, update: 0, delete: 0}, fn {type, _sub}, acc ->
+      |> Enum.reduce(%{insert: 0, update: 0}, fn {type, _sub}, acc ->
         Map.update!(acc, type, &(&1 + 1))
       end)
 
@@ -116,7 +116,7 @@ defmodule HygeiaUserSync do
 
   defp merge(
          %User{iam_sub: sub} = user,
-         [%UserGrantView{user_id: sub} | _other_grants] = grants,
+         grants,
          multi,
          tenants
        ) do
@@ -132,12 +132,6 @@ defmodule HygeiaUserSync do
       changeset = UserContext.change_user(user, attrs)
       Ecto.Multi.update(multi, {:update, sub}, changeset)
     end
-  end
-
-  defp merge(%User{iam_sub: sub} = user, [], multi, _tenants) do
-    Logger.debug("Deleting user #{sub}")
-
-    Multi.delete(multi, {:delete, sub}, user)
   end
 
   defp to_user_attrs(
