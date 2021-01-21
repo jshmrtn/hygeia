@@ -126,6 +126,9 @@ case System.fetch_env("DKIM_PATH") do
   :error -> nil
 end
 
+config :hygeia, Hygeia.TenantContext.Tenant.Smtp,
+  sender_hostname: System.get_env("SMTP_SENDER_HOSTNAME", "smtp.covid19-tracing.ch")
+
 config :hygeia_iam,
   organisation_id: System.get_env("IAM_ORGANISATION_ID", "***REMOVED***"),
   project_id: System.get_env("IAM_PROJECT_ID", "***REMOVED***")
