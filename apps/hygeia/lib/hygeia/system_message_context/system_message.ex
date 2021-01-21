@@ -102,6 +102,6 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
 
     def authorized?(_system_message, action, user, _meta)
         when action in [:create, :update, :delete],
-        do: Enum.any?([:admin, :webmaster], &User.has_role?(user, &1, :any))
+        do: Enum.any?([:super_user, :admin, :webmaster], &User.has_role?(user, &1, :any))
   end
 end
