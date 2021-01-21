@@ -64,15 +64,7 @@ defmodule Hygeia.TenantContext.Tenant.Smtp do
     [
       relay: relay,
       port: 25,
-      hostname: :hygeia |> Application.fetch_env!(__MODULE__) |> Keyword.fetch!(:sender_hostname),
-      tls_options: [
-        versions: ['tlsv1', 'tlsv1.1', 'tlsv1.2', 'tlsv1.3'],
-        verify: :verify_peer,
-        verify_fun: VerifyFun,
-        customize_hostname_check: [match_fun: :public_key.pkix_verify_hostname_match_fun(:https)],
-        cacertfile: :certifi.cacertfile(),
-        depth: 3
-      ]
+      hostname: :hygeia |> Application.fetch_env!(__MODULE__) |> Keyword.fetch!(:sender_hostname)
     ]
   end
 
