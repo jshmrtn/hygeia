@@ -3,6 +3,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
 
   import HygeiaGettext
 
+  require Logger
+
   @general_field_names %{
     human_readable_id: "Human Readable ID",
     inserted_at: "Inserted At",
@@ -283,6 +285,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       do: pgettext("Field", unquote(translation))
   end
 
-  def schema_field_name(field, schema),
-    do: raise("Field Name for #{inspect(schema)}/#{field} is not defined")
+  def schema_field_name(field, schema) do
+    Logger.warn("Field Name for #{inspect(schema)}/#{field} is not defined")
+    field
+  end
 end
