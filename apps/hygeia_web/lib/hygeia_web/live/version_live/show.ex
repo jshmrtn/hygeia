@@ -34,7 +34,10 @@ defmodule HygeiaWeb.VersionLive.Show do
         unless authorized?(resource, :versioning, get_auth(socket)), do: throw(:unauthorized)
     end
 
-    versions = PaperTrail.get_versions(schema, id, [])
+    versions =
+      schema
+      |> PaperTrail.get_versions(id, [])
+      |> Enum.sort_by(& &1.inserted_at, {:desc, DateTime})
 
     socket =
       assign(socket,
