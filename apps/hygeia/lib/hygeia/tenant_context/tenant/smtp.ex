@@ -61,7 +61,19 @@ defmodule Hygeia.TenantContext.Tenant.Smtp do
   def gen_smtp_options(%__MODULE__{enable_relay: false}, recipient_email) do
     relay = recipient_email |> String.split("@") |> List.last()
 
-    [relay: relay, port: 25]
+    [
+      relay: relay,
+      port: 25,
+      hostname: :hygeia |> Application.fetch_env!(__MODULE__) |> Keyword.fetch!(:sender_hostname),
+      tls_options: [
+        versions: ['tlsv1', 'tlsv1.1', 'tlsv1.2', 'tlsv1.3'],
+        verify: :verify_peer,
+        verify_fun: VerifyFun,
+        customize_hostname_check: [match_fun: :public_key.pkix_verify_hostname_match_fun(:https)],
+        cacertfile: :certifi.cacertfile(),
+        depth: 3
+      ]
+    ]
   end
 
   def gen_smtp_options(
@@ -74,6 +86,8 @@ defmodule Hygeia.TenantContext.Tenant.Smtp do
   defimpl Hygeia.EmailSender do
     alias Hygeia.CommunicationContext.Email
     alias Hygeia.TenantContext.Tenant.Smtp
+
+    require Logger
 
     @spec send(configuration :: Smtp.t(), email :: Email.t()) ::
             Email.Status.t()
@@ -102,13 +116,47 @@ defmodule Hygeia.TenantContext.Tenant.Smtp do
       |> :gen_smtp_client.send_blocking(send_options ++ [retries: 10])
       |> case do
         binary when is_binary(binary) -> :success
-        {:error, :no_more_hosts, {:permanent_failure, _host, _reason}} -> :permanent_failure
-        {:error, :retries_exceeded, {:permanent_failure, _host, _reason}} -> :permanent_failure
-        {:error, :retries_exceeded, {_type, _host, _reason}} -> :temporary_failure
+        {:error, :no_more_hosts, error} -> handle_error(error)
+        {:error, :retries_exceeded, error} -> handle_error(error)
       end
     catch
-      {:permanent_failure, _message} -> :permanent_failure
-      {_type, _message} -> :temporary_failure
+      {type, _reason} = error when is_atom(type) -> handle_error(error)
+    end
+
+    defp handle_error({:permanent_failure, host, reason}) do
+      Logger.warn("""
+      Permanently failed to send Email via #{host}:
+      #{inspect(reason)}
+      """)
+
+      :permanent_failure
+    end
+
+    defp handle_error({:permanent_failure, reason}) do
+      Logger.warn("""
+      Permanently failed to send Email:
+      #{inspect(reason)}
+      """)
+
+      :permanent_failure
+    end
+
+    defp handle_error({type, host, reason}) do
+      Logger.warn("""
+      Temporary failed to send Email via #{host} (#{type}):
+      #{inspect(reason)}
+      """)
+
+      :temporary_failure
+    end
+
+    defp handle_error({type, reason}) do
+      Logger.warn("""
+      Temporary failed to send Email (#{type}):
+      #{inspect(reason)}
+      """)
+
+      :temporary_failure
     end
   end
 end
