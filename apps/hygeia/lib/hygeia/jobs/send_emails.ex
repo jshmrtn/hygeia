@@ -10,6 +10,8 @@ defmodule Hygeia.Jobs.SendEmails do
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
 
+  require Logger
+
   @default_send_interval_ms (case(Mix.env()) do
                                :dev -> :timer.seconds(30)
                                _env -> :timer.minutes(5)
@@ -90,19 +92,31 @@ defmodule Hygeia.Jobs.SendEmails do
 
   def handle_info(:send, state) do
     Repo.transaction(fn ->
+      emails = CommunicationContext.list_emails_to_send()
+
       Hygeia.Jobs.TaskSupervisor
       |> Task.Supervisor.async_stream(
-        CommunicationContext.list_emails_to_send(),
+        emails,
         &send(&1),
         max_concurrency: 10,
-        ordered: false
+        ordered: true,
+        timeout: 30_000,
+        on_timeout: :kill_task
       )
-      |> Enum.reduce(Ecto.Multi.new(), fn {:ok,
-                                           {%Email{uuid: uuid} = email, retried_at, new_status}},
-                                          acc ->
-        Ecto.Multi.run(acc, uuid, fn _repo, _before ->
-          CommunicationContext.update_email(email, %{status: new_status, last_try: retried_at})
-        end)
+      |> Enum.zip(emails)
+      |> Enum.reduce(Ecto.Multi.new(), fn
+        {{:exit, :timeout}, %Email{uuid: uuid} = email}, acc ->
+          Ecto.Multi.run(acc, uuid, fn _repo, _before ->
+            CommunicationContext.update_email(email, %{
+              status: :temporary_failure,
+              last_try: DateTime.utc_now()
+            })
+          end)
+
+        {{:ok, {retried_at, new_status}}, %Email{uuid: uuid} = email}, acc ->
+          Ecto.Multi.run(acc, uuid, fn _repo, _before ->
+            CommunicationContext.update_email(email, %{status: new_status, last_try: retried_at})
+          end)
       end)
       |> Repo.transaction()
     end)
@@ -119,20 +133,42 @@ defmodule Hygeia.Jobs.SendEmails do
                tenant: %{outgoing_mail_configuration: outgoing_mail_configuration}
              } = email
            ) do
-        {email, DateTime.utc_now(), Hygeia.EmailSender.send(outgoing_mail_configuration, email)}
+        {DateTime.utc_now(), Hygeia.EmailSender.send(outgoing_mail_configuration, email)}
+      rescue
+        error ->
+          Logger.error("""
+          Uncaught Error while sending email:
+          #{inspect(error, true)}
+          """)
+
+          {DateTime.utc_now(), :temporary_failure}
+      catch
+        error ->
+          Logger.error("""
+          Uncaught Error while sending email:
+          #{inspect(error, true)}
+          """)
+
+          {DateTime.utc_now(), :temporary_failure}
+
+        :exit, error ->
+          Logger.error("""
+          Uncaught Error while sending email:
+          #{inspect({:exit, error}, true)}
+          """)
+
+          {DateTime.utc_now(), :temporary_failure}
       end
 
     _env ->
-      defp send(%Email{message: message} = email) do
-        require Logger
-
+      defp send(%Email{message: message} = _email) do
         Logger.info("""
         Email Sent:
 
         #{message}
         """)
 
-        {email, DateTime.utc_now(), :success}
+        {DateTime.utc_now(), :success}
       end
   end
 end
