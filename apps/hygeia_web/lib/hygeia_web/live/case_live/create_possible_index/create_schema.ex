@@ -205,8 +205,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       nil ->
         {start_date, end_date} = phase_dates(date)
 
-        Ecto.Changeset.put_embed(
-          changeset,
+        changeset
+        |> Ecto.Changeset.put_embed(
           :phases,
           existing_phases ++
             [
@@ -217,6 +217,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
               }
             ]
         )
+        |> Ecto.Changeset.put_change(:status, :first_contact)
 
       %Case.Phase{} ->
         changeset

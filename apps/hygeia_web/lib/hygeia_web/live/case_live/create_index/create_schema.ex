@@ -171,11 +171,12 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
               }
           end)
 
-        Ecto.Changeset.put_embed(
-          changeset,
+        changeset
+        |> Ecto.Changeset.put_embed(
           :phases,
           status_changed_phases ++ [%Case.Phase{details: %Case.Phase.Index{}}]
         )
+        |> Ecto.Changeset.put_change(:status, :first_contact)
 
       %Case.Phase{} ->
         changeset
