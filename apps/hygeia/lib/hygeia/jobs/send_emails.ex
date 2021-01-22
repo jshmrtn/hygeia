@@ -138,7 +138,7 @@ defmodule Hygeia.Jobs.SendEmails do
         error ->
           Logger.error("""
           Uncaught Error while sending email:
-          #{inspect(error, true)}
+          #{inspect(error, pretty: true)}
           """)
 
           {DateTime.utc_now(), :temporary_failure}
@@ -146,7 +146,7 @@ defmodule Hygeia.Jobs.SendEmails do
         error ->
           Logger.error("""
           Uncaught Error while sending email:
-          #{inspect(error, true)}
+          #{inspect(error, pretty: true)}
           """)
 
           {DateTime.utc_now(), :temporary_failure}
@@ -154,7 +154,7 @@ defmodule Hygeia.Jobs.SendEmails do
         :exit, error ->
           Logger.error("""
           Uncaught Error while sending email:
-          #{inspect({:exit, error}, true)}
+          #{inspect({:exit, error}, pretty: true)}
           """)
 
           {DateTime.utc_now(), :temporary_failure}
