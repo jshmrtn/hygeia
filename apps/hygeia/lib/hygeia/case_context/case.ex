@@ -6,6 +6,7 @@ defmodule Hygeia.CaseContext.Case do
 
   import Ecto.Query
   import EctoEnum
+  import HygeiaGettext
 
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.Hospitalization
@@ -161,6 +162,7 @@ defmodule Hygeia.CaseContext.Case do
     |> cast_embed(:hospitalizations)
     |> cast_embed(:monitoring)
     |> cast_embed(:phases, required: true)
+    |> validate_phases_linear()
     |> cast_many_to_many(:related_organisations)
   end
 
@@ -201,6 +203,39 @@ defmodule Hygeia.CaseContext.Case do
 
         put_assoc(changeset, field, related_organisations)
     end
+  end
+
+  defp validate_phases_linear(changeset) do
+    put_embed(
+      changeset,
+      :phases,
+      changeset
+      |> fetch_change(:phases)
+      |> case do
+        :error -> changeset |> fetch_field!(:phases) |> Enum.map(&Phase.changeset(&1, %{}))
+        {:ok, phases} -> phases
+      end
+      |> Enum.chunk_every(2, 1)
+      |> Enum.map(fn
+        [phase] ->
+          phase
+
+        [phase_before, phase_after] ->
+          with %Date{} = end_date_before <- fetch_field!(phase_before, :end),
+               %Date{} = start_date_after <- fetch_field!(phase_after, :start),
+               :gt <- Date.compare(end_date_before, start_date_after) do
+            add_error(
+              phase_before,
+              :end,
+              dgettext("errors", "end must be before or equal to next phase start")
+            )
+          else
+            nil -> phase_before
+            :eq -> phase_before
+            :lt -> phase_before
+          end
+      end)
+    )
   end
 
   defimpl Hygeia.Authorization.Resource do

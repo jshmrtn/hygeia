@@ -370,6 +370,15 @@
                         </div>
                         <div class="row">
                           <div class="col">
+                            <Field name={{ :symptom_start }} class="form-group">
+                              <HygeiaWeb.FieldLabel />
+                              <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
+                              <ErrorTag class="d-block invalid-feedback" />
+                            </Field>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
                             <Field name={{ :test }} class="form-group">
                               <HygeiaWeb.FieldLabel />
                               <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>

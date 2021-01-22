@@ -125,7 +125,13 @@ defmodule HygeiaWeb.Helpers.Case do
         )
 
       {start_date, end_date} ->
-        Cldr.Interval.to_string!(Date.range(start_date, end_date), HygeiaCldr)
+        range =
+          case Date.compare(start_date, end_date) do
+            :gt -> Date.range(end_date, start_date)
+            other when other in [:lt, :eq] -> Date.range(start_date, end_date)
+          end
+
+        Cldr.Interval.to_string!(range, HygeiaCldr)
     end
   end
 

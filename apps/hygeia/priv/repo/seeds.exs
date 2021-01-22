@@ -332,7 +332,8 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         test: ~D[2020-10-11],
         laboratory_report: ~D[2020-10-12],
         test_kind: :pcr,
-        result: :positive
+        result: :positive,
+        symptom_start: ~D[2020-10-10]
       },
       external_references: [
         %{

@@ -50,7 +50,8 @@ defmodule Hygeia.CaseContext.Case.Clinical do
           test_kind: TestKind.t() | nil,
           result: Result.t() | nil,
           sponsor: Entity.t() | nil,
-          reporting_unit: Entity.t() | nil
+          reporting_unit: Entity.t() | nil,
+          symptom_start: Date.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -62,7 +63,8 @@ defmodule Hygeia.CaseContext.Case.Clinical do
           test_kind: TestKind.t() | nil,
           result: Result.t() | nil,
           sponsor: Entity.t() | nil,
-          reporting_unit: Entity.t() | nil
+          reporting_unit: Entity.t() | nil,
+          symptom_start: Date.t() | nil
         }
 
   embedded_schema do
@@ -73,6 +75,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     field :laboratory_report, :date
     field :test_kind, TestKind
     field :result, Result
+    field :symptom_start, :date
 
     embeds_one :sponsor, Entity, on_replace: :update
     embeds_one :reporting_unit, Entity, on_replace: :update
@@ -89,7 +92,8 @@ defmodule Hygeia.CaseContext.Case.Clinical do
       :test,
       :laboratory_report,
       :test_kind,
-      :result
+      :result,
+      :symptom_start
     ])
     |> cast_embed(:sponsor)
     |> cast_embed(:reporting_unit)

@@ -131,3 +131,8 @@ msgstr ""
 #: lib/hygeia/helpers/dns.ex:23
 msgid "is not a valid hostname"
 msgstr ""
+
+#, elixir-format
+#: lib/hygeia/case_context/case.ex:230
+msgid "end must be before or equal to next phase start"
+msgstr ""

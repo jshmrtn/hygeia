@@ -47,7 +47,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       sponsor: "Sponsor",
       symptoms: "Symptoms",
       test: "Test date",
-      test_kind: "Test Kind"
+      test_kind: "Test Kind",
+      symptom_start: "Symptoms start date"
     },
     Hygeia.CaseContext.Case.Hospitalization => %{
       end: "End",
