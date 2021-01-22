@@ -44,7 +44,7 @@ defmodule HygeiaWeb.CaseLive.Create do
           [%{name: name}] -> name
           _other -> nil
         end,
-      "address" => Ecto.embedded_dump(person.address, :json)
+      "address" => person.address |> Ecto.embedded_dump(:json) |> recursive_string_keys()
     })
   end
 
@@ -56,7 +56,7 @@ defmodule HygeiaWeb.CaseLive.Create do
       "clinical" =>
         case case.clinical do
           nil -> nil
-          other -> Ecto.embedded_dump(other, :json)
+          clinical -> clinical |> Ecto.embedded_dump(:json) |> recursive_string_keys()
         end,
       "tracer_uuid" => case.tracer_uuid,
       "supervisor_uuid" => case.supervisor_uuid,
@@ -152,7 +152,10 @@ defmodule HygeiaWeb.CaseLive.Create do
         ) ::
           Ecto.Changeset.t()
   def import_into_changeset(changeset, data, schema_module) do
-    data = Enum.map(data, &Map.put(&1, :uuid, Ecto.UUID.generate()))
+    data =
+      data
+      |> Enum.map(&Map.put(&1, :uuid, Ecto.UUID.generate()))
+      |> recursive_string_keys()
 
     schema_module.changeset(
       changeset.data,
@@ -311,4 +314,16 @@ defmodule HygeiaWeb.CaseLive.Create do
       "Auftraggeber PLZ" => [:clinical, :sponsor, :address, :zip],
       "Auftraggeber Ort" => [:clinical, :sponsor, :address, :place]
     }
+
+  defp recursive_string_keys(%{} = map) when not is_struct(map) do
+    Map.new(map, fn
+      {key, value} when is_atom(key) -> {Atom.to_string(key), recursive_string_keys(value)}
+      {key, value} -> {key, recursive_string_keys(value)}
+    end)
+  end
+
+  defp recursive_string_keys(list) when is_list(list),
+    do: Enum.map(list, &recursive_string_keys/1)
+
+  defp recursive_string_keys(other), do: other
 end
