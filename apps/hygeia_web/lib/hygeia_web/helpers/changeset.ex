@@ -127,7 +127,9 @@ defmodule HygeiaWeb.Helpers.Changeset do
 
         %{} = map ->
           map
-          |> Map.values()
+          |> Enum.to_list()
+          |> Enum.sort_by(&String.to_integer(elem(&1, 0)))
+          |> Enum.map(&elem(&1, 1))
           |> callback.()
           |> Enum.with_index()
           |> Map.new(&{Integer.to_string(elem(&1, 1)), elem(&1, 0)})
