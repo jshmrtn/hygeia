@@ -147,6 +147,8 @@ defmodule HygeiaUserSync do
     }
   end
 
+  defp to_user_attrs([] = _iam_grants, _tenants), do: %{grants: []}
+
   defp to_grant_attrs(iam_grants, tenants) do
     iam_grants
     |> Enum.flat_map(fn %UserGrantView{role_keys: roles, org_domain: domain} ->
