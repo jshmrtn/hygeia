@@ -124,7 +124,7 @@ defmodule Hygeia.Jobs.SendEmails do
     {:noreply, state}
   end
 
-  @spec send(email :: Email.t()) :: {Email.t(), DateTime.t(), Email.Status.t()}
+  @spec send(email :: Email.t()) :: {DateTime.t(), Email.Status.t()}
 
   case Mix.env() do
     :prod ->
