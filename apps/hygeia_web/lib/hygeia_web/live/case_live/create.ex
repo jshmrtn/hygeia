@@ -48,8 +48,17 @@ defmodule HygeiaWeb.CaseLive.Create do
     })
   end
 
-  @spec get_case_changes(person :: Case.t()) :: Ecto.Changeset.t()
-  def get_case_changes(case) do
+  @spec get_case_changes(person :: Case.t(), schema_module :: module()) :: Ecto.Changeset.t()
+  def get_case_changes(case, schema_module) do
+    phase_detail_module =
+      case schema_module do
+        HygeiaWeb.CaseLive.CreateIndex.CreateSchema -> Case.Phase.Index
+        HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema -> Case.Phase.PossibleIndex
+      end
+
+    keep_assignees =
+      Enum.any?(case.phases, &match?(%Case.Phase{details: %^phase_detail_module{}}, &1))
+
     drop_empty_recursively_and_remove_uuid(%{
       "accepted_duplicate" => true,
       "accepted_duplicate_case_uuid" => case.uuid,
@@ -58,8 +67,8 @@ defmodule HygeiaWeb.CaseLive.Create do
           nil -> nil
           clinical -> clinical |> Ecto.embedded_dump(:json) |> recursive_string_keys()
         end,
-      "tracer_uuid" => case.tracer_uuid,
-      "supervisor_uuid" => case.supervisor_uuid,
+      "tracer_uuid" => if(keep_assignees, do: case.tracer_uuid),
+      "supervisor_uuid" => if(keep_assignees, do: case.supervisor_uuid),
       "ism_case_id" =>
         Enum.find_value(case.external_references, fn
           %ExternalReference{type: :ism_case, value: value} -> value
@@ -227,8 +236,11 @@ defmodule HygeiaWeb.CaseLive.Create do
         &Map.merge(
           &1,
           case person_or_changeset do
-            {case, person} -> Map.merge(get_person_changes(person), get_case_changes(case))
-            person -> get_person_changes(person)
+            {case, person} ->
+              Map.merge(get_person_changes(person), get_case_changes(case, schema_module))
+
+            person ->
+              get_person_changes(person)
           end
         )
       )
