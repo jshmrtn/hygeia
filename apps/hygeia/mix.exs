@@ -15,6 +15,7 @@ defmodule Hygeia.MixProject do
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
+      compilers: [:gettext] ++ Mix.compilers(),
       aliases: aliases(),
       deps: deps(),
       build_embedded: Mix.env() == :prod or System.get_env("BUILD_EMBEDDED") in ["1", "true"],

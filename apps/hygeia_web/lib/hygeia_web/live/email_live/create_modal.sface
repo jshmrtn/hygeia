@@ -1,7 +1,7 @@
 <div class="component-case-sms container">
   <HygeiaWeb.Modal
     id={{ {@myself, :modal} }}
-    title={{ gettext("New SMS") }}
+    title={{ gettext("New Email") }}
     close={{ @close }}
   >
     <Form
@@ -34,7 +34,10 @@
         name={{ :body }}
       >
         <HygeiaWeb.FieldLabel />
-        <TextArea class="form-control" />
+        <TextArea
+          class="form-control"
+          opts={{ rows: 12 }}
+        />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
       <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} diabled={{ @changeset.valid? }}>

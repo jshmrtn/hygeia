@@ -15,7 +15,10 @@
         name={{ :note }}
       >
         <HygeiaWeb.FieldLabel />
-        <TextArea class="form-control" />
+        <TextArea
+          class="form-control"
+          opts={{ rows: 8 }}
+        />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
       <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} diabled={{ @changeset.valid? }}>
