@@ -103,7 +103,16 @@
                 <div class="col">
                   <Field name={{ :sex }} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <Select opts={{ disabled: @live_action == :show }} class="form-control" field={{ :sex }} options={{ [{gettext("Male"), :male}, {gettext("Female"), :female}, {gettext("Other"), :other}] }} />
+                    <Select
+                      opts={{ disabled: @live_action == :show }}
+                      class="form-control"
+                      field={{ :sex }}
+                      options={{ [
+                        {pgettext("Sex", "Male"), :male},
+                        {pgettext("Sex", "Female"), :female},
+                        {pgettext("Sex", "Other"), :other}
+                      ] }}
+                    />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>

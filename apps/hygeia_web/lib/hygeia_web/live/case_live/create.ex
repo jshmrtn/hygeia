@@ -96,18 +96,34 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   @spec fetch_test_result(field :: {key :: [atom], value :: term}) ::
           {key :: [atom], value :: term}
-  def fetch_test_result({[:clinical, :result], kind}) do
+  def fetch_test_result({[:clinical, :result], result}) do
     {[:clinical, :result],
      cond do
-       String.downcase(kind) == String.downcase("positive") -> :positive
-       String.downcase(kind) == String.downcase("negative") -> :negative
-       String.downcase(kind) == String.downcase(gettext("positive")) -> :positive
-       String.downcase(kind) == String.downcase(gettext("negative")) -> :negative
+       String.downcase(result) == String.downcase("positive") -> :positive
+       String.downcase(result) == String.downcase("negative") -> :negative
+       String.downcase(result) == String.downcase(gettext("positive")) -> :positive
+       String.downcase(result) == String.downcase(gettext("negative")) -> :negative
        true -> nil
      end}
   end
 
   def fetch_test_result(field), do: field
+
+  @spec fetch_sex(field :: {key :: [atom], value :: term}) :: {key :: [atom], value :: term}
+  def fetch_sex({[:sex], sex}) do
+    {[:sex],
+     cond do
+       String.downcase(sex) == String.downcase("Male") -> :male
+       String.downcase(sex) == String.downcase("Female") -> :female
+       String.downcase(sex) == String.downcase("Other") -> :other
+       String.downcase(sex) == String.downcase(pgettext("Sex", "Male")) -> :male
+       String.downcase(sex) == String.downcase(pgettext("Sex", "Female")) -> :female
+       String.downcase(sex) == String.downcase(pgettext("Sex", "Other")) -> :other
+       true -> nil
+     end}
+  end
+
+  def fetch_sex(field), do: field
 
   @spec fetch_test_kind(field :: {key :: [atom], value :: term}) :: {key :: [atom], value :: term}
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
@@ -170,6 +186,7 @@ defmodule HygeiaWeb.CaseLive.Create do
     |> fetch_tenant(tenants)
     |> fetch_test_kind()
     |> fetch_test_result()
+    |> fetch_sex()
     |> decide_phone_kind()
   end
 
