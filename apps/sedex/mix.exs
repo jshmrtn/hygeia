@@ -39,11 +39,13 @@ defmodule Sedex.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:jose, "~> 1.11"},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.17", override: true},
       {:sweet_xml, "~> 0.6"},
       {:erlsom, "~> 1.5"},
+      {:briefly, "~> 0.3.0", only: [:test]},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end
