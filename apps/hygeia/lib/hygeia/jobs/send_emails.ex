@@ -20,6 +20,8 @@ defmodule Hygeia.Jobs.SendEmails do
                                 :dev -> :timer.seconds(30)
                                 _env -> :timer.hours(1)
                               end)
+  @email_send_limit 10
+  @email_send_timeout_ms :timer.seconds(30)
 
   defstruct []
 
@@ -91,35 +93,42 @@ defmodule Hygeia.Jobs.SendEmails do
   def handle_info({:deleted, %Email{}, _version}, state), do: {:noreply, state}
 
   def handle_info(:send, state) do
-    Repo.transaction(fn ->
-      emails = CommunicationContext.list_emails_to_send()
+    Repo.transaction(
+      fn ->
+        emails = CommunicationContext.list_emails_to_send(@email_send_limit)
 
-      Hygeia.Jobs.TaskSupervisor
-      |> Task.Supervisor.async_stream(
-        emails,
-        &send(&1),
-        max_concurrency: 10,
-        ordered: true,
-        timeout: 30_000,
-        on_timeout: :kill_task
-      )
-      |> Enum.zip(emails)
-      |> Enum.reduce(Ecto.Multi.new(), fn
-        {{:exit, :timeout}, %Email{uuid: uuid} = email}, acc ->
-          Ecto.Multi.run(acc, uuid, fn _repo, _before ->
-            CommunicationContext.update_email(email, %{
-              status: :temporary_failure,
-              last_try: DateTime.utc_now()
-            })
-          end)
+        if length(emails) > @email_send_limit do
+          send(self(), :send)
+        end
 
-        {{:ok, {retried_at, new_status}}, %Email{uuid: uuid} = email}, acc ->
-          Ecto.Multi.run(acc, uuid, fn _repo, _before ->
-            CommunicationContext.update_email(email, %{status: new_status, last_try: retried_at})
-          end)
-      end)
-      |> Repo.transaction()
-    end)
+        Hygeia.Jobs.TaskSupervisor
+        |> Task.Supervisor.async_stream(
+          emails,
+          &send(&1),
+          max_concurrency: 10,
+          ordered: true,
+          timeout: @email_send_timeout_ms,
+          on_timeout: :kill_task
+        )
+        |> Enum.zip(emails)
+        |> Enum.reduce(Ecto.Multi.new(), fn
+          {{:exit, :timeout}, %Email{uuid: uuid} = email}, acc ->
+            Ecto.Multi.run(acc, uuid, fn _repo, _before ->
+              CommunicationContext.update_email(email, %{
+                status: :temporary_failure,
+                last_try: DateTime.utc_now()
+              })
+            end)
+
+          {{:ok, {retried_at, new_status}}, %Email{uuid: uuid} = email}, acc ->
+            Ecto.Multi.run(acc, uuid, fn _repo, _before ->
+              CommunicationContext.update_email(email, %{status: new_status, last_try: retried_at})
+            end)
+        end)
+        |> Repo.transaction()
+      end,
+      timeout: @email_send_timeout_ms * @email_send_limit
+    )
 
     {:noreply, state}
   end

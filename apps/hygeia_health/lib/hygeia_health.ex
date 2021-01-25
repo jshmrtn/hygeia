@@ -104,6 +104,37 @@ defmodule HygeiaHealth do
     DBConnection.ConnectionError -> {:error, "connection error"}
   end
 
+  @checks %PlugCheckup.Check{
+    name: "Email Spool wait time",
+    module: __MODULE__,
+    function: :check_email_spool_wait
+  }
+  @spec check_email_spool_wait :: check_result
+  def check_email_spool_wait do
+    import Ecto.Query
+
+    alias Hygeia.CommunicationContext
+    alias Hygeia.Repo
+
+    interval =
+      Repo.one(
+        from(email in CommunicationContext.Email,
+          select:
+            coalesce(
+              avg(email.last_try - email.inserted_at),
+              fragment("INTERVAL '0 seconds'")
+            ),
+          where: email.inserted_at > ago(1, "hour")
+        )
+      )
+
+    if interval.secs > 600 do
+      {:error, "queing for avg of #{interval.secs} secs"}
+    else
+      :ok
+    end
+  end
+
   defp smtp_reply({tenant_name, server, hostname}) do
     alias Socket.Stream
     alias Socket.TCP

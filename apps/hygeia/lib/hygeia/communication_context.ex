@@ -25,11 +25,11 @@ defmodule Hygeia.CommunicationContext do
   @spec list_emails :: [Email.t()]
   def list_emails, do: Repo.all(Email)
 
-  @spec list_emails_to_send :: [Email.t()]
-  def list_emails_to_send, do: Repo.all(list_emails_to_send_query())
+  @spec list_emails_to_send(limit :: pos_integer()) :: [Email.t()]
+  def list_emails_to_send(limit \\ 100), do: Repo.all(list_emails_to_send_query(limit))
 
-  @spec list_emails_to_send_query :: Ecto.Query.t()
-  def list_emails_to_send_query,
+  @spec list_emails_to_send_query(limit :: pos_integer()) :: Ecto.Query.t()
+  def list_emails_to_send_query(limit \\ 100),
     do:
       from(email in Email,
         where:
@@ -43,7 +43,8 @@ defmodule Hygeia.CommunicationContext do
                  ) <=
                  ^NaiveDateTime.utc_now()),
         lock: "FOR UPDATE",
-        preload: [:tenant]
+        preload: [:tenant],
+        limit: ^limit
       )
 
   @spec list_emails_to_abort :: [Email.t()]
