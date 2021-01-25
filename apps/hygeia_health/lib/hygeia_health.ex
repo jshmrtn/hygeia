@@ -124,7 +124,7 @@ defmodule HygeiaHealth do
               avg(email.last_try - email.inserted_at),
               fragment("INTERVAL '0 seconds'")
             ),
-          where: email.inserted_at > ago(1, "hour")
+          where: email.status == :in_progress
         )
       )
 
