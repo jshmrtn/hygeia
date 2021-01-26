@@ -22,6 +22,18 @@ Versioning.put_originator(:noone)
     iam_domain: "covid19-tracing.ch"
   })
 
+internal_public_key = """
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqLJ2dI4NC6fSk+rDHH6B
+3Yda4LaVMFRRqLFXqGu2WwyGMK3bQrbK5dahguHE+tQP+ER1PRoemfX6udBPX2yy
+C4lxT79yFVwC8pFJAfg2EwyIJAIQY4EfxjXFhqrefdofHV3WT1wNAQVtQSb0uboB
+X89HcEK0GegW9cC7g1auG6taAN/Xp6CluZ1qnaPsPiYpRJpk3iyTvGSpOjVumr3A
+C/AfeoQxYi82s1NbhJuEI9w71vQF0eS/cFnOtcTszc0/gc8v7Pdo3LfbROq1hCtt
+yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
+3QIDAQAB
+-----END PUBLIC KEY-----
+"""
+
 tenants =
   "CH"
   |> Cadastre.Country.new()
@@ -40,7 +52,13 @@ tenants =
            access_token: "***REMOVED***"
          },
          iam_domain: "kfssg.ch",
-         template_variation: :sg
+         template_variation: :sg,
+         enable_sedex_export: true,
+         sedex_export_configuration: %{
+           recipient_id: "***REMOVED***",
+           recipient_public_key: internal_public_key,
+           schedule: "0 * * * *"
+         }
        }}
 
     %Cadastre.Subdivision{id: "AR"} = subdivision ->
@@ -56,7 +74,13 @@ tenants =
            access_token: "***REMOVED***"
          },
          iam_domain: "ar.covid19-tracing.ch",
-         template_variation: :ar
+         template_variation: :ar,
+         enable_sedex_export: true,
+         sedex_export_configuration: %{
+           recipient_id: "***REMOVED***",
+           recipient_public_key: internal_public_key,
+           schedule: "0 * * * *"
+         }
        }}
 
     %Cadastre.Subdivision{id: "AI"} = subdivision ->
@@ -72,7 +96,13 @@ tenants =
            access_token: "***REMOVED***"
          },
          iam_domain: "ai.covid19-tracing.ch",
-         template_variation: :ai
+         template_variation: :ai,
+         enable_sedex_export: true,
+         sedex_export_configuration: %{
+           recipient_id: "***REMOVED***",
+           recipient_public_key: internal_public_key,
+           schedule: "0 * * * *"
+         }
        }}
 
     subdivision ->
@@ -120,6 +150,12 @@ tenant_ai = Enum.find(tenants, &match?(%{short_name: "AI"}, &1))
   |> Enum.to_list()
 
 if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
+  {:ok, _sedex_export_sg} =
+    create_sedex_export(tenant_sg, %{
+      scheduling_date: NaiveDateTime.utc_now(),
+      status: :sent
+    })
+
   {:ok, user_jony} =
     create_user(%{
       email: "maennchen@joshmartin.ch",

@@ -17,6 +17,7 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.SystemMessageContext
   alias Hygeia.SystemMessageContext.SystemMessage
   alias Hygeia.TenantContext
+  alias Hygeia.TenantContext.SedexExport
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext
   alias Hygeia.UserContext.User
@@ -354,5 +355,17 @@ defmodule Hygeia.Fixtures do
       |> SystemMessageContext.create_system_message()
 
     system_message
+  end
+
+  @valid_attrs %{scheduling_date: ~N[2010-04-17 14:00:00], status: :sent}
+
+  @spec sedex_export_fixture(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          SedexExport.t()
+
+  def sedex_export_fixture(tenant \\ tenant_fixture(), attrs \\ %{}) do
+    {:ok, sedex_export} =
+      TenantContext.create_sedex_export(tenant, Enum.into(attrs, @valid_attrs))
+
+    sedex_export
   end
 end

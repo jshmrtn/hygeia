@@ -97,3 +97,4 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   * `SEDEX_FILESYSTEM_MINIO_SCHEME` (default `http`) - Mini Access Scheme
   * `SEDEX_FILESYSTEM_MINIO_PORT` (default `9000`) - Minio Port
   * `SEDEX_FILESYSTEM_MINIO_HOST` (default `localhost`) - Minio Host
+  * `SEDEX_SENDER_ID` (default `***REMOVED***`) - Sedex Sender ID

@@ -16,6 +16,7 @@ defmodule HygeiaWeb.TenantLive.Show do
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.PasswordInput
   alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
   alias Surface.Components.LivePatch

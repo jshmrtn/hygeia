@@ -120,6 +120,11 @@ defmodule HygeiaWeb.Router do
     live "/tenants/:id/export", TenantLive.Export, :export
     get "/tenants/:id/export/:format", TenantController, :export
     live "/tenants/:id/edit", TenantLive.Show, :edit
+    live "/tenants/:tenant_id/sedex-exports", SedexExportLive.Index, :index
+
+    live "/tenants/:tenant_id/sedex-exports/:cursor_direction/:cursor",
+         SedexExportLive.Index,
+         :index
 
     live "/users", UserLive.Index, :index
     live "/users/:id", UserLive.Show, :show

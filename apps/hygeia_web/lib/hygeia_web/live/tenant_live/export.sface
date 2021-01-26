@@ -1,9 +1,7 @@
 <div class="component-tenant-base-data container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1 class="mb-3">
-      {{ gettext("Export Data for %{tenant}", tenant: @tenant.name) }}
-    </h1>
+  <HygeiaWeb.TenantLive.Header tenant={{ @tenant }} id="header" />
 
+  <Context get={{ HygeiaWeb, auth: auth }}>
     <ul>
       <li :if={{ authorized?(@tenant, :export_data, auth, format: :bag_med_16122020_case) }}>
         <Link

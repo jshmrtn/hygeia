@@ -20,7 +20,7 @@ defmodule Sedex do
 
   @type envelope :: %{
           :message_id => String.t(),
-          :message_type => 0..2_699_999,
+          :message_type => String.t(),
           :message_class => non_neg_integer(),
           :sender_id => String.t(),
           :recipient_id => [String.t()],

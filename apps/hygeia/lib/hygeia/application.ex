@@ -7,7 +7,7 @@ defmodule Hygeia.Application do
 
   case Mix.env() do
     :test -> @workers []
-    _others -> @workers [Hygeia.SystemMessageContext.SystemMessageCache]
+    _others -> @workers [Hygeia.SedexExport, Hygeia.SystemMessageContext.SystemMessageCache]
   end
 
   @impl Application

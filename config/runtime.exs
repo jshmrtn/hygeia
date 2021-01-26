@@ -144,6 +144,9 @@ case System.get_env("SEDEX_FILESYSTEM_ADAPTER", "filesystem") do
     raise "#{other} is not a valid value for SEDEX_FILESYSTEM_ADAPTER"
 end
 
+config :hygeia, Hygeia.TenantContext,
+  sedex_sender_id: System.get_env("SEDEX_SENDER_ID", "***REMOVED***")
+
 config :hygeia, Hygeia.TenantContext.Tenant.Smtp,
   sender_hostname: System.get_env("SMTP_SENDER_HOSTNAME", "smtp.covid19-tracing.ch")
 

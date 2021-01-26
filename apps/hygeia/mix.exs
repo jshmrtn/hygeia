@@ -50,6 +50,7 @@ defmodule Hygeia.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:crontab, "~> 1.1"},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_pubsub, "~> 2.0"},
       {:ecto_sql, "~> 3.4"},
@@ -57,7 +58,7 @@ defmodule Hygeia.MixProject do
       {:jason, "~> 1.0"},
       {:ecto_boot_migration, "~> 0.2"},
       {:email_checker, "~> 0.1"},
-      {:paper_trail, "~> 0.12"},
+      {:paper_trail, github: "jshmrtn/paper_trail", branch: "master"},
       {:ecto_enum, "~> 1.4"},
       {:cadastre, "~> 0.1.4"},
       {:human_readable_identifier_generator, "~> 1.0"},
@@ -72,6 +73,7 @@ defmodule Hygeia.MixProject do
       {:hygeia_gettext, in_umbrella: true},
       {:hygeia_cldr, in_umbrella: true},
       {:hygeia_cluster, in_umbrella: true},
+      {:sedex, in_umbrella: true},
       {:csv, "~> 2.4"},
       {:highlander, "~> 0.2"},
       {:assert_value, "~> 0.9", only: [:dev, :test]}

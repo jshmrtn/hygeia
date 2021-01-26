@@ -163,6 +163,12 @@ defmodule HygeiaWeb.Helpers.FieldName do
       name: "Name",
       notes: "Notes"
     },
+    Hygeia.TenantContext.SedexExport => %{
+      scheduling_date: "Scheduling Date",
+      status: "Status",
+      tenant: "Tenant",
+      tenant_uuid: "Tenant UUID"
+    },
     Hygeia.TenantContext.Tenant => %{
       case_management_enabled: "Case Management Enabled",
       from_email: "From Email",
@@ -174,8 +180,14 @@ defmodule HygeiaWeb.Helpers.FieldName do
       outgoing_sms_configuration_type: "Outgoing SMS Configuration Type",
       override_url: "Override URL",
       public_statistics: "Public Statistics",
+      sedex_export_enabled: "Sedex Export Enabled",
       short_name: "Short Name",
       template_variation: "Template Variation"
+    },
+    Hygeia.TenantContext.Tenant.SedexExportConfiguration => %{
+      recipient_id: "Recipient ID",
+      recipient_public_key: "Recipient Public Key",
+      schedule: "Schedule"
     },
     Hygeia.TenantContext.Tenant.Smtp => %{
       dkim: "DKIM",

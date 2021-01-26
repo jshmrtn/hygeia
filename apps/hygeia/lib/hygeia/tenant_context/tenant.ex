@@ -10,6 +10,8 @@ defmodule Hygeia.TenantContext.Tenant do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.SystemMessageContext.SystemMessage
+  alias Hygeia.TenantContext.SedexExport
+  alias Hygeia.TenantContext.Tenant.SedexExportConfiguration
   alias Hygeia.TenantContext.Tenant.Smtp
   alias Hygeia.TenantContext.Tenant.Websms
 
@@ -26,11 +28,14 @@ defmodule Hygeia.TenantContext.Tenant do
           outgoing_sms_configuration: Websms.t() | nil,
           people: Ecto.Schema.has_many(Person.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
+          sedex_exports: Ecto.Schema.has_many(SedexExport.t()) | nil,
           override_url: String.t() | nil,
           template_variation: TemplateVariation.t() | nil,
           iam_domain: String.t() | nil,
           from_email: String.t() | nil,
           short_name: String.t() | nil,
+          sedex_export_enabled: boolean() | nil,
+          sedex_export_configuration: SedexExportConfiguration.t() | nil,
           related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
@@ -45,11 +50,14 @@ defmodule Hygeia.TenantContext.Tenant do
           outgoing_sms_configuration: Websms.t() | nil,
           people: Ecto.Schema.has_many(Person.t()),
           cases: Ecto.Schema.has_many(Case.t()),
+          sedex_exports: Ecto.Schema.has_many(SedexExport.t()),
           override_url: String.t() | nil,
           template_variation: TemplateVariation.t() | nil,
           iam_domain: String.t() | nil,
           from_email: String.t() | nil,
           short_name: String.t() | nil,
+          sedex_export_enabled: boolean(),
+          sedex_export_configuration: SedexExportConfiguration.t() | nil,
           related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
@@ -64,9 +72,11 @@ defmodule Hygeia.TenantContext.Tenant do
     field :iam_domain, :string
     field :short_name, :string
     field :from_email, :string
+    field :sedex_export_enabled, :boolean, default: false
 
     has_many :people, Person
     has_many :cases, Case
+    has_many :sedex_exports, SedexExport
 
     many_to_many :related_system_messages, SystemMessage,
       join_through: "system_message_tenants",
@@ -86,12 +96,13 @@ defmodule Hygeia.TenantContext.Tenant do
       ],
       on_replace: :update
 
+    embeds_one :sedex_export_configuration, SedexExportConfiguration, on_replace: :update
+
     # Use in Protocol Creation Form
     field :outgoing_mail_configuration_type, :string, virtual: true, default: "smtp"
     field :outgoing_sms_configuration_type, :string, virtual: true
   end
 
-  @doc false
   @spec changeset(tenant :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(tenant, attrs) do
     # Mapping "" to nil because of overridden empty_values
@@ -115,14 +126,16 @@ defmodule Hygeia.TenantContext.Tenant do
         :template_variation,
         :iam_domain,
         :short_name,
-        :from_email
+        :from_email,
+        :sedex_export_enabled
       ],
       empty_values: []
     )
     |> validate_required([:name, :public_statistics, :case_management_enabled])
-    |> validate_url(:override_url)
     |> cast_polymorphic_embed(:outgoing_mail_configuration)
     |> cast_polymorphic_embed(:outgoing_sms_configuration)
+    |> maybe_cast_embed(:sedex_export_configuration, :sedex_export_enabled)
+    |> validate_url(:override_url)
     |> foreign_key_constraint(:people,
       name: :cases_tenant_uuid_fkey,
       message: "has assigned relations"
@@ -133,6 +146,14 @@ defmodule Hygeia.TenantContext.Tenant do
     )
     |> unique_constraint(:iam_domain)
     |> unique_constraint(:short_name)
+  end
+
+  defp maybe_cast_embed(changeset, embed, enable) do
+    if Changeset.fetch_field!(changeset, enable) == true do
+      cast_embed(changeset, embed)
+    else
+      put_embed(changeset, embed, nil)
+    end
   end
 
   @spec validate_url(changeset :: Changeset.t(), field :: atom, opts :: [atom]) :: Changeset.t()
