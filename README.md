@@ -10,8 +10,8 @@ To start your Phoenix server:
 
 ```console
 $ docker volume create postgres
-$ docker run \                                                                                                                 
-    --restart always \ 
+$ docker run \
+    --restart always \
     --name postgres \
     -v postgres:/var/lib/postgresql/data \
     -p 5432:5432 \
