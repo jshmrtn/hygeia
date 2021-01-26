@@ -139,7 +139,7 @@ defmodule HygeiaWeb.CaseLive.Create do
   def fetch_test_kind({[:clinical, :test_kind], kind}) do
     {[:clinical, :test_kind],
      cond do
-       String.downcase(kind) == String.downcase("Antigen ++ Schnelltest") -> :quick
+       String.downcase(kind) == String.downcase("Antigen ++ Schnelltest") -> :antigen_quick
        String.downcase(kind) == String.downcase("quick") -> :quick
        String.downcase(kind) == String.downcase(gettext("quick")) -> :quick
        String.downcase(kind) == String.downcase("Nukleinsäure ++ PCR") -> :pcr
