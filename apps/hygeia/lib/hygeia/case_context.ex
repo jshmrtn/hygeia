@@ -884,7 +884,7 @@ defmodule Hygeia.CaseContext do
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", index_phase)),
           # iso_loc_type
           type(
-            fragment("(?->>'location')::isolation_location", case.monitoring),
+            fragment("(?->>'location')", case.monitoring),
             Case.Monitoring.IsolationLocation
           ),
           # other_iso_loc
@@ -919,7 +919,12 @@ defmodule Hygeia.CaseContext do
           # vacc_name
           fragment("?->>'name'", person.vaccination),
           # vacc_dose
-          fragment("JSONB_ARRAY_LENGTH(?->'jab_dates')", person.vaccination),
+          fragment(
+            "CASE WHEN ? THEN ? ELSE ? END",
+            is_nil(fragment("?->>'jab_dates'", person.vaccination)),
+            nil,
+            fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination))
+          ),
           # vacc_dt_first
           fragment("(?->'jab_dates'->>0)", person.vaccination),
           # vacc_dt_last
@@ -1487,7 +1492,12 @@ defmodule Hygeia.CaseContext do
           # vacc_name
           fragment("?->>'name'", person.vaccination),
           # vacc_dose
-          fragment("JSONB_ARRAY_LENGTH(?->'jab_dates')", person.vaccination),
+          fragment(
+            "CASE WHEN ? THEN ? ELSE ? END",
+            is_nil(fragment("?->>'jab_dates'", person.vaccination)),
+            nil,
+            fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination))
+          ),
           # vacc_dt_first
           fragment("(?->'jab_dates'->>0)", person.vaccination),
           # vacc_dt_last
