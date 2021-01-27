@@ -88,7 +88,7 @@
                             to={{ Routes.case_base_data_path(@socket, :show, @transmission.recipient_case) }}
                             :if={{ authorized?(@transmission.recipient_case, :details, auth) }}
                           >
-                            {{ case_phase_type_translation(List.last(@transmission.recipient_case.phases)) }}
+                            {{case_display_type(@transmission.recipient_case) }}
                             <small class="ml-1">({{ case_display_date(@transmission.recipient_case) }})</small>
                           </Link>
                           <span
@@ -131,7 +131,7 @@
                             to={{ Routes.case_base_data_path(@socket, :show, @transmission.propagator_case) }}
                             :if={{ authorized?(@transmission.propagator_case, :details, auth) }}
                           >
-                            {{ case_phase_type_translation(List.last(@transmission.propagator_case.phases)) }}
+                            {{case_display_type(@transmission.propagator_case) }}
                             <small class="ml-1">({{ case_display_date(@transmission.propagator_case) }})</small>
                           </Link>
                           <span

@@ -109,18 +109,14 @@ defmodule HygeiaWeb.Helpers.Case do
     do: pgettext("Possible Index Type", "Other")
 
   @spec case_display_name(case :: Case.t()) :: String.t()
-  def case_display_name(
-        %Case{
-          phases: [%Phase{} | _] = phases
-        } = case
-      ) do
-    last_phase = List.last(phases)
+  def case_display_name(case), do: "#{case_display_type(case)} (#{case_display_date(case)})"
 
-    gettext("%{phase_type} (%{date})",
-      phase_type: case_phase_type_translation(last_phase),
-      date: case_display_date(case)
-    )
-  end
+  @spec case_display_type(case :: Case.t()) :: String.t()
+  def case_display_type(%Case{phases: phases} = _case),
+    do:
+      phases
+      |> Enum.map(&case_phase_type_translation/1)
+      |> HygeiaCldr.List.to_string!(format: :unit_short)
 
   @spec case_display_date(case :: Case.t()) :: String.t()
   def case_display_date(%Case{

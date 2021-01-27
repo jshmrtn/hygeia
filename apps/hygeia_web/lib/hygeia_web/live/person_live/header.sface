@@ -48,7 +48,7 @@
           opts={{ active: :inclusive }}
         >
           <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
-            {{ case_phase_type_translation(List.last(case.phases)) }} <span class="date ml-2">{{ case_display_date(case) }}</span>
+            {{ case_display_type(case) }} <span class="date ml-2">{{ case_display_date(case) }}</span>
           </LiveRedirect>
         </UriActiveContext>
       </li>

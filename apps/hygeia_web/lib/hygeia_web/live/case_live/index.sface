@@ -231,11 +231,7 @@
             {{ case_status_translation(case.status) }}
           </td>
           <td>
-            {{
-              case.phases
-              |> Enum.map(&case_phase_type_translation/1)
-              |> HygeiaCldr.List.to_string!(format: :unit)
-            }}
+            {{ case_display_type(case) }}
           </td>
           <td>
             <Link
