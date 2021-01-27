@@ -19,6 +19,9 @@ defmodule Hygeia.Authorization do
   end
 
   defprotocol Resource do
+    @spec preload(resource :: term) :: term
+    def preload(resource)
+
     @spec authorized?(
             resource :: term,
             action :: atom,
@@ -43,6 +46,8 @@ defmodule Hygeia.Authorization do
     do: authorized?(struct(resource), action, user_context, meta)
 
   def authorized?(resource, action, user_context, %{} = meta) when is_atom(action) do
-    Resource.authorized?(resource, action, UserContext.user(user_context), meta)
+    resource
+    |> Resource.preload()
+    |> Resource.authorized?(action, UserContext.user(user_context), meta)
   end
 end

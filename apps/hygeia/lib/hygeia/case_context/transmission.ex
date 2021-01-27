@@ -128,17 +128,22 @@ defmodule Hygeia.CaseContext.Transmission do
     alias Hygeia.Repo
     alias Hygeia.UserContext.User
 
+    @spec preload(resource :: Transmission.t()) :: Transmission.t()
+    def preload(resource), do: Repo.preload(resource, propagator_case: [], recipient_case: [])
+
     @spec authorized?(
             resource :: Transmission.t(),
             action :: :create | :details | :list | :update | :delete,
             user :: :anonymous | User.t(),
             meta :: %{atom() => term}
           ) :: boolean
-    def authorized?(transmission, action, user, meta)
+    def authorized?(
+          %Transmission{propagator_case: propagator_case, recipient_case: recipient_case},
+          action,
+          user,
+          meta
+        )
         when action in [:details, :update, :delete, :versioning] do
-      %Transmission{propagator_case: propagator_case, recipient_case: recipient_case} =
-        Repo.preload(transmission, propagator_case: [], recipient_case: [])
-
       [propagator_case, recipient_case]
       |> Enum.reject(&is_nil/1)
       |> Enum.any?(&Resource.authorized?(&1, action, user, meta))

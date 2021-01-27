@@ -181,7 +181,8 @@ defmodule HygeiaWeb.PersonLive.Index do
 
   defp base_query(socket) do
     from(person in CaseContext.list_people_query(),
-      where: person.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid)
+      where: person.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid),
+      preload: [:tenant]
     )
   end
 

@@ -240,8 +240,12 @@ defmodule Hygeia.CaseContext.Case do
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Case
+    alias Hygeia.Repo
     alias Hygeia.TenantContext.Tenant
     alias Hygeia.UserContext.User
+
+    @spec preload(resource :: Case.t()) :: Case.t()
+    def preload(resource), do: Repo.preload(resource, :tenant)
 
     @spec authorized?(
             resource :: Case.t(),
@@ -268,6 +272,14 @@ defmodule Hygeia.CaseContext.Case do
           _meta
         ),
         do: User.has_role?(user, :supervisor, :any)
+
+    def authorized?(%Case{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
+        when action in [:details, :versioning, :update, :delete],
+        do:
+          Enum.any?(
+            [:super_user, :supervisor, :admin],
+            &User.has_role?(user, &1, :any)
+          )
 
     def authorized?(%Case{tenant_uuid: tenant_uuid}, action, user, _meta)
         when action in [:details, :versioning],

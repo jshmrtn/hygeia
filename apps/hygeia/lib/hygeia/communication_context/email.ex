@@ -158,6 +158,9 @@ defmodule Hygeia.CommunicationContext.Email do
     alias Hygeia.CommunicationContext.Email
     alias Hygeia.UserContext.User
 
+    @spec preload(resource :: Email.t()) :: Email.t()
+    def preload(resource), do: resource
+
     @spec authorized?(
             resource :: Email.t(),
             action :: :create,

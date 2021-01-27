@@ -38,7 +38,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
         tenants =
           Enum.filter(
             TenantContext.list_tenants(),
-            &authorized?(person, action, get_auth(socket), tenant: &1)
+            &authorized?(person, :create, get_auth(socket), tenant: &1)
           )
 
         socket |> assign(tenants: tenants) |> load_data(person)

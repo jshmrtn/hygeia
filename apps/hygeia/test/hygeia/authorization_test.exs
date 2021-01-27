@@ -100,7 +100,7 @@ defmodule Hygeia.AuthorizationTest do
 
       for action <- [:details, :update] do
         test "should allow person #{action} for #{role}" do
-          tenant = tenant_fixture()
+          tenant = tenant_fixture(%{iam_domain: "covid19-tracing.ch"})
           user = user_fixture(grants: [%{role: unquote(role), tenant_uuid: tenant.uuid}])
 
           person = person_fixture(tenant)
@@ -162,7 +162,7 @@ defmodule Hygeia.AuthorizationTest do
 
       for action <- [:details, :update] do
         test "should allow case #{action} for #{role}" do
-          tenant = tenant_fixture()
+          tenant = tenant_fixture(%{iam_domain: "covid19-tracing.ch"})
           user = user_fixture(grants: [%{role: unquote(role), tenant_uuid: tenant.uuid}])
 
           case = case_fixture(person_fixture(tenant))

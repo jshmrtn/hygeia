@@ -189,6 +189,9 @@ defmodule Hygeia.TenantContext.Tenant do
     alias Hygeia.TenantContext.Tenant
     alias Hygeia.UserContext.User
 
+    @spec preload(resource :: Tenant.t()) :: Tenant.t()
+    def preload(resource), do: resource
+
     @spec authorized?(
             resource :: Tenant.t(),
             action :: :create | :details | :list | :update | :delete | :export_data,

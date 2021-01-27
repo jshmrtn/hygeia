@@ -78,6 +78,9 @@ defmodule Hygeia.UserContext.User do
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.UserContext.User
 
+    @spec preload(resource :: User.t()) :: User.t()
+    def preload(resource), do: resource
+
     @spec authorized?(
             resource :: User.t(),
             action :: :list | :details,

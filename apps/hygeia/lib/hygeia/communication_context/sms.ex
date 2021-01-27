@@ -82,6 +82,9 @@ defmodule Hygeia.CommunicationContext.SMS do
     alias Hygeia.CommunicationContext.SMS
     alias Hygeia.UserContext.User
 
+    @spec preload(resource :: SMS.t()) :: SMS.t()
+    def preload(resource), do: resource
+
     @spec authorized?(
             resource :: SMS.t(),
             action :: :create,

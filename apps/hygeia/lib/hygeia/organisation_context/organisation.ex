@@ -61,6 +61,9 @@ defmodule Hygeia.OrganisationContext.Organisation do
     alias Hygeia.OrganisationContext.Organisation
     alias Hygeia.UserContext.User
 
+    @spec preload(resource :: Organisation.t()) :: Organisation.t()
+    def preload(resource), do: resource
+
     @spec authorized?(
             resource :: Organisation.t(),
             action :: :create | :list | :details | :update | :delete,

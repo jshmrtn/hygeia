@@ -130,6 +130,9 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
     alias Hygeia.CaseContext.PossibleIndexSubmission
     alias Hygeia.UserContext.User
 
+    @spec preload(resource :: PossibleIndexSubmission.t()) :: PossibleIndexSubmission.t()
+    def preload(resource), do: resource
+
     @spec authorized?(
             resource :: PossibleIndexSubmission.t(),
             action :: :create | :details | :list | :update | :delete | :accept,

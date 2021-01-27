@@ -139,8 +139,12 @@ defmodule Hygeia.CaseContext.Person do
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person
+    alias Hygeia.Repo
     alias Hygeia.TenantContext.Tenant
     alias Hygeia.UserContext.User
+
+    @spec preload(resource :: Person.t()) :: Person.t()
+    def preload(resource), do: Repo.preload(resource, :tenant)
 
     @spec authorized?(
             resource :: Person.t(),
@@ -152,12 +156,20 @@ defmodule Hygeia.CaseContext.Person do
         when action in [:list, :create, :details, :update, :delete],
         do: false
 
-    def authorized?(%Person{tenant_uuid: tenant_uuid}, action, user, _meta)
+    def authorized?(%Person{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
+        when action in [:details, :versioning, :update, :delete],
+        do:
+          Enum.any?(
+            [:super_user, :supervisor, :admin],
+            &User.has_role?(user, &1, :any)
+          )
+
+    def authorized?(%Person{tenant: %Tenant{} = tenant}, action, user, _meta)
         when action in [:details, :versioning],
         do:
           Enum.any?(
             [:viewer, :tracer, :super_user, :supervisor, :admin],
-            &User.has_role?(user, &1, tenant_uuid)
+            &User.has_role?(user, &1, tenant)
           )
 
     def authorized?(_module, :deleted_versioning, user, _meta),
@@ -182,12 +194,12 @@ defmodule Hygeia.CaseContext.Person do
         )
 
     def authorized?(_module, :create, user, %{
-          tenant: %Tenant{case_management_enabled: true} = tenant
+          tenant: %Tenant{case_management_enabled: true}
         }),
         do:
           Enum.any?(
             [:tracer, :super_user, :supervisor, :admin],
-            &User.has_role?(user, &1, tenant)
+            &User.has_role?(user, &1, :any)
           )
 
     def authorized?(_module, :create, _user, %{tenant: %Tenant{case_management_enabled: false}}),

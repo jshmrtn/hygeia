@@ -82,6 +82,9 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
     alias Hygeia.SystemMessageContext.SystemMessage
     alias Hygeia.UserContext.User
 
+    @spec preload(resource :: SystemMessage.t()) :: SystemMessage.t()
+    def preload(resource), do: resource
+
     @spec authorized?(
             resource :: SystemMessage.t(),
             action :: :create | :details | :list | :update | :delete,

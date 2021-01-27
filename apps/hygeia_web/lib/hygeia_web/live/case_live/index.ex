@@ -175,7 +175,8 @@ defmodule HygeiaWeb.CaseLive.Index do
         preload: [supervisor: supervisor],
         left_join:
           phase in fragment("UNNEST(ARRAY[?[ARRAY_UPPER(?, 1)]])", case.phases, case.phases),
-        as: :phase
+        as: :phase,
+        preload: [:tenant]
       )
 
   @sort_mapping %{

@@ -55,6 +55,9 @@ defmodule Hygeia.TenantContext.SedexExport do
     alias Hygeia.TenantContext.SedexExport
     alias Hygeia.UserContext.User
 
+    @spec preload(resource :: SedexExport.t()) :: SedexExport.t()
+    def preload(resource), do: resource
+
     @spec authorized?(
             resource :: SedexExport.t(),
             action :: :list,

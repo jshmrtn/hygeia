@@ -52,6 +52,9 @@ defmodule Hygeia.CaseContext.Note do
     alias Hygeia.CaseContext.Note
     alias Hygeia.UserContext.User
 
+    @spec preload(resource :: Note.t()) :: Note.t()
+    def preload(resource), do: resource
+
     @spec authorized?(
             resource :: Note.t(),
             action :: :create,
