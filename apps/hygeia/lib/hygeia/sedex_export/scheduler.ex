@@ -14,7 +14,7 @@ defmodule Hygeia.SedexExport.Scheduler do
 
   @skip_threshold :timer.hours(1)
   @status_check_interval_ms :timer.seconds(30)
-  @status_check_lost_interval_ms :timer.minutes(1)
+  @status_check_lost_interval_ms :timer.minutes(30)
 
   @type t :: %__MODULE__{
           tenant: Tenant.t(),
