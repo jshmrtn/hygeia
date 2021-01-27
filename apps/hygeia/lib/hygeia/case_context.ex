@@ -1007,6 +1007,8 @@ defmodule Hygeia.CaseContext do
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_zoo)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_prison)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.other_exp_loc_type)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.symptoms_yn)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.case_link_yn)
         |> List.update_at(@bag_med_16122020_case_fields_index.test_type, fn
           nil -> 5
           :pcr -> 1
