@@ -65,7 +65,11 @@ defmodule HygeiaWeb.CaseLive.Index do
                 socket,
                 pagination_params,
                 %{
-                  "status" => Enum.map(Case.Status.__enum_map__() -- [:done], &Atom.to_string/1),
+                  "status" =>
+                    Enum.map(
+                      Case.Status.__enum_map__() -- [:done, :hospitalization, :home_resident],
+                      &Atom.to_string/1
+                    ),
                   "tracer_uuid" => [get_auth(socket).uuid]
                 },
                 sort
