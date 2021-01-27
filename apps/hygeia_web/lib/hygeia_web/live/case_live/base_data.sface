@@ -150,129 +150,173 @@
                     <div class="card">
                       <div class="card-body">
                         <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                          <div class="form-group">
-                            <HygeiaWeb.FieldLabel field={{ :type }} />
-                            <div class="value">{{
-                              case Ecto.Changeset.fetch_field!(form.source, :details) do
-                                %Phase.Index{} -> gettext("Index")
-                                %Phase.PossibleIndex{} -> gettext("Possible Index")
-                              end
-                            }}</div>
-                          </div>
-
-                          <div class="row">
-                            <div class="col">
-                              <Field name={{ :start }} class="form-group">
-                                <HygeiaWeb.FieldLabel />
-                                <DateInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                                <ErrorTag class="d-block invalid-feedback" />
-                              </Field>
-                            </div>
-                            <div class="col">
-                              <Field name={{ :end }} class="form-group">
-                                <HygeiaWeb.FieldLabel />
-                                <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
-                                <ErrorTag class="d-block invalid-feedback" />
-                              </Field>
-                            </div>
-                          </div>
-
-                          <PolimorphicInputs
-                            :if={{ match?(%Phase.Index{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
-                            field={{ :details }}
-                            type={{ :index }}
-                            id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+                          <Context
+                            put={{ __MODULE__, phase_details: Ecto.Changeset.get_field(form.source, :details) }}
+                            get={{ __MODULE__, phase_details: phase_details }}
                           >
-                            <div class="d-flex">
-                              <Field name={{ :end_reason }} class="form-group flex-grow-1">
-                                <HygeiaWeb.FieldLabel />
-                                <Select 
-                                  class="form-control" 
-                                  opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
-                                  options={{ case_phase_index_end_reason_map() }}
-                                />
-                                <ErrorTag class="d-block invalid-feedback" />
-                              </Field>
-                              <div :if={{ @live_action != :show }} class="form-group">
-                                <label>&nbsp;</label>
-                                <button
-                                  type="button"
-                                  class="d-block ml-1 btn btn-info"
-                                  :on-click="show_index_phase_end_reason_help">
-                                  <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true"></span>
-                                </button>
+                            <div class="form-group">
+                              <HygeiaWeb.FieldLabel field={{ :type }} />
+                              <div class="value">
+                                {{ case_phase_type_translation(phase_details) }}
                               </div>
                             </div>
-                          </PolimorphicInputs>
-                          <PolimorphicInputs
-                            :if={{ match?(%Phase.PossibleIndex{}, Ecto.Changeset.fetch_field!(form.source, :details)) }}
-                            field={{ :details }}
-                            type={{ :possible_index }}
-                            id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
-                          >
-                            <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                              <div class="form-group">
-                                <HygeiaWeb.FieldLabel field={{ :type }} />
-                                <div class="value">
-                                  {{ form.source |> Ecto.Changeset.fetch_field!(:type) |> case_phase_possible_index_type_translation() }}
-                                </div>
-                              </div>
-                              <div class="d-flex">
-                                <Field name={{ :end_reason }} class="form-group flex-grow-1">
+
+                            <div class="row">
+                              <div class="col">
+                                <Field name={{ :start }} class="form-group">
                                   <HygeiaWeb.FieldLabel />
-                                  <Select 
-                                    class="form-control" 
-                                    opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
-                                    options={{ case_phase_possible_index_end_reason_map() }}
-                                  />
+                                  <DateInput class="form-control" opts={{ disabled: @live_action == :show }} />
                                   <ErrorTag class="d-block invalid-feedback" />
                                 </Field>
-                                <div :if={{ @live_action != :show }} class="form-group">
-                                  <label>&nbsp;</label>
-                                  <button
-                                    type="button"
-                                    class="d-block ml-1 btn btn-info"
-                                    :on-click="show_possible_index_phase_end_reason_help">
-                                    <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true"></span>
-                                  </button>
-                                </div>
                               </div>
-                            </InputContext>
-                          </PolimorphicInputs>
+                              <div class="col">
+                                <Field name={{ :end }} class="form-group">
+                                  <HygeiaWeb.FieldLabel />
+                                  <DateInput class="form-control" opts={{ disabled: @live_action == :show }}/>
+                                  <ErrorTag class="d-block invalid-feedback" />
+                                </Field>
+                              </div>
+                            </div>
 
-                          <div class="row">
-                            <div class="col">
-                              <Field
-                                :if={{ Ecto.Changeset.get_field(form.source, :automated_close_email_sent) == nil }}
-                                name={{ :send_automated_close_email }}
-                                class="form-check"
-                              >
-                                <label class="checkbox-label">
-                                  <Checkbox  class="form-check-input" opts={{ disabled: @live_action == :show }} />
-                                  {{ gettext("Automated Close Email") }}
-                                </label>
-                                <ErrorTag class="d-block invalid-feedback" />
-                              </Field>
+                            <PolimorphicInputs
+                              :if={{
+                                match?(%Phase.Index{}, phase_details) or
+                                match?(%Ecto.Changeset{data: %Phase.Index{}}, phase_details)
+                              }}
+                              field={{ :details }}
+                              type={{ :index }}
+                              id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+                            >
+                              <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                                <div class="row">
+                                  <div class="col">
+                                    <div class="d-flex">
+                                      <Field name={{ :end_reason }} class="form-group flex-grow-1">
+                                        <HygeiaWeb.FieldLabel />
+                                        <Select 
+                                          class="form-control" 
+                                          opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
+                                          options={{ case_phase_index_end_reason_map() }}
+                                        />
+                                        <ErrorTag class="d-block invalid-feedback" />
+                                      </Field>
+                                    </div>
+                                  </div>
+                                  <div
+                                    :if={{ Ecto.Changeset.get_field(form.source, :end_reason) == :other }}
+                                    class="col"
+                                  >
+                                    <Field name={{ :other_end_reason }} class="form-group flex-grow-1">
+                                      <HygeiaWeb.FieldLabel />
+                                      <TextInput
+                                        class="form-control"
+                                        opts={{ disabled: @live_action == :show }} 
+                                      />
+                                      <ErrorTag class="d-block invalid-feedback" />
+                                    </Field>
+                                  </div>
+                                  <div :if={{ @live_action != :show }} class="form-group">
+                                    <label>&nbsp;</label>
+                                    <button
+                                      type="button"
+                                      class="d-block ml-1 btn btn-info"
+                                      :on-click="show_index_phase_end_reason_help">
+                                      <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true"></span>
+                                    </button>
+                                  </div>
+                                </div>
+                              </InputContext>
+                            </PolimorphicInputs>
+                            <PolimorphicInputs
+                              :if={{
+                                match?(%Phase.PossibleIndex{}, phase_details) or
+                                match?(%Ecto.Changeset{data: %Phase.PossibleIndex{}}, phase_details)
+                              }}
+                              field={{ :details }}
+                              type={{ :possible_index }}
+                              id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
+                            >
+                              <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                                <div class="form-group">
+                                  <HygeiaWeb.FieldLabel field={{ :type }} />
+                                  <div class="value">
+                                    {{ form.source |> Ecto.Changeset.fetch_field!(:type) |> case_phase_possible_index_type_translation() }}
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col">
+                                    <div class="d-flex">
+                                      <Field name={{ :end_reason }} class="form-group flex-grow-1">
+                                        <HygeiaWeb.FieldLabel />
+                                        <Select 
+                                          class="form-control" 
+                                          opts={{ prompt: gettext("Select end reason"), disabled: @live_action == :show }} 
+                                          options={{ case_phase_possible_index_end_reason_map() }}
+                                        />
+                                        <ErrorTag class="d-block invalid-feedback" />
+                                      </Field>
+                                    </div>
+                                  </div>
+                                  <div
+                                    :if={{ Ecto.Changeset.get_field(form.source, :end_reason) == :other }}
+                                    class="col"
+                                  >
+                                    <Field name={{ :other_end_reason }} class="form-group flex-grow-1">
+                                      <HygeiaWeb.FieldLabel />
+                                      <TextInput
+                                        class="form-control"
+                                        opts={{ disabled: @live_action == :show }} 
+                                      />
+                                      <ErrorTag class="d-block invalid-feedback" />
+                                    </Field>
+                                  </div>
+                                  <div :if={{ @live_action != :show }} class="form-group">
+                                    <label>&nbsp;</label>
+                                    <button
+                                      type="button"
+                                      class="d-block ml-1 btn btn-info"
+                                      :on-click="show_possible_index_phase_end_reason_help">
+                                      <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true"></span>
+                                    </button>
+                                  </div>
+                                </div>
+                              </InputContext>
+                            </PolimorphicInputs>
 
-                              <div :if={{ Ecto.Changeset.get_field(form.source, :automated_close_email_sent) != nil }} class="form-group">
-                                <label>
-                                  {{ gettext("Automated Close Email") }}
-                                </label>
+                            <div class="row">
+                              <div class="col">
+                                <Field
+                                  :if={{ Ecto.Changeset.get_field(form.source, :automated_close_email_sent) == nil }}
+                                  name={{ :send_automated_close_email }}
+                                  class="form-check"
+                                >
+                                  <label class="checkbox-label">
+                                    <Checkbox  class="form-check-input" opts={{ disabled: @live_action == :show }} />
+                                    {{ gettext("Automated Close Email") }}
+                                  </label>
+                                  <ErrorTag class="d-block invalid-feedback" />
+                                </Field>
 
-                                <div class="value">
-                                  {{
-                                    gettext(
-                                      "Sent at %{date}",
-                                      date: form.source
-                                        |> Ecto.Changeset.get_field(:automated_close_email_sent)
-                                        |> DateTime.shift_zone!("Europe/Zurich")
-                                        |> HygeiaCldr.DateTime.to_string!()
-                                    )
-                                  }}
+                                <div :if={{ Ecto.Changeset.get_field(form.source, :automated_close_email_sent) != nil }} class="form-group">
+                                  <label>
+                                    {{ gettext("Automated Close Email") }}
+                                  </label>
+
+                                  <div class="value">
+                                    {{
+                                      gettext(
+                                        "Sent at %{date}",
+                                        date: form.source
+                                          |> Ecto.Changeset.get_field(:automated_close_email_sent)
+                                          |> DateTime.shift_zone!("Europe/Zurich")
+                                          |> HygeiaCldr.DateTime.to_string!()
+                                      )
+                                    }}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </Context>
                         </InputContext>
                       </div>
                     </div>

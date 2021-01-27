@@ -17,7 +17,8 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     "quarantine",
     "app_report",
     "convenience",
-    "contact_tracing"
+    "contact_tracing",
+    "quarantine_end"
   ]
 
   defenum Symptom, :symptom, [

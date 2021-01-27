@@ -70,10 +70,15 @@ defmodule HygeiaWeb.Helpers.FieldName do
       start: "Start",
       type: "Type"
     },
-    Hygeia.CaseContext.Case.Phase.Index => %{end_reason: "End Reason"},
+    Hygeia.CaseContext.Case.Phase.Index => %{
+      end_reason: "End Reason",
+      other_end_reason: "Other End Reason"
+    },
     Hygeia.CaseContext.Case.Phase.PossibleIndex => %{
       end_reason: "End Reason",
-      type: "Type"
+      type: "Type",
+      type_other: "Other Type",
+      other_end_reason: "Other End Reason"
     },
     Hygeia.CaseContext.Employer => %{
       address: "Address",
@@ -265,7 +270,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       propagator_ism_id: "Propagator ISM ID",
       send_confirmation_email: "Send Confirmation Email",
       send_confirmation_sms: "Send Confirmation SMS",
-      type: "Type"
+      type: "Type",
+      type_other: "Other"
     },
     PaperTrail.Version => %{
       date: "Date",

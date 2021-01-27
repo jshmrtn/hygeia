@@ -14,17 +14,23 @@ defmodule HygeiaWeb.Helpers.Clinical do
       )
 
   @spec translate_clinical_test_reason(type :: Clinical.TestReason.t()) :: String.t()
-  def translate_clinical_test_reason(:symptoms), do: gettext("Symptoms")
+  def translate_clinical_test_reason(:symptoms), do: pgettext("Test Reason", "Symptoms")
 
   def translate_clinical_test_reason(:outbreak_examination),
-    do: gettext("Outbreak examination")
+    do: pgettext("Test Reason", "Outbreak examination")
 
-  def translate_clinical_test_reason(:screening), do: gettext("Screening")
-  def translate_clinical_test_reason(:work_related), do: gettext("Work related")
-  def translate_clinical_test_reason(:quarantine), do: gettext("Quarantine")
-  def translate_clinical_test_reason(:app_report), do: gettext("App report")
-  def translate_clinical_test_reason(:contact_tracing), do: gettext("Contact tracing")
-  def translate_clinical_test_reason(:convenience), do: gettext("Convenience")
+  def translate_clinical_test_reason(:screening), do: pgettext("Test Reason", "Screening")
+  def translate_clinical_test_reason(:work_related), do: pgettext("Test Reason", "Work related")
+  def translate_clinical_test_reason(:quarantine), do: pgettext("Test Reason", "Quarantine")
+  def translate_clinical_test_reason(:app_report), do: pgettext("Test Reason", "App report")
+
+  def translate_clinical_test_reason(:contact_tracing),
+    do: pgettext("Test Reason", "Contact tracing")
+
+  def translate_clinical_test_reason(:convenience), do: pgettext("Test Reason", "Convenience")
+
+  def translate_clinical_test_reason(:quarantine_end),
+    do: pgettext("Test Reason", "Quarantine End")
 
   @spec symptoms :: [{String.t(), Clinical.Symptom.t()}]
   def symptoms,

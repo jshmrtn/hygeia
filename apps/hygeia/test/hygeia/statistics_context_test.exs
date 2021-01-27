@@ -147,7 +147,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 12
+      assert length(entries) == 15
 
       assert Enum.all?(
                entries,
@@ -187,7 +187,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 12
+      assert length(entries) == 15
 
       assert Enum.all?(
                entries,
@@ -228,7 +228,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 12
+      assert length(entries) == 15
 
       assert Enum.all?(entries, &match?(%CumulativeIndexCaseEndReasons{count: 0}, &1))
     end
@@ -263,7 +263,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-14]
                )
 
-      assert length(entries) == 8
+      assert length(entries) == 20
 
       assert Enum.all?(
                entries,
@@ -303,7 +303,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-14]
                )
 
-      assert length(entries) == 8
+      assert length(entries) == 20
 
       assert Enum.all?(
                entries,
@@ -343,7 +343,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-14]
                )
 
-      assert length(entries) == 8
+      assert length(entries) == 20
 
       assert Enum.all?(entries, &match?(%ActiveQuarantineCasesPerDay{count: 0}, &1))
     end
@@ -378,7 +378,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 30
+      assert length(entries) == 75
 
       assert Enum.all?(
                entries,
@@ -424,7 +424,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 30
+      assert length(entries) == 75
 
       assert Enum.all?(
                entries,
@@ -469,7 +469,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 30
+      assert length(entries) == 75
 
       assert Enum.all?(entries, &match?(%CumulativePossibleIndexCaseEndReasons{count: 0}, &1))
     end
@@ -501,7 +501,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 9
+      assert length(entries) == 18
 
       assert Enum.all?(
                entries,
@@ -538,7 +538,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 9
+      assert length(entries) == 18
 
       assert Enum.all?(
                entries,
@@ -576,7 +576,7 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 9
+      assert length(entries) == 18
 
       assert Enum.all?(
                entries,

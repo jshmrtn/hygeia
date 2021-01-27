@@ -654,7 +654,7 @@ defmodule Hygeia.CaseContext do
           # exp_loc_dt
           fragment("(ARRAY_AGG(?))[1]", received_transmission.date),
           # exp_loc_type_yn
-          fragment("(ARRAY_AGG(?->>'known'))[1]", received_transmission.infection_place),
+          fragment("(ARRAY_AGG(?->'known'))[1]", received_transmission.infection_place),
           # activity_mapping_yn
           nil,
           # exp_country
@@ -868,18 +868,18 @@ defmodule Hygeia.CaseContext do
             received_transmission.infection_place
           ),
           # corr_ct_dt
-          # TODO: Where to find first contact date?
-          nil,
+          fragment("?->>'first_contact'", case.monitoring),
           # quar_yn
           count(fragment("?->>'uuid'", possible_index_phase), :distinct) > 0,
           # onset_quar_dt
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", possible_index_phase)),
           # reason_quar
-          # TODO: Where to get the values apart contact & travel?
-          nil,
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->'details'->>'type'", possible_index_phase)),
           # other_reason_quar
-          # TODO: Where to get the values apart contact & travel?
-          nil,
+          fragment(
+            "(ARRAY_AGG(?))[1]",
+            fragment("?->'details'->>'type_other'", possible_index_phase)
+          ),
           # onset_iso_dt
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", index_phase)),
           # iso_loc_type
@@ -908,11 +908,12 @@ defmodule Hygeia.CaseContext do
           # end_of_iso_dt
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'end'", index_phase)),
           # reason_end_of_iso
-          # TODO: Allow other
           fragment("(ARRAY_AGG(?))[1]", fragment("?->'detail'->>'end_reason'", index_phase)),
           # other_reason_end_of_iso
-          # TODO: Text Field when other
-          nil,
+          fragment(
+            "(ARRAY_AGG(?))[1]",
+            fragment("?->'detail'->>'other_end_reason'", index_phase)
+          ),
           # vacc_yn
           fragment("(?->>'done')::boolean", person.vaccination),
           # vacc_name
@@ -964,191 +965,43 @@ defmodule Hygeia.CaseContext do
           :contact_person -> 1
           :travel -> 2
         end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_symptoms, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_outbreak, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_cohort, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_work_screening, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_quarantine, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_app, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.test_reason_convenience, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_work_place, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_army, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_asyl, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_choir, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_club, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_hh, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_high_school, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_childcare, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_erotica, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_flight, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_medical, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_hotel, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_child_home, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_cinema, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_shop, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_school, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_less_300, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_more_300, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_public_transp, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_massage, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_nursing_home, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_religion, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_restaurant, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_school_camp, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_indoor_sport, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_outdoor_sport, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_gathering, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_zoo, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.exp_loc_type_prison, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.other_exp_loc_type, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.test_reason_symptoms)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.test_reason_outbreak)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.test_reason_cohort)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.test_reason_work_screening)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.test_reason_quarantine)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.test_reason_app)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.test_reason_convenience)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_work_place)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_army)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_asyl)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_choir)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_club)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_hh)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_high_school)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_childcare)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_erotica)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_flight)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_medical)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_hotel)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_child_home)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_cinema)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_shop)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_school)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_less_300)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_more_300)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_public_transp)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_massage)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_nursing_home)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_religion)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_restaurant)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_school_camp)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_indoor_sport)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_outdoor_sport)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_gathering)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_zoo)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_prison)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.other_exp_loc_type)
         |> List.update_at(@bag_med_16122020_case_fields_index.test_type, fn
           nil -> 5
           :pcr -> 1
@@ -1174,6 +1027,8 @@ defmodule Hygeia.CaseContext do
           false -> 2
           nil -> 3
         end)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_yn)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.quar_yn)
       end)
 
     [@bag_med_16122020_case_fields]
@@ -1601,8 +1456,7 @@ defmodule Hygeia.CaseContext do
           # test_reason_quarantine
           fragment("?->'reasons_for_test' \\? ?", case.clinical, "quarantine"),
           # test_reason_quarantine_end
-          # TODO
-          nil,
+          fragment("?->'reasons_for_test' \\? ?", case.clinical, "quarantine_end"),
           # other_test_reason
           fragment("?->'reasons_for_test' \\?| ?", case.clinical, [
             "outbreak_examination",
@@ -1627,8 +1481,7 @@ defmodule Hygeia.CaseContext do
           # reason_end_quar
           fragment("(ARRAY_AGG(?))[1]", fragment("?->'detail'->>'end_reason'", phase)),
           # other_reason_end_quar
-          # TODO
-          nil,
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->'detail'->>'other_end_reason'", phase)),
           # vacc_yn
           fragment("(?->>'done')::boolean", person.vaccination),
           # vacc_name
@@ -1680,176 +1533,54 @@ defmodule Hygeia.CaseContext do
           :contact_person -> 1
           :travel -> 2
         end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.test_reason_symptoms, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_work_place, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_army, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_asyl, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_choir, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_club, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_hh, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_high_school, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_childcare, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_erotica, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_flight, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_medical, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_hotel, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_child_home, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_cinema, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_shop, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_school, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_less_300, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_more_300, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_public_transp, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_massage, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_nursing_home, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_religion, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_restaurant, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_school_camp, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_indoor_sport, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_outdoor_sport, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_gathering, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_zoo, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.exp_loc_type_prison, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.other_exp_loc_type, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.test_reason_quarantine, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.test_reason_quarantine_end, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.other_test_reason, fn
-          nil -> nil
-          true -> 1
-          false -> 0
-        end)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.test_reason_symptoms)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_work_place)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_army)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_asyl)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_choir)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_club)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_hh)
+        |> normalize_boolean_field(
+          @bag_med_16122020_contact_fields_index.exp_loc_type_high_school
+        )
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_childcare)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_erotica)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_flight)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_medical)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_hotel)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_child_home)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_cinema)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_shop)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_school)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_less_300)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_more_300)
+        |> normalize_boolean_field(
+          @bag_med_16122020_contact_fields_index.exp_loc_type_public_transp
+        )
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_massage)
+        |> normalize_boolean_field(
+          @bag_med_16122020_contact_fields_index.exp_loc_type_nursing_home
+        )
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_religion)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_restaurant)
+        |> normalize_boolean_field(
+          @bag_med_16122020_contact_fields_index.exp_loc_type_school_camp
+        )
+        |> normalize_boolean_field(
+          @bag_med_16122020_contact_fields_index.exp_loc_type_indoor_sport
+        )
+        |> normalize_boolean_field(
+          @bag_med_16122020_contact_fields_index.exp_loc_type_outdoor_sport
+        )
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_gathering)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_zoo)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_prison)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.other_exp_loc_type)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.test_reason_quarantine)
+        |> normalize_boolean_field(
+          @bag_med_16122020_contact_fields_index.test_reason_quarantine_end
+        )
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.other_test_reason)
         |> List.update_at(@bag_med_16122020_contact_fields_index.test_type, fn
           nil -> 5
           :pcr -> 1
@@ -1873,6 +1604,14 @@ defmodule Hygeia.CaseContext do
     [@bag_med_16122020_contact_fields]
     |> Stream.concat(cases)
     |> CSV.encode()
+  end
+
+  defp normalize_boolean_field(row, field_number) do
+    List.update_at(row, field_number, fn
+      nil -> nil
+      true -> 1
+      false -> 0
+    end)
   end
 
   @doc """

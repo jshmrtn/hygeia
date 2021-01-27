@@ -22,6 +22,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     belongs_to :default_tracer, User, references: :uuid, foreign_key: :default_tracer_uuid
 
     field :type, Type
+    field :type_other, :string
 
     field :date, :date
     field :propagator_ism_id, :string
@@ -52,6 +53,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       :default_supervisor_uuid,
       :default_tracer_uuid,
       :type,
+      :type_other,
       :date,
       :propagator_case_uuid,
       :propagator_internal,
@@ -80,6 +82,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
         :type,
         :date
       ])
+      |> validate_type_other()
       |> Transmission.validate_case(
         :propagator_internal,
         :propagator_ism_id,
@@ -118,6 +121,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       |> get_change(:people, [])
       |> Enum.reject(&is_empty?(&1, [:search_params_hash, :suspected_duplicate_uuids]))
     )
+  end
+
+  defp validate_type_other(changeset) do
+    changeset
+    |> fetch_field!(:type)
+    |> case do
+      :other -> validate_required(changeset, [:type_other])
+      _defined -> put_change(changeset, :type_other, nil)
+    end
   end
 
   # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
@@ -160,6 +172,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
           default_tracer_uuid: default_tracer_uuid,
           default_supervisor_uuid: default_supervisor_uuid,
           type: global_type,
+          type_other: global_type_other,
           directly_close_cases: directly_close_cases,
           date: date
         }
@@ -176,7 +189,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
         uuid ->
           uuid |> CaseContext.get_case!() |> CaseContext.change_case()
       end
-      |> merge_phases(date, global_type)
+      |> merge_phases(date, global_type, global_type_other)
       |> merge_status(directly_close_cases)
       |> merge_assignee(:tracer_uuid, tracer_uuid, default_tracer_uuid)
       |> merge_assignee(:supervisor_uuid, supervisor_uuid, default_supervisor_uuid)
@@ -192,7 +205,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     case
   end
 
-  defp merge_phases(changeset, date, global_type) do
+  defp merge_phases(changeset, date, global_type, global_type_other) do
     existing_phases =
       changeset
       |> Ecto.Changeset.fetch_field!(:phases)
@@ -211,7 +224,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
           existing_phases ++
             [
               %Case.Phase{
-                details: %Case.Phase.PossibleIndex{type: global_type},
+                details: %Case.Phase.PossibleIndex{
+                  type: global_type,
+                  type_other: global_type_other
+                },
                 start: start_date,
                 end: end_date
               }

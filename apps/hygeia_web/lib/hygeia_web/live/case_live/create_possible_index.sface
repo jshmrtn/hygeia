@@ -27,15 +27,29 @@
           <div class="col-12 col-lg-6">
             <div class="card">
               <div class="card-body">
-                <Field name={{ :type }} class="form-group">
-                  <HygeiaWeb.FieldLabel />
-                  <Select
-                    class="form-control"
-                    options={{ case_phase_possible_index_type_map() }}
-                    opts={{ prompt: gettext("Select Type") }}
-                  />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
+                <div class="row">
+                  <div class="col">
+                    <Field name={{ :type }} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <Select
+                        class="form-control"
+                        options={{ case_phase_possible_index_type_map() }}
+                        opts={{ prompt: gettext("Select Type") }}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                  <div
+                    :if={{ Ecto.Changeset.get_field(@changeset, :type) == :other }}
+                    class="col"
+                  >
+                    <Field name={{ :type_other }} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </div>
                 <div :if={{ Ecto.Changeset.get_field(@changeset, :type) != :travel }}>
                   <Field name={{ :propagator_internal }} class="form-group">
                     <div class="btn-group btn-group-toggle btn-radio-group">

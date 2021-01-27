@@ -54,9 +54,13 @@ defmodule HygeiaWeb.Helpers.Case do
   end
 
   @spec case_phase_index_end_reason_translation(Index.EndReason.t()) :: String.t()
-  def case_phase_index_end_reason_translation(:healed), do: gettext("Healed")
-  def case_phase_index_end_reason_translation(:death), do: gettext("Death")
-  def case_phase_index_end_reason_translation(:no_follow_up), do: gettext("No Follow Up")
+  def case_phase_index_end_reason_translation(:healed), do: pgettext("Index Type", "Healed")
+  def case_phase_index_end_reason_translation(:death), do: pgettext("Index Type", "Death")
+
+  def case_phase_index_end_reason_translation(:no_follow_up),
+    do: pgettext("Index Type", "No Follow Up")
+
+  def case_phase_index_end_reason_translation(:other), do: pgettext("Index Type", "Other")
 
   @spec case_phase_possible_index_end_reason_map :: [
           {String.t(), PossibleIndex.EndReason.t()}
@@ -89,8 +93,20 @@ defmodule HygeiaWeb.Helpers.Case do
   end
 
   @spec case_phase_possible_index_type_translation(PossibleIndex.Type.t()) :: String.t()
-  def case_phase_possible_index_type_translation(:contact_person), do: gettext("Contact Person")
-  def case_phase_possible_index_type_translation(:travel), do: gettext("Travel")
+  def case_phase_possible_index_type_translation(:contact_person),
+    do: pgettext("Possible Index Type", "Contact Person")
+
+  def case_phase_possible_index_type_translation(:travel),
+    do: pgettext("Possible Index Type", "Travel")
+
+  def case_phase_possible_index_type_translation(:outbreak),
+    do: pgettext("Possible Index Type", "Outbreak Examination")
+
+  def case_phase_possible_index_type_translation(:covid_app),
+    do: pgettext("Possible Index Type", "CovidApp Alert")
+
+  def case_phase_possible_index_type_translation(:other),
+    do: pgettext("Possible Index Type", "Other")
 
   @spec case_display_name(case :: Case.t()) :: String.t()
   def case_display_name(
@@ -135,12 +151,24 @@ defmodule HygeiaWeb.Helpers.Case do
     end
   end
 
-  @spec case_phase_type_translation(phase :: Phase.t()) :: String.t()
-  def case_phase_type_translation(%Phase{details: %PossibleIndex{type: :travel}}),
-    do: gettext("Travel")
+  @spec case_phase_type_translation(
+          phase ::
+            Phase.t()
+            | Index.t()
+            | PossibleIndex.t()
+            | Ecto.Changeset.t(Phase.t() | Index.t() | PossibleIndex.t())
+        ) :: String.t()
+  def case_phase_type_translation(%PossibleIndex{type: :other, type_other: type_other}),
+    do: "#{case_phase_possible_index_type_translation(:other)} / #{type_other}"
 
-  def case_phase_type_translation(%Phase{details: %PossibleIndex{type: :contact_person}}),
-    do: gettext("Contact Person")
+  def case_phase_type_translation(%PossibleIndex{type: type}),
+    do: case_phase_possible_index_type_translation(type)
 
-  def case_phase_type_translation(%Phase{details: %Index{}}), do: gettext("Index")
+  def case_phase_type_translation(%Index{}), do: gettext("Index")
+
+  def case_phase_type_translation(%Phase{details: details}),
+    do: case_phase_type_translation(details)
+
+  def case_phase_type_translation(%Ecto.Changeset{} = changeset),
+    do: case_phase_type_translation(Ecto.Changeset.apply_changes(changeset))
 end
