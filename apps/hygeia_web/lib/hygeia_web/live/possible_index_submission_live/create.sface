@@ -85,6 +85,7 @@
                     {gettext("Female"), :female},
                     {gettext("Other"), :other}
                   ] }}
+                  opts={{ prompt: gettext("Choose Sex") }}
                 />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
@@ -192,6 +193,7 @@
                   <Select
                     class="form-control"
                     options={{ infection_place_type_options() }}
+                    opts={{ prompt: gettext("Choose Type") }}
                   />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>

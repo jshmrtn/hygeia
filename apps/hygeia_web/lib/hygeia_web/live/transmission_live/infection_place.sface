@@ -60,7 +60,10 @@
               <HygeiaWeb.FieldLabel />
               <Select
                 class="form-control"
-                opts={{ disabled: @disabled }}
+                opts={{
+                  prompt: gettext("Choose Type"),
+                  disabled: @disabled
+                }}
                 options={{ infection_place_type_options() }}
               />
               <ErrorTag class="d-block invalid-feedback" />
