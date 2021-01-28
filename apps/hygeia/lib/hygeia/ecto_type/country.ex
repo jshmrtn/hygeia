@@ -5,7 +5,7 @@ defmodule Hygeia.EctoType.Country do
 
   use Ecto.Type
 
-  alias Hygeia.Country.Schema.ECH007210
+  alias Hygeia.Country.ECH007210
 
   require ECH007210
 
