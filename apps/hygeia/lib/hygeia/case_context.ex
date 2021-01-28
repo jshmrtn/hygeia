@@ -433,7 +433,7 @@ defmodule Hygeia.CaseContext do
     :exp_loc_type_gathering,
     :exp_loc_type_zoo,
     :exp_loc_type_prison,
-    :other_exp_loc_type,
+    :other_exp_loc_type_yn,
     :exp_loc_type_less_300_detail,
     :exp_loc_type_more_300_detail,
     :exp_loc_name,
@@ -836,7 +836,7 @@ defmodule Hygeia.CaseContext do
             received_transmission.infection_place,
             "prison"
           ),
-          # other_exp_loc_type
+          # other_exp_loc_type_yn
           fragment(
             "(ARRAY_AGG(?->'type' \\? ?))[1]",
             received_transmission.infection_place,
@@ -1006,7 +1006,7 @@ defmodule Hygeia.CaseContext do
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_gathering)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_zoo)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_prison)
-        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.other_exp_loc_type)
+        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.other_exp_loc_type_yn)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.symptoms_yn)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.case_link_yn)
         |> List.update_at(@bag_med_16122020_case_fields_index.test_type, fn
@@ -1097,7 +1097,7 @@ defmodule Hygeia.CaseContext do
     :exp_loc_type_gathering,
     :exp_loc_type_zoo,
     :exp_loc_type_prison,
-    :other_exp_loc_type,
+    :other_exp_loc_type_yn,
     :exp_loc_type_less_300_detail,
     :exp_loc_type_more_300_detail,
     :exp_loc_name,
@@ -1427,7 +1427,7 @@ defmodule Hygeia.CaseContext do
             received_transmission.infection_place,
             "prison"
           ),
-          # other_exp_loc_type
+          # other_exp_loc_type_yn
           fragment(
             "(ARRAY_AGG(?->'type' \\? ?))[1]",
             received_transmission.infection_place,
@@ -1587,7 +1587,7 @@ defmodule Hygeia.CaseContext do
         |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_gathering)
         |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_zoo)
         |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_prison)
-        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.other_exp_loc_type)
+        |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.other_exp_loc_type_yn)
         |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.test_reason_quarantine)
         |> normalize_boolean_field(
           @bag_med_16122020_contact_fields_index.test_reason_quarantine_end
