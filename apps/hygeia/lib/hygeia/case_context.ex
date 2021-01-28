@@ -434,6 +434,7 @@ defmodule Hygeia.CaseContext do
     :exp_loc_type_zoo,
     :exp_loc_type_prison,
     :other_exp_loc_type_yn,
+    :other_exp_loc_type,
     :exp_loc_type_less_300_detail,
     :exp_loc_type_more_300_detail,
     :exp_loc_name,
@@ -842,6 +843,9 @@ defmodule Hygeia.CaseContext do
             received_transmission.infection_place,
             "other"
           ),
+          # other_exp_loc_type
+          # TODO: Add Text field when other_exp_loc_type_yn true
+          nil,
           # exp_loc_type_less_300_detail
           fragment("(ARRAY_AGG(?->>'name'))[1]", received_transmission.infection_place),
           # exp_loc_type_more_300_detail
@@ -1098,6 +1102,7 @@ defmodule Hygeia.CaseContext do
     :exp_loc_type_zoo,
     :exp_loc_type_prison,
     :other_exp_loc_type_yn,
+    :other_exp_loc_type,
     :exp_loc_type_less_300_detail,
     :exp_loc_type_more_300_detail,
     :exp_loc_name,
@@ -1433,6 +1438,9 @@ defmodule Hygeia.CaseContext do
             received_transmission.infection_place,
             "other"
           ),
+          # other_exp_loc_type
+          # TODO: Add Text field when other_exp_loc_type_yn true
+          nil,
           # exp_loc_type_less_300_detail
           fragment("(ARRAY_AGG(?->>'name'))[1]", received_transmission.infection_place),
           # exp_loc_type_more_300_detail
