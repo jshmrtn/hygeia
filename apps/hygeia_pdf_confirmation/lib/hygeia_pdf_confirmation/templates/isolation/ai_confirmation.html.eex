@@ -24,7 +24,7 @@
 <p class="p-2x-margin">Wie Ihnen bereits durch Ihre Ärztin / Ihren Arzt und/oder durch das Contact Tracing mitgeteilt wurde, wurden Sie positiv auf das neue Coronavirus (Sars-CoV-2) getestet.</p>
 
 <p class="p-4x-margin">Gestützt auf das Epidemiengesetz (EpG) werden Sie deshalb <b>einer 10-tägigen Isolation unterstellt</b> (Art. 35 Abs. 1 lit. a in Verbindung mit Art. 31 Abs. 3 und 4 EpG). Ziel dieser Isolation ist es, die Ausbreitung des Coronavirus einzudämmen.</p>
-<p class="p-4x-margin">Ihre Isolation dauert vom <%= HygeiaCldr.Date.to_string!(@phase.start) %> bis und mit <%= HygeiaCldr.Date.to_string!(@phase.end) %>.</p>
+<p class="p-4x-margin">Ihre Isolation dauert vom <%= HygeiaCldr.Date.to_string!(ConfirmationDates.isolation_start_date(@case, @phase.start)) %> bis und mit <%= HygeiaCldr.Date.to_string!(@phase.end) %>.</p>
 
 <p class="p-2x-margin">
   Via untenstehenden Link finden Sie das <a href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/merkblatt-selbstisolation-covid-19.pdf.download.pdf/covid-19_anweisungen_isolation.pdf">Merkblatt</a> (<a href="https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/faq-kontakte-downloads/downloads-in-verschiedenen-sprachen.html">Merkblatt in verschiedenen Sprachen</a>) des Bundesamts für Gesundheit (BAG) zur <b>Isolation</b>. Bitte befolgen Sie die entsprechenden Verhaltensanweisungen.

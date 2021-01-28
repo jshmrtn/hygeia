@@ -103,17 +103,17 @@
         <div
           :for={{ %{details: %Phase.Index{}, uuid: uuid} = phase <- @case.phases }}
           data-toggle="tooltip"
-          data-original-title={{ if !can_generate_isolation_confirmation(phase), do: gettext("Phase start- and end-dates must be set to create Isolation Confirmations."), else: "" }}
+          data-original-title={{ if !can_generate_isolation_confirmation(phase, @case.clinical), do: gettext("Phase start- and end-dates must be set to create Isolation Confirmations."), else: "" }}
         >
           <Link
-            class={{ "dropdown-item" <> if !can_generate_isolation_confirmation(phase), do: " disabled", else: "" }}
+            class={{ "dropdown-item" <> if !can_generate_isolation_confirmation(phase, @case.clinical), do: " disabled", else: "" }}
             to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, uuid) }}
           >
             <span class="oi oi-data-transfer-download mr-1" aria-hidden="true"></span>
             {{ gettext("Isolation Confirmation") }}
           </Link>
           <a
-            class={{ "dropdown-item" <> if !can_generate_isolation_confirmation(phase), do: " disabled", else: "" }}
+            class={{ "dropdown-item" <> if !can_generate_isolation_confirmation(phase, @case.clinical), do: " disabled", else: "" }}
             href="#"
             :on-click="open_sms_modal"
             phx-value-message={{ isolation_sms(@socket, @case, phase) }}
@@ -123,7 +123,7 @@
             {{ gettext("Send SMS Isolation Confirmation") }}
           </a>
           <a
-            class={{ "dropdown-item" <> if !can_generate_isolation_confirmation(phase), do: " disabled", else: "" }}
+            class={{ "dropdown-item" <> if !can_generate_isolation_confirmation(phase, @case.clinical), do: " disabled", else: "" }}
             href="#"
             :on-click="open_email_modal"
             phx-value-subject={{ isolation_email_subject() }}

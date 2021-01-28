@@ -31,7 +31,7 @@
 <p class="p-4x-margin">Gestützt auf das Epidemiengesetz (EpG) werden Sie deshalb <strong>einer 10-tägigen Isolation unterstellt</strong> (Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG). Ziel dieser Isolation ist es, die Ausbreitung des Coronavirus einzudämmen.</p>
 
 <p class="p-4x-margin">
-  Ihre Isolation dauert somit vom <%= HygeiaCldr.Date.to_string!(@phase.start) %> bis
+  Ihre Isolation dauert somit vom <%= HygeiaCldr.Date.to_string!(ConfirmationDates.isolation_start_date(@case, @phase.start)) %> bis
   <%= HygeiaCldr.Date.to_string!(@phase.end) %>.
 </p>
 

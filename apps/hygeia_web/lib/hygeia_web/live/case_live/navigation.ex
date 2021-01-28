@@ -119,8 +119,14 @@ defmodule HygeiaWeb.CaseLive.Navigation do
     {:noreply, assign(socket, email_modal: nil)}
   end
 
-  defp can_generate_isolation_confirmation(phase) do
-    phase.start != nil and phase.end != nil
+  defp can_generate_isolation_confirmation(phase, clinical) do
+    clinical = if is_nil(clinical), do: nil, else: Map.from_struct(clinical)
+
+    not is_nil(phase.end) and
+      Enum.any?(
+        [clinical[:symptom_start], clinical[:laboratory_report], phase.start],
+        &(not is_nil(&1))
+      )
   end
 
   defp can_generate_quarantine_confirmation(phase) do

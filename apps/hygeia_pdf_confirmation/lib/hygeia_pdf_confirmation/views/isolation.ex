@@ -7,4 +7,5 @@ defmodule HygeiaPdfConfirmation.IsolationView do
   import Phoenix.HTML.Tag
 
   alias Hygeia.CaseContext.Address
+  alias HygeiaPdfConfirmation.Helpers.ConfirmationDates
 end
