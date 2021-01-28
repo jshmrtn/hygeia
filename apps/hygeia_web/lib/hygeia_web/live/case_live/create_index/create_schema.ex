@@ -167,6 +167,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
                     possible_index
                     | end_reason: :converted_to_index
                   },
+                  end: Date.utc_today(),
                   send_automated_close_email: false
               }
           end)
@@ -174,7 +175,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
         changeset
         |> Ecto.Changeset.put_embed(
           :phases,
-          status_changed_phases ++ [%Case.Phase{details: %Case.Phase.Index{}}]
+          status_changed_phases ++
+            [%Case.Phase{details: %Case.Phase.Index{}, start: Date.utc_today()}]
         )
         |> Ecto.Changeset.put_change(:status, :first_contact)
 

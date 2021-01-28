@@ -218,10 +218,24 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       nil ->
         {start_date, end_date} = phase_dates(date)
 
+        status_changed_phases =
+          Enum.map(existing_phases, fn
+            %Case.Phase{details: %Case.Phase.PossibleIndex{} = possible_index} = phase ->
+              %Case.Phase{
+                phase
+                | details: %Case.Phase.PossibleIndex{
+                    possible_index
+                    | end_reason: :other
+                  },
+                  end: start_date,
+                  send_automated_close_email: false
+              }
+          end)
+
         changeset
         |> Ecto.Changeset.put_embed(
           :phases,
-          existing_phases ++
+          status_changed_phases ++
             [
               %Case.Phase{
                 details: %Case.Phase.PossibleIndex{

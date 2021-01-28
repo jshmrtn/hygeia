@@ -611,7 +611,7 @@ defmodule HygeiaWeb.CaseLiveTest do
 
       duplicate_case =
         case_fixture(duplicate_person, tracer_user, supervisor_user, %{
-          phases: [%{details: %{__type__: :index}}]
+          phases: [%{details: %{__type__: :possible_index, type: :travel}}]
         })
 
       assert {:ok, create_live, _html} =
@@ -622,7 +622,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                |> form("#case-create-form")
                |> render_submit(%{
                  create_schema: %{
-                   type: :travel,
+                   type: :contact_person,
                    date: ~D[2020-10-17],
                    default_tenant_uuid: tenant.uuid,
                    default_tracer_uuid: tracer_user.uuid,
