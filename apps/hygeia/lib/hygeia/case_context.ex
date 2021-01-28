@@ -603,7 +603,7 @@ defmodule Hygeia.CaseContext do
           # test_reason_convenience
           fragment("?->'reasons_for_test' \\? ?", case.clinical, "convenience"),
           # symptom_onset_dt
-          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", phase)),
+          fragment("(?->>'symptom_start')", case.clinical),
           # sampling_dt
           fragment("?->>'test'", case.clinical),
           # lab_report_dt
@@ -1487,7 +1487,7 @@ defmodule Hygeia.CaseContext do
             "convenience"
           ]),
           # symptom_onset_dt
-          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", phase_index)),
+          fragment("(?->>'symptom_start')", case.clinical),
           # test_type
           type(fragment("(?->>'test_kind')", case.clinical), Case.Clinical.TestKind),
           # sampling_dt

@@ -613,7 +613,8 @@ defmodule Hygeia.CaseContextTest do
               symptoms: [:fever],
               reasons_for_test: [:symptoms],
               test_kind: :serology,
-              result: :positive
+              result: :positive,
+              symptom_start: ~D[2020-10-04]
             }
           })
 
@@ -714,7 +715,7 @@ defmodule Hygeia.CaseContextTest do
                          "date_of_birth" => "1993-01-30",
                          "exp_loc_type_asyl" => "0",
                          "test_result" => "1",
-                         "symptom_onset_dt" => "2020-10-06",
+                         "symptom_onset_dt" => "2020-10-04",
                          "work_place_postal_code" => "9000",
                          "vacc_name" => "Biontech",
                          "exp_loc_type_medical" => "0",
@@ -820,7 +821,7 @@ defmodule Hygeia.CaseContextTest do
                          "date_of_birth" => "1992-03-27",
                          "exp_loc_type_asyl" => "0",
                          "test_result" => "3",
-                         "symptom_onset_dt" => "2020-10-10",
+                         "symptom_onset_dt" => "",
                          "work_place_postal_code" => "9000",
                          "vacc_name" => "",
                          "exp_loc_type_medical" => "0",
@@ -1009,7 +1010,8 @@ defmodule Hygeia.CaseContextTest do
               symptoms: [:fever],
               reasons_for_test: [:symptoms],
               test_kind: :serology,
-              result: :positive
+              result: :positive,
+              symptom_start: ~D[2020-10-04]
             }
           })
 
@@ -1102,7 +1104,7 @@ defmodule Hygeia.CaseContextTest do
                          "date_of_birth" => "1993-01-30",
                          "exp_loc_type_asyl" => "0",
                          "test_result" => "1",
-                         "symptom_onset_dt" => "2020-10-06",
+                         "symptom_onset_dt" => "2020-10-04",
                          "work_place_postal_code" => "9000",
                          "vacc_name" => "",
                          "exp_loc_type_medical" => "0",
@@ -1184,7 +1186,7 @@ defmodule Hygeia.CaseContextTest do
                          "date_of_birth" => "1992-03-27",
                          "exp_loc_type_asyl" => "0",
                          "test_result" => "3",
-                         "symptom_onset_dt" => "2020-10-10",
+                         "symptom_onset_dt" => "",
                          "work_place_postal_code" => "9000",
                          "vacc_name" => "",
                          "exp_loc_type_medical" => "0",

@@ -219,15 +219,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
         {start_date, end_date} = phase_dates(date)
 
         status_changed_phases =
-          Enum.map(existing_phases, fn
-            %Case.Phase{details: %Case.Phase.PossibleIndex{} = possible_index} = phase ->
+          List.update_at(existing_phases, -1, fn
+            %Case.Phase{} = phase ->
               %Case.Phase{
                 phase
-                | details: %Case.Phase.PossibleIndex{
-                    possible_index
-                    | end_reason: :other
-                  },
-                  end: start_date,
+                | end: start_date,
                   send_automated_close_email: false
               }
           end)

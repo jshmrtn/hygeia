@@ -159,7 +159,7 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
     |> case do
       nil ->
         status_changed_phases =
-          Enum.map(existing_phases, fn
+          List.update_at(existing_phases, -1, fn
             %Case.Phase{details: %Case.Phase.PossibleIndex{} = possible_index} = phase ->
               %Case.Phase{
                 phase
