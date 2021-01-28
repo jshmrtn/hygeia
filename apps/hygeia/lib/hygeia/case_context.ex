@@ -14,6 +14,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CommunicationContext
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
+  alias Hygeia.EctoType.Country
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
 
@@ -938,6 +939,8 @@ defmodule Hygeia.CaseContext do
       |> Repo.stream()
       |> Stream.map(fn entry ->
         entry
+        |> normalize_ism_id(@bag_med_16122020_case_fields_index.fall_id_ism)
+        |> normalize_ism_id(@bag_med_16122020_case_fields_index.case_link_fall_id_ism)
         |> List.update_at(@bag_med_16122020_case_fields_index.phone_number, fn
           nil ->
             nil
@@ -1040,6 +1043,10 @@ defmodule Hygeia.CaseContext do
         end)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_yn)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.quar_yn)
+        |> normalize_country(@bag_med_16122020_case_fields_index.country)
+        |> normalize_country(@bag_med_16122020_case_fields_index.work_place_country)
+        |> normalize_country(@bag_med_16122020_case_fields_index.exp_country)
+        |> normalize_country(@bag_med_16122020_case_fields_index.iso_loc_country)
       end)
 
     [@bag_med_16122020_case_fields]
@@ -1517,6 +1524,7 @@ defmodule Hygeia.CaseContext do
       |> Repo.stream()
       |> Stream.map(fn entry ->
         entry
+        |> normalize_ism_id(@bag_med_16122020_contact_fields_index.case_link_fall_id_ism)
         |> List.update_at(@bag_med_16122020_contact_fields_index.phone_number, fn
           nil ->
             nil
@@ -1619,6 +1627,9 @@ defmodule Hygeia.CaseContext do
           false -> 2
           nil -> 3
         end)
+        |> normalize_country(@bag_med_16122020_contact_fields_index.country)
+        |> normalize_country(@bag_med_16122020_contact_fields_index.work_place_country)
+        |> normalize_country(@bag_med_16122020_contact_fields_index.exp_country)
       end)
 
     [@bag_med_16122020_contact_fields]
@@ -1631,6 +1642,27 @@ defmodule Hygeia.CaseContext do
       nil -> nil
       true -> 1
       false -> 0
+    end)
+  end
+
+  defp normalize_country(row, field_number) do
+    List.update_at(row, field_number, fn
+      nil -> nil
+      country -> Country.bfs_code(country)
+    end)
+  end
+
+  defp normalize_ism_id(row, field_number) do
+    List.update_at(row, field_number, fn
+      nil ->
+        nil
+
+      id ->
+        case Integer.parse(id) do
+          {id, ""} -> id
+          {_id, _rest} -> nil
+          :error -> nil
+        end
     end)
   end
 

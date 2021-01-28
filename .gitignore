@@ -27,5 +27,8 @@ erl_crash.dump
 apps/sedex/priv/schema/*.hrl
 apps/sedex/priv/test/sedex/*
 
+# BFS Country List
+apps/hygeia/lib/hygeia/ecto_type/country/*.hrl
+
 # .mo Files
 *.mo

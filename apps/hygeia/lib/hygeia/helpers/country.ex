@@ -5,10 +5,6 @@ defmodule Hygeia.Helpers.Country do
 
   alias Ecto.Changeset
 
-  @spec validate_country(changeset :: Changeset.t(), field :: atom) :: Changeset.t()
-  def validate_country(changeset, field),
-    do: validate_inclusion(changeset, field, Cadastre.Country.ids())
-
   @spec validate_subdivision(changeset :: Changeset.t(), field :: atom, country_field :: atom) ::
           Changeset.t()
   def validate_subdivision(changeset, field, country_field) do

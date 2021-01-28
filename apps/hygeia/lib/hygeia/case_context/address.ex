@@ -5,12 +5,14 @@ defmodule Hygeia.CaseContext.Address do
 
   use Hygeia, :model
 
+  alias Hygeia.EctoType.Country
+
   @type empty :: %__MODULE__{
           address: String.t() | nil,
           zip: String.t() | nil,
           place: String.t() | nil,
           subdivision: String.t() | nil,
-          country: String.t() | nil
+          country: Country.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -18,7 +20,7 @@ defmodule Hygeia.CaseContext.Address do
           zip: String.t() | nil,
           place: String.t() | nil,
           subdivision: String.t() | nil,
-          country: String.t() | nil
+          country: Country.t() | nil
         }
 
   embedded_schema do
@@ -26,7 +28,7 @@ defmodule Hygeia.CaseContext.Address do
     field :zip, :string
     field :place, :string
     field :subdivision, :string
-    field :country, :string, default: "CH"
+    field :country, Country, default: "CH"
   end
 
   @doc false
@@ -35,7 +37,6 @@ defmodule Hygeia.CaseContext.Address do
     address
     |> cast(attrs, [:address, :zip, :place, :subdivision, :country])
     |> validate_required([])
-    |> validate_country(:country)
     |> validate_subdivision(:subdivision, :country)
   end
 
