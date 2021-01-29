@@ -233,16 +233,19 @@ defmodule HygeiaWeb.CaseLive.Create do
         changeset,
         :people,
         %{uuid: person_changeset_uuid},
-        &Map.merge(
-          &1,
-          case person_or_changeset do
-            {case, person} ->
-              Map.merge(get_person_changes(person), get_case_changes(case, schema_module))
+        fn old_params ->
+          Map.merge(
+            old_params,
+            case person_or_changeset do
+              {case, person} ->
+                Map.merge(get_person_changes(person), get_case_changes(case, schema_module))
 
-            person ->
-              get_person_changes(person)
-          end
-        )
+              person ->
+                get_person_changes(person)
+            end,
+            &recursive_map_merge/3
+          )
+        end
       )
     )
   end
@@ -343,6 +346,11 @@ defmodule HygeiaWeb.CaseLive.Create do
       "Auftraggeber PLZ" => [:clinical, :sponsor, :address, :zip],
       "Auftraggeber Ort" => [:clinical, :sponsor, :address, :place]
     }
+
+  defp recursive_map_merge(_key, %{} = a, %{} = b) when not is_struct(1) and not is_struct(b),
+    do: Map.merge(a, b, &recursive_map_merge/3)
+
+  defp recursive_map_merge(_key, _a, b), do: b
 
   defp recursive_string_keys(%{} = map) when not is_struct(map) do
     Map.new(map, fn
