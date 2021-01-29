@@ -80,11 +80,7 @@
                 <HygeiaWeb.FieldLabel />
                 <Select
                   class="form-control"
-                  options={{ [
-                    {gettext("Male"), :male},
-                    {gettext("Female"), :female},
-                    {gettext("Other"), :other}
-                  ] }}
+                  options={{ person_sex_map() }}
                   opts={{ prompt: gettext("Choose Sex") }}
                 />
                 <ErrorTag class="d-block invalid-feedback" />

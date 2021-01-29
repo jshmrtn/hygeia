@@ -1,9 +1,12 @@
+# credo:disable-for-this-file Credo.Check.Design.AliasUsage
 defmodule HygeiaWeb.VersionLive.Change do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
 
   alias Surface.Components.LiveRedirect
+
+  require Logger
 
   prop version, :map, required: true
 
@@ -76,7 +79,53 @@ defmodule HygeiaWeb.VersionLive.Change do
     """
   end
 
-  defp render_tree(scalar, _schema, _assings) when not is_struct(scalar), do: scalar
+  defp render_tree(string, schema, _assings) when schema in [:string, :binary_id], do: string
+  defp render_tree(country, Hygeia.EctoType.Country, _assigns), do: country_name(country)
+
+  defp render_tree(date, :date, _assigns),
+    do: date |> Date.from_iso8601!() |> HygeiaCldr.Date.to_string!()
+
+  defp render_tree(type, Hygeia.CaseContext.Person.ContactMethod.Type, _assigns),
+    do: type |> String.to_existing_atom() |> translate_contact_method_type()
+
+  defp render_tree(type, Hygeia.CaseContext.ExternalReference.Type, _assigns),
+    do: type |> String.to_existing_atom() |> translate_external_reference_type()
+
+  defp render_tree(date, type, _assigns) when type in [:naive_datetime, :naive_datetime_usec],
+    do:
+      date
+      |> NaiveDateTime.from_iso8601!()
+      |> DateTime.from_naive!("Europe/Zurich")
+      |> HygeiaCldr.DateTime.to_string!()
+
+  defp render_tree(date, type, _assigns)
+       when type in [:utc_datetime, :datetime, :datetime_usec, :utc_datetime_usec] do
+    {:ok, date, _offset} = DateTime.from_iso8601(date)
+    date |> DateTime.shift_zone!("Europe/Zurich") |> HygeiaCldr.DateTime.to_string!()
+  end
+
+  defp render_tree(code, Hygeia.EctoType.NOGA.Code, _assigns),
+    do: code |> String.to_existing_atom() |> Hygeia.EctoType.NOGA.Code.title()
+
+  defp render_tree(code, Hygeia.EctoType.NOGA.Section, _assigns),
+    do: code |> String.to_existing_atom() |> Hygeia.EctoType.NOGA.Section.title()
+
+  defp render_tree(sex, Hygeia.CaseContext.Person.Sex, _assigns),
+    do: sex |> String.to_existing_atom() |> translate_person_sex()
+
+  defp render_tree(boolean, :boolean, _assigns),
+    do: if(boolean, do: gettext("True"), else: gettext("False"))
+
+  defp render_tree(status, Hygeia.CaseContext.Case.Status, _assigns),
+    do: status |> String.to_existing_atom() |> case_status_translation()
+
+  defp render_tree(other, schema, _assings) do
+    Logger.warn("""
+    #{__MODULE__}.render_tree/3 for #{inspect(schema)} not implemented
+    """)
+
+    other
+  end
 
   defp is_foregin_key?(schema, field), do: get_field_relation_target_schema(schema, field) != nil
 
