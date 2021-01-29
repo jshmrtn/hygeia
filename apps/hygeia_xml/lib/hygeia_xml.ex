@@ -25,7 +25,6 @@ defmodule HygeiaXml do
       :erlsom.write_hrl(model, hrl_path)
 
       @external_resource path
-      @external_resource hrl_path
 
       for {name, def} <- Record.extract_all(from: hrl_path) do
         firendly_name =
