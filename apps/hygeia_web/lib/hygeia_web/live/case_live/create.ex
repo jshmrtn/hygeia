@@ -347,7 +347,7 @@ defmodule HygeiaWeb.CaseLive.Create do
       "Auftraggeber Ort" => [:clinical, :sponsor, :address, :place]
     }
 
-  defp recursive_map_merge(_key, %{} = a, %{} = b) when not is_struct(1) and not is_struct(b),
+  defp recursive_map_merge(_key, %{} = a, %{} = b) when not is_struct(a) and not is_struct(b),
     do: Map.merge(a, b, &recursive_map_merge/3)
 
   defp recursive_map_merge(_key, _a, b), do: b
