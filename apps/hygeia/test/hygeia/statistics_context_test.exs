@@ -789,7 +789,8 @@ defmodule Hygeia.StatisticsContextTest do
         recipient_case_uuid: index_case.uuid,
         infection_place: %{
           known: true,
-          type: :other
+          type: :other,
+          type_other: "Bla Bla"
         }
       })
 

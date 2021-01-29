@@ -158,9 +158,9 @@ msgstr ""
 msgid "App report"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/index.sface:285
+#: lib/hygeia_web/live/case_live/index.sface:281
 #: lib/hygeia_web/live/case_live/navigation.sface:245 lib/hygeia_web/live/case_live/navigation.sface:289
-#: lib/hygeia_web/live/case_live/transmission_table.sface:152 lib/hygeia_web/live/organisation_live/index.sface:97
+#: lib/hygeia_web/live/case_live/transmission_table.sface:153 lib/hygeia_web/live/organisation_live/index.sface:97
 #: lib/hygeia_web/live/organisation_live/show.sface:20 lib/hygeia_web/live/person_live/base_data.sface:41
 #: lib/hygeia_web/live/person_live/index.sface:198 lib/hygeia_web/live/possible_index_submission_live/index.sface:132
 #: lib/hygeia_web/live/possible_index_submission_live/show.sface:49 lib/hygeia_web/live/system_message_live/index.sface:58
@@ -244,7 +244,7 @@ msgstr ""
 msgid "Case"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/navigation.ex:90
+#: lib/hygeia_web/live/case_live/navigation.ex:94
 msgid "Case deleted successfully"
 msgstr ""
 
@@ -270,7 +270,7 @@ msgstr ""
 #: lib/hygeia_web/live/person_live/base_data.sface:168
 #: lib/hygeia_web/live/person_live/create.sface:70 lib/hygeia_web/live/possible_index_submission_live/create.sface:196
 #: lib/hygeia_web/live/references.sface:25 lib/hygeia_web/live/tenant_live/show.sface:128
-#: lib/hygeia_web/live/tenant_live/show.sface:243 lib/hygeia_web/live/transmission_live/infection_place.sface:64
+#: lib/hygeia_web/live/tenant_live/show.sface:243 lib/hygeia_web/live/transmission_live/infection_place.sface:66
 msgid "Choose Type"
 msgstr ""
 
@@ -439,7 +439,7 @@ msgstr ""
 msgid "Created Index Phase"
 msgstr ""
 
-#: lib/hygeia_web/helpers/case.ex:134 lib/hygeia_web/helpers/case.ex:139
+#: lib/hygeia_web/helpers/case.ex:130 lib/hygeia_web/helpers/case.ex:135
 msgid "Created at %{created_at}"
 msgstr ""
 
@@ -483,9 +483,9 @@ msgstr ""
 msgid "Default country"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/index.sface:284
+#: lib/hygeia_web/live/case_live/index.sface:280
 #: lib/hygeia_web/live/case_live/navigation.sface:288 lib/hygeia_web/live/case_live/navigation.sface:293
-#: lib/hygeia_web/live/case_live/transmission_table.sface:151 lib/hygeia_web/live/organisation_live/index.sface:96
+#: lib/hygeia_web/live/case_live/transmission_table.sface:152 lib/hygeia_web/live/organisation_live/index.sface:96
 #: lib/hygeia_web/live/organisation_live/show.sface:19 lib/hygeia_web/live/organisation_live/show.sface:26
 #: lib/hygeia_web/live/person_live/base_data.sface:40 lib/hygeia_web/live/person_live/base_data.sface:47
 #: lib/hygeia_web/live/person_live/index.sface:197 lib/hygeia_web/live/possible_index_submission_live/index.sface:131
@@ -586,8 +586,8 @@ msgstr ""
 
 #: lib/hygeia_web/live/case_live/base_data.sface:16
 #: lib/hygeia_web/live/case_live/base_data.sface:17 lib/hygeia_web/live/case_live/base_data.sface:555
-#: lib/hygeia_web/live/case_live/base_data.sface:556 lib/hygeia_web/live/case_live/index.sface:277
-#: lib/hygeia_web/live/case_live/transmission_table.sface:144 lib/hygeia_web/live/organisation_live/index.sface:89
+#: lib/hygeia_web/live/case_live/base_data.sface:556 lib/hygeia_web/live/case_live/index.sface:273
+#: lib/hygeia_web/live/case_live/transmission_table.sface:145 lib/hygeia_web/live/organisation_live/index.sface:89
 #: lib/hygeia_web/live/organisation_live/show.sface:11 lib/hygeia_web/live/organisation_live/show.sface:12
 #: lib/hygeia_web/live/person_live/base_data.sface:31 lib/hygeia_web/live/person_live/base_data.sface:32
 #: lib/hygeia_web/live/person_live/base_data.sface:468 lib/hygeia_web/live/person_live/base_data.sface:469
@@ -847,7 +847,7 @@ msgstr ""
 msgid "Includes Phase Type"
 msgstr ""
 
-#: lib/hygeia_web/helpers/case.ex:167 lib/hygeia_web/helpers/phase.ex:11
+#: lib/hygeia_web/helpers/case.ex:163 lib/hygeia_web/helpers/phase.ex:11
 #: lib/hygeia_web/live/case_live/index.sface:107 lib/hygeia_web/live/statistics_live/statistics.sface:295
 msgid "Index"
 msgstr ""
@@ -1183,8 +1183,8 @@ msgstr ""
 msgid "No Follow Up"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/index.sface:301
-#: lib/hygeia_web/live/case_live/protocol.sface:95 lib/hygeia_web/live/case_live/transmission_table.sface:168
+#: lib/hygeia_web/live/case_live/index.sface:297
+#: lib/hygeia_web/live/case_live/protocol.sface:95 lib/hygeia_web/live/case_live/transmission_table.sface:169
 #: lib/hygeia_web/live/organisation_live/show.sface:162 lib/hygeia_web/live/person_live/index.sface:213
 #: lib/hygeia_web/live/statistics_live/choose_tenant.sface:22
 msgid "No data to display"
@@ -1724,8 +1724,8 @@ msgstr ""
 msgid "Sex"
 msgstr ""
 
-#: lib/hygeia_web/live/case_live/index.sface:270
-#: lib/hygeia_web/live/case_live/transmission_table.sface:137 lib/hygeia_web/live/organisation_live/index.sface:81
+#: lib/hygeia_web/live/case_live/index.sface:266
+#: lib/hygeia_web/live/case_live/transmission_table.sface:138 lib/hygeia_web/live/organisation_live/index.sface:81
 #: lib/hygeia_web/live/person_live/index.sface:183 lib/hygeia_web/live/possible_index_submission_live/index.sface:116
 #: lib/hygeia_web/live/system_message_live/index.sface:43 lib/hygeia_web/live/tenant_live/index.sface:43
 #: lib/hygeia_web/live/user_live/index.sface:49
@@ -2629,652 +2629,652 @@ msgstr ""
 msgid "History"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Address"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Country"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Subdivision"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "ZIP"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Clinical Information"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Complexity"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Hospitalizations"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Monitoring"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Person"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Person UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Phases"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "References"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Status"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Supervisor"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Supervisor UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tenant"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tenant UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tracer"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tracer UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Laboratory report date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Reasons for test"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Reporting unit"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Result"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Sponsor"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Test Kind"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Test date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Hospitalization Field"
 msgid "End"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Hospitalization Field"
 msgid "Organisation"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Hospitalization Field"
 msgid "Organisation UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Hospitalization Field"
 msgid "Start"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "First Contact"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Location"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Location Details"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Automated close email sent"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Details"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "End"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Send Automated Close Email"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Start"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Type"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.Index Field"
 msgid "End Reason"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "End Reason"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "Type"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Address"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Supervisor Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Supervisor Phone"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
 msgid "Address"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
 msgid "Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.ExternalReference Field"
 msgid "Type"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.ExternalReference Field"
 msgid "Type name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.ExternalReference Field"
 msgid "Value"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Address"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Birth Date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "First Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Lasr Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Profession"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Profession Category"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Sex"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Tenant"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Tenant UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Address"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Birth Date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Email"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "First Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Infection Place"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Landline"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Last Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Mobile"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Sex"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Transmission Date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Case"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Case UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator ISM ID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Recipient Case"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Recipient Case UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Recipient ISM ID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Type"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Activity Mapping"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Type"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Address"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Notes"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Case Management Enabled"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "IAM Domain"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Outgoing Mail Configuration Type"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Outgoing SMS Configuration Type"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Override URL"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Public Statistics"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Short Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Template Variation"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Display Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Email"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Grants"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "IAM Subject"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Roles"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Supervisor"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Supervisor UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Tenant"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Tenant UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Tracer"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Tracer UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Copy Address From Propagator"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Supervisor"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Supervisor UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Tenant"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Tenant UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Tracer"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Tracer UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Directly Close Cases"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Propagator Case"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Propagator Case UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Propagator ISM ID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Send Confirmation Email"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Send Confirmation SMS"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Type"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:304
+#: lib/hygeia_web/helpers/field_name.ex:305
 msgctxt "Field"
 msgid "Human Readable ID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:304
+#: lib/hygeia_web/helpers/field_name.ex:305
 msgctxt "Field"
 msgid "Inserted At"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:304
+#: lib/hygeia_web/helpers/field_name.ex:305
 msgctxt "Field"
 msgid "Kind"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:304
+#: lib/hygeia_web/helpers/field_name.ex:305
 msgctxt "Field"
 msgid "UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:304
+#: lib/hygeia_web/helpers/field_name.ex:305
 msgctxt "Field"
 msgid "Updated At"
 msgstr ""
@@ -3294,172 +3294,172 @@ msgctxt "versioning_event"
 msgid "update"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Recipient"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Known"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Address"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Birth Date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Email"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Employer"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "First Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "ISM Case ID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "ISM Report ID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Landline"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Mobile"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Sex"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Supervisor"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Supervisor UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Tenant"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Tenant UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Tracer"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Tracer UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Jab Dates"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.PaperTrail.Version Field"
 msgid "Author"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.PaperTrail.Version Field"
 msgid "Changes"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.PaperTrail.Version Field"
 msgid "Date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.PaperTrail.Version Field"
 msgid "Origin"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.PaperTrail.Version Field"
 msgid "Type"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Last Name"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Contact Methods"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Employers"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "References"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Vaccination"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person.ContactMethod Field"
 msgid "Comment"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person.ContactMethod Field"
 msgid "Typ"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person.ContactMethod Field"
 msgid "Value"
 msgstr ""
@@ -3468,37 +3468,37 @@ msgstr ""
 msgid "No verson entries found"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Infection Place"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Internal"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Recipient Internal"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Activity Mapping Executed"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Address"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Outgoing Mail Configuration"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Outgoing SMS Configuration"
 msgstr ""
@@ -3567,122 +3567,122 @@ msgstr ""
 msgid "SMS created successfully"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Address"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
 msgid "Note"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Body"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Recipient"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Status"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "To"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Message"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Number"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Status"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "From Email"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "DKIM"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Enable DKIM"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Enable Relay"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Relay"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Domain"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Private Key"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Signing Domain Identifier"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Hostname"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Password"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Port"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Server"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Username"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Websms Field"
 msgid "Access Token"
 msgstr ""
@@ -3795,27 +3795,27 @@ msgstr ""
 msgid "User Roles"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "End Date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Related Tenants"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Roles"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Start Date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Text"
 msgstr ""
@@ -3825,7 +3825,7 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Done"
 msgstr ""
@@ -3864,42 +3864,42 @@ msgstr ""
 msgid "Sedex Exports"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
 msgid "Scheduling Date"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
 msgid "Status"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
 msgid "Tenant"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
 msgid "Tenant UUID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Sedex Export Enabled"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
 msgid "Recipient ID"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
 msgid "Recipient Public Key"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
 msgid "Schedule"
 msgstr ""
@@ -3908,31 +3908,31 @@ msgstr ""
 msgid "Export Data for %{tenant}"
 msgstr ""
 
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.Index Field"
 msgid "Other End Reason"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "Other End Reason"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "Other Type"
 msgstr ""
 
 #, elixir-format
-#: lib/hygeia_web/helpers/field_name.ex:299
+#: lib/hygeia_web/helpers/field_name.ex:300
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Other"
 msgstr ""
@@ -4045,7 +4045,13 @@ msgctxt "Test Reason"
 msgid "Work related"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 #: lib/hygeia_web/live/possible_index_submission_live/create.sface:88
 msgid "Choose Sex"
+msgstr ""
+
+#, elixir-format
+#: lib/hygeia_web/helpers/field_name.ex:300
+msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
+msgid "Type Other"
 msgstr ""

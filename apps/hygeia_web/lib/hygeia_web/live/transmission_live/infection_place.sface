@@ -56,18 +56,35 @@
               />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-            <Field name={{ :type }} class="form-group">
-              <HygeiaWeb.FieldLabel />
-              <Select
-                class="form-control"
-                opts={{
-                  prompt: gettext("Choose Type"),
-                  disabled: @disabled
-                }}
-                options={{ infection_place_type_options() }}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
+            <div class="row">
+              <div class="col">
+                <Field name={{ :type }} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <Select
+                    class="form-control"
+                    opts={{
+                      prompt: gettext("Choose Type"),
+                      disabled: @disabled
+                    }}
+                    options={{ infection_place_type_options() }}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+              <div
+                :if={{ Ecto.Changeset.get_field(form.source, :type) == :other }}
+                class="col"
+              >
+                <Field name={{ :type_other }} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TextInput
+                    class="form-control"
+                    opts={{ disabled: @disabled }}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+            </div>
             <Field name={{ :name }} class="form-group">
               <HygeiaWeb.FieldLabel />
               <TextInput

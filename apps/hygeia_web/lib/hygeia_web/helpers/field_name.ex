@@ -154,7 +154,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       flight_information: "Flight Information",
       known: "Known",
       name: "Name",
-      type: "Type"
+      type: "Type",
+      type_other: "Type Other"
     },
     Hygeia.CommunicationContext.Email => %{
       body: "Body",

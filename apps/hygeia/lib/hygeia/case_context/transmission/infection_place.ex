@@ -48,6 +48,7 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
           activity_mapping_executed: boolean() | nil,
           activity_mapping: String.t() | nil,
           type: Type.t() | nil,
+          type_other: String.t() | nil,
           name: String.t() | nil,
           flight_information: String.t() | nil
         }
@@ -61,6 +62,7 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
     field :name, :string
     field :flight_information, :string
     field :type, Type
+    field :type_other, :string
 
     embeds_one :address, Address, on_replace: :update
   end
@@ -76,9 +78,20 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
       :activity_mapping,
       :name,
       :flight_information,
-      :type
+      :type,
+      :type_other
     ])
     |> validate_required([])
     |> cast_embed(:address)
+    |> validate_type_other()
+  end
+
+  defp validate_type_other(changeset) do
+    changeset
+    |> fetch_field!(:type)
+    |> case do
+      :other -> validate_required(changeset, [:type_other])
+      _defined -> put_change(changeset, :type_other, nil)
+    end
   end
 end

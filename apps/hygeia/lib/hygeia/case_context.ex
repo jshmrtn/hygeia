@@ -845,8 +845,7 @@ defmodule Hygeia.CaseContext do
             "other"
           ),
           # other_exp_loc_type
-          # TODO: Add Text field when other_exp_loc_type_yn true
-          nil,
+          fragment("(ARRAY_AGG(?->'type_other'))[1]", received_transmission.infection_place),
           # exp_loc_type_less_300_detail
           fragment("(ARRAY_AGG(?->>'name'))[1]", received_transmission.infection_place),
           # exp_loc_type_more_300_detail
@@ -1446,8 +1445,7 @@ defmodule Hygeia.CaseContext do
             "other"
           ),
           # other_exp_loc_type
-          # TODO: Add Text field when other_exp_loc_type_yn true
-          nil,
+          fragment("(ARRAY_AGG(?->'type_other'))[1]", received_transmission.infection_place),
           # exp_loc_type_less_300_detail
           fragment("(ARRAY_AGG(?->>'name'))[1]", received_transmission.infection_place),
           # exp_loc_type_more_300_detail
