@@ -1,3 +1,13 @@
+# # This is a PO Template file.
+# #
+# # `msgid`s here are often extracted from source code.
+# # Add new translations manually only if they're dynamic
+# # translations that can't be statically extracted.
+# #
+# # Run `mix gettext.extract` to bring this file up to
+# # date. Leave `msgstr`s empty as changing them here has no
+# # effect: edit them in PO (`.po`) files instead.
+# # From Ecto.Changeset.cast/4
 msgid ""
 msgstr ""
 "Project-Id-Version: Hygeia\n"
@@ -11,52 +21,78 @@ msgstr ""
 "X-Generator: Poedit 2.4.1\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-# # This is a PO Template file.
-# #
-# # `msgid`s here are often extracted from source code.
-# # Add new translations manually only if they're dynamic
-# # translations that can't be statically extracted.
-# #
-# # Run `mix gettext.extract` to bring this file up to
-# # date. Leave `msgstr`s empty as changing them here has no
-# # effect: edit them in PO (`.po`) files instead.
-# # From Ecto.Changeset.cast/4
+msgid "are still associated with this entry"
+msgstr ""
+
+#, elixir-format
+msgid "at least one contact method must be provided"
+msgstr ""
+
 msgid "can't be blank"
 msgstr ""
 
-# # From Ecto.Changeset.unique_constraint/3
-msgid "has already been taken"
-msgstr ""
-
-# # From Ecto.Changeset.put_change/3
-msgid "is invalid"
-msgstr ""
-
-# # From Ecto.Changeset.validate_acceptance/3
-msgid "must be accepted"
-msgstr ""
-
-# # From Ecto.Changeset.validate_format/3
-msgid "has invalid format"
-msgstr ""
-
-# # From Ecto.Changeset.validate_subset/3
-msgid "has an invalid entry"
-msgstr ""
-
-# # From Ecto.Changeset.validate_exclusion/3
-msgid "is reserved"
+#, elixir-format
+msgid "date is to far away from today"
 msgstr ""
 
 # # From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
 msgstr ""
 
+#, elixir-format
+msgid "end must be after start"
+msgstr ""
+
+#, elixir-format
+msgid "end must be before or equal to next phase start"
+msgstr ""
+
+# # From Ecto.Changeset.unique_constraint/3
+msgid "has already been taken"
+msgstr ""
+
+# # From Ecto.Changeset.validate_subset/3
+msgid "has an invalid entry"
+msgstr ""
+
+# # From Ecto.Changeset.validate_format/3
+msgid "has invalid format"
+msgstr ""
+
+# # From Ecto.Changeset.put_change/3
+msgid "is invalid"
+msgstr ""
+
+#, elixir-format
+msgid "is not a valid hostname"
+msgstr ""
+
+# # From Ecto.Changeset.validate_exclusion/3
+msgid "is reserved"
+msgstr ""
+
 # # From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
 msgstr ""
 
-msgid "are still associated with this entry"
+# # From Ecto.Changeset.validate_acceptance/3
+msgid "must be accepted"
+msgstr ""
+
+msgid "must be equal to %{number}"
+msgstr ""
+
+msgid "must be greater than %{number}"
+msgstr ""
+
+msgid "must be greater than or equal to %{number}"
+msgstr ""
+
+# # From Ecto.Changeset.validate_number/3
+msgid "must be less than %{number}"
+msgstr ""
+
+msgid "must be less than or equal to %{number}"
 msgstr ""
 
 # # From Ecto.Changeset.validate_length/3
@@ -65,18 +101,8 @@ msgid_plural "should be %{count} character(s)"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "should have %{count} item(s)"
-msgid_plural "should have %{count} item(s)"
-msgstr[0] ""
-msgstr[1] ""
-
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "should have at least %{count} item(s)"
-msgid_plural "should have at least %{count} item(s)"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -85,53 +111,21 @@ msgid_plural "should be at most %{count} character(s)"
 msgstr[0] ""
 msgstr[1] ""
 
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
 msgstr[0] ""
 msgstr[1] ""
 
-# # From Ecto.Changeset.validate_number/3
-msgid "must be less than %{number}"
-msgstr ""
-
-msgid "must be greater than %{number}"
-msgstr ""
-
-msgid "must be less than or equal to %{number}"
-msgstr ""
-
-msgid "must be greater than or equal to %{number}"
-msgstr ""
-
-msgid "must be equal to %{number}"
-msgstr ""
-
 #, elixir-format
-#: lib/hygeia/case_context/possible_index_submission.ex:122
-msgid "at least one contact method must be provided"
-msgstr ""
-
-#, elixir-format
-#: lib/hygeia/case_context/case/phase.ex:87
-msgid "date is to far away from today"
-msgstr ""
-
-#, elixir-format
-#: lib/hygeia/case_context/case/phase.ex:60
-msgid "end must be after start"
-msgstr ""
-
-#, elixir-format
-#: lib/hygeia/case_context/case/phase.ex:54
 msgid "start must be before end"
-msgstr ""
-
-#, elixir-format
-#: lib/hygeia/helpers/dns.ex:23
-msgid "is not a valid hostname"
-msgstr ""
-
-#, elixir-format
-#: lib/hygeia/case_context/case.ex:230
-msgid "end must be before or equal to next phase start"
 msgstr ""

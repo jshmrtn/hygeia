@@ -18,6 +18,7 @@ defmodule HygeiaGettext.MixProject do
       test_coverage: [tool: ExCoveralls],
       compilers: [:gettext] ++ Mix.compilers(),
       deps: deps(),
+      gettext: [write_reference_comments: false, sort_by_msgid: true],
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
