@@ -35,7 +35,7 @@ defmodule HygeiaWeb.SMSLive.CreateModal do
     numbers =
       case.person.contact_methods
       |> Enum.filter(&match?(%ContactMethod{type: :mobile}, &1))
-      |> Enum.map(& &1.value)
+      |> Enum.map(&{ContactMethod.name(&1), &1.value})
 
     changeset =
       case

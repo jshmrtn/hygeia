@@ -67,6 +67,11 @@ defmodule Hygeia.CaseContext.Person.ContactMethod do
     end)
   end
 
+  @spec name(contact_method :: t) :: String.t()
+  def name(%__MODULE__{value: value, comment: nil}), do: value
+  def name(%__MODULE__{value: value, comment: ""}), do: value
+  def name(%__MODULE__{value: value, comment: comment}), do: "#{value} - #{comment}"
+
   defp switch_type(changeset, callback) do
     changeset
     |> fetch_field!(:type)

@@ -36,7 +36,7 @@ defmodule HygeiaWeb.EmailLive.CreateModal do
     emails =
       case.person.contact_methods
       |> Enum.filter(&match?(%ContactMethod{type: :email}, &1))
-      |> Enum.map(& &1.value)
+      |> Enum.map(&{ContactMethod.name(&1), &1.value})
 
     changeset = CommunicationContext.change_email_create(case, Map.merge(params, @field_defaults))
 
