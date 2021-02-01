@@ -221,21 +221,39 @@ defmodule Hygeia.CaseContext.Case do
           phase
 
         [phase_before, phase_after] ->
-          with %Date{} = end_date_before <- fetch_field!(phase_before, :end),
-               %Date{} = start_date_after <- fetch_field!(phase_after, :start),
-               :gt <- Date.compare(end_date_before, start_date_after) do
-            add_error(
-              phase_before,
-              :end,
-              dgettext("errors", "end must be before or equal to next phase start")
-            )
-          else
-            nil -> phase_before
-            :eq -> phase_before
-            :lt -> phase_before
-          end
+          check_dates(phase_before, phase_after)
       end)
     )
+  end
+
+  defp check_dates(phase_before, phase_after) do
+    end_date_before = fetch_field!(phase_before, :end)
+    start_date_after = fetch_field!(phase_after, :start)
+
+    cond do
+      is_nil(end_date_before) ->
+        phase_before
+
+      is_nil(start_date_after) ->
+        phase_before
+
+      Date.compare(end_date_before, start_date_after) == :gt ->
+        add_error(
+          phase_before,
+          :end,
+          dgettext("errors", "end must be before or equal to next phase start")
+        )
+
+      Date.diff(start_date_after, end_date_before) > 1 ->
+        add_error(
+          phase_before,
+          :end,
+          dgettext("errors", "end must be at most one day before next phase start")
+        )
+
+      true ->
+        phase_before
+    end
   end
 
   defimpl Hygeia.Authorization.Resource do

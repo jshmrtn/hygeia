@@ -4,6 +4,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
   use Hygeia, :model
 
   import HygeiaWeb.CaseLive.Create.CreateSchema
+  import HygeiaGettext
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
@@ -82,6 +83,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
         :type,
         :date
       ])
+      |> validate_date()
       |> validate_type_other()
       |> Transmission.validate_case(
         :propagator_internal,
@@ -130,6 +132,23 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       :other -> validate_required(changeset, [:type_other])
       _defined -> put_change(changeset, :type_other, nil)
     end
+  end
+
+  defp validate_date(changeset) do
+    validate_change(changeset, :date, fn :date, value ->
+      diff = Date.diff(Date.utc_today(), value)
+
+      cond do
+        diff > 10 ->
+          [{:date, dgettext("errors", "date must not be older than 10 days")}]
+
+        diff < 0 ->
+          [{:date, dgettext("errors", "date must not be in the future")}]
+
+        true ->
+          []
+      end
+    end)
   end
 
   # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode

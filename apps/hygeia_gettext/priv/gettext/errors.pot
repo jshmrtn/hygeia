@@ -35,12 +35,24 @@ msgstr ""
 msgid "date is to far away from today"
 msgstr ""
 
+#, elixir-format
+msgid "date must not be in the future"
+msgstr ""
+
+#, elixir-format
+msgid "date must not be older than 10 days"
+msgstr ""
+
 # # From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
 msgstr ""
 
 #, elixir-format
 msgid "end must be after start"
+msgstr ""
+
+#, elixir-format
+msgid "end must be at most one day before next phase start"
 msgstr ""
 
 #, elixir-format

@@ -393,7 +393,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                |> form("#case-create-form",
                  create_schema: %{
                    type: :travel,
-                   date: "2020-10-17",
+                   date: Date.add(Date.utc_today(), -5),
                    default_tenant_uuid: tenant.uuid,
                    default_tracer_uuid: tracer_user.uuid,
                    default_supervisor_uuid: supervisor_user.uuid,
@@ -451,7 +451,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                |> form("#case-create-form",
                  create_schema: %{
                    type: :travel,
-                   date: ~D[2020-10-17],
+                   date: Date.add(Date.utc_today(), -5),
                    default_tenant_uuid: tenant.uuid,
                    default_tracer_uuid: tracer_user.uuid,
                    default_supervisor_uuid: supervisor_user.uuid,
@@ -504,7 +504,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                |> render_submit(%{
                  create_schema: %{
                    type: :travel,
-                   date: ~D[2020-10-17],
+                   date: Date.add(Date.utc_today(), -5),
                    default_tenant_uuid: tenant.uuid,
                    default_tracer_uuid: tracer_user.uuid,
                    default_supervisor_uuid: supervisor_user.uuid,
@@ -563,7 +563,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                |> render_submit(%{
                  create_schema: %{
                    type: :travel,
-                   date: ~D[2020-10-17],
+                   date: Date.add(Date.utc_today(), -5),
                    default_tenant_uuid: tenant.uuid,
                    default_tracer_uuid: tracer_user.uuid,
                    default_supervisor_uuid: supervisor_user.uuid,
@@ -623,7 +623,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                |> render_submit(%{
                  create_schema: %{
                    type: :contact_person,
-                   date: ~D[2020-10-17],
+                   date: Date.add(Date.utc_today(), -5),
                    default_tenant_uuid: tenant.uuid,
                    default_tracer_uuid: tracer_user.uuid,
                    default_supervisor_uuid: supervisor_user.uuid,
@@ -678,7 +678,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                |> render_submit(%{
                  create_schema: %{
                    type: :travel,
-                   date: ~D[2020-10-17],
+                   date: Date.add(Date.utc_today(), -5),
                    default_tenant_uuid: tenant.uuid,
                    default_tracer_uuid: tracer_user.uuid,
                    default_supervisor_uuid: supervisor_user.uuid,

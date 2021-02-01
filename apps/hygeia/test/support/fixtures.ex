@@ -208,7 +208,7 @@ defmodule Hygeia.Fixtures do
   end
 
   @valid_attrs %{
-    date: ~D[2010-04-17],
+    date: Date.add(Date.utc_today(), -5),
     infection_place: %{
       address: %{
         address: "Torstrasse 25",

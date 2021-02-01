@@ -9,6 +9,8 @@ defmodule Hygeia.CaseContext.Transmission do
 
   use Hygeia, :model
 
+  import HygeiaGettext
+
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Transmission.InfectionPlace
@@ -81,6 +83,7 @@ defmodule Hygeia.CaseContext.Transmission do
     ])
     |> cast_embed(:infection_place)
     |> validate_required([:date])
+    |> validate_date()
     |> validate_case(:propagator_internal, :propagator_ism_id, :propagator_case_uuid)
     |> validate_case(:recipient_internal, :recipient_ism_id, :recipient_case_uuid)
     |> validate_propagator_or_recipient_required
@@ -120,6 +123,23 @@ defmodule Hygeia.CaseContext.Transmission do
       nil -> validate_required(changeset, [:recipient_case_uuid])
       uuid when is_binary(uuid) -> validate_required(changeset, [:propagator_case_uuid])
     end
+  end
+
+  defp validate_date(changeset) do
+    validate_change(changeset, :date, fn :date, value ->
+      diff = Date.diff(Date.utc_today(), value)
+
+      cond do
+        diff > 10 ->
+          [{:date, dgettext("errors", "date must not be older than 10 days")}]
+
+        diff < 0 ->
+          [{:date, dgettext("errors", "date must not be in the future")}]
+
+        true ->
+          []
+      end
+    end)
   end
 
   defimpl Hygeia.Authorization.Resource do

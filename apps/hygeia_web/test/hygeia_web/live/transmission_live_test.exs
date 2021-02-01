@@ -18,7 +18,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
   }
   @create_attrs %{
     type: :travel,
-    date: "2020-10-17",
+    date: Date.add(Date.utc_today(), -5),
     propagator_internal: true,
     recipient_internal: true,
     infection_place: %{
@@ -37,7 +37,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
     }
   }
   @update_attrs %{
-    date: "2020-01-01",
+    date: Date.add(Date.utc_today(), -7),
     infection_place: %{
       address: %{
         address: "new address",

@@ -652,7 +652,7 @@ defmodule Hygeia.CaseContextTest do
 
         _transmission_jony =
           transmission_fixture(%{
-            date: ~D[2020-10-02],
+            date: Date.add(Date.utc_today(), -5),
             propagator_internal: nil,
             recipient_internal: true,
             recipient_case_uuid: case_jony.uuid,
@@ -671,7 +671,7 @@ defmodule Hygeia.CaseContextTest do
 
         _transmission_jony_jay =
           transmission_fixture(%{
-            date: ~D[2020-10-05],
+            date: Date.add(Date.utc_today(), -2),
             propagator_internal: true,
             propagator_case_uuid: case_jony.uuid,
             recipient_internal: true,
@@ -724,7 +724,7 @@ defmodule Hygeia.CaseContextTest do
                          "last_name" => "Männchen",
                          "exp_loc_type_army" => "0",
                          "exp_loc_type_shop" => "0",
-                         "exp_loc_dt" => "2020-10-02",
+                         "exp_loc_dt" => "2021-01-27",
                          "iso_loc_type" => "1",
                          "country" => "8100",
                          "test_reason_work_screening" => "0",
@@ -747,7 +747,7 @@ defmodule Hygeia.CaseContextTest do
                          "corr_ct_dt" => "",
                          "mobile_number" => "+41787245790",
                          "street_name" => "Erlen 4",
-                         "case_link_contact_dt" => "2020-10-02",
+                         "case_link_contact_dt" => "2021-01-27",
                          "exp_loc_type_club" => "0",
                          "onset_iso_dt" => "2020-10-06",
                          "test_reason_symptoms" => "1",
@@ -830,7 +830,7 @@ defmodule Hygeia.CaseContextTest do
                          "last_name" => "Zahner",
                          "exp_loc_type_army" => "0",
                          "exp_loc_type_shop" => "0",
-                         "exp_loc_dt" => "2020-10-05",
+                         "exp_loc_dt" => "2021-01-30",
                          "iso_loc_type" => "1",
                          "country" => "8100",
                          "test_reason_work_screening" => "0",
@@ -853,7 +853,7 @@ defmodule Hygeia.CaseContextTest do
                          "corr_ct_dt" => "",
                          "mobile_number" => "+41797945783",
                          "street_name" => "Hebelstrasse 20",
-                         "case_link_contact_dt" => "2020-10-05",
+                         "case_link_contact_dt" => "2021-01-30",
                          "exp_loc_type_club" => "0",
                          "onset_iso_dt" => "2020-10-10",
                          "test_reason_symptoms" => "0",
@@ -1047,7 +1047,7 @@ defmodule Hygeia.CaseContextTest do
 
         _transmission_jony =
           transmission_fixture(%{
-            date: ~D[2020-10-02],
+            date: Date.add(Date.utc_today(), -5),
             propagator_internal: nil,
             recipient_internal: true,
             recipient_case_uuid: case_jony.uuid,
@@ -1066,7 +1066,7 @@ defmodule Hygeia.CaseContextTest do
 
         _transmission_jony_jay =
           transmission_fixture(%{
-            date: ~D[2020-10-05],
+            date: Date.add(Date.utc_today(), -2),
             propagator_internal: true,
             propagator_case_uuid: case_jony.uuid,
             recipient_internal: true,
@@ -1113,7 +1113,7 @@ defmodule Hygeia.CaseContextTest do
                          "last_name" => "Männchen",
                          "exp_loc_type_army" => "0",
                          "exp_loc_type_shop" => "0",
-                         "exp_loc_dt" => "2020-10-02",
+                         "exp_loc_dt" => "2021-01-27",
                          "country" => "8100",
                          "exp_type" => "2",
                          "work_place_name" => "JOSHMARTIN GmbH",
@@ -1127,7 +1127,7 @@ defmodule Hygeia.CaseContextTest do
                          "vacc_yn" => "3",
                          "mobile_number" => "+41787245790",
                          "street_name" => "Erlen 4",
-                         "case_link_contact_dt" => "2020-10-02",
+                         "case_link_contact_dt" => "2021-01-27",
                          "other_test_reason" => "0",
                          "exp_loc_type_club" => "0",
                          "test_reason_symptoms" => "1",
@@ -1195,7 +1195,7 @@ defmodule Hygeia.CaseContextTest do
                          "last_name" => "Zahner",
                          "exp_loc_type_army" => "0",
                          "exp_loc_type_shop" => "0",
-                         "exp_loc_dt" => "2020-10-05",
+                         "exp_loc_dt" => "2021-01-30",
                          "country" => "8100",
                          "exp_type" => "1",
                          "work_place_name" => "JOSHMARTIN GmbH",
@@ -1209,7 +1209,7 @@ defmodule Hygeia.CaseContextTest do
                          "vacc_yn" => "3",
                          "mobile_number" => "+41797945783",
                          "street_name" => "Hebelstrasse 20",
-                         "case_link_contact_dt" => "2020-10-05",
+                         "case_link_contact_dt" => "2021-01-30",
                          "other_test_reason" => "1",
                          "exp_loc_type_club" => "0",
                          "test_reason_symptoms" => "0",
@@ -1263,10 +1263,10 @@ defmodule Hygeia.CaseContextTest do
 
   describe "transmissions" do
     @valid_attrs %{
-      date: ~D[2010-04-17]
+      date: Date.add(Date.utc_today(), -5)
     }
     @update_attrs %{
-      date: ~D[2011-05-18]
+      date: Date.add(Date.utc_today(), -7)
     }
     @invalid_attrs %{
       date: nil,
@@ -1311,7 +1311,7 @@ defmodule Hygeia.CaseContextTest do
                |> Enum.into(@valid_attrs)
                |> CaseContext.create_transmission()
 
-      assert transmission.date == ~D[2010-04-17]
+      assert transmission.date == Date.add(Date.utc_today(), -5)
     end
 
     test "create_transmission/1 with invalid data returns error changeset" do
@@ -1330,7 +1330,7 @@ defmodule Hygeia.CaseContextTest do
       assert {:ok, %Transmission{} = transmission} =
                CaseContext.update_transmission(transmission, @update_attrs)
 
-      assert transmission.date == ~D[2011-05-18]
+      assert transmission.date == Date.add(Date.utc_today(), -7)
     end
 
     test "update_transmission/2 with invalid data returns error changeset" do
