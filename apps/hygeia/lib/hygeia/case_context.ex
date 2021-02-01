@@ -1556,8 +1556,11 @@ defmodule Hygeia.CaseContext do
         end)
         |> List.update_at(@bag_med_16122020_contact_fields_index.exp_type, fn
           nil -> nil
+          :other -> nil
           :contact_person -> 1
           :travel -> 2
+          :outbreak -> 2
+          :covid_app -> 1
         end)
         |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.test_reason_symptoms)
         |> normalize_boolean_field(@bag_med_16122020_contact_fields_index.exp_loc_type_work_place)
