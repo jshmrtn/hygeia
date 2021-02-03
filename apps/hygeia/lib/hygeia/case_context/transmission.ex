@@ -86,7 +86,7 @@ defmodule Hygeia.CaseContext.Transmission do
     |> validate_date()
     |> validate_case(:propagator_internal, :propagator_ism_id, :propagator_case_uuid)
     |> validate_case(:recipient_internal, :recipient_ism_id, :recipient_case_uuid)
-    |> validate_propagator_or_recipient_required
+    |> validate_propagator_or_recipient_required()
   end
 
   @spec validate_case(
