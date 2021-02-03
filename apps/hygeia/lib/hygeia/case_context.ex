@@ -878,7 +878,13 @@ defmodule Hygeia.CaseContext do
           # onset_quar_dt
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", possible_index_phase)),
           # reason_quar
-          fragment("(ARRAY_AGG(?))[1]", fragment("?->'details'->>'type'", possible_index_phase)),
+          type(
+            fragment(
+              "(ARRAY_AGG(?))[1]",
+              fragment("?->'details'->>'type'", possible_index_phase)
+            ),
+            Case.Phase.PossibleIndex.Type
+          ),
           # other_reason_quar
           fragment(
             "(ARRAY_AGG(?))[1]",
@@ -1046,6 +1052,14 @@ defmodule Hygeia.CaseContext do
         |> normalize_country(@bag_med_16122020_case_fields_index.work_place_country)
         |> normalize_country(@bag_med_16122020_case_fields_index.exp_country)
         |> normalize_country(@bag_med_16122020_case_fields_index.iso_loc_country)
+        |> List.update_at(@bag_med_16122020_case_fields_index.reason_quar, fn
+          nil -> nil
+          :contact_person -> 1
+          :travel -> 2
+          :outbreak -> 3
+          :covid_app -> 4
+          :other -> 5
+        end)
       end)
 
     [@bag_med_16122020_case_fields]

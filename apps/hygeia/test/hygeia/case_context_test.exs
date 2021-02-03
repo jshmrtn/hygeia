@@ -843,7 +843,7 @@ defmodule Hygeia.CaseContextTest do
                    "work_place_street" => "Neugasse 51",
                    "exp_loc_type_gathering" => "0",
                    "profession" => "M",
-                   "reason_quar" => "contact_person",
+                   "reason_quar" => "1",
                    "vacc_dt_first" => "",
                    "exp_loc_flightdetail" => "",
                    "exp_loc_postal_code" => "9000",
