@@ -87,10 +87,7 @@
           </li>
         </ul>
         <div class="nav nav-pills">
-          <li
-            class="nav-item mr-3"
-            :if={{ logged_in }}
-          >
+          <li class="nav-item mr-3" :if={{ logged_in }}>
             <HygeiaWeb.Search id="search" />
           </li>
           <li class="nav-item">
@@ -99,14 +96,20 @@
               :let={{ to: to, active: active }}
             >
               <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
-                <span class="oi oi-question-mark" title={{ gettext("Help") }} aria-hidden="true"></span>
+                <span class="oi oi-question-mark" title={{ gettext("Help") }} aria-hidden="true" />
               </LiveRedirect>
             </UriActiveContext>
           </li>
           <li class="nav-item" :if={{ auth != :anonymous }}>
             <div class="dropdown" id="profile" phx-update="ignore">
-              <a class="nav-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="oi oi-person" title={{ gettext("Profile") }} aria-hidden="true"></span>
+              <a
+                class="nav-link"
+                type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <span class="oi oi-person" title={{ gettext("Profile") }} aria-hidden="true" />
               </a>
               <div class="nav-dropdown dropdown-menu dropdown-menu-right">
                 <UriActiveContext
@@ -118,7 +121,7 @@
                     {{ gettext("Profile") }}
                   </LiveRedirect>
                 </UriActiveContext>
-                <!-- TODO: Put method DELETE when https://github.com/w3c/webappsec-csp/issues/8 is resolved -->
+
                 <Link to={{ Routes.auth_path(@socket, :delete) }} class="dropdown-item">
                   {{ gettext("Logout") }}
                 </Link>
@@ -135,5 +138,5 @@
         </div>
       </div>
     </section>
-  </Context>  
+  </Context>
 </header>

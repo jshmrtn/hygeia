@@ -3,9 +3,13 @@
     <div :if={{ not logged_in }}>
       <h2>{{ gettext("Enter Possible Transmissions") }}</h2>
 
-      <p>{{ gettext("You have been requested to enter personal data from all persons with which you have had contact with for more than 15 minutes without wearing a mask.") }}</p>
+      <p>{{ gettext(
+          "You have been requested to enter personal data from all persons with which you have had contact with for more than 15 minutes without wearing a mask."
+        ) }}</p>
 
-      <p>{{ gettext("If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact.") }}</p>
+      <p>{{ gettext(
+          "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
+        ) }}</p>
 
       <p>{{ gettext("If you're having trouble recalling what you did since then, here are some examples:") }}</p>
 
@@ -37,39 +41,26 @@
       </ul>
     </div>
 
-    <HygeiaWeb.PersonLive.Header
-      person={{ @case.person }}
-      id="header"
-      :if={{ logged_in }}
-    />
+    <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" :if={{ logged_in }} />
 
     <div class="card">
-      <div
-        class="card-header"
-        :if={{ authorized?(@case, :details, auth) }}
-      >
-        <HygeiaWeb.CaseLive.Navigation
-          case={{ @case }}
-          id="navigation"
-        />
+      <div class="card-header" :if={{ authorized?(@case, :details, auth) }}>
+        <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
       </div>
-      <div
-        :if={{ not @has_index_phase? }}
-        class="card-body"
-      >
+      <div :if={{ not @has_index_phase? }} class="card-body">
         <div class="alert alert-warning">
           <strong>{{ gettext("This case is not in an index phase.") }}</strong>
           <p>{{ gettext("Possible index submissions can only be managed for cases with an index phase.") }}</p>
         </div>
       </div>
-      <div
-        :if={{ @has_index_phase? }}
-        class="card-body"
-      >
+      <div :if={{ @has_index_phase? }} class="card-body">
         <div class="d-flex">
-          <LiveRedirect class="mr-2" to={{ Routes.possible_index_submission_create_path(@socket, :create, @case) }}>
+          <LiveRedirect
+            class="mr-2"
+            to={{ Routes.possible_index_submission_create_path(@socket, :create, @case) }}
+          >
             <button type="button" class="mb-2 mt-3 btn btn-primary">
-              <span class="oi oi-plus" aria-hidden="true"></span>
+              <span class="oi oi-plus" aria-hidden="true" />
               {{ gettext("New Possible Index Submission") }}
             </button>
           </LiveRedirect>
@@ -88,12 +79,12 @@
                 {{ schema_field_name(:address, PossibleIndexSubmission) }}
               </th>
 
-              <th></th>
+              <th />
             </tr>
           </thead>
           <tbody id="possible_index_submissions">
             <tr
-              :for={{ possible_index_submission <- @case.possible_index_submissions  }}
+              :for={{ possible_index_submission <- @case.possible_index_submissions }}
               id="possible_index_submission-{{ possible_index_submission.uuid }}"
             >
               <td>
@@ -121,12 +112,12 @@
                     :if={{ authorized?(possible_index_submission, :update, auth) }}
                   >
                     <button class="ml-1 btn btn-sm btn-secondary">
-                      <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                      <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
                     </button>
                   </LiveRedirect>
-                  <Link 
-                    to="#" 
-                    click="delete" 
+                  <Link
+                    to="#"
+                    click="delete"
                     opts={{
                       title: gettext("Delete"),
                       data: [confirm: gettext("Are you sure?")],
@@ -136,20 +127,20 @@
                     :if={{ authorized?(possible_index_submission, :delete, auth) }}
                   >
                     <button class="ml-1 btn btn-sm btn-danger">
-                      <span class="oi oi-trash" aria-hidden="true"></span>
+                      <span class="oi oi-trash" aria-hidden="true" />
                     </button>
                   </Link>
-                  <LiveRedirect 
-                    to={{ Routes.case_create_possible_index_path(
+                  <LiveRedirect
+                    to={{Routes.case_create_possible_index_path(
                       @socket,
                       :create,
                       possible_index_submission_uuid: possible_index_submission,
                       return_to: Routes.possible_index_submission_index_path(@socket, :index, @case)
-                    ) }} 
+                    )}}
                     :if={{ authorized?(Case, :create, auth, tenant: :any) }}
                   >
                     <button class="ml-1 btn btn-sm btn-secondary">
-                      <span class="oi oi-check" title={{ gettext("Accept") }} aria-hidden="true"></span>
+                      <span class="oi oi-check" title={{ gettext("Accept") }} aria-hidden="true" />
                     </button>
                   </LiveRedirect>
                 </div>
@@ -158,7 +149,9 @@
             <tr :if={{ @case.possible_index_submissions == [] }}>
               <td colspan="5">
                 <div class="d-flex justify-content-center py-3">
-                  {{ gettext("No submissions have been entered yet. Please submit all relevant people. Previous submissions can also be viewed, edited and deleted later.") }}
+                  {{ gettext(
+                    "No submissions have been entered yet. Please submit all relevant people. Previous submissions can also be viewed, edited and deleted later."
+                  ) }}
                 </div>
               </td>
             </tr>

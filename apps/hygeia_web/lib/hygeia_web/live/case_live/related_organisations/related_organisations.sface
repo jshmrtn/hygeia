@@ -1,7 +1,10 @@
 <div class="component-case-related_organisations">
   <InputContext assigns={{ assigns }} :let={{ form: form }}>
-    <div :if={{ @disabled and length(Ecto.Changeset.get_field(form.source, :related_organisations, [])) == 0 }} class="alert alert-info">
-      <span class="oi oi-info mr-2" aria-hidden="true"></span>
+    <div
+      :if={{ @disabled and length(Ecto.Changeset.get_field(form.source, :related_organisations, [])) == 0 }}
+      class="alert alert-info"
+    >
+      <span class="oi oi-info mr-2" aria-hidden="true" />
       {{ gettext("No related organisations") }}
     </div>
   </InputContext>
@@ -9,7 +12,7 @@
     <InputContext assigns={{ assigns }} :let={{ form: form }}>
       <Field class="form-group" name={{ :uuid }}>
         <HygeiaWeb.OrganisationLive.Choose
-          id={{ {:related_organisation, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid) } }}
+          id={{ {:related_organisation, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid)} }}
           change="change"
           disabled={{ @disabled }}
         />
@@ -17,10 +20,10 @@
       </Field>
     </InputContext>
   </Inputs>
-    
-  <div class="add-button mt-2" :if={{ not(@disabled) }}>
+
+  <div class="add-button mt-2" :if={{ not @disabled }}>
     <HygeiaWeb.OrganisationLive.Choose
-      id={{ {:related_organisation, @myself, :new } }}
+      id={{ {:related_organisation, @myself, :new} }}
       change="change"
     />
   </div>

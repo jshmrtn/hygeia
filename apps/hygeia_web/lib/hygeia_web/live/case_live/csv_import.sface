@@ -9,11 +9,8 @@
     </label>
   </form>
 
-  <button
-    type="button"
-    class="ml-1 btn btn-info"
-    :on-click="show_help">
-    <span class="oi oi-info mr-1" title={{ gettext("Info") }} aria-hidden="true"></span>
+  <button type="button" class="ml-1 btn btn-info" :on-click="show_help">
+    <span class="oi oi-info mr-1" title={{ gettext("Info") }} aria-hidden="true" />
     {{ gettext("Info") }}
   </button>
 
@@ -26,13 +23,11 @@
     <dl>
       <dt>{{ gettext("File Type") }}</dt>
       <dd>
-        {{
-          [".xlsx", ".csv"]
-          |> Enum.map(&content_tag(:code, &1))
-          |> Enum.map(&safe_to_string/1)
-          |> HygeiaCldr.List.to_string!(format: :or)
-          |> raw()
-        }}
+        {{ [".xlsx", ".csv"]
+        |> Enum.map(&content_tag(:code, &1))
+        |> Enum.map(&safe_to_string/1)
+        |> HygeiaCldr.List.to_string!(format: :or)
+        |> raw() }}
       </dd>
 
       <dt>{{ gettext("Encoding (CSV only)") }}</dt>
@@ -43,24 +38,20 @@
 
       <dt>{{ gettext("Available Column Headers") }}</dt>
       <dd>
-        {{ 
-          @mapping
-          |> Map.keys
-          |> Enum.sort_by(&String.downcase(&1))
-          |> Enum.map(&content_tag(:code, &1))
-          |> Enum.map(&safe_to_string/1)
-          |> HygeiaCldr.List.to_string!()
-          |> raw()
-        }}
+        {{ @mapping
+        |> Map.keys()
+        |> Enum.sort_by(&String.downcase(&1))
+        |> Enum.map(&content_tag(:code, &1))
+        |> Enum.map(&safe_to_string/1)
+        |> HygeiaCldr.List.to_string!()
+        |> raw() }}
       </dd>
 
       <dt>{{ gettext("Date Format") }}</dt>
       <dd>
         <samp>
-          {{
-            gettext_comment("Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj");
-            gettext("yyyy-mm-dd")
-          }}
+          {{ gettext_comment("Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj")
+          gettext("yyyy-mm-dd") }}
         </samp>
       </dd>
 

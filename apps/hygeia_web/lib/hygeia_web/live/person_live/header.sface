@@ -1,23 +1,16 @@
 <div class="component-person-header mb-4">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1
-      class="mb-4"
-      :if={{ authorized?(@person, :details, auth) }}
-    >
+    <h1 class="mb-4" :if={{ authorized?(@person, :details, auth) }}>
       {{ @person_display_name }}
     </h1>
-    <h1
-      class="mb-4"
-      :if={{ not authorized?(@person, :details, auth) }}
-    >
-      {{ @person.tenant.short_name }} / {{ @person.human_readable_id }}
+    <h1 class="mb-4" :if={{ not authorized?(@person, :details, auth) }}>
+      {{ @person.tenant.short_name }}
+      /
+      {{ @person.human_readable_id }}
     </h1>
 
     <ul class="nav nav-tabs">
-      <li
-        class="nav-item"
-        :if={{ authorized?(@person, :details, auth) }}
-      >
+      <li class="nav-item" :if={{ authorized?(@person, :details, auth) }}>
         <UriActiveContext
           to={{ Routes.person_base_data_path(@socket, :show, @person) }}
           :let={{ to: to, active: active }}
@@ -32,23 +25,20 @@
           to={{ Routes.version_show_path(@socket, :show, "Person", @person) }}
           :let={{ to: to, active: active }}
         >
-          <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active"}}">
+          <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active" }}">
             {{ gettext("History") }}
           </LiveRedirect>
         </UriActiveContext>
       </li>
-      <li
-        class="nav-item"
-        :for={{ case <- @person.cases }}
-        :if={{ authorized?(case, :details, auth) }}
-      >
+      <li class="nav-item" :for={{ case <- @person.cases }} :if={{ authorized?(case, :details, auth) }}>
         <UriActiveContext
           to={{ Routes.case_base_data_path(@socket, :show, case) }}
           :let={{ to: to, active: active }}
           opts={{ active: :inclusive }}
         >
           <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
-            {{ case_display_type(case) }} <span class="date ml-2">{{ case_display_date(case) }}</span>
+            {{ case_display_type(case) }}
+            <span class="date ml-2">{{ case_display_date(case) }}</span>
           </LiveRedirect>
         </UriActiveContext>
       </li>

@@ -13,7 +13,7 @@ defmodule HygeiaWeb.Pagination do
   def render(assigns) do
     ~H"""
     <ul class="pagination justify-content-center">
-      <li class="page-item" :if={{ not(is_nil(@pagination.before)) }}>
+      <li class="page-item" :if={{ not is_nil(@pagination.before) }}>
         <slot :props={{ cursor_direction: "before", cursor: @pagination.before, text: gettext("Previous") }} />
       </li>
       <li class="page-item disabled" :if={{ is_nil(@pagination.before) }}>
@@ -21,10 +21,13 @@ defmodule HygeiaWeb.Pagination do
       </li>
       <li class="page-item disabled">
         <span class="page-link">
-          {{ gettext("Showing %{count} of %{total} entries", count: min(@pagination.limit, @pagination.total_count), total: @pagination.total_count) }}
+          {{ gettext("Showing %{count} of %{total} entries",
+            count: min(@pagination.limit, @pagination.total_count),
+            total: @pagination.total_count
+          ) }}
         </span>
       </li>
-      <li class="page-item" :if={{ not(is_nil(@pagination.after)) }}>
+      <li class="page-item" :if={{ not is_nil(@pagination.after) }}>
         <slot :props={{ cursor_direction: "after", cursor: @pagination.after, text: gettext("Next") }} />
       </li>
       <li class="page-item disabled" :if={{ is_nil(@pagination.after) }}>

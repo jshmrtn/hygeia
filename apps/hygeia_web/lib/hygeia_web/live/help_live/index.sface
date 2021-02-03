@@ -1,440 +1,561 @@
 <div class="component-help container">
   <Context get={{ HygeiaWeb, logged_in: logged_in }}>
-  <h1 class="mb-4">{{ gettext("Help") }}</h1>
+    <h1 class="mb-4">{{ gettext("Help") }}</h1>
 
-  <div :if={{ logged_in }}>
-    <h2>Intro</h2>
-
-    <div class="embed-responsive embed-responsive-16by9 mt-3">
-      <iframe
-        class="embed-responsive-item"
-        src="https://player.vimeo.com/video/483233691"
-        frameborder="0"
-        allow="autoplay; fullscreen"
-        allowfullscreen
-      >
-        Intro Video
-      </iframe>
-    </div>
-  </div>
-
-  <details class="mt-5">
-    <summary>
-      <h2>Registrierung</h2>
-    </summary>
-
-    <p>
-      Die Registrierung erfolgt via «Zitadel» und setzt den Google Authenticator voraus. Entsprechende Einladungen werden von den Administratoren per E-Mail versandt.
-    </p>
-    <p>
-      Zitadel-Benutzer initialisieren (E-Mail Einladung):
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/01-initialisierung.png") }} />
-    <p>
-      Passwort setzen:
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/02-passwort.png") }} />
-    <p>
-      Account auswählen:
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/03-account.png") }} />
-    <p>
-      Google Authenticator auf dem Smartphone ­Installieren (<a href="https://apps.apple.com/de/app/google-authenticator/id388497605">iOS</a> / <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=de_CH&gl=US">Android</a>):
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/04-authenticator.png") }} />
-    <p>
-      Google Authenticator öffnen und neues OTP hinzufügen (Code scannen):
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/05-otp.png") }} />
-    <p>
-      Angezeigten Code eingeben:
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/06-auth.png") }} />
-    <p>
-      Die Registrierung ist abgeschlossen.
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/07-zitadel.png") }} />
-  </details>
-
-  <details>
-    <summary>
-      <h2>Login</h2>
-    </summary>
-
-    <p>
-      Nach erfolgreicher Registrierung kann der Login in zwei Schritten via Zitadel und Google Authenticator erfolgen.
-    </p>
-    <p>
-      <a href="https://accounts.zitadel.ch/">https://accounts.zitadel.ch/</a> aufrufen und Account auswählen
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/02-Login/01-account.png") }} />
-    <p>
-      Passwort eingeben
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/02-Login/02-passwort.png") }} />
-    <p>
-      Google Authenticator auf Smartphone starten und Code von Zitadel eingeben
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/02-Login/03-auth.png") }} />
-    <p>
-      Nach erfolgreichem Login kann die Applikation unter <a href="{{ Routes.home_url(@socket, :index) }}">{{ Routes.home_url(@socket, :index) }}</a> gestartet werden
-    </p>
-    <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/02-Login/04-app.png") }} />
-  </details>
-
-  <details :if={{ logged_in }}>
-    <summary>
-      <h2>Fälle</h2>
-    </summary>
-
-    <details>
-      <summary>
-        <h3>Wie suche ich nach Index-Fällen, die mir zugewiesen wurden?</h3>
-      </summary>
-
-      <p>
-        Die Fallliste wird durch die Falladministratorinnen angelegt. Sie setzen auch gleich deinen Namen in das entsprechende Feld, so dass die sich öffnende Fallliste zum sofortigen Tracen zur Verfügung steht.<br>
-        Am Anfang kann es allerdings sein, dass du wie bisher einen Fall als PDF oder Excel-Datei erhältst, so dass du selber einen neuen Index erfassen musst. Wähle dafür den Button “Neuer Indexfall”.
-      </p>
-
-      <p>
-        In der Fallliste können Fälle erfasst, angezeigt, bearbeitet und gefiltert werden:
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/01-liste.png") }} />
-
-      <p>
-        Mit dem Button «Filter» kann die Fallliste nach folgenden Kriterien gefiltert werden:
-
-        <ul>
-          <li>Status</li>
-          <li>Komplexität</li>
-          <li>Tracer</li>
-          <li>Supervisor / Teamleitung</li>
-        </ul>
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/02-filter.png") }} />
-
-      <p>
-        Für die Anzeige von zugewiesenen Fällen den/die entsprechende Tracerin auswählen:
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/03-filter-tracerin.png") }} />
-    </details>
-
-    <details>
-      <summary>
-        <h3>Wie suche ich meine aktiven Fälle?</h3>
-      </summary>
-
-      <p>
-        Die Suche innerhalb der Index-Fälle ist vor allem für Rückfragen oder noch offene Aufgaben wichtig. z.B. hast du einen Index nicht erreicht, dann wähle im Feld Status den entsprechenden Eintrag “Index tel. nicht erreicht”. Dann kannst du den nächsten Fall bearbeiten. Wenn du später diesen Index wieder suchst, kannst du über den Filter nach den entsprechenden Status suchen und die noch nicht kontaktierten Indexe stehen wieder zur Verfügung.
-      </p>
-
-      <p>
-        In der Fallliste können Fälle erfasst, angezeigt, bearbeitet und gefiltert werden.
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/01-liste.png") }} />
-      
-      <p>
-        Mit dem Button «Filter» kann die Fallliste nach folgenden Kriterien gefiltert werden:
-
-        <ul>
-          <li>Status</li>
-          <li>Komplexität</li>
-          <li>Tracer</li>
-          <li>Supervisor</li>
-        </ul>
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/02-filter.png") }} />
-
-      <p>
-        Für die Anzeige von zugewiesenen Fällen den/die entsprechende Tracerin auswählen. 
-        <br>
-        Für noch genauere Anzeige können sämtliche Filteroptionen kombiniert werden.
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/03-filter-tracerin.png") }} />
-    </details>
-
-    <details>
-      <summary>
-        <h3>Wie erfasse ich die Informationen zu den Fällen?</h3>
-      </summary>
-
-      <p>
-        Wird ein neuer Indexfall erfasst, müssen zuerst die Basisdaten der betreffenden Person eingegeben werden.
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/04-basisdaten.png") }} />
-      
-      <p>
-        Während der Eingabe wird automatisch nach Duplikaten gesucht. Falls diese Ergebnisse findet, wird rechts in der Liste ein Symbol erscheinen.
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/06-duplicatecheck.png") }} />
-
-      <p>
-        Durch Klick auf das Symbol kann zwischen dem potenziellen Duplikat oder der aktuellen Eingabe ausgewählt werden.
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/07-duplicateselect.png") }} />
-      
-      
-      <p>
-        Sobald ein Fall erfasst ist, erscheint dieser in der Fallliste und kann mit dem entsprechenden Button angezeigt werden.
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/08-liste-anzeige.png") }} />
-      
-      <p>
-        In der Anzeige können sämtliche Personendaten und Falldaten durch Klick auf den entsprechenden Button bearbeitet werden.
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/09-falldaten.png") }} />
-      <p>
-        Die Datenstruktur ist folgendermassen aufgebaut:
-
-        <h4>Basisdaten (Personendaten)</h4>
-        <ul>
-          <li>Basisdaten</li>
-          <li>Referenzen</li>
-          <li>Adresse</li>
-          <li>Kontaktmethoden</li>
-          <li>Anstellung</li>
-        </ul>
-
-        <h4>Falldaten</h4>
-        <ul>
-          <li>Basisdaten</li>
-          <li>
-            <ul>
-              <li>Tracing <small>(hier sind v.a. die Angaben zum Status und zur Komplexität wichtig)</small></li>
-              <li>Referenzen <small>(dient der Identifikation im System)</small></li>
-              <li>Phasen <small>(Symptombeginn und Isolationsende)</small></li>
-              <li>Klinische Informationen <small>(Wohn- und Aufenthalts-Situation des Index)</small></li>
-              <li>Monitoring <small>(hier kann z.B. die Schule, das Heim etc. eingetragen werden)</small></li>
-              <li>Krankenhausaufenthalte</li>
-              <li>Verwandte Organisationen</li>
-            </ul>
-          </li>
-          <li>Übertragungen (Ansteckungswege, Verbindungen etc.)</li>
-          <li>Protokoll (Notizen, Korrespondenzen, Emails, SMS etc.)</li>
-        </ul>
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/03-Fälle/05-anzeige.png") }} />
-    </details>
-
-    <details>
-      <summary>
-        <h3>Wie versende ich einen Code für die Swiss-Covid-App?</h3>
-      </summary>
-
-      <p>Zur Zeit muss der Code wie bisher beim Senior-Tracer angefordert werden. Nach erhalt des Codes kann mit Klick auf den Button “Aktion” der Eintrag “SMS senden” ausgewählt werden. Damit öffnet sich im Bereich “Protokoll” der Eingabe-Typ “SMS”. Der Code kann mit einem kurzen Beschrieb direkt in das Textfeld übertragen werden. Mit dem Klick auf “Speichern” wird das SMS versendet, der Text bleibt beim Index ersichtlich.</p>
-    </details>
-
-    <details>
-      <summary>
-        <h3>Wie importiere ich eine Fall-Liste?</h3>
-      </summary>
-  
-      <p>Es können zwei Arten von Dateien importiert werden: <code>.xlsx</code> und <code>.csv</code>.</p>
-
-      <h4>CSV</h4>
-
-      <p>Ein CSV muss folgende Attribute aufweisen um importiert werden zu können:</p>
-
-      <dl>
-        <dt>{{ gettext("Encoding") }}</dt>
-        <dd>{{ gettext("UTF-8") }}</dd>
-
-        <dt>{{ gettext("Separator") }}</dt>
-        <dd>{{ gettext("Comma (,)") }}</dd>
-      </dl>
-
-      <p>Falls die Datei nich zu 100% mit dieser Vorgabe übereinstimmt, kann sie nicht importiert werden.</p>
-
-      <p>
-        <Link
-          class="btn btn-primary"
-          to={{ Routes.static_path(@socket, "/downloads/help/03-Fälle/example.csv") }}
-        >
-          <span class="oi oi-data-transfer-download"></span>
-          Beispiel CSV Download
-        </Link>
-      </p>
-
-      <h4>XLSX (Excel)</h4>
-
-      <p>Ein XLSX muss als XLSX abgespeichert werden, XLS wird nicht unterstützt.</p>
-
-      <p>Falls mehrere Arbeitsmappen in der Datei sind, wird immer nur die erste geladen.</p>
-
-      <p>
-        <Link
-          class="btn btn-primary"
-          to={{ Routes.static_path(@socket, "/downloads/help/03-Fälle/example.xlsx") }}
-        >
-          <span class="oi oi-data-transfer-download"></span>
-          Beispiel XLSX Download
-        </Link>
-      </p>
-
-      <h4>Inhalte</h4>
-
-      <p>Die erste Zeile der Datei muss die Spaltennamen enthalten, die darauf folgenden Zeilen sind die zu importierenden Inhalte.</p>
-
-      <p>Die auf der Import unter "info" erwähnten Spaltennamen werden unterstützt.</p>
-
-      <p>Spaltennamen die nicht bekannt sind, werden einfach ignoriert.</p>
-
-      <h5>Mandant</h5>
-
-      <p>Der Feldinhalt für Mandant muss der volle ausgeschriebene Name des Mandanten sein. Also zB. <samp>Kanton St. Gallen</samp>.</p>
-
-      <h5>Datum</h5>
-
-      <p>Ein Datum muss wie gefolgt formatiert sein um importiert weren zu können: <samp>JJJJ-MM-dd</samp> (<samp>2020-12-16</samp>)</p>
-
-      <h5>Biologisches Geschlecht</h5>
-
-      <p><samp>male</samp>, <samp>female</samp> oder <samp>other</samp></p>
-
-      <h5>Testresultat</h5>
-
-      <p><samp>positiv</samp> oder <samp>negativ</samp></p>
-    </details>
-
-    <details>
-      <summary>
-        <h3>Wie funktionieren die Einsendungen von Kontaktpersonen (möglicher Index)?</h3>
-      </summary>
+    <div :if={{ logged_in }}>
+      <h2>Intro</h2>
 
       <div class="embed-responsive embed-responsive-16by9 mt-3">
         <iframe
           class="embed-responsive-item"
-          src="https://player.vimeo.com/video/493799824"
+          src="https://player.vimeo.com/video/483233691"
           frameborder="0"
           allow="autoplay; fullscreen"
           allowfullscreen
         >
-          Video - Einsendung Möglicher Index
+          Intro Video
         </iframe>
       </div>
+    </div>
 
-    </details>
-
-  </details>
-
-  <details :if={{ logged_in }}>
-    <summary>
-      <h2>Aktionen</h2>
-    </summary>
-
-    <p class="pl-5">Nach der Überprüfung der Angaben zum Index wie Adresse, Arbeitsplatz etc., geht es darum, die Kontaktpersonen zu erfassen. Dazu wählt ihr den Button “Aktionen” wie unten beschrieben.</p>
-
-    <details>
+    <details class="mt-5">
       <summary>
-        <h3>Wie verknüpfe ich Kontaktpersonen (mögliche Indexfälle) mit dem Indexfall?</h3>
+        <h2>Registrierung</h2>
       </summary>
 
       <p>
-        In der Ansicht eines bereits erfassten Indexfalls, erscheint oben rechts ein Menü mit der Aufschrift «Aktionen»
+        Die Registrierung erfolgt via «Zitadel» und setzt den Google Authenticator voraus. Entsprechende Einladungen werden von den Administratoren per E-Mail versandt.
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/01-aktionen.png") }} />
-      
       <p>
-        Geöffnet enthält das Menü diverse Optionen für weiterführende, diesen Indexfall betreffende Aktionen. Darunter auch die Aktion «Kontaktfälle erstellen».
+        Zitadel-Benutzer initialisieren (E-Mail Einladung):
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/02-aktion-kontaktfall.png") }} />
-
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/01-initialisierung.png") }}
+      />
       <p>
-        Wenn ausgeführt, öffnet diese Aktion die Eingabemaske «Mögliche Indexfälle erstellen. Dabei sollen so viele Informationen wie möglich, mindestens aber der Typ (bei Kontaktfall bereits vorgemerkt), das Datum und die Basisdaten des Kontaktes angegeben werden.
+        Passwort setzen:
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/03-kontaktfall.png") }} />
-      
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/02-passwort.png") }}
+      />
       <p>
-        Die Verknüpfung zum ausgehenden Indexfall ist in diesem Fall schon hergestellt. Diese kann wenn nötig auch angepasst werden.
+        Account auswählen:
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/04-kontaktfall-link.png") }} />
-      
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/03-account.png") }}
+      />
       <p>
-        Für den Fall, dass die Kontaktperson bereits im System erfasst ist, kann diese durch die Duplikatkontrolle in der Liste vervollständigt bzw. verknüpft werden.
+        Google Authenticator auf dem Smartphone ­Installieren (<a href="https://apps.apple.com/de/app/google-authenticator/id388497605">iOS</a>
+        /
+        <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=de_CH&gl=US">Android</a>):
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/05-kontakt-intern.png") }} />
-    </details>
-
-    <details>
-      <summary>
-        <h3>Wie versende ich eine Quarantäne-Bestätigung?</h3>
-      </summary>
-
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/04-authenticator.png") }}
+      />
       <p>
-        Nach der Erfassung der Kontaktpersonen kann diesen unmittelbar die Quarantäne-Bestätigung gesandt werden.
+        Google Authenticator öffnen und neues OTP hinzufügen (Code scannen):
       </p>
-
-      <p>Um die Kontaktperson zu erfassen wählt man unter dem Button «Aktionen» die Auswahl: «Kontaktfälle erstellen». Danach öffnet sich dieses Fenster. Typ – Auswahl «Kontaktperson» wählen.</p>
-
-      <p>“Anstecker Fall” ist in der Regel bereits vorausgefüllt, falls nicht, kann man ihn aus einer Liste suchen und auswählen.</p>
-
-      <p>“Datum” Das Datum des letzten Kontakts zwischen dem Index und der KP wird ausgewählt. Infektionsort muss nicht ausgewählt werden, da es nur eine potentielle Ansteckung ist. Danach können die nötigen Angaben zur Person aufgenommen und eingetragen werden.</p>
-
-      <p>Damit die KP eine Bestätigung erhält, muss anschliessend in die Auswahl «Personen» gewechselt werden und die KP dort mittels «Anzeigen» ausgewählt werden.Es öffnen sich die Basisdaten, deshalb muss auf den Reiter «Kontaktpersonen» geklickt und danach der Button «Aktion» gewählt werden. Dort findet man den Eintrag «E-Mail-Quarantäne- Bestätigungen senden». Mit einem Klick darauf öffnet sich die E-Mail unter dem Bereich «Protokoll». Mittels «Speichern» wird das E-Mail versandt und die Angaben bei der KP abgespeichert.</p>
-
-      <p>Unten wird beschrieben wie sich das System im Einzelnen verhält.</p>
-
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/05-otp.png") }}
+      />
       <p>
-        E-Mail- und SMS-Korrespondenzen sowie Notizen zu den Fällen werden über das Protokoll ausgeführt.
+        Angezeigten Code eingeben:
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/06-protokoll.png") }} />
-      
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/06-auth.png") }}
+      />
       <p>
-        Neue Korrespondenzen können entweder automatisch über das «Aktionen»-Menü oben rechts in der Ansicht …
+        Die Registrierung ist abgeschlossen.
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/07-aktionen-email.png") }} />
-
-      <p>
-        …oder manuell im Protokoll erfasst werden.<br>
-        Dazu muss der Typ der Korrespondenz gewählt und der Inhalt erfasst werden.
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/08-protokoll-manuell.png") }} />
-      
-      <p>
-        Sobald der Entwurf gespeichert wird, wird die Nachricht ausgelöst bzw. versandt.
-      </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/09-email-ausloesen.png") }} />
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/07-zitadel.png") }}
+      />
     </details>
 
     <details>
       <summary>
-        <h3>Wie schliesse ich einen Fall ab?</h3>
+        <h2>Login</h2>
       </summary>
 
       <p>
-        In den Basisdaten eines Index kann unter dem Punkt «Tracking» der Status des Falls bearbeitet werden. Der Status ist auch Teil der Filteroptionen in der Fallliste.
+        Nach erfolgreicher Registrierung kann der Login in zwei Schritten via Zitadel und Google Authenticator erfolgen.
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/10-status.png") }} />
-      
       <p>
-        Bei den «Phasen» können Start- und Enddaten gesetzt sowie eine Begründung erfasst werden, falls ein Enddatum gesetzt wurde.
+        <a href="https://accounts.zitadel.ch/">https://accounts.zitadel.ch/</a>
+        aufrufen und Account auswählen
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/11-phasen.png") }} />
-      
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/02-Login/01-account.png") }}
+      />
       <p>
-        Handelt es sich um einen möglichen Indexfall (Kontaktperson), kann das Ende mit folgenden Begründungen beendet werden:
-
-        <ul>
-          <li>Asymptomatisch</li>
-          <li>zu Indexfall umgewandelt</li>
-          <li>kein erneuter Kontakt</li>
-          <li>andere</li>
-        </ul>
+        Passwort eingeben
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/12-phase-kp.png") }} />
-      
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/02-Login/02-passwort.png") }}
+      />
       <p>
-        Das Ende einer Phase des Typs «Index» kann mit folgenden Möglichkeiten begründet werden:
-
-        <ul>
-          <li>Geheilt</li>
-          <li>Tod</li>
-          <li>kein erneuter Kontakt</li>
-        </ul>
+        Google Authenticator auf Smartphone starten und Code von Zitadel eingeben
       </p>
-      <img class="img-fluid" src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/13-phase-index.png") }} />
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/02-Login/03-auth.png") }}
+      />
+      <p>
+        Nach erfolgreichem Login kann die Applikation unter
+        <a href="{{ Routes.home_url(@socket, :index) }}">{{ Routes.home_url(@socket, :index) }}</a>
+        gestartet werden
+      </p>
+      <img
+        class="img-fluid"
+        src={{ Routes.static_path(@socket, "/images/help/02-Login/04-app.png") }}
+      />
     </details>
-  </details>
+
+    <details :if={{ logged_in }}>
+      <summary>
+        <h2>Fälle</h2>
+      </summary>
+
+      <details>
+        <summary>
+          <h3>Wie suche ich nach Index-Fällen, die mir zugewiesen wurden?</h3>
+        </summary>
+
+        <p>
+          Die Fallliste wird durch die Falladministratorinnen angelegt. Sie setzen auch gleich deinen Namen in das entsprechende Feld, so dass die sich öffnende Fallliste zum sofortigen Tracen zur Verfügung steht.<br />
+          Am Anfang kann es allerdings sein, dass du wie bisher einen Fall als PDF oder Excel-Datei erhältst, so dass du selber einen neuen Index erfassen musst. Wähle dafür den Button “Neuer Indexfall”.
+        </p>
+
+        <p>
+          In der Fallliste können Fälle erfasst, angezeigt, bearbeitet und gefiltert werden:
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/01-liste.png") }}
+        />
+
+        <p>
+          Mit dem Button «Filter» kann die Fallliste nach folgenden Kriterien gefiltert werden:
+          <ul>
+            <li>Status</li>
+            <li>Komplexität</li>
+            <li>Tracer</li>
+            <li>Supervisor / Teamleitung</li>
+          </ul>
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/02-filter.png") }}
+        />
+
+        <p>
+          Für die Anzeige von zugewiesenen Fällen den/die entsprechende Tracerin auswählen:
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/03-filter-tracerin.png") }}
+        />
+      </details>
+
+      <details>
+        <summary>
+          <h3>Wie suche ich meine aktiven Fälle?</h3>
+        </summary>
+
+        <p>
+          Die Suche innerhalb der Index-Fälle ist vor allem für Rückfragen oder noch offene Aufgaben wichtig. z.B. hast du einen Index nicht erreicht, dann wähle im Feld Status den entsprechenden Eintrag “Index tel. nicht erreicht”. Dann kannst du den nächsten Fall bearbeiten. Wenn du später diesen Index wieder suchst, kannst du über den Filter nach den entsprechenden Status suchen und die noch nicht kontaktierten Indexe stehen wieder zur Verfügung.
+        </p>
+
+        <p>
+          In der Fallliste können Fälle erfasst, angezeigt, bearbeitet und gefiltert werden.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/01-liste.png") }}
+        />
+
+        <p>
+          Mit dem Button «Filter» kann die Fallliste nach folgenden Kriterien gefiltert werden:
+          <ul>
+            <li>Status</li>
+            <li>Komplexität</li>
+            <li>Tracer</li>
+            <li>Supervisor</li>
+          </ul>
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/02-filter.png") }}
+        />
+
+        <p>
+          Für die Anzeige von zugewiesenen Fällen den/die entsprechende Tracerin auswählen.
+          <br />
+          Für noch genauere Anzeige können sämtliche Filteroptionen kombiniert werden.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/03-filter-tracerin.png") }}
+        />
+      </details>
+
+      <details>
+        <summary>
+          <h3>Wie erfasse ich die Informationen zu den Fällen?</h3>
+        </summary>
+
+        <p>
+          Wird ein neuer Indexfall erfasst, müssen zuerst die Basisdaten der betreffenden Person eingegeben werden.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/04-basisdaten.png") }}
+        />
+
+        <p>
+          Während der Eingabe wird automatisch nach Duplikaten gesucht. Falls diese Ergebnisse findet, wird rechts in der Liste ein Symbol erscheinen.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/06-duplicatecheck.png") }}
+        />
+
+        <p>
+          Durch Klick auf das Symbol kann zwischen dem potenziellen Duplikat oder der aktuellen Eingabe ausgewählt werden.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/07-duplicateselect.png") }}
+        />
+
+        <p>
+          Sobald ein Fall erfasst ist, erscheint dieser in der Fallliste und kann mit dem entsprechenden Button angezeigt werden.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/08-liste-anzeige.png") }}
+        />
+
+        <p>
+          In der Anzeige können sämtliche Personendaten und Falldaten durch Klick auf den entsprechenden Button bearbeitet werden.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/09-falldaten.png") }}
+        />
+        <p>
+          Die Datenstruktur ist folgendermassen aufgebaut:
+          <h4>Basisdaten (Personendaten)</h4>
+          <ul>
+            <li>Basisdaten</li>
+            <li>Referenzen</li>
+            <li>Adresse</li>
+            <li>Kontaktmethoden</li>
+            <li>Anstellung</li>
+          </ul>
+
+          <h4>Falldaten</h4>
+          <ul>
+            <li>Basisdaten</li>
+            <li>
+              <ul>
+                <li>Tracing
+                  <small>(hier sind v.a. die Angaben zum Status und zur Komplexität wichtig)</small></li>
+                <li>Referenzen
+                  <small>(dient der Identifikation im System)</small></li>
+                <li>Phasen
+                  <small>(Symptombeginn und Isolationsende)</small></li>
+                <li>Klinische Informationen
+                  <small>(Wohn- und Aufenthalts-Situation des Index)</small></li>
+                <li>Monitoring
+                  <small>(hier kann z.B. die Schule, das Heim etc. eingetragen werden)</small></li>
+                <li>Krankenhausaufenthalte</li>
+                <li>Verwandte Organisationen</li>
+              </ul>
+            </li>
+            <li>Übertragungen (Ansteckungswege, Verbindungen etc.)</li>
+            <li>Protokoll (Notizen, Korrespondenzen, Emails, SMS etc.)</li>
+          </ul>
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/05-anzeige.png") }}
+        />
+      </details>
+
+      <details>
+        <summary>
+          <h3>Wie versende ich einen Code für die Swiss-Covid-App?</h3>
+        </summary>
+
+        <p>Zur Zeit muss der Code wie bisher beim Senior-Tracer angefordert werden. Nach erhalt des Codes kann mit Klick auf den Button “Aktion” der Eintrag “SMS senden” ausgewählt werden. Damit öffnet sich im Bereich “Protokoll” der Eingabe-Typ “SMS”. Der Code kann mit einem kurzen Beschrieb direkt in das Textfeld übertragen werden. Mit dem Klick auf “Speichern” wird das SMS versendet, der Text bleibt beim Index ersichtlich.</p>
+      </details>
+
+      <details>
+        <summary>
+          <h3>Wie importiere ich eine Fall-Liste?</h3>
+        </summary>
+
+        <p>Es können zwei Arten von Dateien importiert werden:
+          <code>.xlsx</code>
+          und
+          <code>.csv</code>.</p>
+
+        <h4>CSV</h4>
+
+        <p>Ein CSV muss folgende Attribute aufweisen um importiert werden zu können:</p>
+
+        <dl>
+          <dt>{{ gettext("Encoding") }}</dt>
+          <dd>{{ gettext("UTF-8") }}</dd>
+
+          <dt>{{ gettext("Separator") }}</dt>
+          <dd>{{ gettext("Comma (,)") }}</dd>
+        </dl>
+
+        <p>Falls die Datei nich zu 100% mit dieser Vorgabe übereinstimmt, kann sie nicht importiert werden.</p>
+
+        <p>
+          <Link
+            class="btn btn-primary"
+            to={{ Routes.static_path(@socket, "/downloads/help/03-Fälle/example.csv") }}
+          >
+            <span class="oi oi-data-transfer-download" />
+            Beispiel CSV Download
+          </Link>
+        </p>
+
+        <h4>XLSX (Excel)</h4>
+
+        <p>Ein XLSX muss als XLSX abgespeichert werden, XLS wird nicht unterstützt.</p>
+
+        <p>Falls mehrere Arbeitsmappen in der Datei sind, wird immer nur die erste geladen.</p>
+
+        <p>
+          <Link
+            class="btn btn-primary"
+            to={{ Routes.static_path(@socket, "/downloads/help/03-Fälle/example.xlsx") }}
+          >
+            <span class="oi oi-data-transfer-download" />
+            Beispiel XLSX Download
+          </Link>
+        </p>
+
+        <h4>Inhalte</h4>
+
+        <p>Die erste Zeile der Datei muss die Spaltennamen enthalten, die darauf folgenden Zeilen sind die zu importierenden Inhalte.</p>
+
+        <p>Die auf der Import unter "info" erwähnten Spaltennamen werden unterstützt.</p>
+
+        <p>Spaltennamen die nicht bekannt sind, werden einfach ignoriert.</p>
+
+        <h5>Mandant</h5>
+
+        <p>Der Feldinhalt für Mandant muss der volle ausgeschriebene Name des Mandanten sein. Also zB.
+          <samp>Kanton St. Gallen</samp>.</p>
+
+        <h5>Datum</h5>
+
+        <p>Ein Datum muss wie gefolgt formatiert sein um importiert weren zu können:
+          <samp>JJJJ-MM-dd</samp>
+          (<samp>2020-12-16</samp>)</p>
+
+        <h5>Biologisches Geschlecht</h5>
+
+        <p><samp>male</samp>,
+          <samp>female</samp>
+          oder
+          <samp>other</samp></p>
+
+        <h5>Testresultat</h5>
+
+        <p><samp>positiv</samp>
+          oder
+          <samp>negativ</samp></p>
+      </details>
+
+      <details>
+        <summary>
+          <h3>Wie funktionieren die Einsendungen von Kontaktpersonen (möglicher Index)?</h3>
+        </summary>
+
+        <div class="embed-responsive embed-responsive-16by9 mt-3">
+          <iframe
+            class="embed-responsive-item"
+            src="https://player.vimeo.com/video/493799824"
+            frameborder="0"
+            allow="autoplay; fullscreen"
+            allowfullscreen
+          >
+            Video - Einsendung Möglicher Index
+          </iframe>
+        </div>
+      </details>
+    </details>
+
+    <details :if={{ logged_in }}>
+      <summary>
+        <h2>Aktionen</h2>
+      </summary>
+
+      <p class="pl-5">Nach der Überprüfung der Angaben zum Index wie Adresse, Arbeitsplatz etc., geht es darum, die Kontaktpersonen zu erfassen. Dazu wählt ihr den Button “Aktionen” wie unten beschrieben.</p>
+
+      <details>
+        <summary>
+          <h3>Wie verknüpfe ich Kontaktpersonen (mögliche Indexfälle) mit dem Indexfall?</h3>
+        </summary>
+
+        <p>
+          In der Ansicht eines bereits erfassten Indexfalls, erscheint oben rechts ein Menü mit der Aufschrift «Aktionen»
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/01-aktionen.png") }}
+        />
+
+        <p>
+          Geöffnet enthält das Menü diverse Optionen für weiterführende, diesen Indexfall betreffende Aktionen. Darunter auch die Aktion «Kontaktfälle erstellen».
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/02-aktion-kontaktfall.png") }}
+        />
+
+        <p>
+          Wenn ausgeführt, öffnet diese Aktion die Eingabemaske «Mögliche Indexfälle erstellen. Dabei sollen so viele Informationen wie möglich, mindestens aber der Typ (bei Kontaktfall bereits vorgemerkt), das Datum und die Basisdaten des Kontaktes angegeben werden.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/03-kontaktfall.png") }}
+        />
+
+        <p>
+          Die Verknüpfung zum ausgehenden Indexfall ist in diesem Fall schon hergestellt. Diese kann wenn nötig auch angepasst werden.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/04-kontaktfall-link.png") }}
+        />
+
+        <p>
+          Für den Fall, dass die Kontaktperson bereits im System erfasst ist, kann diese durch die Duplikatkontrolle in der Liste vervollständigt bzw. verknüpft werden.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/05-kontakt-intern.png") }}
+        />
+      </details>
+
+      <details>
+        <summary>
+          <h3>Wie versende ich eine Quarantäne-Bestätigung?</h3>
+        </summary>
+
+        <p>
+          Nach der Erfassung der Kontaktpersonen kann diesen unmittelbar die Quarantäne-Bestätigung gesandt werden.
+        </p>
+
+        <p>Um die Kontaktperson zu erfassen wählt man unter dem Button «Aktionen» die Auswahl: «Kontaktfälle erstellen». Danach öffnet sich dieses Fenster. Typ – Auswahl «Kontaktperson» wählen.</p>
+
+        <p>“Anstecker Fall” ist in der Regel bereits vorausgefüllt, falls nicht, kann man ihn aus einer Liste suchen und auswählen.</p>
+
+        <p>“Datum” Das Datum des letzten Kontakts zwischen dem Index und der KP wird ausgewählt. Infektionsort muss nicht ausgewählt werden, da es nur eine potentielle Ansteckung ist. Danach können die nötigen Angaben zur Person aufgenommen und eingetragen werden.</p>
+
+        <p>Damit die KP eine Bestätigung erhält, muss anschliessend in die Auswahl «Personen» gewechselt werden und die KP dort mittels «Anzeigen» ausgewählt werden.Es öffnen sich die Basisdaten, deshalb muss auf den Reiter «Kontaktpersonen» geklickt und danach der Button «Aktion» gewählt werden. Dort findet man den Eintrag «E-Mail-Quarantäne- Bestätigungen senden». Mit einem Klick darauf öffnet sich die E-Mail unter dem Bereich «Protokoll». Mittels «Speichern» wird das E-Mail versandt und die Angaben bei der KP abgespeichert.</p>
+
+        <p>Unten wird beschrieben wie sich das System im Einzelnen verhält.</p>
+
+        <p>
+          E-Mail- und SMS-Korrespondenzen sowie Notizen zu den Fällen werden über das Protokoll ausgeführt.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/06-protokoll.png") }}
+        />
+
+        <p>
+          Neue Korrespondenzen können entweder automatisch über das «Aktionen»-Menü oben rechts in der Ansicht …
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/07-aktionen-email.png") }}
+        />
+
+        <p>
+          …oder manuell im Protokoll erfasst werden.<br />
+          Dazu muss der Typ der Korrespondenz gewählt und der Inhalt erfasst werden.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/08-protokoll-manuell.png") }}
+        />
+
+        <p>
+          Sobald der Entwurf gespeichert wird, wird die Nachricht ausgelöst bzw. versandt.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/09-email-ausloesen.png") }}
+        />
+      </details>
+
+      <details>
+        <summary>
+          <h3>Wie schliesse ich einen Fall ab?</h3>
+        </summary>
+
+        <p>
+          In den Basisdaten eines Index kann unter dem Punkt «Tracking» der Status des Falls bearbeitet werden. Der Status ist auch Teil der Filteroptionen in der Fallliste.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/10-status.png") }}
+        />
+
+        <p>
+          Bei den «Phasen» können Start- und Enddaten gesetzt sowie eine Begründung erfasst werden, falls ein Enddatum gesetzt wurde.
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/11-phasen.png") }}
+        />
+
+        <p>
+          Handelt es sich um einen möglichen Indexfall (Kontaktperson), kann das Ende mit folgenden Begründungen beendet werden:
+          <ul>
+            <li>Asymptomatisch</li>
+            <li>zu Indexfall umgewandelt</li>
+            <li>kein erneuter Kontakt</li>
+            <li>andere</li>
+          </ul>
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/12-phase-kp.png") }}
+        />
+
+        <p>
+          Das Ende einer Phase des Typs «Index» kann mit folgenden Möglichkeiten begründet werden:
+          <ul>
+            <li>Geheilt</li>
+            <li>Tod</li>
+            <li>kein erneuter Kontakt</li>
+          </ul>
+        </p>
+        <img
+          class="img-fluid"
+          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/13-phase-index.png") }}
+        />
+      </details>
+    </details>
   </Context>
 </div>

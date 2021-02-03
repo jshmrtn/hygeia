@@ -13,7 +13,13 @@
         <div class="modal-title">
           <h5 class="mb-0">{{ @title }}</h5>
         </div>
-        <button :on-click={{ @close }} type="button" class="close p-3" data-dismiss="modal" aria-label="Close">
+        <button
+          :on-click={{ @close }}
+          type="button"
+          class="close p-3"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

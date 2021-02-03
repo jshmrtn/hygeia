@@ -11,32 +11,44 @@
         :if={{ authorized?(Case, :create, auth, tenant: :any) }}
       >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
-          <span class="oi oi-plus" aria-hidden="true"></span>
+          <span class="oi oi-plus" aria-hidden="true" />
           {{ gettext("New Index") }}
         </button>
       </LivePatch>
 
       <LivePatch
         class="mr-2"
-        to={{ Routes.case_create_possible_index_path(@socket, :create, return_to: Routes.case_index_path(@socket, :index)) }}
+        to={{Routes.case_create_possible_index_path(@socket, :create,
+          return_to: Routes.case_index_path(@socket, :index)
+        )}}
         :if={{ authorized?(Case, :create, auth, tenant: :any) }}
       >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
-          <span class="oi oi-plus" aria-hidden="true"></span>
+          <span class="oi oi-plus" aria-hidden="true" />
           {{ gettext("New Possible Index") }}
         </button>
       </LivePatch>
 
-      <HygeiaWeb.Dropdown class="ml-auto" trigger_class="mt-3" dropdown_class="dropdown-menu-right p-3 filter-dropdown" id="filter-dropdown">
+      <HygeiaWeb.Dropdown
+        class="ml-auto"
+        trigger_class="mt-3"
+        dropdown_class="dropdown-menu-right p-3 filter-dropdown"
+        id="filter-dropdown"
+      >
         <template slot="trigger">
           <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
-            <span class="oi oi-cog" aria-hidden="true"></span>
+            <span class="oi oi-cog" aria-hidden="true" />
             {{ gettext("Filter") }}
           </button>
         </template>
         <template slot="default">
           <h4>{{ gettext("Filter") }}</h4>
-          <Form for={{ @filters }} change="filter" submit="filter" opts={{ autocomplete: "off", id: "filter-form", as: :filter }}>
+          <Form
+            for={{ @filters }}
+            change="filter"
+            submit="filter"
+            opts={{ autocomplete: "off", id: "filter-form", as: :filter }}
+          >
             <InputContext assigns={{ assigns }} :let={{ form: form }}>
               <div class="row">
                 <div class="col-md-6 col-sm-12">
@@ -82,14 +94,20 @@
               <div class="form-group">
                 <label class="d-block">{{ schema_field_name(:tracer, Case) }}</label>
                 <FieldContext name={{ :tracer_uuid }}>
-                  <MultipleSelect class="form-control" options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }} />
+                  <MultipleSelect
+                    class="form-control"
+                    options={{ Enum.map(@tracer_users, &{&1.display_name, &1.uuid}) }}
+                  />
                 </FieldContext>
               </div>
 
               <div class="form-group">
                 <label class="d-block">{{ schema_field_name(:supervisor, Case) }}</label>
                 <FieldContext name={{ :supervisor_uuid }}>
-                  <MultipleSelect class="form-control" options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }} />
+                  <MultipleSelect
+                    class="form-control"
+                    options={{ Enum.map(@supervisor_users, &{&1.display_name, &1.uuid}) }}
+                  />
                 </FieldContext>
               </div>
 
@@ -97,19 +115,19 @@
                 <label class="d-block">{{ gettext("Includes Phase Type") }}</label>
                 <Field name="phase_type" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value={{ nil }} /> 
+                    <RadioButton class="form-check-input" value={{ nil }} />
                     {{ gettext("Any") }}
                   </label>
                 </Field>
                 <Field name="phase_type" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value="index"/> 
+                    <RadioButton class="form-check-input" value="index" />
                     {{ gettext("Index") }}
                   </label>
                 </Field>
                 <Field name="phase_type" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value="possible_index" /> 
+                    <RadioButton class="form-check-input" value="possible_index" />
                     {{ gettext("Possible Index") }}
                   </label>
                 </Field>
@@ -207,7 +225,7 @@
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
-          <th></th>
+          <th />
         </tr>
       </thead>
       <tbody id="cases">
@@ -217,15 +235,15 @@
             {{ case.person.last_name }}
           </td>
           <td :if={{ not authorized?(case.person, :details, auth) }}>
-            {{ case.person.tenant.short_name }} / {{ case.person.human_readable_id }}
+            {{ case.person.tenant.short_name }}
+            /
+            {{ case.person.human_readable_id }}
           </td>
           <td>
-            {{
-              case case.complexity do
-                nil -> nil
-                other -> case_complexity_translation(other)
-              end
-            }}
+            {{ case case.complexity do
+              nil -> nil
+              other -> case_complexity_translation(other)
+            end }}
           </td>
           <td>
             {{ case_status_translation(case.status) }}
@@ -234,28 +252,20 @@
             {{ case_display_type(case) }}
           </td>
           <td>
-            <Link
-              to={{ Routes.user_show_path(@socket, :show, case.tracer) }}
-              :if={{ case.tracer }}
-            >
+            <Link to={{ Routes.user_show_path(@socket, :show, case.tracer) }} :if={{ case.tracer }}>
               {{ case.tracer.display_name }}
             </Link>
           </td>
           <td>
-            <Link
-              to={{ Routes.user_show_path(@socket, :show, case.supervisor) }}
-              :if={{ case.supervisor }}
-            >
+            <Link to={{ Routes.user_show_path(@socket, :show, case.supervisor) }} :if={{ case.supervisor }}>
               {{ case.supervisor.display_name }}
             </Link>
           </td>
           <td>
-            {{
-              HygeiaCldr.DateTime.to_string!(
-                DateTime.from_naive!(case.inserted_at, "Europe/Zurich"),
-                format: :short
-              )
-            }}
+            {{ HygeiaCldr.DateTime.to_string!(
+              DateTime.from_naive!(case.inserted_at, "Europe/Zurich"),
+              format: :short
+            ) }}
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">
@@ -270,12 +280,12 @@
                 :if={{ authorized?(case, :update, auth) }}
               >
                 <button class="ml-1 btn btn-sm btn-secondary">
-                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
                 </button>
               </LiveRedirect>
-              <Link 
-                to="#" 
-                click="delete" 
+              <Link
+                to="#"
+                click="delete"
                 opts={{
                   title: gettext("Delete"),
                   data: [confirm: gettext("Are you sure?")],
@@ -285,7 +295,7 @@
                 :if={{ authorized?(case, :delete, auth) }}
               >
                 <button class="ml-1 btn btn-sm btn-danger">
-                  <span class="oi oi-trash" aria-hidden="true"></span>
+                  <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>
             </div>
@@ -301,10 +311,17 @@
       </tbody>
     </table>
 
-    <HygeiaWeb.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }} id="pagination">
-        <LivePatch class="page-link" to={{ page_url(@socket, [{cursor_direction, cursor}], @filters, @sort) }}>
-          {{ text }}
-        </LivePatch>
+    <HygeiaWeb.Pagination
+      pagination={{ @pagination }}
+      :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }}
+      id="pagination"
+    >
+      <LivePatch
+        class="page-link"
+        to={{ page_url(@socket, [{cursor_direction, cursor}], @filters, @sort) }}
+      >
+        {{ text }}
+      </LivePatch>
     </HygeiaWeb.Pagination>
   </Context>
 </div>

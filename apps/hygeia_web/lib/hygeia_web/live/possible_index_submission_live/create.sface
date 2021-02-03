@@ -1,17 +1,20 @@
 <Form
-  for={{ @changeset }} 
-  change="validate" 
-  submit="save" 
-  opts={{ autocomplete: "off", id: "possible-index-submission-form", class: "container component-possible-index-submission-create" }}
+  for={{ @changeset }}
+  change="validate"
+  submit="save"
+  opts={{
+    autocomplete: "off",
+    id: "possible-index-submission-form",
+    class: "container component-possible-index-submission-create"
+  }}
 >
   <InputContext assigns={{ assigns }} :let={{ form: form }}>
-
     <h1 class="mb-5">
       {{ gettext("New possible index submission") }}
     </h1>
 
     <ul class="mb-4 progress-steps" id="progressbar">
-      <div class="progress-bar"></div>
+      <div class="progress-bar" />
       <li
         :for={{ {step, {name, active, completed}} <- steps(@step) }}
         class={{
@@ -30,32 +33,33 @@
 
     <div class="card mb-3">
       <div class="card-body">
-        <div
-          :show={{ @step == :base }}
-          id="step_base"
-        >
+        <div :show={{ @step == :base }} id="step_base">
           <h2>
             {{ gettext("Who did you meet or who do you live with?") }}
           </h2>
 
-          <hr>
+          <hr />
 
           <section>
             <p>
-              {{ gettext("To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious.") }}
+              {{ gettext(
+                "To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious."
+              ) }}
             </p>
             <p>
               {{ gettext("Relevant will be all contacts you have where ALL of the following is true:") }}
             </p>
             <ul>
-              <li>{{ gettext("You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test.") }}</li>
+              <li>{{ gettext(
+                  "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
+                ) }}</li>
               <li>{{ gettext("You had contact for more than 15 minutes on the same day.") }}</li>
               <li>{{ gettext("Either you or the other person did not weark a mask.") }}</li>
               <li>{{ gettext("You did not keep a safe distance of at least 1.5 meters.") }}</li>
             </ul>
           </section>
 
-          <hr>
+          <hr />
 
           <div class="row">
             <div class="col">
@@ -92,7 +96,7 @@
             class="btn btn-primary"
             type="button"
             :on-click="advance"
-            disabled={{ errors_in?(@changeset, [
+            disabled={{errors_in?(@changeset, [
               :first_name,
               :last_name,
               :sex
@@ -101,29 +105,22 @@
             {{ gettext("Continue") }}
           </button>
         </div>
-        
-        <div
-          :show={{ @step == :transmission_date }}
-          id="step_transmission_date"
-        >
+
+        <div :show={{ @step == :transmission_date }} id="step_transmission_date">
           <h2>
-            {{
-              gettext(
-                "When did you meet %{first_name} %{last_name} last?",
-                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-              )
-            }}
+            {{ gettext(
+              "When did you meet %{first_name} %{last_name} last?",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            ) }}
           </h2>
 
           <p>
-            {{
-              gettext(
-                "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test.",
-                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-              )
-            }}
+            {{ gettext(
+              "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test.",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            ) }}
           </p>
 
           <div class="row">
@@ -140,7 +137,7 @@
             class="btn btn-primary"
             type="button"
             :on-click="advance"
-            disabled={{ errors_in?(@changeset, [
+            disabled={{errors_in?(@changeset, [
               :transmission_date
             ])}}
           >
@@ -148,32 +145,25 @@
           </button>
         </div>
 
-        <div
-          :show={{ @step == :infection_place }}
-          id="step_infection_place"
-        >
+        <div :show={{ @step == :infection_place }} id="step_infection_place">
           <Inputs for={{ :infection_place }}>
             <h2>
-              {{
-                gettext(
-                  "Where did you meet %{first_name} %{last_name} last?",
-                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-                )
-              }}
+              {{ gettext(
+                "Where did you meet %{first_name} %{last_name} last?",
+                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+              ) }}
             </h2>
 
-             <p>
-              {{
-                gettext(
-                  "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field.",
-                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-                )
-              }}
+            <p>
+              {{ gettext(
+                "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field.",
+                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+              ) }}
             </p>
 
-            <HiddenInput field={{ :known }} value={{ true }} />
+            <HiddenInput field={{ :known }} value />
 
             <div class="row">
               <div class="col">
@@ -200,7 +190,7 @@
               class="btn btn-primary"
               type="button"
               :on-click="advance"
-              disabled={{ errors_in?(@changeset, [
+              disabled={{errors_in?(@changeset, [
                 {:infection_place, :known},
                 {:infection_place, :name},
                 {:infection_place, :type}
@@ -217,26 +207,22 @@
         >
           <Inputs for={{ :infection_place }}>
             <h2>
-              {{
-                gettext(
-                  "How did your encounter with %{first_name} %{last_name} happen?",
-                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-                )
-              }}
+              {{ gettext(
+                "How did your encounter with %{first_name} %{last_name} happen?",
+                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+              ) }}
             </h2>
 
             <p>
-              {{
-                gettext(
-                  "Describe your encounter with %{first_name} %{last_name}. Under which circumstances did you meet? What kind of activity happened during your encounter (e.g. «wedding with lunch, sat at same table next to each other» or «living in same household, sharing kitchen and bathroom»).",
-                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-                )
-              }}
+              {{ gettext(
+                "Describe your encounter with %{first_name} %{last_name}. Under which circumstances did you meet? What kind of activity happened during your encounter (e.g. «wedding with lunch, sat at same table next to each other» or «living in same household, sharing kitchen and bathroom»).",
+                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+              ) }}
             </p>
 
-            <HiddenInput field={{ :activity_mapping_executed }} value={{ true }} />
+            <HiddenInput field={{ :activity_mapping_executed }} value />
 
             <Field name={{ :activity_mapping }} class="form-group">
               <HygeiaWeb.FieldLabel />
@@ -248,7 +234,7 @@
               class="btn btn-primary"
               type="button"
               :on-click="advance"
-              disabled={{ errors_in?(@changeset, [
+              disabled={{errors_in?(@changeset, [
                 {:infection_place, :activity_mapping_executed},
                 {:infection_place, :activity_mapping}
               ])}}
@@ -258,22 +244,17 @@
           </Inputs>
         </div>
 
-        <div
-          :show={{ @step == :infection_place_address }}
-          id="step_infection_place_address"
-        >
+        <div :show={{ @step == :infection_place_address }} id="step_infection_place_address">
           <Inputs for={{ :infection_place }}>
             <Inputs for={{ :address }}>
               <h2>
-                {{
-                  gettext(
-                    "Do you know the address where you met with %{first_name} %{last_name}?",
-                    first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                    last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-                  )
-                }}
+                {{ gettext(
+                  "Do you know the address where you met with %{first_name} %{last_name}?",
+                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+                ) }}
               </h2>
-              
+
               <HygeiaWeb.AddressForm id="infection_place_address" />
             </Inputs>
           </Inputs>
@@ -282,7 +263,7 @@
             class="btn btn-primary"
             type="button"
             :on-click="advance"
-            disabled={{ errors_in?(@changeset, [
+            disabled={{errors_in?(@changeset, [
               {:infection_place, :address, :address},
               {:infection_place, :address, :zip},
               {:infection_place, :address, :place},
@@ -294,18 +275,13 @@
           </button>
         </div>
 
-        <div
-          :show={{ @step == :contact_methods }}
-          id="step_contact_methods"
-        >
+        <div :show={{ @step == :contact_methods }} id="step_contact_methods">
           <h2>
-            {{
-              gettext(
-                "How can we contact %{first_name} %{last_name}?",
-                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-              )
-            }}
+            {{ gettext(
+              "How can we contact %{first_name} %{last_name}?",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            ) }}
           </h2>
 
           <div class="row">
@@ -339,7 +315,7 @@
             class="btn btn-primary"
             type="button"
             :on-click="advance"
-            disabled={{ errors_in?(@changeset, [
+            disabled={{errors_in?(@changeset, [
               :mobile,
               :landline,
               :email
@@ -349,18 +325,13 @@
           </button>
         </div>
 
-        <div
-          :show={{ @step == :address }}
-          id="step_address"
-        >
+        <div :show={{ @step == :address }} id="step_address">
           <h2>
-            {{
-              gettext(
-                "Where does %{first_name} %{last_name} live?",
-                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-              )
-            }}
+            {{ gettext(
+              "Where does %{first_name} %{last_name} live?",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            ) }}
           </h2>
 
           <Inputs for={{ :address }}>
@@ -380,4 +351,3 @@
     </div>
   </InputContext>
 </Form>
- 

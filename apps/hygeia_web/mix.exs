@@ -70,6 +70,7 @@ defmodule HygeiaWeb.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.4.1"},
       {:surface, "~> 0.2 and >= 0.2.1"},
+      {:surface_formatter, "~> 0.2"},
       {:ecto_psql_extras, "~> 0.4"},
       {:jsone, "~> 1.5", override: true},
       {:oidcc, github: "jshmrtn/oidcc", branch: "master", override: true},

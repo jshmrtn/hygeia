@@ -1,7 +1,7 @@
 <Form
-  for={{ @changeset }} 
-  change="validate" 
-  submit="save" 
+  for={{ @changeset }}
+  change="validate"
+  submit="save"
   opts={{ autocomplete: "off", id: "tenant-form", class: "container" }}
 >
   <h1 class="mb-3">
@@ -29,4 +29,3 @@
     {{ gettext("Save") }}
   </button>
 </Form>
- 

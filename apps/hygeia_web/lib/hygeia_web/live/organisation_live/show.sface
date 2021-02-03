@@ -8,13 +8,13 @@
         to={{ Routes.organisation_show_path(@socket, :edit, @organisation) }}
       >
         <button class="btn btn-primary mr-2" id="organisation-edit">
-          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
           {{ gettext("Edit") }}
         </button>
       </LivePatch>
-      <Link 
-        to="#" 
-        click="delete" 
+      <Link
+        to="#"
+        click="delete"
         opts={{
           title: gettext("Delete"),
           data: [confirm: gettext("Are you sure?")]
@@ -22,16 +22,16 @@
         :if={{ authorized?(@organisation, :delete, auth) }}
       >
         <button class="btn btn-danger">
-          <span class="oi oi-trash" aria-hidden="true"></span>
+          <span class="oi oi-trash" aria-hidden="true" />
           {{ gettext("Delete") }}
         </button>
       </Link>
     </div>
 
-    <Form 
-      for={{ @changeset }} 
-      change="validate" 
-      submit="save" 
+    <Form
+      for={{ @changeset }}
+      change="validate"
+      submit="save"
       opts={{ autocomplete: "off", id: "organisation-form", "phx-hook": "BlockNavigation" }}
     >
       <HygeiaWeb.Lock
@@ -42,11 +42,20 @@
         <div :if={{ @live_action == :edit }}>
           <div class="mb-4" :if={{ @live_action == :edit }}>
             <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
-              <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+              <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
               {{ gettext("Save") }}
             </button>
-            <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
-              <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+            <button
+              :on-click="reset"
+              class="btn btn-warning"
+              type="button"
+              data-confirm={{if @changeset.changes != %{} do
+                gettext("Do you really want to discard your changes?")
+              else
+                nil
+              end}}
+            >
+              <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
               {{ gettext("Discard") }}
             </button>
           </div>
@@ -58,10 +67,7 @@
               <h4 class="card-title">{{ gettext("Name") }}</h4>
               <Field name={{ :name }} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <TextInput 
-                  class="form-control" 
-                  opts={{ disabled: @live_action == :show }}
-                />
+                <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
@@ -71,10 +77,7 @@
               <h4 class="card-title">{{ gettext("Notes") }}</h4>
               <Field name={{ :notes }} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <TextArea
-                  class="form-control"
-                  opts={{ disabled: @live_action == :show }}
-                />
+                <TextArea class="form-control" opts={{ disabled: @live_action == :show }} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
@@ -99,7 +102,7 @@
                   <tr>
                     <th>{{ gettext("Person") }}</th>
                     <th>{{ gettext("Position") }}</th>
-                    <th :if={{ @live_action == :edit }}></th>
+                    <th :if={{ @live_action == :edit }} />
                   </tr>
                 </thead>
                 <tbody>
@@ -112,8 +115,8 @@
                         <td :if={{ @live_action == :edit }}>
                           <Field name={{ :person_uuid }}>
                             <HygeiaWeb.PersonLive.Choose
-                              id={{ {:position, Ecto.Changeset.fetch_field!(form.source, :uuid) } }}
-                              small={{ true }}
+                              id={{ {:position, Ecto.Changeset.fetch_field!(form.source, :uuid)} }}
+                              small
                               change={{ "change_position_person_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
                               disabled={{ @live_action != :edit }}
                             />
@@ -125,31 +128,29 @@
                             to={{ Routes.person_base_data_path(@socket, :show, form.source.data.person) }}
                             :if={{ authorized?(form.source.data.person, :details, auth) }}
                           >
-                            {{ person_display_name(form.source.data.person)}}
+                            {{ person_display_name(form.source.data.person) }}
                           </LiveRedirect>
                           <span :if={{ not authorized?(form.source.data.person, :details, auth) }}>
-                            {{ person_display_name(form.source.data.person)}}
+                            {{ person_display_name(form.source.data.person) }}
                           </span>
                         </td>
                         <td>
                           <Field name={{ :position }}>
-                            <TextInput 
-                              class="form-control" 
-                              opts={{ disabled: @live_action == :show }} 
-                            />
+                            <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
                             <ErrorTag class="d-block invalid-feedback" />
                           </Field>
                         </td>
                         <td :if={{ @live_action == :edit }}>
                           <button
-                            :if={{ Ecto.Changeset.get_field(form.source, :person_uuid) != nil or Ecto.Changeset.get_field(form.source, :position) != nil }}
+                            :if={{Ecto.Changeset.get_field(form.source, :person_uuid) != nil or
+                              Ecto.Changeset.get_field(form.source, :position) != nil}}
                             class="ml-1 btn btn-secondary btn-danger"
                             type="button"
                             phx-value-uuid={{ Ecto.Changeset.get_field(form.source, :uuid) }}
                             phx-click="remove_position"
                             title={{ gettext("Remove") }}
                           >
-                            <span class="oi oi-trash" aria-hidden="true"></span>
+                            <span class="oi oi-trash" aria-hidden="true" />
                           </button>
                         </td>
                       </tr>
@@ -173,7 +174,7 @@
                       phx-click="add_position"
                       title={{ gettext("Add") }}
                     >
-                      <span class="oi oi-plus" aria-hidden="true"></span>
+                      <span class="oi oi-plus" aria-hidden="true" />
                     </button>
                   </td>
                 </tfoot>

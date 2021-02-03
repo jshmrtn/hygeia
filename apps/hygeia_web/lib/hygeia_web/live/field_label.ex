@@ -37,18 +37,20 @@ defmodule HygeiaWeb.FieldLabel do
 
     ~H"""
     <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
-      <Label
-        form={{ form }}
-        field={{ field }}
-        class={{ @class }}
-        opts={{ @opts }}
-      >
+      <Label form={{ form }} field={{ field }} class={{ @class }} opts={{ @opts }}>
         <slot :props={{
           schema: get_schema_name(helper_opts, form),
           field: cut_relation_uuid(field, get_schema_name(helper_opts, form)),
-          name: schema_field_name(cut_relation_uuid(field, get_schema_name(helper_opts, form)), get_schema_name(helper_opts, form))
+          name:
+            schema_field_name(
+              cut_relation_uuid(field, get_schema_name(helper_opts, form)),
+              get_schema_name(helper_opts, form)
+            )
         }}>
-          {{ schema_field_name(cut_relation_uuid(field, get_schema_name(helper_opts, form)), get_schema_name(helper_opts, form)) }}
+          {{ schema_field_name(
+            cut_relation_uuid(field, get_schema_name(helper_opts, form)),
+            get_schema_name(helper_opts, form)
+          ) }}
         </slot>
       </Label>
     </InputContext>

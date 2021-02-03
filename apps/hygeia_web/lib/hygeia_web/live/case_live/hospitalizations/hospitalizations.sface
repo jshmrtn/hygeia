@@ -1,6 +1,9 @@
 <div class="component-case-hospitalizations">
   <InputContext assigns={{ assigns }} :let={{ form: form }}>
-    <div :if={{ @disabled and length(Ecto.Changeset.get_field(form.source, :hospitalizations, [])) == 0 }} class="alert alert-info">
+    <div
+      :if={{ @disabled and length(Ecto.Changeset.get_field(form.source, :hospitalizations, [])) == 0 }}
+      class="alert alert-info"
+    >
       {{ gettext("No hospitalizations") }}
     </div>
   </InputContext>
@@ -13,14 +16,14 @@
             <div class="col">
               <Field class="form-group" name={{ :start }}>
                 <HygeiaWeb.FieldLabel />
-                <DateInput class="form-control" opts={{ disabled: @disabled }}/>
+                <DateInput class="form-control" opts={{ disabled: @disabled }} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
             <div class="col">
               <Field class="form-group" name={{ :end }}>
                 <HygeiaWeb.FieldLabel />
-                <DateInput class="form-control" opts={{ disabled: @disabled }}/>
+                <DateInput class="form-control" opts={{ disabled: @disabled }} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
@@ -30,7 +33,7 @@
               <Field class="form-group" name={{ :organisation_uuid }}>
                 <HygeiaWeb.FieldLabel />
                 <HygeiaWeb.OrganisationLive.Choose
-                  id={{ {:hospitalisations, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid) } }}
+                  id={{ {:hospitalisations, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid)} }}
                   change={{ "change_organisation_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
                   disabled={{ @disabled }}
                 />
@@ -49,7 +52,7 @@
                   title={{ gettext("Remove") }}
                 >
                   {{ gettext("Remove") }}
-                  <span class="oi oi-trash" aria-hidden="true"></span>
+                  <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </InputContext>
             </div>
@@ -58,10 +61,10 @@
       </div>
     </InputContext>
   </Inputs>
-    
-  <div class="add-button mt-2" :if={{ not(@disabled) }}>
+
+  <div class="add-button mt-2" :if={{ not @disabled }}>
     <button type="button" class="btn btn-secondary" :on-click={{ @add_hospitalization }}>
-      <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+      <span class="oi oi-plus mr-1" aria-hidden="true" />
       {{ gettext("Add hospitalization") }}
     </button>
   </div>

@@ -8,11 +8,16 @@
       <slot :props={{ value: value_tuple(form, field, @options) }}>
         {{ elem(value_tuple(form, field, @options), 0) }}
       </slot>
-      <button :if={{ !@disabled }} class="ml-1 btn btn-sm btn-secondary" :on-click="open_modal" type="button">
-        <span class="oi oi-pencil" aria-hidden="true"></span>
-      </button>  
+      <button
+        :if={{ !@disabled }}
+        class="ml-1 btn btn-sm btn-secondary"
+        :on-click="open_modal"
+        type="button"
+      >
+        <span class="oi oi-pencil" aria-hidden="true" />
+      </button>
     </div>
-    
+
     <HygeiaWeb.Modal
       id={{ {:choose_generic, field} }}
       :if={{ @modal_open }}
@@ -22,12 +27,24 @@
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text">
-            <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+            <span class="oi oi-magnifying-glass" aria-hidden="true" />
           </span>
         </div>
-        <input class="form-control" type="search" value={{ @query }} :on-keyup="query" placeholder={{ gettext("Search") }} />
+        <input
+          class="form-control"
+          type="search"
+          value={{ @query }}
+          :on-keyup="query"
+          placeholder={{ gettext("Search") }}
+        />
       </div>
-      <div role="button" class="card hy-button-card mt-2" :for={{ option <- @filtered_options }} :on-click="choose" phx-value-uuid={{ elem(option, 1) }}>
+      <div
+        role="button"
+        class="card hy-button-card mt-2"
+        :for={{ option <- @filtered_options }}
+        :on-click="choose"
+        phx-value-uuid={{ elem(option, 1) }}
+      >
         <div class="card-body py-2 px-3">
           <div class="d-flex justify-content-between align-items-center">
             {{ elem(option, 0) }}

@@ -1,25 +1,23 @@
 <div class="component-person-base-data container">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <HygeiaWeb.PersonLive.Header person={{@changeset}} id="header" />
+    <HygeiaWeb.PersonLive.Header person={{ @changeset }} id="header" />
 
     <div
-      :for={{
-        %Person{first_name: first_name, last_name: last_name} = person <- @changeset
-          |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-          |> Enum.take(5)
-          |> load_people_by_id
-      }}
+      :for={{%Person{first_name: first_name, last_name: last_name} = person <-
+        @changeset
+        |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+        |> Enum.take(5)
+        |> load_people_by_id}}
       class="alert alert-warning"
     >
-      {{ 
-        "This person is possibly a duplicate of %{name_link}, please check."
-        |> gettext(
-          name_link: "#{first_name} #{last_name}"
-            |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
-            |> safe_to_string
-        )
-        |> raw
-      }}
+      {{ "This person is possibly a duplicate of %{name_link}, please check."
+      |> gettext(
+        name_link:
+          "#{first_name} #{last_name}"
+          |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
+          |> safe_to_string
+      )
+      |> raw }}
     </div>
 
     <div class="mb-4" :if={{ @live_action == :show }}>
@@ -28,14 +26,14 @@
         to={{ Routes.person_base_data_path(@socket, :edit, @person) }}
       >
         <button class="btn btn-primary" id="person-edit">
-          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
           {{ gettext("Edit") }}
         </button>
       </LivePatch>
 
-      <Link 
-        to="#" 
-        click="delete" 
+      <Link
+        to="#"
+        click="delete"
         opts={{
           title: gettext("Delete"),
           data: [confirm: gettext("Are you sure?")]
@@ -43,16 +41,16 @@
         :if={{ authorized?(@person, :delete, auth) }}
       >
         <button class="btn btn-danger">
-          <span class="oi oi-trash" aria-hidden="true"></span>
+          <span class="oi oi-trash" aria-hidden="true" />
           {{ gettext("Delete") }}
         </button>
       </Link>
     </div>
 
-    <Form 
-      for={{ @changeset }} 
-      change="validate" 
-      submit="save" 
+    <Form
+      for={{ @changeset }}
+      change="validate"
+      submit="save"
       opts={{ autocomplete: "off", id: "person-form", "phx-hook": "BlockNavigation" }}
     >
       <HygeiaWeb.Lock
@@ -62,15 +60,24 @@
       >
         <div class="mb-4" :if={{ @live_action == :edit }}>
           <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
-            <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+            <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
             {{ gettext("Save") }}
           </button>
-          <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
-            <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+          <button
+            :on-click="reset"
+            class="btn btn-warning"
+            type="button"
+            data-confirm={{if @changeset.changes != %{} do
+              gettext("Do you really want to discard your changes?")
+            else
+              nil
+            end}}
+          >
+            <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
             {{ gettext("Discard") }}
           </button>
         </div>
-        
+
         <div class="form-grid">
           <div class="card">
             <div class="card-body">
@@ -78,7 +85,12 @@
 
               <Field name={{ :tenant_uuid }} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <Select class="form-control" opts={{ prompt: gettext("Select tenant"), disabled: @live_action == :show }} field={{ :tenant_uuid }} options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }} />
+                <Select
+                  class="form-control"
+                  opts={{ prompt: gettext("Select tenant"), disabled: @live_action == :show }}
+                  field={{ :tenant_uuid }}
+                  options={{ Enum.map(@tenants, &{&1.name, &1.uuid}) }}
+                />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
@@ -86,14 +98,22 @@
                 <div class="col">
                   <Field name={{ :first_name }} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <TextInput field={{ :first_name }} class="form-control" opts={{ disabled: @live_action == :show }} />
+                    <TextInput
+                      field={{ :first_name }}
+                      class="form-control"
+                      opts={{ disabled: @live_action == :show }}
+                    />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
                 <div class="col">
                   <Field name={{ :last_name }} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <TextInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :last_name }}/>
+                    <TextInput
+                      opts={{ disabled: @live_action == :show }}
+                      class="form-control"
+                      field={{ :last_name }}
+                    />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
@@ -115,7 +135,11 @@
                 <div class="col">
                   <Field name={{ :birth_date }} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <DateInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :birth_date }}/>
+                    <DateInput
+                      opts={{ disabled: @live_action == :show }}
+                      class="form-control"
+                      field={{ :birth_date }}
+                    />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
@@ -150,18 +174,23 @@
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">{{ gettext("Contact Methods") }}</h4>
-              
+
               <div class="contact-method-grid">
                 <h6>{{ gettext("Type") }}</h6>
                 <h6>{{ gettext("Value") }}</h6>
                 <h6>{{ gettext("Comment") }}</h6>
-                <div aria-hidden="true"></div>
+                <div aria-hidden="true" />
 
                 <Inputs for={{ :contact_methods }}>
                   <InputContext assigns={{ assigns }} :let={{ form: form }}>
                     <HiddenInput field={{ :uuid }} />
                     <Field name={{ :type }}>
-                      <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }} field={{ :type }} options={{ contact_method_options() }} />
+                      <Select
+                        class="form-control"
+                        opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
+                        field={{ :type }}
+                        options={{ contact_method_options() }}
+                      />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                     <Field name={{ :value }}>
@@ -172,29 +201,25 @@
                         :if={{ @live_action == :edit or Ecto.Changeset.fetch_field!(form.source, :type) == :other }}
                       />
                       <Link
-                        :if={{ @live_action == :show  and Ecto.Changeset.fetch_field!(form.source, :type) in [:mobile, :landline] }}
-                        to={{
-                          form.source
-                          |> Ecto.Changeset.fetch_field!(:value)
-                          |> ExPhoneNumber.parse("CH")
-                          |> case do
-                            {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
-                            _ -> nil
-                          end
-                        }}
+                        :if={{ @live_action == :show and Ecto.Changeset.fetch_field!(form.source, :type) in [:mobile, :landline] }}
+                        to={{form.source
+                        |> Ecto.Changeset.fetch_field!(:value)
+                        |> ExPhoneNumber.parse("CH")
+                        |> case do
+                          {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
+                          _ -> nil
+                        end}}
                       >
-                        {{
-                          form.source
-                          |> Ecto.Changeset.fetch_field!(:value)
-                          |> ExPhoneNumber.parse("CH")
-                          |> case do
-                            {:ok, number} -> ExPhoneNumber.format(number, :international)
-                            _ -> nil
-                          end
-                        }}
+                        {{ form.source
+                        |> Ecto.Changeset.fetch_field!(:value)
+                        |> ExPhoneNumber.parse("CH")
+                        |> case do
+                          {:ok, number} -> ExPhoneNumber.format(number, :international)
+                          _ -> nil
+                        end }}
                       </Link>
                       <Link
-                        :if={{ @live_action == :show  and Ecto.Changeset.fetch_field!(form.source, :type) in [:email] }}
+                        :if={{ @live_action == :show and Ecto.Changeset.fetch_field!(form.source, :type) in [:email] }}
                         to={{ "mailto:#{Ecto.Changeset.fetch_field!(form.source, :value)}" }}
                       >
                         {{ Ecto.Changeset.fetch_field!(form.source, :value) }}
@@ -213,7 +238,7 @@
                         :on-click="remove_contact_method"
                         phx-value-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
                       >
-                        <span class="oi oi-trash" aria-hidden="true"></span>
+                        <span class="oi oi-trash" aria-hidden="true" />
                       </button>
                     </div>
                   </InputContext>
@@ -221,7 +246,7 @@
 
                 <div class="add-button mt-2" :if={{ @live_action == :edit }}>
                   <button type="button" class="btn btn-secondary" :on-click="add_contact_method">
-                    <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+                    <span class="oi oi-plus mr-1" aria-hidden="true" />
                     {{ gettext("New contact method") }}
                   </button>
                 </div>
@@ -251,12 +276,10 @@
                     <Select
                       class="form-control"
                       opts={{ prompt: gettext("Choose profession category"), disabled: @live_action == :show }}
-                      options={{
-                        case Ecto.Changeset.get_field(@changeset, :profession_category_main) do
-                          nil -> []
-                          section -> NOGA.Code.select_options(section)
-                        end
-                      }}
+                      options={{case Ecto.Changeset.get_field(@changeset, :profession_category_main) do
+                        nil -> []
+                        section -> NOGA.Code.select_options(section)
+                      end}}
                     />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
@@ -275,14 +298,21 @@
                         </Field>
 
                         <Inputs for={{ :address }}>
-                          <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id={{ {Ecto.Changeset.fetch_field!(form.source, :uuid), :address} }} />
+                          <HygeiaWeb.AddressForm
+                            disabled={{ @live_action == :show }}
+                            id={{ {Ecto.Changeset.fetch_field!(form.source, :uuid), :address} }}
+                          />
                         </Inputs>
 
                         <div class="row">
                           <div class="col">
                             <Field name={{ :supervisor_name }} class="form-group">
                               <HygeiaWeb.FieldLabel />
-                              <TextInput class="form-control" field={{ :supervisor_name }} opts={{ disabled: @live_action == :show }} />
+                              <TextInput
+                                class="form-control"
+                                field={{ :supervisor_name }}
+                                opts={{ disabled: @live_action == :show }}
+                              />
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                           </div>
@@ -296,26 +326,23 @@
                                 :if={{ @live_action == :edit }}
                               />
                               <Link
-                                :if={{ @live_action == :show and not(Ecto.Changeset.fetch_field!(form.source, :supervisor_phone) in ["", nil]) }}
-                                to={{
-                                  form.source
-                                  |> Ecto.Changeset.fetch_field!(:supervisor_phone)
-                                  |> ExPhoneNumber.parse("CH")
-                                  |> case do
-                                    {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
-                                    _ -> nil
-                                  end
-                                }}
+                                :if={{@live_action == :show and
+                                  not (Ecto.Changeset.fetch_field!(form.source, :supervisor_phone) in ["", nil])}}
+                                to={{form.source
+                                |> Ecto.Changeset.fetch_field!(:supervisor_phone)
+                                |> ExPhoneNumber.parse("CH")
+                                |> case do
+                                  {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
+                                  _ -> nil
+                                end}}
                               >
-                                {{
-                                  form.source
-                                  |> Ecto.Changeset.fetch_field!(:supervisor_phone)
-                                  |> ExPhoneNumber.parse("CH")
-                                  |> case do
-                                    {:ok, number} -> ExPhoneNumber.format(number, :international)
-                                    _ -> nil
-                                  end
-                                }}
+                                {{ form.source
+                                |> Ecto.Changeset.fetch_field!(:supervisor_phone)
+                                |> ExPhoneNumber.parse("CH")
+                                |> case do
+                                  {:ok, number} -> ExPhoneNumber.format(number, :international)
+                                  _ -> nil
+                                end }}
                               </Link>
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
@@ -329,7 +356,7 @@
                             :on-click="remove_employer"
                             phx-value-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
                           >
-                            <span class="oi oi-trash" aria-hidden="true"></span>
+                            <span class="oi oi-trash" aria-hidden="true" />
                           </button>
                         </div>
                       </div>
@@ -338,8 +365,13 @@
                 </Inputs>
               </div>
 
-              <button :if={{ @live_action == :edit }} type="button" class="btn btn-secondary" :on-click="add_employer">
-                <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+              <button
+                :if={{ @live_action == :edit }}
+                type="button"
+                class="btn btn-secondary"
+                :on-click="add_employer"
+              >
+                <span class="oi oi-plus mr-1" aria-hidden="true" />
                 {{ gettext("New employer / employment") }}
               </button>
             </div>
@@ -353,41 +385,35 @@
                 <InputContext assigns={{ assigns }} :let={{ form: form }}>
                   <Field name={{ :done }} class="form-group">
                     <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                      <label
-                        class={{
-                          "btn",
-                          "btn-sm",
-                          "btn-secondary",
-                          disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != nil,
-                          active: Ecto.Changeset.get_field(form.source, :done) == nil
-                        }}
-                      >
+                      <label class={{
+                        "btn",
+                        "btn-sm",
+                        "btn-secondary",
+                        disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != nil,
+                        active: Ecto.Changeset.get_field(form.source, :done) == nil
+                      }}>
                         <RadioButton value={{ nil }} opts={{ disabled: @live_action == :show }} />
                         {{ pgettext("vaccination_done", "Unknown") }}
                       </label>
-                      
-                      <label
-                        class={{
-                          "btn",
-                          "btn-sm",
-                          "btn-secondary",
-                          disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != true,
-                          active: Ecto.Changeset.get_field(form.source, :done) == true
-                        }}
-                      >
-                        <RadioButton value={{ true }} opts={{ disabled: @live_action == :show }} />
+
+                      <label class={{
+                        "btn",
+                        "btn-sm",
+                        "btn-secondary",
+                        disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != true,
+                        active: Ecto.Changeset.get_field(form.source, :done) == true
+                      }}>
+                        <RadioButton value opts={{ disabled: @live_action == :show }} />
                         {{ pgettext("vaccination_done", "Done") }}
                       </label>
-                      <label
-                        class={{
-                          "btn",
-                          "btn-sm",
-                          "btn-secondary",
-                          disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != false,
-                          active: Ecto.Changeset.get_field(form.source, :done) == false
-                        }}
-                      >
-                        <RadioButton value={{ false }} opts={{ disabled: @live_action == :show }} />
+                      <label class={{
+                        "btn",
+                        "btn-sm",
+                        "btn-secondary",
+                        disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != false,
+                        active: Ecto.Changeset.get_field(form.source, :done) == false
+                      }}>
+                        <RadioButton value=false opts={{ disabled: @live_action == :show }} />
                         {{ pgettext("vaccination_done", "Not Done") }}
                       </label>
                     </div>
@@ -397,22 +423,27 @@
                   <div class="vaccination-grid" :if={{ Ecto.Changeset.get_field(form.source, :done) }}>
                     <h6><HygeiaWeb.FieldLabel field={{ :name }} /></h6>
                     <h6><HygeiaWeb.FieldLabel field={{ :jab_dates }} /></h6>
-                    
+
                     <Field name={{ :name }} class="form-group">
                       <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                     <Field name={{ :jab_dates }} class="form-group">
-                      <div class="d-flex mb-2" :for={{ {date, index} <- Enum.with_index(Ecto.Changeset.get_field(form.source, :jab_dates, [nil]) || [nil]) }}>
+                      <div
+                        class="d-flex mb-2"
+                        :for={{{date, index} <-
+                          Enum.with_index(Ecto.Changeset.get_field(form.source, :jab_dates, [nil]) || [nil])}}
+                      >
                         <DateInput
                           class="form-control"
                           opts={{
                             disabled: @live_action == :show,
                             name: input_name(form, :jab_dates) <> "[]",
-                            value: case date do
-                              nil -> nil
-                              date -> Date.to_iso8601(date)
-                            end
+                            value:
+                              case date do
+                                nil -> nil
+                                date -> Date.to_iso8601(date)
+                              end
                           }}
                         />
                         <button
@@ -422,17 +453,13 @@
                           :on-click="remove_vaccination_jab_date"
                           phx-value-index={{ index }}
                         >
-                          <span class="oi oi-trash" aria-hidden="true"></span>
+                          <span class="oi oi-trash" aria-hidden="true" />
                         </button>
                       </div>
                       <ErrorTag class="d-block invalid-feedback" />
                       <div :if={{ @live_action == :edit }}>
-                        <button
-                          type="button"
-                          class="btn btn-secondary"
-                          :on-click="add_vaccination_jab_date"
-                        >
-                          <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+                        <button type="button" class="btn btn-secondary" :on-click="add_vaccination_jab_date">
+                          <span class="oi oi-plus mr-1" aria-hidden="true" />
                           {{ gettext("New date") }}
                         </button>
                       </div>
@@ -446,11 +473,20 @@
 
         <div class="mt-4" :if={{ @live_action == :edit }}>
           <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
-            <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+            <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
             {{ gettext("Save") }}
           </button>
-          <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
-            <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+          <button
+            :on-click="reset"
+            class="btn btn-warning"
+            type="button"
+            data-confirm={{if @changeset.changes != %{} do
+              gettext("Do you really want to discard your changes?")
+            else
+              nil
+            end}}
+          >
+            <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
             {{ gettext("Discard") }}
           </button>
         </div>
@@ -461,14 +497,14 @@
           to={{ Routes.person_base_data_path(@socket, :edit, @person) }}
         >
           <button class="btn btn-primary mb-4" id="person-edit">
-            <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+            <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
             {{ gettext("Edit") }}
           </button>
         </LivePatch>
       </HygeiaWeb.Lock>
     </Form>
 
-    <hr :if={{ @person.positions != [] }} class="my-5">
+    <hr :if={{ @person.positions != [] }} class="my-5" />
     <div :if={{ @person.positions != [] }} class="hy-card-grid-2-cols">
       <div class="card">
         <div class="card-body">

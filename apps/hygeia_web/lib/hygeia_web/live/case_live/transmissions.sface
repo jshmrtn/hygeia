@@ -11,22 +11,22 @@
           <h3>{{ gettext("Received") }}</h3>
           <div :if={{ authorized?(Transmission, :create, auth, tenant: :any) }}>
             <LiveRedirect
-              to={{ Routes.transmission_create_path(
+              to={{Routes.transmission_create_path(
                 @socket,
                 :create,
                 recipient_internal: true,
                 recipient_case_uuid: @case.uuid
-              ) }}
+              )}}
               class="btn btn-primary"
             >
-              <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+              <span class="oi oi-plus mr-1" aria-hidden="true" />
               {{ gettext("New Transmission") }}
             </LiveRedirect>
           </div>
         </div>
         <HygeiaWeb.CaseLive.TransmissionTable
           transmissions={{ @case.received_transmissions }}
-          show_recipient={{ false }}
+          show_recipient=false
           id="received_transmissions"
         />
 
@@ -37,37 +37,37 @@
           <div :if={{ authorized?(Case, :create, auth, tenant: :any) }}>
             <Context get={{ HygeiaWeb, uri: uri }}>
               <LiveRedirect
-                to={{ Routes.case_create_possible_index_path(
+                to={{Routes.case_create_possible_index_path(
                   @socket,
                   :create,
                   propagator_internal: true,
                   propagator_case_uuid: @case.uuid,
                   default_tenant_uuid: @case.tenant_uuid,
                   return_to: URI.parse(uri).path
-                ) }}
+                )}}
                 class="btn btn-primary mr-1"
               >
-                <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+                <span class="oi oi-plus mr-1" aria-hidden="true" />
                 {{ gettext("New Possible Index") }}
               </LiveRedirect>
             </Context>
             <LiveRedirect
-              to={{ Routes.transmission_create_path(
+              to={{Routes.transmission_create_path(
                 @socket,
                 :create,
                 propagator_internal: true,
                 propagator_case_uuid: @case.uuid
-              ) }}
+              )}}
               class="btn btn-primary"
             >
-              <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+              <span class="oi oi-plus mr-1" aria-hidden="true" />
               {{ gettext("New Transmission") }}
             </LiveRedirect>
           </div>
         </div>
         <HygeiaWeb.CaseLive.TransmissionTable
           transmissions={{ @case.propagated_transmissions }}
-          show_propagator={{ false }}
+          show_propagator=false
           id="propagated_transmissions"
         />
       </div>

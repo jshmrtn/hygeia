@@ -1,23 +1,14 @@
 <div class="component-person-header mb-4">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1
-      class="mb-4"
-      :if={{ authorized?(@tenant, :details, auth) }}
-    >
+    <h1 class="mb-4" :if={{ authorized?(@tenant, :details, auth) }}>
       {{ @display_name }}
     </h1>
-    <h1
-      class="mb-4"
-      :if={{ not authorized?(@tenant, :details, auth) }}
-    >
+    <h1 class="mb-4" :if={{ not authorized?(@tenant, :details, auth) }}>
       {{ @tenant.uuid }}
     </h1>
 
     <ul class="nav nav-tabs">
-      <li
-        class="nav-item"
-        :if={{ authorized?(@tenant, :details, auth) }}
-      >
+      <li class="nav-item" :if={{ authorized?(@tenant, :details, auth) }}>
         <UriActiveContext
           to={{ Routes.tenant_show_path(@socket, :show, @tenant) }}
           :let={{ to: to, active: active }}
@@ -27,10 +18,7 @@
           </LiveRedirect>
         </UriActiveContext>
       </li>
-      <li
-        class="nav-item"
-        :if={{ authorized?(@tenant, :export_data, auth) }}
-      >
+      <li class="nav-item" :if={{ authorized?(@tenant, :export_data, auth) }}>
         <UriActiveContext
           to={{ Routes.tenant_export_path(@socket, :export, @tenant) }}
           :let={{ to: to, active: active }}
@@ -58,7 +46,7 @@
           to={{ Routes.version_show_path(@socket, :show, "Tenant", @tenant) }}
           :let={{ to: to, active: active }}
         >
-          <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active"}}">
+          <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active" }}">
             {{ gettext("History") }}
           </LiveRedirect>
         </UriActiveContext>

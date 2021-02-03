@@ -1,7 +1,7 @@
 <Form
-  for={{ @changeset }} 
-  change="validate" 
-  submit="save" 
+  for={{ @changeset }}
+  change="validate"
+  submit="save"
   opts={{ autocomplete: "off", id: "system_message-form", class: "container" }}
 >
   <h1 class="mb-3">
@@ -19,16 +19,24 @@
         <div>
           {{ gettext("Preview") }}
           {{ raw(Earmark.as_html!(get_text(@changeset))) }}
-         </div>
+        </div>
 
         <Field name={{ :start_date }} class="form-group">
           <HygeiaWeb.FieldLabel>{{ "Start Date" }}</HygeiaWeb.FieldLabel>
-          <DateInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :start_date }}/>
+          <DateInput
+            opts={{ disabled: @live_action == :show }}
+            class="form-control"
+            field={{ :start_date }}
+          />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <Field name={{ :end_date }} class="form-group">
           <HygeiaWeb.FieldLabel>{{ "End Date" }}</HygeiaWeb.FieldLabel>
-          <DateInput opts={{ disabled: @live_action == :show }} class="form-control" field={{ :end_date }}/>
+          <DateInput
+            opts={{ disabled: @live_action == :show }}
+            class="form-control"
+            field={{ :end_date }}
+          />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
 
@@ -65,7 +73,7 @@
                 type="checkbox"
                 name={{ input_name(form, :related_tenants) <> "[]" }}
                 disabled={{ @live_action == :show }}
-                checked={{ key in (Enum.map(Ecto.Changeset.get_field(form.source, :related_tenants, []), &(&1.uuid))) }}
+                checked={{ key in Enum.map(Ecto.Changeset.get_field(form.source, :related_tenants, []), & &1.uuid) }}
                 value={{ key }}
               />
               {{ name }}
@@ -73,7 +81,6 @@
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
         </InputContext>
-
       </div>
     </div>
   </div>
@@ -87,4 +94,3 @@
     {{ gettext("Save") }}
   </button>
 </Form>
- 

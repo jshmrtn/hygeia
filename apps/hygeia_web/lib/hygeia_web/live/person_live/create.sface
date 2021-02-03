@@ -1,34 +1,37 @@
 <Form
-  for={{ @changeset }} 
-  change="validate" 
-  submit="save" 
+  for={{ @changeset }}
+  change="validate"
+  submit="save"
   opts={{ autocomplete: "off", id: "person-form", class: "container" }}
 >
   <h1 class="mb-4">{{ gettext("New person") }}</h1>
 
   <div
-    :for={{
-      %Person{first_name: first_name, last_name: last_name} = person <- @changeset
-        |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-        |> Enum.take(5)
-        |> load_people_by_id
-    }}
+    :for={{%Person{first_name: first_name, last_name: last_name} = person <-
+      @changeset
+      |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+      |> Enum.take(5)
+      |> load_people_by_id}}
     class="alert alert-warning"
   >
-    {{ 
-      "This person is possibly a duplicate of %{name_link}, please check."
-      |> gettext(
-        name_link: "#{first_name} #{last_name}"
-          |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
-          |> safe_to_string
-      )
-      |> raw
-    }}
+    {{ "This person is possibly a duplicate of %{name_link}, please check."
+    |> gettext(
+      name_link:
+        "#{first_name} #{last_name}"
+        |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
+        |> safe_to_string
+    )
+    |> raw }}
   </div>
 
   <Field name={{ :tenant_uuid }} class="form-group">
     <HygeiaWeb.FieldLabel />
-    <Select class="form-control" opts={{ prompt: "Select tenant" |> gettext }} field={{ :tenant_uuid }} options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }} />
+    <Select
+      class="form-control"
+      opts={{ prompt: "Select tenant" |> gettext }}
+      field={{ :tenant_uuid }}
+      options={{ Enum.map(@tenants, &{&1.name, &1.uuid}) }}
+    />
     <ErrorTag class="d-block invalid-feedback" />
   </Field>
 
@@ -43,7 +46,7 @@
     <div class="col">
       <Field name={{ :last_name }} class="form-group">
         <HygeiaWeb.FieldLabel />
-        <TextInput class="form-control" field={{ :last_name }}/>
+        <TextInput class="form-control" field={{ :last_name }} />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
@@ -67,19 +70,24 @@
         <tr>
           <td>
             <Field name={{ :type }}>
-              <Select class="form-control" opts={{ prompt: gettext("Choose Type") }} field={{ :type }} options={{ contact_method_options() }} />
+              <Select
+                class="form-control"
+                opts={{ prompt: gettext("Choose Type") }}
+                field={{ :type }}
+                options={{ contact_method_options() }}
+              />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
             <Field name={{ :value }}>
-              <TextInput class="form-control" field={{ :value }}/>
+              <TextInput class="form-control" field={{ :value }} />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
             <Field name={{ :comment }}>
-              <TextInput class="form-control" field={{ :comment }}/>
+              <TextInput class="form-control" field={{ :comment }} />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
@@ -88,7 +96,7 @@
     </tbody>
   </table>
   <button type="button" class="btn btn-secondary d-block mb-4" :on-click="add_contact_method">
-    <span class="oi oi-plus" aria-hidden="true"></span>
+    <span class="oi oi-plus" aria-hidden="true" />
     {{ gettext("New contact method") }}
   </button>
 
@@ -96,4 +104,3 @@
     {{ "Save" |> gettext }}
   </button>
 </Form>
- 

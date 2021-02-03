@@ -5,7 +5,6 @@
   <div class="label">{{ gettext("UUID") }}</div>
   <div class="value">{{ @source.uuid }}</div>
 
-
   <div class="label">{{ gettext("Human Readable ID") }}</div>
   <div class="value">{{ @source.human_readable_id }}</div>
 
@@ -20,9 +19,17 @@
           </span>
         </label>
       </div>
-      <div :if={{ !@disabled }} class="{{ if Ecto.Changeset.get_field(form.source, :type) != :other, do: "label" }}">
+      <div
+        :if={{ !@disabled }}
+        class="{{ if Ecto.Changeset.get_field(form.source, :type) != :other, do: "label" }}"
+      >
         <Field name={{ :type }}>
-          <Select class="form-control" opts={{ prompt: gettext("Choose Type"), disabled: @disabled }} field={{ :type }} options={{ external_reference_options() }} />
+          <Select
+            class="form-control"
+            opts={{ prompt: gettext("Choose Type"), disabled: @disabled }}
+            field={{ :type }}
+            options={{ external_reference_options() }}
+          />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
       </div>
@@ -45,15 +52,15 @@
           :on-click={{ @remove }}
           phx-value-uuid={{ Ecto.Changeset.get_field(form.source, :uuid) }}
         >
-          <span class="oi oi-trash" aria-hidden="true"></span>
+          <span class="oi oi-trash" aria-hidden="true" />
         </button>
       </div>
     </InputContext>
   </Inputs>
-    
-  <div class="add-button mt-2" :if={{ not(@disabled) }}>
+
+  <div class="add-button mt-2" :if={{ not @disabled }}>
     <button type="button" class="btn btn-secondary" :on-click={{ @add }}>
-      <span class="oi oi-plus mr-1" aria-hidden="true"></span>
+      <span class="oi oi-plus mr-1" aria-hidden="true" />
       {{ gettext("New reference") }}
     </button>
   </div>

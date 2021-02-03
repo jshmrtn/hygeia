@@ -18,14 +18,14 @@ defmodule HygeiaWeb.Sort do
         asc?: is_asc?(@params, @current_params),
         desc?: is_desc?(@params, @current_params),
         active: is_asc?(@params, @current_params) or is_desc?(@params, @current_params),
-        sort_params: (
-          if is_asc?(@params, @current_params),
-            do: Enum.map(@params, &("desc_#{&1}")),
-            else: Enum.map(@params, &("asc_#{&1}"))
-        )
+        sort_params:
+          if(is_asc?(@params, @current_params),
+            do: Enum.map(@params, &"desc_#{&1}"),
+            else: Enum.map(@params, &"asc_#{&1}")
+          )
       }} />
-      <span :if={{ is_asc?(@params, @current_params) }} class="oi oi-sort-descending"></span>
-      <span :if={{ is_desc?(@params, @current_params) }} class="oi oi-sort-ascending"></span>
+      <span :if={{ is_asc?(@params, @current_params) }} class="oi oi-sort-descending" />
+      <span :if={{ is_desc?(@params, @current_params) }} class="oi oi-sort-ascending" />
     </span>
     """
   end

@@ -1,10 +1,7 @@
 <div class="component-case-create-case">
   <h1 class="container mb-4">{{ gettext("Create Index Cases") }}</h1>
 
-  <div
-    :if={{ @loading }}
-    class="container alert alert-info"
-  >
+  <div :if={{ @loading }} class="container alert alert-info">
     <p>{{ gettext("Import is currently running.") }}</p>
 
     <div class="spinner-border" role="status">
@@ -13,27 +10,24 @@
   </div>
 
   <Form
-    :if={{ not(@loading) }}
-    for={{ @changeset }} 
-    change="validate" 
-    submit="save" 
+    :if={{ not @loading }}
+    for={{ @changeset }}
+    change="validate"
+    submit="save"
     opts={{ autocomplete: "off", id: "case-create-form", "phx-hook": "BlockNavigation" }}
   >
     <div class="container mt-5">
       <div class="row mb-2">
         <div class="col">
           <Field name={{ :default_tenant_uuid }} class="input-group">
-            <HygeiaWeb.FieldLabel
-              class="input-group-prepend mb-0"
-              :let={{ name: name }}
-            >
+            <HygeiaWeb.FieldLabel class="input-group-prepend mb-0" :let={{ name: name }}>
               <span class="input-group-text">
                 {{ name }}
               </span>
             </HygeiaWeb.FieldLabel>
-            <Select 
+            <Select
               class="form-control"
-              options={{ Enum.map(@tenants, &({&1.name, &1.uuid})) }}
+              options={{ Enum.map(@tenants, &{&1.name, &1.uuid}) }}
               opts={{ prompt: gettext("Select Tenant") }}
             />
             <ErrorTag class="d-block invalid-feedback" />
@@ -43,17 +37,14 @@
           <HiddenInput field={{ :default_supervisor_uuid }} />
 
           <Field name={{ :default_supervisor_uuid }} class="input-group">
-            <HygeiaWeb.FieldLabel
-              class="input-group-prepend mb-0"
-              :let={{ name: name }}
-            >
+            <HygeiaWeb.FieldLabel class="input-group-prepend mb-0" :let={{ name: name }}>
               <span class="input-group-text">
                 {{ name }}
               </span>
             </HygeiaWeb.FieldLabel>
-            <Select 
+            <Select
               class="form-control"
-              options={{ Enum.map(@supervisor_users, &({&1.display_name, &1.uuid})) }}
+              options={{ Enum.map(@supervisor_users, &{&1.display_name, &1.uuid}) }}
               opts={{ prompt: gettext("Default Supervisor") }}
             />
             <ErrorTag class="d-block invalid-feedback" />
@@ -65,17 +56,14 @@
           <HiddenInput field={{ :default_tracer_uuid }} />
 
           <Field name={{ :default_tracer_uuid }} class="input-group">
-            <HygeiaWeb.FieldLabel
-              class="input-group-prepend mb-0"
-              :let={{ name: name }}
-            >
+            <HygeiaWeb.FieldLabel class="input-group-prepend mb-0" :let={{ name: name }}>
               <span class="input-group-text">
                 {{ name }}
               </span>
             </HygeiaWeb.FieldLabel>
-            <Select 
+            <Select
               class="form-control"
-              options={{ Enum.map(@tracer_users, &({&1.display_name, &1.uuid})) }}
+              options={{ Enum.map(@tracer_users, &{&1.display_name, &1.uuid}) }}
               opts={{ prompt: gettext("Default Tracer") }}
             />
             <ErrorTag class="d-block invalid-feedback" />
@@ -152,13 +140,21 @@
               </td>
               <td>
                 <Field class="fill-cell" name={{ :test_kind }}>
-                  <Select class="form-control" opts={{ prompt: gettext("Choose test kind") }} options={{ test_kinds() }} />
+                  <Select
+                    class="form-control"
+                    opts={{ prompt: gettext("Choose test kind") }}
+                    options={{ test_kinds() }}
+                  />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </td>
               <td class="table-col-border">
                 <Field class="fill-cell" name={{ :result }}>
-                  <Select class="form-control" opts={{ prompt: gettext("Choose test result") }} options={{ test_results() }} />
+                  <Select
+                    class="form-control"
+                    opts={{ prompt: gettext("Choose test result") }}
+                    options={{ test_results() }}
+                  />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </td>
@@ -196,15 +192,17 @@
     </div>
 
     <div class="container">
-      <button class="btn btn-primary mt-5" type="submit" phx-disable-with={{ gettext("Saving...") }} disabled={{ not @changeset.valid? }}>
+      <button
+        class="btn btn-primary mt-5"
+        type="submit"
+        phx-disable-with={{ gettext("Saving...") }}
+        disabled={{ not @changeset.valid? }}
+      >
         {{ gettext("Save") }}
       </button>
     </div>
   </Form>
-  <div
-    class="container mt-5"
-    :if={{ not(@loading) }}
-  >
+  <div class="container mt-5" :if={{ not @loading }}>
     <HygeiaWeb.CaseLive.CSVImport
       id="csv-import"
       mapping={{ get_csv_key_mapping() }}

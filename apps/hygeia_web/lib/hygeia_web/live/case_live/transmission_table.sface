@@ -18,7 +18,7 @@
           <th>
             {{ schema_field_name(:type, Transmission.InfectionPlace) }}
           </th>
-          <th></th>
+          <th />
         </tr>
       </thead>
       <tbody>
@@ -28,36 +28,37 @@
               <em :if={{ is_nil(transmission.recipient) }}>
                 {{ gettext("deleted") }}
               </em>
-              <div :if={{ not(is_nil(transmission.recipient)) }}>
+              <div :if={{ not is_nil(transmission.recipient) }}>
                 <Link
                   to={{ Routes.person_base_data_path(@socket, :show, transmission.recipient) }}
                   :if={{ authorized?(transmission.recipient, :details, auth) }}
                 >
-                  {{ transmission.recipient.first_name }} {{ transmission.recipient.last_name }}
+                  {{ transmission.recipient.first_name }}
+                  {{ transmission.recipient.last_name }}
                 </Link>
-                <span
-                  :if={{ not authorized?(transmission.recipient, :details, auth) }}
-                >
-                  {{ transmission.recipient.tenant.short_name }} / {{ transmission.recipient.human_readable_id }}
+                <span :if={{ not authorized?(transmission.recipient, :details, auth) }}>
+                  {{ transmission.recipient.tenant.short_name }}
+                  /
+                  {{ transmission.recipient.human_readable_id }}
                 </span>
               </div>
               <span class="mx-2">|</span>
               <em :if={{ is_nil(transmission.recipient_case) }}>
                 {{ gettext("deleted") }}
               </em>
-              <div :if={{ not(is_nil(transmission.recipient_case)) }}>
+              <div :if={{ not is_nil(transmission.recipient_case) }}>
                 <Link
                   class="d-flex align-items-center"
                   to={{ Routes.case_base_data_path(@socket, :show, transmission.recipient_case) }}
                   :if={{ authorized?(transmission.recipient_case, :details, auth) }}
                 >
-                  {{case_display_type(transmission.recipient_case) }}
+                  {{ case_display_type(transmission.recipient_case) }}
                   <small class="ml-1">({{ case_display_date(transmission.recipient_case) }})</small>
                 </Link>
-                <span
-                  :if={{ not authorized?(transmission.recipient_case, :details, auth) }}
-                >
-                  {{ transmission.recipient_case.tenant.short_name }} / {{ transmission.recipient_case.human_readable_id }}
+                <span :if={{ not authorized?(transmission.recipient_case, :details, auth) }}>
+                  {{ transmission.recipient_case.tenant.short_name }}
+                  /
+                  {{ transmission.recipient_case.human_readable_id }}
                 </span>
               </div>
             </div>
@@ -70,36 +71,37 @@
               <em :if={{ is_nil(transmission.propagator) }}>
                 {{ gettext("deleted") }}
               </em>
-              <div :if={{ not(is_nil(transmission.propagator)) }}>
+              <div :if={{ not is_nil(transmission.propagator) }}>
                 <Link
                   to={{ Routes.person_base_data_path(@socket, :show, transmission.propagator) }}
                   :if={{ authorized?(transmission.propagator, :details, auth) }}
                 >
-                  {{ transmission.propagator.first_name }} {{ transmission.propagator.last_name }}
+                  {{ transmission.propagator.first_name }}
+                  {{ transmission.propagator.last_name }}
                 </Link>
-                <span
-                  :if={{ not authorized?(transmission.propagator, :details, auth) }}
-                >
-                  {{ transmission.propagator.tenant.short_name }} / {{ transmission.propagator.human_readable_id }}
+                <span :if={{ not authorized?(transmission.propagator, :details, auth) }}>
+                  {{ transmission.propagator.tenant.short_name }}
+                  /
+                  {{ transmission.propagator.human_readable_id }}
                 </span>
               </div>
               <span class="mx-2">|</span>
               <em :if={{ is_nil(transmission.propagator_case) }}>
                 {{ gettext("deleted") }}
               </em>
-              <div :if={{ not(is_nil(transmission.propagator_case)) }}>
+              <div :if={{ not is_nil(transmission.propagator_case) }}>
                 <Link
                   class="d-flex align-items-center"
                   to={{ Routes.case_base_data_path(@socket, :show, transmission.propagator_case) }}
                   :if={{ authorized?(transmission.propagator_case, :details, auth) }}
                 >
-                  {{case_display_type(transmission.propagator_case) }}
+                  {{ case_display_type(transmission.propagator_case) }}
                   <small class="ml-1">({{ case_display_date(transmission.propagator_case) }})</small>
                 </Link>
-                <span
-                  :if={{ not authorized?(transmission.propagator_case, :details, auth) }}
-                >
-                  {{ transmission.propagator_case.tenant.short_name }} / {{ transmission.propagator_case.human_readable_id }}
+                <span :if={{ not authorized?(transmission.propagator_case, :details, auth) }}>
+                  {{ transmission.propagator_case.tenant.short_name }}
+                  /
+                  {{ transmission.propagator_case.human_readable_id }}
                 </span>
               </div>
             </div>
@@ -121,13 +123,16 @@
             end }}
           </td>
           <td>
-            {{
-              case transmission.infection_place.type do
-                nil -> nil
-                :other -> "#{translate_infection_place_type(:other)}: #{transmission.infection_place.type_other}"
-                type -> translate_infection_place_type(type)
-              end
-            }}
+            {{ case transmission.infection_place.type do
+              nil ->
+                nil
+            
+              :other ->
+                "#{translate_infection_place_type(:other)}: #{transmission.infection_place.type_other}"
+            
+              type ->
+                translate_infection_place_type(type)
+            end }}
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">
@@ -142,11 +147,11 @@
                 :if={{ authorized?(transmission, :update, auth) }}
               >
                 <button class="ml-1 btn btn-sm btn-secondary">
-                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
                 </button>
               </LivePatch>
-              <Link 
-                to="#" 
+              <Link
+                to="#"
                 click="delete"
                 opts={{
                   title: gettext("Delete"),
@@ -157,7 +162,7 @@
                 :if={{ authorized?(transmission, :delete, auth) }}
               >
                 <button class="ml-1 btn btn-sm btn-danger">
-                  <span class="oi oi-trash" aria-hidden="true"></span>
+                  <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>
             </div>

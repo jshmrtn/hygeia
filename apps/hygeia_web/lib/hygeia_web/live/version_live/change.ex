@@ -35,15 +35,13 @@ defmodule HygeiaWeb.VersionLive.Change do
         <span :if={{ not is_complex?(value) }}>
           <strong class="field-name">{{ field_name }}</strong>
           <LiveRedirect
-            :if={{ is_foregin_key?(schema, field_key) and not(is_nil(value)) }}
-            to={{
-              Routes.version_show_path(
-                @socket,
-                :show,
-                schema |> get_field_relation_target_schema(field_key) |> module_to_item_type(),
-                value
-              )
-            }}
+            :if={{ is_foregin_key?(schema, field_key) and not is_nil(value) }}
+            to={{Routes.version_show_path(
+              @socket,
+              :show,
+              schema |> get_field_relation_target_schema(field_key) |> module_to_item_type(),
+              value
+            )}}
           >
             {{ render_tree(value, field_schema, assigns) }}
           </LiveRedirect>
@@ -58,14 +56,14 @@ defmodule HygeiaWeb.VersionLive.Change do
 
   defp render_tree(nil, _schema, assigns) do
     ~H"""
-    <span class="nil"></span>
+    <span class="nil" />
     """
   end
 
   # credo:disable-for-next-line Credo.Check.Consistency.UnusedVariableNames
   defp render_tree([], _schema, assigns) do
     ~H"""
-    <span class="empty-list"></span>
+    <span class="empty-list" />
     """
   end
 

@@ -140,7 +140,9 @@ defmodule HygeiaWeb.VersionLive.Show do
     ~H"""
     <div class="component-versioning container">
       <h1>
-        {{ module_translation(@schema) }} / {{ @id }}
+        {{ module_translation(@schema) }}
+        /
+        {{ @id }}
       </h1>
       {{ render_table(assigns) }}
     </div>

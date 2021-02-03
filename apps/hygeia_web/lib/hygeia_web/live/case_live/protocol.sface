@@ -27,7 +27,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr :for={{ {uuid, inserted_at, entry, version} <- Enum.reverse(@protocol_entries) }} id={{ "protocol_entry_#{uuid}" }}>
+          <tr
+            :for={{ {uuid, inserted_at, entry, version} <- Enum.reverse(@protocol_entries) }}
+            id={{ "protocol_entry_#{uuid}" }}
+          >
             <td>{{ module_translation(entry.__struct__) }}</td>
             <td>
               <time
@@ -73,7 +76,7 @@
                   phx-update="ignore"
                 >
                   <summary class="text-primary">
-                    <b>{{ schema_field_name(:body, Hygeia.CommunicationContext.Email) }}</b><br>
+                    <b>{{ schema_field_name(:body, Hygeia.CommunicationContext.Email) }}</b><br />
                   </summary>
                   <div class="preserve-linebreaks">{{ message.body }}</div>
                 </details>

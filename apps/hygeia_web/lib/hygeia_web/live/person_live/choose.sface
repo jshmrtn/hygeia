@@ -3,34 +3,37 @@
     <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
       <HiddenInput />
 
-      <div :if={{ not(Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""]) }}>
+      <div :if={{ not (Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""]) }}>
         <Context
           put={{
-            person: form.source
-            |> Phoenix.HTML.FormData.input_value(form, field)
-            |> load_person()
+            person:
+              form.source
+              |> Phoenix.HTML.FormData.input_value(form, field)
+              |> load_person()
           }}
           get={{ person: person }}
         >
-
           <div class={{ "card" <> if @small, do: " card-small", else: "" }}>
             <div class="card-body py-2 px-3">
               <div class="d-flex justify-content-between align-items-center">
                 <div :if={{ authorized?(person, :details, auth) }}>
-                  {{ person.first_name }} {{ person.last_name }}
+                  {{ person.first_name }}
+                  {{ person.last_name }}
                   <small :if={{ !@small }} class="d-block text-muted">{{ format_address(person.address) }}</small>
                 </div>
                 <div :if={{ not authorized?(person, :details, auth) }}>
-                  {{ person.tenant.short_name }} / {{ person.human_readable_id }}
+                  {{ person.tenant.short_name }}
+                  /
+                  {{ person.human_readable_id }}
                 </div>
                 <button
-                  :if={{ not(@disabled) }}
+                  :if={{ not @disabled }}
                   class={{ "btn btn-danger" <> if @small, do: " btn-sm", else: "" }}
                   :on-click={{ @change }}
                   type="button"
                   phx-value-from-uuid={{ person.uuid }}
                 >
-                  <span class="oi oi-trash" aria-hidden="true"></span>
+                  <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -38,7 +41,7 @@
         </Context>
       </div>
 
-      <div :if={{ Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""] and not(@disabled) }}>
+      <div :if={{ Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""] and not @disabled }}>
         <button class="btn btn-secondary" :on-click="open_modal" type="button">
           {{ gettext("Choose person") }}
         </button>
@@ -52,10 +55,16 @@
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">
-                <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+                <span class="oi oi-magnifying-glass" aria-hidden="true" />
               </span>
             </div>
-            <input class="form-control" type="search" value={{ @query }} :on-keyup="query" placeholder={{ gettext("Search") }} />
+            <input
+              class="form-control"
+              type="search"
+              value={{ @query }}
+              :on-keyup="query"
+              placeholder={{ gettext("Search") }}
+            />
           </div>
 
           <div>
@@ -69,7 +78,8 @@
               <div class="card-body py-2 px-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
-                    {{ person.first_name }} {{ person.last_name }}
+                    {{ person.first_name }}
+                    {{ person.last_name }}
                     <small class="d-block text-muted">{{ format_address(person.address) }}</small>
                   </div>
                   <button class="btn btn-primary" type="button">

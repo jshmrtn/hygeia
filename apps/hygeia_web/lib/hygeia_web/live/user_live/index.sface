@@ -17,14 +17,11 @@
             {{ schema_field_name(:roles, User) }}
           </th>
 
-          <th></th>
+          <th />
         </tr>
       </thead>
       <tbody id="users">
-        <tr
-          :for={{ user <- @users  }}
-          id="user-{{ user.uuid }}"
-        >
+        <tr :for={{ user <- @users }} id="user-{{ user.uuid }}">
           <td>
             {{ user.display_name }}
           </td>
@@ -34,7 +31,7 @@
           <td>
             <span :for={{ role <- user.grants |> Enum.map(& &1.role) |> Enum.uniq() |> Enum.sort() }}>
               <span class="badge badge-secondary">
-              {{ role }}
+                {{ role }}
               </span>
             </span>
           </td>

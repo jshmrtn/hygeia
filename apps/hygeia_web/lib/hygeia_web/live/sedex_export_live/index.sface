@@ -13,16 +13,11 @@
       </tr>
     </thead>
     <tbody id="sedex-exports">
-      <tr
-        :for={{ sedex_export <- @sedex_exports  }}
-        id="sedex-export-{{ sedex_export.uuid }}"
-      >
+      <tr :for={{ sedex_export <- @sedex_exports }} id="sedex-export-{{ sedex_export.uuid }}">
         <td>
-          {{
-            sedex_export.scheduling_date
-            |> DateTime.from_naive!("Etc/UTC")
-            |> HygeiaCldr.DateTime.to_string!()
-          }}
+          {{ sedex_export.scheduling_date
+          |> DateTime.from_naive!("Etc/UTC")
+          |> HygeiaCldr.DateTime.to_string!() }}
         </td>
         <td>
           {{ sedex_export.status }}
@@ -31,9 +26,16 @@
     </tbody>
   </table>
 
-  <HygeiaWeb.Pagination pagination={{ @pagination }} :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }} id="pagination">
-      <LiveRedirect class="page-link" to={{ Routes.sedex_export_index_path(@socket, :index, @tenant, cursor_direction, cursor) }}>
-        {{ text }}
-      </LiveRedirect>
+  <HygeiaWeb.Pagination
+    pagination={{ @pagination }}
+    :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }}
+    id="pagination"
+  >
+    <LiveRedirect
+      class="page-link"
+      to={{ Routes.sedex_export_index_path(@socket, :index, @tenant, cursor_direction, cursor) }}
+    >
+      {{ text }}
+    </LiveRedirect>
   </HygeiaWeb.Pagination>
 </div>

@@ -2,10 +2,10 @@
   <Context get={{ HygeiaWeb, auth: auth }}>
     <HygeiaWeb.TransmissionLive.Header transmission={{ @transmission }} id="header" />
 
-    <Form 
-      for={{ @changeset }} 
-      change="validate" 
-      submit="save" 
+    <Form
+      for={{ @changeset }}
+      change="validate"
+      submit="save"
       opts={{ autocomplete: "off", id: "transmission-form", "phx-hook": "BlockNavigation" }}
     >
       <HygeiaWeb.Lock
@@ -21,13 +21,13 @@
                 to={{ Routes.transmission_show_path(@socket, :edit, @transmission) }}
               >
                 <button class="btn btn-primary mb-3" id="transmission-edit">
-                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
                   {{ gettext("Edit") }}
                 </button>
               </LivePatch>
-              <Link 
-                to="#" 
-                click="delete" 
+              <Link
+                to="#"
+                click="delete"
                 opts={{
                   title: gettext("Delete"),
                   data: [confirm: gettext("Are you sure?")]
@@ -35,7 +35,7 @@
                 :if={{ authorized?(@transmission, :delete, auth) }}
               >
                 <button class="btn btn-danger mb-3">
-                  <span class="oi oi-trash" aria-hidden="true"></span>
+                  <span class="oi oi-trash" aria-hidden="true" />
                   {{ gettext("Delete") }}
                 </button>
               </Link>
@@ -44,11 +44,20 @@
             <div :if={{ @live_action == :edit }}>
               <div class="mb-4" :if={{ @live_action == :edit }}>
                 <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
-                  <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+                  <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
                   {{ gettext("Save") }}
                 </button>
-                <button :on-click="reset" class="btn btn-warning" type="button" data-confirm={{ if @changeset.changes != %{} do gettext("Do you really want to discard your changes?") else nil end }}>
-                  <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true"></span>
+                <button
+                  :on-click="reset"
+                  class="btn btn-warning"
+                  type="button"
+                  data-confirm={{if @changeset.changes != %{} do
+                    gettext("Do you really want to discard your changes?")
+                  else
+                    nil
+                  end}}
+                >
+                  <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
                   {{ gettext("Discard") }}
                 </button>
               </div>
@@ -65,36 +74,37 @@
                         <em :if={{ is_nil(@transmission.recipient) }}>
                           {{ gettext("deleted") }}
                         </em>
-                        <span :if={{ not(is_nil(@transmission.recipient)) }}>
+                        <span :if={{ not is_nil(@transmission.recipient) }}>
                           <Link
                             to={{ Routes.person_base_data_path(@socket, :show, @transmission.recipient) }}
                             :if={{ authorized?(@transmission.recipient, :details, auth) }}
                           >
-                            {{ @transmission.recipient.first_name }} {{ @transmission.recipient.last_name }}
+                            {{ @transmission.recipient.first_name }}
+                            {{ @transmission.recipient.last_name }}
                           </Link>
-                          <span
-                            :if={{ not authorized?(@transmission.recipient, :details, auth) }}
-                          >
-                            {{ @transmission.recipient.tenant.short_name }} / {{ @transmission.recipient.human_readable_id }}
+                          <span :if={{ not authorized?(@transmission.recipient, :details, auth) }}>
+                            {{ @transmission.recipient.tenant.short_name }}
+                            /
+                            {{ @transmission.recipient.human_readable_id }}
                           </span>
                         </span>
                         <span class="mx-2">|</span>
                         <em :if={{ is_nil(@transmission.recipient_case) }}>
                           {{ gettext("deleted") }}
                         </em>
-                        <span :if={{ not(is_nil(@transmission.recipient_case)) }}>
+                        <span :if={{ not is_nil(@transmission.recipient_case) }}>
                           <Link
                             class="d-flex align-items-center"
                             to={{ Routes.case_base_data_path(@socket, :show, @transmission.recipient_case) }}
                             :if={{ authorized?(@transmission.recipient_case, :details, auth) }}
                           >
-                            {{case_display_type(@transmission.recipient_case) }}
+                            {{ case_display_type(@transmission.recipient_case) }}
                             <small class="ml-1">({{ case_display_date(@transmission.recipient_case) }})</small>
                           </Link>
-                          <span
-                            :if={{ not authorized?(@transmission.recipient_case, :details, auth) }}
-                          >
-                            {{ @transmission.recipient_case.tenant.short_name }} / {{ @transmission.recipient_case.human_readable_id }}
+                          <span :if={{ not authorized?(@transmission.recipient_case, :details, auth) }}>
+                            {{ @transmission.recipient_case.tenant.short_name }}
+                            /
+                            {{ @transmission.recipient_case.human_readable_id }}
                           </span>
                         </span>
                       </div>
@@ -108,36 +118,37 @@
                         <em :if={{ is_nil(@transmission.propagator) }}>
                           {{ gettext("deleted") }}
                         </em>
-                        <span :if={{ not(is_nil(@transmission.propagator)) }}>
+                        <span :if={{ not is_nil(@transmission.propagator) }}>
                           <Link
                             to={{ Routes.person_base_data_path(@socket, :show, @transmission.propagator) }}
                             :if={{ authorized?(@transmission.propagator, :details, auth) }}
                           >
-                            {{ @transmission.propagator.first_name }} {{ @transmission.propagator.last_name }}
+                            {{ @transmission.propagator.first_name }}
+                            {{ @transmission.propagator.last_name }}
                           </Link>
-                          <span
-                            :if={{ not authorized?(@transmission.propagator, :details, auth) }}
-                          >
-                            {{ @transmission.propagator.tenant.short_name }} / {{ @transmission.propagator.human_readable_id }}
+                          <span :if={{ not authorized?(@transmission.propagator, :details, auth) }}>
+                            {{ @transmission.propagator.tenant.short_name }}
+                            /
+                            {{ @transmission.propagator.human_readable_id }}
                           </span>
                         </span>
                         <span class="mx-2">|</span>
                         <em :if={{ is_nil(@transmission.propagator_case) }}>
                           {{ gettext("deleted") }}
                         </em>
-                        <span :if={{ not(is_nil(@transmission.propagator_case)) }}>
+                        <span :if={{ not is_nil(@transmission.propagator_case) }}>
                           <Link
                             class="d-flex align-items-center"
                             to={{ Routes.case_base_data_path(@socket, :show, @transmission.propagator_case) }}
                             :if={{ authorized?(@transmission.propagator_case, :details, auth) }}
                           >
-                            {{case_display_type(@transmission.propagator_case) }}
+                            {{ case_display_type(@transmission.propagator_case) }}
                             <small class="ml-1">({{ case_display_date(@transmission.propagator_case) }})</small>
                           </Link>
-                          <span
-                            :if={{ not authorized?(@transmission.propagator_case, :details, auth) }}
-                          >
-                            {{ @transmission.propagator_case.tenant.short_name }} / {{ @transmission.propagator_case.human_readable_id }}
+                          <span :if={{ not authorized?(@transmission.propagator_case, :details, auth) }}>
+                            {{ @transmission.propagator_case.tenant.short_name }}
+                            /
+                            {{ @transmission.propagator_case.human_readable_id }}
                           </span>
                         </span>
                       </div>
@@ -148,10 +159,7 @@
                   </div>
                   <Field name={{ :date }} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <DateInput 
-                      class="form-control" 
-                      opts={{ disabled: @live_action == :show }}
-                    />
+                    <DateInput class="form-control" opts={{ disabled: @live_action == :show }} />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
@@ -168,7 +176,7 @@
                   </Inputs>
                 </div>
               </div>
-            </div>       
+            </div>
           </div>
         </div>
       </HygeiaWeb.Lock>

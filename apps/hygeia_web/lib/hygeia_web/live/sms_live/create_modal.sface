@@ -1,39 +1,28 @@
 <div class="component-case-sms container">
-  <HygeiaWeb.Modal
-    id={{ {@myself, :modal} }}
-    title={{ gettext("New SMS") }}
-    close={{ @close }}
-  >
+  <HygeiaWeb.Modal id={{ {@myself, :modal} }} title={{ gettext("New SMS") }} close={{ @close }}>
     <Form
       for={{ @changeset }}
       change="validate"
       submit="save"
       opts={{ autocomplete: "off", id: "sms-form", "phx-hook": "BlockNavigation" }}
     >
-      <Field
-        class="form-group"
-        name={{ :number }}
-      >
+      <Field class="form-group" name={{ :number }}>
         <HygeiaWeb.FieldLabel />
-        <Select
-          class="form-control"
-          options={{ @numbers }}
-        />
+        <Select class="form-control" options={{ @numbers }} />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
-      <Field
-        class="form-group"
-        name={{ :message }}
-      >
+      <Field class="form-group" name={{ :message }}>
         <HygeiaWeb.FieldLabel />
-        <TextArea
-          class="form-control"
-          opts={{ rows: 8 }}
-        />
+        <TextArea class="form-control" opts={{ rows: 8 }} />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
-      <button class="btn btn-primary" type="submit" phx-disable-with={{ gettext("Saving...") }} diabled={{ @changeset.valid? }}>
-        <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true"></span>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        phx-disable-with={{ gettext("Saving...") }}
+        diabled={{ @changeset.valid? }}
+      >
+        <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
         {{ gettext("Save") }}
       </button>
     </Form>

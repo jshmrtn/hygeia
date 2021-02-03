@@ -1,23 +1,14 @@
 <div class="component-person-header mb-4">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1
-      class="mb-4"
-      :if={{ authorized?(@transmission, :details, auth) }}
-    >
+    <h1 class="mb-4" :if={{ authorized?(@transmission, :details, auth) }}>
       {{ @display_name }}
     </h1>
-    <h1
-      class="mb-4"
-      :if={{ not authorized?(@transmission, :details, auth) }}
-    >
+    <h1 class="mb-4" :if={{ not authorized?(@transmission, :details, auth) }}>
       {{ @transmission.uuid }}
     </h1>
 
     <ul class="nav nav-tabs">
-      <li
-        class="nav-item"
-        :if={{ authorized?(@transmission, :details, auth) }}
-      >
+      <li class="nav-item" :if={{ authorized?(@transmission, :details, auth) }}>
         <UriActiveContext
           to={{ Routes.transmission_show_path(@socket, :show, @transmission) }}
           :let={{ to: to, active: active }}
@@ -32,7 +23,7 @@
           to={{ Routes.version_show_path(@socket, :show, "Transmission", @transmission) }}
           :let={{ to: to, active: active }}
         >
-          <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active"}}">
+          <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active" }}">
             {{ gettext("History") }}
           </LiveRedirect>
         </UriActiveContext>

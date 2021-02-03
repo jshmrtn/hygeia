@@ -34,20 +34,15 @@ defmodule HygeiaWeb.Dropdown do
         show: @dropdown_open
       }}
     >
-      <div
-        class={{ @trigger_class }}
-        :on-click="toggle_dropdown"
-      >
+      <div class={{ @trigger_class }} :on-click="toggle_dropdown">
         <slot name="trigger" />
       </div>
 
-      <div
-        class={{
-          "dropdown-menu",
-          @dropdown_class,
-          show: @dropdown_open
-        }}
-      >
+      <div class={{
+        "dropdown-menu",
+        @dropdown_class,
+        show: @dropdown_open
+      }}>
         <slot />
       </div>
     </div>

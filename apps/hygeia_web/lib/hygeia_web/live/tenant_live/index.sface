@@ -11,7 +11,7 @@
         :if={{ authorized?(Tenant, :create, auth) }}
       >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
-          <span class="oi oi-plus" aria-hidden="true"></span>
+          <span class="oi oi-plus" aria-hidden="true" />
           {{ gettext("New Tenant") }}
         </button>
       </LiveRedirect>
@@ -24,14 +24,11 @@
             {{ schema_field_name(:name, Tenant) }}
           </th>
 
-          <th></th>
+          <th />
         </tr>
       </thead>
       <tbody id="tenants">
-        <tr
-          :for={{ tenant <- @tenants  }}
-          id="tenant-{{ tenant.uuid }}"
-        >
+        <tr :for={{ tenant <- @tenants }} id="tenant-{{ tenant.uuid }}">
           <td>{{ tenant.name }}</td>
 
           <td>
@@ -47,7 +44,11 @@
                 :if={{ tenant.case_management_enabled and authorized?(tenant, :export_data, auth) }}
               >
                 <button class="ml-1 btn btn-sm btn-secondary">
-                  <span class="oi oi-data-transfer-download" title={{ gettext("Export Data") }} aria-hidden="true"></span>
+                  <span
+                    class="oi oi-data-transfer-download"
+                    title={{ gettext("Export Data") }}
+                    aria-hidden="true"
+                  />
                 </button>
               </LiveRedirect>
               <LivePatch
@@ -55,12 +56,12 @@
                 :if={{ authorized?(tenant, :update, auth) }}
               >
                 <button class="ml-1 btn btn-sm btn-secondary">
-                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true"></span>
+                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
                 </button>
               </LivePatch>
-              <Link 
-                to="#" 
-                click="delete" 
+              <Link
+                to="#"
+                click="delete"
                 opts={{
                   title: gettext("Delete"),
                   data: [confirm: gettext("Are you sure?")],
@@ -70,7 +71,7 @@
                 :if={{ authorized?(tenant, :delete, auth) }}
               >
                 <button class="ml-1 btn btn-sm btn-danger">
-                  <span class="oi oi-trash" aria-hidden="true"></span>
+                  <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>
             </div>
