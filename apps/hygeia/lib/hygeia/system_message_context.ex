@@ -142,13 +142,17 @@ defmodule Hygeia.SystemMessageContext do
 
   @spec get_active_system_messages :: [SystemMessage.t()]
   def get_active_system_messages do
-    time_now = DateTime.utc_now()
+    time_now = NaiveDateTime.utc_now()
 
     Repo.all(
       from(system_message in SystemMessage,
         where:
-          system_message.end_date > ^time_now and
-            system_message.start_date < ^time_now,
+          fragment(
+            "? BETWEEN ? AND ?",
+            ^time_now,
+            system_message.start_date,
+            system_message.end_date
+          ),
         order_by: system_message.end_date,
         preload: [:related_tenants]
       )

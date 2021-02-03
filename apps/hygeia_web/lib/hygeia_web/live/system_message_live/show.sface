@@ -67,7 +67,7 @@
           <div class="card-body">
             <h4 class="card-title">{{ gettext("System Message") }}</h4>
             <Field :if={{ @live_action == :edit }} name={{ :text }} class="form-group">
-              <HygeiaWeb.FieldLabel>{{ gettext("Text") }}</HygeiaWeb.FieldLabel>
+              <HygeiaWeb.FieldLabel />
               <TextArea class="form-control" opts={{ disabled: @live_action == :show }} rows="5" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
@@ -83,8 +83,8 @@
             <div class="row">
               <div class="col-12 col-md-6">
                 <Field name={{ :start_date }} class="form-group">
-                  <HygeiaWeb.FieldLabel>{{ "Start Date" }}</HygeiaWeb.FieldLabel>
-                  <DateInput
+                  <HygeiaWeb.FieldLabel />
+                  <DateTimeLocalInput
                     opts={{ disabled: @live_action == :show }}
                     class="form-control"
                     field={{ :start_date }}
@@ -94,8 +94,8 @@
               </div>
               <div class="col-12 col-md-6">
                 <Field name={{ :end_date }} class="form-group">
-                  <HygeiaWeb.FieldLabel>{{ "End Date" }}</HygeiaWeb.FieldLabel>
-                  <DateInput
+                  <HygeiaWeb.FieldLabel />
+                  <DateTimeLocalInput
                     opts={{ disabled: @live_action == :show }}
                     class="form-control"
                     field={{ :end_date }}
@@ -109,7 +109,7 @@
               <div class="col-12 col-md-6">
                 <InputContext assigns={{ assigns }} :let={{ form: form }}>
                   <Field name={{ :roles }}>
-                    <HygeiaWeb.FieldLabel>{{ gettext("User Roles") }}</HygeiaWeb.FieldLabel>
+                    <HygeiaWeb.FieldLabel />
                     <HygeiaWeb.FieldLabel
                       :for={{ {name, key} <- roles() }}
                       class="d-block checkbox-label"
@@ -132,7 +132,7 @@
               <div class="col-12 col-md-6">
                 <InputContext assigns={{ assigns }} :let={{ form: form }}>
                   <Field name={{ :related_tenants }}>
-                    <HygeiaWeb.FieldLabel>{{ gettext("Tenants") }}</HygeiaWeb.FieldLabel>
+                    <HygeiaWeb.FieldLabel />
                     <HygeiaWeb.FieldLabel
                       :for={{ {name, key} <- tenants() }}
                       class="d-block checkbox-label"

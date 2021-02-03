@@ -12,7 +12,7 @@
     <div class="card mb-3">
       <div class="card-body">
         <Field name={{ :text }} class="form-group">
-          <HygeiaWeb.FieldLabel>{{ gettext("Text") }}</HygeiaWeb.FieldLabel>
+          <HygeiaWeb.FieldLabel />
           <TextArea class="form-control" />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
@@ -22,8 +22,8 @@
         </div>
 
         <Field name={{ :start_date }} class="form-group">
-          <HygeiaWeb.FieldLabel>{{ "Start Date" }}</HygeiaWeb.FieldLabel>
-          <DateInput
+          <HygeiaWeb.FieldLabel />
+          <DateTimeLocalInput
             opts={{ disabled: @live_action == :show }}
             class="form-control"
             field={{ :start_date }}
@@ -31,8 +31,8 @@
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <Field name={{ :end_date }} class="form-group">
-          <HygeiaWeb.FieldLabel>{{ "End Date" }}</HygeiaWeb.FieldLabel>
-          <DateInput
+          <HygeiaWeb.FieldLabel />
+          <DateTimeLocalInput
             opts={{ disabled: @live_action == :show }}
             class="form-control"
             field={{ :end_date }}
@@ -42,7 +42,7 @@
 
         <InputContext assigns={{ assigns }} :let={{ form: form }}>
           <Field name={{ :roles }}>
-            <HygeiaWeb.FieldLabel>{{ gettext("User Roles") }}</HygeiaWeb.FieldLabel>
+            <HygeiaWeb.FieldLabel />
             <label
               :for={{ {name, key} <- roles() }}
               class="d-block checkbox-label"
@@ -63,7 +63,7 @@
 
         <InputContext assigns={{ assigns }} :let={{ form: form }}>
           <Field name={{ :related_tenants }}>
-            <HygeiaWeb.FieldLabel>{{ gettext("Tenants") }}</HygeiaWeb.FieldLabel>
+            <HygeiaWeb.FieldLabel />
             <label
               :for={{ {name, key} <- tenants() }}
               class="d-block checkbox-label"

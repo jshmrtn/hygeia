@@ -17,15 +17,15 @@ defmodule Hygeia.SystemMessageContextTest do
 
   describe "system_messages" do
     @valid_attrs %{
-      end_date: ~D[2010-04-17],
+      end_date: ~N[2010-04-17 14:00:00],
       text: "some message",
-      start_date: ~D[2010-04-17],
+      start_date: ~N[2010-04-17 10:00:00],
       roles: ["admin"]
     }
     @update_attrs %{
-      end_date: ~D[2011-05-18],
+      end_date: ~N[2011-05-18 14:00:00],
       text: "some updated message",
-      start_date: ~D[2011-05-18],
+      start_date: ~N[2011-05-18 10:00:00],
       roles: ["tracer"]
     }
     @invalid_attrs %{end_date: nil, text: nil, start_date: nil, roles: nil}
@@ -52,9 +52,9 @@ defmodule Hygeia.SystemMessageContextTest do
 
       assert_receive :refresh
 
-      assert system_message.end_date == ~D[2010-04-17]
+      assert system_message.end_date == ~N[2010-04-17 14:00:00.000000]
       assert system_message.text == "some message"
-      assert system_message.start_date == ~D[2010-04-17]
+      assert system_message.start_date == ~N[2010-04-17 10:00:00.000000]
     end
 
     test "create_system_message/1 with invalid data returns error changeset" do
@@ -72,9 +72,9 @@ defmodule Hygeia.SystemMessageContextTest do
 
       assert_receive :refresh
 
-      assert system_message.end_date == ~D[2011-05-18]
+      assert system_message.end_date == ~N[2011-05-18 14:00:00.000000]
       assert system_message.text == "some updated message"
-      assert system_message.start_date == ~D[2011-05-18]
+      assert system_message.start_date == ~N[2011-05-18 10:00:00.000000]
     end
 
     test "update_system_message/2 with invalid data returns error changeset" do

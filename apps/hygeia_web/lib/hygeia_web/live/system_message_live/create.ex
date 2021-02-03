@@ -8,7 +8,7 @@ defmodule HygeiaWeb.SystemMessageLive.Create do
   alias Hygeia.TenantContext
   alias Hygeia.UserContext.Grant.Role
   alias Surface.Components.Form
-  alias Surface.Components.Form.DateInput
+  alias Surface.Components.Form.DateTimeLocalInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
@@ -58,7 +58,10 @@ defmodule HygeiaWeb.SystemMessageLive.Create do
 
   @spec tenants :: [{name :: String.t(), uuid :: String.t()}]
   def tenants,
-    do: Enum.map(TenantContext.list_tenants(), &{&1.name, &1.uuid})
+    do:
+      TenantContext.list_tenants()
+      |> Enum.reject(&is_nil(&1.iam_domain))
+      |> Enum.map(&{&1.name, &1.uuid})
 
   @spec get_text(changeset :: Ecto.Changeset.t()) :: text :: String.t()
   def get_text(%{changes: changes}) do

@@ -7,6 +7,7 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
 
   import Ecto.Query
 
+  alias Hygeia.EctoType.LocalizedNaiveDatetime
   alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.Grant.Role
@@ -14,8 +15,8 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
   @type empty :: %__MODULE__{
           uuid: String.t() | nil,
           text: String.t() | nil,
-          start_date: Date.t() | nil,
-          end_date: Date.t() | nil,
+          start_date: LocalizedNaiveDatetime.t() | nil,
+          end_date: LocalizedNaiveDatetime.t() | nil,
           related_tenants: Ecto.Schema.many_to_many(Tenant.t()) | nil,
           roles: [Role.t()] | nil,
           inserted_at: NaiveDateTime.t() | nil,
@@ -25,8 +26,8 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
   @type t :: %__MODULE__{
           uuid: String.t(),
           text: String.t(),
-          start_date: Date.t(),
-          end_date: Date.t(),
+          start_date: LocalizedNaiveDatetime.t(),
+          end_date: LocalizedNaiveDatetime.t(),
           related_tenants: Ecto.Schema.many_to_many(Tenant.t()),
           roles: [Role.t()],
           inserted_at: NaiveDateTime.t(),
@@ -35,8 +36,8 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
 
   schema "system_messages" do
     field :text, :string
-    field :start_date, :date
-    field :end_date, :date
+    field :start_date, LocalizedNaiveDatetime
+    field :end_date, LocalizedNaiveDatetime
     field :roles, {:array, Role}
 
     many_to_many :related_tenants, Tenant,

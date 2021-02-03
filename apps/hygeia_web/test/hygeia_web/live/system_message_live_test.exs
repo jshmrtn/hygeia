@@ -11,15 +11,15 @@ defmodule HygeiaWeb.SystemMessageLiveTest do
   @moduletag log_in: [roles: [:admin]]
 
   @create_attrs %{
-    end_date: ~D[2010-04-17],
+    end_date: ~N[2010-04-17 14:00:00],
     text: "some message",
-    start_date: ~D[2010-04-17],
+    start_date: ~N[2010-04-17 10:00:00],
     roles: ["admin"]
   }
   @update_attrs %{
-    end_date: ~D[2011-05-18],
+    end_date: ~N[2011-05-18 14:00:00],
     text: "some updated message",
-    start_date: ~D[2011-05-18],
+    start_date: ~N[2011-05-18 10:00:00],
     roles: ["tracer"]
   }
   @invalid_attrs %{end_date: nil, text: nil, start_date: nil}

@@ -342,9 +342,9 @@ defmodule Hygeia.Fixtures do
   end
 
   @valid_attrs %{
-    end_date: ~D[2010-04-17],
+    end_date: ~N[2010-04-17 14:00:00],
     text: "some message",
-    start_date: ~D[2010-04-17],
+    start_date: ~N[2010-04-17 10:00:00],
     roles: ["admin"]
   }
 

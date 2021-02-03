@@ -8,7 +8,7 @@ defmodule Hygeia.SystemMessageContext.SystemMessageCache do
 
   alias Hygeia.SystemMessageContext
 
-  @default_refresh_interval_ms :timer.minutes(15)
+  @default_refresh_interval_ms :timer.minutes(1)
   @ets_table_name Module.concat(__MODULE__, Table)
   @ets_new_table_name Module.concat(__MODULE__, NewTable)
 
