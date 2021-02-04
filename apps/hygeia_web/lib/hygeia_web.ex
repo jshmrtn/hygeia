@@ -186,6 +186,8 @@ defmodule HygeiaWeb do
     unless is_nil(session["cldr_locale"]) do
       HygeiaCldr.put_locale(session["cldr_locale"])
       Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name)
+
+      Sentry.Context.set_tags_context(%{locale: session["cldr_locale"]})
     end
 
     Versioning.put_origin(:web)

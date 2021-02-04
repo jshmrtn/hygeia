@@ -6,13 +6,7 @@ defmodule HygeiaWeb.HomeController do
 
   @spec index(Plug.Conn.t(), map) :: Plug.Conn.t()
   def index(conn, _params) do
-    auth =
-      conn
-      |> get_auth
-      |> case do
-        nil -> :anonymous
-        user -> user
-      end
+    auth = get_auth(conn)
 
     cond do
       authorized?(Hygeia.CaseContext.Case, :list, auth, tenant: :any) ->

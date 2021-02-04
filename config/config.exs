@@ -56,7 +56,9 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :logger, compile_time_purge_matching: [[application: :remote_ip]]
+config :logger,
+  compile_time_purge_matching: [[application: :remote_ip]],
+  backends: [:console, Sentry.LoggerBackend]
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
@@ -98,6 +100,11 @@ config :surface, :components, [
 # AWS (Minio)
 config :ex_aws,
   json_codec: Jason
+
+config :sentry,
+  enable_source_code_context: true,
+  root_source_code_path:
+    __ENV__.file |> Path.dirname() |> Path.dirname() |> Path.join("apps/*") |> Path.wildcard()
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

@@ -21,3 +21,11 @@
     </div>
   </div>
 </div>
+<%= case Sentry.get_last_event_id_and_source() do %>
+  <% {event_id, :plug} when is_binary(event_id) -> %>
+    <div
+      id="sentry-report"
+      data-report-options="<%= Jason.encode!(%{eventId: event_id}) %>"
+    ></div>
+  <% _ -> %>
+<% end %>

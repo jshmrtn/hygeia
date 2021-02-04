@@ -21,6 +21,7 @@ import BlockNavigation from "./block-navigation.hook";
 import Chart from "./chart.hook";
 import Dropdown from "./dropdown.hook";
 import Input from "./input.hook";
+import {init as sentryInit, showReportDialog as sentryShowReportDialog, setUser as sentrySetUser } from "@sentry/browser";
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
@@ -48,3 +49,17 @@ liveSocket.connect();
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket;
+
+// Sentry Setup
+sentryInit({dsn: document.documentElement.dataset.sentryDsn});
+sentrySetUser();
+document.addEventListener('DOMContentLoaded', () => {
+  const element = document.getElementById('sentry-report');
+
+  if(!element) return;
+
+  sentryShowReportDialog({
+    user: JSON.parse(document.documentElement.dataset.sentryUser),
+    ...JSON.parse(element.dataset.reportOptions)
+  });
+}, false);

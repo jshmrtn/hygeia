@@ -14,7 +14,11 @@ defmodule HygeiaWeb.Router do
                     false
                   )
   @frame_src if(@code_reloading, do: ~w('self'), else: ~w())
-  @style_src if(@debug_errors, do: ~w('unsafe-inline'), else: ~w())
+  @sentry_style_hashes ~w('sha256-FRN1wueUR0omGyIEYxaEnuYQtc2jZ6NpVNr+9MqxDfg=')
+  @style_src if(@debug_errors,
+               do: [@sentry_style_hashes | ~w('unsafe-inline')],
+               else: [@sentry_style_hashes]
+             )
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -48,14 +52,23 @@ defmodule HygeiaWeb.Router do
         |> Map.put(:path, "")
         |> URI.to_string()
 
+      sentry_root =
+        Sentry.Config.dsn()
+        |> URI.parse()
+        |> Map.merge(%{
+          userinfo: nil,
+          path: nil
+        })
+        |> URI.to_string()
+
       directives = %{
         default_src: ~w('none'),
-        script_src: ~w(),
+        script_src: [sentry_root | ~w()],
         style_src: @style_src,
         img_src: ~w('self' data:),
         font_src: ~w('self' data:),
         # TODO: Remove when https://bugs.webkit.org/show_bug.cgi?id=201591 is fixed
-        connect_src: [ws_url | ~w('self')],
+        connect_src: [ws_url, sentry_root | ~w('self')],
         media_src: ~w('none'),
         object_src: ~w('none'),
         prefetch_src: ~w('none'),
@@ -68,7 +81,12 @@ defmodule HygeiaWeb.Router do
         sandbox:
           ~w(allow-forms allow-scripts allow-modals allow-same-origin allow-downloads allow-popups),
         base_uri: ~w('none'),
-        manifest_src: ~w('none')
+        manifest_src: ~w('none'),
+        report_uri:
+          System.get_env(
+            "SENTRY_CSP_REPORT_TO",
+            "https://sentry.joshmartin.ch/api/2/security/?sentry_key=***REMOVED***"
+          )
       }
 
       directives =

@@ -98,3 +98,8 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   * `SEDEX_FILESYSTEM_MINIO_PORT` (default `9000`) - Minio Port
   * `SEDEX_FILESYSTEM_MINIO_HOST` (default `localhost`) - Minio Host
   * `SEDEX_SENDER_ID` (default `***REMOVED***`) - Sedex Sender ID
+* Sentry
+  * `SENTRY_DSN` (default `https://***REMOVED***:***REMOVED***@sentry.joshmartin.ch/2`)
+  * `SENTRY_ENV` (default `local`)
+  * `SENTRY_VERSION` (default `RELEASE_VSN` / `dev`)
+  * `SENTRY_CSP_REPORT_TO` (default `https://sentry.joshmartin.ch/api/2/security/?sentry_key=***REMOVED***`)

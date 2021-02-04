@@ -66,6 +66,9 @@ defmodule HygeiaApi.MixProject do
       {:hygeia_health, in_umbrella: true},
       {:phoenix_live_dashboard, "~> 0.4.0"},
       {:plug_checkup, "~> 0.6"},
+      {:sentry, "~> 8.0"},
+      {:jason, "~> 1.1"},
+      {:hackney, "~> 1.8"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

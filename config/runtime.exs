@@ -153,3 +153,13 @@ config :hygeia, Hygeia.TenantContext.Tenant.Smtp,
 config :hygeia_iam,
   organisation_id: System.get_env("IAM_ORGANISATION_ID", "***REMOVED***"),
   project_id: System.get_env("IAM_PROJECT_ID", "***REMOVED***")
+
+config :sentry,
+  dsn:
+    System.get_env(
+      "SENTRY_DSN",
+      "https://***REMOVED***:***REMOVED***@sentry.joshmartin.ch/2"
+    ),
+  tags: %{version: System.get_env("SENTRY_VERSION", System.get_env("RELEASE_VSN", "dev"))},
+  environment_name: System.get_env("SENTRY_ENV", "local"),
+  included_environments: [System.get_env("SENTRY_ENV", "local")]

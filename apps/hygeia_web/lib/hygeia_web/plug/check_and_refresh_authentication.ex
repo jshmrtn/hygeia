@@ -33,7 +33,15 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
         tokens
         |> upsert_user_with_tokens(provider)
         |> case do
-          {:ok, user} ->
+          {:ok,
+           %User{uuid: uuid, email: email, display_name: display_name, iam_sub: iam_sub} = user} ->
+            Sentry.Context.set_user_context(%{
+              uuid: uuid,
+              email: email,
+              display_name: display_name,
+              iam_sub: iam_sub
+            })
+
             put_session(conn, :auth, user)
 
           {:error, _reason} ->
