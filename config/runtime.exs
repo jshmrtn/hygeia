@@ -162,4 +162,4 @@ config :sentry,
     ),
   tags: %{version: System.get_env("SENTRY_VERSION", System.get_env("RELEASE_VSN", "dev"))},
   environment_name: System.get_env("SENTRY_ENV", "local"),
-  included_environments: [System.get_env("SENTRY_ENV", "local")]
+  included_environments: [System.get_env("SENTRY_ENV")]
