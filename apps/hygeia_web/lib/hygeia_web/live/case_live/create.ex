@@ -98,8 +98,23 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   @spec fetch_tenant(field :: {key :: [atom], value :: term}, tenants :: [Tenant.t()]) ::
           {key :: [atom], value :: term}
-  def fetch_tenant({[:tenant], tenant_name}, tenants),
-    do: {[:tenant], Enum.find(tenants, &match?(%Tenant{name: ^tenant_name}, &1))}
+  def fetch_tenant({[:tenant], tenant_name}, tenants) do
+    search = String.downcase(tenant_name)
+
+    {[:tenant_uuid],
+     tenants
+     |> Enum.flat_map(fn
+       %Tenant{uuid: uuid, name: name, short_name: nil} ->
+         [{String.downcase(name), uuid}]
+
+       %Tenant{uuid: uuid, name: name, short_name: short_name} ->
+         [{String.downcase(name), uuid}, {String.downcase(short_name), uuid}]
+     end)
+     |> Enum.find_value(fn
+       {^search, uuid} -> uuid
+       _other -> false
+     end)}
+  end
 
   def fetch_tenant(field, _tenants), do: field
 
@@ -114,6 +129,13 @@ defmodule HygeiaWeb.CaseLive.Create do
        String.downcase(result) == String.downcase(gettext("negative")) -> :negative
        true -> nil
      end}
+  end
+
+  def fetch_test_result({[:clinical, :positive_result_count], count}) do
+    case Integer.parse(count) do
+      {count, ""} when count > 0 -> {[:clinical, :result], :positive}
+      _other -> {[:clinical, :result], :negative}
+    end
   end
 
   def fetch_test_result(field), do: field
@@ -149,6 +171,20 @@ defmodule HygeiaWeb.CaseLive.Create do
        String.downcase(kind) == String.downcase("serology") -> :serology
        true -> nil
      end}
+  end
+
+  def fetch_test_kind({[:clinical, :test_kind_pcr_count], count} = field) do
+    case Integer.parse(count) do
+      {count, ""} when count > 0 -> {[:clinical, :test_kind], :pcr}
+      _other -> field
+    end
+  end
+
+  def fetch_test_kind({[:clinical, :test_kind_antigen_count], count} = field) do
+    case Integer.parse(count) do
+      {count, ""} when count > 0 -> {[:clinical, :test_kind], :antigen_quick}
+      _other -> field
+    end
   end
 
   def fetch_test_kind(field), do: field
@@ -344,7 +380,37 @@ defmodule HygeiaWeb.CaseLive.Create do
       "Auftraggeber Vorname" => [:clinical, :sponsor, :name],
       "Auftraggeber Strasse" => [:clinical, :sponsor, :address, :address],
       "Auftraggeber PLZ" => [:clinical, :sponsor, :address, :zip],
-      "Auftraggeber Ort" => [:clinical, :sponsor, :address, :place]
+      "Auftraggeber Ort" => [:clinical, :sponsor, :address, :place],
+
+      # Laboratory Report (2020-02)
+      "manifestationsbeginn" => [:clinical, :symptom_start],
+      "eingang1positivertest" => [:clinical, :test],
+      "labtestcreationdatetime" => [:clinical, :laboratory_report],
+      "falldatum" => [:clinical, :laboratory_report],
+      "geburtsdatum" => [:birth_date],
+      "geschlecht" => [:sex],
+      "telefon" => [:phone],
+      "strasse" => [:address, :address],
+      "plz" => [:address, :zip],
+      "wohnort" => [:address, :place],
+      "wohnsitzland" => [:address, :country],
+      "land" => [:address, :country],
+      "fallkanton" => [:tenant],
+      "testspositiv" => [:clinical, :positive_result_count],
+      "pcrpositiv" => [:clinical, :test_kind_pcr_count],
+      "antigenpositiv" => [:clinical, :test_kind_antigen_count],
+      "meldeeinheitklinbefundinstitution" => [:clinical, :reporting_unit, :name],
+      "meldeeinheitklinbefundabteilunginstitut" => [:clinical, :reporting_unit, :name],
+      "meldeeinheitklinbefundvorname" => [:clinical, :reporting_unit, :name],
+      "meldeeinheitklinbefundnachname" => [:clinical, :reporting_unit, :name],
+      "meldeeinheitklinbefundplz" => [:clinical, :reporting_unit, :address, :zip],
+      "meldeeinheitklinbefundort" => [:clinical, :reporting_unit, :address, :place],
+      "laborauftraggeberinstitution" => [:clinical, :sponsor, :name],
+      "laborauftraggeberabteilunginstitut" => [:clinical, :sponsor, :name],
+      "laborauftraggebernachname" => [:clinical, :sponsor, :name],
+      "laborauftraggebervorname" => [:clinical, :sponsor, :name],
+      "laborauftraggeberplz" => [:clinical, :sponsor, :address, :zip],
+      "laborauftraggeberort" => [:clinical, :sponsor, :address, :place]
     }
 
   defp recursive_map_merge(_key, %{} = a, %{} = b) when not is_struct(a) and not is_struct(b),

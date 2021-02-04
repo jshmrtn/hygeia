@@ -87,6 +87,9 @@
             {{ schema_field_name(:ism_report_id, CreatePersonSchema) }}
           </th>
           <th>
+            {{ schema_field_name(:symptom_start, Hygeia.CaseContext.Case.Clinical) }}
+          </th>
+          <th>
             {{ schema_field_name(:test, Hygeia.CaseContext.Case.Clinical) }}
           </th>
           <th>
@@ -126,6 +129,12 @@
               </Field>
             </td>
             <Inputs for={{ :clinical }}>
+              <td>
+                <Field class="fill-cell" name={{ :symptom_start }}>
+                  <DateInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </td>
               <td>
                 <Field class="fill-cell" name={{ :test }}>
                   <DateInput class="form-control" />
