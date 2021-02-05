@@ -41,6 +41,7 @@ defmodule HygeiaHealth.MixProject do
       {:hygeia, in_umbrella: true},
       {:hygeia_iam, in_umbrella: true},
       {:socket, "~> 0.3"},
+      {:sentry, "~> 8.0"},
       {:plug_checkup, "~> 0.6"}
     ]
   end

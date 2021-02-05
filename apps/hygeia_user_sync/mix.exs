@@ -44,6 +44,7 @@ defmodule HygeiaUserSync.MixProject do
       {:hygeia_cluster, in_umbrella: true},
       {:gun, "~> 2.0.0", hex: :grpc_gun, override: true},
       {:zitadel_api, "~> 1.0-beta"},
+      {:sentry, "~> 8.0"},
       {:highlander, "~> 0.2"}
     ]
   end

@@ -69,6 +69,7 @@ defmodule HygeiaApi.MixProject do
       {:sentry, "~> 8.0"},
       {:jason, "~> 1.1"},
       {:hackney, "~> 1.8"},
+      {:sentry, "~> 8.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

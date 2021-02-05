@@ -42,6 +42,7 @@ defmodule HygeiaIam.MixProject do
       {:oidcc, github: "jshmrtn/oidcc", branch: "master"},
       {:certifi, "~> 2.5"},
       {:jason, "~> 1.0"},
+      {:sentry, "~> 8.0"},
       {:jose, "~> 1.10"}
     ]
   end

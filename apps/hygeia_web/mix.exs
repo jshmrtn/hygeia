@@ -87,6 +87,7 @@ defmodule HygeiaWeb.MixProject do
       {:earmark, "~> 1.1"},
       {:sentry, "~> 8.0"},
       {:jason, "~> 1.1"},
+      {:sentry, "~> 8.0"},
       {:hackney, "~> 1.8"}
     ]
   end

@@ -40,7 +40,8 @@ defmodule HygeiaGettext.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:gettext, "~> 0.11"}
+      {:gettext, "~> 0.11"},
+      {:sentry, "~> 8.0"}
     ]
   end
 end

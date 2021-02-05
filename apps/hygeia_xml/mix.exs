@@ -38,6 +38,7 @@ defmodule HygeiaXml.MixProject do
   defp deps do
     [
       {:erlsom, "~> 1.5"},
+      {:sentry, "~> 8.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

@@ -76,6 +76,7 @@ defmodule Hygeia.MixProject do
       {:hygeia_xml, in_umbrella: true},
       {:sedex, in_umbrella: true},
       {:csv, "~> 2.4"},
+      {:sentry, "~> 8.0"},
       {:highlander, "~> 0.2"}
     ]
   end

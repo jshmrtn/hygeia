@@ -51,6 +51,7 @@ defmodule HygeiaPdfConfirmation.MixProject do
       {:pdf_generator, "~> 0.6.2"},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_html, "~> 2.11"},
+      {:sentry, "~> 8.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end

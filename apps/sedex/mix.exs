@@ -46,6 +46,7 @@ defmodule Sedex.MixProject do
       {:hackney, "~> 1.17", override: true},
       {:sweet_xml, "~> 0.6"},
       {:briefly, "~> 0.3.0", only: [:test]},
+      {:sentry, "~> 8.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
   end
