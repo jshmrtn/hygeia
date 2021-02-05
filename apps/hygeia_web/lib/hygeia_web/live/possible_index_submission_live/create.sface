@@ -90,6 +90,13 @@
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
+            <div class="col">
+              <Field name={{ :birth_date }} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <DateInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
           </div>
 
           <button
@@ -337,6 +344,31 @@
           <Inputs for={{ :address }}>
             <HygeiaWeb.AddressForm id="address" />
           </Inputs>
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            :on-click="advance"
+            disabled={{ not @changeset.valid? }}
+          >
+            {{ gettext("Continue") }}
+          </button>
+        </div>
+
+        <div :show={{ @step == :employer }} id="step_employer">
+          <h2>
+            {{ gettext(
+              "Where does %{first_name} %{last_name} work?",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            ) }}
+          </h2>
+
+          <Field name={{ :employer }} class="form-group">
+            <HygeiaWeb.FieldLabel />
+            <TextInput class="form-control" />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
 
           <button
             class="btn btn-primary"

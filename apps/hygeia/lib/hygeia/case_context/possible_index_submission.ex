@@ -27,6 +27,7 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
           mobile: String.t() | nil,
           landline: String.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
+          employer: String.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -44,6 +45,7 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
           transmission_date: Date.t() | nil,
           infection_place: InfectionPlace.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()),
+          employer: String.t() | nil,
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -57,6 +59,7 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
     field :mobile, :string
     field :sex, Sex
     field :transmission_date, :date
+    field :employer, :string
 
     embeds_one :address, Address, on_replace: :update
     embeds_one :infection_place, InfectionPlace, on_replace: :update
@@ -81,7 +84,8 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
       :landline,
       :sex,
       :birth_date,
-      :transmission_date
+      :transmission_date,
+      :employer
     ])
     |> validate_required([
       :first_name,

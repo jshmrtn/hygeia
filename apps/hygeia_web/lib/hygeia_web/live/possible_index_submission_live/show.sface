@@ -115,6 +115,12 @@
                         <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
+
+                      <Field name={{ :birth_date }} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <DateInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
                     </div>
                   </div>
                 </div>
@@ -127,6 +133,17 @@
                       </Inputs>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <div class="card mt-5">
+                <div class="card-body">
+                  <h4 class="card-title">{{ gettext("Employer") }}</h4>
+
+                  <Field name={{ :employer }} class="form-group">
+                    <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
                 </div>
               </div>
 

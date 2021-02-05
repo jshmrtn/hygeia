@@ -78,6 +78,9 @@
               <th>
                 {{ schema_field_name(:address, PossibleIndexSubmission) }}
               </th>
+              <th>
+                {{ schema_field_name(:birth_date, PossibleIndexSubmission) }}
+              </th>
 
               <th />
             </tr>
@@ -95,6 +98,12 @@
               </td>
               <td>
                 {{ format_address(possible_index_submission.address) }}
+              </td>
+              <td>
+                {{ case possible_index_submission.birth_date do
+                  nil -> nil
+                  date -> Cldr.Date.to_string!(date, HygeiaCldr)
+                end }}
               </td>
 
               <td>

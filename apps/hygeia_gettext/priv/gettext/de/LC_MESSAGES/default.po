@@ -1040,6 +1040,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Employer"
 msgstr "Arbeitgeber"
 
+msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
+msgid "Employer"
+msgstr "Arbeitgeber"
+
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Employers"
 msgstr "Arbeitgeber"
@@ -1121,6 +1125,9 @@ msgstr "Einrichtung zur familienergänzenden Kinderbetreuung"
 msgctxt "SMS Status"
 msgid "Failure"
 msgstr "Fehler"
+
+msgid "False"
+msgstr "Falsch"
 
 msgid "Families in the same household"
 msgstr "Familien im gleichen Haushalt"
@@ -2789,10 +2796,12 @@ msgstr "Übertragungen"
 msgid "Travel"
 msgstr "Reisen"
 
-#, elixir-format
 msgctxt "Possible Index Type"
 msgid "Travel"
 msgstr "Reisen"
+
+msgid "True"
+msgstr "Wahr"
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.ContactMethod Field"
 msgid "Typ"
@@ -2945,6 +2954,9 @@ msgstr "Wo haben Sie %{first_name} %{last_name} getroffen?"
 
 msgid "Where does %{first_name} %{last_name} live?"
 msgstr "Wo wohnt %{first_name} %{last_name}?"
+
+msgid "Where does %{first_name} %{last_name} work?"
+msgstr "Wo arbeitet %{first_name} %{last_name}?"
 
 msgid "Who did you meet or who do you live with?"
 msgstr "Wen haben Sie getroffen oder mit wem wohnen Sie zusammen?"

@@ -61,14 +61,6 @@ msgstr "entspricht nicht der Bestätigung"
 msgid "end must be after start"
 msgstr "Ende muss nach dem Start sein"
 
-#, elixir-format, fuzzy
-msgid "end must be at most one day before next phase start"
-msgstr "Ende darf nicht mehr als ein Tag vor dem nächsten Phasenstart sein"
-
-#, elixir-format
-msgid "end must be before or equal to next phase start"
-msgstr "Ende muss vor oder gleich dem nächsten Phasenstart sein"
-
 # # From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
 msgstr "wurde bereits vergeben"

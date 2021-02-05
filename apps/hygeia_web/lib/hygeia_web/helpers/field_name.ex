@@ -130,7 +130,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       last_name: "Last Name",
       mobile: "Mobile",
       sex: "Sex",
-      transmission_date: "Transmission Date"
+      transmission_date: "Transmission Date",
+      employer: "Employer"
     },
     Hygeia.CaseContext.Transmission => %{
       date: "Date",

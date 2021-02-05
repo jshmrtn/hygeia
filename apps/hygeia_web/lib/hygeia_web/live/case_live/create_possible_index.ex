@@ -216,10 +216,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       first_name: first_name,
       last_name: last_name,
       sex: sex,
+      birth_date: birth_date,
       mobile: mobile,
       landline: landline,
       email: email,
-      address: address
+      address: address,
+      employer: employer
     } = CaseContext.get_possible_index_submission!(uuid)
 
     %{
@@ -237,10 +239,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           first_name: first_name,
           last_name: last_name,
           sex: sex,
+          birth_date: birth_date,
           mobile: mobile,
           landline: landline,
           email: email,
-          address: Map.from_struct(address)
+          address: Map.from_struct(address),
+          employer: employer
         }
       ]
     }

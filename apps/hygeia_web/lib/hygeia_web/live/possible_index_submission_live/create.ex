@@ -126,7 +126,8 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
       infection_place_address: gettext("Meet Address"),
       infection_place_activity_mapping: gettext("Activity Mapping"),
       contact_methods: gettext("Contact Methods"),
-      address: gettext("Address")
+      address: gettext("Address"),
+      employer: gettext("Employer")
     ]
 
     current_index =
