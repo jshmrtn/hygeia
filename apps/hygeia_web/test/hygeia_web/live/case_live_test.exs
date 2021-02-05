@@ -9,6 +9,7 @@ defmodule HygeiaWeb.CaseLiveTest do
   import Phoenix.LiveViewTest
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
 
@@ -525,6 +526,102 @@ defmodule HygeiaWeb.CaseLiveTest do
 
       assert [_] = CaseContext.list_cases()
       assert [_] = CaseContext.list_people()
+    end
+
+    test "accept create case with duplicate person, copy address", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      tracer_user =
+        user_fixture(%{
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
+        })
+
+      supervisor_user =
+        user_fixture(%{
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+        })
+
+      propagator =
+        person_fixture(tenant, %{
+          first_name: "Karl",
+          last_name: "Muster",
+          address: %{
+            address: "Teststrasse 2"
+          }
+        })
+
+      propagator_case = case_fixture(propagator, tracer_user, supervisor_user)
+
+      duplicate_person_1 =
+        person_fixture(tenant, %{
+          first_name: "Max",
+          last_name: "Muster",
+          address: %{
+            address: "Teststrasse 3"
+          }
+        })
+
+      duplicate_person_2 =
+        person_fixture(tenant, %{
+          first_name: "Henry",
+          last_name: "Muster",
+          address: nil
+        })
+
+      assert {:ok, create_live, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
+
+      assert html =
+               create_live
+               |> form("#case-create-form")
+               |> render_submit(%{
+                 create_schema: %{
+                   type: :contact_person,
+                   date: Date.add(Date.utc_today(), -5),
+                   default_tenant_uuid: tenant.uuid,
+                   default_tracer_uuid: tracer_user.uuid,
+                   default_supervisor_uuid: supervisor_user.uuid,
+                   copy_address_from_propagator: true,
+                   propagator_internal: true,
+                   propagator_case_uuid: propagator_case.uuid,
+                   people: %{
+                     0 => %{
+                       first_name: "Max",
+                       last_name: "Muster",
+                       accepted_duplicate: true,
+                       accepted_duplicate_uuid: duplicate_person_1.uuid,
+                       accepted_duplicate_human_readable_id: duplicate_person_1.human_readable_id
+                     },
+                     1 => %{
+                       first_name: "Henry",
+                       last_name: "Muster",
+                       accepted_duplicate: true,
+                       accepted_duplicate_uuid: duplicate_person_2.uuid,
+                       accepted_duplicate_human_readable_id: duplicate_person_2.human_readable_id
+                     },
+                     2 => %{
+                       first_name: "Petra",
+                       last_name: "Muster"
+                     }
+                   }
+                 }
+               })
+
+      assert html =~ "Created 3 Cases"
+
+      assert [_, _, _, _] = CaseContext.list_cases()
+      assert [_, _, _, _] = people = CaseContext.list_people()
+
+      assert %Person{address: %Address{address: "Teststrasse 3"}} =
+               Enum.find(people, &match?(%Person{first_name: "Max"}, &1))
+
+      assert %Person{address: %Address{address: "Teststrasse 2"}} =
+               Enum.find(people, &match?(%Person{first_name: "Henry"}, &1))
+
+      assert %Person{address: %Address{address: "Teststrasse 2"}} =
+               Enum.find(people, &match?(%Person{first_name: "Petra"}, &1))
     end
 
     test "accept create case with duplicate case keeps phases", %{conn: conn, user: user} do

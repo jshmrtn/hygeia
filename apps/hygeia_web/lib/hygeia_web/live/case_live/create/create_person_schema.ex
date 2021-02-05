@@ -273,7 +273,20 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
   defp copy_address(changeset, %{copy_address_from_propagator: true}, %Case{
          person: %Person{address: address}
        }) do
-    Ecto.Changeset.put_embed(changeset, :address, address)
+    case Ecto.Changeset.fetch_field!(changeset, :address) do
+      nil ->
+        Ecto.Changeset.put_embed(changeset, :address, address)
+
+      old_address ->
+        Ecto.Changeset.put_embed(
+          changeset,
+          :address,
+          address
+          |> Address.merge(old_address)
+          |> Ecto.Changeset.put_change(:uuid, old_address.uuid)
+          |> Ecto.Changeset.apply_changes()
+        )
+    end
   end
 
   defp copy_address(changeset, _global, _propagator_case), do: changeset
