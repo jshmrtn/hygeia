@@ -251,6 +251,9 @@
               display: true,
               text: gettext("Quarantine End Reasons")
             },
+            legend: %{
+              display: false
+            },
             scales: %{
               xAxes: [
                 %{
