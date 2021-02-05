@@ -53,6 +53,8 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
     {:noreply, state}
   end
 
+  def handle_info(_other, state), do: {:noreply, state}
+
   @impl GenServer
   def handle_cast(:refresh, state) do
     send_emails()

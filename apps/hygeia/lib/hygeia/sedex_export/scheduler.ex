@@ -125,6 +125,8 @@ defmodule Hygeia.SedexExport.Scheduler do
     end
   end
 
+  def handle_info(_other, state), do: {:noreply, state}
+
   @impl GenServer
   def handle_continue(
         {:wait_for_export, remaining_wait_time_ms, export},

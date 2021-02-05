@@ -133,6 +133,8 @@ defmodule Hygeia.Jobs.SendEmails do
     {:noreply, state}
   end
 
+  def handle_info(_other, state), do: {:noreply, state}
+
   @spec send(email :: Email.t()) :: {DateTime.t(), Email.Status.t()}
 
   case Mix.env() do

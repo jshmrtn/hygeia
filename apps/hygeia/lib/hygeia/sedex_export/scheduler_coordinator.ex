@@ -51,6 +51,8 @@ defmodule Hygeia.SedexExport.SchedulerCoordinator do
   def handle_info({_action, %Tenant{} = _tenant, _version}, state),
     do: {:noreply, refresh_schedulers(state)}
 
+  def handle_info(_other, state), do: {:noreply, state}
+
   defp refresh_schedulers(
          %__MODULE__{scheduler_supervisor: scheduler_supervisor, schedulers: schedulers} = state
        ) do

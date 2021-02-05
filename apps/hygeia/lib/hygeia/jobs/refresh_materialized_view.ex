@@ -54,6 +54,8 @@ defmodule Hygeia.Jobs.RefreshMaterializedView do
     {:noreply, view}
   end
 
+  def handle_info(_other, state), do: {:noreply, state}
+
   @impl GenServer
   def handle_cast(:refresh, view) do
     execute_refresh(view)

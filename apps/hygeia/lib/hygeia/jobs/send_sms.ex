@@ -85,6 +85,8 @@ defmodule Hygeia.Jobs.SendSMS do
     {:noreply, state}
   end
 
+  def handle_info(_other, state), do: {:noreply, state}
+
   @spec send(sms :: SMS.t()) :: {SMS.t(), SMS.Status.t(), String.t()}
   defp send(
          %SMS{

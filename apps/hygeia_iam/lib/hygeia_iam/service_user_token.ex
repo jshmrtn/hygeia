@@ -38,6 +38,8 @@ defmodule HygeiaIam.ServiceUserToken do
   def handle_info(:login, %__MODULE__{user: user} = state),
     do: {:noreply, %__MODULE__{state | access_token: login(user)}}
 
+  def handle_info(_other, state), do: {:noreply, state}
+
   @impl GenServer
   def handle_call(:get_access_token, _from, %__MODULE__{access_token: access_token} = state),
     do: {:reply, access_token, state}

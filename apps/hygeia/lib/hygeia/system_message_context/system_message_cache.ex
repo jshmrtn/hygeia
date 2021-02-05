@@ -48,6 +48,8 @@ defmodule Hygeia.SystemMessageContext.SystemMessageCache do
     {:noreply, state}
   end
 
+  def handle_info(_other, state), do: {:noreply, state}
+
   @impl GenServer
   def terminate(reason, _state) do
     @ets_table_name

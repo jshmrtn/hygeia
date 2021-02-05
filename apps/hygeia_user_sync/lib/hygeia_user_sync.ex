@@ -76,6 +76,8 @@ defmodule HygeiaUserSync do
     {:noreply, state}
   end
 
+  def handle_info(_other, state), do: {:noreply, state}
+
   defp sync(channel, access_token) do
     tenants = Map.new(TenantContext.list_tenants(), &{&1.iam_domain, &1})
 
