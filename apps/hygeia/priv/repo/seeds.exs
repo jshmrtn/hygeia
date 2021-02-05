@@ -432,13 +432,28 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       start_date = Enum.random(random_start_date_range)
       end_date = Date.add(start_date, 10)
 
+      index_end_reason =
+        Enum.random([nil | Hygeia.CaseContext.Case.Phase.Index.EndReason.__enum_map__()])
+
+      possible_index_end_reason =
+        Enum.random([
+          nil | Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason.__enum_map__()
+        ])
+
+      possible_index_type =
+        Enum.random(Hygeia.CaseContext.Case.Phase.PossibleIndex.Type.__enum_map__())
+
       phase =
         Enum.random([
           %{
             details: %{
               __type__: "index",
-              end_reason:
-                Enum.random([nil | Hygeia.CaseContext.Case.Phase.Index.EndReason.__enum_map__()])
+              end_reason: index_end_reason,
+              other_end_reason:
+                case index_end_reason do
+                  :other -> "ran away"
+                  _other -> nil
+                end
             },
             start: start_date,
             end: end_date
@@ -446,11 +461,18 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           %{
             details: %{
               __type__: "possible_index",
-              type: Enum.random(Hygeia.CaseContext.Case.Phase.PossibleIndex.Type.__enum_map__()),
-              end_reason:
-                Enum.random([
-                  nil | Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason.__enum_map__()
-                ])
+              type: possible_index_type,
+              type_other:
+                case possible_index_type do
+                  :other -> "likes to stay home alone"
+                  _other -> nil
+                end,
+              end_reason: possible_index_end_reason,
+              other_end_reason:
+                case possible_index_end_reason do
+                  :other -> "ran away"
+                  _other -> nil
+                end
             },
             start: start_date,
             end: end_date
@@ -516,7 +538,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
 
   {:ok, _transmission_jony_jay} =
     create_transmission(%{
-      date: ~D[2020-10-12],
+      date: Date.utc_today(),
       propagator_internal: true,
       propagator_case_uuid: case_jony.uuid,
       recipient_internal: true,
@@ -540,7 +562,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
 
   {:ok, _transmission_flight_jony} =
     create_transmission(%{
-      date: ~D[2020-10-12],
+      date: Date.utc_today(),
       recipient_internal: true,
       recipient_case_uuid: case_jony.uuid,
       infection_place: %{
@@ -556,7 +578,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
 
   {:ok, _transmission_jony_josia} =
     create_transmission(%{
-      date: ~D[2020-10-12],
+      date: Date.utc_today(),
       propagator_internal: true,
       propagator_case_uuid: case_jony.uuid,
       recipient_internal: false,
