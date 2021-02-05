@@ -13,6 +13,7 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
   alias Hygeia.OrganisationContext
+  alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.SystemMessageContext
   alias Hygeia.SystemMessageContext.SystemMessage
@@ -64,18 +65,6 @@ defmodule Hygeia.Fixtures do
         type: :mobile,
         value: "+41 78 724 57 90",
         comment: "Call only between 7 and 9 am"
-      }
-    ],
-    employers: [
-      %{
-        name: "JOSHMARTIN GmbH",
-        address: %{
-          address: "Neugasse 51",
-          zip: "9000",
-          place: "St. Gallen",
-          subdivision: "SG",
-          country: "CH"
-        }
       }
     ],
     external_references: [
@@ -362,11 +351,28 @@ defmodule Hygeia.Fixtures do
 
   @spec sedex_export_fixture(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           SedexExport.t()
-
   def sedex_export_fixture(tenant \\ tenant_fixture(), attrs \\ %{}) do
     {:ok, sedex_export} =
       TenantContext.create_sedex_export(tenant, Enum.into(attrs, @valid_attrs))
 
     sedex_export
+  end
+
+  @valid_attrs %{kind: :employee}
+
+  @spec affiliation_fixture(
+          person :: Person.t(),
+          organisation :: Organisation.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Affiliation.t()
+  def affiliation_fixture(
+        person \\ person_fixture(),
+        organisation \\ organisation_fixture(),
+        attrs \\ %{}
+      ) do
+    {:ok, affiliation} =
+      OrganisationContext.create_affiliation(person, organisation, Enum.into(attrs, @valid_attrs))
+
+    affiliation
   end
 end

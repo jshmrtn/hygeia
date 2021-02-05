@@ -17,6 +17,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
@@ -76,7 +77,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   def handle_event("validate", %{"person" => person_params}, socket) do
     person_params =
       person_params
-      |> Map.put_new("employers", [])
+      |> Map.put_new("affiliations", [])
       |> Map.put_new("contact_methods", [])
       |> Map.put_new("external_references", [])
 
@@ -158,7 +159,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   end
 
   def handle_event(
-        "add_employer",
+        "add_affiliation",
         _params,
         %{assigns: %{changeset: changeset, person: person}} = socket
       ) do
@@ -168,14 +169,14 @@ defmodule HygeiaWeb.PersonLive.BaseData do
        :changeset,
        CaseContext.change_person(
          person,
-         changeset_add_to_params(changeset, :employers, %{uuid: Ecto.UUID.generate()})
+         changeset_add_to_params(changeset, :affiliations, %{uuid: Ecto.UUID.generate()})
        )
      )
      |> maybe_block_navigation()}
   end
 
   def handle_event(
-        "remove_employer",
+        "remove_affiliation",
         %{"uuid" => uuid} = _params,
         %{assigns: %{changeset: changeset, person: person}} = socket
       ) do
@@ -185,7 +186,29 @@ defmodule HygeiaWeb.PersonLive.BaseData do
        :changeset,
        CaseContext.change_person(
          person,
-         changeset_remove_from_params_by_id(changeset, :employers, %{uuid: uuid})
+         changeset_remove_from_params_by_id(changeset, :affiliations, %{uuid: uuid})
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event(
+        "select_affiliation_organisation",
+        %{"subject" => affiliation_uuid} = params,
+        %{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_person(
+         person,
+         changeset_update_params_by_id(
+           changeset,
+           :affiliations,
+           %{uuid: affiliation_uuid},
+           &Map.put(&1, "organisation_uuid", params["uuid"])
+         )
        )
      )
      |> maybe_block_navigation()}
@@ -244,7 +267,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   def handle_event("save", %{"person" => person_params}, socket) do
     person_params =
       person_params
-      |> Map.put_new("employers", [])
+      |> Map.put_new("affiliations", [])
       |> Map.put_new("contact_methods", [])
       |> Map.put_new("external_references", [])
 
@@ -278,7 +301,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   end
 
   defp load_data(socket, person) do
-    person = Repo.preload(person, positions: [organisation: []], tenant: [])
+    person = Repo.preload(person, positions: [organisation: []], tenant: [], affiliations: [])
 
     changeset = CaseContext.change_person(person)
 

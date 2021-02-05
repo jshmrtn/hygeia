@@ -4,6 +4,7 @@ defmodule Hygeia.OrganisationContextTest do
   use Hygeia.DataCase
 
   alias Hygeia.OrganisationContext
+  alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
 
   @moduletag origin: :test
@@ -159,6 +160,76 @@ defmodule Hygeia.OrganisationContextTest do
     test "change_position/1 returns a position changeset" do
       position = position_fixture()
       assert %Ecto.Changeset{} = OrganisationContext.change_position(position)
+    end
+  end
+
+  describe "affiliations" do
+    @valid_attrs %{kind: :employee, kind_other: nil}
+    @update_attrs %{kind: :other, kind_other: "some updated kind_other"}
+    @invalid_attrs %{kind: :other, kind_other: nil}
+
+    test "list_affiliations/0 returns all affiliations" do
+      affiliation = affiliation_fixture()
+      assert OrganisationContext.list_affiliations() == [affiliation]
+    end
+
+    test "get_affiliation!/1 returns the affiliation with given id" do
+      affiliation = affiliation_fixture()
+      assert OrganisationContext.get_affiliation!(affiliation.uuid) == affiliation
+    end
+
+    test "create_affiliation/1 with valid data creates a affiliation" do
+      assert {:ok, %Affiliation{} = affiliation} =
+               OrganisationContext.create_affiliation(
+                 person_fixture(),
+                 organisation_fixture(),
+                 @valid_attrs
+               )
+
+      assert affiliation.kind == :employee
+      assert affiliation.kind_other == nil
+    end
+
+    test "create_affiliation/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               OrganisationContext.create_affiliation(
+                 person_fixture(),
+                 organisation_fixture(),
+                 @invalid_attrs
+               )
+    end
+
+    test "update_affiliation/2 with valid data updates the affiliation" do
+      affiliation = affiliation_fixture()
+
+      assert {:ok, %Affiliation{} = affiliation} =
+               OrganisationContext.update_affiliation(affiliation, @update_attrs)
+
+      assert affiliation.kind == :other
+      assert affiliation.kind_other == "some updated kind_other"
+    end
+
+    test "update_affiliation/2 with invalid data returns error changeset" do
+      affiliation = affiliation_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               OrganisationContext.update_affiliation(affiliation, @invalid_attrs)
+
+      assert affiliation == OrganisationContext.get_affiliation!(affiliation.uuid)
+    end
+
+    test "delete_affiliation/1 deletes the affiliation" do
+      affiliation = affiliation_fixture()
+      assert {:ok, %Affiliation{}} = OrganisationContext.delete_affiliation(affiliation)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        OrganisationContext.get_affiliation!(affiliation.uuid)
+      end
+    end
+
+    test "change_affiliation/1 returns a affiliation changeset" do
+      affiliation = affiliation_fixture()
+      assert %Ecto.Changeset{} = OrganisationContext.change_affiliation(affiliation)
     end
   end
 end

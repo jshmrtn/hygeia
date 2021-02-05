@@ -9,11 +9,12 @@ defmodule Hygeia.CaseContext.Person do
 
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Employer
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.Person.Vaccination
   alias Hygeia.EctoType.NOGA
+  alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Position
   alias Hygeia.TenantContext.Tenant
 
@@ -31,7 +32,6 @@ defmodule Hygeia.CaseContext.Person do
           address: Address.t() | nil,
           contact_methods: [ContactMethod.t()] | nil,
           external_references: [ExternalReference.t()] | nil,
-          employers: [Employer.t()] | nil,
           profession_category: NOGA.Code.t() | nil,
           profession_category_main: NOGA.Section.t() | nil,
           tenant_uuid: String.t() | nil,
@@ -39,6 +39,9 @@ defmodule Hygeia.CaseContext.Person do
           cases: Ecto.Schema.has_many(Case.t()) | nil,
           positions: Ecto.Schema.has_many(Position.t()) | nil,
           vaccination: Vaccination.t() | nil,
+          affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
+          employee_affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
+          employers: Ecto.Schema.has_many(Organisation.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -53,7 +56,6 @@ defmodule Hygeia.CaseContext.Person do
           address: Address.t(),
           contact_methods: [ContactMethod.t()],
           external_references: [ExternalReference.t()],
-          employers: [Employer.t()],
           profession_category: NOGA.Code.t() | nil,
           profession_category_main: NOGA.Section.t() | nil,
           tenant_uuid: String.t(),
@@ -61,6 +63,9 @@ defmodule Hygeia.CaseContext.Person do
           cases: Ecto.Schema.has_many(Case.t()),
           positions: Ecto.Schema.has_many(Position.t()),
           vaccination: Vaccination.t(),
+          affiliations: Ecto.Schema.has_many(Affiliation.t()),
+          employee_affiliations: Ecto.Schema.has_many(Affiliation.t()),
+          employers: Ecto.Schema.has_many(Organisation.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -77,12 +82,18 @@ defmodule Hygeia.CaseContext.Person do
     embeds_one :address, Address, on_replace: :update
     embeds_many :contact_methods, ContactMethod, on_replace: :delete
     embeds_many :external_references, ExternalReference, on_replace: :delete
-    embeds_many :employers, Employer, on_replace: :delete
     embeds_one :vaccination, Vaccination, on_replace: :update
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     has_many :cases, Case
     has_many :positions, Position, foreign_key: :person_uuid
+    has_many :affiliations, Affiliation, foreign_key: :person_uuid, on_replace: :delete
+
+    has_many :employee_affiliations, Affiliation,
+      foreign_key: :person_uuid,
+      where: [kind: :employee]
+
+    has_many :employers, through: [:employee_affiliations, :organisation]
 
     field :suspected_duplicates_uuid, {:array, :binary_id}, virtual: true, default: []
 
@@ -110,10 +121,10 @@ defmodule Hygeia.CaseContext.Person do
     |> fill_human_readable_id
     |> validate_required([:uuid, :human_readable_id, :tenant_uuid, :first_name])
     |> validate_profession_category()
+    |> cast_assoc(:affiliations)
     |> cast_embed(:external_references)
     |> cast_embed(:address)
     |> cast_embed(:contact_methods)
-    |> cast_embed(:employers)
     |> cast_embed(:vaccination)
     |> foreign_key_constraint(:tenant_uuid)
     |> detect_name_duplicates

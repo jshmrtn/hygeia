@@ -15,6 +15,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
   alias Hygeia.EctoType.Country
+  alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
 
@@ -250,13 +251,21 @@ defmodule Hygeia.CaseContext do
   @spec delete_person(person :: Person.t()) ::
           {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
   def delete_person(%Person{} = person) do
-    cases = Repo.preload(person, :cases).cases
+    %Person{cases: cases, affiliations: affiliations} =
+      Repo.preload(person, cases: [], affiliations: [])
 
     Repo.transaction(fn ->
       cases
       |> Enum.map(&delete_case/1)
       |> Enum.each(fn
         {:ok, _case} -> :ok
+        {:error, reason} -> Repo.rollback(reason)
+      end)
+
+      affiliations
+      |> Enum.map(&OrganisationContext.delete_affiliation/1)
+      |> Enum.each(fn
+        {:ok, _affiliation} -> :ok
         {:error, reason} -> Repo.rollback(reason)
       end)
 
@@ -538,6 +547,7 @@ defmodule Hygeia.CaseContext do
         on: fragment("?->>'type'", received_transmission_case_ism_id) == "ism_case",
         left_join: email in assoc(case, :emails),
         left_join: sms in assoc(case, :sms),
+        left_join: employer in assoc(person, :employers),
         where:
           case.tenant_uuid == ^tenant_uuid and
             fragment("?->'details'->>'__type__'", phase) == "index",
@@ -575,17 +585,17 @@ defmodule Hygeia.CaseContext do
           # profession
           person.profession_category_main,
           # work_place_name
-          fragment("?[1]->>'name'", person.employers),
+          fragment("(ARRAY_AGG(?))[1]", employer.name),
           # work_place_street
-          fragment("?[1]->'address'->>'address'", person.employers),
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'address'", employer.address)),
           # work_place_street_number
           nil,
           # work_place_location
-          fragment("?[1]->'address'->>'place'", person.employers),
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'place'", employer.address)),
           # work_place_postal_code
-          fragment("?[1]->'address'->>'zip'", person.employers),
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'zip'", employer.address)),
           # work_place_country
-          fragment("?[1]->'address'->>'country'", person.employers),
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'country'", employer.address)),
           # symptoms_yn
           fragment("?->'has_symptoms'", case.clinical),
           # test_reason_symptoms
@@ -1198,6 +1208,7 @@ defmodule Hygeia.CaseContext do
             received_transmission_case.external_references
           ),
         on: fragment("?->>'type'", received_transmission_case_ism_id) == "ism_case",
+        left_join: employer in assoc(person, :employers),
         where:
           case.tenant_uuid == ^tenant_uuid and
             fragment("?->'details'->>'__type__'", phase) == "possible_index",
@@ -1231,11 +1242,11 @@ defmodule Hygeia.CaseContext do
           # profession
           person.profession_category_main,
           # work_place_name
-          fragment("?[1]->>'name'", person.employers),
+          fragment("(ARRAY_AGG(?))[1]", employer.name),
           # work_place_postal_code
-          fragment("?[1]->'address'->>'zip'", person.employers),
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'zip'", employer.address)),
           # work_place_country
-          fragment("?[1]->'address'->>'country'", person.employers),
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->>'country'", employer.address)),
           # quar_loc_type
           type(
             fragment("(?->>'location')::isolation_location", case.monitoring),

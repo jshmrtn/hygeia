@@ -5,6 +5,8 @@ defmodule Hygeia.OrganisationContext do
 
   use Hygeia, :context
 
+  alias Hygeia.CaseContext.Person
+  alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Position
 
@@ -281,4 +283,140 @@ defmodule Hygeia.OrganisationContext do
   def change_position(%Position{} = position, attrs \\ %{}) do
     Position.changeset(position, attrs)
   end
+
+  @doc """
+  Returns the list of affiliations.
+
+  ## Examples
+
+      iex> list_affiliations()
+      [%Affiliation{}, ...]
+
+  """
+  @spec list_affiliations :: [Affiliation.t()]
+  def list_affiliations, do: Repo.all(Affiliation)
+
+  @doc """
+  Gets a single affiliation.
+
+  Raises `Ecto.NoResultsError` if the Affiliation does not exist.
+
+  ## Examples
+
+      iex> get_affiliation!(123)
+      %Affiliation{}
+
+      iex> get_affiliation!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_affiliation!(id :: String.t()) :: Affiliation.t()
+  def get_affiliation!(id), do: Repo.get!(Affiliation, id)
+
+  @doc """
+  Creates a affiliation.
+
+  ## Examples
+
+      iex> create_affiliation(%{field: value})
+      {:ok, %Affiliation{}}
+
+      iex> create_affiliation(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_affiliation(
+          person :: Person.t(),
+          organisation :: Organisation.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: {:ok, Affiliation.t()} | {:error, Ecto.Changeset.t(Affiliation.t())}
+  def create_affiliation(
+        %Person{} = person,
+        %Organisation{uuid: organisation_uuid} = _organisation,
+        attrs \\ %{}
+      ),
+      do:
+        person
+        |> Ecto.build_assoc(:affiliations, %{organisation_uuid: organisation_uuid})
+        |> change_affiliation(attrs)
+        |> versioning_insert()
+        |> broadcast(
+          "affiliations",
+          :create,
+          & &1.uuid,
+          &["people:#{&1.person_uuid}", "organisations:#{&1.organisation_uuid}"]
+        )
+        |> versioning_extract()
+
+  @doc """
+  Updates a affiliation.
+
+  ## Examples
+
+      iex> update_affiliation(affiliation, %{field: new_value})
+      {:ok, %Affiliation{}}
+
+      iex> update_affiliation(affiliation, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_affiliation(
+          affiliation :: Affiliation.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: {:ok, Affiliation.t()} | {:error, Ecto.Changeset.t(Affiliation.t())}
+  def update_affiliation(%Affiliation{} = affiliation, attrs),
+    do:
+      affiliation
+      |> change_affiliation(attrs)
+      |> versioning_update()
+      |> broadcast(
+        "affiliations",
+        :update,
+        & &1.uuid,
+        &["people:#{&1.person_uuid}", "organisations:#{&1.organisation_uuid}"]
+      )
+      |> versioning_extract()
+
+  @doc """
+  Deletes a affiliation.
+
+  ## Examples
+
+      iex> delete_affiliation(affiliation)
+      {:ok, %Affiliation{}}
+
+      iex> delete_affiliation(affiliation)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_affiliation(affiliation :: Affiliation.t()) ::
+          {:ok, Affiliation.t()} | {:error, Ecto.Changeset.t(Affiliation.t())}
+  def delete_affiliation(%Affiliation{} = affiliation),
+    do:
+      affiliation
+      |> change_affiliation()
+      |> versioning_delete()
+      |> broadcast(
+        "affiliations",
+        :delete,
+        & &1.uuid,
+        &["people:#{&1.person_uuid}", "organisations:#{&1.organisation_uuid}"]
+      )
+      |> versioning_extract()
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking affiliation changes.
+
+  ## Examples
+
+      iex> change_affiliation(affiliation)
+      %Ecto.Changeset{data: %Affiliation{}}
+
+  """
+  @spec change_affiliation(
+          affiliation :: resource | Ecto.Changeset.t(resource),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Ecto.Changeset.t(resource)
+        when resource: Affiliation.t() | Affiliation.empty()
+  def change_affiliation(affiliation, attrs \\ %{}), do: Affiliation.changeset(affiliation, attrs)
 end

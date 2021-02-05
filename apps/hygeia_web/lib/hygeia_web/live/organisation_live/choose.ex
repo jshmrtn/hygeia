@@ -20,6 +20,8 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
 
   prop disabled, :boolean, default: false
 
+  prop subject, :any, default: nil
+
   @impl Phoenix.LiveComponent
   def mount(socket) do
     socket =

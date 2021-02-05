@@ -521,6 +521,11 @@ msgid "Choose %{case}"
 msgstr ""
 
 #, elixir-format
+msgctxt "Affiliation"
+msgid "Choose Kind"
+msgstr ""
+
+#, elixir-format
 msgid "Choose Sex"
 msgstr ""
 
@@ -586,6 +591,11 @@ msgid "Comment"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.ContactMethod Field"
+msgid "Comment"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Comment"
 msgstr ""
 
@@ -929,6 +939,11 @@ msgid "Email Sender"
 msgstr ""
 
 msgid "Email created successfully"
+msgstr ""
+
+#, elixir-format
+msgctxt "Affiliation Kind"
+msgid "Employee"
 msgstr ""
 
 msgid "Employer"
@@ -1352,6 +1367,16 @@ msgctxt "Field"
 msgid "Kind"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Kind"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Kind Other"
+msgstr ""
+
 msgid "Known"
 msgstr ""
 
@@ -1481,6 +1506,11 @@ msgstr ""
 msgid "Meeting with family / friends"
 msgstr ""
 
+#, elixir-format
+msgctxt "Affiliation Kind"
+msgid "Member"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Message"
 msgstr ""
@@ -1592,6 +1622,10 @@ msgid "New Tenant"
 msgstr ""
 
 msgid "New Transmission"
+msgstr ""
+
+#, elixir-format
+msgid "New affiliation"
 msgstr ""
 
 msgid "New contact method"
@@ -1735,10 +1769,20 @@ msgctxt "Item Type"
 msgid "Organisation"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Organisation"
+msgstr ""
+
 msgid "Organisation Positions"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Hospitalization Field"
+msgid "Organisation UUID"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Organisation UUID"
 msgstr ""
 
@@ -1780,6 +1824,11 @@ msgstr ""
 
 #, elixir-format
 msgctxt "Possible Index Type"
+msgid "Other"
+msgstr ""
+
+#, elixir-format
+msgctxt "Affiliation Kind"
 msgid "Other"
 msgstr ""
 
@@ -2251,6 +2300,11 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
 msgid "Scheduling Date"
+msgstr ""
+
+#, elixir-format
+msgctxt "Affiliation Kind"
+msgid "Scholar"
 msgstr ""
 
 msgid "School / scout camp"
@@ -2971,6 +3025,10 @@ msgid "delete"
 msgstr ""
 
 msgid "deleted"
+msgstr ""
+
+#, elixir-format
+msgid "either organisation or comment must be filled"
 msgstr ""
 
 msgid "hostname"

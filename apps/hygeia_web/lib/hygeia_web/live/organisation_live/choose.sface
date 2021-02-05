@@ -25,6 +25,7 @@
                 :on-click={{ @change }}
                 type="button"
                 phx-value-from-uuid={{ organisation.uuid }}
+                phx-value-subject={{ @subject }}
               >
                 <span class="oi oi-trash" aria-hidden="true" />
               </button>
@@ -67,6 +68,7 @@
             :for={{ organisation <- @organisations }}
             :on-click={{ @change }}
             phx-value-uuid={{ organisation.uuid }}
+            phx-value-subject={{ @subject }}
           >
             <div class="card-body py-2 px-3">
               <div class="d-flex justify-content-between align-items-center">

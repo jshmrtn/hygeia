@@ -265,16 +265,10 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           value: "jonatan@maennchen.ch"
         }
       ],
-      employers: [
+      affiliations: [
         %{
-          name: "JOSHMARTIN GmbH",
-          address: %{
-            address: "Neugasse 51",
-            zip: "9000",
-            place: "St. Gallen",
-            subdivision: "SG",
-            country: "CH"
-          }
+          kind: :employee,
+          organisation_uuid: organisation_jm.uuid
         }
       ],
       external_references: [

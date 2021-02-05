@@ -10,12 +10,12 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Case.Hospitalization
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
-  alias Hygeia.CaseContext.Employer
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
@@ -38,18 +38,6 @@ defmodule Hygeia.CaseContextTest do
           type: :mobile,
           value: "+41 78 724 57 90",
           comment: "Call only between 7 and 9 am"
-        }
-      ],
-      employers: [
-        %{
-          name: "JOSHMARTIN GmbH",
-          address: %{
-            address: "Neugasse 51",
-            zip: "9000",
-            place: "St. Gallen",
-            subdivision: "SG",
-            country: "CH"
-          }
         }
       ],
       external_references: [],
@@ -86,42 +74,58 @@ defmodule Hygeia.CaseContextTest do
 
     test "create_person/1 with valid data creates a person" do
       tenant = tenant_fixture()
+      organisation = organisation_fixture()
 
-      assert {:ok,
-              %Person{
-                address: %Address{
-                  address: "Neugasse 51",
-                  zip: "9000",
-                  place: "St. Gallen",
-                  subdivision: "SG",
-                  country: "CH"
-                },
-                birth_date: ~D[2010-04-17],
-                contact_methods: [
-                  %ContactMethod{
-                    type: :mobile,
-                    value: "+41 78 724 57 90",
-                    comment: "Call only between 7 and 9 am"
-                  }
-                ],
-                employers: [
-                  %Employer{
-                    name: "JOSHMARTIN GmbH",
-                    address: %Address{
-                      address: "Neugasse 51",
-                      zip: "9000",
-                      place: "St. Gallen",
-                      subdivision: "SG",
-                      country: "CH"
-                    }
-                  }
-                ],
-                external_references: [],
-                first_name: "some first_name",
-                human_readable_id: _,
-                last_name: "some last_name",
-                sex: :female
-              }} = CaseContext.create_person(tenant, @valid_attrs)
+      assert {:ok, person} =
+               CaseContext.create_person(
+                 tenant,
+                 Map.merge(@valid_attrs, %{
+                   affiliations: [
+                     %{
+                       kind: :employee,
+                       organisation_uuid: organisation.uuid
+                     }
+                   ]
+                 })
+               )
+
+      assert %Person{
+               address: %Address{
+                 address: "Neugasse 51",
+                 zip: "9000",
+                 place: "St. Gallen",
+                 subdivision: "SG",
+                 country: "CH"
+               },
+               birth_date: ~D[2010-04-17],
+               contact_methods: [
+                 %ContactMethod{
+                   type: :mobile,
+                   value: "+41 78 724 57 90",
+                   comment: "Call only between 7 and 9 am"
+                 }
+               ],
+               affiliations: [
+                 %Affiliation{
+                   kind: :employee,
+                   organisation: %Organisation{
+                     name: "JOSHMARTIN GmbH",
+                     address: %Address{
+                       address: "Neugasse 51",
+                       zip: "9000",
+                       place: "St. Gallen",
+                       subdivision: "SG",
+                       country: "CH"
+                     }
+                   }
+                 }
+               ],
+               external_references: [],
+               first_name: "some first_name",
+               human_readable_id: _,
+               last_name: "some last_name",
+               sex: :female
+             } = Repo.preload(person, affiliations: [organisation: []])
     end
 
     test "create_person/1 with valid data formats phone number" do
@@ -178,56 +182,73 @@ defmodule Hygeia.CaseContextTest do
     end
 
     test "update_person/2 with valid data updates the person" do
-      person = person_fixture()
+      person = Repo.preload(person_fixture(), :affiliations)
 
-      assert {:ok,
-              %Person{
-                address: %Address{
-                  address: "Neugasse 51",
-                  zip: "9000",
-                  place: "St. Gallen",
-                  subdivision: "SG",
-                  country: "CH"
-                },
-                birth_date: ~D[2011-05-18],
-                contact_methods: [
-                  %ContactMethod{
-                    type: :mobile,
-                    value: "+41 78 724 57 90",
-                    comment: "Call only between 7 and 9 am"
-                  }
-                ],
-                employers: [
-                  %Employer{
-                    name: "JOSHMARTIN GmbH",
-                    address: %Address{
-                      address: "Neugasse 51",
-                      zip: "9000",
-                      place: "St. Gallen",
-                      subdivision: "SG",
-                      country: "CH"
-                    }
-                  }
-                ],
-                external_references: [
-                  %Hygeia.CaseContext.ExternalReference{
-                    type: :ism_case,
-                    type_name: nil,
-                    uuid: _,
-                    value: "7000"
-                  },
-                  %Hygeia.CaseContext.ExternalReference{
-                    type: :other,
-                    type_name: "foo",
-                    uuid: _,
-                    value: "7000"
-                  }
-                ],
-                first_name: "some updated first_name",
-                human_readable_id: _,
-                last_name: "some updated last_name",
-                sex: :male
-              }} = CaseContext.update_person(person, @update_attrs)
+      organisation = organisation_fixture()
+
+      assert {:ok, person} =
+               CaseContext.update_person(
+                 person,
+                 Map.merge(@update_attrs, %{
+                   affiliations: [
+                     %{
+                       kind: :employee,
+                       organisation_uuid: organisation.uuid
+                     }
+                   ]
+                 })
+               )
+
+      assert %Person{
+               address: %Address{
+                 address: "Neugasse 51",
+                 zip: "9000",
+                 place: "St. Gallen",
+                 subdivision: "SG",
+                 country: "CH"
+               },
+               birth_date: ~D[2011-05-18],
+               contact_methods: [
+                 %ContactMethod{
+                   type: :mobile,
+                   value: "+41 78 724 57 90",
+                   comment: "Call only between 7 and 9 am"
+                 }
+               ],
+               affiliations: [
+                 %Affiliation{
+                   kind: :employee,
+                   organisation: %Organisation{
+                     name: "JOSHMARTIN GmbH",
+                     address: %Address{
+                       address: "Neugasse 51",
+                       zip: "9000",
+                       place: "St. Gallen",
+                       subdivision: "SG",
+                       country: "CH"
+                     }
+                   }
+                 }
+               ],
+               external_references: [
+                 %Hygeia.CaseContext.ExternalReference{
+                   type: :ism_case,
+                   type_name: nil,
+                   uuid: _,
+                   value: "7000"
+                 },
+                 %Hygeia.CaseContext.ExternalReference{
+                   type: :other,
+                   type_name: "foo",
+                   uuid: _,
+                   value: "7000"
+                 }
+               ],
+               first_name: "some updated first_name",
+               human_readable_id: _,
+               last_name: "some updated last_name",
+               sex: :male
+             } = Repo.preload(person, affiliations: [organisation: []])
     end
 
     test "update_person/2 with invalid data returns error changeset" do
@@ -510,6 +531,18 @@ defmodule Hygeia.CaseContextTest do
         user = user_fixture()
         tenant = tenant_fixture()
 
+        organisation_jm =
+          organisation_fixture(%{
+            name: "JOSHMARTIN GmbH",
+            address: %{
+              address: "Neugasse 51",
+              zip: "9000",
+              place: "St. Gallen",
+              subdivision: "SG",
+              country: "CH"
+            }
+          })
+
         person_jony =
           person_fixture(tenant, %{
             first_name: "Jonatan",
@@ -527,16 +560,10 @@ defmodule Hygeia.CaseContextTest do
               %{type: :mobile, value: "+41787245790"},
               %{type: :landline, value: "+41522330689"}
             ],
-            employers: [
+            affiliations: [
               %{
-                name: "JOSHMARTIN GmbH",
-                address: %{
-                  address: "Neugasse 51",
-                  zip: "9000",
-                  place: "St. Gallen",
-                  subdivision: "SG",
-                  country: "CH"
-                }
+                kind: :employee,
+                organisation_uuid: organisation_jm.uuid
               }
             ],
             vaccination: %{
@@ -807,7 +834,7 @@ defmodule Hygeia.CaseContextTest do
                    "test_type" => "5",
                    "work_place_street_number" => "",
                    "exp_loc_type_choir" => "0",
-                   "work_place_location" => "St. Gallen",
+                   "work_place_location" => "",
                    "first_name" => "Jeremy",
                    "iso_loc_street_number" => "",
                    "test_reason_quarantine" => "0",
@@ -820,7 +847,7 @@ defmodule Hygeia.CaseContextTest do
                    "exp_loc_type_asyl" => "0",
                    "test_result" => "3",
                    "symptom_onset_dt" => "",
-                   "work_place_postal_code" => "9000",
+                   "work_place_postal_code" => "",
                    "vacc_name" => "",
                    "exp_loc_type_medical" => "0",
                    "vacc_dose" => "",
@@ -835,12 +862,12 @@ defmodule Hygeia.CaseContextTest do
                    "exp_type" => "1",
                    "test_reason_convenience" => "0",
                    "reason_end_of_iso" => "",
-                   "work_place_name" => "JOSHMARTIN GmbH",
+                   "work_place_name" => "",
                    "exp_loc_type_yn" => "1",
                    "test_reason_cohort" => "0",
                    "exp_loc_type_work_place" => "0",
                    "exp_loc_type_school_camp" => "0",
-                   "work_place_street" => "Neugasse 51",
+                   "work_place_street" => "",
                    "exp_loc_type_gathering" => "0",
                    "profession" => "M",
                    "reason_quar" => "1",
@@ -857,7 +884,7 @@ defmodule Hygeia.CaseContextTest do
                    "test_reason_symptoms" => "0",
                    "exp_loc_street" => "Torstrasse 25",
                    "ktn_internal_id" => "dd1911a3-a79f-4594-8439-5b0455569e9e",
-                   "work_place_country" => "8100",
+                   "work_place_country" => "",
                    "other_exp_loc_type_yn" => "0",
                    "phone_number" => "",
                    "exp_loc_type_nursing_home" => "0",
@@ -920,6 +947,18 @@ defmodule Hygeia.CaseContextTest do
         user = user_fixture()
         tenant = tenant_fixture()
 
+        organisation_jm =
+          organisation_fixture(%{
+            name: "JOSHMARTIN GmbH",
+            address: %{
+              address: "Neugasse 51",
+              zip: "9000",
+              place: "St. Gallen",
+              subdivision: "SG",
+              country: "CH"
+            }
+          })
+
         person_jony =
           person_fixture(tenant, %{
             first_name: "Jonatan",
@@ -937,16 +976,10 @@ defmodule Hygeia.CaseContextTest do
               %{type: :mobile, value: "+41787245790"},
               %{type: :landline, value: "+41522330689"}
             ],
-            employers: [
+            affiliations: [
               %{
-                name: "JOSHMARTIN GmbH",
-                address: %{
-                  address: "Neugasse 51",
-                  zip: "9000",
-                  place: "St. Gallen",
-                  subdivision: "SG",
-                  country: "CH"
-                }
+                kind: :employee,
+                organisation_uuid: organisation_jm.uuid
               }
             ]
           })
@@ -1189,7 +1222,7 @@ defmodule Hygeia.CaseContextTest do
                    "exp_loc_type_asyl" => "0",
                    "test_result" => "3",
                    "symptom_onset_dt" => "",
-                   "work_place_postal_code" => "9000",
+                   "work_place_postal_code" => "",
                    "vacc_name" => "",
                    "exp_loc_type_medical" => "0",
                    "vacc_dose" => "",
@@ -1200,7 +1233,7 @@ defmodule Hygeia.CaseContextTest do
                    "exp_loc_dt" => ^transmission_jony_jay_date,
                    "country" => "8100",
                    "exp_type" => "1",
-                   "work_place_name" => "JOSHMARTIN GmbH",
+                   "work_place_name" => "",
                    "exp_loc_type_work_place" => "0",
                    "exp_loc_type_school_camp" => "0",
                    "exp_loc_type_gathering" => "0",
@@ -1217,7 +1250,7 @@ defmodule Hygeia.CaseContextTest do
                    "test_reason_symptoms" => "0",
                    "exp_loc_street" => "Torstrasse 25",
                    "ktn_internal_id" => "fc705b72-2911-46d8-93f2-5d70b982d4d8",
-                   "work_place_country" => "8100",
+                   "work_place_country" => "",
                    "other_exp_loc_type_yn" => "0",
                    "reason_end_quar" => "",
                    "phone_number" => "",

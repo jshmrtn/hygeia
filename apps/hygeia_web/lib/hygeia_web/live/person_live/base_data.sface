@@ -286,74 +286,58 @@
                 </div>
               </div>
 
-              <div class="employment-grid mb-3">
-                <Inputs for={{ :employers }}>
+              <div class="affiliation-grid mb-3">
+                <Inputs for={{ :affiliations }}>
+                  <HiddenInput field={{ :uuid }} />
                   <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                    <div class="card">
+                    <div class="card" id={{ "affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}>
                       <div class="card-body">
-                        <Field name={{ :name }} class="form-group">
-                          <HygeiaWeb.FieldLabel />
-                          <TextInput class="form-control" field={{ :name }} opts={{ disabled: @live_action == :show }} />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-
-                        <Inputs for={{ :address }}>
-                          <HygeiaWeb.AddressForm
-                            disabled={{ @live_action == :show }}
-                            id={{ {Ecto.Changeset.fetch_field!(form.source, :uuid), :address} }}
-                          />
-                        </Inputs>
-
                         <div class="row">
                           <div class="col">
-                            <Field name={{ :supervisor_name }} class="form-group">
+                            <Field name={{ :kind }} class="form-group">
                               <HygeiaWeb.FieldLabel />
-                              <TextInput
+                              <Select
                                 class="form-control"
-                                field={{ :supervisor_name }}
-                                opts={{ disabled: @live_action == :show }}
+                                opts={{
+                                  prompt: pgettext("Affiliation", "Choose Kind"),
+                                  disabled: @live_action == :show
+                                }}
+                                options={{ affiliation_kinds() }}
                               />
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                           </div>
-                          <div class="col">
-                            <Field name={{ :supervisor_phone }} class="form-group">
+                          <div :if={{ Ecto.Changeset.fetch_field!(form.source, :kind) == :other }} class="col">
+                            <Field name={{ :kind_other }} class="form-group">
                               <HygeiaWeb.FieldLabel />
-                              <TextInput
-                                class="form-control"
-                                field={{ :supervisor_phone }}
-                                opts={{ disabled: @live_action == :show }}
-                                :if={{ @live_action == :edit }}
-                              />
-                              <Link
-                                :if={{@live_action == :show and
-                                  not (Ecto.Changeset.fetch_field!(form.source, :supervisor_phone) in ["", nil])}}
-                                to={{form.source
-                                |> Ecto.Changeset.fetch_field!(:supervisor_phone)
-                                |> ExPhoneNumber.parse("CH")
-                                |> case do
-                                  {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
-                                  _ -> nil
-                                end}}
-                              >
-                                {{ form.source
-                                |> Ecto.Changeset.fetch_field!(:supervisor_phone)
-                                |> ExPhoneNumber.parse("CH")
-                                |> case do
-                                  {:ok, number} -> ExPhoneNumber.format(number, :international)
-                                  _ -> nil
-                                end }}
-                              </Link>
+                              <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                           </div>
                         </div>
 
+                        <Field class="form-group" name={{ :comment }}>
+                          <HygeiaWeb.FieldLabel />
+                          <TextArea class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+
+                        <Field class="form-group" name={{ :organisation_uuid }}>
+                          <HygeiaWeb.FieldLabel />
+                          <HygeiaWeb.OrganisationLive.Choose
+                            id={{ {:affiliations, Ecto.Changeset.fetch_field!(form.source, :uuid), :organisation} }}
+                            change="select_affiliation_organisation"
+                            subject={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
+                            disabled={{ @live_action == :show }}
+                          />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+
                         <div :if={{ @live_action == :edit }}>
                           <button
                             type="button"
                             class="btn btn-danger"
-                            :on-click="remove_employer"
+                            :on-click="remove_affiliation"
                             phx-value-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
                           >
                             <span class="oi oi-trash" aria-hidden="true" />
@@ -369,10 +353,10 @@
                 :if={{ @live_action == :edit }}
                 type="button"
                 class="btn btn-secondary"
-                :on-click="add_employer"
+                :on-click="add_affiliation"
               >
                 <span class="oi oi-plus mr-1" aria-hidden="true" />
-                {{ gettext("New employer / employment") }}
+                {{ gettext("New affiliation") }}
               </button>
             </div>
           </div>
