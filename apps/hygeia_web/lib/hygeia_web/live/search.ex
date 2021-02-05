@@ -1,7 +1,7 @@
 defmodule HygeiaWeb.Search do
   @moduledoc false
 
-  use HygeiaWeb, :surface_live_component
+  use HygeiaWeb, :surface_view_bare
 
   import Ecto.Query
 
@@ -14,39 +14,42 @@ defmodule HygeiaWeb.Search do
   alias Surface.Components.Link
 
   data open, :boolean, default: false
+  data tenants, :list, default: []
   data query, :string, default: ""
   data results, :map, default: %{}
   data pending_search, :any, default: nil
 
-  @impl Phoenix.LiveComponent
-  def mount(socket) do
+  @impl Phoenix.LiveView
+  def mount(_params, _session, socket) do
     {:ok, assign(socket, tenants: TenantContext.list_tenants())}
   end
 
-  @impl Phoenix.LiveComponent
-  def update(
-        %{append_result: {key, result, pid}} = assigns,
+  @impl Phoenix.LiveView
+  def handle_info(
+        {:clear_pending_search, pid},
         %{assigns: %{pending_search: %Task{pid: pid}}} = socket
-      ) do
-    socket = assign(socket, Map.drop(assigns, [:append_result]))
-    socket = assign(socket, results: Map.put(socket.assigns.results, key, result))
-    {:ok, socket}
-  end
+      ),
+      do: {:noreply, assign(socket, pending_search: nil)}
+
+  # Clear arrived too late
+  def handle_info({:clear_pending_search, _pid}, socket), do: {:noreply, socket}
+
+  def handle_info(
+        {:append_result, {key, new_results}, pid},
+        %{assigns: %{results: results_before, pending_search: %Task{pid: pid}}} = socket
+      ),
+      do: {:noreply, assign(socket, results: Map.put(results_before, key, new_results))}
 
   # Result arrived too late
-  def update(
-        %{append_result: {_key, _result, result_pid}} = _assigns,
-        %{assigns: %{pending_search: %Task{pid: pending_pid}}} = socket
-      )
-      when result_pid != pending_pid do
-    {:ok, socket}
-  end
+  def handle_info({:append_result, {_key, _new_results}, _pid}, socket),
+    do: {:noreply, socket}
 
-  def update(assigns, socket) do
-    {:ok, assign(socket, assigns)}
-  end
+  # TODO: Report to LiveView as Bug
+  def handle_info({ref, msg}, socket) when is_reference(ref), do: handle_info(msg, socket)
 
-  @impl Phoenix.LiveComponent
+  def handle_info(_other, socket), do: {:noreply, socket}
+
+  @impl Phoenix.LiveView
   def handle_event("open", _params, socket) do
     {:noreply, assign(socket, :open, true)}
   end
@@ -55,19 +58,10 @@ defmodule HygeiaWeb.Search do
     {:noreply, search_results(socket, query)}
   end
 
-  defp search_results(socket, "") do
-    if socket.assigns.pending_search do
-      Task.shutdown(socket.assigns.pending_search)
-    end
-
-    assign(socket, results: %{}, query: "", pending_search: nil)
-  end
+  defp search_results(socket, ""),
+    do: assign(socket, results: %{}, query: "", pending_search: nil)
 
   defp search_results(socket, query) do
-    if socket.assigns.pending_search do
-      Task.shutdown(socket.assigns.pending_search)
-    end
-
     pid = self()
 
     task =
@@ -78,17 +72,17 @@ defmodule HygeiaWeb.Search do
         |> search_fns(socket)
         |> Enum.reject(&match?({_key, nil}, &1))
         |> Enum.map(fn {key, callback} ->
-          Task.async(fn -> run_search(key, callback, pid, socket, task_pid) end)
+          Task.async(fn -> run_search(key, callback, pid, task_pid) end)
         end)
         |> Enum.each(&Task.await/1)
 
-        send_update(pid, __MODULE__, id: socket.assigns.id, pending_search: nil)
+        send(pid, {:clear_pending_search, task_pid})
       end)
 
     assign(socket, query: query, results: %{}, pending_search: task)
   end
 
-  defp run_search(key, callback, pid, socket, task_pid) do
+  defp run_search(key, callback, pid, task_pid) do
     case callback.() do
       nil ->
         :ok
@@ -97,10 +91,7 @@ defmodule HygeiaWeb.Search do
         :ok
 
       [_ | _] = results ->
-        send_update(pid, __MODULE__,
-          id: socket.assigns.id,
-          append_result: {key, results, task_pid}
-        )
+        send(pid, {:append_result, {key, results}, task_pid})
 
         :ok
     end

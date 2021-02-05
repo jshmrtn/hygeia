@@ -12,7 +12,6 @@
           placeholder: gettext("Search"),
           name: "query",
           autocomplete: "off",
-          "phx-target": @myself,
           "phx-focus": "open"
         }}
         value={{ @query }}
