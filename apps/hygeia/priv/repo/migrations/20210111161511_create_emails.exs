@@ -4,7 +4,6 @@ defmodule Hygeia.Repo.Migrations.CreateEmails do
 
   use Hygeia, :migration
 
-  alias Ecto.Multi
   alias Hygeia.CommunicationContext.Direction
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
