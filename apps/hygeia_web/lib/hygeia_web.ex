@@ -58,7 +58,10 @@ defmodule HygeiaWeb do
       use Phoenix.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
-      use HygeiaWeb.LiveView
+      require HygeiaWeb.LiveView
+
+      HygeiaWeb.LiveView.mount()
+      HygeiaWeb.LiveView.handle_params()
 
       unquote(view_helpers())
     end
@@ -71,7 +74,10 @@ defmodule HygeiaWeb do
       use Surface.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
-      use HygeiaWeb.LiveView
+      require HygeiaWeb.LiveView
+
+      HygeiaWeb.LiveView.mount()
+      HygeiaWeb.LiveView.handle_params()
 
       unquote(view_helpers())
     end
@@ -82,6 +88,10 @@ defmodule HygeiaWeb do
     quote do
       use Surface.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
+
+      require HygeiaWeb.LiveView
+
+      HygeiaWeb.LiveView.mount()
 
       unquote(view_helpers())
     end

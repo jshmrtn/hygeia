@@ -1,7 +1,7 @@
 defmodule HygeiaWeb.LiveView do
   @moduledoc false
 
-  defmacro __using__(_opts) do
+  defmacro mount do
     quote do
       @impl Phoenix.LiveView
       def mount(_params, session, %{assigns: assigns} = socket) do
@@ -20,6 +20,12 @@ defmodule HygeiaWeb.LiveView do
          )}
       end
 
+      defoverridable mount: 3
+    end
+  end
+
+  defmacro handle_params do
+    quote do
       @impl Phoenix.LiveView
       def handle_params(params, uri, %{assigns: assigns} = socket) do
         {:noreply,
@@ -33,7 +39,7 @@ defmodule HygeiaWeb.LiveView do
          )}
       end
 
-      defoverridable mount: 3, handle_params: 3
+      defoverridable handle_params: 3
     end
   end
 end
