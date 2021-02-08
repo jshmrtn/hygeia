@@ -99,17 +99,27 @@ defmodule HygeiaWeb.CaseLive.CSVImport do
     |> Enum.map(fn {keys, value} ->
       {Enum.map(keys, &Access.key(&1, %{})), value}
     end)
-    |> Enum.reduce(%{}, fn {keys, value_new}, acc ->
-      update_in(acc, keys, fn
-        value_old when value_old == %{} ->
-          value_new
+    |> Enum.reduce(%{}, fn
+      {_keys, ""}, acc ->
+        acc
 
-        value_old when is_binary(value_old) and is_binary(value_new) ->
-          value_old <> " / " <> value_new
+      {_keys, nil}, acc ->
+        acc
 
-        _value_old ->
-          value_new
-      end)
+      {keys, value_new}, acc ->
+        update_in(acc, keys, fn
+          ^value_new ->
+            value_new
+
+          value_old when value_old == %{} ->
+            value_new
+
+          value_old when is_binary(value_old) and is_binary(value_new) ->
+            value_old <> " / " <> value_new
+
+          _value_old ->
+            value_new
+        end)
     end)
   end
 

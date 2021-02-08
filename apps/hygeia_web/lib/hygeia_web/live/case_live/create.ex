@@ -156,6 +156,30 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   def fetch_sex(field), do: field
 
+  @spec fetch_country(field :: {key :: [atom], value :: term}) :: {key :: [atom], value :: term}
+  def fetch_country({path, country} = field) when is_binary(country) do
+    with :country <- List.last(path),
+         locale = HygeiaCldr.get_locale().language,
+         upcase_country = String.upcase(country),
+         downcase_country = String.downcase(country),
+         country_ids = Cadastre.Country.ids(),
+         false <- upcase_country in country_ids,
+         %{^downcase_country => code} <-
+           Map.new(
+             country_ids,
+             &{&1 |> Cadastre.Country.new() |> Cadastre.Country.name(locale) |> String.downcase(),
+              &1}
+           ) do
+      {path, code}
+    else
+      field_name when is_atom(field_name) -> field
+      true -> field
+      %{} -> {path, nil}
+    end
+  end
+
+  def fetch_country(field), do: field
+
   @spec fetch_test_kind(field :: {key :: [atom], value :: term}) :: {key :: [atom], value :: term}
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def fetch_test_kind({[:clinical, :test_kind], kind}) do
@@ -232,6 +256,7 @@ defmodule HygeiaWeb.CaseLive.Create do
     |> fetch_test_kind()
     |> fetch_test_result()
     |> fetch_sex()
+    |> fetch_country()
     |> decide_phone_kind()
   end
 
