@@ -11,18 +11,52 @@
 
 <h1 style="margin-bottom: 10mm;">Anordnung zur Quarantäne</h1>
 
-<p class="p-4x-margin">Sie wurden uns von einer auf das neue Coronavirus (Sars-CoV-2) positiv getesteten oder an COVID-19 erkrankten Person als Kontaktperson gemeldet. Sie hatten ohne ausreichende Schutzmassnahmen einen engen Kontakt zur erwähnten Person (kumulativ mehr als 15 Minuten während der gesamten Ansteckungszeit mit einer Distanz von weniger als 1.5 Meter ohne Schutzmassnahmen wie Mundschutz bei beiden Personen). Es kann deshalb nicht ausgeschlossen werden, dass Sie sich selber angesteckt haben.</p>
+<p class="p-4x-margin">Sie hatten engen Kontakt mit einer Person, die positiv auf das Coronavirus getestet wurde. Sie haben damit eine grössere Wahrscheinlichkeit, dass Sie sich angesteckt haben und in den nächsten Tagen erkranken und andere Personen anstecken. Daher müssen Sie für 10 Tage in Quarantäne (gestützt auf Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG). Ziel dieser Quarantäne ist es, die Ausbreitung des Coronavirus einzudämmen. Ausgenommen von der Quarantäne ist nur, wer <i>innert der letzten drei Monate eine Infektion mit dem neuen Coronavirus durchgemacht hat, die mittels eines positiven PCR oder Schnelltests (von einem Nasen-Rachen-Abstrich) nachgewiesen wurde.</i></p>
 
-<p class="p-4x-margin">Gestützt auf das Epidemiengesetz (EpG) werden Sie deshalb einer 10-tägigen Quarantäne (zehn volle Tage ab dem letzten Kontakt zur infizierten/erkrankten Person) unterstellt (Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG).</p>
-<p class="p-4x-margin">Ihre Quarantäne dauert somit vom <%= HygeiaCldr.Date.to_string!(@phase.start) %> bis und mit <%= HygeiaCldr.Date.to_string!(@phase.end) %>.</p>
+<% last_contact_date = Enum.max(Enum.map(@case.received_transmissions, &(&1.date)), Date, fn -> nil end) %>
+<%= if last_contact_date != nil do %>
+  <p class="p-4x-margin">Der letzte Kontakt mit der erkrankten Person war am <%= Cldr.Date.to_string!(last_contact_date, HygeiaCldr) %>. Die 10 Tage berechnen sich ab diesem Datum.</p>
+<% end %>
+
+<p class="p-4x-margin">Wir haben seit heute Kenntnis von ihrem engen Kontakt, und sprechen darum eine
+Quarantäne aus von <%= HygeiaCldr.Date.to_string!(@phase.start) %> bis und mit <%= HygeiaCldr.Date.to_string!(@phase.end) %>.</p>
+
+<b class="p-2x-margin"><i>Weitere Informationen</i></b>
+
 <p class="p-2x-margin">Hier finden Sie das <a href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/merkblatt-selbstquarantaene.pdf.download.pdf/covid-19_anweisungen_quarantaene.pdf">Merkblatt</a> vom Bundesamt für Gesundheit (BAG) zur Quarantäne auf Deutsch und in weiteren Sprachen <a href="https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/faq-kontakte-downloads/downloads-in-verschiedenen-sprachen.html">hier</a>.</p>
-<p class="p-2x-margin">Ziel dieser Quarantäne ist es, die Ausbreitung des Coronavirus einzudämmen und weitere Personen vor einer Ansteckung zu schützen.</p>
 
-<p class="p-2x-margin">Das Contact Tracing Sankt Gallen, welches bisher auch die Kontaktpersonennachverfolgung für Appenzell Ausserrhoden durchgeführt hat, kann bei hohen Fallzahlen vorübergehend nur die zeitnahe telefonische Kontaktaufnahme mit den erkrankten Personen und den im gleichen Haushalt lebenden Familienangehörigen sicherstellen. Da es jedoch gerade jetzt besonders wichtig ist, eine ungebremste Weiterverbreitung des Virus einzudämmen, haben wir alle neu diagnostizieren Personen in unserem Kantonen darum gebeten alle ihre engen Kontaktpersonen selbstständig möglichst rasch darüber zu informieren, dass sie sich in Quarantäne begeben müssen. Auch wenn es die hohen Fallzahlen dem Tracing Team allenfalls nicht erlauben Sie persönlich telefonisch zu kontaktieren, möchten wir Ihnen aber auf diesem Weg dafür danken, dass Sie durch Ihr Verhalten im Alltag und durch die Befolgung der Quarantäneanordnung die Eindämmung der Pandemie in Appenzell Ausserrhoden unterstützen.</p>
+<p class="p-2x-margin">Häufig gestellte Fragen (FAQs) und deren Beantwortung finden Sie auf der Webseite des <a href="https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/haeufig-gestellte-fragen.html">BAG</a>.<br />
+Die Informationshotline des BAG erreichen sie unter 058 463 00 00 (täglich 06.00 – 23.00 Uhr).<br>
+Die kantonale Hotline erreichen Sie unter +41 71 353 67 97 (Montag bis Freitag, 8.30 bis 12.15 und von 13.30 bis 17 Uhr, Samstag von 8.30 bis 11 Uhr).<br>
+Bei dringenden Fragen oder Unklarheiten zur Ihrer Quarantäne erreichen sie das Tracing Team wie folgt:infoline@sg.ch oder Kontaktformular oder per Telefon 058 229 22 33
+</p>
 
-<div style="page-break-before: always;"></div>
+<p class="p-4x-margin">
+Bei medizinischen Notfällen wenden Sie sich bitte an Ihren Hausarzt, die Notrufzentrale (144, rund um die Uhr) oder den medizinischen Notfalldienst für die Bevölkerung im Kanton Appenzell Ausserrhoden (0844 55 00 55, rund um die Uhr).
+</p>
 
-<p class="p-4x-margin">Überwachen Sie während der gesamten Quarantäne-Zeit Ihren Gesundheitszustand und lassen Sie sich beim Auftreten von Symptomen testen. Melden Sie sich immer zuerst telefonisch in der Arztpraxis, über die Hotline des Kantons für das Testzentrum in Teufen (+41 71 353 67 97 Montag bis Freitag, 8.30 bis 12.15 und von 13.30 bis 17 Uhr, Samstag von 8.30 bis 11 Uhr) oder bei schweren Symptomen über die Testhotline des SVAR (071 353 26 54, täglich 09.00 – 11.30 Uhr und 13.30 – 16.30 Uhr) an. Das kantonale Testzentrum ist von Montag bis Freitag geöffnet und steht ausschliesslich Bewohnerinnen und Bewohnern der Kantone Appenzell Ausserrhoden und Appenzell Innerrhoden sowie Berufstätigen in diesem Gebiet zur Verfügung. Das Testzentrum bietet insbesondere Personen mit nur leichten Symptomen, die keine ärztliche Untersuchung benötigen, eine Testmöglichkeit.</p>
+<b class="p-2x-margin"><i>Verhalten beim Auftreten von Symptomen</i></b>
+<p>
+Überwachen Sie während der gesamten Quarantäne-Zeit Ihren Gesundheitszustand und lassen Sie sich beim Auftreten von Symptomen sofort testen.
+</p>
+Symptome die möglicherweise zum Coronavirus passen:
+<ul class="p-4x-margin">
+  <li>Husten (meist trocken)</li>
+  <li>Kurzatmigkeit</li>
+  <li>Fieber, Fiebergefühl</li>
+  <li>Muskelschmerzen</li>
+  <li>Plötzlicher Verlust des Geruchs- und/oder Geschmackssinns</li>
+  <li>Kopfschmerzen</li>
+  <li>Allgemeine Schwäche, Unwohlsein</li>
+  <li>Muskelschmerzen</li>
+  <li>Schnupfen</li>
+  <li>Magen-Darm-Symptome (Übelkeit, Erbrechen, Durchfall, Bauchschmerzen)</li>
+  <li>Hautausschläge</li>
+</ul>
+
+<p class="p-4x-margin">
+  Melden Sie sich immer zuerst telefonisch in der Arztpraxis, über die Hotline des Kantons für das Testzentrum in Teufen (+41 71 353 67 97 Montag bis Freitag, 8.30 bis 12.15 und von 13.30 bis 17 Uhr, Samstag von 8.30 bis 11 Uhr) oder bei schweren Symptomen über die Testhotline des SVAR (071 353 26 54, täglich 09.00 – 11.30 Uhr und 13.30 – 16.30 Uhr) an. Das kantonale Testzentrum ist von Montag bis Freitag geöffnet und steht ausschliesslich Bewohnerinnen und Bewohnern der Kantone Appenzell Ausserrhoden und Appenzell Innerrhoden sowie Berufstätigen in diesem Gebiet zur Verfügung. Das Testzentrum bietet insbesondere Personen mit nur leichten Symptomen, die keine ärztliche Untersuchung benötigen, eine Testmöglichkeit.
+</p>
 
 Wichtig:
 <ul class="p-4x-margin">
@@ -30,35 +64,39 @@ Wichtig:
   <li>Auch bei negativem Ergebnis müssen Sie die vollen 10 Tage in Quarantäne bleiben.</li>
 </ul>
 
-Symptome des neuen Coronavirus:
-<ul class="p-4x-margin">
-  <li>Husten</li>
-  <li>Kurzatmigkeit</li>
-  <li>Fieber, Fiebergefühl</li>
-  <li>Plötzlicher Verlust des Geruchs- und/oder Geschmackssinns</li>
-  <li>Seltener auch Kopfschmerzen, Muskelschmerzen, allgemeine Schwäche, Schnupfen, Magen-Darm-Symptome (etwa Übelkeit, Erbrechen, Durchfall, Bauchschmerzen) oder Hautausschläge</li>
-</ul>
-
-<p class="p-4x-margin"><i>Ausgenommen von der Quarantäne ist nur, wer innerhalb der letzten drei Monate eine Infektion mit dem neuen Coronavirus durchgemacht hat, die mittels eines positiven PCR-Tests (von einem Nasen-Rachen-Abstrich) nachgewiesen wurde.</i></p>
-
-<p class="p-4x-margin">Häufig gestellte Fragen (FAQs) und deren Beantwortung finden Sie auf der Webseite des <a href="https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/haeufig-gestellte-fragen.html">BAG</a>.<br />
-Die Informationshotline des BAG erreichen sie unter 058 463 00 00 (täglich 06.00 – 23.00 Uhr).
+<b class="p-2x-margin">
+  <i>Möglichkeit zur Testung ohne Symptome</i>
+</b>
+<p>
+In bestimmten Fällen kann ein Test vor dem 7. Tag ärztlich verordnet werden. Ein solcher Test ermöglicht keine Verkürzung der Quarantäne.
 </p>
 
-<p class="p-4x-margin">Bei dringenden Fragen oder Unklarheiten zur Ihrer Quarantäne erreichen sie das Tracing Team wie folgt:
-<a href="mailto:infoline@sg.ch">infoline@sg.ch</a> oder <a href="https://www.sg.ch/tools/informationen-coronavirus/Kontaktformular_Corona_Virus/">Kontaktformular</a> oder per Telefon 058 229 22 33</p>
+<b class="p-2x-margin">
+  <i>Beendigung der Quarantäne</i>
+</b>
+<p>
+  Ihre Quarantäne ist automatisch um 24.00 Uhr des letzten Tages beendet, sofern Sie zu diesem Zeitpunkt keine der oben erwähnten Symptome haben.
+</p>
 
-<p class="p-4x-margin">Bei medizinischen Notfällen wenden Sie sich bitte an Ihren Hausarzt, die Notrufzentrale (144, rund um die Uhr) oder den medizinischen Notfalldienst für die Bevölkerung im Kanton Appenzell Ausserrhoden (0844 55 00 55, rund um die Uhr)</p>
-
-<p class="p-4x-margin">Nach Ende der Quarantäne befolgen Sie bitte für mindestens 4 weitere Tage besondere Vorsichtsmassnahmen: achten Sie gut auf Ihren Gesundheitszustand, halten Sie die Hygieneregeln ein, tragen Sie eine Maske wenn Sie Kontakt zu anderen Menschen haben, meiden Sie Menschenansammlungen und verzichten Sie wenn möglich auf Kontakte zu Personen die der Risikogruppe angehören.</p>
+<p class="p-4x-margin">
+Nach Ende der Quarantäne befolgen Sie bitte für mindestens 4 weitere Tage besondere Vorsichtsmassnahmen: achten Sie gut auf Ihren Gesundheitszustand, halten Sie die Hygieneregeln ein, tragen Sie eine Maske wenn Sie Kontakt zu anderen Menschen haben, meiden Sie Menschenansammlungen und verzichten Sie wenn möglich auf Kontakte zu Personen die der Risikogruppe angehören.<br>
+Wenn Sie die Quarantäne vorzeitig beenden möchten, müssen Sie uns ein negatives Testresultat vorweisen. Den Test dafür (Schnelltest oder PCR-Test) können Sie frühestens ab dem 7. Tag nach Beginn der Quarantäne auf eigene Kosten durchführen lassen. Im Fall einer früheren Beendigung der Quarantäne gelten jedoch bis die normale 10 tägige Quarantänezeit abgelaufen gewesen wäre besondere Sicherheitsauflagen. So müssen Sie ausserhalb Ihrer Wohnung stets eine Maske tragen und jederzeit einen Abstand von mindestens 1.5m zu anderen Personen einhalten. Wenn Sie beabsichtigen durch die vorzeitige Beendigung der Quarantäne frühzeitig an Ihren Arbeitsplatz zurückzukehren, nehmen Sie bitte vorgängig mit dem Arbeitgeber Kontakt auf um abzuklären ob eine konsequente Umsetzung des vorgeschriebenen Abstands überhaupt möglich ist.
+</p>
 
 <div style="page-break-before: always;"></div>
 
-<p class="p-4x-margin"><i>Bitte nehmen Sie zur Kenntnis, dass grundsätzlich mit Busse bestraft werden kann, wer der Quarantäneanordnung vorsätzlich oder fahrlässig zuwiderhandelt (Art. 83 Abs. 1 lit. h und Abs. 2 EpG).</i></p>
+<p class="p-4x-margin">
+  Bitte senden Sie in diesem Fall die Bestätigung des negativen Testergebnis per Mail an
+  <a href="mailto:info.contacttracing@sg.ch">info.contacttracing@sg.ch</a>. Sie erhalten dann eine Bestätigung zur frühzeitigen Aufhebung der Quarantäne.
+</p>
+
+<p>
+  Bitte beachten Sie, dass eine frühzeitige Beendigung der Quarantäne leider nicht möglich ist, wenn bei Ihrer positiv getesteten Kontaktperson eine der neuen hochansteckenden Mutationen des Coronavirus nachgewiesen wurde.
+</p>
 
 <%= if length(@case.person.employers) > 0 do %>
   <p class="p-2x-margin">
-    <strong>Arbeitgeberbestätigung:</strong><br />
+    <b class="p-2x-margin"><i>Arbeitgeberbestätigung:</i></b><br />
     Dieses Schreiben gilt als Nachweis der Verpflichtung, sich in Quarantäne begeben zu müssen und gilt als Bestätigung gegenüber der Arbeitgeberin/dem Arbeitgeber, der SVA und/oder einer allfälligen Versicherung.
   </p>
 
@@ -75,6 +113,10 @@ Die Informationshotline des BAG erreichen sie unter 058 463 00 00 (täglich 06.0
     <% end %>
   </div>
 <% end %>
+
+<p class="p-4x-margin">
+Bitte nehmen Sie zur Kenntnis, dass grundsätzlich mit Busse bestraft werden kann, wer der Quarantäneanordnung vorsätzlich oder fahrlässig zuwiderhandelt (Art. 83 Abs. 1 lit. h und Abs. 2 EpG).
+</p>
 
 <p class="p-4x-margin">Ich wünsche Ihnen in dieser heraufordernden Zeit alles Gute. Geben Sie auf sich und Ihre Nächsten acht.</p>
 

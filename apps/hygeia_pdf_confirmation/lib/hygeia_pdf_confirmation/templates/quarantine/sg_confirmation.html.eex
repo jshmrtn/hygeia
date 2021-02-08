@@ -27,7 +27,10 @@
 <h1>Anordnung zur Quarantäne</h1>
 
 <p>
-  Sie hatten engen Kontakt mit einer Person, die positiv auf das Coronavirus getestet wurde. Sie haben damit eine grössere Wahrscheinlichkeit, dass Sie sich angesteckt haben und in den nächsten Tagen erkranken. Daher müssen Sie für 10 Tage in Quarantäne (gestützt auf Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG). Ziel dieser Quarantäne ist es, die Ausbreitung des Coronavirus einzudämmen..
+  Sie hatten engen Kontakt mit einer Person, die positiv auf das Coronavirus getestet wurde. Sie haben damit eine grössere Wahrscheinlichkeit, dass Sie sich angesteckt haben und in den nächsten Tagen erkranken. Daher müssen Sie für 10 Tage in Quarantäne (gestützt auf Art. 35 Abs. 1 lit. a i.V.m. Art. 31 Abs. 3 und 4 EpG). Ziel dieser Quarantäne ist es, die Ausbreitung des Coronavirus einzudämmen.<br>
+  Ausgenommen von der Quarantäne ist nur, wer innert der letzten drei Monate eine
+  Infektion mit dem neuen Coronavirus durchgemacht hat, die mittels eines positiven
+  PCR oder Schnelltests (von einem Nasen-Rachen-Abstrich) nachgewiesen wurde.
 </p>
 
 <% last_contact_date = Enum.max(Enum.map(@case.received_transmissions, &(&1.date)), Date, fn -> nil end) %>
@@ -42,19 +45,27 @@
 </p>
 
 <p>
-  Via untenstehenden Link finden Sie das <a href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/merkblatt-selbstquarantaene.pdf.download.pdf/covid-19_anweisungen_quarantaene.pdf">Merkblatt</a> vom Bundesamt für Gesundheit (BAG) zur <strong>Quarantäne</strong>. Alles über das Contact Tracing im Kanton St.Gallen finden Sie <a href="https://www.sg.ch/tools/informationen-coronavirus/contact-tracing.html">hier</a>.Bitte befolgen Sie die entsprechenden Verhaltensanweisungen. Überwachen Sie während der gesamten Quarantäne-Zeit Ihren Gesundheitszustand und lassen Sie sich beim Auftreten von Symptomen (siehe Auflistung unten) sofort testen. Melden Sie sich immer telefonisch in der Arztpraxis an und nehmen Sie zur Bestätigung diese E-Mail mit. Wichtig:
+  Weiter Informationen:<br>
+  Via untenstehenden Link finden Sie das <a href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/merkblatt-selbstquarantaene.pdf.download.pdf/covid-19_anweisungen_quarantaene.pdf">Merkblatt</a> vom Bundesamt für Gesundheit (BAG) zur <strong>Quarantäne</strong>. Alles über das Contact Tracing im Kanton St.Gallen finden Sie <a href="https://www.sg.ch/tools/informationen-coronavirus/contact-tracing.html">hier</a>.Bitte befolgen Sie die entsprechenden Verhaltensanweisungen.
 </p>
 
-<ul>
-  <li>
-    Wenn ein Besuch in der Arztpraxis nötig ist und Sie das Haus verlassen müssen: Tragen Sie eine Hygienemaske und halten Sie Abstand zu allen Personen. Nutzen sie dafür nicht den öffentlichen Verkehr.
-  </li>
-  <li>
-    Auch bei negativem Ergebnis müssen Sie die vollen 10 Tage in Quarantäne bleiben.
-  </li>
-</ul>
-
 <p>
+  Häufig gestellte Fragen (FAQs) und deren Beantwortung finden Sie <a href="https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/haeufig-gestellte-fragen.html">hier</a>. Bei
+  dringenden Fragen oder Unklarheiten erreichen sie uns wie folgt:
+</p>
+<p>
+  <a href="mailto:infoline@sg.ch">infoline@sg.ch</a> oder <a href="https://www.sg.ch/tools/informationen-coronavirus/Kontaktformular_Corona_Virus/">Kontaktformular</a> oder per Telefon 058 229 22 33
+</p>
+<p>
+  Wir werden Ihre Anfragen schnellstmöglich beantworten. Bei medizinischen Notfällen
+  wenden Sie sich bitte an Ihren Hausarzt oder den diensthabenden Notfallarzt.
+</p>
+
+<div style="page-break-before: always;"></div>
+
+<h2>Verhalten beim Auftreten von Symptomen:</h2>
+<p>
+  Lassen Sie sich beim Auftreten von Symptomen sofort testen.<br>
   Symptome die möglicherweise zum Coronavirus passen:
 </p>
 
@@ -72,26 +83,25 @@
   <li>Hautausschläge</li>
 </ul>
 
+<p>Bitte melden Sie sich vor Tests immer telefonisch in der Arztpraxis an und nehmen Sie zur Bestätigung diese E-Mail mit. Wichtig: Wenn ein Besuch in der Arztpraxis nötig ist und Sie das Haus verlassen müssen: Tragen Sie eine Hygienemaske und halten Sie Abstand zu allen Personen. Nutzen sie dafür nicht den öffentlichen Verkehr.</p>
+
+<h2>Möglichkeit zur Testung ohne Symptome:</h2>
 <p>
-  Ausgenommen von der Quarantäne ist nur, wer <em>innert der letzten drei Monate eine Infektion mit dem neuen Coronavirus durchgemacht hat, die mittels eines positiven PCR oder Schnelltests (von einem Nasen-Rachen-Abstrich) nachgewiesen wurde.</em>
+  Sie haben die Möglichkeit, sich einmal ab dem 5. Tag nach Beginn der Quarantäne auch ohne Symptome kostenlos testen zu lassen (Schnelltest oder PCR-Test). Bitte nehmen Sie zur Kenntnis, dass Sie dieser Test auch bei negativem Resultat <u>nicht</u> von der Quarantänepflicht befreit.
 </p>
 
-<p class="p-2x-margin">
-  Häufig gestellte Fragen (FAQs) und deren Beantwortung finden Sie
-  <a href="https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/haeufig-gestellte-fragen.html">hier</a>.
-  Bei dringenden Fragen oder Unklarheiten erreichen sie uns wie folgt:
+<h2>Beendigung der Quarantäne:</h2>
+
+<p>
+  Ihre Quarantäne ist automatisch um 24.00 Uhr des letzten Tages beendet, sofern Sie zu diesem Zeitpunkt keine der oben erwähnten Symptome haben.
 </p>
 
-<p class="p-2x-margin">
-  <a href="mailto:infoline@sg.ch">infoline@sg.ch</a> oder
-  <a href="https://www.sg.ch/tools/informationen-coronavirus/Kontaktformular_Corona_Virus/">Kontaktformular</a>
-  oder per Telefon <a href="tel:+41-58-229-22-33">058 229 22 33</a>
+<p>
+  Wenn Sie die Quarantäne vorzeitig beenden möchten, müssen Sie uns ein negatives Testresultat vorweisen. Den Test dafür (Schnelltest oder PCR-Test) können Sie frühestens ab dem 7. Tag nach Beginn der Quarantäne durchführen lassen. Dieser Test ist kostenpflichtig, sofern Sie bereits den oben erwähnten Test nach 5 Tagen gemacht haben.<br>
+  Bitte senden Sie in diesem Fall die Bestätigung des negativen Testergebnis per Mail an <a href="mailto:info.contacttracing@sg.ch">info.contacttracing@sg.ch</a>. Sie erhalten dann eine Bestätigung zur frühzeitigen Aufhebung der Quarantäne.
 </p>
 
-<p class="p-2x-margin">
-  Wir werden Ihre Anfragen schnellstmöglich beantworten. Bei medizinischen Notfällen wenden Sie sich bitte an Ihren
-  Hausarzt oder den diensthabenden Notfallarzt.
-</p>
+<div style="page-break-before: always;"></div>
 
 <h2>Arbeitgeberbestätigung:</h2>
 
@@ -117,8 +127,9 @@
 <% end %>
 
 <p class="p-4x-margin">
-  Bitte nehmen Sie zur Kenntnis, dass grundsätzlich mit Busse bestraft werden kann, wer der Quarantäneanordnung vorsätzlich
-  oder fahrlässig zuwiderhandelt (Art. 83 Abs. 1 lit. h und Abs. 2 EpG).
+  Bitte nehmen Sie zur Kenntnis, dass grundsätzlich mit Busse bestraft werden kann,
+wer der Quarantäneanordnung vorsätzlich oder fahrlässig zuwiderhandelt (Art. 83
+Abs. 1 lit. h und Abs. 2 EpG).
 </p>
 
 <p class="p-2x-margin">
