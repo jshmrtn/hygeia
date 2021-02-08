@@ -5,6 +5,7 @@ defmodule Hygeia.OrganisationContext do
 
   use Hygeia, :context
 
+  alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
@@ -25,6 +26,55 @@ defmodule Hygeia.OrganisationContext do
   @spec list_organisations_query :: Ecto.Queryable.t()
   def list_organisations_query,
     do: from(organisation in Organisation, order_by: organisation.name)
+
+  @spec list_organisations_by_ids(ids :: [String.t()]) :: [Organisation.t()]
+  def list_organisations_by_ids(ids)
+  def list_organisations_by_ids([]), do: []
+
+  def list_organisations_by_ids(ids),
+    do:
+      Repo.all(from(organisation in list_organisations_query(), where: organisation.uuid in ^ids))
+
+  @spec list_possible_organisation_duplicates(organisation :: Organisation.t()) ::
+          Ecto.Queryable.t()
+  def list_possible_organisation_duplicates(
+        %Organisation{name: name, address: address, uuid: uuid} = _organisation
+      ),
+      do:
+        list_organisations_query()
+        |> filter_similar_organisation_names(name)
+        |> filter_same_organisation_address(address)
+        |> remove_uuid(uuid)
+        |> Repo.all()
+
+  defp filter_similar_organisation_names(query, name),
+    do: from(organisation in query, where: fragment("? % ?", ^name, organisation.name))
+
+  defp filter_same_organisation_address(query, nil), do: query
+
+  defp filter_same_organisation_address(query, %Address{address: nil}), do: query
+  defp filter_same_organisation_address(query, %Address{address: ""}), do: query
+
+  defp filter_same_organisation_address(query, %Address{
+         address: address,
+         zip: zip,
+         place: place,
+         country: country
+       }),
+       do:
+         from(organisation in query,
+           or_where:
+             fragment(
+               "? <@ ?",
+               ^%{address: address, zip: zip, place: place, country: country},
+               organisation.address
+             )
+         )
+
+  defp remove_uuid(query, nil), do: query
+
+  defp remove_uuid(query, uuid),
+    do: from(organisation in query, where: organisation.uuid != ^uuid)
 
   @spec fulltext_organisation_search_query(query :: String.t(), limit :: pos_integer()) ::
           Ecto.Query.t()

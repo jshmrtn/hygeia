@@ -7,6 +7,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
 
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
+  alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Position
 
   @derive {Phoenix.Param, key: :uuid}
@@ -43,6 +44,8 @@ defmodule Hygeia.OrganisationContext.Organisation do
       join_through: "case_related_organisations",
       join_keys: [organisation_uuid: :uuid, case_uuid: :uuid]
 
+    field :suspected_duplicates_uuid, {:array, :binary_id}, virtual: true, default: []
+
     timestamps()
   end
 
@@ -55,7 +58,21 @@ defmodule Hygeia.OrganisationContext.Organisation do
     |> validate_required([:name])
     |> cast_embed(:address)
     |> cast_assoc(:positions)
+    |> check_duplicates()
   end
+
+  defp check_duplicates(%Ecto.Changeset{valid?: true} = changeset),
+    do:
+      put_change(
+        changeset,
+        :suspected_duplicates_uuid,
+        changeset
+        |> apply_changes()
+        |> OrganisationContext.list_possible_organisation_duplicates()
+        |> Enum.map(& &1.uuid)
+      )
+
+  defp check_duplicates(changeset), do: changeset
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.OrganisationContext.Organisation

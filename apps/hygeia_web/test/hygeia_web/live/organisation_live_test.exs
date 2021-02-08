@@ -114,5 +114,29 @@ defmodule HygeiaWeb.OrganisationLiveTest do
       assert html =~ "Organisation updated successfully"
       assert html =~ "some updated name"
     end
+
+    test "show suspected duplicate", %{conn: conn, organisation: orga_show} do
+      orga_duplicate_name =
+        organisation_fixture(%{
+          name: "JOHSMARTIN GmbH",
+          address: nil
+        })
+
+      orga_duplicate_address =
+        organisation_fixture(%{
+          name: "Other Company",
+          address: %{
+            address: "Neugasse 51",
+            zip: "9000",
+            place: "St. Gallen",
+            country: "CH"
+          }
+        })
+
+      {:ok, _show_live, html} = live(conn, Routes.organisation_show_path(conn, :show, orga_show))
+
+      assert html =~ orga_duplicate_name.uuid
+      assert html =~ orga_duplicate_address.uuid
+    end
   end
 end

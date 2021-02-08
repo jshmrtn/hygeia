@@ -8,6 +8,24 @@
     {{ gettext("New organisation") }}
   </h1>
 
+  <div
+    :for={{%Organisation{name: name} = organisation <-
+      @changeset
+      |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+      |> Enum.take(5)
+      |> OrganisationContext.list_organisations_by_ids()}}
+    class="alert alert-warning"
+  >
+    {{ "This organisation is possibly a duplicate of %{name_link}, please check."
+    |> gettext(
+      name_link:
+        name
+        |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
+        |> safe_to_string
+    )
+    |> raw }}
+  </div>
+
   <div class="hy-card-grid-2-cols">
     <div class="card mb-3">
       <div class="card-body">
