@@ -138,15 +138,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     validate_change(changeset, :date, fn :date, value ->
       diff = Date.diff(Date.utc_today(), value)
 
-      cond do
-        diff > 10 ->
-          [{:date, dgettext("errors", "date must not be older than 10 days")}]
+      # TODO: Correct Validation Rules
+      # diff > 10 ->
+      #   [{:date, dgettext("errors", "date must not be older than 10 days")}]
 
-        diff < 0 ->
-          [{:date, dgettext("errors", "date must not be in the future")}]
-
-        true ->
-          []
+      if diff < 0 do
+        [{:date, dgettext("errors", "date must not be in the future")}]
+      else
+        []
       end
     end)
   end
