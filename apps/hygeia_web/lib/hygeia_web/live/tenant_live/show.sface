@@ -310,6 +310,23 @@
               </Inputs>
             </div>
           </div>
+
+          <div class="card" :if={{ Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) }}>
+            <Inputs for={{ :template_parameters }}>
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Template Parameters") }}</h4>
+                <div class="row">
+                  <div class="col">
+                    <Field name={{ :message_sender }} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </div>
+              </div>
+            </Inputs>
+          </div>
         </div>
       </HygeiaWeb.Lock>
     </Form>

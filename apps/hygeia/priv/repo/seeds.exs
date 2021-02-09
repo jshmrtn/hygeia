@@ -58,6 +58,10 @@ tenants =
            recipient_id: "***REMOVED***",
            recipient_public_key: internal_public_key,
            schedule: "0 * * * *"
+         },
+         template_parameters: %{
+           message_sender:
+             "Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS"
          }
        }}
 
@@ -80,6 +84,10 @@ tenants =
            recipient_id: "***REMOVED***",
            recipient_public_key: internal_public_key,
            schedule: "0 * * * *"
+         },
+         template_parameters: %{
+           message_sender:
+             "Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS"
          }
        }}
 

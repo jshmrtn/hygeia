@@ -49,10 +49,6 @@ msgstr "Datum ist zu weit entfernt von Heute"
 msgid "date must not be in the future"
 msgstr "Datum darf nicht in Zukunft sein"
 
-#, elixir-format
-msgid "date must not be older than 10 days"
-msgstr "Datum darf nicht älter als 10 Tage sein"
-
 # # From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
 msgstr "entspricht nicht der Bestätigung"

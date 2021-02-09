@@ -49,20 +49,7 @@ msgid ""
 "Should you continue to feel ill, please contact your general practitioner.\n"
 "\n"
 "Kind Regards,\n"
-"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
-"Kantonaler Führungsstab: KFS\n"
-msgstr ""
-
-msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"Your isolation period ends tomorrow. If you did not experience any fever or "
-"coughs with sputum, you're allowed to leave isolation.\n"
-"Should you continue to feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
-"Kantonaler Führungsstab: KFS\n"
+"%{message_sender}\n"
 msgstr ""
 
 msgid ""
@@ -74,8 +61,7 @@ msgid ""
 "Should you feel ill, please contact your general practitioner.\n"
 "\n"
 "Kind Regards,\n"
-"Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden "
-"Kantonaler Führungsstab: KFS\n"
+"%{message_sender}\n"
 msgstr ""
 
 msgid ""
@@ -246,24 +232,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"You have been identified as a contact person of a person with corona.\n"
-"Therefore you have to self quarantine.\n"
-"Details: %{quarantine_confirmation_link}\n"
-msgstr ""
-
-msgid ""
 "You have been requested to enter personal data from all persons with which "
 "you have had contact with for more than 15 minutes without wearing a mask."
-msgstr ""
-
-msgid ""
-"You have been tested positive for the corona virus.\n"
-"Therefore you have to self isolate.\n"
-"Details: %{isolation_confirmation_link}\n"
-"To ensure the contact tracing we need to record personal details of your "
-"contacts.\n"
-"You can enter persons you had contact with here: "
-"%{possible_index_submission_link}\n"
 msgstr ""
 
 msgid "%{phase_type} (%{date})"
@@ -1480,6 +1450,10 @@ msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Message"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.TenantContext.Tenant.TemplateParameters Field"
+msgid "Message Sender"
+msgstr ""
+
 msgid "Meta"
 msgstr ""
 
@@ -2554,6 +2528,9 @@ msgstr ""
 msgid "Take Me Home"
 msgstr ""
 
+msgid "Template Parameters"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Template Variation"
 msgstr ""
@@ -2874,7 +2851,7 @@ msgstr ""
 msgid "Where does %{first_name} %{last_name} live?"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "Where does %{first_name} %{last_name} work?"
 msgstr ""
 
@@ -2907,7 +2884,13 @@ msgstr ""
 msgid "You had contact for more than 15 minutes on the same day."
 msgstr ""
 
+msgid "You have been identified as a contact person of a person with corona.\nTherefore you have to self quarantine.\nDetails: %{quarantine_confirmation_link}\n\nKind Regards,\n%{message_sender}\n"
+msgstr ""
+
 msgid "You have been logged out!"
+msgstr ""
+
+msgid "You have been tested positive for the corona virus.\nTherefore you have to self isolate.\nDetails: %{isolation_confirmation_link}\nTo ensure the contact tracing we need to record personal details of your contacts.\nYou can enter persons you had contact with here: %{possible_index_submission_link}\n\nKind Regards,\n%{message_sender}\n"
 msgstr ""
 
 msgid "You must provide a reason for completing a phase."

@@ -12,6 +12,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
   alias Hygeia.CommunicationContext
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
+  alias Hygeia.TenantContext.Tenant
 
   case Mix.env() do
     :dev -> @default_refresh_interval_ms :timer.seconds(30)
@@ -67,32 +68,38 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
     GenServer.cast(server, :refresh)
   end
 
-  @spec text(phase :: Phase.t()) :: String.t()
-  defp text(%Phase{details: %Phase.Index{}}),
+  @spec text(phase :: Phase.t(), tenant :: Tenant.t()) :: String.t()
+  defp text(%Phase{details: %Phase.Index{}}, tenant),
     do:
-      gettext("""
-      Dear Sir / Madam,
+      gettext(
+        """
+        Dear Sir / Madam,
 
-      Your isolation period ends tomorrow. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
+        Your isolation period ends tomorrow. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
 
-      Should you continue to feel ill, please contact your general practitioner.
+        Should you continue to feel ill, please contact your general practitioner.
 
-      Kind Regards,
-      Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS
-      """)
+        Kind Regards,
+        %{message_sender}
+        """,
+        message_sender: Tenant.get_message_sender_text(tenant)
+      )
 
-  defp text(%Phase{details: %Phase.PossibleIndex{}}),
+  defp text(%Phase{details: %Phase.PossibleIndex{}}, tenant),
     do:
-      gettext("""
-      Dear Sir / Madam,
+      gettext(
+        """
+        Dear Sir / Madam,
 
-      Your quarantine period ends tomorrow. If you do not currently experience any symptoms, you're allowed to leave quarantine.
+        Your quarantine period ends tomorrow. If you do not currently experience any symptoms, you're allowed to leave quarantine.
 
-      Should you feel ill, please contact your general practitioner.
+        Should you feel ill, please contact your general practitioner.
 
-      Kind Regards,
-      Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS
-      """)
+        Kind Regards,
+        %{message_sender}
+        """,
+        message_sender: Tenant.get_message_sender_text(tenant)
+      )
 
   @spec email_subject(phase :: Phase.t()) :: String.t()
   def email_subject(%Phase{details: %Phase.Index{}}),
@@ -101,11 +108,11 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
   def email_subject(%Phase{details: %Phase.PossibleIndex{}}),
     do: gettext("Quarantine Period End")
 
-  @spec email_body(phase :: Phase.t()) :: String.t()
-  def email_body(phase), do: text(phase)
+  @spec email_body(phase :: Phase.t(), tenant :: Tenant.t()) :: String.t()
+  def email_body(phase, tenant), do: text(phase, tenant)
 
-  @spec sms_text(phase :: Phase.t()) :: String.t()
-  def sms_text(phase), do: text(phase)
+  @spec sms_text(phase :: Phase.t(), tenant :: Tenant.t()) :: String.t()
+  def sms_text(phase, tenant), do: text(phase, tenant)
 
   defp send_emails do
     [] =
@@ -133,7 +140,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
 
   defp send_sms(case, phase) do
     case
-    |> CommunicationContext.create_outgoing_sms(sms_text(phase))
+    |> CommunicationContext.create_outgoing_sms(sms_text(phase, case.tenant))
     |> case do
       {:ok, _sms} -> :ok
       {:error, :no_mobile_number} -> :ok
@@ -144,7 +151,10 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
 
   defp send_email(case, phase) do
     case
-    |> CommunicationContext.create_outgoing_email(email_subject(phase), email_body(phase))
+    |> CommunicationContext.create_outgoing_email(
+      email_subject(phase),
+      email_body(phase, case.tenant)
+    )
     |> case do
       {:ok, _email} -> :ok
       {:error, :no_email} -> :ok

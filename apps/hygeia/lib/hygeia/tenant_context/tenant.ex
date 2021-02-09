@@ -13,6 +13,7 @@ defmodule Hygeia.TenantContext.Tenant do
   alias Hygeia.TenantContext.SedexExport
   alias Hygeia.TenantContext.Tenant.SedexExportConfiguration
   alias Hygeia.TenantContext.Tenant.Smtp
+  alias Hygeia.TenantContext.Tenant.TemplateParameters
   alias Hygeia.TenantContext.Tenant.Websms
 
   defenum TemplateVariation, :template_variation, [:sg, :ar, :ai]
@@ -34,6 +35,7 @@ defmodule Hygeia.TenantContext.Tenant do
           iam_domain: String.t() | nil,
           from_email: String.t() | nil,
           short_name: String.t() | nil,
+          template_parameters: TemplateParameters.t() | nil,
           sedex_export_enabled: boolean() | nil,
           sedex_export_configuration: SedexExportConfiguration.t() | nil,
           related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()) | nil,
@@ -56,6 +58,7 @@ defmodule Hygeia.TenantContext.Tenant do
           iam_domain: String.t() | nil,
           from_email: String.t() | nil,
           short_name: String.t() | nil,
+          template_parameters: TemplateParameters.t() | nil,
           sedex_export_enabled: boolean(),
           sedex_export_configuration: SedexExportConfiguration.t() | nil,
           related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()),
@@ -97,6 +100,7 @@ defmodule Hygeia.TenantContext.Tenant do
       on_replace: :update
 
     embeds_one :sedex_export_configuration, SedexExportConfiguration, on_replace: :update
+    embeds_one :template_parameters, TemplateParameters, on_replace: :update
 
     # Use in Protocol Creation Form
     field :outgoing_mail_configuration_type, :string, virtual: true, default: "smtp"
@@ -134,6 +138,7 @@ defmodule Hygeia.TenantContext.Tenant do
     |> validate_required([:name, :public_statistics, :case_management_enabled])
     |> cast_polymorphic_embed(:outgoing_mail_configuration)
     |> cast_polymorphic_embed(:outgoing_sms_configuration)
+    |> cast_embed(:template_parameters)
     |> maybe_cast_embed(:sedex_export_configuration, :sedex_export_enabled)
     |> validate_url(:override_url)
     |> foreign_key_constraint(:people,
@@ -184,6 +189,12 @@ defmodule Hygeia.TenantContext.Tenant do
         end
     end)
   end
+
+  @spec get_message_sender_text(tenant :: t) :: String.t()
+  def get_message_sender_text(%{template_parameters: %{message_sender: message_sender}}),
+    do: message_sender
+
+  def get_message_sender_text(_tenant), do: ""
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.TenantContext.Tenant
