@@ -144,6 +144,7 @@ tenant_ai = Enum.find(tenants, &match?(%{short_name: "AI"}, &1))
   |> Stream.map(
     &%{
       name: &1["name"],
+      type: :healthcare,
       address: %{
         address: &1["address"],
         zip: &1["zip"],

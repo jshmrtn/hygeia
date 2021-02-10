@@ -68,6 +68,9 @@
             {{ schema_field_name(:name, Organisation) }}
           </th>
           <th>
+            {{ schema_field_name(:type, Organisation) }}
+          </th>
+          <th>
             {{ schema_field_name(:address, Organisation) }}
           </th>
 
@@ -78,6 +81,9 @@
         <tr :for={{ organisation <- @organisations }} id="organisation-{{ organisation.uuid }}">
           <td>
             {{ organisation.name }}
+          </td>
+          <td>
+            {{ organisation_type_name(organisation) }}
           </td>
           <td>
             {{ format_address(organisation.address) }}

@@ -176,7 +176,9 @@ defmodule HygeiaWeb.Helpers.FieldName do
     Hygeia.OrganisationContext.Organisation => %{
       address: "Address",
       name: "Name",
-      notes: "Notes"
+      notes: "Notes",
+      type: "Type",
+      type_other: "Type Other"
     },
     Hygeia.TenantContext.SedexExport => %{
       scheduling_date: "Scheduling Date",

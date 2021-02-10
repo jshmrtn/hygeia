@@ -95,11 +95,33 @@
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">{{ gettext("Name") }}</h4>
+
               <Field name={{ :name }} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
+
+              <div class="row">
+                <div class="col">
+                  <Field name={{ :type }} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <Select
+                      class="form-control"
+                      options={{ organisation_types() }}
+                      opts={{ prompt: gettext("Select Type"), disabled: @live_action == :show }}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+                <div :if={{ Ecto.Changeset.get_field(@changeset, :type) == :other }} class="col">
+                  <Field name={{ :type_other }} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+              </div>
             </div>
           </div>
           <div class="card">

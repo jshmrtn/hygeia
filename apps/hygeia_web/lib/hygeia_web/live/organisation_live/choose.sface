@@ -18,6 +18,9 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   {{ organisation.name }}
+                  <small class="d-block text-muted" :if={{ not is_nil(organisation_type_name(organisation)) }}>
+                    {{ organisation_type_name(organisation) }}
+                  </small>
                   <small class="d-block text-muted">{{ format_address(organisation.address) }}</small>
                 </div>
                 <button
@@ -75,6 +78,9 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <div>
                     {{ organisation.name }}
+                    <small class="d-block text-muted" :if={{ not is_nil(organisation_type_name(organisation)) }}>
+                      {{ organisation_type_name(organisation) }}
+                    </small>
                     <small class="d-block text-muted">{{ format_address(organisation.address) }}</small>
                   </div>
                   <button class="btn btn-primary" type="button">

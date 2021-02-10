@@ -13,7 +13,7 @@ defmodule HygeiaWeb.OrganisationLive.Show do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
-
+  alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Link

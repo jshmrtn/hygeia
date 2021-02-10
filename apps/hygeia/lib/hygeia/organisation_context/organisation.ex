@@ -5,17 +5,29 @@ defmodule Hygeia.OrganisationContext.Organisation do
 
   use Hygeia, :model
 
+  import EctoEnum
+
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Position
 
+  defenum Type, :organisation_type, [
+    "club",
+    "school",
+    "healthcare",
+    "corporation",
+    "other"
+  ]
+
   @derive {Phoenix.Param, key: :uuid}
 
   @type empty :: %__MODULE__{
           uuid: String.t() | nil,
           name: String.t() | nil,
+          type: Type.t() | nil,
+          type_other: String.t() | nil,
           address: Address.t() | nil,
           notes: String.t() | nil,
           positions: Ecto.Schema.has_many(Position.t()) | nil,
@@ -27,6 +39,8 @@ defmodule Hygeia.OrganisationContext.Organisation do
   @type t :: %__MODULE__{
           uuid: String.t(),
           name: String.t(),
+          type: Type.t() | nil,
+          type_other: String.t() | nil,
           address: Address.t(),
           notes: String.t() | nil,
           positions: Ecto.Schema.has_many(Position.t()),
@@ -39,6 +53,8 @@ defmodule Hygeia.OrganisationContext.Organisation do
   schema "organisations" do
     field :name, :string
     field :notes, :string
+    field :type, Type
+    field :type_other, :string
 
     embeds_one :address, Address, on_replace: :delete
     has_many :positions, Position, foreign_key: :organisation_uuid, on_replace: :delete
@@ -59,11 +75,21 @@ defmodule Hygeia.OrganisationContext.Organisation do
           Changeset.t()
   def changeset(organisation, attrs) do
     organisation
-    |> cast(attrs, [:name, :notes])
+    |> cast(attrs, [:name, :notes, :type, :type_other])
     |> validate_required([:name])
     |> cast_embed(:address)
     |> cast_assoc(:positions)
     |> check_duplicates()
+    |> validate_type_other()
+  end
+
+  defp validate_type_other(changeset) do
+    changeset
+    |> fetch_field!(:type)
+    |> case do
+      :other -> validate_required(changeset, [:type_other])
+      _defined -> put_change(changeset, :type_other, nil)
+    end
   end
 
   defp check_duplicates(%Ecto.Changeset{valid?: true} = changeset),

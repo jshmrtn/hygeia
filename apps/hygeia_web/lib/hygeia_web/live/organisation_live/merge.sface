@@ -39,7 +39,7 @@
           class="d-block invalid-feedback"
           :if={{ if is_nil(@into), do: false, else: @delete == @into }}
         >
-          {{ gettext(~S("Merge" and "Into" may not be the same)) }}
+          {{ gettext(~S("Merge" and "Into" must not be the same)) }}
         </span>
       </Field>
     </div>
