@@ -163,6 +163,62 @@ defmodule Hygeia.OrganisationContext do
       |> broadcast("organisations", :update)
       |> versioning_extract()
 
+  @spec merge_organisations(delete :: Organisation.t(), into :: Organisation.t()) ::
+          {:ok, Organisation.t()}
+  def merge_organisations(
+        %Organisation{uuid: delete_uuid} = delete,
+        %Organisation{uuid: into_uuid} = into
+      ) do
+    delete = Repo.preload(delete, :related_cases)
+    into = Repo.preload(into, :related_cases)
+
+    Repo.transaction(fn ->
+      affiliation_updates =
+        delete
+        |> Ecto.assoc(:affiliations)
+        |> Repo.stream()
+        |> Enum.reduce(Ecto.Multi.new(), fn %Affiliation{uuid: uuid} = affiliation, acc ->
+          PaperTrail.Multi.update(
+            acc,
+            uuid,
+            Ecto.Changeset.change(affiliation, %{organisation_uuid: into_uuid})
+          )
+        end)
+
+      position_updates =
+        delete
+        |> Ecto.assoc(:positions)
+        |> Repo.stream()
+        |> Enum.reduce(Ecto.Multi.new(), fn %Position{uuid: uuid} = position, acc ->
+          PaperTrail.Multi.update(
+            acc,
+            uuid,
+            Ecto.Changeset.change(position, %{organisation_uuid: into_uuid})
+          )
+        end)
+
+      {:ok, _updates} =
+        affiliation_updates
+        |> Ecto.Multi.append(position_updates)
+        |> Ecto.Multi.update(
+          {:add_related_cases, into_uuid},
+          into
+          |> Ecto.Changeset.change()
+          |> Ecto.Changeset.put_assoc(:related_cases, into.related_cases ++ delete.related_cases)
+        )
+        |> Ecto.Multi.update(
+          {:remove_related_cases, delete_uuid},
+          delete
+          |> Ecto.Changeset.change()
+          |> Ecto.Changeset.put_assoc(:related_cases, [])
+        )
+        |> PaperTrail.Multi.delete({:delete, delete_uuid}, Ecto.Changeset.change(delete))
+        |> Repo.transaction()
+
+      get_organisation!(into_uuid)
+    end)
+  end
+
   @doc """
   Deletes a organisation.
 

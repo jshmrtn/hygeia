@@ -96,5 +96,22 @@ defmodule Hygeia.Repo.Migrations.CreateAffiliations do
     alter table(:people) do
       remove :employers, {:list, :map}
     end
+
+    execute("""
+    ALTER
+      TABLE people
+      ADD fulltext TSVECTOR
+        GENERATED ALWAYS AS (
+          TO_TSVECTOR('german', uuid::text) ||
+          TO_TSVECTOR('german', human_readable_id) ||
+          TO_TSVECTOR('german', COALESCE(first_name, '')) ||
+          TO_TSVECTOR('german', COALESCE(last_name, '')) ||
+          JSONB_ARRAY_TO_TSVECTOR_WITH_PATH(contact_methods, '$[*].value') ||
+          JSONB_ARRAY_TO_TSVECTOR_WITH_PATH(external_references, '$[*].value') ||
+          COALESCE(JSONB_TO_TSVECTOR('german', address, '["all"]'), TO_TSVECTOR('german', ''))
+        ) STORED
+    """)
+
+    create index(:people, [:fulltext], using: :gin)
   end
 end

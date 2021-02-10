@@ -185,6 +185,7 @@ defmodule HygeiaWeb.Router do
     live "/cases/:cursor_direction/:cursor", CaseLive.Index, :index
 
     live "/organisations", OrganisationLive.Index, :index
+    live "/organisations/merge", OrganisationLive.Merge, :merge
     live "/organisations/new", OrganisationLive.Create, :create
     live "/organisations/:id", OrganisationLive.Show, :show
     live "/organisations/:id/edit", OrganisationLive.Show, :edit

@@ -99,6 +99,26 @@ defmodule Hygeia.OrganisationContextTest do
       organisation = organisation_fixture()
       assert %Ecto.Changeset{} = OrganisationContext.change_organisation(organisation)
     end
+
+    test "merge_organisation/2 moves all data to target and deletes source" do
+      organisation_1 = organisation_fixture(%{name: "JOSHMARTIN GmbH"})
+      _position_1 = position_fixture(person_fixture(), organisation_1, %{position: "1"})
+      _affiliation_1 = affiliation_fixture(person_fixture(), organisation_1, %{kind: :employee})
+
+      organisation_2 = organisation_fixture(%{name: "JOHSMARTIN GmbH"})
+      _position_2 = position_fixture(person_fixture(), organisation_2, %{position: "2"})
+      _affiliation_2 = affiliation_fixture(person_fixture(), organisation_2, %{kind: :scholar})
+
+      assert {:ok, organisation_into} =
+               OrganisationContext.merge_organisations(organisation_2, organisation_1)
+
+      assert %Organisation{affiliations: [_, _], positions: [_, _]} =
+               Repo.preload(organisation_into, affiliations: [], positions: [])
+
+      assert_raise Ecto.NoResultsError, fn ->
+        OrganisationContext.get_organisation!(organisation_2.uuid)
+      end
+    end
   end
 
   describe "positions" do

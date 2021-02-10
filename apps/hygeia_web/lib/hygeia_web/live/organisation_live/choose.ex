@@ -22,6 +22,9 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
 
   prop subject, :any, default: nil
 
+  @doc "Value to pre-populated the input"
+  prop value, :string
+
   @impl Phoenix.LiveComponent
   def mount(socket) do
     socket =

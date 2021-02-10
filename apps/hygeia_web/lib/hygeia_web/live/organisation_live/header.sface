@@ -18,7 +18,7 @@
           </LiveRedirect>
         </UriActiveContext>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" :if={{ authorized?(@organisation, :versioning, auth) }}>
         <UriActiveContext
           to={{ Routes.version_show_path(@socket, :show, "Organisation", @organisation) }}
           :let={{ to: to, active: active }}
@@ -28,6 +28,27 @@
           </LiveRedirect>
         </UriActiveContext>
       </li>
+
+      <HygeiaWeb.Dropdown
+        class="ml-auto"
+        trigger_class="btn btn-sm btn-secondary dropdown-toggle"
+        dropdown_class="dropdown-menu-right"
+        id="navigation-dropdown"
+      >
+        <template slot="trigger">
+          {{ gettext("Actions") }}
+        </template>
+
+        <UriActiveContext
+          :if={{ authorized?(@organisation, :update, auth) }}
+          to={{ Routes.organisation_merge_path(@socket, :merge, delete: @organisation) }}
+          :let={{ to: to, active: active }}
+        >
+          <LiveRedirect to={{ to }} class={{ "dropdown-item", "nav-link", active: active }}>
+            {{ pgettext("Organisation", "Merge") }}
+          </LiveRedirect>
+        </UriActiveContext>
+      </HygeiaWeb.Dropdown>
     </ul>
   </Context>
 </div>

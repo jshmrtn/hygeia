@@ -10,14 +10,26 @@
         |> OrganisationContext.list_organisations_by_ids()}}
       class="alert alert-warning"
     >
-      {{ "This organisation is possibly a duplicate of %{name_link}, please check."
-      |> gettext(
-        name_link:
-          name
-          |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
-          |> safe_to_string
-      )
-      |> raw }}
+      <div class="d-flex justify-content-between align-items-center">
+        <span>
+          {{ "This organisation is possibly a duplicate of %{name_link}, please check."
+          |> gettext(
+            name_link:
+              name
+              |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
+              |> safe_to_string
+          )
+          |> raw }}
+        </span>
+
+        <LiveRedirect
+          :if={{ authorized?(@organisation, :update, auth) and authorized?(organisation, :update, auth) }}
+          class="btn btn-secondary btn-sm"
+          to={{ Routes.organisation_merge_path(@socket, :merge, delete: organisation, into: @organisation) }}
+        >
+          {{ pgettext("Organisation", "Merge") }}
+        </LiveRedirect>
+      </div>
     </div>
 
     <div class="mb-4" :if={{ @live_action == :show }}>
