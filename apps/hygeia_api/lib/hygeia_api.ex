@@ -20,7 +20,7 @@ defmodule HygeiaApi do
   @doc false
   @spec controller :: Macro.t()
   def controller do
-    quote do
+    quote location: :keep do
       use Phoenix.Controller, namespace: HygeiaApi
 
       import Plug.Conn
@@ -31,7 +31,7 @@ defmodule HygeiaApi do
   @doc false
   @spec view :: Macro.t()
   def view do
-    quote do
+    quote location: :keep do
       use Phoenix.View,
         root: "lib/hygeia_api_web/templates",
         namespace: HygeiaApi
@@ -48,7 +48,7 @@ defmodule HygeiaApi do
   @doc false
   @spec router :: Macro.t()
   def router do
-    quote do
+    quote location: :keep do
       use Phoenix.Router
 
       import Plug.Conn
@@ -59,13 +59,13 @@ defmodule HygeiaApi do
   @doc false
   @spec channel :: Macro.t()
   def channel do
-    quote do
+    quote location: :keep do
       use Phoenix.Channel
     end
   end
 
   defp view_helpers do
-    quote do
+    quote location: :keep do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
@@ -77,7 +77,7 @@ defmodule HygeiaApi do
   @doc false
   @spec subschema :: Macro.t()
   def subschema do
-    quote do
+    quote location: :keep do
       use Absinthe.Schema.Notation
       use Absinthe.Relay.Schema.Notation, :modern
 
@@ -101,7 +101,7 @@ defmodule HygeiaApi do
   @doc false
   @spec resolver :: Macro.t()
   def resolver do
-    quote do
+    quote location: :keep do
       import HygeiaApi.Authorization
       import HygeiaApi.Schema.Result
 
@@ -115,7 +115,7 @@ defmodule HygeiaApi do
   @doc false
   @spec subscription_config :: Macro.t()
   def subscription_config do
-    quote do
+    quote location: :keep do
       @type config_result ::
               {:ok, [{:topic, term | [term]}, {:context_id, term}]} | {:error, term}
 
@@ -128,7 +128,7 @@ defmodule HygeiaApi do
   @doc false
   @spec subscription_trigger_topic :: Macro.t()
   def subscription_trigger_topic do
-    quote do
+    quote location: :keep do
     end
   end
 

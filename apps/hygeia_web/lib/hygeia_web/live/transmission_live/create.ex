@@ -16,7 +16,7 @@ defmodule HygeiaWeb.TransmissionLive.Create do
   alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView
-  def mount(params, session, socket) do
+  def mount(params, _session, socket) do
     socket =
       if authorized?(Transmission, :create, get_auth(socket)) do
         assign(socket, changeset: CaseContext.change_transmission(%Transmission{}, params))
@@ -26,7 +26,7 @@ defmodule HygeiaWeb.TransmissionLive.Create do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView

@@ -15,16 +15,16 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   alias Surface.Components.Link
 
   @impl Phoenix.LiveView
-  def mount(params, session, socket) do
+  def mount(_params, _session, socket) do
     socket = assign(socket, now: DateTime.utc_now())
 
     :timer.send_interval(:timer.seconds(1), :tick)
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id} = params, uri, socket) do
+  def handle_params(%{"id" => id} = _params, _uri, socket) do
     case = CaseContext.get_case!(id)
 
     socket =
@@ -41,7 +41,7 @@ defmodule HygeiaWeb.CaseLive.Protocol do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, uri, socket)
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveView

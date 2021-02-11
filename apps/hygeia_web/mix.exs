@@ -67,7 +67,7 @@ defmodule HygeiaWeb.MixProject do
       {:phoenix_live_dashboard, "~> 0.4.0"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.4.1"},
       {:surface, "~> 0.2 and >= 0.2.1"},
       {:surface_formatter, "~> 0.2"},
@@ -85,8 +85,6 @@ defmodule HygeiaWeb.MixProject do
       {:nebulex, "~> 2.0-rc"},
       {:shards, "~> 1.0"},
       {:earmark, "~> 1.1"},
-      {:sentry, "~> 8.0"},
-      {:jason, "~> 1.1"},
       {:sentry, "~> 8.0"},
       {:hackney, "~> 1.8"}
     ]

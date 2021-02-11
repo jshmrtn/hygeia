@@ -13,7 +13,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
-  def mount(%{"case_uuid" => case_uuid} = params, session, socket) do
+  def mount(%{"case_uuid" => case_uuid} = _params, _session, socket) do
     socket =
       if authorized?(PossibleIndexSubmission, :list, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{case_uuid}")
@@ -26,7 +26,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView

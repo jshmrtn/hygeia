@@ -9,7 +9,7 @@ defmodule HygeiaWeb.SedexExportLive.Index do
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
-  def mount(%{"tenant_id" => tenant_uuid} = params, session, socket) do
+  def mount(%{"tenant_id" => tenant_uuid} = params, _session, socket) do
     tenant = TenantContext.get_tenant!(tenant_uuid)
 
     socket =
@@ -32,7 +32,7 @@ defmodule HygeiaWeb.SedexExportLive.Index do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView

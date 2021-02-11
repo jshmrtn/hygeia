@@ -11,16 +11,16 @@ defmodule HygeiaWeb.VersionLive.Show do
   data schema, :map
 
   @impl Phoenix.LiveView
-  def mount(params, session, socket) do
+  def mount(_params, _session, socket) do
     socket = assign(socket, now: DateTime.utc_now())
 
     :timer.send_interval(:timer.seconds(1), :tick)
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id, "resource" => resource} = params, uri, socket) do
+  def handle_params(%{"id" => id, "resource" => resource}, _uri, socket) do
     schema = item_type_to_module(resource)
 
     resource = Repo.get(schema, id)
@@ -48,7 +48,7 @@ defmodule HygeiaWeb.VersionLive.Show do
         now: DateTime.utc_now()
       )
 
-    super(params, uri, socket)
+    {:noreply, socket}
   catch
     :unauthorized ->
       socket =
@@ -56,7 +56,7 @@ defmodule HygeiaWeb.VersionLive.Show do
         |> push_redirect(to: Routes.home_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
 
-      super(params, uri, socket)
+      {:noreply, socket}
   end
 
   @impl Phoenix.LiveView

@@ -19,7 +19,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id} = params, uri, socket) do
+  def handle_params(%{"id" => id}, _uri, socket) do
     possible_index_submission = CaseContext.get_possible_index_submission!(id)
 
     socket =
@@ -40,7 +40,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, uri, socket)
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveView

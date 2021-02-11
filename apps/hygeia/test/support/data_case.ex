@@ -22,7 +22,7 @@ defmodule Hygeia.DataCase do
   alias Hygeia.Helpers.Versioning
 
   using do
-    quote do
+    quote location: :keep do
       alias Hygeia.Repo
 
       import Ecto

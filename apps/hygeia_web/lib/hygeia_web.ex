@@ -22,7 +22,7 @@ defmodule HygeiaWeb do
   @doc false
   @spec controller :: Macro.t()
   def controller do
-    quote do
+    quote location: :keep do
       use Phoenix.Controller, namespace: HygeiaWeb
 
       import Plug.Conn
@@ -37,7 +37,7 @@ defmodule HygeiaWeb do
   @doc false
   @spec view :: Macro.t()
   def view do
-    quote do
+    quote location: :keep do
       use Phoenix.View,
         root: "lib/hygeia_web/templates",
         namespace: HygeiaWeb
@@ -54,14 +54,11 @@ defmodule HygeiaWeb do
   @doc false
   @spec live_view :: Macro.t()
   def live_view do
-    quote do
+    quote location: :keep do
       use Phoenix.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
-      require HygeiaWeb.LiveView
-
-      HygeiaWeb.LiveView.mount()
-      HygeiaWeb.LiveView.handle_params()
+      use HygeiaWeb.LiveView
 
       unquote(view_helpers())
     end
@@ -70,14 +67,11 @@ defmodule HygeiaWeb do
   @doc false
   @spec surface_view :: Macro.t()
   def surface_view do
-    quote do
+    quote location: :keep do
       use Surface.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
-      require HygeiaWeb.LiveView
-
-      HygeiaWeb.LiveView.mount()
-      HygeiaWeb.LiveView.handle_params()
+      use HygeiaWeb.LiveView
 
       unquote(view_helpers())
     end
@@ -85,13 +79,11 @@ defmodule HygeiaWeb do
 
   @spec surface_view_bare :: Macro.t()
   def surface_view_bare do
-    quote do
+    quote location: :keep do
       use Surface.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
-      require HygeiaWeb.LiveView
-
-      HygeiaWeb.LiveView.mount()
+      use HygeiaWeb.LiveView, only: [:mount]
 
       unquote(view_helpers())
     end
@@ -100,7 +92,7 @@ defmodule HygeiaWeb do
   @doc false
   @spec live_component :: Macro.t()
   def live_component do
-    quote do
+    quote location: :keep do
       use Phoenix.LiveComponent
 
       unquote(view_helpers())
@@ -110,7 +102,7 @@ defmodule HygeiaWeb do
   @doc false
   @spec surface_live_component :: Macro.t()
   def surface_live_component do
-    quote do
+    quote location: :keep do
       use Surface.LiveComponent
 
       unquote(view_helpers())
@@ -120,7 +112,7 @@ defmodule HygeiaWeb do
   @doc false
   @spec surface_component :: Macro.t()
   def surface_component do
-    quote do
+    quote location: :keep do
       use Surface.Component
 
       unquote(view_helpers())
@@ -130,7 +122,7 @@ defmodule HygeiaWeb do
   @doc false
   @spec router :: Macro.t()
   def router do
-    quote do
+    quote location: :keep do
       use Phoenix.Router
 
       import Plug.Conn
@@ -142,14 +134,14 @@ defmodule HygeiaWeb do
   @doc false
   @spec channel :: Macro.t()
   def channel do
-    quote do
+    quote location: :keep do
       use Phoenix.Channel
       import HygeiaGettext
     end
   end
 
   defp view_helpers do
-    quote do
+    quote location: :keep do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 

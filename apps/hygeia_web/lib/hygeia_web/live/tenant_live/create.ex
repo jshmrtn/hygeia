@@ -12,7 +12,7 @@ defmodule HygeiaWeb.TenantLive.Create do
   alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView
-  def mount(params, session, socket) do
+  def mount(_params, _session, socket) do
     socket =
       if authorized?(Tenant, :create, get_auth(socket)) do
         assign(socket, changeset: TenantContext.change_tenant(%Tenant{}))
@@ -22,7 +22,7 @@ defmodule HygeiaWeb.TenantLive.Create do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView

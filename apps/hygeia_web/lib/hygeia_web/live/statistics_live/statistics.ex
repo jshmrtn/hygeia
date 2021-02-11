@@ -9,14 +9,12 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
   alias Surface.Components.Form
 
   @impl Phoenix.LiveView
-  def mount(params, session, socket) do
-    {:ok, socket} = super(params, session, socket)
-
+  def mount(_params, _session, socket) do
     {:ok, socket, temporary_assigns: [active_isolation_cases_per_day: []]}
   end
 
   @impl Phoenix.LiveView
-  def handle_params(%{"tenant_uuid" => tenant_uuid} = params, uri, socket) do
+  def handle_params(%{"tenant_uuid" => tenant_uuid} = params, _uri, socket) do
     tenant = TenantContext.get_tenant!(tenant_uuid)
 
     socket =
@@ -46,7 +44,7 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, uri, socket)
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveView

@@ -22,7 +22,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
   data step, :atom, default: :base
 
   @impl Phoenix.LiveView
-  def mount(%{"case_uuid" => case_uuid} = params, session, socket) do
+  def mount(%{"case_uuid" => case_uuid} = params, _session, socket) do
     case = CaseContext.get_case!(case_uuid)
 
     socket =
@@ -40,7 +40,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView

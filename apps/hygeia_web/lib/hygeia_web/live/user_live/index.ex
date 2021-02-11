@@ -10,7 +10,7 @@ defmodule HygeiaWeb.UserLive.Index do
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
-  def mount(params, session, socket) do
+  def mount(_params, _session, socket) do
     socket =
       if authorized?(User, :list, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "users")
@@ -22,12 +22,12 @@ defmodule HygeiaWeb.UserLive.Index do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView
-  def handle_params(params, uri, socket) do
-    super(params, uri, apply_action(socket, socket.assigns.live_action, params))
+  def handle_params(params, _uri, socket) do
+    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
   defp apply_action(socket, :index, _params) do

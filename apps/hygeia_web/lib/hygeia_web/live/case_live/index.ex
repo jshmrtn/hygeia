@@ -21,7 +21,7 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
-  def mount(params, session, socket) do
+  def mount(_params, _session, socket) do
     socket =
       if authorized?(Case, :list, get_auth(socket), tenant: :any) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases")
@@ -44,11 +44,11 @@ defmodule HygeiaWeb.CaseLive.Index do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView
-  def handle_params(params, uri, socket) do
+  def handle_params(params, _uri, socket) do
     pagination_params =
       case params do
         %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
@@ -91,7 +91,7 @@ defmodule HygeiaWeb.CaseLive.Index do
           |> list_cases()
       end
 
-    super(params, uri, socket)
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveView

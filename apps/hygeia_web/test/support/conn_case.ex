@@ -22,7 +22,7 @@ defmodule HygeiaWeb.ConnCase do
   alias Hygeia.Repo
 
   using do
-    quote do
+    quote location: :keep do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest

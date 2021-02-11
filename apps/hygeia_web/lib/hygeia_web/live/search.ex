@@ -20,9 +20,7 @@ defmodule HygeiaWeb.Search do
   data pending_search, :any, default: nil
 
   @impl Phoenix.LiveView
-  def mount(params, session, socket) do
-    {:ok, socket} = super(params, session, socket)
-
+  def mount(_params, _session, socket) do
     {:ok, assign(socket, tenants: TenantContext.list_tenants())}
   end
 
@@ -100,7 +98,6 @@ defmodule HygeiaWeb.Search do
   end
 
   defp search_fns(query, socket) do
-    # IO.inspect socket.assigns
     %{
       person:
         if authorized?(CaseContext.Person, :list, get_auth(socket), tenant: :any) do

@@ -8,7 +8,7 @@ defmodule HygeiaWeb.StatisticsLive.ChooseTenant do
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
-  def mount(params, session, socket) do
+  def mount(_params, _session, socket) do
     socket =
       if authorized?(Tenant, :list, get_auth(socket)) do
         assign(socket, tenants: list_tenants(socket))
@@ -18,7 +18,7 @@ defmodule HygeiaWeb.StatisticsLive.ChooseTenant do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView

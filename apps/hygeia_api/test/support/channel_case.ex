@@ -18,7 +18,7 @@ defmodule HygeiaApi.ChannelCase do
   use ExUnit.CaseTemplate
 
   using do
-    quote do
+    quote location: :keep do
       # Import conveniences for testing with channels
       import Phoenix.ChannelTest
       import HygeiaApi.ChannelCase

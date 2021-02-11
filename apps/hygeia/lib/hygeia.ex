@@ -33,7 +33,7 @@ defmodule Hygeia do
   @doc false
   @spec model :: Macro.t()
   def model do
-    quote do
+    quote location: :keep do
       use Ecto.Schema
 
       import Ecto.Changeset
@@ -60,7 +60,7 @@ defmodule Hygeia do
   @doc false
   @spec migration :: Macro.t()
   def migration do
-    quote do
+    quote location: :keep do
       use Ecto.Migration
 
       import Ecto.Query
@@ -70,7 +70,7 @@ defmodule Hygeia do
   @doc false
   @spec context :: Macro.t()
   def context do
-    quote do
+    quote location: :keep do
       import Ecto.Query, warn: false
       import Hygeia.Helpers.PostgresError
       import Hygeia.Helpers.PubSub

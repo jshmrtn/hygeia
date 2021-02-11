@@ -21,7 +21,7 @@ defmodule HygeiaApi.GraphQLCase do
   # @endpoint Endpoint
 
   using do
-    quote do
+    quote location: :keep do
       import unquote(__MODULE__)
 
       use Absinthe.Phoenix.SubscriptionTest, schema: HygeiaApi.Schema

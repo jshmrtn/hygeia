@@ -15,7 +15,7 @@ defmodule HygeiaWeb.SystemMessageLive.Create do
   alias Surface.Components.Form.TextArea
 
   @impl Phoenix.LiveView
-  def mount(params, session, socket) do
+  def mount(_params, _session, socket) do
     socket =
       if authorized?(SystemMessage, :create, get_auth(socket)) do
         assign(socket, changeset: SystemMessageContext.change_system_message(%SystemMessage{}))
@@ -25,7 +25,7 @@ defmodule HygeiaWeb.SystemMessageLive.Create do
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
-    super(params, session, socket)
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView

@@ -1,45 +1,94 @@
 defmodule HygeiaWeb.LiveView do
   @moduledoc false
 
-  defmacro mount do
-    quote do
-      @impl Phoenix.LiveView
-      def mount(_params, session, %{assigns: assigns} = socket) do
-        import HygeiaWeb.Helpers.Auth
+  import HygeiaWeb.Helpers.Auth
+  import Phoenix.LiveView, only: [assign: 3]
 
-        HygeiaWeb.setup_live_view(session)
+  alias Phoenix.LiveView.Socket
 
-        {:ok,
-         assign(
-           socket,
-           :__context__,
-           assigns
-           |> Map.get(:__context__, %{})
-           |> Map.put({HygeiaWeb, :auth}, get_auth(socket))
-           |> Map.put({HygeiaWeb, :logged_in}, is_logged_in?(socket))
-         )}
+  defmacro __using__(opts \\ []) do
+    quote location: :keep, bind_quoted: [opts: opts] do
+      enabled_transforms = Keyword.get(opts, :only, [:mount, :handle_params])
+
+      if Enum.member?(enabled_transforms, :mount) do
+        @before_compile {HygeiaWeb.LiveView, :__before_compile_mount__}
       end
 
-      defoverridable mount: 3
+      if Enum.member?(enabled_transforms, :handle_params) do
+        @before_compile {HygeiaWeb.LiveView, :__before_compile_handle_params__}
+      end
     end
   end
 
-  defmacro handle_params do
-    quote do
-      @impl Phoenix.LiveView
-      def handle_params(params, uri, %{assigns: assigns} = socket) do
-        {:noreply,
-         assign(
-           socket,
-           :__context__,
-           assigns
-           |> Map.get(:__context__, %{})
-           |> Map.put({HygeiaWeb, :params}, params)
-           |> Map.put({HygeiaWeb, :uri}, uri)
-         )}
-      end
+  defmacro __before_compile_mount__(env) do
+    if Module.defines?(env.module, {:mount, 3}) do
+      quote location: :keep do
+        defoverridable mount: 3
 
-      defoverridable handle_params: 3
+        @impl Phoenix.LiveView
+        def mount(params, session, socket) do
+          socket = HygeiaWeb.LiveView.before_mount(socket, session)
+
+          super(params, session, socket)
+        end
+      end
+    else
+      quote location: :keep do
+        @impl Phoenix.LiveView
+        def mount(_params, session, socket) do
+          {:ok, HygeiaWeb.LiveView.before_mount(socket, session)}
+        end
+      end
     end
+  end
+
+  defmacro __before_compile_handle_params__(env) do
+    if Module.defines?(env.module, {:handle_params, 3}) do
+      quote location: :keep do
+        defoverridable handle_params: 3
+
+        @impl Phoenix.LiveView
+        def handle_params(params, uri, socket) do
+          socket = HygeiaWeb.LiveView.before_handle_params(socket, params, uri)
+
+          super(params, uri, socket)
+        end
+      end
+    else
+      quote location: :keep do
+        @impl Phoenix.LiveView
+        def handle_params(params, uri, socket) do
+          {:noreply, HygeiaWeb.LiveView.before_handle_params(socket, params, uri)}
+        end
+      end
+    end
+  end
+
+  @doc false
+  @spec before_mount(socket :: Socket.t(), session :: map) :: Socket.t()
+  def before_mount(socket, session) do
+    HygeiaWeb.setup_live_view(session)
+
+    assign(
+      socket,
+      :__context__,
+      socket.assigns
+      |> Map.get(:__context__, %{})
+      |> Map.put({HygeiaWeb, :auth}, get_auth(socket))
+      |> Map.put({HygeiaWeb, :logged_in}, is_logged_in?(socket))
+    )
+  end
+
+  @doc false
+  @spec before_handle_params(socket :: Socket.t(), params :: map, uri :: String.t()) :: Socket.t()
+  def before_handle_params(socket, params, uri) do
+    assign(
+      socket,
+      :__context__,
+      socket.assigns
+      |> Map.get(:__context__, %{})
+      |> Map.put({HygeiaWeb, :params}, params)
+      |> Map.put({HygeiaWeb, :uri}, uri)
+    )
   end
 end

@@ -6,7 +6,7 @@ defmodule HygeiaPdfConfirmation.Case do
   use ExUnit.CaseTemplate
 
   using do
-    quote do
+    quote location: :keep do
       import unquote(__MODULE__),
         only: [
           pdf_string: 1,
