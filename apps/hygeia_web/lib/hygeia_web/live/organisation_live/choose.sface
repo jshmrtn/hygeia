@@ -50,19 +50,36 @@
           title={{ gettext("Select Organisation") }}
           close="close_modal"
         >
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <span class="oi oi-magnifying-glass" aria-hidden="true" />
-              </span>
+          <div class="d-flex flex-justify-content-between">
+            <div class="input-group flex-grow-1">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <span class="oi oi-magnifying-glass" aria-hidden="true" />
+                </span>
+              </div>
+              <input
+                class="form-control"
+                type="search"
+                value={{ @query }}
+                :on-keyup="query"
+                placeholder={{ gettext("Search") }}
+              />
+              <div
+                class="input-group-apend"
+                id={{ "#{@myself}_create" }}
+                phx-hook="PostMessage"
+                data-post-message-target={{ @myself }}
+              >
+                <Link
+                  class="input-group-text text-nowrap"
+                  to={{ Routes.organisation_create_path(@socket, :create, popup: true) }}
+                  opts={{ target: "_blank", rel: "opener" }}
+                >
+                  <span class="oi oi-plus" />
+                  {{ pgettext("Organisation", "Create") }}
+                </Link>
+              </div>
             </div>
-            <input
-              class="form-control"
-              type="search"
-              value={{ @query }}
-              :on-keyup="query"
-              placeholder={{ gettext("Search") }}
-            />
           </div>
 
           <div>

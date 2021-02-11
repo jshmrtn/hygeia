@@ -13,8 +13,11 @@ defmodule HygeiaWeb.OrganisationLive.Create do
   alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
 
+  data changeset, :map, default: nil
+  data popup, :boolean, default: false
+
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     socket =
       if authorized?(Organisation, :create, get_auth(socket)) do
         assign(socket, changeset: OrganisationContext.change_organisation(%Organisation{}))
@@ -23,6 +26,8 @@ defmodule HygeiaWeb.OrganisationLive.Create do
         |> push_redirect(to: Routes.home_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
+
+    socket = if Map.has_key?(params, "popup"), do: assign(socket, popup: true), else: socket
 
     {:ok, socket}
   end
@@ -40,11 +45,18 @@ defmodule HygeiaWeb.OrganisationLive.Create do
     organisation_params
     |> OrganisationContext.create_organisation()
     |> case do
-      {:ok, organisation} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, gettext("Organisation created successfully"))
-         |> push_redirect(to: Routes.organisation_show_path(socket, :show, organisation))}
+      {:ok, %Organisation{uuid: uuid} = organisation} ->
+        if socket.assigns.popup do
+          {:noreply,
+           socket
+           |> push_event("send_opener_post_messsage", %{event: "created_organisation", uuid: uuid})
+           |> push_event("close_window", %{})}
+        else
+          {:noreply,
+           socket
+           |> put_flash(:info, gettext("Organisation created successfully"))
+           |> push_redirect(to: Routes.organisation_show_path(socket, :show, organisation))}
+        end
 
       {:error, changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}

@@ -9,6 +9,7 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   alias Hygeia.Repo
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
+  alias Surface.Components.Link
 
   @doc "An identifier for the form"
   prop form, :form
@@ -25,33 +26,38 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   @doc "Value to pre-populated the input"
   prop value, :string
 
-  @impl Phoenix.LiveComponent
-  def mount(socket) do
-    socket =
-      socket
-      |> assign(modal_open: false, query: nil)
-      |> load_organisations
-
-    {:ok, socket}
-  end
+  data modal_open, :boolean, default: false
+  data query, :string, default: nil
 
   @impl Phoenix.LiveComponent
-  def handle_event("open_modal", _params, socket) do
-    {:noreply, assign(socket, modal_open: true)}
-  end
+  def mount(socket), do: {:ok, load_organisations(socket)}
 
-  def handle_event("close_modal", _params, socket) do
-    {:noreply, assign(socket, modal_open: false)}
-  end
+  @impl Phoenix.LiveComponent
+  def handle_event("open_modal", _params, socket),
+    do: {:noreply, assign(socket, modal_open: true)}
 
-  def handle_event("query", %{"value" => value} = _params, socket) do
-    socket =
-      socket
-      |> assign(query: value)
-      |> load_organisations
+  def handle_event("close_modal", _params, socket),
+    do: {:noreply, assign(socket, modal_open: false)}
 
-    {:noreply, socket}
-  end
+  def handle_event("query", %{"value" => value} = _params, socket),
+    do:
+      {:noreply,
+       socket
+       |> assign(query: value)
+       |> load_organisations}
+
+  def handle_event(
+        "received_post_message",
+        %{"payload" => %{"event" => "created_organisation", "uuid" => uuid}},
+        socket
+      ),
+      do:
+        {:noreply,
+         socket
+         |> assign(query: uuid)
+         |> load_organisations}
+
+  def handle_event("received_post_message", _params, socket), do: {:noreply, socket}
 
   defp load_organisations(socket) do
     query =

@@ -70,10 +70,12 @@
   </div>
 
   <button
+    id="submit"
     class="btn btn-primary"
     type="submit"
     phx-disable-with={{ gettext("Saving...") }}
     disabled={{ not @changeset.valid? }}
+    phx-hook="PostMessage"
   >
     {{ gettext("Save") }}
   </button>
