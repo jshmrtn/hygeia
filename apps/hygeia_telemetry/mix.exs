@@ -41,7 +41,7 @@ defmodule HygeiaTelemetry.MixProject do
     [
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
-      {:telemetry_metrics_prometheus, "~> 0.6"},
+      {:telemetry_metrics_prometheus, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
     ]
