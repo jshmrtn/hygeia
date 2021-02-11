@@ -8,8 +8,8 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Hygeia.EctoType.NOGA
   alias Hygeia.Repo
   alias Hygeia.TenantContext
+  alias HygeiaWeb.PolyfilledDateInput, as: DateInput
   alias Surface.Components.Form
-  alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput

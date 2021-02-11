@@ -5,8 +5,8 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias HygeiaWeb.PolyfilledDateInput, as: DateInput
   alias Surface.Components.Form
-  alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.EmailInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field

@@ -21,12 +21,18 @@ import BlockNavigation from "./block-navigation.hook";
 import Chart from "./chart.hook";
 import Dropdown from "./dropdown.hook";
 import Input from "./input.hook";
-import {init as sentryInit, showReportDialog as sentryShowReportDialog, setUser as sentrySetUser } from "@sentry/browser";
+import InputDate from "./input-date.hook";
+import {
+  init as sentryInit,
+  showReportDialog as sentryShowReportDialog,
+  setUser as sentrySetUser,
+} from "@sentry/browser";
+import "date-input-polyfill";
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
-  hooks: { BlockNavigation, Chart, Dropdown, Input },
+  hooks: { BlockNavigation, Chart, Dropdown, Input, InputDate },
 });
 
 // Show progress bar on live navigation and form submits
@@ -51,15 +57,19 @@ liveSocket.connect();
 window.liveSocket = liveSocket;
 
 // Sentry Setup
-sentryInit({dsn: document.documentElement.dataset.sentryDsn});
+sentryInit({ dsn: document.documentElement.dataset.sentryDsn });
 sentrySetUser();
-document.addEventListener('DOMContentLoaded', () => {
-  const element = document.getElementById('sentry-report');
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    const element = document.getElementById("sentry-report");
 
-  if(!element) return;
+    if (!element) return;
 
-  sentryShowReportDialog({
-    user: JSON.parse(document.documentElement.dataset.sentryUser),
-    ...JSON.parse(element.dataset.reportOptions)
-  });
-}, false);
+    sentryShowReportDialog({
+      user: JSON.parse(document.documentElement.dataset.sentryUser),
+      ...JSON.parse(element.dataset.reportOptions),
+    });
+  },
+  false
+);

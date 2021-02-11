@@ -1,0 +1,55 @@
+date-input-polyfill {
+  padding: 0.25rem;
+  height: auto;
+  background-color: $white;
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: $border-radius;
+
+  &[data-open="false"] {
+    display: none;
+  }
+
+  select {
+    @extend .form-control;
+    display: inline-block;
+  }
+  button {
+    @extend .btn;
+    @extend .btn-primary;
+    margin-bottom: 0.5rem;
+  }
+  .yearSelect-wrapper,
+  .monthSelect-wrapper {
+    margin-right: 0.5rem;
+  }
+
+  .yearSelect-wrapper select {
+    padding-right: 1.25rem;
+  }
+
+  table {
+    flex-basis: 100%;
+    table-layout: fixed;
+
+    th,
+    td {
+      padding-left: 0.5rem;
+      overflow: hidden;
+      max-width: 1ch;
+      text-overflow: ellipsis;
+    }
+
+    td {
+      cursor: pointer;
+
+      &:hover {
+        background-color: theme-color("primary");
+        border-radius: $border-radius;
+        color: $white;
+      }
+    }
+  }
+}

@@ -11,8 +11,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
   alias Hygeia.UserContext
   alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
   alias HygeiaWeb.CaseLive.CreateIndex.CreateSchema
+  alias HygeiaWeb.PolyfilledDateInput, as: DateInput
   alias Surface.Components.Form
-  alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput

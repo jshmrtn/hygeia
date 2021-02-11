@@ -9,9 +9,19 @@
   }}
 >
   <InputContext assigns={{ assigns }} :let={{ form: form }}>
-    <h1 class="mb-5">
+    <h1 class="mb-4">
       {{ gettext("New possible index submission") }}
     </h1>
+
+    <p class="mb-4 alert alert-info">
+      {{ gettext(
+        "Please note that submitting contact persons only works in recent versions of the following browsers:"
+      ) }}
+      <a href={{ gettext("https://www.google.com/chrome/") }}>Chrome</a>,
+      <a href={{ gettext("https://www.apple.com/safari/") }}>Safari</a>,
+      <a href={{ gettext("https://www.mozilla.org/en-US/firefox/new/") }}>Firefox</a>,
+      <a href={{ gettext("https://www.microsoft.com/en-us/edge") }}>Edge</a>
+    </p>
 
     <ul class="mb-4 progress-steps" id="progressbar">
       <div class="progress-bar" />
