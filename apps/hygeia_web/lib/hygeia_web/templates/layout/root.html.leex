@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html
   lang="<%= HygeiaCldr.get_locale().cldr_locale_name %>"
+  data-sentry-enabled="<%= Sentry.Config.environment_name() in Sentry.Config.included_environments() %>"
   data-sentry-dsn="<%= Sentry.Config.dsn() %>"
   data-sentry-user="<%= Jason.encode!(case get_auth(@conn) do
     :anonymous -> %{}
     %{uuid: id, email: email, display_name: name} -> %{id: id, email: email, name: name}
   end) %>"
 >
- <!-- Sentry.setUser({ email: "john.doe@example.com" });-->
   <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>

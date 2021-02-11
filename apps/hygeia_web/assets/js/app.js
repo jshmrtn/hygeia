@@ -22,12 +22,8 @@ import Chart from "./chart.hook";
 import Dropdown from "./dropdown.hook";
 import Input from "./input.hook";
 import InputDate from "./input-date.hook";
-import {
-  init as sentryInit,
-  showReportDialog as sentryShowReportDialog,
-  setUser as sentrySetUser,
-} from "@sentry/browser";
 import "date-input-polyfill";
+import { init as sentryInit } from "./sentry";
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
@@ -57,19 +53,6 @@ liveSocket.connect();
 window.liveSocket = liveSocket;
 
 // Sentry Setup
-sentryInit({ dsn: document.documentElement.dataset.sentryDsn });
-sentrySetUser();
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-    const element = document.getElementById("sentry-report");
-
-    if (!element) return;
-
-    sentryShowReportDialog({
-      user: JSON.parse(document.documentElement.dataset.sentryUser),
-      ...JSON.parse(element.dataset.reportOptions),
-    });
-  },
-  false
-);
+if (document.documentElement.dataset.sentryEnabled) {
+  sentryInit(document.documentElement.dataset);
+}
