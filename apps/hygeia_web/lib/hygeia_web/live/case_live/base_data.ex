@@ -11,8 +11,8 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
+  alias HygeiaWeb.DateInput
   alias HygeiaWeb.PolimorphicInputs
-  alias HygeiaWeb.PolyfilledDateInput, as: DateInput
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.ErrorTag

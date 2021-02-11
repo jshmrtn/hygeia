@@ -5,7 +5,7 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
 
   alias Hygeia.StatisticsContext
   alias Hygeia.TenantContext
-  alias HygeiaWeb.PolyfilledDateInput, as: DateInput
+  alias HygeiaWeb.DateInput
   alias Surface.Components.Form
 
   @impl Phoenix.LiveView

@@ -2,7 +2,7 @@ defmodule HygeiaWeb.LiveView do
   @moduledoc false
 
   import HygeiaWeb.Helpers.Auth
-  import Phoenix.LiveView, only: [assign: 3]
+  import Phoenix.LiveView, only: [assign: 3, get_connect_params: 1, connected?: 1]
 
   alias Phoenix.LiveView.Socket
 
@@ -76,6 +76,12 @@ defmodule HygeiaWeb.LiveView do
       |> Map.get(:__context__, %{})
       |> Map.put({HygeiaWeb, :auth}, get_auth(socket))
       |> Map.put({HygeiaWeb, :logged_in}, is_logged_in?(socket))
+      |> Map.put(
+        {HygeiaWeb, :browser_features},
+        if(connected?(socket) and not is_nil(socket.private[:connect_params]),
+          do: get_connect_params(socket)["browser_features"]
+        )
+      )
     )
   end
 

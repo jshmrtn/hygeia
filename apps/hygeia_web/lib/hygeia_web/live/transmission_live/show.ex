@@ -6,7 +6,7 @@ defmodule HygeiaWeb.TransmissionLive.Show do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.Repo
-  alias HygeiaWeb.PolyfilledDateInput, as: DateInput
+  alias HygeiaWeb.DateInput
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field

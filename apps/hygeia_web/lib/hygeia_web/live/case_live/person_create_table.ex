@@ -8,7 +8,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
-  alias HygeiaWeb.PolyfilledDateInput, as: DateInput
+  alias HygeiaWeb.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput

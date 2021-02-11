@@ -3,7 +3,7 @@ defmodule HygeiaWeb.CaseLive.Monitoring do
 
   use HygeiaWeb, :surface_live_component
 
-  alias HygeiaWeb.PolyfilledDateInput, as: DateInput
+  alias HygeiaWeb.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Inputs

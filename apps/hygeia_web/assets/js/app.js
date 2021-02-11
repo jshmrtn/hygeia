@@ -21,14 +21,13 @@ import BlockNavigation from "./block-navigation.hook";
 import Chart from "./chart.hook";
 import Dropdown from "./dropdown.hook";
 import Input from "./input.hook";
-import InputDate from "./input-date.hook";
-import "date-input-polyfill";
 import { init as sentryInit } from "./sentry";
+import browserFeatures from "./feature-detect";
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
-  params: { _csrf_token: csrfToken },
-  hooks: { BlockNavigation, Chart, Dropdown, Input, InputDate },
+  params: { _csrf_token: csrfToken, browser_features: browserFeatures },
+  hooks: { BlockNavigation, Chart, Dropdown, Input },
 });
 
 // Show progress bar on live navigation and form submits
