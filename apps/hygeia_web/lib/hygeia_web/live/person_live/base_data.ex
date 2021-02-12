@@ -45,7 +45,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
         socket |> assign(tenants: tenants) |> load_data(person)
       else
         socket
-        |> push_redirect(to: Routes.home_path(socket, :index))
+        |> push_redirect(to: Routes.home_index_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 

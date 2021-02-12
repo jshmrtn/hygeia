@@ -206,7 +206,7 @@ defmodule HygeiaWeb.Router do
   scope "/", HygeiaWeb do
     pipe_through [:browser, :csrf]
 
-    get "/", HomeController, :index
+    live "/", HomeLive.Index, :index
 
     live "/help", HelpLive.Index, :index
 

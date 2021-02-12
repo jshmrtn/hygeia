@@ -53,7 +53,7 @@ defmodule HygeiaWeb.VersionLive.Show do
     :unauthorized ->
       socket =
         socket
-        |> push_redirect(to: Routes.home_path(socket, :index))
+        |> push_redirect(to: Routes.home_index_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
 
       {:noreply, socket}

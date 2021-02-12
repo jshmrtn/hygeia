@@ -19,7 +19,7 @@ defmodule HygeiaWeb.TenantController do
       export(conn, tenant, format)
     else
       conn
-      |> redirect(to: Routes.home_path(conn, :index))
+      |> redirect(to: Routes.home_index_path(conn, :index))
       |> put_flash(:error, gettext("You are not authorized to do this action."))
     end
   end

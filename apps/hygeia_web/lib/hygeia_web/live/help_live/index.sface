@@ -111,7 +111,7 @@
       />
       <p>
         Nach erfolgreichem Login kann die Applikation unter
-        <a href="{{ Routes.home_url(@socket, :index) }}">{{ Routes.home_url(@socket, :index) }}</a>
+        <a href="{{ Routes.home_index_url(@socket, :index) }}">{{ Routes.home_index_url(@socket, :index) }}</a>
         gestartet werden
       </p>
       <img

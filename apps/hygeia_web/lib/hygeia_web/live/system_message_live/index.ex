@@ -18,7 +18,7 @@ defmodule HygeiaWeb.SystemMessageLive.Index do
         assign(socket, system_messages: list_system_messages())
       else
         socket
-        |> push_redirect(to: Routes.home_path(socket, :index))
+        |> push_redirect(to: Routes.home_index_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 

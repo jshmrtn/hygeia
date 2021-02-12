@@ -16,7 +16,7 @@ defmodule HygeiaWeb.AuthController do
       query
       |> Kernel.||("")
       |> URI.decode_query()
-      |> Map.put("post_logout_redirect_uri", Routes.home_url(conn, :index))
+      |> Map.put("post_logout_redirect_uri", Routes.home_index_url(conn, :index))
       |> URI.encode_query()
 
     after_logout_url = URI.to_string(%{end_session_uri | query: query})
