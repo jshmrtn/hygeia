@@ -1,0 +1,171 @@
+@import "mixins";
+
+////////////////////////////////////////////////////////////////
+// Museo Sans
+////////////////////////////////////////////////////////////////
+
+// Normal
+@include font-face(
+  "Museo Sans",
+  "museo_sans",
+  100,
+  normal,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Sans",
+  "museo_sans",
+  300,
+  normal,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Sans",
+  "museo_sans",
+  500,
+  normal,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Sans",
+  "museo_sans",
+  700,
+  normal,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Sans",
+  "museo_sans",
+  900,
+  normal,
+  eot woff2 woff ttf svg
+);
+
+// Italic
+@include font-face(
+  "Museo Sans",
+  "museo_sans",
+  100,
+  italic,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Sans",
+  "museo_sans",
+  300,
+  italic,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Sans",
+  "museo_sans",
+  500,
+  italic,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Sans",
+  "museo_sans",
+  700,
+  italic,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Sans",
+  "museo_sans",
+  900,
+  italic,
+  eot woff2 woff ttf svg
+);
+
+////////////////////////////////////////////////////////////////
+// Museo Slab
+////////////////////////////////////////////////////////////////
+
+// Normal
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  100,
+  normal,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  300,
+  normal,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  500,
+  normal,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  700,
+  normal,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  900,
+  normal,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  1000,
+  normal,
+  eot woff2 woff ttf svg
+);
+
+// Italic
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  100,
+  italic,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  300,
+  italic,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  500,
+  italic,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  700,
+  italic,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  900,
+  italic,
+  eot woff2 woff ttf svg
+);
+@include font-face(
+  "Museo Slab",
+  "museo_slab",
+  1000,
+  italic,
+  eot woff2 woff ttf svg
+);

@@ -1,1 +1,44 @@
-hello world
+<div class="jumbotron home-jumbo">
+  <section class="container">
+    <h1 class="display-4">Contact Tracing für SARS-CoV-2</h1>
+    <p class="lead col-md-10">Hygeia ist darauf ausgelegt, fehleranfällige Prozesse klar und einheitlich zu strukturieren, Standards wie das
+      <a
+        href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/weisung-kantone-ct-und-kontrolle-dezember-2020.PDF.download.PDF/Weisung%20Kantone%20CT%20und%20Kontrolle.pdf.PDF"
+        target="_blank"
+      >«Minimal Essential Dataset»</a>
+      des BAG einzuhalten, Anbindungen wie diejenige an die BAG-Datenbank zu gewährleisten und die fürs Contact Tracing notwendigen Personal-Mittel zu reduzieren.</p>
+    <hr class="my-4" />
+    <p class="col-md-8">Weitere Informationen zur Software, den Kosten sowie den angebotenen SLA finden Sie in den folgenden Factsheets.</p>
+    <a class="btn btn-primary btn-lg disabled" download aria-disabled="true" href="#" role="button">
+      <span class="oi oi-data-transfer-download" aria-hidden="true" />
+      Factsheet
+    </a>
+    <a class="btn btn-primary btn-lg disabled" download aria-disabled="true" href="#" role="button">
+      <span class="oi oi-data-transfer-download" aria-hidden="true" />
+      Kosten
+    </a>
+    <a class="btn btn-primary btn-lg disabled" download aria-disabled="true" href="#" role="button">
+      <span class="oi oi-data-transfer-download" aria-hidden="true" />
+      SLA
+    </a>
+    <hr class="my-4" />
+    <p class="col-md-8">Im Falle von Störungen des Systems kann die Status-Seite konsultiert werden.</p>
+    <a
+      class="btn btn-primary btn-lg"
+      href="https://status.covid19-tracing.ch"
+      role="button"
+      target="_blank"
+    >
+      <span class="oi oi-external-link" aria-hidden="true" />
+      Status-Seite
+    </a>
+    <hr class="my-4" />
+    <p class="col-md-8">Für Rückfragen im Bezug auf den Einsatz von Hygeia steht Ihnen
+      <a href="https://joshmartin.ch/team/jeremy-zahner/" target="_blank">Jeremy Zahner</a>
+      per E-Mail unter
+      <a href="mailto:zahner@joshmartin.ch" title="E-Mail an Jeremy Zahner">zahner@joshmartin.ch</a>
+      sowie über Telefon unter
+      <a href="tel:+41715117253" title="Jeremy Zahner anrufen">+41 71 511 72 53</a>
+      zur Verfügung.</p>
+  </section>
+</div>

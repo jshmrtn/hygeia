@@ -302,7 +302,7 @@
           </td>
         </tr>
         <tr :if={{ length(@cases) == 0 }}>
-          <td colspan="7">
+          <td colspan="8">
             <div class="d-flex justify-content-center py-3">
               {{ "No data to display" |> gettext }}
             </div>

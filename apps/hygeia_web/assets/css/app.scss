@@ -1,5 +1,6 @@
 @import "../node_modules/nprogress/nprogress.css";
 @import "./open-iconic-bootstrap.scss";
+@import "./fonts.scss";
 
 // LiveView specific classes for your customizations
 .phx-no-feedback.invalid-feedback,
@@ -43,12 +44,52 @@ $body-color: #111;
 $enable-rounded: true;
 $border-radius: 3px;
 $theme-colors: (
-  "primary": #01c5c4,
-  "secondary": #625261,
+  "primary": #37b8c0,
+  "secondary": #3C3C3B,
+  "dark": #3C3C3B,
 );
 $grid-gutter-width: 0.5rem;
 
+$font-weight-light: 100;
+$font-weight-normal: 300;
+$font-weight-bold: 500;
+$headings-font-weight: 700;
+
+$font-family-sans-serif:
+  "Museo Sans",
+  // Safari for OS X and iOS (San Francisco)
+  -apple-system,
+  // Chrome < 56 for OS X (San Francisco)
+  BlinkMacSystemFont,
+  // Windows
+  "Segoe UI",
+  // Android
+  "Roboto",
+  // Basic web fallback
+  "Helvetica Neue", Arial, sans-serif,
+  // Emoji fonts
+  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+
 @import "node_modules/bootstrap/scss/bootstrap";
+
+// Globals
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.25),
+    only screen and (min-device-pixel-ratio: 1.25),
+    only screen and (min-resolution: 200dpi),
+    only screen and (min-resolution: 1.25dppx) {
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
 
 a:hover {
   text-decoration: none;
@@ -171,5 +212,44 @@ table {
   &:hover {
     cursor: pointer;
     background-color: $gray-100;
+  }
+}
+
+.navbar-brand {
+  margin-right: $grid-gutter-width * 3;
+  padding-left: $grid-gutter-width / 2;
+  .logo {
+    height: 30px;
+    width: 90px;
+  }
+}
+
+.dropdown-submenu.loading {
+  display: flex;
+  justify-content: center;
+}
+
+.home-jumbo {
+  background-color: $body-bg;
+}
+
+.btn .oi {
+  vertical-align: middle;
+}
+
+@include media-breakpoint-down(md) {
+  .layout-header {
+    padding: $grid-gutter-width $grid-gutter-width * 2;
+    >.container {
+      >div {
+        flex-direction: column;
+        >.nav {
+            margin-bottom: $grid-gutter-width * 2;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
   }
 }
