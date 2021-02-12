@@ -192,6 +192,14 @@ defmodule HygeiaWeb do
       Sentry.Context.set_tags_context(%{locale: session["cldr_locale"]})
     end
 
+    case session["auth"] do
+      %{uuid: id, email: email, display_name: name} ->
+        Sentry.Context.set_user_context(%{id: id, email: email, name: name})
+
+      _other ->
+        :ok
+    end
+
     Versioning.put_origin(:web)
     Versioning.put_originator(session["auth"] || :noone)
 
