@@ -9,12 +9,17 @@ defmodule HygeiaWeb.CaseLive.Create do
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
+  alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
 
   @origin_country Application.compile_env!(:hygeia, [:phone_number_parsing_origin_country])
 
   @spec get_person_changes(person :: Person.t()) :: Ecto.Changeset.t()
   def get_person_changes(person) do
+    person = Repo.preload(person, affiliations: [organisation: []])
+
     drop_empty_recursively_and_remove_uuid(%{
       "accepted_duplicate" => true,
       "accepted_duplicate_uuid" => person.uuid,
@@ -40,8 +45,9 @@ defmodule HygeiaWeb.CaseLive.Create do
       "sex" => person.sex,
       "birth_date" => person.birth_date,
       "employer" =>
-        case person.employers do
-          [%{name: name}] -> name
+        case person.affiliations do
+          [%Affiliation{organisation: %Organisation{name: name}} | _] -> name
+          [%Affiliation{comment: comment} | _] -> comment
           _other -> nil
         end,
       "address" => person.address |> Ecto.embedded_dump(:json) |> recursive_string_keys()

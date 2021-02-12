@@ -9,6 +9,9 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.Sex
+  alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
@@ -224,7 +227,10 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
           |> Map.put(:valid?, true)
 
         uuid ->
-          uuid |> CaseContext.get_person!() |> CaseContext.change_person()
+          uuid
+          |> CaseContext.get_person!()
+          |> Repo.preload(affiliations: [organisation: []])
+          |> CaseContext.change_person()
       end
       |> merge_flat_fields(schema)
       |> merge_address(address)
@@ -310,12 +316,22 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
   defp merge_employer(changeset, nil), do: changeset
 
   defp merge_employer(changeset, employer) do
-    existing_employers = Ecto.Changeset.fetch_field!(changeset, :employers) || []
+    existing_affiliations = Ecto.Changeset.fetch_field!(changeset, :affiliations) || []
 
-    if Enum.any?(existing_employers, &match?(%{name: ^employer}, &1)) do
-      changeset
-    else
-      Ecto.Changeset.put_embed(changeset, :employers, [%{name: employer} | existing_employers])
+    cond do
+      Enum.any?(
+        existing_affiliations,
+        &match?(%Affiliation{organisation: %Organisation{name: ^employer}}, &1)
+      ) ->
+        changeset
+
+      Enum.any?(existing_affiliations, &match?(%Affiliation{comment: ^employer}, &1)) ->
+        changeset
+
+      true ->
+        Ecto.Changeset.put_assoc(changeset, :affiliations, [
+          %{comment: employer, kind: :employee} | existing_affiliations
+        ])
     end
   end
 end
