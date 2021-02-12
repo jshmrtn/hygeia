@@ -34,7 +34,7 @@ defmodule HygeiaWeb.OrganisationLive.Show do
            get_auth(socket)
          ) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "organisations:#{id}")
-
+        socket = assign(socket, page_title: "#{organisation.name} - #{gettext("Organisation")}")
         load_data(socket, organisation)
       else
         socket

@@ -4,12 +4,12 @@
       <div class="d-flex justify-content-between">
         <ul class="nav nav-pills" role="navigation">
           <div class="navbar-brand">
-            <a>
+            <LiveRedirect to={{ Routes.home_index_path(@socket, :index) }}>
               <img
                 class="nav-item logo img-fluid"
                 src={{ Routes.static_path(@socket, "/images/hygeia-logo.svg") }}
               />
-            </a>
+            </LiveRedirect>
           </div>
           <li class="nav-item" :if={{ authorized?(Hygeia.CaseContext.Case, :list, auth, tenant: :any) }}>
             <UriActiveContext

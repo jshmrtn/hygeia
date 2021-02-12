@@ -54,6 +54,13 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
 
     has_index_phase? = Enum.any?(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1))
 
-    assign(socket, case: case, has_index_phase?: has_index_phase?)
+    assign(socket,
+      case: case,
+      has_index_phase?: has_index_phase?,
+      page_title:
+        "#{case.person.first_name} #{case.person.last_name} - #{
+          gettext("Possible Index Submissions")
+        } - #{gettext("Case")}"
+    )
   end
 end

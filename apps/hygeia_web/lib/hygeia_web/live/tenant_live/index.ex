@@ -15,7 +15,7 @@ defmodule HygeiaWeb.TenantLive.Index do
       if authorized?(Tenant, :list, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "tenants")
 
-        assign(socket, tenants: list_tenants())
+        assign(socket, tenants: list_tenants(), page_title: gettext("Tenants"))
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))

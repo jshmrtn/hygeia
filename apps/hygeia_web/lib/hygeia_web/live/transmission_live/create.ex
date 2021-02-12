@@ -19,7 +19,10 @@ defmodule HygeiaWeb.TransmissionLive.Create do
   def mount(params, _session, socket) do
     socket =
       if authorized?(Transmission, :create, get_auth(socket)) do
-        assign(socket, changeset: CaseContext.change_transmission(%Transmission{}, params))
+        assign(socket,
+          changeset: CaseContext.change_transmission(%Transmission{}, params),
+          page_title: gettext("New Transmission")
+        )
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))

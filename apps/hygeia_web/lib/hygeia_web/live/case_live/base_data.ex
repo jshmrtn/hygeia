@@ -337,6 +337,9 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
     socket
     |> assign(case: case, changeset: changeset)
+    |> assign(
+      page_title: "#{case.person.first_name} #{case.person.last_name} - #{gettext("Case")}"
+    )
     |> maybe_block_navigation()
   end
 

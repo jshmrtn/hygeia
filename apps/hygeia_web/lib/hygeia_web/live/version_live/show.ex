@@ -41,6 +41,7 @@ defmodule HygeiaWeb.VersionLive.Show do
 
     socket =
       assign(socket,
+        page_title: gettext("History"),
         schema: schema,
         resource: preload(resource),
         versions: versions,

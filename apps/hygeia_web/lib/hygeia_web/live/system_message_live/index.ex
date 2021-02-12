@@ -15,7 +15,10 @@ defmodule HygeiaWeb.SystemMessageLive.Index do
       if authorized?(SystemMessage, :list, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "system_messages")
 
-        assign(socket, system_messages: list_system_messages())
+        assign(socket,
+          system_messages: list_system_messages(),
+          page_title: gettext("System Messages")
+        )
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))

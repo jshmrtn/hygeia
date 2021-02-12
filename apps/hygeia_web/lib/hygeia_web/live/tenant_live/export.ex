@@ -18,7 +18,10 @@ defmodule HygeiaWeb.TenantLive.Export do
       if authorized?(tenant, :export_data, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "tenants:#{id}")
 
-        assign(socket, tenant: tenant)
+        assign(socket,
+          tenant: tenant,
+          page_title: "#{tenant.name} - #{gettext("Manual Export")} - #{gettext("Tenant")}"
+        )
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))

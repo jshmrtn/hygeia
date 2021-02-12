@@ -35,7 +35,7 @@ defmodule HygeiaWeb.TenantLive.Show do
            get_auth(socket)
          ) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "tenants:#{id}")
-
+        socket = assign(socket, page_title: "#{tenant.name} - #{gettext("Tenant")}")
         load_data(socket, tenant)
       else
         socket

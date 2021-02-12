@@ -27,6 +27,7 @@ defmodule HygeiaWeb.PersonLive.Index do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "people")
 
         assign(socket,
+          page_title: gettext("People"),
           authorized_tenants:
             Enum.filter(
               TenantContext.list_tenants(),

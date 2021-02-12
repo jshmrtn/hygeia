@@ -20,7 +20,10 @@ defmodule HygeiaWeb.OrganisationLive.Create do
   def mount(params, _session, socket) do
     socket =
       if authorized?(Organisation, :create, get_auth(socket)) do
-        assign(socket, changeset: OrganisationContext.change_organisation(%Organisation{}))
+        assign(socket,
+          changeset: OrganisationContext.change_organisation(%Organisation{}),
+          page_title: gettext("New Organisation")
+        )
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))

@@ -24,6 +24,8 @@ defmodule HygeiaWeb.StatisticsLive.Timeline do
 
         socket = assign(socket, :tenant, tenant)
 
+        socket = assign(socket, page_title: "#{tenant.name} - #{gettext("Statistics")}")
+
         if is_nil(params["from"]) or is_nil(params["to"]) do
           from = Date.utc_today() |> Date.add(-30) |> Date.to_string()
           to = Date.to_string(Date.utc_today())

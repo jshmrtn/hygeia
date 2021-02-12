@@ -42,7 +42,12 @@ defmodule HygeiaWeb.PersonLive.BaseData do
             &authorized?(person, :create, get_auth(socket), tenant: &1)
           )
 
-        socket |> assign(tenants: tenants) |> load_data(person)
+        socket
+        |> assign(
+          tenants: tenants,
+          page_title: "#{person.first_name} #{person.last_name} - #{gettext("Person")}"
+        )
+        |> load_data(person)
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))

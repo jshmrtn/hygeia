@@ -52,15 +52,21 @@ defmodule HygeiaWeb.CaseLive.Transmissions do
   def handle_info(_other, socket), do: {:noreply, socket}
 
   defp load_data(socket, case) do
+    case =
+      Repo.preload(
+        case,
+        received_transmissions: [propagator_case: [tenant: []], propagator: [tenant: []]],
+        propagated_transmissions: [recipient_case: [tenant: []], recipient: [tenant: []]],
+        person: [tenant: []],
+        tenant: []
+      )
+
     assign(socket,
-      case:
-        Repo.preload(
-          case,
-          received_transmissions: [propagator_case: [tenant: []], propagator: [tenant: []]],
-          propagated_transmissions: [recipient_case: [tenant: []], recipient: [tenant: []]],
-          person: [tenant: []],
-          tenant: []
-        )
+      case: case,
+      page_title:
+        "#{case.person.first_name} #{case.person.last_name} - #{gettext("Transmissions")} - #{
+          gettext("Case")
+        }"
     )
   end
 end

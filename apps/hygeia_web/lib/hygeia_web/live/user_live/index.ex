@@ -32,7 +32,7 @@ defmodule HygeiaWeb.UserLive.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, gettext("Listing User"))
+    |> assign(:page_title, gettext("Users"))
     |> assign(:user, nil)
   end
 

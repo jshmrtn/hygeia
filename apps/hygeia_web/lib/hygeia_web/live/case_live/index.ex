@@ -30,6 +30,7 @@ defmodule HygeiaWeb.CaseLive.Index do
         tracer_users = UserContext.list_users_with_role(:tracer, :any)
 
         assign(socket,
+          page_title: gettext("Cases"),
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
           authorized_tenants:

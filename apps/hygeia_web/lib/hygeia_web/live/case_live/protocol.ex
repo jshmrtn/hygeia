@@ -75,6 +75,14 @@ defmodule HygeiaWeb.CaseLive.Protocol do
 
   defp load_data(socket, case) do
     case = Repo.preload(case, person: [tenant: []], tenant: [])
-    assign(socket, case: case, protocol_entries: CaseContext.list_protocol_entries(case))
+
+    assign(socket,
+      case: case,
+      protocol_entries: CaseContext.list_protocol_entries(case),
+      page_title:
+        "#{case.person.first_name} #{case.person.last_name} - #{gettext("Protocol")} - #{
+          gettext("Case")
+        }"
+    )
   end
 end

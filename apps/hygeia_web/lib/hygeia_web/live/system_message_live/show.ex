@@ -31,7 +31,7 @@ defmodule HygeiaWeb.SystemMessageLive.Show do
            get_auth(socket)
          ) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "system_message:#{id}")
-
+        socket = assign(socket, page_title: gettext("System Message"))
         load_data(socket, system_message)
       else
         socket

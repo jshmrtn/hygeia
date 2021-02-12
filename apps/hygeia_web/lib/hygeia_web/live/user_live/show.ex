@@ -19,8 +19,7 @@ defmodule HygeiaWeb.UserLive.Show do
     socket =
       if authorized?(user, :details, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "users:#{id}")
-
-        assign(socket, :user, user)
+        assign(socket, user: user, page_title: "#{user.display_name} - #{gettext("User")}")
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))

@@ -34,6 +34,8 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
 
         socket = assign(socket, :tenant, tenant)
 
+        socket = assign(socket, page_title: "#{tenant.name} - #{gettext("Daily Statistics")}")
+
         if is_nil(params["date"]) do
           date = Date.to_string(Date.utc_today())
 

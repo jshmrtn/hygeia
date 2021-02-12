@@ -122,7 +122,8 @@ defmodule HygeiaWeb.TransmissionLive.Show do
       transmission: transmission,
       changeset: changeset,
       people: CaseContext.list_people(),
-      versions: PaperTrail.get_versions(transmission)
+      versions: PaperTrail.get_versions(transmission),
+      page_title: gettext("Transmission")
     )
     |> maybe_block_navigation()
   end

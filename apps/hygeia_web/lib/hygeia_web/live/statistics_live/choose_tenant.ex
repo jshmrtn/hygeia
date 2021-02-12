@@ -11,7 +11,7 @@ defmodule HygeiaWeb.StatisticsLive.ChooseTenant do
   def mount(_params, _session, socket) do
     socket =
       if authorized?(Tenant, :list, get_auth(socket)) do
-        assign(socket, tenants: list_tenants(socket))
+        assign(socket, tenants: list_tenants(socket), page_title: gettext("Statistics"))
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))

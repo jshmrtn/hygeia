@@ -24,7 +24,11 @@ defmodule HygeiaWeb.SedexExportLive.Index do
           end
 
         socket
-        |> assign(pagination_params: pagination_params, tenant: tenant)
+        |> assign(
+          pagination_params: pagination_params,
+          tenant: tenant,
+          page_title: "#{tenant.name} - #{gettext("Sedex Exports")} - #{gettext("Tenant")}"
+        )
         |> list_sedex_exports
       else
         socket

@@ -18,7 +18,10 @@ defmodule HygeiaWeb.SystemMessageLive.Create do
   def mount(_params, _session, socket) do
     socket =
       if authorized?(SystemMessage, :create, get_auth(socket)) do
-        assign(socket, changeset: SystemMessageContext.change_system_message(%SystemMessage{}))
+        assign(socket,
+          changeset: SystemMessageContext.change_system_message(%SystemMessage{}),
+          page_title: gettext("New System Message")
+        )
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))

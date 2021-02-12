@@ -22,6 +22,7 @@ defmodule HygeiaWeb.PersonLive.Create do
       if authorized?(Person, :create, get_auth(socket), tenant: :any) do
         assign(socket,
           changeset: CaseContext.change_person(%Person{}),
+          page_title: gettext("New Person"),
           tenants:
             Enum.filter(
               TenantContext.list_tenants(),

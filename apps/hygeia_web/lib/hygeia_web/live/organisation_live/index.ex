@@ -31,7 +31,11 @@ defmodule HygeiaWeb.OrganisationLive.Index do
           end
 
         socket
-        |> assign(pagination_params: pagination_params, filters: %{})
+        |> assign(
+          pagination_params: pagination_params,
+          filters: %{},
+          page_title: gettext("Organisations")
+        )
         |> list_organisations
       else
         socket

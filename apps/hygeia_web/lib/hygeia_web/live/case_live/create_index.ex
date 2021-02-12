@@ -49,7 +49,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
           suspected_duplicate_changeset_uuid: nil,
           file: nil,
           return_to: params["return_to"],
-          loading: false
+          loading: false,
+          page_title: "#{gettext("Create Index Cases")} - #{gettext("Cases")}"
         )
       else
         socket

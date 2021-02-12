@@ -16,6 +16,7 @@ defmodule HygeiaWeb.OrganisationLive.Merge do
   def handle_params(params, _uri, socket) do
     {:noreply,
      socket
+     |> assign(:page_title, gettext("Merge Organisations"))
      |> load_organisation(:delete, params["delete"])
      |> load_organisation(:into, params["into"])}
   end
