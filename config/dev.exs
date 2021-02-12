@@ -10,7 +10,7 @@ config :hygeia, Hygeia.Repo, show_sensitive_data_on_connection_error: true
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :hygeia_web, HygeiaWeb.Endpoint,
-  debug_errors: true,
+  debug_errors: false,
   code_reloader: true,
   check_origin: false,
   watchers: [

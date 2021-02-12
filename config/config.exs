@@ -103,6 +103,7 @@ config :ex_aws,
 
 config :sentry,
   enable_source_code_context: true,
+  filter: SentryEventFilter,
   root_source_code_path:
     __ENV__.file |> Path.dirname() |> Path.dirname() |> Path.join("apps/*") |> Path.wildcard()
 
