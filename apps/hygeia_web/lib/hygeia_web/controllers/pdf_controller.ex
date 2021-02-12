@@ -7,6 +7,29 @@ defmodule HygeiaWeb.PdfController do
   alias HygeiaPdfConfirmation.Isolation
   alias HygeiaPdfConfirmation.Quarantine
 
+  defmodule PhaseNotFoundError do
+    @moduledoc false
+    defexception plug_status: 404,
+                 message: "phase not found",
+                 conn: nil,
+                 case_uuid: nil,
+                 phase_uuid: nil
+
+    @impl Exception
+    def exception(opts) do
+      conn = Keyword.fetch!(opts, :conn)
+      case_uuid = Keyword.fetch!(opts, :case_uuid)
+      phase_uuid = Keyword.fetch!(opts, :phase_uuid)
+
+      %__MODULE__{
+        message: "the phase with id #{phase_uuid} was not found in the case #{case_uuid}",
+        conn: conn,
+        case_uuid: case_uuid,
+        phase_uuid: phase_uuid
+      }
+    end
+  end
+
   @spec isolation_confirmation(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) ::
           Plug.Conn.t()
   def isolation_confirmation(conn, %{"case_uuid" => case_uuid, "phase_uuid" => phase_uuid}) do
@@ -16,7 +39,7 @@ defmodule HygeiaWeb.PdfController do
     |> Enum.find(&match?(%Phase{uuid: ^phase_uuid}, &1))
     |> case do
       nil ->
-        raise "not found"
+        raise PhaseNotFoundError, conn: conn, phase_uuid: phase_uuid, case_uuid: case_uuid
 
       %Phase{} = phase ->
         conn
@@ -35,7 +58,7 @@ defmodule HygeiaWeb.PdfController do
     |> Enum.find(&match?(%Phase{uuid: ^phase_uuid}, &1))
     |> case do
       nil ->
-        raise "not found"
+        raise PhaseNotFoundError, conn: conn, phase_uuid: phase_uuid, case_uuid: case_uuid
 
       %Phase{} = phase ->
         conn
