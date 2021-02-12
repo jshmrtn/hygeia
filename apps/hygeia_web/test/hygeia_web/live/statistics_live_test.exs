@@ -25,10 +25,10 @@ defmodule HygeiaWeb.StatisticsLiveTest do
       [%{tenant: tenant} | _other_grants] = user.grants
 
       assert {:error, {:live_redirect, %{to: path}}} =
-               live(conn, Routes.statistics_statistics_path(conn, :show, tenant))
+               live(conn, Routes.statistics_timeline_path(conn, :show, tenant))
 
       assert path ==
-               Routes.statistics_statistics_path(
+               Routes.statistics_timeline_path(
                  conn,
                  :show,
                  tenant,
@@ -43,7 +43,7 @@ defmodule HygeiaWeb.StatisticsLiveTest do
       assert {:ok, _live_view, html} =
                live(
                  conn,
-                 Routes.statistics_statistics_path(
+                 Routes.statistics_timeline_path(
                    conn,
                    :show,
                    tenant,

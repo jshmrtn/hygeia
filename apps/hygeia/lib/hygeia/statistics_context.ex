@@ -49,18 +49,25 @@ defmodule Hygeia.StatisticsContext do
   @spec list_active_isolation_cases_per_day(
           tenant :: Tenant.t(),
           from :: Date.t(),
-          to :: Date.t()
+          to :: Date.t(),
+          include_zero_values :: boolean()
         ) :: [ActiveIsolationCasesPerDay.t()]
-  def list_active_isolation_cases_per_day(%Tenant{uuid: tenant_uuid} = _tenant, from, to),
-    do:
-      Repo.all(
-        from(cases_per_day in ActiveIsolationCasesPerDay,
-          where:
-            cases_per_day.tenant_uuid == ^tenant_uuid and
-              fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to),
-          order_by: cases_per_day.date
+  def list_active_isolation_cases_per_day(
+        %Tenant{uuid: tenant_uuid} = _tenant,
+        from,
+        to,
+        include_zero_values \\ true
+      ),
+      do:
+        Repo.all(
+          from(cases_per_day in ActiveIsolationCasesPerDay,
+            where:
+              cases_per_day.tenant_uuid == ^tenant_uuid and
+                fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to) and
+                (^include_zero_values or cases_per_day.count > 0),
+            order_by: cases_per_day.date
+          )
         )
-      )
 
   @doc """
   Returns the list of cumulative_index_case_end_reasons.
@@ -95,12 +102,14 @@ defmodule Hygeia.StatisticsContext do
   @spec list_cumulative_index_case_end_reasons(
           tenant :: Tenant.t(),
           from :: Date.t(),
-          to :: Date.t()
+          to :: Date.t(),
+          include_zero_values :: boolean()
         ) :: [CumulativeIndexCaseEndReasons.t()]
   def list_cumulative_index_case_end_reasons(
         %Tenant{uuid: tenant_uuid} = _tenant,
         from,
-        to
+        to,
+        include_zero_values \\ true
       ),
       do:
         Repo.all(
@@ -112,7 +121,8 @@ defmodule Hygeia.StatisticsContext do
                   cumulative_index_case_end_reasons.date,
                   ^from,
                   ^to
-                ),
+                ) and
+                (^include_zero_values or cumulative_index_case_end_reasons.count > 0),
             order_by: cumulative_index_case_end_reasons.date
           )
         )
@@ -150,12 +160,14 @@ defmodule Hygeia.StatisticsContext do
   @spec list_active_quarantine_cases_per_day(
           tenant :: Tenant.t(),
           from :: Date.t(),
-          to :: Date.t()
+          to :: Date.t(),
+          include_zero_values :: boolean()
         ) :: [ActiveQuarantineCasesPerDay.t()]
   def list_active_quarantine_cases_per_day(
         %Tenant{uuid: tenant_uuid} = _tenant,
         from,
-        to
+        to,
+        include_zero_values \\ true
       ),
       do:
         Repo.all(
@@ -167,7 +179,8 @@ defmodule Hygeia.StatisticsContext do
                   cases_per_day.date,
                   ^from,
                   ^to
-                ),
+                ) and
+                (^include_zero_values or cases_per_day.count > 0),
             order_by: cases_per_day.date
           )
         )
@@ -207,12 +220,14 @@ defmodule Hygeia.StatisticsContext do
   @spec list_cumulative_possible_index_case_end_reasons(
           tenant :: Tenant.t(),
           from :: Date.t(),
-          to :: Date.t()
+          to :: Date.t(),
+          include_zero_values :: boolean()
         ) :: [CumulativePossibleIndexCaseEndReasons.t()]
   def list_cumulative_possible_index_case_end_reasons(
         %Tenant{uuid: tenant_uuid} = _tenant,
         from,
-        to
+        to,
+        include_zero_values \\ true
       ),
       do:
         Repo.all(
@@ -224,7 +239,8 @@ defmodule Hygeia.StatisticsContext do
                   cases_per_day.date,
                   ^from,
                   ^to
-                ),
+                ) and
+                (^include_zero_values or cases_per_day.count > 0),
             order_by: cases_per_day.date
           )
         )
@@ -262,12 +278,14 @@ defmodule Hygeia.StatisticsContext do
   @spec list_new_cases_per_day(
           tenant :: Tenant.t(),
           from :: Date.t(),
-          to :: Date.t()
+          to :: Date.t(),
+          include_zero_values :: boolean()
         ) :: [NewCasesPerDay.t()]
   def list_new_cases_per_day(
         %Tenant{uuid: tenant_uuid} = _tenant,
         from,
-        to
+        to,
+        include_zero_values \\ true
       ),
       do:
         Repo.all(
@@ -279,7 +297,8 @@ defmodule Hygeia.StatisticsContext do
                   cases_per_day.date,
                   ^from,
                   ^to
-                ),
+                ) and
+                (^include_zero_values or cases_per_day.count > 0),
             order_by: cases_per_day.date
           )
         )
@@ -317,18 +336,25 @@ defmodule Hygeia.StatisticsContext do
   @spec list_active_hospitalization_cases_per_day(
           tenant :: Tenant.t(),
           from :: Date.t(),
-          to :: Date.t()
+          to :: Date.t(),
+          include_zero_values :: boolean()
         ) :: [ActiveHospitalizationCasesPerDay.t()]
-  def list_active_hospitalization_cases_per_day(%Tenant{uuid: tenant_uuid} = _tenant, from, to),
-    do:
-      Repo.all(
-        from(cases_per_day in ActiveHospitalizationCasesPerDay,
-          where:
-            cases_per_day.tenant_uuid == ^tenant_uuid and
-              fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to),
-          order_by: cases_per_day.date
+  def list_active_hospitalization_cases_per_day(
+        %Tenant{uuid: tenant_uuid} = _tenant,
+        from,
+        to,
+        include_zero_values \\ true
+      ),
+      do:
+        Repo.all(
+          from(cases_per_day in ActiveHospitalizationCasesPerDay,
+            where:
+              cases_per_day.tenant_uuid == ^tenant_uuid and
+                fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to) and
+                (^include_zero_values or cases_per_day.count > 0),
+            order_by: cases_per_day.date
+          )
         )
-      )
 
   @doc """
   Returns the list of active_complexity_cases_per_day.
@@ -363,12 +389,14 @@ defmodule Hygeia.StatisticsContext do
   @spec list_active_complexity_cases_per_day(
           tenant :: Tenant.t(),
           from :: Date.t(),
-          to :: Date.t()
+          to :: Date.t(),
+          include_zero_values :: boolean()
         ) :: [ActiveComplexityCasesPerDay.t()]
   def list_active_complexity_cases_per_day(
         %Tenant{uuid: tenant_uuid} = _tenant,
         from,
-        to
+        to,
+        include_zero_values \\ true
       ),
       do:
         Repo.all(
@@ -380,7 +408,8 @@ defmodule Hygeia.StatisticsContext do
                   active_complexity_cases_per_day.date,
                   ^from,
                   ^to
-                ),
+                ) and
+                (^include_zero_values or active_complexity_cases_per_day.count > 0),
             order_by: active_complexity_cases_per_day.date
           )
         )
@@ -418,12 +447,14 @@ defmodule Hygeia.StatisticsContext do
   @spec list_active_infection_place_cases_per_day(
           tenant :: Tenant.t(),
           from :: Date.t(),
-          to :: Date.t()
+          to :: Date.t(),
+          include_zero_values :: boolean()
         ) :: [ActiveInfectionPlaceCasesPerDay.t()]
   def list_active_infection_place_cases_per_day(
         %Tenant{uuid: tenant_uuid} = _tenant,
         from,
-        to
+        to,
+        include_zero_values \\ true
       ),
       do:
         Repo.all(
@@ -435,7 +466,8 @@ defmodule Hygeia.StatisticsContext do
                   active_infection_place_cases_per_day.date,
                   ^from,
                   ^to
-                ),
+                ) and
+                (^include_zero_values or active_infection_place_cases_per_day.count > 0),
             order_by: active_infection_place_cases_per_day.date
           )
         )
@@ -473,12 +505,14 @@ defmodule Hygeia.StatisticsContext do
   @spec list_transmission_country_cases_per_day(
           tenant :: Tenant.t(),
           from :: Date.t(),
-          to :: Date.t()
+          to :: Date.t(),
+          include_zero_values :: boolean()
         ) :: [TransmissionCountryCasesPerDay.t()]
   def list_transmission_country_cases_per_day(
         %Tenant{uuid: tenant_uuid} = _tenant,
         from,
-        to
+        to,
+        include_zero_values \\ true
       ),
       do:
         Repo.all(
@@ -490,7 +524,8 @@ defmodule Hygeia.StatisticsContext do
                   transmission_country_cases_per_day.date,
                   ^from,
                   ^to
-                ),
+                ) and
+                (^include_zero_values or transmission_country_cases_per_day.count > 0),
             order_by: transmission_country_cases_per_day.date
           )
         )

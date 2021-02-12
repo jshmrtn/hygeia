@@ -1,0 +1,14 @@
+.component-statistics-daily-statistics {
+  progress {
+    background-color: lightgray;
+  }
+  progress::-moz-progress-bar {
+    background: #01c5c4;
+  }
+  progress::-webkit-progress-bar {
+    background: lightgray;
+  }
+  progress::-webkit-progress-value {
+    background-color: #01c5c4;
+  }
+}

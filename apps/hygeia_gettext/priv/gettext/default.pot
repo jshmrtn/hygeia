@@ -188,6 +188,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"Please note that submitting contact persons only works in recent versions of "
+"the following browsers:"
+msgstr ""
+
+msgid ""
 "Possible index submissions can only be managed for cases with an index phase."
 msgstr ""
 
@@ -221,6 +226,10 @@ msgid ""
 msgstr ""
 
 msgid ""
+"This organisation is possibly a duplicate of %{name_link}, please check."
+msgstr ""
+
+msgid ""
 "To fulfill all needs regarding the tracing of contacts you will need to "
 "enter personal details of people you met while being potentially infectious."
 msgstr ""
@@ -231,8 +240,36 @@ msgid ""
 msgstr ""
 
 msgid ""
+"You have been identified as a contact person of a person with corona.\n"
+"Therefore you have to self quarantine.\n"
+"Details: %{quarantine_confirmation_link}\n"
+"\n"
+"Kind Regards,\n"
+"%{message_sender}\n"
+msgstr ""
+
+msgid ""
 "You have been requested to enter personal data from all persons with which "
 "you have had contact with for more than 15 minutes without wearing a mask."
+msgstr ""
+
+msgid ""
+"You have been tested positive for the corona virus.\n"
+"Therefore you have to self isolate.\n"
+"Details: %{isolation_confirmation_link}\n"
+"To ensure the contact tracing we need to record personal details of your "
+"contacts.\n"
+"You can enter persons you had contact with here: "
+"%{possible_index_submission_link}\n"
+"\n"
+"Kind Regards,\n"
+"%{message_sender}\n"
+msgstr ""
+
+msgid "\"Merge\" and \"Into\" may not be the same"
+msgstr ""
+
+msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr ""
 
 msgid "%{phase_type} (%{date})"
@@ -576,6 +613,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Clinical Information"
 msgstr ""
 
+msgctxt "Organisation Type"
+msgid "Club"
+msgstr ""
+
 msgid "Code Pending"
 msgstr ""
 
@@ -656,6 +697,10 @@ msgstr ""
 msgid "Copy Address from Propagator"
 msgstr ""
 
+msgctxt "Organisation Type"
+msgid "Corporation"
+msgstr ""
+
 msgid "Correct phone number available"
 msgstr ""
 
@@ -671,6 +716,10 @@ msgstr ""
 msgid "Count"
 msgstr ""
 
+#, elixir-format
+msgid "Countries"
+msgstr ""
+
 msgid "Country"
 msgstr ""
 
@@ -683,6 +732,10 @@ msgstr ""
 
 msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
+msgstr ""
+
+msgctxt "Organisation"
+msgid "Create"
 msgstr ""
 
 msgid "Create Contact Cases"
@@ -713,6 +766,10 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "DKIM"
+msgstr ""
+
+#, elixir-format
+msgid "Daily Statistics"
 msgstr ""
 
 msgid "Date"
@@ -1138,6 +1195,10 @@ msgctxt "Index Type"
 msgid "Healed"
 msgstr ""
 
+msgctxt "Organisation Type"
+msgid "Healthcare"
+msgstr ""
+
 msgid "Help"
 msgstr ""
 
@@ -1320,6 +1381,10 @@ msgstr ""
 msgid "Internal"
 msgstr ""
 
+msgctxt "Organisation Merge"
+msgid "Into"
+msgstr ""
+
 msgid "Isolation Confirmation"
 msgstr ""
 
@@ -1486,6 +1551,17 @@ msgstr ""
 
 msgctxt "Affiliation Kind"
 msgid "Member"
+msgstr ""
+
+msgctxt "Organisation"
+msgid "Merge"
+msgstr ""
+
+msgctxt "Organisation Merge"
+msgid "Merge"
+msgstr ""
+
+msgid "Merge Organisations"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
@@ -1669,6 +1745,10 @@ msgstr ""
 msgid "No data to display"
 msgstr ""
 
+#, elixir-format
+msgid "No data to show"
+msgstr ""
+
 msgid "No follow up"
 msgstr ""
 
@@ -1769,6 +1849,9 @@ msgstr ""
 msgid "Organisations"
 msgstr ""
 
+msgid "Organisations merged successfully"
+msgstr ""
+
 msgid "Origin"
 msgstr ""
 
@@ -1796,6 +1879,10 @@ msgid "Other"
 msgstr ""
 
 msgctxt "Affiliation Kind"
+msgid "Other"
+msgstr ""
+
+msgctxt "Organisation Type"
 msgid "Other"
 msgstr ""
 
@@ -1886,6 +1973,10 @@ msgstr ""
 msgid "People in Quarantine"
 msgstr ""
 
+#, elixir-format
+msgid "Percentage"
+msgstr ""
+
 msgctxt "Email Status"
 msgid "Permanent Failure"
 msgstr ""
@@ -1944,11 +2035,6 @@ msgid "Place Name"
 msgstr ""
 
 msgid "Please Wait..."
-msgstr ""
-
-msgid ""
-"Please note that submitting contact persons only works in recent versions of "
-"the following browsers:"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
@@ -2267,6 +2353,10 @@ msgctxt "Affiliation Kind"
 msgid "Scholar"
 msgstr ""
 
+msgctxt "Organisation Type"
+msgid "School"
+msgstr ""
+
 msgid "School / scout camp"
 msgstr ""
 
@@ -2557,6 +2647,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Supervisor UUID"
 msgstr ""
 
+msgctxt "Organisation Merge"
+msgid "Switch"
+msgstr ""
+
 msgid "Symptoms"
 msgstr ""
 
@@ -2798,7 +2892,15 @@ msgctxt "Protocol Entry"
 msgid "Type"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
+msgid "Type"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
+msgid "Type Other"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Type Other"
 msgstr ""
 
@@ -2941,29 +3043,7 @@ msgstr ""
 msgid "You had contact for more than 15 minutes on the same day."
 msgstr ""
 
-msgid ""
-"You have been identified as a contact person of a person with corona.\n"
-"Therefore you have to self quarantine.\n"
-"Details: %{quarantine_confirmation_link}\n"
-"\n"
-"Kind Regards,\n"
-"%{message_sender}\n"
-msgstr ""
-
 msgid "You have been logged out!"
-msgstr ""
-
-msgid ""
-"You have been tested positive for the corona virus.\n"
-"Therefore you have to self isolate.\n"
-"Details: %{isolation_confirmation_link}\n"
-"To ensure the contact tracing we need to record personal details of your "
-"contacts.\n"
-"You can enter persons you had contact with here: "
-"%{possible_index_submission_link}\n"
-"\n"
-"Kind Regards,\n"
-"%{message_sender}\n"
 msgstr ""
 
 msgid "You must provide a reason for completing a phase."
@@ -3053,68 +3133,4 @@ msgstr ""
 
 #. Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj
 msgid "yyyy-mm-dd"
-msgstr ""
-
-msgid ""
-"This organisation is possibly a duplicate of %{name_link}, please check."
-msgstr ""
-
-msgid "\"Merge\" and \"Into\" may not be the same"
-msgstr ""
-
-msgctxt "Organisation Merge"
-msgid "Into"
-msgstr ""
-
-msgctxt "Organisation"
-msgid "Merge"
-msgstr ""
-
-msgctxt "Organisation Merge"
-msgid "Merge"
-msgstr ""
-
-msgid "Merge Organisations"
-msgstr ""
-
-msgid "Organisations merged successfully"
-msgstr ""
-
-msgctxt "Organisation Merge"
-msgid "Switch"
-msgstr ""
-
-msgid "\"Merge\" and \"Into\" must not be the same"
-msgstr ""
-
-msgctxt "Organisation Type"
-msgid "Club"
-msgstr ""
-
-msgctxt "Organisation Type"
-msgid "Corporation"
-msgstr ""
-
-msgctxt "Organisation Type"
-msgid "Healthcare"
-msgstr ""
-
-msgctxt "Organisation Type"
-msgid "Other"
-msgstr ""
-
-msgctxt "Organisation Type"
-msgid "School"
-msgstr ""
-
-msgctxt "Organisation"
-msgid "Create"
-msgstr ""
-
-msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
-msgid "Type"
-msgstr ""
-
-msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
-msgid "Type Other"
 msgstr ""

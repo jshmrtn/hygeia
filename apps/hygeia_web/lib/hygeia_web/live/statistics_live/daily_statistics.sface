@@ -1,0 +1,295 @@
+<div class="component-statistics-daily-statistics container pt-3">
+  <HygeiaWeb.StatisticsLive.Header tenant={{ @tenant }} id="header" />
+
+  <div class="component-statistics-daily-statistics container pt-3">
+    <div class="container">
+      <Form for={{ assigns }} change="params_change" opts={{ class: "mt-3 d-flex" }}>
+        <div class="input-group w-auto">
+          <div class="input-group-prepend">
+            <span class="input-group-text">{{ gettext("Date") }}</span>
+          </div>
+          <DateInput class="form-control" field={{ :date }} />
+        </div>
+      </Form>
+    </div>
+
+    <div class="row mt-3">
+      <div class={{ "col-12 col-xl-6 text-center h-full", empty: @active_isolation_cases_per_day == [] }}>
+        <div class="text-center">
+          <p class="small"><strong>{{ gettext("People in Isolation") }}</strong></p>
+        </div>
+        <div class="text-center">
+          <p class="display-1 w-100">
+            {{ case @active_isolation_cases_per_day do
+              [%{count: count}] -> HygeiaCldr.Number.to_string!(count)
+              [] -> nil
+            end }}
+          </p>
+        </div>
+      </div>
+
+      <div class={{ "col-12 col-xl-6", empty: @cumulative_index_case_end_reasons == [] }}>
+        <HygeiaWeb.Chart
+          id="cumulative_index_case_end_reasons"
+          dom_id="cumulative_index_case_end_reasons"
+          config={{%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@cumulative_index_case_end_reasons, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(@cumulative_index_case_end_reasons, fn
+                  %{end_reason: nil} -> gettext("unknown")
+                  %{end_reason: end_reason} -> case_phase_index_end_reason_translation(end_reason)
+                end)
+            },
+            options: %{
+              title: %{
+                display: true,
+                text: gettext("Finished Isolations")
+              }
+            }
+          }}}
+        />
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class={{ "col-12 col-xl-6", empty: @active_quarantine_cases_per_day == [] }}>
+        <HygeiaWeb.Chart
+          id="active_quarantine_cases_per_day"
+          dom_id="active_quarantine_cases_per_day"
+          config={{%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@active_quarantine_cases_per_day, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(
+                  @active_quarantine_cases_per_day,
+                  &case_phase_possible_index_type_translation(&1.type)
+                )
+            },
+            options: %{
+              title: %{
+                display: true,
+                text: gettext("People in Quarantine")
+              }
+            }
+          }}}
+        />
+      </div>
+
+      <div class={{ "col-12 col-xl-6", empty: @cumulative_possible_index_case_end_reasons == [] }}>
+        <HygeiaWeb.Chart
+          id="cumulative_possible_index_case_end_reasons"
+          dom_id="cumulative_possible_index_case_end_reasons"
+          config={{%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data:
+                    @cumulative_possible_index_case_end_reasons
+                    |> Enum.group_by(& &1.type)
+                    |> Enum.sort()
+                    |> Enum.map(fn {_group, entries} ->
+                      entries |> Enum.map(& &1.count) |> Enum.sum()
+                    end),
+                  labels:
+                    @cumulative_possible_index_case_end_reasons
+                    |> Enum.map(& &1.type)
+                    |> Enum.uniq()
+                    |> Enum.sort()
+                    |> Enum.map(&case_phase_possible_index_type_translation(&1))
+                },
+                %{
+                  data:
+                    @cumulative_possible_index_case_end_reasons
+                    |> Enum.sort_by(& &1.type)
+                    |> Enum.map(& &1.count),
+                  labels:
+                    @cumulative_possible_index_case_end_reasons
+                    |> Enum.sort_by(& &1.type)
+                    |> Enum.map(fn
+                      %{end_reason: nil, type: type} ->
+                        case_phase_possible_index_type_translation(type) <>
+                          " / " <> gettext("unknown")
+          
+                      %{end_reason: end_reason, type: type} ->
+                        case_phase_possible_index_type_translation(type) <>
+                          " / " <> case_phase_possible_index_end_reason_translation(end_reason)
+                    end)
+                }
+              ]
+            },
+            options: %{
+              title: %{
+                display: true,
+                text: gettext("Quarantine End Reasons")
+              },
+              legend: %{
+                display: false
+              }
+            }
+          }}}
+        />
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class={{ "col-12 col-xl-6", empty: @new_cases_per_day == [] }}>
+        <HygeiaWeb.Chart
+          id="new_cases_per_day"
+          dom_id="new_cases_per_day"
+          config={{%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@new_cases_per_day, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(@new_cases_per_day, fn
+                  %{type: :index, sub_type: nil} ->
+                    gettext("Index")
+          
+                  %{type: :possible_index, sub_type: sub_type} ->
+                    case_phase_possible_index_type_translation(sub_type)
+                end)
+            }
+          }}}
+        />
+      </div>
+
+      <div class={{ "col-12 col-xl-6 text-center h-full", empty: @active_hospitalization_cases_per_day == [] }}>
+        <div class="text-center">
+          <p class="small"><strong>{{ gettext("People in Hospital") }}</strong></p>
+        </div>
+        <div class="text-center">
+          <p class="display-1 w-100">
+            {{ case @active_hospitalization_cases_per_day do
+              [%{count: count}] -> HygeiaCldr.Number.to_string!(count)
+              [] -> "?"
+            end }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class={{ "col-12 col-xl-6", empty: @active_complexity_cases_per_day == [] }}>
+        <HygeiaWeb.Chart
+          id="active_complexity_cases_per_day"
+          dom_id="active_complexity_cases_per_day"
+          config={{%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@active_complexity_cases_per_day, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(@active_complexity_cases_per_day, fn
+                  %{case_complexity: nil} -> gettext("unknown")
+                  %{case_complexity: case_complexity} -> case_complexity_translation(case_complexity)
+                end)
+            }
+          }}}
+        />
+      </div>
+      <div class={{ "col-12 col-xl-6 text-center h-full", empty: @active_infection_place_cases_per_day == [] }}>
+        <div class="text-center mb-5">
+          <p class="small"><strong>{{ gettext("Infection Place") }}</strong></p>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">{{ gettext("Place") }}</th>
+              <th scope="col">{{ gettext("Count") }}</th>
+              <th scope="col">{{ gettext("Percentage") }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <Context
+              put={{ sum_count: Enum.reduce(@active_infection_place_cases_per_day, 0, &(&1.count + &2)) }}
+              get={{ sum_count: sum_count }}
+            >
+              <tr :for={{item <-
+                Enum.map(@active_infection_place_cases_per_day, fn
+                  %{count: count, infection_place_type: nil} ->
+                    %{count: count, infection_place_type: gettext("unknown")}
+              
+                  %{count: count, infection_place_type: infection_place_type} ->
+                    %{count: count, infection_place_type: translate_infection_place_type(infection_place_type)}
+                end)}}>
+                <td>{{ item.infection_place_type }}</td>
+                <td>{{ item.count }}</td>
+                <td>
+                  <progress id="placeProgress" value="{{ item.count / sum_count }}" max="1">
+                    {{ HygeiaCldr.Number.to_string!(item.count / sum_count, format: :percent) }}
+                  </progress>
+                </td>
+              </tr>
+
+              <tr :if={{ @active_infection_place_cases_per_day == [] }}>
+                <td colspan=3>{{ gettext("No data to show") }}</td>
+              </tr>
+            </Context>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class={{ "col-12 col-xl-6 text-center h-full", empty: @transmission_country_cases_per_day == [] }}>
+        <div class="text-center mb-5">
+          <p class="small"><strong>{{ gettext("Countries") }}</strong></p>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">{{ gettext("Country") }}</th>
+              <th scope="col">{{ gettext("Count") }}</th>
+              <th scope="col">{{ gettext("Percentage") }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <Context
+              put={{ sum_count: Enum.reduce(@transmission_country_cases_per_day, 0, &(&1.count + &2)) }}
+              get={{ sum_count: sum_count }}
+            >
+              <tr :for={{item <-
+                @transmission_country_cases_per_day
+                |> Enum.map(fn
+                  %{count: count, country: nil} -> %{count: count, country: gettext("unknown")}
+                  %{count: count, country: country} -> %{count: count, country: country_name(country)}
+                end)}}>
+                <td>{{ item.country }}</td>
+                <td>{{ item.count }}</td>
+                <td>
+                  <progress id="countryProgress" value="{{ item.count / sum_count }}" max="1">
+                    {{ HygeiaCldr.Number.to_string!(item.count / sum_count, format: :percent) }}
+                  </progress>
+                </td>
+              </tr>
+
+              <tr :if={{ @transmission_country_cases_per_day == [] }}>
+                <td colspan=3>{{ gettext("No data to show") }}</td>
+              </tr>
+            </Context>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

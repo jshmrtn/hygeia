@@ -1,0 +1,30 @@
+<div class="container">
+  <h1 class="mb-4">
+    {{ gettext("Statistics for %{tenant}", tenant: @tenant.name) }}
+  </h1>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <UriActiveContext
+        to={{ Routes.statistics_timeline_path(@socket, :show, @tenant) }}
+        :let={{ to: to, active: active }}
+        opts={{ active: :inclusive }}
+      >
+        <LiveRedirect to={{ to }} class={{ "nav-link", active: active }}>
+          {{ gettext("Statistics") }}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+    <li class="nav-item">
+      <UriActiveContext
+        to={{ Routes.statistics_daily_statistics_path(@socket, :show, @tenant) }}
+        :let={{ to: to, active: active }}
+        opts={{ active: :inclusive }}
+      >
+        <LiveRedirect to={{ to }} class={{ "nav-link", active: active }}>
+          {{ gettext("Daily Statistics") }}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+  </ul>
+</div>

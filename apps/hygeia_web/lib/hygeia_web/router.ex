@@ -221,8 +221,10 @@ defmodule HygeiaWeb.Router do
          :edit
 
     live "/statistics", StatisticsLive.ChooseTenant, :index
-    live "/statistics/:tenant_uuid", StatisticsLive.Statistics, :show
-    live "/statistics/:tenant_uuid/:from/:to", StatisticsLive.Statistics, :show
+    live "/statistics/:tenant_uuid/timeline/:from/:to", StatisticsLive.Timeline, :show
+    live "/statistics/:tenant_uuid/timeline", StatisticsLive.Timeline, :show
+    live "/statistics/:tenant_uuid/daily", StatisticsLive.DailyStatistics, :show
+    live "/statistics/:tenant_uuid/daily/:date", StatisticsLive.DailyStatistics, :show
 
     live "/system_messages", SystemMessageLive.Index, :index
 

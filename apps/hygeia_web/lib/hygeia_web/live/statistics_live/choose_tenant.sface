@@ -7,7 +7,7 @@
     <li :for={{ tenant <- @tenants }}>
       {{ tenant.name }}
 
-      <LiveRedirect to={{ Routes.statistics_statistics_path(@socket, :show, tenant) }}>
+      <LiveRedirect to={{ Routes.statistics_timeline_path(@socket, :show, tenant) }}>
         {{ gettext("Show Statistics") }}
       </LiveRedirect>
     </li>

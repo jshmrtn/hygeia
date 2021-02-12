@@ -33,17 +33,45 @@ function addColorsToDataset({ data: { datasets, ...otherData }, ...config }) {
   return {
     data: {
       datasets: datasets.map((dataset, index) => ({
-        backgroundColor: backgrounds[index % backgrounds.length],
+        backgroundColor: config.type == "doughnut" ? setColorForDoughnutCharts(dataset) : backgrounds[index % backgrounds.length],
         ...dataset
       })), ...otherData
     }, ...config
   };
 }
 
+function setColorForDoughnutCharts(data) {
+  let colors = [];
+
+  for (let i = 0; i < data.data.length; i++) {
+    colors.push(backgrounds[i]);
+  }
+
+  return colors;
+}
+
 export default {
   mounted() {
-    const { id, ...config } = addColorsToDataset(JSON.parse(this.el.dataset.chart));
-    this.chart = new Chart(id, config);
+    const { id, data, options: initialOptions, ...config } = addColorsToDataset(JSON.parse(this.el.dataset.chart));
+    let options;
+    if(data.datasets.some(dataset => dataset.labels !== undefined)) {
+      options = {
+        ...initialOptions,
+        tooltips: {
+          ...initialOptions.tooltips,
+          callbacks: {
+            label: function(tooltipItem, data) {
+              var dataset = data.datasets[tooltipItem.datasetIndex];
+              var index = tooltipItem.index;
+              return dataset.labels[index] + ': ' + dataset.data[index];
+            }
+          }
+        }
+      }
+    } else {
+      options = initialOptions
+    }
+    this.chart = new Chart(id, {data, options, ...config});
   },
 
   updated() {

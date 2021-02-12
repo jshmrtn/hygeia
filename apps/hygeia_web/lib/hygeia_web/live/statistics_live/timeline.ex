@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.StatisticsLive.Statistics do
+defmodule HygeiaWeb.StatisticsLive.Timeline do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
@@ -7,6 +7,7 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
   alias Hygeia.TenantContext
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
+  alias Surface.Components.Form.DateInput
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
@@ -28,7 +29,7 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
           to = Date.to_string(Date.utc_today())
 
           push_redirect(socket,
-            to: Routes.statistics_statistics_path(socket, :show, tenant, from, to)
+            to: Routes.statistics_timeline_path(socket, :show, tenant, from, to)
           )
         else
           socket
@@ -59,7 +60,7 @@ defmodule HygeiaWeb.StatisticsLive.Statistics do
   def handle_event("params_change", %{"from" => from, "to" => to}, socket) do
     {:noreply,
      push_patch(socket,
-       to: Routes.statistics_statistics_path(socket, :show, socket.assigns.tenant, from, to)
+       to: Routes.statistics_timeline_path(socket, :show, socket.assigns.tenant, from, to)
      )}
   end
 

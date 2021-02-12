@@ -275,6 +275,13 @@ msgstr ""
 "besitzt kein Telefon, keine E-Mail-Adresse"
 
 msgid ""
+"Please note that submitting contact persons only works in recent versions of "
+"the following browsers:"
+msgstr ""
+"Bitte beachten Sie, dass die Eingabe der Kontaktpersonen nur in aktuellen "
+"Versionen der folgenden Browser funktioniert:"
+
+msgid ""
 "Possible index submissions can only be managed for cases with an index phase."
 msgstr ""
 "Mögliche Indexübermittlungen können nur für Fälle mit einer Indexphase "
@@ -326,6 +333,12 @@ msgstr ""
 "werden."
 
 msgid ""
+"This organisation is possibly a duplicate of %{name_link}, please check."
+msgstr ""
+"Diese Organisation ist möglicherweise ein Duplikat von %{name_link}, "
+"überprüfen Sie dies bitte."
+
+msgid ""
 "To fulfill all needs regarding the tracing of contacts you will need to "
 "enter personal details of people you met while being potentially infectious."
 msgstr ""
@@ -341,12 +354,67 @@ msgstr ""
 "keine Symptome haben 48 Stunden vor dem Test)."
 
 msgid ""
+"You have been identified as a contact person of a person with corona.\n"
+"Therefore you have to self quarantine.\n"
+"Details: %{quarantine_confirmation_link}\n"
+"\n"
+"Kind Regards,\n"
+"%{message_sender}\n"
+msgstr ""
+"Sehr geehrte Damen und Herren\n"
+"\n"
+"Sie hatten engen Kontakt zu einer auf Covid-19 positiv getesteten Person. "
+"Aus diesem Grund müssen Sie für 10 Tage in Quarantäne. Bitte beachten Sie "
+"die Anweisungen und Informationen unter folgendem Link. \n"
+"%{quarantine_confirmation_link}\n"
+"\n"
+"Freundliche Grüsse\n"
+"\n"
+"%{message_sender}\n"
+
+msgid ""
 "You have been requested to enter personal data from all persons with which "
 "you have had contact with for more than 15 minutes without wearing a mask."
 msgstr ""
 "Sie wurden aufgefordert, die persönlichen Daten aller Kontakte zu erfassen, "
 "zu denen Sie in einem Abstand von weniger als 1.5 m und länger als 15 Min "
 "ohne Maske zusammen waren."
+
+msgid ""
+"You have been tested positive for the corona virus.\n"
+"Therefore you have to self isolate.\n"
+"Details: %{isolation_confirmation_link}\n"
+"To ensure the contact tracing we need to record personal details of your "
+"contacts.\n"
+"You can enter persons you had contact with here: "
+"%{possible_index_submission_link}\n"
+"\n"
+"Kind Regards,\n"
+"%{message_sender}\n"
+msgstr ""
+"Sehr geehrte Damen und Herren\n"
+"\n"
+"Wie soeben telefonisch besprochen, erhalten Sie unter folgendem Link die "
+"Informationen zur Isolation:\n"
+"%{isolation_confirmation_link}\n"
+"Bitte lesen Sie das Dokument vollständig durch und beachten Sie die "
+"angegebenen Links für weitere Informationen. \n"
+"\n"
+"Damit das Contact Tracing sichergestellt werden kann, benötigen wir alle "
+"Angaben Ihrer Kontaktpersonen.\n"
+"Sie können Ihre Kontaktpersonen hier selbst erfassen:\n"
+"%{possible_index_submission_link}\n"
+"\n"
+"\n"
+"Besten Dank und freundliche Grüsse\n"
+"\n"
+"%{message_sender}\n"
+
+msgid "\"Merge\" and \"Into\" may not be the same"
+msgstr "\"Fusionieren\" und \"Ziel\" dürfen nicht die selben sein"
+
+msgid "\"Merge\" and \"Into\" must not be the same"
+msgstr "\"Fusionieren\" und \"Ziel\" dürfen nicht die selben sein"
 
 msgid "%{phase_type} (%{date})"
 msgstr "%{phase_type} (%{date})"
@@ -691,6 +759,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Clinical Information"
 msgstr "Klinische Informationen"
 
+msgctxt "Organisation Type"
+msgid "Club"
+msgstr "Verein"
+
 msgid "Code Pending"
 msgstr "Versand Code noch offen"
 
@@ -771,6 +843,10 @@ msgstr "Adresse vom Anstecker kopieren"
 msgid "Copy Address from Propagator"
 msgstr "Adresse vom Anstecker kopieren"
 
+msgctxt "Organisation Type"
+msgid "Corporation"
+msgstr "Unternehmen"
+
 msgid "Correct phone number available"
 msgstr "Telefonnummer korrekt vorhanden"
 
@@ -786,6 +862,10 @@ msgstr "CSV konnte nicht importiert werden"
 msgid "Count"
 msgstr "Anzahl"
 
+#, elixir-format
+msgid "Countries"
+msgstr "Länder"
+
 msgid "Country"
 msgstr "Land"
 
@@ -799,6 +879,10 @@ msgstr "Land des Wohnsitzes"
 msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
 msgstr "SwissCovidApp-Meldung"
+
+msgctxt "Organisation"
+msgid "Create"
+msgstr "Erstellen"
 
 msgid "Create Contact Cases"
 msgstr "Kontaktfälle erstellen"
@@ -829,6 +913,10 @@ msgstr "Erstellt am %{created_at}"
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "DKIM"
 msgstr "DKIM"
+
+#, elixir-format
+msgid "Daily Statistics"
+msgstr "Tagesstatistik"
 
 msgid "Date"
 msgstr "Datum"
@@ -1255,6 +1343,10 @@ msgctxt "Index Type"
 msgid "Healed"
 msgstr "Geheilt"
 
+msgctxt "Organisation Type"
+msgid "Healthcare"
+msgstr "Gesundheitswesen"
+
 msgid "Help"
 msgstr "Hilfe"
 
@@ -1437,6 +1529,10 @@ msgstr "Erstellt Am"
 msgid "Internal"
 msgstr "Intern"
 
+msgctxt "Organisation Merge"
+msgid "Into"
+msgstr "Ziel"
+
 msgid "Isolation Confirmation"
 msgstr "Isolationsbestätigung"
 
@@ -1606,6 +1702,17 @@ msgstr "Treffen mit Familie / Freunden"
 msgctxt "Affiliation Kind"
 msgid "Member"
 msgstr "Mitglied"
+
+msgctxt "Organisation"
+msgid "Merge"
+msgstr "Fusionieren"
+
+msgctxt "Organisation Merge"
+msgid "Merge"
+msgstr "Fusionieren"
+
+msgid "Merge Organisations"
+msgstr "Organisationen fusionieren"
 
 msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Message"
@@ -1788,6 +1895,10 @@ msgstr "Keine Symptome"
 msgid "No data to display"
 msgstr "Keine Daten anzuzeigen"
 
+#, elixir-format
+msgid "No data to show"
+msgstr "Keine Daten anzuzeigen"
+
 msgid "No follow up"
 msgstr "Kein erneuter Kontakt"
 
@@ -1888,6 +1999,9 @@ msgstr "Mandant wurde erfolgreich aktualisiert"
 msgid "Organisations"
 msgstr "Organisationen"
 
+msgid "Organisations merged successfully"
+msgstr "Organisationen erfolgreich fusioniert"
+
 msgid "Origin"
 msgstr "Herkunft"
 
@@ -1915,6 +2029,10 @@ msgid "Other"
 msgstr "Anderer Grund"
 
 msgctxt "Affiliation Kind"
+msgid "Other"
+msgstr "Andere"
+
+msgctxt "Organisation Type"
 msgid "Other"
 msgstr "Andere"
 
@@ -2005,6 +2123,10 @@ msgstr "Personen in Isolation"
 msgid "People in Quarantine"
 msgstr "Personen in Quarantäne"
 
+#, elixir-format
+msgid "Percentage"
+msgstr "Anteil"
+
 msgctxt "Email Status"
 msgid "Permanent Failure"
 msgstr "Permanenter Fehler"
@@ -2065,13 +2187,6 @@ msgstr "Ort Name"
 
 msgid "Please Wait..."
 msgstr "Bitte warten ..."
-
-msgid ""
-"Please note that submitting contact persons only works in recent versions of "
-"the following browsers:"
-msgstr ""
-"Bitte beachten Sie, dass die Eingabe der Kontaktpersonen nur in aktuellen "
-"Versionen der folgenden Browser funktioniert:"
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Port"
@@ -2389,6 +2504,10 @@ msgctxt "Affiliation Kind"
 msgid "Scholar"
 msgstr "Schüler"
 
+msgctxt "Organisation Type"
+msgid "School"
+msgstr "Schule"
+
 msgid "School / scout camp"
 msgstr "Schul-/Pfadfinderlager"
 
@@ -2679,6 +2798,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Supervisor UUID"
 msgstr "Teamleiter UUID"
 
+msgctxt "Organisation Merge"
+msgid "Switch"
+msgstr "Wechseln"
+
 msgid "Symptoms"
 msgstr "Symptome"
 
@@ -2922,7 +3045,15 @@ msgctxt "Protocol Entry"
 msgid "Type"
 msgstr "Typ"
 
+msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
+msgid "Type"
+msgstr "Typ"
+
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
+msgid "Type Other"
+msgstr "Anderer Typ"
+
+msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Type Other"
 msgstr "Anderer Typ"
 
@@ -3068,57 +3199,8 @@ msgstr "Sie waren sich näher als 1.5 Meter."
 msgid "You had contact for more than 15 minutes on the same day."
 msgstr "Der Kontakt dauerte länger als 15 Minuten."
 
-msgid ""
-"You have been identified as a contact person of a person with corona.\n"
-"Therefore you have to self quarantine.\n"
-"Details: %{quarantine_confirmation_link}\n"
-"\n"
-"Kind Regards,\n"
-"%{message_sender}\n"
-msgstr ""
-"Sehr geehrte Damen und Herren\n"
-"\n"
-"Sie hatten engen Kontakt zu einer auf Covid-19 positiv getesteten Person. "
-"Aus diesem Grund müssen Sie für 10 Tage in Quarantäne. Bitte beachten Sie "
-"die Anweisungen und Informationen unter folgendem Link. \n"
-"%{quarantine_confirmation_link}\n"
-"\n"
-"Freundliche Grüsse\n"
-"\n"
-"%{message_sender}\n"
-
 msgid "You have been logged out!"
 msgstr "Sie wurden abgemeldet!"
-
-msgid ""
-"You have been tested positive for the corona virus.\n"
-"Therefore you have to self isolate.\n"
-"Details: %{isolation_confirmation_link}\n"
-"To ensure the contact tracing we need to record personal details of your "
-"contacts.\n"
-"You can enter persons you had contact with here: "
-"%{possible_index_submission_link}\n"
-"\n"
-"Kind Regards,\n"
-"%{message_sender}\n"
-msgstr ""
-"Sehr geehrte Damen und Herren\n"
-"\n"
-"Wie soeben telefonisch besprochen, erhalten Sie unter folgendem Link die "
-"Informationen zur Isolation:\n"
-"%{isolation_confirmation_link}\n"
-"Bitte lesen Sie das Dokument vollständig durch und beachten Sie die "
-"angegebenen Links für weitere Informationen. \n"
-"\n"
-"Damit das Contact Tracing sichergestellt werden kann, benötigen wir alle "
-"Angaben Ihrer Kontaktpersonen.\n"
-"Sie können Ihre Kontaktpersonen hier selbst erfassen:\n"
-"%{possible_index_submission_link}\n"
-"\n"
-"\n"
-"Besten Dank und freundliche Grüsse\n"
-"\n"
-"%{message_sender}\n"
 
 msgid "You must provide a reason for completing a phase."
 msgstr ""
@@ -3210,69 +3292,3 @@ msgstr "Benutzername"
 #. Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj
 msgid "yyyy-mm-dd"
 msgstr "JJJJ-MM-TT"
-
-msgid ""
-"This organisation is possibly a duplicate of %{name_link}, please check."
-msgstr ""
-"Diese Organisation ist möglicherweise ein Duplikat von %{name_link}, "
-"überprüfen Sie dies bitte."
-
-msgid "\"Merge\" and \"Into\" may not be the same"
-msgstr "\"Fusionieren\" und \"Ziel\" dürfen nicht die selben sein"
-
-msgctxt "Organisation Merge"
-msgid "Into"
-msgstr "Ziel"
-
-msgctxt "Organisation"
-msgid "Merge"
-msgstr "Fusionieren"
-
-msgctxt "Organisation Merge"
-msgid "Merge"
-msgstr "Fusionieren"
-
-msgid "Merge Organisations"
-msgstr "Organisationen fusionieren"
-
-msgid "Organisations merged successfully"
-msgstr "Organisationen erfolgreich fusioniert"
-
-msgctxt "Organisation Merge"
-msgid "Switch"
-msgstr "Wechseln"
-
-msgid "\"Merge\" and \"Into\" must not be the same"
-msgstr "\"Fusionieren\" und \"Ziel\" dürfen nicht die selben sein"
-
-msgctxt "Organisation Type"
-msgid "Club"
-msgstr "Verein"
-
-msgctxt "Organisation Type"
-msgid "Corporation"
-msgstr "Unternehmen"
-
-msgctxt "Organisation Type"
-msgid "Healthcare"
-msgstr "Gesundheitswesen"
-
-msgctxt "Organisation Type"
-msgid "Other"
-msgstr "Andere"
-
-msgctxt "Organisation Type"
-msgid "School"
-msgstr "Schule"
-
-msgctxt "Organisation"
-msgid "Create"
-msgstr "Erstellen"
-
-msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
-msgid "Type"
-msgstr "Typ"
-
-msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
-msgid "Type Other"
-msgstr "Anderer Typ"
