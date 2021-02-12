@@ -53,9 +53,8 @@ defmodule HygeiaWeb.DateInput do
     ~H"""
     <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
       <Context get={{ HygeiaWeb, browser_features: browser_features }}>
-        <div :if={{ browser_features["date_input"] != false }}>
-          {{ date_input(form, field, helper_opts ++ attr_opts ++ @opts ++ @input_opts ++ event_opts) }}
-        </div>
+        {{ if browser_features["date_input"] != false,
+          do: date_input(form, field, helper_opts ++ attr_opts ++ @opts ++ @input_opts ++ event_opts) }}
         <div :if={{ browser_features["date_input"] == false }} class="date-select">
           {{ date_select(
             form,
