@@ -311,11 +311,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
     changeset = CaseContext.change_person(person)
 
     socket
-    |> assign(
-      person: person,
-      changeset: changeset,
-      versions: PaperTrail.get_versions(person)
-    )
+    |> assign(person: person, changeset: changeset)
     |> maybe_block_navigation()
   end
 

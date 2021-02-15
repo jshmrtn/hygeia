@@ -147,11 +147,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
     changeset = CaseContext.change_possible_index_submission(possible_index_submission)
 
     socket
-    |> assign(
-      possible_index_submission: possible_index_submission,
-      changeset: changeset,
-      versions: PaperTrail.get_versions(possible_index_submission)
-    )
+    |> assign(possible_index_submission: possible_index_submission, changeset: changeset)
     |> maybe_block_navigation()
   end
 

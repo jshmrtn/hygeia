@@ -179,11 +179,7 @@ defmodule HygeiaWeb.OrganisationLive.Show do
     changeset = OrganisationContext.change_organisation(organisation)
 
     socket
-    |> assign(
-      organisation: organisation,
-      changeset: changeset,
-      versions: PaperTrail.get_versions(organisation)
-    )
+    |> assign(organisation: organisation, changeset: changeset)
     |> maybe_block_navigation()
   end
 

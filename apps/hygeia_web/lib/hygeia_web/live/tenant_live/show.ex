@@ -137,11 +137,7 @@ defmodule HygeiaWeb.TenantLive.Show do
     changeset = TenantContext.change_tenant(tenant)
 
     socket
-    |> assign(
-      tenant: tenant,
-      changeset: changeset,
-      versions: PaperTrail.get_versions(tenant)
-    )
+    |> assign(tenant: tenant, changeset: changeset)
     |> maybe_block_navigation()
   end
 
