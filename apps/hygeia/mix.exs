@@ -71,7 +71,7 @@ defmodule Hygeia.MixProject do
       {:websms, "~> 1.0.0-alpha"},
       {:paginator, "~> 1.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
-      {:gen_smtp, "~> 0.15"},
+      {:gen_smtp, "~> 1.0"},
       {:mail, "~> 0.2"},
       {:hygeia_gettext, in_umbrella: true},
       {:hygeia_cldr, in_umbrella: true},
