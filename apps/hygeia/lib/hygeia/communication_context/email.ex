@@ -144,7 +144,9 @@ defmodule Hygeia.CommunicationContext.Email do
              {"X-Auto-Response-Suppress", "All"},
              {"Precedence", "auto_reply"},
              {"Date", Calendar.strftime(DateTime.utc_now(), "%a, %-d %b %Y %X %z")},
-             {"Message-ID", Changeset.fetch_field!(changeset, :uuid)}
+             {"Message-ID", Changeset.fetch_field!(changeset, :uuid)},
+             {"Content-Type", "text/plain"},
+             {"Content-Transfer-Encoding", "7bit"}
            ], [], Changeset.fetch_field!(changeset, :body)},
           encoding_options
         )
