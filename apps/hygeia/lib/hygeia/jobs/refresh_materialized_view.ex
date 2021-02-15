@@ -68,9 +68,20 @@ defmodule Hygeia.Jobs.RefreshMaterializedView do
     GenServer.cast(server, :refresh)
   end
 
-  defp execute_refresh(view) do
-    Repo.query!("REFRESH MATERIALIZED VIEW CONCURRENTLY #{view}", [], timeout: :timer.minutes(5))
+  defp execute_refresh(view, concurrently \\ true) do
+    Repo.query!("REFRESH MATERIALIZED VIEW #{if concurrently, do: "CONCURRENTLY"} #{view}", [],
+      timeout: :timer.minutes(5)
+    )
 
     Phoenix.PubSub.broadcast!(Hygeia.PubSub, Atom.to_string(view), :refresh)
+  rescue
+    e in Postgrex.Error ->
+      case e.postgres do
+        %{code: :feature_not_supported} when concurrently ->
+          execute_refresh(view, false)
+
+        _other ->
+          reraise e, __STACKTRACE__
+      end
   end
 end
