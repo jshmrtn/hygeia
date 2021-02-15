@@ -13,23 +13,31 @@
       </Form>
     </div>
 
-    <div class="row mt-3">
-      <div class={{ "col-12 col-xl-6 text-center h-full", empty: @active_isolation_cases_per_day == [] }}>
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("People in Isolation") }}</strong></p>
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6 text-center h-full d-flex justify-content-center align-items-center">
+        <div
+          :if={{ @active_isolation_cases_per_day != [] }}
+          class="card justify-content-center align-items-center"
+        >
+          <div class="card-body p-5">
+            <h5 class="card-title mb-5 text-muted">{{ gettext("People in Isolation") }}</h5>
+            <p class="display-1 m-0">
+              {{ case @active_isolation_cases_per_day do
+                [%{count: count}] -> HygeiaCldr.Number.to_string!(count)
+                [] -> nil
+              end }}
+            </p>
+          </div>
         </div>
-        <div class="text-center">
-          <p class="display-1 w-100">
-            {{ case @active_isolation_cases_per_day do
-              [%{count: count}] -> HygeiaCldr.Number.to_string!(count)
-              [] -> nil
-            end }}
-          </p>
-        </div>
+        <HygeiaWeb.StatisticsLive.NoDataWarning
+          :if={{ @active_isolation_cases_per_day == [] }}
+          title={{ gettext("People in Isolation") }}
+        />
       </div>
 
-      <div class={{ "col-12 col-xl-6", empty: @cumulative_index_case_end_reasons == [] }}>
+      <div class="col-12 col-xl-6 mt-5 mt-xl-0">
         <HygeiaWeb.Chart
+          :if={{ @cumulative_index_case_end_reasons != [] }}
           id="cumulative_index_case_end_reasons"
           dom_id="cumulative_index_case_end_reasons"
           config={{%{
@@ -54,12 +62,19 @@
             }
           }}}
         />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={{ @cumulative_index_case_end_reasons == [] }}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={{ gettext("Finished Isolations") }} />
+        </div>
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class={{ "col-12 col-xl-6", empty: @active_quarantine_cases_per_day == [] }}>
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6">
         <HygeiaWeb.Chart
+          :if={{ @active_quarantine_cases_per_day != [] }}
           id="active_quarantine_cases_per_day"
           dom_id="active_quarantine_cases_per_day"
           config={{%{
@@ -84,10 +99,17 @@
             }
           }}}
         />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={{ @active_quarantine_cases_per_day == [] }}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={{ gettext("People in Quarantine") }} />
+        </div>
       </div>
 
-      <div class={{ "col-12 col-xl-6", empty: @cumulative_possible_index_case_end_reasons == [] }}>
+      <div class="col-12 col-xl-6 mt-5 mt-xl-0">
         <HygeiaWeb.Chart
+          :if={{ @cumulative_possible_index_case_end_reasons != [] }}
           id="cumulative_possible_index_case_end_reasons"
           dom_id="cumulative_possible_index_case_end_reasons"
           config={{%{
@@ -140,12 +162,19 @@
             }
           }}}
         />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={{ @cumulative_possible_index_case_end_reasons == [] }}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={{ gettext("Quarantine End Reasons") }} />
+        </div>
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class={{ "col-12 col-xl-6", empty: @new_cases_per_day == [] }}>
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6">
         <HygeiaWeb.Chart
+          :if={{ @new_cases_per_day != [] }}
           id="new_cases_per_day"
           dom_id="new_cases_per_day"
           config={{%{
@@ -167,26 +196,37 @@
             }
           }}}
         />
+        <div class="d-flex justify-content-center align-items-center" :if={{ @new_cases_per_day == [] }}>
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={{ gettext("New cases") }} />
+        </div>
       </div>
 
-      <div class={{ "col-12 col-xl-6 text-center h-full", empty: @active_hospitalization_cases_per_day == [] }}>
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("People in Hospital") }}</strong></p>
+      <div class="col-12 col-xl-6  mt-5 mt-xl-0 text-center h-full d-flex justify-content-center align-items-center">
+        <div
+          :if={{ @active_hospitalization_cases_per_day != [] }}
+          class="card justify-content-center align-items-center"
+        >
+          <div class="card-body p-5">
+            <h5 class="card-title mb-5 text-muted">{{ gettext("People in Hospital") }}</h5>
+            <p class="display-1 m-0">
+              {{ case @active_hospitalization_cases_per_day do
+                [%{count: count}] -> HygeiaCldr.Number.to_string!(count)
+                [] -> "?"
+              end }}
+            </p>
+          </div>
         </div>
-        <div class="text-center">
-          <p class="display-1 w-100">
-            {{ case @active_hospitalization_cases_per_day do
-              [%{count: count}] -> HygeiaCldr.Number.to_string!(count)
-              [] -> "?"
-            end }}
-          </p>
-        </div>
+        <HygeiaWeb.StatisticsLive.NoDataWarning
+          :if={{ @active_hospitalization_cases_per_day == [] }}
+          title={{ gettext("People in Hospital") }}
+        />
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class={{ "col-12 col-xl-6", empty: @active_complexity_cases_per_day == [] }}>
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6">
         <HygeiaWeb.Chart
+          :if={{ @active_complexity_cases_per_day != [] }}
           id="active_complexity_cases_per_day"
           dom_id="active_complexity_cases_per_day"
           config={{%{
@@ -205,11 +245,15 @@
             }
           }}}
         />
-      </div>
-      <div class={{ "col-12 col-xl-6 text-center h-full", empty: @active_infection_place_cases_per_day == [] }}>
-        <div class="text-center mb-5">
-          <p class="small"><strong>{{ gettext("Infection Place") }}</strong></p>
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={{ @active_complexity_cases_per_day == [] }}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={{ gettext("Complexity") }} />
         </div>
+      </div>
+      <div class={{ "col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_infection_place_cases_per_day == [] }}>
+        <h5 class="mb-2">{{ gettext("Infection Place") }}</h5>
         <table class="table">
           <thead>
             <tr>
@@ -249,11 +293,9 @@
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class={{ "col-12 col-xl-6 text-center h-full", empty: @transmission_country_cases_per_day == [] }}>
-        <div class="text-center mb-5">
-          <p class="small"><strong>{{ gettext("Countries") }}</strong></p>
-        </div>
+    <div class="row mt-5">
+      <div class={{ "col-12 col-xl-6 h-full", empty: @transmission_country_cases_per_day == [] }}>
+        <h5 class="mb-2">{{ gettext("Countries") }}</h5>
         <table class="table">
           <thead>
             <tr>

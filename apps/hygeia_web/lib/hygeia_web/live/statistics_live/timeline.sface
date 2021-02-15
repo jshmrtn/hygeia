@@ -19,7 +19,7 @@
       </Form>
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-5">
       <div class="col-12 col-xl-6">
         <HygeiaWeb.Chart
           id="active_isolation_cases_per_day"
@@ -78,7 +78,7 @@
           }}}
         />
       </div>
-      <div class="col-12 col-xl-6">
+      <div class="col-12 col-xl-6 mt-5 mt-xl-0">
         <HygeiaWeb.Chart
           id="cumulative_index_case_end_reasons"
           dom_id="cumulative_index_case_end_reasons"
@@ -148,7 +148,7 @@
       </div>
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-5">
       <div class="col-12 col-xl-6">
         <HygeiaWeb.Chart
           id="active_quarantine_cases_per_day"
@@ -210,7 +210,7 @@
           }}}
         />
       </div>
-      <div class="col-12 col-xl-6">
+      <div class="col-12 col-xl-6 mt-5 mt-xl-0">
         <HygeiaWeb.Chart
           id="cumulative_possible_index_case_end_reasons"
           dom_id="cumulative_possible_index_case_end_reasons"
@@ -287,7 +287,7 @@
       </div>
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-5">
       <div class="col-12 col-xl-6">
         <HygeiaWeb.Chart
           id="new_cases_per_day"
@@ -356,7 +356,7 @@
           }}}
         />
       </div>
-      <div class="col-12 col-xl-6">
+      <div class="col-12 col-xl-6 mt-5 mt-xl-0">
         <HygeiaWeb.Chart
           id="active_hospitalization_cases_per_day"
           dom_id="active_hospitalization_cases_per_day"
@@ -416,7 +416,7 @@
       </div>
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-5">
       <div class="col-12 col-xl-6">
         <HygeiaWeb.Chart
           id="active_complexity_cases_per_day"
@@ -485,7 +485,7 @@
           }}}
         />
       </div>
-      <div class="col-12 col-xl-6">
+      <div class="col-12 col-xl-6 mt-5 mt-xl-0">
         <HygeiaWeb.Chart
           id="active_infection_place_cases_per_day"
           dom_id="active_infection_place_cases_per_day"
@@ -563,7 +563,7 @@
       </div>
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-5">
       <div class="col-12 col-xl-6">
         <HygeiaWeb.Chart
           id="transmission_country_cases_per_day"
