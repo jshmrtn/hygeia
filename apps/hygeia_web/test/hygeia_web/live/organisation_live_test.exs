@@ -139,4 +139,27 @@ defmodule HygeiaWeb.OrganisationLiveTest do
       assert html =~ orga_duplicate_address.uuid
     end
   end
+
+  describe "Merge" do
+    test "merges organisations", %{conn: conn} do
+      {:ok, merge_live, _html} = live(conn, Routes.organisation_merge_path(conn, :merge))
+
+      delete = organisation_fixture()
+      into = organisation_fixture()
+
+      render_hook(merge_live, :change_delete, %{uuid: delete.uuid})
+      assert render_hook(merge_live, :change_into, %{uuid: delete.uuid}) =~ "must not be the same"
+
+      render_hook(merge_live, :change_into, %{uuid: into.uuid})
+
+      {:ok, _view, html} =
+        merge_live
+        |> form("#organisation-merge-form")
+        |> render_submit()
+        |> follow_redirect(conn)
+
+      assert html =~ "Organisations merged successfully"
+      assert html =~ into.name
+    end
+  end
 end

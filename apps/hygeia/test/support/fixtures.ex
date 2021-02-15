@@ -14,6 +14,7 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.CommunicationContext.SMS
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.SystemMessageContext
   alias Hygeia.SystemMessageContext.SystemMessage
@@ -374,5 +375,18 @@ defmodule Hygeia.Fixtures do
       OrganisationContext.create_affiliation(person, organisation, Enum.into(attrs, @valid_attrs))
 
     affiliation
+  end
+
+  @valid_attrs %{description: "some description", title: "some title"}
+
+  @spec division_fixture(
+          organisation :: Organisation.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Division.t()
+  def division_fixture(organisation \\ organisation_fixture(), attrs \\ %{}) do
+    {:ok, division} =
+      OrganisationContext.create_division(organisation, Enum.into(attrs, @valid_attrs))
+
+    division
   end
 end

@@ -4,6 +4,8 @@ defmodule HygeiaWeb.OrganisationLive.Header do
   use HygeiaWeb, :surface_live_component
 
   alias Ecto.Changeset
+  alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
   alias HygeiaWeb.UriActiveContext
   alias Surface.Components.LiveRedirect

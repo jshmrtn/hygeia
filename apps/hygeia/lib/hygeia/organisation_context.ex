@@ -8,6 +8,7 @@ defmodule Hygeia.OrganisationContext do
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Position
 
@@ -197,9 +198,22 @@ defmodule Hygeia.OrganisationContext do
           )
         end)
 
+      division_updates =
+        delete
+        |> Ecto.assoc(:divisions)
+        |> Repo.stream()
+        |> Enum.reduce(Ecto.Multi.new(), fn %Division{uuid: uuid} = division, acc ->
+          PaperTrail.Multi.update(
+            acc,
+            uuid,
+            Ecto.Changeset.change(division, %{organisation_uuid: into_uuid})
+          )
+        end)
+
       {:ok, _updates} =
         affiliation_updates
         |> Ecto.Multi.append(position_updates)
+        |> Ecto.Multi.append(division_updates)
         |> Ecto.Multi.update(
           {:add_related_cases, into_uuid},
           into
@@ -529,4 +543,173 @@ defmodule Hygeia.OrganisationContext do
         ) :: Ecto.Changeset.t(resource)
         when resource: Affiliation.t() | Affiliation.empty()
   def change_affiliation(affiliation, attrs \\ %{}), do: Affiliation.changeset(affiliation, attrs)
+
+  @doc """
+  Returns the list of divisions.
+
+  ## Examples
+
+      iex> list_divisions()
+      [%Division{}, ...]
+
+  """
+  @spec list_divisions :: [Division.t()]
+  def list_divisions, do: Repo.all(Division)
+
+  @spec list_divisions_query(organisation_uuid :: String.t()) :: Ecto.Query.t()
+  def list_divisions_query(organisation_uuid) when is_binary(organisation_uuid),
+    do: from(division in Division, where: division.organisation_uuid == ^organisation_uuid)
+
+  @spec fulltext_division_search_query(
+          organisation_uuid :: String.t(),
+          query :: String.t(),
+          limit :: pos_integer()
+        ) ::
+          Ecto.Query.t()
+  def fulltext_division_search_query(organisation_uuid, query, limit \\ 10),
+    do:
+      from(division in list_divisions_query(organisation_uuid),
+        where:
+          division.uuid == ^query or
+            fragment("? % ?", division.title, ^query) or
+            fragment("? % ?", division.description, ^query),
+        order_by: [division.title],
+        limit: ^limit
+      )
+
+  @doc """
+  Gets a single division.
+
+  Raises `Ecto.NoResultsError` if the Division does not exist.
+
+  ## Examples
+
+      iex> get_division!(123)
+      %Division{}
+
+      iex> get_division!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_division!(id :: String.t()) :: Division.t()
+  def get_division!(id), do: Repo.get!(Division, id)
+
+  @doc """
+  Creates a division.
+
+  ## Examples
+
+      iex> create_division(%{field: value})
+      {:ok, %Division{}}
+
+      iex> create_division(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_division(organisation :: Organisation.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Division.t()} | {:error, Ecto.Changeset.t(Division.t())}
+  def create_division(organisation, attrs \\ %{}),
+    do:
+      organisation
+      |> change_new_division(attrs)
+      |> versioning_insert()
+      |> broadcast("divisions", :create)
+      |> versioning_extract()
+
+  @doc """
+  Updates a division.
+
+  ## Examples
+
+      iex> update_division(division, %{field: new_value})
+      {:ok, %Division{}}
+
+      iex> update_division(division, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_division(division :: Division.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Division.t()} | {:error, Ecto.Changeset.t(Division.t())}
+  def update_division(%Division{} = division, attrs),
+    do:
+      division
+      |> change_division(attrs)
+      |> versioning_update()
+      |> broadcast("divisions", :update)
+      |> versioning_extract()
+
+  @doc """
+  Deletes a division.
+
+  ## Examples
+
+      iex> delete_division(division)
+      {:ok, %Division{}}
+
+      iex> delete_division(division)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_division(division :: Division.t()) ::
+          {:ok, Division.t()} | {:error, Ecto.Changeset.t(Division.t())}
+  def delete_division(%Division{} = division),
+    do:
+      division
+      |> change_division()
+      |> versioning_delete()
+      |> broadcast("divisions", :delete)
+      |> versioning_extract()
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking division changes.
+
+  ## Examples
+
+      iex> change_division(division)
+      %Ecto.Changeset{data: %Division{}}
+
+  """
+  @spec change_division(division :: Division.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          Ecto.Changeset.t(Division.t())
+  def change_division(%Division{} = division, attrs \\ %{}),
+    do: Division.changeset(division, attrs)
+
+  @spec change_new_division(
+          organisation :: Organisation.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          Ecto.Changeset.t(Division.t())
+  def change_new_division(%Organisation{} = organisation, attrs \\ %{}),
+    do:
+      organisation
+      |> Ecto.build_assoc(:divisions)
+      |> change_division(attrs)
+
+  @spec merge_divisions(delete :: Division.t(), into :: Division.t()) ::
+          {:ok, Division.t()}
+  def merge_divisions(
+        %Division{uuid: delete_uuid} = delete,
+        %Division{uuid: into_uuid} = _into
+      ) do
+    Repo.transaction(fn ->
+      affiliation_updates =
+        delete
+        |> Ecto.assoc(:affiliations)
+        |> Repo.stream()
+        |> Enum.reduce(Ecto.Multi.new(), fn %Affiliation{uuid: uuid} = affiliation, acc ->
+          PaperTrail.Multi.update(
+            acc,
+            uuid,
+            Ecto.Changeset.change(affiliation, %{division_uuid: into_uuid})
+          )
+        end)
+
+      {:ok, _updates} =
+        affiliation_updates
+        |> PaperTrail.Multi.delete({:delete, delete_uuid}, Ecto.Changeset.change(delete))
+        |> Repo.transaction()
+
+      get_division!(into_uuid)
+    end)
+  end
 end

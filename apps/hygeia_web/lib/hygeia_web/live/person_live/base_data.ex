@@ -6,6 +6,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
   alias Hygeia.EctoType.NOGA
+  alias Hygeia.OrganisationContext
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias HygeiaWeb.DateInput
@@ -220,6 +221,28 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   end
 
   def handle_event(
+        "select_affiliation_division",
+        %{"subject" => affiliation_uuid} = params,
+        %{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_person(
+         person,
+         changeset_update_params_by_id(
+           changeset,
+           :affiliations,
+           %{uuid: affiliation_uuid},
+           &Map.put(&1, "division_uuid", params["uuid"])
+         )
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event(
         "add_vaccination_jab_date",
         _params,
         %{assigns: %{changeset: changeset, person: person}} = socket
@@ -318,6 +341,8 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   defp load_people_by_id(ids) do
     CaseContext.list_people_by_ids(ids)
   end
+
+  defp load_organisation(id), do: OrganisationContext.get_organisation!(id)
 
   defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do
     if changes == %{} do

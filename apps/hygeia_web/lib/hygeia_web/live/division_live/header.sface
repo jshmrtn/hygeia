@@ -1,0 +1,62 @@
+<div class="component-person-header mb-4">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <h1 class="mb-4">
+      <span :if={{ authorized?(@division.organisation, :details, auth) }}>
+        <LiveRedirect to={{ Routes.organisation_show_path(@socket, :show, @division.organisation) }}>
+          {{ @division.organisation.name }}
+        </LiveRedirect>
+        /
+      </span>
+      <span :if={{ authorized?(@division, :details, auth) }}>
+        {{ @display_name }}
+      </span>
+      <span :if={{ not authorized?(@division, :details, auth) }}>
+        {{ @division.uuid }}
+      </span>
+    </h1>
+
+    <ul class="nav nav-tabs">
+      <li class="nav-item" :if={{ authorized?(@division, :details, auth) }}>
+        <UriActiveContext
+          to={{ Routes.division_show_path(@socket, :show, @division) }}
+          :let={{ to: to, active: active }}
+        >
+          <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+            {{ gettext("Base Data") }}
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class="nav-item" :if={{ authorized?(@division, :versioning, auth) }}>
+        <UriActiveContext
+          to={{ Routes.version_show_path(@socket, :show, "Division", @division) }}
+          :let={{ to: to, active: active }}
+        >
+          <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active" }}">
+            {{ gettext("History") }}
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+
+      <HygeiaWeb.Dropdown
+        class="ml-auto"
+        trigger_class="btn btn-sm btn-secondary dropdown-toggle"
+        dropdown_class="dropdown-menu-right"
+        id="navigation-dropdown"
+      >
+        <template slot="trigger">
+          {{ gettext("Actions") }}
+        </template>
+
+        <UriActiveContext
+          :if={{ authorized?(@division, :update, auth) }}
+          to={{ Routes.division_merge_path(@socket, :merge, @division.organisation, delete: @division) }}
+          :let={{ to: to, active: active }}
+        >
+          <LiveRedirect to={{ to }} class={{ "dropdown-item", "nav-link", active: active }}>
+            {{ pgettext("Division", "Merge") }}
+          </LiveRedirect>
+        </UriActiveContext>
+      </HygeiaWeb.Dropdown>
+    </ul>
+  </Context>
+</div>

@@ -333,6 +333,22 @@
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
 
+                        <Field
+                          :if={{ Ecto.Changeset.fetch_field!(form.source, :organisation_uuid) }}
+                          class="form-group"
+                          name={{ :division_uuid }}
+                        >
+                          <HygeiaWeb.FieldLabel />
+                          <HygeiaWeb.DivisionLive.Choose
+                            id={{ {:affiliations, Ecto.Changeset.fetch_field!(form.source, :uuid), :division} }}
+                            change="select_affiliation_division"
+                            subject={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
+                            organisation={{ load_organisation(Ecto.Changeset.fetch_field!(form.source, :organisation_uuid)) }}
+                            disabled={{ @live_action == :show }}
+                          />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+
                         <div :if={{ @live_action == :edit }}>
                           <button
                             type="button"

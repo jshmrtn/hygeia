@@ -11,6 +11,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
   alias Hygeia.CaseContext.Case
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Position
 
   defenum Type, :organisation_type, [
@@ -33,6 +34,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           positions: Ecto.Schema.has_many(Position.t()) | nil,
           related_cases: Ecto.Schema.many_to_many(Case.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
+          divisions: Ecto.Schema.has_many(Division.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -46,6 +48,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           positions: Ecto.Schema.has_many(Position.t()),
           related_cases: Ecto.Schema.many_to_many(Case.t()),
           affiliations: Ecto.Schema.has_many(Affiliation.t()),
+          divisions: Ecto.Schema.has_many(Division.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -59,6 +62,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
     embeds_one :address, Address, on_replace: :delete
     has_many :positions, Position, foreign_key: :organisation_uuid, on_replace: :delete
     has_many :affiliations, Affiliation, foreign_key: :organisation_uuid, on_replace: :delete
+    has_many :divisions, Division, foreign_key: :organisation_uuid, on_replace: :delete
 
     many_to_many :related_cases, Case,
       join_through: "case_related_organisations",

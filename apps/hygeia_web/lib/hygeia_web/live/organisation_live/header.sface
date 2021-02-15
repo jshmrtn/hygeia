@@ -18,6 +18,26 @@
           </LiveRedirect>
         </UriActiveContext>
       </li>
+      <li class="nav-item" :if={{ authorized?(Division, :list, auth, organisation: @organisation) }}>
+        <UriActiveContext
+          to={{ Routes.division_index_path(@socket, :index, @organisation) }}
+          :let={{ to: to, active: active }}
+        >
+          <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+            {{ gettext("Divisions") }}
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class="nav-item" :if={{ authorized?(Affiliation, :list, auth, organisation: @organisation) }}>
+        <UriActiveContext
+          to={{ Routes.affiliation_index_path(@socket, :index, @organisation) }}
+          :let={{ to: to, active: active }}
+        >
+          <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
+            {{ gettext("Affiliations") }}
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
       <li class="nav-item" :if={{ authorized?(@organisation, :versioning, auth) }}>
         <UriActiveContext
           to={{ Routes.version_show_path(@socket, :show, "Organisation", @organisation) }}
@@ -46,6 +66,16 @@
         >
           <LiveRedirect to={{ to }} class={{ "dropdown-item", "nav-link", active: active }}>
             {{ pgettext("Organisation", "Merge") }}
+          </LiveRedirect>
+        </UriActiveContext>
+
+        <UriActiveContext
+          to={{ Routes.division_create_path(@socket, :create, @organisation) }}
+          :if={{ authorized?(Division, :create, auth, organisation: @organisation) }}
+          :let={{ to: to, active: active }}
+        >
+          <LiveRedirect to={{ to }} class={{ "dropdown-item", "nav-link", active: active }}>
+            {{ gettext("New Division") }}
           </LiveRedirect>
         </UriActiveContext>
       </HygeiaWeb.Dropdown>

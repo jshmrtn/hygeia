@@ -189,6 +189,23 @@ defmodule HygeiaWeb.Router do
     live "/organisations/new", OrganisationLive.Create, :create
     live "/organisations/:id", OrganisationLive.Show, :show
     live "/organisations/:id/edit", OrganisationLive.Show, :edit
+
+    live "/organisations/:organisation_id/divisions", DivisionLive.Index, :index
+    live "/organisations/:organisation_id/divisions/merge", DivisionLive.Merge, :merge
+    live "/organisations/:organisation_id/divisions/new", DivisionLive.Create, :create
+    live "/divisions/:id", DivisionLive.Show, :show
+    live "/divisions/:id/edit", DivisionLive.Show, :edit
+
+    live "/organisations/:organisation_id/divisions/:cursor_direction/:cursor",
+         DivisionLive.Index,
+         :index
+
+    live "/organisations/:organisation_id/affiliations", AffiliationLive.Index, :index
+
+    live "/organisations/:organisation_id/affiliations/:cursor_direction/:cursor",
+         AffiliationLive.Index,
+         :index
+
     live "/organisations/:cursor_direction/:cursor", OrganisationLive.Index, :index
 
     live "/organisations/:id/positions/new", OrganisationLive.Show, :position_new
