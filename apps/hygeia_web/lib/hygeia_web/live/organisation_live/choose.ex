@@ -10,6 +10,7 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Link
+  alias Surface.Components.LiveRedirect
 
   @doc "An identifier for the form"
   prop form, :form
@@ -78,4 +79,14 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   end
 
   defp load_organisation(uuid), do: OrganisationContext.get_organisation!(uuid)
+
+  defp render_organisation(assigns, organisation) do
+    ~H"""
+    {{ organisation.name }}
+    <small class="d-block text-muted" :if={{ not is_nil(organisation_type_name(organisation)) }}>
+      {{ organisation_type_name(organisation) }}
+    </small>
+    <small class="d-block text-muted">{{ format_address(organisation.address) }}</small>
+    """
+  end
 end
