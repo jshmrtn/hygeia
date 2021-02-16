@@ -117,6 +117,45 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-14]
                )
     end
+
+    test "exports index cases" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-13]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_isolation_cases_per_day)
+
+      Repo.transaction(fn ->
+        assert [
+                 ["Date", "Count"],
+                 ["2020-10-11", "0"],
+                 ["2020-10-12", "1"],
+                 ["2020-10-13", "1"],
+                 ["2020-10-14", "0"]
+               ] =
+                 :active_isolation_cases_per_day
+                 |> StatisticsContext.export(
+                   tenant,
+                   ~D[2020-10-11],
+                   ~D[2020-10-14]
+                 )
+                 |> CSV.decode!()
+                 |> Enum.to_list()
+      end)
+    end
   end
 
   describe "cumulative_index_case_end_reasons" do
@@ -232,6 +271,41 @@ defmodule Hygeia.StatisticsContextTest do
 
       assert Enum.all?(entries, &match?(%CumulativeIndexCaseEndReasons{count: 0}, &1))
     end
+
+    test "exports cumulative index case end reasons" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-12]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_cumulative_index_case_end_reasons)
+
+      Repo.transaction(fn ->
+        assert entries =
+                 :cumulative_index_case_end_reasons
+                 |> StatisticsContext.export(
+                   tenant,
+                   ~D[2020-10-11],
+                   ~D[2020-10-14]
+                 )
+                 |> CSV.decode!()
+                 |> Enum.to_list()
+
+        assert length(entries) == 21
+      end)
+    end
   end
 
   describe "active_quarantine_cases_per_day" do
@@ -346,6 +420,42 @@ defmodule Hygeia.StatisticsContextTest do
       assert length(entries) == 20
 
       assert Enum.all?(entries, &match?(%ActiveQuarantineCasesPerDay{count: 0}, &1))
+    end
+
+    test "exports quarantine cases" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :possible_index,
+              type: :travel,
+              end_reason: :asymptomatic
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-13]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_quarantine_cases_per_day)
+
+      Repo.transaction(fn ->
+        assert entries =
+                 :active_quarantine_cases_per_day
+                 |> StatisticsContext.export(
+                   tenant,
+                   ~D[2020-10-11],
+                   ~D[2020-10-14]
+                 )
+                 |> CSV.decode!()
+                 |> Enum.to_list()
+
+        assert length(entries) == 21
+      end)
     end
   end
 
@@ -473,6 +583,42 @@ defmodule Hygeia.StatisticsContextTest do
 
       assert Enum.all?(entries, &match?(%CumulativePossibleIndexCaseEndReasons{count: 0}, &1))
     end
+
+    test "exports cumulative possible index case end reasons" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :possible_index,
+              type: :travel,
+              end_reason: :asymptomatic
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-12]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_cumulative_possible_index_case_end_reasons)
+
+      Repo.transaction(fn ->
+        assert entries =
+                 :cumulative_possible_index_case_end_reasons
+                 |> StatisticsContext.export(
+                   tenant,
+                   ~D[2020-10-11],
+                   ~D[2020-10-14]
+                 )
+                 |> CSV.decode!()
+                 |> Enum.to_list()
+
+        assert length(entries) == 101
+      end)
+    end
   end
 
   describe "new_cases_per_day" do
@@ -592,6 +738,39 @@ defmodule Hygeia.StatisticsContextTest do
                    ))
              )
     end
+
+    test "exports new cases per day" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :index
+            },
+            start: ~D[2020-10-12]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_new_cases_per_day)
+
+      Repo.transaction(fn ->
+        assert entries =
+                 :new_cases_per_day
+                 |> StatisticsContext.export(
+                   tenant,
+                   ~D[2020-10-11],
+                   ~D[2020-10-14]
+                 )
+                 |> CSV.decode!()
+                 |> Enum.to_list()
+
+        assert length(entries) == 25
+      end)
+    end
   end
 
   describe "active_hospitalization_cases_per_day" do
@@ -643,6 +822,34 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-11],
                  ~D[2020-10-14]
                )
+    end
+
+    test "exports active hospitalization cases per day" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        hospitalizations: [
+          %{start: ~D[2020-10-12], end: ~D[2020-10-13]}
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_hospitalization_cases_per_day)
+
+      Repo.transaction(fn ->
+        assert entries =
+                 :active_hospitalization_cases_per_day
+                 |> StatisticsContext.export(
+                   tenant,
+                   ~D[2020-10-11],
+                   ~D[2020-10-14]
+                 )
+                 |> CSV.decode!()
+                 |> Enum.to_list()
+
+        assert length(entries) == 5
+      end)
     end
   end
 
@@ -762,6 +969,42 @@ defmodule Hygeia.StatisticsContextTest do
 
       assert Enum.all?(entries, &match?(%ActiveComplexityCasesPerDay{count: 0}, &1))
     end
+
+    test "exports active complexity cases per day" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      case_fixture(person, user, user, %{
+        complexity: :high,
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-12]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_complexity_cases_per_day)
+
+      Repo.transaction(fn ->
+        assert entries =
+                 :active_complexity_cases_per_day
+                 |> StatisticsContext.export(
+                   tenant,
+                   ~D[2020-10-11],
+                   ~D[2020-10-14]
+                 )
+                 |> CSV.decode!()
+                 |> Enum.to_list()
+
+        assert length(entries) == 21
+      end)
+    end
   end
 
   describe "active_infection_place_cases_per_day" do
@@ -862,6 +1105,52 @@ defmodule Hygeia.StatisticsContextTest do
                      &1
                    ))
              )
+    end
+
+    test "exports infection place cases" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      index_case =
+        case_fixture(person, user, user, %{
+          phases: [
+            %{
+              details: %{
+                __type__: :index,
+                end_reason: :healed
+              },
+              start: ~D[2020-10-12],
+              end: ~D[2020-10-12]
+            }
+          ]
+        })
+
+      transmission_fixture(%{
+        recipient_internal: true,
+        recipient_case_uuid: index_case.uuid,
+        infection_place: %{
+          known: true,
+          type: :other,
+          type_other: "Bla Bla"
+        }
+      })
+
+      execute_materialized_view_refresh(:statistics_active_infection_place_cases_per_day)
+
+      Repo.transaction(fn ->
+        assert entries =
+                 :active_infection_place_cases_per_day
+                 |> StatisticsContext.export(
+                   tenant,
+                   ~D[2020-10-11],
+                   ~D[2020-10-14]
+                 )
+                 |> CSV.decode!()
+                 |> Enum.to_list()
+
+        assert length(entries) == 125
+      end)
     end
   end
 
@@ -974,6 +1263,57 @@ defmodule Hygeia.StatisticsContextTest do
                      &1
                    ))
              )
+    end
+
+    test "exports transmission country cases" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      index_case =
+        case_fixture(person, user, user, %{
+          phases: [
+            %{
+              details: %{
+                __type__: :index,
+                end_reason: :healed
+              },
+              start: ~D[2020-10-12],
+              end: ~D[2020-10-12]
+            }
+          ]
+        })
+
+      transmission_fixture(%{
+        recipient_internal: true,
+        recipient_case_uuid: index_case.uuid,
+        infection_place: %{
+          address: %{
+            address: "Torstrasse 25",
+            zip: "9000",
+            place: "St. Gallen",
+            subdivision: "SG",
+            country: "CH"
+          },
+          known: true
+        }
+      })
+
+      execute_materialized_view_refresh(:statistics_transmission_country_cases_per_day)
+
+      Repo.transaction(fn ->
+        assert entries =
+                 :transmission_country_cases_per_day
+                 |> StatisticsContext.export(
+                   tenant,
+                   ~D[2020-10-11],
+                   ~D[2020-10-14]
+                 )
+                 |> CSV.decode!()
+                 |> Enum.to_list()
+
+        assert length(entries) == 5
+      end)
     end
   end
 end

@@ -77,7 +77,7 @@ defmodule Hygeia.DataCase do
 
   @spec execute_materialized_view_refresh(view :: atom) :: :ok
   def execute_materialized_view_refresh(view) do
-    SQL.query!(Hygeia.Repo, "REFRESH MATERIALIZED VIEW CONCURRENTLY #{view}")
+    SQL.query!(Hygeia.Repo, "REFRESH MATERIALIZED VIEW #{view}")
 
     :ok
   end

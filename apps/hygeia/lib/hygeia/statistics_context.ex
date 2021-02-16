@@ -5,6 +5,8 @@ defmodule Hygeia.StatisticsContext do
 
   use Hygeia, :context
 
+  import HygeiaGettext
+
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
   alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveInfectionPlaceCasesPerDay
@@ -52,22 +54,23 @@ defmodule Hygeia.StatisticsContext do
           to :: Date.t(),
           include_zero_values :: boolean()
         ) :: [ActiveIsolationCasesPerDay.t()]
-  def list_active_isolation_cases_per_day(
-        %Tenant{uuid: tenant_uuid} = _tenant,
-        from,
-        to,
-        include_zero_values \\ true
-      ),
-      do:
-        Repo.all(
-          from(cases_per_day in ActiveIsolationCasesPerDay,
-            where:
-              cases_per_day.tenant_uuid == ^tenant_uuid and
-                fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to) and
-                (^include_zero_values or cases_per_day.count > 0),
-            order_by: cases_per_day.date
-          )
-        )
+  def list_active_isolation_cases_per_day(tenant, from, to, include_zero_values \\ true),
+    do: Repo.all(list_active_isolation_cases_per_day_query(tenant, from, to, include_zero_values))
+
+  defp list_active_isolation_cases_per_day_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         include_zero_values \\ true
+       ),
+       do:
+         from(cases_per_day in ActiveIsolationCasesPerDay,
+           where:
+             cases_per_day.tenant_uuid == ^tenant_uuid and
+               fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to) and
+               (^include_zero_values or cases_per_day.count > 0),
+           order_by: cases_per_day.date
+         )
 
   @doc """
   Returns the list of cumulative_index_case_end_reasons.
@@ -106,26 +109,35 @@ defmodule Hygeia.StatisticsContext do
           include_zero_values :: boolean()
         ) :: [CumulativeIndexCaseEndReasons.t()]
   def list_cumulative_index_case_end_reasons(
-        %Tenant{uuid: tenant_uuid} = _tenant,
+        tenant,
         from,
         to,
         include_zero_values \\ true
       ),
       do:
         Repo.all(
-          from(cumulative_index_case_end_reasons in CumulativeIndexCaseEndReasons,
-            where:
-              cumulative_index_case_end_reasons.tenant_uuid == ^tenant_uuid and
-                fragment(
-                  "? BETWEEN ?::date AND ?::date",
-                  cumulative_index_case_end_reasons.date,
-                  ^from,
-                  ^to
-                ) and
-                (^include_zero_values or cumulative_index_case_end_reasons.count > 0),
-            order_by: cumulative_index_case_end_reasons.date
-          )
+          list_cumulative_index_case_end_reasons_query(tenant, from, to, include_zero_values)
         )
+
+  defp list_cumulative_index_case_end_reasons_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         include_zero_values \\ true
+       ) do
+    from(cumulative_index_case_end_reasons in CumulativeIndexCaseEndReasons,
+      where:
+        cumulative_index_case_end_reasons.tenant_uuid == ^tenant_uuid and
+          fragment(
+            "? BETWEEN ?::date AND ?::date",
+            cumulative_index_case_end_reasons.date,
+            ^from,
+            ^to
+          ) and
+          (^include_zero_values or cumulative_index_case_end_reasons.count > 0),
+      order_by: cumulative_index_case_end_reasons.date
+    )
+  end
 
   @doc """
   Returns the list of active_quarantine_cases_per_day.
@@ -164,26 +176,35 @@ defmodule Hygeia.StatisticsContext do
           include_zero_values :: boolean()
         ) :: [ActiveQuarantineCasesPerDay.t()]
   def list_active_quarantine_cases_per_day(
-        %Tenant{uuid: tenant_uuid} = _tenant,
+        tenant,
         from,
         to,
         include_zero_values \\ true
       ),
       do:
         Repo.all(
-          from(cases_per_day in ActiveQuarantineCasesPerDay,
-            where:
-              cases_per_day.tenant_uuid == ^tenant_uuid and
-                fragment(
-                  "? BETWEEN ?::date AND ?::date",
-                  cases_per_day.date,
-                  ^from,
-                  ^to
-                ) and
-                (^include_zero_values or cases_per_day.count > 0),
-            order_by: cases_per_day.date
-          )
+          list_active_quarantine_cases_per_day_query(tenant, from, to, include_zero_values)
         )
+
+  defp list_active_quarantine_cases_per_day_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         include_zero_values \\ true
+       ) do
+    from(cases_per_day in ActiveQuarantineCasesPerDay,
+      where:
+        cases_per_day.tenant_uuid == ^tenant_uuid and
+          fragment(
+            "? BETWEEN ?::date AND ?::date",
+            cases_per_day.date,
+            ^from,
+            ^to
+          ) and
+          (^include_zero_values or cases_per_day.count > 0),
+      order_by: cases_per_day.date
+    )
+  end
 
   @doc """
   Returns the list of cumulative_possible_index_case_end_reasons.
@@ -224,26 +245,40 @@ defmodule Hygeia.StatisticsContext do
           include_zero_values :: boolean()
         ) :: [CumulativePossibleIndexCaseEndReasons.t()]
   def list_cumulative_possible_index_case_end_reasons(
-        %Tenant{uuid: tenant_uuid} = _tenant,
+        tenant,
         from,
         to,
         include_zero_values \\ true
       ),
       do:
         Repo.all(
-          from(cases_per_day in CumulativePossibleIndexCaseEndReasons,
-            where:
-              cases_per_day.tenant_uuid == ^tenant_uuid and
-                fragment(
-                  "? BETWEEN ?::date AND ?::date",
-                  cases_per_day.date,
-                  ^from,
-                  ^to
-                ) and
-                (^include_zero_values or cases_per_day.count > 0),
-            order_by: cases_per_day.date
+          list_cumulative_possible_index_case_end_reasons_query(
+            tenant,
+            from,
+            to,
+            include_zero_values
           )
         )
+
+  defp list_cumulative_possible_index_case_end_reasons_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         include_zero_values \\ true
+       ) do
+    from(cases_per_day in CumulativePossibleIndexCaseEndReasons,
+      where:
+        cases_per_day.tenant_uuid == ^tenant_uuid and
+          fragment(
+            "? BETWEEN ?::date AND ?::date",
+            cases_per_day.date,
+            ^from,
+            ^to
+          ) and
+          (^include_zero_values or cases_per_day.count > 0),
+      order_by: cases_per_day.date
+    )
+  end
 
   @doc """
   Returns the list of new_cases_per_day.
@@ -282,26 +317,32 @@ defmodule Hygeia.StatisticsContext do
           include_zero_values :: boolean()
         ) :: [NewCasesPerDay.t()]
   def list_new_cases_per_day(
-        %Tenant{uuid: tenant_uuid} = _tenant,
+        tenant,
         from,
         to,
         include_zero_values \\ true
       ),
-      do:
-        Repo.all(
-          from(cases_per_day in NewCasesPerDay,
-            where:
-              cases_per_day.tenant_uuid == ^tenant_uuid and
-                fragment(
-                  "? BETWEEN ?::date AND ?::date",
-                  cases_per_day.date,
-                  ^from,
-                  ^to
-                ) and
-                (^include_zero_values or cases_per_day.count > 0),
-            order_by: cases_per_day.date
-          )
-        )
+      do: Repo.all(list_new_cases_per_day_query(tenant, from, to, include_zero_values))
+
+  defp list_new_cases_per_day_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         include_zero_values \\ true
+       ) do
+    from(cases_per_day in NewCasesPerDay,
+      where:
+        cases_per_day.tenant_uuid == ^tenant_uuid and
+          fragment(
+            "? BETWEEN ?::date AND ?::date",
+            cases_per_day.date,
+            ^from,
+            ^to
+          ) and
+          (^include_zero_values or cases_per_day.count > 0),
+      order_by: cases_per_day.date
+    )
+  end
 
   @doc """
   Returns the list of active_hospitalization_cases_per_day.
@@ -340,21 +381,35 @@ defmodule Hygeia.StatisticsContext do
           include_zero_values :: boolean()
         ) :: [ActiveHospitalizationCasesPerDay.t()]
   def list_active_hospitalization_cases_per_day(
-        %Tenant{uuid: tenant_uuid} = _tenant,
+        tenant,
         from,
         to,
         include_zero_values \\ true
       ),
       do:
         Repo.all(
-          from(cases_per_day in ActiveHospitalizationCasesPerDay,
-            where:
-              cases_per_day.tenant_uuid == ^tenant_uuid and
-                fragment("? BETWEEN ?::date AND ?::date", cases_per_day.date, ^from, ^to) and
-                (^include_zero_values or cases_per_day.count > 0),
-            order_by: cases_per_day.date
-          )
+          list_active_hospitalization_cases_per_day_query(tenant, from, to, include_zero_values)
         )
+
+  defp list_active_hospitalization_cases_per_day_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         include_zero_values \\ true
+       ),
+       do:
+         from(active_hospitalization_cases in ActiveHospitalizationCasesPerDay,
+           where:
+             active_hospitalization_cases.tenant_uuid == ^tenant_uuid and
+               fragment(
+                 "? BETWEEN ?::date AND ?::date",
+                 active_hospitalization_cases.date,
+                 ^from,
+                 ^to
+               ) and
+               (^include_zero_values or active_hospitalization_cases.count > 0),
+           order_by: active_hospitalization_cases.date
+         )
 
   @doc """
   Returns the list of active_complexity_cases_per_day.
@@ -393,26 +448,35 @@ defmodule Hygeia.StatisticsContext do
           include_zero_values :: boolean()
         ) :: [ActiveComplexityCasesPerDay.t()]
   def list_active_complexity_cases_per_day(
-        %Tenant{uuid: tenant_uuid} = _tenant,
+        tenant,
         from,
         to,
         include_zero_values \\ true
       ),
       do:
         Repo.all(
-          from(active_complexity_cases_per_day in ActiveComplexityCasesPerDay,
-            where:
-              active_complexity_cases_per_day.tenant_uuid == ^tenant_uuid and
-                fragment(
-                  "? BETWEEN ?::date AND ?::date",
-                  active_complexity_cases_per_day.date,
-                  ^from,
-                  ^to
-                ) and
-                (^include_zero_values or active_complexity_cases_per_day.count > 0),
-            order_by: active_complexity_cases_per_day.date
-          )
+          list_active_complexity_cases_per_day_query(tenant, from, to, include_zero_values)
         )
+
+  defp list_active_complexity_cases_per_day_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         include_zero_values \\ true
+       ) do
+    from(active_complexity_cases_per_day in ActiveComplexityCasesPerDay,
+      where:
+        active_complexity_cases_per_day.tenant_uuid == ^tenant_uuid and
+          fragment(
+            "? BETWEEN ?::date AND ?::date",
+            active_complexity_cases_per_day.date,
+            ^from,
+            ^to
+          ) and
+          (^include_zero_values or active_complexity_cases_per_day.count > 0),
+      order_by: active_complexity_cases_per_day.date
+    )
+  end
 
   @doc """
   Returns the list of active_infection_place_cases_per_day.
@@ -451,26 +515,35 @@ defmodule Hygeia.StatisticsContext do
           include_zero_values :: boolean()
         ) :: [ActiveInfectionPlaceCasesPerDay.t()]
   def list_active_infection_place_cases_per_day(
-        %Tenant{uuid: tenant_uuid} = _tenant,
+        tenant,
         from,
         to,
         include_zero_values \\ true
       ),
       do:
         Repo.all(
-          from(active_infection_place_cases_per_day in ActiveInfectionPlaceCasesPerDay,
-            where:
-              active_infection_place_cases_per_day.tenant_uuid == ^tenant_uuid and
-                fragment(
-                  "? BETWEEN ?::date AND ?::date",
-                  active_infection_place_cases_per_day.date,
-                  ^from,
-                  ^to
-                ) and
-                (^include_zero_values or active_infection_place_cases_per_day.count > 0),
-            order_by: active_infection_place_cases_per_day.date
-          )
+          list_active_infection_place_cases_per_day_query(tenant, from, to, include_zero_values)
         )
+
+  defp list_active_infection_place_cases_per_day_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         include_zero_values \\ true
+       ) do
+    from(active_infection_place_cases_per_day in ActiveInfectionPlaceCasesPerDay,
+      where:
+        active_infection_place_cases_per_day.tenant_uuid == ^tenant_uuid and
+          fragment(
+            "? BETWEEN ?::date AND ?::date",
+            active_infection_place_cases_per_day.date,
+            ^from,
+            ^to
+          ) and
+          (^include_zero_values or active_infection_place_cases_per_day.count > 0),
+      order_by: active_infection_place_cases_per_day.date
+    )
+  end
 
   @doc """
   Returns the list of transmission_country_cases_per_day.
@@ -509,24 +582,250 @@ defmodule Hygeia.StatisticsContext do
           include_zero_values :: boolean()
         ) :: [TransmissionCountryCasesPerDay.t()]
   def list_transmission_country_cases_per_day(
-        %Tenant{uuid: tenant_uuid} = _tenant,
+        tenant,
         from,
         to,
         include_zero_values \\ true
       ),
       do:
         Repo.all(
-          from(transmission_country_cases_per_day in TransmissionCountryCasesPerDay,
-            where:
-              transmission_country_cases_per_day.tenant_uuid == ^tenant_uuid and
-                fragment(
-                  "? BETWEEN ?::date AND ?::date",
-                  transmission_country_cases_per_day.date,
-                  ^from,
-                  ^to
-                ) and
-                (^include_zero_values or transmission_country_cases_per_day.count > 0),
-            order_by: transmission_country_cases_per_day.date
-          )
+          list_transmission_country_cases_per_day_query(tenant, from, to, include_zero_values)
         )
+
+  defp list_transmission_country_cases_per_day_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         include_zero_values \\ true
+       ) do
+    from(transmission_country_cases_per_day in TransmissionCountryCasesPerDay,
+      where:
+        transmission_country_cases_per_day.tenant_uuid == ^tenant_uuid and
+          fragment(
+            "? BETWEEN ?::date AND ?::date",
+            transmission_country_cases_per_day.date,
+            ^from,
+            ^to
+          ) and
+          (^include_zero_values or transmission_country_cases_per_day.count > 0),
+      order_by: transmission_country_cases_per_day.date
+    )
+  end
+
+  @spec export(
+          type :: :active_isolation_cases_per_day,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:active_isolation_cases_per_day, tenant, from, to) do
+    [[gettext("Date"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(cases_per_day in list_active_isolation_cases_per_day_query(tenant, from, to),
+          select: [cases_per_day.date, cases_per_day.count]
+        )
+      )
+    )
+    |> CSV.encode()
+  end
+
+  @spec export(
+          type :: :cumulative_index_case_end_reasons,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:cumulative_index_case_end_reasons, tenant, from, to) do
+    [[gettext("Date"), gettext("End_reason"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(
+          cases_per_day in list_cumulative_index_case_end_reasons_query(tenant, from, to),
+          select: [
+            cases_per_day.date,
+            cases_per_day.end_reason,
+            cases_per_day.count
+          ]
+        )
+      )
+    )
+    |> CSV.encode()
+  end
+
+  @spec export(
+          type :: :active_quarantine_cases_per_day,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:active_quarantine_cases_per_day, tenant, from, to) do
+    [[gettext("Date"), gettext("Type"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(cases_per_day in list_active_quarantine_cases_per_day_query(tenant, from, to),
+          select: [
+            cases_per_day.date,
+            cases_per_day.type,
+            cases_per_day.count
+          ]
+        )
+      )
+    )
+    |> CSV.encode()
+  end
+
+  @spec export(
+          type :: :cumulative_possible_index_case_end_reasons,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:cumulative_possible_index_case_end_reasons, tenant, from, to) do
+    [[gettext("Date"), gettext("Type"), gettext("End_reason"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(
+          cases_per_day in list_cumulative_possible_index_case_end_reasons_query(tenant, from, to),
+          select: [
+            cases_per_day.date,
+            cases_per_day.type,
+            cases_per_day.end_reason,
+            cases_per_day.count
+          ]
+        )
+      )
+    )
+    |> CSV.encode()
+  end
+
+  @spec export(
+          type :: :new_cases_per_day,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:new_cases_per_day, tenant, from, to) do
+    [[gettext("Date"), gettext("Type"), gettext("Sub_type"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(cases_per_day in list_new_cases_per_day_query(tenant, from, to),
+          select: [
+            cases_per_day.date,
+            cases_per_day.type,
+            cases_per_day.sub_type,
+            cases_per_day.count
+          ]
+        )
+      )
+    )
+    |> CSV.encode()
+  end
+
+  @spec export(
+          type :: :active_hospitalization_cases_per_day,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:active_hospitalization_cases_per_day, tenant, from, to) do
+    [[gettext("Date"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(
+          cases_per_day in list_active_hospitalization_cases_per_day_query(
+            tenant,
+            from,
+            to
+          ),
+          select: [
+            cases_per_day.date,
+            cases_per_day.count
+          ]
+        )
+      )
+    )
+    |> CSV.encode()
+  end
+
+  @spec export(
+          type :: :active_complexity_cases_per_day,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:active_complexity_cases_per_day, tenant, from, to) do
+    [[gettext("Date"), gettext("Complexity"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(
+          cases_per_day in list_active_complexity_cases_per_day_query(
+            tenant,
+            from,
+            to
+          ),
+          select: [
+            cases_per_day.date,
+            cases_per_day.case_complexity,
+            cases_per_day.count
+          ]
+        )
+      )
+    )
+    |> CSV.encode()
+  end
+
+  @spec export(
+          type :: :active_infection_place_cases_per_day,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:active_infection_place_cases_per_day, tenant, from, to) do
+    [[gettext("Date"), gettext("Type"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(
+          cases_per_day in list_active_infection_place_cases_per_day_query(
+            tenant,
+            from,
+            to
+          ),
+          select: [
+            cases_per_day.date,
+            cases_per_day.infection_place_type,
+            cases_per_day.count
+          ]
+        )
+      )
+    )
+    |> CSV.encode()
+  end
+
+  @spec export(
+          type :: :transmission_country_cases_per_day,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:transmission_country_cases_per_day, tenant, from, to) do
+    [[gettext("Date"), gettext("Country"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(
+          cases_per_day in list_transmission_country_cases_per_day_query(
+            tenant,
+            from,
+            to
+          ),
+          select: [
+            cases_per_day.date,
+            cases_per_day.country,
+            cases_per_day.count
+          ]
+        )
+      )
+    )
+    |> CSV.encode()
+  end
 end

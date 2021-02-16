@@ -1,6 +1,8 @@
 defmodule HygeiaWeb.TenantController do
   use HygeiaWeb, :controller
 
+  import HygeiaWeb.Helpers.Export
+
   alias Hygeia.CaseContext
   alias Hygeia.Repo
   alias Hygeia.TenantContext
@@ -43,17 +45,5 @@ defmodule HygeiaWeb.TenantController do
       end)
 
     conn
-  end
-
-  defp into_conn(chunks, conn) do
-    Enum.reduce_while(chunks, conn, fn chunk, conn ->
-      case Plug.Conn.chunk(conn, chunk) do
-        {:ok, conn} ->
-          {:cont, conn}
-
-        {:error, :closed} ->
-          {:halt, conn}
-      end
-    end)
   end
 end
