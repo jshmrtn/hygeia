@@ -7,11 +7,26 @@ defmodule HygeiaWeb.StatisticsLive.Timeline do
   alias Hygeia.TenantContext
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
-  alias Surface.Components.Form.DateInput
+  alias Surface.Components.Form.Checkbox
+  alias Surface.Components.Form.Field
+  alias Surface.Components.Form.Label
+
+  data enable_vision_impaired_mode, :boolean, default: false
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
-    {:ok, socket, temporary_assigns: [active_isolation_cases_per_day: []]}
+    {:ok, socket,
+     temporary_assigns: [
+       active_isolation_cases_per_day: [],
+       active_quarantine_cases_per_day: [],
+       cumulative_index_case_end_reasons: [],
+       cumulative_possible_index_case_end_reasons: [],
+       new_cases_per_day: [],
+       active_hospitalization_cases_per_day: [],
+       active_complexity_cases_per_day: [],
+       active_infection_place_cases_per_day: [],
+       transmission_country_cases_per_day: []
+     ]}
   end
 
   @impl Phoenix.LiveView
@@ -51,18 +66,27 @@ defmodule HygeiaWeb.StatisticsLive.Timeline do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("params_change", %{"from" => ""}, socket) do
-    {:noreply, socket}
-  end
-
-  def handle_event("params_change", %{"to" => ""}, socket) do
-    {:noreply, socket}
-  end
-
-  def handle_event("params_change", %{"from" => from, "to" => to}, socket) do
+  def handle_event("params_change", %{} = params, socket) do
     {:noreply,
-     push_patch(socket,
-       to: Routes.statistics_timeline_path(socket, :show, socket.assigns.tenant, from, to)
+     socket
+     |> assign(enable_vision_impaired_mode: params["enable_vision_impaired_mode"] == "true")
+     |> push_patch(
+       to:
+         Routes.statistics_timeline_path(
+           socket,
+           :show,
+           socket.assigns.tenant,
+           case params["from"] do
+             "" -> Date.to_iso8601(socket.assigns.from)
+             nil -> Date.to_iso8601(socket.assigns.from)
+             date -> date
+           end,
+           case params["to"] do
+             "" -> Date.to_iso8601(socket.assigns.to)
+             nil -> Date.to_iso8601(socket.assigns.to)
+             date -> date
+           end
+         )
      )}
   end
 

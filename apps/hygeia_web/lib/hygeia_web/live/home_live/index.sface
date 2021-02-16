@@ -5,22 +5,36 @@
       <a
         href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/weisung-kantone-ct-und-kontrolle-dezember-2020.PDF.download.PDF/Weisung%20Kantone%20CT%20und%20Kontrolle.pdf.PDF"
         target="_blank"
-      >«Minimal Essential Dataset»</a>
+      >
+        «Minimal Essential Dataset»
+      </a>
       des BAG einzuhalten, Anbindungen wie diejenige an die BAG-Datenbank zu gewährleisten und die fürs Contact Tracing notwendigen Personal-Mittel zu reduzieren.</p>
     <hr class="my-4" />
     <p class="col-md-8">Weitere Informationen zur Software, den Kosten sowie den angebotenen SLA finden Sie in den folgenden Factsheets.</p>
-    <a class="btn btn-primary btn-lg disabled" download aria-disabled="true" href="#" role="button">
+    <Link
+      to={{ Routes.static_path(@socket, "/downloads/product/20210216_Hygeia_Factsheet.pdf") }}
+      class="btn btn-primary btn-lg"
+      opts={{ download: "Hygeia - Factsheet.pdf" }}
+    >
       <span class="oi oi-data-transfer-download" aria-hidden="true" />
       Factsheet
-    </a>
-    <a class="btn btn-primary btn-lg disabled" download aria-disabled="true" href="#" role="button">
+    </Link>
+    <Link
+      to={{ Routes.static_path(@socket, "/downloads/product/20210216_Hygeia_Kosten.pdf") }}
+      class="btn btn-primary btn-lg"
+      opts={{ download: "Hygeia - Kosten.pdf" }}
+    >
       <span class="oi oi-data-transfer-download" aria-hidden="true" />
       Kosten
-    </a>
-    <a class="btn btn-primary btn-lg disabled" download aria-disabled="true" href="#" role="button">
+    </Link>
+    <Link
+      to={{ Routes.static_path(@socket, "/downloads/product/20210216_Hygeia_SLA.pdf") }}
+      class="btn btn-primary btn-lg"
+      opts={{ download: "Hygeia - SLA.pdf" }}
+    >
       <span class="oi oi-data-transfer-download" aria-hidden="true" />
       SLA
-    </a>
+    </Link>
     <hr class="my-4" />
     <p class="col-md-8">Im Falle von Störungen des Systems kann die Status-Seite konsultiert werden.</p>
     <a

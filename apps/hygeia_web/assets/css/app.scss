@@ -77,7 +77,6 @@ $font-family-sans-serif:
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100%;
   text-size-adjust: none;
   -moz-text-size-adjust: none;
   -webkit-text-size-adjust: none;
@@ -231,10 +230,6 @@ table {
 
 .home-jumbo {
   background-color: $body-bg;
-}
-
-.btn .oi {
-  vertical-align: middle;
 }
 
 @include media-breakpoint-down(md) {

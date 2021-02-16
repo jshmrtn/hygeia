@@ -7,6 +7,11 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
   alias Hygeia.TenantContext
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
+  alias Surface.Components.Form.Checkbox
+  alias Surface.Components.Form.Field
+  alias Surface.Components.Form.Label
+
+  data enable_vision_impaired_mode, :boolean, default: false
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
@@ -57,14 +62,22 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("params_change", %{"date" => ""}, socket) do
-    {:noreply, socket}
-  end
-
-  def handle_event("params_change", %{"date" => date}, socket) do
+  def handle_event("params_change", params, socket) do
     {:noreply,
-     push_patch(socket,
-       to: Routes.statistics_daily_statistics_path(socket, :show, socket.assigns.tenant, date)
+     socket
+     |> assign(enable_vision_impaired_mode: params["enable_vision_impaired_mode"] == "true")
+     |> push_patch(
+       to:
+         Routes.statistics_daily_statistics_path(
+           socket,
+           :show,
+           socket.assigns.tenant,
+           case params["date"] do
+             "" -> Date.to_iso8601(socket.assigns.date)
+             nil -> Date.to_iso8601(socket.assigns.date)
+             date -> date
+           end
+         )
      )}
   end
 
