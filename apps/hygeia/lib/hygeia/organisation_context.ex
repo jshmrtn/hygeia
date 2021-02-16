@@ -132,8 +132,8 @@ defmodule Hygeia.OrganisationContext do
           {:ok, Organisation.t()} | {:error, Ecto.Changeset.t(Organisation.t())}
   def create_organisation(attrs \\ %{}),
     do:
-      %Organisation{}
-      |> change_organisation(attrs)
+      attrs
+      |> change_new_organisation()
       |> versioning_insert()
       |> broadcast("organisations", :create)
       |> versioning_extract()
@@ -273,6 +273,10 @@ defmodule Hygeia.OrganisationContext do
   def change_organisation(%Organisation{} = organisation, attrs \\ %{}) do
     Organisation.changeset(organisation, attrs)
   end
+
+  @spec change_new_organisation(attrs :: Hygeia.ecto_changeset_params()) ::
+          Ecto.Changeset.t(Organisation.t())
+  def change_new_organisation(attrs \\ %{}), do: change_organisation(%Organisation{}, attrs)
 
   @doc """
   Returns the list of positions.

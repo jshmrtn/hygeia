@@ -222,7 +222,7 @@ defmodule HygeiaWeb.CaseLive.Create.CreatePersonSchema do
 
           socket.assigns.tenants
           |> Enum.find(&match?(%Tenant{uuid: ^tenant_uuid}, &1))
-          |> CaseContext.create_person_changeset(%{})
+          |> CaseContext.change_new_person(%{})
           |> Map.put(:errors, [])
           |> Map.put(:valid?, true)
 

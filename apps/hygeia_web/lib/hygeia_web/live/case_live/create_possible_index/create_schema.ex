@@ -200,7 +200,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       |> case do
         nil ->
           person
-          |> CaseContext.create_case_changeset(%{})
+          |> CaseContext.change_new_case(%{})
           |> Map.put(:errors, [])
           |> Map.put(:valid?, true)
 

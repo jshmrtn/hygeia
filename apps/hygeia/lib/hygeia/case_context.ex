@@ -185,7 +185,7 @@ defmodule Hygeia.CaseContext do
   def create_person(%Tenant{} = tenant, attrs),
     do:
       tenant
-      |> create_person_changeset(attrs)
+      |> change_new_person(attrs)
       |> create_person()
 
   @spec create_person(changeset :: Ecto.Changeset.t(Person.t())) ::
@@ -299,9 +299,9 @@ defmodule Hygeia.CaseContext do
     Person.changeset(person, attrs)
   end
 
-  @spec create_person_changeset(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec change_new_person(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           Ecto.Changeset.t(Person.t())
-  def create_person_changeset(tenant, attrs \\ %{}) do
+  def change_new_person(tenant, attrs \\ %{}) do
     tenant
     |> Ecto.build_assoc(:people)
     |> change_person(attrs)
@@ -1730,7 +1730,7 @@ defmodule Hygeia.CaseContext do
   def create_case(%Person{} = person, attrs),
     do:
       person
-      |> create_case_changeset(attrs)
+      |> change_new_case(attrs)
       |> create_case()
 
   @spec create_case(changeset :: Ecto.Changeset.t(Case.t())) ::
@@ -1752,7 +1752,7 @@ defmodule Hygeia.CaseContext do
   def create_case(%Person{} = person, %Tenant{} = tenant, attrs),
     do:
       person
-      |> create_case_changeset(tenant, attrs)
+      |> change_new_case(tenant, attrs)
       |> create_case()
 
   @spec relate_case_to_organisation(case :: Case.t(), organisation :: Organisation.t()) ::
@@ -1897,12 +1897,12 @@ defmodule Hygeia.CaseContext do
           Ecto.Changeset.t(Case.t())
   def change_case(%Case{} = case, attrs \\ %{}), do: Case.changeset(case, attrs)
 
-  @spec create_case_changeset(
+  @spec change_new_case(
           person :: Person.t(),
           tenant :: Tenant.t(),
           attrs :: Hygeia.ecto_changeset_params()
         ) :: Ecto.Changeset.t(Case.t())
-  def create_case_changeset(person, tenant, attrs) do
+  def change_new_case(person, tenant, attrs) do
     person
     |> Ecto.build_assoc(:cases)
     |> change_case(
@@ -1917,13 +1917,13 @@ defmodule Hygeia.CaseContext do
     )
   end
 
-  @spec create_case_changeset(
+  @spec change_new_case(
           person :: Person.t(),
           attrs :: Hygeia.ecto_changeset_params()
         ) :: Ecto.Changeset.t(Case.t())
-  def create_case_changeset(person, attrs) do
+  def change_new_case(person, attrs) do
     tenant = Repo.preload(person, :tenant).tenant
-    create_case_changeset(person, tenant, attrs)
+    change_new_case(person, tenant, attrs)
   end
 
   @doc """

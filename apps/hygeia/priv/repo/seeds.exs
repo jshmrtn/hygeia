@@ -34,7 +34,7 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
 -----END PUBLIC KEY-----
 """
 
-tenants =
+{:ok, tenants} =
   "CH"
   |> Cadastre.Country.new()
   |> Cadastre.Subdivision.all()
@@ -117,26 +117,27 @@ tenants =
       {subdivision, %{}}
   end)
   |> Enum.map(fn {%Cadastre.Subdivision{id: id, name: name}, extra_args} ->
-    {:ok, tenant} =
-      create_tenant(
-        Map.merge(
-          %{
-            name: "Kanton #{name}",
-            short_name: id,
-            case_management_enabled: true
-          },
-          extra_args
-        )
+    change_new_tenant(
+      Map.merge(
+        %{
+          name: "Kanton #{name}",
+          short_name: id,
+          case_management_enabled: true
+        },
+        extra_args
       )
-
-    tenant
+    )
   end)
+  |> Enum.reduce(Ecto.Multi.new(), &PaperTrail.Multi.insert(&2, make_ref(), &1))
+  |> Repo.transaction()
+
+tenants = tenants |> Map.values() |> Enum.filter(&is_struct(&1, Hygeia.TenantContext.Tenant))
 
 tenant_sg = Enum.find(tenants, &match?(%{short_name: "SG"}, &1))
 tenant_ar = Enum.find(tenants, &match?(%{short_name: "AR"}, &1))
 tenant_ai = Enum.find(tenants, &match?(%{short_name: "AI"}, &1))
 
-[] =
+{:ok, _organisations} =
   :hygeia
   |> Application.app_dir("priv/repo/seeds/hospitals.csv")
   |> File.stream!()
@@ -154,9 +155,9 @@ tenant_ai = Enum.find(tenants, &match?(%{short_name: "AI"}, &1))
       }
     }
   )
-  |> Stream.map(&create_organisation/1)
-  |> Stream.reject(&match?({:ok, _organisation}, &1))
-  |> Enum.to_list()
+  |> Stream.map(&change_new_organisation/1)
+  |> Enum.reduce(Ecto.Multi.new(), &PaperTrail.Multi.insert(&2, make_ref(), &1))
+  |> Repo.transaction()
 
 if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
   {:ok, _sedex_export_sg} =
@@ -419,78 +420,96 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
   random_start_date_range = Date.range(Date.add(Date.utc_today(), -100), Date.utc_today())
 
   if System.get_env("LOAD_STATISTICS_SEEDS", "false") in ["1", "true"] do
-    for i <- 1..1000 do
-      noga_code = Enum.random(Hygeia.EctoType.NOGA.Code.__enum_map__())
-      noga_section = Hygeia.EctoType.NOGA.Code.section(noga_code)
+    {:ok, stats_people} =
+      1..1000
+      |> Enum.reduce(Ecto.Multi.new(), fn i, acc ->
+        noga_code = Enum.random(Hygeia.EctoType.NOGA.Code.__enum_map__())
+        noga_section = Hygeia.EctoType.NOGA.Code.section(noga_code)
 
-      {:ok, person} =
-        create_person(Enum.random(tenants), %{
-          profession_category: noga_code,
-          profession_category_main: noga_section,
-          first_name: "Test #{i}",
-          last_name: "Test",
-          sex: Enum.random(Hygeia.CaseContext.Person.Sex.__enum_map__())
-        })
+        PaperTrail.Multi.insert(
+          acc,
+          i,
+          change_new_person(Enum.random(tenants), %{
+            profession_category: noga_code,
+            profession_category_main: noga_section,
+            first_name: "Test #{i}",
+            last_name: "Test",
+            sex: Enum.random(Hygeia.CaseContext.Person.Sex.__enum_map__())
+          })
+        )
+      end)
+      |> Repo.transaction()
 
-      start_date = Enum.random(random_start_date_range)
-      end_date = Date.add(start_date, 10)
+    stats_people =
+      stats_people |> Map.values() |> Enum.filter(&is_struct(&1, Hygeia.CaseContext.Person))
 
-      index_end_reason =
-        Enum.random([nil | Hygeia.CaseContext.Case.Phase.Index.EndReason.__enum_map__()])
+    {:ok, _stats_cases} =
+      stats_people
+      |> Enum.with_index()
+      |> Enum.reduce(Ecto.Multi.new(), fn {person, i}, acc ->
+        start_date = Enum.random(random_start_date_range)
+        end_date = Date.add(start_date, 10)
 
-      possible_index_end_reason =
-        Enum.random([
-          nil | Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason.__enum_map__()
-        ])
+        index_end_reason =
+          Enum.random([nil | Hygeia.CaseContext.Case.Phase.Index.EndReason.__enum_map__()])
 
-      possible_index_type =
-        Enum.random(Hygeia.CaseContext.Case.Phase.PossibleIndex.Type.__enum_map__())
+        possible_index_end_reason =
+          Enum.random([
+            nil | Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason.__enum_map__()
+          ])
 
-      phase =
-        Enum.random([
-          %{
-            details: %{
-              __type__: "index",
-              end_reason: index_end_reason,
-              other_end_reason:
-                case index_end_reason do
-                  :other -> "ran away"
-                  _other -> nil
-                end
+        possible_index_type =
+          Enum.random(Hygeia.CaseContext.Case.Phase.PossibleIndex.Type.__enum_map__())
+
+        phase =
+          Enum.random([
+            %{
+              details: %{
+                __type__: "index",
+                end_reason: index_end_reason,
+                other_end_reason:
+                  case index_end_reason do
+                    :other -> "ran away"
+                    _other -> nil
+                  end
+              },
+              start: start_date,
+              end: end_date
             },
-            start: start_date,
-            end: end_date
-          },
-          %{
-            details: %{
-              __type__: "possible_index",
-              type: possible_index_type,
-              type_other:
-                case possible_index_type do
-                  :other -> "likes to stay home alone"
-                  _other -> nil
-                end,
-              end_reason: possible_index_end_reason,
-              other_end_reason:
-                case possible_index_end_reason do
-                  :other -> "ran away"
-                  _other -> nil
-                end
-            },
-            start: start_date,
-            end: end_date
-          }
-        ])
+            %{
+              details: %{
+                __type__: "possible_index",
+                type: possible_index_type,
+                type_other:
+                  case possible_index_type do
+                    :other -> "likes to stay home alone"
+                    _other -> nil
+                  end,
+                end_reason: possible_index_end_reason,
+                other_end_reason:
+                  case possible_index_end_reason do
+                    :other -> "ran away"
+                    _other -> nil
+                  end
+              },
+              start: start_date,
+              end: end_date
+            }
+          ])
 
-      {:ok, _index_case} =
-        create_case(person, %{
-          complexity: Enum.random(Hygeia.CaseContext.Case.Complexity.__enum_map__()),
-          status: Enum.random(Hygeia.CaseContext.Case.Status.__enum_map__()),
-          tracer_uuid: user_jony.uuid,
-          supervisor_uuid: user_jony.uuid,
-          phases: [phase]
-        })
-    end
+        PaperTrail.Multi.insert(
+          acc,
+          i,
+          change_new_case(person, %{
+            complexity: Enum.random(Hygeia.CaseContext.Case.Complexity.__enum_map__()),
+            status: Enum.random(Hygeia.CaseContext.Case.Status.__enum_map__()),
+            tracer_uuid: user_jony.uuid,
+            supervisor_uuid: user_jony.uuid,
+            phases: [phase]
+          })
+        )
+      end)
+      |> Repo.transaction()
   end
 
   {:ok, case_jony} = relate_case_to_organisation(case_jony, organisation_jm)

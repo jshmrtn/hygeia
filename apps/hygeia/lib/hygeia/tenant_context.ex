@@ -54,8 +54,8 @@ defmodule Hygeia.TenantContext do
           {:ok, Tenant.t()} | {:error, Ecto.Changeset.t(Tenant.t())}
   def create_tenant(attrs \\ %{}),
     do:
-      %Tenant{}
-      |> change_tenant(attrs)
+      attrs
+      |> change_new_tenant()
       |> versioning_insert()
       |> broadcast("tenants", :create)
       |> versioning_extract()
@@ -119,6 +119,9 @@ defmodule Hygeia.TenantContext do
         ) ::
           Ecto.Changeset.t(Tenant.t())
   def change_tenant(%Tenant{} = tenant, attrs \\ %{}), do: Tenant.changeset(tenant, attrs)
+
+  @spec change_new_tenant(attrs :: Hygeia.ecto_changeset_params()) :: Ecto.Changeset.t(Tenant.t())
+  def change_new_tenant(attrs \\ %{}), do: change_tenant(%Tenant{}, attrs)
 
   @spec tenant_has_outgoing_mail_configuration?(tenant :: Tenant.t()) :: boolean
   def tenant_has_outgoing_mail_configuration?(%Tenant{outgoing_mail_configuration: nil}),
