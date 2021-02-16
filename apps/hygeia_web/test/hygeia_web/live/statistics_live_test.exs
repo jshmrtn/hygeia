@@ -10,6 +10,24 @@ defmodule HygeiaWeb.StatisticsLiveTest do
   @moduletag originator: :noone
   @moduletag log_in: [roles: [:statistics_viewer]]
 
+  setup do
+    for view <- [
+          :statistics_active_isolation_cases_per_day,
+          :statistics_active_quarantine_cases_per_day,
+          :statistics_cumulative_index_case_end_reasons,
+          :statistics_cumulative_possible_index_case_end_reasons,
+          :statistics_new_cases_per_day,
+          :statistics_active_hospitalization_cases_per_day,
+          :statistics_active_complexity_cases_per_day,
+          :statistics_active_infection_place_cases_per_day,
+          :statistics_transmission_country_cases_per_day
+        ] do
+      execute_materialized_view_refresh(view)
+    end
+
+    :ok
+  end
+
   describe "ChooseTenant" do
     test "lists all tenants", %{conn: conn, user: user} do
       [%{tenant: tenant} | _other_grants] = user.grants
