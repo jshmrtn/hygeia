@@ -3,7 +3,6 @@ defmodule HygeiaWeb.StatisticsLive.Export do
 
   use HygeiaWeb, :surface_view
 
-  alias Hygeia.StatisticsContext
   alias Hygeia.TenantContext
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
