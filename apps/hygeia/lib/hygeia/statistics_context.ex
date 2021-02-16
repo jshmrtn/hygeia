@@ -637,7 +637,7 @@ defmodule Hygeia.StatisticsContext do
           to :: Date.t()
         ) :: Enumerable.t()
   def export(:cumulative_index_case_end_reasons, tenant, from, to) do
-    [[gettext("Date"), gettext("End_reason"), gettext("Count")]]
+    [[gettext("Date"), gettext("End Reason"), gettext("Count")]]
     |> Stream.concat(
       Repo.stream(
         from(
@@ -682,7 +682,7 @@ defmodule Hygeia.StatisticsContext do
           to :: Date.t()
         ) :: Enumerable.t()
   def export(:cumulative_possible_index_case_end_reasons, tenant, from, to) do
-    [[gettext("Date"), gettext("Type"), gettext("End_reason"), gettext("Count")]]
+    [[gettext("Date"), gettext("Type"), gettext("End Reason"), gettext("Count")]]
     |> Stream.concat(
       Repo.stream(
         from(
@@ -706,7 +706,7 @@ defmodule Hygeia.StatisticsContext do
           to :: Date.t()
         ) :: Enumerable.t()
   def export(:new_cases_per_day, tenant, from, to) do
-    [[gettext("Date"), gettext("Type"), gettext("Sub_type"), gettext("Count")]]
+    [[gettext("Date"), gettext("Type"), gettext("Sub-Type"), gettext("Count")]]
     |> Stream.concat(
       Repo.stream(
         from(cases_per_day in list_new_cases_per_day_query(tenant, from, to),
