@@ -232,6 +232,15 @@ table {
   background-color: $body-bg;
 }
 
+.btn > .oi {
+  vertical-align: text-bottom;
+  line-height: 1.3em;
+}
+
+.btn.btn-lg > .oi {
+  line-height: 1.1em;
+}
+
 @include media-breakpoint-down(md) {
   .layout-header {
     padding: $grid-gutter-width $grid-gutter-width * 2;
