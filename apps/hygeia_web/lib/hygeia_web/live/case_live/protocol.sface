@@ -46,7 +46,7 @@
               </time>
             </td>
             <td>
-              {{ translate_versioning_origin(version.origin) }}
+              {{ unless is_nil(version.origin), do: translate_versioning_origin(version.origin) }}
             </td>
             <td>
               <Link to={{ Routes.user_show_path(@socket, :show, version.user) }} :if={{ version.user != nil }}>
