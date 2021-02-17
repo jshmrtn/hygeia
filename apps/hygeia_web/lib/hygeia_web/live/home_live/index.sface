@@ -20,7 +20,10 @@
       Factsheet
     </Link>
     <Link
-      to={{ Routes.static_path(@socket, "/downloads/product/20210217_Hygeia_Datenschutz_Informationssicherheit.pdf") }}
+      to={{Routes.static_path(
+        @socket,
+        "/downloads/product/20210217_Hygeia_Datenschutz_Informationssicherheit.pdf"
+      )}}
       class="btn btn-primary btn-lg"
       opts={{ download: "Hygeia - Datenschutz & Informationssicherheit.pdf" }}
     >
