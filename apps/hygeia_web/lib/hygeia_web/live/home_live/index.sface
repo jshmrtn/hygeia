@@ -12,7 +12,7 @@
     <hr class="my-4" />
     <p class="col-md-8">Weitere Informationen zur Software, den Kosten sowie den angebotenen SLA finden Sie in den folgenden Factsheets.</p>
     <Link
-      to={{ Routes.static_path(@socket, "/downloads/product/20210216_Hygeia_Factsheet.pdf") }}
+      to={{ Routes.static_path(@socket, "/downloads/product/20210217_Hygeia_Factsheet.pdf") }}
       class="btn btn-primary btn-lg"
       opts={{ download: "Hygeia - Factsheet.pdf" }}
     >
@@ -20,7 +20,15 @@
       Factsheet
     </Link>
     <Link
-      to={{ Routes.static_path(@socket, "/downloads/product/20210216_Hygeia_Kosten.pdf") }}
+      to={{ Routes.static_path(@socket, "/downloads/product/20210217_Hygeia_Datenschutz_Informationssicherheit.pdf") }}
+      class="btn btn-primary btn-lg"
+      opts={{ download: "Hygeia - Datenschutz & Informationssicherheit.pdf" }}
+    >
+      <span class="oi oi-data-transfer-download" aria-hidden="true" />
+      Datenschutz & Informationssicherheit
+    </Link>
+    <Link
+      to={{ Routes.static_path(@socket, "/downloads/product/20210217_Hygeia_Kosten.pdf") }}
       class="btn btn-primary btn-lg"
       opts={{ download: "Hygeia - Kosten.pdf" }}
     >
@@ -28,7 +36,7 @@
       Kosten
     </Link>
     <Link
-      to={{ Routes.static_path(@socket, "/downloads/product/20210216_Hygeia_SLA.pdf") }}
+      to={{ Routes.static_path(@socket, "/downloads/product/20210217_Hygeia_SLA.pdf") }}
       class="btn btn-primary btn-lg"
       opts={{ download: "Hygeia - SLA.pdf" }}
     >
