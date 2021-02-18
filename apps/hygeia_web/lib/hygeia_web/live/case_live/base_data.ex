@@ -48,7 +48,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
         tenants =
           Enum.filter(
             TenantContext.list_tenants(),
-            &authorized?(case, auth_action, get_auth(socket), tenant: &1)
+            &authorized?(case, :create, get_auth(socket), tenant: &1)
           )
 
         supervisor_users = UserContext.list_users_with_role(:supervisor, tenants)
