@@ -16,7 +16,6 @@ defmodule HygeiaCldr.MixProject do
       start_permanent: Mix.env() == :prod,
       build_embedded: Mix.env() == :prod or System.get_env("BUILD_EMBEDDED") in ["1", "true"],
       test_coverage: [tool: ExCoveralls],
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       deps: deps(),
       preferred_cli_env: [
         coveralls: :test,
@@ -46,7 +45,11 @@ defmodule HygeiaCldr.MixProject do
       {:ex_cldr_calendars, "~> 1.10"},
       {:ex_cldr_units, "~> 3.2"},
       {:ex_cldr_languages, "~> 0.2.1"},
-      {:hygeia_gettext, in_umbrella: true},
+      # Removed Gettext Dependency to allow for faster recompilation
+      # Dependendy is not needed since it doesn't integrate directly
+      # {:hygeia_gettext, in_umbrella: true},
+      # Instead we depend on gettext directly
+      {:gettext, "~> 0.11"},
       {:tzdata, "~> 1.0"},
       {:sentry, "~> 8.0"}
     ]
