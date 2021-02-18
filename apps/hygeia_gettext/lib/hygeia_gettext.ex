@@ -20,5 +20,5 @@ defmodule HygeiaGettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :hygeia_gettext, one_module_per_locale: true
+  use Gettext, otp_app: :hygeia_gettext
 end
