@@ -9,7 +9,9 @@ defmodule Hygeia.OrganisationContext.Affiliation do
   import HygeiaGettext
 
   alias Hygeia.CaseContext.Person
+  alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.TenantContext.Tenant
 
   defenum Kind, :affiliation_kind, [
     "employee",
@@ -25,6 +27,9 @@ defmodule Hygeia.OrganisationContext.Affiliation do
           person: Ecto.Schema.belongs_to(Person.t()) | nil,
           organisation_uuid: String.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
+          division_uuid: String.t() | nil,
+          division: Ecto.Schema.belongs_to(Division.t()) | nil,
+          tenant: Ecto.Schema.has_one(Tenant.t()) | nil,
           comment: String.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
@@ -37,6 +42,9 @@ defmodule Hygeia.OrganisationContext.Affiliation do
           person: Ecto.Schema.belongs_to(Person.t()),
           organisation_uuid: String.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
+          division_uuid: String.t() | nil,
+          division: Ecto.Schema.belongs_to(Division.t()) | nil,
+          tenant: Ecto.Schema.has_one(Tenant.t()),
           comment: String.t() | nil,
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
@@ -49,6 +57,8 @@ defmodule Hygeia.OrganisationContext.Affiliation do
 
     belongs_to :person, Person, references: :uuid, foreign_key: :person_uuid
     belongs_to :organisation, Organisation, references: :uuid, foreign_key: :organisation_uuid
+    belongs_to :division, Division, references: :uuid, foreign_key: :division_uuid
+    has_one :tenant, through: [:person, :tenant]
 
     timestamps()
   end
@@ -58,10 +68,19 @@ defmodule Hygeia.OrganisationContext.Affiliation do
   def changeset(affiliation, attrs),
     do:
       affiliation
-      |> cast(attrs, [:uuid, :kind, :kind_other, :person_uuid, :organisation_uuid, :comment])
+      |> cast(attrs, [
+        :uuid,
+        :kind,
+        :kind_other,
+        :person_uuid,
+        :organisation_uuid,
+        :division_uuid,
+        :comment
+      ])
       |> fill_uuid()
       |> assoc_constraint(:person)
       |> assoc_constraint(:organisation)
+      |> assoc_constraint(:division)
       |> validate_kind_other()
       |> validate_organisation_or_comment()
 
@@ -81,5 +100,30 @@ defmodule Hygeia.OrganisationContext.Affiliation do
       :other -> validate_required(changeset, [:kind_other])
       _defined -> put_change(changeset, :kind_other, nil)
     end
+  end
+
+  defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.OrganisationContext.Affiliation
+    alias Hygeia.Repo
+    alias Hygeia.UserContext.User
+
+    @spec preload(resource :: Affiliation.t()) :: Affiliation.t()
+    def preload(resource), do: Repo.preload(resource, tenant: [])
+
+    @spec authorized?(
+            resource :: Affiliation.t(),
+            action :: :list | :versioning | :deleted_versioning,
+            user :: :anonymous | User.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(_affiliation, _action, :anonymous, _meta), do: false
+
+    def authorized?(_division, action, user, _meta)
+        when action in [:list, :versioning, :deleted_versioning],
+        do:
+          Enum.any?(
+            [:viewer, :tracer, :super_user, :supervisor, :admin],
+            &User.has_role?(user, &1, :any)
+          )
   end
 end

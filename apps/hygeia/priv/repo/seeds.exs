@@ -110,6 +110,9 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       notes: "Coole Astronauten"
     })
 
+  {:ok, division_jm_devs} =
+    create_division(organisation_jm, %{title: "Developers", description: "People developing code"})
+
   organisation_kssg = Repo.get_by!(Organisation, name: "Kantonsspital St. Gallen")
 
   {:ok, person_jony} =
@@ -140,7 +143,8 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       affiliations: [
         %{
           kind: :employee,
-          organisation_uuid: organisation_jm.uuid
+          organisation_uuid: organisation_jm.uuid,
+          division_uuid: division_jm_devs.uuid
         }
       ],
       external_references: [
@@ -171,6 +175,12 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         country: "CH"
       },
       birth_date: ~D[1992-03-27],
+      affiliations: [
+        %{
+          kind: :employee,
+          organisation_uuid: organisation_jm.uuid
+        }
+      ],
       contact_methods: [
         %{
           type: :mobile,

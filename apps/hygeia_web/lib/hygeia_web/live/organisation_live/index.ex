@@ -81,8 +81,8 @@ defmodule HygeiaWeb.OrganisationLive.Index do
       end)
       |> Enum.reject(&match?({nil, _value}, &1))
       |> Enum.reject(&match?({_key, nil}, &1))
-      # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
+      # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, ""}, &1))
       |> Enum.reduce(OrganisationContext.list_organisations_query(), fn
         {:country, value}, query ->

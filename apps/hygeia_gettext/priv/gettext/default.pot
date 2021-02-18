@@ -386,10 +386,24 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Address"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
+msgid "Address"
+msgstr ""
+
 msgid "Adress"
 msgstr ""
 
 msgid "Adult salon / prostitution services"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Type"
+msgid "Affiliation"
+msgstr ""
+
+#, elixir-format
+msgid "Affiliations"
 msgstr ""
 
 msgid "Agreed with index that no further contact is necessary"
@@ -573,6 +587,10 @@ msgstr ""
 msgid "Choose country"
 msgstr ""
 
+#, elixir-format
+msgid "Choose division"
+msgstr ""
+
 msgid "Choose existing person"
 msgstr ""
 
@@ -738,6 +756,11 @@ msgctxt "Organisation"
 msgid "Create"
 msgstr ""
 
+#, elixir-format
+msgctxt "Division"
+msgid "Create"
+msgstr ""
+
 msgid "Create Contact Cases"
 msgstr ""
 
@@ -873,6 +896,11 @@ msgstr ""
 msgid "Describe your encounter with %{first_name} %{last_name}."
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
+msgid "Description"
+msgstr ""
+
 msgid "Description of encounter"
 msgstr ""
 
@@ -922,6 +950,45 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Display Name"
+msgstr ""
+
+#, elixir-format
+msgid "Division"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Division"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Type"
+msgid "Division"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Division UUID"
+msgstr ""
+
+#, elixir-format
+msgid "Division created successfully"
+msgstr ""
+
+#, elixir-format
+msgid "Division deleted successfully"
+msgstr ""
+
+#, elixir-format
+msgid "Division updated successfully"
+msgstr ""
+
+#, elixir-format
+msgid "Divisions"
+msgstr ""
+
+#, elixir-format
+msgid "Divisions merged successfully"
 msgstr ""
 
 msgid "Do you know the address where you met with %{first_name} %{last_name}?"
@@ -1397,6 +1464,11 @@ msgctxt "Organisation Merge"
 msgid "Into"
 msgstr ""
 
+#, elixir-format
+msgctxt "Division Merge"
+msgid "Into"
+msgstr ""
+
 msgid "Isolation Confirmation"
 msgstr ""
 
@@ -1573,6 +1645,20 @@ msgctxt "Organisation Merge"
 msgid "Merge"
 msgstr ""
 
+#, elixir-format
+msgctxt "Division"
+msgid "Merge"
+msgstr ""
+
+#, elixir-format
+msgctxt "Division Merge"
+msgid "Merge"
+msgstr ""
+
+#, elixir-format
+msgid "Merge Divisions"
+msgstr ""
+
 msgid "Merge Organisations"
 msgstr ""
 
@@ -1651,6 +1737,14 @@ msgid "Negative"
 msgstr ""
 
 msgid "New Cases"
+msgstr ""
+
+#, elixir-format
+msgid "New Division"
+msgstr ""
+
+#, elixir-format
+msgid "New Division for %{organisation}"
 msgstr ""
 
 msgid "New Email"
@@ -1786,6 +1880,10 @@ msgstr ""
 msgid "No verson entries found"
 msgstr ""
 
+#, elixir-format
+msgid "None"
+msgstr ""
+
 msgctxt "vaccination_done"
 msgid "Not Done"
 msgstr ""
@@ -1846,6 +1944,11 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Organisation"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
+msgid "Organisation"
+msgstr ""
+
 msgid "Organisation Positions"
 msgstr ""
 
@@ -1854,6 +1957,11 @@ msgid "Organisation UUID"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Organisation UUID"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Organisation UUID"
 msgstr ""
 
@@ -2012,10 +2120,20 @@ msgctxt "Item Type"
 msgid "Person"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Person"
+msgstr ""
+
 msgid "Person Base Data"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
+msgid "Person UUID"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person UUID"
 msgstr ""
 
@@ -2403,6 +2521,10 @@ msgstr ""
 msgid "Select Case"
 msgstr ""
 
+#, elixir-format
+msgid "Select Division"
+msgstr ""
+
 msgid "Select Organisation"
 msgstr ""
 
@@ -2513,6 +2635,11 @@ msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Sex"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
+msgid "Shares Address"
 msgstr ""
 
 msgid "Shops / market"
@@ -2675,6 +2802,11 @@ msgctxt "Organisation Merge"
 msgid "Switch"
 msgstr ""
 
+#, elixir-format
+msgctxt "Division Merge"
+msgid "Switch"
+msgstr ""
+
 msgid "Symptoms"
 msgstr ""
 
@@ -2813,6 +2945,11 @@ msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr ""
 
 msgid "Time expenditure"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
+msgid "Title"
 msgstr ""
 
 msgid "To"

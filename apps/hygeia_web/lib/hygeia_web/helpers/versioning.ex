@@ -29,6 +29,8 @@ defmodule HygeiaWeb.Helpers.Versioning do
     Hygeia.CommunicationContext.SMS => "SMS",
     Hygeia.UserContext.User => "User",
     Hygeia.TenantContext.Tenant => "Tenant",
+    Hygeia.OrganisationContext.Affiliation => "Affiliation",
+    Hygeia.OrganisationContext.Division => "Division",
     Hygeia.OrganisationContext.Organisation => "Organisation"
   }
 

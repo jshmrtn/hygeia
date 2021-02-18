@@ -168,10 +168,22 @@ defmodule HygeiaWeb.Helpers.FieldName do
     Hygeia.CommunicationContext.SMS => %{number: "Number", message: "Message", status: "Status"},
     Hygeia.OrganisationContext.Affiliation => %{
       comment: "Comment",
+      division: "Division",
+      division_uuid: "Division UUID",
       kind: "Kind",
       kind_other: "Kind Other",
       organisation: "Organisation",
-      organisation_uuid: "Organisation UUID"
+      organisation_uuid: "Organisation UUID",
+      person: "Person",
+      person_uuid: "Person UUID"
+    },
+    Hygeia.OrganisationContext.Division => %{
+      address: "Address",
+      description: "Description",
+      organisation: "Organisation",
+      organisation_uuid: "Organisation UUID",
+      shares_address: "Shares Address",
+      title: "Title"
     },
     Hygeia.OrganisationContext.Organisation => %{
       address: "Address",

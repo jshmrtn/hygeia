@@ -20,6 +20,12 @@ defmodule HygeiaWeb.Helpers.Organisation do
   def translate_affiliation_kind(:member), do: pgettext("Affiliation Kind", "Member")
   def translate_affiliation_kind(:other), do: pgettext("Affiliation Kind", "Other")
 
+  @spec affilation_kind(affiliation :: Affiliation.t()) :: String.t()
+  def affilation_kind(%Affiliation{kind: :other, kind_other: kind_other}),
+    do: "#{translate_affiliation_kind(:other)} / #{kind_other}"
+
+  def affilation_kind(%Affiliation{kind: kind}), do: translate_affiliation_kind(kind)
+
   @spec organisation_types :: [{String.t(), Organisation.Type.t()}]
   def organisation_types,
     do:

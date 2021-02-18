@@ -127,6 +127,16 @@ defmodule HygeiaWeb.VersionLive.Show do
     """
   end
 
+  def render(%{resource: %Hygeia.OrganisationContext.Division{} = division} = assigns) do
+    ~H"""
+    <div class="component-versioning division container">
+      <HygeiaWeb.DivisionLive.Header division={{ division }} id="header" />
+
+      {{ render_table(assigns) }}
+    </div>
+    """
+  end
+
   def render(%{resource: %Hygeia.OrganisationContext.Organisation{} = organisation} = assigns) do
     ~H"""
     <div class="component-versioning organisation container">

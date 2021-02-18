@@ -1,0 +1,82 @@
+<div class="component-division-index container">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <HygeiaWeb.OrganisationLive.Header organisation={{ @organisation }} id="header" />
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            {{ schema_field_name(:title, Division) }}
+          </th>
+          <th>
+            {{ schema_field_name(:address, Division) }}
+          </th>
+
+          <th />
+        </tr>
+      </thead>
+      <tbody id="divisions">
+        <tr :for={{ division <- @divisions }} id="division-{{ division.uuid }}">
+          <td>
+            {{ division.title }}
+          </td>
+          <td :if={{ division.shares_address }}>
+            {{ format_address(@organisation.address) }}
+          </td>
+          <td :if={{ not division.shares_address }}>
+            {{ format_address(division.address) }}
+          </td>
+
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LiveRedirect
+                to={{ Routes.division_show_path(@socket, :show, division) }}
+                :if={{ authorized?(division, :details, auth) }}
+              >
+                <button class="ml-auto btn btn-sm btn-secondary">
+                  {{ gettext("Show") }}
+                </button>
+              </LiveRedirect>
+              <LiveRedirect
+                to={{ Routes.division_show_path(@socket, :edit, division) }}
+                :if={{ authorized?(division, :update, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-secondary">
+                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
+                </button>
+              </LiveRedirect>
+              <Link
+                to="#"
+                click="delete"
+                opts={{
+                  title: gettext("Delete"),
+                  data: [confirm: gettext("Are you sure?")],
+                  phx_value_id: division.uuid,
+                  class: "delete"
+                }}
+                :if={{ authorized?(division, :delete, auth) }}
+              >
+                <button class="ml-1 btn btn-sm btn-danger">
+                  <span class="oi oi-trash" aria-hidden="true" />
+                </button>
+              </Link>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <HygeiaWeb.Pagination
+      pagination={{ @pagination }}
+      :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }}
+      id="pagination"
+    >
+      <LivePatch
+        class="page-link"
+        to={{ Routes.division_index_path(@socket, :index, @organisation, cursor_direction, cursor) }}
+      >
+        {{ text }}
+      </LivePatch>
+    </HygeiaWeb.Pagination>
+  </Context>
+</div>

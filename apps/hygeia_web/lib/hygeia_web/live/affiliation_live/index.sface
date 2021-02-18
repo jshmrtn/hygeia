@@ -1,0 +1,107 @@
+<div class="component-affiliation-index container">
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <HygeiaWeb.OrganisationLive.Header organisation={{ @organisation }} id="header" />
+
+    <div class="d-flex">
+      <HygeiaWeb.Dropdown
+        class="ml-auto"
+        trigger_class="mt-3"
+        dropdown_class="dropdown-menu-right p-3 filter-dropdown"
+        id="filter-dropdown"
+      >
+        <template slot="trigger">
+          <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="oi oi-cog" aria-hidden="true" />
+            {{ gettext("Filter") }}
+          </button>
+        </template>
+        <template slot="default">
+          <h4>{{ gettext("Filter") }}</h4>
+          <Form
+            for={{ @filters }}
+            change="filter"
+            submit="filter"
+            opts={{ autocomplete: "off", id: "filter-form", as: :filter }}
+          >
+            <div class="form-group">
+              <Field class="form-group" name={{ :division_uuid }}>
+                <HygeiaWeb.FieldLabel schema={{ Affiliation }} />
+                <Select
+                  class="form-control"
+                  opts={{ prompt: gettext("Any") }}
+                  options={{ [{gettext("None"), "none"} | Enum.map(@divisions, &{&1.title, &1.uuid})] }}
+                />
+              </Field>
+            </div>
+          </Form>
+        </template>
+      </HygeiaWeb.Dropdown>
+    </div>
+
+    <table class="table mt-5">
+      <thead>
+        <tr>
+          <th>
+            {{ schema_field_name(:person, Affiliation) }}
+          </th>
+          <th>
+            {{ schema_field_name(:division, Affiliation) }}
+          </th>
+          <th>
+            {{ schema_field_name(:kind, Affiliation) }}
+          </th>
+          <th>
+            {{ schema_field_name(:comment, Affiliation) }}
+          </th>
+        </tr>
+      </thead>
+      <tbody id="affiliations">
+        <tr :for={{ affiliation <- @affiliations }} id="division-{{ affiliation.uuid }}">
+          <td>
+            <LiveRedirect
+              :if={{ authorized?(affiliation.person, :details, auth) }}
+              to={{ Routes.person_base_data_path(@socket, :show, affiliation.person) }}
+            >
+              {{ person_display_name(affiliation.person) }}
+            </LiveRedirect>
+            <span :if={{ not authorized?(affiliation.person, :details, auth) }}>
+              {{ affiliation.person_uuid }}
+            </span>
+          </td>
+          <td :if={{ affiliation.division == nil }} />
+          <td :if={{ affiliation.division != nil }}>
+            <LiveRedirect
+              :if={{ authorized?(affiliation.division, :details, auth) }}
+              to={{ Routes.division_show_path(@socket, :show, affiliation.division) }}
+            >
+              {{ affiliation.division.title }}
+            </LiveRedirect>
+            <span :if={{ not authorized?(affiliation.division, :details, auth) }}>
+              {{ affiliation.division_uuid }}
+            </span>
+          </td>
+          <td>{{ affilation_kind(affiliation) }}</td>
+          <td>
+            {{ case affiliation.comment do
+              nil -> nil
+              comment -> comment |> String.split("\n") |> Enum.intersperse(raw("<br />"))
+            end }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <HygeiaWeb.Pagination
+      pagination={{ @pagination }}
+      :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }}
+      id="pagination"
+    >
+      <LivePatch
+        class="page-link"
+        to={{ Routes.affiliation_index_path(@socket, :index, @organisation, cursor_direction, cursor) }}
+      >
+        {{ text }}
+      </LivePatch>
+    </HygeiaWeb.Pagination>
+  </Context>
+</div>
