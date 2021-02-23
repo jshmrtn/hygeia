@@ -55,7 +55,7 @@ defmodule HygeiaWeb.SystemMessageLiveTest do
 
       assert create_live
              |> form("#system_message-form", system_message: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         create_live
@@ -88,7 +88,7 @@ defmodule HygeiaWeb.SystemMessageLiveTest do
 
       assert show_live
              |> form("#system_message-form", system_message: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       assert html =
                show_live

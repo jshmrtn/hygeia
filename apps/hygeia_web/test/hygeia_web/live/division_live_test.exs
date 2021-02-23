@@ -76,7 +76,7 @@ defmodule HygeiaWeb.DivisionLiveTest do
 
       assert create_live
              |> form("#division-form", division: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         create_live
@@ -107,11 +107,11 @@ defmodule HygeiaWeb.DivisionLiveTest do
 
       assert show_live
              |> form("#division-form", division: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       assert show_live
              |> form("#division-form", division: Map.drop(@update_attrs, [:address]))
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       html =
         show_live

@@ -69,7 +69,7 @@ defmodule HygeiaWeb.OrganisationLiveTest do
 
       assert create_live
              |> form("#organisation-form", organisation: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         create_live
@@ -102,7 +102,7 @@ defmodule HygeiaWeb.OrganisationLiveTest do
 
       assert show_live
              |> form("#organisation-form", organisation: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       html =
         show_live

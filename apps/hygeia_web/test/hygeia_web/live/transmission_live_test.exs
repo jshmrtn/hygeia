@@ -89,7 +89,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
 
       assert create_live
              |> form("#transmission-form", transmission: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       create_live
       |> form("#transmission-form",
@@ -135,7 +135,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
 
       assert show_live
              |> form("#transmission-form", transmission: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       html =
         show_live

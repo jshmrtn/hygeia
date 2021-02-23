@@ -57,7 +57,7 @@ defmodule HygeiaWeb.PersonLiveTest do
 
       assert create_live
              |> form("#person-form", person: Map.put(@invalid_attrs, :tenant_uuid, tenant.uuid))
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _, html} =
         create_live
@@ -84,7 +84,7 @@ defmodule HygeiaWeb.PersonLiveTest do
 
       assert edit_live
              |> form("#person-form", person: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "can&#39;t be blank"
 
       html =
         edit_live
