@@ -74,6 +74,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   * `DATABASE_PORT` (default `5432`) - Database Port
   * `DATABASE_HOST` (default `localhost`) - Database Hostname / IP
   * `DATABASE_POOL_SIZE` (default `10`) - Database Pool Size
+  * `DATABASE_PREPARE` (default `named`) - Database Prepare Statements (`named` / `unnamed`) / https://github.com/elixir-ecto/postgrex#pgbouncer
 * Clustering
   * `RELEASE_NAME` (`optional`) - App Name
   * `KUBERNETES_POD_SELECTOR` (`optional`) - Selector to load Pod List

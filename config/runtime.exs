@@ -15,6 +15,13 @@ database_ssl =
     _falsy -> false
   end
 
+database_prepare =
+  case System.get_env("DATABASE_PREPARE", "named") do
+    "named" -> :named
+    "unnamed" -> :unnamed
+    other -> raise "Invalid value #{inspect(other)} for env DATABASE_PREPARE"
+  end
+
 config :hygeia, Hygeia.Repo,
   ssl: database_ssl,
   backoff_type: :stop,
