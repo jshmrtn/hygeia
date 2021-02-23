@@ -30,7 +30,8 @@ config :hygeia, Hygeia.Repo,
   password: System.get_env("DATABASE_PASSWORD", ""),
   database: System.get_env("DATABASE_NAME", "hygeia_#{config_env()}"),
   hostname: System.get_env("DATABASE_HOST", "localhost"),
-  pool_size: String.to_integer(System.get_env("DATABASE_POOL_SIZE", "10"))
+  pool_size: String.to_integer(System.get_env("DATABASE_POOL_SIZE", "10")),
+  prepare: database_prepare
 
 secret_key_base =
   System.get_env(
