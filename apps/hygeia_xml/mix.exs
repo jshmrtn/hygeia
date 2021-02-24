@@ -15,6 +15,7 @@ defmodule HygeiaXml.MixProject do
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      aliases: aliases(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
@@ -40,6 +41,18 @@ defmodule HygeiaXml.MixProject do
       {:erlsom, "~> 1.5"},
       {:sentry, "~> 8.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+    ]
+  end
+
+  # Aliases are shortcuts or tasks specific to the current project.
+  # For example, to install project dependencies and perform other setup tasks, run:
+  #
+  #     $ mix setup
+  #
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    [
+      setup: []
     ]
   end
 end

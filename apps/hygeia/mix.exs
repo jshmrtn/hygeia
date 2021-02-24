@@ -91,7 +91,7 @@ defmodule Hygeia.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup"],
+      setup: ["ecto.reset"],
       "ecto.setup":
         case Mix.env() do
           :test -> @ecto_setup

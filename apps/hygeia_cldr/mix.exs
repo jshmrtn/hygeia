@@ -17,6 +17,7 @@ defmodule HygeiaCldr.MixProject do
       build_embedded: Mix.env() == :prod or System.get_env("BUILD_EMBEDDED") in ["1", "true"],
       test_coverage: [tool: ExCoveralls],
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      aliases: aliases(),
       deps: deps(),
       preferred_cli_env: [
         coveralls: :test,
@@ -49,6 +50,18 @@ defmodule HygeiaCldr.MixProject do
       {:hygeia_gettext, in_umbrella: true},
       {:tzdata, "~> 1.0"},
       {:sentry, "~> 8.0"}
+    ]
+  end
+
+  # Aliases are shortcuts or tasks specific to the current project.
+  # For example, to install project dependencies and perform other setup tasks, run:
+  #
+  #     $ mix setup
+  #
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    [
+      setup: []
     ]
   end
 end

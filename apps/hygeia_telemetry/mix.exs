@@ -16,6 +16,7 @@ defmodule HygeiaTelemetry.MixProject do
       start_permanent: Mix.env() == :prod,
       build_embedded: Mix.env() == :prod or System.get_env("BUILD_EMBEDDED") in ["1", "true"],
       test_coverage: [tool: ExCoveralls],
+      aliases: aliases(),
       deps: deps(),
       preferred_cli_env: [
         coveralls: :test,
@@ -44,6 +45,18 @@ defmodule HygeiaTelemetry.MixProject do
       {:telemetry_metrics_prometheus, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+    ]
+  end
+
+  # Aliases are shortcuts or tasks specific to the current project.
+  # For example, to install project dependencies and perform other setup tasks, run:
+  #
+  #     $ mix setup
+  #
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    [
+      setup: []
     ]
   end
 end

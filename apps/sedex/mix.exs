@@ -17,6 +17,7 @@ defmodule Sedex.MixProject do
       deps: deps(),
       build_embedded: Mix.env() == :prod or System.get_env("BUILD_EMBEDDED") in ["1", "true"],
       test_coverage: [tool: ExCoveralls],
+      aliases: aliases(),
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
@@ -48,6 +49,18 @@ defmodule Sedex.MixProject do
       {:briefly, "~> 0.3.0", only: [:test]},
       {:sentry, "~> 8.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+    ]
+  end
+
+  # Aliases are shortcuts or tasks specific to the current project.
+  # For example, to install project dependencies and perform other setup tasks, run:
+  #
+  #     $ mix setup
+  #
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    [
+      setup: []
     ]
   end
 end
