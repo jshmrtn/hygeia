@@ -41,30 +41,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"Your isolation period ends tomorrow. If you did not experience any fever or "
-"coughs with sputum, you're allowed to leave isolation.\n"
-"\n"
-"Should you continue to feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_sender}\n"
-msgstr ""
-
-msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"Your quarantine period ends tomorrow. If you do not currently experience any "
-"symptoms, you're allowed to leave quarantine.\n"
-"\n"
-"Should you feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_sender}\n"
-msgstr ""
-
-msgid ""
 "Describe where you met %{first_name} %{last_name} exactly. Choose a type of "
 "place, e.g. for living in the same household choose «own household» and "
 "leave the left field empty. If you met at a restaurant, choose «restaurant, "
@@ -735,7 +711,6 @@ msgstr ""
 msgid "Count"
 msgstr ""
 
-#, elixir-format
 msgid "Countries"
 msgstr ""
 
@@ -792,7 +767,6 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "DKIM"
 msgstr ""
 
-#, elixir-format
 msgid "Daily Statistics"
 msgstr ""
 
@@ -816,6 +790,14 @@ msgid "Date"
 msgstr ""
 
 msgid "Date Format"
+msgstr ""
+
+#, elixir-format, fuzzy
+msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_sender}\n"
+msgstr ""
+
+#, elixir-format, fuzzy
+msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_sender}\n"
 msgstr ""
 
 msgid "Death"
@@ -1856,7 +1838,6 @@ msgstr ""
 msgid "No data to display"
 msgstr ""
 
-#, elixir-format
 msgid "No data to show"
 msgstr ""
 

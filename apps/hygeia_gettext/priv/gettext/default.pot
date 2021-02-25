@@ -39,29 +39,6 @@ msgid ""
 "An unknown error happened during registration. Report this to your webmaster."
 msgstr ""
 
-msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"Your isolation period ends tomorrow. If you did not experience any fever or "
-"coughs with sputum, you're allowed to leave isolation.\n"
-"\n"
-"Should you continue to feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_sender}\n"
-msgstr ""
-
-msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"Your quarantine period ends tomorrow. If you do not currently experience any "
-"symptoms, you're allowed to leave quarantine.\n"
-"\n"
-"Should you feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_sender}\n"
-msgstr ""
 
 msgid ""
 "Describe where you met %{first_name} %{last_name} exactly. Choose a type of "
@@ -815,6 +792,14 @@ msgid "Date"
 msgstr ""
 
 msgid "Date Format"
+msgstr ""
+
+#, elixir-format
+msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_sender}\n"
+msgstr ""
+
+#, elixir-format
+msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_sender}\n"
 msgstr ""
 
 msgid "Death"
