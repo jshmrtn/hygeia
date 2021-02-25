@@ -16,7 +16,6 @@ defmodule HygeiaCldr.MixProject do
       start_permanent: Mix.env() == :prod,
       build_embedded: Mix.env() == :prod or System.get_env("BUILD_EMBEDDED") in ["1", "true"],
       test_coverage: [tool: ExCoveralls],
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       aliases: aliases(),
       deps: deps(),
       preferred_cli_env: [

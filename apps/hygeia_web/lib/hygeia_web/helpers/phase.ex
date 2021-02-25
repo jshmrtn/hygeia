@@ -5,18 +5,9 @@ defmodule HygeiaWeb.Helpers.Phase do
 
   alias Hygeia.CaseContext.Case.Phase
 
-  @spec phase_type_translation(phase_type :: :phase_type) :: :string
-  def phase_type_translation(phase_type) do
-    case phase_type do
-      :index -> gettext("Index")
-      :possible_index -> gettext("Possible index")
-      _default -> phase_type
-    end
-  end
-
   @spec phase_end_reason_translation(
           phase_end_reason :: Phase.Index.EndReason.t() | Phase.PossibleIndex.EndReason.t()
-        ) :: :string
+        ) :: String.t()
   def phase_end_reason_translation(phase_end_reason) do
     case phase_end_reason do
       :healed -> gettext("Healed")

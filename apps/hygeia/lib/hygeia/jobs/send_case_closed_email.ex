@@ -69,35 +69,37 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
   end
 
   @spec text(phase :: Phase.t(), tenant :: Tenant.t()) :: String.t()
-  defp text(%Phase{details: %Phase.Index{}}, tenant),
+  defp text(%Phase{details: %Phase.Index{}} = phase, tenant),
     do:
       gettext(
         """
         Dear Sir / Madam,
 
-        Your isolation period ends tomorrow. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
+        Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
 
         Should you continue to feel ill, please contact your general practitioner.
 
         Kind Regards,
         %{message_sender}
         """,
+        date: HygeiaCldr.Date.to_string!(Date.add(phase.end, 1), format: :full),
         message_sender: Tenant.get_message_sender_text(tenant)
       )
 
-  defp text(%Phase{details: %Phase.PossibleIndex{}}, tenant),
+  defp text(%Phase{details: %Phase.PossibleIndex{}} = phase, tenant),
     do:
       gettext(
         """
         Dear Sir / Madam,
 
-        Your quarantine period ends tomorrow. If you do not currently experience any symptoms, you're allowed to leave quarantine.
+        Your quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.
 
         Should you feel ill, please contact your general practitioner.
 
         Kind Regards,
         %{message_sender}
         """,
+        date: HygeiaCldr.Date.to_string!(Date.add(phase.end, 1), format: :full),
         message_sender: Tenant.get_message_sender_text(tenant)
       )
 
