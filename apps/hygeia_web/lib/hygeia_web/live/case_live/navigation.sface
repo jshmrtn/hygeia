@@ -145,6 +145,7 @@
             :on-click="open_sms_modal"
             phx-value-message={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase, @case.tenant) }}
             :if={{authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
+              not is_nil(phase.end) and
               CaseContext.person_has_mobile_number?(@case.person) and
               TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}}
           >
@@ -158,6 +159,7 @@
             phx-value-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
             phx-value-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase, @case.tenant) }}
             :if={{authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
+              not is_nil(phase.end) and
               CaseContext.person_has_email?(@case.person) and
               TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}}
           >
@@ -216,6 +218,7 @@
             :on-click="open_sms_modal"
             phx-value-message={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase, @case.tenant) }}
             :if={{authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
+              not is_nil(phase.end) and
               CaseContext.person_has_mobile_number?(@case.person) and
               TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}}
           >
@@ -229,6 +232,7 @@
             phx-value-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
             phx-value-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase, @case.tenant) }}
             :if={{authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
+              not is_nil(phase.end) and
               CaseContext.person_has_email?(@case.person) and
               TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}}
           >
