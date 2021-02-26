@@ -72,7 +72,7 @@ defmodule HygeiaWeb.CaseLive.Navigation do
       end)
       |> Kernel.++([%{start: Date.utc_today(), details: %{__type__: :index}}])
 
-    {:ok, case} = CaseContext.update_case(case, %{phases: phase_args})
+    {:ok, case} = CaseContext.update_case(case, %{phases: phase_args, status: :first_contact})
 
     {:noreply,
      socket
