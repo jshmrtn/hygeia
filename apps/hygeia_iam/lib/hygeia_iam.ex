@@ -68,20 +68,13 @@ defmodule HygeiaIam do
   defp client_credential_claims(
          %{audience: audience} = _config,
          %{"userId" => user_id} = _login,
-         %{local_endpoint: local_endpoint, issuer: issuer} = _oidc_config
+         %{issuer: issuer} = _oidc_config
        ) do
-    iss =
-      local_endpoint
-      |> URI.parse()
-      |> Map.put(:path, nil)
-      |> Map.put(:query, nil)
-      |> URI.to_string()
-
     iat = :os.system_time(:seconds)
     exp = iat + 60
 
     Jason.encode(%{
-      "iss" => iss,
+      "iss" => user_id,
       "sub" => user_id,
       "aud" => [issuer | audience],
       "exp" => exp,
