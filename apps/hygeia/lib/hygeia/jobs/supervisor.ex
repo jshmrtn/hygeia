@@ -52,6 +52,10 @@ defmodule Hygeia.Jobs.Supervisor do
          {RefreshMaterializedView,
           view: :statistics_transmission_country_cases_per_day,
           name: RefreshMaterializedView.TransmissionCountryCasesPerDay}},
+        {Highlander,
+         {RefreshMaterializedView,
+          view: :statistics_active_cases_per_day_and_organisation,
+          name: RefreshMaterializedView.ActiveCasesPerDayAndOrganisation}},
 
         # Message Triggers
         {Highlander, Hygeia.Jobs.SendCaseClosedEmail},

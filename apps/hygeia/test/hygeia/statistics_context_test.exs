@@ -5,6 +5,7 @@ defmodule Hygeia.StatisticsContextTest do
   use Hygeia.DataCase
 
   alias Hygeia.StatisticsContext
+  alias Hygeia.StatisticsContext.ActiveCasesPerDayAndOrganisation
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
   alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveInfectionPlaceCasesPerDay
@@ -1314,6 +1315,126 @@ defmodule Hygeia.StatisticsContextTest do
 
         assert length(entries) == 5
       end)
+    end
+  end
+
+  describe "active_cases_per_day_and_organisation" do
+    test "list active cases per day and organisation" do
+      tenant = tenant_fixture()
+      user = user_fixture()
+      organisation1 = organisation_fixture()
+      organisation1_uuid = organisation1.uuid
+      organisation2 = organisation_fixture()
+      organisation2_uuid = organisation2.uuid
+
+      person1 = person_fixture(tenant)
+      affiliation_fixture(person1, organisation1, %{kind: :employee})
+
+      case_fixture(person1, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-13]
+          }
+        ]
+      })
+
+      person2 = person_fixture(tenant)
+      affiliation_fixture(person2, organisation1, %{kind: :employee})
+
+      case_fixture(person2, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-13]
+          }
+        ]
+      })
+
+      person3 = person_fixture(tenant)
+      affiliation_fixture(person3, organisation2, %{kind: :employee})
+
+      case_fixture(person3, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-13]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_cases_per_day_and_organisation)
+
+      assert [
+               %ActiveCasesPerDayAndOrganisation{
+                 count: 2,
+                 date: ~D[2020-10-12],
+                 organisation_uuid: ^organisation1_uuid
+               },
+               %ActiveCasesPerDayAndOrganisation{
+                 count: 1,
+                 date: ~D[2020-10-12],
+                 organisation_uuid: ^organisation2_uuid
+               },
+               %ActiveCasesPerDayAndOrganisation{
+                 count: 2,
+                 date: ~D[2020-10-13],
+                 organisation_uuid: ^organisation1_uuid
+               },
+               %ActiveCasesPerDayAndOrganisation{
+                 count: 1,
+                 date: ~D[2020-10-13],
+                 organisation_uuid: ^organisation2_uuid
+               }
+             ] =
+               StatisticsContext.list_active_cases_per_day_and_organisation(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-14]
+               )
+    end
+
+    test "does not list possible index" do
+      tenant = tenant_fixture()
+      person = person_fixture(tenant)
+      user = user_fixture()
+
+      affiliation_fixture(person, organisation_fixture(), %{kind: :employee})
+
+      case_fixture(person, user, user, %{
+        phases: [
+          %{
+            details: %{
+              __type__: :possible_index,
+              type: :contact_person,
+              end_reason: :asymptomatic
+            },
+            start: ~D[2020-10-12],
+            end: ~D[2020-10-13]
+          }
+        ]
+      })
+
+      execute_materialized_view_refresh(:statistics_active_cases_per_day_and_organisation)
+
+      assert [] =
+               StatisticsContext.list_active_cases_per_day_and_organisation(
+                 tenant,
+                 ~D[2020-10-11],
+                 ~D[2020-10-14]
+               )
     end
   end
 end
