@@ -193,7 +193,7 @@
                 opts={{
                   title: "Delete" |> gettext,
                   data: [confirm: "Are you sure?" |> gettext],
-                  phx_value_id: person.uuid
+                  "phx-value-id": person.uuid
                 }}
                 :if={{ authorized?(person, :delete, auth) }}
               >

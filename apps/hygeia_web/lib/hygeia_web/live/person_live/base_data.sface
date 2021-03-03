@@ -504,7 +504,7 @@
       </HygeiaWeb.Lock>
     </Form>
 
-    <hr :if={{ @person.positions != [] }} class="my-5" />
+    <hr :if={{ @person.positions != [] }} class="my-5">
     <div :if={{ @person.positions != [] }} class="hy-card-grid-2-cols">
       <div class="card">
         <div class="card-body">

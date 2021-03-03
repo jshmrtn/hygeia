@@ -69,7 +69,7 @@ defmodule HygeiaWeb.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.4.1"},
-      {:surface, "~> 0.2 and >= 0.2.1"},
+      {:surface, "~> 0.3"},
       {:surface_formatter, "~> 0.2"},
       {:ecto_psql_extras, "~> 0.4"},
       {:jsone, "~> 1.5", override: true},

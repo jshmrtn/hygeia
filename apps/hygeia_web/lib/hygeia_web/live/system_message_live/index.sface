@@ -50,11 +50,11 @@
               <Link
                 to="#"
                 click="delete"
+                class="delete"
                 opts={{
                   title: gettext("Delete"),
                   data: [confirm: gettext("Are you sure?")],
-                  phx_value_id: system_message.uuid,
-                  class: "delete"
+                  "phx-value-id": system_message.uuid
                 }}
                 :if={{ authorized?(system_message, :delete, auth) }}
               >

@@ -156,7 +156,7 @@
                 opts={{
                   title: gettext("Delete"),
                   data: [confirm: gettext("Are you sure?")],
-                  phx_value_id: transmission.uuid,
+                  "phx-value-id": transmission.uuid,
                   class: "delete"
                 }}
                 :if={{ authorized?(transmission, :delete, auth) }}

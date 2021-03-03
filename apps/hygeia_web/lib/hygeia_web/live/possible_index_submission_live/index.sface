@@ -127,11 +127,11 @@
                   <Link
                     to="#"
                     click="delete"
+                    class="delete"
                     opts={{
                       title: gettext("Delete"),
                       data: [confirm: gettext("Are you sure?")],
-                      phx_value_id: possible_index_submission.uuid,
-                      class: "delete"
+                      "phx-value-id": possible_index_submission.uuid
                     }}
                     :if={{ authorized?(possible_index_submission, :delete, auth) }}
                   >
