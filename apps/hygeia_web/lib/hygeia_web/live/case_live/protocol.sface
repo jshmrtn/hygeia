@@ -62,13 +62,13 @@
                 get={{ __MODULE__, message: message }}
               >
                 <b>{{ schema_field_name(:subject, Hygeia.CommunicationContext.Email) }}:</b>
-                {{ Message.get_header(message, "subject") }}<br />
+                {{ Message.get_header(message, "subject") }}<br>
 
                 <b>{{ schema_field_name(:to, Hygeia.CommunicationContext.Email) }}:</b>
-                {{ format_recipients(Message.get_header(message, "to")) }}<br />
+                {{ format_recipients(Message.get_header(message, "to")) }}<br>
 
                 <b>{{ schema_field_name(:status, Hygeia.CommunicationContext.Email) }}:</b>
-                {{ email_status(entry.status) }}<br />
+                {{ email_status(entry.status) }}<br>
 
                 <details
                   if={{ Message.is_text_part?(message) }}
@@ -76,7 +76,7 @@
                   phx-update="ignore"
                 >
                   <summary class="text-primary">
-                    <b>{{ schema_field_name(:body, Hygeia.CommunicationContext.Email) }}</b><br />
+                    <b>{{ schema_field_name(:body, Hygeia.CommunicationContext.Email) }}</b><br>
                   </summary>
                   <div class="preserve-linebreaks">{{ message.body }}</div>
                 </details>
@@ -84,10 +84,10 @@
             </td>
             <td colspan="2" :if={{ match?(%Hygeia.CommunicationContext.SMS{}, entry) }}>
               <b>{{ schema_field_name(:number, Hygeia.CommunicationContext.SMS) }}:</b>
-              {{ entry.number }}<br />
+              {{ entry.number }}<br>
 
               <b>{{ schema_field_name(:status, Hygeia.CommunicationContext.SMS) }}:</b>
-              {{ sms_status(entry.status) }}<br />
+              {{ sms_status(entry.status) }}<br>
 
               <div class="preserve-linebreaks">{{ entry.message }}</div>
             </td>

@@ -200,7 +200,7 @@
                           <td>
                             {{ Ecto.Changeset.fetch_field!(form.source, :first_name) }}
                             {{ Ecto.Changeset.fetch_field!(form.source, :last_name) }}
-                            <br />
+                            <br>
                           </td>
                         </tr>
                         <tr>
@@ -250,10 +250,10 @@
                           <Context put={{ person: get_person(person_uuid) }} get={{ person: person }}>
                             <table class="candidate-table">
                               <tr>
-                                <td>{{ get_person_name(person) }}<br /></td>
+                                <td>{{ get_person_name(person) }}<br></td>
                               </tr>
                               <tr>
-                                <td>{{ format_date(person.birth_date) }}<br /></td>
+                                <td>{{ format_date(person.birth_date) }}<br></td>
                               </tr>
                               <tr>
                                 <td>{{ get_contact_method(person, :mobile) }}</td>
