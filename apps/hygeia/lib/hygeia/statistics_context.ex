@@ -7,6 +7,7 @@ defmodule Hygeia.StatisticsContext do
 
   import HygeiaGettext
 
+  alias Hygeia.StatisticsContext.ActiveCasesPerDayAndOrganisation
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
   alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveInfectionPlaceCasesPerDay
@@ -827,5 +828,66 @@ defmodule Hygeia.StatisticsContext do
       )
     )
     |> CSV.encode()
+  end
+
+  @doc """
+  Returns the list of active cases per day and organisation.
+
+  ## Examples
+
+      iex> list_active_cases_per_day_and_organisation()
+      [%ActiveCasesPerDayAndOrganisation{}, ...]
+
+  """
+  @spec list_active_cases_per_day_and_organisation :: [ActiveCasesPerDayAndOrganisation.t()]
+  def list_active_cases_per_day_and_organisation,
+    do:
+      Repo.all(
+        from(active_cases_per_day_and_organisation in ActiveCasesPerDayAndOrganisation,
+          order_by: active_cases_per_day_and_organisation.date
+        )
+      )
+
+  @spec list_active_cases_per_day_and_organisation(tenant :: Tenant.t()) :: [
+          ActiveCasesPerDayAndOrganisation.t()
+        ]
+  def list_active_cases_per_day_and_organisation(%Tenant{uuid: tenant_uuid} = _tenant),
+    do:
+      Repo.all(
+        from(active_cases_per_day_and_organisation in ActiveCasesPerDayAndOrganisation,
+          where: active_cases_per_day_and_organisation.tenant_uuid == ^tenant_uuid,
+          order_by: active_cases_per_day_and_organisation.date
+        )
+      )
+
+  @spec list_active_cases_per_day_and_organisation(
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: [ActiveCasesPerDayAndOrganisation.t()]
+  def list_active_cases_per_day_and_organisation(
+        tenant,
+        from,
+        to
+      ),
+      do: Repo.all(list_active_cases_per_day_and_organisation_query(tenant, from, to))
+
+  defp list_active_cases_per_day_and_organisation_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to
+       ) do
+    from(active_cases_per_day_and_organisation in ActiveCasesPerDayAndOrganisation,
+      where:
+        active_cases_per_day_and_organisation.tenant_uuid == ^tenant_uuid and
+          fragment(
+            "? BETWEEN ?::date AND ?::date",
+            active_cases_per_day_and_organisation.date,
+            ^from,
+            ^to
+          ),
+      order_by: active_cases_per_day_and_organisation.date,
+      preload: [:organisation]
+    )
   end
 end

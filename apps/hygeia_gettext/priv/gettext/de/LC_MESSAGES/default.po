@@ -489,7 +489,6 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Address"
 msgstr "Adresse"
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Address"
 msgstr "Adresse"
@@ -500,12 +499,10 @@ msgstr "Adresse"
 msgid "Adult salon / prostitution services"
 msgstr "Erotiksalon / Prostitutionsdienste"
 
-#, elixir-format
 msgctxt "Item Type"
 msgid "Affiliation"
 msgstr "Neue Zugehörigkeit"
 
-#, elixir-format
 msgid "Affiliations"
 msgstr "Zugehörigkeiten"
 
@@ -692,7 +689,6 @@ msgstr "Variation wählen"
 msgid "Choose country"
 msgstr "Land wählen"
 
-#, elixir-format
 msgid "Choose division"
 msgstr "Abteilung / Klasse wählen"
 
@@ -860,7 +856,6 @@ msgctxt "Organisation"
 msgid "Create"
 msgstr "Erstellen"
 
-#, elixir-format
 msgctxt "Division"
 msgid "Create"
 msgstr "Erstellen"
@@ -1040,7 +1035,6 @@ msgstr "Löschen"
 msgid "Describe your encounter with %{first_name} %{last_name}."
 msgstr "Beschreiben Sie Ihre Begegnung mit %{first_name} %{last_name}."
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Description"
 msgstr "Beschreibung"
@@ -1096,42 +1090,33 @@ msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Display Name"
 msgstr "Anzeigename"
 
-#, elixir-format
 msgid "Division"
 msgstr "Abteilung / Klasse"
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division"
 msgstr "Abteilung / Klasse"
 
-#, elixir-format
 msgctxt "Item Type"
 msgid "Division"
 msgstr "Abteilung / Klasse"
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division UUID"
 msgstr "Abteilung / Klasse UUID"
 
-#, elixir-format
 msgid "Division created successfully"
 msgstr "Abteilung / Klasse wurde erfolgreich erstellt"
 
-#, elixir-format
 msgid "Division deleted successfully"
 msgstr "Abteilung / Klasse erfolgreich gelöscht"
 
-#, elixir-format
 msgid "Division updated successfully"
 msgstr "Abteilung / Klasse wurde erfolgreich aktualisiert"
 
-#, elixir-format
 msgid "Divisions"
 msgstr "Abteilungen / Klassen"
 
-#, elixir-format
 msgid "Divisions merged successfully"
 msgstr "Abteilungen / Klassen erfolgreich fusioniert"
 
@@ -1168,7 +1153,6 @@ msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Done"
 msgstr "Erledigt"
 
-#, elixir-format
 msgid "Download CSV"
 msgstr "CSV herunterladen"
 
@@ -1233,7 +1217,6 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Enable Relay"
 msgstr "Relay aktivieren"
 
-#, elixir-format
 msgid "Enable Vision Impaired Mode"
 msgstr "Schlechte-Sicht-Modus aktivieren"
 
@@ -1285,7 +1268,6 @@ msgstr "Eintrag"
 msgid "Events"
 msgstr "Veranstaltungen"
 
-#, elixir-format
 msgid "Export"
 msgstr "Export"
 
@@ -1610,7 +1592,6 @@ msgctxt "Organisation Merge"
 msgid "Into"
 msgstr "Ziel"
 
-#, elixir-format
 msgctxt "Division Merge"
 msgid "Into"
 msgstr "Ziel"
@@ -1623,6 +1604,9 @@ msgstr "Isolationsverordnung"
 
 msgid "Isolation Period End"
 msgstr "Isolationsperiode Ende"
+
+msgid "Isolations Per Organisation"
+msgstr "Indexfälle pro Organisation"
 
 msgid "It's difficult speaking in English. A translator is required"
 msgstr ""
@@ -1793,17 +1777,14 @@ msgctxt "Organisation Merge"
 msgid "Merge"
 msgstr "Fusionieren"
 
-#, elixir-format
 msgctxt "Division"
 msgid "Merge"
 msgstr "Fusionieren"
 
-#, elixir-format
 msgctxt "Division Merge"
 msgid "Merge"
 msgstr "Fusionieren"
 
-#, elixir-format
 msgid "Merge Divisions"
 msgstr "Abteilungen / Klassen fusionisren"
 
@@ -1887,11 +1868,9 @@ msgstr "Negativ"
 msgid "New Cases"
 msgstr "Neue Fälle"
 
-#, elixir-format
 msgid "New Division"
 msgstr "Neue Abteilung / Klasse"
 
-#, elixir-format
 msgid "New Division for %{organisation}"
 msgstr "Neue Abteilung / Klasse für %{organisation}"
 
@@ -1934,7 +1913,6 @@ msgstr "Neue Übertragung"
 msgid "New affiliation"
 msgstr "Neue Zugehörigkeit"
 
-#, elixir-format
 msgid "New cases"
 msgstr "Neue Fälle"
 
@@ -2027,7 +2005,6 @@ msgstr "Keine verwandten Organisationen"
 msgid "No verson entries found"
 msgstr "Es wurden keine Versions-Einträge gefunden"
 
-#, elixir-format
 msgid "None"
 msgstr "Keine"
 
@@ -2063,7 +2040,6 @@ msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Number"
 msgstr "Nummer"
 
-#, elixir-format
 msgid "Occupation / Employment"
 msgstr "Tätigkeiten / Arbeit"
 
@@ -2091,7 +2067,6 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Organisation"
 msgstr "Organisation"
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Organisation"
 msgstr "Organisation"
@@ -2107,7 +2082,6 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Organisation UUID"
 msgstr "Organisation UUID"
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Organisation UUID"
 msgstr "Organisation UUID"
@@ -2266,7 +2240,6 @@ msgctxt "Item Type"
 msgid "Person"
 msgstr "Person"
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person"
 msgstr "Person"
@@ -2278,7 +2251,6 @@ msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Person UUID"
 msgstr "Person UUID"
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person UUID"
 msgstr "Person UUID"
@@ -2668,7 +2640,6 @@ msgstr "Sedex Exporte"
 msgid "Select Case"
 msgstr "Fall auswählen"
 
-#, elixir-format
 msgid "Select Division"
 msgstr "Abteilung / Klasse wählen"
 
@@ -2784,7 +2755,6 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Sex"
 msgstr "Biologisches Geschlecht"
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Shares Address"
 msgstr "Teilt Hauptadresse"
@@ -2883,7 +2853,6 @@ msgstr "Statushilfe"
 msgid "Sub Type"
 msgstr "Untertyp"
 
-#, elixir-format
 msgid "Sub-Type"
 msgstr "Untertyp"
 
@@ -2949,7 +2918,6 @@ msgctxt "Organisation Merge"
 msgid "Switch"
 msgstr "Wechseln"
 
-#, elixir-format
 msgctxt "Division Merge"
 msgid "Switch"
 msgstr "Wechseln"
@@ -3096,7 +3064,6 @@ msgstr ""
 msgid "Time expenditure"
 msgstr "Zeitaufwand"
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Title"
 msgstr "Titel"
@@ -3134,7 +3101,6 @@ msgctxt "Item Type"
 msgid "Transmission"
 msgstr "Übertragung"
 
-#, elixir-format
 msgid "Transmission"
 msgstr "Übertragung"
 
