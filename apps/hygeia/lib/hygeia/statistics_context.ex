@@ -7,6 +7,10 @@ defmodule Hygeia.StatisticsContext do
 
   import HygeiaGettext
 
+  alias Hygeia.CaseContext.Case
+  alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Division
+  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.StatisticsContext.ActiveCasesPerDayAndOrganisation
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
   alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
@@ -829,6 +833,66 @@ defmodule Hygeia.StatisticsContext do
     )
     |> CSV.encode()
   end
+
+  # Export for only "from" day !
+  @spec export(
+          type :: :active_cases_per_day_and_organisation,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:active_cases_per_day_and_organisation, tenant, from, _to) do
+    [[gettext("Organisation"), gettext("Division"), gettext("Type"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(
+          cases_per_day in list_active_cases_per_day_organisation_division_kind_query(
+            tenant,
+            from
+          )
+        )
+      )
+    )
+    |> CSV.encode()
+  end
+
+  defp list_active_cases_per_day_organisation_division_kind_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         date
+       ),
+       do:
+         from(
+           case in Case,
+           join: phase in fragment("UNNEST(?)", case.phases),
+           join: person in assoc(case, :person),
+           join: affiliation in assoc(person, :affiliations),
+           join: organisation in assoc(affiliation, :organisation),
+           left_join: division in assoc(affiliation, :division),
+           where:
+             case.tenant_uuid == ^tenant_uuid and
+               fragment("?->'details'->>'__type__'", phase) == "index" and
+               coalesce(
+                 fragment("(?->>'start')::date", phase),
+                 fragment("?::date", case.inserted_at)
+               ) <= ^date and
+               coalesce(fragment("(?->>'end')::date", phase), fragment("CURRENT_DATE")) >= ^date,
+           group_by: [
+             organisation.uuid,
+             division.uuid,
+             affiliation.kind
+           ],
+           order_by: [
+             organisation.name,
+             division.title,
+             desc: count(person.uuid)
+           ],
+           select: [
+             organisation.name,
+             division.title,
+             affiliation.kind,
+             count(person.uuid)
+           ]
+         )
 
   @doc """
   Returns the list of active cases per day and organisation.
