@@ -16,7 +16,8 @@ defmodule HygeiaWeb.StatisticsController do
     :new_cases_per_day,
     :active_complexity_cases_per_day,
     :active_infection_place_cases_per_day,
-    :transmission_country_cases_per_day
+    :transmission_country_cases_per_day,
+    :active_cases_per_day_and_organisation
   ]
   @string_types Enum.map(@types, &Atom.to_string/1)
 
