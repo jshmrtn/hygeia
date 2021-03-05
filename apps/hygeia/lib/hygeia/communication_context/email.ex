@@ -138,8 +138,11 @@ defmodule Hygeia.CommunicationContext.Email do
           {"text", "plain",
            [
              {"Subject", Changeset.fetch_field!(changeset, :subject)},
-             {"From", "#{from_name} <#{from_email}>"},
-             {"To", "#{to_name} <#{Changeset.fetch_field!(changeset, :recipient)}>"},
+             {"From", :smtp_util.combine_rfc822_addresses([{from_name, from_email}])},
+             {"To",
+              :smtp_util.combine_rfc822_addresses([
+                {to_name, Changeset.fetch_field!(changeset, :recipient)}
+              ])},
              {"Auto-submitted", "yes"},
              {"X-Auto-Response-Suppress", "All"},
              {"Precedence", "auto_reply"},

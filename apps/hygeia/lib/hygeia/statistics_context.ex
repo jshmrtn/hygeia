@@ -8,9 +8,6 @@ defmodule Hygeia.StatisticsContext do
   import HygeiaGettext
 
   alias Hygeia.CaseContext.Case
-  alias Hygeia.OrganisationContext.Affiliation
-  alias Hygeia.OrganisationContext.Division
-  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.StatisticsContext.ActiveCasesPerDayAndOrganisation
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
   alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
