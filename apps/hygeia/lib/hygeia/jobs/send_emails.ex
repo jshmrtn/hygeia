@@ -149,8 +149,10 @@ defmodule Hygeia.Jobs.SendEmails do
         error ->
           Logger.error("""
           Uncaught Error while sending email:
-          #{inspect(error, pretty: true)}
+          #{Exception.format(:error, error, __STACKTRACE__)}
           """)
+
+          Sentry.capture_exception(error, extra: %{email_uuid: email.uuid})
 
           {DateTime.utc_now(), :temporary_failure}
       catch
@@ -160,13 +162,17 @@ defmodule Hygeia.Jobs.SendEmails do
           #{inspect(error, pretty: true)}
           """)
 
+          Sentry.capture_exception(error, extra: %{email_uuid: email.uuid})
+
           {DateTime.utc_now(), :temporary_failure}
 
-        :exit, error ->
+        kind, error when kind in [:exit, :throw] ->
           Logger.error("""
           Uncaught Error while sending email:
-          #{inspect({:exit, error}, pretty: true)}
+          #{Exception.format(kind, error, __STACKTRACE__)}
           """)
+
+          Sentry.capture_exception(error, extra: %{email_uuid: email.uuid})
 
           {DateTime.utc_now(), :temporary_failure}
       end
