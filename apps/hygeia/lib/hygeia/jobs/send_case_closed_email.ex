@@ -68,8 +68,8 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
     GenServer.cast(server, :refresh)
   end
 
-  @spec text(phase :: Phase.t(), tenant :: Tenant.t()) :: String.t()
-  defp text(%Phase{details: %Phase.Index{}} = phase, tenant),
+  @spec text(phase :: Phase.t(), tenant :: Tenant.t(), message_type :: atom) :: String.t()
+  defp text(%Phase{details: %Phase.Index{}} = phase, tenant, message_type),
     do:
       gettext(
         """
@@ -80,13 +80,13 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
         Should you continue to feel ill, please contact your general practitioner.
 
         Kind Regards,
-        %{message_sender}
+        %{message_signature}
         """,
         date: HygeiaCldr.Date.to_string!(Date.add(phase.end, 1), format: :full),
-        message_sender: Tenant.get_message_sender_text(tenant)
+        message_signature: Tenant.get_message_signature_text(tenant, message_type)
       )
 
-  defp text(%Phase{details: %Phase.PossibleIndex{}} = phase, tenant),
+  defp text(%Phase{details: %Phase.PossibleIndex{}} = phase, tenant, message_type),
     do:
       gettext(
         """
@@ -97,10 +97,10 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
         Should you feel ill, please contact your general practitioner.
 
         Kind Regards,
-        %{message_sender}
+        %{message_signature}
         """,
         date: HygeiaCldr.Date.to_string!(Date.add(phase.end, 1), format: :full),
-        message_sender: Tenant.get_message_sender_text(tenant)
+        message_signature: Tenant.get_message_signature_text(tenant, message_type)
       )
 
   @spec email_subject(phase :: Phase.t()) :: String.t()
@@ -111,10 +111,10 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
     do: gettext("Quarantine Period End")
 
   @spec email_body(phase :: Phase.t(), tenant :: Tenant.t()) :: String.t()
-  def email_body(phase, tenant), do: text(phase, tenant)
+  def email_body(phase, tenant), do: text(phase, tenant, :sms)
 
   @spec sms_text(phase :: Phase.t(), tenant :: Tenant.t()) :: String.t()
-  def sms_text(phase, tenant), do: text(phase, tenant)
+  def sms_text(phase, tenant), do: text(phase, tenant, :email)
 
   defp send_emails do
     [] =

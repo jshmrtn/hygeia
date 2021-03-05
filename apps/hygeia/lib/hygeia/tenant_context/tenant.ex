@@ -190,11 +190,20 @@ defmodule Hygeia.TenantContext.Tenant do
     end)
   end
 
-  @spec get_message_sender_text(tenant :: t) :: String.t()
-  def get_message_sender_text(%{template_parameters: %{message_sender: message_sender}}),
-    do: message_sender
+  @spec get_message_signature_text(tenant :: t, message_type :: atom) :: String.t()
+  def get_message_signature_text(
+        %{template_parameters: %{sms_signature: sms_signature}},
+        :sms
+      ),
+      do: sms_signature
 
-  def get_message_sender_text(_tenant), do: ""
+  def get_message_signature_text(
+        %{template_parameters: %{email_signature: email_signature}},
+        :email
+      ),
+      do: email_signature
+
+  def get_message_signature_text(_tenant, _message_type), do: ""
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.TenantContext.Tenant

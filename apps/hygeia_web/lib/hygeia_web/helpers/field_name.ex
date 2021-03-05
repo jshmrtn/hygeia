@@ -237,7 +237,10 @@ defmodule HygeiaWeb.Helpers.FieldName do
       username: "Username"
     },
     Hygeia.TenantContext.Tenant.Websms => %{access_token: "Access Token"},
-    Hygeia.TenantContext.Tenant.TemplateParameters => %{message_sender: "Message Sender"},
+    Hygeia.TenantContext.Tenant.TemplateParameters => %{
+      sms_signature: "SMS Signature",
+      email_signature: "Email Signature"
+    },
     Hygeia.UserContext.User => %{
       display_name: "Display Name",
       email: "Email",

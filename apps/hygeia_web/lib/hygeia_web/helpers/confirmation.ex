@@ -16,7 +16,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
           phase :: Phase.t()
         ) :: String.t()
   def isolation_sms(conn_or_socket, case, phase),
-    do: isolation_email_body(conn_or_socket, case, phase)
+    do: isolation_email_body(conn_or_socket, case, phase, :sms)
 
   @spec isolation_email_subject() :: String.t()
   def isolation_email_subject, do: gettext("Isolation Order")
@@ -24,9 +24,10 @@ defmodule HygeiaWeb.Helpers.Confirmation do
   @spec isolation_email_body(
           conn_or_socket :: Plug.Conn.t() | Phoenix.LiveView.Socket.t(),
           case :: Case.t(),
-          phase :: Phase.t()
+          phase :: Phase.t(),
+          message_type :: atom
         ) :: String.t()
-  def isolation_email_body(conn_or_socket, case, phase) do
+  def isolation_email_body(conn_or_socket, case, phase, message_type) do
     case = Repo.preload(case, :tenant)
 
     gettext(
@@ -38,7 +39,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       You can enter persons you had contact with here: %{possible_index_submission_link}
 
       Kind Regards,
-      %{message_sender}
+      %{message_signature}
       """,
       isolation_confirmation_link:
         TenantContext.replace_base_url(
@@ -52,7 +53,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
           Routes.possible_index_submission_index_url(conn_or_socket, :index, case),
           HygeiaWeb.Endpoint.url()
         ),
-      message_sender: Tenant.get_message_sender_text(case.tenant)
+      message_signature: Tenant.get_message_signature_text(case.tenant, message_type)
     )
   end
 
@@ -62,7 +63,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
           phase :: Phase.t()
         ) :: String.t()
   def quarantine_sms(conn_or_socket, case, phase),
-    do: quarantine_email_body(conn_or_socket, case, phase)
+    do: quarantine_email_body(conn_or_socket, case, phase, :sms)
 
   @spec quarantine_email_subject() :: String.t()
   def quarantine_email_subject, do: gettext("Quarantine Order")
@@ -70,9 +71,10 @@ defmodule HygeiaWeb.Helpers.Confirmation do
   @spec quarantine_email_body(
           conn_or_socket :: Plug.Conn.t() | Phoenix.LiveView.Socket.t(),
           case :: Case.t(),
-          phase :: Phase.t()
+          phase :: Phase.t(),
+          message_type :: atom
         ) :: String.t()
-  def quarantine_email_body(conn_or_socket, case, phase) do
+  def quarantine_email_body(conn_or_socket, case, phase, message_type) do
     case = Repo.preload(case, :tenant)
 
     gettext(
@@ -82,7 +84,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       Details: %{quarantine_confirmation_link}
 
       Kind Regards,
-      %{message_sender}
+      %{message_signature}
       """,
       quarantine_confirmation_link:
         TenantContext.replace_base_url(
@@ -90,7 +92,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
           Routes.pdf_url(conn_or_socket, :quarantine_confirmation, case, phase),
           HygeiaWeb.Endpoint.url()
         ),
-      message_sender: Tenant.get_message_sender_text(case.tenant)
+      message_signature: Tenant.get_message_signature_text(case.tenant, message_type)
     )
   end
 end

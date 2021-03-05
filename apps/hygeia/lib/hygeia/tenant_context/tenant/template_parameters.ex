@@ -8,15 +8,18 @@ defmodule Hygeia.TenantContext.Tenant.TemplateParameters do
   import Ecto.Changeset
 
   @type empty :: %__MODULE__{
-          message_sender: String.t() | nil
+          sms_signature: String.t() | nil,
+          email_signature: String.t() | nil
         }
 
   @type t :: %__MODULE__{
-          message_sender: String.t() | nil
+          sms_signature: String.t() | nil,
+          email_signature: String.t() | nil
         }
 
   embedded_schema do
-    field :message_sender, :string
+    field :sms_signature, :string
+    field :email_signature, :string
   end
 
   @doc false
@@ -26,7 +29,7 @@ defmodule Hygeia.TenantContext.Tenant.TemplateParameters do
         ) :: Changeset.t()
   def changeset(template_parameters, attrs) do
     template_parameters
-    |> cast(attrs, [:message_sender])
+    |> cast(attrs, [:sms_signature, :email_signature])
     |> validate_required([])
   end
 end

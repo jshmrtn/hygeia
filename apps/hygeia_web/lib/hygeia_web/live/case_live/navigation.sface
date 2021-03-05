@@ -131,7 +131,7 @@
             href="#"
             :on-click="open_email_modal"
             phx-value-subject={{ isolation_email_subject() }}
-            phx-value-body={{ isolation_email_body(@socket, @case, phase) }}
+            phx-value-body={{ isolation_email_body(@socket, @case, phase, :email) }}
             :if={{authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
               CaseContext.person_has_email?(@case.person) and
               TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}}
@@ -204,7 +204,7 @@
             href="#"
             :on-click="open_email_modal"
             phx-value-subject={{ quarantine_email_subject() }}
-            phx-value-body={{ quarantine_email_body(@socket, @case, phase) }}
+            phx-value-body={{ quarantine_email_body(@socket, @case, phase, :email) }}
             :if={{authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
               CaseContext.person_has_email?(@case.person) and
               TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}}

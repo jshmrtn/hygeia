@@ -282,7 +282,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           CommunicationContext.create_outgoing_email(
             &1,
             quarantine_email_subject(),
-            quarantine_email_body(socket, &1, phase)
+            quarantine_email_body(socket, &1, phase, :email)
           )
         end)
       )
