@@ -9,9 +9,9 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
   alias Hygeia.Repo
+  alias Hygeia.VersionContext.Version
   alias Mail.Message
   alias Mail.Parsers.RFC2822
-  alias PaperTrail.Version
   alias Surface.Components.Link
 
   @impl Phoenix.LiveView

@@ -1,5 +1,6 @@
 import Hygeia.OrganisationContext
 
+alias Hygeia.Helpers.Versioning
 alias Hygeia.Repo
 
 {:ok, schools} =
@@ -21,7 +22,8 @@ alias Hygeia.Repo
     }
   )
   |> Stream.map(&change_new_organisation/1)
-  |> Enum.reduce(Ecto.Multi.new(), &PaperTrail.Multi.insert(&2, make_ref(), &1))
+  |> Enum.reduce(Ecto.Multi.new(), &Ecto.Multi.insert(&2, make_ref(), &1))
+  |> Versioning.authenticate_multi()
   |> Repo.transaction()
 
 schools |> Map.values() |> Enum.filter(&is_struct(&1, Hygeia.OrganisationContext.Organisation))

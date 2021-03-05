@@ -1,5 +1,6 @@
 import Hygeia.TenantContext
 
+alias Hygeia.Helpers.Versioning
 alias Hygeia.Repo
 
 {:ok, tenant_root} =
@@ -146,7 +147,8 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
       )
     )
   end)
-  |> Enum.reduce(Ecto.Multi.new(), &PaperTrail.Multi.insert(&2, make_ref(), &1))
+  |> Enum.reduce(Ecto.Multi.new(), &Ecto.Multi.insert(&2, make_ref(), &1))
+  |> Versioning.authenticate_multi()
   |> Repo.transaction()
 
 [

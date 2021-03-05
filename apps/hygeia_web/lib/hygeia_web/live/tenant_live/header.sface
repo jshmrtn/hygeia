@@ -42,7 +42,7 @@
       </li>
       <li class="nav-item">
         <UriActiveContext
-          to={{ Routes.version_show_path(@socket, :show, "Tenant", @tenant) }}
+          to={{ Routes.version_show_path(@socket, :show, Tenant.__schema__(:source), @tenant) }}
           :let={{ to: to, active: active }}
         >
           <LiveRedirect to={{ to }} class={{ "nav-link", active: active }}>

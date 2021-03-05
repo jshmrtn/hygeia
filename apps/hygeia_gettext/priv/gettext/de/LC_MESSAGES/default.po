@@ -460,6 +460,10 @@ msgstr "Mind. 3 Punkte müssen erfüllt sein"
 msgid "API"
 msgstr "Schnittstelle"
 
+msgctxt "Versioning Origin"
+msgid "API"
+msgstr "Schnittstelle"
+
 msgid "Accept"
 msgstr "Akzeptieren"
 
@@ -620,6 +624,14 @@ msgctxt "Elixir.PaperTrail.Version Field"
 msgid "Author"
 msgstr "Autor"
 
+msgctxt "Elixir.Hygeia.VersionContext.Version Field"
+msgid "Author"
+msgstr "Autor"
+
+msgid "Automated Case Close Email"
+msgstr "Automatisches Fall-Abschluss-Email"
+
+msgctxt "Versioning Origin"
 msgid "Automated Case Close Email"
 msgstr "Automatisches Fall-Abschluss-Email"
 
@@ -711,6 +723,10 @@ msgid "Cases"
 msgstr "Fälle"
 
 msgctxt "Elixir.PaperTrail.Version Field"
+msgid "Changes"
+msgstr "Änderungen"
+
+msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Changes"
 msgstr "Änderungen"
 
@@ -974,6 +990,10 @@ msgctxt "Protocol Entry"
 msgid "Date"
 msgstr "Datum"
 
+msgctxt "Elixir.Hygeia.VersionContext.Version Field"
+msgid "Date"
+msgstr "Datum"
+
 msgid "Date Format"
 msgstr "Datumsformat"
 
@@ -1205,6 +1225,10 @@ msgctxt "Item Type"
 msgid "Email"
 msgstr "E-Mail"
 
+msgid "Email Sender"
+msgstr "E-Mail-Absender"
+
+msgctxt "Versioning Origin"
 msgid "Email Sender"
 msgstr "E-Mail-Absender"
 
@@ -1833,6 +1857,10 @@ msgstr "Absender"
 msgid "Meta"
 msgstr "Meta"
 
+msgctxt "Versioning Origin"
+msgid "Migration"
+msgstr "Daten-Migration"
+
 msgid "Missing phone number"
 msgstr "Fehlende Telefonnummer"
 
@@ -2144,6 +2172,10 @@ msgid "Origin"
 msgstr "Herkunft"
 
 msgctxt "Elixir.PaperTrail.Version Field"
+msgid "Origin"
+msgstr "Herkunft"
+
+msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Origin"
 msgstr "Herkunft"
 
@@ -2626,6 +2658,10 @@ msgctxt "Item Type"
 msgid "SMS"
 msgstr "SMS"
 
+msgid "SMS Sender"
+msgstr "SMS-Absender"
+
+msgctxt "Versioning Origin"
 msgid "SMS Sender"
 msgstr "SMS-Absender"
 
@@ -3226,6 +3262,10 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Type"
 msgstr "Typ"
 
+msgctxt "Elixir.Hygeia.VersionContext.Version Field"
+msgid "Type"
+msgstr "Typ"
+
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Type Other"
 msgstr "Anderer Typ"
@@ -3278,6 +3318,10 @@ msgstr "Rollen"
 msgid "User Sync"
 msgstr "Benutzersynchronisierung"
 
+msgctxt "Versioning Origin"
+msgid "User Sync"
+msgstr "Benutzersynchronisierung"
+
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Username"
 msgstr "Benutzername"
@@ -3327,6 +3371,10 @@ msgstr ""
 msgid "Web-SMS"
 msgstr "Web-SMS"
 
+msgid "Website"
+msgstr "Webseite"
+
+msgctxt "Versioning Origin"
 msgid "Website"
 msgstr "Webseite"
 
@@ -3394,8 +3442,16 @@ msgstr "PLZ"
 msgid "Zoos, animal parks, gardens"
 msgstr "Zoos, Tierparks, Gärten"
 
+msgctxt "Item Table"
+msgid "affiliations"
+msgstr "Zugehörigkeiten"
+
 msgid "another place"
 msgstr "anderer Ort"
+
+msgctxt "Item Table"
+msgid "cases"
+msgstr "Fälle"
 
 msgid "choose"
 msgstr "Auswählen"
@@ -3410,8 +3466,16 @@ msgstr "Gelöscht"
 msgid "deleted"
 msgstr "Gelöscht"
 
+msgctxt "Item Table"
+msgid "divisions"
+msgstr "Abteilungen / Klassen"
+
 msgid "either organisation or comment must be filled"
 msgstr "Organisation oder Kommentar müssen ausgefüllt werden"
+
+msgctxt "Item Table"
+msgid "emails"
+msgstr "Emails"
 
 msgid "hostname"
 msgstr "Hostname"
@@ -3435,20 +3499,44 @@ msgstr "Eingefügt"
 msgid "negative"
 msgstr "Negativ"
 
+msgctxt "Item Table"
+msgid "notes"
+msgstr "Notizen"
+
 msgid "on \"From\" Day"
 msgstr "am \"Von\" Tag"
+
+msgctxt "Item Table"
+msgid "organisations"
+msgstr "Organisationen"
 
 msgid "password"
 msgstr "Passwort"
 
+msgctxt "Item Table"
+msgid "people"
+msgstr "Personen"
+
 msgid "port"
 msgstr "Port"
+
+msgctxt "Item Table"
+msgid "positions"
+msgstr "Positionen"
 
 msgid "positive"
 msgstr "Positiv"
 
+msgctxt "Item Table"
+msgid "possible_index_submissions"
+msgstr "Möglicher-Index Einsendungen"
+
 msgid "quick"
 msgstr "Schnelltest"
+
+msgctxt "Item Table"
+msgid "sedex_exports"
+msgstr "Sedex Exporte"
 
 msgid "sender email address"
 msgstr "Absender-E-Mail-Adresse"
@@ -3459,6 +3547,62 @@ msgstr "Serologie"
 msgid "server"
 msgstr "Server"
 
+msgctxt "Item Table"
+msgid "sms"
+msgstr "SMS"
+
+msgctxt "Item Table"
+msgid "statistics_active_cases_per_day_and_organisation"
+msgstr "Aktive Fälle / Tag / Organisation"
+
+msgctxt "Item Table"
+msgid "statistics_active_complexity_cases_per_day"
+msgstr "Aktive Fälle / Tag / Komplexität"
+
+msgctxt "Item Table"
+msgid "statistics_active_hospitalization_cases_per_day"
+msgstr "Aktive Hospitalisierungen / Tag"
+
+msgctxt "Item Table"
+msgid "statistics_active_infection_place_cases_per_day"
+msgstr "Aktive Fälle / Infektionsort / Tag"
+
+msgctxt "Item Table"
+msgid "statistics_active_isolation_cases_per_day"
+msgstr "Aktive Isolationen / Tag"
+
+msgctxt "Item Table"
+msgid "statistics_active_quarantine_cases_per_day"
+msgstr "Aktive Quarantänen / Tag"
+
+msgctxt "Item Table"
+msgid "statistics_cumulative_index_case_end_reasons"
+msgstr "Kummulative Index Fälle End Gründe"
+
+msgctxt "Item Table"
+msgid "statistics_cumulative_possible_index_case_end_reasons"
+msgstr "Kummulative Mögliche Index Fälle End Gründe"
+
+msgctxt "Item Table"
+msgid "statistics_new_cases_per_day"
+msgstr "Neue Fälle / Tag"
+
+msgctxt "Item Table"
+msgid "statistics_transmission_country_cases_per_day"
+msgstr "Übertragungen / Land / Tag"
+
+msgctxt "Item Table"
+msgid "system_messages"
+msgstr "Systemnachrichten"
+
+msgctxt "Item Table"
+msgid "tenants"
+msgstr "Mandanten"
+
+msgctxt "Item Table"
+msgid "transmissions"
+msgstr "Übertragungen"
+
 msgid "unknown"
 msgstr "unbekannt"
 
@@ -3466,8 +3610,20 @@ msgctxt "versioning_event"
 msgid "update"
 msgstr "Aktualisiert"
 
+msgctxt "Item Table"
+msgid "user_grants"
+msgstr "Authorisierungen"
+
 msgid "username"
 msgstr "Benutzername"
+
+msgctxt "Item Table"
+msgid "users"
+msgstr "Benutzer"
+
+msgctxt "Item Table"
+msgid "versions"
+msgstr "Versionen"
 
 #. Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj
 msgid "yyyy-mm-dd"

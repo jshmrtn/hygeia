@@ -2368,7 +2368,7 @@ defmodule Hygeia.CaseContext do
 
   @spec list_protocol_entries(case :: Case.t(), limit :: pos_integer()) :: [
           %{
-            version: PaperTrail.Version.t(),
+            version: Hygeia.VersionContext.Version.t(),
             entry: Note.t() | Email.t() | SMS.t(),
             inserted_at: DateTime.t()
           }
@@ -2410,13 +2410,14 @@ defmodule Hygeia.CaseContext do
   defp load_protocol_entries(case, {"sms", ids}),
     do:
       Repo.all(
-        from(version in PaperTrail.Version,
+        from(version in Hygeia.VersionContext.Version,
           join: sms in ^Ecto.assoc(case, :sms),
           on:
-            version.item_id == sms.uuid and version.item_type == "SMS" and
-              version.event == "insert",
+            fragment("(?->>'uuid')::uuid", version.item_pk) == sms.uuid and
+              version.item_table == "sms" and
+              version.event == :insert,
           select: {sms.uuid, {sms, version}},
-          where: version.item_id in ^ids,
+          where: fragment("?->>'uuid'", version.item_pk) in ^ids,
           preload: [:user]
         )
       )
@@ -2424,13 +2425,14 @@ defmodule Hygeia.CaseContext do
   defp load_protocol_entries(case, {"email", ids}),
     do:
       Repo.all(
-        from(version in PaperTrail.Version,
+        from(version in Hygeia.VersionContext.Version,
           join: email in ^Ecto.assoc(case, :emails),
           on:
-            version.item_id == email.uuid and version.item_type == "Email" and
-              version.event == "insert",
+            fragment("(?->>'uuid')::uuid", version.item_pk) == email.uuid and
+              version.item_table == "emails" and
+              version.event == :insert,
           select: {email.uuid, {email, version}},
-          where: version.item_id in ^ids,
+          where: fragment("?->>'uuid'", version.item_pk) in ^ids,
           preload: [:user]
         )
       )
@@ -2438,13 +2440,14 @@ defmodule Hygeia.CaseContext do
   defp load_protocol_entries(case, {"note", ids}),
     do:
       Repo.all(
-        from(version in PaperTrail.Version,
+        from(version in Hygeia.VersionContext.Version,
           join: note in ^Ecto.assoc(case, :notes),
           on:
-            version.item_id == note.uuid and version.item_type == "Note" and
-              version.event == "insert",
+            fragment("(?->>'uuid')::uuid", version.item_pk) == note.uuid and
+              version.item_table == "notes" and
+              version.event == :insert,
           select: {note.uuid, {note, version}},
-          where: version.item_id in ^ids,
+          where: fragment("?->>'uuid'", version.item_pk) in ^ids,
           preload: [:user]
         )
       )

@@ -313,6 +313,11 @@ msgstr ""
 msgid "API"
 msgstr ""
 
+#, elixir-format
+msgctxt "Versioning Origin"
+msgid "API"
+msgstr ""
+
 msgid "Accept"
 msgstr ""
 
@@ -472,6 +477,16 @@ msgctxt "Elixir.PaperTrail.Version Field"
 msgid "Author"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.VersionContext.Version Field"
+msgid "Author"
+msgstr ""
+
+msgid "Automated Case Close Email"
+msgstr ""
+
+#, elixir-format
+msgctxt "Versioning Origin"
 msgid "Automated Case Close Email"
 msgstr ""
 
@@ -563,6 +578,11 @@ msgid "Cases"
 msgstr ""
 
 msgctxt "Elixir.PaperTrail.Version Field"
+msgid "Changes"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Changes"
 msgstr ""
 
@@ -826,6 +846,11 @@ msgctxt "Protocol Entry"
 msgid "Date"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.VersionContext.Version Field"
+msgid "Date"
+msgstr ""
+
 msgid "Date Format"
 msgstr ""
 
@@ -1056,6 +1081,11 @@ msgctxt "Item Type"
 msgid "Email"
 msgstr ""
 
+msgid "Email Sender"
+msgstr ""
+
+#, elixir-format
+msgctxt "Versioning Origin"
 msgid "Email Sender"
 msgstr ""
 
@@ -1682,6 +1712,11 @@ msgstr ""
 msgid "Meta"
 msgstr ""
 
+#, elixir-format
+msgctxt "Versioning Origin"
+msgid "Migration"
+msgstr ""
+
 msgid "Missing phone number"
 msgstr ""
 
@@ -1995,6 +2030,11 @@ msgid "Origin"
 msgstr ""
 
 msgctxt "Elixir.PaperTrail.Version Field"
+msgid "Origin"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Origin"
 msgstr ""
 
@@ -2477,6 +2517,11 @@ msgctxt "Item Type"
 msgid "SMS"
 msgstr ""
 
+msgid "SMS Sender"
+msgstr ""
+
+#, elixir-format
+msgctxt "Versioning Origin"
 msgid "SMS Sender"
 msgstr ""
 
@@ -3075,6 +3120,11 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Type"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.VersionContext.Version Field"
+msgid "Type"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Type Other"
 msgstr ""
@@ -3127,6 +3177,11 @@ msgstr ""
 msgid "User Sync"
 msgstr ""
 
+#, elixir-format
+msgctxt "Versioning Origin"
+msgid "User Sync"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Username"
 msgstr ""
@@ -3173,6 +3228,11 @@ msgstr ""
 msgid "Web-SMS"
 msgstr ""
 
+msgid "Website"
+msgstr ""
+
+#, elixir-format
+msgctxt "Versioning Origin"
 msgid "Website"
 msgstr ""
 
@@ -3238,7 +3298,17 @@ msgstr ""
 msgid "Zoos, animal parks, gardens"
 msgstr ""
 
+#, elixir-format
+msgctxt "Item Table"
+msgid "affiliations"
+msgstr ""
+
 msgid "another place"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "cases"
 msgstr ""
 
 msgid "choose"
@@ -3254,7 +3324,17 @@ msgstr ""
 msgid "deleted"
 msgstr ""
 
+#, elixir-format
+msgctxt "Item Table"
+msgid "divisions"
+msgstr ""
+
 msgid "either organisation or comment must be filled"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "emails"
 msgstr ""
 
 msgid "hostname"
@@ -3280,19 +3360,49 @@ msgid "negative"
 msgstr ""
 
 #, elixir-format
+msgctxt "Item Table"
+msgid "notes"
+msgstr ""
+
+#, elixir-format
 msgid "on \"From\" Day"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "organisations"
 msgstr ""
 
 msgid "password"
 msgstr ""
 
+#, elixir-format
+msgctxt "Item Table"
+msgid "people"
+msgstr ""
+
 msgid "port"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "positions"
 msgstr ""
 
 msgid "positive"
 msgstr ""
 
+#, elixir-format
+msgctxt "Item Table"
+msgid "possible_index_submissions"
+msgstr ""
+
 msgid "quick"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "sedex_exports"
 msgstr ""
 
 msgid "sender email address"
@@ -3304,6 +3414,76 @@ msgstr ""
 msgid "server"
 msgstr ""
 
+#, elixir-format
+msgctxt "Item Table"
+msgid "sms"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "statistics_active_cases_per_day_and_organisation"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "statistics_active_complexity_cases_per_day"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "statistics_active_hospitalization_cases_per_day"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "statistics_active_infection_place_cases_per_day"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "statistics_active_isolation_cases_per_day"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "statistics_active_quarantine_cases_per_day"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "statistics_cumulative_index_case_end_reasons"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "statistics_cumulative_possible_index_case_end_reasons"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "statistics_new_cases_per_day"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "statistics_transmission_country_cases_per_day"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "system_messages"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "tenants"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "transmissions"
+msgstr ""
+
 msgid "unknown"
 msgstr ""
 
@@ -3311,7 +3491,22 @@ msgctxt "versioning_event"
 msgid "update"
 msgstr ""
 
+#, elixir-format
+msgctxt "Item Table"
+msgid "user_grants"
+msgstr ""
+
 msgid "username"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "users"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "versions"
 msgstr ""
 
 #. Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj

@@ -94,13 +94,18 @@ defmodule HygeiaUserSync do
       end)
       |> Map.values()
       |> Enum.reduce(Multi.new(), &merge(elem(&1, 0), elem(&1, 1), &2, tenants))
+      |> Versioning.authenticate_multi()
       |> Repo.transaction()
 
     stats =
       results
       |> Map.keys()
-      |> Enum.reduce(%{insert: 0, update: 0}, fn {type, _sub}, acc ->
-        Map.update!(acc, type, &(&1 + 1))
+      |> Enum.reduce(%{insert: 0, update: 0}, fn
+        :set_versioning_variables, acc ->
+          acc
+
+        {type, _sub}, acc ->
+          Map.update!(acc, type, &(&1 + 1))
       end)
 
     Logger.info("Synced Users with IAM (#{inspect(stats)}")
