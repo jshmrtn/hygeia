@@ -17,7 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 msgid ""
@@ -37,6 +37,30 @@ msgstr ""
 
 msgid ""
 "An unknown error happened during registration. Report this to your webmaster."
+msgstr ""
+
+msgid ""
+"Dear Sir / Madam,\n"
+"\n"
+"Your isolation period ends tomorrow %{date}. If you did not experience any "
+"fever or coughs with sputum, you're allowed to leave isolation.\n"
+"\n"
+"Should you continue to feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
+msgstr ""
+
+msgid ""
+"Dear Sir / Madam,\n"
+"\n"
+"Your quarantine period ends tomorrow %{date}. If you do not currently "
+"experience any symptoms, you're allowed to leave quarantine.\n"
+"\n"
+"Should you feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
 msgstr ""
 
 msgid ""
@@ -221,7 +245,7 @@ msgid ""
 "Details: %{quarantine_confirmation_link}\n"
 "\n"
 "Kind Regards,\n"
-"%{message_sender}\n"
+"%{message_signature}\n"
 msgstr ""
 
 msgid ""
@@ -239,7 +263,7 @@ msgid ""
 "%{possible_index_submission_link}\n"
 "\n"
 "Kind Regards,\n"
-"%{message_sender}\n"
+"%{message_signature}\n"
 msgstr ""
 
 msgid "\"Merge\" and \"Into\" may not be the same"
@@ -362,7 +386,6 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Address"
 msgstr ""
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Address"
 msgstr ""
@@ -373,12 +396,10 @@ msgstr ""
 msgid "Adult salon / prostitution services"
 msgstr ""
 
-#, elixir-format
 msgctxt "Item Type"
 msgid "Affiliation"
 msgstr ""
 
-#, elixir-format
 msgid "Affiliations"
 msgstr ""
 
@@ -563,7 +584,6 @@ msgstr ""
 msgid "Choose country"
 msgstr ""
 
-#, elixir-format
 msgid "Choose division"
 msgstr ""
 
@@ -710,7 +730,6 @@ msgstr ""
 msgid "Count"
 msgstr ""
 
-#, elixir-format
 msgid "Countries"
 msgstr ""
 
@@ -732,7 +751,6 @@ msgctxt "Organisation"
 msgid "Create"
 msgstr ""
 
-#, elixir-format
 msgctxt "Division"
 msgid "Create"
 msgstr ""
@@ -767,7 +785,6 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "DKIM"
 msgstr ""
 
-#, elixir-format
 msgid "Daily Statistics"
 msgstr ""
 
@@ -791,14 +808,6 @@ msgid "Date"
 msgstr ""
 
 msgid "Date Format"
-msgstr ""
-
-#, elixir-format
-msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_sender}\n"
-msgstr ""
-
-#, elixir-format
-msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_sender}\n"
 msgstr ""
 
 msgid "Death"
@@ -880,7 +889,6 @@ msgstr ""
 msgid "Describe your encounter with %{first_name} %{last_name}."
 msgstr ""
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Description"
 msgstr ""
@@ -936,42 +944,33 @@ msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Display Name"
 msgstr ""
 
-#, elixir-format
 msgid "Division"
 msgstr ""
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division"
 msgstr ""
 
-#, elixir-format
 msgctxt "Item Type"
 msgid "Division"
 msgstr ""
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division UUID"
 msgstr ""
 
-#, elixir-format
 msgid "Division created successfully"
 msgstr ""
 
-#, elixir-format
 msgid "Division deleted successfully"
 msgstr ""
 
-#, elixir-format
 msgid "Division updated successfully"
 msgstr ""
 
-#, elixir-format
 msgid "Divisions"
 msgstr ""
 
-#, elixir-format
 msgid "Divisions merged successfully"
 msgstr ""
 
@@ -1006,7 +1005,6 @@ msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Done"
 msgstr ""
 
-#, elixir-format
 msgid "Download CSV"
 msgstr ""
 
@@ -1036,6 +1034,10 @@ msgid "Email"
 msgstr ""
 
 msgid "Email Sender"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.TenantContext.Tenant.TemplateParameters Field"
+msgid "Email Signature"
 msgstr ""
 
 msgid "Email created successfully"
@@ -1071,7 +1073,6 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Enable Relay"
 msgstr ""
 
-#, elixir-format
 msgid "Enable Vision Impaired Mode"
 msgstr ""
 
@@ -1123,7 +1124,6 @@ msgstr ""
 msgid "Events"
 msgstr ""
 
-#, elixir-format
 msgid "Export"
 msgstr ""
 
@@ -1448,7 +1448,6 @@ msgctxt "Organisation Merge"
 msgid "Into"
 msgstr ""
 
-#, elixir-format
 msgctxt "Division Merge"
 msgid "Into"
 msgstr ""
@@ -1635,17 +1634,14 @@ msgctxt "Organisation Merge"
 msgid "Merge"
 msgstr ""
 
-#, elixir-format
 msgctxt "Division"
 msgid "Merge"
 msgstr ""
 
-#, elixir-format
 msgctxt "Division Merge"
 msgid "Merge"
 msgstr ""
 
-#, elixir-format
 msgid "Merge Divisions"
 msgstr ""
 
@@ -1729,11 +1725,9 @@ msgstr ""
 msgid "New Cases"
 msgstr ""
 
-#, elixir-format
 msgid "New Division"
 msgstr ""
 
-#, elixir-format
 msgid "New Division for %{organisation}"
 msgstr ""
 
@@ -1776,7 +1770,6 @@ msgstr ""
 msgid "New affiliation"
 msgstr ""
 
-#, elixir-format
 msgid "New cases"
 msgstr ""
 
@@ -1845,7 +1838,6 @@ msgstr ""
 msgid "No data to display"
 msgstr ""
 
-#, elixir-format
 msgid "No data to show"
 msgstr ""
 
@@ -1870,7 +1862,6 @@ msgstr ""
 msgid "No verson entries found"
 msgstr ""
 
-#, elixir-format
 msgid "None"
 msgstr ""
 
@@ -1906,7 +1897,6 @@ msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Number"
 msgstr ""
 
-#, elixir-format
 msgid "Occupation / Employment"
 msgstr ""
 
@@ -1934,7 +1924,6 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Organisation"
 msgstr ""
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Organisation"
 msgstr ""
@@ -1950,7 +1939,6 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Organisation UUID"
 msgstr ""
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Organisation UUID"
 msgstr ""
@@ -2091,7 +2079,6 @@ msgstr ""
 msgid "People in Quarantine"
 msgstr ""
 
-#, elixir-format
 msgid "Percentage"
 msgstr ""
 
@@ -2110,7 +2097,6 @@ msgctxt "Item Type"
 msgid "Person"
 msgstr ""
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person"
 msgstr ""
@@ -2122,7 +2108,6 @@ msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Person UUID"
 msgstr ""
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person UUID"
 msgstr ""
@@ -2457,6 +2442,10 @@ msgstr ""
 msgid "SMS Sender"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.TenantContext.Tenant.TemplateParameters Field"
+msgid "SMS Signature"
+msgstr ""
+
 msgid "SMS created successfully"
 msgstr ""
 
@@ -2511,7 +2500,6 @@ msgstr ""
 msgid "Select Case"
 msgstr ""
 
-#, elixir-format
 msgid "Select Division"
 msgstr ""
 
@@ -2627,7 +2615,6 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Sex"
 msgstr ""
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Shares Address"
 msgstr ""
@@ -2726,7 +2713,6 @@ msgstr ""
 msgid "Sub Type"
 msgstr ""
 
-#, elixir-format
 msgid "Sub-Type"
 msgstr ""
 
@@ -2792,7 +2778,6 @@ msgctxt "Organisation Merge"
 msgid "Switch"
 msgstr ""
 
-#, elixir-format
 msgctxt "Division Merge"
 msgid "Switch"
 msgstr ""
@@ -2937,7 +2922,6 @@ msgstr ""
 msgid "Time expenditure"
 msgstr ""
 
-#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Title"
 msgstr ""
@@ -2975,7 +2959,6 @@ msgctxt "Item Type"
 msgid "Transmission"
 msgstr ""
 
-#, elixir-format
 msgid "Transmission"
 msgstr ""
 
