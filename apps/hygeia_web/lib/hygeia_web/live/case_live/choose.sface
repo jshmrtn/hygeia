@@ -40,7 +40,7 @@
 
       <div :if={{ Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""] }}>
         <button class="btn btn-secondary" :on-click="open_modal" type="button">
-          {{ gettext("Choose propagator") }}
+          {{ gettext("Choose case") }}
         </button>
 
         <HygeiaWeb.Modal
