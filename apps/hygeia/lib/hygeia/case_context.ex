@@ -1865,7 +1865,7 @@ defmodule Hygeia.CaseContext do
           {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
   def case_phase_automated_email_sent(%Case{phases: phases} = case, %Case.Phase{uuid: phase_uuid}) do
     case
-    |> change_case()
+    |> Ecto.Changeset.change()
     |> Ecto.Changeset.put_embed(
       :phases,
       Enum.map(phases, fn
