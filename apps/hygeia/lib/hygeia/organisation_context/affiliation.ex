@@ -5,20 +5,13 @@ defmodule Hygeia.OrganisationContext.Affiliation do
 
   use Hygeia, :model
 
-  import EctoEnum
   import HygeiaGettext
 
   alias Hygeia.CaseContext.Person
+  alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
-
-  defenum Kind, :affiliation_kind, [
-    "employee",
-    "scholar",
-    "member",
-    "other"
-  ]
 
   @type empty :: %__MODULE__{
           kind: Kind.t() | nil,

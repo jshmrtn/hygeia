@@ -8,6 +8,7 @@ defmodule Hygeia.StatisticsContext do
   import HygeiaGettext
 
   alias Hygeia.CaseContext.Case
+  alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.StatisticsContext.ActiveCasesPerDayAndOrganisation
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
   alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
@@ -841,13 +842,18 @@ defmodule Hygeia.StatisticsContext do
   def export(:active_cases_per_day_and_organisation, tenant, from, _to) do
     [[gettext("Organisation"), gettext("Division"), gettext("Type"), gettext("Count")]]
     |> Stream.concat(
-      Repo.stream(
-        from(
-          cases_per_day in list_active_cases_per_day_organisation_division_kind_query(
-            tenant,
-            from
+      Stream.map(
+        Repo.stream(
+          from(
+            cases_per_day in list_active_cases_per_day_organisation_division_kind_query(
+              tenant,
+              from
+            )
           )
-        )
+        ),
+        fn [organisation, division, affiliation_kind, count] ->
+          [organisation, division, Kind.translate_affiliation_kind(affiliation_kind), count]
+        end
       )
     )
     |> CSV.encode()

@@ -356,7 +356,11 @@
               >
                 <tr :for={{item <-
                   @active_cases_per_day_and_organisation}}>
-                  <td>{{ item.organisation.name }}</td>
+                  <td>{{ if item.organisation == nil do
+                      gettext("unknown")
+                    else
+                      item.organisation.name
+                    end }}</td>
                   <td>{{ item.count }}</td>
                   <td>
                     <progress id="organisationProgress" value="{{ item.count / sum_count }}" max="1">

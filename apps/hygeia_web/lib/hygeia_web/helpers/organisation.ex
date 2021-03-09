@@ -4,27 +4,22 @@ defmodule HygeiaWeb.Helpers.Organisation do
   import HygeiaGettext
 
   alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.OrganisationContext.Organisation
 
-  @spec affiliation_kinds :: [{String.t(), Affiliation.Kind.t()}]
+  @spec affiliation_kinds :: [{String.t(), Kind.t()}]
   def affiliation_kinds,
     do:
       Enum.map(
-        Affiliation.Kind.__enum_map__(),
-        &{translate_affiliation_kind(&1), &1}
+        Kind.__enum_map__(),
+        &{Kind.translate_affiliation_kind(&1), &1}
       )
-
-  @spec translate_affiliation_kind(type :: Affiliation.Kind.t()) :: String.t()
-  def translate_affiliation_kind(:employee), do: pgettext("Affiliation Kind", "Employee")
-  def translate_affiliation_kind(:scholar), do: pgettext("Affiliation Kind", "Scholar")
-  def translate_affiliation_kind(:member), do: pgettext("Affiliation Kind", "Member")
-  def translate_affiliation_kind(:other), do: pgettext("Affiliation Kind", "Other")
 
   @spec affilation_kind(affiliation :: Affiliation.t()) :: String.t()
   def affilation_kind(%Affiliation{kind: :other, kind_other: kind_other}),
-    do: "#{translate_affiliation_kind(:other)} / #{kind_other}"
+    do: "#{Kind.translate_affiliation_kind(:other)} / #{kind_other}"
 
-  def affilation_kind(%Affiliation{kind: kind}), do: translate_affiliation_kind(kind)
+  def affilation_kind(%Affiliation{kind: kind}), do: Kind.translate_affiliation_kind(kind)
 
   @spec organisation_types :: [{String.t(), Organisation.Type.t()}]
   def organisation_types,
