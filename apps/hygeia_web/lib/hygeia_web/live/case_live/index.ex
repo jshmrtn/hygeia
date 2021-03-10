@@ -26,8 +26,15 @@ defmodule HygeiaWeb.CaseLive.Index do
       if authorized?(Case, :list, get_auth(socket), tenant: :any) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases")
 
-        supervisor_users = UserContext.list_users_with_role(:supervisor, :any)
-        tracer_users = UserContext.list_users_with_role(:tracer, :any)
+        supervisor_users = [
+          %{display_name: gettext("Case Administration"), uuid: :user_not_assigned}
+          | UserContext.list_users_with_role(:supervisor, :any)
+        ]
+
+        tracer_users = [
+          %{display_name: gettext("Case Administration"), uuid: :user_not_assigned}
+          | UserContext.list_users_with_role(:tracer, :any)
+        ]
 
         assign(socket,
           page_title: gettext("Cases"),
@@ -130,6 +137,7 @@ defmodule HygeiaWeb.CaseLive.Index do
 
   defp list_cases(socket) do
     {cursor_fields, query} = sort_params(socket)
+    user_not_assigned = Atom.to_string(:user_not_assigned)
 
     %Paginator.Page{entries: entries, metadata: metadata} =
       socket.assigns.filters
@@ -143,6 +151,26 @@ defmodule HygeiaWeb.CaseLive.Index do
       |> Enum.reduce(query, fn
         {_key, value}, query when value in ["", nil] ->
           query
+
+        {:tracer_uuid, [^user_not_assigned]}, query ->
+          where(query, [case], is_nil(field(case, :tracer_uuid)))
+
+        {:tracer_uuid, [^user_not_assigned | value]}, query ->
+          where(
+            query,
+            [case],
+            is_nil(field(case, :tracer_uuid)) or field(case, :tracer_uuid) in ^value
+          )
+
+        {:supervisor_uuid, [^user_not_assigned]}, query ->
+          where(query, [case], is_nil(field(case, :supervisor_uuid)))
+
+        {:supervisor_uuid, [^user_not_assigned | value]}, query ->
+          where(
+            query,
+            [case],
+            is_nil(field(case, :supervisor_uuid)) or field(case, :supervisor_uuid) in ^value
+          )
 
         {key, value}, query when is_list(value) ->
           where(query, [case], field(case, ^key) in ^value)

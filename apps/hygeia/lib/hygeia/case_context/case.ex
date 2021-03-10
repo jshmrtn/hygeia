@@ -78,10 +78,10 @@ defmodule Hygeia.CaseContext.Case do
           person: Ecto.Schema.belongs_to(Person.t()),
           tenant_uuid: String.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
-          tracer_uuid: String.t(),
-          tracer: Ecto.Schema.belongs_to(User.t()),
-          supervisor_uuid: String.t(),
-          supervisor: Ecto.Schema.belongs_to(User.t()),
+          tracer_uuid: String.t() | nil,
+          tracer: Ecto.Schema.belongs_to(User.t()) | nil,
+          supervisor_uuid: String.t() | nil,
+          supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
           related_organisations: Ecto.Schema.many_to_many(Organisation.t()),
           possible_index_submissions: Ecto.Schema.many_to_many(PossibleIndexSubmission.t()),
           emails: Ecto.Schema.has_many(Email.t()),
@@ -151,8 +151,6 @@ defmodule Hygeia.CaseContext.Case do
       :uuid,
       :human_readable_id,
       :status,
-      :tracer_uuid,
-      :supervisor_uuid,
       :tenant_uuid,
       :person_uuid
     ])

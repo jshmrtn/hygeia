@@ -93,22 +93,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       |> drop_multiple_empty_rows()
       |> CreatePersonSchema.detect_duplicates()
 
-    changeset =
-      if Enum.any?(people, &match?(%CreatePersonSchema{tenant_uuid: nil}, &1)) do
-        validate_required(changeset, [:default_tenant_uuid])
-      else
-        changeset
-      end
-
-    changeset =
-      if Enum.any?(people, &match?(%CreatePersonSchema{supervisor_uuid: nil}, &1)) do
-        validate_required(changeset, [:default_supervisor_uuid])
-      else
-        changeset
-      end
-
-    if Enum.any?(people, &match?(%CreatePersonSchema{tracer_uuid: nil}, &1)) do
-      validate_required(changeset, [:default_tracer_uuid])
+    if Enum.any?(people, &match?(%CreatePersonSchema{tenant_uuid: nil}, &1)) do
+      validate_required(changeset, [:default_tenant_uuid])
     else
       changeset
     end
