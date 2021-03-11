@@ -18,7 +18,19 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, socket,
+    temporary_assigns: [
+      active_isolation_cases_per_day: [],
+      active_quarantine_cases_per_day: [],
+      cumulative_index_case_end_reasons: [],
+      cumulative_possible_index_case_end_reasons: [],
+      new_cases_per_day: [],
+      active_hospitalization_cases_per_day: [],
+      active_complexity_cases_per_day: [],
+      active_infection_place_cases_per_day: [],
+      transmission_country_cases_per_day: [],
+      active_cases_per_day_and_organisation: []
+    ]}
   end
 
   @impl Phoenix.LiveView
@@ -106,31 +118,31 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
 
   @impl Phoenix.LiveView
   def handle_event("open_infection_table_modal", _params, socket) do
-    {:noreply, assign(socket, infection_table_modal_open: true)}
+    {:noreply, socket |> assign(infection_table_modal_open: true) |> load_data()}
   end
 
   @impl Phoenix.LiveView
   def handle_event("close_infection_table_modal", _params, socket) do
-    {:noreply, assign(socket, infection_table_modal_open: false)}
+    {:noreply, socket |> assign(infection_table_modal_open: false) |> load_data()}
   end
 
   @impl Phoenix.LiveView
   def handle_event("open_country_table_modal", _params, socket) do
-    {:noreply, assign(socket, country_table_modal_open: true)}
+    {:noreply, socket |> assign(country_table_modal_open: true) |> load_data()}
   end
 
   @impl Phoenix.LiveView
   def handle_event("close_country_table_modal", _params, socket) do
-    {:noreply, assign(socket, country_table_modal_open: false)}
+    {:noreply, socket |> assign(country_table_modal_open: false) |> load_data()}
   end
 
   @impl Phoenix.LiveView
   def handle_event("open_organisation_table_modal", _params, socket) do
-    {:noreply, assign(socket, organisation_table_modal_open: true)}
+    {:noreply, socket |> assign(organisation_table_modal_open: true) |> load_data()}
   end
 
   @impl Phoenix.LiveView
   def handle_event("close_organisation_table_modal", _params, socket) do
-    {:noreply, assign(socket, organisation_table_modal_open: false)}
+    {:noreply, socket |> assign(organisation_table_modal_open: false) |> load_data()}
   end
 end
