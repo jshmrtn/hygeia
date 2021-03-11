@@ -1,0 +1,45 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">{{ gettext("Place") }}</th>
+      <th scope="col">{{ gettext("Count") }}</th>
+      <th scope="col">{{ gettext("Percentage") }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <Context
+      put={{ sum_count: Enum.reduce(@active_infection_place_cases_per_day, 0, &(&1.count + &2)) }}
+      get={{ sum_count: sum_count }}
+    >
+      <tr :for={{item <-
+        Enum.map(
+          Enum.take(
+            @active_infection_place_cases_per_day,
+            @count || length(@active_infection_place_cases_per_day)
+          ),
+          fn
+            %{count: count, infection_place_type: nil} ->
+              %{count: count, infection_place_type: gettext("unknown")}
+      
+            %{count: count, infection_place_type: infection_place_type} ->
+              %{
+                count: count,
+                infection_place_type: translate_infection_place_type(infection_place_type)
+              }
+          end
+        )}}>
+        <td>{{ item.infection_place_type }}</td>
+        <td>{{ item.count }}</td>
+        <td>
+          <progress id="placeProgress" value="{{ item.count / sum_count }}" max="1">
+            {{ HygeiaCldr.Number.to_string!(item.count / sum_count, format: :percent) }}
+          </progress>
+        </td>
+      </tr>
+
+      <tr :if={{ @active_infection_place_cases_per_day == [] }}>
+        <td colspan=3>{{ gettext("No data to show") }}</td>
+      </tr>
+    </Context>
+  </tbody>
+</table>
