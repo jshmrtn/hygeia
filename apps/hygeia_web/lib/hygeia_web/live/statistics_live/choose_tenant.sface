@@ -3,13 +3,18 @@
     {{ gettext("Choose Tenant") }}
   </h1>
 
-  <ul>
-    <li :for={{ tenant <- @tenants }}>
-      {{ tenant.name }}
+  <ul class="pl-0 mt-4 col-12 col-lg-8">
+    <li class="card mt-2" :for={{ tenant <- @tenants }}>
+      <div class="card-body d-flex align-items-center justify-content-between">
+        <h6 class="mb-0">{{ tenant.name }}</h6>
 
-      <LiveRedirect to={{ Routes.statistics_timeline_path(@socket, :show, tenant) }}>
-        {{ gettext("Show Statistics") }}
-      </LiveRedirect>
+        <LiveRedirect
+          class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+          to={{ Routes.statistics_timeline_path(@socket, :show, tenant) }}
+        >
+          {{ gettext("Show Statistics") }}
+        </LiveRedirect>
+      </div>
     </li>
   </ul>
 

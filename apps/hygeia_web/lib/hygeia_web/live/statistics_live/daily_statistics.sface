@@ -260,121 +260,67 @@
           </div>
         </div>
         <div class={{ "col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_infection_place_cases_per_day == [] }}>
-          <h5 class="mb-2">{{ gettext("Infection Place") }}</h5>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">{{ gettext("Place") }}</th>
-                <th scope="col">{{ gettext("Count") }}</th>
-                <th scope="col">{{ gettext("Percentage") }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <Context
-                put={{ sum_count: Enum.reduce(@active_infection_place_cases_per_day, 0, &(&1.count + &2)) }}
-                get={{ sum_count: sum_count }}
-              >
-                <tr :for={{item <-
-                  Enum.map(@active_infection_place_cases_per_day, fn
-                    %{count: count, infection_place_type: nil} ->
-                      %{count: count, infection_place_type: gettext("unknown")}
-                
-                    %{count: count, infection_place_type: infection_place_type} ->
-                      %{count: count, infection_place_type: translate_infection_place_type(infection_place_type)}
-                  end)}}>
-                  <td>{{ item.infection_place_type }}</td>
-                  <td>{{ item.count }}</td>
-                  <td>
-                    <progress id="placeProgress" value="{{ item.count / sum_count }}" max="1">
-                      {{ HygeiaCldr.Number.to_string!(item.count / sum_count, format: :percent) }}
-                    </progress>
-                  </td>
-                </tr>
-
-                <tr :if={{ @active_infection_place_cases_per_day == [] }}>
-                  <td colspan=3>{{ gettext("No data to show") }}</td>
-                </tr>
-              </Context>
-            </tbody>
-          </table>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="mb-0">{{ gettext("Infection Place") }}</h5>
+            <button class="btn btn-sm btn-secondary" :on-click="open_infection_table_modal" type="button">
+              {{ gettext("Show all") }}
+            </button>
+          </div>
+          <HygeiaWeb.StatisticsLive.InfectionPlaceTable
+            count=5
+            active_infection_place_cases_per_day={{ @active_infection_place_cases_per_day }}
+          />
+          <HygeiaWeb.Modal
+            id={{ :infection_place_table_modal }}
+            :if={{ @infection_table_modal_open }}
+            title={{ gettext("Infection Place") }}
+            close="close_infection_table_modal"
+          >
+            <HygeiaWeb.StatisticsLive.InfectionPlaceTable active_infection_place_cases_per_day={{ @active_infection_place_cases_per_day }} />
+          </HygeiaWeb.Modal>
         </div>
       </div>
 
       <div class="row mt-5">
         <div class={{ "col-12 col-xl-6 h-full", empty: @transmission_country_cases_per_day == [] }}>
-          <h5 class="mb-2">{{ gettext("Countries") }}</h5>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">{{ gettext("Country") }}</th>
-                <th scope="col">{{ gettext("Count") }}</th>
-                <th scope="col">{{ gettext("Percentage") }}</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <Context
-                put={{ sum_count: Enum.reduce(@transmission_country_cases_per_day, 0, &(&1.count + &2)) }}
-                get={{ sum_count: sum_count }}
-              >
-                <tr :for={{item <-
-                  @transmission_country_cases_per_day
-                  |> Enum.map(fn
-                    %{count: count, country: nil} -> %{count: count, country: gettext("unknown")}
-                    %{count: count, country: country} -> %{count: count, country: country_name(country)}
-                  end)}}>
-                  <td>{{ item.country }}</td>
-                  <td>{{ item.count }}</td>
-                  <td>
-                    <progress id="countryProgress" value="{{ item.count / sum_count }}" max="1">
-                      {{ HygeiaCldr.Number.to_string!(item.count / sum_count, format: :percent) }}
-                    </progress>
-                  </td>
-                </tr>
-
-                <tr :if={{ @transmission_country_cases_per_day == [] }}>
-                  <td colspan=3>{{ gettext("No data to show") }}</td>
-                </tr>
-              </Context>
-            </tbody>
-          </table>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="mb-2">{{ gettext("Countries") }}</h5>
+            <button class="btn btn-sm btn-secondary" :on-click="open_country_table_modal" type="button">
+              {{ gettext("Show all") }}
+            </button>
+          </div>
+          <HygeiaWeb.StatisticsLive.CountryTable
+            count=5
+            transmission_country_cases_per_day={{ @transmission_country_cases_per_day }}
+          />
+          <HygeiaWeb.Modal
+            id={{ :country_table_modal }}
+            :if={{ @country_table_modal_open }}
+            title={{ gettext("Countries") }}
+            close="close_country_table_modal"
+          >
+            <HygeiaWeb.StatisticsLive.CountryTable transmission_country_cases_per_day={{ @transmission_country_cases_per_day }} />
+          </HygeiaWeb.Modal>
         </div>
         <div class={{ "col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_cases_per_day_and_organisation == [] }}>
-          <h5 class="mb-2">{{ gettext("Isolations Per Organisation") }}</h5>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">{{ gettext("Organisation") }}</th>
-                <th scope="col">{{ gettext("Count") }}</th>
-                <th scope="col">{{ gettext("Percentage") }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <Context
-                put={{ sum_count: Enum.reduce(@active_cases_per_day_and_organisation, 0, &(&1.count + &2)) }}
-                get={{ sum_count: sum_count }}
-              >
-                <tr :for={{item <-
-                  @active_cases_per_day_and_organisation}}>
-                  <td>{{ if item.organisation == nil do
-                      gettext("unknown")
-                    else
-                      item.organisation.name
-                    end }}</td>
-                  <td>{{ item.count }}</td>
-                  <td>
-                    <progress id="organisationProgress" value="{{ item.count / sum_count }}" max="1">
-                      {{ HygeiaCldr.Number.to_string!(item.count / sum_count, format: :percent) }}
-                    </progress>
-                  </td>
-                </tr>
-
-                <tr :if={{ @active_cases_per_day_and_organisation == [] }}>
-                  <td colspan=3>{{ gettext("No data to show") }}</td>
-                </tr>
-              </Context>
-            </tbody>
-          </table>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="mb-2">{{ gettext("Isolations Per Organisation") }}</h5>
+            <button class="btn btn-sm btn-secondary" :on-click="open_organisation_table_modal" type="button">
+              {{ gettext("Show all") }}
+            </button>
+          </div>
+          <HygeiaWeb.StatisticsLive.OrganisationTable
+            count=5
+            active_cases_per_day_and_organisation={{ @active_cases_per_day_and_organisation }}
+          />
+          <HygeiaWeb.Modal
+            id={{ :organisation_table_modal }}
+            :if={{ @organisation_table_modal_open }}
+            title={{ gettext("Isolations Per Organisation") }}
+            close="close_organisation_table_modal"
+          >
+            <HygeiaWeb.StatisticsLive.OrganisationTable active_cases_per_day_and_organisation={{ @active_cases_per_day_and_organisation }} />
+          </HygeiaWeb.Modal>
         </div>
       </div>
     </div>
