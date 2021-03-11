@@ -18,7 +18,6 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
-    # TODO: temporary assigns?
     {:ok, socket}
   end
 
