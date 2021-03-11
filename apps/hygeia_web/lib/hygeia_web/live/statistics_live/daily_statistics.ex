@@ -19,18 +19,18 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     {:ok, socket,
-    temporary_assigns: [
-      active_isolation_cases_per_day: [],
-      active_quarantine_cases_per_day: [],
-      cumulative_index_case_end_reasons: [],
-      cumulative_possible_index_case_end_reasons: [],
-      new_cases_per_day: [],
-      active_hospitalization_cases_per_day: [],
-      active_complexity_cases_per_day: [],
-      active_infection_place_cases_per_day: [],
-      transmission_country_cases_per_day: [],
-      active_cases_per_day_and_organisation: []
-    ]}
+     temporary_assigns: [
+       active_isolation_cases_per_day: [],
+       active_quarantine_cases_per_day: [],
+       cumulative_index_case_end_reasons: [],
+       cumulative_possible_index_case_end_reasons: [],
+       new_cases_per_day: [],
+       active_hospitalization_cases_per_day: [],
+       active_complexity_cases_per_day: [],
+       active_infection_place_cases_per_day: [],
+       transmission_country_cases_per_day: [],
+       active_cases_per_day_and_organisation: []
+     ]}
   end
 
   @impl Phoenix.LiveView
