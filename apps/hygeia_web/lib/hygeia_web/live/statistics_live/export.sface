@@ -18,15 +18,13 @@
         </div>
       </Form>
     </div>
-
-    <div class="row mt-3">
-      <div class="col-12 col-xl-6 text-center h-full">
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("People in Isolation") }}</strong></p>
-        </div>
-        <div class="text-center">
-          <p class="w-100">
+    <div class="row mt-4">
+      <div class="col-12 col-xl-6 h-full mt-2">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ gettext("People in Isolation") }}</h6>
             <Link
+              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
               to={{Routes.statistics_path(
                 @socket,
                 :export,
@@ -37,17 +35,16 @@
               )}}
               opts={{ download: "active_isolation_cases_per_day_#{@tenant.name}_#{@from}_#{@to}.csv" }}
             >{{ gettext("Download CSV") }}</Link>
-          </p>
+          </div>
         </div>
       </div>
 
-      <div class="col-12 col-xl-6 text-center h-full">
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("Finished Isolations") }}</strong></p>
-        </div>
-        <div class="text-center">
-          <p class="w-100">
+      <div class="col-12 col-xl-6 h-full mt-2">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ gettext("Finished Isolations") }}</h6>
             <Link
+              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
               to={{Routes.statistics_path(
                 @socket,
                 :export,
@@ -58,19 +55,18 @@
               )}}
               opts={{ download: "cumulative_index_case_end_reasons_#{@tenant.name}_#{@from}_#{@to}.csv" }}
             >{{ gettext("Download CSV") }}</Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class="col-12 col-xl-6 text-center h-full">
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("People in Quarantine") }}</strong></p>
-        </div>
-        <div class="text-center">
-          <p class="w-100">
+    <div class="row">
+      <div class="col-12 col-xl-6 h-full mt-2">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ gettext("People in Quarantine") }}</h6>
             <Link
+              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
               to={{Routes.statistics_path(
                 @socket,
                 :export,
@@ -81,17 +77,16 @@
               )}}
               opts={{ download: "active_quarantine_cases_per_day#{@tenant.name}_#{@from}_#{@to}.csv" }}
             >{{ gettext("Download CSV") }}</Link>
-          </p>
+          </div>
         </div>
       </div>
 
-      <div class="col-12 col-xl-6 text-center h-full">
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("Quarantine End Reasons") }}</strong></p>
-        </div>
-        <div class="text-center">
-          <p class="w-100">
+      <div class="col-12 col-xl-6 h-full mt-2">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ gettext("Quarantine End Reasons") }}</h6>
             <Link
+              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
               to={{Routes.statistics_path(
                 @socket,
                 :export,
@@ -102,19 +97,18 @@
               )}}
               opts={{ download: "cumulative_possible_index_case_end_reasons#{@tenant.name}_#{@from}_#{@to}.csv" }}
             >{{ gettext("Download CSV") }}</Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class="col-12 col-xl-6 text-center h-full">
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("New Cases") }}</strong></p>
-        </div>
-        <div class="text-center">
-          <p class="w-100">
+    <div class="row">
+      <div class="col-12 col-xl-6 h-full mt-2">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ gettext("New Cases") }}</h6>
             <Link
+              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
               to={{Routes.statistics_path(
                 @socket,
                 :export,
@@ -125,17 +119,16 @@
               )}}
               opts={{ download: "new_cases_per_day#{@tenant.name}_#{@from}_#{@to}.csv" }}
             >{{ gettext("Download CSV") }}</Link>
-          </p>
+          </div>
         </div>
       </div>
 
-      <div class="col-12 col-xl-6 text-center h-full">
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("People in Hospital") }}</strong></p>
-        </div>
-        <div class="text-center">
-          <p class="w-100">
+      <div class="col-12 col-xl-6 h-full mt-2">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ gettext("People in Hospital") }}</h6>
             <Link
+              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
               to={{Routes.statistics_path(
                 @socket,
                 :export,
@@ -146,19 +139,18 @@
               )}}
               opts={{ download: "active_hospitalization_cases_per_day#{@tenant.name}_#{@from}_#{@to}.csv" }}
             >{{ gettext("Download CSV") }}</Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class="col-12 col-xl-6 text-center h-full">
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("Complexity") }}</strong></p>
-        </div>
-        <div class="text-center">
-          <p class="w-100">
+    <div class="row">
+      <div class="col-12 col-xl-6 h-full mt-2">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ gettext("Complexity") }}</h6>
             <Link
+              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
               to={{Routes.statistics_path(
                 @socket,
                 :export,
@@ -169,17 +161,16 @@
               )}}
               opts={{ download: "active_complexity_cases_per_day#{@tenant.name}_#{@from}_#{@to}.csv" }}
             >{{ gettext("Download CSV") }}</Link>
-          </p>
+          </div>
         </div>
       </div>
 
-      <div class="col-12 col-xl-6 text-center h-full">
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("Infection Place") }}</strong></p>
-        </div>
-        <div class="text-center">
-          <p class="w-100">
+      <div class="col-12 col-xl-6 h-full mt-2">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ gettext("Infection Place") }}</h6>
             <Link
+              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
               to={{Routes.statistics_path(
                 @socket,
                 :export,
@@ -190,17 +181,16 @@
               )}}
               opts={{ download: "active_infection_place_cases_per_day#{@tenant.name}_#{@from}_#{@to}.csv" }}
             >{{ gettext("Download CSV") }}</Link>
-          </p>
+          </div>
         </div>
       </div>
 
-      <div class="col-12 col-xl-6 text-center h-full">
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("Countries") }}</strong></p>
-        </div>
-        <div class="text-center">
-          <p class="w-100">
+      <div class="col-12 col-xl-6 h-full mt-2">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ gettext("Countries") }}</h6>
             <Link
+              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
               to={{Routes.statistics_path(
                 @socket,
                 :export,
@@ -211,19 +201,18 @@
               )}}
               opts={{ download: "transmission_country_cases_per_day#{@tenant.name}_#{@from}_#{@to}.csv" }}
             >{{ gettext("Download CSV") }}</Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class="col-12 col-xl-6 text-center h-full">
-        <div class="text-center">
-          <p class="small"><strong>{{ gettext("Isolations Per Organisation (Daily Statistics on \"From\" Day)") }}</strong></p>
-        </div>
-        <div class="text-center">
-          <p class="w-100">
+    <div class="row">
+      <div class="col-12 col-xl-6 h-full mt-2">
+        <div class="card">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ gettext("Isolations Per Organisation (Daily Statistics on \"From\" Day)") }}</h6>
             <Link
+              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
               to={{Routes.statistics_path(
                 @socket,
                 :export,
@@ -234,7 +223,7 @@
               )}}
               opts={{ download: "active_cases_per_day_and_organisation_#{@tenant.name}_#{@from}_#{@to}.csv" }}
             >{{ gettext("Download CSV") }}</Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>
