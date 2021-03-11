@@ -7,8 +7,8 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
-    "@sentry/browser": "^6.2.1",
-    "@sentry/tracing": "^6.2.1",
+    "@sentry/browser": "^6.2.2",
+    "@sentry/tracing": "^6.2.2",
     "bootstrap": "^4.6.0",
     "bootstrap.native": "^3.0.14",
     "chart.js": "^2.9.4",
@@ -19,11 +19,11 @@
     "phoenix_live_view": "file:../../../deps/phoenix_live_view"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.8",
-    "@babel/preset-env": "^7.13.9",
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
     "babel-loader": "^8.2.2",
-    "copy-webpack-plugin": "^7.0.0",
-    "css-loader": "^5.1.1",
+    "copy-webpack-plugin": "^8.0.0",
+    "css-loader": "^5.1.2",
     "css-minimizer-webpack-plugin": "^1.2.0",
     "file-loader": "^6.2.0",
     "hard-source-webpack-plugin": "^0.13.1",
@@ -32,7 +32,7 @@
     "node-sass-glob-importer": "^5.3.2",
     "sass-loader": "^11.0.1",
     "terser-webpack-plugin": "^5.1.1",
-    "webpack": "5.24.2",
+    "webpack": "5.24.4",
     "webpack-cli": "^4.5.0"
   }
 }

@@ -63,7 +63,7 @@ defmodule Hygeia.MixProject do
       # - https://github.com/izelnakri/paper_trail/pull/131
       {:paper_trail, github: "jshmrtn/paper_trail", branch: "dev"},
       {:ecto_enum, "~> 1.4"},
-      {:cadastre, "~> 0.1.4"},
+      {:cadastre, "~> 0.2.0"},
       {:human_readable_identifier_generator, "~> 1.0"},
       {:polymorphic_embed, "~> 1.3"},
       {:ex_phone_number, "~> 0.2"},
