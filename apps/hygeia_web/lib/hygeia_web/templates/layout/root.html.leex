@@ -43,16 +43,6 @@
     %>" />
   </head>
   <body class="layout-root">
-    <div class="system-messages">
-      <%= for msg <- Hygeia.SystemMessageContext.list_active_system_messages(get_auth(@conn)) do %>
-        <div class="alert alert-info m-0 d-flex align-items-center rounded-0">
-          <h5 class="oi oi-info mb-0 mr-4" aria-hidden="true"></h5>
-          <div class="">
-            <%= raw(Earmark.as_html!(msg)) %>
-          </div>
-        </div>
-      <% end %>
-    </div>
     <%= @inner_content %>
   </body>
 </html>

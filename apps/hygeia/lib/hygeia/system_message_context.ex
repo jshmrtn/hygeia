@@ -130,12 +130,12 @@ defmodule Hygeia.SystemMessageContext do
 
     if :ets.whereis(ets_table_name) != :undefined do
       MapSet.to_list(
-        for {_uuid, msg, roles, tenants} <- :ets.tab2list(ets_table_name),
+        for {uuid, msg, roles, tenants} <- :ets.tab2list(ets_table_name),
             tenant_uuid <- tenants,
             role <- roles,
             User.has_role?(user, role, tenant_uuid),
             into: MapSet.new(),
-            do: msg
+            do: {uuid, msg}
       )
     end
   end

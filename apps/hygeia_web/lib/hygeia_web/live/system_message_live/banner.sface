@@ -1,0 +1,13 @@
+<div class="system-messages" phx-hook="HideAlert">
+  <div
+    :for={{ {uuid, msg} <- @messages }}
+    class="alert alert-info m-0 d-flex align-items-center rounded-0"
+  >
+    <h5 class="oi oi-info mb-0 mr-4" aria-hidden="true" />
+    <div class="flex-grow-1">
+      {{ raw(Earmark.as_html!(msg)) }}
+    </div>
+
+    <button data-alert-id={{ uuid }} class="btn btn-link oi oi-x" />
+  </div>
+</div>
