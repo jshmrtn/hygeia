@@ -301,6 +301,12 @@
             ) }}
           </h2>
 
+          <p>
+            {{ gettext(
+              "If there are no known contact methods for the person, a contact method for a close person (relative, roommate, caretaker) can be entered instead."
+            ) }}
+          </p>
+
           <div class="row">
             <div class="col">
               <Field name={{ :mobile }} class="form-group">
