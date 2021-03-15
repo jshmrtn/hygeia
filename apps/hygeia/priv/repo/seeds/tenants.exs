@@ -132,11 +132,11 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
     subdivision ->
       {subdivision, %{}}
   end)
-  |> Enum.map(fn {%Cadastre.Subdivision{id: id, name: name}, extra_args} ->
+  |> Enum.map(fn {%Cadastre.Subdivision{id: id} = subdivision, extra_args} ->
     change_new_tenant(
       Map.merge(
         %{
-          name: "Kanton #{name}",
+          name: "Kanton #{Cadastre.Subdivision.name(subdivision, "de")}",
           short_name: id,
           case_management_enabled: true
         },
