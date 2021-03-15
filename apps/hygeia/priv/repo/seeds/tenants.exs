@@ -46,23 +46,24 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
            schedule: "0 * * * *"
          },
          template_parameters: %{
-          sms_signature:
+           sms_signature:
              "Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS",
-          email_signature:
-             "Contact Tracing St. Gallen
+           email_signature: """
+           Contact Tracing St. Gallen
 
-             T +41 71 521 26 10
-             Telefonische Erreichbarkeit:
-             Mo-Fr von 08.00 - 12.00 und 14.00 - 17.00
-             In dringenden Fällen ausserhalb der Telefonzeiten sowie am Wochenende kontaktieren Sie uns bitte per Mail
+           T +41 71 521 26 10
+           Telefonische Erreichbarkeit:
+           Mo-Fr von 08.00 - 12.00 und 14.00 - 17.00
+           In dringenden Fällen ausserhalb der Telefonzeiten sowie am Wochenende kontaktieren Sie uns bitte per Mail
 
-              info.contacttracing@sg.ch
+            info.contacttracing@sg.ch
 
-             Kanton St. Gallen
-             Gesundheitsdepartement
-             Oberer Graben 32
-             9001 St.Gallen
-             https://www.sg.ch/tools/informationen-coronavirus.html"
+           Kanton St. Gallen
+           Gesundheitsdepartement
+           Oberer Graben 32
+           9001 St.Gallen
+           https://www.sg.ch/tools/informationen-coronavirus.html
+           """
          }
        }}
 
@@ -87,23 +88,24 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
            schedule: "0 * * * *"
          },
          template_parameters: %{
-          sms_signature:
+           sms_signature:
              "Contact Tracing St.Gallen, Appenzell Innerrhoden, Appenzell Ausserrhoden Kantonaler Führungsstab: KFS",
-          email_signature:
-             "Contact Tracing Appenzell Ausserrhoden
+           email_signature: """
+           Contact Tracing Appenzell Ausserrhoden
 
-             T +41 71 521 26 10
-             Telefonische Erreichbarkeit:
-             Mo-Fr von 08.00 - 12.00 und 14.00 - 17.00
-             In dringenden Fällen ausserhalb der Telefonzeiten sowie am Wochenende kontaktieren Sie uns bitte per Mail
+           T +41 71 521 26 10
+           Telefonische Erreichbarkeit:
+           Mo-Fr von 08.00 - 12.00 und 14.00 - 17.00
+           In dringenden Fällen ausserhalb der Telefonzeiten sowie am Wochenende kontaktieren Sie uns bitte per Mail
 
-              info.contacttracing@sg.ch
-             Appenzell Ausserrhoden
-             Departement Gesundheit und Soziales
-             Amt für Gesundheit
-             Kasernenstrasse 17
-             9102 Herisau
-             www.ar.ch"
+            info.contacttracing@sg.ch
+           Appenzell Ausserrhoden
+           Departement Gesundheit und Soziales
+           Amt für Gesundheit
+           Kasernenstrasse 17
+           9102 Herisau
+           www.ar.ch
+           """
          }
        }}
 
@@ -147,4 +149,7 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
   |> Enum.reduce(Ecto.Multi.new(), &PaperTrail.Multi.insert(&2, make_ref(), &1))
   |> Repo.transaction()
 
-[tenant_root | tenants |> Map.values() |> Enum.filter(&is_struct(&1, Hygeia.TenantContext.Tenant))]
+[
+  tenant_root
+  | tenants |> Map.values() |> Enum.filter(&is_struct(&1, Hygeia.TenantContext.Tenant))
+]

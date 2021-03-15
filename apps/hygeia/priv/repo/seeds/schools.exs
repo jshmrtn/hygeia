@@ -24,4 +24,4 @@ alias Hygeia.Repo
   |> Enum.reduce(Ecto.Multi.new(), &PaperTrail.Multi.insert(&2, make_ref(), &1))
   |> Repo.transaction()
 
-  schools |> Map.values() |> Enum.filter(&is_struct(&1, Hygeia.OrganisationContext.Organisation))
+schools |> Map.values() |> Enum.filter(&is_struct(&1, Hygeia.OrganisationContext.Organisation))

@@ -148,7 +148,7 @@ defmodule Hygeia.CommunicationContext.Email do
              {"Precedence", "auto_reply"},
              {"Date", Calendar.strftime(DateTime.utc_now(), "%a, %-d %b %Y %X %z")},
              {"Message-ID", Changeset.fetch_field!(changeset, :uuid)},
-             {"Content-Type", "text/plain"},
+             {"Content-Type", "text/plain; charset=utf-8"},
              {"Content-Transfer-Encoding", "7bit"}
            ], [], Changeset.fetch_field!(changeset, :body)},
           encoding_options
