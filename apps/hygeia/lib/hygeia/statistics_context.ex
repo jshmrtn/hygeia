@@ -851,8 +851,12 @@ defmodule Hygeia.StatisticsContext do
             )
           )
         ),
-        fn [organisation, division, affiliation_kind, count] ->
-          [organisation, division, Kind.translate_affiliation_kind(affiliation_kind), count]
+        fn
+          [organisation, division, nil, count] ->
+            [organisation, division, nil, count]
+
+          [organisation, division, affiliation_kind, count] ->
+            [organisation, division, Kind.translate_affiliation_kind(affiliation_kind), count]
         end
       )
     )
@@ -873,12 +877,15 @@ defmodule Hygeia.StatisticsContext do
            left_join: division in assoc(affiliation, :division),
            where:
              case.tenant_uuid == ^tenant_uuid and
-               fragment("?->'details'->>'__type__'", phase) == "index" and
-               coalesce(
-                 fragment("(?->>'start')::date", phase),
-                 fragment("?::date", case.inserted_at)
-               ) <= ^date and
-               coalesce(fragment("(?->>'end')::date", phase), fragment("CURRENT_DATE")) >= ^date,
+               fragment(
+                 "? BETWEEN ? AND ?",
+                 ^date,
+                 coalesce(
+                   fragment("(?->>'start')::date", phase),
+                   fragment("?::date", case.inserted_at)
+                 ),
+                 coalesce(fragment("(?->>'end')::date", phase), fragment("CURRENT_DATE"))
+               ),
            group_by: [
              organisation.uuid,
              division.uuid,

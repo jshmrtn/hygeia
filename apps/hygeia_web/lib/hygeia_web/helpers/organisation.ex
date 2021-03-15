@@ -16,6 +16,8 @@ defmodule HygeiaWeb.Helpers.Organisation do
       )
 
   @spec affilation_kind(affiliation :: Affiliation.t()) :: String.t()
+  def affilation_kind(%Affiliation{kind: nil}), do: nil
+
   def affilation_kind(%Affiliation{kind: :other, kind_other: kind_other}),
     do: "#{Kind.translate_affiliation_kind(:other)} / #{kind_other}"
 
