@@ -16,6 +16,7 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.Repo
   alias Hygeia.SystemMessageContext
   alias Hygeia.SystemMessageContext.SystemMessage
   alias Hygeia.TenantContext
@@ -164,6 +165,16 @@ defmodule Hygeia.Fixtures do
         supervisor \\ user_fixture(%{iam_sub: Ecto.UUID.generate()}),
         attrs \\ %{}
       ) do
+    tracer = Repo.preload(tracer, :grants)
+
+    UserContext.update_user(tracer, %{grants: [%{role: :tracer, tenant_uuid: person.tenant_uuid}]})
+
+    supervisor = Repo.preload(supervisor, :grants)
+
+    UserContext.update_user(supervisor, %{
+      grants: [%{role: :supervisor, tenant_uuid: person.tenant_uuid}]
+    })
+
     {:ok, case} =
       CaseContext.create_case(
         person,
