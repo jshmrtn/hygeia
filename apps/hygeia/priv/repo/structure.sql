@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.2 (Debian 12.2-1.pgdg100+1)
--- Dumped by pg_dump version 12.5 (Ubuntu 12.5-0ubuntu0.20.04.1)
+-- Dumped from database version 13.2 (Debian 13.2-1.pgdg100+1)
+-- Dumped by pg_dump version 13.2 (Ubuntu 13.2-1.pgdg20.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2188,6 +2188,7 @@ CREATE TABLE public.affiliations (
     comment text,
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+    division_uuid uuid,
     CONSTRAINT comment_required CHECK (((organisation_uuid IS NOT NULL) OR (comment IS NOT NULL))),
     CONSTRAINT kind_other_required CHECK (
 CASE
@@ -2228,6 +2229,27 @@ CREATE TABLE public.cases (
     updated_at timestamp without time zone NOT NULL,
     fulltext tsvector GENERATED ALWAYS AS (((to_tsvector('german'::regconfig, (uuid)::text) || to_tsvector('german'::regconfig, (human_readable_id)::text)) || public.jsonb_array_to_tsvector_with_path(external_references, '$[*]."value"'::jsonpath))) STORED,
     status public.case_status NOT NULL
+);
+
+
+--
+-- Name: divisions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.divisions (
+    uuid uuid NOT NULL,
+    title character varying(255) NOT NULL,
+    description text,
+    organisation_uuid uuid NOT NULL,
+    shares_address boolean DEFAULT true,
+    address jsonb,
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT address_required CHECK (
+CASE
+    WHEN shares_address THEN (address IS NULL)
+    ELSE (address IS NOT NULL)
+END)
 );
 
 
@@ -2377,6 +2399,35 @@ CREATE TABLE public.sms (
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
+
+
+--
+-- Name: statistics_active_cases_per_day_and_organisation; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.statistics_active_cases_per_day_and_organisation AS
+ WITH ranked_active_cases AS (
+         SELECT (date.date)::date AS date,
+            cases.tenant_uuid,
+            affiliations.organisation_uuid,
+            count(cases.person_uuid) AS count,
+            row_number() OVER (PARTITION BY date.date, cases.tenant_uuid ORDER BY (count(cases.person_uuid)) DESC) AS row_number
+           FROM (((public.cases
+             CROSS JOIN LATERAL unnest(cases.phases) phase(phase))
+             CROSS JOIN LATERAL generate_series((COALESCE(((phase.phase ->> 'start'::text))::date, (cases.inserted_at)::date))::timestamp with time zone, (COALESCE(((phase.phase ->> 'end'::text))::date, CURRENT_DATE))::timestamp with time zone, '1 day'::interval) date(date))
+             LEFT JOIN public.affiliations ON ((affiliations.person_uuid = cases.person_uuid)))
+          WHERE (((phase.phase -> 'details'::text) ->> '__type__'::text) = 'index'::text)
+          GROUP BY cases.tenant_uuid, date.date, affiliations.organisation_uuid
+         HAVING (count(cases.person_uuid) > 0)
+          ORDER BY ((date.date)::date), cases.tenant_uuid, (count(cases.person_uuid)) DESC
+        )
+ SELECT ranked_active_cases.tenant_uuid,
+    ranked_active_cases.date,
+    ranked_active_cases.organisation_uuid,
+    ranked_active_cases.count
+   FROM ranked_active_cases
+  WHERE (ranked_active_cases.row_number <= 100)
+  WITH NO DATA;
 
 
 --
@@ -2797,6 +2848,14 @@ ALTER TABLE ONLY public.cases
 
 
 --
+-- Name: divisions divisions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.divisions
+    ADD CONSTRAINT divisions_pkey PRIMARY KEY (uuid);
+
+
+--
 -- Name: emails emails_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2925,6 +2984,13 @@ ALTER TABLE ONLY public.versions
 
 
 --
+-- Name: affiliations_division_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX affiliations_division_uuid_index ON public.affiliations USING btree (division_uuid);
+
+
+--
 -- Name: affiliations_organisation_uuid_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2985,6 +3051,13 @@ CREATE INDEX cases_tenant_uuid_index ON public.cases USING btree (tenant_uuid);
 --
 
 CREATE INDEX cases_tracer_uuid_index ON public.cases USING btree (tracer_uuid);
+
+
+--
+-- Name: divisions_organisation_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX divisions_organisation_uuid_index ON public.divisions USING btree (organisation_uuid);
 
 
 --
@@ -3076,6 +3149,34 @@ CREATE INDEX sms_case_uuid_index ON public.sms USING btree (case_uuid);
 --
 
 CREATE INDEX sms_direction_status_index ON public.sms USING btree (direction, status);
+
+
+--
+-- Name: statistics_active_cases_per_day_and_organisation_date_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX statistics_active_cases_per_day_and_organisation_date_index ON public.statistics_active_cases_per_day_and_organisation USING btree (date);
+
+
+--
+-- Name: statistics_active_cases_per_day_and_organisation_organisation_u; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX statistics_active_cases_per_day_and_organisation_organisation_u ON public.statistics_active_cases_per_day_and_organisation USING btree (organisation_uuid);
+
+
+--
+-- Name: statistics_active_cases_per_day_and_organisation_tenant_uuid_da; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX statistics_active_cases_per_day_and_organisation_tenant_uuid_da ON public.statistics_active_cases_per_day_and_organisation USING btree (tenant_uuid, date, organisation_uuid);
+
+
+--
+-- Name: statistics_active_cases_per_day_and_organisation_tenant_uuid_in; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX statistics_active_cases_per_day_and_organisation_tenant_uuid_in ON public.statistics_active_cases_per_day_and_organisation USING btree (tenant_uuid);
 
 
 --
@@ -3394,6 +3495,14 @@ CREATE INDEX versions_originator_id_index ON public.versions USING btree (origin
 
 
 --
+-- Name: affiliations affiliations_division_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.affiliations
+    ADD CONSTRAINT affiliations_division_uuid_fkey FOREIGN KEY (division_uuid) REFERENCES public.divisions(uuid);
+
+
+--
 -- Name: affiliations affiliations_organisation_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3455,6 +3564,14 @@ ALTER TABLE ONLY public.cases
 
 ALTER TABLE ONLY public.cases
     ADD CONSTRAINT cases_tracer_uuid_fkey FOREIGN KEY (tracer_uuid) REFERENCES public.users(uuid) ON DELETE SET NULL;
+
+
+--
+-- Name: divisions divisions_organisation_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.divisions
+    ADD CONSTRAINT divisions_organisation_uuid_fkey FOREIGN KEY (organisation_uuid) REFERENCES public.organisations(uuid);
 
 
 --
@@ -3645,3 +3762,6 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210204134512);
 INSERT INTO public."schema_migrations" (version) VALUES (20210205151543);
 INSERT INTO public."schema_migrations" (version) VALUES (20210205161105);
 INSERT INTO public."schema_migrations" (version) VALUES (20210210183541);
+INSERT INTO public."schema_migrations" (version) VALUES (20210215124820);
+INSERT INTO public."schema_migrations" (version) VALUES (20210302143322);
+INSERT INTO public."schema_migrations" (version) VALUES (20210305203915);
