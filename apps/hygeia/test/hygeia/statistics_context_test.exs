@@ -4,6 +4,7 @@ defmodule Hygeia.StatisticsContextTest do
 
   use Hygeia.DataCase
 
+  alias Hygeia.CaseContext.Case.Phase.PossibleIndex
   alias Hygeia.StatisticsContext
   alias Hygeia.StatisticsContext.ActiveCasesPerDayAndOrganisation
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
@@ -489,7 +490,9 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 75
+      assert length(entries) ==
+               (length(PossibleIndex.EndReason.__enum_map__()) + 1) *
+                 length(PossibleIndex.Type.__enum_map__()) * 3
 
       assert Enum.all?(
                entries,
@@ -535,7 +538,9 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 75
+      assert length(entries) ==
+               (length(PossibleIndex.EndReason.__enum_map__()) + 1) *
+                 length(PossibleIndex.Type.__enum_map__()) * 3
 
       assert Enum.all?(
                entries,
@@ -580,7 +585,9 @@ defmodule Hygeia.StatisticsContextTest do
                  ~D[2020-10-13]
                )
 
-      assert length(entries) == 75
+      assert length(entries) ==
+               (length(PossibleIndex.EndReason.__enum_map__()) + 1) *
+                 length(PossibleIndex.Type.__enum_map__()) * 3
 
       assert Enum.all?(entries, &match?(%CumulativePossibleIndexCaseEndReasons{count: 0}, &1))
     end
@@ -617,7 +624,9 @@ defmodule Hygeia.StatisticsContextTest do
                  |> CSV.decode!()
                  |> Enum.to_list()
 
-        assert length(entries) == 101
+        assert length(entries) ==
+                 (length(PossibleIndex.EndReason.__enum_map__()) + 1) *
+                   length(PossibleIndex.Type.__enum_map__()) * 4 + 1
       end)
     end
   end

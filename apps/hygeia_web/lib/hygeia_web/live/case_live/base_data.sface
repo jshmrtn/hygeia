@@ -658,15 +658,15 @@
     <table class="table table-sm table-striped">
       <tbody>
         <tr>
-          <td><b>{{ phase_end_reason_translation(:healed) }}</b></td>
+          <td><b>{{ case_phase_index_end_reason_translation(:healed) }}</b></td>
           <td>{{ gettext("Index is completely healed and isolation is completed") }}</td>
         </tr>
         <tr>
-          <td><b>{{ phase_end_reason_translation(:death) }}</b></td>
+          <td><b>{{ case_phase_index_end_reason_translation(:death) }}</b></td>
           <td>{{ gettext("Index died") }}</td>
         </tr>
         <tr>
-          <td><b>{{ phase_end_reason_translation(:no_follow_up) }}</b></td>
+          <td><b>{{ case_phase_index_end_reason_translation(:no_follow_up) }}</b></td>
           <td>{{ gettext("Agreed with index that no further contact is necessary") }}</td>
         </tr>
       </tbody>
@@ -684,16 +684,20 @@
     <table class="table table-sm table-striped">
       <tbody>
         <tr>
-          <td><b>{{ phase_end_reason_translation(:asymptomatic) }}</b></td>
+          <td><b>{{ case_phase_possible_index_end_reason_translation(:asymptomatic) }}</b></td>
           <td>{{ gettext("The contact person didn't develop any symptoms during quarantine") }}</td>
         </tr>
         <tr>
-          <td><b>{{ phase_end_reason_translation(:converted_to_index) }}</b></td>
+          <td><b>{{ case_phase_possible_index_end_reason_translation(:converted_to_index) }}</b></td>
           <td>{{ gettext("The contact person has developed symptoms, did a test and became an index") }}</td>
         </tr>
         <tr>
-          <td><b>{{ phase_end_reason_translation(:no_follow_up) }}</b></td>
+          <td><b>{{ case_phase_possible_index_end_reason_translation(:no_follow_up) }}</b></td>
           <td>{{ gettext("Agreed with index that had been in contact that no further contact is necessary") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ case_phase_possible_index_end_reason_translation(:negative_test) }}</b></td>
+          <td>{{ gettext("Early end because of negative test after the 7th day of quarantine") }}</td>
         </tr>
       </tbody>
     </table>

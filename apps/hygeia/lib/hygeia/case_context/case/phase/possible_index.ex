@@ -19,6 +19,7 @@ defmodule Hygeia.CaseContext.Case.Phase.PossibleIndex do
     "asymptomatic",
     "converted_to_index",
     "no_follow_up",
+    "negative_test",
     "other"
   ]
 

@@ -74,7 +74,8 @@ CREATE TYPE public.case_phase_possible_index_end_reason AS ENUM (
     'asymptomatic',
     'converted_to_index',
     'no_follow_up',
-    'other'
+    'other',
+    'negative_test'
 );
 
 
@@ -3765,3 +3766,4 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210210183541);
 INSERT INTO public."schema_migrations" (version) VALUES (20210215124820);
 INSERT INTO public."schema_migrations" (version) VALUES (20210302143322);
 INSERT INTO public."schema_migrations" (version) VALUES (20210305203915);
+INSERT INTO public."schema_migrations" (version) VALUES (20210316120150);
