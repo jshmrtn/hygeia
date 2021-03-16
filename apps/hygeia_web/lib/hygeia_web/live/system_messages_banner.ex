@@ -11,9 +11,9 @@ defmodule HygeiaWeb.SystemMessagesBanner do
   end
 
   defp filtered_system_messages(auth, hidden_message_ids) do
-    Enum.filter(
+    Enum.reject(
       Hygeia.SystemMessageContext.list_active_system_messages(auth),
-      fn {id, _msg} -> not (id in hidden_message_ids) end
+      fn {id, _msg} -> id in hidden_message_ids end
     )
   end
 end
