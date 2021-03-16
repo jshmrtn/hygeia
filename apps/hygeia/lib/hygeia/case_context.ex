@@ -1524,9 +1524,12 @@ defmodule Hygeia.CaseContext do
           # end_quar_dt
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'end'", phase)),
           # reason_end_quar
-          fragment("(ARRAY_AGG(?))[1]", fragment("?->'detail'->>'end_reason'", phase)),
+          type(
+            fragment("(ARRAY_AGG(?))[1]", fragment("?->'details'->>'end_reason'", phase)),
+            Case.Phase.PossibleIndex.EndReason
+          ),
           # other_reason_end_quar
-          fragment("(ARRAY_AGG(?))[1]", fragment("?->'detail'->>'other_end_reason'", phase)),
+          fragment("(ARRAY_AGG(?))[1]", fragment("?->'details'->>'other_end_reason'", phase)),
           # vacc_yn
           fragment("(?->>'done')::boolean", person.vaccination),
           # vacc_name
@@ -1656,6 +1659,55 @@ defmodule Hygeia.CaseContext do
         |> normalize_country(@bag_med_16122020_contact_fields_index.country)
         |> normalize_country(@bag_med_16122020_contact_fields_index.work_place_country)
         |> normalize_country(@bag_med_16122020_contact_fields_index.exp_country)
+        |> (fn list ->
+              case Enum.at(list, @bag_med_16122020_contact_fields_index.reason_end_quar) do
+                :negative_test ->
+                  list
+                  |> put_in(
+                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                    4
+                  )
+                  |> put_in(
+                    [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
+                    "Negative Test"
+                  )
+
+                :asymptomatic ->
+                  put_in(
+                    list,
+                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                    1
+                  )
+
+                :converted_to_index ->
+                  put_in(
+                    list,
+                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                    2
+                  )
+
+                :no_follow_up ->
+                  put_in(
+                    list,
+                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                    3
+                  )
+
+                :other ->
+                  put_in(
+                    list,
+                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                    4
+                  )
+
+                nil ->
+                  put_in(
+                    list,
+                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                    nil
+                  )
+              end
+            end).()
       end)
 
     [@bag_med_16122020_contact_fields]

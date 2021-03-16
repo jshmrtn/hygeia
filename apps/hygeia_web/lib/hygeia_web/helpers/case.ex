@@ -74,13 +74,20 @@ defmodule HygeiaWeb.Helpers.Case do
 
   @spec case_phase_possible_index_end_reason_translation(PossibleIndex.EndReason.t()) ::
           String.t()
-  def case_phase_possible_index_end_reason_translation(:asymptomatic), do: gettext("Asymptomatic")
+  def case_phase_possible_index_end_reason_translation(:asymptomatic),
+    do: pgettext("Possible Index End Reason", "Asymptomatic")
 
   def case_phase_possible_index_end_reason_translation(:converted_to_index),
     do: gettext("Converted to Index")
 
-  def case_phase_possible_index_end_reason_translation(:no_follow_up), do: gettext("No Follow Up")
-  def case_phase_possible_index_end_reason_translation(:other), do: gettext("Other")
+  def case_phase_possible_index_end_reason_translation(:no_follow_up),
+    do: pgettext("Possible Index End Reason", "No Follow Up")
+
+  def case_phase_possible_index_end_reason_translation(:negative_test),
+    do: pgettext("Possible Index End Reason", "Negative Test")
+
+  def case_phase_possible_index_end_reason_translation(:other),
+    do: pgettext("Possible Index End Reason", "Other")
 
   @spec case_phase_possible_index_type_map :: [
           {String.t(), PossibleIndex.Type.t()}

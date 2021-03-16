@@ -1060,18 +1060,11 @@ defmodule Hygeia.CaseContextTest do
               %{
                 details: %{
                   __type__: :possible_index,
-                  type: :contact_person
+                  type: :contact_person,
+                  end_reason: :negative_test
                 },
                 start: ~D[2020-10-06],
                 end: ~D[2020-10-10]
-              },
-              %{
-                details: %{
-                  __type__: :index,
-                  type: :contact_person
-                },
-                start: ~D[2020-10-10],
-                end: ~D[2020-10-20]
               }
             ],
             clinical: %{
@@ -1252,7 +1245,7 @@ defmodule Hygeia.CaseContextTest do
                    "ktn_internal_id" => "fc705b72-2911-46d8-93f2-5d70b982d4d8",
                    "work_place_country" => "",
                    "other_exp_loc_type_yn" => "0",
-                   "reason_end_quar" => "",
+                   "reason_end_quar" => "4",
                    "phone_number" => "",
                    "exp_loc_type_nursing_home" => "0",
                    "exp_loc_type_public_transp" => "0",
@@ -1265,7 +1258,7 @@ defmodule Hygeia.CaseContextTest do
                    "exp_loc_type_childcare" => "0",
                    "other_exp_loc_type" => "",
                    "sex" => "1",
-                   "other_reason_end_quar" => "",
+                   "other_reason_end_quar" => "Negative Test",
                    "exp_loc_street_number" => "",
                    "test_reason_quarantine_end" => "0",
                    "vacc_dt_last" => "",
