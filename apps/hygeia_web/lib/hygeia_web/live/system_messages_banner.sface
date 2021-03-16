@@ -1,0 +1,15 @@
+<div class="system-messages" phx-hook="HideAlert">
+  <Context :if={{ @hidden_message_ids != nil }} get={{ HygeiaWeb, auth: auth }}>
+    <div
+      :for={{ {uuid, msg} <- filtered_system_messages(auth, @hidden_message_ids) }}
+      class="alert alert-info m-0 d-flex align-items-center rounded-0"
+    >
+      <h5 class="oi oi-info mb-0 mr-4" aria-hidden="true" />
+      <div class="flex-grow-1">
+        {{ raw(Earmark.as_html!(msg)) }}
+      </div>
+
+      <button data-alert-id={{ uuid }} class="btn btn-link oi oi-x" />
+    </div>
+  </Context>
+</div>
