@@ -4,6 +4,7 @@ defmodule HygeiaWeb.OrganisationLive.Show do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.CaseContext.Person
+  alias Hygeia.Helpers.Empty
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
@@ -183,8 +184,8 @@ defmodule HygeiaWeb.OrganisationLive.Show do
     |> maybe_block_navigation()
   end
 
-  defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do
-    if changes == %{} do
+  defp maybe_block_navigation(%{assigns: %{changeset: changeset}} = socket) do
+    if Empty.is_empty?(changeset, [:suspected_duplicates_uuid]) do
       push_event(socket, "unblock_navigation", %{})
     else
       push_event(socket, "block_navigation", %{})
