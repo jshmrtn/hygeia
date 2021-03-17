@@ -38,9 +38,9 @@ defmodule Hygeia.Repo.Migrations.VersioningNative do
       ALTER COLUMN event
         TYPE #{Version.Event.type()}
         USING CASE
-          WHEN origin = 'insert' THEN 'insert'::#{Version.Event.type()}
-          WHEN origin = 'update' THEN 'update'::#{Version.Event.type()}
-          WHEN origin = 'delete' THEN 'delete'::#{Version.Event.type()}
+          WHEN event = 'insert' THEN 'insert'::#{Version.Event.type()}
+          WHEN event = 'update' THEN 'update'::#{Version.Event.type()}
+          WHEN event = 'delete' THEN 'delete'::#{Version.Event.type()}
         END
     """)
 
