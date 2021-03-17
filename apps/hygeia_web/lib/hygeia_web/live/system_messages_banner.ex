@@ -10,6 +10,11 @@ defmodule HygeiaWeb.SystemMessagesBanner do
     {:noreply, assign(socket, hidden_message_ids: hidden_message_ids)}
   end
 
+  @impl Phoenix.LiveComponent
+  def handle_event("hide_alert", %{"alert-id" => alert_id}, socket) do
+    {:noreply, push_event(socket, "hide_alert", %{id: alert_id})}
+  end
+
   defp filtered_system_messages(auth, hidden_message_ids) do
     Enum.reject(
       Hygeia.SystemMessageContext.list_active_system_messages(auth),

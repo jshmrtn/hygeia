@@ -9,7 +9,7 @@
         {{ raw(Earmark.as_html!(msg)) }}
       </div>
 
-      <button data-alert-id={{ uuid }} class="btn btn-link oi oi-x" />
+      <button :on-click="hide_alert" phx-value-alert-id={{ uuid }} class="btn btn-link oi oi-x" />
     </div>
   </Context>
 </div>
