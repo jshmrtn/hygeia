@@ -33,6 +33,14 @@
                 />
               </Field>
             </div>
+            <div class="form-group">
+              <Field name="active_cases" class="form-check">
+                <label class="checkbox-label">
+                  <Checkbox class="form-check-input" />
+                  {{ gettext("Active Cases") }}
+                </label>
+              </Field>
+            </div>
           </Form>
         </template>
       </HygeiaWeb.Dropdown>

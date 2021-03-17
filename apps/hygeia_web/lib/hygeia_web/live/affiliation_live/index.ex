@@ -5,12 +5,14 @@ defmodule HygeiaWeb.AffiliationLive.Index do
 
   import Ecto.Query
 
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.Repo
   alias Surface.Components.Context
   alias Surface.Components.Form
+  alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Select
   alias Surface.Components.LivePatch
@@ -70,7 +72,8 @@ defmodule HygeiaWeb.AffiliationLive.Index do
   def handle_info(_other, socket), do: {:noreply, socket}
 
   @allowed_filter_fields %{
-    "division_uuid" => :division_uuid
+    "division_uuid" => :division_uuid,
+    "active_cases" => :active_cases
   }
 
   defp list_affiliations(socket) do
@@ -94,6 +97,28 @@ defmodule HygeiaWeb.AffiliationLive.Index do
 
           {:division_uuid, value}, query ->
             where(query, [affiliation], affiliation.division_uuid == ^value)
+
+          {:active_cases, "false"}, query ->
+            query
+
+          {:active_cases, "true"}, query ->
+            query
+            |> join(:left, [affiliation], case in Case,
+              on: affiliation.person_uuid == case.person_uuid
+            )
+            |> join(:left, [affiliation, case], phase in fragment("UNNEST(?)", case.phases))
+            |> where(
+              [affiliation, case, phase],
+              fragment(
+                "? BETWEEN ? AND ?",
+                fragment("CURRENT_DATE"),
+                coalesce(
+                  fragment("(?->>'start')::date", phase),
+                  fragment("?::date", case.inserted_at)
+                ),
+                coalesce(fragment("(?->>'end')::date", phase), fragment("CURRENT_DATE"))
+              )
+            )
         end
       )
       |> Repo.paginate(
