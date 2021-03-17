@@ -47,8 +47,8 @@ defmodule Hygeia.Helpers.Versioning do
     :ok
   end
 
-  @spec authenticate_multi(multi :: Multi.t(), options :: Keyword.t()) :: Multi.t()
-  def authenticate_multi(%Multi{} = multi, options \\ []) do
+  @spec run_authentication(repo :: atom, options :: Keyword.t()) :: :ok
+  def run_authentication(repo, options) do
     origin =
       case Keyword.get(options, :origin, get_origin()) do
         nil -> raise "Origin must be set to mutate resources"
@@ -62,10 +62,17 @@ defmodule Hygeia.Helpers.Versioning do
         %User{uuid: originator_uuid} -> originator_uuid
       end
 
+    repo.query!("SET SESSION versioning.originator_id = '#{originator_id}'")
+    repo.query!("SET SESSION versioning.origin = '#{origin}'")
+
+    :ok
+  end
+
+  @spec authenticate_multi(multi :: Multi.t(), options :: Keyword.t()) :: Multi.t()
+  def authenticate_multi(%Multi{} = multi, options \\ []) do
     Multi.new()
     |> Multi.run(:set_versioning_variables, fn repo, _changes ->
-      repo.query!("SET SESSION versioning.originator_id = '#{originator_id}'")
-      repo.query!("SET SESSION versioning.origin = '#{origin}'")
+      :ok = run_authentication(repo, options)
       {:ok, nil}
     end)
     |> Multi.append(multi)

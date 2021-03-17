@@ -62,6 +62,7 @@ defmodule Hygeia do
       use Ecto.Migration
 
       import Ecto.Query
+      import Hygeia.Helpers.Versioning
     end
   end
 
