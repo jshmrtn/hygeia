@@ -75,6 +75,7 @@ defmodule Hygeia.Jobs.SendEmails do
         |> Enum.reduce(Ecto.Multi.new(), fn %Email{uuid: uuid} = email, acc ->
           Ecto.Multi.run(acc, uuid, fn _repo, _before ->
             CommunicationContext.update_email(email, %{status: :retries_exceeded})
+            # todo: delete contact method
           end)
         end)
         |> Repo.transaction()
@@ -120,9 +121,20 @@ defmodule Hygeia.Jobs.SendEmails do
               })
             end)
 
-          {{:ok, {retried_at, new_status}}, %Email{uuid: uuid} = email}, acc ->
+
+            {{:ok, {retried_at, :permanent_failure}}, %Email{uuid: uuid} = email}, acc ->
+
+              IO.inspect(email)
+              IO.puts("here---")
+
+              Ecto.Multi.run(acc, uuid, fn _repo, _before ->
+                CommunicationContext.update_email(email, %{status: :permanent_failure, last_try: retried_at})
+
+            end)
+
+            {{:ok, {retried_at, :temporary_failure}}, %Email{uuid: uuid} = email}, acc ->
             Ecto.Multi.run(acc, uuid, fn _repo, _before ->
-              CommunicationContext.update_email(email, %{status: new_status, last_try: retried_at})
+              CommunicationContext.update_email(email, %{status: :temporary_failure, last_try: retried_at})
             end)
         end)
         |> Repo.transaction()
@@ -132,6 +144,18 @@ defmodule Hygeia.Jobs.SendEmails do
 
     {:noreply, state}
   end
+
+  # defp remove_contact_method(email, %{assigns: %{changeset: changeset, person: person}} = socket) do
+  #   {:ok,
+  #    socket
+  #    |> assign(
+  #      :changeset,
+  #      CaseContext.change_person(
+  #        person,
+  #        changeset_remove_from_params_by_id(changeset, :contact_methods, %{uuid: uuid})
+  #      )
+  #    )}
+  # end
 
   def handle_info(_other, state), do: {:noreply, state}
 
