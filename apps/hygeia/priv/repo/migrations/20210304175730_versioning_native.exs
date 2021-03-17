@@ -16,7 +16,6 @@ defmodule Hygeia.Repo.Migrations.VersioningNative do
       add :uuid, :binary_id, null: true
       add :item_pk, :map, null: true
       add :item_table, :text, null: true
-      modify :origin, :text, null: false
       modify :event, :text, null: false
     end
 
@@ -74,6 +73,7 @@ defmodule Hygeia.Repo.Migrations.VersioningNative do
       modify :item_pk, :map, null: false
       modify :uuid, :binary_id, null: false, primary_key: true
       remove :item_id
+      modify :origin, Version.Origin.type(), null: false
       remove :item_type
     end
 
