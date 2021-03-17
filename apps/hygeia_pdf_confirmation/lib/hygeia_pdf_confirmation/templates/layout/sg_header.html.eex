@@ -1,5 +1,11 @@
 <div>
-  <img style="width: 1.5cm" class="pull-right" src="https://www.sg.ch/apps/core/docroot/images/design/sgch/logo-sg-wappen.png" />
+  <img style="width: 1.5cm" class="pull-right" src="data:image/png;base64,<%=
+      :hygeia_pdf_confirmation
+      |> Application.app_dir("priv/assets/logo_ar.png")
+      |> File.read!()
+      |> Base.encode64()
+      |> raw()
+    %>" />
   <p class="page-1-header">
     Kanton St.Gallen<br />
     Gesundheitsdepartement
