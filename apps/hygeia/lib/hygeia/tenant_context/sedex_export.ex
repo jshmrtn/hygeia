@@ -50,6 +50,7 @@ defmodule Hygeia.TenantContext.SedexExport do
       |> cast(attrs, [:scheduling_date, :status])
       |> validate_required([:scheduling_date, :status])
       |> assoc_constraint(:tenant)
+      |> unique_constraint([:tenant_uuid, :scheduling_date])
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.TenantContext.SedexExport

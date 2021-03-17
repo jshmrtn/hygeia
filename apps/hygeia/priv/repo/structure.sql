@@ -3293,6 +3293,13 @@ CREATE INDEX sedex_exports_tenant_uuid_index ON public.sedex_exports USING btree
 
 
 --
+-- Name: sedex_exports_tenant_uuid_scheduling_date_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX sedex_exports_tenant_uuid_scheduling_date_index ON public.sedex_exports USING btree (tenant_uuid, scheduling_date);
+
+
+--
 -- Name: sms_case_uuid_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4286,3 +4293,4 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210302143322);
 INSERT INTO public."schema_migrations" (version) VALUES (20210304175730);
 INSERT INTO public."schema_migrations" (version) VALUES (20210305203915);
 INSERT INTO public."schema_migrations" (version) VALUES (20210316120150);
+INSERT INTO public."schema_migrations" (version) VALUES (20210317121030);
