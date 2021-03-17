@@ -27,7 +27,7 @@
       </tr>
       <tr
         :for={{%Version{
-          id: id,
+          uuid: uuid,
           event: event,
           inserted_at: inserted_at,
           origin: origin,
@@ -35,9 +35,9 @@
         } = version <-
           @versions}}
         phx-update="ignore"
-        id={{ "version_#{id}" }}
+        id={{ "version_#{uuid}" }}
       >
-        <td>{{ event_name(event) }}</td>
+        <td>{{ Event.translate(event) }}</td>
         <td>
           <time
             datetime={{ NaiveDateTime.to_iso8601(inserted_at) }}
@@ -51,7 +51,7 @@
             ) }}
           </time>
         </td>
-        <td>{{ unless is_nil(origin), do: translate_versioning_origin(origin) }}</td>
+        <td>{{ unless is_nil(origin), do: Version.Origin.translate(origin) }}</td>
         <td :if={{ not is_nil(user) and authorized?(user, :details, auth) }}>
           <LiveRedirect to={{ Routes.user_show_path(@socket, :show, user) }}>
             {{ user.display_name }}
@@ -62,7 +62,7 @@
         </td>
         <td :if={{ is_nil(user) }} />
         <td>
-          <HygeiaWeb.VersionLive.Change version={{ version }} id={{ "version_#{id}_changes" }} />
+          <HygeiaWeb.VersionLive.Change version={{ version }} id={{ "version_#{uuid}_changes" }} />
         </td>
       </tr>
     </tbody>

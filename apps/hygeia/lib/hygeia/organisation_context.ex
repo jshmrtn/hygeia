@@ -179,7 +179,7 @@ defmodule Hygeia.OrganisationContext do
         |> Ecto.assoc(:affiliations)
         |> Repo.stream()
         |> Enum.reduce(Ecto.Multi.new(), fn %Affiliation{uuid: uuid} = affiliation, acc ->
-          PaperTrail.Multi.update(
+          Ecto.Multi.update(
             acc,
             uuid,
             Ecto.Changeset.change(affiliation, %{organisation_uuid: into_uuid})
@@ -191,7 +191,7 @@ defmodule Hygeia.OrganisationContext do
         |> Ecto.assoc(:positions)
         |> Repo.stream()
         |> Enum.reduce(Ecto.Multi.new(), fn %Position{uuid: uuid} = position, acc ->
-          PaperTrail.Multi.update(
+          Ecto.Multi.update(
             acc,
             uuid,
             Ecto.Changeset.change(position, %{organisation_uuid: into_uuid})
@@ -203,7 +203,7 @@ defmodule Hygeia.OrganisationContext do
         |> Ecto.assoc(:divisions)
         |> Repo.stream()
         |> Enum.reduce(Ecto.Multi.new(), fn %Division{uuid: uuid} = division, acc ->
-          PaperTrail.Multi.update(
+          Ecto.Multi.update(
             acc,
             uuid,
             Ecto.Changeset.change(division, %{organisation_uuid: into_uuid})
@@ -226,7 +226,8 @@ defmodule Hygeia.OrganisationContext do
           |> Ecto.Changeset.change()
           |> Ecto.Changeset.put_assoc(:related_cases, [])
         )
-        |> PaperTrail.Multi.delete({:delete, delete_uuid}, Ecto.Changeset.change(delete))
+        |> Ecto.Multi.delete({:delete, delete_uuid}, Ecto.Changeset.change(delete))
+        |> authenticate_multi()
         |> Repo.transaction()
 
       get_organisation!(into_uuid)
@@ -697,7 +698,7 @@ defmodule Hygeia.OrganisationContext do
         |> Ecto.assoc(:affiliations)
         |> Repo.stream()
         |> Enum.reduce(Ecto.Multi.new(), fn %Affiliation{uuid: uuid} = affiliation, acc ->
-          PaperTrail.Multi.update(
+          Ecto.Multi.update(
             acc,
             uuid,
             Ecto.Changeset.change(affiliation, %{division_uuid: into_uuid})
@@ -706,7 +707,8 @@ defmodule Hygeia.OrganisationContext do
 
       {:ok, _updates} =
         affiliation_updates
-        |> PaperTrail.Multi.delete({:delete, delete_uuid}, Ecto.Changeset.change(delete))
+        |> Ecto.Multi.delete({:delete, delete_uuid}, Ecto.Changeset.change(delete))
+        |> authenticate_multi()
         |> Repo.transaction()
 
       get_division!(into_uuid)

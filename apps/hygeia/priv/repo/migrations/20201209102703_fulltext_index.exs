@@ -6,6 +6,7 @@ defmodule Hygeia.Repo.Migrations.FulltextIndex do
 
   import Ecto.Query
 
+  alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
 
   @origin_country Application.compile_env!(:hygeia, [:phone_number_parsing_origin_country])
@@ -150,6 +151,7 @@ defmodule Hygeia.Repo.Migrations.FulltextIndex do
           ]
         )
       end)
+      |> Versioning.authenticate_multi(originator: :noone, origin: :migration)
       |> Repo.transaction()
     end)
   end

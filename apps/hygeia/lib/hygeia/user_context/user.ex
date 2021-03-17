@@ -49,7 +49,7 @@ defmodule Hygeia.UserContext.User do
   @spec changeset(user :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :display_name, :iam_sub])
+    |> cast(attrs, [:uuid, :email, :display_name, :iam_sub])
     |> cast_assoc(:grants)
     |> validate_required([:email, :display_name, :iam_sub])
     |> unique_constraint(:iam_sub)

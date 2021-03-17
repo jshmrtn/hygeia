@@ -300,7 +300,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type: "Type",
       type_other: "Other"
     },
-    PaperTrail.Version => %{
+    Hygeia.VersionContext.Version => %{
       date: "Date",
       item_changes: "Changes",
       origin: "Origin",

@@ -4,6 +4,7 @@ defmodule HygeiaWeb.VersionLive.Show do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.Repo
+  alias Hygeia.VersionContext
 
   data versions, :list, default: []
   data now, :map
@@ -21,7 +22,7 @@ defmodule HygeiaWeb.VersionLive.Show do
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id, "resource" => resource}, _uri, socket) do
-    schema = item_type_to_module(resource)
+    schema = item_table_to_module(resource)
 
     resource = Repo.get(schema, id)
 
@@ -36,8 +37,8 @@ defmodule HygeiaWeb.VersionLive.Show do
 
     versions =
       schema
-      |> PaperTrail.get_versions(id, [])
-      |> Enum.sort_by(& &1.inserted_at, {:desc, DateTime})
+      |> VersionContext.get_versions(id)
+      |> Enum.reverse()
 
     socket =
       assign(socket,

@@ -23,8 +23,6 @@ defmodule Hygeia do
 
   @type ecto_changeset_params :: %{required(binary()) => term()} | %{required(atom()) => term()}
 
-  @type papertrail_version :: %PaperTrail.Version{}
-
   @type paginator_page(row_type) :: %Paginator.Page{
           entries: [row_type],
           metadata: Paginator.Page.Metadata.t()

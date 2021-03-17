@@ -306,7 +306,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         noga_code = Enum.random(Hygeia.EctoType.NOGA.Code.__enum_map__())
         noga_section = Hygeia.EctoType.NOGA.Code.section(noga_code)
 
-        PaperTrail.Multi.insert(
+        Ecto.Multi.insert(
           acc,
           i,
           change_new_person(Enum.random(tenants), %{
@@ -318,6 +318,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           })
         )
       end)
+      |> Versioning.authenticate_multi()
       |> Repo.transaction()
 
     stats_people =
@@ -377,7 +378,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
             }
           ])
 
-        PaperTrail.Multi.insert(
+        Ecto.Multi.insert(
           acc,
           i,
           change_new_case(person, %{
@@ -389,6 +390,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           })
         )
       end)
+      |> Versioning.authenticate_multi()
       |> Repo.transaction()
   end
 

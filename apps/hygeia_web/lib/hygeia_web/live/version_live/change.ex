@@ -14,7 +14,7 @@ defmodule HygeiaWeb.VersionLive.Change do
   def render(assigns) do
     ~H"""
     <div class="component-version-live-change">
-      {{ render_tree(@version.item_changes, item_type_to_module(@version.item_type), assigns) }}
+      {{ render_tree(@version.item_changes, item_table_to_module(@version.item_table), assigns) }}
     </div>
     """
   end
@@ -39,7 +39,7 @@ defmodule HygeiaWeb.VersionLive.Change do
             to={{Routes.version_show_path(
               @socket,
               :show,
-              schema |> get_field_relation_target_schema(field_key) |> module_to_item_type(),
+              schema |> get_field_relation_target_schema(field_key) |> module_to_item_table(),
               value
             )}}
           >

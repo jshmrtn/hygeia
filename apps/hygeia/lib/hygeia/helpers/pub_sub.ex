@@ -2,9 +2,7 @@ defmodule Hygeia.Helpers.PubSub do
   @moduledoc false
 
   @spec broadcast(
-          result ::
-            {:ok, %{model: resource, version: %PaperTrail.Version{}}}
-            | {:error, reason},
+          result :: {:ok, resource} | {:error, reason},
           resource_name :: String.t(),
           action :: :create | :update | :delete,
           id_fetcher :: (resource -> String.t()),
@@ -34,7 +32,7 @@ defmodule Hygeia.Helpers.PubSub do
         delete: :deleted
       } do
     def broadcast(
-          {:ok, %{model: resource, version: %PaperTrail.Version{} = version}} = result,
+          {:ok, resource} = result,
           resource_name,
           unquote(cause),
           id_fetcher,
@@ -44,7 +42,7 @@ defmodule Hygeia.Helpers.PubSub do
             resource_name,
             resource_name <> ":" <> id_fetcher.(resource) | additional_topics_fetcher.(resource)
           ] do
-        Phoenix.PubSub.broadcast!(Hygeia.PubSub, topic, {unquote(event), resource, version})
+        Phoenix.PubSub.broadcast!(Hygeia.PubSub, topic, {unquote(event), resource, nil})
       end
 
       result
