@@ -22,6 +22,9 @@ defmodule Hygeia.Application do
         Hygeia.Repo,
         # Start the PubSub system
         {Phoenix.PubSub, name: Hygeia.PubSub},
+        # Postgres PubSub Relay
+        Hygeia.PostgresPubSubRelay,
+        # Other Workers
         Hygeia.Jobs.Supervisor | @workers
       ],
       strategy: :one_for_one,

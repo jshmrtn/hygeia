@@ -166,10 +166,7 @@
             end }}</td>
           <td>{{ format_address(person.address) }}</td>
           <td>
-            {{ HygeiaCldr.DateTime.to_string!(
-              DateTime.from_naive!(person.inserted_at, "Europe/Zurich"),
-              format: :short
-            ) }}
+            {{ HygeiaCldr.DateTime.to_string!(person.inserted_at, format: :short) }}
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">

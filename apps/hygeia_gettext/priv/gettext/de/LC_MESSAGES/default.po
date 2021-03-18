@@ -18,7 +18,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 msgid ""
@@ -1076,6 +1076,10 @@ msgstr "Standard Land"
 msgid "Delete"
 msgstr "Löschen"
 
+msgctxt "Notification"
+msgid "Delete"
+msgstr "Löschen"
+
 msgid "Describe your encounter with %{first_name} %{last_name}."
 msgstr "Beschreiben Sie Ihre Begegnung mit %{first_name} %{last_name}."
 
@@ -2102,6 +2106,9 @@ msgstr "Notizen"
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Notes"
 msgstr "Notizen"
+
+msgid "Notifications"
+msgstr "Benachrichtigungen"
 
 msgid "November"
 msgstr "November"
@@ -3466,6 +3473,10 @@ msgctxt "versioning_event"
 msgid "delete"
 msgstr "Gelöscht"
 
+msgctxt "Notification"
+msgid "delete all"
+msgstr "Alle löschen"
+
 msgid "deleted"
 msgstr "Gelöscht"
 
@@ -3479,6 +3490,10 @@ msgstr "Organisation oder Kommentar müssen ausgefüllt werden"
 msgctxt "Item Table"
 msgid "emails"
 msgstr "Emails"
+
+msgctxt "Notification"
+msgid "failed to send email."
+msgstr "Email Versand fehlgeschlagen."
 
 msgid "hostname"
 msgstr "Hostname"
@@ -3499,12 +3514,20 @@ msgctxt "versioning_event"
 msgid "insert"
 msgstr "Eingefügt"
 
+msgctxt "Notification"
+msgid "mark all as read"
+msgstr "Alle als gelesen markieren"
+
 msgid "negative"
 msgstr "Negativ"
 
 msgctxt "Item Table"
 msgid "notes"
 msgstr "Notizen"
+
+msgctxt "Item Table"
+msgid "notifications"
+msgstr "Benachrichtigungen"
 
 msgid "on \"From\" Day"
 msgstr "am \"Von\" Tag"
@@ -3627,6 +3650,10 @@ msgstr "Benutzer"
 msgctxt "Item Table"
 msgid "versions"
 msgstr "Versionen"
+
+msgctxt "Notification"
+msgid "was assigned to you."
+msgstr "wurde zugewiesen."
 
 #. Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj
 msgid "yyyy-mm-dd"

@@ -928,6 +928,11 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+#, elixir-format, fuzzy
+msgctxt "Notification"
+msgid "Delete"
+msgstr ""
+
 msgid "Describe your encounter with %{first_name} %{last_name}."
 msgstr ""
 
@@ -1949,6 +1954,10 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Notes"
+msgstr ""
+
+#, elixir-format
+msgid "Notifications"
 msgstr ""
 
 msgid "November"
@@ -3306,6 +3315,11 @@ msgctxt "versioning_event"
 msgid "delete"
 msgstr ""
 
+#, elixir-format, fuzzy
+msgctxt "Notification"
+msgid "delete all"
+msgstr ""
+
 msgid "deleted"
 msgstr ""
 
@@ -3318,6 +3332,11 @@ msgstr ""
 
 msgctxt "Item Table"
 msgid "emails"
+msgstr ""
+
+#, elixir-format
+msgctxt "Notification"
+msgid "failed to send email."
 msgstr ""
 
 msgid "hostname"
@@ -3339,11 +3358,21 @@ msgctxt "versioning_event"
 msgid "insert"
 msgstr ""
 
+#, elixir-format
+msgctxt "Notification"
+msgid "mark all as read"
+msgstr ""
+
 msgid "negative"
 msgstr ""
 
 msgctxt "Item Table"
 msgid "notes"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "notifications"
 msgstr ""
 
 msgid "on \"From\" Day"
@@ -3466,6 +3495,11 @@ msgstr ""
 
 msgctxt "Item Table"
 msgid "versions"
+msgstr ""
+
+#, elixir-format
+msgctxt "Notification"
+msgid "was assigned to you."
 msgstr ""
 
 #. Has to be in format yyyy-mm-dd, can not be rearranged to for example dd.mm.jjjj

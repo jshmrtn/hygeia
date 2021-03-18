@@ -1,0 +1,16 @@
+.notification-tray-content {
+    .scroll-container {
+        width: 300px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .dropdown-item {
+        white-space: initial;
+        font-size: 0.7em;
+
+        &.notification:not(.read) {
+            background-color: orange;
+        }
+    }
+}

@@ -5,6 +5,7 @@ defmodule Hygeia.UserContext.User do
 
   use Hygeia, :model
 
+  alias Hygeia.NotificationContext.Notification
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.Grant
   alias Hygeia.UserContext.Grant.Role
@@ -20,6 +21,7 @@ defmodule Hygeia.UserContext.User do
           iam_sub: String.t() | nil,
           grants: Ecto.Schema.has_many(Grant.t()) | nil,
           tenants: Ecto.Schema.has_many(Tenant.t()) | nil,
+          notifications: Ecto.Schema.has_many(Notification.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -31,6 +33,7 @@ defmodule Hygeia.UserContext.User do
           iam_sub: String.t(),
           grants: Ecto.Schema.has_many(Grant.t()),
           tenants: Ecto.Schema.has_many(Tenant.t()),
+          notifications: Ecto.Schema.has_many(Notification.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -42,6 +45,7 @@ defmodule Hygeia.UserContext.User do
 
     has_many :grants, Grant, foreign_key: :user_uuid, on_replace: :delete
     has_many :tenants, through: [:grants, :tenant]
+    has_many :notifications, Notification, foreign_key: :user_uuid, on_replace: :delete
 
     timestamps()
   end
