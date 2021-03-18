@@ -187,7 +187,7 @@ defmodule HygeiaWeb do
   def setup_live_view(session) do
     unless is_nil(session["cldr_locale"]) do
       HygeiaCldr.put_locale(session["cldr_locale"])
-      Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name)
+      Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
 
       Sentry.Context.set_tags_context(%{locale: session["cldr_locale"]})
     end
