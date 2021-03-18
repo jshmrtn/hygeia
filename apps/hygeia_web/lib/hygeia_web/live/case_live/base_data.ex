@@ -11,6 +11,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
+  alias HygeiaWeb.CaseLive.CaseLiveHelper
   alias HygeiaWeb.DateInput
   alias HygeiaWeb.PolimorphicInputs
   alias Surface.Components.Form

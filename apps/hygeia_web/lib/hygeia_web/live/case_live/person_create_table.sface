@@ -134,7 +134,14 @@
                   id={{ {:supervisor, changeset_uuid} }}
                   title={{ gettext("Supervisor") }}
                   options={{[{gettext("Default Supervisor"), nil}] ++
-                    Enum.map(@supervisor_users, &{&1.display_name, &1.uuid})}}
+                    Enum.map(
+                      CaseLiveHelper.get_users(
+                        @supervisor_users,
+                        Ecto.Changeset.fetch_field!(form.source, :tenant_uuid),
+                        :supervisor
+                      ),
+                      &{&1.display_name, &1.uuid}
+                    )}}
                   :let={{ value: value }}
                   id={{ "person_create_#{changeset_uuid}_supervisor_input" }}
                 >
@@ -149,7 +156,14 @@
                   id={{ {:tracer, changeset_uuid} }}
                   title={{ gettext("Tracer") }}
                   options={{[{gettext("Default Tracer"), nil}] ++
-                    Enum.map(@tracer_users, &{&1.display_name, &1.uuid})}}
+                    Enum.map(
+                      CaseLiveHelper.get_users(
+                        @tracer_users,
+                        Ecto.Changeset.fetch_field!(form.source, :tenant_uuid),
+                        :tracer
+                      ),
+                      &{&1.display_name, &1.uuid}
+                    )}}
                   :let={{ value: value }}
                   id={{ "person_create_#{changeset_uuid}_tracer_input" }}
                 >
