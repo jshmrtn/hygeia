@@ -262,10 +262,7 @@
             </Link>
           </td>
           <td>
-            {{ HygeiaCldr.DateTime.to_string!(
-              DateTime.from_naive!(case.inserted_at, "Europe/Zurich"),
-              format: :short
-            ) }}
+            {{ HygeiaCldr.DateTime.to_string!(case.inserted_at, format: :short) }}
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">

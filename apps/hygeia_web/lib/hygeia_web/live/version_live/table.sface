@@ -41,11 +41,10 @@
         <td>
           <time
             datetime={{ NaiveDateTime.to_iso8601(inserted_at) }}
-            title={{ Cldr.DateTime.to_string!(inserted_at, HygeiaCldr) }}
+            title={{ HygeiaCldr.DateTime.to_string!(inserted_at) }}
           >
-            {{ Cldr.DateTime.Relative.to_string!(
-              DateTime.from_naive!(inserted_at, "Etc/UTC"),
-              HygeiaCldr,
+            {{ HygeiaCldr.DateTime.Relative.to_string!(
+              inserted_at,
               format: :short,
               relative_to: @now
             ) }}

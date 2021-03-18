@@ -109,7 +109,10 @@
               </LiveRedirect>
             </UriActiveContext>
           </li>
-          <li class="nav-item" :if={{ auth != :anonymous }}>
+          <li class="nav-item text-primary" :if={{ logged_in }}>
+            <HygeiaWeb.Notification.Tray id="header_notifications_tray" />
+          </li>
+          <li class="nav-item" :if={{ logged_in }}>
             <div class="dropdown" id="profile" phx-update="ignore">
               <a
                 class="nav-link"
@@ -137,7 +140,7 @@
               </div>
             </div>
           </li>
-          <li class="nav-item" :if={{ auth == :anonymous }}>
+          <li class="nav-item" :if={{ not logged_in }}>
             <div id="profile" phx-update="ignore">
               <Link to={{ Routes.auth_path(@socket, :request, "oidc") }} class="nav-link">
                 {{ gettext("Login") }}

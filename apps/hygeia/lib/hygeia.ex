@@ -51,7 +51,7 @@ defmodule Hygeia do
 
       @primary_key {:uuid, :binary_id, autogenerate: true}
       @foreign_key_type :binary_id
-      @timestamps_opts type: :naive_datetime_usec
+      @timestamps_opts type: :utc_datetime_usec
     end
   end
 

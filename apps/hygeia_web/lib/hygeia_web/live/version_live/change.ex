@@ -96,10 +96,15 @@ defmodule HygeiaWeb.VersionLive.Change do
       |> DateTime.from_naive!("Europe/Zurich")
       |> HygeiaCldr.DateTime.to_string!()
 
-  defp render_tree(date, type, _assigns)
+  defp render_tree(date, type, assigns)
        when type in [:utc_datetime, :datetime, :datetime_usec, :utc_datetime_usec] do
-    {:ok, date, _offset} = DateTime.from_iso8601(date)
-    date |> DateTime.shift_zone!("Europe/Zurich") |> HygeiaCldr.DateTime.to_string!()
+    case DateTime.from_iso8601(date) do
+      {:ok, date, _offset} ->
+        date |> DateTime.shift_zone!("Europe/Zurich") |> HygeiaCldr.DateTime.to_string!()
+
+      {:error, :missing_offset} ->
+        render_tree(date, :naive_datetime_usec, assigns)
+    end
   end
 
   defp render_tree(code, Hygeia.EctoType.NOGA.Code, _assigns),

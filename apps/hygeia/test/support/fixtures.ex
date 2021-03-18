@@ -12,6 +12,8 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.CommunicationContext
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
+  alias Hygeia.NotificationContext
+  alias Hygeia.NotificationContext.Notification
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
@@ -399,5 +401,20 @@ defmodule Hygeia.Fixtures do
       OrganisationContext.create_division(organisation, Enum.into(attrs, @valid_attrs))
 
     division
+  end
+
+  @valid_attrs %{
+    body: %{__type__: :case_assignee, case_uuid: "a4f86204-9510-4b69-aef2-f8e78bab5760"},
+    notified: true,
+    read: true
+  }
+
+  @spec notification_fixture(user :: User.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          Notification.t()
+  def notification_fixture(user \\ user_fixture(), attrs \\ %{}) do
+    {:ok, notification} =
+      NotificationContext.create_notification(user, Enum.into(attrs, @valid_attrs))
+
+    notification
   end
 end
