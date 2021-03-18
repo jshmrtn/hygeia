@@ -5,10 +5,15 @@ defmodule Hygeia.Jobs.SendEmails do
 
   use GenServer
 
+  import HygeiaGettext
+
+  alias Hygeia.CaseContext
   alias Hygeia.CommunicationContext
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
+  alias Mail.Message
+  alias Mail.Parsers.RFC2822
 
   require Logger
 
@@ -74,6 +79,7 @@ defmodule Hygeia.Jobs.SendEmails do
         CommunicationContext.list_emails_to_abort()
         |> Enum.reduce(Ecto.Multi.new(), fn %Email{uuid: uuid} = email, acc ->
           Ecto.Multi.run(acc, uuid, fn _repo, _before ->
+            remove_failed_email_contact(email)
             CommunicationContext.update_email(email, %{status: :retries_exceeded})
           end)
         end)
@@ -122,6 +128,10 @@ defmodule Hygeia.Jobs.SendEmails do
 
           {{:ok, {retried_at, new_status}}, %Email{uuid: uuid} = email}, acc ->
             Ecto.Multi.run(acc, uuid, fn _repo, _before ->
+              # credo:disable-for-next-line Credo.Check.Refactor.Nesting
+              if new_status in [:retries_exceeded, :permanent_failure],
+                do: remove_failed_email_contact(email)
+
               CommunicationContext.update_email(email, %{status: new_status, last_try: retried_at})
             end)
         end)
@@ -134,6 +144,32 @@ defmodule Hygeia.Jobs.SendEmails do
   end
 
   def handle_info(_other, state), do: {:noreply, state}
+
+  defp remove_failed_email_contact(email) do
+    person = CaseContext.get_person!(email.case.person_uuid)
+
+    to =
+      email.message
+      |> RFC2822.parse()
+      |> Message.get_header("to")
+
+    [to_mail] =
+      Enum.map(to, fn
+        address when is_binary(address) -> address
+        {_name, address} when is_binary(address) -> address
+      end)
+
+    CaseContext.update_person(person, %{
+      contact_methods:
+        person.contact_methods
+        |> Enum.filter(&(&1.value != to_mail))
+        |> Enum.map(&Map.from_struct/1)
+    })
+
+    CaseContext.create_note(email.case, %{
+      note: gettext("Failed email contact (%{failed_mail}) deleted", failed_mail: to_mail)
+    })
+  end
 
   @spec send(email :: Email.t()) :: {DateTime.t(), Email.Status.t()}
 
