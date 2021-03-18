@@ -108,6 +108,7 @@ defmodule Hygeia.TenantContext.Tenant.Smtp do
       |> :gen_smtp_client.send_blocking(send_options ++ [retries: 10])
       |> case do
         binary when is_binary(binary) -> :success
+        {:error, :send, error} -> handle_error(error)
         {:error, :no_more_hosts, error} -> handle_error(error)
         {:error, :retries_exceeded, error} -> handle_error(error)
       end
