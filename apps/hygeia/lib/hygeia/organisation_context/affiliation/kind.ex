@@ -1,5 +1,5 @@
 defmodule Hygeia.OrganisationContext.Affiliation.Kind do
-  @moduledoc false
+  @moduledoc "Affiliation Kind"
 
   use EctoEnum,
     type: :affiliation_kind,
