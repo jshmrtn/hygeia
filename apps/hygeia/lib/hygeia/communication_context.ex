@@ -44,7 +44,7 @@ defmodule Hygeia.CommunicationContext do
                  ) <=
                  ^NaiveDateTime.utc_now()),
         lock: "FOR UPDATE",
-        preload: [:tenant],
+        preload: [:tenant, :case],
         limit: ^limit
       )
 

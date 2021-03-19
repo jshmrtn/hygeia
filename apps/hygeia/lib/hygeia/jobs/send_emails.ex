@@ -8,6 +8,7 @@ defmodule Hygeia.Jobs.SendEmails do
   import HygeiaGettext
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CommunicationContext
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.Helpers.Versioning
@@ -145,8 +146,8 @@ defmodule Hygeia.Jobs.SendEmails do
 
   def handle_info(_other, state), do: {:noreply, state}
 
-  defp remove_failed_email_contact(email) do
-    person = CaseContext.get_person!(email.case.person_uuid)
+  defp remove_failed_email_contact(%Email{case: %Case{person_uuid: person_uuid}} = email) do
+    person = CaseContext.get_person!(person_uuid)
 
     to =
       email.message
@@ -174,6 +175,8 @@ defmodule Hygeia.Jobs.SendEmails do
       note: gettext("Failed email contact (%{failed_mail}) deleted", failed_mail: to_mail)
     })
   end
+
+  defp remove_failed_email_contact(_email), do: :ok
 
   @spec send(email :: Email.t()) :: {DateTime.t(), Email.Status.t()}
 
