@@ -5,51 +5,59 @@
   class="open dropleft"
 >
   <template slot="trigger">
-    <span class="oi oi-bell" title={{ gettext("Notifications") }} />
-    <span class="badge badge-primary" :if={{ @notifications != [] }}>
-      {{ Enum.count(@notifications, &match?(%Notification{read: false}, &1)) }} /
-      {{ Enum.count(@notifications) }}
-    </span>
+    <button class="nav-item notification-tray-trigger">
+      <span class="oi oi-bell" title={{ gettext("Notifications") }} />
+      <span class="notification-badge badge badge-warning" :if={{ @notifications != [] }}>
+        {{ Enum.count(@notifications, &match?(%Notification{read: false}, &1)) }}
+      </span>
+    </button>
   </template>
   <template slot="default">
+    <div class="dropdown-item actions">
+      <button class="btn btn-secondary btn-sm" :on-click="read_all">
+        <span class="oi oi-check" aria-hidden="true" />
+        {{ pgettext("Notification", "mark all as read") }}
+      </button>
+      <button class="btn btn-danger btn-sm" :on-click="delete_all" data-confirm="Are you sure?">
+        <span class="oi oi-trash" aria-hidden="true" />
+        {{ pgettext("Notification", "delete all") }}
+      </button>
+    </div>
     <div class="scroll-container">
       <div
         :for={{%Notification{uuid: uuid, read: read, body: body, inserted_at: inserted_at} = notification <-
           @notifications}}
         id={{ "notifications_tray_notification_#{uuid}" }}
         class={{ "dropdown-item", "notification", body.__struct__, read: read }}
-        :on-click="read"
-        phx-value-uuid={{ uuid }}
       >
-        <button class="btn float-right btn-link btn-sm" :on-click="delete" phx-value-uuid={{ uuid }}>
+        <span
+          :on-click="read"
+          phx-value-uuid={{ uuid }}
+          class={{ "read-icon", "oi", "oi-envelope-closed": !read, "oi-envelope-open": read }}
+        />
+        <div class="notification-content">
+          <small class="notification-time">
+            <time
+              datetime={{ DateTime.to_iso8601(inserted_at) }}
+              title={{ HygeiaCldr.DateTime.to_string!(inserted_at) }}
+            >
+              {{ HygeiaCldr.DateTime.Relative.to_string!(
+                inserted_at,
+                format: :short,
+                relative_to: @now
+              ) }}
+            </time>
+          </small>
+          <div :on-click="read" phx-value-uuid={{ uuid }}>{{ render_body(assigns, notification) }}</div>
+        </div>
+        <button
+          class="remove-notification btn float-right btn-link btn-sm text-dark"
+          :on-click="delete"
+          phx-value-uuid={{ uuid }}
+        >
           <span class="oi oi-x" title={{ pgettext("Notification", "Delete") }} />
         </button>
-        <small>
-          <time
-            datetime={{ DateTime.to_iso8601(inserted_at) }}
-            title={{ HygeiaCldr.DateTime.to_string!(inserted_at) }}
-          >
-            {{ HygeiaCldr.DateTime.Relative.to_string!(
-              inserted_at,
-              format: :short,
-              relative_to: @now
-            ) }}
-          </time>
-        </small>
-        {{ render_body(assigns, notification) }}
       </div>
-    </div>
-    <div class="dropdown-item">
-      <button class="btn btn-secondary btn-sm" :on-click="read_all">
-        <span class="oi oi-check" aria-hidden="true" />
-        {{ pgettext("Notification", "mark all as read") }}
-      </button>
-    </div>
-    <div class="dropdown-item">
-      <button class="btn btn-danger btn-sm" :on-click="delete_all" data-confirm="Are you sure?">
-        <span class="oi oi-trash" aria-hidden="true" />
-        {{ pgettext("Notification", "delete all") }}
-      </button>
     </div>
   </template>
 </HygeiaWeb.Dropdown>

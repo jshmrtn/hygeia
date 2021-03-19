@@ -1,16 +1,77 @@
+.notification-tray-trigger {
+  background: transparent;
+  border: none;
+  color: theme-color("primary");
+  position: relative;
+
+  &:hover {
+    color: theme-color-level("primary", 3);
+  }
+
+  &:focus-within {
+    color: $white;
+  }
+
+  .notification-badge {
+    position: absolute;
+    top: -10px;
+    left: 15px;
+  }
+}
+
 .notification-tray-content {
-    .scroll-container {
-        width: 300px;
-        max-height: 80vh;
-        overflow-y: auto;
+  overflow: hidden;
+  padding: 0;
+  .scroll-container {
+    width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .dropdown-item {
+    white-space: initial;
+    font-size: 0.8em;
+
+    &:hover {
+      background-color: unset;
+      color: unset;
     }
 
-    .dropdown-item {
-        white-space: initial;
-        font-size: 0.7em;
+    &.actions {
+      padding: 16px;
+      background-color: $gray-100;
+      border-bottom: 1px solid $gray-300;
+    }
 
-        &.notification:not(.read) {
-            background-color: orange;
+    &.notification {
+      padding: 8px 8px 8px 16px;
+      display: flex;
+      border-bottom: 1px solid $gray-100;
+      align-items: center;
+
+      .read-icon {
+        margin-right: 12px;
+        font-size: 18px;
+        color: $gray-500;
+        &.oi-envelope-closed {
+          cursor: pointer;
+          color: $warning;
         }
+      }
+      .notification-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+      .notification-time {
+        color: $gray-700;
+      }
+
+      &:not(:hover) {
+        .remove-notification {
+          visibility: hidden;
+        }
+      }
     }
+  }
 }
