@@ -13,6 +13,7 @@ defmodule Hygeia.CommunicationContext.Email do
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.TenantContext.Tenant.Smtp.DKIM
+  alias Hygeia.UserContext.User
 
   defenum Status, :email_status, [
     :in_progress,
@@ -32,7 +33,10 @@ defmodule Hygeia.CommunicationContext.Email do
           last_try: DateTime.t() | nil,
           case_uuid: String.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          tenant: Ecto.Schema.has_one(Tenant.t()) | nil,
+          user_uuid: String.t() | nil,
+          user: Ecto.Schema.belongs_to(User.t()) | nil,
+          tenant_uuid: String.t() | nil,
+          tenant: Ecto.Schema.belongs_to(User.t()) | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -45,9 +49,12 @@ defmodule Hygeia.CommunicationContext.Email do
           subject: String.t() | nil,
           body: String.t() | nil,
           last_try: DateTime.t(),
-          case_uuid: String.t(),
-          case: Ecto.Schema.belongs_to(Case.t()),
-          tenant: Ecto.Schema.has_one(Tenant.t()),
+          case_uuid: String.t() | nil,
+          case: Ecto.Schema.belongs_to(Case.t()) | nil,
+          user_uuid: String.t() | nil,
+          user: Ecto.Schema.belongs_to(User.t()) | nil,
+          tenant_uuid: String.t(),
+          tenant: Ecto.Schema.belongs_to(User.t()),
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -63,7 +70,8 @@ defmodule Hygeia.CommunicationContext.Email do
     field :body, :string, virtual: true
 
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
-    has_one :tenant, through: [:case, :tenant]
+    belongs_to :user, User, references: :uuid, foreign_key: :user_uuid
+    belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
 
     timestamps()
   end
@@ -90,6 +98,8 @@ defmodule Hygeia.CommunicationContext.Email do
       |> maybe_generate_message()
       |> validate_required([:uuid, :direction, :status, :message])
       |> assoc_constraint(:case)
+      |> assoc_constraint(:user)
+      |> check_constraint(:case_uuid, name: :context_must_be_provided)
 
   defp maybe_generate_message(changeset) do
     if Enum.any?(
@@ -107,19 +117,33 @@ defmodule Hygeia.CommunicationContext.Email do
   defp generate_message(%Changeset{valid?: false} = changeset), do: changeset
 
   defp generate_message(
-         %Changeset{valid?: true, data: %__MODULE__{case: case, tenant: tenant}} = changeset
+         %Changeset{valid?: true, data: %__MODULE__{case: %Case{} = case}} = changeset
        ) do
-    %Case{
-      person: person,
-      tenant: %Tenant{name: from_name, from_email: from_email}
-    } = Repo.preload(case, person: [], tenant: [])
+    %Case{person: person} = Repo.preload(case, person: [])
 
+    to_name =
+      [person.first_name, person.last_name]
+      |> Enum.reject(&(&1 in ["", nil]))
+      |> Enum.join(" ")
+
+    generate_message(changeset, to_name)
+  end
+
+  defp generate_message(
+         %Changeset{valid?: true, data: %__MODULE__{user: %User{display_name: to_name}}} =
+           changeset
+       ) do
+    generate_message(changeset, to_name)
+  end
+
+  defp generate_message(
+         %Changeset{
+           valid?: true,
+           data: %__MODULE__{tenant: %Tenant{name: from_name, from_email: from_email} = tenant}
+         } = changeset,
+         to_name
+       ) do
     if TenantContext.tenant_has_outgoing_mail_configuration?(tenant) do
-      to_name =
-        [person.first_name, person.last_name]
-        |> Enum.reject(&(&1 in ["", nil]))
-        |> Enum.join(" ")
-
       encoding_options =
         case tenant do
           %Tenant{outgoing_mail_configuration: %Tenant.Smtp{enable_dkim: false}} ->

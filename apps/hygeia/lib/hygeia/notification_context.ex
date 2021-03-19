@@ -29,6 +29,23 @@ defmodule Hygeia.NotificationContext do
         )
       )
 
+  @spec list_and_lock_users_with_pending_notification_reminders :: [User.t()]
+  def list_and_lock_users_with_pending_notification_reminders,
+    do:
+      Repo.all(
+        from(user in User,
+          where:
+            user.uuid in subquery(
+              from(notification in Notification,
+                select: notification.user_uuid,
+                where: not notification.read and not notification.notified,
+                group_by: notification.user_uuid
+              )
+            ),
+          lock: "FOR UPDATE"
+        )
+      )
+
   @doc """
   Gets a single notification.
 

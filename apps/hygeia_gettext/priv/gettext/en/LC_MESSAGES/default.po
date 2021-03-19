@@ -278,6 +278,12 @@ msgstr ""
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr ""
 
+#, elixir-format
+msgid "%{count} New Notification"
+msgid_plural "%{count} New Notifications"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "%{phase_type} (%{date})"
 msgstr ""
 
@@ -558,6 +564,11 @@ msgid "Case"
 msgstr ""
 
 msgid "Case Administration"
+msgstr ""
+
+#, elixir-format
+msgctxt "Notification Type"
+msgid "Case Assignee Changed"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
@@ -928,7 +939,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Notification"
 msgid "Delete"
 msgstr ""
@@ -1081,6 +1092,11 @@ msgstr ""
 
 msgctxt "Item Type"
 msgid "Email"
+msgstr ""
+
+#, elixir-format, fuzzy
+msgctxt "Notification Type"
+msgid "Email Send Failed"
 msgstr ""
 
 msgid "Email Sender"
@@ -1320,6 +1336,10 @@ msgid "Healthcare"
 msgstr ""
 
 msgid "Help"
+msgstr ""
+
+#, elixir-format
+msgid "Hi %{name},\n\nThere's new notifications available on Hygeia for you:\n%{totals}\n\nBest,\nHygeia\n"
 msgstr ""
 
 msgid "High"
@@ -3318,7 +3338,7 @@ msgctxt "versioning_event"
 msgid "delete"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Notification"
 msgid "delete all"
 msgstr ""

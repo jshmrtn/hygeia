@@ -72,7 +72,12 @@ defmodule Hygeia.TenantContext.Tenant.Smtp do
         %__MODULE__{enable_relay: true, relay: %{} = relay_config},
         _recipient_email
       ) do
-    Map.take(relay_config, [:server, :port, :username, :password])
+    relay_config
+    |> Map.take([:server, :port, :username, :password])
+    |> Enum.map(fn
+      {:server, value} -> {:relay, value}
+      {key, value} -> {key, value}
+    end)
   end
 
   defimpl Hygeia.EmailSender do
@@ -105,7 +110,7 @@ defmodule Hygeia.TenantContext.Tenant.Smtp do
       send_options = Smtp.gen_smtp_options(smtp_config, to_mail)
 
       {from_mail, [to_mail], message}
-      |> :gen_smtp_client.send_blocking(send_options ++ [retries: 10])
+      |> :gen_smtp_client.send_blocking(send_options ++ [etries: 10])
       |> case do
         binary when is_binary(binary) -> :success
         {:error, :send, error} -> handle_error(error)
