@@ -7,6 +7,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CommunicationContext
   alias Hygeia.Repo
@@ -268,28 +269,38 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   defp send_confirmation_emails(_socket, %CreateSchema{send_confirmation_email: false}, _cases),
     do: :ok
 
-  defp send_confirmation_emails(socket, %CreateSchema{send_confirmation_email: true}, cases) do
+  defp send_confirmation_emails(
+         socket,
+         %CreateSchema{send_confirmation_email: true, type: type},
+         cases
+       ) do
     locale = Gettext.get_locale(HygeiaGettext)
 
     [] =
       cases
       |> Enum.map(
         &Task.async(fn ->
-          %Case{phases: [phase]} = &1
+          case List.last(&1.phases) do
+            %Phase{details: %Phase.PossibleIndex{type: ^type}} = phase ->
+              Gettext.put_locale(HygeiaGettext, locale)
 
-          Gettext.put_locale(HygeiaGettext, locale)
+              CommunicationContext.create_outgoing_email(
+                &1,
+                quarantine_email_subject(),
+                quarantine_email_body(socket, &1, phase, :email)
+              )
 
-          CommunicationContext.create_outgoing_email(
-            &1,
-            quarantine_email_subject(),
-            quarantine_email_body(socket, &1, phase, :email)
-          )
+            %Phase{} ->
+              {:error, :not_latest_phase}
+          end
         end)
       )
       |> Enum.map(&Task.await/1)
+      # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({:ok, _}, &1))
       |> Enum.reject(&match?({:error, :no_email}, &1))
       |> Enum.reject(&match?({:error, :no_outgoing_mail_configuration}, &1))
+      |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
 
     :ok
   end
@@ -299,24 +310,33 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   defp send_confirmation_sms(_socket, %CreateSchema{send_confirmation_sms: false}, _cases),
     do: :ok
 
-  defp send_confirmation_sms(socket, %CreateSchema{send_confirmation_sms: true}, cases) do
+  defp send_confirmation_sms(
+         socket,
+         %CreateSchema{send_confirmation_sms: true, type: type},
+         cases
+       ) do
     locale = Gettext.get_locale(HygeiaGettext)
 
     [] =
       cases
       |> Enum.map(
         &Task.async(fn ->
-          %Case{phases: [phase]} = &1
+          case List.last(&1.phases) do
+            %Phase{details: %Phase.PossibleIndex{type: ^type}} = phase ->
+              Gettext.put_locale(HygeiaGettext, locale)
 
-          Gettext.put_locale(HygeiaGettext, locale)
+              CommunicationContext.create_outgoing_sms(&1, quarantine_sms(socket, &1, phase))
 
-          CommunicationContext.create_outgoing_sms(&1, quarantine_sms(socket, &1, phase))
+            %Phase{} ->
+              {:error, :not_latest_phase}
+          end
         end)
       )
       |> Enum.map(&Task.await/1)
       |> Enum.reject(&match?({:ok, _}, &1))
       |> Enum.reject(&match?({:error, :no_mobile_number}, &1))
       |> Enum.reject(&match?({:error, :sms_config_missing}, &1))
+      |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
 
     :ok
   end
