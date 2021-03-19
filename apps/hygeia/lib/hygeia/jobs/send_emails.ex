@@ -166,6 +166,10 @@ defmodule Hygeia.Jobs.SendEmails do
         |> Enum.map(&Map.from_struct/1)
     })
 
+    # TODO: Get Local from Case
+    HygeiaCldr.put_locale("de-CH")
+    Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
+
     CaseContext.create_note(email.case, %{
       note: gettext("Failed email contact (%{failed_mail}) deleted", failed_mail: to_mail)
     })
