@@ -1,9 +1,11 @@
-<small>
-  <LiveRedirect to={{ Routes.case_base_data_path(@socket, :show, @body.case_uuid) }}>
-    {{ case_display_type(@body.case) }}
-    <span class="date ml-2">{{ case_display_date(@body.case) }}</span>
-    ({{ @body.case.person.first_name }} {{ @body.case.person.last_name }})
-  </LiveRedirect>
+<div>
+  <LiveRedirect
+    class="d-inline-block"
+    to={{ Routes.case_base_data_path(@socket, :show, @body.case_uuid) }}
+  >
+    <strong>{{ case_display_type(@body.case) }}<span class="date ml-2">{{ case_display_date(@body.case) }}</span>
+      ({{ @body.case.person.first_name }} {{ @body.case.person.last_name }})</strong>
 
-  {{ pgettext("Notification", "was assigned to you.") }}
-</small>
+    {{ pgettext("Notification", "was assigned to you.") }}
+  </LiveRedirect>
+</div>
