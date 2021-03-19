@@ -64,7 +64,10 @@ defmodule Hygeia.Jobs.Supervisor do
         {Highlander, Hygeia.Jobs.SendEmails},
 
         # SMS Spooling
-        {Highlander, Hygeia.Jobs.SendSMS}
+        {Highlander, Hygeia.Jobs.SendSMS},
+
+        # Notification Emails
+        {Highlander, Hygeia.Jobs.NotificationReminder}
       ]
   end
 

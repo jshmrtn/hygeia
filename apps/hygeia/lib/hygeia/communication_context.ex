@@ -12,6 +12,7 @@ defmodule Hygeia.CommunicationContext do
   alias Hygeia.CommunicationContext.SMS
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
+  alias Hygeia.UserContext.User
 
   @doc """
   Returns the list of emails.
@@ -89,11 +90,11 @@ defmodule Hygeia.CommunicationContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_email(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec create_email(context :: Case.t() | User.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           {:ok, Email.t()} | {:error, Ecto.Changeset.t(Email.t())}
-  def create_email(case, attrs \\ %{}),
+  def create_email(context, attrs \\ %{}),
     do:
-      case
+      context
       |> change_email_create(attrs)
       |> versioning_insert()
       |> broadcast("emails", :create, & &1.uuid, &["emails:case:#{&1.case_uuid}"])
@@ -102,7 +103,7 @@ defmodule Hygeia.CommunicationContext do
   @spec create_outgoing_email(case :: Case.t(), subject :: String.t(), body :: String.t()) ::
           {:ok, Email.t()}
           | {:error, Ecto.Changeset.t(Email.t()) | :no_email | :no_outgoing_mail_configuration}
-  def create_outgoing_email(case, subject, body) do
+  def create_outgoing_email(%Case{} = case, subject, body) do
     %Case{
       person: %Person{contact_methods: contact_methods} = person,
       tenant: tenant
@@ -129,6 +130,25 @@ defmodule Hygeia.CommunicationContext do
           status: :in_progress,
           direction: :outgoing
         })
+    end
+  end
+
+  @spec create_outgoing_email(user :: User.t(), subject :: String.t(), body :: String.t()) ::
+          {:ok, Email.t()}
+          | {:error, Ecto.Changeset.t(Email.t()) | :no_email | :no_outgoing_mail_configuration}
+  def create_outgoing_email(%User{} = user, subject, body) do
+    user = %User{tenants: [tenant | _], email: email} = Repo.preload(user, tenants: [])
+
+    if TenantContext.tenant_has_outgoing_mail_configuration?(tenant) do
+      create_email(user, %{
+        recipient: email,
+        subject: subject,
+        body: body,
+        status: :in_progress,
+        direction: :outgoing
+      })
+    else
+      {:error, :no_outgoing_mail_configuration}
     end
   end
 
@@ -189,15 +209,33 @@ defmodule Hygeia.CommunicationContext do
           Ecto.Changeset.t(Email.t() | Email.empty())
   def change_email(%Email{} = email, attrs \\ %{}), do: Email.changeset(email, attrs)
 
+  def change_email_create(context, attrs \\ %{})
+
   @spec change_email_create(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           Ecto.Changeset.t(Email.t() | Email.empty())
-  def change_email_create(case, attrs \\ %{}) do
-    case = %Case{tenant: tenant} = Repo.preload(case, tenant: [])
+  def change_email_create(%Case{} = case, attrs) do
+    %Case{tenant: tenant} = case = Repo.preload(case, tenant: [])
 
     case
     |> Ecto.build_assoc(:emails)
     |> Map.put(:case, case)
+    |> Map.put(:case_uuid, case.uuid)
     |> Map.put(:tenant, tenant)
+    |> Map.put(:tenant_uuid, tenant.uuid)
+    |> change_email(attrs)
+  end
+
+  @spec change_email_create(user :: User.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          Ecto.Changeset.t(Email.t() | Email.empty())
+  def change_email_create(%User{} = user, attrs) do
+    %User{tenants: [tenant | _]} = user = Repo.preload(user, tenants: [])
+
+    user
+    |> Ecto.build_assoc(:emails)
+    |> Map.put(:user, user)
+    |> Map.put(:user_uuid, user.uuid)
+    |> Map.put(:tenant, tenant)
+    |> Map.put(:tenant_uuid, tenant.uuid)
     |> change_email(attrs)
   end
 

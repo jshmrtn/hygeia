@@ -6,7 +6,18 @@ alias Hygeia.Repo
 {:ok, tenant_root} =
   create_tenant(%{
     name: "Hygeia - Covid19 Tracing",
-    iam_domain: "covid19-tracing.ch"
+    iam_domain: "covid19-tracing.ch",
+    from_email: "no-reply@covid19-tracing.ch",
+    outgoing_mail_configuration: %{
+      __type__: "smtp",
+      enable_relay: true,
+      relay: %{
+        server: "smtp.postmarkapp.com",
+        port: 2525,
+        username: "***REMOVED***",
+        password: "***REMOVED***"
+      }
+    }
   })
 
 internal_public_key = """
