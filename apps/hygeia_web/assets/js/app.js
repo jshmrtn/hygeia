@@ -54,6 +54,6 @@ liveSocket.connect();
 window.liveSocket = liveSocket;
 
 // Sentry Setup
-if (document.documentElement.dataset.sentryEnabled) {
+if (document.documentElement.dataset.sentryEnabled === "true") {
   sentryInit(document.documentElement.dataset);
 }
