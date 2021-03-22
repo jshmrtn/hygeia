@@ -18,6 +18,7 @@ defmodule HygeiaWeb.Dropdown do
     <div
       tabindex="-1"
       id={{ @id <> "_dropdown" }}
+      phx-target={{ @myself }}
       phx-hook="Dropdown"
       class={{
         "dropdown",

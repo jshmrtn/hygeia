@@ -3,7 +3,7 @@ const Hook = {
     this.close_dropdown = (e) => {
       if (this.el.contains(e.relatedTarget)) return;
 
-      this.pushEvent("close_dropdown");
+      this.pushEventTo(this.el.getAttribute("phx-target"), "close_dropdown");
     };
     this.el.addEventListener("focusout", this.close_dropdown);
   },
