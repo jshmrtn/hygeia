@@ -61,7 +61,7 @@ defmodule HygeiaApi.MixProject do
       {:absinthe_relay, "~> 1.5"},
       {:absinthe_error_payload, "1.0.1"},
       {:dataloader, "~> 1.0"},
-      {:remote_ip, "~> 0.1"},
+      {:remote_ip, "~> 1.0"},
       {:hygeia, in_umbrella: true},
       {:hygeia_health, in_umbrella: true},
       {:phoenix_live_dashboard, "~> 0.4.0"},

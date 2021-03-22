@@ -76,7 +76,7 @@ defmodule HygeiaWeb.MixProject do
       {:oidcc, github: "jshmrtn/oidcc", branch: "master", override: true},
       {:csv, "~> 2.4"},
       {:plug_content_security_policy, "~> 0.2.1"},
-      {:remote_ip, "~> 0.1"},
+      {:remote_ip, "~> 1.0"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
       {:xlsxir, "~> 1.6.4"},
       {:mime, "~> 1.5"},

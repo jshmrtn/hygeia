@@ -7,8 +7,8 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
-    "@sentry/browser": "^6.2.2",
-    "@sentry/tracing": "^6.2.2",
+    "@sentry/browser": "^6.2.3",
+    "@sentry/tracing": "^6.2.3",
     "bootstrap": "^4.6.0",
     "bootstrap.native": "^3.0.14",
     "chart.js": "^2.9.4",
@@ -32,7 +32,7 @@
     "node-sass-glob-importer": "^5.3.2",
     "sass-loader": "^11.0.1",
     "terser-webpack-plugin": "^5.1.1",
-    "webpack": "5.26.3",
+    "webpack": "5.27.1",
     "webpack-cli": "^4.5.0"
   }
 }
