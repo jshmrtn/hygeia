@@ -104,7 +104,7 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   @spec fetch_tenant(field :: {key :: [atom], value :: term}, tenants :: [Tenant.t()]) ::
           {key :: [atom], value :: term}
-  def fetch_tenant({[:tenant], tenant_name}, tenants) do
+  def fetch_tenant({[:tenant], tenant_name}, tenants) when is_binary(tenant_name) do
     search = String.downcase(tenant_name)
 
     {[:tenant_uuid],
@@ -126,7 +126,7 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   @spec fetch_test_result(field :: {key :: [atom], value :: term}) ::
           {key :: [atom], value :: term}
-  def fetch_test_result({[:clinical, :result], result}) do
+  def fetch_test_result({[:clinical, :result], result}) when is_binary(result) do
     {[:clinical, :result],
      cond do
        String.downcase(result) == String.downcase("positive") -> :positive
@@ -137,7 +137,7 @@ defmodule HygeiaWeb.CaseLive.Create do
      end}
   end
 
-  def fetch_test_result({[:clinical, :positive_result_count], count}) do
+  def fetch_test_result({[:clinical, :positive_result_count], count}) when is_binary(count) do
     case Integer.parse(count) do
       {count, ""} when count > 0 -> {[:clinical, :result], :positive}
       _other -> {[:clinical, :result], :negative}
@@ -147,7 +147,7 @@ defmodule HygeiaWeb.CaseLive.Create do
   def fetch_test_result(field), do: field
 
   @spec fetch_sex(field :: {key :: [atom], value :: term}) :: {key :: [atom], value :: term}
-  def fetch_sex({[:sex], sex}) do
+  def fetch_sex({[:sex], sex}) when is_binary(sex) do
     {[:sex],
      cond do
        String.downcase(sex) == String.downcase("Male") -> :male
@@ -188,7 +188,7 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   @spec fetch_test_kind(field :: {key :: [atom], value :: term}) :: {key :: [atom], value :: term}
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
-  def fetch_test_kind({[:clinical, :test_kind], kind}) do
+  def fetch_test_kind({[:clinical, :test_kind], kind}) when is_binary(kind) do
     {[:clinical, :test_kind],
      cond do
        String.downcase(kind) == String.downcase("Antigen ++ Schnelltest") -> :antigen_quick
@@ -203,14 +203,15 @@ defmodule HygeiaWeb.CaseLive.Create do
      end}
   end
 
-  def fetch_test_kind({[:clinical, :test_kind_pcr_count], count} = field) do
+  def fetch_test_kind({[:clinical, :test_kind_pcr_count], count} = field) when is_binary(count) do
     case Integer.parse(count) do
       {count, ""} when count > 0 -> {[:clinical, :test_kind], :pcr}
       _other -> field
     end
   end
 
-  def fetch_test_kind({[:clinical, :test_kind_antigen_count], count} = field) do
+  def fetch_test_kind({[:clinical, :test_kind_antigen_count], count} = field)
+      when is_binary(count) do
     case Integer.parse(count) do
       {count, ""} when count > 0 -> {[:clinical, :test_kind], :antigen_quick}
       _other -> field
@@ -222,7 +223,7 @@ defmodule HygeiaWeb.CaseLive.Create do
   @spec decide_phone_kind(field :: {key :: [atom], value :: term}) ::
           {key :: [atom], value :: term}
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
-  def decide_phone_kind({[:phone], value}) do
+  def decide_phone_kind({[:phone], value}) when is_binary(value) do
     with {:ok, parsed_number} <-
            ExPhoneNumber.parse(value, @origin_country),
          true <- ExPhoneNumber.is_valid_number?(parsed_number),
