@@ -44,12 +44,19 @@ defmodule HygeiaIam.ServiceUserToken do
   def handle_call(:get_access_token, _from, %__MODULE__{access_token: access_token} = state),
     do: {:reply, access_token, state}
 
-  @spec get_access_token(server :: GenServer.server()) :: String.t()
+  @spec get_access_token(server :: GenServer.server()) :: {:ok, String.t()} | {:error, term}
   def get_access_token(server), do: GenServer.call(server, :get_access_token)
 
   defp login(user) do
-    {:ok, token, expiry} = HygeiaIam.service_login(user)
-    Process.send_after(self(), :login, (expiry - 1) * 1000)
-    token
+    case HygeiaIam.service_login(user) do
+      {:ok, token, expiry} ->
+        Process.send_after(self(), :login, (expiry - 1) * 1000)
+        {:ok, token}
+
+      {:error, reason} ->
+        # Retry in 1 sec
+        Process.send_after(self(), :login, 1000)
+        {:error, reason}
+    end
   end
 end

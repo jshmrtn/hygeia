@@ -36,10 +36,24 @@ defmodule HygeiaIam do
            Jason.decode(body) do
       {:ok, access_token, expires_in}
     else
-      {:error, reason} -> {:error, reason}
-      :error -> {:error, :missing_config}
-      %{} -> {:error, :missing_config}
-      {:ok, %{}} -> {:error, :missing_config}
+      {:error, reason} ->
+        {:error, reason}
+
+      :error ->
+        {:error, :missing_config}
+
+      %{} ->
+        {:error, :missing_config}
+
+      {:ok,
+       %{
+         "error" => "server_error",
+         "error_description" => "issuedAt of token is in the future" <> _
+       }} ->
+        {:error, :iat_in_future}
+
+      {:ok, %{"error" => type, "error_description" => description}} ->
+        {:error, {type, description}}
     end
   end
 

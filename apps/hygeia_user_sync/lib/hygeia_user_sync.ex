@@ -71,7 +71,16 @@ defmodule HygeiaUserSync do
         %__MODULE__{channel: channel, user_sync_token_server_name: user_sync_token_server_name} =
           state
       ) do
-    sync(channel, ServiceUserToken.get_access_token(user_sync_token_server_name))
+    case ServiceUserToken.get_access_token(user_sync_token_server_name) do
+      {:ok, token} ->
+        sync(channel, token)
+
+      {:error, reason} ->
+        Logger.error("""
+        Skipping IAM Sync because no access token could be obtained:
+        #{inspect(reason, pretty: true)}
+        """)
+    end
 
     {:noreply, state}
   end
