@@ -26,6 +26,7 @@ defmodule Hygeia.TenantContext.Tenant.Smtp.Relay do
     field :hostname, :string
     field :port, :integer
     field :username, :string
+    field :change_password, :boolean, virtual: true, default: false
     field :password, :string
   end
 
@@ -36,10 +37,19 @@ defmodule Hygeia.TenantContext.Tenant.Smtp.Relay do
         ) :: Changeset.t()
   def changeset(smtp, attrs) do
     smtp
-    |> cast(attrs, [:server, :hostname, :port, :username, :password])
+    |> cast(attrs, [:server, :hostname, :port, :username, :password, :change_password])
     |> validate_required([:server, :port])
     |> validate_number(:port, greater_than: 0, less_than: 65_536)
     |> validate_hostname(:server)
     |> validate_hostname(:hostname)
+    |> reject_password_change()
+  end
+
+  defp reject_password_change(changeset) do
+    if Changeset.fetch_field!(changeset, :change_password) do
+      changeset
+    else
+      Changeset.delete_change(changeset, :password)
+    end
   end
 end

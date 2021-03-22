@@ -129,45 +129,58 @@
                   <InputContext assigns={{ assigns }} :let={{ form: form }}>
                     <Field name={{ :enable_relay }} class="form-group">
                       <HygeiaWeb.FieldLabel />
-                      <Checkbox class="form-control" />
+                      <Checkbox class="form-control" opts={{ disabled: @live_action == :show }} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                     <Inputs
                       for={{ :relay }}
                       :if={{ Ecto.Changeset.fetch_field!(form.source, :enable_relay) == true }}
                     >
-                      <Field name={{ :server }} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                      <Field name={{ :hostname }} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                      <Field name={{ :port }} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                      <Field name={{ :username }} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                      <Field name={{ :password }} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <PasswordInput
-                          class="form-control"
-                          opts={{ disabled: @live_action == :show, placeholder: "password" }}
-                        />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
+                      <InputContext assigns={{ assigns }} :let={{ form: smtp_relay_form }}>
+                        <Field name={{ :server }} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        <Field name={{ :hostname }} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        <Field name={{ :port }} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        <Field name={{ :username }} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        <Field name={{ :change_password }} class="form-group" :if={{ @live_action == :edit }}>
+                          <HygeiaWeb.FieldLabel />
+                          <Checkbox class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        <Field
+                          name={{ :password }}
+                          class="form-group"
+                          :if={{@live_action == :edit and
+                            Phoenix.HTML.FormData.input_value(smtp_relay_form.source, smtp_relay_form, :change_password) ==
+                              "true"}}
+                        >
+                          <HygeiaWeb.FieldLabel />
+                          <PasswordInput
+                            class="form-control"
+                            opts={{ disabled: @live_action == :show, placeholder: "password" }}
+                          />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                      </InputContext>
                     </Inputs>
                     <Field name={{ :enable_dkim }} class="form-group">
                       <HygeiaWeb.FieldLabel />
-                      <Checkbox class="form-control" />
+                      <Checkbox class="form-control" opts={{ disabled: @live_action == :show }} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                     <Inputs for={{ :dkim }} :if={{ Ecto.Changeset.fetch_field!(form.source, :enable_dkim) == true }}>

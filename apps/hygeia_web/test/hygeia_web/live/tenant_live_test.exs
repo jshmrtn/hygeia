@@ -24,6 +24,7 @@ defmodule HygeiaWeb.TenantLiveTest do
         server: "kanton.com",
         port: 2525,
         username: "test1",
+        change_password: true,
         password: "test1"
       }
     }
@@ -101,7 +102,18 @@ defmodule HygeiaWeb.TenantLiveTest do
       assert show_live
              |> form("#tenant-form",
                tenant:
-                 Map.update!(@update_attrs, :outgoing_mail_configuration, &Map.drop(&1, [:relay]))
+                 update_in(@update_attrs, [:outgoing_mail_configuration], &Map.drop(&1, [:relay]))
+             )
+             |> render_change()
+
+      assert show_live
+             |> form("#tenant-form",
+               tenant:
+                 update_in(
+                   @update_attrs,
+                   [:outgoing_mail_configuration, :relay],
+                   &Map.drop(&1, [:password])
+                 )
              )
              |> render_change()
 

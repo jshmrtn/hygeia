@@ -230,6 +230,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       private_key: "Private Key"
     },
     Hygeia.TenantContext.Tenant.Smtp.Relay => %{
+      change_password: "Change Password",
       hostname: "Hostname",
       password: "Password",
       port: "Port",

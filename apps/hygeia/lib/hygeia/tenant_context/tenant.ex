@@ -118,23 +118,19 @@ defmodule Hygeia.TenantContext.Tenant do
       end
 
     tenant
-    |> cast(
-      attrs,
-      [
-        :name,
-        :case_management_enabled,
-        :public_statistics,
-        :outgoing_mail_configuration_type,
-        :outgoing_sms_configuration_type,
-        :override_url,
-        :template_variation,
-        :iam_domain,
-        :short_name,
-        :from_email,
-        :sedex_export_enabled
-      ],
-      empty_values: []
-    )
+    |> cast(attrs, [
+      :name,
+      :case_management_enabled,
+      :public_statistics,
+      :outgoing_mail_configuration_type,
+      :outgoing_sms_configuration_type,
+      :override_url,
+      :template_variation,
+      :iam_domain,
+      :short_name,
+      :from_email,
+      :sedex_export_enabled
+    ])
     |> validate_required([:name, :public_statistics, :case_management_enabled])
     |> cast_polymorphic_embed(:outgoing_mail_configuration)
     |> cast_polymorphic_embed(:outgoing_sms_configuration)
