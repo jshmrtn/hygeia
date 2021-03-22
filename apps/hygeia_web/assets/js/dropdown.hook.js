@@ -1,10 +1,9 @@
 const Hook = {
   mounted() {
     this.close_dropdown = (e) => {
-      if (this.el.contains(e.relatedTarget)) {
-        return;
-      }
-      this.pushEventTo(`#${this.el.dataset.id}`, "close_dropdown");
+      if (this.el.contains(e.relatedTarget)) return;
+
+      this.pushEvent("close_dropdown");
     };
     this.el.addEventListener("focusout", this.close_dropdown);
   },
