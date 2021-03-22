@@ -166,7 +166,7 @@
               <Select
                 class="form-control"
                 options={{ Enum.map(@supervisor_users, &{&1.display_name, &1.uuid}) }}
-                opts={{ prompt: gettext("Default Supervisor") }}
+                opts={{ prompt: gettext("Case Administration") }}
               />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
@@ -185,7 +185,7 @@
               <Select
                 class="form-control"
                 options={{ Enum.map(@tracer_users, &{&1.display_name, &1.uuid}) }}
-                opts={{ prompt: gettext("Default Tracer") }}
+                opts={{ prompt: gettext("Case Administration") }}
               />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>

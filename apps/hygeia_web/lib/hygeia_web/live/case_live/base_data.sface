@@ -72,7 +72,7 @@
                         <HygeiaWeb.FieldLabel />
                         <Select
                           class="form-control"
-                          opts={{ prompt: "Select user" |> gettext, disabled: @live_action == :show }}
+                          opts={{ prompt: gettext("Case Administration"), disabled: @live_action == :show }}
                           options={{Enum.map(
                             CaseLiveHelper.get_users(
                               @tracer_users,
@@ -90,7 +90,7 @@
                         <HygeiaWeb.FieldLabel />
                         <Select
                           class="form-control"
-                          opts={{ prompt: "Select user" |> gettext, disabled: @live_action == :show }}
+                          opts={{ prompt: gettext("Case Administration"), disabled: @live_action == :show }}
                           options={{Enum.map(
                             CaseLiveHelper.get_users(
                               @supervisor_users,

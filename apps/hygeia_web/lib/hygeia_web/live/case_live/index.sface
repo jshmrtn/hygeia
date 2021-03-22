@@ -255,11 +255,17 @@
             <Link to={{ Routes.user_show_path(@socket, :show, case.tracer) }} :if={{ case.tracer }}>
               {{ case.tracer.display_name }}
             </Link>
+            <span :if={{ is_nil(case.tracer) }}>
+              {{ gettext("Case Administration") }}
+            </span>
           </td>
           <td>
             <Link to={{ Routes.user_show_path(@socket, :show, case.supervisor) }} :if={{ case.supervisor }}>
               {{ case.supervisor.display_name }}
             </Link>
+            <span :if={{ is_nil(case.supervisor) }}>
+              {{ gettext("Case Administration") }}
+            </span>
           </td>
           <td>
             {{ HygeiaCldr.DateTime.to_string!(case.inserted_at, format: :short) }}
