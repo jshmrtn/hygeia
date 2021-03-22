@@ -112,13 +112,16 @@ defmodule Hygeia.NotificationContext do
 
   @spec mark_all_as_read(user :: User.t()) :: :ok
   def mark_all_as_read(%User{uuid: user_uuid} = user) do
-    {_length, nil} =
-      user
-      |> Ecto.assoc(:notifications)
-      |> Repo.update_all(set: [read: true])
+    {:ok, %{result: {length, nil}}} =
+      Ecto.Multi.new()
+      |> Ecto.Multi.update_all(:result, Ecto.assoc(user, :notifications), set: [read: true])
+      |> authenticate_multi()
+      |> Repo.transaction()
 
-    Phoenix.PubSub.broadcast!(Hygeia.PubSub, "notifications", :read_all)
-    Phoenix.PubSub.broadcast!(Hygeia.PubSub, "notifications:users:#{user_uuid}", :read_all)
+    if length > 0 do
+      Phoenix.PubSub.broadcast!(Hygeia.PubSub, "notifications", :read_all)
+      Phoenix.PubSub.broadcast!(Hygeia.PubSub, "notifications:users:#{user_uuid}", :read_all)
+    end
 
     :ok
   end
@@ -147,13 +150,16 @@ defmodule Hygeia.NotificationContext do
 
   @spec delete_all_notifications(user :: User.t()) :: :ok
   def delete_all_notifications(%User{uuid: user_uuid} = user) do
-    {_length, nil} =
-      user
-      |> Ecto.assoc(:notifications)
-      |> Repo.delete_all()
+    {:ok, %{result: {length, nil}}} =
+      Ecto.Multi.new()
+      |> Ecto.Multi.delete_all(:result, Ecto.assoc(user, :notifications))
+      |> authenticate_multi()
+      |> Repo.transaction()
 
-    Phoenix.PubSub.broadcast!(Hygeia.PubSub, "notifications", :deleted_all)
-    Phoenix.PubSub.broadcast!(Hygeia.PubSub, "notifications:users:#{user_uuid}", :deleted_all)
+    if length > 0 do
+      Phoenix.PubSub.broadcast!(Hygeia.PubSub, "notifications", :deleted_all)
+      Phoenix.PubSub.broadcast!(Hygeia.PubSub, "notifications:users:#{user_uuid}", :deleted_all)
+    end
 
     :ok
   end
