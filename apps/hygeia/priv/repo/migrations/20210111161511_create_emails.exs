@@ -175,7 +175,7 @@ defmodule Hygeia.Repo.Migrations.CreateEmails do
                {"Precedence", "auto_reply"},
                {"Date", Calendar.strftime(inserted_at, "%a, %-d %b %Y %X %z")},
                {"Message-ID", string_message_id}
-             ], [], body},
+             ], %{}, body},
             []
           )
 
