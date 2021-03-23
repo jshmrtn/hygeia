@@ -62,8 +62,8 @@ defmodule Hygeia.Helpers.Versioning do
         %User{uuid: originator_uuid} -> originator_uuid
       end
 
-    repo.query!("SET SESSION versioning.originator_id = '#{originator_id}'")
-    repo.query!("SET SESSION versioning.origin = '#{origin}'")
+    repo.query!("SELECT SET_CONFIG('versioning.originator_id', $1, true)", [originator_id])
+    repo.query!("SELECT SET_CONFIG('versioning.origin', $1, true)", [origin])
 
     :ok
   end
