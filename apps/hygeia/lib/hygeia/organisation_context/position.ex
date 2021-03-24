@@ -51,6 +51,7 @@ defmodule Hygeia.OrganisationContext.Position do
   end
 
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
     alias Hygeia.OrganisationContext.Position
     alias Hygeia.UserContext.User
 
@@ -60,10 +61,14 @@ defmodule Hygeia.OrganisationContext.Position do
     @spec authorized?(
             resource :: Position.t(),
             action :: :create | :list | :delete,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_position, action, :anonymous, _meta)
+        when action in [:list, :create, :delete],
+        do: false
+
+    def authorized?(_position, action, %Person{}, _meta)
         when action in [:list, :create, :delete],
         do: false
 

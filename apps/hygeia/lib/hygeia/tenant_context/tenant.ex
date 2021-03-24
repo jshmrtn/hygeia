@@ -202,6 +202,7 @@ defmodule Hygeia.TenantContext.Tenant do
   def get_message_signature_text(_tenant, _message_type), do: ""
 
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
     alias Hygeia.TenantContext.Tenant
     alias Hygeia.UserContext.User
 
@@ -211,7 +212,7 @@ defmodule Hygeia.TenantContext.Tenant do
     @spec authorized?(
             resource :: Tenant.t(),
             action :: :create | :details | :list | :update | :delete | :export_data,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_tenant, :list, _user, _meta), do: true

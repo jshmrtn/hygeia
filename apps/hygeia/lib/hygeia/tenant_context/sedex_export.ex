@@ -53,6 +53,7 @@ defmodule Hygeia.TenantContext.SedexExport do
       |> unique_constraint([:tenant_uuid, :scheduling_date])
 
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
     alias Hygeia.TenantContext.SedexExport
     alias Hygeia.UserContext.User
 
@@ -62,10 +63,11 @@ defmodule Hygeia.TenantContext.SedexExport do
     @spec authorized?(
             resource :: SedexExport.t(),
             action :: :list,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_sedex_export, :list, :anonymous, _meta), do: false
+    def authorized?(_sedex_export, :list, %Person{}, _meta), do: false
 
     def authorized?(_sedex_export, :list, %User{} = user, %{tenant: tenant}),
       do: User.has_role?(user, :admin, tenant) or User.has_role?(user, :webmaster, :any)

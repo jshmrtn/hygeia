@@ -47,7 +47,7 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
           {:error, _reason} ->
             conn
             |> configure_session(drop: true)
-            |> redirect(to: Helpers.auth_path(conn, :request, "oidc", return_url: request_path))
+            |> redirect(to: Helpers.auth_login_path(conn, :login, return_url: request_path))
             |> halt
 
             # TODO: Refresh token if expired as soon as Zitadel is ready

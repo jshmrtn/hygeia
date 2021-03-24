@@ -20,7 +20,10 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
-    possible_index_submission = CaseContext.get_possible_index_submission!(id)
+    possible_index_submission =
+      id
+      |> CaseContext.get_possible_index_submission!()
+      |> Repo.preload(:case)
 
     socket =
       if authorized?(
@@ -35,9 +38,18 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
 
         load_data(socket, possible_index_submission)
       else
-        socket
-        |> push_redirect(to: Routes.home_index_path(socket, :index))
-        |> put_flash(:error, gettext("You are not authorized to do this action."))
+        push_redirect(socket,
+          to:
+            Routes.auth_login_path(socket, :login,
+              person_uuid: possible_index_submission.case.person_uuid,
+              return_url:
+                Routes.possible_index_submission_show_path(
+                  socket,
+                  :show,
+                  possible_index_submission
+                )
+            )
+        )
       end
 
     {:noreply, socket}

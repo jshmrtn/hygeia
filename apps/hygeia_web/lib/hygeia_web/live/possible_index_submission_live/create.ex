@@ -35,9 +35,13 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
             |> CaseContext.change_possible_index_submission(params)
         )
       else
-        socket
-        |> push_redirect(to: Routes.home_index_path(socket, :index))
-        |> put_flash(:error, gettext("You are not authorized to do this action."))
+        push_redirect(socket,
+          to:
+            Routes.auth_login_path(socket, :login,
+              person_uuid: case.person_uuid,
+              return_url: Routes.possible_index_submission_create_path(socket, :create, case)
+            )
+        )
       end
 
     {:ok, socket}

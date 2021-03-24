@@ -96,6 +96,7 @@ defmodule Hygeia.OrganisationContext.Affiliation do
   end
 
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
     alias Hygeia.OrganisationContext.Affiliation
     alias Hygeia.Repo
     alias Hygeia.UserContext.User
@@ -106,10 +107,11 @@ defmodule Hygeia.OrganisationContext.Affiliation do
     @spec authorized?(
             resource :: Affiliation.t(),
             action :: :list | :versioning | :deleted_versioning,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_affiliation, _action, :anonymous, _meta), do: false
+    def authorized?(_affiliation, _action, %Person{}, _meta), do: false
 
     def authorized?(_division, action, user, _meta)
         when action in [:list, :versioning, :deleted_versioning],

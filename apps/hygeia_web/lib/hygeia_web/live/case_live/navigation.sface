@@ -28,7 +28,7 @@
       caller_module={{ __MODULE__ }}
     />
 
-    <li class="nav-item">
+    <li class="nav-item" :if={{ authorized?(@case, :details, auth) }}>
       <UriActiveContext
         to={{ Routes.case_base_data_path(@socket, :show, @case) }}
         :let={{ to: to, active: active }}
@@ -43,7 +43,7 @@
         </UriActiveContext>
       </UriActiveContext>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" :if={{ authorized?(@case, :details, auth) }}>
       <UriActiveContext
         to={{ Routes.case_transmissions_path(@socket, :show, @case) }}
         opts={{ active: :inclusive }}
@@ -54,7 +54,10 @@
         </LiveRedirect>
       </UriActiveContext>
     </li>
-    <li :if={{ has_index_phase?(@case) }} class="nav-item">
+    <li
+      :if={{ has_index_phase?(@case) and authorized?(PossibleIndexSubmission, :list, auth, case: @case) }}
+      class="nav-item"
+    >
       <UriActiveContext
         to={{ Routes.possible_index_submission_index_path(@socket, :index, @case) }}
         opts={{ active: :inclusive }}
@@ -65,7 +68,7 @@
         </LiveRedirect>
       </UriActiveContext>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" :if={{ authorized?(@case, :details, auth) }}>
       <UriActiveContext
         to={{ Routes.case_protocol_path(@socket, :show, @case) }}
         :let={{ to: to, active: active }}
@@ -75,7 +78,7 @@
         </LiveRedirect>
       </UriActiveContext>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" :if={{ authorized?(@case, :versioning, auth) }}>
       <UriActiveContext
         to={{ Routes.version_show_path(@socket, :show, Case.__schema__(:source), @case) }}
         :let={{ to: to, active: active }}
@@ -99,6 +102,7 @@
       <div :if={{ Enum.any?(@case.phases, &match?(%{details: %Phase.Index{}}, &1)) }}>
         <div
           :for={{ %{details: %Phase.Index{}, uuid: uuid} = phase <- @case.phases }}
+          :if={{ authorized?(@case, :partial_details, auth) }}
           data-toggle="tooltip"
           data-original-title={{if !can_generate_isolation_confirmation(phase, @case.clinical),
             do: gettext("Phase start- and end-dates must be set to create Isolation Confirmations."),
@@ -175,6 +179,7 @@
         />
         <div
           :for={{ %{details: %Phase.PossibleIndex{}, uuid: uuid} = phase <- @case.phases }}
+          :if={{ authorized?(@case, :partial_details, auth) }}
           data-toggle="tooltip"
           data-original-title={{if !can_generate_quarantine_confirmation(phase),
             do: gettext("Quarantine Confirmations are only available for contact persons."),

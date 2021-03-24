@@ -153,7 +153,7 @@ defmodule Hygeia.CaseContext.Transmission do
     @spec authorized?(
             resource :: Transmission.t(),
             action :: :create | :details | :list | :update | :delete,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(
@@ -172,6 +172,7 @@ defmodule Hygeia.CaseContext.Transmission do
       do: User.has_role?(user, :admin, :any)
 
     def authorized?(_transmission, :create, :anonymous, _meta), do: false
+    def authorized?(_transmission, :create, %Person{}, _meta), do: false
 
     def authorized?(_transmission, :create, user, _meta),
       do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, :any))

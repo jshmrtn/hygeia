@@ -68,6 +68,7 @@ defmodule Hygeia.OrganisationContext.Division do
   end
 
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
     alias Hygeia.OrganisationContext.Division
     alias Hygeia.UserContext.User
 
@@ -77,10 +78,14 @@ defmodule Hygeia.OrganisationContext.Division do
     @spec authorized?(
             resource :: Division.t(),
             action :: :create | :list | :details | :update | :delete,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_division, action, :anonymous, _meta)
+        when action in [:list, :create, :details, :update, :delete],
+        do: false
+
+    def authorized?(_division, action, %Person{}, _meta)
         when action in [:list, :create, :details, :update, :delete],
         do: false
 

@@ -52,7 +52,7 @@
               role="button"
               aria-haspopup="true"
               aria-expanded="false"
-              :if={{ logged_in }}
+              :if={{ match?(%User{}, auth) }}
             >
               {{ gettext("More") }}
             </a>
@@ -96,7 +96,7 @@
           </li>
         </ul>
         <div class="nav nav-pills">
-          <li class="nav-item mr-3" :if={{ logged_in }}>
+          <li class="nav-item mr-3" :if={{ match?(%User{}, auth) }}>
             <HygeiaWeb.Search id="search" />
           </li>
           <li class="nav-item">
@@ -109,7 +109,7 @@
               </LiveRedirect>
             </UriActiveContext>
           </li>
-          <li class="nav-item text-primary" :if={{ logged_in }}>
+          <li class="nav-item text-primary" :if={{ match?(%User{}, auth) }}>
             <HygeiaWeb.Notification.Tray id="header_notifications_tray" />
           </li>
           <li class="nav-item" :if={{ logged_in }}>
@@ -124,6 +124,12 @@
                 <span class="oi oi-person" title={{ gettext("Profile") }} aria-hidden="true" />
               </a>
               <div class="nav-dropdown dropdown-menu dropdown-menu-right">
+                <div class="dropdown-item" :if={{ match?(%User{}, auth) }}>
+                  {{ auth.display_name }}
+                </div>
+                <div class="dropdown-item" :if={{ match?(%Person{}, auth) }}>
+                  {{ auth.first_name }} {{ auth.last_name }}
+                </div>
                 <UriActiveContext
                   to={{ Routes.user_show_path(@socket, :show, auth.uuid) }}
                   :let={{ to: to, active: active }}
@@ -142,7 +148,7 @@
           </li>
           <li class="nav-item" :if={{ not logged_in }}>
             <div id="profile" phx-update="ignore">
-              <Link to={{ Routes.auth_path(@socket, :request, "oidc") }} class="nav-link">
+              <Link to={{ Routes.auth_login_path(@socket, :login) }} class="nav-link">
                 {{ gettext("Login") }}
               </Link>
             </div>

@@ -251,6 +251,7 @@ defmodule HygeiaWeb.Router do
     get "/pdf/isolation/:case_uuid/:phase_uuid", PdfController, :isolation_confirmation
     get "/pdf/quarantine/:case_uuid/:phase_uuid", PdfController, :quarantine_confirmation
 
+    live "/auth/login", AuthLive.Login, :login
     get "/auth/:provider", AuthController, :request
     get "/auth/:provider/callback", AuthController, :callback
     post "/auth/:provider/callback", AuthController, :callback

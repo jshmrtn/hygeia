@@ -1,13 +1,12 @@
 <div class="component-possible-index-submission-base-data container">
-  <Context get={{ HygeiaWeb, auth: auth, logged_in: logged_in }}>
-    <HygeiaWeb.PersonLive.Header
-      person={{ @possible_index_submission.case.person }}
-      id="header"
-      :if={{ logged_in }}
-    />
+  <Context get={{ HygeiaWeb, auth: auth }}>
+    <HygeiaWeb.PersonLive.Header person={{ @possible_index_submission.case.person }} id="header" />
 
     <div class="card">
-      <div class="card-header" :if={{ authorized?(@possible_index_submission.case, :details, auth) }}>
+      <div
+        class="card-header"
+        :if={{ authorized?(@possible_index_submission.case, :partial_details, auth) }}
+      >
         <HygeiaWeb.CaseLive.Navigation case={{ @possible_index_submission.case }} id="navigation" />
       </div>
       <div class="card-body">

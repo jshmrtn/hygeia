@@ -50,6 +50,7 @@ defmodule Hygeia.CaseContext.Note do
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Note
+    alias Hygeia.CaseContext.Person
     alias Hygeia.UserContext.User
 
     @spec preload(resource :: Note.t()) :: Note.t()
@@ -58,10 +59,14 @@ defmodule Hygeia.CaseContext.Note do
     @spec authorized?(
             resource :: Note.t(),
             action :: :create,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_note, action, :anonymous, _meta)
+        when action in [:create],
+        do: false
+
+    def authorized?(_note, action, %Person{}, _meta)
         when action in [:create],
         do: false
 

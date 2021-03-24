@@ -182,6 +182,7 @@ defmodule Hygeia.CommunicationContext.Email do
   end
 
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
     alias Hygeia.CommunicationContext.Email
     alias Hygeia.UserContext.User
 
@@ -191,10 +192,14 @@ defmodule Hygeia.CommunicationContext.Email do
     @spec authorized?(
             resource :: Email.t(),
             action :: :create,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_email, action, :anonymous, _meta)
+        when action in [:create],
+        do: false
+
+    def authorized?(_email, action, %Person{}, _meta)
         when action in [:create],
         do: false
 

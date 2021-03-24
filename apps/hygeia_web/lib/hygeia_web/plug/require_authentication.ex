@@ -8,8 +8,8 @@ defmodule HygeiaWeb.Plug.RequireAuthentication do
   import Plug.Conn
   import Phoenix.Controller
 
+  alias Hygeia.CaseContext.Person
   alias Hygeia.UserContext.User
-
   alias HygeiaWeb.Router.Helpers
 
   @impl Plug
@@ -24,10 +24,13 @@ defmodule HygeiaWeb.Plug.RequireAuthentication do
     |> case do
       nil ->
         conn
-        |> redirect(to: Helpers.auth_path(conn, :request, "oidc", return_url: request_path))
+        |> redirect(to: Helpers.auth_login_path(conn, :login, return_url: request_path))
         |> halt
 
       %User{} ->
+        conn
+
+      %Person{} ->
         conn
     end
   end
