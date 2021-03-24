@@ -1,7 +1,7 @@
 <div>
   <img style="width: 1.5cm" class="pull-right" src="data:image/png;base64,<%=
       :hygeia_pdf_confirmation
-      |> Application.app_dir("priv/assets/logo_ar.png")
+      |> Application.app_dir("priv/assets/logo_sg.png")
       |> File.read!()
       |> Base.encode64()
       |> raw()
