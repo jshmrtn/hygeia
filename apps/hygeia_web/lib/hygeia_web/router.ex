@@ -250,19 +250,15 @@ defmodule HygeiaWeb.Router do
 
     get "/pdf/isolation/:case_uuid/:phase_uuid", PdfController, :isolation_confirmation
     get "/pdf/quarantine/:case_uuid/:phase_uuid", PdfController, :quarantine_confirmation
-  end
 
-  scope "/auth", HygeiaWeb do
-    pipe_through [:browser, :csrf]
+    get "/auth/:provider", AuthController, :request
+    get "/auth/:provider/callback", AuthController, :callback
+    post "/auth/:provider/callback", AuthController, :callback
 
-    get "/:provider", AuthController, :request
-    get "/:provider/callback", AuthController, :callback
-    post "/:provider/callback", AuthController, :callback
-
-    delete "/", AuthController, :delete
+    delete "/auth/", AuthController, :delete
     # This route also exists as get because of this issue
     # https://github.com/w3c/webappsec-csp/issues/8
-    get "/", AuthController, :delete
+    get "/auth/", AuthController, :delete
   end
 
   scope "/dashboard" do
