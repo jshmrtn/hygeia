@@ -23,10 +23,6 @@ erl_crash.dump
 /chart/charts/*
 !/chart/charts/.gitkeep
 
-## Sedex Test Data / Schema HRL
-apps/sedex/priv/schema/*.hrl
-apps/sedex/priv/test/sedex/*
-
 # BFS Country List
 apps/hygeia/lib/hygeia/ecto_type/country/*.hrl
 
