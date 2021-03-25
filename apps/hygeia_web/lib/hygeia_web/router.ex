@@ -14,7 +14,7 @@ defmodule HygeiaWeb.Router do
                     false
                   )
   @frame_src if(@code_reloading, do: ~w('self'), else: ~w())
-  @sentry_style_hashes ~w('sha256-FRN1wueUR0omGyIEYxaEnuYQtc2jZ6NpVNr+9MqxDfg=')
+  @sentry_style_hashes ~w('sha256-BXwPQptozQDv35u3ITlSj8VrRIiC6xV8KtgyDoIAqUc=')
   @style_src if(@debug_errors, do: ~w('unsafe-inline'), else: ~w())
 
   pipeline :browser do
