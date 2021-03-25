@@ -44,7 +44,7 @@ defmodule Sedex.MixProject do
       {:jose, "~> 1.11"},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
-      {:hackney, "~> 1.17", override: true},
+      {:hackney, "~> 1.17"},
       {:sweet_xml, "~> 0.6"},
       {:briefly, "~> 0.3.0", only: [:test]},
       {:sentry, "~> 8.0"},
