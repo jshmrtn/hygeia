@@ -1,0 +1,69 @@
+<div class="container-sm">
+  <h1>
+    {{ gettext("Log In") }}
+  </h1>
+
+  <p>
+    {{ gettext("To show the requested information, we need to verify your identity.") }}
+  </p>
+
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          {{ pgettext("Login", "Person") }}
+        </div>
+        <div class="card-body">
+          <Form
+            for={{ @form }}
+            submit="login"
+            opts={{ autocomplete: "off", id: "person-login-form", as: :person_login }}
+          >
+            <Field class="form-group" name={{ :first_name }}>
+              <HygeiaWeb.FieldLabel schema={{ Person }} />
+              <TextInput
+                class="form-control"
+                opts={{ placeholder: pgettext("Person Login Form", "Jane"), required: true }}
+              />
+            </Field>
+            <Field class="form-group" name={{ :last_name }}>
+              <HygeiaWeb.FieldLabel schema={{ Person }} />
+              <TextInput
+                class="form-control"
+                opts={{ placeholder: pgettext("Person Login Form", "Doe"), required: true }}
+              />
+            </Field>
+
+            <button
+              class="btn btn-primary mr-2"
+              type="submit"
+              phx-disable-with={{ gettext("Logging In...") }}
+            >
+              <span class="oi oi-circle-check" title={{ gettext("Log In") }} aria-hidden="true" />
+              {{ gettext("Log In") }}
+            </button>
+          </Form>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          {{ pgettext("Login", "Authorized Personel") }}
+        </div>
+        <div class="card-body">
+          <p>
+            {{ gettext("If you're an authorized person of the contact tracing team, log in instead:") }}
+          </p>
+
+          <Link
+            to={{ Routes.auth_path(@socket, :request, "zitadel", return_url: @return_url) }}
+            class="btn btn-secondary"
+          >
+            {{ gettext("Log In") }}
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,6 +8,7 @@ defmodule HygeiaWeb.Plug.HasRole do
   import Plug.Conn
   import Phoenix.Controller
 
+  alias Hygeia.CaseContext.Person
   alias Hygeia.UserContext.User
   alias HygeiaWeb.ErrorView
 
@@ -18,16 +19,31 @@ defmodule HygeiaWeb.Plug.HasRole do
 
   @impl Plug
   def call(conn, role) do
-    %User{} = user = get_session(conn, :auth)
+    case get_session(conn, :auth) do
+      %User{} = user ->
+        if User.has_role?(user, role, :any) do
+          conn
+        else
+          conn
+          |> put_status(:forbidden)
+          |> put_view(ErrorView)
+          |> render("403.html")
+          |> halt
+        end
 
-    if User.has_role?(user, role, :any) do
-      conn
-    else
-      conn
-      |> put_status(:forbidden)
-      |> put_view(ErrorView)
-      |> render("403.html")
-      |> halt
+      %Person{} ->
+        conn
+        |> put_status(:forbidden)
+        |> put_view(ErrorView)
+        |> render("403.html")
+        |> halt
+
+      nil ->
+        conn
+        |> put_status(:forbidden)
+        |> put_view(ErrorView)
+        |> render("403.html")
+        |> halt
     end
   end
 end

@@ -5,6 +5,7 @@ defmodule Hygeia.UserContext.User do
 
   use Hygeia, :model
 
+  alias Hygeia.CaseContext.Person
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.NotificationContext.Notification
   alias Hygeia.TenantContext.Tenant
@@ -83,7 +84,12 @@ defmodule Hygeia.UserContext.User do
           false
   def has_role?(:anonymous, _role, _tenant), do: false
 
+  @spec has_role?(user :: Person.t(), role :: Role.t(), tenant :: Tenant.t() | :any | String.t()) ::
+          false
+  def has_role?(%Person{}, _role, _tenant), do: false
+
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
     alias Hygeia.UserContext.User
 
     @spec preload(resource :: User.t()) :: User.t()
@@ -92,10 +98,14 @@ defmodule Hygeia.UserContext.User do
     @spec authorized?(
             resource :: User.t(),
             action :: :list | :details,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_resource_user, action, :anonymous, _meta)
+        when action in [:list, :details],
+        do: false
+
+    def authorized?(_resource_user, action, %Person{}, _meta)
         when action in [:list, :details],
         do: false
 

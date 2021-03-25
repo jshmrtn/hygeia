@@ -5,7 +5,16 @@
   data-sentry-dsn="<%= Sentry.Config.dsn() %>"
   data-sentry-user="<%= Jason.encode!(case get_auth(@conn) do
     :anonymous -> %{}
-    %{uuid: id, email: email, display_name: name} -> %{id: id, email: email, name: name}
+    %Hygeia.UserContext.User{
+      uuid: id,
+      email: email,
+      display_name: name
+    } -> %{id: id, email: email, name: name}
+    %Hygeia.CaseContext.Person{
+      uuid: id,
+      first_name: first_name,
+      last_name: last_name
+    } -> %{id: id, name: "#{String.slice(first_name, 0..0)}. #{String.slice(last_name, 0..0)}."}
   end) %>"
 >
   <head>

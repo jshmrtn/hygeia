@@ -1,34 +1,44 @@
 defmodule HygeiaWeb.AuthController do
   use HygeiaWeb, :controller
 
+  alias Hygeia.CaseContext
   alias HygeiaWeb.Plug.CheckAndRefreshAuthentication
+  alias Phoenix.Token
 
   require Logger
 
   @spec delete(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) :: Plug.Conn.t()
   def delete(conn, _params) do
-    {:ok, %{end_session_endpoint: end_session_endpoint}} =
-      :oidcc.get_openid_provider_info("zitadel")
+    conn =
+      conn
+      |> put_flash(:info, gettext("You have been logged out!"))
+      |> configure_session(drop: true)
 
-    %{query: query} = end_session_uri = URI.parse(end_session_endpoint)
+    case get_session(conn, :auth_tokens) do
+      nil ->
+        redirect(conn, to: "/")
 
-    query =
-      query
-      |> Kernel.||("")
-      |> URI.decode_query()
-      |> Map.put("post_logout_redirect_uri", Routes.home_index_url(conn, :index))
-      |> URI.encode_query()
+      _tokens ->
+        {:ok, %{end_session_endpoint: end_session_endpoint}} =
+          :oidcc.get_openid_provider_info("zitadel")
 
-    after_logout_url = URI.to_string(%{end_session_uri | query: query})
+        %{query: query} = end_session_uri = URI.parse(end_session_endpoint)
 
-    conn
-    |> put_flash(:info, gettext("You have been logged out!"))
-    |> configure_session(drop: true)
-    |> redirect(external: after_logout_url)
+        query =
+          query
+          |> Kernel.||("")
+          |> URI.decode_query()
+          |> Map.put("post_logout_redirect_uri", Routes.home_index_url(conn, :index))
+          |> URI.encode_query()
+
+        after_logout_url = URI.to_string(%{end_session_uri | query: query})
+
+        redirect(conn, external: after_logout_url)
+    end
   end
 
   @spec request(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) :: Plug.Conn.t()
-  def request(conn, params) do
+  def request(conn, %{"provider" => "zitadel"} = params) do
     session = HygeiaIam.generate_session_info("zitadel", params["return_url"])
 
     redirect_uri = HygeiaIam.generate_redirect_url!(session)
@@ -39,6 +49,21 @@ defmodule HygeiaWeb.AuthController do
       HygeiaIam.clean_sessions([session | get_session(conn, __MODULE__) || []])
     )
     |> redirect(external: redirect_uri)
+  end
+
+  def request(conn, %{"provider" => "person", "uuid" => signed_uuid} = params) do
+    case Token.verify(conn, "person auth", signed_uuid, max_age: 30) do
+      {:ok, uuid} ->
+        conn
+        |> put_flash(:info, gettext("Successfully authenticated."))
+        |> put_session(:auth, CaseContext.get_person!(uuid))
+        |> redirect(to: params["return_url"] || "/")
+
+      {:error, reason} when reason in [:invalid, :expired] ->
+        conn
+        |> put_flash(:info, gettext("Error while authenticating."))
+        |> redirect(to: "/")
+    end
   end
 
   @spec callback(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) :: Plug.Conn.t()

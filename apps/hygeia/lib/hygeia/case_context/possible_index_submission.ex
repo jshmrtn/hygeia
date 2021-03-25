@@ -130,20 +130,51 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
   end
 
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.Authorization.Resource
+    alias Hygeia.CaseContext.Person
     alias Hygeia.CaseContext.PossibleIndexSubmission
+    alias Hygeia.Repo
     alias Hygeia.UserContext.User
 
     @spec preload(resource :: PossibleIndexSubmission.t()) :: PossibleIndexSubmission.t()
-    def preload(resource), do: resource
+    def preload(resource), do: Repo.preload(resource, :case)
 
     @spec authorized?(
             resource :: PossibleIndexSubmission.t(),
             action :: :create | :details | :list | :update | :delete | :accept,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
-    def authorized?(_possible_index_submission, action, _user, _meta)
-        when action in [:create, :details, :list, :update, :delete],
+    def authorized?(_possible_index_submission, :create, %User{} = user, %{case: case} = meta),
+      do: Resource.authorized?(case, :update, user, meta)
+
+    def authorized?(_possible_index_submission, :list, %User{} = user, %{case: case} = meta),
+      do: Resource.authorized?(case, :details, user, meta)
+
+    def authorized?(%PossibleIndexSubmission{case: case}, :details, %User{} = user, meta),
+      do: Resource.authorized?(case, :details, user, meta)
+
+    def authorized?(%PossibleIndexSubmission{case: case}, action, %User{} = user, meta)
+        when action in [:update, :delete, :accept],
+        do: Resource.authorized?(case, :update, user, meta)
+
+    def authorized?(_possible_index_submission, action, %Person{uuid: person_uuid}, %{
+          case: %Case{person_uuid: person_uuid}
+        })
+        when action in [:create, :list],
         do: true
+
+    def authorized?(
+          %PossibleIndexSubmission{case: %Case{person_uuid: person_uuid}},
+          action,
+          %Person{uuid: person_uuid},
+          _meta
+        )
+        when action in [:details, :update, :delete],
+        do: true
+
+    def authorized?(_possible_index_submission, action, _user, _meta)
+        when action in [:create, :details, :list, :update, :delete, :accept],
+        do: false
   end
 end

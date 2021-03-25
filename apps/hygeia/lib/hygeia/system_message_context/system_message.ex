@@ -80,6 +80,7 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
   end
 
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
     alias Hygeia.SystemMessageContext.SystemMessage
     alias Hygeia.UserContext.User
 
@@ -89,10 +90,14 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
     @spec authorized?(
             resource :: SystemMessage.t(),
             action :: :create | :details | :list | :update | :delete,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_system_message, action, :anonymous, _meta)
+        when action in [:list, :create, :details, :update, :delete],
+        do: false
+
+    def authorized?(_system_message, action, %Person{}, _meta)
         when action in [:list, :create, :details, :update, :delete],
         do: false
 

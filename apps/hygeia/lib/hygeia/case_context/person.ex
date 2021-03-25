@@ -159,16 +159,28 @@ defmodule Hygeia.CaseContext.Person do
 
     @spec authorized?(
             resource :: Person.t(),
-            action :: :create | :details | :list | :update | :delete,
-            user :: :anonymous | User.t(),
+            action :: :create | :details | :partial_details | :list | :update | :delete,
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
+    def authorized?(
+          %Person{uuid: person_uuid},
+          :partial_details,
+          %Person{uuid: person_uuid},
+          _meta
+        ),
+        do: true
+
     def authorized?(_person, action, :anonymous, _meta)
-        when action in [:list, :create, :details, :update, :delete],
+        when action in [:list, :create, :details, :partial_details, :update, :delete],
+        do: false
+
+    def authorized?(_person, action, %Person{}, _meta)
+        when action in [:list, :create, :details, :partial_details, :update, :delete],
         do: false
 
     def authorized?(%Person{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
-        when action in [:details, :versioning, :update, :delete],
+        when action in [:details, :partial_details, :versioning, :update, :delete],
         do:
           Enum.any?(
             [:super_user, :supervisor, :admin],
@@ -176,7 +188,7 @@ defmodule Hygeia.CaseContext.Person do
           )
 
     def authorized?(%Person{tenant: %Tenant{} = tenant}, action, user, _meta)
-        when action in [:details, :versioning],
+        when action in [:details, :partial_details, :versioning],
         do:
           Enum.any?(
             [:viewer, :tracer, :super_user, :supervisor, :admin],

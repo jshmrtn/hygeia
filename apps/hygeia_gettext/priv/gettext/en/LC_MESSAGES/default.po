@@ -489,6 +489,11 @@ msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Author"
 msgstr ""
 
+#, elixir-format
+msgctxt "Login"
+msgid "Authorized Personel"
+msgstr ""
+
 msgid "Automated Case Close Email"
 msgstr ""
 
@@ -1046,6 +1051,11 @@ msgstr ""
 msgid "Do you really want to discard your changes?"
 msgstr ""
 
+#, elixir-format, fuzzy
+msgctxt "Person Login Form"
+msgid "Doe"
+msgstr ""
+
 msgid "Domain"
 msgstr ""
 
@@ -1194,6 +1204,10 @@ msgstr ""
 
 msgctxt "Protocol Entry"
 msgid "Entry"
+msgstr ""
+
+#, elixir-format
+msgid "Error while authenticating."
 msgstr ""
 
 msgid "Events"
@@ -1440,6 +1454,10 @@ msgstr ""
 msgid "ISM-ID: %{id}"
 msgstr ""
 
+#, elixir-format
+msgid "If you're an authorized person of the contact tracing team, log in instead:"
+msgstr ""
+
 msgid "Import CSV / XLSX"
 msgstr ""
 
@@ -1534,6 +1552,10 @@ msgctxt "Division Merge"
 msgid "Into"
 msgstr ""
 
+#, elixir-format
+msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
+msgstr ""
+
 msgid "Isolation Confirmation"
 msgstr ""
 
@@ -1554,6 +1576,11 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Jab Dates"
+msgstr ""
+
+#, elixir-format, fuzzy
+msgctxt "Person Login Form"
+msgid "Jane"
 msgstr ""
 
 msgid "January"
@@ -1662,6 +1689,14 @@ msgid "Location Details"
 msgstr ""
 
 msgid "Location details"
+msgstr ""
+
+#, elixir-format, fuzzy
+msgid "Log In"
+msgstr ""
+
+#, elixir-format
+msgid "Logging In..."
 msgstr ""
 
 msgid "Login"
@@ -2204,6 +2239,11 @@ msgid "Person"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Person"
+msgstr ""
+
+#, elixir-format, fuzzy
+msgctxt "Login"
 msgid "Person"
 msgstr ""
 
@@ -3046,6 +3086,10 @@ msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "To"
 msgstr ""
 
+#, elixir-format
+msgid "To show the requested information, we need to verify your identity."
+msgstr ""
+
 msgid "Tracer"
 msgstr ""
 
@@ -3351,7 +3395,7 @@ msgstr ""
 msgid "deleted"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Notification"
 msgid "deleted"
 msgstr ""

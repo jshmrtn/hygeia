@@ -17,7 +17,9 @@ defmodule HygeiaWeb do
   and import those modules here.
   """
 
+  alias Hygeia.CaseContext.Person
   alias Hygeia.Helpers.Versioning
+  alias Hygeia.UserContext.User
 
   @doc false
   @spec controller :: Macro.t()
@@ -201,7 +203,13 @@ defmodule HygeiaWeb do
     end
 
     Versioning.put_origin(:web)
-    Versioning.put_originator(session["auth"] || :noone)
+
+    case session["auth"] do
+      %User{} = user -> Versioning.put_originator(user)
+      # TODO: Incorporate Person into Versioning
+      %Person{} -> Versioning.put_originator(:noone)
+      nil -> Versioning.put_originator(:noone)
+    end
 
     :ok
   end

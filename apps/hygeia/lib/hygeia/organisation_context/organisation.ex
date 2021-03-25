@@ -110,6 +110,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
   defp check_duplicates(changeset), do: changeset
 
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
     alias Hygeia.OrganisationContext.Organisation
     alias Hygeia.UserContext.User
 
@@ -119,10 +120,14 @@ defmodule Hygeia.OrganisationContext.Organisation do
     @spec authorized?(
             resource :: Organisation.t(),
             action :: :create | :list | :details | :update | :delete,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_organisation, action, :anonymous, _meta)
+        when action in [:list, :create, :details, :update, :delete],
+        do: false
+
+    def authorized?(_organisation, action, %Person{}, _meta)
         when action in [:list, :create, :details, :update, :delete],
         do: false
 

@@ -79,6 +79,7 @@ defmodule Hygeia.CommunicationContext.SMS do
       |> assoc_constraint(:case)
 
   defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
     alias Hygeia.CommunicationContext.SMS
     alias Hygeia.UserContext.User
 
@@ -88,10 +89,14 @@ defmodule Hygeia.CommunicationContext.SMS do
     @spec authorized?(
             resource :: SMS.t(),
             action :: :create,
-            user :: :anonymous | User.t(),
+            user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_sms, action, :anonymous, _meta)
+        when action in [:create],
+        do: false
+
+    def authorized?(_sms, action, %Person{}, _meta)
         when action in [:create],
         do: false
 
