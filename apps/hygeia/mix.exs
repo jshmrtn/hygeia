@@ -72,11 +72,11 @@ defmodule Hygeia.MixProject do
       {:hygeia_gettext, in_umbrella: true},
       {:hygeia_cldr, in_umbrella: true},
       {:hygeia_cluster, in_umbrella: true},
-      {:hygeia_xml, in_umbrella: true},
       {:sedex, "~> 1.0"},
       {:csv, "~> 2.4"},
       {:sentry, "~> 8.0"},
-      {:highlander, "~> 0.2"}
+      {:highlander, "~> 0.2"},
+      {:erlsom, "~> 1.5"}
     ]
   end
 
