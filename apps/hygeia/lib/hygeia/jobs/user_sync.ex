@@ -1,4 +1,4 @@
-defmodule HygeiaUserSync do
+defmodule Hygeia.Jobs.UserSync do
   @moduledoc """
   Sync IAM
   """

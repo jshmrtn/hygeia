@@ -61,11 +61,13 @@ defmodule Hygeia.MixProject do
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
       {:ex_phone_number, "~> 0.2"},
       {:gen_smtp, "~> 1.0"},
+      {:gun, "~> 2.0.0", hex: :grpc_gun, override: true},
       {:highlander, "~> 0.2"},
       {:human_readable_identifier_generator, "~> 1.0"},
       {:hygeia_cldr, in_umbrella: true},
       {:hygeia_cluster, in_umbrella: true},
       {:hygeia_gettext, in_umbrella: true},
+      {:hygeia_iam, in_umbrella: true},
       {:jason, "~> 1.0"},
       {:mail, "~> 0.2"},
       {:mox, "~> 1.0", only: :test},
@@ -76,7 +78,8 @@ defmodule Hygeia.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:sedex, "~> 1.0"},
       {:sentry, "~> 8.0"},
-      {:websms, "~> 1.0.0-alpha"}
+      {:websms, "~> 1.0.0-alpha"},
+      {:zitadel_api, "~> 1.0-beta"}
     ]
   end
 
