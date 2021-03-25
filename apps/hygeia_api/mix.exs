@@ -50,27 +50,27 @@ defmodule HygeiaApi.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.6"},
-      {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
-      {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.4"},
-      {:cors_plug, "~> 2.0"},
       {:absinthe, "~> 1.5"},
+      {:absinthe_error_payload, "1.0.1"},
       {:absinthe_phoenix, "~> 2.0"},
       {:absinthe_relay, "~> 1.5"},
-      {:absinthe_error_payload, "1.0.1"},
+      {:cors_plug, "~> 2.0"},
       {:dataloader, "~> 1.0"},
-      {:remote_ip, "~> 1.0"},
-      {:hygeia, in_umbrella: true},
+      {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
+      {:hackney, "~> 1.8"},
       {:hygeia_health, in_umbrella: true},
+      {:hygeia, in_umbrella: true},
+      {:jason, "~> 1.0"},
+      {:jason, "~> 1.1"},
+      {:phoenix, "~> 1.5.6"},
       {:phoenix_live_dashboard, "~> 0.4.0"},
       {:plug_checkup, "~> 0.6"},
+      {:plug_cowboy, "~> 2.4"},
+      {:remote_ip, "~> 1.0"},
       {:sentry, "~> 8.0"},
-      {:jason, "~> 1.1"},
-      {:hackney, "~> 1.8"},
       {:sentry, "~> 8.0"},
-      {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+      {:telemetry_metrics, "~> 0.4"},
+      {:telemetry_poller, "~> 0.4"}
     ]
   end
 

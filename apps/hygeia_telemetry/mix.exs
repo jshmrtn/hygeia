@@ -40,11 +40,11 @@ defmodule HygeiaTelemetry.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
-      {:telemetry_metrics_prometheus, "~> 1.0"},
+      {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
       {:sentry, "~> 8.0"},
-      {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+      {:telemetry_metrics, "~> 0.4"},
+      {:telemetry_metrics_prometheus, "~> 1.0"},
+      {:telemetry_poller, "~> 0.4"}
     ]
   end
 

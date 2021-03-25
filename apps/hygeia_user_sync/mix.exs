@@ -40,13 +40,13 @@ defmodule HygeiaUserSync.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:hygeia, in_umbrella: true},
-      {:hygeia_iam, in_umbrella: true},
-      {:hygeia_cluster, in_umbrella: true},
       {:gun, "~> 2.0.0", hex: :grpc_gun, override: true},
-      {:zitadel_api, "~> 1.0-beta"},
+      {:highlander, "~> 0.2"},
+      {:hygeia_cluster, in_umbrella: true},
+      {:hygeia_iam, in_umbrella: true},
+      {:hygeia, in_umbrella: true},
       {:sentry, "~> 8.0"},
-      {:highlander, "~> 0.2"}
+      {:zitadel_api, "~> 1.0-beta"}
     ]
   end
 

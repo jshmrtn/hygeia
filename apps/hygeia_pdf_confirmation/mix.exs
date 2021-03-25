@@ -45,15 +45,14 @@ defmodule HygeiaPdfConfirmation.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:hygeia, in_umbrella: true},
-      {:hygeia_gettext, in_umbrella: true},
-      {:hygeia_cldr, in_umbrella: true},
       {:briefly, "~> 0.3"},
+      {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
+      {:hygeia_cldr, in_umbrella: true},
+      {:hygeia_gettext, in_umbrella: true},
+      {:hygeia, in_umbrella: true},
       {:pdf_generator, "~> 0.6.2"},
       {:phoenix, "~> 1.5.6"},
-      {:phoenix_html, "~> 2.11"},
-      {:sentry, "~> 8.0"},
-      {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+      {:phoenix_html, "~> 2.11"}
     ]
   end
 

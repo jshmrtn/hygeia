@@ -40,9 +40,9 @@ defmodule HygeiaCluster.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
       {:libcluster, "~> 3.2"},
-      {:sentry, "~> 8.0"},
-      {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+      {:sentry, "~> 8.0"}
     ]
   end
 

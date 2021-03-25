@@ -39,11 +39,10 @@ defmodule HygeiaHealth.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:hygeia, in_umbrella: true},
       {:hygeia_iam, in_umbrella: true},
-      {:socket, "~> 0.3"},
-      {:sentry, "~> 8.0"},
-      {:plug_checkup, "~> 0.6"}
+      {:hygeia, in_umbrella: true},
+      {:plug_checkup, "~> 0.6"},
+      {:socket, "~> 0.3"}
     ]
   end
 

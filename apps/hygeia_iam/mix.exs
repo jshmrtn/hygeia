@@ -40,11 +40,11 @@ defmodule HygeiaIam.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:oidcc, github: "jshmrtn/oidcc", branch: "master"},
       {:certifi, "~> 2.5"},
       {:jason, "~> 1.0"},
-      {:sentry, "~> 8.0"},
-      {:jose, "~> 1.10"}
+      {:jose, "~> 1.10"},
+      {:oidcc, github: "jshmrtn/oidcc", branch: "master"},
+      {:sentry, "~> 8.0"}
     ]
   end
 

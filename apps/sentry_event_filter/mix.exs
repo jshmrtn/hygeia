@@ -39,9 +39,9 @@ defmodule SentryEventFilter.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:sentry, "~> 8.0"},
+      {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
       {:plug, "~> 1.11"},
-      {:excoveralls, "~> 0.4", runtime: false, only: [:test]}
+      {:sentry, "~> 8.0"}
     ]
   end
 
