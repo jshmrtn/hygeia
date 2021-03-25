@@ -8,6 +8,12 @@ defmodule HygeiaApi.Endpoint do
 
   plug RemoteIp, proxies: ~w[10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 fc00::/7]
 
+  plug Plug.Static,
+    at: "/",
+    from: :hygeia_api,
+    gzip: false,
+    only: ~w(robots.txt security.txt .well-known)
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
