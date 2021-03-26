@@ -1,5 +1,7 @@
 FROM elixir:1.11-slim
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update -qq && \
     apt-get install -qq software-properties-common && \
     rm -rf /var/lib/apt/lists/*
@@ -18,9 +20,6 @@ RUN buildDeps='binutils curl' && \
 
 ADD _build/prod/rel/hygeia /app
 ADD entry.sh /entry.sh
-
-ADD pdf_templates /pdf_templates
-ENV PDF_CONFIRMATION_TEMPLATE_ROOT="/pdf_templates"
 
 ENTRYPOINT ["/entry.sh"]
 CMD ["start"]

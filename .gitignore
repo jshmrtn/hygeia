@@ -31,3 +31,7 @@ apps/hygeia/lib/hygeia/ecto_type/country/*.hrl
 
 # Local Configuration
 /.env
+
+# Dialyzer
+/priv/plts/*.plt
+/priv/plts/*.plt.hash

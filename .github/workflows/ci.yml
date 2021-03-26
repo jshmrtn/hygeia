@@ -1,0 +1,419 @@
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - 'v*'
+
+env:
+  BUILD_EMBEDDED: true
+  DIALYZER_PLT_PRIV: true
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  compile_assets:
+    name: Compile Assets
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: 23.3
+          elixir-version: 1.11.4
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+            deps-
+      - run: mix deps.get
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.16.0'
+      - run: npm config set cache $GITHUB_WORKSPACE/.ci-npm-cache
+      - uses: actions/cache@v2
+        with:
+          path: .ci-npm-cache
+          key: deps-${{ runner.os }}-${{ hashFiles('apps/hygeia_web/assets/package-lock.json') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+            deps-
+      - run: npm ci --prefix=apps/hygeia_web/assets
+      - run: npm run deploy --prefix=apps/hygeia_web/assets
+      - uses: actions/upload-artifact@v2
+        with:
+          name: compile_assets
+          path: apps/hygeia_web/priv/static
+
+  format:
+    name: Check Formatting
+    
+    runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: dev
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: 23.3
+          elixir-version: 1.11.4
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+            deps-
+      - run: mix deps.get
+      - run: mix format --check-formatted
+
+  surface_format:
+    name: Check Surface Formatting
+    
+    runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: dev
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: 23.3
+          elixir-version: 1.11.4
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+            deps-
+      - run: mix deps.get
+      - uses: actions/cache@v2
+        with:
+          path: _build/dev
+          key: compile_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            compile_dev-${{ runner.os }}-
+            compile_dev-
+      - run: mix deps.compile --skip-umbrella-children
+      - run: mix compile --warning-as-errors
+      - run: mix surface.format --check-formatted
+
+  test:
+    name: Run Tests & Submit Coverage
+
+    runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: test
+      SECRET_KEY_BASE: invalid
+      WEB_IAM_CLIENT_ID: invalid
+      WEB_IAM_CLIENT_SECRET: invalid
+      IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN: invalid
+      SEDEX_SENDER_ID: TX-XXXXX-XX
+      IAM_ORGANISATION_ID: invalid
+      IAM_PROJECT_ID: invalid
+      DATABASE_USER: runner
+      DATABASE_PASSWORD: runner
+      DATABASE_NAME: hygeia
+      DATABASE_HOST: localhost
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: hygeia
+          POSTGRES_USER: runner
+          POSTGRES_PASSWORD: runner
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: 23.3
+          elixir-version: 1.11.4
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+            deps-
+      - run: mix deps.get
+      - uses: actions/cache@v2
+        with:
+          path: _build/test
+          key: compile_test-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            compile_test-${{ runner.os }}-
+            compile_test-
+      - run: mix deps.compile --skip-umbrella-children
+      - run: mix compile --warning-as-errors
+      - run: sudo apt-get install -y wkhtmltopdf poppler-utils
+      - run: mix ecto.create
+        env:
+          DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
+      - run: mix ecto.migrate
+        env:
+          DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
+      - run: mix coveralls.detail # TODO: Switch to coveralls.github when this repo was set to public
+        env:
+          DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
+
+  credo:
+    name: Check Credo
+
+    runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: dev
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: 23.3
+          elixir-version: 1.11.4
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+            deps-
+      - run: mix deps.get
+      - uses: actions/cache@v2
+        with:
+          path: _build/dev
+          key: compile_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            compile_dev-${{ runner.os }}-
+            compile_dev-
+      - run: mix deps.compile --skip-umbrella-children
+      - run: mix compile --warning-as-errors
+      - run: mix credo --strict
+
+  dialyzer_plt:
+    name: Generate Dialyzer PLT
+
+    runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: dev
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: 23.3
+          elixir-version: 1.11.4
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+            deps-
+      - run: mix deps.get
+      - uses: actions/cache@v2
+        with:
+          path: _build/dev
+          key: compile_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            compile_dev-${{ runner.os }}-
+            compile_dev-
+      - run: mix deps.compile --skip-umbrella-children
+      - run: mix compile --warning-as-errors
+      - uses: actions/cache@v2
+        with:
+          path: priv/plts/
+          key: dialyzer_plt_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            dialyzer_plt_dev-${{ runner.os }}-
+            dialyzer_plt_dev-
+      - run: mix dialyzer --plt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dialyzer_plt_dev
+          path: priv/plts/
+
+  dialyzer_test:
+    name: "Check Dialyzer"
+
+    runs-on: ubuntu-latest
+
+    needs: ['dialyzer_plt']
+
+    env:
+      MIX_ENV: dev
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: 23.3
+          elixir-version: 1.11.4
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+            deps-
+      - run: mix deps.get
+      - uses: actions/cache@v2
+        with:
+          path: _build/dev
+          key: compile_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            compile_dev-${{ runner.os }}-
+            compile_dev-
+      - run: mix deps.compile --skip-umbrella-children
+      - run: mix compile --warning-as-errors
+      - uses: actions/download-artifact@v2
+        with:
+          name: dialyzer_plt_dev
+          path: priv/plts/
+      - run: mix dialyzer
+
+  docs:
+    name: "Generate Docs"
+
+    runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: dev
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: 23.3
+          elixir-version: 1.11.4
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+            deps-
+      - run: mix deps.get
+      - uses: actions/cache@v2
+        with:
+          path: _build/dev
+          key: compile_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            compile_dev-${{ runner.os }}-
+            compile_dev-
+      - run: mix deps.compile --skip-umbrella-children
+      - run: mix compile --warning-as-errors
+      - run: mix docs
+      - uses: actions/upload-artifact@v2
+        with:
+          name: docs
+          path: doc
+  
+  mix_release:
+    name: "Mix Release"
+
+    runs-on: ubuntu-latest
+
+    needs: ['compile_assets']
+
+    env:
+      MIX_ENV: prod
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: 23.3
+          elixir-version: 1.11.4
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ runner.os }}-
+            deps-
+      - run: mix deps.get
+      - uses: actions/cache@v2
+        with:
+          path: _build/prod
+          key: compile_prod-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            compile_prod-${{ runner.os }}-
+            compile_prod-
+      - run: mix deps.compile --skip-umbrella-children
+        env:
+          MIX_ENV: prod
+      - run: mix compile --warning-as-errors
+        env:
+          MIX_ENV: prod
+      - uses: actions/download-artifact@v2
+        with:
+          name: compile_assets
+          path: apps/hygeia_web/priv/static
+      - run: mix phx.digest
+      - run: mix release
+      - run: tar -czvf release.tar.gz _build/prod/rel/hygeia
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mix_release
+          path: release.tar.gz
+  
+  docker_build:
+    name: "Docker Build"
+
+    runs-on: ubuntu-latest
+
+    needs: ['mix_release', 'dialyzer_test', 'test']
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: mix_release
+          path: .
+      - run: tar -zxvf release.tar.gz
+      - name: Branch name
+        id: branch_name
+        run: |
+          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+          echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+        with:
+          key: foo-docker-cache-{hash}
+          restore-keys: |
+            docker-${{ runner.os }}-{{ steps.branch_name.outputs.SOURCE_BRANCH }}
+            docker-
+      - run: docker build -t ghcr.io/${{ github.repository }}:$GITHUB_SHA .
+      - run: docker push ghcr.io/${{ github.repository }}:$GITHUB_SHA
+        if: github.event_name == 'push' && steps.branch_name.outputs.SOURCE_BRANCH == 'master'
+      - run: docker tag ghcr.io/${{ github.repository }}:$GITHUB_SHA ghcr.io/${{ github.repository }}:${{ steps.branch_name.outputs.SOURCE_TAG }}
+        if: github.event_name == 'create' && github.event.ref_type == 'tag'
+      - run: docker push ghcr.io/${{ github.repository }}:${{ steps.branch_name.outputs.SOURCE_TAG }}
+        if: github.event_name == 'create' && github.event.ref_type == 'tag'

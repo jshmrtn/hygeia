@@ -14,11 +14,17 @@ defmodule Hygeia.Umbrella.MixProject do
       aliases: aliases(),
       build_embedded: Mix.env() == :prod or System.get_env("BUILD_EMBEDDED") in ["1", "true"],
       test_coverage: [tool: ExCoveralls],
-      dialyzer: [
-        ignore_warnings: ".dialyzer_ignore.exs",
-        list_unused_filters: true,
-        plt_add_apps: [:mix]
-      ],
+      dialyzer:
+        [
+          ignore_warnings: ".dialyzer_ignore.exs",
+          list_unused_filters: true,
+          plt_add_apps: [:mix]
+        ] ++
+          if (System.get_env("DIALYZER_PLT_PRIV") || "false") in ["1", "true"] do
+            [plt_file: {:no_warn, "priv/plts/dialyzer.plt"}]
+          else
+            []
+          end,
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
