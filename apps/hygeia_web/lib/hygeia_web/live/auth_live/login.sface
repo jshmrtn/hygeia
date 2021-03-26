@@ -8,7 +8,7 @@
   </p>
 
   <div class="row">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
       <div class="card">
         <div class="card-header">
           {{ pgettext("Login", "Person") }}
@@ -39,7 +39,7 @@
               type="submit"
               phx-disable-with={{ gettext("Logging In...") }}
             >
-              <span class="oi oi-circle-check" title={{ gettext("Log In") }} aria-hidden="true" />
+              <span class="oi oi-account-login mr-1" title={{ gettext("Log In") }} aria-hidden="true" />
               {{ gettext("Log In") }}
             </button>
           </Form>
@@ -60,6 +60,7 @@
             to={{ Routes.auth_path(@socket, :request, "zitadel", return_url: @return_url) }}
             class="btn btn-secondary"
           >
+            <span class="oi oi-account-login mr-1" title={{ gettext("Log In") }} aria-hidden="true" />
             {{ gettext("Log In") }}
           </Link>
         </div>

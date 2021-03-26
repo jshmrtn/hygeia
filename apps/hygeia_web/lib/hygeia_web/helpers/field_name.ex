@@ -100,7 +100,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       employers: "Employers",
       external_references: "References",
       first_name: "First Name",
-      last_name: "Lasr Name",
+      last_name: "Last Name",
       profession_category: "Profession",
       profession_category_main: "Profession Category",
       sex: "Sex",
