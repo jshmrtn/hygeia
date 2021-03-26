@@ -28,3 +28,6 @@ apps/hygeia/lib/hygeia/ecto_type/country/*.hrl
 
 # .mo Files
 *.mo
+
+# Local Configuration
+/.env

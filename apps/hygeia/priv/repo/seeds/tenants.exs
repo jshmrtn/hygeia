@@ -14,12 +14,13 @@ alias Hygeia.Repo
       relay: %{
         server: "smtp.postmarkapp.com",
         port: 2525,
-        username: "***REMOVED***",
-        password: "***REMOVED***"
+        username: System.fetch_env!("SEEDS_TENANT_HYGEIA_SMTP_USER"),
+        password: System.fetch_env!("SEEDS_TENANT_HYGEIA_SMTP_PASSWORD")
       }
     }
   })
 
+  # Public Key from https://github.com/jshmrtn/sedex/blob/master/priv/test/public.pem
 internal_public_key = """
 -----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqLJ2dI4NC6fSk+rDHH6B
@@ -47,13 +48,13 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
          },
          outgoing_sms_configuration: %{
            __type__: "websms",
-           access_token: "***REMOVED***"
+           access_token: System.fetch_env!("SEEDS_TENANT_WEBSMS_ACCESS_TOKEN")
          },
          iam_domain: "kfssg.ch",
          template_variation: :sg,
          enable_sedex_export: true,
          sedex_export_configuration: %{
-           recipient_id: "***REMOVED***",
+          recipient_id: System.fetch_env!("SEEDS_TENANT_SEDEX_RECIPIENT_ID"),
            recipient_public_key: internal_public_key,
            schedule: "0 * * * *"
          },
@@ -89,13 +90,13 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
          },
          outgoing_sms_configuration: %{
            __type__: "websms",
-           access_token: "***REMOVED***"
+           access_token: System.fetch_env!("SEEDS_TENANT_WEBSMS_ACCESS_TOKEN")
          },
          iam_domain: "ar.covid19-tracing.ch",
          template_variation: :ar,
          enable_sedex_export: true,
          sedex_export_configuration: %{
-           recipient_id: "***REMOVED***",
+           recipient_id: System.fetch_env!("SEEDS_TENANT_SEDEX_RECIPIENT_ID"),
            recipient_public_key: internal_public_key,
            schedule: "0 * * * *"
          },
@@ -131,13 +132,13 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
          },
          outgoing_sms_configuration: %{
            __type__: "websms",
-           access_token: "***REMOVED***"
+           access_token: System.fetch_env!("SEEDS_TENANT_WEBSMS_ACCESS_TOKEN")
          },
          iam_domain: "ai.covid19-tracing.ch",
          template_variation: :ai,
          enable_sedex_export: true,
          sedex_export_configuration: %{
-           recipient_id: "***REMOVED***",
+          recipient_id: System.fetch_env!("SEEDS_TENANT_SEDEX_RECIPIENT_ID"),
            recipient_public_key: internal_public_key,
            schedule: "0 * * * *"
          }

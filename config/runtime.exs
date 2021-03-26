@@ -33,12 +33,6 @@ config :hygeia, Hygeia.Repo,
   pool_size: String.to_integer(System.get_env("DATABASE_POOL_SIZE", "10")),
   prepare: database_prepare
 
-secret_key_base =
-  System.get_env(
-    "SECRET_KEY_BASE",
-    "***REMOVED***"
-  )
-
 web_port =
   String.to_integer(
     System.get_env(
@@ -60,7 +54,7 @@ config :hygeia_web, HygeiaWeb.Endpoint,
     port: web_port,
     transport_options: [socket_opts: [:inet6]]
   ],
-  secret_key_base: secret_key_base
+  secret_key_base: System.fetch_env!("SECRET_KEY_BASE")
 
 api_port =
   String.to_integer(
@@ -83,7 +77,7 @@ config :hygeia_api, HygeiaApi.Endpoint,
     port: api_port,
     transport_options: [socket_opts: [:inet6]]
   ],
-  secret_key_base: secret_key_base
+  secret_key_base: System.fetch_env!("SECRET_KEY_BASE")
 
 # Prometheus Exporter
 config :hygeia_telemetry, port: "METRICS_PORT" |> System.get_env("9568") |> String.to_integer()
@@ -91,12 +85,8 @@ config :hygeia_telemetry, port: "METRICS_PORT" |> System.get_env("9568") |> Stri
 # IAM
 iam_config = [
   issuer_or_config_endpoint: System.get_env("IAM_ISSUER", "https://issuer.zitadel.ch"),
-  client_id: System.get_env("WEB_IAM_CLIENT_ID", "***REMOVED***"),
-  client_secret:
-    System.get_env(
-      "WEB_IAM_CLIENT_SECRET",
-      "***REMOVED***"
-    ),
+  client_id: System.fetch_env!("WEB_IAM_CLIENT_ID"),
+  client_secret: System.fetch_env!("WEB_IAM_CLIENT_SECRET"),
   local_endpoint:
     URI.to_string(%URI{
       host: System.get_env("WEB_EXTERNAL_HOST", "localhost"),
@@ -111,18 +101,7 @@ config :hygeia_iam, :providers, zitadel: iam_config
 
 config :hygeia_iam, :service_accounts,
   user_sync: [
-    login:
-      System.get_env(
-        "IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN",
-        ~S"""
-        {
-          "type": "serviceaccount",
-          "keyId": "***REMOVED***",
-          "key": "-----BEGIN RSA PRIVATE KEY-----\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n***REMOVED***\n-----END RSA PRIVATE KEY-----\n",
-          "userId": "***REMOVED***"
-        }
-        """
-      ),
+    login: System.fetch_env!("IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN"),
     audience: [
       "https://api.zitadel.ch/oauth/v2/token",
       "https://api.zitadel.ch/"
@@ -152,22 +131,17 @@ case System.get_env("SEDEX_FILESYSTEM_ADAPTER", "filesystem") do
     raise "#{other} is not a valid value for SEDEX_FILESYSTEM_ADAPTER"
 end
 
-config :hygeia, Hygeia.TenantContext,
-  sedex_sender_id: System.get_env("SEDEX_SENDER_ID", "***REMOVED***")
+config :hygeia, Hygeia.TenantContext, sedex_sender_id: System.fetch_env!("SEDEX_SENDER_ID")
 
 config :hygeia, Hygeia.TenantContext.Tenant.Smtp,
-  sender_hostname: System.get_env("SMTP_SENDER_HOSTNAME", "smtp.covid19-tracing.ch")
+  sender_hostname: System.get_env("SMTP_SENDER_HOSTNAME", "localhost")
 
 config :hygeia_iam,
-  organisation_id: System.get_env("IAM_ORGANISATION_ID", "***REMOVED***"),
-  project_id: System.get_env("IAM_PROJECT_ID", "***REMOVED***")
+  organisation_id: System.fetch_env!("IAM_ORGANISATION_ID"),
+  project_id: System.fetch_env!("IAM_PROJECT_ID")
 
 config :sentry,
-  dsn:
-    System.get_env(
-      "SENTRY_DSN",
-      "https://***REMOVED***:***REMOVED***@sentry.joshmartin.ch/2"
-    ),
+  dsn: System.get_env("SENTRY_DSN"),
   tags: %{version: System.get_env("SENTRY_VERSION", System.get_env("RELEASE_VSN", "dev"))},
   environment_name: System.get_env("SENTRY_ENV", "local"),
   included_environments: [System.get_env("SENTRY_ENV")]
