@@ -20,7 +20,7 @@ alias Hygeia.Repo
     }
   })
 
-  # Public Key from https://github.com/jshmrtn/sedex/blob/master/priv/test/public.pem
+# Public Key from https://github.com/jshmrtn/sedex/blob/master/priv/test/public.pem
 internal_public_key = """
 -----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqLJ2dI4NC6fSk+rDHH6B
@@ -54,7 +54,7 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
          template_variation: :sg,
          enable_sedex_export: true,
          sedex_export_configuration: %{
-          recipient_id: System.fetch_env!("SEEDS_TENANT_SEDEX_RECIPIENT_ID"),
+           recipient_id: System.fetch_env!("SEEDS_TENANT_SEDEX_RECIPIENT_ID"),
            recipient_public_key: internal_public_key,
            schedule: "0 * * * *"
          },
@@ -138,7 +138,7 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
          template_variation: :ai,
          enable_sedex_export: true,
          sedex_export_configuration: %{
-          recipient_id: System.fetch_env!("SEEDS_TENANT_SEDEX_RECIPIENT_ID"),
+           recipient_id: System.fetch_env!("SEEDS_TENANT_SEDEX_RECIPIENT_ID"),
            recipient_public_key: internal_public_key,
            schedule: "0 * * * *"
          }
