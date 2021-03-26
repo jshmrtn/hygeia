@@ -50,9 +50,7 @@ defmodule Hygeia.Jobs.UserSync do
     |> GRPC.Stub.connect(cred: %{ssl: []}, metadata: %{})
     |> case do
       {:ok, channel} ->
-        send(self(), :sync)
-
-        :timer.send_interval(@default_refresh_interval_ms, :sync)
+        Process.send_after(self(), :start_interval, :rand.uniform(@default_refresh_interval_ms))
 
         {:ok,
          %__MODULE__{
@@ -66,6 +64,13 @@ defmodule Hygeia.Jobs.UserSync do
   end
 
   @impl GenServer
+  def handle_info(:start_interval, state) do
+    :timer.send_interval(@default_refresh_interval_ms, :sync)
+    send(self(), :sync)
+
+    {:noreply, state}
+  end
+
   def handle_info(
         :sync,
         %__MODULE__{channel: channel, user_sync_token_server_name: user_sync_token_server_name} =

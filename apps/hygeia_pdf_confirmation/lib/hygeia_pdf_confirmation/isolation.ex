@@ -8,18 +8,14 @@ defmodule HygeiaPdfConfirmation.Isolation do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.Repo
-  alias HygeiaPdfConfirmation.IsolationView
+  alias Hygeia.TenantContext.Tenant
 
   @spec render_pdf(case :: Case.t(), phase :: Phase.t()) :: binary
   def render_pdf(%Case{} = case, %Phase{} = phase) do
-    case = Repo.preload(case, person: [employers: []], tenant: [])
+    %Case{tenant: %Tenant{template_variation: template_variation}} =
+      case = Repo.preload(case, person: [employers: []], tenant: [])
 
-    case.tenant.template_variation
-    |> case do
-      nil -> hd(HygeiaPdfConfirmation.available_variations())
-      other -> other
-    end
-    |> HygeiaPdfConfirmation.render_pdf(IsolationView, "confirmation.html",
+    HygeiaPdfConfirmation.render_pdf(template_variation, "isolation",
       case: case,
       phase: phase,
       document_name: gettext("Isolation Order")

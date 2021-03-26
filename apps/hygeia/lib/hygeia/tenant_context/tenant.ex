@@ -5,8 +5,6 @@ defmodule Hygeia.TenantContext.Tenant do
 
   use Hygeia, :model
 
-  import EctoEnum
-
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.SystemMessageContext.SystemMessage
@@ -15,8 +13,6 @@ defmodule Hygeia.TenantContext.Tenant do
   alias Hygeia.TenantContext.Tenant.Smtp
   alias Hygeia.TenantContext.Tenant.TemplateParameters
   alias Hygeia.TenantContext.Tenant.Websms
-
-  defenum TemplateVariation, :template_variation, [:sg, :ar, :ai]
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -31,7 +27,7 @@ defmodule Hygeia.TenantContext.Tenant do
           cases: Ecto.Schema.has_many(Case.t()) | nil,
           sedex_exports: Ecto.Schema.has_many(SedexExport.t()) | nil,
           override_url: String.t() | nil,
-          template_variation: TemplateVariation.t() | nil,
+          template_variation: String.t() | nil,
           iam_domain: String.t() | nil,
           from_email: String.t() | nil,
           short_name: String.t() | nil,
@@ -54,7 +50,7 @@ defmodule Hygeia.TenantContext.Tenant do
           cases: Ecto.Schema.has_many(Case.t()),
           sedex_exports: Ecto.Schema.has_many(SedexExport.t()),
           override_url: String.t() | nil,
-          template_variation: TemplateVariation.t() | nil,
+          template_variation: String.t() | nil,
           iam_domain: String.t() | nil,
           from_email: String.t() | nil,
           short_name: String.t() | nil,
@@ -71,7 +67,7 @@ defmodule Hygeia.TenantContext.Tenant do
     field :case_management_enabled, :boolean, default: false
     field :public_statistics, :boolean, default: false
     field :override_url, :string
-    field :template_variation, TemplateVariation
+    field :template_variation, :string
     field :iam_domain, :string
     field :short_name, :string
     field :from_email, :string

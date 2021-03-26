@@ -4,7 +4,9 @@ defmodule Hygeia.Repo.Migrations.TenantTemplateVariation do
 
   use Hygeia, :migration
 
-  alias Hygeia.TenantContext.Tenant.TemplateVariation
+  import EctoEnum
+
+  defenum(TemplateVariation, :template_variation, [:sg, :ar, :ai])
 
   def change do
     TemplateVariation.create_type()

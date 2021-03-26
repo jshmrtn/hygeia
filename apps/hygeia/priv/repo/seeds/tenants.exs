@@ -51,7 +51,7 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
            access_token: System.fetch_env!("SEEDS_TENANT_WEBSMS_ACCESS_TOKEN")
          },
          iam_domain: "kfssg.ch",
-         template_variation: :sg,
+         template_variation: "sg",
          enable_sedex_export: true,
          sedex_export_configuration: %{
            recipient_id: System.fetch_env!("SEEDS_TENANT_SEDEX_RECIPIENT_ID"),
@@ -93,7 +93,7 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
            access_token: System.fetch_env!("SEEDS_TENANT_WEBSMS_ACCESS_TOKEN")
          },
          iam_domain: "ar.covid19-tracing.ch",
-         template_variation: :ar,
+         template_variation: "ar",
          enable_sedex_export: true,
          sedex_export_configuration: %{
            recipient_id: System.fetch_env!("SEEDS_TENANT_SEDEX_RECIPIENT_ID"),
@@ -135,7 +135,7 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
            access_token: System.fetch_env!("SEEDS_TENANT_WEBSMS_ACCESS_TOKEN")
          },
          iam_domain: "ai.covid19-tracing.ch",
-         template_variation: :ai,
+         template_variation: "ai",
          enable_sedex_export: true,
          sedex_export_configuration: %{
            recipient_id: System.fetch_env!("SEEDS_TENANT_SEDEX_RECIPIENT_ID"),

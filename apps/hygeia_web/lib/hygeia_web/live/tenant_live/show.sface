@@ -245,11 +245,7 @@
               <h4 class="card-title">{{ gettext("Confirmation PDF Template") }}</h4>
               <Field name={{ :template_variation }} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <Select
-                  class="form-control"
-                  opts={{ prompt: gettext("Choose Variation"), disabled: @live_action == :show }}
-                  options={{ Tenant.TemplateVariation.__enum_map__() }}
-                />
+                <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>

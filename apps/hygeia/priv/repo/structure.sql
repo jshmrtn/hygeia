@@ -2099,17 +2099,6 @@ CREATE TYPE public.symptom AS ENUM (
 
 
 --
--- Name: template_variation; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.template_variation AS ENUM (
-    'sg',
-    'ar',
-    'ai'
-);
-
-
---
 -- Name: test_kind; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -2176,6 +2165,103 @@ CREATE TYPE public.versioning_origin AS ENUM (
 
 
 --
+-- Name: case_assignee_notification(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.case_assignee_notification() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      IF (OLD.tracer_uuid <> NEW.tracer_uuid OR OLD IS NULL) AND NOT NEW.tracer_uuid IS NULL AND (NEW.tracer_uuid <> (NULLIF(CURRENT_SETTING('versioning.originator_id'), ''))::uuid OR CURRENT_SETTING('versioning.originator_id') = '') THEN
+        INSERT INTO notifications
+          (uuid, body, user_uuid, inserted_at, updated_at) VALUES
+          (
+            MD5(RANDOM()::text || CLOCK_TIMESTAMP()::text)::uuid,
+            JSONB_BUILD_OBJECT('__type__', 'case_assignee', 'uuid', MD5(RANDOM()::text || CLOCK_TIMESTAMP()::text)::uuid, 'case_uuid', NEW.uuid),
+            NEW.tracer_uuid,
+            NOW(),
+            NOW()
+          );
+      END IF;
+
+      IF (OLD.supervisor_uuid <> NEW.supervisor_uuid OR OLD IS NULL) AND NOT NEW.supervisor_uuid IS NULL AND (NEW.supervisor_uuid <> (NULLIF(CURRENT_SETTING('versioning.originator_id'), ''))::uuid OR CURRENT_SETTING('versioning.originator_id') = '') THEN
+        INSERT INTO notifications
+          (uuid, body, user_uuid, inserted_at, updated_at) VALUES
+          (
+            MD5(RANDOM()::text || CLOCK_TIMESTAMP()::text)::uuid,
+            JSONB_BUILD_OBJECT('__type__', 'case_assignee', 'uuid', MD5(RANDOM()::text || CLOCK_TIMESTAMP()::text)::uuid, 'case_uuid', NEW.uuid),
+            NEW.supervisor_uuid,
+            NOW(),
+            NOW()
+          );
+      END IF;
+
+      RETURN NEW;
+    END
+  $$;
+
+
+--
+-- Name: check_user_authorization_on_case(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.check_user_authorization_on_case() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT * FROM user_grants
+    WHERE user_grants.tenant_uuid = NEW.tenant_uuid AND
+      user_grants.user_uuid = NEW.tracer_uuid AND
+      user_grants.role = 'tracer'
+    ) THEN
+    NEW.tracer_uuid = NULL;
+  END IF;
+  IF NOT EXISTS (
+    SELECT * FROM user_grants
+    WHERE user_grants.tenant_uuid = NEW.tenant_uuid AND
+      user_grants.user_uuid = NEW.supervisor_uuid AND
+      user_grants.role = 'supervisor'
+    ) THEN
+    NEW.supervisor_uuid = NULL;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: email_send_failed(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.email_send_failed() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    DECLARE
+      AFFECTED_TRACER_UUID UUID;
+    BEGIN
+      IF (OLD.status <> NEW.status OR OLD IS NULL) AND NEW.status IN ('retries_exceeded', 'permanent_failure') THEN
+        SELECT tracer_uuid INTO AFFECTED_TRACER_UUID FROM cases WHERE uuid = NEW.case_uuid;
+
+        IF NOT AFFECTED_TRACER_UUID IS NULL THEN
+          INSERT INTO notifications
+            (uuid, body, user_uuid, inserted_at, updated_at) VALUES
+            (
+              MD5(RANDOM()::text || CLOCK_TIMESTAMP()::text)::uuid,
+              JSONB_BUILD_OBJECT('__type__', 'email_send_failed', 'uuid', MD5(RANDOM()::text || CLOCK_TIMESTAMP()::text)::uuid, 'case_uuid', NEW.case_uuid, 'email_uuid', NEW.uuid),
+              AFFECTED_TRACER_UUID,
+              NOW(),
+              NOW()
+            );
+        END IF;
+      END IF;
+
+      RETURN NEW;
+    END
+  $$;
+
+
+--
 -- Name: jsonb_array_to_tsvector_with_path(jsonb[], jsonpath); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -2207,6 +2293,24 @@ CREATE FUNCTION public.jsonb_equal(a jsonb, b jsonb) RETURNS boolean
     AS $$
     BEGIN
       RETURN A @> B AND A <@ B;
+    END
+  $$;
+
+
+--
+-- Name: notification_created(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.notification_created() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      PERFORM pg_notify(
+        'notification_created',
+        ROW_TO_JSON(NEW)::text
+      );
+
+      RETURN NEW;
     END
   $$;
 
@@ -2445,9 +2549,12 @@ CREATE TABLE public.emails (
     status public.email_status NOT NULL,
     message bytea NOT NULL,
     last_try timestamp without time zone,
-    case_uuid uuid NOT NULL,
+    case_uuid uuid,
     inserted_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    user_uuid uuid,
+    tenant_uuid uuid NOT NULL,
+    CONSTRAINT context_must_be_provided CHECK (((case_uuid IS NOT NULL) OR (user_uuid IS NOT NULL)))
 );
 
 
@@ -2459,6 +2566,21 @@ CREATE TABLE public.notes (
     uuid uuid NOT NULL,
     note text NOT NULL,
     case_uuid uuid NOT NULL,
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notifications (
+    uuid uuid NOT NULL,
+    body jsonb,
+    read boolean DEFAULT false NOT NULL,
+    notified boolean DEFAULT false NOT NULL,
+    user_uuid uuid NOT NULL,
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -2625,7 +2747,7 @@ CREATE TABLE public.tenants (
     public_statistics boolean DEFAULT false NOT NULL,
     outgoing_sms_configuration jsonb,
     override_url character varying(255),
-    template_variation public.template_variation,
+    template_variation character varying(255),
     iam_domain character varying(255),
     short_name character varying(255),
     case_management_enabled boolean DEFAULT false,
@@ -3027,6 +3149,14 @@ ALTER TABLE ONLY public.notes
 
 
 --
+-- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (uuid);
+
+
+--
 -- Name: organisations organisations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3234,6 +3364,34 @@ CREATE INDEX emails_direction_status_last_try_index ON public.emails USING btree
 --
 
 CREATE INDEX notes_case_uuid_index ON public.notes USING btree (case_uuid);
+
+
+--
+-- Name: notifications_notified_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX notifications_notified_index ON public.notifications USING btree (notified);
+
+
+--
+-- Name: notifications_read_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX notifications_read_index ON public.notifications USING btree (read);
+
+
+--
+-- Name: notifications_user_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX notifications_user_uuid_index ON public.notifications USING btree (user_uuid);
+
+
+--
+-- Name: notifications_user_uuid_read_notified_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX notifications_user_uuid_read_notified_index ON public.notifications USING btree (user_uuid, read, notified);
 
 
 --
@@ -3685,6 +3843,13 @@ CREATE TRIGGER case_related_organisations_versioning_update AFTER UPDATE ON publ
 
 
 --
+-- Name: cases cases_assignee_changed; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER cases_assignee_changed AFTER INSERT OR UPDATE ON public.cases FOR EACH ROW EXECUTE FUNCTION public.case_assignee_notification();
+
+
+--
 -- Name: cases cases_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -3706,6 +3871,13 @@ CREATE TRIGGER cases_versioning_update AFTER UPDATE ON public.cases FOR EACH ROW
 
 
 --
+-- Name: cases check_user_authorization_on_case; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER check_user_authorization_on_case BEFORE INSERT OR UPDATE ON public.cases FOR EACH ROW EXECUTE FUNCTION public.check_user_authorization_on_case();
+
+
+--
 -- Name: divisions divisions_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -3724,6 +3896,13 @@ CREATE TRIGGER divisions_versioning_insert AFTER INSERT ON public.divisions FOR 
 --
 
 CREATE TRIGGER divisions_versioning_update AFTER UPDATE ON public.divisions FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
+
+
+--
+-- Name: emails email_status_changed; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER email_status_changed AFTER INSERT OR UPDATE ON public.emails FOR EACH ROW EXECUTE FUNCTION public.email_send_failed();
 
 
 --
@@ -3766,6 +3945,34 @@ CREATE TRIGGER notes_versioning_insert AFTER INSERT ON public.notes FOR EACH ROW
 --
 
 CREATE TRIGGER notes_versioning_update AFTER UPDATE ON public.notes FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
+
+
+--
+-- Name: notifications notification_created; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER notification_created AFTER INSERT ON public.notifications FOR EACH ROW EXECUTE FUNCTION public.notification_created();
+
+
+--
+-- Name: notifications notifications_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER notifications_versioning_delete AFTER DELETE ON public.notifications FOR EACH ROW EXECUTE FUNCTION public.versioning_delete();
+
+
+--
+-- Name: notifications notifications_versioning_insert; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER notifications_versioning_insert AFTER INSERT ON public.notifications FOR EACH ROW EXECUTE FUNCTION public.versioning_insert();
+
+
+--
+-- Name: notifications notifications_versioning_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER notifications_versioning_update AFTER UPDATE ON public.notifications FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
 
 
 --
@@ -4109,11 +4316,35 @@ ALTER TABLE ONLY public.emails
 
 
 --
+-- Name: emails emails_tenant_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.emails
+    ADD CONSTRAINT emails_tenant_uuid_fkey FOREIGN KEY (tenant_uuid) REFERENCES public.tenants(uuid) ON DELETE CASCADE;
+
+
+--
+-- Name: emails emails_user_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.emails
+    ADD CONSTRAINT emails_user_uuid_fkey FOREIGN KEY (user_uuid) REFERENCES public.users(uuid) ON DELETE CASCADE;
+
+
+--
 -- Name: notes notes_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.notes
     ADD CONSTRAINT notes_case_uuid_fkey FOREIGN KEY (case_uuid) REFERENCES public.cases(uuid) ON DELETE CASCADE;
+
+
+--
+-- Name: notifications notifications_user_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_user_uuid_fkey FOREIGN KEY (user_uuid) REFERENCES public.users(uuid) ON DELETE CASCADE;
 
 
 --
@@ -4292,5 +4523,9 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210215124820);
 INSERT INTO public."schema_migrations" (version) VALUES (20210302143322);
 INSERT INTO public."schema_migrations" (version) VALUES (20210304175730);
 INSERT INTO public."schema_migrations" (version) VALUES (20210305203915);
+INSERT INTO public."schema_migrations" (version) VALUES (20210315103136);
 INSERT INTO public."schema_migrations" (version) VALUES (20210316120150);
 INSERT INTO public."schema_migrations" (version) VALUES (20210317121030);
+INSERT INTO public."schema_migrations" (version) VALUES (20210318105649);
+INSERT INTO public."schema_migrations" (version) VALUES (20210319113229);
+INSERT INTO public."schema_migrations" (version) VALUES (20210326144056);
