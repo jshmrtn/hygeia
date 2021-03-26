@@ -34,7 +34,7 @@ defmodule HygeiaPdfConfirmation.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger, :eex]
     ]
   end
 
@@ -50,6 +50,7 @@ defmodule HygeiaPdfConfirmation.MixProject do
       {:hygeia_cldr, in_umbrella: true},
       {:hygeia_gettext, in_umbrella: true},
       {:hygeia, in_umbrella: true},
+      {:jsone, "~> 1.5", override: true},
       {:pdf_generator, "~> 0.6.2"},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_html, "~> 2.11"}

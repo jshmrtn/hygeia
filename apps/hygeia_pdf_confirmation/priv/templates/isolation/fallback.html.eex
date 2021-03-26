@@ -1,0 +1,3 @@
+<h1>Fallback Isolation Confirmation Document</h1>
+
+<pre><%= inspect(@case, pretty: true) %></pre>

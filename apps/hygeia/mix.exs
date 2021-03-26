@@ -69,6 +69,7 @@ defmodule Hygeia.MixProject do
       {:hygeia_gettext, in_umbrella: true},
       {:hygeia_iam, in_umbrella: true},
       {:jason, "~> 1.0"},
+      {:jsone, "~> 1.5", override: true},
       {:mail, "~> 0.2"},
       {:mox, "~> 1.0", only: :test},
       {:paginator, "~> 1.0"},

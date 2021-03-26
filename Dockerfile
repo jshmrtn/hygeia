@@ -19,5 +19,8 @@ RUN buildDeps='binutils curl' && \
 ADD _build/prod/rel/hygeia /app
 ADD entry.sh /entry.sh
 
+ADD pdf_templates /pdf_templates
+ENV PDF_CONFIRMATION_TEMPLATE_ROOT="/pdf_templates"
+
 ENTRYPOINT ["/entry.sh"]
 CMD ["start"]

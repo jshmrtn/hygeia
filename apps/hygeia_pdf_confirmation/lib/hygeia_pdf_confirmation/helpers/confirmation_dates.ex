@@ -1,5 +1,7 @@
 defmodule HygeiaPdfConfirmation.Helpers.ConfirmationDates do
-  @moduledoc false
+  @moduledoc """
+  Helpers for Confirmation Dates
+  """
 
   alias Hygeia.CaseContext.Case
 
