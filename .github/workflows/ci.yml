@@ -419,9 +419,6 @@ jobs:
       - name: Branch name
         id: branch_name
         run: |
-          echo "$GITHUB_REF"
-          echo "SOURCE_BRANCH=${GITHUB_REF/refs\/heads\//}"
-          echo "SOURCE_TAG=${GITHUB_REF/refs\/tags\//}"
           echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF/refs\/heads\//}
           echo ::set-output name=SOURCE_TAG::${GITHUB_REF/refs\/tags\//}
       - name: Login to GitHub Container Registry
@@ -443,9 +440,9 @@ jobs:
       - run: docker push ghcr.io/${{ github.repository }}:$GITHUB_SHA
         if: github.event_name == 'push' && steps.branch_name.outputs.SOURCE_BRANCH == 'master'
       - run: docker tag ghcr.io/${{ github.repository }}:$GITHUB_SHA ghcr.io/${{ github.repository }}:${{ steps.branch_name.outputs.SOURCE_TAG }}
-        if: github.event_name == 'push' && github.event.ref_type == 'tag'
+        if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v')
       - run: docker push ghcr.io/${{ github.repository }}:${{ steps.branch_name.outputs.SOURCE_TAG }}
-        if: github.event_name == 'push' && github.event.ref_type == 'tag'
+        if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v')
   
   notify_jm_gitlab:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
@@ -486,7 +483,7 @@ jobs:
             "$JM_GITLAB_URL"
         env:
           SOURCE_TAG: steps.branch_name.outputs.SOURCE_TAG
-        if: github.event_name == 'push' && github.event.ref_type == 'tag' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v') && contains(steps.branch_name.outputs.SOURCE_TAG, '-beta.')
+        if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v') && contains(steps.branch_name.outputs.SOURCE_TAG, '-beta.')
       - run: |
           curl -X POST \
             --form "token=$JM_GITLAB_TOKEN" \
@@ -497,4 +494,4 @@ jobs:
             "$JM_GITLAB_URL"
         env:
           SOURCE_TAG: steps.branch_name.outputs.SOURCE_TAG
-        if: github.event_name == 'push' && github.event.ref_type == 'tag' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v') && !contains(steps.branch_name.outputs.SOURCE_TAG, '-beta.')
+        if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v') && !contains(steps.branch_name.outputs.SOURCE_TAG, '-beta.')
