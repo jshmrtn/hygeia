@@ -482,7 +482,7 @@ jobs:
             --fail \
             "$JM_GITLAB_URL"
         env:
-          SOURCE_TAG: steps.branch_name.outputs.SOURCE_TAG
+          SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
         if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v') && contains(steps.branch_name.outputs.SOURCE_TAG, '-beta.')
       - run: |
           curl -X POST \
@@ -493,5 +493,5 @@ jobs:
             --fail \
             "$JM_GITLAB_URL"
         env:
-          SOURCE_TAG: steps.branch_name.outputs.SOURCE_TAG
+          SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
         if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v') && !contains(steps.branch_name.outputs.SOURCE_TAG, '-beta.')
