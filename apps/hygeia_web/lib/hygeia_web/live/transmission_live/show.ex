@@ -7,6 +7,7 @@ defmodule HygeiaWeb.TransmissionLive.Show do
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.Repo
   alias HygeiaWeb.DateInput
+  alias HygeiaWeb.Helpers.ViewerLogging
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
@@ -26,9 +27,18 @@ defmodule HygeiaWeb.TransmissionLive.Show do
              :edit -> :update
              :show -> :details
            end,
-           get_auth(socket)
+           user = get_auth(socket)
          ) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "transmission:#{id}")
+
+        ViewerLogging.log_viewer(
+          user,
+          get_connect_info(socket),
+          socket.host_uri,
+          :details,
+          Transmission,
+          id
+        )
 
         load_data(socket, transmission)
       else

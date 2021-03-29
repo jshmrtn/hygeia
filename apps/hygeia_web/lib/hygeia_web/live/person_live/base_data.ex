@@ -11,6 +11,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias HygeiaWeb.DateInput
+  alias HygeiaWeb.Helpers.ViewerLogging
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
@@ -35,8 +36,17 @@ defmodule HygeiaWeb.PersonLive.BaseData do
       end
 
     socket =
-      if authorized?(person, action, get_auth(socket)) do
+      if authorized?(person, action, user = get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "people:#{id}")
+
+        ViewerLogging.log_viewer(
+          user,
+          get_connect_info(socket),
+          socket.host_uri,
+          :details,
+          Person,
+          id
+        )
 
         tenants =
           Enum.filter(

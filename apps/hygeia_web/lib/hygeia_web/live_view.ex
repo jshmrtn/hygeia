@@ -68,6 +68,7 @@ defmodule HygeiaWeb.LiveView do
   @spec before_mount(socket :: Socket.t(), session :: map) :: Socket.t()
   def before_mount(socket, session) do
     HygeiaWeb.setup_live_view(session)
+# generate request_id in context
 
     assign(
       socket,

@@ -26,7 +26,7 @@ defmodule HygeiaWeb.CaseLive.Protocol do
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id} = _params, _uri, socket) do
     case = CaseContext.get_case!(id)
-
+    # TODO Protokollierung Ansichten?
     socket =
       if authorized?(case, :details, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")

@@ -8,6 +8,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
   alias HygeiaWeb.DateInput
+  alias HygeiaWeb.Helpers.ViewerLogging
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
@@ -25,6 +26,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
       |> CaseContext.get_possible_index_submission!()
       |> Repo.preload(:case)
 
+    # TODO Protokollierung Ansichten?
     socket =
       if authorized?(
            possible_index_submission,
@@ -32,9 +34,18 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
              :edit -> :update
              :show -> :details
            end,
-           get_auth(socket)
+           user = get_auth(socket)
          ) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "possible_index_submissions:#{id}")
+
+        ViewerLogging.log_viewer(
+          user,
+          get_connect_info(socket),
+          socket.host_uri,
+          :details,
+          Person,
+          id
+        )
 
         load_data(socket, possible_index_submission)
       else

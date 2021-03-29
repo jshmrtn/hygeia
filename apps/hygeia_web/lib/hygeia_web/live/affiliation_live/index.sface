@@ -70,7 +70,9 @@
               :if={{ authorized?(affiliation.person, :details, auth) }}
               to={{ Routes.person_base_data_path(@socket, :show, affiliation.person) }}
             >
+            <HygeiaWeb.RecordView resource={{ affiliation.person }} action={{ :list }}>
               {{ person_display_name(affiliation.person) }}
+            </HygeiaWeb.RecordView>
             </LiveRedirect>
             <span :if={{ not authorized?(affiliation.person, :details, auth) }}>
               {{ affiliation.person_uuid }}

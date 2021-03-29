@@ -10,6 +10,7 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
+  alias HygeiaWeb.Helpers.ViewerLogging
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.FieldContext
@@ -23,8 +24,10 @@ defmodule HygeiaWeb.CaseLive.Index do
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     socket =
-      if authorized?(Case, :list, get_auth(socket), tenant: :any) do
+      if authorized?(Case, :list, user = get_auth(socket), tenant: :any) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases")
+
+        ViewerLogging.log_viewer(user, get_connect_info(socket), socket.host_uri, :list, Case)
 
         supervisor_users = [
           %{display_name: gettext("Case Administration"), uuid: :user_not_assigned}
