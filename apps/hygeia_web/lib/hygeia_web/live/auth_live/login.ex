@@ -33,9 +33,17 @@ defmodule HygeiaWeb.AuthLive.Login do
         %{"person_login" => %{"first_name" => first_name, "last_name" => last_name}} = _params,
         socket
       ) do
-    first_name_difference = String.bag_distance(first_name, socket.assigns.person.first_name)
+    first_name_difference =
+      String.bag_distance(
+        String.downcase(first_name),
+        String.downcase(socket.assigns.person.first_name)
+      )
 
-    last_name_difference = String.bag_distance(last_name, socket.assigns.person.last_name)
+    last_name_difference =
+      String.bag_distance(
+        String.downcase(last_name),
+        String.downcase(socket.assigns.person.last_name)
+      )
 
     socket =
       if first_name_difference + last_name_difference > 1.8 do

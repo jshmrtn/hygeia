@@ -64,20 +64,33 @@ defmodule HygeiaWeb.PdfController do
 
   @spec quarantine_confirmation(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) ::
           Plug.Conn.t()
-  def quarantine_confirmation(conn, %{"case_uuid" => case_uuid, "phase_uuid" => phase_uuid}) do
+  def quarantine_confirmation(%Plug.Conn{request_path: request_path} = conn, %{
+        "case_uuid" => case_uuid,
+        "phase_uuid" => phase_uuid
+      }) do
     case = get_case!(case_uuid)
 
-    case.phases
-    |> Enum.find(&match?(%Phase{uuid: ^phase_uuid}, &1))
-    |> case do
-      nil ->
-        raise PhaseNotFoundError, conn: conn, phase_uuid: phase_uuid, case_uuid: case_uuid
+    if authorized?(case, :partial_details, get_auth(conn)) do
+      case.phases
+      |> Enum.find(&match?(%Phase{uuid: ^phase_uuid}, &1))
+      |> case do
+        nil ->
+          raise PhaseNotFoundError, conn: conn, phase_uuid: phase_uuid, case_uuid: case_uuid
 
-      %Phase{} = phase ->
-        conn
-        |> put_resp_header("content-type", "application/pdf")
-        |> put_resp_header("content-disposition", "attachment")
-        |> send_resp(:ok, Quarantine.render_pdf(case, phase))
+        %Phase{} = phase ->
+          conn
+          |> put_resp_header("content-type", "application/pdf")
+          |> put_resp_header("content-disposition", "attachment")
+          |> send_resp(:ok, Quarantine.render_pdf(case, phase))
+      end
+    else
+      redirect(conn,
+        to:
+          Routes.auth_login_path(conn, :login,
+            person_uuid: case.person_uuid,
+            return_url: request_path
+          )
+      )
     end
   end
 end
