@@ -200,6 +200,12 @@
                     %{type: :possible_index, sub_type: sub_type} ->
                       case_phase_possible_index_type_translation(sub_type)
                   end)
+              },
+              options: %{
+                title: %{
+                  display: true,
+                  text: gettext("New Cases")
+                }
               }
             }}}
           />
@@ -249,6 +255,12 @@
                     %{case_complexity: nil} -> gettext("unknown")
                     %{case_complexity: case_complexity} -> case_complexity_translation(case_complexity)
                   end)
+              },
+              options: %{
+                title: %{
+                  display: true,
+                  text: gettext("Complexity")
+                }
               }
             }}}
           />

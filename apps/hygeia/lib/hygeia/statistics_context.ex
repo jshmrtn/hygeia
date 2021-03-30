@@ -544,7 +544,10 @@ defmodule Hygeia.StatisticsContext do
             ^to
           ) and
           (^include_zero_values or active_infection_place_cases_per_day.count > 0),
-      order_by: active_infection_place_cases_per_day.date
+      order_by: [
+        active_infection_place_cases_per_day.date,
+        desc: active_infection_place_cases_per_day.count
+      ]
     )
   end
 
@@ -960,7 +963,10 @@ defmodule Hygeia.StatisticsContext do
             ^from,
             ^to
           ),
-      order_by: active_cases_per_day_and_organisation.date,
+      order_by: [
+        active_cases_per_day_and_organisation.date,
+        desc: active_cases_per_day_and_organisation.count
+      ],
       preload: [:organisation]
     )
   end
