@@ -34,19 +34,19 @@ defmodule HygeiaWeb.AuthLive.Login do
         socket
       ) do
     first_name_difference =
-      String.bag_distance(
+      String.jaro_distance(
         String.downcase(first_name),
         String.downcase(socket.assigns.person.first_name)
       )
 
     last_name_difference =
-      String.bag_distance(
+      String.jaro_distance(
         String.downcase(last_name),
         String.downcase(socket.assigns.person.last_name)
       )
 
     socket =
-      if first_name_difference + last_name_difference > 1.8 do
+      if first_name_difference + last_name_difference >= 1.8 do
         push_redirect(socket,
           to:
             Routes.auth_path(socket, :request, "person",
