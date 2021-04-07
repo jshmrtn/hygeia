@@ -110,7 +110,21 @@ defmodule Hygeia.TenantContext.Tenant.Smtp do
       send_options = Smtp.gen_smtp_options(smtp_config, to_mail)
 
       {from_mail, [to_mail], message}
-      |> :gen_smtp_client.send_blocking(send_options ++ [etries: 10])
+      |> :gen_smtp_client.send_blocking(
+        send_options ++
+          [
+            retries: 10,
+            tls: [
+              versions: [:tlsv1, :"tlsv1.1", :"tlsv1.2", :"tlsv1.3"],
+              verify: :verify_peer,
+              depth: 4,
+              cacertfile: CAStore.file_path(),
+              customize_hostname_check: [
+                match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
+              ]
+            ]
+          ]
+      )
       |> case do
         binary when is_binary(binary) -> :success
         {:error, :send, error} -> handle_error(error)
