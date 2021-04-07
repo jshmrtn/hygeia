@@ -4,7 +4,7 @@ on:
       - '*'
   push:
     branches:
-      - '*'
+      - 'master'
     tags:
       - 'v*'
 
@@ -15,8 +15,6 @@ env:
 
 jobs:
   compile_assets:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-
     name: Compile Assets
 
     runs-on: ubuntu-latest
@@ -54,8 +52,6 @@ jobs:
           path: apps/hygeia_web/priv/static
 
   format:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-
     name: Check Formatting
     
     runs-on: ubuntu-latest
@@ -80,8 +76,6 @@ jobs:
       - run: mix format --check-formatted
 
   surface_format:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-
     name: Check Surface Formatting
     
     runs-on: ubuntu-latest
@@ -115,8 +109,6 @@ jobs:
       - run: mix surface.format --check-formatted
 
   test:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-
     name: Run Tests & Submit Coverage
 
     runs-on: ubuntu-latest
@@ -186,8 +178,6 @@ jobs:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
 
   credo:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-
     name: Check Credo
 
     runs-on: ubuntu-latest
@@ -221,8 +211,6 @@ jobs:
       - run: mix credo --strict
 
   dialyzer_plt:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-
     name: Generate Dialyzer PLT
 
     runs-on: ubuntu-latest
@@ -267,8 +255,6 @@ jobs:
           path: priv/plts/
 
   dialyzer_test:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-
     name: "Check Dialyzer"
 
     runs-on: ubuntu-latest
@@ -308,8 +294,6 @@ jobs:
       - run: mix dialyzer
 
   docs:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-
     name: "Generate Docs"
 
     runs-on: ubuntu-latest
@@ -347,8 +331,6 @@ jobs:
           path: doc
   
   mix_release:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-
     name: "Mix Release"
 
     runs-on: ubuntu-latest
@@ -401,8 +383,6 @@ jobs:
           path: release.tar.gz
   
   docker_build:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-
     name: "Docker Build"
 
     runs-on: ubuntu-latest
@@ -445,8 +425,6 @@ jobs:
         if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v')
   
   notify_jm_gitlab:
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
-    
     name: "Notify JM GitLab"
 
     runs-on: ubuntu-latest
