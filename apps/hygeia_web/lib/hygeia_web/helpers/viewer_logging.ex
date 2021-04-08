@@ -1,24 +1,41 @@
 defmodule HygeiaWeb.Helpers.ViewerLogging do
   @moduledoc false
 
-  def log_viewer(user, connect_info, host_uri, action, resource, resource_id \\ nil) do
-    ip =
-      case connect_info do
-        nil -> nil
-        connect_info -> connect_info.peer_data.address
-      end
+  alias Hygeia.CaseContext.Person
+  alias Hygeia.UserContext.User
 
+  @spec log_viewer(
+          request_id :: String.t(),
+          auth :: User.t() | Person.t() | :anonymous,
+          ip_address :: :inet.ip_address(),
+          url :: String.t(),
+          action :: atom,
+          resource :: any
+        ) :: :ok
+  def log_viewer(
+        request_id,
+        auth,
+        ip_address,
+        url,
+        action,
+        %resource_name{} = resource
+      ) do
     message = %{
-      user_uuid: user.uuid,
+      request_id: request_id,
+      auth:
+        case auth do
+          %User{uuid: uuid} -> {User, uuid}
+          %Person{uuid: uuid} -> {Person, uuid}
+          :anonymous -> :anonymous
+        end,
       time: DateTime.utc_now(),
-      ip: ip,
-      url: URI.to_string(host_uri),
+      ip_address: ip_address,
+      url: url,
       action: action,
-      resource: resource,
-      resource_id: resource_id
+      resource: resource_name,
+      resource_uuid: resource.uuid
     }
 
-    IO.inspect(message, label: "************ VIEWER LOGG MESSAGE ***********")
     Phoenix.PubSub.broadcast!(Hygeia.PubSub, "viewer_logging", message)
   end
 end

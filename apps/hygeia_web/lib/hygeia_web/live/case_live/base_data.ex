@@ -13,7 +13,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Hygeia.UserContext
   alias HygeiaWeb.CaseLive.CaseLiveHelper
   alias HygeiaWeb.DateInput
-  alias HygeiaWeb.Helpers.ViewerLogging
   alias HygeiaWeb.PolimorphicInputs
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
@@ -44,17 +43,8 @@ defmodule HygeiaWeb.CaseLive.BaseData do
       end
 
     socket =
-      if authorized?(case, auth_action, user = get_auth(socket)) do
+      if authorized?(case, auth_action, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
-
-        ViewerLogging.log_viewer(
-          user,
-          get_connect_info(socket),
-          socket.host_uri,
-          :details,
-          Case,
-          id
-        )
 
         tenants =
           Enum.filter(

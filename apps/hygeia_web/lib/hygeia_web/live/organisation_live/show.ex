@@ -24,7 +24,7 @@ defmodule HygeiaWeb.OrganisationLive.Show do
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
     organisation = OrganisationContext.get_organisation!(id)
-    # TODO Protokollierung Ansichten?
+
     socket =
       if authorized?(
            organisation,

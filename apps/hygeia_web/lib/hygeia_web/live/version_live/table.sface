@@ -37,6 +37,12 @@
         phx-update="ignore"
         id={{ "version_#{uuid}" }}
       >
+        <HygeiaWeb.RecordView
+          resource={{ version }}
+          action={{ :details }}
+          id={{ "version_recordview_#{uuid}" }}
+        />
+
         <td>{{ Event.translate(event) }}</td>
         <td>
           <time

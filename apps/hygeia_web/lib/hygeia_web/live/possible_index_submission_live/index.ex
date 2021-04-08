@@ -9,7 +9,6 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
-  alias HygeiaWeb.Helpers.ViewerLogging
   alias Surface.Components.Context
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
@@ -19,18 +18,9 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
     case = CaseContext.get_case!(case_uuid)
 
     socket =
-      if authorized?(PossibleIndexSubmission, :list, user = get_auth(socket), %{case: case}) do
-    # TODO Protokollierung Ansichten?
+      if authorized?(PossibleIndexSubmission, :list, get_auth(socket), %{case: case}) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{case_uuid}")
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "possible_index_submissions")
-
-        ViewerLogging.log_viewer(
-          user,
-          get_connect_info(socket),
-          socket.host_uri,
-          :list,
-          Person
-        )
 
         load_data(socket, case_uuid)
       else

@@ -176,6 +176,11 @@
                           </Field>
                         </td>
                         <td :if={{ @live_action == :show }}>
+                          <HygeiaWeb.RecordView
+                            resource={{ @organisation }}
+                            action={{ :list }}
+                            id={{ "organisation_recordview_#{@organisation.uuid}" }}
+                          />
                           <LiveRedirect
                             to={{ Routes.person_base_data_path(@socket, :show, form.source.data.person) }}
                             :if={{ authorized?(form.source.data.person, :details, auth) }}

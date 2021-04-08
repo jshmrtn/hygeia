@@ -18,6 +18,11 @@
             </button>
           </LivePatch>
         </div>
+        <HygeiaWeb.RecordView
+          resource={{ @case }}
+          action={{ :details }}
+          id={{ "case_recordview_#{@case.uuid}" }}
+        />
 
         <HygeiaWeb.Lock
           id={{ {:lock, Case, @case.uuid} }}

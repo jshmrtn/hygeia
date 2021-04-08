@@ -22,7 +22,6 @@ defmodule HygeiaWeb.VersionLive.Show do
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id, "resource" => resource}, _uri, socket) do
-    # TODO Protokollierung Ansichten?
     schema = item_table_to_module(resource)
 
     resource = Repo.get(schema, id)

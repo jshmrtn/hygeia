@@ -231,6 +231,11 @@
       <tbody id="cases">
         <tr :for={{ case <- @cases }} id="case-{{ case.uuid }}">
           <td :if={{ authorized?(case.person, :details, auth) }}>
+            <HygeiaWeb.RecordView
+              resource={{ case }}
+              action={{ :list }}
+              id={{ "case_recordview_#{case.uuid}" }}
+            />
             {{ case.person.first_name }}
             {{ case.person.last_name }}
           </td>

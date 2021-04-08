@@ -2,7 +2,9 @@ defmodule HygeiaWeb.LiveView do
   @moduledoc false
 
   import HygeiaWeb.Helpers.Auth
-  import Phoenix.LiveView, only: [assign: 3, get_connect_params: 1, connected?: 1]
+
+  import Phoenix.LiveView,
+    only: [assign: 3, get_connect_params: 1, connected?: 1, get_connect_info: 1]
 
   alias Phoenix.LiveView.Socket
 
@@ -68,7 +70,6 @@ defmodule HygeiaWeb.LiveView do
   @spec before_mount(socket :: Socket.t(), session :: map) :: Socket.t()
   def before_mount(socket, session) do
     HygeiaWeb.setup_live_view(session)
-# generate request_id in context
 
     assign(
       socket,
@@ -83,7 +84,23 @@ defmodule HygeiaWeb.LiveView do
           do: get_connect_params(socket)["browser_features"]
         )
       )
+      |> Map.put(
+        {HygeiaWeb, :ip_address},
+        if(connected?(socket) and not is_nil(socket.private[:connect_info]),
+          do: get_ip_address(socket)
+        )
+      )
     )
+  end
+
+  defp get_ip_address(socket) do
+    case get_connect_info(socket) do
+      %{peer_data: peer_data} ->
+        peer_data.address
+
+      _other ->
+        nil
+    end
   end
 
   @doc false

@@ -9,7 +9,6 @@ defmodule HygeiaWeb.PersonLive.Index do
   alias Hygeia.CaseContext.Person
   alias Hygeia.EctoType.NOGA
   alias Hygeia.Repo
-  alias HygeiaWeb.Helpers.ViewerLogging
   alias Hygeia.TenantContext
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
@@ -24,10 +23,8 @@ defmodule HygeiaWeb.PersonLive.Index do
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     socket =
-      if authorized?(Person, :list, user = get_auth(socket), tenant: :any) do
+      if authorized?(Person, :list, get_auth(socket), tenant: :any) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "people")
-
-        ViewerLogging.log_viewer(user, get_connect_info(socket), socket.host_uri, :list, Person)
 
         assign(socket,
           page_title: gettext("People"),
@@ -79,8 +76,6 @@ defmodule HygeiaWeb.PersonLive.Index do
 
   @impl Phoenix.LiveView
   def handle_event("filter", params, socket) do
-    IO.inspect("********* person_live.index:handle_event filter **********")
-
     {:noreply,
      push_patch(socket, to: page_url(socket, [], params["filter"] || %{}, socket.assigns.sort))}
   end
@@ -97,7 +92,6 @@ defmodule HygeiaWeb.PersonLive.Index do
 
   @impl Phoenix.LiveView
   def handle_info({_type, %Person{}, _version}, socket) do
-    IO.inspect("********* person_live.index:handle_info **********")
     {:noreply, list_people(socket)}
   end
 

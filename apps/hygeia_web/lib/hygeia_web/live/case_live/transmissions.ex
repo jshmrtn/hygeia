@@ -7,7 +7,6 @@ defmodule HygeiaWeb.CaseLive.Transmissions do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.Repo
-  alias HygeiaWeb.Helpers.ViewerLogging
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
@@ -21,17 +20,9 @@ defmodule HygeiaWeb.CaseLive.Transmissions do
              :edit -> :update
              :show -> :details
            end,
-           user = get_auth(socket)
+           get_auth(socket)
          ) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
-
-        ViewerLogging.log_viewer(
-          user,
-          get_connect_info(socket),
-          socket.host_uri,
-          :list,
-          Transmission
-        )
 
         load_data(socket, case)
       else

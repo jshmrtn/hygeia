@@ -10,7 +10,6 @@ defmodule HygeiaWeb.AffiliationLive.Index do
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.Repo
-  alias HygeiaWeb.Helpers.ViewerLogging
   alias Surface.Components.Context
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
@@ -32,16 +31,8 @@ defmodule HygeiaWeb.AffiliationLive.Index do
     organisation = OrganisationContext.get_organisation!(organisation_id)
 
     socket =
-      if authorized?(Affiliation, :list, user = get_auth(socket), organisation: organisation) do
+      if authorized?(Affiliation, :list, get_auth(socket), organisation: organisation) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "affiliations")
-
-        ViewerLogging.log_viewer(
-          user,
-          get_connect_info(socket),
-          socket.host_uri,
-          :list,
-          Affiliation
-        )
 
         pagination_params =
           case params do

@@ -11,7 +11,6 @@ defmodule HygeiaWeb.UserLive.Show do
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
-    # TODO Protokollierung Ansichten?
     user =
       id
       |> UserContext.get_user!()

@@ -33,6 +33,11 @@
                   to={{ Routes.person_base_data_path(@socket, :show, transmission.recipient) }}
                   :if={{ authorized?(transmission.recipient, :details, auth) }}
                 >
+                  <HygeiaWeb.RecordView
+                    resource={{ transmission }}
+                    action={{ :list }}
+                    id={{ "transmission_recordview_#{transmission.uuid}" }}
+                  />
                   {{ transmission.recipient.first_name }}
                   {{ transmission.recipient.last_name }}
                 </Link>
@@ -76,6 +81,11 @@
                   to={{ Routes.person_base_data_path(@socket, :show, transmission.propagator) }}
                   :if={{ authorized?(transmission.propagator, :details, auth) }}
                 >
+                  <HygeiaWeb.RecordView
+                    resource={{ transmission }}
+                    action={{ :list }}
+                    id={{ "transmission_recordview_#{transmission.uuid}" }}
+                  />
                   {{ transmission.propagator.first_name }}
                   {{ transmission.propagator.last_name }}
                 </Link>

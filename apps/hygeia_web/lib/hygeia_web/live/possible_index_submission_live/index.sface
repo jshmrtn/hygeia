@@ -90,6 +90,11 @@
               :for={{ possible_index_submission <- @case.possible_index_submissions }}
               id="possible_index_submission-{{ possible_index_submission.uuid }}"
             >
+              <HygeiaWeb.RecordView
+                resource={{ possible_index_submission }}
+                action={{ :list }}
+                id={{ "possible_index_submission_recordview_#{possible_index_submission.uuid}" }}
+              />
               <td>
                 {{ possible_index_submission.first_name }}
               </td>

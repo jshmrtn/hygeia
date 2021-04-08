@@ -10,6 +10,11 @@
         <HygeiaWeb.CaseLive.Navigation case={{ @possible_index_submission.case }} id="navigation" />
       </div>
       <div class="card-body">
+        <HygeiaWeb.RecordView
+          resource={{ @possible_index_submission }}
+          action={{ :details }}
+          id={{ "possible_index_submission_recordview_#{@possible_index_submission.uuid}" }}
+        />
         <h1 class="mb-3">
           {{ Ecto.Changeset.get_field(@changeset, :first_name) }}
           {{ Ecto.Changeset.get_field(@changeset, :last_name) }}

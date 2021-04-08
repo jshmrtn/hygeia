@@ -31,6 +31,12 @@
             :for={{ {uuid, inserted_at, entry, version} <- Enum.reverse(@protocol_entries) }}
             id={{ "protocol_entry_#{uuid}" }}
           >
+            <HygeiaWeb.RecordView
+              resource={{ entry }}
+              action={{ :details }}
+              id={{ "protocol_entry_recordview_#{uuid}" }}
+            />
+
             <td>{{ module_translation(entry.__struct__) }}</td>
             <td>
               <time

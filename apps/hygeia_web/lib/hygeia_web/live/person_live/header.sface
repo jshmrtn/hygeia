@@ -1,6 +1,11 @@
 <div class="component-person-header mb-4">
   <Context get={{ HygeiaWeb, auth: auth }}>
     <h1 class="mb-4" :if={{ authorized?(@person, :partial_details, auth) }}>
+      <HygeiaWeb.RecordView
+        resource={{ @person }}
+        action={{ :details }}
+        id={{ "person_recordview_#{@person.uuid}" }}
+      />
       {{ @person_display_name }}
     </h1>
     <h1 class="mb-4" :if={{ not authorized?(@person, :partial_details, auth) }}>

@@ -11,7 +11,6 @@ defmodule HygeiaWeb.UserLive.Index do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
-    # TODO Protokollierung Ansichten?
     socket =
       if authorized?(User, :list, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "users")
