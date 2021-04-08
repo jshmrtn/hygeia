@@ -179,7 +179,7 @@ jobs:
       - run: mix ecto.migrate
         env:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
-      - run: mix coveralls.detail # TODO: Switch to coveralls.github when this repo was set to public
+      - run: mix coveralls.github
         env:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
 
