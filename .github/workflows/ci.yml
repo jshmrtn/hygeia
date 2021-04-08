@@ -179,7 +179,7 @@ jobs:
       - run: mix ecto.migrate
         env:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
-      - run: mix coveralls.github
+      - run: mix coveralls.github --umbrella
         env:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
 
