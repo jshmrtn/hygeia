@@ -8,6 +8,12 @@ on:
     tags:
       - 'v*'
 
+# Secrets:
+# * CACHE_VERSION - Set to `date +%s`, set new when the cache should be busted
+# * JM_GITLAB_REF - Branch to trigger CI on. (Even though the name includes "ref", GitLab does only allow branch names)
+# * JM_GITLAB_TOKEN - Auth token to trigger GitLab CI
+# * JM_GITLAB_URL - CI Trigger URL
+
 env:
   BUILD_EMBEDDED: true
   DIALYZER_PLT_PRIV: true
@@ -28,10 +34,10 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ runner.os }}-
-            deps-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.get
       - uses: actions/setup-node@v2
         with:
@@ -40,10 +46,10 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: .ci-npm-cache
-          key: deps-${{ runner.os }}-${{ hashFiles('apps/hygeia_web/assets/package-lock.json') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('apps/hygeia_web/assets/package-lock.json') }}
           restore-keys: |
-            deps-${{ runner.os }}-
-            deps-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
       - run: npm ci --prefix=apps/hygeia_web/assets
       - run: npm run deploy --prefix=apps/hygeia_web/assets
       - uses: actions/upload-artifact@v2
@@ -68,10 +74,10 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ runner.os }}-
-            deps-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.get
       - run: mix format --check-formatted
 
@@ -92,18 +98,18 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ runner.os }}-
-            deps-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
           path: _build/dev
-          key: compile_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            compile_dev-${{ runner.os }}-
-            compile_dev-
+            compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            compile_dev-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.compile --skip-umbrella-children
       - run: mix compile --warning-as-errors
       - run: mix surface.format --check-formatted
@@ -152,18 +158,18 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ runner.os }}-
-            deps-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
           path: _build/test
-          key: compile_test-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: compile_test-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            compile_test-${{ runner.os }}-
-            compile_test-
+            compile_test-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            compile_test-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.compile --skip-umbrella-children
       - run: mix compile --warning-as-errors
       - run: sudo apt-get install -y wkhtmltopdf poppler-utils
@@ -194,18 +200,18 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ runner.os }}-
-            deps-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
           path: _build/dev
-          key: compile_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            compile_dev-${{ runner.os }}-
-            compile_dev-
+            compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            compile_dev-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.compile --skip-umbrella-children
       - run: mix compile --warning-as-errors
       - run: mix credo --strict
@@ -227,27 +233,27 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ runner.os }}-
-            deps-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
           path: _build/dev
-          key: compile_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            compile_dev-${{ runner.os }}-
-            compile_dev-
+            compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            compile_dev-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.compile --skip-umbrella-children
       - run: mix compile --warning-as-errors
       - uses: actions/cache@v2
         with:
           path: priv/plts/
-          key: dialyzer_plt_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: dialyzer_plt_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            dialyzer_plt_dev-${{ runner.os }}-
-            dialyzer_plt_dev-
+            dialyzer_plt_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            dialyzer_plt_dev-${{ secrets.CACHE_VERSION }}-
       - run: mix dialyzer --plt
       - uses: actions/upload-artifact@v2
         with:
@@ -273,18 +279,18 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ runner.os }}-
-            deps-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
           path: _build/dev
-          key: compile_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            compile_dev-${{ runner.os }}-
-            compile_dev-
+            compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            compile_dev-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.compile --skip-umbrella-children
       - run: mix compile --warning-as-errors
       - uses: actions/download-artifact@v2
@@ -310,18 +316,18 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ runner.os }}-
-            deps-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
           path: _build/dev
-          key: compile_dev-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            compile_dev-${{ runner.os }}-
-            compile_dev-
+            compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            compile_dev-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.compile --skip-umbrella-children
       - run: mix compile --warning-as-errors
       - run: mix docs
@@ -352,18 +358,18 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: deps
-          key: deps-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ runner.os }}-
-            deps-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
           path: _build/prod
-          key: compile_docker_prod-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          key: compile_docker_prod-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            compile_docker_prod-${{ runner.os }}-
-            compile_docker_prod-
+            compile_docker_prod-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            compile_docker_prod-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.compile --skip-umbrella-children
         env:
           MIX_ENV: prod
