@@ -26,6 +26,9 @@ erl_crash.dump
 # BFS Country List
 apps/hygeia/lib/hygeia/ecto_type/country/*.hrl
 
+# CLDR Locales
+/apps/hygeia_cldr/priv/cldr
+
 # .mo Files
 *.mo
 
