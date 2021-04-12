@@ -25,8 +25,8 @@ defmodule HygeiaWeb.VersionLive.Change do
       <li :for={{
         {key, value} <- map,
         field_key = field_key(key),
-        field_name = schema_field_name(field_key, schema),
-        field_schema = field_schema(schema, field_key(key), value)
+        field_schema = field_schema(schema, field_key(key), value),
+        field_name = schema_field_name(field_key, schema)
       }}>
         <details :if={{ is_complex?(value) }}>
           <summary><strong>{{ field_name }}</strong></summary>
