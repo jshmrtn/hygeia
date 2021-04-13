@@ -62,9 +62,11 @@
                   end)
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("Finished Isolations")
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("Finished Isolations")
+                  }
                 }
               }
             }}}
@@ -99,9 +101,11 @@
                   )
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("People in Quarantine")
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("People in Quarantine")
+                  }
                 }
               }
             }}}
@@ -159,12 +163,14 @@
                 ]
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("Quarantine End Reasons")
-                },
-                legend: %{
-                  display: false
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("Quarantine End Reasons")
+                  },
+                  legend: %{
+                    display: false
+                  }
                 }
               }
             }}}
@@ -202,9 +208,11 @@
                   end)
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("New Cases")
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("New Cases")
+                  }
                 }
               }
             }}}
@@ -257,9 +265,11 @@
                   end)
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("Complexity")
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("Complexity")
+                  }
                 }
               }
             }}}
