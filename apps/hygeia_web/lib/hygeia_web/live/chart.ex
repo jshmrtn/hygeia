@@ -20,8 +20,7 @@ defmodule HygeiaWeb.Chart do
           chart:
             @config
             |> Map.put(:id, @dom_id <> "_chart")
-            |> Map.update(:credits, %{enabled: false}, &Map.put_new(&1, :enabled, false))
-            |> Map.update(:chart, %{height: "60%"}, &Map.put_new(&1, :height, "50%"))
+            |> Map.update(:chart, %{height: "50%"}, &Map.put_new(&1, :height, "50%"))
             |> Map.put_new(:enableVisionImpairedMode, enable_vision_impaired_mode)
             |> Jason.encode!()
         ]
