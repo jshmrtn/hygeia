@@ -37,6 +37,7 @@
                 datasets: [
                   %{
                     label: gettext("Count"),
+                    fill: %{target: "origin"},
                     data:
                       Enum.map(
                         @active_isolation_cases_per_day,
@@ -49,37 +50,35 @@
                 ]
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("People in Isolation")
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("People in Isolation")
+                  }
                 },
                 scales: %{
-                  xAxes: [
-                    %{
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Date")
-                      },
-                      type: "time",
-                      time: %{
-                        unit: "day",
-                        tooltipFormat: "LL"
-                      }
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "LL"
                     }
-                  ],
-                  yAxes: [
-                    %{
-                      stacked: true,
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("People")
-                      },
-                      ticks: %{
-                        stepSize: 1,
-                        beginAtZero: true
-                      }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("People")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
                     }
-                  ]
+                  }
                 }
               }
             }}}
@@ -106,48 +105,48 @@
                     {nil, entries} ->
                       %{
                         label: gettext("unknown"),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
             
                     {end_reason, entries} ->
                       %{
                         label: case_phase_index_end_reason_translation(end_reason),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
                   end)
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("Finished Isolations")
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("Finished Isolations")
+                  }
                 },
                 scales: %{
-                  xAxes: [
-                    %{
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Date")
-                      },
-                      type: "time",
-                      time: %{
-                        unit: "day",
-                        tooltipFormat: "LL"
-                      }
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "LL"
                     }
-                  ],
-                  yAxes: [
-                    %{
-                      stacked: true,
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Cases")
-                      },
-                      ticks: %{
-                        stepSize: 1,
-                        beginAtZero: true
-                      }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("Cases")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
                     }
-                  ]
+                  }
                 }
               }
             }}}
@@ -176,42 +175,41 @@
                   |> Enum.map(fn {type, entries} ->
                     %{
                       label: case_phase_possible_index_type_translation(type),
+                      fill: %{target: "origin"},
                       data: Enum.reverse(entries)
                     }
                   end)
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("People in Quarantine")
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("People in Quarantine")
+                  }
                 },
                 scales: %{
-                  xAxes: [
-                    %{
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Date")
-                      },
-                      type: "time",
-                      time: %{
-                        unit: "day",
-                        tooltipFormat: "LL"
-                      }
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "LL"
                     }
-                  ],
-                  yAxes: [
-                    %{
-                      stacked: true,
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("People")
-                      },
-                      ticks: %{
-                        stepSize: 1,
-                        beginAtZero: true
-                      }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("People")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
                     }
-                  ]
+                  }
                 }
               }
             }}}
@@ -240,6 +238,7 @@
                       %{
                         label:
                           case_phase_possible_index_type_translation(type) <> " / " <> gettext("unknown"),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
             
@@ -248,45 +247,44 @@
                         label:
                           case_phase_possible_index_type_translation(type) <>
                             " / " <> case_phase_possible_index_end_reason_translation(end_reason),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
                   end)
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("Quarantine End Reasons")
-                },
-                legend: %{
-                  display: false
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("Quarantine End Reasons")
+                  },
+                  legend: %{
+                    display: false
+                  }
                 },
                 scales: %{
-                  xAxes: [
-                    %{
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Date")
-                      },
-                      type: "time",
-                      time: %{
-                        unit: "day",
-                        tooltipFormat: "LL"
-                      }
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "LL"
                     }
-                  ],
-                  yAxes: [
-                    %{
-                      stacked: true,
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Cases")
-                      },
-                      ticks: %{
-                        stepSize: 1,
-                        beginAtZero: true
-                      }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("Cases")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
                     }
-                  ]
+                  }
                 }
               }
             }}}
@@ -316,48 +314,48 @@
                     {{:index, nil}, entries} ->
                       %{
                         label: gettext("Index"),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
             
                     {{:possible_index, sub_type}, entries} ->
                       %{
                         label: case_phase_possible_index_type_translation(sub_type),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
                   end)
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("New Cases")
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("New Cases")
+                  }
                 },
                 scales: %{
-                  xAxes: [
-                    %{
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Date")
-                      },
-                      type: "time",
-                      time: %{
-                        unit: "day",
-                        tooltipFormat: "LL"
-                      }
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "LL"
                     }
-                  ],
-                  yAxes: [
-                    %{
-                      stacked: true,
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Cases")
-                      },
-                      ticks: %{
-                        stepSize: 1,
-                        beginAtZero: true
-                      }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("Cases")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
                     }
-                  ]
+                  }
                 }
               }
             }}}
@@ -373,6 +371,7 @@
                 datasets: [
                   %{
                     label: gettext("Count"),
+                    fill: %{target: "origin"},
                     data:
                       Enum.map(
                         @active_hospitalization_cases_per_day,
@@ -385,37 +384,35 @@
                 ]
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("People in Hospital")
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("People in Hospital")
+                  }
                 },
                 scales: %{
-                  xAxes: [
-                    %{
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Date")
-                      },
-                      type: "time",
-                      time: %{
-                        unit: "day",
-                        tooltipFormat: "LL"
-                      }
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "LL"
                     }
-                  ],
-                  yAxes: [
-                    %{
-                      stacked: true,
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("People")
-                      },
-                      ticks: %{
-                        stepSize: 1,
-                        beginAtZero: true
-                      }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("People")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
                     }
-                  ]
+                  }
                 }
               }
             }}}
@@ -445,48 +442,48 @@
                     {nil, entries} ->
                       %{
                         label: gettext("unknown"),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
             
                     {case_complexity, entries} ->
                       %{
                         label: case_complexity_translation(case_complexity),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
                   end)
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("Complexity")
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("Complexity")
+                  }
                 },
                 scales: %{
-                  xAxes: [
-                    %{
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Date")
-                      },
-                      type: "time",
-                      time: %{
-                        unit: "day",
-                        tooltipFormat: "LL"
-                      }
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "LL"
                     }
-                  ],
-                  yAxes: [
-                    %{
-                      stacked: true,
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Cases")
-                      },
-                      ticks: %{
-                        stepSize: 1,
-                        beginAtZero: true
-                      }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("Cases")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
                     }
-                  ]
+                  }
                 }
               }
             }}}
@@ -518,51 +515,51 @@
                     {nil, entries} ->
                       %{
                         label: gettext("unknown"),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
             
                     {infection_place_type, entries} ->
                       %{
                         label: translate_infection_place_type(infection_place_type),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
                   end)
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("Infection Place")
-                },
-                legend: %{
-                  display: false
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("Infection Place")
+                  },
+                  legend: %{
+                    display: false
+                  }
                 },
                 scales: %{
-                  xAxes: [
-                    %{
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Date")
-                      },
-                      type: "time",
-                      time: %{
-                        unit: "day",
-                        tooltipFormat: "LL"
-                      }
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "LL"
                     }
-                  ],
-                  yAxes: [
-                    %{
-                      stacked: true,
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("People")
-                      },
-                      ticks: %{
-                        stepSize: 1,
-                        beginAtZero: true
-                      }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("People")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
                     }
-                  ]
+                  }
                 }
               }
             }}}
@@ -592,51 +589,51 @@
                     {nil, entries} ->
                       %{
                         label: gettext("unknown"),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
             
                     {country, entries} ->
                       %{
                         label: country_name(country),
+                        fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
                   end)
               },
               options: %{
-                title: %{
-                  display: true,
-                  text: gettext("Country")
-                },
-                legend: %{
-                  display: false
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("Country")
+                  },
+                  legend: %{
+                    display: false
+                  }
                 },
                 scales: %{
-                  xAxes: [
-                    %{
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Date")
-                      },
-                      type: "time",
-                      time: %{
-                        unit: "day",
-                        tooltipFormat: "LL"
-                      }
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "LL"
                     }
-                  ],
-                  yAxes: [
-                    %{
-                      stacked: true,
-                      scaleLabel: %{
-                        display: true,
-                        labelString: gettext("Cases")
-                      },
-                      ticks: %{
-                        stepSize: 1,
-                        beginAtZero: true
-                      }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("Cases")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
                     }
-                  ]
+                  }
                 }
               }
             }}}

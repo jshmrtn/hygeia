@@ -55,6 +55,8 @@ defmodule Hygeia.MixProject do
       {:csv, "~> 2.4"},
       {:ecto_boot_migration, "~> 0.2"},
       {:ecto_enum, "~> 1.4"},
+      # TODO: Loosen Restriction when version is available again
+      {:ecto, "~> 3.4 and < 3.6.1"},
       {:ecto_sql, "~> 3.4"},
       {:email_checker, "~> 0.1"},
       {:erlsom, "~> 1.5"},
@@ -80,7 +82,8 @@ defmodule Hygeia.MixProject do
       {:sedex, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:websms, "~> 1.0.0-alpha"},
-      {:zitadel_api, "~> 1.0-beta"}
+      # TODO: Loosen Restriction for RC
+      {:zitadel_api, "1.0.0-beta.3"}
     ]
   end
 

@@ -1,7 +1,35 @@
-import Chart from 'chart.js';
-import 'chart.js/dist/Chart.min.css';
+import {
+  ArcElement,
+  CategoryScale,
+  Chart,
+  DoughnutController,
+  Filler,
+  Legend,
+  LineController,
+  LineElement,
+  LinearScale,
+  PointElement,
+  TimeScale,
+  Title,
+  Tooltip
+} from 'chart.js';
+import 'chartjs-adapter-date-fns';
 import pattern from 'patternomaly';
-import { seededShuffle } from './shuffle';
+
+Chart.register(
+  ArcElement,
+  CategoryScale,
+  DoughnutController,
+  Filler,
+  Legend,
+  LineController,
+  LineElement,
+  LinearScale,
+  PointElement,
+  TimeScale,
+  Title,
+  Tooltip
+);
 
 const baseColors = [
   '#37B8BF',
@@ -31,11 +59,10 @@ const colors = [
 const visionImpairedBackgrounds = pattern.generate(colors);
 const goodVisionBackgrounds = baseColors;
 
-Chart.platform.disableCSSInjection = true;
-Chart.defaults.global.legend.position = 'bottom';
-Chart.defaults.global.responsive = true;
-Chart.defaults.global.maintainAspectRatio = true;
-Chart.defaults.global.aspectRatio = 4 / 3;
+Chart.defaults.plugins.legend.position = 'bottom';
+Chart.defaults.responsive = true;
+Chart.defaults.maintainAspectRatio = true;
+Chart.defaults.aspectRatio = 4 / 3;
 
 function prepareConfig(config) {
   config = addColorsToDataset(config);
@@ -45,16 +72,18 @@ function prepareConfig(config) {
       ...config,
       options: {
         ...config.options,
-        tooltips: {
-          ...config.options.tooltips,
-          callbacks: {
-            label: function (tooltipItem, data) {
-              var dataset = data.datasets[tooltipItem.datasetIndex];
-              var index = tooltipItem.index;
-              return dataset.labels[index] + ': ' + dataset.data[index];
+        plugins: {
+          ...config.options.plugins,
+          tooltip: {
+            ...config.options.plugins.tooltip,
+            callbacks: {
+              label: function ({ dataset: { labels: labels }, dataIndex: index, formattedValue }) {
+                return labels[index] + ': ' + formattedValue;
+              }
             }
           }
         }
+
       }
     }
   }
