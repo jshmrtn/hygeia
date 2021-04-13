@@ -5,6 +5,8 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
 
   use Hygeia, :model
 
+  import HygeiaGettext
+
   @type empty :: %__MODULE__{
           done: boolean() | nil,
           name: String.t() | nil,
@@ -26,5 +28,12 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
     vaccination
     |> cast(attrs, [:uuid, :done, :name, :jab_dates])
     |> fill_uuid
+    |> validate_change(:jab_dates, fn :jab_dates, jab_dates ->
+      if Enum.member?(jab_dates, nil) do
+        [jab_dates: dgettext("errors", "can't be blank")]
+      else
+        []
+      end
+    end)
   end
 end
