@@ -571,7 +571,7 @@ defmodule Hygeia.OrganisationContext do
     do:
       from(division in list_divisions_query(organisation_uuid),
         where:
-          division.uuid == ^query or
+          fragment("? % ?::text", ^query, division.uuid) or
             fragment("? % ?", division.title, ^query) or
             fragment("? % ?", division.description, ^query),
         order_by: [division.title],
