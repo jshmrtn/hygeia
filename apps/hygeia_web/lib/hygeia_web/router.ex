@@ -14,7 +14,6 @@ defmodule HygeiaWeb.Router do
                     false
                   )
   @frame_src if(@code_reloading, do: ~w('self'), else: ~w())
-  @sentry_style_hashes ~w('sha256-BXwPQptozQDv35u3ITlSj8VrRIiC6xV8KtgyDoIAqUc=')
   @style_src if(@debug_errors, do: ~w('unsafe-inline'), else: ~w())
 
   pipeline :browser do
@@ -101,7 +100,7 @@ defmodule HygeiaWeb.Router do
           |> Map.put(:report_uri, System.get_env("SENTRY_CSP_REPORT_TO", sentry_csp_report_to))
           |> Map.update!(:script_src, &[sentry_root | &1])
           |> Map.update!(:connect_src, &[sentry_root | &1])
-          |> Map.update!(:style_src, &[@sentry_style_hashes | &1])
+          |> Map.update!(:style_src, &["'#{System.get_env("SENTRY_STYLE_HASH")}'" | &1])
         else
           directives
         end
