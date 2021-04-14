@@ -1,7 +1,14 @@
 <div class="component-person-header mb-4">
   <Context get={{ HygeiaWeb, auth: auth }}>
     <h1 class="mb-4" :if={{ authorized?(@person, :partial_details, auth) }}>
-      {{ @person_display_name }}
+      <HygeiaWeb.RecordView
+        resource={{ @person }}
+        action={{ :list }}
+        id={{ {@myself, "person_recordview_#{@person.uuid}"} }}
+        wrapper_tag={{ :span }}
+      >
+        {{ @person_display_name }}
+      </HygeiaWeb.RecordView>
     </h1>
     <h1 class="mb-4" :if={{ not authorized?(@person, :partial_details, auth) }}>
       {{ @person.tenant.short_name }}
@@ -53,8 +60,15 @@
           opts={{ active: :inclusive }}
         >
           <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
-            {{ case_display_type(case) }}
-            <span class="date ml-2">{{ case_display_date(case) }}</span>
+            <HygeiaWeb.RecordView
+              resource={{ case }}
+              action={{ :list }}
+              id={{ {@myself, "case_recordview_#{case.uuid}"} }}
+              wrapper_tag={{ :span }}
+            >
+              {{ case_display_type(case) }}
+              <span class="date ml-2">{{ case_display_date(case) }}</span>
+            </HygeiaWeb.RecordView>
           </LiveRedirect>
         </UriActiveContext>
       </li>

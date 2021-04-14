@@ -16,11 +16,21 @@
           <div class="card">
             <div class="card-body py-2 px-3">
               <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <span :if={{ authorized?(case.person, :details, auth) }}>
+                <HygeiaWeb.RecordView
+                  resource={{ case }}
+                  action={{ :list }}
+                  id={{ "case_value_recordview_#{case.uuid}" }}
+                >
+                  <HygeiaWeb.RecordView
+                    resource={{ case.person }}
+                    action={{ :list }}
+                    id={{ "case_person_value_recordview_#{case.person.uuid}" }}
+                    :if={{ authorized?(case.person, :details, auth) }}
+                    wrapper_tag={{ :span }}
+                  >
                     {{ case.person.first_name }}
                     {{ case.person.last_name }}
-                  </span>
+                  </HygeiaWeb.RecordView>
                   <span :if={{ not authorized?(case.person, :details, auth) }}>
                     {{ case.person.tenant.short_name }}
                     /
@@ -28,7 +38,7 @@
                   </span>
                   <small class="d-block text-muted">{{ case_phase_type_translation(List.last(case.phases)) }}</small>
                   <small class="d-block text-muted">{{ case_display_date(case) }}</small>
-                </div>
+                </HygeiaWeb.RecordView>
                 <button class="btn btn-danger" :on-click={{ @change }} type="button">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
@@ -74,11 +84,21 @@
             >
               <div class="card-body py-2 px-3">
                 <div class="d-flex justify-content-between align-items-center">
-                  <div>
-                    <span :if={{ authorized?(case.person, :details, auth) }}>
+                  <HygeiaWeb.RecordView
+                    resource={{ case }}
+                    action={{ :list }}
+                    id={{ "case_select_recordview_#{case.uuid}" }}
+                  >
+                    <HygeiaWeb.RecordView
+                      resource={{ case.person }}
+                      action={{ :list }}
+                      id={{ "case_select_value_recordview_#{case.person.uuid}" }}
+                      :if={{ authorized?(case.person, :details, auth) }}
+                      wrapper_tag={{ :span }}
+                    >
                       {{ case.person.first_name }}
                       {{ case.person.last_name }}
-                    </span>
+                    </HygeiaWeb.RecordView>
                     <span :if={{ not authorized?(case.person, :details, auth) }}>
                       {{ case.person.tenant.short_name }}
                       /
@@ -86,7 +106,8 @@
                     </span>
                     <small class="d-block text-muted">{{ case_phase_type_translation(List.last(case.phases)) }}</small>
                     <small class="d-block text-muted">{{ case_display_date(case) }}</small>
-                  </div>
+                  </HygeiaWeb.RecordView>
+
                   <button class="btn btn-primary" type="button">
                     {{ gettext("choose") }}
                   </button>

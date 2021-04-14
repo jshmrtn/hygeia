@@ -27,9 +27,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr
+          <HygeiaWeb.RecordView
+            resource={{ entry }}
+            action={{ :details }}
             :for={{ {uuid, inserted_at, entry, version} <- Enum.reverse(@protocol_entries) }}
             id={{ "protocol_entry_#{uuid}" }}
+            wrapper_tag={{ :tr }}
           >
             <td>{{ module_translation(entry.__struct__) }}</td>
             <td>
@@ -89,7 +92,7 @@
 
               <div class="preserve-linebreaks">{{ entry.message }}</div>
             </td>
-          </tr>
+          </HygeiaWeb.RecordView>
           <tr :if={{ length(@protocol_entries) == 0 }}>
             <td colspan="5">
               <div class="d-flex justify-content-center py-3">

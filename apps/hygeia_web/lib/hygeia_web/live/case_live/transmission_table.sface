@@ -22,7 +22,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr :for={{ transmission <- @transmissions }}>
+        <HygeiaWeb.RecordView
+          :for={{ transmission <- @transmissions }}
+          resource={{ transmission }}
+          action={{ :list }}
+          id={{ "transmission-#{transmission.uuid}" }}
+          wrapper_tag={{ :tr }}
+        >
           <td :if={{ @show_recipient }}>
             <div :if={{ transmission.recipient_internal == true }} class="d-flex align-items-center">
               <em :if={{ is_nil(transmission.recipient) }}>
@@ -33,8 +39,15 @@
                   to={{ Routes.person_base_data_path(@socket, :show, transmission.recipient) }}
                   :if={{ authorized?(transmission.recipient, :details, auth) }}
                 >
-                  {{ transmission.recipient.first_name }}
-                  {{ transmission.recipient.last_name }}
+                  <HygeiaWeb.RecordView
+                    resource={{ transmission.recipient }}
+                    action={{ :list }}
+                    id={{ {:transmission, :recipient, :record_view, transmission.uuid, transmission.recipient.uuid} }}
+                    wrapper_tag={{ :span }}
+                  >
+                    {{ transmission.recipient.first_name }}
+                    {{ transmission.recipient.last_name }}
+                  </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={{ not authorized?(transmission.recipient, :details, auth) }}>
                   {{ transmission.recipient.tenant.short_name }}
@@ -52,8 +65,16 @@
                   to={{ Routes.case_base_data_path(@socket, :show, transmission.recipient_case) }}
                   :if={{ authorized?(transmission.recipient_case, :details, auth) }}
                 >
-                  {{ case_display_type(transmission.recipient_case) }}
-                  <small class="ml-1">({{ case_display_date(transmission.recipient_case) }})</small>
+                  <HygeiaWeb.RecordView
+                    resource={{ transmission.recipient_case }}
+                    action={{ :list }}
+                    id={{{:transmission, :recipient_case, :record_view, transmission.uuid,
+                     transmission.recipient_case.uuid}}}
+                    wrapper_tag={{ :span }}
+                  >
+                    {{ case_display_type(transmission.recipient_case) }}
+                    <small class="ml-1">({{ case_display_date(transmission.recipient_case) }})</small>
+                  </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={{ not authorized?(transmission.recipient_case, :details, auth) }}>
                   {{ transmission.recipient_case.tenant.short_name }}
@@ -76,8 +97,15 @@
                   to={{ Routes.person_base_data_path(@socket, :show, transmission.propagator) }}
                   :if={{ authorized?(transmission.propagator, :details, auth) }}
                 >
-                  {{ transmission.propagator.first_name }}
-                  {{ transmission.propagator.last_name }}
+                  <HygeiaWeb.RecordView
+                    resource={{ transmission.propagator }}
+                    action={{ :list }}
+                    id={{ {:transmission, :propagator, :record_view, transmission.uuid, transmission.propagator.uuid} }}
+                    wrapper_tag={{ :span }}
+                  >
+                    {{ transmission.propagator.first_name }}
+                    {{ transmission.propagator.last_name }}
+                  </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={{ not authorized?(transmission.propagator, :details, auth) }}>
                   {{ transmission.propagator.tenant.short_name }}
@@ -95,8 +123,16 @@
                   to={{ Routes.case_base_data_path(@socket, :show, transmission.propagator_case) }}
                   :if={{ authorized?(transmission.propagator_case, :details, auth) }}
                 >
-                  {{ case_display_type(transmission.propagator_case) }}
-                  <small class="ml-1">({{ case_display_date(transmission.propagator_case) }})</small>
+                  <HygeiaWeb.RecordView
+                    resource={{ transmission.propagator_case }}
+                    action={{ :list }}
+                    id={{{:transmission, :propagator_case, :record_view, transmission.uuid,
+                     transmission.propagator_case.uuid}}}
+                    wrapper_tag={{ :span }}
+                  >
+                    {{ case_display_type(transmission.propagator_case) }}
+                    <small class="ml-1">({{ case_display_date(transmission.propagator_case) }})</small>
+                  </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={{ not authorized?(transmission.propagator_case, :details, auth) }}>
                   {{ transmission.propagator_case.tenant.short_name }}
@@ -167,7 +203,7 @@
               </Link>
             </div>
           </td>
-        </tr>
+        </HygeiaWeb.RecordView>
         <tr :if={{ length(@transmissions) == 0 }}>
           <td colspan="5">
             <div class="d-flex justify-content-center py-3">

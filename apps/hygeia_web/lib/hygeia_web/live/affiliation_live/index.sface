@@ -64,13 +64,25 @@
         </tr>
       </thead>
       <tbody id="affiliations">
-        <tr :for={{ affiliation <- @affiliations }} id="division-{{ affiliation.uuid }}">
+        <HygeiaWeb.RecordView
+          :for={{ affiliation <- @affiliations }}
+          resource={{ affiliation }}
+          action={{ :list }}
+          id={{ "division-#{affiliation.uuid}" }}
+          wrapper_tag={{ :tr }}
+        >
           <td>
             <LiveRedirect
               :if={{ authorized?(affiliation.person, :details, auth) }}
               to={{ Routes.person_base_data_path(@socket, :show, affiliation.person) }}
             >
-              {{ person_display_name(affiliation.person) }}
+              <HygeiaWeb.RecordView
+                resource={{ affiliation.person }}
+                action={{ :list }}
+                id={{ "affiliation_person_recordview_#{affiliation.person.uuid}" }}
+              >
+                {{ person_display_name(affiliation.person) }}
+              </HygeiaWeb.RecordView>
             </LiveRedirect>
             <span :if={{ not authorized?(affiliation.person, :details, auth) }}>
               {{ affiliation.person_uuid }}
@@ -95,7 +107,7 @@
               comment -> comment |> String.split("\n") |> Enum.intersperse(raw("<br />"))
             end }}
           </td>
-        </tr>
+        </HygeiaWeb.RecordView>
       </tbody>
     </table>
 

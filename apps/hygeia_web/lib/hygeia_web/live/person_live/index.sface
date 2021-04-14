@@ -158,6 +158,11 @@
       </thead>
       <tbody id="people">
         <tr :for={{ person <- @people }} id="person-{{ person.uuid }}">
+          <HygeiaWeb.RecordView
+            resource={{ person }}
+            action={{ :list }}
+            id={{ "person_recordview_#{person.uuid}" }}
+          />
           <td>{{ person.first_name }}</td>
           <td>{{ person.last_name }}</td>
           <td>{{ case person.birth_date do
