@@ -1,169 +1,170 @@
 <div class="component-possible-index-submission-base-data container">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <HygeiaWeb.PersonLive.Header person={{ @possible_index_submission.case.person }} id="header" />
+    <HygeiaWeb.RecordView
+      resource={{ @possible_index_submission }}
+      action={{ :details }}
+      id={{ "possible_index_submission_recordview_#{@possible_index_submission.uuid}" }}
+    >
+      <HygeiaWeb.PersonLive.Header person={{ @possible_index_submission.case.person }} id="header" />
 
-    <div class="card">
-      <div
-        class="card-header"
-        :if={{ authorized?(@possible_index_submission.case, :partial_details, auth) }}
-      >
-        <HygeiaWeb.CaseLive.Navigation case={{ @possible_index_submission.case }} id="navigation" />
-      </div>
-      <div class="card-body">
-        <HygeiaWeb.RecordView
-          resource={{ @possible_index_submission }}
-          action={{ :details }}
-          id={{ "possible_index_submission_recordview_#{@possible_index_submission.uuid}" }}
-        />
-        <h1 class="mb-3">
-          {{ Ecto.Changeset.get_field(@changeset, :first_name) }}
-          {{ Ecto.Changeset.get_field(@changeset, :last_name) }}
-        </h1>
-
-        <div class="mb-4" :if={{ @live_action == :show }}>
-          <LiveRedirect
-            :if={{ authorized?(PossibleIndexSubmission, :list, auth) }}
-            to={{ Routes.possible_index_submission_index_path(@socket, :index, @possible_index_submission.case) }}
-          >
-            <button class="btn btn-primary mr-2" id="possible_index_submission-edit">
-              <span class="oi oi-arrow-left" title={{ gettext("Back to List") }} aria-hidden="true" />
-              {{ gettext("Back to List") }}
-            </button>
-          </LiveRedirect>
-          <LivePatch
-            :if={{ authorized?(@possible_index_submission, :update, auth) }}
-            to={{ Routes.possible_index_submission_show_path(@socket, :edit, @possible_index_submission) }}
-          >
-            <button class="btn btn-primary mr-2" id="possible_index_submission-edit">
-              <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
-              {{ gettext("Edit") }}
-            </button>
-          </LivePatch>
-          <Link
-            to="#"
-            click="delete"
-            opts={{
-              title: gettext("Delete"),
-              data: [confirm: gettext("Are you sure?")]
-            }}
-            :if={{ authorized?(@possible_index_submission, :delete, auth) }}
-          >
-            <button class="btn btn-danger">
-              <span class="oi oi-trash" aria-hidden="true" />
-            </button>
-          </Link>
-          <LiveRedirect
-            to={{Routes.case_create_possible_index_path(
-              @socket,
-              :create,
-              possible_index_submission_uuid: @possible_index_submission,
-              return_to:
-                Routes.possible_index_submission_index_path(@socket, :index, @possible_index_submission.case)
-            )}}
-            :if={{ authorized?(Case, :create, auth, tenant: :any) }}
-          >
-            <button class="btn btn-secondary">
-              <span class="oi oi-check" title={{ gettext("Accept") }} aria-hidden="true" />
-            </button>
-          </LiveRedirect>
-        </div>
-
-        <Form
-          for={{ @changeset }}
-          change="validate"
-          submit="save"
-          opts={{ autocomplete: "off", id: "possible_index_submission-form", "phx-hook": "BlockNavigation" }}
+      <div class="card">
+        <div
+          class="card-header"
+          :if={{ authorized?(@possible_index_submission.case, :partial_details, auth) }}
         >
-          <HygeiaWeb.Lock
-            id={{ {:lock, PossibleIndexSubmission, @possible_index_submission.uuid} }}
-            resource={{ {PossibleIndexSubmission, @possible_index_submission.uuid} }}
-            lock={{ @live_action == :edit }}
+          <HygeiaWeb.CaseLive.Navigation case={{ @possible_index_submission.case }} id="navigation" />
+        </div>
+        <div class="card-body">
+          <h1 class="mb-3">
+            {{ Ecto.Changeset.get_field(@changeset, :first_name) }}
+            {{ Ecto.Changeset.get_field(@changeset, :last_name) }}
+          </h1>
+
+          <div class="mb-4" :if={{ @live_action == :show }}>
+            <LiveRedirect
+              :if={{ authorized?(PossibleIndexSubmission, :list, auth) }}
+              to={{ Routes.possible_index_submission_index_path(@socket, :index, @possible_index_submission.case) }}
+            >
+              <button class="btn btn-primary mr-2" id="possible_index_submission-edit">
+                <span class="oi oi-arrow-left" title={{ gettext("Back to List") }} aria-hidden="true" />
+                {{ gettext("Back to List") }}
+              </button>
+            </LiveRedirect>
+            <LivePatch
+              :if={{ authorized?(@possible_index_submission, :update, auth) }}
+              to={{ Routes.possible_index_submission_show_path(@socket, :edit, @possible_index_submission) }}
+            >
+              <button class="btn btn-primary mr-2" id="possible_index_submission-edit">
+                <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
+                {{ gettext("Edit") }}
+              </button>
+            </LivePatch>
+            <Link
+              to="#"
+              click="delete"
+              opts={{
+                title: gettext("Delete"),
+                data: [confirm: gettext("Are you sure?")]
+              }}
+              :if={{ authorized?(@possible_index_submission, :delete, auth) }}
+            >
+              <button class="btn btn-danger">
+                <span class="oi oi-trash" aria-hidden="true" />
+              </button>
+            </Link>
+            <LiveRedirect
+              to={{Routes.case_create_possible_index_path(
+                @socket,
+                :create,
+                possible_index_submission_uuid: @possible_index_submission,
+                return_to:
+                  Routes.possible_index_submission_index_path(@socket, :index, @possible_index_submission.case)
+              )}}
+              :if={{ authorized?(Case, :create, auth, tenant: :any) }}
+            >
+              <button class="btn btn-secondary">
+                <span class="oi oi-check" title={{ gettext("Accept") }} aria-hidden="true" />
+              </button>
+            </LiveRedirect>
+          </div>
+
+          <Form
+            for={{ @changeset }}
+            change="validate"
+            submit="save"
+            opts={{ autocomplete: "off", id: "possible_index_submission-form", "phx-hook": "BlockNavigation" }}
           >
-            <div :if={{ @live_action == :edit }}>
-              <div class="mb-4" :if={{ @live_action == :edit }}>
-                <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
-                  <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
-                  {{ gettext("Save") }}
-                </button>
-                <button
-                  :on-click="reset"
-                  class="btn btn-warning"
-                  type="button"
-                  data-confirm={{if @changeset.changes != %{} do
-                    gettext("Do you really want to discard your changes?")
-                  else
-                    nil
-                  end}}
-                >
-                  <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
-                  {{ gettext("Discard") }}
-                </button>
+            <HygeiaWeb.Lock
+              id={{ {:lock, PossibleIndexSubmission, @possible_index_submission.uuid} }}
+              resource={{ {PossibleIndexSubmission, @possible_index_submission.uuid} }}
+              lock={{ @live_action == :edit }}
+            >
+              <div :if={{ @live_action == :edit }}>
+                <div class="mb-4" :if={{ @live_action == :edit }}>
+                  <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
+                    <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
+                    {{ gettext("Save") }}
+                  </button>
+                  <button
+                    :on-click="reset"
+                    class="btn btn-warning"
+                    type="button"
+                    data-confirm={{if @changeset.changes != %{} do
+                      gettext("Do you really want to discard your changes?")
+                    else
+                      nil
+                    end}}
+                  >
+                    <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
+                    {{ gettext("Discard") }}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div class="hy-readonly-form">
-              <div class="row">
-                <div class="col">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">{{ gettext("Person") }}</h4>
+              <div class="hy-readonly-form">
+                <div class="row">
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">{{ gettext("Person") }}</h4>
 
-                      <Field name={{ :first_name }} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
+                        <Field name={{ :first_name }} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
 
-                      <Field name={{ :last_name }} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
+                        <Field name={{ :last_name }} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
 
-                      <Field name={{ :birth_date }} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <DateInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
+                        <Field name={{ :birth_date }} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <DateInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">{{ gettext("Adress") }}</h4>
+                        <Inputs for={{ :address }}>
+                          <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address" />
+                        </Inputs>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="col">
-                  <div class="card">
-                    <div class="card-body">
-                      <h4 class="card-title">{{ gettext("Adress") }}</h4>
-                      <Inputs for={{ :address }}>
-                        <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address" />
-                      </Inputs>
-                    </div>
+
+                <div class="card mt-5">
+                  <div class="card-body">
+                    <h4 class="card-title">{{ gettext("Employer") }}</h4>
+
+                    <Field name={{ :employer }} class="form-group">
+                      <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </div>
+
+                <div class="card mt-5">
+                  <div class="card-body">
+                    <h4 class="card-title">{{ gettext("Infection Place") }}</h4>
+
+                    <Inputs for={{ :infection_place }}>
+                      <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
+                    </Inputs>
                   </div>
                 </div>
               </div>
-
-              <div class="card mt-5">
-                <div class="card-body">
-                  <h4 class="card-title">{{ gettext("Employer") }}</h4>
-
-                  <Field name={{ :employer }} class="form-group">
-                    <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-              </div>
-
-              <div class="card mt-5">
-                <div class="card-body">
-                  <h4 class="card-title">{{ gettext("Infection Place") }}</h4>
-
-                  <Inputs for={{ :infection_place }}>
-                    <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
-                  </Inputs>
-                </div>
-              </div>
-            </div>
-          </HygeiaWeb.Lock>
-        </Form>
+            </HygeiaWeb.Lock>
+          </Form>
+        </div>
       </div>
-    </div>
+    </HygeiaWeb.RecordView>
   </Context>
 </div>

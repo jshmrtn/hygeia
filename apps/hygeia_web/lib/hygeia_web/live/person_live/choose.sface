@@ -16,11 +16,16 @@
           <div class={{ "card" <> if @small, do: " card-small", else: "" }}>
             <div class="card-body py-2 px-3">
               <div class="d-flex justify-content-between align-items-center">
-                <div :if={{ authorized?(person, :details, auth) }}>
+                <HygeiaWeb.RecordView
+                  :if={{ authorized?(person, :details, auth) }}
+                  resource={{ person }}
+                  action={{ :details }}
+                  id={{ "person_value_recordview_#{person.uuid}" }}
+                >
                   {{ person.first_name }}
                   {{ person.last_name }}
                   <small :if={{ !@small }} class="d-block text-muted">{{ format_address(person.address) }}</small>
-                </div>
+                </HygeiaWeb.RecordView>
                 <div :if={{ not authorized?(person, :details, auth) }}>
                   {{ person.tenant.short_name }}
                   /
@@ -77,11 +82,16 @@
             >
               <div class="card-body py-2 px-3">
                 <div class="d-flex justify-content-between align-items-center">
-                  <div>
+                  <HygeiaWeb.RecordView
+                    :if={{ authorized?(person, :list, auth) }}
+                    resource={{ person }}
+                    action={{ :details }}
+                    id={{ "person_select_recordview_#{person.uuid}" }}
+                  >
                     {{ person.first_name }}
                     {{ person.last_name }}
                     <small class="d-block text-muted">{{ format_address(person.address) }}</small>
-                  </div>
+                  </HygeiaWeb.RecordView>
                   <button class="btn btn-primary" type="button">
                     {{ gettext("choose") }}
                   </button>

@@ -27,6 +27,7 @@ defmodule HygeiaWeb.Helpers.ViewerLogging do
           %User{uuid: uuid} -> {User, uuid}
           %Person{uuid: uuid} -> {Person, uuid}
           :anonymous -> :anonymous
+          nil -> :anonymous
         end,
       time: DateTime.utc_now(),
       ip_address: ip_address,

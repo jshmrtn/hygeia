@@ -1,535 +1,541 @@
 <div class="component-person-base-data container">
   <Context get={{ HygeiaWeb, auth: auth }}>
-    <HygeiaWeb.PersonLive.Header person={{ @changeset }} id="header" />
-
-    <div
-      :for={{%Person{first_name: first_name, last_name: last_name} = person <-
-        @changeset
-        |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-        |> Enum.take(5)
-        |> load_people_by_id}}
-      class="alert alert-warning"
+    <HygeiaWeb.RecordView
+      resource={{ @person }}
+      action={{ :details }}
+      id={{ "person_recordview_#{@person.uuid}" }}
     >
-      {{ "This person is possibly a duplicate of %{name_link}, please check."
-      |> gettext(
-        name_link:
-          "#{first_name} #{last_name}"
-          |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
-          |> safe_to_string
-      )
-      |> raw }}
-    </div>
+      <HygeiaWeb.PersonLive.Header person={{ @changeset }} id="header" />
 
-    <div class="mb-4" :if={{ @live_action == :show }}>
-      <LivePatch
-        :if={{ authorized?(@person, :update, auth) }}
-        to={{ Routes.person_base_data_path(@socket, :edit, @person) }}
+      <div
+        :for={{%Person{first_name: first_name, last_name: last_name} = person <-
+          @changeset
+          |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+          |> Enum.take(5)
+          |> load_people_by_id}}
+        class="alert alert-warning"
       >
-        <button class="btn btn-primary" id="person-edit">
-          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
-          {{ gettext("Edit") }}
-        </button>
-      </LivePatch>
+        {{ "This person is possibly a duplicate of %{name_link}, please check."
+        |> gettext(
+          name_link:
+            "#{first_name} #{last_name}"
+            |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
+            |> safe_to_string
+        )
+        |> raw }}
+      </div>
 
-      <Link
-        to="#"
-        click="delete"
-        opts={{
-          title: gettext("Delete"),
-          data: [confirm: gettext("Are you sure?")]
-        }}
-        :if={{ authorized?(@person, :delete, auth) }}
-      >
-        <button class="btn btn-danger">
-          <span class="oi oi-trash" aria-hidden="true" />
-          {{ gettext("Delete") }}
-        </button>
-      </Link>
-    </div>
-
-    <Form
-      for={{ @changeset }}
-      change="validate"
-      submit="save"
-      opts={{ autocomplete: "off", id: "person-form", "phx-hook": "BlockNavigation" }}
-    >
-      <HygeiaWeb.Lock
-        id={{ {:lock, Person, @person.uuid} }}
-        resource={{ {Person, @person.uuid} }}
-        lock={{ @live_action == :edit }}
-      >
-        <div class="mb-4" :if={{ @live_action == :edit }}>
-          <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
-            <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
-            {{ gettext("Save") }}
-          </button>
-          <button
-            :on-click="reset"
-            class="btn btn-warning"
-            type="button"
-            data-confirm={{if @changeset.changes != %{} do
-              gettext("Do you really want to discard your changes?")
-            else
-              nil
-            end}}
-          >
-            <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
-            {{ gettext("Discard") }}
-          </button>
-        </div>
-
-        <div class="form-grid">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("Base Data") }}</h4>
-
-              <Field name={{ :tenant_uuid }} class="form-group">
-                <HygeiaWeb.FieldLabel />
-                <Select
-                  class="form-control"
-                  opts={{ prompt: gettext("Select tenant"), disabled: @live_action == :show }}
-                  field={{ :tenant_uuid }}
-                  options={{ Enum.map(@tenants, &{&1.name, &1.uuid}) }}
-                />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-
-              <div class="row">
-                <div class="col">
-                  <Field name={{ :first_name }} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <TextInput
-                      field={{ :first_name }}
-                      class="form-control"
-                      opts={{ disabled: @live_action == :show }}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-                <div class="col">
-                  <Field name={{ :last_name }} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <TextInput
-                      opts={{ disabled: @live_action == :show }}
-                      class="form-control"
-                      field={{ :last_name }}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col">
-                  <Field name={{ :sex }} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <Select
-                      opts={{ disabled: @live_action == :show }}
-                      class="form-control"
-                      field={{ :sex }}
-                      options={{ person_sex_map() }}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-                <div class="col">
-                  <Field name={{ :birth_date }} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <DateInput
-                      opts={{ disabled: @live_action == :show }}
-                      class="form-control"
-                      field={{ :birth_date }}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("References") }}</h4>
-
-              <HygeiaWeb.References
-                disabled={{ @live_action == :show }}
-                source={{ @person }}
-                id="references"
-                add="add_external_reference"
-                remove="remove_external_reference"
-              />
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("Address") }}</h4>
-
-              <Inputs for={{ :address }}>
-                <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address" />
-              </Inputs>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("Contact Methods") }}</h4>
-
-              <div class="contact-method-grid">
-                <h6>{{ gettext("Type") }}</h6>
-                <h6>{{ gettext("Value") }}</h6>
-                <h6>{{ gettext("Comment") }}</h6>
-                <div aria-hidden="true" />
-
-                <Inputs for={{ :contact_methods }}>
-                  <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                    <HiddenInput field={{ :uuid }} />
-                    <Field name={{ :type }}>
-                      <Select
-                        class="form-control"
-                        opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
-                        field={{ :type }}
-                        options={{ contact_method_options() }}
-                      />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
-                    <Field name={{ :value }}>
-                      <TextInput
-                        class="form-control"
-                        field={{ :value }}
-                        opts={{ disabled: @live_action == :show }}
-                        :if={{ @live_action == :edit or Ecto.Changeset.fetch_field!(form.source, :type) == :other }}
-                      />
-                      <Link
-                        :if={{ @live_action == :show and Ecto.Changeset.fetch_field!(form.source, :type) in [:mobile, :landline] }}
-                        to={{form.source
-                        |> Ecto.Changeset.fetch_field!(:value)
-                        |> ExPhoneNumber.parse("CH")
-                        |> case do
-                          {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
-                          _ -> nil
-                        end}}
-                      >
-                        {{ form.source
-                        |> Ecto.Changeset.fetch_field!(:value)
-                        |> ExPhoneNumber.parse("CH")
-                        |> case do
-                          {:ok, number} -> ExPhoneNumber.format(number, :international)
-                          _ -> nil
-                        end }}
-                      </Link>
-                      <Link
-                        :if={{ @live_action == :show and Ecto.Changeset.fetch_field!(form.source, :type) in [:email] }}
-                        to={{ "mailto:#{Ecto.Changeset.fetch_field!(form.source, :value)}" }}
-                      >
-                        {{ Ecto.Changeset.fetch_field!(form.source, :value) }}
-                      </Link>
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
-                    <Field name={{ :comment }}>
-                      <TextInput class="form-control" field={{ :comment }} opts={{ disabled: @live_action == :show }} />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
-                    <div>
-                      <button
-                        :if={{ @live_action == :edit }}
-                        type="button"
-                        class="btn btn-danger"
-                        :on-click="remove_contact_method"
-                        phx-value-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
-                      >
-                        <span class="oi oi-trash" aria-hidden="true" />
-                      </button>
-                    </div>
-                  </InputContext>
-                </Inputs>
-
-                <div class="add-button mt-2" :if={{ @live_action == :edit }}>
-                  <button type="button" class="btn btn-secondary" :on-click="add_contact_method">
-                    <span class="oi oi-plus mr-1" aria-hidden="true" />
-                    {{ gettext("New contact method") }}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card employment">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("Occupation / Employment") }}</h4>
-
-              <div class="row">
-                <div class="col">
-                  <Field name={{ :profession_category_main }} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <Select
-                      class="form-control"
-                      opts={{ prompt: gettext("Choose profession category"), disabled: @live_action == :show }}
-                      options={{ NOGA.Section.select_options() }}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-                <div class="col">
-                  <Field name={{ :profession_category }} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <Select
-                      class="form-control"
-                      opts={{ prompt: gettext("Choose profession category"), disabled: @live_action == :show }}
-                      options={{case Ecto.Changeset.get_field(@changeset, :profession_category_main) do
-                        nil -> []
-                        section -> NOGA.Code.select_options(section)
-                      end}}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-              </div>
-
-              <div class="affiliation-grid mb-3">
-                <Inputs for={{ :affiliations }}>
-                  <HiddenInput field={{ :uuid }} />
-                  <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                    <div class="card" id={{ "affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}>
-                      <div class="card-body">
-                        <div class="row">
-                          <div class="col">
-                            <Field name={{ :kind }} class="form-group">
-                              <HygeiaWeb.FieldLabel />
-                              <Select
-                                class="form-control"
-                                opts={{
-                                  prompt: pgettext("Affiliation", "Choose Kind"),
-                                  disabled: @live_action == :show
-                                }}
-                                options={{ affiliation_kinds() }}
-                              />
-                              <ErrorTag class="d-block invalid-feedback" />
-                            </Field>
-                          </div>
-                          <div :if={{ Ecto.Changeset.fetch_field!(form.source, :kind) == :other }} class="col">
-                            <Field name={{ :kind_other }} class="form-group">
-                              <HygeiaWeb.FieldLabel />
-                              <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                              <ErrorTag class="d-block invalid-feedback" />
-                            </Field>
-                          </div>
-                        </div>
-
-                        <Field class="form-group" name={{ :comment }}>
-                          <HygeiaWeb.FieldLabel />
-                          <TextArea class="form-control" opts={{ disabled: @live_action == :show }} />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-
-                        <Field class="form-group" name={{ :organisation_uuid }}>
-                          <HygeiaWeb.FieldLabel />
-                          <HygeiaWeb.OrganisationLive.Choose
-                            id={{ {:affiliations, Ecto.Changeset.fetch_field!(form.source, :uuid), :organisation} }}
-                            change="select_affiliation_organisation"
-                            subject={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
-                            disabled={{ @live_action == :show }}
-                          />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-
-                        <Field
-                          :if={{ Ecto.Changeset.fetch_field!(form.source, :organisation_uuid) }}
-                          class="form-group"
-                          name={{ :division_uuid }}
-                        >
-                          <HygeiaWeb.FieldLabel />
-                          <HygeiaWeb.DivisionLive.Choose
-                            id={{ {:affiliations, Ecto.Changeset.fetch_field!(form.source, :uuid), :division} }}
-                            change="select_affiliation_division"
-                            subject={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
-                            organisation={{ load_organisation(Ecto.Changeset.fetch_field!(form.source, :organisation_uuid)) }}
-                            disabled={{ @live_action == :show }}
-                          />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-
-                        <div :if={{ @live_action == :edit }}>
-                          <button
-                            type="button"
-                            class="btn btn-danger"
-                            :on-click="remove_affiliation"
-                            phx-value-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
-                          >
-                            <span class="oi oi-trash" aria-hidden="true" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </InputContext>
-                </Inputs>
-              </div>
-
-              <button
-                :if={{ @live_action == :edit }}
-                type="button"
-                class="btn btn-secondary"
-                :on-click="add_affiliation"
-              >
-                <span class="oi oi-plus mr-1" aria-hidden="true" />
-                {{ gettext("New affiliation") }}
-              </button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ gettext("Vaccination") }}</h4>
-
-              <Inputs for={{ :vaccination }}>
-                <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                  <Field name={{ :done }} class="form-group">
-                    <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                      <label class={{
-                        "btn",
-                        "btn-sm",
-                        "btn-secondary",
-                        disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != nil,
-                        active: Ecto.Changeset.get_field(form.source, :done) == nil
-                      }}>
-                        <RadioButton value={{ nil }} opts={{ disabled: @live_action == :show }} />
-                        {{ pgettext("vaccination_done", "Unknown") }}
-                      </label>
-
-                      <label class={{
-                        "btn",
-                        "btn-sm",
-                        "btn-secondary",
-                        disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != true,
-                        active: Ecto.Changeset.get_field(form.source, :done) == true
-                      }}>
-                        <RadioButton value opts={{ disabled: @live_action == :show }} />
-                        {{ pgettext("vaccination_done", "Done") }}
-                      </label>
-                      <label class={{
-                        "btn",
-                        "btn-sm",
-                        "btn-secondary",
-                        disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != false,
-                        active: Ecto.Changeset.get_field(form.source, :done) == false
-                      }}>
-                        <RadioButton value=false opts={{ disabled: @live_action == :show }} />
-                        {{ pgettext("vaccination_done", "Not Done") }}
-                      </label>
-                    </div>
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-
-                  <div class="vaccination-grid" :if={{ Ecto.Changeset.get_field(form.source, :done) }}>
-                    <h6><HygeiaWeb.FieldLabel field={{ :name }} /></h6>
-                    <h6><HygeiaWeb.FieldLabel field={{ :jab_dates }} /></h6>
-
-                    <Field name={{ :name }} class="form-group">
-                      <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
-                    <Field name={{ :jab_dates }} class="form-group">
-                      <div
-                        class="d-flex mb-2"
-                        :for={{{date, index} <-
-                          Enum.with_index(Ecto.Changeset.get_field(form.source, :jab_dates, [nil]) || [nil])}}
-                      >
-                        <DateInput
-                          class="form-control"
-                          opts={{
-                            disabled: @live_action == :show,
-                            name: input_name(form, :jab_dates) <> "[]",
-                            value:
-                              case date do
-                                nil -> nil
-                                date -> Date.to_iso8601(date)
-                              end
-                          }}
-                        />
-                        <button
-                          :if={{ @live_action == :edit }}
-                          type="button"
-                          class="ml-2 btn btn-danger"
-                          :on-click="remove_vaccination_jab_date"
-                          phx-value-index={{ index }}
-                        >
-                          <span class="oi oi-trash" aria-hidden="true" />
-                        </button>
-                      </div>
-                      <ErrorTag class="d-block invalid-feedback" />
-                      <div :if={{ @live_action == :edit }}>
-                        <button type="button" class="btn btn-secondary" :on-click="add_vaccination_jab_date">
-                          <span class="oi oi-plus mr-1" aria-hidden="true" />
-                          {{ gettext("New date") }}
-                        </button>
-                      </div>
-                    </Field>
-                  </div>
-                </InputContext>
-              </Inputs>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-4" :if={{ @live_action == :edit }}>
-          <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
-            <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
-            {{ gettext("Save") }}
-          </button>
-          <button
-            :on-click="reset"
-            class="btn btn-warning"
-            type="button"
-            data-confirm={{if @changeset.changes != %{} do
-              gettext("Do you really want to discard your changes?")
-            else
-              nil
-            end}}
-          >
-            <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
-            {{ gettext("Discard") }}
-          </button>
-        </div>
-
+      <div class="mb-4" :if={{ @live_action == :show }}>
         <LivePatch
-          class="d-block mt-4"
-          :if={{ @live_action == :show and authorized?(@person, :update, auth) }}
+          :if={{ authorized?(@person, :update, auth) }}
           to={{ Routes.person_base_data_path(@socket, :edit, @person) }}
         >
-          <button class="btn btn-primary mb-4" id="person-edit">
+          <button class="btn btn-primary" id="person-edit">
             <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
             {{ gettext("Edit") }}
           </button>
         </LivePatch>
-      </HygeiaWeb.Lock>
-    </Form>
 
-    <hr :if={{ @person.positions != [] }} class="my-5">
-    <div :if={{ @person.positions != [] }} class="hy-card-grid-2-cols">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">{{ gettext("Organisation Positions") }}</h4>
+        <Link
+          to="#"
+          click="delete"
+          opts={{
+            title: gettext("Delete"),
+            data: [confirm: gettext("Are you sure?")]
+          }}
+          :if={{ authorized?(@person, :delete, auth) }}
+        >
+          <button class="btn btn-danger">
+            <span class="oi oi-trash" aria-hidden="true" />
+            {{ gettext("Delete") }}
+          </button>
+        </Link>
+      </div>
 
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>{{ gettext("Organisation") }}</th>
-                <th>{{ gettext("Position") }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr :for={{ position <- @person.positions }}>
-                <td>
-                  <Link to={{ Routes.organisation_show_path(@socket, :show, position.organisation) }}>
-                    {{ position.organisation.name }}
-                  </Link>
-                </td>
-                <td>{{ position.position }}</td>
-              </tr>
-            </tbody>
-          </table>
+      <Form
+        for={{ @changeset }}
+        change="validate"
+        submit="save"
+        opts={{ autocomplete: "off", id: "person-form", "phx-hook": "BlockNavigation" }}
+      >
+        <HygeiaWeb.Lock
+          id={{ {:lock, Person, @person.uuid} }}
+          resource={{ {Person, @person.uuid} }}
+          lock={{ @live_action == :edit }}
+        >
+          <div class="mb-4" :if={{ @live_action == :edit }}>
+            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
+              <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
+              {{ gettext("Save") }}
+            </button>
+            <button
+              :on-click="reset"
+              class="btn btn-warning"
+              type="button"
+              data-confirm={{if @changeset.changes != %{} do
+                gettext("Do you really want to discard your changes?")
+              else
+                nil
+              end}}
+            >
+              <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
+              {{ gettext("Discard") }}
+            </button>
+          </div>
+
+          <div class="form-grid">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Base Data") }}</h4>
+
+                <Field name={{ :tenant_uuid }} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <Select
+                    class="form-control"
+                    opts={{ prompt: gettext("Select tenant"), disabled: @live_action == :show }}
+                    field={{ :tenant_uuid }}
+                    options={{ Enum.map(@tenants, &{&1.name, &1.uuid}) }}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+
+                <div class="row">
+                  <div class="col">
+                    <Field name={{ :first_name }} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput
+                        field={{ :first_name }}
+                        class="form-control"
+                        opts={{ disabled: @live_action == :show }}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                  <div class="col">
+                    <Field name={{ :last_name }} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput
+                        opts={{ disabled: @live_action == :show }}
+                        class="form-control"
+                        field={{ :last_name }}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <Field name={{ :sex }} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <Select
+                        opts={{ disabled: @live_action == :show }}
+                        class="form-control"
+                        field={{ :sex }}
+                        options={{ person_sex_map() }}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                  <div class="col">
+                    <Field name={{ :birth_date }} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <DateInput
+                        opts={{ disabled: @live_action == :show }}
+                        class="form-control"
+                        field={{ :birth_date }}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("References") }}</h4>
+
+                <HygeiaWeb.References
+                  disabled={{ @live_action == :show }}
+                  source={{ @person }}
+                  id="references"
+                  add="add_external_reference"
+                  remove="remove_external_reference"
+                />
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Address") }}</h4>
+
+                <Inputs for={{ :address }}>
+                  <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address" />
+                </Inputs>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Contact Methods") }}</h4>
+
+                <div class="contact-method-grid">
+                  <h6>{{ gettext("Type") }}</h6>
+                  <h6>{{ gettext("Value") }}</h6>
+                  <h6>{{ gettext("Comment") }}</h6>
+                  <div aria-hidden="true" />
+
+                  <Inputs for={{ :contact_methods }}>
+                    <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                      <HiddenInput field={{ :uuid }} />
+                      <Field name={{ :type }}>
+                        <Select
+                          class="form-control"
+                          opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
+                          field={{ :type }}
+                          options={{ contact_method_options() }}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field name={{ :value }}>
+                        <TextInput
+                          class="form-control"
+                          field={{ :value }}
+                          opts={{ disabled: @live_action == :show }}
+                          :if={{ @live_action == :edit or Ecto.Changeset.fetch_field!(form.source, :type) == :other }}
+                        />
+                        <Link
+                          :if={{ @live_action == :show and Ecto.Changeset.fetch_field!(form.source, :type) in [:mobile, :landline] }}
+                          to={{form.source
+                          |> Ecto.Changeset.fetch_field!(:value)
+                          |> ExPhoneNumber.parse("CH")
+                          |> case do
+                            {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
+                            _ -> nil
+                          end}}
+                        >
+                          {{ form.source
+                          |> Ecto.Changeset.fetch_field!(:value)
+                          |> ExPhoneNumber.parse("CH")
+                          |> case do
+                            {:ok, number} -> ExPhoneNumber.format(number, :international)
+                            _ -> nil
+                          end }}
+                        </Link>
+                        <Link
+                          :if={{ @live_action == :show and Ecto.Changeset.fetch_field!(form.source, :type) in [:email] }}
+                          to={{ "mailto:#{Ecto.Changeset.fetch_field!(form.source, :value)}" }}
+                        >
+                          {{ Ecto.Changeset.fetch_field!(form.source, :value) }}
+                        </Link>
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field name={{ :comment }}>
+                        <TextInput class="form-control" field={{ :comment }} opts={{ disabled: @live_action == :show }} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <div>
+                        <button
+                          :if={{ @live_action == :edit }}
+                          type="button"
+                          class="btn btn-danger"
+                          :on-click="remove_contact_method"
+                          phx-value-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
+                        >
+                          <span class="oi oi-trash" aria-hidden="true" />
+                        </button>
+                      </div>
+                    </InputContext>
+                  </Inputs>
+
+                  <div class="add-button mt-2" :if={{ @live_action == :edit }}>
+                    <button type="button" class="btn btn-secondary" :on-click="add_contact_method">
+                      <span class="oi oi-plus mr-1" aria-hidden="true" />
+                      {{ gettext("New contact method") }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card employment">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Occupation / Employment") }}</h4>
+
+                <div class="row">
+                  <div class="col">
+                    <Field name={{ :profession_category_main }} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <Select
+                        class="form-control"
+                        opts={{ prompt: gettext("Choose profession category"), disabled: @live_action == :show }}
+                        options={{ NOGA.Section.select_options() }}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                  <div class="col">
+                    <Field name={{ :profession_category }} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <Select
+                        class="form-control"
+                        opts={{ prompt: gettext("Choose profession category"), disabled: @live_action == :show }}
+                        options={{case Ecto.Changeset.get_field(@changeset, :profession_category_main) do
+                          nil -> []
+                          section -> NOGA.Code.select_options(section)
+                        end}}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </div>
+
+                <div class="affiliation-grid mb-3">
+                  <Inputs for={{ :affiliations }}>
+                    <HiddenInput field={{ :uuid }} />
+                    <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                      <div class="card" id={{ "affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col">
+                              <Field name={{ :kind }} class="form-group">
+                                <HygeiaWeb.FieldLabel />
+                                <Select
+                                  class="form-control"
+                                  opts={{
+                                    prompt: pgettext("Affiliation", "Choose Kind"),
+                                    disabled: @live_action == :show
+                                  }}
+                                  options={{ affiliation_kinds() }}
+                                />
+                                <ErrorTag class="d-block invalid-feedback" />
+                              </Field>
+                            </div>
+                            <div :if={{ Ecto.Changeset.fetch_field!(form.source, :kind) == :other }} class="col">
+                              <Field name={{ :kind_other }} class="form-group">
+                                <HygeiaWeb.FieldLabel />
+                                <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                                <ErrorTag class="d-block invalid-feedback" />
+                              </Field>
+                            </div>
+                          </div>
+
+                          <Field class="form-group" name={{ :comment }}>
+                            <HygeiaWeb.FieldLabel />
+                            <TextArea class="form-control" opts={{ disabled: @live_action == :show }} />
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+
+                          <Field class="form-group" name={{ :organisation_uuid }}>
+                            <HygeiaWeb.FieldLabel />
+                            <HygeiaWeb.OrganisationLive.Choose
+                              id={{ {:affiliations, Ecto.Changeset.fetch_field!(form.source, :uuid), :organisation} }}
+                              change="select_affiliation_organisation"
+                              subject={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
+                              disabled={{ @live_action == :show }}
+                            />
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+
+                          <Field
+                            :if={{ Ecto.Changeset.fetch_field!(form.source, :organisation_uuid) }}
+                            class="form-group"
+                            name={{ :division_uuid }}
+                          >
+                            <HygeiaWeb.FieldLabel />
+                            <HygeiaWeb.DivisionLive.Choose
+                              id={{ {:affiliations, Ecto.Changeset.fetch_field!(form.source, :uuid), :division} }}
+                              change="select_affiliation_division"
+                              subject={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
+                              organisation={{ load_organisation(Ecto.Changeset.fetch_field!(form.source, :organisation_uuid)) }}
+                              disabled={{ @live_action == :show }}
+                            />
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+
+                          <div :if={{ @live_action == :edit }}>
+                            <button
+                              type="button"
+                              class="btn btn-danger"
+                              :on-click="remove_affiliation"
+                              phx-value-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
+                            >
+                              <span class="oi oi-trash" aria-hidden="true" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </InputContext>
+                  </Inputs>
+                </div>
+
+                <button
+                  :if={{ @live_action == :edit }}
+                  type="button"
+                  class="btn btn-secondary"
+                  :on-click="add_affiliation"
+                >
+                  <span class="oi oi-plus mr-1" aria-hidden="true" />
+                  {{ gettext("New affiliation") }}
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{ gettext("Vaccination") }}</h4>
+
+                <Inputs for={{ :vaccination }}>
+                  <InputContext assigns={{ assigns }} :let={{ form: form }}>
+                    <Field name={{ :done }} class="form-group">
+                      <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+                        <label class={{
+                          "btn",
+                          "btn-sm",
+                          "btn-secondary",
+                          disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != nil,
+                          active: Ecto.Changeset.get_field(form.source, :done) == nil
+                        }}>
+                          <RadioButton value={{ nil }} opts={{ disabled: @live_action == :show }} />
+                          {{ pgettext("vaccination_done", "Unknown") }}
+                        </label>
+
+                        <label class={{
+                          "btn",
+                          "btn-sm",
+                          "btn-secondary",
+                          disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != true,
+                          active: Ecto.Changeset.get_field(form.source, :done) == true
+                        }}>
+                          <RadioButton value opts={{ disabled: @live_action == :show }} />
+                          {{ pgettext("vaccination_done", "Done") }}
+                        </label>
+                        <label class={{
+                          "btn",
+                          "btn-sm",
+                          "btn-secondary",
+                          disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != false,
+                          active: Ecto.Changeset.get_field(form.source, :done) == false
+                        }}>
+                          <RadioButton value=false opts={{ disabled: @live_action == :show }} />
+                          {{ pgettext("vaccination_done", "Not Done") }}
+                        </label>
+                      </div>
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <div class="vaccination-grid" :if={{ Ecto.Changeset.get_field(form.source, :done) }}>
+                      <h6><HygeiaWeb.FieldLabel field={{ :name }} /></h6>
+                      <h6><HygeiaWeb.FieldLabel field={{ :jab_dates }} /></h6>
+
+                      <Field name={{ :name }} class="form-group">
+                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field name={{ :jab_dates }} class="form-group">
+                        <div
+                          class="d-flex mb-2"
+                          :for={{{date, index} <-
+                            Enum.with_index(Ecto.Changeset.get_field(form.source, :jab_dates, [nil]) || [nil])}}
+                        >
+                          <DateInput
+                            class="form-control"
+                            opts={{
+                              disabled: @live_action == :show,
+                              name: input_name(form, :jab_dates) <> "[]",
+                              value:
+                                case date do
+                                  nil -> nil
+                                  date -> Date.to_iso8601(date)
+                                end
+                            }}
+                          />
+                          <button
+                            :if={{ @live_action == :edit }}
+                            type="button"
+                            class="ml-2 btn btn-danger"
+                            :on-click="remove_vaccination_jab_date"
+                            phx-value-index={{ index }}
+                          >
+                            <span class="oi oi-trash" aria-hidden="true" />
+                          </button>
+                        </div>
+                        <ErrorTag class="d-block invalid-feedback" />
+                        <div :if={{ @live_action == :edit }}>
+                          <button type="button" class="btn btn-secondary" :on-click="add_vaccination_jab_date">
+                            <span class="oi oi-plus mr-1" aria-hidden="true" />
+                            {{ gettext("New date") }}
+                          </button>
+                        </div>
+                      </Field>
+                    </div>
+                  </InputContext>
+                </Inputs>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4" :if={{ @live_action == :edit }}>
+            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
+              <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
+              {{ gettext("Save") }}
+            </button>
+            <button
+              :on-click="reset"
+              class="btn btn-warning"
+              type="button"
+              data-confirm={{if @changeset.changes != %{} do
+                gettext("Do you really want to discard your changes?")
+              else
+                nil
+              end}}
+            >
+              <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
+              {{ gettext("Discard") }}
+            </button>
+          </div>
+
+          <LivePatch
+            class="d-block mt-4"
+            :if={{ @live_action == :show and authorized?(@person, :update, auth) }}
+            to={{ Routes.person_base_data_path(@socket, :edit, @person) }}
+          >
+            <button class="btn btn-primary mb-4" id="person-edit">
+              <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
+              {{ gettext("Edit") }}
+            </button>
+          </LivePatch>
+        </HygeiaWeb.Lock>
+      </Form>
+
+      <hr :if={{ @person.positions != [] }} class="my-5">
+      <div :if={{ @person.positions != [] }} class="hy-card-grid-2-cols">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{ gettext("Organisation Positions") }}</h4>
+
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>{{ gettext("Organisation") }}</th>
+                  <th>{{ gettext("Position") }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr :for={{ position <- @person.positions }}>
+                  <td>
+                    <Link to={{ Routes.organisation_show_path(@socket, :show, position.organisation) }}>
+                      {{ position.organisation.name }}
+                    </Link>
+                  </td>
+                  <td>{{ position.position }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
+    </HygeiaWeb.RecordView>
   </Context>
 </div>

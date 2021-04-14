@@ -8,10 +8,52 @@ defmodule HygeiaWeb.RecordView do
   prop resource, :map, required: true
   prop action, :atom, required: true
 
+  prop wrapper_tag, :atom, default: :div
+
   slot default
 
   @impl Phoenix.LiveComponent
-  def render(assigns) do
+  def render(%{wrapper_tag: :div} = assigns) do
+    trigger(assigns)
+
+    ~H"""
+    <div>
+      <slot />
+    </div>
+    """
+  end
+
+  def render(%{wrapper_tag: :tr} = assigns) do
+    trigger(assigns)
+
+    ~H"""
+    <tr>
+      <slot />
+    </tr>
+    """
+  end
+
+  def render(%{wrapper_tag: :span} = assigns) do
+    trigger(assigns)
+
+    ~H"""
+    <span>
+      <slot />
+    </span>
+    """
+  end
+
+  def render(%{wrapper_tag: :strong} = assigns) do
+    trigger(assigns)
+
+    ~H"""
+    <strong>
+      <slot />
+    </strong>
+    """
+  end
+
+  defp trigger(assigns) do
     if Map.has_key?(assigns.__changed__, :resource) or Map.has_key?(assigns.__changed__, :action) or
          Map.has_key?(assigns.__changed__, :__context__) do
       ViewerLogging.log_viewer(
@@ -23,11 +65,5 @@ defmodule HygeiaWeb.RecordView do
         assigns.resource
       )
     end
-
-    ~H"""
-    <div>
-      <slot />
-    </div>
-    """
   end
 end

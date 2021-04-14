@@ -86,15 +86,13 @@
             </tr>
           </thead>
           <tbody id="possible_index_submissions">
-            <tr
+            <HygeiaWeb.RecordView
               :for={{ possible_index_submission <- @case.possible_index_submissions }}
+              resource={{ possible_index_submission }}
+              action={{ :list }}
               id="possible_index_submission-{{ possible_index_submission.uuid }}"
+              wrapper_tag={{ :tr }}
             >
-              <HygeiaWeb.RecordView
-                resource={{ possible_index_submission }}
-                action={{ :list }}
-                id={{ "possible_index_submission_recordview_#{possible_index_submission.uuid}" }}
-              />
               <td>
                 {{ possible_index_submission.first_name }}
               </td>
@@ -159,7 +157,7 @@
                   </LiveRedirect>
                 </div>
               </td>
-            </tr>
+            </HygeiaWeb.RecordView>
             <tr :if={{ @case.possible_index_submissions == [] }}>
               <td colspan="5">
                 <div class="d-flex justify-content-center py-3">

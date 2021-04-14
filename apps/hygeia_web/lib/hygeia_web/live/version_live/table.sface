@@ -25,7 +25,7 @@
           {{ gettext("No verson entries found") }}
         </td>
       </tr>
-      <tr
+      <HygeiaWeb.RecordView
         :for={{%Version{
           uuid: uuid,
           event: event,
@@ -34,15 +34,11 @@
           user: user
         } = version <-
           @versions}}
-        phx-update="ignore"
         id={{ "version_#{uuid}" }}
+        resource={{ version }}
+        action={{ :details }}
+        wrapper_tag={{ :tr }}
       >
-        <HygeiaWeb.RecordView
-          resource={{ version }}
-          action={{ :details }}
-          id={{ "version_recordview_#{uuid}" }}
-        />
-
         <td>{{ Event.translate(event) }}</td>
         <td>
           <time
@@ -66,10 +62,10 @@
           {{ user.display_name }}
         </td>
         <td :if={{ is_nil(user) }} />
-        <td>
+        <td phx-update="ignore" id={{ "version_#{uuid}_table" }}>
           <HygeiaWeb.VersionLive.Change version={{ version }} id={{ "version_#{uuid}_changes" }} />
         </td>
-      </tr>
+      </HygeiaWeb.RecordView>
     </tbody>
   </table>
 </Context>

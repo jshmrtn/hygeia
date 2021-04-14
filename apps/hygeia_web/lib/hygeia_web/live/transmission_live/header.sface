@@ -1,7 +1,14 @@
 <div class="component-person-header mb-4">
   <Context get={{ HygeiaWeb, auth: auth }}>
     <h1 class="mb-4" :if={{ authorized?(@transmission, :details, auth) }}>
-      {{ @display_name }}
+      <HygeiaWeb.RecordView
+        resource={{ @transmission }}
+        action={{ :list }}
+        id={{ {:header, :record_view, @transmission.uuid} }}
+        wrapper_tag={{ :span }}
+      >
+        {{ @display_name }}
+      </HygeiaWeb.RecordView>
     </h1>
     <h1 class="mb-4" :if={{ not authorized?(@transmission, :details, auth) }}>
       {{ @transmission.uuid }}
