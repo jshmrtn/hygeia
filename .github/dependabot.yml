@@ -2,7 +2,11 @@ version: 2
 updates:
 - package-ecosystem: mix
   directory: "/"
+  update_schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+- package-ecosystem: javascript
+  directory: "/apps/hygeia_web/assets/"
   schedule:
     interval: daily
-    time: "04:00"
   open-pull-requests-limit: 10
