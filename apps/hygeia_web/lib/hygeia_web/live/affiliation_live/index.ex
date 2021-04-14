@@ -89,7 +89,10 @@ defmodule HygeiaWeb.AffiliationLive.Index do
       |> Enum.reject(&match?({_key, ""}, &1))
       |> Enum.reduce(
         from(affiliation in Ecto.assoc(socket.assigns.organisation, :affiliations),
-          preload: [person: [:tenant], division: []]
+          join: person in assoc(affiliation, :person),
+          as: :person,
+          preload: [person: {person, [:tenant]}, division: []],
+          order_by: [person.first_name, person.last_name]
         ),
         fn
           {:division_uuid, "none"}, query ->
@@ -122,7 +125,9 @@ defmodule HygeiaWeb.AffiliationLive.Index do
         end
       )
       |> Repo.paginate(
-        Keyword.merge(socket.assigns.pagination_params, cursor_fields: [title: :asc])
+        Keyword.merge(socket.assigns.pagination_params,
+          cursor_fields: [{{:person, :first_name}, :asc}, {{:person, :last_name}, :asc}]
+        )
       )
 
     assign(socket,
