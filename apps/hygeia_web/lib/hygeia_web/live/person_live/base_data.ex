@@ -6,6 +6,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
   alias Hygeia.EctoType.NOGA
+  alias Hygeia.Helpers.Empty
   alias Hygeia.OrganisationContext
   alias Hygeia.Repo
   alias Hygeia.TenantContext
@@ -369,8 +370,8 @@ defmodule HygeiaWeb.PersonLive.BaseData do
 
   defp load_organisation(id), do: OrganisationContext.get_organisation!(id)
 
-  defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do
-    if changes == %{} do
+  defp maybe_block_navigation(%{assigns: %{changeset: changeset}} = socket) do
+    if Empty.is_empty?(changeset, [:suspected_duplicates_uuid]) do
       push_event(socket, "unblock_navigation", %{})
     else
       push_event(socket, "block_navigation", %{})
