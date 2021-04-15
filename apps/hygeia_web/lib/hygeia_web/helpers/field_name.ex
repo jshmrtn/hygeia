@@ -66,6 +66,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       automated_close_email_sent: "Automated close email sent",
       details: "Details",
       end: "End",
+      quarantine_order: "Quarantine / Isolation",
       send_automated_close_email: "Send Automated Close Email",
       start: "Start",
       type: "Type"

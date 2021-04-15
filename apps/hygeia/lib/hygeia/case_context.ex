@@ -327,7 +327,8 @@ defmodule Hygeia.CaseContext do
     from(case in Case,
       join: phase in fragment("UNNEST(?)", case.phases),
       where:
-        fragment("(?->>'end')::date", phase) <= fragment("CURRENT_DATE") and
+        fragment("(?->>'quarantine_order')::boolean", phase) and
+          fragment("(?->>'end')::date", phase) <= fragment("CURRENT_DATE") and
           fragment("(?->'send_automated_close_email')::boolean", phase) and
           is_nil(fragment("?->>'automated_close_email_sent'", phase)),
       select: {case, fragment("(?->>'uuid')::uuid", phase)},
@@ -884,7 +885,12 @@ defmodule Hygeia.CaseContext do
           # corr_ct_dt
           fragment("?->>'first_contact'", case.monitoring),
           # quar_yn
-          count(fragment("?->>'uuid'", possible_index_phase), :distinct) > 0,
+          sum(
+            fragment(
+              "CASE WHEN (?->>'quarantine_order')::boolean THEN 1 ELSE 0 END",
+              possible_index_phase
+            )
+          ) > 0,
           # onset_quar_dt
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", possible_index_phase)),
           # reason_quar

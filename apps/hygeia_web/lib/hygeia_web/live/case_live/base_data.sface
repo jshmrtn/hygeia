@@ -183,7 +183,46 @@
                                 </div>
                               </div>
 
-                              <div class="row">
+                              <Field name={{ :quarantine_order }} class="form-group">
+                                <div>
+                                  <HygeiaWeb.FieldLabel />
+                                </div>
+                                <div class="btn-group btn-group-toggle btn-radio-group">
+                                  <label class={{
+                                    "btn",
+                                    "btn-sm",
+                                    "btn-secondary",
+                                    active: Ecto.Changeset.get_field(form.source, :quarantine_order) == nil,
+                                    disabled: @live_action == :show
+                                  }}>
+                                    <RadioButton value={{ nil }} opts={{ disabled: @live_action == :show }} />
+                                    {{ gettext("Unknown") }}
+                                  </label>
+                                  <label class={{
+                                    "btn",
+                                    "btn-sm",
+                                    "btn-secondary",
+                                    active: Ecto.Changeset.get_field(form.source, :quarantine_order) == true,
+                                    disabled: @live_action == :show
+                                  }}>
+                                    <RadioButton value opts={{ disabled: @live_action == :show }} />
+                                    {{ gettext("Ordered") }}
+                                  </label>
+                                  <label class={{
+                                    "btn",
+                                    "btn-sm",
+                                    "btn-secondary",
+                                    active: Ecto.Changeset.get_field(form.source, :quarantine_order) == false,
+                                    disabled: @live_action == :show
+                                  }}>
+                                    <RadioButton value=false opts={{ disabled: @live_action == :show }} />
+                                    {{ gettext("No Order") }}
+                                  </label>
+                                </div>
+                                <ErrorTag class="d-block invalid-feedback" />
+                              </Field>
+
+                              <div class="row" :if={{ Ecto.Changeset.get_field(form.source, :quarantine_order) == true }}>
                                 <div class="col">
                                   <Field name={{ :start }} class="form-group">
                                     <HygeiaWeb.FieldLabel />
@@ -291,7 +330,7 @@
                                 </InputContext>
                               </PolimorphicInputs>
 
-                              <div class="row">
+                              <div class="row" :if={{ Ecto.Changeset.get_field(form.source, :quarantine_order) == true }}>
                                 <div class="col">
                                   <Field
                                     :if={{ Ecto.Changeset.get_field(form.source, :automated_close_email_sent) == nil }}

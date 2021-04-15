@@ -315,7 +315,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       |> Enum.map(
         &Task.async(fn ->
           case List.last(&1.phases) do
-            %Phase{details: %Phase.PossibleIndex{type: ^type}} = phase ->
+            %Phase{details: %Phase.PossibleIndex{type: ^type}, quarantine_order: false} = phase ->
+              {:error, :no_quarantine_ordered}
+
+            %Phase{details: %Phase.PossibleIndex{type: ^type}, quarantine_order: true} = phase ->
               Gettext.put_locale(HygeiaGettext, locale)
 
               CommunicationContext.create_outgoing_sms(&1, quarantine_sms(socket, &1, phase))
@@ -330,6 +333,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       |> Enum.reject(&match?({:error, :no_mobile_number}, &1))
       |> Enum.reject(&match?({:error, :sms_config_missing}, &1))
       |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
+      |> Enum.reject(&match?({:error, :no_quarantine_ordered}, &1))
 
     :ok
   end
