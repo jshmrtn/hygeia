@@ -10,7 +10,6 @@ defmodule HygeiaWeb.CaseLive.Create.CreateSchema do
           default_uuid :: String.t()
         ) :: Ecto.Changeset.t()
   def merge_assignee(changeset, type, uuid, default_uuid)
-  def merge_assignee(changeset, _type, nil, nil), do: changeset
 
   def merge_assignee(changeset, type, nil, default_uuid),
     do: Ecto.Changeset.put_change(changeset, type, default_uuid)

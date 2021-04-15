@@ -35,14 +35,9 @@ defmodule HygeiaWeb.CaseLive.CreateIndex do
 
         supervisor_users = UserContext.list_users_with_role(:supervisor, tenants)
         tracer_users = UserContext.list_users_with_role(:tracer, tenants)
-        auth_user = get_auth(socket)
 
         assign(socket,
-          changeset:
-            CreateSchema.changeset(%CreateSchema{people: []}, %{
-              default_tracer_uuid: auth_user.uuid,
-              default_supervisor_uuid: auth_user.uuid
-            }),
+          changeset: CreateSchema.changeset(%CreateSchema{people: []}, params),
           tenants: tenants,
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
