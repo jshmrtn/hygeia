@@ -42,21 +42,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         supervisor_users = UserContext.list_users_with_role(:supervisor, tenants)
         tracer_users = UserContext.list_users_with_role(:tracer, tenants)
 
-        auth_user = get_auth(socket)
-
-        changeset_attrs =
-          params
-          |> Map.put_new("default_tracer_uuid", auth_user.uuid)
-          |> Map.put_new("default_supervisor_uuid", auth_user.uuid)
-
-        changeset_attrs =
+        params =
           case params["possible_index_submission_uuid"] do
-            nil -> changeset_attrs
-            uuid -> Map.merge(changeset_attrs, possible_index_submission_attrs(uuid))
+            nil -> params
+            uuid -> Map.merge(params, possible_index_submission_attrs(uuid))
           end
 
         assign(socket,
-          changeset: CreateSchema.changeset(%CreateSchema{people: []}, changeset_attrs),
+          changeset: CreateSchema.changeset(%CreateSchema{people: []}, params),
           tenants: tenants,
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
