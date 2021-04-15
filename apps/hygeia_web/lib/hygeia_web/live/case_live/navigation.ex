@@ -71,7 +71,7 @@ defmodule HygeiaWeb.CaseLive.Navigation do
         {phase, _other_index} ->
           %{uuid: phase.uuid}
       end)
-      |> Kernel.++([%{start: Date.utc_today(), details: %{__type__: :index}}])
+      |> Kernel.++([%{details: %{__type__: :index}}])
 
     {:ok, case} = CaseContext.update_case(case, %{phases: phase_args, status: :first_contact})
 
@@ -120,19 +120,20 @@ defmodule HygeiaWeb.CaseLive.Navigation do
     {:noreply, assign(socket, email_modal: nil)}
   end
 
-  defp can_generate_isolation_confirmation(phase, clinical) do
-    clinical = if is_nil(clinical), do: nil, else: Map.from_struct(clinical)
+  defp can_generate_isolation_confirmation(%Phase{quarantine_order: false}), do: false
+  defp can_generate_isolation_confirmation(%Phase{start: nil}), do: false
+  defp can_generate_isolation_confirmation(%Phase{end: nil}), do: false
+  defp can_generate_isolation_confirmation(_phase), do: true
 
-    not is_nil(phase.end) and
-      Enum.any?(
-        [clinical[:symptom_start], clinical[:laboratory_report], phase.start],
-        &(not is_nil(&1))
-      )
-  end
+  defp can_generate_quarantine_confirmation(%Phase{quarantine_order: false}), do: false
+  defp can_generate_quarantine_confirmation(%Phase{start: nil}), do: false
+  defp can_generate_quarantine_confirmation(%Phase{end: nil}), do: false
 
-  defp can_generate_quarantine_confirmation(phase) do
-    phase.details.type == :contact_person and phase.start != nil and phase.end != nil
-  end
+  defp can_generate_quarantine_confirmation(%Phase{details: %Phase.PossibleIndex{type: type}})
+       when type != :contact_person,
+       do: false
+
+  defp can_generate_quarantine_confirmation(_phase), do: true
 
   defp has_index_phase?(case) do
     Enum.any?(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1))

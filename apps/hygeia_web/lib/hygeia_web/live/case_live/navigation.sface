@@ -104,13 +104,13 @@
           :for={{ %{details: %Phase.Index{}, uuid: uuid} = phase <- @case.phases }}
           :if={{ authorized?(@case, :partial_details, auth) }}
           data-toggle="tooltip"
-          data-original-title={{if !can_generate_isolation_confirmation(phase, @case.clinical),
+          data-original-title={{if !can_generate_isolation_confirmation(phase),
             do: gettext("Phase start- and end-dates must be set to create Isolation Confirmations."),
             else: ""}}
         >
           <Link
             class={{"dropdown-item" <>
-              if !can_generate_isolation_confirmation(phase, @case.clinical), do: " disabled", else: ""}}
+              if !can_generate_isolation_confirmation(phase), do: " disabled", else: ""}}
             to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, uuid) }}
           >
             <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
@@ -118,7 +118,7 @@
           </Link>
           <a
             class={{"dropdown-item" <>
-              if !can_generate_isolation_confirmation(phase, @case.clinical), do: " disabled", else: ""}}
+              if !can_generate_isolation_confirmation(phase), do: " disabled", else: ""}}
             href="#"
             :on-click="open_sms_modal"
             phx-value-message={{ isolation_sms(@socket, @case, phase) }}
@@ -131,7 +131,7 @@
           </a>
           <a
             class={{"dropdown-item" <>
-              if !can_generate_isolation_confirmation(phase, @case.clinical), do: " disabled", else: ""}}
+              if !can_generate_isolation_confirmation(phase), do: " disabled", else: ""}}
             href="#"
             :on-click="open_email_modal"
             phx-value-subject={{ isolation_email_subject() }}

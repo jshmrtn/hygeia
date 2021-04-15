@@ -34,7 +34,8 @@ defmodule Hygeia.StatisticsContextTest do
               end_reason: :healed
             },
             start: ~D[2020-10-12],
-            end: ~D[2020-10-13]
+            end: ~D[2020-10-13],
+            quarantine_order: true
           }
         ]
       })
@@ -54,7 +55,7 @@ defmodule Hygeia.StatisticsContextTest do
                )
     end
 
-    test "lists index case with only inserted_at date" do
+    test "does not list index case with only inserted_at date" do
       tenant = tenant_fixture()
       person = person_fixture(tenant)
       user = user_fixture()
@@ -75,9 +76,9 @@ defmodule Hygeia.StatisticsContextTest do
 
       assert [
                %ActiveIsolationCasesPerDay{count: 0, date: ~D[2020-10-11]},
-               %ActiveIsolationCasesPerDay{count: 1, date: ~D[2020-10-12]},
-               %ActiveIsolationCasesPerDay{count: 1, date: ~D[2020-10-13]},
-               %ActiveIsolationCasesPerDay{count: 1, date: ~D[2020-10-14]}
+               %ActiveIsolationCasesPerDay{count: 0, date: ~D[2020-10-12]},
+               %ActiveIsolationCasesPerDay{count: 0, date: ~D[2020-10-13]},
+               %ActiveIsolationCasesPerDay{count: 0, date: ~D[2020-10-14]}
              ] =
                StatisticsContext.list_active_isolation_cases_per_day(
                  tenant,
@@ -133,7 +134,8 @@ defmodule Hygeia.StatisticsContextTest do
               end_reason: :healed
             },
             start: ~D[2020-10-12],
-            end: ~D[2020-10-13]
+            end: ~D[2020-10-13],
+            quarantine_order: true
           }
         ]
       })
@@ -255,7 +257,8 @@ defmodule Hygeia.StatisticsContextTest do
               end_reason: :asymptomatic
             },
             start: ~D[2020-10-12],
-            end: ~D[2020-10-12]
+            end: ~D[2020-10-12],
+            quarantine_order: true
           }
         ]
       })
@@ -1347,7 +1350,8 @@ defmodule Hygeia.StatisticsContextTest do
               end_reason: :healed
             },
             start: ~D[2020-10-12],
-            end: ~D[2020-10-13]
+            end: ~D[2020-10-13],
+            quarantine_order: true
           }
         ]
       })
@@ -1363,7 +1367,8 @@ defmodule Hygeia.StatisticsContextTest do
               end_reason: :healed
             },
             start: ~D[2020-10-12],
-            end: ~D[2020-10-13]
+            end: ~D[2020-10-13],
+            quarantine_order: true
           }
         ]
       })
@@ -1379,7 +1384,8 @@ defmodule Hygeia.StatisticsContextTest do
               end_reason: :healed
             },
             start: ~D[2020-10-12],
-            end: ~D[2020-10-13]
+            end: ~D[2020-10-13],
+            quarantine_order: true
           }
         ]
       })

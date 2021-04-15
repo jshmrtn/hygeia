@@ -142,7 +142,8 @@ defmodule Hygeia.Fixtures do
           end_reason: :converted_to_index
         },
         start: ~D[2020-10-10],
-        end: ~D[2020-10-12]
+        end: ~D[2020-10-12],
+        quarantine_order: true
       },
       %{
         details: %{
@@ -150,7 +151,8 @@ defmodule Hygeia.Fixtures do
           end_reason: :healed
         },
         start: ~D[2020-10-12],
-        end: ~D[2020-10-22]
+        end: ~D[2020-10-22],
+        quarantine_order: true
       }
     ]
   }

@@ -11,20 +11,30 @@ defmodule Hygeia.CaseContext.Case.Phase do
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex
 
   @type empty :: %__MODULE__{
+          quarantine_order: boolean() | nil,
           start: Date.t() | nil,
           end: Date.t() | nil,
           details: Index.t() | PossibleIndex.t() | nil
         }
 
-  @type t :: %__MODULE__{
-          start: Date.t() | nil,
-          end: Date.t() | nil,
-          details: Index.t() | PossibleIndex.t()
-        }
+  @type t ::
+          %__MODULE__{
+            quarantine_order: true,
+            start: Date.t(),
+            end: Date.t(),
+            details: Index.t() | PossibleIndex.t()
+          }
+          | %__MODULE__{
+              quarantine_order: false | nil,
+              start: nil,
+              end: nil,
+              details: Index.t() | PossibleIndex.t()
+            }
 
   @derive {Phoenix.Param, key: :uuid}
 
   embedded_schema do
+    field :quarantine_order, :boolean
     field :start, :date
     field :end, :date
     field :send_automated_close_email, :boolean, default: true
@@ -42,7 +52,13 @@ defmodule Hygeia.CaseContext.Case.Phase do
   @spec changeset(phase :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(phase, attrs) do
     phase
-    |> cast(attrs, [:start, :end, :send_automated_close_email, :automated_close_email_sent])
+    |> cast(attrs, [
+      :quarantine_order,
+      :start,
+      :end,
+      :send_automated_close_email,
+      :automated_close_email_sent
+    ])
     |> cast_polymorphic_embed(:details)
     |> validate_required([:details])
     |> validate_date_recent(:start)
@@ -59,6 +75,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
       :start,
       dgettext("errors", "end must be after start")
     )
+    |> validate_quarantine_order()
   end
 
   defp validate_date_relative(changeset, field, cmp_equality, cmp_field, message) do
@@ -89,5 +106,15 @@ defmodule Hygeia.CaseContext.Case.Phase do
         []
       end
     end)
+  end
+
+  defp validate_quarantine_order(changeset) do
+    if get_field(changeset, :quarantine_order) == true do
+      validate_required(changeset, [:start, :end])
+    else
+      changeset
+      |> put_change(:start, nil)
+      |> put_change(:end, nil)
+    end
   end
 end

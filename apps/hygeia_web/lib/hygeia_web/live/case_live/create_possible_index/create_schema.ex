@@ -242,6 +242,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
                   type: global_type,
                   type_other: global_type_other
                 },
+                quarantine_order: global_type in [:contact_person, :travel],
                 start: start_date,
                 end: end_date
               }
