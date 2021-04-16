@@ -54,9 +54,24 @@
                   data: [confirm: gettext("Are you sure?")],
                   "phx-value-id": division.uuid
                 }}
-                :if={{ authorized?(division, :delete, auth) }}
+                :if={{ authorized?(division, :delete, auth) and not OrganisationContext.has_affiliations?(division) }}
               >
                 <button class="ml-1 btn btn-sm btn-danger">
+                  <span class="oi oi-trash" aria-hidden="true" />
+                </button>
+              </Link>
+              <Link
+                to="#"
+                click="delete"
+                class="delete"
+                opts={{
+                  title: gettext("Delete"),
+                  data: [confirm: gettext("Are you sure? There are affiliations assigned!")],
+                  "phx-value-id": division.uuid
+                }}
+                :if={{ authorized?(division, :delete, auth) and OrganisationContext.has_affiliations?(division) }}
+              >
+                <button class="ml-1 btn btn-sm border-dark btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>
