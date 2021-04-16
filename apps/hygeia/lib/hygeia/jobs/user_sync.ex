@@ -5,19 +5,20 @@ defmodule Hygeia.Jobs.UserSync do
 
   use GenServer
 
-  alias Caos.Zitadel.Management.Api.V1.ManagementService.Stub
-  alias Caos.Zitadel.Management.Api.V1.SearchMethod
-  alias Caos.Zitadel.Management.Api.V1.UserGrantSearchKey
-  alias Caos.Zitadel.Management.Api.V1.UserGrantSearchQuery
-  alias Caos.Zitadel.Management.Api.V1.UserGrantSearchRequest
-  alias Caos.Zitadel.Management.Api.V1.UserGrantSearchResponse
-  alias Caos.Zitadel.Management.Api.V1.UserGrantView
   alias Ecto.Multi
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
   alias Hygeia.UserContext.User
+  alias Zitadel.Management.V1.ListUserGrantRequest
+  alias Zitadel.Management.V1.ListUserGrantResponse
+  alias Zitadel.Management.V1.ManagementService.Stub
+  alias Zitadel.User.V1.UserGrant
+  alias Zitadel.User.V1.UserGrantProjectIDQuery
+  alias Zitadel.User.V1.UserGrantQuery
+  alias Zitadel.User.V1.UserGrantWithGrantedQuery
+  alias Zitadel.V1.ListQuery
 
   alias HygeiaIam.ServiceUserToken
 
@@ -103,7 +104,7 @@ defmodule Hygeia.Jobs.UserSync do
     {:ok, results} =
       channel
       |> list_users(access_token)
-      |> Enum.reduce(db_users, fn %UserGrantView{user_id: sub} = grant, acc ->
+      |> Enum.reduce(db_users, fn %UserGrant{user_id: sub} = grant, acc ->
         Map.update(acc, sub, {nil, [grant]}, &{elem(&1, 0), [grant | elem(&1, 1)]})
       end)
       |> Map.values()
@@ -125,7 +126,7 @@ defmodule Hygeia.Jobs.UserSync do
     Logger.info("Synced Users with IAM (#{inspect(stats)}")
   end
 
-  defp merge(nil, [%UserGrantView{user_id: sub} | _other_grants] = grants, multi, tenants) do
+  defp merge(nil, [%UserGrant{user_id: sub} | _other_grants] = grants, multi, tenants) do
     Logger.debug("Creating user #{sub}")
 
     Multi.insert(
@@ -156,7 +157,7 @@ defmodule Hygeia.Jobs.UserSync do
   end
 
   defp to_user_attrs(
-         [%UserGrantView{user_id: sub, email: email, display_name: display_name} | _other_grants] =
+         [%UserGrant{user_id: sub, email: email, display_name: display_name} | _other_grants] =
            iam_grants,
          tenants
        ) do
@@ -172,7 +173,7 @@ defmodule Hygeia.Jobs.UserSync do
 
   defp to_grant_attrs(iam_grants, tenants) do
     iam_grants
-    |> Enum.flat_map(fn %UserGrantView{role_keys: roles, org_domain: domain} ->
+    |> Enum.flat_map(fn %UserGrant{role_keys: roles, org_domain: domain} ->
       tenants
       |> Map.fetch(domain)
       |> case do
@@ -203,8 +204,8 @@ defmodule Hygeia.Jobs.UserSync do
           channel
           |> load_page(access_token, offset)
           |> case do
-            {:ok, %UserGrantSearchResponse{result: []}} -> {:halt, offset}
-            {:ok, %UserGrantSearchResponse{result: grants}} -> {grants, offset + length(grants)}
+            {:ok, %ListUserGrantResponse{result: []}} -> {:halt, offset}
+            {:ok, %ListUserGrantResponse{result: grants}} -> {grants, offset + length(grants)}
           end
       end,
       fn _acc -> :ok end
@@ -212,21 +213,21 @@ defmodule Hygeia.Jobs.UserSync do
   end
 
   defp load_page(channel, access_token, offset) do
-    Stub.search_user_grants(
+    Stub.list_user_grants(
       channel,
-      UserGrantSearchRequest.new(
-        offset: offset,
-        limit: @limit,
-        queries: [
-          UserGrantSearchQuery.new(
-            key: UserGrantSearchKey.value(:USERGRANTSEARCHKEY_PROJECT_ID),
-            method: SearchMethod.value(:SEARCHMETHOD_EQUALS),
-            value: HygeiaIam.project_id()
+      ListUserGrantRequest.new(
+        query:
+          ListQuery.new(
+            offset: offset,
+            limit: @limit
           ),
-          UserGrantSearchQuery.new(
-            key: UserGrantSearchKey.value(:USERGRANTSEARCHKEY_WITH_GRANTED),
-            method: SearchMethod.value(:SEARCHMETHOD_EQUALS),
-            value: "true"
+        queries: [
+          UserGrantQuery.new(
+            query:
+              {:project_id_query, UserGrantProjectIDQuery.new(project_id: HygeiaIam.project_id())}
+          ),
+          UserGrantQuery.new(
+            query: {:with_granted_query, UserGrantWithGrantedQuery.new(with_granted: true)}
           )
         ]
       ),
