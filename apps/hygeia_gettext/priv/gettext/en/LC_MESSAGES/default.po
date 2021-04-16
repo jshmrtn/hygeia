@@ -1961,6 +1961,10 @@ msgctxt "Possible Index End Reason"
 msgid "No Follow Up"
 msgstr ""
 
+#, elixir-format
+msgid "No Order"
+msgstr ""
+
 msgid "No Symptoms"
 msgstr ""
 
@@ -2040,6 +2044,10 @@ msgid "On the Help Page"
 msgstr ""
 
 msgid "Oops!"
+msgstr ""
+
+#, elixir-format
+msgid "Ordered"
 msgstr ""
 
 msgid "Organisation"
@@ -2437,6 +2445,11 @@ msgstr ""
 
 msgctxt "Test Reason"
 msgid "Quarantine"
+msgstr ""
+
+#, elixir-format, fuzzy
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
+msgid "Quarantine / Isolation"
 msgstr ""
 
 msgid "Quarantine Confirmation"
