@@ -69,6 +69,7 @@ defmodule Hygeia.OrganisationContext.Division do
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person
+    alias Hygeia.OrganisationContext
     alias Hygeia.OrganisationContext.Division
     alias Hygeia.UserContext.User
 
@@ -98,8 +99,19 @@ defmodule Hygeia.OrganisationContext.Division do
           )
 
     def authorized?(_division, action, user, _meta)
-        when action in [:create, :update, :delete],
+        when action in [:create, :update],
         do:
           Enum.any?([:tracer, :super_user, :supervisor, :admin], &User.has_role?(user, &1, :any))
+
+    def authorized?(division, action, user, _meta)
+        when action in [:delete] do
+      cond do
+        Enum.any?([:super_user, :supervisor, :admin], &User.has_role?(user, &1, :any)) ->
+          true
+
+        Enum.any?([:tracer], &User.has_role?(user, &1, :any)) ->
+          not OrganisationContext.has_affiliations?(division)
+      end
+    end
   end
 end

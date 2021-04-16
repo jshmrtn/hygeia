@@ -16,10 +16,10 @@
           @active_cases_per_day_and_organisation,
           @count || length(@active_cases_per_day_and_organisation)
         )}}>
-        <td>{{ if item.organisation == nil do
+        <td>{{ if item.organisation_name == nil do
             gettext("unknown")
           else
-            item.organisation.name
+            item.organisation_name
           end }}</td>
         <td>{{ item.count }}</td>
         <td>

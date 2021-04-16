@@ -966,8 +966,7 @@ defmodule Hygeia.StatisticsContext do
       order_by: [
         active_cases_per_day_and_organisation.date,
         desc: active_cases_per_day_and_organisation.count
-      ],
-      preload: [:organisation]
+      ]
     )
   end
 end

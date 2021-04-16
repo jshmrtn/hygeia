@@ -249,26 +249,19 @@ defmodule Hygeia.OrganisationContext do
   @spec delete_organisation(organisation :: Organisation.t()) ::
           {:ok, Organisation.t()} | {:error, Ecto.Changeset.t(Organisation.t())}
   def delete_organisation(%Organisation{} = organisation) do
-    positions = Repo.preload(organisation, :positions).positions
-
-    Repo.transaction(fn ->
-      positions
-      |> Enum.map(&delete_position/1)
-      |> Enum.each(fn
-        {:ok, _position} -> :ok
-        {:error, reason} -> Repo.rollback(reason)
-      end)
-
-      organisation
-      |> change_organisation()
-      |> versioning_delete()
-      |> broadcast("organisations", :delete)
-      |> versioning_extract()
-      |> case do
-        {:ok, organisation} -> organisation
-        {:error, reason} -> Repo.rollback(reason)
-      end
-    end)
+    Ecto.Multi.new()
+    |> Ecto.Multi.update_all(:affiliations, Ecto.assoc(organisation, :affiliations),
+      set: [comment: organisation.name]
+    )
+    |> Ecto.Multi.delete(:organisation, change_organisation(organisation))
+    |> authenticate_multi()
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{organisation: organisation}} -> {:ok, organisation}
+      {:error, _name, error, _acc} -> {:error, error}
+    end
+    |> broadcast("organisations", :delete)
+    |> versioning_extract()
   end
 
   @doc """
@@ -383,13 +376,13 @@ defmodule Hygeia.OrganisationContext do
   """
   @spec delete_position(position :: Position.t()) ::
           {:ok, Position.t()} | {:error, Ecto.Changeset.t(Position.t())}
-  def delete_position(%Position{} = position) do
-    position
-    |> change_position()
-    |> versioning_delete()
-    |> broadcast("positions", :delete)
-    |> versioning_extract()
-  end
+  def delete_position(%Position{} = position),
+    do:
+      position
+      |> change_position()
+      |> versioning_delete()
+      |> broadcast("positions", :delete)
+      |> versioning_extract()
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking position changes.
@@ -713,5 +706,21 @@ defmodule Hygeia.OrganisationContext do
 
       get_division!(into_uuid)
     end)
+  end
+
+  @spec has_affiliations?(organisation :: Organisation.t()) :: boolean
+  def has_affiliations?(%Organisation{} = organisation) do
+    case Repo.preload(organisation, :affiliations) do
+      %Organisation{affiliations: []} -> false
+      %Organisation{} -> true
+    end
+  end
+
+  @spec has_affiliations?(division :: Division.t()) :: boolean
+  def has_affiliations?(%Division{} = division) do
+    case Repo.preload(division, :affiliations) do
+      %Division{affiliations: []} -> false
+      %Division{} -> true
+    end
   end
 end

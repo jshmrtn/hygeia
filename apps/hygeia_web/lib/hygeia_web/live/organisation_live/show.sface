@@ -49,9 +49,24 @@
           title: gettext("Delete"),
           data: [confirm: gettext("Are you sure?")]
         }}
-        :if={{ authorized?(@organisation, :delete, auth) }}
+        :if={{authorized?(@organisation, :delete, auth) and
+          not OrganisationContext.has_affiliations?(@organisation)}}
       >
         <button class="btn btn-danger">
+          <span class="oi oi-trash" aria-hidden="true" />
+          {{ gettext("Delete") }}
+        </button>
+      </Link>
+      <Link
+        to="#"
+        click="delete"
+        opts={{
+          title: gettext("Delete"),
+          data: [confirm: gettext("Are you sure? There are affiliations assigned!")]
+        }}
+        :if={{ authorized?(@organisation, :delete, auth) and OrganisationContext.has_affiliations?(@organisation) }}
+      >
+        <button class="btn border-dark btn-danger">
           <span class="oi oi-trash" aria-hidden="true" />
           {{ gettext("Delete") }}
         </button>

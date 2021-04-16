@@ -1335,9 +1335,9 @@ defmodule Hygeia.StatisticsContextTest do
       tenant = tenant_fixture()
       user = user_fixture()
       organisation1 = organisation_fixture()
-      organisation1_uuid = organisation1.uuid
-      organisation2 = organisation_fixture()
-      organisation2_uuid = organisation2.uuid
+      organisation1_name = organisation1.name
+      organisation2 = organisation_fixture(%{name: "JMC"})
+      organisation2_name = organisation2.name
 
       person1 = person_fixture(tenant)
       affiliation_fixture(person1, organisation1, %{kind: :employee})
@@ -1396,22 +1396,22 @@ defmodule Hygeia.StatisticsContextTest do
                %ActiveCasesPerDayAndOrganisation{
                  count: 2,
                  date: ~D[2020-10-12],
-                 organisation_uuid: ^organisation1_uuid
+                 organisation_name: ^organisation1_name
                },
                %ActiveCasesPerDayAndOrganisation{
                  count: 1,
                  date: ~D[2020-10-12],
-                 organisation_uuid: ^organisation2_uuid
+                 organisation_name: ^organisation2_name
                },
                %ActiveCasesPerDayAndOrganisation{
                  count: 2,
                  date: ~D[2020-10-13],
-                 organisation_uuid: ^organisation1_uuid
+                 organisation_name: ^organisation1_name
                },
                %ActiveCasesPerDayAndOrganisation{
                  count: 1,
                  date: ~D[2020-10-13],
-                 organisation_uuid: ^organisation2_uuid
+                 organisation_name: ^organisation2_name
                }
              ] =
                StatisticsContext.list_active_cases_per_day_and_organisation(
