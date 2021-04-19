@@ -2485,16 +2485,6 @@ END)
 
 
 --
--- Name: case_related_organisations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.case_related_organisations (
-    case_uuid uuid NOT NULL,
-    organisation_uuid uuid NOT NULL
-);
-
-
---
 -- Name: cases; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2713,21 +2703,22 @@ CREATE MATERIALIZED VIEW public.statistics_active_cases_per_day_and_organisation
  WITH ranked_active_cases AS (
          SELECT (date.date)::date AS date,
             cases.tenant_uuid,
-            affiliations.organisation_uuid,
+            organisations.name AS organisation_name,
             count(cases.person_uuid) AS count,
             row_number() OVER (PARTITION BY date.date, cases.tenant_uuid ORDER BY (count(cases.person_uuid)) DESC) AS row_number
-           FROM (((public.cases
+           FROM ((((public.cases
              CROSS JOIN LATERAL unnest(cases.phases) phase(phase))
-             CROSS JOIN LATERAL generate_series((COALESCE(((phase.phase ->> 'start'::text))::date, (cases.inserted_at)::date))::timestamp with time zone, (COALESCE(((phase.phase ->> 'end'::text))::date, CURRENT_DATE))::timestamp with time zone, '1 day'::interval) date(date))
+             CROSS JOIN LATERAL generate_series((((phase.phase ->> 'start'::text))::date)::timestamp with time zone, (((phase.phase ->> 'end'::text))::date)::timestamp with time zone, '1 day'::interval) date(date))
              LEFT JOIN public.affiliations ON ((affiliations.person_uuid = cases.person_uuid)))
-          WHERE (((phase.phase -> 'details'::text) ->> '__type__'::text) = 'index'::text)
-          GROUP BY cases.tenant_uuid, date.date, affiliations.organisation_uuid
+             LEFT JOIN public.organisations ON ((organisations.uuid = affiliations.organisation_uuid)))
+          WHERE ('{"details": {"__type__": "index"}, "quarantine_order": true}'::jsonb <@ phase.phase)
+          GROUP BY cases.tenant_uuid, date.date, organisations.name
          HAVING (count(cases.person_uuid) > 0)
           ORDER BY ((date.date)::date), cases.tenant_uuid, (count(cases.person_uuid)) DESC
         )
  SELECT ranked_active_cases.tenant_uuid,
     ranked_active_cases.date,
-    ranked_active_cases.organisation_uuid,
+    ranked_active_cases.organisation_name,
     ranked_active_cases.count
    FROM ranked_active_cases
   WHERE (ranked_active_cases.row_number <= 100)
@@ -2771,8 +2762,8 @@ CREATE MATERIALIZED VIEW public.statistics_active_complexity_cases_per_day AS
             (cases.complexity)::public.case_complexity AS cmp_complexity
            FROM ((public.cases
              CROSS JOIN LATERAL unnest(cases.phases) phase(phase))
-             CROSS JOIN LATERAL generate_series((COALESCE(((phase.phase ->> 'start'::text))::date, (cases.inserted_at)::date))::timestamp with time zone, (COALESCE(((phase.phase ->> 'end'::text))::date, CURRENT_DATE))::timestamp with time zone, '1 day'::interval) cmp_date(cmp_date))
-          WHERE (((phase.phase -> 'details'::text) ->> '__type__'::text) = 'index'::text)
+             CROSS JOIN LATERAL generate_series((((phase.phase ->> 'start'::text))::date)::timestamp with time zone, (((phase.phase ->> 'end'::text))::date)::timestamp with time zone, '1 day'::interval) cmp_date(cmp_date))
+          WHERE ('{"details": {"__type__": "index"}, "quarantine_order": true}'::jsonb <@ phase.phase)
         )
  SELECT tenants.uuid AS tenant_uuid,
     (date.date)::date AS date,
@@ -2797,7 +2788,7 @@ CREATE MATERIALIZED VIEW public.statistics_active_hospitalization_cases_per_day 
          SELECT cases.tenant_uuid,
             cases.person_uuid,
             ((hospitalization.hospitalization ->> 'start'::text))::date AS start_date,
-            COALESCE(((hospitalization.hospitalization ->> 'end'::text))::date, ((cases.phases[array_upper(cases.phases, 1)] ->> 'end'::text))::date, CURRENT_DATE) AS end_date
+            COALESCE(((hospitalization.hospitalization ->> 'end'::text))::date, CURRENT_DATE) AS end_date
            FROM (public.cases
              CROSS JOIN LATERAL unnest(cases.hospitalizations) hospitalization(hospitalization))
         )
@@ -2845,7 +2836,8 @@ CREATE MATERIALIZED VIEW public.statistics_active_infection_place_cases_per_day 
            FROM (((public.cases
              LEFT JOIN public.transmissions ON ((transmissions.recipient_case_uuid = cases.uuid)))
              CROSS JOIN LATERAL unnest(cases.phases) phase(phase))
-             CROSS JOIN LATERAL generate_series((COALESCE(((phase.phase ->> 'start'::text))::date, (cases.inserted_at)::date))::timestamp with time zone, (COALESCE(((phase.phase ->> 'end'::text))::date, CURRENT_DATE))::timestamp with time zone, '1 day'::interval) cmp_date(cmp_date))
+             CROSS JOIN LATERAL generate_series((((phase.phase ->> 'start'::text))::date)::timestamp with time zone, (((phase.phase ->> 'end'::text))::date)::timestamp with time zone, '1 day'::interval) cmp_date(cmp_date))
+          WHERE ('{"details": {"__type__": "index"}, "quarantine_order": true}'::jsonb <@ phase.phase)
         )
  SELECT tenants.uuid AS tenant_uuid,
     (day.day)::date AS date,
@@ -2872,8 +2864,8 @@ CREATE MATERIALIZED VIEW public.statistics_active_isolation_cases_per_day AS
             (cmp_date.cmp_date)::date AS cmp_date
            FROM ((public.cases
              CROSS JOIN LATERAL unnest(cases.phases) phase(phase))
-             CROSS JOIN LATERAL generate_series((COALESCE(((phase.phase ->> 'start'::text))::date, (cases.inserted_at)::date))::timestamp with time zone, (COALESCE(((phase.phase ->> 'end'::text))::date, CURRENT_DATE))::timestamp with time zone, '1 day'::interval) cmp_date(cmp_date))
-          WHERE ('{"details": {"__type__": "index"}}'::jsonb <@ phase.phase)
+             CROSS JOIN LATERAL generate_series((((phase.phase ->> 'start'::text))::date)::timestamp with time zone, (((phase.phase ->> 'end'::text))::date)::timestamp with time zone, '1 day'::interval) cmp_date(cmp_date))
+          WHERE ('{"details": {"__type__": "index"}, "quarantine_order": true}'::jsonb <@ phase.phase)
         )
  SELECT tenants.uuid AS tenant_uuid,
     (date.date)::date AS date,
@@ -2899,8 +2891,8 @@ CREATE MATERIALIZED VIEW public.statistics_active_quarantine_cases_per_day AS
             (cmp_date.cmp_date)::date AS cmp_date
            FROM ((public.cases
              CROSS JOIN LATERAL unnest(cases.phases) phase(phase))
-             CROSS JOIN LATERAL generate_series((COALESCE(((phase.phase ->> 'start'::text))::date, (cases.inserted_at)::date))::timestamp with time zone, (COALESCE(((phase.phase ->> 'end'::text))::date, CURRENT_DATE))::timestamp with time zone, '1 day'::interval) cmp_date(cmp_date))
-          WHERE ('{"details": {"__type__": "possible_index"}}'::jsonb <@ phase.phase)
+             CROSS JOIN LATERAL generate_series((((phase.phase ->> 'start'::text))::date)::timestamp with time zone, (((phase.phase ->> 'end'::text))::date)::timestamp with time zone, '1 day'::interval) cmp_date(cmp_date))
+          WHERE ('{"details": {"__type__": "possible_index"}, "quarantine_order": true}'::jsonb <@ phase.phase)
         )
  SELECT tenants.uuid AS tenant_uuid,
     type.type,
@@ -3479,17 +3471,17 @@ CREATE INDEX statistics_active_cases_per_day_and_organisation_date_index ON publ
 
 
 --
--- Name: statistics_active_cases_per_day_and_organisation_organisation_u; Type: INDEX; Schema: public; Owner: -
+-- Name: statistics_active_cases_per_day_and_organisation_organisation_n; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX statistics_active_cases_per_day_and_organisation_organisation_u ON public.statistics_active_cases_per_day_and_organisation USING btree (organisation_uuid);
+CREATE INDEX statistics_active_cases_per_day_and_organisation_organisation_n ON public.statistics_active_cases_per_day_and_organisation USING btree (organisation_name);
 
 
 --
 -- Name: statistics_active_cases_per_day_and_organisation_tenant_uuid_da; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX statistics_active_cases_per_day_and_organisation_tenant_uuid_da ON public.statistics_active_cases_per_day_and_organisation USING btree (tenant_uuid, date, organisation_uuid);
+CREATE UNIQUE INDEX statistics_active_cases_per_day_and_organisation_tenant_uuid_da ON public.statistics_active_cases_per_day_and_organisation USING btree (tenant_uuid, date, organisation_name);
 
 
 --
@@ -3819,27 +3811,6 @@ CREATE TRIGGER affiliations_versioning_insert AFTER INSERT ON public.affiliation
 --
 
 CREATE TRIGGER affiliations_versioning_update AFTER UPDATE ON public.affiliations FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
-
-
---
--- Name: case_related_organisations case_related_organisations_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER case_related_organisations_versioning_delete AFTER DELETE ON public.case_related_organisations FOR EACH ROW EXECUTE FUNCTION public.versioning_delete();
-
-
---
--- Name: case_related_organisations case_related_organisations_versioning_insert; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER case_related_organisations_versioning_insert AFTER INSERT ON public.case_related_organisations FOR EACH ROW EXECUTE FUNCTION public.versioning_insert();
-
-
---
--- Name: case_related_organisations case_related_organisations_versioning_update; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER case_related_organisations_versioning_update AFTER UPDATE ON public.case_related_organisations FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
 
 
 --
@@ -4232,7 +4203,7 @@ CREATE TRIGGER users_versioning_update AFTER UPDATE ON public.users FOR EACH ROW
 --
 
 ALTER TABLE ONLY public.affiliations
-    ADD CONSTRAINT affiliations_division_uuid_fkey FOREIGN KEY (division_uuid) REFERENCES public.divisions(uuid);
+    ADD CONSTRAINT affiliations_division_uuid_fkey FOREIGN KEY (division_uuid) REFERENCES public.divisions(uuid) ON DELETE SET NULL;
 
 
 --
@@ -4240,7 +4211,7 @@ ALTER TABLE ONLY public.affiliations
 --
 
 ALTER TABLE ONLY public.affiliations
-    ADD CONSTRAINT affiliations_organisation_uuid_fkey FOREIGN KEY (organisation_uuid) REFERENCES public.organisations(uuid);
+    ADD CONSTRAINT affiliations_organisation_uuid_fkey FOREIGN KEY (organisation_uuid) REFERENCES public.organisations(uuid) ON DELETE SET NULL;
 
 
 --
@@ -4248,23 +4219,7 @@ ALTER TABLE ONLY public.affiliations
 --
 
 ALTER TABLE ONLY public.affiliations
-    ADD CONSTRAINT affiliations_person_uuid_fkey FOREIGN KEY (person_uuid) REFERENCES public.people(uuid);
-
-
---
--- Name: case_related_organisations case_related_organisations_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.case_related_organisations
-    ADD CONSTRAINT case_related_organisations_case_uuid_fkey FOREIGN KEY (case_uuid) REFERENCES public.cases(uuid);
-
-
---
--- Name: case_related_organisations case_related_organisations_organisation_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.case_related_organisations
-    ADD CONSTRAINT case_related_organisations_organisation_uuid_fkey FOREIGN KEY (organisation_uuid) REFERENCES public.organisations(uuid);
+    ADD CONSTRAINT affiliations_person_uuid_fkey FOREIGN KEY (person_uuid) REFERENCES public.people(uuid) ON DELETE CASCADE;
 
 
 --
@@ -4304,7 +4259,7 @@ ALTER TABLE ONLY public.cases
 --
 
 ALTER TABLE ONLY public.divisions
-    ADD CONSTRAINT divisions_organisation_uuid_fkey FOREIGN KEY (organisation_uuid) REFERENCES public.organisations(uuid);
+    ADD CONSTRAINT divisions_organisation_uuid_fkey FOREIGN KEY (organisation_uuid) REFERENCES public.organisations(uuid) ON DELETE CASCADE;
 
 
 --
@@ -4360,7 +4315,7 @@ ALTER TABLE ONLY public.people
 --
 
 ALTER TABLE ONLY public.positions
-    ADD CONSTRAINT positions_organisation_uuid_fkey FOREIGN KEY (organisation_uuid) REFERENCES public.organisations(uuid);
+    ADD CONSTRAINT positions_organisation_uuid_fkey FOREIGN KEY (organisation_uuid) REFERENCES public.organisations(uuid) ON DELETE CASCADE;
 
 
 --
@@ -4368,7 +4323,7 @@ ALTER TABLE ONLY public.positions
 --
 
 ALTER TABLE ONLY public.positions
-    ADD CONSTRAINT positions_person_uuid_fkey FOREIGN KEY (person_uuid) REFERENCES public.people(uuid);
+    ADD CONSTRAINT positions_person_uuid_fkey FOREIGN KEY (person_uuid) REFERENCES public.people(uuid) ON DELETE CASCADE;
 
 
 --
@@ -4529,3 +4484,6 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210317121030);
 INSERT INTO public."schema_migrations" (version) VALUES (20210318105649);
 INSERT INTO public."schema_migrations" (version) VALUES (20210319113229);
 INSERT INTO public."schema_migrations" (version) VALUES (20210326144056);
+INSERT INTO public."schema_migrations" (version) VALUES (20210415111909);
+INSERT INTO public."schema_migrations" (version) VALUES (20210416111804);
+INSERT INTO public."schema_migrations" (version) VALUES (20210419130620);

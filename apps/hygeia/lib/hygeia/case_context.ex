@@ -16,7 +16,6 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CommunicationContext.SMS
   alias Hygeia.EctoType.Country
   alias Hygeia.OrganisationContext
-  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
 
   @origin_country Application.compile_env!(:hygeia, [:phone_number_parsing_origin_country])
@@ -350,19 +349,16 @@ defmodule Hygeia.CaseContext do
     do:
       from(case in Case,
         join: person in assoc(case, :person),
-        left_join: organisation in assoc(case, :related_organisations),
         where:
           fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", person, ^query) or
-            fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", case, ^query) or
-            fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", organisation, ^query),
+            fragment("?.fulltext @@ WEBSEARCH_TO_TSQUERY('german', ?)", case, ^query),
         order_by: [
           desc:
             max(
               fragment(
-                "TS_RANK_CD((?.fulltext || ?.fulltext || ?.fulltext), WEBSEARCH_TO_TSQUERY('german', ?))",
+                "TS_RANK_CD((?.fulltext || ?.fulltext), WEBSEARCH_TO_TSQUERY('german', ?))",
                 case,
                 person,
-                organisation,
                 ^query
               )
             )
@@ -1813,21 +1809,6 @@ defmodule Hygeia.CaseContext do
       |> change_new_case(tenant, attrs)
       |> create_case()
 
-  @spec relate_case_to_organisation(case :: Case.t(), organisation :: Organisation.t()) ::
-          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
-  def relate_case_to_organisation(case, organisation) do
-    case = Repo.preload(case, :related_organisations)
-
-    case
-    |> change_case()
-    |> Ecto.Changeset.put_assoc(:related_organisations, [
-      organisation | case.related_organisations
-    ])
-    |> versioning_update()
-    |> broadcast("cases", :update)
-    |> versioning_extract()
-  end
-
   @doc """
   Updates a case.
 
@@ -1873,7 +1854,7 @@ defmodule Hygeia.CaseContext do
   @spec delete_case(case :: Case.t()) :: {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
   def delete_case(%Case{} = case) do
     %Case{notes: notes, sms: sms, emails: emails} =
-      case = Repo.preload(case, notes: [], related_organisations: [], sms: [], emails: [])
+      case = Repo.preload(case, notes: [], sms: [], emails: [])
 
     Repo.transaction(fn ->
       notes
@@ -1896,17 +1877,6 @@ defmodule Hygeia.CaseContext do
         {:ok, _email} -> :ok
         {:error, reason} -> Repo.rollback(reason)
       end)
-
-      case =
-        case
-        |> change_case(%{related_organisations: []})
-        |> versioning_update()
-        |> broadcast("cases", :update)
-        |> versioning_extract()
-        |> case do
-          {:ok, case} -> case
-          {:error, reason} -> Repo.rollback(reason)
-        end
 
       case
       |> versioning_delete()

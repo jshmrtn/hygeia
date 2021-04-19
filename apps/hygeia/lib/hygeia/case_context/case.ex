@@ -4,7 +4,6 @@ defmodule Hygeia.CaseContext.Case do
   """
   use Hygeia, :model
 
-  import Ecto.Query
   import EctoEnum
   import HygeiaGettext
 
@@ -19,7 +18,6 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
-  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
@@ -56,7 +54,6 @@ defmodule Hygeia.CaseContext.Case do
           tracer: Ecto.Schema.belongs_to(User.t()) | nil,
           supervisor_uuid: String.t() | nil,
           supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
-          related_organisations: Ecto.Schema.many_to_many(Organisation.t()) | nil,
           possible_index_submissions: Ecto.Schema.many_to_many(PossibleIndexSubmission.t()) | nil,
           emails: Ecto.Schema.has_many(Email.t()) | nil,
           sms: Ecto.Schema.has_many(SMS.t()) | nil,
@@ -83,7 +80,6 @@ defmodule Hygeia.CaseContext.Case do
           tracer: Ecto.Schema.belongs_to(User.t()) | nil,
           supervisor_uuid: String.t() | nil,
           supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
-          related_organisations: Ecto.Schema.many_to_many(Organisation.t()),
           possible_index_submissions: Ecto.Schema.many_to_many(PossibleIndexSubmission.t()),
           emails: Ecto.Schema.has_many(Email.t()),
           sms: Ecto.Schema.has_many(SMS.t()),
@@ -117,11 +113,6 @@ defmodule Hygeia.CaseContext.Case do
     has_many :emails, Email, foreign_key: :case_uuid
     has_many :sms, SMS, foreign_key: :case_uuid
     has_many :notes, Note, foreign_key: :case_uuid
-
-    many_to_many :related_organisations, Organisation,
-      join_through: "case_related_organisations",
-      join_keys: [case_uuid: :uuid, organisation_uuid: :uuid],
-      on_replace: :delete
 
     timestamps()
   end
@@ -160,7 +151,6 @@ defmodule Hygeia.CaseContext.Case do
     |> cast_embed(:hospitalizations)
     |> cast_embed(:monitoring)
     |> cast_embed(:phases, required: true)
-    |> cast_many_to_many(:related_organisations)
     |> validate_at_least_one_phase()
     |> validate_phase_type_unique()
   end
@@ -171,36 +161,6 @@ defmodule Hygeia.CaseContext.Case do
     |> case do
       [] -> put_embed(changeset, :phases, [%Phase{}])
       _other -> changeset
-    end
-  end
-
-  defp cast_many_to_many(%Changeset{params: params} = changeset, field) do
-    params
-    |> Map.take([field, Atom.to_string(field)])
-    |> Map.values()
-    |> case do
-      [] ->
-        changeset
-
-      [_ | _] = fields ->
-        related_organisation_ids =
-          fields
-          |> Enum.flat_map(fn
-            %{} = map -> Map.values(map)
-            list when is_list(list) -> list
-          end)
-          |> Enum.map(&(&1[:uuid] || &1["uuid"]))
-          |> Enum.reject(&is_nil/1)
-          |> Enum.reject(&match?("", &1))
-
-        related_organisations =
-          Repo.all(
-            from(organisation in Organisation,
-              where: organisation.uuid in ^related_organisation_ids
-            )
-          )
-
-        put_assoc(changeset, field, related_organisations)
     end
   end
 

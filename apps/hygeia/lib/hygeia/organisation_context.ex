@@ -168,11 +168,8 @@ defmodule Hygeia.OrganisationContext do
           {:ok, Organisation.t()}
   def merge_organisations(
         %Organisation{uuid: delete_uuid} = delete,
-        %Organisation{uuid: into_uuid} = into
+        %Organisation{uuid: into_uuid} = _into
       ) do
-    delete = Repo.preload(delete, :related_cases)
-    into = Repo.preload(into, :related_cases)
-
     Repo.transaction(fn ->
       affiliation_updates =
         delete
@@ -214,18 +211,6 @@ defmodule Hygeia.OrganisationContext do
         affiliation_updates
         |> Ecto.Multi.append(position_updates)
         |> Ecto.Multi.append(division_updates)
-        |> Ecto.Multi.update(
-          {:add_related_cases, into_uuid},
-          into
-          |> Ecto.Changeset.change()
-          |> Ecto.Changeset.put_assoc(:related_cases, into.related_cases ++ delete.related_cases)
-        )
-        |> Ecto.Multi.update(
-          {:remove_related_cases, delete_uuid},
-          delete
-          |> Ecto.Changeset.change()
-          |> Ecto.Changeset.put_assoc(:related_cases, [])
-        )
         |> Ecto.Multi.delete({:delete, delete_uuid}, Ecto.Changeset.change(delete))
         |> authenticate_multi()
         |> Repo.transaction()
