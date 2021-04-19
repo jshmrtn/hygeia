@@ -18,7 +18,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 msgid ""
@@ -27,21 +27,6 @@ msgid ""
 msgstr ""
 "Viele Kontaktpersonen aus unterschiedlichen Orten, Vereine betroffen, Gastronomie "
 "betroffen, Spital/Heim betroffen"
-
-msgid "A lot of contact persons/places that must be determined / assignment to team lead"
-msgstr ""
-"Viele verschiedene Kontaktpersonen/ Orte, die abgeklärt werden müssen / Übergabe an die "
-"Teamleitung"
-
-msgid "Agreed with index that had been in contact that no further contact is necessary"
-msgstr ""
-"Mit dem Index, der mit der Kontaktperson in Verbindung war, abgemacht, dass kein "
-"erneuter Kontakt nötig ist (momentan der Normalfall)"
-
-msgid "An unknown error happened during registration. Report this to your webmaster."
-msgstr ""
-"Bei der Registrierung ist ein unbekannter Fehler aufgetreten. Melden Sie dies Ihrem "
-"Webmaster."
 
 msgid ""
 "Dear Sir / Madam,\n"
@@ -106,9 +91,6 @@ msgstr ""
 "nachgegangen (z.B. «Hochzeit mit Mittagessen. Sassen am selben Tisch» oder «leben im "
 "selben Haushalt, teilen uns Küche und Bad»)."
 
-msgid "Despite multiple calls and inquiries regarding the phone number unavailable"
-msgstr "Trotz mehrfachen Anrufe und Abklärungen zur Telefonnummer nicht erreichbar"
-
 msgid ""
 "Establishment of upper secondary level, tertiary educational institution or further "
 "training facility"
@@ -133,6 +115,23 @@ msgid ""
 msgstr ""
 "Gesundheitseinrichtung (Spital, Klinik, Arztpraxis, Praxis für Gesundheitspflege, "
 "Einrichtung von Gesundheitsfachpersonen nach Bundesrecht und kantonalem Recht)"
+
+msgid ""
+"Hi %{name},\n"
+"\n"
+"There's new notifications available on Hygeia for you:\n"
+"%{totals}\n"
+"\n"
+"Best,\n"
+"Hygeia\n"
+msgstr ""
+"Hallo %{name},\n"
+"\n"
+"Es warten neue Benachrichtigungen auf dich:\n"
+"%{totals}\n"
+"\n"
+"Beste Grüsse,\n"
+"Hygeia - COVID19 Tracing\n"
 
 msgid ""
 "If there are no known contact methods for the person, a contact method for a close "
@@ -221,9 +220,6 @@ msgstr ""
 "“Startdatum” setzten und “Organisation” auswählen, dann Notiz anlegen warum Index im "
 "Spital ist und wie es ihm geht, am Schluss Info an Teamleitung."
 
-msgid "Index understands and speaks English, but several explanations are necessary"
-msgstr "Index versteht und spricht Deutsch, doch braucht es etliche Erklärungen"
-
 msgid ""
 "Maybe inform the team lead if not already done, create a protocol entry (status for "
 "exceptional cases)"
@@ -231,25 +227,12 @@ msgstr ""
 "Evt Info an Teamleitung die noch nicht erfolgt ist, dazu Eintrag im Protokoll (Status "
 "für aussergewöhnliches)"
 
-msgid "No submissions have been entered yet. Please submit all relevant people."
-msgstr ""
-"Es wurden noch keine Einsendungen erfasst. Bitte reichen Sie alle relevanten Personen "
-"ein."
-
 msgid ""
 "No submissions have been entered yet. Please submit all relevant people. Previous "
 "submissions can also be viewed, edited and deleted later."
 msgstr ""
 "Es wurden noch keine Einsendungen erfasst. Bitte reichen Sie alle relevanten Personen "
 "ein. Vorherige Einsendungen können später angesehen, bearbeitet und gelöscht werden."
-
-msgid "Personal service with physical contact (e.g. hairdressers, massage studio)"
-msgstr "Persönliche Dienstleistung mit Körperkontakt (z.B. Friseure, Massagestudio)"
-
-msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
-msgstr ""
-"Phasenanfangs- und Enddatum müssen festgelegt werden, um Isolationsbestätigungen zu "
-"erstellen."
 
 msgid ""
 "Phone number can only be obtained at the residents' registration office, index doesn't "
@@ -265,26 +248,11 @@ msgstr ""
 "Bitte beachten Sie, dass die Eingabe der Kontaktpersonen nur in aktuellen Versionen der "
 "folgenden Browser funktioniert:"
 
-msgid "Possible index submissions can only be managed for cases with an index phase."
-msgstr ""
-"Mögliche Indexübermittlungen können nur für Fälle mit einer Indexphase verwaltet werden."
-
-msgid "Relevant will be all contacts you have where ALL of the following is true:"
-msgstr "Relevant sind alle Kontakte bei denen ALLE der folgenden Bedingungen zutreffen:"
-
 msgid ""
 "Someone else is currently editing this resource. Wait until they finished their work."
 msgstr ""
 "Eine andere Person bearbeitet diese Ressource derzeit. Warten Sie, bis diese ihre "
 "Arbeit beendet haben."
-
-msgid "The case administraton sends cases like this. Index has not been contacted"
-msgstr ""
-"Falladministration verschickt die neuen Fälle so. Es wurde noch keinen Kontakt zu Index "
-"aufgenommen"
-
-msgid "The contact person has developed symptoms, did a test and became an index"
-msgstr "Die Kontaktperson hat Symptome entwickelt, sich testen lassen und wurde zum Index"
 
 msgid ""
 "The link to the possible index submissions was sent. The Index did not enter the "
@@ -303,11 +271,6 @@ msgstr ""
 "befindet. Anhand dieses Status kann im Filter gesucht werden. Die Fälle werden von der "
 "Falladministration immer als Status “Erster Kontakt” eingefügt. Nachdem der Fall "
 "bearbeitet wurde, muss der Status angepasst werden."
-
-msgid "This organisation is possibly a duplicate of %{name_link}, please check."
-msgstr ""
-"Diese Organisation ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie "
-"dies bitte."
 
 msgid ""
 "To fulfill all needs regarding the tracing of contacts you will need to enter personal "
@@ -415,6 +378,11 @@ msgstr "> 15 Min."
 
 msgid "> 30 Min."
 msgstr "> 30 Min."
+
+msgid "A lot of contact persons/places that must be determined / assignment to team lead"
+msgstr ""
+"Viele verschiedene Kontaktpersonen/ Orte, die abgeklärt werden müssen / Übergabe an die "
+"Teamleitung"
 
 msgid "A minimum of 2 points must be fulfilled"
 msgstr "Mind. 2 Punkte müssen erfüllt sein"
@@ -527,6 +495,11 @@ msgstr "Neue Zugehörigkeit"
 msgid "Affiliations"
 msgstr "Zugehörigkeiten"
 
+msgid "Agreed with index that had been in contact that no further contact is necessary"
+msgstr ""
+"Mit dem Index, der mit der Kontaktperson in Verbindung war, abgemacht, dass kein "
+"erneuter Kontakt nötig ist (momentan der Normalfall)"
+
 msgid "Agreed with index that no further contact is necessary"
 msgstr ""
 "Mit Index abgemacht, dass kein erneuter Kontakt nötig ist (momentan der Normalfall)"
@@ -536,6 +509,11 @@ msgstr "Flugzeug oder Reise"
 
 msgid "All points must be fulfilled"
 msgstr "Alle Punkte müssen erfüllt sein"
+
+msgid "An unknown error happened during registration. Report this to your webmaster."
+msgstr ""
+"Bei der Registrierung ist ein unbekannter Fehler aufgetreten. Melden Sie dies Ihrem "
+"Webmaster."
 
 msgid "Antibody"
 msgstr "Antikörper"
@@ -583,6 +561,9 @@ msgstr "Asymptomatisch"
 msgctxt "Possible Index End Reason"
 msgid "Asymptomatic"
 msgstr "Asymptomatisch"
+
+msgid "At least one phase is required"
+msgstr "Mindestens eine Phase wird benötigt"
 
 msgid "August"
 msgstr "August"
@@ -686,6 +667,9 @@ msgstr "Fall-Zuweisung geändert"
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Case Management Enabled"
 msgstr "Fallverwaltung aktiviert"
+
+msgid "Case Phase Type must be unique"
+msgstr "Der Phasen Typ muss einmalig sein"
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case UUID"
@@ -929,6 +913,9 @@ msgstr "Indexfälle erstellen"
 msgid "Create Note"
 msgstr "Notiz anlegen"
 
+msgid "Create Phase"
+msgstr "Phase erstellen"
+
 msgid "Create Possible Index Cases"
 msgstr "Mögliche Indexfälle erstellen"
 
@@ -1068,6 +1055,9 @@ msgstr "Beschreibung"
 
 msgid "Description of encounter"
 msgstr "Beschreibung des Kontakts"
+
+msgid "Despite multiple calls and inquiries regarding the phone number unavailable"
+msgstr "Trotz mehrfachen Anrufe und Abklärungen zur Telefonnummer nicht erreichbar"
 
 msgid "Detailed Instructions"
 msgstr "Detaillierte Anleitung"
@@ -1461,23 +1451,6 @@ msgstr "Gesundheitswesen"
 msgid "Help"
 msgstr "Hilfe"
 
-msgid ""
-"Hi %{name},\n"
-"\n"
-"There's new notifications available on Hygeia for you:\n"
-"%{totals}\n"
-"\n"
-"Best,\n"
-"Hygeia\n"
-msgstr ""
-"Hallo %{name},\n"
-"\n"
-"Es warten neue Benachrichtigungen auf dich:\n"
-"%{totals}\n"
-"\n"
-"Beste Grüsse,\n"
-"Hygeia - COVID19 Tracing\n"
-
 msgid "High"
 msgstr "Hoch"
 
@@ -1602,6 +1575,10 @@ msgstr "Beinhaltet Phase"
 msgid "Index"
 msgstr "Index"
 
+msgctxt "Case Phase Type"
+msgid "Index"
+msgstr "Index"
+
 msgid "Index died"
 msgstr "Index ist verstorben"
 
@@ -1610,6 +1587,9 @@ msgstr "Index ist vollständig genesen und die Isolation ist beendet"
 
 msgid "Index understands and speaks English"
 msgstr "Index versteht und spricht Deutsch"
+
+msgid "Index understands and speaks English, but several explanations are necessary"
+msgstr "Index versteht und spricht Deutsch, doch braucht es etliche Erklärungen"
 
 msgid "Indoor Sport activities"
 msgstr "Sportliche Betätigung in der Halle"
@@ -1988,6 +1968,9 @@ msgstr "Neue Organisation"
 msgid "New Person"
 msgstr "Neue Person"
 
+msgid "New Phase"
+msgstr "Neue Phase"
+
 msgid "New Possible Index"
 msgstr "Neuer Möglicher Indexfall"
 
@@ -2107,6 +2090,11 @@ msgstr "Kein Empfänger"
 
 msgid "No related organisations"
 msgstr "Keine verwandten Organisationen"
+
+msgid "No submissions have been entered yet. Please submit all relevant people."
+msgstr ""
+"Es wurden noch keine Einsendungen erfasst. Bitte reichen Sie alle relevanten Personen "
+"ein."
 
 msgid "No verson entries found"
 msgstr "Es wurden keine Versions-Einträge gefunden"
@@ -2388,6 +2376,20 @@ msgstr "Person erfolgreich gelöscht"
 msgid "Person updated successfully"
 msgstr "Person wurde erfolgreich aktualisiert"
 
+msgid "Personal service with physical contact (e.g. hairdressers, massage studio)"
+msgstr "Persönliche Dienstleistung mit Körperkontakt (z.B. Friseure, Massagestudio)"
+
+msgid "Phase Type already exists on the case"
+msgstr "Der Phasen Typ wird im Fall bereits verwendet"
+
+msgid "Phase created successfully"
+msgstr "Phase wurde erfolgreich erstellt"
+
+msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
+msgstr ""
+"Phasenanfangs- und Enddatum müssen festgelegt werden, um Isolationsbestätigungen zu "
+"erstellen."
+
 msgid "Phases"
 msgstr "Phasen"
 
@@ -2433,6 +2435,10 @@ msgstr "Positiv"
 msgid "Possible Index"
 msgstr "Möglicher Index"
 
+msgctxt "Case Phase Type"
+msgid "Possible Index"
+msgstr "Möglicher Index"
+
 msgid "Possible Index Submissions"
 msgstr "Möglicher-Index Einsendungen"
 
@@ -2441,6 +2447,10 @@ msgstr "Möglicher Index"
 
 msgid "Possible index submission created successfully"
 msgstr "Mögliche Indexübermittlung erfolgreich erstellt"
+
+msgid "Possible index submissions can only be managed for cases with an index phase."
+msgstr ""
+"Mögliche Indexübermittlungen können nur für Fälle mit einer Indexphase verwaltet werden."
 
 msgid "PossibleIndexSubmission deleted successfully"
 msgstr "Mögliche Indexübermittlung erfolgreich gelöscht"
@@ -2658,6 +2668,9 @@ msgstr "Mandant wählen"
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Relay"
 msgstr "Relay"
+
+msgid "Relevant will be all contacts you have where ALL of the following is true:"
+msgstr "Relevant sind alle Kontakte bei denen ALLE der folgenden Bedingungen zutreffen:"
 
 msgid "Religious gatherings / funerals"
 msgstr "Religiöse Versammlungen / Beerdigungen"
@@ -3188,11 +3201,24 @@ msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Text"
 msgstr "Text"
 
+msgid "The case administraton sends cases like this. Index has not been contacted"
+msgstr ""
+"Falladministration verschickt die neuen Fälle so. Es wurde noch keinen Kontakt zu Index "
+"aufgenommen"
+
 msgid "The contact person didn't develop any symptoms during quarantine"
 msgstr "Die Kontaktperson hat während der Quarantäne keine Symptome entwickelt"
 
+msgid "The contact person has developed symptoms, did a test and became an index"
+msgstr "Die Kontaktperson hat Symptome entwickelt, sich testen lassen und wurde zum Index"
+
 msgid "This case is not in an index phase."
 msgstr "Dieser Fall befindet sich nicht in einer Indexphase."
+
+msgid "This organisation is possibly a duplicate of %{name_link}, please check."
+msgstr ""
+"Diese Organisation ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie "
+"dies bitte."
 
 msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr ""

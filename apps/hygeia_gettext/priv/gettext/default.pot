@@ -7,7 +7,6 @@
 # # Run "mix gettext.extract" to bring this file up to
 # # date. Leave "msgstr"s empty as changing them here as no
 # # effect: edit them in PO (.po) files instead.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Hygeia\n"
@@ -24,15 +23,6 @@ msgstr ""
 msgid ""
 "A lot of contact persons from different places, clubs affected, gastronomy affected, "
 "hospital/nursing home affected"
-msgstr ""
-
-msgid "A lot of contact persons/places that must be determined / assignment to team lead"
-msgstr ""
-
-msgid "Agreed with index that had been in contact that no further contact is necessary"
-msgstr ""
-
-msgid "An unknown error happened during registration. Report this to your webmaster."
 msgstr ""
 
 msgid ""
@@ -73,9 +63,6 @@ msgid ""
 "kitchen and bathroom»)."
 msgstr ""
 
-msgid "Despite multiple calls and inquiries regarding the phone number unavailable"
-msgstr ""
-
 msgid ""
 "Establishment of upper secondary level, tertiary educational institution or further "
 "training facility"
@@ -91,6 +78,16 @@ msgstr ""
 msgid ""
 "Health care facility (hospital, clinic, doctor's practice, health care practice, "
 "establishment of health professionals according to federal and cantonal law)"
+msgstr ""
+
+msgid ""
+"Hi %{name},\n"
+"\n"
+"There's new notifications available on Hygeia for you:\n"
+"%{totals}\n"
+"\n"
+"Best,\n"
+"Hygeia\n"
 msgstr ""
 
 msgid ""
@@ -151,26 +148,14 @@ msgid ""
 "how they are, in the end inform the team lead."
 msgstr ""
 
-msgid "Index understands and speaks English, but several explanations are necessary"
-msgstr ""
-
 msgid ""
 "Maybe inform the team lead if not already done, create a protocol entry (status for "
 "exceptional cases)"
 msgstr ""
 
-msgid "No submissions have been entered yet. Please submit all relevant people."
-msgstr ""
-
 msgid ""
 "No submissions have been entered yet. Please submit all relevant people. Previous "
 "submissions can also be viewed, edited and deleted later."
-msgstr ""
-
-msgid "Personal service with physical contact (e.g. hairdressers, massage studio)"
-msgstr ""
-
-msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
 msgstr ""
 
 msgid ""
@@ -183,20 +168,8 @@ msgid ""
 "following browsers:"
 msgstr ""
 
-msgid "Possible index submissions can only be managed for cases with an index phase."
-msgstr ""
-
-msgid "Relevant will be all contacts you have where ALL of the following is true:"
-msgstr ""
-
 msgid ""
 "Someone else is currently editing this resource. Wait until they finished their work."
-msgstr ""
-
-msgid "The case administraton sends cases like this. Index has not been contacted"
-msgstr ""
-
-msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr ""
 
 msgid ""
@@ -209,9 +182,6 @@ msgid ""
 "status can be used to search in the filter. The cases are always created with the "
 "status \"First contact\" by the case administration. After the case has been processed, "
 "the status must be adjusted."
-msgstr ""
-
-msgid "This organisation is possibly a duplicate of %{name_link}, please check."
 msgstr ""
 
 msgid ""
@@ -285,6 +255,9 @@ msgid "> 15 Min."
 msgstr ""
 
 msgid "> 30 Min."
+msgstr ""
+
+msgid "A lot of contact persons/places that must be determined / assignment to team lead"
 msgstr ""
 
 msgid "A minimum of 2 points must be fulfilled"
@@ -398,6 +371,9 @@ msgstr ""
 msgid "Affiliations"
 msgstr ""
 
+msgid "Agreed with index that had been in contact that no further contact is necessary"
+msgstr ""
+
 msgid "Agreed with index that no further contact is necessary"
 msgstr ""
 
@@ -405,6 +381,9 @@ msgid "Airplane or travel"
 msgstr ""
 
 msgid "All points must be fulfilled"
+msgstr ""
+
+msgid "An unknown error happened during registration. Report this to your webmaster."
 msgstr ""
 
 msgid "Antibody"
@@ -452,6 +431,10 @@ msgstr ""
 
 msgctxt "Possible Index End Reason"
 msgid "Asymptomatic"
+msgstr ""
+
+#, elixir-format
+msgid "At least one phase is required"
 msgstr ""
 
 msgid "August"
@@ -555,6 +538,10 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Case Management Enabled"
+msgstr ""
+
+#, elixir-format
+msgid "Case Phase Type must be unique"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
@@ -799,6 +786,10 @@ msgstr ""
 msgid "Create Note"
 msgstr ""
 
+#, elixir-format
+msgid "Create Phase"
+msgstr ""
+
 msgid "Create Possible Index Cases"
 msgstr ""
 
@@ -937,6 +928,9 @@ msgid "Description"
 msgstr ""
 
 msgid "Description of encounter"
+msgstr ""
+
+msgid "Despite multiple calls and inquiries regarding the phone number unavailable"
 msgstr ""
 
 msgid "Detailed Instructions"
@@ -1329,16 +1323,6 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-msgid ""
-"Hi %{name},\n"
-"\n"
-"There's new notifications available on Hygeia for you:\n"
-"%{totals}\n"
-"\n"
-"Best,\n"
-"Hygeia\n"
-msgstr ""
-
 msgid "High"
 msgstr ""
 
@@ -1461,6 +1445,11 @@ msgstr ""
 msgid "Index"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Phase Type"
+msgid "Index"
+msgstr ""
+
 msgid "Index died"
 msgstr ""
 
@@ -1468,6 +1457,9 @@ msgid "Index is completely healed and isolation is completed"
 msgstr ""
 
 msgid "Index understands and speaks English"
+msgstr ""
+
+msgid "Index understands and speaks English, but several explanations are necessary"
 msgstr ""
 
 msgid "Indoor Sport activities"
@@ -1844,6 +1836,10 @@ msgstr ""
 msgid "New Person"
 msgstr ""
 
+#, elixir-format
+msgid "New Phase"
+msgstr ""
+
 msgid "New Possible Index"
 msgstr ""
 
@@ -1963,6 +1959,9 @@ msgid "No recipient"
 msgstr ""
 
 msgid "No related organisations"
+msgstr ""
+
+msgid "No submissions have been entered yet. Please submit all relevant people."
 msgstr ""
 
 msgid "No verson entries found"
@@ -2246,6 +2245,20 @@ msgstr ""
 msgid "Person updated successfully"
 msgstr ""
 
+msgid "Personal service with physical contact (e.g. hairdressers, massage studio)"
+msgstr ""
+
+#, elixir-format
+msgid "Phase Type already exists on the case"
+msgstr ""
+
+#, elixir-format
+msgid "Phase created successfully"
+msgstr ""
+
+msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
+msgstr ""
+
 msgid "Phases"
 msgstr ""
 
@@ -2291,6 +2304,11 @@ msgstr ""
 msgid "Possible Index"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Phase Type"
+msgid "Possible Index"
+msgstr ""
+
 msgid "Possible Index Submissions"
 msgstr ""
 
@@ -2298,6 +2316,9 @@ msgid "Possible index"
 msgstr ""
 
 msgid "Possible index submission created successfully"
+msgstr ""
+
+msgid "Possible index submissions can only be managed for cases with an index phase."
 msgstr ""
 
 msgid "PossibleIndexSubmission deleted successfully"
@@ -2516,6 +2537,9 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Relay"
+msgstr ""
+
+msgid "Relevant will be all contacts you have where ALL of the following is true:"
 msgstr ""
 
 msgid "Religious gatherings / funerals"
@@ -3047,10 +3071,19 @@ msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Text"
 msgstr ""
 
+msgid "The case administraton sends cases like this. Index has not been contacted"
+msgstr ""
+
 msgid "The contact person didn't develop any symptoms during quarantine"
 msgstr ""
 
+msgid "The contact person has developed symptoms, did a test and became an index"
+msgstr ""
+
 msgid "This case is not in an index phase."
+msgstr ""
+
+msgid "This organisation is possibly a duplicate of %{name_link}, please check."
 msgstr ""
 
 msgid "This person is possibly a duplicate of %{name_link}, please check."

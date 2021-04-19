@@ -176,6 +176,20 @@
                               put={{ __MODULE__, phase_details: Ecto.Changeset.get_field(form.source, :details) }}
                               get={{ __MODULE__, phase_details: phase_details }}
                             >
+                              <div :if={{ @live_action != :show }} class="row">
+                                <div class="col d-flex justify-content-end">
+                                  <button
+                                    class="btn btn-sm btn-danger"
+                                    type="button"
+                                    phx-value-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
+                                    :on-click="remove_phase"
+                                    title={{ gettext("Remove") }}
+                                  >
+                                    {{ gettext("Remove") }}
+                                    <span class="oi oi-trash" aria-hidden="true" />
+                                  </button>
+                                </div>
+                              </div>
                               <div class="form-group">
                                 <HygeiaWeb.FieldLabel field={{ :type }} />
                                 <div class="value">
@@ -370,6 +384,7 @@
                         </div>
                       </div>
                     </Inputs>
+                    <ErrorTag class="d-block invalid-feedback" field={{ :phases }} />
                   </div>
                 </div>
 

@@ -6,6 +6,7 @@ defmodule Hygeia.CaseContext.Case do
 
   import Ecto.Query
   import EctoEnum
+  import HygeiaGettext
 
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.Hospitalization
@@ -159,8 +160,9 @@ defmodule Hygeia.CaseContext.Case do
     |> cast_embed(:hospitalizations)
     |> cast_embed(:monitoring)
     |> cast_embed(:phases, required: true)
-    # |> validate_phases_linear()
     |> cast_many_to_many(:related_organisations)
+    |> validate_at_least_one_phase()
+    |> validate_phase_type_unique()
   end
 
   defp prefill_first_phase(changeset) do
@@ -202,57 +204,41 @@ defmodule Hygeia.CaseContext.Case do
     end
   end
 
-  # TODO: Disabled until discussion with Tracing
-  # defp validate_phases_linear(changeset) do
-  #   put_embed(
-  #     changeset,
-  #     :phases,
-  #     changeset
-  #     |> fetch_change(:phases)
-  #     |> case do
-  #       :error -> changeset |> fetch_field!(:phases) |> Enum.map(&Phase.changeset(&1, %{}))
-  #       {:ok, phases} -> phases
-  #     end
-  #     |> Enum.chunk_every(2, 1)
-  #     |> Enum.map(fn
-  #       [phase] ->
-  #         phase
+  defp validate_at_least_one_phase(changeset) do
+    validate_change(changeset, :phases, fn :phases, phases ->
+      phases
+      |> Enum.reject(&match?(%Changeset{action: action} when action in [:replace, :delete], &1))
+      |> case do
+        [] -> [phases: gettext("At least one phase is required")]
+        [_ | _] -> []
+      end
+    end)
+  end
 
-  #       [phase_before, phase_after] ->
-  #         check_dates(phase_before, phase_after)
-  #     end)
-  #   )
-  # end
+  defp validate_phase_type_unique(changeset) do
+    validate_change(changeset, :phases, fn :phases, phases ->
+      keep_phases =
+        Enum.reject(
+          phases,
+          &match?(%Changeset{action: action} when action in [:replace, :delete], &1)
+        )
 
-  # defp check_dates(phase_before, phase_after) do
-  #   end_date_before = fetch_field!(phase_before, :end)
-  #   start_date_after = fetch_field!(phase_after, :start)
+      unique_phases =
+        Enum.uniq_by(keep_phases, fn phase_changeset ->
+          case fetch_field!(phase_changeset, :details) do
+            nil -> make_ref()
+            %Phase.Index{} -> :index
+            %Phase.PossibleIndex{type: type} -> {:possible_index, type}
+          end
+        end)
 
-  #   cond do
-  #     is_nil(end_date_before) ->
-  #       phase_before
-
-  #     is_nil(start_date_after) ->
-  #       phase_before
-
-  #     Date.compare(end_date_before, start_date_after) == :gt ->
-  #       add_error(
-  #         phase_before,
-  #         :end,
-  #         dgettext("errors", "end must be before or equal to next phase start")
-  #       )
-
-  #     Date.diff(start_date_after, end_date_before) > 1 ->
-  #       add_error(
-  #         phase_before,
-  #         :end,
-  #         dgettext("errors", "end must be at most one day before next phase start")
-  #       )
-
-  #     true ->
-  #       phase_before
-  #   end
-  # end
+      if length(unique_phases) == length(keep_phases) do
+        []
+      else
+        [phases: gettext("Case Phase Type must be unique")]
+      end
+    end)
+  end
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Case

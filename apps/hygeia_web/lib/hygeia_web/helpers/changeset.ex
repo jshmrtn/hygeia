@@ -30,7 +30,7 @@ defmodule HygeiaWeb.Helpers.Changeset do
           id_fields :: [atom]
         ) :: params
   def changeset_add_to_params(changeset, field, new_params \\ %{}, id_fields \\ [:uuid]) do
-    new_params = Map.new(new_params, &{Atom.to_string(elem(&1, 0)), elem(&1, 1)})
+    new_params = Map.new(new_params, &{key_to_string(elem(&1, 0)), elem(&1, 1)})
 
     update_changeset_param_relation(
       changeset,
@@ -48,7 +48,7 @@ defmodule HygeiaWeb.Helpers.Changeset do
           ids :: %{atom => term}
         ) :: params
   def changeset_remove_from_params_by_id(changeset, field, ids) do
-    string_ids = Map.new(ids, &{Atom.to_string(elem(&1, 0)), elem(&1, 1)})
+    string_ids = Map.new(ids, &{key_to_string(elem(&1, 0)), elem(&1, 1)})
 
     update_changeset_param_relation(
       changeset,
@@ -70,7 +70,7 @@ defmodule HygeiaWeb.Helpers.Changeset do
           update_fn :: (params -> params)
         ) :: params
   def changeset_update_params_by_id(changeset, field, ids, update_fn) do
-    string_ids = Map.new(ids, &{Atom.to_string(elem(&1, 0)), elem(&1, 1)})
+    string_ids = Map.new(ids, &{key_to_string(elem(&1, 0)), elem(&1, 1)})
 
     update_changeset_param_relation(
       changeset,
@@ -101,11 +101,11 @@ defmodule HygeiaWeb.Helpers.Changeset do
       )
       when is_atom(field) and is_function(callback, 1) do
     params
-    |> Map.put_new_lazy(Atom.to_string(field), fn ->
+    |> Map.put_new_lazy(key_to_string(field), fn ->
       default = Changeset.fetch_field!(changeset, field)
       default_map.(default)
     end)
-    |> Map.update!(Atom.to_string(field), callback)
+    |> Map.update!(key_to_string(field), callback)
   end
 
   @spec update_changeset_param_relation(
@@ -138,9 +138,12 @@ defmodule HygeiaWeb.Helpers.Changeset do
         default
         |> Enum.map(&Map.take(&1, id_fields))
         |> Enum.map(fn map ->
-          Map.new(map, &{Atom.to_string(elem(&1, 0)), elem(&1, 1)})
+          Map.new(map, &{key_to_string(elem(&1, 0)), elem(&1, 1)})
         end)
       end
     )
   end
+
+  defp key_to_string(key) when is_atom(key), do: Atom.to_string(key)
+  defp key_to_string(key) when is_binary(key), do: key
 end
