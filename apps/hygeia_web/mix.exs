@@ -77,7 +77,7 @@ defmodule HygeiaWeb.MixProject do
       {:phoenix_live_view, "~> 0.15"},
       {:plug_checkup, "~> 0.6"},
       {:plug_content_security_policy, "~> 0.2.1"},
-      {:plug_cowboy, "~> 2.4.1"},
+      {:plug_cowboy, "~> 2.5.0"},
       {:plug_dynamic, "~> 1.0"},
       {:remote_ip, "~> 1.0"},
       {:sentry, "~> 8.0"},
