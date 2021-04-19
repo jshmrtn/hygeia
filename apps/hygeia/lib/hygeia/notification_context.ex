@@ -37,9 +37,11 @@ defmodule Hygeia.NotificationContext do
           where:
             user.uuid in subquery(
               from(notification in Notification,
-                select: notification.user_uuid,
                 where: not notification.read and not notification.notified,
-                group_by: notification.user_uuid
+                join: notification_user in assoc(notification, :user),
+                join: tenant in assoc(notification_user, :tenants),
+                select: notification_user.uuid,
+                group_by: notification_user.uuid
               )
             ),
           lock: "FOR UPDATE"
