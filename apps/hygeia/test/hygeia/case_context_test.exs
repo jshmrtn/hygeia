@@ -520,14 +520,6 @@ defmodule Hygeia.CaseContextTest do
       assert %Ecto.Changeset{} = CaseContext.change_case(case)
     end
 
-    test "relate_case_to_organisation/2 relates organisation" do
-      case = case_fixture()
-      organisation = organisation_fixture()
-
-      {:ok, %Case{related_organisations: [^organisation]}} =
-        CaseContext.relate_case_to_organisation(case, organisation)
-    end
-
     test "case_export/1 exports :bag_med_16122020_case" do
       Repo.transaction(fn ->
         user = user_fixture()

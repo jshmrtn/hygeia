@@ -27,12 +27,12 @@ defmodule Hygeia.Helpers.Versioning do
     run_ecto_multi(&Multi.update(&1, &2, changeset))
   end
 
-  @spec versioning_delete(changeset :: Ecto.Changeset.t(resource)) ::
+  @spec versioning_delete(changeset_or_resource :: Ecto.Changeset.t(resource) | resource) ::
           {:ok, %{model: resource, version: %Version{}}}
           | {:error, Ecto.Changeset.t(resource)}
-        when resource: term
-  def versioning_delete(changeset) do
-    run_ecto_multi(&Multi.delete(&1, &2, changeset))
+        when resource: Ecto.Schema.t()
+  def versioning_delete(changeset_or_resource) do
+    run_ecto_multi(&Multi.delete(&1, &2, changeset_or_resource))
   end
 
   @spec put_origin(origin :: Version.Origin.t()) :: :ok

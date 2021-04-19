@@ -7,7 +7,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.OrganisationContext
-  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
@@ -85,38 +84,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
 
   def handle_info(
-        {:remove_related_organisation, uuid},
-        %{assigns: %{changeset: changeset, case: case}} = socket
-      ) do
-    {:noreply,
-     socket
-     |> assign(
-       :changeset,
-       CaseContext.change_case(
-         case,
-         changeset_remove_from_params_by_id(changeset, :related_organisations, %{uuid: uuid})
-       )
-     )
-     |> maybe_block_navigation()}
-  end
-
-  def handle_info(
-        {:add_related_organisation, uuid},
-        %{assigns: %{changeset: changeset, case: case}} = socket
-      ) do
-    {:noreply,
-     socket
-     |> assign(
-       :changeset,
-       CaseContext.change_case(
-         case,
-         changeset_add_to_params(changeset, :related_organisations, %{uuid: uuid})
-       )
-     )
-     |> maybe_block_navigation()}
-  end
-
-  def handle_info(
         {:hospitalisation_change_organisation, uuid, organisation_uuid},
         %{assigns: %{changeset: changeset, case: case}} = socket
       ) do
@@ -155,7 +122,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
       case_params
       |> Map.put_new("hospitalizations", [])
       |> Map.put_new("external_references", [])
-      |> Map.put_new("related_organisations", [])
 
     {:noreply,
      socket
@@ -172,7 +138,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
       |> Map.put_new("hospitalizations", [])
       |> Map.put_new("phases", [])
       |> Map.put_new("external_references", [])
-      |> Map.put_new("related_organisations", [])
 
     socket.assigns.case
     |> CaseContext.update_case(case_params)
@@ -277,46 +242,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
      |> maybe_block_navigation()}
   end
 
-  def handle_event("add_related_organisation", _params, socket) do
-    organisations = Ecto.Changeset.get_field(socket.assigns.changeset, :related_organisations, [])
-
-    changeset =
-      Ecto.Changeset.put_change(
-        socket.assigns.changeset,
-        :related_organisations,
-        organisations ++ [Organisation.changeset(%Organisation{}, %{})]
-      )
-
-    {:noreply,
-     socket
-     |> assign(:changeset, changeset)
-     |> maybe_block_navigation()}
-  end
-
-  def handle_event("remove_related_organisation", params, socket) do
-    related_organisations =
-      socket.assigns.changeset
-      |> Ecto.Changeset.get_change(
-        :related_organisations,
-        socket.assigns.changeset
-        |> Ecto.Changeset.fetch_field!(:related_organisations)
-        |> Enum.map(&Organisation.changeset(&1, %{}))
-      )
-      |> Enum.reject(&(Ecto.Changeset.get_field(&1, :uuid) == params["changeset-uuid"]))
-
-    changeset =
-      Ecto.Changeset.put_assoc(
-        socket.assigns.changeset,
-        :related_organisations,
-        related_organisations
-      )
-
-    {:noreply,
-     socket
-     |> assign(:changeset, changeset)
-     |> maybe_block_navigation()}
-  end
-
   def handle_event("show_complexity_help", _params, socket) do
     {:noreply, assign(socket, show_complexity_help: true)}
   end
@@ -350,7 +275,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   end
 
   defp load_data(socket, case) do
-    case = Repo.preload(case, person: [tenant: []], related_organisations: [], tenant: [])
+    case = Repo.preload(case, person: [tenant: []], tenant: [])
 
     changeset = CaseContext.change_case(case)
 

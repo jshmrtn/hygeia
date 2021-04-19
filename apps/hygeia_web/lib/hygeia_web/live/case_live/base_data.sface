@@ -594,15 +594,6 @@
                     />
                   </div>
                 </div>
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">{{ gettext("Related Organisations") }}</h4>
-                    <HygeiaWeb.CaseLive.RelatedOrganisations
-                      disabled={{ @live_action == :show }}
-                      id="related_organisations"
-                    />
-                  </div>
-                </div>
               </div>
 
               <div :if={{ @live_action == :edit }}>
