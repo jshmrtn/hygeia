@@ -315,7 +315,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       |> Enum.map(
         &Task.async(fn ->
           case List.last(&1.phases) do
-            %Phase{details: %Phase.PossibleIndex{type: ^type}, quarantine_order: false} = phase ->
+            %Phase{details: %Phase.PossibleIndex{type: ^type}, quarantine_order: false} ->
               {:error, :no_quarantine_ordered}
 
             %Phase{details: %Phase.PossibleIndex{type: ^type}, quarantine_order: true} = phase ->

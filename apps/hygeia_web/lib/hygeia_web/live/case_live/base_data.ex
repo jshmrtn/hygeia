@@ -170,6 +170,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
     case_params =
       case_params
       |> Map.put_new("hospitalizations", [])
+      |> Map.put_new("phases", [])
       |> Map.put_new("external_references", [])
       |> Map.put_new("related_organisations", [])
 
@@ -220,6 +221,23 @@ defmodule HygeiaWeb.CaseLive.BaseData do
        CaseContext.change_case(
          case,
          changeset_remove_from_params_by_id(changeset, :external_references, %{uuid: uuid})
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event(
+        "remove_phase",
+        %{"uuid" => uuid} = _params,
+        %{assigns: %{changeset: changeset, case: case}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_case(
+         case,
+         changeset_remove_from_params_by_id(changeset, :phases, %{uuid: uuid})
        )
      )
      |> maybe_block_navigation()}

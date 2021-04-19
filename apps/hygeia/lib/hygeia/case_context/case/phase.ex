@@ -9,9 +9,11 @@ defmodule Hygeia.CaseContext.Case.Phase do
 
   alias Hygeia.CaseContext.Case.Phase.Index
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex
+  alias Hygeia.CaseContext.Case.Phase.Type, as: PhaseType
 
   @type empty :: %__MODULE__{
           quarantine_order: boolean() | nil,
+          type: PhaseType.t() | nil,
           start: Date.t() | nil,
           end: Date.t() | nil,
           details: Index.t() | PossibleIndex.t() | nil
@@ -20,6 +22,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
   @type t ::
           %__MODULE__{
             quarantine_order: true,
+            type: PhaseType.t() | nil,
             start: Date.t(),
             end: Date.t(),
             details: Index.t() | PossibleIndex.t()
@@ -37,6 +40,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
     field :quarantine_order, :boolean
     field :start, :date
     field :end, :date
+    field :type, PhaseType, virtual: true
     field :send_automated_close_email, :boolean, default: true
     field :automated_close_email_sent, :utc_datetime_usec
 
@@ -56,6 +60,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
       :quarantine_order,
       :start,
       :end,
+      :type,
       :send_automated_close_email,
       :automated_close_email_sent
     ])

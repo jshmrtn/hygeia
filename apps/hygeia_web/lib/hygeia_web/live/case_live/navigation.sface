@@ -27,6 +27,15 @@
       caller_id={{ @id }}
       caller_module={{ __MODULE__ }}
     />
+    <HygeiaWeb.CaseLive.CreatePhaseModal
+      case={{ @case }}
+      id={{ {:navigation, :phase_create_modal} }}
+      :if={{ not is_nil(@phase_create_modal) }}
+      params={{ @phase_create_modal }}
+      close="close_phase_create_modal"
+      caller_id={{ @id }}
+      caller_module={{ __MODULE__ }}
+    />
 
     <li class="nav-item" :if={{ authorized?(@case, :details, auth) }}>
       <UriActiveContext
@@ -266,21 +275,12 @@
           </LiveRedirect>
         </Context>
       </div>
-      <div :if={{authorized?(@case, :update, auth) and
-        not match?(%{details: %Phase.Index{}}, List.last(@case.phases))}}>
+      <div :if={{ authorized?(@case, :update, auth) }}>
         <div class="dropdown-divider" />
-        <Link
-          class="dropdown-item"
-          to="#"
-          click="convert_to_index"
-          opts={{
-            title: gettext("Convert to Index"),
-            data: [confirm: gettext("Are you sure?")]
-          }}
-        >
-          <span class="oi oi-beaker mr-1" aria-hidden="true" />
-          {{ gettext("Convert to Index") }}
-        </Link>
+        <a class="dropdown-item" href="#" :on-click="open_phase_create_modal">
+          <span class="oi oi-plus mr-1" aria-hidden="true" />
+          {{ gettext("Create Phase") }}
+        </a>
       </div>
       <div :if={{ authorized?(Hygeia.CaseContext.Note, :create, auth, %{case: @case}) }}>
         <div class="dropdown-divider" />

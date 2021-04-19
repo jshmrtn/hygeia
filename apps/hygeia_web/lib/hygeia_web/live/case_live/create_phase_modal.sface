@@ -1,0 +1,119 @@
+<div class="component-case-phase container">
+  <HygeiaWeb.Modal id={{ {@myself, :modal} }} title={{ gettext("New Phase") }} close={{ @close }}>
+    <Form
+      for={{ @changeset }}
+      change="validate"
+      submit="save"
+      opts={{ autocomplete: "off", id: "phase-form", "phx-hook": "BlockNavigation" }}
+    >
+      <Field name={{ :type }} class="form-group">
+        <HygeiaWeb.FieldLabel />
+        <Select
+          class="form-control"
+          options={{ Phase.Type.map() }}
+          opts={{ prompt: gettext("Select Type") }}
+        />
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
+
+      <Field name={{ :quarantine_order }} class="form-group">
+        <div>
+          <HygeiaWeb.FieldLabel />
+        </div>
+        <div class="btn-group btn-group-toggle btn-radio-group">
+          <label class={{
+            "btn",
+            "btn-sm",
+            "btn-secondary",
+            active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == nil
+          }}>
+            <RadioButton value={{ nil }} />
+            {{ gettext("Unknown") }}
+          </label>
+          <label class={{
+            "btn",
+            "btn-sm",
+            "btn-secondary",
+            active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == true
+          }}>
+            <RadioButton value />
+            {{ gettext("Ordered") }}
+          </label>
+          <label class={{
+            "btn",
+            "btn-sm",
+            "btn-secondary",
+            active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == false
+          }}>
+            <RadioButton value=false />
+            {{ gettext("No Order") }}
+          </label>
+        </div>
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
+
+      <div class="row" :if={{ Ecto.Changeset.get_field(@changeset, :quarantine_order) == true }}>
+        <div class="col">
+          <Field name={{ :start }} class="form-group">
+            <HygeiaWeb.FieldLabel />
+            <DateInput class="form-control" />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </div>
+        <div class="col">
+          <Field name={{ :end }} class="form-group">
+            <HygeiaWeb.FieldLabel />
+            <DateInput class="form-control" />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </div>
+      </div>
+
+      <PolimorphicInputs
+        :if={{ Ecto.Changeset.get_field(@changeset, :type) == :index }}
+        field={{ :details }}
+        type={{ :index }}
+        id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(@changeset, :uuid)}" }}
+      />
+
+      <PolimorphicInputs
+        :if={{ Ecto.Changeset.get_field(@changeset, :type) == :possible_index }}
+        field={{ :details }}
+        type={{ :possible_index }}
+        id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(@changeset, :uuid)}" }}
+      >
+        <Field name={{ :type }} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <Select
+            class="form-control"
+            options={{ case_phase_possible_index_type_map() }}
+            opts={{ prompt: gettext("Select Type") }}
+          />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+      </PolimorphicInputs>
+
+      <div class="row" :if={{ Ecto.Changeset.get_field(@changeset, :quarantine_order) == true }}>
+        <div class="col">
+          <Field name={{ :send_automated_close_email }} class="form-check">
+            <label class="checkbox-label">
+              <Checkbox class="form-check-input" />
+              {{ gettext("Automated Close Email") }}
+            </label>
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </div>
+      </div>
+
+      <button
+        class="btn btn-primary"
+        type="submit"
+        phx-disable-with={{ gettext("Saving...") }}
+        diabled={{ @changeset.valid? }}
+      >
+        <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
+        {{ gettext("Save") }}
+      </button>
+    </Form>
+  </HygeiaWeb.Modal>
+</div>
