@@ -394,8 +394,6 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       |> Repo.transaction()
   end
 
-  {:ok, case_jony} = relate_case_to_organisation(case_jony, organisation_jm)
-
   {:ok, _note_jony} = create_note(case_jony, %{note: "zeigt symptome, geht an PCR test"})
 
   {:ok, _email_jony} = create_outgoing_email(case_jony, "Bleib Zuhause", "No Joke")
@@ -437,8 +435,6 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         }
       ]
     })
-
-  {:ok, case_jay} = relate_case_to_organisation(case_jay, organisation_jm)
 
   {:ok, _transmission_jony_jay} =
     create_transmission(%{
