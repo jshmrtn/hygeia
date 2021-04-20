@@ -82,8 +82,7 @@ defmodule Hygeia.MixProject do
       {:sedex, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:websms, "~> 1.0.0-alpha"},
-      # TODO: Loosen Restriction for RC
-      {:zitadel_api, "1.0.0-beta.3"}
+      {:zitadel_api, "~> 1.0-rc"}
     ]
   end
 

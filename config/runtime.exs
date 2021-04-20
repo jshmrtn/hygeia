@@ -101,11 +101,7 @@ config :hygeia_iam, :providers, zitadel: iam_config
 
 config :hygeia_iam, :service_accounts,
   user_sync: [
-    login: System.fetch_env!("IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN"),
-    audience: [
-      "https://api.zitadel.ch/oauth/v2/token",
-      "https://api.zitadel.ch/"
-    ]
+    login: System.fetch_env!("IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN")
   ]
 
 case System.fetch_env("DKIM_PATH") do
