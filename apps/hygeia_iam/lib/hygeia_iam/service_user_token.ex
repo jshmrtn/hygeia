@@ -31,7 +31,7 @@ defmodule HygeiaIam.ServiceUserToken do
   @impl GenServer
   def init(opts) do
     user = Keyword.fetch!(opts, :user)
-    {:ok, %__MODULE__{access_token: login(user)}}
+    {:ok, %__MODULE__{user: user, access_token: login(user)}}
   end
 
   @impl GenServer

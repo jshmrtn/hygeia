@@ -40,10 +40,7 @@ defmodule HygeiaIam do
         {:error, reason}
 
       :error ->
-        {:error, :missing_config}
-
-      %{} ->
-        {:error, :missing_config}
+        {:error, :missing_application_config}
 
       {:ok,
        %{
@@ -57,10 +54,10 @@ defmodule HygeiaIam do
     end
   end
 
-  defp client_credential_jwt(%{login: login} = config, oidc_config) do
+  defp client_credential_jwt(%{login: login} = _config, oidc_config) do
     with {:ok, %{"key" => key, "keyId" => key_id} = login} <- Jason.decode(login),
          jwk = JOSE.JWK.from_pem(key),
-         {:ok, claims} <- client_credential_claims(config, login, oidc_config),
+         {:ok, claims} <- client_credential_claims(login, oidc_config),
          header = %{
            "alg" => "RS256",
            "typ" => "JWT"
@@ -72,15 +69,13 @@ defmodule HygeiaIam do
       {:ok, assertion}
     else
       {:error, reason} -> {:error, reason}
-      {:ok, %{}} -> {:error, :missing_config}
-      %{} -> {:error, :missing_config}
+      {:ok, %{} = other} -> {:error, {:invalid_key_or_claims, other}}
     end
   end
 
-  defp client_credential_jwt(_config, _oidc_config), do: {:error, :missing_config}
+  defp client_credential_jwt(_config, _oidc_config), do: {:error, :missing_credential_config}
 
   defp client_credential_claims(
-         %{audience: audience} = _config,
          %{"userId" => user_id} = _login,
          %{issuer: issuer} = _oidc_config
        ) do
@@ -90,14 +85,14 @@ defmodule HygeiaIam do
     Jason.encode(%{
       "iss" => user_id,
       "sub" => user_id,
-      "aud" => [issuer | audience],
+      "aud" => [issuer],
       "exp" => exp,
       "iat" => iat,
       "nbf" => iat
     })
   end
 
-  defp client_credential_claims(_config, _login, _oidc_config), do: {:error, :missing_config}
+  defp client_credential_claims(_login, _oidc_config), do: {:error, :missing_claims_config}
 
   @opaque session(state) :: %{
             id: String.t(),

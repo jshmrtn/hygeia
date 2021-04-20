@@ -8,9 +8,6 @@ defmodule Hygeia.Jobs.Supervisor do
   alias Hygeia.Jobs.RefreshMaterializedView
   alias HygeiaIam.ServiceUserToken
 
-  # credo:disable-for-next-line Credo.Check.Warning.UnsafeToAtom
-  user_sync_token_server_name = {:global, Module.concat(ServiceUserToken, UserSync)}
-
   case Mix.env() do
     :test ->
       @jobs []
@@ -74,9 +71,10 @@ defmodule Hygeia.Jobs.Supervisor do
         {Highlander, Hygeia.Jobs.NotificationReminder},
 
         # User Sync
-        {Highlander, {ServiceUserToken, user: :user_sync, name: user_sync_token_server_name}},
+        {ServiceUserToken, user: :user_sync, name: Module.concat(ServiceUserToken, UserSync)},
         {Highlander,
-         {Hygeia.Jobs.UserSync, user_sync_token_server_name: user_sync_token_server_name}}
+         {Hygeia.Jobs.UserSync,
+          user_sync_token_server_name: Module.concat(ServiceUserToken, UserSync)}}
       ]
   end
 
