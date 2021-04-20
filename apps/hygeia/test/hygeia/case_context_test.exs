@@ -322,7 +322,7 @@ defmodule Hygeia.CaseContextTest do
       status: :first_contact,
       hospitalizations: [
         %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
-        %{start: ~D[2020-10-16], end: nil}
+        %{start: ~D[2020-10-16], end: ~D[2020-10-17]}
       ],
       clinical: %{
         reasons_for_test: [:symptoms, :outbreak_examination],
@@ -425,7 +425,7 @@ defmodule Hygeia.CaseContextTest do
                 hospitalizations: [
                   %Hospitalization{end: ~D[2020-10-15], start: ~D[2020-10-13], uuid: _} =
                     hospitalization,
-                  %Hospitalization{end: nil, start: ~D[2020-10-16], uuid: _}
+                  %Hospitalization{end: ~D[2020-10-17], start: ~D[2020-10-16], uuid: _}
                 ],
                 human_readable_id: _,
                 inserted_at: _,
@@ -501,6 +501,41 @@ defmodule Hygeia.CaseContextTest do
                 complexity: :low,
                 status: :done
               }} = CaseContext.update_case(case, @update_attrs)
+    end
+
+    test "update_case/2 other status than hospitalization needs end date" do
+      case =
+        case_fixture(
+          person_fixture(),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          %{status: :hospitalization, hospitalizations: [%{start: Date.utc_today()}]}
+        )
+
+      assert {:error, _changeset} = CaseContext.update_case(case, %{status: :done})
+    end
+
+    test "update_case/2 status done needs phase order decision" do
+      case =
+        case_fixture(
+          person_fixture(),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          %{
+            status: :first_contact,
+            phases: [
+              %{
+                details: %{
+                  __type__: :possible_index,
+                  type: :contact_person,
+                  end_reason: :converted_to_index
+                }
+              }
+            ]
+          }
+        )
+
+      assert {:error, _changeset} = CaseContext.update_case(case, %{status: :done})
     end
 
     test "update_case/2 with invalid data returns error changeset" do
