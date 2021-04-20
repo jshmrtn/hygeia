@@ -393,7 +393,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    needs: ['mix_release', 'dialyzer_test', 'test']
+    needs: ['mix_release']
 
     steps:
       - uses: actions/checkout@v2
@@ -435,7 +435,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    needs: ['docker_build']
+    needs: ['docker_build', 'dialyzer_test', 'test']
 
     env:
       JM_GITLAB_TOKEN: ${{ secrets.JM_GITLAB_TOKEN }}
