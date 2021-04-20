@@ -64,7 +64,7 @@ config :cadastre, Cadastre.I18n,
 config :hygeia_telemetry, server: true
 
 # OIDC
-config :oidcc, http_request_timeout: 15
+config :oidcc, http_request_timeout: 60
 
 # Nebulex Sessions
 config :hygeia_web, HygeiaWeb.SessionStorage.Storage,
