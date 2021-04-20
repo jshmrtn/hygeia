@@ -45,7 +45,7 @@ $enable-rounded: true;
 $border-radius: 3px;
 $theme-colors: (
   "primary": #37b8c0,
-  "secondary": #3C3C3B,
+  "secondary": #ffac7b,
   "dark": #3C3C3B,
 );
 $grid-gutter-width: 0.5rem;
@@ -258,6 +258,7 @@ table {
   }
 }
 
-.btn.disabled.active {
-  opacity: 0.9;
+.btn-secondary.disabled.active {
+  background-color: #b55e2b;
+  color: white;
 }
