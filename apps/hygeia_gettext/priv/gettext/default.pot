@@ -1416,6 +1416,14 @@ msgstr ""
 msgid "ISM-ID: %{id}"
 msgstr ""
 
+#, elixir-format
+msgid "If there are open hospitalizations, the status needs to be set to \"hospitalization\"."
+msgstr ""
+
+#, elixir-format
+msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\"."
+msgstr ""
+
 msgid "If you're an authorized person of the contact tracing team, log in instead:"
 msgstr ""
 
@@ -3492,6 +3500,11 @@ msgid "possible_index_submissions"
 msgstr ""
 
 msgid "quick"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "resource_views"
 msgstr ""
 
 msgctxt "Item Table"

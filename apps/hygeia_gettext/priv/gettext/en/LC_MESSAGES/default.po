@@ -787,7 +787,7 @@ msgstr ""
 msgid "Create Note"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "Create Phase"
 msgstr ""
 
@@ -1417,6 +1417,14 @@ msgstr ""
 msgid "ISM-ID: %{id}"
 msgstr ""
 
+#, elixir-format
+msgid "If there are open hospitalizations, the status needs to be set to \"hospitalization\"."
+msgstr ""
+
+#, elixir-format
+msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\"."
+msgstr ""
+
 msgid "If you're an authorized person of the contact tracing team, log in instead:"
 msgstr ""
 
@@ -1446,7 +1454,7 @@ msgstr ""
 msgid "Index"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Case Phase Type"
 msgid "Index"
 msgstr ""
@@ -1837,7 +1845,7 @@ msgstr ""
 msgid "New Person"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "New Phase"
 msgstr ""
 
@@ -2253,7 +2261,7 @@ msgstr ""
 msgid "Phase Type already exists on the case"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "Phase created successfully"
 msgstr ""
 
@@ -2305,7 +2313,7 @@ msgstr ""
 msgid "Possible Index"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Case Phase Type"
 msgid "Possible Index"
 msgstr ""
@@ -3493,6 +3501,11 @@ msgid "possible_index_submissions"
 msgstr ""
 
 msgid "quick"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "resource_views"
 msgstr ""
 
 msgctxt "Item Table"
