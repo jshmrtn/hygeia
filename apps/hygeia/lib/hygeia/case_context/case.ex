@@ -155,6 +155,7 @@ defmodule Hygeia.CaseContext.Case do
     |> validate_phase_type_unique()
     |> validate_status_hospitalization()
     |> validate_phase_orders()
+    |> validate_phase_no_overlap()
   end
 
   defp prefill_first_phase(changeset) do
@@ -190,7 +191,9 @@ defmodule Hygeia.CaseContext.Case do
           case fetch_field!(phase_changeset, :details) do
             nil -> make_ref()
             %Phase.Index{} -> :index
+            %Changeset{data: %Phase.Index{}} -> :index
             %Phase.PossibleIndex{type: type} -> {:possible_index, type}
+            %Changeset{data: %Phase.PossibleIndex{type: type}} -> {:possible_index, type}
           end
         end)
 
@@ -256,6 +259,29 @@ defmodule Hygeia.CaseContext.Case do
             )
         end
     end
+  end
+
+  defp validate_phase_no_overlap(changeset) do
+    validate_change(changeset, :phases, fn :phases, phases ->
+      phases
+      |> Enum.reject(&match?(%Changeset{action: action} when action in [:replace, :delete], &1))
+      |> Enum.filter(&fetch_field!(&1, :quarantine_order))
+      |> Enum.reject(&is_nil(fetch_field!(&1, :start)))
+      |> Enum.reject(&is_nil(fetch_field!(&1, :end)))
+      |> Enum.map(&Date.range(fetch_field!(&1, :start), fetch_field!(&1, :end)))
+      |> Enum.map(&MapSet.new/1)
+      |> Enum.reduce_while(MapSet.new(), fn phase_range, acc ->
+        if MapSet.disjoint?(acc, phase_range) do
+          {:cont, MapSet.union(acc, phase_range)}
+        else
+          {:halt, :overlap}
+        end
+      end)
+      |> case do
+        :overlap -> [phases: gettext("Phase Quarantine / Isolation Orders must not overlap.")]
+        _map -> []
+      end
+    end)
   end
 
   defimpl Hygeia.Authorization.Resource do

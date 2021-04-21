@@ -220,35 +220,61 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.PossibleIndex{type: ^global_type}}, &1))
     |> case do
       nil ->
-        {start_date, end_date} = phase_dates(date)
+        if global_type in [:contact_person, :travel] do
+          {start_date, end_date} = phase_dates(date)
+          old_phase_end_date = Date.add(start_date, -1)
 
-        status_changed_phases =
-          List.update_at(existing_phases, -1, fn
-            %Case.Phase{} = phase ->
-              %Case.Phase{
+          status_changed_phases =
+            Enum.map(existing_phases, fn
+              %Case.Phase{quarantine_order: true, start: old_phase_start} = phase ->
+                if Date.compare(old_phase_start, old_phase_end_date) == :lt do
+                  %Case.Phase{
+                    phase
+                    | end: Date.add(start_date, -1),
+                      send_automated_close_email: false
+                  }
+                else
+                  %Case.Phase{phase | quarantine_order: false}
+                end
+
+              %Case.Phase{quarantine_order: quarantine_order} = phase
+              when quarantine_order in [false, nil] ->
                 phase
-                | end: start_date,
-                  send_automated_close_email: false
-              }
-          end)
+            end)
 
-        changeset
-        |> Ecto.Changeset.put_embed(
-          :phases,
-          status_changed_phases ++
-            [
-              %Case.Phase{
-                details: %Case.Phase.PossibleIndex{
-                  type: global_type,
-                  type_other: global_type_other
-                },
-                quarantine_order: global_type in [:contact_person, :travel],
-                start: start_date,
-                end: end_date
-              }
-            ]
-        )
-        |> Ecto.Changeset.put_change(:status, :first_contact)
+          changeset
+          |> Ecto.Changeset.put_embed(
+            :phases,
+            status_changed_phases ++
+              [
+                %Case.Phase{
+                  details: %Case.Phase.PossibleIndex{
+                    type: global_type,
+                    type_other: global_type_other
+                  },
+                  quarantine_order: true,
+                  start: start_date,
+                  end: end_date
+                }
+              ]
+          )
+          |> Ecto.Changeset.put_change(:status, :first_contact)
+        else
+          changeset
+          |> Ecto.Changeset.put_embed(
+            :phases,
+            existing_phases ++
+              [
+                %Case.Phase{
+                  details: %Case.Phase.PossibleIndex{
+                    type: global_type,
+                    type_other: global_type_other
+                  }
+                }
+              ]
+          )
+          |> Ecto.Changeset.put_change(:status, :first_contact)
+        end
 
       %Case.Phase{} ->
         changeset

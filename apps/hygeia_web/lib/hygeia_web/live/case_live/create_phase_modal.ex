@@ -4,6 +4,7 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
   use HygeiaWeb, :surface_live_component
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias HygeiaWeb.PolimorphicInputs
   alias Surface.Components.Form
@@ -13,6 +14,13 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
+
+  @typep additional_action ::
+           {:status, Case.Status.t()}
+           | {:phase_end_date, Phase.t(), Date.t()}
+           | {:phase_end_reason, Phase.t(),
+              Phase.Index.EndReason.t() | Phase.PossibleIndex.EndReason.t()}
+           | {:phase_quarantine_order, Phase.t(), false}
 
   prop case, :map, required: true
   prop close, :event, required: true
@@ -53,9 +61,15 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
 
     socket.assigns.case
     |> CaseContext.update_case(
-      socket.assigns.case
-      |> CaseContext.change_case()
-      |> changeset_add_to_params(:phases, phase_params)
+      %Phase{}
+      |> Phase.changeset(phase_params)
+      |> additional_actions(socket.assigns.case)
+      |> Enum.reduce(
+        socket.assigns.case
+        |> CaseContext.change_case()
+        |> changeset_add_to_params(:phases, phase_params),
+        &apply_action/2
+      )
     )
     |> handle_save_response(socket, phase_params)
   end
@@ -119,6 +133,117 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
          }
        )
        |> maybe_block_navigation()}
+
+  @spec additional_actions(changeset :: Ecto.Changeset.t(Phase.t()), case :: Case.t()) :: [
+          additional_action
+        ]
+  defp additional_actions(changeset, case)
+  defp additional_actions(%Ecto.Changeset{valid?: false}, _case), do: []
+
+  defp additional_actions(%Ecto.Changeset{valid?: true} = changeset, case) do
+    List.flatten([
+      additional_actions_status(changeset, case),
+      additional_actions_phase_end_date(changeset, case),
+      additional_actions_phase_end_reason(changeset, case),
+      additional_actions_phase_quarantine_order(changeset, case)
+    ])
+  end
+
+  defp additional_actions_status(changeset, case) do
+    cond do
+      Ecto.Changeset.fetch_field!(changeset, :type) != :index -> []
+      case.status == :first_contact -> []
+      true -> [{:status, :first_contact}]
+    end
+  end
+
+  defp additional_actions_phase_end_date(changeset, case) do
+    with true <- Ecto.Changeset.fetch_field!(changeset, :quarantine_order),
+         new_start_date = Ecto.Changeset.fetch_field!(changeset, :start),
+         [_ | _] = overlapping_phases <-
+           case.phases
+           |> Enum.filter(&match?(%Phase{quarantine_order: true}, &1))
+           |> Enum.reject(&(Date.compare(&1.end, new_start_date) == :lt))
+           |> Enum.filter(&(Date.compare(&1.start, new_start_date) == :lt)) do
+      Enum.map(overlapping_phases, &{:phase_end_date, &1, Date.add(new_start_date, -1)})
+    else
+      nil -> []
+      false -> []
+      [] -> []
+    end
+  end
+
+  defp additional_actions_phase_quarantine_order(changeset, case) do
+    with true <- Ecto.Changeset.fetch_field!(changeset, :quarantine_order),
+         new_start_date = Ecto.Changeset.fetch_field!(changeset, :start),
+         [_ | _] = overlapping_phases <-
+           case.phases
+           |> Enum.filter(&match?(%Phase{quarantine_order: true}, &1))
+           |> Enum.reject(&(Date.compare(&1.end, new_start_date) == :lt))
+           |> Enum.reject(&(Date.compare(&1.start, new_start_date) == :lt)) do
+      Enum.map(overlapping_phases, &{:phase_quarantine_order, &1, false})
+    else
+      nil -> []
+      false -> []
+      [] -> []
+    end
+  end
+
+  defp additional_actions_phase_end_reason(changeset, case) do
+    with :index <- Ecto.Changeset.fetch_field!(changeset, :type),
+         [_ | _] = change_phases <-
+           Enum.reject(
+             case.phases,
+             &match?(%Phase{details: %Phase.PossibleIndex{end_reason: :converted_to_index}}, &1)
+           ) do
+      Enum.map(change_phases, &{:phase_end_reason, &1, :converted_to_index})
+    else
+      :possible_index -> []
+      [] -> []
+    end
+  end
+
+  @spec apply_action(action :: additional_action(), acc :: map) :: map
+  defp apply_action(action, acc)
+  defp apply_action({:status, new_status}, acc), do: Map.put(acc, "status", new_status)
+
+  defp apply_action({:phase_end_date, %Phase{uuid: uuid}, new_end_date}, acc) do
+    Map.update!(
+      acc,
+      "phases",
+      &Enum.map(&1, fn
+        %{"uuid" => ^uuid} = phase -> Map.put(phase, "end", new_end_date)
+        %{} = phase -> phase
+      end)
+    )
+  end
+
+  defp apply_action({:phase_end_reason, %Phase{uuid: uuid}, new_end_reason}, acc) do
+    Map.update!(
+      acc,
+      "phases",
+      &Enum.map(&1, fn
+        %{"uuid" => ^uuid} = phase ->
+          Map.update(phase, "details", %{"end_reason" => new_end_reason}, fn details ->
+            Map.put(details, "end_reason", new_end_reason)
+          end)
+
+        %{} = phase ->
+          phase
+      end)
+    )
+  end
+
+  defp apply_action({:phase_quarantine_order, %Phase{uuid: uuid}, false}, acc) do
+    Map.update!(
+      acc,
+      "phases",
+      &Enum.map(&1, fn
+        %{"uuid" => ^uuid} = phase -> Map.put(phase, "quarantine_order", false)
+        %{} = phase -> phase
+      end)
+    )
+  end
 
   defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do
     if changes == %{} do

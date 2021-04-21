@@ -142,7 +142,7 @@ defmodule Hygeia.Fixtures do
           end_reason: :converted_to_index
         },
         start: ~D[2020-10-10],
-        end: ~D[2020-10-12],
+        end: ~D[2020-10-11],
         quarantine_order: true
       },
       %{
