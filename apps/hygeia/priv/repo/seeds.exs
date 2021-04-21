@@ -203,7 +203,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
   {:ok, case_jony} =
     create_case(person_jony, %{
       complexity: :medium,
-      status: :first_contact,
+      status: :hospitalization,
       tracer_uuid: user_jony.uuid,
       supervisor_uuid: user_jony.uuid,
       hospitalizations: [
