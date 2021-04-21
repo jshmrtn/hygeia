@@ -90,6 +90,14 @@ defmodule HygeiaWeb.LiveView do
           do: get_ip_address(socket)
         )
       )
+      |> Map.put(
+        {HygeiaWeb, :uri},
+        case {socket.host_uri, socket.private[:connect_info][:uri]} do
+          {%URI{} = uri, _connect_uri} -> URI.to_string(uri)
+          {:not_mounted_at_router, %URI{} = uri} -> URI.to_string(uri)
+          _other -> nil
+        end
+      )
     )
   end
 

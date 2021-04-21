@@ -74,7 +74,10 @@ defmodule Hygeia.Jobs.Supervisor do
         {ServiceUserToken, user: :user_sync, name: Module.concat(ServiceUserToken, UserSync)},
         {Highlander,
          {Hygeia.Jobs.UserSync,
-          user_sync_token_server_name: Module.concat(ServiceUserToken, UserSync)}}
+          user_sync_token_server_name: Module.concat(ServiceUserToken, UserSync)}},
+
+        # Persist Viewer Log
+        Hygeia.Jobs.ViewerLogPersistence.Supervisor
       ]
   end
 

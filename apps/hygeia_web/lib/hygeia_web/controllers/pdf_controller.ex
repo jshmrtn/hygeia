@@ -3,10 +3,10 @@ defmodule HygeiaWeb.PdfController do
 
   import Hygeia.CaseContext
 
+  alias Hygeia.AuditContext
   alias Hygeia.CaseContext.Case.Phase
   alias HygeiaPdfConfirmation.Isolation
   alias HygeiaPdfConfirmation.Quarantine
-  alias HygeiaWeb.Helpers.ViewerLogging
 
   defmodule PhaseNotFoundError do
     @moduledoc false
@@ -50,7 +50,7 @@ defmodule HygeiaWeb.PdfController do
     case = get_case!(case_uuid)
 
     if authorized?(case, :partial_details, get_auth(conn)) do
-      ViewerLogging.log_viewer(
+      AuditContext.log_view(
         Logger.metadata()[:request_id],
         get_auth(conn),
         conn.remote_ip,

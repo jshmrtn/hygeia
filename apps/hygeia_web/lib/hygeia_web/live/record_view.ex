@@ -3,7 +3,7 @@ defmodule HygeiaWeb.RecordView do
 
   use HygeiaWeb, :surface_live_component
 
-  alias HygeiaWeb.Helpers.ViewerLogging
+  alias Hygeia.AuditContext
 
   prop resource, :map, required: true
   prop action, :atom, required: true
@@ -56,9 +56,12 @@ defmodule HygeiaWeb.RecordView do
   defp trigger(assigns) do
     if Map.has_key?(assigns.__changed__, :resource) or Map.has_key?(assigns.__changed__, :action) or
          Map.has_key?(assigns.__changed__, :__context__) do
-      ViewerLogging.log_viewer(
+      AuditContext.log_view(
         assigns.socket.id,
-        assigns.__context__[{HygeiaWeb, :auth}],
+        case get_auth(assigns.socket) do
+          :anonymous -> assigns.__context__[{HygeiaWeb, :auth}] || :anonymous
+          other -> other
+        end,
         assigns.__context__[{HygeiaWeb, :ip_address}],
         assigns.__context__[{HygeiaWeb, :uri}],
         assigns.action,
