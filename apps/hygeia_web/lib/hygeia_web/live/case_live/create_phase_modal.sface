@@ -1,119 +1,189 @@
 <div class="component-case-phase container">
   <HygeiaWeb.Modal id={{ {@myself, :modal} }} title={{ gettext("New Phase") }} close={{ @close }}>
-    <Form
-      for={{ @changeset }}
-      change="validate"
-      submit="save"
-      opts={{ autocomplete: "off", id: "phase-form", "phx-hook": "BlockNavigation" }}
+    <HygeiaWeb.Lock
+      id={{ {:create_phase, :lock, Case, @case.uuid} }}
+      resource={{ {Case, @case.uuid} }}
     >
-      <Field name={{ :type }} class="form-group">
-        <HygeiaWeb.FieldLabel />
-        <Select
-          class="form-control"
-          options={{ Phase.Type.map() }}
-          opts={{ prompt: gettext("Select Type") }}
-        />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-
-      <Field name={{ :quarantine_order }} class="form-group">
-        <div>
-          <HygeiaWeb.FieldLabel />
-        </div>
-        <div class="btn-group btn-group-toggle btn-radio-group">
-          <label class={{
-            "btn",
-            "btn-sm",
-            "btn-secondary",
-            active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == nil
-          }}>
-            <RadioButton value={{ nil }} />
-            {{ gettext("Unknown") }}
-          </label>
-          <label class={{
-            "btn",
-            "btn-sm",
-            "btn-secondary",
-            active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == true
-          }}>
-            <RadioButton value />
-            {{ gettext("Ordered") }}
-          </label>
-          <label class={{
-            "btn",
-            "btn-sm",
-            "btn-secondary",
-            active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == false
-          }}>
-            <RadioButton value=false />
-            {{ gettext("No Order") }}
-          </label>
-        </div>
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-
-      <div class="row" :if={{ Ecto.Changeset.get_field(@changeset, :quarantine_order) == true }}>
-        <div class="col">
-          <Field name={{ :start }} class="form-group">
-            <HygeiaWeb.FieldLabel />
-            <DateInput class="form-control" />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </div>
-        <div class="col">
-          <Field name={{ :end }} class="form-group">
-            <HygeiaWeb.FieldLabel />
-            <DateInput class="form-control" />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </div>
-      </div>
-
-      <PolimorphicInputs
-        :if={{ Ecto.Changeset.get_field(@changeset, :type) == :index }}
-        field={{ :details }}
-        type={{ :index }}
-        id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(@changeset, :uuid)}" }}
-      />
-
-      <PolimorphicInputs
-        :if={{ Ecto.Changeset.get_field(@changeset, :type) == :possible_index }}
-        field={{ :details }}
-        type={{ :possible_index }}
-        id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(@changeset, :uuid)}" }}
+      <Form
+        for={{ @changeset }}
+        change="validate"
+        submit="save"
+        opts={{ autocomplete: "off", id: "phase-form", "phx-hook": "BlockNavigation" }}
       >
         <Field name={{ :type }} class="form-group">
           <HygeiaWeb.FieldLabel />
           <Select
             class="form-control"
-            options={{ case_phase_possible_index_type_map() }}
+            options={{ Phase.Type.map() }}
             opts={{ prompt: gettext("Select Type") }}
           />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
-      </PolimorphicInputs>
 
-      <div class="row" :if={{ Ecto.Changeset.get_field(@changeset, :quarantine_order) == true }}>
-        <div class="col">
-          <Field name={{ :send_automated_close_email }} class="form-check">
-            <label class="checkbox-label">
-              <Checkbox class="form-check-input" />
-              {{ gettext("Automated Close Email") }}
+        <Field name={{ :quarantine_order }} class="form-group">
+          <div>
+            <HygeiaWeb.FieldLabel />
+          </div>
+          <div class="btn-group btn-group-toggle btn-radio-group">
+            <label class={{
+              "btn",
+              "btn-sm",
+              "btn-secondary",
+              active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == nil
+            }}>
+              <RadioButton value={{ nil }} />
+              {{ gettext("Unknown") }}
             </label>
+            <label class={{
+              "btn",
+              "btn-sm",
+              "btn-secondary",
+              active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == true
+            }}>
+              <RadioButton value />
+              {{ gettext("Ordered") }}
+            </label>
+            <label class={{
+              "btn",
+              "btn-sm",
+              "btn-secondary",
+              active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == false
+            }}>
+              <RadioButton value=false />
+              {{ gettext("No Order") }}
+            </label>
+          </div>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <div class="row" :if={{ Ecto.Changeset.get_field(@changeset, :quarantine_order) == true }}>
+          <div class="col">
+            <Field name={{ :start }} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <DateInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <Field name={{ :end }} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <DateInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+
+        <PolimorphicInputs
+          :if={{ Ecto.Changeset.get_field(@changeset, :type) == :index }}
+          field={{ :details }}
+          type={{ :index }}
+          id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(@changeset, :uuid)}" }}
+        />
+
+        <PolimorphicInputs
+          :if={{ Ecto.Changeset.get_field(@changeset, :type) == :possible_index }}
+          field={{ :details }}
+          type={{ :possible_index }}
+          id={{ "poly-inputs-phase-#{Ecto.Changeset.fetch_field!(@changeset, :uuid)}" }}
+        >
+          <Field name={{ :type }} class="form-group">
+            <HygeiaWeb.FieldLabel />
+            <Select
+              class="form-control"
+              options={{ case_phase_possible_index_type_map() }}
+              opts={{ prompt: gettext("Select Type") }}
+            />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
-        </div>
-      </div>
+        </PolimorphicInputs>
 
-      <button
-        class="btn btn-primary"
-        type="submit"
-        phx-disable-with={{ gettext("Saving...") }}
-        diabled={{ @changeset.valid? }}
-      >
-        <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
-        {{ gettext("Save") }}
-      </button>
-    </Form>
+        <div class="row" :if={{ Ecto.Changeset.get_field(@changeset, :quarantine_order) == true }}>
+          <div class="col">
+            <Field name={{ :send_automated_close_email }} class="form-check">
+              <label class="checkbox-label">
+                <Checkbox class="form-check-input" />
+                {{ gettext("Automated Close Email") }}
+              </label>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+
+        <div class="alert alert-warning" :if={{ additional_actions(@changeset, @case) != [] }}>
+          <h6>{{ pgettext("Phase Create Modal", "Additional Changes") }}</h6>
+          <p>{{ pgettext("Phase Create Modal", "When Saving, the following changes will also be applied:") }}</p>
+          <ul>
+            <li :for={{ {:status, new_status} <- additional_actions(@changeset, @case) }}>
+              {{ pgettext(
+                "Phase Create Modal",
+                ~S(The status of the case will be changed from "%{old_status}" to "%{new_status}".),
+                old_status: case_status_translation(@case.status),
+                new_status: case_status_translation(new_status)
+              ) }}
+            </li>
+            <li :for={{{:phase_end_date, %Phase{end: old_end_date} = phase, new_end_date} <-
+              additional_actions(@changeset, @case)}}>
+              {{ pgettext(
+                "Phase Create Modal",
+                ~S(The end date of the %{type} phase will be changed from "%{old_end_date}" to "%{new_end_date}".),
+                type: case_phase_type_translation(phase),
+                old_end_date:
+                  case old_end_date do
+                    nil -> nil
+                    %Date{} = old_end_date -> HygeiaCldr.Date.to_string!(old_end_date)
+                  end,
+                new_end_date: HygeiaCldr.Date.to_string!(new_end_date)
+              ) }}
+            </li>
+            <li :for={{{:phase_end_reason, %Phase{details: %Phase.PossibleIndex{end_reason: old_end_reason}} = phase,
+             new_end_reason} <- additional_actions(@changeset, @case)}}>
+              {{ pgettext(
+                "Phase Create Modal",
+                ~S(The end reason of the %{type} phase will be changed from "%{old_end_reason}" to "%{new_end_reason}".),
+                type: case_phase_type_translation(phase),
+                old_end_reason:
+                  case old_end_reason do
+                    nil -> nil
+                    old_end_reason -> case_phase_possible_index_end_reason_translation(old_end_reason)
+                  end,
+                new_end_reason: case_phase_possible_index_end_reason_translation(new_end_reason)
+              ) }}
+            </li>
+            <li :for={{{:phase_end_reason, %Phase{details: %Phase.Index{end_reason: old_end_reason}} = phase,
+             new_end_reason} <-
+              additional_actions(@changeset, @case)}}>
+              {{ pgettext(
+                "Phase Create Modal",
+                ~S(The end reason of the %{type} phase will be changed from "%{old_end_reason}" to "%{new_end_reason}".),
+                type: case_phase_type_translation(phase),
+                old_end_reason:
+                  case old_end_reason do
+                    nil -> nil
+                    old_end_reason -> case_phase_index_end_reason_translation(old_end_reason)
+                  end,
+                new_end_reason: case_phase_index_end_reason_translation(new_end_reason)
+              ) }}
+            </li>
+            <li :for={{ {:phase_quarantine_order, phase, false} <- additional_actions(@changeset, @case) }}>
+              {{ pgettext(
+                "Phase Create Modal",
+                ~S(The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date.),
+                type: case_phase_type_translation(phase)
+              ) }}
+            </li>
+          </ul>
+        </div>
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+          phx-disable-with={{ gettext("Saving...") }}
+          diabled={{ @changeset.valid? }}
+        >
+          <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
+          {{ gettext("Save") }}
+        </button>
+      </Form>
+    </HygeiaWeb.Lock>
   </HygeiaWeb.Modal>
 </div>

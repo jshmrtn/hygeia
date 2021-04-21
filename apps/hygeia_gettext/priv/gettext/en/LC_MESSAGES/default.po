@@ -313,6 +313,11 @@ msgstr ""
 msgid "Add hospitalization"
 msgstr ""
 
+#, elixir-format
+msgctxt "Phase Create Modal"
+msgid "Additional Changes"
+msgstr ""
+
 msgid "Additional inquiries"
 msgstr ""
 
@@ -2258,6 +2263,10 @@ msgid "Personal service with physical contact (e.g. hairdressers, massage studio
 msgstr ""
 
 #, elixir-format
+msgid "Phase Quarantine / Isolation Orders must not overlap."
+msgstr ""
+
+#, elixir-format
 msgid "Phase Type already exists on the case"
 msgstr ""
 
@@ -3089,6 +3098,26 @@ msgstr ""
 msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr ""
 
+#, elixir-format
+msgctxt "Phase Create Modal"
+msgid "The end date of the %{type} phase will be changed from \"%{old_end_date}\" to \"%{new_end_date}\"."
+msgstr ""
+
+#, elixir-format
+msgctxt "Phase Create Modal"
+msgid "The end reason of the %{type} phase will be changed from \"%{old_end_reason}\" to \"%{new_end_reason}\"."
+msgstr ""
+
+#, elixir-format
+msgctxt "Phase Create Modal"
+msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
+msgstr ""
+
+#, elixir-format
+msgctxt "Phase Create Modal"
+msgid "The status of the case will be changed from \"%{old_status}\" to \"%{new_status}\"."
+msgstr ""
+
 msgid "This case is not in an index phase."
 msgstr ""
 
@@ -3327,6 +3356,11 @@ msgstr ""
 
 msgctxt "Versioning Origin"
 msgid "Website"
+msgstr ""
+
+#, elixir-format
+msgctxt "Phase Create Modal"
+msgid "When Saving, the following changes will also be applied:"
 msgstr ""
 
 msgid "When did you meet %{first_name} %{last_name} last?"

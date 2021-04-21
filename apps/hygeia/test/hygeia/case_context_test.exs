@@ -365,7 +365,7 @@ defmodule Hygeia.CaseContextTest do
             end_reason: :converted_to_index
           },
           start: ~D[2020-10-10],
-          end: ~D[2020-10-12],
+          end: ~D[2020-10-11],
           quarantine_order: true
         },
         %{
@@ -449,7 +449,7 @@ defmodule Hygeia.CaseContextTest do
                       type: :contact_person,
                       end_reason: :converted_to_index
                     },
-                    end: ~D[2020-10-12],
+                    end: ~D[2020-10-11],
                     start: ~D[2020-10-10],
                     uuid: _
                   },
@@ -687,7 +687,7 @@ defmodule Hygeia.CaseContextTest do
                   type: :contact_person
                 },
                 start: ~D[2020-10-06],
-                end: ~D[2020-10-10],
+                end: ~D[2020-10-09],
                 quarantine_order: true
               },
               %{
