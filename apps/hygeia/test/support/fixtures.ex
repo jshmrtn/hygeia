@@ -100,7 +100,7 @@ defmodule Hygeia.Fixtures do
     status: :first_contact,
     hospitalizations: [
       %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
-      %{start: ~D[2020-10-16], end: nil}
+      %{start: ~D[2020-10-16], end: ~D[2020-10-17]}
     ],
     clinical: %{
       reasons_for_test: [:symptoms, :outbreak_examination],

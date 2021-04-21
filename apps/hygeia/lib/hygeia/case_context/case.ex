@@ -153,6 +153,8 @@ defmodule Hygeia.CaseContext.Case do
     |> cast_embed(:phases, required: true)
     |> validate_at_least_one_phase()
     |> validate_phase_type_unique()
+    |> validate_status_hospitalization()
+    |> validate_phase_orders()
   end
 
   defp prefill_first_phase(changeset) do
@@ -198,6 +200,62 @@ defmodule Hygeia.CaseContext.Case do
         [phases: gettext("Case Phase Type must be unique")]
       end
     end)
+  end
+
+  defp validate_status_hospitalization(changeset) do
+    case {fetch_change(changeset, :status), fetch_change(changeset, :hospitalizations)} do
+      {:error, :error} ->
+        changeset
+
+      _other ->
+        cond do
+          Enum.all?(
+            fetch_field!(changeset, :hospitalizations),
+            &match?(%Hospitalization{start: %Date{}, end: %Date{}}, &1)
+          ) ->
+            changeset
+
+          fetch_field!(changeset, :status) == :hospitalization ->
+            changeset
+
+          true ->
+            add_error(
+              changeset,
+              :status,
+              gettext(
+                ~S(If there are open hospitalizations, the status needs to be set to "hospitalization".)
+              )
+            )
+        end
+    end
+  end
+
+  defp validate_phase_orders(changeset) do
+    case {fetch_change(changeset, :status), fetch_change(changeset, :phases)} do
+      {:error, :error} ->
+        changeset
+
+      _other ->
+        cond do
+          not Enum.any?(
+            fetch_field!(changeset, :phases),
+            &match?(%Phase{quarantine_order: nil}, &1)
+          ) ->
+            changeset
+
+          fetch_field!(changeset, :status) != :done ->
+            changeset
+
+          true ->
+            add_error(
+              changeset,
+              :status,
+              gettext(
+                ~S(If there are phases without decided unknown quarantine / isolation orders, the status must not be "done".)
+              )
+            )
+        end
+    end
   end
 
   defimpl Hygeia.Authorization.Resource do
