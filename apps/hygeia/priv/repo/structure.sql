@@ -2043,6 +2043,27 @@ CREATE TYPE public.organisation_type AS ENUM (
 
 
 --
+-- Name: resource_view_action; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.resource_view_action AS ENUM (
+    'list',
+    'details'
+);
+
+
+--
+-- Name: resource_view_auth_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.resource_view_auth_type AS ENUM (
+    'user',
+    'person',
+    'anonymous'
+);
+
+
+--
 -- Name: sedex_export_status; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -2651,6 +2672,23 @@ CREATE TABLE public.possible_index_submissions (
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     employer character varying(255)
+);
+
+
+--
+-- Name: resource_views; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resource_views (
+    request_id bigint NOT NULL,
+    auth_type public.resource_view_auth_type NOT NULL,
+    auth_subject uuid,
+    "time" timestamp without time zone NOT NULL,
+    ip_address inet,
+    uri text,
+    action public.resource_view_action NOT NULL,
+    resource_table character varying(255) NOT NULL,
+    resource_pk jsonb NOT NULL
 );
 
 
@@ -3433,6 +3471,13 @@ CREATE INDEX positions_organisation_uuid_index ON public.positions USING btree (
 --
 
 CREATE INDEX positions_person_uuid_index ON public.positions USING btree (person_uuid);
+
+
+--
+-- Name: resource_views_request_id_action_resource_table_resource_pk_ind; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX resource_views_request_id_action_resource_table_resource_pk_ind ON public.resource_views USING btree (request_id, action, resource_table, resource_pk);
 
 
 --
@@ -4487,3 +4532,4 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210326144056);
 INSERT INTO public."schema_migrations" (version) VALUES (20210415111909);
 INSERT INTO public."schema_migrations" (version) VALUES (20210416111804);
 INSERT INTO public."schema_migrations" (version) VALUES (20210419130620);
+INSERT INTO public."schema_migrations" (version) VALUES (20210419154442);
