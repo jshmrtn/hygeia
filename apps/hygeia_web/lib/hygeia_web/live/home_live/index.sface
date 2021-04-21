@@ -10,27 +10,6 @@
       </a>
       des BAG einzuhalten, Anbindungen wie diejenige an die BAG-Datenbank zu gewährleisten und die fürs Contact Tracing notwendigen Personal-Mittel zu reduzieren.</p>
     <hr class="my-4">
-    <p class="col-md-8">Weitere Informationen zur Software, den Kosten sowie den angebotenen SLA finden Sie in den folgenden Factsheets.</p>
-    <Link
-      to={{ Routes.static_path(@socket, "/downloads/product/20210217_Hygeia_Factsheet.pdf") }}
-      class="btn btn-primary btn-lg"
-      opts={{ download: "Hygeia - Factsheet.pdf" }}
-    >
-      <span class="oi oi-data-transfer-download" aria-hidden="true" />
-      Factsheet
-    </Link>
-    <Link
-      to={{Routes.static_path(
-        @socket,
-        "/downloads/product/20210217_Hygeia_Datenschutz_Informationssicherheit.pdf"
-      )}}
-      class="btn btn-primary btn-lg"
-      opts={{ download: "Hygeia - Datenschutz & Informationssicherheit.pdf" }}
-    >
-      <span class="oi oi-data-transfer-download" aria-hidden="true" />
-      Datenschutz & Informationssicherheit
-    </Link>
-    <hr class="my-4">
     <p class="col-md-8">Im Falle von Störungen des Systems kann die Status-Seite konsultiert werden.</p>
     <a
       class="btn btn-primary btn-lg"
@@ -41,13 +20,5 @@
       <span class="oi oi-external-link" aria-hidden="true" />
       Status-Seite
     </a>
-    <hr class="my-4">
-    <p class="col-md-8">Für Rückfragen im Bezug auf den Einsatz von Hygeia steht Ihnen
-      <a href="https://joshmartin.ch/team/jeremy-zahner/" target="_blank">Jeremy Zahner</a>
-      per E-Mail unter
-      <a href="mailto:zahner@joshmartin.ch" title="E-Mail an Jeremy Zahner">zahner@joshmartin.ch</a>
-      sowie über Telefon unter
-      <a href="tel:+41715117253" title="Jeremy Zahner anrufen">+41 71 511 72 53</a>
-      zur Verfügung.</p>
   </section>
 </div>
