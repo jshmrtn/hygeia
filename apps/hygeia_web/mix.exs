@@ -75,7 +75,9 @@ defmodule HygeiaWeb.MixProject do
       {:phoenix_live_dashboard, "~> 0.4.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.15"},
-      {:plug_checkup, "~> 0.6"},
+      # TODO: Revert to released version when this PR is merged and released:
+      # - https://github.com/ggpasqualino/plug_checkup/pull/66
+      {:plug_checkup, github: "jshmrtn/plug_checkup", branch: "check_query_selector"},
       {:plug_content_security_policy, "~> 0.2.1"},
       {:plug_cowboy, "~> 2.4"},
       {:plug_dynamic, "~> 1.0"},

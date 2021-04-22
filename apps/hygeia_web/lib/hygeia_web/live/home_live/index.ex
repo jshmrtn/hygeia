@@ -3,8 +3,6 @@ defmodule HygeiaWeb.HomeLive.Index do
 
   use HygeiaWeb, :surface_view
 
-  alias Surface.Components.Link
-
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     auth = get_auth(socket)

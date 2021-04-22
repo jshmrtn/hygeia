@@ -41,7 +41,9 @@ defmodule HygeiaHealth.MixProject do
     [
       {:hygeia_iam, in_umbrella: true},
       {:hygeia, in_umbrella: true},
-      {:plug_checkup, "~> 0.6"},
+      # TODO: Revert to released version when this PR is merged and released:
+      # - https://github.com/ggpasqualino/plug_checkup/pull/66
+      {:plug_checkup, github: "jshmrtn/plug_checkup", branch: "check_query_selector"},
       {:socket, "~> 0.3"}
     ]
   end

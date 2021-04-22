@@ -64,7 +64,9 @@ defmodule HygeiaApi.MixProject do
       {:jason, "~> 1.1"},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_live_dashboard, "~> 0.4.0"},
-      {:plug_checkup, "~> 0.6"},
+      # TODO: Revert to released version when this PR is merged and released:
+      # - https://github.com/ggpasqualino/plug_checkup/pull/66
+      {:plug_checkup, github: "jshmrtn/plug_checkup", branch: "check_query_selector"},
       {:plug_cowboy, "~> 2.4"},
       {:remote_ip, "~> 1.0"},
       {:sentry, "~> 8.0"},
