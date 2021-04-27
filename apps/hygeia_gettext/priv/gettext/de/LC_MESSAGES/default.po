@@ -3185,6 +3185,11 @@ msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Text"
 msgstr "Text"
 
+#, elixir-format
+msgctxt "Phase Create Modal"
+msgid "The automated case close email for the %{type} phase will be disabled."
+msgstr "Das automatische Fall-Abschluss-Email wird deaktiviert."
+
 msgid "The case administraton sends cases like this. Index has not been contacted"
 msgstr "Falladministration verschickt die neuen Fälle so. Es wurde noch keinen Kontakt zu Index aufgenommen"
 

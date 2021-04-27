@@ -171,6 +171,13 @@
                 type: case_phase_type_translation(phase)
               ) }}
             </li>
+            <li :for={{ {:phase_send_automated_close_email, phase, false} <- additional_actions(@changeset, @case) }}>
+              {{ pgettext(
+                "Phase Create Modal",
+                ~S(The automated case close email for the %{type} phase will be disabled.),
+                type: case_phase_type_translation(phase)
+              ) }}
+            </li>
           </ul>
         </div>
 
