@@ -1834,7 +1834,6 @@ defmodule Hygeia.CaseContext do
   def update_case(%Ecto.Changeset{data: %Case{}} = changeset),
     do:
       changeset
-      |> Case.changeset(%{})
       |> versioning_update()
       |> broadcast("cases", :update)
       |> versioning_extract()
