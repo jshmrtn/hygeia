@@ -65,7 +65,10 @@
                     type: "time",
                     time: %{
                       unit: "day",
-                      tooltipFormat: "LL"
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
                     }
                   },
                   y: %{
@@ -133,7 +136,10 @@
                     type: "time",
                     time: %{
                       unit: "day",
-                      tooltipFormat: "LL"
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
                     }
                   },
                   y: %{
@@ -196,7 +202,10 @@
                     type: "time",
                     time: %{
                       unit: "day",
-                      tooltipFormat: "LL"
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
                     }
                   },
                   y: %{
@@ -271,7 +280,10 @@
                     type: "time",
                     time: %{
                       unit: "day",
-                      tooltipFormat: "LL"
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
                     }
                   },
                   y: %{
@@ -342,7 +354,10 @@
                     type: "time",
                     time: %{
                       unit: "day",
-                      tooltipFormat: "LL"
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
                     }
                   },
                   y: %{
@@ -399,7 +414,10 @@
                     type: "time",
                     time: %{
                       unit: "day",
-                      tooltipFormat: "LL"
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
                     }
                   },
                   y: %{
@@ -470,7 +488,10 @@
                     type: "time",
                     time: %{
                       unit: "day",
-                      tooltipFormat: "LL"
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
                     }
                   },
                   y: %{
@@ -546,7 +567,10 @@
                     type: "time",
                     time: %{
                       unit: "day",
-                      tooltipFormat: "LL"
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
                     }
                   },
                   y: %{
@@ -620,7 +644,10 @@
                     type: "time",
                     time: %{
                       unit: "day",
-                      tooltipFormat: "LL"
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
                     }
                   },
                   y: %{
