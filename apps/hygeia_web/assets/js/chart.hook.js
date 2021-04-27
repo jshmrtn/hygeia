@@ -13,7 +13,7 @@ import {
   Title,
   Tooltip
 } from 'chart.js';
-import 'chartjs-adapter-date-fns';
+import 'chartjs-adapter-luxon';
 import pattern from 'patternomaly';
 
 Chart.register(
