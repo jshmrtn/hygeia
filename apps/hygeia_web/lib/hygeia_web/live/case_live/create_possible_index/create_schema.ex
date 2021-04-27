@@ -222,15 +222,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       nil ->
         if global_type in [:contact_person, :travel] do
           {start_date, end_date} = phase_dates(date)
-          old_phase_end_date = Date.add(start_date, -1)
 
           status_changed_phases =
             Enum.map(existing_phases, fn
               %Case.Phase{quarantine_order: true, start: old_phase_start} = phase ->
-                if Date.compare(old_phase_start, old_phase_end_date) == :lt do
+                if Date.compare(old_phase_start, start_date) == :lt do
                   %Case.Phase{
                     phase
-                    | end: Date.add(start_date, -1),
+                    | end: start_date,
                       send_automated_close_email: false
                   }
                 else

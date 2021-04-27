@@ -165,7 +165,7 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
            |> Enum.filter(&match?(%Phase{quarantine_order: true}, &1))
            |> Enum.reject(&(Date.compare(&1.end, new_start_date) == :lt))
            |> Enum.filter(&(Date.compare(&1.start, new_start_date) == :lt)) do
-      Enum.map(overlapping_phases, &{:phase_end_date, &1, Date.add(new_start_date, -1)})
+      Enum.map(overlapping_phases, &{:phase_end_date, &1, new_start_date})
     else
       nil -> []
       false -> []
