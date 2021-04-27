@@ -271,7 +271,11 @@ defmodule Hygeia.CaseContext.Case do
       |> Enum.map(&Date.range(fetch_field!(&1, :start), fetch_field!(&1, :end)))
       |> Enum.map(&MapSet.new/1)
       |> Enum.reduce_while(MapSet.new(), fn phase_range, acc ->
-        if MapSet.disjoint?(acc, phase_range) do
+        acc
+        |> MapSet.intersection(phase_range)
+        |> MapSet.size()
+        |> Kernel.<=(1)
+        |> if do
           {:cont, MapSet.union(acc, phase_range)}
         else
           {:halt, :overlap}
