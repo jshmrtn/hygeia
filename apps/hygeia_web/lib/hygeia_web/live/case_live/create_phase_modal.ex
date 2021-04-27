@@ -21,6 +21,7 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
            | {:phase_end_reason, Phase.t(),
               Phase.Index.EndReason.t() | Phase.PossibleIndex.EndReason.t()}
            | {:phase_quarantine_order, Phase.t(), false}
+           | {:phase_send_automated_close_email, Phase.t(), false}
 
   prop case, :map, required: true
   prop close, :event, required: true
@@ -145,7 +146,8 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
       additional_actions_status(changeset, case),
       additional_actions_phase_end_date(changeset, case),
       additional_actions_phase_end_reason(changeset, case),
-      additional_actions_phase_quarantine_order(changeset, case)
+      additional_actions_phase_quarantine_order(changeset, case),
+      additional_actions_phase_automated_case_closed_email(case)
     ])
   end
 
@@ -163,8 +165,8 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
          [_ | _] = overlapping_phases <-
            case.phases
            |> Enum.filter(&match?(%Phase{quarantine_order: true}, &1))
-           |> Enum.reject(&(Date.compare(&1.end, new_start_date) == :lt))
-           |> Enum.filter(&(Date.compare(&1.start, new_start_date) == :lt)) do
+           |> Enum.reject(&(Date.compare(&1.end, new_start_date) in [:lt, :eq]))
+           |> Enum.filter(&(Date.compare(&1.start, new_start_date) in [:lt, :eq])) do
       Enum.map(overlapping_phases, &{:phase_end_date, &1, new_start_date})
     else
       nil -> []
@@ -179,8 +181,8 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
          [_ | _] = overlapping_phases <-
            case.phases
            |> Enum.filter(&match?(%Phase{quarantine_order: true}, &1))
-           |> Enum.reject(&(Date.compare(&1.end, new_start_date) == :lt))
-           |> Enum.reject(&(Date.compare(&1.start, new_start_date) == :lt)) do
+           |> Enum.reject(&(Date.compare(&1.end, new_start_date) in [:lt, :eq]))
+           |> Enum.reject(&(Date.compare(&1.start, new_start_date) in [:lt, :eq])) do
       Enum.map(overlapping_phases, &{:phase_quarantine_order, &1, false})
     else
       nil -> []
@@ -201,6 +203,12 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
       :possible_index -> []
       [] -> []
     end
+  end
+
+  defp additional_actions_phase_automated_case_closed_email(case) do
+    case.phases
+    |> Enum.filter(&match?(%Phase{send_automated_close_email: true}, &1))
+    |> Enum.map(&{:phase_send_automated_close_email, &1, false})
   end
 
   @spec apply_action(action :: additional_action(), acc :: map) :: map
@@ -240,6 +248,17 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
       "phases",
       &Enum.map(&1, fn
         %{"uuid" => ^uuid} = phase -> Map.put(phase, "quarantine_order", false)
+        %{} = phase -> phase
+      end)
+    )
+  end
+
+  defp apply_action({:phase_send_automated_close_email, %Phase{uuid: uuid}, false}, acc) do
+    Map.update!(
+      acc,
+      "phases",
+      &Enum.map(&1, fn
+        %{"uuid" => ^uuid} = phase -> Map.put(phase, "send_automated_close_email", false)
         %{} = phase -> phase
       end)
     )
