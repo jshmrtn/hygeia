@@ -261,12 +261,12 @@
                             :for={{
                               person_uuid <-
                                 String.split(Ecto.Changeset.fetch_field!(form.source, :suspected_duplicate_uuids), ","),
-                              person = get_person(person_uuid),
-                              true = authorized?(person, :details, auth)
+                              person = get_person(person_uuid)
                             }}
                             class="candidate"
                           >
                             <HygeiaWeb.RecordView
+                              :if={{ authorized?(person, :details, auth) }}
                               resource={{ person }}
                               action={{ :details }}
                               id={{ "duplicate_person_value_recordview_#{person.uuid}" }}
@@ -292,6 +292,12 @@
                                 </tr>
                               </table>
                             </HygeiaWeb.RecordView>
+
+                            <span :if={{ not authorized?(person, :details, auth) }}>
+                              {{ person.tenant.short_name }}
+                              /
+                              {{ person.human_readable_id }}
+                            </span>
 
                             <input
                               type="button"

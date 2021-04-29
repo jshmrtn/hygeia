@@ -82,7 +82,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
     {:noreply, assign(socket, suspected_duplicate_changeset_uuid: nil)}
   end
 
-  defp get_person(uuid), do: uuid |> CaseContext.get_person!() |> Repo.preload(:cases)
+  defp get_person(uuid), do: uuid |> CaseContext.get_person!() |> Repo.preload([:cases, :tenant])
 
   defp get_person_name(person) do
     "#{person.first_name} #{person.last_name}"
