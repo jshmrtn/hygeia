@@ -6,8 +6,8 @@ defmodule HygeiaWeb.CaseLive.Create.CreateSchema do
   @spec merge_assignee(
           changeset :: Ecto.Changeset.t(),
           type :: atom,
-          uuid :: String.t(),
-          default_uuid :: String.t()
+          uuid :: Ecto.UUID.t(),
+          default_uuid :: Ecto.UUID.t()
         ) :: Ecto.Changeset.t()
   def merge_assignee(changeset, type, uuid, default_uuid)
 

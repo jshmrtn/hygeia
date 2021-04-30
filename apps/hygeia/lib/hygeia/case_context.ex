@@ -41,14 +41,14 @@ defmodule Hygeia.CaseContext do
   @spec find_duplicates(
           search :: [
             %{
-              uuid: String.t(),
+              uuid: Ecto.UUID.t(),
               first_name: String.t() | nil,
               last_name: String.t(),
               mobile: String.t() | nil,
               email: String.t() | nil
             }
           ]
-        ) :: %{required(uuid :: String.t()) => [person_id :: String.t()]}
+        ) :: %{required(uuid :: Ecto.UUID.t()) => [person_id :: Ecto.UUID.t()]}
   def find_duplicates([]), do: %{}
 
   def find_duplicates(search) when is_list(search) do
@@ -164,7 +164,7 @@ defmodule Hygeia.CaseContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_person!(id :: String.t()) :: Person.t()
+  @spec get_person!(id :: Ecto.UUID.t()) :: Person.t()
   def get_person!(id), do: Repo.get!(Person, id)
 
   @doc """
@@ -1760,10 +1760,10 @@ defmodule Hygeia.CaseContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_case!(id :: String.t()) :: Case.t()
+  @spec get_case!(id :: Ecto.UUID.t()) :: Case.t()
   def get_case!(id), do: Repo.get!(Case, id)
 
-  @spec get_case_with_lock!(id :: String.t()) :: Case.t()
+  @spec get_case_with_lock!(id :: Ecto.UUID.t()) :: Case.t()
   def get_case_with_lock!(id),
     do: Repo.one!(from case in Case, where: case.uuid == ^id, lock: "FOR UPDATE")
 
@@ -1979,7 +1979,7 @@ defmodule Hygeia.CaseContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_transmission!(id :: String.t()) :: Transmission.t()
+  @spec get_transmission!(id :: Ecto.UUID.t()) :: Transmission.t()
   def get_transmission!(id), do: Repo.get!(Transmission, id)
 
   @doc """
@@ -2108,7 +2108,7 @@ defmodule Hygeia.CaseContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_note!(id :: String.t()) :: Note.t()
+  @spec get_note!(id :: Ecto.UUID.t()) :: Note.t()
   def get_note!(id), do: Repo.get!(Note, id)
 
   @doc """
@@ -2237,7 +2237,7 @@ defmodule Hygeia.CaseContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_possible_index_submission!(id :: String.t()) :: PossibleIndexSubmission.t()
+  @spec get_possible_index_submission!(id :: Ecto.UUID.t()) :: PossibleIndexSubmission.t()
   def get_possible_index_submission!(id), do: Repo.get!(PossibleIndexSubmission, id)
 
   @doc """

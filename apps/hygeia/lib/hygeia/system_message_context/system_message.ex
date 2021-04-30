@@ -13,7 +13,7 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
   alias Hygeia.UserContext.Grant.Role
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           text: String.t() | nil,
           start_date: LocalizedNaiveDatetime.t() | nil,
           end_date: LocalizedNaiveDatetime.t() | nil,
@@ -24,7 +24,7 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
         }
 
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           text: String.t(),
           start_date: LocalizedNaiveDatetime.t(),
           end_date: LocalizedNaiveDatetime.t(),

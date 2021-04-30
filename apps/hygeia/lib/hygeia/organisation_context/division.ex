@@ -14,7 +14,7 @@ defmodule Hygeia.OrganisationContext.Division do
   @type empty :: %__MODULE__{
           title: String.t() | nil,
           description: String.t() | nil,
-          organisation_uuid: String.t() | nil,
+          organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           affiliations: Ecto.Schema.belongs_to(Affiliation.t()) | nil,
           shares_address: boolean() | nil,
@@ -26,7 +26,7 @@ defmodule Hygeia.OrganisationContext.Division do
   @type t :: %__MODULE__{
           title: String.t(),
           description: String.t() | nil,
-          organisation_uuid: String.t(),
+          organisation_uuid: Ecto.UUID.t(),
           organisation: Ecto.Schema.belongs_to(Organisation.t()),
           affiliations: Ecto.Schema.belongs_to(Affiliation.t()),
           shares_address: boolean(),

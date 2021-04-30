@@ -16,33 +16,33 @@ defmodule Hygeia.CaseContext.Transmission do
   alias Hygeia.CaseContext.Transmission.InfectionPlace
 
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           date: Date.t() | nil,
           propagator_internal: boolean,
           propagator_ism_id: String.t() | nil,
           propagator_case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          propagator_case_uuid: String.t() | nil,
+          propagator_case_uuid: Ecto.UUID.t() | nil,
           recipient_internal: boolean,
           recipient_ism_id: String.t() | nil,
           recipient_case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          recipient_case_uuid: String.t() | nil,
+          recipient_case_uuid: Ecto.UUID.t() | nil,
           infection_place: InfectionPlace.t() | nil,
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           date: Date.t() | nil,
           propagator_internal: boolean | nil,
           propagator_ism_id: String.t() | nil,
           propagator_case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          propagator_case_uuid: String.t() | nil,
+          propagator_case_uuid: Ecto.UUID.t() | nil,
           propagator: Ecto.Schema.has_one(Person.t()) | nil,
           recipient_internal: boolean | nil,
           recipient_ism_id: String.t() | nil,
           recipient_case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          recipient_case_uuid: String.t() | nil,
+          recipient_case_uuid: Ecto.UUID.t() | nil,
           recipient: Ecto.Schema.has_one(Person.t()) | nil,
           infection_place: InfectionPlace.t(),
           inserted_at: NaiveDateTime.t() | nil,

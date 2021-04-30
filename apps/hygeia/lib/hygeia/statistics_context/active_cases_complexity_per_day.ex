@@ -12,7 +12,7 @@ defmodule Hygeia.StatisticsContext.ActiveComplexityCasesPerDay do
           count: non_neg_integer(),
           date: Date.t(),
           case_complexity: Complexity.t() | nil,
-          tenant_uuid: String.t(),
+          tenant_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t())
         }
 

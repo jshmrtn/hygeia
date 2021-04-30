@@ -10,16 +10,16 @@ defmodule Hygeia.NotificationContext.Notification.EmailSendFailed do
 
   @type empty :: %__MODULE__{
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          case_uuid: String.t() | nil,
+          case_uuid: Ecto.UUID.t() | nil,
           email: Ecto.Schema.belongs_to(Email.t()) | nil,
-          email_uuid: String.t() | nil
+          email_uuid: Ecto.UUID.t() | nil
         }
 
   @type t :: %__MODULE__{
           case: Ecto.Schema.belongs_to(Case.t()),
-          case_uuid: String.t(),
+          case_uuid: Ecto.UUID.t(),
           email: Ecto.Schema.belongs_to(Email.t()),
-          email_uuid: String.t()
+          email_uuid: Ecto.UUID.t()
         }
 
   embedded_schema do

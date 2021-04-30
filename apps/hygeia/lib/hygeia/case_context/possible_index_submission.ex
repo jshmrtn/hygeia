@@ -15,7 +15,7 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
   @derive {Phoenix.Param, key: :uuid}
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           first_name: String.t() | nil,
           last_name: String.t() | nil,
           sex: Sex.t() | nil,
@@ -33,7 +33,7 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
         }
 
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           first_name: String.t(),
           last_name: String.t(),
           sex: Sex.t() | nil,

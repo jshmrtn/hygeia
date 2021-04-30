@@ -10,7 +10,7 @@ defmodule Hygeia.StatisticsContext.ActiveCasesPerDayAndOrganisation do
   @type t :: %__MODULE__{
           count: non_neg_integer(),
           date: Date.t(),
-          tenant_uuid: String.t(),
+          tenant_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
           organisation_name: String.t()
         }

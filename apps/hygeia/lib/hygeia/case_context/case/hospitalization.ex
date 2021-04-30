@@ -11,14 +11,14 @@ defmodule Hygeia.CaseContext.Case.Hospitalization do
           start: Date.t() | nil,
           end: Date.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
-          organisation_uuid: String.t() | nil
+          organisation_uuid: Ecto.UUID.t() | nil
         }
 
   @type t :: %__MODULE__{
           start: Date.t() | nil,
           end: Date.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
-          organisation_uuid: String.t() | nil
+          organisation_uuid: Ecto.UUID.t() | nil
         }
 
   embedded_schema do

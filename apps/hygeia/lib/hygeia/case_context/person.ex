@@ -23,7 +23,7 @@ defmodule Hygeia.CaseContext.Person do
   @derive {Phoenix.Param, key: :uuid}
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           human_readable_id: String.t() | nil,
           first_name: String.t() | nil,
           last_name: String.t() | nil,
@@ -34,7 +34,7 @@ defmodule Hygeia.CaseContext.Person do
           external_references: [ExternalReference.t()] | nil,
           profession_category: NOGA.Code.t() | nil,
           profession_category_main: NOGA.Section.t() | nil,
-          tenant_uuid: String.t() | nil,
+          tenant_uuid: Ecto.UUID.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
           positions: Ecto.Schema.has_many(Position.t()) | nil,
@@ -47,7 +47,7 @@ defmodule Hygeia.CaseContext.Person do
         }
 
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           human_readable_id: String.t(),
           first_name: String.t() | nil,
           last_name: String.t() | nil,
@@ -58,7 +58,7 @@ defmodule Hygeia.CaseContext.Person do
           external_references: [ExternalReference.t()],
           profession_category: NOGA.Code.t() | nil,
           profession_category_main: NOGA.Section.t() | nil,
-          tenant_uuid: String.t(),
+          tenant_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
           cases: Ecto.Schema.has_many(Case.t()),
           positions: Ecto.Schema.has_many(Position.t()),

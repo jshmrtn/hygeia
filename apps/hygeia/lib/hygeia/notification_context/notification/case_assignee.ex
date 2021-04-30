@@ -9,12 +9,12 @@ defmodule Hygeia.NotificationContext.Notification.CaseAssignee do
 
   @type empty :: %__MODULE__{
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          case_uuid: String.t() | nil
+          case_uuid: Ecto.UUID.t() | nil
         }
 
   @type t :: %__MODULE__{
           case: Ecto.Schema.belongs_to(Case.t()),
-          case_uuid: String.t()
+          case_uuid: Ecto.UUID.t()
         }
 
   embedded_schema do

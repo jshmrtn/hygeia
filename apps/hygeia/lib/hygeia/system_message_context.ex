@@ -36,7 +36,7 @@ defmodule Hygeia.SystemMessageContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_system_message!(id :: String.t()) :: SystemMessage.t()
+  @spec get_system_message!(id :: Ecto.UUID.t()) :: SystemMessage.t()
   def get_system_message!(id), do: Repo.get!(SystemMessage, id)
 
   @doc """

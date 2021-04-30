@@ -10,7 +10,7 @@ defmodule Hygeia.CaseContext.Note do
 
   @type empty :: %__MODULE__{
           note: String.t() | nil,
-          case_uuid: String.t() | nil,
+          case_uuid: Ecto.UUID.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
           tenant: Ecto.Schema.has_one(Tenant.t()) | nil,
           inserted_at: DateTime.t() | nil,
@@ -19,7 +19,7 @@ defmodule Hygeia.CaseContext.Note do
 
   @type t :: %__MODULE__{
           note: String.t(),
-          case_uuid: String.t(),
+          case_uuid: Ecto.UUID.t(),
           case: Ecto.Schema.belongs_to(Case.t()),
           tenant: Ecto.Schema.has_one(Tenant.t()),
           inserted_at: DateTime.t(),

@@ -12,7 +12,7 @@ defmodule Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons do
           count: non_neg_integer(),
           date: Date.t(),
           end_reason: EndReason.t() | nil,
-          tenant_uuid: String.t(),
+          tenant_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t())
         }
 

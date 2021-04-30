@@ -12,7 +12,7 @@ defmodule Hygeia.StatisticsContext.ActiveInfectionPlaceCasesPerDay do
           count: non_neg_integer(),
           date: Date.t(),
           infection_place_type: Type.t() | nil,
-          tenant_uuid: String.t(),
+          tenant_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t())
         }
 

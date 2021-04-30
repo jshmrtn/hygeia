@@ -7,7 +7,7 @@ defmodule Hygeia.VersionContext do
 
   alias Hygeia.VersionContext.Version
 
-  @spec get_versions(schema :: atom, id :: String.t()) :: [Version.t()]
+  @spec get_versions(schema :: atom, id :: Ecto.UUID.t()) :: [Version.t()]
   def get_versions(schema, id) do
     Repo.all(
       from(

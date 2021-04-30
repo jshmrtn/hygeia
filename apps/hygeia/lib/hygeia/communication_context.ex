@@ -75,7 +75,7 @@ defmodule Hygeia.CommunicationContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_email!(id :: String.t()) :: Email.t()
+  @spec get_email!(id :: Ecto.UUID.t()) :: Email.t()
   def get_email!(id), do: Repo.get!(Email, id)
 
   @doc """
@@ -277,7 +277,7 @@ defmodule Hygeia.CommunicationContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_sms!(id :: String.t()) :: SMS.t()
+  @spec get_sms!(id :: Ecto.UUID.t()) :: SMS.t()
   def get_sms!(id), do: Repo.get!(SMS, id)
 
   @doc """

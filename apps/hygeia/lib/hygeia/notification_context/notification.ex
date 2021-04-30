@@ -8,23 +8,23 @@ defmodule Hygeia.NotificationContext.Notification do
   alias Hygeia.UserContext.User
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           body: __MODULE__.CaseAssignee.t() | __MODULE__.EmailSendFailed.t() | nil,
           notified: boolean | nil,
           read: boolean | nil,
           user: Ecto.Schema.belongs_to(User.t()) | nil,
-          user_uuid: String.t() | nil,
+          user_uuid: Ecto.UUID.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           body: __MODULE__.CaseAssignee.t() | __MODULE__.EmailSendFailed.t(),
           notified: boolean,
           read: boolean,
           user: Ecto.Schema.belongs_to(User.t()),
-          user_uuid: String.t(),
+          user_uuid: Ecto.UUID.t(),
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
