@@ -86,8 +86,6 @@ defmodule Hygeia.MixProject do
     ]
   end
 
-  @ecto_setup ["ecto.create", "ecto.load --skip-if-loaded --quiet", "ecto.migrate"]
-
   # Aliases are shortcuts or tasks specific to the current project.
   #
   # See the documentation for `Mix` for more info on aliases.
@@ -96,8 +94,16 @@ defmodule Hygeia.MixProject do
       setup: ["ecto.reset"],
       "ecto.setup":
         case Mix.env() do
-          :test -> @ecto_setup
-          _env -> @ecto_setup ++ ["run priv/repo/seeds.exs"]
+          :test ->
+            ["ecto.create", "ecto.migrate"]
+
+          _env ->
+            [
+              "ecto.create",
+              "ecto.load --skip-if-loaded --quiet",
+              "ecto.migrate",
+              "run priv/repo/seeds.exs"
+            ]
         end,
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
