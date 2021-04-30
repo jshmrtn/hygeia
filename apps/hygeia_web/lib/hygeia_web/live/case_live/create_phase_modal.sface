@@ -152,9 +152,9 @@
                 old_end_reason:
                   case old_end_reason do
                     nil -> nil
-                    old_end_reason -> case_phase_index_end_reason_translation(old_end_reason)
+                    old_end_reason -> Phase.Index.EndReason.translate(old_end_reason)
                   end,
-                new_end_reason: case_phase_index_end_reason_translation(new_end_reason)
+                new_end_reason: Phase.Index.EndReason.translate(new_end_reason)
               )}
             </li>
             <li :for={{:phase_quarantine_order, phase, false} <- additional_actions(@changeset, @case)}>

@@ -3,6 +3,7 @@ defmodule HygeiaWeb.References do
 
   use HygeiaWeb, :surface_live_component
 
+  alias Hygeia.CaseContext.ExternalReference.Type
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput

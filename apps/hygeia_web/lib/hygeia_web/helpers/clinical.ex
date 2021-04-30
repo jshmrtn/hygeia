@@ -51,23 +51,4 @@ defmodule HygeiaWeb.Helpers.Clinical do
   def translate_symptom(:general_weakness), do: gettext("General Weakness")
   def translate_symptom(:gastrointestinal), do: gettext("Gastrointestinal")
   def translate_symptom(:skin_rash), do: gettext("Skin Rash")
-
-  @spec test_kinds :: [{String.t(), Clinical.TestKind.t()}]
-  def test_kinds,
-    do: Enum.map(Clinical.TestKind.__enum_map__(), &{translate_test_kind(&1), &1})
-
-  @spec translate_test_kind(type :: Clinical.TestKind.t()) :: String.t()
-  def translate_test_kind(:pcr), do: gettext("PCR")
-  def translate_test_kind(:quick), do: gettext("PCR Quick")
-  def translate_test_kind(:serology), do: gettext("Serology")
-  def translate_test_kind(:antigen_quick), do: gettext("Antigen Quick")
-  def translate_test_kind(:antibody), do: gettext("Antibody")
-
-  @spec test_results :: [{String.t(), Clinical.Result.t()}]
-  def test_results,
-    do: Enum.map(Clinical.Result.__enum_map__(), &{translate_test_result(&1), &1})
-
-  @spec translate_test_result(type :: Clinical.Result.t()) :: String.t()
-  def translate_test_result(:positive), do: gettext("Positive")
-  def translate_test_result(:negative), do: gettext("Negative")
 end

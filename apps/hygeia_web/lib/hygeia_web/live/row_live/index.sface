@@ -1,0 +1,73 @@
+<div class="component-row-index container">
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.ImportLive.Header import={@import} id="header" />
+
+    <h1>
+      {gettext("Listing Rows")}
+    </h1>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            {schema_field_name(:identifiers, Row)}
+          </th>
+          <th>
+            {schema_field_name(:status, Row)}
+          </th>
+
+          <th />
+        </tr>
+      </thead>
+      <tbody id="rows">
+        <tr :for={row <- @rows} id={"row-#{row.uuid}"}>
+          <td>
+            <dl>
+              {#for {field_name, field_value} <- row.identifiers}
+                <dt>{field_name}</dt>
+                <dd>{field_value}</dd>
+              {/for}
+            </dl>
+          </td>
+          <td>
+            {Status.translate(row.status)}
+          </td>
+
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LiveRedirect
+                to={Routes.row_apply_path(@socket, :apply, row)}
+                :if={authorized?(row, :details, auth) and row.status == :pending}
+              >
+                <button class="ml-auto btn btn-sm btn-secondary">
+                  {gettext("Apply")}
+                </button>
+              </LiveRedirect>
+              <LiveRedirect
+                to={Routes.row_show_path(@socket, :show, row)}
+                :if={authorized?(row, :details, auth)}
+              >
+                <button class="ml-auto btn btn-sm btn-secondary">
+                  {gettext("Show")}
+                </button>
+              </LiveRedirect>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <HygeiaWeb.Pagination
+      pagination={@pagination}
+      :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
+      id="pagination"
+    >
+      <LiveRedirect
+        class="page-link"
+        to={Routes.row_index_path(@socket, :index, @import, @status, cursor_direction, cursor)}
+      >
+        {text}
+      </LiveRedirect>
+    </HygeiaWeb.Pagination>
+  </Context>
+</div>

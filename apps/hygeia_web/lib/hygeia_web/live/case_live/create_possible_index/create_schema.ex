@@ -3,19 +3,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
 
   use Hygeia, :model
 
-  import HygeiaWeb.CaseLive.Create.CreateSchema
   import HygeiaGettext
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
+
+  alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CaseContext.Transmission.InfectionPlace
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
-  alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema
 
   embedded_schema do
     belongs_to :default_tenant, Tenant, references: :uuid, foreign_key: :default_tenant_uuid
@@ -346,4 +347,38 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
   end
 
   defp unpack(other), do: other
+
+  @spec merge_assignee(
+          changeset :: Ecto.Changeset.t(),
+          type :: atom,
+          uuid :: Ecto.UUID.t(),
+          default_uuid :: Ecto.UUID.t()
+        ) :: Ecto.Changeset.t()
+  def merge_assignee(changeset, type, uuid, default_uuid)
+
+  def merge_assignee(changeset, type, nil, default_uuid),
+    do: Ecto.Changeset.put_change(changeset, type, default_uuid)
+
+  def merge_assignee(changeset, type, uuid, _default_uuid),
+    do: Ecto.Changeset.put_change(changeset, type, uuid)
+
+  @spec merge_external_reference(changeset :: Ecto.Changeset.t(), type :: atom, id :: String.t()) ::
+          Ecto.Changeset.t()
+  def merge_external_reference(changeset, type, id)
+  def merge_external_reference(changeset, _type, nil), do: changeset
+
+  def merge_external_reference(changeset, type, id) do
+    existing_external_references = Ecto.Changeset.fetch_field!(changeset, :external_references)
+
+    if Enum.any?(
+         existing_external_references,
+         &match?(%ExternalReference{type: ^type, value: ^id}, &1)
+       ) do
+      changeset
+    else
+      Ecto.Changeset.put_embed(changeset, :external_references, [
+        %{type: type, value: id} | existing_external_references
+      ])
+    end
+  end
 end

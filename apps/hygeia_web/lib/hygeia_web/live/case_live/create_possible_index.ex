@@ -3,17 +3,23 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   use HygeiaWeb, :surface_view
 
-  import HygeiaWeb.CaseLive.Create
+  import HygeiaWeb.Helpers.Changeset
+  import HygeiaGettext
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
+  alias Hygeia.CaseContext.ExternalReference
+  alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CommunicationContext
+  alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
-  alias HygeiaWeb.CaseLive.Create.CreatePersonSchema
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
@@ -157,27 +163,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:csv_import, :start}, socket) do
-    {:noreply, assign(socket, loading: true)}
-  end
-
-  def handle_info({:csv_import, {:ok, data}}, socket) do
-    {:noreply,
-     socket
-     |> assign(
-       changeset: import_into_changeset(socket.assigns.changeset, data, CreateSchema),
-       loading: false
-     )
-     |> maybe_block_navigation()}
-  end
-
-  def handle_info({:csv_import, {:error, _reason}}, socket) do
-    {:noreply,
-     socket
-     |> put_flash(:error, gettext("Could not parse CSV"))
-     |> assign(loading: false)}
-  end
-
   def handle_info({:accept_duplicate, uuid, case_or_person}, socket) do
     {:noreply,
      socket
@@ -349,4 +334,195 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       [_ | _] -> push_event(socket, "block_navigation", %{})
     end
   end
+
+  @spec get_person_changes(person :: Person.t()) :: Ecto.Changeset.t()
+  def get_person_changes(person) do
+    person = Repo.preload(person, affiliations: [organisation: []])
+
+    drop_empty_recursively_and_remove_uuid(%{
+      "accepted_duplicate" => true,
+      "accepted_duplicate_uuid" => person.uuid,
+      "accepted_duplicate_human_readable_id" => person.human_readable_id,
+      "first_name" => person.first_name,
+      "last_name" => person.last_name,
+      "tenant_uuid" => person.tenant_uuid,
+      "mobile" =>
+        Enum.find_value(person.contact_methods, fn
+          %ContactMethod{type: :mobile, value: value} -> value
+          _other -> false
+        end),
+      "landline" =>
+        Enum.find_value(person.contact_methods, fn
+          %ContactMethod{type: :landline, value: value} -> value
+          _other -> false
+        end),
+      "email" =>
+        Enum.find_value(person.contact_methods, fn
+          %ContactMethod{type: :email, value: value} -> value
+          _other -> false
+        end),
+      "sex" => person.sex,
+      "birth_date" => person.birth_date,
+      "employer" =>
+        case person.affiliations do
+          [%Affiliation{organisation: %Organisation{name: name}} | _] -> name
+          [%Affiliation{comment: comment} | _] -> comment
+          _other -> nil
+        end,
+      "address" => person.address |> Ecto.embedded_dump(:json) |> recursive_string_keys()
+    })
+  end
+
+  @spec get_case_changes(person :: Case.t(), schema_module :: module()) :: Ecto.Changeset.t()
+  def get_case_changes(case, schema_module) do
+    phase_detail_module =
+      case schema_module do
+        HygeiaWeb.CaseLive.CreateIndex.CreateSchema -> Case.Phase.Index
+        HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema -> Case.Phase.PossibleIndex
+      end
+
+    keep_assignees =
+      Enum.any?(case.phases, &match?(%Case.Phase{details: %^phase_detail_module{}}, &1))
+
+    drop_empty_recursively_and_remove_uuid(%{
+      "accepted_duplicate" => true,
+      "accepted_duplicate_case_uuid" => case.uuid,
+      "clinical" =>
+        case case.clinical do
+          nil -> nil
+          clinical -> clinical |> Ecto.embedded_dump(:json) |> recursive_string_keys()
+        end,
+      "tracer_uuid" => if(keep_assignees, do: case.tracer_uuid),
+      "supervisor_uuid" => if(keep_assignees, do: case.supervisor_uuid),
+      "ism_case_id" =>
+        Enum.find_value(case.external_references, fn
+          %ExternalReference{type: :ism_case, value: value} -> value
+          _other -> false
+        end),
+      "ism_report_id" =>
+        Enum.find_value(case.external_references, fn
+          %ExternalReference{type: :ism_report, value: value} -> value
+          _other -> false
+        end)
+    })
+  end
+
+  @spec drop_empty_recursively_and_remove_uuid(input :: term) :: term
+  def drop_empty_recursively_and_remove_uuid(map) when is_map(map) and not is_struct(map),
+    do:
+      map
+      |> Enum.reject(&match?({:uuid, _value}, &1))
+      |> Enum.reject(&match?({_key, nil}, &1))
+      |> Enum.map(&{elem(&1, 0), drop_empty_recursively_and_remove_uuid(elem(&1, 1))})
+      |> Map.new()
+
+  def drop_empty_recursively_and_remove_uuid(list) when is_list(list),
+    do: list |> Enum.reject(&is_nil/1) |> Enum.map(&drop_empty_recursively_and_remove_uuid/1)
+
+  def drop_empty_recursively_and_remove_uuid(other), do: other
+
+  @spec decline_duplicate(
+          changeset :: Ecto.Changeset.t(),
+          person_changeset_uuid :: Ecto.UUID.t(),
+          schema_module :: atom
+        ) ::
+          Ecto.Changeset.t()
+  def decline_duplicate(changeset, person_changeset_uuid, schema_module),
+    do:
+      schema_module.changeset(
+        changeset.data,
+        changeset_update_params_by_id(
+          changeset,
+          :people,
+          %{uuid: person_changeset_uuid},
+          &Map.merge(&1, %{
+            "accepted_duplicate" => false,
+            "accepted_duplicate_uuid" => nil
+          })
+        )
+      )
+
+  @spec accept_duplicate(
+          changeset :: Ecto.Changeset.t(),
+          person_changeset_uuid :: Ecto.UUID.t(),
+          person :: Person.t() | {Case.t(), Person.t()},
+          schema_module :: atom
+        ) :: Ecto.Changeset.t()
+  def accept_duplicate(changeset, person_changeset_uuid, person_or_changeset, schema_module) do
+    schema_module.changeset(
+      changeset.data,
+      changeset_update_params_by_id(
+        changeset,
+        :people,
+        %{uuid: person_changeset_uuid},
+        fn old_params ->
+          Map.merge(
+            old_params,
+            case person_or_changeset do
+              {case, person} ->
+                Map.merge(get_person_changes(person), get_case_changes(case, schema_module))
+
+              person ->
+                get_person_changes(person)
+            end,
+            &recursive_map_merge/3
+          )
+        end
+      )
+    )
+  end
+
+  @spec remove_person(
+          changeset :: Ecto.Changeset.t(),
+          person_changeset_uuid :: Ecto.UUID.t(),
+          schema_module :: atom
+        ) :: Ecto.Changeset.t()
+  def remove_person(changeset, person_changeset_uuid, schema_module),
+    do:
+      schema_module.changeset(
+        changeset.data,
+        changeset_remove_from_params_by_id(changeset, :people, %{uuid: person_changeset_uuid})
+      )
+
+  @spec handle_save_success(socket :: Phoenix.LiveView.Socket.t(), schema :: atom) ::
+          Phoenix.LiveView.Socket.t()
+  def handle_save_success(socket, schema) do
+    case socket.assigns.return_to do
+      nil ->
+        assign(socket,
+          changeset:
+            schema.changeset(
+              socket.assigns.changeset.data,
+              update_changeset_param_relation(
+                socket.assigns.changeset,
+                :people,
+                [:uuid],
+                fn _list -> [] end
+              )
+            ),
+          suspected_duplicate_changeset_uuid: nil,
+          file: nil
+        )
+
+      uri ->
+        push_redirect(socket, to: uri)
+    end
+  end
+
+  defp recursive_map_merge(_key, %{} = a, %{} = b) when not is_struct(a) and not is_struct(b),
+    do: Map.merge(a, b, &recursive_map_merge/3)
+
+  defp recursive_map_merge(_key, _a, b), do: b
+
+  defp recursive_string_keys(%{} = map) when not is_struct(map) do
+    Map.new(map, fn
+      {key, value} when is_atom(key) -> {Atom.to_string(key), recursive_string_keys(value)}
+      {key, value} -> {key, recursive_string_keys(value)}
+    end)
+  end
+
+  defp recursive_string_keys(list) when is_list(list),
+    do: Enum.map(list, &recursive_string_keys/1)
+
+  defp recursive_string_keys(other), do: other
 end

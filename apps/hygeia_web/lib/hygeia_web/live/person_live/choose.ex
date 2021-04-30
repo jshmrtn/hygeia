@@ -23,6 +23,8 @@ defmodule HygeiaWeb.PersonLive.Choose do
   prop disabled, :boolean, default: false
   prop small, :boolean, default: false
 
+  prop subject, :any, default: nil
+
   data modal_open, :boolean, default: false
   data query, :string, default: ""
   data tenants, :list, default: nil

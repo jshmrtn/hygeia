@@ -20,6 +20,8 @@ defmodule HygeiaWeb.CaseLive.Choose do
 
   prop change, :event
 
+  prop subject, :any, default: nil
+
   data modal_open, :boolean, default: false
   data query, :string, default: ""
   data tenants, :list, default: nil

@@ -1,0 +1,63 @@
+<Form
+  for={@changeset}
+  change="validate"
+  submit="save"
+  opts={autocomplete: "off", id: "case-form", class: "container"}
+>
+  <h1 class="mb-4">{gettext("New Case")}</h1>
+
+  <Field name={:person_uuid} class="form-group">
+    <HygeiaWeb.FieldLabel />
+    <HygeiaWeb.PersonLive.Choose id="choose_person" small change="change_person" />
+    <ErrorTag class="d-block invalid-feedback" />
+  </Field>
+
+  <Field name={:tenant_uuid} class="form-group">
+    <HygeiaWeb.FieldLabel />
+    <Select
+      class="form-control"
+      opts={prompt: gettext("Select tenant")}
+      field={:tenant_uuid}
+      options={Enum.map(@tenants, &{&1.name, &1.uuid})}
+    />
+    <ErrorTag class="d-block invalid-feedback" />
+  </Field>
+
+  <Inputs for={:phases} opts={append: [%Phase{}]}>
+    <InputContext assigns={assigns} :let={form: form}>
+      <Field name={:type} class="form-group">
+        <HygeiaWeb.FieldLabel />
+        <Select class="form-control" options={Phase.Type.map()} opts={prompt: gettext("Select Type")} />
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
+
+      <PolimorphicInputs
+        :if={Ecto.Changeset.get_field(form.source, :type) == :index}
+        field={:details}
+        type={:index}
+        id={"poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
+      />
+
+      <PolimorphicInputs
+        :if={Ecto.Changeset.get_field(form.source, :type) == :possible_index}
+        field={:details}
+        type={:possible_index}
+        id={"poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
+      >
+        <Field name={:type} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <Select
+            class="form-control"
+            options={case_phase_possible_index_type_map()}
+            opts={prompt: gettext("Select Type")}
+          />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+      </PolimorphicInputs>
+    </InputContext>
+  </Inputs>
+
+  <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
+    {gettext("Save")}
+  </button>
+</Form>

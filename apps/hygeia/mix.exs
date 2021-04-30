@@ -83,6 +83,7 @@ defmodule Hygeia.MixProject do
       {:sedex, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:websms, "~> 1.0.0-alpha"},
+      {:xlsxir, "~> 1.6.4"},
       {:zitadel_api, "~> 1.0-rc"}
     ]
   end
