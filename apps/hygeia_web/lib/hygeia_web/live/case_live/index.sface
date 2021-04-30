@@ -7,12 +7,12 @@
     <div class="d-flex">
       <LivePatch
         class="mr-2"
-        to={Routes.case_create_index_path(@socket, :create, return_to: Routes.case_index_path(@socket, :index))}
+        to={Routes.case_create_path(@socket, :create, return_to: Routes.case_index_path(@socket, :index))}
         :if={authorized?(Case, :create, auth, tenant: :any)}
       >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
           <span class="oi oi-plus" aria-hidden="true" />
-          {gettext("New Index")}
+          {gettext("New Case")}
         </button>
       </LivePatch>
 

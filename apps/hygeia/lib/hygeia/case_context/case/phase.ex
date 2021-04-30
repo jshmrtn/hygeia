@@ -58,7 +58,10 @@ defmodule Hygeia.CaseContext.Case.Phase do
   end
 
   @doc false
-  @spec changeset(phase :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
+  @spec changeset(
+          phase :: t | empty | Changeset.t(t | empty),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Changeset.t()
   def changeset(phase, attrs) do
     phase
     |> cast(attrs, [

@@ -7,6 +7,7 @@ defmodule Hygeia.TenantContext.Tenant do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
+  alias Hygeia.ImportContext.Import
   alias Hygeia.SystemMessageContext.SystemMessage
   alias Hygeia.TenantContext.SedexExport
   alias Hygeia.TenantContext.Tenant.SedexExportConfiguration
@@ -25,6 +26,7 @@ defmodule Hygeia.TenantContext.Tenant do
           outgoing_sms_configuration: Websms.t() | nil,
           people: Ecto.Schema.has_many(Person.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
+          imports: Ecto.Schema.has_many(Import.t()) | nil,
           sedex_exports: Ecto.Schema.has_many(SedexExport.t()) | nil,
           override_url: String.t() | nil,
           template_variation: String.t() | nil,
@@ -48,6 +50,7 @@ defmodule Hygeia.TenantContext.Tenant do
           outgoing_sms_configuration: Websms.t() | nil,
           people: Ecto.Schema.has_many(Person.t()),
           cases: Ecto.Schema.has_many(Case.t()),
+          imports: Ecto.Schema.has_many(Import.t()),
           sedex_exports: Ecto.Schema.has_many(SedexExport.t()),
           override_url: String.t() | nil,
           template_variation: String.t() | nil,
@@ -76,6 +79,7 @@ defmodule Hygeia.TenantContext.Tenant do
     has_many :people, Person
     has_many :cases, Case
     has_many :sedex_exports, SedexExport
+    has_many :imports, Import
 
     many_to_many :related_system_messages, SystemMessage,
       join_through: "system_message_tenants",

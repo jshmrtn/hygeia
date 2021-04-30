@@ -9,16 +9,25 @@ defmodule Hygeia.CaseContext.Entity do
 
   @type empty :: %__MODULE__{
           name: String.t() | nil,
+          division: String.t() | nil,
+          person_first_name: String.t() | nil,
+          person_last_name: String.t() | nil,
           address: Address.t() | nil
         }
 
   @type t :: %__MODULE__{
           name: String.t() | nil,
+          division: String.t() | nil,
+          person_first_name: String.t() | nil,
+          person_last_name: String.t() | nil,
           address: Address.t()
         }
 
   embedded_schema do
     field :name, :string
+    field :division, :string
+    field :person_first_name, :string
+    field :person_last_name, :string
 
     embeds_one :address, Address, on_replace: :delete
   end
@@ -27,7 +36,7 @@ defmodule Hygeia.CaseContext.Entity do
   @spec changeset(entity :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
   def changeset(entity, attrs) do
     entity
-    |> cast(attrs, [:uuid, :name])
+    |> cast(attrs, [:uuid, :name, :division, :person_first_name, :person_last_name])
     |> fill_uuid
     |> validate_required([])
     |> cast_embed(:address)

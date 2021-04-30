@@ -210,13 +210,17 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         %{start: ~D[2020-10-13], end: ~D[2020-10-15], organisation_uuid: organisation_kssg.uuid},
         %{start: ~D[2020-10-16], end: nil}
       ],
+      tests: [
+        %{
+          tested_at: ~D[2020-10-11],
+          laboratory_reported_at: ~D[2020-10-12],
+          kind: :pcr,
+          result: :positive
+        }
+      ],
       clinical: %{
         reasons_for_test: [:symptoms, :outbreak_examination],
         symptoms: [:fever],
-        test: ~D[2020-10-11],
-        laboratory_report: ~D[2020-10-12],
-        test_kind: :pcr,
-        result: :positive,
         symptom_start: ~D[2020-10-10]
       },
       external_references: [

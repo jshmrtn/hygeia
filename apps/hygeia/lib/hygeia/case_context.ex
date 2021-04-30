@@ -6,11 +6,13 @@ defmodule Hygeia.CaseContext do
   use Hygeia, :context
 
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CommunicationContext
   alias Hygeia.CommunicationContext.Email
@@ -110,6 +112,40 @@ defmodule Hygeia.CaseContext do
               ~S[?::jsonb <@ ANY (?)],
               ^%{type: type, value: value},
               person.contact_methods
+            )
+        )
+      )
+
+  @spec list_people_by_external_reference(type :: ExternalReference.Type.t(), value: String.t()) ::
+          [
+            Case.t()
+          ]
+  def list_people_by_external_reference(type, value),
+    do:
+      Repo.all(
+        from(person in Person,
+          where:
+            fragment(
+              ~S[?::jsonb <@ ANY (?)],
+              ^%{type: type, value: value},
+              person.external_references
+            )
+        )
+      )
+
+  @spec list_cases_by_external_reference(type :: ExternalReference.Type.t(), value: String.t()) ::
+          [
+            Case.t()
+          ]
+  def list_cases_by_external_reference(type, value),
+    do:
+      Repo.all(
+        from(case in Case,
+          where:
+            fragment(
+              ~S[?::jsonb <@ ANY (?)],
+              ^%{type: type, value: value},
+              case.external_references
             )
         )
       )
@@ -291,13 +327,15 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec change_person(
-          person :: Person.t() | Person.empty(),
+          person :: Person.t() | Person.empty() | Changeset.t(Person.t() | Person.empty()),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
           Ecto.Changeset.t(Person.t())
-  def change_person(%Person{} = person, attrs \\ %{}) do
-    Person.changeset(person, attrs)
-  end
+  def change_person(person, attrs \\ %{})
+  def change_person(%Person{} = person, attrs), do: Person.changeset(person, attrs)
+
+  def change_person(%Changeset{data: %Person{}} = person, attrs),
+    do: Person.changeset(person, attrs)
 
   @spec change_new_person(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           Ecto.Changeset.t(Person.t())
@@ -546,6 +584,7 @@ defmodule Hygeia.CaseContext do
         left_join: email in assoc(case, :emails),
         left_join: sms in assoc(case, :sms),
         left_join: employer in assoc(person, :employers),
+        left_join: test in assoc(case, :tests),
         where:
           case.tenant_uuid == ^tenant_uuid and
             fragment("?->'details'->>'__type__'", phase) == "index",
@@ -613,13 +652,13 @@ defmodule Hygeia.CaseContext do
           # symptom_onset_dt
           fragment("(?->>'symptom_start')", case.clinical),
           # sampling_dt
-          fragment("?->>'test'", case.clinical),
+          fragment("(ARRAY_AGG(?))[1]", test.tested_at),
           # lab_report_dt
-          fragment("(?->>'laboratory_report')", case.clinical),
+          fragment("(ARRAY_AGG(?))[1]", test.laboratory_reported_at),
           # test_type
-          type(fragment("(?->>'test_kind')", case.clinical), Case.Clinical.TestKind),
+          type(fragment("(ARRAY_AGG(?))[1]", test.kind), Test.Kind),
           # test_result
-          type(fragment("(?->>'result')", case.clinical), Case.Clinical.Result),
+          type(fragment("(ARRAY_AGG(?))[1]", test.result), Test.Result),
           # exp_type
           type(
             fragment(
@@ -1064,6 +1103,7 @@ defmodule Hygeia.CaseContext do
         |> List.update_at(@bag_med_16122020_case_fields_index.test_result, fn
           :positive -> 1
           :negative -> 2
+          :inconclusive -> 3
           nil -> 3
         end)
         |> List.update_at(@bag_med_16122020_case_fields_index.reason_end_of_iso, fn
@@ -1227,6 +1267,7 @@ defmodule Hygeia.CaseContext do
           ),
         on: fragment("?->>'type'", received_transmission_case_ism_id) == "ism_case",
         left_join: employer in assoc(person, :employers),
+        left_join: test in assoc(case, :tests),
         where:
           case.tenant_uuid == ^tenant_uuid and
             fragment("?->'details'->>'__type__'", phase) == "possible_index",
@@ -1532,11 +1573,11 @@ defmodule Hygeia.CaseContext do
           # symptom_onset_dt
           fragment("(?->>'symptom_start')", case.clinical),
           # test_type
-          type(fragment("(?->>'test_kind')", case.clinical), Case.Clinical.TestKind),
+          type(fragment("(ARRAY_AGG(?))[1]", test.kind), Test.Kind),
           # sampling_dt
-          fragment("?->>'test'", case.clinical),
+          fragment("(ARRAY_AGG(?))[1]", test.tested_at),
           # test_result
-          type(fragment("(?->>'result')", case.clinical), Case.Clinical.Result),
+          type(fragment("(ARRAY_AGG(?))[1]", test.result), Test.Result),
           # onset_quar_dt
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", phase)),
           # end_quar_dt
@@ -1667,6 +1708,7 @@ defmodule Hygeia.CaseContext do
         |> List.update_at(@bag_med_16122020_contact_fields_index.test_result, fn
           :positive -> 1
           :negative -> 2
+          :inconclusive -> 3
           nil -> 3
         end)
         |> normalize_boolean_and_unknown_field(@bag_med_16122020_contact_fields_index.vacc_yn)
@@ -1938,11 +1980,13 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec change_case(
-          case :: Case.t() | Case.empty(),
+          case :: Case.t() | Case.empty() | Changeset.t(Case.t() | Case.empty()),
           attrs :: Hygeia.ecto_changeset_params()
         ) ::
           Ecto.Changeset.t(Case.t())
-  def change_case(%Case{} = case, attrs \\ %{}), do: Case.changeset(case, attrs)
+  def change_case(case, attrs \\ %{})
+  def change_case(%Case{} = case, attrs), do: Case.changeset(case, attrs)
+  def change_case(%Changeset{data: %Case{}} = case, attrs), do: Case.changeset(case, attrs)
 
   @spec change_new_case(
           person :: Person.t(),
@@ -2576,4 +2620,112 @@ defmodule Hygeia.CaseContext do
           preload: [:user]
         )
       )
+
+  @doc """
+  Returns the list of tests.
+
+  ## Examples
+
+      iex> list_tests()
+      [%Test{}, ...]
+
+  """
+  @spec list_tests :: [Test.t()]
+  def list_tests, do: Repo.all(Test)
+
+  @doc """
+  Gets a single test.
+
+  Raises `Ecto.NoResultsError` if the Test does not exist.
+
+  ## Examples
+
+      iex> get_test!(123)
+      %Test{}
+
+      iex> get_test!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_test!(id :: Ecto.UUID.t()) :: Test.t()
+  def get_test!(id), do: Repo.get!(Test, id)
+
+  @doc """
+  Creates a test.
+
+  ## Examples
+
+      iex> create_test(%{field: value})
+      {:ok, %Test{}}
+
+      iex> create_test(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_test(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Test.t()} | {:error, Ecto.Changeset.t(Test.t())}
+  def create_test(case, attrs \\ %{}),
+    do:
+      case
+      |> Ecto.build_assoc(:tests)
+      |> change_test(attrs)
+      |> versioning_insert()
+      |> broadcast("tests", :create, & &1.uuid, &["cases:#{&1.case_uuid}"])
+      |> versioning_extract()
+
+  @doc """
+  Updates a test.
+
+  ## Examples
+
+      iex> update_test(test, %{field: new_value})
+      {:ok, %Test{}}
+
+      iex> update_test(test, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_test(test :: Test.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Test.t()} | {:error, Ecto.Changeset.t(Test.t())}
+  def update_test(%Test{} = test, attrs),
+    do:
+      test
+      |> change_test(attrs)
+      |> versioning_update()
+      |> broadcast("tests", :update, & &1.uuid, &["cases:#{&1.case_uuid}"])
+      |> versioning_extract()
+
+  @doc """
+  Deletes a test.
+
+  ## Examples
+
+      iex> delete_test(test)
+      {:ok, %Test{}}
+
+      iex> delete_test(test)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_test(test :: Test.t()) :: {:ok, Test.t()} | {:error, Ecto.Changeset.t(Test.t())}
+  def delete_test(%Test{} = test),
+    do:
+      test
+      |> change_test()
+      |> versioning_delete()
+      |> broadcast("tests", :delete, & &1.uuid, &["cases:#{&1.case_uuid}"])
+      |> versioning_extract()
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking test changes.
+
+  ## Examples
+
+      iex> change_test(test)
+      %Ecto.Changeset{data: %Test{}}
+
+  """
+  @spec change_test(test :: Test.t() | Test.empty(), attrs :: Hygeia.ecto_changeset_params()) ::
+          Changeset.t(Test.t())
+  def change_test(%Test{} = test, attrs \\ %{}), do: Test.changeset(test, attrs)
 end

@@ -14,6 +14,7 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
@@ -328,12 +329,16 @@ defmodule Hygeia.CaseContextTest do
         reasons_for_test: [:symptoms, :outbreak_examination],
         has_symptoms: true,
         symptoms: [:fever],
-        test: ~D[2020-10-11],
-        laboratory_report: ~D[2020-10-12],
-        test_kind: :pcr,
-        result: :positive,
         symptom_start: ~D[2020-10-10]
       },
+      tests: [
+        %{
+          tested_at: ~D[2020-10-11],
+          laboratory_reported_at: ~D[2020-10-12],
+          kind: :pcr,
+          result: :positive
+        }
+      ],
       external_references: [
         %{
           type: :ism_case,
@@ -390,12 +395,14 @@ defmodule Hygeia.CaseContextTest do
 
     test "list_cases/0 returns all cases" do
       case = case_fixture()
-      assert Repo.preload(CaseContext.list_cases(), :hospitalizations) == [case]
+      assert Repo.preload(CaseContext.list_cases(), hospitalizations: [], tests: []) == [case]
     end
 
     test "get_case!/1 returns the case with given id" do
       case = case_fixture()
-      assert case.uuid |> CaseContext.get_case!() |> Repo.preload(:hospitalizations) == case
+
+      assert case.uuid |> CaseContext.get_case!() |> Repo.preload(hospitalizations: [], tests: []) ==
+               case
     end
 
     test "create_case/1 with valid data creates a case" do
@@ -404,76 +411,7 @@ defmodule Hygeia.CaseContextTest do
       user = %User{uuid: user_uuid} = user_fixture()
       organisation = organisation_fixture()
 
-      assert {:ok,
-              %Case{
-                clinical: %Clinical{
-                  laboratory_report: ~D[2020-10-12],
-                  reasons_for_test: [:symptoms, :outbreak_examination],
-                  result: :positive,
-                  has_symptoms: true,
-                  symptoms: [:fever],
-                  test: ~D[2020-10-11],
-                  test_kind: :pcr,
-                  uuid: _,
-                  symptom_start: ~D[2020-10-10]
-                },
-                complexity: :high,
-                external_references: [
-                  %ExternalReference{type: :ism_case, type_name: nil, uuid: _, value: "7000"},
-                  %ExternalReference{type: :other, type_name: "foo", uuid: _, value: "7000"}
-                ],
-                hospitalizations: [
-                  %Hospitalization{end: ~D[2020-10-15], start: ~D[2020-10-13], uuid: _} =
-                    hospitalization,
-                  %Hospitalization{end: ~D[2020-10-17], start: ~D[2020-10-16], uuid: _}
-                ],
-                human_readable_id: _,
-                inserted_at: _,
-                monitoring: %Monitoring{
-                  address: %Address{
-                    address: "Helmweg 48",
-                    country: "CH",
-                    place: "Winterthur",
-                    subdivision: "ZH",
-                    uuid: _,
-                    zip: "8405"
-                  },
-                  first_contact: ~D[2020-10-12],
-                  location: :home,
-                  location_details: "Bei Mutter zuhause",
-                  uuid: _
-                },
-                phases: [
-                  %Phase{
-                    details: %Phase.PossibleIndex{
-                      type: :contact_person,
-                      end_reason: :converted_to_index
-                    },
-                    end: ~D[2020-10-11],
-                    start: ~D[2020-10-10],
-                    uuid: _
-                  },
-                  %Phase{
-                    details: %Phase.Index{
-                      end_reason: :healed
-                    },
-                    end: ~D[2020-10-22],
-                    start: ~D[2020-10-12],
-                    uuid: _
-                  }
-                ],
-                person: _,
-                person_uuid: ^person_uuid,
-                status: :first_contact,
-                supervisor: _,
-                supervisor_uuid: ^user_uuid,
-                tenant: _,
-                tenant_uuid: ^tenant_uuid,
-                tracer: _,
-                tracer_uuid: ^user_uuid,
-                updated_at: _,
-                uuid: _
-              }} =
+      assert {:ok, case} =
                CaseContext.create_case(
                  person,
                  @valid_attrs
@@ -483,6 +421,74 @@ defmodule Hygeia.CaseContextTest do
                    organisation.uuid
                  )
                )
+
+      case = Repo.preload(case, tests: [])
+
+      assert %Case{
+               clinical: %Clinical{
+                 reasons_for_test: [:symptoms, :outbreak_examination],
+                 has_symptoms: true,
+                 symptoms: [:fever],
+                 uuid: _,
+                 symptom_start: ~D[2020-10-10]
+               },
+               complexity: :high,
+               external_references: [
+                 %ExternalReference{type: :ism_case, type_name: nil, uuid: _, value: "7000"},
+                 %ExternalReference{type: :other, type_name: "foo", uuid: _, value: "7000"}
+               ],
+               hospitalizations: [
+                 %Hospitalization{end: ~D[2020-10-15], start: ~D[2020-10-13], uuid: _} =
+                   hospitalization,
+                 %Hospitalization{end: ~D[2020-10-17], start: ~D[2020-10-16], uuid: _}
+               ],
+               human_readable_id: _,
+               inserted_at: _,
+               monitoring: %Monitoring{
+                 address: %Address{
+                   address: "Helmweg 48",
+                   country: "CH",
+                   place: "Winterthur",
+                   subdivision: "ZH",
+                   uuid: _,
+                   zip: "8405"
+                 },
+                 first_contact: ~D[2020-10-12],
+                 location: :home,
+                 location_details: "Bei Mutter zuhause",
+                 uuid: _
+               },
+               phases: [
+                 %Phase{
+                   details: %Phase.PossibleIndex{
+                     type: :contact_person,
+                     end_reason: :converted_to_index
+                   },
+                   end: ~D[2020-10-11],
+                   start: ~D[2020-10-10],
+                   uuid: _
+                 },
+                 %Phase{
+                   details: %Phase.Index{
+                     end_reason: :healed
+                   },
+                   end: ~D[2020-10-22],
+                   start: ~D[2020-10-12],
+                   uuid: _
+                 }
+               ],
+               person: _,
+               person_uuid: ^person_uuid,
+               status: :first_contact,
+               supervisor: _,
+               supervisor_uuid: ^user_uuid,
+               tenant: _,
+               tenant_uuid: ^tenant_uuid,
+               tracer: _,
+               tracer_uuid: ^user_uuid,
+               updated_at: _,
+               uuid: _
+             } = case
 
       assert %Hospitalization{organisation: %Organisation{}} =
                Repo.preload(hospitalization, :organisation)
@@ -541,7 +547,11 @@ defmodule Hygeia.CaseContextTest do
     test "update_case/2 with invalid data returns error changeset" do
       case = case_fixture()
       assert {:error, %Ecto.Changeset{}} = CaseContext.update_case(case, @invalid_attrs)
-      assert case == case.uuid |> CaseContext.get_case!() |> Repo.preload(:hospitalizations)
+
+      assert case ==
+               case.uuid
+               |> CaseContext.get_case!()
+               |> Repo.preload(hospitalizations: [], tests: [])
     end
 
     test "delete_case/1 deletes the case" do
@@ -667,10 +677,15 @@ defmodule Hygeia.CaseContextTest do
               has_symptoms: true,
               symptoms: [:fever],
               reasons_for_test: [:symptoms],
-              test_kind: :serology,
-              result: :positive,
               symptom_start: ~D[2020-10-04]
-            }
+            },
+            tests: [
+              %{
+                kind: :serology,
+                result: :positive,
+                tested_at: ~D[2020-10-05]
+              }
+            ]
           })
 
         _note_case_jony = sms_fixture(case_jony, %{inserted_at: ~U[2021-01-05 11:55:10.783294Z]})
@@ -704,7 +719,8 @@ defmodule Hygeia.CaseContextTest do
             clinical: %{
               has_symptoms: false,
               reasons_for_test: [:contact_tracing]
-            }
+            },
+            tests: []
           })
 
         transmission_jony =
@@ -831,7 +847,7 @@ defmodule Hygeia.CaseContextTest do
                    "quar_yn" => "2",
                    "reason_end_of_iso" => "",
                    "reason_quar" => "2",
-                   "sampling_dt" => "",
+                   "sampling_dt" => "2020-10-05",
                    "sex" => "1",
                    "street_name" => "Erlen 4",
                    "street_number" => "",
@@ -1073,10 +1089,15 @@ defmodule Hygeia.CaseContextTest do
               has_symptoms: true,
               symptoms: [:fever],
               reasons_for_test: [:symptoms],
-              test_kind: :serology,
-              result: :positive,
               symptom_start: ~D[2020-10-04]
-            }
+            },
+            tests: [
+              %{
+                kind: :serology,
+                result: :positive,
+                tested_at: ~D[2020-10-05]
+              }
+            ]
           })
 
         case_jay =
@@ -1100,7 +1121,8 @@ defmodule Hygeia.CaseContextTest do
             clinical: %{
               has_symptoms: false,
               reasons_for_test: [:contact_tracing]
-            }
+            },
+            tests: []
           })
 
         transmission_jony =
@@ -1211,7 +1233,7 @@ defmodule Hygeia.CaseContextTest do
                    "profession" => "",
                    "quar_loc_type" => "1",
                    "reason_end_quar" => "",
-                   "sampling_dt" => "",
+                   "sampling_dt" => "2020-10-05",
                    "sex" => "1",
                    "street_name" => "Erlen 4",
                    "street_number" => "",
@@ -1672,6 +1694,92 @@ defmodule Hygeia.CaseContextTest do
       hospitalization = hospitalization_fixture()
 
       assert %Ecto.Changeset{} = CaseContext.change_hospitalization(hospitalization)
+    end
+  end
+
+  describe "tests" do
+    @valid_attrs %{
+      kind: :pcr,
+      laboratory_reported_at: ~D[2010-04-17],
+      reporting_unit: %{},
+      result: :positive,
+      sponsor: %{},
+      tested_at: ~D[2010-04-17],
+      reference: "123"
+    }
+    @update_attrs %{
+      kind: :quick,
+      laboratory_reported_at: ~D[2011-05-18],
+      reporting_unit: %{},
+      result: :negative,
+      sponsor: %{},
+      tested_at: ~D[2011-05-18],
+      reference: "456"
+    }
+    @invalid_attrs %{
+      kind: nil,
+      laboratory_reported_at: nil,
+      reporting_unit: nil,
+      result: nil,
+      sponsor: nil,
+      tested_at: nil,
+      reference: nil
+    }
+
+    test "list_tests/0 returns all tests" do
+      case =
+        case_fixture(
+          person_fixture(),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          tests: []
+        )
+
+      test = test_fixture(case)
+      assert CaseContext.list_tests() == [test]
+    end
+
+    test "get_test!/1 returns the test with given id" do
+      test = test_fixture()
+      assert CaseContext.get_test!(test.uuid) == test
+    end
+
+    test "create_test/1 with valid data creates a test" do
+      assert {:ok, %Test{} = test} = CaseContext.create_test(case_fixture(), @valid_attrs)
+      assert test.kind == :pcr
+      assert test.laboratory_reported_at == ~D[2010-04-17]
+      assert test.result == :positive
+      assert test.tested_at == ~D[2010-04-17]
+    end
+
+    test "create_test/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = CaseContext.create_test(case_fixture(), @invalid_attrs)
+    end
+
+    test "update_test/2 with valid data updates the test" do
+      test = test_fixture()
+      assert {:ok, %Test{} = test} = CaseContext.update_test(test, @update_attrs)
+      assert test.kind == :quick
+      assert test.laboratory_reported_at == ~D[2011-05-18]
+      assert test.result == :negative
+      assert test.tested_at == ~D[2011-05-18]
+    end
+
+    test "update_test/2 with invalid data returns error changeset" do
+      test = test_fixture()
+      assert {:error, %Ecto.Changeset{}} = CaseContext.update_test(test, @invalid_attrs)
+      assert test == CaseContext.get_test!(test.uuid)
+    end
+
+    test "delete_test/1 deletes the test" do
+      test = test_fixture()
+      assert {:ok, %Test{}} = CaseContext.delete_test(test)
+      assert_raise Ecto.NoResultsError, fn -> CaseContext.get_test!(test.uuid) end
+    end
+
+    test "change_test/1 returns a test changeset" do
+      test = test_fixture()
+      assert %Ecto.Changeset{} = CaseContext.change_test(test)
     end
   end
 end

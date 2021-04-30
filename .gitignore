@@ -38,3 +38,7 @@ apps/hygeia/lib/hygeia/ecto_type/country/*.hrl
 # Dialyzer
 /priv/plts/*.plt
 /priv/plts/*.plt.hash
+
+# Temp Dirs
+/temp
+/apps/*/temp

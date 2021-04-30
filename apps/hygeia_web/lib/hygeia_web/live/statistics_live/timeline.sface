@@ -114,7 +114,7 @@
             
                     {end_reason, entries} ->
                       %{
-                        label: case_phase_index_end_reason_translation(end_reason),
+                        label: Hygeia.CaseContext.Case.Phase.Index.EndReason.translate(end_reason),
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }

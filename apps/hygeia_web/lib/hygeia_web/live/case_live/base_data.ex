@@ -122,6 +122,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   def handle_event("validate", %{"case" => case_params}, socket) do
     case_params =
       case_params
+      |> Map.put_new("tests", [])
       |> Map.put_new("hospitalizations", [])
       |> Map.put_new("external_references", [])
 
@@ -137,6 +138,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   def handle_event("save", %{"case" => case_params}, socket) do
     case_params =
       case_params
+      |> Map.put_new("tests", [])
       |> Map.put_new("hospitalizations", [])
       |> Map.put_new("phases", [])
       |> Map.put_new("external_references", [])
@@ -244,6 +246,40 @@ defmodule HygeiaWeb.CaseLive.BaseData do
      |> maybe_block_navigation()}
   end
 
+  def handle_event(
+        "add_test",
+        _params,
+        %{assigns: %{changeset: changeset, case: case}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_case(
+         case,
+         changeset_add_to_params(changeset, :tests, %{uuid: Ecto.UUID.generate()})
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
+  def handle_event(
+        "remove_test",
+        %{"changeset-uuid" => uuid} = _params,
+        %{assigns: %{changeset: changeset, case: case}} = socket
+      ) do
+    {:noreply,
+     socket
+     |> assign(
+       :changeset,
+       CaseContext.change_case(
+         case,
+         changeset_remove_from_params_by_id(changeset, :tests, %{uuid: uuid})
+       )
+     )
+     |> maybe_block_navigation()}
+  end
+
   def handle_event("show_complexity_help", _params, socket) do
     {:noreply, assign(socket, show_complexity_help: true)}
   end
@@ -286,7 +322,12 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
   defp load_data(socket, case) do
     case =
-      Repo.preload(case, person: [tenant: []], tenant: [], hospitalizations: [organisation: []])
+      Repo.preload(case,
+        person: [tenant: []],
+        tenant: [],
+        hospitalizations: [organisation: []],
+        tests: []
+      )
 
     changeset = CaseContext.change_case(case)
 

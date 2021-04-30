@@ -1,0 +1,13 @@
+.component-row-apply {
+    .action {
+        &.certain  {
+            background-color: green;
+        }
+        &.uncertain  {
+            background-color: yellow;
+        }
+        &.input_needed  {
+            background-color: red;
+        }
+    }
+}

@@ -88,14 +88,22 @@ defmodule HygeiaWeb.VersionLive.Change do
     do: type |> String.to_existing_atom() |> translate_contact_method_type()
 
   defp render_tree(type, Hygeia.CaseContext.ExternalReference.Type, _assigns),
-    do: type |> String.to_existing_atom() |> translate_external_reference_type()
+    do: type |> String.to_existing_atom() |> Hygeia.CaseContext.ExternalReference.Type.translate()
 
-  defp render_tree(date, type, _assigns) when type in [:naive_datetime, :naive_datetime_usec],
-    do:
-      date
-      |> NaiveDateTime.from_iso8601!()
-      |> DateTime.from_naive!("Europe/Zurich")
-      |> HygeiaCldr.DateTime.to_string!()
+  defp render_tree(type, Hygeia.ImportContext.Import.Type, _assigns),
+    do: type |> String.to_existing_atom() |> Hygeia.ImportContext.Import.Type.translate()
+
+  defp render_tree(date, type, _assigns)
+       when type in [
+              :naive_datetime,
+              :naive_datetime_usec,
+              Hygeia.EctoType.LocalizedNaiveDatetime
+            ],
+       do:
+         date
+         |> NaiveDateTime.from_iso8601!()
+         |> DateTime.from_naive!("Europe/Zurich")
+         |> HygeiaCldr.DateTime.to_string!()
 
   defp render_tree(date, type, assigns)
        when type in [:utc_datetime, :datetime, :datetime_usec, :utc_datetime_usec] do

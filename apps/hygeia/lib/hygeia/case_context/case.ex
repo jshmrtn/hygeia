@@ -16,6 +16,7 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
@@ -32,7 +33,7 @@ defmodule Hygeia.CaseContext.Case do
           status: Status.t() | nil,
           clinical: Clinical.t() | nil,
           external_references: [ExternalReference.t()] | nil,
-          hospitalizations: [Hospitalization.t()] | nil,
+          hospitalizations: Ecto.Schema.has_many(Hospitalization.t()) | nil,
           monitoring: Monitoring.t() | nil,
           phases: [Phase.t()] | nil,
           person_uuid: Ecto.UUID.t() | nil,
@@ -47,6 +48,7 @@ defmodule Hygeia.CaseContext.Case do
           emails: Ecto.Schema.has_many(Email.t()) | nil,
           sms: Ecto.Schema.has_many(SMS.t()) | nil,
           notes: Ecto.Schema.has_many(Note.t()) | nil,
+          tests: Ecto.Schema.has_many(Test.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -58,7 +60,7 @@ defmodule Hygeia.CaseContext.Case do
           status: Status.t(),
           clinical: Clinical.t(),
           external_references: [ExternalReference.t()],
-          hospitalizations: [Hospitalization.t()],
+          hospitalizations: Ecto.Schema.has_many(Hospitalization.t()),
           monitoring: Monitoring.t(),
           phases: [Phase.t()],
           person_uuid: Ecto.UUID.t(),
@@ -73,6 +75,7 @@ defmodule Hygeia.CaseContext.Case do
           emails: Ecto.Schema.has_many(Email.t()),
           sms: Ecto.Schema.has_many(SMS.t()),
           notes: Ecto.Schema.has_many(Note.t()),
+          tests: Ecto.Schema.has_many(Test.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -102,6 +105,7 @@ defmodule Hygeia.CaseContext.Case do
     has_many :sms, SMS, foreign_key: :case_uuid
     has_many :notes, Note, foreign_key: :case_uuid
     has_many :hospitalizations, Hospitalization, foreign_key: :case_uuid, on_replace: :delete
+    has_many :tests, Test, foreign_key: :case_uuid, on_replace: :delete
 
     timestamps()
   end
@@ -127,7 +131,6 @@ defmodule Hygeia.CaseContext.Case do
     ])
     |> fill_uuid
     |> fill_human_readable_id
-    |> prefill_first_phase
     |> validate_required([
       :uuid,
       :human_readable_id,
@@ -138,6 +141,7 @@ defmodule Hygeia.CaseContext.Case do
     |> cast_embed(:clinical)
     |> cast_embed(:external_references)
     |> cast_assoc(:hospitalizations)
+    |> cast_assoc(:tests)
     |> cast_embed(:monitoring)
     |> cast_embed(:phases, required: true)
     |> validate_at_least_one_phase()
@@ -145,15 +149,6 @@ defmodule Hygeia.CaseContext.Case do
     |> validate_status_hospitalization()
     |> validate_phase_orders()
     |> validate_phase_no_overlap()
-  end
-
-  defp prefill_first_phase(changeset) do
-    changeset
-    |> fetch_field!(:phases)
-    |> case do
-      [] -> put_embed(changeset, :phases, [%Phase{}])
-      _other -> changeset
-    end
   end
 
   defp validate_at_least_one_phase(changeset) do
