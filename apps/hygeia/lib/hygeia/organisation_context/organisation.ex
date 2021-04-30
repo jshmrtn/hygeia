@@ -24,7 +24,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
   @derive {Phoenix.Param, key: :uuid}
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           name: String.t() | nil,
           type: Type.t() | nil,
           type_other: String.t() | nil,
@@ -37,7 +37,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           updated_at: NaiveDateTime.t() | nil
         }
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           name: String.t(),
           type: Type.t() | nil,
           type_other: String.t() | nil,

@@ -84,7 +84,7 @@ defmodule Hygeia.UserContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_user!(id :: String.t()) :: User.t()
+  @spec get_user!(id :: Ecto.UUID.t()) :: User.t()
   def get_user!(id), do: Repo.get!(User, id)
 
   @spec get_user_by_sub!(sub :: String.t()) :: User.t()

@@ -10,14 +10,14 @@ defmodule Hygeia.VersionContext.Version do
   alias Hygeia.VersionContext.Version.Origin
 
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           event: Event.t(),
           item_changes: map,
           origin: Origin.t(),
           item_pk: map,
           item_table: String.t(),
           user: Ecto.Schema.belongs_to(User.t()),
-          originator_id: String.t(),
+          originator_id: Ecto.UUID.t(),
           inserted_at: NaiveDateTime.t()
         }
 

@@ -114,7 +114,7 @@ defmodule Hygeia.OrganisationContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_organisation!(id :: String.t()) :: Organisation.t()
+  @spec get_organisation!(id :: Ecto.UUID.t()) :: Organisation.t()
   def get_organisation!(id), do: Repo.get!(Organisation, id)
 
   @doc """
@@ -297,7 +297,7 @@ defmodule Hygeia.OrganisationContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_position!(id :: String.t()) :: Position.t()
+  @spec get_position!(id :: Ecto.UUID.t()) :: Position.t()
   def get_position!(id), do: Repo.get!(Position, id)
 
   @doc """
@@ -413,7 +413,7 @@ defmodule Hygeia.OrganisationContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_affiliation!(id :: String.t()) :: Affiliation.t()
+  @spec get_affiliation!(id :: Ecto.UUID.t()) :: Affiliation.t()
   def get_affiliation!(id), do: Repo.get!(Affiliation, id)
 
   @doc """
@@ -535,12 +535,12 @@ defmodule Hygeia.OrganisationContext do
   @spec list_divisions :: [Division.t()]
   def list_divisions, do: Repo.all(Division)
 
-  @spec list_divisions_query(organisation_uuid :: String.t()) :: Ecto.Query.t()
+  @spec list_divisions_query(organisation_uuid :: Ecto.UUID.t()) :: Ecto.Query.t()
   def list_divisions_query(organisation_uuid) when is_binary(organisation_uuid),
     do: from(division in Division, where: division.organisation_uuid == ^organisation_uuid)
 
   @spec fulltext_division_search_query(
-          organisation_uuid :: String.t(),
+          organisation_uuid :: Ecto.UUID.t(),
           query :: String.t(),
           limit :: pos_integer()
         ) ::
@@ -570,7 +570,7 @@ defmodule Hygeia.OrganisationContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_division!(id :: String.t()) :: Division.t()
+  @spec get_division!(id :: Ecto.UUID.t()) :: Division.t()
   def get_division!(id), do: Repo.get!(Division, id)
 
   @doc """

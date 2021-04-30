@@ -37,7 +37,7 @@ defmodule Hygeia.CaseContext.Case do
   ]
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           human_readable_id: String.t() | nil,
           complexity: Complexity.t() | nil,
           status: Status.t() | nil,
@@ -46,13 +46,13 @@ defmodule Hygeia.CaseContext.Case do
           hospitalizations: [Hospitalization.t()] | nil,
           monitoring: Monitoring.t() | nil,
           phases: [Phase.t()] | nil,
-          person_uuid: String.t() | nil,
+          person_uuid: Ecto.UUID.t() | nil,
           person: Ecto.Schema.belongs_to(Person.t()) | nil,
-          tenant_uuid: String.t() | nil,
+          tenant_uuid: Ecto.UUID.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
-          tracer_uuid: String.t() | nil,
+          tracer_uuid: Ecto.UUID.t() | nil,
           tracer: Ecto.Schema.belongs_to(User.t()) | nil,
-          supervisor_uuid: String.t() | nil,
+          supervisor_uuid: Ecto.UUID.t() | nil,
           supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
           possible_index_submissions: Ecto.Schema.many_to_many(PossibleIndexSubmission.t()) | nil,
           emails: Ecto.Schema.has_many(Email.t()) | nil,
@@ -63,7 +63,7 @@ defmodule Hygeia.CaseContext.Case do
         }
 
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           human_readable_id: String.t(),
           complexity: Complexity.t() | nil,
           status: Status.t(),
@@ -72,13 +72,13 @@ defmodule Hygeia.CaseContext.Case do
           hospitalizations: [Hospitalization.t()],
           monitoring: Monitoring.t(),
           phases: [Phase.t()],
-          person_uuid: String.t(),
+          person_uuid: Ecto.UUID.t(),
           person: Ecto.Schema.belongs_to(Person.t()),
-          tenant_uuid: String.t(),
+          tenant_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
-          tracer_uuid: String.t() | nil,
+          tracer_uuid: Ecto.UUID.t() | nil,
           tracer: Ecto.Schema.belongs_to(User.t()) | nil,
-          supervisor_uuid: String.t() | nil,
+          supervisor_uuid: Ecto.UUID.t() | nil,
           supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
           possible_index_submissions: Ecto.Schema.many_to_many(PossibleIndexSubmission.t()),
           emails: Ecto.Schema.has_many(Email.t()),

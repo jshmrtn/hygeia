@@ -59,7 +59,7 @@ defmodule HygeiaWeb.SystemMessageLive.Create do
   def roles,
     do: Enum.map(Role.__enum_map__(), &{&1, &1})
 
-  @spec tenants :: [{name :: String.t(), uuid :: String.t()}]
+  @spec tenants :: [{name :: String.t(), uuid :: Ecto.UUID.t()}]
   def tenants,
     do:
       TenantContext.list_tenants()

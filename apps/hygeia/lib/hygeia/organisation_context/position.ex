@@ -11,21 +11,21 @@ defmodule Hygeia.OrganisationContext.Position do
   @derive {Phoenix.Param, key: :uuid}
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           position: String.t() | nil,
-          person_uuid: String.t() | nil,
+          person_uuid: Ecto.UUID.t() | nil,
           person: Ecto.Schema.belongs_to(Person.t()) | nil,
-          organisation_uuid: String.t() | nil,
+          organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           position: String.t(),
-          person_uuid: String.t(),
+          person_uuid: Ecto.UUID.t(),
           person: Ecto.Schema.belongs_to(Person.t()),
-          organisation_uuid: String.t(),
+          organisation_uuid: Ecto.UUID.t(),
           organisation: Ecto.Schema.belongs_to(Organisation.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()

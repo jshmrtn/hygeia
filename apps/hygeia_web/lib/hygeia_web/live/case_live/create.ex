@@ -269,7 +269,7 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   @spec decline_duplicate(
           changeset :: Ecto.Changeset.t(),
-          person_changeset_uuid :: String.t(),
+          person_changeset_uuid :: Ecto.UUID.t(),
           schema_module :: atom
         ) ::
           Ecto.Changeset.t()
@@ -290,7 +290,7 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   @spec accept_duplicate(
           changeset :: Ecto.Changeset.t(),
-          person_changeset_uuid :: String.t(),
+          person_changeset_uuid :: Ecto.UUID.t(),
           person :: Person.t() | {Case.t(), Person.t()},
           schema_module :: atom
         ) :: Ecto.Changeset.t()
@@ -320,7 +320,7 @@ defmodule HygeiaWeb.CaseLive.Create do
 
   @spec remove_person(
           changeset :: Ecto.Changeset.t(),
-          person_changeset_uuid :: String.t(),
+          person_changeset_uuid :: Ecto.UUID.t(),
           schema_module :: atom
         ) :: Ecto.Changeset.t()
   def remove_person(changeset, person_changeset_uuid, schema_module),

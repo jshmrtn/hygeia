@@ -14,21 +14,21 @@ defmodule Hygeia.TenantContext.SedexExport do
   @derive {Phoenix.Param, key: :uuid}
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           scheduling_date: NaiveDateTime.t() | nil,
           status: Status.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
-          tenant_uuid: String.t() | nil,
+          tenant_uuid: Ecto.UUID.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           scheduling_date: NaiveDateTime.t(),
           status: Status.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
-          tenant_uuid: String.t(),
+          tenant_uuid: Ecto.UUID.t(),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }

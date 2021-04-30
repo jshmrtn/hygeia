@@ -21,7 +21,7 @@ defmodule Hygeia.StatisticsContext.NewCasesPerDay do
             date: Date.t(),
             type: :index,
             sub_type: nil,
-            tenant_uuid: String.t(),
+            tenant_uuid: Ecto.UUID.t(),
             tenant: Ecto.Schema.belongs_to(Tenant.t())
           }
           | %__MODULE__{
@@ -29,7 +29,7 @@ defmodule Hygeia.StatisticsContext.NewCasesPerDay do
               date: Date.t(),
               type: :possible_index,
               sub_type: PossibleIndexType.t(),
-              tenant_uuid: String.t(),
+              tenant_uuid: Ecto.UUID.t(),
               tenant: Ecto.Schema.belongs_to(Tenant.t())
             }
 

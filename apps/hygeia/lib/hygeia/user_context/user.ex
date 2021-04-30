@@ -17,7 +17,7 @@ defmodule Hygeia.UserContext.User do
   @derive {Phoenix.Param, key: :uuid}
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           email: String.t() | nil,
           display_name: String.t() | nil,
           iam_sub: String.t() | nil,
@@ -30,7 +30,7 @@ defmodule Hygeia.UserContext.User do
         }
 
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           email: String.t(),
           display_name: String.t(),
           iam_sub: String.t(),

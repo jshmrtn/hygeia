@@ -23,9 +23,9 @@ defmodule Hygeia.UserContext.Grant do
 
   @type empty :: %__MODULE__{
           user: Ecto.Schema.belongs_to(User.t()) | nil,
-          user_uuid: String.t() | nil,
+          user_uuid: Ecto.UUID.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
-          tenant_uuid: String.t() | nil,
+          tenant_uuid: Ecto.UUID.t() | nil,
           role: Role.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
@@ -33,9 +33,9 @@ defmodule Hygeia.UserContext.Grant do
 
   @type t :: %__MODULE__{
           user: Ecto.Schema.belongs_to(User.t()),
-          user_uuid: String.t(),
+          user_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
-          tenant_uuid: String.t(),
+          tenant_uuid: Ecto.UUID.t(),
           role: Role.t(),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()

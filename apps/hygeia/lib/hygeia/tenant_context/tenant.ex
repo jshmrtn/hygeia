@@ -17,7 +17,7 @@ defmodule Hygeia.TenantContext.Tenant do
   @derive {Phoenix.Param, key: :uuid}
 
   @type empty :: %__MODULE__{
-          uuid: String.t() | nil,
+          uuid: Ecto.UUID.t() | nil,
           name: String.t() | nil,
           case_management_enabled: boolean | nil,
           public_statistics: boolean | nil,
@@ -40,7 +40,7 @@ defmodule Hygeia.TenantContext.Tenant do
         }
 
   @type t :: %__MODULE__{
-          uuid: String.t(),
+          uuid: Ecto.UUID.t(),
           name: String.t(),
           case_management_enabled: boolean,
           public_statistics: boolean,

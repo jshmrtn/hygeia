@@ -35,7 +35,7 @@ defmodule Hygeia.TenantContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_tenant!(id :: String.t()) :: Tenant.t()
+  @spec get_tenant!(id :: Ecto.UUID.t()) :: Tenant.t()
   def get_tenant!(id), do: Repo.get!(Tenant, id)
 
   @doc """
@@ -199,7 +199,7 @@ defmodule Hygeia.TenantContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_sedex_export!(id :: String.t()) :: SedexExport.t()
+  @spec get_sedex_export!(id :: Ecto.UUID.t()) :: SedexExport.t()
   def get_sedex_export!(id), do: Repo.get!(SedexExport, id)
 
   @doc """

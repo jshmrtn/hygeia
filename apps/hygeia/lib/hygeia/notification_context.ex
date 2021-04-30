@@ -62,7 +62,7 @@ defmodule Hygeia.NotificationContext do
       ** (Ecto.NoResultsError)
 
   """
-  @spec get_notification!(id :: String.t()) :: Notification.t()
+  @spec get_notification!(id :: Ecto.UUID.t()) :: Notification.t()
   def get_notification!(id), do: Repo.get!(Notification, id)
 
   @doc """
