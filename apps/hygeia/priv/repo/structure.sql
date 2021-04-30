@@ -55,6 +55,27 @@ CREATE TYPE public.case_complexity AS ENUM (
 
 
 --
+-- Name: case_import_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.case_import_status AS ENUM (
+    'pending',
+    'discarded',
+    'resolved'
+);
+
+
+--
+-- Name: case_import_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.case_import_type AS ENUM (
+    'ism_2021_06_11_death',
+    'ism_2021_06_11_test'
+);
+
+
+--
 -- Name: case_phase_index_end_reason; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -152,6 +173,7 @@ CREATE TYPE public.email_status AS ENUM (
 CREATE TYPE public.external_reference_type AS ENUM (
     'ism_case',
     'ism_report',
+    'ism_patient',
     'other'
 );
 
@@ -2155,6 +2177,7 @@ CREATE TYPE public.test_reason AS ENUM (
 --
 
 CREATE TYPE public.test_result AS ENUM (
+    'inconclusive',
     'positive',
     'negative'
 );
@@ -2281,6 +2304,41 @@ CREATE FUNCTION public.email_send_failed() RETURNS trigger
       RETURN NEW;
     END
   $$;
+
+
+--
+-- Name: import_close(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.import_close() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+  DECLARE
+    OPEN_ROWS INTEGER;
+  BEGIN
+  UPDATE
+    imports AS update_import
+    SET closed_at = CASE
+      WHEN totals.count = 0 AND update_import.closed_at IS NULL THEN NOW()
+      WHEN totals.count = 0 AND update_import.closed_at IS NOT NULL THEN update_import.closed_at
+      ELSE NULL
+    END
+    FROM (
+      SELECT
+        select_import.uuid AS uuid,
+        COUNT(import_rows.uuid) AS count
+      FROM imports select_import
+      LEFT JOIN import_rows
+        ON select_import.uuid = import_rows.import_uuid AND
+          import_rows.status = 'pending'
+      WHERE select_import.uuid IN (OLD.import_uuid, NEW.import_uuid)
+      GROUP BY select_import.uuid
+    ) AS totals
+    WHERE totals.uuid = update_import.uuid;
+
+    RETURN NEW;
+  END
+$$;
 
 
 --
@@ -2607,6 +2665,38 @@ CREATE TABLE public.hospitalizations (
     "end" date,
     organisation_uuid uuid,
     case_uuid uuid,
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: import_rows; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.import_rows (
+    uuid uuid NOT NULL,
+    data jsonb NOT NULL,
+    corrected jsonb,
+    identifiers jsonb NOT NULL,
+    status public.case_import_status DEFAULT 'pending'::public.case_import_status,
+    import_uuid uuid NOT NULL,
+    case_uuid uuid,
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: imports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.imports (
+    uuid uuid NOT NULL,
+    type public.case_import_type NOT NULL,
+    closed_at timestamp without time zone,
+    change_date timestamp without time zone NOT NULL,
+    tenant_uuid uuid NOT NULL,
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -3141,6 +3231,25 @@ CREATE TABLE public.system_messages (
 
 
 --
+-- Name: tests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tests (
+    uuid uuid NOT NULL,
+    tested_at date,
+    laboratory_reported_at date,
+    kind public.test_kind NOT NULL,
+    result public.test_result,
+    sponsor jsonb,
+    reporting_unit jsonb,
+    case_uuid uuid NOT NULL,
+    reference character varying(255),
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: user_grants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3221,6 +3330,22 @@ ALTER TABLE ONLY public.emails
 
 ALTER TABLE ONLY public.hospitalizations
     ADD CONSTRAINT hospitalizations_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: import_rows import_rows_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.import_rows
+    ADD CONSTRAINT import_rows_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: imports imports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.imports
+    ADD CONSTRAINT imports_pkey PRIMARY KEY (uuid);
 
 
 --
@@ -3317,6 +3442,14 @@ ALTER TABLE ONLY public.system_messages
 
 ALTER TABLE ONLY public.tenants
     ADD CONSTRAINT tenants_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: tests tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tests
+    ADD CONSTRAINT tests_pkey PRIMARY KEY (uuid);
 
 
 --
@@ -3440,6 +3573,34 @@ CREATE INDEX emails_case_uuid_index ON public.emails USING btree (case_uuid);
 --
 
 CREATE INDEX emails_direction_status_last_try_index ON public.emails USING btree (direction, status, last_try);
+
+
+--
+-- Name: import_rows_case_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX import_rows_case_uuid_index ON public.import_rows USING btree (case_uuid);
+
+
+--
+-- Name: import_rows_data_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX import_rows_data_index ON public.import_rows USING btree (data);
+
+
+--
+-- Name: import_rows_import_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX import_rows_import_uuid_index ON public.import_rows USING btree (import_uuid);
+
+
+--
+-- Name: imports_tenant_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX imports_tenant_uuid_index ON public.imports USING btree (tenant_uuid);
 
 
 --
@@ -3849,6 +4010,13 @@ CREATE UNIQUE INDEX tenants_short_name_index ON public.tenants USING btree (shor
 
 
 --
+-- Name: tests_case_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX tests_case_uuid_index ON public.tests USING btree (case_uuid);
+
+
+--
 -- Name: transmissions_propagator_case_uuid_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4014,6 +4182,69 @@ CREATE TRIGGER hospitalizations_versioning_insert AFTER INSERT ON public.hospita
 --
 
 CREATE TRIGGER hospitalizations_versioning_update AFTER UPDATE ON public.hospitalizations FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
+
+
+--
+-- Name: import_rows import_rows_import_close_delete; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER import_rows_import_close_delete AFTER DELETE ON public.import_rows FOR EACH ROW EXECUTE FUNCTION public.import_close();
+
+
+--
+-- Name: import_rows import_rows_import_close_insert; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER import_rows_import_close_insert AFTER INSERT ON public.import_rows FOR EACH ROW EXECUTE FUNCTION public.import_close();
+
+
+--
+-- Name: import_rows import_rows_import_close_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER import_rows_import_close_update AFTER UPDATE OF status, import_uuid ON public.import_rows FOR EACH ROW EXECUTE FUNCTION public.import_close();
+
+
+--
+-- Name: import_rows import_rows_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER import_rows_versioning_delete AFTER DELETE ON public.import_rows FOR EACH ROW EXECUTE FUNCTION public.versioning_delete();
+
+
+--
+-- Name: import_rows import_rows_versioning_insert; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER import_rows_versioning_insert AFTER INSERT ON public.import_rows FOR EACH ROW EXECUTE FUNCTION public.versioning_insert();
+
+
+--
+-- Name: import_rows import_rows_versioning_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER import_rows_versioning_update AFTER UPDATE ON public.import_rows FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
+
+
+--
+-- Name: imports imports_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER imports_versioning_delete AFTER DELETE ON public.imports FOR EACH ROW EXECUTE FUNCTION public.versioning_delete();
+
+
+--
+-- Name: imports imports_versioning_insert; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER imports_versioning_insert AFTER INSERT ON public.imports FOR EACH ROW EXECUTE FUNCTION public.versioning_insert();
+
+
+--
+-- Name: imports imports_versioning_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER imports_versioning_update AFTER UPDATE ON public.imports FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
 
 
 --
@@ -4262,6 +4493,27 @@ CREATE TRIGGER tenants_versioning_update AFTER UPDATE ON public.tenants FOR EACH
 
 
 --
+-- Name: tests tests_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER tests_versioning_delete AFTER DELETE ON public.tests FOR EACH ROW EXECUTE FUNCTION public.versioning_delete();
+
+
+--
+-- Name: tests tests_versioning_insert; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER tests_versioning_insert AFTER INSERT ON public.tests FOR EACH ROW EXECUTE FUNCTION public.versioning_insert();
+
+
+--
+-- Name: tests tests_versioning_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER tests_versioning_update AFTER UPDATE ON public.tests FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
+
+
+--
 -- Name: transmissions transmissions_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -4429,6 +4681,30 @@ ALTER TABLE ONLY public.hospitalizations
 
 
 --
+-- Name: import_rows import_rows_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.import_rows
+    ADD CONSTRAINT import_rows_case_uuid_fkey FOREIGN KEY (case_uuid) REFERENCES public.cases(uuid) ON DELETE SET NULL;
+
+
+--
+-- Name: import_rows import_rows_import_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.import_rows
+    ADD CONSTRAINT import_rows_import_uuid_fkey FOREIGN KEY (import_uuid) REFERENCES public.imports(uuid) ON DELETE CASCADE;
+
+
+--
+-- Name: imports imports_tenant_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.imports
+    ADD CONSTRAINT imports_tenant_uuid_fkey FOREIGN KEY (tenant_uuid) REFERENCES public.tenants(uuid) ON DELETE CASCADE;
+
+
+--
 -- Name: notes notes_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4506,6 +4782,14 @@ ALTER TABLE ONLY public.system_message_tenants
 
 ALTER TABLE ONLY public.system_message_tenants
     ADD CONSTRAINT system_message_tenants_tenant_uuid_fkey FOREIGN KEY (tenant_uuid) REFERENCES public.tenants(uuid) ON DELETE CASCADE;
+
+
+--
+-- Name: tests tests_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tests
+    ADD CONSTRAINT tests_case_uuid_fkey FOREIGN KEY (case_uuid) REFERENCES public.cases(uuid) ON DELETE CASCADE;
 
 
 --
@@ -4630,6 +4914,8 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210415111909);
 INSERT INTO public."schema_migrations" (version) VALUES (20210416111804);
 INSERT INTO public."schema_migrations" (version) VALUES (20210419130620);
 INSERT INTO public."schema_migrations" (version) VALUES (20210419154442);
+INSERT INTO public."schema_migrations" (version) VALUES (20210429143724);
 INSERT INTO public."schema_migrations" (version) VALUES (20210511110755);
 INSERT INTO public."schema_migrations" (version) VALUES (20210521094209);
 INSERT INTO public."schema_migrations" (version) VALUES (20210527153512);
+INSERT INTO public."schema_migrations" (version) VALUES (20210611101143);

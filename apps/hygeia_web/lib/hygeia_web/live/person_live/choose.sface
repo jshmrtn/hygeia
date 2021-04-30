@@ -35,6 +35,7 @@
                   :if={not @disabled}
                   class={"btn btn-danger" <> if @small, do: " btn-sm", else: ""}
                   :on-click={@change}
+                  phx-value-subject={@subject}
                   type="button"
                   phx-value-from-uuid={person.uuid}
                 >
@@ -47,7 +48,12 @@
       </div>
 
       <div :if={Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""] and not @disabled}>
-        <button class="btn btn-secondary" :on-click="open_modal" type="button">
+        <button
+          class="btn btn-secondary"
+          :on-click="open_modal"
+          type="button"
+          phx-value-subject={@subject}
+        >
           {gettext("Choose person")}
         </button>
 
@@ -78,12 +84,13 @@
               class="card hy-button-card mt-2"
               :for={person <- @people}
               :on-click={@change}
+              phx-value-subject={@subject}
               phx-value-uuid={person.uuid}
             >
               <div class="card-body py-2 px-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <HygeiaWeb.RecordView
-                    :if={authorized?(person, :list, auth)}
+                    :if={authorized?(person, :details, auth)}
                     resource={person}
                     action={:details}
                     id={"person_select_recordview_#{person.uuid}"}

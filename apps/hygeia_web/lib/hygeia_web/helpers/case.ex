@@ -19,23 +19,6 @@ defmodule HygeiaWeb.Helpers.Case do
     Enum.map(Case.Complexity.__enum_map__(), &{case_complexity_translation(&1), &1})
   end
 
-  @spec case_phase_index_end_reason_map :: [{String.t(), Index.EndReason.t()}]
-  def case_phase_index_end_reason_map do
-    Enum.map(
-      Index.EndReason.__enum_map__(),
-      &{case_phase_index_end_reason_translation(&1), &1}
-    )
-  end
-
-  @spec case_phase_index_end_reason_translation(Index.EndReason.t()) :: String.t()
-  def case_phase_index_end_reason_translation(:healed), do: pgettext("Index Type", "Healed")
-  def case_phase_index_end_reason_translation(:death), do: pgettext("Index Type", "Death")
-
-  def case_phase_index_end_reason_translation(:no_follow_up),
-    do: pgettext("Index Type", "No Follow Up")
-
-  def case_phase_index_end_reason_translation(:other), do: pgettext("Index Type", "Other")
-
   @spec case_phase_possible_index_end_reason_map :: [
           {String.t(), PossibleIndex.EndReason.t()}
         ]

@@ -1,0 +1,91 @@
+<div class="component-row-show container">
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.ImportLive.Header import={@row.import} id="header" />
+
+    <Link
+      :if={@row.status == :pending}
+      to="#"
+      click="discard"
+      opts={
+        title: gettext("Discard"),
+        data: [confirm: gettext("Are you sure?")]
+      }
+    >
+      <button class="btn btn-danger">
+        <span class="oi oi-trash" aria-hidden="true" />
+        {gettext("Discard")}
+      </button>
+    </Link>
+
+    Status: {Row.Status.translate(@row.status)}
+
+    <details id="row_data">
+      <summary>
+        <h2>{gettext("Import Data")}</h2>
+      </summary>
+      <dl>
+        {#for {key, value} <- @row.data}
+          <dt>{key}</dt>
+          <dd>{value}</dd>
+        {/for}
+      </dl>
+    </details>
+
+    <details id="row_corrections" :if={@row.corrected != nil}>
+      <summary>
+        <h2>{gettext("Correct Data")}</h2>
+      </summary>
+      <dl>
+        {#for {key, value} <- @row.corrected}
+          <dt>{key}</dt>
+          <dd>{value}</dd>
+        {/for}
+      </dl>
+    </details>
+
+    <p :if={@row.case}>
+      Case:
+
+      <Link
+        to={Routes.person_base_data_path(@socket, :show, @row.case.person)}
+        :if={authorized?(@row.case.person, :details, auth)}
+      >
+        <HygeiaWeb.RecordView
+          resource={@row.case.person}
+          action={:list}
+          id="record_view_person"
+          wrapper_tag={:span}
+        >
+          {@row.case.person.first_name}
+          {@row.case.person.last_name}
+        </HygeiaWeb.RecordView>
+      </Link>
+      <span :if={not authorized?(@row.case.person, :details, auth)}>
+        {@row.case.person.tenant.short_name}
+        /
+        {@row.case.person.human_readable_id}
+      </span>
+      |
+      <Link
+        class="d-flex align-items-center"
+        to={Routes.case_base_data_path(@socket, :show, @row.case)}
+        :if={authorized?(@row.case, :details, auth)}
+      >
+        <HygeiaWeb.RecordView
+          resource={@row.case}
+          action={:list}
+          id="record_view_case"
+          wrapper_tag={:span}
+        >
+          {case_display_type(@row.case)}
+          <small class="ml-1">({case_display_date(@row.case)})</small>
+        </HygeiaWeb.RecordView>
+      </Link>
+      <span :if={not authorized?(@row.case, :details, auth)}>
+        {@row.case.tenant.short_name}
+        /
+        {@row.case.human_readable_id}
+      </span>
+    </p>
+  </Context>
+</div>

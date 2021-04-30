@@ -1,0 +1,74 @@
+<Form
+  for={@changeset}
+  change="validate"
+  submit="save"
+  opts={autocomplete: "off", id: "import-form", class: "container"}
+>
+  <h1 class="mb-3">
+    {gettext("New Import")}
+  </h1>
+
+  <div class="hy-card-grid-2-cols">
+    <div class="card mb-3">
+      <div class="card-body">
+        <Field name={:tenant_uuid} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <Select class="form-control" options={Enum.map(@tenants, &{&1.name, &1.uuid})} />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <Field name={:type} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <Select class="form-control" options={Type.map()} opts={prompt: gettext("Choose Type")} />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <Field name={:file} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <LiveFileInput class="form-control" upload={@uploads.file} />
+
+          <progress
+            :for={%{preflighted?: true} = entry <- @uploads.file.entries}
+            value={entry.progress}
+            max="100"
+          >
+            {HygeiaCldr.Number.to_string!(entry.progress / 100, format: :percent)}
+          </progress>
+
+          <div :for={:too_many_files <- upload_errors(@uploads.file)} class="invalid-feedback">
+            {gettext("Too many files were selected")}
+          </div>
+
+          <div
+            :for={entry <- @uploads.file.entries, :too_large <- upload_errors(@uploads.file, entry)}
+            class="invalid-feedback"
+          >
+            {gettext("The file was too large")}
+          </div>
+
+          <div
+            :for={entry <- @uploads.file.entries, :not_accepted <- upload_errors(@uploads.file, entry)}
+            class="invalid-feedback"
+          >
+            {gettext("You have selected an unacceptable file type")}
+          </div>
+
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+      </div>
+    </div>
+  </div>
+
+  <button
+    id="submit"
+    class="btn btn-primary"
+    type="submit"
+    phx-disable-with={gettext("Saving...")}
+    disabled={not @changeset.valid? or not match?([%{valid?: true}], @uploads.file.entries)}
+    phx-hook="PostMessage"
+  >
+    {gettext("Save")}
+  </button>
+
+  Warning! When importing the same rows multiple times, they will be re-assigned from the old import to the current import. Therefore rows might appear missing from an import later on.
+</Form>

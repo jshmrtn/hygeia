@@ -92,6 +92,13 @@
               >
                 {gettext("System Messages")}
               </Link>
+              <Link
+                to={Routes.import_index_path(@socket, :index)}
+                class="dropdown-item"
+                :if={authorized?(Hygeia.ImportContext.Import, :list, auth, tenant: :any)}
+              >
+                {gettext("Inbox")}
+              </Link>
             </div>
           </li>
         </ul>

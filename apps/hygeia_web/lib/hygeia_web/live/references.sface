@@ -13,7 +13,7 @@
     <InputContext assigns={assigns} :let={form: form}>
       <div class="label" :if={@disabled}>
         <label class="type-label d-flex align-items-center">
-          {translate_external_reference_type(Ecto.Changeset.get_field(form.source, :type))}
+          {Type.translate(Ecto.Changeset.get_field(form.source, :type))}
           <span :if={Ecto.Changeset.get_field(form.source, :type) == :other}>:
             {Ecto.Changeset.get_field(form.source, :type_name)}
           </span>
@@ -28,7 +28,7 @@
             class="form-control"
             opts={prompt: gettext("Choose Type"), disabled: @disabled}
             field={:type}
-            options={external_reference_options()}
+            options={Type.map()}
           />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>

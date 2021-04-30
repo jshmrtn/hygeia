@@ -35,7 +35,7 @@
                   <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
                   <small class="d-block text-muted">{case_display_date(case)}</small>
                 </HygeiaWeb.RecordView>
-                <button class="btn btn-danger" :on-click={@change} type="button">
+                <button class="btn btn-danger" :on-click={@change} type="button" phx-value-subject={@subject}>
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </div>
@@ -45,7 +45,12 @@
       </div>
 
       <div :if={Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""]}>
-        <button class="btn btn-secondary" :on-click="open_modal" type="button">
+        <button
+          class="btn btn-secondary"
+          :on-click="open_modal"
+          type="button"
+          phx-value-subject={@subject}
+        >
           {gettext("Choose case")}
         </button>
 
@@ -76,6 +81,7 @@
               class="card hy-button-card mt-2"
               :for={case <- @cases}
               :on-click={@change}
+              phx-value-subject={@subject}
               phx-value-uuid={case.uuid}
             >
               <div class="card-body py-2 px-3">
@@ -96,7 +102,7 @@
                       /
                       {case.person.human_readable_id}
                     </span>
-                    <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
+                    <small class="d-block text-muted" :if={[] != case.phases}>{case_phase_type_translation(List.last(case.phases))}</small>
                     <small class="d-block text-muted">{case_display_date(case)}</small>
                   </HygeiaWeb.RecordView>
 

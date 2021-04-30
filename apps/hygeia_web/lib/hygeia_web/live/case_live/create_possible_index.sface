@@ -1,14 +1,6 @@
 <div class="component-case-create-case">
   <h1 class="container mb-4">{gettext("Create Possible Index Cases")}</h1>
 
-  <div :if={@loading} class="container alert alert-info">
-    <p>{gettext("Import is currently running.")}</p>
-
-    <div class="spinner-border" role="status">
-      <span class="sr-only">{gettext("Please Wait...")}</span>
-    </div>
-  </div>
-
   <Form
     :if={not @loading}
     for={@changeset}
@@ -221,11 +213,4 @@
       </div>
     </InputContext>
   </Form>
-  <div class="container mt-5" :if={not @loading}>
-    <HygeiaWeb.CaseLive.CSVImport
-      id="csv-import"
-      mapping={get_csv_key_mapping()}
-      normalize_row_callback={&normalize_import_field(&1, @tenants)}
-    />
-  </div>
 </div>

@@ -40,14 +40,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
     },
     Hygeia.CaseContext.Case.Clinical => %{
       has_symptoms: "Has Symptoms",
-      laboratory_report: "Laboratory report date",
       reasons_for_test: "Reasons for test",
-      reporting_unit: "Reporting unit",
-      result: "Result",
-      sponsor: "Sponsor",
       symptoms: "Symptoms",
-      test: "Test date",
-      test_kind: "Test Kind",
       symptom_start: "Symptoms start date"
     },
     Hygeia.CaseContext.Hospitalization => %{
@@ -87,7 +81,13 @@ defmodule HygeiaWeb.Helpers.FieldName do
       supervisor_name: "Supervisor Name",
       supervisor_phone: "Supervisor Phone"
     },
-    Hygeia.CaseContext.Entity => %{address: "Address", name: "Name"},
+    Hygeia.CaseContext.Entity => %{
+      address: "Address",
+      division: "Division",
+      name: "Name",
+      person_first_name: "Person Firstname",
+      person_last_name: "Person Lastname"
+    },
     Hygeia.CaseContext.ExternalReference => %{
       type: "Type",
       type_name: "Type name",
@@ -135,6 +135,14 @@ defmodule HygeiaWeb.Helpers.FieldName do
       transmission_date: "Transmission Date",
       employer: "Employer"
     },
+    Hygeia.CaseContext.Test => %{
+      result: "Result",
+      sponsor: "Sponsor",
+      tested_at: "Test date",
+      kind: "Test Kind",
+      laboratory_reported_at: "Laboratory report date",
+      reporting_unit: "Reporting unit"
+    },
     Hygeia.CaseContext.Transmission => %{
       comment: "Comment",
       date: "Date",
@@ -169,6 +177,17 @@ defmodule HygeiaWeb.Helpers.FieldName do
       to: "To"
     },
     Hygeia.CommunicationContext.SMS => %{number: "Number", message: "Message", status: "Status"},
+    Hygeia.ImportContext.Import => %{
+      change_date: "Change Date",
+      closed_at: "Closed At",
+      file: "File",
+      tenant: "Tenant",
+      tenant_uuid: "Tenant UUID",
+      type: "Type"
+    },
+    Hygeia.ImportContext.Row => %{
+      status: "Status"
+    },
     Hygeia.OrganisationContext.Affiliation => %{
       comment: "Comment",
       division: "Division",
@@ -259,7 +278,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       roles: "Roles",
       related_tenants: "Related Tenants"
     },
-    HygeiaWeb.CaseLive.Create.CreatePersonSchema => %{
+    HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema => %{
       address: "Address",
       birth_date: "Birth Date",
       email: "Email",
