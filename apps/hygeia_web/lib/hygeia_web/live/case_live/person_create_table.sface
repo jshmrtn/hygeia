@@ -116,12 +116,11 @@
               <td class="table-col-border" id={{ "person_create_#{changeset_uuid}_tenant" }}>
                 <Field class="p-1" name={{ :tenant_uuid }}>
                   <HygeiaWeb.CaseLive.ModalSelect
-                    id={{ {:tenant, changeset_uuid} }}
                     title={{ gettext("Tenant") }}
                     options={{[{gettext("Default Tenant"), nil}] ++
                       Enum.map(@tenants, &{&1.name, &1.uuid})}}
                     :let={{ value: value }}
-                    id={{ "person_create_#{changeset_uuid}_tenant_iinput" }}
+                    id={{ "person_create_#{changeset_uuid}_tenant_input" }}
                   >
                     <small>{{ elem(value, 0) }}</small>
                   </HygeiaWeb.CaseLive.ModalSelect>
@@ -132,7 +131,6 @@
               <td id={{ "person_create_#{changeset_uuid}_supervisor" }}>
                 <Field class="p-1" name={{ :supervisor_uuid }}>
                   <HygeiaWeb.CaseLive.ModalSelect
-                    id={{ {:supervisor, changeset_uuid} }}
                     title={{ gettext("Supervisor") }}
                     options={{[{gettext("Default Supervisor"), nil}] ++
                       Enum.map(
@@ -154,7 +152,6 @@
               <td class="table-col-border" id={{ "person_create_#{changeset_uuid}_tracer" }}>
                 <Field class="p-1" name={{ :tracer_uuid }}>
                   <HygeiaWeb.CaseLive.ModalSelect
-                    id={{ {:tracer, changeset_uuid} }}
                     title={{ gettext("Tracer") }}
                     options={{[{gettext("Default Tracer"), nil}] ++
                       Enum.map(
