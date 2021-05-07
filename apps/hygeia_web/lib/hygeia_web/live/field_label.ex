@@ -69,6 +69,14 @@ defmodule HygeiaWeb.FieldLabel do
     end
   end
 
+  defp cut_relation_uuid(field, schema) when is_binary(field) do
+    field
+    |> String.to_existing_atom()
+    |> cut_relation_uuid(schema)
+  rescue
+    ArgumentError -> false
+  end
+
   defp cut_relation_uuid(field, schema) when is_atom(field) do
     :associations
     |> schema.__schema__()

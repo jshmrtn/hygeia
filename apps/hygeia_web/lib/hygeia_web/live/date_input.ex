@@ -5,6 +5,7 @@ defmodule HygeiaWeb.DateInput do
 
   import HygeiaGettext
   import Phoenix.HTML.Form, only: [date_input: 3, date_select: 3]
+  import Surface.Components.Utils, only: [events_to_opts: 1]
   import Surface.Components.Form.Utils
 
   prop input_opts, :keyword, default: []
