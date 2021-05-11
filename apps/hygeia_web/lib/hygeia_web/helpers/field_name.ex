@@ -50,7 +50,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       test_kind: "Test Kind",
       symptom_start: "Symptoms start date"
     },
-    Hygeia.CaseContext.Case.Hospitalization => %{
+    Hygeia.CaseContext.Hospitalization => %{
       end: "End",
       organisation: "Organisation",
       organisation_uuid: "Organisation UUID",

@@ -6,6 +6,7 @@ defmodule Hygeia.OrganisationContext do
   use Hygeia, :context
 
   alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
@@ -207,10 +208,23 @@ defmodule Hygeia.OrganisationContext do
           )
         end)
 
+      hospitalization_updates =
+        delete
+        |> Ecto.assoc(:hospitalizations)
+        |> Repo.stream()
+        |> Enum.reduce(Ecto.Multi.new(), fn %Hospitalization{uuid: uuid} = hospitalization, acc ->
+          Ecto.Multi.update(
+            acc,
+            uuid,
+            Ecto.Changeset.change(hospitalization, %{organisation_uuid: into_uuid})
+          )
+        end)
+
       {:ok, _updates} =
         affiliation_updates
         |> Ecto.Multi.append(position_updates)
         |> Ecto.Multi.append(division_updates)
+        |> Ecto.Multi.append(hospitalization_updates)
         |> Ecto.Multi.delete({:delete, delete_uuid}, Ecto.Changeset.change(delete))
         |> authenticate_multi()
         |> Repo.transaction()

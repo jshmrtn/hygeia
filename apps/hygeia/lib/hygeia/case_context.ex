@@ -6,6 +6,7 @@ defmodule Hygeia.CaseContext do
   use Hygeia, :context
 
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
@@ -2339,6 +2340,136 @@ defmodule Hygeia.CaseContext do
         attrs \\ %{}
       ) do
     PossibleIndexSubmission.changeset(possible_index_submission, attrs)
+  end
+
+  @doc """
+  Returns the list of hospitalizations.
+
+  ## Examples
+
+      iex> list_hospitalizations()
+      [%Hospitalization{}, ...]
+
+  """
+  @spec list_hospitalizations :: [Hospitalization.t()]
+  def list_hospitalizations, do: Repo.all(Hospitalization)
+
+  @doc """
+  Gets a single hospitalization.
+
+  Raises `Ecto.NoResultsError` if the Possible index submission does not exist.
+
+  ## Examples
+
+      iex> get_hospitalization!(123)
+      %Hospitalization{}
+
+      iex> get_hospitalization!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_hospitalization!(id :: Ecto.UUID.t()) :: Hospitalization.t()
+  def get_hospitalization!(id), do: Repo.get!(Hospitalization, id)
+
+  @doc """
+  Creates a hospitalization.
+
+  ## Examples
+
+      iex> create_hospitalization(%{field: value})
+      {:ok, %Hospitalization{}}
+
+      iex> create_hospitalization(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_hospitalization(
+          case :: Case.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          {:ok, Hospitalization.t()}
+          | {:error, Ecto.Changeset.t(Hospitalization.t())}
+  def create_hospitalization(case, attrs \\ %{}),
+    do:
+      case
+      |> Ecto.build_assoc(:hospitalizations)
+      |> change_hospitalization(attrs)
+      |> versioning_insert()
+      |> broadcast("hospitalizations", :create, & &1.uuid, &["cases:#{&1.case_uuid}"])
+      |> versioning_extract()
+
+  @doc """
+  Updates a hospitalization.
+
+  ## Examples
+
+      iex> update_hospitalization(hospitalization, %{field: new_value})
+      {:ok, %Hospitalization{}}
+
+      iex> update_hospitalization(hospitalization, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_hospitalization(
+          hospitalization :: Hospitalization.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          {:ok, Hospitalization.t()}
+          | {:error, Ecto.Changeset.t(Hospitalization.t())}
+  def update_hospitalization(
+        %Hospitalization{} = hospitalization,
+        attrs
+      ),
+      do:
+        hospitalization
+        |> change_hospitalization(attrs)
+        |> versioning_update()
+        |> broadcast("hospitalizations", :update, & &1.uuid, &["cases:#{&1.case_uuid}"])
+        |> versioning_extract()
+
+  @doc """
+  Deletes a hospitalization.
+
+  ## Examples
+
+      iex> delete_hospitalization(hospitalization)
+      {:ok, %Hospitalization{}}
+
+      iex> delete_hospitalization(hospitalization)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_hospitalization(hospitalization :: Hospitalization.t()) ::
+          {:ok, Hospitalization.t()}
+          | {:error, Ecto.Changeset.t(Hospitalization.t())}
+  def delete_hospitalization(%Hospitalization{} = hospitalization),
+    do:
+      hospitalization
+      |> change_hospitalization()
+      |> versioning_delete()
+      |> broadcast("hospitalizations", :delete, & &1.uuid, &["cases:#{&1.case_uuid}"])
+      |> versioning_extract()
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking hospitalization changes.
+
+  ## Examples
+
+      iex> change_hospitalization(hospitalization)
+      %Ecto.Changeset{data: %Hospitalization{}}
+
+  """
+  @spec change_hospitalization(
+          hospitalization ::
+            Hospitalization.t() | Hospitalization.empty(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          Ecto.Changeset.t(Hospitalization.t())
+  def change_hospitalization(
+        %Hospitalization{} = hospitalization,
+        attrs \\ %{}
+      ) do
+    Hospitalization.changeset(hospitalization, attrs)
   end
 
   @spec list_protocol_entries(case :: Case.t(), limit :: pos_integer()) :: [

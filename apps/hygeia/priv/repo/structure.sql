@@ -2516,7 +2516,6 @@ CREATE TABLE public.cases (
     complexity character varying(255),
     clinical jsonb,
     monitoring jsonb,
-    hospitalizations jsonb[],
     phases jsonb[],
     tracer_uuid uuid,
     supervisor_uuid uuid,
@@ -2566,6 +2565,21 @@ CREATE TABLE public.emails (
     user_uuid uuid,
     tenant_uuid uuid NOT NULL,
     CONSTRAINT context_must_be_provided CHECK (((case_uuid IS NOT NULL) OR (user_uuid IS NOT NULL)))
+);
+
+
+--
+-- Name: hospitalizations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hospitalizations (
+    uuid uuid NOT NULL,
+    start date,
+    "end" date,
+    organisation_uuid uuid,
+    case_uuid uuid,
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -2825,10 +2839,10 @@ CREATE MATERIALIZED VIEW public.statistics_active_hospitalization_cases_per_day 
  WITH cases_with_hospitalizations AS (
          SELECT cases.tenant_uuid,
             cases.person_uuid,
-            ((hospitalization.hospitalization ->> 'start'::text))::date AS start_date,
-            COALESCE(((hospitalization.hospitalization ->> 'end'::text))::date, CURRENT_DATE) AS end_date
+            hospitalizations.start AS start_date,
+            COALESCE(hospitalizations."end", CURRENT_DATE) AS end_date
            FROM (public.cases
-             CROSS JOIN LATERAL unnest(cases.hospitalizations) hospitalization(hospitalization))
+             JOIN public.hospitalizations ON ((hospitalizations.case_uuid = cases.uuid)))
         )
  SELECT tenants.uuid AS tenant_uuid,
     (date.date)::date AS date,
@@ -3168,6 +3182,14 @@ ALTER TABLE ONLY public.divisions
 
 ALTER TABLE ONLY public.emails
     ADD CONSTRAINT emails_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: hospitalizations hospitalizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hospitalizations
+    ADD CONSTRAINT hospitalizations_pkey PRIMARY KEY (uuid);
 
 
 --
@@ -3943,6 +3965,27 @@ CREATE TRIGGER emails_versioning_update AFTER UPDATE ON public.emails FOR EACH R
 
 
 --
+-- Name: hospitalizations hospitalizations_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER hospitalizations_versioning_delete AFTER DELETE ON public.hospitalizations FOR EACH ROW EXECUTE FUNCTION public.versioning_delete();
+
+
+--
+-- Name: hospitalizations hospitalizations_versioning_insert; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER hospitalizations_versioning_insert AFTER INSERT ON public.hospitalizations FOR EACH ROW EXECUTE FUNCTION public.versioning_insert();
+
+
+--
+-- Name: hospitalizations hospitalizations_versioning_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER hospitalizations_versioning_update AFTER UPDATE ON public.hospitalizations FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
+
+
+--
 -- Name: notes notes_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -4332,6 +4375,22 @@ ALTER TABLE ONLY public.emails
 
 
 --
+-- Name: hospitalizations hospitalizations_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hospitalizations
+    ADD CONSTRAINT hospitalizations_case_uuid_fkey FOREIGN KEY (case_uuid) REFERENCES public.cases(uuid) ON DELETE CASCADE;
+
+
+--
+-- Name: hospitalizations hospitalizations_organisation_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hospitalizations
+    ADD CONSTRAINT hospitalizations_organisation_uuid_fkey FOREIGN KEY (organisation_uuid) REFERENCES public.organisations(uuid) ON DELETE SET NULL;
+
+
+--
 -- Name: notes notes_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4533,3 +4592,4 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210415111909);
 INSERT INTO public."schema_migrations" (version) VALUES (20210416111804);
 INSERT INTO public."schema_migrations" (version) VALUES (20210419130620);
 INSERT INTO public."schema_migrations" (version) VALUES (20210419154442);
+INSERT INTO public."schema_migrations" (version) VALUES (20210511110755);
