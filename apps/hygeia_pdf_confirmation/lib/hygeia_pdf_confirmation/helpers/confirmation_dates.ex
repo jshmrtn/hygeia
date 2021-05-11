@@ -10,7 +10,7 @@ defmodule HygeiaPdfConfirmation.Helpers.ConfirmationDates do
     clinical = if is_nil(case.clinical), do: nil, else: Map.from_struct(case.clinical)
 
     Enum.find(
-      [clinical[:symptom_start], clinical[:laboratory_report], phase_start],
+      [clinical[:symptom_start], clinical[:test], clinical[:laboratory_report], phase_start],
       nil,
       &(not is_nil(&1))
     )
