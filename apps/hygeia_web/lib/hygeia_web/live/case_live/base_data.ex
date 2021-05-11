@@ -275,7 +275,8 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   end
 
   defp load_data(socket, case) do
-    case = Repo.preload(case, person: [tenant: []], tenant: [])
+    case =
+      Repo.preload(case, person: [tenant: []], tenant: [], hospitalizations: [organisation: []])
 
     changeset = CaseContext.change_case(case)
 

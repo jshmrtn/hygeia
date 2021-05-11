@@ -8,6 +8,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
   import EctoEnum
 
   alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
@@ -33,6 +34,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           positions: Ecto.Schema.has_many(Position.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           divisions: Ecto.Schema.has_many(Division.t()) | nil,
+          hospitalizations: Ecto.Schema.has_many(Hospitalization.t()) | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
@@ -46,6 +48,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           positions: Ecto.Schema.has_many(Position.t()),
           affiliations: Ecto.Schema.has_many(Affiliation.t()),
           divisions: Ecto.Schema.has_many(Division.t()),
+          hospitalizations: Ecto.Schema.has_many(Hospitalization.t()),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
@@ -60,6 +63,10 @@ defmodule Hygeia.OrganisationContext.Organisation do
     has_many :positions, Position, foreign_key: :organisation_uuid, on_replace: :delete
     has_many :affiliations, Affiliation, foreign_key: :organisation_uuid, on_replace: :delete
     has_many :divisions, Division, foreign_key: :organisation_uuid, on_replace: :delete
+
+    has_many :hospitalizations, Hospitalization,
+      foreign_key: :organisation_uuid,
+      on_replace: :delete
 
     field :suspected_duplicates_uuid, {:array, :binary_id}, virtual: true, default: []
 

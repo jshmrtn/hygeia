@@ -5,6 +5,7 @@ defmodule Hygeia.Fixtures do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
@@ -418,5 +419,19 @@ defmodule Hygeia.Fixtures do
       NotificationContext.create_notification(user, Enum.into(attrs, @valid_attrs))
 
     notification
+  end
+
+  @valid_attrs %{
+    start: ~D[2020-01-01],
+    end: ~D[2020-01-01]
+  }
+
+  @spec hospitalization_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          Hospitalization.t()
+  def hospitalization_fixture(case \\ case_fixture(), attrs \\ %{}) do
+    {:ok, hospitalization} =
+      CaseContext.create_hospitalization(case, Enum.into(attrs, @valid_attrs))
+
+    hospitalization
   end
 end

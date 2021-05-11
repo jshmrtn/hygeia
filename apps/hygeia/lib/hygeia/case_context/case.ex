@@ -8,10 +8,10 @@ defmodule Hygeia.CaseContext.Case do
   import HygeiaGettext
 
   alias Hygeia.CaseContext.Case.Clinical
-  alias Hygeia.CaseContext.Case.Hospitalization
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.ExternalReference
+  alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
@@ -97,7 +97,6 @@ defmodule Hygeia.CaseContext.Case do
 
     embeds_one :clinical, Clinical, on_replace: :update
     embeds_many :external_references, ExternalReference, on_replace: :delete
-    embeds_many :hospitalizations, Hospitalization, on_replace: :delete
     embeds_one :monitoring, Monitoring, on_replace: :update
     embeds_many :phases, Phase, on_replace: :delete
 
@@ -113,6 +112,7 @@ defmodule Hygeia.CaseContext.Case do
     has_many :emails, Email, foreign_key: :case_uuid
     has_many :sms, SMS, foreign_key: :case_uuid
     has_many :notes, Note, foreign_key: :case_uuid
+    has_many :hospitalizations, Hospitalization, foreign_key: :case_uuid, on_replace: :delete
 
     timestamps()
   end
@@ -148,7 +148,7 @@ defmodule Hygeia.CaseContext.Case do
     ])
     |> cast_embed(:clinical)
     |> cast_embed(:external_references)
-    |> cast_embed(:hospitalizations)
+    |> cast_assoc(:hospitalizations)
     |> cast_embed(:monitoring)
     |> cast_embed(:phases, required: true)
     |> validate_at_least_one_phase()

@@ -7,10 +7,10 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Clinical
-  alias Hygeia.CaseContext.Case.Hospitalization
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.ExternalReference
+  alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
@@ -390,12 +390,12 @@ defmodule Hygeia.CaseContextTest do
 
     test "list_cases/0 returns all cases" do
       case = case_fixture()
-      assert CaseContext.list_cases() == [case]
+      assert Repo.preload(CaseContext.list_cases(), :hospitalizations) == [case]
     end
 
     test "get_case!/1 returns the case with given id" do
       case = case_fixture()
-      assert CaseContext.get_case!(case.uuid) == case
+      assert case.uuid |> CaseContext.get_case!() |> Repo.preload(:hospitalizations) == case
     end
 
     test "create_case/1 with valid data creates a case" do
@@ -541,7 +541,7 @@ defmodule Hygeia.CaseContextTest do
     test "update_case/2 with invalid data returns error changeset" do
       case = case_fixture()
       assert {:error, %Ecto.Changeset{}} = CaseContext.update_case(case, @invalid_attrs)
-      assert case == CaseContext.get_case!(case.uuid)
+      assert case == case.uuid |> CaseContext.get_case!() |> Repo.preload(:hospitalizations)
     end
 
     test "delete_case/1 deletes the case" do
@@ -1598,6 +1598,85 @@ defmodule Hygeia.CaseContextTest do
 
       assert %Ecto.Changeset{} =
                CaseContext.change_possible_index_submission(possible_index_submission)
+    end
+  end
+
+  describe "hospitalizations" do
+    @valid_attrs %{
+      start: ~D[2011-05-18],
+      end: ~D[2011-05-18]
+    }
+
+    @update_attrs %{
+      start: ~D[2011-05-19],
+      end: ~D[2011-05-19]
+    }
+    @invalid_attrs %{
+      start: :invalid,
+      end: "value"
+    }
+
+    test "list_hospitalizations/0 returns all hospitalizations" do
+      person = person_fixture()
+      tracer = user_fixture(%{iam_sub: Ecto.UUID.generate()})
+      supervisor = user_fixture(%{iam_sub: Ecto.UUID.generate()})
+      case = case_fixture(person, tracer, supervisor, %{hospitalizations: []})
+      hospitalization = hospitalization_fixture(case)
+      assert CaseContext.list_hospitalizations() == [hospitalization]
+    end
+
+    test "get_hospitalization!/1 returns the hospitalization with given id" do
+      hospitalization = hospitalization_fixture()
+
+      assert CaseContext.get_hospitalization!(hospitalization.uuid) == hospitalization
+    end
+
+    test "create_hospitalization/1 with valid data creates a hospitalization" do
+      assert {:ok, %Hospitalization{} = hospitalization} =
+               CaseContext.create_hospitalization(case_fixture(), @valid_attrs)
+
+      assert hospitalization.start == ~D[2011-05-18]
+      assert hospitalization.end == ~D[2011-05-18]
+    end
+
+    test "create_hospitalization/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               CaseContext.create_hospitalization(case_fixture(), @invalid_attrs)
+    end
+
+    test "update_hospitalization/2 with valid data updates the hospitalization" do
+      hospitalization = hospitalization_fixture()
+
+      assert {:ok, %Hospitalization{} = hospitalization} =
+               CaseContext.update_hospitalization(hospitalization, @update_attrs)
+
+      assert hospitalization.start == ~D[2011-05-19]
+      assert hospitalization.end == ~D[2011-05-19]
+    end
+
+    test "update_hospitalization/2 with invalid data returns error changeset" do
+      hospitalization = hospitalization_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               CaseContext.update_hospitalization(hospitalization, @invalid_attrs)
+
+      assert hospitalization == CaseContext.get_hospitalization!(hospitalization.uuid)
+    end
+
+    test "delete_hospitalization/1 deletes the hospitalization" do
+      hospitalization = hospitalization_fixture()
+
+      assert {:ok, %Hospitalization{}} = CaseContext.delete_hospitalization(hospitalization)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        CaseContext.get_hospitalization!(hospitalization.uuid)
+      end
+    end
+
+    test "change_hospitalization/1 returns a hospitalization changeset" do
+      hospitalization = hospitalization_fixture()
+
+      assert %Ecto.Changeset{} = CaseContext.change_hospitalization(hospitalization)
     end
   end
 end
