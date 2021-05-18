@@ -17,19 +17,14 @@ defmodule HygeiaWeb.StatisticsLive.Export do
       if authorized?(tenant, :statistics, get_auth(socket)) do
         socket = assign(socket, :tenant, tenant)
 
-        if is_nil(params["from"]) or is_nil(params["to"]) do
-          from = Date.utc_today() |> Date.add(-30) |> Date.to_string()
-          to = Date.to_string(Date.utc_today())
-
-          push_redirect(socket,
-            to: Routes.statistics_export_path(socket, :show, tenant, from, to)
-          )
+        with from when is_binary(from) <- params["from"],
+             to when is_binary(from) <- params["to"],
+             {:ok, from} <- Date.from_iso8601(from),
+             {:ok, to} <- Date.from_iso8601(to) do
+          assign(socket, from: from, to: to)
         else
-          assign(
-            socket,
-            from: Date.from_iso8601!(params["from"]),
-            to: Date.from_iso8601!(params["to"])
-          )
+          nil -> fallback_redirect(socket, tenant)
+          {:error, :invalid_format} -> fallback_redirect(socket, tenant)
         end
       else
         socket
@@ -58,4 +53,13 @@ defmodule HygeiaWeb.StatisticsLive.Export do
 
   @impl Phoenix.LiveView
   def handle_info(_other, socket), do: {:noreply, socket}
+
+  defp fallback_redirect(socket, tenant) do
+    from = Date.utc_today() |> Date.add(-30) |> Date.to_string()
+    to = Date.to_string(Date.utc_today())
+
+    push_redirect(socket,
+      to: Routes.statistics_timeline_path(socket, :show, tenant, from, to)
+    )
+  end
 end
