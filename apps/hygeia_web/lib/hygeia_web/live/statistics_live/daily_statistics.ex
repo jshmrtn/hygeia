@@ -45,16 +45,14 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
 
         socket = assign(socket, page_title: "#{tenant.name} - #{gettext("Daily Statistics")}")
 
-        if is_nil(params["date"]) do
-          date = Date.to_string(Date.utc_today())
-
-          push_redirect(socket,
-            to: Routes.statistics_daily_statistics_path(socket, :show, tenant, date)
-          )
-        else
+        with date when is_binary(date) <- params["date"],
+             {:ok, date} <- Date.from_iso8601(date) do
           socket
-          |> assign(date: Date.from_iso8601!(params["date"]))
+          |> assign(date: date)
           |> load_data
+        else
+          nil -> fallback_redirect(socket, tenant)
+          {:error, :invalid_format} -> fallback_redirect(socket, tenant)
         end
       else
         socket
@@ -115,6 +113,14 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
+
+  defp fallback_redirect(socket, tenant) do
+    date = Date.to_string(Date.utc_today())
+
+    push_redirect(socket,
+      to: Routes.statistics_daily_statistics_path(socket, :show, tenant, date)
+    )
+  end
 
   defp load_data(%{assigns: %{tenant: tenant, date: date}} = socket) do
     assign(socket,

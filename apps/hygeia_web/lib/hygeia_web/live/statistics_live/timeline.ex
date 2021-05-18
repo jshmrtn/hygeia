@@ -41,20 +41,16 @@ defmodule HygeiaWeb.StatisticsLive.Timeline do
 
         socket = assign(socket, page_title: "#{tenant.name} - #{gettext("Statistics")}")
 
-        if is_nil(params["from"]) or is_nil(params["to"]) do
-          from = Date.utc_today() |> Date.add(-30) |> Date.to_string()
-          to = Date.to_string(Date.utc_today())
-
-          push_redirect(socket,
-            to: Routes.statistics_timeline_path(socket, :show, tenant, from, to)
-          )
-        else
+        with from when is_binary(from) <- params["from"],
+             to when is_binary(from) <- params["to"],
+             {:ok, from} <- Date.from_iso8601(from),
+             {:ok, to} <- Date.from_iso8601(to) do
           socket
-          |> assign(
-            from: Date.from_iso8601!(params["from"]),
-            to: Date.from_iso8601!(params["to"])
-          )
+          |> assign(from: from, to: to)
           |> load_data
+        else
+          nil -> fallback_redirect(socket, tenant)
+          {:error, :invalid_format} -> fallback_redirect(socket, tenant)
         end
       else
         socket
@@ -96,6 +92,15 @@ defmodule HygeiaWeb.StatisticsLive.Timeline do
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
+
+  defp fallback_redirect(socket, tenant) do
+    from = Date.utc_today() |> Date.add(-30) |> Date.to_string()
+    to = Date.to_string(Date.utc_today())
+
+    push_redirect(socket,
+      to: Routes.statistics_timeline_path(socket, :show, tenant, from, to)
+    )
+  end
 
   defp load_data(%{assigns: %{tenant: tenant, from: from, to: to}} = socket) do
     assign(socket,
