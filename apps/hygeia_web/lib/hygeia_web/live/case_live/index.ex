@@ -191,6 +191,8 @@ defmodule HygeiaWeb.CaseLive.Index do
       end
 
     assign(socket, pagination: metadata, cases: Repo.preload(entries, person: [tenant: []]))
+  rescue
+    ArgumentError -> reraise HygeiaWeb.InvalidPaginationParamsError, __STACKTRACE__
   end
 
   defp base_query(socket),

@@ -78,5 +78,7 @@ defmodule HygeiaWeb.DivisionLive.Index do
       pagination: metadata,
       divisions: entries
     )
+  rescue
+    ArgumentError -> reraise HygeiaWeb.InvalidPaginationParamsError, __STACKTRACE__
   end
 end

@@ -134,6 +134,8 @@ defmodule HygeiaWeb.AffiliationLive.Index do
       pagination: metadata,
       affiliations: entries
     )
+  rescue
+    ArgumentError -> reraise HygeiaWeb.InvalidPaginationParamsError, __STACKTRACE__
   end
 
   defp person_display_name(%Person{last_name: nil, first_name: first_name} = _person) do

@@ -103,5 +103,7 @@ defmodule HygeiaWeb.OrganisationLive.Index do
       pagination: metadata,
       organisations: entries
     )
+  rescue
+    ArgumentError -> reraise HygeiaWeb.InvalidPaginationParamsError, __STACKTRACE__
   end
 end
