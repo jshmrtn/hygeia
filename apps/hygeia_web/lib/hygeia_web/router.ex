@@ -30,8 +30,9 @@ defmodule HygeiaWeb.Router do
       apps: [:cldr, :gettext],
       from: [:session, :accept_language],
       gettext: HygeiaGettext,
-      cldr: HygeiaCldr,
-      session_key: "cldr_locale"
+      cldr: HygeiaCldr
+
+    plug Cldr.Plug.SetSession
 
     dynamic_plug PlugContentSecurityPolicy, reevaluate: :first_usage do
       URI.default_port("wss", 443)
@@ -116,8 +117,6 @@ defmodule HygeiaWeb.Router do
         directives: directives
       ]
     end
-
-    plug :store_locale
 
     plug HygeiaWeb.Plug.CheckAndRefreshAuthentication
 
@@ -308,8 +307,4 @@ defmodule HygeiaWeb.Router do
       timeout: :timer.seconds(15)
     )
   )
-
-  defp store_locale(conn, _params) do
-    Plug.Conn.put_session(conn, "cldr_locale", conn.private.cldr_locale.requested_locale_name)
-  end
 end

@@ -187,11 +187,13 @@ defmodule HygeiaWeb do
   @doc false
   @spec setup_live_view(session :: map) :: :ok
   def setup_live_view(session) do
-    unless is_nil(session["cldr_locale"]) do
-      HygeiaCldr.put_locale(session["cldr_locale"])
+    import Cldr.Plug.SetLocale, only: [session_key: 0]
+
+    unless is_nil(session[session_key()]) do
+      HygeiaCldr.put_locale(session[session_key()])
       Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
 
-      Sentry.Context.set_tags_context(%{locale: session["cldr_locale"]})
+      Sentry.Context.set_tags_context(%{locale: session[session_key()]})
     end
 
     case session["auth"] do
