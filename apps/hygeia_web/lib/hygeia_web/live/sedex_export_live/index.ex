@@ -58,5 +58,7 @@ defmodule HygeiaWeb.SedexExportLive.Index do
       pagination: metadata,
       sedex_exports: entries
     )
+  rescue
+    ArgumentError -> reraise HygeiaWeb.InvalidPaginationParamsError, __STACKTRACE__
   end
 end

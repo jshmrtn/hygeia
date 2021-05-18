@@ -147,6 +147,8 @@ defmodule HygeiaWeb.PersonLive.Index do
       pagination: metadata,
       people: entries
     )
+  rescue
+    ArgumentError -> reraise HygeiaWeb.InvalidPaginationParamsError, __STACKTRACE__
   end
 
   @sort_mapping %{
