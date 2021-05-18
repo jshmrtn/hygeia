@@ -113,21 +113,19 @@
           :for={{ %{details: %Phase.Index{}, uuid: uuid} = phase <- @case.phases }}
           :if={{ authorized?(@case, :partial_details, auth) }}
           data-toggle="tooltip"
-          data-original-title={{if !can_generate_isolation_confirmation(phase),
+          data-original-title={{if !Phase.can_generate_pdf_confirmation?(phase, @case.tenant),
             do: gettext("Phase start- and end-dates must be set to create Isolation Confirmations."),
             else: ""}}
         >
           <Link
-            class={{"dropdown-item" <>
-              if !can_generate_isolation_confirmation(phase), do: " disabled", else: ""}}
+            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
             to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, uuid) }}
           >
             <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
             {{ gettext("Isolation Confirmation") }}
           </Link>
           <a
-            class={{"dropdown-item" <>
-              if !can_generate_isolation_confirmation(phase), do: " disabled", else: ""}}
+            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
             href="#"
             :on-click="open_sms_modal"
             phx-value-message={{ isolation_sms(@socket, @case, phase) }}
@@ -139,8 +137,7 @@
             {{ gettext("Send SMS Isolation Confirmation") }}
           </a>
           <a
-            class={{"dropdown-item" <>
-              if !can_generate_isolation_confirmation(phase), do: " disabled", else: ""}}
+            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
             href="#"
             :on-click="open_email_modal"
             phx-value-subject={{ isolation_email_subject() }}
@@ -190,19 +187,19 @@
           :for={{ %{details: %Phase.PossibleIndex{}, uuid: uuid} = phase <- @case.phases }}
           :if={{ authorized?(@case, :partial_details, auth) }}
           data-toggle="tooltip"
-          data-original-title={{if !can_generate_quarantine_confirmation(phase),
+          data-original-title={{if !Phase.can_generate_pdf_confirmation?(phase, @case.tenant),
             do: gettext("Quarantine Confirmations are only available for contact persons."),
             else: ""}}
         >
           <Link
-            class={{ "dropdown-item" <> if !can_generate_quarantine_confirmation(phase), do: " disabled", else: "" }}
+            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
             to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, uuid) }}
           >
             <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
             {{ gettext("Quarantine Confirmation") }}
           </Link>
           <a
-            class={{ "dropdown-item" <> if !can_generate_quarantine_confirmation(phase), do: " disabled", else: "" }}
+            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
             href="#"
             :on-click="open_sms_modal"
             phx-value-message={{ quarantine_sms(@socket, @case, phase) }}
@@ -214,7 +211,7 @@
             {{ gettext("Send SMS Quarantine Confirmation") }}
           </a>
           <a
-            class={{ "dropdown-item" <> if !can_generate_quarantine_confirmation(phase), do: " disabled", else: "" }}
+            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
             href="#"
             :on-click="open_email_modal"
             phx-value-subject={{ quarantine_email_subject() }}

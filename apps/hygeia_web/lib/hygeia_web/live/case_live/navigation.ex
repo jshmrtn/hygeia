@@ -107,21 +107,6 @@ defmodule HygeiaWeb.CaseLive.Navigation do
     {:noreply, assign(socket, phase_create_modal: nil)}
   end
 
-  defp can_generate_isolation_confirmation(%Phase{quarantine_order: false}), do: false
-  defp can_generate_isolation_confirmation(%Phase{start: nil}), do: false
-  defp can_generate_isolation_confirmation(%Phase{end: nil}), do: false
-  defp can_generate_isolation_confirmation(_phase), do: true
-
-  defp can_generate_quarantine_confirmation(%Phase{quarantine_order: false}), do: false
-  defp can_generate_quarantine_confirmation(%Phase{start: nil}), do: false
-  defp can_generate_quarantine_confirmation(%Phase{end: nil}), do: false
-
-  defp can_generate_quarantine_confirmation(%Phase{details: %Phase.PossibleIndex{type: type}})
-       when type != :contact_person,
-       do: false
-
-  defp can_generate_quarantine_confirmation(_phase), do: true
-
   defp has_index_phase?(case) do
     Enum.any?(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1))
   end
