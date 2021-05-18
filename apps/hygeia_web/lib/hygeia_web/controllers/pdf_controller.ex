@@ -5,6 +5,7 @@ defmodule HygeiaWeb.PdfController do
 
   alias Hygeia.AuditContext
   alias Hygeia.CaseContext.Case.Phase
+  alias Hygeia.Repo
   alias HygeiaPdfConfirmation.Isolation
   alias HygeiaPdfConfirmation.Quarantine
 
@@ -47,7 +48,10 @@ defmodule HygeiaWeb.PdfController do
          },
          confirmation_type
        ) do
-    case = get_case!(case_uuid)
+    case =
+      case_uuid
+      |> get_case!()
+      |> Repo.preload(:tenant)
 
     if authorized?(case, :partial_details, get_auth(conn)) do
       AuditContext.log_view(
@@ -60,6 +64,7 @@ defmodule HygeiaWeb.PdfController do
       )
 
       case.phases
+      |> Enum.filter(&Phase.can_generate_pdf_confirmation?(&1, case.tenant))
       |> Enum.find(&match?(%Phase{uuid: ^phase_uuid}, &1))
       |> case do
         nil ->

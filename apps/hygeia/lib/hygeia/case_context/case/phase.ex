@@ -10,6 +10,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
   alias Hygeia.CaseContext.Case.Phase.Index
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex
   alias Hygeia.CaseContext.Case.Phase.Type, as: PhaseType
+  alias Hygeia.TenantContext.Tenant
 
   @type empty :: %__MODULE__{
           quarantine_order: boolean() | nil,
@@ -122,4 +123,17 @@ defmodule Hygeia.CaseContext.Case.Phase do
       |> put_change(:end, nil)
     end
   end
+
+  @spec can_generate_pdf_confirmation?(phase :: t, tenant :: Tenant.t()) :: boolean
+  def can_generate_pdf_confirmation?(phase, tenant)
+  def can_generate_pdf_confirmation?(%__MODULE__{quarantine_order: false}, _tenant), do: false
+  def can_generate_pdf_confirmation?(%__MODULE__{start: nil}, _tenant), do: false
+  def can_generate_pdf_confirmation?(%__MODULE__{end: nil}, _tenant), do: false
+
+  def can_generate_pdf_confirmation?(%__MODULE__{details: %PossibleIndex{type: type}}, _tenant)
+      when type != :contact_person,
+      do: false
+
+  def can_generate_pdf_confirmation?(_phase, %Tenant{template_variation: nil}), do: false
+  def can_generate_pdf_confirmation?(_phase, _tenant), do: true
 end
