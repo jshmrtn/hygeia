@@ -79,7 +79,7 @@
               <HygeiaWeb.RecordView
                 resource={{ affiliation.person }}
                 action={{ :list }}
-                id={{ "affiliation_person_recordview_#{affiliation.person.uuid}" }}
+                id={{ "affiliation_#{affiliation.uuid}_person_#{affiliation.person.uuid}_recordview" }}
               >
                 {{ person_display_name(affiliation.person) }}
               </HygeiaWeb.RecordView>
