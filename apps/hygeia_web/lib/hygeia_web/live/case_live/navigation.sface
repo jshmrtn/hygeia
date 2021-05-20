@@ -112,7 +112,7 @@
         <div
           :for={{ %{details: %Phase.Index{}, uuid: uuid} = phase <- @case.phases }}
           :if={{ authorized?(@case, :partial_details, auth) }}
-          data-toggle="tooltip"
+          data-bs-toggle="tooltip"
           data-original-title={{if !can_generate_isolation_confirmation(phase),
             do: gettext("Phase start- and end-dates must be set to create Isolation Confirmations."),
             else: ""}}
@@ -189,7 +189,7 @@
         <div
           :for={{ %{details: %Phase.PossibleIndex{}, uuid: uuid} = phase <- @case.phases }}
           :if={{ authorized?(@case, :partial_details, auth) }}
-          data-toggle="tooltip"
+          data-bs-toggle="tooltip"
           data-original-title={{if !can_generate_quarantine_confirmation(phase),
             do: gettext("Quarantine Confirmations are only available for contact persons."),
             else: ""}}

@@ -35,7 +35,8 @@ let liveSocket = new LiveSocket("/live", Socket, {
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", (info) => NProgress.start());
 window.addEventListener("phx:page-loading-stop", (info) => {
-  BSN.initCallback(document.body);
+  console.log(BSN.initCallback());
+  console.log('bsn init');
 
   document.querySelectorAll(".stop-propagation").forEach((d) => {
     d.addEventListener("click", (e) => e.stopPropagation());
