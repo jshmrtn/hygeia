@@ -676,12 +676,12 @@ defmodule Hygeia.CaseContext do
             END
             """,
             case.status == :canceled,
-            2,
+            false,
             case.status == :first_contact,
-            3,
+            nil,
             case.status == :first_contact_unreachable,
-            2,
-            1
+            false,
+            true
           ),
           # exp_country
           fragment(
@@ -1048,6 +1048,9 @@ defmodule Hygeia.CaseContext do
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_zoo)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_prison)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.other_exp_loc_type_yn)
+        |> normalize_boolean_and_unknown_field(
+          @bag_med_16122020_case_fields_index.activity_mapping_yn
+        )
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.symptoms_yn)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.case_link_yn)
         |> List.update_at(@bag_med_16122020_case_fields_index.test_type, fn
@@ -1070,13 +1073,9 @@ defmodule Hygeia.CaseContext do
           :death -> 2
           :no_follow_up -> 3
         end)
-        |> List.update_at(@bag_med_16122020_case_fields_index.vacc_yn, fn
-          true -> 1
-          false -> 2
-          nil -> 3
-        end)
+        |> normalize_boolean_and_unknown_field(@bag_med_16122020_case_fields_index.vacc_yn)
         |> normalize_boolean_field(@bag_med_16122020_case_fields_index.exp_loc_type_yn)
-        |> normalize_boolean_field(@bag_med_16122020_case_fields_index.quar_yn)
+        |> normalize_boolean_and_unknown_field(@bag_med_16122020_case_fields_index.quar_yn)
         |> normalize_country(@bag_med_16122020_case_fields_index.country)
         |> normalize_country(@bag_med_16122020_case_fields_index.work_place_country)
         |> normalize_country(@bag_med_16122020_case_fields_index.exp_country)
@@ -1670,11 +1669,7 @@ defmodule Hygeia.CaseContext do
           :negative -> 2
           nil -> 3
         end)
-        |> List.update_at(@bag_med_16122020_contact_fields_index.vacc_yn, fn
-          true -> 1
-          false -> 2
-          nil -> 3
-        end)
+        |> normalize_boolean_and_unknown_field(@bag_med_16122020_contact_fields_index.vacc_yn)
         |> normalize_country(@bag_med_16122020_contact_fields_index.country)
         |> normalize_country(@bag_med_16122020_contact_fields_index.work_place_country)
         |> normalize_country(@bag_med_16122020_contact_fields_index.exp_country)
@@ -1739,6 +1734,14 @@ defmodule Hygeia.CaseContext do
       nil -> nil
       true -> 1
       false -> 0
+    end)
+  end
+
+  defp normalize_boolean_and_unknown_field(row, field_number) do
+    List.update_at(row, field_number, fn
+      nil -> 3
+      true -> 1
+      false -> 2
     end)
   end
 
