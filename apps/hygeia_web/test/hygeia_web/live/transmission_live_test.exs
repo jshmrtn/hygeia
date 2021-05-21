@@ -21,6 +21,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
     date: Date.add(Date.utc_today(), -5),
     propagator_internal: true,
     recipient_internal: true,
+    comment: "Drank beer, kept distance to other people",
     infection_place: %{
       address: %{
         address: "new address",
@@ -31,13 +32,12 @@ defmodule HygeiaWeb.TransmissionLiveTest do
       },
       name: "BrüW",
       known: true,
-      activity_mapping_executed: true,
-      activity_mapping: "Drank beer, kept distance to other people",
       flight_information: "xyz"
     }
   }
   @update_attrs %{
     date: Date.add(Date.utc_today(), -7),
+    comment: "Drank beer, kept distance to other people",
     infection_place: %{
       address: %{
         address: "new address",
@@ -48,8 +48,6 @@ defmodule HygeiaWeb.TransmissionLiveTest do
       },
       name: "BrüW",
       known: true,
-      activity_mapping_executed: true,
-      activity_mapping: "Drank beer, kept distance to other people",
       flight_information: "xyz"
     }
   }
@@ -99,7 +97,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
 
       create_live
       |> form("#transmission-form",
-        transmission: %{infection_place: %{known: true, activity_mapping_executed: true}}
+        transmission: %{infection_place: %{known: true}}
       )
       |> render_change()
 

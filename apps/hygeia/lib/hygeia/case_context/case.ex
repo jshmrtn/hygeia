@@ -10,6 +10,7 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
+  alias Hygeia.CaseContext.Case.Status
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.CaseContext.Note
@@ -23,18 +24,6 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.UserContext.User
 
   defenum Complexity, :case_complexity, ["low", "medium", "high", "extreme"]
-
-  defenum Status, :case_status, [
-    "first_contact",
-    "first_contact_unreachable",
-    "code_pending",
-    "waiting_for_contact_person_list",
-    "other_actions_todo",
-    "next_contact_agreed",
-    "hospitalization",
-    "home_resident",
-    "done"
-  ]
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,

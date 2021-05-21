@@ -215,6 +215,7 @@ defmodule Hygeia.Fixtures do
 
   @valid_attrs %{
     date: Date.add(Date.utc_today(), -5),
+    comment: "Drank beer, kept distance to other people",
     infection_place: %{
       address: %{
         address: "Torstrasse 25",
@@ -224,8 +225,6 @@ defmodule Hygeia.Fixtures do
         country: "CH"
       },
       known: true,
-      activity_mapping_executed: true,
-      activity_mapping: "Drank beer, kept distance to other people",
       type: :club,
       name: "BrüW",
       flight_information: nil
@@ -274,6 +273,7 @@ defmodule Hygeia.Fixtures do
     birth_date: ~D[1975-07-11],
     email: "corinne.weber@gmx.ch",
     first_name: "Corinne",
+    comment: "Drank beer, kept distance to other people",
     infection_place: %{
       address: %{
         address: "Torstrasse 25",
@@ -283,8 +283,6 @@ defmodule Hygeia.Fixtures do
         country: "CH"
       },
       known: true,
-      activity_mapping_executed: true,
-      activity_mapping: "Drank beer, kept distance to other people",
       type: :club,
       name: "BrüW",
       flight_information: nil

@@ -205,6 +205,12 @@
                   <div class="card-body">
                     <h4 class="card-title">{{ gettext("Infection Place") }}</h4>
 
+                    <Field name={{ :comment }} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <TextArea class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
                     <Inputs for={{ :infection_place }}>
                       <HygeiaWeb.TransmissionLive.InfectionPlace
                         id="infection_place"

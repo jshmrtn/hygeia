@@ -134,7 +134,7 @@
                           <Select
                             class="form-control"
                             opts={{ prompt: "Select status" |> gettext, disabled: @live_action == :show }}
-                            options={{ case_status_map() }}
+                            options={{ Status.map() }}
                           />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
@@ -783,23 +783,23 @@
     <table class="table table-sm table-striped">
       <tbody>
         <tr>
-          <td><b>{{ case_status_translation(:first_contact) }}</b></td>
+          <td><b>{{ Status.translate(:first_contact) }}</b></td>
           <td>{{ gettext("The case administraton sends cases like this. Index has not been contacted") }}</td>
         </tr>
         <tr>
-          <td><b>{{ case_status_translation(:first_contact_unreachable) }}</b></td>
+          <td><b>{{ Status.translate(:first_contact_unreachable) }}</b></td>
           <td>{{ gettext(
               "Index could not be reached by phone. Always create a note in the protocol with all steps taken to reach the person. For example: Tried to call three times, asked about the number at their general practitioner, SMS sent to the index that we are CT and ask them to please answer the phone."
             ) }}</td>
         </tr>
         <tr>
-          <td><b>{{ case_status_translation(:hospitalization) }}</b></td>
+          <td><b>{{ Status.translate(:hospitalization) }}</b></td>
           <td>{{ gettext(
               "Index is hospitalized because of Covid19. Set the \"Start Date\" at hospitalizations and choose an \"Organisation\", then create a note why the index is hospitalized and how they are, in the end inform the team lead."
             ) }}</td>
         </tr>
         <tr>
-          <td><b>{{ case_status_translation(:waiting_for_contact_person_list) }}</b></td>
+          <td><b>{{ Status.translate(:waiting_for_contact_person_list) }}</b></td>
           <td>{{ "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
             |> gettext(
               link:
@@ -811,25 +811,25 @@
             |> raw() }}</td>
         </tr>
         <tr>
-          <td><b>{{ case_status_translation(:other_actions_todo) }}</b></td>
+          <td><b>{{ Status.translate(:other_actions_todo) }}</b></td>
           <td>{{ gettext(
               "Maybe inform the team lead if not already done, create a protocol entry (status for exceptional cases)"
             ) }}</td>
         </tr>
         <tr>
-          <td><b>{{ case_status_translation(:next_contact_agreed) }}</b></td>
+          <td><b>{{ Status.translate(:next_contact_agreed) }}</b></td>
           <td>{{ gettext(
               "Generally there are no follow-up calls. If an index is for example very anxious and single or in a generally bad state, a next contact can be agreed. Always create a note in the protocol with the time of the next contact. If possible always set the date to a day when you will be working."
             ) }}</td>
         </tr>
         <tr>
-          <td><b>{{ case_status_translation(:done) }}</b></td>
+          <td><b>{{ Status.translate(:done) }}</b></td>
           <td>{{ gettext(
               "In this case there are no further actions necessary. \"Done\" should be set on the index and contact person."
             ) }}</td>
         </tr>
         <tr>
-          <td><b>{{ case_status_translation(:home_resident) }}</b></td>
+          <td><b>{{ Status.translate(:home_resident) }}</b></td>
           <td>{{ gettext(
               "Index is a nursing home resident, e.g. nursing home, home for the handicapped, etc... Always inform the team lead"
             ) }}</td>

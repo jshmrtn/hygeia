@@ -523,6 +523,11 @@ msgstr ""
 msgid "Call"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Status"
+msgid "Canceled"
+msgstr ""
+
 msgid "Case"
 msgstr ""
 
@@ -661,6 +666,11 @@ msgstr ""
 msgid "Code Pending"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Status"
+msgid "Code Pending"
+msgstr ""
+
 msgid "Comma (,)"
 msgstr ""
 
@@ -672,6 +682,21 @@ msgid "Comment"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Comment"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
+msgid "Comment"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
+msgid "Comment"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Comment"
 msgstr ""
 
@@ -1051,6 +1076,11 @@ msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Done"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Status"
+msgid "Done"
+msgstr ""
+
 msgid "Download CSV"
 msgstr ""
 
@@ -1265,6 +1295,16 @@ msgstr ""
 msgid "First contact"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Status"
+msgid "First contact"
+msgstr ""
+
+msgid "First contact, unreachable"
+msgstr ""
+
+#, elixir-format
+msgctxt "Case Status"
 msgid "First contact, unreachable"
 msgstr ""
 
@@ -1341,10 +1381,20 @@ msgctxt "case_status"
 msgid "Home Resident"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Status"
+msgid "Home Resident"
+msgstr ""
+
 msgid "Hospital"
 msgstr ""
 
 msgctxt "case_status"
+msgid "Hospitalization"
+msgstr ""
+
+#, elixir-format
+msgctxt "Case Status"
 msgid "Hospitalization"
 msgstr ""
 
@@ -1929,6 +1979,11 @@ msgctxt "case_status"
 msgid "Next Contact Agreed"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Status"
+msgid "Next Contact Agreed"
+msgstr ""
+
 msgid "No"
 msgstr ""
 
@@ -2129,6 +2184,11 @@ msgid "Other Actions To Do"
 msgstr ""
 
 msgctxt "case_status"
+msgid "Other Actions To Do"
+msgstr ""
+
+#, elixir-format
+msgctxt "Case Status"
 msgid "Other Actions To Do"
 msgstr ""
 
@@ -3346,6 +3406,11 @@ msgstr ""
 msgid "Wainting for Contact Person List"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Status"
+msgid "Wainting for Contact Person List"
+msgstr ""
+
 msgid "Waiting for results..."
 msgstr ""
 
@@ -3474,6 +3539,11 @@ msgstr ""
 
 msgctxt "Notification"
 msgid "failed to send email."
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "hospitalizations"
 msgstr ""
 
 msgid "hostname"

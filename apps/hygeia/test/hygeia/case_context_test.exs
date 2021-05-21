@@ -636,6 +636,7 @@ defmodule Hygeia.CaseContextTest do
         case_jony =
           case_fixture(person_jony, user, user, %{
             uuid: "ca98a59b-64c5-4476-9abd-d91d2d1d24e3",
+            status: :next_contact_agreed,
             external_references: [
               %{type: :ism_case, value: "ISM ID"}
             ],
@@ -712,13 +713,12 @@ defmodule Hygeia.CaseContextTest do
             propagator_internal: nil,
             recipient_internal: true,
             recipient_case_uuid: case_jony.uuid,
+            comment: "Seat 3A",
             infection_place: %{
               address: %{
                 country: "GB"
               },
               known: true,
-              activity_mapping_executed: true,
-              activity_mapping: "Seat 3A",
               type: :flight,
               name: "Swiss International Airlines",
               flight_information: "LX332"
@@ -732,6 +732,7 @@ defmodule Hygeia.CaseContextTest do
             propagator_case_uuid: case_jony.uuid,
             recipient_internal: true,
             recipient_case_uuid: case_jay.uuid,
+            comment: "Drank beer, kept distance to other people",
             infection_place: %{
               address: %{
                 address: "Torstrasse 25",
@@ -741,8 +742,6 @@ defmodule Hygeia.CaseContextTest do
                 country: "CH"
               },
               known: true,
-              activity_mapping_executed: true,
-              activity_mapping: "Drank beer, kept distance to other people",
               type: :flight,
               name: "BrüW",
               flight_information: nil
@@ -754,7 +753,7 @@ defmodule Hygeia.CaseContextTest do
 
         assert [
                  %{
-                   "activity_mapping_yn" => "",
+                   "activity_mapping_yn" => "1",
                    "case_link_contact_dt" => ^transmission_jony_date,
                    "case_link_fall_id_ism" => "",
                    "case_link_ktn_internal_id" => "",
@@ -860,7 +859,7 @@ defmodule Hygeia.CaseContextTest do
                    "work_place_street_number" => ""
                  },
                  %{
-                   "activity_mapping_yn" => "",
+                   "activity_mapping_yn" => "3",
                    "case_link_contact_dt" => ^transmission_jony_jay_date,
                    "case_link_fall_id_ism" => "",
                    "case_link_ktn_internal_id" => "ca98a59b-64c5-4476-9abd-d91d2d1d24e3",
@@ -1110,13 +1109,12 @@ defmodule Hygeia.CaseContextTest do
             propagator_internal: nil,
             recipient_internal: true,
             recipient_case_uuid: case_jony.uuid,
+            comment: "Seat 3A",
             infection_place: %{
               address: %{
                 country: "GB"
               },
               known: true,
-              activity_mapping_executed: true,
-              activity_mapping: "Seat 3A",
               type: :flight,
               name: "Swiss International Airlines",
               flight_information: "LX332"
@@ -1130,6 +1128,7 @@ defmodule Hygeia.CaseContextTest do
             propagator_case_uuid: case_jony.uuid,
             recipient_internal: true,
             recipient_case_uuid: case_jay.uuid,
+            comment: "Drank beer, kept distance to other people",
             infection_place: %{
               address: %{
                 address: "Torstrasse 25",
@@ -1139,8 +1138,6 @@ defmodule Hygeia.CaseContextTest do
                 country: "CH"
               },
               known: true,
-              activity_mapping_executed: true,
-              activity_mapping: "Drank beer, kept distance to other people",
               type: :flight,
               name: "BrüW",
               flight_information: nil
@@ -1449,6 +1446,7 @@ defmodule Hygeia.CaseContextTest do
       birth_date: ~D[1975-07-11],
       email: "corinne.weber@gmx.ch",
       first_name: "Corinne",
+      comment: "Drank beer, kept distance to other people",
       infection_place: %{
         address: %{
           address: "Torstrasse 25",
@@ -1458,8 +1456,6 @@ defmodule Hygeia.CaseContextTest do
           country: "CH"
         },
         known: true,
-        activity_mapping_executed: true,
-        activity_mapping: "Drank beer, kept distance to other people",
         type: :club,
         name: "BrüW",
         flight_information: nil
@@ -1522,8 +1518,6 @@ defmodule Hygeia.CaseContextTest do
       assert possible_index_submission.first_name == "Corinne"
 
       assert %{
-               activity_mapping: "Drank beer, kept distance to other people",
-               activity_mapping_executed: true,
                address: %{
                  address: "Torstrasse 25",
                  country: "CH",
@@ -1541,6 +1535,7 @@ defmodule Hygeia.CaseContextTest do
       assert possible_index_submission.mobile == "+41 78 898 04 51"
       assert possible_index_submission.sex == :female
       assert possible_index_submission.transmission_date == ~D[2020-01-25]
+      assert possible_index_submission.comment == "Drank beer, kept distance to other people"
     end
 
     test "create_possible_index_submission/1 with invalid data returns error changeset" do

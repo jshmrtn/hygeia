@@ -12,7 +12,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Inputs
-
+  alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
   alias Surface.Components.LivePatch

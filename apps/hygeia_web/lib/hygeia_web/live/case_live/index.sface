@@ -55,7 +55,7 @@
                   <div class="form-group">
                     <label class="d-block">{{ schema_field_name(:status, Case) }}</label>
                     <label
-                      :for={{ {name, key} <- case_status_map() }}
+                      :for={{ {name, key} <- Status.map() }}
                       class="d-block checkbox-label"
                       data-disabled={{ @live_action == :show }}
                     >
@@ -251,7 +251,7 @@
             end }}
           </td>
           <td>
-            {{ case_status_translation(case.status) }}
+            {{ Status.translate(case.status) }}
           </td>
           <td>
             {{ case_display_type(case) }}

@@ -124,6 +124,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       birth_date: "Birth Date",
       case: "Case",
       case_uuid: "Case UUID",
+      comment: "Comment",
       email: "Email",
       first_name: "First Name",
       infection_place: "Infection Place",
@@ -135,6 +136,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       employer: "Employer"
     },
     Hygeia.CaseContext.Transmission => %{
+      comment: "Comment",
       date: "Date",
       infection_place: "Infection Place",
       propagator_internal: "Propagator Internal",
@@ -285,6 +287,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       default_tracer_uuid: "Default Tracer UUID"
     },
     HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema => %{
+      comment: "Comment",
       copy_address_from_propagator: "Copy Address From Propagator",
       date: "Date",
       default_supervisor: "Default Supervisor",

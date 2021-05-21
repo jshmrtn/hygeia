@@ -23,9 +23,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
-
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView
@@ -206,6 +206,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   defp possible_index_submission_attrs(uuid) do
     %PossibleIndexSubmission{
       case_uuid: case_uuid,
+      comment: comment,
       transmission_date: transmission_date,
       infection_place: infection_place,
       first_name: first_name,
@@ -220,6 +221,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     } = CaseContext.get_possible_index_submission!(uuid)
 
     %{
+      "comment" => comment,
       "propagator_internal" => true,
       "propagator_case_uuid" => case_uuid,
       "type" => :contact_person,

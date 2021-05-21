@@ -10,7 +10,6 @@ defmodule HygeiaWeb.TransmissionLive.InfectionPlace do
 
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
-  alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
 
   prop disabled, :boolean, default: false

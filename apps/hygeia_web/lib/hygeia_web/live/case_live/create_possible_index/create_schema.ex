@@ -23,6 +23,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     belongs_to :default_tracer, User, references: :uuid, foreign_key: :default_tracer_uuid
 
     field :type, Type
+    field :comment, :string
     field :type_other, :string
 
     field :date, :date
@@ -50,6 +51,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
   def changeset(schema, attrs \\ %{}) do
     schema
     |> cast(attrs, [
+      :comment,
       :default_tenant_uuid,
       :default_supervisor_uuid,
       :default_tracer_uuid,
@@ -314,6 +316,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
   @spec create_transmission(case :: Case.t(), schema :: %__MODULE__{}) :: Transmission.t()
   def create_transmission(case, %__MODULE__{
         date: date,
+        comment: comment,
         infection_place: infection_place,
         propagator_internal: propagator_internal,
         propagator_ism_id: propagator_ism_id,
@@ -321,6 +324,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       }) do
     {:ok, transmission} =
       CaseContext.create_transmission(%{
+        comment: comment,
         date: date,
         recipient_internal: true,
         recipient_case_uuid: case.uuid,

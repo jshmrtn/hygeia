@@ -4,6 +4,7 @@ defmodule HygeiaWeb.VersionLive.Change do
 
   use HygeiaWeb, :surface_live_component
 
+  alias Hygeia.CaseContext.Case.Status
   alias Surface.Components.LiveRedirect
 
   require Logger
@@ -120,7 +121,7 @@ defmodule HygeiaWeb.VersionLive.Change do
     do: if(boolean, do: gettext("True"), else: gettext("False"))
 
   defp render_tree(status, Hygeia.CaseContext.Case.Status, _assigns),
-    do: status |> String.to_existing_atom() |> case_status_translation()
+    do: status |> String.to_existing_atom() |> Status.translate()
 
   defp render_tree(other, schema, _assings) do
     Logger.warn("""
