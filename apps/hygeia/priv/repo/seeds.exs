@@ -275,6 +275,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       birth_date: ~D[1975-07-11],
       email: "corinne.weber@gmx.ch",
       first_name: "Corinne",
+      comment: "Drank beer, kept distance to other people",
       infection_place: %{
         address: %{
           address: "Torstrasse 25",
@@ -284,8 +285,6 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           country: "CH"
         },
         known: true,
-        activity_mapping_executed: true,
-        activity_mapping: "Drank beer, kept distance to other people",
         type: :club,
         name: "BrüW",
         flight_information: nil
@@ -443,6 +442,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       propagator_case_uuid: case_jony.uuid,
       recipient_internal: true,
       recipient_case_uuid: case_jay.uuid,
+      comment: "Drank beer, kept distance to other people",
       infection_place: %{
         address: %{
           address: "Torstrasse 25",
@@ -452,8 +452,6 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           country: "CH"
         },
         known: true,
-        activity_mapping_executed: true,
-        activity_mapping: "Drank beer, kept distance to other people",
         type: :club,
         name: "BrüW",
         flight_information: nil
@@ -468,8 +466,6 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       infection_place: %{
         address: nil,
         known: true,
-        activity_mapping_executed: false,
-        activity_mapping: nil,
         type: :flight,
         name: "Swiss International Airlines",
         flight_information: "LX-332"
@@ -483,6 +479,8 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       propagator_case_uuid: case_jony.uuid,
       recipient_internal: false,
       recipient_ism_id: "94327",
+      comment:
+        "stayed at brothers place, were in contact for more than 15 minutes while not keeping save distance",
       infection_place: %{
         address: %{
           address: "Sunnehof 1",
@@ -492,9 +490,6 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           country: "CH"
         },
         known: true,
-        activity_mapping_executed: true,
-        activity_mapping:
-          "stayed at brothers place, were in contact for more than 15 minutes while not keeping save distance",
         type: :gathering,
         name: nil,
         flight_information: nil

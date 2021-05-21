@@ -13,7 +13,6 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
-
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TelephoneInput
   alias Surface.Components.Form.TextArea
@@ -128,7 +127,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
       transmission_date: gettext("Transmission Date"),
       infection_place: gettext("Infection Place"),
       infection_place_address: gettext("Meet Address"),
-      infection_place_activity_mapping: gettext("Activity Mapping"),
+      comment: gettext("Activity Mapping"),
       contact_methods: gettext("Contact Methods"),
       address: gettext("Address"),
       employer: gettext("Employer")

@@ -93,6 +93,12 @@
           </div>
         </div>
 
+        <Field name={{ :comment }} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <TextArea class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
         <Inputs for={{ :infection_place }}>
           <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
         </Inputs>

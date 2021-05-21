@@ -45,8 +45,6 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
   @type empty :: %__MODULE__{
           address: Address.t() | nil,
           known: boolean() | nil,
-          activity_mapping_executed: boolean() | nil,
-          activity_mapping: String.t() | nil,
           type: Type.t() | nil,
           type_other: String.t() | nil,
           name: String.t() | nil,
@@ -57,8 +55,6 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
 
   embedded_schema do
     field :known, :boolean, default: false
-    field :activity_mapping_executed, :boolean, default: false
-    field :activity_mapping, :string
     field :name, :string
     field :flight_information, :string
     field :type, Type
@@ -74,8 +70,6 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
     infection_place
     |> cast(attrs, [
       :known,
-      :activity_mapping_executed,
-      :activity_mapping,
       :name,
       :flight_information,
       :type,

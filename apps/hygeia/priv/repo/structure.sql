@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 13.2 (Debian 13.2-1.pgdg100+1)
--- Dumped by pg_dump version 13.2 (Ubuntu 13.2-1.pgdg20.04+1)
+-- Dumped by pg_dump version 13.3 (Ubuntu 13.3-1.pgdg20.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -105,7 +105,8 @@ CREATE TYPE public.case_status AS ENUM (
     'next_contact_agreed',
     'hospitalization',
     'home_resident',
-    'done'
+    'done',
+    'canceled'
 );
 
 
@@ -2685,7 +2686,8 @@ CREATE TABLE public.possible_index_submissions (
     case_uuid uuid,
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    employer character varying(255)
+    employer character varying(255),
+    comment text
 );
 
 
@@ -2871,7 +2873,8 @@ CREATE TABLE public.transmissions (
     propagator_case_uuid uuid,
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    infection_place jsonb
+    infection_place jsonb,
+    comment text
 );
 
 
@@ -4593,3 +4596,4 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210416111804);
 INSERT INTO public."schema_migrations" (version) VALUES (20210419130620);
 INSERT INTO public."schema_migrations" (version) VALUES (20210419154442);
 INSERT INTO public."schema_migrations" (version) VALUES (20210511110755);
+INSERT INTO public."schema_migrations" (version) VALUES (20210521094209);

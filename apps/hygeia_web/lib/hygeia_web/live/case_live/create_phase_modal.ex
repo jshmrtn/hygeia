@@ -6,6 +6,7 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
+  alias Hygeia.CaseContext.Case.Status
   alias HygeiaWeb.PolimorphicInputs
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox

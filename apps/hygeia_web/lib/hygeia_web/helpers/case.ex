@@ -19,32 +19,6 @@ defmodule HygeiaWeb.Helpers.Case do
     Enum.map(Case.Complexity.__enum_map__(), &{case_complexity_translation(&1), &1})
   end
 
-  @spec case_status_translation(status :: Case.Status.t()) :: String.t()
-  def case_status_translation(:first_contact), do: gettext("First contact")
-
-  def case_status_translation(:first_contact_unreachable),
-    do: gettext("First contact, unreachable")
-
-  def case_status_translation(:code_pending), do: gettext("Code Pending")
-
-  def case_status_translation(:waiting_for_contact_person_list),
-    do: gettext("Wainting for Contact Person List")
-
-  def case_status_translation(:other_actions_todo),
-    do: pgettext("case_status", "Other Actions To Do")
-
-  def case_status_translation(:next_contact_agreed),
-    do: pgettext("case_status", "Next Contact Agreed")
-
-  def case_status_translation(:done), do: pgettext("case_status", "Done")
-  def case_status_translation(:hospitalization), do: pgettext("case_status", "Hospitalization")
-  def case_status_translation(:home_resident), do: pgettext("case_status", "Home Resident")
-
-  @spec case_status_map :: [{String.t(), Case.Status.t()}]
-  def case_status_map do
-    Enum.map(Case.Status.__enum_map__(), &{case_status_translation(&1), &1})
-  end
-
   @spec case_phase_index_end_reason_map :: [{String.t(), Index.EndReason.t()}]
   def case_phase_index_end_reason_map do
     Enum.map(

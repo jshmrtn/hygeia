@@ -18,6 +18,7 @@ defmodule Hygeia.CaseContext.Transmission do
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t(),
           date: Date.t() | nil,
+          comment: String.t() | nil,
           propagator_internal: boolean,
           propagator_ism_id: String.t() | nil,
           propagator_case: Ecto.Schema.belongs_to(Case.t()) | nil,
@@ -34,6 +35,7 @@ defmodule Hygeia.CaseContext.Transmission do
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           date: Date.t() | nil,
+          comment: String.t() | nil,
           propagator_internal: boolean | nil,
           propagator_ism_id: String.t() | nil,
           propagator_case: Ecto.Schema.belongs_to(Case.t()) | nil,
@@ -53,6 +55,7 @@ defmodule Hygeia.CaseContext.Transmission do
 
   schema "transmissions" do
     field :date, :date
+    field :comment, :string
     field :propagator_ism_id, :string
     field :propagator_internal, :boolean
     field :recipient_ism_id, :string
@@ -74,6 +77,7 @@ defmodule Hygeia.CaseContext.Transmission do
     transmission
     |> cast(attrs, [
       :date,
+      :comment,
       :recipient_internal,
       :recipient_ism_id,
       :propagator_case_uuid,

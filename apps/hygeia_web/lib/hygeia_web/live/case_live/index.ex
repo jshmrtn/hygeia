@@ -7,6 +7,7 @@ defmodule HygeiaWeb.CaseLive.Index do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Case.Status
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
@@ -75,7 +76,8 @@ defmodule HygeiaWeb.CaseLive.Index do
                 %{
                   "status" =>
                     Enum.map(
-                      Case.Status.__enum_map__() -- [:done, :hospitalization, :home_resident],
+                      Case.Status.__enum_map__() --
+                        [:done, :hospitalization, :home_resident, :canceled],
                       &Atom.to_string/1
                     ),
                   "tracer_uuid" => [get_auth(socket).uuid]

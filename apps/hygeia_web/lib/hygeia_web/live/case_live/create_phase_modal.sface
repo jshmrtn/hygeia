@@ -117,8 +117,8 @@
               {{ pgettext(
                 "Phase Create Modal",
                 ~S(The status of the case will be changed from "%{old_status}" to "%{new_status}".),
-                old_status: case_status_translation(@case.status),
-                new_status: case_status_translation(new_status)
+                old_status: Status.translate(@case.status),
+                new_status: Status.translate(new_status)
               ) }}
             </li>
             <li :for={{{:phase_end_date, %Phase{end: old_end_date} = phase, new_end_date} <-

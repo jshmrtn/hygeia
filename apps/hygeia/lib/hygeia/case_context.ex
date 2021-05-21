@@ -666,7 +666,23 @@ defmodule Hygeia.CaseContext do
           # exp_loc_type_yn
           fragment("(ARRAY_AGG(?->'known'))[1]", received_transmission.infection_place),
           # activity_mapping_yn
-          nil,
+          fragment(
+            """
+            CASE
+              WHEN ? THEN ?
+              WHEN ? THEN ?
+              WHEN ? THEN ?
+              ELSE ?
+            END
+            """,
+            case.status == :canceled,
+            2,
+            case.status == :first_contact,
+            3,
+            case.status == :first_contact_unreachable,
+            2,
+            1
+          ),
           # exp_country
           fragment(
             "(ARRAY_AGG(?))[1]",

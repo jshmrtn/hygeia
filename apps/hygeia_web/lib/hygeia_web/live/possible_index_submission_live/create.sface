@@ -218,47 +218,39 @@
           </Inputs>
         </div>
 
-        <div
-          :show={{ @step == :infection_place_activity_mapping }}
-          id="step_infection_place_activity_mapping"
-        >
-          <Inputs for={{ :infection_place }}>
-            <h2>
-              {{ gettext(
-                "How did your encounter with %{first_name} %{last_name} happen?",
-                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-              ) }}
-            </h2>
+        <div :show={{ @step == :comment }} id="step_comment">
+          <h2>
+            {{ gettext(
+              "How did your encounter with %{first_name} %{last_name} happen?",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            ) }}
+          </h2>
 
-            <p>
-              {{ gettext(
-                "Describe your encounter with %{first_name} %{last_name}. Under which circumstances did you meet? What kind of activity happened during your encounter (e.g. «wedding with lunch, sat at same table next to each other» or «living in same household, sharing kitchen and bathroom»).",
-                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-              ) }}
-            </p>
+          <p>
+            {{ gettext(
+              "Describe your encounter with %{first_name} %{last_name}. Under which circumstances did you meet? What kind of activity happened during your encounter (e.g. «wedding with lunch, sat at same table next to each other» or «living in same household, sharing kitchen and bathroom»).",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            ) }}
+          </p>
 
-            <HiddenInput field={{ :activity_mapping_executed }} value />
+          <Field name={{ :comment }} class="form-group">
+            <HygeiaWeb.FieldLabel />
+            <TextArea class="form-control" />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
 
-            <Field name={{ :activity_mapping }} class="form-group">
-              <HygeiaWeb.FieldLabel />
-              <TextArea class="form-control" />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-
-            <button
-              class="btn btn-primary"
-              type="button"
-              :on-click="advance"
-              disabled={{errors_in?(@changeset, [
-                {:infection_place, :activity_mapping_executed},
-                {:infection_place, :activity_mapping}
-              ])}}
-            >
-              {{ gettext("Continue") }}
-            </button>
-          </Inputs>
+          <button
+            class="btn btn-primary"
+            type="button"
+            :on-click="advance"
+            disabled={{errors_in?(@changeset, [
+              {:comment}
+            ])}}
+          >
+            {{ gettext("Continue") }}
+          </button>
         </div>
 
         <div :show={{ @step == :infection_place_address }} id="step_infection_place_address">
