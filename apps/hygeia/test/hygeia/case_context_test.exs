@@ -828,7 +828,7 @@ defmodule Hygeia.CaseContextTest do
                    "phone_number" => "+41522330689",
                    "postal_code" => "9042",
                    "profession" => "M",
-                   "quar_yn" => "0",
+                   "quar_yn" => "2",
                    "reason_end_of_iso" => "",
                    "reason_quar" => "2",
                    "sampling_dt" => "",
