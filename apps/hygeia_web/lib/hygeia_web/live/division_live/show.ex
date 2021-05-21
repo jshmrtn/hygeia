@@ -117,9 +117,7 @@ defmodule HygeiaWeb.DivisionLive.Show do
       division: division,
       changeset: changeset,
       page_title:
-        "#{division.title} - #{gettext("Division")} - #{division.organisation.name} - #{
-          gettext("Organisation")
-        }"
+        "#{division.title} - #{gettext("Division")} - #{division.organisation.name} - #{gettext("Organisation")}"
     )
     |> maybe_block_navigation()
   end

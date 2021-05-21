@@ -7,7 +7,7 @@
       >
         <HiddenInput value={{ value }} />
 
-        <div :if={{ not (value in [nil, ""]) }}>
+        <div :if={{ value not in [nil, ""] }}>
           <Context
             put={{
               organisation: load_organisation(value)

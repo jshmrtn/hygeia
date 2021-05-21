@@ -34,12 +34,12 @@ defmodule HygeiaWeb.CaseLive.ModalSelect do
   end
 
   @impl Phoenix.LiveComponent
-  def update(assigns, socket) do
+  def update(%{options: options} = assigns, socket) do
     socket = assign(socket, assigns)
 
     socket =
       case socket.assigns.query do
-        "" -> assign(socket, filtered_options: assigns.options)
+        "" -> assign(socket, filtered_options: options)
         _query -> socket
       end
 

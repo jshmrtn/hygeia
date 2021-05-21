@@ -207,7 +207,7 @@ defmodule Hygeia.CaseContext.Case do
           ) ->
             changeset
 
-          not (fetch_field!(changeset, :status) in [:done, :canceled]) ->
+          fetch_field!(changeset, :status) not in [:done, :canceled] ->
             changeset
 
           true ->
@@ -235,7 +235,7 @@ defmodule Hygeia.CaseContext.Case do
           ) ->
             changeset
 
-          not (fetch_field!(changeset, :status) in [:done, :canceled]) ->
+          fetch_field!(changeset, :status) not in [:done, :canceled] ->
             changeset
 
           true ->

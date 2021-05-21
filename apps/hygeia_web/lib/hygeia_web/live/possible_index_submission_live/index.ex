@@ -65,9 +65,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
       case: case,
       has_index_phase?: has_index_phase?,
       page_title:
-        "#{case.person.first_name} #{case.person.last_name} - #{
-          gettext("Possible Index Submissions")
-        } - #{gettext("Case")}"
+        "#{case.person.first_name} #{case.person.last_name} - #{gettext("Possible Index Submissions")} - #{gettext("Case")}"
     )
   end
 end

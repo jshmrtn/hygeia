@@ -49,9 +49,7 @@ defmodule HygeiaWeb.PdfController do
 
       %__MODULE__{
         message:
-          "requested document is currently unavailable, due to wrong or missing parameters for phase with id #{
-            phase_uuid
-          } of the case #{case_uuid} or if an end confirmation is requested more than one day before phase end",
+          "requested document is currently unavailable, due to wrong or missing parameters for phase with id #{phase_uuid} of the case #{case_uuid} or if an end confirmation is requested more than one day before phase end",
         conn: conn,
         case_uuid: case_uuid,
         phase_uuid: phase_uuid

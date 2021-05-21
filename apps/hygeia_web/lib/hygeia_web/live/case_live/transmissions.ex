@@ -64,9 +64,7 @@ defmodule HygeiaWeb.CaseLive.Transmissions do
     assign(socket,
       case: case,
       page_title:
-        "#{case.person.first_name} #{case.person.last_name} - #{gettext("Transmissions")} - #{
-          gettext("Case")
-        }"
+        "#{case.person.first_name} #{case.person.last_name} - #{gettext("Transmissions")} - #{gettext("Case")}"
     )
   end
 end

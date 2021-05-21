@@ -152,9 +152,7 @@ defmodule Hygeia.SedexExport.Scheduler do
     case Sedex.message_status(export.uuid) do
       {:error, :not_found} ->
         Logger.info("""
-        Delivery of Sedex Export #{export.scheduling_date} is not yet finished for tenant #{
-          tenant.uuid
-        }, waiting
+        Delivery of Sedex Export #{export.scheduling_date} is not yet finished for tenant #{tenant.uuid}, waiting
         """)
 
         Process.sleep(@status_check_interval_ms)

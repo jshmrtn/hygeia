@@ -27,9 +27,7 @@ defmodule Hygeia.Repo.Migrations.VersioningNative do
           WHEN origin = 'web' THEN 'web'::#{Version.Origin.type()}
           WHEN origin = 'api' THEN 'api'::#{Version.Origin.type()}
           WHEN origin = 'user_sync_job' THEN 'user_sync_job'::#{Version.Origin.type()}
-          WHEN origin = 'case_close_email_job' THEN 'case_close_email_job'::#{
-      Version.Origin.type()
-    }
+          WHEN origin = 'case_close_email_job' THEN 'case_close_email_job'::#{Version.Origin.type()}
           WHEN origin = 'email_sender' THEN 'email_sender'::#{Version.Origin.type()}
           WHEN origin = 'sms_sender' THEN 'sms_sender'::#{Version.Origin.type()}
           ELSE 'migration'::#{Version.Origin.type()}

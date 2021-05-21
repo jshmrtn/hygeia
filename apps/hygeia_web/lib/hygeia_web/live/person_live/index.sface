@@ -81,7 +81,7 @@
 
               <div
                 class="form-group"
-                :if={{ not (Phoenix.HTML.FormData.input_value(form.source, form, "country") in ["", nil]) }}
+                :if={{ Phoenix.HTML.FormData.input_value(form.source, form, "country") not in ["", nil] }}
               >
                 <Field name="subdivision" class="form-group">
                   <HygeiaWeb.FieldLabel schema={{ Hygeia.CaseContext.Address }} />
