@@ -3,6 +3,8 @@ defmodule HygeiaWeb.DivisionLive.Index do
 
   use HygeiaWeb, :surface_view
 
+  import Ecto.Query
+
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.Repo
@@ -70,7 +72,9 @@ defmodule HygeiaWeb.DivisionLive.Index do
   defp list_divisions(socket) do
     %Paginator.Page{entries: entries, metadata: metadata} =
       Repo.paginate(
-        Ecto.assoc(socket.assigns.organisation, :divisions),
+        socket.assigns.organisation
+        |> Ecto.assoc(:divisions)
+        |> order_by(:title),
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: [title: :asc])
       )
 
