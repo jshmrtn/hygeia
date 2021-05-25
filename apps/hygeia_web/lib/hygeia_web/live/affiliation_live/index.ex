@@ -107,20 +107,21 @@ defmodule HygeiaWeb.AffiliationLive.Index do
           {:active_cases, "true"}, query ->
             query
             |> join(:left, [affiliation], case in Case,
-              on: affiliation.person_uuid == case.person_uuid
+              on: affiliation.person_uuid == case.person_uuid,
+              as: :case
             )
-            |> join(:left, [affiliation, case], phase in fragment("UNNEST(?)", case.phases))
+            |> join(:left, [affiliation, case: case], phase in fragment("UNNEST(?)", case.phases),
+              as: :phase
+            )
             |> where(
-              [affiliation, case, phase],
-              fragment(
-                "? BETWEEN ? AND ?",
-                fragment("CURRENT_DATE"),
-                coalesce(
+              [affiliation, case: case, phase: phase],
+              fragment("?->'quarantine_order'", phase) == fragment("TO_JSONB(?)", true) and
+                fragment(
+                  "? BETWEEN ? AND ?",
+                  fragment("CURRENT_DATE"),
                   fragment("(?->>'start')::date", phase),
-                  fragment("?::date", case.inserted_at)
-                ),
-                coalesce(fragment("(?->>'end')::date", phase), fragment("CURRENT_DATE"))
-              )
+                  fragment("(?->>'end')::date", phase)
+                )
             )
         end
       )
