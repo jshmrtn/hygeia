@@ -32,7 +32,7 @@ defmodule HygeiaWeb.Router do
       gettext: HygeiaGettext,
       cldr: HygeiaCldr
 
-    plug Cldr.Plug.SetSession
+    plug Cldr.Plug.PutSession
 
     dynamic_plug PlugContentSecurityPolicy, reevaluate: :first_usage do
       URI.default_port("wss", 443)

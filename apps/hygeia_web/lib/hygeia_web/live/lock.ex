@@ -90,7 +90,7 @@ defmodule HygeiaWeb.Lock do
         pid = self()
 
         cond do
-          !socket.connected? ->
+          !connected?(socket) ->
             # Not connected can not handle locks, therefore we're just giving it access
             assign(socket, lock_acquired: true)
 
