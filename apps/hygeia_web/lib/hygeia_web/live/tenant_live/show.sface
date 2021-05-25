@@ -166,8 +166,7 @@
                           name={{ :password }}
                           class="form-group"
                           :if={{@live_action == :edit and
-                            Phoenix.HTML.FormData.input_value(smtp_relay_form.source, smtp_relay_form, :change_password) ==
-                              "true"}}
+                            Phoenix.HTML.FormData.input_value(smtp_relay_form.source, smtp_relay_form, :change_password)}}
                         >
                           <HygeiaWeb.FieldLabel />
                           <PasswordInput
