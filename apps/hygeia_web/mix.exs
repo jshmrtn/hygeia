@@ -84,9 +84,7 @@ defmodule HygeiaWeb.MixProject do
       {:remote_ip, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:shards, "~> 1.0"},
-      # TODO: Revert to released version when this PR is merged and released:
-      # - https://github.com/surface-ui/surface/pull/399
-      {:surface, github: "jshmrtn/surface", branch: "_live_component_no_socket", override: true},
+      {:surface, "~> 0.4.1"},
       {:surface_formatter, "~> 0.2"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
