@@ -9,7 +9,11 @@ defmodule Hygeia.NotificationContext.Notification do
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
-          body: __MODULE__.CaseAssignee.t() | __MODULE__.EmailSendFailed.t() | nil,
+          body:
+            __MODULE__.CaseAssignee.t()
+            | __MODULE__.EmailSendFailed.t()
+            | __MODULE__.PossibleIndexSubmitted.t()
+            | nil,
           notified: boolean | nil,
           read: boolean | nil,
           user: Ecto.Schema.belongs_to(User.t()) | nil,
@@ -20,7 +24,10 @@ defmodule Hygeia.NotificationContext.Notification do
 
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t(),
-          body: __MODULE__.CaseAssignee.t() | __MODULE__.EmailSendFailed.t(),
+          body:
+            __MODULE__.CaseAssignee.t()
+            | __MODULE__.EmailSendFailed.t()
+            | __MODULE__.PossibleIndexSubmitted.t(),
           notified: boolean,
           read: boolean,
           user: Ecto.Schema.belongs_to(User.t()),
@@ -33,7 +40,8 @@ defmodule Hygeia.NotificationContext.Notification do
     field :body, PolymorphicEmbed,
       types: [
         case_assignee: __MODULE__.CaseAssignee,
-        email_send_failed: __MODULE__.EmailSendFailed
+        email_send_failed: __MODULE__.EmailSendFailed,
+        possible_index_submitted: __MODULE__.PossibleIndexSubmitted
       ],
       on_replace: :update
 
