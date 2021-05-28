@@ -5,8 +5,6 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.PossibleIndexSubmission
-  alias Hygeia.NotificationContext
-  alias Hygeia.UserContext
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
   alias Surface.Components.Form.EmailInput
