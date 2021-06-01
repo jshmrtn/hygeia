@@ -27,14 +27,16 @@ defmodule Hygeia.CaseContext.Case.Phase.PossibleIndex do
           type: Type.t() | nil,
           type_other: String.t() | nil,
           end_reason: EndReason.t() | nil,
-          other_end_reason: String.t() | nil
+          other_end_reason: String.t() | nil,
+          end_reason_date: DateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
           type: Type.t(),
           type_other: String.t() | nil,
           end_reason: EndReason.t() | nil,
-          other_end_reason: String.t() | nil
+          other_end_reason: String.t() | nil,
+          end_reason_date: DateTime.t() | nil
         }
 
   embedded_schema do
@@ -42,16 +44,18 @@ defmodule Hygeia.CaseContext.Case.Phase.PossibleIndex do
     field :type_other, :string
     field :end_reason, EndReason
     field :other_end_reason, :string
+    field :end_reason_date, :utc_datetime_usec
   end
 
   @spec changeset(possible_index :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
           Changeset.t()
   def changeset(possible_index, attrs) do
     possible_index
-    |> cast(attrs, [:type, :type_other, :end_reason, :other_end_reason])
+    |> cast(attrs, [:type, :type_other, :end_reason, :other_end_reason, :end_reason_date])
     |> validate_required([:type])
     |> validate_type_other()
     |> validate_end_reason_other()
+    |> set_end_reason_date()
   end
 
   defp validate_type_other(changeset) do
@@ -69,6 +73,14 @@ defmodule Hygeia.CaseContext.Case.Phase.PossibleIndex do
     |> case do
       :other -> validate_required(changeset, [:other_end_reason])
       _defined -> put_change(changeset, :other_end_reason, nil)
+    end
+  end
+
+  defp set_end_reason_date(changeset) do
+    case fetch_change(changeset, :end_reason) do
+      {:ok, nil} -> put_change(changeset, :end_reason_date, nil)
+      {:ok, _end_reason_change} -> put_change(changeset, :end_reason_date, DateTime.utc_now())
+      :error -> changeset
     end
   end
 

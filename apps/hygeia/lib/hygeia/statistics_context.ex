@@ -969,4 +969,72 @@ defmodule Hygeia.StatisticsContext do
       ]
     )
   end
+
+  @spec count_last24hours_isolation_orders(tenant :: Tenant.t()) :: integer
+  def count_last24hours_isolation_orders(%Tenant{uuid: tenant_uuid} = _tenant) do
+    Repo.one(
+      from(
+        case in Case,
+        join: phase in fragment("UNNEST(?)", case.phases),
+        where:
+          case.tenant_uuid == ^tenant_uuid and
+            fragment("?->'details'->>'__type__'", phase) == "index" and
+            fragment("(?->>'order_date')::date", phase) >=
+              fragment("CURRENT_TIMESTAMP - INTERVAL '1 day'"),
+        select: count(case.uuid)
+      )
+    )
+  end
+
+  @spec list_last24hours_quarantine_orders(tenant :: Tenant.t()) :: [
+          %{type: atom, count: integer}
+        ]
+  def list_last24hours_quarantine_orders(%Tenant{uuid: tenant_uuid} = _tenant) do
+    Repo.all(
+      from(
+        case in Case,
+        join: phase in fragment("UNNEST(?)", case.phases),
+        where:
+          case.tenant_uuid == ^tenant_uuid and
+            fragment("?->'details'->>'__type__'", phase) == "possible_index" and
+            fragment("(?->>'order_date')::date", phase) >=
+              fragment("CURRENT_TIMESTAMP - INTERVAL '1 day'"),
+        group_by: fragment("?->'details'->>'type'", phase),
+        select: %{
+          type:
+            type(
+              fragment("(?->'details'->>'type')", phase),
+              Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
+            ),
+          count: count(case.uuid)
+        }
+      )
+    )
+  end
+
+  @spec list_last24hours_quarantine_converted_to_index(tenant :: Tenant.t()) :: [
+          %{type: atom, count: integer}
+        ]
+  def list_last24hours_quarantine_converted_to_index(%Tenant{uuid: tenant_uuid} = _tenant) do
+    Repo.all(
+      from(
+        case in Case,
+        join: phase in fragment("UNNEST(?)", case.phases),
+        where:
+          case.tenant_uuid == ^tenant_uuid and
+            fragment("?->'details'->>'end_reason'", phase) == "converted_to_index" and
+            fragment("(?->'details'->>'end_reason_date')::date", phase) >=
+              fragment("CURRENT_TIMESTAMP - INTERVAL '1 day'"),
+        group_by: fragment("?->'details'->>'type'", phase),
+        select: %{
+          type:
+            type(
+              fragment("(?->'details'->>'type')", phase),
+              Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
+            ),
+          count: count(case.uuid)
+        }
+      )
+    )
+  end
 end

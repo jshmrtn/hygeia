@@ -242,6 +242,7 @@ defmodule HygeiaWeb.Router do
     live "/statistics/:tenant_uuid/daily/:date", StatisticsLive.DailyStatistics, :show
     live "/statistics/:tenant_uuid/export", StatisticsLive.Export, :show
     live "/statistics/:tenant_uuid/export/:from/:to", StatisticsLive.Export, :show
+    live "/statistics/:tenant_uuid/last24hours", StatisticsLive.Last24HoursStatistics, :show
     get "/statistics/:tenant_uuid/export/:type/:from/:to", StatisticsController, :export
 
     live "/system_messages", SystemMessageLive.Index, :index
