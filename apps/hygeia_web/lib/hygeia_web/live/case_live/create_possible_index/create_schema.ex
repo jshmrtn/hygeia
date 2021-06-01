@@ -254,6 +254,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
                     type_other: global_type_other
                   },
                   quarantine_order: true,
+                  order_date: DateTime.utc_now(),
                   start: start_date,
                   end: end_date
                 }

@@ -14,6 +14,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
 
   @type empty :: %__MODULE__{
           quarantine_order: boolean() | nil,
+          order_date: DateTime.t() | nil,
           type: PhaseType.t() | nil,
           start: Date.t() | nil,
           end: Date.t() | nil,
@@ -23,6 +24,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
   @type t ::
           %__MODULE__{
             quarantine_order: true,
+            order_date: DateTime.t(),
             type: PhaseType.t() | nil,
             start: Date.t(),
             end: Date.t(),
@@ -30,6 +32,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
           }
           | %__MODULE__{
               quarantine_order: false | nil,
+              order_date: nil,
               start: nil,
               end: nil,
               details: Index.t() | PossibleIndex.t()
@@ -39,6 +42,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
 
   embedded_schema do
     field :quarantine_order, :boolean
+    field :order_date, :utc_datetime_usec
     field :start, :date
     field :end, :date
     field :type, PhaseType, virtual: true
@@ -59,6 +63,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
     phase
     |> cast(attrs, [
       :quarantine_order,
+      :order_date,
       :start,
       :end,
       :type,
@@ -82,6 +87,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
       dgettext("errors", "end must be after start")
     )
     |> validate_quarantine_order()
+    |> set_order_date()
   end
 
   defp validate_date_relative(changeset, field, cmp_equality, cmp_field, message) do
@@ -121,6 +127,15 @@ defmodule Hygeia.CaseContext.Case.Phase do
       changeset
       |> put_change(:start, nil)
       |> put_change(:end, nil)
+    end
+  end
+
+  defp set_order_date(changeset) do
+    case fetch_change(changeset, :quarantine_order) do
+      {:ok, true} -> put_change(changeset, :order_date, DateTime.utc_now())
+      {:ok, false} -> put_change(changeset, :order_date, nil)
+      {:ok, nil} -> put_change(changeset, :order_date, nil)
+      :error -> changeset
     end
   end
 

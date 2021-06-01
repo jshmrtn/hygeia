@@ -37,5 +37,16 @@
         </LiveRedirect>
       </UriActiveContext>
     </li>
+    <li class="nav-item">
+      <UriActiveContext
+        to={{ Routes.statistics_last24_hours_statistics_path(@socket, :show, @tenant) }}
+        :let={{ to: to, active: active }}
+        opts={{ active: :inclusive }}
+      >
+        <LiveRedirect to={{ to }} class={{ "nav-link", active: active }}>
+          {{ gettext("24 Hours") }}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
   </ul>
 </div>

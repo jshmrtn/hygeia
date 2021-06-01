@@ -21,9 +21,6 @@ msgstr ""
 "X-Generator: Poedit 2.4.3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-msgid "A lot of contact persons from different places, clubs affected, gastronomy affected, hospital/nursing home affected"
-msgstr "Viele Kontaktpersonen aus unterschiedlichen Orten, Vereine betroffen, Gastronomie betroffen, Spital/Heim betroffen"
-
 msgid ""
 "Dear Sir / Madam,\n"
 "\n"
@@ -81,9 +78,6 @@ msgstr ""
 "von Aktivität sind Sie während Ihrer Begegnung nachgegangen (z.B. «Hochzeit mit Mittagessen. Sassen am selben Tisch» "
 "oder «leben im selben Haushalt, teilen uns Küche und Bad»)."
 
-msgid "Establishment of upper secondary level, tertiary educational institution or further training facility"
-msgstr "Einrichtung der Sekundarstufe II, tertiäre Bildungseinrichtung oder Weiterbildungsstätte"
-
 msgid ""
 "Generally there are no follow-up calls. If an index is for example very anxious and single or in a generally bad state, "
 "a next contact can be agreed. Always create a note in the protocol with the time of the next contact. If possible always "
@@ -132,10 +126,6 @@ msgstr ""
 "Falls sie enge Kontakte zu unbekannten Personen hatten (z.B. in einem Restaurant, in der Kirche etc.), besprechen Sie "
 "das Vorgehen zur Kontaktaufnahme oder anderer Massnahmen mit Ihrem Tracer oder Ihrer Tracerin."
 
-msgid "If you had contact with people you do not know, please talk to your tracer with further details."
-msgstr ""
-"Wenn Sie Kontakt mit Personen hatten, die Sie nicht kennen, sprechen Sie bitte mit Ihrem Tracer mit weiteren Details."
-
 msgid ""
 "If you met %{first_name} %{last_name} multiple times, select the earliest date after 48 hours before your symptom start "
 "date or before the test (if you don't have symptoms)."
@@ -151,14 +141,6 @@ msgstr ""
 "Wenn Sie %{first_name} %{last_name} mehrmals getroffen haben, geben Sie bitte das letzte Datum an, an dem Sie sich ohne "
 "Schutzmassnahmen getroffen haben. Bedenken Sie, dass sie schon 48h vor Symptombeginn ansteckend waren (falls Sie keine "
 "Symptome haben 48h vor dem Test)."
-
-msgid "If you're having trouble recalling what you did since then, here are some examples:"
-msgstr "Wenn Sie Schwierigkeiten haben, sich daran zu erinnern, was Sie seitdem getan haben, hier sind einige Beispiele:"
-
-msgid "In this case there are no further actions necessary. \"Done\" should be set on the index and contact person."
-msgstr ""
-"In diesem Fall sind beim Index keine weiteren Aktionen nötig. Tracing abgeschlossen soll bei Index und KP angepasst "
-"werden."
 
 msgid ""
 "Index could not be reached by phone. Always create a note in the protocol with all steps taken to reach the person. For "
@@ -176,18 +158,12 @@ msgstr ""
 "Index versteht kein Deutsch. Kann sich auch nicht in einer europäischen Sprache ausdrücken. Ohne Übersetzung kann nicht "
 "kommuniziert werden."
 
-msgid "Index is a nursing home resident, e.g. nursing home, home for the handicapped, etc... Always inform the team lead"
-msgstr "Index ist ein Heimbewohner z.B. Altersheim, Behindertenheim, etc… Immer Info an Teamleitung"
-
 msgid ""
 "Index is hospitalized because of Covid19. Set the \"Start Date\" at hospitalizations and choose an \"Organisation\", "
 "then create a note why the index is hospitalized and how they are, in the end inform the team lead."
 msgstr ""
 "Index befindet sich aufgrund von Covid19 im Spital. Bei Krankheitsaufenthalt “Startdatum” setzten und “Organisation” "
 "auswählen, dann Notiz anlegen warum Index im Spital ist und wie es ihm geht, am Schluss Info an Teamleitung."
-
-msgid "Maybe inform the team lead if not already done, create a protocol entry (status for exceptional cases)"
-msgstr "Evt Info an Teamleitung die noch nicht erfolgt ist, dazu Eintrag im Protokoll (Status für aussergewöhnliches)"
 
 msgid ""
 "No submissions have been entered yet. Please submit all relevant people. Previous submissions can also be viewed, edited "
@@ -200,13 +176,6 @@ msgid ""
 "Phone number can only be obtained at the residents' registration office, index doesn't own a phone, no E-Mail address"
 msgstr ""
 "Telefonnummer kann nur über die Einwohnerkontrolle eingeholt werden, Index besitzt kein Telefon, keine E-Mail-Adresse"
-
-msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
-msgstr ""
-"Bitte beachten Sie, dass die Eingabe der Kontaktpersonen nur in aktuellen Versionen der folgenden Browser funktioniert:"
-
-msgid "Someone else is currently editing this resource. Wait until they finished their work."
-msgstr "Eine andere Person bearbeitet diese Ressource derzeit. Warten Sie, bis diese ihre Arbeit beendet haben."
 
 msgid ""
 "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked "
@@ -309,6 +278,12 @@ msgstr "1 Telefonanruf"
 msgid "2-5 contact persons"
 msgstr "2-5 Kontaktpersonen"
 
+msgid "24 Hours"
+msgstr "24 Stunden"
+
+msgid "24 Hours Statistics"
+msgstr "24 Stunden Statistiken"
+
 msgid "6 or more contact persons"
 msgstr "6 und mehr Kontaktpersonen"
 
@@ -323,6 +298,9 @@ msgstr "> 15 Min."
 
 msgid "> 30 Min."
 msgstr "> 30 Min."
+
+msgid "A lot of contact persons from different places, clubs affected, gastronomy affected, hospital/nursing home affected"
+msgstr "Viele Kontaktpersonen aus unterschiedlichen Orten, Vereine betroffen, Gastronomie betroffen, Spital/Heim betroffen"
 
 msgid "A lot of contact persons/places that must be determined / assignment to team lead"
 msgstr "Viele verschiedene Kontaktpersonen/ Orte, die abgeklärt werden müssen / Übergabe an die Teamleitung"
@@ -1270,6 +1248,9 @@ msgstr "Eintrag"
 msgid "Error while authenticating."
 msgstr "Fehler beim authentifizieren."
 
+msgid "Establishment of upper secondary level, tertiary educational institution or further training facility"
+msgstr "Einrichtung der Sekundarstufe II, tertiäre Bildungseinrichtung oder Weiterbildungsstätte"
+
 msgid "Events"
 msgstr "Veranstaltungen"
 
@@ -1534,8 +1515,15 @@ msgstr ""
 "Falls es Phasen gibt wo nicht entschieden wurde ob eine Quarantäne / Isolation verordnet wird, darf der Status nicht auf "
 "\"Tracing abgeschlossen\" gesetzt werden."
 
+msgid "If you had contact with people you do not know, please talk to your tracer with further details."
+msgstr ""
+"Wenn Sie Kontakt mit Personen hatten, die Sie nicht kennen, sprechen Sie bitte mit Ihrem Tracer mit weiteren Details."
+
 msgid "If you're an authorized person of the contact tracing team, log in instead:"
 msgstr "Wenn Sie eine autorisierte Person des Contact Tracing Teams sind, loggen Sie sich stattdessen hier ein:"
+
+msgid "If you're having trouble recalling what you did since then, here are some examples:"
+msgstr "Wenn Sie Schwierigkeiten haben, sich daran zu erinnern, was Sie seitdem getan haben, hier sind einige Beispiele:"
 
 msgid "Import CSV / XLSX"
 msgstr ".csv / .xlsx importieren"
@@ -1557,6 +1545,11 @@ msgstr "In Bearbeitung"
 msgid "In how close proximity to each other were you?"
 msgstr "Wie nah beieinander waren Sie?"
 
+msgid "In this case there are no further actions necessary. \"Done\" should be set on the index and contact person."
+msgstr ""
+"In diesem Fall sind beim Index keine weiteren Aktionen nötig. Tracing abgeschlossen soll bei Index und KP angepasst "
+"werden."
+
 msgid "Includes Phase Type"
 msgstr "Beinhaltet Phase"
 
@@ -1569,6 +1562,9 @@ msgstr "Index"
 
 msgid "Index died"
 msgstr "Index ist verstorben"
+
+msgid "Index is a nursing home resident, e.g. nursing home, home for the handicapped, etc... Always inform the team lead"
+msgstr "Index ist ein Heimbewohner z.B. Altersheim, Behindertenheim, etc… Immer Info an Teamleitung"
 
 msgid "Index is completely healed and isolation is completed"
 msgstr "Index ist vollständig genesen und die Isolation ist beendet"
@@ -1648,6 +1644,9 @@ msgstr "Isolationsbestätigung"
 
 msgid "Isolation Order"
 msgstr "Isolationsverordnung"
+
+msgid "Isolation Ordered"
+msgstr "Isolation verordnet"
 
 msgid "Isolation Period End"
 msgstr "Isolationsperiode Ende"
@@ -1813,6 +1812,9 @@ msgstr "März"
 
 msgid "May"
 msgstr "Mai"
+
+msgid "Maybe inform the team lead if not already done, create a protocol entry (status for exceptional cases)"
+msgstr "Evt Info an Teamleitung die noch nicht erfolgt ist, dazu Eintrag im Protokoll (Status für aussergewöhnliches)"
 
 msgid "Medium"
 msgstr "Mittel"
@@ -2413,6 +2415,10 @@ msgstr "Ort Name"
 msgid "Please Wait..."
 msgstr "Bitte warten ..."
 
+msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
+msgstr ""
+"Bitte beachten Sie, dass die Eingabe der Kontaktpersonen nur in aktuellen Versionen der folgenden Browser funktioniert:"
+
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Port"
 msgstr "Port"
@@ -2582,6 +2588,9 @@ msgstr "Quarantäne-Endgründe"
 
 msgid "Quarantine Order"
 msgstr "Quarantäneverordnung"
+
+msgid "Quarantine Ordered"
+msgstr "Quarantäne verordnet"
 
 msgid "Quarantine Period End"
 msgstr "Quarantäneperiode Ende"
@@ -2934,6 +2943,9 @@ msgstr "SMTP"
 
 msgid "Social medical facility"
 msgstr "Sozialmedizinische Einrichtung"
+
+msgid "Someone else is currently editing this resource. Wait until they finished their work."
+msgstr "Eine andere Person bearbeitet diese Ressource derzeit. Warten Sie, bis diese ihre Arbeit beendet haben."
 
 msgid "Sore Throat"
 msgstr "Halsschmerzen"
