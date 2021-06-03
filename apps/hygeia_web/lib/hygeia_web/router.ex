@@ -249,6 +249,7 @@ defmodule HygeiaWeb.Router do
 
     get "/pdf/isolation/:case_uuid/:phase_uuid", PdfController, :isolation_confirmation
     get "/pdf/quarantine/:case_uuid/:phase_uuid", PdfController, :quarantine_confirmation
+    get "/pdf/isolation_end/:case_uuid/:phase_uuid", PdfController, :isolation_end_confirmation
 
     live "/auth/login", AuthLive.Login, :login
     get "/auth/:provider", AuthController, :request

@@ -1,0 +1,5 @@
+<%= case @reason do %>
+  <% %HygeiaWeb.PdfController.DocumentCurrentlyUnavailableError{} -> %>
+    <%= gettext("Requested document is currently unavailable") %>
+  <% _other -> %>
+<% end %>

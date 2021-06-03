@@ -99,6 +99,9 @@ config :sentry,
   root_source_code_path:
     __ENV__.file |> Path.dirname() |> Path.dirname() |> Path.join("apps/*") |> Path.wildcard()
 
+config :hygeia, Hygeia.Jobs.SendCaseClosedEmail,
+  url_generator: HygeiaWeb.SendCaseClosedEmailUrlGenerator
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

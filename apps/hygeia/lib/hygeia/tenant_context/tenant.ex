@@ -182,20 +182,23 @@ defmodule Hygeia.TenantContext.Tenant do
     end)
   end
 
-  @spec get_message_signature_text(tenant :: t, message_type :: atom) :: String.t()
+  @spec get_message_signature_text(tenant :: t, message_type :: :sms | :email) :: String.t()
+  def get_message_signature_text(tenant, message_type)
+
   def get_message_signature_text(
-        %{template_parameters: %{sms_signature: sms_signature}},
+        %__MODULE__{template_parameters: %TemplateParameters{sms_signature: sms_signature}},
         :sms
       ),
       do: sms_signature
 
   def get_message_signature_text(
-        %{template_parameters: %{email_signature: email_signature}},
+        %__MODULE__{template_parameters: %TemplateParameters{email_signature: email_signature}},
         :email
       ),
       do: email_signature
 
-  def get_message_signature_text(_tenant, _message_type), do: ""
+  def get_message_signature_text(%__MODULE__{}, message_type) when message_type in [:sms, :email],
+    do: ""
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person

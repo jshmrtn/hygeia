@@ -18,6 +18,7 @@ defmodule HygeiaPdfConfirmation do
       ensure_template_exists("layout/header", variation)
       ensure_template_exists("layout/footer", variation)
       ensure_template_exists("quarantine", variation)
+      ensure_template_exists("isolation_end", variation)
     end
 
     variations
