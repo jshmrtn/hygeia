@@ -207,7 +207,7 @@ defmodule Hygeia.CaseContext.Case do
           ) ->
             changeset
 
-          fetch_field!(changeset, :status) == :hospitalization ->
+          not (fetch_field!(changeset, :status) in [:done, :canceled]) ->
             changeset
 
           true ->
@@ -215,7 +215,7 @@ defmodule Hygeia.CaseContext.Case do
               changeset,
               :status,
               gettext(
-                ~S(If there are open hospitalizations, the status needs to be set to "hospitalization".)
+                ~S(If there are open hospitalizations, the status can not be set to "done" / "canceled".)
               )
             )
         end
@@ -235,7 +235,7 @@ defmodule Hygeia.CaseContext.Case do
           ) ->
             changeset
 
-          fetch_field!(changeset, :status) != :done ->
+          not (fetch_field!(changeset, :status) in [:done, :canceled]) ->
             changeset
 
           true ->
@@ -243,7 +243,7 @@ defmodule Hygeia.CaseContext.Case do
               changeset,
               :status,
               gettext(
-                ~S(If there are phases without decided unknown quarantine / isolation orders, the status must not be "done".)
+                ~S(If there are phases without decided unknown quarantine / isolation orders, the status must not be "done" / "canceled".)
               )
             )
         end
