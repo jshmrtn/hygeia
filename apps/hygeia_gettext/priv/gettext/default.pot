@@ -820,6 +820,19 @@ msgstr ""
 msgid "Date Format"
 msgstr ""
 
+msgid ""
+"Dear Sir / Madam,\n"
+"\n"
+"Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed "
+"to leave isolation.\n"
+"Details: %{isolation_end_confirmation_link}\n"
+"\n"
+"Should you continue to feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
+msgstr ""
+
 msgid "Death"
 msgstr ""
 
@@ -1545,6 +1558,12 @@ msgid "Invalid Person Details, if you believe this is an error, contact the trac
 msgstr ""
 
 msgid "Isolation Confirmation"
+msgstr ""
+
+msgid "Isolation End"
+msgstr ""
+
+msgid "Isolation End Confirmation"
 msgstr ""
 
 msgid "Isolation Order"
@@ -2592,6 +2611,9 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Reporting unit"
+msgstr ""
+
+msgid "Requested document is currently unavailable"
 msgstr ""
 
 msgid "Residency Address"

@@ -8,11 +8,14 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
   import HygeiaGettext
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CommunicationContext
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
+
+  @url_generator Application.compile_env!(:hygeia, [__MODULE__, :url_generator])
 
   case Mix.env() do
     :dev -> @default_refresh_interval_ms :timer.seconds(30)
@@ -68,25 +71,27 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
     GenServer.cast(server, :refresh)
   end
 
-  @spec text(phase :: Phase.t(), tenant :: Tenant.t(), message_type :: atom) :: String.t()
-  defp text(%Phase{details: %Phase.Index{}} = phase, tenant, message_type),
-    do:
-      gettext(
-        """
-        Dear Sir / Madam,
+  @spec text(phase :: Phase.t(), case :: Case.t(), message_type :: atom) :: String.t()
+  defp text(%Phase{details: %Phase.Index{}} = phase, case, message_type) do
+    gettext(
+      """
+      Dear Sir / Madam,
 
-        Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
+      Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
+      Details: %{isolation_end_confirmation_link}
 
-        Should you continue to feel ill, please contact your general practitioner.
+      Should you continue to feel ill, please contact your general practitioner.
 
-        Kind Regards,
-        %{message_signature}
-        """,
-        date: HygeiaCldr.Date.to_string!(Date.add(phase.end, 1), format: :full),
-        message_signature: Tenant.get_message_signature_text(tenant, message_type)
-      )
+      Kind Regards,
+      %{message_signature}
+      """,
+      date: HygeiaCldr.Date.to_string!(Date.add(phase.end, 1), format: :full),
+      isolation_end_confirmation_link: @url_generator.pdf_url(case, phase),
+      message_signature: Tenant.get_message_signature_text(case.tenant, message_type)
+    )
+  end
 
-  defp text(%Phase{details: %Phase.PossibleIndex{}} = phase, tenant, message_type),
+  defp text(%Phase{details: %Phase.PossibleIndex{}} = phase, case, message_type),
     do:
       gettext(
         """
@@ -100,7 +105,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
         %{message_signature}
         """,
         date: HygeiaCldr.Date.to_string!(Date.add(phase.end, 1), format: :full),
-        message_signature: Tenant.get_message_signature_text(tenant, message_type)
+        message_signature: Tenant.get_message_signature_text(case.tenant, message_type)
       )
 
   @spec email_subject(phase :: Phase.t()) :: String.t()
@@ -110,11 +115,11 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
   def email_subject(%Phase{details: %Phase.PossibleIndex{}}),
     do: gettext("Quarantine Period End")
 
-  @spec email_body(phase :: Phase.t(), tenant :: Tenant.t()) :: String.t()
-  def email_body(phase, tenant), do: text(phase, tenant, :sms)
+  @spec email_body(phase :: Phase.t(), case :: Case.t()) :: String.t()
+  def email_body(phase, case), do: text(phase, case, :email)
 
-  @spec sms_text(phase :: Phase.t(), tenant :: Tenant.t()) :: String.t()
-  def sms_text(phase, tenant), do: text(phase, tenant, :email)
+  @spec sms_text(phase :: Phase.t(), case :: Case.t()) :: String.t()
+  def sms_text(phase, case), do: text(phase, case, :sms)
 
   defp send_emails do
     [] =
@@ -130,6 +135,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
       Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
 
       with case <- CaseContext.get_case_with_lock!(case.uuid),
+           case <- Repo.preload(case, :tenant),
            :ok <- send_sms(case, phase),
            :ok <- send_email(case, phase),
            {:ok, case} <- CaseContext.case_phase_automated_email_sent(case, phase) do
@@ -142,7 +148,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
 
   defp send_sms(case, phase) do
     case
-    |> CommunicationContext.create_outgoing_sms(sms_text(phase, case.tenant))
+    |> CommunicationContext.create_outgoing_sms(sms_text(phase, case))
     |> case do
       {:ok, _sms} -> :ok
       {:error, :no_mobile_number} -> :ok
@@ -155,7 +161,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
     case
     |> CommunicationContext.create_outgoing_email(
       email_subject(phase),
-      email_body(phase, case.tenant)
+      email_body(phase, case)
     )
     |> case do
       {:ok, _email} -> :ok

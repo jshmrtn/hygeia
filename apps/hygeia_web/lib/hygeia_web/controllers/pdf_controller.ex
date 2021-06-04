@@ -7,6 +7,7 @@ defmodule HygeiaWeb.PdfController do
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.Repo
   alias HygeiaPdfConfirmation.Isolation
+  alias HygeiaPdfConfirmation.IsolationEnd
   alias HygeiaPdfConfirmation.Quarantine
 
   defmodule PhaseNotFoundError do
@@ -32,6 +33,32 @@ defmodule HygeiaWeb.PdfController do
     end
   end
 
+  defmodule DocumentCurrentlyUnavailableError do
+    @moduledoc false
+    defexception plug_status: 409,
+                 message: "currently unavailable",
+                 conn: nil,
+                 case_uuid: nil,
+                 phase_uuid: nil
+
+    @impl Exception
+    def exception(opts) do
+      conn = Keyword.fetch!(opts, :conn)
+      case_uuid = Keyword.fetch!(opts, :case_uuid)
+      phase_uuid = Keyword.fetch!(opts, :phase_uuid)
+
+      %__MODULE__{
+        message:
+          "requested document is currently unavailable, due to wrong or missing parameters for phase with id #{
+            phase_uuid
+          } of the case #{case_uuid} or if an end confirmation is requested more than one day before phase end",
+        conn: conn,
+        case_uuid: case_uuid,
+        phase_uuid: phase_uuid
+      }
+    end
+  end
+
   @spec isolation_confirmation(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) ::
           Plug.Conn.t()
   def isolation_confirmation(conn, params), do: confirmation(conn, params, Isolation)
@@ -39,6 +66,10 @@ defmodule HygeiaWeb.PdfController do
   @spec quarantine_confirmation(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) ::
           Plug.Conn.t()
   def quarantine_confirmation(conn, params), do: confirmation(conn, params, Quarantine)
+
+  @spec isolation_end_confirmation(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) ::
+          Plug.Conn.t()
+  def isolation_end_confirmation(conn, params), do: confirmation(conn, params, IsolationEnd)
 
   defp confirmation(
          %Plug.Conn{request_path: request_path} = conn,
@@ -64,17 +95,26 @@ defmodule HygeiaWeb.PdfController do
       )
 
       case.phases
-      |> Enum.filter(&Phase.can_generate_pdf_confirmation?(&1, case.tenant))
       |> Enum.find(&match?(%Phase{uuid: ^phase_uuid}, &1))
       |> case do
         nil ->
           raise PhaseNotFoundError, conn: conn, phase_uuid: phase_uuid, case_uuid: case_uuid
 
         %Phase{} = phase ->
-          conn
-          |> put_resp_header("content-type", "application/pdf")
-          |> put_resp_header("content-disposition", "attachment")
-          |> send_resp(:ok, confirmation_type.render_pdf(case, phase))
+          if (IsolationEnd == confirmation_type and
+                Phase.can_generate_pdf_end_confirmation?(phase, case.tenant)) or
+               (IsolationEnd != confirmation_type and
+                  Phase.can_generate_pdf_confirmation?(phase, case.tenant)) do
+            conn
+            |> put_resp_header("content-type", "application/pdf")
+            |> put_resp_header("content-disposition", "attachment")
+            |> send_resp(:ok, confirmation_type.render_pdf(case, phase))
+          else
+            raise DocumentCurrentlyUnavailableError,
+              conn: conn,
+              phase_uuid: phase_uuid,
+              case_uuid: case_uuid
+          end
       end
     else
       redirect(conn,

@@ -151,4 +151,10 @@ defmodule Hygeia.CaseContext.Case.Phase do
 
   def can_generate_pdf_confirmation?(_phase, %Tenant{template_variation: nil}), do: false
   def can_generate_pdf_confirmation?(_phase, _tenant), do: true
+
+  @spec can_generate_pdf_end_confirmation?(phase :: t, tenant :: Tenant.t()) :: boolean
+  def can_generate_pdf_end_confirmation?(phase, tenant),
+    do:
+      can_generate_pdf_confirmation?(phase, tenant) and
+        Date.compare(Date.add(Date.utc_today(), 1), phase.end) in [:gt, :eq]
 end

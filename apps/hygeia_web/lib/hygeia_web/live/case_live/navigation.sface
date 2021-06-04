@@ -124,6 +124,16 @@
             <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
             {{ gettext("Isolation Confirmation") }}
           </Link>
+          <Link
+            class={{
+              "dropdown-item",
+              disabled: not Phase.can_generate_pdf_end_confirmation?(phase, @case.tenant)
+            }}
+            to={{ Routes.pdf_path(@socket, :isolation_end_confirmation, @case.uuid, uuid) }}
+          >
+            <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
+            {{ gettext("Isolation End Confirmation") }}
+          </Link>
           <a
             class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
             href="#"
@@ -150,10 +160,13 @@
             {{ gettext("Send Email Isolation Confirmation") }}
           </a>
           <a
-            class="dropdown-item"
+            class={{
+              "dropdown-item",
+              disabled: not Phase.can_generate_pdf_end_confirmation?(phase, @case.tenant)
+            }}
             href="#"
             :on-click="open_sms_modal"
-            phx-value-message={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase, @case.tenant) }}
+            phx-value-message={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase, @case) }}
             :if={{authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
               not is_nil(phase.end) and
               CaseContext.person_has_mobile_number?(@case.person) and
@@ -163,11 +176,14 @@
             {{ gettext("Send SMS Isolation End Confirmation") }}
           </a>
           <a
-            class="dropdown-item"
+            class={{
+              "dropdown-item",
+              disabled: not Phase.can_generate_pdf_end_confirmation?(phase, @case.tenant)
+            }}
             href="#"
             :on-click="open_email_modal"
             phx-value-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
-            phx-value-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase, @case.tenant) }}
+            phx-value-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase, @case) }}
             :if={{authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
               not is_nil(phase.end) and
               CaseContext.person_has_email?(@case.person) and
@@ -227,7 +243,7 @@
             class="dropdown-item"
             href="#"
             :on-click="open_sms_modal"
-            phx-value-message={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase, @case.tenant) }}
+            phx-value-message={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase, @case) }}
             :if={{authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
               not is_nil(phase.end) and
               CaseContext.person_has_mobile_number?(@case.person) and
@@ -241,7 +257,7 @@
             href="#"
             :on-click="open_email_modal"
             phx-value-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
-            phx-value-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase, @case.tenant) }}
+            phx-value-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase, @case) }}
             :if={{authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
               not is_nil(phase.end) and
               CaseContext.person_has_email?(@case.person) and
