@@ -1,0 +1,10 @@
+.component-person-overview {
+  .jumbotron {
+    border-width: 1px 1px 1px 6px !important;
+    padding-left: 5rem;
+    border: 1px solid;
+    border-color: theme-color-level("primary", -7);
+    border-left-color: theme-color("primary");
+    background: transparent;
+  }
+}
