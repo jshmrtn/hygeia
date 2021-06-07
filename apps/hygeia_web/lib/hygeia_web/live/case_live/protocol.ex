@@ -80,9 +80,7 @@ defmodule HygeiaWeb.CaseLive.Protocol do
       case: case,
       protocol_entries: CaseContext.list_protocol_entries(case),
       page_title:
-        "#{case.person.first_name} #{case.person.last_name} - #{gettext("Protocol")} - #{
-          gettext("Case")
-        }"
+        "#{case.person.first_name} #{case.person.last_name} - #{gettext("Protocol")} - #{gettext("Case")}"
     )
   end
 end

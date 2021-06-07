@@ -3,6 +3,8 @@ defmodule HygeiaPdfConfirmation do
   PDF Generation
   """
 
+  alias Phoenix.HTML.Safe
+
   @spec template_variations :: [String.t()]
   def template_variations do
     variations =
@@ -44,7 +46,7 @@ defmodule HygeiaPdfConfirmation do
       |> render_layout "layout/body", assigns do
         render(variation, "layout/header", assigns)
       end
-      |> Phoenix.HTML.safe_to_string()
+      |> Safe.to_iodata()
 
     File.write!(header_html_path, header_html)
 
@@ -55,7 +57,7 @@ defmodule HygeiaPdfConfirmation do
       |> render_layout "layout/body", assigns do
         render(variation, "layout/footer", assigns)
       end
-      |> Phoenix.HTML.safe_to_string()
+      |> Safe.to_iodata()
 
     File.write!(footer_html_path, footer_html)
 
@@ -63,7 +65,8 @@ defmodule HygeiaPdfConfirmation do
     |> render_layout "layout/body", assigns do
       render(variation, template, assigns)
     end
-    |> Phoenix.HTML.safe_to_string()
+    |> Safe.to_iodata()
+    |> IO.iodata_to_binary()
     |> PdfGenerator.generate_binary!(
       delete_temporary: true,
       shell_params: [

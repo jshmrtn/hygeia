@@ -3,7 +3,7 @@
     <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
       <HiddenInput />
 
-      <div :if={{ not (Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""]) }}>
+      <div :if={{ Phoenix.HTML.FormData.input_value(form.source, form, field) not in [nil, ""] }}>
         <Context
           put={{
             case:

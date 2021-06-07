@@ -18,10 +18,7 @@
       />
     </div>
 
-    <ul
-      :if={{ @open and not (@query in ["", nil]) }}
-      class="d-block dropdown-menu dropdown-menu-right"
-    >
+    <ul :if={{ @open and @query not in ["", nil] }} class="d-block dropdown-menu dropdown-menu-right">
       <li class="dropdown-submenu loading" :if={{ not is_nil(@pending_search) }}>
         <div class="spinner-border text-primary" role="status">
           <span class="sr-only">{{ gettext("Waiting for results...") }}</span>

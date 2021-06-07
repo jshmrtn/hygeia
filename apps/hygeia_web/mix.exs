@@ -12,7 +12,7 @@ defmodule HygeiaWeb.MixProject do
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
-      elixir: "~> 1.11",
+      elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -64,7 +64,8 @@ defmodule HygeiaWeb.MixProject do
       {:hygeia_pdf_confirmation, in_umbrella: true},
       {:hygeia_telemetry, in_umbrella: true},
       {:jason, "~> 1.1"},
-      {:jsone, "~> 1.5", override: true},
+      # TODO: Remove override when erljwt 2.0.6 is released
+      {:erljwt, github: "jshmrtn/erljwt", branch: "updates", override: true},
       {:mime, "~> 1.5"},
       {:nebulex, "~> 2.0-rc"},
       {:oidcc, github: "jshmrtn/oidcc", branch: "master", override: true},

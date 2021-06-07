@@ -185,7 +185,7 @@
 
                 <div class="d-flex justify-content-end p-1">
                   <button
-                    :if={{not (Ecto.Changeset.fetch_field!(form.source, :suspected_duplicate_uuids) in ["", nil]) and
+                    :if={{Ecto.Changeset.fetch_field!(form.source, :suspected_duplicate_uuids) not in ["", nil] and
                       accepted_duplicate != true}}
                     class="btn btn-secondary btn-sm"
                     type="button"

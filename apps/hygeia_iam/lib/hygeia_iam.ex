@@ -28,9 +28,11 @@ defmodule HygeiaIam do
              token_endpoint,
              [],
              "application/x-www-form-urlencoded",
-             "assertion=#{:http_uri.encode(assertion)}&grant_type=#{
-               :http_uri.encode("urn:ietf:params:oauth:grant-type:jwt-bearer")
-             }&scope=#{:http_uri.encode("urn:zitadel:iam:org:project:id:69234237810729019:aud")}"
+             URI.encode_query(%{
+               "assertion" => assertion,
+               "grant_type" => "urn:ietf:params:oauth:grant-type:jwt-bearer",
+               "scope" => "urn:zitadel:iam:org:project:id:69234237810729019:aud"
+             })
            ),
          {:ok, %{"access_token" => access_token, "expires_in" => expires_in}} <-
            Jason.decode(body) do

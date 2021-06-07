@@ -7,7 +7,7 @@
       >
         <HiddenInput value={{ value }} />
 
-        <div :if={{ not (value in [nil, ""]) }}>
+        <div :if={{ value not in [nil, ""] }}>
           <Context put={{ division: load_division(value) }} get={{ division: division }}>
             <div class="card">
               <div class="card-body py-2 px-3">
