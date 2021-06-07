@@ -74,7 +74,7 @@
                   <div class="form-group">
                     <label class="d-block">{schema_field_name(:complexity, Case)}</label>
                     <label
-                      :for={{name, key} <- case_complexity_map()}
+                      :for={{name, key} <- Case.Complexity.map()}
                       class="d-block checkbox-label"
                       data-disabled={@live_action == :show}
                     >
@@ -261,7 +261,7 @@
           <td>
             {case case.complexity do
               nil -> nil
-              other -> case_complexity_translation(other)
+              other -> Case.Complexity.translate(other)
             end}
           </td>
           <td>

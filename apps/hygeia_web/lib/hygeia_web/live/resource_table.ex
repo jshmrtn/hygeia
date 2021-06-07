@@ -101,7 +101,11 @@ defmodule HygeiaWeb.ResourceTable do
         Hygeia.ImportContext.Import.Type,
         Hygeia.CaseContext.Person.Sex,
         Hygeia.CaseContext.Case.Status,
-        Hygeia.CaseContext.Test.Kind
+        Hygeia.CaseContext.Case.Complexity,
+        Hygeia.CaseContext.Test.Kind,
+        Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason,
+        Hygeia.CaseContext.Case.Phase.Index.EndReason,
+        Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
       ] do
     defp render_tree(value, unquote(enum), _assigns, _timezone) do
       {:ok, value} = unquote(enum).cast(value)
@@ -175,7 +179,7 @@ defmodule HygeiaWeb.ResourceTable do
 
   defp render_tree(other, schema, _assings, _timezone) do
     Logger.warn("""
-    #{__MODULE__}.render_tree/34for #{inspect(schema)} not implemented
+    #{__MODULE__}.render_tree/4 for #{inspect(schema)} not implemented
     """)
 
     other

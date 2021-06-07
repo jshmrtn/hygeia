@@ -40,7 +40,7 @@
                 labels:
                   Enum.map(
                     @last24hours_quarantine_orders,
-                    &case_phase_possible_index_type_translation(&1.type)
+                    &Phase.PossibleIndex.Type.translate(&1.type)
                   )
               },
               options: %{
@@ -79,7 +79,7 @@
                 labels:
                   Enum.map(
                     @last24hours_quarantine_converted_to_index,
-                    &case_phase_possible_index_type_translation(&1.type)
+                    &Phase.PossibleIndex.Type.translate(&1.type)
                   )
               },
               options: %{

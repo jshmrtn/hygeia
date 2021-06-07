@@ -1,0 +1,61 @@
+<Form
+  for={@changeset}
+  change="validate"
+  submit="save"
+  opts={autocomplete: "off", id: "premature-release-form", class: "container col-lg-6"}
+>
+  <h1 class="mb-4">{gettext("New Premature Release")}</h1>
+
+  <Field name={:reason} class="form-group">
+    <HygeiaWeb.FieldLabel />
+    <Select
+      class="form-control"
+      opts={prompt: gettext("Select reason")}
+      options={PrematureRelease.Reason.map()}
+    />
+    <ErrorTag class="d-block invalid-feedback" />
+  </Field>
+
+  {#if Ecto.Changeset.fetch_field!(@changeset, :reason) !== nil}
+    <div class="alert alert-info">
+      {#case Ecto.Changeset.fetch_field!(@changeset, :reason)}
+        {#match :vaccinated}{gettext(
+            "I have received at least two COVID vaccinations that are licensed in Switzerland and are less than 6 months old."
+          )}
+        {#match :immune}{gettext("I had COVID in the last six months and had a PCR test that was positive.")}
+        {#match :negative_test}{gettext("I did a COVID test after quarantine day 7 with a negative result.")}
+      {/case}
+    </div>
+
+    <div class="form-group">
+      <Field name={:has_documentation} class="form-check">
+        <Label class="mb-0 checkbox-label">
+          <Checkbox class="form-check-input" />
+          {gettext(
+            "I do have the neccesary documentation to prove that I fullfil the requirements stated above."
+          )}
+        </Label>
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
+    </div>
+
+    <div class="form-group">
+      <Field name={:truthful} class="form-check">
+        <Label class="mb-0 checkbox-label">
+          <Checkbox class="form-check-input" />
+          {gettext("I confirm that all the data above is correct. This may be inspected!")}
+        </Label>
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
+    </div>
+  {/if}
+
+  <button
+    class="mt-1 btn btn-primary"
+    type="submit"
+    phx-disable-with={gettext("Saving...")}
+    disabled={not @changeset.valid?}
+  >
+    {gettext("Save")}
+  </button>
+</Form>

@@ -23,7 +23,7 @@
               <HygeiaWeb.FieldLabel schema={Person} />
               <TextInput
                 class="form-control"
-                opts={placeholder: pgettext("Person Login Form", "Jane"), required: true}
+                opts={placeholder: pgettext("Person Login Form", "Jane"), required: true, autofocus: true}
               />
             </Field>
             <Field class="form-group" name={:last_name}>

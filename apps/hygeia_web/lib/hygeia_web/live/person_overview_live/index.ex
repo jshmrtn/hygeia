@@ -6,12 +6,12 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
+  alias Hygeia.CaseContext.Person
   alias Hygeia.Repo
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
-
   def handle_params(%{"person_uuid" => person_uuid}, _uri, socket) do
     person = CaseContext.get_person!(person_uuid)
 
@@ -31,8 +31,32 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
     {:noreply, socket}
   end
 
+  @impl Phoenix.LiveView
+  def handle_info({:updated, %Person{} = person, _version}, socket) do
+    {:noreply, load_data(socket, person)}
+  end
+
+  def handle_info({:deleted, %Person{}, _version}, socket) do
+    {:noreply, redirect(socket, to: Routes.home_index_path(socket, :index))}
+  end
+
+  def handle_info({:updated, %Case{} = case, _version}, socket) do
+    case = Repo.preload(case, person: [cases: [:tracer]])
+    {:noreply, load_data(socket, case.person)}
+  end
+
+  def handle_info({:deleted, %Case{}, _version}, socket) do
+    {:noreply, load_data(socket, CaseContext.get_person!(socket.assigns.person.uuid))}
+  end
+
   defp load_data(socket, person) do
     person = Repo.preload(person, cases: [:tracer])
+
+    Phoenix.PubSub.subscribe(Hygeia.PubSub, "people:#{person.uuid}")
+
+    for %Case{uuid: uuid} <- person.cases do
+      Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{uuid}")
+    end
 
     {active_phase, active_case} =
       person.cases

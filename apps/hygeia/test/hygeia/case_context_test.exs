@@ -14,6 +14,7 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.CaseContext.PrematureRelease
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.OrganisationContext.Affiliation
@@ -1780,6 +1781,75 @@ defmodule Hygeia.CaseContextTest do
     test "change_test/1 returns a test changeset" do
       test = test_fixture()
       assert %Ecto.Changeset{} = CaseContext.change_test(test)
+    end
+  end
+
+  describe "premature_releases" do
+    @invalid_attrs %{reason: nil}
+
+    test "list_premature_releases/0 returns all premature_releases" do
+      premature_release = premature_release_fixture()
+      assert CaseContext.list_premature_releases() == [premature_release]
+    end
+
+    test "get_premature_release!/1 returns the premature_release with given id" do
+      premature_release = premature_release_fixture()
+
+      assert CaseContext.get_premature_release!(premature_release.uuid) ==
+               premature_release
+    end
+
+    test "create_premature_release/1 with valid data creates a premature_release" do
+      case = case_fixture()
+      case_uuid = case.uuid
+      phase_uuid = List.first(case.phases).uuid
+
+      assert {:ok, %PrematureRelease{} = premature_release} =
+               CaseContext.create_premature_release(case, List.first(case.phases), %{
+                 reason: :immune,
+                 has_documentation: true,
+                 truthful: true
+               })
+
+      assert premature_release.case_uuid == case_uuid
+      assert premature_release.phase_uuid == phase_uuid
+      assert premature_release.reason == :immune
+    end
+
+    test "create_premature_release/1 with invalid data returns error changeset" do
+      case = case_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               CaseContext.create_premature_release(case, List.first(case.phases), @invalid_attrs)
+    end
+
+    test "update_premature_release/2 with valid data updates the premature_release" do
+      premature_release = premature_release_fixture()
+
+      assert {:ok, %PrematureRelease{reason: :vaccinated}} =
+               CaseContext.update_premature_release(premature_release, %{
+                 reason: :vaccinated
+               })
+    end
+
+    test "update_premature_release/2 with invalid data returns error changeset" do
+      premature_release = premature_release_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               CaseContext.update_premature_release(premature_release, @invalid_attrs)
+
+      assert premature_release ==
+               CaseContext.get_premature_release!(premature_release.uuid)
+    end
+
+    test "delete_premature_release/1 deletes the premature_release" do
+      premature_release = Repo.preload(premature_release_fixture(), :case)
+
+      assert {:ok, %PrematureRelease{}} = CaseContext.delete_premature_release(premature_release)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        CaseContext.get_premature_release!(premature_release.uuid)
+      end
     end
   end
 end

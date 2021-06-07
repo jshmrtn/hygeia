@@ -214,7 +214,7 @@
           </td>
         </tr>
         <tr :if={length(@people) == 0}>
-          <td colspan="5">
+          <td colspan="6">
             <div class="d-flex justify-content-center py-3">
               {gettext("No data to display")}
             </div>
