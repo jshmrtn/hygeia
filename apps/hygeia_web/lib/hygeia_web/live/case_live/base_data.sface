@@ -406,6 +406,7 @@
                                     <div class="mb-2 d-flex align-items-center">
                                       <HygeiaWeb.FieldLabel class="mb-0" />
                                       <button
+                                        :if={{ @live_action != :show }}
                                         type="button"
                                         class="d-block ml-2 btn btn-info btn-sm"
                                         :on-click="show_reasons_for_test_help"

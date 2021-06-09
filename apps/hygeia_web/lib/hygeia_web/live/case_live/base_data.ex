@@ -27,11 +27,11 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Surface.Components.Form.TextInput
   alias Surface.Components.LivePatch
 
-  data(show_complexity_help, :boolean, default: false)
-  data(show_case_status_help, :boolean, default: false)
-  data(show_index_phase_end_reason_help, :boolean, default: false)
-  data(show_possible_index_phase_end_reason_help, :boolean, default: false)
-  data(show_reasons_for_test_help, :boolean, default: false)
+  data show_complexity_help, :boolean, default: false
+  data show_case_status_help, :boolean, default: false
+  data show_index_phase_end_reason_help, :boolean, default: false
+  data show_possible_index_phase_end_reason_help, :boolean, default: false
+  data show_reasons_for_test_help, :boolean, default: false
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
