@@ -133,9 +133,6 @@ msgid ""
 "deleted later."
 msgstr ""
 
-msgid "Phone number can only be obtained at the residents' registration office, index doesn't own a phone, no E-Mail address"
-msgstr ""
-
 msgid ""
 "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under "
 "%{link}."
@@ -150,9 +147,6 @@ msgstr ""
 msgid ""
 "To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being "
 "potentially infectious."
-msgstr ""
-
-msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
 msgstr ""
 
 msgid ""
@@ -2296,6 +2290,10 @@ msgstr ""
 msgid "Person deleted successfully"
 msgstr ""
 
+#, elixir-format
+msgid "Person is symptomatic and therefore tested"
+msgstr ""
+
 msgid "Person updated successfully"
 msgstr ""
 
@@ -2322,6 +2320,9 @@ msgid "Phases"
 msgstr ""
 
 msgid "Phoenix Dashboard"
+msgstr ""
+
+msgid "Phone number can only be obtained at the residents' registration office, index doesn't own a phone, no E-Mail address"
 msgstr ""
 
 msgid "Phone number incorrect or missing, multiple calls required"
@@ -2532,6 +2533,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Reasons for test"
 msgstr ""
 
+#, elixir-format, fuzzy
+msgid "Reasons for test help"
+msgstr ""
+
 msgid "Received"
 msgstr ""
 
@@ -2605,6 +2610,10 @@ msgid "Religious gatherings / funerals"
 msgstr ""
 
 msgid "Remove"
+msgstr ""
+
+#, elixir-format
+msgid "Repetitive preventative tests of specific groups (e.g. care centers, schools, companies etc.)"
 msgstr ""
 
 msgid "Reporting Unit"
@@ -3116,6 +3125,14 @@ msgstr ""
 msgid "Test Result"
 msgstr ""
 
+#, elixir-format
+msgid "Test as part of a planned trip"
+msgstr ""
+
+#, elixir-format
+msgid "Test by order from CT"
+msgstr ""
+
 msgid "Test date"
 msgstr ""
 
@@ -3123,10 +3140,26 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Test date"
 msgstr ""
 
+#, elixir-format
+msgid "Test during quarantine without ending it"
+msgstr ""
+
+#, elixir-format
+msgid "Test for early termination of quarantine"
+msgstr ""
+
 msgid "Test kind"
 msgstr ""
 
+#, elixir-format
+msgid "Test required by professional activity"
+msgstr ""
+
 msgid "Test result"
+msgstr ""
+
+#, elixir-format
+msgid "Testing based on a message via app"
 msgstr ""
 
 msgid "Text"
@@ -3447,6 +3480,10 @@ msgctxt "Test Reason"
 msgid "Work related"
 msgstr ""
 
+#, elixir-format
+msgid "Workplace/school testing ordered by CT"
+msgstr ""
+
 msgid "Yes"
 msgstr ""
 
@@ -3454,6 +3491,9 @@ msgid "You are not authorized to do this action."
 msgstr ""
 
 msgid "You did not keep a safe distance of at least 1.5 meters."
+msgstr ""
+
+msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
 msgstr ""
 
 msgid "You had contact for more than 15 minutes on the same day."

@@ -403,7 +403,17 @@
                               <div class="form-group">
                                 <InputContext assigns={{ assigns }} :let={{ form: form }}>
                                   <Field name={{ :reasons_for_test }}>
-                                    <HygeiaWeb.FieldLabel />
+                                    <div class="mb-2 d-flex align-items-center">
+                                      <HygeiaWeb.FieldLabel class="mb-0" />
+                                      <button
+                                        :if={{ @live_action != :show }}
+                                        type="button"
+                                        class="d-block ml-2 btn btn-info btn-sm"
+                                        :on-click="show_reasons_for_test_help"
+                                      >
+                                        <span class="oi oi-info" title={{ gettext("Info") }} aria-hidden="true" />
+                                      </button>
+                                    </div>
                                     <label
                                       :for={{ {name, key} <- test_reasons() }}
                                       class="d-block checkbox-label"
@@ -765,6 +775,57 @@
         <tr>
           <td><b>{{ case_phase_possible_index_end_reason_translation(:negative_test) }}</b></td>
           <td>{{ gettext("Early end because of negative test after the 7th day of quarantine") }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </HygeiaWeb.Modal>
+
+  <HygeiaWeb.Modal
+    :if={{ @show_reasons_for_test_help }}
+    id={{ :reasons_for_test_help }}
+    title={{ gettext("Reasons for test help") }}
+    close="hide_reasons_for_test_help"
+    size="xl"
+  >
+    <table class="table table-sm table-striped">
+      <tbody>
+        <tr>
+          <td><b>{{ translate_clinical_test_reason(:symptoms) }}</b></td>
+          <td>{{ gettext("Person is symptomatic and therefore tested") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ translate_clinical_test_reason(:outbreak_examination) }}</b></td>
+          <td>{{ gettext("Workplace/school testing ordered by CT") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ translate_clinical_test_reason(:screening) }}</b></td>
+          <td>{{ gettext(
+              "Repetitive preventative tests of specific groups (e.g. care centers, schools, companies etc.)"
+            ) }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ translate_clinical_test_reason(:work_related) }}</b></td>
+          <td>{{ gettext("Test required by professional activity") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ translate_clinical_test_reason(:quarantine) }}</b></td>
+          <td>{{ gettext("Test during quarantine without ending it") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ translate_clinical_test_reason(:app_report) }}</b></td>
+          <td>{{ gettext("Testing based on a message via app") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ translate_clinical_test_reason(:convenience) }}</b></td>
+          <td>{{ gettext("Test as part of a planned trip") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ translate_clinical_test_reason(:contact_tracing) }}</b></td>
+          <td>{{ gettext("Test by order from CT") }}</td>
+        </tr>
+        <tr>
+          <td><b>{{ translate_clinical_test_reason(:quarantine_end) }}</b></td>
+          <td>{{ gettext("Test for early termination of quarantine") }}</td>
         </tr>
       </tbody>
     </table>
