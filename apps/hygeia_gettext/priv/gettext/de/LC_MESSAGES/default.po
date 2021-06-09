@@ -193,9 +193,6 @@ msgstr ""
 "Es wurden noch keine Einsendungen erfasst. Bitte reichen Sie alle relevanten Personen ein. Vorherige Einsendungen können später "
 "angesehen, bearbeitet und gelöscht werden."
 
-msgid "Phone number can only be obtained at the residents' registration office, index doesn't own a phone, no E-Mail address"
-msgstr "Telefonnummer kann nur über die Einwohnerkontrolle eingeholt werden, Index besitzt kein Telefon, keine E-Mail-Adresse"
-
 msgid ""
 "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under "
 "%{link}."
@@ -218,9 +215,6 @@ msgid ""
 msgstr ""
 "Um das Contact Tracing zu ermöglichen, müssen Sie die persönlichen Daten aller Kontakte erfassen, die Sie hatten, während Sie "
 "möglicherweise ansteckend waren."
-
-msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
-msgstr "Kontakt zwischen jetzt und 48 Stunden vor Beginn der Symptome (falls Sie keine Symptome haben 48 Stunden vor dem Test)."
 
 msgid ""
 "You have been identified as a contact person of a person with corona.\n"
@@ -2397,6 +2391,9 @@ msgstr "Person wurde erfolgreich erstellt"
 msgid "Person deleted successfully"
 msgstr "Person erfolgreich gelöscht"
 
+msgid "Person is symptomatic and therefore tested"
+msgstr "Person ist symptomatisch und wird darum getestet"
+
 msgid "Person updated successfully"
 msgstr "Person wurde erfolgreich aktualisiert"
 
@@ -2424,6 +2421,9 @@ msgstr "Phasen"
 
 msgid "Phoenix Dashboard"
 msgstr "Phoenix Dashboard"
+
+msgid "Phone number can only be obtained at the residents' registration office, index doesn't own a phone, no E-Mail address"
+msgstr "Telefonnummer kann nur über die Einwohnerkontrolle eingeholt werden, Index besitzt kein Telefon, keine E-Mail-Adresse"
 
 msgid "Phone number incorrect or missing, multiple calls required"
 msgstr "Telefonnummer nicht korrekt oder nicht vorhanden, es braucht mehrere Rückrufe"
@@ -2633,6 +2633,9 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Reasons for test"
 msgstr "Gründe für Test"
 
+msgid "Reasons for test help"
+msgstr "Gründe für Test Hilfe"
+
 msgid "Received"
 msgstr "Erhalten"
 
@@ -2707,6 +2710,9 @@ msgstr "Religiöse Versammlungen / Beerdigungen"
 
 msgid "Remove"
 msgstr "Entfernen"
+
+msgid "Repetitive preventative tests of specific groups (e.g. care centers, schools, companies etc.)"
+msgstr "Repetitive präventive Tests von umschriebenen Gruppen (z.B. Pflegezentren, Schulen, Firmen etc.)"
 
 msgid "Reporting Unit"
 msgstr "Meldeeinheit"
@@ -3217,6 +3223,12 @@ msgstr "Testart"
 msgid "Test Result"
 msgstr "Testresultat"
 
+msgid "Test as part of a planned trip"
+msgstr "Test im Rahmen einer geplanten Reise"
+
+msgid "Test by order from CT"
+msgstr "Test auf Anordnung vom CT"
+
 msgid "Test date"
 msgstr "Testdatum"
 
@@ -3224,11 +3236,23 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Test date"
 msgstr "Testdatum"
 
+msgid "Test during quarantine without ending it"
+msgstr "Test im Laufe der Quarantäne, ohne diese zu beenden"
+
+msgid "Test for early termination of quarantine"
+msgstr "Test zur frühzeitigen Beendigung der Quarantäne"
+
 msgid "Test kind"
 msgstr "Testart"
 
+msgid "Test required by professional activity"
+msgstr "Test im Rahmen der beruflichen Tätigkeit"
+
 msgid "Test result"
 msgstr "Testresultat"
+
+msgid "Testing based on a message via app"
+msgstr "Testung aufgrund einer Meldung via App"
 
 msgid "Text"
 msgstr "Text"
@@ -3548,6 +3572,9 @@ msgctxt "Test Reason"
 msgid "Work related"
 msgstr "Arbeitsbedingt"
 
+msgid "Workplace/school testing ordered by CT"
+msgstr "Vom CT angeordnete Durchtestung am Arbeitsplatz/Schule"
+
 msgid "Yes"
 msgstr "Ja"
 
@@ -3556,6 +3583,9 @@ msgstr "Sie sind nicht berechtigt, diese Aktion auszuführen."
 
 msgid "You did not keep a safe distance of at least 1.5 meters."
 msgstr "Sie waren sich näher als 1.5 Meter."
+
+msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
+msgstr "Kontakt zwischen jetzt und 48 Stunden vor Beginn der Symptome (falls Sie keine Symptome haben 48 Stunden vor dem Test)."
 
 msgid "You had contact for more than 15 minutes on the same day."
 msgstr "Der Kontakt dauerte länger als 15 Minuten."
