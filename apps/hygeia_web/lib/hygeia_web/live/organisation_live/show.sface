@@ -2,35 +2,41 @@
   <Context get={{ HygeiaWeb, auth: auth }}>
     <HygeiaWeb.OrganisationLive.Header organisation={{ @changeset }} id="header" />
 
-    <div
-      :for={{%Organisation{name: name} = organisation <-
-        @changeset
-        |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-        |> Enum.take(5)
-        |> OrganisationContext.list_organisations_by_ids()}}
-      class="alert alert-warning"
+    <HygeiaWeb.CollapsibleCard
+      :if={{ @changeset |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid) |> length > 0 }}
+      title={{ gettext("Possible duplicates") }}
+      id="possible_duplicates"
     >
-      <div class="d-flex justify-content-between align-items-center">
-        <span>
-          {{ "This organisation is possibly a duplicate of %{name_link}, please check."
-          |> gettext(
-            name_link:
-              name
-              |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
-              |> safe_to_string
-          )
-          |> raw }}
-        </span>
+      <div
+        :for={{%Organisation{name: name} = organisation <-
+          @changeset
+          |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+          |> Enum.take(5)
+          |> OrganisationContext.list_organisations_by_ids()}}
+        class="alert alert-warning"
+      >
+        <div class="d-flex justify-content-between align-items-center">
+          <span>
+            {{ "This organisation is possibly a duplicate of %{name_link}, please check."
+            |> gettext(
+              name_link:
+                name
+                |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
+                |> safe_to_string
+            )
+            |> raw }}
+          </span>
 
-        <LiveRedirect
-          :if={{ authorized?(@organisation, :update, auth) and authorized?(organisation, :update, auth) }}
-          class="btn btn-secondary btn-sm"
-          to={{ Routes.organisation_merge_path(@socket, :merge, delete: organisation, into: @organisation) }}
-        >
-          {{ pgettext("Organisation", "Merge") }}
-        </LiveRedirect>
+          <LiveRedirect
+            :if={{ authorized?(@organisation, :update, auth) and authorized?(organisation, :update, auth) }}
+            class="btn btn-secondary btn-sm"
+            to={{ Routes.organisation_merge_path(@socket, :merge, delete: organisation, into: @organisation) }}
+          >
+            {{ pgettext("Organisation", "Merge") }}
+          </LiveRedirect>
+        </div>
       </div>
-    </div>
+    </HygeiaWeb.CollapsibleCard>
 
     <div class="mb-4" :if={{ @live_action == :show }}>
       <LivePatch

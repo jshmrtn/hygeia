@@ -6,23 +6,29 @@
 >
   <h1 class="mb-4">{{ gettext("New person") }}</h1>
 
-  <div
-    :for={{%Person{first_name: first_name, last_name: last_name} = person <-
-      @changeset
-      |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-      |> Enum.take(5)
-      |> load_people_by_id}}
-    class="alert alert-warning"
+  <HygeiaWeb.CollapsibleCard
+    :if={{ @changeset |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid) |> length > 0 }}
+    title={{ gettext("Possible duplicates") }}
+    id="possible_duplicates"
   >
-    {{ "This person is possibly a duplicate of %{name_link}, please check."
-    |> gettext(
-      name_link:
-        "#{first_name} #{last_name}"
-        |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
-        |> safe_to_string
-    )
-    |> raw }}
-  </div>
+    <div
+      :for={{%Person{first_name: first_name, last_name: last_name} = person <-
+        @changeset
+        |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+        |> Enum.take(5)
+        |> load_people_by_id}}
+      class="alert alert-warning"
+    >
+      {{ "This person is possibly a duplicate of %{name_link}, please check."
+      |> gettext(
+        name_link:
+          "#{first_name} #{last_name}"
+          |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
+          |> safe_to_string
+      )
+      |> raw }}
+    </div>
+  </HygeiaWeb.CollapsibleCard>
 
   <Field name={{ :tenant_uuid }} class="form-group">
     <HygeiaWeb.FieldLabel />

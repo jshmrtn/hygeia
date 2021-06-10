@@ -1,0 +1,14 @@
+<div class="card mb-4">
+  <div class="card-header d-flex align-items-center" :on-click="toggle" role="button">
+    <span class="flex-grow-1">{{ @title }}</span>
+    <span
+      class="ml-1 oi {{ if @collapsed, do: "oi-caret-bottom", else: "oi-caret-top" }}"
+      aria-hidden="true"
+    />
+  </div>
+  <div class="collapse {{ if not @collapsed, do: "show" }}">
+    <div class="card-body">
+      <slot />
+    </div>
+  </div>
+</div>
