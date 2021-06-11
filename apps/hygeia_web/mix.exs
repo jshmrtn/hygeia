@@ -64,11 +64,10 @@ defmodule HygeiaWeb.MixProject do
       {:hygeia_pdf_confirmation, in_umbrella: true},
       {:hygeia_telemetry, in_umbrella: true},
       {:jason, "~> 1.1"},
-      # TODO: Remove override when erljwt 2.0.6 is released
-      {:erljwt, github: "jshmrtn/erljwt", branch: "updates", override: true},
       {:mime, "~> 1.5"},
       {:nebulex, "~> 2.0-rc"},
-      {:oidcc, github: "jshmrtn/oidcc", branch: "master", override: true},
+      # TODO: Revert to released version when is released
+      {:oidcc, github: "Erlang-Openid/oidcc", branch: "master", override: true},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_active_link, "~> 0.3.1"},
       {:phoenix_ecto, "~> 4.0"},

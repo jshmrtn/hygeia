@@ -43,7 +43,8 @@ defmodule HygeiaIam.MixProject do
       {:certifi, "~> 2.5"},
       {:jason, "~> 1.0"},
       {:jose, "~> 1.10"},
-      {:oidcc, github: "jshmrtn/oidcc", branch: "master"},
+      # TODO: Revert to released version when is released
+      {:oidcc, github: "Erlang-Openid/oidcc", branch: "master", override: true},
       {:sentry, "~> 8.0"}
     ]
   end
