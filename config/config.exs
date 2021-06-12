@@ -48,9 +48,7 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :logger,
-  compile_time_purge_matching: [[application: :remote_ip]],
-  backends: [:console, Sentry.LoggerBackend]
+config :logger, compile_time_purge_matching: [[application: :remote_ip]]
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
@@ -95,7 +93,6 @@ config :ex_aws,
 
 config :sentry,
   enable_source_code_context: true,
-  filter: SentryEventFilter,
   root_source_code_path:
     __ENV__.file |> Path.dirname() |> Path.dirname() |> Path.join("apps/*") |> Path.wildcard()
 
