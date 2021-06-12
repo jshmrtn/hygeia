@@ -2338,6 +2338,34 @@ CREATE FUNCTION public.notification_created() RETURNS trigger
 
 
 --
+-- Name: possible_index_submission_notification(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.possible_index_submission_notification() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    DECLARE
+      AFFECTED_TRACER_UUID UUID;
+    BEGIN
+      SELECT tracer_uuid INTO AFFECTED_TRACER_UUID FROM cases WHERE uuid = NEW.case_uuid;
+      IF NOT AFFECTED_TRACER_UUID IS NULL AND (AFFECTED_TRACER_UUID <> (NULLIF(CURRENT_SETTING('versioning.originator_id'), ''))::uuid OR CURRENT_SETTING('versioning.originator_id') = '') THEN
+        INSERT INTO notifications
+          (uuid, body, user_uuid, inserted_at, updated_at) VALUES
+          (
+            MD5(RANDOM()::text || CLOCK_TIMESTAMP()::text)::uuid,
+            JSONB_BUILD_OBJECT('__type__', 'possible_index_submitted', 'uuid', MD5(RANDOM()::text || CLOCK_TIMESTAMP()::text)::uuid, 'case_uuid', NEW.case_uuid, 'possible_index_submission_uuid', NEW.uuid),
+            AFFECTED_TRACER_UUID,
+            NOW(),
+            NOW()
+          );
+      END IF;
+
+      RETURN NEW;
+    END
+  $$;
+
+
+--
 -- Name: versioning_delete(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -4101,6 +4129,13 @@ CREATE TRIGGER positions_versioning_update AFTER UPDATE ON public.positions FOR 
 
 
 --
+-- Name: possible_index_submissions possible_index_submission_changed; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER possible_index_submission_changed AFTER INSERT OR UPDATE ON public.possible_index_submissions FOR EACH ROW EXECUTE FUNCTION public.possible_index_submission_notification();
+
+
+--
 -- Name: possible_index_submissions possible_index_submissions_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -4597,3 +4632,4 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210419130620);
 INSERT INTO public."schema_migrations" (version) VALUES (20210419154442);
 INSERT INTO public."schema_migrations" (version) VALUES (20210511110755);
 INSERT INTO public."schema_migrations" (version) VALUES (20210521094209);
+INSERT INTO public."schema_migrations" (version) VALUES (20210527153512);

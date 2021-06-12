@@ -27,7 +27,9 @@ defmodule Hygeia.MixProject do
         "coveralls.json": :test,
         "coveralls.post": :test,
         "coveralls.xml": :test
-      ]
+      ],
+      # Injected via Config
+      xref: [exclude: [HygeiaWeb.SendCaseClosedEmailUrlGenerator]]
     ]
   end
 
