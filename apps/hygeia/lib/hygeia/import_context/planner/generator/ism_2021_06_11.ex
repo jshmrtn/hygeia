@@ -55,7 +55,8 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     sponsor_person_last_name: [:sponsor, :person_last_name],
     sponsor_address: [:sponsor, :address, :address],
     sponsor_zip: [:sponsor, :address, :zip],
-    sponsor_place: [:sponsor, :address, :place]
+    sponsor_place: [:sponsor, :address, :place],
+    mutation_ism_code: [:mutation, :ism_code]
   }
 
   @spec select_tenant(field_mapping :: field_mapping) ::
@@ -152,7 +153,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
 
   defp find_person_by_external_reference(type, id) do
     with [person | _] <- CaseContext.list_people_by_external_reference(type, to_string(id)),
-         person <- Repo.preload(person, :cases) do
+         person <- Repo.preload(person, cases: [tenant: [], tests: []]) do
       {:ok, select_active_cases(person)}
     else
       [] -> :error

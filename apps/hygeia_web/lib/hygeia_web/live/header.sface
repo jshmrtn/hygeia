@@ -99,6 +99,13 @@
               >
                 {gettext("Inbox")}
               </Link>
+              <Link
+                to={Routes.mutation_index_path(@socket, :index)}
+                class="dropdown-item"
+                :if={authorized?(Hygeia.MutationContext.Mutation, :list, auth)}
+              >
+                {gettext("Mutations")}
+              </Link>
             </div>
           </li>
         </ul>

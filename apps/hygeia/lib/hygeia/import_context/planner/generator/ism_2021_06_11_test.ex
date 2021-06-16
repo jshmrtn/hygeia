@@ -43,7 +43,8 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
               sponsor_person_last_name: "Auftraggeber Nachname",
               sponsor_address: "Auftraggeber Strasse",
               sponsor_zip: "Auftraggeber PLZ",
-              sponsor_place: "Auftraggeber Ort"
+              sponsor_place: "Auftraggeber Ort",
+              mutation_ism_code: "Typisierung Code"
             },
             &{elem(&1, 0), &1 |> elem(1) |> String.downcase() |> String.trim()}
           )

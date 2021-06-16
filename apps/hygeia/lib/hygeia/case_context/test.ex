@@ -8,6 +8,7 @@ defmodule Hygeia.CaseContext.Test do
   alias Hygeia.CaseContext.Entity
   alias Hygeia.CaseContext.Test.Kind
   alias Hygeia.CaseContext.Test.Result
+  alias Hygeia.MutationContext.Mutation
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
@@ -19,6 +20,8 @@ defmodule Hygeia.CaseContext.Test do
           tested_at: Date.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
           reference: String.t() | nil,
+          mutation_uuid: Ecto.UUID.t() | nil,
+          mutation: Ecto.Schema.belongs_to(Mutation.t()) | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -33,6 +36,8 @@ defmodule Hygeia.CaseContext.Test do
           tested_at: Date.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()),
           reference: String.t() | nil,
+          mutation_uuid: Ecto.UUID.t() | nil,
+          mutation: Ecto.Schema.belongs_to(Mutation.t()) | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -50,6 +55,7 @@ defmodule Hygeia.CaseContext.Test do
     embeds_one :reporting_unit, Entity, on_replace: :update
 
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
+    belongs_to :mutation, Mutation, references: :uuid, foreign_key: :mutation_uuid
 
     timestamps()
   end
@@ -61,7 +67,15 @@ defmodule Hygeia.CaseContext.Test do
         ) :: Changeset.t(t)
   def changeset(test, attrs) do
     test
-    |> cast(attrs, [:uuid, :tested_at, :laboratory_reported_at, :kind, :result, :reference])
+    |> cast(attrs, [
+      :uuid,
+      :tested_at,
+      :laboratory_reported_at,
+      :kind,
+      :result,
+      :reference,
+      :mutation_uuid
+    ])
     |> fill_uuid()
     |> validate_required([:kind])
     |> cast_embed(:sponsor)

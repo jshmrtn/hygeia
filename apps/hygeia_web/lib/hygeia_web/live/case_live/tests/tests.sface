@@ -50,6 +50,19 @@
               </Field>
             </div>
           </div>
+          <div class="row">
+            <div class="col">
+              <Field name={:mutation_uuid} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <Select
+                  class="form-control"
+                  opts={prompt: gettext("Select mutation"), disabled: @disabled}
+                  options={Enum.map(@mutations, &{&1.name, &1.uuid})}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+          </div>
 
           <div class="row">
             <div class="col">

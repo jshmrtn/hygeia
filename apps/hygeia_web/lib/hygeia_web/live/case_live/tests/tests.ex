@@ -5,6 +5,7 @@ defmodule HygeiaWeb.CaseLive.Tests do
 
   alias Hygeia.CaseContext.Test.Kind
   alias Hygeia.CaseContext.Test.Result
+  alias Hygeia.MutationContext
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
@@ -18,4 +19,9 @@ defmodule HygeiaWeb.CaseLive.Tests do
   prop add_test, :event, required: true
   prop remove_test, :event, required: true
   prop disabled, :boolean, default: false
+
+  data mutations, :list, default: []
+
+  @impl Phoenix.LiveComponent
+  def mount(socket), do: {:ok, assign(socket, :mutations, MutationContext.list_mutations())}
 end
