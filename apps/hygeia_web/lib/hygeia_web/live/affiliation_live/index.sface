@@ -1,6 +1,6 @@
 <div class="component-affiliation-index container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
-    <HygeiaWeb.OrganisationLive.Header organisation={{ @organisation }} id="header" />
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.OrganisationLive.Header organisation={@organisation} id="header" />
 
     <div class="d-flex">
       <HygeiaWeb.Dropdown
@@ -9,27 +9,27 @@
         dropdown_class="dropdown-menu-right p-3 filter-dropdown"
         id="filter-dropdown"
       >
-        <template slot="trigger">
+        <:trigger>
           <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
             <span class="oi oi-cog" aria-hidden="true" />
-            {{ gettext("Filter") }}
+            {gettext("Filter")}
           </button>
-        </template>
-        <template slot="default">
-          <h4>{{ gettext("Filter") }}</h4>
+        </:trigger>
+        <:default>
+          <h4>{gettext("Filter")}</h4>
           <Form
-            for={{ @filters }}
+            for={@filters}
             change="filter"
             submit="filter"
-            opts={{ autocomplete: "off", id: "filter-form", as: :filter }}
+            opts={autocomplete: "off", id: "filter-form", as: :filter}
           >
             <div class="form-group">
-              <Field class="form-group" name={{ :division_uuid }}>
-                <HygeiaWeb.FieldLabel schema={{ Affiliation }} />
+              <Field class="form-group" name={:division_uuid}>
+                <HygeiaWeb.FieldLabel schema={Affiliation} />
                 <Select
                   class="form-control"
-                  opts={{ prompt: gettext("Any") }}
-                  options={{ [{gettext("None"), "none"} | Enum.map(@divisions, &{&1.title, &1.uuid})] }}
+                  opts={prompt: gettext("Any")}
+                  options={[{gettext("None"), "none"} | Enum.map(@divisions, &{&1.title, &1.uuid})]}
                 />
               </Field>
             </div>
@@ -37,12 +37,12 @@
               <Field name="active_cases" class="form-check">
                 <label class="checkbox-label">
                   <Checkbox class="form-check-input" />
-                  {{ gettext("Active Cases") }}
+                  {gettext("Active Cases")}
                 </label>
               </Field>
             </div>
           </Form>
-        </template>
+        </:default>
       </HygeiaWeb.Dropdown>
     </div>
 
@@ -50,77 +50,77 @@
       <thead>
         <tr>
           <th>
-            {{ schema_field_name(:person, Affiliation) }}
+            {schema_field_name(:person, Affiliation)}
           </th>
           <th>
-            {{ schema_field_name(:division, Affiliation) }}
+            {schema_field_name(:division, Affiliation)}
           </th>
           <th>
-            {{ schema_field_name(:kind, Affiliation) }}
+            {schema_field_name(:kind, Affiliation)}
           </th>
           <th>
-            {{ schema_field_name(:comment, Affiliation) }}
+            {schema_field_name(:comment, Affiliation)}
           </th>
         </tr>
       </thead>
       <tbody id="affiliations">
         <HygeiaWeb.RecordView
-          :for={{ affiliation <- @affiliations }}
-          resource={{ affiliation }}
-          action={{ :list }}
-          id={{ "division-#{affiliation.uuid}" }}
-          wrapper_tag={{ :tr }}
+          :for={affiliation <- @affiliations}
+          resource={affiliation}
+          action={:list}
+          id={"division-#{affiliation.uuid}"}
+          wrapper_tag={:tr}
         >
           <td>
             <LiveRedirect
-              :if={{ authorized?(affiliation.person, :details, auth) }}
-              to={{ Routes.person_base_data_path(@socket, :show, affiliation.person) }}
+              :if={authorized?(affiliation.person, :details, auth)}
+              to={Routes.person_base_data_path(@socket, :show, affiliation.person)}
             >
               <HygeiaWeb.RecordView
-                resource={{ affiliation.person }}
-                action={{ :list }}
-                id={{ "affiliation_#{affiliation.uuid}_person_#{affiliation.person.uuid}_recordview" }}
+                resource={affiliation.person}
+                action={:list}
+                id={"affiliation_#{affiliation.uuid}_person_#{affiliation.person.uuid}_recordview"}
               >
-                {{ person_display_name(affiliation.person) }}
+                {person_display_name(affiliation.person)}
               </HygeiaWeb.RecordView>
             </LiveRedirect>
-            <span :if={{ not authorized?(affiliation.person, :details, auth) }}>
-              {{ affiliation.person_uuid }}
+            <span :if={not authorized?(affiliation.person, :details, auth)}>
+              {affiliation.person_uuid}
             </span>
           </td>
-          <td :if={{ affiliation.division == nil }} />
-          <td :if={{ affiliation.division != nil }}>
+          <td :if={affiliation.division == nil} />
+          <td :if={affiliation.division != nil}>
             <LiveRedirect
-              :if={{ authorized?(affiliation.division, :details, auth) }}
-              to={{ Routes.division_show_path(@socket, :show, affiliation.division) }}
+              :if={authorized?(affiliation.division, :details, auth)}
+              to={Routes.division_show_path(@socket, :show, affiliation.division)}
             >
-              {{ affiliation.division.title }}
+              {affiliation.division.title}
             </LiveRedirect>
-            <span :if={{ not authorized?(affiliation.division, :details, auth) }}>
-              {{ affiliation.division_uuid }}
+            <span :if={not authorized?(affiliation.division, :details, auth)}>
+              {affiliation.division_uuid}
             </span>
           </td>
-          <td>{{ affilation_kind(affiliation) }}</td>
+          <td>{affilation_kind(affiliation)}</td>
           <td>
-            {{ case affiliation.comment do
+            {case affiliation.comment do
               nil -> nil
               comment -> comment |> String.split("\n") |> Enum.intersperse(raw("<br />"))
-            end }}
+            end}
           </td>
         </HygeiaWeb.RecordView>
       </tbody>
     </table>
 
     <HygeiaWeb.Pagination
-      pagination={{ @pagination }}
-      :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }}
+      pagination={@pagination}
+      :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
       id="pagination"
     >
       <LivePatch
         class="page-link"
-        to={{ Routes.affiliation_index_path(@socket, :index, @organisation, cursor_direction, cursor) }}
+        to={Routes.affiliation_index_path(@socket, :index, @organisation, cursor_direction, cursor)}
       >
-        {{ text }}
+        {text}
       </LivePatch>
     </HygeiaWeb.Pagination>
   </Context>

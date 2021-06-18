@@ -65,23 +65,23 @@ defmodule HygeiaWeb.DateTimeLocalInput do
         select_opts
       end
 
-    ~H"""
-    <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
-      <Context get={{ HygeiaWeb, browser_features: browser_features }}>
-        {{ if browser_features["datetime_local_input"] != false,
+    ~F"""
+    <InputContext assigns={assigns} :let={form: form, field: field}>
+      <Context get={HygeiaWeb, browser_features: browser_features}>
+        {if browser_features["datetime_local_input"] != false,
           do:
             datetime_local_input(
               form,
               field,
               helper_opts ++ attr_opts ++ @opts ++ @input_opts ++ event_opts
-            ) }}
+            )}
 
-        <div :if={{ browser_features["datetime_local_input"] == false }} class="datetime-select">
-          {{ datetime_select(
+        <div :if={browser_features["datetime_local_input"] == false} class="datetime-select">
+          {datetime_select(
             form,
             field,
             helper_opts ++ attr_opts ++ @opts ++ select_opts ++ event_opts
-          ) }}
+          )}
         </div>
       </Context>
     </InputContext>

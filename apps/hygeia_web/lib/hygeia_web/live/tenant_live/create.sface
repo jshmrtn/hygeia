@@ -1,17 +1,17 @@
 <Form
-  for={{ @changeset }}
+  for={@changeset}
   change="validate"
   submit="save"
-  opts={{ autocomplete: "off", id: "tenant-form", class: "container" }}
+  opts={autocomplete: "off", id: "tenant-form", class: "container"}
 >
   <h1 class="mb-3">
-    {{ gettext("New tenant") }}
+    {gettext("New tenant")}
   </h1>
 
   <div class="hy-card-grid-2-cols">
     <div class="card mb-3">
       <div class="card-body">
-        <Field name={{ :name }} class="form-group">
+        <Field name={:name} class="form-group">
           <HygeiaWeb.FieldLabel />
           <TextInput class="form-control" />
           <ErrorTag class="d-block invalid-feedback" />
@@ -23,9 +23,9 @@
   <button
     class="btn btn-primary"
     type="submit"
-    phx-disable-with={{ gettext("Saving...") }}
-    disabled={{ not @changeset.valid? }}
+    phx-disable-with={gettext("Saving...")}
+    disabled={not @changeset.valid?}
   >
-    {{ gettext("Save") }}
+    {gettext("Save")}
   </button>
 </Form>

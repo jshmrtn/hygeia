@@ -16,7 +16,7 @@ defmodule HygeiaWeb.CaseLive.AddressInput do
 
   prop disabled, :boolean, default: false
 
-  slot default, props: [:address]
+  slot default, args: [:address]
 
   data modal_open, :boolean, default: false
 

@@ -1,69 +1,69 @@
-<Context get={{ HygeiaWeb, auth: auth }}>
+<Context get={HygeiaWeb, auth: auth}>
   <table class="protocol-table table table-sm">
     <thead>
       <tr>
         <th class="col-type" scope="col">
-          {{ schema_field_name(:type, Version) }}
+          {schema_field_name(:type, Version)}
         </th>
         <th class="col-date" scope="col">
-          {{ schema_field_name(:date, Version) }}
+          {schema_field_name(:date, Version)}
         </th>
         <th scope="col">
-          {{ schema_field_name(:origin, Version) }}
+          {schema_field_name(:origin, Version)}
         </th>
         <th class="col-author" scope="col">
-          {{ schema_field_name(:originator, Version) }}
+          {schema_field_name(:originator, Version)}
         </th>
         <th class="col-changes" scope="col" colspan="2">
-          {{ schema_field_name(:item_changes, Version) }}
+          {schema_field_name(:item_changes, Version)}
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr :if={{ @versions == [] }}>
+      <tr :if={@versions == []}>
         <td colspan="5">
-          {{ gettext("No verson entries found") }}
+          {gettext("No verson entries found")}
         </td>
       </tr>
       <HygeiaWeb.RecordView
-        :for={{%Version{
+        :for={%Version{
           uuid: uuid,
           event: event,
           inserted_at: inserted_at,
           origin: origin,
           user: user
         } = version <-
-          @versions}}
-        id={{ "version_#{uuid}" }}
-        resource={{ version }}
-        action={{ :details }}
-        wrapper_tag={{ :tr }}
+          @versions}
+        id={"version_#{uuid}"}
+        resource={version}
+        action={:details}
+        wrapper_tag={:tr}
       >
-        <td>{{ Event.translate(event) }}</td>
+        <td>{Event.translate(event)}</td>
         <td>
           <time
-            datetime={{ NaiveDateTime.to_iso8601(inserted_at) }}
-            title={{ HygeiaCldr.DateTime.to_string!(inserted_at) }}
+            datetime={NaiveDateTime.to_iso8601(inserted_at)}
+            title={HygeiaCldr.DateTime.to_string!(inserted_at)}
           >
-            {{ HygeiaCldr.DateTime.Relative.to_string!(
+            {HygeiaCldr.DateTime.Relative.to_string!(
               inserted_at,
               format: :short,
               relative_to: @now
-            ) }}
+            )}
           </time>
         </td>
-        <td>{{ unless is_nil(origin), do: Version.Origin.translate(origin) }}</td>
-        <td :if={{ not is_nil(user) and authorized?(user, :details, auth) }}>
-          <LiveRedirect to={{ Routes.user_show_path(@socket, :show, user) }}>
-            {{ user.display_name }}
+        <td>{unless is_nil(origin), do: Version.Origin.translate(origin)}</td>
+        <td :if={not is_nil(user) and authorized?(user, :details, auth)}>
+          <LiveRedirect to={Routes.user_show_path(@socket, :show, user)}>
+            {user.display_name}
           </LiveRedirect>
         </td>
-        <td :if={{ not is_nil(user) and not authorized?(user, :details, auth) }}>
-          {{ user.display_name }}
+        <td :if={not is_nil(user) and not authorized?(user, :details, auth)}>
+          {user.display_name}
         </td>
-        <td :if={{ is_nil(user) }} />
-        <td phx-update="ignore" id={{ "version_#{uuid}_table" }}>
-          <HygeiaWeb.VersionLive.Change version={{ version }} id={{ "version_#{uuid}_changes" }} />
+        <td :if={is_nil(user)} />
+        <td phx-update="ignore" id={"version_#{uuid}_table"}>
+          <HygeiaWeb.VersionLive.Change version={version} id={"version_#{uuid}_changes"} />
         </td>
       </HygeiaWeb.RecordView>
     </tbody>

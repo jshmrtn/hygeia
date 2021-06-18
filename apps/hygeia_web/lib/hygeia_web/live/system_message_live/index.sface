@@ -1,18 +1,18 @@
 <div class="component-system-message-index container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
+  <Context get={HygeiaWeb, auth: auth}>
     <h1 class="mb-3">
-      {{ gettext("Listing System Messages") }}
+      {gettext("Listing System Messages")}
     </h1>
 
     <div class="d-flex">
       <LiveRedirect
         class="mr-2"
-        to={{ Routes.system_message_create_path(@socket, :create) }}
-        :if={{ authorized?(SystemMessage, :create, auth) }}
+        to={Routes.system_message_create_path(@socket, :create)}
+        :if={authorized?(SystemMessage, :create, auth)}
       >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
           <span class="oi oi-plus" aria-hidden="true" />
-          {{ gettext("New System Message") }}
+          {gettext("New System Message")}
         </button>
       </LiveRedirect>
     </div>
@@ -21,42 +21,42 @@
       <thead>
         <tr>
           <th>
-            {{ schema_field_name(:text, SystemMessage) }}
+            {schema_field_name(:text, SystemMessage)}
           </th>
 
           <th />
         </tr>
       </thead>
       <tbody id="system_messages">
-        <tr :for={{ system_message <- @system_messages }} id="system_message-{{ system_message.uuid }}">
-          <td>{{ raw(Earmark.as_html!(system_message.text)) }}</td>
+        <tr :for={system_message <- @system_messages} id={"system_message-#{system_message.uuid}"}>
+          <td>{raw(Earmark.as_html!(system_message.text))}</td>
 
           <td>
             <div class="d-flex justify-content-end w-100">
               <LiveRedirect
-                to={{ Routes.system_message_show_path(@socket, :show, system_message.uuid) }}
-                :if={{ authorized?(system_message, :details, auth) }}
+                to={Routes.system_message_show_path(@socket, :show, system_message.uuid)}
+                :if={authorized?(system_message, :details, auth)}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">{{ gettext("Show") }}</button>
+                <button class="ml-auto btn btn-sm btn-secondary">{gettext("Show")}</button>
               </LiveRedirect>
               <LivePatch
-                to={{ Routes.system_message_show_path(@socket, :edit, system_message.uuid) }}
-                :if={{ authorized?(system_message, :update, auth) }}
+                to={Routes.system_message_show_path(@socket, :edit, system_message.uuid)}
+                :if={authorized?(system_message, :update, auth)}
               >
                 <button class="ml-1 btn btn-sm btn-secondary">
-                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
+                  <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LivePatch>
               <Link
                 to="#"
                 click="delete"
                 class="delete"
-                opts={{
+                opts={
                   title: gettext("Delete"),
                   data: [confirm: gettext("Are you sure?")],
                   "phx-value-id": system_message.uuid
-                }}
-                :if={{ authorized?(system_message, :delete, auth) }}
+                }
+                :if={authorized?(system_message, :delete, auth)}
               >
                 <button class="ml-1 btn btn-sm btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />

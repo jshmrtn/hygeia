@@ -27,7 +27,7 @@ defmodule HygeiaWeb.FieldLabel do
   @doc """
   The text for the label
   """
-  slot default, props: [:name, :schema, :field]
+  slot default, args: [:name, :schema, :field]
 
   @impl Phoenix.LiveComponent
   def render(assigns) do
@@ -35,10 +35,10 @@ defmodule HygeiaWeb.FieldLabel do
 
     # The duplication is not refactored nicely since props does not accept the output of a function call directly
 
-    ~H"""
-    <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
-      <Label form={{ form }} field={{ field }} class={{ @class }} opts={{ @opts }}>
-        <slot :props={{
+    ~F"""
+    <InputContext assigns={assigns} :let={form: form, field: field}>
+      <Label form={form} field={field} class={@class} opts={@opts}>
+        <#slot :args={
           schema: get_schema_name(helper_opts, form),
           field: cut_relation_uuid(field, get_schema_name(helper_opts, form)),
           name:
@@ -46,12 +46,12 @@ defmodule HygeiaWeb.FieldLabel do
               cut_relation_uuid(field, get_schema_name(helper_opts, form)),
               get_schema_name(helper_opts, form)
             )
-        }}>
-          {{ schema_field_name(
+        }>
+          {schema_field_name(
             cut_relation_uuid(field, get_schema_name(helper_opts, form)),
             get_schema_name(helper_opts, form)
-          ) }}
-        </slot>
+          )}
+        </#slot>
       </Label>
     </InputContext>
     """

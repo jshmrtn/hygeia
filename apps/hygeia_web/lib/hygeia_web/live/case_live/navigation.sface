@@ -1,99 +1,99 @@
 <ul class="nav nav-tabs card-header-tabs">
-  <Context get={{ HygeiaWeb, auth: auth }}>
+  <Context get={HygeiaWeb, auth: auth}>
     <HygeiaWeb.NoteLive.CreateModal
-      case={{ @case }}
-      id={{ {:navigation, :note_modal} }}
-      :if={{ not is_nil(@note_modal) }}
-      params={{ @note_modal }}
+      case={@case}
+      id={{:navigation, :note_modal}}
+      :if={not is_nil(@note_modal)}
+      params={@note_modal}
       close="close_note_modal"
-      caller_id={{ @id }}
-      caller_module={{ __MODULE__ }}
+      caller_id={@id}
+      caller_module={__MODULE__}
     />
     <HygeiaWeb.SMSLive.CreateModal
-      case={{ @case }}
-      id={{ {:navigation, :sms_modal} }}
-      :if={{ not is_nil(@sms_modal) }}
-      params={{ @sms_modal }}
+      case={@case}
+      id={{:navigation, :sms_modal}}
+      :if={not is_nil(@sms_modal)}
+      params={@sms_modal}
       close="close_sms_modal"
-      caller_id={{ @id }}
-      caller_module={{ __MODULE__ }}
+      caller_id={@id}
+      caller_module={__MODULE__}
     />
     <HygeiaWeb.EmailLive.CreateModal
-      case={{ @case }}
-      id={{ {:navigation, :email_modal} }}
-      :if={{ not is_nil(@email_modal) }}
-      params={{ @email_modal }}
+      case={@case}
+      id={{:navigation, :email_modal}}
+      :if={not is_nil(@email_modal)}
+      params={@email_modal}
       close="close_email_modal"
-      caller_id={{ @id }}
-      caller_module={{ __MODULE__ }}
+      caller_id={@id}
+      caller_module={__MODULE__}
     />
     <HygeiaWeb.CaseLive.CreatePhaseModal
-      case={{ @case }}
-      id={{ {:navigation, :phase_create_modal} }}
-      :if={{ not is_nil(@phase_create_modal) }}
-      params={{ @phase_create_modal }}
+      case={@case}
+      id={{:navigation, :phase_create_modal}}
+      :if={not is_nil(@phase_create_modal)}
+      params={@phase_create_modal}
       close="close_phase_create_modal"
-      caller_id={{ @id }}
-      caller_module={{ __MODULE__ }}
+      caller_id={@id}
+      caller_module={__MODULE__}
     />
 
-    <li class="nav-item" :if={{ authorized?(@case, :details, auth) }}>
+    <li class="nav-item" :if={authorized?(@case, :details, auth)}>
       <UriActiveContext
-        to={{ Routes.case_base_data_path(@socket, :show, @case) }}
-        :let={{ to: to, active: active }}
+        to={Routes.case_base_data_path(@socket, :show, @case)}
+        :let={to: to, active: active}
       >
         <UriActiveContext
-          to={{ Routes.case_base_data_path(@socket, :edit, @case) }}
-          :let={{ active: editActive }}
+          to={Routes.case_base_data_path(@socket, :edit, @case)}
+          :let={active: editActive}
         >
-          <LiveRedirect to={{ to }} class="nav-link {{ if active || editActive, do: "active" }}">
-            {{ gettext("Base Data") }}
+          <LiveRedirect to={to} class={"nav-link #{if active || editActive, do: "active"}"}>
+            {gettext("Base Data")}
           </LiveRedirect>
         </UriActiveContext>
       </UriActiveContext>
     </li>
-    <li class="nav-item" :if={{ authorized?(@case, :details, auth) }}>
+    <li class="nav-item" :if={authorized?(@case, :details, auth)}>
       <UriActiveContext
-        to={{ Routes.case_transmissions_path(@socket, :show, @case) }}
-        opts={{ active: :inclusive }}
-        :let={{ to: to, active: active }}
+        to={Routes.case_transmissions_path(@socket, :show, @case)}
+        opts={active: :inclusive}
+        :let={to: to, active: active}
       >
-        <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
-          {{ gettext("Transmissions") }}
+        <LiveRedirect to={to} class={"nav-link #{if active, do: "active"}"}>
+          {gettext("Transmissions")}
         </LiveRedirect>
       </UriActiveContext>
     </li>
     <li
-      :if={{ has_index_phase?(@case) and authorized?(PossibleIndexSubmission, :list, auth, case: @case) }}
+      :if={has_index_phase?(@case) and authorized?(PossibleIndexSubmission, :list, auth, case: @case)}
       class="nav-item"
     >
       <UriActiveContext
-        to={{ Routes.possible_index_submission_index_path(@socket, :index, @case) }}
-        opts={{ active: :inclusive }}
-        :let={{ to: to, active: active }}
+        to={Routes.possible_index_submission_index_path(@socket, :index, @case)}
+        opts={active: :inclusive}
+        :let={to: to, active: active}
       >
-        <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
-          {{ gettext("Possible Index Submissions") }}
+        <LiveRedirect to={to} class={"nav-link #{if active, do: "active"}"}>
+          {gettext("Possible Index Submissions")}
         </LiveRedirect>
       </UriActiveContext>
     </li>
-    <li class="nav-item" :if={{ authorized?(@case, :details, auth) }}>
+    <li class="nav-item" :if={authorized?(@case, :details, auth)}>
       <UriActiveContext
-        to={{ Routes.case_protocol_path(@socket, :show, @case) }}
-        :let={{ to: to, active: active }}
+        to={Routes.case_protocol_path(@socket, :show, @case)}
+        :let={to: to, active: active}
       >
-        <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active" }}">
-          {{ gettext("Protocol") }}
+        <LiveRedirect to={to} class={"nav-link  #{if active, do: "active"}"}>
+          {gettext("Protocol")}
         </LiveRedirect>
       </UriActiveContext>
     </li>
-    <li class="nav-item" :if={{ authorized?(@case, :versioning, auth) }}>
+    <li class="nav-item" :if={authorized?(@case, :versioning, auth)}>
       <UriActiveContext
-        to={{ Routes.version_show_path(@socket, :show, Case.__schema__(:source), @case) }}
-        :let={{ to: to, active: active }}
+        to={Routes.version_show_path(@socket, :show, Case.__schema__(:source), @case)}
+        :let={to: to, active: active}
       >
-        <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active" }}">
-          {{ gettext("History") }}
+        <LiveRedirect to={to} class={"nav-link  #{if active, do: "active"}"}>
+          {gettext("History")}
         </LiveRedirect>
       </UriActiveContext>
     </li>
@@ -104,176 +104,176 @@
       dropdown_class="dropdown-menu-right"
       id="navigation-dropdown"
     >
-      <template slot="trigger">
-        {{ gettext("Actions") }}
-      </template>
+      <:trigger>
+        {gettext("Actions")}
+      </:trigger>
 
-      <div :if={{ Enum.any?(@case.phases, &match?(%{details: %Phase.Index{}}, &1)) }}>
+      <div :if={Enum.any?(@case.phases, &match?(%{details: %Phase.Index{}}, &1))}>
         <div
-          :for={{ %{details: %Phase.Index{}, uuid: uuid} = phase <- @case.phases }}
-          :if={{ authorized?(@case, :partial_details, auth) }}
+          :for={%{details: %Phase.Index{}, uuid: uuid} = phase <- @case.phases}
+          :if={authorized?(@case, :partial_details, auth)}
           data-bs-toggle="tooltip"
-          data-original-title={{if !Phase.can_generate_pdf_confirmation?(phase, @case.tenant),
+          data-original-title={if !Phase.can_generate_pdf_confirmation?(phase, @case.tenant),
             do: gettext("Phase start- and end-dates must be set to create Isolation Confirmations."),
-            else: ""}}
+            else: ""}
         >
           <Link
-            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
-            to={{ Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, uuid) }}
+            class={"dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant)}
+            to={Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, uuid)}
           >
             <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
-            {{ gettext("Isolation Confirmation") }}
+            {gettext("Isolation Confirmation")}
           </Link>
           <Link
-            class={{
+            class={
               "dropdown-item",
               disabled: not Phase.can_generate_pdf_end_confirmation?(phase, @case.tenant)
-            }}
-            to={{ Routes.pdf_path(@socket, :isolation_end_confirmation, @case.uuid, uuid) }}
+            }
+            to={Routes.pdf_path(@socket, :isolation_end_confirmation, @case.uuid, uuid)}
           >
             <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
-            {{ gettext("Isolation End Confirmation") }}
+            {gettext("Isolation End Confirmation")}
           </Link>
           <a
-            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
+            class={"dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant)}
             href="#"
             :on-click="open_sms_modal"
-            phx-value-message={{ isolation_sms(@socket, @case, phase) }}
-            :if={{authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
+            phx-value-message={isolation_sms(@socket, @case, phase)}
+            :if={authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
               CaseContext.person_has_mobile_number?(@case.person) and
-              TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}}
+              TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
           >
             <span class="oi oi-phone mr-1" aria-hidden="true" />
-            {{ gettext("Send SMS Isolation Confirmation") }}
+            {gettext("Send SMS Isolation Confirmation")}
           </a>
           <a
-            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
+            class={"dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant)}
             href="#"
             :on-click="open_email_modal"
-            phx-value-subject={{ isolation_email_subject() }}
-            phx-value-body={{ isolation_email_body(@socket, @case, phase, :email) }}
-            :if={{authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
+            phx-value-subject={isolation_email_subject()}
+            phx-value-body={isolation_email_body(@socket, @case, phase, :email)}
+            :if={authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
               CaseContext.person_has_email?(@case.person) and
-              TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}}
+              TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
           >
             <span class="oi oi-envelope-closed mr-1" aria-hidden="true" />
-            {{ gettext("Send Email Isolation Confirmation") }}
+            {gettext("Send Email Isolation Confirmation")}
           </a>
           <a
-            class={{
+            class={
               "dropdown-item",
               disabled: not Phase.can_generate_pdf_end_confirmation?(phase, @case.tenant)
-            }}
+            }
             href="#"
             :on-click="open_sms_modal"
-            phx-value-message={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase, @case) }}
-            :if={{authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
+            phx-value-message={Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase, @case)}
+            :if={authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
               not is_nil(phase.end) and
               CaseContext.person_has_mobile_number?(@case.person) and
-              TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}}
+              TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
           >
             <span class="oi oi-phone mr-1" aria-hidden="true" />
-            {{ gettext("Send SMS Isolation End Confirmation") }}
+            {gettext("Send SMS Isolation End Confirmation")}
           </a>
           <a
-            class={{
+            class={
               "dropdown-item",
               disabled: not Phase.can_generate_pdf_end_confirmation?(phase, @case.tenant)
-            }}
+            }
             href="#"
             :on-click="open_email_modal"
-            phx-value-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
-            phx-value-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase, @case) }}
-            :if={{authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
+            phx-value-subject={Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase)}
+            phx-value-body={Hygeia.Jobs.SendCaseClosedEmail.email_body(phase, @case)}
+            :if={authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
               not is_nil(phase.end) and
               CaseContext.person_has_email?(@case.person) and
-              TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}}
+              TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
           >
             <span class="oi oi-envelope-closed mr-1" aria-hidden="true" />
-            {{ gettext("Send Email Isolation End Confirmation") }}
+            {gettext("Send Email Isolation End Confirmation")}
           </a>
         </div>
       </div>
-      <div :if={{ Enum.any?(@case.phases, &match?(%{details: %Phase.PossibleIndex{}}, &1)) }}>
+      <div :if={Enum.any?(@case.phases, &match?(%{details: %Phase.PossibleIndex{}}, &1))}>
         <div
-          :if={{ Enum.any?(@case.phases, &match?(%{details: %Phase.Index{}}, &1)) }}
+          :if={Enum.any?(@case.phases, &match?(%{details: %Phase.Index{}}, &1))}
           class="dropdown-divider"
         />
         <div
-          :for={{ %{details: %Phase.PossibleIndex{}, uuid: uuid} = phase <- @case.phases }}
-          :if={{ authorized?(@case, :partial_details, auth) }}
+          :for={%{details: %Phase.PossibleIndex{}, uuid: uuid} = phase <- @case.phases}
+          :if={authorized?(@case, :partial_details, auth)}
           data-bs-toggle="tooltip"
-          data-original-title={{if !Phase.can_generate_pdf_confirmation?(phase, @case.tenant),
+          data-original-title={if !Phase.can_generate_pdf_confirmation?(phase, @case.tenant),
             do: gettext("Quarantine Confirmations are only available for contact persons."),
-            else: ""}}
+            else: ""}
         >
           <Link
-            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
-            to={{ Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, uuid) }}
+            class={"dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant)}
+            to={Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, uuid)}
           >
             <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
-            {{ gettext("Quarantine Confirmation") }}
+            {gettext("Quarantine Confirmation")}
           </Link>
           <a
-            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
+            class={"dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant)}
             href="#"
             :on-click="open_sms_modal"
-            phx-value-message={{ quarantine_sms(@socket, @case, phase) }}
-            :if={{authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
+            phx-value-message={quarantine_sms(@socket, @case, phase)}
+            :if={authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
               CaseContext.person_has_mobile_number?(@case.person) and
-              TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}}
+              TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
           >
             <span class="oi oi-phone mr-1" aria-hidden="true" />
-            {{ gettext("Send SMS Quarantine Confirmation") }}
+            {gettext("Send SMS Quarantine Confirmation")}
           </a>
           <a
-            class={{ "dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant) }}
+            class={"dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant)}
             href="#"
             :on-click="open_email_modal"
-            phx-value-subject={{ quarantine_email_subject() }}
-            phx-value-body={{ quarantine_email_body(@socket, @case, phase, :email) }}
-            :if={{authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
+            phx-value-subject={quarantine_email_subject()}
+            phx-value-body={quarantine_email_body(@socket, @case, phase, :email)}
+            :if={authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
               CaseContext.person_has_email?(@case.person) and
-              TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}}
+              TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
           >
             <span class="oi oi-envelope-closed mr-1" aria-hidden="true" />
-            {{ gettext("Send Email Quarantine Confirmation") }}
+            {gettext("Send Email Quarantine Confirmation")}
           </a>
           <a
             class="dropdown-item"
             href="#"
             :on-click="open_sms_modal"
-            phx-value-message={{ Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase, @case) }}
-            :if={{authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
+            phx-value-message={Hygeia.Jobs.SendCaseClosedEmail.sms_text(phase, @case)}
+            :if={authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
               not is_nil(phase.end) and
               CaseContext.person_has_mobile_number?(@case.person) and
-              TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}}
+              TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
           >
             <span class="oi oi-phone mr-1" aria-hidden="true" />
-            {{ gettext("Send SMS Quarantine End Confirmation") }}
+            {gettext("Send SMS Quarantine End Confirmation")}
           </a>
           <a
             class="dropdown-item"
             href="#"
             :on-click="open_email_modal"
-            phx-value-subject={{ Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase) }}
-            phx-value-body={{ Hygeia.Jobs.SendCaseClosedEmail.email_body(phase, @case) }}
-            :if={{authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
+            phx-value-subject={Hygeia.Jobs.SendCaseClosedEmail.email_subject(phase)}
+            phx-value-body={Hygeia.Jobs.SendCaseClosedEmail.email_body(phase, @case)}
+            :if={authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
               not is_nil(phase.end) and
               CaseContext.person_has_email?(@case.person) and
-              TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}}
+              TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
           >
             <span class="oi oi-envelope-closed mr-1" aria-hidden="true" />
-            {{ gettext("Send Email Quarantine End Confirmation") }}
+            {gettext("Send Email Quarantine End Confirmation")}
           </a>
         </div>
       </div>
-      <div :if={{ authorized?(Case, :create, auth, tenant: :any) }}>
+      <div :if={authorized?(Case, :create, auth, tenant: :any)}>
         <div class="dropdown-divider" />
-        <Context get={{ HygeiaWeb, uri: uri }}>
+        <Context get={HygeiaWeb, uri: uri}>
           <LiveRedirect
             class="dropdown-item"
-            to={{Routes.case_create_possible_index_path(
+            to={Routes.case_create_possible_index_path(
               @socket,
               :create,
               propagator_internal: true,
@@ -283,60 +283,60 @@
               default_supervisor_uuid: @case.supervisor_uuid,
               type: :contact_person,
               return_to: URI.parse(uri).path
-            )}}
+            )}
           >
             <span class="oi oi-plus mr-1" aria-hidden="true" />
-            {{ gettext("Create Contact Cases") }}
+            {gettext("Create Contact Cases")}
           </LiveRedirect>
         </Context>
       </div>
-      <div :if={{ authorized?(@case, :update, auth) }}>
+      <div :if={authorized?(@case, :update, auth)}>
         <div class="dropdown-divider" />
         <a class="dropdown-item" href="#" :on-click="open_phase_create_modal">
           <span class="oi oi-plus mr-1" aria-hidden="true" />
-          {{ gettext("Create Phase") }}
+          {gettext("Create Phase")}
         </a>
       </div>
-      <div :if={{ authorized?(Hygeia.CaseContext.Note, :create, auth, %{case: @case}) }}>
+      <div :if={authorized?(Hygeia.CaseContext.Note, :create, auth, %{case: @case})}>
         <div class="dropdown-divider" />
         <a class="dropdown-item" href="#" :on-click="open_note_modal">
           <span class="oi oi-plus mr-1" aria-hidden="true" />
-          {{ gettext("Create Note") }}
+          {gettext("Create Note")}
         </a>
         <a
           class="dropdown-item"
           href="#"
           :on-click="open_sms_modal"
-          :if={{CaseContext.person_has_mobile_number?(@case.person) and
-            TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}}
+          :if={CaseContext.person_has_mobile_number?(@case.person) and
+            TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
         >
           <span class="oi oi-phone mr-1" aria-hidden="true" />
-          {{ gettext("Send SMS") }}
+          {gettext("Send SMS")}
         </a>
         <a
           class="dropdown-item"
           href="#"
           :on-click="open_email_modal"
-          :if={{CaseContext.person_has_email?(@case.person) and
-            TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}}
+          :if={CaseContext.person_has_email?(@case.person) and
+            TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
         >
           <span class="oi oi-envelope-closed mr-1" aria-hidden="true" />
-          {{ gettext("Send Email") }}
+          {gettext("Send Email")}
         </a>
       </div>
-      <div :if={{ authorized?(@case, :delete, auth) }}>
+      <div :if={authorized?(@case, :delete, auth)}>
         <div class="dropdown-divider" />
         <Link
           to="#"
           click="delete"
           class="dropdown-item"
-          opts={{
+          opts={
             title: gettext("Delete"),
             data: [confirm: gettext("Are you sure?")]
-          }}
+          }
         >
           <span class="oi oi-trash mr-1" aria-hidden="true" />
-          {{ gettext("Delete") }}
+          {gettext("Delete")}
         </Link>
       </div>
     </HygeiaWeb.Dropdown>

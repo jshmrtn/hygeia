@@ -1,55 +1,55 @@
 <div class="component-possible-index-submissions-index container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
-    <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
 
     <div class="card">
-      <div class="card-header" :if={{ authorized?(@case, :partial_details, auth) }}>
-        <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
+      <div class="card-header" :if={authorized?(@case, :partial_details, auth)}>
+        <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
       </div>
-      <div :if={{ not @has_index_phase? }} class="card-body">
+      <div :if={not @has_index_phase?} class="card-body">
         <div class="alert alert-warning">
-          <strong>{{ gettext("This case is not in an index phase.") }}</strong>
-          <p>{{ gettext("Possible index submissions can only be managed for cases with an index phase.") }}</p>
+          <strong>{gettext("This case is not in an index phase.")}</strong>
+          <p>{gettext("Possible index submissions can only be managed for cases with an index phase.")}</p>
         </div>
       </div>
-      <div :if={{ @has_index_phase? }} class="card-body">
-        <div :if={{ match?(%Person{}, auth) }}>
-          <h2>{{ gettext("Enter Possible Transmissions") }}</h2>
+      <div :if={@has_index_phase?} class="card-body">
+        <div :if={match?(%Person{}, auth)}>
+          <h2>{gettext("Enter Possible Transmissions")}</h2>
 
-          <p>{{ gettext(
+          <p>{gettext(
               "You have been requested to enter personal data from all persons with which you have had contact with for more than 15 minutes without wearing a mask."
-            ) }}</p>
+            )}</p>
 
-          <p>{{ gettext(
+          <p>{gettext(
               "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
-            ) }}</p>
+            )}</p>
 
-          <p>{{ gettext("If you're having trouble recalling what you did since then, here are some examples:") }}</p>
+          <p>{gettext("If you're having trouble recalling what you did since then, here are some examples:")}</p>
 
           <ul>
             <li>
-              <strong>{{ gettext("Vacation") }}</strong>
-              {{ gettext("How did you travel there and back?") }}
+              <strong>{gettext("Vacation")}</strong>
+              {gettext("How did you travel there and back?")}
             </li>
             <li>
-              <strong>{{ gettext("Association") }}</strong>
-              {{ gettext("Are you working in an association?") }}
+              <strong>{gettext("Association")}</strong>
+              {gettext("Are you working in an association?")}
             </li>
             <li>
-              <strong>{{ gettext("Employment") }}</strong>
-              {{ gettext("Did you meet any colleages?") }}
+              <strong>{gettext("Employment")}</strong>
+              {gettext("Did you meet any colleages?")}
             </li>
             <li>
-              <strong>{{ gettext("Family / Friends") }}</strong>
-              {{ gettext("Did you meet your family or friends recently?") }}
+              <strong>{gettext("Family / Friends")}</strong>
+              {gettext("Did you meet your family or friends recently?")}
             </li>
             <li>
-              <strong>{{ gettext("Events") }}</strong>
-              {{ gettext("Did you visit a pub / restaurant / event recently?") }}
+              <strong>{gettext("Events")}</strong>
+              {gettext("Did you visit a pub / restaurant / event recently?")}
             </li>
             <li>
-              <strong>{{ gettext("Gym") }}</strong>
-              {{ gettext("Did you visit a gym recently?") }}
+              <strong>{gettext("Gym")}</strong>
+              {gettext("Did you visit a gym recently?")}
             </li>
           </ul>
         </div>
@@ -57,11 +57,11 @@
         <div class="d-flex">
           <LiveRedirect
             class="mr-2"
-            to={{ Routes.possible_index_submission_create_path(@socket, :create, @case) }}
+            to={Routes.possible_index_submission_create_path(@socket, :create, @case)}
           >
             <button type="button" class="mb-2 mt-3 btn btn-primary">
               <span class="oi oi-plus" aria-hidden="true" />
-              {{ gettext("New Possible Index Submission") }}
+              {gettext("New Possible Index Submission")}
             </button>
           </LiveRedirect>
         </div>
@@ -70,16 +70,16 @@
           <thead>
             <tr>
               <th>
-                {{ schema_field_name(:first_name, PossibleIndexSubmission) }}
+                {schema_field_name(:first_name, PossibleIndexSubmission)}
               </th>
               <th>
-                {{ schema_field_name(:last_name, PossibleIndexSubmission) }}
+                {schema_field_name(:last_name, PossibleIndexSubmission)}
               </th>
               <th>
-                {{ schema_field_name(:address, PossibleIndexSubmission) }}
+                {schema_field_name(:address, PossibleIndexSubmission)}
               </th>
               <th>
-                {{ schema_field_name(:birth_date, PossibleIndexSubmission) }}
+                {schema_field_name(:birth_date, PossibleIndexSubmission)}
               </th>
 
               <th />
@@ -87,83 +87,83 @@
           </thead>
           <tbody id="possible_index_submissions">
             <HygeiaWeb.RecordView
-              :for={{ possible_index_submission <- @case.possible_index_submissions }}
-              resource={{ possible_index_submission }}
-              action={{ :list }}
-              id="possible_index_submission-{{ possible_index_submission.uuid }}"
-              wrapper_tag={{ :tr }}
+              :for={possible_index_submission <- @case.possible_index_submissions}
+              resource={possible_index_submission}
+              action={:list}
+              id={"possible_index_submission-#{possible_index_submission.uuid}"}
+              wrapper_tag={:tr}
             >
               <td>
-                {{ possible_index_submission.first_name }}
+                {possible_index_submission.first_name}
               </td>
               <td>
-                {{ possible_index_submission.last_name }}
+                {possible_index_submission.last_name}
               </td>
               <td>
-                {{ format_address(possible_index_submission.address) }}
+                {format_address(possible_index_submission.address)}
               </td>
               <td>
-                {{ case possible_index_submission.birth_date do
+                {case possible_index_submission.birth_date do
                   nil -> nil
                   date -> Cldr.Date.to_string!(date, HygeiaCldr)
-                end }}
+                end}
               </td>
 
               <td>
                 <div class="d-flex justify-content-end w-100">
                   <LiveRedirect
-                    to={{ Routes.possible_index_submission_show_path(@socket, :show, possible_index_submission) }}
-                    :if={{ authorized?(possible_index_submission, :details, auth) }}
+                    to={Routes.possible_index_submission_show_path(@socket, :show, possible_index_submission)}
+                    :if={authorized?(possible_index_submission, :details, auth)}
                   >
                     <button class="ml-auto btn btn-sm btn-secondary">
-                      {{ gettext("Show") }}
+                      {gettext("Show")}
                     </button>
                   </LiveRedirect>
                   <LiveRedirect
-                    to={{ Routes.possible_index_submission_show_path(@socket, :edit, possible_index_submission) }}
-                    :if={{ authorized?(possible_index_submission, :update, auth) }}
+                    to={Routes.possible_index_submission_show_path(@socket, :edit, possible_index_submission)}
+                    :if={authorized?(possible_index_submission, :update, auth)}
                   >
                     <button class="ml-1 btn btn-sm btn-secondary">
-                      <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
+                      <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                     </button>
                   </LiveRedirect>
                   <Link
                     to="#"
                     click="delete"
                     class="delete"
-                    opts={{
+                    opts={
                       title: gettext("Delete"),
                       data: [confirm: gettext("Are you sure?")],
                       "phx-value-id": possible_index_submission.uuid
-                    }}
-                    :if={{ authorized?(possible_index_submission, :delete, auth) }}
+                    }
+                    :if={authorized?(possible_index_submission, :delete, auth)}
                   >
                     <button class="ml-1 btn btn-sm btn-danger">
                       <span class="oi oi-trash" aria-hidden="true" />
                     </button>
                   </Link>
                   <LiveRedirect
-                    to={{Routes.case_create_possible_index_path(
+                    to={Routes.case_create_possible_index_path(
                       @socket,
                       :create,
                       possible_index_submission_uuid: possible_index_submission,
                       return_to: Routes.possible_index_submission_index_path(@socket, :index, @case)
-                    )}}
-                    :if={{ authorized?(Case, :create, auth, tenant: :any) }}
+                    )}
+                    :if={authorized?(Case, :create, auth, tenant: :any)}
                   >
                     <button class="ml-1 btn btn-sm btn-secondary">
-                      <span class="oi oi-check" title={{ gettext("Accept") }} aria-hidden="true" />
+                      <span class="oi oi-check" title={gettext("Accept")} aria-hidden="true" />
                     </button>
                   </LiveRedirect>
                 </div>
               </td>
             </HygeiaWeb.RecordView>
-            <tr :if={{ @case.possible_index_submissions == [] }}>
+            <tr :if={@case.possible_index_submissions == []}>
               <td colspan="5">
                 <div class="d-flex justify-content-center py-3">
-                  {{ gettext(
+                  {gettext(
                     "No submissions have been entered yet. Please submit all relevant people. Previous submissions can also be viewed, edited and deleted later."
-                  ) }}
+                  )}
                 </div>
               </td>
             </tr>

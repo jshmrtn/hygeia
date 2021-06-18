@@ -1,11 +1,11 @@
 <Form
-  for={{ @changeset }}
+  for={@changeset}
   change="validate"
   submit="save"
-  opts={{ autocomplete: "off", id: "transmission-form", class: "container" }}
+  opts={autocomplete: "off", id: "transmission-form", class: "container"}
 >
   <h1 class="mb-3">
-    {{ gettext("New transmission") }}
+    {gettext("New transmission")}
   </h1>
 
   <div class="container">
@@ -13,47 +13,47 @@
       <div class="col-12 col-lg-6">
         <div class="card">
           <div class="card-body">
-            <Field name={{ :type }} class="form-group">
+            <Field name={:type} class="form-group">
               <HygeiaWeb.FieldLabel />
               <Select
                 class="form-control"
-                options={{ case_phase_possible_index_type_map() }}
-                opts={{ prompt: gettext("Select Type") }}
+                options={case_phase_possible_index_type_map()}
+                opts={prompt: gettext("Select Type")}
               />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-            <div :if={{ Ecto.Changeset.get_field(@changeset, :type) != :travel }}>
-              <Field name={{ :propagator_internal }} class="form-group">
+            <div :if={Ecto.Changeset.get_field(@changeset, :type) != :travel}>
+              <Field name={:propagator_internal} class="form-group">
                 <div class="btn-group btn-group-toggle btn-radio-group">
-                  <label class="input-group-text input-sm">{{ gettext("Propagator") }}:</label>
-                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil, do: "active" }}">
+                  <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
+                  <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil, do: "active"}"}>
                     <RadioButton value="" />
-                    {{ gettext("No propagator") }}
+                    {gettext("No propagator")}
                   </label>
-                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == true, do: "active" }}">
+                  <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :propagator_internal) == true, do: "active"}"}>
                     <RadioButton value="true" />
-                    {{ gettext("Internal") }}
+                    {gettext("Internal")}
                   </label>
-                  <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :propagator_internal) == false, do: "active" }}">
+                  <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :propagator_internal) == false, do: "active"}"}>
                     <RadioButton value="false" />
-                    {{ gettext("External") }}
+                    {gettext("External")}
                   </label>
                 </div>
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
               <Field
-                name={{ :propagator_ism_id }}
+                name={:propagator_ism_id}
                 class="form-group"
-                :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == false }}
+                :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}
               >
                 <HygeiaWeb.FieldLabel />
                 <TextInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
               <Field
-                name={{ :propagator_case_uuid }}
+                name={:propagator_case_uuid}
                 class="form-group"
-                :if={{ Ecto.Changeset.get_field(@changeset, :propagator_internal) == true }}
+                :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}
               >
                 <HygeiaWeb.FieldLabel />
                 <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
@@ -61,44 +61,44 @@
               </Field>
             </div>
 
-            <Field name={{ :recipient_internal }} class="form-group">
+            <Field name={:recipient_internal} class="form-group">
               <div class="btn-group btn-group-toggle btn-radio-group">
-                <label class="input-group-text input-sm">{{ gettext("Recipient") }}:</label>
-                <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :recipient_internal) == nil, do: "active" }}">
+                <label class="input-group-text input-sm">{gettext("Recipient")}:</label>
+                <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :recipient_internal) == nil, do: "active"}"}>
                   <RadioButton value="" />
-                  {{ gettext("No recipient") }}
+                  {gettext("No recipient")}
                 </label>
-                <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :recipient_internal) == true, do: "active" }}">
+                <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :recipient_internal) == true, do: "active"}"}>
                   <RadioButton value="true" />
-                  {{ gettext("Internal") }}
+                  {gettext("Internal")}
                 </label>
-                <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(@changeset, :recipient_internal) == false, do: "active" }}">
+                <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :recipient_internal) == false, do: "active"}"}>
                   <RadioButton value="false" />
-                  {{ gettext("External") }}
+                  {gettext("External")}
                 </label>
               </div>
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
             <Field
-              name={{ :recipient_ism_id }}
+              name={:recipient_ism_id}
               class="form-group"
-              :if={{ Ecto.Changeset.get_field(@changeset, :recipient_internal) == false }}
+              :if={Ecto.Changeset.get_field(@changeset, :recipient_internal) == false}
             >
               <HygeiaWeb.FieldLabel />
               <TextInput class="form-control" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
             <Field
-              name={{ :recipient_case_uuid }}
+              name={:recipient_case_uuid}
               class="form-group"
-              :if={{ Ecto.Changeset.get_field(@changeset, :recipient_internal) == true }}
+              :if={Ecto.Changeset.get_field(@changeset, :recipient_internal) == true}
             >
               <HygeiaWeb.FieldLabel />
               <HygeiaWeb.CaseLive.Choose id="recipient_case" change="change_recipient_case" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
 
-            <Field name={{ :date }} class="form-group">
+            <Field name={:date} class="form-group">
               <HygeiaWeb.FieldLabel />
               <DateInput class="form-control" />
               <ErrorTag class="d-block invalid-feedback" />
@@ -108,13 +108,13 @@
       </div>
     </div>
 
-    <Field name={{ :comment }} class="form-group">
+    <Field name={:comment} class="form-group">
       <HygeiaWeb.FieldLabel />
       <TextArea class="form-control" />
       <ErrorTag class="d-block invalid-feedback" />
     </Field>
 
-    <Inputs for={{ :infection_place }}>
+    <Inputs for={:infection_place}>
       <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
     </Inputs>
   </div>
@@ -122,9 +122,9 @@
   <button
     class="btn btn-primary"
     type="submit"
-    phx-disable-with={{ gettext("Saving...") }}
-    disabled={{ not @changeset.valid? }}
+    phx-disable-with={gettext("Saving...")}
+    disabled={not @changeset.valid?}
   >
-    {{ gettext("Save") }}
+    {gettext("Save")}
   </button>
 </Form>

@@ -1,22 +1,22 @@
 <div class="component-tenant-base-data container">
-  <HygeiaWeb.TenantLive.Header tenant={{ @tenant }} id="header" />
+  <HygeiaWeb.TenantLive.Header tenant={@tenant} id="header" />
 
-  <Context get={{ HygeiaWeb, auth: auth }}>
+  <Context get={HygeiaWeb, auth: auth}>
     <ul>
-      <li :if={{ authorized?(@tenant, :export_data, auth, format: :bag_med_16122020_case) }}>
+      <li :if={authorized?(@tenant, :export_data, auth, format: :bag_med_16122020_case)}>
         <Link
-          to={{ Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_case) }}
-          opts={{ download: "bag_med_16122020_case - #{@tenant.name} - #{DateTime.utc_now()}.csv" }}
+          to={Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_case)}
+          opts={download: "bag_med_16122020_case - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
         >
-          {{ gettext("BAG MED 16122020 (Case)") }}
+          {gettext("BAG MED 16122020 (Case)")}
         </Link>
       </li>
-      <li :if={{ authorized?(@tenant, :export_data, auth, format: :bag_med_16122020_contact) }}>
+      <li :if={authorized?(@tenant, :export_data, auth, format: :bag_med_16122020_contact)}>
         <Link
-          to={{ Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_contact) }}
-          opts={{ download: "bag_med_16122020_contact - #{@tenant.name} - #{DateTime.utc_now()}.csv" }}
+          to={Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_contact)}
+          opts={download: "bag_med_16122020_contact - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
         >
-          {{ gettext("BAG MED 16122020 (Contact)") }}
+          {gettext("BAG MED 16122020 (Contact)")}
         </Link>
       </li>
     </ul>

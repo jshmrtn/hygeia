@@ -16,9 +16,9 @@ defmodule HygeiaWeb.RecordView do
   def render(%{wrapper_tag: :div} = assigns) do
     trigger(assigns)
 
-    ~H"""
+    ~F"""
     <div>
-      <slot />
+      <#slot />
     </div>
     """
   end
@@ -26,9 +26,9 @@ defmodule HygeiaWeb.RecordView do
   def render(%{wrapper_tag: :tr} = assigns) do
     trigger(assigns)
 
-    ~H"""
+    ~F"""
     <tr>
-      <slot />
+      <#slot />
     </tr>
     """
   end
@@ -36,9 +36,9 @@ defmodule HygeiaWeb.RecordView do
   def render(%{wrapper_tag: :span} = assigns) do
     trigger(assigns)
 
-    ~H"""
+    ~F"""
     <span>
-      <slot />
+      <#slot />
     </span>
     """
   end
@@ -46,9 +46,9 @@ defmodule HygeiaWeb.RecordView do
   def render(%{wrapper_tag: :strong} = assigns) do
     trigger(assigns)
 
-    ~H"""
+    ~F"""
     <strong>
-      <slot />
+      <#slot />
     </strong>
     """
   end

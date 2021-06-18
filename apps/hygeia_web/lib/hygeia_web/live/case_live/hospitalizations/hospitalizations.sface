@@ -1,57 +1,57 @@
 <div class="component-case-hospitalizations">
-  <InputContext assigns={{ assigns }} :let={{ form: form }}>
+  <InputContext assigns={assigns} :let={form: form}>
     <div
-      :if={{ @disabled and length(Ecto.Changeset.get_field(form.source, :hospitalizations, [])) == 0 }}
+      :if={@disabled and length(Ecto.Changeset.get_field(form.source, :hospitalizations, [])) == 0}
       class="alert alert-info"
     >
-      {{ gettext("No hospitalizations") }}
+      {gettext("No hospitalizations")}
     </div>
   </InputContext>
-  <Inputs for={{ :hospitalizations }}>
-    <InputContext assigns={{ assigns }} :let={{ form: form }}>
+  <Inputs for={:hospitalizations}>
+    <InputContext assigns={assigns} :let={form: form}>
       <div class="card mb-2">
         <div class="card-body">
           <div class="row">
-            <HiddenInput field={{ :uuid }} />
+            <HiddenInput field={:uuid} />
             <div class="col">
-              <Field class="form-group" name={{ :start }}>
+              <Field class="form-group" name={:start}>
                 <HygeiaWeb.FieldLabel />
-                <DateInput class="form-control" opts={{ disabled: @disabled }} />
+                <DateInput class="form-control" opts={disabled: @disabled} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
             <div class="col">
-              <Field class="form-group" name={{ :end }}>
+              <Field class="form-group" name={:end}>
                 <HygeiaWeb.FieldLabel />
-                <DateInput class="form-control" opts={{ disabled: @disabled }} />
+                <DateInput class="form-control" opts={disabled: @disabled} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
           </div>
           <div class="row">
             <div class="col">
-              <Field class="form-group" name={{ :organisation_uuid }}>
+              <Field class="form-group" name={:organisation_uuid}>
                 <HygeiaWeb.FieldLabel />
                 <HygeiaWeb.OrganisationLive.Choose
-                  id={{ {:hospitalisations, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid)} }}
-                  change={{ "change_organisation_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}" }}
-                  disabled={{ @disabled }}
+                  id={{:hospitalisations, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid)}}
+                  change={"change_organisation_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
+                  disabled={@disabled}
                 />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
           </div>
-          <div :if={{ !@disabled }} class="row">
+          <div :if={!@disabled} class="row">
             <div class="col d-flex justify-content-end">
-              <InputContext assigns={{ assigns }} :let={{ form: form }}>
+              <InputContext assigns={assigns} :let={form: form}>
                 <button
                   class="btn btn-sm btn-danger"
                   type="button"
-                  phx-value-changeset-uuid={{ Ecto.Changeset.fetch_field!(form.source, :uuid) }}
-                  :on-click={{ @remove_hospitalization }}
-                  title={{ gettext("Remove") }}
+                  phx-value-changeset-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
+                  :on-click={@remove_hospitalization}
+                  title={gettext("Remove")}
                 >
-                  {{ gettext("Remove") }}
+                  {gettext("Remove")}
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </InputContext>
@@ -62,10 +62,10 @@
     </InputContext>
   </Inputs>
 
-  <div class="add-button mt-2" :if={{ not @disabled }}>
-    <button type="button" class="btn btn-secondary" :on-click={{ @add_hospitalization }}>
+  <div class="add-button mt-2" :if={not @disabled}>
+    <button type="button" class="btn btn-secondary" :on-click={@add_hospitalization}>
       <span class="oi oi-plus mr-1" aria-hidden="true" />
-      {{ gettext("Add hospitalization") }}
+      {gettext("Add hospitalization")}
     </button>
   </div>
 </div>

@@ -14,28 +14,28 @@ defmodule HygeiaWeb.Dropdown do
 
   @impl Phoenix.LiveComponent
   def render(assigns) do
-    ~H"""
+    ~F"""
     <div
       tabindex="-1"
-      id={{ @id <> "_dropdown" }}
-      phx-target={{ @myself }}
+      id={@id <> "_dropdown"}
+      phx-target={@myself}
       phx-hook="Dropdown"
-      class={{
+      class={
         "dropdown",
         @class,
         show: @dropdown_open
-      }}
+      }
     >
-      <div class={{ @trigger_class }} :on-click="toggle_dropdown">
-        <slot name="trigger" />
+      <div class={@trigger_class} :on-click="toggle_dropdown">
+        <#slot name="trigger" />
       </div>
 
-      <div class={{
+      <div class={
         "dropdown-menu",
         @dropdown_class,
         show: @dropdown_open
-      }}>
-        <slot />
+      }>
+        <#slot />
       </div>
     </div>
     """

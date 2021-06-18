@@ -1,37 +1,37 @@
 <div class="component-user-index container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
+  <Context get={HygeiaWeb, auth: auth}>
     <h1 class="mb-3">
-      {{ gettext("Listing Users") }}
+      {gettext("Listing Users")}
     </h1>
 
     <table class="table">
       <thead>
         <tr>
           <th>
-            {{ schema_field_name(:display_name, User) }}
+            {schema_field_name(:display_name, User)}
           </th>
           <th>
-            {{ schema_field_name(:email, User) }}
+            {schema_field_name(:email, User)}
           </th>
           <th>
-            {{ schema_field_name(:roles, User) }}
+            {schema_field_name(:roles, User)}
           </th>
 
           <th />
         </tr>
       </thead>
       <tbody id="users">
-        <tr :for={{ user <- @users }} id="user-{{ user.uuid }}">
+        <tr :for={user <- @users} id={"user-#{user.uuid}"}>
           <td>
-            {{ user.display_name }}
+            {user.display_name}
           </td>
           <td>
-            {{ user.email }}
+            {user.email}
           </td>
           <td>
-            <span :for={{ role <- user.grants |> Enum.map(& &1.role) |> Enum.uniq() |> Enum.sort() }}>
+            <span :for={role <- user.grants |> Enum.map(& &1.role) |> Enum.uniq() |> Enum.sort()}>
               <span class="badge badge-secondary">
-                {{ role }}
+                {role}
               </span>
             </span>
           </td>
@@ -39,11 +39,11 @@
           <td>
             <div class="d-flex justify-content-end w-100">
               <LiveRedirect
-                to={{ Routes.user_show_path(@socket, :show, user) }}
-                :if={{ authorized?(user, :details, auth) }}
+                to={Routes.user_show_path(@socket, :show, user)}
+                :if={authorized?(user, :details, auth)}
               >
                 <button class="ml-auto btn btn-sm btn-secondary">
-                  {{ gettext("Show") }}
+                  {gettext("Show")}
                 </button>
               </LiveRedirect>
             </div>

@@ -1,104 +1,104 @@
 <div class="component-system-message-base-data container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
+  <Context get={HygeiaWeb, auth: auth}>
     <h1 class="mb-3">
-      {{ gettext("System Message") }}
+      {gettext("System Message")}
     </h1>
 
-    <div class="mb-4" :if={{ @live_action == :show }}>
+    <div class="mb-4" :if={@live_action == :show}>
       <LivePatch
-        :if={{ authorized?(@system_message, :update, auth) }}
-        to={{ Routes.system_message_show_path(@socket, :edit, @system_message.uuid) }}
+        :if={authorized?(@system_message, :update, auth)}
+        to={Routes.system_message_show_path(@socket, :edit, @system_message.uuid)}
       >
         <button class="btn btn-primary mr-2" id="system_message-edit">
-          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
-          {{ gettext("Edit") }}
+          <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+          {gettext("Edit")}
         </button>
       </LivePatch>
       <Link
         to="#"
         click="delete"
-        opts={{
+        opts={
           title: gettext("Delete"),
           data: [confirm: gettext("Are you sure?")]
-        }}
-        :if={{ authorized?(@system_message, :delete, auth) }}
+        }
+        :if={authorized?(@system_message, :delete, auth)}
       >
         <button class="btn btn-danger">
           <span class="oi oi-trash" aria-hidden="true" />
-          {{ gettext("Delete") }}
+          {gettext("Delete")}
         </button>
       </Link>
     </div>
 
     <Form
-      for={{ @changeset }}
+      for={@changeset}
       change="validate"
       submit="save"
-      opts={{ autocomplete: "off", id: "system_message-form", "phx-hook": "BlockNavigation" }}
+      opts={autocomplete: "off", id: "system_message-form", "phx-hook": "BlockNavigation"}
     >
       <HygeiaWeb.Lock
-        id={{ {:lock, SystemMessage, @system_message.uuid} }}
-        resource={{ {SystemMessage, @system_message.uuid} }}
-        lock={{ @live_action == :edit }}
+        id={{:lock, SystemMessage, @system_message.uuid}}
+        resource={{SystemMessage, @system_message.uuid}}
+        lock={@live_action == :edit}
       >
-        <div :if={{ @live_action == :edit }}>
-          <div class="mb-4" :if={{ @live_action == :edit }}>
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
-              <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
-              {{ gettext("Save") }}
+        <div :if={@live_action == :edit}>
+          <div class="mb-4" :if={@live_action == :edit}>
+            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Saving...")}>
+              <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+              {gettext("Save")}
             </button>
             <button
               :on-click="reset"
               class="btn btn-warning"
               type="button"
-              data-confirm={{if @changeset.changes != %{} do
+              data-confirm={if @changeset.changes != %{} do
                 gettext("Do you really want to discard your changes?")
               else
                 nil
-              end}}
+              end}
             >
-              <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
-              {{ gettext("Discard") }}
+              <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+              {gettext("Discard")}
             </button>
           </div>
         </div>
 
         <div class="card hy-readonly-form">
           <div class="card-body">
-            <h4 class="card-title">{{ gettext("System Message") }}</h4>
-            <Field :if={{ @live_action == :edit }} name={{ :text }} class="form-group">
+            <h4 class="card-title">{gettext("System Message")}</h4>
+            <Field :if={@live_action == :edit} name={:text} class="form-group">
               <HygeiaWeb.FieldLabel />
-              <TextArea class="form-control" opts={{ disabled: @live_action == :show }} rows="5" />
+              <TextArea class="form-control" opts={disabled: @live_action == :show} rows="5" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-            <InputContext assigns={{ assigns }} :let={{ form: form }}>
-              <label>{{ gettext("Preview") }}</label>
+            <InputContext assigns={assigns} :let={form: form}>
+              <label>{gettext("Preview")}</label>
               <div class="system-messages mb-5">
                 <div class="alert alert-info">
-                  {{ raw(Earmark.as_html!(Ecto.Changeset.get_field(form.source, :text, ""))) }}
+                  {raw(Earmark.as_html!(Ecto.Changeset.get_field(form.source, :text, "")))}
                 </div>
               </div>
             </InputContext>
 
             <div class="row">
               <div class="col-12 col-md-6">
-                <Field name={{ :start_date }} class="form-group">
+                <Field name={:start_date} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <DateTimeLocalInput
-                    opts={{ disabled: @live_action == :show }}
+                    opts={disabled: @live_action == :show}
                     class="form-control"
-                    field={{ :start_date }}
+                    field={:start_date}
                   />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
               <div class="col-12 col-md-6">
-                <Field name={{ :end_date }} class="form-group">
+                <Field name={:end_date} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <DateTimeLocalInput
-                    opts={{ disabled: @live_action == :show }}
+                    opts={disabled: @live_action == :show}
                     class="form-control"
-                    field={{ :end_date }}
+                    field={:end_date}
                   />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
@@ -107,22 +107,22 @@
 
             <div class="row">
               <div class="col-12 col-md-6">
-                <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                  <Field name={{ :roles }}>
+                <InputContext assigns={assigns} :let={form: form}>
+                  <Field name={:roles}>
                     <HygeiaWeb.FieldLabel />
                     <HygeiaWeb.FieldLabel
-                      :for={{ {name, key} <- roles() }}
+                      :for={{name, key} <- roles()}
                       class="d-block checkbox-label"
-                      opts={{ "data-disabled": @live_action == :show }}
+                      opts={"data-disabled": @live_action == :show}
                     >
                       <input
                         type="checkbox"
-                        name={{ input_name(form, :roles) <> "[]" }}
-                        disabled={{ @live_action == :show }}
-                        checked={{ key in (Ecto.Changeset.get_field(form.source, :roles, []) || []) }}
-                        value={{ key }}
+                        name={input_name(form, :roles) <> "[]"}
+                        disabled={@live_action == :show}
+                        checked={key in (Ecto.Changeset.get_field(form.source, :roles, []) || [])}
+                        value={key}
                       />
-                      {{ name }}
+                      {name}
                     </HygeiaWeb.FieldLabel>
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
@@ -130,22 +130,22 @@
               </div>
 
               <div class="col-12 col-md-6">
-                <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                  <Field name={{ :related_tenants }}>
+                <InputContext assigns={assigns} :let={form: form}>
+                  <Field name={:related_tenants}>
                     <HygeiaWeb.FieldLabel />
                     <HygeiaWeb.FieldLabel
-                      :for={{ {name, key} <- tenants() }}
+                      :for={{name, key} <- tenants()}
                       class="d-block checkbox-label"
-                      opts={{ "data-disabled": @live_action == :show }}
+                      opts={"data-disabled": @live_action == :show}
                     >
                       <input
                         type="checkbox"
-                        name={{ input_name(form, :related_tenants) <> "[]" }}
-                        disabled={{ @live_action == :show }}
-                        checked={{ key in Enum.map(Ecto.Changeset.get_field(form.source, :related_tenants, []), & &1.uuid) }}
-                        value={{ key }}
+                        name={input_name(form, :related_tenants) <> "[]"}
+                        disabled={@live_action == :show}
+                        checked={key in Enum.map(Ecto.Changeset.get_field(form.source, :related_tenants, []), & &1.uuid)}
+                        value={key}
                       />
-                      {{ name }}
+                      {name}
                     </HygeiaWeb.FieldLabel>
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>

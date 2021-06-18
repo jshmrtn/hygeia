@@ -72,16 +72,16 @@ defmodule HygeiaWeb.VersionLive.Show do
 
   @impl Phoenix.LiveView
   def render(%{resource: %Hygeia.CaseContext.Case{} = case} = assigns) do
-    ~H"""
+    ~F"""
     <div class="component-versioning case container">
-      <HygeiaWeb.PersonLive.Header person={{ case.person }} id="header" />
+      <HygeiaWeb.PersonLive.Header person={case.person} id="header" />
 
       <div class="card">
         <div class="card-header">
-          <HygeiaWeb.CaseLive.Navigation case={{ case }} id="navigation" />
+          <HygeiaWeb.CaseLive.Navigation case={case} id="navigation" />
         </div>
         <div class="card-body">
-          {{ render_table(assigns) }}
+          {render_table(assigns)}
         </div>
       </div>
     </div>
@@ -89,84 +89,84 @@ defmodule HygeiaWeb.VersionLive.Show do
   end
 
   def render(%{resource: %Hygeia.CaseContext.Person{} = person} = assigns) do
-    ~H"""
+    ~F"""
     <div class="component-versioning person container">
-      <HygeiaWeb.PersonLive.Header person={{ person }} id="header" />
+      <HygeiaWeb.PersonLive.Header person={person} id="header" />
 
-      {{ render_table(assigns) }}
+      {render_table(assigns)}
     </div>
     """
   end
 
   def render(%{resource: %Hygeia.CaseContext.Transmission{} = transmission} = assigns) do
-    ~H"""
+    ~F"""
     <div class="component-versioning transmission container">
-      <HygeiaWeb.TransmissionLive.Header transmission={{ transmission }} id="header" />
+      <HygeiaWeb.TransmissionLive.Header transmission={transmission} id="header" />
 
-      {{ render_table(assigns) }}
+      {render_table(assigns)}
     </div>
     """
   end
 
   def render(%{resource: %Hygeia.UserContext.User{} = user} = assigns) do
-    ~H"""
+    ~F"""
     <div class="component-versioning user container">
-      <HygeiaWeb.UserLive.Header user={{ user }} id="header" />
+      <HygeiaWeb.UserLive.Header user={user} id="header" />
 
-      {{ render_table(assigns) }}
+      {render_table(assigns)}
     </div>
     """
   end
 
   def render(%{resource: %Hygeia.TenantContext.Tenant{} = tenant} = assigns) do
-    ~H"""
+    ~F"""
     <div class="component-versioning tenant container">
-      <HygeiaWeb.TenantLive.Header tenant={{ tenant }} id="header" />
+      <HygeiaWeb.TenantLive.Header tenant={tenant} id="header" />
 
-      {{ render_table(assigns) }}
+      {render_table(assigns)}
     </div>
     """
   end
 
   def render(%{resource: %Hygeia.OrganisationContext.Division{} = division} = assigns) do
-    ~H"""
+    ~F"""
     <div class="component-versioning division container">
-      <HygeiaWeb.DivisionLive.Header division={{ division }} id="header" />
+      <HygeiaWeb.DivisionLive.Header division={division} id="header" />
 
-      {{ render_table(assigns) }}
+      {render_table(assigns)}
     </div>
     """
   end
 
   def render(%{resource: %Hygeia.OrganisationContext.Organisation{} = organisation} = assigns) do
-    ~H"""
+    ~F"""
     <div class="component-versioning organisation container">
-      <HygeiaWeb.OrganisationLive.Header organisation={{ organisation }} id="header" />
+      <HygeiaWeb.OrganisationLive.Header organisation={organisation} id="header" />
 
-      {{ render_table(assigns) }}
+      {render_table(assigns)}
     </div>
     """
   end
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <div class="component-versioning container">
       <h1>
-        {{ module_translation(@schema) }}
+        {module_translation(@schema)}
         /
-        {{ @id }}
+        {@id}
       </h1>
-      {{ render_table(assigns) }}
+      {render_table(assigns)}
     </div>
     """
   end
 
   defp render_table(assigns) do
-    ~H"""
+    ~F"""
     <HygeiaWeb.VersionLive.Table
-      versions={{ @versions }}
-      now={{ @now }}
-      id={{ "resource_#{@id}_version_table" }}
+      versions={@versions}
+      now={@now}
+      id={"resource_#{@id}_version_table"}
     />
     """
   end

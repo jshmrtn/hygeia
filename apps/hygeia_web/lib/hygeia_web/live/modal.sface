@@ -1,20 +1,20 @@
 <div
-  id={{ "#{@myself}_modal" }}
+  id={"#{@myself}_modal"}
   class="modal fade show live-modal"
   tabindex="-1"
-  :on-capture-click={{ @close }}
-  :on-window-keydown={{ @close }}
+  :on-capture-click={@close}
+  :on-window-keydown={@close}
   phx-key="escape"
   phx-page-loading
 >
-  <div class={{ "modal-dialog modal-dialog-scrollable modal-" <> @size }} role="document">
+  <div class={"modal-dialog modal-dialog-scrollable modal-" <> @size} role="document">
     <div class="modal-content">
       <div class="modal-header">
         <div class="modal-title">
-          <h5 class="mb-0">{{ @title }}</h5>
+          <h5 class="mb-0">{@title}</h5>
         </div>
         <button
-          :on-click={{ @close }}
+          :on-click={@close}
           type="button"
           class="close p-3"
           data-dismiss="modal"
@@ -24,7 +24,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <slot />
+        <#slot />
       </div>
     </div>
   </div>

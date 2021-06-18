@@ -1,37 +1,37 @@
 <div class="component-person-header mb-4">
-  <Context get={{ HygeiaWeb, auth: auth }}>
-    <h1 class="mb-4" :if={{ authorized?(@transmission, :details, auth) }}>
+  <Context get={HygeiaWeb, auth: auth}>
+    <h1 class="mb-4" :if={authorized?(@transmission, :details, auth)}>
       <HygeiaWeb.RecordView
-        resource={{ @transmission }}
-        action={{ :list }}
-        id={{ {:header, :record_view, @transmission.uuid} }}
-        wrapper_tag={{ :span }}
+        resource={@transmission}
+        action={:list}
+        id={{:header, :record_view, @transmission.uuid}}
+        wrapper_tag={:span}
       >
-        {{ @display_name }}
+        {@display_name}
       </HygeiaWeb.RecordView>
     </h1>
-    <h1 class="mb-4" :if={{ not authorized?(@transmission, :details, auth) }}>
-      {{ @transmission.uuid }}
+    <h1 class="mb-4" :if={not authorized?(@transmission, :details, auth)}>
+      {@transmission.uuid}
     </h1>
 
     <ul class="nav nav-tabs">
-      <li class="nav-item" :if={{ authorized?(@transmission, :details, auth) }}>
+      <li class="nav-item" :if={authorized?(@transmission, :details, auth)}>
         <UriActiveContext
-          to={{ Routes.transmission_show_path(@socket, :show, @transmission) }}
-          :let={{ to: to, active: active }}
+          to={Routes.transmission_show_path(@socket, :show, @transmission)}
+          :let={to: to, active: active}
         >
-          <LiveRedirect to={{ to }} class="nav-link {{ if active, do: "active" }}">
-            {{ gettext("Base Data") }}
+          <LiveRedirect to={to} class={"nav-link #{if active, do: "active"}"}>
+            {gettext("Base Data")}
           </LiveRedirect>
         </UriActiveContext>
       </li>
       <li class="nav-item">
         <UriActiveContext
-          to={{ Routes.version_show_path(@socket, :show, Transmission.__schema__(:source), @transmission) }}
-          :let={{ to: to, active: active }}
+          to={Routes.version_show_path(@socket, :show, Transmission.__schema__(:source), @transmission)}
+          :let={to: to, active: active}
         >
-          <LiveRedirect to={{ to }} class="nav-link  {{ if active, do: "active" }}">
-            {{ gettext("History") }}
+          <LiveRedirect to={to} class={"nav-link  #{if active, do: "active"}"}>
+            {gettext("History")}
           </LiveRedirect>
         </UriActiveContext>
       </li>

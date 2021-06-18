@@ -101,10 +101,10 @@ defmodule HygeiaWeb.Notification.Tray do
   defp render_body(assigns, notification)
 
   defp render_body(assigns, %Notification{uuid: uuid, body: %Notification.CaseAssignee{} = body}) do
-    ~H"""
+    ~F"""
     <HygeiaWeb.Notification.CaseAssignee
-      id={{ "notifications_tray_notification_body_#{uuid}" }}
-      body={{ body }}
+      id={"notifications_tray_notification_body_#{uuid}"}
+      body={body}
     />
     """
   end
@@ -113,10 +113,10 @@ defmodule HygeiaWeb.Notification.Tray do
          uuid: uuid,
          body: %Notification.PossibleIndexSubmitted{} = body
        }) do
-    ~H"""
+    ~F"""
     <HygeiaWeb.Notification.PossibleIndexSubmitted
-      id={{ "notifications_tray_notification_body_#{uuid}" }}
-      body={{ body }}
+      id={"notifications_tray_notification_body_#{uuid}"}
+      body={body}
     />
     """
   end
@@ -125,10 +125,10 @@ defmodule HygeiaWeb.Notification.Tray do
          uuid: uuid,
          body: %Notification.EmailSendFailed{} = body
        }) do
-    ~H"""
+    ~F"""
     <HygeiaWeb.Notification.EmailSendFailed
-      id={{ "notifications_tray_notification_body_#{uuid}" }}
-      body={{ body }}
+      id={"notifications_tray_notification_body_#{uuid}"}
+      body={body}
     />
     """
   end

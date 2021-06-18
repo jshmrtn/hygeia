@@ -1,16 +1,16 @@
-<InputContext assigns={{ assigns }} :let={{ form: form }}>
+<InputContext assigns={assigns} :let={form: form}>
   <div class="row">
     <div class="col">
-      <Field name={{ :known }} class="form-group">
+      <Field name={:known} class="form-group">
         <div class="btn-group btn-group-toggle btn-radio-group">
-          <label class="input-group-text input-sm">{{ gettext("Infection place") }}:</label>
-          <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :known) == true, do: "active" }}">
-            <RadioButton value="true" opts={{ disabled: @disabled }} />
-            {{ gettext("Known") }}
+          <label class="input-group-text input-sm">{gettext("Infection place")}:</label>
+          <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(form.source, :known) == true, do: "active"}"}>
+            <RadioButton value="true" opts={disabled: @disabled} />
+            {gettext("Known")}
           </label>
-          <label class="btn btn-secondary {{ if Ecto.Changeset.get_field(form.source, :known) == false, do: "active" }}">
-            <RadioButton value="false" opts={{ disabled: @disabled }} />
-            {{ gettext("Unknown") }}
+          <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(form.source, :known) == false, do: "active"}"}>
+            <RadioButton value="false" opts={disabled: @disabled} />
+            {gettext("Unknown")}
           </label>
         </div>
         <ErrorTag class="d-block invalid-feedback" />
@@ -19,51 +19,51 @@
   </div>
   <div class="row">
     <div class="col-6">
-      <div :if={{ Ecto.Changeset.get_field(form.source, :known) == true }}>
+      <div :if={Ecto.Changeset.get_field(form.source, :known) == true}>
         <div class="card">
           <div class="card-body">
             <div class="row">
               <div class="col">
-                <Field name={{ :type }} class="form-group">
+                <Field name={:type} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <Select
                     class="form-control"
-                    opts={{
+                    opts={
                       prompt: gettext("Choose Type"),
                       disabled: @disabled
-                    }}
-                    options={{ infection_place_type_options() }}
+                    }
+                    options={infection_place_type_options()}
                   />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
-              <div :if={{ Ecto.Changeset.get_field(form.source, :type) == :other }} class="col">
-                <Field name={{ :type_other }} class="form-group">
+              <div :if={Ecto.Changeset.get_field(form.source, :type) == :other} class="col">
+                <Field name={:type_other} class="form-group">
                   <HygeiaWeb.FieldLabel />
-                  <TextInput class="form-control" opts={{ disabled: @disabled }} />
+                  <TextInput class="form-control" opts={disabled: @disabled} />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
             </div>
-            <Field name={{ :name }} class="form-group">
+            <Field name={:name} class="form-group">
               <HygeiaWeb.FieldLabel />
-              <TextInput class="form-control" opts={{ disabled: @disabled }} />
+              <TextInput class="form-control" opts={disabled: @disabled} />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-            <Field name={{ :flight_information }} class="form-group">
+            <Field name={:flight_information} class="form-group">
               <HygeiaWeb.FieldLabel />
-              <TextInput class="form-control" opts={{ disabled: @disabled }} />
+              <TextInput class="form-control" opts={disabled: @disabled} />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-6" :if={{ Ecto.Changeset.get_field(form.source, :known) == true }}>
+    <div class="col-6" :if={Ecto.Changeset.get_field(form.source, :known) == true}>
       <div class="card">
         <div class="card-body">
-          <Inputs for={{ :address }}>
-            <HygeiaWeb.AddressForm disabled={{ @disabled }} id="infection-place-address" />
+          <Inputs for={:address}>
+            <HygeiaWeb.AddressForm disabled={@disabled} id="infection-place-address" />
           </Inputs>
         </div>
       </div>

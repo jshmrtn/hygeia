@@ -1,38 +1,38 @@
 <div>
-  <Context get={{ HygeiaWeb, auth: auth }}>
-    <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
+  <Context get={HygeiaWeb, auth: auth}>
+    <InputContext assigns={assigns} :let={form: form, field: field}>
       <Context
-        put={{ value: @value || Phoenix.HTML.FormData.input_value(form.source, form, field) }}
-        get={{ value: value }}
+        put={value: @value || Phoenix.HTML.FormData.input_value(form.source, form, field)}
+        get={value: value}
       >
-        <HiddenInput value={{ value }} />
+        <HiddenInput value={value} />
 
-        <div :if={{ value not in [nil, ""] }}>
+        <div :if={value not in [nil, ""]}>
           <Context
-            put={{
+            put={
               organisation: load_organisation(value)
-            }}
-            get={{ organisation: organisation }}
+            }
+            get={organisation: organisation}
           >
             <div class="card">
               <div class="card-body py-2 px-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <LiveRedirect
-                    :if={{ @disabled and authorized?(organisation, :details, auth) }}
-                    to={{ Routes.organisation_show_path(@socket, :show, organisation) }}
+                    :if={@disabled and authorized?(organisation, :details, auth)}
+                    to={Routes.organisation_show_path(@socket, :show, organisation)}
                   >
-                    {{ render_organisation(assigns, organisation) }}
+                    {render_organisation(assigns, organisation)}
                   </LiveRedirect>
-                  <div :if={{ not @disabled or not authorized?(organisation, :details, auth) }}>
-                    {{ render_organisation(assigns, organisation) }}
+                  <div :if={not @disabled or not authorized?(organisation, :details, auth)}>
+                    {render_organisation(assigns, organisation)}
                   </div>
                   <button
-                    :if={{ not @disabled }}
+                    :if={not @disabled}
                     class="btn btn-danger"
-                    :on-click={{ @change }}
+                    :on-click={@change}
                     type="button"
-                    phx-value-from-uuid={{ organisation.uuid }}
-                    phx-value-subject={{ @subject }}
+                    phx-value-from-uuid={organisation.uuid}
+                    phx-value-subject={@subject}
                   >
                     <span class="oi oi-trash" aria-hidden="true" />
                   </button>
@@ -42,15 +42,15 @@
           </Context>
         </div>
 
-        <div :if={{ value in [nil, ""] and not @disabled }}>
+        <div :if={value in [nil, ""] and not @disabled}>
           <button class="btn btn-secondary" :on-click="open_modal" type="button">
-            {{ gettext("Choose organisation") }}
+            {gettext("Choose organisation")}
           </button>
 
           <HygeiaWeb.Modal
-            id={{ {:choose_organisation, field} }}
-            :if={{ @modal_open }}
-            title={{ gettext("Select Organisation") }}
+            id={{:choose_organisation, field}}
+            :if={@modal_open}
+            title={gettext("Select Organisation")}
             close="close_modal"
           >
             <div class="d-flex flex-justify-content-between">
@@ -63,23 +63,23 @@
                 <input
                   class="form-control"
                   type="search"
-                  value={{ @query }}
+                  value={@query}
                   :on-keyup="query"
-                  placeholder={{ gettext("Search") }}
+                  placeholder={gettext("Search")}
                 />
                 <div
                   class="input-group-apend"
-                  id={{ "#{@myself}_create" }}
+                  id={"#{@myself}_create"}
                   phx-hook="PostMessage"
-                  data-post-message-target={{ @myself }}
+                  data-post-message-target={@myself}
                 >
                   <Link
                     class="input-group-text text-nowrap"
-                    to={{ Routes.organisation_create_path(@socket, :create, popup: true) }}
-                    opts={{ target: "_blank", rel: "opener" }}
+                    to={Routes.organisation_create_path(@socket, :create, popup: true)}
+                    opts={target: "_blank", rel: "opener"}
                   >
                     <span class="oi oi-plus" />
-                    {{ pgettext("Organisation", "Create") }}
+                    {pgettext("Organisation", "Create")}
                   </Link>
                 </div>
               </div>
@@ -89,18 +89,18 @@
               <div
                 role="button"
                 class="card hy-button-card mt-2"
-                :for={{ organisation <- @organisations }}
-                :on-click={{ @change }}
-                phx-value-uuid={{ organisation.uuid }}
-                phx-value-subject={{ @subject }}
+                :for={organisation <- @organisations}
+                :on-click={@change}
+                phx-value-uuid={organisation.uuid}
+                phx-value-subject={@subject}
               >
                 <div class="card-body py-2 px-3">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
-                      {{ render_organisation(assigns, organisation) }}
+                      {render_organisation(assigns, organisation)}
                     </div>
                     <button class="btn btn-primary" type="button">
-                      {{ gettext("choose") }}
+                      {gettext("choose")}
                     </button>
                   </div>
                 </div>

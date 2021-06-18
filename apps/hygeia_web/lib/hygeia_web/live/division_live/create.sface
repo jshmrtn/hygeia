@@ -1,23 +1,23 @@
 <Form
-  for={{ @changeset }}
+  for={@changeset}
   change="validate"
   submit="save"
-  opts={{ autocomplete: "off", id: "division-form", class: "container" }}
+  opts={autocomplete: "off", id: "division-form", class: "container"}
 >
   <h1 class="mb-3">
-    {{ gettext("New Division for %{organisation}", organisation: @organisation.name) }}
+    {gettext("New Division for %{organisation}", organisation: @organisation.name)}
   </h1>
 
   <div class="hy-card-grid-2-cols">
     <div class="card mb-3">
       <div class="card-body">
-        <Field name={{ :title }} class="form-group">
+        <Field name={:title} class="form-group">
           <HygeiaWeb.FieldLabel />
           <TextInput class="form-control" />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
 
-        <Field name={{ :description }} class="form-group">
+        <Field name={:description} class="form-group">
           <HygeiaWeb.FieldLabel />
           <TextArea class="form-control" />
           <ErrorTag class="d-block invalid-feedback" />
@@ -27,16 +27,16 @@
 
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">{{ gettext("Address") }}</h4>
+        <h4 class="card-title">{gettext("Address")}</h4>
 
-        <Field name={{ :shares_address }} class="form-group">
+        <Field name={:shares_address} class="form-group">
           <HygeiaWeb.FieldLabel />
-          <Checkbox class="form-control" opts={{ disabled: @live_action == :show }} />
+          <Checkbox class="form-control" opts={disabled: @live_action == :show} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
 
-        <Inputs for={{ :address }} :if={{ not Ecto.Changeset.fetch_field!(@changeset, :shares_address) }}>
-          <HygeiaWeb.AddressForm disabled={{ @live_action == :show }} id="address" />
+        <Inputs for={:address} :if={not Ecto.Changeset.fetch_field!(@changeset, :shares_address)}>
+          <HygeiaWeb.AddressForm disabled={@live_action == :show} id="address" />
         </Inputs>
       </div>
     </div>
@@ -46,10 +46,10 @@
     id="submit"
     class="btn btn-primary"
     type="submit"
-    phx-disable-with={{ gettext("Saving...") }}
-    disabled={{ not @changeset.valid? }}
+    phx-disable-with={gettext("Saving...")}
+    disabled={not @changeset.valid?}
     phx-hook="PostMessage"
   >
-    {{ gettext("Save") }}
+    {gettext("Save")}
   </button>
 </Form>

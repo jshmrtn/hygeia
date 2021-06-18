@@ -1,52 +1,52 @@
 <div class="component-person-header mb-4">
-  <Context get={{ HygeiaWeb, auth: auth }}>
+  <Context get={HygeiaWeb, auth: auth}>
     <h1 class="mb-4">
-      {{ if authorized?(@tenant, :details, auth) or authorized?(@tenant, :export_data, auth),
+      {if authorized?(@tenant, :details, auth) or authorized?(@tenant, :export_data, auth),
         do: @display_name,
-        else: @tenant.uuid }}
+        else: @tenant.uuid}
     </h1>
 
     <ul class="nav nav-tabs">
-      <li class="nav-item" :if={{ authorized?(@tenant, :details, auth) }}>
+      <li class="nav-item" :if={authorized?(@tenant, :details, auth)}>
         <UriActiveContext
-          to={{ Routes.tenant_show_path(@socket, :show, @tenant) }}
-          :let={{ to: to, active: active }}
+          to={Routes.tenant_show_path(@socket, :show, @tenant)}
+          :let={to: to, active: active}
         >
-          <LiveRedirect to={{ to }} class={{ "nav-link", active: active }}>
-            {{ gettext("Base Data") }}
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            {gettext("Base Data")}
           </LiveRedirect>
         </UriActiveContext>
       </li>
-      <li class="nav-item" :if={{ authorized?(@tenant, :export_data, auth) }}>
+      <li class="nav-item" :if={authorized?(@tenant, :export_data, auth)}>
         <UriActiveContext
-          to={{ Routes.tenant_export_path(@socket, :export, @tenant) }}
-          :let={{ to: to, active: active }}
+          to={Routes.tenant_export_path(@socket, :export, @tenant)}
+          :let={to: to, active: active}
         >
-          <LiveRedirect to={{ to }} class={{ "nav-link", active: active }}>
-            {{ gettext("Manual Export") }}
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            {gettext("Manual Export")}
           </LiveRedirect>
         </UriActiveContext>
       </li>
       <li
         class="nav-item"
-        :if={{ authorized?(Hygeia.TenantContext.SedexExport, :list, auth, tenant: @tenant) }}
+        :if={authorized?(Hygeia.TenantContext.SedexExport, :list, auth, tenant: @tenant)}
       >
         <UriActiveContext
-          to={{ Routes.sedex_export_index_path(@socket, :index, @tenant) }}
-          :let={{ to: to, active: active }}
+          to={Routes.sedex_export_index_path(@socket, :index, @tenant)}
+          :let={to: to, active: active}
         >
-          <LiveRedirect to={{ to }} class={{ "nav-link", active: active }}>
-            {{ gettext("Sedex Exports") }}
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            {gettext("Sedex Exports")}
           </LiveRedirect>
         </UriActiveContext>
       </li>
       <li class="nav-item">
         <UriActiveContext
-          to={{ Routes.version_show_path(@socket, :show, Tenant.__schema__(:source), @tenant) }}
-          :let={{ to: to, active: active }}
+          to={Routes.version_show_path(@socket, :show, Tenant.__schema__(:source), @tenant)}
+          :let={to: to, active: active}
         >
-          <LiveRedirect to={{ to }} class={{ "nav-link", active: active }}>
-            {{ gettext("History") }}
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            {gettext("History")}
           </LiveRedirect>
         </UriActiveContext>
       </li>

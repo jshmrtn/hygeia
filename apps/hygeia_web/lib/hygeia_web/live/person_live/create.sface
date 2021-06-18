@@ -1,93 +1,93 @@
 <Form
-  for={{ @changeset }}
+  for={@changeset}
   change="validate"
   submit="save"
-  opts={{ autocomplete: "off", id: "person-form", class: "container" }}
+  opts={autocomplete: "off", id: "person-form", class: "container"}
 >
-  <h1 class="mb-4">{{ gettext("New person") }}</h1>
+  <h1 class="mb-4">{gettext("New person")}</h1>
 
   <div
-    :for={{%Person{first_name: first_name, last_name: last_name} = person <-
+    :for={%Person{first_name: first_name, last_name: last_name} = person <-
       @changeset
       |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
       |> Enum.take(5)
-      |> load_people_by_id}}
+      |> load_people_by_id}
     class="alert alert-warning"
   >
-    {{ "This person is possibly a duplicate of %{name_link}, please check."
+    {"This person is possibly a duplicate of %{name_link}, please check."
     |> gettext(
       name_link:
         "#{first_name} #{last_name}"
         |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
         |> safe_to_string
     )
-    |> raw }}
+    |> raw}
   </div>
 
-  <Field name={{ :tenant_uuid }} class="form-group">
+  <Field name={:tenant_uuid} class="form-group">
     <HygeiaWeb.FieldLabel />
     <Select
       class="form-control"
-      opts={{ prompt: "Select tenant" |> gettext }}
-      field={{ :tenant_uuid }}
-      options={{ Enum.map(@tenants, &{&1.name, &1.uuid}) }}
+      opts={prompt: "Select tenant" |> gettext}
+      field={:tenant_uuid}
+      options={Enum.map(@tenants, &{&1.name, &1.uuid})}
     />
     <ErrorTag class="d-block invalid-feedback" />
   </Field>
 
   <div class="row">
     <div class="col">
-      <Field name={{ :first_name }} class="form-group">
+      <Field name={:first_name} class="form-group">
         <HygeiaWeb.FieldLabel />
-        <TextInput field={{ :first_name }} class="form-control" />
+        <TextInput field={:first_name} class="form-control" />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
     <div class="col">
-      <Field name={{ :last_name }} class="form-group">
+      <Field name={:last_name} class="form-group">
         <HygeiaWeb.FieldLabel />
-        <TextInput class="form-control" field={{ :last_name }} />
+        <TextInput class="form-control" field={:last_name} />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
   </div>
 
-  <Inputs for={{ :address }}>
+  <Inputs for={:address}>
     <HygeiaWeb.AddressForm id="address" />
   </Inputs>
 
-  <h3 class="mb-3">{{ gettext("Contact Methods") }}</h3>
+  <h3 class="mb-3">{gettext("Contact Methods")}</h3>
   <table class="table mb-2">
     <thead>
       <tr>
-        <th>{{ gettext("Type") }}</th>
-        <th>{{ gettext("Value") }}</th>
-        <th>{{ gettext("Comment") }}</th>
+        <th>{gettext("Type")}</th>
+        <th>{gettext("Value")}</th>
+        <th>{gettext("Comment")}</th>
       </tr>
     </thead>
     <tbody>
-      <Inputs for={{ :contact_methods }}>
+      <Inputs for={:contact_methods}>
         <tr>
           <td>
-            <Field name={{ :type }}>
+            <Field name={:type}>
               <Select
                 class="form-control"
-                opts={{ prompt: gettext("Choose Type") }}
-                field={{ :type }}
-                options={{ contact_method_options() }}
+                opts={prompt: gettext("Choose Type")}
+                field={:type}
+                options={contact_method_options()}
               />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
-            <Field name={{ :value }}>
-              <TextInput class="form-control" field={{ :value }} />
+            <Field name={:value}>
+              <TextInput class="form-control" field={:value} />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
           <td>
-            <Field name={{ :comment }}>
-              <TextInput class="form-control" field={{ :comment }} />
+            <Field name={:comment}>
+              <TextInput class="form-control" field={:comment} />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </td>
@@ -97,10 +97,10 @@
   </table>
   <button type="button" class="btn btn-secondary d-block mb-4" :on-click="add_contact_method">
     <span class="oi oi-plus" aria-hidden="true" />
-    {{ gettext("New contact method") }}
+    {gettext("New contact method")}
   </button>
 
-  <button class="btn btn-primary" type="submit" phx-disable-with={{ "Saving..." |> gettext }}>
-    {{ "Save" |> gettext }}
+  <button class="btn btn-primary" type="submit" phx-disable-with={"Saving..." |> gettext}>
+    {"Save" |> gettext}
   </button>
 </Form>
