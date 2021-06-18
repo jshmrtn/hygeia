@@ -1,56 +1,56 @@
 <div class="component-references">
-  <h6>{{ gettext("Type") }}</h6>
-  <h6>{{ gettext("Value") }}</h6>
+  <h6>{gettext("Type")}</h6>
+  <h6>{gettext("Value")}</h6>
 
-  <div class="label">{{ gettext("UUID") }}</div>
-  <div class="value">{{ @source.uuid }}</div>
+  <div class="label">{gettext("UUID")}</div>
+  <div class="value">{@source.uuid}</div>
 
-  <div class="label">{{ gettext("Human Readable ID") }}</div>
-  <div class="value">{{ @source.human_readable_id }}</div>
+  <div class="label">{gettext("Human Readable ID")}</div>
+  <div class="value">{@source.human_readable_id}</div>
 
-  <Inputs for={{ :external_references }}>
-    <HiddenInput field={{ :uuid }} />
-    <InputContext assigns={{ assigns }} :let={{ form: form }}>
-      <div class="label" :if={{ @disabled }}>
+  <Inputs for={:external_references}>
+    <HiddenInput field={:uuid} />
+    <InputContext assigns={assigns} :let={form: form}>
+      <div class="label" :if={@disabled}>
         <label class="type-label d-flex align-items-center">
-          {{ translate_external_reference_type(Ecto.Changeset.get_field(form.source, :type)) }}
-          <span :if={{ Ecto.Changeset.get_field(form.source, :type) == :other }}>:
-            {{ Ecto.Changeset.get_field(form.source, :type_name) }}
+          {translate_external_reference_type(Ecto.Changeset.get_field(form.source, :type))}
+          <span :if={Ecto.Changeset.get_field(form.source, :type) == :other}>:
+            {Ecto.Changeset.get_field(form.source, :type_name)}
           </span>
         </label>
       </div>
       <div
-        :if={{ !@disabled }}
-        class="{{ if Ecto.Changeset.get_field(form.source, :type) != :other, do: "label" }}"
+        :if={!@disabled}
+        class={"#{if Ecto.Changeset.get_field(form.source, :type) != :other, do: "label"}"}
       >
-        <Field name={{ :type }}>
+        <Field name={:type}>
           <Select
             class="form-control"
-            opts={{ prompt: gettext("Choose Type"), disabled: @disabled }}
-            field={{ :type }}
-            options={{ external_reference_options() }}
+            opts={prompt: gettext("Choose Type"), disabled: @disabled}
+            field={:type}
+            options={external_reference_options()}
           />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
       </div>
-      <div :if={{ !@disabled and Ecto.Changeset.get_field(form.source, :type) == :other }}>
-        <Field name={{ :type_name }}>
-          <TextInput class="form-control" field={{ :type_name }} opts={{ disabled: @disabled }} />
+      <div :if={!@disabled and Ecto.Changeset.get_field(form.source, :type) == :other}>
+        <Field name={:type_name}>
+          <TextInput class="form-control" field={:type_name} opts={disabled: @disabled} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
       </div>
       <div>
-        <Field name={{ :value }}>
-          <TextInput class="form-control" field={{ :value }} opts={{ disabled: @disabled }} />
+        <Field name={:value}>
+          <TextInput class="form-control" field={:value} opts={disabled: @disabled} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
       </div>
-      <div :if={{ !@disabled }}>
+      <div :if={!@disabled}>
         <button
           type="button"
           class="btn btn-danger"
-          :on-click={{ @remove }}
-          phx-value-uuid={{ Ecto.Changeset.get_field(form.source, :uuid) }}
+          :on-click={@remove}
+          phx-value-uuid={Ecto.Changeset.get_field(form.source, :uuid)}
         >
           <span class="oi oi-trash" aria-hidden="true" />
         </button>
@@ -58,10 +58,10 @@
     </InputContext>
   </Inputs>
 
-  <div class="add-button mt-2" :if={{ not @disabled }}>
-    <button type="button" class="btn btn-secondary" :on-click={{ @add }}>
+  <div class="add-button mt-2" :if={not @disabled}>
+    <button type="button" class="btn btn-secondary" :on-click={@add}>
       <span class="oi oi-plus mr-1" aria-hidden="true" />
-      {{ gettext("New reference") }}
+      {gettext("New reference")}
     </button>
   </div>
 </div>

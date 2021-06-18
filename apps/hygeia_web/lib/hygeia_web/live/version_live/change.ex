@@ -13,41 +13,41 @@ defmodule HygeiaWeb.VersionLive.Change do
 
   @impl Phoenix.LiveComponent
   def render(assigns) do
-    ~H"""
+    ~F"""
     <div class="component-version-live-change">
-      {{ render_tree(@version.item_changes, item_table_to_module(@version.item_table), assigns) }}
+      {render_tree(@version.item_changes, item_table_to_module(@version.item_table), assigns)}
     </div>
     """
   end
 
   defp render_tree(map, schema, assigns) when is_map(map) and not is_struct(map) do
-    ~H"""
+    ~F"""
     <ul>
-      <li :for={{
+      <li :for={
         {key, value} <- map,
         field_key = field_key(key),
         field_schema = field_schema(schema, field_key(key), value),
         field_name = schema_field_name(field_key, schema)
-      }}>
-        <details :if={{ is_complex?(value) }}>
-          <summary><strong>{{ field_name }}</strong></summary>
-          {{ render_tree(value, field_schema, assigns) }}
+      }>
+        <details :if={is_complex?(value)}>
+          <summary><strong>{field_name}</strong></summary>
+          {render_tree(value, field_schema, assigns)}
         </details>
-        <span :if={{ not is_complex?(value) }}>
-          <strong class="field-name">{{ field_name }}</strong>
+        <span :if={not is_complex?(value)}>
+          <strong class="field-name">{field_name}</strong>
           <LiveRedirect
-            :if={{ is_foregin_key?(schema, field_key) and not is_nil(value) }}
-            to={{Routes.version_show_path(
+            :if={is_foregin_key?(schema, field_key) and not is_nil(value)}
+            to={Routes.version_show_path(
               @socket,
               :show,
               schema |> get_field_relation_target_schema(field_key) |> module_to_item_table(),
               value
-            )}}
+            )}
           >
-            {{ render_tree(value, field_schema, assigns) }}
+            {render_tree(value, field_schema, assigns)}
           </LiveRedirect>
-          <span :if={{ not is_foregin_key?(schema, field_key) }}>
-            {{ render_tree(value, field_schema, assigns) }}
+          <span :if={not is_foregin_key?(schema, field_key)}>
+            {render_tree(value, field_schema, assigns)}
           </span>
         </span>
       </li>
@@ -56,23 +56,23 @@ defmodule HygeiaWeb.VersionLive.Change do
   end
 
   defp render_tree(nil, _schema, assigns) do
-    ~H"""
+    ~F"""
     <span class="nil" />
     """
   end
 
   # credo:disable-for-next-line Credo.Check.Consistency.UnusedVariableNames
   defp render_tree([], _schema, assigns) do
-    ~H"""
+    ~F"""
     <span class="empty-list" />
     """
   end
 
   defp render_tree(list, schema, assigns) when is_list(list) do
-    ~H"""
+    ~F"""
     <div>
-      <div :for={{ value <- list }}>
-        {{ render_tree(value, schema, assigns) }}
+      <div :for={value <- list}>
+        {render_tree(value, schema, assigns)}
       </div>
     </div>
     """

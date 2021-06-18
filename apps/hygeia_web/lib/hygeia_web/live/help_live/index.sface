@@ -1,8 +1,8 @@
 <div class="component-help container">
-  <Context get={{ HygeiaWeb, logged_in: logged_in }}>
-    <h1 class="mb-4">{{ gettext("Help") }}</h1>
+  <Context get={HygeiaWeb, logged_in: logged_in}>
+    <h1 class="mb-4">{gettext("Help")}</h1>
 
-    <div :if={{ logged_in }}>
+    <div :if={logged_in}>
       <h2>Intro</h2>
 
       <div class="embed-responsive embed-responsive-16by9 mt-3">
@@ -31,21 +31,21 @@
       </p>
       <img
         class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/01-initialisierung.png") }}
+        src={Routes.static_path(@socket, "/images/help/01-Registrierung/01-initialisierung.png")}
       />
       <p>
         Passwort setzen:
       </p>
       <img
         class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/02-passwort.png") }}
+        src={Routes.static_path(@socket, "/images/help/01-Registrierung/02-passwort.png")}
       />
       <p>
         Account auswählen:
       </p>
       <img
         class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/03-account.png") }}
+        src={Routes.static_path(@socket, "/images/help/01-Registrierung/03-account.png")}
       />
       <p>
         Google Authenticator auf dem Smartphone ­Installieren (<a href="https://apps.apple.com/de/app/google-authenticator/id388497605">iOS</a>
@@ -54,28 +54,28 @@
       </p>
       <img
         class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/04-authenticator.png") }}
+        src={Routes.static_path(@socket, "/images/help/01-Registrierung/04-authenticator.png")}
       />
       <p>
         Google Authenticator öffnen und neues OTP hinzufügen (Code scannen):
       </p>
       <img
         class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/05-otp.png") }}
+        src={Routes.static_path(@socket, "/images/help/01-Registrierung/05-otp.png")}
       />
       <p>
         Angezeigten Code eingeben:
       </p>
       <img
         class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/06-auth.png") }}
+        src={Routes.static_path(@socket, "/images/help/01-Registrierung/06-auth.png")}
       />
       <p>
         Die Registrierung ist abgeschlossen.
       </p>
       <img
         class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/01-Registrierung/07-zitadel.png") }}
+        src={Routes.static_path(@socket, "/images/help/01-Registrierung/07-zitadel.png")}
       />
     </details>
 
@@ -93,34 +93,28 @@
       </p>
       <img
         class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/02-Login/01-account.png") }}
+        src={Routes.static_path(@socket, "/images/help/02-Login/01-account.png")}
       />
       <p>
         Passwort eingeben
       </p>
       <img
         class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/02-Login/02-passwort.png") }}
+        src={Routes.static_path(@socket, "/images/help/02-Login/02-passwort.png")}
       />
       <p>
         Google Authenticator auf Smartphone starten und Code von Zitadel eingeben
       </p>
-      <img
-        class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/02-Login/03-auth.png") }}
-      />
+      <img class="img-fluid" src={Routes.static_path(@socket, "/images/help/02-Login/03-auth.png")}>
       <p>
         Nach erfolgreichem Login kann die Applikation unter
-        <a href="{{ Routes.home_index_url(@socket, :index) }}">{{ Routes.home_index_url(@socket, :index) }}</a>
+        <a href={"#{Routes.home_index_url(@socket, :index)}"}>{Routes.home_index_url(@socket, :index)}</a>
         gestartet werden
       </p>
-      <img
-        class="img-fluid"
-        src={{ Routes.static_path(@socket, "/images/help/02-Login/04-app.png") }}
-      />
+      <img class="img-fluid" src={Routes.static_path(@socket, "/images/help/02-Login/04-app.png")}>
     </details>
 
-    <details :if={{ logged_in }}>
+    <details :if={logged_in}>
       <summary>
         <h2>Fälle</h2>
       </summary>
@@ -138,10 +132,7 @@
         <p>
           In der Fallliste können Fälle erfasst, angezeigt, bearbeitet und gefiltert werden:
         </p>
-        <img
-          class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/01-liste.png") }}
-        />
+        <img class="img-fluid" src={Routes.static_path(@socket, "/images/help/03-Fälle/01-liste.png")}>
 
         <p>
           Mit dem Button «Filter» kann die Fallliste nach folgenden Kriterien gefiltert werden:
@@ -152,17 +143,14 @@
             <li>Supervisor / Teamleitung</li>
           </ul>
         </p>
-        <img
-          class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/02-filter.png") }}
-        />
+        <img class="img-fluid" src={Routes.static_path(@socket, "/images/help/03-Fälle/02-filter.png")}>
 
         <p>
           Für die Anzeige von zugewiesenen Fällen den/die entsprechende Tracerin auswählen:
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/03-filter-tracerin.png") }}
+          src={Routes.static_path(@socket, "/images/help/03-Fälle/03-filter-tracerin.png")}
         />
       </details>
 
@@ -178,10 +166,7 @@
         <p>
           In der Fallliste können Fälle erfasst, angezeigt, bearbeitet und gefiltert werden.
         </p>
-        <img
-          class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/01-liste.png") }}
-        />
+        <img class="img-fluid" src={Routes.static_path(@socket, "/images/help/03-Fälle/01-liste.png")}>
 
         <p>
           Mit dem Button «Filter» kann die Fallliste nach folgenden Kriterien gefiltert werden:
@@ -192,10 +177,7 @@
             <li>Supervisor</li>
           </ul>
         </p>
-        <img
-          class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/02-filter.png") }}
-        />
+        <img class="img-fluid" src={Routes.static_path(@socket, "/images/help/03-Fälle/02-filter.png")}>
 
         <p>
           Für die Anzeige von zugewiesenen Fällen den/die entsprechende Tracerin auswählen.
@@ -204,7 +186,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/03-filter-tracerin.png") }}
+          src={Routes.static_path(@socket, "/images/help/03-Fälle/03-filter-tracerin.png")}
         />
       </details>
 
@@ -218,7 +200,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/04-basisdaten.png") }}
+          src={Routes.static_path(@socket, "/images/help/03-Fälle/04-basisdaten.png")}
         />
 
         <p>
@@ -226,7 +208,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/06-duplicatecheck.png") }}
+          src={Routes.static_path(@socket, "/images/help/03-Fälle/06-duplicatecheck.png")}
         />
 
         <p>
@@ -234,7 +216,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/07-duplicateselect.png") }}
+          src={Routes.static_path(@socket, "/images/help/03-Fälle/07-duplicateselect.png")}
         />
 
         <p>
@@ -242,7 +224,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/08-liste-anzeige.png") }}
+          src={Routes.static_path(@socket, "/images/help/03-Fälle/08-liste-anzeige.png")}
         />
 
         <p>
@@ -250,7 +232,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/09-falldaten.png") }}
+          src={Routes.static_path(@socket, "/images/help/03-Fälle/09-falldaten.png")}
         />
         <p>
           Die Datenstruktur ist folgendermassen aufgebaut:
@@ -288,7 +270,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/03-Fälle/05-anzeige.png") }}
+          src={Routes.static_path(@socket, "/images/help/03-Fälle/05-anzeige.png")}
         />
       </details>
 
@@ -315,11 +297,11 @@
         <p>Ein CSV muss folgende Attribute aufweisen um importiert werden zu können:</p>
 
         <dl>
-          <dt>{{ gettext("Encoding") }}</dt>
-          <dd>{{ gettext("UTF-8") }}</dd>
+          <dt>{gettext("Encoding")}</dt>
+          <dd>{gettext("UTF-8")}</dd>
 
-          <dt>{{ gettext("Separator") }}</dt>
-          <dd>{{ gettext("Comma (,)") }}</dd>
+          <dt>{gettext("Separator")}</dt>
+          <dd>{gettext("Comma (,)")}</dd>
         </dl>
 
         <p>Falls die Datei nich zu 100% mit dieser Vorgabe übereinstimmt, kann sie nicht importiert werden.</p>
@@ -327,7 +309,7 @@
         <p>
           <Link
             class="btn btn-primary"
-            to={{ Routes.static_path(@socket, "/downloads/help/03-Fälle/example.csv") }}
+            to={Routes.static_path(@socket, "/downloads/help/03-Fälle/example.csv")}
           >
             <span class="oi oi-data-transfer-download" />
             Beispiel CSV Download
@@ -343,7 +325,7 @@
         <p>
           <Link
             class="btn btn-primary"
-            to={{ Routes.static_path(@socket, "/downloads/help/03-Fälle/example.xlsx") }}
+            to={Routes.static_path(@socket, "/downloads/help/03-Fälle/example.xlsx")}
           >
             <span class="oi oi-data-transfer-download" />
             Beispiel XLSX Download
@@ -402,7 +384,7 @@
       </details>
     </details>
 
-    <details :if={{ logged_in }}>
+    <details :if={logged_in}>
       <summary>
         <h2>Aktionen</h2>
       </summary>
@@ -419,7 +401,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/01-aktionen.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/01-aktionen.png")}
         />
 
         <p>
@@ -427,7 +409,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/02-aktion-kontaktfall.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/02-aktion-kontaktfall.png")}
         />
 
         <p>
@@ -435,7 +417,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/03-kontaktfall.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/03-kontaktfall.png")}
         />
 
         <p>
@@ -443,7 +425,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/04-kontaktfall-link.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/04-kontaktfall-link.png")}
         />
 
         <p>
@@ -451,7 +433,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/05-kontakt-intern.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/05-kontakt-intern.png")}
         />
       </details>
 
@@ -479,7 +461,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/06-protokoll.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/06-protokoll.png")}
         />
 
         <p>
@@ -487,7 +469,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/07-aktionen-email.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/07-aktionen-email.png")}
         />
 
         <p>
@@ -496,7 +478,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/08-protokoll-manuell.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/08-protokoll-manuell.png")}
         />
 
         <p>
@@ -504,7 +486,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/09-email-ausloesen.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/09-email-ausloesen.png")}
         />
       </details>
 
@@ -518,7 +500,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/10-status.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/10-status.png")}
         />
 
         <p>
@@ -526,7 +508,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/11-phasen.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/11-phasen.png")}
         />
 
         <p>
@@ -540,7 +522,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/12-phase-kp.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/12-phase-kp.png")}
         />
 
         <p>
@@ -553,7 +535,7 @@
         </p>
         <img
           class="img-fluid"
-          src={{ Routes.static_path(@socket, "/images/help/04-Aktionen/13-phase-index.png") }}
+          src={Routes.static_path(@socket, "/images/help/04-Aktionen/13-phase-index.png")}
         />
       </details>
     </details>

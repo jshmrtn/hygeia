@@ -1,43 +1,43 @@
 <div class="component-case-transmission container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
-    <HygeiaWeb.PersonLive.Header person={{ @case.person }} id="header" />
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
 
     <div class="card">
       <div class="card-header">
-        <HygeiaWeb.CaseLive.Navigation case={{ @case }} id="navigation" />
+        <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
       </div>
       <div class="card-body">
         <div class="d-flex justify-content-between mb-1">
-          <h3>{{ gettext("Received") }}</h3>
-          <div :if={{ authorized?(Transmission, :create, auth, tenant: :any) }}>
+          <h3>{gettext("Received")}</h3>
+          <div :if={authorized?(Transmission, :create, auth, tenant: :any)}>
             <LiveRedirect
-              to={{Routes.transmission_create_path(
+              to={Routes.transmission_create_path(
                 @socket,
                 :create,
                 recipient_internal: true,
                 recipient_case_uuid: @case.uuid
-              )}}
+              )}
               class="btn btn-primary"
             >
               <span class="oi oi-plus mr-1" aria-hidden="true" />
-              {{ gettext("New Transmission") }}
+              {gettext("New Transmission")}
             </LiveRedirect>
           </div>
         </div>
         <HygeiaWeb.CaseLive.TransmissionTable
-          transmissions={{ @case.received_transmissions }}
-          show_recipient=false
+          transmissions={@case.received_transmissions}
+          show_recipient={false}
           id="received_transmissions"
         />
 
         <div class="d-flex justify-content-between mb-1 mt-5">
           <h3>
-            {{ gettext("Propagated") }}
+            {gettext("Propagated")}
           </h3>
-          <div :if={{ authorized?(Case, :create, auth, tenant: :any) }}>
-            <Context get={{ HygeiaWeb, uri: uri }}>
+          <div :if={authorized?(Case, :create, auth, tenant: :any)}>
+            <Context get={HygeiaWeb, uri: uri}>
               <LiveRedirect
-                to={{Routes.case_create_possible_index_path(
+                to={Routes.case_create_possible_index_path(
                   @socket,
                   :create,
                   propagator_internal: true,
@@ -46,30 +46,30 @@
                   default_tracer_uuid: @case.tracer_uuid,
                   default_supervisor_uuid: @case.supervisor_uuid,
                   return_to: URI.parse(uri).path
-                )}}
+                )}
                 class="btn btn-primary mr-1"
               >
                 <span class="oi oi-plus mr-1" aria-hidden="true" />
-                {{ gettext("New Possible Index") }}
+                {gettext("New Possible Index")}
               </LiveRedirect>
             </Context>
             <LiveRedirect
-              to={{Routes.transmission_create_path(
+              to={Routes.transmission_create_path(
                 @socket,
                 :create,
                 propagator_internal: true,
                 propagator_case_uuid: @case.uuid
-              )}}
+              )}
               class="btn btn-primary"
             >
               <span class="oi oi-plus mr-1" aria-hidden="true" />
-              {{ gettext("New Transmission") }}
+              {gettext("New Transmission")}
             </LiveRedirect>
           </div>
         </div>
         <HygeiaWeb.CaseLive.TransmissionTable
-          transmissions={{ @case.propagated_transmissions }}
-          show_propagator=false
+          transmissions={@case.propagated_transmissions}
+          show_propagator={false}
           id="propagated_transmissions"
         />
       </div>

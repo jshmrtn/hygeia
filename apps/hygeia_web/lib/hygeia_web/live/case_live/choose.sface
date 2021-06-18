@@ -1,45 +1,41 @@
 <div>
-  <Context get={{ HygeiaWeb, auth: auth }}>
-    <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
+  <Context get={HygeiaWeb, auth: auth}>
+    <InputContext assigns={assigns} :let={form: form, field: field}>
       <HiddenInput />
 
-      <div :if={{ Phoenix.HTML.FormData.input_value(form.source, form, field) not in [nil, ""] }}>
+      <div :if={Phoenix.HTML.FormData.input_value(form.source, form, field) not in [nil, ""]}>
         <Context
-          put={{
+          put={
             case:
               form.source
               |> Phoenix.HTML.FormData.input_value(form, field)
               |> load_case()
-          }}
-          get={{ case: case }}
+          }
+          get={case: case}
         >
           <div class="card">
             <div class="card-body py-2 px-3">
               <div class="d-flex justify-content-between align-items-center">
-                <HygeiaWeb.RecordView
-                  resource={{ case }}
-                  action={{ :list }}
-                  id={{ "case_value_recordview_#{case.uuid}" }}
-                >
+                <HygeiaWeb.RecordView resource={case} action={:list} id={"case_value_recordview_#{case.uuid}"}>
                   <HygeiaWeb.RecordView
-                    resource={{ case.person }}
-                    action={{ :list }}
-                    id={{ "case_person_value_recordview_#{case.uuid}_#{case.person.uuid}" }}
-                    :if={{ authorized?(case.person, :details, auth) }}
-                    wrapper_tag={{ :span }}
+                    resource={case.person}
+                    action={:list}
+                    id={"case_person_value_recordview_#{case.uuid}_#{case.person.uuid}"}
+                    :if={authorized?(case.person, :details, auth)}
+                    wrapper_tag={:span}
                   >
-                    {{ case.person.first_name }}
-                    {{ case.person.last_name }}
+                    {case.person.first_name}
+                    {case.person.last_name}
                   </HygeiaWeb.RecordView>
-                  <span :if={{ not authorized?(case.person, :details, auth) }}>
-                    {{ case.person.tenant.short_name }}
+                  <span :if={not authorized?(case.person, :details, auth)}>
+                    {case.person.tenant.short_name}
                     /
-                    {{ case.person.human_readable_id }}
+                    {case.person.human_readable_id}
                   </span>
-                  <small class="d-block text-muted">{{ case_phase_type_translation(List.last(case.phases)) }}</small>
-                  <small class="d-block text-muted">{{ case_display_date(case) }}</small>
+                  <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
+                  <small class="d-block text-muted">{case_display_date(case)}</small>
                 </HygeiaWeb.RecordView>
-                <button class="btn btn-danger" :on-click={{ @change }} type="button">
+                <button class="btn btn-danger" :on-click={@change} type="button">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </div>
@@ -48,15 +44,15 @@
         </Context>
       </div>
 
-      <div :if={{ Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""] }}>
+      <div :if={Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""]}>
         <button class="btn btn-secondary" :on-click="open_modal" type="button">
-          {{ gettext("Choose case") }}
+          {gettext("Choose case")}
         </button>
 
         <HygeiaWeb.Modal
-          id={{ {:choose_case, field} }}
-          :if={{ @modal_open }}
-          title={{ gettext("Select Case") }}
+          id={{:choose_case, field}}
+          :if={@modal_open}
+          title={gettext("Select Case")}
           close="close_modal"
         >
           <div class="input-group">
@@ -68,9 +64,9 @@
             <input
               class="form-control"
               type="search"
-              value={{ @query }}
+              value={@query}
               :on-keyup="query"
-              placeholder={{ gettext("Search") }}
+              placeholder={gettext("Search")}
             />
           </div>
 
@@ -78,38 +74,34 @@
             <div
               role="button"
               class="card hy-button-card mt-2"
-              :for={{ case <- @cases }}
-              :on-click={{ @change }}
-              phx-value-uuid={{ case.uuid }}
+              :for={case <- @cases}
+              :on-click={@change}
+              phx-value-uuid={case.uuid}
             >
               <div class="card-body py-2 px-3">
                 <div class="d-flex justify-content-between align-items-center">
-                  <HygeiaWeb.RecordView
-                    resource={{ case }}
-                    action={{ :list }}
-                    id={{ "case_select_recordview_#{case.uuid}" }}
-                  >
+                  <HygeiaWeb.RecordView resource={case} action={:list} id={"case_select_recordview_#{case.uuid}"}>
                     <HygeiaWeb.RecordView
-                      resource={{ case.person }}
-                      action={{ :list }}
-                      id={{ "case_select_person_value_recordview_#{case.uuid}_#{case.person.uuid}" }}
-                      :if={{ authorized?(case.person, :details, auth) }}
-                      wrapper_tag={{ :span }}
+                      resource={case.person}
+                      action={:list}
+                      id={"case_select_person_value_recordview_#{case.uuid}_#{case.person.uuid}"}
+                      :if={authorized?(case.person, :details, auth)}
+                      wrapper_tag={:span}
                     >
-                      {{ case.person.first_name }}
-                      {{ case.person.last_name }}
+                      {case.person.first_name}
+                      {case.person.last_name}
                     </HygeiaWeb.RecordView>
-                    <span :if={{ not authorized?(case.person, :details, auth) }}>
-                      {{ case.person.tenant.short_name }}
+                    <span :if={not authorized?(case.person, :details, auth)}>
+                      {case.person.tenant.short_name}
                       /
-                      {{ case.person.human_readable_id }}
+                      {case.person.human_readable_id}
                     </span>
-                    <small class="d-block text-muted">{{ case_phase_type_translation(List.last(case.phases)) }}</small>
-                    <small class="d-block text-muted">{{ case_display_date(case) }}</small>
+                    <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
+                    <small class="d-block text-muted">{case_display_date(case)}</small>
                   </HygeiaWeb.RecordView>
 
                   <button class="btn btn-primary" type="button">
-                    {{ gettext("choose") }}
+                    {gettext("choose")}
                   </button>
                 </div>
               </div>

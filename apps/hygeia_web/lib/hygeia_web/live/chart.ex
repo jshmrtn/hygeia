@@ -8,9 +8,9 @@ defmodule HygeiaWeb.Chart do
 
   @impl Phoenix.LiveComponent
   def render(assigns) do
-    ~H"""
-    <Context get={{ __MODULE__, enable_vision_impaired_mode: enable_vision_impaired_mode }}>
-      {{ content_tag(
+    ~F"""
+    <Context get={__MODULE__, enable_vision_impaired_mode: enable_vision_impaired_mode}>
+      {content_tag(
         :div,
         "",
         id: @dom_id <> "_hook",
@@ -24,9 +24,9 @@ defmodule HygeiaWeb.Chart do
             |> Map.put_new(:enableVisionImpairedMode, enable_vision_impaired_mode)
             |> Jason.encode!()
         ]
-      ) }}
-      <div phx-update="ignore" id={{ @dom_id <> "_ignore" }} class="position-relative chart-container">
-        <canvas id={{ @dom_id <> "_chart" }} />
+      )}
+      <div phx-update="ignore" id={@dom_id <> "_ignore"} class="position-relative chart-container">
+        <canvas id={@dom_id <> "_chart"} />
       </div>
     </Context>
     """

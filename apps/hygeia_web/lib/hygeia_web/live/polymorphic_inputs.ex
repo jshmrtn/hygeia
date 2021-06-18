@@ -8,21 +8,21 @@ defmodule HygeiaWeb.PolimorphicInputs do
 
   alias Surface.Components.Form.Input.InputContext
 
-  slot default, props: [:form]
+  slot default, args: [:form]
 
   prop field, :string, required: true
   prop type, :atom, required: true
 
   @impl Phoenix.LiveComponent
   def render(assigns) do
-    ~H"""
-    <InputContext assigns={{ assigns }} :let={{ form: form }}>
+    ~F"""
+    <InputContext assigns={assigns} :let={form: form}>
       <Context
-        :for={{ f <- to_form(form.source, form, @field, @type, Keyword.take(form.options, [:multipart])) }}
-        put={{ Surface.Components.Form, form: f }}
+        :for={f <- to_form(form.source, form, @field, @type, Keyword.take(form.options, [:multipart]))}
+        put={Surface.Components.Form, form: f}
       >
-        {{ hidden_inputs_for(f) }}
-        <slot :props={{ form: f }} />
+        {hidden_inputs_for(f)}
+        <#slot :args={form: f} />
       </Context>
     </InputContext>
     """

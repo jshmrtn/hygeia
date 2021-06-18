@@ -1,26 +1,26 @@
 <div class="component-statistics-index container pt-3">
-  <Context put={{ HygeiaWeb.Chart, enable_vision_impaired_mode: @enable_vision_impaired_mode }}>
-    <HygeiaWeb.StatisticsLive.Header tenant={{ @tenant }} id="header" />
+  <Context put={HygeiaWeb.Chart, enable_vision_impaired_mode: @enable_vision_impaired_mode}>
+    <HygeiaWeb.StatisticsLive.Header tenant={@tenant} id="header" />
 
     <div class="component-statistics-index container pt-3">
       <div class="container">
-        <Form for={{ assigns }} change="params_change" opts={{ class: "mt-3 d-flex align-items-center" }}>
-          <Field name={{ :from }} class="input-group w-auto">
+        <Form for={assigns} change="params_change" opts={class: "mt-3 d-flex align-items-center"}>
+          <Field name={:from} class="input-group w-auto">
             <div class="input-group-prepend">
-              <span class="input-group-text">{{ gettext("From") }}</span>
+              <span class="input-group-text">{gettext("From")}</span>
             </div>
             <DateInput class="form-control" />
           </Field>
-          <Field name={{ :to }} class="ml-2 input-group w-auto">
+          <Field name={:to} class="ml-2 input-group w-auto">
             <div class="input-group-prepend">
-              <span class="input-group-text">{{ gettext("To") }}</span>
+              <span class="input-group-text">{gettext("To")}</span>
             </div>
             <DateInput class="form-control" />
           </Field>
-          <Field name={{ :enable_vision_impaired_mode }} class="ml-2 w-auto">
+          <Field name={:enable_vision_impaired_mode} class="ml-2 w-auto">
             <Checkbox />
             <Label class="mb-0">
-              {{ gettext("Enable Vision Impaired Mode") }}
+              {gettext("Enable Vision Impaired Mode")}
             </Label>
           </Field>
         </Form>
@@ -31,7 +31,7 @@
           <HygeiaWeb.Chart
             id="active_isolation_cases_per_day"
             dom_id="active_isolation_cases_per_day"
-            config={{%{
+            config={%{
               type: "line",
               data: %{
                 datasets: [
@@ -84,14 +84,14 @@
                   }
                 }
               }
-            }}}
+            }}
           />
         </div>
         <div class="col-12 col-xl-6 mt-5 mt-xl-0">
           <HygeiaWeb.Chart
             id="cumulative_index_case_end_reasons"
             dom_id="cumulative_index_case_end_reasons"
-            config={{%{
+            config={%{
               type: "line",
               data: %{
                 datasets:
@@ -155,7 +155,7 @@
                   }
                 }
               }
-            }}}
+            }}
           />
         </div>
       </div>
@@ -165,7 +165,7 @@
           <HygeiaWeb.Chart
             id="active_quarantine_cases_per_day"
             dom_id="active_quarantine_cases_per_day"
-            config={{%{
+            config={%{
               type: "line",
               data: %{
                 datasets:
@@ -221,14 +221,14 @@
                   }
                 }
               }
-            }}}
+            }}
           />
         </div>
         <div class="col-12 col-xl-6 mt-5 mt-xl-0">
           <HygeiaWeb.Chart
             id="cumulative_possible_index_case_end_reasons"
             dom_id="cumulative_possible_index_case_end_reasons"
-            config={{%{
+            config={%{
               type: "line",
               data: %{
                 datasets:
@@ -299,7 +299,7 @@
                   }
                 }
               }
-            }}}
+            }}
           />
         </div>
       </div>
@@ -309,7 +309,7 @@
           <HygeiaWeb.Chart
             id="new_cases_per_day"
             dom_id="new_cases_per_day"
-            config={{%{
+            config={%{
               type: "line",
               data: %{
                 datasets:
@@ -373,14 +373,14 @@
                   }
                 }
               }
-            }}}
+            }}
           />
         </div>
         <div class="col-12 col-xl-6 mt-5 mt-xl-0">
           <HygeiaWeb.Chart
             id="active_hospitalization_cases_per_day"
             dom_id="active_hospitalization_cases_per_day"
-            config={{%{
+            config={%{
               type: "line",
               data: %{
                 datasets: [
@@ -433,7 +433,7 @@
                   }
                 }
               }
-            }}}
+            }}
           />
         </div>
       </div>
@@ -443,7 +443,7 @@
           <HygeiaWeb.Chart
             id="active_complexity_cases_per_day"
             dom_id="active_complexity_cases_per_day"
-            config={{%{
+            config={%{
               type: "line",
               data: %{
                 datasets:
@@ -507,14 +507,14 @@
                   }
                 }
               }
-            }}}
+            }}
           />
         </div>
         <div class="col-12 col-xl-6 mt-5 mt-xl-0">
           <HygeiaWeb.Chart
             id="active_infection_place_cases_per_day"
             dom_id="active_infection_place_cases_per_day"
-            config={{%{
+            config={%{
               type: "line",
               data: %{
                 datasets:
@@ -586,7 +586,7 @@
                   }
                 }
               }
-            }}}
+            }}
           />
         </div>
       </div>
@@ -596,7 +596,7 @@
           <HygeiaWeb.Chart
             id="transmission_country_cases_per_day"
             dom_id="transmission_country_cases_per_day"
-            config={{%{
+            config={%{
               type: "line",
               data: %{
                 datasets:
@@ -663,7 +663,7 @@
                   }
                 }
               }
-            }}}
+            }}
           />
         </div>
       </div>

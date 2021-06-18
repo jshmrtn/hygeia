@@ -1,35 +1,35 @@
 <Form
-  for={{ @changeset }}
+  for={@changeset}
   change="validate"
   submit="save"
-  opts={{ autocomplete: "off", id: "organisation-form", class: "container" }}
+  opts={autocomplete: "off", id: "organisation-form", class: "container"}
 >
   <h1 class="mb-3">
-    {{ gettext("New organisation") }}
+    {gettext("New organisation")}
   </h1>
 
   <div
-    :for={{%Organisation{name: name} = organisation <-
+    :for={%Organisation{name: name} = organisation <-
       @changeset
       |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
       |> Enum.take(5)
-      |> OrganisationContext.list_organisations_by_ids()}}
+      |> OrganisationContext.list_organisations_by_ids()}
     class="alert alert-warning"
   >
-    {{ "This organisation is possibly a duplicate of %{name_link}, please check."
+    {"This organisation is possibly a duplicate of %{name_link}, please check."
     |> gettext(
       name_link:
         name
         |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
         |> safe_to_string
     )
-    |> raw }}
+    |> raw}
   </div>
 
   <div class="hy-card-grid-2-cols">
     <div class="card mb-3">
       <div class="card-body">
-        <Field name={{ :name }} class="form-group">
+        <Field name={:name} class="form-group">
           <HygeiaWeb.FieldLabel />
           <TextInput class="form-control" />
           <ErrorTag class="d-block invalid-feedback" />
@@ -37,18 +37,18 @@
 
         <div class="row">
           <div class="col">
-            <Field name={{ :type }} class="form-group">
+            <Field name={:type} class="form-group">
               <HygeiaWeb.FieldLabel />
               <Select
                 class="form-control"
-                options={{ organisation_types() }}
-                opts={{ prompt: gettext("Select Type") }}
+                options={organisation_types()}
+                opts={prompt: gettext("Select Type")}
               />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
-          <div :if={{ Ecto.Changeset.get_field(@changeset, :type) == :other }} class="col">
-            <Field name={{ :type_other }} class="form-group">
+          <div :if={Ecto.Changeset.get_field(@changeset, :type) == :other} class="col">
+            <Field name={:type_other} class="form-group">
               <HygeiaWeb.FieldLabel />
               <TextInput class="form-control" />
               <ErrorTag class="d-block invalid-feedback" />
@@ -56,11 +56,11 @@
           </div>
         </div>
 
-        <Inputs for={{ :address }}>
+        <Inputs for={:address}>
           <HygeiaWeb.AddressForm id="address" />
         </Inputs>
 
-        <Field name={{ :notes }} class="form-group">
+        <Field name={:notes} class="form-group">
           <HygeiaWeb.FieldLabel />
           <TextArea class="form-control" />
           <ErrorTag class="d-block invalid-feedback" />
@@ -73,10 +73,10 @@
     id="submit"
     class="btn btn-primary"
     type="submit"
-    phx-disable-with={{ gettext("Saving...") }}
-    disabled={{ not @changeset.valid? }}
+    phx-disable-with={gettext("Saving...")}
+    disabled={not @changeset.valid?}
     phx-hook="PostMessage"
   >
-    {{ gettext("Save") }}
+    {gettext("Save")}
   </button>
 </Form>

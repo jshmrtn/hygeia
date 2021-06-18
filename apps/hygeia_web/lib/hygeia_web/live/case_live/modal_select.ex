@@ -18,7 +18,7 @@ defmodule HygeiaWeb.CaseLive.ModalSelect do
   prop options, :list, default: []
   prop disabled, :boolean, default: false
 
-  slot default, props: [:value]
+  slot default, args: [:value]
 
   data input_id, :string
   data query, :string, default: ""

@@ -1,18 +1,18 @@
 <div class="component-person-index container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
+  <Context get={HygeiaWeb, auth: auth}>
     <h1 class="mb-3">
-      {{ gettext("Listing People") }}
+      {gettext("Listing People")}
     </h1>
 
     <div class="d-flex">
       <LiveRedirect
         class="mr-2"
-        to={{ Routes.person_create_path(@socket, :create) }}
-        :if={{ authorized?(Person, :create, auth, tenant: :any) }}
+        to={Routes.person_create_path(@socket, :create)}
+        :if={authorized?(Person, :create, auth, tenant: :any)}
       >
         <button type="button" class="mb-2 mt-3 btn btn-primary">
           <span class="oi oi-plus" aria-hidden="true" />
-          {{ gettext("New Person") }}
+          {gettext("New Person")}
         </button>
       </LiveRedirect>
 
@@ -22,80 +22,80 @@
         dropdown_class="dropdown-menu-right p-3 filter-dropdown"
         id="filter-dropdown"
       >
-        <template slot="trigger">
+        <:trigger>
           <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
             <span class="oi oi-cog" aria-hidden="true" />
-            {{ gettext("Filter") }}
+            {gettext("Filter")}
           </button>
-        </template>
-        <template slot="default">
+        </:trigger>
+        <:default>
           <h4>
-            {{ gettext("Filter") }}
+            {gettext("Filter")}
           </h4>
           <Form
-            for={{ @filters }}
+            for={@filters}
             change="filter"
             submit="filter"
-            opts={{ autocomplete: "off", id: "filter-form", as: :filter }}
+            opts={autocomplete: "off", id: "filter-form", as: :filter}
           >
-            <InputContext assigns={{ assigns }} :let={{ form: form }}>
+            <InputContext assigns={assigns} :let={form: form}>
               <div class="form-group">
-                <label class="d-block">{{ schema_field_name(:sex, Person) }}</label>
+                <label class="d-block">{schema_field_name(:sex, Person)}</label>
                 <Field name="sex" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value={{ nil }} />
-                    {{ gettext("Any") }}
+                    <RadioButton class="form-check-input" value={nil} />
+                    {gettext("Any")}
                   </label>
                 </Field>
                 <Field name="sex" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
                     <RadioButton class="form-check-input" value="male" />
-                    {{ gettext("Male") }}
+                    {gettext("Male")}
                   </label>
                 </Field>
                 <Field name="sex" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
                     <RadioButton class="form-check-input" value="female" />
-                    {{ gettext("Female") }}
+                    {gettext("Female")}
                   </label>
                 </Field>
               </div>
 
               <div class="form-group">
-                <Field class="form-group" name={{ :profession_category_main }}>
-                  <HygeiaWeb.FieldLabel schema={{ Person }} />
+                <Field class="form-group" name={:profession_category_main}>
+                  <HygeiaWeb.FieldLabel schema={Person} />
                   <Select
                     class="form-control"
-                    opts={{ prompt: gettext("Any") }}
-                    options={{ NOGA.Section.select_options() }}
+                    opts={prompt: gettext("Any")}
+                    options={NOGA.Section.select_options()}
                   />
                 </Field>
               </div>
 
               <div class="form-group">
                 <Field class="form-group" name="country">
-                  <HygeiaWeb.FieldLabel schema={{ Hygeia.CaseContext.Address }} />
-                  <Select class="form-control" opts={{ prompt: gettext("Any") }} options={{ countries() }} />
+                  <HygeiaWeb.FieldLabel schema={Hygeia.CaseContext.Address} />
+                  <Select class="form-control" opts={prompt: gettext("Any")} options={countries()} />
                 </Field>
               </div>
 
               <div
                 class="form-group"
-                :if={{ Phoenix.HTML.FormData.input_value(form.source, form, "country") not in ["", nil] }}
+                :if={Phoenix.HTML.FormData.input_value(form.source, form, "country") not in ["", nil]}
               >
                 <Field name="subdivision" class="form-group">
-                  <HygeiaWeb.FieldLabel schema={{ Hygeia.CaseContext.Address }} />
+                  <HygeiaWeb.FieldLabel schema={Hygeia.CaseContext.Address} />
                   <Select
                     class="form-control"
-                    opts={{ prompt: gettext("Choose subdivision") }}
-                    field={{ :subdivision }}
-                    options={{ subdivisions(form.source) }}
+                    opts={prompt: gettext("Choose subdivision")}
+                    field={:subdivision}
+                    options={subdivisions(form.source)}
                   />
                 </Field>
               </div>
             </InputContext>
           </Form>
-        </template>
+        </:default>
       </HygeiaWeb.Dropdown>
     </div>
 
@@ -104,52 +104,52 @@
         <tr>
           <th>
             <HygeiaWeb.Sort
-              params={{ ["first_name", "last_name"] }}
-              current_params={{ @sort }}
-              id={{ {:sort, :first_name} }}
-              :let={{ sort_params: sort_params }}
+              params={["first_name", "last_name"]}
+              current_params={@sort}
+              id={{:sort, :first_name}}
+              :let={sort_params: sort_params}
             >
-              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ schema_field_name(:first_name, Person) }}
+              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+                {schema_field_name(:first_name, Person)}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
           <th>
             <HygeiaWeb.Sort
-              params={{ ["last_name", "first_name"] }}
-              current_params={{ @sort }}
-              id={{ {:sort, :last_name} }}
-              :let={{ sort_params: sort_params }}
+              params={["last_name", "first_name"]}
+              current_params={@sort}
+              id={{:sort, :last_name}}
+              :let={sort_params: sort_params}
             >
-              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ schema_field_name(:last_name, Person) }}
+              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+                {schema_field_name(:last_name, Person)}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
           <th>
             <HygeiaWeb.Sort
-              params={{ ["birth_date"] }}
-              current_params={{ @sort }}
-              id={{ {:sort, :birth_date} }}
-              :let={{ sort_params: sort_params }}
+              params={["birth_date"]}
+              current_params={@sort}
+              id={{:sort, :birth_date}}
+              :let={sort_params: sort_params}
             >
-              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ schema_field_name(:birth_date, Person) }}
+              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+                {schema_field_name(:birth_date, Person)}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
           <th>
-            {{ schema_field_name(:address, Person) }}
+            {schema_field_name(:address, Person)}
           </th>
           <th>
             <HygeiaWeb.Sort
-              params={{ ["inserted_at"] }}
-              current_params={{ @sort }}
-              id={{ {:sort, :inserted_at} }}
-              :let={{ sort_params: sort_params }}
+              params={["inserted_at"]}
+              current_params={@sort}
+              id={{:sort, :inserted_at}}
+              :let={sort_params: sort_params}
             >
-              <LivePatch to={{ page_url(@socket, [], @filters, sort_params) }}>
-                {{ schema_field_name(:inserted_at, Person) }}
+              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+                {schema_field_name(:inserted_at, Person)}
               </LivePatch>
             </HygeiaWeb.Sort>
           </th>
@@ -157,47 +157,43 @@
         </tr>
       </thead>
       <tbody id="people">
-        <tr :for={{ person <- @people }} id="person-{{ person.uuid }}">
-          <HygeiaWeb.RecordView
-            resource={{ person }}
-            action={{ :list }}
-            id={{ "person_recordview_#{person.uuid}" }}
-          />
-          <td>{{ person.first_name }}</td>
-          <td>{{ person.last_name }}</td>
-          <td>{{ case person.birth_date do
+        <tr :for={person <- @people} id={"person-#{person.uuid}"}>
+          <HygeiaWeb.RecordView resource={person} action={:list} id={"person_recordview_#{person.uuid}"} />
+          <td>{person.first_name}</td>
+          <td>{person.last_name}</td>
+          <td>{case person.birth_date do
               nil -> nil
               date -> Cldr.Date.to_string!(date, HygeiaCldr)
-            end }}</td>
-          <td>{{ format_address(person.address) }}</td>
+            end}</td>
+          <td>{format_address(person.address)}</td>
           <td>
-            {{ HygeiaCldr.DateTime.to_string!(person.inserted_at, format: :short) }}
+            {HygeiaCldr.DateTime.to_string!(person.inserted_at, format: :short)}
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">
               <LiveRedirect
-                to={{ Routes.person_base_data_path(@socket, :show, person) }}
-                :if={{ authorized?(person, :details, auth) }}
+                to={Routes.person_base_data_path(@socket, :show, person)}
+                :if={authorized?(person, :details, auth)}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">{{ "Show" |> gettext }}</button>
+                <button class="ml-auto btn btn-sm btn-secondary">{"Show" |> gettext}</button>
               </LiveRedirect>
               <LivePatch
-                to={{ Routes.person_base_data_path(@socket, :edit, person) }}
-                :if={{ authorized?(person, :update, auth) }}
+                to={Routes.person_base_data_path(@socket, :edit, person)}
+                :if={authorized?(person, :update, auth)}
               >
                 <button class="ml-1 btn btn-sm btn-secondary">
-                  <span class="oi oi-pencil" title={{ "Edit" |> gettext }} aria-hidden="true" />
+                  <span class="oi oi-pencil" title={"Edit" |> gettext} aria-hidden="true" />
                 </button>
               </LivePatch>
               <Link
                 to="#"
                 click="delete"
-                opts={{
+                opts={
                   title: "Delete" |> gettext,
                   data: [confirm: "Are you sure?" |> gettext],
                   "phx-value-id": person.uuid
-                }}
-                :if={{ authorized?(person, :delete, auth) }}
+                }
+                :if={authorized?(person, :delete, auth)}
               >
                 <button class="ml-1 btn btn-sm btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
@@ -206,10 +202,10 @@
             </div>
           </td>
         </tr>
-        <tr :if={{ length(@people) == 0 }}>
+        <tr :if={length(@people) == 0}>
           <td colspan="5">
             <div class="d-flex justify-content-center py-3">
-              {{ gettext("No data to display") }}
+              {gettext("No data to display")}
             </div>
           </td>
         </tr>
@@ -217,15 +213,15 @@
     </table>
 
     <HygeiaWeb.Pagination
-      pagination={{ @pagination }}
-      :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }}
+      pagination={@pagination}
+      :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
       id="pagination"
     >
       <LivePatch
         class="page-link"
-        to={{ page_url(@socket, [{cursor_direction, cursor}], @filters, @sort) }}
+        to={page_url(@socket, [{cursor_direction, cursor}], @filters, @sort)}
       >
-        {{ text }}
+        {text}
       </LivePatch>
     </HygeiaWeb.Pagination>
   </Context>

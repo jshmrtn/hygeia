@@ -81,12 +81,12 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   defp load_organisation(uuid), do: OrganisationContext.get_organisation!(uuid)
 
   defp render_organisation(assigns, organisation) do
-    ~H"""
-    {{ organisation.name }}
-    <small class="d-block text-muted" :if={{ not is_nil(organisation_type_name(organisation)) }}>
-      {{ organisation_type_name(organisation) }}
+    ~F"""
+    {organisation.name}
+    <small class="d-block text-muted" :if={not is_nil(organisation_type_name(organisation))}>
+      {organisation_type_name(organisation)}
     </small>
-    <small class="d-block text-muted">{{ format_address(organisation.address) }}</small>
+    <small class="d-block text-muted">{format_address(organisation.address)}</small>
     """
   end
 end

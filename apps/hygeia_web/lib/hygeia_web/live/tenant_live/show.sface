@@ -1,62 +1,62 @@
 <div class="component-tenant-base-data container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
-    <HygeiaWeb.TenantLive.Header tenant={{ @changeset }} id="header" />
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.TenantLive.Header tenant={@changeset} id="header" />
 
-    <div class="mb-4" :if={{ @live_action == :show }}>
+    <div class="mb-4" :if={@live_action == :show}>
       <LivePatch
-        :if={{ authorized?(@tenant, :update, auth) }}
-        to={{ Routes.tenant_show_path(@socket, :edit, @tenant) }}
+        :if={authorized?(@tenant, :update, auth)}
+        to={Routes.tenant_show_path(@socket, :edit, @tenant)}
       >
         <button class="btn btn-primary mr-2" id="tenant-edit">
-          <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
-          {{ gettext("Edit") }}
+          <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+          {gettext("Edit")}
         </button>
       </LivePatch>
       <Link
         to="#"
         click="delete"
-        opts={{
+        opts={
           title: gettext("Delete"),
           data: [confirm: gettext("Are you sure?")]
-        }}
-        :if={{ authorized?(@tenant, :delete, auth) }}
+        }
+        :if={authorized?(@tenant, :delete, auth)}
       >
         <button class="btn btn-danger">
           <span class="oi oi-trash" aria-hidden="true" />
-          {{ gettext("Delete") }}
+          {gettext("Delete")}
         </button>
       </Link>
     </div>
 
     <Form
-      for={{ @changeset }}
+      for={@changeset}
       change="validate"
       submit="save"
-      opts={{ autocomplete: "off", id: "tenant-form", "phx-hook": "BlockNavigation" }}
+      opts={autocomplete: "off", id: "tenant-form", "phx-hook": "BlockNavigation"}
     >
       <HygeiaWeb.Lock
-        id={{ {:lock, Tenant, @tenant.uuid} }}
-        resource={{ {Tenant, @tenant.uuid} }}
-        lock={{ @live_action == :edit }}
+        id={{:lock, Tenant, @tenant.uuid}}
+        resource={{Tenant, @tenant.uuid}}
+        lock={@live_action == :edit}
       >
-        <div :if={{ @live_action == :edit }}>
-          <div class="mb-4" :if={{ @live_action == :edit }}>
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={{ gettext("Saving...") }}>
-              <span class="oi oi-circle-check" title={{ gettext("Save") }} aria-hidden="true" />
-              {{ gettext("Save") }}
+        <div :if={@live_action == :edit}>
+          <div class="mb-4" :if={@live_action == :edit}>
+            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Saving...")}>
+              <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+              {gettext("Save")}
             </button>
             <button
               :on-click="reset"
               class="btn btn-warning"
               type="button"
-              data-confirm={{if @changeset.changes != %{} do
+              data-confirm={if @changeset.changes != %{} do
                 gettext("Do you really want to discard your changes?")
               else
                 nil
-              end}}
+              end}
             >
-              <span class="oi oi-circle-x" title={{ gettext("Discard") }} aria-hidden="true" />
-              {{ gettext("Discard") }}
+              <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+              {gettext("Discard")}
             </button>
           </div>
         </div>
@@ -64,35 +64,35 @@
         <div class="hy-card-grid-2-cols hy-readonly-form">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">{{ gettext("Name") }}</h4>
-              <Field name={{ :name }} class="form-group">
+              <h4 class="card-title">{gettext("Name")}</h4>
+              <Field name={:name} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                <TextInput class="form-control" opts={disabled: @live_action == :show} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
-              <Field name={{ :case_management_enabled }} class="form-group">
+              <Field name={:case_management_enabled} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <Checkbox class="form-control" opts={{ disabled: @live_action == :show }} />
+                <Checkbox class="form-control" opts={disabled: @live_action == :show} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
-              <div :if={{ Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) }}>
-                <Field name={{ :public_statistics }} class="form-group">
+              <div :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false)}>
+                <Field name={:public_statistics} class="form-group">
                   <HygeiaWeb.FieldLabel />
-                  <Checkbox class="form-control" opts={{ disabled: @live_action == :show }} />
+                  <Checkbox class="form-control" opts={disabled: @live_action == :show} />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
 
-                <Field name={{ :override_url }} class="form-group">
+                <Field name={:override_url} class="form-group">
                   <HygeiaWeb.FieldLabel />
-                  <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                  <TextInput class="form-control" opts={disabled: @live_action == :show} />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
 
-                <Field name={{ :short_name }} class="form-group">
+                <Field name={:short_name} class="form-group">
                   <HygeiaWeb.FieldLabel />
-                  <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                  <TextInput class="form-control" opts={disabled: @live_action == :show} />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
@@ -101,104 +101,101 @@
 
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">{{ gettext("Outgoing Email Configuration") }}</h4>
+              <h4 class="card-title">{gettext("Outgoing Email Configuration")}</h4>
 
-              <Field name={{ :from_email }} class="form-group">
+              <Field name={:from_email} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                <TextInput class="form-control" opts={disabled: @live_action == :show} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
-              <Field name={{ :outgoing_mail_configuration_type }}>
+              <Field name={:outgoing_mail_configuration_type}>
                 <HygeiaWeb.FieldLabel />
                 <Select
                   class="form-control"
-                  opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
-                  options={{ [{gettext("Smtp"), "smtp"}] }}
+                  opts={prompt: gettext("Choose Type"), disabled: @live_action == :show}
+                  options={[{gettext("Smtp"), "smtp"}]}
                 />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
-              <InputContext assigns={{ assigns }} :let={{ form: form }}>
+              <InputContext assigns={assigns} :let={form: form}>
                 <PolimorphicInputs
-                  :if={{ Ecto.Changeset.get_field(form.source, :outgoing_mail_configuration_type) == "smtp" }}
-                  field={{ :outgoing_mail_configuration }}
-                  type={{ :smtp }}
+                  :if={Ecto.Changeset.get_field(form.source, :outgoing_mail_configuration_type) == "smtp"}
+                  field={:outgoing_mail_configuration}
+                  type={:smtp}
                   id="poly-inputs"
                 >
-                  <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                    <Field name={{ :enable_relay }} class="form-group">
+                  <InputContext assigns={assigns} :let={form: form}>
+                    <Field name={:enable_relay} class="form-group">
                       <HygeiaWeb.FieldLabel />
-                      <Checkbox class="form-control" opts={{ disabled: @live_action == :show }} />
+                      <Checkbox class="form-control" opts={disabled: @live_action == :show} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
-                    <Inputs
-                      for={{ :relay }}
-                      :if={{ Ecto.Changeset.fetch_field!(form.source, :enable_relay) == true }}
-                    >
-                      <InputContext assigns={{ assigns }} :let={{ form: smtp_relay_form }}>
-                        <Field name={{ :server }} class="form-group">
+                    <Inputs for={:relay} :if={Ecto.Changeset.fetch_field!(form.source, :enable_relay) == true}>
+                      <InputContext assigns={assigns} :let={form: smtp_relay_form}>
+                        <Field name={:server} class="form-group">
                           <HygeiaWeb.FieldLabel />
-                          <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <TextInput class="form-control" opts={disabled: @live_action == :show} />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
-                        <Field name={{ :hostname }} class="form-group">
+                        <Field name={:hostname} class="form-group">
                           <HygeiaWeb.FieldLabel />
-                          <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <TextInput class="form-control" opts={disabled: @live_action == :show} />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
-                        <Field name={{ :port }} class="form-group">
+                        <Field name={:port} class="form-group">
                           <HygeiaWeb.FieldLabel />
-                          <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <TextInput class="form-control" opts={disabled: @live_action == :show} />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
-                        <Field name={{ :username }} class="form-group">
+                        <Field name={:username} class="form-group">
                           <HygeiaWeb.FieldLabel />
-                          <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <TextInput class="form-control" opts={disabled: @live_action == :show} />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
-                        <Field name={{ :change_password }} class="form-group" :if={{ @live_action == :edit }}>
+                        <Field name={:change_password} class="form-group" :if={@live_action == :edit}>
                           <HygeiaWeb.FieldLabel />
-                          <Checkbox class="form-control" opts={{ disabled: @live_action == :show }} />
+                          <Checkbox class="form-control" opts={disabled: @live_action == :show} />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                         <Field
-                          name={{ :password }}
+                          name={:password}
                           class="form-group"
-                          :if={{@live_action == :edit and
-                            Phoenix.HTML.FormData.input_value(smtp_relay_form.source, smtp_relay_form, :change_password)}}
+                          :if={@live_action == :edit and
+                            Phoenix.HTML.FormData.input_value(smtp_relay_form.source, smtp_relay_form, :change_password)}
                         >
                           <HygeiaWeb.FieldLabel />
                           <PasswordInput
                             class="form-control"
-                            opts={{ disabled: @live_action == :show, placeholder: "password" }}
+                            opts={disabled: @live_action == :show, placeholder: "password"}
                           />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                       </InputContext>
                     </Inputs>
-                    <Field name={{ :enable_dkim }} class="form-group">
+                    <Field name={:enable_dkim} class="form-group">
                       <HygeiaWeb.FieldLabel />
-                      <Checkbox class="form-control" opts={{ disabled: @live_action == :show }} />
+                      <Checkbox class="form-control" opts={disabled: @live_action == :show} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
-                    <Inputs for={{ :dkim }} :if={{ Ecto.Changeset.fetch_field!(form.source, :enable_dkim) == true }}>
-                      <Field name={{ :signing_domain_identifier }} class="form-group">
+                    <Inputs for={:dkim} :if={Ecto.Changeset.fetch_field!(form.source, :enable_dkim) == true}>
+                      <Field name={:signing_domain_identifier} class="form-group">
                         <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                        <TextInput class="form-control" opts={disabled: @live_action == :show} />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
-                      <Field name={{ :domain }} class="form-group">
+                      <Field name={:domain} class="form-group">
                         <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                        <TextInput class="form-control" opts={disabled: @live_action == :show} />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
-                      <Field name={{ :private_key }} class="form-group">
+                      <Field name={:private_key} class="form-group">
                         <HygeiaWeb.FieldLabel />
                         <Select
                           class="form-control"
-                          opts={{ disabled: @live_action == :show }}
-                          options={{ Hygeia.Helpers.DNS.valid_cert_names() }}
+                          opts={disabled: @live_action == :show}
+                          options={Hygeia.Helpers.DNS.valid_cert_names()}
                         />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
@@ -209,29 +206,29 @@
             </div>
           </div>
 
-          <div class="card" :if={{ Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) }}>
+          <div class="card" :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false)}>
             <div class="card-body">
-              <h4 class="card-title">{{ gettext("Outgoing SMS Configuration") }}</h4>
-              <Field name={{ :outgoing_sms_configuration_type }} class="form-group">
+              <h4 class="card-title">{gettext("Outgoing SMS Configuration")}</h4>
+              <Field name={:outgoing_sms_configuration_type} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <Select
                   class="form-control"
-                  opts={{ prompt: gettext("Choose Type"), disabled: @live_action == :show }}
-                  options={{ [{gettext("Web-SMS"), "websms"}] }}
+                  opts={prompt: gettext("Choose Type"), disabled: @live_action == :show}
+                  options={[{gettext("Web-SMS"), "websms"}]}
                 />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
-              <InputContext assigns={{ assigns }} :let={{ form: form }}>
+              <InputContext assigns={assigns} :let={form: form}>
                 <PolimorphicInputs
-                  field={{ :outgoing_sms_configuration }}
-                  type={{ :websms }}
-                  :if={{ Ecto.Changeset.get_field(form.source, :outgoing_sms_configuration_type) == "websms" }}
+                  field={:outgoing_sms_configuration}
+                  type={:websms}
+                  :if={Ecto.Changeset.get_field(form.source, :outgoing_sms_configuration_type) == "websms"}
                   id="poly-inputs-sms"
                 >
-                  <Field name={{ :access_token }} class="form-group">
+                  <Field name={:access_token} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                    <TextInput class="form-control" opts={disabled: @live_action == :show} />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </PolimorphicInputs>
@@ -239,12 +236,12 @@
             </div>
           </div>
 
-          <div class="card" :if={{ Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) }}>
+          <div class="card" :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false)}>
             <div class="card-body">
-              <h4 class="card-title">{{ gettext("Confirmation PDF Template") }}</h4>
-              <Field name={{ :template_variation }} class="form-group">
+              <h4 class="card-title">{gettext("Confirmation PDF Template")}</h4>
+              <Field name={:template_variation} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                <TextInput class="form-control" opts={disabled: @live_action == :show} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
@@ -252,10 +249,10 @@
 
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">{{ gettext("IAM Configuration") }}</h4>
-              <Field name={{ :iam_domain }} class="form-group">
+              <h4 class="card-title">{gettext("IAM Configuration")}</h4>
+              <Field name={:iam_domain} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                <TextInput class="form-control" opts={disabled: @live_action == :show} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
@@ -263,27 +260,27 @@
 
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">{{ gettext("Sedex Configuration") }}</h4>
-              <Field name={{ :sedex_export_enabled }} class="form-group">
+              <h4 class="card-title">{gettext("Sedex Configuration")}</h4>
+              <Field name={:sedex_export_enabled} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <Checkbox class="form-control" opts={{ disabled: @live_action == :show }} />
+                <Checkbox class="form-control" opts={disabled: @live_action == :show} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
               <Inputs
-                for={{ :sedex_export_configuration }}
-                :if={{ Ecto.Changeset.fetch_field!(@changeset, :sedex_export_enabled) == true }}
+                for={:sedex_export_configuration}
+                :if={Ecto.Changeset.fetch_field!(@changeset, :sedex_export_enabled) == true}
               >
-                <InputContext assigns={{ assigns }} :let={{ form: form }}>
-                  <Field name={{ :recipient_id }} class="form-group">
+                <InputContext assigns={assigns} :let={form: form}>
+                  <Field name={:recipient_id} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                    <TextInput class="form-control" opts={disabled: @live_action == :show} />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
-                  <Field name={{ :recipient_public_key }} class="form-group">
+                  <Field name={:recipient_public_key} class="form-group">
                     <HygeiaWeb.FieldLabel />
                     <TextArea
                       class="form-control"
-                      opts={{
+                      opts={
                         disabled: @live_action == :show,
                         rows: 10,
                         placeholder: """
@@ -291,26 +288,26 @@
                         ...
                         -----END PUBLIC KEY-----
                         """
-                      }}
-                      value={{case Ecto.Changeset.fetch_field!(form.source, :recipient_public_key) do
+                      }
+                      value={case Ecto.Changeset.fetch_field!(form.source, :recipient_public_key) do
                         nil -> nil
                         pem_entry -> :public_key.pem_encode([:public_key.pem_entry_encode(:RSAPublicKey, pem_entry)])
-                      end}}
+                      end}
                     />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
-                  <Field name={{ :schedule }} class="form-group">
+                  <Field name={:schedule} class="form-group">
                     <HygeiaWeb.FieldLabel />
                     <TextInput
                       class="form-control"
-                      opts={{
+                      opts={
                         disabled: @live_action == :show,
                         placehlder: "0 8,16 * * *"
-                      }}
-                      value={{case Ecto.Changeset.fetch_field!(form.source, :schedule) do
+                      }
+                      value={case Ecto.Changeset.fetch_field!(form.source, :schedule) do
                         nil -> nil
                         expression -> Crontab.CronExpression.Composer.compose(expression)
-                      end}}
+                      end}
                     />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
@@ -319,20 +316,20 @@
             </div>
           </div>
 
-          <div class="card" :if={{ Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) }}>
-            <Inputs for={{ :template_parameters }}>
+          <div class="card" :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false)}>
+            <Inputs for={:template_parameters}>
               <div class="card-body">
-                <h4 class="card-title">{{ gettext("Template Parameters") }}</h4>
+                <h4 class="card-title">{gettext("Template Parameters")}</h4>
                 <div class="row">
                   <div class="col">
-                    <Field name={{ :sms_signature }} class="form-group">
+                    <Field name={:sms_signature} class="form-group">
                       <HygeiaWeb.FieldLabel />
-                      <TextInput class="form-control" opts={{ disabled: @live_action == :show }} />
+                      <TextInput class="form-control" opts={disabled: @live_action == :show} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
-                    <Field name={{ :email_signature }} class="form-group">
+                    <Field name={:email_signature} class="form-group">
                       <HygeiaWeb.FieldLabel />
-                      <TextArea class="form-control" opts={{ disabled: @live_action == :show }} />
+                      <TextArea class="form-control" opts={disabled: @live_action == :show} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                   </div>

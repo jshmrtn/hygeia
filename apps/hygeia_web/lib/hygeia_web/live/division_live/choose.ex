@@ -84,11 +84,11 @@ defmodule HygeiaWeb.DivisionLive.Choose do
   defp load_division(uuid), do: OrganisationContext.get_division!(uuid)
 
   defp render_division(assigns, division) do
-    ~H"""
+    ~F"""
     <div>
-      {{ division.title }}
-      <small class="d-block text-muted">{{ division.description }}</small>
-      <small class="d-block text-muted">{{ format_address(if division.shares_address, do: @organisation.address, else: division.address) }}</small>
+      {division.title}
+      <small class="d-block text-muted">{division.description}</small>
+      <small class="d-block text-muted">{format_address(if division.shares_address, do: @organisation.address, else: division.address)}</small>
     </div>
     """
   end

@@ -1,15 +1,15 @@
 <div>
-  <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
-    <div id={{ @input_id }} phx-hook="Input">
+  <InputContext assigns={assigns} :let={form: form, field: field}>
+    <div id={@input_id} phx-hook="Input">
       <HiddenInput />
     </div>
 
     <div class="d-flex justify-content-between align-items-center">
-      <slot :props={{ value: value_tuple(form, field, @options) }}>
-        {{ elem(value_tuple(form, field, @options), 0) }}
-      </slot>
+      <#slot :args={value: value_tuple(form, field, @options)}>
+        {elem(value_tuple(form, field, @options), 0)}
+      </#slot>
       <button
-        :if={{ !@disabled }}
+        :if={!@disabled}
         class="ml-1 btn btn-sm btn-secondary"
         :on-click="open_modal"
         type="button"
@@ -19,9 +19,9 @@
     </div>
 
     <HygeiaWeb.Modal
-      id={{ {:choose_generic, field} }}
-      :if={{ @modal_open }}
-      title={{ @title }}
+      id={{:choose_generic, field}}
+      :if={@modal_open}
+      title={@title}
       close="close_modal"
     >
       <div class="input-group">
@@ -33,23 +33,23 @@
         <input
           class="form-control"
           type="search"
-          value={{ @query }}
+          value={@query}
           :on-keyup="query"
-          placeholder={{ gettext("Search") }}
+          placeholder={gettext("Search")}
         />
       </div>
       <div
         role="button"
         class="card hy-button-card mt-2"
-        :for={{ option <- @filtered_options }}
+        :for={option <- @filtered_options}
         :on-click="choose"
-        phx-value-uuid={{ elem(option, 1) }}
+        phx-value-uuid={elem(option, 1)}
       >
         <div class="card-body py-2 px-3">
           <div class="d-flex justify-content-between align-items-center">
-            {{ elem(option, 0) }}
+            {elem(option, 0)}
             <button class="btn btn-primary" type="button">
-              {{ gettext("choose") }}
+              {gettext("choose")}
             </button>
           </div>
         </div>

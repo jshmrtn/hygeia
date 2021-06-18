@@ -5,16 +5,16 @@ defmodule HygeiaWeb.Sort do
 
   use HygeiaWeb, :surface_live_component
 
-  slot default, props: [:asc?, :desc?, :active, :sort_params]
+  slot default, args: [:asc?, :desc?, :active, :sort_params]
 
   prop params, :list, required: true
   prop current_params, :list, required: true
 
   @impl Phoenix.LiveComponent
   def render(assigns) do
-    ~H"""
+    ~F"""
     <span class="sort-row-header">
-      <slot :props={{
+      <#slot :args={
         asc?: is_asc?(@params, @current_params),
         desc?: is_desc?(@params, @current_params),
         active: is_asc?(@params, @current_params) or is_desc?(@params, @current_params),
@@ -23,9 +23,9 @@ defmodule HygeiaWeb.Sort do
             do: Enum.map(@params, &"desc_#{&1}"),
             else: Enum.map(@params, &"asc_#{&1}")
           )
-      }} />
-      <span :if={{ is_asc?(@params, @current_params) }} class="oi oi-sort-descending" />
-      <span :if={{ is_desc?(@params, @current_params) }} class="oi oi-sort-ascending" />
+      } />
+      <span :if={is_asc?(@params, @current_params)} class="oi oi-sort-descending" />
+      <span :if={is_desc?(@params, @current_params)} class="oi oi-sort-ascending" />
     </span>
     """
   end

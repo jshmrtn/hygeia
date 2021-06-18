@@ -1,41 +1,41 @@
 <div class="component-sedex-export-index container">
-  <HygeiaWeb.TenantLive.Header tenant={{ @tenant }} id="header" />
+  <HygeiaWeb.TenantLive.Header tenant={@tenant} id="header" />
 
   <table class="table">
     <thead>
       <tr>
         <th>
-          {{ schema_field_name(:scheduling_date, SedexExport) }}
+          {schema_field_name(:scheduling_date, SedexExport)}
         </th>
         <th>
-          {{ schema_field_name(:status, SedexExport) }}
+          {schema_field_name(:status, SedexExport)}
         </th>
       </tr>
     </thead>
     <tbody id="sedex-exports">
-      <tr :for={{ sedex_export <- @sedex_exports }} id="sedex-export-{{ sedex_export.uuid }}">
+      <tr :for={sedex_export <- @sedex_exports} id={"sedex-export-#{sedex_export.uuid}"}>
         <td>
-          {{ sedex_export.scheduling_date
+          {sedex_export.scheduling_date
           |> DateTime.from_naive!("Etc/UTC")
-          |> HygeiaCldr.DateTime.to_string!() }}
+          |> HygeiaCldr.DateTime.to_string!()}
         </td>
         <td>
-          {{ sedex_export.status }}
+          {sedex_export.status}
         </td>
       </tr>
     </tbody>
   </table>
 
   <HygeiaWeb.Pagination
-    pagination={{ @pagination }}
-    :let={{ text: text, cursor_direction: cursor_direction, cursor: cursor }}
+    pagination={@pagination}
+    :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
     id="pagination"
   >
     <LiveRedirect
       class="page-link"
-      to={{ Routes.sedex_export_index_path(@socket, :index, @tenant, cursor_direction, cursor) }}
+      to={Routes.sedex_export_index_path(@socket, :index, @tenant, cursor_direction, cursor)}
     >
-      {{ text }}
+      {text}
     </LiveRedirect>
   </HygeiaWeb.Pagination>
 </div>

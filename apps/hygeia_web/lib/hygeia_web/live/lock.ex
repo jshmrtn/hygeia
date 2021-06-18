@@ -47,14 +47,14 @@ defmodule HygeiaWeb.Lock do
 
   @impl Phoenix.LiveComponent
   def render(assigns) do
-    ~H"""
+    ~F"""
     <div>
-      <slot :if={{ not @lock or @lock_acquired }} />
-      <div :if={{ @lock and not @lock_acquired }} class="alert alert-info">
-        <p>{{ gettext("Someone else is currently editing this resource. Wait until they finished their work.") }}</p>
+      <#slot :if={not @lock or @lock_acquired} />
+      <div :if={@lock and not @lock_acquired} class="alert alert-info">
+        <p>{gettext("Someone else is currently editing this resource. Wait until they finished their work.")}</p>
 
         <div class="spinner-border" role="status">
-          <span class="sr-only">{{ gettext("Acquiring Lock...") }}</span>
+          <span class="sr-only">{gettext("Acquiring Lock...")}</span>
         </div>
       </div>
     </div>

@@ -84,7 +84,7 @@ defmodule HygeiaWeb.MixProject do
       {:remote_ip, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:shards, "~> 1.0"},
-      {:surface, "~> 0.4.1"},
+      {:surface, "~> 0.4"},
       {:surface_formatter, "~> 0.2"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},

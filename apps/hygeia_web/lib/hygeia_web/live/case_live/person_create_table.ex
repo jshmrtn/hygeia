@@ -24,7 +24,7 @@ defmodule HygeiaWeb.CaseLive.PersonCreateTable do
   prop show_address, :boolean, default: true
 
   slot additional_header, required: false
-  slot additional_row, required: false, props: [:disabled]
+  slot additional_row, required: false, args: [:disabled]
 
   @impl Phoenix.LiveComponent
   def mount(socket) do

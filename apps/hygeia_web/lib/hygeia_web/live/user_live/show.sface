@@ -1,47 +1,47 @@
 <div class="component-user-base-data container">
-  <Context get={{ HygeiaWeb, auth: auth }}>
-    <HygeiaWeb.UserLive.Header user={{ @user }} id={{ "user#{@user.uuid}_header" }} />
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.UserLive.Header user={@user} id={"user#{@user.uuid}_header"} />
 
     <div class="hy-readonly-form">
       <div class="alert alert-info" role="alert">
         <span class="oi oi-info mr-2" aria-hidden="true" />
-        {{ gettext("Users can not be edited here since they are synchronized with the IAM.") }}
+        {gettext("Users can not be edited here since they are synchronized with the IAM.")}
       </div>
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title">{{ gettext("Base Data") }}</h4>
+          <h4 class="card-title">{gettext("Base Data")}</h4>
           <div class="row">
             <div class="col form-group">
-              <HygeiaWeb.FieldLabel schema={{ User }} field={{ :display_name }} />
-              <span class="value form-control">{{ @user.display_name }}</span>
+              <HygeiaWeb.FieldLabel schema={User} field={:display_name} />
+              <span class="value form-control">{@user.display_name}</span>
             </div>
             <div class="col form-group">
-              <HygeiaWeb.FieldLabel schema={{ User }} field={{ :email }} />
-              <span class="value form-control">{{ @user.email }}</span>
+              <HygeiaWeb.FieldLabel schema={User} field={:email} />
+              <span class="value form-control">{@user.email}</span>
             </div>
           </div>
           <div class="row">
             <div class="col form-group">
-              <HygeiaWeb.FieldLabel schema={{ User }} field={{ :iam_sub }} />
-              <span class="value form-control">{{ @user.iam_sub }}</span>
+              <HygeiaWeb.FieldLabel schema={User} field={:iam_sub} />
+              <span class="value form-control">{@user.iam_sub}</span>
             </div>
             <div class="col form-group">
-              <HygeiaWeb.FieldLabel schema={{ User }} field={{ :grants }} />
+              <HygeiaWeb.FieldLabel schema={User} field={:grants} />
               <span class="value form-control">
                 <ul>
-                  <li :for={{ %Grant{role: role, tenant: tenant} <- @user.grants }}>
+                  <li :for={%Grant{role: role, tenant: tenant} <- @user.grants}>
                     <LiveRedirect
-                      :if={{ authorized?(tenant, :details, auth) }}
-                      to={{ Routes.tenant_show_path(@socket, :show, tenant) }}
+                      :if={authorized?(tenant, :details, auth)}
+                      to={Routes.tenant_show_path(@socket, :show, tenant)}
                     >
-                      {{ tenant.name }}
+                      {tenant.name}
                     </LiveRedirect>
-                    <span :if={{ not authorized?(tenant, :details, auth) }}>
-                      {{ tenant.name }}
+                    <span :if={not authorized?(tenant, :details, auth)}>
+                      {tenant.name}
                     </span>
                     -
                     <span class="badge badge-secondary">
-                      {{ role }}
+                      {role}
                     </span>
                   </li>
                 </ul>

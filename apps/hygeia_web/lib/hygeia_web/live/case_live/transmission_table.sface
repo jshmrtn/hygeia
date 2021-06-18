@@ -1,165 +1,165 @@
 <div>
-  <Context get={{ HygeiaWeb, auth: auth }}>
+  <Context get={HygeiaWeb, auth: auth}>
     <table class="table table-sm">
       <thead>
         <tr>
-          <th :if={{ @show_recipient }}>
-            {{ schema_field_name(:recipient, Transmission) }}
+          <th :if={@show_recipient}>
+            {schema_field_name(:recipient, Transmission)}
           </th>
-          <th :if={{ @show_propagator }}>
-            {{ schema_field_name(:propagator, Transmission) }}
-          </th>
-          <th>
-            {{ schema_field_name(:date, Transmission) }}
+          <th :if={@show_propagator}>
+            {schema_field_name(:propagator, Transmission)}
           </th>
           <th>
-            {{ schema_field_name(:known, Transmission.InfectionPlace) }}
+            {schema_field_name(:date, Transmission)}
           </th>
           <th>
-            {{ schema_field_name(:type, Transmission.InfectionPlace) }}
+            {schema_field_name(:known, Transmission.InfectionPlace)}
+          </th>
+          <th>
+            {schema_field_name(:type, Transmission.InfectionPlace)}
           </th>
           <th />
         </tr>
       </thead>
       <tbody>
         <HygeiaWeb.RecordView
-          :for={{ transmission <- @transmissions }}
-          resource={{ transmission }}
-          action={{ :list }}
-          id={{ "transmission-#{transmission.uuid}" }}
-          wrapper_tag={{ :tr }}
+          :for={transmission <- @transmissions}
+          resource={transmission}
+          action={:list}
+          id={"transmission-#{transmission.uuid}"}
+          wrapper_tag={:tr}
         >
-          <td :if={{ @show_recipient }}>
-            <div :if={{ transmission.recipient_internal == true }} class="d-flex align-items-center">
-              <em :if={{ is_nil(transmission.recipient) }}>
-                {{ gettext("deleted") }}
+          <td :if={@show_recipient}>
+            <div :if={transmission.recipient_internal == true} class="d-flex align-items-center">
+              <em :if={is_nil(transmission.recipient)}>
+                {gettext("deleted")}
               </em>
-              <div :if={{ not is_nil(transmission.recipient) }}>
+              <div :if={not is_nil(transmission.recipient)}>
                 <Link
-                  to={{ Routes.person_base_data_path(@socket, :show, transmission.recipient) }}
-                  :if={{ authorized?(transmission.recipient, :details, auth) }}
+                  to={Routes.person_base_data_path(@socket, :show, transmission.recipient)}
+                  :if={authorized?(transmission.recipient, :details, auth)}
                 >
                   <HygeiaWeb.RecordView
-                    resource={{ transmission.recipient }}
-                    action={{ :list }}
-                    id={{ {:transmission, :recipient, :record_view, transmission.uuid, transmission.recipient.uuid} }}
-                    wrapper_tag={{ :span }}
+                    resource={transmission.recipient}
+                    action={:list}
+                    id={{:transmission, :recipient, :record_view, transmission.uuid, transmission.recipient.uuid}}
+                    wrapper_tag={:span}
                   >
-                    {{ transmission.recipient.first_name }}
-                    {{ transmission.recipient.last_name }}
+                    {transmission.recipient.first_name}
+                    {transmission.recipient.last_name}
                   </HygeiaWeb.RecordView>
                 </Link>
-                <span :if={{ not authorized?(transmission.recipient, :details, auth) }}>
-                  {{ transmission.recipient.tenant.short_name }}
+                <span :if={not authorized?(transmission.recipient, :details, auth)}>
+                  {transmission.recipient.tenant.short_name}
                   /
-                  {{ transmission.recipient.human_readable_id }}
+                  {transmission.recipient.human_readable_id}
                 </span>
               </div>
               <span class="mx-2">|</span>
-              <em :if={{ is_nil(transmission.recipient_case) }}>
-                {{ gettext("deleted") }}
+              <em :if={is_nil(transmission.recipient_case)}>
+                {gettext("deleted")}
               </em>
-              <div :if={{ not is_nil(transmission.recipient_case) }}>
+              <div :if={not is_nil(transmission.recipient_case)}>
                 <Link
                   class="d-flex align-items-center"
-                  to={{ Routes.case_base_data_path(@socket, :show, transmission.recipient_case) }}
-                  :if={{ authorized?(transmission.recipient_case, :details, auth) }}
+                  to={Routes.case_base_data_path(@socket, :show, transmission.recipient_case)}
+                  :if={authorized?(transmission.recipient_case, :details, auth)}
                 >
                   <HygeiaWeb.RecordView
-                    resource={{ transmission.recipient_case }}
-                    action={{ :list }}
-                    id={{{:transmission, :recipient_case, :record_view, transmission.uuid,
-                     transmission.recipient_case.uuid}}}
-                    wrapper_tag={{ :span }}
+                    resource={transmission.recipient_case}
+                    action={:list}
+                    id={{:transmission, :recipient_case, :record_view, transmission.uuid,
+                     transmission.recipient_case.uuid}}
+                    wrapper_tag={:span}
                   >
-                    {{ case_display_type(transmission.recipient_case) }}
-                    <small class="ml-1">({{ case_display_date(transmission.recipient_case) }})</small>
+                    {case_display_type(transmission.recipient_case)}
+                    <small class="ml-1">({case_display_date(transmission.recipient_case)})</small>
                   </HygeiaWeb.RecordView>
                 </Link>
-                <span :if={{ not authorized?(transmission.recipient_case, :details, auth) }}>
-                  {{ transmission.recipient_case.tenant.short_name }}
+                <span :if={not authorized?(transmission.recipient_case, :details, auth)}>
+                  {transmission.recipient_case.tenant.short_name}
                   /
-                  {{ transmission.recipient_case.human_readable_id }}
+                  {transmission.recipient_case.human_readable_id}
                 </span>
               </div>
             </div>
-            <div :if={{ transmission.recipient_internal == false }}>
-              {{ gettext("ISM-ID: %{id}", id: transmission.recipient_ism_id) }}
+            <div :if={transmission.recipient_internal == false}>
+              {gettext("ISM-ID: %{id}", id: transmission.recipient_ism_id)}
             </div>
           </td>
-          <td :if={{ @show_propagator }}>
-            <div :if={{ transmission.propagator_internal == true }} class="d-flex align-items-center">
-              <em :if={{ is_nil(transmission.propagator) }}>
-                {{ gettext("deleted") }}
+          <td :if={@show_propagator}>
+            <div :if={transmission.propagator_internal == true} class="d-flex align-items-center">
+              <em :if={is_nil(transmission.propagator)}>
+                {gettext("deleted")}
               </em>
-              <div :if={{ not is_nil(transmission.propagator) }}>
+              <div :if={not is_nil(transmission.propagator)}>
                 <Link
-                  to={{ Routes.person_base_data_path(@socket, :show, transmission.propagator) }}
-                  :if={{ authorized?(transmission.propagator, :details, auth) }}
+                  to={Routes.person_base_data_path(@socket, :show, transmission.propagator)}
+                  :if={authorized?(transmission.propagator, :details, auth)}
                 >
                   <HygeiaWeb.RecordView
-                    resource={{ transmission.propagator }}
-                    action={{ :list }}
-                    id={{ {:transmission, :propagator, :record_view, transmission.uuid, transmission.propagator.uuid} }}
-                    wrapper_tag={{ :span }}
+                    resource={transmission.propagator}
+                    action={:list}
+                    id={{:transmission, :propagator, :record_view, transmission.uuid, transmission.propagator.uuid}}
+                    wrapper_tag={:span}
                   >
-                    {{ transmission.propagator.first_name }}
-                    {{ transmission.propagator.last_name }}
+                    {transmission.propagator.first_name}
+                    {transmission.propagator.last_name}
                   </HygeiaWeb.RecordView>
                 </Link>
-                <span :if={{ not authorized?(transmission.propagator, :details, auth) }}>
-                  {{ transmission.propagator.tenant.short_name }}
+                <span :if={not authorized?(transmission.propagator, :details, auth)}>
+                  {transmission.propagator.tenant.short_name}
                   /
-                  {{ transmission.propagator.human_readable_id }}
+                  {transmission.propagator.human_readable_id}
                 </span>
               </div>
               <span class="mx-2">|</span>
-              <em :if={{ is_nil(transmission.propagator_case) }}>
-                {{ gettext("deleted") }}
+              <em :if={is_nil(transmission.propagator_case)}>
+                {gettext("deleted")}
               </em>
-              <div :if={{ not is_nil(transmission.propagator_case) }}>
+              <div :if={not is_nil(transmission.propagator_case)}>
                 <Link
                   class="d-flex align-items-center"
-                  to={{ Routes.case_base_data_path(@socket, :show, transmission.propagator_case) }}
-                  :if={{ authorized?(transmission.propagator_case, :details, auth) }}
+                  to={Routes.case_base_data_path(@socket, :show, transmission.propagator_case)}
+                  :if={authorized?(transmission.propagator_case, :details, auth)}
                 >
                   <HygeiaWeb.RecordView
-                    resource={{ transmission.propagator_case }}
-                    action={{ :list }}
-                    id={{{:transmission, :propagator_case, :record_view, transmission.uuid,
-                     transmission.propagator_case.uuid}}}
-                    wrapper_tag={{ :span }}
+                    resource={transmission.propagator_case}
+                    action={:list}
+                    id={{:transmission, :propagator_case, :record_view, transmission.uuid,
+                     transmission.propagator_case.uuid}}
+                    wrapper_tag={:span}
                   >
-                    {{ case_display_type(transmission.propagator_case) }}
-                    <small class="ml-1">({{ case_display_date(transmission.propagator_case) }})</small>
+                    {case_display_type(transmission.propagator_case)}
+                    <small class="ml-1">({case_display_date(transmission.propagator_case)})</small>
                   </HygeiaWeb.RecordView>
                 </Link>
-                <span :if={{ not authorized?(transmission.propagator_case, :details, auth) }}>
-                  {{ transmission.propagator_case.tenant.short_name }}
+                <span :if={not authorized?(transmission.propagator_case, :details, auth)}>
+                  {transmission.propagator_case.tenant.short_name}
                   /
-                  {{ transmission.propagator_case.human_readable_id }}
+                  {transmission.propagator_case.human_readable_id}
                 </span>
               </div>
             </div>
-            <div :if={{ transmission.propagator_internal == false }}>
-              {{ gettext("ISM-ID: %{id}", id: transmission.propagator_ism_id) }}
+            <div :if={transmission.propagator_internal == false}>
+              {gettext("ISM-ID: %{id}", id: transmission.propagator_ism_id)}
             </div>
           </td>
           <td>
-            {{ case transmission.date do
+            {case transmission.date do
               nil -> nil
               date -> Cldr.Date.to_string!(date, HygeiaCldr)
-            end }}
+            end}
           </td>
           <td>
-            {{ case transmission.infection_place.known do
+            {case transmission.infection_place.known do
               nil -> nil
               true -> gettext("Yes")
               false -> gettext("No")
-            end }}
+            end}
           </td>
           <td>
-            {{ case transmission.infection_place.type do
+            {case transmission.infection_place.type do
               nil ->
                 nil
             
@@ -168,34 +168,34 @@
             
               type ->
                 translate_infection_place_type(type)
-            end }}
+            end}
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">
               <LivePatch
-                to={{ Routes.transmission_show_path(@socket, :show, transmission) }}
-                :if={{ authorized?(transmission, :details, auth) }}
+                to={Routes.transmission_show_path(@socket, :show, transmission)}
+                :if={authorized?(transmission, :details, auth)}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">{{ gettext("Show") }}</button>
+                <button class="ml-auto btn btn-sm btn-secondary">{gettext("Show")}</button>
               </LivePatch>
               <LivePatch
-                to={{ Routes.transmission_show_path(@socket, :edit, transmission) }}
-                :if={{ authorized?(transmission, :update, auth) }}
+                to={Routes.transmission_show_path(@socket, :edit, transmission)}
+                :if={authorized?(transmission, :update, auth)}
               >
                 <button class="ml-1 btn btn-sm btn-secondary">
-                  <span class="oi oi-pencil" title={{ gettext("Edit") }} aria-hidden="true" />
+                  <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LivePatch>
               <Link
                 to="#"
                 click="delete"
-                opts={{
+                opts={
                   title: gettext("Delete"),
                   data: [confirm: gettext("Are you sure?")],
                   "phx-value-id": transmission.uuid,
                   class: "delete"
-                }}
-                :if={{ authorized?(transmission, :delete, auth) }}
+                }
+                :if={authorized?(transmission, :delete, auth)}
               >
                 <button class="ml-1 btn btn-sm btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
@@ -204,10 +204,10 @@
             </div>
           </td>
         </HygeiaWeb.RecordView>
-        <tr :if={{ length(@transmissions) == 0 }}>
+        <tr :if={length(@transmissions) == 0}>
           <td colspan="5">
             <div class="d-flex justify-content-center py-3">
-              {{ "No data to display" |> gettext }}
+              {"No data to display" |> gettext}
             </div>
           </td>
         </tr>
