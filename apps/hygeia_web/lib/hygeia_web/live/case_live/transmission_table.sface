@@ -42,7 +42,7 @@
                   <HygeiaWeb.RecordView
                     resource={transmission.recipient}
                     action={:list}
-                    id={{:transmission, :recipient, :record_view, transmission.uuid, transmission.recipient.uuid}}
+                    id={:transmission, :recipient, :record_view, transmission.uuid, transmission.recipient.uuid}
                     wrapper_tag={:span}
                   >
                     {transmission.recipient.first_name}
@@ -68,8 +68,13 @@
                   <HygeiaWeb.RecordView
                     resource={transmission.recipient_case}
                     action={:list}
-                    id={{:transmission, :recipient_case, :record_view, transmission.uuid,
-                     transmission.recipient_case.uuid}}
+                    id={
+                      :transmission,
+                      :recipient_case,
+                      :record_view,
+                      transmission.uuid,
+                      transmission.recipient_case.uuid
+                    }
                     wrapper_tag={:span}
                   >
                     {case_display_type(transmission.recipient_case)}
@@ -100,7 +105,7 @@
                   <HygeiaWeb.RecordView
                     resource={transmission.propagator}
                     action={:list}
-                    id={{:transmission, :propagator, :record_view, transmission.uuid, transmission.propagator.uuid}}
+                    id={:transmission, :propagator, :record_view, transmission.uuid, transmission.propagator.uuid}
                     wrapper_tag={:span}
                   >
                     {transmission.propagator.first_name}
@@ -126,8 +131,13 @@
                   <HygeiaWeb.RecordView
                     resource={transmission.propagator_case}
                     action={:list}
-                    id={{:transmission, :propagator_case, :record_view, transmission.uuid,
-                     transmission.propagator_case.uuid}}
+                    id={
+                      :transmission,
+                      :propagator_case,
+                      :record_view,
+                      transmission.uuid,
+                      transmission.propagator_case.uuid
+                    }
                     wrapper_tag={:span}
                   >
                     {case_display_type(transmission.propagator_case)}

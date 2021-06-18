@@ -43,7 +43,7 @@
           </button>
 
           <HygeiaWeb.Modal
-            id={{:choose_division, field}}
+            id={:choose_division, field}
             :if={@modal_open}
             title={gettext("Select Division")}
             close="close_modal"

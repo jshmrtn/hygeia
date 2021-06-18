@@ -4,7 +4,7 @@
       <HygeiaWeb.RecordView
         resource={@transmission}
         action={:list}
-        id={{:header, :record_view, @transmission.uuid}}
+        id={:header, :record_view, @transmission.uuid}
         wrapper_tag={:span}
       >
         {@display_name}

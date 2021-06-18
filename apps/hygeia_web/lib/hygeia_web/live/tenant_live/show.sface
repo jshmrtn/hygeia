@@ -35,8 +35,8 @@
       opts={autocomplete: "off", id: "tenant-form", "phx-hook": "BlockNavigation"}
     >
       <HygeiaWeb.Lock
-        id={{:lock, Tenant, @tenant.uuid}}
-        resource={{Tenant, @tenant.uuid}}
+        id={:lock, Tenant, @tenant.uuid}
+        resource={Tenant, @tenant.uuid}
         lock={@live_action == :edit}
       >
         <div :if={@live_action == :edit}>

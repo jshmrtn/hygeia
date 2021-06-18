@@ -52,7 +52,7 @@
         </button>
 
         <HygeiaWeb.Modal
-          id={{:choose_person, field}}
+          id={:choose_person, field}
           :if={@modal_open}
           title={gettext("Select Person")}
           close="close_modal"

@@ -172,7 +172,7 @@
                 </td>
                 <td class="p-1 table-col-border">
                   <Inputs for={:address}>
-                    <HygeiaWeb.CaseLive.AddressInput id={{:reporting_unit_address, Ecto.Changeset.get_field(form.source, :uuid, nil)}} />
+                    <HygeiaWeb.CaseLive.AddressInput id={:reporting_unit_address, Ecto.Changeset.get_field(form.source, :uuid, nil)} />
                   </Inputs>
                 </td>
               </Inputs>
@@ -186,7 +186,7 @@
                 </td>
                 <td class="p-1 table-col-border">
                   <Inputs for={:address}>
-                    <HygeiaWeb.CaseLive.AddressInput id={{:sponsor_address, Ecto.Changeset.get_field(form.source, :uuid, nil)}} />
+                    <HygeiaWeb.CaseLive.AddressInput id={:sponsor_address, Ecto.Changeset.get_field(form.source, :uuid, nil)} />
                   </Inputs>
                 </td>
               </Inputs>

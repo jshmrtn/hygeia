@@ -14,8 +14,8 @@
         opts={autocomplete: "off", id: "transmission-form", "phx-hook": "BlockNavigation"}
       >
         <HygeiaWeb.Lock
-          id={{:lock, Transmission, @transmission.uuid}}
-          resource={{Transmission, @transmission.uuid}}
+          id={:lock, Transmission, @transmission.uuid}
+          resource={Transmission, @transmission.uuid}
           lock={@live_action == :edit}
         >
           <div class="card">
@@ -88,7 +88,7 @@
                                 :if={not is_nil(@transmission.recipient)}
                                 resource={@transmission.recipient}
                                 action={:list}
-                                id={{:transmission, :recipient, :record_view, @transmission.recipient.uuid}}
+                                id={:transmission, :recipient, :record_view, @transmission.recipient.uuid}
                                 wrapper_tag={:span}
                               >
                                 {@transmission.recipient.first_name}
@@ -115,7 +115,7 @@
                                 :if={not is_nil(@transmission.recipient_case)}
                                 resource={@transmission.recipient_case}
                                 action={:list}
-                                id={{:transmission, :recipient_case, :record_view, @transmission.recipient_case.uuid}}
+                                id={:transmission, :recipient_case, :record_view, @transmission.recipient_case.uuid}
                                 wrapper_tag={:span}
                               >
                                 {case_display_type(@transmission.recipient_case)}
@@ -148,7 +148,7 @@
                                 :if={not is_nil(@transmission.propagator)}
                                 resource={@transmission.propagator}
                                 action={:list}
-                                id={{:transmission, :propagator, :record_view, @transmission.propagator.uuid}}
+                                id={:transmission, :propagator, :record_view, @transmission.propagator.uuid}
                                 wrapper_tag={:span}
                               >
                                 {@transmission.propagator.first_name}
@@ -175,7 +175,7 @@
                                 :if={not is_nil(@transmission.propagator_case)}
                                 resource={@transmission.propagator_case}
                                 action={:list}
-                                id={{:transmission, :propagator_case, :record_view, @transmission.propagator_case.uuid}}
+                                id={:transmission, :propagator_case, :record_view, @transmission.propagator_case.uuid}
                                 wrapper_tag={:span}
                               >
                                 {case_display_type(@transmission.propagator_case)}

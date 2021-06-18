@@ -21,8 +21,8 @@
           </div>
 
           <HygeiaWeb.Lock
-            id={{:lock, Case, @case.uuid}}
-            resource={{Case, @case.uuid}}
+            id={:lock, Case, @case.uuid}
+            resource={Case, @case.uuid}
             lock={@live_action == :edit}
           >
             <Form

@@ -16,7 +16,7 @@
 
   <HygeiaWeb.Modal
     :if={@show_help}
-    id={{@myself, :help}}
+    id={@myself, :help}
     title={gettext("Import Help")}
     close="hide_help"
   >

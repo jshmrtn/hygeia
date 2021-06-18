@@ -33,7 +33,7 @@
               <Field class="form-group" name={:organisation_uuid}>
                 <HygeiaWeb.FieldLabel />
                 <HygeiaWeb.OrganisationLive.Choose
-                  id={{:hospitalisations, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid)}}
+                  id={:hospitalisations, @myself, Ecto.Changeset.fetch_field!(form.source, :uuid)}
                   change={"change_organisation_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
                   disabled={@disabled}
                 />

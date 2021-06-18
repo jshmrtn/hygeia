@@ -107,7 +107,7 @@
               </td>
               <td class="p-1" id={"person_create_#{changeset_uuid}_address"}>
                 <Inputs for={:address}>
-                  <HygeiaWeb.CaseLive.AddressInput id={{:person_address, changeset_uuid}} />
+                  <HygeiaWeb.CaseLive.AddressInput id={:person_address, changeset_uuid} />
                 </Inputs>
               </td>
               <td class="table-col-border" id={"person_create_#{changeset_uuid}_tenant"}>
