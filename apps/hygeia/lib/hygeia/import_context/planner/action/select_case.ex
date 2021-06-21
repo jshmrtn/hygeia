@@ -8,20 +8,23 @@ defmodule Hygeia.ImportContext.Planner.Action.SelectCase do
 
   @type existing_case :: %__MODULE__{
           case: Case.t(),
-          person: Person.t()
+          person: Person.t(),
+          suppress_quarantine: false
         }
   @type existing_person :: %__MODULE__{
           case: nil,
-          person: Person.t()
+          person: Person.t(),
+          suppress_quarantine: boolean()
         }
   @type create :: %__MODULE__{
           case: nil,
-          person: nil
+          person: nil,
+          suppress_quarantine: false
         }
 
   @type t :: existing_case | existing_person | create
 
-  defstruct [:case, :person]
+  defstruct [:case, :person, :suppress_quarantine]
 
   defimpl Hygeia.ImportContext.Planner.Action do
     alias Ecto.Changeset
@@ -46,16 +49,24 @@ defmodule Hygeia.ImportContext.Planner.Action.SelectCase do
        }}
     end
 
-    def execute(%SelectCase{case: nil, person: %Person{} = person}, %{tenant: tenant}, _row),
-      do:
-        {:ok,
-         %{
-           person: person,
-           person_changeset: CaseContext.change_person(person),
-           case: nil,
-           case_changeset:
-             Changeset.change(%Case{}, %{tenant_uuid: tenant.uuid, person_uuid: person.uuid})
-         }}
+    def execute(
+          %SelectCase{
+            case: nil,
+            person: %Person{} = person,
+            suppress_quarantine: _suppress_quarantine
+          },
+          %{tenant: tenant},
+          _row
+        ),
+        do:
+          {:ok,
+           %{
+             person: person,
+             person_changeset: CaseContext.change_person(person),
+             case: nil,
+             case_changeset:
+               Changeset.change(%Case{}, %{tenant_uuid: tenant.uuid, person_uuid: person.uuid})
+           }}
 
     def execute(
           %SelectCase{case: %Case{} = case, person: %Person{} = person},

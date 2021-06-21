@@ -3,9 +3,13 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchPhases do
   Patch / Append Phases
   """
 
-  @type t :: %__MODULE__{action: :append | :skip, phase_type: :index}
+  @type t :: %__MODULE__{
+          action: :append | :skip,
+          phase_type: :index,
+          quarantine_order: boolean() | nil
+        }
 
-  defstruct [:action, :phase_type]
+  defstruct [:action, :phase_type, :quarantine_order]
 
   defimpl Hygeia.ImportContext.Planner.Action do
     alias Ecto.Changeset
@@ -16,7 +20,11 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchPhases do
     def execute(%PatchPhases{action: :skip}, _preceding_results, _row), do: {:ok, %{}}
 
     def execute(
-          %PatchPhases{action: :append, phase_type: phase_type},
+          %PatchPhases{
+            action: :append,
+            phase_type: phase_type,
+            quarantine_order: quarantine_order
+          },
           %{case_changeset: case_changeset},
           _row
         ) do
@@ -27,7 +35,12 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchPhases do
 
       phases =
         Changeset.get_change(case_changeset, :phases, fallback_phases) ++
-          [Phase.changeset(%Phase{}, %{details: %{__type__: phase_type}})]
+          [
+            Phase.changeset(%Phase{}, %{
+              details: %{__type__: phase_type},
+              quarantine_order: quarantine_order
+            })
+          ]
 
       {:ok, %{case_changeset: Changeset.put_embed(case_changeset, :phases, phases)}}
     end
