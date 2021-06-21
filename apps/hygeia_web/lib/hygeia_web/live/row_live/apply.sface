@@ -75,7 +75,7 @@
         <summary>Tenant: {action.tenant.name}</summary>
 
         <Form
-          for={%{}}
+          for={%{tenant_uuid: action.tenant.uuid}}
           submit="choose_tenant"
           opts={autocomplete: "off", id: "choose-tenant-form", class: "container"}
           as={:choose_tenant}
@@ -83,11 +83,7 @@
           <HiddenInput field={:index} value={index} />
           <Field name={:tenant_uuid} class="form-group row">
             <Label class="col-sm-3 col-form-label" />
-            <Select
-              class="form-control col-sm-9"
-              options={Enum.map(@tenants, &{&1.name, &1.uuid})}
-              opts={value: action.tenant.uuid}
-            />
+            <Select class="form-control col-sm-9" options={Enum.map(@tenants, &{&1.name, &1.uuid})} />
           </Field>
 
           <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
@@ -111,6 +107,7 @@
         </summary>
 
         <Form
+          submit="patch_select_case"
           for={%{
             person_uuid: if(action.person, do: action.person.uuid),
             case_uuid: if(action.case, do: action.case.uuid)
@@ -138,6 +135,19 @@
               subject={index}
             />
           </Field>
+
+          <div class="form-group">
+            <Field name={:suppress_quarantine} class="form-check">
+              <label class="checkbox-label">
+                <Checkbox class="form-check-input" opts={disabled: certainty != :input_needed} />
+                {gettext("Suppress quarantine")}
+              </label>
+            </Field>
+          </div>
+
+          <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
+            {gettext("Continue")}
+          </button>
         </Form>
       {/if}
       {#if match?(%Action.PatchPhases{}, action)}
