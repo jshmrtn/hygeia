@@ -4,7 +4,7 @@
       <HygeiaWeb.RecordView
         resource={@person}
         action={:list}
-        id={@myself, "person_recordview_#{@person.uuid}"}
+        id={"#{@myself}_person_recordview_#{@person.uuid}"}
         wrapper_tag={:span}
       >
         {@person_display_name}
@@ -63,7 +63,7 @@
             <HygeiaWeb.RecordView
               resource={case}
               action={:list}
-              id={@myself, "case_recordview_#{case.uuid}"}
+              id={"#{@myself}_case_recordview_#{case.uuid}"}
               wrapper_tag={:span}
             >
               {case_display_type(case)}

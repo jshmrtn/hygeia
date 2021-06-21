@@ -25,8 +25,8 @@ defmodule HygeiaWeb.Chart do
             |> Jason.encode!()
         ]
       )}
-      <div phx-update="ignore" id={@dom_id <> "_ignore"} class="position-relative chart-container">
-        <canvas id={@dom_id <> "_chart"} />
+      <div phx-update="ignore" id={"#{@dom_id}_ignore"} class="position-relative chart-container">
+        <canvas id={"#{@dom_id}_chart"} />
       </div>
     </Context>
     """

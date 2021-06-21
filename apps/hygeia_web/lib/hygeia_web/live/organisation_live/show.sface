@@ -80,8 +80,8 @@
       opts={autocomplete: "off", id: "organisation-form", "phx-hook": "BlockNavigation"}
     >
       <HygeiaWeb.Lock
-        id={:lock, Organisation, @organisation.uuid}
-        resource={Organisation, @organisation.uuid}
+        id={"lock_Organisation_#{@organisation.uuid}"}
+        resource={{Organisation, @organisation.uuid}}
         lock={@live_action == :edit}
       >
         <div :if={@live_action == :edit}>
@@ -182,7 +182,7 @@
                         <td :if={@live_action == :edit}>
                           <Field name={:person_uuid}>
                             <HygeiaWeb.PersonLive.Choose
-                              id={:position, Ecto.Changeset.fetch_field!(form.source, :uuid)}
+                              id={"position_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
                               small
                               change={"change_position_person_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
                               disabled={@live_action != :edit}

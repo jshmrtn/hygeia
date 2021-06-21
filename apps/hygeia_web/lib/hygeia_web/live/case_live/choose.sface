@@ -50,7 +50,7 @@
         </button>
 
         <HygeiaWeb.Modal
-          id={:choose_case, field}
+          id={"choose_case_#{field}"}
           :if={@modal_open}
           title={gettext("Select Case")}
           close="close_modal"

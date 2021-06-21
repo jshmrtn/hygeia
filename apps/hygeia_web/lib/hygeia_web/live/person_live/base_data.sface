@@ -59,8 +59,8 @@
         opts={autocomplete: "off", id: "person-form", "phx-hook": "BlockNavigation"}
       >
         <HygeiaWeb.Lock
-          id={:lock, Person, @person.uuid}
-          resource={Person, @person.uuid}
+          id={"lock_Person_#{@person.uuid}"}
+          resource={{Person, @person.uuid}}
           lock={@live_action == :edit}
         >
           <div class="mb-4" :if={@live_action == :edit}>
@@ -318,7 +318,7 @@
                           <Field class="form-group" name={:organisation_uuid}>
                             <HygeiaWeb.FieldLabel />
                             <HygeiaWeb.OrganisationLive.Choose
-                              id={:affiliations, Ecto.Changeset.fetch_field!(form.source, :uuid), :organisation}
+                              id={"affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}_organisation"}
                               change="select_affiliation_organisation"
                               subject={Ecto.Changeset.fetch_field!(form.source, :uuid)}
                               disabled={@live_action == :show}
@@ -333,7 +333,7 @@
                           >
                             <HygeiaWeb.FieldLabel />
                             <HygeiaWeb.DivisionLive.Choose
-                              id={:affiliations, Ecto.Changeset.fetch_field!(form.source, :uuid), :division}
+                              id={"affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}_division"}
                               change="select_affiliation_division"
                               subject={Ecto.Changeset.fetch_field!(form.source, :uuid)}
                               organisation={load_organisation(Ecto.Changeset.fetch_field!(form.source, :organisation_uuid))}

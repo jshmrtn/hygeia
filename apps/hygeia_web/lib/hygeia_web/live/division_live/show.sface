@@ -49,8 +49,8 @@
       opts={autocomplete: "off", id: "division-form", "phx-hook": "BlockNavigation"}
     >
       <HygeiaWeb.Lock
-        id={:lock, Division, @division.uuid}
-        resource={Division, @division.uuid}
+        id={"lock_Division_#{@division.uuid}"}
+        resource={{Division, @division.uuid}}
         lock={@live_action == :edit}
       >
         <div :if={@live_action == :edit}>

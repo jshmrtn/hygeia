@@ -37,8 +37,8 @@
       opts={autocomplete: "off", id: "system_message-form", "phx-hook": "BlockNavigation"}
     >
       <HygeiaWeb.Lock
-        id={:lock, SystemMessage, @system_message.uuid}
-        resource={SystemMessage, @system_message.uuid}
+        id={"lock_SystemMessage_#{@system_message.uuid}"}
+        resource={{SystemMessage, @system_message.uuid}}
         lock={@live_action == :edit}
       >
         <div :if={@live_action == :edit}>

@@ -106,7 +106,7 @@
             <HygeiaWeb.Sort
               params={["first_name", "last_name"]}
               current_params={@sort}
-              id={:sort, :first_name}
+              id="sort_first_name"
               :let={sort_params: sort_params}
             >
               <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
@@ -118,7 +118,7 @@
             <HygeiaWeb.Sort
               params={["last_name", "first_name"]}
               current_params={@sort}
-              id={:sort, :last_name}
+              id="sort_last_name"
               :let={sort_params: sort_params}
             >
               <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
@@ -130,7 +130,7 @@
             <HygeiaWeb.Sort
               params={["birth_date"]}
               current_params={@sort}
-              id={:sort, :birth_date}
+              id="sort_birth_date"
               :let={sort_params: sort_params}
             >
               <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
@@ -145,7 +145,7 @@
             <HygeiaWeb.Sort
               params={["inserted_at"]}
               current_params={@sort}
-              id={:sort, :inserted_at}
+              id="sort_inserted_at"
               :let={sort_params: sort_params}
             >
               <LivePatch to={page_url(@socket, [], @filters, sort_params)}>

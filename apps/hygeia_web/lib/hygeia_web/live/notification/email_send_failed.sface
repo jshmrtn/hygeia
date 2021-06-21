@@ -7,7 +7,7 @@
       :if={not is_nil(@body.case)}
       resource={@body.case}
       action={:list}
-      id={@id, :record_view, @body.case.uuid}
+      id={"#{@id}_record_view_#{@body.case.uuid}"}
       wrapper_tag={:strong}
     >
       {case_display_type(@body.case)}
@@ -17,7 +17,7 @@
       <HygeiaWeb.RecordView
         resource={@body.case.person}
         action={:list}
-        id={@id, :record_view, :person, @body.case.person.uuid}
+        id={"#{@id}_record_view_person_#{@body.case.person.uuid}"}
         wrapper_tag={:span}
       >
         ({@body.case.person.first_name} {@body.case.person.last_name})

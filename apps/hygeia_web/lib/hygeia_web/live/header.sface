@@ -1,4 +1,4 @@
-<HygeiaWeb.SystemMessagesBanner id={:system_messages_banner} />
+<HygeiaWeb.SystemMessagesBanner id="system_messages_banner" />
 <header class="layout-header py-3 bg-dark mb-5">
   <Context get={HygeiaWeb, auth: auth, logged_in: logged_in}>
     <section class="container">

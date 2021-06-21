@@ -18,12 +18,12 @@
       </button>
 
       <HygeiaWeb.Modal
-        id={@id, :address_input}
+        id={"#{@id}_address_input"}
         :if={@modal_open}
         title={gettext("Address")}
         close="close_modal"
       >
-        <HygeiaWeb.AddressForm id={@id, :address_input_form} />
+        <HygeiaWeb.AddressForm id={"#{@id}_address_input_form"} />
       </HygeiaWeb.Modal>
     </div>
   </InputContext>

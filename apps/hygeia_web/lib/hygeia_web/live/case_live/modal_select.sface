@@ -18,7 +18,12 @@
       </button>
     </div>
 
-    <HygeiaWeb.Modal id={:choose_generic, field} :if={@modal_open} title={@title} close="close_modal">
+    <HygeiaWeb.Modal
+      id={"choose_generic_#{field}"}
+      :if={@modal_open}
+      title={@title}
+      close="close_modal"
+    >
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text">

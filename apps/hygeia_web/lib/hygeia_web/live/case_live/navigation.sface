@@ -2,7 +2,7 @@
   <Context get={HygeiaWeb, auth: auth}>
     <HygeiaWeb.NoteLive.CreateModal
       case={@case}
-      id={:navigation, :note_modal}
+      id="navigation_note_modal"
       :if={not is_nil(@note_modal)}
       params={@note_modal}
       close="close_note_modal"
@@ -11,7 +11,7 @@
     />
     <HygeiaWeb.SMSLive.CreateModal
       case={@case}
-      id={:navigation, :sms_modal}
+      id="navigation_sms_modal"
       :if={not is_nil(@sms_modal)}
       params={@sms_modal}
       close="close_sms_modal"
@@ -20,7 +20,7 @@
     />
     <HygeiaWeb.EmailLive.CreateModal
       case={@case}
-      id={:navigation, :email_modal}
+      id="navigation_email_modal"
       :if={not is_nil(@email_modal)}
       params={@email_modal}
       close="close_email_modal"
@@ -29,7 +29,7 @@
     />
     <HygeiaWeb.CaseLive.CreatePhaseModal
       case={@case}
-      id={:navigation, :phase_create_modal}
+      id="navigation_phase_create_modal"
       :if={not is_nil(@phase_create_modal)}
       params={@phase_create_modal}
       close="close_phase_create_modal"

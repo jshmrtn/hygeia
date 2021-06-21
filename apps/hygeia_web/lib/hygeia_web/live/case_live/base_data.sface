@@ -21,8 +21,8 @@
           </div>
 
           <HygeiaWeb.Lock
-            id={:lock, Case, @case.uuid}
-            resource={Case, @case.uuid}
+            id={"lock_Case_#{@case.uuid}"}
+            resource={{Case, @case.uuid}}
             lock={@live_action == :edit}
           >
             <Form
@@ -642,7 +642,7 @@
 
   <HygeiaWeb.Modal
     :if={@show_complexity_help}
-    id={:complexity_help}
+    id="complexity_help"
     title={gettext("Complexity")}
     close="hide_complexity_help"
     size="xl"
@@ -718,7 +718,7 @@
 
   <HygeiaWeb.Modal
     :if={@show_index_phase_end_reason_help}
-    id={:index_phase_end_reason_help}
+    id="index_phase_end_reason_help"
     title={gettext("End reason help")}
     close="hide_index_phase_end_reason_help"
     size="xl"
@@ -744,7 +744,7 @@
 
   <HygeiaWeb.Modal
     :if={@show_possible_index_phase_end_reason_help}
-    id={:possible_index_phase_end_reason_help}
+    id="possible_index_phase_end_reason_help"
     title={gettext("End reason help")}
     close="hide_possible_index_phase_end_reason_help"
     size="xl"
@@ -774,7 +774,7 @@
 
   <HygeiaWeb.Modal
     :if={@show_reasons_for_test_help}
-    id={:reasons_for_test_help}
+    id="reasons_for_test_help"
     title={gettext("Reasons for test help")}
     close="hide_reasons_for_test_help"
     size="xl"
@@ -825,7 +825,7 @@
 
   <HygeiaWeb.Modal
     :if={@show_case_status_help}
-    id={:case_status_help}
+    id="case_status_help"
     title={gettext("Status help")}
     close="hide_case_status_help"
     size="xl"

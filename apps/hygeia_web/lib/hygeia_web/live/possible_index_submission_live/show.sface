@@ -75,8 +75,8 @@
             opts={autocomplete: "off", id: "possible_index_submission-form", "phx-hook": "BlockNavigation"}
           >
             <HygeiaWeb.Lock
-              id={:lock, PossibleIndexSubmission, @possible_index_submission.uuid}
-              resource={PossibleIndexSubmission, @possible_index_submission.uuid}
+              id={"lock_PossibleIndexSubmission_#{@possible_index_submission.uuid}"}
+              resource={{PossibleIndexSubmission, @possible_index_submission.uuid}}
               lock={@live_action == :edit}
             >
               <div :if={@live_action == :edit}>

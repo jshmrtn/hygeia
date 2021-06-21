@@ -42,7 +42,7 @@
                   <HygeiaWeb.RecordView
                     resource={transmission.recipient}
                     action={:list}
-                    id={:transmission, :recipient, :record_view, transmission.uuid, transmission.recipient.uuid}
+                    id={"transmission_recipient_record_view_#{transmission.uuid}_#{transmission.recipient.uuid}"}
                     wrapper_tag={:span}
                   >
                     {transmission.recipient.first_name}
@@ -105,7 +105,7 @@
                   <HygeiaWeb.RecordView
                     resource={transmission.propagator}
                     action={:list}
-                    id={:transmission, :propagator, :record_view, transmission.uuid, transmission.propagator.uuid}
+                    id={"transmission_propagator_record_view_#{transmission.uuid}_#{transmission.propagator.uuid}"}
                     wrapper_tag={:span}
                   >
                     {transmission.propagator.first_name}

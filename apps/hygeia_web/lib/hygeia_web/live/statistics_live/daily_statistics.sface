@@ -293,7 +293,7 @@
             active_infection_place_cases_per_day={@active_infection_place_cases_per_day}
           />
           <HygeiaWeb.Modal
-            id={:infection_place_table_modal}
+            id="infection_place_table_modal"
             :if={@infection_table_modal_open}
             title={gettext("Infection Place")}
             close="close_infection_table_modal"
@@ -316,7 +316,7 @@
             transmission_country_cases_per_day={@transmission_country_cases_per_day}
           />
           <HygeiaWeb.Modal
-            id={:country_table_modal}
+            id="country_table_modal"
             :if={@country_table_modal_open}
             title={gettext("Countries")}
             close="close_country_table_modal"
@@ -336,7 +336,7 @@
             active_cases_per_day_and_organisation={@active_cases_per_day_and_organisation}
           />
           <HygeiaWeb.Modal
-            id={:organisation_table_modal}
+            id="organisation_table_modal"
             :if={@organisation_table_modal_open}
             title={gettext("Isolations Per Organisation")}
             close="close_organisation_table_modal"
