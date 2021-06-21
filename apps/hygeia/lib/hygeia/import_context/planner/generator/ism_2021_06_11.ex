@@ -4,6 +4,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.Test
@@ -213,6 +214,12 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   end
 
   defp select_active_cases(%Person{cases: cases} = person, max_certainty \\ :certain) do
+    was_index =
+      cases != [] and
+        Enum.any?(cases, fn case ->
+          Enum.any?(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1))
+        end)
+
     cases
     |> Enum.filter(fn %Case{inserted_at: inserted_at, phases: phases} ->
       phase_active =
@@ -221,11 +228,14 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
         |> Enum.map(&Date.range(&1.start, &1.end))
         |> Enum.any?(&Enum.member?(&1, Date.utc_today()))
 
-      case_recent = abs(Date.diff(DateTime.to_date(inserted_at), Date.utc_today())) < 10
+      case_recent = abs(Date.diff(DateTime.to_date(inserted_at), Date.utc_today())) < 0
 
       phase_active or case_recent
     end)
     |> case do
+      [] when was_index ->
+        {:input_needed, %Planner.Action.SelectCase{case: nil, person: person}}
+
       [] ->
         {max_certainty, %Planner.Action.SelectCase{case: nil, person: person}}
 
@@ -268,14 +278,29 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   def patch_phase(_row, _params, preceeding_steps) do
     {:certain,
      case Enum.find(preceeding_steps, &match?({_certainty, %Planner.Action.SelectCase{}}, &1)) do
+       {_certainty, %Planner.Action.SelectCase{case: nil, suppress_quarantine: true}} ->
+         %Planner.Action.PatchPhases{action: :append, phase_type: :index, quarantine_order: false}
+
        {_certainty, %Planner.Action.SelectCase{case: nil}} ->
          %Planner.Action.PatchPhases{action: :append, phase_type: :index}
 
-       {_certainty, %Planner.Action.SelectCase{case: %Case{phases: phases}}} ->
+       {_certainty,
+        %Planner.Action.SelectCase{
+          case: %Case{phases: phases},
+          suppress_quarantine: suppress_quarantine
+        }} ->
          if Enum.any?(phases, &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1)) do
            %Planner.Action.PatchPhases{action: :skip, phase_type: :index}
          else
-           %Planner.Action.PatchPhases{action: :append, phase_type: :index}
+           if suppress_quarantine do
+             %Planner.Action.PatchPhases{
+               action: :append,
+               phase_type: :index,
+               quarantine_order: false
+             }
+           else
+             %Planner.Action.PatchPhases{action: :append, phase_type: :index}
+           end
          end
      end}
   end
@@ -511,7 +536,14 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
          %Planner.Action.PatchStatus{action: :skip}
 
        {_certainty, %Planner.Action.PatchPhases{action: :append}} ->
-         %Planner.Action.PatchStatus{action: :change, status: :first_contact}
+         if Enum.find(
+              preceeding_steps,
+              &match?({_certainty, %Planner.Action.SelectCase{suppress_quarantine: true}}, &1)
+            ) do
+           %Planner.Action.PatchStatus{action: :change, status: :done}
+         else
+           %Planner.Action.PatchStatus{action: :change, status: :first_contact}
+         end
      end}
   end
 end
