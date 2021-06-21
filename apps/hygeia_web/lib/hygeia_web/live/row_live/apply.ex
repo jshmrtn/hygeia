@@ -15,6 +15,7 @@ defmodule HygeiaWeb.RowLive.Apply do
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
   alias Surface.Components.Form
+  alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Label
@@ -113,6 +114,26 @@ defmodule HygeiaWeb.RowLive.Apply do
       %Action.ChooseTenant{
         action
         | tenant: Enum.find(socket.assigns.tenants, &(&1.uuid == tenant_uuid))
+      }
+    end)
+  end
+
+  def handle_event(
+        "patch_select_case",
+        %{
+          "select_case" => %{
+            "index" => index,
+            "person_uuid" => person_uuid,
+            "case_uuid" => case_uuid,
+            "suppress_quarantine" => suppress_quarantine
+          }
+        } = _params,
+        socket
+      ) do
+    patch_action_plan(socket, index, fn %Action.SelectCase{} = action ->
+      %Action.SelectCase{
+        action
+        | suppress_quarantine: suppress_quarantine in ["true", "1"]
       }
     end)
   end
@@ -242,7 +263,9 @@ defmodule HygeiaWeb.RowLive.Apply do
      assign(socket,
        action_plan_suggestion: action_plan_suggestion,
        complete: complete,
-       action_plan: action_plan
+       action_plan: action_plan,
+       tracers: get_users(action_plan, :tracer),
+       supervisors: get_users(action_plan, :supervisor)
      )}
   end
 
