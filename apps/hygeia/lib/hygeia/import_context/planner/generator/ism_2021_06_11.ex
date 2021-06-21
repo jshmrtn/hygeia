@@ -228,13 +228,14 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
         |> Enum.map(&Date.range(&1.start, &1.end))
         |> Enum.any?(&Enum.member?(&1, Date.utc_today()))
 
-      case_recent = abs(Date.diff(DateTime.to_date(inserted_at), Date.utc_today())) < 0
+      case_recent = abs(Date.diff(DateTime.to_date(inserted_at), Date.utc_today())) < 10
 
       phase_active or case_recent
     end)
     |> case do
       [] when was_index ->
-        {:input_needed, %Planner.Action.SelectCase{case: nil, person: person}}
+        {:input_needed,
+         %Planner.Action.SelectCase{case: nil, person: person, suppress_quarantine: true}}
 
       [] ->
         {max_certainty, %Planner.Action.SelectCase{case: nil, person: person}}
