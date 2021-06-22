@@ -141,7 +141,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       tested_at: "Test date",
       kind: "Test Kind",
       laboratory_reported_at: "Laboratory report date",
-      reporting_unit: "Reporting unit"
+      reporting_unit: "Reporting unit",
+      mutation: "Mutation"
     },
     Hygeia.CaseContext.Transmission => %{
       comment: "Comment",
@@ -278,6 +279,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       roles: "Roles",
       related_tenants: "Related Tenants"
     },
+    Hygeia.MutationContext.Mutation => %{name: "Name", ism_code: "ISM Code"},
     HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema => %{
       address: "Address",
       birth_date: "Birth Date",

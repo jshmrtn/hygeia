@@ -11,6 +11,10 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchTests do
     alias Ecto.Changeset
     alias Hygeia.CaseContext.Test
     alias Hygeia.ImportContext.Planner.Action.PatchTests
+    alias Hygeia.MutationContext
+    alias Hygeia.MutationContext.Mutation
+
+    require Logger
 
     @impl Hygeia.ImportContext.Planner.Action
     def execute(
@@ -22,6 +26,27 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchTests do
         case_changeset
         |> Changeset.fetch_field!(:tests)
         |> Enum.map(&Changeset.change/1)
+
+      test_attrs =
+        if is_nil(test_attrs[:mutation]) do
+          test_attrs
+        else
+          Map.put(
+            test_attrs,
+            :mutation_uuid,
+            case MutationContext.get_mutation_by_ism_code(test_attrs.mutation.ism_code) do
+              %Mutation{uuid: uuid} ->
+                uuid
+
+              nil ->
+                message = "No mutations found for #{inspect(test_attrs.mutation)}"
+                Logger.warn(message)
+                Sentry.capture_message(message)
+
+                nil
+            end
+          )
+        end
 
       tests =
         Changeset.get_change(case_changeset, :tests, fallback_tests) ++

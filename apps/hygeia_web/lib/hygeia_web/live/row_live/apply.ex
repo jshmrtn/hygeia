@@ -123,8 +123,8 @@ defmodule HygeiaWeb.RowLive.Apply do
         %{
           "select_case" => %{
             "index" => index,
-            "person_uuid" => person_uuid,
-            "case_uuid" => case_uuid,
+            "person_uuid" => _person_uuid,
+            "case_uuid" => _case_uuid,
             "suppress_quarantine" => suppress_quarantine
           }
         } = _params,

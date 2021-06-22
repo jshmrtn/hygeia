@@ -232,6 +232,12 @@ defmodule HygeiaWeb.Router do
     live "/inbox/rows/:id", RowLive.Show, :show
 
     live "/inbox/imports/:cursor_direction/:cursor", ImportLive.Index, :index
+
+    live "/mutations", MutationLive.Index, :index
+    live "/mutations/new", MutationLive.Create, :create
+
+    live "/mutations/:id", MutationLive.Show, :show
+    live "/mutations/:id/edit", MutationLive.Show, :edit
   end
 
   scope "/", HygeiaWeb do
