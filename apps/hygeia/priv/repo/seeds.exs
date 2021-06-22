@@ -5,6 +5,7 @@
 
 import Hygeia.CaseContext
 import Hygeia.CommunicationContext
+import Hygeia.MutationContext
 import Hygeia.OrganisationContext
 import Hygeia.TenantContext
 import Hygeia.UserContext
@@ -28,6 +29,11 @@ tenant_root = Enum.find(tenants, &match?(%{name: "Hygeia - Covid19 Tracing"}, &1
 
 {_hospitals, _bindings} =
   Code.eval_file(Application.app_dir(:hygeia, "priv/repo/seeds/schools.exs"))
+
+{:ok, _mutation} = create_mutation(%{name: "Alpha", ism_code: 42})
+{:ok, _mutation} = create_mutation(%{name: "Beta", ism_code: 43})
+{:ok, _mutation} = create_mutation(%{name: "Gamma", ism_code: 44})
+{:ok, _mutation} = create_mutation(%{name: "Delta", ism_code: 45})
 
 if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
   {:ok, _sedex_export_sg} =

@@ -17,6 +17,8 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.ImportContext
   alias Hygeia.ImportContext.Import
   alias Hygeia.ImportContext.Row
+  alias Hygeia.MutationContext
+  alias Hygeia.MutationContext.Mutation
   alias Hygeia.NotificationContext
   alias Hygeia.NotificationContext.Notification
   alias Hygeia.OrganisationContext
@@ -443,7 +445,7 @@ defmodule Hygeia.Fixtures do
 
   @valid_attrs %{corrected: %{}, identifiers: %{}, data: %{}, status: :pending}
 
-  @spec row_fixture(import :: Import.t(), atts :: Hygeia.ecto_changeset_params()) :: Row.t()
+  @spec row_fixture(import :: Import.t(), attrs :: Hygeia.ecto_changeset_params()) :: Row.t()
   def row_fixture(import \\ import_fixture(), attrs \\ %{}) do
     {:ok, row} = ImportContext.create_row(import, Enum.into(attrs, @valid_attrs))
 
@@ -452,7 +454,8 @@ defmodule Hygeia.Fixtures do
 
   @valid_attrs %{type: :ism_2021_06_11_test}
 
-  @spec import_fixture(tenant :: Tenant.t(), atts :: Hygeia.ecto_changeset_params()) :: Import.t()
+  @spec import_fixture(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          Import.t()
   def import_fixture(tenant \\ tenant_fixture(), attrs \\ %{}) do
     {:ok, import} = ImportContext.create_import(tenant, Enum.into(attrs, @valid_attrs))
 
@@ -466,10 +469,22 @@ defmodule Hygeia.Fixtures do
     result: :positive
   }
 
-  @spec test_fixture(case :: Case.t(), atts :: Hygeia.ecto_changeset_params()) :: Test.t()
+  @spec test_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) :: Test.t()
   def test_fixture(case \\ case_fixture(), attrs \\ %{}) do
     {:ok, test} = CaseContext.create_test(case, Enum.into(attrs, @valid_attrs))
 
     test
+  end
+
+  @valid_attrs %{name: "some name", ism_code: 42}
+
+  @spec mutation_fixture(attrs :: Hygeia.ecto_changeset_params()) :: Mutation.t()
+  def mutation_fixture(attrs \\ %{}) do
+    {:ok, mutation} =
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> MutationContext.create_mutation()
+
+    mutation
   end
 end
