@@ -16,7 +16,13 @@
       }
     }
 
-    details[open] {
+    &:not([open]) {
+      summary.card-header {
+        border-bottom: none;
+      }
+    }
+
+    &[open] {
       summary.card-header {
         background-color: $gray-100;
       }

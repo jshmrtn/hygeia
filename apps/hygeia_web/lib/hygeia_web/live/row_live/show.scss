@@ -1,0 +1,31 @@
+.component-row-show {
+  .data-card {
+    border-width: 1px 1px 1px 6px !important;
+    border: 1px solid;
+    background: transparent;
+    border-color: theme-color-level("info", -7);
+    border-left-color: theme-color("info");
+
+    details {
+      summary.card-header {
+        background-color: transparent;
+      }
+
+      summary.card-header:hover {
+        background-color: $gray-100;
+      }
+
+      &:not([open]) {
+        summary.card-header {
+          border-bottom: none;
+        }
+      }
+
+      &[open] {
+        summary.card-header {
+          background-color: $gray-100;
+        }
+      }
+    }
+  }
+}
