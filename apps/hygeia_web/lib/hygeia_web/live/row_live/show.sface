@@ -17,11 +17,11 @@
       </button>
     </Link>
 
-    <div class="mt-4 mb-3">
+    <div class="mt-4 mb-3 alert alert-info">
       <strong>{gettext("Status")}:</strong> {Row.Status.translate(@row.status)}
     </div>
 
-    <div class=" mb-2 card data-card">
+    <div class="mb-2 card data-card">
       <details id="row_data">
         <summary class="card-header">
           {gettext("Import Data")}

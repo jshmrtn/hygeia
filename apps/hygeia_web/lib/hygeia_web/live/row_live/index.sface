@@ -15,31 +15,31 @@
           <th>
             {schema_field_name(:status, Row)}
           </th>
-
           <th />
         </tr>
       </thead>
       <tbody id="rows">
         <tr :for={row <- @rows} id={"row-#{row.uuid}"}>
-          <td>
-            <dl>
-              {#for {field_name, field_value} <- row.identifiers}
-                <dt>{field_name}</dt>
-                <dd>{field_value}</dd>
-              {/for}
-            </dl>
+          <td class="hy-readonly-form identifiers">
+            {#for {field_name, field_value} <- row.identifiers}
+              <div class="form-group">
+                <label class="mb-0">{field_name}</label>
+                <div class="value">
+                  {field_value}
+                </div>
+              </div>
+            {/for}
           </td>
           <td>
             {Status.translate(row.status)}
           </td>
-
           <td>
             <div class="d-flex justify-content-end w-100">
               <LiveRedirect
                 to={Routes.row_apply_path(@socket, :apply, row)}
                 :if={authorized?(row, :details, auth) and row.status == :pending}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">
+                <button class="ml-auto btn btn-sm btn-primary">
                   {gettext("Apply")}
                 </button>
               </LiveRedirect>
