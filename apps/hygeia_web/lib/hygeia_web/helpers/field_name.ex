@@ -187,7 +187,13 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type: "Type"
     },
     Hygeia.ImportContext.Row => %{
+      identifiers: "Identifiers",
       status: "Status"
+    },
+    Hygeia.ImportContext.Planner => %{
+      input_needed: "Input Needed",
+      uncertain: "Uncertain",
+      certain: "Certain"
     },
     Hygeia.OrganisationContext.Affiliation => %{
       comment: "Comment",

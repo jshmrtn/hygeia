@@ -1,13 +1,42 @@
 .component-row-apply {
-    .action {
-        &.certain  {
-            background-color: green;
-        }
-        &.uncertain  {
-            background-color: yellow;
-        }
-        &.input_needed  {
-            background-color: red;
-        }
+  .data-card {
+    border-width: 1px 1px 1px 6px !important;
+    border: 1px solid;
+    background: transparent;
+    border-color: theme-color-level("info", -7);
+    border-left-color: theme-color("info");
+
+    details {
+      summary.card-header {
+        background-color: transparent;
+      }
+
+      summary.card-header:hover {
+        background-color: $gray-100;
+      }
     }
+
+    details[open] {
+      summary.card-header {
+        background-color: $gray-100;
+      }
+    }
+
+    &.certain {
+      border-color: theme-color-level("success", -7);
+      border-left-color: theme-color("success");
+    }
+    &.uncertain {
+      border-color: theme-color-level("warning", -7);
+      border-left-color: theme-color-level("warning", 7);
+    }
+    &.input_needed {
+      border-color: theme-color-level("danger", -7);
+      border-left-color: theme-color("danger");
+    }
+
+    .certainty-label {
+      color: $gray-600;
+    }
+  }
 }

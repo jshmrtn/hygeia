@@ -9,289 +9,390 @@
       data: [confirm: gettext("Are you sure?")]
     }
   >
-    <button class="btn btn-danger">
+    <button class="mb-4 btn btn-danger">
       <span class="oi oi-trash" aria-hidden="true" />
       {gettext("Discard")}
     </button>
   </Link>
 
-  <p>Warning! ALways work from Top to Bottom. Otherwiese changes may be lost!</p>
+  <p class="mb-4 alert alert-warning">
+    <span class="oi oi-warning mr-1" aria-hidden="true" />
+    {gettext("Always work from Top to Bottom. Otherwise changes may be lost!")}
+  </p>
 
   <HygeiaWeb.Lock id={"lock_Row_#{@row.uuid}"} resource={{Row, @row.uuid}}>
-    <details id="row_data">
-      <summary>
-        <h2>{gettext("Import Data")}</h2>
-      </summary>
-      <dl>
-        {#for {key, value} <- @row.data}
-          <dt>{key}</dt>
-          <dd>{value}</dd>
-        {/for}
-      </dl>
-    </details>
+    <div class="mb-2 card data-card">
+      <details id="row_data">
+        <summary class="card-header">
+          {gettext("Import Data")}
+        </summary>
+        <div class="card-body hy-readonly-form">
+          <div class="row">
+            {#for {key, value} <- @row.data}
+              <div class="col-sm-12 col-md-6 col-lg-4 form-group mb-3 small">
+                <label class="mb-0">{key}</label>
+                <div class="value">
+                  {value_or_default(value, "-")}
+                </div>
+              </div>
+            {/for}
+          </div>
+        </div>
+      </details>
+    </div>
 
-    <details id="row_corrections">
-      <summary>
-        <h2>{gettext("Correct Data")}</h2>
-      </summary>
-      <dl>
-        <Form
-          for={@corrections}
-          submit="save_corrections"
-          opts={autocomplete: "off", id: "changes-form", class: "container"}
-          as={:corrections}
-        >
-          <Field :for={{key, _value} <- @corrections} name={key} class="form-group row">
-            <Label class="col-sm-3 col-form-label" />
-            <TextInput class="form-control col-sm-9" />
-          </Field>
+    <div class="mb-2  card data-card">
+      <details id="row_corrections">
+        <summary class="card-header">
+          {gettext("Correct Data")}
+        </summary>
+        <div class="card-body">
+          <Form
+            for={@corrections}
+            submit="save_corrections"
+            opts={autocomplete: "off", id: "changes-form", class: "container"}
+            as={:corrections}
+          >
+            <Field :for={{key, _value} <- @corrections} name={key} class="form-group row">
+              <Label class="col-sm-3 col-form-label" />
+              <TextInput class="form-control col-sm-9" />
+            </Field>
 
-          <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
-            {gettext("Save")}
-          </button>
-        </Form>
-      </dl>
-    </details>
+            <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
+              {gettext("Save")}
+            </button>
+          </Form>
+        </div>
+      </details>
+    </div>
 
-    <details id="row_changes">
-      <summary>
-        <h2>{gettext("Resulting Changes")}</h2>
-      </summary>
-      <dl>
-        {#for {key, value} <- Row.get_changes(@row, @predecessor)}
-          <dt>{key}</dt>
-          <dd>{value}</dd>
-        {/for}
-      </dl>
-    </details>
+    <div class="mb-2 card data-card">
+      <details id="row_changes">
+        <summary class="card-header">
+          {gettext("Resulting Changes")}
+        </summary>
+        <div class="card-body hy-readonly-form">
+          <div class="row">
+            {#for {key, value} <- Row.get_changes(@row, @predecessor)}
+              <div class="col-sm-12 col-md-6 col-lg-4 form-group mb-3 small">
+                <label class="mb-0">{key}</label>
+                <div class="value">
+                  {value_or_default(value, "-")}
+                </div>
+              </div>
+            {/for}
+          </div>
+        </div>
+      </details>
+    </div>
 
-    <details
+    <hr class="my-4">
+
+    <div
+      class={"mb-2 card data-card", certainty}
       :for={{{certainty, action}, index} <- Enum.with_index(@action_plan_suggestion)}
       :id={"action_plan_#{index}"}
-      open={certainty == :input_needed}
-      class={"action", certainty}
     >
-      {#if match?(%Action.ChooseTenant{}, action)}
-        <summary>Tenant: {action.tenant.name}</summary>
+      <details open={certainty == :input_needed}>
+        {#if match?(%Action.ChooseTenant{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {schema_field_name(certainty, Planner)}
+              </span>
+              Tenant: {action.tenant.name}
+            </div>
+          </summary>
 
-        <Form
-          for={%{tenant_uuid: action.tenant.uuid}}
-          submit="choose_tenant"
-          opts={autocomplete: "off", id: "choose-tenant-form", class: "container"}
-          as={:choose_tenant}
-        >
-          <HiddenInput field={:index} value={index} />
-          <Field name={:tenant_uuid} class="form-group row">
-            <Label class="col-sm-3 col-form-label" />
-            <Select class="form-control col-sm-9" options={Enum.map(@tenants, &{&1.name, &1.uuid})} />
-          </Field>
+          <div class="card-body">
+            <Form
+              for={%{tenant_uuid: action.tenant.uuid}}
+              submit="choose_tenant"
+              opts={autocomplete: "off", id: "choose-tenant-form", class: "container"}
+              as={:choose_tenant}
+            >
+              <HiddenInput field={:index} value={index} />
+              <Field name={:tenant_uuid} class="form-group row">
+                <Label class="col-sm-3 col-form-label" />
+                <Select class="form-control col-sm-9" options={Enum.map(@tenants, &{&1.name, &1.uuid})} />
+              </Field>
 
-          <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
-            {gettext("Change Tenant")}
-          </button>
-        </Form>
-      {/if}
-      {#if match?(%Action.SelectCase{}, action)}
-        <summary>
-          Case:
+              <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
+                {gettext("Change Tenant")}
+              </button>
+            </Form>
+          </div>
+        {/if}
+        {#if match?(%Action.SelectCase{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {schema_field_name(certainty, Planner)}
+              </span>
+              Case:
 
-          {#if is_nil(action.case) and is_nil(action.person)}
-            Create New
-          {/if}
-          {#if is_nil(action.case) and not is_nil(action.person)}
-            Existing Person, new case
-          {/if}
-          {#if not is_nil(action.case) and not is_nil(action.person)}
-            Existing Case
-          {/if}
-        </summary>
+              {#if is_nil(action.case) and is_nil(action.person)}
+                Create New
+              {/if}
+              {#if is_nil(action.case) and not is_nil(action.person)}
+                Existing Person, new case
+              {/if}
+              {#if not is_nil(action.case) and not is_nil(action.person)}
+                Existing Case
+              {/if}
+            </div>
+          </summary>
 
-        <Form
-          submit="patch_select_case"
-          for={%{
-            person_uuid: if(action.person, do: action.person.uuid),
-            case_uuid: if(action.case, do: action.case.uuid)
-          }}
-          opts={autocomplete: "off", id: "select-case-form", class: "container"}
-          as={:select_case}
-        >
-          <HiddenInput field={:index} value={index} />
-          <Field name={:person_uuid} class="form-group row">
-            <Label class="col-sm-3 col-form-label" />
-            <HygeiaWeb.PersonLive.Choose
-              id={"#{index}_Action.SelectCase_person"}
-              change="select_person"
-              subject={index}
-            />
-          </Field>
-
-          or
-
-          <Field name={:case_uuid} class="form-group row">
-            <Label class="col-sm-3 col-form-label" />
-            <HygeiaWeb.CaseLive.Choose
-              id={"#{index}_Action.SelectCase_case"}
-              change="select_case"
-              subject={index}
-            />
-          </Field>
-
-          <div class="form-group">
-            <Field name={:suppress_quarantine} class="form-check">
-              <label class="checkbox-label">
-                <Checkbox class="form-check-input" opts={disabled: certainty != :input_needed} />
-                {gettext("Suppress quarantine")}
-              </label>
+          <Form
+            submit="patch_select_case"
+            for={%{
+              person_uuid: if(action.person, do: action.person.uuid),
+              case_uuid: if(action.case, do: action.case.uuid)
+            }}
+            opts={autocomplete: "off", id: "select-case-form", class: "card-body container"}
+            as={:select_case}
+          >
+            <HiddenInput field={:index} value={index} />
+            <Field name={:person_uuid} class="form-group">
+              <Label />
+              <HygeiaWeb.PersonLive.Choose
+                id={"#{index}_Action.SelectCase_person"}
+                change="select_person"
+                subject={index}
+              />
             </Field>
-          </div>
 
-          <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
-            {gettext("Continue")}
-          </button>
-        </Form>
-      {/if}
-      {#if match?(%Action.PatchPhases{}, action)}
-        <summary :if={action.action == :skip}>
-          {gettext("Keep Phases")}
-        </summary>
-        <summary :if={action.action == :append}>
-          {gettext("Append Phase")}
-        </summary>
+            <span class="mb-3 d-block text-muted">{gettext("or")}</span>
 
-        {gettext("A phase will be appended.")}
-      {/if}
-      {#if match?(%Action.PatchPhaseDeath{}, action)}
-        <summary>
-          {gettext("Set end rason %{end_reason}", end_reason: Case.Phase.Index.EndReason.translate(:death))}
-        </summary>
+            <Field name={:case_uuid} class="mb-4 form-group">
+              <Label />
+              <HygeiaWeb.CaseLive.Choose
+                id={"#{index}_Action.SelectCase_case"}
+                change="select_case"
+                subject={index}
+              />
+            </Field>
 
-        {gettext("The index phase end reason will be set to %{end_reason}.",
-          end_reason: Case.Phase.Index.EndReason.translate(:death)
-        )}
-      {/if}
-      {#if match?(%Action.PatchExternalReferences{}, action)}
-        <summary>
-          {gettext("Add external references if it does not exist.")}
-        </summary>
-
-        <dl>
-          {#for {subject, type, value} <- action.references}
-            <dt>{subject} / {type}</dt>
-            <dd>{value}</dd>
-          {/for}
-        </dl>
-      {/if}
-      {#if match?(%Action.PatchPerson{}, action)}
-        <summary>
-          {gettext("Add replace field in Person.")}
-        </summary>
-
-        <pre>{inspect(action.person_attrs, pretty: true)}</pre>
-      {/if}
-      {#if match?(%Action.Save{}, action)}
-        <summary>
-          {gettext("Save")}
-        </summary>
-
-        {gettext("Execute the steps above & save.")}
-      {/if}
-      {#if match?(%Action.PatchTests{}, action)}
-        <summary :if={action.action == :append}>
-          {gettext("Append new Test")}
-        </summary>
-        <summary :if={action.action == :patch}>
-          {gettext("Patch existing Test")}
-        </summary>
-
-        <pre>{inspect(action.test_attrs, pretty: true)}</pre>
-      {/if}
-      {#if match?(%Action.PatchStatus{}, action)}
-        <summary :if={action.action == :skip}>
-          {gettext("Keep Status")}
-        </summary>
-        <summary :if={action.action == :change}>
-          {gettext("Change Status to %{status}", status: Case.Status.translate(action.status))}
-        </summary>
-
-        <Form
-          for={%{status: action.status}}
-          submit="patch_status"
-          opts={autocomplete: "off", id: "patch-status-form", class: "container"}
-          as={:patch_status}
-        >
-          <HiddenInput field={:index} value={index} />
-          <Field name={:status} class="form-group">
-            <Label class="col-sm-3 col-form-label" />
-            <Select
-              class="form-control"
-              opts={prompt: gettext("Select status")}
-              options={Case.Status.map()}
-            />
-          </Field>
-          <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
-            {gettext("Change Status")}
-          </button>
-        </Form>
-      {/if}
-      {#if match?(%Action.PatchAssignee{}, action)}
-        <summary :if={action.action == :skip}>
-          {gettext("Keep Assignees")}
-        </summary>
-        <summary :if={action.action == :change and action.tracer_uuid == nil and action.supervisor_uuid == nil}>
-          {gettext("Reset tracer & supervisor")}
-        </summary>
-        <summary :if={action.action == :change and (action.tracer_uuid != nil or action.supervisor_uuid != nil)}>
-          {gettext("Change Tracer to %{tracer} and supervisor to %{supervisor}",
-            tracer: user_name(@tracers, action.tracer_uuid),
-            supervisor: user_name(@supervisors, action.supervisor_uuid)
-          )}
-        </summary>
-
-        <Form
-          for={%{
-            tracer_uuid: action.tracer_uuid,
-            supervisor_uuid: action.supervisor_uuid
-          }}
-          submit="patch_assignee"
-          opts={autocomplete: "off", id: "patch-assignee-form", class: "container"}
-          as={:patch_assignee}
-        >
-          <HiddenInput field={:index} value={index} />
-          <div class="row">
-            <div class="col">
-              <Field name={:tracer_uuid} class="form-group">
-                <Label class="col-sm-3 col-form-label" />
-                <Select
-                  class="form-control"
-                  opts={prompt: gettext("Case Administration")}
-                  options={Enum.map(@tracers, &{&1.display_name, &1.uuid})}
-                />
+            <div class="form-group">
+              <Field name={:suppress_quarantine} class="form-check">
+                <label class="checkbox-label">
+                  <Checkbox class="form-check-input" opts={disabled: certainty != :input_needed} />
+                  {gettext("Suppress quarantine")}
+                </label>
               </Field>
             </div>
-            <div class="col">
-              <Field name={:supervisor_uuid} class="form-group">
-                <Label class="col-sm-3 col-form-label" />
-                <Select
-                  class="form-control"
-                  opts={prompt: gettext("Case Administration")}
-                  options={Enum.map(@supervisors, &{&1.display_name, &1.uuid})}
-                />
-              </Field>
-            </div>
-          </div>
-          <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
-            {gettext("Change Assignees")}
-          </button>
-        </Form>
-      {/if}
-    </details>
 
-    <button
-      :on-click="execute"
-      class="btn btn-primary execute-next"
-      disabled={not @complete}
-      phx-value-next="1"
-    >{gettext("Execute & Go to Next")}</button>
-    <button :on-click="execute" class="btn btn-primary execute-show" disabled={not @complete}>{gettext("Execute & Show Row")}</button>
+            <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
+              {gettext("Continue")}
+            </button>
+          </Form>
+        {/if}
+        {#if match?(%Action.PatchPhases{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {schema_field_name(certainty, Planner)}
+              </span>
+              <span :if={action.action == :skip}>{gettext("Keep Phases")}</span>
+              <span :if={action.action == :append}>{gettext("Append Phase")}</span>
+            </div>
+          </summary>
+
+          <div class="card-body">
+            {gettext("A phase will be appended.")}
+          </div>
+        {/if}
+        {#if match?(%Action.PatchPhaseDeath{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {schema_field_name(certainty, Planner)}
+              </span>
+              {gettext("Set end rason %{end_reason}", end_reason: Case.Phase.Index.EndReason.translate(:death))}
+            </div>
+          </summary>
+
+          <div class="card-body">
+            {gettext("The index phase end reason will be set to %{end_reason}.",
+              end_reason: Case.Phase.Index.EndReason.translate(:death)
+            )}
+          </div>
+        {/if}
+        {#if match?(%Action.PatchExternalReferences{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {schema_field_name(certainty, Planner)}
+              </span>
+              {gettext("Add external references if it does not exist.")}
+            </div>
+          </summary>
+
+          <div class="card-body hy-readonly-form">
+            {#for {subject, type, value} <- action.references}
+              <div class="form-group mb-3">
+                <label class="mb-0">{subject} / {type}</label>
+                <div class="value">
+                  {value}
+                </div>
+              </div>
+            {/for}
+          </div>
+        {/if}
+        {#if match?(%Action.PatchPerson{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {schema_field_name(certainty, Planner)}
+              </span>
+              {gettext("Add replace field in Person.")}
+            </div>
+          </summary>
+
+          <div class="card-body">
+            <pre>{inspect(action.person_attrs, pretty: true)}</pre>
+          </div>
+        {/if}
+        {#if match?(%Action.Save{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {schema_field_name(certainty, Planner)}
+              </span>
+              {gettext("Save")}
+            </div>
+          </summary>
+
+          <div class="card-body">
+            {gettext("Execute the steps above & save.")}
+          </div>
+        {/if}
+        {#if match?(%Action.PatchTests{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {schema_field_name(certainty, Planner)}
+              </span>
+
+              <span :if={action.action == :append}>
+                {gettext("Append new Test")}
+              </span>
+              <span :if={action.action == :patch}>
+                {gettext("Patch existing Test")}
+              </span>
+            </div>
+          </summary>
+
+          <div class="card-body">
+            <pre>{inspect(action.test_attrs, pretty: true)}</pre>
+          </div>
+        {/if}
+        {#if match?(%Action.PatchStatus{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {schema_field_name(certainty, Planner)}
+              </span>
+
+              <span :if={action.action == :skip}>
+                {gettext("Keep Status")}
+              </span>
+              <span :if={action.action == :change}>
+                {gettext("Change Status to %{status}", status: Case.Status.translate(action.status))}
+              </span>
+            </div>
+          </summary>
+
+          <Form
+            for={%{status: action.status}}
+            submit="patch_status"
+            opts={autocomplete: "off", id: "patch-status-form", class: "card-body container"}
+            as={:patch_status}
+          >
+            <HiddenInput field={:index} value={index} />
+            <Field name={:status} class="form-group">
+              <Label class="col-sm-3 col-form-label" />
+              <Select
+                class="form-control"
+                opts={prompt: gettext("Select status")}
+                options={Case.Status.map()}
+              />
+            </Field>
+            <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
+              {gettext("Change Status")}
+            </button>
+          </Form>
+        {/if}
+        {#if match?(%Action.PatchAssignee{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {schema_field_name(certainty, Planner)}
+              </span>
+
+              <span :if={action.action == :skip}>
+                {gettext("Keep Assignees")}
+              </span>
+              <span :if={action.action == :change and action.tracer_uuid == nil and action.supervisor_uuid == nil}>
+                {gettext("Reset tracer & supervisor")}
+              </span>
+              <span :if={action.action == :change and (action.tracer_uuid != nil or action.supervisor_uuid != nil)}>
+                {gettext("Change Tracer to %{tracer} and supervisor to %{supervisor}",
+                  tracer: user_name(@tracers, action.tracer_uuid),
+                  supervisor: user_name(@supervisors, action.supervisor_uuid)
+                )}
+              </span>
+            </div>
+          </summary>
+
+          <Form
+            for={%{
+              tracer_uuid: action.tracer_uuid,
+              supervisor_uuid: action.supervisor_uuid
+            }}
+            submit="patch_assignee"
+            opts={autocomplete: "off", id: "patch-assignee-form", class: "card-body container"}
+            as={:patch_assignee}
+          >
+            <HiddenInput field={:index} value={index} />
+            <div class="row">
+              <div class="col">
+                <Field name={:tracer_uuid} class="form-group">
+                  <Label class="col-sm-3 col-form-label" />
+                  <Select
+                    class="form-control"
+                    opts={prompt: gettext("Case Administration")}
+                    options={Enum.map(@tracers, &{&1.display_name, &1.uuid})}
+                  />
+                </Field>
+              </div>
+              <div class="col">
+                <Field name={:supervisor_uuid} class="form-group">
+                  <Label class="col-sm-3 col-form-label" />
+                  <Select
+                    class="form-control"
+                    opts={prompt: gettext("Case Administration")}
+                    options={Enum.map(@supervisors, &{&1.display_name, &1.uuid})}
+                  />
+                </Field>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
+              {gettext("Change Assignees")}
+            </button>
+          </Form>
+        {/if}
+      </details>
+    </div>
+
+    <div class="mt-4">
+      <button
+        :on-click="execute"
+        class="btn btn-primary execute-next"
+        disabled={not @complete}
+        phx-value-next="1"
+      >{gettext("Execute & Go to Next")}</button>
+      <button :on-click="execute" class="btn btn-primary execute-show" disabled={not @complete}>{gettext("Execute & Show Row")}</button>
+    </div>
   </HygeiaWeb.Lock>
 </div>
