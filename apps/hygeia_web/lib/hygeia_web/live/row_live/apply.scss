@@ -14,17 +14,17 @@
       summary.card-header:hover {
         background-color: $gray-100;
       }
-    }
 
-    &:not([open]) {
-      summary.card-header {
-        border-bottom: none;
+      &:not([open]) {
+        summary.card-header {
+          border-bottom: none;
+        }
       }
-    }
 
-    &[open] {
-      summary.card-header {
-        background-color: $gray-100;
+      &[open] {
+        summary.card-header {
+          background-color: $gray-100;
+        }
       }
     }
 
