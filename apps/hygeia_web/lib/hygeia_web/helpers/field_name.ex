@@ -142,7 +142,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       kind: "Test Kind",
       laboratory_reported_at: "Laboratory report date",
       reporting_unit: "Reporting unit",
-      mutation: "Mutation"
+      mutation: "Mutation",
+      reference: "Reference"
     },
     Hygeia.CaseContext.Transmission => %{
       comment: "Comment",
@@ -187,6 +188,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type: "Type"
     },
     Hygeia.ImportContext.Row => %{
+      identifiers: "Identifiers",
       status: "Status"
     },
     Hygeia.OrganisationContext.Affiliation => %{

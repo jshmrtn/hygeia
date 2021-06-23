@@ -10,8 +10,25 @@
   <Inputs for={:tests}>
     <HiddenInput field={:uuid} />
     <InputContext assigns={assigns} :let={form: form}>
-      <div class="card mb-2">
+      <div class="card mb-4">
         <div class="card-body">
+          <div :if={!@disabled} class="row">
+            <div class="col d-flex justify-content-end">
+              <InputContext assigns={assigns} :let={form: form}>
+                <button
+                  class="btn btn-sm btn-danger"
+                  type="button"
+                  phx-value-changeset-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
+                  :on-click={@remove_test}
+                  title={gettext("Remove")}
+                >
+                  {gettext("Remove")}
+                  <span class="oi oi-trash" aria-hidden="true" />
+                </button>
+              </InputContext>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col">
               <Field name={:tested_at} class="form-group">
@@ -160,23 +177,6 @@
                   </Inputs>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div :if={!@disabled} class="row">
-            <div class="col d-flex justify-content-end">
-              <InputContext assigns={assigns} :let={form: form}>
-                <button
-                  class="btn btn-sm btn-danger"
-                  type="button"
-                  phx-value-changeset-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
-                  :on-click={@remove_test}
-                  title={gettext("Remove")}
-                >
-                  {gettext("Remove")}
-                  <span class="oi oi-trash" aria-hidden="true" />
-                </button>
-              </InputContext>
             </div>
           </div>
         </div>

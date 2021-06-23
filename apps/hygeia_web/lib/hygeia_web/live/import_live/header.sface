@@ -1,7 +1,8 @@
 <div class="component-person-header mb-4">
   <Context get={HygeiaWeb, auth: auth}>
+    <span class="text-muted">{HygeiaCldr.DateTime.to_string!(@import.inserted_at)}</span>
     <h1 class="mb-4" :if={authorized?(@import, :details, auth)}>
-      {Type.translate(@import.type)} / {HygeiaCldr.DateTime.to_string!(@import.inserted_at)}
+      {Type.translate(@import.type)}
     </h1>
     <h1 class="mb-4" :if={not authorized?(@import, :details, auth)}>
       {@import.uuid}

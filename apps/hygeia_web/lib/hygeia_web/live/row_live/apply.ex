@@ -196,7 +196,7 @@ defmodule HygeiaWeb.RowLive.Apply do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(:person)
+      |> Repo.preload(person: [], tenant: [], tests: [])
 
     unless authorized?(case, :details, get_auth(socket)) do
       raise "unauthorized"
@@ -308,5 +308,13 @@ defmodule HygeiaWeb.RowLive.Apply do
       Enum.find(users, &match?(%UserContext.User{uuid: ^uuid}, &1))
 
     display_name
+  end
+
+  defp value_or_default(value, default) do
+    case value do
+      nil -> default
+      "" -> default
+      _other -> value
+    end
   end
 end

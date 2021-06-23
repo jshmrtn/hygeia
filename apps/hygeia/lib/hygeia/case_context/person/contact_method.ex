@@ -5,9 +5,7 @@ defmodule Hygeia.CaseContext.Person.ContactMethod do
 
   use Hygeia, :model
 
-  import EctoEnum
-
-  defenum Type, :contact_method_type, ["mobile", "landline", "email", "other"]
+  alias Hygeia.CaseContext.Person.ContactMethod.Type
 
   @type empty :: %__MODULE__{
           type: Type.t() | nil,

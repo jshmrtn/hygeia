@@ -1,21 +1,21 @@
 # credo:disable-for-this-file Credo.Check.Design.AliasUsage
-defmodule HygeiaWeb.VersionLive.Change do
+defmodule HygeiaWeb.ResourceTable do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
 
-  alias Hygeia.CaseContext.Case.Status
   alias Surface.Components.LiveRedirect
 
   require Logger
 
-  prop version, :map, required: true
+  prop subject, :map, required: true
+  prop module, :atom, required: true
 
   @impl Phoenix.LiveComponent
   def render(assigns) do
     ~F"""
-    <div class="component-version-live-change">
-      {render_tree(@version.item_changes, item_table_to_module(@version.item_table), assigns)}
+    <div class="component-resource-table">
+      {render_tree(@subject, @module, assigns)}
     </div>
     """
   end
@@ -79,19 +79,39 @@ defmodule HygeiaWeb.VersionLive.Change do
   end
 
   defp render_tree(string, schema, _assings) when schema in [:string, :binary_id], do: string
+
   defp render_tree(country, Hygeia.EctoType.Country, _assigns), do: country_name(country)
 
-  defp render_tree(date, :date, _assigns),
+  defp render_tree(%Date{} = date, :date, _assigns),
+    do: HygeiaCldr.Date.to_string!(date)
+
+  defp render_tree(date, :date, _assigns) when is_binary(date),
     do: date |> Date.from_iso8601!() |> HygeiaCldr.Date.to_string!()
 
-  defp render_tree(type, Hygeia.CaseContext.Person.ContactMethod.Type, _assigns),
-    do: type |> String.to_existing_atom() |> translate_contact_method_type()
+  for enum <- [
+        Hygeia.CaseContext.Person.ContactMethod.Type,
+        Hygeia.CaseContext.ExternalReference.Type,
+        Hygeia.ImportContext.Import.Type,
+        Hygeia.CaseContext.Person.Sex,
+        Hygeia.CaseContext.Case.Status,
+        Hygeia.CaseContext.Test.Kind
+      ] do
+    defp render_tree(value, unquote(enum), _assigns) do
+      {:ok, value} = unquote(enum).cast(value)
+      unquote(enum).translate(value)
+    end
+  end
 
-  defp render_tree(type, Hygeia.CaseContext.ExternalReference.Type, _assigns),
-    do: type |> String.to_existing_atom() |> Hygeia.CaseContext.ExternalReference.Type.translate()
-
-  defp render_tree(type, Hygeia.ImportContext.Import.Type, _assigns),
-    do: type |> String.to_existing_atom() |> Hygeia.ImportContext.Import.Type.translate()
+  defp render_tree(%NaiveDateTime{} = date, type, _assigns)
+       when type in [
+              :naive_datetime,
+              :naive_datetime_usec,
+              Hygeia.EctoType.LocalizedNaiveDatetime
+            ],
+       do:
+         date
+         |> DateTime.from_naive!("Europe/Zurich")
+         |> HygeiaCldr.DateTime.to_string!()
 
   defp render_tree(date, type, _assigns)
        when type in [
@@ -105,8 +125,13 @@ defmodule HygeiaWeb.VersionLive.Change do
          |> DateTime.from_naive!("Europe/Zurich")
          |> HygeiaCldr.DateTime.to_string!()
 
+  defp render_tree(%DateTime{} = date, type, _assigns)
+       when type in [:utc_datetime, :datetime, :datetime_usec, :utc_datetime_usec],
+       do: date |> DateTime.shift_zone!("Europe/Zurich") |> HygeiaCldr.DateTime.to_string!()
+
   defp render_tree(date, type, assigns)
-       when type in [:utc_datetime, :datetime, :datetime_usec, :utc_datetime_usec] do
+       when type in [:utc_datetime, :datetime, :datetime_usec, :utc_datetime_usec] and
+              is_binary(date) do
     case DateTime.from_iso8601(date) do
       {:ok, date, _offset} ->
         date |> DateTime.shift_zone!("Europe/Zurich") |> HygeiaCldr.DateTime.to_string!()
@@ -116,20 +141,18 @@ defmodule HygeiaWeb.VersionLive.Change do
     end
   end
 
-  defp render_tree(code, Hygeia.EctoType.NOGA.Code, _assigns),
-    do: code |> String.to_existing_atom() |> Hygeia.EctoType.NOGA.Code.title()
+  defp render_tree(code, Hygeia.EctoType.NOGA.Code, _assigns) do
+    {:ok, code} = Hygeia.EctoType.NOGA.Code.cast(code)
+    Hygeia.EctoType.NOGA.Code.title(code)
+  end
 
-  defp render_tree(code, Hygeia.EctoType.NOGA.Section, _assigns),
-    do: code |> String.to_existing_atom() |> Hygeia.EctoType.NOGA.Section.title()
-
-  defp render_tree(sex, Hygeia.CaseContext.Person.Sex, _assigns),
-    do: sex |> String.to_existing_atom() |> translate_person_sex()
+  defp render_tree(code, Hygeia.EctoType.NOGA.Section, _assigns) do
+    {:ok, code} = Hygeia.EctoType.NOGA.Section.cast(code)
+    Hygeia.EctoType.NOGA.Section.title(code)
+  end
 
   defp render_tree(boolean, :boolean, _assigns),
     do: if(boolean, do: gettext("True"), else: gettext("False"))
-
-  defp render_tree(status, Hygeia.CaseContext.Case.Status, _assigns),
-    do: status |> String.to_existing_atom() |> Status.translate()
 
   defp render_tree(other, schema, _assings) do
     Logger.warn("""

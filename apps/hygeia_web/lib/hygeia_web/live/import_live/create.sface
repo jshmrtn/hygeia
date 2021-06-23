@@ -8,6 +8,13 @@
     {gettext("New Import")}
   </h1>
 
+  <p class="mb-4 alert alert-warning">
+    <span class="oi oi-warning mr-1" aria-hidden="true" />
+    {gettext(
+      "Warning! When importing the same rows multiple times, they will be re-assigned from the old import to the current import. Therefore rows might appear missing from an import later on."
+    )}
+  </p>
+
   <div class="hy-card-grid-2-cols">
     <div class="card mb-3">
       <div class="card-body">
@@ -23,9 +30,17 @@
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
 
-        <Field name={:file} class="form-group">
+        <Field name={:file} class="mb-0 form-group">
           <HygeiaWeb.FieldLabel />
-          <LiveFileInput class="form-control" upload={@uploads.file} />
+          <label class="mb-0 d-block">
+            <div class="btn btn-primary">{gettext("Choose file")}</div>
+            <div class="mt-1">
+              <span class="d-block small" :for={entry <- @uploads.file.entries}>
+                {entry.client_name}
+              </span>
+            </div>
+            <LiveFileInput class="d-none form-control-file" upload={@uploads.file} />
+          </label>
 
           <progress
             :for={%{preflighted?: true} = entry <- @uploads.file.entries}
@@ -69,6 +84,4 @@
   >
     {gettext("Save")}
   </button>
-
-  Warning! When importing the same rows multiple times, they will be re-assigned from the old import to the current import. Therefore rows might appear missing from an import later on.
 </Form>

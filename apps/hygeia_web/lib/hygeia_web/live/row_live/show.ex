@@ -9,6 +9,7 @@ defmodule HygeiaWeb.RowLive.Show do
   alias Hygeia.ImportContext.Row
   alias Hygeia.Repo
   alias Surface.Components.Link
+  alias Surface.Components.LiveRedirect
 
   require Logger
 
@@ -63,5 +64,13 @@ defmodule HygeiaWeb.RowLive.Show do
     assign(socket,
       row: Repo.preload(row, import: [], tenant: [], case: [tenant: [], person: [tenant: []]])
     )
+  end
+
+  defp value_or_default(value, default) do
+    case value do
+      nil -> default
+      "" -> default
+      _other -> value
+    end
   end
 end

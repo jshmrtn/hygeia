@@ -1,4 +1,4 @@
-.component-row-apply {
+.component-row-show {
   .data-card {
     border-width: 1px 1px 1px 6px !important;
     border: 1px solid;
@@ -26,23 +26,6 @@
           background-color: $gray-100;
         }
       }
-    }
-
-    &.certain {
-      border-color: theme-color-level("success", -7);
-      border-left-color: theme-color("success");
-    }
-    &.uncertain {
-      border-color: theme-color-level("warning", -7);
-      border-left-color: theme-color-level("warning", 7);
-    }
-    &.input_needed {
-      border-color: theme-color-level("danger", -7);
-      border-left-color: theme-color("danger");
-    }
-
-    .certainty-label {
-      color: $gray-600;
     }
   }
 }
