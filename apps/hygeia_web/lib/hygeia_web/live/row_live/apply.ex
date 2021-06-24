@@ -196,7 +196,7 @@ defmodule HygeiaWeb.RowLive.Apply do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(:person)
+      |> Repo.preload(person: [], tenant: [], tests: [])
 
     unless authorized?(case, :details, get_auth(socket)) do
       raise "unauthorized"

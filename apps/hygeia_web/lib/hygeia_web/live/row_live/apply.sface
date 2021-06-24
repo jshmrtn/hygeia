@@ -91,6 +91,7 @@
     <div
       class={"mb-2 card data-card", certainty}
       :for={{{certainty, action}, index} <- Enum.with_index(@action_plan_suggestion)}
+      :if={not match?(%Action.Save{}, action)}
       :id={"action_plan_#{index}"}
     >
       <details open={certainty == :input_needed}>
@@ -231,7 +232,8 @@
           <div class="card-body hy-readonly-form">
             {#for {subject, type, value} <- action.references}
               <div class="form-group mb-3">
-                <label class="mb-0">{subject} / {type}</label>
+                <label class="mb-0">{#case subject}
+                    {#match :person}{gettext("Person")}{#match :case}                  {/case} / {CaseContext.ExternalReference.Type.translate(type)}</label>
                 <div class="value">
                   {value}
                 </div>
@@ -250,21 +252,11 @@
           </summary>
 
           <div class="card-body">
-            <pre>{inspect(action.person_attrs, pretty: true)}</pre>
-          </div>
-        {/if}
-        {#if match?(%Action.Save{}, action)}
-          <summary class="card-header">
-            <div class="d-inline-block">
-              <span class="d-block small certainty-label">
-                {translate_certainty(certainty)}
-              </span>
-              {gettext("Save")}
-            </div>
-          </summary>
-
-          <div class="card-body">
-            {gettext("Execute the steps above & save.")}
+            <HygeiaWeb.ResourceTable
+              subject={action.person_attrs}
+              module={CaseContext.Person}
+              id="patch_person_changes"
+            />
           </div>
         {/if}
         {#if match?(%Action.PatchTests{}, action)}
@@ -284,7 +276,11 @@
           </summary>
 
           <div class="card-body">
-            <pre>{inspect(action.test_attrs, pretty: true)}</pre>
+            <HygeiaWeb.ResourceTable
+              subject={action.test_attrs}
+              module={CaseContext.Test}
+              id="patch_test_changes"
+            />
           </div>
         {/if}
         {#if match?(%Action.PatchStatus{}, action)}

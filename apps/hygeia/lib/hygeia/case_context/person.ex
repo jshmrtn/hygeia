@@ -5,20 +5,17 @@ defmodule Hygeia.CaseContext.Person do
 
   use Hygeia, :model
 
-  import EctoEnum
-
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Person.ContactMethod
+  alias Hygeia.CaseContext.Person.Sex
   alias Hygeia.CaseContext.Person.Vaccination
   alias Hygeia.EctoType.NOGA
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Position
   alias Hygeia.TenantContext.Tenant
-
-  defenum Sex, :sex, ["male", "female", "other"]
 
   @derive {Phoenix.Param, key: :uuid}
 
