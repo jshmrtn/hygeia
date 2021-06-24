@@ -66,8 +66,7 @@ defmodule HygeiaWeb.MixProject do
       {:jason, "~> 1.1"},
       {:mime, "~> 1.5"},
       {:nebulex, "~> 2.0-rc"},
-      # TODO: Revert to released version when is released
-      {:oidcc, github: "Erlang-Openid/oidcc", branch: "master", override: true},
+      {:oidcc, "~> 1.8.1"},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_active_link, "~> 0.3.1"},
       {:phoenix_ecto, "~> 4.0"},
