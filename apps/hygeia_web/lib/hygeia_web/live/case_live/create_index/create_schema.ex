@@ -151,7 +151,8 @@ defmodule HygeiaWeb.CaseLive.CreateIndex.CreateSchema do
                 phase
                 | details: %Case.Phase.PossibleIndex{
                     possible_index
-                    | end_reason: :converted_to_index
+                    | end_reason: :converted_to_index,
+                      end_reason_date: DateTime.utc_now()
                   },
                   end: Date.utc_today(),
                   send_automated_close_email: false
