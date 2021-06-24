@@ -190,11 +190,6 @@ defmodule HygeiaWeb.Helpers.FieldName do
       identifiers: "Identifiers",
       status: "Status"
     },
-    Hygeia.ImportContext.Planner => %{
-      input_needed: "Input Needed",
-      uncertain: "Uncertain",
-      certain: "Certain"
-    },
     Hygeia.OrganisationContext.Affiliation => %{
       comment: "Comment",
       division: "Division",

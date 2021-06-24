@@ -98,7 +98,7 @@
           <summary class="card-header">
             <div class="d-inline-block">
               <span class="d-block small certainty-label">
-                {schema_field_name(certainty, Planner)}
+                {translate_certainty(certainty)}
               </span>
               Tenant: {action.tenant.name}
             </div>
@@ -127,7 +127,7 @@
           <summary class="card-header">
             <div class="d-inline-block">
               <span class="d-block small certainty-label">
-                {schema_field_name(certainty, Planner)}
+                {translate_certainty(certainty)}
               </span>
               Case:
 
@@ -191,7 +191,7 @@
           <summary class="card-header">
             <div class="d-inline-block">
               <span class="d-block small certainty-label">
-                {schema_field_name(certainty, Planner)}
+                {translate_certainty(certainty)}
               </span>
               <span :if={action.action == :skip}>{gettext("Keep Phases")}</span>
               <span :if={action.action == :append}>{gettext("Append Phase")}</span>
@@ -206,7 +206,7 @@
           <summary class="card-header">
             <div class="d-inline-block">
               <span class="d-block small certainty-label">
-                {schema_field_name(certainty, Planner)}
+                {translate_certainty(certainty)}
               </span>
               {gettext("Set end rason %{end_reason}", end_reason: Case.Phase.Index.EndReason.translate(:death))}
             </div>
@@ -222,7 +222,7 @@
           <summary class="card-header">
             <div class="d-inline-block">
               <span class="d-block small certainty-label">
-                {schema_field_name(certainty, Planner)}
+                {translate_certainty(certainty)}
               </span>
               {gettext("Add external references if it does not exist.")}
             </div>
@@ -243,7 +243,7 @@
           <summary class="card-header">
             <div class="d-inline-block">
               <span class="d-block small certainty-label">
-                {schema_field_name(certainty, Planner)}
+                {translate_certainty(certainty)}
               </span>
               {gettext("Add replace field in Person.")}
             </div>
@@ -257,7 +257,7 @@
           <summary class="card-header">
             <div class="d-inline-block">
               <span class="d-block small certainty-label">
-                {schema_field_name(certainty, Planner)}
+                {translate_certainty(certainty)}
               </span>
               {gettext("Save")}
             </div>
@@ -271,7 +271,7 @@
           <summary class="card-header">
             <div class="d-inline-block">
               <span class="d-block small certainty-label">
-                {schema_field_name(certainty, Planner)}
+                {translate_certainty(certainty)}
               </span>
 
               <span :if={action.action == :append}>
@@ -291,7 +291,7 @@
           <summary class="card-header">
             <div class="d-inline-block">
               <span class="d-block small certainty-label">
-                {schema_field_name(certainty, Planner)}
+                {translate_certainty(certainty)}
               </span>
 
               <span :if={action.action == :skip}>
@@ -327,7 +327,7 @@
           <summary class="card-header">
             <div class="d-inline-block">
               <span class="d-block small certainty-label">
-                {schema_field_name(certainty, Planner)}
+                {translate_certainty(certainty)}
               </span>
 
               <span :if={action.action == :skip}>

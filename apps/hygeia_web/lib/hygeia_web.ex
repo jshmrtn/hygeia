@@ -168,6 +168,7 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.ContactMethod
       import HygeiaWeb.Helpers.CSP
       import HygeiaWeb.Helpers.FieldName
+      import HygeiaWeb.Helpers.Import
       import HygeiaWeb.Helpers.InfectionPlace
       import HygeiaWeb.Helpers.Monitoring
       import HygeiaWeb.Helpers.Organisation
