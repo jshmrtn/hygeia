@@ -84,7 +84,7 @@
               <HygeiaWeb.RecordView
                 resource={@row.case.person}
                 action={:list}
-                id="record_view_person_asdf"
+                id="record_view_person"
                 wrapper_tag={:span}
               >
                 {@row.case.person.first_name}
