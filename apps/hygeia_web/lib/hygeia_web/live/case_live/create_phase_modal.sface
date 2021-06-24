@@ -1,6 +1,6 @@
 <div class="component-case-phase container">
   <HygeiaWeb.Modal id={"#{@myself}_modal"} title={gettext("New Phase")} close={@close}>
-    <HygeiaWeb.Lock id={"create_phase_lock_Case_#{@case.uuid}"} resource={Case, @case.uuid}>
+    <HygeiaWeb.Lock id={"create_phase_lock_Case_#{@case.uuid}"} resource={{Case, @case.uuid}}>
       <Form
         for={@changeset}
         change="validate"

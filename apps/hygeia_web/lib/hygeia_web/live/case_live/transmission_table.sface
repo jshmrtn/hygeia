@@ -68,13 +68,7 @@
                   <HygeiaWeb.RecordView
                     resource={transmission.recipient_case}
                     action={:list}
-                    id={
-                      :transmission,
-                      :recipient_case,
-                      :record_view,
-                      transmission.uuid,
-                      transmission.recipient_case.uuid
-                    }
+                    id={"transmission_recipient_case__record_view_#{transmission.uuid}_#{transmission.recipient_case.uuid}"}
                     wrapper_tag={:span}
                   >
                     {case_display_type(transmission.recipient_case)}
@@ -131,13 +125,7 @@
                   <HygeiaWeb.RecordView
                     resource={transmission.propagator_case}
                     action={:list}
-                    id={
-                      :transmission,
-                      :propagator_case,
-                      :record_view,
-                      transmission.uuid,
-                      transmission.propagator_case.uuid
-                    }
+                    id={"transmission_propagator_case_record_view_#{transmission.uuid}_#{transmission.propagator_case.uuid}"}
                     wrapper_tag={:span}
                   >
                     {case_display_type(transmission.propagator_case)}
