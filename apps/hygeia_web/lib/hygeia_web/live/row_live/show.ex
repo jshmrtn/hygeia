@@ -9,6 +9,7 @@ defmodule HygeiaWeb.RowLive.Show do
   alias Hygeia.ImportContext.Row
   alias Hygeia.Repo
   alias Surface.Components.Link
+  alias Surface.Components.LiveRedirect
 
   require Logger
 
