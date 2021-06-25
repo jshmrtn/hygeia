@@ -14,7 +14,7 @@
           to={Routes.import_show_path(@socket, :show, @import)}
           :let={to: to, active: active}
         >
-          <LiveRedirect to={to} class={"nav-link #{if active, do: "active"}"}>
+          <LiveRedirect to={to} class={"nav-link", active: active}>
             {gettext("Base Data")}
           </LiveRedirect>
         </UriActiveContext>
@@ -28,7 +28,7 @@
           to={Routes.row_index_path(@socket, :index, @import, status)}
           :let={to: to, active: active}
         >
-          <LiveRedirect to={to} class={"nav-link #{if active, do: "active"}"}>
+          <LiveRedirect to={to} class={"nav-link", active: active}>
             {case status do
               :pending -> gettext("Pending Rows")
               :resolved -> gettext("Resolved Rows")
@@ -42,7 +42,7 @@
           to={Routes.version_show_path(@socket, :show, Import.__schema__(:source), @import)}
           :let={to: to, active: active}
         >
-          <LiveRedirect to={to} class={"nav-link  #{if active, do: "active"}"}>
+          <LiveRedirect to={to} class={"nav-link", active: active}>
             {gettext("History")}
           </LiveRedirect>
         </UriActiveContext>
