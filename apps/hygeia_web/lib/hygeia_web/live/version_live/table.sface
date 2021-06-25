@@ -63,7 +63,11 @@
         </td>
         <td :if={is_nil(user)} />
         <td phx-update="ignore" id={"version_#{uuid}_table"}>
-          <HygeiaWeb.VersionLive.Change version={version} id={"version_#{uuid}_changes"} />
+          <HygeiaWeb.ResourceTable
+            subject={version.item_changes}
+            module={item_table_to_module(version.item_table)}
+            id={"version_#{uuid}_changes"}
+          />
         </td>
       </HygeiaWeb.RecordView>
     </tbody>

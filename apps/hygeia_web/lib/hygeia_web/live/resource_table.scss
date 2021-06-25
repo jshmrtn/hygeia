@@ -1,0 +1,39 @@
+.component-resource-table {
+  ul {
+    list-style-type: none;
+    padding-inline-start: 24px;
+
+    details {
+      summary {
+        list-style: none;
+        margin-left: -20px;
+
+        &::marker, &::-webkit-details-marker {
+          display: none;
+        }
+
+        &:before {
+          display: inline-block;
+          content: "▶";
+          height: 18px;
+          width: 20px;
+        }
+      }
+      &[open] > summary:before {
+        content: "▼";
+      }
+    }
+
+    .field-name::after {
+      content: ":";
+    }
+
+    .nil,
+    .empty-list {
+      &::after {
+        color: $gray-500;
+        content: "-";
+      }
+    }
+  }
+}

@@ -7,8 +7,6 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
   import EctoEnum
 
-  alias Hygeia.CaseContext.Entity
-
   defenum TestReason, :test_reason, [
     "symptoms",
     "outbreak_examination",
@@ -38,20 +36,10 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     "other"
   ]
 
-  defenum TestKind, :test_kind, ["pcr", "serology", "quick", "antigen_quick", "antibody"]
-
-  defenum Result, :test_result, ["positive", "negative"]
-
   @type empty :: %__MODULE__{
           reasons_for_test: [TestReason.t()] | nil,
           has_symptoms: boolean() | nil,
           symptoms: [Symptom.t()] | nil,
-          test: Date.t() | nil,
-          laboratory_report: Date.t() | nil,
-          test_kind: TestKind.t() | nil,
-          result: Result.t() | nil,
-          sponsor: Entity.t() | nil,
-          reporting_unit: Entity.t() | nil,
           symptom_start: Date.t() | nil
         }
 
@@ -59,12 +47,6 @@ defmodule Hygeia.CaseContext.Case.Clinical do
           reasons_for_test: [TestReason.t()],
           has_symptoms: boolean() | nil,
           symptoms: [Symptom.t()],
-          test: Date.t() | nil,
-          laboratory_report: Date.t() | nil,
-          test_kind: TestKind.t() | nil,
-          result: Result.t() | nil,
-          sponsor: Entity.t() | nil,
-          reporting_unit: Entity.t() | nil,
           symptom_start: Date.t() | nil
         }
 
@@ -72,14 +54,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     field :reasons_for_test, {:array, TestReason}
     field :has_symptoms, :boolean
     field :symptoms, {:array, Symptom}
-    field :test, :date
-    field :laboratory_report, :date
-    field :test_kind, TestKind
-    field :result, Result
     field :symptom_start, :date
-
-    embeds_one :sponsor, Entity, on_replace: :update
-    embeds_one :reporting_unit, Entity, on_replace: :update
   end
 
   @doc false
@@ -90,14 +65,8 @@ defmodule Hygeia.CaseContext.Case.Clinical do
       :reasons_for_test,
       :has_symptoms,
       :symptoms,
-      :test,
-      :laboratory_report,
-      :test_kind,
-      :result,
       :symptom_start
     ])
-    |> cast_embed(:sponsor)
-    |> cast_embed(:reporting_unit)
     |> validate_required([])
     |> clear_symptoms()
   end
@@ -132,10 +101,5 @@ defmodule Hygeia.CaseContext.Case.Clinical do
   end
 
   @spec merge(old :: t() | Changeset.t(t()), new :: t() | Changeset.t(t())) :: Changeset.t(t())
-  def merge(old, new) do
-    merge(old, new, __MODULE__, fn embed, old_embed, new_embed
-                                   when embed in [:sponsor, :reporting_unit] ->
-      Entity.merge(old_embed, new_embed)
-    end)
-  end
+  def merge(old, new), do: merge(old, new, __MODULE__)
 end

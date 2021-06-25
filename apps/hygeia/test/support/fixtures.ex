@@ -9,10 +9,16 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CommunicationContext
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
+  alias Hygeia.ImportContext
+  alias Hygeia.ImportContext.Import
+  alias Hygeia.ImportContext.Row
+  alias Hygeia.MutationContext
+  alias Hygeia.MutationContext.Mutation
   alias Hygeia.NotificationContext
   alias Hygeia.NotificationContext.Notification
   alias Hygeia.OrganisationContext
@@ -103,13 +109,17 @@ defmodule Hygeia.Fixtures do
       %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
       %{start: ~D[2020-10-16], end: ~D[2020-10-17]}
     ],
+    tests: [
+      %{
+        tested_at: ~D[2020-10-11],
+        laboratory_reported_at: ~D[2020-10-12],
+        kind: :pcr,
+        result: :positive
+      }
+    ],
     clinical: %{
       reasons_for_test: [:symptoms, :outbreak_examination],
       symptoms: [:fever],
-      test: ~D[2020-10-11],
-      laboratory_report: ~D[2020-10-12],
-      test_kind: :pcr,
-      result: :positive,
       symptom_start: ~D[2020-10-10]
     },
     external_references: [
@@ -431,5 +441,50 @@ defmodule Hygeia.Fixtures do
       CaseContext.create_hospitalization(case, Enum.into(attrs, @valid_attrs))
 
     hospitalization
+  end
+
+  @valid_attrs %{corrected: %{}, identifiers: %{}, data: %{}, status: :pending}
+
+  @spec row_fixture(import :: Import.t(), attrs :: Hygeia.ecto_changeset_params()) :: Row.t()
+  def row_fixture(import \\ import_fixture(), attrs \\ %{}) do
+    {:ok, row} = ImportContext.create_row(import, Enum.into(attrs, @valid_attrs))
+
+    row
+  end
+
+  @valid_attrs %{type: :ism_2021_06_11_test}
+
+  @spec import_fixture(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          Import.t()
+  def import_fixture(tenant \\ tenant_fixture(), attrs \\ %{}) do
+    {:ok, import} = ImportContext.create_import(tenant, Enum.into(attrs, @valid_attrs))
+
+    import
+  end
+
+  @valid_attrs %{
+    tested_at: ~D[2020-10-11],
+    laboratory_reported_at: ~D[2020-10-12],
+    kind: :pcr,
+    result: :positive
+  }
+
+  @spec test_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) :: Test.t()
+  def test_fixture(case \\ case_fixture(), attrs \\ %{}) do
+    {:ok, test} = CaseContext.create_test(case, Enum.into(attrs, @valid_attrs))
+
+    test
+  end
+
+  @valid_attrs %{name: "some name", ism_code: 42}
+
+  @spec mutation_fixture(attrs :: Hygeia.ecto_changeset_params()) :: Mutation.t()
+  def mutation_fixture(attrs \\ %{}) do
+    {:ok, mutation} =
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> MutationContext.create_mutation()
+
+    mutation
   end
 end

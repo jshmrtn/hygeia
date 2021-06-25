@@ -1,0 +1,88 @@
+<div class="component-mutation-base-data container">
+  <Context get={HygeiaWeb, auth: auth}>
+    <h1 class="mb-3">
+      {gettext("Mutation")}
+    </h1>
+
+    <div class="mb-4" :if={@live_action == :show}>
+      <LivePatch
+        :if={authorized?(@mutation, :update, auth)}
+        to={Routes.mutation_show_path(@socket, :edit, @mutation)}
+      >
+        <button class="btn btn-primary mr-2" id="mutation-edit">
+          <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+          {gettext("Edit")}
+        </button>
+      </LivePatch>
+      <Link
+        to="#"
+        click="delete"
+        opts={
+          title: gettext("Delete"),
+          data: [confirm: gettext("Are you sure?")]
+        }
+        :if={authorized?(@mutation, :delete, auth)}
+      >
+        <button class="btn btn-danger">
+          <span class="oi oi-trash" aria-hidden="true" />
+          {gettext("Delete")}
+        </button>
+      </Link>
+    </div>
+
+    <Form
+      for={@changeset}
+      change="validate"
+      submit="save"
+      opts={autocomplete: "off", id: "mutation-form", "phx-hook": "BlockNavigation"}
+    >
+      <HygeiaWeb.Lock
+        id={{:lock, Mutation, @mutation.uuid}}
+        resource={{Mutation, @mutation.uuid}}
+        lock={@live_action == :edit}
+      >
+        <div :if={@live_action == :edit}>
+          <div class="mb-4" :if={@live_action == :edit}>
+            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Saving...")}>
+              <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+              {gettext("Save")}
+            </button>
+            <button
+              :on-click="reset"
+              class="btn btn-warning"
+              type="button"
+              data-confirm={if @changeset.changes != %{} do
+                gettext("Do you really want to discard your changes?")
+              else
+                nil
+              end}
+            >
+              <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+              {gettext("Discard")}
+            </button>
+          </div>
+        </div>
+
+        <div class="hy-card-grid-2-cols hy-readonly-form">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">{gettext("Name")}</h4>
+
+              <Field name={:name} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+
+              <Field name={:ism_code} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <NumberInput class="form-control" opts={disabled: @live_action == :show} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+          </div>
+        </div>
+      </HygeiaWeb.Lock>
+    </Form>
+  </Context>
+</div>

@@ -38,6 +38,13 @@ defmodule Hygeia.EctoType.LocalizedNaiveDatetime do
     |> DateTime.to_naive()
   end
 
+  @impl Ecto.Type
+  def autogenerate,
+    do:
+      local_timezone()
+      |> DateTime.now!()
+      |> DateTime.to_naive()
+
   #   TODO read timezone from user/session
   defp local_timezone, do: "Europe/Zurich"
 end

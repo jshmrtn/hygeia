@@ -5,6 +5,7 @@
 
 import Hygeia.CaseContext
 import Hygeia.CommunicationContext
+import Hygeia.MutationContext
 import Hygeia.OrganisationContext
 import Hygeia.TenantContext
 import Hygeia.UserContext
@@ -28,6 +29,10 @@ tenant_root = Enum.find(tenants, &match?(%{name: "Hygeia - Covid19 Tracing"}, &1
 
 {_hospitals, _bindings} =
   Code.eval_file(Application.app_dir(:hygeia, "priv/repo/seeds/schools.exs"))
+
+{:ok, _mutation} = create_mutation(%{name: "SARS-CoV-2 - N501Y", ism_code: 1173})
+{:ok, _mutation} = create_mutation(%{name: "SARS-CoV-2 - B.1.1.7", ism_code: 1174})
+{:ok, _mutation} = create_mutation(%{name: "SARS-CoV-2 - N501Y & E484K", ism_code: 1180})
 
 if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
   {:ok, _sedex_export_sg} =
@@ -210,13 +215,17 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         %{start: ~D[2020-10-13], end: ~D[2020-10-15], organisation_uuid: organisation_kssg.uuid},
         %{start: ~D[2020-10-16], end: nil}
       ],
+      tests: [
+        %{
+          tested_at: ~D[2020-10-11],
+          laboratory_reported_at: ~D[2020-10-12],
+          kind: :pcr,
+          result: :positive
+        }
+      ],
       clinical: %{
         reasons_for_test: [:symptoms, :outbreak_examination],
         symptoms: [:fever],
-        test: ~D[2020-10-11],
-        laboratory_report: ~D[2020-10-12],
-        test_kind: :pcr,
-        result: :positive,
         symptom_start: ~D[2020-10-10]
       },
       external_references: [
@@ -341,6 +350,8 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         possible_index_type =
           Enum.random(Hygeia.CaseContext.Case.Phase.PossibleIndex.Type.__enum_map__())
 
+        status = Enum.random(Hygeia.CaseContext.Case.Status.__enum_map__())
+
         phase =
           Enum.random([
             %{
@@ -354,7 +365,11 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
                   end
               },
               start: start_date,
-              end: end_date
+              end: end_date,
+              quarantine_order:
+                if status in [:done, :canceled] do
+                  true
+                end
             },
             %{
               details: %{
@@ -373,7 +388,11 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
                   end
               },
               start: start_date,
-              end: end_date
+              end: end_date,
+              quarantine_order:
+                if status in [:done, :canceled] do
+                  true
+                end
             }
           ])
 
@@ -382,7 +401,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
           i,
           change_new_case(person, %{
             complexity: Enum.random(Hygeia.CaseContext.Case.Complexity.__enum_map__()),
-            status: Enum.random(Hygeia.CaseContext.Case.Status.__enum_map__()),
+            status: status,
             tracer_uuid: user_jony.uuid,
             supervisor_uuid: user_jony.uuid,
             phases: [phase]

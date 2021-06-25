@@ -50,7 +50,6 @@ defmodule HygeiaWeb.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:csv, "~> 2.4"},
       {:earmark, "~> 1.1"},
       {:ecto_psql_extras, "~> 0.4"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},
@@ -86,8 +85,7 @@ defmodule HygeiaWeb.MixProject do
       {:surface, "~> 0.4"},
       {:surface_formatter, "~> 0.2"},
       {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
-      {:xlsxir, "~> 1.6.4"}
+      {:telemetry_poller, "~> 0.4"}
     ]
   end
 

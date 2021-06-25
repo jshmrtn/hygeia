@@ -168,7 +168,7 @@ defmodule HygeiaWeb.Router do
     live "/people/:id/edit", PersonLive.BaseData, :edit
     live "/people/:cursor_direction/:cursor", PersonLive.Index, :index
 
-    live "/cases/new/index", CaseLive.CreateIndex, :create
+    live "/cases/new", CaseLive.Create, :create
     live "/cases/new/possible-index", CaseLive.CreatePossibleIndex, :create
     live "/cases/:id", CaseLive.BaseData, :show
     live "/cases/:id/edit", CaseLive.BaseData, :edit
@@ -213,9 +213,31 @@ defmodule HygeiaWeb.Router do
          :position_edit
 
     live "/history/:resource/:id", VersionLive.Show, :show
+
     live "/system_messages/new", SystemMessageLive.Create, :create
     live "/system_messages/:id", SystemMessageLive.Show, :show
     live "/system_messages/:id/edit", SystemMessageLive.Show, :edit
+
+    live "/inbox/imports", ImportLive.Index, :index
+    live "/inbox/imports/new", ImportLive.Create, :create
+    live "/inbox/imports/:id", ImportLive.Show, :show
+
+    live "/inbox/imports/:import_id/rows/apply-next-pending",
+         RowLive.ApplyNextPending,
+         :apply_next_pending
+
+    live "/inbox/imports/:import_id/rows/:status", RowLive.Index, :index
+    live "/inbox/imports/:import_id/rows/:status/:cursor_direction/:cursor", RowLive.Index, :index
+    live "/inbox/rows/:id/apply", RowLive.Apply, :apply
+    live "/inbox/rows/:id", RowLive.Show, :show
+
+    live "/inbox/imports/:cursor_direction/:cursor", ImportLive.Index, :index
+
+    live "/mutations", MutationLive.Index, :index
+    live "/mutations/new", MutationLive.Create, :create
+
+    live "/mutations/:id", MutationLive.Show, :show
+    live "/mutations/:id/edit", MutationLive.Show, :edit
   end
 
   scope "/", HygeiaWeb do

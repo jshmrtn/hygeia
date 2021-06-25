@@ -148,6 +148,16 @@ defmodule HygeiaWeb.VersionLive.Show do
     """
   end
 
+  def render(%{resource: %Hygeia.ImportContext.Import{} = import} = assigns) do
+    ~F"""
+    <div class="component-versioning import container">
+      <HygeiaWeb.ImportLive.Header import={import} id="header" />
+
+      {render_table(assigns)}
+    </div>
+    """
+  end
+
   def render(assigns) do
     ~F"""
     <div class="component-versioning container">

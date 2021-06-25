@@ -57,8 +57,11 @@
                 ],
                 labels:
                   Enum.map(@cumulative_index_case_end_reasons, fn
-                    %{end_reason: nil} -> gettext("unknown")
-                    %{end_reason: end_reason} -> case_phase_index_end_reason_translation(end_reason)
+                    %{end_reason: nil} ->
+                      gettext("unknown")
+            
+                    %{end_reason: end_reason} ->
+                      Hygeia.CaseContext.Case.Phase.Index.EndReason.translate(end_reason)
                   end)
               },
               options: %{

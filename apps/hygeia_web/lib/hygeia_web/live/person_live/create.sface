@@ -74,7 +74,7 @@
                 class="form-control"
                 opts={prompt: gettext("Choose Type")}
                 field={:type}
-                options={contact_method_options()}
+                options={Person.ContactMethod.Type.map()}
               />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>

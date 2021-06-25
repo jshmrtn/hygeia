@@ -92,6 +92,20 @@
               >
                 {gettext("System Messages")}
               </Link>
+              <Link
+                to={Routes.import_index_path(@socket, :index)}
+                class="dropdown-item"
+                :if={authorized?(Hygeia.ImportContext.Import, :list, auth, tenant: :any)}
+              >
+                {gettext("Inbox")}
+              </Link>
+              <Link
+                to={Routes.mutation_index_path(@socket, :index)}
+                class="dropdown-item"
+                :if={authorized?(Hygeia.MutationContext.Mutation, :list, auth)}
+              >
+                {gettext("Mutations")}
+              </Link>
             </div>
           </li>
         </ul>

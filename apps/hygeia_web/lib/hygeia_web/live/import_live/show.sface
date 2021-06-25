@@ -1,0 +1,72 @@
+<div class="component-import-base-data container">
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.ImportLive.Header import={@import} id="header" />
+
+    <div class="mb-4">
+      <Link
+        to="#"
+        click="delete"
+        opts={
+          title: gettext("Delete"),
+          data: [confirm: gettext("Are you sure?")]
+        }
+        :if={authorized?(@import, :delete, auth)}
+      >
+        <button class="btn btn-danger">
+          <span class="oi oi-trash" aria-hidden="true" />
+          {gettext("Delete")}
+        </button>
+      </Link>
+    </div>
+
+    <div class="hy-card-grid-2-cols">
+      <div class="card">
+        <div class="card-body hy-readonly-form">
+          <div class="form-group">
+            <div>
+              {schema_field_name(:tenant, Import)}
+            </div>
+            <div class="value">
+              <Link
+                :if={authorized?(@import.tenant, :details, auth)}
+                to={Routes.tenant_show_path(@socket, :show, @import.tenant)}
+              >
+                {@import.tenant.name}
+              </Link>
+              <span :if={not authorized?(@import.tenant, :details, auth)}>
+                {@import.tenant.name}
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div>
+              {schema_field_name(:inserted_at, Import)}
+            </div>
+            <div class="value">
+              {HygeiaCldr.DateTime.to_string!(@import.inserted_at)}
+            </div>
+          </div>
+          <div class="form-group">
+            <div>
+              {schema_field_name(:type, Import)}
+            </div>
+            <div class="value">
+              {Type.translate(@import.type)}
+            </div>
+          </div>
+          <div class="form-group">
+            <div>
+              {schema_field_name(:closed_at, Import)}
+            </div>
+            <div class="value">
+              {case @import.closed_at do
+                nil -> nil
+                date -> HygeiaCldr.DateTime.to_string!(date)
+              end}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Context>
+</div>

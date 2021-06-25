@@ -5,14 +5,7 @@ defmodule Hygeia.CaseContext.Case.Phase.Index do
 
   use Hygeia, :model
 
-  import EctoEnum
-
-  defenum EndReason, :case_phase_index_end_reason, [
-    "healed",
-    "death",
-    "no_follow_up",
-    "other"
-  ]
+  alias Hygeia.CaseContext.Case.Phase.Index.EndReason
 
   @type empty :: %__MODULE__{
           end_reason: EndReason.t() | nil,
