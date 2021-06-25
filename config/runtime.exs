@@ -94,7 +94,7 @@ iam_config = [
       port: "WEB_EXTERNAL_PORT" |> System.get_env("#{web_port}") |> String.to_integer(),
       path: "/auth/oidc/callback"
     }),
-  request_scopes: ["openid", "profile", "email"]
+  request_scopes: ["openid", "profile", "email", "offline_access"]
 ]
 
 config :hygeia_iam, :providers, zitadel: iam_config

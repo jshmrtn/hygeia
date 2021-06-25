@@ -16,42 +16,90 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
   alias Hygeia.UserContext.User
   alias HygeiaWeb.Router.Helpers
 
+  require Logger
+
   @impl Plug
   def init(_opts) do
     nil
   end
 
   @impl Plug
-  def call(%Plug.Conn{request_path: request_path} = conn, _opts) do
+  def call(conn, _opts) do
     conn
     |> get_session(:auth_tokens)
     |> case do
-      nil ->
+      nil -> conn
+      {tokens, provider} -> handle_login(tokens, provider, conn)
+    end
+  end
+
+  defp handle_login(
+         tokens,
+         provider,
+         %Plug.Conn{request_path: request_path} = conn,
+         refreshed \\ false
+       ) do
+    tokens
+    |> upsert_user_with_tokens(provider)
+    |> case do
+      {:ok, %User{uuid: uuid, email: email, display_name: display_name, iam_sub: iam_sub} = user} ->
+        Sentry.Context.set_user_context(%{
+          uuid: uuid,
+          email: email,
+          display_name: display_name,
+          iam_sub: iam_sub
+        })
+
+        {:ok,
+         conn
+         |> put_session(:auth, user)
+         |> put_session(:auth_tokens, {tokens, provider})}
+
+      {:error, reason} when refreshed ->
+        {:error, reason}
+
+      {:error, reason} when not refreshed ->
+        case handle_refresh(tokens, provider) do
+          {:ok, new_tokens} -> handle_login(new_tokens, provider, conn, true)
+          {:error, :no_refresh_token} -> {:error, reason}
+          {:error, new_reason} -> {:error, {reason, {:refresh, new_reason}}}
+        end
+    end
+    |> case do
+      {:ok, conn} ->
         conn
 
-      {tokens, provider} ->
-        tokens
-        |> upsert_user_with_tokens(provider)
-        |> case do
-          {:ok,
-           %User{uuid: uuid, email: email, display_name: display_name, iam_sub: iam_sub} = user} ->
-            Sentry.Context.set_user_context(%{
-              uuid: uuid,
-              email: email,
-              display_name: display_name,
-              iam_sub: iam_sub
-            })
+      {:error, reason} ->
+        log = "Token Verify / Refresh Error: #{inspect(reason, pretty: true)}"
+        Logger.warn(log)
+        Sentry.capture_message(log)
 
-            put_session(conn, :auth, user)
+        conn
+        |> configure_session(drop: true)
+        |> redirect(to: Helpers.auth_login_path(conn, :login, return_url: request_path))
+        |> halt
+    end
+  end
 
-          {:error, _reason} ->
-            conn
-            |> configure_session(drop: true)
-            |> redirect(to: Helpers.auth_login_path(conn, :login, return_url: request_path))
-            |> halt
-
-            # TODO: Refresh token if expired as soon as Zitadel is ready
-        end
+  defp handle_refresh(tokens, provider) do
+    with %{refresh: %{token: refresh_token}} when is_binary(refresh_token) <- tokens,
+         {:ok, token_json} <- :oidcc.retrieve_fresh_token(refresh_token, provider),
+         {:ok,
+          %{
+            "access_token" => access_token,
+            "expires_in" => expires_in,
+            "id_token" => id_token,
+            "refresh_token" => refresh_token
+          }} <- Jason.decode(token_json) do
+      {:ok,
+       tokens
+       |> put_in([:access, :token], access_token)
+       |> put_in([:access, :expires], expires_in)
+       |> put_in([:id, :token], id_token)
+       |> put_in([:refresh, :token], refresh_token)}
+    else
+      %{refresh: %{token: :none}} -> {:error, :no_refresh_token}
+      {:error, reason} -> {:error, reason}
     end
   end
 
