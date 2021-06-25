@@ -477,6 +477,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
      cond do
        String.downcase(result) == "positiv" -> :positive
        String.downcase(result) == "negativ" -> :negative
+       String.downcase(result) == "nicht bestimmbar" -> :inconclusive
        true -> nil
      end}
   end

@@ -82,7 +82,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
                    division: "Buchs",
                    name: "Labormedizinisches Zentrum Dr. Risch"
                  },
-                 result: nil,
+                 result: :inconclusive,
                  sponsor: %Hygeia.CaseContext.Entity{
                    address: %Hygeia.CaseContext.Address{
                      address: "Chnoblisbüel 1",

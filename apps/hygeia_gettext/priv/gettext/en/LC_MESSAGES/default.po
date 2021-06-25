@@ -230,6 +230,10 @@ msgstr ""
 msgid "A minimum of 3 points must be fulfilled"
 msgstr ""
 
+#, elixir-format
+msgid "A phase will be appended."
+msgstr ""
+
 msgid "API"
 msgstr ""
 
@@ -273,7 +277,19 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+#, elixir-format
+msgid "Add external references if it does not exist."
+msgstr ""
+
 msgid "Add hospitalization"
+msgstr ""
+
+#, elixir-format
+msgid "Add replace field in Person."
+msgstr ""
+
+#, elixir-format
+msgid "Add test"
 msgstr ""
 
 msgctxt "Phase Create Modal"
@@ -326,6 +342,11 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Address"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Address"
+msgstr ""
+
 msgid "Adress"
 msgstr ""
 
@@ -351,12 +372,26 @@ msgstr ""
 msgid "All points must be fulfilled"
 msgstr ""
 
+#, elixir-format
+msgid "Always work from Top to Bottom. Otherwise changes may be lost!"
+msgstr ""
+
 msgid "An unknown error happened during registration. Report this to your webmaster."
 msgstr ""
 
 msgid "Antibody"
 msgstr ""
 
+#, elixir-format
+msgctxt "Test Kind"
+msgid "Antibody"
+msgstr ""
+
+msgid "Antigen Quick"
+msgstr ""
+
+#, elixir-format
+msgctxt "Test Kind"
 msgid "Antigen Quick"
 msgstr ""
 
@@ -368,6 +403,18 @@ msgstr ""
 
 msgctxt "Test Reason"
 msgid "App report"
+msgstr ""
+
+#, elixir-format
+msgid "Append Phase"
+msgstr ""
+
+#, elixir-format
+msgid "Append new Test"
+msgstr ""
+
+#, elixir-format
+msgid "Apply"
 msgstr ""
 
 msgid "April"
@@ -466,6 +513,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Birth Date"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Birth Date"
+msgstr ""
+
 msgid "Birth date"
 msgstr ""
 
@@ -518,6 +570,10 @@ msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case UUID"
 msgstr ""
 
+#, elixir-format
+msgid "Case created successfully"
+msgstr ""
+
 msgid "Case deleted successfully"
 msgstr ""
 
@@ -527,8 +583,37 @@ msgstr ""
 msgid "Cases"
 msgstr ""
 
+#, elixir-format
+msgid "Certain"
+msgstr ""
+
+#, elixir-format
+msgid "Change Assignees"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
+msgid "Change Date"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Change Password"
+msgstr ""
+
+#, elixir-format
+msgid "Change Status"
+msgstr ""
+
+#, elixir-format
+msgid "Change Status to %{status}"
+msgstr ""
+
+#, elixir-format
+msgid "Change Tenant"
+msgstr ""
+
+#, elixir-format
+msgid "Change Tracer to %{tracer} and supervisor to %{supervisor}"
 msgstr ""
 
 msgctxt "Elixir.PaperTrail.Version Field"
@@ -579,6 +664,10 @@ msgstr ""
 msgid "Choose existing person"
 msgstr ""
 
+#, elixir-format
+msgid "Choose file"
+msgstr ""
+
 msgid "Choose location"
 msgstr ""
 
@@ -617,6 +706,11 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Clinical Information"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
+msgid "Closed At"
 msgstr ""
 
 msgctxt "Organisation Type"
@@ -721,6 +815,10 @@ msgstr ""
 
 msgctxt "Organisation Type"
 msgid "Corporation"
+msgstr ""
+
+#, elixir-format
+msgid "Correct Data"
 msgstr ""
 
 msgid "Correct phone number available"
@@ -829,6 +927,11 @@ msgid "Death"
 msgstr ""
 
 msgctxt "Index Type"
+msgid "Death"
+msgstr ""
+
+#, elixir-format
+msgctxt "Index End Reason"
 msgid "Death"
 msgstr ""
 
@@ -959,6 +1062,15 @@ msgstr ""
 msgid "Discard"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Import Row Status"
+msgid "Discarded"
+msgstr ""
+
+#, elixir-format
+msgid "Discarded Rows"
+msgstr ""
+
 msgid "Display Name"
 msgstr ""
 
@@ -974,6 +1086,11 @@ msgid "Division"
 msgstr ""
 
 msgctxt "Item Type"
+msgid "Division"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
 msgid "Division"
 msgstr ""
 
@@ -1066,6 +1183,16 @@ msgctxt "Item Type"
 msgid "Email"
 msgstr ""
 
+#, elixir-format
+msgctxt "Contact Method Type"
+msgid "Email"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Email"
+msgstr ""
+
 msgctxt "Notification Type"
 msgid "Email Send Failed"
 msgstr ""
@@ -1096,6 +1223,11 @@ msgid "Employer"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
+msgid "Employer"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Employer"
 msgstr ""
 
@@ -1171,6 +1303,18 @@ msgstr ""
 msgid "Events"
 msgstr ""
 
+#, elixir-format
+msgid "Execute & Go to Next"
+msgstr ""
+
+#, elixir-format
+msgid "Execute & Show Row"
+msgstr ""
+
+#, elixir-format
+msgid "Execute failed, contact a Super User"
+msgstr ""
+
 msgid "Export"
 msgstr ""
 
@@ -1221,6 +1365,11 @@ msgstr ""
 msgid "Fever"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
+msgid "File"
+msgstr ""
+
 msgid "File Type"
 msgstr ""
 
@@ -1246,6 +1395,11 @@ msgid "First Name"
 msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
+msgid "First Name"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "First Name"
 msgstr ""
 
@@ -1313,6 +1467,11 @@ msgid "Healed"
 msgstr ""
 
 msgctxt "Index Type"
+msgid "Healed"
+msgstr ""
+
+#, elixir-format
+msgctxt "Index End Reason"
 msgid "Healed"
 msgstr ""
 
@@ -1404,6 +1563,21 @@ msgstr ""
 msgid "ISM"
 msgstr ""
 
+#, elixir-format
+msgctxt "Case Import Type"
+msgid "ISM (06/11/2021) Death"
+msgstr ""
+
+#, elixir-format
+msgctxt "Case Import Type"
+msgid "ISM (06/11/2021) Test"
+msgstr ""
+
+#, elixir-format
+msgctxt "External Reference Type"
+msgid "ISM Case"
+msgstr ""
+
 msgid "ISM Case ID"
 msgstr ""
 
@@ -1411,6 +1585,26 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "ISM Case ID"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "ISM Case ID"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.MutationContext.Mutation Field"
+msgid "ISM Code"
+msgstr ""
+
+#, elixir-format
+msgctxt "External Reference Type"
+msgid "ISM Patient"
+msgstr ""
+
+msgid "ISM Report"
+msgstr ""
+
+#, elixir-format
+msgctxt "External Reference Type"
 msgid "ISM Report"
 msgstr ""
 
@@ -1421,7 +1615,17 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "ISM Report ID"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "ISM Report ID"
+msgstr ""
+
 msgid "ISM-ID: %{id}"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.ImportContext.Row Field"
+msgid "Identifiers"
 msgstr ""
 
 msgid "If there are open hospitalizations, the status can not be set to \"done\" / \"canceled\"."
@@ -1445,13 +1649,33 @@ msgstr ""
 msgid "If you're having trouble recalling what you did since then, here are some examples:"
 msgstr ""
 
+#, elixir-format
+msgid "Import"
+msgstr ""
+
 msgid "Import CSV / XLSX"
+msgstr ""
+
+#, elixir-format
+msgid "Import Data"
 msgstr ""
 
 msgid "Import Help"
 msgstr ""
 
+#, elixir-format
+msgid "Import created successfully"
+msgstr ""
+
+#, elixir-format
+msgid "Import deleted successfully"
+msgstr ""
+
 msgid "Import is currently running."
+msgstr ""
+
+#, elixir-format
+msgid "Imports - Inbox"
 msgstr ""
 
 msgctxt "Email Status"
@@ -1468,7 +1692,16 @@ msgstr ""
 msgid "In this case there are no further actions necessary. \"Done\" should be set on the index and contact person."
 msgstr ""
 
+#, elixir-format
+msgid "Inbox"
+msgstr ""
+
 msgid "Includes Phase Type"
+msgstr ""
+
+#, elixir-format
+msgctxt "Test Result"
+msgid "Inconclusive"
 msgstr ""
 
 msgid "Index"
@@ -1532,6 +1765,10 @@ msgid "Infection place types"
 msgstr ""
 
 msgid "Info"
+msgstr ""
+
+#, elixir-format
+msgid "Input needed"
 msgstr ""
 
 msgid "Inserted At"
@@ -1599,6 +1836,18 @@ msgstr ""
 msgid "June"
 msgstr ""
 
+#, elixir-format
+msgid "Keep Assignees"
+msgstr ""
+
+#, elixir-format
+msgid "Keep Phases"
+msgstr ""
+
+#, elixir-format
+msgid "Keep Status"
+msgstr ""
+
 msgctxt "Field"
 msgid "Kind"
 msgstr ""
@@ -1625,6 +1874,11 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Laboratory report date"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
+msgid "Laboratory report date"
+msgstr ""
+
 msgid "Landline"
 msgstr ""
 
@@ -1633,6 +1887,16 @@ msgid "Landline"
 msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
+msgid "Landline"
+msgstr ""
+
+#, elixir-format
+msgctxt "Contact Method Type"
+msgid "Landline"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Landline"
 msgstr ""
 
@@ -1654,6 +1918,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Last Name"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Last Name"
+msgstr ""
+
 msgid "Last name"
 msgstr ""
 
@@ -1663,6 +1932,14 @@ msgstr ""
 msgid "Listing Cases"
 msgstr ""
 
+#, elixir-format
+msgid "Listing Imports"
+msgstr ""
+
+#, elixir-format
+msgid "Listing Mutations"
+msgstr ""
+
 msgid "Listing Organisations"
 msgstr ""
 
@@ -1670,6 +1947,10 @@ msgid "Listing People"
 msgstr ""
 
 msgid "Listing Professions"
+msgstr ""
+
+#, elixir-format
+msgid "Listing Rows"
 msgstr ""
 
 msgid "Listing System Messages"
@@ -1802,6 +2083,16 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Mobile"
 msgstr ""
 
+#, elixir-format
+msgctxt "Contact Method Type"
+msgid "Mobile"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Mobile"
+msgstr ""
+
 msgid "Mobile Phone"
 msgstr ""
 
@@ -1819,6 +2110,31 @@ msgid "Multiple calls for first contact"
 msgstr ""
 
 msgid "Muscle Pain"
+msgstr ""
+
+#, elixir-format
+msgid "Mutation"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
+msgid "Mutation"
+msgstr ""
+
+#, elixir-format
+msgid "Mutation created successfully"
+msgstr ""
+
+#, elixir-format
+msgid "Mutation deleted successfully"
+msgstr ""
+
+#, elixir-format
+msgid "Mutation updated successfully"
+msgstr ""
+
+#, elixir-format
+msgid "Mutations"
 msgstr ""
 
 msgid "Name"
@@ -1848,11 +2164,25 @@ msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.MutationContext.Mutation Field"
+msgid "Name"
+msgstr ""
+
+msgid "Negative"
+msgstr ""
+
+#, elixir-format
+msgctxt "Test Result"
 msgid "Negative"
 msgstr ""
 
 msgctxt "Possible Index End Reason"
 msgid "Negative Test"
+msgstr ""
+
+#, elixir-format
+msgid "New Case"
 msgstr ""
 
 msgid "New Cases"
@@ -1867,10 +2197,18 @@ msgstr ""
 msgid "New Email"
 msgstr ""
 
+#, elixir-format
+msgid "New Import"
+msgstr ""
+
 msgid "New Index"
 msgstr ""
 
 msgid "New Infection place type"
+msgstr ""
+
+#, elixir-format
+msgid "New Mutation"
 msgstr ""
 
 msgid "New Organisation"
@@ -1922,6 +2260,10 @@ msgid "New entry"
 msgstr ""
 
 msgid "New infection place type"
+msgstr ""
+
+#, elixir-format
+msgid "New mutation"
 msgstr ""
 
 msgid "New note"
@@ -1976,6 +2318,11 @@ msgctxt "Possible Index End Reason"
 msgid "No Follow Up"
 msgstr ""
 
+#, elixir-format
+msgctxt "Index End Reason"
+msgid "No Follow Up"
+msgstr ""
+
 msgid "No Order"
 msgstr ""
 
@@ -2007,6 +2354,10 @@ msgid "No related organisations"
 msgstr ""
 
 msgid "No submissions have been entered yet. Please submit all relevant people."
+msgstr ""
+
+#, elixir-format
+msgid "No tests"
 msgstr ""
 
 msgid "No verson entries found"
@@ -2156,6 +2507,21 @@ msgctxt "Possible Index End Reason"
 msgid "Other"
 msgstr ""
 
+#, elixir-format
+msgctxt "Contact Method Type"
+msgid "Other"
+msgstr ""
+
+#, elixir-format
+msgctxt "External Reference Type"
+msgid "Other"
+msgstr ""
+
+#, elixir-format
+msgctxt "Index End Reason"
+msgid "Other"
+msgstr ""
+
 msgid "Other Actions To Do"
 msgstr ""
 
@@ -2228,11 +2594,34 @@ msgstr ""
 msgid "PCR"
 msgstr ""
 
+#, elixir-format
+msgctxt "Test Kind"
+msgid "PCR"
+msgstr ""
+
+msgid "PCR Quick"
+msgstr ""
+
+#, elixir-format
+msgctxt "Test Kind"
 msgid "PCR Quick"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Password"
+msgstr ""
+
+#, elixir-format
+msgid "Patch existing Test"
+msgstr ""
+
+#, elixir-format
+msgctxt "Case Import Row Status"
+msgid "Pending"
+msgstr ""
+
+#, elixir-format
+msgid "Pending Rows"
 msgstr ""
 
 msgid "People"
@@ -2274,6 +2663,16 @@ msgid "Person"
 msgstr ""
 
 msgid "Person Base Data"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
+msgid "Person Firstname"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
+msgid "Person Lastname"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
@@ -2357,6 +2756,11 @@ msgstr ""
 msgid "Positions"
 msgstr ""
 
+msgid "Positive"
+msgstr ""
+
+#, elixir-format
+msgctxt "Test Result"
 msgid "Positive"
 msgstr ""
 
@@ -2533,7 +2937,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Reasons for test"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "Reasons for test help"
 msgstr ""
 
@@ -2581,6 +2985,15 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
 msgid "Recipient Public Key"
 msgstr ""
 
+#, elixir-format
+msgid "Redirecting"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
+msgid "Reference"
+msgstr ""
+
 msgid "References"
 msgstr ""
 
@@ -2626,10 +3039,28 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Reporting unit"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
+msgid "Reporting unit"
+msgstr ""
+
 msgid "Requested document is currently unavailable"
 msgstr ""
 
+#, elixir-format
+msgid "Reset tracer & supervisor"
+msgstr ""
+
 msgid "Residency Address"
+msgstr ""
+
+#, elixir-format
+msgctxt "Case Import Row Status"
+msgid "Resolved"
+msgstr ""
+
+#, elixir-format
+msgid "Resolved Rows"
 msgstr ""
 
 msgid "Restaurant"
@@ -2637,6 +3068,15 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Result"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
+msgid "Result"
+msgstr ""
+
+#, elixir-format
+msgid "Resulting Changes"
 msgstr ""
 
 msgid "Retirement / nursing home"
@@ -2655,6 +3095,10 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Roles"
+msgstr ""
+
+#, elixir-format
+msgid "Rows"
 msgstr ""
 
 msgid "SMS"
@@ -2753,6 +3197,10 @@ msgstr ""
 msgid "Select existing person"
 msgstr ""
 
+#, elixir-format
+msgid "Select mutation"
+msgstr ""
+
 msgid "Select status"
 msgstr ""
 
@@ -2825,8 +3273,17 @@ msgstr ""
 msgid "Serology"
 msgstr ""
 
+#, elixir-format
+msgctxt "Test Kind"
+msgid "Serology"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Server"
+msgstr ""
+
+#, elixir-format
+msgid "Set end rason %{end_reason}"
 msgstr ""
 
 msgid "Sex"
@@ -2841,6 +3298,11 @@ msgid "Sex"
 msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
+msgid "Sex"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Sex"
 msgstr ""
 
@@ -2896,6 +3358,11 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Sponsor"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
+msgid "Sponsor"
+msgstr ""
+
 msgid "Start"
 msgstr ""
 
@@ -2936,6 +3403,11 @@ msgid "Status"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
+msgid "Status"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.ImportContext.Row Field"
 msgid "Status"
 msgstr ""
 
@@ -2987,6 +3459,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Supervisor"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Supervisor"
+msgstr ""
+
 msgid "Supervisor Name"
 msgstr ""
 
@@ -3007,6 +3484,15 @@ msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
 msgid "Supervisor UUID"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Supervisor UUID"
+msgstr ""
+
+#, elixir-format
+msgid "Suppress quarantine"
 msgstr ""
 
 msgctxt "Organisation Merge"
@@ -3084,6 +3570,16 @@ msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
 msgid "Tenant"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
+msgid "Tenant"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Tenant"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tenant UUID"
 msgstr ""
@@ -3097,6 +3593,16 @@ msgid "Tenant UUID"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
+msgid "Tenant UUID"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
+msgid "Tenant UUID"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tenant UUID"
 msgstr ""
 
@@ -3122,6 +3628,11 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Test Kind"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
+msgid "Test Kind"
+msgstr ""
+
 msgid "Test Result"
 msgstr ""
 
@@ -3137,6 +3648,11 @@ msgid "Test date"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
+msgid "Test date"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Test date"
 msgstr ""
 
@@ -3160,6 +3676,10 @@ msgstr ""
 
 #, elixir-format
 msgid "Testing based on a message via app"
+msgstr ""
+
+#, elixir-format
+msgid "Tests"
 msgstr ""
 
 msgid "Text"
@@ -3190,6 +3710,14 @@ msgctxt "Phase Create Modal"
 msgid "The end reason of the %{type} phase will be changed from \"%{old_end_reason}\" to \"%{new_end_reason}\"."
 msgstr ""
 
+#, elixir-format
+msgid "The file was too large"
+msgstr ""
+
+#, elixir-format
+msgid "The index phase end reason will be set to %{end_reason}."
+msgstr ""
+
 msgctxt "Phase Create Modal"
 msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
 msgstr ""
@@ -3205,6 +3733,10 @@ msgid "This organisation is possibly a duplicate of %{name_link}, please check."
 msgstr ""
 
 msgid "This person is possibly a duplicate of %{name_link}, please check."
+msgstr ""
+
+#, elixir-format
+msgid "This row is already resolved."
 msgstr ""
 
 msgid "Time expenditure"
@@ -3224,6 +3756,10 @@ msgstr ""
 msgid "To show the requested information, we need to verify your identity."
 msgstr ""
 
+#, elixir-format
+msgid "Too many files were selected"
+msgstr ""
+
 msgid "Tracer"
 msgstr ""
 
@@ -3232,6 +3768,11 @@ msgid "Tracer"
 msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
+msgid "Tracer"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tracer"
 msgstr ""
 
@@ -3240,6 +3781,11 @@ msgid "Tracer UUID"
 msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.Create.CreatePersonSchema Field"
+msgid "Tracer UUID"
+msgstr ""
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tracer UUID"
 msgstr ""
 
@@ -3329,6 +3875,11 @@ msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Type"
 msgstr ""
 
+#, elixir-format
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
+msgid "Type"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Type Other"
 msgstr ""
@@ -3349,6 +3900,10 @@ msgstr ""
 
 msgctxt "Field"
 msgid "UUID"
+msgstr ""
+
+#, elixir-format
+msgid "Uncertain"
 msgstr ""
 
 msgid "Undocumented"
@@ -3429,6 +3984,10 @@ msgstr ""
 msgid "Waiting for results..."
 msgstr ""
 
+#, elixir-format
+msgid "Warning! When importing the same rows multiple times, they will be re-assigned from the old import to the current import. Therefore rows might appear missing from an import later on."
+msgstr ""
+
 msgid "We're having difficulty connecting to the database."
 msgstr ""
 
@@ -3500,6 +4059,10 @@ msgid "You had contact for more than 15 minutes on the same day."
 msgstr ""
 
 msgid "You have been logged out!"
+msgstr ""
+
+#, elixir-format
+msgid "You have selected an unacceptable file type"
 msgstr ""
 
 msgid "You must provide a reason for completing a phase."
@@ -3581,12 +4144,27 @@ msgstr ""
 msgid "https://www.mozilla.org/en-US/firefox/new/"
 msgstr ""
 
+#, elixir-format
+msgctxt "Item Table"
+msgid "import_rows"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "imports"
+msgstr ""
+
 msgctxt "versioning_event"
 msgid "insert"
 msgstr ""
 
 msgctxt "Notification"
 msgid "mark all as read"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "mutations"
 msgstr ""
 
 msgid "negative"
@@ -3601,6 +4179,10 @@ msgid "notifications"
 msgstr ""
 
 msgid "on \"From\" Day"
+msgstr ""
+
+#, elixir-format
+msgid "or"
 msgstr ""
 
 msgctxt "Item Table"
@@ -3702,6 +4284,11 @@ msgstr ""
 
 msgctxt "Item Table"
 msgid "tenants"
+msgstr ""
+
+#, elixir-format
+msgctxt "Item Table"
+msgid "tests"
 msgstr ""
 
 msgctxt "Item Table"
