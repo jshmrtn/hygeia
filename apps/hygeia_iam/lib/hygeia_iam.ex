@@ -170,15 +170,14 @@ defmodule HygeiaIam do
   def retrieve_and_validate_token!(sessions, params) do
     {state, code} = gather_callback_params!(params)
 
-    %{provider: provider, pkce: pkce, nonce: _nonce, scopes: scopes, state: state} =
+    %{provider: provider, pkce: pkce, nonce: nonce, scopes: scopes, state: state} =
       session = find_session(sessions, state)
 
     remaining_sessions = Enum.reject(sessions, &(&1 == session))
 
     tokens =
       code
-      # TODO: Re-enable nonce check
-      |> :oidcc.retrieve_and_validate_token(provider, %{nonce: :any, pkce: pkce, scope: scopes})
+      |> :oidcc.retrieve_and_validate_token(provider, %{nonce: nonce, pkce: pkce, scope: scopes})
       |> case do
         {:ok, tokens} ->
           tokens
