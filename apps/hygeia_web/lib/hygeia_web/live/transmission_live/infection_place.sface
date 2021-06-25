@@ -4,11 +4,11 @@
       <Field name={:known} class="form-group">
         <div class="btn-group btn-group-toggle btn-radio-group">
           <label class="input-group-text input-sm">{gettext("Infection place")}:</label>
-          <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(form.source, :known) == true, do: "active"}"}>
+          <label class={"btn", "btn-secondary", active: Ecto.Changeset.get_field(form.source, :known) == true}>
             <RadioButton value="true" opts={disabled: @disabled} />
             {gettext("Known")}
           </label>
-          <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(form.source, :known) == false, do: "active"}"}>
+          <label class={"btn", "btn-secondary", active: Ecto.Changeset.get_field(form.source, :known) == false}>
             <RadioButton value="false" opts={disabled: @disabled} />
             {gettext("Unknown")}
           </label>

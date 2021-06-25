@@ -26,15 +26,27 @@
               <Field name={:propagator_internal} class="form-group">
                 <div class="btn-group btn-group-toggle btn-radio-group">
                   <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
-                  <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil, do: "active"}"}>
+                  <label class={
+                    "btn",
+                    "btn-secondary",
+                    active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil
+                  }>
                     <RadioButton value="" />
                     {gettext("No propagator")}
                   </label>
-                  <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :propagator_internal) == true, do: "active"}"}>
+                  <label class={
+                    "btn",
+                    "btn-secondary",
+                    active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true
+                  }>
                     <RadioButton value="true" />
                     {gettext("Internal")}
                   </label>
-                  <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :propagator_internal) == false, do: "active"}"}>
+                  <label class={
+                    "btn",
+                    "btn-secondary",
+                    active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false
+                  }>
                     <RadioButton value="false" />
                     {gettext("External")}
                   </label>
@@ -64,15 +76,23 @@
             <Field name={:recipient_internal} class="form-group">
               <div class="btn-group btn-group-toggle btn-radio-group">
                 <label class="input-group-text input-sm">{gettext("Recipient")}:</label>
-                <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :recipient_internal) == nil, do: "active"}"}>
+                <label class={"btn", "btn-secondary", active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == nil}>
                   <RadioButton value="" />
                   {gettext("No recipient")}
                 </label>
-                <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :recipient_internal) == true, do: "active"}"}>
+                <label class={
+                  "btn",
+                  "btn-secondary",
+                  active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == true
+                }>
                   <RadioButton value="true" />
                   {gettext("Internal")}
                 </label>
-                <label class={"btn btn-secondary #{if Ecto.Changeset.get_field(@changeset, :recipient_internal) == false, do: "active"}"}>
+                <label class={
+                  "btn",
+                  "btn-secondary",
+                  active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == false
+                }>
                   <RadioButton value="false" />
                   {gettext("External")}
                 </label>

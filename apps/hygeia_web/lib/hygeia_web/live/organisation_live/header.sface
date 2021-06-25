@@ -13,7 +13,7 @@
           to={Routes.organisation_show_path(@socket, :show, @organisation)}
           :let={to: to, active: active}
         >
-          <LiveRedirect to={to} class={"nav-link #{if active, do: "active"}"}>
+          <LiveRedirect to={to} class={"nav-link", active: active}>
             {gettext("Base Data")}
           </LiveRedirect>
         </UriActiveContext>
@@ -23,7 +23,7 @@
           to={Routes.division_index_path(@socket, :index, @organisation)}
           :let={to: to, active: active}
         >
-          <LiveRedirect to={to} class={"nav-link #{if active, do: "active"}"}>
+          <LiveRedirect to={to} class={"nav-link", active: active}>
             {gettext("Divisions")}
           </LiveRedirect>
         </UriActiveContext>
@@ -33,7 +33,7 @@
           to={Routes.affiliation_index_path(@socket, :index, @organisation)}
           :let={to: to, active: active}
         >
-          <LiveRedirect to={to} class={"nav-link #{if active, do: "active"}"}>
+          <LiveRedirect to={to} class={"nav-link", active: active}>
             {gettext("Affiliations")}
           </LiveRedirect>
         </UriActiveContext>
@@ -43,7 +43,7 @@
           to={Routes.version_show_path(@socket, :show, Organisation.__schema__(:source), @organisation)}
           :let={to: to, active: active}
         >
-          <LiveRedirect to={to} class={"nav-link  #{if active, do: "active"}"}>
+          <LiveRedirect to={to} class={"nav-link", active: active}>
             {gettext("History")}
           </LiveRedirect>
         </UriActiveContext>
