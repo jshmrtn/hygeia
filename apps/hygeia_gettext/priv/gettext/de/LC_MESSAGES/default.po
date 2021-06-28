@@ -277,8 +277,14 @@ msgstr "Automatisches Fall-Abschluss-Email gesendet"
 msgid "BAG MED 16122020 (Case)"
 msgstr "BAG MED 16122020 (Fall)"
 
+msgid "BAG MED 16122020 (Case; Hygeia Extended Fields)"
+msgstr "BAG MED 16122020 (Fall; mit Hygeia-Zusatz-Felden)"
+
 msgid "BAG MED 16122020 (Contact)"
 msgstr "BAG MED 16122020 (Kontakt)"
+
+msgid "BAG MED 16122020 (Contact; Hygeia Extended Fields)"
+msgstr "BAG MED 16122020 (Kontakt; mit Hygeia-Zusatz-Felden)"
 
 msgid "Back to List"
 msgstr "Zurück zur Liste"
@@ -1105,6 +1111,9 @@ msgstr "Von"
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "From Email"
 msgstr "Absender-E-Mail-Adresse"
+
+msgid "Fully Vaccinated"
+msgstr "vollständig geimpft"
 
 msgid "Gastrointestinal"
 msgstr "Magen-Darm"
@@ -3153,6 +3162,9 @@ msgstr "Impfung"
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Vaccination"
 msgstr "Impfung"
+
+msgid "Vaccination Failures"
+msgstr "Impfversager"
 
 msgid "Value"
 msgstr "Wert"

@@ -12,9 +12,11 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
   alias Surface.Components.Form
+  alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.FieldContext
   alias Surface.Components.Form.Input.InputContext
+  alias Surface.Components.Form.Label
   alias Surface.Components.Form.MultipleSelect
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Link
@@ -134,7 +136,9 @@ defmodule HygeiaWeb.CaseLive.Index do
     "complexity" => :complexity,
     "tracer_uuid" => :tracer_uuid,
     "supervisor_uuid" => :supervisor_uuid,
-    "phase_type" => :phase_type
+    "phase_type" => :phase_type,
+    "fully_vaccinated" => :fully_vaccinated,
+    "vaccination_failures" => :vaccination_failures
   }
 
   defp list_cases(socket) do
@@ -151,6 +155,29 @@ defmodule HygeiaWeb.CaseLive.Index do
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
       |> Enum.reduce(query, fn
+        {:fully_vaccinated, "true"}, query ->
+          where(
+            query,
+            [case, person: person],
+            fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >= 2 and
+              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >= ago(6, "month")
+          )
+
+        {:vaccination_failures, "false"}, query ->
+          query
+
+        {:vaccination_failures, "true"}, query ->
+          where(
+            query,
+            [case, person: person],
+            fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >= 2 and
+              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >= ago(6, "month") and
+              case.inserted_at >= fragment("(?->'jab_dates'->>-1)::date", person.vaccination)
+          )
+
+        {:fully_vaccinated, "false"}, query ->
+          query
+
         {_key, value}, query when value in ["", nil] ->
           query
 
