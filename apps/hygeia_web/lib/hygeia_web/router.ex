@@ -143,6 +143,8 @@ defmodule HygeiaWeb.Router do
     live "/cases/:case_uuid/possible-index-submissions/new",
          PossibleIndexSubmissionLive.Create,
          :create
+
+    live "/people/:person_uuid/overview", PersonOverviewLive.Index, :index
   end
 
   scope "/", HygeiaWeb do
