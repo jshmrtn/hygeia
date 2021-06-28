@@ -132,6 +132,24 @@
                   </label>
                 </Field>
               </div>
+
+              <div class="form-group">
+                <Field name="fully_vaccinated" class="form-group">
+                  <Label class="checkbox-label">
+                    <Checkbox />
+                    {gettext("Fully Vaccinated")}
+                  </Label>
+                </Field>
+              </div>
+
+              <div class="form-group">
+                <Field name="vaccination_failures" class="form-group">
+                  <Label class="checkbox-label">
+                    <Checkbox />
+                    {gettext("Vaccination Failures")}
+                  </Label>
+                </Field>
+              </div>
             </InputContext>
           </Form>
         </:default>

@@ -11,9 +11,10 @@ defmodule HygeiaWeb.PersonLive.Index do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Surface.Components.Form
+  alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
-
+  alias Surface.Components.Form.Label
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
   alias Surface.Components.Link
@@ -101,7 +102,8 @@ defmodule HygeiaWeb.PersonLive.Index do
     "profession_category_main" => :profession_category_main,
     "sex" => :sex,
     "country" => :country,
-    "subdivision" => :subdivision
+    "subdivision" => :subdivision,
+    "fully_vaccinated" => :fully_vaccinated
   }
 
   defp list_people(socket) do
@@ -117,6 +119,17 @@ defmodule HygeiaWeb.PersonLive.Index do
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
       |> Enum.reduce(query, fn
+        {:fully_vaccinated, "true"}, query ->
+          where(
+            query,
+            [person],
+            fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >= 2 and
+              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >= ago(6, "month")
+          )
+
+        {:fully_vaccinated, "false"}, query ->
+          query
+
         {_key, value}, query when value in ["", nil] ->
           query
 
