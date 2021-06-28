@@ -20,8 +20,8 @@ defmodule Hygeia.ImportContext.Row do
           import_uuid: Ecto.UUID.t() | nil,
           import: Ecto.Schema.belongs_to(Import.t()) | nil,
           tenant: Ecto.Schema.has_one(Tenant.t()) | nil,
-          inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -35,8 +35,8 @@ defmodule Hygeia.ImportContext.Row do
           import_uuid: Ecto.UUID.t(),
           import: Ecto.Schema.belongs_to(Import.t()),
           tenant: Ecto.Schema.has_one(Tenant.t()),
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   @derive {Phoenix.Param, key: :uuid}

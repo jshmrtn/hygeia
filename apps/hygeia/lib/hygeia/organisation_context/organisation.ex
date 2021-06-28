@@ -35,8 +35,8 @@ defmodule Hygeia.OrganisationContext.Organisation do
           affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           divisions: Ecto.Schema.has_many(Division.t()) | nil,
           hospitalizations: Ecto.Schema.has_many(Hospitalization.t()) | nil,
-          inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t(),
@@ -49,8 +49,8 @@ defmodule Hygeia.OrganisationContext.Organisation do
           affiliations: Ecto.Schema.has_many(Affiliation.t()),
           divisions: Ecto.Schema.has_many(Division.t()),
           hospitalizations: Ecto.Schema.has_many(Hospitalization.t()),
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "organisations" do

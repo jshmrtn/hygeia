@@ -1,4 +1,4 @@
-<Context get={HygeiaWeb, auth: auth}>
+<Context get={HygeiaWeb, auth: auth, timezone: timezone}>
   <table class="protocol-table table table-sm">
     <thead>
       <tr>
@@ -43,7 +43,7 @@
         <td>
           <time
             datetime={NaiveDateTime.to_iso8601(inserted_at)}
-            title={HygeiaCldr.DateTime.to_string!(inserted_at)}
+            title={inserted_at |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()}
           >
             {HygeiaCldr.DateTime.Relative.to_string!(
               inserted_at,

@@ -20,10 +20,15 @@ defmodule HygeiaWeb.ImportLive.Show do
       if authorized?(import, :details, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "imports:#{id}")
 
+        timezone = context_get(socket, :timezone)
+
+        inserted_at =
+          import.inserted_at |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()
+
         socket =
           assign(socket,
             page_title:
-              "#{Type.translate(import.type)} / #{HygeiaCldr.DateTime.to_string!(import.inserted_at)} - #{gettext("Import")} - #{gettext("Inbox")}"
+              "#{Type.translate(import.type)} / #{inserted_at} - #{gettext("Import")} - #{gettext("Inbox")}"
           )
 
         load_data(socket, import)

@@ -37,8 +37,8 @@ defmodule Hygeia.TenantContext.Tenant do
           sedex_export_enabled: boolean() | nil,
           sedex_export_configuration: SedexExportConfiguration.t() | nil,
           related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()) | nil,
-          inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -61,8 +61,8 @@ defmodule Hygeia.TenantContext.Tenant do
           sedex_export_enabled: boolean(),
           sedex_export_configuration: SedexExportConfiguration.t() | nil,
           related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()),
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "tenants" do

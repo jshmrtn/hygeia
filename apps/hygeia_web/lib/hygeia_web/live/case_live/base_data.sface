@@ -1,5 +1,5 @@
 <div class="component-case-base-data container">
-  <Context get={HygeiaWeb, auth: auth}>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
     <HygeiaWeb.RecordView resource={@case} action={:details} id={"case_recordview_#{@case.uuid}"}>
       <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
 
@@ -370,7 +370,7 @@
                                           date:
                                             form.source
                                             |> Ecto.Changeset.get_field(:automated_close_email_sent)
-                                            |> DateTime.shift_zone!("Europe/Zurich")
+                                            |> DateTime.shift_zone!(timezone)
                                             |> HygeiaCldr.DateTime.to_string!()
                                         )}
                                       </div>

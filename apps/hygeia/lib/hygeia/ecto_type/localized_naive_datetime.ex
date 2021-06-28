@@ -5,6 +5,8 @@ defmodule Hygeia.EctoType.LocalizedNaiveDatetime do
 
   use Ecto.Type
 
+  alias Hygeia.Helpers.RecursiveProcessDirectory
+
   @type t :: NaiveDateTime.t()
 
   @database_timezone "Etc/UTC"
@@ -45,6 +47,13 @@ defmodule Hygeia.EctoType.LocalizedNaiveDatetime do
       |> DateTime.now!()
       |> DateTime.to_naive()
 
-  #   TODO read timezone from user/session
-  defp local_timezone, do: "Europe/Zurich"
+  @spec local_timezone :: Calendar.time_zone()
+  defp local_timezone,
+    do: RecursiveProcessDirectory.get([self()], {__MODULE__, :timezone}, "Europe/Zurich")
+
+  @spec put_timezone(timezone :: String.t()) :: :ok
+  def put_timezone(timezone) when is_binary(timezone) do
+    Process.put({__MODULE__, :timezone}, timezone)
+    :ok
+  end
 end
