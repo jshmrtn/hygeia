@@ -17,8 +17,8 @@ defmodule Hygeia.OrganisationContext.Position do
           person: Ecto.Schema.belongs_to(Person.t()) | nil,
           organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
-          inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t(),
@@ -27,8 +27,8 @@ defmodule Hygeia.OrganisationContext.Position do
           person: Ecto.Schema.belongs_to(Person.t()),
           organisation_uuid: Ecto.UUID.t(),
           organisation: Ecto.Schema.belongs_to(Organisation.t()),
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "positions" do

@@ -49,8 +49,8 @@ defmodule Hygeia.CaseContext.Case do
           sms: Ecto.Schema.has_many(SMS.t()) | nil,
           notes: Ecto.Schema.has_many(Note.t()) | nil,
           tests: Ecto.Schema.has_many(Test.t()) | nil,
-          inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -76,8 +76,8 @@ defmodule Hygeia.CaseContext.Case do
           sms: Ecto.Schema.has_many(SMS.t()),
           notes: Ecto.Schema.has_many(Note.t()),
           tests: Ecto.Schema.has_many(Test.t()),
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   @derive {Phoenix.Param, key: :uuid}

@@ -1,5 +1,5 @@
 <div class="component-person-index container">
-  <Context get={HygeiaWeb, auth: auth}>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
     <h1 class="mb-3">
       {gettext("Listing People")}
     </h1>
@@ -167,7 +167,9 @@
             end}</td>
           <td>{format_address(person.address)}</td>
           <td>
-            {HygeiaCldr.DateTime.to_string!(person.inserted_at, format: :short)}
+            {person.inserted_at
+            |> DateTime.shift_zone!(timezone)
+            |> HygeiaCldr.DateTime.to_string!(format: :short)}
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">

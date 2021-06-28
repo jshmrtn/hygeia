@@ -1,6 +1,6 @@
 <div class="component-person-header mb-4">
-  <Context get={HygeiaWeb, auth: auth}>
-    <span class="text-muted">{HygeiaCldr.DateTime.to_string!(@import.inserted_at)}</span>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
+    <span class="text-muted">{@import.inserted_at |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()}</span>
     <h1 class="mb-4" :if={authorized?(@import, :details, auth)}>
       {Type.translate(@import.type)}
     </h1>

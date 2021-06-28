@@ -26,10 +26,17 @@ defmodule HygeiaWeb.RowLive.Show do
       if authorized?(row, :details, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "rows:#{id}")
 
+        timezone = context_get(socket, :timezone)
+
+        inserted_at =
+          row.import.inserted_at
+          |> DateTime.shift_zone!(timezone)
+          |> HygeiaCldr.DateTime.to_string!()
+
         socket =
           assign(socket,
             page_title:
-              "Apply - #{row.uuid} - #{Type.translate(row.import.type)} / #{HygeiaCldr.DateTime.to_string!(row.import.inserted_at)} - #{gettext("Import")} - #{gettext("Inbox")}"
+              "Show - #{row.uuid} - #{Type.translate(row.import.type)} / #{inserted_at} - #{gettext("Import")} - #{gettext("Inbox")}"
           )
 
         load_data(socket, row)

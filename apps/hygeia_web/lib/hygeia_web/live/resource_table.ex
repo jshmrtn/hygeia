@@ -15,12 +15,14 @@ defmodule HygeiaWeb.ResourceTable do
   def render(assigns) do
     ~F"""
     <div class="component-resource-table">
-      {render_tree(@subject, @module, assigns)}
+      <Context get={HygeiaWeb, timezone: timezone}>
+        {render_tree(@subject, @module, assigns, timezone)}
+      </Context>
     </div>
     """
   end
 
-  defp render_tree(map, schema, assigns) when is_map(map) and not is_struct(map) do
+  defp render_tree(map, schema, assigns, timezone) when is_map(map) and not is_struct(map) do
     ~F"""
     <ul>
       <li :for={
@@ -31,7 +33,7 @@ defmodule HygeiaWeb.ResourceTable do
       }>
         <details :if={is_complex?(value)}>
           <summary><strong>{field_name}</strong></summary>
-          {render_tree(value, field_schema, assigns)}
+          {render_tree(value, field_schema, assigns, timezone)}
         </details>
         <span :if={not is_complex?(value)}>
           <strong class="field-name">{field_name}</strong>
@@ -44,10 +46,10 @@ defmodule HygeiaWeb.ResourceTable do
               value
             )}
           >
-            {render_tree(value, field_schema, assigns)}
+            {render_tree(value, field_schema, assigns, timezone)}
           </LiveRedirect>
           <span :if={not is_foregin_key?(schema, field_key)}>
-            {render_tree(value, field_schema, assigns)}
+            {render_tree(value, field_schema, assigns, timezone)}
           </span>
         </span>
       </li>
@@ -55,38 +57,43 @@ defmodule HygeiaWeb.ResourceTable do
     """
   end
 
-  defp render_tree(nil, _schema, assigns) do
+  defp render_tree(nil, _schema, assigns, _timezone) do
     ~F"""
     <span class="nil" />
     """
   end
 
   # credo:disable-for-next-line Credo.Check.Consistency.UnusedVariableNames
-  defp render_tree([], _schema, assigns) do
+  defp render_tree([], _schema, assigns, _timezone) do
     ~F"""
     <span class="empty-list" />
     """
   end
 
-  defp render_tree(list, schema, assigns) when is_list(list) do
+  defp render_tree(list, schema, assigns, timezone) when is_list(list) do
     ~F"""
     <div>
       <div :for={value <- list}>
-        {render_tree(value, schema, assigns)}
+        {render_tree(value, schema, assigns, timezone)}
       </div>
     </div>
     """
   end
 
-  defp render_tree(string, schema, _assings) when schema in [:string, :binary_id], do: string
+  defp render_tree(string, schema, _assings, _timezone) when schema in [:string, :binary_id],
+    do: string
 
-  defp render_tree(country, Hygeia.EctoType.Country, _assigns), do: country_name(country)
+  defp render_tree(country, Hygeia.EctoType.Country, _assigns, _timezone),
+    do: country_name(country)
 
-  defp render_tree(%Date{} = date, :date, _assigns),
+  defp render_tree(%Date{} = date, :date, _assigns, _timezone),
     do: HygeiaCldr.Date.to_string!(date)
 
-  defp render_tree(date, :date, _assigns) when is_binary(date),
-    do: date |> Date.from_iso8601!() |> HygeiaCldr.Date.to_string!()
+  defp render_tree(date, :date, _assigns, _timezone) when is_binary(date),
+    do:
+      date
+      |> Date.from_iso8601!()
+      |> HygeiaCldr.Date.to_string!()
 
   for enum <- [
         Hygeia.CaseContext.Person.ContactMethod.Type,
@@ -96,67 +103,79 @@ defmodule HygeiaWeb.ResourceTable do
         Hygeia.CaseContext.Case.Status,
         Hygeia.CaseContext.Test.Kind
       ] do
-    defp render_tree(value, unquote(enum), _assigns) do
+    defp render_tree(value, unquote(enum), _assigns, _timezone) do
       {:ok, value} = unquote(enum).cast(value)
       unquote(enum).translate(value)
     end
   end
 
-  defp render_tree(%NaiveDateTime{} = date, type, _assigns)
-       when type in [
-              :naive_datetime,
-              :naive_datetime_usec,
-              Hygeia.EctoType.LocalizedNaiveDatetime
-            ],
+  defp render_tree(%NaiveDateTime{} = date, type, _assigns, timezone)
+       when type in [:naive_datetime, :naive_datetime_usec],
        do:
          date
-         |> DateTime.from_naive!("Europe/Zurich")
+         |> DateTime.from_naive!("Etc/UTC")
+         |> DateTime.shift_zone!(timezone)
          |> HygeiaCldr.DateTime.to_string!()
 
-  defp render_tree(date, type, _assigns)
-       when type in [
-              :naive_datetime,
-              :naive_datetime_usec,
-              Hygeia.EctoType.LocalizedNaiveDatetime
-            ],
+  defp render_tree(
+         %NaiveDateTime{} = date,
+         Hygeia.EctoType.LocalizedNaiveDatetime,
+         _assigns,
+         timezone
+       ),
+       do:
+         date
+         |> DateTime.from_naive!(timezone)
+         |> HygeiaCldr.DateTime.to_string!()
+
+  defp render_tree(date, type, _assigns, timezone)
+       when type in [:naive_datetime, :naive_datetime_usec],
        do:
          date
          |> NaiveDateTime.from_iso8601!()
-         |> DateTime.from_naive!("Europe/Zurich")
+         |> DateTime.from_naive!("Etc/UTC")
+         |> DateTime.shift_zone!(timezone)
          |> HygeiaCldr.DateTime.to_string!()
 
-  defp render_tree(%DateTime{} = date, type, _assigns)
-       when type in [:utc_datetime, :datetime, :datetime_usec, :utc_datetime_usec],
-       do: date |> DateTime.shift_zone!("Europe/Zurich") |> HygeiaCldr.DateTime.to_string!()
+  defp render_tree(date, Hygeia.EctoType.LocalizedNaiveDatetime, _assigns, timezone),
+    do:
+      date
+      |> NaiveDateTime.from_iso8601!()
+      |> DateTime.from_naive!(timezone)
+      |> HygeiaCldr.DateTime.to_string!()
 
-  defp render_tree(date, type, assigns)
+  defp render_tree(%DateTime{} = date, type, _assigns, timezone)
+       when type in [:utc_datetime, :datetime, :datetime_usec, :utc_datetime_usec],
+       do: date |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()
+
+  defp render_tree(date, type, assigns, timezone)
        when type in [:utc_datetime, :datetime, :datetime_usec, :utc_datetime_usec] and
               is_binary(date) do
     case DateTime.from_iso8601(date) do
       {:ok, date, _offset} ->
-        date |> DateTime.shift_zone!("Europe/Zurich") |> HygeiaCldr.DateTime.to_string!()
+        date |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()
 
       {:error, :missing_offset} ->
-        render_tree(date, :naive_datetime_usec, assigns)
+        render_tree(date, :naive_datetime_usec, assigns, timezone)
     end
   end
 
-  defp render_tree(code, Hygeia.EctoType.NOGA.Code, _assigns) do
+  defp render_tree(code, Hygeia.EctoType.NOGA.Code, _assigns, _timezone) do
     {:ok, code} = Hygeia.EctoType.NOGA.Code.cast(code)
     Hygeia.EctoType.NOGA.Code.title(code)
   end
 
-  defp render_tree(code, Hygeia.EctoType.NOGA.Section, _assigns) do
+  defp render_tree(code, Hygeia.EctoType.NOGA.Section, _assigns, _timezone) do
     {:ok, code} = Hygeia.EctoType.NOGA.Section.cast(code)
     Hygeia.EctoType.NOGA.Section.title(code)
   end
 
-  defp render_tree(boolean, :boolean, _assigns),
-    do: if(boolean, do: gettext("True"), else: gettext("False"))
+  defp render_tree(true, :boolean, _assigns, _timezone), do: gettext("True")
+  defp render_tree(false, :boolean, _assigns, _timezone), do: gettext("False")
 
-  defp render_tree(other, schema, _assings) do
+  defp render_tree(other, schema, _assings, _timezone) do
     Logger.warn("""
-    #{__MODULE__}.render_tree/3 for #{inspect(schema)} not implemented
+    #{__MODULE__}.render_tree/34for #{inspect(schema)} not implemented
     """)
 
     other

@@ -26,9 +26,11 @@ import Input from "./input.hook";
 import { init as sentryInit } from "./sentry";
 import browserFeatures from "./feature-detect";
 
-let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-let liveSocket = new LiveSocket("/live", Socket, {
-  params: { _csrf_token: csrfToken, browser_features: browserFeatures },
+const DEFAULT_TIMEZONE = 'Europe/Zurich';
+
+const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+const liveSocket = new LiveSocket("/live", Socket, {
+  params: { _csrf_token: csrfToken, browser_features: browserFeatures, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || DEFAULT_TIMEZONE },
   hooks: { BlockNavigation, Chart, Dropdown, HideAlert, Input, PostMessage },
 });
 

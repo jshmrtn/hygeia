@@ -18,7 +18,7 @@ defmodule Hygeia.VersionContext.Version do
           item_table: String.t(),
           user: Ecto.Schema.belongs_to(User.t()),
           originator_id: Ecto.UUID.t(),
-          inserted_at: NaiveDateTime.t()
+          inserted_at: DateTime.t()
         }
 
   schema "versions" do

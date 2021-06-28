@@ -19,8 +19,8 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
           end_date: LocalizedNaiveDatetime.t() | nil,
           related_tenants: Ecto.Schema.many_to_many(Tenant.t()) | nil,
           roles: [Role.t()] | nil,
-          inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -30,8 +30,8 @@ defmodule Hygeia.SystemMessageContext.SystemMessage do
           end_date: LocalizedNaiveDatetime.t(),
           related_tenants: Ecto.Schema.many_to_many(Tenant.t()),
           roles: [Role.t()],
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "system_messages" do

@@ -29,8 +29,8 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
           landline: String.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
           employer: String.t() | nil,
-          inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -48,8 +48,8 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
           infection_place: InfectionPlace.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()),
           employer: String.t() | nil,
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "possible_index_submissions" do

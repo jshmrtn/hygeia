@@ -19,8 +19,8 @@ defmodule Hygeia.TenantContext.SedexExport do
           status: Status.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
           tenant_uuid: Ecto.UUID.t() | nil,
-          inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -29,8 +29,8 @@ defmodule Hygeia.TenantContext.SedexExport do
           status: Status.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
           tenant_uuid: Ecto.UUID.t(),
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "sedex_exports" do

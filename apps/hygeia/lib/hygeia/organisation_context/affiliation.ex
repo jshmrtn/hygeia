@@ -24,8 +24,8 @@ defmodule Hygeia.OrganisationContext.Affiliation do
           division: Ecto.Schema.belongs_to(Division.t()) | nil,
           tenant: Ecto.Schema.has_one(Tenant.t()) | nil,
           comment: String.t() | nil,
-          inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -39,8 +39,8 @@ defmodule Hygeia.OrganisationContext.Affiliation do
           division: Ecto.Schema.belongs_to(Division.t()) | nil,
           tenant: Ecto.Schema.has_one(Tenant.t()),
           comment: String.t() | nil,
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "affiliations" do

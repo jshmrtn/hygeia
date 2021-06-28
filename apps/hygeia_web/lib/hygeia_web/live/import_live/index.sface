@@ -1,5 +1,5 @@
 <div class="component-import-index container">
-  <Context get={HygeiaWeb, auth: auth}>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
     <h1>
       {gettext("Listing Imports")}
     </h1>
@@ -47,7 +47,7 @@
             </span>
           </td>
           <td>
-            {HygeiaCldr.DateTime.to_string!(import.inserted_at)}
+            {import.inserted_at |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()}
           </td>
           <td>
             {Type.translate(import.type)}
@@ -55,7 +55,7 @@
           <td>
             {case import.closed_at do
               nil -> nil
-              date -> HygeiaCldr.DateTime.to_string!(date)
+              date -> date |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()
             end}
           </td>
 

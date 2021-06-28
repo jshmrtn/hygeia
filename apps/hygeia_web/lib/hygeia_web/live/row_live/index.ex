@@ -25,6 +25,11 @@ defmodule HygeiaWeb.RowLive.Index do
       if authorized?(Row, :list, get_auth(socket), import: import) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "rows")
 
+        timezone = context_get(socket, :timezone)
+
+        inserted_at =
+          import.inserted_at |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()
+
         pagination_params =
           case params do
             %{"cursor" => cursor, "cursor_direction" => "after"} -> [after: cursor]
@@ -38,7 +43,7 @@ defmodule HygeiaWeb.RowLive.Index do
           pagination_params: pagination_params,
           import: import,
           page_title:
-            "#{gettext("Rows")} - #{Type.translate(import.type)} / #{HygeiaCldr.DateTime.to_string!(import.inserted_at)} - #{gettext("Import")} - #{gettext("Inbox")}"
+            "#{gettext("Rows")} - #{Type.translate(import.type)} / #{inserted_at} - #{gettext("Import")} - #{gettext("Inbox")}"
         )
         |> list_rows()
       else

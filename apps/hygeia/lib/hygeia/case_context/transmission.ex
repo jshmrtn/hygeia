@@ -28,8 +28,8 @@ defmodule Hygeia.CaseContext.Transmission do
           recipient_case: Ecto.Schema.belongs_to(Case.t()) | nil,
           recipient_case_uuid: Ecto.UUID.t() | nil,
           infection_place: InfectionPlace.t() | nil,
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   @type empty :: %__MODULE__{
@@ -47,8 +47,8 @@ defmodule Hygeia.CaseContext.Transmission do
           recipient_case_uuid: Ecto.UUID.t() | nil,
           recipient: Ecto.Schema.has_one(Person.t()) | nil,
           infection_place: InfectionPlace.t(),
-          inserted_at: NaiveDateTime.t() | nil,
-          updated_at: NaiveDateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
         }
 
   @derive {Phoenix.Param, key: :uuid}
