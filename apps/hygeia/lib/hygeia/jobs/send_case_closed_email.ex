@@ -78,7 +78,10 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
       Dear Sir / Madam,
 
       Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
-      Details: %{isolation_end_confirmation_link}
+
+      You can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}
+
+      To access the confirmation, please log in using you firstname & lastname. (%{initial_first_name}. %{initial_last_name}.)
 
       Should you continue to feel ill, please contact your general practitioner.
 
@@ -87,7 +90,9 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
       """,
       date: HygeiaCldr.Date.to_string!(Date.add(phase.end, 1), format: :full),
       isolation_end_confirmation_link: @url_generator.pdf_url(case, phase),
-      message_signature: Tenant.get_message_signature_text(case.tenant, message_type)
+      message_signature: Tenant.get_message_signature_text(case.tenant, message_type),
+      initial_first_name: String.slice(case.person.first_name, 0..0),
+      initial_last_name: String.slice(case.person.last_name, 0..0)
     )
   end
 
@@ -135,7 +140,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
       Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
 
       with case <- CaseContext.get_case_with_lock!(case.uuid),
-           case <- Repo.preload(case, :tenant),
+           case <- Repo.preload(case, tenant: [], person: []),
            :ok <- send_sms(case, phase),
            :ok <- send_email(case, phase),
            {:ok, case} <- CaseContext.case_phase_automated_email_sent(case, phase) do

@@ -24,7 +24,6 @@ msgstr ""
 msgid "are still associated with this entry"
 msgstr "sind immer noch mit diesem Eintrag verknüpft"
 
-#, elixir-format
 msgid "at least one contact method must be provided"
 msgstr "Mindestens eine Kontaktmethode muss angegeben werden"
 
@@ -41,11 +40,9 @@ msgstr "Mindestens eine Kontaktmethode muss angegeben werden"
 msgid "can't be blank"
 msgstr "kann nicht leer sein"
 
-#, elixir-format
 msgid "date is to far away from today"
 msgstr "Datum ist zu weit entfernt von Heute"
 
-#, elixir-format
 msgid "date must not be in the future"
 msgstr "Datum darf nicht in Zukunft sein"
 
@@ -53,7 +50,6 @@ msgstr "Datum darf nicht in Zukunft sein"
 msgid "does not match confirmation"
 msgstr "entspricht nicht der Bestätigung"
 
-#, elixir-format
 msgid "end must be after start"
 msgstr "Ende muss nach dem Start sein"
 
@@ -73,7 +69,6 @@ msgstr "hat ungültiges Format"
 msgid "is invalid"
 msgstr "ist ungültig"
 
-#, elixir-format
 msgid "is not a valid hostname"
 msgstr "ist kein gültiger Hostname"
 
@@ -136,6 +131,5 @@ msgid_plural "should have at most %{count} item(s)"
 msgstr[0] "sollte höchstens %-Anzahl-Elemente haben"
 msgstr[1] "sollte höchstens %-Anzahl-Elemente haben"
 
-#, elixir-format
 msgid "start must be before end"
 msgstr "Start muss vor dem Ende sein"

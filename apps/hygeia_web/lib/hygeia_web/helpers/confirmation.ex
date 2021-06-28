@@ -32,11 +32,18 @@ defmodule HygeiaWeb.Helpers.Confirmation do
 
     gettext(
       """
-      You have been tested positive for the corona virus.
-      Therefore you have to self isolate.
-      Details: %{isolation_confirmation_link}
+      Dear Sir / Madam,
+
+      As discussed via phone, you can access the information about your quarantine via the following link:
+      %{isolation_confirmation_link}
+
+      To access the confirmation, please log in using you firstname & lastname. (%{initial_first_name}. %{initial_last_name}.)
+
+      Please read the document carefully and consider the links for more information.
+
       To ensure the contact tracing we need to record personal details of your contacts.
-      You can enter persons you had contact with here: %{possible_index_submission_link}
+      You can enter persons you had contact with here:
+      %{possible_index_submission_link}
 
       Kind Regards,
       %{message_signature}
@@ -53,7 +60,9 @@ defmodule HygeiaWeb.Helpers.Confirmation do
           Routes.possible_index_submission_index_url(conn_or_socket, :index, case),
           HygeiaWeb.Endpoint.url()
         ),
-      message_signature: Tenant.get_message_signature_text(case.tenant, message_type)
+      message_signature: Tenant.get_message_signature_text(case.tenant, message_type),
+      initial_first_name: String.slice(case.person.first_name, 0..0),
+      initial_last_name: String.slice(case.person.last_name, 0..0)
     )
   end
 
@@ -79,9 +88,12 @@ defmodule HygeiaWeb.Helpers.Confirmation do
 
     gettext(
       """
-      You have been identified as a contact person of a person with corona.
-      Therefore you have to self quarantine.
-      Details: %{quarantine_confirmation_link}
+      Dear Sir / Madam,
+
+      You have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please consider the instructions and information via the following link:
+      %{quarantine_confirmation_link}
+
+      To access the confirmation, please log in using you firstname & lastname. (%{initial_first_name}. %{initial_last_name}.)
 
       Kind Regards,
       %{message_signature}
@@ -92,7 +104,9 @@ defmodule HygeiaWeb.Helpers.Confirmation do
           Routes.pdf_url(conn_or_socket, :quarantine_confirmation, case, phase),
           HygeiaWeb.Endpoint.url()
         ),
-      message_signature: Tenant.get_message_signature_text(case.tenant, message_type)
+      message_signature: Tenant.get_message_signature_text(case.tenant, message_type),
+      initial_first_name: String.slice(case.person.first_name, 0..0),
+      initial_last_name: String.slice(case.person.last_name, 0..0)
     )
   end
 end
