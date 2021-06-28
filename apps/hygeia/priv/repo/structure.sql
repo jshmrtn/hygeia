@@ -2703,6 +2703,19 @@ CREATE TABLE public.imports (
 
 
 --
+-- Name: mutations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.mutations (
+    uuid uuid NOT NULL,
+    name character varying(255),
+    ism_code integer,
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: notes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3245,7 +3258,8 @@ CREATE TABLE public.tests (
     case_uuid uuid NOT NULL,
     reference character varying(255),
     inserted_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    mutation_uuid uuid
 );
 
 
@@ -3346,6 +3360,14 @@ ALTER TABLE ONLY public.import_rows
 
 ALTER TABLE ONLY public.imports
     ADD CONSTRAINT imports_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: mutations mutations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.mutations
+    ADD CONSTRAINT mutations_pkey PRIMARY KEY (uuid);
 
 
 --
@@ -3601,6 +3623,13 @@ CREATE INDEX import_rows_import_uuid_index ON public.import_rows USING btree (im
 --
 
 CREATE INDEX imports_tenant_uuid_index ON public.imports USING btree (tenant_uuid);
+
+
+--
+-- Name: mutations_ism_code_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX mutations_ism_code_index ON public.mutations USING btree (ism_code);
 
 
 --
@@ -4605,7 +4634,7 @@ ALTER TABLE ONLY public.affiliations
 --
 
 ALTER TABLE ONLY public.cases
-    ADD CONSTRAINT cases_person_uuid_fkey FOREIGN KEY (person_uuid) REFERENCES public.people(uuid);
+    ADD CONSTRAINT cases_person_uuid_fkey FOREIGN KEY (person_uuid) REFERENCES public.people(uuid) ON DELETE CASCADE;
 
 
 --
@@ -4793,6 +4822,14 @@ ALTER TABLE ONLY public.tests
 
 
 --
+-- Name: tests tests_mutation_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tests
+    ADD CONSTRAINT tests_mutation_uuid_fkey FOREIGN KEY (mutation_uuid) REFERENCES public.mutations(uuid) ON DELETE SET NULL;
+
+
+--
 -- Name: transmissions transmissions_propagator_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4919,3 +4956,5 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210511110755);
 INSERT INTO public."schema_migrations" (version) VALUES (20210521094209);
 INSERT INTO public."schema_migrations" (version) VALUES (20210527153512);
 INSERT INTO public."schema_migrations" (version) VALUES (20210611101143);
+INSERT INTO public."schema_migrations" (version) VALUES (20210616130134);
+INSERT INTO public."schema_migrations" (version) VALUES (20210628141251);
