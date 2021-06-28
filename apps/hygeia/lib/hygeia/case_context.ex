@@ -14,11 +14,9 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
-  alias Hygeia.CommunicationContext
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
   alias Hygeia.EctoType.Country
-  alias Hygeia.OrganisationContext
   alias Hygeia.TenantContext.Tenant
 
   @origin_country Application.compile_env!(:hygeia, [:phone_number_parsing_origin_country])
@@ -286,36 +284,13 @@ defmodule Hygeia.CaseContext do
   """
   @spec delete_person(person :: Person.t()) ::
           {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
-  def delete_person(%Person{} = person) do
-    %Person{cases: cases, affiliations: affiliations} =
-      Repo.preload(person, cases: [], affiliations: [])
-
-    Repo.transaction(fn ->
-      cases
-      |> Enum.map(&delete_case/1)
-      |> Enum.each(fn
-        {:ok, _case} -> :ok
-        {:error, reason} -> Repo.rollback(reason)
-      end)
-
-      affiliations
-      |> Enum.map(&OrganisationContext.delete_affiliation/1)
-      |> Enum.each(fn
-        {:ok, _affiliation} -> :ok
-        {:error, reason} -> Repo.rollback(reason)
-      end)
-
+  def delete_person(%Person{} = person),
+    do:
       person
       |> change_person()
       |> versioning_delete()
       |> broadcast("people", :delete)
       |> versioning_extract()
-      |> case do
-        {:ok, person} -> person
-        {:error, reason} -> Repo.rollback(reason)
-      end
-    end)
-  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking person changes.
@@ -1943,42 +1918,13 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec delete_case(case :: Case.t()) :: {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
-  def delete_case(%Case{} = case) do
-    %Case{notes: notes, sms: sms, emails: emails} =
-      case = Repo.preload(case, notes: [], sms: [], emails: [])
-
-    Repo.transaction(fn ->
-      notes
-      |> Enum.map(&delete_note/1)
-      |> Enum.each(fn
-        {:ok, _note} -> :ok
-        {:error, reason} -> Repo.rollback(reason)
-      end)
-
-      sms
-      |> Enum.map(&CommunicationContext.delete_sms/1)
-      |> Enum.each(fn
-        {:ok, _sms} -> :ok
-        {:error, reason} -> Repo.rollback(reason)
-      end)
-
-      emails
-      |> Enum.map(&CommunicationContext.delete_email/1)
-      |> Enum.each(fn
-        {:ok, _email} -> :ok
-        {:error, reason} -> Repo.rollback(reason)
-      end)
-
+  def delete_case(%Case{} = case),
+    do:
       case
+      |> change_case()
       |> versioning_delete()
       |> broadcast("cases", :delete)
       |> versioning_extract()
-      |> case do
-        {:ok, case} -> case
-        {:error, reason} -> Repo.rollback(reason)
-      end
-    end)
-  end
 
   @spec case_phase_automated_email_sent(case :: Case.t(), phase :: Case.Phase.t()) ::
           {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
