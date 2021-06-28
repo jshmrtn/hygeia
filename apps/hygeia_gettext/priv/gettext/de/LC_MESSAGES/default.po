@@ -515,6 +515,10 @@ msgctxt "Possible Index Type"
 msgid "Contact Person"
 msgstr "Kontaktperson"
 
+msgctxt "Home"
+msgid "Contact Tracing for SARS-CoV-2"
+msgstr "Contact Tracing für SARS-CoV-2"
+
 msgid "Contact persons"
 msgstr "Kontaktpersonen"
 
@@ -1207,6 +1211,10 @@ msgctxt "Field"
 msgid "Human Readable ID"
 msgstr "Menschlich lesbare ID"
 
+msgctxt "Home"
+msgid "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «%{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing."
+msgstr "Hygeia ist darauf ausgelegt, fehleranfällige Prozesse klar und einheitlich zu strukturieren, Standards wie das «%{link_med}» des BAG einzuhalten, Anbindungen wie diejenige an die BAG-Datenbank zu gewährleisten und die fürs Contact Tracing notwendigen Personal-Mittel zu reduzieren."
+
 msgid "IAM Configuration"
 msgstr "IAM-Konfiguration"
 
@@ -1301,6 +1309,10 @@ msgctxt "SMS Status"
 msgid "In Progress"
 msgstr "In Bearbeitung"
 
+msgctxt "Home"
+msgid "In case of service disruptions, please check the status page."
+msgstr "Im Falle von Störungen des Systems kann die Status-Seite konsultiert werden."
+
 msgid "In this case there are no further actions necessary. \"Done\" should be set on the index and contact person."
 msgstr "In diesem Fall sind beim Index keine weiteren Aktionen nötig. Tracing abgeschlossen soll bei Index und KP angepasst werden."
 
@@ -1366,6 +1378,10 @@ msgstr "Infektionsort"
 
 msgid "Info"
 msgstr "Info"
+
+msgctxt "Home"
+msgid "Info Website"
+msgstr "Info Webseite"
 
 msgid "Input needed"
 msgstr "Angaben benötigt"
@@ -1608,6 +1624,9 @@ msgstr "Nachricht"
 msgctxt "Versioning Origin"
 msgid "Migration"
 msgstr "Daten-Migration"
+
+msgid "Minimal Essential Dataset"
+msgstr "Minimal Essential Dataset"
 
 msgid "Missing phone number"
 msgstr "Fehlende Telefonnummer"
@@ -2694,6 +2713,10 @@ msgstr "Status"
 msgid "Status Page"
 msgstr "Statusseite"
 
+msgctxt "Home"
+msgid "Status Page"
+msgstr "Statusseite"
+
 msgid "Status help"
 msgstr "Statushilfe"
 
@@ -3141,6 +3164,10 @@ msgstr "Wert"
 msgctxt "Elixir.Hygeia.CaseContext.Person.ContactMethod Field"
 msgid "Value"
 msgstr "Wert"
+
+msgctxt "Home"
+msgid "Various information regarding the applications functionality as well as details regarding using Hygeia are available on the website."
+msgstr "Verschiedenste Informationen zur Funktionsweise der Applikation sowie zur Nutzung von Hygeia finden Sie auf der Website."
 
 msgctxt "Case Status"
 msgid "Wainting for Contact Person List"
