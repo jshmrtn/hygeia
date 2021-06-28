@@ -1,24 +1,44 @@
 <div class="jumbotron home-jumbo">
   <section class="container">
-    <h1 class="display-4">Contact Tracing für SARS-CoV-2</h1>
-    <p class="lead col-md-10">Hygeia ist darauf ausgelegt, fehleranfällige Prozesse klar und einheitlich zu strukturieren, Standards wie das
-      <a
-        href="https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/weisung-kantone-ct-und-kontrolle-dezember-2020.PDF.download.PDF/Weisung%20Kantone%20CT%20und%20Kontrolle.pdf.PDF"
-        target="_blank"
-      >
-        «Minimal Essential Dataset»
-      </a>
-      des BAG einzuhalten, Anbindungen wie diejenige an die BAG-Datenbank zu gewährleisten und die fürs Contact Tracing notwendigen Personal-Mittel zu reduzieren.</p>
+    <h1 class="display-4">{pgettext("Home", "Contact Tracing for SARS-CoV-2")}</h1>
+    <p class="lead col-md-10">
+      {raw(
+        pgettext(
+          "Home",
+          "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «%{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing.",
+          link_med:
+            safe_to_string(
+              link(gettext("Minimal Essential Dataset"),
+                to:
+                  "https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/weisung-kantone-ct-und-kontrolle-dezember-2020.PDF.download.PDF/Weisung%20Kantone%20CT%20und%20Kontrolle.pdf.PDF",
+                target: "_blank"
+              )
+            )
+        )
+      )}
+    </p>
     <hr class="my-4">
-    <p class="col-md-8">Im Falle von Störungen des Systems kann die Status-Seite konsultiert werden.</p>
-    <a
+    <p class="col-md-8">{pgettext(
+        "Home",
+        "Various information regarding the applications functionality as well as details regarding using Hygeia are available on the website."
+      )}</p>
+    <Link
       class="btn btn-primary btn-lg"
-      href="https://status.covid19-tracing.ch"
-      role="button"
-      target="_blank"
+      to="https://info.covid19-tracing.ch/"
+      opts={role: "button", target: "_blank"}
     >
       <span class="oi oi-external-link" aria-hidden="true" />
-      Status-Seite
-    </a>
+      {pgettext("Home", "Info Website")}
+    </Link>
+    <hr class="my-4">
+    <p class="col-md-8">{pgettext("Home", "In case of service disruptions, please check the status page.")}</p>
+    <Link
+      class="btn btn-primary btn-lg"
+      to="https://status.covid19-tracing.ch"
+      opts={role: "button", target: "_blank"}
+    >
+      <span class="oi oi-external-link" aria-hidden="true" />
+      {pgettext("Home", "Status Page")}
+    </Link>
   </section>
 </div>
