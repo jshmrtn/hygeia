@@ -12,13 +12,16 @@ defmodule HygeiaWeb.TenantController do
 
   @spec export(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) ::
           Plug.Conn.t()
-  def export(conn, %{"id" => tenant_uuid, "format" => format}) when format in @string_formats do
+  def export(conn, %{"id" => tenant_uuid, "format" => format} = params)
+      when format in @string_formats do
     tenant = TenantContext.get_tenant!(tenant_uuid)
 
     format = String.to_existing_atom(format)
 
     if authorized?(tenant, :export_data, get_auth(conn), format: format) do
-      export(conn, tenant, format)
+      extended = params["extended"] == "true"
+
+      export(conn, tenant, format, extended)
     else
       conn
       |> redirect(to: Routes.home_index_path(conn, :index))
@@ -26,7 +29,7 @@ defmodule HygeiaWeb.TenantController do
     end
   end
 
-  defp export(conn, tenant, format) do
+  defp export(conn, tenant, format, extended) do
     {:ok, conn} =
       Repo.transaction(fn ->
         {:ok, conn} =
@@ -40,7 +43,7 @@ defmodule HygeiaWeb.TenantController do
           |> chunk(:unicode.encoding_to_bom(:utf8))
 
         tenant
-        |> CaseContext.case_export(format)
+        |> CaseContext.case_export(format, extended)
         |> into_conn(conn)
       end)
 
