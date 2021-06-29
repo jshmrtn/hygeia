@@ -136,13 +136,22 @@ defmodule HygeiaHealth do
   end
 
   defp smtp_reply({tenant_name, server, hostname}) do
-    alias Socket.Stream
-    alias Socket.TCP
-
-    with {:ok, socket} <- TCP.connect(server, 25, packet: :line),
-         {:ok, _resp} <- Stream.recv(socket),
-         :ok <- Stream.send(socket, "HELO #{hostname}\r\n"),
-         {:ok, "250" <> _rest} <- Stream.recv(socket) do
+    with {:ok, socket} <-
+           :gen_tcp.connect(String.to_charlist(server), 25, [:binary, {:packet, :line}]),
+         :ok <-
+           (receive do
+              {:tcp, ^socket, "220" <> _rest} -> :ok
+            after
+              500 -> {:error, :timeout}
+            end),
+         :ok <- :gen_tcp.send(socket, "HELO #{hostname}\r\n"),
+         :ok <-
+           (receive do
+              {:tcp, ^socket, "250" <> _rest} -> :ok
+            after
+              500 -> {:error, :timeout}
+            end),
+         :ok <- :gen_tcp.close(socket) do
       {tenant_name, :ok}
     else
       {:error, reason} -> {tenant_name, {:error, reason}}
