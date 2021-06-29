@@ -81,7 +81,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
 
       You can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}
 
-      To access the confirmation, please log in using you firstname & lastname. (%{initial_first_name}. %{initial_last_name}.)
+      To access the confirmation, please log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)
 
       Should you continue to feel ill, please contact your general practitioner.
 
