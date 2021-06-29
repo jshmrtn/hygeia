@@ -37,7 +37,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       As discussed via phone, you can access the information about your quarantine via the following link:
       %{isolation_confirmation_link}
 
-      To access the confirmation, please log in using you firstname & lastname. (%{initial_first_name}. %{initial_last_name}.)
+      To access the confirmation, please log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)
 
       Please read the document carefully and consider the links for more information.
 
@@ -93,7 +93,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       You have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please consider the instructions and information via the following link:
       %{quarantine_confirmation_link}
 
-      To access the confirmation, please log in using you firstname & lastname. (%{initial_first_name}. %{initial_last_name}.)
+      To access the confirmation, please log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)
 
       Kind Regards,
       %{message_signature}
