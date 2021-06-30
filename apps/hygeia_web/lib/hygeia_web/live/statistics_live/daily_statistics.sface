@@ -100,7 +100,7 @@
                 labels:
                   Enum.map(
                     @active_quarantine_cases_per_day,
-                    &case_phase_possible_index_type_translation(&1.type)
+                    &Phase.PossibleIndex.Type.translate(&1.type)
                   )
               },
               options: %{
@@ -143,7 +143,7 @@
                       |> Enum.map(& &1.type)
                       |> Enum.uniq()
                       |> Enum.sort()
-                      |> Enum.map(&case_phase_possible_index_type_translation(&1))
+                      |> Enum.map(&Phase.PossibleIndex.Type.translate(&1))
                   },
                   %{
                     data:
@@ -155,12 +155,12 @@
                       |> Enum.sort_by(& &1.type)
                       |> Enum.map(fn
                         %{end_reason: nil, type: type} ->
-                          case_phase_possible_index_type_translation(type) <>
+                          Phase.PossibleIndex.Type.translate(type) <>
                             " / " <> gettext("unknown")
             
                         %{end_reason: end_reason, type: type} ->
-                          case_phase_possible_index_type_translation(type) <>
-                            " / " <> case_phase_possible_index_end_reason_translation(end_reason)
+                          Phase.PossibleIndex.Type.translate(type) <>
+                            " / " <> Phase.PossibleIndex.EndReason.translate(end_reason)
                       end)
                   }
                 ]
@@ -207,7 +207,7 @@
                       gettext("Index")
             
                     %{type: :possible_index, sub_type: sub_type} ->
-                      case_phase_possible_index_type_translation(sub_type)
+                      Phase.PossibleIndex.Type.translate(sub_type)
                   end)
               },
               options: %{
@@ -264,7 +264,7 @@
                 labels:
                   Enum.map(@active_complexity_cases_per_day, fn
                     %{case_complexity: nil} -> gettext("unknown")
-                    %{case_complexity: case_complexity} -> case_complexity_translation(case_complexity)
+                    %{case_complexity: case_complexity} -> Case.Complexity.translate(case_complexity)
                   end)
               },
               options: %{

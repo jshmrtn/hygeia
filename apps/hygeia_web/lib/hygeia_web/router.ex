@@ -145,6 +145,10 @@ defmodule HygeiaWeb.Router do
          :create
 
     live "/people/:person_uuid/overview", PersonOverviewLive.Index, :index
+
+    live "/cases/:case_uuid/:phase_uuid/create-premature-release",
+         PrematureReleaseLive.Create,
+         :create
   end
 
   scope "/", HygeiaWeb do
@@ -181,6 +185,7 @@ defmodule HygeiaWeb.Router do
     live "/transmissions/:id/edit", TransmissionLive.Show, :edit
 
     live "/cases/:id/protocol", CaseLive.Protocol, :show
+    live "/cases/:case_uuid/premature-releases", PrematureReleaseLive.Index, :index
     live "/cases/", CaseLive.Index, :index
     live "/cases/:cursor_direction/:cursor", CaseLive.Index, :index
 

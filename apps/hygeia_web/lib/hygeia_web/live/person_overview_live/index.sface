@@ -19,11 +19,27 @@
       |> raw()}</p>
     <p>{gettext("Download your:")}</p>
     <Link
-      class="btn btn-lg btn-primary"
+      class="btn btn-lg btn-primary mb-5"
       to={Routes.pdf_path(@socket, :quarantine_confirmation, @active_case.uuid, @active_phase.uuid)}
     >
       {gettext("Quarantine Confirmation")}
     </Link>
+    {#if @active_phase.end != Date.utc_today()}
+      <p>{gettext(
+          "If you're vaccinated, had covid before in the last six months or have a negative test to release test, you might be eligible to end the quarantine early."
+        )}</p>
+      <LiveRedirect
+        class="btn btn-lg btn-secondary"
+        to={Routes.premature_release_create_path(@socket, :create, @active_case, @active_phase)}
+      >
+        {gettext("End Quarantine")}
+      </LiveRedirect>
+    {#else}
+      <p>{gettext(
+          "Today is your last day of quarantine. If you do not experience any symptoms, you're allowed to leave quarantine."
+        )}</p>
+      <p>{gettext("Should you feel ill, please contact your general practitioner.")}</p>
+    {/if}
   </div>
   <div
     class="my-5 jumbotron"

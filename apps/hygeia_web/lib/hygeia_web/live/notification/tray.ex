@@ -132,4 +132,16 @@ defmodule HygeiaWeb.Notification.Tray do
     />
     """
   end
+
+  defp render_body(assigns, %Notification{
+         uuid: uuid,
+         body: %Notification.PrematureRelease{} = body
+       }) do
+    ~F"""
+    <HygeiaWeb.Notification.PrematureRelease
+      id={"notifications_tray_notification_body_#{uuid}"}
+      body={body}
+    />
+    """
+  end
 end

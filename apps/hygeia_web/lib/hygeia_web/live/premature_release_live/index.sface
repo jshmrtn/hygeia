@@ -1,0 +1,35 @@
+<div class="component-case-protocol container">
+  <Context get={HygeiaWeb, timezone: timezone}>
+    <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
+
+    <div class="card">
+      <div class="card-header">
+        <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                {schema_field_name(:reason, PrematureRelease)}
+              </th>
+              <th>
+                {schema_field_name(:inserted_at, PrematureRelease)}
+              </th>
+              <th>
+                {schema_field_name(:phase, PrematureRelease)}
+              </th>
+            </tr>
+          </thead>
+          <tbody id="divisions">
+            <tr :for={release <- @premature_releases}>
+              <td>{PrematureRelease.Reason.translate(release.reason)}</td>
+              <td>{release.inserted_at |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()}</td>
+              <td>{phase_name(release.phase_uuid, @case)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </Context>
+</div>

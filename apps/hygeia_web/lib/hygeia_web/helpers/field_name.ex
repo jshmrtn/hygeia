@@ -67,10 +67,12 @@ defmodule HygeiaWeb.Helpers.FieldName do
     },
     Hygeia.CaseContext.Case.Phase.Index => %{
       end_reason: "End Reason",
+      end_reason_date: "End Reason Set Date",
       other_end_reason: "Other End Reason"
     },
     Hygeia.CaseContext.Case.Phase.PossibleIndex => %{
       end_reason: "End Reason",
+      end_reason_date: "End Reason Set Date",
       type: "Type",
       type_other: "Other Type",
       other_end_reason: "Other End Reason"
@@ -134,6 +136,12 @@ defmodule HygeiaWeb.Helpers.FieldName do
       sex: "Sex",
       transmission_date: "Transmission Date",
       employer: "Employer"
+    },
+    Hygeia.CaseContext.PrematureRelease => %{
+      has_documentation: "Has Documentation",
+      phase: "Phase",
+      reason: "Reason",
+      truthful: "Is truthful"
     },
     Hygeia.CaseContext.Test => %{
       result: "Result",

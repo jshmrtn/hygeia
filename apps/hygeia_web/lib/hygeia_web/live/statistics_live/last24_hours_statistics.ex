@@ -3,6 +3,7 @@ defmodule HygeiaWeb.StatisticsLive.Last24HoursStatistics do
 
   use HygeiaWeb, :surface_view
 
+  alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.StatisticsContext
   alias Hygeia.TenantContext
   alias Surface.Components.Form

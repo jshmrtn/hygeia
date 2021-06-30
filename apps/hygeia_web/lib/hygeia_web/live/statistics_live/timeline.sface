@@ -180,7 +180,7 @@
                   end)
                   |> Enum.map(fn {type, entries} ->
                     %{
-                      label: case_phase_possible_index_type_translation(type),
+                      label: Phase.PossibleIndex.Type.translate(type),
                       fill: %{target: "origin"},
                       data: Enum.reverse(entries)
                     }
@@ -245,8 +245,7 @@
                   |> Enum.map(fn
                     {{type, nil}, entries} ->
                       %{
-                        label:
-                          case_phase_possible_index_type_translation(type) <> " / " <> gettext("unknown"),
+                        label: Phase.PossibleIndex.Type.translate(type) <> " / " <> gettext("unknown"),
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
@@ -254,8 +253,8 @@
                     {{type, end_reason}, entries} ->
                       %{
                         label:
-                          case_phase_possible_index_type_translation(type) <>
-                            " / " <> case_phase_possible_index_end_reason_translation(end_reason),
+                          Phase.PossibleIndex.Type.translate(type) <>
+                            " / " <> Phase.PossibleIndex.EndReason.translate(end_reason),
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
@@ -332,7 +331,7 @@
             
                     {{:possible_index, sub_type}, entries} ->
                       %{
-                        label: case_phase_possible_index_type_translation(sub_type),
+                        label: Phase.PossibleIndex.Type.translate(sub_type),
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
@@ -466,7 +465,7 @@
             
                     {case_complexity, entries} ->
                       %{
-                        label: case_complexity_translation(case_complexity),
+                        label: Case.Complexity.translate(case_complexity),
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }

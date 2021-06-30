@@ -4,6 +4,7 @@ defmodule HygeiaWeb.TransmissionLive.Create do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.Transmission
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form

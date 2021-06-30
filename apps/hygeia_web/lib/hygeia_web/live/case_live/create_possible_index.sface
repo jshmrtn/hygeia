@@ -22,7 +22,7 @@
                       <HygeiaWeb.FieldLabel />
                       <Select
                         class="form-control"
-                        options={case_phase_possible_index_type_map()}
+                        options={Phase.PossibleIndex.Type.map()}
                         opts={prompt: gettext("Select Type")}
                       />
                       <ErrorTag class="d-block invalid-feedback" />

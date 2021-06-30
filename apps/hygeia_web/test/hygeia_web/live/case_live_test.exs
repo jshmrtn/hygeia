@@ -5,7 +5,6 @@ defmodule HygeiaWeb.CaseLiveTest do
   use Hygeia.DataCase
   use HygeiaWeb.ConnCase
 
-  import HygeiaWeb.Helpers.Case
   import Phoenix.LiveViewTest
 
   alias Hygeia.CaseContext
@@ -37,7 +36,7 @@ defmodule HygeiaWeb.CaseLiveTest do
         )
 
       assert html =~ "Listing Cases"
-      assert html =~ case_complexity_translation(case.complexity)
+      assert html =~ Case.Complexity.translate(case.complexity)
     end
   end
 

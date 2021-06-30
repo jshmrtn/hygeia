@@ -5,23 +5,8 @@ defmodule Hygeia.CaseContext.Case.Phase.PossibleIndex do
 
   use Hygeia, :model
 
-  import EctoEnum
-
-  defenum Type, :case_phase_possible_index_type, [
-    "contact_person",
-    "travel",
-    "outbreak",
-    "covid_app",
-    "other"
-  ]
-
-  defenum EndReason, :case_phase_possible_index_end_reason, [
-    "asymptomatic",
-    "converted_to_index",
-    "no_follow_up",
-    "negative_test",
-    "other"
-  ]
+  alias Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason
+  alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
 
   @type empty :: %__MODULE__{
           type: Type.t() | nil,

@@ -9,6 +9,7 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.CaseContext.PrematureRelease
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CommunicationContext
@@ -486,5 +487,20 @@ defmodule Hygeia.Fixtures do
       |> MutationContext.create_mutation()
 
     mutation
+  end
+
+  @valid_attrs %{reason: :immune, has_documentation: true, truthful: true}
+
+  @spec premature_release_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          PrematureRelease.t()
+  def premature_release_fixture(case \\ case_fixture(), attrs \\ %{}) do
+    {:ok, %PrematureRelease{uuid: uuid}} =
+      CaseContext.create_premature_release(
+        case,
+        List.first(case.phases),
+        Enum.into(attrs, @valid_attrs)
+      )
+
+    CaseContext.get_premature_release!(uuid)
   end
 end

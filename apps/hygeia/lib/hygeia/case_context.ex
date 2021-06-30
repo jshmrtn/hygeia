@@ -12,6 +12,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.CaseContext.PrematureRelease
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CommunicationContext.Email
@@ -2704,4 +2705,141 @@ defmodule Hygeia.CaseContext do
   @spec change_test(test :: Test.t() | Test.empty(), attrs :: Hygeia.ecto_changeset_params()) ::
           Changeset.t(Test.t())
   def change_test(%Test{} = test, attrs \\ %{}), do: Test.changeset(test, attrs)
+
+  @doc """
+  Returns the list of premature_releases.
+
+  ## Examples
+
+      iex> list_premature_releases()
+      [%PrematureRelease{}, ...]
+
+  """
+  @spec list_premature_releases :: [PrematureRelease.t()]
+  def list_premature_releases, do: Repo.all(PrematureRelease)
+
+  @spec list_premature_releases(case :: Case.t()) :: [PrematureRelease.t()]
+  def list_premature_releases(%Case{} = case),
+    do: case |> Ecto.assoc(:premature_releases) |> Repo.all()
+
+  @doc """
+  Gets a single premature_release.
+
+  Raises `Ecto.NoResultsError` if the Premature release does not exist.
+
+  ## Examples
+
+      iex> get_premature_release!(123)
+      %PrematureRelease{}
+
+      iex> get_premature_release!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_premature_release!(id :: Ecto.UUID.t()) :: PrematureRelease.t()
+  def get_premature_release!(id), do: Repo.get!(PrematureRelease, id)
+
+  @doc """
+  Creates a premature_release.
+
+  ## Examples
+
+      iex> create_premature_release(%{field: value})
+      {:ok, %PrematureRelease{}}
+
+      iex> create_premature_release(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_premature_release(
+          case :: Case.t(),
+          phase :: Case.Phase.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          {:ok, PrematureRelease.t()} | {:error, Ecto.Changeset.t(PrematureRelease.t())}
+  def create_premature_release(%Case{} = case, %Case.Phase{} = phase, attrs \\ %{}),
+    do:
+      case
+      |> change_new_premature_release(phase, attrs)
+      |> versioning_insert()
+      |> broadcast("premature_releases", :create)
+      |> versioning_extract()
+
+  @doc """
+  Updates a premature_release.
+
+  ## Examples
+
+      iex> update_premature_release(premature_release, %{field: new_value})
+      {:ok, %PrematureRelease{}}
+
+      iex> update_premature_release(premature_release, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_premature_release(
+          premature_release :: PrematureRelease.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          {:ok, PrematureRelease.t()} | {:error, Ecto.Changeset.t(PrematureRelease.t())}
+
+  def update_premature_release(%PrematureRelease{} = premature_release, attrs),
+    do:
+      premature_release
+      |> change_premature_release(attrs)
+      |> versioning_update()
+      |> broadcast("premature_releases", :update)
+      |> versioning_extract()
+
+  @doc """
+  Deletes a premature_release.
+
+  ## Examples
+
+      iex> delete_premature_release(premature_release)
+      {:ok, %PrematureRelease{}}
+
+      iex> delete_premature_release(premature_release)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_premature_release(premature_release :: PrematureRelease.t()) ::
+          {:ok, PrematureRelease.t()} | {:error, Ecto.Changeset.t(PrematureRelease.t())}
+
+  def delete_premature_release(%PrematureRelease{} = premature_release),
+    do:
+      premature_release
+      |> change_premature_release()
+      |> versioning_delete()
+      |> broadcast("premature_releases", :delete)
+      |> versioning_extract()
+
+  @spec change_new_premature_release(
+          case :: Case.t(),
+          phase :: Case.Phase.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          Ecto.Changeset.t(PrematureRelease.t())
+  def change_new_premature_release(%Case{} = case, %Case.Phase{} = phase, attrs \\ %{}),
+    do:
+      case
+      |> Ecto.build_assoc(:premature_releases)
+      |> Changeset.change(%{phase_uuid: phase.uuid})
+      |> PrematureRelease.create_changeset(attrs)
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking premature_release changes.
+
+  ## Examples
+
+      iex> change_premature_release(premature_release)
+      %Ecto.Changeset{data: %PrematureRelease{}}
+
+  """
+  @spec change_premature_release(
+          premature_release :: PrematureRelease.t() | PrematureRelease.empty(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Ecto.Changeset.t(PrematureRelease.t())
+  def change_premature_release(%PrematureRelease{} = premature_release, attrs \\ %{}),
+    do: PrematureRelease.changeset(premature_release, attrs)
 end

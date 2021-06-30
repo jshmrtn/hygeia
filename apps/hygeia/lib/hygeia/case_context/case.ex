@@ -4,10 +4,10 @@ defmodule Hygeia.CaseContext.Case do
   """
   use Hygeia, :model
 
-  import EctoEnum
   import HygeiaGettext
 
   alias Hygeia.CaseContext.Case.Clinical
+  alias Hygeia.CaseContext.Case.Complexity
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.Case.Status
@@ -16,6 +16,7 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.CaseContext.PrematureRelease
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CommunicationContext.Email
@@ -23,8 +24,6 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
-
-  defenum Complexity, :case_complexity, ["low", "medium", "high", "extreme"]
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
@@ -49,6 +48,7 @@ defmodule Hygeia.CaseContext.Case do
           sms: Ecto.Schema.has_many(SMS.t()) | nil,
           notes: Ecto.Schema.has_many(Note.t()) | nil,
           tests: Ecto.Schema.has_many(Test.t()) | nil,
+          premature_releases: Ecto.Schema.has_many(PrematureRelease.t()) | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -76,6 +76,7 @@ defmodule Hygeia.CaseContext.Case do
           sms: Ecto.Schema.has_many(SMS.t()),
           notes: Ecto.Schema.has_many(Note.t()),
           tests: Ecto.Schema.has_many(Test.t()),
+          premature_releases: Ecto.Schema.has_many(PrematureRelease.t()),
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -106,6 +107,7 @@ defmodule Hygeia.CaseContext.Case do
     has_many :notes, Note, foreign_key: :case_uuid
     has_many :hospitalizations, Hospitalization, foreign_key: :case_uuid, on_replace: :delete
     has_many :tests, Test, foreign_key: :case_uuid, on_replace: :delete
+    has_many :premature_releases, PrematureRelease, foreign_key: :case_uuid, on_replace: :delete
 
     timestamps()
   end

@@ -83,7 +83,7 @@
             <HygeiaWeb.FieldLabel />
             <Select
               class="form-control"
-              options={case_phase_possible_index_type_map()}
+              options={Phase.PossibleIndex.Type.map()}
               opts={prompt: gettext("Select Type")}
             />
             <ErrorTag class="d-block invalid-feedback" />
@@ -137,9 +137,9 @@
                 old_end_reason:
                   case old_end_reason do
                     nil -> nil
-                    old_end_reason -> case_phase_possible_index_end_reason_translation(old_end_reason)
+                    old_end_reason -> Phase.PossibleIndex.EndReason.translate(old_end_reason)
                   end,
-                new_end_reason: case_phase_possible_index_end_reason_translation(new_end_reason)
+                new_end_reason: Phase.PossibleIndex.EndReason.translate(new_end_reason)
               )}
             </li>
             <li :for={{:phase_end_reason, %Phase{details: %Phase.Index{end_reason: old_end_reason}} = phase,
