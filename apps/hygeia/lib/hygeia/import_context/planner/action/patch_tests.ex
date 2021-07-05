@@ -28,24 +28,35 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchTests do
         |> Enum.map(&Changeset.change/1)
 
       test_attrs =
-        if is_nil(test_attrs[:mutation]) do
-          test_attrs
-        else
-          Map.put(
-            test_attrs,
-            :mutation_uuid,
-            case MutationContext.get_mutation_by_ism_code(test_attrs.mutation.ism_code) do
-              %Mutation{uuid: uuid} ->
-                uuid
+        case test_attrs[:mutation] do
+          nil ->
+            test_attrs
 
-              nil ->
-                message = "No mutations found for #{inspect(test_attrs.mutation)}"
-                Logger.warn(message)
-                Sentry.capture_message(message)
+          "" ->
+            test_attrs
 
-                nil
-            end
-          )
+          %{ism_code: nil} ->
+            test_attrs
+
+          %{ism_code: ""} ->
+            test_attrs
+
+          %{ism_code: code} ->
+            Map.put(
+              test_attrs,
+              :mutation_uuid,
+              case MutationContext.get_mutation_by_ism_code(code) do
+                %Mutation{uuid: uuid} ->
+                  uuid
+
+                nil ->
+                  message = "No mutations found for #{code}"
+                  Logger.warn(message)
+                  Sentry.capture_message(message)
+
+                  nil
+              end
+            )
         end
 
       tests =

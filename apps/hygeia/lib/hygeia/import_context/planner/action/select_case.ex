@@ -9,7 +9,7 @@ defmodule Hygeia.ImportContext.Planner.Action.SelectCase do
   @type existing_case :: %__MODULE__{
           case: Case.t(),
           person: Person.t(),
-          suppress_quarantine: false
+          suppress_quarantine: boolean()
         }
   @type existing_person :: %__MODULE__{
           case: nil,
@@ -19,7 +19,7 @@ defmodule Hygeia.ImportContext.Planner.Action.SelectCase do
   @type create :: %__MODULE__{
           case: nil,
           person: nil,
-          suppress_quarantine: false
+          suppress_quarantine: boolean()
         }
 
   @type t :: existing_case | existing_person | create

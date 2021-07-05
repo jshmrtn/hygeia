@@ -148,7 +148,8 @@
             submit="patch_select_case"
             for={%{
               person_uuid: if(action.person, do: action.person.uuid),
-              case_uuid: if(action.case, do: action.case.uuid)
+              case_uuid: if(action.case, do: action.case.uuid),
+              suppress_quarantine: action.suppress_quarantine
             }}
             opts={autocomplete: "off", id: "select-case-form", class: "card-body container"}
             as={:select_case}
@@ -177,7 +178,7 @@
             <div class="form-group">
               <Field name={:suppress_quarantine} class="form-check">
                 <label class="checkbox-label">
-                  <Checkbox class="form-check-input" opts={disabled: certainty != :input_needed} />
+                  <Checkbox class="form-check-input" />
                   {gettext("Suppress quarantine")}
                 </label>
               </Field>
@@ -233,7 +234,9 @@
             {#for {subject, type, value} <- action.references}
               <div class="form-group mb-3">
                 <label class="mb-0">{#case subject}
-                    {#match :person}{gettext("Person")}{#match :case}                  {/case} / {CaseContext.ExternalReference.Type.translate(type)}</label>
+                    {#match :person}{gettext("Person")}
+                    {#match :case}{gettext("Case")}
+                  {/case} / {CaseContext.ExternalReference.Type.translate(type)}</label>
                 <div class="value">
                   {value}
                 </div>

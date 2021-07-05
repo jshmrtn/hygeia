@@ -17,7 +17,9 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
 
     socket =
       if authorized?(person, :partial_details, get_auth(socket)) do
-        load_data(socket, person)
+        socket
+        |> assign(page_title: "#{person.first_name} #{person.last_name} - #{gettext("Person")}")
+        |> load_data(person)
       else
         push_redirect(socket,
           to:
@@ -50,7 +52,7 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
   end
 
   defp load_data(socket, person) do
-    person = Repo.preload(person, cases: [:tracer])
+    person = Repo.preload(person, cases: [:tracer, :tenant])
 
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "people:#{person.uuid}")
 

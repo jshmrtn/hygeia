@@ -72,9 +72,7 @@
         <th>{gettext("Start Date")}</th>
         <th>{gettext("End Date")}</th>
         <th>{gettext("Tracer")}</th>
-        <th />
-        <th />
-        <th />
+        <th class="text-right">{gettext("Actions")}</th>
       </tr>
     </thead>
     <tbody>
@@ -101,53 +99,48 @@
         <td>
           <div :if={not is_nil(case.tracer)}>
             {case.tracer.display_name}<br>
-            <small class="text-muted">{case.tracer.email}</small>
+            <small class="text-muted">{case.tenant.from_email}</small>
           </div>
         </td>
-        <div :if={match?(%Phase{details: %Phase.Index{}}, phase)}>
-          <td>
-            <LiveRedirect to={Routes.possible_index_submission_index_path(@socket, :index, case)}>
-              {gettext("Possible Index Submissions")}
-            </LiveRedirect>
-          </td>
-          <td>
-            <Link
-              class={
-                "btn btn-sm btn-secondary ml-2 flex-shrink-0",
-                disabled: not Phase.can_generate_pdf_confirmation?(phase, case.tenant)
-              }
-              to={Routes.pdf_path(@socket, :isolation_confirmation, case.uuid, phase.uuid)}
-            >
-              {gettext("Isolation Confirmation")}
-            </Link>
-          </td>
-          <td>
-            <Link
-              class={
-                "btn btn-sm btn-secondary ml-2 flex-shrink-0",
-                disabled: not Phase.can_generate_pdf_end_confirmation?(phase, case.tenant)
-              }
-              to={Routes.pdf_path(@socket, :isolation_end_confirmation, case.uuid, phase.uuid)}
-            >
-              {gettext("Isolation End Confirmation")}
-            </Link>
-          </td>
-        </div>
-        <div :if={match?(%Phase{details: %Phase.PossibleIndex{}}, phase)}>
-          <td />
-          <td />
-          <td>
-            <Link
-              class={
-                "btn btn-sm btn-secondary ml-2 flex-shrink-0",
-                disabled: not Phase.can_generate_pdf_confirmation?(phase, case.tenant)
-              }
-              to={Routes.pdf_path(@socket, :quarantine_confirmation, case.uuid, phase.uuid)}
-            >
-              {gettext("Quarantine Confirmation")}
-            </Link>
-          </td>
-        </div>
+        <td class="text-right">
+          {#case phase}
+            {#match %Phase{details: %Phase.Index{}}}
+              <LiveRedirect
+                class="btn btn-sm btn-secondary ml-2 mb-2"
+                to={Routes.possible_index_submission_index_path(@socket, :index, case)}
+              >
+                {gettext("Possible Index Submissions")}
+              </LiveRedirect>
+              <Link
+                class={
+                  "btn btn-sm btn-secondary ml-2 mb-2",
+                  disabled: not Phase.can_generate_pdf_confirmation?(phase, case.tenant)
+                }
+                to={Routes.pdf_path(@socket, :isolation_confirmation, case.uuid, phase.uuid)}
+              >
+                {gettext("Isolation Confirmation")}
+              </Link>
+              <Link
+                class={
+                  "btn btn-sm btn-secondary ml-2 mb-2",
+                  disabled: not Phase.can_generate_pdf_end_confirmation?(phase, case.tenant)
+                }
+                to={Routes.pdf_path(@socket, :isolation_end_confirmation, case.uuid, phase.uuid)}
+              >
+                {gettext("Isolation End Confirmation")}
+              </Link>
+            {#match %Phase{details: %Phase.PossibleIndex{}}}
+              <Link
+                class={
+                  "btn btn-sm btn-secondary ml-2",
+                  disabled: not Phase.can_generate_pdf_confirmation?(phase, case.tenant)
+                }
+                to={Routes.pdf_path(@socket, :quarantine_confirmation, case.uuid, phase.uuid)}
+              >
+                {gettext("Quarantine Confirmation")}
+              </Link>
+          {/case}
+        </td>
       </tr>
     </tbody>
   </table>
