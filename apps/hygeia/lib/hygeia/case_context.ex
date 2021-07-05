@@ -1213,7 +1213,8 @@ defmodule Hygeia.CaseContext do
           format :: :bag_med_16122020_contact,
           extended :: boolean
         ) :: Enumerable.t()
-  # credo:disable-for-next-line Credo.Check.Refactor.ABCSize
+  # credo:disable-for-lines:2 Credo.Check.Refactor.ABCSize
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def case_export(%Tenant{uuid: tenant_uuid} = _teant, :bag_med_16122020_contact, extended) do
     first_transmission_query =
       from(transmission in Transmission,
@@ -1723,6 +1724,28 @@ defmodule Hygeia.CaseContext do
                   |> put_in(
                     [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
                     "Negative Test"
+                  )
+
+                :immune ->
+                  list
+                  |> put_in(
+                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                    4
+                  )
+                  |> put_in(
+                    [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
+                    "Immune"
+                  )
+
+                :vaccinated ->
+                  list
+                  |> put_in(
+                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                    4
+                  )
+                  |> put_in(
+                    [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
+                    "Vaccinated"
                   )
 
                 :asymptomatic ->

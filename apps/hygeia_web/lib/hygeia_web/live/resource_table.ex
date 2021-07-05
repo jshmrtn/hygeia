@@ -105,7 +105,8 @@ defmodule HygeiaWeb.ResourceTable do
         Hygeia.CaseContext.Test.Kind,
         Hygeia.CaseContext.Case.Phase.PossibleIndex.EndReason,
         Hygeia.CaseContext.Case.Phase.Index.EndReason,
-        Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
+        Hygeia.CaseContext.Case.Phase.PossibleIndex.Type,
+        Hygeia.CaseContext.Test.Result
       ] do
     defp render_tree(value, unquote(enum), _assigns, _timezone) do
       {:ok, value} = unquote(enum).cast(value)
