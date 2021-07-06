@@ -21,18 +21,18 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Hygeia.UserContext
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema
-  alias HygeiaWeb.DateInput
-  alias Surface.Components.Form
-  alias Surface.Components.Form.Checkbox
-  alias Surface.Components.Form.ErrorTag
-  alias Surface.Components.Form.Field
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.{DefineTransmission, DefinePeople, DefineOptions, Summary}
+  alias HygeiaWeb.Helpers.FormStep
+
   alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
-  alias Surface.Components.Form.Inputs
-  alias Surface.Components.Form.RadioButton
-  alias Surface.Components.Form.Select
-  alias Surface.Components.Form.TextArea
-  alias Surface.Components.Form.TextInput
+
+
+  @form_steps [
+    %FormStep{name: :transmission, prev: nil, next: :subjects},
+    %FormStep{name: :subjects, prev: :transmission, next: :options},
+    %FormStep{name: :options, prev: :subject, next: :summary},
+    %FormStep{name: :summary, prev: :options, next: nil}
+  ]
 
   @impl Phoenix.LiveView
   # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
@@ -48,21 +48,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         supervisor_users = UserContext.list_users_with_role(:supervisor, tenants)
         tracer_users = UserContext.list_users_with_role(:tracer, tenants)
 
-        params =
+        available_data =
           case params["possible_index_submission_uuid"] do
-            nil -> params
-            uuid -> Map.merge(params, possible_index_submission_attrs(uuid))
+            nil -> %{}
+            uuid -> possible_index_submission_attrs(uuid)
           end
 
         assign(socket,
-          changeset: CreateSchema.changeset(%CreateSchema{people: []}, params),
+          current_form_data: available_data,
+          form_step: set_form_step(@form_steps, available_data),
           tenants: tenants,
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
           suspected_duplicate_changeset_uuid: nil,
-          file: nil,
           return_to: params["return_to"],
-          loading: false,
           page_title: "#{gettext("Create Possible Index Cases")} - #{gettext("Cases")}"
         )
       else
@@ -79,20 +78,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     {:noreply, assign(socket, suspected_duplicate_changeset_uuid: nil)}
   end
 
-  @impl Phoenix.LiveView
-  def handle_event("validate", %{"create_schema" => create_params}, socket) do
-    {:noreply,
-     socket
-     |> assign(:changeset, %{
-       CreateSchema.changeset(%CreateSchema{people: []}, create_params)
-       | action: :validate
-     })
-     |> maybe_block_navigation()}
-  end
-
-  def handle_event("save", %{"create_schema" => create_params}, socket) do
-    %CreateSchema{people: []}
-    |> CreateSchema.changeset(create_params)
+  def save(socket) do
+    socket.assigns.current_form_data
+    |> CreateSchema.changeset()
     |> case do
       %Ecto.Changeset{valid?: false} = changeset ->
         {:noreply,
@@ -145,22 +133,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     end
   end
 
-  def handle_event("change_propagator_case", params, socket) do
-    {:noreply,
-     socket
-     |> assign(:changeset, %{
-       CreateSchema.changeset(
-         %CreateSchema{people: []},
-         update_changeset_param(
-           socket.assigns.changeset,
-           :propagator_case_uuid,
-           fn _value_before -> params["uuid"] end
-         )
-       )
-       | action: :validate
-     })
-     |> maybe_block_navigation()}
-  end
 
   @impl Phoenix.LiveView
   def handle_info({:accept_duplicate, uuid, case_or_person}, socket) do
@@ -184,6 +156,19 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
      socket
      |> assign(changeset: remove_person(socket.assigns.changeset, uuid, CreateSchema))
      |> maybe_block_navigation()}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_info({:proceed, form_data}, socket) do
+    updated_data =
+      socket.assigns.current_form_data
+      |> Map.merge(form_data)
+
+    {:noreply,
+      socket
+      |> assign(:current_form_data, updated_data)
+      |> assign_step(:next)
+    }
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
@@ -230,6 +215,18 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         }
       ]
     }
+  end
+
+  defp set_form_step(steps, _form_data) do
+    List.first(steps)
+  end
+
+  defp assign_step(socket, step) do
+    if new_step = Enum.find(@form_steps, & &1.name == Map.get(socket.assigns.form_step, step)) do
+      assign(socket, :form_step, new_step)
+    else
+      save(socket)
+    end
   end
 
   defp close_submission(uuid)

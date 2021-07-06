@@ -44,7 +44,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
 
     embeds_one :infection_place, InfectionPlace
 
-    embeds_many :people, CreatePersonSchema, on_replace: :delete
+    embeds_many :people, CreatePersonSchema, on_replace: :delete #list of persons
   end
 
   @spec changeset(schema :: %__MODULE__{}, attrs :: Hygeia.ecto_changeset_params()) ::
@@ -86,8 +86,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
         :type,
         :date
       ])
-      |> validate_date()
-      |> validate_type_other()
+      #|> validate_date()
+      #|> validate_type_other()
       |> Transmission.validate_case(
         :propagator_internal,
         :propagator_ism_id,
@@ -114,30 +114,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
     )
   end
 
-  defp validate_type_other(changeset) do
-    changeset
-    |> fetch_field!(:type)
-    |> case do
-      :other -> validate_required(changeset, [:type_other])
-      _defined -> put_change(changeset, :type_other, nil)
-    end
-  end
 
-  defp validate_date(changeset) do
-    validate_change(changeset, :date, fn :date, value ->
-      diff = Date.diff(Date.utc_today(), value)
-
-      # TODO: Correct Validation Rules
-      # diff > 10 ->
-      #   [{:date, dgettext("errors", "date must not be older than 10 days")}]
-
-      if diff < 0 do
-        [{:date, dgettext("errors", "date must not be in the future")}]
-      else
-        []
-      end
-    end)
-  end
 
   # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
   defp drop_multiple_empty_rows(changeset) do
