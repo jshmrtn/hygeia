@@ -87,7 +87,11 @@
         </LiveRedirect>
       </UriActiveContext>
     </li>
-    <li class="nav-item" :if={authorized?(CaseContext.PrematureRelease, :list, auth, case: @case)}>
+    <li
+      class="nav-item"
+      :if={authorized?(CaseContext.PrematureRelease, :list, auth, case: @case) and
+        Enum.any?(@case.phases, &match?(%Case.Phase{details: %Case.Phase.PossibleIndex{}}, &1))}
+    >
       <UriActiveContext
         to={Routes.premature_release_index_path(@socket, :index, @case)}
         :let={to: to, active: active}

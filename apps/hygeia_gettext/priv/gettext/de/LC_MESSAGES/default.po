@@ -1256,19 +1256,19 @@ msgid "Hygeia is deisgned to structure complicated processes, to fullfill standa
 msgstr "Hygeia ist darauf ausgelegt, fehleranfällige Prozesse klar und einheitlich zu strukturieren, Standards wie das «%{link_med}» des BAG einzuhalten, Anbindungen wie diejenige an die BAG-Datenbank zu gewährleisten und die fürs Contact Tracing notwendigen Personal-Mittel zu reduzieren."
 
 msgid "I confirm that all the data above is correct. This may be inspected!"
-msgstr "Ich bestätige das alle Angaben korrekt sind. Dies kann überprüft werden."
+msgstr "Ich bestätige, dass alle Angaben korrekt sind. Dies kann überprüft werden."
 
-msgid "I did a COVID test after quarantine day 7 with a negative result."
-msgstr "Ich habe einen COVID Test mit einem negativen Resultat nach dem 7. Quarantäne Tag gemacht."
+msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
+msgstr "Ich habe einen Covid-19 Test ab frühestens dem 4. Tag vor Ablauf der Quarantäne gemacht. Das Testresultat ist negativ."
 
-msgid "I do have the neccesary documentation to prove that I fullfil the requirements stated above."
-msgstr "Ich habe die benötigten Dokumente um die Anforderungen von Oben zu belegen."
+msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation COnfirmation)"
+msgstr "Ich war innerhalb der letzten sechs Monate an Covid-19 erkrankt und bin bereits genesen. Die Erkrankung kann ich offiziell nachweisen (Covid Zertifikat, positiver PCR-Test, Isolationsbestätigung)."
 
-msgid "I had COVID in the last six months and had a PCR test that was positive."
-msgstr "Ich bin in den letzten sechs Monaten mit COVID erkrant & genesen und habe einen PCR Test der dies belegen kann gemacht."
+msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
+msgstr "Ich verfüge über einen offiziellen Nachweis (geimpft, immun, negativer Test) um die Quarantäne zu beenden."
 
-msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and are less than 6 months old."
-msgstr "Ich habe mindestens zwei COVID Impfungen mit einem in der Schweiz zugelassenen Impfstoff gemacht und die letzte Impfung liegt weniger als sechs Monate zurück."
+msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
+msgstr "Ich habe mindestens zwei Covid-19 Impfungen mit einem in der Schweiz zugelassenen Impfstoff erhalten und die letzte Impfung liegt weniger als sechs Monate zurück."
 
 msgid "IAM Configuration"
 msgstr "IAM-Konfiguration"
@@ -1340,9 +1340,6 @@ msgstr "Wenn Sie eine autorisierte Person des Contact Tracing Teams sind, loggen
 
 msgid "If you're having trouble recalling what you did since then, here are some examples:"
 msgstr "Wenn Sie Schwierigkeiten haben, sich daran zu erinnern, was Sie seitdem getan haben, hier sind einige Beispiele:"
-
-msgid "If you're vaccinated, had covid before in the last six months or have a negative test to release test, you might be eligible to end the quarantine early."
-msgstr "Wenn Sie geimpft sind oder von COVID genesen in den letzten sechs Monaten oder einen Negativen PCR Test haben, sind Sie möglicherweise berechtigt Ihre Quarantäne vorzeitig zu beenden."
 
 msgctxt "Possible Index End Reason"
 msgid "Immune"
@@ -3348,6 +3345,12 @@ msgstr "Sie befinden sich momentan nicht in Quarantäne oder Isolation."
 
 msgid "You are not authorized to do this action."
 msgstr "Sie sind nicht berechtigt, diese Aktion auszuführen."
+
+msgid "You can also end quarantine early, if you do a COVID-19 test in the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
+msgstr "Ausserdem können Sie die Quarantäne vorzeitig beenden, indem Sie ab frühestens 4 Tage vor Ablauf der Quarantäne einen Test durchführen lassen, welcher negativ ausfällt. Der Test muss von einer offiziellen Teststelle durchgeführt werden."
+
+msgid "You can lift quarantine if you're fully vaccinated or if you verifiably had COVID-19 in the last six months."
+msgstr "Sie können sich von der Quarantäne befreien lassen, wenn sie bereits vollständig geimpft sind oder nachweislich in den letzten sechs Monaten an Covid-19 erkrankt waren und genesen sind."
 
 msgid "You did not keep a safe distance of at least 1.5 meters."
 msgstr "Sie waren sich näher als 1.5 Meter."
