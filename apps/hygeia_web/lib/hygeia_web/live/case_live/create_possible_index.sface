@@ -3,28 +3,28 @@
 
   <HiddenInput field={:possible_index_submission_uuid} />
 
-    <div class="container">
-      {#if @form_step.name == :transmission}
-        <DefineTransmission id="transmission" {=@current_form_data} />
-      {/if}
+  <div class="container">
+    {#if @form_step.name == :transmission}
+      <DefineTransmission id="transmission" {=@current_form_data} />
+    {/if}
 
-      {#if @form_step.name == :subjects}
-        <DefinePeople
-          id="subjects"
-          {=@current_form_data}
-          {=@tenants}
-          {=@supervisor_users}
-          {=@tracer_users}
-          show_address={Map.get(@current_form_data, :copy_address_from_propagator, false)}
-        />
-      {/if}
+    {#if @form_step.name == :people}
+      <DefinePeople
+        id="people"
+        {=@current_form_data}
+        {=@tenants}
+        {=@supervisor_users}
+        {=@tracer_users}
+        show_address={Map.get(@current_form_data, :copy_address_from_propagator, false)}
+      />
+    {/if}
 
-      {#if @form_step.name == :options}
-        <DefineOptions id="options" {=@current_form_data} is_internal_propagator={false} />
-      {/if}
+    {#if @form_step.name == :options}
+      <DefineOptions id="options" {=@current_form_data} is_internal_propagator={false} />
+    {/if}
 
-      {#if @form_step.name == :summary}
-        <Summary id="summary" {=@current_form_data} />
-      {/if}
-    </div>
+    {#if @form_step.name == :summary}
+      <Summary id="summary" {=@current_form_data} />
+    {/if}
+  </div>
 </div>

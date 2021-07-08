@@ -2,7 +2,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
-  use Ecto.Schema
+  use Hygeia, :model
 
   import Ecto.Changeset
   import HygeiaGettext
@@ -113,6 +113,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
   def changeset(schema, attrs \\ %{}) do
     schema
     |> cast(attrs, [
+       :uuid,
        :type,
        :type_other,
        :propagator_internal,

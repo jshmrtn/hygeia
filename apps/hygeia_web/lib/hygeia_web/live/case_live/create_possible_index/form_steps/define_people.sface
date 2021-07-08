@@ -1,348 +1,81 @@
-<div class="component-case-person-create-table mb-2">
-  <Context get={HygeiaWeb, auth: auth}>
-    <table class="person-table table table-sm no-autofill-background">
-      <thead>
-        <tr>
-          <th scope="col">
-            {schema_field_name(:first_name, CreatePersonSchema)}
-          </th>
-          <th scope="col">
-            {schema_field_name(:last_name, CreatePersonSchema)}
-          </th>
-          <th scope="col">
-            {schema_field_name(:sex, CreatePersonSchema)}
-          </th>
-          <th scope="col">
-            {schema_field_name(:birth_date, CreatePersonSchema)}
-          </th>
-          <th scope="col">
-            {schema_field_name(:mobile, CreatePersonSchema)}
-          </th>
-          <th scope="col">
-            {schema_field_name(:landline, CreatePersonSchema)}
-          </th>
-          <th scope="col">
-            {schema_field_name(:email, CreatePersonSchema)}
-          </th>
-          <th scope="col">
-            {schema_field_name(:address, CreatePersonSchema)}
-          </th>
-          <th scope="col" class="table-col-border">
-            {schema_field_name(:tenant, CreatePersonSchema)}
-          </th>
-          <#slot name="additional_header" />
-          <th scope="col">
-            {schema_field_name(:supervisor, CreatePersonSchema)}
-          </th>
-          <th scope="col" class="table-col-border">
-            {schema_field_name(:tracer, CreatePersonSchema)}
-          </th>
-          <th scope="col" class="table-col-border">
-            {schema_field_name(:employer, CreatePersonSchema)}
-          </th>
-          <th scope="col" class="actions-col" />
-        </tr>
-      </thead>
-      <Inputs for={:people}>
-        <InputContext assigns={assigns} :let={form: form}>
-          <Context
-            put={
-              changeset_uuid: Ecto.Changeset.fetch_field!(form.source, :uuid),
-              accepted_duplicate: Ecto.Changeset.fetch_field!(form.source, :accepted_duplicate) == true
-            }
-            get={
-              changeset_uuid: changeset_uuid,
-              accepted_duplicate: accepted_duplicate
-            }
-          >
-            <tr class={"duplicate-accepted": accepted_duplicate} id={"person_create_#{changeset_uuid}"}>
-              <td id={"person_create_#{changeset_uuid}_first_name"}>
-                <HiddenInput field={:uuid} />
-                <HiddenInput field={:accepted_duplicate_human_readable_id} />
-                <Field class="fill-cell" name={:first_name}>
-                  <TextInput class="form-control" id={"person_create_#{changeset_uuid}_first_name_input"} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td id={"person_create_#{changeset_uuid}_last_name"}>
-                <Field class="fill-cell" name={:last_name}>
-                  <TextInput class="form-control" id={"person_create_#{changeset_uuid}_last_name_input"} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td id={"person_create_#{changeset_uuid}_sex"}>
-                <Field class="fill-cell" name={:sex}>
-                  <Select
-                    opts={prompt: gettext("choose sex")}
-                    class="form-control"
-                    options={person_sex_map()}
-                    id={"person_create_#{changeset_uuid}_sex_input"}
-                  />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td id={"person_create_#{changeset_uuid}_birth_date"}>
-                <Field class="fill-cell" name={:birth_date}>
-                  <DateInput class="form-control" id={"person_create_#{changeset_uuid}_birth_date_input"} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td id={"person_create_#{changeset_uuid}_mobile"}>
-                <Field class="fill-cell" name={:mobile}>
-                  <TextInput class="form-control" id={"person_create_#{changeset_uuid}_mobile_input"} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td id={"person_create_#{changeset_uuid}_landline"}>
-                <Field class="fill-cell" name={:landline}>
-                  <TextInput class="form-control" id={"person_create_#{changeset_uuid}_landline_input"} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td id={"person_create_#{changeset_uuid}_email"}>
-                <Field class="fill-cell" name={:email}>
-                  <TextInput class="form-control" id={"person_create_#{changeset_uuid}_email_input"} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td class="p-1" id={"person_create_#{changeset_uuid}_address"}>
-                <Inputs for={:address}>
-                  <HygeiaWeb.CaseLive.AddressInput id={"person_address_#{changeset_uuid}"} />
-                </Inputs>
-              </td>
-              <td class="table-col-border" id={"person_create_#{changeset_uuid}_tenant"}>
-                <Field class="p-1" name={:tenant_uuid}>
-                  <HygeiaWeb.CaseLive.ModalSelect
-                    title={gettext("Tenant")}
-                    options={[{gettext("Default Tenant"), nil}] ++
-                      Enum.map(@tenants, &{&1.name, &1.uuid})}
-                    :let={value: value}
-                    id={"person_create_#{changeset_uuid}_tenant_input"}
-                  >
-                    <small>{elem(value, 0)}</small>
-                  </HygeiaWeb.CaseLive.ModalSelect>
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <#slot name="additional_row" />
-              <td id={"person_create_#{changeset_uuid}_supervisor"}>
-                <Field class="p-1" name={:supervisor_uuid}>
-                  <HygeiaWeb.CaseLive.ModalSelect
-                    title={gettext("Supervisor")}
-                    options={[{gettext("Default Supervisor"), nil}] ++
-                      Enum.map(
-                        CaseLiveHelper.get_users(
-                          @supervisor_users,
-                          Ecto.Changeset.fetch_field!(form.source, :tenant_uuid),
-                          :supervisor
-                        ),
-                        &{&1.display_name, &1.uuid}
-                      )}
-                    :let={value: value}
-                    id={"person_create_#{changeset_uuid}_supervisor_input"}
-                  >
-                    <small>{elem(value, 0)}</small>
-                  </HygeiaWeb.CaseLive.ModalSelect>
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td class="table-col-border" id={"person_create_#{changeset_uuid}_tracer"}>
-                <Field class="p-1" name={:tracer_uuid}>
-                  <HygeiaWeb.CaseLive.ModalSelect
-                    title={gettext("Tracer")}
-                    options={[{gettext("Default Tracer"), nil}] ++
-                      Enum.map(
-                        CaseLiveHelper.get_users(
-                          @tracer_users,
-                          Ecto.Changeset.fetch_field!(form.source, :tenant_uuid),
-                          :tracer
-                        ),
-                        &{&1.display_name, &1.uuid}
-                      )}
-                    :let={value: value}
-                    id={"person_create_#{changeset_uuid}_tracer_input"}
-                  >
-                    <small>{elem(value, 0)}</small>
-                  </HygeiaWeb.CaseLive.ModalSelect>
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td class="table-col-border" id={"person_create_#{changeset_uuid}_employer"}>
-                <Field class="fill-cell" name={:employer}>
-                  <TextInput class="form-control" />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </td>
-              <td id={"person_create_#{changeset_uuid}_actions"}>
-                <HiddenInput field={:search_params_hash} />
-                <HiddenInput field={:suspected_duplicate_uuids} />
-                <HiddenInput field={:accepted_duplicate} />
-                <HiddenInput field={:accepted_duplicate_case_uuid} />
-                <HiddenInput field={:accepted_duplicate_uuid} />
-
-                <div class="d-flex justify-content-end p-1">
-                  <button
-                    :if={Ecto.Changeset.fetch_field!(form.source, :suspected_duplicate_uuids) not in ["", nil] and
-                      accepted_duplicate != true}
-                    class="btn btn-secondary btn-sm"
-                    type="button"
-                    phx-value-changeset-uuid={changeset_uuid}
-                    phx-click="check_duplicate"
-                    phx-target={@myself}
-                    title={gettext("Check Duplicates")}
-                  >
-                    <span class="oi oi-person" aria-hidden="true" />
-                  </button>
-
-                  <HygeiaWeb.Modal
-                    :if={not is_nil(@suspected_duplicate_changeset_uuid) and
-                      @suspected_duplicate_changeset_uuid == changeset_uuid}
-                    title={gettext("Select existing person")}
-                    id="modal"
-                    close="decline_duplicate"
-                  >
-                    <div class="candidate-card card flex-row">
-                      <div class="card-header card-vertical-header">
-                        <table class="candidate-table">
-                          <tr>
-                            <th>{gettext("Name")}</th>
-                            <td>
-                              {Ecto.Changeset.fetch_field!(form.source, :first_name)}
-                              {Ecto.Changeset.fetch_field!(form.source, :last_name)}
-                              <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>{schema_field_name(:birth_date, CreatePersonSchema)}</th>
-                            <td>{form.source |> Ecto.Changeset.fetch_field!(:birth_date) |> format_date()}</td>
-                          </tr>
-                          <tr>
-                            <th>{schema_field_name(:mobile, CreatePersonSchema)}</th>
-                            <td>{Ecto.Changeset.fetch_field!(form.source, :mobile)}</td>
-                          </tr>
-                          <tr>
-                            <th>{schema_field_name(:landline, CreatePersonSchema)}</th>
-                            <td>{Ecto.Changeset.fetch_field!(form.source, :landline)}</td>
-                          </tr>
-                          <tr>
-                            <th>{schema_field_name(:email, CreatePersonSchema)}</th>
-                            <td>{Ecto.Changeset.fetch_field!(form.source, :email)}</td>
-                          </tr>
-                          <tr>
-                            <th>{schema_field_name(:tenant, CreatePersonSchema)}</th>
-                            <td>
-                              {form.source
-                              |> Ecto.Changeset.fetch_field!(:tenant_uuid)
-                              |> case do
-                                nil -> nil
-                                uuid -> get_tenant(@tenants, uuid).name
-                              end}
-                            </td>
-                          </tr>
-                        </table>
-                        <input
-                          type="button"
-                          class="btn btn-primary mt-3"
-                          checked={accepted_duplicate and is_nil(Ecto.Changeset.fetch_field!(form.source, :accepted_duplicate_uuid))}
-                          phx-click="decline_duplicate"
-                          phx-target={@myself}
-                          value={gettext("Create new person")}
-                        />
-                      </div>
-                      <div class="card-body">
-                        <div class="candidates">
-                          <div
-                            :for={
-                              person_uuid <-
-                                String.split(Ecto.Changeset.fetch_field!(form.source, :suspected_duplicate_uuids), ","),
-                              person = get_person(person_uuid)
-                            }
-                            class="candidate"
-                          >
-                            <HygeiaWeb.RecordView
-                              :if={authorized?(person, :details, auth)}
-                              resource={person}
-                              action={:details}
-                              id={"duplicate_person_value_recordview_#{person.uuid}"}
-                            >
-                              <table class="candidate-table">
-                                <tr>
-                                  <td>{get_person_name(person)}<br></td>
-                                </tr>
-                                <tr>
-                                  <td>{format_date(person.birth_date)}<br></td>
-                                </tr>
-                                <tr>
-                                  <td>{get_contact_method(person, :mobile)}</td>
-                                </tr>
-                                <tr>
-                                  <td>{get_contact_method(person, :landline)}</td>
-                                </tr>
-                                <tr>
-                                  <td>{get_contact_method(person, :email)}</td>
-                                </tr>
-                                <tr>
-                                  <td>{get_tenant(@tenants, person.tenant_uuid).name}</td>
-                                </tr>
-                              </table>
-                            </HygeiaWeb.RecordView>
-
-                            <span :if={not authorized?(person, :details, auth)}>
-                              {person.tenant.short_name}
-                              /
-                              {person.human_readable_id}
-                            </span>
-
-                            <input
-                              type="button"
-                              :for={case <- person.cases}
-                              class="btn btn-primary mt-3 d-block"
-                              phx-click="select_accepted_duplicate"
-                              phx-value-person-uuid={person_uuid}
-                              phx-value-case-uuid={case.uuid}
-                              phx-value-type="case"
-                              phx-target={@myself}
-                              value={gettext("Choose %{case}", case: case_display_name(case))}
-                            />
-
-                            <input
-                              type="button"
-                              class={
-                                "btn",
-                                "mt-3",
-                                "d-block",
-                                "btn-primary": match?([], person.cases),
-                                "btn-secondary": match?([_ | _], person.cases)
-                              }
-                              phx-click="select_accepted_duplicate"
-                              phx-value-person-uuid={person_uuid}
-                              phx-value-type="person"
-                              phx-target={@myself}
-                              value={gettext("Choose existing person")}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </HygeiaWeb.Modal>
-
-                  <button
-                    :if={not CreatePersonSchema.is_person_empty?(form.source)}
-                    class="ml-1 btn btn-secondary btn-sm btn-danger"
-                    type="button"
-                    phx-value-changeset-uuid={changeset_uuid}
-                    phx-click="remove_person"
-                    phx-target={@myself}
-                    title={gettext("Remove")}
-                  >
-                    <span class="oi oi-trash" aria-hidden="true" />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </Context>
-        </InputContext>
-      </Inputs>
-    </table>
-  </Context>
+<div class="row mb-3">
+  <div class="col-12">
+    <Form
+      :if={not @loading}
+      for={:person}
+      change="suggest"
+      submit="create_person"
+      opts={autocomplete: "off", id: "suggest-people-form", "phx-hook": "BlockNavigation"}
+    >
+      <div class="input-group">
+        <Field name={:first_name} class="form-group">
+          <Label />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={:last_name} class="form-group">
+          <Label />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={:mobile} class="form-group">
+          <Label />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={:landline} class="form-group">
+          <Label />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={:email} class="form-group">
+          <Label />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <div class="input-group-append">
+          <button class="input-group-text">Add new person</button>
+        </div>
+      </div>
+    </Form>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-12">
+    <HygeiaWeb.Modal :if={@action in [:new, :edit]} title={gettext("Create new person")} id="modal" close="close_modal">
+      <Form
+        :if={not @loading}
+        for={@changeset}
+        change="validate"
+        submit="save"
+        opts={autocomplete: "off", id: "create-person-form", "phx-hook": "BlockNavigation"}
+      >
+        <Field name={:first_name} class="form-group">
+          <Label />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={:last_name} class="form-group">
+          <Label />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={:mobile} class="form-group">
+          <Label />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={:landline} class="form-group">
+          <Label />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={:email} class="form-group">
+          <Label />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+      </Form>
+    </HygeiaWeb.Modal>
+  </div>
 </div>

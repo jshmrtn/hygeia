@@ -28,8 +28,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
 
   @form_steps [
-    %FormStep{name: :transmission, prev: nil, next: :subjects},
-    %FormStep{name: :subjects, prev: :transmission, next: :options},
+    %FormStep{name: :transmission, prev: nil, next: :people},
+    %FormStep{name: :people, prev: :transmission, next: :options},
     %FormStep{name: :options, prev: :subject, next: :summary},
     %FormStep{name: :summary, prev: :options, next: nil}
   ]
@@ -56,7 +56,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
         assign(socket,
           current_form_data: available_data,
-          form_step: set_form_step(@form_steps, available_data),
+          form_step: Enum.at(@form_steps, 1), #set_form_step(@form_steps, available_data),
           tenants: tenants,
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,

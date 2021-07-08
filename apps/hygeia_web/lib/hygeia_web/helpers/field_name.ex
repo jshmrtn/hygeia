@@ -309,7 +309,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       tracer: "Tracer",
       tracer_uuid: "Tracer UUID"
     },
-    HygeiaWeb.CaseLive.CreateIndex.CreateSchema => %{
+    HygeiaWeb.CaseLive.CreateIndex.CreateSchema => %{ # DELETE
       default_supervisor: "Default Supervisor",
       default_supervisor_uuid: "Default Supervisor UUID",
       default_tenant: "Default Tenant",
@@ -317,7 +317,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       default_tracer: "Default Tracer",
       default_tracer_uuid: "Default Tracer UUID"
     },
-    HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema => %{
+    HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema => %{ # TODO
       comment: "Comment",
       copy_address_from_propagator: "Copy Address From Propagator",
       date: "Date",
