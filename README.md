@@ -68,4 +68,4 @@ See [`.env.example`](./.env.example)
 
 ### [Code BEAM V Europe 2021](https://codesync.global/speaker/jonatan-maennchen/#845covid-19-contact-tracing-on-the-beam)
 
-[![COVID-19 contact tracing on the BEAM - Jonatan Männchen; Jeremy "Jay" Zahner | Code BEAM V Europe](https://img.youtube.com/vi/nbrQKSrUfvQ/0.jpg)](https://www.youtube.com/watch?v=nbrQKSrUfvQ)
+[![COVID-19 contact tracing on the BEAM - Jonatan Männchen; Jeremy "Jay" Zahner | Code BEAM V Europe](https://img.youtube.com/vi/7ypfyCOfwLo/0.jpg)](https://www.youtube.com/watch?v=7ypfyCOfwLo)
