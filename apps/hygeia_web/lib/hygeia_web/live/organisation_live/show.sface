@@ -2,35 +2,58 @@
   <Context get={HygeiaWeb, auth: auth}>
     <HygeiaWeb.OrganisationLive.Header organisation={@changeset} id="header" />
 
-    <div
-      :for={%Organisation{name: name} = organisation <-
-        @changeset
+    <Context
+        put={
+          duplicate_organisations:
+            @changeset
         |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-        |> Enum.take(5)
-        |> OrganisationContext.list_organisations_by_ids()}
-      class="alert alert-warning"
-    >
-      <div class="d-flex justify-content-between align-items-center">
-        <span>
-          {"This organisation is possibly a duplicate of %{name_link}, please check."
-          |> gettext(
-            name_link:
-              name
-              |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
-              |> safe_to_string
-          )
-          |> raw}
-        </span>
+        |> OrganisationContext.list_organisations_by_ids()
+        }
+        get={duplicate_organisations: duplicate_organisations}
+      >
+        <details
+          id={"organisation_duplicates_details_#{@organisation.uuid}"}
+          phx-hook="DetailsState"
+          data-uuid={@organisation.uuid}
+          class="alert alert-warning p-3"
+          :if={length(duplicate_organisations) > 0}
+        >
+          <summary>
+            {ngettext(
+              "This organisation has a possible duplicate.",
+              "This organisation has %{length} possible duplicates.",
+              length(duplicate_organisations),
+              length: length(duplicate_organisations)
+            )}
+          </summary>
+          <div
+            :for={%Organisation{name: name, address: address} = organisation <-
+              duplicate_organisations}
+            class="card mt-2 card-body"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <span>
+              {"This organisation is possibly a duplicate of %{name_link}, please check."
+              |> gettext(
+                name_link:
+                  "#{name} #{if(address, do: "(#{address.place})")}"
+                  |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
+                  |> safe_to_string
+              )
+              |> raw}
+              </span>
 
-        <LiveRedirect
+              <LiveRedirect
           :if={authorized?(@organisation, :update, auth) and authorized?(organisation, :update, auth)}
           class="btn btn-secondary btn-sm"
           to={Routes.organisation_merge_path(@socket, :merge, delete: organisation, into: @organisation)}
         >
           {pgettext("Organisation", "Merge")}
         </LiveRedirect>
-      </div>
-    </div>
+            </div>
+          </div>
+        </details>
+      </Context>
 
     <div class="mb-4" :if={@live_action == :show}>
       <LivePatch

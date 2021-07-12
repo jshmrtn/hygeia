@@ -2,11 +2,15 @@ const storageKey = "HiddenDetails";
 
 const Hook = {
   mounted() {
-    const detailsUuid = this.el.dataset.uuid;
+    this.detailsUuid = this.el.dataset.uuid;
 
     const summary = this.el.querySelector("summary");
     const storageData = localStorage.getItem(storageKey);
     this.hiddenDetails = {};
+    this.setInitialState = () => {
+      const initialState = this.hiddenDetails[this.detailsUuid]?.isOpen;
+      this.el.open = !!(initialState === undefined || initialState);
+    };
     if (storageData) {
       try {
         this.hiddenDetails = JSON.parse(storageData);
@@ -15,18 +19,20 @@ const Hook = {
       }
     }
 
-    const initialState = this.hiddenDetails[detailsUuid]?.isOpen;
-    this.el.open = !!(initialState === undefined || initialState);
+    this.setInitialState();
 
     summary.addEventListener("click", (ev) => {
       const open = !this.el.open;
       this.el.open = open;
-      this.hiddenDetails[detailsUuid] = {
+      this.hiddenDetails[this.detailsUuid] = {
         isOpen: open,
       };
       localStorage.setItem(storageKey, JSON.stringify(this.hiddenDetails));
       ev.preventDefault();
     });
+  },
+  updated() {
+    this.setInitialState();
   },
 };
 
