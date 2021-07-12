@@ -2,11 +2,11 @@
   & > .layout-header {
     .nav-dropdown {
       .nav-link {
-        color: theme-color("primary");
+        color: $primary;
         background-color: transparent;
         &.active {
           color: $white;
-          background-color: theme-color("primary");
+          background-color: $primary;
         }
       }
     }

@@ -56,7 +56,7 @@
     }
 
     tr.duplicate-accepted {
-      background-color: lighten(color("teal"), 30%);
+      background-color: lighten($teal, 30%);
       .form-control {
         color: $gray-900 !important;
       }
