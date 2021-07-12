@@ -21,9 +21,8 @@
         <summary>
           {ngettext(
             "This organisation has a possible duplicate.",
-            "This organisation has %{length} possible duplicates.",
-            length(duplicate_organisations),
-            length: length(duplicate_organisations)
+            "This organisation has %{count} possible duplicates.",
+            length(duplicate_organisations)
           )}
         </summary>
         <div
