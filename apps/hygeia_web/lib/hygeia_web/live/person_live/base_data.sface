@@ -7,23 +7,47 @@
     >
       <HygeiaWeb.PersonLive.Header person={@changeset} id="header" />
 
-      <div
-        :for={%Person{first_name: first_name, last_name: last_name} = person <-
-          @changeset
-          |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-          |> Enum.take(5)
-          |> load_people_by_id}
-        class="alert alert-warning"
+      <Context
+        put={
+          duplicate_persons:
+            @changeset
+            |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+            |> load_people_by_id
+        }
+        get={duplicate_persons: duplicate_persons}
       >
-        {"This person is possibly a duplicate of %{name_link}, please check."
-        |> gettext(
-          name_link:
-            "#{first_name} #{last_name}"
-            |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
-            |> safe_to_string
-        )
-        |> raw}
-      </div>
+        <details
+          id={"person_duplicates_details_#{@person.uuid}"}
+          phx-hook="DetailsState"
+          data-uuid={@person.uuid}
+          class="alert alert-warning p-3"
+          :if={length(duplicate_persons) > 0}
+        >
+          <summary>
+            {ngettext(
+              "This person has a possible duplicate.",
+              "This person has %{count} possible duplicates.",
+              length(duplicate_persons)
+            )}
+          </summary>
+          <div
+            :for={%Person{first_name: first_name, last_name: last_name, address: address} = person <-
+              duplicate_persons}
+            class="card mt-2 card-body"
+          >
+            <div>
+              {"This person is possibly a duplicate of %{name_link} please check."
+              |> gettext(
+                name_link:
+                  "#{first_name} #{last_name} #{if(address, do: "(#{address.place})")}"
+                  |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
+                  |> safe_to_string
+              )
+              |> raw}
+            </div>
+          </div>
+        </details>
+      </Context>
 
       <div class="mb-4" :if={@live_action == :show}>
         <LivePatch
