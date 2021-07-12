@@ -6,24 +6,34 @@
       id={"person_recordview_#{@person.uuid}"}
     >
       <HygeiaWeb.PersonLive.Header person={@changeset} id="header" />
-
-      <div
-        :for={%Person{first_name: first_name, last_name: last_name} = person <-
-          @changeset
-          |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-          |> Enum.take(5)
-          |> load_people_by_id}
+      <details
+        id={"person_duplicates_details_#{@person.uuid}"}
+        phx-hook="DetailsState"
+        data-uuid={@person.uuid}
         class="alert alert-warning"
+        :if={@changeset |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid) |> length > 0}
       >
-        {"This person is possibly a duplicate of %{name_link}, please check."
-        |> gettext(
-          name_link:
-            "#{first_name} #{last_name}"
-            |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
-            |> safe_to_string
-        )
-        |> raw}
-      </div>
+        <summary>
+          Test
+        </summary>
+        <div
+          :for={%Person{first_name: first_name, last_name: last_name, address: address} = person <-
+            @changeset
+            |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+            |> load_people_by_id}
+          class="card mb-2 card-body"
+        >≈
+          {"This person is possibly a duplicate of %{name_link} (%{place}) please check."
+          |> gettext(
+            name_link:
+              "#{first_name} #{last_name}"
+              |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
+              |> safe_to_string,
+            place: if(address, do: address.place)
+          )
+          |> raw}
+        </div>
+      </details>
 
       <div class="mb-4" :if={@live_action == :show}>
         <LivePatch
