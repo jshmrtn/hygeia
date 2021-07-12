@@ -7,7 +7,7 @@
         to={Routes.row_apply_path(@socket, :apply, @row)}
         :if={authorized?(@row, :details, auth) and @row.status == :pending}
       >
-        <button class="ml-auto btn btn-primary">
+        <button class="ms-auto btn btn-primary">
           {gettext("Apply")}
         </button>
       </LiveRedirect>

@@ -30,7 +30,7 @@
           </td>
           <td>
             <span :for={role <- user.grants |> Enum.map(& &1.role) |> Enum.uniq() |> Enum.sort()}>
-              <span class="badge badge-secondary">
+              <span class="badge bg-secondary">
                 {role}
               </span>
             </span>
@@ -42,7 +42,7 @@
                 to={Routes.user_show_path(@socket, :show, user)}
                 :if={authorized?(user, :details, auth)}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">
+                <button class="ms-auto btn btn-sm btn-secondary">
                   {gettext("Show")}
                 </button>
               </LiveRedirect>

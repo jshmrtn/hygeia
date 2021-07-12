@@ -328,7 +328,7 @@
 
                   <button
                     :if={not CreatePersonSchema.is_person_empty?(form.source)}
-                    class="ml-1 btn btn-secondary btn-sm btn-danger"
+                    class="ms-1 btn btn-secondary btn-sm btn-danger"
                     type="button"
                     phx-value-changeset-uuid={changeset_uuid}
                     phx-click="remove_person"

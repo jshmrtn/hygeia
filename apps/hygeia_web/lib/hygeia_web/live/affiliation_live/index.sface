@@ -4,9 +4,9 @@
 
     <div class="d-flex">
       <HygeiaWeb.Dropdown
-        class="ml-auto"
+        class="ms-auto"
         trigger_class="mt-3"
-        dropdown_class="dropdown-menu-right p-3 filter-dropdown"
+        dropdown_class="dropdown-menu-end p-3 filter-dropdown"
         id="filter-dropdown"
       >
         <:trigger>

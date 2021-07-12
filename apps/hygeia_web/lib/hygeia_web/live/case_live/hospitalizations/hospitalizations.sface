@@ -64,7 +64,7 @@
 
   <div class="add-button mt-2" :if={not @disabled}>
     <button type="button" class="btn btn-secondary" :on-click={@add_hospitalization}>
-      <span class="oi oi-plus mr-1" aria-hidden="true" />
+      <span class="oi oi-plus me-1" aria-hidden="true" />
       {gettext("Add hospitalization")}
     </button>
   </div>

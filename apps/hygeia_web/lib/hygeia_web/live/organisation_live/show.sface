@@ -59,7 +59,7 @@
         :if={authorized?(@organisation, :update, auth)}
         to={Routes.organisation_show_path(@socket, :edit, @organisation)}
       >
-        <button class="btn btn-primary mr-2" id="organisation-edit">
+        <button class="btn btn-primary me-2" id="organisation-edit">
           <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
           {gettext("Edit")}
         </button>
@@ -108,7 +108,7 @@
       >
         <div :if={@live_action == :edit}>
           <div class="mb-4" :if={@live_action == :edit}>
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Saving...")}>
+            <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
               <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
               {gettext("Save")}
             </button>
@@ -238,7 +238,7 @@
                           <button
                             :if={Ecto.Changeset.get_field(form.source, :person_uuid) != nil or
                               Ecto.Changeset.get_field(form.source, :position) != nil}
-                            class="ml-1 btn btn-secondary btn-danger"
+                            class="ms-1 btn btn-secondary btn-danger"
                             type="button"
                             phx-value-uuid={Ecto.Changeset.get_field(form.source, :uuid)}
                             phx-click="remove_position"

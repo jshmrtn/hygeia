@@ -33,7 +33,7 @@
                 to={Routes.division_show_path(@socket, :show, division)}
                 :if={authorized?(division, :details, auth)}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">
+                <button class="ms-auto btn btn-sm btn-secondary">
                   {gettext("Show")}
                 </button>
               </LiveRedirect>
@@ -41,7 +41,7 @@
                 to={Routes.division_show_path(@socket, :edit, division)}
                 :if={authorized?(division, :update, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-secondary">
                   <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LiveRedirect>
@@ -56,7 +56,7 @@
                 }
                 :if={authorized?(division, :delete, auth) and not OrganisationContext.has_affiliations?(division)}
               >
-                <button class="ml-1 btn btn-sm btn-danger">
+                <button class="ms-1 btn btn-sm btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>
@@ -71,7 +71,7 @@
                 }
                 :if={authorized?(division, :delete, auth) and OrganisationContext.has_affiliations?(division)}
               >
-                <button class="ml-1 btn btn-sm border-dark btn-danger">
+                <button class="ms-1 btn btn-sm border-dark btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>

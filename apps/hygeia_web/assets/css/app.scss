@@ -40,19 +40,21 @@
 
 // bootstrap theming options
 @import "bootstrap/scss/_functions";
-@import "bootstrap/scss/_variables";
 
 $body-bg: #fdfdfd;
 $body-color: #111;
 $enable-rounded: true;
 $border-radius: 3px;
-$custom-colors: (
-  "primary": #37b8c0,
-  "secondary": #ffac7b,
-  "dark": #3c3c3b,
-);
 
-$theme-colors: map-merge($theme-colors, $custom-colors);
+$primary: #37b8c0;
+$secondary: #ffac7b;
+$dark: #3c3c3b;
+
+// $theme-colors: (
+//   primary: $primary,
+//   secondary: $secondary,
+//   dark: $dark,
+// ) !default;
 
 $grid-gutter-width: 0.5rem;
 
@@ -97,12 +99,14 @@ html {
   }
 }
 
+a,
 a:hover {
   text-decoration: none;
 }
 
 [type="radio"] {
   appearance: none;
+  -webkit-appearance: none;
   outline: none;
   height: 1rem;
   width: 1rem;
@@ -110,7 +114,12 @@ a:hover {
   border-radius: 50%;
 
   &:checked {
+    background-image: none !important;
     background-color: $primary;
+  }
+
+  &:focus {
+    background-image: none !important;
   }
 
   &:not(:disabled) {
@@ -187,6 +196,12 @@ select {
 
 table {
   empty-cells: show;
+}
+
+.btn-group-toggle {
+  input {
+    display: none;
+  }
 }
 
 @import "./mixins.scss";
@@ -268,4 +283,11 @@ table {
 .btn-secondary.disabled.active {
   background-color: #b55e2b;
   color: white;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  label {
+    margin-bottom: 0.5rem;
+  }
 }

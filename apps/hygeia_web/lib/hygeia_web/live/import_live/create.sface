@@ -9,7 +9,7 @@
   </h1>
 
   <p class="mb-4 alert alert-warning">
-    <span class="oi oi-warning mr-1" aria-hidden="true" />
+    <span class="oi oi-warning me-1" aria-hidden="true" />
     {gettext(
       "Warning! When importing the same rows multiple times, they will be re-assigned from the old import to the current import. Therefore rows might appear missing from an import later on."
     )}

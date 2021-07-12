@@ -139,7 +139,7 @@
         <div class="row mb-2">
           <div class="col">
             <Field name={:default_tenant_uuid} class="input-group">
-              <HygeiaWeb.FieldLabel class="input-group-prepend mb-0" :let={name: name}>
+              <HygeiaWeb.FieldLabel class="mb-0" :let={name: name}>
                 <span class="input-group-text">
                   {name}
                 </span>
@@ -156,7 +156,7 @@
             <HiddenInput field={:default_supervisor_uuid} />
 
             <Field name={:default_supervisor_uuid} class="input-group">
-              <HygeiaWeb.FieldLabel class="input-group-prepend mb-0" :let={name: name}>
+              <HygeiaWeb.FieldLabel class="mb-0" :let={name: name}>
                 <span class="input-group-text">
                   {name}
                 </span>
@@ -175,7 +175,7 @@
             <HiddenInput field={:default_tracer_uuid} />
 
             <Field name={:default_tracer_uuid} class="input-group">
-              <HygeiaWeb.FieldLabel class="input-group-prepend mb-0" :let={name: name}>
+              <HygeiaWeb.FieldLabel class="mb-0" :let={name: name}>
                 <span class="input-group-text">
                   {name}
                 </span>

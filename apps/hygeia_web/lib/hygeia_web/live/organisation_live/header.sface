@@ -50,9 +50,9 @@
       </li>
 
       <HygeiaWeb.Dropdown
-        class="ml-auto"
+        class="ms-auto"
         trigger_class="btn btn-sm btn-secondary dropdown-toggle"
-        dropdown_class="dropdown-menu-right"
+        dropdown_class="dropdown-menu-end"
         id="navigation-dropdown"
       >
         <:trigger>

@@ -7,7 +7,7 @@
         :if={authorized?(@tenant, :update, auth)}
         to={Routes.tenant_show_path(@socket, :edit, @tenant)}
       >
-        <button class="btn btn-primary mr-2" id="tenant-edit">
+        <button class="btn btn-primary me-2" id="tenant-edit">
           <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
           {gettext("Edit")}
         </button>
@@ -41,7 +41,7 @@
       >
         <div :if={@live_action == :edit}>
           <div class="mb-4" :if={@live_action == :edit}>
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Saving...")}>
+            <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
               <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
               {gettext("Save")}
             </button>
