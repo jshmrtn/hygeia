@@ -95,7 +95,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type_name: "Type name",
       value: "Value"
     },
-    Hygeia.CaseContext.Note => %{note: "Note"},
+    Hygeia.CaseContext.Note => %{note: "Note", pinned: "Pinned"},
     Hygeia.CaseContext.Person => %{
       address: "Address",
       birth_date: "Birth Date",

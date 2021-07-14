@@ -8,6 +8,7 @@ defmodule Hygeia.CaseContext.Person do
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.ExternalReference
+  alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.Person.Sex
   alias Hygeia.CaseContext.Person.Vaccination
@@ -39,6 +40,7 @@ defmodule Hygeia.CaseContext.Person do
           affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employers: Ecto.Schema.has_many(Organisation.t()) | nil,
+          pinned_notes: Ecto.Schema.has_many(Note.t()) | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -63,6 +65,7 @@ defmodule Hygeia.CaseContext.Person do
           affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employers: Ecto.Schema.has_many(Organisation.t()),
+          pinned_notes: Ecto.Schema.has_many(Note.t()),
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -91,6 +94,7 @@ defmodule Hygeia.CaseContext.Person do
       where: [kind: :employee]
 
     has_many :employers, through: [:employee_affiliations, :organisation]
+    has_many :pinned_notes, through: [:cases, :pinned_notes]
 
     field :suspected_duplicates_uuid, {:array, :binary_id}, virtual: true, default: []
 

@@ -322,6 +322,43 @@
             </button>
           </Form>
         {/if}
+        {#if match?(%Action.AddNote{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {translate_certainty(certainty)}
+              </span>
+
+              <span :if={action.action == :skip}>
+                {gettext("Do not append Note")}
+              </span>
+              <span :if={action.action == :append}>
+                {gettext("Append Note")}
+              </span>
+            </div>
+          </summary>
+
+          <Form
+            for={%{note: action.note, pinned: action.pinned}}
+            submit="add_note"
+            opts={autocomplete: "off", id: "add_note-form", class: "card-body container"}
+            as={:add_note}
+          >
+            <HiddenInput field={:index} value={index} />
+            <Field name={:pinned} class="form-check">
+              <label class="checkbox-label">
+                <Checkbox class="form-check-input" />
+                {gettext("Pin Note")}
+              </label>
+            </Field>
+            <Field name={:note} class="form-group">
+              <TextArea class="form-control" opts={rows: 8} />
+            </Field>
+            <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
+              {gettext("Append Note")}
+            </button>
+          </Form>
+        {/if}
         {#if match?(%Action.PatchAssignee{}, action)}
           <summary class="card-header">
             <div class="d-inline-block">

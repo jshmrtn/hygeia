@@ -549,4 +549,15 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
          end
      end}
   end
+
+  @spec add_note ::
+          (row :: Row.t(),
+           params :: Planner.Generator.params(),
+           preceeding_action_plan :: [Planner.Action.t()] ->
+             {Planner.certainty(), Planner.Action.t()})
+  def add_note do
+    fn %Row{}, _params, _preceeding_steps ->
+      {:certain, %Planner.Action.AddNote{action: :skip}}
+    end
+  end
 end

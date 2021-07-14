@@ -20,6 +20,7 @@ defmodule HygeiaWeb.RowLive.Apply do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
 
@@ -192,6 +193,16 @@ defmodule HygeiaWeb.RowLive.Apply do
 
     patch_action_plan(socket, index, fn %Action.PatchStatus{} = action ->
       %Action.PatchStatus{action | status: status}
+    end)
+  end
+
+  def handle_event(
+        "add_note",
+        %{"add_note" => %{"note" => note, "pinned" => pinned, "index" => index}} = _params,
+        socket
+      ) do
+    patch_action_plan(socket, index, fn %Action.AddNote{} = action ->
+      %Action.AddNote{action | action: :append, note: note, pinned: pinned}
     end)
   end
 
