@@ -150,6 +150,20 @@
                   </Label>
                 </Field>
               </div>
+
+              <div class="form-group">
+                <Field name="inserted_at" class="form-group">
+                  <Label class="d-block">{schema_field_name(:inserted_at, Case)}</Label>
+
+                  <FieldContext name={:inserted_at_from}>
+                    <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                  </FieldContext>
+                  {pgettext("Date Range", "until")}
+                  <FieldContext name={:inserted_at_to}>
+                    <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                  </FieldContext>
+                </Field>
+              </div>
             </InputContext>
           </Form>
         </:default>
