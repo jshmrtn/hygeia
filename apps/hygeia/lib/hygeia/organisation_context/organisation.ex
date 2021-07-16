@@ -152,6 +152,9 @@ defmodule Hygeia.OrganisationContext.Organisation do
 
         Enum.any?([:tracer], &User.has_role?(user, &1, :any)) ->
           not OrganisationContext.has_affiliations?(organisation)
+
+        true ->
+          false
       end
     end
   end
