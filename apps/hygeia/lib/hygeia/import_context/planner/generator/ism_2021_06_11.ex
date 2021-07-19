@@ -67,10 +67,10 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   def select_tenant(field_mapping) do
     fn %Row{tenant: row_tenant}, %{data: data, tenants: tenants} = _params, _preceeding_steps ->
       {certainty, tenant} =
-        with short_name when is_binary(short_name) <-
-               Row.get_change_field(data, [field_mapping.tenant_short_name]),
+        with subdivision when is_binary(subdivision) <-
+               Row.get_change_field(data, [field_mapping.tenant_subdivision]),
              %Tenant{} = tenant <-
-               Enum.find(tenants, &match?(%Tenant{short_name: ^short_name}, &1)) do
+               Enum.find(tenants, &match?(%Tenant{subdivision: ^subdivision}, &1)) do
           {:certain, tenant}
         else
           nil -> {:uncertain, row_tenant}

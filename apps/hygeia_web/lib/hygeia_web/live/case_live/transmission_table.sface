@@ -50,7 +50,7 @@
                   </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={not authorized?(transmission.recipient, :details, auth)}>
-                  {transmission.recipient.tenant.short_name}
+                  {transmission.recipient.tenant.subdivision}
                   /
                   {transmission.recipient.human_readable_id}
                 </span>
@@ -76,7 +76,7 @@
                   </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={not authorized?(transmission.recipient_case, :details, auth)}>
-                  {transmission.recipient_case.tenant.short_name}
+                  {transmission.recipient_case.tenant.subdivision}
                   /
                   {transmission.recipient_case.human_readable_id}
                 </span>
@@ -107,7 +107,7 @@
                   </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={not authorized?(transmission.propagator, :details, auth)}>
-                  {transmission.propagator.tenant.short_name}
+                  {transmission.propagator.tenant.subdivision}
                   /
                   {transmission.propagator.human_readable_id}
                 </span>
@@ -133,7 +133,7 @@
                   </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={not authorized?(transmission.propagator_case, :details, auth)}>
-                  {transmission.propagator_case.tenant.short_name}
+                  {transmission.propagator_case.tenant.subdivision}
                   /
                   {transmission.propagator_case.human_readable_id}
                 </span>

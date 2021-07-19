@@ -7,6 +7,7 @@ defmodule Hygeia.TenantContext.Tenant do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
+  alias Hygeia.EctoType.Country
   alias Hygeia.ImportContext.Import
   alias Hygeia.SystemMessageContext.SystemMessage
   alias Hygeia.TenantContext.SedexExport
@@ -32,11 +33,12 @@ defmodule Hygeia.TenantContext.Tenant do
           template_variation: String.t() | nil,
           iam_domain: String.t() | nil,
           from_email: String.t() | nil,
-          short_name: String.t() | nil,
           template_parameters: TemplateParameters.t() | nil,
           sedex_export_enabled: boolean() | nil,
           sedex_export_configuration: SedexExportConfiguration.t() | nil,
           related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()) | nil,
+          subdivision: String.t() | nil,
+          country: Country.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -56,11 +58,12 @@ defmodule Hygeia.TenantContext.Tenant do
           template_variation: String.t() | nil,
           iam_domain: String.t() | nil,
           from_email: String.t() | nil,
-          short_name: String.t() | nil,
           template_parameters: TemplateParameters.t() | nil,
           sedex_export_enabled: boolean(),
           sedex_export_configuration: SedexExportConfiguration.t() | nil,
           related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()),
+          subdivision: String.t() | nil,
+          country: Country.t() | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -72,9 +75,10 @@ defmodule Hygeia.TenantContext.Tenant do
     field :override_url, :string
     field :template_variation, :string
     field :iam_domain, :string
-    field :short_name, :string
     field :from_email, :string
     field :sedex_export_enabled, :boolean, default: false
+    field :subdivision, :string
+    field :country, Country
 
     has_many :people, Person
     has_many :cases, Case
@@ -127,16 +131,20 @@ defmodule Hygeia.TenantContext.Tenant do
       :override_url,
       :template_variation,
       :iam_domain,
-      :short_name,
       :from_email,
-      :sedex_export_enabled
+      :sedex_export_enabled,
+      :subdivision,
+      :country
     ])
     |> validate_required([:name, :public_statistics, :case_management_enabled])
+    |> validate_subdivision(:subdivision, :country)
     |> cast_polymorphic_embed(:outgoing_mail_configuration)
     |> cast_polymorphic_embed(:outgoing_sms_configuration)
     |> cast_embed(:template_parameters)
     |> maybe_cast_embed(:sedex_export_configuration, :sedex_export_enabled)
     |> validate_url(:override_url)
+    |> clear_fields_when_management_disabled()
+    |> clear_fields_when_no_iam_disabled()
     |> foreign_key_constraint(:people,
       name: :cases_tenant_uuid_fkey,
       message: "has assigned relations"
@@ -146,7 +154,7 @@ defmodule Hygeia.TenantContext.Tenant do
       message: "has assigned relations"
     )
     |> unique_constraint(:iam_domain)
-    |> unique_constraint(:short_name)
+    |> unique_constraint(:subdivision)
   end
 
   defp maybe_cast_embed(changeset, embed, enable) do
@@ -154,6 +162,42 @@ defmodule Hygeia.TenantContext.Tenant do
       cast_embed(changeset, embed)
     else
       put_embed(changeset, embed, nil)
+    end
+  end
+
+  defp clear_fields_when_management_disabled(changeset) do
+    if fetch_field!(changeset, :case_management_enabled) do
+      changeset
+    else
+      changeset
+      |> change(%{
+        public_statistics: false,
+        override_url: nil,
+        subdivision: nil,
+        country: nil,
+        outgoing_sms_configuration: nil,
+        template_variation: nil,
+        sedex_export_enabled: false
+      })
+      |> put_embed(:template_parameters, nil)
+    end
+  end
+
+  defp clear_fields_when_no_iam_disabled(changeset) do
+    if fetch_field!(changeset, :iam_domain) in ["", nil] do
+      changeset
+      |> change(%{
+        public_statistics: false,
+        override_url: nil,
+        outgoing_mail_configuration: nil,
+        outgoing_sms_configuration: nil,
+        template_variation: nil,
+        sedex_export_enabled: false,
+        from_email: nil
+      })
+      |> put_embed(:template_parameters, nil)
+    else
+      changeset
     end
   end
 

@@ -27,7 +27,7 @@
                   <small :if={!@small} class="d-block text-muted">{format_address(person.address)}</small>
                 </HygeiaWeb.RecordView>
                 <div :if={not authorized?(person, :details, auth)}>
-                  {person.tenant.short_name}
+                  {person.tenant.subdivision}
                   /
                   {person.human_readable_id}
                 </div>

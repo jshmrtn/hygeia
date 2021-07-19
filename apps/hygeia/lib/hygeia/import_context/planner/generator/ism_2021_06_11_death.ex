@@ -17,7 +17,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Death do
               last_name: "Nachname",
               phone: "Telefon",
               patient_id: "Patient ID",
-              tenant_short_name: "Fallkanton",
+              tenant_subdivision: "Fallkanton",
               birth_date: "Geburtsdatum",
               sex: "Geschlecht",
               address: "Strasse",

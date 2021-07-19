@@ -19,9 +19,9 @@ Versioning.put_originator(:noone)
 
 {tenants, _bindings} = Code.eval_file(Application.app_dir(:hygeia, "priv/repo/seeds/tenants.exs"))
 
-tenant_sg = Enum.find(tenants, &match?(%{short_name: "SG"}, &1))
-tenant_ar = Enum.find(tenants, &match?(%{short_name: "AR"}, &1))
-tenant_ai = Enum.find(tenants, &match?(%{short_name: "AI"}, &1))
+tenant_sg = Enum.find(tenants, &match?(%{subdivision: "SG"}, &1))
+tenant_ar = Enum.find(tenants, &match?(%{subdivision: "AR"}, &1))
+tenant_ai = Enum.find(tenants, &match?(%{subdivision: "AI"}, &1))
 tenant_root = Enum.find(tenants, &match?(%{name: "Hygeia - Covid19 Tracing"}, &1))
 
 {_hospitals, _bindings} =

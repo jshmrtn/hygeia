@@ -92,7 +92,7 @@
               </HygeiaWeb.RecordView>
             </Link>
             <div :if={not authorized?(@row.case.person, :details, auth)}>
-              {@row.case.person.tenant.short_name}
+              {@row.case.person.tenant.subdivision}
               /
               {@row.case.person.human_readable_id}
             </div>
@@ -113,7 +113,7 @@
               </HygeiaWeb.RecordView>
             </Link>
             <span :if={not authorized?(@row.case, :details, auth)}>
-              {@row.case.tenant.short_name}
+              {@row.case.tenant.subdivision}
               /
               {@row.case.human_readable_id}
             </span>
