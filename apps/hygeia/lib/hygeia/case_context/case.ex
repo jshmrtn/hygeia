@@ -47,6 +47,7 @@ defmodule Hygeia.CaseContext.Case do
           emails: Ecto.Schema.has_many(Email.t()) | nil,
           sms: Ecto.Schema.has_many(SMS.t()) | nil,
           notes: Ecto.Schema.has_many(Note.t()) | nil,
+          pinned_notes: Ecto.Schema.has_many(Note.t()) | nil,
           tests: Ecto.Schema.has_many(Test.t()) | nil,
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()) | nil,
           inserted_at: DateTime.t() | nil,
@@ -75,6 +76,7 @@ defmodule Hygeia.CaseContext.Case do
           emails: Ecto.Schema.has_many(Email.t()),
           sms: Ecto.Schema.has_many(SMS.t()),
           notes: Ecto.Schema.has_many(Note.t()),
+          pinned_notes: Ecto.Schema.has_many(Note.t()),
           tests: Ecto.Schema.has_many(Test.t()),
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()),
           inserted_at: DateTime.t(),
@@ -105,6 +107,7 @@ defmodule Hygeia.CaseContext.Case do
     has_many :emails, Email, foreign_key: :case_uuid
     has_many :sms, SMS, foreign_key: :case_uuid
     has_many :notes, Note, foreign_key: :case_uuid
+    has_many :pinned_notes, Note, foreign_key: :case_uuid, where: [pinned: true]
     has_many :hospitalizations, Hospitalization, foreign_key: :case_uuid, on_replace: :delete
     has_many :tests, Test, foreign_key: :case_uuid, on_replace: :delete
     has_many :premature_releases, PrematureRelease, foreign_key: :case_uuid, on_replace: :delete

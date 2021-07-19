@@ -69,6 +69,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
       &ISM_2021_06_11.patch_assignee/3,
       &ISM_2021_06_11.patch_status/3,
       ISM_2021_06_11.patch_extenal_references(@fields),
+      ISM_2021_06_11.add_note(),
       &ISM_2021_06_11.save/3
     ]
 end

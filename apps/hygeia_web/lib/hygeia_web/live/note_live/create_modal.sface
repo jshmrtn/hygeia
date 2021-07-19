@@ -6,6 +6,12 @@
       submit="save"
       opts={autocomplete: "off", id: "note-form", "phx-hook": "BlockNavigation"}
     >
+      <Field name={:pinned} class="form-check">
+        <label class="checkbox-label">
+          <Checkbox class="form-check-input" />
+          {gettext("Pin Note")}
+        </label>
+      </Field>
       <Field class="form-group" name={:note}>
         <HygeiaWeb.FieldLabel />
         <TextArea class="form-control" opts={rows: 8} />

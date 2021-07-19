@@ -13,6 +13,7 @@ defmodule Hygeia.CaseContext.Note do
           case_uuid: Ecto.UUID.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
           tenant: Ecto.Schema.has_one(Tenant.t()) | nil,
+          pinned: boolean | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -22,12 +23,14 @@ defmodule Hygeia.CaseContext.Note do
           case_uuid: Ecto.UUID.t(),
           case: Ecto.Schema.belongs_to(Case.t()),
           tenant: Ecto.Schema.has_one(Tenant.t()),
+          pinned: boolean,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
 
   schema "notes" do
     field :note, :string
+    field :pinned, :boolean, default: false
 
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
     has_one :tenant, through: [:case, :tenant]
@@ -43,7 +46,7 @@ defmodule Hygeia.CaseContext.Note do
   def changeset(note, attrs),
     do:
       note
-      |> cast(attrs, [:uuid, :note])
+      |> cast(attrs, [:uuid, :note, :pinned])
       |> fill_uuid()
       |> validate_required([:note])
       |> assoc_constraint(:case)

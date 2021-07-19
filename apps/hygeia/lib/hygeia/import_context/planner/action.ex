@@ -13,6 +13,7 @@ defprotocol Hygeia.ImportContext.Planner.Action do
           | __MODULE__.PatchTests.t()
           | __MODULE__.Save.t()
           | __MODULE__.SelectCase.t()
+          | __MODULE__.AddNote.t()
 
   @doc "Ececute Action"
   @spec execute(

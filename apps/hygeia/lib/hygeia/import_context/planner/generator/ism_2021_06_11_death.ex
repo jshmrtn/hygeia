@@ -46,6 +46,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Death do
       ISM_2021_06_11.patch_person(@fields),
       &patch_phase_death/3,
       ISM_2021_06_11.patch_extenal_references(@fields),
+      ISM_2021_06_11.add_note(),
       &ISM_2021_06_11.save/3
     ]
 

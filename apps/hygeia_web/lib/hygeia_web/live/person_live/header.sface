@@ -16,6 +16,8 @@
       {@person.human_readable_id}
     </h1>
 
+    <HygeiaWeb.PinnedNotes person={@person} id={"#{@myself}_person_pinned_notes_#{@person.uuid}"} />
+
     <ul class="nav nav-tabs">
       <li class="nav-item" :if={authorized?(@person, :details, auth)}>
         <UriActiveContext
