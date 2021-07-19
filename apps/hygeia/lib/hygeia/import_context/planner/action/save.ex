@@ -104,7 +104,7 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
     end
 
     defp create_note_as_needed(case, changeset)
-    defp create_note_as_needed(case, nil), do: {:ok, nil}
+    defp create_note_as_needed(_case, nil), do: {:ok, nil}
 
     defp create_note_as_needed(case, changeset),
       do: CaseContext.create_note(case, changeset.changes)
