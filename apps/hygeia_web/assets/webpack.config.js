@@ -20,8 +20,8 @@ module.exports = (env, options) => {
       app: glob.sync("./vendor/**/*.js").concat(["./js/app.js"]),
     },
     output: {
-      filename: "[name].js",
-      path: path.resolve(__dirname, "../priv/static/js"),
+      filename: "js/[name].js",
+      path: path.resolve(__dirname, "../priv/static/js/"),
       publicPath: "/js/",
     },
     devtool: devMode ? "cheap-module-source-map" : "source-map",
@@ -51,15 +51,10 @@ module.exports = (env, options) => {
         },
         {
           test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-          use: [
-            {
-              loader: "file-loader",
-              options: {
-                name: "[name].[ext]",
-                outputPath: "fonts/",
-              },
-            },
-          ],
+          type: 'asset/resource',
+          generator: {
+            filename: '../fonts/[hash][ext][query]'
+          },
         },
       ],
     },
