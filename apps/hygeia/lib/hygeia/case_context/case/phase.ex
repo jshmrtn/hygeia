@@ -18,7 +18,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
           type: PhaseType.t() | nil,
           start: Date.t() | nil,
           end: Date.t() | nil,
-          details: Index.t() | PossibleIndex.t() | nil
+          details: Index.t() | PossibleIndex.t() | nil,
+          inserted_at: DateTime.t() | nil
         }
 
   @type t ::
@@ -28,14 +29,16 @@ defmodule Hygeia.CaseContext.Case.Phase do
             type: PhaseType.t() | nil,
             start: Date.t(),
             end: Date.t(),
-            details: Index.t() | PossibleIndex.t()
+            details: Index.t() | PossibleIndex.t(),
+            inserted_at: DateTime.t()
           }
           | %__MODULE__{
               quarantine_order: false | nil,
               order_date: nil,
               start: nil,
               end: nil,
-              details: Index.t() | PossibleIndex.t()
+              details: Index.t() | PossibleIndex.t(),
+              inserted_at: DateTime.t()
             }
 
   @derive {Phoenix.Param, key: :uuid}
@@ -55,6 +58,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
         possible_index: PossibleIndex
       ],
       on_replace: :update
+
+    timestamps(updated_at: false)
   end
 
   @doc false

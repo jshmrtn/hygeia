@@ -96,7 +96,12 @@
               data: %{
                 datasets:
                   @cumulative_index_case_end_reasons
-                  |> Enum.reduce(%{}, fn %{date: date, count: count, end_reason: end_reason}, acc ->
+                  |> Enum.reduce(%{}, fn %StatisticsContext.CumulativeIndexCaseEndReasons{
+                                           date: date,
+                                           count: count,
+                                           end_reason: end_reason
+                                         },
+                                         acc ->
                     entry = %{
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
@@ -233,7 +238,12 @@
               data: %{
                 datasets:
                   @cumulative_possible_index_case_end_reasons
-                  |> Enum.reduce(%{}, fn %{date: date, count: count, type: type, end_reason: end_reason},
+                  |> Enum.reduce(%{}, fn %StatisticsContext.CumulativePossibleIndexCaseEndReasons{
+                                           date: date,
+                                           count: count,
+                                           type: type,
+                                           end_reason: end_reason
+                                         },
                                          acc ->
                     entry = %{
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
@@ -313,7 +323,13 @@
               data: %{
                 datasets:
                   @new_cases_per_day
-                  |> Enum.reduce(%{}, fn %{date: date, count: count, type: type, sub_type: sub_type}, acc ->
+                  |> Enum.reduce(%{}, fn %StatisticsContext.NewCasesPerDay{
+                                           date: date,
+                                           count: count,
+                                           type: type,
+                                           sub_type: sub_type
+                                         },
+                                         acc ->
                     entry = %{
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
@@ -447,7 +463,12 @@
               data: %{
                 datasets:
                   @active_complexity_cases_per_day
-                  |> Enum.reduce(%{}, fn %{date: date, count: count, case_complexity: case_complexity}, acc ->
+                  |> Enum.reduce(%{}, fn %StatisticsContext.ActiveComplexityCasesPerDay{
+                                           date: date,
+                                           count: count,
+                                           case_complexity: case_complexity
+                                         },
+                                         acc ->
                     entry = %{
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
@@ -600,7 +621,12 @@
               data: %{
                 datasets:
                   @transmission_country_cases_per_day
-                  |> Enum.reduce(%{}, fn %{date: date, count: count, country: country}, acc ->
+                  |> Enum.reduce(%{}, fn %StatisticsContext.TransmissionCountryCasesPerDay{
+                                           date: date,
+                                           count: count,
+                                           country: country
+                                         },
+                                         acc ->
                     entry = %{
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
@@ -632,6 +658,161 @@
                   },
                   legend: %{
                     display: false
+                  }
+                },
+                scales: %{
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
+                    }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("Cases")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
+                    }
+                  }
+                }
+              }
+            }}
+          />
+        </div>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-12 col-xl-6">
+          <HygeiaWeb.Chart
+            id="new_registered_cases_per_day_first_contact"
+            dom_id="new_registered_cases_per_day_first_contact"
+            config={%{
+              type: "line",
+              data: %{
+                datasets:
+                  @new_registered_cases_per_day_first_contact
+                  |> Enum.reduce(%{}, fn %StatisticsContext.NewRegisteredCasesPerDay{
+                                           date: date,
+                                           count: count,
+                                           type: type
+                                         },
+                                         acc ->
+                    entry = %{
+                      x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                      y: count
+                    }
+            
+                    Map.update(acc, type, [entry], &[entry | &1])
+                  end)
+                  |> Enum.map(fn
+                    {:index, entries} ->
+                      %{
+                        label: gettext("Index"),
+                        fill: %{target: "origin"},
+                        data: Enum.reverse(entries)
+                      }
+            
+                    {:possible_index, entries} ->
+                      %{
+                        label: gettext("Possible Index"),
+                        fill: %{target: "origin"},
+                        data: Enum.reverse(entries)
+                      }
+                  end)
+              },
+              options: %{
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("New Registered Cases First Contact")
+                  }
+                },
+                scales: %{
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
+                    }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("Cases")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
+                    }
+                  }
+                }
+              }
+            }}
+          />
+        </div>
+        <div class="col-12 col-xl-6">
+          <HygeiaWeb.Chart
+            id="new_registered_cases_per_day_not_first_contact"
+            dom_id="new_registered_cases_per_day_not_first_contact"
+            config={%{
+              type: "line",
+              data: %{
+                datasets:
+                  @new_registered_cases_per_day_not_first_contact
+                  |> Enum.reduce(%{}, fn %StatisticsContext.NewRegisteredCasesPerDay{
+                                           date: date,
+                                           count: count,
+                                           type: type
+                                         },
+                                         acc ->
+                    entry = %{
+                      x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                      y: count
+                    }
+            
+                    Map.update(acc, type, [entry], &[entry | &1])
+                  end)
+                  |> Enum.map(fn
+                    {:index, entries} ->
+                      %{
+                        label: gettext("Index"),
+                        fill: %{target: "origin"},
+                        data: Enum.reverse(entries)
+                      }
+            
+                    {:possible_index, entries} ->
+                      %{
+                        label: gettext("Possible Index"),
+                        fill: %{target: "origin"},
+                        data: Enum.reverse(entries)
+                      }
+                  end)
+              },
+              options: %{
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("New Registered Cases Not First Contact")
                   }
                 },
                 scales: %{
