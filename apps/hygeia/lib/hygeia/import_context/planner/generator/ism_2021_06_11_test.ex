@@ -17,7 +17,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
               phone: "Patient Telefon",
               email: "E-Mail",
               patient_id: "Patient ID",
-              tenant_short_name: "Zuständiger Kanton",
+              tenant_subdivision: "Zuständiger Kanton",
               birth_date: "Patient Geburtsdatum",
               sex: "Patient Geschlecht",
               address: "Patient Strasse",

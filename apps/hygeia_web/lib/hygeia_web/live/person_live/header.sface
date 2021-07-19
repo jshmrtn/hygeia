@@ -11,7 +11,7 @@
       </HygeiaWeb.RecordView>
     </h1>
     <h1 class="mb-4" :if={not authorized?(@person, :partial_details, auth)}>
-      {@person.tenant.short_name}
+      {@person.tenant.subdivision}
       /
       {@person.human_readable_id}
     </h1>

@@ -23,8 +23,8 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_DeathTest do
   @external_resource @path
 
   setup do
-    tenant_ar = tenant_fixture(%{short_name: "AR"})
-    tenant_sg = tenant_fixture(%{short_name: "SG"})
+    tenant_ar = tenant_fixture(%{subdivision: "AR", country: "CH"})
+    tenant_sg = tenant_fixture(%{subdivision: "SG", country: "CH"})
 
     {:ok, import} =
       ImportContext.create_import(tenant_ar, @mime, @path, %{

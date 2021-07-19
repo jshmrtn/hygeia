@@ -23,6 +23,12 @@
           <th>
             {schema_field_name(:name, Tenant)}
           </th>
+          <th>
+            {schema_field_name(:county, Tenant)}
+          </th>
+          <th>
+            {schema_field_name(:subdivision, Tenant)}
+          </th>
 
           <th />
         </tr>
@@ -30,6 +36,12 @@
       <tbody id="tenants">
         <tr :for={tenant <- @tenants} id={"tenant-#{tenant.uuid}"}>
           <td>{tenant.name}</td>
+          <td>{unless is_nil(tenant.country), do: country_name(tenant.country)}</td>
+          <td>{cond do
+              not is_nil(tenant.subdivision) -> subdivision_name(tenant.subdivision, tenant.country)
+              not is_nil(tenant.country) -> gettext("all subdivisions")
+              true -> nil
+            end}</td>
 
           <td>
             <div class="d-flex justify-content-end w-100">

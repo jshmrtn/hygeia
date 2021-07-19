@@ -233,6 +233,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
     },
     Hygeia.TenantContext.Tenant => %{
       case_management_enabled: "Case Management Enabled",
+      country: "Country",
       from_email: "From Email",
       iam_domain: "IAM Domain",
       name: "Name",
@@ -243,7 +244,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       override_url: "Override URL",
       public_statistics: "Public Statistics",
       sedex_export_enabled: "Sedex Export Enabled",
-      short_name: "Short Name",
+      subdivision: "Subdivision",
       template_variation: "Template Variation"
     },
     Hygeia.TenantContext.Tenant.SedexExportConfiguration => %{
