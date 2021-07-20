@@ -1841,6 +1841,12 @@ msgstr "Neue Kontaktperson einsenden"
 msgid "New Premature Release"
 msgstr "Neue vorzeitige Quarantäneentlassung"
 
+msgid "New Registered Cases First Contact"
+msgstr "Neu eingetragene Fälle erster Kontakt"
+
+msgid "New Registered Cases Not First Contact"
+msgstr "Neu eingetragene Fälle kein erster Kontakt"
+
 msgid "New SMS"
 msgstr "Neue SMS"
 
@@ -3586,6 +3592,10 @@ msgstr "Kummulative Mögliche Index Fälle End Gründe"
 
 msgctxt "Item Table"
 msgid "statistics_new_cases_per_day"
+msgstr "Neue Fälle / Tag"
+
+msgctxt "Item Table"
+msgid "statistics_new_registered_cases_per_day"
 msgstr "Neue Fälle / Tag"
 
 msgctxt "Item Table"
