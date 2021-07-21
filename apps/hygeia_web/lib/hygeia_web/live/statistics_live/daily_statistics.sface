@@ -294,7 +294,11 @@
         <div class={"col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_infection_place_cases_per_day == []}>
           <div class="d-flex justify-content-between align-items-center mb-2">
             <h5 class="mb-0">{gettext("Infection Place")}</h5>
-            <button class="btn btn-sm btn-outline-primary" :on-click="open_infection_table_modal" type="button">
+            <button
+              class="btn btn-sm btn-outline-primary"
+              :on-click="open_infection_table_modal"
+              type="button"
+            >
               {gettext("Show all")}
             </button>
           </div>
@@ -337,7 +341,11 @@
         <div class={"col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_cases_per_day_and_organisation == []}>
           <div class="d-flex justify-content-between align-items-center mb-2">
             <h5 class="mb-2">{gettext("Isolations Per Organisation")}</h5>
-            <button class="btn btn-sm btn-outline-primary" :on-click="open_organisation_table_modal" type="button">
+            <button
+              class="btn btn-sm btn-outline-primary"
+              :on-click="open_organisation_table_modal"
+              type="button"
+            >
               {gettext("Show all")}
             </button>
           </div>

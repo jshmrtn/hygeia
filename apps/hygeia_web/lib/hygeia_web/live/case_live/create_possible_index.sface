@@ -44,11 +44,17 @@
                         <RadioButton value="" />
                         {gettext("No propagator")}
                       </label>
-                      <label class={"btn btn-outline-primary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}>
+                      <label class={
+                        "btn btn-outline-primary",
+                        active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true
+                      }>
                         <RadioButton value="true" />
                         {gettext("Internal")}
                       </label>
-                      <label class={"btn btn-outline-primary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}>
+                      <label class={
+                        "btn btn-outline-primary",
+                        active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false
+                      }>
                         <RadioButton value="false" />
                         {gettext("External")}
                       </label>

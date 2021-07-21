@@ -76,7 +76,11 @@
             <Field name={:recipient_internal} class="form-group">
               <div class="btn-group btn-group-toggle btn-radio-group">
                 <label class="input-group-text input-sm">{gettext("Recipient")}:</label>
-                <label class={"btn", "btn-outline-primary", active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == nil}>
+                <label class={
+                  "btn",
+                  "btn-outline-primary",
+                  active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == nil
+                }>
                   <RadioButton value="" />
                   {gettext("No recipient")}
                 </label>
