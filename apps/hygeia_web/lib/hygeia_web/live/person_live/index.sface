@@ -6,7 +6,7 @@
 
     <div class="d-flex">
       <LiveRedirect
-        class="mr-2"
+        class="me-2"
         to={Routes.person_create_path(@socket, :create)}
         :if={authorized?(Person, :create, auth, tenant: :any)}
       >
@@ -17,9 +17,9 @@
       </LiveRedirect>
 
       <HygeiaWeb.Dropdown
-        class="ml-auto"
+        class="ms-auto"
         trigger_class="mt-3"
-        dropdown_class="dropdown-menu-right p-3 filter-dropdown"
+        dropdown_class="dropdown-menu-end p-3 filter-dropdown"
         id="filter-dropdown"
       >
         <:trigger>
@@ -43,7 +43,7 @@
                 <label class="d-block">{schema_field_name(:sex, Person)}</label>
                 <Field name="sex" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value={nil} />
+                    <RadioButton class="form-check-input" value="" />
                     {gettext("Any")}
                   </label>
                 </Field>
@@ -186,13 +186,13 @@
                 to={Routes.person_base_data_path(@socket, :show, person)}
                 :if={authorized?(person, :details, auth)}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">{"Show" |> gettext}</button>
+                <button class="ms-auto btn btn-sm btn-secondary">{"Show" |> gettext}</button>
               </LiveRedirect>
               <LivePatch
                 to={Routes.person_base_data_path(@socket, :edit, person)}
                 :if={authorized?(person, :update, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-secondary">
                   <span class="oi oi-pencil" title={"Edit" |> gettext} aria-hidden="true" />
                 </button>
               </LivePatch>
@@ -206,7 +206,7 @@
                 }
                 :if={authorized?(person, :delete, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-danger">
+                <button class="ms-1 btn btn-sm btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>

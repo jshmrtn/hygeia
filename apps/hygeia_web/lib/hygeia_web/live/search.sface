@@ -1,11 +1,9 @@
 <form class="component-search" :on-change="search">
   <Context get={HygeiaWeb, auth: auth}>
     <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text border-0">
-          <span class="oi oi-magnifying-glass" aria-hidden="true" />
-        </span>
-      </div>
+      <span class="input-group-text border-0">
+        <span class="oi oi-magnifying-glass" aria-hidden="true" />
+      </span>
       <SearchInput
         class="form-control border-0"
         opts={
@@ -18,9 +16,11 @@
       />
     </div>
 
-    <ul :if={@open and @query not in ["", nil]} class="d-block dropdown-menu dropdown-menu-right">
+    <ul :if={@open and @query not in ["", nil]} class="d-block dropdown-menu dropdown-menu-end">
       <li class="dropdown-submenu loading" :if={not is_nil(@pending_search)}>
-        <div class="spinner-border text-primary" role="status">
+        <div class="d-flex align-items-center gap-2">
+          <div class="spinner-border text-primary" role="status">
+          </div>
           <span class="sr-only">{gettext("Waiting for results...")}</span>
         </div>
       </li>

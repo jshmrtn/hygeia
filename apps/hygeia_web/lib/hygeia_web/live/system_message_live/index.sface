@@ -6,7 +6,7 @@
 
     <div class="d-flex">
       <LiveRedirect
-        class="mr-2"
+        class="me-2"
         to={Routes.system_message_create_path(@socket, :create)}
         :if={authorized?(SystemMessage, :create, auth)}
       >
@@ -37,13 +37,13 @@
                 to={Routes.system_message_show_path(@socket, :show, system_message.uuid)}
                 :if={authorized?(system_message, :details, auth)}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">{gettext("Show")}</button>
+                <button class="ms-auto btn btn-sm btn-secondary">{gettext("Show")}</button>
               </LiveRedirect>
               <LivePatch
                 to={Routes.system_message_show_path(@socket, :edit, system_message.uuid)}
                 :if={authorized?(system_message, :update, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-secondary">
                   <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LivePatch>
@@ -58,7 +58,7 @@
                 }
                 :if={authorized?(system_message, :delete, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-danger">
+                <button class="ms-1 btn btn-sm btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>

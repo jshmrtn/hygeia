@@ -1,11 +1,11 @@
 .notification-tray-trigger {
   background: transparent;
   border: none;
-  color: theme-color("primary");
+  color: $primary;
   position: relative;
 
   &:hover {
-    color: theme-color-level("primary", 3);
+    color: shade-color($primary, 30);
   }
 
   &:focus-within {

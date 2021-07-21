@@ -1,12 +1,12 @@
 <div class="component-person-overview container">
   <HygeiaWeb.PersonLive.Header person={@person} id="header" />
 
-  <div :if={is_nil(@active_phase)} class="jumbotron h3 font-weight-normal">
+  <div :if={is_nil(@active_phase)} class="p-5 my-5 jumbotron h3 font-weight-normal">
     {gettext("You are currently not quarantined or in isolation.")}
   </div>
 
   <div
-    class="my-5 jumbotron"
+    class="my-5 p-5 jumbotron"
     :if={not is_nil(@active_phase) and match?(%Phase.PossibleIndex{}, @active_phase.details)}
   >
     <p class="mb-1">{gettext("You are currently in")}</p>
@@ -45,7 +45,7 @@
     {/if}
   </div>
   <div
-    class="my-5 jumbotron"
+    class="my-5 p-5 jumbotron"
     :if={not is_nil(@active_phase) and match?(%Phase.Index{}, @active_phase.details)}
   >
     <p class="mb-1">{gettext("You are currently in")}</p>
@@ -75,7 +75,7 @@
         <th>{gettext("Start Date")}</th>
         <th>{gettext("End Date")}</th>
         <th>{gettext("Tracer")}</th>
-        <th class="text-right">{gettext("Actions")}</th>
+        <th class="text-end">{gettext("Actions")}</th>
       </tr>
     </thead>
     <tbody>
@@ -105,18 +105,18 @@
             <small class="text-muted">{case.tenant.from_email}</small>
           </div>
         </td>
-        <td class="text-right">
+        <td class="text-end">
           {#case phase}
             {#match %Phase{details: %Phase.Index{}}}
               <LiveRedirect
-                class="btn btn-sm btn-secondary ml-2 mb-2"
+                class="btn btn-sm btn-secondary ms-2 mb-2"
                 to={Routes.possible_index_submission_index_path(@socket, :index, case)}
               >
                 {gettext("Possible Index Submissions")}
               </LiveRedirect>
               <Link
                 class={
-                  "btn btn-sm btn-secondary ml-2 mb-2",
+                  "btn btn-sm btn-secondary ms-2 mb-2",
                   disabled: not Phase.can_generate_pdf_confirmation?(phase, case.tenant)
                 }
                 to={Routes.pdf_path(@socket, :isolation_confirmation, case.uuid, phase.uuid)}
@@ -125,7 +125,7 @@
               </Link>
               <Link
                 class={
-                  "btn btn-sm btn-secondary ml-2 mb-2",
+                  "btn btn-sm btn-secondary ms-2 mb-2",
                   disabled: not Phase.can_generate_pdf_end_confirmation?(phase, case.tenant)
                 }
                 to={Routes.pdf_path(@socket, :isolation_end_confirmation, case.uuid, phase.uuid)}
@@ -135,7 +135,7 @@
             {#match %Phase{details: %Phase.PossibleIndex{}}}
               <Link
                 class={
-                  "btn btn-sm btn-secondary ml-2",
+                  "btn btn-sm btn-secondary ms-2",
                   disabled: not Phase.can_generate_pdf_confirmation?(phase, case.tenant)
                 }
                 to={Routes.pdf_path(@socket, :quarantine_confirmation, case.uuid, phase.uuid)}

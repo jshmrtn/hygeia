@@ -29,9 +29,9 @@
       <div class="card-body">
         <h4 class="card-title">{gettext("Address")}</h4>
 
-        <Field name={:shares_address} class="form-group">
+        <Field name={:shares_address} class="form-check">
           <HygeiaWeb.FieldLabel />
-          <Checkbox class="form-control" opts={disabled: @live_action == :show} />
+          <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
 

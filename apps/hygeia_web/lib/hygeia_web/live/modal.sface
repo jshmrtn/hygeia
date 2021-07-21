@@ -16,12 +16,10 @@
         <button
           :on-click={@close}
           type="button"
-          class="close p-3"
+          class="btn-close"
           data-dismiss="modal"
           aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+        />
       </div>
       <div class="modal-body">
         <#slot />

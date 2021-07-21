@@ -56,7 +56,7 @@
 
         <div class="d-flex">
           <LiveRedirect
-            class="mr-2"
+            class="me-2"
             to={Routes.possible_index_submission_create_path(@socket, :create, @case)}
           >
             <button type="button" class="mb-2 mt-3 btn btn-primary">
@@ -115,7 +115,7 @@
                     to={Routes.possible_index_submission_show_path(@socket, :show, possible_index_submission)}
                     :if={authorized?(possible_index_submission, :details, auth)}
                   >
-                    <button class="ml-auto btn btn-sm btn-secondary">
+                    <button class="ms-auto btn btn-sm btn-secondary">
                       {gettext("Show")}
                     </button>
                   </LiveRedirect>
@@ -123,7 +123,7 @@
                     to={Routes.possible_index_submission_show_path(@socket, :edit, possible_index_submission)}
                     :if={authorized?(possible_index_submission, :update, auth)}
                   >
-                    <button class="ml-1 btn btn-sm btn-secondary">
+                    <button class="ms-1 btn btn-sm btn-secondary">
                       <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                     </button>
                   </LiveRedirect>
@@ -138,7 +138,7 @@
                     }
                     :if={authorized?(possible_index_submission, :delete, auth)}
                   >
-                    <button class="ml-1 btn btn-sm btn-danger">
+                    <button class="ms-1 btn btn-sm btn-danger">
                       <span class="oi oi-trash" aria-hidden="true" />
                     </button>
                   </Link>
@@ -151,7 +151,7 @@
                     )}
                     :if={authorized?(Case, :create, auth, tenant: :any)}
                   >
-                    <button class="ml-1 btn btn-sm btn-secondary">
+                    <button class="ms-1 btn btn-sm btn-secondary">
                       <span class="oi oi-check" title={gettext("Accept")} aria-hidden="true" />
                     </button>
                   </LiveRedirect>

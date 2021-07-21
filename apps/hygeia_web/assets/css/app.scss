@@ -39,15 +39,19 @@
 }
 
 // bootstrap theming options
+@import "bootstrap/scss/_functions";
+
+$min-contrast-ratio: 2;
+
 $body-bg: #fdfdfd;
 $body-color: #111;
 $enable-rounded: true;
 $border-radius: 3px;
-$theme-colors: (
-  "primary": #37b8c0,
-  "secondary": #ffac7b,
-  "dark": #3C3C3B,
-);
+
+$primary: #37b8c0;
+$secondary: #ffac7b;
+$dark: #3c3c3b;
+
 $grid-gutter-width: 0.5rem;
 
 $font-weight-light: 100;
@@ -55,8 +59,7 @@ $font-weight-normal: 300;
 $font-weight-bold: 500;
 $headings-font-weight: 700;
 
-$font-family-sans-serif:
-  "Museo Sans",
+$font-family-sans-serif: "Museo Sans",
   // Safari for OS X and iOS (San Francisco)
   -apple-system,
   // Chrome < 56 for OS X (San Francisco)
@@ -66,9 +69,11 @@ $font-family-sans-serif:
   // Android
   "Roboto",
   // Basic web fallback
-  "Helvetica Neue", Arial, sans-serif,
+  "Helvetica Neue",
+  Arial, sans-serif,
   // Emoji fonts
-  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+  "Apple Color Emoji",
+  "Segoe UI Emoji", "Segoe UI Symbol" !default;
 
 @import "node_modules/bootstrap/scss/bootstrap";
 
@@ -90,20 +95,27 @@ html {
   }
 }
 
+a,
 a:hover {
   text-decoration: none;
 }
 
 [type="radio"] {
   appearance: none;
+  -webkit-appearance: none;
   outline: none;
   height: 1rem;
   width: 1rem;
-  border: 2px solid theme-color("primary");
+  border: 2px solid $primary;
   border-radius: 50%;
 
   &:checked {
-    background-color: theme-color("primary");
+    background-image: none !important;
+    background-color: $primary;
+  }
+
+  &:focus {
+    background-image: none !important;
   }
 
   &:not(:disabled) {
@@ -116,11 +128,12 @@ a:hover {
   outline: none;
   height: 0.9rem;
   width: 0.9rem;
-  border: 2px solid theme-color("primary");
+  border: 2px solid $primary;
   border-radius: $border-radius;
 
   &:checked {
-    background-color: theme-color("primary");
+    background-color: $primary;
+    background-image: none !important;
   }
 
   &:disabled {
@@ -180,6 +193,12 @@ select {
 
 table {
   empty-cells: show;
+}
+
+.btn-group-toggle {
+  input {
+    display: none;
+  }
 }
 
 @import "./mixins.scss";
@@ -244,11 +263,11 @@ table {
 @include media-breakpoint-down(md) {
   .layout-header {
     padding: $grid-gutter-width $grid-gutter-width * 2;
-    >.container {
-      >div {
+    > .container {
+      > div {
         flex-direction: column;
-        >.nav {
-            margin-bottom: $grid-gutter-width * 2;
+        > .nav {
+          margin-bottom: $grid-gutter-width * 2;
           &:last-child {
             margin-bottom: 0;
           }
@@ -261,4 +280,11 @@ table {
 .btn-secondary.disabled.active {
   background-color: #b55e2b;
   color: white;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  label {
+    margin-bottom: 0.5rem;
+  }
 }

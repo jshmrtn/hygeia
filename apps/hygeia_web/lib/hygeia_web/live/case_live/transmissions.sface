@@ -19,7 +19,7 @@
               )}
               class="btn btn-primary"
             >
-              <span class="oi oi-plus mr-1" aria-hidden="true" />
+              <span class="oi oi-plus me-1" aria-hidden="true" />
               {gettext("New Transmission")}
             </LiveRedirect>
           </div>
@@ -47,9 +47,9 @@
                   default_supervisor_uuid: @case.supervisor_uuid,
                   return_to: URI.parse(uri).path
                 )}
-                class="btn btn-primary mr-1"
+                class="btn btn-primary me-1"
               >
-                <span class="oi oi-plus mr-1" aria-hidden="true" />
+                <span class="oi oi-plus me-1" aria-hidden="true" />
                 {gettext("New Possible Index")}
               </LiveRedirect>
             </Context>
@@ -62,7 +62,7 @@
               )}
               class="btn btn-primary"
             >
-              <span class="oi oi-plus mr-1" aria-hidden="true" />
+              <span class="oi oi-plus me-1" aria-hidden="true" />
               {gettext("New Transmission")}
             </LiveRedirect>
           </div>

@@ -113,9 +113,9 @@
     </li>
 
     <HygeiaWeb.Dropdown
-      class="ml-auto"
+      class="ms-auto"
       trigger_class="btn btn-sm btn-secondary dropdown-toggle"
-      dropdown_class="dropdown-menu-right"
+      dropdown_class="dropdown-menu-end"
       id="navigation-dropdown"
     >
       <:trigger>
@@ -135,7 +135,7 @@
             class={"dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant)}
             to={Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, uuid)}
           >
-            <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
+            <span class="oi oi-data-transfer-download me-1" aria-hidden="true" />
             {gettext("Isolation Confirmation")}
           </Link>
           <Link
@@ -145,7 +145,7 @@
             }
             to={Routes.pdf_path(@socket, :isolation_end_confirmation, @case.uuid, uuid)}
           >
-            <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
+            <span class="oi oi-data-transfer-download me-1" aria-hidden="true" />
             {gettext("Isolation End Confirmation")}
           </Link>
           <a
@@ -157,7 +157,7 @@
               CaseContext.person_has_mobile_number?(@case.person) and
               TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
           >
-            <span class="oi oi-phone mr-1" aria-hidden="true" />
+            <span class="oi oi-phone me-1" aria-hidden="true" />
             {gettext("Send SMS Isolation Confirmation")}
           </a>
           <a
@@ -170,7 +170,7 @@
               CaseContext.person_has_email?(@case.person) and
               TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
           >
-            <span class="oi oi-envelope-closed mr-1" aria-hidden="true" />
+            <span class="oi oi-envelope-closed me-1" aria-hidden="true" />
             {gettext("Send Email Isolation Confirmation")}
           </a>
           <a
@@ -186,7 +186,7 @@
               CaseContext.person_has_mobile_number?(@case.person) and
               TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
           >
-            <span class="oi oi-phone mr-1" aria-hidden="true" />
+            <span class="oi oi-phone me-1" aria-hidden="true" />
             {gettext("Send SMS Isolation End Confirmation")}
           </a>
           <a
@@ -203,7 +203,7 @@
               CaseContext.person_has_email?(@case.person) and
               TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
           >
-            <span class="oi oi-envelope-closed mr-1" aria-hidden="true" />
+            <span class="oi oi-envelope-closed me-1" aria-hidden="true" />
             {gettext("Send Email Isolation End Confirmation")}
           </a>
         </div>
@@ -225,7 +225,7 @@
             class={"dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant)}
             to={Routes.pdf_path(@socket, :quarantine_confirmation, @case.uuid, uuid)}
           >
-            <span class="oi oi-data-transfer-download mr-1" aria-hidden="true" />
+            <span class="oi oi-data-transfer-download me-1" aria-hidden="true" />
             {gettext("Quarantine Confirmation")}
           </Link>
           <a
@@ -237,7 +237,7 @@
               CaseContext.person_has_mobile_number?(@case.person) and
               TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
           >
-            <span class="oi oi-phone mr-1" aria-hidden="true" />
+            <span class="oi oi-phone me-1" aria-hidden="true" />
             {gettext("Send SMS Quarantine Confirmation")}
           </a>
           <a
@@ -250,7 +250,7 @@
               CaseContext.person_has_email?(@case.person) and
               TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
           >
-            <span class="oi oi-envelope-closed mr-1" aria-hidden="true" />
+            <span class="oi oi-envelope-closed me-1" aria-hidden="true" />
             {gettext("Send Email Quarantine Confirmation")}
           </a>
           <a
@@ -263,7 +263,7 @@
               CaseContext.person_has_mobile_number?(@case.person) and
               TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
           >
-            <span class="oi oi-phone mr-1" aria-hidden="true" />
+            <span class="oi oi-phone me-1" aria-hidden="true" />
             {gettext("Send SMS Quarantine End Confirmation")}
           </a>
           <a
@@ -277,7 +277,7 @@
               CaseContext.person_has_email?(@case.person) and
               TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
           >
-            <span class="oi oi-envelope-closed mr-1" aria-hidden="true" />
+            <span class="oi oi-envelope-closed me-1" aria-hidden="true" />
             {gettext("Send Email Quarantine End Confirmation")}
           </a>
         </div>
@@ -299,7 +299,7 @@
               return_to: URI.parse(uri).path
             )}
           >
-            <span class="oi oi-plus mr-1" aria-hidden="true" />
+            <span class="oi oi-plus me-1" aria-hidden="true" />
             {gettext("Create Contact Cases")}
           </LiveRedirect>
         </Context>
@@ -307,14 +307,14 @@
       <div :if={authorized?(@case, :update, auth)}>
         <div class="dropdown-divider" />
         <a class="dropdown-item" href="#" :on-click="open_phase_create_modal">
-          <span class="oi oi-plus mr-1" aria-hidden="true" />
+          <span class="oi oi-plus me-1" aria-hidden="true" />
           {gettext("Create Phase")}
         </a>
       </div>
       <div :if={authorized?(Hygeia.CaseContext.Note, :create, auth, %{case: @case})}>
         <div class="dropdown-divider" />
         <a class="dropdown-item" href="#" :on-click="open_note_modal">
-          <span class="oi oi-plus mr-1" aria-hidden="true" />
+          <span class="oi oi-plus me-1" aria-hidden="true" />
           {gettext("Create Note")}
         </a>
         <a
@@ -324,7 +324,7 @@
           :if={CaseContext.person_has_mobile_number?(@case.person) and
             TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
         >
-          <span class="oi oi-phone mr-1" aria-hidden="true" />
+          <span class="oi oi-phone me-1" aria-hidden="true" />
           {gettext("Send SMS")}
         </a>
         <a
@@ -334,7 +334,7 @@
           :if={CaseContext.person_has_email?(@case.person) and
             TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
         >
-          <span class="oi oi-envelope-closed mr-1" aria-hidden="true" />
+          <span class="oi oi-envelope-closed me-1" aria-hidden="true" />
           {gettext("Send Email")}
         </a>
       </div>
@@ -349,7 +349,7 @@
             data: [confirm: gettext("Are you sure?")]
           }
         >
-          <span class="oi oi-trash mr-1" aria-hidden="true" />
+          <span class="oi oi-trash me-1" aria-hidden="true" />
           {gettext("Delete")}
         </Link>
       </div>

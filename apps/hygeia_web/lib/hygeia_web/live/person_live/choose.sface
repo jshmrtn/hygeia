@@ -64,11 +64,9 @@
           close="close_modal"
         >
           <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <span class="oi oi-magnifying-glass" aria-hidden="true" />
-              </span>
-            </div>
+            <span class="input-group-text">
+              <span class="oi oi-magnifying-glass" aria-hidden="true" />
+            </span>
             <input
               class="form-control"
               type="search"

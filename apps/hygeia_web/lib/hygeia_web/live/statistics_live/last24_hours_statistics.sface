@@ -5,7 +5,7 @@
     <div class="component-statistics-last24hours-statistics container pt-3">
       <div class="container">
         <Form for={assigns} change="params_change" opts={class: "mt-3 d-flex align-items-center"}>
-          <Field name={:enable_vision_impaired_mode} class="ml-2 w-auto">
+          <Field name={:enable_vision_impaired_mode} class="ms-2 w-auto">
             <Checkbox />
             <Label class="mb-0">
               {gettext("Enable Vision Impaired Mode")}
