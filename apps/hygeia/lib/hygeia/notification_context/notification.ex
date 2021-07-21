@@ -14,6 +14,7 @@ defmodule Hygeia.NotificationContext.Notification do
             | __MODULE__.EmailSendFailed.t()
             | __MODULE__.PossibleIndexSubmitted.t()
             | __MODULE__.PrematureRelease.t()
+            | __MODULE__.SelfServiceHelpRequest.t()
             | nil,
           notified: boolean | nil,
           read: boolean | nil,
@@ -29,7 +30,8 @@ defmodule Hygeia.NotificationContext.Notification do
             __MODULE__.CaseAssignee.t()
             | __MODULE__.EmailSendFailed.t()
             | __MODULE__.PossibleIndexSubmitted.t()
-            | __MODULE__.PrematureRelease.t(),
+            | __MODULE__.PrematureRelease.t()
+            | __MODULE__.SelfServiceHelpRequest.t(),
           notified: boolean,
           read: boolean,
           user: Ecto.Schema.belongs_to(User.t()),
@@ -44,7 +46,8 @@ defmodule Hygeia.NotificationContext.Notification do
         case_assignee: __MODULE__.CaseAssignee,
         email_send_failed: __MODULE__.EmailSendFailed,
         possible_index_submitted: __MODULE__.PossibleIndexSubmitted,
-        premature_release: __MODULE__.PrematureRelease
+        premature_release: __MODULE__.PrematureRelease,
+        self_service_help_request: __MODULE__.SelfServiceHelpRequest
       ],
       on_replace: :update
 
