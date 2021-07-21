@@ -3,14 +3,14 @@ defmodule HygeiaWeb.Dropdown do
 
   use HygeiaWeb, :surface_live_component
 
-  prop(class, :string, default: "")
-  prop(trigger_class, :string, default: "")
-  prop(dropdown_class, :string, default: "")
+  prop class, :string, default: ""
+  prop trigger_class, :string, default: ""
+  prop dropdown_class, :string, default: ""
 
-  data(dropdown_open, :boolean, default: false)
+  data dropdown_open, :boolean, default: false
 
-  slot(trigger, required: true)
-  slot(default, required: true)
+  slot trigger, required: true
+  slot default, required: true
 
   @impl Phoenix.LiveComponent
   def render(assigns) do
@@ -21,7 +21,7 @@ defmodule HygeiaWeb.Dropdown do
       phx-target={@myself}
       phx-hook="Dropdown"
       class={
-        "dropdown-component dropdown",
+        "component-dropdown dropdown",
         @class,
         show: @dropdown_open
       }
