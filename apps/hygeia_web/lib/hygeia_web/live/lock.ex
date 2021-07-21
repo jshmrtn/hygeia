@@ -53,7 +53,9 @@ defmodule HygeiaWeb.Lock do
       <div :if={@lock and not @lock_acquired} class="alert alert-info">
         <p>{gettext("Someone else is currently editing this resource. Wait until they finished their work.")}</p>
 
-        <div class="spinner-border" role="status">
+        <div class="d-flex align-items-center gap-2">
+          <div class="spinner-border" role="status">
+          </div>
           <span class="sr-only">{gettext("Acquiring Lock...")}</span>
         </div>
       </div>

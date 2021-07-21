@@ -115,7 +115,7 @@
                 <label class="d-block">{gettext("Includes Phase Type")}</label>
                 <Field name="phase_type" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value={nil} />
+                    <RadioButton class="form-check-input" value="" />
                     {gettext("Any")}
                   </label>
                 </Field>

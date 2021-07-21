@@ -41,6 +41,8 @@
 // bootstrap theming options
 @import "bootstrap/scss/_functions";
 
+$min-contrast-ratio: 2;
+
 $body-bg: #fdfdfd;
 $body-color: #111;
 $enable-rounded: true;
@@ -137,6 +139,7 @@ a:hover {
 
   &:checked {
     background-color: $primary;
+    background-image: none !important;
   }
 
   &:disabled {

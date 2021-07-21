@@ -15,7 +15,7 @@
             >
               <button class="btn btn-primary" id="case-edit">
                 <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                {gettext("Edit")}asdf
+                {gettext("Edit")}
               </button>
             </LivePatch>
           </div>
@@ -434,6 +434,7 @@
                                     "btn",
                                     "btn-sm",
                                     "btn-secondary",
+                                    "mb-0",
                                     active: Ecto.Changeset.get_field(form.source, :has_symptoms) == nil,
                                     disabled: @live_action == :show
                                   }>
@@ -444,6 +445,7 @@
                                     "btn",
                                     "btn-sm",
                                     "btn-secondary",
+                                    "mb-0",
                                     active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true,
                                     disabled: @live_action == :show
                                   }>
@@ -454,6 +456,7 @@
                                     "btn",
                                     "btn-sm",
                                     "btn-secondary",
+                                    "mb-0",
                                     active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false,
                                     disabled: @live_action == :show
                                   }>

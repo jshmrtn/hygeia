@@ -21,11 +21,7 @@
   $index: str-index($string, $search);
   @if $index {
     @return str-slice($string, 1, $index - 1) + $replace +
-      str-replace(
-        str-slice($string, $index + str-length($search)),
-        $search,
-        $replace
-      );
+      str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
   }
   @return $string;
 }
@@ -33,13 +29,7 @@
 // =============================================================================
 // Font Face
 // =============================================================================
-@mixin font-face(
-  $name,
-  $slug,
-  $weight: null,
-  $style: null,
-  $exts: eot woff2 woff ttf svg
-) {
+@mixin font-face($name, $slug, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
   $src: null;
   $extmods: (
     eot: "?",
@@ -50,18 +40,11 @@
     ttf: "truetype",
   );
   @each $ext in $exts {
-    $extmod: if(
-      map-has-key($extmods, $ext),
-      $ext + map-get($extmods, $ext),
-      $ext
-    );
+    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
     $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
     $src: append(
       $src,
-      url(quote(
-          "../fonts/" + $slug + "-" + $style + "-" + $weight + "." + $extmod
-        ))
-        format(quote($format)),
+      url(quote("../fonts/" + $slug + "-" + $style + "-" + $weight + "." + $extmod)) format(quote($format)),
       comma
     );
   }

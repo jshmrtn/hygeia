@@ -1,8 +1,8 @@
 <HygeiaWeb.Dropdown
   id="notifications-try-dropdown"
   trigger_class="nav-link"
-  dropdown_class="notification-tray-content"
-  class="open dropleft"
+  dropdown_class="dropdown-menu-end notification-tray-content"
+  class="open"
 >
   <:trigger>
     <button class="nav-item notification-tray-trigger">

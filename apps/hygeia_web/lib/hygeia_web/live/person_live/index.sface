@@ -43,7 +43,7 @@
                 <label class="d-block">{schema_field_name(:sex, Person)}</label>
                 <Field name="sex" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value={nil} />
+                    <RadioButton class="form-check-input" value="" />
                     {gettext("Any")}
                   </label>
                 </Field>
