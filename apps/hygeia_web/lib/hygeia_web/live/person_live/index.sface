@@ -23,7 +23,7 @@
         id="filter-dropdown"
       >
         <:trigger>
-          <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
             <span class="oi oi-cog" aria-hidden="true" />
             {gettext("Filter")}
           </button>
@@ -186,13 +186,13 @@
                 to={Routes.person_base_data_path(@socket, :show, person)}
                 :if={authorized?(person, :details, auth)}
               >
-                <button class="ms-auto btn btn-sm btn-secondary">{"Show" |> gettext}</button>
+                <button class="ms-auto btn btn-sm btn-outline-primary">{"Show" |> gettext}</button>
               </LiveRedirect>
               <LivePatch
                 to={Routes.person_base_data_path(@socket, :edit, person)}
                 :if={authorized?(person, :update, auth)}
               >
-                <button class="ms-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   <span class="oi oi-pencil" title={"Edit" |> gettext} aria-hidden="true" />
                 </button>
               </LivePatch>

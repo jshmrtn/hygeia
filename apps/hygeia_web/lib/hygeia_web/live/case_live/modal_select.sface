@@ -10,7 +10,7 @@
       </#slot>
       <button
         :if={!@disabled}
-        class="ms-1 btn btn-sm btn-secondary"
+        class="ms-1 btn btn-sm btn-outline-primary"
         :on-click="open_modal"
         type="button"
       >

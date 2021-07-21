@@ -54,7 +54,7 @@
 
           <Link
             to={Routes.auth_path(@socket, :request, "zitadel", return_url: @return_url)}
-            class="btn btn-secondary"
+            class="btn btn-outline-primary"
           >
             <span class="oi oi-account-login me-1" title={gettext("Log In")} aria-hidden="true" />
             {gettext("Log In")}

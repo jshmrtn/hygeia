@@ -21,7 +21,7 @@
             <label class={
               "btn",
               "btn-sm",
-              "btn-secondary",
+              "btn-outline-primary",
               active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == nil
             }>
               <RadioButton value={nil} />
@@ -30,7 +30,7 @@
             <label class={
               "btn",
               "btn-sm",
-              "btn-secondary",
+              "btn-outline-primary",
               active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == true
             }>
               <RadioButton value />
@@ -39,7 +39,7 @@
             <label class={
               "btn",
               "btn-sm",
-              "btn-secondary",
+              "btn-outline-primary",
               active: Ecto.Changeset.get_field(@changeset, :quarantine_order) == false
             }>
               <RadioButton value={false} />

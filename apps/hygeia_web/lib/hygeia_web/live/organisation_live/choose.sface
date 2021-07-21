@@ -43,7 +43,7 @@
         </div>
 
         <div :if={value in [nil, ""] and not @disabled}>
-          <button class="btn btn-secondary" :on-click="open_modal" type="button">
+          <button class="btn btn-outline-primary" :on-click="open_modal" type="button">
             {gettext("Choose organisation")}
           </button>
 

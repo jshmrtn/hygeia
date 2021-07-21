@@ -9,7 +9,7 @@
         <h6 class="mb-0">{tenant.name}</h6>
 
         <LiveRedirect
-          class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+          class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
           to={Routes.statistics_timeline_path(@socket, :show, tenant)}
         >
           {gettext("Show Statistics")}

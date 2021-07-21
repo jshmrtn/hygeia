@@ -40,7 +40,7 @@
                       {tenant.name}
                     </span>
                     -
-                    <span class="badge bg-secondary">
+                    <span class="badge rounded-pill badge-outline-primary">
                       {role}
                     </span>
                   </li>

@@ -115,7 +115,7 @@
                     to={Routes.possible_index_submission_show_path(@socket, :show, possible_index_submission)}
                     :if={authorized?(possible_index_submission, :details, auth)}
                   >
-                    <button class="ms-auto btn btn-sm btn-secondary">
+                    <button class="ms-auto btn btn-sm btn-outline-primary">
                       {gettext("Show")}
                     </button>
                   </LiveRedirect>
@@ -123,7 +123,7 @@
                     to={Routes.possible_index_submission_show_path(@socket, :edit, possible_index_submission)}
                     :if={authorized?(possible_index_submission, :update, auth)}
                   >
-                    <button class="ms-1 btn btn-sm btn-secondary">
+                    <button class="ms-1 btn btn-sm btn-outline-primary">
                       <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                     </button>
                   </LiveRedirect>
@@ -151,7 +151,7 @@
                     )}
                     :if={authorized?(Case, :create, auth, tenant: :any)}
                   >
-                    <button class="ms-1 btn btn-sm btn-secondary">
+                    <button class="ms-1 btn btn-sm btn-outline-primary">
                       <span class="oi oi-check" title={gettext("Accept")} aria-hidden="true" />
                     </button>
                   </LiveRedirect>

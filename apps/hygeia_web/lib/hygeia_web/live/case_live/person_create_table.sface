@@ -184,7 +184,7 @@
                   <button
                     :if={Ecto.Changeset.fetch_field!(form.source, :suspected_duplicate_uuids) not in ["", nil] and
                       accepted_duplicate != true}
-                    class="btn btn-secondary btn-sm"
+                    class="btn btn-outline-primary btn-sm"
                     type="button"
                     phx-value-changeset-uuid={changeset_uuid}
                     phx-click="check_duplicate"
@@ -312,7 +312,7 @@
                                 "mt-3",
                                 "d-block",
                                 "btn-primary": match?([], person.cases),
-                                "btn-secondary": match?([_ | _], person.cases)
+                                "btn-outline-primary": match?([_ | _], person.cases)
                               }
                               phx-click="select_accepted_duplicate"
                               phx-value-person-uuid={person_uuid}
@@ -328,7 +328,7 @@
 
                   <button
                     :if={not CreatePersonSchema.is_person_empty?(form.source)}
-                    class="ms-1 btn btn-secondary btn-sm btn-danger"
+                    class="ms-1 btn btn-outline-primary btn-sm btn-danger"
                     type="button"
                     phx-value-changeset-uuid={changeset_uuid}
                     phx-click="remove_person"

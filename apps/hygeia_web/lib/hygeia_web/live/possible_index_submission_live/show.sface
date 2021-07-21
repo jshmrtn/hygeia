@@ -62,7 +62,7 @@
               )}
               :if={authorized?(Case, :create, auth, tenant: :any)}
             >
-              <button class="btn btn-secondary">
+              <button class="btn btn-outline-primary">
                 <span class="oi oi-check" title={gettext("Accept")} aria-hidden="true" />
               </button>
             </LiveRedirect>
