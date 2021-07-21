@@ -59,7 +59,7 @@ defmodule HygeiaWeb.StatisticsLive.Export do
     to = Date.to_string(Date.utc_today())
 
     push_redirect(socket,
-      to: Routes.statistics_timeline_path(socket, :show, tenant, from, to)
+      to: Routes.statistics_export_path(socket, :show, tenant, from, to)
     )
   end
 end
