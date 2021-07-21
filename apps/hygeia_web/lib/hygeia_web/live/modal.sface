@@ -19,7 +19,7 @@
           class="btn-close"
           data-dismiss="modal"
           aria-label="Close"
-        ></button>
+        />
       </div>
       <div class="modal-body">
         <#slot />
