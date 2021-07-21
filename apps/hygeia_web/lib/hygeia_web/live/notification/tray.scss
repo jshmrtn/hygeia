@@ -5,8 +5,7 @@
   position: relative;
 
   &:hover {
-    // TODO: bootstrap 5
-    color: color-level($primary, 3);
+    color: shade-color($primary, 30);
   }
 
   &:focus-within {

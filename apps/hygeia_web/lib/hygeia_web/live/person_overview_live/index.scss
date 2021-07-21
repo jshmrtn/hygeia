@@ -3,8 +3,7 @@
     border-width: 1px 1px 1px 6px !important;
     padding-left: 5rem;
     border: 1px solid;
-    // TODO: bootstrap 5
-    // border-color: theme-color-level("primary", -7);
+    border-color: tint-color($primary, 60);
     border-left-color: $primary;
     background: transparent;
   }
