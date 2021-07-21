@@ -59,7 +59,7 @@
   </Inputs>
 
   <div class="add-button mt-2" :if={not @disabled}>
-    <button type="button" class="btn btn-secondary" :on-click={@add}>
+    <button type="button" class="btn btn-outline-primary" :on-click={@add}>
       <span class="oi oi-plus me-1" aria-hidden="true" />
       {gettext("New reference")}
     </button>

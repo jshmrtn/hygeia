@@ -10,7 +10,7 @@
         id="filter-dropdown"
       >
         <:trigger>
-          <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
             <span class="oi oi-cog" aria-hidden="true" />
             {gettext("Filter")}
           </button>

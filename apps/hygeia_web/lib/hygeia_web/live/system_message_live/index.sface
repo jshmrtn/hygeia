@@ -37,13 +37,13 @@
                 to={Routes.system_message_show_path(@socket, :show, system_message.uuid)}
                 :if={authorized?(system_message, :details, auth)}
               >
-                <button class="ms-auto btn btn-sm btn-secondary">{gettext("Show")}</button>
+                <button class="ms-auto btn btn-sm btn-outline-primary">{gettext("Show")}</button>
               </LiveRedirect>
               <LivePatch
                 to={Routes.system_message_show_path(@socket, :edit, system_message.uuid)}
                 :if={authorized?(system_message, :update, auth)}
               >
-                <button class="ms-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LivePatch>

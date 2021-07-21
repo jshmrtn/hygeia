@@ -95,7 +95,7 @@
       </Inputs>
     </tbody>
   </table>
-  <button type="button" class="btn btn-secondary d-block mb-4" :on-click="add_contact_method">
+  <button type="button" class="btn btn-outline-primary d-block mb-4" :on-click="add_contact_method">
     <span class="oi oi-plus" aria-hidden="true" />
     {gettext("New contact method")}
   </button>

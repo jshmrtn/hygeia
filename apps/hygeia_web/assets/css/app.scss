@@ -42,6 +42,7 @@
 @import "bootstrap/scss/_functions";
 
 $min-contrast-ratio: 2;
+$table-striped-bg-factor: 0.02;
 
 $body-bg: #fdfdfd;
 $body-color: #111;
@@ -282,9 +283,19 @@ table {
   color: white;
 }
 
+.btn-outline-primary.disabled.active {
+  background-color: $primary;
+  color: white;
+}
+
 .form-group {
   margin-bottom: 1rem;
   label {
     margin-bottom: 0.5rem;
   }
+}
+
+.badge-outline-primary {
+  border: 1px solid $primary;
+  color: $primary;
 }

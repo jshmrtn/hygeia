@@ -23,7 +23,7 @@
         id="filter-dropdown"
       >
         <:trigger>
-          <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
             <span class="oi oi-cog" aria-hidden="true" />
             {gettext("Filter")}
           </button>
@@ -95,7 +95,7 @@
                 to={Routes.organisation_show_path(@socket, :show, organisation)}
                 :if={authorized?(organisation, :details, auth)}
               >
-                <button class="ms-auto btn btn-sm btn-secondary">
+                <button class="ms-auto btn btn-sm btn-outline-primary">
                   {gettext("Show")}
                 </button>
               </LiveRedirect>
@@ -103,7 +103,7 @@
                 to={Routes.organisation_show_path(@socket, :edit, organisation)}
                 :if={authorized?(organisation, :update, auth)}
               >
-                <button class="ms-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LiveRedirect>

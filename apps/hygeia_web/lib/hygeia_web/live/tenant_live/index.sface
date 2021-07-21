@@ -49,13 +49,13 @@
                 to={Routes.tenant_show_path(@socket, :show, tenant)}
                 :if={authorized?(tenant, :details, auth)}
               >
-                <button class="ms-auto btn btn-sm btn-secondary">{gettext("Show")}</button>
+                <button class="ms-auto btn btn-sm btn-outline-primary">{gettext("Show")}</button>
               </LiveRedirect>
               <LiveRedirect
                 to={Routes.tenant_export_path(@socket, :export, tenant)}
                 :if={tenant.case_management_enabled and authorized?(tenant, :export_data, auth)}
               >
-                <button class="ms-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   <span class="oi oi-data-transfer-download" title={gettext("Export Data")} aria-hidden="true" />
                 </button>
               </LiveRedirect>
@@ -63,7 +63,7 @@
                 to={Routes.tenant_show_path(@socket, :edit, tenant)}
                 :if={authorized?(tenant, :update, auth)}
               >
-                <button class="ms-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LivePatch>

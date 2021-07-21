@@ -262,7 +262,7 @@
                   </Inputs>
 
                   <div class="add-button mt-2" :if={@live_action == :edit}>
-                    <button type="button" class="btn btn-secondary" :on-click="add_contact_method">
+                    <button type="button" class="btn btn-outline-primary" :on-click="add_contact_method">
                       <span class="oi oi-plus me-1" aria-hidden="true" />
                       {gettext("New contact method")}
                     </button>
@@ -385,7 +385,7 @@
                 <button
                   :if={@live_action == :edit}
                   type="button"
-                  class="btn btn-secondary"
+                  class="btn btn-outline-primary"
                   :on-click="add_affiliation"
                 >
                   <span class="oi oi-plus me-1" aria-hidden="true" />
@@ -405,7 +405,7 @@
                         <label class={
                           "btn",
                           "btn-sm",
-                          "btn-secondary",
+                          "btn-outline-primary",
                           disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != nil,
                           active: Ecto.Changeset.get_field(form.source, :done) == nil
                         }>
@@ -416,7 +416,7 @@
                         <label class={
                           "btn",
                           "btn-sm",
-                          "btn-secondary",
+                          "btn-outline-primary",
                           disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != true,
                           active: Ecto.Changeset.get_field(form.source, :done) == true
                         }>
@@ -426,7 +426,7 @@
                         <label class={
                           "btn",
                           "btn-sm",
-                          "btn-secondary",
+                          "btn-outline-primary",
                           disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != false,
                           active: Ecto.Changeset.get_field(form.source, :done) == false
                         }>
@@ -475,7 +475,7 @@
                         </div>
                         <ErrorTag class="d-block invalid-feedback" />
                         <div :if={@live_action == :edit}>
-                          <button type="button" class="btn btn-secondary" :on-click="add_vaccination_jab_date">
+                          <button type="button" class="btn btn-outline-primary" :on-click="add_vaccination_jab_date">
                             <span class="oi oi-plus me-1" aria-hidden="true" />
                             {gettext("New date")}
                           </button>

@@ -47,7 +47,7 @@
                 to={Routes.row_show_path(@socket, :show, row)}
                 :if={authorized?(row, :details, auth)}
               >
-                <button class="ms-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   {gettext("Show")}
                 </button>
               </LiveRedirect>

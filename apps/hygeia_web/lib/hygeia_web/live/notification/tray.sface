@@ -15,7 +15,7 @@
   <:default>
     <Context get={HygeiaWeb, timezone: timezone}>
       <div class="dropdown-item actions">
-        <button class="btn btn-secondary btn-sm" :on-click="read_all">
+        <button class="btn btn-outline-primary btn-sm" :on-click="read_all">
           <span class="oi oi-check" aria-hidden="true" />
           {pgettext("Notification", "mark all as read")}
         </button>

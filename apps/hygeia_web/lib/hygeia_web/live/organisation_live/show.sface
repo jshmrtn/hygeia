@@ -44,7 +44,7 @@
 
             <LiveRedirect
               :if={authorized?(@organisation, :update, auth) and authorized?(organisation, :update, auth)}
-              class="btn btn-secondary btn-sm"
+              class="btn btn-outline-primary btn-sm"
               to={Routes.organisation_merge_path(@socket, :merge, delete: organisation, into: @organisation)}
             >
               {pgettext("Organisation", "Merge")}
@@ -238,7 +238,7 @@
                           <button
                             :if={Ecto.Changeset.get_field(form.source, :person_uuid) != nil or
                               Ecto.Changeset.get_field(form.source, :position) != nil}
-                            class="ms-1 btn btn-secondary btn-danger"
+                            class="ms-1 btn btn-outline-primary btn-danger"
                             type="button"
                             phx-value-uuid={Ecto.Changeset.get_field(form.source, :uuid)}
                             phx-click="remove_position"
@@ -263,7 +263,7 @@
                 <tfoot :if={@live_action == :edit}>
                   <td colspan="3">
                     <button
-                      class="mt-1 btn btn-secondary btn-sm"
+                      class="mt-1 btn btn-outline-primary btn-sm"
                       type="button"
                       phx-click="add_position"
                       title={gettext("Add")}

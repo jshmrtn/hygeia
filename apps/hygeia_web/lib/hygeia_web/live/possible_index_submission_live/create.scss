@@ -36,7 +36,8 @@
         height: 2rem;
         margin-bottom: 0.5rem;
         border-radius: 10000px;
-        background-color: $secondary;
+        background-color: $white;
+        border: 1px solid $primary;
       }
 
       &.completed {

@@ -13,7 +13,7 @@
       <#slot :args={address: merged_address(form)}>
         <span class="address me-1">{Address.to_string(merged_address(form), :long)}</span>
       </#slot>
-      <button :if={!@disabled} class="btn btn-sm btn-secondary" :on-click="open_modal" type="button">
+      <button :if={!@disabled} class="btn btn-sm btn-outline-primary" :on-click="open_modal" type="button">
         <span class="oi oi-pencil" aria-hidden="true" />
       </button>
 

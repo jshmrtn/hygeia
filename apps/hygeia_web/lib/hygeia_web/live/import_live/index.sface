@@ -65,7 +65,7 @@
                 to={Routes.import_show_path(@socket, :show, import)}
                 :if={authorized?(import, :details, auth)}
               >
-                <button class="ms-auto btn btn-sm btn-secondary">
+                <button class="ms-auto btn btn-sm btn-outline-primary">
                   {gettext("Show")}
                 </button>
               </LiveRedirect>

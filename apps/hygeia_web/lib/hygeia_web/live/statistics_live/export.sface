@@ -20,7 +20,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("People in Isolation")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -40,7 +40,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("Finished Isolations")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -62,7 +62,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("People in Quarantine")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -82,7 +82,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("Quarantine End Reasons")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -104,7 +104,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("New Cases")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -124,7 +124,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("People in Hospital")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -146,7 +146,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("Complexity")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -166,7 +166,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("Infection Place")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -188,7 +188,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("Countries")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -213,7 +213,7 @@
             </h6>
 
             <Link
-              class="btn btn-sm btn-secondary ms-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,

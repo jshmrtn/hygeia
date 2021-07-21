@@ -49,7 +49,7 @@
 
       <div :if={Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""] and not @disabled}>
         <button
-          class="btn btn-secondary"
+          class="btn btn-outline-primary"
           :on-click="open_modal"
           type="button"
           phx-value-subject={@subject}

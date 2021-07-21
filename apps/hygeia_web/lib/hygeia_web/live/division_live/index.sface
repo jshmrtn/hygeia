@@ -33,7 +33,7 @@
                 to={Routes.division_show_path(@socket, :show, division)}
                 :if={authorized?(division, :details, auth)}
               >
-                <button class="ms-auto btn btn-sm btn-secondary">
+                <button class="ms-auto btn btn-sm btn-outline-primary">
                   {gettext("Show")}
                 </button>
               </LiveRedirect>
@@ -41,7 +41,7 @@
                 to={Routes.division_show_path(@socket, :edit, division)}
                 :if={authorized?(division, :update, auth)}
               >
-                <button class="ms-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LiveRedirect>
