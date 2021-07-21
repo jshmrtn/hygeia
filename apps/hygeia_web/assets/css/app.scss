@@ -41,7 +41,7 @@
 // bootstrap theming options
 @import "bootstrap/scss/_functions";
 
-$min-contrast-ratio: 2;
+$min-contrast-ratio: 0.5;
 $table-striped-bg-factor: 0.02;
 
 $body-bg: #fdfdfd;
@@ -52,13 +52,14 @@ $border-radius: 3px;
 $primary: #37b8c0;
 $secondary: #ffac7b;
 $dark: #3c3c3b;
+$info: #919191;
 
 $grid-gutter-width: 0.5rem;
 
 $font-weight-light: 100;
 $font-weight-normal: 300;
 $font-weight-bold: 500;
-$headings-font-weight: 700;
+$headings-font-weight: 300;
 
 $font-family-sans-serif: "Museo Sans",
   // Safari for OS X and iOS (San Francisco)
