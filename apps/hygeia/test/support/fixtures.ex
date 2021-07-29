@@ -3,6 +3,8 @@ defmodule Hygeia.Fixtures do
   Model Fixtures Helper
   """
 
+  alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Hospitalization
@@ -502,5 +504,16 @@ defmodule Hygeia.Fixtures do
       )
 
     CaseContext.get_premature_release!(uuid)
+  end
+
+  @valid_attrs %{current_step: :contact}
+
+  @spec auto_tracing_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          AutoTracing.t()
+  def auto_tracing_fixture(case \\ case_fixture(), attrs \\ %{}) do
+    {:ok, auto_tracing} =
+      AutoTracingContext.create_auto_tracing(case, Enum.into(attrs, @valid_attrs))
+
+    auto_tracing
   end
 end
