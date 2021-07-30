@@ -40,7 +40,8 @@ defmodule HygeiaWeb.TestLive.Create do
   def handle_event("save", %{"test" => test}, socket) do
     case = CaseContext.get_case!(socket.assigns.case_id)
 
-    CaseContext.create_test(case, test)
+    case
+    |> CaseContext.create_test(test)
     |> case do
       {:ok, test} ->
         {:noreply,
