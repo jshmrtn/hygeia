@@ -23,81 +23,81 @@
               {gettext("New Test")}
             </LiveRedirect>
           </div>
-          </div>
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>
-                  {schema_field_name(:tested_at, Test)}
-                </th>
-                <th>
-                  {schema_field_name(:laboratory_reported_at, Test)}
-                </th>
-                <th>
-                  {schema_field_name(:kind, Test)}
-                </th>
-                <th>
-                  {schema_field_name(:result, Test)}
-                </th>
-                <th>
-                  {schema_field_name(:mutation, Test)}
-                </th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              <HygeiaWeb.RecordView
-                :for={test <- @case.tests}
-                resource={test}
-                action={:list}
-                id={"test-#{test.uuid}"}
-                wrapper_tag={:tr}
-              >
-                <td>{HygeiaCldr.Date.to_string!(test.tested_at)}</td>
-                <td>{HygeiaCldr.Date.to_string!(test.laboratory_reported_at)}</td>
-                <td>{Kind.translate(test.kind)}</td>
-                <td><span :if={ !is_nil(test.result) }>{Result.translate(test.result)}</span></td>
-                <td><span :if={ !is_nil(test.mutation) }>{test.mutation.name}</span></td>
-                <td>
-                  <div class="d-flex justify-content-end w-100">
-                    <LivePatch
-                      to={Routes.test_show_path(@socket, :show, @case.uuid, test)}
-                      :if={authorized?(test, :details, auth)}
-                    >
-                      <button class="ms-auto btn btn-sm btn-outline-primary">{gettext("Show")}</button>
-                    </LivePatch>
-                    <LivePatch
-                      to={Routes.test_show_path(@socket, :edit, @case.uuid, test)}
-                      :if={authorized?(test, :update, auth)}
-                    >
-                      <button class="ms-1 btn btn-sm btn-outline-primary">
-                        <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                      </button>
-                    </LivePatch>
-                    <Link
-                      to="#"
-                      click="delete"
-                      opts={
-                        title: gettext("Delete"),
-                        data: [confirm: gettext("Are you sure?")],
-                        "phx-value-id": test.uuid,
-                        class: "delete"
-                      }
-                      :if={authorized?(test, :delete, auth)}
-                    >
-                      <button class="ms-1 btn btn-sm btn-danger">
-                        <span class="oi oi-trash" aria-hidden="true" />
-                      </button>
-                    </Link>
-                  </div>
-                </td>
-              </HygeiaWeb.RecordView>
-            </tbody>
-          </table>
+        </div>
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>
+                {schema_field_name(:tested_at, Test)}
+              </th>
+              <th>
+                {schema_field_name(:laboratory_reported_at, Test)}
+              </th>
+              <th>
+                {schema_field_name(:kind, Test)}
+              </th>
+              <th>
+                {schema_field_name(:result, Test)}
+              </th>
+              <th>
+                {schema_field_name(:mutation, Test)}
+              </th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            <HygeiaWeb.RecordView
+              :for={test <- @case.tests}
+              resource={test}
+              action={:list}
+              id={"test-#{test.uuid}"}
+              wrapper_tag={:tr}
+            >
+              <td>{HygeiaCldr.Date.to_string!(test.tested_at)}</td>
+              <td>{HygeiaCldr.Date.to_string!(test.laboratory_reported_at)}</td>
+              <td>{Kind.translate(test.kind)}</td>
+              <td><span :if={!is_nil(test.result)}>{Result.translate(test.result)}</span></td>
+              <td><span :if={!is_nil(test.mutation)}>{test.mutation.name}</span></td>
+              <td>
+                <div class="d-flex justify-content-end w-100">
+                  <LivePatch
+                    to={Routes.test_show_path(@socket, :show, @case.uuid, test)}
+                    :if={authorized?(test, :details, auth)}
+                  >
+                    <button class="ms-auto btn btn-sm btn-outline-primary">{gettext("Show")}</button>
+                  </LivePatch>
+                  <LivePatch
+                    to={Routes.test_show_path(@socket, :edit, @case.uuid, test)}
+                    :if={authorized?(test, :update, auth)}
+                  >
+                    <button class="ms-1 btn btn-sm btn-outline-primary">
+                      <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+                    </button>
+                  </LivePatch>
+                  <Link
+                    to="#"
+                    click="delete"
+                    opts={
+                      title: gettext("Delete"),
+                      data: [confirm: gettext("Are you sure?")],
+                      "phx-value-id": test.uuid,
+                      class: "delete"
+                    }
+                    :if={authorized?(test, :delete, auth)}
+                  >
+                    <button class="ms-1 btn btn-sm btn-danger">
+                      <span class="oi oi-trash" aria-hidden="true" />
+                    </button>
+                  </Link>
+                </div>
+              </td>
+            </HygeiaWeb.RecordView>
+          </tbody>
+        </table>
 
-          <!-- change="validate"
+        <!-- change="validate"
               submit="save" -->
-          <!-- <Form
+        <!-- <Form
               for={@changeset}
               
               opts={autocomplete: "off", id: "case-tests-form", "phx-hook": "BlockNavigation"}
