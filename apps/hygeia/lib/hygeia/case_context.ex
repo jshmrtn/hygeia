@@ -2147,6 +2147,9 @@ defmodule Hygeia.CaseContext do
     do: Transmission.changeset(transmission, attrs)
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for tracking test changes.
+
+  @doc """
   Returns the list of notes.
 
   ## Examples
@@ -2650,6 +2653,7 @@ defmodule Hygeia.CaseContext do
   @spec get_test!(id :: Ecto.UUID.t()) :: Test.t()
   def get_test!(id), do: Repo.get!(Test, id)
 
+  # TODO: remove
   @doc """
   Creates a test.
 
@@ -2671,6 +2675,34 @@ defmodule Hygeia.CaseContext do
       |> change_test(attrs)
       |> versioning_insert()
       |> broadcast("tests", :create, & &1.uuid, &["cases:#{&1.case_uuid}"])
+      |> versioning_extract()
+
+  @doc """
+  Creates a test.
+
+  ## Examples
+
+      iex> create_test(%{field: value})
+      {:ok, %Test{}}
+
+      iex> create_test(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_test2(attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Test.t()} | {:error, Ecto.Changeset.t(Test.t())}
+  def create_test2(case, attrs \\ %{}),
+    do:
+      %Test{}
+      |> change_test(attrs)
+      |> versioning_insert()
+      # TODO: broadcast change
+      # |> broadcast(
+      #   "tests",
+      #   :create,
+      #   & &1.uuid,
+      #   &["cases:#{&1.recipient_case_uuid}", "cases:#{&1.propagator_case_uuid}"]
+      # )
       |> versioning_extract()
 
   @doc """

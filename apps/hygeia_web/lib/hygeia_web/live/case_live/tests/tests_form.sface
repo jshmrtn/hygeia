@@ -1,0 +1,160 @@
+<div class="component-case-tests-form">
+  <HiddenInput field={:uuid} />
+  <HiddenInput field={:case_uuid} />
+  <InputContext assigns={assigns} :let={form: form}>
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <Field name={:tested_at} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <DateInput class="form-control" opts={disabled: @disabled} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <Field name={:laboratory_reported_at} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <DateInput class="form-control" opts={disabled: @disabled} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <Field name={:kind} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <Select
+                class="form-control"
+                opts={prompt: gettext("Choose test kind"), disabled: @disabled}
+                options={Kind.map()}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <Field name={:result} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <Select
+                class="form-control"
+                opts={prompt: gettext("Choose test result"), disabled: @disabled}
+                options={Result.map()}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <Field name={:mutation_uuid} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <Select
+                class="form-control"
+                opts={prompt: gettext("Select mutation"), disabled: @disabled}
+                options={Enum.map(@mutations, &{&1.name, &1.uuid})}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{gettext("Reporting unit")}</h4>
+                <Inputs for={:reporting_unit}>
+                  <div class="row">
+                    <div class="col">
+                      <Field name={:name} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" opts={disabled: @disabled} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                    <div class="col">
+                      <Field name={:division} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" opts={disabled: @disabled} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <Field name={:person_first_name} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" opts={disabled: @disabled} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                    <div class="col">
+                      <Field name={:person_last_name} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" opts={disabled: @disabled} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                  </div>
+
+                  <Inputs for={:address}>
+                    <HygeiaWeb.AddressForm
+                      disabled={@disabled}
+                      id={"reporting_unit_address_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
+                    />
+                  </Inputs>
+                </Inputs>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{gettext("Sponsor")}</h4>
+                <Inputs for={:sponsor}>
+                  <div class="row">
+                    <div class="col">
+                      <Field name={:name} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" opts={disabled: @disabled} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                    <div class="col">
+                      <Field name={:division} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" opts={disabled: @disabled} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <Field name={:person_first_name} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" opts={disabled: @disabled} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                    <div class="col">
+                      <Field name={:person_last_name} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" opts={disabled: @disabled} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                  </div>
+
+                  <Inputs for={:address}>
+                    <HygeiaWeb.AddressForm
+                      disabled={@disabled}
+                      id={"sponsor_address_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
+                    />
+                  </Inputs>
+                </Inputs>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </InputContext>
+</div>

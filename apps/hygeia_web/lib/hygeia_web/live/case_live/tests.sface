@@ -1,0 +1,79 @@
+<div class="component-case-tests container">
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
+
+    <div class="card">
+      <div class="card-header">
+        <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between mb-1">
+          <h3>{gettext("Tests")}</h3>
+
+          <div :if={authorized?(Test, :create, auth, tenant: :any)}>
+            <LiveRedirect
+              to={Routes.test_create_path(
+                @socket,
+                :create,
+                @case.uuid
+              )}
+              class="btn btn-primary"
+            >
+              <span class="oi oi-plus me-1" aria-hidden="true" />
+              {gettext("New Test")}
+            </LiveRedirect>
+          </div>
+          </div>
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>
+                  {schema_field_name(:tested_at, Case)}
+                </th>
+                <th>
+                  {schema_field_name(:laboratory_reported_at, Case)}
+                </th>
+                <th>
+                  {schema_field_name(:kind, Case.Kind)}
+                </th>
+                <th>
+                  {schema_field_name(:result, Case.Result)}
+                </th>
+                <th>
+                  {schema_field_name(:mutation, Case.Mutation)}
+                </th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              <HygeiaWeb.RecordView
+                :for={test <- @case.tests}
+                resource={test}
+                action={:list}
+                id={"test-#{test.uuid}"}
+                wrapper_tag={:tr}
+              >
+              </HygeiaWeb.RecordView>
+            </tbody>
+          </table>
+
+          <!-- change="validate"
+              submit="save" -->
+          <!-- <Form
+              for={@changeset}
+              
+              opts={autocomplete: "off", id: "case-tests-form", "phx-hook": "BlockNavigation"}
+            >
+            <h3>{gettext("Tests")}</h3>
+              
+            <HygeiaWeb.CaseLive.TestsForm
+              source={@case}
+              id="tests"
+              add_test="add_test"
+              remove_test="remove_test"
+          />
+          </Form> -->
+      </div>
+    </div>
+  </Context>
+</div>

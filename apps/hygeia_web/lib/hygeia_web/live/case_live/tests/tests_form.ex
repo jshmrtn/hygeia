@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.Tests do
+defmodule HygeiaWeb.CaseLive.TestsForm do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
@@ -15,9 +15,6 @@ defmodule HygeiaWeb.CaseLive.Tests do
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
 
-  prop source, :map, required: true
-  prop add_test, :event, required: true
-  prop remove_test, :event, required: true
   prop disabled, :boolean, default: false
 
   data mutations, :list, default: []

@@ -1,0 +1,21 @@
+<Form
+  for={@changeset}
+  change="validate"
+  submit="save"
+  opts={autocomplete: "off", id: "transmission-form", class: "view-test-create container"}
+>
+  <h1 class="mb-3">
+    {gettext("New test")}
+  </h1>
+
+  <HygeiaWeb.CaseLive.TestsForm id="test-create" />
+
+  <button
+    class="btn btn-primary"
+    type="submit"
+    phx-disable-with={gettext("Saving...")}
+    disabled={not @changeset.valid?}
+  >
+    {gettext("Save")}
+  </button>
+</Form>
