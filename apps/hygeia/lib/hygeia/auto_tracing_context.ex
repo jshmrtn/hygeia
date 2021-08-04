@@ -37,6 +37,9 @@ defmodule Hygeia.AutoTracingContext do
   @spec get_auto_tracing!(id :: Ecto.UUID.t()) :: AutoTracing.t()
   def get_auto_tracing!(id), do: Repo.get!(AutoTracing, id)
 
+  @spec get_auto_tracing_by_case(case :: Case.t()) :: AutoTracing.t() | nil
+  def get_auto_tracing_by_case(%Case{} = case), do: Repo.get_by(AutoTracing, case_uuid: case.uuid)
+
   @doc """
   Creates a auto_tracing.
 

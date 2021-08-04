@@ -11,6 +11,7 @@ defmodule Hygeia.Repo.Migrations.CreateAutoTracings do
 
     create table(:auto_tracings) do
       add :current_step, Step.type()
+      add :last_completed_step, Step.type()
       add :closed, :boolean
       add :employer, :map
       add :transmission, :map

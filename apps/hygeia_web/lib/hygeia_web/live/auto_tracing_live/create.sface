@@ -1,0 +1,356 @@
+<Form
+  for={@changeset}
+  change="validate"
+  submit="save"
+  opts={
+    autocomplete: "off",
+    id: "possible-index-submission-form",
+    class: "container component-possible-index-submission-create"
+  }
+>
+  <InputContext assigns={assigns} :let={form: form}>
+    <h1 class="mb-4">
+      {gettext("Auto Tracing")}
+    </h1>
+
+    <p class="mb-4 alert alert-info">
+      {gettext(
+        "Please note that submitting contact persons only works in recent versions of the following browsers:"
+      )}
+      <a href={gettext("https://www.google.com/chrome/")}>Chrome</a>,
+      <a href={gettext("https://www.apple.com/safari/")}>Safari</a>,
+      <a href={gettext("https://www.mozilla.org/en-US/firefox/new/")}>Firefox</a>,
+      <a href={gettext("https://www.microsoft.com/en-us/edge")}>Edge</a>
+    </p>
+
+    <ul class="mb-4 progress-steps" id="progressbar">
+      <div class="progress-bar" />
+      <li
+        :for={{step, {name, active, completed}} <- steps(@step, @auto_tracing.last_completed_step)}
+        class={
+          active: active,
+          completed: completed
+        }
+        :on-click="goto_step"
+        phx-value-step={step}
+        phx-value-active={if completed, do: "1", else: "0"}
+      >
+        <small>
+          {name}
+        </small>
+      </li>
+    </ul>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <div :show={@step == :start} id="step_start">
+          <h2>
+            {gettext("Sehr geehrte/r Frau/Herr Muster")}
+          </h2>
+
+          <hr>
+
+          <section>
+            <p>
+              {gettext(
+                "Sie wurden kürzlich positiv auf Corona getestet. Zur Eindämmung der weiteren Verbreitung ist das kantonale Contact Tracing auf Ihre Unterstützung angewiesen."
+              )}
+            </p>
+            <p>
+              {gettext(
+                "Wir möchten Sie bitten, die Informationen auf den folgenden Seiten möglichst präzise und vollständig auszufüllen."
+              )}
+            </p>
+            <p>
+              {gettext("Besten Dank für Ihre Mithilfe!")}
+            </p>
+          </section>
+
+          <hr>
+
+          <p>
+            {gettext("Ihr Test TODO")}
+          </p>
+
+          <button class="btn btn-primary" type="button" :on-click="advance">
+            {gettext("Continue")}
+          </button>
+        </div>
+
+        <div :show={@step == :address} id="step_address">
+          <h2>
+            {gettext("Address / Isolation Address")}
+          </h2>
+          <div class="row">
+            <div class="col">
+              <div class="card">
+                <div class="card-body">
+                  <h2>
+                    {gettext("Bitte geben sie Ihren Wohnort ein.")}
+                  </h2>
+
+                  <h4 class="card-title">{gettext("Address")}</h4>
+
+                  <Form for={@person_changeset} change="validate" submit="save">
+                    <Inputs for={:address}>
+                      <HygeiaWeb.AddressForm id="person_address" />
+                    </Inputs>
+                  </Form>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card">
+                <div class="card-body">
+                  <h2>
+                    {gettext(
+                      "Planen Sie ihre Isolation an einer anderen Adresse zu verbringen? Wenn ja, an welcher Adresse?"
+                    )}
+                  </h2>
+
+                  <h4 class="card-title">{gettext("Isolation Address")}</h4>
+
+                  <Form for={@case_changeset} change="validate" submit="save">
+                    <Inputs for={:monitoring}>
+                      <Inputs for={:address}>
+                        <HygeiaWeb.AddressForm id="monitoring_address" />
+                      </Inputs>
+                    </Inputs>
+                  </Form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            :on-click="advance"
+            disabled={errors_in?(@changeset, [
+              :transmission_date
+            ])}
+          >
+            {gettext("Continue")}
+          </button>
+        </div>
+
+        <div :show={@step == :contact_methods} id="step_contact">
+          <Form for={@changeset} change="validate" submit="save">
+            <h2>
+              {gettext("Bitte geben sie an, wie wir Sie erreichen können:")}
+            </h2>
+
+            <p :if={not @person_changeset.valid?}>
+              {dgettext("errors", "at least one contact method must be provided")}
+            </p>
+            <div class="row">
+              <div class="col">
+                <Field name={:mobile} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TelephoneInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+              <div class="col">
+                <Field name={:landline} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TelephoneInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <Field name={:email} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <EmailInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+            </div>
+
+            <button
+              class="btn btn-primary"
+              type="button"
+              :on-click="advance"
+              disabled={not @person_changeset.valid?}
+            >
+              {gettext("Continue")}
+            </button>
+          </Form>
+        </div>
+
+        <!-- <div :show={@step == :employer} id="step_employer">
+          <Inputs for={:infection_place}>
+            <h2>
+              {gettext(
+                "Where did you meet %{first_name} %{last_name} last?",
+                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+              )}
+            </h2>
+
+            <p>
+              {gettext(
+                "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field.",
+                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+              )}
+            </p>
+
+            <HiddenInput field={:known} value />
+
+            <div class="row">
+              <div class="col">
+                <Field name={:name} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TextInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+              <div class="col">
+                <Field name={:type} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <Select
+                    class="form-control"
+                    options={infection_place_type_options()}
+                    opts={prompt: gettext("Choose Type")}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+            </div>
+
+            <button
+              class="btn btn-primary"
+              type="button"
+              :on-click="advance"
+              disabled={errors_in?(@changeset, [
+                {:infection_place, :known},
+                {:infection_place, :name},
+                {:infection_place, :type}
+              ])}
+            >
+              {gettext("Continue")}
+            </button>
+          </Inputs>
+        </div> -->
+
+        <!-- <div :show={@step == :vaccination} id="step_vaccination">
+          <h2>
+            {gettext(
+              "How did your encounter with %{first_name} %{last_name} happen?",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            )}
+          </h2>
+
+          <p>
+            {gettext(
+              "Describe your encounter with %{first_name} %{last_name}. Under which circumstances did you meet? What kind of activity happened during your encounter (e.g. «wedding with lunch, sat at same table next to each other» or «living in same household, sharing kitchen and bathroom»).",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            )}
+          </p>
+
+          <Field name={:comment} class="form-group">
+            <HygeiaWeb.FieldLabel />
+            <TextArea class="form-control" />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            :on-click="advance"
+            disabled={errors_in?(@changeset, [
+              {:comment}
+            ])}
+          >
+            {gettext("Continue")}
+          </button>
+        </div> -->
+
+        <!-- <div :show={@step == :covid_app} id="step_covid_app">
+          <Inputs for={:infection_place}>
+            <Inputs for={:address}>
+              <h2>
+                {gettext(
+                  "Do you know the address where you met with %{first_name} %{last_name}?",
+                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+                )}
+              </h2>
+
+              <HygeiaWeb.AddressForm id="infection_place_address" />
+            </Inputs>
+          </Inputs>
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            :on-click="advance"
+            disabled={errors_in?(@changeset, [
+              {:infection_place, :address, :address},
+              {:infection_place, :address, :zip},
+              {:infection_place, :address, :place},
+              {:infection_place, :address, :subdivision},
+              {:infection_place, :address, :country}
+            ])}
+          >
+            {gettext("Continue")}
+          </button>
+        </div> -->
+
+        <!-- <div :show={@step == :transmission} id="step_transmission">
+          <h2>
+            {gettext(
+              "Where does %{first_name} %{last_name} live?",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            )}
+          </h2>
+
+          <Inputs for={:address}>
+            <HygeiaWeb.AddressForm id="address" />
+          </Inputs>
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            :on-click="advance"
+            disabled={not @changeset.valid?}
+          >
+            {gettext("Continue")}
+          </button>
+        </div> -->
+
+        <!-- <div :show={@step == :finished} id="step_finished">
+          <h2>
+            {gettext(
+              "Where does %{first_name} %{last_name} work?",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            )}
+          </h2>
+
+          <Field name={:employer} class="form-group">
+            <HygeiaWeb.FieldLabel />
+            <TextInput class="form-control" />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+
+          <button
+            class="btn btn-primary"
+            type="submit"
+            phx-disable-with={gettext("Saving...")}
+            disabled={not @changeset.valid?}
+          >
+            {gettext("Save")}
+          </button>
+        </div> -->
+      </div>
+    </div>
+  </InputContext>
+</Form>

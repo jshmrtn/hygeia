@@ -343,6 +343,11 @@ defmodule HygeiaWeb.Helpers.FieldName do
       origin: "Origin",
       originator: "Author",
       type: "Type"
+    },
+    Hygeia.AutoTracingContext.AutoTracing => %{
+      mobile: "Mobile",
+      landline: "Landline",
+      email: "Email"
     }
   }
 

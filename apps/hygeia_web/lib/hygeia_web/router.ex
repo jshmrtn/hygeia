@@ -144,6 +144,10 @@ defmodule HygeiaWeb.Router do
          PossibleIndexSubmissionLive.Create,
          :create
 
+    live "/cases/:case_uuid/auto-tracing/new",
+         AutoTracingLive.Create,
+         :create
+
     live "/people/:person_uuid/overview", PersonOverviewLive.Index, :index
 
     live "/cases/:case_uuid/:phase_uuid/create-premature-release",
