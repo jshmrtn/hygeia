@@ -1,0 +1,42 @@
+<div id="step_covid_app">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+  <h3>
+    {gettext("Swiss CovidApp")}
+  </h3>
+  <h3>
+    {gettext("Is the Swiss CovidApp installed / in operation on your smartphone?")}
+  </h3>
+
+  <Form for={@auto_tracing_changeset} change="validate" submit="save">
+    <InputContext assigns={assigns} :let={form: form}>
+      <Field name={:covid_app} class="form-group">
+        <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+          <label class={
+            "btn",
+            "btn-sm",
+            "btn-outline-primary",
+            active: Ecto.Changeset.get_field(form.source, :covid_app) == true
+          }>
+            <RadioButton value />
+            {gettext("Yes")}
+          </label>
+          <label class={
+            "btn",
+            "btn-sm",
+            "btn-outline-primary",
+            active: Ecto.Changeset.get_field(form.source, :covid_app) == false
+          }>
+            <RadioButton value={false} />
+            {gettext("No")}
+          </label>
+        </div>
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
+      <div :if={not is_nil(Ecto.Changeset.get_field(form.source, :covid_app))}>
+        <button class="btn btn-primary" type="button" :on-click="advance">
+          {gettext("Continue")}
+        </button>
+      </div>
+    </InputContext>
+  </Form>
+</div>

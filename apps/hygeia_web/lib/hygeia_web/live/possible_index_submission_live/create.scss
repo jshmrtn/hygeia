@@ -49,6 +49,14 @@
         }
       }
 
+      &.next {
+        cursor: pointer;
+
+        &:before {
+          background-color: $secondary;
+        }
+      }
+
       &.active {
         color: $primary;
         &:before {

@@ -339,24 +339,42 @@ defmodule Hygeia.CaseContext.Case do
 
     @spec authorized?(
             resource :: Case.t(),
-            action :: :details | :partial_details | :create | :list | :update | :delete,
+            action ::
+              :details | :partial_details | :create | :list | :update | :delete | :auto_tracing,
             user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_case, action, :anonymous, _meta)
-        when action in [:list, :create, :details, :partial_details, :update, :delete],
+        when action in [
+               :list,
+               :create,
+               :details,
+               :partial_details,
+               :update,
+               :delete,
+               :auto_tracing
+             ],
         do: false
 
     def authorized?(
           %Case{person_uuid: person_uuid},
-          :partial_details,
+          action,
           %Person{uuid: person_uuid},
           _meta
-        ),
+        )
+        when action in [:partial_details, :auto_tracing],
         do: true
 
     def authorized?(_case, action, %Person{}, _meta)
-        when action in [:list, :create, :details, :partial_details, :update, :delete],
+        when action in [
+               :list,
+               :create,
+               :details,
+               :partial_details,
+               :update,
+               :delete,
+               :auto_tracing
+             ],
         do: false
 
     def authorized?(
@@ -365,7 +383,7 @@ defmodule Hygeia.CaseContext.Case do
           %User{uuid: tracer_uuid} = user,
           _meta
         )
-        when action in [:details, :partial_details],
+        when action in [:details, :partial_details, :auto_tracing],
         do: User.has_role?(user, :tracer, :any)
 
     def authorized?(
@@ -374,11 +392,11 @@ defmodule Hygeia.CaseContext.Case do
           %User{uuid: supervisor_uuid} = user,
           _meta
         )
-        when action in [:details, :partial_details],
+        when action in [:details, :partial_details, :auto_tracing],
         do: User.has_role?(user, :supervisor, :any)
 
     def authorized?(%Case{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
-        when action in [:details, :partial_details, :versioning, :update, :delete],
+        when action in [:details, :partial_details, :versioning, :update, :delete, :auto_tracing],
         do:
           Enum.any?(
             [:super_user, :supervisor, :admin],
@@ -386,7 +404,7 @@ defmodule Hygeia.CaseContext.Case do
           )
 
     def authorized?(%Case{tenant_uuid: tenant_uuid}, action, user, _meta)
-        when action in [:details, :partial_details, :versioning],
+        when action in [:details, :partial_details, :versioning, :auto_tracing],
         do:
           Enum.any?(
             [:viewer, :tracer, :super_user, :supervisor, :admin],

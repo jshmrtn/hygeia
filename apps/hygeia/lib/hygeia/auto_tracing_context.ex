@@ -6,6 +6,7 @@ defmodule Hygeia.AutoTracingContext do
   use Hygeia, :context
 
   alias Hygeia.AutoTracingContext.AutoTracing
+  alias Hygeia.AutoTracingContext.AutoTracing.Step
   alias Hygeia.CaseContext.Case
 
   @doc """
@@ -84,6 +85,14 @@ defmodule Hygeia.AutoTracingContext do
     do:
       auto_tracing
       |> change_auto_tracing(attrs)
+      |> update_auto_tracing()
+
+  @spec update_auto_tracing(changeset :: Ecto.Changeset.t(AutoTracing.t())) ::
+          {:ok, AutoTracing.t()} | {:error, Ecto.Changeset.t(AutoTracing.t())}
+  def update_auto_tracing(%Ecto.Changeset{data: %AutoTracing{}} = changeset),
+    do:
+      changeset
+      |> AutoTracing.changeset(%{})
       |> versioning_update()
       |> broadcast("auto_tracings", :update)
       |> versioning_extract()
@@ -126,4 +135,41 @@ defmodule Hygeia.AutoTracingContext do
           Ecto.Changeset.t(AutoTracing.t())
   def change_auto_tracing(%AutoTracing{} = auto_tracing, attrs \\ %{}),
     do: AutoTracing.changeset(auto_tracing, attrs)
+
+  @spec step_completed?(auto_tracing :: AutoTracing.t(), step :: Step.t()) :: boolean()
+  def step_completed?(auto_tracing, step) do
+    steps = Step.__enum_map__()
+
+    Enum.find_index(steps, &(&1 == step)) <=
+      Enum.find_index(steps, &(&1 == auto_tracing.last_completed_step))
+  end
+
+  @spec first_not_completed_step?(auto_tracing :: AutoTracing.t(), step :: Step.t()) :: boolean()
+  def first_not_completed_step?(auto_tracing, step),
+    do: get_next_step(auto_tracing.last_completed_step) == step
+
+  @spec get_next_step(step :: Step.t()) :: Step.t() | nil
+  def get_next_step(step) do
+    steps = Step.__enum_map__()
+    Enum.at(steps, Enum.find_index(steps, &(&1 == step)) + 1)
+  end
+
+  @spec advance_one_step(auto_tracing :: AutoTracing.t(), current_step :: Step.t()) ::
+          {:ok, AutoTracing.t()} | {:error, Ecto.Changeset.t(AutoTracing.t())}
+  def advance_one_step(auto_tracing, current_step) do
+    next_step = get_next_step(current_step)
+
+    update_auto_tracing(
+      auto_tracing,
+      %{
+        current_step: next_step,
+        last_completed_step:
+          if step_completed?(auto_tracing, current_step) do
+            auto_tracing.last_completed_step
+          else
+            current_step
+          end
+      }
+    )
+  end
 end

@@ -1,0 +1,86 @@
+<div id="step_vaccination">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+
+  <Form for={@person_changeset} change="validate" submit="save">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{gettext("Vaccination")}</h4>
+
+        <Inputs for={:vaccination}>
+          <InputContext assigns={assigns} :let={form: form}>
+            <Field name={:done} class="form-group">
+              <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+                <label class={
+                  "btn",
+                  "btn-sm",
+                  "btn-outline-primary",
+                  active: Ecto.Changeset.get_field(form.source, :done) == true
+                }>
+                  <RadioButton value />
+                  {pgettext("vaccination_done", "Done")}
+                </label>
+                <label class={
+                  "btn",
+                  "btn-sm",
+                  "btn-outline-primary",
+                  active: Ecto.Changeset.get_field(form.source, :done) == false
+                }>
+                  <RadioButton value={false} />
+                  {pgettext("vaccination_done", "Not Done")}
+                </label>
+              </div>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+
+            <div class="vaccination-grid" :if={Ecto.Changeset.get_field(form.source, :done)}>
+              <h6><HygeiaWeb.FieldLabel field={:name} /></h6>
+              <h6><HygeiaWeb.FieldLabel field={:jab_dates} /></h6>
+
+              <Field name={:name} class="form-group">
+                <TextInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+              <Field name={:jab_dates} class="form-group">
+                <div
+                  class="d-flex mb-2"
+                  :for={{date, index} <-
+                    Enum.with_index(Ecto.Changeset.get_field(form.source, :jab_dates, [nil]) || [nil])}
+                >
+                  <DateInput
+                    class="form-control"
+                    opts={
+                      name: input_name(form, :jab_dates) <> "[]",
+                      value:
+                        case date do
+                          nil -> nil
+                          date -> Date.to_iso8601(date)
+                        end
+                    }
+                  />
+                  <button
+                    type="button"
+                    class="ms-2 btn btn-danger"
+                    :on-click="remove_vaccination_jab_date"
+                    phx-value-index={index}
+                  >
+                    <span class="oi oi-trash" aria-hidden="true" />
+                  </button>
+                </div>
+                <ErrorTag class="d-block invalid-feedback" />
+                <div>
+                  <button type="button" class="btn btn-outline-primary" :on-click="add_vaccination_jab_date">
+                    <span class="oi oi-plus me-1" aria-hidden="true" />
+                    {gettext("New date")}
+                  </button>
+                </div>
+              </Field>
+            </div>
+          </InputContext>
+        </Inputs>
+      </div>
+    </div>
+  </Form>
+  <button class="btn btn-primary" type="button" :on-click="advance">
+    {gettext("Continue")}
+  </button>
+</div>

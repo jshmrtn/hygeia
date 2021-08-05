@@ -506,7 +506,7 @@ defmodule Hygeia.Fixtures do
     CaseContext.get_premature_release!(uuid)
   end
 
-  @valid_attrs %{current_step: :contact}
+  @valid_attrs %{current_step: :contact_methods}
 
   @spec auto_tracing_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           AutoTracing.t()

@@ -1,0 +1,55 @@
+<div id="step_address">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+  <h2>
+    {gettext("Address / Isolation Address")}
+  </h2>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h2>
+            {gettext("Please enter your place of residence.")}
+          </h2>
+
+          <h4 class="card-title">{gettext("Address")}</h4>
+
+          <Form
+            for={@person_changeset}
+            change="validate"
+            submit="save"
+            opts={autocomplete: "off", id: "person_address-form", class: "container"}
+          >
+            <Inputs for={:address}>
+              <HygeiaWeb.AddressForm id="person_address" />
+            </Inputs>
+          </Form>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h2>
+            {gettext(
+              "Are you planning to move to a different address for your isolation? If so, at which address?"
+            )}
+          </h2>
+
+          <h4 class="card-title">{gettext("Isolation Address")}</h4>
+
+          <Form for={@case_changeset} change="validate" submit="save">
+            <Inputs for={:monitoring}>
+              <Inputs for={:address}>
+                <HygeiaWeb.AddressForm id="monitoring_address" />
+              </Inputs>
+            </Inputs>
+          </Form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" type="button" :on-click="advance">
+    {gettext("Continue")}
+  </button>
+</div>

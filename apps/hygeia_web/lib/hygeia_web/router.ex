@@ -144,9 +144,45 @@ defmodule HygeiaWeb.Router do
          PossibleIndexSubmissionLive.Create,
          :create
 
-    live "/cases/:case_uuid/auto-tracing/new",
-         AutoTracingLive.Create,
-         :create
+    live "/cases/:case_uuid/auto-tracing",
+         AutoTracingLive.AutoTracing,
+         :auto_tracing
+
+    live "/cases/:case_uuid/auto-tracing/start",
+         AutoTracingLive.Start,
+         :start
+
+    live "/cases/:case_uuid/auto-tracing/address",
+         AutoTracingLive.Address,
+         :address
+
+    live "/cases/:case_uuid/auto-tracing/contact_methods",
+         AutoTracingLive.ContactMethods,
+         :contact_methods
+
+    live "/cases/:case_uuid/auto-tracing/employer",
+         AutoTracingLive.Employer,
+         :employer
+
+    live "/cases/:case_uuid/auto-tracing/vaccination",
+         AutoTracingLive.Vaccination,
+         :vaccination
+
+    live "/cases/:case_uuid/auto-tracing/covid_app",
+         AutoTracingLive.CovidApp,
+         :covid_app
+
+    live "/cases/:case_uuid/auto-tracing/clinical",
+         AutoTracingLive.Clinical,
+         :clinical
+
+    live "/cases/:case_uuid/auto-tracing/transmission",
+         AutoTracingLive.Transmission,
+         :transmission
+
+    live "/cases/:case_uuid/auto-tracing/end",
+         AutoTracingLive.End,
+         :end
 
     live "/people/:person_uuid/overview", PersonOverviewLive.Index, :index
 

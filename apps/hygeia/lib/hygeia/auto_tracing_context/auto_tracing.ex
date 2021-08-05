@@ -5,35 +5,21 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   use Hygeia, :model
 
-  import EctoEnum
-  import HygeiaGettext
-
-  alias Hygeia.AutoTracingContext.Employer
-  alias Hygeia.AutoTracingContext.Transmission
+  alias Hygeia.AutoTracingContext.AutoTracing.Employer
+  alias Hygeia.AutoTracingContext.AutoTracing.Step
+  alias Hygeia.AutoTracingContext.AutoTracing.Transmission
   alias Hygeia.CaseContext.Case
-
-  defenum(Step, :auto_tracing_step, [
-    :start,
-    :address,
-    :contact_methods,
-    :employer,
-    :vaccination,
-    :covid_app,
-    :clinical,
-    :transmission,
-    :finished
-  ])
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           current_step: Step.t() | nil,
           last_completed_step: Step.t() | nil,
-          closed: boolean | nil,
           employer: Employer.t() | nil,
           transmission: Transmission.t() | nil,
           mobile: String.t() | nil,
           landline: String.t() | nil,
           email: String.t() | nil,
+          covid_app: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
           case_uuid: Ecto.UUID.t() | nil,
           inserted_at: DateTime.t(),
@@ -44,12 +30,12 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           uuid: Ecto.UUID.t(),
           current_step: Step.t(),
           last_completed_step: Step.t(),
-          closed: boolean,
           employer: Employer.t() | nil,
           transmission: Transmission.t() | nil,
           mobile: String.t() | nil,
           landline: String.t() | nil,
           email: String.t() | nil,
+          covid_app: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()),
           case_uuid: Ecto.UUID.t(),
           inserted_at: DateTime.t(),
@@ -59,34 +45,37 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
   @derive {Phoenix.Param, key: :uuid}
 
   schema "auto_tracings" do
-    field :closed, :boolean
-    field :current_step, Step
-    field :last_completed_step, Step
+    field :current_step, Step, default: :start
+    field :last_completed_step, Step, default: :start
+    field :covid_app, :boolean
 
     field :mobile, :string, virtual: true
     field :landline, :string, virtual: true
     field :email, :string, virtual: true
 
-    embeds_one :employer, Employer
-    embeds_one :transmission, Transmission
+    embeds_one :employer, Employer, on_replace: :update
+    embeds_one :transmission, Transmission, on_replace: :update
 
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
 
     timestamps()
   end
 
-  @spec changeset(auto_tracing :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec changeset(
+          auto_tracing :: t | empty | Changeset.t(t | empty),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
           Changeset.t()
   def changeset(auto_tracing, attrs \\ %{}) do
     auto_tracing
     |> cast(attrs, [
-      :closed,
       :current_step,
       :last_completed_step,
       :case_uuid,
       :mobile,
       :landline,
-      :email
+      :email,
+      :covid_app
     ])
     |> validate_required([:current_step, :last_completed_step, :case_uuid])
     |> validate_and_normalize_phone(:mobile, fn
@@ -106,28 +95,14 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       _other -> {:error, "not a landline number"}
     end)
     |> validate_email(:email)
-    # |> validate_contact_methods()
     |> cast_embed(:employer)
     |> cast_embed(:transmission)
   end
 
-  # defp validate_contact_methods(changeset) do
-  #   if get_field(changeset, :current_step) == :contact do
-  #     with nil <- get_field(changeset, :mobile),
-  #          nil <- get_field(changeset, :email) do
-  #       validate_required(changeset, [:landline],
-  #         message: dgettext("errors", "at least one contact method must be provided")
-  #       )
-  #     end
-  #   else
-  #     changeset
-  #   end
-  # end
-
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.Authorization.Resource
-    alias Hygeia.CaseContext.Person
     alias Hygeia.AutoTracingContext.AutoTracing
+    alias Hygeia.CaseContext.Person
     alias Hygeia.Repo
     alias Hygeia.UserContext.User
 

@@ -11,7 +11,7 @@ defmodule Hygeia.AutoTracingContextTest do
   @moduletag originator: :noone
 
   describe "auto_tracing" do
-    @valid_attrs %{current_step: :contact}
+    @valid_attrs %{current_step: :contact_methods}
     @update_attrs %{current_step: :covid_app}
     @invalid_attrs %{current_step: nil}
 
@@ -31,7 +31,7 @@ defmodule Hygeia.AutoTracingContextTest do
       assert {:ok, %AutoTracing{} = auto_tracing} =
                AutoTracingContext.create_auto_tracing(case, @valid_attrs)
 
-      assert auto_tracing.current_step == :contact
+      assert auto_tracing.current_step == :contact_methods
 
       auto_tracing = Repo.preload(auto_tracing, :case)
       assert auto_tracing.case.status == :first_contact

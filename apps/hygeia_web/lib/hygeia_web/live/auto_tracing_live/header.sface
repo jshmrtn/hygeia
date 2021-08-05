@@ -1,0 +1,163 @@
+<Form
+  for={@changeset}
+  submit="save"
+  opts={
+    autocomplete: "off",
+    id: "possible-index-submission-form",
+    class: "container component-possible-index-submission-create"
+  }
+>
+  <InputContext assigns={assigns}>
+    <h1 class="mb-4">
+      {gettext("Auto Tracing")}
+    </h1>
+
+    <ul class="mb-4 progress-steps" id="progressbar">
+      <div class="progress-bar" />
+      <li class={
+        active: @auto_tracing.current_step == :start,
+        completed: AutoTracingContext.step_completed?(@auto_tracing, :start),
+        next: AutoTracingContext.first_not_completed_step?(@auto_tracing, :start)
+      }>
+        <UriActiveContext
+          to={Routes.auto_tracing_start_path(@socket, :start, @auto_tracing.case_uuid)}
+          :let={to: to, active: active}
+        >
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            <small>
+              {Step.translate_step(:start)}
+            </small>
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class={
+        active: @auto_tracing.current_step == :address,
+        completed: AutoTracingContext.step_completed?(@auto_tracing, :address),
+        next: AutoTracingContext.first_not_completed_step?(@auto_tracing, :address)
+      }>
+        <UriActiveContext
+          to={Routes.auto_tracing_address_path(@socket, :address, @auto_tracing.case_uuid)}
+          :let={to: to, active: active}
+        >
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            <small>
+              {Step.translate_step(:address)}
+            </small>
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class={
+        active: @auto_tracing.current_step == :contact_methods,
+        completed: AutoTracingContext.step_completed?(@auto_tracing, :contact_methods),
+        next: AutoTracingContext.first_not_completed_step?(@auto_tracing, :contact_methods)
+      }>
+        <UriActiveContext
+          to={Routes.auto_tracing_contact_methods_path(@socket, :contact_methods, @auto_tracing.case_uuid)}
+          :let={to: to, active: active}
+        >
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            <small>
+              {Step.translate_step(:contact_methods)}
+            </small>
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class={
+        active: @auto_tracing.current_step == :employer,
+        completed: AutoTracingContext.step_completed?(@auto_tracing, :employer),
+        next: AutoTracingContext.first_not_completed_step?(@auto_tracing, :employer)
+      }>
+        <UriActiveContext
+          to={Routes.auto_tracing_employer_path(@socket, :employer, @auto_tracing.case_uuid)}
+          :let={to: to, active: active}
+        >
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            <small>
+              {Step.translate_step(:employer)}
+            </small>
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class={
+        active: @auto_tracing.current_step == :vaccination,
+        completed: AutoTracingContext.step_completed?(@auto_tracing, :vaccination),
+        next: AutoTracingContext.first_not_completed_step?(@auto_tracing, :vaccination)
+      }>
+        <UriActiveContext
+          to={Routes.auto_tracing_vaccination_path(@socket, :vaccination, @auto_tracing.case_uuid)}
+          :let={to: to, active: active}
+        >
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            <small>
+              {Step.translate_step(:vaccination)}
+            </small>
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class={
+        active: @auto_tracing.current_step == :covid_app,
+        completed: AutoTracingContext.step_completed?(@auto_tracing, :covid_app),
+        next: AutoTracingContext.first_not_completed_step?(@auto_tracing, :covid_app)
+      }>
+        <UriActiveContext
+          to={Routes.auto_tracing_covid_app_path(@socket, :covid_app, @auto_tracing.case_uuid)}
+          :let={to: to, active: active}
+        >
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            <small>
+              {Step.translate_step(:covid_app)}
+            </small>
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class={
+        active: @auto_tracing.current_step == :clinical,
+        completed: AutoTracingContext.step_completed?(@auto_tracing, :clinical),
+        next: AutoTracingContext.first_not_completed_step?(@auto_tracing, :clinical)
+      }>
+        <UriActiveContext
+          to={Routes.auto_tracing_clinical_path(@socket, :clinical, @auto_tracing.case_uuid)}
+          :let={to: to, active: active}
+        >
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            <small>
+              {Step.translate_step(:clinical)}
+            </small>
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class={
+        active: @auto_tracing.current_step == :transmission,
+        completed: AutoTracingContext.step_completed?(@auto_tracing, :transmission),
+        next: AutoTracingContext.first_not_completed_step?(@auto_tracing, :transmission)
+      }>
+        <UriActiveContext
+          to={Routes.auto_tracing_transmission_path(@socket, :transmission, @auto_tracing.case_uuid)}
+          :let={to: to, active: active}
+        >
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            <small>
+              {Step.translate_step(:transmission)}
+            </small>
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+      <li class={
+        active: @auto_tracing.current_step == :end,
+        completed: AutoTracingContext.step_completed?(@auto_tracing, :end),
+        next: AutoTracingContext.first_not_completed_step?(@auto_tracing, :end)
+      }>
+        <UriActiveContext
+          to={Routes.auto_tracing_end_path(@socket, :end, @auto_tracing.case_uuid)}
+          :let={to: to, active: active}
+        >
+          <LiveRedirect to={to} class={"nav-link", active: active}>
+            <small>
+              {Step.translate_step(:end)}
+            </small>
+          </LiveRedirect>
+        </UriActiveContext>
+      </li>
+    </ul>
+  </InputContext>
+</Form>

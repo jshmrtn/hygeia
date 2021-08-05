@@ -1,0 +1,119 @@
+<div id="step_transmission">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+
+  <Form for={@auto_tracing_changeset} change="validate" submit="save">
+    <Inputs for={:transmission}>
+      <InputContext assigns={assigns} :let={form: form}>
+        <h2>
+          {gettext("Do you know how you got infected?")}
+        </h2>
+        <Field name={:known} class="form-group">
+          <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+            <label class={
+              "btn",
+              "btn-sm",
+              "btn-outline-primary",
+              active: Ecto.Changeset.get_field(form.source, :known) == true
+            }>
+              <RadioButton value />
+              {gettext("Yes")}
+            </label>
+            <label class={
+              "btn",
+              "btn-sm",
+              "btn-outline-primary",
+              active: Ecto.Changeset.get_field(form.source, :known) == false
+            }>
+              <RadioButton value={false} />
+              {gettext("No")}
+            </label>
+          </div>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <div :show={Ecto.Changeset.get_field(form.source, :known) == true} class="row">
+          <div class="col">
+            <h2>
+              {gettext("Please give us the details.")}
+            </h2>
+            <Field name={:date} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <DateInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Inputs for={:infection_place}>
+              <div class="card">
+                <Field name={:type} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <Select
+                    class="form-control"
+                    options={infection_place_type_options()}
+                    opts={prompt: gettext("Choose Type")}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+                <Field name={:name} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TextInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+                <Field name={:flight_information} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TextInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+              <div class="card">
+                <Inputs for={:address}>
+                  <HygeiaWeb.AddressForm id="infection_place_address" />
+                </Inputs>
+              </div>
+            </Inputs>
+          </div>
+          <div class="col">
+            <h2>
+              {gettext("Did you get infected from a specific person? If so please enter the details.")}
+            </h2>
+            <div class="row">
+              <div class="col">
+                <Field name={:propagator_first_name} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TextInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+              <div class="col">
+                <Field name={:propagator_last_name} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TextInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+            </div>
+            <Inputs for={:propagator_address}>
+              <HygeiaWeb.AddressForm id="propagator_address" />
+            </Inputs>
+            <Field name={:propagator_phone} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <TelephoneInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field name={:propagator_email} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <EmailInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+        <button
+          class="btn btn-primary"
+          type="button"
+          :on-click="advance"
+          disabled={is_nil(Ecto.Changeset.get_field(form.source, :known)) or not @auto_tracing_changeset.valid?}
+        >
+          {gettext("Continue")}
+        </button>
+      </InputContext>
+    </Inputs>
+  </Form>
+</div>

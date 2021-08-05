@@ -1,0 +1,129 @@
+<div id="step_clinical">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+
+  <Form for={@case_changeset} change="validate" submit="save">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{gettext("Clinical Information")}</h4>
+        <Inputs for={:clinical}>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <InputContext assigns={assigns} :let={form: form}>
+                  <Field name={:reasons_for_test}>
+                    <div class="mb-2 d-flex align-items-center">
+                      <HygeiaWeb.FieldLabel class="mb-0" />
+                    </div>
+                    <label
+                      :for={{name, key} <- test_reasons()}
+                      class="d-block checkbox-label"
+                      data-disabled={@live_action == :show}
+                    >
+                      <input
+                        type="checkbox"
+                        name={input_name(form, :reasons_for_test) <> "[]"}
+                        disabled={@live_action == :show}
+                        checked={key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || [])}
+                        value={key}
+                      />
+                      {name}
+                    </label>
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </InputContext>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <InputContext assigns={assigns} :let={form: form}>
+                  <Field name={:has_symptoms} class="form-group">
+                    <div class="btn-group-vertical disabled display-only btn-group-toggle btn-radio-group">
+                      <label class={
+                        "btn",
+                        "btn-sm",
+                        "btn-outline-primary",
+                        "mb-0",
+                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == nil,
+                        disabled: @live_action == :show
+                      }>
+                        <RadioButton value={nil} opts={disabled: @live_action == :show} />
+                        {gettext("Undocumented")}
+                      </label>
+                      <label class={
+                        "btn",
+                        "btn-sm",
+                        "btn-outline-primary",
+                        "mb-0",
+                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true,
+                        disabled: @live_action == :show
+                      }>
+                        <RadioButton value opts={disabled: @live_action == :show} />
+                        {gettext("Has Symptoms")}
+                      </label>
+                      <label class={
+                        "btn",
+                        "btn-sm",
+                        "btn-outline-primary",
+                        "mb-0",
+                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false,
+                        disabled: @live_action == :show
+                      }>
+                        <RadioButton value={false} opts={disabled: @live_action == :show} />
+                        {gettext("No Symptoms")}
+                      </label>
+                    </div>
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                  <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
+                    <Field name={:symptoms}>
+                      <label
+                        :for={{name, key} <- symptoms()}
+                        class="d-block checkbox-label"
+                        data-disabled={@live_action == :show}
+                      >
+                        <input
+                          type="checkbox"
+                          name={input_name(form, :symptoms) <> "[]"}
+                          disabled={@live_action == :show}
+                          checked={key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || [])}
+                          value={key}
+                        />
+                        {name}
+                      </label>
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </InputContext>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <Field name={:symptom_start} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <DateInput class="form-control" opts={disabled: @live_action == :show} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+          </div>
+        </Inputs>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{gettext("Hospitalizations")}</h4>
+        <HygeiaWeb.CaseLive.Hospitalizations
+          source={@case}
+          id="hospitalizations"
+          organisations={@organisations}
+          add_hospitalization="add_hospitalization"
+          remove_hospitalization="remove_hospitalization"
+        />
+      </div>
+    </div>
+  </Form>
+  <button class="btn btn-primary" type="button" :on-click="advance">
+    {gettext("Continue")}
+  </button>
+</div>
