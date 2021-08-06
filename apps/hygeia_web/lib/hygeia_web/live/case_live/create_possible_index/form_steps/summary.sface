@@ -1,1 +1,132 @@
 
+<fieldset disabled="disabled">
+  <DefineTransmission
+    id="summary-define-transmission"
+    {=@current_form_data}
+    show_navigation={false}
+  />
+</fieldset>
+
+
+<div class="container mt-5">
+  <fieldset disabled="disabled">
+    <Form
+      for={@people_changeset}
+      opts={autocomplete: "off", id: "supervisors-form", "phx-hook": "BlockNavigation"}
+    >
+      <Inputs for={:people}>
+        <InputContext :let={form: form}>
+          <div class="row">
+            <Inputs for={:cases}>
+              <div class="w-100">
+                <PersonCard person={form.data}>
+                  <:feature>
+                      <div class="ml-auto">
+                        <Field name={:status} class="input-group">
+                          <HygeiaWeb.FieldLabel class="mb-0">
+                            <span class="input-group-text">
+                              {gettext("Directly close case")}
+                            </span>
+                          </HygeiaWeb.FieldLabel>
+                          <Select
+                            class="form-control"
+                            options={[{gettext("Yes"), :done}, {gettext("No"), :first_contact}]}
+                            prompt={gettext("Select")}
+                          />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                      </div>
+                  </:feature>
+
+                  <:right>
+                    <div class="row mb-2">
+                      <div class="col">
+                        <Field name={:supervisor_uuid}>
+                          <HygeiaWeb.FieldLabel />
+                          <Select
+                            class="form-control"
+                            options={DefineOptions.assignees_form_options(@supervisor_users, form.data.tenant_uuid)}
+                            opts={prompt: gettext("Case Administration")}
+                          />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                      </div>
+                    </div>
+                    <div class="row mb-2">
+                      <div class="col">
+                        <Field name={:tracer_uuid}>
+                          <HygeiaWeb.FieldLabel />
+                          <Select
+                            class="form-control"
+                            options={DefineOptions.assignees_form_options(@supervisor_users, form.data.tenant_uuid)}
+                            opts={prompt: gettext("Case Administration")}
+                          />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                      </div>
+                    </div>
+                  </:right>
+
+                  <:bottom>
+                    {#if Reporting.none_selected?(@reporting.contact_uuids, Reporting.case_uuid(form.data))}
+                      <span>{gettext("This person will not be notified.")}</span>
+                    {#else}
+                      <span>{gettext("This person will be notified on the following contact methods")}:</span>
+                      {#for {type, type_contacts} <-
+                          form.data.contact_methods
+                          |> Enum.group_by(& &1.type)
+                          |> Enum.filter(fn {type, _} -> type != :landline end)}
+                        <div class="mb-4" style="width: 700px;">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">{type}</th>
+                                <th scope="col">{gettext("Comment")}</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {#for {contact, i} <- Enum.with_index(type_contacts)}
+                                <tr>
+                                  <td>{i + 1}</td>
+                                  <td>{contact.value}</td>
+                                  <td>{contact.comment}</td>
+                                  <td><Checkbox 
+                                    opts={[
+                                    checked: (if contact.uuid in Reporting.selected_contacts(@reporting.contact_uuids, Reporting.case_uuid(form.data), "#{type}"), do: true),
+                                    hidden_input: "false"]}
+                                  />
+                                  </td>
+                                </tr>
+                              {/for}
+                            </tbody>
+                          </table>
+                        </div>
+                      {/for}
+                    {/if}
+                  </:bottom>
+
+                </PersonCard>
+              </div>
+            </Inputs>
+          </div>
+        </InputContext>
+      </Inputs>
+    </Form>
+  </fieldset>
+</div>
+
+<div class="row mb-3">
+  <button class="btn btn-warning mt-5" type="button" :on-click="back">
+    {gettext("Back")}
+  </button>
+  <button
+    class="btn btn-primary mt-5"
+    type="submit"
+    :on-click="next"
+    phx-disable-with={gettext("Saving...")}
+  >
+    {gettext("Next")}
+  </button>
+</div>

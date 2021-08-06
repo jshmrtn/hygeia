@@ -2,7 +2,7 @@
   <div class="col-12">
     <Form
       :if={not @loading}
-      for={:person}
+      for={@search_params}
       change="suggest"
       submit="create_person"
       opts={autocomplete: "off", id: "suggest-people-form", "phx-hook": "BlockNavigation"}
@@ -10,31 +10,34 @@
       <div class="input-group">
         <Field name={:first_name} class="form-group">
           <Label />
-          <TextInput class="form-control" />
+          <TextInput class="form-control" value={Map.get(@search_params, "first_name", "")} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <Field name={:last_name} class="form-group">
           <Label />
-          <TextInput class="form-control" />
+          <TextInput class="form-control" value={Map.get(@search_params, "last_name", "")} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <Field name={:mobile} class="form-group">
           <Label />
-          <TextInput class="form-control" />
+          <TextInput class="form-control" value={Map.get(@search_params, "mobile", "")} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <Field name={:landline} class="form-group">
           <Label />
-          <TextInput class="form-control" />
+          <TextInput class="form-control" value={Map.get(@search_params, "landline", "")} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <Field name={:email} class="form-group">
           <Label />
-          <TextInput class="form-control" />
+          <TextInput class="form-control" value={Map.get(@search_params, "email", "")} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <div class="input-group-append">
-          <button class="input-group-text">Add new person</button>
+          <button class="input-group-text">Add</button>
+        </div>
+        <div class="input-group-append">
+          <a class="input-group-text" :on-click="clear_search">Clear</a>
         </div>
       </div>
     </Form>
@@ -42,40 +45,428 @@
 </div>
 <div class="row mb-3">
   <div class="col-12">
-    <HygeiaWeb.Modal :if={@action in [:new, :edit]} title={gettext("Create new person")} id="modal" close="close_modal">
+    <HygeiaWeb.Modal
+      :if={@live_action in [:new, :edit, :show]}
+      title={gettext("Create new person")}
+      id="modal"
+      close="close_modal"
+    >
       <Form
         :if={not @loading}
         for={@changeset}
         change="validate"
         submit="save"
-        opts={autocomplete: "off", id: "create-person-form", "phx-hook": "BlockNavigation"}
+        opts={
+          autocomplete: "off",
+          id: "create-person-form",
+          class: "component-person-base-data",
+          "phx-hook": "BlockNavigation"
+        }
       >
-        <Field name={:first_name} class="form-group">
-          <Label />
-          <TextInput class="form-control" />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-        <Field name={:last_name} class="form-group">
-          <Label />
-          <TextInput class="form-control" />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-        <Field name={:mobile} class="form-group">
-          <Label />
-          <TextInput class="form-control" />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-        <Field name={:landline} class="form-group">
-          <Label />
-          <TextInput class="form-control" />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-        <Field name={:email} class="form-group">
-          <Label />
-          <TextInput class="form-control" />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
+        <div class="form-grid">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">{gettext("Base Data")}</h4>
+
+              <Field name={:tenant_uuid} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <Select
+                  class="form-control"
+                  opts={prompt: gettext("Select tenant"), disabled: @live_action == :show}
+                  field={:tenant_uuid}
+                  options={Enum.map(@tenants, &{&1.name, &1.uuid})}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+
+              <div class="row">
+                <div class="col">
+                  <Field name={:first_name} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput field={:first_name} class="form-control" opts={disabled: @live_action == :show} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+                <div class="col">
+                  <Field name={:last_name} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput opts={disabled: @live_action == :show} class="form-control" field={:last_name} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  <Field name={:sex} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <Select
+                      opts={disabled: @live_action == :show}
+                      class="form-control"
+                      field={:sex}
+                      options={person_sex_map()}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+                <div class="col">
+                  <Field name={:birth_date} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <DateInput opts={disabled: @live_action == :show} class="form-control" field={:birth_date} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex">
+                <h4 class="card-title">{gettext("Address")}</h4>
+                {#if @propagator}
+                  <span :on-click="copy_address_from_propagator">
+                    {gettext("Copy address from propagator")}
+                  </span>
+                {/if}
+              </div>
+
+              <Inputs for={:address}>
+                <HygeiaWeb.AddressForm disabled={@live_action == :show} id="address" />
+              </Inputs>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{gettext("Contact Methods")}</h4>
+
+            <div class="contact-method-grid">
+              <h6>{gettext("Type")}</h6>
+              <h6>{gettext("Value")}</h6>
+              <h6>{gettext("Comment")}</h6>
+              <div aria-hidden="true" />
+
+              <Inputs for={:contact_methods}>
+                <InputContext assigns={assigns} :let={form: form}>
+                  <HiddenInput field={:uuid} />
+                  <Field name={:type}>
+                    <Select
+                      class="form-control"
+                      opts={prompt: gettext("Choose Type"), disabled: @live_action == :show}
+                      field={:type}
+                      options={Person.ContactMethod.Type.map()}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                  <Field name={:value}>
+                    <TextInput
+                      class="form-control"
+                      field={:value}
+                      opts={disabled: @live_action == :show}
+                      :if={@live_action in [:new, :edit]}
+                    />
+                    <Link
+                      :if={@live_action == :show and Ecto.Changeset.fetch_field!(form.source, :type) in [:mobile, :landline]}
+                      to={form.source
+                      |> Ecto.Changeset.fetch_field!(:value)
+                      |> ExPhoneNumber.parse("CH")
+                      |> case do
+                        {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
+                        _ -> nil
+                      end}
+                    >
+                      {form.source
+                      |> Ecto.Changeset.fetch_field!(:value)
+                      |> ExPhoneNumber.parse("CH")
+                      |> case do
+                        {:ok, number} -> ExPhoneNumber.format(number, :international)
+                        _ -> nil
+                      end}
+                    </Link>
+                    <Link
+                      :if={@live_action == :show and Ecto.Changeset.fetch_field!(form.source, :type) in [:email]}
+                      to={"mailto:#{Ecto.Changeset.fetch_field!(form.source, :value)}"}
+                    >
+                      {Ecto.Changeset.fetch_field!(form.source, :value)}
+                    </Link>
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                  <Field name={:comment}>
+                    <TextInput class="form-control" field={:comment} opts={disabled: @live_action == :show} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                  <div>
+                    <button
+                      :if={@live_action in [:new, :edit]}
+                      type="button"
+                      class="btn btn-danger"
+                      :on-click="remove_contact_method"
+                      phx-value-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
+                    >
+                      <span class="oi oi-trash" aria-hidden="true" />
+                    </button>
+                  </div>
+                </InputContext>
+              </Inputs>
+
+              <div class="add-button mt-2" :if={@live_action in [:new, :edit]}>
+                <button type="button" class="btn btn-secondary" :on-click="add_contact_method">
+                  <span class="oi oi-plus mr-1" aria-hidden="true" />
+                  {gettext("New contact method")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4" :if={@live_action in [:new, :edit]}>
+          <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Saving...")}>
+            <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+            {gettext("Save")}
+          </button>
+          <button
+            :on-click="reset"
+            class="btn btn-warning"
+            type="button"
+            data-confirm={if @changeset.changes != %{} do
+              gettext("Do you really want to discard your changes?")
+            else
+              nil
+            end}
+          >
+            <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+            {gettext("Discard")}
+          </button>
+        </div>
       </Form>
     </HygeiaWeb.Modal>
   </div>
+</div>
+
+
+<div class="row mb-3">
+  {#if length(@suggestions) > 0}
+    <div class="w-100">
+      {#for person <- @suggestions}
+        <PersonCard person={person}>
+          <:header>
+            <div class="d-flex w-100">
+              <div class="w-100">
+                <span class={if contains?(person.first_name, get_field(@search_params, :first_name)),
+                  do: "font-weight-bold"}>
+                  {person.first_name}
+                </span>
+              </div>
+              <div class="w-100">
+                <span class={if contains?(person.last_name, get_field(@search_params, :last_name)),
+                  do: "font-weight-bold"}>
+                  {person.last_name}
+                </span>
+              </div>
+              <div class="w-100">
+                {#if mobile =
+                    person.contact_methods
+                    |> Enum.find_value(fn contact ->
+                      if contact.type == :mobile and contact.value == get_field(@search_params, :mobile),
+                        do: contact.value
+                    end)}
+                  <span class="font-weight-bold">
+                    {mobile}
+                  </span>
+                {#else}
+                  <span>
+                    —
+                  </span>
+                {/if}
+              </div>
+              <div class="w-100">
+                {#if landline =
+                    person.contact_methods
+                    |> Enum.find_value(fn contact ->
+                      if contact.type == :landline and contact.value == get_field(@search_params, :landline),
+                        do: contact.value
+                    end)}
+                  <span class="font-weight-bold">
+                    {landline}
+                  </span>
+                {#else}
+                  <span>
+                    —
+                  </span>
+                {/if}
+              </div>
+              <div class="w-100">
+                {#if email =
+                    person.contact_methods
+                    |> Enum.find_value(fn contact ->
+                      if contact.type == :email and contact.value == get_field(@search_params, :email),
+                        do: contact.value
+                    end)}
+                  <span class="font-weight-bold">
+                    {email}
+                  </span>
+                {#else}
+                  <span>
+                    —
+                  </span>
+                {/if}
+              </div>
+            </div>
+          </:header>
+          <:left>
+            <button class="btn btn-primary" type="button" :on-click="person_selected" value={person.uuid}>
+              {gettext("Select person")}
+            </button>
+          </:left>
+          <:bottom>
+            <div class="mb-4 ml-auto" style="width: 600px;">
+              <div class="list-group">
+                {#for person_case <- person.cases}
+                  <div class="list-group-item list-group-item-action">
+                    <span>{person_case.inserted_at}</span>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      :on-click="case_selected"
+                      phx-value-person_uuid={person.uuid}
+                      value={person_case.uuid}
+                    >
+                      {gettext("Select case")}
+                    </button>
+                  </div>
+                {/for}
+              </div>
+            </div>
+          </:bottom>
+        </PersonCard>
+      {/for}
+    </div>
+  {/if}
+</div>
+
+<div class="row mb-3">
+  <!-- Fiexed height element because checkbox and button can disappear -->
+  {#if not Enum.empty?(get_field(@people_changeset, :people))}
+    <Checkbox
+      hidden_input="false"
+      opts={[
+        checked:
+          length(get_field(@people_changeset, :people)) == length(Map.values(@bulk_action_elements)),
+        phx_target: @myself,
+        phx_click: "all_checked"
+      ]}
+    />
+    <button
+      disabled={Enum.empty?(@bulk_action_elements)}
+      class="btn btn-danger"
+      :on-click="apply_bulk_action"
+      type="submit"
+    >
+      <span class="oi oi-trash" aria-hidden="true" />
+      {gettext("Delete selected")}
+    </button>
+  {/if}
+</div>
+
+<div class="row mb-3">
+  {#for {index, person} <-
+      Enum.with_index(
+        get_field(@people_changeset, :people),
+        fn element, index -> {index, element} end
+      )}
+    <div class="w-100">
+      <Checkbox
+        class="form-check-input"
+        hidden_input="false"
+        opts={[
+          checked: Map.get(@bulk_action_elements, "#{index}", false),
+          phx_target: @myself,
+          phx_click: "person_checked",
+          phx_value_index: index
+        ]}
+      />
+      <PersonCard person={person}>
+        <:header>
+          <div class="d-flex">
+            <div>
+              <div>
+                <div class="d-inline-block">
+                  <small>{gettext("First name")}:</small>
+                  <h4 class="d-inline-block font-weight-bold">
+                    {person.first_name}
+                  </h4>
+                </div>
+                &nbsp;
+                &nbsp;
+                <div class="d-inline-block">
+                  <small>{gettext("Last name")}:</small>
+                  <h4 class="d-inline-block font-weight-bold">
+                    {person.last_name}
+                  </h4>
+                </div>
+              </div>
+              <span :if={person.inserted_at != nil} class="text-muted">
+                {gettext("This person is already present in the database")}
+              </span>
+            </div>
+          </div>
+        </:header>
+
+        <:left>
+          <button class="btn btn-secondary" type="button" :on-click="show_person" phx-value-index={index}>
+            {gettext("View")}
+          </button>
+          <button
+            disabled={person.inserted_at != nil}
+            class="btn btn-primary"
+            :on-click="edit_person"
+            phx-value-index={index}
+          >
+            <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+            {gettext("Edit")}
+          </button>
+        </:left>
+
+        <:right>
+          <Link
+            to="#"
+            click="delete_person"
+            opts={
+              title: gettext("Delete"),
+              data: [confirm: gettext("Are you sure?")],
+              "phx-value-index": index
+            }
+          >
+            <button class="btn btn-danger">
+              <span class="oi oi-trash" aria-hidden="true" />
+              {gettext("Delete")}
+            </button>
+          </Link>
+        </:right>
+
+        <:bottom>
+          {#if is_list(person.cases) and length(person.cases) > 0}
+            <span>{List.first(person.cases).inserted_at}</span>
+          {/if}
+        </:bottom>
+      </PersonCard>
+    </div>
+  {/for}
+</div>
+
+<div class="row mb-3">
+  <button class="btn btn-warning mt-5" type="button" :on-click="back">
+    {gettext("Back")}
+  </button>
+  <button
+    class="btn btn-primary mt-5"
+    type="submit"
+    :on-click="next"
+    phx-disable-with={gettext("Saving...")}
+    disabled={not @people_changeset.valid?}
+  >
+    {gettext("Next")}
+  </button>
 </div>

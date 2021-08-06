@@ -1,0 +1,63 @@
+<div class="card mb-3">
+  <div class="card-header">
+    <#slot name="header">
+      <div class="d-flex">
+        <div>
+          <div>
+            <div class="d-inline-block">
+              <small>{gettext("First name")}:</small>
+              <h4 class="d-inline-block font-weight-bold">
+                {@person.first_name}
+              </h4>
+            </div>
+            &nbsp;
+            &nbsp;
+            <div class="d-inline-block">
+              <small>{gettext("Last name")}:</small>
+              <h4 class="d-inline-block font-weight-bold">
+                {@person.last_name}
+              </h4>
+            </div>
+          </div>
+          <span :if={@person.inserted_at != nil} class="text-muted">
+            {gettext("This person is already present in the database")}
+          </span>
+        </div>
+        
+        <#slot name="feature" />
+
+      </div>
+    </#slot>
+  </div>
+  <div class="card-body py-2 px-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <#slot name="left" />
+      <table class="table table-sm table-borderless">
+        <tbody>
+          <tr>
+            <td>{gettext("Tenant")}:</td>
+            <td>{@person |> Map.get(:tenant) |> show_field(:name, gettext("N/A"))}</td>
+            <td>{gettext("Address")}:</td>
+            <td>{@person |> Map.get(:address) |> show_field(:address, gettext("N/A"))}</td>
+          </tr>
+          <tr>
+            <td>{gettext("Birth date")}:</td>
+            <td>{show_field(@person, :birth_date, gettext("N/A"))}</td>
+            <td>{gettext("Place")}:</td>
+            <td>{@person |> Map.get(:address) |> show_field(:place, gettext("N/A"))}</td>
+          </tr>
+          <tr>
+            <td>{gettext("Sex")}:</td>
+            <td>{show_field(@person, :sex, gettext("N/A"))}</td>
+            <td>{gettext("Country")}:</td>
+            <td>{@person |> Map.get(:address) |> show_field(:country, gettext("N/A"))}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <#slot name="right" />
+      </div>
+    </div>
+    <#slot name="bottom" />
+  </div>
+</div>

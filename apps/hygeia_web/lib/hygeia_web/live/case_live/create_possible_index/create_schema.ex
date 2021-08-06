@@ -44,7 +44,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
 
     embeds_one :infection_place, InfectionPlace
 
-    embeds_many :people, CreatePersonSchema, on_replace: :delete #list of persons
+    # list of persons
+    embeds_many :people, CreatePersonSchema, on_replace: :delete
   end
 
   @spec changeset(schema :: %__MODULE__{}, attrs :: Hygeia.ecto_changeset_params()) ::
@@ -86,8 +87,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
         :type,
         :date
       ])
-      #|> validate_date()
-      #|> validate_type_other()
+      # |> validate_date()
+      # |> validate_type_other()
       |> Transmission.validate_case(
         :propagator_internal,
         :propagator_ism_id,
@@ -113,8 +114,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
       |> Enum.reject(&is_empty?(&1, [:search_params_hash, :suspected_duplicate_uuids]))
     )
   end
-
-
 
   # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
   defp drop_multiple_empty_rows(changeset) do

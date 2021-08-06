@@ -4,27 +4,56 @@
   <HiddenInput field={:possible_index_submission_uuid} />
 
   <div class="container">
-    {#if @form_step.name == :transmission}
-      <DefineTransmission id="transmission" {=@current_form_data} />
-    {/if}
-
-    {#if @form_step.name == :people}
-      <DefinePeople
-        id="people"
+    {#if @form_step == "transmission"}
+      <DefineTransmission
+        id={@form_step}
+        {=@form_step}
+        {=@live_action}
+        {=@params}
         {=@current_form_data}
-        {=@tenants}
-        {=@supervisor_users}
-        {=@tracer_users}
-        show_address={Map.get(@current_form_data, :copy_address_from_propagator, false)}
       />
     {/if}
 
-    {#if @form_step.name == :options}
-      <DefineOptions id="options" {=@current_form_data} is_internal_propagator={false} />
+    {#if @form_step == "people"}
+      <DefinePeople
+        id={@form_step}
+        {=@form_step}
+        {=@live_action}
+        {=@params}
+        {=@current_form_data}
+        {=@tenants}
+      />
     {/if}
 
-    {#if @form_step.name == :summary}
-      <Summary id="summary" {=@current_form_data} />
+    {#if @form_step == "options"}
+      <DefineOptions
+        id={@form_step}
+        {=@form_step}
+        {=@live_action}
+        {=@current_form_data}
+        {=@supervisor_users}
+        {=@tracer_users}
+      />
+    {/if}
+
+    {#if @form_step == "reporting"}
+      <Reporting
+        id={@form_step}
+        {=@form_step}
+        {=@live_action}
+        {=@current_form_data}
+      />
+    {/if}
+
+    {#if @form_step == "summary"}
+      <Summary 
+        id={@form_step}
+        {=@form_step}
+        {=@live_action}
+        {=@current_form_data}
+        {=@supervisor_users}
+        {=@tracer_users}
+      />
     {/if}
   </div>
 </div>

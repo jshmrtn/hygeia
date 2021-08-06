@@ -290,7 +290,17 @@ defmodule HygeiaWeb.Helpers.FieldName do
       related_tenants: "Related Tenants"
     },
     Hygeia.MutationContext.Mutation => %{name: "Name", ism_code: "ISM Code"},
-    HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema => %{
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission => %{
+      type: "Type",
+      type_other: "Other",
+      comment: "Comment",
+      copy_address_from_propagator: "Copy Address From Propagator",
+      date: "Date",
+      propagator_case: "Propagator Case",
+      propagator_case_uuid: "Propagator Case UUID",
+      propagator_ism_id: "Propagator ISM ID"
+    },
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions => %{
       address: "Address",
       birth_date: "Birth Date",
       email: "Email",
@@ -309,18 +319,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       tracer: "Tracer",
       tracer_uuid: "Tracer UUID"
     },
-    HygeiaWeb.CaseLive.CreateIndex.CreateSchema => %{ # DELETE
-      default_supervisor: "Default Supervisor",
-      default_supervisor_uuid: "Default Supervisor UUID",
-      default_tenant: "Default Tenant",
-      default_tenant_uuid: "Default Tenant UUID",
-      default_tracer: "Default Tracer",
-      default_tracer_uuid: "Default Tracer UUID"
-    },
-    HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema => %{ # TODO
-      comment: "Comment",
-      copy_address_from_propagator: "Copy Address From Propagator",
-      date: "Date",
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.Summary => %{
       default_supervisor: "Default Supervisor",
       default_supervisor_uuid: "Default Supervisor UUID",
       default_tenant: "Default Tenant",
@@ -328,13 +327,16 @@ defmodule HygeiaWeb.Helpers.FieldName do
       default_tracer: "Default Tracer",
       default_tracer_uuid: "Default Tracer UUID",
       directly_close_cases: "Directly Close Cases",
-      propagator_case: "Propagator Case",
-      propagator_case_uuid: "Propagator Case UUID",
-      propagator_ism_id: "Propagator ISM ID",
       send_confirmation_email: "Send Confirmation Email",
-      send_confirmation_sms: "Send Confirmation SMS",
-      type: "Type",
-      type_other: "Other"
+      send_confirmation_sms: "Send Confirmation SMS"
+    },
+    HygeiaWeb.CaseLive.CreateIndex.CreateSchema => %{
+      default_supervisor: "Default Supervisor",
+      default_supervisor_uuid: "Default Supervisor UUID",
+      default_tenant: "Default Tenant",
+      default_tenant_uuid: "Default Tenant UUID",
+      default_tracer: "Default Tracer",
+      default_tracer_uuid: "Default Tracer UUID"
     },
     Hygeia.VersionContext.Version => %{
       date: "Date",

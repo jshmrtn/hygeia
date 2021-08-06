@@ -1,0 +1,80 @@
+<div class="container mt-5">
+    <div class="row">
+      {#for {index, person} <-
+          Enum.with_index(
+            @people,
+            fn element, index -> {index, element} end
+          )}
+        <div class="w-100">
+          <PersonCard person={person}>
+            <:bottom>
+              {#for {type, type_contacts} <-
+                  person.contact_methods
+                  |> Enum.group_by(& &1.type)
+                  |> Enum.filter(fn {type, _} -> type != :landline end)}
+                <div class="mb-4">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">{type}</th>
+                        <th scope="col">{gettext("Comment")}</th>
+                        <th>
+                          <Checkbox 
+                            opts={[
+                              checked: all_checked?(type_contacts, selected_contacts(@changeset, case_uuid(person), "#{type}")),
+                              hidden_input: "false",
+                              phx_click: "all_checked",
+                              phx_target: @myself,
+                              phx_value_case_uuid: case_uuid(person),
+                              phx_value_contact_type: type,
+                              phx_value_contacts: to_serialized_uuids(type_contacts)]}
+                          />
+                          Select all
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {#for {contact, i} <- Enum.with_index(type_contacts)}
+                        <tr>
+                          <td>{i + 1}</td>
+                          <td>{contact.value}</td>
+                          <td>{contact.comment}</td>
+                          <td><Checkbox 
+                            opts={[
+                            checked: (if contact.uuid in selected_contacts(@changeset, case_uuid(person), "#{type}"), do: true),
+                            hidden_input: "false",
+                            phx_click: "contact_method_checked",
+                            phx_target: @myself,
+                            phx_value_case_uuid: case_uuid(person),
+                            phx_value_contact_type: type,
+                            phx_value_contact_uuid: contact.uuid]}
+                          />
+                          </td>
+                        </tr>
+                      {/for}
+                    </tbody>
+                  </table>
+                </div>
+              {/for}
+            </:bottom>
+          </PersonCard>
+        </div>
+      {/for}
+    </div>
+</div>
+
+<div class="row mb-3">
+  <button class="btn btn-warning mt-5" type="button" :on-click="back">
+    {gettext("Back")}
+  </button>
+  <button
+    class="btn btn-primary mt-5"
+    type="submit"
+    :on-click="next"
+    phx-disable-with={gettext("Saving...")}
+    disabled={not @changeset.valid?}
+  >
+    {gettext("Next")}
+  </button>
+</div>

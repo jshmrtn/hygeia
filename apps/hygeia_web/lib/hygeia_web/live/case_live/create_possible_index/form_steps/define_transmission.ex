@@ -7,12 +7,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
   import Ecto.Changeset
   import HygeiaGettext
 
+  alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Case.Person
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CaseContext.Transmission.InfectionPlace
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema
 
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
@@ -24,7 +25,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Form.RadioButton
 
-
+  @primary_key false
   embedded_schema do
     field :type, Type
     field :comment, :string
@@ -34,13 +35,17 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
     field :propagator_ism_id, :string
     field :propagator_internal, :boolean
 
+    embeds_one :propagator, Person
     embeds_one :infection_place, InfectionPlace
 
-    field :copy_address_from_propagator, :boolean, default: false
     belongs_to :propagator_case, Case, references: :uuid, foreign_key: :propagator_case_uuid
   end
 
-  prop current_form_data, :map, required: true
+  prop params, :map, default: %{}
+  prop form_step, :string, default: ""
+  prop live_action, :atom, default: :index
+  prop current_form_data, :keyword, required: true
+  prop show_navigation, :boolean, default: true
 
   @impl Phoenix.LiveComponent
   def mount(socket) do
@@ -51,61 +56,81 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
      )}
   end
 
-
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
-    changeset = changeset(%__MODULE__{}, assigns.current_form_data)
+    changeset =
+      assigns.current_form_data
+      |> Keyword.get(__MODULE__, %__MODULE__{})
+      |> changeset()
 
     {:ok,
-      socket
-      |> assign(assigns)
-      |> assign(changeset: changeset)
-    }
+     socket
+     |> assign(assigns)
+     |> assign(changeset: changeset)}
   end
-
 
   @impl Phoenix.LiveComponent
   def handle_event("validate", %{"define_transmission" => params}, socket) do
-    {:noreply,
-     socket
-     |> assign(:changeset, %{
+    cs = %{
       changeset(%__MODULE__{}, params)
       | action: :validate
-    })}
+    }
+
+    {:noreply,
+     socket
+     |> assign(:changeset, cs)}
   end
 
   @impl Phoenix.LiveComponent
   def handle_event("save", %{"define_transmission" => params}, socket) do
-    %__MODULE__{}
+    propagator =
+      params["propagator_case_uuid"]
+      |> case do
+        nil ->
+          nil
+
+        uuid ->
+          uuid
+          |> CaseContext.get_case_with_preload!([:person])
+          |> Map.get(:person)
+      end
+
+    %__MODULE__{propagator: propagator}
     |> changeset(params)
     |> apply_action(:validate)
     |> case do
-      {:ok, _struct} ->
-        send(self(), {:proceed, params})
+      {:ok, struct} ->
+        send(self(), {:proceed, {__MODULE__, struct}})
         {:noreply, socket}
+
       {:error, changeset} ->
-        {:noreply,
-          socket
-          |> assign(:changeset, changeset)
-        }
+        {:noreply, assign(socket, :changeset, changeset)}
     end
   end
 
   @impl Phoenix.LiveComponent
   def handle_event("change_propagator_case", params, socket) do
+    cs1 =
+      %__MODULE__{}
+      |> changeset(
+        update_changeset_param(
+          socket.assigns.changeset,
+          :propagator_case_uuid,
+          fn _value_before -> params["uuid"] end
+        )
+      )
+
     {:noreply,
      socket
      |> assign(:changeset, %{
-       changeset(
-         %__MODULE__{},
-         update_changeset_param(
-           socket.assigns.changeset,
-           :propagator_case_uuid,
-           fn _value_before -> params["uuid"] end
-         )
-       )
+       cs1
        | action: :validate
      })}
+  end
+
+  @impl Phoenix.LiveComponent
+  def handle_event(_, _params, socket) do
+    {:noreply, socket}
   end
 
   @spec changeset(schema :: %__MODULE__{}, attrs :: map()) ::
@@ -113,14 +138,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
   def changeset(schema, attrs \\ %{}) do
     schema
     |> cast(attrs, [
-       :uuid,
-       :type,
-       :type_other,
-       :propagator_internal,
-       :propagator_ism_id,
-       :propagator_case_uuid,
-       :date,
-       :comment
+      :type,
+      :type_other,
+      :propagator_internal,
+      :propagator_ism_id,
+      :propagator_case_uuid,
+      :date,
+      :comment
     ])
     |> cast_embed(:infection_place, required: true)
     |> validate_changeset()
@@ -128,22 +152,19 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
 
   @spec validate_changeset(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_changeset(changeset) do
-    changeset =
-      changeset
-      |> validate_required([
-        :type,
-        :date,
-        :copy_address_from_propagator
-      ])
-      |> validate_date()
-      |> validate_type_other()
-      |> Transmission.validate_case(
-        :propagator_internal,
-        :propagator_ism_id,
-        :propagator_case_uuid
-      )
+    changeset
+    |> validate_required([
+      :type,
+      :date
+    ])
+    |> validate_date()
+    |> validate_type_other()
+    |> Transmission.validate_case(
+      :propagator_internal,
+      :propagator_ism_id,
+      :propagator_case_uuid
+    )
   end
-
 
   @spec validate_type_other(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def validate_type_other(changeset) do

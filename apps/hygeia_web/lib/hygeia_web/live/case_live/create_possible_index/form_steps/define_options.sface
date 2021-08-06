@@ -1,92 +1,87 @@
 <div class="container mt-5">
-  <div class="row mb-2">
-    <div class="col">
-      <Field name={:default_tenant_uuid} class="input-group">
-        <HygeiaWeb.FieldLabel class="input-group-prepend mb-0" :let={name: name}>
-          <span class="input-group-text">
-            {name}
-          </span>
-        </HygeiaWeb.FieldLabel>
-        <Select
-          class="form-control"
-          options={Enum.map(@tenants, &{&1.name, &1.uuid})}
-          opts={prompt: gettext("Select Tenant")}
-        />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
-    <div class="col">
-      <HiddenInput field={:default_supervisor_uuid} />
+  <Form
+    :if={not @loading}
+    for={@changeset}
+    change="validate"
+    opts={autocomplete: "off", id: "supervisors-form", "phx-hook": "BlockNavigation"}
+  >
+    <Inputs for={:people}>
+      <InputContext :let={form: form}>
+        <div class="row">
+          <Inputs for={:cases}>
+            <div class="w-100">
+              <PersonCard person={form.data}>
+                <:feature>
+                    <div class="ml-auto">
+                      <Field name={:status} class="input-group">
+                        <HygeiaWeb.FieldLabel class="mb-0">
+                          <span class="input-group-text">
+                            {gettext("Directly close case")}
+                          </span>
+                        </HygeiaWeb.FieldLabel>
+                        <Select
+                          class="form-control"
+                          options={[{gettext("Yes"), :done}, {gettext("No"), :first_contact}]}
+                          prompt={gettext("Select")}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                </:feature>
 
-      <Field name={:default_supervisor_uuid} class="input-group">
-        <HygeiaWeb.FieldLabel class="input-group-prepend mb-0" :let={name: name}>
-          <span class="input-group-text">
-            {name}
-          </span>
-        </HygeiaWeb.FieldLabel>
-        <Select
-          class="form-control"
-          options={Enum.map(@supervisor_users, &{&1.display_name, &1.uuid})}
-          opts={prompt: gettext("Case Administration")}
-        />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
-  </div>
-  <div class="row mb-2">
-    <div class="col">
-      <HiddenInput field={:default_tracer_uuid} />
-
-      <Field name={:default_tracer_uuid} class="input-group">
-        <HygeiaWeb.FieldLabel class="input-group-prepend mb-0" :let={name: name}>
-          <span class="input-group-text">
-            {name}
-          </span>
-        </HygeiaWeb.FieldLabel>
-        <Select
-          class="form-control"
-          options={Enum.map(@tracer_users, &{&1.display_name, &1.uuid})}
-          opts={prompt: gettext("Case Administration")}
-        />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
-  </div>
+                <:right>
+                  <div class="row mb-2">
+                    <div class="col">
+                      <Field name={:supervisor_uuid}>
+                        <HygeiaWeb.FieldLabel />
+                        <Select
+                          class="form-control"
+                          options={assignees_form_options(@supervisor_users, form.data.tenant_uuid)}
+                          opts={prompt: gettext("Case Administration")}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col">
+                      <Field name={:tracer_uuid}>
+                        <HygeiaWeb.FieldLabel />
+                        <Select
+                          class="form-control"
+                          options={assignees_form_options(@tracer_users, form.data.tenant_uuid)}
+                          opts={prompt: gettext("Case Administration")}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                  </div>
+                </:right>
+                <:bottom>
+                  {#if p_case = person_case(form.data)}
+                    <span>{p_case.inserted_at}</span>
+                  {/if}
+                </:bottom>
+              </PersonCard>
+            </div>
+          </Inputs>
+        </div>
+      </InputContext>
+    </Inputs>
+  </Form>
 </div>
 
-<div class="container mt-5">
-  <div class="row">
-    <div class="col">
-      <Field name={:send_confirmation_sms} class="form-check">
-        <Checkbox class="form-check-input" />
-        <HygeiaWeb.FieldLabel class="form-check-label" />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
-    <div class="col">
-      <Field name={:send_confirmation_email} class="form-check">
-        <Checkbox class="form-check-input" />
-        <HygeiaWeb.FieldLabel class="form-check-label" />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <Field name={:directly_close_cases} class="form-check">
-        <Checkbox class="form-check-input" />
-        <HygeiaWeb.FieldLabel class="form-check-label" />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
-    <div class="col">
-      {#if @is_internal_propagator}
-        <Field name={:copy_address_from_propagator} class="form-check">
-          <Checkbox class="form-check-input" />
-          <HygeiaWeb.FieldLabel class="form-check-label" />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-      {/if}
-    </div>
-  </div>
+<div class="row mb-3">
+  <button class="btn btn-warning mt-5" type="button" :on-click="back">
+    {gettext("Back")}
+  </button>
+  <button
+    class="btn btn-primary mt-5"
+    type="submit"
+    :on-click="next"
+    phx-disable-with={gettext("Saving...")}
+    disabled={not @changeset.valid?}
+  >
+    {gettext("Next")}
+  </button>
 </div>

@@ -175,7 +175,12 @@ defmodule HygeiaWeb.Router do
     live "/people/:cursor_direction/:cursor", PersonLive.Index, :index
 
     live "/cases/new", CaseLive.Create, :create
-    live "/cases/new/possible-index", CaseLive.CreatePossibleIndex, :create
+    live "/cases/new/possible-index/", CaseLive.CreatePossibleIndex, :create
+    live "/cases/new/possible-index/:form_step", CaseLive.CreatePossibleIndex, :index
+    live "/cases/new/possible-index/:form_step/new", CaseLive.CreatePossibleIndex, :new
+    live "/cases/new/possible-index/:form_step/:index/edit", CaseLive.CreatePossibleIndex, :edit
+    live "/cases/new/possible-index/:form_step/:index/show", CaseLive.CreatePossibleIndex, :show
+
     live "/cases/:id", CaseLive.BaseData, :show
     live "/cases/:id/edit", CaseLive.BaseData, :edit
     live "/cases/:id/transmissions", CaseLive.Transmissions, :show

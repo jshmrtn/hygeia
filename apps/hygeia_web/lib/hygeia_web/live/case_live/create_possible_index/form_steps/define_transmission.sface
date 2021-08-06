@@ -88,22 +88,16 @@
     <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
   </Inputs>
 
-  <div class="container">
-    <button
-      class="btn btn-warning mt-5"
-      type="button"
-      phx-disable-with={gettext("Saving...")}
-      disabled={not @changeset.valid?}
-    >
-      {gettext("Back")}
-    </button>
-    <button
-      class="btn btn-primary mt-5"
-      type="submit"
-      phx-disable-with={gettext("Saving...")}
-      disabled={not @changeset.valid?}
-    >
-      {gettext("Next")}
-    </button>
-  </div>
+  {#if @show_navigation}
+    <div class="container">
+      <button
+        class="btn btn-primary mt-5"
+        type="submit"
+        phx-disable-with={gettext("Saving...")}
+        disabled={not @changeset.valid?}
+      >
+        {gettext("Next")}
+      </button>
+    </div>
+  {/if}
 </Form>
