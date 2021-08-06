@@ -4,12 +4,11 @@ defmodule HygeiaWeb.TestLive.Show do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.CaseContext
-  alias Hygeia.Repo
-
   alias Hygeia.CaseContext.Test
+  alias Hygeia.Repo
   alias Surface.Components.Form
-  alias Surface.Components.LivePatch
   alias Surface.Components.Link
+  alias Surface.Components.LivePatch
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
@@ -55,6 +54,7 @@ defmodule HygeiaWeb.TestLive.Show do
     |> maybe_block_navigation()
   end
 
+  @impl Phoenix.LiveView
   def handle_event("validate", %{"test" => test}, socket) do
     {:noreply,
      socket
@@ -63,6 +63,23 @@ defmodule HygeiaWeb.TestLive.Show do
          CaseContext.change_test(%Test{}, test)
          | action: :validate
        }
+     )
+     |> maybe_block_navigation()}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event("reset", _params, %{assigns: %{test: test}} = socket) do
+    {:noreply,
+     socket
+     |> load_data(test)
+     |> push_patch(
+       to:
+         Routes.test_show_path(
+           socket,
+           :show,
+           test.case.uuid,
+           test.uuid
+         )
      )
      |> maybe_block_navigation()}
   end

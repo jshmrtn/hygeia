@@ -10,7 +10,7 @@
       <!-- TODO: test data -->
     </h1>
 
-    <div class="mt-4">
+    <div class="mt-4" :if={@live_action == :show}>
       <LivePatch
         :if={authorized?(@test, :update, auth)}
         to={Routes.test_show_path(@socket, :edit, @test.case, @test)}
@@ -36,6 +36,26 @@
       </Link>
     </div>
 
+    <div class="mb-4" :if={@live_action == :edit}>
+      <button class="btn btn-primary me-2" type="submit" disabled={not @changeset.valid?} phx-disable-with={gettext("Saving...")}>
+        <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+        {gettext("Save")}
+      </button>
+      <button
+        :on-click="reset"
+        class="btn btn-warning"
+        type="button"
+        data-confirm={if @changeset.changes != %{} do
+          gettext("Do you really want to discard your changes?")
+        else
+          nil
+        end}
+      >
+        <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+        {gettext("Discard")}
+      </button>
+    </div>
+
     <HygeiaWeb.Lock
       id={"lock_Test_#{@test.uuid}"}
       resource={{Test, @test.uuid}}
@@ -43,14 +63,5 @@
     >
       <HygeiaWeb.CaseLive.TestsForm disabled={@live_action == :show} id="test-show" />
     </HygeiaWeb.Lock>
-
-    <button
-      class="btn btn-primary"
-      type="submit"
-      phx-disable-with={gettext("Saving...")}
-      disabled={not @changeset.valid?}
-    >
-      {gettext("Save")}
-    </button>
   </Context>
 </Form>

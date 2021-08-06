@@ -1,4 +1,4 @@
-<div class="component-case-tests-form">
+<div class="component-case-tests-form hy-readonly-form">
   <HiddenInput field={:uuid} />
   <HiddenInput field={:case_uuid} />
   <InputContext assigns={assigns} :let={form: form}>
