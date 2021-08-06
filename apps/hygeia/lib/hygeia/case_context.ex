@@ -2147,9 +2147,6 @@ defmodule Hygeia.CaseContext do
     do: Transmission.changeset(transmission, attrs)
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking test changes.
-
-  @doc """
   Returns the list of notes.
 
   ## Examples
@@ -2653,7 +2650,6 @@ defmodule Hygeia.CaseContext do
   @spec get_test!(id :: Ecto.UUID.t()) :: Test.t()
   def get_test!(id), do: Repo.get!(Test, id)
 
-  # TODO: remove
   @doc """
   Creates a test.
 
