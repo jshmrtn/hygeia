@@ -12,8 +12,8 @@ defmodule HygeiaWeb.CaseLive.Tests do
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id}, _uri, socket) do
-    case = CaseContext.get_case!(id)
+  def handle_params(%{"id" => case_id}, _uri, socket) do
+    case = CaseContext.get_case!(case_id)
 
     socket =
       if authorized?(
@@ -24,7 +24,7 @@ defmodule HygeiaWeb.CaseLive.Tests do
            end,
            get_auth(socket)
          ) do
-        Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{id}")
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{case_id}")
 
         load_data(socket, case)
       else
