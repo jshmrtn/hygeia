@@ -4,13 +4,19 @@ defmodule HygeiaWeb.CaseLive.TestCreate do
   use HygeiaWeb, :surface_view
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Test
+  alias Hygeia.Repo
   alias Surface.Components.Form
+  alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
-  def mount(params, _session, socket) do
+  def mount(%{"id" => id} = params, _session, socket) do
+    case = CaseContext.get_case!(id)
+
     socket =
       if authorized?(Test, :create, get_auth(socket)) do
-        assign(socket,
+        socket
+        |> load_data(case)
+        |> assign(
           changeset: CaseContext.change_test(%Test{}, params),
           page_title: gettext("New Test")
         )
@@ -35,6 +41,16 @@ defmodule HygeiaWeb.CaseLive.TestCreate do
        CaseContext.change_test(%Test{}, test)
        | action: :validate
      })}
+  end
+
+  defp load_data(socket, case) do
+    case =
+      Repo.preload(case,
+        person: []
+      )
+
+    socket
+    |> assign(case: case)
   end
 
   def handle_event("save", %{"test" => test}, socket) do

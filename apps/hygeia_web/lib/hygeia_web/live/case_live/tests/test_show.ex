@@ -9,9 +9,9 @@ defmodule HygeiaWeb.CaseLive.TestShow do
   alias Surface.Components.Form
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
+  alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
-  @spec handle_params(map, binary, Phoenix.LiveView.Socket.t()) :: {:noreply, map}
   def handle_params(%{"test_id" => test_id}, _uri, socket) do
     test = CaseContext.get_test!(test_id)
 
