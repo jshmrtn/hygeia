@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.TestLive.Show do
+defmodule HygeiaWeb.CaseLive.TestShow do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
@@ -11,8 +11,9 @@ defmodule HygeiaWeb.TestLive.Show do
   alias Surface.Components.LivePatch
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => id}, _uri, socket) do
-    test = CaseContext.get_test!(id)
+  @spec handle_params(map, binary, Phoenix.LiveView.Socket.t()) :: {:noreply, map}
+  def handle_params(%{"test_id" => test_id}, _uri, socket) do
+    test = CaseContext.get_test!(test_id)
 
     socket =
       if authorized?(
@@ -23,7 +24,7 @@ defmodule HygeiaWeb.TestLive.Show do
            end,
            get_auth(socket)
          ) do
-        Phoenix.PubSub.subscribe(Hygeia.PubSub, "test:#{id}")
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "test:#{test_id}")
 
         load_data(socket, test)
       else
@@ -39,7 +40,7 @@ defmodule HygeiaWeb.TestLive.Show do
     test =
       Repo.preload(test,
         mutation: [],
-        case: []
+        case: [person: []]
       )
 
     changeset = CaseContext.change_test(test)
@@ -74,7 +75,7 @@ defmodule HygeiaWeb.TestLive.Show do
      |> load_data(test)
      |> push_patch(
        to:
-         Routes.test_show_path(
+         Routes.case_test_show_path(
            socket,
            :show,
            test.case.uuid,
@@ -82,6 +83,31 @@ defmodule HygeiaWeb.TestLive.Show do
          )
      )
      |> maybe_block_navigation()}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event("save", %{"test" => test_params}, socket) do
+    socket.assigns.test
+    |> CaseContext.update_test(test_params)
+    |> case do
+      {:ok, test} ->
+        {:noreply,
+         socket
+         |> load_data(test)
+         |> put_flash(:info, gettext("Test updated successfully"))
+         |> push_patch(to: Routes.case_test_show_path(socket, :show, test.case.uuid, test.uuid))}
+
+      {:error, changeset} ->
+        {:noreply,
+         socket
+         |> assign(changeset: changeset)
+         |> maybe_block_navigation()}
+    end
+  end
+
+  @impl Phoenix.LiveView
+  def handle_info({:deleted, %Test{}, _version}, socket) do
+    {:noreply, load_data(socket, CaseContext.get_test!(socket.assigns.test.uuid))}
   end
 
   defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do

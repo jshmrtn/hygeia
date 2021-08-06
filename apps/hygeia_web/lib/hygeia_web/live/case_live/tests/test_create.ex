@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.TestLive.Create do
+defmodule HygeiaWeb.CaseLive.TestCreate do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
@@ -24,8 +24,8 @@ defmodule HygeiaWeb.TestLive.Create do
   end
 
   @impl Phoenix.LiveView
-  def handle_params(%{"case_id" => case_id}, _uri, socket) do
-    {:noreply, assign(socket, case_id: case_id)}
+  def handle_params(%{"id" => id}, _uri, socket) do
+    {:noreply, assign(socket, case_id: id)}
   end
 
   @impl Phoenix.LiveView
@@ -47,7 +47,7 @@ defmodule HygeiaWeb.TestLive.Create do
         {:noreply,
          socket
          |> put_flash(:info, gettext("Test created successfully"))
-         |> push_redirect(to: Routes.test_show_path(socket, :show, case.uuid, test))}
+         |> push_redirect(to: Routes.case_test_show_path(socket, :show, case.uuid, test))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}

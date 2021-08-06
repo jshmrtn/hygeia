@@ -180,10 +180,9 @@ defmodule HygeiaWeb.Router do
     live "/cases/:id/edit", CaseLive.BaseData, :edit
     live "/cases/:id/transmissions", CaseLive.Transmissions, :show
     live "/cases/:id/tests", CaseLive.Tests, :show
-
-    live "/tests/:case_id/new", TestLive.Create, :create
-    live "/tests/:case_id/:id", TestLive.Show, :show
-    live "/tests/:case_id/:id/edit", TestLive.Show, :edit
+    live "/cases/:id/tests/new", CaseLive.TestCreate, :create
+    live "/cases/:id/tests/:test_id", CaseLive.TestShow, :show
+    live "/cases/:id/tests/:test_id/edit", CaseLive.TestShow, :edit
 
     live "/transmissions/new", TransmissionLive.Create, :create
     live "/transmissions/:id", TransmissionLive.Show, :show
