@@ -10,7 +10,7 @@
         <div class="d-flex justify-content-between mb-1">
           <h3>{gettext("Tests")}</h3>
 
-          <div :if={authorized?(Test, :create, auth, tenant: :any)}>
+          <div :if={authorized?(Test, :create, auth, %{case: @case})}>
             <LiveRedirect
               to={Routes.case_test_create_path(
                 @socket,
@@ -62,13 +62,13 @@
                 <div class="d-flex justify-content-end w-100">
                   <LivePatch
                     to={Routes.case_test_show_path(@socket, :show, @case.uuid, test)}
-                    :if={authorized?(test, :details, auth)}
+                    :if={authorized?(test, :details, auth, %{case: @case})}
                   >
                     <button class="ms-auto btn btn-sm btn-outline-primary">{gettext("Show")}</button>
                   </LivePatch>
                   <LivePatch
                     to={Routes.case_test_show_path(@socket, :edit, @case.uuid, test)}
-                    :if={authorized?(test, :update, auth)}
+                    :if={authorized?(test, :update, auth, %{case: @case})}
                   >
                     <button class="ms-1 btn btn-sm btn-outline-primary">
                       <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
@@ -83,7 +83,7 @@
                       "phx-value-id": test.uuid,
                       class: "delete"
                     }
-                    :if={authorized?(test, :delete, auth)}
+                    :if={authorized?(test, :delete, auth, %{case: @case})}
                   >
                     <button class="ms-1 btn btn-sm btn-danger">
                       <span class="oi oi-trash" aria-hidden="true" />
@@ -94,23 +94,6 @@
             </HygeiaWeb.RecordView>
           </tbody>
         </table>
-
-        <!-- change="validate"
-              submit="save" -->
-        <!-- <Form
-              for={@changeset}
-              
-              opts={autocomplete: "off", id: "case-tests-form", "phx-hook": "BlockNavigation"}
-            >
-            <h3>{gettext("Tests")}</h3>
-              
-            <HygeiaWeb.CaseLive.TestsForm
-              source={@case}
-              id="tests"
-              add_test="add_test"
-              remove_test="remove_test"
-          />
-          </Form> -->
       </div>
     </div>
   </Context>

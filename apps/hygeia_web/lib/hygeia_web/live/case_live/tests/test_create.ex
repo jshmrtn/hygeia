@@ -13,7 +13,7 @@ defmodule HygeiaWeb.CaseLive.TestCreate do
     case = CaseContext.get_case!(id)
 
     socket =
-      if authorized?(Test, :create, get_auth(socket)) do
+      if authorized?(Test, :create, get_auth(socket), %{case: case}) do
         socket
         |> load_data(case)
         |> assign(
@@ -43,16 +43,6 @@ defmodule HygeiaWeb.CaseLive.TestCreate do
      })}
   end
 
-  defp load_data(socket, case) do
-    case =
-      Repo.preload(case,
-        person: []
-      )
-
-    socket
-    |> assign(case: case)
-  end
-
   def handle_event("save", %{"test" => test}, socket) do
     case = CaseContext.get_case!(socket.assigns.case_id)
 
@@ -68,5 +58,14 @@ defmodule HygeiaWeb.CaseLive.TestCreate do
       {:error, changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
     end
+  end
+
+  defp load_data(socket, case) do
+    case =
+      Repo.preload(case,
+        person: []
+      )
+
+    assign(socket, case: case)
   end
 end

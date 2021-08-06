@@ -2678,34 +2678,6 @@ defmodule Hygeia.CaseContext do
       |> versioning_extract()
 
   @doc """
-  Creates a test.
-
-  ## Examples
-
-      iex> create_test(%{field: value})
-      {:ok, %Test{}}
-
-      iex> create_test(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec create_test2(attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Test.t()} | {:error, Ecto.Changeset.t(Test.t())}
-  def create_test2(case, attrs \\ %{}),
-    do:
-      %Test{}
-      |> change_test(attrs)
-      |> versioning_insert()
-      # TODO: broadcast change
-      # |> broadcast(
-      #   "tests",
-      #   :create,
-      #   & &1.uuid,
-      #   &["cases:#{&1.recipient_case_uuid}", "cases:#{&1.propagator_case_uuid}"]
-      # )
-      |> versioning_extract()
-
-  @doc """
   Updates a test.
 
   ## Examples

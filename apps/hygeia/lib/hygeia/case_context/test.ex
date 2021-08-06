@@ -93,28 +93,23 @@ defmodule Hygeia.CaseContext.Test do
 
     @spec authorized?(
             resource :: Test.t(),
-            action :: :create | :details | :list | :update | :delete,
+            action :: :create | :details | :update | :delete,
             user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(
-          _case,
+          _test,
           action,
-          _user,
-          _meta
+          user,
+          %{case: %Case{tenant_uuid: tenant_uuid}}
         )
-        when action in [:details, :update, :delete, :versioning] do
-      # TODO: auth
-      true
+        when action in [:create, :details, :update, :delete] do
+      Enum.any?(
+        [:tracer, :super_user, :supervisor, :admin],
+        &User.has_role?(user, &1, tenant_uuid)
+      )
     end
 
-    def authorized?(_module, :deleted_versioning, user, _meta),
-      do: User.has_role?(user, :admin, :any)
-
-    def authorized?(_test, :create, :anonymous, _meta), do: false
-    def authorized?(_test, :create, %Person{}, _meta), do: false
-
-    def authorized?(_test, :create, user, _meta),
-      do: Enum.any?([:tracer, :supervisor, :admin], &User.has_role?(user, &1, :any))
+    def authorized?(_test, _action, _user, _meta), do: false
   end
 end

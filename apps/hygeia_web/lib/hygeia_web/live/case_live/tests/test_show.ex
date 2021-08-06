@@ -107,7 +107,7 @@ defmodule HygeiaWeb.CaseLive.TestShow do
 
   @impl Phoenix.LiveView
   def handle_event("delete", _params, %{assigns: %{test: test}} = socket) do
-    true = authorized?(test, :delete, get_auth(socket))
+    true = authorized?(test, :delete, get_auth(socket), %{case: test.case})
 
     {:ok, _} = CaseContext.delete_test(test)
 

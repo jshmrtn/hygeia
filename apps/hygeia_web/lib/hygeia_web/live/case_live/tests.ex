@@ -3,10 +3,8 @@ defmodule HygeiaWeb.CaseLive.Tests do
 
   use HygeiaWeb, :surface_view
   alias Hygeia.CaseContext
-  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Test
   alias Hygeia.Repo
-  alias Surface.Components.Form
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
   alias Surface.Components.LiveRedirect
@@ -46,8 +44,8 @@ defmodule HygeiaWeb.CaseLive.Tests do
         person: [tenant: []]
       )
 
-    socket
-    |> assign(
+    assign(
+      socket,
       case: case,
       page_title:
         "#{case.person.first_name} #{case.person.last_name} - #{gettext("Tests")} - #{gettext("Case")}"
@@ -63,7 +61,7 @@ defmodule HygeiaWeb.CaseLive.Tests do
   def handle_event("delete", %{"id" => id} = _params, socket) do
     test = Enum.find(socket.assigns.case.tests, &match?(%Test{uuid: ^id}, &1))
 
-    true = authorized?(test, :delete, get_auth(socket))
+    true = authorized?(test, :delete, get_auth(socket), %{case: test.case})
 
     {:ok, _} = CaseContext.delete_test(test)
 
