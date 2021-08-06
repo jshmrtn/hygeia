@@ -53,8 +53,8 @@
               id={"test-#{test.uuid}"}
               wrapper_tag={:tr}
             >
-              <td class="align-middle">{HygeiaCldr.Date.to_string!(test.tested_at)}</td>
-              <td class="align-middle">{HygeiaCldr.Date.to_string!(test.laboratory_reported_at)}</td>
+              <td class="align-middle">{format_date(test.tested_at)}</td>
+              <td class="align-middle">{format_date(test.laboratory_reported_at)}</td>
               <td class="align-middle">{Kind.translate(test.kind)}</td>
               <td class="align-middle"><span :if={!is_nil(test.result)}>{Result.translate(test.result)}</span></td>
               <td class="align-middle"><span :if={!is_nil(test.mutation)}>{test.mutation.name}</span></td>

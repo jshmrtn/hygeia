@@ -106,6 +106,18 @@ defmodule HygeiaWeb.CaseLive.TestShow do
   end
 
   @impl Phoenix.LiveView
+  def handle_event("delete", _params, %{assigns: %{test: test}} = socket) do
+    true = authorized?(test, :delete, get_auth(socket))
+
+    {:ok, _} = CaseContext.delete_test(test)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, gettext("Test deleted successfully"))
+     |> redirect(to: Routes.case_tests_path(socket, :show, test.case.uuid))}
+  end
+
+  @impl Phoenix.LiveView
   def handle_info({:deleted, %Test{}, _version}, socket) do
     {:noreply, load_data(socket, CaseContext.get_test!(socket.assigns.test.uuid))}
   end

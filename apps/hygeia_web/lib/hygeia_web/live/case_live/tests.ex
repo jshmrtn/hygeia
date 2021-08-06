@@ -8,8 +8,8 @@ defmodule HygeiaWeb.CaseLive.Tests do
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Link
-  alias Surface.Components.LiveRedirect
   alias Surface.Components.LivePatch
+  alias Surface.Components.LiveRedirect
   alias Hygeia.CaseContext.Test.Kind
   alias Hygeia.CaseContext.Test.Result
 
@@ -69,4 +69,7 @@ defmodule HygeiaWeb.CaseLive.Tests do
 
     {:noreply, socket}
   end
+
+  defp format_date(nil), do: nil
+  defp format_date(date), do: HygeiaCldr.Date.to_string!(date)
 end
