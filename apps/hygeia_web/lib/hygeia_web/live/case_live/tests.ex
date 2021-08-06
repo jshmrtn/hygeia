@@ -4,12 +4,12 @@ defmodule HygeiaWeb.CaseLive.Tests do
   use HygeiaWeb, :surface_view
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Test
+  alias Hygeia.CaseContext.Test.Kind
+  alias Hygeia.CaseContext.Test.Result
   alias Hygeia.Repo
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
   alias Surface.Components.LiveRedirect
-  alias Hygeia.CaseContext.Test.Kind
-  alias Hygeia.CaseContext.Test.Result
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do

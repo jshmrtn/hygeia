@@ -6,10 +6,10 @@ defmodule Hygeia.CaseContext.Test do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Entity
+  alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Test.Kind
   alias Hygeia.CaseContext.Test.Result
   alias Hygeia.MutationContext.Mutation
-  alias Hygeia.CaseContext.Person
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
