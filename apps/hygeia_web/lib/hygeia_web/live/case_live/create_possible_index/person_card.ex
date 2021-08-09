@@ -11,7 +11,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard do
   slot right
   slot bottom
 
-  def show_field(nil, _, default \\ "") do
+  def show_field(map, key, default \\ "")
+  def show_field(nil, _, "") do
     ""
   end
 

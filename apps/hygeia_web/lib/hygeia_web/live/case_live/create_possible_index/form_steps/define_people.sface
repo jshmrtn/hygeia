@@ -4,33 +4,33 @@
       :if={not @loading}
       for={@search_params}
       change="suggest_people"
-      submit="create_person"
+      submit="new_person_modal"
       opts={autocomplete: "off", id: "suggest-people-form", "phx-hook": "BlockNavigation"}
     >
       <div class="input-group">
         <Field name={:first_name} class="form-group">
           <Label />
-          <TextInput class="form-control" value={Map.get(@search_params, "first_name", "")} />
+          <TextInput class="form-control" opts={phx_debounce: debounce()} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <Field name={:last_name} class="form-group">
           <Label />
-          <TextInput class="form-control" value={Map.get(@search_params, "last_name", "")} />
+          <TextInput class="form-control" opts={phx_debounce: debounce()} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <Field name={:mobile} class="form-group">
           <Label />
-          <TextInput class="form-control" value={Map.get(@search_params, "mobile", "")} />
+          <TextInput class="form-control" opts={phx_debounce: debounce()} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <Field name={:landline} class="form-group">
           <Label />
-          <TextInput class="form-control" value={Map.get(@search_params, "landline", "")} />
+          <TextInput class="form-control" opts={phx_debounce: debounce()} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <Field name={:email} class="form-group">
           <Label />
-          <TextInput class="form-control" value={Map.get(@search_params, "email", "")} />
+          <TextInput class="form-control" opts={phx_debounce: debounce()} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <div class="input-group-append">
@@ -54,8 +54,8 @@
       <Form
         :if={not @loading}
         for={@changeset}
-        change="validate"
-        submit="save"
+        change="validate_person"
+        submit="add_person"
         opts={
           autocomplete: "off",
           id: "create-person-form",

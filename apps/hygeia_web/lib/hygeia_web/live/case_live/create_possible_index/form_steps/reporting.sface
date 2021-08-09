@@ -1,10 +1,6 @@
 <div class="container mt-5">
     <div class="row">
-      {#for {index, person} <-
-          Enum.with_index(
-            @people,
-            fn element, index -> {index, element} end
-          )}
+      {#for person <- @people}
         <div class="w-100">
           <PersonCard person={person}>
             <:bottom>

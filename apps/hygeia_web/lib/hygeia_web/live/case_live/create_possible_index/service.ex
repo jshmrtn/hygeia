@@ -1,7 +1,5 @@
 defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
-  import Ecto.Changeset
-
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person

@@ -9,9 +9,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Person
 
-  HygeiaWeb.CaseLive.CreatePossibleIndex.Service
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople
 
@@ -25,7 +24,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions do
   prop form_step, :string, required: true
   prop live_action, :atom, required: true
   prop current_form_data, :keyword, required: true
-  prop is_internal_propagator, :boolean, required: true
   prop supervisor_users, :map, required: true
   prop tracer_users, :map, required: true
 

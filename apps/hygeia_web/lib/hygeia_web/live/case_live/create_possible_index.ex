@@ -3,24 +3,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   use HygeiaWeb, :surface_view
 
-  import HygeiaWeb.Helpers.Changeset
   import HygeiaGettext
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Case.Phase
-  alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Person
-  alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
-  alias Hygeia.CommunicationContext
-  alias Hygeia.OrganisationContext.Affiliation
-  alias Hygeia.OrganisationContext.Organisation
-  alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.{
     DefineTransmission,
@@ -30,7 +21,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     Summary
   }
 
-  alias Surface.Components.LivePatch
   alias Surface.Components.Form.HiddenInput
   alias HygeiaWeb.Helpers.FormStep
 

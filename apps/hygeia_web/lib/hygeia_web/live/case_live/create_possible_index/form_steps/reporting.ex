@@ -7,18 +7,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.Reporting do
   import Ecto.Changeset
   import HygeiaGettext
 
-  alias Hygeia.CaseContext.Person.ContactMethod
-  alias Hygeia.TenantContext.Tenant
-  alias Hygeia.UserContext.User
-
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople
 
-  alias Surface.Components.Form
-  alias Surface.Components.Form.Select
   alias Surface.Components.Form.Checkbox
-  alias Surface.Components.Form.ErrorTag
-  alias Surface.Components.Form.Field
 
   @primary_key false
   embedded_schema do
@@ -28,10 +20,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.Reporting do
   prop form_step, :string, required: true
   prop live_action, :atom, required: true
   prop current_form_data, :keyword, required: true
-  prop tenants, :list, required: true
-  prop supervisor_users, :map, required: true
-  prop tracer_users, :map, required: true
-  prop is_internal_propagator, :boolean, required: true
 
   @impl Phoenix.LiveComponent
   def mount(socket) do

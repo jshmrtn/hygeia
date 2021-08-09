@@ -28,6 +28,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
   alias Surface.Components.Link
   alias Surface.Components.Form.Input.InputContext
 
+  @search_debounce 500
+
   embedded_schema do
     embeds_many :people, Person, on_replace: :delete
   end
@@ -127,7 +129,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("validate", %{"person" => params}, socket) do
+  def handle_event("validate_person", %{"person" => params}, socket) do
     changeset = %{
       CaseContext.change_person(%Person{}, params)
       | action: :validate
@@ -141,7 +143,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("save", %{"person" => person_params}, socket) do
+  def handle_event("add_person", %{"person" => person_params}, socket) do
     %{
       assigns: %{
         people_changeset: people_changeset,
@@ -421,7 +423,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("create_person", %{"search" => params}, socket) do
+  def handle_event("new_person_modal", %{"search" => params}, socket) do
     %{assigns: %{form_step: form_step}} = socket
 
     %{
@@ -740,5 +742,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
         uuid: Ecto.UUID.generate()
       })
     )
+  end
+
+  defp debounce() do
+    @search_debounce
   end
 end
