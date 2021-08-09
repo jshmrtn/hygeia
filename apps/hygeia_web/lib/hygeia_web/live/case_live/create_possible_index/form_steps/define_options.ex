@@ -59,42 +59,17 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions do
       |> get_field(:people, [])
       |> Enum.with_index()
       |> Enum.map(fn {person, index} ->
-        if case_params = case_params(params, "#{index}", "0") do
-          %{
-            "status" => case_status,
-            "supervisor_uuid" => supervisor_uuid,
-            "tracer_uuid" => tracer_uuid
-          } = case_params
-
-          person
-          |> CaseContext.change_person()
-          |> put_assoc(
-            :cases,
-            person
-            |> Map.get(:cases, [])
-            |> Enum.at(0, %Case{})
-            |> CaseContext.change_case(%{
-              status: case_status,
-              tenant_uuid: person.tenant_uuid,
-              tracer_uuid: tracer_uuid,
-              supervisor_uuid: supervisor_uuid
-            })
-            |> List.wrap()
-          )
-          |> apply_changes()
-        else
-          person
-        end
+        put_assignees(person, case_params(params, "#{index}", "0"))
       end)
 
-    cs = %{
+    changeset = %{
       DefinePeople.changeset(%DefinePeople{people: people})
       | action: :validate
     }
 
     {:noreply,
      socket
-     |> assign(:changeset, cs)}
+     |> assign(:changeset, changeset)}
   end
 
   @impl Phoenix.LiveComponent
@@ -123,6 +98,34 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions do
     ))
 
     {:noreply, socket}
+  end
+
+
+  defp put_assignee(case, type, uuid)
+
+  defp put_assignee(case, type, uuid),
+    do: Map.put(case, type, uuid)
+
+  defp put_assignees(person, case_params)
+  defp put_assignees(person, nil), do: person
+
+  defp put_assignees(person, case_params) do
+    %{
+      "status" => case_status,
+      "supervisor_uuid" => supervisor_uuid,
+      "tracer_uuid" => tracer_uuid
+    } = case_params
+
+    person
+    |> Map.put(
+      :cases,
+      person
+      |> Service.person_case()
+      |> put_assignee(:status, case_status)
+      |> put_assignee(:tracer_uuid, tracer_uuid)
+      |> put_assignee(:supervisor_uuid, supervisor_uuid)
+      |> List.wrap()
+    )
   end
 
   defp case_params(people_params, person_index, case_index) do
