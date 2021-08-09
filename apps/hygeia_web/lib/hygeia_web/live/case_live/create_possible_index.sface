@@ -4,11 +4,10 @@
   <HiddenInput field={:possible_index_submission_uuid} />
 
   <div class="container">
-
     <div class="row">
       <div class="text-center w-100">
         {#for {step, index} <- get_form_steps() |> Enum.with_index()}
-          <LivePatch 
+          <LivePatch
             to={Routes.case_create_possible_index_path(@socket, :index, step.name)}
             class={if @form_step == step.name, do: "font-weight-bold"}
             label={index}
@@ -50,16 +49,11 @@
     {/if}
 
     {#if @form_step == "reporting"}
-      <Reporting
-        id={@form_step}
-        {=@form_step}
-        {=@live_action}
-        {=@current_form_data}
-      />
+      <Reporting id={@form_step} {=@form_step} {=@live_action} {=@current_form_data} />
     {/if}
 
     {#if @form_step == "summary"}
-      <Summary 
+      <Summary
         id={@form_step}
         {=@form_step}
         {=@live_action}

@@ -1,10 +1,8 @@
 defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
-
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.Repo
-
 
   def upsert(people, transmission_data) do
     Repo.transaction(fn ->
@@ -20,10 +18,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
           person
           |> merge_case_phases(transmission_data)
           |> upsert_person_case()
-        end
-      )
+      end)
       |> Enum.map(fn
-          person -> insert_transmission(person, transmission_data)
+        person -> insert_transmission(person, transmission_data)
       end)
     end)
   end
@@ -72,19 +69,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
             |> Map.put(
               :phases,
               status_changed_phases ++
-              [
-                %Case.Phase{
-                  details: %Case.Phase.PossibleIndex{
-                    type: global_type,
-                    type_other: global_type_other
-                  },
-                  quarantine_order: true,
-                  order_date: DateTime.utc_now(),
-                  start: start_date,
-                  end: end_date
-                }
-              ]
-            ) |> then(&([&1]))
+                [
+                  %Case.Phase{
+                    details: %Case.Phase.PossibleIndex{
+                      type: global_type,
+                      type_other: global_type_other
+                    },
+                    quarantine_order: true,
+                    order_date: DateTime.utc_now(),
+                    start: start_date,
+                    end: end_date
+                  }
+                ]
+            )
+            |> then(&[&1])
           )
         else
           person
@@ -102,7 +100,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
                     }
                   }
                 ]
-            ) |> then(&([&1]))
+            )
+            |> then(&[&1])
           )
         end
 
@@ -122,15 +121,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
       %Case{} = old_case ->
         %Case{uuid: old_case.uuid}
-        |> CaseContext.change_case(
-          %{
-            person_uuid: old_case.person_uuid,
-            status: old_case.status,
-            tenant_uuid: old_case.tenant_uuid,
-            supervisor_uuid: old_case.supervisor_uuid,
-            tracer_uuid: old_case.tracer_uuid
-          }
-        )
+        |> CaseContext.change_case(%{
+          person_uuid: old_case.person_uuid,
+          status: old_case.status,
+          tenant_uuid: old_case.tenant_uuid,
+          supervisor_uuid: old_case.supervisor_uuid,
+          tracer_uuid: old_case.tracer_uuid
+        })
         |> Ecto.Changeset.put_embed(:phases, old_case.phases)
         |> Map.put(:errors, [])
         |> Map.put(:valid?, true)
@@ -176,7 +173,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
         propagator_ism_id: propagator_ism_id,
         propagator_case_uuid: propagator_case_uuid
       }) do
-
     {:ok, _transmission} =
       CaseContext.create_transmission(%{
         comment: comment,
@@ -295,6 +291,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
   def put_action_validate(%Ecto.Changeset{} = changeset, nil), do: changeset
 
   def put_action_validate(%Ecto.Changeset{} = changeset, _) do
-    Map.put changeset, :action, :validate
+    Map.put(changeset, :action, :validate)
   end
 end

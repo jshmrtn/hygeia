@@ -60,19 +60,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           case params["possible_index_submission_uuid"] do
             nil ->
               []
-              # %Person{tenant_uuid: tenant_uuid} = person1 = CaseContext.get_person!("fe607c86-b590-484e-aab7-b52db47a5c73")
-              # [
-              #   {DefinePeople,
-              #    %DefinePeople{
-              #      people: [
-              #         person1
-              #         |> Map.put(:cases, [
-              #          Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid}) |> CaseContext.change_case(%{phases: []})|> Ecto.Changeset.apply_changes()
-              #        ])
-              #      ]
-              #    }}
-              # For testing, replace person_uuid with existing one.
-              # ]
+
+            # %Person{tenant_uuid: tenant_uuid} = person1 = CaseContext.get_person!("fe607c86-b590-484e-aab7-b52db47a5c73")
+            # [
+            #   {DefinePeople,
+            #    %DefinePeople{
+            #      people: [
+            #         person1
+            #         |> Map.put(:cases, [
+            #          Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid}) |> CaseContext.change_case(%{phases: []})|> Ecto.Changeset.apply_changes()
+            #        ])
+            #      ]
+            #    }}
+            # For testing, replace person_uuid with existing one.
+            # ]
 
             # TODO to keyword list
             uuid ->
@@ -130,55 +131,55 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
     people
     |> Service.upsert(transmission_data)
-    #|> Service.send_notifications(reporting_data)
+
+    # |> Service.send_notifications(reporting_data)
 
     socket
 
-      #   %Ecto.Changeset{valid?: true} = changeset ->
-      #     %CreateSchema{
-      #       propagator_case_uuid: propagator_case_uuid,
-      #       possible_index_submission_uuid: possible_index_submission_uuid
-      #     } = global = Ecto.Changeset.apply_changes(changeset)
+    #   %Ecto.Changeset{valid?: true} = changeset ->
+    #     %CreateSchema{
+    #       propagator_case_uuid: propagator_case_uuid,
+    #       possible_index_submission_uuid: possible_index_submission_uuid
+    #     } = global = Ecto.Changeset.apply_changes(changeset)
 
-      #     propagator_case =
-      #       case propagator_case_uuid do
-      #         nil -> nil
-      #         id -> id |> CaseContext.get_case!() |> Repo.preload(person: [])
-      #       end
+    #     propagator_case =
+    #       case propagator_case_uuid do
+    #         nil -> nil
+    #         id -> id |> CaseContext.get_case!() |> Repo.preload(person: [])
+    #       end
 
-      #     {:ok, {cases, transmissions}} =
-      #       Repo.transaction(fn ->
-      #         cases =
-      #           changeset
-      #           |> CreateSchema.drop_empty_rows()
-      #           |> Ecto.Changeset.fetch_field!(:people)
-      #           |> Enum.map(&{&1, CreatePersonSchema.upsert(&1, socket, global, propagator_case)})
-      #           |> Enum.map(&CreateSchema.upsert_case(&1, global))
+    #     {:ok, {cases, transmissions}} =
+    #       Repo.transaction(fn ->
+    #         cases =
+    #           changeset
+    #           |> CreateSchema.drop_empty_rows()
+    #           |> Ecto.Changeset.fetch_field!(:people)
+    #           |> Enum.map(&{&1, CreatePersonSchema.upsert(&1, socket, global, propagator_case)})
+    #           |> Enum.map(&CreateSchema.upsert_case(&1, global))
 
-      #         transmissions = Enum.map(cases, &CreateSchema.create_transmission(&1, global))
+    #         transmissions = Enum.map(cases, &CreateSchema.create_transmission(&1, global))
 
-      #         :ok = close_submission(possible_index_submission_uuid)
+    #         :ok = close_submission(possible_index_submission_uuid)
 
-      #         {cases, transmissions}
-      #       end)
+    #         {cases, transmissions}
+    #       end)
 
-      #     :ok = send_confirmation_sms(socket, global, cases)
+    #     :ok = send_confirmation_sms(socket, global, cases)
 
-      #     :ok = send_confirmation_emails(socket, global, cases)
+    #     :ok = send_confirmation_emails(socket, global, cases)
 
-      #     socket =
-      #       put_flash(
-      #         socket,
-      #         :info,
-      #         ngettext("Created Case", "Created %{n} Cases", length(transmissions),
-      #           n: length(transmissions)
-      #         )
-      #       )
+    #     socket =
+    #       put_flash(
+    #         socket,
+    #         :info,
+    #         ngettext("Created Case", "Created %{n} Cases", length(transmissions),
+    #           n: length(transmissions)
+    #         )
+    #       )
 
-      #     {:noreply, socket |> handle_save_success(CreateSchema) |> maybe_block_navigation()}
-      # end
+    #     {:noreply, socket |> handle_save_success(CreateSchema) |> maybe_block_navigation()}
+    # end
   end
-
 
   @impl Phoenix.LiveView
   def handle_info(:proceed, socket) do
@@ -292,7 +293,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     else
       save(socket)
       |> put_flash(:success, gettext("The form has been submited."))
-      |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, @default_form_step))
+      |> push_patch(
+        to: Routes.case_create_possible_index_path(socket, :index, @default_form_step)
+      )
     end
   end
 
@@ -317,6 +320,4 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   #     [_ | _] -> push_event(socket, "block_navigation", %{})
   #   end
   # end
-
-
 end

@@ -1,4 +1,3 @@
-
 <fieldset disabled="disabled">
   <DefineTransmission
     id="summary-define-transmission"
@@ -6,7 +5,6 @@
     show_navigation={false}
   />
 </fieldset>
-
 
 <div class="container mt-5">
   <fieldset disabled="disabled">
@@ -21,21 +19,21 @@
               <div class="w-100">
                 <PersonCard person={form.data}>
                   <:feature>
-                      <div class="ml-auto">
-                        <Field name={:status} class="input-group">
-                          <HygeiaWeb.FieldLabel class="mb-0">
-                            <span class="input-group-text">
-                              {gettext("Directly close case")}
-                            </span>
-                          </HygeiaWeb.FieldLabel>
-                          <Select
-                            class="form-control"
-                            options={[{gettext("Yes"), :done}, {gettext("No"), :first_contact}]}
-                            prompt={gettext("Select")}
-                          />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                      </div>
+                    <div class="ml-auto">
+                      <Field name={:status} class="input-group">
+                        <HygeiaWeb.FieldLabel class="mb-0">
+                          <span class="input-group-text">
+                            {gettext("Directly close case")}
+                          </span>
+                        </HygeiaWeb.FieldLabel>
+                        <Select
+                          class="form-control"
+                          options={[{gettext("Yes"), :done}, {gettext("No"), :first_contact}]}
+                          prompt={gettext("Select")}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
                   </:feature>
 
                   <:right>
@@ -83,7 +81,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">{type}</th>
                                 <th scope="col">{gettext("Comment")}</th>
-                                <th></th>
+                                <th />
                               </tr>
                             </thead>
                             <tbody>
@@ -92,11 +90,18 @@
                                   <td>{i + 1}</td>
                                   <td>{contact.value}</td>
                                   <td>{contact.comment}</td>
-                                  <td><Checkbox 
-                                    opts={[
-                                    checked: (if contact.uuid in Reporting.selected_contacts(@reporting.contact_uuids, Reporting.case_uuid(form.data), "#{type}"), do: true),
-                                    hidden_input: "false"]}
-                                  />
+                                  <td><Checkbox opts={[
+                                      checked:
+                                        if(
+                                          contact.uuid in Reporting.selected_contacts(
+                                            @reporting.contact_uuids,
+                                            Reporting.case_uuid(form.data),
+                                            "#{type}"
+                                          ),
+                                          do: true
+                                        ),
+                                      hidden_input: "false"
+                                    ]} />
                                   </td>
                                 </tr>
                               {/for}
@@ -106,7 +111,6 @@
                       {/for}
                     {/if}
                   </:bottom>
-
                 </PersonCard>
               </div>
             </Inputs>

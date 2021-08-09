@@ -93,13 +93,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions do
 
     changeset
     |> apply_changes
-    |> then(&(
-        send(self(), {:return, {DefinePeople, &1}})
-    ))
+    |> then(&send(self(), {:return, {DefinePeople, &1}}))
 
     {:noreply, socket}
   end
-
 
   defp put_assignee(case, type, uuid)
 

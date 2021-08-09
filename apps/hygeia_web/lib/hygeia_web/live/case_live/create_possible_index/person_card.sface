@@ -23,9 +23,8 @@
             {gettext("This person is already present in the database")}
           </span>
         </div>
-        
-        <#slot name="feature" />
 
+        <#slot name="feature" />
       </div>
     </#slot>
   </div>

@@ -245,7 +245,6 @@
   </div>
 </div>
 
-
 <div class="row mb-3">
   {#if length(@suggestions) > 0}
     <div class="w-100">

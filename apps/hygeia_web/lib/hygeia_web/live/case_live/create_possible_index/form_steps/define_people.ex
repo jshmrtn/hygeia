@@ -375,7 +375,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
         _params,
         %{assigns: %{changeset: changeset}} = socket
       ) do
-
     {:noreply,
      socket
      |> assign(
@@ -517,9 +516,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
 
     people_changeset
     |> apply_changes
-    |> then(&(
-        send(self(), {:return, {__MODULE__, &1}})
-    ))
+    |> then(&send(self(), {:return, {__MODULE__, &1}}))
 
     {:noreply, socket}
   end
@@ -641,6 +638,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
   end
 
   defp get_suggested_person(suggestions, person_uuid, case_uuid \\ nil)
+
   defp get_suggested_person(suggestions, person_uuid, nil) do
     suggestions
     |> Enum.find_value(fn person ->

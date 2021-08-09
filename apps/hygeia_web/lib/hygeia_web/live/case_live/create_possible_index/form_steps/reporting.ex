@@ -248,7 +248,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.Reporting do
   def none_selected?(selected_contacts, case_uuid) do
     selected_contacts
     |> contact_groups(case_uuid)
-    |> Enum.reduce(true, fn ({_type, type_members}, truth) -> (Enum.empty?(type_members) and truth) end)
+    |> Enum.reduce(true, fn {_type, type_members}, truth ->
+      Enum.empty?(type_members) and truth
+    end)
   end
 
   defp contact_groups(contacts, case_uuid) do
