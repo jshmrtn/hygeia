@@ -1099,7 +1099,7 @@ defmodule Hygeia.StatisticsContext do
          from,
          to,
          first_contact,
-         include_zero_values \\ true
+         include_zero_values
        ) do
     from(registered_cases_per_day in NewRegisteredCasesPerDay,
       where:
