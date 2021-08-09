@@ -11,6 +11,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
 
+  HygeiaWeb.CaseLive.CreatePossibleIndex.Service
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople
 
@@ -139,12 +140,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions do
       :error ->
         nil
     end
-  end
-
-  def person_case(%Person{} = person) do
-    person
-    |> Map.get(:cases)
-    |> List.first()
   end
 
   @spec merge_assignee(

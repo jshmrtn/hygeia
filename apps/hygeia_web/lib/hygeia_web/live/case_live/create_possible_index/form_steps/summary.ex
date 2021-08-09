@@ -6,6 +6,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.Summary do
 
   import HygeiaGettext
 
+  alias Hygeia.CaseContext
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.{

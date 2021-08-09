@@ -19,7 +19,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.{
@@ -30,6 +30,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     Summary
   }
 
+  alias Surface.Components.LivePatch
   alias Surface.Components.Form.HiddenInput
   alias HygeiaWeb.Helpers.FormStep
 
@@ -68,13 +69,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         available_data =
           case params["possible_index_submission_uuid"] do
             nil ->
+              %Person{tenant_uuid: tenant_uuid} = person1 = CaseContext.get_person!("fe607c86-b590-484e-aab7-b52db47a5c73")
               [
                 {DefinePeople,
                  %DefinePeople{
                    people: [
-                     CaseContext.get_person!("a01d4b12-81ee-49e6-8166-0410cb653b45")
-                     |> Map.put(:cases, [
-                       CaseContext.change_case(%Case{}) |> Ecto.Changeset.apply_changes()
+                      person1
+                      |> Map.put(:cases, [
+                       Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid}) |> CaseContext.change_case(%{phases: []})|> Ecto.Changeset.apply_changes()
                      ])
                    ]
                  }}
@@ -130,7 +132,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       |> Keyword.get(DefinePeople, %DefinePeople{})
       |> Map.get(:people, [])
 
-    upsert(transmission_data, people) |> IO.inspect()
+    reporting_data =
+      socket.assigns.current_form_data
+      |> Keyword.get(Reporting, %Reporting{})
+
+    people
+    |> Service.upsert(transmission_data)
+    #|> Service.send_notifications(reporting_data)
 
     socket
 
@@ -179,137 +187,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       # end
   end
 
-  def upsert(transmission_data, people) do
-    Repo.transaction(fn ->
-      Enum.map(people, fn
-        %Person{inserted_at: nil} = person ->
-          person
-          |> merge_phases(transmission_data)
-          |> CaseContext.change_person()
-          |> CaseContext.create_person()
-
-        %Person{} = person ->
-          person
-          |> merge_phases(transmission_data)
-          |> CaseContext.change_person()
-          |> CaseContext.update_person()
-        end
-      )
-    end)
-  end
-
-  defp merge_phases(person, transmission_data) do
-    %{
-      date: date,
-      type: global_type,
-      type_other: global_type_other
-    } = transmission_data
-
-    existing_phases =
-      person
-      |> DefineOptions.person_case()
-      |> Map.get(:phases)
-      # Drop Empty Phases for Create Form
-      |> Enum.reject(&match?(%Case.Phase{details: nil}, &1))
-
-    existing_phases
-    |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.PossibleIndex{type: ^global_type}}, &1))
-    |> case do
-      nil ->
-        IO.inspect("OKOK")
-        if global_type in [:contact_person, :travel] do
-          {start_date, end_date} = phase_dates(date)
-
-          status_changed_phases =
-            Enum.map(existing_phases, fn
-              %Case.Phase{quarantine_order: true, start: old_phase_start} = phase ->
-                if Date.compare(old_phase_start, start_date) == :lt do
-                  %Case.Phase{
-                    phase
-                    | end: start_date,
-                      send_automated_close_email: false
-                  }
-                else
-                  %Case.Phase{phase | quarantine_order: false}
-                end
-
-              %Case.Phase{quarantine_order: quarantine_order} = phase
-              when quarantine_order in [false, nil] ->
-                phase
-            end)
-
-          person
-          |> Map.put(
-            :cases,
-            DefineOptions.person_case(person)
-            |> Map.put(
-              :phases,
-              status_changed_phases ++
-              [
-                %Case.Phase{
-                  details: %Case.Phase.PossibleIndex{
-                    type: global_type,
-                    type_other: global_type_other
-                  },
-                  quarantine_order: true,
-                  order_date: DateTime.utc_now(),
-                  start: start_date,
-                  end: end_date
-                }
-              ]
-            ) |> then(&([&1]))
-          )
-        else
-          person
-          |> Map.put(
-            :cases,
-            DefineOptions.person_case(person)
-            |> Map.put(
-              :phases,
-              existing_phases ++
-                [
-                  %Case.Phase{
-                    details: %Case.Phase.PossibleIndex{
-                      type: global_type,
-                      type_other: global_type_other
-                    }
-                  }
-                ]
-            ) |> then(&([&1]))
-          )
-        end
-
-      %Case.Phase{} ->
-        person
-    end
-  end
-
-  defp phase_dates(contact_date) do
-    case contact_date do
-      nil ->
-        {nil, nil}
-
-      %Date{} = contact_date ->
-        start_date = contact_date
-        end_date = Date.add(start_date, 9)
-
-        start_date =
-          if Date.compare(start_date, Date.utc_today()) == :lt do
-            Date.utc_today()
-          else
-            start_date
-          end
-
-        end_date =
-          if Date.compare(end_date, Date.utc_today()) == :lt do
-            Date.utc_today()
-          else
-            end_date
-          end
-
-        {start_date, end_date}
-    end
-  end
 
   @impl Phoenix.LiveView
   def handle_info(:proceed, socket) do
@@ -360,6 +237,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
+
+  def get_form_steps() do
+    @form_steps
+  end
 
   defp possible_index_submission_attrs(uuid) do
     %PossibleIndexSubmission{
@@ -421,297 +302,27 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     end
   end
 
-  defp close_submission(uuid)
-  defp close_submission(nil), do: :ok
+  # defp close_submission(uuid)
+  # defp close_submission(nil), do: :ok
 
-  defp close_submission(uuid) do
-    {:ok, _possible_index_submission} =
-      uuid
-      |> CaseContext.get_possible_index_submission!()
-      |> CaseContext.delete_possible_index_submission()
+  # defp close_submission(uuid) do
+  #   {:ok, _possible_index_submission} =
+  #     uuid
+  #     |> CaseContext.get_possible_index_submission!()
+  #     |> CaseContext.delete_possible_index_submission()
 
-    :ok
-  end
+  #   :ok
+  # end
 
-  defp send_confirmation_emails(socket, global, cases)
+  # defp maybe_block_navigation(%{assigns: %{changeset: changeset}} = socket) do
+  #   changeset
+  #   |> Ecto.Changeset.get_field(:people, [])
+  #   |> case do
+  #     [] -> push_event(socket, "unblock_navigation", %{})
+  #     [_] -> push_event(socket, "unblock_navigation", %{})
+  #     [_ | _] -> push_event(socket, "block_navigation", %{})
+  #   end
+  # end
 
-  defp send_confirmation_emails(_socket, %CreateSchema{send_confirmation_email: false}, _cases),
-    do: :ok
 
-  defp send_confirmation_emails(
-         socket,
-         %CreateSchema{send_confirmation_email: true, type: type},
-         cases
-       ) do
-    locale = Gettext.get_locale(HygeiaGettext)
-
-    [] =
-      cases
-      |> Enum.map(
-        &Task.async(fn ->
-          case List.last(&1.phases) do
-            %Phase{details: %Phase.PossibleIndex{type: ^type}} = phase ->
-              Gettext.put_locale(HygeiaGettext, locale)
-
-              CommunicationContext.create_outgoing_email(
-                &1,
-                quarantine_email_subject(),
-                quarantine_email_body(socket, &1, phase, :email)
-              )
-
-            %Phase{} ->
-              {:error, :not_latest_phase}
-          end
-        end)
-      )
-      |> Enum.map(&Task.await/1)
-      # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
-      |> Enum.reject(&match?({:ok, _}, &1))
-      |> Enum.reject(&match?({:error, :no_email}, &1))
-      |> Enum.reject(&match?({:error, :no_outgoing_mail_configuration}, &1))
-      |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
-
-    :ok
-  end
-
-  defp send_confirmation_sms(socket, global, cases)
-
-  defp send_confirmation_sms(_socket, %CreateSchema{send_confirmation_sms: false}, _cases),
-    do: :ok
-
-  defp send_confirmation_sms(
-         socket,
-         %CreateSchema{send_confirmation_sms: true, type: type},
-         cases
-       ) do
-    locale = Gettext.get_locale(HygeiaGettext)
-
-    [] =
-      cases
-      |> Enum.map(
-        &Task.async(fn ->
-          case List.last(&1.phases) do
-            %Phase{details: %Phase.PossibleIndex{type: ^type}, quarantine_order: false} ->
-              {:error, :no_quarantine_ordered}
-
-            %Phase{details: %Phase.PossibleIndex{type: ^type}, quarantine_order: true} = phase ->
-              Gettext.put_locale(HygeiaGettext, locale)
-
-              CommunicationContext.create_outgoing_sms(&1, quarantine_sms(socket, &1, phase))
-
-            %Phase{} ->
-              {:error, :not_latest_phase}
-          end
-        end)
-      )
-      |> Enum.map(&Task.await/1)
-      |> Enum.reject(&match?({:ok, _}, &1))
-      |> Enum.reject(&match?({:error, :no_mobile_number}, &1))
-      |> Enum.reject(&match?({:error, :sms_config_missing}, &1))
-      |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
-      |> Enum.reject(&match?({:error, :no_quarantine_ordered}, &1))
-
-    :ok
-  end
-
-  defp maybe_block_navigation(%{assigns: %{changeset: changeset}} = socket) do
-    changeset
-    |> Ecto.Changeset.get_field(:people, [])
-    |> case do
-      [] -> push_event(socket, "unblock_navigation", %{})
-      [_] -> push_event(socket, "unblock_navigation", %{})
-      [_ | _] -> push_event(socket, "block_navigation", %{})
-    end
-  end
-
-  @spec get_person_changes(person :: Person.t()) :: Ecto.Changeset.t()
-  def get_person_changes(person) do
-    person = Repo.preload(person, affiliations: [organisation: []])
-
-    drop_empty_recursively_and_remove_uuid(%{
-      "accepted_duplicate" => true,
-      "accepted_duplicate_uuid" => person.uuid,
-      "accepted_duplicate_human_readable_id" => person.human_readable_id,
-      "first_name" => person.first_name,
-      "last_name" => person.last_name,
-      "tenant_uuid" => person.tenant_uuid,
-      "mobile" =>
-        Enum.find_value(person.contact_methods, fn
-          %ContactMethod{type: :mobile, value: value} -> value
-          _other -> false
-        end),
-      "landline" =>
-        Enum.find_value(person.contact_methods, fn
-          %ContactMethod{type: :landline, value: value} -> value
-          _other -> false
-        end),
-      "email" =>
-        Enum.find_value(person.contact_methods, fn
-          %ContactMethod{type: :email, value: value} -> value
-          _other -> false
-        end),
-      "sex" => person.sex,
-      "birth_date" => person.birth_date,
-      "employer" =>
-        case person.affiliations do
-          [%Affiliation{organisation: %Organisation{name: name}} | _] -> name
-          [%Affiliation{comment: comment} | _] -> comment
-          _other -> nil
-        end,
-      "address" => person.address |> Ecto.embedded_dump(:json) |> recursive_string_keys()
-    })
-  end
-
-  @spec get_case_changes(person :: Case.t(), schema_module :: module()) :: Ecto.Changeset.t()
-  def get_case_changes(case, schema_module) do
-    phase_detail_module =
-      case schema_module do
-        HygeiaWeb.CaseLive.CreateIndex.CreateSchema -> Case.Phase.Index
-        HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema -> Case.Phase.PossibleIndex
-      end
-
-    keep_assignees =
-      Enum.any?(case.phases, &match?(%Case.Phase{details: %^phase_detail_module{}}, &1))
-
-    drop_empty_recursively_and_remove_uuid(%{
-      "accepted_duplicate" => true,
-      "accepted_duplicate_case_uuid" => case.uuid,
-      "clinical" =>
-        case case.clinical do
-          nil -> nil
-          clinical -> clinical |> Ecto.embedded_dump(:json) |> recursive_string_keys()
-        end,
-      "tracer_uuid" => if(keep_assignees, do: case.tracer_uuid),
-      "supervisor_uuid" => if(keep_assignees, do: case.supervisor_uuid),
-      "ism_case_id" =>
-        Enum.find_value(case.external_references, fn
-          %ExternalReference{type: :ism_case, value: value} -> value
-          _other -> false
-        end),
-      "ism_report_id" =>
-        Enum.find_value(case.external_references, fn
-          %ExternalReference{type: :ism_report, value: value} -> value
-          _other -> false
-        end)
-    })
-  end
-
-  @spec drop_empty_recursively_and_remove_uuid(input :: term) :: term
-  def drop_empty_recursively_and_remove_uuid(map) when is_map(map) and not is_struct(map),
-    do:
-      map
-      |> Enum.reject(&match?({:uuid, _value}, &1))
-      |> Enum.reject(&match?({_key, nil}, &1))
-      |> Enum.map(&{elem(&1, 0), drop_empty_recursively_and_remove_uuid(elem(&1, 1))})
-      |> Map.new()
-
-  def drop_empty_recursively_and_remove_uuid(list) when is_list(list),
-    do: list |> Enum.reject(&is_nil/1) |> Enum.map(&drop_empty_recursively_and_remove_uuid/1)
-
-  def drop_empty_recursively_and_remove_uuid(other), do: other
-
-  @spec decline_duplicate(
-          changeset :: Ecto.Changeset.t(),
-          person_changeset_uuid :: Ecto.UUID.t(),
-          schema_module :: atom
-        ) ::
-          Ecto.Changeset.t()
-  def decline_duplicate(changeset, person_changeset_uuid, schema_module),
-    do:
-      schema_module.changeset(
-        changeset.data,
-        changeset_update_params_by_id(
-          changeset,
-          :people,
-          %{uuid: person_changeset_uuid},
-          &Map.merge(&1, %{
-            "accepted_duplicate" => false,
-            "accepted_duplicate_uuid" => nil
-          })
-        )
-      )
-
-  @spec accept_duplicate(
-          changeset :: Ecto.Changeset.t(),
-          person_changeset_uuid :: Ecto.UUID.t(),
-          person :: Person.t() | {Case.t(), Person.t()},
-          schema_module :: atom
-        ) :: Ecto.Changeset.t()
-  def accept_duplicate(changeset, person_changeset_uuid, person_or_changeset, schema_module) do
-    schema_module.changeset(
-      changeset.data,
-      changeset_update_params_by_id(
-        changeset,
-        :people,
-        %{uuid: person_changeset_uuid},
-        fn old_params ->
-          Map.merge(
-            old_params,
-            case person_or_changeset do
-              {case, person} ->
-                Map.merge(get_person_changes(person), get_case_changes(case, schema_module))
-
-              person ->
-                get_person_changes(person)
-            end,
-            &recursive_map_merge/3
-          )
-        end
-      )
-    )
-  end
-
-  @spec remove_person(
-          changeset :: Ecto.Changeset.t(),
-          person_changeset_uuid :: Ecto.UUID.t(),
-          schema_module :: atom
-        ) :: Ecto.Changeset.t()
-  def remove_person(changeset, person_changeset_uuid, schema_module),
-    do:
-      schema_module.changeset(
-        changeset.data,
-        changeset_remove_from_params_by_id(changeset, :people, %{uuid: person_changeset_uuid})
-      )
-
-  @spec handle_save_success(socket :: Phoenix.LiveView.Socket.t(), schema :: atom) ::
-          Phoenix.LiveView.Socket.t()
-  def handle_save_success(socket, schema) do
-    case socket.assigns.return_to do
-      nil ->
-        assign(socket,
-          changeset:
-            schema.changeset(
-              socket.assigns.changeset.data,
-              update_changeset_param_relation(
-                socket.assigns.changeset,
-                :people,
-                [:uuid],
-                fn _list -> [] end
-              )
-            ),
-          suspected_duplicate_changeset_uuid: nil,
-          file: nil
-        )
-
-      uri ->
-        push_redirect(socket, to: uri)
-    end
-  end
-
-  defp recursive_map_merge(_key, %{} = a, %{} = b) when not is_struct(a) and not is_struct(b),
-    do: Map.merge(a, b, &recursive_map_merge/3)
-
-  defp recursive_map_merge(_key, _a, b), do: b
-
-  defp recursive_string_keys(%{} = map) when not is_struct(map) do
-    Map.new(map, fn
-      {key, value} when is_atom(key) -> {Atom.to_string(key), recursive_string_keys(value)}
-      {key, value} -> {key, recursive_string_keys(value)}
-    end)
-  end
-
-  defp recursive_string_keys(list) when is_list(list),
-    do: Enum.map(list, &recursive_string_keys/1)
-
-  defp recursive_string_keys(other), do: other
 end

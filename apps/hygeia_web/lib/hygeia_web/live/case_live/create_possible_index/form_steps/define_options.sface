@@ -12,21 +12,21 @@
             <div class="w-100">
               <PersonCard person={form.data}>
                 <:feature>
-                    <div class="ml-auto">
-                      <Field name={:status} class="input-group">
-                        <HygeiaWeb.FieldLabel class="mb-0">
-                          <span class="input-group-text">
-                            {gettext("Directly close case")}
-                          </span>
-                        </HygeiaWeb.FieldLabel>
-                        <Select
-                          class="form-control"
-                          options={[{gettext("Yes"), :done}, {gettext("No"), :first_contact}]}
-                          prompt={gettext("Select")}
-                        />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                    </div>
+                  <div class="ml-auto">
+                    <Field name={:status} class="input-group">
+                      <HygeiaWeb.FieldLabel class="mb-0">
+                        <span class="input-group-text">
+                          {gettext("Directly close case")}
+                        </span>
+                      </HygeiaWeb.FieldLabel>
+                      <Select
+                        class="form-control"
+                        options={[{gettext("Yes"), :done}, {gettext("No"), :first_contact}]}
+                        prompt={gettext("Select")}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
                 </:feature>
 
                 <:right>
