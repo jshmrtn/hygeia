@@ -3,7 +3,7 @@
     <Form
       :if={not @loading}
       for={@search_params}
-      change="suggest"
+      change="suggest_people"
       submit="create_person"
       opts={autocomplete: "off", id: "suggest-people-form", "phx-hook": "BlockNavigation"}
     >

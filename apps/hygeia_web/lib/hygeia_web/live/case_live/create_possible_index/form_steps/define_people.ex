@@ -160,7 +160,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
         valid_person
         |> set_tenant(tenants)
         |> put_empty_case()
-        |> include_person(live_action, params, people_changeset)
+        |> include_person(people_changeset, live_action, params)
         |> apply_action(:validate)
         |> case do
           {:ok, struct} ->
@@ -184,7 +184,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("suggest", %{"search" => search_params}, socket) do
+  def handle_event("suggest_people", %{"search" => search_params}, socket) do
     %{assigns: %{suggestions: prev_suggestions}} = socket
 
     changeset =
@@ -196,7 +196,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
       changeset
       |> case do
         %{valid?: true} ->
-          CaseContext.suggest_people_by_params(changeset |> apply_changes(), [
+          CaseContext.suggest_people_by_params(search_params, [
             :tenant,
             cases: :hospitalizations
           ])
@@ -247,12 +247,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
     } = socket
 
     suggestions
-    |> Enum.find_value(fn person ->
-      if person.uuid == person_uuid,
-        do:
-          person
-          |> put_empty_case()
-    end)
+    |> get_suggested_person(person_uuid)
     |> add_person(people_changeset)
     |> apply_action(:validate)
     |> case do
@@ -287,12 +282,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
     } = socket
 
     suggestions
-    |> Enum.find_value(fn person ->
-      if person.uuid == person_uuid,
-        do:
-          person
-          |> Map.put(:cases, [Enum.find(person.cases, fn p_case -> p_case.uuid == case_uuid end)])
-    end)
+    |> get_suggested_person(person_uuid, case_uuid)
     |> add_person(people_changeset)
     |> apply_action(:validate)
     |> case do
@@ -302,8 +292,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
         {:noreply,
          socket
          # |> assign(:search_params, Search.changeset(%Search{}))
-         |> assign(:suggestions, [])
          # TODO investigate bug
+         |> assign(:suggestions, [])
          |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, form_step))}
 
       {:error, _changeset} ->
@@ -383,7 +373,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
         _params,
         %{assigns: %{changeset: changeset}} = socket
       ) do
-    IO.inspect(get_field(changeset, :contact_methods))
 
     {:noreply,
      socket
@@ -558,7 +547,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
     end
   end
 
-  defp handle_action(socket, :edit, %{"form_step" => form_step, "index" => index}) do
+  defp handle_action(socket, :edit, %{"form_step" => _form_step, "index" => index}) do
     person_list =
       socket.assigns
       |> Map.get(:people_changeset)
@@ -603,9 +592,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
     |> cast_embed(:people, required: true)
   end
 
-  defp include_person(person, live_action, params, people_changeset)
+  defp include_person(person, people_changeset, live_action, params)
 
-  defp include_person(%Person{} = person, :edit, params, people_changeset) do
+  defp include_person(%Person{} = person, people_changeset, :edit, params) do
     index =
       params
       |> Map.get("index")
@@ -622,12 +611,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
           |> get_field(:people, [])
           |> List.replace_at(String.to_integer(index), person)
         )
-        |> apply_changes()
-        |> changeset()
     end
   end
 
-  defp include_person(%Person{} = person, _, _params, people_changeset) do
+  defp include_person(%Person{} = person, people_changeset, _, _params) do
     add_person(person, people_changeset)
   end
 
@@ -652,6 +639,27 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
     )
     |> apply_changes()
     |> changeset()
+  end
+
+  defp get_suggested_person(suggestions, person_uuid, case_uuid \\ nil)
+  defp get_suggested_person(suggestions, person_uuid, nil) do
+    suggestions
+    |> Enum.find_value(fn person ->
+      if person.uuid == person_uuid,
+        do:
+          person
+          |> put_empty_case()
+    end)
+  end
+
+  defp get_suggested_person(suggestions, person_uuid, case_uuid) do
+    suggestions
+    |> Enum.find_value(fn person ->
+      if person.uuid == person_uuid,
+        do:
+          person
+          |> Map.put(:cases, [Enum.find(person.cases, fn p_case -> p_case.uuid == case_uuid end)])
+    end)
   end
 
   defp set_tenant(%Person{tenant_uuid: tenant_uuid} = person, tenants) do

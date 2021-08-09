@@ -58,7 +58,7 @@
                   </div>
                 </:right>
                 <:bottom>
-                  {#if p_case = person_case(form.data)}
+                  {#if p_case = Service.person_case(form.data)}
                     <span>{p_case.inserted_at}</span>
                   {/if}
                 </:bottom>

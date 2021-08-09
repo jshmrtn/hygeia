@@ -169,11 +169,11 @@ defmodule Hygeia.CaseContext do
   @spec suggest_people_by_params(params :: Map.t(), preload :: List.t(), limit :: pos_integer()) ::
           [Person.t()]
   def suggest_people_by_params(params, preload, limit \\ 9) do
-    first_name = Map.get(params, :first_name, "")
-    last_name = Map.get(params, :last_name, "")
-    email = Map.get(params, :email, "")
-    mobile = Map.get(params, :mobile, "")
-    landline = Map.get(params, :landline, "")
+    first_name = Map.get(params, "first_name", "")
+    last_name = Map.get(params, "last_name", "")
+    email = Map.get(params, "email", "")
+    mobile = Map.get(params, "mobile", "")
+    landline = Map.get(params, "landline", "")
 
     Repo.all(
       from(person in Person,

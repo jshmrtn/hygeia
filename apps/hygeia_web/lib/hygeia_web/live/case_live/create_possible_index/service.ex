@@ -4,17 +4,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.Person
-  alias Hygeia.CommunicationContext
   alias Hygeia.Repo
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
 
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.{
-    DefineTransmission,
-    DefinePeople,
-    DefineOptions
-  }
 
   def upsert(people, transmission_data) do
     Repo.transaction(fn ->
