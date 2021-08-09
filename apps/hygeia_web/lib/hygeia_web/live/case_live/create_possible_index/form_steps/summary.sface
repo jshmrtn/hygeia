@@ -127,6 +127,6 @@
     :on-click="next"
     phx-disable-with={gettext("Saving...")}
   >
-    {gettext("Next")}
+    {gettext("Submit")}
   </button>
 </div>

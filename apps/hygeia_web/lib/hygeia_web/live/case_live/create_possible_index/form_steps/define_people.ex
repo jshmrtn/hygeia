@@ -516,15 +516,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefinePeople do
     %{assigns: %{people_changeset: people_changeset}} = socket
 
     people_changeset
-    |> apply_action(:validate)
-    |> case do
-      {:ok, struct} ->
-        send(self(), {:return, {__MODULE__, struct}})
-        {:noreply, socket}
+    |> apply_changes
+    |> then(&(
+        send(self(), {:return, {__MODULE__, &1}})
+    ))
 
-      {:error, _people_changeset} ->
-        {:noreply, socket}
-    end
+    {:noreply, socket}
   end
 
   defp handle_action(socket, :show, %{"form_step" => form_step, "index" => index}) do

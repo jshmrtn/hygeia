@@ -117,15 +117,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions do
     %{assigns: %{changeset: changeset}} = socket
 
     changeset
-    |> apply_action(:validate)
-    |> case do
-      {:ok, struct} ->
-        send(self(), {:return, {DefinePeople, struct}})
-        {:noreply, socket}
+    |> apply_changes
+    |> then(&(
+        send(self(), {:return, {DefinePeople, &1}})
+    ))
 
-      {:error, _changeset} ->
-        {:noreply, socket}
-    end
+    {:noreply, socket}
   end
 
   defp case_params(people_params, person_index, case_index) do
@@ -139,20 +136,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions do
         nil
     end
   end
-
-  @spec merge_assignee(
-          changeset :: Ecto.Changeset.t(),
-          type :: atom,
-          uuid :: Ecto.UUID.t(),
-          default_uuid :: Ecto.UUID.t()
-        ) :: Ecto.Changeset.t()
-  def merge_assignee(changeset, type, uuid, default_uuid)
-
-  def merge_assignee(changeset, type, nil, default_uuid),
-    do: Ecto.Changeset.put_change(changeset, type, default_uuid)
-
-  def merge_assignee(changeset, type, uuid, _default_uuid),
-    do: Ecto.Changeset.put_change(changeset, type, uuid)
 
   def assignees_form_options(tenant_bindings, target_tenant_uuid) do
     tenant_bindings

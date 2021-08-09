@@ -22,8 +22,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
           |> upsert_person_case()
         end
       )
-      |> Enum.map(fn person ->
-        insert_transmission(person, transmission_data)
+      |> Enum.map(fn
+          person -> insert_transmission(person, transmission_data)
       end)
     end)
   end

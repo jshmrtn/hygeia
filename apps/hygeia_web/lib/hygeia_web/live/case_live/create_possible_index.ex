@@ -7,7 +7,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
@@ -21,6 +20,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     Summary
   }
 
+  alias Surface.Components.LivePatch
   alias Surface.Components.Form.HiddenInput
   alias HygeiaWeb.Helpers.FormStep
 
@@ -59,18 +59,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         available_data =
           case params["possible_index_submission_uuid"] do
             nil ->
-              %Person{tenant_uuid: tenant_uuid} = person1 = CaseContext.get_person!("fe607c86-b590-484e-aab7-b52db47a5c73")
-              [
-                {DefinePeople,
-                 %DefinePeople{
-                   people: [
-                      person1
-                      |> Map.put(:cases, [
-                       Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid}) |> CaseContext.change_case(%{phases: []})|> Ecto.Changeset.apply_changes()
-                     ])
-                   ]
-                 }}
-              ]
+              []
+              # %Person{tenant_uuid: tenant_uuid} = person1 = CaseContext.get_person!("fe607c86-b590-484e-aab7-b52db47a5c73")
+              # [
+              #   {DefinePeople,
+              #    %DefinePeople{
+              #      people: [
+              #         person1
+              #         |> Map.put(:cases, [
+              #          Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid}) |> CaseContext.change_case(%{phases: []})|> Ecto.Changeset.apply_changes()
+              #        ])
+              #      ]
+              #    }}
+              # For testing, replace person_uuid with existing one.
+              # ]
 
             # TODO to keyword list
             uuid ->
@@ -289,6 +291,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       push_patch(socket, to: Routes.case_create_possible_index_path(socket, :index, step_name))
     else
       save(socket)
+      |> put_flash(:success, gettext("The form has been submited."))
+      |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, @default_form_step))
     end
   end
 
