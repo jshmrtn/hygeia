@@ -89,7 +89,7 @@ defmodule Hygeia.CaseContext.Test do
     alias Hygeia.UserContext.User
 
     @spec preload(resource :: Test.t()) :: Test.t()
-    def preload(resource), do: Repo.preload(resource, [])
+    def preload(resource), do: Repo.preload(resource, case: [])
 
     @spec authorized?(
             resource :: Test.t(),
@@ -103,7 +103,20 @@ defmodule Hygeia.CaseContext.Test do
           user,
           %{case: %Case{tenant_uuid: tenant_uuid}}
         )
-        when action in [:create, :details, :update, :delete] do
+        when action in [:create, :list] do
+      Enum.any?(
+        [:tracer, :super_user, :supervisor, :admin],
+        &User.has_role?(user, &1, tenant_uuid)
+      )
+    end
+    
+    def authorized?(
+          %Test{case: %Case{tenant_uuid: tenant_uuid}},
+          action,
+          user,
+          _meta
+        )
+        when action in [:details, :update, :delete] do
       Enum.any?(
         [:tracer, :super_user, :supervisor, :admin],
         &User.has_role?(user, &1, tenant_uuid)
