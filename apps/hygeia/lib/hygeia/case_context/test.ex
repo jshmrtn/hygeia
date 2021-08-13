@@ -109,7 +109,7 @@ defmodule Hygeia.CaseContext.Test do
         &User.has_role?(user, &1, tenant_uuid)
       )
     end
-    
+
     def authorized?(
           %Test{case: %Case{tenant_uuid: tenant_uuid}},
           action,
