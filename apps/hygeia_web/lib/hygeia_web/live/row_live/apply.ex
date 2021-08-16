@@ -327,12 +327,4 @@ defmodule HygeiaWeb.RowLive.Apply do
 
     display_name
   end
-
-  defp value_or_default(value, default) do
-    case value do
-      nil -> default
-      "" -> default
-      _other -> value
-    end
-  end
 end

@@ -4,6 +4,8 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Death do
 
   use Hygeia.ImportContext.Planner.Generator
 
+  import HygeiaGettext
+
   alias Hygeia.ImportContext.Planner.Action.PatchPhaseDeath
   alias Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11
   alias Hygeia.Repo
@@ -49,6 +51,36 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Death do
       ISM_2021_06_11.add_note(),
       &ISM_2021_06_11.save/3
     ]
+
+  @impl Hygeia.ImportContext.Planner.Generator
+  def id_fields, do: [@fields.case_id]
+
+  @impl Hygeia.ImportContext.Planner.Generator
+  def list_fields, do: [@fields.case_id, @fields.first_name, @fields.last_name]
+
+  @impl Hygeia.ImportContext.Planner.Generator
+  def display_field_grouping,
+    do: %{
+      pgettext("ISM 2021-06-11 Death Field Group", "References") =>
+        MapSet.new([
+          @fields.case_id,
+          @fields.report_id,
+          @fields.patient_id
+        ]),
+      pgettext("ISM 2021-06-11 Death Field Group", "Personal") =>
+        MapSet.new([
+          @fields.first_name,
+          @fields.last_name,
+          @fields.phone,
+          @fields.birth_date,
+          @fields.sex,
+          @fields.place,
+          @fields.country,
+          @fields.tenant_subdivision,
+          @fields.address,
+          @fields.zip
+        ])
+    }
 
   defp patch_phase_death(_row, _params, _preceeding_steps), do: {:certain, %PatchPhaseDeath{}}
 end

@@ -16,9 +16,15 @@ defmodule Hygeia.ImportContext.Import.Type do
   def translate(:ism_2021_06_11_test), do: pgettext("Case Import Type", "ISM (06/11/2021) Test")
 
   @spec id_fields(type :: t) :: [String.t()]
-  def id_fields(type)
-  def id_fields(:ism_2021_06_11_death), do: ["Fall ID"]
-  def id_fields(:ism_2021_06_11_test), do: ["Fall ID"]
+  def id_fields(type), do: action_plan_generator(type).id_fields()
+
+  @spec display_field_grouping(type :: t) :: %{
+          (section_name :: String.t()) => MapSet.t(field_name :: String.t())
+        }
+  def display_field_grouping(type), do: action_plan_generator(type).display_field_grouping()
+
+  @spec list_fields(type :: t) :: [field_name :: String.t()]
+  def list_fields(type), do: action_plan_generator(type).list_fields()
 
   @spec action_plan_generator(type :: t) :: module
   def action_plan_generator(type)
