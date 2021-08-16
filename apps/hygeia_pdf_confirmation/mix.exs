@@ -52,8 +52,8 @@ defmodule HygeiaPdfConfirmation.MixProject do
       {:hygeia, in_umbrella: true},
       {:jsone, "~> 1.5", override: true},
       {:pdf_generator, "~> 0.6.2"},
-      {:phoenix, "~> 1.5.6"},
-      {:phoenix_html, "~> 2.11"}
+      {:phoenix, "~> 1.5"},
+      {:phoenix_html, "~> 2.11 or ~> 3.0"}
     ]
   end
 
