@@ -64,7 +64,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
   def action_plan_steps,
     do: [
       ISM_2021_06_11.select_tenant(@fields),
-      ISM_2021_06_11.select_case(@fields),
+      ISM_2021_06_11.select_case(@fields, @fields.laboratory_reported_at),
       &ISM_2021_06_11.patch_phase/3,
       ISM_2021_06_11.patch_person(@fields),
       ISM_2021_06_11.patch_tests(@fields),
