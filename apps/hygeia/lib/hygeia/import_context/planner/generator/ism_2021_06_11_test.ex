@@ -4,6 +4,8 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
 
   use Hygeia.ImportContext.Planner.Generator
 
+  import HygeiaGettext
+
   alias Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11
   alias Hygeia.Repo
   alias Hygeia.TenantContext
@@ -72,4 +74,59 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
       ISM_2021_06_11.add_note(),
       &ISM_2021_06_11.save/3
     ]
+
+  @impl Hygeia.ImportContext.Planner.Generator
+  def id_fields, do: [@fields.case_id]
+
+  @impl Hygeia.ImportContext.Planner.Generator
+  def list_fields, do: [@fields.case_id, @fields.first_name, @fields.last_name]
+
+  @impl Hygeia.ImportContext.Planner.Generator
+  # credo:disable-for-next-line Credo.Check.Refactor.ABCSize
+  def display_field_grouping,
+    do: %{
+      pgettext("ISM 2021-06-11 Test Field Group", "References") =>
+        MapSet.new([
+          @fields.case_id,
+          @fields.report_id,
+          @fields.patient_id,
+          @fields.test_reference
+        ]),
+      pgettext("ISM 2021-06-11 Test Field Group", "Personal") =>
+        MapSet.new([
+          @fields.first_name,
+          @fields.last_name,
+          @fields.phone,
+          @fields.email,
+          @fields.birth_date,
+          @fields.sex,
+          @fields.place,
+          @fields.zip,
+          @fields.subdivision,
+          @fields.country,
+          @fields.tenant_subdivision
+        ]),
+      pgettext("ISM 2021-06-11 Test Field Group", "Test") =>
+        MapSet.new([
+          @fields.tested_at,
+          @fields.laboratory_reported_at,
+          @fields.test_result,
+          @fields.test_kind,
+          @fields.reporting_unit_name,
+          @fields.reporting_unit_division,
+          @fields.reporting_unit_person_first_name,
+          @fields.reporting_unit_person_last_name,
+          @fields.reporting_unit_address,
+          @fields.reporting_unit_zip,
+          @fields.reporting_unit_place,
+          @fields.sponsor_name,
+          @fields.sponsor_division,
+          @fields.sponsor_person_first_name,
+          @fields.sponsor_person_last_name,
+          @fields.sponsor_address,
+          @fields.sponsor_zip,
+          @fields.sponsor_place,
+          @fields.mutation_ism_code
+        ])
+    }
 end
