@@ -430,6 +430,20 @@ jobs:
       - run: docker push ghcr.io/${{ github.repository }}:${{ steps.branch_name.outputs.SOURCE_TAG }}
         if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v')
   
+  automerge_dependabot:
+    name: "Automerge Dependabot PRs"
+
+    runs-on: ubuntu-latest
+
+    needs: ['docker_build', 'dialyzer_test', 'test']
+
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v2.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Major Updates need to be merged manually
+          target: minor
+
   notify_jm_gitlab:
     name: "Notify JM GitLab"
 
