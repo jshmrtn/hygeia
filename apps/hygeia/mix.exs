@@ -78,7 +78,10 @@ defmodule Hygeia.MixProject do
       {:paginator, "~> 1.0"},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_pubsub, "~> 2.0"},
-      {:polymorphic_embed, "~> 1.3"},
+      # TODO: Revert to released version when this PR is merged and released:
+      # - https://github.com/mathieuprog/polymorphic_embed/pull/432
+      {:polymorphic_embed, "~> 1.3",
+       github: "maennchen/polymorphic_embed", branch: "phoenix_html_v3"},
       {:postgrex, ">= 0.0.0"},
       {:sedex, "~> 1.0"},
       {:sentry, "~> 8.0"},
