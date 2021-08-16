@@ -77,7 +77,8 @@ defmodule HygeiaWeb.ImportLive.Index do
       Repo.paginate(
         from(import in Import,
           where: import.tenant_uuid in ^authorized_tenant_uuids,
-          preload: :tenant
+          preload: :tenant,
+          order_by: [desc: import.inserted_at]
         ),
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: [inserted_at: :desc])
       )
