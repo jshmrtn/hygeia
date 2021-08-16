@@ -25,7 +25,8 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Death do
               address: "Strasse",
               zip: "PLZ",
               place: "Wohnort",
-              country: "Wohnsitzland"
+              country: "Wohnsitzland",
+              date_of_death: "Todesdatum"
             },
             &{elem(&1, 0), &1 |> elem(1) |> String.downcase() |> String.trim()}
           )
@@ -43,7 +44,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Death do
   def action_plan_steps,
     do: [
       ISM_2021_06_11.select_tenant(@fields),
-      ISM_2021_06_11.select_case(@fields),
+      ISM_2021_06_11.select_case(@fields, @fields.date_of_death),
       &ISM_2021_06_11.patch_phase/3,
       ISM_2021_06_11.patch_person(@fields),
       &patch_phase_death/3,

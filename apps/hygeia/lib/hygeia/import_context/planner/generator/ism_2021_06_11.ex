@@ -80,58 +80,96 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     end
   end
 
-  @spec select_case(field_mapping :: field_mapping) ::
+  @spec select_case(field_mapping :: field_mapping, relevance_date_field :: String.t()) ::
           (row :: Row.t(),
            params :: Planner.Generator.params(),
            preceeding_action_plan :: [Planner.Action.t()] ->
              {Planner.certainty(), Planner.Action.t()})
-  def select_case(field_mapping) do
+  def select_case(field_mapping, relevance_date_field) do
     fn
       _row, %{predecessor: %Row{case: %Case{} = case}}, _preceeding_steps ->
         case = Repo.preload(case, person: [], tenant: [], tests: [])
         {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}
 
-      _row, %{changes: changes}, _preceeding_steps ->
-        Enum.reduce_while(
-          [
-            fn ->
-              find_case_by_external_reference(
-                :ism_case,
-                Row.get_change_field(changes, [field_mapping.case_id])
-              )
-            end,
-            fn ->
-              find_case_by_external_reference(
-                :ism_report,
-                Row.get_change_field(changes, [field_mapping.report_id])
-              )
-            end,
-            fn ->
-              find_person_by_external_reference(
-                :ism_patient,
-                Row.get_change_field(changes, [field_mapping.patient_id])
-              )
-            end,
-            fn ->
-              find_person_by_name(
-                Row.get_change_field(changes, [field_mapping.first_name]),
-                Row.get_change_field(changes, [field_mapping.last_name]),
-                changes,
-                field_mapping
-              )
-            end,
-            fn -> find_person_by_phone(Row.get_change_field(changes, [field_mapping.phone])) end,
-            fn -> find_person_by_email(Row.get_change_field(changes, [field_mapping[:email]])) end
-          ],
-          {:certain, %Planner.Action.SelectCase{}},
-          fn search_fn, acc ->
-            case search_fn.() do
-              {:ok, {certainty, action}} -> {:halt, {certainty, action}}
-              :error -> {:cont, acc}
-            end
-          end
-        )
+      _row, %{changes: changes, data: data}, _preceeding_steps ->
+        data
+        |> Row.get_change_field([relevance_date_field])
+        |> Date.from_iso8601()
+        |> case do
+          {:ok, date} ->
+            select_case_with_relevance_date(field_mapping, date, changes)
+
+          {:error, _reason} ->
+            select_case_with_relevance_date(
+              field_mapping,
+              Date.utc_today(),
+              changes,
+              :input_needed
+            )
+        end
     end
+  end
+
+  defp select_case_with_relevance_date(
+         field_mapping,
+         relevance_date,
+         changes,
+         max_certainty \\ :certain
+       ) do
+    {certainty, action} =
+      Enum.reduce_while(
+        [
+          fn ->
+            find_case_by_external_reference(
+              :ism_case,
+              Row.get_change_field(changes, [field_mapping.case_id])
+            )
+          end,
+          fn ->
+            find_case_by_external_reference(
+              :ism_report,
+              Row.get_change_field(changes, [field_mapping.report_id])
+            )
+          end,
+          fn ->
+            find_person_by_external_reference(
+              :ism_patient,
+              Row.get_change_field(changes, [field_mapping.patient_id]),
+              relevance_date
+            )
+          end,
+          fn ->
+            find_person_by_name(
+              Row.get_change_field(changes, [field_mapping.first_name]),
+              Row.get_change_field(changes, [field_mapping.last_name]),
+              changes,
+              field_mapping,
+              relevance_date
+            )
+          end,
+          fn ->
+            find_person_by_phone(
+              Row.get_change_field(changes, [field_mapping.phone]),
+              relevance_date
+            )
+          end,
+          fn ->
+            find_person_by_email(
+              Row.get_change_field(changes, [field_mapping[:email]]),
+              relevance_date
+            )
+          end
+        ],
+        {:certain, %Planner.Action.SelectCase{}},
+        fn search_fn, acc ->
+          case search_fn.() do
+            {:ok, {certainty, action}} -> {:halt, {certainty, action}}
+            :error -> {:cont, acc}
+          end
+        end
+      )
+
+    {Planner.limit_certainty(max_certainty, certainty), action}
   end
 
   defp find_case_by_external_reference(type, id)
@@ -147,26 +185,29 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     end
   end
 
-  defp find_person_by_external_reference(type, id)
-  defp find_person_by_external_reference(_type, ""), do: :error
-  defp find_person_by_external_reference(_type, nil), do: :error
+  defp find_person_by_external_reference(type, id, relevance_date)
+  defp find_person_by_external_reference(_type, "", _relevance_date), do: :error
+  defp find_person_by_external_reference(_type, nil, _relevance_date), do: :error
 
-  defp find_person_by_external_reference(type, id) do
+  defp find_person_by_external_reference(type, id, relevance_date) do
     with [person | _] <- CaseContext.list_people_by_external_reference(type, to_string(id)),
          person <- Repo.preload(person, cases: [tenant: [], tests: []]) do
-      {:ok, select_active_cases(person)}
+      {:ok, select_active_cases(person, relevance_date)}
     else
       [] -> :error
     end
   end
 
-  defp find_person_by_name(first_name, last_name, changes, field_mapping)
-  defp find_person_by_name(nil, _last_name, _changes, _field_mapping), do: :error
-  defp find_person_by_name("", _last_name, _changes, _field_mapping), do: :error
-  defp find_person_by_name(_first_name, nil, _changes, _field_mapping), do: :error
-  defp find_person_by_name(_first_name, "", _changes, _field_mapping), do: :error
+  defp find_person_by_name(first_name, last_name, changes, field_mapping, relevance_date)
+  defp find_person_by_name(nil, _last_name, _changes, _field_mapping, _relevance_date), do: :error
+  defp find_person_by_name("", _last_name, _changes, _field_mapping, _relevance_date), do: :error
 
-  defp find_person_by_name(first_name, last_name, changes, field_mapping) do
+  defp find_person_by_name(_first_name, nil, _changes, _field_mapping, _relevance_date),
+    do: :error
+
+  defp find_person_by_name(_first_name, "", _changes, _field_mapping, _relevance_date), do: :error
+
+  defp find_person_by_name(first_name, last_name, changes, field_mapping, relevance_date) do
     first_name
     |> CaseContext.list_people_by_name(last_name)
     |> Repo.preload(cases: [person: [], tenant: [], tests: []])
@@ -176,17 +217,17 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     |> Enum.sort()
     |> case do
       [] -> :error
-      [{true, person}] -> {:ok, select_active_cases(person)}
-      [{false, person}] -> {:ok, select_active_cases(person, :input_needed)}
-      [{_phone_matches, person} | _others] -> {:ok, select_active_cases(person)}
+      [{true, person}] -> {:ok, select_active_cases(person, relevance_date)}
+      [{false, person}] -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
+      [{_phone_matches, person} | _others] -> {:ok, select_active_cases(person, relevance_date)}
     end
   end
 
-  defp find_person_by_phone(phone)
-  defp find_person_by_phone(nil), do: :error
-  defp find_person_by_phone(""), do: :error
+  defp find_person_by_phone(phone, relevance_date)
+  defp find_person_by_phone(nil, _relevance_date), do: :error
+  defp find_person_by_phone("", _relevance_date), do: :error
 
-  defp find_person_by_phone(phone) do
+  defp find_person_by_phone(phone, relevance_date) do
     [
       CaseContext.list_people_by_contact_method(:mobile, phone),
       CaseContext.list_people_by_contact_method(:landline, phone)
@@ -196,25 +237,29 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     |> Repo.preload(cases: [person: [], tenant: [], tests: []])
     |> case do
       [] -> :error
-      [person | _others] -> {:ok, select_active_cases(person, :input_needed)}
+      [person | _others] -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
     end
   end
 
-  defp find_person_by_email(email)
-  defp find_person_by_email(nil), do: :error
-  defp find_person_by_email(""), do: :error
+  defp find_person_by_email(email, relevance_date)
+  defp find_person_by_email(nil, _relevance_date), do: :error
+  defp find_person_by_email("", _relevance_date), do: :error
 
-  defp find_person_by_email(email) do
+  defp find_person_by_email(email, relevance_date) do
     :email
     |> CaseContext.list_people_by_contact_method(email)
     |> Repo.preload(cases: [person: [], tenant: [], tests: []])
     |> case do
       [] -> :error
-      [person | _others] -> {:ok, select_active_cases(person, :input_needed)}
+      [person | _others] -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
     end
   end
 
-  defp select_active_cases(%Person{cases: cases} = person, max_certainty \\ :certain) do
+  defp select_active_cases(
+         %Person{cases: cases} = person,
+         relevance_date,
+         max_certainty \\ :certain
+       ) do
     was_index =
       cases != [] and
         Enum.any?(cases, fn case ->
@@ -227,9 +272,9 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
         phases
         |> Enum.filter(& &1.quarantine_order)
         |> Enum.map(&Date.range(&1.start, &1.end))
-        |> Enum.any?(&Enum.member?(&1, Date.utc_today()))
+        |> Enum.any?(&Enum.member?(&1, relevance_date))
 
-      case_recent = abs(Date.diff(DateTime.to_date(inserted_at), Date.utc_today())) < 10
+      case_recent = abs(Date.diff(DateTime.to_date(inserted_at), relevance_date)) < 10
 
       phase_active or case_recent
     end)
