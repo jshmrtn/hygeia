@@ -3,7 +3,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard do
 
   use HygeiaWeb, :surface_component
 
-  prop person, :any, default: nil
+  import Ecto.Changeset
+
+  prop person_changeset, :any, default: nil
 
   slot header
   slot feature
@@ -13,8 +15,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard do
 
   def show_field(map, key, default \\ "")
 
-  def show_field(nil, _, "") do
-    ""
+  def show_field(nil, _, text) do
+    text
   end
 
   def show_field(map, key, default) do

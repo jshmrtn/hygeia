@@ -152,6 +152,30 @@ defmodule Hygeia.CommunicationContext do
     end
   end
 
+
+  @spec create_outgoing_email(case :: Case.t(), to_email :: String.t(), subject :: String.t(), body :: String.t()) ::
+        {:ok, Email.t()}
+        | {:error, Ecto.Changeset.t(Email.t()) | :no_outgoing_mail_configuration}
+  def create_outgoing_email(%Case{} = case, to_email, subject, body) do
+    %Case{
+      tenant: tenant
+    } = Repo.preload(case, tenant: [])
+
+    cond do
+      !TenantContext.tenant_has_outgoing_mail_configuration?(tenant) ->
+        {:error, :no_outgoing_mail_configuration}
+
+      true ->
+        create_email(case, %{
+          recipient: to_email,
+          subject: subject,
+          body: body,
+          status: :in_progress,
+          direction: :outgoing
+        })
+    end
+  end
+
   @doc """
   Updates an email.
 
@@ -324,6 +348,27 @@ defmodule Hygeia.CommunicationContext do
             _contact_method -> false
           end)
 
+        create_sms(case, %{
+          direction: :outgoing,
+          status: :in_progress,
+          message: message,
+          number: phone_number
+        })
+    end
+  end
+
+  @spec create_outgoing_sms(case :: Case.t(), phone_number :: String.t(), message :: String.t()) ::
+          {:ok, SMS.t()}
+          | {:error, Ecto.Changeset.t(SMS.t()) | :sms_config_missing}
+  def create_outgoing_sms(case, phone_number, message) do
+    %Case{person: %Person{tenant: %Tenant{} = tenant}} =
+      Repo.preload(case, tenant: [])
+
+    cond do
+      !TenantContext.tenant_has_outgoing_sms_configuration?(tenant) ->
+        {:error, :sms_config_missing}
+
+      true ->
         create_sms(case, %{
           direction: :outgoing,
           status: :in_progress,

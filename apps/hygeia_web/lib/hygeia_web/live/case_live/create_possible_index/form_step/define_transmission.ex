@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
+defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
@@ -14,6 +14,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CaseContext.Transmission.InfectionPlace
+
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
 
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
@@ -41,27 +43,31 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
     belongs_to :propagator_case, Case, references: :uuid, foreign_key: :propagator_case_uuid
   end
 
-  prop params, :map, default: %{}
   prop form_step, :string, default: ""
   prop live_action, :atom, default: :index
-  prop current_form_data, :keyword, required: true
+  prop current_form_data, :map, required: true
   prop show_navigation, :boolean, default: true
 
   @impl Phoenix.LiveComponent
   def mount(socket) do
     {:ok,
      assign(socket,
-       changeset: changeset(%__MODULE__{}),
-       loading: false
+        changeset: changeset(%__MODULE__{}),
+        loading: false
      )}
   end
 
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
+
     changeset =
-      assigns.current_form_data
-      |> Keyword.get(__MODULE__, %__MODULE__{})
-      |> changeset()
+      %__MODULE__{}
+      |> changeset(assigns.current_form_data)
+      |> case do
+        %Ecto.Changeset{changes: changes} = changeset when map_size(changes) > 0 ->
+          Map.put(changeset, :action, :validate)
+        changeset -> changeset
+      end
 
     {:ok,
      socket
@@ -71,14 +77,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
 
   @impl Phoenix.LiveComponent
   def handle_event("validate", %{"define_transmission" => params}, socket) do
-    cs = %{
-      changeset(%__MODULE__{}, params)
-      | action: :validate
-    }
-
     {:noreply,
      socket
-     |> assign(:changeset, cs)}
+     |> assign(:changeset, validation_changeset(__MODULE__, params))}
   end
 
   @impl Phoenix.LiveComponent
@@ -86,46 +87,41 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
     propagator =
       params["propagator_case_uuid"]
       |> case do
-        nil ->
-          nil
-
+        nil -> nil
         uuid ->
-          uuid
-          |> CaseContext.get_case_with_preload!([:person])
+          CaseContext.get_case_with_preload!(uuid, [:person])
           |> Map.get(:person)
       end
 
-    %__MODULE__{propagator: propagator}
-    |> changeset(params)
-    |> apply_action(:validate)
+    actual_params =
+      params
+      |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
+      |> Map.put(:propagator, propagator)
+
+    __MODULE__
+    |> validation_changeset(actual_params)
     |> case do
-      {:ok, struct} ->
-        send(self(), {:proceed, {__MODULE__, struct}})
+      %Ecto.Changeset{valid?: true} ->
+        send(self(), {:proceed, actual_params})
         {:noreply, socket}
 
-      {:error, changeset} ->
+      %Ecto.Changeset{valid?: false} = changeset ->
         {:noreply, assign(socket, :changeset, changeset)}
     end
   end
 
   @impl Phoenix.LiveComponent
   def handle_event("change_propagator_case", params, socket) do
-    cs1 =
-      %__MODULE__{}
-      |> changeset(
-        update_changeset_param(
-          socket.assigns.changeset,
-          :propagator_case_uuid,
-          fn _value_before -> params["uuid"] end
-        )
+    updated_params =
+      update_changeset_param(
+        socket.assigns.changeset,
+        :propagator_case_uuid,
+        fn _value_before -> params["uuid"] end
       )
 
     {:noreply,
      socket
-     |> assign(:changeset, %{
-       cs1
-       | action: :validate
-     })}
+     |> assign(:changeset, validation_changeset(__MODULE__, updated_params))}
   end
 
   @impl Phoenix.LiveComponent
@@ -146,7 +142,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission do
       :date,
       :comment
     ])
-    |> cast_embed(:infection_place, required: true)
+    |> cast_embed(:infection_place)
     |> validate_changeset()
   end
 

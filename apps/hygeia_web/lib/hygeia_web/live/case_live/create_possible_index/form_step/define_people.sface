@@ -55,7 +55,7 @@
         :if={not @loading}
         for={@changeset}
         change="validate_person"
-        submit="add_person"
+        submit="save_person"
         opts={
           autocomplete: "off",
           id: "create-person-form",
@@ -227,7 +227,7 @@
             {gettext("Save")}
           </button>
           <button
-            :on-click="reset"
+            :on-click="discard_person"
             class="btn btn-warning"
             type="button"
             data-confirm={if @changeset.changes != %{} do
@@ -249,7 +249,7 @@
   {#if length(@suggestions) > 0}
     <div class="w-100">
       {#for person <- @suggestions}
-        <PersonCard person={person}>
+        <PersonCard person_changeset={CaseContext.change_person(person)}>
           <:header>
             <div class="d-flex w-100">
               <div class="w-100">
@@ -332,7 +332,7 @@
                       phx-value-person_uuid={person.uuid}
                       value={person_case.uuid}
                     >
-                      {gettext("Select case")}
+                      {gettext("Select case")} 
                     </button>
                   </div>
                 {/for}
@@ -347,15 +347,14 @@
 
 <div class="row mb-3">
   <!-- Fiexed height element because checkbox and button can disappear -->
-  {#if not Enum.empty?(get_field(@people_changeset, :people))}
+  {#if not Enum.empty?(@bindings)}
     <Checkbox
       hidden_input="false"
-      opts={[
-        checked:
-          length(get_field(@people_changeset, :people)) == length(Map.values(@bulk_action_elements)),
+      opts={
+        checked: is_all_checked?(@bindings, @bulk_action_elements),
         phx_target: @myself,
         phx_click: "all_checked"
-      ]}
+      }
     />
     <button
       disabled={Enum.empty?(@bulk_action_elements)}
@@ -370,55 +369,25 @@
 </div>
 
 <div class="row mb-3">
-  {#for {index, person} <-
-      Enum.with_index(
-        get_field(@people_changeset, :people),
-        fn element, index -> {index, element} end
-      )}
+  {#for {%{person_changeset: person_cs, case_changeset: case_cs}, index} <- Enum.with_index(@bindings)}
     <div class="w-100">
       <Checkbox
         class="form-check-input"
         hidden_input="false"
-        opts={[
-          checked: Map.get(@bulk_action_elements, "#{index}", false),
+        opts={
+          checked: in_bulk_action?(@bulk_action_elements, index),
           phx_target: @myself,
           phx_click: "person_checked",
           phx_value_index: index
-        ]}
+        }
       />
-      <PersonCard person={person}>
-        <:header>
-          <div class="d-flex">
-            <div>
-              <div>
-                <div class="d-inline-block">
-                  <small>{gettext("First name")}:</small>
-                  <h4 class="d-inline-block font-weight-bold">
-                    {person.first_name}
-                  </h4>
-                </div>
-                &nbsp;
-                &nbsp;
-                <div class="d-inline-block">
-                  <small>{gettext("Last name")}:</small>
-                  <h4 class="d-inline-block font-weight-bold">
-                    {person.last_name}
-                  </h4>
-                </div>
-              </div>
-              <span :if={person.inserted_at != nil} class="text-muted">
-                {gettext("This person is already present in the database")}
-              </span>
-            </div>
-          </div>
-        </:header>
-
+      <PersonCard person_changeset={person_cs}>
         <:left>
           <button class="btn btn-secondary" type="button" :on-click="show_person" phx-value-index={index}>
             {gettext("View")}
           </button>
           <button
-            disabled={person.inserted_at != nil}
+            disabled={fetch_field!(person_cs, :inserted_at) != nil}
             class="btn btn-primary"
             :on-click="edit_person"
             phx-value-index={index}
@@ -446,8 +415,8 @@
         </:right>
 
         <:bottom>
-          {#if is_list(person.cases) and length(person.cases) > 0}
-            <span>{List.first(person.cases).inserted_at}</span>
+          {#if inserted_at = fetch_field!(case_cs, :inserted_at)}
+            <span>{inserted_at}</span>
           {/if}
         </:bottom>
       </PersonCard>
@@ -464,7 +433,7 @@
     type="submit"
     :on-click="next"
     phx-disable-with={gettext("Saving...")}
-    disabled={not @people_changeset.valid?}
+    disabled={not valid?(@bindings)}
   >
     {gettext("Next")}
   </button>

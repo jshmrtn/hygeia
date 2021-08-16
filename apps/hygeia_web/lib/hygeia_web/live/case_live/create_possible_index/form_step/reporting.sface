@@ -1,51 +1,45 @@
 <div class="container mt-5">
   <div class="row">
-    {#for person <- @people}
+    {#for %{uuid: binding_uuid, person_changeset: person_cs, reporting: reporting} <- @bindings}
       <div class="w-100">
-        <PersonCard person={person}>
+        <PersonCard person_changeset={person_cs}>
           <:bottom>
-            {#for {type, type_contacts} <-
-                person.contact_methods
-                |> Enum.group_by(& &1.type)
-                |> Enum.filter(fn {type, _} -> type != :landline end)}
+            {#for {contact_type, contact_type_members} <- group_contacts_by_group(person_cs)}
               <div class="mb-4">
                 <table class="table">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">{type}</th>
+                      <th scope="col">{contact_type}</th>
                       <th scope="col">{gettext("Comment")}</th>
                       <th>
-                        <Checkbox opts={[
+                        <Checkbox opts={
                           checked:
-                            all_checked?(type_contacts, selected_contacts(@changeset, case_uuid(person), "#{type}")),
+                            all_checked?(reporting, contact_type_members),
                           hidden_input: "false",
                           phx_click: "all_checked",
                           phx_target: @myself,
-                          phx_value_case_uuid: case_uuid(person),
-                          phx_value_contact_type: type,
-                          phx_value_contacts: to_serialized_uuids(type_contacts)
-                        ]} />
+                          phx_value_binding_uuid: binding_uuid,
+                          phx_value_contact_uuids: to_serialized_uuids(contact_type_members)
+                        } />
                         Select all
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {#for {contact, i} <- Enum.with_index(type_contacts)}
+                    {#for {contact, i} <- Enum.with_index(contact_type_members)}
                       <tr>
                         <td>{i + 1}</td>
                         <td>{contact.value}</td>
                         <td>{contact.comment}</td>
-                        <td><Checkbox opts={[
-                            checked:
-                              if(contact.uuid in selected_contacts(@changeset, case_uuid(person), "#{type}"), do: true),
+                        <td><Checkbox opts={
+                            checked: (if (has_contact_uuid?(reporting, contact.uuid)), do: true),
                             hidden_input: "false",
                             phx_click: "contact_method_checked",
                             phx_target: @myself,
-                            phx_value_case_uuid: case_uuid(person),
-                            phx_value_contact_type: type,
+                            phx_value_binding_uuid: binding_uuid,
                             phx_value_contact_uuid: contact.uuid
-                          ]} />
+                          } />
                         </td>
                       </tr>
                     {/for}
@@ -69,7 +63,6 @@
     type="submit"
     :on-click="next"
     phx-disable-with={gettext("Saving...")}
-    disabled={not @changeset.valid?}
   >
     {gettext("Next")}
   </button>

@@ -218,7 +218,6 @@ defmodule Hygeia.CaseContext do
         preload: ^preload,
         limit: ^limit
       )
-      |> IO.inspect()
     )
   end
 
@@ -241,38 +240,6 @@ defmodule Hygeia.CaseContext do
             )
         ],
         limit: ^limit
-      )
-
-  @spec first_name_person_search_query(query :: String.t(), first_name :: String.t()) ::
-          Ecto.Query.t()
-  def first_name_person_search_query(query, first_name),
-    do:
-      query
-      |> where([q], fragment("(? % ?)", q.first_name, ^first_name))
-
-  @spec last_name_person_search_query(query :: String.t(), first_name :: String.t()) ::
-          Ecto.Query.t()
-  def last_name_person_search_query(query, last_name),
-    do:
-      query
-      |> where([q], fragment("(? % ?)", q.last_name, ^last_name))
-
-  @spec contact_method_person_search_query(
-          query :: String.t(),
-          type :: ContactMethod.Type.t(),
-          value :: String.t()
-        ) ::
-          Ecto.Query.t()
-  def contact_method_person_search_query(query, type, value),
-    do:
-      query
-      |> where(
-        [q],
-        fragment(
-          ~S[?::jsonb <@ ANY (?)],
-          ^%{type: type, value: value},
-          q.contact_methods
-        )
       )
 
   @doc """

@@ -1,0 +1,83 @@
+<div class="container mt-5">
+  <div class="row mb-3">
+    {#for %{uuid: binding_uuid, person_changeset: person_cs, case_changeset: case_cs} <- @bindings}
+      <div class="w-100">
+      <Form
+        :if={not @loading}
+        for={case_cs}
+        change="validate"
+        opts={autocomplete: "off", "phx-hook": "BlockNavigation"}
+      >
+      <HiddenInput name="binding_uuid" value={binding_uuid} />
+        <PersonCard person_changeset={person_cs}>
+          <:feature>
+            <div class="ml-auto">
+              <Field name={:status} class="input-group">
+                <HygeiaWeb.FieldLabel class="mb-0">
+                  <span class="input-group-text">
+                    {gettext("Status")}
+                  </span>
+                </HygeiaWeb.FieldLabel>
+                <Select
+                  class="form-control"
+                  options={Status.map()}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+          </:feature>
+
+          <:right>
+            <div class="row mb-2">
+              <div class="col">
+                <Field name={:supervisor_uuid}>
+                  <HygeiaWeb.FieldLabel />
+                  <Select
+                    class="form-control"
+                    options={assignees_form_options(@supervisor_users, get_field(case_cs, :tenant_uuid))}
+                    opts={prompt: gettext("Case Administration")}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col">
+                <Field name={:tracer_uuid}>
+                  <HygeiaWeb.FieldLabel />
+                  <Select
+                    class="form-control"
+                    options={assignees_form_options(@tracer_users, get_field(case_cs, :tenant_uuid))}
+                    opts={prompt: gettext("Case Administration")}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+            </div>
+          </:right>
+          <:bottom>
+            {#if inserted_at = fetch_field!(case_cs, :inserted_at)}
+              <span>{inserted_at}</span>
+            {/if}
+          </:bottom>
+        </PersonCard>
+      </Form>
+      </div>
+    {/for}
+  </div>
+</div>
+
+<div class="row mb-3">
+  <button class="btn btn-warning mt-5" type="button" :on-click="back">
+    {gettext("Back")}
+  </button>
+  <button
+    class="btn btn-primary mt-5"
+    type="submit"
+    :on-click="next"
+    phx-disable-with={gettext("Saving...")}
+    disabled={not valid?(@bindings)}
+  >
+    {gettext("Next")}
+  </button>
+</div>

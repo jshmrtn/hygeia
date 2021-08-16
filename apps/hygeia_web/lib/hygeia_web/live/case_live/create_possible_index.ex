@@ -7,12 +7,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
 
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.{
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.{
     DefineTransmission,
     DefinePeople,
     DefineOptions,
@@ -20,7 +21,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     Summary
   }
 
-  alias Surface.Components.LivePatch
+  alias Surface.Components.Link
   alias Surface.Components.Form.HiddenInput
   alias HygeiaWeb.Helpers.FormStep
 
@@ -56,31 +57,34 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             Map.put(acc, tenant.uuid, UserContext.list_users_with_role(:tracer, tenant))
           end)
 
+        normalized_params =
+          params
+          |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
+
         available_data =
           case params["possible_index_submission_uuid"] do
             nil ->
-              []
+              normalized_params
+              # alias Hygeia.CaseContext.Person
 
-            # %Person{tenant_uuid: tenant_uuid} = person1 = CaseContext.get_person!("fe607c86-b590-484e-aab7-b52db47a5c73")
-            # [
-            #   {DefinePeople,
-            #    %DefinePeople{
-            #      people: [
-            #         person1
-            #         |> Map.put(:cases, [
-            #          Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid}) |> CaseContext.change_case(%{phases: []})|> Ecto.Changeset.apply_changes()
-            #        ])
-            #      ]
-            #    }}
-            # For testing, replace person_uuid with existing one.
-            # ]
+              # %Person{tenant_uuid: tenant_uuid} = person1 = CaseContext.get_person!("e3239c4f-a98a-46f1-8e09-0fb412599d44") |> Hygeia.Repo.preload(:tenant)
+              # %{
+              #   bindings: [
+              #     %{
+              #       uuid: Ecto.UUID.generate(),
+              #       person_changeset: person1 |> CaseContext.change_person(),
+              #       case_changeset: Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid, status: :done}) |> Ecto.Changeset.change()
+              #     }
+              #   ]
+              # }
+              # |> Map.merge(normalized_params)
 
-            # TODO to keyword list
-            uuid ->
-              possible_index_submission_attrs(uuid)
+            # TODO adapt to requirements
+            uuid -> Map.merge(normalized_params, possible_index_submission_attrs(uuid))
           end
 
         assign(socket,
+          control_step: @default_form_step,
           current_form_data: available_data,
           tenants: tenants,
           supervisor_users: supervisor_users,
@@ -99,86 +103,46 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   @impl Phoenix.LiveView
   def handle_params(params, _uri, socket) do
+    %{assigns: %{control_step: control_step}} = socket
+
     form_step =
       @form_steps
-      |> FormStep.get_step_names()
-      |> Enum.member?(params["form_step"])
+      |> FormStep.member?(params["form_step"])
       |> case do
         true -> params["form_step"]
         false -> @default_form_step
       end
 
+    form_step =
+      if FormStep.reachable?(@form_steps, form_step, control_step) do
+        form_step
+      else
+        @default_form_step
+      end
+
     {:noreply,
      socket
      |> assign(:params, params)
-     # TODO put form_step
      |> assign(:form_step, form_step)}
   end
 
   def save(socket) do
-    transmission_data =
-      socket.assigns.current_form_data
-      |> Keyword.get(DefineTransmission, %DefineTransmission{})
+    %{assigns: %{current_form_data: current_form_data}} = socket
 
-    people =
-      socket.assigns.current_form_data
-      |> Keyword.get(DefinePeople, %DefinePeople{})
-      |> Map.get(:people, [])
+    bindings =
+      current_form_data
+      |> Map.fetch!(:bindings)
 
-    reporting_data =
-      socket.assigns.current_form_data
-      |> Keyword.get(Reporting, %Reporting{})
+    {:ok ,tuples} =
+      Service.upsert(bindings, current_form_data)
 
-    people
-    |> Service.upsert(transmission_data)
-
-    # |> Service.send_notifications(reporting_data)
+    Service.send_confirmations(socket, tuples, current_form_data)
 
     socket
-
-    #   %Ecto.Changeset{valid?: true} = changeset ->
-    #     %CreateSchema{
-    #       propagator_case_uuid: propagator_case_uuid,
-    #       possible_index_submission_uuid: possible_index_submission_uuid
-    #     } = global = Ecto.Changeset.apply_changes(changeset)
-
-    #     propagator_case =
-    #       case propagator_case_uuid do
-    #         nil -> nil
-    #         id -> id |> CaseContext.get_case!() |> Repo.preload(person: [])
-    #       end
-
-    #     {:ok, {cases, transmissions}} =
-    #       Repo.transaction(fn ->
-    #         cases =
-    #           changeset
-    #           |> CreateSchema.drop_empty_rows()
-    #           |> Ecto.Changeset.fetch_field!(:people)
-    #           |> Enum.map(&{&1, CreatePersonSchema.upsert(&1, socket, global, propagator_case)})
-    #           |> Enum.map(&CreateSchema.upsert_case(&1, global))
-
-    #         transmissions = Enum.map(cases, &CreateSchema.create_transmission(&1, global))
-
-    #         :ok = close_submission(possible_index_submission_uuid)
-
-    #         {cases, transmissions}
-    #       end)
-
-    #     :ok = send_confirmation_sms(socket, global, cases)
-
-    #     :ok = send_confirmation_emails(socket, global, cases)
-
-    #     socket =
-    #       put_flash(
-    #         socket,
-    #         :info,
-    #         ngettext("Created Case", "Created %{n} Cases", length(transmissions),
-    #           n: length(transmissions)
-    #         )
-    #       )
-
-    #     {:noreply, socket |> handle_save_success(CreateSchema) |> maybe_block_navigation()}
-    # end
+    |> put_flash(
+      :info,
+      gettext("Cases inserted successfully.")
+    )
   end
 
   @impl Phoenix.LiveView
@@ -196,10 +160,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:proceed, {module, form_data}}, socket) do
+  def handle_info({:proceed, form_data}, socket) do
     updated_data =
       socket.assigns.current_form_data
-      |> Keyword.put(module, form_data)
+      |> Map.merge(form_data)
 
     {:noreply,
      socket
@@ -208,10 +172,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:return, {module, form_data}}, socket) do
+  def handle_info({:return, form_data}, socket) do
     updated_data =
       socket.assigns.current_form_data
-      |> Keyword.put(module, form_data)
+      |> Map.merge(form_data)
 
     {:noreply,
      socket
@@ -219,10 +183,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
      |> change_step(@form_steps, :prev)}
   end
 
-  def handle_info({:feed, {module, form_data}}, socket) do
+  def handle_info({:feed, form_data}, socket) do
     updated_data =
       socket.assigns.current_form_data
-      |> Keyword.put(module, form_data)
+      |> Map.merge(form_data)
 
     {:noreply,
      socket
@@ -230,10 +194,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
-
-  def get_form_steps() do
-    @form_steps
-  end
 
   defp possible_index_submission_attrs(uuid) do
     %PossibleIndexSubmission{
@@ -249,75 +209,74 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       landline: landline,
       email: email,
       address: address,
-      employer: employer
+      #employer: employer
     } = CaseContext.get_possible_index_submission!(uuid)
 
     %{
-      "comment" => comment,
-      "propagator_internal" => true,
-      "propagator_case_uuid" => case_uuid,
-      "type" => :contact_person,
-      "date" => Date.to_iso8601(transmission_date),
-      "infection_place" =>
+      :comment => comment,
+      :propagator_internal => true,
+      :propagator_case_uuid => case_uuid,
+      :type => :contact_person,
+      :date => Date.to_iso8601(transmission_date),
+      :infection_place =>
         infection_place
         |> Map.from_struct()
         |> Map.put(:address, Map.from_struct(infection_place.address))
         |> Map.drop([:type]),
-      "people" => [
+      :bindings => [
         %{
-          first_name: first_name,
-          last_name: last_name,
-          sex: sex,
-          birth_date: birth_date,
-          mobile: mobile,
-          landline: landline,
-          email: email,
-          address: Map.from_struct(address),
-          employer: employer
+          person_changeset: CaseContext.change_person(%Person{}, %{
+            first_name: first_name,
+            last_name: last_name,
+            sex: sex,
+            birth_date: birth_date,
+            mobile: mobile,
+            landline: landline,
+            email: email,
+            address: Map.from_struct(address),
+            #employer: employer
+          }),
+          case_changeset: CaseContext.change_case(%Case{})
         }
       ]
     }
   end
 
-  defp get_step(steps, step_name) do
-    steps
-    |> Enum.find(&(&1.name == step_name))
+
+  defp change_step(socket, steps, :prev) do
+    %{assigns: %{form_step: form_step}} = socket
+
+    if new_step = FormStep.get_previous_step(steps, form_step) do
+      push_patch(socket, to: Routes.case_create_possible_index_path(socket, :index, new_step))
+    else
+      socket
+    end
   end
 
-  defp change_step(socket, steps, direction) do
-    current_step = get_step(steps, socket.assigns.form_step)
+  defp change_step(socket, steps, :next) do
+    %{assigns: %{form_step: form_step, control_step: control_step}} = socket
 
-    if new_step = Enum.find(steps, &(&1.name == Map.get(current_step, direction))) do
-      step_name = Map.get(new_step, :name)
-      push_patch(socket, to: Routes.case_create_possible_index_path(socket, :index, step_name))
+    if new_step = FormStep.get_next_step(steps, form_step) do
+      socket
+      |> assign(control_step: new_control_step(steps, control_step, new_step))
+      |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, new_step))
     else
       save(socket)
-      |> put_flash(:success, gettext("The form has been submited."))
-      |> push_patch(
+      |> push_redirect(
         to: Routes.case_create_possible_index_path(socket, :index, @default_form_step)
       )
     end
   end
 
-  # defp close_submission(uuid)
-  # defp close_submission(nil), do: :ok
+  defp new_control_step(steps, control_step, possible_control_step) do
+    if FormStep.reachable?(steps, control_step, possible_control_step) do
+      possible_control_step
+    else
+      control_step
+    end
+  end
 
-  # defp close_submission(uuid) do
-  #   {:ok, _possible_index_submission} =
-  #     uuid
-  #     |> CaseContext.get_possible_index_submission!()
-  #     |> CaseContext.delete_possible_index_submission()
-
-  #   :ok
-  # end
-
-  # defp maybe_block_navigation(%{assigns: %{changeset: changeset}} = socket) do
-  #   changeset
-  #   |> Ecto.Changeset.get_field(:people, [])
-  #   |> case do
-  #     [] -> push_event(socket, "unblock_navigation", %{})
-  #     [_] -> push_event(socket, "unblock_navigation", %{})
-  #     [_ | _] -> push_event(socket, "block_navigation", %{})
-  #   end
-  # end
+  def get_form_steps() do
+    @form_steps
+  end
 end

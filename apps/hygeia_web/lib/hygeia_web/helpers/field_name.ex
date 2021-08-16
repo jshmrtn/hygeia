@@ -290,7 +290,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       related_tenants: "Related Tenants"
     },
     Hygeia.MutationContext.Mutation => %{name: "Name", ism_code: "ISM Code"},
-    HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineTransmission => %{
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission => %{
       type: "Type",
       type_other: "Other",
       comment: "Comment",
@@ -300,43 +300,15 @@ defmodule HygeiaWeb.Helpers.FieldName do
       propagator_case_uuid: "Propagator Case UUID",
       propagator_ism_id: "Propagator ISM ID"
     },
-    HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.DefineOptions => %{
-      address: "Address",
-      birth_date: "Birth Date",
-      email: "Email",
-      employer: "Employer",
-      first_name: "First Name",
-      ism_case_id: "ISM Case ID",
-      ism_report_id: "ISM Report ID",
-      landline: "Landline",
-      last_name: "Last Name",
-      mobile: "Mobile",
-      sex: "Sex",
-      supervisor: "Supervisor",
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions => %{
+      status: "Status",
       supervisor_uuid: "Supervisor UUID",
-      tenant: "Tenant",
-      tenant_uuid: "Tenant UUID",
-      tracer: "Tracer",
       tracer_uuid: "Tracer UUID"
     },
-    HygeiaWeb.CaseLive.CreatePossibleIndex.FormSteps.Summary => %{
-      default_supervisor: "Default Supervisor",
-      default_supervisor_uuid: "Default Supervisor UUID",
-      default_tenant: "Default Tenant",
-      default_tenant_uuid: "Default Tenant UUID",
-      default_tracer: "Default Tracer",
-      default_tracer_uuid: "Default Tracer UUID",
-      directly_close_cases: "Directly Close Cases",
-      send_confirmation_email: "Send Confirmation Email",
-      send_confirmation_sms: "Send Confirmation SMS"
-    },
-    HygeiaWeb.CaseLive.CreateIndex.CreateSchema => %{
-      default_supervisor: "Default Supervisor",
-      default_supervisor_uuid: "Default Supervisor UUID",
-      default_tenant: "Default Tenant",
-      default_tenant_uuid: "Default Tenant UUID",
-      default_tracer: "Default Tracer",
-      default_tracer_uuid: "Default Tracer UUID"
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary => %{
+      status: "Status",
+      supervisor_uuid: "Supervisor UUID",
+      tracer_uuid: "Tracer UUID"
     },
     Hygeia.VersionContext.Version => %{
       date: "Date",

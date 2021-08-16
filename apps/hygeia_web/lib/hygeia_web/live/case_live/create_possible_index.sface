@@ -7,60 +7,62 @@
     <div class="row">
       <div class="text-center w-100">
         {#for {step, index} <- get_form_steps() |> Enum.with_index()}
-          <LivePatch
+          <Link
             to={Routes.case_create_possible_index_path(@socket, :index, step.name)}
-            class={if @form_step == step.name, do: "font-weight-bold"}
-            label={index}
-          />
+          >
+            <button 
+              class={if @form_step == step.name, do: "bg-warning"}
+              disabled={if not FormStep.reachable?(get_form_steps(), step.name, @control_step), do: true}
+            >
+              {index}
+            </button>
+          </Link>
         {/for}
       </div>
     </div>
 
-    {#if @form_step == "transmission"}
-      <DefineTransmission
-        id={@form_step}
-        {=@form_step}
-        {=@live_action}
-        {=@params}
-        {=@current_form_data}
-      />
-    {/if}
+    {#case @form_step}
+      {#match "transmission"}
+        <DefineTransmission
+          id={@form_step}
+          {=@form_step}
+          {=@live_action}
+          {=@params}
+          {=@current_form_data}
+        />
 
-    {#if @form_step == "people"}
-      <DefinePeople
-        id={@form_step}
-        {=@form_step}
-        {=@live_action}
-        {=@params}
-        {=@current_form_data}
-        {=@tenants}
-      />
-    {/if}
+      {#match "people"}
+        <DefinePeople
+          id={@form_step}
+          {=@form_step}
+          {=@live_action}
+          {=@params}
+          {=@current_form_data}
+          {=@tenants}
+        />
 
-    {#if @form_step == "options"}
-      <DefineOptions
-        id={@form_step}
-        {=@form_step}
-        {=@live_action}
-        {=@current_form_data}
-        {=@supervisor_users}
-        {=@tracer_users}
-      />
-    {/if}
+      {#match "options"}
+        <DefineOptions
+          id={@form_step}
+          {=@form_step}
+          {=@live_action}
+          {=@current_form_data}
+          {=@supervisor_users}
+          {=@tracer_users}
+        />
 
-    {#if @form_step == "reporting"}
-      <Reporting id={@form_step} {=@form_step} {=@live_action} {=@current_form_data} />
-    {/if}
+      {#match "reporting"}
+        <Reporting id={@form_step} {=@form_step} {=@live_action} {=@current_form_data} /> 
 
-    {#if @form_step == "summary"}
-      <Summary
-        id={@form_step}
-        {=@form_step}
-        {=@live_action}
-        {=@current_form_data}
-        {=@supervisor_users}
-        {=@tracer_users}
-      />
-    {/if}
+      {#match "summary"}
+        <Summary
+          id={@form_step}
+          {=@form_step}
+          {=@live_action}
+          {=@current_form_data}
+          {=@supervisor_users}
+          {=@tracer_users}
+        />
+    {/case}
   </div>
 </div>

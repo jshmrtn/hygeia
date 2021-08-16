@@ -144,6 +144,25 @@ defmodule HygeiaWeb.Helpers.Changeset do
     )
   end
 
+  @spec validation_changeset(module :: atom(), data :: map() | keyword()) :: Changeset.t()
+  def validation_changeset(module, data) do
+    module
+    |> struct()
+    |> module.changeset(data)
+    |> Map.put(:action, :validate)
+  end
+
+  @spec validation_changeset(
+      struct_or_changeset :: struct() | Changeset.t(),
+      module :: atom(),
+      data :: map() | keyword()
+    ) :: Changeset.t()
+  def validation_changeset(struct_or_changeset, module, data \\ %{}) do
+    struct_or_changeset
+    |> module.changeset(data)
+    |> Map.put(:action, :validate)
+  end
+
   defp key_to_string(key) when is_atom(key), do: Atom.to_string(key)
   defp key_to_string(key) when is_binary(key), do: key
 end
