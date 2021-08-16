@@ -435,10 +435,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    needs: ['docker_build', 'dialyzer_test', 'test']
+    needs: ['docker_build', 'dialyzer_test', 'test', 'format', 'surface_format', 'credo', 'docs']
 
     steps:
-      - uses: fastify/github-action-merge-dependabot@v2.1.1
+      - uses: fastify/github-action-merge-dependabot@v2.4.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # Major Updates need to be merged manually
