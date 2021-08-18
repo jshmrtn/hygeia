@@ -1,4 +1,4 @@
-<div class="card mb-3" {<> if @person_changeset.is_valid?, do: "border border-danger"} >
+<div class={"card", "mb-3", if(not @person_changeset.valid?, do: "border border-danger")}>
   <div class="card-header">
     <#slot name="header">
       <div class="d-flex">

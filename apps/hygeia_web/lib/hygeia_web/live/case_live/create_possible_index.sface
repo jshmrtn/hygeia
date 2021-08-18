@@ -4,22 +4,24 @@
   <HiddenInput field={:possible_index_submission_uuid} />
 
   <div class="container">
-    <div class="row">
-      <div class="text-center w-100">
-        {#for {step, index} <- get_form_steps() |> Enum.with_index()}
-          <Link
-            to={Routes.case_create_possible_index_path(@socket, :index, step.name)}
-          >
-            <button 
-              class={if @form_step == step.name, do: "bg-warning"}
-              disabled={if not FormStep.reachable?(get_form_steps(), step.name, @control_step), do: true}
+    {#if @form_step != "summary"}
+      <div class="row">
+        <div class="text-center w-100">
+          {#for {step, index} <- get_form_steps() |> Enum.reject(&( &1.name == "summary" )) |> Enum.with_index()}
+          <LivePatch
+              to={Routes.case_create_possible_index_path(@socket, :index, step.name)}
             >
-              {index}
-            </button>
-          </Link>
-        {/for}
+              <button 
+                class={if @form_step == step.name, do: "bg-warning"}
+                disabled={if not FormStep.reachable?(get_form_steps(), step.name, @control_step), do: true}
+              >
+                {index}
+              </button>
+            </LivePatch>
+          {/for}
+        </div>
       </div>
-    </div>
+    {/if}
 
     {#case @form_step}
       {#match "transmission"}
@@ -27,7 +29,6 @@
           id={@form_step}
           {=@form_step}
           {=@live_action}
-          {=@params}
           {=@current_form_data}
         />
 

@@ -2,16 +2,18 @@
 defmodule HygeiaWeb.CaseLiveTest do
   @moduledoc false
 
+  import HygeiaWeb.CaseLiveTestHelper
+
   use Hygeia.DataCase
   use HygeiaWeb.ConnCase
 
   import Phoenix.LiveViewTest
 
   alias Hygeia.CaseContext
-  alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
 
+  @moduletag :case_live
   @moduletag origin: :test
   @moduletag originator: :noone
   @moduletag log_in: [roles: [:admin]]
@@ -83,460 +85,182 @@ defmodule HygeiaWeb.CaseLiveTest do
     end
   end
 
-  describe "CreatePossibleIndex" do
+  describe "CreatePossibleIndex - Path navigation" do
+    test "navigate to step without reaching it", %{conn: conn} do
+      assert {:error, {:live_redirect, %{to: path}}} =
+               live(
+                 conn,
+                 Routes.case_create_possible_index_path(conn, :index, "reporting")
+               )
+    end
+  end
 
-    @tag form_step: "transmission"
-    test "transmission step travel type", %{conn: conn, user: user} do
+  describe "CreatePossibleIndex - Define Transmission step" do
+    test "submit with type: travel", %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
+
+      test_transmission_step_type_travel(context, view)
+    end
+
+    test "submit with type: travel, imported from params", %{conn: conn} = context do
       params = %{
         "type" => "travel",
         "date" => Date.add(Date.utc_today(), -5) |> Date.to_string(),
         "comment" => "Simple comment."
       }
 
-      assert {:ok, create_live, _html} =
-                live(conn, Routes.case_create_possible_index_path(conn, :index, "transmission", params))
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create, params))
 
-
-
-      assert create_live
-             |> element(".container button[type=submit]")
+      test_transmission_step_type_travel_import(context, view)
     end
 
-    test "creates new case new person", %{conn: conn, user: user} do
-  #     person_fixture(tenant, %{
-  #       first_name: "Max",
-  #       last_name: "Muster",
-  #       contact_methods: [%{type: :mobile, value: "+41787245790"}]
-  #     })
+    test "submit with propagator and type: contact_person", %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
 
+      test_transmission_step_with_propagator_type_contact_person(context, view)
     end
 
+    # test "submit with propagator and type: contact_person, imported_from_params", %{conn: conn} = context do
+
+    #   assert {:ok, view, _html} =
+    #     live(conn, Routes.case_create_possible_index_path(conn, :create))
+
+    #   test_transmission_step_with_propagator_type_contact_person_import(context, view)
+    # end
+
+    test "submit with external propagator and type: contact_person", %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
+
+      test_transmission_step_with_ext_propagator_type_contact_person(context, view)
+    end
+
+    test "submit with type: other and type_other", %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
+
+      test_transmission_step_type_other(context, view)
+    end
   end
 
-  # describe "CreatePossibleIndex" do
-  #   test "creates case without duplicate", %{conn: conn, user: user} do
-  #     [%{tenant: tenant} | _other_grants] = user.grants
+  describe "CreatePossibleIndex - Define People step" do
+    test "submit with new person, new case", %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-  #     tracer_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
-  #       })
+      test_transmission_step_type_travel(context, view)
 
-  #     supervisor_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
-  #       })
+      test_define_people_step_new_person_new_case(context, view)
+    end
 
-  #     assert {:ok, create_live, _html} =
-  #              live(conn, Routes.case_create_possible_index_path(conn, :create))
+    test "submit with existing person, new case", %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-  #     assert html =
-  #              create_live
-  #              |> form("#case-create-form",
-  #                create_schema: %{
-  #                  type: :travel,
-  #                  date: Date.add(Date.utc_today(), -5),
-  #                  default_tenant_uuid: tenant.uuid,
-  #                  default_tracer_uuid: tracer_user.uuid,
-  #                  default_supervisor_uuid: supervisor_user.uuid,
-  #                  people: %{
-  #                    0 => %{
-  #                      first_name: "Max",
-  #                      last_name: "Muster",
-  #                      mobile: "+41 78 724 57 90"
-  #                    }
-  #                  }
-  #                }
-  #              )
-  #              |> render_submit()
+      test_transmission_step_type_travel(context, view)
 
-  #     assert html =~ "Created Case"
+      test_define_people_step_existing_person_new_case(context, view)
+    end
 
-  #     assert [
-  #              %Person{
-  #                first_name: "Max",
-  #                last_name: "Muster",
-  #                contact_methods: [%{type: :mobile, value: "+41 78 724 57 90"}]
-  #              }
-  #            ] = CaseContext.list_people()
+    test "submit with existing person, existing case", %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-  #     assert [_] = CaseContext.list_cases()
-  #     assert [_] = CaseContext.list_transmissions()
-  #   end
+      test_transmission_step_type_travel(context, view)
 
-  #   test "blocks create case with duplicate", %{conn: conn, user: user} do
-  #     [%{tenant: tenant} | _other_grants] = user.grants
+      test_define_people_step_existing_person_existing_case(context, view)
+    end
+  end
 
-  #     tracer_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
-  #       })
+  describe "CreatePossibleIndex - Define Options step" do
+    test "submit with case status, supervisor, tracer with new person, new case",
+         %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-  #     supervisor_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
-  #       })
+      test_transmission_step_type_travel(context, view)
 
-  #     person_fixture(tenant, %{
-  #       first_name: "Max",
-  #       last_name: "Muster",
-  #       contact_methods: [%{type: :mobile, value: "+41787245790"}]
-  #     })
+      test_define_people_step_new_person_new_case(context, view)
 
-  #     assert {:ok, create_live, _html} =
-  #              live(conn, Routes.case_create_possible_index_path(conn, :create))
+      test_define_options_step_case_status_first_contact(context, view)
+    end
+  end
 
-  #     assert html =
-  #              create_live
-  #              |> form("#case-create-form",
-  #                create_schema: %{
-  #                  type: :travel,
-  #                  date: Date.add(Date.utc_today(), -5),
-  #                  default_tenant_uuid: tenant.uuid,
-  #                  default_tracer_uuid: tracer_user.uuid,
-  #                  default_supervisor_uuid: supervisor_user.uuid,
-  #                  people: %{
-  #                    0 => %{
-  #                      first_name: "Max",
-  #                      last_name: "Muster",
-  #                      mobile: "+41787245790"
-  #                    }
-  #                  }
-  #                }
-  #              )
-  #              |> render_submit()
+  describe "CreatePossibleIndex" do
+    test "type: travel, new person, new case, status: first_contact", %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-  #     refute html =~ "Created Case"
+      test_transmission_step_type_travel(context, view)
 
-  #     assert [_] = CaseContext.list_people()
-  #     assert [] = CaseContext.list_cases()
-  #     assert [] = CaseContext.list_transmissions()
-  #   end
+      test_define_people_step_new_person_new_case(context, view)
 
-  #   test "accept create case with duplicate person", %{conn: conn, user: user} do
-  #     [%{tenant: tenant} | _other_grants] = user.grants
+      test_define_options_step_case_status_first_contact(context, view)
 
-  #     tracer_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
-  #       })
+      test_reporting_step_all_contact_methods(context, view)
 
-  #     supervisor_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
-  #       })
+      assert [
+               %Person{
+                 first_name: "Karl",
+                 last_name: "Muster",
+                 contact_methods: [
+                   %{type: :mobile, value: "+41 78 724 57 90"},
+                   %{type: :email, value: "karl.muster@gmail.com"}
+                 ]
+               }
+             ] = CaseContext.list_people()
 
-  #     duplicate_person =
-  #       person_fixture(tenant, %{
-  #         first_name: "Max",
-  #         last_name: "Muster",
-  #         contact_methods: [%{type: :mobile, value: "+41 78 724 57 90"}]
-  #       })
+      assert [_] = CaseContext.list_cases()
+      assert [_] = CaseContext.list_transmissions()
+    end
 
-  #     assert {:ok, create_live, _html} =
-  #              live(conn, Routes.case_create_possible_index_path(conn, :create))
+    test "type: travel, existing person, new case, status: done", %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-  #     assert html =
-  #              create_live
-  #              |> form("#case-create-form")
-  #              |> render_submit(%{
-  #                create_schema: %{
-  #                  type: :travel,
-  #                  date: Date.add(Date.utc_today(), -5),
-  #                  default_tenant_uuid: tenant.uuid,
-  #                  default_tracer_uuid: tracer_user.uuid,
-  #                  default_supervisor_uuid: supervisor_user.uuid,
-  #                  people: %{
-  #                    0 => %{
-  #                      first_name: "Max",
-  #                      last_name: "Muster",
-  #                      mobile: "+41 78 724 57 90",
-  #                      accepted_duplicate: true,
-  #                      accepted_duplicate_uuid: duplicate_person.uuid,
-  #                      accepted_duplicate_human_readable_id: duplicate_person.human_readable_id
-  #                    }
-  #                  }
-  #                }
-  #              })
+      test_transmission_step_type_travel(context, view)
 
-  #     assert html =~ "Created Case"
+      test_define_people_step_existing_person_new_case(context, view)
 
-  #     assert [_] = CaseContext.list_cases()
-  #     assert [_] = CaseContext.list_people()
-  #   end
+      test_define_options_step_case_status_done(context, view)
 
-  #   test "accept create case with duplicate person, copy address", %{conn: conn, user: user} do
-  #     [%{tenant: tenant} | _other_grants] = user.grants
+      test_reporting_step_all_contact_methods(context, view)
 
-  #     tracer_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
-  #       })
+      assert [
+               %Person{
+                 first_name: "Karl",
+                 last_name: "Muster"
+               }
+             ] = CaseContext.list_people()
 
-  #     supervisor_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
-  #       })
+      assert [_] = CaseContext.list_cases()
+      assert [_] = CaseContext.list_transmissions()
+    end
 
-  #     propagator =
-  #       person_fixture(tenant, %{
-  #         first_name: "Karl",
-  #         last_name: "Muster",
-  #         address: %{
-  #           address: "Teststrasse 2"
-  #         }
-  #       })
+    test "type: other, new person, new case, status: done", %{conn: conn} = context do
+      assert {:ok, view, _html} =
+               live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-  #     propagator_case = case_fixture(propagator, tracer_user, supervisor_user)
+      test_transmission_step_type_other(context, view)
 
-  #     duplicate_person_1 =
-  #       person_fixture(tenant, %{
-  #         first_name: "Max",
-  #         last_name: "Muster",
-  #         address: %{
-  #           address: "Teststrasse 3"
-  #         }
-  #       })
+      test_define_people_step_new_person_new_case(context, view)
 
-  #     duplicate_person_2 =
-  #       person_fixture(tenant, %{
-  #         first_name: "Henry",
-  #         last_name: "Muster",
-  #         address: nil
-  #       })
+      test_define_options_step_case_status_done(context, view)
 
-  #     assert {:ok, create_live, _html} =
-  #              live(conn, Routes.case_create_possible_index_path(conn, :create))
+      test_reporting_step_all_contact_methods(context, view)
 
-  #     assert html =
-  #              create_live
-  #              |> form("#case-create-form")
-  #              |> render_submit(%{
-  #                create_schema: %{
-  #                  type: :contact_person,
-  #                  date: Date.add(Date.utc_today(), -5),
-  #                  default_tenant_uuid: tenant.uuid,
-  #                  default_tracer_uuid: tracer_user.uuid,
-  #                  default_supervisor_uuid: supervisor_user.uuid,
-  #                  copy_address_from_propagator: true,
-  #                  propagator_internal: true,
-  #                  propagator_case_uuid: propagator_case.uuid,
-  #                  people: %{
-  #                    0 => %{
-  #                      first_name: "Max",
-  #                      last_name: "Muster",
-  #                      accepted_duplicate: true,
-  #                      accepted_duplicate_uuid: duplicate_person_1.uuid,
-  #                      accepted_duplicate_human_readable_id: duplicate_person_1.human_readable_id
-  #                    },
-  #                    1 => %{
-  #                      first_name: "Henry",
-  #                      last_name: "Muster",
-  #                      accepted_duplicate: true,
-  #                      accepted_duplicate_uuid: duplicate_person_2.uuid,
-  #                      accepted_duplicate_human_readable_id: duplicate_person_2.human_readable_id
-  #                    },
-  #                    2 => %{
-  #                      first_name: "Petra",
-  #                      last_name: "Muster"
-  #                    }
-  #                  }
-  #                }
-  #              })
+      assert [
+               %Person{
+                 first_name: "Karl",
+                 last_name: "Muster"
+               }
+             ] = CaseContext.list_people()
 
-  #     assert html =~ "Created 3 Cases"
-
-  #     assert [_, _, _, _] = CaseContext.list_cases()
-  #     assert [_, _, _, _] = people = CaseContext.list_people()
-
-  #     assert %Person{address: %Address{address: "Teststrasse 3"}} =
-  #              Enum.find(people, &match?(%Person{first_name: "Max"}, &1))
-
-  #     assert %Person{address: %Address{address: "Teststrasse 2"}} =
-  #              Enum.find(people, &match?(%Person{first_name: "Henry"}, &1))
-
-  #     assert %Person{address: %Address{address: "Teststrasse 2"}} =
-  #              Enum.find(people, &match?(%Person{first_name: "Petra"}, &1))
-  #   end
-
-  #   test "accept create case with duplicate case keeps phases", %{conn: conn, user: user} do
-  #     [%{tenant: tenant} | _other_grants] = user.grants
-
-  #     tracer_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
-  #       })
-
-  #     supervisor_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
-  #       })
-
-  #     duplicate_person =
-  #       person_fixture(tenant, %{
-  #         first_name: "Max",
-  #         last_name: "Muster",
-  #         contact_methods: [%{type: :mobile, value: "+41 78 724 57 90"}]
-  #       })
-
-  #     duplicate_case =
-  #       case_fixture(duplicate_person, tracer_user, supervisor_user, %{
-  #         phases: [%{details: %{__type__: :possible_index, type: :travel}}]
-  #       })
-
-  #     assert {:ok, create_live, _html} =
-  #              live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-  #     assert html =
-  #              create_live
-  #              |> form("#case-create-form")
-  #              |> render_submit(%{
-  #                create_schema: %{
-  #                  type: :travel,
-  #                  date: Date.add(Date.utc_today(), -5),
-  #                  default_tenant_uuid: tenant.uuid,
-  #                  default_tracer_uuid: tracer_user.uuid,
-  #                  default_supervisor_uuid: supervisor_user.uuid,
-  #                  people: %{
-  #                    0 => %{
-  #                      first_name: "Max",
-  #                      last_name: "Muster",
-  #                      mobile: "+41 78 724 57 90",
-  #                      accepted_duplicate: true,
-  #                      accepted_duplicate_uuid: duplicate_person.uuid,
-  #                      accepted_duplicate_human_readable_id: duplicate_person.human_readable_id,
-  #                      accepted_duplicate_case_uuid: duplicate_case.uuid
-  #                    }
-  #                  }
-  #                }
-  #              })
-
-  #     assert html =~ "Created Case"
-
-  #     assert [%Case{phases: [_]}] = CaseContext.list_cases()
-  #     assert [_] = CaseContext.list_people()
-  #   end
-
-  #   test "accept create case with duplicate case appends phase", %{conn: conn, user: user} do
-  #     [%{tenant: tenant} | _other_grants] = user.grants
-
-  #     tracer_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
-  #       })
-
-  #     supervisor_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
-  #       })
-
-  #     duplicate_person =
-  #       person_fixture(tenant, %{
-  #         first_name: "Max",
-  #         last_name: "Muster",
-  #         contact_methods: [%{type: :mobile, value: "+41 78 724 57 90"}]
-  #       })
-
-  #     duplicate_case =
-  #       case_fixture(duplicate_person, tracer_user, supervisor_user, %{
-  #         phases: [%{details: %{__type__: :possible_index, type: :travel}}]
-  #       })
-
-  #     assert {:ok, create_live, _html} =
-  #              live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-  #     assert html =
-  #              create_live
-  #              |> form("#case-create-form")
-  #              |> render_submit(%{
-  #                create_schema: %{
-  #                  type: :contact_person,
-  #                  date: Date.add(Date.utc_today(), -5),
-  #                  default_tenant_uuid: tenant.uuid,
-  #                  default_tracer_uuid: tracer_user.uuid,
-  #                  default_supervisor_uuid: supervisor_user.uuid,
-  #                  people: %{
-  #                    0 => %{
-  #                      first_name: "Max",
-  #                      last_name: "Muster",
-  #                      mobile: "+41 78 724 57 90",
-  #                      accepted_duplicate: true,
-  #                      accepted_duplicate_uuid: duplicate_person.uuid,
-  #                      accepted_duplicate_human_readable_id: duplicate_person.human_readable_id,
-  #                      accepted_duplicate_case_uuid: duplicate_case.uuid
-  #                    }
-  #                  }
-  #                }
-  #              })
-
-  #     assert html =~ "Created Case"
-
-  #     assert [%Case{phases: [_, _]}] = CaseContext.list_cases()
-  #     assert [_] = CaseContext.list_people()
-  #   end
-
-  #   test "refute create case with duplicate person", %{conn: conn, user: user} do
-  #     [%{tenant: tenant} | _other_grants] = user.grants
-
-  #     tracer_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
-  #       })
-
-  #     supervisor_user =
-  #       user_fixture(%{
-  #         iam_sub: Ecto.UUID.generate(),
-  #         grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
-  #       })
-
-  #     _duplicate_person =
-  #       person_fixture(tenant, %{
-  #         first_name: "Max",
-  #         last_name: "Muster",
-  #         contact_methods: [%{type: :mobile, value: "+41 78 724 57 90"}]
-  #       })
-
-  #     assert {:ok, create_live, _html} =
-  #              live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-  #     assert html =
-  #              create_live
-  #              |> form("#case-create-form")
-  #              |> render_submit(%{
-  #                create_schema: %{
-  #                  type: :travel,
-  #                  date: Date.add(Date.utc_today(), -5),
-  #                  default_tenant_uuid: tenant.uuid,
-  #                  default_tracer_uuid: tracer_user.uuid,
-  #                  default_supervisor_uuid: supervisor_user.uuid,
-  #                  people: %{
-  #                    0 => %{
-  #                      first_name: "Max",
-  #                      last_name: "Muster",
-  #                      mobile: "+41 78 724 57 90",
-  #                      accepted_duplicate: false
-  #                    }
-  #                  }
-  #                }
-  #              })
-
-  #     assert html =~ "Created Case"
-
-  #     assert [_] = CaseContext.list_cases()
-  #     assert [_, _] = CaseContext.list_people()
-  #   end
-  # end
+      assert [_] = CaseContext.list_cases()
+      assert [_] = CaseContext.list_transmissions()
+    end
+  end
 end

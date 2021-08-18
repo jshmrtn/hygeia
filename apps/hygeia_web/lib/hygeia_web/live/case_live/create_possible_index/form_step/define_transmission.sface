@@ -11,7 +11,6 @@
         <div class="card-body">
           <div class="row">
             <div class="col">
-
               <Field name={:type} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <Select
@@ -30,9 +29,8 @@
               </Field>
             </div>
           </div>
-          <div 
-            :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == :true or Ecto.Changeset.get_field(@changeset, :type) not in [nil, :travel]}
-          >
+          <div :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true or
+            Ecto.Changeset.get_field(@changeset, :type) not in [nil, :travel]}>
             <Field name={:propagator_internal} class="form-group">
               <div class="btn-group btn-group-toggle btn-radio-group">
                 <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
@@ -91,16 +89,14 @@
     <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
   </Inputs>
 
-  {#if @show_navigation}
-    <div class="container">
-      <button
-        class="btn btn-primary mt-5"
-        type="submit"
-        phx-disable-with={gettext("Saving...")}
-        disabled={not @changeset.valid?}
-      >
-        {gettext("Next")}
-      </button>
-    </div>
-  {/if}
+  <div class="container">
+    <button
+      class="btn btn-primary mt-5"
+      type="submit"
+      phx-disable-with={gettext("Saving...")}
+      disabled={not @changeset.valid?}
+    >
+      {gettext("Next")}
+    </button>
+  </div>
 </Form>

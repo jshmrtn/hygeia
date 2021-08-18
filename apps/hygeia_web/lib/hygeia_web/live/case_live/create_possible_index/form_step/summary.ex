@@ -8,7 +8,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary do
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
 
-
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.ErrorTag
@@ -17,7 +16,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary do
 
   alias Hygeia.CaseContext.Case.Status
 
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting
 

@@ -1,21 +1,11 @@
-<fieldset disabled="disabled">
-  <DefineTransmission
-    id="summary-define-transmission"
-    {=@current_form_data}
-    show_navigation={false}
-  />
-</fieldset>
 
 <div class="container mt-5">
   <fieldset disabled="disabled">
     <div class="row">
-      {#for %{uuid: binding_uuid, person_changeset: person_cs, case_changeset: case_cs, reporting: reporting} <- @current_form_data.bindings}
+      {#for %{person_changeset: person_cs, case_changeset: case_cs, reporting: reporting} <-
+          @current_form_data.bindings}
         <div class="w-100">
-          <Form
-            for={case_cs}
-            change="validate"
-            opts={autocomplete: "off", "phx-hook": "BlockNavigation"}
-          >
+          <Form for={case_cs} change="validate" opts={autocomplete: "off", "phx-hook": "BlockNavigation"}>
             <PersonCard person_changeset={person_cs}>
               <:feature>
                 <div class="ml-auto">
@@ -25,10 +15,7 @@
                         {gettext("Status")}
                       </span>
                     </HygeiaWeb.FieldLabel>
-                    <Select
-                      class="form-control"
-                      options={Status.map()}
-                    />
+                    <Select class="form-control" options={Status.map()} />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
@@ -68,7 +55,7 @@
                   <span>{gettext("This person will not be notified.")}</span>
                 {#else}
                   <span>{gettext("This person will be notified on the following contact methods")}:</span>
-                  {#for {contact_type, contact_type_members} <- Reporting.group_contacts_by_group(person_cs)}
+                  {#for {contact_type, contact_type_members} <- Reporting.group_contacts_by_type(person_cs)}
                     <div class="mb-4" style="width: 700px;">
                       <table class="table">
                         <thead>
@@ -86,7 +73,7 @@
                               <td>{contact.value}</td>
                               <td>{contact.comment}</td>
                               <td><Checkbox opts={[
-                                  checked: (if (Reporting.has_contact_uuid?(reporting, contact.uuid)), do: true),
+                                  checked: if(Reporting.has_contact_uuid?(reporting, contact.uuid), do: true),
                                   hidden_input: "false"
                                 ]} />
                               </td>
@@ -104,18 +91,4 @@
       {/for}
     </div>
   </fieldset>
-</div>
-
-<div class="row mb-3">
-  <button class="btn btn-warning mt-5" type="button" :on-click="back">
-    {gettext("Back")}
-  </button>
-  <button
-    class="btn btn-primary mt-5"
-    type="submit"
-    :on-click="next"
-    phx-disable-with={gettext("Saving...")}
-  >
-    {gettext("Submit")}
-  </button>
 </div>

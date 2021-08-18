@@ -1,0 +1,98 @@
+<div class="case-snippet">
+  <Form
+    for={@case_changeset}
+    opts={autocomplete: "off", id: "case-snippet-form", "phx-hook": "BlockNavigation"}
+  >
+    <div class="card full-width">
+      <div class="card-header">
+        <h5 class="card-title mb-0">{gettext("Phases")}</h5>
+      </div>
+      <div class="card-body">
+        <ErrorTag class="d-block invalid-feedback" field={:phases} />
+        <div class="form-grid">
+          <Inputs for={:phases}>
+            <div class="card">
+              <div class="card-body">
+                <InputContext assigns={assigns} :let={form: form}>
+                  <Context
+                    put={__MODULE__, phase_details: Ecto.Changeset.get_field(form.source, :details)}
+                    get={__MODULE__, phase_details: phase_details}
+                  >
+                    <div class="form-group">
+                      <HygeiaWeb.FieldLabel field={:type} />
+                      <div class="value">
+                        {case_phase_type_translation(phase_details)}
+                      </div>
+                    </div>
+
+                    <Field name={:quarantine_order} class="form-group">
+                      <div>
+                        <HygeiaWeb.FieldLabel />
+                      </div>
+                      <div class="btn-group btn-group-toggle btn-radio-group">
+                        <label class={
+                          "btn",
+                          "btn-sm",
+                          "btn-secondary",
+                          active: Ecto.Changeset.get_field(form.source, :quarantine_order) == nil,
+                          disabled: true
+                        }>
+                          <RadioButton value={nil} opts={disabled: true} />
+                          {gettext("Unknown")}
+                        </label>
+                        <label class={
+                          "btn",
+                          "btn-sm",
+                          "btn-secondary",
+                          active: Ecto.Changeset.get_field(form.source, :quarantine_order) == true,
+                          disabled: true
+                        }>
+                          <RadioButton value opts={disabled: true} />
+                          {gettext("Ordered")}
+                        </label>
+                        <label class={
+                          "btn",
+                          "btn-sm",
+                          "btn-secondary",
+                          active: Ecto.Changeset.get_field(form.source, :quarantine_order) == false,
+                          disabled: true
+                        }>
+                          <RadioButton value={false} opts={disabled: true} />
+                          {gettext("No Order")}
+                        </label>
+                      </div>
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <div class="row" :if={Ecto.Changeset.get_field(form.source, :quarantine_order) == true}>
+                      <div class="col">
+                        <Field name={:start} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <DateInput class="form-control" opts={disabled: true} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                      </div>
+                      <div class="col">
+                        <Field name={:end} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <DateInput class="form-control" opts={disabled: true} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                      </div>
+                    </div>
+
+                    <div class="row" :if={Ecto.Changeset.get_field(form.source, :quarantine_order) != true}>
+                      <label>Phase created at:</label>
+                      <span>{Ecto.Changeset.get_field(form.source, :inserted_at)}</span>
+                    </div>
+
+                  </Context>
+                </InputContext>
+              </div>
+            </div>
+          </Inputs>
+        </div>
+      </div>
+    </div>
+  </Form>
+</div>

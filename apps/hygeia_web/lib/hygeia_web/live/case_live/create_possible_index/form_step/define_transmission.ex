@@ -15,8 +15,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CaseContext.Transmission.InfectionPlace
 
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
-
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
   alias Surface.Components.Form.Inputs
@@ -46,27 +44,27 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
   prop form_step, :string, default: ""
   prop live_action, :atom, default: :index
   prop current_form_data, :map, required: true
-  prop show_navigation, :boolean, default: true
 
   @impl Phoenix.LiveComponent
   def mount(socket) do
     {:ok,
      assign(socket,
-        changeset: changeset(%__MODULE__{}),
-        loading: false
+       changeset: changeset(%__MODULE__{}),
+       loading: false
      )}
   end
 
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
-
     changeset =
       %__MODULE__{}
       |> changeset(assigns.current_form_data)
       |> case do
         %Ecto.Changeset{changes: changes} = changeset when map_size(changes) > 0 ->
           Map.put(changeset, :action, :validate)
-        changeset -> changeset
+
+        changeset ->
+          changeset
       end
 
     {:ok,
@@ -87,15 +85,24 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     propagator =
       params["propagator_case_uuid"]
       |> case do
-        nil -> nil
+        nil ->
+          nil
+
         uuid ->
-          CaseContext.get_case_with_preload!(uuid, [:person])
-          |> Map.get(:person)
+          case = CaseContext.get_case_with_preload!(uuid, [:person])
+          person = Map.get(case, :person)
+          {person, case}
       end
 
     actual_params =
       params
-      |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
+      |> Map.new(fn
+        {"type", type} ->
+          {:type, String.to_atom(type)}
+
+        {k, v} ->
+          {String.to_atom(k), v}
+      end)
       |> Map.put(:propagator, propagator)
 
     __MODULE__

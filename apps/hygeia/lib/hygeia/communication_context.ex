@@ -152,14 +152,16 @@ defmodule Hygeia.CommunicationContext do
     end
   end
 
-
-  @spec create_outgoing_email(case :: Case.t(), to_email :: String.t(), subject :: String.t(), body :: String.t()) ::
-        {:ok, Email.t()}
-        | {:error, Ecto.Changeset.t(Email.t()) | :no_outgoing_mail_configuration}
+  @spec create_outgoing_email(
+          case :: Case.t(),
+          to_email :: String.t(),
+          subject :: String.t(),
+          body :: String.t()
+        ) ::
+          {:ok, Email.t()}
+          | {:error, Ecto.Changeset.t(Email.t()) | :no_outgoing_mail_configuration}
   def create_outgoing_email(%Case{} = case, to_email, subject, body) do
-    %Case{
-      tenant: tenant
-    } = Repo.preload(case, tenant: [])
+    %Case{tenant: tenant} = Repo.preload(case, tenant: [])
 
     cond do
       !TenantContext.tenant_has_outgoing_mail_configuration?(tenant) ->
@@ -361,8 +363,7 @@ defmodule Hygeia.CommunicationContext do
           {:ok, SMS.t()}
           | {:error, Ecto.Changeset.t(SMS.t()) | :sms_config_missing}
   def create_outgoing_sms(case, phone_number, message) do
-    %Case{person: %Person{tenant: %Tenant{} = tenant}} =
-      Repo.preload(case, tenant: [])
+    %Case{person: %Person{tenant: %Tenant{} = tenant}} = Repo.preload(case, person: :tenant)
 
     cond do
       !TenantContext.tenant_has_outgoing_sms_configuration?(tenant) ->

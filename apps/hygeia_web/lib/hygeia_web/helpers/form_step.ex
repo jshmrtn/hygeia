@@ -21,7 +21,9 @@ defmodule HygeiaWeb.Helpers.FormStep do
     steps
     |> get_step(current_step_name)
     |> case do
-      nil -> nil
+      nil ->
+        nil
+
       step ->
         step
         |> Map.get(direction)
@@ -44,7 +46,7 @@ defmodule HygeiaWeb.Helpers.FormStep do
   def reachable?(_steps, _, nil), do: false
 
   def reachable?(_steps, source_step_name, target_step_name)
-    when source_step_name == target_step_name,
+      when source_step_name == target_step_name,
       do: true
 
   def reachable?(steps, source_step_name, target_step_name) do
