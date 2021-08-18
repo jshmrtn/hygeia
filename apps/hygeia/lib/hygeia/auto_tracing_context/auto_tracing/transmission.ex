@@ -9,7 +9,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Transmission do
 
   @type t :: %__MODULE__{
           date: Date.t() | nil,
-          known: boolean | nil,
+          known: boolean,
+          propagator_known: boolean | nil,
           propagator_first_name: String.t() | nil,
           propagator_last_name: String.t() | nil,
           propagator_address: Address.t() | nil,
@@ -21,6 +22,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Transmission do
   @type empty :: %__MODULE__{
           date: Date.t() | nil,
           known: boolean | nil,
+          propagator_known: boolean | nil,
           propagator_first_name: String.t() | nil,
           propagator_last_name: String.t() | nil,
           propagator_address: Address.t() | nil,
@@ -32,6 +34,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Transmission do
   embedded_schema do
     field :date, :date
     field :known, :boolean
+    field :propagator_known, :boolean
     field :propagator_first_name, :string
     field :propagator_last_name, :string
     field :propagator_phone, :string
@@ -48,12 +51,13 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Transmission do
     |> cast(attrs, [
       :date,
       :known,
+      :propagator_known,
       :propagator_first_name,
       :propagator_last_name,
       :propagator_phone,
       :propagator_email
     ])
-    |> validate_required([])
+    |> validate_required([:known])
     |> validate_and_normalize_phone(:propagator_phone, fn
       :mobile -> :ok
       :fixed_line -> :ok

@@ -55,8 +55,7 @@ defmodule Hygeia.Jobs.DetectUnchangedCases do
           case in Case,
           where:
             case.status == "first_contact" and
-              case.updated_at <=
-                fragment("CURRENT_TIMESTAMP - INTERVAL '3 day'")
+              case.updated_at <= ago(3, "day")
         )
       )
 

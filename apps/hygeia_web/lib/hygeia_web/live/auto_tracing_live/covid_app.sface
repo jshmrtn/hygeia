@@ -32,11 +32,14 @@
         </div>
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
-      <div :if={not is_nil(Ecto.Changeset.get_field(form.source, :covid_app))}>
-        <button class="btn btn-primary" type="button" :on-click="advance">
-          {gettext("Continue")}
-        </button>
-      </div>
+      <button
+        class="btn btn-primary"
+        type="button"
+        :on-click="advance"
+        disabled={is_nil(Ecto.Changeset.get_field(form.source, :covid_app))}
+      >
+        {gettext("Continue")}
+      </button>
     </InputContext>
   </Form>
 </div>

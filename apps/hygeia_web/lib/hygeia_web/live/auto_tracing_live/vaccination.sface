@@ -75,12 +75,17 @@
                 </div>
               </Field>
             </div>
+            <button
+              class="btn btn-primary"
+              type="button"
+              :on-click="advance"
+              disabled={is_nil(Ecto.Changeset.get_field(form.source, :done)) or not @person_changeset.valid?}
+            >
+              {gettext("Continue")}
+            </button>
           </InputContext>
         </Inputs>
       </div>
     </div>
   </Form>
-  <button class="btn btn-primary" type="button" :on-click="advance">
-    {gettext("Continue")}
-  </button>
 </div>

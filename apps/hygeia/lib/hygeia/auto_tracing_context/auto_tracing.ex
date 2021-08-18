@@ -99,6 +99,19 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     |> cast_embed(:transmission)
   end
 
+  @spec step_completed?(auto_tracing :: t, step :: Step.t()) :: boolean()
+  def step_completed?(auto_tracing, step) do
+    steps = Step.__enum_map__()
+
+    Enum.find_index(steps, &(&1 == step)) <=
+      Enum.find_index(steps, &(&1 == auto_tracing.last_completed_step))
+  end
+
+  @spec first_not_completed_step?(auto_tracing :: t, step :: Step.t()) ::
+          boolean()
+  def first_not_completed_step?(auto_tracing, step),
+    do: Step.get_next_step(auto_tracing.last_completed_step) == step
+
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.Authorization.Resource
     alias Hygeia.AutoTracingContext.AutoTracing
@@ -115,10 +128,10 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
             user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
-    def authorized?(_possible_index_submission, :create, %User{} = user, %{case: case} = meta),
+    def authorized?(_auto_tracing, :create, %User{} = user, %{case: case} = meta),
       do: Resource.authorized?(case, :update, user, meta)
 
-    def authorized?(_possible_index_submission, :list, %User{} = user, %{case: case} = meta),
+    def authorized?(_auto_tracing, :list, %User{} = user, %{case: case} = meta),
       do: Resource.authorized?(case, :details, user, meta)
 
     def authorized?(%AutoTracing{case: case}, :details, %User{} = user, meta),
@@ -128,7 +141,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
         when action in [:update, :delete, :accept],
         do: Resource.authorized?(case, :update, user, meta)
 
-    def authorized?(_possible_index_submission, action, %Person{uuid: person_uuid}, %{
+    def authorized?(_auto_tracing, action, %Person{uuid: person_uuid}, %{
           case: %Case{person_uuid: person_uuid}
         })
         when action in [:create, :list],
@@ -143,7 +156,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
         when action in [:details, :update, :delete],
         do: true
 
-    def authorized?(_possible_index_submission, action, _user, _meta)
+    def authorized?(_auto_tracing, action, _user, _meta)
         when action in [:create, :details, :list, :update, :delete, :accept],
         do: false
   end

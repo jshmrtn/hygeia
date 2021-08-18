@@ -22,18 +22,17 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], hospitalizations: [organisation: []])
+      |> Repo.preload(person: [], hospitalizations: [organisation: []], auto_tracing: [])
 
     socket =
       if authorized?(case, :auto_tracing, get_auth(socket)) do
-        auto_tracing = AutoTracingContext.get_auto_tracing_by_case(case)
         organisations = OrganisationContext.list_organisations()
 
         assign(socket,
           case: case,
           case_changeset: CaseContext.change_case(case),
           person: case.person,
-          auto_tracing: auto_tracing,
+          auto_tracing: case.auto_tracing,
           organisations: organisations
         )
       else

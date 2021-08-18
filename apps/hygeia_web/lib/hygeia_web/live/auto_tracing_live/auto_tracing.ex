@@ -11,7 +11,6 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~F"""
-
     """
   end
 
@@ -20,12 +19,12 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], tests: [:mutation])
+      |> Repo.preload(person: [], tests: [:mutation], auto_tracing: [])
 
     socket =
       if authorized?(case, :auto_tracing, get_auth(socket)) do
         {:ok, auto_tracing} =
-          case AutoTracingContext.get_auto_tracing_by_case(case) do
+          case case.auto_tracing do
             nil ->
               AutoTracingContext.create_auto_tracing(case)
 

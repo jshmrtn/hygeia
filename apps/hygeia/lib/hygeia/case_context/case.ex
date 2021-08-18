@@ -6,6 +6,7 @@ defmodule Hygeia.CaseContext.Case do
 
   import HygeiaGettext
 
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.Complexity
   alias Hygeia.CaseContext.Case.Monitoring
@@ -54,6 +55,7 @@ defmodule Hygeia.CaseContext.Case do
           pinned_notes: Ecto.Schema.has_many(Note.t()) | nil,
           tests: Ecto.Schema.has_many(Test.t()) | nil,
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()) | nil,
+          auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -83,6 +85,7 @@ defmodule Hygeia.CaseContext.Case do
           pinned_notes: Ecto.Schema.has_many(Note.t()),
           tests: Ecto.Schema.has_many(Test.t()),
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()),
+          auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -115,6 +118,8 @@ defmodule Hygeia.CaseContext.Case do
     has_many :hospitalizations, Hospitalization, foreign_key: :case_uuid, on_replace: :delete
     has_many :tests, Test, foreign_key: :case_uuid, on_replace: :delete
     has_many :premature_releases, PrematureRelease, foreign_key: :case_uuid, on_replace: :delete
+
+    has_one :auto_tracing, AutoTracing, foreign_key: :case_uuid
 
     timestamps()
   end

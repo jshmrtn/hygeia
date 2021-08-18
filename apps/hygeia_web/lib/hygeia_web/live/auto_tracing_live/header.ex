@@ -3,7 +3,6 @@ defmodule HygeiaWeb.AutoTracingLive.Header do
 
   use HygeiaWeb, :surface_live_component
 
-  alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Step
   alias HygeiaWeb.UriActiveContext

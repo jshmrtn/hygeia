@@ -14,15 +14,10 @@
                     <div class="mb-2 d-flex align-items-center">
                       <HygeiaWeb.FieldLabel class="mb-0" />
                     </div>
-                    <label
-                      :for={{name, key} <- test_reasons()}
-                      class="d-block checkbox-label"
-                      data-disabled={@live_action == :show}
-                    >
+                    <label :for={{name, key} <- test_reasons()} class="d-block checkbox-label">
                       <input
                         type="checkbox"
                         name={input_name(form, :reasons_for_test) <> "[]"}
-                        disabled={@live_action == :show}
                         checked={key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || [])}
                         value={key}
                       />
@@ -43,10 +38,9 @@
                         "btn-sm",
                         "btn-outline-primary",
                         "mb-0",
-                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == nil,
-                        disabled: @live_action == :show
+                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == nil
                       }>
-                        <RadioButton value={nil} opts={disabled: @live_action == :show} />
+                        <RadioButton value={nil} />
                         {gettext("Undocumented")}
                       </label>
                       <label class={
@@ -54,10 +48,9 @@
                         "btn-sm",
                         "btn-outline-primary",
                         "mb-0",
-                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true,
-                        disabled: @live_action == :show
+                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true
                       }>
-                        <RadioButton value opts={disabled: @live_action == :show} />
+                        <RadioButton value />
                         {gettext("Has Symptoms")}
                       </label>
                       <label class={
@@ -65,10 +58,9 @@
                         "btn-sm",
                         "btn-outline-primary",
                         "mb-0",
-                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false,
-                        disabled: @live_action == :show
+                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false
                       }>
-                        <RadioButton value={false} opts={disabled: @live_action == :show} />
+                        <RadioButton value={false} />
                         {gettext("No Symptoms")}
                       </label>
                     </div>
@@ -76,15 +68,10 @@
                   </Field>
                   <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
                     <Field name={:symptoms}>
-                      <label
-                        :for={{name, key} <- symptoms()}
-                        class="d-block checkbox-label"
-                        data-disabled={@live_action == :show}
-                      >
+                      <label :for={{name, key} <- symptoms()} class="d-block checkbox-label">
                         <input
                           type="checkbox"
                           name={input_name(form, :symptoms) <> "[]"}
-                          disabled={@live_action == :show}
                           checked={key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || [])}
                           value={key}
                         />
@@ -101,7 +88,7 @@
             <div class="col">
               <Field name={:symptom_start} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <DateInput class="form-control" opts={disabled: @live_action == :show} />
+                <DateInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
@@ -123,7 +110,12 @@
       </div>
     </div>
   </Form>
-  <button class="btn btn-primary" type="button" :on-click="advance">
+  <button
+    class="btn btn-primary"
+    type="button"
+    :on-click="advance"
+    disabled={not @case_changeset.valid?}
+  >
     {gettext("Continue")}
   </button>
 </div>

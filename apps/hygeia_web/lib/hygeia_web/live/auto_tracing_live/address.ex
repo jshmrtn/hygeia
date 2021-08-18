@@ -16,18 +16,16 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [])
+      |> Repo.preload(person: [], auto_tracing: [])
 
     socket =
       if authorized?(case, :auto_tracing, get_auth(socket)) do
-        auto_tracing = AutoTracingContext.get_auto_tracing_by_case(case)
-
         assign(socket,
           case: case,
           case_changeset: CaseContext.change_case(case),
           person: case.person,
           person_changeset: CaseContext.change_person(case.person),
-          auto_tracing: auto_tracing
+          auto_tracing: case.auto_tracing
         )
       else
         push_redirect(socket,

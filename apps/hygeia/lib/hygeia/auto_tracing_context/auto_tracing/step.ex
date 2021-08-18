@@ -27,4 +27,10 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Step do
   def translate_step(:clinical), do: pgettext("Auto Tracing Step", "Clinical")
   def translate_step(:transmission), do: pgettext("Auto Tracing Step", "Transmission")
   def translate_step(:end), do: pgettext("Auto Tracing Step", "Finish")
+
+  @spec get_next_step(step :: t) :: t | nil
+  def get_next_step(step) do
+    steps = __enum_map__()
+    Enum.at(steps, Enum.find_index(steps, &(&1 == step)) + 1)
+  end
 end

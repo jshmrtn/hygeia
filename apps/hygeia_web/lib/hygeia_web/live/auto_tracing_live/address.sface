@@ -49,7 +49,12 @@
     </div>
   </div>
 
-  <button class="btn btn-primary" type="button" :on-click="advance">
+  <button
+    class="btn btn-primary"
+    type="button"
+    :on-click="advance"
+    disabled={not (@case_changeset.valid? and @person_changeset.valid?)}
+  >
     {gettext("Continue")}
   </button>
 </div>

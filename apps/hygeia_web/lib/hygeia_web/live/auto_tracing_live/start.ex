@@ -14,26 +14,14 @@ defmodule HygeiaWeb.AutoTracingLive.Start do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], tests: [:mutation])
+      |> Repo.preload(person: [], tests: [:mutation], auto_tracing: [])
 
     socket =
       if authorized?(case, :auto_tracing, get_auth(socket)) do
-        {:ok, auto_tracing} =
-          case AutoTracingContext.get_auto_tracing_by_case(case) do
-            nil ->
-              AutoTracingContext.create_auto_tracing(case, %{
-                current_step: :start,
-                last_completed_step: :start
-              })
-
-            auto_tracing ->
-              {:ok, auto_tracing}
-          end
-
         assign(socket,
           case: case,
           person: case.person,
-          auto_tracing: auto_tracing
+          auto_tracing: case.auto_tracing
         )
       else
         push_redirect(socket,
