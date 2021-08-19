@@ -18,11 +18,12 @@
     li {
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: start;
       align-items: center;
       flex-grow: 1;
       flex-basis: 0;
       z-index: 1;
+      text-align: center;
 
       &:before {
         content: "";
@@ -62,6 +63,13 @@
         &:before {
           background-color: $primary;
         }
+      }
+
+      .nav-link {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        line-height: 18px;
       }
     }
   }
