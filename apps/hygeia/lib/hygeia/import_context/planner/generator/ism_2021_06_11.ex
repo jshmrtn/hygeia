@@ -8,6 +8,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.Test
+  alias Hygeia.ImportContext.Import
   alias Hygeia.ImportContext.Planner
   alias Hygeia.ImportContext.Row
   alias Hygeia.Repo
@@ -527,6 +528,9 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
      end}
   end
 
+  defp normalize_test_data({[:kind] = path, [kind | _others]}) when is_binary(kind),
+    do: normalize_test_data({path, kind})
+
   defp normalize_test_data({[:kind] = path, kind}) when is_binary(kind) do
     {path,
      cond do
@@ -560,14 +564,38 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
           preceeding_action_plan :: [Planner.Action.t()]
         ) ::
           {Planner.certainty(), Planner.Action.t()}
-  def patch_assignee(_row, _params, preceeding_steps) do
+  def patch_assignee(
+        %Row{
+          import: %Import{
+            default_supervisor_uuid: default_supervisor_uuid,
+            default_tracer_uuid: default_tracer_uuid,
+            tenant_uuid: tenant_uuid
+          }
+        },
+        _params,
+        preceeding_steps
+      ) do
+    {_certainty, %Planner.Action.ChooseTenant{tenant: tenant}} =
+      Enum.find(preceeding_steps, &match?({_certainty, %Planner.Action.ChooseTenant{}}, &1))
+
+    # Reset Default if Tenant of Import does not match Tenant of Row
+    {default_tracer_uuid, default_supervisor_uuid} =
+      case tenant do
+        %Tenant{uuid: ^tenant_uuid} -> {default_tracer_uuid, default_supervisor_uuid}
+        %Tenant{} -> {nil, nil}
+      end
+
     {:certain,
      case Enum.find(preceeding_steps, &match?({_certainty, %Planner.Action.PatchPhases{}}, &1)) do
        {_certainty, %Planner.Action.PatchPhases{action: :skip}} ->
          %Planner.Action.PatchAssignee{action: :skip}
 
        {_certainty, %Planner.Action.PatchPhases{action: :append}} ->
-         %Planner.Action.PatchAssignee{action: :change, tracer_uuid: nil, supervisor_uuid: nil}
+         %Planner.Action.PatchAssignee{
+           action: :change,
+           tracer_uuid: default_tracer_uuid,
+           supervisor_uuid: default_supervisor_uuid
+         }
      end}
   end
 

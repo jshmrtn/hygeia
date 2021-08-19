@@ -190,6 +190,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
     Hygeia.ImportContext.Import => %{
       change_date: "Change Date",
       closed_at: "Closed At",
+      default_supervisor: "Default Supervisor",
+      default_tracer: "Default Tracer",
       file: "File",
       tenant: "Tenant",
       tenant_uuid: "Tenant UUID",
