@@ -54,7 +54,7 @@
     </li>
     <li class="nav-item" :if={authorized?(Test, :list, auth, case: @case)}>
       <UriActiveContext
-        to={Routes.test_list_path(@socket, :show, @case)}
+        to={Routes.test_index_path(@socket, :show, @case)}
         opts={active: :inclusive}
         :let={to: to, active: active}
       >

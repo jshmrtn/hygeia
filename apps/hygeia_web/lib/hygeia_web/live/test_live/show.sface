@@ -14,7 +14,7 @@
           opts={autocomplete: "off", id: "transmission-form", class: "view-test-show container"}
         >
           <LiveRedirect
-            to={Routes.test_list_path(
+            to={Routes.test_index_path(
               @socket,
               :show,
               @test.case.uuid

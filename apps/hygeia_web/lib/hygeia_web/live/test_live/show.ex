@@ -113,7 +113,7 @@ defmodule HygeiaWeb.TestLive.Show do
     {:noreply,
      socket
      |> put_flash(:info, gettext("Test deleted successfully"))
-     |> redirect(to: Routes.test_list_path(socket, :show, test.case.uuid))}
+     |> redirect(to: Routes.test_index_path(socket, :show, test.case.uuid))}
   end
 
   @impl Phoenix.LiveView

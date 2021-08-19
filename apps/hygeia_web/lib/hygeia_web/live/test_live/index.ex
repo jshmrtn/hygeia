@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.TestLive.List do
+defmodule HygeiaWeb.TestLive.Index do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
