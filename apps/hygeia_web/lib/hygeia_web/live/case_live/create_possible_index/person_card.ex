@@ -12,6 +12,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard do
   slot left
   slot right
   slot bottom
+  slot error
 
   def show_field(map, key, default \\ "")
 

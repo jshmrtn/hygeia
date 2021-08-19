@@ -87,105 +87,11 @@ defmodule HygeiaWeb.CaseLiveTest do
 
   describe "CreatePossibleIndex - Path navigation" do
     test "navigate to step without reaching it", %{conn: conn} do
-      assert {:error, {:live_redirect, %{to: path}}} =
+      assert {:error, {:live_redirect, %{to: _}}} =
                live(
                  conn,
                  Routes.case_create_possible_index_path(conn, :index, "reporting")
                )
-    end
-  end
-
-  describe "CreatePossibleIndex - Define Transmission step" do
-    test "submit with type: travel", %{conn: conn} = context do
-      assert {:ok, view, _html} =
-               live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-      test_transmission_step_type_travel(context, view)
-    end
-
-    test "submit with type: travel, imported from params", %{conn: conn} = context do
-      params = %{
-        "type" => "travel",
-        "date" => Date.add(Date.utc_today(), -5) |> Date.to_string(),
-        "comment" => "Simple comment."
-      }
-
-      assert {:ok, view, _html} =
-               live(conn, Routes.case_create_possible_index_path(conn, :create, params))
-
-      test_transmission_step_type_travel_import(context, view)
-    end
-
-    test "submit with propagator and type: contact_person", %{conn: conn} = context do
-      assert {:ok, view, _html} =
-               live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-      test_transmission_step_with_propagator_type_contact_person(context, view)
-    end
-
-    # test "submit with propagator and type: contact_person, imported_from_params", %{conn: conn} = context do
-
-    #   assert {:ok, view, _html} =
-    #     live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-    #   test_transmission_step_with_propagator_type_contact_person_import(context, view)
-    # end
-
-    test "submit with external propagator and type: contact_person", %{conn: conn} = context do
-      assert {:ok, view, _html} =
-               live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-      test_transmission_step_with_ext_propagator_type_contact_person(context, view)
-    end
-
-    test "submit with type: other and type_other", %{conn: conn} = context do
-      assert {:ok, view, _html} =
-               live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-      test_transmission_step_type_other(context, view)
-    end
-  end
-
-  describe "CreatePossibleIndex - Define People step" do
-    test "submit with new person, new case", %{conn: conn} = context do
-      assert {:ok, view, _html} =
-               live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-      test_transmission_step_type_travel(context, view)
-
-      test_define_people_step_new_person_new_case(context, view)
-    end
-
-    test "submit with existing person, new case", %{conn: conn} = context do
-      assert {:ok, view, _html} =
-               live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-      test_transmission_step_type_travel(context, view)
-
-      test_define_people_step_existing_person_new_case(context, view)
-    end
-
-    test "submit with existing person, existing case", %{conn: conn} = context do
-      assert {:ok, view, _html} =
-               live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-      test_transmission_step_type_travel(context, view)
-
-      test_define_people_step_existing_person_existing_case(context, view)
-    end
-  end
-
-  describe "CreatePossibleIndex - Define Options step" do
-    test "submit with case status, supervisor, tracer with new person, new case",
-         %{conn: conn} = context do
-      assert {:ok, view, _html} =
-               live(conn, Routes.case_create_possible_index_path(conn, :create))
-
-      test_transmission_step_type_travel(context, view)
-
-      test_define_people_step_new_person_new_case(context, view)
-
-      test_define_options_step_case_status_first_contact(context, view)
     end
   end
 

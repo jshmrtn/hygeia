@@ -66,34 +66,34 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             nil ->
               normalized_params
 
-              # alias Hygeia.CaseContext.Person
+            # alias Hygeia.CaseContext.Person
 
-              # %Person{tenant_uuid: tenant_uuid} =
-              #   person1 =
-              #   CaseContext.get_person!("e3239c4f-a98a-46f1-8e09-0fb412599d44")
-              #   |> Hygeia.Repo.preload([:tenant, :cases])
+            # %Person{tenant_uuid: tenant_uuid} =
+            #   person1 =
+            #   CaseContext.get_person!("e3239c4f-a98a-46f1-8e09-0fb412599d44")
+            #   |> Hygeia.Repo.preload([:tenant, :cases])
 
-              # %{
-              #   type: :travel,
-              #   date: Date.add(Date.utc_today(), -5) |> Date.to_iso8601(),
-              #   bindings: [
-              #     %{
-              #       person_changeset: person1 |> CaseContext.change_person(),
-              #       case_changeset: List.first(person1.cases) |> Ecto.Changeset.change()
-              #       # EMPTY CASE
-              #       # Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid, status: :done})
-              #       # |> Ecto.Changeset.change()
-              #     }
-              #   ]
-              # }
-              # |> Map.merge(normalized_params)
+            # %{
+            #   type: :travel,
+            #   date: Date.add(Date.utc_today(), -5) |> Date.to_iso8601(),
+            #   bindings: [
+            #     %{
+            #       person_changeset: person1 |> CaseContext.change_person(),
+            #       case_changeset: List.first(person1.cases) |> Ecto.Changeset.change()
+            #       # EMPTY CASE
+            #       # Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid, status: :done})
+            #       # |> Ecto.Changeset.change()
+            #     }
+            #   ]
+            # }
+            # |> Map.merge(normalized_params)
 
             uuid ->
               Map.merge(normalized_params, possible_index_submission_attrs(uuid))
           end
 
         assign(socket,
-          control_step: @default_form_step,
+          visited_steps: visit_step([], @default_form_step),
           current_form_data: available_data,
           tenants: tenants,
           supervisor_users: supervisor_users,
@@ -112,7 +112,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   @impl Phoenix.LiveView
   def handle_params(params, _uri, socket) do
-    %{assigns: %{control_step: control_step}} = socket
+    %{assigns: %{visited_steps: visited_steps}} = socket
 
     form_step =
       @form_steps
@@ -123,7 +123,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       end
 
     socket =
-      if FormStep.reachable?(@form_steps, form_step, control_step) do
+      if visited_step?(visited_steps, form_step) do
         assign(socket, :form_step, form_step)
       else
         push_patch(socket,
@@ -146,7 +146,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     :ok = Service.send_confirmations(socket, tuples, current_form_data)
 
     socket
-    |> assign(control_step: "summary")
+    |> assign(visited_steps: visit_step([], "summary"))
     |> put_flash(:info, gettext("Cases inserted successfully."))
     |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, "summary"))
   end
@@ -264,22 +264,47 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   defp change_step(socket, steps, :next) do
-    %{assigns: %{form_step: form_step, control_step: control_step}} = socket
+    %{assigns: %{form_step: form_step, visited_steps: visited_steps}} = socket
 
     if new_step = FormStep.get_next_step(steps, form_step) do
       socket
-      |> assign(control_step: update_control_step(steps, control_step, new_step))
+      |> assign(visited_steps: visit_step(visited_steps, new_step))
       |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, new_step))
     else
       save(socket)
     end
   end
 
-  defp update_control_step(steps, control_step, possible_control_step) do
-    if FormStep.reachable?(steps, control_step, possible_control_step) do
-      possible_control_step
-    else
-      control_step
+  def visit_step([], form_step), do: [form_step]
+  def visit_step([form_step|_t] = visited, form_step), do: visited
+  def visit_step([h|t], form_step), do: [h|visit_step(t, form_step)]
+
+  def visited_step?([], _form_step), do: false
+  def visited_step?([form_step|_t], form_step), do: true
+  def visited_step?([_|t], form_step), do: visited_step?(t, form_step)
+
+  defp valid_step?("transmission", current_form_data) do
+    DefineTransmission.valid?(current_form_data)
+  end
+
+  defp valid_step?("people", current_form_data) do
+    DefinePeople.valid?(current_form_data[:bindings])
+  end
+
+  defp valid_step?("options", current_form_data) do
+    DefineOptions.valid?(current_form_data[:bindings])
+  end
+
+  defp valid_step?("reporting", current_form_data) do
+    Reporting.valid?(current_form_data[:bindings])
+  end
+
+  defp decide_nav_class(current_step, target_step, visited_steps, current_data) do
+    cond do
+      match?(^current_step, target_step) -> "bg-warning"
+      valid_step?(target_step, current_data) and visited_step?(visited_steps, target_step) -> "bg-success"
+      not visited_step?(visited_steps, target_step) -> ""
+      true -> "bg-danger"
     end
   end
 

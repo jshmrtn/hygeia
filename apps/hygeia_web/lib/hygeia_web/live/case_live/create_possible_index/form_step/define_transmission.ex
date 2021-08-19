@@ -195,4 +195,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
       end
     end)
   end
+
+  def valid?(step_data) do
+    %__MODULE__{}
+    |> changeset(step_data)
+    |> then(&( &1.valid? )) |> IO.inspect(label: "transmission is")
+  end
 end

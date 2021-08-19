@@ -57,6 +57,11 @@
         <#slot name="right" />
       </div>
     </div>
+    <#slot name="error">
+      {#if not @person_changeset.valid?}
+        <span class="d-block invalid-feedback">{gettext("This person requires further processing, please click on edit to correct the availabe information.")}</span>
+      {/if}
+    </#slot>
     <#slot name="bottom" />
   </div>
 </div>

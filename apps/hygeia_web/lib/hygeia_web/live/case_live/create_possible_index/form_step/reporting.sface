@@ -71,6 +71,7 @@
     type="submit"
     :on-click="next"
     phx-disable-with={gettext("Saving...")}
+    disabled={not valid?(@bindings)}
   >
     {gettext("Submit and send")}
   </button>

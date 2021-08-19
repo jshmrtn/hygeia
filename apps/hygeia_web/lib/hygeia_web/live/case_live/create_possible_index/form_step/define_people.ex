@@ -657,7 +657,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
   defp decide_case_status(_type), do: :first_contact
 
-  defp valid?(bindings) do
+  def valid?(nil), do: false
+
+  def valid?(bindings) do
     Enum.reduce(bindings, length(bindings) > 0, fn %{person_changeset: person_changeset}, truth ->
       person_changeset.valid? and truth
     end)

@@ -21,8 +21,7 @@ defmodule HygeiaWeb.Helpers.FormStep do
     steps
     |> get_step(current_step_name)
     |> case do
-      nil ->
-        nil
+      nil -> nil
 
       step ->
         step
@@ -38,19 +37,7 @@ defmodule HygeiaWeb.Helpers.FormStep do
 
   defp get_step(steps, step_name) do
     steps
-    |> Enum.find(&(&1.name == step_name))
-  end
-
-  def reachable?(steps, source_step, target_step_name)
-  def reachable?(_steps, nil, _), do: false
-  def reachable?(_steps, _, nil), do: false
-
-  def reachable?(_steps, source_step_name, target_step_name)
-      when source_step_name == target_step_name,
-      do: true
-
-  def reachable?(steps, source_step_name, target_step_name) do
-    reachable?(steps, get_next_step(steps, source_step_name), target_step_name)
+    |> Enum.find(&(match?(^step_name, &1.name)))
   end
 
   defp get_step_names(step_list) when is_list(step_list),

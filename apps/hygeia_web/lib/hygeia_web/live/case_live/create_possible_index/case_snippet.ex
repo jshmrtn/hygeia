@@ -3,7 +3,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet do
 
   use HygeiaWeb, :surface_component
 
-
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag

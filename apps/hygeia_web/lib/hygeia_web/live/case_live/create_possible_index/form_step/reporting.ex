@@ -260,4 +260,16 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
       has_contact_uuid?(reporting, contact.uuid) and truth
     end)
   end
+
+  def valid?(nil), do: false
+
+  def valid?(bindings) do
+    Enum.reduce(bindings, length(bindings) > 0, fn %{
+                                                     person_changeset: person_changeset,
+                                                     case_changeset: case_changeset
+                                                   },
+                                                   truth ->
+      person_changeset.valid? and case_changeset.valid? and truth
+    end)
+  end
 end

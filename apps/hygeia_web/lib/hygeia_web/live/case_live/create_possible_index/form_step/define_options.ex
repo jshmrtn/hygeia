@@ -145,7 +145,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
     |> Enum.find_value(&if match?(&1, assignee_uuid), do: &1.uuid)
   end
 
-  defp valid?(bindings) do
+  def valid?(nil), do: false
+  def valid?(bindings) do
     Enum.reduce(bindings, length(bindings) > 0, fn %{case_changeset: case_changeset}, truth ->
       case_changeset.valid? and truth
     end)

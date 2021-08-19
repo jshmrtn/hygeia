@@ -325,6 +325,12 @@
                 {#for case <- person.cases}
                   <div class="list-group-item list-group-item-action">
                     <CaseSnippet case_changeset={change(case)} />
+                    <Link 
+                      to={Routes.case_base_data_path(@socket, :show, case.uuid)}
+                      opts={target: "_blank", rel: "noopener noreferrer"}
+                    >
+                      Open case in new tab
+                    </Link>
                     <button
                       class="btn btn-primary"
                       type="button"
