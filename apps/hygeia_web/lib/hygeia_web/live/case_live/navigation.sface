@@ -52,6 +52,17 @@
         </UriActiveContext>
       </UriActiveContext>
     </li>
+    <li class="nav-item" :if={authorized?(Test, :list, auth, case: @case)}>
+      <UriActiveContext
+        to={Routes.test_index_path(@socket, :show, @case)}
+        opts={active: :inclusive}
+        :let={to: to, active: active}
+      >
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {gettext("Tests")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
     <li class="nav-item" :if={authorized?(@case, :details, auth)}>
       <UriActiveContext
         to={Routes.case_transmissions_path(@socket, :show, @case)}

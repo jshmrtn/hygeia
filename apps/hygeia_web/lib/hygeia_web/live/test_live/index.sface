@@ -1,0 +1,100 @@
+<div class="component-case-tests container">
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
+
+    <div class="card">
+      <div class="card-header">
+        <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between mb-1">
+          <h3>{gettext("Tests")}</h3>
+
+          <div :if={authorized?(Test, :create, auth, %{case: @case})}>
+            <LiveRedirect
+              to={Routes.test_create_path(
+                @socket,
+                :create,
+                @case.uuid
+              )}
+              class="btn btn-primary"
+            >
+              <span class="oi oi-plus me-1" aria-hidden="true" />
+              {gettext("New Test")}
+            </LiveRedirect>
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                {schema_field_name(:tested_at, Test)}
+              </th>
+              <th>
+                {schema_field_name(:laboratory_reported_at, Test)}
+              </th>
+              <th>
+                {schema_field_name(:kind, Test)}
+              </th>
+              <th>
+                {schema_field_name(:result, Test)}
+              </th>
+              <th>
+                {schema_field_name(:mutation, Test)}
+              </th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            <HygeiaWeb.RecordView
+              :for={test <- @case.tests}
+              resource={test}
+              action={:list}
+              id={"test-#{test.uuid}"}
+              wrapper_tag={:tr}
+            >
+              <td class="align-middle">{format_date(test.tested_at)}</td>
+              <td class="align-middle">{format_date(test.laboratory_reported_at)}</td>
+              <td class="align-middle">{Kind.translate(test.kind)}</td>
+              <td class="align-middle"><span :if={!is_nil(test.result)}>{Result.translate(test.result)}</span></td>
+              <td class="align-middle"><span :if={!is_nil(test.mutation)}>{test.mutation.name}</span></td>
+              <td class="align-middle">
+                <div class="d-flex justify-content-end w-100">
+                  <LivePatch
+                    to={Routes.test_show_path(@socket, :show, test)}
+                    :if={authorized?(test, :details, auth, %{case: @case})}
+                  >
+                    <button class="ms-auto btn btn-sm btn-outline-primary">{gettext("Show")}</button>
+                  </LivePatch>
+                  <LivePatch
+                    to={Routes.test_show_path(@socket, :edit, test)}
+                    :if={authorized?(test, :update, auth, %{case: @case})}
+                  >
+                    <button class="ms-1 btn btn-sm btn-outline-primary">
+                      <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+                    </button>
+                  </LivePatch>
+                  <Link
+                    to="#"
+                    click="delete"
+                    opts={
+                      title: gettext("Delete"),
+                      data: [confirm: gettext("Are you sure?")],
+                      "phx-value-id": test.uuid,
+                      class: "delete"
+                    }
+                    :if={authorized?(test, :delete, auth, %{case: @case})}
+                  >
+                    <button class="ms-1 btn btn-sm btn-danger">
+                      <span class="oi oi-trash" aria-hidden="true" />
+                    </button>
+                  </Link>
+                </div>
+              </td>
+            </HygeiaWeb.RecordView>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </Context>
+</div>

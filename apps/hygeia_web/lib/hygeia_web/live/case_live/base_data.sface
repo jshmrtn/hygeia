@@ -509,21 +509,6 @@
                   </div>
                 </div>
 
-                <div class="card full-width">
-                  <div class="card-header">
-                    <h4 class="card-title mb-0">{gettext("Tests")}</h4>
-                  </div>
-                  <div class="card-body">
-                    <HygeiaWeb.CaseLive.Tests
-                      disabled={@live_action == :show}
-                      source={@case}
-                      id="tests"
-                      add_test="add_test"
-                      remove_test="remove_test"
-                    />
-                  </div>
-                </div>
-
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">{gettext("Hospitalizations")}</h4>
