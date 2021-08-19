@@ -7,6 +7,7 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
   alias Hygeia.CaseContext
   alias Hygeia.Helpers.Empty
   alias Hygeia.Repo
+  alias Surface.Components.LiveRedirect
 
   alias Surface.Components.Form
   alias Surface.Components.Form.Inputs

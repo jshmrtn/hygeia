@@ -1,76 +1,78 @@
-<div id="step_employer">
+<div id="step_employer" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
-
-  <h2>
+  <h2 class="mb-4">
     {gettext("Occupation / Employment")}
   </h2>
   <div class="row">
-    <div class="col">
-      <Form for={@person_changeset} change="validate" submit="save">
-        <div class="affiliation-grid mb-3">
-          <Inputs for={:affiliations}>
-            <HiddenInput field={:uuid} />
-            <InputContext assigns={assigns} :let={form: form}>
-              <div class="card" id={"affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <Field name={:kind} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <Select
-                          class="form-control"
-                          opts={prompt: pgettext("Affiliation", "Choose Kind")}
-                          options={affiliation_kinds()}
-                        />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                    </div>
-                    <div :if={Ecto.Changeset.fetch_field!(form.source, :kind) == :other} class="col">
-                      <Field name={:kind_other} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                    </div>
-                  </div>
-
-                  <Field class="form-group" name={:organisation_uuid}>
-                    <HygeiaWeb.FieldLabel />
-                    <HygeiaWeb.OrganisationLive.Choose
-                      id={"affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}_organisation"}
-                      change="select_affiliation_organisation"
-                      subject={Ecto.Changeset.fetch_field!(form.source, :uuid)}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-              </div>
-            </InputContext>
-          </Inputs>
+    <Form for={@person_changeset} change="validate" submit="save" class="col">
+      <Inputs for={:affiliations}>
+        <HiddenInput field={:uuid} />
+        <InputContext assigns={assigns} :let={form: form}>
+          <div class="card" id={"affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}>
+            <div class="card-body">
+              <h4 class="mb-4">{gettext("Are you employed?")}</h4>
+              <Field name={:kind} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <Select
+                  class="form-control"
+                  opts={prompt: pgettext("Affiliation", "Choose Kind")}
+                  options={affiliation_kinds()}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+              <Field
+                :if={Ecto.Changeset.fetch_field!(form.source, :kind) == :other}
+                name={:kind_other}
+                class="form-group"
+              >
+                <HygeiaWeb.FieldLabel />
+                <TextInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+              <Field class="form-group" name={:organisation_uuid}>
+                <HygeiaWeb.FieldLabel />
+                <HygeiaWeb.OrganisationLive.Choose
+                  id={"affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}_organisation"}
+                  change="select_affiliation_organisation"
+                  subject={Ecto.Changeset.fetch_field!(form.source, :uuid)}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+          </div>
+        </InputContext>
+      </Inputs>
+    </Form>
+    <Form for={@auto_tracing_changeset} change="validate" submit="save" class="col">
+      <Inputs for={:employer}>
+        <div class="card">
+          <div class="card-body">
+            <p class="mb-4">
+              {gettext(
+                "Your employer does not appear in the list or was not registered correctly? Please enter manually."
+              )}
+            </p>
+            <!-- TODO: @Jan - Translation output of the label have to be "Name" not "name" -->
+            <Field name={:name} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Inputs for={:address}>
+              <HygeiaWeb.AddressForm id="monitoring_address" />
+            </Inputs>
+          </div>
         </div>
-      </Form>
-    </div>
-    <div class="col">
-      <Form for={@auto_tracing_changeset} change="validate" submit="save">
-        <Inputs for={:employer}>
-          <h2>
-            {gettext(
-              "Your employer does not appear in the list or was not registered correctly? Please enter manually."
-            )}
-          </h2>
-          <Field name={:name} class="form-group">
-            <HygeiaWeb.FieldLabel />
-            <TextInput class="form-control" />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-          <Inputs for={:address}>
-            <HygeiaWeb.AddressForm id="monitoring_address" />
-          </Inputs>
-        </Inputs>
-      </Form>
-    </div>
+      </Inputs>
+    </Form>
   </div>
 
+  <LiveRedirect
+    to={Routes.auto_tracing_contact_methods_path(@socket, :contact_methods, @auto_tracing.case_uuid)}
+    class="btn btn-outline-primary"
+  >
+    {gettext("Back")}
+  </LiveRedirect>
   <button
     class="btn btn-primary"
     type="button"

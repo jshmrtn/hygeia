@@ -1,40 +1,44 @@
-<div id="step_contact">
+<div id="step_contact" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
   <Form for={@auto_tracing_changeset} change="validate" submit="save">
-    <h2>
-      {gettext("How can we contact you?")}
+    <h2 class="mb-4">
+      {gettext("Contact Methods")}
     </h2>
 
-    <p :if={not @person_changeset.valid?}>
-      {dgettext("errors", "at least one contact method must be provided")}
-    </p>
-    <div class="row">
-      <div class="col">
-        <Field name={:mobile} class="form-group">
-          <HygeiaWeb.FieldLabel />
-          <TelephoneInput class="form-control" />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-      </div>
-      <div class="col">
-        <Field name={:landline} class="form-group">
-          <HygeiaWeb.FieldLabel />
-          <TelephoneInput class="form-control" />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <Field name={:email} class="form-group">
-          <HygeiaWeb.FieldLabel />
-          <EmailInput class="form-control" />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
+    <div class="row mb-5">
+      <div class="col-6">
+        <div class="card">
+          <div class="card-body">
+            <h4 class={"mb-4": @person_changeset.valid?}>{gettext("Please indicate how we can reach you:")}</h4>
+            <p :if={not @person_changeset.valid?} class="text-danger">
+              {dgettext("errors", "at least one contact method must be provided")}
+            </p>
+            <Field name={:email} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <EmailInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field name={:mobile} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <TelephoneInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field name={:landline} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <TelephoneInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
       </div>
     </div>
 
+    <LiveRedirect
+      to={Routes.auto_tracing_address_path(@socket, :address, @auto_tracing.case_uuid)}
+      class="btn btn-outline-primary"
+    >
+      {gettext("Back")}
+    </LiveRedirect>
     <button
       class="btn btn-primary"
       type="button"

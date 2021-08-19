@@ -1,18 +1,14 @@
-<div id="step_address">
+<div id="step_address" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
-  <h2>
+  <h2 class="mb-4">
     {gettext("Address / Isolation Address")}
   </h2>
-  <div class="row">
-    <div class="col">
+  <div class="row mb-5">
+    <div class="col-6">
       <div class="card">
         <div class="card-body">
-          <h2>
-            {gettext("Please enter your place of residence.")}
-          </h2>
-
-          <h4 class="card-title">{gettext("Address")}</h4>
-
+          <h4>{gettext("Address")}</h4>
+          <p class="mb-4">{gettext("Please enter your place of residence.")}</p>
           <Form
             for={@person_changeset}
             change="validate"
@@ -26,17 +22,15 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col-6">
       <div class="card">
         <div class="card-body">
-          <h2>
+          <h4>{gettext("Isolation Address")}</h4>
+          <p class="mb-4">
             {gettext(
               "Are you planning to move to a different address for your isolation? If so, at which address?"
             )}
-          </h2>
-
-          <h4 class="card-title">{gettext("Isolation Address")}</h4>
-
+          </p>
           <Form for={@case_changeset} change="validate" submit="save">
             <Inputs for={:monitoring}>
               <Inputs for={:address}>
@@ -49,6 +43,12 @@
     </div>
   </div>
 
+  <LiveRedirect
+    to={Routes.auto_tracing_start_path(@socket, :start, @auto_tracing.case_uuid)}
+    class="btn btn-outline-primary"
+  >
+    {gettext("Back")}
+  </LiveRedirect>
   <button
     class="btn btn-primary"
     type="button"

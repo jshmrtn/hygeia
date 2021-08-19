@@ -17,6 +17,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.TextInput
+  alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do

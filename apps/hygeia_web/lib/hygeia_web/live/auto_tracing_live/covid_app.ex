@@ -12,6 +12,7 @@ defmodule HygeiaWeb.AutoTracingLive.CovidApp do
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.RadioButton
+  alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do

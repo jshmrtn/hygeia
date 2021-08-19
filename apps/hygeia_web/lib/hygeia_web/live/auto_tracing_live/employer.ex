@@ -16,6 +16,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
+  alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do

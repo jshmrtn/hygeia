@@ -1,37 +1,17 @@
-<div id="step_clinical">
+<div id="step_clinical" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
 
-  <Form for={@case_changeset} change="validate" submit="save">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">{gettext("Clinical Information")}</h4>
-        <Inputs for={:clinical}>
-          <div class="row">
-            <div class="col">
-              <div class="form-group">
+  <h2 class="mb-4">{gettext("Clinical Information")}</h2>
+
+  <Form for={@case_changeset} change="validate" submit="save" class="mb-5">
+      <div class="row">
+        <div class="col-6">
+          <Inputs for={:clinical}>
+            <div class="card mb-2">
+              <div class="card-body">
                 <InputContext assigns={assigns} :let={form: form}>
-                  <Field name={:reasons_for_test}>
-                    <div class="mb-2 d-flex align-items-center">
-                      <HygeiaWeb.FieldLabel class="mb-0" />
-                    </div>
-                    <label :for={{name, key} <- test_reasons()} class="d-block checkbox-label">
-                      <input
-                        type="checkbox"
-                        name={input_name(form, :reasons_for_test) <> "[]"}
-                        checked={key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || [])}
-                        value={key}
-                      />
-                      {name}
-                    </label>
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </InputContext>
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-group">
-                <InputContext assigns={assigns} :let={form: form}>
-                  <Field name={:has_symptoms} class="form-group">
+                  <h4 class="mb-4">{gettext("Do you have symptoms?")}</h4>
+                  <Field name={:has_symptoms} class="form-group my-0">
                     <div class="btn-group-vertical disabled display-only btn-group-toggle btn-radio-group">
                       <label class={
                         "btn",
@@ -67,6 +47,7 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
+                    <h4 class="my-4">{gettext("What symptoms are present?")}</h4>
                     <Field name={:symptoms}>
                       <label :for={{name, key} <- symptoms()} class="d-block checkbox-label">
                         <input
@@ -81,35 +62,57 @@
                     </Field>
                   </div>
                 </InputContext>
+                <h4 class="my-4">{gettext("When did the symptoms start?")}</h4>
+                <Field name={:symptom_start} class="form-group">
+                  <DateInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <Field name={:symptom_start} class="form-group">
-                <HygeiaWeb.FieldLabel />
-                <DateInput class="form-control" />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
+            <div class="card">
+              <div class="card-body">
+                <h4 class="mb-4">{gettext("Reasons for the test")}</h4>
+                  <InputContext assigns={assigns} :let={form: form} class="form-group">
+                    <Field name={:reasons_for_test}>
+                      <label :for={{name, key} <- test_reasons()} class="d-block checkbox-label">
+                        <input
+                          type="checkbox"
+                          name={input_name(form, :reasons_for_test) <> "[]"}
+                          checked={key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || [])}
+                          value={key}
+                        />
+                        {name}
+                      </label>
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </InputContext>
+              </div>
+            </div>
+          </Inputs>
+        </div>
+
+        <div class="col-6">
+            <div class="card mb-2">
+              <div class="card-body">
+                <h4 class="mb-4">{gettext("Have you been or are you in a hospital?")}</h4>
+                <HygeiaWeb.CaseLive.Hospitalizations
+                  source={@case}
+                  id="hospitalizations"
+                  organisations={@organisations}
+                  add_hospitalization="add_hospitalization"
+                  remove_hospitalization="remove_hospitalization"
+                />
+              </div>    
             </div>
           </div>
-        </Inputs>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">{gettext("Hospitalizations")}</h4>
-        <HygeiaWeb.CaseLive.Hospitalizations
-          source={@case}
-          id="hospitalizations"
-          organisations={@organisations}
-          add_hospitalization="add_hospitalization"
-          remove_hospitalization="remove_hospitalization"
-        />
-      </div>
-    </div>
   </Form>
+  <LiveRedirect
+    to={Routes.auto_tracing_covid_app_path(@socket, :covid_app, @auto_tracing.case_uuid)}
+    class="btn btn-outline-primary"
+  >
+    {gettext("Back")}
+  </LiveRedirect>
   <button
     class="btn btn-primary"
     type="button"

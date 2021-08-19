@@ -1,79 +1,86 @@
-<div id="step_start">
+<div id="step_start" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
-  <h2>
+  
+  <h2 class="mb-4">
     {gettext("Dear Sir / Madam")}
   </h2>
 
-  <hr>
-
-  <section>
-    <p>
-      {gettext(
-        "You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support."
-      )}
-    </p>
-    <p>
-      {gettext(
-        "We would like to ask you to fill out the information on the following pages as precisely and completely as possible."
-      )}
-    </p>
-    <p>
-      {gettext("Thanks for your help!")}
-    </p>
-    <p>
-      {gettext("TODO message_signature")}
-    </p>
-  </section>
-
-  <hr>
-
-  <button class="btn btn-primary" type="button" :on-click="advance">
-    {gettext("Collect Data")}
-  </button>
-
-  <div class="component-case-tests container">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between mb-1">
-          <h3>{gettext("Your Tests")}</h3>
+  <div class="row">
+    <div class="col-6 mb-5">
+      <p>
+        {gettext(
+          "You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support."
+        )}
+      </p>
+      <p>
+        {gettext(
+          "We would like to ask you to fill out the information on the following pages as precisely and completely as possible."
+        )}
+      </p>
+      <p>
+        {gettext("Thanks for your help!")}
+      </p>
+      <p>
+        <!-- TODO: @Jony Add Kanton-Signatur Image -->
+        <img
+          src={Routes.static_path(@socket, "/images/wappen_st_gallen.svg")}
+          class="component-auto-tracing-live-address__logo"
+        />
+      </p>
+      <p class="mb-5">
+        <!-- TODO: @Jony Add Kanton-Signatur Text -->
+        {gettext("TODO message_signature")}
+      </p>
+      
+      <button class="btn btn-primary" type="button" :on-click="advance">
+        {gettext("Collect Data")}
+      </button>
+    </div>
+  
+    <div class="component-case-tests row">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between mb-1">
+            <h3>{gettext("Your Tests")}</h3>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>
+                  {schema_field_name(:tested_at, Test)}
+                </th>
+                <th>
+                  {schema_field_name(:laboratory_reported_at, Test)}
+                </th>
+                <th>
+                  {schema_field_name(:kind, Test)}
+                </th>
+                <th>
+                  {schema_field_name(:result, Test)}
+                </th>
+                <th>
+                  {schema_field_name(:mutation, Test)}
+                </th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              <HygeiaWeb.RecordView
+                :for={test <- @case.tests}
+                resource={test}
+                action={:list}
+                id={"test-#{test.uuid}"}
+                wrapper_tag={:tr}
+              >
+                <td class="align-middle">{format_date(test.tested_at)}</td>
+                <td class="align-middle">{format_date(test.laboratory_reported_at)}</td>
+                <td class="align-middle">{Kind.translate(test.kind)}</td>
+                <td class="align-middle"><span :if={!is_nil(test.result)}>{Result.translate(test.result)}</span></td>
+                <td class="align-middle"><span :if={!is_nil(test.mutation)}>{test.mutation.name}</span></td>
+              </HygeiaWeb.RecordView>
+            </tbody>
+          </table>
         </div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>
-                {schema_field_name(:tested_at, Test)}
-              </th>
-              <th>
-                {schema_field_name(:laboratory_reported_at, Test)}
-              </th>
-              <th>
-                {schema_field_name(:kind, Test)}
-              </th>
-              <th>
-                {schema_field_name(:result, Test)}
-              </th>
-              <th>
-                {schema_field_name(:mutation, Test)}
-              </th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            <HygeiaWeb.RecordView
-              :for={test <- @case.tests}
-              resource={test}
-              action={:list}
-              id={"test-#{test.uuid}"}
-              wrapper_tag={:tr}
-            >
-              <td class="align-middle">{format_date(test.tested_at)}</td>
-              <td class="align-middle">{format_date(test.laboratory_reported_at)}</td>
-              <td class="align-middle">{Kind.translate(test.kind)}</td>
-              <td class="align-middle"><span :if={!is_nil(test.result)}>{Result.translate(test.result)}</span></td>
-              <td class="align-middle"><span :if={!is_nil(test.mutation)}>{test.mutation.name}</span></td>
-            </HygeiaWeb.RecordView>
-          </tbody>
-        </table>
       </div>
     </div>
   </div>
