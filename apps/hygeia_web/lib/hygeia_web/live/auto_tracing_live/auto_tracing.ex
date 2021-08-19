@@ -1,4 +1,3 @@
-# credo:disable-for-this-file Credo.Check.Refactor.CyclomaticComplexity
 defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
   @moduledoc false
 
@@ -8,9 +7,23 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
   alias Hygeia.CaseContext
   alias Hygeia.Repo
 
+  defp route(:start), do: &Routes.auto_tracing_start_path(&1, :start, &2)
+  defp route(:address), do: &Routes.auto_tracing_address_path(&1, :address, &2)
+
+  defp route(:contact_methods),
+    do: &Routes.auto_tracing_contact_methods_path(&1, :contact_methods, &2)
+
+  defp route(:employer), do: &Routes.auto_tracing_employer_path(&1, :employer, &2)
+  defp route(:vaccination), do: &Routes.auto_tracing_vaccination_path(&1, :vaccination, &2)
+  defp route(:covid_app), do: &Routes.auto_tracing_covid_app_path(&1, :covid_app, &2)
+  defp route(:clinical), do: &Routes.auto_tracing_clinical_path(&1, :clinical, &2)
+  defp route(:transmission), do: &Routes.auto_tracing_transmission_path(&1, :transmission, &2)
+  defp route(:end), do: &Routes.auto_tracing_end_path(&1, :end, &2)
+
   @impl Phoenix.LiveView
   def render(assigns) do
     ~F"""
+    nil
     """
   end
 
@@ -32,37 +45,7 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
               {:ok, auto_tracing}
           end
 
-        push_redirect(socket,
-          to:
-            case auto_tracing.last_completed_step do
-              :start ->
-                Routes.auto_tracing_start_path(socket, :start, case.uuid)
-
-              :address ->
-                Routes.auto_tracing_address_path(socket, :address, case.uuid)
-
-              :contact_methods ->
-                Routes.auto_tracing_contact_methods_path(socket, :contact_methods, case.uuid)
-
-              :employer ->
-                Routes.auto_tracing_employer_path(socket, :employer, case.uuid)
-
-              :vaccination ->
-                Routes.auto_tracing_vaccination_path(socket, :vaccination, case.uuid)
-
-              :covid_app ->
-                Routes.auto_tracing_covid_app_path(socket, :covid_app, case.uuid)
-
-              :clinical ->
-                Routes.auto_tracing_clinical_path(socket, :clinical, case.uuid)
-
-              :transmission ->
-                Routes.auto_tracing_transmission_path(socket, :transmission, case.uuid)
-
-              :end ->
-                Routes.auto_tracing_end_path(socket, :end, case.uuid)
-            end
-        )
+        push_redirect(socket, to: route(auto_tracing.last_completed_step).(socket, case.uuid))
       else
         push_redirect(socket,
           to:

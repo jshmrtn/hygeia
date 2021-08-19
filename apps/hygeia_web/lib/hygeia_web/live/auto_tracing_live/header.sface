@@ -1,12 +1,4 @@
-<Form
-  for={@changeset}
-  submit="save"
-  opts={
-    autocomplete: "off",
-    id: "possible-index-submission-form",
-    class: "container component-possible-index-submission-create"
-  }
->
+<div class="container component-possible-index-submission-create">
   <InputContext assigns={assigns}>
     <h1 class="mb-4">
       {gettext("Auto Tracing")}
@@ -160,4 +152,4 @@
       </li>
     </ul>
   </InputContext>
-</Form>
+</div>

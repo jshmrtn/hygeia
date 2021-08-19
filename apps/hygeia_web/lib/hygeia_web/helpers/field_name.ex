@@ -348,6 +348,9 @@ defmodule HygeiaWeb.Helpers.FieldName do
       mobile: "Mobile",
       landline: "Landline",
       email: "Email"
+    },
+    Hygeia.AutoTracingContext.AutoTracing.Employer => %{
+      name: "Name"
     }
   }
 
