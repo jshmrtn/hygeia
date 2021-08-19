@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.Tests do
+defmodule HygeiaWeb.TestLive.List do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
@@ -16,14 +16,7 @@ defmodule HygeiaWeb.CaseLive.Tests do
     case = CaseContext.get_case!(case_id)
 
     socket =
-      if authorized?(
-           case,
-           case socket.assigns.live_action do
-             :edit -> :update
-             :show -> :details
-           end,
-           get_auth(socket)
-         ) do
+      if authorized?(Test, :list, get_auth(socket), case: case) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{case_id}")
 
         load_data(socket, case)
@@ -53,7 +46,7 @@ defmodule HygeiaWeb.CaseLive.Tests do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:deleted, %Test{}, _version}, socket) do
+  def handle_info({_type, %Test{}, _version}, socket) do
     {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
   end
 

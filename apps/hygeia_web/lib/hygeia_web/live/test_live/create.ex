@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.TestCreate do
+defmodule HygeiaWeb.TestLive.Create do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
@@ -53,7 +53,7 @@ defmodule HygeiaWeb.CaseLive.TestCreate do
         {:noreply,
          socket
          |> put_flash(:info, gettext("Test created successfully"))
-         |> push_redirect(to: Routes.case_test_show_path(socket, :show, case.uuid, test))}
+         |> push_redirect(to: Routes.test_show_path(socket, :show, test))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}

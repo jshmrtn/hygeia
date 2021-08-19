@@ -52,9 +52,9 @@
         </UriActiveContext>
       </UriActiveContext>
     </li>
-    <li class="nav-item" :if={authorized?(@case, :details, auth)}>
+    <li class="nav-item" :if={authorized?(Test, :list, auth, case: @case)}>
       <UriActiveContext
-        to={Routes.case_tests_path(@socket, :show, @case)}
+        to={Routes.test_list_path(@socket, :show, @case)}
         opts={active: :inclusive}
         :let={to: to, active: active}
       >

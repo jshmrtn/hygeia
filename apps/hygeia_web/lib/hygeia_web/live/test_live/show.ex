@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.TestShow do
+defmodule HygeiaWeb.TestLive.Show do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
@@ -75,10 +75,9 @@ defmodule HygeiaWeb.CaseLive.TestShow do
      |> load_data(test)
      |> push_patch(
        to:
-         Routes.case_test_show_path(
+         Routes.test_show_path(
            socket,
            :show,
-           test.case.uuid,
            test.uuid
          )
      )
@@ -95,7 +94,7 @@ defmodule HygeiaWeb.CaseLive.TestShow do
          socket
          |> load_data(test)
          |> put_flash(:info, gettext("Test updated successfully"))
-         |> push_patch(to: Routes.case_test_show_path(socket, :show, test.case.uuid, test.uuid))}
+         |> push_patch(to: Routes.test_show_path(socket, :show, test.uuid))}
 
       {:error, changeset} ->
         {:noreply,
@@ -114,7 +113,7 @@ defmodule HygeiaWeb.CaseLive.TestShow do
     {:noreply,
      socket
      |> put_flash(:info, gettext("Test deleted successfully"))
-     |> redirect(to: Routes.case_tests_path(socket, :show, test.case.uuid))}
+     |> redirect(to: Routes.test_list_path(socket, :show, test.case.uuid))}
   end
 
   @impl Phoenix.LiveView

@@ -12,7 +12,7 @@
 
           <div :if={authorized?(Test, :create, auth, %{case: @case})}>
             <LiveRedirect
-              to={Routes.case_test_create_path(
+              to={Routes.test_create_path(
                 @socket,
                 :create,
                 @case.uuid
@@ -61,13 +61,13 @@
               <td class="align-middle">
                 <div class="d-flex justify-content-end w-100">
                   <LivePatch
-                    to={Routes.case_test_show_path(@socket, :show, @case.uuid, test)}
+                    to={Routes.test_show_path(@socket, :show, test)}
                     :if={authorized?(test, :details, auth, %{case: @case})}
                   >
                     <button class="ms-auto btn btn-sm btn-outline-primary">{gettext("Show")}</button>
                   </LivePatch>
                   <LivePatch
-                    to={Routes.case_test_show_path(@socket, :edit, @case.uuid, test)}
+                    to={Routes.test_show_path(@socket, :edit, test)}
                     :if={authorized?(test, :update, auth, %{case: @case})}
                   >
                     <button class="ms-1 btn btn-sm btn-outline-primary">

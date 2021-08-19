@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.TestsForm do
+defmodule HygeiaWeb.TestLive.Form do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
