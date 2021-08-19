@@ -117,7 +117,7 @@ defmodule HygeiaWeb.TestLive.Show do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:deleted, %Test{}, _version}, socket) do
+  def handle_info({_type, %Test{}, _version}, socket) do
     {:noreply, load_data(socket, CaseContext.get_test!(socket.assigns.test.uuid))}
   end
 
