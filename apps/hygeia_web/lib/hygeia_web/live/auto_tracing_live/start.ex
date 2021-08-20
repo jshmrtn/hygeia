@@ -8,13 +8,14 @@ defmodule HygeiaWeb.AutoTracingLive.Start do
   alias Hygeia.CaseContext.Test.Kind
   alias Hygeia.CaseContext.Test.Result
   alias Hygeia.Repo
+  alias HygeiaWeb.Helpers.Tenant, as: TenantHelper
 
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], tests: [:mutation], auto_tracing: [])
+      |> Repo.preload(person: [], tests: [:mutation], auto_tracing: [], tenant: [])
 
     socket =
       if authorized?(case, :auto_tracing, get_auth(socket)) do

@@ -52,7 +52,6 @@
                 "Your employer does not appear in the list or was not registered correctly? Please enter manually."
               )}
             </p>
-            <!-- TODO: @Jan - Translation output of the label have to be "Name" not "name" -->
             <Field name={:name} class="form-group">
               <HygeiaWeb.FieldLabel />
               <TextInput class="form-control" />

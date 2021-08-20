@@ -17,19 +17,18 @@
           "We would like to ask you to fill out the information on the following pages as precisely and completely as possible."
         )}
       </p>
-      <p>
+      <p class="mb-5">
         {gettext("Thanks for your help!")}
       </p>
-      <p>
-        <!-- TODO: @Jony Add Kanton-Signatur Image -->
+      <p :if={TenantHelper.logo_exists?(@case.tenant)}>
         <img
-          src={Routes.static_path(@socket, "/images/wappen_st_gallen.svg")}
-          class="component-auto-tracing-live-address__logo"
+          src={TenantHelper.logo_uri(@case.tenant, @socket)}
+          alt={"#{@case.tenant.name} Logo"}
+          class="component-auto-tracing-live-start__logo"
         />
       </p>
       <p class="mb-5">
-        <!-- TODO: @Jony Add Kanton-Signatur Text -->
-        {gettext("TODO message_signature")}
+        {@case.tenant.template_parameters.sms_signature}
       </p>
       
       <button class="btn btn-primary" type="button" :on-click="advance">
