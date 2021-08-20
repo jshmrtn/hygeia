@@ -99,6 +99,13 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     |> cast_embed(:transmission)
   end
 
+  @spec step_available?(auto_tracing :: t, step :: Step.t()) :: boolean()
+  def step_available?(auto_tracing, step) do
+    steps = Step.__enum_map__()
+    Enum.find_index(steps, &(&1 == step)) <=
+      Enum.find_index(steps, &(&1 == auto_tracing.last_completed_step)) + 1
+  end
+
   @spec step_completed?(auto_tracing :: t, step :: Step.t()) :: boolean()
   def step_completed?(auto_tracing, step) do
     steps = Step.__enum_map__()

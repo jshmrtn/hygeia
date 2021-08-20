@@ -1,7 +1,7 @@
 <div id="step_vaccination" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
 
-  <h2 class="mb-4">{gettext("Vaccination")}</h2>
+  <h2 class="mb-4 mt-5">{gettext("Vaccination")}</h2>
 
   <Form for={@person_changeset} change="validate" submit="save">
     <Inputs for={:vaccination}>

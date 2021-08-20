@@ -1,10 +1,12 @@
 <div id="step_end" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+  
+  <h2 class="mb-4">
+    {gettext("Thank you for your information!")}
+  </h2>
+  
   <div class="row">
     <div class="col-6">
-      <h2 class="mb-4">
-        {gettext("Thank you for your information!")}
-      </h2>
       <p>
         {gettext(
           "We will forward you to the recording of people that you were in contact with and could possibly have passed the infection on."

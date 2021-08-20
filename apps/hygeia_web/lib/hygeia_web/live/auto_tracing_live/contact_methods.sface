@@ -1,10 +1,11 @@
 <div id="step_contact" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
-  <Form for={@auto_tracing_changeset} change="validate" submit="save">
-    <h2 class="mb-4">
-      {gettext("Contact Methods")}
-    </h2>
+  
+  <h2 class="mb-4">
+    {gettext("Contact Methods")}
+  </h2>
 
+  <Form for={@auto_tracing_changeset} change="validate" submit="save">
     <div class="row mb-5">
       <div class="col-6">
         <div class="card">
