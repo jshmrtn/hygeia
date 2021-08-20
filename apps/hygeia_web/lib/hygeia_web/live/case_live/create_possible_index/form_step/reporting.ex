@@ -269,6 +269,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
                                                      case_changeset: case_changeset
                                                    },
                                                    truth ->
+                                        # TODO pass to changeset functions first
       person_changeset.valid? and case_changeset.valid? and truth
     end)
   end

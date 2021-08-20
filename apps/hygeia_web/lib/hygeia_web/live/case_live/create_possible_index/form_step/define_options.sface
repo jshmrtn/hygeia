@@ -18,9 +18,18 @@
                       {gettext("Status")}
                     </span>
                   </HygeiaWeb.FieldLabel>
-                  <Select class="form-control" options={Status.map()} />
+                  <Select class="form-control" options={
+                    if existing_entity?(case_cs) do
+                      Status.map()
+                    else
+                      manage_statuses(@current_form_data[:type], Status.map())
+                    end}
+                  />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
+              </div>
+              <div :if={not existing_entity?(case_cs) and @current_form_data.type not in [:travel, :contact_person]}>
+                <h4>(?)</h4>
               </div>
             </:feature>
 
@@ -53,9 +62,17 @@
               </div>
             </:right>
           <:bottom>
-            {#if fetch_field!(case_cs, :inserted_at)}
+            {#if existing_entity?(case_cs)}
               <span>Associated case:</span>
               <CaseSnippet case_changeset={case_cs}/>
+              <Link 
+                to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
+                opts={target: "_blank", rel: "noopener noreferrer"}
+              >
+                {gettext("Open case in new tab")}
+              </Link>
+              {#else}
+                {gettext("A new case will be created for this person.")}
             {/if}
           </:bottom>
           </PersonCard>

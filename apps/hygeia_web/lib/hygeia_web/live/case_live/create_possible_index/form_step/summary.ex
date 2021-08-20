@@ -7,7 +7,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary do
   import HygeiaGettext
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
 
+  alias Surface.Components.Link
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.ErrorTag
@@ -35,14 +37,4 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary do
     {:ok, assign(socket, assigns)}
   end
 
-  @impl Phoenix.LiveComponent
-  def handle_event("next", _, socket) do
-    send(self(), :proceed)
-    {:noreply, socket}
-  end
-
-  def handle_event("back", _, socket) do
-    send(self(), :return)
-    {:noreply, socket}
-  end
 end

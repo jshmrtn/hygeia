@@ -163,6 +163,10 @@ defmodule HygeiaWeb.Helpers.Changeset do
     |> Map.put(:action, :validate)
   end
 
+  @spec existing_entity?(changeset :: Changeset.t()) :: boolean
+  def existing_entity?(%Changeset{} = changeset),
+    do: Changeset.fetch_field!(changeset, :inserted_at) != nil
+
   defp key_to_string(key) when is_atom(key), do: Atom.to_string(key)
   defp key_to_string(key) when is_binary(key), do: key
 end

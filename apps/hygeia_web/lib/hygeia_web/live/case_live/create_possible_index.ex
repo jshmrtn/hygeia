@@ -66,27 +66,27 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             nil ->
               normalized_params
 
-            # alias Hygeia.CaseContext.Person
+            alias Hygeia.CaseContext.Person
 
-            # %Person{tenant_uuid: tenant_uuid} =
-            #   person1 =
-            #   CaseContext.get_person!("e3239c4f-a98a-46f1-8e09-0fb412599d44")
-            #   |> Hygeia.Repo.preload([:tenant, :cases])
+            %Person{tenant_uuid: tenant_uuid} =
+              person1 =
+              CaseContext.get_person!("e3239c4f-a98a-46f1-8e09-0fb412599d44")
+              |> Hygeia.Repo.preload([:tenant, :cases])
 
-            # %{
-            #   type: :travel,
-            #   date: Date.add(Date.utc_today(), -5) |> Date.to_iso8601(),
-            #   bindings: [
-            #     %{
-            #       person_changeset: person1 |> CaseContext.change_person(),
-            #       case_changeset: List.first(person1.cases) |> Ecto.Changeset.change()
-            #       # EMPTY CASE
-            #       # Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid, status: :done})
-            #       # |> Ecto.Changeset.change()
-            #     }
-            #   ]
-            # }
-            # |> Map.merge(normalized_params)
+            %{
+              type: :travel,
+              date: Date.add(Date.utc_today(), -5) |> Date.to_iso8601(),
+              bindings: [
+                %{
+                  person_changeset: person1 |> CaseContext.change_person(),
+                  case_changeset: List.first(person1.cases) |> Ecto.Changeset.change()
+                  # EMPTY CASE
+                  # Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid, status: :done})
+                  # |> Ecto.Changeset.change()
+                }
+              ]
+            }
+            |> Map.merge(normalized_params)
 
             uuid ->
               Map.merge(normalized_params, possible_index_submission_attrs(uuid))
@@ -141,14 +141,29 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
     bindings = Map.fetch!(current_form_data, :bindings)
 
-    {:ok, tuples} = Service.upsert(bindings, current_form_data)
+    case Service.upsert(bindings, current_form_data) do
+      {:error, _} ->
+        socket
+        |> put_flash(:info, gettext("There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."))
 
-    :ok = Service.send_confirmations(socket, tuples, current_form_data)
+      {:ok, tuples} ->
+        :ok = Service.send_confirmations(socket, tuples, current_form_data)
 
-    socket
-    |> assign(visited_steps: visit_step([], "summary"))
-    |> put_flash(:info, gettext("Cases inserted successfully."))
-    |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, "summary"))
+        new_bindings =
+          Enum.map(tuples, fn {person, case, reporting_data} ->
+            %{
+              person_changeset: CaseContext.change_person(person),
+              case_changeset: CaseContext.change_case(case),
+              reporting: reporting_data
+            }
+          end)
+
+        socket
+        |> assign(bindings: new_bindings)
+        |> assign(visited_steps: visit_step([], "summary"))
+        |> put_flash(:info, gettext("Cases inserted successfully."))
+        |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, "summary"))
+    end
   end
 
   @impl Phoenix.LiveView

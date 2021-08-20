@@ -9,6 +9,14 @@
             <PersonCard person_changeset={person_cs}>
               <:feature>
                 <div class="ml-auto">
+
+                  <Link 
+                    to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
+                    opts={target: "_blank", rel: "noopener noreferrer"}
+                  >
+                    {gettext("Open case in new tab")}
+                  </Link>
+
                   <Field name={:status} class="input-group">
                     <HygeiaWeb.FieldLabel class="mb-0">
                       <span class="input-group-text">
@@ -52,11 +60,11 @@
 
               <:bottom>
                 {#if Reporting.empty_reporting?(reporting)}
-                  <span>{gettext("This person will not be notified.")}</span>
+                  <span>{gettext("This person has not been notified.")}</span>
                 {#else}
-                  <span>{gettext("This person will be notified on the following contact methods")}:</span>
+                  <span>{gettext("This person has been notified on the following contact methods")}:</span>
                   {#for {contact_type, contact_type_members} <- Reporting.group_contacts_by_type(person_cs)}
-                    <div class="mb-4" style="width: 700px;">
+                    <div class="mb-4">
                       <table class="table">
                         <thead>
                           <tr>
@@ -84,6 +92,10 @@
                     </div>
                   {/for}
                 {/if}
+                <div>
+                  <span>Associated case:</span>
+                  <CaseSnippet case_changeset={case_cs}/>
+                </div>
               </:bottom>
             </PersonCard>
           </Form>

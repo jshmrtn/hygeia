@@ -34,15 +34,122 @@
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
         <div class="input-group-append">
-          <button class="input-group-text">Add</button>
+          <button class="input-group-text">{gettext("Add")}</button>
         </div>
         <div class="input-group-append">
-          <a class="input-group-text" :on-click="clear_search">Clear</a>
+          <a class="input-group-text" :on-click="clear_search">{gettext("Clear")}</a>
         </div>
       </div>
     </Form>
   </div>
 </div>
+
+<div class="row mb-3">
+  {#if length(@suggestions) > 0}
+    <div id="suggestions" class="w-100">
+      {#for person <- @suggestions}
+        <PersonCard person_changeset={CaseContext.change_person(person)}>
+          <:header>
+            <div class="d-flex w-100">
+              <div class="w-100">
+                <span class={if contains?(person.first_name, get_field(@search_params, :first_name)),
+                  do: "font-weight-bold"}>
+                  {person.first_name}
+                </span>
+              </div>
+              <div class="w-100">
+                <span class={if contains?(person.last_name, get_field(@search_params, :last_name)),
+                  do: "font-weight-bold"}>
+                  {person.last_name}
+                </span>
+              </div>
+              <div class="w-100">
+                {#if mobile =
+                    person.contact_methods
+                    |> Enum.find_value(fn contact ->
+                      if contact.type == :mobile and contact.value == get_field(@search_params, :mobile),
+                        do: contact.value
+                    end)}
+                  <span class="font-weight-bold">
+                    {mobile}
+                  </span>
+                {#else}
+                  <span>
+                    —
+                  </span>
+                {/if}
+              </div>
+              <div class="w-100">
+                {#if landline =
+                    person.contact_methods
+                    |> Enum.find_value(fn contact ->
+                      if contact.type == :landline and contact.value == get_field(@search_params, :landline),
+                        do: contact.value
+                    end)}
+                  <span class="font-weight-bold">
+                    {landline}
+                  </span>
+                {#else}
+                  <span>
+                    —
+                  </span>
+                {/if}
+              </div>
+              <div class="w-100">
+                {#if email =
+                    person.contact_methods
+                    |> Enum.find_value(fn contact ->
+                      if contact.type == :email and contact.value == get_field(@search_params, :email),
+                        do: contact.value
+                    end)}
+                  <span class="font-weight-bold">
+                    {email}
+                  </span>
+                {#else}
+                  <span>
+                    —
+                  </span>
+                {/if}
+              </div>
+            </div>
+          </:header>
+          <:left>
+            <button class="btn btn-primary" type="button" :on-click="person_selected" value={person.uuid}>
+              {gettext("Select person")}
+            </button>
+          </:left>
+          <:bottom>
+            <div id="suggestion-cases" class="mb-4">
+              <div class="list-group">
+                {#for case <- person.cases}
+                  <div class="list-group-item list-group-item-action">
+                    <CaseSnippet case_changeset={change(case)} />
+                    <Link 
+                      to={Routes.case_base_data_path(@socket, :show, case.uuid)}
+                      opts={target: "_blank", rel: "noopener noreferrer"}
+                    >
+                      {gettext("Open case in new tab")}
+                    </Link>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      :on-click="case_selected"
+                      phx-value-person_uuid={person.uuid}
+                      value={case.uuid}
+                    >
+                      {gettext("Select case")}
+                    </button>
+                  </div>
+                {/for}
+              </div>
+            </div>
+          </:bottom>
+        </PersonCard>
+      {/for}
+    </div>
+  {/if}
+</div>
+
 <div class="row mb-3">
   <div class="col-12">
     <HygeiaWeb.Modal
@@ -51,6 +158,30 @@
       id="modal"
       close="close_modal"
     >
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{gettext("Suggested duplicates")}</h4>
+          <div class="list-group">
+            {#for person <- @changeset |> get_field(:suspected_duplicates_uuid) |> Enum.map(&CaseContext.get_person!/1)}
+              <div class="list-group-item list-group-item-action">
+                <div class="d-flex">
+                  <PersonSnippet person={person} />
+                  <div>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      :on-click="duplicate_person_selected"
+                      value={person.uuid}
+                    >
+                      {gettext("Choose")}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            {/for}
+          </div>
+        </div>
+      </div>
       <Form
         :if={not @loading}
         for={@changeset}
@@ -246,113 +377,6 @@
 </div>
 
 <div class="row mb-3">
-  {#if length(@suggestions) > 0}
-    <div id="suggestions" class="w-100">
-      {#for person <- @suggestions}
-        <PersonCard person_changeset={CaseContext.change_person(person)}>
-          <:header>
-            <div class="d-flex w-100">
-              <div class="w-100">
-                <span class={if contains?(person.first_name, get_field(@search_params, :first_name)),
-                  do: "font-weight-bold"}>
-                  {person.first_name}
-                </span>
-              </div>
-              <div class="w-100">
-                <span class={if contains?(person.last_name, get_field(@search_params, :last_name)),
-                  do: "font-weight-bold"}>
-                  {person.last_name}
-                </span>
-              </div>
-              <div class="w-100">
-                {#if mobile =
-                    person.contact_methods
-                    |> Enum.find_value(fn contact ->
-                      if contact.type == :mobile and contact.value == get_field(@search_params, :mobile),
-                        do: contact.value
-                    end)}
-                  <span class="font-weight-bold">
-                    {mobile}
-                  </span>
-                {#else}
-                  <span>
-                    —
-                  </span>
-                {/if}
-              </div>
-              <div class="w-100">
-                {#if landline =
-                    person.contact_methods
-                    |> Enum.find_value(fn contact ->
-                      if contact.type == :landline and contact.value == get_field(@search_params, :landline),
-                        do: contact.value
-                    end)}
-                  <span class="font-weight-bold">
-                    {landline}
-                  </span>
-                {#else}
-                  <span>
-                    —
-                  </span>
-                {/if}
-              </div>
-              <div class="w-100">
-                {#if email =
-                    person.contact_methods
-                    |> Enum.find_value(fn contact ->
-                      if contact.type == :email and contact.value == get_field(@search_params, :email),
-                        do: contact.value
-                    end)}
-                  <span class="font-weight-bold">
-                    {email}
-                  </span>
-                {#else}
-                  <span>
-                    —
-                  </span>
-                {/if}
-              </div>
-            </div>
-          </:header>
-          <:left>
-            <button class="btn btn-primary" type="button" :on-click="person_selected" value={person.uuid}>
-              {gettext("Select person")}
-            </button>
-          </:left>
-          <:bottom>
-            <div id="suggestion-cases" class="mb-4">
-              <div class="list-group">
-                {#for case <- person.cases}
-                  <div class="list-group-item list-group-item-action">
-                    <CaseSnippet case_changeset={change(case)} />
-                    <Link 
-                      to={Routes.case_base_data_path(@socket, :show, case.uuid)}
-                      opts={target: "_blank", rel: "noopener noreferrer"}
-                    >
-                      Open case in new tab
-                    </Link>
-                    <button
-                      class="btn btn-primary"
-                      type="button"
-                      :on-click="case_selected"
-                      phx-value-person_uuid={person.uuid}
-                      value={case.uuid}
-                    >
-                      {gettext("Select case")}
-                    </button>
-                  </div>
-                {/for}
-              </div>
-            </div>
-          </:bottom>
-        </PersonCard>
-      {/for}
-    </div>
-  {/if}
-</div>
-
-<div class="row mb-3">
-  <!-- Fiexed height element because checkbox and button can disappear -->
   {#if not Enum.empty?(@bindings)}
     <Checkbox
       hidden_input="false"
@@ -362,15 +386,21 @@
         phx_click: "all_checked"
       }
     />
-    <button
-      disabled={Enum.empty?(@bulk_action_elements)}
-      class="btn btn-danger"
-      :on-click="apply_bulk_action"
-      type="submit"
+    <Link
+      to="#"
+      click="delete_person"
+      opts={data: [confirm: gettext("Are you sure?")]}
     >
-      <span class="oi oi-trash" aria-hidden="true" />
-      {gettext("Delete selected")}
-    </button>
+      <button
+        disabled={Enum.empty?(@bulk_action_elements)}
+        class="btn btn-danger"
+        :on-click="apply_bulk_action"
+        type="submit"
+      >
+        <span class="oi oi-trash" aria-hidden="true" />
+        {gettext("Delete selected")}
+      </button>
+    </Link>
   {/if}
 </div>
 
@@ -388,19 +418,32 @@
         }
       />
       <PersonCard person_changeset={person_cs}>
+        <:feature>
+          {#if not existing_entity?(person_cs)}
+            {#if length(fetch_field!(person_cs, :suspected_duplicates_uuid)) > 0}
+              <div>
+                <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace={:true}>
+                  <span class="text-info">{gettext("There are possible duplicates for this person. Click to resolve.")}</span>
+                </LivePatch>
+              </div>
+            {/if}
+          {/if}
+        </:feature>
         <:left>
-          <button class="btn btn-secondary" type="button" :on-click="show_person" phx-value-index={index}>
-            {gettext("View")}
-          </button>
-          <button
-            :if={fetch_field!(person_cs, :inserted_at) == nil}
-            class="btn btn-primary"
-            :on-click="edit_person"
-            phx-value-index={index}
-          >
-            <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-            {gettext("Edit")}
-          </button>
+          <LivePatch to={Routes.case_create_possible_index_path(@socket, :show, @form_step, index)} replace={:true}>
+            <button class="btn btn-secondary" type="button">
+              {gettext("View")}
+            </button>
+          </LivePatch>
+          <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace={:true}>
+            <button
+              :if={not existing_entity?(person_cs)}
+              class="btn btn-primary"
+            >
+                <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+                {gettext("Edit")}
+            </button>
+          </LivePatch>
         </:left>
 
         <:right>
@@ -421,9 +464,15 @@
         </:right>
 
         <:bottom>
-          {#if fetch_field!(case_cs, :inserted_at)}
+          {#if existing_entity?(case_cs)}
             <span>Associated case:</span>
             <CaseSnippet case_changeset={case_cs}/>
+            <Link 
+              to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
+              opts={target: "_blank", rel: "noopener noreferrer"}
+            >
+              {gettext("Open case in new tab")}
+            </Link>
           {/if}
         </:bottom>
       </PersonCard>

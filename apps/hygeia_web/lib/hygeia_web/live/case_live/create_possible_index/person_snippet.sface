@@ -1,0 +1,38 @@
+<div class="d-flex">
+  <div>
+    <small>{gettext("First name:")}</small>
+    <div>{@person.first_name}</div>
+  </div>
+  <div>
+    <small>{gettext("Last name:")}</small>
+    <div>{@person.last_name}</div>
+  </div>
+  <div>
+    <small>{gettext("Sex:")}</small>
+    <div>{@person.sex}</div>
+  </div>
+  <div>
+    <small>{gettext("Date of birth:")}</small>
+    <div>{@person.birth_date || gettext("Unknown")}</div>
+  </div>
+  <div>
+    <small>{gettext("Address:")}</small>
+    <div>{@person.address.address || gettext("Unknown")}</div>
+  </div>
+  <div>
+    <small>{gettext("Place:")}</small>
+    <div>{@person.address.place || gettext("Unknown")}</div>
+  </div>
+  <div>
+    <small>{gettext("Contry:")}</small>
+    <div>{@person.address.country || gettext("Unknown")}</div>
+  </div>
+  <div>
+    <Link 
+      to={Routes.person_base_data_path(@socket, :show, @person.uuid)}
+      opts={target: "_blank", rel: "noopener noreferrer"}
+    >
+      <small>{gettext("Open in new tab")}</small>
+    </Link>
+  </div>
+</div>
