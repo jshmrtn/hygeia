@@ -8,6 +8,8 @@ defmodule HygeiaWeb.ImportLive.Create do
   alias Hygeia.ImportContext.Import.Type
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
+  alias Hygeia.UserContext
+  alias HygeiaWeb.CaseLive.CaseLiveHelper
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
@@ -20,15 +22,22 @@ defmodule HygeiaWeb.ImportLive.Create do
   def mount(_params, _session, socket) do
     {:ok,
      if authorized?(Import, :create, get_auth(socket), tenant: :any) do
+       tenants =
+         Enum.filter(
+           TenantContext.list_tenants(),
+           &authorized?(Import, :create, get_auth(socket), tenant: &1)
+         )
+
+       supervisor_users = UserContext.list_users_with_role(:supervisor, tenants)
+       tracer_users = UserContext.list_users_with_role(:tracer, tenants)
+
        socket
        |> assign(
          changeset: ImportContext.change_import(%Import{}),
          page_title: gettext("New Import"),
-         tenants:
-           Enum.filter(
-             TenantContext.list_tenants(),
-             &authorized?(Import, :create, get_auth(socket), tenant: &1)
-           )
+         tenants: tenants,
+         supervisor_users: supervisor_users,
+         tracer_users: tracer_users
        )
        |> allow_upload(:file,
          accept: ~w(.csv .xlsx .json),

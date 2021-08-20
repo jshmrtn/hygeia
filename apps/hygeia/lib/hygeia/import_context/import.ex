@@ -8,6 +8,7 @@ defmodule Hygeia.ImportContext.Import do
   alias Hygeia.ImportContext.Import.Type
   alias Hygeia.ImportContext.Row
   alias Hygeia.TenantContext.Tenant
+  alias Hygeia.UserContext.User
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
@@ -19,6 +20,10 @@ defmodule Hygeia.ImportContext.Import do
           discarded_rows: Ecto.Schema.has_many(Row.t()) | nil,
           resolved_rows: Ecto.Schema.has_many(Row.t()) | nil,
           closed_at: DateTime.t() | nil,
+          default_tracer_uuid: Ecto.UUID.t() | nil,
+          default_tracer: Ecto.Schema.belongs_to(User.t()) | nil,
+          default_supervisor_uuid: Ecto.UUID.t() | nil,
+          default_supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -33,6 +38,10 @@ defmodule Hygeia.ImportContext.Import do
           discarded_rows: Ecto.Schema.has_many(Row.t()),
           resolved_rows: Ecto.Schema.has_many(Row.t()),
           closed_at: DateTime.t() | nil,
+          default_tracer_uuid: Ecto.UUID.t() | nil,
+          default_tracer: Ecto.Schema.belongs_to(User.t()) | nil,
+          default_supervisor_uuid: Ecto.UUID.t() | nil,
+          default_supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -51,6 +60,9 @@ defmodule Hygeia.ImportContext.Import do
     has_many :discarded_rows, Row, where: [status: :discarded]
     has_many :resolved_rows, Row, where: [status: :resolved]
 
+    belongs_to :default_tracer, User, references: :uuid, foreign_key: :default_tracer_uuid
+    belongs_to :default_supervisor, User, references: :uuid, foreign_key: :default_supervisor_uuid
+
     timestamps()
   end
 
@@ -61,8 +73,10 @@ defmodule Hygeia.ImportContext.Import do
           Ecto.Changeset.t(t)
   def changeset(import, attrs) do
     import
-    |> cast(attrs, [:type])
+    |> cast(attrs, [:type, :default_tracer_uuid, :default_supervisor_uuid])
     |> validate_required([:type])
+    |> check_constraint(:default_tracer_uuid, name: :default_tracer_uuid)
+    |> check_constraint(:default_supervisor_uuid, name: :default_supervisor_uuid)
   end
 
   defimpl Hygeia.Authorization.Resource do
