@@ -17,13 +17,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
 
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
-  alias Surface.Components.Form.Inputs
-  alias Surface.Components.Form.Field
-  alias Surface.Components.Form.Select
   alias Surface.Components.Form.ErrorTag
+  alias Surface.Components.Form.Field
+  alias Surface.Components.Form.Inputs
+  alias Surface.Components.Form.RadioButton
+  alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
-  alias Surface.Components.Form.RadioButton
 
   @primary_key false
   embedded_schema do
@@ -75,16 +75,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
 
   @impl Phoenix.LiveComponent
   def handle_event("validate", %{"define_transmission" => params}, socket) do
-    {:noreply,
-     socket
-     |> assign(:changeset, validation_changeset(__MODULE__, params))}
+    {:noreply, assign(socket, :changeset, validation_changeset(__MODULE__, params))}
   end
 
   @impl Phoenix.LiveComponent
   def handle_event("save", %{"define_transmission" => params}, socket) do
     propagator =
-      params["propagator_case_uuid"]
-      |> case do
+      case params["propagator_case_uuid"] do
         nil ->
           nil
 
@@ -126,13 +123,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
         fn _value_before -> params["uuid"] end
       )
 
-    {:noreply,
-     socket
-     |> assign(:changeset, validation_changeset(__MODULE__, updated_params))}
+    {:noreply, assign(socket, :changeset, validation_changeset(__MODULE__, updated_params))}
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event(_, _params, socket) do
+  def handle_event(_other, _params, socket) do
     {:noreply, socket}
   end
 
@@ -196,9 +191,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     end)
   end
 
+  @spec valid?(step_data :: map()) :: boolean()
   def valid?(step_data) do
     %__MODULE__{}
     |> changeset(step_data)
-    |> then(&( &1.valid? )) |> IO.inspect(label: "transmission is")
+    |> then(& &1.valid?)
   end
 end

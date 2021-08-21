@@ -1,14 +1,22 @@
 defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
+  @moduledoc false
+
   import Ecto.Changeset
   import HygeiaWeb.Helpers.Confirmation
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
-  alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.Transmission
+
   alias Hygeia.CommunicationContext
+  alias Hygeia.CommunicationContext.Email
+  alias Hygeia.CommunicationContext.SMS
+
   alias Hygeia.Repo
 
+  @spec upsert(bindings :: list(), transmission_data :: map()) ::
+          {:ok, [tuple()]} | {:error, String.t()}
   def upsert(bindings, transmission_data) do
     Repo.transaction(fn ->
       Enum.map(bindings, fn %{
@@ -17,43 +25,191 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
                               reporting: reporting
                             } ->
         person =
-          person_changeset
-          |> case do
-            %Ecto.Changeset{data: %Person{inserted_at: nil}} = person_changeset ->
+          case fetch_field!(person_changeset, :inserted_at) do
+            nil ->
               {:ok, person} = CaseContext.create_person(person_changeset)
               person
 
-            person_changeset ->
+            _date ->
               apply_changes(person_changeset)
           end
 
         case =
-          case_changeset
-          |> merge_phases(transmission_data)
-          |> case do
-            %Ecto.Changeset{data: %Case{inserted_at: nil}} = case_changeset ->
-              {:ok, case} = CaseContext.create_case(case_changeset)
+          case fetch_field!(case_changeset, :inserted_at) do
+            nil ->
+              {:ok, case} =
+                CaseContext.create_case(merge_phases(case_changeset, transmission_data))
+
               case
 
-            %Ecto.Changeset{} = case_changeset ->
-              {:ok, case} = CaseContext.update_case(case_changeset)
+            _date ->
+              {:ok, case} =
+                CaseContext.update_case(merge_phases(case_changeset, transmission_data))
+
               case
           end
           |> Hygeia.Repo.preload(:person)
 
-        insert_transmission(case, transmission_data)
+        {:ok, _} = insert_transmission(case, transmission_data)
 
-        contact_method_uuids = Enum.map(reporting, fn {uuid, true} -> uuid end)
-
-        {person, case, contact_method_uuids}
+        {person, case, reporting}
       end)
     end)
   end
 
+  @spec send_confirmations(
+          socket :: Phoenix.LiveView.Socket.t(),
+          tuples :: [tuple()],
+          transmission_data :: map()
+        ) :: :ok
+  def send_confirmations(socket, tuples, transmission_data) when is_list(tuples) do
+    Enum.each(tuples, fn {person, case, reporting} ->
+      type = Map.get(transmission_data, :type)
+
+      email_addresses =
+        person
+        |> Map.fetch!(:contact_methods)
+        |> Enum.filter(&(&1.type == :email and &1.uuid in reporting))
+        |> Enum.map(& &1.value)
+
+      phone_numbers =
+        person
+        |> Map.fetch!(:contact_methods)
+        |> Enum.filter(&(&1.type == :mobile and &1.uuid in reporting))
+        |> Enum.map(& &1.value)
+
+      [] =
+        Task.async(fn -> send_confirmation_emails(socket, case, email_addresses, type) end)
+        |> Task.await()
+        |> Enum.reject(&match?({:ok, _}, &1))
+        |> Enum.reject(&match?({:error, :no_outgoing_mail_configuration}, &1))
+        |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
+
+      [] =
+        Task.async(fn -> send_confirmation_sms(socket, case, phone_numbers, type) end)
+        |> Task.await()
+        |> Enum.reject(&match?({:ok, _}, &1))
+        |> Enum.reject(&match?({:error, :sms_config_missing}, &1))
+        |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
+        |> Enum.reject(&match?({:error, :no_quarantine_ordered}, &1))
+    end)
+  end
+
+  @spec send_confirmation_emails(
+          socket :: Phoenix.LiveView.Socket.t(),
+          case :: Case.t(),
+          email_addresses :: [String.t()],
+          transmission_type :: atom
+        ) ::
+          [{:ok, Email.t()}]
+          | [
+              {:error,
+               :not_latest_phase
+               | Ecto.Changeset.t(Email.t())
+               | :no_email
+               | :no_outgoing_mail_configuration}
+            ]
+  def send_confirmation_emails(socket, case, email_addresses, transmission_type)
+
+  def send_confirmation_emails(_socket, _case, [], _transmission_type),
+    do: [{:ok, :no_email}]
+
+  def send_confirmation_emails(
+        socket,
+        case,
+        email_addresses,
+        transmission_type
+      ) do
+    locale = Gettext.get_locale(HygeiaGettext)
+
+    case List.last(case.phases) do
+      %Phase{details: %Phase.PossibleIndex{type: ^transmission_type}} = phase ->
+        Gettext.put_locale(HygeiaGettext, locale)
+
+        Enum.map(
+          email_addresses,
+          &CommunicationContext.create_outgoing_email(
+            case,
+            &1,
+            quarantine_email_subject(),
+            quarantine_email_body(socket, case, phase, :email)
+          )
+        )
+
+      %Phase{} ->
+        [{:error, :not_latest_phase}]
+    end
+  end
+
+  @spec send_confirmation_sms(
+          socket :: Phoenix.LiveView.Socket.t(),
+          case :: Case.t(),
+          phone_numbers :: [String.t()],
+          transmission_type :: atom
+        ) ::
+          [{:ok, SMS.t()}]
+          | [
+              {:error,
+               :no_quarantine_ordered
+               | :not_latest_phase
+               | Ecto.Changeset.t(SMS.t())
+               | :sms_config_missing}
+            ]
+  def send_confirmation_sms(socket, case, phone_numbers, transmission_type)
+
+  def send_confirmation_sms(_socket, _case, [], _transmission_type),
+    do: [{:ok, :no_mobile_number}]
+
+  def send_confirmation_sms(
+        socket,
+        case,
+        phone_numbers,
+        transmission_type
+      ) do
+    locale = Gettext.get_locale(HygeiaGettext)
+
+    case List.last(case.phases) do
+      %Phase{details: %Phase.PossibleIndex{type: ^transmission_type}, quarantine_order: false} ->
+        {:error, :no_quarantine_ordered}
+
+      %Phase{details: %Phase.PossibleIndex{type: ^transmission_type}, quarantine_order: true} =
+          phase ->
+        Gettext.put_locale(HygeiaGettext, locale)
+
+        Enum.map(
+          phone_numbers,
+          &CommunicationContext.create_outgoing_sms(case, &1, quarantine_sms(socket, case, phase))
+        )
+
+      %Phase{} ->
+        [{:error, :not_latest_phase}]
+    end
+  end
+
+  @spec insert_transmission(case :: Case.t(), map :: map()) :: {:ok, Transmission.t()}
+  def insert_transmission(case, transmission_data) do
+    date = Map.get(transmission_data, :date)
+    comment = Map.get(transmission_data, :comment)
+    infection_place = Map.get(transmission_data, :infection_place)
+    propagator_internal = Map.get(transmission_data, :propagator_internal)
+    propagator_ism_id = Map.get(transmission_data, :propagator_ism_id)
+    propagator_case_uuid = Map.get(transmission_data, :propagator_case_uuid)
+
+    {:ok, _transmission} =
+      CaseContext.create_transmission(%{
+        comment: comment,
+        date: date,
+        recipient_internal: true,
+        recipient_case_uuid: case.uuid,
+        infection_place: unstruct(infection_place),
+        propagator_internal: propagator_internal,
+        propagator_ism_id: propagator_ism_id,
+        propagator_case_uuid: propagator_case_uuid
+      })
+  end
+
   defp merge_phases(case_changeset, transmission_data) do
-    existing_phases =
-      case_changeset
-      |> fetch_field!(:phases)
+    existing_phases = fetch_field!(case_changeset, :phases)
 
     existing_phases
     |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
@@ -93,8 +249,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
                 phase
             end)
 
-          case_changeset
-          |> Ecto.Changeset.put_embed(
+          Ecto.Changeset.put_embed(
+            case_changeset,
             :phases,
             status_changed_phases ++
               [
@@ -111,8 +267,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
               ]
           )
         else
-          case_changeset
-          |> Ecto.Changeset.put_embed(
+          Ecto.Changeset.put_embed(
+            case_changeset,
             :phases,
             existing_phases ++
               [
@@ -132,160 +288,35 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
   end
 
   defp phase_dates(contact_date) do
-    case contact_date do
-      nil ->
-        {nil, nil}
+    start_date = contact_date
+    end_date = Date.add(start_date, 9)
 
-      %Date{} = contact_date ->
-        start_date = contact_date
-        end_date = Date.add(start_date, 9)
+    start_date =
+      if Date.compare(start_date, Date.utc_today()) == :lt do
+        Date.utc_today()
+      else
+        start_date
+      end
 
-        start_date =
-          if Date.compare(start_date, Date.utc_today()) == :lt do
-            Date.utc_today()
-          else
-            start_date
-          end
+    end_date =
+      if Date.compare(end_date, Date.utc_today()) == :lt do
+        Date.utc_today()
+      else
+        end_date
+      end
 
-        end_date =
-          if Date.compare(end_date, Date.utc_today()) == :lt do
-            Date.utc_today()
-          else
-            end_date
-          end
-
-        {start_date, end_date}
-    end
+    {start_date, end_date}
   end
 
-  @spec insert_transmission(case :: Case.t(), map :: Map.t()) :: Transmission.t()
-  def insert_transmission(case, transmission_data) do
-    date = transmission_data |> Map.get(:date)
-    comment = transmission_data |> Map.get(:comment)
-    infection_place = transmission_data |> Map.get(:infection_place)
-    propagator_internal = transmission_data |> Map.get(:propagator_internal)
-    propagator_ism_id = transmission_data |> Map.get(:propagator_ism_id)
-    propagator_case_uuid = transmission_data |> Map.get(:propagator_case_uuid)
-
-    {:ok, _transmission} =
-      CaseContext.create_transmission(%{
-        comment: comment,
-        date: date,
-        recipient_internal: true,
-        recipient_case_uuid: case.uuid,
-        infection_place: unstruct(infection_place),
-        propagator_internal: propagator_internal,
-        propagator_ism_id: propagator_ism_id,
-        propagator_case_uuid: propagator_case_uuid
-      })
-  end
-
-  def send_confirmations(socket, tuples, transmission_data) when is_list(tuples) do
-    tuples
-    |> Enum.each(fn {person, case, reporting} ->
-      type = transmission_data |> Map.get(:type)
-
-      email_addresses =
-        person
-        |> Map.fetch!(:contact_methods)
-        |> Enum.filter(&(&1.type == :email and &1.uuid in reporting))
-        |> Enum.map(& &1.value)
-
-      phone_numbers =
-        person
-        |> Map.fetch!(:contact_methods)
-        |> Enum.filter(&(&1.type == :mobile and &1.uuid in reporting))
-        |> Enum.map(& &1.value)
-
-      [] =
-        Task.async(fn -> send_confirmation_emails(socket, case, email_addresses, type) end)
-        |> Task.await()
-        |> Enum.reject(&match?({:ok, _}, &1))
-        |> Enum.reject(&match?({:error, :no_outgoing_mail_configuration}, &1))
-        |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
-
-      [] =
-        Task.async(fn -> send_confirmation_sms(socket, case, phone_numbers, type) end)
-        |> Task.await()
-        |> Enum.reject(&match?({:ok, _}, &1))
-        |> Enum.reject(&match?({:error, :sms_config_missing}, &1))
-        |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
-        |> Enum.reject(&match?({:error, :no_quarantine_ordered}, &1))
-    end)
-  end
-
-  def send_confirmation_emails(socket, case, email_addresses, transmission_type)
-
-  def send_confirmation_emails(_socket, _case, [], _transmission_type),
-    do: [{:ok, :no_email}]
-
-  def send_confirmation_emails(
-        socket,
-        case,
-        email_addresses,
-        transmission_type
-      ) do
-    locale = Gettext.get_locale(HygeiaGettext)
-
-    case List.last(case.phases) do
-      %Phase{details: %Phase.PossibleIndex{type: ^transmission_type}} = phase ->
-        Gettext.put_locale(HygeiaGettext, locale)
-
-        email_addresses
-        |> Enum.map(
-          &CommunicationContext.create_outgoing_email(
-            case,
-            &1,
-            quarantine_email_subject(),
-            quarantine_email_body(socket, case, phase, :email)
-          )
-        )
-
-      %Phase{} ->
-        [{:error, :not_latest_phase}]
-    end
-  end
-
-  def send_confirmation_sms(socket, case, phone_numbers, transmission_type)
-
-  def send_confirmation_sms(_socket, _case, [], _transmission_type),
-    do: [{:ok, :no_mobile_number}]
-
-  def send_confirmation_sms(
-        socket,
-        case,
-        phone_numbers,
-        transmission_type
-      ) do
-    locale = Gettext.get_locale(HygeiaGettext)
-
-    case List.last(case.phases) do
-      %Phase{details: %Phase.PossibleIndex{type: ^transmission_type}, quarantine_order: false} ->
-        {:error, :no_quarantine_ordered}
-
-      %Phase{details: %Phase.PossibleIndex{type: ^transmission_type}, quarantine_order: true} =
-          phase ->
-        Gettext.put_locale(HygeiaGettext, locale)
-
-        phone_numbers
-        |> Enum.map(
-          &CommunicationContext.create_outgoing_sms(case, &1, quarantine_sms(socket, case, phase))
-        )
-
-      %Phase{} ->
-        [{:error, :not_latest_phase}]
-    end
-  end
-
-  @spec unstruct(any()) :: Map.t()
-  def unstruct(struct) when is_struct(struct) do
+  @spec unstruct(map()) :: map()
+  defp unstruct(struct) when is_struct(struct) do
     struct
     |> Map.from_struct()
     |> Enum.map(fn {key, value} -> {key, unstruct(value)} end)
     |> Map.new()
   end
 
-  def unstruct(list) when is_list(list), do: Enum.map(list, &unstruct/1)
+  defp unstruct(list) when is_list(list), do: Enum.map(list, &unstruct/1)
 
-  def unstruct(other), do: other
+  defp unstruct(other), do: other
 end

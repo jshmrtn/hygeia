@@ -6,5 +6,4 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.PersonSnippet do
   alias Surface.Components.Link
 
   prop person, :map, required: true
-
 end

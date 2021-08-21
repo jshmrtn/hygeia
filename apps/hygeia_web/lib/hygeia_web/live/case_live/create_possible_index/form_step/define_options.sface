@@ -18,8 +18,9 @@
                       {gettext("Status")}
                     </span>
                   </HygeiaWeb.FieldLabel>
-                  <Select class="form-control" options={
-                    if existing_entity?(case_cs) do
+                  <Select
+                    class="form-control"
+                    options={if existing_entity?(case_cs) do
                       Status.map()
                     else
                       manage_statuses(@current_form_data[:type], Status.map())
@@ -40,7 +41,7 @@
                     <HygeiaWeb.FieldLabel />
                     <Select
                       class="form-control"
-                      options={assignees_form_options(@supervisor_users, get_field(case_cs, :tenant_uuid))}
+                      options={form_options_administrators(@supervisor_users, get_field(case_cs, :tenant_uuid))}
                       opts={prompt: gettext("Case Administration")}
                     />
                     <ErrorTag class="d-block invalid-feedback" />
@@ -53,7 +54,7 @@
                     <HygeiaWeb.FieldLabel />
                     <Select
                       class="form-control"
-                      options={assignees_form_options(@tracer_users, fetch_field!(case_cs, :tenant_uuid))}
+                      options={form_options_administrators(@tracer_users, fetch_field!(case_cs, :tenant_uuid))}
                       opts={prompt: gettext("Case Administration")}
                     />
                     <ErrorTag class="d-block invalid-feedback" />
@@ -61,20 +62,20 @@
                 </div>
               </div>
             </:right>
-          <:bottom>
-            {#if existing_entity?(case_cs)}
-              <span>Associated case:</span>
-              <CaseSnippet case_changeset={case_cs}/>
-              <Link 
-                to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
-                opts={target: "_blank", rel: "noopener noreferrer"}
-              >
-                {gettext("Open case in new tab")}
-              </Link>
+            <:bottom>
+              {#if existing_entity?(case_cs)}
+                <span>Associated case:</span>
+                <CaseSnippet case_changeset={case_cs} />
+                <Link
+                  to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
+                  opts={target: "_blank", rel: "noopener noreferrer"}
+                >
+                  {gettext("Open case in new tab")}
+                </Link>
               {#else}
                 {gettext("A new case will be created for this person.")}
-            {/if}
-          </:bottom>
+              {/if}
+            </:bottom>
           </PersonCard>
         </Form>
       </div>

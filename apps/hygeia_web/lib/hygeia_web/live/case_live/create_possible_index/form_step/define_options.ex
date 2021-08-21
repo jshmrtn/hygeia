@@ -1,20 +1,22 @@
 defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
-  @moduledoc false
+  @moduledoc """
+    Form step responsible for managing case options.
+  """
 
   use HygeiaWeb, :surface_live_component
 
   import Ecto.Changeset
   import HygeiaGettext
 
-  alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Case.Person
   alias Hygeia.CaseContext.Case.Status
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
 
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
-  alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Field
+  alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Select
   alias Surface.Components.Link
 
@@ -35,22 +37,34 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
 
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
-    %{current_form_data: data, supervisor_users: supervisor_users, tracer_users: tracer_users} = assigns
+    %{current_form_data: data, supervisor_users: supervisor_users, tracer_users: tracer_users} =
+      assigns
+
+    bindings = Map.get(data, :bindings, [])
+    propagator = assigns[:propagator]
 
     bindings =
-      data[:bindings]
-      |> copy_propagator_data(data[:propagator], supervisor_users, tracer_users)
-      |> validate_statuses(data[:type])
+      Enum.map(bindings, fn %{case_changeset: case_changeset} = binding ->
+        case_changeset =
+          merge_propagator_administrators(
+            case_changeset,
+            propagator,
+            supervisor_users,
+            tracer_users
+          )
+
+        Map.put(binding, :case_changeset, case_changeset)
+      end)
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:bindings, bindings)}
+     |> assign(bindings: bindings)}
   end
 
   @impl Phoenix.LiveComponent
   def handle_event("validate", %{"index" => index, "case" => case_params}, socket) do
-    %{assigns: %{bindings: bindings, current_form_data: data}} = socket
+    %{assigns: %{bindings: bindings}} = socket
 
     bindings =
       List.update_at(
@@ -62,17 +76,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
             :case_changeset,
             change(case_changeset, normalize_params(case_params))
           )
-          |> validate_status(data[:type])
         end
       )
 
-    {:noreply,
-     socket
-     |> assign(:bindings, bindings)}
+    {:noreply, assign(socket, bindings: bindings)}
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("next", _, socket) do
+  def handle_event("next", _params, socket) do
     %{assigns: %{bindings: bindings}} = socket
 
     case valid?(bindings) do
@@ -85,15 +96,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
     end
   end
 
-  def handle_event("back", _, socket) do
+  def handle_event("back", _params, socket) do
     %{assigns: %{bindings: bindings}} = socket
 
     send(self(), {:return, %{bindings: bindings}})
     {:noreply, socket}
   end
 
-  def assignees_form_options(tenant_mappings, target_tenant_uuid) do
-    tenant_mappings
+  @spec form_options_administrators(
+          tenant_mapping :: %{String.t() => Person.t()},
+          target_tenant_uuid :: String.t()
+        ) ::
+          list()
+  def form_options_administrators(tenant_mapping, target_tenant_uuid) do
+    tenant_mapping
     |> Enum.find_value(
       [],
       fn {tenant_uuid, assignees} ->
@@ -108,7 +124,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
   defp manage_statuses(:travel, statuses), do: statuses
   defp manage_statuses(:contact_person, statuses), do: statuses
 
-  defp manage_statuses(_, statuses) do
+  defp manage_statuses(_transmission_type, statuses) do
     Enum.map(statuses, fn
       {name, :done} -> [key: name, value: :done, disabled: true]
       {name, :canceled} -> [key: name, value: :canceled, disabled: true]
@@ -116,74 +132,50 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
     end)
   end
 
-  defp copy_propagator_data(bindings, propagator, supervisor_users, tracer_users) do
-    case propagator do
-      nil -> bindings
+  defp merge_propagator_administrators(case_changeset, propagator, supervisor_users, tracer_users)
 
-      {_propagator, propagator_case} ->
-        bindings
-        |> Enum.map(fn %{case_changeset: case_changeset} = binding ->
-          tenant_uuid = fetch_field!(case_changeset, :tenant_uuid)
+  defp merge_propagator_administrators(case_changeset, nil, _sup_users, _trac_users),
+    do: case_changeset
 
-          Map.put(
-            binding,
-            :case_changeset,
-            change(case_changeset, %{
-              supervisor_uuid:
-                validate_assignee(
-                  supervisor_users,
-                  tenant_uuid,
-                  propagator_case.supervisor_uuid
-                ),
-              tracer_uuid:
-                validate_assignee(tracer_users, tenant_uuid, propagator_case.tracer_uuid)
-            })
-          )
-        end)
-    end
+  defp merge_propagator_administrators(case_changeset, propagator, supervisor_users, tracer_users) do
+    {_propagator, propagator_case} = propagator
+
+    tenant_uuid = fetch_field!(case_changeset, :tenant_uuid)
+
+    change(case_changeset, %{
+      supervisor_uuid:
+        validate_administrator(
+          supervisor_users,
+          tenant_uuid,
+          propagator_case.supervisor_uuid
+        ),
+      tracer_uuid: validate_administrator(tracer_users, tenant_uuid, propagator_case.tracer_uuid)
+    })
   end
 
-  defp validate_statuses(bindings, type) when is_list(bindings) do
-    Enum.map(bindings, &( validate_status(&1, type) ))
-  end
-
-  defp validate_status(binding, :travel), do: binding
-  defp validate_status(binding, :contact_person), do: binding
-
-  defp validate_status(binding, type) do
-    %{case_changeset: case_changeset} = binding
-
-    case not existing_entity?(case_changeset) and fetch_field!(case_changeset, :status) in [:done, :canceled] do
-      true -> Map.put(binding, :case_changeset, add_error(case_changeset, :status, gettext("invalid status")) |> Map.put(:action, :validate))
-      false -> Map.put(binding, :case_changeset, Map.merge(case_changeset, %{action: nil, errors: [], valid?: true}))
-    end
-  end
-
-  defp choose_case_status(type) when type in [:contact_person, :travel], do: :done
-
-  defp choose_case_status(_), do: :first_contact
-
-  defp validate_assignee(tenant_mappings, target_tenant_uuid, assignee_uuid) do
-    tenant_mappings
-    |> Enum.find_value(
+  defp validate_administrator(tenant_mapping, target_tenant_uuid, administrator_uuid) do
+    Enum.find_value(
+      tenant_mapping,
       [],
-      fn {tenant_uuid, assignees} ->
+      fn {tenant_uuid, admins} ->
         if tenant_uuid == target_tenant_uuid,
-          do: assignees
+          do: Enum.find_value(admins, &if(match?(&1, administrator_uuid), do: &1.uuid))
       end
     )
-    |> Enum.find_value(&if match?(&1, assignee_uuid), do: &1.uuid)
   end
 
   defp normalize_params(params) do
-    params
-    |> Map.new(fn
+    Map.new(params, fn
       {k, ""} -> {String.to_atom(k), nil}
       {k, v} -> {String.to_atom(k), v}
     end)
   end
 
+  @spec valid?(bindings :: list()) :: boolean()
+  def valid?(bindings)
+
   def valid?(nil), do: false
+
   def valid?(bindings) do
     Enum.reduce(bindings, length(bindings) > 0, fn %{case_changeset: case_changeset}, truth ->
       case_changeset.valid? and truth

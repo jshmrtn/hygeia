@@ -124,7 +124,7 @@
                 {#for case <- person.cases}
                   <div class="list-group-item list-group-item-action">
                     <CaseSnippet case_changeset={change(case)} />
-                    <Link 
+                    <Link
                       to={Routes.case_base_data_path(@socket, :show, case.uuid)}
                       opts={target: "_blank", rel: "noopener noreferrer"}
                     >
@@ -162,7 +162,8 @@
         <div class="card-body">
           <h4 class="card-title">{gettext("Suggested duplicates")}</h4>
           <div class="list-group">
-            {#for person <- @changeset |> get_field(:suspected_duplicates_uuid) |> Enum.map(&CaseContext.get_person!/1)}
+            {#for person <-
+                @changeset |> get_field(:suspected_duplicates_uuid) |> Enum.map(&CaseContext.get_person!/1)}
               <div class="list-group-item list-group-item-action">
                 <div class="d-flex">
                   <PersonSnippet person={person} />
@@ -182,6 +183,7 @@
           </div>
         </div>
       </div>
+
       <Form
         :if={not @loading}
         for={@changeset}
@@ -221,7 +223,7 @@
                 <div class="col">
                   <Field name={:last_name} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <TextInput opts={disabled: @live_action == :show} class="form-control" field={:last_name} />
+                    <TextInput field={:last_name} class="form-control" opts={disabled: @live_action == :show} />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
@@ -386,11 +388,7 @@
         phx_click: "all_checked"
       }
     />
-    <Link
-      to="#"
-      click="delete_person"
-      opts={data: [confirm: gettext("Are you sure?")]}
-    >
+    <Link to="#" click="delete_person" opts={data: [confirm: gettext("Are you sure?")]}>
       <button
         disabled={Enum.empty?(@bulk_action_elements)}
         class="btn btn-danger"
@@ -422,7 +420,7 @@
           {#if not existing_entity?(person_cs)}
             {#if length(fetch_field!(person_cs, :suspected_duplicates_uuid)) > 0}
               <div>
-                <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace={:true}>
+                <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace>
                   <span class="text-info">{gettext("There are possible duplicates for this person. Click to resolve.")}</span>
                 </LivePatch>
               </div>
@@ -430,18 +428,15 @@
           {/if}
         </:feature>
         <:left>
-          <LivePatch to={Routes.case_create_possible_index_path(@socket, :show, @form_step, index)} replace={:true}>
+          <LivePatch to={Routes.case_create_possible_index_path(@socket, :show, @form_step, index)} replace>
             <button class="btn btn-secondary" type="button">
               {gettext("View")}
             </button>
           </LivePatch>
-          <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace={:true}>
-            <button
-              :if={not existing_entity?(person_cs)}
-              class="btn btn-primary"
-            >
-                <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                {gettext("Edit")}
+          <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace>
+            <button :if={not existing_entity?(person_cs)} class="btn btn-primary">
+              <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+              {gettext("Edit")}
             </button>
           </LivePatch>
         </:left>
@@ -466,8 +461,8 @@
         <:bottom>
           {#if existing_entity?(case_cs)}
             <span>Associated case:</span>
-            <CaseSnippet case_changeset={case_cs}/>
-            <Link 
+            <CaseSnippet case_changeset={case_cs} />
+            <Link
               to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
               opts={target: "_blank", rel: "noopener noreferrer"}
             >

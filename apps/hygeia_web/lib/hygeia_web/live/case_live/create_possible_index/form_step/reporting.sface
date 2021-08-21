@@ -1,6 +1,7 @@
 <div class="container mt-5">
   <div class="row">
-    {#for {%{person_changeset: person_cs, case_changeset: case_cs, reporting: reporting}, index} <- Enum.with_index(@bindings)}
+    {#for {%{person_changeset: person_cs, case_changeset: case_cs, reporting: reporting}, index} <-
+        Enum.with_index(@bindings)}
       <div class="w-100">
         <PersonCard person_changeset={person_cs}>
           <:bottom>
@@ -22,11 +23,11 @@
                             phx_value_index: index,
                             phx_value_contact_uuids: to_serialized_uuids(contact_type_members)
                           } />
-                            {#if all_checked?(reporting, contact_type_members)}
-                              {gettext("Deselect all")}
-                            {#else}
-                              {gettext("Select all")}
-                            {/if}
+                          {#if all_checked?(reporting, contact_type_members)}
+                            {gettext("Deselect all")}
+                          {#else}
+                            {gettext("Select all")}
+                          {/if}
                         </th>
                       </tr>
                     </thead>
@@ -52,7 +53,9 @@
                 </div>
               {/for}
             {#else}
-              <span>{gettext("The case for this person has either an index phase or a contact person phase and therefore this person should not be contacted now.")}</span>
+              <span>{gettext(
+                  "The case for this person has either an index phase or a contact person phase and therefore this person should not be contacted now."
+                )}</span>
             {/if}
           </:bottom>
         </PersonCard>

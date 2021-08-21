@@ -28,7 +28,7 @@
     <div>{@person.address.country || gettext("Unknown")}</div>
   </div>
   <div>
-    <Link 
+    <Link
       to={Routes.person_base_data_path(@socket, :show, @person.uuid)}
       opts={target: "_blank", rel: "noopener noreferrer"}
     >

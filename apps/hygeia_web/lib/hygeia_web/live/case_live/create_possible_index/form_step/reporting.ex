@@ -7,6 +7,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   import Ecto.Changeset
 
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Person
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
 
@@ -18,17 +19,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
 
   @impl Phoenix.LiveComponent
   def mount(socket) do
-    {:ok,
-     assign(socket,
-       bindings: [],
-       loading: false
-     )}
+    {:ok, assign(socket, bindings: [])}
   end
 
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
+    %{current_form_data: current_form_data} = assigns
+
     bindings =
-      assigns.current_form_data
+      current_form_data
       |> Map.get(:bindings, [])
       |> clean_reporting_data()
       |> prefill_reporting_data()
@@ -36,7 +35,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:bindings, bindings)}
+     |> assign(bindings: bindings)}
   end
 
   @impl Phoenix.LiveComponent
@@ -52,15 +51,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
     %{assigns: %{bindings: bindings}} = socket
 
     updated_bindings =
-      bindings
-      |> List.update_at(
+      List.update_at(
+        bindings,
         String.to_integer(index),
         fn %{reporting: reporting} = binding ->
           Map.put(binding, :reporting, add_contact_uuid(reporting, contact_uuid))
         end
       )
 
-    {:noreply, socket |> assign(:bindings, updated_bindings)}
+    {:noreply, assign(socket, bindings: updated_bindings)}
   end
 
   @impl Phoenix.LiveComponent
@@ -75,15 +74,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
     %{assigns: %{bindings: bindings}} = socket
 
     updated_bindings =
-      bindings
-      |> List.update_at(
+      List.update_at(
+        bindings,
         String.to_integer(index),
         fn %{reporting: reporting} = binding ->
           Map.put(binding, :reporting, remove_contact_uuid(reporting, contact_uuid))
         end
       )
 
-    {:noreply, socket |> assign(:bindings, updated_bindings)}
+    {:noreply, assign(socket, bindings: updated_bindings)}
   end
 
   @impl Phoenix.LiveComponent
@@ -99,8 +98,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
     %{assigns: %{bindings: bindings}} = socket
 
     updated_bindings =
-      bindings
-      |> List.update_at(
+      List.update_at(
+        bindings,
         String.to_integer(index),
         fn %{reporting: reporting} = binding ->
           Map.put(
@@ -111,7 +110,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
         end
       )
 
-    {:noreply, socket |> assign(:bindings, updated_bindings)}
+    {:noreply, assign(socket, bindings: updated_bindings)}
   end
 
   @impl Phoenix.LiveComponent
@@ -126,8 +125,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
     %{assigns: %{bindings: bindings}} = socket
 
     updated_bindings =
-      bindings
-      |> List.update_at(
+      List.update_at(
+        bindings,
         String.to_integer(index),
         fn %{reporting: reporting} = binding ->
           Map.put(
@@ -138,28 +137,30 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
         end
       )
 
-    {:noreply, socket |> assign(:bindings, updated_bindings)}
+    {:noreply, assign(socket, bindings: updated_bindings)}
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("next", _, socket) do
+  def handle_event("next", _params, socket) do
     %{assigns: %{bindings: bindings}} = socket
 
     send(self(), {:proceed, %{bindings: bindings}})
     {:noreply, socket}
   end
 
-  def handle_event("back", _, socket) do
+  def handle_event("back", _params, socket) do
     %{assigns: %{bindings: bindings}} = socket
 
     send(self(), {:return, %{bindings: bindings}})
     {:noreply, socket}
   end
 
+  @spec empty_reporting?(reporting :: list()) :: boolean()
   def empty_reporting?(reporting) do
-    map_size(reporting) == 0
+    Enum.empty?(reporting)
   end
 
+  @spec group_contacts_by_type(Ecto.Changeset.t(%Person{})) :: list()
   def group_contacts_by_type(person_changeset) do
     person_changeset
     |> get_field(:contact_methods)
@@ -168,15 +169,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   end
 
   defp clean_reporting_data(bindings) do
-    bindings
-    |> Enum.map(fn %{person_changeset: person_changeset} = binding ->
-      reporting = Map.get(binding, :reporting, %{})
+    Enum.map(bindings, fn %{person_changeset: person_changeset} = binding ->
+      reporting = Map.get(binding, :reporting, [])
 
       updated_reporting =
         person_changeset
         |> get_field(:contact_methods, [])
-        |> Enum.reduce(%{}, fn contact, acc ->
-          if Map.has_key?(reporting, contact.uuid) do
+        |> Enum.reduce([], fn contact, acc ->
+          if Enum.member?(reporting, contact.uuid) do
             add_contact_uuid(acc, contact.uuid)
           else
             acc
@@ -188,12 +188,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   end
 
   defp prefill_reporting_data(bindings) do
-    bindings
-    |> Enum.map(fn %{
-                     person_changeset: person_changeset,
-                     case_changeset: case_changeset,
-                     reporting: reporting
-                   } = binding ->
+    Enum.map(bindings, fn %{
+                            person_changeset: person_changeset,
+                            case_changeset: case_changeset,
+                            reporting: reporting
+                          } = binding ->
       if should_contact_person(case_changeset) do
         contact_uuids =
           person_changeset
@@ -221,17 +220,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   end
 
   defp add_contact_uuid(reporting, contact_uuid) do
-    Map.put(reporting, contact_uuid, true)
+    [contact_uuid] ++ reporting
   end
 
   defp remove_contact_uuid(reporting, contact_uuid) do
-    Map.delete(reporting, contact_uuid)
+    List.delete(reporting, contact_uuid)
   end
 
   defp add_contact_uuids(reporting, contact_uuids) do
-    Enum.reduce(contact_uuids, reporting, fn contact_uuid, acc ->
-      add_contact_uuid(acc, contact_uuid)
-    end)
+    contact_uuids ++ reporting
   end
 
   defp remove_contact_uuids(reporting, contact_uuids) do
@@ -247,12 +244,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   end
 
   defp to_deserialized_uuids(string_list) when is_binary(string_list) do
-    string_list
-    |> String.split(",")
+    String.split(string_list, ",")
   end
 
+  @spec has_contact_uuid?(reporting :: list(), contact_uuid :: String.t()) :: boolean()
   def has_contact_uuid?(reporting, contact_uuid) do
-    Map.has_key?(reporting, contact_uuid)
+    Enum.member?(reporting, contact_uuid)
   end
 
   defp all_checked?(reporting, contact_type_members) do
@@ -260,6 +257,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
       has_contact_uuid?(reporting, contact.uuid) and truth
     end)
   end
+
+  @spec valid?(bindings :: list()) :: boolean()
+  def valid?(bindings)
 
   def valid?(nil), do: false
 
@@ -269,7 +269,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
                                                      case_changeset: case_changeset
                                                    },
                                                    truth ->
-                                        # TODO pass to changeset functions first
       person_changeset.valid? and case_changeset.valid? and truth
     end)
   end

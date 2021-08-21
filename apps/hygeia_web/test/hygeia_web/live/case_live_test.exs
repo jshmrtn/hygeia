@@ -2,18 +2,16 @@
 defmodule HygeiaWeb.CaseLiveTest do
   @moduledoc false
 
-  import HygeiaWeb.CaseLiveTestHelper
-
   use Hygeia.DataCase
   use HygeiaWeb.ConnCase
 
   import Phoenix.LiveViewTest
+  import HygeiaWeb.CaseLiveTestHelper
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
 
-  @moduletag :case_live
   @moduletag origin: :test
   @moduletag originator: :noone
   @moduletag log_in: [roles: [:admin]]
@@ -100,13 +98,11 @@ defmodule HygeiaWeb.CaseLiveTest do
       assert {:ok, view, _html} =
                live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-      test_transmission_step_type_travel(context, view)
-
-      test_define_people_step_new_person_new_case(context, view)
-
-      test_define_options_step_case_status_first_contact(context, view)
-
-      test_reporting_step_all_contact_methods(context, view)
+      view
+      |> test_transmission_step_type_travel(context)
+      |> test_define_people_step_new_person_new_case(context)
+      |> test_define_options_step_case_status_first_contact(context)
+      |> test_reporting_step_all_contact_methods(context)
 
       assert [
                %Person{
@@ -127,13 +123,11 @@ defmodule HygeiaWeb.CaseLiveTest do
       assert {:ok, view, _html} =
                live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-      test_transmission_step_type_travel(context, view)
-
-      test_define_people_step_existing_person_new_case(context, view)
-
-      test_define_options_step_case_status_done(context, view)
-
-      test_reporting_step_all_contact_methods(context, view)
+      view
+      |> test_transmission_step_type_travel(context)
+      |> test_define_people_step_existing_person_new_case(context)
+      |> test_define_options_step_case_status_done(context)
+      |> test_reporting_step_all_contact_methods(context)
 
       assert [
                %Person{
@@ -150,13 +144,11 @@ defmodule HygeiaWeb.CaseLiveTest do
       assert {:ok, view, _html} =
                live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-      test_transmission_step_type_other(context, view)
-
-      test_define_people_step_new_person_new_case(context, view)
-
-      test_define_options_step_case_status_done(context, view)
-
-      test_reporting_step_all_contact_methods(context, view)
+      view
+      |> test_transmission_step_type_other(context)
+      |> test_define_people_step_new_person_new_case(context)
+      |> test_define_options_step_case_status_done(context)
+      |> test_reporting_step_all_contact_methods(context)
 
       assert [
                %Person{

@@ -165,7 +165,7 @@ defmodule Hygeia.CaseContext do
         )
       )
 
-  @spec suggest_people_by_params(params :: Map.t(), preload :: List.t(), limit :: pos_integer()) ::
+  @spec suggest_people_by_params(params :: map(), preload :: list(atom()), limit :: pos_integer()) ::
           [Person.t()]
   def suggest_people_by_params(params, preload, limit \\ 9) do
     first_name = Map.get(params, :first_name, "")
