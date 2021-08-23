@@ -6,7 +6,7 @@
 
     <div class="d-flex">
       <LiveRedirect
-        class="mr-2"
+        class="me-2"
         to={Routes.mutation_create_path(@socket, :create)}
         :if={authorized?(Mutation, :create, auth)}
       >
@@ -43,7 +43,7 @@
                 to={Routes.mutation_show_path(@socket, :show, mutation)}
                 :if={authorized?(mutation, :details, auth)}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">
+                <button class="ms-auto btn btn-sm btn-outline-primary">
                   {gettext("Show")}
                 </button>
               </LiveRedirect>
@@ -51,7 +51,7 @@
                 to={Routes.mutation_show_path(@socket, :edit, mutation)}
                 :if={authorized?(mutation, :update, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LiveRedirect>
@@ -66,7 +66,7 @@
                 }
                 :if={authorized?(mutation, :delete, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-danger">
+                <button class="ms-1 btn btn-sm btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>

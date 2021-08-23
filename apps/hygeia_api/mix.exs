@@ -52,7 +52,11 @@ defmodule HygeiaApi.MixProject do
     [
       {:absinthe, "~> 1.5"},
       {:absinthe_error_payload, "1.0.1"},
-      {:absinthe_phoenix, "~> 2.0"},
+      # TODO: Revert to released version when this commit is released
+      # - https://github.com/absinthe-graphql/absinthe_phoenix/commit/fdcf5e33a9c44044f53a536b0f9e2c7ed160893d
+      {:absinthe_phoenix, "~> 2.0",
+       github: "absinthe-graphql/absinthe_phoenix",
+       ref: "fdcf5e33a9c44044f53a536b0f9e2c7ed160893d"},
       {:absinthe_relay, "~> 1.5"},
       {:cors_plug, "~> 2.0"},
       {:dataloader, "~> 1.0"},
@@ -61,8 +65,8 @@ defmodule HygeiaApi.MixProject do
       {:hygeia_health, in_umbrella: true},
       {:hygeia, in_umbrella: true},
       {:jason, "~> 1.1"},
-      {:phoenix, "~> 1.5.6"},
-      {:phoenix_live_dashboard, "~> 0.4.0"},
+      {:phoenix, "~> 1.5"},
+      {:phoenix_live_dashboard, "~> 0.4"},
       # TODO: Revert to released version when this PR is merged and released:
       # - https://github.com/ggpasqualino/plug_checkup/pull/66
       {:plug_checkup, github: "jshmrtn/plug_checkup", branch: "check_query_selector"},

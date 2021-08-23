@@ -6,7 +6,7 @@
 
     <div class="d-flex">
       <LivePatch
-        class="mr-2"
+        class="me-2"
         to={Routes.case_create_path(@socket, :create, return_to: Routes.case_index_path(@socket, :index))}
         :if={authorized?(Case, :create, auth, tenant: :any)}
       >
@@ -17,7 +17,7 @@
       </LivePatch>
 
       <LivePatch
-        class="mr-2"
+        class="me-2"
         to={Routes.case_create_possible_index_path(@socket, :create,
           return_to: Routes.case_index_path(@socket, :index)
         )}
@@ -30,13 +30,13 @@
       </LivePatch>
 
       <HygeiaWeb.Dropdown
-        class="ml-auto"
+        class="ms-auto"
         trigger_class="mt-3"
-        dropdown_class="dropdown-menu-right p-3 filter-dropdown"
+        dropdown_class="dropdown-menu-end p-3 filter-dropdown"
         id="filter-dropdown"
       >
         <:trigger>
-          <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
             <span class="oi oi-cog" aria-hidden="true" />
             {gettext("Filter")}
           </button>
@@ -115,7 +115,7 @@
                 <label class="d-block">{gettext("Includes Phase Type")}</label>
                 <Field name="phase_type" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value={nil} />
+                    <RadioButton class="form-check-input" value="" />
                     {gettext("Any")}
                   </label>
                 </Field>
@@ -148,6 +148,20 @@
                     <Checkbox />
                     {gettext("Vaccination Failures")}
                   </Label>
+                </Field>
+              </div>
+
+              <div class="form-group">
+                <Field name="inserted_at" class="form-group">
+                  <Label class="d-block">{schema_field_name(:inserted_at, Case)}</Label>
+
+                  <FieldContext name={:inserted_at_from}>
+                    <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                  </FieldContext>
+                  {pgettext("Date Range", "until")}
+                  <FieldContext name={:inserted_at_to}>
+                    <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                  </FieldContext>
                 </Field>
               </div>
             </InputContext>
@@ -254,7 +268,7 @@
             {case.person.last_name}
           </td>
           <td :if={not authorized?(case.person, :details, auth)}>
-            {case.person.tenant.short_name}
+            {case.person.tenant.subdivision}
             /
             {case.person.human_readable_id}
           </td>
@@ -297,13 +311,13 @@
                 to={Routes.case_base_data_path(@socket, :show, case)}
                 :if={authorized?(case, :details, auth)}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">{"Show" |> gettext}</button>
+                <button class="ms-auto btn btn-sm btn-outline-primary">{"Show" |> gettext}</button>
               </LiveRedirect>
               <LiveRedirect
                 to={Routes.case_base_data_path(@socket, :edit, case)}
                 :if={authorized?(case, :update, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LiveRedirect>
@@ -318,7 +332,7 @@
                 }
                 :if={authorized?(case, :delete, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-danger">
+                <button class="ms-1 btn btn-sm btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>

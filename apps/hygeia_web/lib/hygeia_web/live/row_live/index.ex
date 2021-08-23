@@ -41,6 +41,7 @@ defmodule HygeiaWeb.RowLive.Index do
         |> assign(
           status: String.to_existing_atom(status),
           pagination_params: pagination_params,
+          list_fields: Type.list_fields(import.type),
           import: import,
           page_title:
             "#{gettext("Rows")} - #{Type.translate(import.type)} / #{inserted_at} - #{gettext("Import")} - #{gettext("Inbox")}"

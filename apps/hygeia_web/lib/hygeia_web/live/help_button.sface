@@ -1,0 +1,4 @@
+<button :on-click="send_help_request" class="ml-1 btn btn-sm btn-secondary">
+  <span class="oi" title={gettext("Need help")} aria-hidden="true" />
+  {gettext("Need help")}
+</button>

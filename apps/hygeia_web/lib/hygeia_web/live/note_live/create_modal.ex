@@ -6,6 +6,7 @@ defmodule HygeiaWeb.NoteLive.CreateModal do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Note
   alias Surface.Components.Form
+  alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.TextArea

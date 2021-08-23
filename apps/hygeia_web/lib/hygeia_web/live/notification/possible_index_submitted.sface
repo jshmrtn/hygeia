@@ -11,7 +11,7 @@
       wrapper_tag={:strong}
     >
       {case_display_type(@body.case)}
-      <span class="date ml-2">
+      <span class="date ms-2">
         {case_display_date(@body.case)}
       </span>
       <HygeiaWeb.RecordView

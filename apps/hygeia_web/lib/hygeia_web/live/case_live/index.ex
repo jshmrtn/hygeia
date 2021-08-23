@@ -138,7 +138,9 @@ defmodule HygeiaWeb.CaseLive.Index do
     "supervisor_uuid" => :supervisor_uuid,
     "phase_type" => :phase_type,
     "fully_vaccinated" => :fully_vaccinated,
-    "vaccination_failures" => :vaccination_failures
+    "vaccination_failures" => :vaccination_failures,
+    "inserted_at_from" => :inserted_at_from,
+    "inserted_at_to" => :inserted_at_to
   }
 
   defp list_cases(socket) do
@@ -159,7 +161,9 @@ defmodule HygeiaWeb.CaseLive.Index do
           where(
             query,
             [case, person: person],
-            fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >= 2 and
+            fragment("(?->>'done')::boolean", person.vaccination) and
+              fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >=
+                2 and
               fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >= ago(6, "month")
           )
 
@@ -170,7 +174,9 @@ defmodule HygeiaWeb.CaseLive.Index do
           where(
             query,
             [case, person: person],
-            fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >= 2 and
+            fragment("(?->>'done')::boolean", person.vaccination) and
+              fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >=
+                2 and
               fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >= ago(6, "month") and
               case.inserted_at >= fragment("(?->'jab_dates'->>-1)::date", person.vaccination)
           )
@@ -180,6 +186,12 @@ defmodule HygeiaWeb.CaseLive.Index do
 
         {_key, value}, query when value in ["", nil] ->
           query
+
+        {:inserted_at_from, date}, query ->
+          where(query, [case], case.inserted_at >= ^cast_date_time_local!(date, socket))
+
+        {:inserted_at_to, date}, query ->
+          where(query, [case], case.inserted_at <= ^cast_date_time_local!(date, socket))
 
         {:tracer_uuid, [^user_not_assigned]}, query ->
           where(query, [case], is_nil(field(case, :tracer_uuid)))
@@ -302,4 +314,15 @@ defmodule HygeiaWeb.CaseLive.Index do
         filter: filters || %{},
         sort: sort || %{}
       )
+
+  defp cast_date_time_local!(date, socket) do
+    {:ok, naive_datetime} = Ecto.Type.cast(:naive_datetime_usec, date)
+    timezone = socket.assigns.__context__[{HygeiaWeb, :timezone}]
+
+    case DateTime.from_naive(naive_datetime, timezone) do
+      {:ok, datetime} -> datetime
+      {:ambiguous, first_datetime, _second_datetime} -> first_datetime
+      {:gap, just_before, _just_after} -> just_before
+    end
+  end
 end

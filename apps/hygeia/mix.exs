@@ -78,7 +78,7 @@ defmodule Hygeia.MixProject do
       {:paginator, "~> 1.0"},
       {:phoenix, "~> 1.5.6"},
       {:phoenix_pubsub, "~> 2.0"},
-      {:polymorphic_embed, "~> 1.3"},
+      {:polymorphic_embed, "~> 1.7"},
       {:postgrex, ">= 0.0.0"},
       {:sedex, "~> 1.0"},
       {:sentry, "~> 8.0"},

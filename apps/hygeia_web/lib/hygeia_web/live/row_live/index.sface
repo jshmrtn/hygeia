@@ -9,8 +9,8 @@
     <table class="table">
       <thead>
         <tr>
-          <th>
-            {schema_field_name(:identifiers, Row)}
+          <th :for={field <- @list_fields}>
+            {field}
           </th>
           <th>
             {schema_field_name(:status, Row)}
@@ -20,15 +20,8 @@
       </thead>
       <tbody id="rows">
         <tr :for={row <- @rows} id={"row-#{row.uuid}"}>
-          <td class="hy-readonly-form identifiers">
-            {#for {field_name, field_value} <- row.identifiers}
-              <div class="form-group">
-                <label class="mb-0">{field_name}</label>
-                <div class="value">
-                  {field_value}
-                </div>
-              </div>
-            {/for}
+          <td :for={field <- @list_fields}>
+            {Row.get_data_field(row, [field])}
           </td>
           <td>
             {Status.translate(row.status)}
@@ -39,7 +32,7 @@
                 to={Routes.row_apply_path(@socket, :apply, row)}
                 :if={authorized?(row, :details, auth) and row.status == :pending}
               >
-                <button class="ml-auto btn btn-sm btn-primary">
+                <button class="ms-auto btn btn-sm btn-primary">
                   {gettext("Apply")}
                 </button>
               </LiveRedirect>
@@ -47,7 +40,7 @@
                 to={Routes.row_show_path(@socket, :show, row)}
                 :if={authorized?(row, :details, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   {gettext("Show")}
                 </button>
               </LiveRedirect>

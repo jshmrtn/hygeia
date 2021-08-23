@@ -1,0 +1,10 @@
+<div
+  :for={note <- @person.pinned_notes}
+  class="alert alert-info m-0 d-flex align-items-center rounded-0 mb-3"
+>
+  <h5 class="oi mb-0 mr-4" aria-hidden="true" />
+  <div class="flex-grow-1">
+    {note.note}
+  </div>
+  <button :on-click="unpinn_note" phx-value-note-id={note.uuid} class="btn btn-link oi oi-x" />
+</div>

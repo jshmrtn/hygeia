@@ -21,6 +21,12 @@ defmodule Hygeia.ImportContext.Planner.Generator do
                  {Planner.certainty(), Action.t()})
             ]
 
+  @callback id_fields :: [String.t()]
+  @callback display_field_grouping :: %{
+              (section_name :: String.t()) => MapSet.t(field_name :: String.t())
+            }
+  @callback list_fields :: [String.t()]
+
   defmacro __using__(_opts) do
     quote do
       @behaviour unquote(__MODULE__)

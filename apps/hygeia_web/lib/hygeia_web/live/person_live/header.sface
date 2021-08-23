@@ -11,10 +11,12 @@
       </HygeiaWeb.RecordView>
     </h1>
     <h1 class="mb-4" :if={not authorized?(@person, :partial_details, auth)}>
-      {@person.tenant.short_name}
+      {@person.tenant.subdivision}
       /
       {@person.human_readable_id}
     </h1>
+
+    <HygeiaWeb.PinnedNotes person={@person} id={"#{@myself}_person_pinned_notes_#{@person.uuid}"} />
 
     <ul class="nav nav-tabs">
       <li class="nav-item" :if={authorized?(@person, :details, auth)}>
@@ -45,7 +47,7 @@
         >
           <LiveRedirect to={to} class={"nav-link", active: active}>
             {case_display_type(case)}
-            <span class="date ml-2">{case_display_date(case)}</span>
+            <span class="date ms-2">{case_display_date(case)}</span>
           </LiveRedirect>
         </UriActiveContext>
       </li>
@@ -67,7 +69,7 @@
               wrapper_tag={:span}
             >
               {case_display_type(case)}
-              <span class="date ml-2">{case_display_date(case)}</span>
+              <span class="date ms-2">{case_display_date(case)}</span>
             </HygeiaWeb.RecordView>
           </LiveRedirect>
         </UriActiveContext>

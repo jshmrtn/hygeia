@@ -4,13 +4,13 @@
 
     <div class="d-flex">
       <HygeiaWeb.Dropdown
-        class="ml-auto"
+        class="ms-auto"
         trigger_class="mt-3"
-        dropdown_class="dropdown-menu-right p-3 filter-dropdown"
+        dropdown_class="dropdown-menu-end p-3 filter-dropdown"
         id="filter-dropdown"
       >
         <:trigger>
-          <button class="btn btn-secondary" type="button" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
             <span class="oi oi-cog" aria-hidden="true" />
             {gettext("Filter")}
           </button>

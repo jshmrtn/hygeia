@@ -20,18 +20,23 @@ import BSN from "bootstrap.native";
 import BlockNavigation from "./block-navigation.hook";
 import PostMessage from "./post-message.hook";
 import Chart from "./chart.hook";
+import DetailsState from "./details-state.hook";
 import Dropdown from "./dropdown.hook";
 import HideAlert from "./hide-alert.hook";
 import Input from "./input.hook";
 import { init as sentryInit } from "./sentry";
 import browserFeatures from "./feature-detect";
 
-const DEFAULT_TIMEZONE = 'Europe/Zurich';
+const DEFAULT_TIMEZONE = "Europe/Zurich";
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 const liveSocket = new LiveSocket("/live", Socket, {
-  params: { _csrf_token: csrfToken, browser_features: browserFeatures, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || DEFAULT_TIMEZONE },
-  hooks: { BlockNavigation, Chart, Dropdown, HideAlert, Input, PostMessage },
+  params: {
+    _csrf_token: csrfToken,
+    browser_features: browserFeatures,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || DEFAULT_TIMEZONE,
+  },
+  hooks: { BlockNavigation, Chart, DetailsState, Dropdown, HideAlert, Input, PostMessage },
 });
 
 // Show progress bar on live navigation and form submits

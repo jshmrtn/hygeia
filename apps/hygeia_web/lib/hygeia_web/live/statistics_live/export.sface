@@ -5,15 +5,11 @@
     <div class="container">
       <Form for={assigns} change="params_change" opts={class: "mt-3 d-flex"}>
         <div class="input-group w-auto">
-          <div class="input-group-prepend">
-            <span class="input-group-text">{gettext("From")}</span>
-          </div>
+          <span class="input-group-text">{gettext("From")}</span>
           <DateInput class="form-control" field={:from} />
         </div>
-        <div class="ml-2 input-group w-auto">
-          <div class="input-group-prepend">
-            <span class="input-group-text">{gettext("To")}</span>
-          </div>
+        <div class="ms-2 input-group w-auto">
+          <span class="input-group-text">{gettext("To")}</span>
           <DateInput class="form-control" field={:to} />
         </div>
       </Form>
@@ -24,7 +20,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("People in Isolation")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -44,7 +40,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("Finished Isolations")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -66,7 +62,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("People in Quarantine")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -86,7 +82,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("Quarantine End Reasons")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -108,7 +104,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("New Cases")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -128,7 +124,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("People in Hospital")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -150,7 +146,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("Complexity")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -170,7 +166,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("Infection Place")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -192,7 +188,7 @@
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">{gettext("Countries")}</h6>
             <Link
-              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
@@ -217,7 +213,7 @@
             </h6>
 
             <Link
-              class="btn btn-sm btn-secondary ml-2 flex-shrink-0"
+              class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,

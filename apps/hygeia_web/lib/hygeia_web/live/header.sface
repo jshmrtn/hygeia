@@ -134,7 +134,7 @@
               >
                 <span class="oi oi-person" title={gettext("Profile")} aria-hidden="true" />
               </a>
-              <div class="nav-dropdown dropdown-menu dropdown-menu-right">
+              <div class="nav-dropdown dropdown-menu dropdown-menu-end">
                 <div class="dropdown-item" :if={match?(%User{}, auth)}>
                   {auth.display_name}
                 </div>

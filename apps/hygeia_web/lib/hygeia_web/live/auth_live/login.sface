@@ -34,8 +34,8 @@
               />
             </Field>
 
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Logging In...")}>
-              <span class="oi oi-account-login mr-1" title={gettext("Log In")} aria-hidden="true" />
+            <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Logging In...")}>
+              <span class="oi oi-account-login me-1" title={gettext("Log In")} aria-hidden="true" />
               {gettext("Log In")}
             </button>
           </Form>
@@ -54,9 +54,9 @@
 
           <Link
             to={Routes.auth_path(@socket, :request, "zitadel", return_url: @return_url)}
-            class="btn btn-secondary"
+            class="btn btn-outline-primary"
           >
-            <span class="oi oi-account-login mr-1" title={gettext("Log In")} aria-hidden="true" />
+            <span class="oi oi-account-login me-1" title={gettext("Log In")} aria-hidden="true" />
             {gettext("Log In")}
           </Link>
         </div>

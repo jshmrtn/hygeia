@@ -7,23 +7,47 @@
     >
       <HygeiaWeb.PersonLive.Header person={@changeset} id="header" />
 
-      <div
-        :for={%Person{first_name: first_name, last_name: last_name} = person <-
-          @changeset
-          |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-          |> Enum.take(5)
-          |> load_people_by_id}
-        class="alert alert-warning"
+      <Context
+        put={
+          duplicate_persons:
+            @changeset
+            |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+            |> load_people_by_id
+        }
+        get={duplicate_persons: duplicate_persons}
       >
-        {"This person is possibly a duplicate of %{name_link}, please check."
-        |> gettext(
-          name_link:
-            "#{first_name} #{last_name}"
-            |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
-            |> safe_to_string
-        )
-        |> raw}
-      </div>
+        <details
+          id={"person_duplicates_details_#{@person.uuid}"}
+          phx-hook="DetailsState"
+          data-uuid={@person.uuid}
+          class="alert alert-warning p-3"
+          :if={length(duplicate_persons) > 0}
+        >
+          <summary>
+            {ngettext(
+              "This person has a possible duplicate.",
+              "This person has %{count} possible duplicates.",
+              length(duplicate_persons)
+            )}
+          </summary>
+          <div
+            :for={%Person{first_name: first_name, last_name: last_name, address: address} = person <-
+              duplicate_persons}
+            class="card mt-2 card-body"
+          >
+            <div>
+              {"This person is possibly a duplicate of %{name_link} please check."
+              |> gettext(
+                name_link:
+                  "#{first_name} #{last_name} #{if(address, do: "(#{address.place})")}"
+                  |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
+                  |> safe_to_string
+              )
+              |> raw}
+            </div>
+          </div>
+        </details>
+      </Context>
 
       <div class="mb-4" :if={@live_action == :show}>
         <LivePatch
@@ -64,7 +88,7 @@
           lock={@live_action == :edit}
         >
           <div class="mb-4" :if={@live_action == :edit}>
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={"Saving..." |> gettext}>
+            <button class="btn btn-primary me-2" type="submit" phx-disable-with={"Saving..." |> gettext}>
               <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
               {gettext("Save")}
             </button>
@@ -238,8 +262,8 @@
                   </Inputs>
 
                   <div class="add-button mt-2" :if={@live_action == :edit}>
-                    <button type="button" class="btn btn-secondary" :on-click="add_contact_method">
-                      <span class="oi oi-plus mr-1" aria-hidden="true" />
+                    <button type="button" class="btn btn-outline-primary" :on-click="add_contact_method">
+                      <span class="oi oi-plus me-1" aria-hidden="true" />
                       {gettext("New contact method")}
                     </button>
                   </div>
@@ -361,10 +385,10 @@
                 <button
                   :if={@live_action == :edit}
                   type="button"
-                  class="btn btn-secondary"
+                  class="btn btn-outline-primary"
                   :on-click="add_affiliation"
                 >
-                  <span class="oi oi-plus mr-1" aria-hidden="true" />
+                  <span class="oi oi-plus me-1" aria-hidden="true" />
                   {gettext("New affiliation")}
                 </button>
               </div>
@@ -381,7 +405,7 @@
                         <label class={
                           "btn",
                           "btn-sm",
-                          "btn-secondary",
+                          "btn-outline-primary",
                           disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != nil,
                           active: Ecto.Changeset.get_field(form.source, :done) == nil
                         }>
@@ -392,7 +416,7 @@
                         <label class={
                           "btn",
                           "btn-sm",
-                          "btn-secondary",
+                          "btn-outline-primary",
                           disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != true,
                           active: Ecto.Changeset.get_field(form.source, :done) == true
                         }>
@@ -402,7 +426,7 @@
                         <label class={
                           "btn",
                           "btn-sm",
-                          "btn-secondary",
+                          "btn-outline-primary",
                           disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != false,
                           active: Ecto.Changeset.get_field(form.source, :done) == false
                         }>
@@ -442,7 +466,7 @@
                           <button
                             :if={@live_action == :edit}
                             type="button"
-                            class="ml-2 btn btn-danger"
+                            class="ms-2 btn btn-danger"
                             :on-click="remove_vaccination_jab_date"
                             phx-value-index={index}
                           >
@@ -451,8 +475,8 @@
                         </div>
                         <ErrorTag class="d-block invalid-feedback" />
                         <div :if={@live_action == :edit}>
-                          <button type="button" class="btn btn-secondary" :on-click="add_vaccination_jab_date">
-                            <span class="oi oi-plus mr-1" aria-hidden="true" />
+                          <button type="button" class="btn btn-outline-primary" :on-click="add_vaccination_jab_date">
+                            <span class="oi oi-plus me-1" aria-hidden="true" />
                             {gettext("New date")}
                           </button>
                         </div>
@@ -465,7 +489,7 @@
           </div>
 
           <div class="mt-4" :if={@live_action == :edit}>
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={"Saving..." |> gettext}>
+            <button class="btn btn-primary me-2" type="submit" phx-disable-with={"Saving..." |> gettext}>
               <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
               {gettext("Save")}
             </button>

@@ -35,7 +35,15 @@ defmodule Hygeia.ImportContext.Utility do
   end
 
   @spec extract_row_identifier(type :: Import.Type.t(), row :: map) :: map
-  def extract_row_identifier(type, row), do: Map.take(row, Import.Type.id_fields(type))
+  def extract_row_identifier(type, row) do
+    id_fields = Import.Type.id_fields(type)
+
+    row
+    |> Enum.filter(fn {key, _value} ->
+      (key |> String.downcase() |> String.trim()) in id_fields
+    end)
+    |> Map.new()
+  end
 
   @spec normalize_values!(row :: map) :: map
   def normalize_values!(row), do: Map.new(row, &{elem(&1, 0), normalize_value!(elem(&1, 1))})

@@ -1,0 +1,13 @@
+<div class="row" :for={{group_name, fields} <- group_fields(@row, @data || @row.data)}>
+  <h5>{group_name}</h5>
+  {#for {key, value} <- fields}
+    <div class="col-sm-12 col-md-6 col-lg-4 form-group mb-3 small">
+      <label class="mb-0">{key}</label>
+      <div class="value">
+        <#slot name="field_value" :args={key: key, value: value}>
+          {value_or_default(value, "-")}
+        </#slot>
+      </div>
+    </div>
+  {/for}
+</div>

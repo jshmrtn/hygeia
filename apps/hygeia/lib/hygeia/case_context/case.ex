@@ -25,6 +25,10 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
+  @phase_type_order [:outbreak, :covid_app, :travel, :contact_person, :other, :index]
+                    |> Enum.with_index()
+                    |> Map.new()
+
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           human_readable_id: String.t() | nil,
@@ -47,6 +51,7 @@ defmodule Hygeia.CaseContext.Case do
           emails: Ecto.Schema.has_many(Email.t()) | nil,
           sms: Ecto.Schema.has_many(SMS.t()) | nil,
           notes: Ecto.Schema.has_many(Note.t()) | nil,
+          pinned_notes: Ecto.Schema.has_many(Note.t()) | nil,
           tests: Ecto.Schema.has_many(Test.t()) | nil,
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()) | nil,
           inserted_at: DateTime.t() | nil,
@@ -75,6 +80,7 @@ defmodule Hygeia.CaseContext.Case do
           emails: Ecto.Schema.has_many(Email.t()),
           sms: Ecto.Schema.has_many(SMS.t()),
           notes: Ecto.Schema.has_many(Note.t()),
+          pinned_notes: Ecto.Schema.has_many(Note.t()),
           tests: Ecto.Schema.has_many(Test.t()),
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()),
           inserted_at: DateTime.t(),
@@ -105,6 +111,7 @@ defmodule Hygeia.CaseContext.Case do
     has_many :emails, Email, foreign_key: :case_uuid
     has_many :sms, SMS, foreign_key: :case_uuid
     has_many :notes, Note, foreign_key: :case_uuid
+    has_many :pinned_notes, Note, foreign_key: :case_uuid, where: [pinned: true]
     has_many :hospitalizations, Hospitalization, foreign_key: :case_uuid, on_replace: :delete
     has_many :tests, Test, foreign_key: :case_uuid, on_replace: :delete
     has_many :premature_releases, PrematureRelease, foreign_key: :case_uuid, on_replace: :delete
@@ -149,6 +156,7 @@ defmodule Hygeia.CaseContext.Case do
     |> validate_at_least_one_phase()
     |> validate_phase_type_unique()
     |> validate_status_hospitalization()
+    |> sort_phases_as_needed()
     |> validate_phase_orders()
     |> validate_phase_no_overlap()
   end
@@ -216,6 +224,52 @@ defmodule Hygeia.CaseContext.Case do
               )
             )
         end
+    end
+  end
+
+  defp sort_phases_as_needed(%Changeset{valid?: false} = changeset), do: changeset
+
+  defp sort_phases_as_needed(%Changeset{valid?: true} = changeset) do
+    phases = get_field(changeset, :phases)
+
+    sorted_phases =
+      Enum.sort_by(
+        phases,
+        fn
+          %Phase{details: %Phase.Index{}, start: start} ->
+            {start, :index}
+
+          %Phase{details: %Phase.PossibleIndex{type: type}, start: start} ->
+            {start, type}
+        end,
+        fn
+          compare, compare ->
+            true
+
+          {date_start, type_a}, {date_start, type_b} ->
+            @phase_type_order[type_a] <= @phase_type_order[type_b]
+
+          {_date_a, :index}, {_date_b, _type_b} ->
+            false
+
+          {_date_a, _type_a}, {_date_b, :index} ->
+            true
+
+          {nil, _type_a}, {%Date{}, _type_b} ->
+            true
+
+          {%Date{}, _type_a}, {nil, _type_b} ->
+            false
+
+          {%Date{} = date_a, _type_a}, {%Date{} = date_b, _type_b} ->
+            Date.compare(date_a, date_b) in [:lt, :eq]
+        end
+      )
+
+    if sorted_phases != phases do
+      put_change(changeset, :phases, sorted_phases)
+    else
+      changeset
     end
   end
 

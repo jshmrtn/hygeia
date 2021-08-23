@@ -20,10 +20,12 @@
     <div class="alert alert-info">
       {#case Ecto.Changeset.fetch_field!(@changeset, :reason)}
         {#match :vaccinated}{gettext(
-            "I have received at least two COVID vaccinations that are licensed in Switzerland and are less than 6 months old."
+            "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
           )}
-        {#match :immune}{gettext("I had COVID in the last six months and had a PCR test that was positive.")}
-        {#match :negative_test}{gettext("I did a COVID test after quarantine day 7 with a negative result.")}
+        {#match :immune}{gettext(
+            "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation COnfirmation)"
+          )}
+        {#match :negative_test}{gettext("I did a COVID test in the last 4 days of quarantine. The result is negative.")}
       {/case}
     </div>
 
@@ -32,7 +34,7 @@
         <Label class="mb-0 checkbox-label">
           <Checkbox class="form-check-input" />
           {gettext(
-            "I do have the neccesary documentation to prove that I fullfil the requirements stated above."
+            "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
           )}
         </Label>
         <ErrorTag class="d-block invalid-feedback" />

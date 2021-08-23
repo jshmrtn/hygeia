@@ -49,4 +49,13 @@ defmodule HygeiaWeb.Helpers.Region do
 
     country_code |> Cadastre.Country.new() |> Cadastre.Country.name(locale)
   end
+
+  @spec subdivision_name(subdivision_code :: String.t(), country_code :: String.t()) :: String.t()
+  def subdivision_name(subdivision_code, country_code) do
+    locale = HygeiaCldr.get_locale().language
+
+    country_code
+    |> Cadastre.Subdivision.new(subdivision_code)
+    |> Cadastre.Subdivision.name(locale)
+  end
 end

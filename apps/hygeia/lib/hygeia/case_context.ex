@@ -1192,7 +1192,7 @@ defmodule Hygeia.CaseContext do
     :case_link_fall_id_ism,
     :case_link_ktn_internal_id,
     :case_link_contact_dt,
-    :hygeia_case_link_region_short_name,
+    :hygeia_case_link_region_subdivision,
     :exp_loc_dt,
     :exp_country,
     :exp_loc_type_work_place,
@@ -1253,7 +1253,7 @@ defmodule Hygeia.CaseContext do
     :vacc_dt_last
   ]
 
-  @extended_fields [:hygeia_case_link_region_short_name]
+  @extended_fields [:hygeia_case_link_region_subdivision]
                    |> Enum.map(fn field ->
                      Enum.find_index(@bag_med_16122020_contact_fields, &(field == &1))
                    end)
@@ -1268,7 +1268,8 @@ defmodule Hygeia.CaseContext do
           format :: :bag_med_16122020_contact,
           extended :: boolean
         ) :: Enumerable.t()
-  # credo:disable-for-next-line Credo.Check.Refactor.ABCSize
+  # credo:disable-for-lines:2 Credo.Check.Refactor.ABCSize
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def case_export(%Tenant{uuid: tenant_uuid} = _teant, :bag_med_16122020_contact, extended) do
     first_transmission_query =
       from(transmission in Transmission,
@@ -1388,10 +1389,10 @@ defmodule Hygeia.CaseContext do
           ),
           # case_link_contact_dt
           fragment("(ARRAY_AGG(?))[1]", received_transmission.date),
-          # hygeia_case_link_region_short_name
+          # hygeia_case_link_region_subdivision
           fragment(
             "(ARRAY_AGG(?))[1]",
-            received_transmission_case_tenant.short_name
+            received_transmission_case_tenant.subdivision
           ),
           # exp_loc_dt
           fragment("(ARRAY_AGG(?))[1]", received_transmission.date),
@@ -1778,6 +1779,28 @@ defmodule Hygeia.CaseContext do
                   |> put_in(
                     [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
                     "Negative Test"
+                  )
+
+                :immune ->
+                  list
+                  |> put_in(
+                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                    4
+                  )
+                  |> put_in(
+                    [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
+                    "Immune"
+                  )
+
+                :vaccinated ->
+                  list
+                  |> put_in(
+                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                    4
+                  )
+                  |> put_in(
+                    [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
+                    "Vaccinated"
                   )
 
                 :asymptomatic ->

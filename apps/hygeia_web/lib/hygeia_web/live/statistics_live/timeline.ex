@@ -27,7 +27,9 @@ defmodule HygeiaWeb.StatisticsLive.Timeline do
        active_hospitalization_cases_per_day: [],
        active_complexity_cases_per_day: [],
        active_infection_place_cases_per_day: [],
-       transmission_country_cases_per_day: []
+       transmission_country_cases_per_day: [],
+       new_registered_cases_per_day_first_contact: [],
+       new_registered_cases_per_day_not_first_contact: []
      ]}
   end
 
@@ -122,7 +124,11 @@ defmodule HygeiaWeb.StatisticsLive.Timeline do
       active_infection_place_cases_per_day:
         StatisticsContext.list_active_infection_place_cases_per_day(tenant, from, to),
       transmission_country_cases_per_day:
-        StatisticsContext.list_transmission_country_cases_per_day(tenant, from, to)
+        StatisticsContext.list_transmission_country_cases_per_day(tenant, from, to),
+      new_registered_cases_per_day_first_contact:
+        StatisticsContext.list_new_registered_cases_per_day(tenant, from, to, true),
+      new_registered_cases_per_day_not_first_contact:
+        StatisticsContext.list_new_registered_cases_per_day(tenant, from, to, false)
     )
   end
 end

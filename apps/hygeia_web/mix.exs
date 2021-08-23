@@ -66,13 +66,16 @@ defmodule HygeiaWeb.MixProject do
       {:mime, "~> 1.5"},
       {:nebulex, "~> 2.0-rc"},
       {:oidcc, "~> 1.8.1"},
-      {:phoenix, "~> 1.5.6"},
-      {:phoenix_active_link, "~> 0.3.1"},
+      {:phoenix, "~> 1.5"},
+      # TODO: Revert to released version when this PR is merged and released:
+      # - https://github.com/danhper/phoenix-active-link/pull/19
+      {:phoenix_active_link, "~> 0.3.1",
+       github: "jshmrtn/phoenix-active-link", branch: "phoenix_html_v3"},
       {:phoenix_ecto, "~> 4.0"},
-      {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_dashboard, "~> 0.4.0"},
+      {:phoenix_html, "~> 2.11 or ~> 3.0"},
+      {:phoenix_live_dashboard, "~> 0.4"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.15"},
+      {:phoenix_live_view, "~> 0.16"},
       # TODO: Revert to released version when this PR is merged and released:
       # - https://github.com/ggpasqualino/plug_checkup/pull/66
       {:plug_checkup, github: "jshmrtn/plug_checkup", branch: "check_query_selector"},
@@ -82,7 +85,9 @@ defmodule HygeiaWeb.MixProject do
       {:remote_ip, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:shards, "~> 1.0"},
-      {:surface, "~> 0.4"},
+      # TODO: Update Surface
+      # Pinned because of https://github.com/jshmrtn/hygeia/runs/3278558991?check_suite_focus=true
+      {:surface, "0.5.1"},
       {:surface_formatter, "~> 0.2"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"}

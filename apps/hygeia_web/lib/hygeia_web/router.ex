@@ -184,6 +184,10 @@ defmodule HygeiaWeb.Router do
     live "/cases/:id", CaseLive.BaseData, :show
     live "/cases/:id/edit", CaseLive.BaseData, :edit
     live "/cases/:id/transmissions", CaseLive.Transmissions, :show
+    live "/cases/:id/tests", TestLive.Index, :show
+    live "/cases/:id/tests/new", TestLive.Create, :create
+    live "/cases/tests/:test_id", TestLive.Show, :show
+    live "/cases/tests/:test_id/edit", TestLive.Show, :edit
 
     live "/transmissions/new", TransmissionLive.Create, :create
     live "/transmissions/:id", TransmissionLive.Show, :show

@@ -96,6 +96,8 @@ CREATE TYPE public.case_phase_possible_index_end_reason AS ENUM (
     'converted_to_index',
     'no_follow_up',
     'negative_test',
+    'immune',
+    'vaccinated',
     'other'
 );
 
@@ -2066,6 +2068,17 @@ CREATE TYPE public.organisation_type AS ENUM (
 
 
 --
+-- Name: premature_release_reason; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.premature_release_reason AS ENUM (
+    'negative_test',
+    'immune',
+    'vaccinated'
+);
+
+
+--
 -- Name: resource_view_action; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -2424,6 +2437,86 @@ CREATE FUNCTION public.possible_index_submission_notification() RETURNS trigger
 
 
 --
+-- Name: premature_release_notification(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.premature_release_notification() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    DECLARE
+      TRACER_UUID UUID;
+    BEGIN
+      SELECT
+      INTO TRACER_UUID cases.tracer_uuid
+      FROM cases
+      WHERE
+        cases.uuid = NEW.case_uuid AND
+        cases.tracer_uuid IS NOT NULL AND
+        (
+          NULLIF(CURRENT_SETTING('versioning.originator_id', true), '') IS NULL OR
+          cases.tracer_uuid <> (NULLIF(CURRENT_SETTING('versioning.originator_id'), ''))::uuid
+        );
+
+      IF FOUND THEN
+        INSERT INTO notifications
+          (uuid, body, user_uuid, inserted_at, updated_at) VALUES
+          (
+            MD5(RANDOM()::text || CLOCK_TIMESTAMP()::text)::uuid,
+            JSONB_BUILD_OBJECT('__type__', 'premature_release', 'uuid', MD5(RANDOM()::text || CLOCK_TIMESTAMP()::text)::uuid, 'premature_release_uuid', NEW.uuid),
+            TRACER_UUID,
+            NOW(),
+            NOW()
+          );
+      END IF;
+
+      RETURN NEW;
+    END
+  $$;
+
+
+--
+-- Name: premature_release_update_case(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.premature_release_update_case() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+      UPDATE
+        cases AS update_case
+      SET
+        phases = ARRAY_REPLACE(
+          update_case.phases,
+          subquery.search_phase,
+          subquery.update_phase
+        ),
+        status = 'done'
+      FROM
+        (
+          SELECT
+            uuid,
+            phase AS search_phase,
+            JSONB_SET(
+              JSONB_SET(
+                phase,
+                '{end}',
+                TO_JSONB(CURRENT_DATE)
+              ),
+              '{details,end_reason}',
+              TO_JSONB(NEW.reason)
+            ) AS update_phase
+          FROM cases
+          CROSS JOIN UNNEST(cases.phases) AS phase
+          WHERE uuid = NEW.case_uuid AND (phase->>'uuid')::uuid = new.phase_uuid
+        ) AS subquery
+      WHERE update_case.uuid = subquery.uuid;
+
+      RETURN NEW;
+    END
+  $$;
+
+
+--
 -- Name: versioning_delete(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -2724,7 +2817,8 @@ CREATE TABLE public.notes (
     note text NOT NULL,
     case_uuid uuid NOT NULL,
     inserted_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    pinned boolean DEFAULT false
 );
 
 
@@ -2819,6 +2913,20 @@ CREATE TABLE public.possible_index_submissions (
     updated_at timestamp without time zone NOT NULL,
     employer character varying(255),
     comment text
+);
+
+
+--
+-- Name: premature_releases; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.premature_releases (
+    uuid uuid NOT NULL,
+    reason public.premature_release_reason NOT NULL,
+    phase_uuid uuid NOT NULL,
+    case_uuid uuid NOT NULL,
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -2925,12 +3033,13 @@ CREATE TABLE public.tenants (
     override_url character varying(255),
     template_variation character varying(255),
     iam_domain character varying(255),
-    short_name character varying(255),
     case_management_enabled boolean DEFAULT false,
     from_email character varying(255),
     sedex_export_enabled boolean DEFAULT false NOT NULL,
     sedex_export_configuration jsonb,
     template_parameters jsonb,
+    subdivision character varying(255),
+    country character varying(255),
     CONSTRAINT sedex_export_must_be_provided CHECK ((((sedex_export_enabled = true) AND (sedex_export_configuration IS NOT NULL)) OR ((sedex_export_enabled = false) AND (sedex_export_configuration IS NULL))))
 );
 
@@ -3419,6 +3528,14 @@ ALTER TABLE ONLY public.possible_index_submissions
 
 
 --
+-- Name: premature_releases premature_releases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.premature_releases
+    ADD CONSTRAINT premature_releases_pkey PRIMARY KEY (uuid);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3640,6 +3757,13 @@ CREATE INDEX notes_case_uuid_index ON public.notes USING btree (case_uuid);
 
 
 --
+-- Name: notes_case_uuid_pinned_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX notes_case_uuid_pinned_index ON public.notes USING btree (case_uuid, pinned);
+
+
+--
 -- Name: notifications_notified_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3714,6 +3838,13 @@ CREATE INDEX positions_organisation_uuid_index ON public.positions USING btree (
 --
 
 CREATE INDEX positions_person_uuid_index ON public.positions USING btree (person_uuid);
+
+
+--
+-- Name: premature_releases_case_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX premature_releases_case_uuid_index ON public.premature_releases USING btree (case_uuid);
 
 
 --
@@ -4029,13 +4160,6 @@ CREATE INDEX statistics_transmission_country_cases_per_day_tenant_uuid_index ON 
 --
 
 CREATE UNIQUE INDEX tenants_iam_domain_index ON public.tenants USING btree (iam_domain);
-
-
---
--- Name: tenants_short_name_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX tenants_short_name_index ON public.tenants USING btree (short_name);
 
 
 --
@@ -4417,6 +4541,20 @@ CREATE TRIGGER possible_index_submissions_versioning_update AFTER UPDATE ON publ
 
 
 --
+-- Name: premature_releases premature_releases_created_notification; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER premature_releases_created_notification AFTER INSERT OR UPDATE ON public.premature_releases FOR EACH ROW EXECUTE FUNCTION public.premature_release_notification();
+
+
+--
+-- Name: premature_releases premature_releases_created_update_case; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER premature_releases_created_update_case AFTER INSERT OR UPDATE ON public.premature_releases FOR EACH ROW EXECUTE FUNCTION public.premature_release_update_case();
+
+
+--
 -- Name: sedex_exports sedex_exports_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -4782,6 +4920,14 @@ ALTER TABLE ONLY public.possible_index_submissions
 
 
 --
+-- Name: premature_releases premature_releases_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.premature_releases
+    ADD CONSTRAINT premature_releases_case_uuid_fkey FOREIGN KEY (case_uuid) REFERENCES public.cases(uuid) ON DELETE CASCADE;
+
+
+--
 -- Name: sedex_exports sedex_exports_tenant_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4957,4 +5103,7 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210521094209);
 INSERT INTO public."schema_migrations" (version) VALUES (20210527153512);
 INSERT INTO public."schema_migrations" (version) VALUES (20210611101143);
 INSERT INTO public."schema_migrations" (version) VALUES (20210616130134);
+INSERT INTO public."schema_migrations" (version) VALUES (20210623093359);
 INSERT INTO public."schema_migrations" (version) VALUES (20210628141251);
+INSERT INTO public."schema_migrations" (version) VALUES (20210713101131);
+INSERT INTO public."schema_migrations" (version) VALUES (20210719122928);

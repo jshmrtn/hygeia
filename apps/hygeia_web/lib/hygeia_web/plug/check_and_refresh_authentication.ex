@@ -60,7 +60,7 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
 
       {:error, reason} when not refreshed ->
         case handle_refresh(tokens, provider) do
-          {:ok, new_tokens} -> handle_login(new_tokens, provider, conn, true)
+          {:ok, new_tokens} -> {:ok, handle_login(new_tokens, provider, conn, true)}
           {:error, :no_refresh_token} -> {:error, reason}
           {:error, new_reason} -> {:error, {reason, {:refresh, new_reason}}}
         end

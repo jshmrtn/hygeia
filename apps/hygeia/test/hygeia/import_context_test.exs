@@ -76,6 +76,65 @@ defmodule Hygeia.ImportContextTest do
              } = Repo.preload(import, :rows)
     end
 
+    test "passes with valid tracer / supervisor" do
+      tenant = tenant_fixture()
+
+      tracer =
+        user_fixture(iam_sub: "tracer", grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
+
+      supervisor =
+        user_fixture(
+          iam_sub: "supervisor",
+          grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+        )
+
+      assert {:ok, _import} =
+               ImportContext.create_import(tenant, %{
+                 type: :ism_2021_06_11_test,
+                 default_tracer_uuid: tracer.uuid,
+                 default_supervisor_uuid: supervisor.uuid
+               })
+    end
+
+    test "fails with invalid tracer" do
+      tenant = tenant_fixture()
+
+      tracer = user_fixture(iam_sub: "tracer", grants: [])
+
+      supervisor =
+        user_fixture(
+          iam_sub: "supervisor",
+          grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+        )
+
+      assert {:error, changeset} =
+               ImportContext.create_import(tenant, %{
+                 type: :ism_2021_06_11_test,
+                 default_tracer_uuid: tracer.uuid,
+                 default_supervisor_uuid: supervisor.uuid
+               })
+
+      assert "is invalid" in errors_on(changeset).default_tracer_uuid
+    end
+
+    test "fails with invalid supervisor" do
+      tenant = tenant_fixture()
+
+      tracer =
+        user_fixture(iam_sub: "tracer", grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
+
+      supervisor = user_fixture(iam_sub: "supervisor", grants: [])
+
+      assert {:error, changeset} =
+               ImportContext.create_import(tenant, %{
+                 type: :ism_2021_06_11_test,
+                 default_tracer_uuid: tracer.uuid,
+                 default_supervisor_uuid: supervisor.uuid
+               })
+
+      assert "is invalid" in errors_on(changeset).default_supervisor_uuid
+    end
+
     test "update_import/2 with valid data updates the import" do
       import = import_fixture()
       assert {:ok, %Import{} = import} = ImportContext.update_import(import, @update_attrs)

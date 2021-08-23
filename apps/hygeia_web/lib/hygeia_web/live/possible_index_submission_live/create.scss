@@ -36,22 +36,23 @@
         height: 2rem;
         margin-bottom: 0.5rem;
         border-radius: 10000px;
-        background-color: theme-color("secondary");
+        background-color: $white;
+        border: 1px solid $primary;
       }
 
       &.completed {
         cursor: pointer;
-        
+
         &:before {
           content: "\e033";
-          background-color: theme-color("primary");
+          background-color: $primary;
         }
       }
 
       &.active {
-        color: theme-color("primary");
+        color: $primary;
         &:before {
-          background-color: theme-color("primary");
+          background-color: $primary;
         }
       }
     }

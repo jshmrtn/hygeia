@@ -9,7 +9,7 @@
         :if={authorized?(@system_message, :update, auth)}
         to={Routes.system_message_show_path(@socket, :edit, @system_message.uuid)}
       >
-        <button class="btn btn-primary mr-2" id="system_message-edit">
+        <button class="btn btn-primary me-2" id="system_message-edit">
           <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
           {gettext("Edit")}
         </button>
@@ -43,7 +43,7 @@
       >
         <div :if={@live_action == :edit}>
           <div class="mb-4" :if={@live_action == :edit}>
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Saving...")}>
+            <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
               <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
               {gettext("Save")}
             </button>

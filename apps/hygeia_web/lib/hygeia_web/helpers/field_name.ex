@@ -95,7 +95,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type_name: "Type name",
       value: "Value"
     },
-    Hygeia.CaseContext.Note => %{note: "Note"},
+    Hygeia.CaseContext.Note => %{note: "Note", pinned: "Pinned"},
     Hygeia.CaseContext.Person => %{
       address: "Address",
       birth_date: "Birth Date",
@@ -190,6 +190,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
     Hygeia.ImportContext.Import => %{
       change_date: "Change Date",
       closed_at: "Closed At",
+      default_supervisor: "Default Supervisor",
+      default_tracer: "Default Tracer",
       file: "File",
       tenant: "Tenant",
       tenant_uuid: "Tenant UUID",
@@ -233,6 +235,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
     },
     Hygeia.TenantContext.Tenant => %{
       case_management_enabled: "Case Management Enabled",
+      country: "Country",
       from_email: "From Email",
       iam_domain: "IAM Domain",
       name: "Name",
@@ -243,7 +246,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       override_url: "Override URL",
       public_statistics: "Public Statistics",
       sedex_export_enabled: "Sedex Export Enabled",
-      short_name: "Short Name",
+      subdivision: "Subdivision",
       template_variation: "Template Variation"
     },
     Hygeia.TenantContext.Tenant.SedexExportConfiguration => %{

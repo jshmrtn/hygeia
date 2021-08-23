@@ -71,6 +71,7 @@ defmodule Hygeia.TenantContextTest do
       tenant =
         tenant_fixture(%{
           name: "Kanton",
+          iam_domain: "test",
           outgoing_mail_configuration: %{
             __type__: "smtp",
             server: "kanton.com",

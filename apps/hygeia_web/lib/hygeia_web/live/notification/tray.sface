@@ -1,13 +1,13 @@
 <HygeiaWeb.Dropdown
   id="notifications-try-dropdown"
   trigger_class="nav-link"
-  dropdown_class="notification-tray-content"
-  class="open dropleft"
+  dropdown_class="dropdown-menu-end notification-tray-content"
+  class="open"
 >
   <:trigger>
     <button class="nav-item notification-tray-trigger">
       <span class="oi oi-bell" title={gettext("Notifications")} />
-      <span class="notification-badge badge badge-warning" :if={@notifications != []}>
+      <span class="notification-badge badge bg-warning" :if={@notifications != []}>
         {Enum.count(@notifications, &match?(%Notification{read: false}, &1))}
       </span>
     </button>
@@ -15,7 +15,7 @@
   <:default>
     <Context get={HygeiaWeb, timezone: timezone}>
       <div class="dropdown-item actions">
-        <button class="btn btn-secondary btn-sm" :on-click="read_all">
+        <button class="btn btn-outline-primary btn-sm" :on-click="read_all">
           <span class="oi oi-check" aria-hidden="true" />
           {pgettext("Notification", "mark all as read")}
         </button>

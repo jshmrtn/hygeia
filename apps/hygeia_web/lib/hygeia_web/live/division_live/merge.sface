@@ -5,7 +5,7 @@
 
   <Form for={:merge} submit="merge" opts={autocomplete: "off", id: "division-merge-form"}>
     <div class="d-flex justify-content-center mt-5">
-      <button type="button" :on-click="switch" class="btn btn-secondary">
+      <button type="button" :on-click="switch" class="btn btn-outline-primary">
         <span class="oi oi-loop-circular" />
         {pgettext("Division Merge", "Switch")}
       </button>

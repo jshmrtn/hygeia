@@ -6,6 +6,7 @@ defmodule Hygeia.CaseContext.Test do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Entity
+  alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Test.Kind
   alias Hygeia.CaseContext.Test.Result
   alias Hygeia.MutationContext.Mutation
@@ -80,5 +81,48 @@ defmodule Hygeia.CaseContext.Test do
     |> validate_required([:kind])
     |> cast_embed(:sponsor)
     |> cast_embed(:reporting_unit)
+  end
+
+  defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Test
+    alias Hygeia.Repo
+    alias Hygeia.UserContext.User
+
+    @spec preload(resource :: Test.t()) :: Test.t()
+    def preload(resource), do: Repo.preload(resource, case: [])
+
+    @spec authorized?(
+            resource :: Test.t(),
+            action :: :create | :details | :update | :delete,
+            user :: :anonymous | User.t() | Person.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(
+          _test,
+          action,
+          user,
+          %{case: %Case{tenant_uuid: tenant_uuid}}
+        )
+        when action in [:create, :list] do
+      Enum.any?(
+        [:tracer, :super_user, :supervisor, :admin],
+        &User.has_role?(user, &1, tenant_uuid)
+      )
+    end
+
+    def authorized?(
+          %Test{case: %Case{tenant_uuid: tenant_uuid}},
+          action,
+          user,
+          _meta
+        )
+        when action in [:details, :update, :delete] do
+      Enum.any?(
+        [:tracer, :super_user, :supervisor, :admin],
+        &User.has_role?(user, &1, tenant_uuid)
+      )
+    end
+
+    def authorized?(_test, _action, _user, _meta), do: false
   end
 end

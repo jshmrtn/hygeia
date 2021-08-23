@@ -16,7 +16,7 @@
   </Link>
 
   <p class="mb-4 alert alert-warning">
-    <span class="oi oi-warning mr-1" aria-hidden="true" />
+    <span class="oi oi-warning me-1" aria-hidden="true" />
     {gettext("Always work from Top to Bottom. Otherwise changes may be lost!")}
   </p>
 
@@ -27,16 +27,7 @@
           {gettext("Import Data")}
         </summary>
         <div class="card-body hy-readonly-form">
-          <div class="row">
-            {#for {key, value} <- @row.data}
-              <div class="col-sm-12 col-md-6 col-lg-4 form-group mb-3 small">
-                <label class="mb-0">{key}</label>
-                <div class="value">
-                  {value_or_default(value, "-")}
-                </div>
-              </div>
-            {/for}
-          </div>
+          <HygeiaWeb.RowLive.Changes row={@row} id="change_data_table" />
         </div>
       </details>
     </div>
@@ -53,10 +44,13 @@
             opts={autocomplete: "off", id: "changes-form", class: "container"}
             as={:corrections}
           >
-            <Field :for={{key, _value} <- @corrections} name={key} class="form-group row">
-              <Label class="col-sm-3 col-form-label" />
-              <TextInput class="form-control col-sm-9" />
-            </Field>
+            <HygeiaWeb.RowLive.Changes row={@row} id="change_correction_table" data={@corrections}>
+              <:field_value :let={key: key}>
+                <Field name={key} class="form-group row">
+                  <TextInput class="form-control col-sm-9" />
+                </Field>
+              </:field_value>
+            </HygeiaWeb.RowLive.Changes>
 
             <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
               {gettext("Save")}
@@ -72,16 +66,11 @@
           {gettext("Resulting Changes")}
         </summary>
         <div class="card-body hy-readonly-form">
-          <div class="row">
-            {#for {key, value} <- Row.get_changes(@row, @predecessor)}
-              <div class="col-sm-12 col-md-6 col-lg-4 form-group mb-3 small">
-                <label class="mb-0">{key}</label>
-                <div class="value">
-                  {value_or_default(value, "-")}
-                </div>
-              </div>
-            {/for}
-          </div>
+          <HygeiaWeb.RowLive.Changes
+            row={@row}
+            id="change_result_table"
+            data={Row.get_changes(@row, @predecessor)}
+          />
         </div>
       </details>
     </div>
@@ -148,7 +137,8 @@
             submit="patch_select_case"
             for={%{
               person_uuid: if(action.person, do: action.person.uuid),
-              case_uuid: if(action.case, do: action.case.uuid)
+              case_uuid: if(action.case, do: action.case.uuid),
+              suppress_quarantine: action.suppress_quarantine
             }}
             opts={autocomplete: "off", id: "select-case-form", class: "card-body container"}
             as={:select_case}
@@ -177,7 +167,7 @@
             <div class="form-group">
               <Field name={:suppress_quarantine} class="form-check">
                 <label class="checkbox-label">
-                  <Checkbox class="form-check-input" opts={disabled: certainty != :input_needed} />
+                  <Checkbox class="form-check-input" />
                   {gettext("Suppress quarantine")}
                 </label>
               </Field>
@@ -233,7 +223,9 @@
             {#for {subject, type, value} <- action.references}
               <div class="form-group mb-3">
                 <label class="mb-0">{#case subject}
-                    {#match :person}{gettext("Person")}{#match :case}                  {/case} / {CaseContext.ExternalReference.Type.translate(type)}</label>
+                    {#match :person}{gettext("Person")}
+                    {#match :case}{gettext("Case")}
+                  {/case} / {CaseContext.ExternalReference.Type.translate(type)}</label>
                 <div class="value">
                   {value}
                 </div>
@@ -316,6 +308,43 @@
             </Field>
             <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
               {gettext("Change Status")}
+            </button>
+          </Form>
+        {/if}
+        {#if match?(%Action.AddNote{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {translate_certainty(certainty)}
+              </span>
+
+              <span :if={action.action == :skip}>
+                {gettext("Do not append Note")}
+              </span>
+              <span :if={action.action == :append}>
+                {gettext("Append Note")}
+              </span>
+            </div>
+          </summary>
+
+          <Form
+            for={%{note: action.note, pinned: action.pinned}}
+            submit="add_note"
+            opts={autocomplete: "off", id: "add_note-form", class: "card-body container"}
+            as={:add_note}
+          >
+            <HiddenInput field={:index} value={index} />
+            <Field name={:pinned} class="form-check">
+              <label class="checkbox-label">
+                <Checkbox class="form-check-input" />
+                {gettext("Pin Note")}
+              </label>
+            </Field>
+            <Field name={:note} class="form-group">
+              <TextArea class="form-control" opts={rows: 8} />
+            </Field>
+            <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>
+              {gettext("Append Note")}
             </button>
           </Form>
         {/if}

@@ -1,0 +1,11 @@
+.component-dropdown {
+  .dropdown-menu {
+    margin: 5px 0px 0px;
+    top: 100%;
+
+    &.dropdown-menu-end {
+      right: 0;
+      left: auto;
+    }
+  }
+}

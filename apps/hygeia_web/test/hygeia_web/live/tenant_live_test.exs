@@ -17,6 +17,8 @@ defmodule HygeiaWeb.TenantLiveTest do
     name: "some updated name",
     outgoing_mail_configuration_type: "smtp",
     from_email: "info@kanton.com",
+    case_management_enabled: true,
+    iam_domain: "test",
     outgoing_mail_configuration: %{
       __type__: "smtp",
       enable_relay: true,
@@ -92,6 +94,17 @@ defmodule HygeiaWeb.TenantLiveTest do
       assert show_live
              |> form("#tenant-form", tenant: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
+
+      assert show_live
+             |> form("#tenant-form",
+               tenant:
+                 Map.drop(@update_attrs, [
+                   :outgoing_mail_configuration,
+                   :outgoing_mail_configuration_type,
+                   :from_email
+                 ])
+             )
+             |> render_change()
 
       assert show_live
              |> form("#tenant-form",

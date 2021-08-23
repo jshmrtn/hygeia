@@ -18,6 +18,7 @@ defmodule Hygeia.StatisticsContext do
   alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
   alias Hygeia.StatisticsContext.CumulativePossibleIndexCaseEndReasons
   alias Hygeia.StatisticsContext.NewCasesPerDay
+  alias Hygeia.StatisticsContext.NewRegisteredCasesPerDay
   alias Hygeia.StatisticsContext.TransmissionCountryCasesPerDay
   alias Hygeia.TenantContext.Tenant
 
@@ -1035,6 +1036,84 @@ defmodule Hygeia.StatisticsContext do
           count: count(case.uuid)
         }
       )
+    )
+  end
+
+  @doc """
+  Returns the list of new_registered_cases_per_day.
+
+  ## Examples
+
+      iex> list_new_registered_cases_per_day()
+      [%NewRegisteredCasesPerDay{}, ...]
+
+  """
+  @spec list_new_registered_cases_per_day :: [NewRegisteredCasesPerDay.t()]
+  def list_new_registered_cases_per_day,
+    do:
+      Repo.all(
+        from(registered_cases_per_day in NewRegisteredCasesPerDay,
+          order_by: registered_cases_per_day.date
+        )
+      )
+
+  @spec list_new_registered_cases_per_day(tenant :: Tenant.t()) :: [
+          NewRegisteredCasesPerDay.t()
+        ]
+  def list_new_registered_cases_per_day(%Tenant{uuid: tenant_uuid} = _tenant),
+    do:
+      Repo.all(
+        from(registered_cases_per_day in NewRegisteredCasesPerDay,
+          where: registered_cases_per_day.tenant_uuid == ^tenant_uuid,
+          order_by: registered_cases_per_day.date
+        )
+      )
+
+  @spec list_new_registered_cases_per_day(
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t(),
+          first_contact :: boolean(),
+          include_zero_values :: boolean()
+        ) :: [NewRegisteredCasesPerDay.t()]
+  def list_new_registered_cases_per_day(
+        tenant,
+        from,
+        to,
+        first_contact,
+        include_zero_values \\ true
+      ),
+      do:
+        Repo.all(
+          list_new_registered_cases_per_day_query(
+            tenant,
+            from,
+            to,
+            first_contact,
+            include_zero_values
+          )
+        )
+
+  defp list_new_registered_cases_per_day_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         first_contact,
+         include_zero_values
+       ) do
+    from(registered_cases_per_day in NewRegisteredCasesPerDay,
+      where:
+        registered_cases_per_day.tenant_uuid == ^tenant_uuid and
+          fragment(
+            "? BETWEEN ?::date AND ?::date",
+            registered_cases_per_day.date,
+            ^from,
+            ^to
+          ) and
+          (registered_cases_per_day.first_contact == ^first_contact or
+             (^include_zero_values and is_nil(registered_cases_per_day.first_contact))) and
+          (^include_zero_values or registered_cases_per_day.count > 0),
+      order_by: registered_cases_per_day.date
     )
   end
 end

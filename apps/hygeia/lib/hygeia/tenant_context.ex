@@ -247,7 +247,7 @@ defmodule Hygeia.TenantContext do
         :ok =
           Sedex.send(
             %{"case.csv" => case_export, "contact.csv" => contact_export},
-            case tenant.short_name do
+            case tenant.subdivision do
               nil -> raise "Tenant Short Name required"
               name when is_binary(name) -> name
             end,

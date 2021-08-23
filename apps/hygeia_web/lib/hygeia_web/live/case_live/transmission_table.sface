@@ -50,7 +50,7 @@
                   </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={not authorized?(transmission.recipient, :details, auth)}>
-                  {transmission.recipient.tenant.short_name}
+                  {transmission.recipient.tenant.subdivision}
                   /
                   {transmission.recipient.human_readable_id}
                 </span>
@@ -72,11 +72,11 @@
                     wrapper_tag={:span}
                   >
                     {case_display_type(transmission.recipient_case)}
-                    <small class="ml-1">({case_display_date(transmission.recipient_case)})</small>
+                    <small class="ms-1">({case_display_date(transmission.recipient_case)})</small>
                   </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={not authorized?(transmission.recipient_case, :details, auth)}>
-                  {transmission.recipient_case.tenant.short_name}
+                  {transmission.recipient_case.tenant.subdivision}
                   /
                   {transmission.recipient_case.human_readable_id}
                 </span>
@@ -107,7 +107,7 @@
                   </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={not authorized?(transmission.propagator, :details, auth)}>
-                  {transmission.propagator.tenant.short_name}
+                  {transmission.propagator.tenant.subdivision}
                   /
                   {transmission.propagator.human_readable_id}
                 </span>
@@ -129,11 +129,11 @@
                     wrapper_tag={:span}
                   >
                     {case_display_type(transmission.propagator_case)}
-                    <small class="ml-1">({case_display_date(transmission.propagator_case)})</small>
+                    <small class="ms-1">({case_display_date(transmission.propagator_case)})</small>
                   </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={not authorized?(transmission.propagator_case, :details, auth)}>
-                  {transmission.propagator_case.tenant.short_name}
+                  {transmission.propagator_case.tenant.subdivision}
                   /
                   {transmission.propagator_case.human_readable_id}
                 </span>
@@ -174,13 +174,13 @@
                 to={Routes.transmission_show_path(@socket, :show, transmission)}
                 :if={authorized?(transmission, :details, auth)}
               >
-                <button class="ml-auto btn btn-sm btn-secondary">{gettext("Show")}</button>
+                <button class="ms-auto btn btn-sm btn-outline-primary">{gettext("Show")}</button>
               </LivePatch>
               <LivePatch
                 to={Routes.transmission_show_path(@socket, :edit, transmission)}
                 :if={authorized?(transmission, :update, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-secondary">
+                <button class="ms-1 btn btn-sm btn-outline-primary">
                   <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
                 </button>
               </LivePatch>
@@ -195,7 +195,7 @@
                 }
                 :if={authorized?(transmission, :delete, auth)}
               >
-                <button class="ml-1 btn btn-sm btn-danger">
+                <button class="ms-1 btn btn-sm btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>

@@ -27,7 +27,7 @@
                   <small :if={!@small} class="d-block text-muted">{format_address(person.address)}</small>
                 </HygeiaWeb.RecordView>
                 <div :if={not authorized?(person, :details, auth)}>
-                  {person.tenant.short_name}
+                  {person.tenant.subdivision}
                   /
                   {person.human_readable_id}
                 </div>
@@ -49,7 +49,7 @@
 
       <div :if={Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""] and not @disabled}>
         <button
-          class="btn btn-secondary"
+          class="btn btn-outline-primary"
           :on-click="open_modal"
           type="button"
           phx-value-subject={@subject}
@@ -64,11 +64,9 @@
           close="close_modal"
         >
           <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <span class="oi oi-magnifying-glass" aria-hidden="true" />
-              </span>
-            </div>
+            <span class="input-group-text">
+              <span class="oi oi-magnifying-glass" aria-hidden="true" />
+            </span>
             <input
               class="form-control"
               type="search"

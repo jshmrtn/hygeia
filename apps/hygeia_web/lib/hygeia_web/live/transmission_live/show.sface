@@ -48,7 +48,7 @@
 
               <div :if={@live_action == :edit}>
                 <div class="mb-4" :if={@live_action == :edit}>
-                  <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Saving...")}>
+                  <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
                     <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
                     {gettext("Save")}
                   </button>
@@ -96,7 +96,7 @@
                               </HygeiaWeb.RecordView>
                             </Link>
                             <span :if={not authorized?(@transmission.recipient, :details, auth)}>
-                              {@transmission.recipient.tenant.short_name}
+                              {@transmission.recipient.tenant.subdivision}
                               /
                               {@transmission.recipient.human_readable_id}
                             </span>
@@ -119,11 +119,11 @@
                                 wrapper_tag={:span}
                               >
                                 {case_display_type(@transmission.recipient_case)}
-                                <small class="ml-1">({case_display_date(@transmission.recipient_case)})</small>
+                                <small class="ms-1">({case_display_date(@transmission.recipient_case)})</small>
                               </HygeiaWeb.RecordView>
                             </Link>
                             <span :if={not authorized?(@transmission.recipient_case, :details, auth)}>
-                              {@transmission.recipient_case.tenant.short_name}
+                              {@transmission.recipient_case.tenant.subdivision}
                               /
                               {@transmission.recipient_case.human_readable_id}
                             </span>
@@ -156,7 +156,7 @@
                               </HygeiaWeb.RecordView>
                             </Link>
                             <span :if={not authorized?(@transmission.propagator, :details, auth)}>
-                              {@transmission.propagator.tenant.short_name}
+                              {@transmission.propagator.tenant.subdivision}
                               /
                               {@transmission.propagator.human_readable_id}
                             </span>
@@ -179,11 +179,11 @@
                                 wrapper_tag={:span}
                               >
                                 {case_display_type(@transmission.propagator_case)}
-                                <small class="ml-1">({case_display_date(@transmission.propagator_case)})</small>
+                                <small class="ms-1">({case_display_date(@transmission.propagator_case)})</small>
                               </HygeiaWeb.RecordView>
                             </Link>
                             <span :if={not authorized?(@transmission.propagator_case, :details, auth)}>
-                              {@transmission.propagator_case.tenant.short_name}
+                              {@transmission.propagator_case.tenant.subdivision}
                               /
                               {@transmission.propagator_case.human_readable_id}
                             </span>

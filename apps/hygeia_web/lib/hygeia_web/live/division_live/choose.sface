@@ -38,7 +38,7 @@
         </div>
 
         <div :if={value in [nil, ""] and not @disabled}>
-          <button class="btn btn-secondary" :on-click="open_modal" type="button">
+          <button class="btn btn-outline-primary" :on-click="open_modal" type="button">
             {gettext("Choose division")}
           </button>
 
@@ -50,11 +50,9 @@
           >
             <div class="d-flex flex-justify-content-between">
               <div class="input-group flex-grow-1">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">
-                    <span class="oi oi-magnifying-glass" aria-hidden="true" />
-                  </span>
-                </div>
+                <span class="input-group-text">
+                  <span class="oi oi-magnifying-glass" aria-hidden="true" />
+                </span>
                 <input
                   class="form-control"
                   type="search"

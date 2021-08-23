@@ -172,7 +172,9 @@ jobs:
             compile_test-${{ secrets.CACHE_VERSION }}-
       - run: mix deps.compile --skip-umbrella-children
       - run: mix compile --warning-as-errors
-      - run: sudo apt-get install -y wkhtmltopdf poppler-utils
+      - run: |
+          sudo apt-get update -yqq
+          sudo apt-get install -y wkhtmltopdf poppler-utils
       - run: mix ecto.create
         env:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
@@ -430,6 +432,20 @@ jobs:
       - run: docker push ghcr.io/${{ github.repository }}:${{ steps.branch_name.outputs.SOURCE_TAG }}
         if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v')
   
+  automerge_dependabot:
+    name: "Automerge Dependabot PRs"
+
+    runs-on: ubuntu-latest
+
+    needs: ['docker_build', 'dialyzer_test', 'test', 'format', 'surface_format', 'credo', 'docs']
+
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v2.4.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # Major Updates need to be merged manually
+          target: minor
+
   notify_jm_gitlab:
     name: "Notify JM GitLab"
 

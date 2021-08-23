@@ -31,7 +31,9 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
        active_complexity_cases_per_day: [],
        active_infection_place_cases_per_day: [],
        transmission_country_cases_per_day: [],
-       active_cases_per_day_and_organisation: []
+       active_cases_per_day_and_organisation: [],
+       new_registered_cases_per_day_first_contact: [],
+       new_registered_cases_per_day_not_first_contact: []
      ]}
   end
 
@@ -144,7 +146,11 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
       transmission_country_cases_per_day:
         StatisticsContext.list_transmission_country_cases_per_day(tenant, date, date, false),
       active_cases_per_day_and_organisation:
-        StatisticsContext.list_active_cases_per_day_and_organisation(tenant, date, date)
+        StatisticsContext.list_active_cases_per_day_and_organisation(tenant, date, date),
+      new_registered_cases_per_day_first_contact:
+        StatisticsContext.list_new_registered_cases_per_day(tenant, date, date, true),
+      new_registered_cases_per_day_not_first_contact:
+        StatisticsContext.list_new_registered_cases_per_day(tenant, date, date, false)
     )
   end
 end

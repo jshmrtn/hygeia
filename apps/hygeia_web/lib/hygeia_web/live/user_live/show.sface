@@ -4,7 +4,7 @@
 
     <div class="hy-readonly-form">
       <div class="alert alert-info" role="alert">
-        <span class="oi oi-info mr-2" aria-hidden="true" />
+        <span class="oi oi-info me-2" aria-hidden="true" />
         {gettext("Users can not be edited here since they are synchronized with the IAM.")}
       </div>
       <div class="card">
@@ -40,7 +40,7 @@
                       {tenant.name}
                     </span>
                     -
-                    <span class="badge badge-secondary">
+                    <span class="badge rounded-pill badge-outline-primary">
                       {role}
                     </span>
                   </li>

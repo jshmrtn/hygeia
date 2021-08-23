@@ -21,7 +21,7 @@ defmodule HygeiaWeb.Dropdown do
       phx-target={@myself}
       phx-hook="Dropdown"
       class={
-        "dropdown",
+        "component-dropdown dropdown",
         @class,
         show: @dropdown_open
       }

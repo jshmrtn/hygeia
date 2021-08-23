@@ -2,42 +2,64 @@
   <Context get={HygeiaWeb, auth: auth}>
     <HygeiaWeb.OrganisationLive.Header organisation={@changeset} id="header" />
 
-    <div
-      :for={%Organisation{name: name} = organisation <-
-        @changeset
-        |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-        |> Enum.take(5)
-        |> OrganisationContext.list_organisations_by_ids()}
-      class="alert alert-warning"
+    <Context
+      put={
+        duplicate_organisations:
+          @changeset
+          |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+          |> OrganisationContext.list_organisations_by_ids()
+      }
+      get={duplicate_organisations: duplicate_organisations}
     >
-      <div class="d-flex justify-content-between align-items-center">
-        <span>
-          {"This organisation is possibly a duplicate of %{name_link}, please check."
-          |> gettext(
-            name_link:
-              name
-              |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
-              |> safe_to_string
-          )
-          |> raw}
-        </span>
-
-        <LiveRedirect
-          :if={authorized?(@organisation, :update, auth) and authorized?(organisation, :update, auth)}
-          class="btn btn-secondary btn-sm"
-          to={Routes.organisation_merge_path(@socket, :merge, delete: organisation, into: @organisation)}
+      <details
+        id={"organisation_duplicates_details_#{@organisation.uuid}"}
+        phx-hook="DetailsState"
+        data-uuid={@organisation.uuid}
+        class="alert alert-warning p-3"
+        :if={length(duplicate_organisations) > 0}
+      >
+        <summary>
+          {ngettext(
+            "This organisation has a possible duplicate.",
+            "This organisation has %{count} possible duplicates.",
+            length(duplicate_organisations)
+          )}
+        </summary>
+        <div
+          :for={%Organisation{name: name, address: address} = organisation <-
+            duplicate_organisations}
+          class="card mt-2 card-body"
         >
-          {pgettext("Organisation", "Merge")}
-        </LiveRedirect>
-      </div>
-    </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>
+              {"This organisation is possibly a duplicate of %{name_link}, please check."
+              |> gettext(
+                name_link:
+                  "#{name} #{if(address, do: "(#{address.place})")}"
+                  |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
+                  |> safe_to_string
+              )
+              |> raw}
+            </span>
+
+            <LiveRedirect
+              :if={authorized?(@organisation, :update, auth) and authorized?(organisation, :update, auth)}
+              class="btn btn-outline-primary btn-sm"
+              to={Routes.organisation_merge_path(@socket, :merge, delete: organisation, into: @organisation)}
+            >
+              {pgettext("Organisation", "Merge")}
+            </LiveRedirect>
+          </div>
+        </div>
+      </details>
+    </Context>
 
     <div class="mb-4" :if={@live_action == :show}>
       <LivePatch
         :if={authorized?(@organisation, :update, auth)}
         to={Routes.organisation_show_path(@socket, :edit, @organisation)}
       >
-        <button class="btn btn-primary mr-2" id="organisation-edit">
+        <button class="btn btn-primary me-2" id="organisation-edit">
           <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
           {gettext("Edit")}
         </button>
@@ -86,7 +108,7 @@
       >
         <div :if={@live_action == :edit}>
           <div class="mb-4" :if={@live_action == :edit}>
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Saving...")}>
+            <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
               <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
               {gettext("Save")}
             </button>
@@ -216,7 +238,7 @@
                           <button
                             :if={Ecto.Changeset.get_field(form.source, :person_uuid) != nil or
                               Ecto.Changeset.get_field(form.source, :position) != nil}
-                            class="ml-1 btn btn-secondary btn-danger"
+                            class="ms-1 btn btn-outline-primary btn-danger"
                             type="button"
                             phx-value-uuid={Ecto.Changeset.get_field(form.source, :uuid)}
                             phx-click="remove_position"
@@ -241,7 +263,7 @@
                 <tfoot :if={@live_action == :edit}>
                   <td colspan="3">
                     <button
-                      class="mt-1 btn btn-secondary btn-sm"
+                      class="mt-1 btn btn-outline-primary btn-sm"
                       type="button"
                       phx-click="add_position"
                       title={gettext("Add")}

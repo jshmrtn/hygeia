@@ -7,6 +7,7 @@ defmodule HygeiaWeb.CaseLive.Navigation do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.CaseContext.Test
   alias Hygeia.TenantContext
   alias HygeiaWeb.UriActiveContext
   alias Surface.Components.Link

@@ -72,12 +72,4 @@ defmodule HygeiaWeb.RowLive.Show do
       row: Repo.preload(row, import: [], tenant: [], case: [tenant: [], person: [tenant: []]])
     )
   end
-
-  defp value_or_default(value, default) do
-    case value do
-      nil -> default
-      "" -> default
-      _other -> value
-    end
-  end
 end

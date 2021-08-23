@@ -27,39 +27,26 @@ defmodule HygeiaWeb.Helpers.Confirmation do
           phase :: Phase.t(),
           message_type :: atom
         ) :: String.t()
-  def isolation_email_body(conn_or_socket, case, phase, message_type) do
+  def isolation_email_body(conn_or_socket, case, _phase, message_type) do
     case = Repo.preload(case, :tenant)
 
     gettext(
       """
       Dear Sir / Madam,
 
-      As discussed via phone, you can access the information about your quarantine via the following link:
-      %{isolation_confirmation_link}
+      As discussed via phone, you can access the information about your isolation via the following link:
+      %{public_overview_link}
 
-      To access the confirmation, please log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)
+      Please open this link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)
 
-      Please read the document carefully and consider the links for more information.
+      You will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.
 
-      To ensure the contact tracing we need to record personal details of your contacts.
-      You can enter persons you had contact with here:
-      %{possible_index_submission_link}
+      Please read the information about your isolation in your confirmation document and the mentioned links and contact methods.
 
       Kind Regards,
       %{message_signature}
       """,
-      isolation_confirmation_link:
-        TenantContext.replace_base_url(
-          case.tenant,
-          Routes.pdf_url(conn_or_socket, :isolation_confirmation, case, phase),
-          HygeiaWeb.Endpoint.url()
-        ),
-      possible_index_submission_link:
-        TenantContext.replace_base_url(
-          case.tenant,
-          Routes.possible_index_submission_index_url(conn_or_socket, :index, case),
-          HygeiaWeb.Endpoint.url()
-        ),
+      public_overview_link: public_overview_link(conn_or_socket, case),
       message_signature: Tenant.get_message_signature_text(case.tenant, message_type),
       initial_first_name: String.slice(case.person.first_name, 0..0),
       initial_last_name: String.slice(case.person.last_name, 0..0)
@@ -83,30 +70,37 @@ defmodule HygeiaWeb.Helpers.Confirmation do
           phase :: Phase.t(),
           message_type :: atom
         ) :: String.t()
-  def quarantine_email_body(conn_or_socket, case, phase, message_type) do
+  def quarantine_email_body(conn_or_socket, case, _phase, message_type) do
     case = Repo.preload(case, :tenant)
 
     gettext(
       """
       Dear Sir / Madam,
 
-      You have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please consider the instructions and information via the following link:
-      %{quarantine_confirmation_link}
+      You have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please
 
-      To access the confirmation, please log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)
+      Please open the following link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)
+      %{public_overview_link}
+
+      You will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.
+
+      Please read the information about your quarantine in your confirmation document and the mentioned links and contact methods.
 
       Kind Regards,
       %{message_signature}
       """,
-      quarantine_confirmation_link:
-        TenantContext.replace_base_url(
-          case.tenant,
-          Routes.pdf_url(conn_or_socket, :quarantine_confirmation, case, phase),
-          HygeiaWeb.Endpoint.url()
-        ),
+      public_overview_link: public_overview_link(conn_or_socket, case),
       message_signature: Tenant.get_message_signature_text(case.tenant, message_type),
       initial_first_name: String.slice(case.person.first_name, 0..0),
       initial_last_name: String.slice(case.person.last_name, 0..0)
     )
   end
+
+  defp public_overview_link(conn_or_socket, case),
+    do:
+      TenantContext.replace_base_url(
+        case.tenant,
+        Routes.person_overview_index_url(conn_or_socket, :index, case.person_uuid),
+        HygeiaWeb.Endpoint.url()
+      )
 end

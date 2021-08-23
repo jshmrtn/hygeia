@@ -28,7 +28,7 @@
                     {case.person.last_name}
                   </HygeiaWeb.RecordView>
                   <span :if={not authorized?(case.person, :details, auth)}>
-                    {case.person.tenant.short_name}
+                    {case.person.tenant.subdivision}
                     /
                     {case.person.human_readable_id}
                   </span>
@@ -46,7 +46,7 @@
 
       <div :if={Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""]}>
         <button
-          class="btn btn-secondary"
+          class="btn btn-outline-primary"
           :on-click="open_modal"
           type="button"
           phx-value-subject={@subject}
@@ -61,11 +61,9 @@
           close="close_modal"
         >
           <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <span class="oi oi-magnifying-glass" aria-hidden="true" />
-              </span>
-            </div>
+            <span class="input-group-text">
+              <span class="oi oi-magnifying-glass" aria-hidden="true" />
+            </span>
             <input
               class="form-control"
               type="search"
@@ -98,7 +96,7 @@
                       {case.person.last_name}
                     </HygeiaWeb.RecordView>
                     <span :if={not authorized?(case.person, :details, auth)}>
-                      {case.person.tenant.short_name}
+                      {case.person.tenant.subdivision}
                       /
                       {case.person.human_readable_id}
                     </span>

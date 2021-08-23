@@ -27,7 +27,7 @@ defmodule Hygeia.AuthorizationTest do
     end
 
     test "should allow tenant statistics for anonymous with public statistics" do
-      tenant = tenant_fixture(%{public_statistics: true})
+      tenant = tenant_fixture(%{public_statistics: true, iam_domain: "test"})
 
       assert authorized?(tenant, :statistics, :anonymous)
     end

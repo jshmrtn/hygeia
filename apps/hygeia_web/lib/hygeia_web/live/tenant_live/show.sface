@@ -7,7 +7,7 @@
         :if={authorized?(@tenant, :update, auth)}
         to={Routes.tenant_show_path(@socket, :edit, @tenant)}
       >
-        <button class="btn btn-primary mr-2" id="tenant-edit">
+        <button class="btn btn-primary me-2" id="tenant-edit">
           <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
           {gettext("Edit")}
         </button>
@@ -41,7 +41,7 @@
       >
         <div :if={@live_action == :edit}>
           <div class="mb-4" :if={@live_action == :edit}>
-            <button class="btn btn-primary mr-2" type="submit" phx-disable-with={gettext("Saving...")}>
+            <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
               <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
               {gettext("Save")}
             </button>
@@ -71,35 +71,77 @@
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
-              <Field name={:case_management_enabled} class="form-group">
+              <Field name={:case_management_enabled} class="my-2 form-check">
                 <HygeiaWeb.FieldLabel />
-                <Checkbox class="form-control" opts={disabled: @live_action == :show} />
+                <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
 
-              <div :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false)}>
-                <Field name={:public_statistics} class="form-group">
-                  <HygeiaWeb.FieldLabel />
-                  <Checkbox class="form-control" opts={disabled: @live_action == :show} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
+              <Field
+                name={:public_statistics}
+                class="my-2 form-check"
+                :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) and
+                  Ecto.Changeset.get_field(@changeset, :iam_domain) not in ["", nil]}
+              >
+                <HygeiaWeb.FieldLabel />
+                <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
 
-                <Field name={:override_url} class="form-group">
-                  <HygeiaWeb.FieldLabel />
-                  <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
+              <Field
+                name={:override_url}
+                class="form-group"
+                :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) and
+                  Ecto.Changeset.get_field(@changeset, :iam_domain) not in ["", nil]}
+              >
+                <HygeiaWeb.FieldLabel />
+                <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
 
-                <Field name={:short_name} class="form-group">
-                  <HygeiaWeb.FieldLabel />
-                  <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
+              <div class="row" :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false)}>
+                <div class="col">
+                  <Field name={:country} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <Select
+                      class="form-control"
+                      opts={prompt: gettext("Choose country"), disabled: @live_action == :show}
+                      field={:country}
+                      options={countries()}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+                <div class="col">
+                  <Field name={:subdivision} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <InputContext assigns={assigns} :let={form: form}>
+                      <Select
+                        class="form-control"
+                        opts={prompt: gettext("Choose subdivision"), disabled: @live_action == :show}
+                        field={:subdivision}
+                        options={subdivisions(form.source)}
+                      />
+                    </InputContext>
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">{gettext("IAM Configuration")}</h4>
+              <Field name={:iam_domain} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+          </div>
+
+          <div class="card" :if={Ecto.Changeset.get_field(@changeset, :iam_domain) not in ["", nil]}>
             <div class="card-body">
               <h4 class="card-title">{gettext("Outgoing Email Configuration")}</h4>
 
@@ -127,9 +169,9 @@
                   id="poly-inputs"
                 >
                   <InputContext assigns={assigns} :let={form: form}>
-                    <Field name={:enable_relay} class="form-group">
+                    <Field name={:enable_relay} class="my-2 form-check">
+                      <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
                       <HygeiaWeb.FieldLabel />
-                      <Checkbox class="form-control" opts={disabled: @live_action == :show} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                     <Inputs for={:relay} :if={Ecto.Changeset.fetch_field!(form.source, :enable_relay) == true}>
@@ -154,9 +196,9 @@
                           <TextInput class="form-control" opts={disabled: @live_action == :show} />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
-                        <Field name={:change_password} class="form-group" :if={@live_action == :edit}>
+                        <Field name={:change_password} class="form-check" :if={@live_action == :edit}>
                           <HygeiaWeb.FieldLabel />
-                          <Checkbox class="form-control" opts={disabled: @live_action == :show} />
+                          <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                         <Field
@@ -174,9 +216,9 @@
                         </Field>
                       </InputContext>
                     </Inputs>
-                    <Field name={:enable_dkim} class="form-group">
+                    <Field name={:enable_dkim} class="form-check">
                       <HygeiaWeb.FieldLabel />
-                      <Checkbox class="form-control" opts={disabled: @live_action == :show} />
+                      <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                     <Inputs for={:dkim} :if={Ecto.Changeset.fetch_field!(form.source, :enable_dkim) == true}>
@@ -206,7 +248,11 @@
             </div>
           </div>
 
-          <div class="card" :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false)}>
+          <div
+            class="card"
+            :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) and
+              Ecto.Changeset.get_field(@changeset, :iam_domain) not in ["", nil]}
+          >
             <div class="card-body">
               <h4 class="card-title">{gettext("Outgoing SMS Configuration")}</h4>
               <Field name={:outgoing_sms_configuration_type} class="form-group">
@@ -236,7 +282,11 @@
             </div>
           </div>
 
-          <div class="card" :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false)}>
+          <div
+            class="card"
+            :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) and
+              Ecto.Changeset.get_field(@changeset, :iam_domain) not in ["", nil]}
+          >
             <div class="card-body">
               <h4 class="card-title">{gettext("Confirmation PDF Template")}</h4>
               <Field name={:template_variation} class="form-group">
@@ -247,23 +297,16 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{gettext("IAM Configuration")}</h4>
-              <Field name={:iam_domain} class="form-group">
-                <HygeiaWeb.FieldLabel />
-                <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </div>
-          </div>
-
-          <div class="card">
+          <div
+            class="card"
+            :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) and
+              Ecto.Changeset.get_field(@changeset, :iam_domain) not in ["", nil]}
+          >
             <div class="card-body">
               <h4 class="card-title">{gettext("Sedex Configuration")}</h4>
-              <Field name={:sedex_export_enabled} class="form-group">
+              <Field name={:sedex_export_enabled} class="form-check">
                 <HygeiaWeb.FieldLabel />
-                <Checkbox class="form-control" opts={disabled: @live_action == :show} />
+                <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
               <Inputs
@@ -316,7 +359,11 @@
             </div>
           </div>
 
-          <div class="card" :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false)}>
+          <div
+            class="card"
+            :if={Ecto.Changeset.get_field(@changeset, :case_management_enabled, false) and
+              Ecto.Changeset.get_field(@changeset, :iam_domain) not in ["", nil]}
+          >
             <Inputs for={:template_parameters}>
               <div class="card-body">
                 <h4 class="card-title">{gettext("Template Parameters")}</h4>
