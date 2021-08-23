@@ -1,6 +1,6 @@
 <div id="step_contact" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
-  
+
   <h2 class="mb-4">
     {gettext("Contact Methods")}
   </h2>

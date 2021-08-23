@@ -40,7 +40,7 @@
               </Field>
             </div>
           </div>
-          <hr class="mb-4" />
+          <hr class="mb-4">
           <LiveRedirect
             to={Routes.auto_tracing_vaccination_path(@socket, :vaccination, @auto_tracing.case_uuid)}
             class="btn btn-outline-primary"

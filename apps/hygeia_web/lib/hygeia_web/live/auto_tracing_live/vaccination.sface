@@ -87,7 +87,7 @@
             </div>
           </div>
         </div>
-        <hr :if={!Ecto.Changeset.get_field(form.source, :done)} class="mb-4" />
+        <hr :if={!Ecto.Changeset.get_field(form.source, :done)} class="mb-4">
         <div>
           <LiveRedirect
             to={Routes.auto_tracing_employer_path(@socket, :employer, @auto_tracing.case_uuid)}

@@ -1,6 +1,6 @@
 <div id="step_start" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
-  
+
   <h2 class="mb-4">
     {gettext("Dear Sir / Madam")}
   </h2>
@@ -30,12 +30,12 @@
       <p class="mb-5">
         {@case.tenant.template_parameters.sms_signature}
       </p>
-      
+
       <button class="btn btn-primary" type="button" :on-click="advance">
         {gettext("Collect Data")}
       </button>
     </div>
-  
+
     <div class="component-case-tests row">
       <div class="card">
         <div class="card-body">

@@ -1,14 +1,10 @@
 <div class="jumbotron home-jumbo">
-
   <section class="container">
     <h1 class="display-4">{pgettext("Home", "Contact Tracing for SARS-CoV-2")}</h1>
 
     <ul class="component-home-live-index__list my-5">
       <li :for={tenant <- @tenants}>
-        <img
-          src={TenantHelper.logo_uri(tenant, @socket)}
-          alt={"#{tenant.name} Logo"}
-        />
+        <img src={TenantHelper.logo_uri(tenant, @socket)} alt={"#{tenant.name} Logo"}>
       </li>
     </ul>
 

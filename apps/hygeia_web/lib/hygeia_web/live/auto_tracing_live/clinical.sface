@@ -4,108 +4,108 @@
   <h2 class="mb-4">{gettext("Clinical Information")}</h2>
 
   <Form for={@case_changeset} change="validate" submit="save" class="mb-5">
-      <div class="row">
-        <div class="col-6">
-          <Inputs for={:clinical}>
-            <div class="card mb-2">
-              <div class="card-body">
-                <InputContext assigns={assigns} :let={form: form}>
-                  <h4 class="mb-4">{gettext("Do you have symptoms?")}</h4>
-                  <Field name={:has_symptoms} class="form-group my-0">
-                    <div class="btn-group-vertical disabled display-only btn-group-toggle btn-radio-group">
-                      <label class={
-                        "btn",
-                        "btn-sm",
-                        "btn-outline-primary",
-                        "mb-0",
-                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == nil
-                      }>
-                        <RadioButton value={nil} />
-                        {gettext("Undocumented")}
-                      </label>
-                      <label class={
-                        "btn",
-                        "btn-sm",
-                        "btn-outline-primary",
-                        "mb-0",
-                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true
-                      }>
-                        <RadioButton value />
-                        {gettext("Has Symptoms")}
-                      </label>
-                      <label class={
-                        "btn",
-                        "btn-sm",
-                        "btn-outline-primary",
-                        "mb-0",
-                        active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false
-                      }>
-                        <RadioButton value={false} />
-                        {gettext("No Symptoms")}
-                      </label>
-                    </div>
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                  <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
-                    <h4 class="my-4">{gettext("What symptoms are present?")}</h4>
-                    <Field name={:symptoms}>
-                      <label :for={{name, key} <- symptoms()} class="d-block checkbox-label">
-                        <input
-                          type="checkbox"
-                          name={input_name(form, :symptoms) <> "[]"}
-                          checked={key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || [])}
-                          value={key}
-                        />
-                        {name}
-                      </label>
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+    <div class="row">
+      <div class="col-6">
+        <Inputs for={:clinical}>
+          <div class="card mb-2">
+            <div class="card-body">
+              <InputContext assigns={assigns} :let={form: form}>
+                <h4 class="mb-4">{gettext("Do you have symptoms?")}</h4>
+                <Field name={:has_symptoms} class="form-group my-0">
+                  <div class="btn-group-vertical disabled display-only btn-group-toggle btn-radio-group">
+                    <label class={
+                      "btn",
+                      "btn-sm",
+                      "btn-outline-primary",
+                      "mb-0",
+                      active: Ecto.Changeset.get_field(form.source, :has_symptoms) == nil
+                    }>
+                      <RadioButton value={nil} />
+                      {gettext("Undocumented")}
+                    </label>
+                    <label class={
+                      "btn",
+                      "btn-sm",
+                      "btn-outline-primary",
+                      "mb-0",
+                      active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true
+                    }>
+                      <RadioButton value />
+                      {gettext("Has Symptoms")}
+                    </label>
+                    <label class={
+                      "btn",
+                      "btn-sm",
+                      "btn-outline-primary",
+                      "mb-0",
+                      active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false
+                    }>
+                      <RadioButton value={false} />
+                      {gettext("No Symptoms")}
+                    </label>
                   </div>
-                </InputContext>
-                <h4 class="my-4">{gettext("When did the symptoms start?")}</h4>
-                <Field name={:symptom_start} class="form-group">
-                  <DateInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-body">
-                <h4 class="mb-4">{gettext("Reasons for the test")}</h4>
-                  <InputContext assigns={assigns} :let={form: form} class="form-group">
-                    <Field name={:reasons_for_test}>
-                      <label :for={{name, key} <- test_reasons()} class="d-block checkbox-label">
-                        <input
-                          type="checkbox"
-                          name={input_name(form, :reasons_for_test) <> "[]"}
-                          checked={key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || [])}
-                          value={key}
-                        />
-                        {name}
-                      </label>
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
-                  </InputContext>
-              </div>
-            </div>
-          </Inputs>
-        </div>
-
-        <div class="col-6">
-            <div class="card mb-2">
-              <div class="card-body">
-                <h4 class="mb-4">{gettext("Have you been or are you in a hospital?")}</h4>
-                <HygeiaWeb.CaseLive.Hospitalizations
-                  source={@case}
-                  id="hospitalizations"
-                  organisations={@organisations}
-                  add_hospitalization="add_hospitalization"
-                  remove_hospitalization="remove_hospitalization"
-                />
-              </div>    
+                <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
+                  <h4 class="my-4">{gettext("What symptoms are present?")}</h4>
+                  <Field name={:symptoms}>
+                    <label :for={{name, key} <- symptoms()} class="d-block checkbox-label">
+                      <input
+                        type="checkbox"
+                        name={input_name(form, :symptoms) <> "[]"}
+                        checked={key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || [])}
+                        value={key}
+                      />
+                      {name}
+                    </label>
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+              </InputContext>
+              <h4 class="my-4">{gettext("When did the symptoms start?")}</h4>
+              <Field name={:symptom_start} class="form-group">
+                <DateInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
             </div>
           </div>
+          <div class="card">
+            <div class="card-body">
+              <h4 class="mb-4">{gettext("Reasons for the test")}</h4>
+              <InputContext assigns={assigns} :let={form: form} class="form-group">
+                <Field name={:reasons_for_test}>
+                  <label :for={{name, key} <- test_reasons()} class="d-block checkbox-label">
+                    <input
+                      type="checkbox"
+                      name={input_name(form, :reasons_for_test) <> "[]"}
+                      checked={key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || [])}
+                      value={key}
+                    />
+                    {name}
+                  </label>
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </InputContext>
+            </div>
+          </div>
+        </Inputs>
       </div>
+
+      <div class="col-6">
+        <div class="card mb-2">
+          <div class="card-body">
+            <h4 class="mb-4">{gettext("Have you been or are you in a hospital?")}</h4>
+            <HygeiaWeb.CaseLive.Hospitalizations
+              source={@case}
+              id="hospitalizations"
+              organisations={@organisations}
+              add_hospitalization="add_hospitalization"
+              remove_hospitalization="remove_hospitalization"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   </Form>
   <LiveRedirect
     to={Routes.auto_tracing_covid_app_path(@socket, :covid_app, @auto_tracing.case_uuid)}
