@@ -1,8 +1,7 @@
 <div class="row mb-3">
   <div class="col-12">
     <Form
-      :if={not @loading}
-      for={@search_params}
+      for={@search_changeset}
       change="suggest_people"
       submit="new_person_modal"
       opts={autocomplete: "off", id: "search-people-form", "phx-hook": "BlockNavigation"}
@@ -52,13 +51,13 @@
           <:header>
             <div class="d-flex w-100">
               <div class="w-100">
-                <span class={if contains?(person.first_name, get_field(@search_params, :first_name)),
+                <span class={if contains?(person.first_name, get_field(@search_changeset, :first_name)),
                   do: "font-weight-bold"}>
                   {person.first_name}
                 </span>
               </div>
               <div class="w-100">
-                <span class={if contains?(person.last_name, get_field(@search_params, :last_name)),
+                <span class={if contains?(person.last_name, get_field(@search_changeset, :last_name)),
                   do: "font-weight-bold"}>
                   {person.last_name}
                 </span>
@@ -67,7 +66,7 @@
                 {#if mobile =
                     person.contact_methods
                     |> Enum.find_value(fn contact ->
-                      if contact.type == :mobile and contact.value == get_field(@search_params, :mobile),
+                      if contact.type == :mobile and contact.value == get_field(@search_changeset, :mobile),
                         do: contact.value
                     end)}
                   <span class="font-weight-bold">
@@ -83,7 +82,7 @@
                 {#if landline =
                     person.contact_methods
                     |> Enum.find_value(fn contact ->
-                      if contact.type == :landline and contact.value == get_field(@search_params, :landline),
+                      if contact.type == :landline and contact.value == get_field(@search_changeset, :landline),
                         do: contact.value
                     end)}
                   <span class="font-weight-bold">
@@ -99,7 +98,7 @@
                 {#if email =
                     person.contact_methods
                     |> Enum.find_value(fn contact ->
-                      if contact.type == :email and contact.value == get_field(@search_params, :email),
+                      if contact.type == :email and contact.value == get_field(@search_changeset, :email),
                         do: contact.value
                     end)}
                   <span class="font-weight-bold">
@@ -185,7 +184,6 @@
       </div>
 
       <Form
-        :if={not @loading}
         for={@changeset}
         change="validate_person"
         submit="save_person"

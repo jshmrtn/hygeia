@@ -35,7 +35,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
           end
 
         case =
-          case fetch_field!(case_changeset, :inserted_at) do
+          case_changeset
+          |> fetch_field!(:inserted_at)
+          |> case do
             nil ->
               {:ok, case} =
                 CaseContext.create_case(merge_phases(case_changeset, transmission_data))
@@ -60,12 +62,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
   @spec send_confirmations(
           socket :: Phoenix.LiveView.Socket.t(),
           tuples :: [tuple()],
-          transmission_data :: map()
+          transmission_type :: atom()
         ) :: :ok
-  def send_confirmations(socket, tuples, transmission_data) when is_list(tuples) do
-    Enum.each(tuples, fn {person, case, reporting} ->
-      type = Map.get(transmission_data, :type)
+  def send_confirmations(socket, tuples, transmission_type)
 
+  def send_confirmations(socket, tuples, :contact_person) when is_list(tuples) do
+    Enum.each(tuples, fn {person, case, reporting} ->
       email_addresses =
         person
         |> Map.fetch!(:contact_methods)
@@ -79,14 +81,16 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
         |> Enum.map(& &1.value)
 
       [] =
-        Task.async(fn -> send_confirmation_emails(socket, case, email_addresses, type) end)
+        Task.async(fn ->
+          send_confirmation_emails(socket, case, email_addresses, :contact_person)
+        end)
         |> Task.await()
         |> Enum.reject(&match?({:ok, _}, &1))
         |> Enum.reject(&match?({:error, :no_outgoing_mail_configuration}, &1))
         |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
 
       [] =
-        Task.async(fn -> send_confirmation_sms(socket, case, phone_numbers, type) end)
+        Task.async(fn -> send_confirmation_sms(socket, case, phone_numbers, :contact_person) end)
         |> Task.await()
         |> Enum.reject(&match?({:ok, _}, &1))
         |> Enum.reject(&match?({:error, :sms_config_missing}, &1))
@@ -94,6 +98,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
         |> Enum.reject(&match?({:error, :no_quarantine_ordered}, &1))
     end)
   end
+
+  def send_confirmations(_socket, _tuples, _other_transmission_type), do: :ok
 
   @spec send_confirmation_emails(
           socket :: Phoenix.LiveView.Socket.t(),
@@ -188,12 +194,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
   @spec insert_transmission(case :: Case.t(), map :: map()) :: {:ok, Transmission.t()}
   def insert_transmission(case, transmission_data) do
-    date = Map.get(transmission_data, :date)
-    comment = Map.get(transmission_data, :comment)
-    infection_place = Map.get(transmission_data, :infection_place)
-    propagator_internal = Map.get(transmission_data, :propagator_internal)
-    propagator_ism_id = Map.get(transmission_data, :propagator_ism_id)
-    propagator_case_uuid = Map.get(transmission_data, :propagator_case_uuid)
+    date = transmission_data[:date]
+    comment = transmission_data[:comment]
+    infection_place = transmission_data[:infection_place]
+    propagator_internal = transmission_data[:propagator_internal]
+    propagator_ism_id = transmission_data[:propagator_ism_id]
+    propagator_case_uuid = transmission_data[:propagator_case_uuid]
 
     {:ok, _transmission} =
       CaseContext.create_transmission(%{
@@ -287,7 +293,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
     end
   end
 
-  defp phase_dates(contact_date) do
+  @spec phase_dates(Date.t()) :: {Date.t(), Date.t()}
+  def phase_dates(contact_date) do
     start_date = contact_date
     end_date = Date.add(start_date, 9)
 

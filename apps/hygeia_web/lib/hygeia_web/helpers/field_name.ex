@@ -44,12 +44,6 @@ defmodule HygeiaWeb.Helpers.FieldName do
       symptoms: "Symptoms",
       symptom_start: "Symptoms start date"
     },
-    Hygeia.CaseContext.Hospitalization => %{
-      end: "End",
-      organisation: "Organisation",
-      organisation_uuid: "Organisation UUID",
-      start: "Start"
-    },
     Hygeia.CaseContext.Case.Monitoring => %{
       address: "Address",
       first_contact: "First Contact",
@@ -94,6 +88,12 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type: "Type",
       type_name: "Type name",
       value: "Value"
+    },
+    Hygeia.CaseContext.Hospitalization => %{
+      end: "End",
+      organisation: "Organisation",
+      organisation_uuid: "Organisation UUID",
+      start: "Start"
     },
     Hygeia.CaseContext.Note => %{note: "Note", pinned: "Pinned"},
     Hygeia.CaseContext.Person => %{
@@ -201,6 +201,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       identifiers: "Identifiers",
       status: "Status"
     },
+    Hygeia.MutationContext.Mutation => %{name: "Name", ism_code: "ISM Code"},
     Hygeia.OrganisationContext.Affiliation => %{
       comment: "Comment",
       division: "Division",
@@ -226,6 +227,13 @@ defmodule HygeiaWeb.Helpers.FieldName do
       notes: "Notes",
       type: "Type",
       type_other: "Type Other"
+    },
+    Hygeia.SystemMessageContext.SystemMessage => %{
+      text: "Text",
+      start_date: "Start Date",
+      end_date: "End Date",
+      roles: "Roles",
+      related_tenants: "Related Tenants"
     },
     Hygeia.TenantContext.SedexExport => %{
       scheduling_date: "Scheduling Date",
@@ -285,14 +293,18 @@ defmodule HygeiaWeb.Helpers.FieldName do
       iam_sub: "IAM Subject",
       roles: "Roles"
     },
-    Hygeia.SystemMessageContext.SystemMessage => %{
-      text: "Text",
-      start_date: "Start Date",
-      end_date: "End Date",
-      roles: "Roles",
-      related_tenants: "Related Tenants"
+    Hygeia.VersionContext.Version => %{
+      date: "Date",
+      item_changes: "Changes",
+      origin: "Origin",
+      originator: "Author",
+      type: "Type"
     },
-    Hygeia.MutationContext.Mutation => %{name: "Name", ism_code: "ISM Code"},
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions => %{
+      status: "Status",
+      supervisor_uuid: "Supervisor UUID",
+      tracer_uuid: "Tracer UUID"
+    },
     HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission => %{
       type: "Type",
       type_other: "Other",
@@ -303,22 +315,10 @@ defmodule HygeiaWeb.Helpers.FieldName do
       propagator_case_uuid: "Propagator Case UUID",
       propagator_ism_id: "Propagator ISM ID"
     },
-    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions => %{
-      status: "Status",
-      supervisor_uuid: "Supervisor UUID",
-      tracer_uuid: "Tracer UUID"
-    },
     HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary => %{
       status: "Status",
       supervisor_uuid: "Supervisor UUID",
       tracer_uuid: "Tracer UUID"
-    },
-    Hygeia.VersionContext.Version => %{
-      date: "Date",
-      item_changes: "Changes",
-      origin: "Origin",
-      originator: "Author",
-      type: "Type"
     }
   }
 

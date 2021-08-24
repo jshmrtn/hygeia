@@ -4,32 +4,23 @@
   <HiddenInput field={:possible_index_submission_uuid} />
 
   <div class="container">
-    {#if @form_step != "summary"}
-      <div class="row">
-        <div class="text-center w-100">
-          {#for {step, index} <- get_form_steps() |> Enum.reject(&(&1.name == "summary")) |> Enum.with_index()}
-            <LivePatch to={Routes.case_create_possible_index_path(@socket, :index, step.name)}>
-              <button
-                class={decide_nav_class(@form_step, step.name, @visited_steps, @current_form_data)}
-                disabled={if not visited_step?(@visited_steps, step.name), do: true}
-              >
-                {index}
-              </button>
-            </LivePatch>
-          {/for}
-        </div>
+    <div class="row" :if={@form_step != "summary"}>
+      <div class="text-center w-100">
+        {#for {step, index} <- get_form_steps() |> Enum.reject(&(&1.name == "summary")) |> Enum.with_index()}
+          <LivePatch to={Routes.case_create_possible_index_path(@socket, :index, step.name)}>
+            <button
+              class={decide_nav_class(@form_step, step.name, @visited_steps, @current_form_data)}
+              disabled={if not visited_step?(@visited_steps, step.name), do: true}
+            >
+              {index}
+            </button>
+          </LivePatch>
+        {/for}
       </div>
-    {/if}
-    {!--- TODO: This 'case' gives error with 'mix surface.format for some unknown reason. Investigate.'
+    </div>
     {#case @form_step}
       {#match "transmission"}
-          <DefineTransmission
-            id={@form_step}
-            {=@form_step}
-            {=@live_action}
-            {=@current_form_data}
-          />
-
+        <DefineTransmission id={@form_step} {=@form_step} {=@live_action} {=@current_form_data} />
       {#match "people"}
         <DefinePeople
           id={@form_step}
@@ -39,7 +30,6 @@
           {=@current_form_data}
           {=@tenants}
         />
-
       {#match "options"}
         <DefineOptions
           id={@form_step}
@@ -49,13 +39,10 @@
           {=@supervisor_users}
           {=@tracer_users}
         />
-
       {#match "reporting"}
-        <Reporting id={@form_step} {=@form_step} {=@live_action} {=@current_form_data} /> 
-
+        <Reporting id={@form_step} {=@form_step} {=@live_action} {=@current_form_data} />
       {#match "summary"}
         <Summary
-          id={@form_step}
           {=@form_step}
           {=@live_action}
           {=@current_form_data}
@@ -63,46 +50,5 @@
           {=@tracer_users}
         />
     {/case}
-    ---}
-
-    {#if @form_step == "transmission"}
-      <DefineTransmission id={@form_step} {=@form_step} {=@live_action} {=@current_form_data} />
-    {/if}
-
-    {#if @form_step == "people"}
-      <DefinePeople
-        id={@form_step}
-        {=@form_step}
-        {=@live_action}
-        {=@params}
-        {=@current_form_data}
-        {=@tenants}
-      />
-    {/if}
-
-    {#if @form_step == "options"}
-      <DefineOptions
-        id={@form_step}
-        {=@form_step}
-        {=@live_action}
-        {=@current_form_data}
-        {=@supervisor_users}
-        {=@tracer_users}
-      />
-    {/if}
-
-    {#if @form_step == "reporting"}
-      <Reporting id={@form_step} {=@form_step} {=@live_action} {=@current_form_data} />
-    {/if}
-
-    {#if @form_step == "summary"}
-      <Summary
-        {=@form_step}
-        {=@live_action}
-        {=@current_form_data}
-        {=@supervisor_users}
-        {=@tracer_users}
-      />
-    {/if}
   </div>
 </div>

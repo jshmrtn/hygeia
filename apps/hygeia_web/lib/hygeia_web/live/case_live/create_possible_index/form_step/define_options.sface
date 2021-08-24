@@ -3,7 +3,6 @@
     {#for {%{person_changeset: person_cs, case_changeset: case_cs}, index} <- Enum.with_index(@bindings)}
       <div class="w-100">
         <Form
-          :if={not @loading}
           for={case_cs}
           change="validate"
           opts={autocomplete: "off", id: "define-options-form", "phx-hook": "BlockNavigation"}

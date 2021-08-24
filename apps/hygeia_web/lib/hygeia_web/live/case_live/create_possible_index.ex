@@ -5,6 +5,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   import HygeiaGettext
 
+  alias Phoenix.LiveView.Socket
+
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
@@ -54,7 +56,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             Map.put(acc, tenant.uuid, UserContext.list_users_with_role(:tracer, tenant))
           end)
 
-        normalized_params = Map.new(params, fn {k, v} -> {String.to_atom(k), v} end)
+        normalized_params = Map.new(params, fn {k, v} -> {String.to_existing_atom(k), v} end)
 
         available_data =
           case params["possible_index_submission_uuid"] do
@@ -124,11 +126,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     {:noreply, assign(socket, :params, params)}
   end
 
-  defp save(socket) do
-    %{assigns: %{current_form_data: current_form_data}} = socket
-
-    bindings = Map.fetch!(current_form_data, :bindings)
-
+  defp save(
+         %Socket{assigns: %{current_form_data: %{bindings: bindings} = current_form_data}} =
+           socket
+       ) do
     case Service.upsert(bindings, current_form_data) do
       {:error, _} ->
         put_flash(
@@ -140,7 +141,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         )
 
       {:ok, tuples} ->
-        :ok = Service.send_confirmations(socket, tuples, current_form_data)
+        :ok = Service.send_confirmations(socket, tuples, current_form_data[:type])
 
         new_bindings =
           Enum.map(tuples, fn {person, case, reporting_data} ->
@@ -218,17 +219,17 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     } = CaseContext.get_possible_index_submission!(uuid)
 
     %{
-      :comment => comment,
-      :propagator_internal => true,
-      :propagator_case_uuid => case_uuid,
-      :type => :contact_person,
-      :date => Date.to_iso8601(transmission_date),
-      :infection_place =>
+      comment: comment,
+      propagator_internal: true,
+      propagator_case_uuid: case_uuid,
+      type: :contact_person,
+      date: Date.to_iso8601(transmission_date),
+      infection_place:
         infection_place
         |> Map.from_struct()
         |> Map.put(:address, Map.from_struct(infection_place.address))
         |> Map.drop([:type]),
-      :bindings => [
+      bindings: [
         %{
           person_changeset:
             CaseContext.change_person(%Person{}, %{

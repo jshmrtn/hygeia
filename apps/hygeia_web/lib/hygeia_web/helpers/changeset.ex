@@ -164,8 +164,8 @@ defmodule HygeiaWeb.Helpers.Changeset do
   end
 
   @spec existing_entity?(changeset :: Changeset.t()) :: boolean
-  def existing_entity?(%Changeset{} = changeset),
-    do: Changeset.fetch_field!(changeset, :inserted_at) != nil
+  def existing_entity?(%Changeset{data: entity} = _changeset),
+    do: Ecto.get_meta(entity, :state) == :loaded
 
   defp key_to_string(key) when is_atom(key), do: Atom.to_string(key)
   defp key_to_string(key) when is_binary(key), do: key

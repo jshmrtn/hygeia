@@ -1,15 +1,15 @@
 defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
-  @moduledoc """
-    Form step responsible for managing case options.
-  """
+  @moduledoc false
 
   use HygeiaWeb, :surface_live_component
 
   import Ecto.Changeset
   import HygeiaGettext
 
-  alias Hygeia.CaseContext.Case.Person
+  alias Phoenix.LiveView.Socket
+
   alias Hygeia.CaseContext.Case.Status
+  alias Hygeia.CaseContext.Person
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
 
@@ -26,20 +26,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
   prop supervisor_users, :map, required: true
   prop tracer_users, :map, required: true
 
-  @impl Phoenix.LiveComponent
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       bindings: [],
-       loading: false
-     )}
-  end
+  data bindings, :list, default: []
 
   @impl Phoenix.LiveComponent
-  def update(assigns, socket) do
-    %{current_form_data: data, supervisor_users: supervisor_users, tracer_users: tracer_users} =
-      assigns
-
+  def update(
+        %{current_form_data: data, supervisor_users: supervisor_users, tracer_users: tracer_users} =
+          assigns,
+        socket
+      ) do
     bindings = Map.get(data, :bindings, [])
     propagator = assigns[:propagator]
 
@@ -63,9 +57,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("validate", %{"index" => index, "case" => case_params}, socket) do
-    %{assigns: %{bindings: bindings}} = socket
-
+  def handle_event(
+        "validate",
+        %{"index" => index, "case" => case_params},
+        %Socket{assigns: %{bindings: bindings}} = socket
+      ) do
     bindings =
       List.update_at(
         bindings,
@@ -79,13 +75,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
         end
       )
 
+    send(self(), {:feed, %{bindings: bindings}})
+
     {:noreply, assign(socket, bindings: bindings)}
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("next", _params, socket) do
-    %{assigns: %{bindings: bindings}} = socket
-
+  def handle_event("next", _params, %Socket{assigns: %{bindings: bindings}} = socket) do
     case valid?(bindings) do
       true ->
         send(self(), {:proceed, %{bindings: bindings}})
@@ -96,9 +92,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
     end
   end
 
-  def handle_event("back", _params, socket) do
-    %{assigns: %{bindings: bindings}} = socket
-
+  def handle_event("back", _params, %Socket{assigns: %{bindings: bindings}} = socket) do
     send(self(), {:return, %{bindings: bindings}})
     {:noreply, socket}
   end
@@ -166,8 +160,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
 
   defp normalize_params(params) do
     Map.new(params, fn
-      {k, ""} -> {String.to_atom(k), nil}
-      {k, v} -> {String.to_atom(k), v}
+      {k, ""} -> {String.to_existing_atom(k), nil}
+      {k, v} -> {String.to_existing_atom(k), v}
     end)
   end
 

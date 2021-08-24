@@ -1,5 +1,4 @@
 <Form
-  :if={not @loading}
   for={@changeset}
   change="validate"
   submit="save"
@@ -88,15 +87,17 @@
   <Inputs for={:infection_place}>
     <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
   </Inputs>
-
-  <div class="container">
-    <button
-      class="btn btn-primary mt-5"
-      type="submit"
-      phx-disable-with={gettext("Saving...")}
-      disabled={not @changeset.valid?}
-    >
-      {gettext("Next")}
-    </button>
-  </div>
 </Form>
+
+<div class="row mb-3">
+  <button
+    id="next-button"
+    class="btn btn-primary mt-5"
+    type="submit"
+    :on-click="next"
+    phx-disable-with={gettext("Saving...")}
+    disabled={not valid?(@current_form_data)}
+  >
+    {gettext("Next")}
+  </button>
+</div>

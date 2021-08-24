@@ -79,6 +79,19 @@ config :hygeia_api, HygeiaApi.Endpoint,
   ],
   secret_key_base: System.fetch_env!("SECRET_KEY_BASE")
 
+config :logger,
+  level:
+    String.to_existing_atom(
+      System.get_env(
+        "LOG_LEVEL",
+        case config_env() do
+          :prod -> "info"
+          :dev -> "debug"
+          :test -> "debug"
+        end
+      )
+    )
+
 # Prometheus Exporter
 config :hygeia_telemetry, port: "METRICS_PORT" |> System.get_env("9568") |> String.to_integer()
 

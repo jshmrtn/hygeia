@@ -6,6 +6,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   import HygeiaGettext
   import Ecto.Changeset
 
+  alias Phoenix.LiveView.Socket
+
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
 
@@ -17,15 +19,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   prop live_action, :atom, required: true
   prop current_form_data, :map, required: true
 
-  @impl Phoenix.LiveComponent
-  def mount(socket) do
-    {:ok, assign(socket, bindings: [])}
-  end
+  data bindings, :list, default: []
 
   @impl Phoenix.LiveComponent
-  def update(assigns, socket) do
-    %{current_form_data: current_form_data} = assigns
-
+  def update(%{current_form_data: current_form_data} = assigns, socket) do
     bindings =
       current_form_data
       |> Map.get(:bindings, [])
@@ -46,10 +43,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
           "contact-uuid" => contact_uuid,
           "value" => "true"
         },
-        socket
+        %Socket{assigns: %{bindings: bindings}} = socket
       ) do
-    %{assigns: %{bindings: bindings}} = socket
-
     updated_bindings =
       List.update_at(
         bindings,
@@ -69,10 +64,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
           "index" => index,
           "contact-uuid" => contact_uuid
         },
-        socket
+        %Socket{assigns: %{bindings: bindings}} = socket
       ) do
-    %{assigns: %{bindings: bindings}} = socket
-
     updated_bindings =
       List.update_at(
         bindings,
@@ -93,10 +86,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
           "contact-uuids" => contact_uuids,
           "value" => "true"
         },
-        socket
+        %Socket{assigns: %{bindings: bindings}} = socket
       ) do
-    %{assigns: %{bindings: bindings}} = socket
-
     updated_bindings =
       List.update_at(
         bindings,
@@ -120,10 +111,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
           "index" => index,
           "contact-uuids" => contact_uuids
         },
-        socket
+        %Socket{assigns: %{bindings: bindings}} = socket
       ) do
-    %{assigns: %{bindings: bindings}} = socket
-
     updated_bindings =
       List.update_at(
         bindings,
@@ -141,16 +130,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("next", _params, socket) do
-    %{assigns: %{bindings: bindings}} = socket
-
+  def handle_event("next", _params, %Socket{assigns: %{bindings: bindings}} = socket) do
     send(self(), {:proceed, %{bindings: bindings}})
     {:noreply, socket}
   end
 
-  def handle_event("back", _params, socket) do
-    %{assigns: %{bindings: bindings}} = socket
-
+  def handle_event("back", _params, %Socket{assigns: %{bindings: bindings}} = socket) do
     send(self(), {:return, %{bindings: bindings}})
     {:noreply, socket}
   end

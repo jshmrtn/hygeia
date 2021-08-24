@@ -83,8 +83,8 @@
 
                     <div class="row" :if={Ecto.Changeset.get_field(form.source, :quarantine_order) != true}>
                       <label>Phase created at:</label>
-                      {!-- TODO: a date should be shown, but which one? A phase has no inserted_at. --}
-                      <span>{Ecto.Changeset.get_field(form.source, :inserted_at)}</span>
+                      {!-- TODO: verify --}
+                      <span>{Ecto.Changeset.get_field(@case_changeset, :inserted_at)}</span>
                     </div>
                   </Context>
                 </InputContext>

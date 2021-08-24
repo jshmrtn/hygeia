@@ -7,6 +7,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
   import Ecto.Changeset
   import HygeiaGettext
 
+  alias Phoenix.LiveView.Socket
+
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Person
@@ -45,20 +47,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
   prop live_action, :atom, default: :index
   prop current_form_data, :map, required: true
 
-  @impl Phoenix.LiveComponent
-  def mount(socket) do
-    {:ok,
-     assign(socket,
-       changeset: changeset(%__MODULE__{}),
-       loading: false
-     )}
-  end
+  data changeset, :map
 
   @impl Phoenix.LiveComponent
-  def update(assigns, socket) do
+  def update(%{current_form_data: current_form_data} = assigns, socket) do
     changeset =
       %__MODULE__{}
-      |> changeset(assigns.current_form_data)
+      |> changeset(current_form_data)
       |> case do
         %Ecto.Changeset{changes: changes} = changeset when map_size(changes) > 0 ->
           Map.put(changeset, :action, :validate)
@@ -75,13 +70,43 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
 
   @impl Phoenix.LiveComponent
   def handle_event("validate", %{"define_transmission" => params}, socket) do
+    normalized_params = normalize_params(params)
+    send(self(), {:feed, normalized_params})
+
     {:noreply, assign(socket, :changeset, validation_changeset(__MODULE__, params))}
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("save", %{"define_transmission" => params}, socket) do
+  def handle_event(
+        "next",
+        _params,
+        %Socket{assigns: %{current_form_data: current_form_data}} = socket
+      ) do
+    case valid?(current_form_data) do
+      true ->
+        send(self(), :proceed)
+        {:noreply, socket}
+
+      false ->
+        {:noreply, socket}
+    end
+  end
+
+  @impl Phoenix.LiveComponent
+  def handle_event(
+        "change_propagator_case",
+        params,
+        %Socket{assigns: %{changeset: changeset}} = socket
+      ) do
+    updated_params =
+      update_changeset_param(
+        changeset,
+        :propagator_case_uuid,
+        fn _value_before -> params["uuid"] end
+      )
+
     propagator =
-      case params["propagator_case_uuid"] do
+      case params["uuid"] do
         nil ->
           nil
 
@@ -91,37 +116,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
           {person, case}
       end
 
-    actual_params =
-      params
-      |> Map.new(fn
-        {"type", type} ->
-          {:type, String.to_atom(type)}
-
-        {k, v} ->
-          {String.to_atom(k), v}
-      end)
-      |> Map.put(:propagator, propagator)
-
-    __MODULE__
-    |> validation_changeset(actual_params)
-    |> case do
-      %Ecto.Changeset{valid?: true} ->
-        send(self(), {:proceed, actual_params})
-        {:noreply, socket}
-
-      %Ecto.Changeset{valid?: false} = changeset ->
-        {:noreply, assign(socket, :changeset, changeset)}
-    end
-  end
-
-  @impl Phoenix.LiveComponent
-  def handle_event("change_propagator_case", params, socket) do
-    updated_params =
-      update_changeset_param(
-        socket.assigns.changeset,
-        :propagator_case_uuid,
-        fn _value_before -> params["uuid"] end
-      )
+    send(self(), {:feed, %{propagator_case_uuid: params["uuid"], propagator: propagator}})
 
     {:noreply, assign(socket, :changeset, validation_changeset(__MODULE__, updated_params))}
   end
@@ -196,5 +191,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     %__MODULE__{}
     |> changeset(step_data)
     |> then(& &1.valid?)
+  end
+
+  defp normalize_params(params) do
+    Map.new(params, fn
+      {"type", type} ->
+        {:type, String.to_existing_atom(type)}
+
+      {k, v} ->
+        {String.to_existing_atom(k), v}
+    end)
   end
 end
