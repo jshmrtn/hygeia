@@ -1,46 +1,44 @@
 <div class="component-case-test-create container">
-  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
-    <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
+  <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
 
-    <div class="card">
-      <div class="card-header">
-        <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
-      </div>
-      <div class="card-body">
-        <Form
-          for={@changeset}
-          change="validate"
-          submit="save"
-          opts={autocomplete: "off", id: "transmission-form", class: "view-test-create container"}
-        >
-          <LiveRedirect
-            to={Routes.test_index_path(
-              @socket,
-              :show,
-              @case.uuid
-            )}
-            class="btn btn-outline-primary mb-4"
-          >
-            <span class="oi oi-arrow-left me-1" aria-hidden="true" />
-            {gettext("Back to list")}
-          </LiveRedirect>
-
-          <h1 class="mb-3">
-            {gettext("New test")}
-          </h1>
-
-          <HygeiaWeb.TestLive.Form id="test-create" />
-
-          <button
-            class="btn btn-primary"
-            type="submit"
-            phx-disable-with={gettext("Saving...")}
-            disabled={not @changeset.valid?}
-          >
-            {gettext("Save")}
-          </button>
-        </Form>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
     </div>
-  </Context>
+    <div class="card-body">
+      <Form
+        for={@changeset}
+        change="validate"
+        submit="save"
+        opts={autocomplete: "off", id: "transmission-form", class: "view-test-create container"}
+      >
+        <LiveRedirect
+          to={Routes.test_index_path(
+            @socket,
+            :show,
+            @case.uuid
+          )}
+          class="btn btn-outline-primary mb-4"
+        >
+          <span class="oi oi-arrow-left me-1" aria-hidden="true" />
+          {gettext("Back to list")}
+        </LiveRedirect>
+
+        <h1 class="mb-3">
+          {gettext("New test")}
+        </h1>
+
+        <HygeiaWeb.TestLive.Form id="test-create" />
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+          phx-disable-with={gettext("Saving...")}
+          disabled={not @changeset.valid?}
+        >
+          {gettext("Save")}
+        </button>
+      </Form>
+    </div>
+  </div>
 </div>
