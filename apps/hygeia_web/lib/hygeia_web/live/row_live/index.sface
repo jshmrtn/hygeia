@@ -33,7 +33,7 @@
                 :if={authorized?(row, :details, auth) and row.status == :pending}
               >
                 <button class="ms-auto btn btn-sm btn-primary">
-                  {gettext("Apply")}
+                  {pgettext("Inbox Row Index", "Process")}
                 </button>
               </LiveRedirect>
               <LiveRedirect

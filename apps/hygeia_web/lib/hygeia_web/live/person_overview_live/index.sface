@@ -101,9 +101,9 @@
         </td>
         <td>
           <div :if={not is_nil(case.tracer)}>
-            {case.tracer.display_name}<br>
-            <small class="text-muted">{case.tenant.from_email}</small>
+            {case.tracer.display_name}
           </div>
+          <small class="text-muted">{case.tenant.from_email}</small>
         </td>
         <td class="text-end">
           {#case phase}

@@ -24,7 +24,7 @@
     <div class="mb-2 card data-card">
       <details id="row_data">
         <summary class="card-header">
-          {gettext("Import Data")}
+          {pgettext("Import Row Apply", "Imported Data")}
         </summary>
         <div class="card-body hy-readonly-form">
           <HygeiaWeb.RowLive.Changes row={@row} id="change_data_table" />
@@ -46,8 +46,8 @@
           >
             <HygeiaWeb.RowLive.Changes row={@row} id="change_correction_table" data={@corrections}>
               <:field_value :let={key: key}>
-                <Field name={key} class="form-group row">
-                  <TextInput class="form-control col-sm-9" />
+                <Field name={key} class="form-group">
+                  <TextInput class="form-control" />
                 </Field>
               </:field_value>
             </HygeiaWeb.RowLive.Changes>
@@ -103,7 +103,7 @@
             >
               <HiddenInput field={:index} value={index} />
               <Field name={:tenant_uuid} class="form-group row">
-                <Label class="col-sm-3 col-form-label" />
+                <Label class="col-sm-3 col-form-label">{pgettext("Inbox Row Apply Tenant", "Tenant")}</Label>
                 <Select class="form-control col-sm-9" options={Enum.map(@tenants, &{&1.name, &1.uuid})} />
               </Field>
 
@@ -119,16 +119,16 @@
               <span class="d-block small certainty-label">
                 {translate_certainty(certainty)}
               </span>
-              Case:
+              {pgettext("Inbox Row Apply Person", "Case:")}
 
               {#if is_nil(action.case) and is_nil(action.person)}
-                Create New
+                {pgettext("Inbox Row Apply Person", "Create New")}
               {/if}
               {#if is_nil(action.case) and not is_nil(action.person)}
-                Existing Person, new case
+                {pgettext("Inbox Row Apply Person", "Existing Person, new case")}
               {/if}
               {#if not is_nil(action.case) and not is_nil(action.person)}
-                Existing Case
+                {pgettext("Inbox Row Apply Person", "Existing Case")}
               {/if}
             </div>
           </summary>
@@ -145,7 +145,7 @@
           >
             <HiddenInput field={:index} value={index} />
             <Field name={:person_uuid} class="form-group">
-              <Label />
+              <Label>{pgettext("Inbox Row Apply Person", "Person")}</Label>
               <HygeiaWeb.PersonLive.Choose
                 id={"#{index}_Action.SelectCase_person"}
                 change="select_person"
@@ -156,7 +156,7 @@
             <span class="mb-3 d-block text-muted">{gettext("or")}</span>
 
             <Field name={:case_uuid} class="mb-4 form-group">
-              <Label />
+              <Label>{pgettext("Inbox Row Apply Person", "Case")}</Label>
               <HygeiaWeb.CaseLive.Choose
                 id={"#{index}_Action.SelectCase_case"}
                 change="select_case"
@@ -190,7 +190,8 @@
           </summary>
 
           <div class="card-body">
-            {gettext("A phase will be appended.")}
+            <span :if={action.action == :skip}>{gettext("Keep Phases")}</span>
+            <span :if={action.action == :append}>{gettext("A phase will be appended.")}</span>
           </div>
         {/if}
         {#if match?(%Action.PatchPhaseDeath{}, action)}
@@ -239,16 +240,24 @@
               <span class="d-block small certainty-label">
                 {translate_certainty(certainty)}
               </span>
-              {gettext("Add replace field in Person.")}
+              {#if map_size(action.person_attrs) == 0}
+                {gettext("Keep personal data")}
+              {#else}
+                {gettext("Update personal data")}
+              {/if}
             </div>
           </summary>
 
           <div class="card-body">
             <HygeiaWeb.ResourceTable
+              :if={map_size(action.person_attrs) > 0}
               subject={action.person_attrs}
               module={CaseContext.Person}
               id="patch_person_changes"
             />
+            {#if map_size(action.person_attrs) == 0}
+              {gettext("Keep personal data")}
+            {/if}
           </div>
         {/if}
         {#if match?(%Action.PatchTests{}, action)}
@@ -383,7 +392,7 @@
             <div class="row">
               <div class="col">
                 <Field name={:tracer_uuid} class="form-group">
-                  <Label class="col-sm-3 col-form-label" />
+                  <Label class="col-sm-3 col-form-label">{pgettext("Inbox Row Apply Assignee", "Tracer")}</Label>
                   <Select
                     class="form-control"
                     opts={prompt: gettext("Case Administration")}
@@ -393,7 +402,7 @@
               </div>
               <div class="col">
                 <Field name={:supervisor_uuid} class="form-group">
-                  <Label class="col-sm-3 col-form-label" />
+                  <Label class="col-sm-3 col-form-label">{pgettext("Inbox Row Apply Assignee", "Supervisor")}</Label>
                   <Select
                     class="form-control"
                     opts={prompt: gettext("Case Administration")}

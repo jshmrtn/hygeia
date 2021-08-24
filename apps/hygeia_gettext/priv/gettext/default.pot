@@ -113,12 +113,6 @@ msgstr ""
 msgid "Add hospitalization"
 msgstr ""
 
-msgid "Add replace field in Person."
-msgstr ""
-
-msgid "Add test"
-msgstr ""
-
 msgctxt "Phase Create Modal"
 msgid "Additional Changes"
 msgstr ""
@@ -291,6 +285,9 @@ msgstr ""
 msgid "Back to List"
 msgstr ""
 
+msgid "Back to list"
+msgstr ""
+
 msgid "Base Data"
 msgstr ""
 
@@ -327,6 +324,10 @@ msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case"
 msgstr ""
 
+msgctxt "Inbox Row Apply Person"
+msgid "Case"
+msgstr ""
+
 msgid "Case Administration"
 msgstr ""
 
@@ -352,6 +353,10 @@ msgid "Case deleted successfully"
 msgstr ""
 
 msgid "Case updated successfully"
+msgstr ""
+
+msgctxt "Inbox Row Apply Person"
+msgid "Case:"
 msgstr ""
 
 msgid "Cases"
@@ -581,6 +586,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Country"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
+msgid "Country"
+msgstr ""
+
 msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
 msgstr ""
@@ -594,6 +603,10 @@ msgid "Create"
 msgstr ""
 
 msgid "Create Contact Cases"
+msgstr ""
+
+msgctxt "Inbox Row Apply Person"
+msgid "Create New"
 msgstr ""
 
 msgid "Create Note"
@@ -664,6 +677,10 @@ msgstr ""
 msgid "Default Supervisor"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
+msgid "Default Supervisor"
+msgstr ""
+
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Supervisor"
 msgstr ""
@@ -699,6 +716,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Tenant UUID"
 msgstr ""
 
+msgid "Default Tracer"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Default Tracer"
 msgstr ""
 
@@ -988,6 +1009,14 @@ msgid "Execute & Show Row"
 msgstr ""
 
 msgid "Execute failed, contact a Super User"
+msgstr ""
+
+msgctxt "Inbox Row Apply Person"
+msgid "Existing Case"
+msgstr ""
+
+msgctxt "Inbox Row Apply Person"
+msgid "Existing Person, new case"
 msgstr ""
 
 msgid "Export"
@@ -1297,13 +1326,18 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-msgid "Import Data"
-msgstr ""
-
 msgid "Import created successfully"
 msgstr ""
 
 msgid "Import deleted successfully"
+msgstr ""
+
+msgctxt "Import Row Apply"
+msgid "Imported Data"
+msgstr ""
+
+msgctxt "Inbox Row Show"
+msgid "Imported Data"
 msgstr ""
 
 msgid "Imports - Inbox"
@@ -1465,6 +1499,9 @@ msgid "Keep Phases"
 msgstr ""
 
 msgid "Keep Status"
+msgstr ""
+
+msgid "Keep personal data"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
@@ -1727,6 +1764,9 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
 msgstr ""
 
+msgid "Need help"
+msgstr ""
+
 msgctxt "Test Result"
 msgid "Negative"
 msgstr ""
@@ -1793,6 +1833,9 @@ msgstr ""
 msgid "New Tenant"
 msgstr ""
 
+msgid "New Test"
+msgstr ""
+
 msgid "New Transmission"
 msgstr ""
 
@@ -1827,6 +1870,9 @@ msgid "New reference"
 msgstr ""
 
 msgid "New tenant"
+msgstr ""
+
+msgid "New test"
 msgstr ""
 
 msgid "New transmission"
@@ -1875,9 +1921,6 @@ msgid "No recipient"
 msgstr ""
 
 msgid "No submissions have been entered yet. Please submit all relevant people. Previous submissions can also be viewed, edited and deleted later."
-msgstr ""
-
-msgid "No tests"
 msgstr ""
 
 msgid "No verson entries found"
@@ -2125,6 +2168,10 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person"
 msgstr ""
 
+msgctxt "Inbox Row Apply Person"
+msgid "Person"
+msgstr ""
+
 msgctxt "Login"
 msgid "Person"
 msgstr ""
@@ -2158,6 +2205,14 @@ msgid "Person is symptomatic and therefore tested"
 msgstr ""
 
 msgid "Person updated successfully"
+msgstr ""
+
+msgctxt "ISM 2021-06-11 Death Field Group"
+msgid "Personal"
+msgstr ""
+
+msgctxt "ISM 2021-06-11 Test Field Group"
+msgid "Personal"
 msgstr ""
 
 msgid "Personal service with physical contact (e.g. hairdressers, massage studio)"
@@ -2268,6 +2323,14 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Private Key"
+msgstr ""
+
+msgctxt "Inbox Row Index"
+msgid "Process"
+msgstr ""
+
+msgctxt "Inbox Row Show"
+msgid "Processed Data"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
@@ -2435,6 +2498,14 @@ msgid "References"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
+msgid "References"
+msgstr ""
+
+msgctxt "ISM 2021-06-11 Death Field Group"
+msgid "References"
+msgstr ""
+
+msgctxt "ISM 2021-06-11 Test Field Group"
 msgid "References"
 msgstr ""
 
@@ -2811,6 +2882,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Supervisor"
 msgstr ""
 
+msgctxt "Inbox Row Apply Assignee"
+msgid "Supervisor"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Supervisor Name"
 msgstr ""
@@ -2902,6 +2977,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tenant"
 msgstr ""
 
+msgctxt "Inbox Row Apply Tenant"
+msgid "Tenant"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tenant UUID"
 msgstr ""
@@ -2934,6 +3013,13 @@ msgstr ""
 msgid "Tenants"
 msgstr ""
 
+msgid "Test"
+msgstr ""
+
+msgctxt "ISM 2021-06-11 Test Field Group"
+msgid "Test"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Test Kind"
 msgstr ""
@@ -2944,8 +3030,14 @@ msgstr ""
 msgid "Test by order from CT"
 msgstr ""
 
+msgid "Test created successfully"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Test date"
+msgstr ""
+
+msgid "Test deleted successfully"
 msgstr ""
 
 msgid "Test during quarantine without ending it"
@@ -2955,6 +3047,9 @@ msgid "Test for early termination of quarantine"
 msgstr ""
 
 msgid "Test required by professional activity"
+msgstr ""
+
+msgid "Test updated successfully"
 msgstr ""
 
 msgid "Testing based on a message via app"
@@ -3067,6 +3162,10 @@ msgid "Tracer"
 msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Tracer"
+msgstr ""
+
+msgctxt "Inbox Row Apply Assignee"
 msgid "Tracer"
 msgstr ""
 
@@ -3193,6 +3292,9 @@ msgid "Unknown"
 msgstr ""
 
 msgid "Unknown Error"
+msgstr ""
+
+msgid "Update personal data"
 msgstr ""
 
 msgctxt "Field"
@@ -3441,6 +3543,10 @@ msgstr ""
 
 msgctxt "Item Table"
 msgid "mutations"
+msgstr ""
+
+msgctxt "Notification"
+msgid "needs help with self-service."
 msgstr ""
 
 msgctxt "Item Table"

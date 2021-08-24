@@ -242,7 +242,7 @@ defmodule Hygeia.ImportContext do
           join: predecessor_import in Import,
           on:
             predecessor_import.type == search_import.type and
-              search_import.change_date > predecessor_import.change_date and
+              search_import.change_date >= predecessor_import.change_date and
               search_import.tenant_uuid == predecessor_import.tenant_uuid,
           join: predecessor in assoc(predecessor_import, :resolved_rows),
           where: search.uuid == ^search_uuid and predecessor.identifiers == search.identifiers,

@@ -66,6 +66,7 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
         Enum.map(phases, &{&1, case})
       end)
       |> Enum.filter(&match?({%Phase{quarantine_order: true}, _case}, &1))
+      |> Enum.sort_by(fn {%Phase{end: end_date}, _case} -> end_date end, {:desc, Date})
       |> Enum.find(
         {nil, nil},
         fn {%Phase{start: start_date, end: end_date}, _case} ->

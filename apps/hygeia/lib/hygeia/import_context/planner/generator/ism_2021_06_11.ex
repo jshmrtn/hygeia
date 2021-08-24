@@ -483,14 +483,14 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
            preceeding_action_plan :: [Planner.Action.t()] ->
              {Planner.certainty(), Planner.Action.t()})
   def patch_tests(field_mapping) do
-    fn row, %{changes: changes}, preceeding_steps ->
+    fn row, %{data: data}, preceeding_steps ->
       test_attrs =
         @test_field_path
         |> Enum.map(fn {common_field_identifier, destination_path} ->
           {field_mapping[common_field_identifier], destination_path}
         end)
         |> Enum.map(fn {field_name, destination_path} ->
-          {destination_path, Row.get_change_field(changes, [field_name])}
+          {destination_path, Row.get_change_field(data, [field_name])}
         end)
         |> Enum.reject(&match?({_path, nil}, &1))
         |> Enum.map(&normalize_test_data/1)
