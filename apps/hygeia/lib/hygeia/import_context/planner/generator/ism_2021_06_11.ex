@@ -212,15 +212,19 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     first_name
     |> CaseContext.list_people_by_name(last_name)
     |> Repo.preload(cases: [person: [], tenant: [], tests: []])
-    |> Enum.map(
-      &{person_phone_matches?(&1, Row.get_change_field(changes, [field_mapping.phone])), &1}
-    )
-    |> Enum.sort()
+    |> Enum.reduce({[], []}, fn person, {acc_phone_match, acc_phone_no_match} ->
+      if person_phone_matches?(person, Row.get_change_field(changes, [field_mapping.phone])) do
+        {acc_phone_match ++ [person], acc_phone_no_match}
+      else
+        {acc_phone_match, acc_phone_no_match ++ [person]}
+      end
+    end)
     |> case do
-      [] -> :error
-      [{true, person}] -> {:ok, select_active_cases(person, relevance_date)}
-      [{false, person}] -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
-      [{_phone_matches, person} | _others] -> {:ok, select_active_cases(person, relevance_date)}
+      {[], []} -> :error
+      {[person], []} -> {:ok, select_active_cases(person, relevance_date)}
+      {[], [person]} -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
+      {[person | _others], _no_matches} -> {:ok, select_active_cases(person, relevance_date)}
+      {[], [person | _others]} -> {:ok, select_active_cases(person, relevance_date)}
     end
   end
 
