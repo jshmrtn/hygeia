@@ -63,6 +63,13 @@
     >
       {gettext("Isolation Confirmation")}
     </Link>
+    <p class="mt-4">{gettext("Additional actions:")}</p>
+    <LiveRedirect
+      class="btn btn-lg btn-primary"
+      to={Routes.possible_index_submission_index_path(@socket, :index, @active_case)}
+    >
+      {gettext("Submit contact persons")}
+    </LiveRedirect>
   </div>
 
   <h3>{gettext("History")}</h3>
@@ -112,7 +119,7 @@
                 class="btn btn-sm btn-outline-primary ms-2 mb-2"
                 to={Routes.possible_index_submission_index_path(@socket, :index, case)}
               >
-                {gettext("Possible Index Submissions")}
+                {gettext("Submit contact persons")}
               </LiveRedirect>
               <Link
                 class={
