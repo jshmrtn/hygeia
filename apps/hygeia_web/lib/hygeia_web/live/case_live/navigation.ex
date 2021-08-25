@@ -8,16 +8,27 @@ defmodule HygeiaWeb.CaseLive.Navigation do
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.Test
+  alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias HygeiaWeb.UriActiveContext
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
   prop case, :map, required: true
+
   data note_modal, :map, default: nil
   data sms_modal, :map, default: nil
   data email_modal, :map, default: nil
   data phase_create_modal, :map, default: nil
+
+  @impl Phoenix.LiveComponent
+  def preload(assign_list),
+    do:
+      preload_assigns_one(
+        assign_list,
+        :case,
+        &Repo.preload(&1, :tenant)
+      )
 
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do

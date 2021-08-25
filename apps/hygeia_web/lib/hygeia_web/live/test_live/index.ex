@@ -33,6 +33,7 @@ defmodule HygeiaWeb.TestLive.Index do
     case =
       Repo.preload(
         case,
+        tenant: [],
         tests: [mutation: []],
         person: [tenant: []]
       )
