@@ -1,5 +1,5 @@
 <div>
-  <Context get={HygeiaWeb, auth: auth}>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
     <table class="table table-sm">
       <thead>
         <tr>
@@ -72,7 +72,7 @@
                     wrapper_tag={:span}
                   >
                     {case_display_type(transmission.recipient_case)}
-                    <small class="ms-1">({case_display_date(transmission.recipient_case)})</small>
+                    <small class="ms-1">({case_display_date(transmission.recipient_case, timezone)})</small>
                   </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={not authorized?(transmission.recipient_case, :details, auth)}>
@@ -129,7 +129,7 @@
                     wrapper_tag={:span}
                   >
                     {case_display_type(transmission.propagator_case)}
-                    <small class="ms-1">({case_display_date(transmission.propagator_case)})</small>
+                    <small class="ms-1">({case_display_date(transmission.propagator_case, timezone)})</small>
                   </HygeiaWeb.RecordView>
                 </Link>
                 <span :if={not authorized?(transmission.propagator_case, :details, auth)}>

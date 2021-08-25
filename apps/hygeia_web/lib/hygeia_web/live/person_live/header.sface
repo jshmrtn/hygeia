@@ -1,5 +1,5 @@
 <div class="component-person-header mb-4">
-  <Context get={HygeiaWeb, auth: auth}>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
     <h1 class="mb-4" :if={authorized?(@person, :partial_details, auth)}>
       <HygeiaWeb.RecordView
         resource={@person}
@@ -47,7 +47,7 @@
         >
           <LiveRedirect to={to} class={"nav-link", active: active}>
             {case_display_type(case)}
-            <span class="date ms-2">{case_display_date(case)}</span>
+            <span class="date ms-2">{case_display_date(case, timezone)}</span>
           </LiveRedirect>
         </UriActiveContext>
       </li>
@@ -69,7 +69,7 @@
               wrapper_tag={:span}
             >
               {case_display_type(case)}
-              <span class="date ms-2">{case_display_date(case)}</span>
+              <span class="date ms-2">{case_display_date(case, timezone)}</span>
             </HygeiaWeb.RecordView>
           </LiveRedirect>
         </UriActiveContext>

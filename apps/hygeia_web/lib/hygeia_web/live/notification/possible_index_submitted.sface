@@ -1,32 +1,34 @@
 <div>
-  <LiveRedirect
-    class="d-inline-block"
-    to={Routes.possible_index_submission_show_path(@socket, :show, @body.possible_index_submission_uuid)}
-  >
-    <HygeiaWeb.RecordView
-      :if={not is_nil(@body.case)}
-      resource={@body.case}
-      action={:list}
-      id={"#{@id}_record_view_#{@body.case.uuid}"}
-      wrapper_tag={:strong}
+  <Context get={HygeiaWeb, timezone: timezone}>
+    <LiveRedirect
+      class="d-inline-block"
+      to={Routes.possible_index_submission_show_path(@socket, :show, @body.possible_index_submission_uuid)}
     >
-      {case_display_type(@body.case)}
-      <span class="date ms-2">
-        {case_display_date(@body.case)}
-      </span>
       <HygeiaWeb.RecordView
-        resource={@body.case.person}
+        :if={not is_nil(@body.case)}
+        resource={@body.case}
         action={:list}
-        id={"#{@id}_record_view_person_#{@body.case.person.uuid}"}
-        wrapper_tag={:span}
+        id={"#{@id}_record_view_#{@body.case.uuid}"}
+        wrapper_tag={:strong}
       >
-        ({@body.case.person.first_name} {@body.case.person.last_name})
+        {case_display_type(@body.case)}
+        <span class="date ms-2">
+          {case_display_date(@body.case, timezone)}
+        </span>
+        <HygeiaWeb.RecordView
+          resource={@body.case.person}
+          action={:list}
+          id={"#{@id}_record_view_person_#{@body.case.person.uuid}"}
+          wrapper_tag={:span}
+        >
+          ({@body.case.person.first_name} {@body.case.person.last_name})
+        </HygeiaWeb.RecordView>
       </HygeiaWeb.RecordView>
-    </HygeiaWeb.RecordView>
-    <em :if={is_nil(@body.case)}>
-      {pgettext("Notification", "deleted")}
-    </em>
+      <em :if={is_nil(@body.case)}>
+        {pgettext("Notification", "deleted")}
+      </em>
 
-    {pgettext("Notification", "possible index submitted.")}
-  </LiveRedirect>
+      {pgettext("Notification", "possible index submitted.")}
+    </LiveRedirect>
+  </Context>
 </div>

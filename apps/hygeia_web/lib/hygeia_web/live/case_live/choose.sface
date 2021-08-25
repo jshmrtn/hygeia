@@ -1,5 +1,5 @@
 <div>
-  <Context get={HygeiaWeb, auth: auth}>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
     <InputContext assigns={assigns} :let={form: form, field: field}>
       <HiddenInput />
 
@@ -33,7 +33,7 @@
                     {case.person.human_readable_id}
                   </span>
                   <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
-                  <small class="d-block text-muted">{case_display_date(case)}</small>
+                  <small class="d-block text-muted">{case_display_date(case, timezone)}</small>
                 </HygeiaWeb.RecordView>
                 <button class="btn btn-danger" :on-click={@change} type="button" phx-value-subject={@subject}>
                   <span class="oi oi-trash" aria-hidden="true" />
@@ -101,7 +101,7 @@
                       {case.person.human_readable_id}
                     </span>
                     <small class="d-block text-muted" :if={[] != case.phases}>{case_phase_type_translation(List.last(case.phases))}</small>
-                    <small class="d-block text-muted">{case_display_date(case)}</small>
+                    <small class="d-block text-muted">{case_display_date(case, timezone)}</small>
                   </HygeiaWeb.RecordView>
 
                   <button class="btn btn-primary" type="button">

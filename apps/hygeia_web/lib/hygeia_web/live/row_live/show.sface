@@ -1,5 +1,5 @@
 <div class="component-row-show container">
-  <Context get={HygeiaWeb, auth: auth}>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
     <HygeiaWeb.ImportLive.Header import={@row.import} id="header" />
 
     <div>
@@ -91,7 +91,7 @@
                 wrapper_tag={:span}
               >
                 <small class="d-block">{case_display_type(@row.case)}</small>
-                <small class="d-block">{case_display_date(@row.case)}</small>
+                <small class="d-block">{case_display_date(@row.case, timezone)}</small>
               </HygeiaWeb.RecordView>
             </Link>
             <span :if={not authorized?(@row.case, :details, auth)}>

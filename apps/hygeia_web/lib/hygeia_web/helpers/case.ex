@@ -8,8 +8,10 @@ defmodule HygeiaWeb.Helpers.Case do
   alias Hygeia.CaseContext.Case.Phase.Index
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex
 
-  @spec case_display_name(case :: Case.t()) :: String.t()
-  def case_display_name(case), do: "#{case_display_type(case)} (#{case_display_date(case)})"
+  @spec case_display_name(case :: Case.t(), display_timezone :: Calendar.time_zone()) ::
+          String.t()
+  def case_display_name(case, timezone),
+    do: "#{case_display_type(case)} (#{case_display_date(case, timezone)})"
 
   @spec case_display_type(case :: Case.t()) :: String.t()
   def case_display_type(%Case{phases: phases} = _case),
@@ -18,22 +20,28 @@ defmodule HygeiaWeb.Helpers.Case do
       |> Enum.map(&case_phase_type_translation/1)
       |> HygeiaCldr.List.to_string!(format: :unit_short)
 
-  @spec case_display_date(case :: Case.t()) :: String.t()
-  def case_display_date(%Case{
-        phases: [%Phase{start: start_date} | _] = phases,
-        inserted_at: inserted_at
-      }) do
+  @spec case_display_date(case :: Case.t(), display_timezone :: Calendar.time_zone()) ::
+          String.t()
+  def case_display_date(
+        %Case{
+          phases: [%Phase{start: start_date} | _] = phases,
+          inserted_at: inserted_at
+        },
+        timezone
+      ) do
     %Phase{end: end_date} = List.last(phases)
 
     case {start_date, end_date} do
       {nil, _end_date} ->
         gettext("Created at %{created_at}",
-          created_at: Cldr.DateTime.to_string!(inserted_at, HygeiaCldr)
+          created_at:
+            inserted_at |> DateTime.shift_zone!(timezone) |> Cldr.DateTime.to_string!(HygeiaCldr)
         )
 
       {_start_date, nil} ->
         gettext("Created at %{created_at}",
-          created_at: Cldr.DateTime.to_string!(inserted_at, HygeiaCldr)
+          created_at:
+            inserted_at |> DateTime.shift_zone!(timezone) |> Cldr.DateTime.to_string!(HygeiaCldr)
         )
 
       {start_date, end_date} ->

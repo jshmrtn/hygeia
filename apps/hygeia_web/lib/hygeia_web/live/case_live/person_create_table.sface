@@ -1,5 +1,5 @@
 <div class="component-case-person-create-table mb-2">
-  <Context get={HygeiaWeb, auth: auth}>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
     <table class="person-table table table-sm no-autofill-background">
       <thead>
         <tr>
@@ -302,7 +302,7 @@
                               phx-value-case-uuid={case.uuid}
                               phx-value-type="case"
                               phx-target={@myself}
-                              value={gettext("Choose %{case}", case: case_display_name(case))}
+                              value={gettext("Choose %{case}", case: case_display_name(case, timezone))}
                             />
 
                             <input
