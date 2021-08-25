@@ -120,6 +120,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
               |> Ecto.Changeset.fetch_field!(:people)
               |> Enum.map(&{&1, CreatePersonSchema.upsert(&1, socket, global, propagator_case)})
               |> Enum.map(&CreateSchema.upsert_case(&1, global))
+              |> Repo.preload(person: [], tenant: [])
 
             transmissions = Enum.map(cases, &CreateSchema.create_transmission(&1, global))
 
