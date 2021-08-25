@@ -18,7 +18,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -118,7 +118,6 @@ msgctxt "Phase Create Modal"
 msgid "Additional Changes"
 msgstr "Weitere Änderungen"
 
-#, elixir-format
 msgid "Additional actions:"
 msgstr "Weitere Aktionen:"
 
@@ -1300,7 +1299,7 @@ msgstr "Ich bestätige, dass alle Angaben korrekt sind. Dies kann überprüft we
 msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
 msgstr "Ich habe einen Covid-19 Test ab frühestens dem 4. Tag vor Ablauf der Quarantäne gemacht. Das Testresultat ist negativ."
 
-msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation COnfirmation)"
+msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
 msgstr "Ich war innerhalb der letzten sechs Monate an Covid-19 erkrankt und bin bereits genesen. Die Erkrankung kann ich offiziell nachweisen (Covid Zertifikat, positiver PCR-Test, Isolationsbestätigung)."
 
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
@@ -2927,7 +2926,6 @@ msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr "Betreff"
 
-#, elixir-format
 msgid "Submit contact persons"
 msgstr "Kontaktpersonen erfassen"
 
@@ -3162,6 +3160,9 @@ msgstr "Der Index-Phase-End-Grund wird auf %{end_reason} gesetzt."
 
 msgid "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
 msgstr "Der Link mit dem Index Self-Service wurde verschickt. Der Index hat seine Kontaktpersonen noch nicht eingetragen. Dies kann bei \"%{link}\" kontrolliert werden."
+
+msgid "The quarantine can be ended because of a negative test the earliest on %{date}."
+msgstr "Die Quarantäne kann auf Grund eines negativen Tests frühestens am %{date} beendet werden."
 
 msgctxt "Phase Create Modal"
 msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."

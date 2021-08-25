@@ -117,7 +117,6 @@ msgctxt "Phase Create Modal"
 msgid "Additional Changes"
 msgstr ""
 
-#, elixir-format
 msgid "Additional actions:"
 msgstr ""
 
@@ -1239,7 +1238,7 @@ msgstr ""
 msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
 msgstr ""
 
-msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation COnfirmation)"
+msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
 msgstr ""
 
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
@@ -2864,7 +2863,6 @@ msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr ""
 
-#, elixir-format
 msgid "Submit contact persons"
 msgstr ""
 
@@ -3098,6 +3096,9 @@ msgid "The index phase end reason will be set to %{end_reason}."
 msgstr ""
 
 msgid "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
+msgstr ""
+
+msgid "The quarantine can be ended because of a negative test the earliest on %{date}."
 msgstr ""
 
 msgctxt "Phase Create Modal"
