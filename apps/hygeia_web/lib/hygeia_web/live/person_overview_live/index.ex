@@ -34,20 +34,12 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:updated, %Person{} = person, _version}, socket) do
-    {:noreply, load_data(socket, person)}
-  end
-
   def handle_info({:deleted, %Person{}, _version}, socket) do
     {:noreply, redirect(socket, to: Routes.home_index_path(socket, :index))}
   end
 
-  def handle_info({:updated, %Case{} = case, _version}, socket) do
-    case = Repo.preload(case, person: [cases: [:tracer]])
-    {:noreply, load_data(socket, case.person)}
-  end
-
-  def handle_info({:deleted, %Case{}, _version}, socket) do
+  def handle_info({action, _entity, _version}, socket)
+      when action in [:created, :updated, :deleted] do
     {:noreply, load_data(socket, CaseContext.get_person!(socket.assigns.person.uuid))}
   end
 
