@@ -2119,7 +2119,6 @@ defmodule Hygeia.CaseContext do
   def delete_transmission(%Transmission{} = transmission),
     do:
       transmission
-      |> change_transmission()
       |> versioning_delete()
       |> broadcast(
         "transmissions",
