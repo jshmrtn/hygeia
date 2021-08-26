@@ -66,6 +66,20 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
         end
       )
 
-    assign(socket, person: person, active_phase: active_phase, active_case: active_case)
+    sorted_case_phases =
+      Enum.sort_by(
+        for case <- person.cases, phase <- case.phases do
+          {phase, case}
+        end,
+        fn {%Phase{end: end_date}, _case} -> end_date end,
+        {:desc, Date}
+      )
+
+    assign(socket,
+      person: person,
+      active_phase: active_phase,
+      active_case: active_case,
+      sorted_case_phases: sorted_case_phases
+    )
   end
 end

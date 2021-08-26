@@ -13,12 +13,12 @@
       <p class="mb-1">{gettext("You are currently in")}</p>
       <p class="mt-0 display-4">{gettext("Quarantine")}</p>
       <p class="mb-5">{gettext(
-          "Your quarantine started on %{start_date} and is expected to end on %{end_date}.",
+          "Your quarantine started on %{start_date} and applies up to and including %{end_date}.",
           start_date: "<b>" <> HygeiaCldr.Date.to_string!(@active_phase.start) <> "</b>",
           end_date: "<b>" <> HygeiaCldr.Date.to_string!(@active_phase.end) <> "</b>"
         )
         |> raw()}</p>
-      <p>{gettext("Download your:")}</p>
+      <p>{gettext("Downloads:")}</p>
       <Link
         class="btn btn-lg btn-primary mb-5"
         to={Routes.pdf_path(@socket, :quarantine_confirmation, @active_case.uuid, @active_phase.uuid)}
@@ -30,7 +30,7 @@
             "You can lift quarantine if you're fully vaccinated or if you verifiably had COVID-19 in the last six months."
           )}</p>
         <p>{gettext(
-            "You can also end quarantine early, if you do a COVID-19 test in the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
+            "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
           )}</p>
         <LiveRedirect
           class="btn btn-lg btn-outline-primary"
@@ -52,12 +52,12 @@
       <p class="mb-1">{gettext("You are currently in")}</p>
       <p class="mt-0 display-4">{gettext("Isolation")}</p>
       <p class="mb-5">{gettext(
-          "Your isolation started on %{start_date} and is expected to end on %{end_date}.",
+          "Your isolation started on %{start_date} and applies up to and including %{end_date}.",
           start_date: "<b>" <> HygeiaCldr.Date.to_string!(@active_phase.start) <> "</b>",
           end_date: "<b>" <> HygeiaCldr.Date.to_string!(@active_phase.end) <> "</b>"
         )
         |> raw()}</p>
-      <p>{gettext("Download your:")}</p>
+      <p>{gettext("Downloads:")}</p>
       <Link
         class="btn btn-lg btn-primary"
         to={Routes.pdf_path(@socket, :isolation_confirmation, @active_case.uuid, @active_phase.uuid)}
@@ -87,7 +87,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr :for={case <- @person.cases, phase <- case.phases}>
+        <tr :for={{phase, case} <- @sorted_case_phases}>
           <td>
             {case_display_type(case)}<br>
             <small class="text-nowrap text-muted">
