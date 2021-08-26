@@ -54,7 +54,8 @@
       <li
         class="nav-item"
         :for={case <- @person.cases}
-        :if={not authorized?(case, :details, auth) and authorized?(case, :partial_details, auth)}
+        :if={not authorized?(case, :details, auth) and authorized?(case, :partial_details, auth) and
+          Enum.any?(case.phases, &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))}
       >
         <UriActiveContext
           to={Routes.possible_index_submission_index_path(@socket, :index, case)}

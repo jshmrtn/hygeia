@@ -89,7 +89,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   def select_case(field_mapping, relevance_date_field) do
     fn
       _row, %{predecessor: %Row{case: %Case{} = case}}, _preceeding_steps ->
-        case = Repo.preload(case, person: [], tenant: [], tests: [])
+        case = preload_case(case)
         {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}
 
       _row, %{changes: changes, data: data}, _preceeding_steps ->
@@ -179,7 +179,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
 
   defp find_case_by_external_reference(type, id) do
     with [case | _] <- CaseContext.list_cases_by_external_reference(type, to_string(id)),
-         case <- Repo.preload(case, person: [], tenant: [], tests: []) do
+         case <- preload_case(case) do
       {:ok, {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}}
     else
       [] -> :error
@@ -192,7 +192,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
 
   defp find_person_by_external_reference(type, id, relevance_date) do
     with [person | _] <- CaseContext.list_people_by_external_reference(type, to_string(id)),
-         person <- Repo.preload(person, cases: [tenant: [], tests: []]) do
+         person <- preload_person(person) do
       {:ok, select_active_cases(person, relevance_date)}
     else
       [] -> :error
@@ -211,7 +211,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp find_person_by_name(first_name, last_name, changes, field_mapping, relevance_date) do
     first_name
     |> CaseContext.list_people_by_name(last_name)
-    |> Repo.preload(cases: [person: [], tenant: [], tests: []])
+    |> preload_person()
     |> Enum.reduce({[], []}, fn person, {acc_phone_match, acc_phone_no_match} ->
       if person_phone_matches?(person, Row.get_change_field(changes, [field_mapping.phone])) do
         {acc_phone_match ++ [person], acc_phone_no_match}
@@ -239,7 +239,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     ]
     |> List.flatten()
     |> Enum.uniq_by(& &1.uuid)
-    |> Repo.preload(cases: [person: [], tenant: [], tests: []])
+    |> preload_person()
     |> case do
       [] -> :error
       [person | _others] -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
@@ -253,7 +253,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp find_person_by_email(email, relevance_date) do
     :email
     |> CaseContext.list_people_by_contact_method(email)
-    |> Repo.preload(cases: [person: [], tenant: [], tests: []])
+    |> preload_person()
     |> case do
       [] -> :error
       [person | _others] -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
@@ -637,4 +637,10 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
       {:certain, %Planner.Action.AddNote{action: :skip}}
     end
   end
+
+  defp preload_case(case),
+    do: Repo.preload(case, person: [], tenant: [], tests: [], hospitalizations: [])
+
+  defp preload_person(person),
+    do: Repo.preload(person, cases: [tenant: [], tests: [], hospitalizations: []])
 end

@@ -32,7 +32,7 @@
     {#if negative_test_too_early?(Ecto.Changeset.fetch_field!(@changeset, :reason), @phase)}
       <div class="alert alert-danger">
         {gettext("The quarantine can be ended because of a negative test the earliest on %{date}.",
-          date: HygeiaCldr.Date.to_string!(Date.add(@phase.end, -4))
+          date: HygeiaCldr.Date.to_string!(Date.add(@phase.end, -3))
         )}
       </div>
     {#else}

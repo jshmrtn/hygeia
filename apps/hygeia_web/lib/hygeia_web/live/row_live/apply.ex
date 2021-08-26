@@ -192,7 +192,7 @@ defmodule HygeiaWeb.RowLive.Apply do
     {:ok, status} = Case.Status.cast(status)
 
     patch_action_plan(socket, index, fn %Action.PatchStatus{} = action ->
-      %Action.PatchStatus{action | status: status}
+      %Action.PatchStatus{action | status: status, action: :change}
     end)
   end
 
@@ -214,7 +214,7 @@ defmodule HygeiaWeb.RowLive.Apply do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], tenant: [], tests: [])
+      |> Repo.preload(person: [], tenant: [], tests: [], hospitalizations: [])
 
     unless authorized?(case, :details, get_auth(socket)) do
       raise "unauthorized"
