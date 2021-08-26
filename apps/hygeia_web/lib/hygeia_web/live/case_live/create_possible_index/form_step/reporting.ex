@@ -23,16 +23,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
 
   @impl Phoenix.LiveComponent
   def update(%{current_form_data: current_form_data} = assigns, socket) do
-    bindings =
-      current_form_data
-      |> Map.get(:bindings, [])
-      |> clean_reporting_data()
-      |> prefill_reporting_data()
+    updated_data = update_step_data(current_form_data, %{type: current_form_data[:type]})
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(bindings: bindings)}
+     |> assign(bindings: Map.get(updated_data, :bindings, []))}
   end
 
   @impl Phoenix.LiveComponent
@@ -153,6 +149,21 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
     |> Enum.filter(fn {type, _} -> type != :landline end)
   end
 
+  @spec update_step_data(form_data :: map(), changed_data :: map()) :: map()
+  def update_step_data(form_data, changed_data)
+
+  def update_step_data(%{bindings: bindings} = current_form_data, %{type: type}) do
+    Map.put(
+      current_form_data,
+      :bindings,
+      bindings
+      |> clean_reporting_data()
+      |> prefill_reporting_data(type)
+    )
+  end
+
+  def update_step_data(current_form_data, _data), do: current_form_data
+
   defp clean_reporting_data(bindings) do
     Enum.map(bindings, fn %{person_changeset: person_changeset} = binding ->
       reporting = Map.get(binding, :reporting, [])
@@ -172,37 +183,45 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
     end)
   end
 
-  defp prefill_reporting_data(bindings) do
+  defp prefill_reporting_data(bindings, type) do
     Enum.map(bindings, fn %{
                             person_changeset: person_changeset,
                             case_changeset: case_changeset,
                             reporting: reporting
                           } = binding ->
-      if should_contact_person(case_changeset) do
-        contact_uuids =
-          person_changeset
-          |> fetch_field!(:contact_methods)
-          |> Enum.map(& &1.uuid)
-
-        Map.put(binding, :reporting, add_contact_uuids(reporting, contact_uuids))
+      if should_contact_person(case_changeset, type) do
+        Map.put(
+          binding,
+          :reporting,
+          add_contact_uuids(
+            reporting,
+            person_changeset
+            |> fetch_field!(:contact_methods)
+            |> Enum.map(& &1.uuid)
+          )
+        )
       else
         binding
       end
     end)
   end
 
-  defp should_contact_person(case_changeset) do
+  defp should_contact_person(case_changeset, type),
+    do: not has_index_phase?(case_changeset) and is_right_type?(type)
+
+  defp has_index_phase?(case_changeset) do
     case_changeset
     |> fetch_field!(:phases)
-    |> Enum.find(
-      &(match?(%Case.Phase{details: %Case.Phase.Index{}}, &1) or
-          match?(%Case.Phase{details: %Case.Phase.PossibleIndex{type: :contact_person}}, &1))
-    )
+    |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
     |> case do
-      nil -> true
-      %Case.Phase{} -> false
+      nil -> false
+      %Case.Phase{} -> true
     end
   end
+
+  defp is_right_type?(transmission_type)
+  defp is_right_type?(:contact_person), do: false
+  defp is_right_type?(_other), do: true
 
   defp add_contact_uuid(reporting, contact_uuid) do
     [contact_uuid] ++ reporting

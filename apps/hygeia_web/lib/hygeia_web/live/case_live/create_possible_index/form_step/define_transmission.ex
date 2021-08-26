@@ -105,18 +105,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
         fn _value_before -> params["uuid"] end
       )
 
-    propagator =
-      case params["uuid"] do
-        nil ->
-          nil
-
-        uuid ->
-          case = CaseContext.get_case_with_preload!(uuid, [:person])
-          person = Map.get(case, :person)
-          {person, case}
-      end
-
-    send(self(), {:feed, %{propagator_case_uuid: params["uuid"], propagator: propagator}})
+    send(
+      self(),
+      {:feed,
+       %{
+         propagator_case_uuid: params["uuid"],
+         propagator: get_propagator_from_case_uuid(params["uuid"])
+       }}
+    )
 
     {:noreply, assign(socket, :changeset, validation_changeset(__MODULE__, updated_params))}
   end
@@ -186,11 +182,24 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     end)
   end
 
+  @spec update_step_data(form_data :: map(), changed_data :: map()) :: map()
+  def update_step_data(form_data, changed_data)
+  def update_step_data(form_data, _data), do: form_data
+
   @spec valid?(step_data :: map()) :: boolean()
   def valid?(step_data) do
     %__MODULE__{}
     |> changeset(step_data)
     |> then(& &1.valid?)
+  end
+
+  defp get_propagator_from_case_uuid(case_uuid)
+  defp get_propagator_from_case_uuid(nil), do: nil
+
+  defp get_propagator_from_case_uuid(case_uuid) do
+    case = CaseContext.get_case_with_preload!(case_uuid, [:person])
+    person = Map.get(case, :person)
+    {person, case}
   end
 
   defp normalize_params(params) do

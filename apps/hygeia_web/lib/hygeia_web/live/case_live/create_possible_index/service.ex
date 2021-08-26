@@ -39,14 +39,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
           |> fetch_field!(:inserted_at)
           |> case do
             nil ->
-              {:ok, case} =
-                CaseContext.create_case(merge_phases(case_changeset, transmission_data))
+              {:ok, case} = CaseContext.create_case(case_changeset)
 
               case
 
             _date ->
-              {:ok, case} =
-                CaseContext.update_case(merge_phases(case_changeset, transmission_data))
+              {:ok, case} = CaseContext.update_case(case_changeset)
 
               case
           end
@@ -212,107 +210,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
         propagator_ism_id: propagator_ism_id,
         propagator_case_uuid: propagator_case_uuid
       })
-  end
-
-  defp merge_phases(case_changeset, transmission_data) do
-    existing_phases = fetch_field!(case_changeset, :phases)
-
-    existing_phases
-    |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
-    |> case do
-      nil -> manage_existing_phases(case_changeset, existing_phases, transmission_data)
-      _index_phase -> case_changeset
-    end
-  end
-
-  defp manage_existing_phases(case_changeset, existing_phases, transmission_data) do
-    date = transmission_data[:date]
-    global_type = transmission_data[:type]
-    global_type_other = transmission_data[:type_other]
-
-    existing_phases
-    |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.PossibleIndex{type: ^global_type}}, &1))
-    |> case do
-      nil ->
-        if global_type in [:contact_person, :travel] do
-          {start_date, end_date} = phase_dates(Date.from_iso8601!(date))
-
-          status_changed_phases =
-            Enum.map(existing_phases, fn
-              %Case.Phase{quarantine_order: true, start: old_phase_start} = phase ->
-                if Date.compare(old_phase_start, start_date) == :lt do
-                  %Case.Phase{
-                    phase
-                    | end: start_date,
-                      send_automated_close_email: false
-                  }
-                else
-                  %Case.Phase{phase | quarantine_order: false}
-                end
-
-              %Case.Phase{quarantine_order: quarantine_order} = phase
-              when quarantine_order in [false, nil] ->
-                phase
-            end)
-
-          Ecto.Changeset.put_embed(
-            case_changeset,
-            :phases,
-            status_changed_phases ++
-              [
-                %Case.Phase{
-                  details: %Case.Phase.PossibleIndex{
-                    type: global_type,
-                    type_other: global_type_other
-                  },
-                  quarantine_order: true,
-                  order_date: DateTime.utc_now(),
-                  start: start_date,
-                  end: end_date
-                }
-              ]
-          )
-        else
-          Ecto.Changeset.put_embed(
-            case_changeset,
-            :phases,
-            existing_phases ++
-              [
-                %Case.Phase{
-                  details: %Case.Phase.PossibleIndex{
-                    type: global_type,
-                    type_other: global_type_other
-                  }
-                }
-              ]
-          )
-        end
-
-      %Case.Phase{} ->
-        case_changeset
-    end
-  end
-
-  @spec phase_dates(Date.t()) :: {Date.t(), Date.t()}
-  def phase_dates(contact_date) do
-    start_date = contact_date
-    end_date = Date.add(start_date, 9)
-
-    start_date =
-      if Date.compare(start_date, Date.utc_today()) == :lt do
-        Date.utc_today()
-      else
-        start_date
-      end
-
-    end_date =
-      if Date.compare(end_date, Date.utc_today()) == :lt do
-        Date.utc_today()
-      else
-        end_date
-      end
-
-    {start_date, end_date}
   end
 
   @spec unstruct(map()) :: map()

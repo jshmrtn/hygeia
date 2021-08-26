@@ -5,7 +5,7 @@
       <div class="w-100">
         <PersonCard person_changeset={person_cs}>
           <:bottom>
-            {#if should_contact_person(case_cs)}
+            {#if should_contact_person(case_cs, @current_form_data.type)}
               {#for {contact_type, contact_type_members} <- group_contacts_by_type(person_cs)}
                 <div class="mb-4">
                   <table class="table">

@@ -171,8 +171,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:proceed, form_data}, socket) do
-    updated_data = Map.merge(socket.assigns.current_form_data, form_data)
+  def handle_info(
+        {:proceed, changed_data},
+        %{assigns: %{current_form_data: current_form_data}} = socket
+      ) do
+    updated_data =
+      current_form_data
+      |> Map.merge(changed_data)
+      |> update_form_data(changed_data)
 
     {:noreply,
      socket
@@ -181,8 +187,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({:return, form_data}, socket) do
-    updated_data = Map.merge(socket.assigns.current_form_data, form_data)
+  def handle_info(
+        {:return, changed_data},
+        %{assigns: %{current_form_data: current_form_data}} = socket
+      ) do
+    updated_data =
+      current_form_data
+      |> Map.merge(changed_data)
+      |> update_form_data(changed_data)
 
     {:noreply,
      socket
@@ -190,8 +202,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
      |> change_step(@form_steps, :prev)}
   end
 
-  def handle_info({:feed, form_data}, socket) do
-    updated_data = Map.merge(socket.assigns.current_form_data, form_data)
+  def handle_info(
+        {:feed, changed_data},
+        %{assigns: %{current_form_data: current_form_data}} = socket
+      ) do
+    updated_data =
+      current_form_data
+      |> Map.merge(changed_data)
+      |> update_form_data(changed_data)
 
     {:noreply, assign(socket, :current_form_data, updated_data)}
   end
@@ -303,6 +321,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   defp valid_step?("reporting", current_form_data) do
     Reporting.valid?(current_form_data[:bindings])
+  end
+
+  defp update_form_data(current_data, changed_data) do
+    current_data
+    |> DefineTransmission.update_step_data(changed_data)
+    |> DefinePeople.update_step_data(changed_data)
+    |> DefineOptions.update_step_data(changed_data)
+    |> Reporting.update_step_data(changed_data)
   end
 
   defp decide_nav_class(current_step, target_step, visited_steps, current_data) do

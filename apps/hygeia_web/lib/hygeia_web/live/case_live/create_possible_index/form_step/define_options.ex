@@ -8,6 +8,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
 
   alias Phoenix.LiveView.Socket
 
+  alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Status
   alias Hygeia.CaseContext.Person
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
@@ -29,31 +31,19 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
   data bindings, :list, default: []
 
   @impl Phoenix.LiveComponent
-  def update(
-        %{current_form_data: data, supervisor_users: supervisor_users, tracer_users: tracer_users} =
-          assigns,
-        socket
-      ) do
-    bindings = Map.get(data, :bindings, [])
-    propagator = assigns[:propagator]
-
-    bindings =
-      Enum.map(bindings, fn %{case_changeset: case_changeset} = binding ->
-        case_changeset =
-          merge_propagator_administrators(
-            case_changeset,
-            propagator,
-            supervisor_users,
-            tracer_users
-          )
-
-        Map.put(binding, :case_changeset, case_changeset)
-      end)
+  def update(%{current_form_data: current_form_data} = assigns, socket) do
+    updated_data =
+      update_step_data(current_form_data, %{
+        type: current_form_data[:type],
+        date: current_form_data[:date],
+        type_other: current_form_data[:type_other],
+        propagator: current_form_data[:propagator]
+      })
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(bindings: bindings)}
+     |> assign(:bindings, Map.get(updated_data, :bindings, []))}
   end
 
   @impl Phoenix.LiveComponent
@@ -70,7 +60,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
           Map.put(
             binding,
             :case_changeset,
-            change(case_changeset, normalize_params(case_params))
+            validation_changeset(case_changeset, Case, normalize_params(case_params))
           )
         end
       )
@@ -114,6 +104,28 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
     |> Enum.map(&{&1.display_name, &1.uuid})
   end
 
+  @spec update_step_data(form_data :: map(), changed_data :: map()) :: map()
+  def update_step_data(form_data, changed_data)
+
+  def update_step_data(%{bindings: bindings} = form_data, changed_data) do
+    Map.put(
+      form_data,
+      :bindings,
+      Enum.map(bindings, fn %{case_changeset: case_changeset} = binding ->
+        case_changeset =
+          case_changeset
+          |> IO.inspect(label: "BEFORE MERGE PHASES")
+          |> merge_phases(changed_data)
+          |> IO.inspect(label: "AFTER MERGE PHASES")
+          |> merge_propagator_administrators(changed_data)
+
+        Map.put(binding, :case_changeset, case_changeset)
+      end)
+    )
+  end
+
+  def update_step_data(form_data, _data), do: form_data
+
   defp manage_statuses(transmission_type, statuses)
   defp manage_statuses(:travel, statuses), do: statuses
   defp manage_statuses(:contact_person, statuses), do: statuses
@@ -126,36 +138,129 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
     end)
   end
 
-  defp merge_propagator_administrators(case_changeset, propagator, supervisor_users, tracer_users)
+  defp merge_propagator_administrators(case_changeset, data)
 
-  defp merge_propagator_administrators(case_changeset, nil, _sup_users, _trac_users),
-    do: case_changeset
-
-  defp merge_propagator_administrators(case_changeset, propagator, supervisor_users, tracer_users) do
-    {_propagator, propagator_case} = propagator
-
-    tenant_uuid = fetch_field!(case_changeset, :tenant_uuid)
-
-    change(case_changeset, %{
-      supervisor_uuid:
-        validate_administrator(
-          supervisor_users,
-          tenant_uuid,
-          propagator_case.supervisor_uuid
-        ),
-      tracer_uuid: validate_administrator(tracer_users, tenant_uuid, propagator_case.tracer_uuid)
+  defp merge_propagator_administrators(case_changeset, %{
+         propagator: {_propagator, propagator_case}
+       }) do
+    CaseContext.change_case(case_changeset, %{
+      supervisor_uuid: Map.fetch!(propagator_case, :supervisor_uuid),
+      tracer_uuid: Map.fetch!(propagator_case, :tracer_uuid)
     })
   end
 
-  defp validate_administrator(tenant_mapping, target_tenant_uuid, administrator_uuid) do
-    Enum.find_value(
-      tenant_mapping,
-      [],
-      fn {tenant_uuid, admins} ->
-        if tenant_uuid == target_tenant_uuid,
-          do: Enum.find_value(admins, &if(match?(&1, administrator_uuid), do: &1.uuid))
-      end
+  defp merge_propagator_administrators(case_changeset, _data), do: case_changeset
+
+  defp merge_phases(case_changeset, data) do
+    existing_phases = fetch_field!(case_changeset, :phases)
+
+    IO.inspect(fetch_change(case_changeset, :phases), label: "DSDK")
+
+    existing_phases
+    |> IO.inspect(label: "EXISTING PHASES")
+    |> Enum.find(
+      &(match?(%Case.Phase{details: %Case.Phase.Index{}}, &1) or
+          match?(%Ecto.Changeset{action: :insert}, &1))
     )
+    |> case do
+      nil -> manage_existing_phases(case_changeset, existing_phases, data)
+      _index_phase -> case_changeset
+    end
+  end
+
+  defp manage_existing_phases(
+         case_changeset,
+         existing_phases,
+         %{type: global_type, date: date} = data
+       ) do
+    global_type_other = data[:type_other]
+
+    existing_phases
+    |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.PossibleIndex{type: ^global_type}}, &1))
+    |> case do
+      nil ->
+        if global_type in [:contact_person, :travel] do
+          {start_date, end_date} = phase_dates(Date.from_iso8601!(date))
+
+          status_changed_phases =
+            Enum.map(existing_phases, fn
+              %Case.Phase{quarantine_order: true, start: old_phase_start} = phase ->
+                if Date.compare(old_phase_start, start_date) == :lt do
+                  %Case.Phase{
+                    phase
+                    | end: start_date,
+                      send_automated_close_email: false
+                  }
+                else
+                  %Case.Phase{phase | quarantine_order: false}
+                end
+
+              %Case.Phase{quarantine_order: quarantine_order} = phase
+              when quarantine_order in [false, nil] ->
+                phase
+            end)
+
+          Ecto.Changeset.put_embed(
+            case_changeset,
+            :phases,
+            status_changed_phases ++
+              [
+                %Case.Phase{
+                  details: %Case.Phase.PossibleIndex{
+                    type: global_type,
+                    type_other: global_type_other
+                  },
+                  quarantine_order: true,
+                  order_date: DateTime.utc_now(),
+                  start: start_date,
+                  end: end_date
+                }
+              ]
+          )
+        else
+          Ecto.Changeset.put_embed(
+            case_changeset,
+            :phases,
+            existing_phases ++
+              [
+                %Case.Phase{
+                  details: %Case.Phase.PossibleIndex{
+                    type: global_type,
+                    type_other: global_type_other
+                  }
+                }
+              ]
+          )
+        end
+
+      %Case.Phase{} ->
+        case_changeset
+    end
+  end
+
+  defp manage_existing_phases(case_changeset, _existing_phases, _data),
+    do: case_changeset
+
+  @spec phase_dates(Date.t()) :: {Date.t(), Date.t()}
+  def phase_dates(contact_date) do
+    start_date = contact_date
+    end_date = Date.add(start_date, 9)
+
+    start_date =
+      if Date.compare(start_date, Date.utc_today()) == :lt do
+        Date.utc_today()
+      else
+        start_date
+      end
+
+    end_date =
+      if Date.compare(end_date, Date.utc_today()) == :lt do
+        Date.utc_today()
+      else
+        end_date
+      end
+
+    {start_date, end_date}
   end
 
   defp normalize_params(params) do
