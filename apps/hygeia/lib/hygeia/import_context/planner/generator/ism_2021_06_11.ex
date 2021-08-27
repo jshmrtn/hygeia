@@ -30,6 +30,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     birth_date: [:birth_date],
     sex: [:sex],
     phone: [:phone],
+    email: [:email],
     address: [:address, :address],
     zip: [:address, :zip],
     place: [:address, :place],
@@ -430,11 +431,11 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
          true <- ExPhoneNumber.is_valid_number?(parsed_number),
          phone_number_type when phone_number_type in [:fixed_line, :voip] <-
            ExPhoneNumber.Validation.get_number_type(parsed_number) do
-      [{[:contact_methods, 0, :type], :landline}, {[:contact_methods, 0, :value], value}]
+      [{[:landline], value}]
     else
       {:error, _reason} -> {path, nil}
       false -> {path, nil}
-      _other -> [{[:contact_methods, 0, :type], :mobile}, {[:contact_methods, 0, :value], value}]
+      _other -> [{[:mobile], value}]
     end
   end
 

@@ -254,6 +254,13 @@
               subject={action.person_attrs}
               module={CaseContext.Person}
               id="patch_person_changes"
+              extra_fields={%{
+                CaseContext.Person => %{
+                  mobile: {:string, gettext("Mobile")},
+                  landline: {:string, gettext("Landline")},
+                  email: {:string, gettext("Email")}
+                }
+              }}
             />
             {#if map_size(action.person_attrs) == 0}
               {gettext("Keep personal data")}
