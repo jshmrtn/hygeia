@@ -117,6 +117,10 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
                place: "Widnau",
                country: "CH"
              },
+             contact_methods: [
+               %Person.ContactMethod{type: :mobile, value: "+41 78 123 45 67"},
+               %Person.ContactMethod{type: :email, value: "test@example.com"}
+             ],
              tenant_uuid: ^tenant_sg_uuid
            } = person
   end
