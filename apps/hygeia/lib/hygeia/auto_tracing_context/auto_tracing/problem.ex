@@ -24,5 +24,5 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
 
   def translate(:hospitalization), do: pgettext("Auto Tracing Problem", "Hospitalization")
   def translate(:new_employer), do: pgettext("Auto Tracing Problem", "New Employer")
-  def translate(:link_propagator), do: pgettext("Auto Tracing Problem", "Link Prpagator")
+  def translate(:link_propagator), do: pgettext("Auto Tracing Problem", "Link Propagator")
 end

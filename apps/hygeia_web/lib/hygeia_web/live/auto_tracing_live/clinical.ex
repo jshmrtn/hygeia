@@ -113,7 +113,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     {:ok, auto_tracing} =
       case case do
-        %Case{hospitalizations: []} ->
+        %Case{hospitalizations: [_hospitalization | _others]} ->
           AutoTracingContext.auto_tracing_add_problem(
             socket.assigns.auto_tracing,
             :hospitalization
