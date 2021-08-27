@@ -6,39 +6,51 @@
       <div class="card-header">
         <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
       </div>
-      <div class="card-body">
-        <h2>{pgettext("Auto Tracing Resolve Problems", "Overview")}</h2>
-        <dl>
-          <dt>{pgettext("Auto Tracing Resolve Problems", "Current Step")}</dt>
-          <dd>{AutoTracing.Step.translate(@auto_tracing.current_step)}</dd>
-          <dt>{pgettext("Auto Tracing Resolve Problems", "Last Change")}</dt>
-          <dd>
+      <div class="card-body hy-readonly-form">
+        <h2 class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Overview")}</h2>
+        <div class="form-group">
+          <div>
+            {pgettext("Auto Tracing Resolve Problems", "Current Step")}
+          </div>
+          <div class="value">
+            {AutoTracing.Step.translate(@auto_tracing.current_step)}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div>
+            {pgettext("Auto Tracing Resolve Problems", "Last Change")}
+          </div>
+          <div class="value">
             <HygeiaWeb.RelativeTime
               time={@auto_tracing.updated_at}
               id="auto_tracing_updated_at"
               component_id="auto_tracing_updated_at"
             />
-          </dd>
-        </dl>
+          </div>
+        </div>
 
-        <h2>{pgettext("Auto Tracing Resolve Problems", "Problems")}</h2>
+        <h2 class="mb-3 mt-5">{pgettext("Auto Tracing Resolve Problems", "Problems")}</h2>
 
         <div
           :for={problem <- @auto_tracing.problems}
-          class={"mb-2", "card", "data-card", solved: problem in @auto_tracing.solved_problems}
+          class={"mb-3 card problem-card", solved: problem in @auto_tracing.solved_problems}
           :id={"auto_tracing_problem_#{problem}"}
         >
           <details open>
-            <summary class="card-header">
-              <span :if={problem in @auto_tracing.solved_problems}>✓</span>
-              {AutoTracing.Problem.translate(problem)}
+            <summary class="card-header d-flex align-items-center justify-content-between">
+              <strong>{AutoTracing.Problem.translate(problem)}</strong>
+              <span :if={problem in @auto_tracing.solved_problems}>
+                <span class="oi oi-check" aria-hidden="true" />
+              </span>
+
               <button
                 :on-click="resolve"
                 phx-value-problem={problem}
-                class="btn btn-sm btn-secondary float-end"
+                class="btn btn-sm btn-danger"
                 :if={problem not in @auto_tracing.solved_problems}
               >
-                X
+                <span class="oi oi-trash" aria-hidden="true" />
               </button>
             </summary>
 
@@ -55,11 +67,11 @@
                     </button>
                   {#match :unmanaged_tenant}
                     <p>
-                      <strong>{pgettext("Auto Tracing Resolve Problems", "Tracer")}</strong>
+                      <strong>{pgettext("Auto Tracing Resolve Problems", "Tracer")}:</strong>
                       {pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}
                     </p>
                     <p>
-                      <strong>{pgettext("Auto Tracing Resolve Problems", "Supervisor")}</strong>
+                      <strong>{pgettext("Auto Tracing Resolve Problems", "Supervisor")}:</strong>
                       {pgettext(
                         "Auto Tracing Resolve Problems",
                         "Report case to the appropriate authority and delete person & case."
@@ -67,12 +79,12 @@
                     </p>
 
                     <p>
-                      <strong>{pgettext("Auto Tracing Resolve Problems", "Residency Address")}</strong>
+                      <strong>{pgettext("Auto Tracing Resolve Problems", "Residency Address")}:</strong>
                       {Address.to_string(@case.person.address, :long)}
                     </p>
 
                     <p :if={@case.monitoring != nil and @case.monitoring.address != nil}>
-                      <strong>{pgettext("Auto Tracing Resolve Problems", "Monitoring Address")}</strong>
+                      <strong>{pgettext("Auto Tracing Resolve Problems", "Monitoring Address")}:</strong>
                       {Address.to_string(@case.monitoring.address, :long)}
                     </p>
 
@@ -168,7 +180,7 @@
                   {#match :new_employer}
                     <div :for={occupation <- @auto_tracing.occupations}>
                       <strong>{occupation.unknown_organisation.name}</strong>
-                      {Address.to_string(occupation.unknown_organisation.address, :long)}
+                      <div class="mb-3">{Address.to_string(occupation.unknown_organisation.address, :long)}</div>
 
                       <Form for={@occupation_form}>
                         <Field name={:organisation_uuid}>

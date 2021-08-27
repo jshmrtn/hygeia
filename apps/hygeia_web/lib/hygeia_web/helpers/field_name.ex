@@ -354,6 +354,15 @@ defmodule HygeiaWeb.Helpers.FieldName do
     Hygeia.AutoTracingContext.AutoTracing.Employer => %{
       name: "Name"
     },
+    Hygeia.AutoTracingContext.AutoTracing.Occupation => %{
+      kind: "Kind",
+      known_organisation: "Organisation",
+      not_found: "Organisation not found"
+    },
+    HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts => %{
+      propagator_case: "Propagator Case",
+      propagator_ism_id: "Propagator ISM ID"
+    },
     Hygeia.AutoTracingContext.AutoTracing.Transmission => %{
       propagator_first_name: "First Name",
       propagator_last_name: "Last Name",

@@ -1,52 +1,45 @@
-<div id="step_employer" class="container">
+<div id="step_employer" class="container component-auto-tracing-employer">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
   <h4>
     {gettext("Occupation / Employment")}
   </h4>
-  <Form for={@changeset} change="validate" submit="save">
+  <Form for={@changeset} change="validate" submit="save" class="mb-4">
+    <p class="mb-4">{gettext("Are you employed?")}</p>
     <div class="row gx-7">
-      <p class="mb-4">{gettext("Are you employed?")}</p>
-      <div class="row">
-        <div class="col-6">
-          <Field name={:employed} class="form-group mb-4">
-            <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-              <label class={
-                "btn",
-                "btn-sm",
-                "btn-outline-primary",
-                active: Ecto.Changeset.get_field(@changeset, :employed) == true
-              }>
-                <RadioButton value />
-                {gettext("Yes")}
-              </label>
-              <label class={
-                "btn",
-                "btn-sm",
-                "btn-outline-primary",
-                active: Ecto.Changeset.get_field(@changeset, :employed) == false
-              }>
-                <RadioButton value={false} />
-                {gettext("No")}
-              </label>
-            </div>
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </div>
+      <div class="col-6">
+        <Field name={:employed} class="form-group">
+          <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+            <label class={
+              "btn",
+              "btn-sm",
+              "btn-outline-primary",
+              active: Ecto.Changeset.get_field(@changeset, :employed) == true
+            }>
+              <RadioButton value />
+              {gettext("Yes")}
+            </label>
+            <label class={
+              "btn",
+              "btn-sm",
+              "btn-outline-primary",
+              active: Ecto.Changeset.get_field(@changeset, :employed) == false
+            }>
+              <RadioButton value={false} />
+              {gettext("No")}
+            </label>
+          </div>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
       </div>
     </div>
-    <Inputs for={:occupations}>
-      <HiddenInput field={:uuid} />
-      <InputContext assigns={assigns} :let={form: occupation}>
-        <div class="row gx-7" :if={Ecto.Changeset.get_field(@changeset, :employed)}>
+    <div
+      :if={Ecto.Changeset.get_field(@changeset, :employed)}
+      class="hy-card-grid-2-cols large-grid-gap"
+    >
+      <Inputs for={:occupations}>
+        <HiddenInput field={:uuid} />
+        <InputContext assigns={assigns} :let={form: occupation}>
           <div>
-            <button
-              class="btn btn-info"
-              type="button"
-              :on-click="remove_occupation"
-              value={fetch_field!(occupation.source, :uuid)}
-            >
-              {gettext("Delete this occupation")}
-            </button>
             <Field name={:kind} class="form-group">
               <HygeiaWeb.FieldLabel />
               <Select
@@ -65,55 +58,68 @@
               <TextInput class="form-control" />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-          </div>
-          <div :if={not Ecto.Changeset.fetch_field!(occupation.source, :not_found)}>
-            <Field class="form-group" name={:known_organisation_uuid}>
-              <HygeiaWeb.FieldLabel />
-              <HygeiaWeb.OrganisationLive.Choose
-                id={"occupation_#{fetch_field!(occupation.source, :uuid)}_organisation"}
-                change="select_affiliation_organisation"
-                subject={fetch_field!(occupation.source, :uuid)}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-          <div>
-            <Field class="form-group" name={:not_found}>
-              <HygeiaWeb.FieldLabel />
-              <Checkbox opts={
-                checked:
-                  if Ecto.Changeset.fetch_field!(occupation.source, :not_found) do
-                    "true"
-                  end
-              } />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-
-          <div :if={Ecto.Changeset.fetch_field!(occupation.source, :not_found)}>
-            <Inputs for={:unknown_organisation}>
-              <p class="mb-4">
-                {gettext(
-                  "Your occupation does not appear in the list or it is not correct? Please enter it manually."
-                )}
-              </p>
-              <Field name={:name} class="form-group">
+            <div>
+              <Field class="form-group" name={:known_organisation_uuid}>
                 <HygeiaWeb.FieldLabel />
-                <TextInput class="form-control" />
+                <HygeiaWeb.OrganisationLive.Choose
+                  disabled={Ecto.Changeset.fetch_field!(occupation.source, :not_found)}
+                  id={"occupation_#{fetch_field!(occupation.source, :uuid)}_organisation"}
+                  change="select_affiliation_organisation"
+                  subject={fetch_field!(occupation.source, :uuid)}
+                />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
-              <Inputs for={:address}>
-                <HygeiaWeb.AddressForm id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_organisation_address"} />
+            </div>
+            <div>
+              <Field
+                :if={Ecto.Changeset.fetch_field!(occupation.source, :known_organisation_uuid) === nil}
+                class="form-group"
+                name={:not_found}
+              >
+                <HygeiaWeb.FieldLabel class="me-2" />
+                <Checkbox opts={
+                  checked:
+                    if Ecto.Changeset.fetch_field!(occupation.source, :not_found) do
+                      "true"
+                    end
+                } />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+
+            <div :if={Ecto.Changeset.fetch_field!(occupation.source, :not_found)}>
+              <Inputs for={:unknown_organisation}>
+                <p class="mb-4">
+                  {gettext(
+                    "Your occupation does not appear in the list or it is not correct? Please enter it manually."
+                  )}
+                </p>
+                <Field name={:name} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TextInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+                <Inputs for={:address}>
+                  <HygeiaWeb.AddressForm id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_organisation_address"} />
+                </Inputs>
               </Inputs>
-            </Inputs>
+            </div>
+            <button
+              class="btn btn-danger mb-4"
+              type="button"
+              :on-click="remove_occupation"
+              value={fetch_field!(occupation.source, :uuid)}
+            >
+              <span class="oi oi-trash" aria-hidden="true" />
+            </button>
           </div>
-        </div>
-      </InputContext>
-    </Inputs>
+        </InputContext>
+      </Inputs>
+    </div>
   </Form>
 
-  <div :if={Ecto.Changeset.get_field(@changeset, :employed)}>
-    <button class="btn btn-secondary" type="button" :on-click="add_occupation">
+  <div class="mb-4" :if={Ecto.Changeset.get_field(@changeset, :employed)}>
+    <button class="btn btn-outline-primary" type="button" :on-click="add_occupation">
       {gettext("Add an occupation")}
     </button>
   </div>

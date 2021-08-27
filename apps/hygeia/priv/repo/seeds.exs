@@ -216,7 +216,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       supervisor_uuid: user_jony.uuid,
       hospitalizations: [
         %{start: ~D[2020-10-13], end: ~D[2020-10-15], organisation_uuid: organisation_kssg.uuid},
-        %{start: ~D[2020-10-16], end: nil}
+        %{start: ~D[2020-10-16], end: nil, organisation_uuid: organisation_kssg.uuid}
       ],
       tests: [
         %{
