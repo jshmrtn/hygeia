@@ -181,6 +181,8 @@
                         </Field>
                       </Form>
                     </div>
+                  {#match :hospitalization}
+                    {pgettext("Auto Tracing Resolve Problems", "TODO: directions")}
                 {/case}
               {/if}
             </div>
