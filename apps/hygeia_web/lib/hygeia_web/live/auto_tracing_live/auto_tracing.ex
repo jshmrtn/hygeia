@@ -23,7 +23,7 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~F"""
-    nil
+    <span>{gettext("Redirectring")}</span>
     """
   end
 
