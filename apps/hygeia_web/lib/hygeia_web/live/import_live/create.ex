@@ -64,9 +64,14 @@ defmodule HygeiaWeb.ImportLive.Create do
     tenant = Enum.find(socket.assigns.tenants, &match?(%Tenant{uuid: ^tenant_uuid}, &1))
 
     [response] =
-      consume_uploaded_entries(socket, :file, fn %{path: path}, %{client_type: mime} ->
+      consume_uploaded_entries(socket, :file, fn %{path: path},
+                                                 %{client_type: mime, client_name: client_name} ->
         tenant
-        |> ImportContext.create_import(mime, path, import_params)
+        |> ImportContext.create_import(
+          mime,
+          path,
+          Map.put(import_params, "filename", client_name)
+        )
         |> case do
           {:ok, import} ->
             {:noreply,
