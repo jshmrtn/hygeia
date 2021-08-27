@@ -195,7 +195,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       file: "File",
       tenant: "Tenant",
       tenant_uuid: "Tenant UUID",
-      type: "Type"
+      type: "Type",
+      filename: "File Name"
     },
     Hygeia.ImportContext.Row => %{
       identifiers: "Identifiers",
