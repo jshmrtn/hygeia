@@ -58,6 +58,8 @@ config :cadastre, Cadastre.I18n,
   default_locale: "en",
   allowed_locales: ["de", "en", "fr", "it"]
 
+config :hygeia_gettext, HygeiaGettext, fuzzy_languages: ["it", "fr"]
+
 # Prometheus Exporter
 config :hygeia_telemetry, server: true
 

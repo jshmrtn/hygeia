@@ -8,12 +8,12 @@
 # # to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: de\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Project-Id-Version: Hygeia\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: Jeremy J. Zahner <zahner@joshmartin.ch>\n"
 "Language-Team: JOSHMARTIN GmbH https://joshmartin.ch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,95 +21,122 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
+#, fuzzy
 msgid "are still associated with this entry"
-msgstr "sind immer noch mit diesem Eintrag verknüpft"
+msgstr "sont toujours associés à cette entrée"
 
+#, fuzzy
 msgid "at least one contact method must be provided"
-msgstr "Mindestens eine Kontaktmethode muss angegeben werden"
+msgstr "au moins une méthode de contact doit être fournie"
 
+#, fuzzy
 msgid "can't be blank"
-msgstr "kann nicht leer sein"
+msgstr "ne peut pas être vide"
 
+#, fuzzy
 msgid "date is to far away from today"
-msgstr "Datum ist zu weit entfernt von Heute"
+msgstr "la date est trop éloignée d'aujourd'hui"
 
+#, fuzzy
 msgid "date must not be in the future"
-msgstr "Datum darf nicht in Zukunft sein"
+msgstr "la date ne doit pas être dans le futur"
 
+#, fuzzy
 msgid "does not match confirmation"
-msgstr "entspricht nicht der Bestätigung"
+msgstr "ne correspond pas à la confirmation"
 
+#, fuzzy
 msgid "end must be after start"
-msgstr "Ende muss nach dem Start sein"
+msgstr "la fin doit être après le début"
 
+#, fuzzy
 msgid "has already been taken"
-msgstr "wurde bereits vergeben"
+msgstr "a déjà été prise"
 
+#, fuzzy
 msgid "has an invalid entry"
-msgstr "hat einen ungültigen Eintrag"
+msgstr "a une entrée invalide"
 
+#, fuzzy
 msgid "has invalid format"
-msgstr "hat ungültiges Format"
+msgstr "a un format invalide"
 
+#, fuzzy
 msgid "is invalid"
-msgstr "ist ungültig"
+msgstr "n'est pas valide"
 
+#, fuzzy
 msgid "is not a valid hostname"
-msgstr "ist kein gültiger Hostname"
+msgstr "n'est pas un nom d'hôte valide"
 
+#, fuzzy
 msgid "is reserved"
-msgstr "ist reserviert"
+msgstr "est réservé"
 
+#, fuzzy
 msgid "is still associated with this entry"
-msgstr "ist immer noch mit diesem Eintrag verknüpft"
+msgstr "est toujours associé à cette entrée"
 
+#, fuzzy
 msgid "must be accepted"
-msgstr "muss akzeptiert werden"
+msgstr "doit être accepté"
 
+#, fuzzy
 msgid "must be equal to %{number}"
-msgstr "muss kleiner als %{number} sein"
+msgstr "doit être égal à %{number}"
 
+#, fuzzy
 msgid "must be greater than %{number}"
-msgstr "muss grösser als %{number} sein"
+msgstr "doit être supérieur à %{number}"
 
+#, fuzzy
 msgid "must be greater than or equal to %{number}"
-msgstr "muss grösser oder gleich wie %{number} sein"
+msgstr "doit être supérieure ou égale à %{number}."
 
+#, fuzzy
 msgid "must be less than %{number}"
-msgstr "muss kleiner als %{number} sein"
+msgstr "doit être inférieur à %{number}"
 
+#, fuzzy
 msgid "must be less than or equal to %{number}"
-msgstr "muss kleiner oder gleich wie %{number} sein"
+msgstr "doit être inférieur ou égal à %{number}"
 
+#, fuzzy
 msgid "should be %{count} character(s)"
 msgid_plural "should be %{count} character(s)"
-msgstr[0] "sollte %{count} Zeichen lang sein"
-msgstr[1] "sollte %{count} Zeichen lang sein"
+msgstr[0] "devrait être %{count} caractère(s)"
+msgstr[1] "devrait être %{count} caractère(s)"
 
+#, fuzzy
 msgid "should be at least %{count} character(s)"
 msgid_plural "should be at least %{count} character(s)"
-msgstr[0] "sollte mindestens das Zeichen \"Anzahl\" (n) sein."
-msgstr[1] "sollte mindestens das Zeichen \"Anzahl\" (n) sein."
+msgstr[0] "doit comporter au moins %{count} caractère(s)"
+msgstr[1] "doit comporter au moins %{count} caractère(s)"
 
+#, fuzzy
 msgid "should be at most %{count} character(s)"
 msgid_plural "should be at most %{count} character(s)"
-msgstr[0] "sollte höchstens %-Anzahl-Zeichen(n) sein"
-msgstr[1] "sollte höchstens %-Anzahl-Zeichen(n) sein"
+msgstr[0] "doit comporter au maximum %{count} caractère(s)"
+msgstr[1] "doit comporter au maximum %{count} caractère(s)"
 
+#, fuzzy
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
-msgstr[0] "sollte %{count} Einträge haben"
-msgstr[1] "sollte %{count} Einträge haben"
+msgstr[0] "devrait avoir %{count} article(s)"
+msgstr[1] "devrait avoir %{count} article(s)"
 
+#, fuzzy
 msgid "should have at least %{count} item(s)"
 msgid_plural "should have at least %{count} item(s)"
-msgstr[0] "sollte mindestens %{count} Elemente haben"
-msgstr[1] "sollte mindestens %{count} Elemente haben"
+msgstr[0] "devrait avoir au moins %{count} article(s)"
+msgstr[1] "devrait avoir au moins %{count} article(s)"
 
+#, fuzzy
 msgid "should have at most %{count} item(s)"
 msgid_plural "should have at most %{count} item(s)"
-msgstr[0] "sollte höchstens %{count} Elemente haben"
-msgstr[1] "sollte höchstens %{count} Elemente haben"
+msgstr[0] "devrait avoir au plus %{count} élément(s)"
+msgstr[1] "devrait avoir au plus %{count} élément(s)"
 
+#, fuzzy
 msgid "start must be before end"
-msgstr "Start muss vor dem Ende sein"
+msgstr "le début doit être avant la fin"
