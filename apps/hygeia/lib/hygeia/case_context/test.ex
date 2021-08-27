@@ -99,16 +99,39 @@ defmodule Hygeia.CaseContext.Test do
           ) :: boolean
     def authorized?(
           _test,
-          action,
+          :create,
           user,
           %{case: %Case{tenant_uuid: tenant_uuid}}
-        )
-        when action in [:create, :list] do
-      Enum.any?(
-        [:tracer, :super_user, :supervisor, :admin],
-        &User.has_role?(user, &1, tenant_uuid)
-      )
-    end
+        ),
+        do:
+          Enum.any?(
+            [:tracer, :super_user, :supervisor, :admin],
+            &User.has_role?(user, &1, tenant_uuid)
+          )
+
+    def authorized?(
+          _test,
+          :list,
+          user,
+          %{case: %Case{tenant_uuid: tenant_uuid}}
+        ),
+        do:
+          Enum.any?(
+            [:tracer, :super_user, :supervisor, :admin, :viewer],
+            &User.has_role?(user, &1, tenant_uuid)
+          )
+
+    def authorized?(
+          %Test{case: %Case{tenant_uuid: tenant_uuid}},
+          :details,
+          user,
+          _meta
+        ),
+        do:
+          Enum.any?(
+            [:tracer, :super_user, :supervisor, :admin, :viewer],
+            &User.has_role?(user, &1, tenant_uuid)
+          )
 
     def authorized?(
           %Test{case: %Case{tenant_uuid: tenant_uuid}},
@@ -116,7 +139,7 @@ defmodule Hygeia.CaseContext.Test do
           user,
           _meta
         )
-        when action in [:details, :update, :delete] do
+        when action in [:update, :delete] do
       Enum.any?(
         [:tracer, :super_user, :supervisor, :admin],
         &User.has_role?(user, &1, tenant_uuid)
