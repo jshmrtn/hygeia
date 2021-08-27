@@ -24,6 +24,7 @@ defmodule Hygeia.ImportContext.Import do
           default_tracer: Ecto.Schema.belongs_to(User.t()) | nil,
           default_supervisor_uuid: Ecto.UUID.t() | nil,
           default_supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
+          filename: String.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -42,6 +43,7 @@ defmodule Hygeia.ImportContext.Import do
           default_tracer: Ecto.Schema.belongs_to(User.t()) | nil,
           default_supervisor_uuid: Ecto.UUID.t() | nil,
           default_supervisor: Ecto.Schema.belongs_to(User.t()) | nil,
+          filename: String.t(),
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -52,6 +54,7 @@ defmodule Hygeia.ImportContext.Import do
     field :type, Type
     field :change_date, LocalizedNaiveDatetime, autogenerate: true
     field :closed_at, :utc_datetime_usec
+    field :filename, :string
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     has_many :rows, Row
@@ -73,7 +76,7 @@ defmodule Hygeia.ImportContext.Import do
           Ecto.Changeset.t(t)
   def changeset(import, attrs) do
     import
-    |> cast(attrs, [:type, :default_tracer_uuid, :default_supervisor_uuid])
+    |> cast(attrs, [:type, :default_tracer_uuid, :default_supervisor_uuid, :filename])
     |> validate_required([:type])
     |> check_constraint(:default_tracer_uuid, name: :default_tracer_uuid)
     |> check_constraint(:default_supervisor_uuid, name: :default_supervisor_uuid)
