@@ -107,6 +107,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
           @fields.sex,
           @fields.place,
           @fields.zip,
+          @fields.address,
           @fields.subdivision,
           @fields.country,
           @fields.tenant_subdivision
