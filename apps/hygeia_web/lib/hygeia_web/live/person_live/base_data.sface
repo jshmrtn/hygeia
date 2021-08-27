@@ -60,6 +60,21 @@
           </button>
         </LivePatch>
 
+        <LivePatch
+          class="me-2"
+          to={Routes.case_create_path(@socket, :create,
+            tenant_uuid: Ecto.Changeset.fetch_field!(@changeset, :tenant_uuid),
+            person_uuid: @person,
+            return_to: Routes.case_index_path(@socket, :index)
+          )}
+          :if={authorized?(Case, :create, auth, tenant: :any)}
+        >
+          <button type="button" class="btn btn-primary">
+            <span class="oi oi-plus" aria-hidden="true" />
+            {gettext("New Case")}
+          </button>
+        </LivePatch>
+
         <Link
           to="#"
           click="delete"
