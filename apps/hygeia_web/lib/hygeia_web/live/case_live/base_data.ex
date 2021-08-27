@@ -122,7 +122,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   def handle_event("validate", %{"case" => case_params}, socket) do
     case_params =
       case_params
-      |> Map.put_new("tests", [])
       |> Map.put_new("hospitalizations", [])
       |> Map.put_new("external_references", [])
 
@@ -138,7 +137,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   def handle_event("save", %{"case" => case_params}, socket) do
     case_params =
       case_params
-      |> Map.put_new("tests", [])
       |> Map.put_new("hospitalizations", [])
       |> Map.put_new("phases", [])
       |> Map.put_new("external_references", [])
