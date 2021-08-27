@@ -221,11 +221,20 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
       end
     end)
     |> case do
-      {[], []} -> :error
-      {[person], []} -> {:ok, select_active_cases(person, relevance_date)}
-      {[], [person]} -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
-      {[person | _others], _no_matches} -> {:ok, select_active_cases(person, relevance_date)}
-      {[], [person | _others]} -> {:ok, select_active_cases(person, relevance_date)}
+      {[], []} ->
+        :error
+
+      {[person], []} ->
+        {:ok, select_active_cases(person, relevance_date)}
+
+      {[], [person]} ->
+        {:ok, select_active_cases(person, relevance_date, :input_needed)}
+
+      {[person | _others], _no_matches} ->
+        {:ok, select_active_cases(person, relevance_date, :input_needed)}
+
+      {[], [person | _others]} ->
+        {:ok, select_active_cases(person, relevance_date, :input_needed)}
     end
   end
 
