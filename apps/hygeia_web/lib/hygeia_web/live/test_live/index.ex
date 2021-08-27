@@ -2,7 +2,9 @@ defmodule HygeiaWeb.TestLive.Index do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
+
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Test.Kind
   alias Hygeia.CaseContext.Test.Result
@@ -47,7 +49,7 @@ defmodule HygeiaWeb.TestLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({_type, %Test{}, _version}, socket) do
+  def handle_info({_type, %module{}, _version}, socket) when module in [Test, Case] do
     {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
   end
 
