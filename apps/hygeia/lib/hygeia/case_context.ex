@@ -253,20 +253,24 @@ defmodule Hygeia.CaseContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_person(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec update_person(
+          person :: Person.t() | Ecto.Changeset.t(Person.t()),
+          attrs :: Hygeia.ecto_changeset_params(),
+          opts :: Person.changeset_options()
+        ) ::
           {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
-  def update_person(%Person{} = person, attrs),
+  def update_person(person, attrs \\ %{}, changeset_opts \\ %{})
+
+  def update_person(%Person{} = person, attrs, changeset_opts),
     do:
       person
-      |> change_person(attrs)
-      |> update_person()
+      |> change_person(attrs, changeset_opts)
+      |> update_person(%{}, changeset_opts)
 
-  @spec update_person(changeset :: Ecto.Changeset.t(Person.t())) ::
-          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
-  def update_person(%Ecto.Changeset{data: %Person{}} = changeset),
+  def update_person(%Ecto.Changeset{data: %Person{}} = changeset, attrs, changeset_opts),
     do:
       changeset
-      |> Person.changeset(%{})
+      |> change_person(attrs, changeset_opts)
       |> versioning_update()
       |> broadcast("people", :update)
       |> versioning_extract()
@@ -304,14 +308,15 @@ defmodule Hygeia.CaseContext do
   """
   @spec change_person(
           person :: Person.t() | Person.empty() | Changeset.t(Person.t() | Person.empty()),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          opts :: Person.changeset_options()
         ) ::
           Ecto.Changeset.t(Person.t())
-  def change_person(person, attrs \\ %{})
-  def change_person(%Person{} = person, attrs), do: Person.changeset(person, attrs)
+  def change_person(person, attrs \\ %{}, opts \\ %{})
+  def change_person(%Person{} = person, attrs, opts), do: Person.changeset(person, attrs, opts)
 
-  def change_person(%Changeset{data: %Person{}} = person, attrs),
-    do: Person.changeset(person, attrs)
+  def change_person(%Changeset{data: %Person{}} = person, attrs, opts),
+    do: Person.changeset(person, attrs, opts)
 
   @spec change_new_person(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           Ecto.Changeset.t(Person.t())
@@ -1912,12 +1917,16 @@ defmodule Hygeia.CaseContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_case(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec update_case(
+          case :: Case.t(),
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: Case.changeset_params()
+        ) ::
           {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
-  def update_case(%Case{} = case, attrs),
+  def update_case(%Case{} = case, attrs, changeset_params \\ %{}),
     do:
       case
-      |> change_case(attrs)
+      |> change_case(attrs, changeset_params)
       |> update_case()
 
   @spec update_case(changeset :: Ecto.Changeset.t(Case.t())) ::
@@ -1981,12 +1990,17 @@ defmodule Hygeia.CaseContext do
   """
   @spec change_case(
           case :: Case.t() | Case.empty() | Changeset.t(Case.t() | Case.empty()),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: Case.changeset_params()
         ) ::
           Ecto.Changeset.t(Case.t())
-  def change_case(case, attrs \\ %{})
-  def change_case(%Case{} = case, attrs), do: Case.changeset(case, attrs)
-  def change_case(%Changeset{data: %Case{}} = case, attrs), do: Case.changeset(case, attrs)
+  def change_case(case, attrs \\ %{}, changeset_params \\ %{})
+
+  def change_case(%Case{} = case, attrs, changeset_params),
+    do: Case.changeset(case, attrs, changeset_params)
+
+  def change_case(%Changeset{data: %Case{}} = case, attrs, changeset_params),
+    do: Case.changeset(case, attrs, changeset_params)
 
   @spec change_new_case(
           person :: Person.t(),
@@ -2864,4 +2878,11 @@ defmodule Hygeia.CaseContext do
         ) :: Ecto.Changeset.t(PrematureRelease.t())
   def change_premature_release(%PrematureRelease{} = premature_release, attrs \\ %{}),
     do: PrematureRelease.changeset(premature_release, attrs)
+
+  @spec auto_tracing_open?(case :: Case.t()) :: boolean
+  def auto_tracing_open?(case) do
+    case = Repo.preload(case, :auto_tracing)
+
+    not is_nil(case.auto_tracing) and case.auto_tracing.last_completed_step != :transmission
+  end
 end

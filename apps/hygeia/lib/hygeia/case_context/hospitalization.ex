@@ -47,6 +47,6 @@ defmodule Hygeia.CaseContext.Hospitalization do
     hospitalization
     |> cast(attrs, [:uuid, :start, :end, :organisation_uuid, :case_uuid])
     |> fill_uuid
-    |> validate_required([])
+    |> validate_required([:start, :organisation_uuid])
   end
 end

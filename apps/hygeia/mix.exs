@@ -29,7 +29,12 @@ defmodule Hygeia.MixProject do
         "coveralls.xml": :test
       ],
       # Injected via Config
-      xref: [exclude: [HygeiaWeb.SendCaseClosedEmailUrlGenerator]]
+      xref: [
+        exclude: [
+          HygeiaWeb.SendCaseClosedEmailUrlGenerator,
+          HygeiaWeb.AutoTracingCommunicationUrlGenerator
+        ]
+      ]
     ]
   end
 

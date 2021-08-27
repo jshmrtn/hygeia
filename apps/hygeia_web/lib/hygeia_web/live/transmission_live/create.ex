@@ -22,7 +22,8 @@ defmodule HygeiaWeb.TransmissionLive.Create do
       if authorized?(Transmission, :create, get_auth(socket)) do
         assign(socket,
           changeset: CaseContext.change_transmission(%Transmission{}, params),
-          page_title: gettext("New Transmission")
+          page_title: gettext("New Transmission"),
+          return_url: params["return_url"]
         )
       else
         socket
@@ -53,7 +54,11 @@ defmodule HygeiaWeb.TransmissionLive.Create do
         {:noreply,
          socket
          |> put_flash(:info, gettext("Transmission created successfully"))
-         |> push_redirect(to: Routes.transmission_show_path(socket, :show, transmission))}
+         |> push_redirect(
+           to:
+             socket.assigns.return_url ||
+               Routes.transmission_show_path(socket, :show, transmission)
+         )}
 
       {:error, changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}

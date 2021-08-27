@@ -14,6 +14,88 @@
   }
 }
 
+@mixin progress-steps {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0;
+  position: relative;
+
+  .progress-bar {
+    position: absolute;
+    border-top: 1px solid $gray-200;
+    border-bottom: 1px solid $gray-200;
+    left: calc(100% / var(--progress-bar-items) / 2);
+    right: calc(100% / var(--progress-bar-items) / 2);
+    top: 1rem;
+  }
+
+  a.progress-step,
+  .progress-step.interactive {
+    cursor: pointer;
+
+    &:hover {
+      color: shade-color($primary, 30) !important;
+    }
+  }
+
+  .progress-step {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    flex-grow: 1;
+    flex-basis: 0;
+    z-index: 1;
+    text-align: center;
+    color: $gray-500;
+    font-weight: 500;
+
+    &:before {
+      content: "";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Icons";
+      color: $white;
+      font-size: 1rem;
+      width: 2rem;
+      height: 2rem;
+      margin-bottom: 0.5rem;
+      border-radius: 10000px;
+      background-color: $white;
+      border: 2px solid $gray-200;
+    }
+
+    &.completed {
+      color: $primary;
+
+      &:before {
+        content: "\e033";
+        background-color: $primary;
+        border-color: $primary;
+      }
+    }
+
+    &.next {
+      color: $primary;
+
+      &:before {
+        border-color: $primary;
+      }
+    }
+
+    &.active {
+      font-weight: 600;
+      color: $primary;
+      &:before {
+        background-color: $primary;
+        border-color: $primary;
+      }
+    }
+  }
+}
+
 // =============================================================================
 // String Replace
 // =============================================================================

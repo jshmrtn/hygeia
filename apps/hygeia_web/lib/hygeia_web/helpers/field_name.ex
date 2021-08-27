@@ -46,8 +46,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
     },
     Hygeia.CaseContext.Hospitalization => %{
       end: "End",
-      organisation: "Organisation",
-      organisation_uuid: "Organisation UUID",
+      organisation: "Hospital",
+      organisation_uuid: "Hospital UUID",
       start: "Start"
     },
     Hygeia.CaseContext.Case.Monitoring => %{
@@ -345,6 +345,26 @@ defmodule HygeiaWeb.Helpers.FieldName do
       origin: "Origin",
       originator: "Author",
       type: "Type"
+    },
+    Hygeia.AutoTracingContext.AutoTracing => %{
+      mobile: "Mobile",
+      landline: "Landline",
+      email: "Email"
+    },
+    Hygeia.AutoTracingContext.AutoTracing.Employer => %{
+      name: "Name"
+    },
+    Hygeia.AutoTracingContext.AutoTracing.Transmission => %{
+      propagator_first_name: "First Name",
+      propagator_last_name: "Last Name",
+      propagator_phone: "Phone",
+      propagator_email: "Email",
+      date: "Date"
+    },
+    HygeiaWeb.AutoTracingLive.ContactMethods => %{
+      email: "Email",
+      landline: "Landline",
+      mobile: "Mobile"
     }
   }
 

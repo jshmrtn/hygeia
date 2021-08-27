@@ -207,6 +207,16 @@ defmodule HygeiaWeb.RowLive.Apply do
   end
 
   def handle_event(
+        "change_auto_tracing",
+        %{"change_auto_tracing" => %{"create" => create, "index" => index}} = _params,
+        socket
+      ) do
+    patch_action_plan(socket, index, fn %Action.CreateAutoTracing{} = action ->
+      %Action.CreateAutoTracing{action | action: :append, create: String.to_existing_atom(create)}
+    end)
+  end
+
+  def handle_event(
         "select_case",
         %{"subject" => index, "uuid" => case_uuid} = _params,
         socket

@@ -14,6 +14,7 @@ defprotocol Hygeia.ImportContext.Planner.Action do
           | __MODULE__.Save.t()
           | __MODULE__.SelectCase.t()
           | __MODULE__.AddNote.t()
+          | __MODULE__.CreateAutoTracing.t()
 
   @doc "Ececute Action"
   @spec execute(

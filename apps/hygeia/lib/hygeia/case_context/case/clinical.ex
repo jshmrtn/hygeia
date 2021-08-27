@@ -50,6 +50,8 @@ defmodule Hygeia.CaseContext.Case.Clinical do
           symptom_start: Date.t() | nil
         }
 
+  @type changeset_params :: %{optional(:symptoms_required) => boolean()}
+
   embedded_schema do
     field :reasons_for_test, {:array, TestReason}
     field :has_symptoms, :boolean
@@ -58,8 +60,21 @@ defmodule Hygeia.CaseContext.Case.Clinical do
   end
 
   @doc false
-  @spec changeset(clinical :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
-  def changeset(clinical, attrs) do
+  @spec changeset(
+          clinical :: t | empty,
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: changeset_params
+        ) :: Changeset.t()
+  def changeset(clinical, attrs, changeset_params \\ %{})
+
+  def changeset(clinical, attrs, %{symptoms_required: true} = changeset_params) do
+    clinical
+    |> changeset(attrs, %{changeset_params | symptoms_required: false})
+    |> validate_required([:has_symptoms])
+    |> validate_required_when_has_symptoms()
+  end
+
+  def changeset(clinical, attrs, _changeset_params) do
     clinical
     |> cast(attrs, [
       :reasons_for_test,
@@ -69,6 +84,23 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     ])
     |> validate_required([])
     |> clear_symptoms()
+  end
+
+  defp validate_required_when_has_symptoms(changeset) do
+    changeset
+    |> fetch_field!(:has_symptoms)
+    |> case do
+      nil ->
+        changeset
+
+      true ->
+        changeset
+        |> validate_required([:symptoms, :symptom_start])
+        |> validate_length(:symptoms, min: 1)
+
+      false ->
+        changeset
+    end
   end
 
   defp clear_symptoms(changeset) do

@@ -14,7 +14,11 @@ defmodule HygeiaWeb.HelpButton do
     user = UserContext.get_user!(socket.assigns.case.tracer_uuid)
 
     NotificationContext.create_notification(user, %{
-      body: %{__type__: :self_service_help_request, case_uuid: socket.assigns.case.uuid}
+      body: %{
+        uuid: Ecto.UUID.generate(),
+        __type__: :self_service_help_request,
+        case_uuid: socket.assigns.case.uuid
+      }
     })
 
     {:noreply, socket}

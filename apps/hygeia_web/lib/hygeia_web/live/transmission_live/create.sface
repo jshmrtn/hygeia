@@ -22,56 +22,54 @@
               />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-            <div :if={Ecto.Changeset.get_field(@changeset, :type) != :travel}>
-              <Field name={:propagator_internal} class="form-group">
-                <div class="btn-group btn-group-toggle btn-radio-group">
-                  <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
-                  <label class={
-                    "btn",
-                    "btn-outline-primary",
-                    active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil
-                  }>
-                    <RadioButton value="" />
-                    {gettext("No propagator")}
-                  </label>
-                  <label class={
-                    "btn",
-                    "btn-outline-primary",
-                    active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true
-                  }>
-                    <RadioButton value="true" />
-                    {gettext("Internal")}
-                  </label>
-                  <label class={
-                    "btn",
-                    "btn-outline-primary",
-                    active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false
-                  }>
-                    <RadioButton value="false" />
-                    {gettext("External")}
-                  </label>
-                </div>
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-              <Field
-                name={:propagator_ism_id}
-                class="form-group"
-                :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}
-              >
-                <HygeiaWeb.FieldLabel />
-                <TextInput class="form-control" />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-              <Field
-                name={:propagator_case_uuid}
-                class="form-group"
-                :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}
-              >
-                <HygeiaWeb.FieldLabel />
-                <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </div>
+            <Field name={:propagator_internal} class="form-group">
+              <div class="btn-group btn-group-toggle btn-radio-group">
+                <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
+                <label class={
+                  "btn",
+                  "btn-outline-primary",
+                  active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil
+                }>
+                  <RadioButton value="" />
+                  {gettext("No propagator")}
+                </label>
+                <label class={
+                  "btn",
+                  "btn-outline-primary",
+                  active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true
+                }>
+                  <RadioButton value="true" />
+                  {gettext("Internal")}
+                </label>
+                <label class={
+                  "btn",
+                  "btn-outline-primary",
+                  active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false
+                }>
+                  <RadioButton value="false" />
+                  {gettext("External")}
+                </label>
+              </div>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field
+              name={:propagator_ism_id}
+              class="form-group"
+              :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}
+            >
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field
+              name={:propagator_case_uuid}
+              class="form-group"
+              :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}
+            >
+              <HygeiaWeb.FieldLabel />
+              <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
 
             <Field name={:recipient_internal} class="form-group">
               <div class="btn-group btn-group-toggle btn-radio-group">

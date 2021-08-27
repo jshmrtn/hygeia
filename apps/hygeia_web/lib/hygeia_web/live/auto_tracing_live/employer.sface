@@ -1,0 +1,136 @@
+<div id="step_employer" class="container">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+  <h4>
+    {gettext("Occupation / Employment")}
+  </h4>
+  <Form for={@changeset} change="validate" submit="save">
+    <div class="row gx-7">
+      <p class="mb-4">{gettext("Are you employed?")}</p>
+      <div class="row">
+        <div class="col-6">
+          <Field name={:employed} class="form-group mb-4">
+            <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(@changeset, :employed) == true
+              }>
+                <RadioButton value />
+                {gettext("Yes")}
+              </label>
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(@changeset, :employed) == false
+              }>
+                <RadioButton value={false} />
+                {gettext("No")}
+              </label>
+            </div>
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </div>
+      </div>
+    </div>
+    <Inputs for={:occupations}>
+      <HiddenInput field={:uuid} />
+      <InputContext assigns={assigns} :let={form: occupation}>
+        <div class="row gx-7" :if={Ecto.Changeset.get_field(@changeset, :employed)}>
+          <div>
+            <button
+              class="btn btn-info"
+              type="button"
+              :on-click="remove_occupation"
+              value={fetch_field!(occupation.source, :uuid)}
+            >
+              {gettext("Delete this occupation")}
+            </button>
+            <Field name={:kind} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <Select
+                class="form-control"
+                opts={prompt: pgettext("Affiliation", "Choose Kind")}
+                options={affiliation_kinds()}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field
+              :if={Ecto.Changeset.fetch_field!(occupation.source, :kind) == :other}
+              name={:kind_other}
+              class="form-group"
+            >
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div :if={not Ecto.Changeset.fetch_field!(occupation.source, :not_found)}>
+            <Field class="form-group" name={:known_organisation_uuid}>
+              <HygeiaWeb.FieldLabel />
+              <HygeiaWeb.OrganisationLive.Choose
+                id={"occupation_#{fetch_field!(occupation.source, :uuid)}_organisation"}
+                change="select_affiliation_organisation"
+                subject={fetch_field!(occupation.source, :uuid)}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div>
+            <Field class="form-group" name={:not_found}>
+              <HygeiaWeb.FieldLabel />
+              <Checkbox opts={
+                checked:
+                  if Ecto.Changeset.fetch_field!(occupation.source, :not_found) do
+                    "true"
+                  end
+              } />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+
+          <div :if={Ecto.Changeset.fetch_field!(occupation.source, :not_found)}>
+            <Inputs for={:unknown_organisation}>
+              <p class="mb-4">
+                {gettext(
+                  "Your occupation does not appear in the list or it is not correct? Please enter it manually."
+                )}
+              </p>
+              <Field name={:name} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <TextInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+              <Inputs for={:address}>
+                <HygeiaWeb.AddressForm id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_organisation_address"} />
+              </Inputs>
+            </Inputs>
+          </div>
+        </div>
+      </InputContext>
+    </Inputs>
+  </Form>
+
+  <div :if={Ecto.Changeset.get_field(@changeset, :employed)}>
+    <button class="btn btn-secondary" type="button" :on-click="add_occupation">
+      {gettext("Add an occupation")}
+    </button>
+  </div>
+
+  <hr class="mb-4">
+  <LiveRedirect
+    to={Routes.auto_tracing_contact_methods_path(@socket, :contact_methods, @auto_tracing.case_uuid)}
+    class="btn btn-outline-primary"
+  >
+    {gettext("Back")}
+  </LiveRedirect>
+  <button
+    class="btn btn-primary"
+    type="button"
+    :on-click="advance"
+    disabled={not @changeset.valid?}
+  >
+    {gettext("Continue")}
+  </button>
+</div>

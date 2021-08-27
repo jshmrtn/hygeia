@@ -791,10 +791,11 @@ defmodule Hygeia.StatisticsContextTest do
       tenant = tenant_fixture()
       person = person_fixture(tenant)
       user = user_fixture()
+      organisation = organisation_fixture()
 
       case_fixture(person, user, user, %{
         hospitalizations: [
-          %{start: ~D[2020-10-12], end: ~D[2020-10-13]}
+          %{start: ~D[2020-10-12], end: ~D[2020-10-13], organisation_uuid: organisation.uuid}
         ]
       })
 
@@ -841,10 +842,11 @@ defmodule Hygeia.StatisticsContextTest do
       tenant = tenant_fixture()
       person = person_fixture(tenant)
       user = user_fixture()
+      organisation = organisation_fixture()
 
       case_fixture(person, user, user, %{
         hospitalizations: [
-          %{start: ~D[2020-10-12], end: ~D[2020-10-13]}
+          %{start: ~D[2020-10-12], end: ~D[2020-10-13], organisation_uuid: organisation.uuid}
         ]
       })
 

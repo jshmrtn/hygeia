@@ -1,0 +1,59 @@
+<div id="step_covid_app" class="container">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+  <h2 class="mb-4">
+    {gettext("Swiss CovidApp")}
+  </h2>
+  <!-- TODO: Replace Icon with an svg -->
+  <img
+    src={Routes.static_path(@socket, "/images/swisscovid-app.png")}
+    class="component-auto-tracing-live-covid-app__logo mb-4"
+  />
+
+  <p>{gettext("Is the Swiss CovidApp installed / in operation on your smartphone?")}</p>
+  <Form for={@auto_tracing_changeset} change="validate" submit="save">
+    <InputContext assigns={assigns} :let={form: form}>
+      <div class="row">
+        <div class="col-6">
+          <Field name={:covid_app} class="form-group mb-4">
+            <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(form.source, :covid_app) == true
+              }>
+                <RadioButton value />
+                {gettext("Yes")}
+              </label>
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(form.source, :covid_app) == false
+              }>
+                <RadioButton value={false} />
+                {gettext("No")}
+              </label>
+            </div>
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </div>
+      </div>
+      <hr class="mb-4">
+      <LiveRedirect
+        to={Routes.auto_tracing_vaccination_path(@socket, :vaccination, @auto_tracing.case_uuid)}
+        class="btn btn-outline-primary"
+      >
+        {gettext("Back")}
+      </LiveRedirect>
+      <button
+        class="btn btn-primary"
+        type="button"
+        :on-click="advance"
+        disabled={is_nil(Ecto.Changeset.get_field(form.source, :covid_app))}
+      >
+        {gettext("Continue")}
+      </button>
+    </InputContext>
+  </Form>
+</div>

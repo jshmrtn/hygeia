@@ -70,6 +70,8 @@ defmodule Hygeia.CaseContext.Person do
           updated_at: DateTime.t()
         }
 
+  @type changeset_options :: %{optional(:address_required) => boolean}
+
   schema "people" do
     field :birth_date, :date
     field :first_name, :string
@@ -104,9 +106,19 @@ defmodule Hygeia.CaseContext.Person do
   @doc false
   @spec changeset(
           person :: t | empty | Changeset.t(t | empty),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          opts :: changeset_options
         ) :: Changeset.t()
-  def changeset(person, attrs) do
+  def changeset(person, attrs, opts \\ %{})
+
+  def changeset(person, attrs, %{address_required: true} = opts) do
+    person
+    |> changeset(attrs, %{opts | address_required: false})
+    |> cast_embed(:address, with: &Address.changeset(&1, &2, %{required: true}), required: true)
+    |> validate_address_required()
+  end
+
+  def changeset(person, attrs, _opts) do
     person
     |> cast(attrs, [
       :uuid,
@@ -132,6 +144,16 @@ defmodule Hygeia.CaseContext.Person do
     |> detect_duplicates(:mobile)
     |> detect_duplicates(:landline)
     |> detect_duplicates(:email)
+  end
+
+  defp validate_address_required(changeset) do
+    changeset
+    |> fetch_field!(:address)
+    |> Address.changeset(%{}, %{required: true})
+    |> case do
+      %Ecto.Changeset{valid?: true} -> changeset
+      %Ecto.Changeset{valid?: false} -> add_error(changeset, :address, "is invalid")
+    end
   end
 
   defp validate_profession_category(changeset) do

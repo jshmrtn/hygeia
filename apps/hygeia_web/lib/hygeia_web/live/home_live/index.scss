@@ -1,0 +1,28 @@
+.component-home-live-index {
+  &__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 60%;
+    margin: 0;
+    padding: 0;
+
+    @include media-breakpoint-down(xl) {
+      width: 100%;
+    }
+
+    @include media-breakpoint-down(md) {
+      grid-template-columns: 1fr;
+      grid-gap: 30px;
+    }
+
+    li {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    img {
+      height: 30px;
+    }
+  }
+}

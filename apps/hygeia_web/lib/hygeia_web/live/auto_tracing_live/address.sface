@@ -1,0 +1,51 @@
+<div id="step_address" class="container">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+  <div class="row gx-7 mb-5">
+    <div class="col-6">
+      <h4>{gettext("Address")}</h4>
+      <p class="mb-4">{gettext("Please enter your place of residence.")}</p>
+      <Form
+        for={@person_changeset}
+        change="validate"
+        submit="save"
+        opts={autocomplete: "off", id: "person_address-form"}
+      >
+        <Inputs for={:address}>
+          <HygeiaWeb.AddressForm id="person_address" />
+        </Inputs>
+      </Form>
+    </div>
+    <div class="col-6">
+      <h4>{gettext("Isolation Address")}</h4>
+      <p class="mb-4">
+        {gettext(
+          "Are you planning to move to a different address for your isolation? If so, at which address?"
+        )}
+      </p>
+      <Form for={@case_changeset} change="validate" submit="save">
+        <Inputs for={:monitoring}>
+          <Inputs for={:address}>
+            <HygeiaWeb.AddressForm id="monitoring_address" />
+          </Inputs>
+        </Inputs>
+      </Form>
+    </div>
+  </div>
+
+  <hr class="mb-4">
+
+  <LiveRedirect
+    to={Routes.auto_tracing_start_path(@socket, :start, @auto_tracing.case_uuid)}
+    class="btn btn-outline-primary"
+  >
+    {gettext("Back")}
+  </LiveRedirect>
+  <button
+    class="btn btn-primary"
+    type="button"
+    :on-click="advance"
+    disabled={not @case_changeset.valid? or not @person_changeset.valid?}
+  >
+    {gettext("Continue")}
+  </button>
+</div>

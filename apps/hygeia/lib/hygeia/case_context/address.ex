@@ -23,6 +23,8 @@ defmodule Hygeia.CaseContext.Address do
           country: Country.t() | nil
         }
 
+  @type changeset_options :: %{optional(:required) => boolean}
+
   embedded_schema do
     field :address, :string
     field :zip, :string
@@ -32,8 +34,27 @@ defmodule Hygeia.CaseContext.Address do
   end
 
   @doc false
-  @spec changeset(address :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
-  def changeset(address, attrs) do
+  @spec changeset(
+          address :: t | empty,
+          attrs :: Hygeia.ecto_changeset_params(),
+          opts :: changeset_options
+        ) :: Changeset.t()
+  def changeset(address, attrs, opts \\ %{})
+
+  def changeset(nil, _attrs, %{required: true} = _opts) do
+    %__MODULE__{}
+    |> change()
+    |> add_error(:address, "is invalid")
+  end
+
+  def changeset(address, attrs, %{required: true} = opts) do
+    address
+    |> changeset(attrs, %{opts | required: false})
+    |> validate_required([:country, :address])
+    |> validate_subdivision_required(:subdivision, :country)
+  end
+
+  def changeset(address, attrs, _opts) do
     address
     |> cast(attrs, [:address, :zip, :place, :subdivision, :country])
     |> validate_required([])

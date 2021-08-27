@@ -3,6 +3,9 @@ defmodule HygeiaWeb.HomeLive.Index do
 
   use HygeiaWeb, :surface_view
 
+  alias Hygeia.TenantContext
+  alias Hygeia.TenantContext.Tenant
+  alias HygeiaWeb.Helpers.Tenant, as: TenantHelper
   alias Surface.Components.Link
 
   @impl Phoenix.LiveView
@@ -17,7 +20,14 @@ defmodule HygeiaWeb.HomeLive.Index do
         {:ok, push_redirect(socket, to: Routes.person_index_path(socket, :index))}
 
       true ->
-        {:ok, socket}
+        {:ok,
+         assign(socket,
+           tenants:
+             TenantContext.list_tenants()
+             |> Enum.filter(&match?(%Tenant{case_management_enabled: true}, &1))
+             |> Enum.reject(&match?(%Tenant{iam_domain: nil}, &1))
+             |> Enum.filter(&TenantHelper.logo_exists?/1)
+         )}
     end
   end
 end

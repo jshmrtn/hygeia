@@ -6,7 +6,11 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
 
   import HygeiaGettext
 
+  alias Hygeia.ImportContext.Planner
+  alias Hygeia.ImportContext.Planner.Action.CreateAutoTracing
   alias Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11
+  alias Hygeia.ImportContext.Row
+
   alias Hygeia.Repo
   alias Hygeia.TenantContext
 
@@ -72,6 +76,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
       &ISM_2021_06_11.patch_status/3,
       ISM_2021_06_11.patch_extenal_references(@fields),
       ISM_2021_06_11.add_note(),
+      create_auto_tracing(),
       &ISM_2021_06_11.save/3
     ]
 
@@ -129,4 +134,15 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
           @fields.mutation_ism_code
         ])
     }
+
+  @spec create_auto_tracing ::
+          (row :: Row.t(),
+           params :: Planner.Generator.params(),
+           preceeding_action_plan :: [Planner.Action.t()] ->
+             {Planner.certainty(), Planner.Action.t()})
+  defp create_auto_tracing do
+    fn %Row{}, _params, _preceeding_steps ->
+      {:certain, %CreateAutoTracing{action: :append, create: true}}
+    end
+  end
 end

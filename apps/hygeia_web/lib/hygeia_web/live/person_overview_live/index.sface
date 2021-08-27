@@ -71,6 +71,17 @@
       >
         {gettext("Submit contact persons")}
       </LiveRedirect>
+      <LiveRedirect
+        class="btn btn-lg btn-primary"
+        to={Routes.auto_tracing_auto_tracing_path(@socket, :auto_tracing, @active_case)}
+      >
+        {#case @active_case.auto_tracing}
+          {#match %AutoTracing{last_completed_step: :transmission}}
+            {gettext("Correct Data")}
+          {#match _other}
+            {gettext("Complete Data")}
+        {/case}
+      </LiveRedirect>
     </div>
 
     <h3>{gettext("History")}</h3>

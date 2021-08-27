@@ -25,6 +25,23 @@ defmodule Hygeia.TenantContextTest do
       assert TenantContext.get_tenant!(tenant.uuid) == tenant
     end
 
+    test "get_tenant_by_region/1" do
+      %Tenant{uuid: tenant_li_uuid} = tenant_fixture(%{country: "LI"})
+      %Tenant{uuid: tenant_ch_zh} = tenant_fixture(%{country: "CH", subdivision: "ZH"})
+
+      assert %Tenant{uuid: ^tenant_li_uuid} = TenantContext.get_tenant_by_region(%{country: "LI"})
+
+      assert %Tenant{uuid: ^tenant_li_uuid} =
+               TenantContext.get_tenant_by_region(%{country: "LI", subdivision: "11"})
+
+      assert nil == TenantContext.get_tenant_by_region(%{country: "CH"})
+
+      assert %Tenant{uuid: ^tenant_ch_zh} =
+               TenantContext.get_tenant_by_region(%{country: "CH", subdivision: "ZH"})
+
+      assert nil == TenantContext.get_tenant_by_region(%{country: "DE"})
+    end
+
     test "create_tenant/1 with valid data creates a tenant" do
       assert {:ok, %Tenant{} = tenant} = TenantContext.create_tenant(@valid_attrs)
       assert tenant.name == "some name"

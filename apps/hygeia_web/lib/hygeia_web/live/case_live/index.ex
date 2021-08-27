@@ -140,7 +140,8 @@ defmodule HygeiaWeb.CaseLive.Index do
     "fully_vaccinated" => :fully_vaccinated,
     "vaccination_failures" => :vaccination_failures,
     "inserted_at_from" => :inserted_at_from,
-    "inserted_at_to" => :inserted_at_to
+    "inserted_at_to" => :inserted_at_to,
+    "auto_tracing_problem" => :auto_tracing_problem
   }
 
   defp list_cases(socket) do
@@ -157,6 +158,15 @@ defmodule HygeiaWeb.CaseLive.Index do
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
       |> Enum.reduce(query, fn
+        {:auto_tracing_problem, "true"}, query ->
+          from(case in query,
+            join: auto_tracing in assoc(case, :auto_tracing),
+            where: auto_tracing.unsolved_problems
+          )
+
+        {:auto_tracing_problem, "false"}, query ->
+          query
+
         {:fully_vaccinated, "true"}, query ->
           where(
             query,
