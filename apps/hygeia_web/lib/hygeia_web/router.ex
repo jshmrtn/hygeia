@@ -328,6 +328,8 @@ defmodule HygeiaWeb.Router do
 
     live "/system_messages", SystemMessageLive.Index, :index
 
+    get "/locale/:locale/:redirect_uri", LocaleController, :set_locale
+
     get "/pdf/isolation/:case_uuid/:phase_uuid", PdfController, :isolation_confirmation
     get "/pdf/quarantine/:case_uuid/:phase_uuid", PdfController, :quarantine_confirmation
     get "/pdf/isolation_end/:case_uuid/:phase_uuid", PdfController, :isolation_end_confirmation
