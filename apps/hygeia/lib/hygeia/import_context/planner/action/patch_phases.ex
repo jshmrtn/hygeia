@@ -34,7 +34,14 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchPhases do
         |> Enum.map(&Changeset.change/1)
 
       phases =
-        Changeset.get_change(case_changeset, :phases, fallback_phases) ++
+        case_changeset
+        |> Changeset.get_change(:phases, fallback_phases)
+        |> List.update_at(-1, fn phase_changeset ->
+          Phase.changeset(phase_changeset, %{details: %{end_reason: :converted_to_index}})
+        end)
+
+      phases =
+        phases ++
           [
             Phase.changeset(%Phase{}, %{
               details: %{__type__: phase_type},
