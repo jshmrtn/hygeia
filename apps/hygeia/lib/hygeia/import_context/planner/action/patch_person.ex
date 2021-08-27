@@ -29,6 +29,7 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchPerson do
         [:mobile, :landline, :email]
         |> Enum.map(&{&1, person_attrs[&1]})
         |> Enum.reject(&match?({_type, nil}, &1))
+        |> Enum.reject(&match?({_type, ""}, &1))
         |> Enum.reject(&(elem(&1, 1) in existing_values))
         |> Enum.map(fn {type, value} ->
           ContactMethod.changeset(%ContactMethod{}, %{type: type, value: value})
