@@ -94,11 +94,12 @@ defmodule Hygeia.CaseContext.Transmission do
   end
 
   @spec validate_case(
-          changeset :: Ecto.Changeset.t(t),
+          changeset :: Ecto.Changeset.t(entity),
           internal_key :: atom,
           ism_id_key :: atom,
           case_relation_key :: atom
-        ) :: Ecto.Changeset.t(t)
+        ) :: Ecto.Changeset.t(entity)
+        when entity: term
   def validate_case(changeset, internal_key, ism_id_key, case_relation_key) do
     changeset
     |> fetch_field!(internal_key)

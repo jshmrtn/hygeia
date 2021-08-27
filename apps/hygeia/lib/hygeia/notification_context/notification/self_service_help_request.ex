@@ -30,6 +30,6 @@ defmodule Hygeia.NotificationContext.Notification.SelfServiceHelpRequest do
   def changeset(self_service_help_request, attrs),
     do:
       self_service_help_request
-      |> cast(attrs, [:case_uuid])
+      |> cast(attrs, [:case_uuid, :uuid])
       |> validate_required([:case_uuid])
 end

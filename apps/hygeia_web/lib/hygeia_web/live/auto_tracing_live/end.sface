@@ -1,0 +1,40 @@
+<div id="step_end" class="container">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+
+  <h2 class="mb-4">
+    {gettext("Thank you for your information!")}
+  </h2>
+
+  <div class="row">
+    <div class="col-6">
+      <p>
+        {gettext(
+          "We will forward you to the recording of people that you were in contact with and could possibly have passed the infection on."
+        )}
+      </p>
+      <p>
+        {gettext(
+          "In your e-mail inbox you will find a certificate for your employer as well as further information on isolation."
+        )}
+      </p>
+      <p class="mb-5">
+        {gettext("We wish you a speedy recovery.")}
+      </p>
+    </div>
+  </div>
+
+  <hr class="mb-4">
+
+  <LiveRedirect
+    to={Routes.auto_tracing_transmission_path(@socket, :transmission, @case)}
+    class="btn btn-outline-primary"
+  >
+    {gettext("Back")}
+  </LiveRedirect>
+  <LiveRedirect
+    to={Routes.person_overview_index_path(@socket, :index, @case.person_uuid)}
+    class="btn btn-primary"
+  >
+    {gettext("Overview")}
+  </LiveRedirect>
+</div>

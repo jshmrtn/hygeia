@@ -27,7 +27,7 @@ defmodule HygeiaWeb.CaseLive.Navigation do
       preload_assigns_one(
         assign_list,
         :case,
-        &Repo.preload(&1, :tenant)
+        &Repo.preload(&1, tenant: [], auto_tracing: [])
       )
 
   @impl Phoenix.LiveComponent

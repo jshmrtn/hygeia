@@ -99,6 +99,9 @@ config :sentry,
 config :hygeia, Hygeia.Jobs.SendCaseClosedEmail,
   url_generator: HygeiaWeb.SendCaseClosedEmailUrlGenerator
 
+config :hygeia, Hygeia.AutoTracingContext.AutoTracingCommunication,
+  url_generator: HygeiaWeb.AutoTracingCommunicationUrlGenerator
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

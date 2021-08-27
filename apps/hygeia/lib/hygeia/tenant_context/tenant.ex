@@ -248,6 +248,18 @@ defmodule Hygeia.TenantContext.Tenant do
   def get_message_signature_text(%__MODULE__{}, message_type) when message_type in [:sms, :email],
     do: ""
 
+  @spec is_internal_managed_tenant?(tenant :: t) :: boolean
+  def is_internal_managed_tenant?(tenant)
+
+  def is_internal_managed_tenant?(%__MODULE__{
+        case_management_enabled: true,
+        iam_domain: iam_domain
+      })
+      when iam_domain != nil,
+      do: true
+
+  def is_internal_managed_tenant?(_tenant), do: false
+
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person
     alias Hygeia.TenantContext.Tenant

@@ -1,0 +1,48 @@
+<div id="step_contact" class="container">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+
+  <h4>
+    {gettext("Contact Methods")}
+  </h4>
+
+  <Form for={@changeset} change="validate" submit="save">
+    <div class="row mb-5">
+      <div class="col-6">
+        <p class={"mb-4": @changeset.valid?}>{gettext("Please indicate how we can reach you:")}</p>
+
+        <Field name={:email} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <EmailInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={:mobile} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <TelephoneInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <Field name={:landline} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <TelephoneInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+      </div>
+    </div>
+
+    <hr class="mb-4">
+
+    <LiveRedirect
+      to={Routes.auto_tracing_address_path(@socket, :address, @auto_tracing.case_uuid)}
+      class="btn btn-outline-primary"
+    >
+      {gettext("Back")}
+    </LiveRedirect>
+    <button
+      class="btn btn-primary"
+      type="button"
+      :on-click="advance"
+      disabled={not @changeset.valid?}
+    >
+      {gettext("Continue")}
+    </button>
+  </Form>
+</div>

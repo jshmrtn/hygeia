@@ -144,6 +144,50 @@ defmodule HygeiaWeb.Router do
          PossibleIndexSubmissionLive.Create,
          :create
 
+    live "/cases/:case_uuid/auto-tracing",
+         AutoTracingLive.AutoTracing,
+         :auto_tracing
+
+    live "/cases/:case_uuid/auto-tracing/start",
+         AutoTracingLive.Start,
+         :start
+
+    live "/cases/:case_uuid/auto-tracing/address",
+         AutoTracingLive.Address,
+         :address
+
+    live "/cases/:case_uuid/auto-tracing/contact_methods",
+         AutoTracingLive.ContactMethods,
+         :contact_methods
+
+    live "/cases/:case_uuid/auto-tracing/employer",
+         AutoTracingLive.Employer,
+         :employer
+
+    live "/cases/:case_uuid/auto-tracing/vaccination",
+         AutoTracingLive.Vaccination,
+         :vaccination
+
+    live "/cases/:case_uuid/auto-tracing/covid_app",
+         AutoTracingLive.CovidApp,
+         :covid_app
+
+    live "/cases/:case_uuid/auto-tracing/clinical",
+         AutoTracingLive.Clinical,
+         :clinical
+
+    live "/cases/:case_uuid/auto-tracing/transmission",
+         AutoTracingLive.Transmission,
+         :transmission
+
+    live "/cases/:case_uuid/auto-tracing/end",
+         AutoTracingLive.End,
+         :end
+
+    live "/cases/:case_uuid/auto-tracing/tenant-exit",
+         AutoTracingLive.TenantExit,
+         :tenant_exit
+
     live "/people/:person_uuid/overview", PersonOverviewLive.Index, :index
 
     live "/cases/:case_uuid/:phase_uuid/create-premature-release",
@@ -173,6 +217,10 @@ defmodule HygeiaWeb.Router do
     live "/people/:id", PersonLive.BaseData, :show
     live "/people/:id/edit", PersonLive.BaseData, :edit
     live "/people/:cursor_direction/:cursor", PersonLive.Index, :index
+
+    live "/cases/:case_uuid/auto-tracing/resolve-problems",
+         AutoTracingLive.ResolveProblems,
+         :resolve_problems
 
     live "/cases/new", CaseLive.Create, :create
     live "/cases/new/possible-index", CaseLive.CreatePossibleIndex, :create

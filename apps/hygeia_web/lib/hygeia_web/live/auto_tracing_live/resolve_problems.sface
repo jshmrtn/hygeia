@@ -1,0 +1,192 @@
+<div class="component-auto_tracing-resolve_problems container">
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
+
+    <div class="card">
+      <div class="card-header">
+        <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
+      </div>
+      <div class="card-body">
+        <h2>{pgettext("Auto Tracing Resolve Problems", "Overview")}</h2>
+        <dl>
+          <dt>{pgettext("Auto Tracing Resolve Problems", "Current Step")}</dt>
+          <dd>{AutoTracing.Step.translate(@auto_tracing.current_step)}</dd>
+          <dt>{pgettext("Auto Tracing Resolve Problems", "Last Change")}</dt>
+          <dd>
+            <HygeiaWeb.RelativeTime
+              time={@auto_tracing.updated_at}
+              id="auto_tracing_updated_at"
+              component_id="auto_tracing_updated_at"
+            />
+          </dd>
+        </dl>
+
+        <h2>{pgettext("Auto Tracing Resolve Problems", "Problems")}</h2>
+
+        <div
+          :for={problem <- @auto_tracing.problems}
+          class={"mb-2", "card", "data-card", solved: problem in @auto_tracing.solved_problems}
+          :id={"auto_tracing_problem_#{problem}"}
+        >
+          <details open>
+            <summary class="card-header">
+              <span :if={problem in @auto_tracing.solved_problems}>✓</span>
+              {AutoTracing.Problem.translate(problem)}
+              <button
+                :on-click="resolve"
+                phx-value-problem={problem}
+                class="btn btn-sm btn-secondary float-end"
+                :if={problem not in @auto_tracing.solved_problems}
+              >
+                X
+              </button>
+            </summary>
+
+            <div class="card-body">
+              {#if problem in @auto_tracing.solved_problems}
+                {pgettext("Auto Tracing Resolve Problems", "Problem solved")}
+              {#else}
+                {#case problem}
+                  {#match :covid_app}
+                    <p>{pgettext("Auto Tracing Resolve Problems", "Send a Covid App Code to the person.")}</p>
+
+                    <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                      {pgettext("Auto Tracing Resolve Problems", "Done")}
+                    </button>
+                  {#match :unmanaged_tenant}
+                    <p>
+                      <strong>{pgettext("Auto Tracing Resolve Problems", "Tracer")}</strong>
+                      {pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}
+                    </p>
+                    <p>
+                      <strong>{pgettext("Auto Tracing Resolve Problems", "Supervisor")}</strong>
+                      {pgettext(
+                        "Auto Tracing Resolve Problems",
+                        "Report case to the appropriate authority and delete person & case."
+                      )}
+                    </p>
+
+                    <p>
+                      <strong>{pgettext("Auto Tracing Resolve Problems", "Residency Address")}</strong>
+                      {Address.to_string(@case.person.address, :long)}
+                    </p>
+
+                    <p :if={@case.monitoring != nil and @case.monitoring.address != nil}>
+                      <strong>{pgettext("Auto Tracing Resolve Problems", "Monitoring Address")}</strong>
+                      {Address.to_string(@case.monitoring.address, :long)}
+                    </p>
+
+                    <button
+                      class="btn btn-danger"
+                      :if={authorized?(@case.person, :delete, auth)}
+                      :on-click="delete_person"
+                    >
+                      {pgettext("Auto Tracing Resolve Problems", "Delete Person")}
+                    </button>
+                  {#match :vaccination_failure}
+                    {pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}
+                  {#match :link_propagator}
+                    <div :if={@auto_tracing.transmission.propagator_known}>
+                      <p>
+                        {@auto_tracing.transmission.propagator_first_name}
+                        {@auto_tracing.transmission.propagator_last_name}
+                      </p>
+                      <dl>
+                        <dt>{gettext("Phone")}</dt>
+                        <dd>{@auto_tracing.transmission.propagator_phone}</dd>
+                        <dt>{gettext("Email")}</dt>
+                        <dd>{@auto_tracing.transmission.propagator_email}</dd>
+                        <dt>{gettext("Address")}</dt>
+                        <dd>{Address.to_string(@auto_tracing.transmission.propagator_address, :long)}</dd>
+                      </dl>
+                    </div>
+
+                    <Form
+                      for={@link_propagator_opts_changeset}
+                      change="link_propagator_opts_change"
+                      as={:link_propagator_opts}
+                      submit="link_propagator_opts_submit"
+                    >
+                      <Field name={:propagator_internal} class="form-group">
+                        <div class="btn-group btn-group-toggle btn-radio-group">
+                          <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
+                          <label class={
+                            "btn",
+                            "btn-outline-primary",
+                            active: Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == nil
+                          }>
+                            <RadioButton value="" />
+                            {gettext("No propagator")}
+                          </label>
+                          <label class={
+                            "btn",
+                            "btn-outline-primary",
+                            active: Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == true
+                          }>
+                            <RadioButton value="true" />
+                            {gettext("Internal")}
+                          </label>
+                          <label class={
+                            "btn",
+                            "btn-outline-primary",
+                            active: Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == false
+                          }>
+                            <RadioButton value="false" />
+                            {gettext("External")}
+                          </label>
+                        </div>
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field
+                        name={:propagator_ism_id}
+                        class="form-group"
+                        :if={Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == false}
+                      >
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field
+                        name={:propagator_case_uuid}
+                        class="form-group"
+                        :if={Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == true}
+                      >
+                        <HygeiaWeb.FieldLabel />
+                        <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+
+                      <button
+                        class="btn btn-primary"
+                        type="submit"
+                        phx-disable-with={gettext("Saving...")}
+                        disabled={not @link_propagator_opts_changeset.valid?}
+                      >
+                        {gettext("Create Transmission")}
+                      </button>
+                    </Form>
+                  {#match :new_employer}
+                    <div :for={occupation <- @auto_tracing.occupations}>
+                      <strong>{occupation.unknown_organisation.name}</strong>
+                      {Address.to_string(occupation.unknown_organisation.address, :long)}
+
+                      <Form for={@occupation_form}>
+                        <Field name={:organisation_uuid}>
+                          <HygeiaWeb.OrganisationLive.Choose
+                            id={"occupation_#{occupation.uuid}_organisation"}
+                            change="select_occupation_organisation"
+                            subject={occupation.uuid}
+                            value={nil}
+                          />
+                        </Field>
+                      </Form>
+                    </div>
+                {/case}
+              {/if}
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </Context>
+</div>

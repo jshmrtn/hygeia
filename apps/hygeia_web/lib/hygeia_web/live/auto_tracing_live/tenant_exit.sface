@@ -1,0 +1,9 @@
+<div id="step_tenant_exit" class="container">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+  <h2 class="mb-4">
+    {gettext("Not responsible")}
+  </h2>
+  TODO: Text we're not responsible and will forward case to correct place.
+
+  TODO: If you've entered the wrong address or forgot to enter the correct isolation location, click <LiveRedirect to={Routes.auto_tracing_address_path(@socket, :address, @auto_tracing.case_uuid)}>here</LiveRedirect> to correct the address.
+</div>

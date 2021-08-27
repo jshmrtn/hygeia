@@ -23,23 +23,25 @@
       <a href={gettext("https://www.microsoft.com/en-us/edge")}>Edge</a>
     </p>
 
-    <ul class="mb-4 progress-steps" id="progressbar">
-      <div class="progress-bar" />
-      <li
+    <nav class="mb-5 progress-steps" id="progressbar">
+      <div aria-hidden="false" class="progress-bar" />
+      <div
         :for={{step, {name, active, completed}} <- steps(@step)}
         class={
+          "progress-step",
           active: active,
-          completed: completed
+          completed: completed,
+          interactive: completed
         }
         :on-click="goto_step"
         phx-value-step={step}
         phx-value-active={if completed, do: "1", else: "0"}
       >
-        <small>
+        <small class="d-none d-lg-block">
           {name}
         </small>
-      </li>
-    </ul>
+      </div>
+    </nav>
 
     <div class="card mb-3">
       <div class="card-body">

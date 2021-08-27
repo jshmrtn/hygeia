@@ -14,7 +14,7 @@ defmodule Hygeia.Helpers.Phone do
         ) ::
           Changeset.t()
   def validate_and_normalize_phone(changeset, field, type \\ fn _type -> :ok end) do
-    with {:ok, phone_number} <- fetch_change(changeset, field),
+    with {:ok, phone_number} when is_binary(phone_number) <- fetch_change(changeset, field),
          {:ok, parsed_number} <-
            ExPhoneNumber.parse(phone_number, @origin_country),
          true <- ExPhoneNumber.is_valid_number?(parsed_number),

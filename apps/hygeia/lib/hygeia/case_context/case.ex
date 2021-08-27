@@ -6,6 +6,7 @@ defmodule Hygeia.CaseContext.Case do
 
   import HygeiaGettext
 
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.Complexity
   alias Hygeia.CaseContext.Case.Monitoring
@@ -54,6 +55,7 @@ defmodule Hygeia.CaseContext.Case do
           pinned_notes: Ecto.Schema.has_many(Note.t()) | nil,
           tests: Ecto.Schema.has_many(Test.t()) | nil,
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()) | nil,
+          auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -83,9 +85,12 @@ defmodule Hygeia.CaseContext.Case do
           pinned_notes: Ecto.Schema.has_many(Note.t()),
           tests: Ecto.Schema.has_many(Test.t()),
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()),
+          auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
+
+  @type changeset_params :: %{optional(:symptoms_required) => boolean()}
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -116,16 +121,31 @@ defmodule Hygeia.CaseContext.Case do
     has_many :tests, Test, foreign_key: :case_uuid, on_replace: :delete
     has_many :premature_releases, PrematureRelease, foreign_key: :case_uuid, on_replace: :delete
 
+    has_one :auto_tracing, AutoTracing, foreign_key: :case_uuid
+
     timestamps()
   end
 
   @doc false
   @spec changeset(
           case :: empty | t | Ecto.Changeset.t(t | empty),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: changeset_params
         ) ::
           Ecto.Changeset.t(t)
-  def changeset(case, attrs) do
+  def changeset(case, attrs \\ %{}, changeset_params \\ %{})
+
+  def changeset(case, attrs, %{symptoms_required: true} = changeset_params) do
+    case
+    |> changeset(attrs, %{changeset_params | symptoms_required: false})
+    |> cast_embed(:clinical,
+      with: &Clinical.changeset(&1, &2, %{symptoms_required: true}),
+      required: true
+    )
+    |> validate_clinical_required()
+  end
+
+  def changeset(case, attrs, _changeset_params) do
     case
     |> cast(attrs, [
       :uuid,
@@ -159,6 +179,23 @@ defmodule Hygeia.CaseContext.Case do
     |> sort_phases_as_needed()
     |> validate_phase_orders()
     |> validate_phase_no_overlap()
+  end
+
+  defp validate_clinical_required(changeset) do
+    changeset
+    |> fetch_field!(:clinical)
+    |> case do
+      %Clinical{} = clinical ->
+        clinical
+        |> Clinical.changeset(%{}, %{symptoms_required: true})
+        |> case do
+          %Ecto.Changeset{valid?: true} -> changeset
+          %Ecto.Changeset{valid?: false} -> add_error(changeset, :clinical, "is invalid")
+        end
+
+      nil ->
+        add_error(changeset, :clinical, "is invalid")
+    end
   end
 
   defp validate_at_least_one_phase(changeset) do
@@ -339,24 +376,42 @@ defmodule Hygeia.CaseContext.Case do
 
     @spec authorized?(
             resource :: Case.t(),
-            action :: :details | :partial_details | :create | :list | :update | :delete,
+            action ::
+              :details | :partial_details | :create | :list | :update | :delete | :auto_tracing,
             user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(_case, action, :anonymous, _meta)
-        when action in [:list, :create, :details, :partial_details, :update, :delete],
+        when action in [
+               :list,
+               :create,
+               :details,
+               :partial_details,
+               :update,
+               :delete,
+               :auto_tracing
+             ],
         do: false
 
     def authorized?(
           %Case{person_uuid: person_uuid},
-          :partial_details,
+          action,
           %Person{uuid: person_uuid},
           _meta
-        ),
+        )
+        when action in [:partial_details, :auto_tracing],
         do: true
 
     def authorized?(_case, action, %Person{}, _meta)
-        when action in [:list, :create, :details, :partial_details, :update, :delete],
+        when action in [
+               :list,
+               :create,
+               :details,
+               :partial_details,
+               :update,
+               :delete,
+               :auto_tracing
+             ],
         do: false
 
     def authorized?(
@@ -365,7 +420,7 @@ defmodule Hygeia.CaseContext.Case do
           %User{uuid: tracer_uuid} = user,
           _meta
         )
-        when action in [:details, :partial_details],
+        when action in [:details, :partial_details, :auto_tracing],
         do: User.has_role?(user, :tracer, :any)
 
     def authorized?(
@@ -374,11 +429,11 @@ defmodule Hygeia.CaseContext.Case do
           %User{uuid: supervisor_uuid} = user,
           _meta
         )
-        when action in [:details, :partial_details],
+        when action in [:details, :partial_details, :auto_tracing],
         do: User.has_role?(user, :supervisor, :any)
 
     def authorized?(%Case{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
-        when action in [:details, :partial_details, :versioning, :update, :delete],
+        when action in [:details, :partial_details, :versioning, :update, :delete, :auto_tracing],
         do:
           Enum.any?(
             [:super_user, :supervisor, :admin],
@@ -386,7 +441,7 @@ defmodule Hygeia.CaseContext.Case do
           )
 
     def authorized?(%Case{tenant_uuid: tenant_uuid}, action, user, _meta)
-        when action in [:details, :partial_details, :versioning],
+        when action in [:details, :partial_details, :versioning, :auto_tracing],
         do:
           Enum.any?(
             [:viewer, :tracer, :super_user, :supervisor, :admin],

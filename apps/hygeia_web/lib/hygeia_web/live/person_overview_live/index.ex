@@ -3,6 +3,7 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
 
   use HygeiaWeb, :surface_view
 
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
@@ -17,9 +18,20 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
 
     socket =
       if authorized?(person, :partial_details, get_auth(socket)) do
-        socket
-        |> assign(page_title: "#{person.first_name} #{person.last_name} - #{gettext("Person")}")
-        |> load_data(person)
+        {socket, redirect_to_auto_tracing} =
+          socket
+          |> assign(page_title: "#{person.first_name} #{person.last_name} - #{gettext("Person")}")
+          |> load_data(person)
+
+        case redirect_to_auto_tracing do
+          %Case{} = case ->
+            push_redirect(socket,
+              to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+            )
+
+          false ->
+            socket
+        end
       else
         push_redirect(socket,
           to:
@@ -40,11 +52,23 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
 
   def handle_info({action, _entity, _version}, socket)
       when action in [:created, :updated, :deleted] do
-    {:noreply, load_data(socket, CaseContext.get_person!(socket.assigns.person.uuid))}
+    {socket, redirect_to_auto_tracing} =
+      load_data(socket, CaseContext.get_person!(socket.assigns.person.uuid))
+
+    {:noreply,
+     case redirect_to_auto_tracing do
+       %Case{} = case ->
+         push_redirect(socket,
+           to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+         )
+
+       false ->
+         socket
+     end}
   end
 
   defp load_data(socket, person) do
-    person = Repo.preload(person, cases: [:tracer, :tenant])
+    person = Repo.preload(person, cases: [:tracer, :tenant, :auto_tracing])
 
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "people:#{person.uuid}")
 
@@ -66,6 +90,19 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
         end
       )
 
+    untraced_index_cases =
+      for case <- person.cases,
+          phase <- case.phases,
+          match?(%Phase{details: %Phase.Index{}, quarantine_order: nil}, phase) do
+        case
+      end
+
+    redirect_to_auto_tracing =
+      case untraced_index_cases do
+        [case | _others] -> case
+        [] -> false
+      end
+
     sorted_case_phases =
       Enum.sort_by(
         for case <- person.cases, phase <- case.phases do
@@ -75,11 +112,11 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
         {:desc, Date}
       )
 
-    assign(socket,
-      person: person,
-      active_phase: active_phase,
-      active_case: active_case,
-      sorted_case_phases: sorted_case_phases
-    )
+    {assign(socket,
+       person: person,
+       active_phase: active_phase,
+       active_case: active_case,
+       sorted_case_phases: sorted_case_phases
+     ), redirect_to_auto_tracing}
   end
 end

@@ -81,7 +81,10 @@ defmodule Hygeia.Jobs.Supervisor do
           user_sync_token_server_name: Module.concat(ServiceUserToken, UserSync)}},
 
         # Persist Viewer Log
-        Hygeia.Jobs.ViewerLogPersistence.Supervisor
+        Hygeia.Jobs.ViewerLogPersistence.Supervisor,
+
+        # Detect Unchanged Cases
+        Hygeia.Jobs.DetectUnchangedCases
       ]
   end
 

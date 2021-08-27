@@ -332,10 +332,6 @@ defmodule Hygeia.CaseContextTest do
     @valid_attrs %{
       complexity: :high,
       status: :first_contact,
-      hospitalizations: [
-        %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
-        %{start: ~D[2020-10-16], end: ~D[2020-10-17]}
-      ],
       clinical: %{
         reasons_for_test: [:symptoms, :outbreak_examination],
         has_symptoms: true,
@@ -406,13 +402,13 @@ defmodule Hygeia.CaseContextTest do
 
     test "list_cases/0 returns all cases" do
       case = case_fixture()
-      assert Repo.preload(CaseContext.list_cases(), hospitalizations: [], tests: []) == [case]
+      assert Repo.preload(CaseContext.list_cases(), tests: []) == [case]
     end
 
     test "get_case!/1 returns the case with given id" do
       case = case_fixture()
 
-      assert case.uuid |> CaseContext.get_case!() |> Repo.preload(hospitalizations: [], tests: []) ==
+      assert case.uuid |> CaseContext.get_case!() |> Repo.preload(tests: []) ==
                case
     end
 
@@ -426,7 +422,22 @@ defmodule Hygeia.CaseContextTest do
                CaseContext.create_case(
                  person,
                  @valid_attrs
-                 |> Map.merge(%{tracer_uuid: user.uuid, supervisor_uuid: user.uuid})
+                 |> Map.merge(%{
+                   tracer_uuid: user.uuid,
+                   supervisor_uuid: user.uuid,
+                   hospitalizations: [
+                     %{
+                       start: ~D[2020-10-13],
+                       end: ~D[2020-10-15],
+                       organisation_uuid: organisation.uuid
+                     },
+                     %{
+                       start: ~D[2020-10-16],
+                       end: ~D[2020-10-17],
+                       organisation_uuid: organisation.uuid
+                     }
+                   ]
+                 })
                  |> put_in(
                    [:hospitalizations, Access.at(0), :organisation_uuid],
                    organisation.uuid
@@ -511,7 +522,7 @@ defmodule Hygeia.CaseContextTest do
     end
 
     test "update_case/2 with valid data updates the case" do
-      case = case_fixture()
+      case = Repo.preload(case_fixture(), :hospitalizations)
 
       assert {:ok,
               %Case{
@@ -521,12 +532,17 @@ defmodule Hygeia.CaseContextTest do
     end
 
     test "update_case/2 other status than hospitalization needs end date" do
+      organisation = organisation_fixture()
+
       case =
         case_fixture(
           person_fixture(),
           user_fixture(%{iam_sub: Ecto.UUID.generate()}),
           user_fixture(%{iam_sub: Ecto.UUID.generate()}),
-          %{status: :hospitalization, hospitalizations: [%{start: Date.utc_today()}]}
+          %{
+            status: :hospitalization,
+            hospitalizations: [%{start: Date.utc_today(), organisation_uuid: organisation.uuid}]
+          }
         )
 
       assert {:error, _changeset} = CaseContext.update_case(case, %{status: :done})
@@ -552,6 +568,8 @@ defmodule Hygeia.CaseContextTest do
           }
         )
 
+      case = Repo.preload(case, :hospitalizations)
+
       assert {:error, _changeset} = CaseContext.update_case(case, %{status: :done})
     end
 
@@ -562,7 +580,7 @@ defmodule Hygeia.CaseContextTest do
       assert case ==
                case.uuid
                |> CaseContext.get_case!()
-               |> Repo.preload(hospitalizations: [], tests: [])
+               |> Repo.preload(tests: [])
     end
 
     test "delete_case/1 deletes the case" do
@@ -1660,8 +1678,13 @@ defmodule Hygeia.CaseContextTest do
     end
 
     test "create_hospitalization/1 with valid data creates a hospitalization" do
+      organisation = organisation_fixture()
+
       assert {:ok, %Hospitalization{} = hospitalization} =
-               CaseContext.create_hospitalization(case_fixture(), @valid_attrs)
+               CaseContext.create_hospitalization(
+                 case_fixture(),
+                 Map.merge(@valid_attrs, %{organisation_uuid: organisation.uuid})
+               )
 
       assert hospitalization.start == ~D[2011-05-18]
       assert hospitalization.end == ~D[2011-05-18]

@@ -357,6 +357,37 @@
             </button>
           </Form>
         {/if}
+        {#if match?(%Action.CreateAutoTracing{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {translate_certainty(certainty)}
+              </span>
+
+              <span :if={action.action == :skip}>
+                {gettext("Do not create Auto Tracing")}
+              </span>
+              <span :if={action.action == :append}>
+                {gettext("Create Auto Tracing")}
+              </span>
+            </div>
+          </summary>
+
+          <Form
+            for={%{create: action.create}}
+            change="change_auto_tracing"
+            opts={autocomplete: "off", id: "auto_tracing-form", class: "card-body container"}
+            as={:change_auto_tracing}
+          >
+            <HiddenInput field={:index} value={index} />
+            <Field name={:create} class="form-check">
+              <label class="checkbox-label">
+                <Checkbox class="form-check-input" unchecked_value={false} />
+                {gettext("Create")}
+              </label>
+            </Field>
+          </Form>
+        {/if}
         {#if match?(%Action.PatchAssignee{}, action)}
           <summary class="card-header">
             <div class="d-inline-block">

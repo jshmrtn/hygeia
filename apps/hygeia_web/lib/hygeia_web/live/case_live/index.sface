@@ -133,37 +133,38 @@
                 </Field>
               </div>
 
-              <div class="form-group">
-                <Field name="fully_vaccinated" class="form-group">
-                  <Label class="checkbox-label">
-                    <Checkbox />
-                    {gettext("Fully Vaccinated")}
-                  </Label>
-                </Field>
-              </div>
+              <Field name="fully_vaccinated" class="form-group">
+                <Label class="checkbox-label">
+                  <Checkbox />
+                  {gettext("Fully Vaccinated")}
+                </Label>
+              </Field>
 
-              <div class="form-group">
-                <Field name="vaccination_failures" class="form-group">
-                  <Label class="checkbox-label">
-                    <Checkbox />
-                    {gettext("Vaccination Failures")}
-                  </Label>
-                </Field>
-              </div>
+              <Field name="vaccination_failures" class="form-group">
+                <Label class="checkbox-label">
+                  <Checkbox />
+                  {gettext("Vaccination Failures")}
+                </Label>
+              </Field>
 
-              <div class="form-group">
-                <Field name="inserted_at" class="form-group">
-                  <Label class="d-block">{schema_field_name(:inserted_at, Case)}</Label>
+              <Field name="inserted_at" class="form-group">
+                <Label class="d-block">{schema_field_name(:inserted_at, Case)}</Label>
 
-                  <FieldContext name={:inserted_at_from}>
-                    <HygeiaWeb.DateTimeLocalInput class="form-control" />
-                  </FieldContext>
-                  {pgettext("Date Range", "until")}
-                  <FieldContext name={:inserted_at_to}>
-                    <HygeiaWeb.DateTimeLocalInput class="form-control" />
-                  </FieldContext>
-                </Field>
-              </div>
+                <FieldContext name={:inserted_at_from}>
+                  <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                </FieldContext>
+                {pgettext("Date Range", "until")}
+                <FieldContext name={:inserted_at_to}>
+                  <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                </FieldContext>
+              </Field>
+
+              <Field name="auto_tracing_problem" class="form-group">
+                <Label class="checkbox-label">
+                  <Checkbox />
+                  {gettext("Auto Tracing Problem")}
+                </Label>
+              </Field>
             </InputContext>
           </Form>
         </:default>
