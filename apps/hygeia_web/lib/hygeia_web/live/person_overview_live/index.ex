@@ -108,7 +108,11 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
         for case <- person.cases, phase <- case.phases do
           {phase, case}
         end,
-        fn {%Phase{end: end_date}, _case} -> end_date end,
+        fn
+          {%Phase{end: nil, inserted_at: nil}, %Case{inserted_at: inserted_at}} -> inserted_at
+          {%Phase{end: nil, inserted_at: inserted_at}, _case} -> inserted_at
+          {%Phase{end: end_date}, _case} -> end_date
+        end,
         {:desc, Date}
       )
 
