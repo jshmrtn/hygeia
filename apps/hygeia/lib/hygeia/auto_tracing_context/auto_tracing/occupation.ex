@@ -1,5 +1,5 @@
 defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
-  @moduledoc false
+  @moduledoc "Occupation Schema"
 
   use Hygeia, :model
 
