@@ -4,6 +4,8 @@ defmodule HygeiaWeb.RowLive.Index do
 
   use HygeiaWeb, :surface_view
 
+  import Ecto.Query
+
   alias Hygeia.ImportContext
   alias Hygeia.ImportContext.Import.Type
   alias Hygeia.ImportContext.Row
@@ -66,13 +68,16 @@ defmodule HygeiaWeb.RowLive.Index do
   defp list_rows(socket) do
     %Paginator.Page{entries: entries, metadata: metadata} =
       Repo.paginate(
-        Ecto.assoc(
-          socket.assigns.import,
-          case socket.assigns.status do
-            :pending -> :pending_rows
-            :discarded -> :discarded_rows
-            :resolved -> :resolved_rows
-          end
+        from(
+          row in Ecto.assoc(
+            socket.assigns.import,
+            case socket.assigns.status do
+              :pending -> :pending_rows
+              :discarded -> :discarded_rows
+              :resolved -> :resolved_rows
+            end
+          ),
+          order_by: [asc: :uuid]
         ),
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: [uuid: :asc])
       )
