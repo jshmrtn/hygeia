@@ -11,6 +11,7 @@ defmodule HygeiaWeb.PersonLive.Choose do
   alias Hygeia.TenantContext
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
+  alias Surface.Components.Link
 
   @doc "An identifier for the form"
   prop form, :form
@@ -83,4 +84,7 @@ defmodule HygeiaWeb.PersonLive.Choose do
   end
 
   defp load_person(uuid), do: uuid |> CaseContext.get_person!() |> Repo.preload(:tenant)
+
+  defp format_date(nil), do: nil
+  defp format_date(date), do: HygeiaCldr.Date.to_string!(date)
 end
