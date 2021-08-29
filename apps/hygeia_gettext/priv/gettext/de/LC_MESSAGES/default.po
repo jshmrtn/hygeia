@@ -18,7 +18,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -925,7 +925,6 @@ msgstr "CSV herunterladen"
 msgid "Download your:"
 msgstr "Downloaden Sie Ihre:"
 
-#, elixir-format
 msgid "Downloads:"
 msgstr "Downloads:"
 
@@ -1892,11 +1891,9 @@ msgstr "Neue Kontaktperson einsenden"
 msgid "New Premature Release"
 msgstr "Neue vorzeitige Quarantäneentlassung"
 
-#, elixir-format
 msgid "New Registered Cases (Processed)"
 msgstr "Neu eingetragene Fälle (Bearbeitet)"
 
-#, elixir-format
 msgid "New Registered Cases (Unprocessed)"
 msgstr "Neu eingetragene Fälle (Unbearbeitet)"
 
@@ -3508,7 +3505,6 @@ msgstr "Sie sind nicht berechtigt, diese Aktion auszuführen."
 msgid "You can also end quarantine early, if you do a COVID-19 test in the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
 msgstr "Ausserdem können Sie die Quarantäne vorzeitig beenden, indem Sie ab frühestens 4 Tage vor Ablauf der Quarantäne einen Test durchführen lassen, welcher negativ ausfällt. Der Test muss von einer offiziellen Teststelle durchgeführt werden."
 
-#, elixir-format
 msgid "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
 msgstr "Ausserdem können Sie die Quarantäne vorzeitig beenden, indem Sie innert der letzten 4 Tage vor Ablauf der Quarantäne einen Test durchführen lassen, welcher negativ ausfällt. Der Test muss von einer offiziellen Teststelle durchgeführt werden."
 
@@ -3536,14 +3532,12 @@ msgstr "Sie haben einen ungültigen Dateityp ausgewählt"
 msgid "You must provide a reason for completing a phase."
 msgstr "Bei “Phasen” soll für die Beendigung des Tracings bzw. der Isolation ein Grund angegeben werden."
 
-#, elixir-format
 msgid "Your isolation started on %{start_date} and applies up to and including %{end_date}."
 msgstr "Ihre Isolation startete am %{start_date} und gilt bis und mit %{end_date}."
 
 msgid "Your isolation started on %{start_date} and is expected to end on %{end_date}."
 msgstr "Ihre Isolation startete am %{start_date} und endet voraussichtlich am %{end_date}."
 
-#, elixir-format
 msgid "Your quarantine started on %{start_date} and applies up to and including %{end_date}."
 msgstr "Ihre Quarantäne startete am %{start_date} und gilt bis und mit %{end_date}."
 
