@@ -67,7 +67,9 @@ defmodule Hygeia.Umbrella.MixProject do
       {:gun, "~> 2.0.0", hex: :grpc_gun, override: true},
       {:sentry, "~> 8.0"},
       {:jason, "~> 1.1"},
-      {:hackney, "~> 1.8"}
+      {:hackney, "~> 1.8"},
+      # TODO: Remove when issue in apps/hygeia_gettext/mix.exs is solved
+      {:gettext, "~> 0.13", github: "jshmrtn/gettext", branch: "keep_flags", override: true}
     ]
   end
 

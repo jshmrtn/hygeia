@@ -41,7 +41,9 @@ defmodule HygeiaGettext.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:gettext, "~> 0.11"}
+      # TODO: Revert back to released version when the following PR is merged:
+      # - https://github.com/elixir-gettext/gettext/pull/283
+      {:gettext, "~> 0.13", github: "jshmrtn/gettext", branch: "keep_flags", override: true}
     ]
   end
 
