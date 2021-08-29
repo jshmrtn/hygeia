@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <div class="row">
     {#for %{person_changeset: person_cs, case_changeset: case_cs, reporting: reporting} <-
-        @current_form_data.bindings}
+        @form_data.bindings}
       <div class="w-100">
         <Form for={case_cs} change="validate" opts={autocomplete: "off", "phx-hook": "BlockNavigation"}>
           <PersonCard person_changeset={person_cs}>

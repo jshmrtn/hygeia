@@ -68,7 +68,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
             # %Person{tenant_uuid: tenant_uuid} =
             #   person1 =
-            #   CaseContext.get_person!("e3239c4f-a98a-46f1-8e09-0fb412599d44")
+            #   CaseContext.get_person!("34e23d8c-777d-40e8-bd77-50838ba7404b")
             #   |> Hygeia.Repo.preload([:tenant, :cases])
 
             # %{
@@ -79,8 +79,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             #       person_changeset: person1 |> CaseContext.change_person(),
             #       # case_changeset: List.first(person1.cases) |> Ecto.Changeset.change()
             #       # EMPTY CASE
-            #       case_changeset: Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid, status: :done})
-            #       |> Ecto.Changeset.change()
+            #       case_changeset:
+            #         Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid, status: :done})
+            #         |> CaseContext.change_case()
             #     }
             #   ]
             # }
@@ -92,7 +93,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
         assign(socket,
           visited_steps: visit_step([], @default_form_step),
-          current_form_data: available_data,
+          form_data: available_data,
           tenants: tenants,
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
@@ -126,11 +127,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     {:noreply, assign(socket, :params, params)}
   end
 
-  defp save(
-         %Socket{assigns: %{current_form_data: %{bindings: bindings} = current_form_data}} =
-           socket
-       ) do
-    case Service.upsert(bindings, current_form_data) do
+  defp save(%Socket{assigns: %{form_data: %{bindings: bindings} = form_data}} = socket) do
+    case Service.upsert(bindings, form_data) do
       {:error, _} ->
         put_flash(
           socket,
@@ -141,7 +139,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         )
 
       {:ok, tuples} ->
-        :ok = Service.send_confirmations(socket, tuples, current_form_data[:type])
+        :ok = Service.send_confirmations(socket, tuples, form_data[:type])
 
         new_bindings =
           Enum.map(tuples, fn {person, case, reporting_data} ->
@@ -153,7 +151,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           end)
 
         socket
-        |> assign(current_form_data: Map.put(current_form_data, :bindings, new_bindings))
+        |> assign(form_data: Map.put(form_data, :bindings, new_bindings))
         |> assign(visited_steps: visit_step([], "summary"))
         |> put_flash(:info, gettext("Cases inserted successfully."))
         |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, "summary"))
@@ -173,45 +171,45 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   @impl Phoenix.LiveView
   def handle_info(
         {:proceed, changed_data},
-        %{assigns: %{current_form_data: current_form_data}} = socket
+        %{assigns: %{form_data: form_data}} = socket
       ) do
     updated_data =
-      current_form_data
+      form_data
       |> Map.merge(changed_data)
       |> update_form_data(changed_data)
 
     {:noreply,
      socket
-     |> assign(:current_form_data, updated_data)
+     |> assign(:form_data, updated_data)
      |> change_step(@form_steps, :next)}
   end
 
   @impl Phoenix.LiveView
   def handle_info(
         {:return, changed_data},
-        %{assigns: %{current_form_data: current_form_data}} = socket
+        %{assigns: %{form_data: form_data}} = socket
       ) do
     updated_data =
-      current_form_data
+      form_data
       |> Map.merge(changed_data)
       |> update_form_data(changed_data)
 
     {:noreply,
      socket
-     |> assign(:current_form_data, updated_data)
+     |> assign(:form_data, updated_data)
      |> change_step(@form_steps, :prev)}
   end
 
   def handle_info(
         {:feed, changed_data},
-        %{assigns: %{current_form_data: current_form_data}} = socket
+        %{assigns: %{form_data: form_data}} = socket
       ) do
     updated_data =
-      current_form_data
+      form_data
       |> Map.merge(changed_data)
       |> update_form_data(changed_data)
 
-    {:noreply, assign(socket, :current_form_data, updated_data)}
+    {:noreply, assign(socket, :form_data, updated_data)}
   end
 
   def handle_info({:push_patch, path, replace?}, socket) do
@@ -307,20 +305,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   def visited_step?([form_step | _t], form_step), do: true
   def visited_step?([_ | t], form_step), do: visited_step?(t, form_step)
 
-  defp valid_step?("transmission", current_form_data) do
-    DefineTransmission.valid?(current_form_data)
+  defp valid_step?("transmission", form_data) do
+    DefineTransmission.valid?(form_data)
   end
 
-  defp valid_step?("people", current_form_data) do
-    DefinePeople.valid?(current_form_data[:bindings])
+  defp valid_step?("people", form_data) do
+    DefinePeople.valid?(form_data)
   end
 
-  defp valid_step?("options", current_form_data) do
-    DefineOptions.valid?(current_form_data[:bindings])
+  defp valid_step?("options", form_data) do
+    DefineOptions.valid?(form_data)
   end
 
-  defp valid_step?("reporting", current_form_data) do
-    Reporting.valid?(current_form_data[:bindings])
+  defp valid_step?("reporting", form_data) do
+    Reporting.valid?(form_data)
   end
 
   defp update_form_data(current_data, changed_data) do

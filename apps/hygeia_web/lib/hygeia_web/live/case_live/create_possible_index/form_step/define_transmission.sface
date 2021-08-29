@@ -96,7 +96,7 @@
     type="submit"
     :on-click="next"
     phx-disable-with={gettext("Saving...")}
-    disabled={not valid?(@current_form_data)}
+    disabled={not valid?(@form_data)}
   >
     {gettext("Next")}
   </button>

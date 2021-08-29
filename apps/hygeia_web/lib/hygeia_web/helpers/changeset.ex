@@ -147,7 +147,7 @@ defmodule HygeiaWeb.Helpers.Changeset do
   @spec validation_changeset(module :: atom(), data :: map() | keyword()) :: Changeset.t()
   def validation_changeset(module, data) do
     module
-    |> struct()
+    |> Kernel.struct()
     |> module.changeset(data)
     |> Map.put(:action, :validate)
   end

@@ -45,15 +45,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
 
   prop form_step, :string, default: ""
   prop live_action, :atom, default: :index
-  prop current_form_data, :map, required: true
+  prop form_data, :map, required: true
 
   data changeset, :map
 
   @impl Phoenix.LiveComponent
-  def update(%{current_form_data: current_form_data} = assigns, socket) do
+  def update(%{form_data: form_data} = assigns, socket) do
     changeset =
       %__MODULE__{}
-      |> changeset(current_form_data)
+      |> changeset(form_data)
       |> case do
         %Ecto.Changeset{changes: changes} = changeset when map_size(changes) > 0 ->
           Map.put(changeset, :action, :validate)
@@ -80,9 +80,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
   def handle_event(
         "next",
         _params,
-        %Socket{assigns: %{current_form_data: current_form_data}} = socket
+        %Socket{assigns: %{form_data: form_data}} = socket
       ) do
-    case valid?(current_form_data) do
+    case valid?(form_data) do
       true ->
         send(self(), :proceed)
         {:noreply, socket}

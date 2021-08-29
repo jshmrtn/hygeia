@@ -24,7 +24,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary do
 
   prop form_step, :string, required: true
   prop live_action, :atom, required: true
-  prop current_form_data, :map, required: true
+  prop form_data, :map, required: true
   prop supervisor_users, :map, required: true
   prop tracer_users, :map, required: true
 end

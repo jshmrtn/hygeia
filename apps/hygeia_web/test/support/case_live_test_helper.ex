@@ -32,6 +32,16 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
     view
   end
 
+  @spec test_disabled_button(view :: LiveViewTest.t(), context :: map(), params :: map()) ::
+          LiveViewTest.t()
+  def test_disabled_button(view, _context, %{button_id: button_id}) do
+    assert_raise(ArgumentError, fn ->
+      view
+      |> element(button_id)
+      |> render_click()
+    end)
+  end
+
   @spec test_navigation(view :: LiveViewTest.t(), context :: map(), params :: map()) ::
           LiveViewTest.t()
   def test_navigation(view, context, params)

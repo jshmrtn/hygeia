@@ -89,12 +89,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   prop form_step, :string, required: true
   prop live_action, :atom, required: true
   prop params, :map, default: %{}
-  prop current_form_data, :map, required: true
+  prop form_data, :map, required: true
   prop tenants, :list, required: true
 
   data changeset, :map
   data search_changeset, :map
-  data bindings, :list, default: []
   data bulk_action_elements, :map, default: %{}
   data propagator, :map, default: nil
   data suggestions, :list, default: []
@@ -108,12 +107,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   end
 
   @impl Phoenix.LiveComponent
-  def update(%{current_form_data: current_form_data} = assigns, socket) do
+  def update(%{form_data: form_data} = assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(propagator: current_form_data[:propagator])
-     |> assign(:bindings, Map.get(current_form_data, :bindings, []))
+     |> assign(propagator: form_data[:propagator])
      |> handle_action(assigns.live_action, assigns.params)}
   end
 
@@ -128,9 +126,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         %{"person" => person_params},
         %Socket{
           assigns: %{
-            bindings: bindings,
             tenants: tenants,
-            current_form_data: current_form_data,
+            form_data: form_data,
             form_step: form_step,
             live_action: live_action,
             params: params
@@ -141,7 +138,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     |> CaseContext.change_person(person_params)
     |> case do
       %Ecto.Changeset{valid?: true} = changeset ->
-        type = current_form_data[:type]
+        type = form_data[:type]
         person_changeset = merge_tenant(changeset, tenants)
         tenant_uuid = get_field(person_changeset, :tenant_uuid)
 
@@ -155,10 +152,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
               tenant_uuid: tenant_uuid,
               status: decide_case_status(type)
             })
-            |> Map.put(:errors, [])
-            |> Map.put(:valid?, true)
         }
-        |> include_binding(bindings, live_action, params)
+        |> include_binding(form_data[:bindings], live_action, params)
         |> then(&send(self(), {:feed, %{bindings: &1}}))
 
         send(
@@ -180,7 +175,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   def handle_event(
         "suggest_people",
         %{"search" => search_params},
-        %Socket{assigns: %{suggestions: prev_suggestions, bindings: bindings}} = socket
+        %Socket{assigns: %{suggestions: prev_suggestions, form_data: form_data}} = socket
       ) do
     changeset = validation_changeset(Search, search_params)
 
@@ -190,7 +185,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
           changeset
           |> apply_changes()
           |> CaseContext.suggest_people_by_params([:tenant, cases: [:hospitalizations]])
-          |> discard_used_suggestions(bindings)
+          |> discard_used_suggestions(form_data[:bindings])
 
         %Ecto.Changeset{valid?: false} ->
           prev_suggestions
@@ -229,14 +224,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         %{"value" => person_uuid},
         %Socket{
           assigns: %{
-            current_form_data: current_form_data,
-            bindings: bindings,
+            form_data: form_data,
             suggestions: suggestions,
             form_step: form_step
           }
         } = socket
       ) do
-    type = current_form_data[:type]
+    type = form_data[:type]
     person = get_suggested_person(suggestions, person_uuid)
     tenant_uuid = Map.get(person, :tenant_uuid)
 
@@ -246,10 +240,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         person
         |> Ecto.build_assoc(:cases)
         |> CaseContext.change_case(%{tenant_uuid: tenant_uuid, status: decide_case_status(type)})
-        |> Map.put(:errors, [])
-        |> Map.put(:valid?, true)
     }
-    |> add_binding(bindings)
+    |> add_binding(form_data[:bindings])
     |> then(&send(self(), {:feed, %{bindings: &1}}))
 
     send(
@@ -269,7 +261,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         %{"person_uuid" => person_uuid, "value" => case_uuid},
         %Socket{
           assigns: %{
-            bindings: bindings,
+            form_data: form_data,
             suggestions: suggestions,
             form_step: form_step
           }
@@ -282,7 +274,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       person_changeset: CaseContext.change_person(person),
       case_changeset: CaseContext.change_case(case)
     }
-    |> add_binding(bindings)
+    |> add_binding(form_data.bindings)
     |> then(&send(self(), {:feed, %{bindings: &1}}))
 
     send(
@@ -302,15 +294,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         %{"value" => person_uuid},
         %Socket{
           assigns: %{
-            current_form_data: current_form_data,
-            bindings: bindings,
+            form_data: form_data,
             form_step: form_step,
             live_action: live_action,
             params: params
           }
         } = socket
       ) do
-    type = current_form_data[:type]
+    type = form_data[:type]
     person = person_uuid |> CaseContext.get_person!() |> Hygeia.Repo.preload(:tenant)
     tenant_uuid = Map.get(person, :tenant_uuid)
 
@@ -321,7 +312,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         |> Ecto.build_assoc(:cases)
         |> CaseContext.change_case(%{tenant_uuid: tenant_uuid, status: decide_case_status(type)})
     }
-    |> include_binding(bindings, live_action, params)
+    |> include_binding(form_data[:bindings], live_action, params)
     |> then(&send(self(), {:feed, %{bindings: &1}}))
 
     send(
@@ -362,11 +353,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   def handle_event(
         "all_checked",
         %{"value" => "true"},
-        %Socket{assigns: %{bindings: bindings}} = socket
+        %Socket{assigns: %{form_data: form_data}} = socket
       ) do
     {
       :noreply,
-      assign(socket, :bulk_action_elements, fill_bulk_action(bindings))
+      assign(socket, :bulk_action_elements, fill_bulk_action(form_data.bindings))
     }
   end
 
@@ -382,19 +373,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   def handle_event(
         "apply_bulk_action",
         _params,
-        %Socket{assigns: %{bindings: bindings, bulk_action_elements: bulk_action_elements}} =
+        %Socket{assigns: %{form_data: form_data, bulk_action_elements: bulk_action_elements}} =
           socket
       ) do
-    bindings = bulk_delete(bindings, bulk_action_elements)
+    send(self(), {:feed, %{bindings: bulk_delete(form_data.bindings, bulk_action_elements)}})
 
-    send(self(), {:feed, %{bindings: bindings}})
-
-    {
-      :noreply,
-      socket
-      |> assign(bindings: bindings)
-      |> assign(bulk_action_elements: empty_bulk_action())
-    }
+    {:noreply, assign(socket, bulk_action_elements: empty_bulk_action())}
   end
 
   def handle_event(
@@ -484,22 +468,23 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   def handle_event(
         "delete_person",
         %{"index" => index},
-        %Socket{assigns: %{bindings: bindings, bulk_action_elements: elements}} = socket
+        %Socket{assigns: %{form_data: form_data, bulk_action_elements: elements}} = socket
       ) do
-    bindings = List.delete_at(bindings, String.to_integer(index))
-
-    send(self(), {:feed, %{bindings: bindings}})
+    send(
+      self(),
+      {:feed, %{bindings: List.delete_at(form_data.bindings, String.to_integer(index))}}
+    )
 
     {:noreply, assign(socket, :bulk_action_elements, remove_from_bulk_action(elements, index))}
   end
 
-  def handle_event("next", _params, %Socket{assigns: %{bindings: bindings}} = socket) do
-    send(self(), {:proceed, %{bindings: bindings}})
+  def handle_event("next", _params, %Socket{assigns: %{form_data: form_data}} = socket) do
+    send(self(), {:proceed, %{bindings: form_data.bindings}})
     {:noreply, socket}
   end
 
-  def handle_event("back", _params, %Socket{assigns: %{bindings: bindings}} = socket) do
-    send(self(), {:return, %{bindings: bindings}})
+  def handle_event("back", _params, %Socket{assigns: %{form_data: form_data}} = socket) do
+    send(self(), {:return, %{bindings: form_data.bindings}})
     {:noreply, socket}
   end
 
@@ -507,22 +492,22 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   def update_step_data(form_data, changed_data)
   def update_step_data(form_data, _data), do: form_data
 
-  @spec valid?(bindings :: list(map() | nil)) :: boolean()
+  @spec valid?(form_data :: map()) :: boolean()
   def valid?(bindings)
 
-  def valid?(nil), do: false
-
-  def valid?(bindings) do
+  def valid?(%{bindings: bindings}) do
     Enum.reduce(bindings, length(bindings) > 0, fn %{person_changeset: person_changeset}, truth ->
       person_changeset.valid? and truth
     end)
   end
 
-  defp handle_action(%Socket{assigns: %{bindings: bindings}} = socket, :show, %{
+  def valid?(_form_data), do: false
+
+  defp handle_action(%Socket{assigns: %{form_data: form_data}} = socket, :show, %{
          "form_step" => form_step,
          "index" => index
        }) do
-    bindings
+    form_data.bindings
     |> Enum.at(String.to_integer(index))
     |> case do
       nil ->
@@ -540,11 +525,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     end
   end
 
-  defp handle_action(%Socket{assigns: %{bindings: bindings}} = socket, :edit, %{
+  defp handle_action(%Socket{assigns: %{form_data: form_data}} = socket, :edit, %{
          "form_step" => form_step,
          "index" => index
        }) do
-    bindings
+    form_data.bindings
     |> Enum.at(String.to_integer(index))
     |> case do
       nil ->
@@ -577,6 +562,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
   defp include_binding(binding, bindings, live_action, params)
 
+  defp include_binding(binding, nil, _action, _params), do: add_binding(binding, nil)
+
   defp include_binding(binding, bindings, :new, _params) do
     add_binding(binding, bindings)
   end
@@ -587,6 +574,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       index -> List.replace_at(bindings, String.to_integer(index), binding)
     end
   end
+
+  defp add_binding(binding, nil), do: [binding]
 
   defp add_binding(binding, bindings) when is_list(bindings) do
     [binding] ++ bindings
@@ -604,6 +593,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       Enum.find(person.cases, fn case -> case.uuid == case_uuid end)
     end)
   end
+
+  defp discard_used_suggestions(suggestions, nil), do: suggestions
 
   defp discard_used_suggestions(suggestions, bindings) do
     Enum.reject(suggestions, fn %{uuid: uuid} ->

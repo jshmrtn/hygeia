@@ -212,6 +212,28 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
       })
   end
 
+  @spec phase_dates(Date.t()) :: {Date.t(), Date.t()}
+  def phase_dates(contact_date) do
+    start_date = contact_date
+    end_date = Date.add(start_date, 9)
+
+    start_date =
+      if Date.compare(start_date, Date.utc_today()) == :lt do
+        Date.utc_today()
+      else
+        start_date
+      end
+
+    end_date =
+      if Date.compare(end_date, Date.utc_today()) == :lt do
+        Date.utc_today()
+      else
+        end_date
+      end
+
+    {start_date, end_date}
+  end
+
   @spec unstruct(map()) :: map()
   defp unstruct(struct) when is_struct(struct) do
     struct

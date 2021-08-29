@@ -377,11 +377,11 @@
 </div>
 
 <div class="row mb-3">
-  {#if not Enum.empty?(@bindings)}
+  {#if not Enum.empty?(Map.get(@form_data, :bindings, []))}
     <Checkbox
       hidden_input="false"
       opts={
-        checked: is_all_checked?(@bindings, @bulk_action_elements),
+        checked: is_all_checked?(@form_data.bindings, @bulk_action_elements),
         phx_target: @myself,
         phx_click: "all_checked"
       }
@@ -401,7 +401,8 @@
 </div>
 
 <div class="row mb-3">
-  {#for {%{person_changeset: person_cs, case_changeset: case_cs}, index} <- Enum.with_index(@bindings)}
+  {#for {%{person_changeset: person_cs, case_changeset: case_cs}, index} <-
+      Enum.with_index(Map.get(@form_data, :bindings, []))}
     <div class="w-100">
       <Checkbox
         class="form-check-input"
@@ -483,7 +484,7 @@
     type="submit"
     :on-click="next"
     phx-disable-with={gettext("Saving...")}
-    disabled={not valid?(@bindings)}
+    disabled={not valid?(@form_data)}
   >
     {gettext("Next")}
   </button>

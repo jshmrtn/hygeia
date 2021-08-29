@@ -1,9 +1,10 @@
 <div class="container mt-5">
   <div class="row mb-3">
-    {#for {%{person_changeset: person_cs, case_changeset: case_cs}, index} <- Enum.with_index(@bindings)}
+    {#for {%{person_changeset: person_cs, case_changeset: case_cs}, index} <-
+        Enum.with_index(@form_data.bindings)}
       <div class="w-100">
         <Form
-          for={case_cs}
+          for={%{case_cs | action: :validate}}
           change="validate"
           opts={autocomplete: "off", id: "define-options-form", "phx-hook": "BlockNavigation"}
         >
@@ -22,13 +23,13 @@
                     options={if existing_entity?(case_cs) do
                       Status.map()
                     else
-                      manage_statuses(@current_form_data[:type], Status.map())
+                      manage_statuses(@form_data[:type], Status.map())
                     end}
                   />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
-              <div :if={not existing_entity?(case_cs) and @current_form_data.type not in [:travel, :contact_person]}>
+              <div :if={not existing_entity?(case_cs) and @form_data.type not in [:travel, :contact_person]}>
                 <h4>(?)</h4>
               </div>
             </:feature>
@@ -92,7 +93,7 @@
     type="submit"
     :on-click="next"
     phx-disable-with={gettext("Saving...")}
-    disabled={not valid?(@bindings)}
+    disabled={not valid?(@form_data)}
   >
     {gettext("Next")}
   </button>
