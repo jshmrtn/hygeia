@@ -44,7 +44,7 @@
               </LiveRedirect>
             </UriActiveContext>
           </li>
-          <li class="nav-item dropdown" phx-update="ignore" id="nav-ignore">
+          <li class="nav-item dropdown" phx-update="ignore" id="nav-ignore-more">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -164,7 +164,7 @@
               </Link>
             </div>
           </li>
-          <li class="nav-item dropdown" phx-update="ignore" id="nav-ignore">
+          <li class="nav-item dropdown" phx-update="ignore" id="nav-ignore-language">
             <a
               class="nav-link dropdown-toggle"
               href="#"
