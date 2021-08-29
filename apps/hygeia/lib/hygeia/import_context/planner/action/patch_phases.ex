@@ -37,7 +37,10 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchPhases do
         case_changeset
         |> Changeset.get_change(:phases, fallback_phases)
         |> List.update_at(-1, fn phase_changeset ->
-          Phase.changeset(phase_changeset, %{details: %{end_reason: :converted_to_index}})
+          Phase.changeset(phase_changeset, %{
+            details: %{end_reason: :converted_to_index},
+            send_automated_close_email: false
+          })
         end)
 
       phases =
