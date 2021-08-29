@@ -158,13 +158,13 @@ defmodule HygeiaWeb.RowLive.Apply do
     end
 
     patch_action_plan(socket, index, fn %Action.SelectCase{} = action ->
-      %Action.SelectCase{action | person: person, case: nil}
+      %Action.SelectCase{action | person: person, case: nil, suppress_quarantine: false}
     end)
   end
 
   def handle_event("select_person", %{"subject" => index, "value" => ""} = _params, socket) do
     patch_action_plan(socket, index, fn %Action.SelectCase{} = action ->
-      %Action.SelectCase{action | person: nil, case: nil}
+      %Action.SelectCase{action | person: nil, case: nil, suppress_quarantine: false}
     end)
   end
 
@@ -221,13 +221,13 @@ defmodule HygeiaWeb.RowLive.Apply do
     end
 
     patch_action_plan(socket, index, fn %Action.SelectCase{} = action ->
-      %Action.SelectCase{action | person: case.person, case: case}
+      %Action.SelectCase{action | person: case.person, case: case, suppress_quarantine: false}
     end)
   end
 
   def handle_event("select_case", %{"subject" => index, "value" => ""} = _params, socket) do
     patch_action_plan(socket, index, fn %Action.SelectCase{} = action ->
-      %Action.SelectCase{action | person: nil, case: nil}
+      %Action.SelectCase{action | case: nil, suppress_quarantine: false}
     end)
   end
 
