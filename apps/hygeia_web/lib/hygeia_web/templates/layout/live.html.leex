@@ -17,6 +17,10 @@
       phx-click="lv:clear-flash"
       phx-value-key="info"><%= live_flash(@flash, :info) %></p>
 
+    <p class="alert alert-warning" role="alert"
+      phx-click="lv:clear-flash"
+      phx-value-key="warning"><%= live_flash(@flash, :warning) %></p>
+
     <p class="alert alert-danger" role="alert"
       phx-click="lv:clear-flash"
       phx-value-key="error"><%= live_flash(@flash, :error) %></p>

@@ -12,6 +12,15 @@ defmodule HygeiaWeb.LocaleController do
 
     conn
     |> put_session(SetLocale.session_key(), locale)
+    |> maybe_set_language_warning(locale)
     |> redirect(external: redirect_uri)
+  end
+
+  defp maybe_set_language_warning(conn, locale) do
+    if HygeiaGettext.is_fuzzy_language?(locale) do
+      put_flash(conn, :warning, gettext("The displayed language was translated mechanically."))
+    else
+      conn
+    end
   end
 end
