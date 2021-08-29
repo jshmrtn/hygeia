@@ -437,14 +437,20 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp normalize_person_data({[:phone] = path, value}) when is_binary(value) do
     with {:ok, parsed_number} <-
            ExPhoneNumber.parse(value, @origin_country),
-         true <- ExPhoneNumber.is_valid_number?(parsed_number),
-         phone_number_type when phone_number_type in [:fixed_line, :voip] <-
-           ExPhoneNumber.Validation.get_number_type(parsed_number) do
-      [{[:landline], value}]
+         formatted_phone <- ExPhoneNumber.Formatting.format(parsed_number, :international),
+         {:ok, parsed_number} <- ExPhoneNumber.parse(formatted_phone, @origin_country),
+         true <- ExPhoneNumber.is_valid_number?(parsed_number) do
+      field =
+        case ExPhoneNumber.Validation.get_number_type(parsed_number) do
+          :mobile -> :mobile
+          :fixed_line_or_mobile -> :mobile
+          _other -> :landline
+        end
+
+      [{[field], formatted_phone}]
     else
       {:error, _reason} -> {path, nil}
       false -> {path, nil}
-      _other -> [{[:mobile], value}]
     end
   end
 
