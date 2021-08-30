@@ -69,7 +69,7 @@ defmodule HygeiaWeb.AutoTracingLive.CovidApp do
     {:ok, auto_tracing} =
       case auto_tracing do
         %AutoTracing{covid_app: true} ->
-          AutoTracingContext.auto_tracing_add_problem(
+          AutoTracingContext.auto_tracing_add_problem_if_not_exists(
             socket.assigns.auto_tracing,
             :covid_app
           )
