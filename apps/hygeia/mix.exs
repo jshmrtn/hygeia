@@ -89,7 +89,9 @@ defmodule Hygeia.MixProject do
       {:sentry, "~> 8.0"},
       {:websms, "~> 1.0.0-alpha"},
       {:xlsxir, "~> 1.6.4"},
-      {:zitadel_api, "~> 1.0-rc"}
+      {:zitadel_api, "~> 1.0-rc"},
+      # TODO: Remove when issue in apps/hygeia_gettext/mix.exs is solved
+      {:gettext, "~> 0.13", github: "jshmrtn/gettext", branch: "keep_flags", override: true}
     ]
   end
 
