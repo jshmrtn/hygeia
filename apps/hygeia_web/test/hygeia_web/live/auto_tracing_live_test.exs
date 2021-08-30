@@ -321,7 +321,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       end
     end
 
-    test "sets transmission and advances to end", %{
+    test "sets transmission and advances to contact persons", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
@@ -340,7 +340,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
 
       assert_redirect(
         transmission_view,
-        Routes.auto_tracing_end_path(conn, :end, case)
+        Routes.auto_tracing_contact_persons_path(conn, :contact_persons, case)
       )
     end
   end
