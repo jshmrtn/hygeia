@@ -3,7 +3,6 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable do
 
   use HygeiaWeb, :surface_component
 
-  alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Surface.Components.Context
