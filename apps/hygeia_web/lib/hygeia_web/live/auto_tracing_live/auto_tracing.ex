@@ -18,6 +18,10 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
   defp route(:covid_app), do: &Routes.auto_tracing_covid_app_path(&1, :covid_app, &2)
   defp route(:clinical), do: &Routes.auto_tracing_clinical_path(&1, :clinical, &2)
   defp route(:transmission), do: &Routes.auto_tracing_transmission_path(&1, :transmission, &2)
+
+  defp route(:contact_persons),
+    do: &Routes.auto_tracing_contact_persons_path(&1, :contact_persons, &2)
+
   defp route(:end), do: &Routes.auto_tracing_end_path(&1, :end, &2)
 
   @impl Phoenix.LiveView

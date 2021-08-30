@@ -3,8 +3,10 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
 
   use HygeiaWeb, :surface_view
 
+  alias Hygeia.AutoTracingContext
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.PossibleIndexSubmission
+  alias Hygeia.Repo
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
   alias Surface.Components.Form.EmailInput
@@ -22,7 +24,12 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
 
   @impl Phoenix.LiveView
   def mount(%{"case_uuid" => case_uuid} = params, _session, socket) do
-    case = CaseContext.get_case!(case_uuid)
+    case = case_uuid |> CaseContext.get_case!() |> Repo.preload(auto_tracing: [])
+
+    socket =
+      assign(socket,
+        return_url: params["return_url"]
+      )
 
     socket =
       if authorized?(PossibleIndexSubmission, :create, get_auth(socket), %{case: case}) do
@@ -71,6 +78,16 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
         %{"possible_index_submission" => possible_index_submission_params},
         socket
       ) do
+    %CaseContext.Case{auto_tracing: auto_tracing} = socket.assigns.case
+
+    if auto_tracing do
+      {:ok, _} =
+        AutoTracingContext.auto_tracing_add_problem_if_not_exists(
+          auto_tracing,
+          :possible_index_submission
+        )
+    end
+
     socket.assigns.case
     |> CaseContext.create_possible_index_submission(possible_index_submission_params)
     |> case do
@@ -79,7 +96,9 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
          socket
          |> put_flash(:info, gettext("Possible index submission created successfully"))
          |> push_redirect(
-           to: Routes.possible_index_submission_index_path(socket, :index, socket.assigns.case)
+           to:
+             socket.assigns.return_url ||
+               Routes.possible_index_submission_index_path(socket, :index, socket.assigns.case)
          )}
 
       {:error, changeset} ->

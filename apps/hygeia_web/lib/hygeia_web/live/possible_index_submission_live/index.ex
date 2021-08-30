@@ -3,14 +3,13 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
 
   use HygeiaWeb, :surface_view
 
+  alias Hygeia.AutoTracingContext
   alias Hygeia.CaseContext
-  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
   alias Surface.Components.Context
-  alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
@@ -44,6 +43,15 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
 
     {:ok, _} = CaseContext.delete_possible_index_submission(possible_index_submission)
 
+    socket = load_data(socket, socket.assigns.case.uuid)
+
+    if Enum.empty?(socket.assigns.case.possible_index_submissions) do
+      AutoTracingContext.auto_tracing_remove_problem(
+        socket.assigns.case.auto_tracing,
+        :possible_index_submission
+      )
+    end
+
     {:noreply, socket}
   end
 
@@ -57,7 +65,12 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [tenant: []], possible_index_submissions: [], tenant: [])
+      |> Repo.preload(
+        auto_tracing: [],
+        person: [tenant: []],
+        possible_index_submissions: [],
+        tenant: []
+      )
 
     has_index_phase? = Enum.any?(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1))
 

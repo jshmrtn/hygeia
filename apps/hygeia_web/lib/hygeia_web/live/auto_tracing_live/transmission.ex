@@ -103,7 +103,12 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
 
     {:noreply,
      push_redirect(socket,
-       to: Routes.auto_tracing_end_path(socket, :end, socket.assigns.auto_tracing.case_uuid)
+       to:
+         Routes.auto_tracing_contact_persons_path(
+           socket,
+           :contact_persons,
+           socket.assigns.auto_tracing.case_uuid
+         )
      )}
   end
 end
