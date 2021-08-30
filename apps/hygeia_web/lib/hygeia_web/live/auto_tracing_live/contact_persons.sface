@@ -60,7 +60,9 @@
         <div class="d-flex">
           <LiveRedirect
             class="me-2"
-            to={Routes.possible_index_submission_create_path(@socket, :create, @case)}
+            to={Routes.possible_index_submission_create_path(@socket, :create, @case,
+              return_url: Routes.auto_tracing_contact_persons_path(@socket, :contact_persons, @case)
+            )}
           >
             <button type="button" class="mb-2 mt-3 btn btn-primary">
               <span class="oi oi-plus" aria-hidden="true" />
@@ -68,7 +70,7 @@
             </button>
           </LiveRedirect>
         </div>
-        <HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable case={@case} />
+        <HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable case={@case} return_url={Routes.auto_tracing_contact_persons_path(@socket, :contact_persons, @case)} />
       </div>
 
       <hr class="mb-4">

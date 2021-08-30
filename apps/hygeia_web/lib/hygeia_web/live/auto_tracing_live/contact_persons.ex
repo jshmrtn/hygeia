@@ -5,6 +5,7 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
@@ -16,10 +17,7 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
   @impl Phoenix.LiveView
   # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
-    case =
-      case_uuid
-      |> CaseContext.get_case!()
-      |> Repo.preload(person: [], auto_tracing: [], possible_index_submissions: [])
+    case = load_case(case_uuid)
 
     socket =
       if authorized?(case, :auto_tracing, get_auth(socket)) do
@@ -60,6 +58,17 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
   end
 
   @impl Phoenix.LiveView
+  def handle_event("delete", %{"id" => id}, socket) do
+    possible_index_submission = CaseContext.get_possible_index_submission!(id)
+
+    true = authorized?(possible_index_submission, :delete, get_auth(socket))
+
+    {:ok, _} = CaseContext.delete_possible_index_submission(possible_index_submission)
+
+    {:noreply, assign(socket, case: load_case(socket.assigns.case.uuid))}
+  end
+
+  @impl Phoenix.LiveView
   def handle_event("advance", _params, socket) do
     {:ok, auto_tracing} =
       AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing_changeset)
@@ -75,5 +84,11 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
            socket.assigns.auto_tracing.case_uuid
          )
      )}
+  end
+
+  defp load_case(case_uuid) do
+    case_uuid
+    |> CaseContext.get_case!()
+    |> Repo.preload(person: [], auto_tracing: [], possible_index_submissions: [])
   end
 end

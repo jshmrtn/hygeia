@@ -25,6 +25,11 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
     case = CaseContext.get_case!(case_uuid)
 
     socket =
+      assign(socket,
+        return_url: params["return_url"]
+      )
+
+    socket =
       if authorized?(PossibleIndexSubmission, :create, get_auth(socket), %{case: case}) do
         assign(socket,
           case: case,
@@ -79,7 +84,9 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
          socket
          |> put_flash(:info, gettext("Possible index submission created successfully"))
          |> push_redirect(
-           to: Routes.possible_index_submission_index_path(socket, :index, socket.assigns.case)
+           to:
+             socket.assigns.return_url ||
+               Routes.possible_index_submission_index_path(socket, :index, socket.assigns.case)
          )}
 
       {:error, changeset} ->

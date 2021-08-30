@@ -3,6 +3,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable do
 
   use HygeiaWeb, :surface_component
 
+  alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Surface.Components.Context
@@ -10,4 +11,5 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable do
   alias Surface.Components.LiveRedirect
 
   prop case, :map, required: true
+  prop return_url, :string, default: nil
 end
