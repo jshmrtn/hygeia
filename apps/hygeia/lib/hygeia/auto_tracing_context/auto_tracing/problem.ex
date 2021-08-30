@@ -17,6 +17,9 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
 
   import HygeiaGettext
 
+  @spec map :: [{String.t(), t}]
+  def map, do: Enum.map(__enum_map__(), &{translate(&1), &1})
+
   @spec translate(problem :: t) :: String.t()
   def translate(:unmanaged_tenant), do: pgettext("Auto Tracing Problem", "Unmanaged Tenant")
   def translate(:covid_app), do: pgettext("Auto Tracing Problem", "SwissCovid App")

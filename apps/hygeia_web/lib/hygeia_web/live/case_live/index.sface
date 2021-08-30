@@ -54,15 +54,10 @@
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
                     <label class="d-block">{schema_field_name(:status, Case)}</label>
-                    <label
-                      :for={{name, key} <- Status.map()}
-                      class="d-block checkbox-label"
-                      data-disabled={@live_action == :show}
-                    >
+                    <label :for={{name, key} <- Status.map()}>
                       <input
                         type="checkbox"
                         name={input_name(form, :status) <> "[]"}
-                        disabled={@live_action == :show}
                         checked={Atom.to_string(key) in (form.source["status"] || [])}
                         value={key}
                       />
@@ -73,15 +68,10 @@
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
                     <label class="d-block">{schema_field_name(:complexity, Case)}</label>
-                    <label
-                      :for={{name, key} <- Case.Complexity.map()}
-                      class="d-block checkbox-label"
-                      data-disabled={@live_action == :show}
-                    >
+                    <label :for={{name, key} <- Case.Complexity.map()} class="d-block checkbox-label">
                       <input
                         type="checkbox"
                         name={input_name(form, :complexity) <> "[]"}
-                        disabled={@live_action == :show}
                         checked={Atom.to_string(key) in (form.source["complexity"] || [])}
                         value={key}
                       />
@@ -159,12 +149,24 @@
                 </FieldContext>
               </Field>
 
-              <Field name="auto_tracing_problem" class="form-group">
+              <!-- <Field name="auto_tracing_problem" class="form-group">
                 <Label class="checkbox-label">
                   <Checkbox />
                   {gettext("Auto Tracing Problem")}
                 </Label>
-              </Field>
+              </Field> -->
+              <div class="form-group">
+                <label class="d-block">{gettext("Auto Tracing Problem")}</label>
+                <label :for={{name, key} <- AutoTracing.Problem.map()} class="d-block checkbox-label">
+                  <input
+                    type="checkbox"
+                    name={input_name(form, :auto_tracing_problem) <> "[]"}
+                    checked={Atom.to_string(key) in (form.source["auto_tracing_problem"] || [])}
+                    value={key}
+                  />
+                  {name}
+                </label>
+              </div>
             </InputContext>
           </Form>
         </:default>
