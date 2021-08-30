@@ -595,6 +595,11 @@ msgstr "Daten korrigieren"
 msgid "Correct address"
 msgstr "Adresse korrigieren"
 
+#, fuzzy
+msgctxt "Auto Tracing Exit"
+msgid "Correct address"
+msgstr "Adresse korrigieren"
+
 msgid "Correct phone number available"
 msgstr "Telefonnummer korrekt vorhanden"
 
@@ -1450,6 +1455,11 @@ msgstr "Wenn Sie eine autorisierte Person des Contact Tracing Teams sind, loggen
 msgid "If you're having trouble recalling what you did since then, here are some examples:"
 msgstr "Wenn Sie Schwierigkeiten haben, sich daran zu erinnern, was Sie seitdem getan haben, hier sind einige Beispiele:"
 
+#, elixir-format
+msgctxt "Auto Tracing Exit"
+msgid "If you've entered the wrong address or forgot to enter the correct isolation location, you can return and correct the address."
+msgstr ""
+
 msgctxt "Possible Index End Reason"
 msgid "Immune"
 msgstr "Immun"
@@ -1615,6 +1625,11 @@ msgstr "Isolationsperiode Ende"
 
 msgid "Isolations Per Organisation"
 msgstr "Indexfälle pro Organisation"
+
+#, elixir-format
+msgctxt "Auto Tracing Exit"
+msgid "It seems like we are not responsible for your case."
+msgstr ""
 
 msgid "It's difficult speaking in English. A translator is required"
 msgstr "Es ist schwierig das Gespräch auf Deutsch zu führen. Es braucht eine Übersetzungsperson"
@@ -2797,6 +2812,11 @@ msgstr "Abgeglichen"
 msgid "Resolved Rows"
 msgstr "Abgeglichene Zeilen"
 
+#, elixir-format
+msgctxt "Auto Tracing Exit"
+msgid "Responsibility"
+msgstr ""
+
 msgid "Restaurant"
 msgstr "Restaurant"
 
@@ -3351,6 +3371,11 @@ msgstr "Vielen Dank für Ihre Informationen!"
 
 msgid "Thanks for your help!"
 msgstr "Vielen Dank für Ihre Hilfe!"
+
+#, elixir-format
+msgctxt "Auto Tracing Exit"
+msgid "That depends mostly on your place of residence. We will forward your data to the entity accountable for tracing you."
+msgstr ""
 
 msgctxt "Phase Create Modal"
 msgid "The automated case close email for the %{type} phase will be disabled."
