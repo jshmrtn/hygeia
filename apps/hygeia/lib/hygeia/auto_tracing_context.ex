@@ -143,11 +143,16 @@ defmodule Hygeia.AutoTracingContext do
   @spec auto_tracing_resolve_problem(auto_tracing :: AutoTracing.t(), problem :: Problem.t()) ::
           {:ok, AutoTracing.t()} | {:error, Ecto.Changeset.t(AutoTracing.t())}
   def auto_tracing_resolve_problem(
-        %AutoTracing{solved_problems: solved_problems} = auto_tracing,
+        %AutoTracing{problems: problems, solved_problems: solved_problems} = auto_tracing,
         problem
       ) do
     update_auto_tracing(auto_tracing, %{
-      solved_problems: Enum.uniq(solved_problems ++ [problem])
+      solved_problems:
+        if problem in problems do
+          Enum.uniq(solved_problems ++ [problem])
+        else
+          solved_problems
+        end
     })
   end
 

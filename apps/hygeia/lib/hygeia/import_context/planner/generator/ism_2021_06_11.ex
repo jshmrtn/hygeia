@@ -403,6 +403,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
              {destination_path, Row.get_change_field(changes, [field_name])}
            end)
            |> Enum.reject(&match?({_path, nil}, &1))
+           |> Enum.reject(&match?({_path, ""}, &1))
            |> Enum.map(&normalize_person_data/1)
            |> extract_field_changes()
        }}

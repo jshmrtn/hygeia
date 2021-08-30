@@ -99,8 +99,11 @@ defmodule HygeiaWeb.AutoTracingLive.ContactMethods do
             )
             |> CaseContext.update_person()
 
-          {:ok, _auto_tracing} =
+          {:ok, auto_tracing} =
             AutoTracingContext.advance_one_step(socket.assigns.auto_tracing, :contact_methods)
+
+          {:ok, _auto_tracing} =
+            AutoTracingContext.auto_tracing_resolve_problem(auto_tracing, :no_contact_method)
 
           push_redirect(socket,
             to:
