@@ -29,7 +29,12 @@ defmodule HygeiaWeb.AutoTracingLive.CovidApp do
           case: case,
           person: case.person,
           auto_tracing: case.auto_tracing,
-          auto_tracing_changeset: AutoTracingContext.change_auto_tracing(case.auto_tracing)
+          auto_tracing_changeset: %Ecto.Changeset{
+            AutoTracingContext.change_auto_tracing(case.auto_tracing, %{}, %{
+              covid_app_required: true
+            })
+            | action: :validate
+          }
         )
       else
         push_redirect(socket,
@@ -45,17 +50,15 @@ defmodule HygeiaWeb.AutoTracingLive.CovidApp do
   end
 
   @impl Phoenix.LiveView
-  def handle_event(
-        "validate",
-        %{"auto_tracing" => %{"covid_app" => covid_app}},
-        socket
-      ) do
+  def handle_event("validate", %{"auto_tracing" => auto_tracing_params}, socket) do
     socket =
-      assign(socket, :auto_tracing_changeset, %{
-        AutoTracingContext.change_auto_tracing(socket.assigns.auto_tracing, %{
-          covid_app: covid_app
-        })
-        | action: :update
+      assign(socket, :auto_tracing_changeset, %Ecto.Changeset{
+        AutoTracingContext.change_auto_tracing(
+          socket.assigns.auto_tracing,
+          auto_tracing_params,
+          %{covid_app_required: true}
+        )
+        | action: :validate
       })
 
     {:noreply, socket}
@@ -64,7 +67,11 @@ defmodule HygeiaWeb.AutoTracingLive.CovidApp do
   @impl Phoenix.LiveView
   def handle_event("advance", _params, socket) do
     {:ok, auto_tracing} =
-      AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing_changeset)
+      AutoTracingContext.update_auto_tracing(
+        %Ecto.Changeset{socket.assigns.auto_tracing_changeset | action: nil},
+        %{},
+        %{covid_app_required: true}
+      )
 
     {:ok, auto_tracing} =
       case auto_tracing do

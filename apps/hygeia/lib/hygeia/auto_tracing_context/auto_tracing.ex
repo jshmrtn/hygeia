@@ -20,7 +20,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           transmission: Transmission.t() | nil,
           problems: [Problem.t()] | nil,
           solved_problems: [Problem.t()] | nil,
-          unsolved_problems: boolean() | nil,
+          unsolved_problems: [Problem.t()] | nil,
           covid_app: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
           case_uuid: Ecto.UUID.t() | nil,
@@ -37,12 +37,17 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           transmission: Transmission.t() | nil,
           problems: [Problem.t()],
           solved_problems: [Problem.t()],
-          unsolved_problems: boolean(),
+          unsolved_problems: [Problem.t()],
           covid_app: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()),
           case_uuid: Ecto.UUID.t(),
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
+        }
+
+  @type changeset_options :: %{
+          optional(:covid_app_required) => boolean,
+          optional(:transmission_required) => boolean
         }
 
   @derive {Phoenix.Param, key: :uuid}
@@ -55,7 +60,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :employed, :boolean
     field :problems, {:array, Problem}, default: []
     field :solved_problems, {:array, Problem}, default: []
-    field :unsolved_problems, :boolean, default: false
+    field :unsolved_problems, {:array, Problem}, read_after_writes: true
 
     embeds_many :occupations, Occupation, on_replace: :delete
 
@@ -68,10 +73,27 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   @spec changeset(
           auto_tracing :: t | empty | Changeset.t(t | empty),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_options :: changeset_options
         ) ::
           Changeset.t()
-  def changeset(auto_tracing, attrs \\ %{}) do
+
+  def changeset(auto_tracing, attrs \\ %{}, changeset_options \\ %{})
+
+  def changeset(auto_tracing, attrs, %{covid_app_required: true} = changeset_options) do
+    auto_tracing
+    |> changeset(attrs, %{changeset_options | covid_app_required: false})
+    |> validate_required([:covid_app])
+  end
+
+  def changeset(auto_tracing, attrs, %{transmission_required: true} = changeset_options) do
+    auto_tracing
+    |> changeset(attrs, %{changeset_options | transmission_required: false})
+    |> cast_embed(:transmission, required: true)
+    |> validate_transmission_required()
+  end
+
+  def changeset(auto_tracing, attrs, _changeset_options) do
     auto_tracing
     |> cast(attrs, [
       :current_step,
@@ -85,28 +107,27 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     |> validate_required([:current_step, :last_completed_step, :case_uuid])
     |> cast_embed(:occupations)
     |> cast_embed(:transmission)
-    |> set_unsolved_problems()
   end
 
-  defp set_unsolved_problems(changeset) do
-    problems = MapSet.new(get_field(changeset, :problems, []))
-    solved_problems = MapSet.new(get_field(changeset, :solved_problems, []))
+  defp validate_transmission_required(changeset) do
+    changeset
+    |> fetch_field!(:transmission)
+    |> case do
+      %Transmission{} = transmission ->
+        transmission
+        |> Transmission.changeset(%{})
+        |> case do
+          %Ecto.Changeset{valid?: true} -> changeset
+          %Ecto.Changeset{valid?: false} -> add_error(changeset, :transmission, "is invalid")
+        end
 
-    put_change(changeset, :unsolved_problems, not MapSet.equal?(problems, solved_problems))
+      nil ->
+        add_error(changeset, :transmission, "is invalid")
+    end
   end
 
   @spec has_problem?(t, problem :: Problem.t()) :: boolean
   def has_problem?(%__MODULE__{problems: problems}, problem), do: problem in problems
-
-  @spec unsolved_problems(t) :: [Problem.t()]
-  def unsolved_problems(%__MODULE__{problems: problems, solved_problems: solved_problems}) do
-    problems = MapSet.new(problems)
-    solved_problems = MapSet.new(solved_problems)
-
-    problems
-    |> MapSet.difference(solved_problems)
-    |> MapSet.to_list()
-  end
 
   @spec step_available?(auto_tracing :: t, step :: Step.t()) :: boolean()
   def step_available?(%__MODULE__{} = auto_tracing, step) do

@@ -126,26 +126,34 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
 
       {:ok, auto_tracing} = AutoTracingContext.create_auto_tracing(case)
 
-      case
-      |> CommunicationContext.create_outgoing_sms(AutoTracingCommunication.auto_tracing_sms(case))
-      |> case do
-        {:ok, _sms} -> :ok
-        {:error, :no_mobile_number} -> :ok
-        {:error, :sms_config_missing} -> :ok
-      end
+      sms_sent? =
+        case
+        |> CommunicationContext.create_outgoing_sms(
+          AutoTracingCommunication.auto_tracing_sms(case)
+        )
+        |> case do
+          {:ok, _sms} -> true
+          {:error, :no_mobile_number} -> false
+          {:error, :sms_config_missing} -> nil
+        end
 
-      case
-      |> CommunicationContext.create_outgoing_email(
-        AutoTracingCommunication.auto_tracing_email_subject(),
-        AutoTracingCommunication.auto_tracing_email_body(case, :email)
-      )
-      |> case do
-        {:ok, _email} -> :ok
-        {:error, :no_email} -> :ok
-        {:error, :no_outgoing_mail_configuration} -> :ok
-      end
+      email_sent? =
+        case
+        |> CommunicationContext.create_outgoing_email(
+          AutoTracingCommunication.auto_tracing_email_subject(case),
+          AutoTracingCommunication.auto_tracing_email_body(case, :email)
+        )
+        |> case do
+          {:ok, _email} -> true
+          {:error, :no_email} -> false
+          {:error, :no_outgoing_mail_configuration} -> nil
+        end
 
-      {:ok, auto_tracing}
+      if sms_sent? == false and email_sent? == false do
+        AutoTracingContext.auto_tracing_add_problem(auto_tracing, :no_contact_method)
+      else
+        {:ok, auto_tracing}
+      end
     end
 
     defp create_auto_tracing_as_needed(_case, _nil_or_false), do: {:ok, nil}

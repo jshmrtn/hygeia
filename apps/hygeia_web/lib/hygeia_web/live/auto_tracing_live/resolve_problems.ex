@@ -77,7 +77,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
     propagator_internal =
       case case.auto_tracing.transmission do
         %AutoTracing.Transmission{propagator_known: true} -> true
-        _other -> false
+        _other -> nil
       end
 
     auto_tracing =

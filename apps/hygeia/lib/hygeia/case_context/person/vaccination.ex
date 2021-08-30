@@ -15,6 +15,8 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
 
   @type t :: empty
 
+  @type changeset_options :: %{optional(:required) => boolean}
+
   embedded_schema do
     field :done, :boolean
     field :name, :string
@@ -22,9 +24,22 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
   end
 
   @doc false
-  @spec changeset(vaccination :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec changeset(
+          vaccination :: t | empty,
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_options :: changeset_options
+        ) ::
           Changeset.t()
-  def changeset(vaccination, attrs) do
+  def changeset(vaccination, attrs \\ %{}, changeset_options \\ %{})
+
+  def changeset(vaccination, attrs, %{required: true} = changeset_options) do
+    vaccination
+    |> changeset(attrs, %{changeset_options | required: false})
+    |> validate_required([:done])
+    |> validate_details_required()
+  end
+
+  def changeset(vaccination, attrs, _changeset_options) do
     vaccination
     |> cast(attrs, [:uuid, :done, :name, :jab_dates])
     |> fill_uuid
@@ -35,5 +50,19 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
         []
       end
     end)
+  end
+
+  defp validate_details_required(changeset) do
+    case fetch_field!(changeset, :done) do
+      true ->
+        changeset
+        |> validate_required([:name, :jab_dates])
+        |> validate_length(:jab_dates, min: 1)
+
+      _other ->
+        changeset
+        |> put_change(:name, nil)
+        |> put_change(:jab_dates, nil)
+    end
   end
 end

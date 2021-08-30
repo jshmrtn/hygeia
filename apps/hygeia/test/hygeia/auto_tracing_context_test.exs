@@ -77,22 +77,20 @@ defmodule Hygeia.AutoTracingContextTest do
     end
 
     test "auto_tracing_add_problem/2 adds a problem and clears solution" do
-      %AutoTracing{unsolved_problems: false} =
+      %AutoTracing{unsolved_problems: []} =
         auto_tracing =
         auto_tracing_fixture(case_fixture(), %{
           problems: [:unmanaged_tenant],
           solved_problems: [:unmanaged_tenant]
         })
 
-      assert [] = AutoTracing.unsolved_problems(auto_tracing)
       assert AutoTracing.has_problem?(auto_tracing, :unmanaged_tenant)
 
       assert {:ok, auto_tracing} =
                AutoTracingContext.auto_tracing_add_problem(auto_tracing, :unmanaged_tenant)
 
-      assert %AutoTracing{unsolved_problems: true} = auto_tracing
+      assert %AutoTracing{unsolved_problems: [:unmanaged_tenant]} = auto_tracing
 
-      assert [:unmanaged_tenant] = AutoTracing.unsolved_problems(auto_tracing)
       assert AutoTracing.has_problem?(auto_tracing, :unmanaged_tenant)
     end
   end

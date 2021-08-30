@@ -42,7 +42,7 @@ defmodule HygeiaWeb.AutoTracingLive.ContactMethods do
           person: case.person,
           auto_tracing: case.auto_tracing,
           step: step,
-          changeset: changeset
+          changeset: %Ecto.Changeset{changeset | action: :validate}
         )
       else
         push_redirect(socket,
@@ -60,7 +60,7 @@ defmodule HygeiaWeb.AutoTracingLive.ContactMethods do
   @impl Phoenix.LiveView
   def handle_event("validate", %{"contact_methods" => auto_tracing_params}, socket) do
     {:noreply,
-     assign(socket, :changeset, %{
+     assign(socket, :changeset, %Ecto.Changeset{
        changeset(socket.assigns.step, auto_tracing_params)
        | action: :validate
      })}
@@ -99,8 +99,11 @@ defmodule HygeiaWeb.AutoTracingLive.ContactMethods do
             )
             |> CaseContext.update_person()
 
-          {:ok, _auto_tracing} =
+          {:ok, auto_tracing} =
             AutoTracingContext.advance_one_step(socket.assigns.auto_tracing, :contact_methods)
+
+          {:ok, _auto_tracing} =
+            AutoTracingContext.auto_tracing_resolve_problem(auto_tracing, :no_contact_method)
 
           push_redirect(socket,
             to:

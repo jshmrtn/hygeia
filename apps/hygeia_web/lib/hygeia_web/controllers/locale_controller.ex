@@ -10,6 +10,9 @@ defmodule HygeiaWeb.LocaleController do
         do: locale,
         else: HygeiaCldr.default_locale()
 
+    HygeiaCldr.put_locale(locale)
+    Gettext.put_locale(HygeiaGettext, locale)
+
     conn
     |> put_session(SetLocale.session_key(), locale)
     |> maybe_set_language_warning(locale)

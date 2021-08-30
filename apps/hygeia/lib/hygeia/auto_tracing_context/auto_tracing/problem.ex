@@ -11,14 +11,19 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
       :hospitalization,
       :school_related,
       :new_employer,
-      :link_propagator
+      :link_propagator,
+      :residency_outside_country,
+      :no_contact_method
     ]
 
   import HygeiaGettext
 
+  @spec map :: [{String.t(), t}]
+  def map, do: Enum.map(__enum_map__(), &{translate(&1), &1})
+
   @spec translate(problem :: t) :: String.t()
   def translate(:unmanaged_tenant), do: pgettext("Auto Tracing Problem", "Unmanaged Tenant")
-  def translate(:covid_app), do: pgettext("Auto Tracing Problem", "Covid App")
+  def translate(:covid_app), do: pgettext("Auto Tracing Problem", "SwissCovid App")
 
   def translate(:vaccination_failure),
     do: pgettext("Auto Tracing Problem", "Vaccination Failure")
@@ -27,4 +32,9 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
   def translate(:school_related), do: pgettext("Auto Tracing Problem", "School Related")
   def translate(:new_employer), do: pgettext("Auto Tracing Problem", "New Employer")
   def translate(:link_propagator), do: pgettext("Auto Tracing Problem", "Link Propagator")
+
+  def translate(:residency_outside_country),
+    do: pgettext("Auto Tracing Problem", "Residency Outside Country")
+
+  def translate(:no_contact_method), do: pgettext("Auto Tracing Problem", "No Contact Method")
 end

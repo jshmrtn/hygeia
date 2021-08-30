@@ -10,6 +10,7 @@
         submit="save"
         opts={autocomplete: "off", id: "person_address-form"}
       >
+        <ErrorTag field={:address} class="d-block invalid-feedback" />
         <Inputs for={:address}>
           <HygeiaWeb.AddressForm id="person_address" />
         </Inputs>
@@ -23,7 +24,10 @@
         )}
       </p>
       <Form for={@case_changeset} change="validate" submit="save">
+        <ErrorTag field={:monitoring} class="d-block invalid-feedback" />
         <Inputs for={:monitoring}>
+          <ErrorTag field={:address} class="d-block invalid-feedback" />
+
           <Inputs for={:address}>
             <HygeiaWeb.AddressForm id="monitoring_address" />
           </Inputs>

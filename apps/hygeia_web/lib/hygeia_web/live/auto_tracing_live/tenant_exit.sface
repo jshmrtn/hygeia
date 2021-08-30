@@ -1,19 +1,27 @@
 <div id="step_tenant_exit" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
   <h2 class="mb-4">
-    {gettext("Not responsible")}
+    {pgettext("Auto Tracing Exit", "Responsibility")}
   </h2>
 
   <div class="alert alert-warning" role="alert">
-    TODO: Text we're not responsible and will forward the case to correct place.
+    {pgettext("Auto Tracing Exit", "It seems like we are not responsible for your case.")}
+    <br>
+    {pgettext(
+      "Auto Tracing Exit",
+      "That depends mostly on your place of residence. We will forward your data to the entity accountable for tracing you."
+    )}
   </div>
 
   <p>
-    TODO: If you've entered the wrong address or forgot to enter the correct isolation location, you can return and correct the address.
+    {pgettext(
+      "Auto Tracing Exit",
+      "If you've entered the wrong address or forgot to enter the correct isolation location, you can return and correct the address."
+    )}
   </p>
 
   <LiveRedirect
     class="btn btn-outline-primary"
     to={Routes.auto_tracing_address_path(@socket, :address, @auto_tracing.case_uuid)}
-  >{gettext("Correct address")}</LiveRedirect>
+  >{pgettext("Auto Tracing Exit", "Correct address")}</LiveRedirect>
 </div>

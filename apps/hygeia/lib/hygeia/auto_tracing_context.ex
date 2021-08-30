@@ -75,25 +75,32 @@ defmodule Hygeia.AutoTracingContext do
 
   """
   @spec update_auto_tracing(
-          auto_tracing :: AutoTracing.t(),
-          attrs :: Hygeia.ecto_changeset_params()
+          auto_tracing :: AutoTracing.t() | Ecto.Changeset.t(AutoTracing.t()),
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_options :: AutoTracing.changeset_options()
         ) ::
           {:ok, AutoTracing.t()} | {:error, Ecto.Changeset.t(AutoTracing.t())}
-  def update_auto_tracing(%AutoTracing{} = auto_tracing, attrs),
+  def update_auto_tracing(auto_tracing, attrs \\ %{}, changeset_options \\ %{})
+
+  def update_auto_tracing(%AutoTracing{} = auto_tracing, attrs, changeset_options),
     do:
       auto_tracing
-      |> change_auto_tracing(attrs)
+      |> change_auto_tracing(attrs, changeset_options)
       |> update_auto_tracing()
 
   @spec update_auto_tracing(changeset :: Ecto.Changeset.t(AutoTracing.t())) ::
           {:ok, AutoTracing.t()} | {:error, Ecto.Changeset.t(AutoTracing.t())}
-  def update_auto_tracing(%Ecto.Changeset{data: %AutoTracing{}} = changeset),
-    do:
-      changeset
-      |> AutoTracing.changeset(%{})
-      |> versioning_update()
-      |> broadcast("auto_tracings", :update)
-      |> versioning_extract()
+  def update_auto_tracing(
+        %Ecto.Changeset{data: %AutoTracing{}} = changeset,
+        attrs,
+        changeset_options
+      ),
+      do:
+        changeset
+        |> change_auto_tracing(attrs, changeset_options)
+        |> versioning_update()
+        |> broadcast("auto_tracings", :update)
+        |> versioning_extract()
 
   @spec auto_tracing_add_problem(auto_tracing :: AutoTracing.t(), problem :: Problem.t()) ::
           {:ok, AutoTracing.t()} | {:error, Ecto.Changeset.t(AutoTracing.t())}
@@ -136,11 +143,16 @@ defmodule Hygeia.AutoTracingContext do
   @spec auto_tracing_resolve_problem(auto_tracing :: AutoTracing.t(), problem :: Problem.t()) ::
           {:ok, AutoTracing.t()} | {:error, Ecto.Changeset.t(AutoTracing.t())}
   def auto_tracing_resolve_problem(
-        %AutoTracing{solved_problems: solved_problems} = auto_tracing,
+        %AutoTracing{problems: problems, solved_problems: solved_problems} = auto_tracing,
         problem
       ) do
     update_auto_tracing(auto_tracing, %{
-      solved_problems: Enum.uniq(solved_problems ++ [problem])
+      solved_problems:
+        if problem in problems do
+          Enum.uniq(solved_problems ++ [problem])
+        else
+          solved_problems
+        end
     })
   end
 
@@ -180,16 +192,21 @@ defmodule Hygeia.AutoTracingContext do
             AutoTracing.t()
             | AutoTracing.empty()
             | Changeset.t(AutoTracing.t() | AutoTracing.empty()),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_options :: AutoTracing.changeset_options()
         ) ::
           Ecto.Changeset.t(AutoTracing.t())
-  def change_auto_tracing(auto_tracing, attrs \\ %{})
+  def change_auto_tracing(auto_tracing, attrs \\ %{}, changeset_options \\ %{})
 
-  def change_auto_tracing(%AutoTracing{} = auto_tracing, attrs),
-    do: AutoTracing.changeset(auto_tracing, attrs)
+  def change_auto_tracing(%AutoTracing{} = auto_tracing, attrs, changeset_options),
+    do: AutoTracing.changeset(auto_tracing, attrs, changeset_options)
 
-  def change_auto_tracing(%Changeset{data: %AutoTracing{}} = auto_tracing, attrs),
-    do: AutoTracing.changeset(auto_tracing, attrs)
+  def change_auto_tracing(
+        %Changeset{data: %AutoTracing{}} = auto_tracing,
+        attrs,
+        changeset_options
+      ),
+      do: AutoTracing.changeset(auto_tracing, attrs, changeset_options)
 
   @spec advance_one_step(auto_tracing :: AutoTracing.t(), current_step :: Step.t()) ::
           {:ok, AutoTracing.t()} | {:error, Ecto.Changeset.t(AutoTracing.t())}

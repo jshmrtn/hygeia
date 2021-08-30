@@ -5,6 +5,7 @@ defmodule HygeiaWeb.CaseLive.Index do
 
   import Ecto.Query
 
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Status
@@ -158,14 +159,11 @@ defmodule HygeiaWeb.CaseLive.Index do
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
       |> Enum.reduce(query, fn
-        {:auto_tracing_problem, "true"}, query ->
+        {:auto_tracing_problem, problems}, query ->
           from(case in query,
             join: auto_tracing in assoc(case, :auto_tracing),
-            where: auto_tracing.unsolved_problems
+            where: fragment("? && ?", ^problems, auto_tracing.unsolved_problems)
           )
-
-        {:auto_tracing_problem, "false"}, query ->
-          query
 
         {:fully_vaccinated, "true"}, query ->
           where(

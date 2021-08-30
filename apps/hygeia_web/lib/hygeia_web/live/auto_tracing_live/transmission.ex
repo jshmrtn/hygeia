@@ -34,7 +34,12 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
           case: case,
           person: case.person,
           auto_tracing: case.auto_tracing,
-          auto_tracing_changeset: AutoTracingContext.change_auto_tracing(case.auto_tracing)
+          auto_tracing_changeset: %Ecto.Changeset{
+            AutoTracingContext.change_auto_tracing(case.auto_tracing, %{}, %{
+              transmission_required: true
+            })
+            | action: :validate
+          }
         )
       else
         push_redirect(socket,
@@ -56,11 +61,15 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
         socket
       ) do
     socket =
-      assign(socket, :auto_tracing_changeset, %{
-        AutoTracingContext.change_auto_tracing(socket.assigns.auto_tracing, %{
-          transmission: transmission
-        })
-        | action: :update
+      assign(socket, :auto_tracing_changeset, %Ecto.Changeset{
+        AutoTracingContext.change_auto_tracing(
+          socket.assigns.auto_tracing,
+          %{
+            transmission: transmission
+          },
+          %{transmission_required: true}
+        )
+        | action: :validate
       })
 
     {:noreply, socket}
@@ -69,7 +78,11 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
   @impl Phoenix.LiveView
   def handle_event("advance", _params, socket) do
     {:ok, auto_tracing} =
-      AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing_changeset)
+      AutoTracingContext.update_auto_tracing(
+        %Ecto.Changeset{socket.assigns.auto_tracing_changeset | action: nil},
+        %{},
+        %{transmission_required: true}
+      )
 
     {:ok, auto_tracing} =
       case auto_tracing do

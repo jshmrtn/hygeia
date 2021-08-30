@@ -4,6 +4,7 @@
   <h2 class="mb-4 mt-5">{gettext("Vaccination")}</h2>
 
   <Form for={@person_changeset} change="validate" submit="save">
+    <ErrorTag class="d-block invalid-feedback" field={:vaccination} />
     <Inputs for={:vaccination}>
       <InputContext assigns={assigns} :let={form: form}>
         <div class="row">
@@ -95,7 +96,7 @@
             class="btn btn-primary"
             type="button"
             :on-click="advance"
-            disabled={is_nil(Ecto.Changeset.get_field(form.source, :done)) or not @person_changeset.valid?}
+            disabled={not @person_changeset.valid?}
           >
             {gettext("Continue")}
           </button>
