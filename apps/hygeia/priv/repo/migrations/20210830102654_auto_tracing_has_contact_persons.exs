@@ -1,5 +1,5 @@
 # credo:disable-for-this-file Credo.Check.Readability.Specs
-defmodule Hygeia.Repo.Migrations.TransmissionInfectionPlace do
+defmodule Hygeia.Repo.Migrations.AutoTracingHasContactPersons do
   @moduledoc false
 
   use Hygeia, :migration
