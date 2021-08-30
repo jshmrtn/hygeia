@@ -1918,12 +1918,14 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec update_case(
-          case :: Case.t(),
+          case :: Case.t() | Ecto.Changeset.t(Case.t()),
           attrs :: Hygeia.ecto_changeset_params(),
           changeset_params :: Case.changeset_params()
         ) ::
           {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
-  def update_case(%Case{} = case, attrs, changeset_params \\ %{}),
+  def update_case(case, attrs \\ %{}, changeset_params \\ %{})
+
+  def update_case(%Case{} = case, attrs, changeset_params),
     do:
       case
       |> change_case(attrs, changeset_params)
@@ -1931,9 +1933,10 @@ defmodule Hygeia.CaseContext do
 
   @spec update_case(changeset :: Ecto.Changeset.t(Case.t())) ::
           {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
-  def update_case(%Ecto.Changeset{data: %Case{}} = changeset),
+  def update_case(%Ecto.Changeset{data: %Case{}} = changeset, attrs, changeset_params),
     do:
       changeset
+      |> change_case(attrs, changeset_params)
       |> versioning_update()
       |> broadcast("cases", :update)
       |> versioning_extract()

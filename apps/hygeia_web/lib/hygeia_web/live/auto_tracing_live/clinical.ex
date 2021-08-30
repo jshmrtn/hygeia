@@ -28,7 +28,10 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
       if authorized?(case, :auto_tracing, get_auth(socket)) do
         assign(socket,
           case: case,
-          case_changeset: CaseContext.change_case(case, %{}, %{symptoms_required: true}),
+          case_changeset: %Ecto.Changeset{
+            CaseContext.change_case(case, %{}, %{symptoms_required: true})
+            | action: :validate
+          },
           auto_tracing: case.auto_tracing
         )
       else
@@ -52,7 +55,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
      assign(
        socket,
        :case_changeset,
-       %{
+       %Ecto.Changeset{
          CaseContext.change_case(socket.assigns.case, case_params, %{symptoms_required: true})
          | action: :update
        }
@@ -68,11 +71,16 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
      assign(
        socket,
        :case_changeset,
-       CaseContext.change_case(
-         case,
-         changeset_add_to_params(case_changeset, :hospitalizations, %{uuid: Ecto.UUID.generate()}),
-         %{symptoms_required: true}
-       )
+       %Ecto.Changeset{
+         CaseContext.change_case(
+           case,
+           changeset_add_to_params(case_changeset, :hospitalizations, %{
+             uuid: Ecto.UUID.generate()
+           }),
+           %{symptoms_required: true}
+         )
+         | action: :validate
+       }
      )}
   end
 
@@ -85,16 +93,24 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
      assign(
        socket,
        :case_changeset,
-       CaseContext.change_case(
-         case,
-         changeset_remove_from_params_by_id(case_changeset, :hospitalizations, %{uuid: uuid}),
-         %{symptoms_required: true}
-       )
+       %Ecto.Changeset{
+         CaseContext.change_case(
+           case,
+           changeset_remove_from_params_by_id(case_changeset, :hospitalizations, %{uuid: uuid}),
+           %{symptoms_required: true}
+         )
+         | action: :validate
+       }
      )}
   end
 
   def handle_event("advance", _params, socket) do
-    {:ok, case} = CaseContext.update_case(socket.assigns.case_changeset)
+    {:ok, case} =
+      CaseContext.update_case(
+        %Ecto.Changeset{socket.assigns.case_changeset | action: nil},
+        %{},
+        %{symptoms_required: true}
+      )
 
     case = Repo.preload(case, hospitalizations: [], tests: [])
 
@@ -148,15 +164,18 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
      assign(
        socket,
        :case_changeset,
-       CaseContext.change_case(
-         case,
-         changeset_update_params_by_id(
-           case_changeset,
-           :hospitalizations,
-           %{uuid: uuid},
-           &Map.put(&1, "organisation_uuid", organisation_uuid)
+       %Ecto.Changeset{
+         CaseContext.change_case(
+           case,
+           changeset_update_params_by_id(
+             case_changeset,
+             :hospitalizations,
+             %{uuid: uuid},
+             &Map.put(&1, "organisation_uuid", organisation_uuid)
+           )
          )
-       )
+         | action: :validate
+       }
      )}
   end
 

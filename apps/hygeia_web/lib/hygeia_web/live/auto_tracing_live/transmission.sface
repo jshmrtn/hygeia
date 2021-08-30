@@ -6,6 +6,7 @@
   </h2>
 
   <Form for={@auto_tracing_changeset} change="validate" submit="save">
+    <ErrorTag class="d-block invalid-feedback" field={:transmission} />
     <Inputs for={:transmission}>
       <InputContext assigns={assigns} :let={form: form}>
         <div class="row mb-4">
@@ -163,7 +164,7 @@
             class="btn btn-primary"
             type="button"
             :on-click="advance"
-            disabled={is_nil(Ecto.Changeset.get_field(form.source, :known)) or not @auto_tracing_changeset.valid?}
+            disabled={not @auto_tracing_changeset.valid?}
           >
             {gettext("Continue")}
           </button>

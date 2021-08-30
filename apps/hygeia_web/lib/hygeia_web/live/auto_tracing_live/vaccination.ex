@@ -30,7 +30,10 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
         assign(socket,
           case: case,
           person: case.person,
-          person_changeset: CaseContext.change_person(case.person),
+          person_changeset: %Ecto.Changeset{
+            CaseContext.change_person(case.person, %{}, %{vaccination_required: true})
+            | action: :validate
+          },
           auto_tracing: case.auto_tracing
         )
       else
@@ -68,7 +71,11 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
     params =
       update_changeset_param(person_changeset, :vaccination, fn _input -> vaccination_params end)
 
-    {:noreply, assign(socket, :person_changeset, CaseContext.change_person(person, params))}
+    {:noreply,
+     assign(socket, :person_changeset, %Ecto.Changeset{
+       CaseContext.change_person(person, params, %{vaccination_required: true})
+       | action: :validate
+     })}
   end
 
   def handle_event(
@@ -92,7 +99,11 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
     params =
       update_changeset_param(person_changeset, :vaccination, fn _input -> vaccination_params end)
 
-    {:noreply, assign(socket, :person_changeset, CaseContext.change_person(person, params))}
+    {:noreply,
+     assign(socket, :person_changeset, %Ecto.Changeset{
+       CaseContext.change_person(person, params, %{vaccination_required: true})
+       | action: :validate
+     })}
   end
 
   def handle_event("validate", %{"person" => person_params}, socket) do
@@ -110,15 +121,22 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
       end)
 
     {:noreply,
-     assign(socket, :person_changeset, %{
-       CaseContext.change_person(socket.assigns.person, person_params)
-       | action: :update
+     assign(socket, :person_changeset, %Ecto.Changeset{
+       CaseContext.change_person(socket.assigns.person, person_params, %{
+         vaccination_required: true
+       })
+       | action: :validate
      })}
   end
 
   @impl Phoenix.LiveView
   def handle_event("advance", _params, socket) do
-    {:ok, person} = CaseContext.update_person(socket.assigns.person_changeset)
+    {:ok, person} =
+      CaseContext.update_person(
+        %Ecto.Changeset{socket.assigns.person_changeset | action: nil},
+        %{},
+        %{vaccination_required: true}
+      )
 
     {:ok, auto_tracing} =
       case person do

@@ -70,7 +70,10 @@ defmodule Hygeia.CaseContext.Person do
           updated_at: DateTime.t()
         }
 
-  @type changeset_options :: %{optional(:address_required) => boolean}
+  @type changeset_options :: %{
+          optional(:address_required) => boolean,
+          optional(:vaccination_required) => boolean
+        }
 
   schema "people" do
     field :birth_date, :date
@@ -115,7 +118,17 @@ defmodule Hygeia.CaseContext.Person do
     person
     |> changeset(attrs, %{opts | address_required: false})
     |> cast_embed(:address, with: &Address.changeset(&1, &2, %{required: true}), required: true)
-    |> validate_address_required()
+    |> validate_embed_required(:address, Address)
+  end
+
+  def changeset(person, attrs, %{vaccination_required: true} = opts) do
+    person
+    |> changeset(attrs, %{opts | vaccination_required: false})
+    |> cast_embed(:vaccination,
+      with: &Vaccination.changeset(&1, &2, %{required: true}),
+      required: true
+    )
+    |> validate_embed_required(:vaccination, Vaccination)
   end
 
   def changeset(person, attrs, _opts) do
@@ -146,13 +159,20 @@ defmodule Hygeia.CaseContext.Person do
     |> detect_duplicates(:email)
   end
 
-  defp validate_address_required(changeset) do
+  defp validate_embed_required(changeset, embed, type) do
     changeset
-    |> fetch_field!(:address)
-    |> Address.changeset(%{}, %{required: true})
+    |> fetch_field!(embed)
     |> case do
-      %Ecto.Changeset{valid?: true} -> changeset
-      %Ecto.Changeset{valid?: false} -> add_error(changeset, :address, "is invalid")
+      nil ->
+        add_error(changeset, embed, "is required")
+
+      other ->
+        other
+        |> type.changeset(%{}, %{required: true})
+        |> case do
+          %Ecto.Changeset{valid?: true} -> changeset
+          %Ecto.Changeset{valid?: false} -> add_error(changeset, embed, "is invalid")
+        end
     end
   end
 
