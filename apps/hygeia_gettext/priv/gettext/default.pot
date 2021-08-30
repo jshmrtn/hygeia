@@ -867,7 +867,7 @@ msgid "Details"
 msgstr ""
 
 msgctxt "Versioning Origin"
-msgid "Detect Unchanged Cases"
+msgid "Detect No Reaction Cases"
 msgstr ""
 
 msgid "Did you get infected from a specific person? If so please enter the details."
@@ -2138,6 +2138,10 @@ msgstr ""
 msgid "No Order"
 msgstr ""
 
+msgctxt "Auto Tracing Problem"
+msgid "No Reaction"
+msgstr ""
+
 msgid "No Symptoms"
 msgstr ""
 
@@ -2835,7 +2839,6 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Residency Address"
 msgstr ""
 
-#, elixir-format
 msgctxt "Auto Tracing Problem"
 msgid "Residency Outside Country"
 msgstr ""
@@ -3661,10 +3664,6 @@ msgid "UUID"
 msgstr ""
 
 msgid "Uncertain"
-msgstr ""
-
-msgctxt "Notification Type"
-msgid "Unchanged Case"
 msgstr ""
 
 msgid "Undocumented"

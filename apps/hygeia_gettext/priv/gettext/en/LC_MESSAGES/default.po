@@ -887,9 +887,8 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Details"
 msgstr ""
 
-#, fuzzy
 msgctxt "Versioning Origin"
-msgid "Detect Unchanged Cases"
+msgid "Detect No Reaction Cases"
 msgstr ""
 
 #, fuzzy
@@ -2200,6 +2199,10 @@ msgid "No Follow Up"
 msgstr ""
 
 msgid "No Order"
+msgstr ""
+
+msgctxt "Auto Tracing Problem"
+msgid "No Reaction"
 msgstr ""
 
 msgid "No Symptoms"
@@ -3761,11 +3764,6 @@ msgid "UUID"
 msgstr ""
 
 msgid "Uncertain"
-msgstr ""
-
-#, fuzzy
-msgctxt "Notification Type"
-msgid "Unchanged Case"
 msgstr ""
 
 msgid "Undocumented"

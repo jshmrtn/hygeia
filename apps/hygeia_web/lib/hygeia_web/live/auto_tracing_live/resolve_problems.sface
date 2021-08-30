@@ -211,6 +211,11 @@
                     <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                       {pgettext("Auto Tracing Resolve Problems", "Done")}
                     </button>
+                  {#match :no_reaction}
+                    <p>{pgettext("Auto Tracing Resolve Problems", "TODO: directions")}</p>
+                    <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                      {pgettext("Auto Tracing Resolve Problems", "Done")}
+                    </button>
                 {/case}
               {/if}
             </div>

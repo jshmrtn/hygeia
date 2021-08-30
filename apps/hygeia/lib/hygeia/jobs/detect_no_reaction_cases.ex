@@ -1,22 +1,21 @@
-defmodule Hygeia.Jobs.DetectUnchangedCases do
+defmodule Hygeia.Jobs.DetectNoReactionCases do
   @moduledoc """
-  Detect Unchanged Cases
+  Detect No Reaction Cases
   """
 
   use GenServer
 
   import Ecto.Query, only: [from: 2]
 
+  alias Hygeia.AutoTracingContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.Helpers.Versioning
-  alias Hygeia.NotificationContext
   alias Hygeia.Repo
-  alias Hygeia.UserContext
 
   @default_refresh_interval_ms :timer.hours(1)
 
-  @unchanged_limit_amount 2
-  @unchanged_limit_unit "hour"
+  @no_reaction_limit_amount 2
+  @no_reaction_limit_unit "hour"
 
   @spec start_link(otps :: Keyword.t()) :: GenServer.on_start()
   def start_link(opts),
@@ -28,7 +27,7 @@ defmodule Hygeia.Jobs.DetectUnchangedCases do
   @impl GenServer
   def init(opts) do
     Versioning.put_originator(:noone)
-    Versioning.put_origin(:detect_unchanged_cases_job)
+    Versioning.put_origin(:detect_no_reaction_cases_job)
 
     interval_ms = Keyword.get(opts, :interval_ms, @default_refresh_interval_ms)
 
@@ -46,34 +45,32 @@ defmodule Hygeia.Jobs.DetectUnchangedCases do
   end
 
   def handle_info(:execute, _params) do
-    detect_unchanged_cases()
+    detect_no_reaction_cases()
 
     {:noreply, nil}
   end
 
-  defp detect_unchanged_cases do
+  defp detect_no_reaction_cases do
     cases =
       Repo.all(
         from(
           case in Case,
           where:
             case.status == "first_contact" and
-              case.updated_at <= ago(^@unchanged_limit_amount, ^@unchanged_limit_unit)
+              case.updated_at <= ago(^@no_reaction_limit_amount, ^@no_reaction_limit_unit)
         )
       )
 
-    Enum.each(cases, fn case -> notify_as_needed(case) end)
+    Enum.each(cases, fn case -> add_problem_as_needed(Repo.preload(case, auto_tracing: [])) end)
   end
 
-  defp notify_as_needed(%{tracer_uuid: nil}), do: nil
+  defp add_problem_as_needed(%{auto_tracing: nil}), do: nil
 
-  defp notify_as_needed(case) do
-    user = UserContext.get_user!(case.tracer_uuid)
-
-    if is_nil(NotificationContext.get_notification_by_type_and_case("unchanged_case", case)) do
-      NotificationContext.create_notification(user, %{
-        body: %{uuid: Ecto.UUID.generate(), __type__: :unchanged_case, case_uuid: case.uuid}
-      })
-    end
-  end
+  defp add_problem_as_needed(%{auto_tracing: auto_tracing}),
+    do:
+      {:ok, _auto_tracing} =
+        AutoTracingContext.auto_tracing_add_problem(
+          auto_tracing,
+          :no_reaction
+        )
 end

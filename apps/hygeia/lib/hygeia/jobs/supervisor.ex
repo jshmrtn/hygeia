@@ -83,8 +83,8 @@ defmodule Hygeia.Jobs.Supervisor do
         # Persist Viewer Log
         Hygeia.Jobs.ViewerLogPersistence.Supervisor,
 
-        # Detect Unchanged Cases
-        Hygeia.Jobs.DetectUnchangedCases
+        # Detect No Reaction Cases
+        Hygeia.Jobs.DetectNoReactionCases
       ]
   end
 
