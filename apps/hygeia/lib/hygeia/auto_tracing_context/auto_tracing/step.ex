@@ -17,6 +17,9 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Step do
 
   import HygeiaGettext
 
+  @spec map :: [{String.t(), t}]
+  def map, do: Enum.map(__enum_map__(), &{translate(&1), &1})
+
   @spec translate(type :: t) :: String.t()
   def translate(:start), do: pgettext("Auto Tracing Step", "Start")
   def translate(:address), do: pgettext("Auto Tracing Step", "Address")
