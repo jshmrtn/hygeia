@@ -180,6 +180,10 @@ defmodule HygeiaWeb.Router do
          AutoTracingLive.Transmission,
          :transmission
 
+    live "/cases/:case_uuid/auto-tracing/contact-persons",
+         AutoTracingLive.ContactPersons,
+         :contact_persons
+
     live "/cases/:case_uuid/auto-tracing/end",
          AutoTracingLive.End,
          :end

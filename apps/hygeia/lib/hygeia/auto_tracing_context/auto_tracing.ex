@@ -22,6 +22,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           solved_problems: [Problem.t()] | nil,
           unsolved_problems: [Problem.t()] | nil,
           covid_app: boolean() | nil,
+          has_contact_persons: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
           case_uuid: Ecto.UUID.t() | nil,
           inserted_at: DateTime.t(),
@@ -39,6 +40,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           solved_problems: [Problem.t()],
           unsolved_problems: [Problem.t()],
           covid_app: boolean() | nil,
+          has_contact_persons: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()),
           case_uuid: Ecto.UUID.t(),
           inserted_at: DateTime.t(),
@@ -56,6 +58,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :current_step, Step, default: :start
     field :last_completed_step, Step, default: :start
     field :covid_app, :boolean
+    field :has_contact_persons, :boolean
     field :employed, :boolean
     field :problems, {:array, Problem}, default: []
     field :solved_problems, {:array, Problem}, default: []
@@ -100,6 +103,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :case_uuid,
       :covid_app,
       :employed,
+      :has_contact_persons,
       :problems,
       :solved_problems
     ])
