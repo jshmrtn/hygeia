@@ -13,7 +13,10 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
   alias Hygeia.TenantContext.Tenant
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
+  alias Surface.Components.Form.Field
   alias Surface.Components.Form.Inputs
+  alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextArea
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
