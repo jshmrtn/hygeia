@@ -195,7 +195,6 @@
                     </div>
                   {#match :hospitalization}
                     {pgettext("Auto Tracing Resolve Problems", "TODO: directions")}
-
                   {#match :school_related}
                     {pgettext("Auto Tracing Resolve Problems", "TODO: directions")}
                 {/case}

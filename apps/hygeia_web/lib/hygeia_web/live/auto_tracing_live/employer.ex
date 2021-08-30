@@ -10,6 +10,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.CaseContext
+  alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
@@ -166,13 +167,15 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
          changeset(
            step,
            changeset_remove_from_params_by_id(changeset, :occupations, %{uuid: occupation_uuid})
-         )|>IO.inspect(label: "REMOVED")
+         )
          | action: :validate
        }
      )}
   end
 
   def handle_event("validate", %{"employer" => params}, socket) do
+    params = Map.put_new(params, "occupations", [])
+
     {:noreply,
      assign(socket,
        changeset: %Changeset{changeset(socket.assigns.step, params) | action: :validate}
@@ -192,41 +195,40 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
         {:error, changeset} ->
           assign(socket, changeset: changeset)
 
-        {:ok, %{occupations: occupations} = step} ->
-          person_changeset = add_affiliations_to_person(person, step|>IO.inspect())
-          {:ok, _person} = CaseContext.update_person(person_changeset)
+        {:ok, step} ->
+          person_changeset = add_affiliations_to_person(person, step)
+
+          {:ok, person} =
+            person_changeset
+            |> CaseContext.update_person()
+
+          person = Repo.preload(person, affiliations: [:organisation])
 
           auto_tracing_changeset = add_unknown_occupations(auto_tracing, step)
 
           {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
 
           {:ok, auto_tracing} =
-            cond do
-              Map.get(auto_tracing, :scholar) ->
-                {:ok, _auto_tracing} =
-                  AutoTracingContext.auto_tracing_add_problem(auto_tracing, :school_related)
-
-              Enum.find(
-                occupations,
-                false,
-                &(match?(%Occupation{kind: :scholar}, &1) or
-                    match?(%Occupation{known_organisation: %Organisation{type: :school}}, &1))
-              ) ->
-                {:ok, _auto_tracing} =
-                  AutoTracingContext.auto_tracing_add_problem(auto_tracing, :school_related)
-
-              length(Map.get(auto_tracing, :occupations, [])) > 0 ->
-                {:ok, _auto_tracing} =
-                  AutoTracingContext.auto_tracing_add_problem(auto_tracing, :new_employer)
-
-              not Map.get(auto_tracing, :scholar) ->
-                {:ok, _auto_tracing} =
-                  AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :school_related)
-
-              length(Map.get(auto_tracing, :occupations, [])) == 0 ->
-                {:ok, _auto_tracing} =
-                  AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :new_employer)
+            if auto_tracing.scholar or
+                 Enum.any?(
+                   person.affiliations,
+                   &(match?(%Affiliation{kind: :scholar}, &1) or
+                       match?(%Affiliation{organisation: %Organisation{type: :school}}, &1))
+                 ) do
+              {:ok, _auto_tracing} =
+                AutoTracingContext.auto_tracing_add_problem(auto_tracing, :school_related)
+            else
+              {:ok, _auto_tracing} =
+                AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :school_related)
             end
+
+          if length(Map.get(auto_tracing, :occupations, [])) > 0 do
+            {:ok, _auto_tracing} =
+              AutoTracingContext.auto_tracing_add_problem(auto_tracing, :new_employer)
+          else
+            {:ok, _auto_tracing} =
+              AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :new_employer)
+          end
 
           {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :employer)
 
@@ -258,18 +260,26 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     |> fetch_field!(:employed)
     |> case do
       true -> cast_embed(changeset, :occupations, required: true)
-      _else -> changeset
+      _else -> put_change(changeset, :occupations, [])
     end
   end
 
   defp add_affiliations_to_person(person, %__MODULE__{occupations: occupations}) do
-    affiliations = person.affiliations
-
     existing_organisation_uuids = Enum.map(person.affiliations, & &1.organisation_uuid)
     new_occupation_organisation_uuids = Enum.map(occupations, & &1.known_organisation_uuid)
 
     keep_affiliations =
-      Enum.filter(affiliations, &(&1.organisation_uuid in new_occupation_organisation_uuids))
+      person.affiliations
+      |> Enum.filter(&(&1.organisation_uuid in new_occupation_organisation_uuids))
+      |> Enum.map(fn %Affiliation{organisation_uuid: organisation_uuid} = affiliation ->
+        occupation =
+          Enum.find(
+            occupations,
+            &match?(%Occupation{known_organisation_uuid: ^organisation_uuid}, &1)
+          )
+
+        OrganisationContext.change_affiliation(affiliation, %{kind: occupation.kind})
+      end)
 
     new_affiliations =
       occupations
