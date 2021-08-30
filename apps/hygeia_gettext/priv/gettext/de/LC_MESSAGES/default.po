@@ -855,8 +855,8 @@ msgid "Details"
 msgstr "Details"
 
 msgctxt "Versioning Origin"
-msgid "Detect Unchanged Cases"
-msgstr "Unveränderte Fälle erkennen"
+msgid "Detect No Reaction Cases"
+msgstr "Fälle ohne Reaktion erkennen"
 
 msgid "Did you get infected from a specific person? If so please enter the details."
 msgstr "Haben Sie sich bei einer bestimmten Person angesteckt? Falls ja, geben Sie bitte die entsprechenden Details an."
@@ -2125,6 +2125,10 @@ msgstr "Kein erneuter Kontakt"
 msgid "No Order"
 msgstr "Nicht verordnet"
 
+msgctxt "Auto Tracing Problem"
+msgid "No Reaction"
+msgstr "Keine Reaktion"
+
 msgid "No Symptoms"
 msgstr "Keine Symptome"
 
@@ -2824,7 +2828,7 @@ msgstr "Wohnadresse"
 
 msgctxt "Auto Tracing Problem"
 msgid "Residency Outside Country"
-msgstr ""
+msgstr "Wohnadresse im Ausland"
 
 msgctxt "Case Import Row Status"
 msgid "Resolved"
@@ -3645,10 +3649,6 @@ msgstr "UUID"
 
 msgid "Uncertain"
 msgstr "Unsicher"
-
-msgctxt "Notification Type"
-msgid "Unchanged Case"
-msgstr "Unveränderter Fall"
 
 msgid "Undocumented"
 msgstr "Nicht erfasst"

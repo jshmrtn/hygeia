@@ -156,16 +156,4 @@ defmodule HygeiaWeb.Notification.Tray do
     />
     """
   end
-
-  defp render_body(assigns, %Notification{
-         uuid: uuid,
-         body: %Notification.UnchangedCase{} = body
-       }) do
-    ~F"""
-    <HygeiaWeb.Notification.UnchangedCase
-      id={"notifications_tray_notification_body_#{uuid}"}
-      body={body}
-    />
-    """
-  end
 end

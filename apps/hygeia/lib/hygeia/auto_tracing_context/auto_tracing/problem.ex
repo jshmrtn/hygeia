@@ -12,7 +12,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
       :new_employer,
       :link_propagator,
       :residency_outside_country,
-      :no_contact_method
+      :no_contact_method,
+      :no_reaction
     ]
 
   import HygeiaGettext
@@ -35,4 +36,5 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
     do: pgettext("Auto Tracing Problem", "Residency Outside Country")
 
   def translate(:no_contact_method), do: pgettext("Auto Tracing Problem", "No Contact Method")
+  def translate(:no_reaction), do: pgettext("Auto Tracing Problem", "No Reaction")
 end

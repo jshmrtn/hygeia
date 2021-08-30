@@ -11,7 +11,7 @@ defmodule Hygeia.VersionContext.Version.Origin do
     :email_sender,
     :sms_sender,
     :migration,
-    :detect_unchanged_cases_job
+    :detect_no_reaction_cases_job
   ]
 
   origins =
@@ -36,6 +36,6 @@ defmodule Hygeia.VersionContext.Version.Origin do
   def translate(:sms_sender), do: pgettext("Versioning Origin", "SMS Sender")
   def translate(:migration), do: pgettext("Versioning Origin", "Migration")
 
-  def translate(:detect_unchanged_cases_job),
-    do: pgettext("Versioning Origin", "Detect Unchanged Cases")
+  def translate(:detect_no_reaction_cases_job),
+    do: pgettext("Versioning Origin", "Detect No Reaction Cases")
 end
