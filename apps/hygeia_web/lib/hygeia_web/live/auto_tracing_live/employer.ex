@@ -7,7 +7,6 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   alias Phoenix.LiveView.Socket
 
   alias Hygeia.AutoTracingContext
-  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.CaseContext
   alias Hygeia.OrganisationContext
