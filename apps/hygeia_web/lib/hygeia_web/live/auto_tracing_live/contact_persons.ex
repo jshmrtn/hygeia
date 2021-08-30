@@ -47,7 +47,7 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
         socket
       ) do
     socket =
-      assign(socket, :auto_tracing_changeset, %{
+      assign(socket, :auto_tracing_changeset, %Ecto.Changeset{
         AutoTracingContext.change_auto_tracing(socket.assigns.auto_tracing, %{
           has_contact_persons: has_contact_persons
         })
