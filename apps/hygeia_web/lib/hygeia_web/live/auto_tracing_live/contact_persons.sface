@@ -70,7 +70,10 @@
             </button>
           </LiveRedirect>
         </div>
-        <HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable case={@case} return_url={Routes.auto_tracing_contact_persons_path(@socket, :contact_persons, @case)} />
+        <HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable
+          case={@case}
+          return_url={Routes.auto_tracing_contact_persons_path(@socket, :contact_persons, @case)}
+        />
       </div>
 
       <hr class="mb-4">
@@ -86,7 +89,8 @@
           class="btn btn-primary"
           type="button"
           :on-click="advance"
-          disabled={is_nil(Ecto.Changeset.get_field(form.source, :has_contact_persons)) or not @auto_tracing_changeset.valid?}
+          disabled={is_nil(Ecto.Changeset.get_field(form.source, :has_contact_persons)) or
+            not @auto_tracing_changeset.valid?}
         >
           {gettext("Continue")}
         </button>

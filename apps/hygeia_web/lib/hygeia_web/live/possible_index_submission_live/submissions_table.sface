@@ -45,7 +45,9 @@
         <td>
           <div class="d-flex justify-content-end w-100">
             <LiveRedirect
-              to={Routes.possible_index_submission_show_path(@socket, :show, possible_index_submission, return_url: @return_url)}
+              to={Routes.possible_index_submission_show_path(@socket, :show, possible_index_submission,
+                return_url: @return_url
+              )}
               :if={authorized?(possible_index_submission, :details, auth)}
             >
               <button class="ms-auto btn btn-sm btn-outline-primary">
@@ -53,7 +55,9 @@
               </button>
             </LiveRedirect>
             <LiveRedirect
-              to={Routes.possible_index_submission_show_path(@socket, :edit, possible_index_submission, return_url: @return_url)}
+              to={Routes.possible_index_submission_show_path(@socket, :edit, possible_index_submission,
+                return_url: @return_url
+              )}
               :if={authorized?(possible_index_submission, :update, auth)}
             >
               <button class="ms-1 btn btn-sm btn-outline-primary">
