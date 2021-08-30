@@ -62,7 +62,6 @@
       :if={Ecto.Changeset.get_field(@changeset, :employed)}
       class="hy-card-grid-2-cols large-grid-gap"
     >
-      <ErrorTag field={:occupations} class="d-block invalid-feedback" />
       <Inputs for={:occupations}>
         <HiddenInput field={:uuid} />
         <InputContext assigns={assigns} :let={form: occupation}>
@@ -143,15 +142,15 @@
         </InputContext>
       </Inputs>
     </div>
+    <div class="mb-2" :if={Ecto.Changeset.get_field(@changeset, :employed)}>
+      <button class="btn btn-outline-primary" type="button" :on-click="add_occupation">
+        {gettext("Add an occupation")}
+      </button>
+    </div>
+    <ErrorTag field={:occupations} class="d-block invalid-feedback" />
   </Form>
 
-  <div class="mb-4" :if={Ecto.Changeset.get_field(@changeset, :employed)}>
-    <button class="btn btn-outline-primary" type="button" :on-click="add_occupation">
-      {gettext("Add an occupation")}
-    </button>
-  </div>
-
-  <hr class="mb-4">
+  <hr class="mb-5">
   <LiveRedirect
     to={Routes.auto_tracing_contact_methods_path(@socket, :contact_methods, @auto_tracing.case_uuid)}
     class="btn btn-outline-primary"

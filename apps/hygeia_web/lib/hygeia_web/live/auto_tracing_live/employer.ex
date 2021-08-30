@@ -257,8 +257,14 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     changeset
     |> fetch_field!(:employed)
     |> case do
-      true -> cast_embed(changeset, :occupations, required: true)
-      _else -> put_change(changeset, :occupations, [])
+      true ->
+        cast_embed(changeset, :occupations,
+          required: true,
+          required_message: gettext("please add at least one occupation")
+        )
+
+      _else ->
+        put_change(changeset, :occupations, [])
     end
   end
 
