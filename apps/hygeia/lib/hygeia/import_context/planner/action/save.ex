@@ -136,7 +136,7 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
 
       case
       |> CommunicationContext.create_outgoing_email(
-        AutoTracingCommunication.auto_tracing_email_subject(),
+        AutoTracingCommunication.auto_tracing_email_subject(case),
         AutoTracingCommunication.auto_tracing_email_body(case, :email)
       )
       |> case do

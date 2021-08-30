@@ -172,7 +172,7 @@
             class={"dropdown-item", disabled: not CaseContext.auto_tracing_open?(@case)}
             href="#"
             :on-click="open_email_modal"
-            phx-value-subject={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_subject()}
+            phx-value-subject={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_subject(@case)}
             phx-value-body={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_body(@case, :email)}
             :if={authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
               CaseContext.person_has_email?(@case.person) and
