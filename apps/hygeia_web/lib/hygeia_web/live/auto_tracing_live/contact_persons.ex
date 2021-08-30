@@ -8,10 +8,10 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
   alias Surface.Components.Form
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.RadioButton
-  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
