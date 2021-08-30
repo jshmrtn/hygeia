@@ -4,9 +4,7 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.AutoTracingContext
-  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
-  alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
@@ -69,10 +67,10 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
     case = load_case(socket.assigns.case.uuid)
 
     if Enum.empty?(case.possible_index_submissions) do
-        AutoTracingContext.auto_tracing_remove_problem(
-          case.auto_tracing,
-          :possible_index_submission
-        )
+      AutoTracingContext.auto_tracing_remove_problem(
+        case.auto_tracing,
+        :possible_index_submission
+      )
     end
 
     {:noreply, assign(socket, case: case)}
