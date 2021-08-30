@@ -6,6 +6,7 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   import Ecto.Query
 
   alias Hygeia.OrganisationContext
+  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
