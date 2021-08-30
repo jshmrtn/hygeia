@@ -60,7 +60,7 @@
               {#else}
                 {#case problem}
                   {#match :covid_app}
-                    <p>{pgettext("Auto Tracing Resolve Problems", "Send a Covid App Code to the person.")}</p>
+                    <p>{pgettext("Auto Tracing Resolve Problems", "Send a SwissCovid App Code to the person.")}</p>
 
                     <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                       {pgettext("Auto Tracing Resolve Problems", "Done")}
@@ -96,7 +96,10 @@
                       {pgettext("Auto Tracing Resolve Problems", "Delete Person")}
                     </button>
                   {#match :vaccination_failure}
-                    {pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}
+                    <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
+                    <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                      {pgettext("Auto Tracing Resolve Problems", "Done")}
+                    </button>
                   {#match :link_propagator}
                     <div :if={@auto_tracing.transmission.propagator_known}>
                       <p>
@@ -194,9 +197,15 @@
                       </Form>
                     </div>
                   {#match :hospitalization}
-                    {pgettext("Auto Tracing Resolve Problems", "TODO: directions")}
+                    <p>{pgettext("Auto Tracing Resolve Problems", "TODO: directions")}</p>
+                    <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                      {pgettext("Auto Tracing Resolve Problems", "Done")}
+                    </button>
                   {#match :residency_outside_country}
-                    {pgettext("Auto Tracing Resolve Problems", "TODO: directions")}
+                    <p>{pgettext("Auto Tracing Resolve Problems", "TODO: directions")}</p>
+                    <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                      {pgettext("Auto Tracing Resolve Problems", "Done")}
+                    </button>
                 {/case}
               {/if}
             </div>

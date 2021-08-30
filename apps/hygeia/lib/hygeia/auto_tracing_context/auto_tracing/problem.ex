@@ -18,7 +18,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
 
   @spec translate(problem :: t) :: String.t()
   def translate(:unmanaged_tenant), do: pgettext("Auto Tracing Problem", "Unmanaged Tenant")
-  def translate(:covid_app), do: pgettext("Auto Tracing Problem", "Covid App")
+  def translate(:covid_app), do: pgettext("Auto Tracing Problem", "SwissCovid App")
 
   def translate(:vaccination_failure),
     do: pgettext("Auto Tracing Problem", "Vaccination Failure")

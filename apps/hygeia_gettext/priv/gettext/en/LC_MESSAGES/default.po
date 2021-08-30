@@ -17,7 +17,6 @@ msgid_plural "%{count} New Notifications"
 msgstr[0] ""
 msgstr[1] ""
 
-
 msgid "%{tenant} - Contact Tracing"
 msgstr ""
 
@@ -1668,6 +1667,10 @@ msgstr ""
 msgid "Is the Swiss CovidApp installed / in operation on your smartphone?"
 msgstr ""
 
+#, fuzzy
+msgid "Is the SwissCovid App installed / in operation on your smartphone?"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Is truthful"
 msgstr ""
@@ -2916,6 +2919,10 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Residency Address"
 msgstr ""
 
+msgctxt "Auto Tracing Problem"
+msgid "Residency Outside Country"
+msgstr ""
+
 msgctxt "Case Import Row Status"
 msgid "Resolved"
 msgstr ""
@@ -2923,7 +2930,6 @@ msgstr ""
 msgid "Resolved Rows"
 msgstr ""
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "Responsibility"
 msgstr ""
@@ -3107,6 +3113,11 @@ msgstr ""
 #, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a Covid App Code to the person."
+msgstr ""
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Send a SwissCovid App Code to the person."
 msgstr ""
 
 msgid "Sent at %{date}"
@@ -3318,6 +3329,20 @@ msgstr ""
 
 #, fuzzy
 msgid "Swiss CovidApp"
+msgstr ""
+
+#, fuzzy
+msgctxt "Auto Tracing Problem"
+msgid "SwissCovid App"
+msgstr ""
+
+#, fuzzy
+msgctxt "Auto Tracing Step"
+msgid "SwissCovid App"
+msgstr ""
+
+#, fuzzy
+msgid "SwissCovid App"
 msgstr ""
 
 msgctxt "Division Merge"

@@ -227,7 +227,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     end
   end
 
-  describe "Covid App" do
+  describe "SwissCovid App" do
     setup [:create_case, :create_auto_tracing]
 
     test "can not advance to clinical", %{
@@ -238,7 +238,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       {:ok, covid_app_view, html} =
         live(conn, Routes.auto_tracing_covid_app_path(conn, :covid_app, case))
 
-      assert html =~ gettext("Is the Swiss CovidApp installed / in operation on your smartphone?")
+      assert html =~ gettext("Is the SwissCovid App installed / in operation on your smartphone?")
 
       assert_raise ArgumentError, fn ->
         covid_app_view
