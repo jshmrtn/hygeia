@@ -198,9 +198,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
         {:ok, step} ->
           person_changeset = add_affiliations_to_person(person, step)
 
-          {:ok, person} =
-            person_changeset
-            |> CaseContext.update_person()
+          {:ok, person} = CaseContext.update_person(person_changeset)
 
           person = Repo.preload(person, affiliations: [:organisation])
 
@@ -222,13 +220,14 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
                 AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :school_related)
             end
 
-          if length(Map.get(auto_tracing, :occupations, [])) > 0 do
-            {:ok, _auto_tracing} =
-              AutoTracingContext.auto_tracing_add_problem(auto_tracing, :new_employer)
-          else
-            {:ok, _auto_tracing} =
-              AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :new_employer)
-          end
+          {:ok, auto_tracing} =
+            if length(Map.get(auto_tracing, :occupations, [])) > 0 do
+              {:ok, _auto_tracing} =
+                AutoTracingContext.auto_tracing_add_problem(auto_tracing, :new_employer)
+            else
+              {:ok, _auto_tracing} =
+                AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :new_employer)
+            end
 
           {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :employer)
 
