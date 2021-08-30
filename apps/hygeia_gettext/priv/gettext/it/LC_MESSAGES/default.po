@@ -13,13 +13,14 @@ msgstr ""
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr "\"Merge\" e \"Into\" non devono essere la stessa cosa"
 
+#, fuzzy
 msgid "%{count} New Notification"
 msgid_plural "%{count} New Notifications"
 msgstr[0] "%{count} Nuova notifica"
 msgstr[1] "%{count} Nuove notifiche"
 
 msgid "%{tenant} - Contact Tracing"
-msgstr ""
+msgstr "%{tenant} – Contact Tracing"
 
 #, fuzzy
 msgid "0-1 contact person"
@@ -1894,7 +1895,7 @@ msgstr "Se sei una persona autorizzata del team di ricerca dei contatti, accedi 
 msgid "If you're having trouble recalling what you did since then, here are some examples:"
 msgstr "Se hai problemi a ricordare cosa hai fatto da allora, ecco alcuni esempi:"
 
-#, elixir-format
+#, fuzzy
 msgctxt "Auto Tracing Exit"
 msgid "If you've entered the wrong address or forgot to enter the correct isolation location, you can return and correct the address."
 msgstr ""
@@ -2119,7 +2120,7 @@ msgstr "Fine del periodo di isolamento"
 msgid "Isolations Per Organisation"
 msgstr "Isolamenti per organizzazione"
 
-#, elixir-format
+#, fuzzy
 msgctxt "Auto Tracing Exit"
 msgid "It seems like we are not responsible for your case."
 msgstr ""
@@ -3639,6 +3640,7 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Residency Address"
 msgstr ""
 
+#, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "Residency Outside Country"
 msgstr ""
@@ -3652,7 +3654,7 @@ msgstr "Risolto"
 msgid "Resolved Rows"
 msgstr "Righe risolte"
 
-#, elixir-format
+#, fuzzy
 msgctxt "Auto Tracing Exit"
 msgid "Responsibility"
 msgstr ""
@@ -3957,6 +3959,7 @@ msgstr "Mostra le statistiche"
 msgid "Show all"
 msgstr "Mostra tutto"
 
+#, fuzzy
 msgid "Showing %{count} of %{total} entries"
 msgstr "Mostra %{count} di %{total} voci"
 
@@ -4157,19 +4160,16 @@ msgstr "Sopprimere la quarantena"
 msgid "Swiss CovidApp"
 msgstr ""
 
-#, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "SwissCovid App"
-msgstr ""
+msgstr "SwissCovid App"
 
-#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "SwissCovid App"
-msgstr ""
+msgstr "SwissCovid App"
 
-#, fuzzy
 msgid "SwissCovid App"
-msgstr ""
+msgstr "SwissCovid App"
 
 #, fuzzy
 msgctxt "Division Merge"
@@ -4390,7 +4390,7 @@ msgstr ""
 msgid "Thanks for your help!"
 msgstr ""
 
-#, elixir-format
+#, fuzzy
 msgctxt "Auto Tracing Exit"
 msgid "That depends mostly on your place of residence. We will forward your data to the entity accountable for tracing you."
 msgstr ""

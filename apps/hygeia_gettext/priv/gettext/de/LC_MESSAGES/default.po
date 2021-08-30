@@ -18,7 +18,7 @@ msgstr[0] "%{count} neue Benachrichtigung"
 msgstr[1] "%{count} neue Benachrichtigungen"
 
 msgid "%{tenant} - Contact Tracing"
-msgstr ""
+msgstr "%{tenant} – Contact Tracing"
 
 msgid "0-1 contact person"
 msgstr "0-1 Kontaktperson"
@@ -1469,7 +1469,6 @@ msgstr "Wenn Sie eine autorisierte Person des Contact Tracing Teams sind, loggen
 msgid "If you're having trouble recalling what you did since then, here are some examples:"
 msgstr "Wenn Sie Schwierigkeiten haben, sich daran zu erinnern, was Sie seitdem getan haben, hier sind einige Beispiele:"
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "If you've entered the wrong address or forgot to enter the correct isolation location, you can return and correct the address."
 msgstr ""
@@ -1643,7 +1642,6 @@ msgstr "Isolationsperiode Ende"
 msgid "Isolations Per Organisation"
 msgstr "Indexfälle pro Organisation"
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "It seems like we are not responsible for your case."
 msgstr ""
@@ -2824,7 +2822,7 @@ msgstr "Wohnadresse"
 
 msgctxt "Auto Tracing Problem"
 msgid "Residency Outside Country"
-msgstr ""
+msgstr "Wohnort im Ausland"
 
 msgctxt "Case Import Row Status"
 msgid "Resolved"
@@ -2833,7 +2831,6 @@ msgstr "Abgeglichen"
 msgid "Resolved Rows"
 msgstr "Abgeglichene Zeilen"
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "Responsibility"
 msgstr ""
@@ -3408,7 +3405,6 @@ msgstr "Vielen Dank für Ihre Informationen!"
 msgid "Thanks for your help!"
 msgstr "Vielen Dank für Ihre Hilfe!"
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "That depends mostly on your place of residence. We will forward your data to the entity accountable for tracing you."
 msgstr ""
