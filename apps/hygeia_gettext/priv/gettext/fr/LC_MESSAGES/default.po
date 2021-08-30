@@ -18,7 +18,6 @@ msgid_plural "%{count} New Notifications"
 msgstr[0] "%{count} Nouvelle notification"
 msgstr[1] "%{count} Nouvelles notifications"
 
-
 msgid "%{tenant} - Contact Tracing"
 msgstr ""
 
@@ -2076,6 +2075,10 @@ msgid "Is the Swiss CovidApp installed / in operation on your smartphone?"
 msgstr ""
 
 #, fuzzy
+msgid "Is the SwissCovid App installed / in operation on your smartphone?"
+msgstr ""
+
+#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Is truthful"
 msgstr "est véridique"
@@ -3636,6 +3639,10 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Residency Address"
 msgstr ""
 
+msgctxt "Auto Tracing Problem"
+msgid "Residency Outside Country"
+msgstr ""
+
 #, fuzzy
 msgctxt "Case Import Row Status"
 msgid "Resolved"
@@ -3877,6 +3884,11 @@ msgstr "Envoyer un SMS de confirmation de fin de quarantaine"
 #, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a Covid App Code to the person."
+msgstr ""
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Send a SwissCovid App Code to the person."
 msgstr ""
 
 #, fuzzy
@@ -4143,6 +4155,20 @@ msgstr "Supprimer la quarantaine"
 
 #, fuzzy
 msgid "Swiss CovidApp"
+msgstr ""
+
+#, fuzzy
+msgctxt "Auto Tracing Problem"
+msgid "SwissCovid App"
+msgstr ""
+
+#, fuzzy
+msgctxt "Auto Tracing Step"
+msgid "SwissCovid App"
+msgstr ""
+
+#, fuzzy
+msgid "SwissCovid App"
 msgstr ""
 
 #, fuzzy
