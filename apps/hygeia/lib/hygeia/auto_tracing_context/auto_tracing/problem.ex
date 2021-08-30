@@ -9,6 +9,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
       :covid_app,
       :vaccination_failure,
       :hospitalization,
+      :school_related,
       :new_employer,
       :link_propagator,
       :residency_outside_country,
@@ -29,6 +30,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
     do: pgettext("Auto Tracing Problem", "Vaccination Failure")
 
   def translate(:hospitalization), do: pgettext("Auto Tracing Problem", "Hospitalization")
+  def translate(:school_related), do: pgettext("Auto Tracing Problem", "School Related")
   def translate(:new_employer), do: pgettext("Auto Tracing Problem", "New Employer")
   def translate(:link_propagator), do: pgettext("Auto Tracing Problem", "Link Propagator")
 

@@ -56,6 +56,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :current_step, Step, default: :start
     field :last_completed_step, Step, default: :start
     field :covid_app, :boolean
+    field :scholar, :boolean
     field :employed, :boolean
     field :problems, {:array, Problem}, default: []
     field :solved_problems, {:array, Problem}, default: []
