@@ -12,8 +12,9 @@ defmodule Hygeia.AutoTracingContext.AutoTracingCommunication do
   def auto_tracing_sms(case),
     do: auto_tracing_email_body(case, :sms)
 
-  @spec auto_tracing_email_subject() :: String.t()
-  def auto_tracing_email_subject, do: gettext("Auto Tracing")
+  @spec auto_tracing_email_subject(case :: Case.t()) :: String.t()
+  def auto_tracing_email_subject(case),
+    do: gettext("%{tenant} - Contact Tracing", tenant: case.tenant.name)
 
   @spec auto_tracing_email_body(case :: Case.t(), message_type :: atom) :: String.t()
   def auto_tracing_email_body(case, message_type) do
@@ -26,7 +27,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracingCommunication do
       We would like to ask you to fill out the information on the following link:
       %{public_overview_link}
 
-      Please open this link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)
+      Please open this link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)
 
       Thanks for your help!
 
