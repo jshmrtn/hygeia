@@ -10,7 +10,9 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.CaseContext
+  alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
@@ -27,6 +29,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   @primary_key false
   embedded_schema do
     field :employed, :boolean
+    field :scholar, :boolean
 
     embeds_many :occupations, Occupation, on_replace: :delete
   end
@@ -54,6 +57,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
         occupations = person_occupations ++ case.auto_tracing.occupations
 
         step = %__MODULE__{
+          scholar: case.auto_tracing.scholar,
           employed:
             case occupations do
               [_occupations | _rest] -> true
@@ -170,6 +174,8 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   end
 
   def handle_event("validate", %{"employer" => params}, socket) do
+    params = Map.put_new(params, "occupations", [])
+
     {:noreply,
      assign(socket,
        changeset: %Changeset{changeset(socket.assigns.step, params) | action: :validate}
@@ -191,18 +197,35 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
         {:ok, step} ->
           person_changeset = add_affiliations_to_person(person, step)
-          {:ok, _person} = CaseContext.update_person(person_changeset)
+
+          {:ok, person} = CaseContext.update_person(person_changeset)
+
+          person = Repo.preload(person, affiliations: [:organisation])
 
           auto_tracing_changeset = add_unknown_occupations(auto_tracing, step)
 
           {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
 
           {:ok, auto_tracing} =
-            case auto_tracing do
-              %AutoTracing{occupations: [_occupation | _rest]} ->
-                AutoTracingContext.auto_tracing_add_problem(auto_tracing, :new_employer)
+            if auto_tracing.scholar or
+                 Enum.any?(
+                   person.affiliations,
+                   &(match?(%Affiliation{kind: :scholar}, &1) or
+                       match?(%Affiliation{organisation: %Organisation{type: :school}}, &1))
+                 ) do
+              {:ok, _auto_tracing} =
+                AutoTracingContext.auto_tracing_add_problem(auto_tracing, :school_related)
+            else
+              {:ok, _auto_tracing} =
+                AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :school_related)
+            end
 
-              %AutoTracing{} ->
+          {:ok, auto_tracing} =
+            if length(Map.get(auto_tracing, :occupations, [])) > 0 do
+              {:ok, _auto_tracing} =
+                AutoTracingContext.auto_tracing_add_problem(auto_tracing, :new_employer)
+            else
+              {:ok, _auto_tracing} =
                 AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :new_employer)
             end
 
@@ -225,8 +248,8 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
           Ecto.Changeset.t()
   def changeset(schema, attrs \\ %{}) do
     schema
-    |> cast(attrs, [:employed])
-    |> validate_required(:employed)
+    |> cast(attrs, [:scholar, :employed])
+    |> validate_required([:scholar, :employed])
     |> validate_occupation()
   end
 
@@ -236,18 +259,26 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     |> fetch_field!(:employed)
     |> case do
       true -> cast_embed(changeset, :occupations, required: true)
-      _else -> changeset
+      _else -> put_change(changeset, :occupations, [])
     end
   end
 
   defp add_affiliations_to_person(person, %__MODULE__{occupations: occupations}) do
-    affiliations = person.affiliations
-
     existing_organisation_uuids = Enum.map(person.affiliations, & &1.organisation_uuid)
     new_occupation_organisation_uuids = Enum.map(occupations, & &1.known_organisation_uuid)
 
     keep_affiliations =
-      Enum.filter(affiliations, &(&1.organisation_uuid in new_occupation_organisation_uuids))
+      person.affiliations
+      |> Enum.filter(&(&1.organisation_uuid in new_occupation_organisation_uuids))
+      |> Enum.map(fn %Affiliation{organisation_uuid: organisation_uuid} = affiliation ->
+        occupation =
+          Enum.find(
+            occupations,
+            &match?(%Occupation{known_organisation_uuid: ^organisation_uuid}, &1)
+          )
+
+        OrganisationContext.change_affiliation(affiliation, %{kind: occupation.kind})
+      end)
 
     new_affiliations =
       occupations
@@ -269,6 +300,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
   defp add_unknown_occupations(auto_tracing, %__MODULE__{
          occupations: occupations,
+         scholar: scholar,
          employed: employed
        }) do
     auto_tracing
@@ -277,6 +309,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
       :occupations,
       Enum.filter(occupations, &match?(%Occupation{known_organisation_uuid: nil}, &1))
     )
+    |> put_change(:scholar, scholar)
     |> put_change(:employed, employed)
   end
 end

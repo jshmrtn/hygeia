@@ -4,9 +4,35 @@
     {gettext("Occupation / Employment")}
   </h4>
   <Form for={@changeset} change="validate" submit="save" class="mb-4">
-    <p class="mb-4">{gettext("Are you employed?")}</p>
     <div class="row gx-7">
       <div class="col-6">
+        <p class="mb-4">{gettext(
+            "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
+          )}</p>
+        <Field name={:scholar} class="form-group">
+          <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+            <label class={
+              "btn",
+              "btn-sm",
+              "btn-outline-primary",
+              active: Ecto.Changeset.get_field(@changeset, :scholar) == true
+            }>
+              <RadioButton value />
+              {gettext("Yes")}
+            </label>
+            <label class={
+              "btn",
+              "btn-sm",
+              "btn-outline-primary",
+              active: Ecto.Changeset.get_field(@changeset, :scholar) == false
+            }>
+              <RadioButton value={false} />
+              {gettext("No")}
+            </label>
+          </div>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <p class="mb-4">{gettext("Are you employed?")}</p>
         <Field name={:employed} class="form-group">
           <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
             <label class={

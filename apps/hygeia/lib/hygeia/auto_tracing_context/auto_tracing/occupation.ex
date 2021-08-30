@@ -65,7 +65,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
       _else ->
         changeset
         |> validate_required(:known_organisation_uuid)
-        |> put_embed(:unknown_organisation, nil)
+        |> put_change(:unknown_organisation, nil)
     end
   end
 
