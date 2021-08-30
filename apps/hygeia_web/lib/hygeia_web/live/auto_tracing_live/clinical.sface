@@ -4,6 +4,7 @@
   <Form for={@case_changeset} change="validate" submit="save" class="mb-5">
     <div class="row gx-7">
       <div class="col-6">
+        <ErrorTag class="d-block invalid-feedback" field={:clinical} />
         <Inputs for={:clinical}>
           <div class="mb-5">
             <InputContext assigns={assigns} :let={form: form}>

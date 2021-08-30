@@ -45,6 +45,11 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           updated_at: DateTime.t()
         }
 
+  @type changeset_options :: %{
+          optional(:covid_app_required) => boolean,
+          optional(:transmission_required) => boolean
+        }
+
   @derive {Phoenix.Param, key: :uuid}
 
   schema "auto_tracings" do
@@ -67,10 +72,27 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   @spec changeset(
           auto_tracing :: t | empty | Changeset.t(t | empty),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_options :: changeset_options
         ) ::
           Changeset.t()
-  def changeset(auto_tracing, attrs \\ %{}) do
+
+  def changeset(auto_tracing, attrs \\ %{}, changeset_options \\ %{})
+
+  def changeset(auto_tracing, attrs, %{covid_app_required: true} = changeset_options) do
+    auto_tracing
+    |> changeset(attrs, %{changeset_options | covid_app_required: false})
+    |> validate_required([:covid_app])
+  end
+
+  def changeset(auto_tracing, attrs, %{transmission_required: true} = changeset_options) do
+    auto_tracing
+    |> changeset(attrs, %{changeset_options | transmission_required: false})
+    |> cast_embed(:transmission, required: true)
+    |> validate_transmission_required()
+  end
+
+  def changeset(auto_tracing, attrs, _changeset_options) do
     auto_tracing
     |> cast(attrs, [
       :current_step,
@@ -85,6 +107,23 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     |> cast_embed(:occupations)
     |> cast_embed(:transmission)
     |> set_unsolved_problems()
+  end
+
+  defp validate_transmission_required(changeset) do
+    changeset
+    |> fetch_field!(:transmission)
+    |> case do
+      %Transmission{} = transmission ->
+        transmission
+        |> Transmission.changeset(%{})
+        |> case do
+          %Ecto.Changeset{valid?: true} -> changeset
+          %Ecto.Changeset{valid?: false} -> add_error(changeset, :transmission, "is invalid")
+        end
+
+      nil ->
+        add_error(changeset, :transmission, "is invalid")
+    end
   end
 
   defp set_unsolved_problems(changeset) do

@@ -12,6 +12,7 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
   alias Surface.Components.Form
+  alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Inputs
   alias Surface.Components.LiveRedirect
 
@@ -26,10 +27,12 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
       if authorized?(case, :auto_tracing, get_auth(socket)) do
         assign(socket,
           case: case,
-          case_changeset: CaseContext.change_case(case),
+          case_changeset: %Ecto.Changeset{CaseContext.change_case(case) | action: :validate},
           person: case.person,
-          person_changeset:
-            CaseContext.change_person(case.person, %{}, %{address_required: true}),
+          person_changeset: %Ecto.Changeset{
+            CaseContext.change_person(case.person, %{}, %{address_required: true})
+            | action: :validate
+          },
           auto_tracing: case.auto_tracing
         )
       else
@@ -52,11 +55,11 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
         socket
       ) do
     socket =
-      assign(socket, :person_changeset, %{
+      assign(socket, :person_changeset, %Ecto.Changeset{
         CaseContext.change_person(socket.assigns.person, %{address: address}, %{
           address_required: true
         })
-        | action: :update
+        | action: :validate
       })
 
     {:noreply, socket}
@@ -68,19 +71,24 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
         socket
       ) do
     socket =
-      assign(socket, :case_changeset, %{
+      assign(socket, :case_changeset, %Ecto.Changeset{
         CaseContext.change_case(socket.assigns.case, %{monitoring: monitoring})
-        | action: :update
+        | action: :validate
       })
 
     {:noreply, socket}
   end
 
   def handle_event("advance", _params, socket) do
-    {:ok, case} = CaseContext.update_case(socket.assigns.case_changeset)
+    {:ok, case} =
+      CaseContext.update_case(%Ecto.Changeset{socket.assigns.case_changeset | action: nil})
 
     {:ok, person} =
-      CaseContext.update_person(socket.assigns.person_changeset, %{}, %{address_required: true})
+      CaseContext.update_person(
+        %Ecto.Changeset{socket.assigns.person_changeset | action: nil},
+        %{},
+        %{address_required: true}
+      )
 
     isolation_address =
       case case do

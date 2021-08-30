@@ -64,7 +64,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
         assign(socket,
           step: step,
-          changeset: changeset(step),
+          changeset: %Ecto.Changeset{changeset(step) | action: :validate},
           person: case.person,
           auto_tracing: case.auto_tracing
         )
