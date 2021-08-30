@@ -20,9 +20,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   prop form_data, :map, required: true
 
   @impl Phoenix.LiveComponent
-  def update(%{form_data: form_data} = assigns, socket) do
-    updated_data = update_step_data(form_data, %{type: form_data[:type]})
-
+  def update(assigns, socket) do
     {:ok, assign(socket, assigns)}
   end
 
@@ -121,12 +119,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("next", _params, %Socket{assigns: %{form_data: form_data}} = socket) do
+  def handle_event("next", _params, socket) do
     send(self(), :proceed)
     {:noreply, socket}
   end
 
-  def handle_event("back", _params, %Socket{assigns: %{form_data: form_data}} = socket) do
+  def handle_event("back", _params, socket) do
     send(self(), :return)
     {:noreply, socket}
   end
@@ -144,11 +142,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
     |> Enum.filter(fn {type, _} -> type != :landline end)
   end
 
-  @spec update_step_data(form_data :: map(), changed_data :: map()) :: map()
-  def update_step_data(form_data, changed_data)
+  @spec update_step_data(form_data :: map()) :: map()
+  def update_step_data(form_data)
 
-  def update_step_data(%{bindings: bindings} = form_data, changed_data) do
-    type = changed_data[:type] || form_data[:type]
+  def update_step_data(%{bindings: bindings} = form_data) do
+    type = form_data[:type]
 
     Map.put(
       form_data,
@@ -159,7 +157,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
     )
   end
 
-  def update_step_data(form_data, _data), do: form_data
+  def update_step_data(form_data), do: form_data
 
   defp clean_reporting_data(bindings) do
     Enum.map(bindings, fn %{person_changeset: person_changeset} = binding ->
@@ -262,7 +260,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   @spec valid?(form_data :: map()) :: boolean()
   def valid?(form_data)
 
-  def valid?(%{bindings: bindings} = form_data) do
+  def valid?(%{bindings: bindings}) do
     Enum.reduce(bindings, length(bindings) > 0, fn %{
                                                      person_changeset: person_changeset,
                                                      case_changeset: case_changeset

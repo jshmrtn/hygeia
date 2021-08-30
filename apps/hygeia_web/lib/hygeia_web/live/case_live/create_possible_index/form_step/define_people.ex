@@ -478,19 +478,19 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     {:noreply, assign(socket, :bulk_action_elements, remove_from_bulk_action(elements, index))}
   end
 
-  def handle_event("next", _params, %Socket{assigns: %{form_data: form_data}} = socket) do
-    send(self(), {:proceed, %{bindings: form_data.bindings}})
+  def handle_event("next", _params, socket) do
+    send(self(), :proceed)
     {:noreply, socket}
   end
 
-  def handle_event("back", _params, %Socket{assigns: %{form_data: form_data}} = socket) do
-    send(self(), {:return, %{bindings: form_data.bindings}})
+  def handle_event("back", _params, socket) do
+    send(self(), :return)
     {:noreply, socket}
   end
 
-  @spec update_step_data(form_data :: map(), changed_data :: map()) :: map()
-  def update_step_data(form_data, changed_data)
-  def update_step_data(form_data, _data), do: form_data
+  @spec update_step_data(form_data :: map()) :: map()
+  def update_step_data(form_data)
+  def update_step_data(form_data), do: form_data
 
   @spec valid?(form_data :: map()) :: boolean()
   def valid?(bindings)

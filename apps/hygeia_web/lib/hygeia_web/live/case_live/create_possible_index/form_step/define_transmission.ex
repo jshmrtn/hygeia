@@ -77,19 +77,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event(
-        "next",
-        _params,
-        %Socket{assigns: %{form_data: form_data}} = socket
-      ) do
-    case valid?(form_data) do
-      true ->
-        send(self(), :proceed)
-        {:noreply, socket}
-
-      false ->
-        {:noreply, socket}
-    end
+  def handle_event("next", _params, socket) do
+    send(self(), :proceed)
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveComponent
@@ -182,9 +172,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     end)
   end
 
-  @spec update_step_data(form_data :: map(), changed_data :: map()) :: map()
-  def update_step_data(form_data, changed_data)
-  def update_step_data(form_data, _data), do: form_data
+  @spec update_step_data(form_data :: map()) :: map()
+  def update_step_data(form_data)
+  def update_step_data(form_data), do: form_data
 
   @spec valid?(step_data :: map()) :: boolean()
   def valid?(step_data) do

@@ -168,38 +168,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     {:noreply, change_step(socket, @form_steps, :prev)}
   end
 
-  @impl Phoenix.LiveView
-  def handle_info(
-        {:proceed, changed_data},
-        %{assigns: %{form_data: form_data}} = socket
-      ) do
-    updated_data =
-      form_data
-      |> Map.merge(changed_data)
-      |> update_form_data(changed_data)
-
-    {:noreply,
-     socket
-     |> assign(:form_data, updated_data)
-     |> change_step(@form_steps, :next)}
-  end
-
-  @impl Phoenix.LiveView
-  def handle_info(
-        {:return, changed_data},
-        %{assigns: %{form_data: form_data}} = socket
-      ) do
-    updated_data =
-      form_data
-      |> Map.merge(changed_data)
-      |> update_form_data(changed_data)
-
-    {:noreply,
-     socket
-     |> assign(:form_data, updated_data)
-     |> change_step(@form_steps, :prev)}
-  end
-
   def handle_info(
         {:feed, changed_data},
         %{assigns: %{form_data: form_data}} = socket
@@ -207,7 +175,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     updated_data =
       form_data
       |> Map.merge(changed_data)
-      |> update_form_data(changed_data)
+      |> update_form_data()
 
     {:noreply, assign(socket, :form_data, updated_data)}
   end
@@ -321,12 +289,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     Reporting.valid?(form_data)
   end
 
-  defp update_form_data(current_data, changed_data) do
+  defp update_form_data(current_data) do
     current_data
-    |> DefineTransmission.update_step_data(changed_data)
-    |> DefinePeople.update_step_data(changed_data)
-    |> DefineOptions.update_step_data(changed_data)
-    |> Reporting.update_step_data(changed_data)
+    |> DefineTransmission.update_step_data()
+    |> DefinePeople.update_step_data()
+    |> DefineOptions.update_step_data()
+    |> Reporting.update_step_data()
   end
 
   defp decide_nav_class(current_step, target_step, visited_steps, current_data) do

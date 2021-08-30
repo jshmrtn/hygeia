@@ -59,19 +59,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("next", _params, %Socket{assigns: %{form_data: form_data}} = socket) do
-    case valid?(form_data) do
-      true ->
-        send(self(), {:proceed, %{bindings: form_data.bindings}})
-        {:noreply, socket}
-
-      false ->
-        {:noreply, socket}
-    end
+  def handle_event("next", _params, socket) do
+    send(self(), :proceed)
+    {:noreply, socket}
   end
 
-  def handle_event("back", _params, %Socket{assigns: %{form_data: form_data}} = socket) do
-    send(self(), {:return, %{bindings: form_data.bindings}})
+  def handle_event("back", _params, socket) do
+    send(self(), :return)
     {:noreply, socket}
   end
 
@@ -92,14 +86,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
     |> Enum.map(&{&1.display_name, &1.uuid})
   end
 
-  @spec update_step_data(form_data :: map(), changed_data :: map()) :: map()
-  def update_step_data(form_data, changed_data)
+  @spec update_step_data(form_data :: map()) :: map()
+  def update_step_data(form_data)
 
-  def update_step_data(%{bindings: bindings} = form_data, changed_data) do
-    type = changed_data[:type] || form_data[:type]
-    date = changed_data[:date] || form_data[:date]
-    type_other = changed_data[:type_other] || form_data[:type_other]
-    propagator = changed_data[:propagator] || form_data[:propagator]
+  def update_step_data(%{bindings: bindings} = form_data) do
+    type = form_data[:type]
+    date = form_data[:date]
+    type_other = form_data[:type_other]
+    propagator = form_data[:propagator]
 
     Map.put(
       form_data,
@@ -115,7 +109,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
     )
   end
 
-  def update_step_data(form_data, _data), do: form_data
+  def update_step_data(form_data), do: form_data
 
   defp manage_statuses(transmission_type, statuses)
   defp manage_statuses(:travel, statuses), do: statuses
