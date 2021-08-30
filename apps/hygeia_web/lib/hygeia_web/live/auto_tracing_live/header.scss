@@ -1,6 +1,6 @@
 .component-auto-tracing-header {
   .progress-steps {
-    --progress-bar-items: 9;
+    --progress-bar-items: 10;
     @include progress-steps;
   }
 }
