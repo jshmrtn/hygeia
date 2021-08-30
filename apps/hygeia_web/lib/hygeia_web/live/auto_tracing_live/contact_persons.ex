@@ -4,6 +4,7 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
@@ -65,7 +66,16 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
 
     {:ok, _} = CaseContext.delete_possible_index_submission(possible_index_submission)
 
-    {:noreply, assign(socket, case: load_case(socket.assigns.case.uuid))}
+    case = load_case(socket.assigns.case.uuid)
+
+    if Enum.empty?(case.possible_index_submissions) do
+        AutoTracingContext.auto_tracing_remove_problem(
+          case.auto_tracing,
+          :possible_index_submission
+        )
+    end
+
+    {:noreply, assign(socket, case: case)}
   end
 
   @impl Phoenix.LiveView
