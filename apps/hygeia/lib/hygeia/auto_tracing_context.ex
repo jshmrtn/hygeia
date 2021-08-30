@@ -107,6 +107,20 @@ defmodule Hygeia.AutoTracingContext do
     })
   end
 
+  @spec auto_tracing_add_problem_if_not_exists(
+          auto_tracing :: AutoTracing.t(),
+          problem :: Problem.t()
+        ) ::
+          {:ok, AutoTracing.t()} | {:error, Ecto.Changeset.t(AutoTracing.t())}
+  def auto_tracing_add_problem_if_not_exists(
+        %AutoTracing{problems: problems} = auto_tracing,
+        problem
+      ) do
+    update_auto_tracing(auto_tracing, %{
+      problems: Enum.uniq(problems ++ [problem])
+    })
+  end
+
   @spec auto_tracing_remove_problem(auto_tracing :: AutoTracing.t(), problem :: Problem.t()) ::
           {:ok, AutoTracing.t()} | {:error, Ecto.Changeset.t(AutoTracing.t())}
   def auto_tracing_remove_problem(
