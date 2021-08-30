@@ -1,24 +1,12 @@
-# # "msgid"s in this file come from POT (.pot) files.
-# #
-# # Do not add, change, or remove "msgid"s manually here as
-# # they're tied to the ones in the corresponding POT file
-# # (with the same domain).
-# #
-# # Use "mix gettext.extract --merge" or "mix gettext.merge"
-# # to merge POT files into PO files.
 msgid ""
 msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Project-Id-Version: Hygeia\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
 "Language-Team: JOSHMARTIN GmbH https://joshmartin.ch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -85,6 +73,7 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Websms Field"
 msgid "Access Token"
 msgstr ""
 
+#, fuzzy
 msgid "Acquiring Lock..."
 msgstr ""
 
@@ -112,6 +101,7 @@ msgstr ""
 msgid "Add an occupation"
 msgstr ""
 
+#, fuzzy
 msgid "Add external references if it does not exist."
 msgstr ""
 
@@ -276,6 +266,7 @@ msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Author"
 msgstr ""
 
+#, fuzzy
 msgctxt "Login"
 msgid "Authorized Personel"
 msgstr ""
@@ -756,9 +747,11 @@ msgstr ""
 msgid "Dear Sir / Madam,\n\nYou have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n\nWe would like to ask you to fill out the information on the following link:\n%{public_overview_link}\n\nPlease open this link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nThanks for your help!\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 
+#, fuzzy
 msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nYou can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n\nTo access the confirmation, please log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 
+#, fuzzy
 msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 
@@ -963,6 +956,7 @@ msgstr ""
 msgid "Do you know the address where you met with %{first_name} %{last_name}?"
 msgstr ""
 
+#, fuzzy
 msgid "Do you really want to continue without saving?"
 msgstr ""
 
@@ -1044,6 +1038,7 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Email"
 msgstr ""
 
+#, fuzzy
 msgctxt "Notification Type"
 msgid "Email Send Failed"
 msgstr ""
@@ -1147,6 +1142,7 @@ msgctxt "Protocol Entry"
 msgid "Entry"
 msgstr ""
 
+#, fuzzy
 msgid "Error while authenticating."
 msgstr ""
 
@@ -1169,6 +1165,7 @@ msgctxt "Inbox Row Apply Person"
 msgid "Existing Case"
 msgstr ""
 
+#, fuzzy
 msgctxt "Inbox Row Apply Person"
 msgid "Existing Person, new case"
 msgstr ""
@@ -1228,6 +1225,7 @@ msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "File"
 msgstr ""
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "File Name"
 msgstr ""
@@ -1337,6 +1335,7 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
+#, fuzzy
 msgid "Hi %{name},\n\nThere's new notifications available on Hygeia for you:\n%{totals}\n\nBest,\nHygeia\n"
 msgstr ""
 
@@ -1825,6 +1824,7 @@ msgstr ""
 msgid "Log In"
 msgstr ""
 
+#, fuzzy
 msgid "Logging In..."
 msgstr ""
 
@@ -1899,6 +1899,7 @@ msgctxt "Organisation Merge"
 msgid "Merge"
 msgstr ""
 
+#, fuzzy
 msgid "Merge Divisions"
 msgstr ""
 
@@ -2071,6 +2072,7 @@ msgstr ""
 msgid "New Phase"
 msgstr ""
 
+#, fuzzy
 msgid "New Possible Index"
 msgstr ""
 
@@ -2125,6 +2127,7 @@ msgstr ""
 msgid "New person"
 msgstr ""
 
+#, fuzzy
 msgid "New possible index submission"
 msgstr ""
 
@@ -2374,6 +2377,7 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Outgoing SMS Configuration Type"
 msgstr ""
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Override URL"
 msgstr ""
@@ -2488,6 +2492,7 @@ msgctxt "ISM 2021-06-11 Test Field Group"
 msgid "Personal"
 msgstr ""
 
+#, fuzzy
 msgid "Personal service with physical contact (e.g. hairdressers, massage studio)"
 msgstr ""
 
@@ -2541,6 +2546,7 @@ msgstr ""
 msgid "Pin Note"
 msgstr ""
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
 msgid "Pinned"
 msgstr ""
@@ -2924,6 +2930,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#, fuzzy
 msgid "Saving..."
 msgstr ""
 
@@ -3447,6 +3454,7 @@ msgstr ""
 msgid "Thanks for your help!"
 msgstr ""
 
+#, fuzzy
 msgctxt "Phase Create Modal"
 msgid "The automated case close email for the %{type} phase will be disabled."
 msgstr ""
@@ -3468,6 +3476,7 @@ msgctxt "Phase Create Modal"
 msgid "The end date of the %{type} phase will be changed from \"%{old_end_date}\" to \"%{new_end_date}\"."
 msgstr ""
 
+#, fuzzy
 msgctxt "Phase Create Modal"
 msgid "The end reason of the %{type} phase will be changed from \"%{old_end_reason}\" to \"%{new_end_reason}\"."
 msgstr ""
@@ -3481,6 +3490,7 @@ msgstr ""
 msgid "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
 msgstr ""
 
+#, fuzzy
 msgid "The quarantine can be ended because of a negative test the earliest on %{date}."
 msgstr ""
 
@@ -3780,6 +3790,7 @@ msgctxt "Case Status"
 msgid "Wainting for Contact Person List"
 msgstr ""
 
+#, fuzzy
 msgid "Waiting for results..."
 msgstr ""
 
@@ -3961,10 +3972,12 @@ msgstr ""
 msgid "either organisation or comment must be filled"
 msgstr ""
 
+#, fuzzy
 msgctxt "Item Table"
 msgid "emails"
 msgstr ""
 
+#, fuzzy
 msgctxt "Notification"
 msgid "failed to send email."
 msgstr ""
@@ -4052,6 +4065,7 @@ msgctxt "Item Table"
 msgid "premature_releases"
 msgstr ""
 
+#, fuzzy
 msgctxt "Item Table"
 msgid "resource_views"
 msgstr ""
@@ -4088,10 +4102,12 @@ msgctxt "Item Table"
 msgid "statistics_active_quarantine_cases_per_day"
 msgstr ""
 
+#, fuzzy
 msgctxt "Item Table"
 msgid "statistics_cumulative_index_case_end_reasons"
 msgstr ""
 
+#, fuzzy
 msgctxt "Item Table"
 msgid "statistics_cumulative_possible_index_case_end_reasons"
 msgstr ""
@@ -4135,6 +4151,7 @@ msgctxt "versioning_event"
 msgid "update"
 msgstr ""
 
+#, fuzzy
 msgctxt "Item Table"
 msgid "user_grants"
 msgstr ""

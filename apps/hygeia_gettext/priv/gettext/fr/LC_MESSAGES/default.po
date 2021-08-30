@@ -1,24 +1,12 @@
-# # "msgid"s in this file come from POT (.pot) files.
-# #
-# # Do not add, change, or remove "msgid"s manually here as
-# # they're tied to the ones in the corresponding POT file
-# # (with the same domain).
-# #
-# # Use "mix gettext.extract --merge" or "mix gettext.merge"
-# # to merge POT files into PO files.
 msgid ""
 msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "Project-Id-Version: Hygeia\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: Jeremy J. Zahner <zahner@joshmartin.ch>\n"
 "Language-Team: JOSHMARTIN GmbH https://joshmartin.ch\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #, fuzzy
@@ -135,6 +123,7 @@ msgstr "Cartographie des activités exécutée"
 msgid "Add"
 msgstr "Ajouter"
 
+#, fuzzy
 msgid "Add an occupation"
 msgstr ""
 
@@ -163,6 +152,7 @@ msgstr "Demandes supplémentaires"
 msgid "Address"
 msgstr "Adresse"
 
+#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Address"
 msgstr ""
@@ -292,9 +282,11 @@ msgstr "Appliquer"
 msgid "April"
 msgstr "Avril"
 
+#, fuzzy
 msgid "Are you employed?"
 msgstr ""
 
+#, fuzzy
 msgid "Are you planning to move to a different address for your isolation? If so, at which address?"
 msgstr ""
 
@@ -349,9 +341,11 @@ msgctxt "Login"
 msgid "Authorized Personel"
 msgstr "Personnes autorisées"
 
+#, fuzzy
 msgid "Auto Tracing"
 msgstr ""
 
+#, fuzzy
 msgid "Auto Tracing Problem"
 msgstr ""
 
@@ -385,6 +379,7 @@ msgstr "BAG MED 16122020 (Contact)"
 msgid "BAG MED 16122020 (Contact; Hygeia Extended Fields)"
 msgstr "BAG MED 16122020 (Contact ; Hygeia Extended Fields)"
 
+#, fuzzy
 msgid "Back"
 msgstr ""
 
@@ -615,6 +610,7 @@ msgstr "Choisir le résultat du test"
 msgid "Cinema / theater / concert"
 msgstr "Cinéma / théâtre / concert"
 
+#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Clinical"
 msgstr ""
@@ -643,6 +639,7 @@ msgctxt "Case Status"
 msgid "Code Pending"
 msgstr "Code en attente"
 
+#, fuzzy
 msgid "Collect Data"
 msgstr ""
 
@@ -679,6 +676,7 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Comment"
 msgstr "Commentaire"
 
+#, fuzzy
 msgid "Complete Data"
 msgstr ""
 
@@ -707,6 +705,7 @@ msgstr "Modèle de confirmation en PDF"
 msgid "Contact Methods"
 msgstr "Méthodes de contact"
 
+#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Contact Methods"
 msgstr ""
@@ -767,6 +766,7 @@ msgstr "Société"
 msgid "Correct Data"
 msgstr "Données correctes"
 
+#, fuzzy
 msgid "Correct address"
 msgstr ""
 
@@ -804,10 +804,12 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Country"
 msgstr "Pays"
 
+#, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "Covid App"
 msgstr ""
 
+#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Covid App"
 msgstr ""
@@ -817,6 +819,7 @@ msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
 msgstr "Alerte CovidApp"
 
+#, fuzzy
 msgid "Create"
 msgstr ""
 
@@ -830,6 +833,7 @@ msgctxt "Organisation"
 msgid "Create"
 msgstr "Créer"
 
+#, fuzzy
 msgid "Create Auto Tracing"
 msgstr ""
 
@@ -854,6 +858,7 @@ msgstr "Phase de création"
 msgid "Create Possible Index Cases"
 msgstr "Créer des cas d'indexation possibles"
 
+#, fuzzy
 msgid "Create Transmission"
 msgstr ""
 
@@ -871,6 +876,7 @@ msgstr[1] "Créé %{n} Dossiers"
 msgid "Created at %{created_at}"
 msgstr "Créé à %{created_at}"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Current Step"
 msgstr ""
@@ -888,6 +894,7 @@ msgstr "Statistiques quotidiennes"
 msgid "Date"
 msgstr "Date"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
 msgid "Date"
 msgstr ""
@@ -912,77 +919,29 @@ msgctxt "Protocol Entry"
 msgid "Date"
 msgstr "Date"
 
+#, fuzzy
 msgid "Dear Sir / Madam"
 msgstr ""
 
 #, fuzzy
 msgid "Dear Sir / Madam,\n\nAs discussed via phone, you can access the information about your isolation via the following link:\n%{public_overview_link}\n\nPlease open this link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nYou will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n\nPlease read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
-msgstr ""
-"Madame, Monsieur,\n"
-"\n"
-"Comme nous en avons discuté par téléphone, vous pouvez accéder aux informations relatives à votre isolement via le lien suivant : \n"
-"%{public_overview_link}\n"
-"\n"
-"Veuillez ouvrir ce lien et vous connecter en utilisant votre prénom et votre nom. (Initiales : %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Vous pourrez télécharger votre confirmation d'isolement et soumettre les personnes avec lesquelles vous avez été en contact. Vous pourrez également télécharger une confirmation de fin d'isolement à la fin de votre séjour.\n"
-"\n"
-"Veuillez lire les informations relatives à votre isolement dans votre document de confirmation ainsi que les liens et les méthodes de contact mentionnés.\n"
-"\n"
-"Bien à vous,\n"
-"\n"
-"%{message_signature}\n"
+msgstr "Madame, Monsieur,\n\nComme nous en avons discuté par téléphone, vous pouvez accéder aux informations relatives à votre isolement via le lien suivant : \n%{public_overview_link}\n\nVeuillez ouvrir ce lien et vous connecter en utilisant votre prénom et votre nom. (Initiales : %{initial_first_name}. %{initial_last_name}.)\n\nVous pourrez télécharger votre confirmation d'isolement et soumettre les personnes avec lesquelles vous avez été en contact. Vous pourrez également télécharger une confirmation de fin d'isolement à la fin de votre séjour.\n\nVeuillez lire les informations relatives à votre isolement dans votre document de confirmation ainsi que les liens et les méthodes de contact mentionnés.\n\nBien à vous,\n\n%{message_signature}\n"
 
 #, fuzzy
 msgid "Dear Sir / Madam,\n\nYou have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n\nPlease open the following link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nYou will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n\nPlease read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
-msgstr ""
-"Madame, Monsieur,\n"
-"\n"
-"Vous avez été identifié comme personne de contact d'une personne atteinte de corona. Pour cette raison, vous allez devoir quantifier pendant 10 jours. \n"
-"\n"
-"Veuillez ouvrir le lien suivant et vous connecter en utilisant vos nom et prénom. (initiales : %{initial_first_name}. %{initial_last_name}.)\n"
-"%{public_overview_link}\n"
-"\n"
-"Vous pourrez télécharger votre confirmation de quarantaine et éventuellement raccourcir / lever votre quarantaine.\n"
-"\n"
-"Veuillez lire les informations relatives à votre quarantaine dans votre document de confirmation ainsi que les liens et les méthodes de contact mentionnés.\n"
-"\n"
-"Bien à vous,\n"
-"\n"
-"%{message_signature}\n"
+msgstr "Madame, Monsieur,\n\nVous avez été identifié comme personne de contact d'une personne atteinte de corona. Pour cette raison, vous allez devoir quantifier pendant 10 jours. \n\nVeuillez ouvrir le lien suivant et vous connecter en utilisant vos nom et prénom. (initiales : %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nVous pourrez télécharger votre confirmation de quarantaine et éventuellement raccourcir / lever votre quarantaine.\n\nVeuillez lire les informations relatives à votre quarantaine dans votre document de confirmation ainsi que les liens et les méthodes de contact mentionnés.\n\nBien à vous,\n\n%{message_signature}\n"
 
+#, fuzzy
 msgid "Dear Sir / Madam,\n\nYou have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n\nWe would like to ask you to fill out the information on the following link:\n%{public_overview_link}\n\nPlease open this link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nThanks for your help!\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 
 #, fuzzy
 msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nYou can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n\nTo access the confirmation, please log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
-msgstr ""
-"Madame, Monsieur,\n"
-"\n"
-"Votre période d'isolement se termine demain %{date}. Si vous n'avez pas eu de fièvre ou de toux avec expectoration, vous êtes autorisé à quitter l'isolement.\n"
-"\n"
-"Vous pouvez trouver la confirmation de fin d'isolement via le lien suivant :\n"
-"%{isolation_end_confirmation_link}\n"
-"\n"
-"Pour accéder à la confirmation, veuillez vous connecter en utilisant votre prénom et votre nom. (initiales : %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Si vous continuez à vous sentir mal, veuillez contacter votre médecin traitant.\n"
-"\n"
-"Nous vous prions d'agréer, l'expression de nos salutations distinguées,\n"
-"\n"
-"%{message_signature}\n"
+msgstr "Madame, Monsieur,\n\nVotre période d'isolement se termine demain %{date}. Si vous n'avez pas eu de fièvre ou de toux avec expectoration, vous êtes autorisé à quitter l'isolement.\n\nVous pouvez trouver la confirmation de fin d'isolement via le lien suivant :\n%{isolation_end_confirmation_link}\n\nPour accéder à la confirmation, veuillez vous connecter en utilisant votre prénom et votre nom. (initiales : %{initial_first_name}. %{initial_last_name}.)\n\nSi vous continuez à vous sentir mal, veuillez contacter votre médecin traitant.\n\nNous vous prions d'agréer, l'expression de nos salutations distinguées,\n\n%{message_signature}\n"
 
 #, fuzzy
 msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
-msgstr ""
-"Madame, Monsieur,\n"
-"\n"
-"Votre période de quarantaine se termine demain %{date}. Si vous ne ressentez actuellement aucun symptôme, vous êtes autorisé à quitter la quarantaine.\n"
-"\n"
-"Si vous vous sentez mal, veuillez contacter votre médecin généraliste.\n"
-"\n"
-"Bien à vous,\n"
-"%{message_signature}\n"
+msgstr "Madame, Monsieur,\n\nVotre période de quarantaine se termine demain %{date}. Si vous ne ressentez actuellement aucun symptôme, vous êtes autorisé à quitter la quarantaine.\n\nSi vous vous sentez mal, veuillez contacter votre médecin généraliste.\n\nBien à vous,\n%{message_signature}\n"
 
 #, fuzzy
 msgctxt "Index End Reason"
@@ -1084,6 +1043,7 @@ msgctxt "Notification"
 msgid "Delete"
 msgstr "Supprimer"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Delete Person"
 msgstr ""
@@ -1109,6 +1069,7 @@ msgstr "Description"
 msgid "Despite multiple calls and inquiries regarding the phone number unavailable"
 msgstr "Malgré de multiples appels et demandes concernant le numéro de téléphone indisponible"
 
+#, fuzzy
 msgid "Details"
 msgstr ""
 
@@ -1117,10 +1078,12 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Details"
 msgstr "Détails"
 
+#, fuzzy
 msgctxt "Versioning Origin"
 msgid "Detect Unchanged Cases"
 msgstr ""
 
+#, fuzzy
 msgid "Did you get infected from a specific person? If so please enter the details."
 msgstr ""
 
@@ -1214,12 +1177,15 @@ msgstr "Les divisions ont fusionné avec succès"
 msgid "Do not append Note"
 msgstr "Ne pas ajouter de note"
 
+#, fuzzy
 msgid "Do not create Auto Tracing"
 msgstr ""
 
+#, fuzzy
 msgid "Do you have symptoms?"
 msgstr ""
 
+#, fuzzy
 msgid "Do you know how you got infected?"
 msgstr ""
 
@@ -1245,6 +1211,7 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Domain"
 msgstr "Domaine"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Done"
 msgstr ""
@@ -1284,6 +1251,7 @@ msgstr "Modifier"
 msgid "Either you or the other person did not weark a mask."
 msgstr "Soit vous, soit l'autre personne n'a pas porté de masque."
 
+#, fuzzy
 msgid "Email"
 msgstr ""
 
@@ -1292,10 +1260,12 @@ msgctxt "Contact Method Type"
 msgid "Email"
 msgstr "Courriel :"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
 msgid "Email"
 msgstr ""
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
 msgid "Email"
 msgstr ""
@@ -1310,6 +1280,7 @@ msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Email"
 msgstr "Courriel :"
 
+#, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
 msgid "Email"
 msgstr ""
@@ -1347,6 +1318,7 @@ msgstr "Employé"
 msgid "Employer"
 msgstr "Employeur"
 
+#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Employer"
 msgstr ""
@@ -1554,6 +1526,7 @@ msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "File"
 msgstr "Fichier"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "File Name"
 msgstr ""
@@ -1562,6 +1535,7 @@ msgstr ""
 msgid "Filter"
 msgstr "Filtre"
 
+#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Finish"
 msgstr ""
@@ -1575,6 +1549,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "First Contact"
 msgstr "Premier contact"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
 msgid "First Name"
 msgstr ""
@@ -1661,6 +1636,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
 msgstr "A des symptômes"
 
+#, fuzzy
 msgid "Have you been or are you in a hospital?"
 msgstr ""
 
@@ -1688,14 +1664,7 @@ msgstr "Aide"
 
 #, fuzzy
 msgid "Hi %{name},\n\nThere's new notifications available on Hygeia for you:\n%{totals}\n\nBest,\nHygeia\n"
-msgstr ""
-"Bonjour %{name},\n"
-"\n"
-"Il y a de nouvelles notifications disponibles sur Hygeia pour vous :\n"
-"%{totals}\n"
-"\n"
-"Best,\n"
-"Hygeia - COVID19 Tracing\n"
+msgstr "Bonjour %{name},\n\nIl y a de nouvelles notifications disponibles sur Hygeia pour vous :\n%{totals}\n\nBest,\nHygeia - COVID19 Tracing\n"
 
 #, fuzzy
 msgid "High"
@@ -1723,14 +1692,17 @@ msgstr "Résident à domicile"
 msgid "Hospital"
 msgstr "Hôpital"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Hospitalization Field"
 msgid "Hospital"
 msgstr ""
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Hospitalization Field"
 msgid "Hospital UUID"
 msgstr ""
 
+#, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "Hospitalization"
 msgstr ""
@@ -1954,6 +1926,7 @@ msgstr "En cas d'interruption de service, veuillez consulter la page d'état."
 msgid "In this case there are no further actions necessary. \"Done\" should be set on the index and contact person."
 msgstr "Dans ce cas, aucune autre action n'est nécessaire. L'index et la personne de contact doivent porter la mention \"Terminé\"."
 
+#, fuzzy
 msgid "In your e-mail inbox you will find a certificate for your employer as well as further information on isolation."
 msgstr ""
 
@@ -2069,6 +2042,7 @@ msgstr "Sur"
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr "Détails de la personne non valides. Si vous pensez qu'il s'agit d'une erreur, contactez l'équipe de recherche."
 
+#, fuzzy
 msgid "Is the Swiss CovidApp installed / in operation on your smartphone?"
 msgstr ""
 
@@ -2081,6 +2055,7 @@ msgstr "est véridique"
 msgid "Isolation"
 msgstr "Isolation"
 
+#, fuzzy
 msgid "Isolation Address"
 msgstr ""
 
@@ -2154,6 +2129,7 @@ msgstr "Maintenir le statut"
 msgid "Keep personal data"
 msgstr "Conserver les données personnelles"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Kind"
 msgstr ""
@@ -2187,6 +2163,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Laboratory report date"
 msgstr "Date du rapport de laboratoire"
 
+#, fuzzy
 msgid "Landline"
 msgstr ""
 
@@ -2195,6 +2172,7 @@ msgctxt "Contact Method Type"
 msgid "Landline"
 msgstr "Ligne fixe"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
 msgid "Landline"
 msgstr ""
@@ -2204,6 +2182,7 @@ msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Landline"
 msgstr "Ligne fixe"
 
+#, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
 msgid "Landline"
 msgstr ""
@@ -2217,10 +2196,12 @@ msgstr "Ligne fixe"
 msgid "Language"
 msgstr "Langue"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Last Change"
 msgstr ""
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
 msgid "Last Name"
 msgstr ""
@@ -2240,6 +2221,7 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Last Name"
 msgstr "Nom de famille"
 
+#, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "Link Propagator"
 msgstr ""
@@ -2416,6 +2398,7 @@ msgstr "Ensemble de données essentielles minimales"
 msgid "Missing phone number"
 msgstr "Numéro de téléphone manquant"
 
+#, fuzzy
 msgid "Mobile"
 msgstr ""
 
@@ -2424,6 +2407,7 @@ msgctxt "Contact Method Type"
 msgid "Mobile"
 msgstr "Mobile"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
 msgid "Mobile"
 msgstr ""
@@ -2433,6 +2417,7 @@ msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Mobile"
 msgstr "Mobile"
 
+#, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
 msgid "Mobile"
 msgstr ""
@@ -2451,6 +2436,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Monitoring"
 msgstr "Surveillance"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Monitoring Address"
 msgstr ""
@@ -2496,6 +2482,7 @@ msgstr "Mutations"
 msgid "Name"
 msgstr "Nom"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Employer Field"
 msgid "Name"
 msgstr ""
@@ -2574,6 +2561,7 @@ msgstr "Nouvelle division pour %{organisation}"
 msgid "New Email"
 msgstr "Nouvel Email"
 
+#, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "New Employer"
 msgstr ""
@@ -2762,6 +2750,7 @@ msgctxt "vaccination_done"
 msgid "Not Done"
 msgstr "Pas fait"
 
+#, fuzzy
 msgid "Not responsible"
 msgstr ""
 
@@ -2816,6 +2805,7 @@ msgstr "Commandé"
 msgid "Organisation"
 msgstr "Organisation"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Organisation"
 msgstr ""
@@ -2852,6 +2842,7 @@ msgstr "Organisation créée avec succès"
 msgid "Organisation deleted successfully"
 msgstr "Organisation supprimée avec succès"
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Organisation not found"
 msgstr ""
@@ -2993,6 +2984,7 @@ msgstr "Remplacer l'URL"
 msgid "Overview"
 msgstr "Vue d'ensemble"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Overview"
 msgstr ""
@@ -3170,9 +3162,11 @@ msgstr "Phases"
 msgid "Phoenix Dashboard"
 msgstr "Tableau de bord de Phoenix"
 
+#, fuzzy
 msgid "Phone"
 msgstr ""
 
+#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
 msgid "Phone"
 msgstr ""
@@ -3207,12 +3201,15 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Lieu"
 
+#, fuzzy
 msgid "Please enter your place of residence."
 msgstr ""
 
+#, fuzzy
 msgid "Please give us the details."
 msgstr ""
 
+#, fuzzy
 msgid "Please indicate how we can reach you:"
 msgstr ""
 
@@ -3288,10 +3285,12 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Private Key"
 msgstr "Clé privée"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Problem solved"
 msgstr ""
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Problems"
 msgstr ""
@@ -3338,6 +3337,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Case"
 msgstr "Cas du propagateur"
 
+#, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts Field"
 msgid "Propagator Case"
 msgstr ""
@@ -3362,6 +3362,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator ISM ID"
 msgstr "Propagateur ISM ID"
 
+#, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts Field"
 msgid "Propagator ISM ID"
 msgstr ""
@@ -3458,6 +3459,7 @@ msgstr "Raisons du test"
 msgid "Reasons for test help"
 msgstr "Raisons de l'aide au test"
 
+#, fuzzy
 msgid "Reasons for the test"
 msgstr ""
 
@@ -3568,10 +3570,12 @@ msgstr "Retirer"
 msgid "Repetitive preventative tests of specific groups (e.g. care centers, schools, companies etc.)"
 msgstr "Tests préventifs répétitifs de groupes spécifiques (par exemple, les centres de soins, les écoles, les entreprises, etc.)"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Report case to the appropriate authority and delete person & case."
 msgstr ""
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Report case to your supervisor."
 msgstr ""
@@ -3593,6 +3597,7 @@ msgstr "Le document demandé est actuellement indisponible"
 msgid "Reset tracer & supervisor"
 msgstr "Remise à zéro du traceur et du superviseur"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Residency Address"
 msgstr ""
@@ -3762,6 +3767,7 @@ msgstr "Sélectionner le statut"
 msgid "Select tenant"
 msgstr "Sélectionner le locataire"
 
+#, fuzzy
 msgctxt "Notification Type"
 msgid "Self Service Help Request"
 msgstr ""
@@ -3785,6 +3791,7 @@ msgstr "Envoyer un SMS de confirmation"
 msgid "Send Email"
 msgstr "Envoyer un courriel"
 
+#, fuzzy
 msgid "Send Email Auto Tracing Invitation"
 msgstr ""
 
@@ -3808,6 +3815,7 @@ msgstr "Envoyer un courriel de confirmation de fin de quarantaine"
 msgid "Send SMS"
 msgstr "Envoyer un SMS"
 
+#, fuzzy
 msgid "Send SMS Auto Tracing Invitation"
 msgstr ""
 
@@ -3827,6 +3835,7 @@ msgstr "Envoyer une confirmation de quarantaine par SMS"
 msgid "Send SMS Quarantine End Confirmation"
 msgstr "Envoyer un SMS de confirmation de fin de quarantaine"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a Covid App Code to the person."
 msgstr ""
@@ -3935,6 +3944,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Sponsor"
 msgstr "Sponsor"
 
+#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Start"
 msgstr ""
@@ -4049,6 +4059,7 @@ msgstr "Authentification réussie."
 msgid "Supervisor"
 msgstr "Superviseur"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Supervisor"
 msgstr ""
@@ -4092,6 +4103,7 @@ msgstr "UUID du superviseur"
 msgid "Suppress quarantine"
 msgstr "Supprimer la quarantaine"
 
+#, fuzzy
 msgid "Swiss CovidApp"
 msgstr ""
 
@@ -4105,6 +4117,7 @@ msgctxt "Organisation Merge"
 msgid "Switch"
 msgstr "Interrupteur"
 
+#, fuzzy
 msgid "Symptoms"
 msgstr ""
 
@@ -4143,6 +4156,7 @@ msgstr "Message système mis à jour avec succès"
 msgid "System Messages"
 msgstr "Messages du système"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "TODO: directions"
 msgstr ""
@@ -4304,9 +4318,11 @@ msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Text"
 msgstr "Texte"
 
+#, fuzzy
 msgid "Thank you for your information!"
 msgstr ""
 
+#, fuzzy
 msgid "Thanks for your help!"
 msgstr ""
 
@@ -4327,6 +4343,7 @@ msgstr "La personne de contact n'a développé aucun symptôme pendant la quaran
 msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr "La personne de contact a développé des symptômes, a fait un test et est devenue un indice"
 
+#, fuzzy
 msgid "The displayed language was translated mechanically."
 msgstr ""
 
@@ -4440,6 +4457,7 @@ msgstr "Trop de fichiers ont été sélectionnés"
 msgid "Tracer"
 msgstr "Traceur"
 
+#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Tracer"
 msgstr ""
@@ -4477,6 +4495,7 @@ msgstr "Tracer"
 msgid "Transmission"
 msgstr "Transmission"
 
+#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Transmission"
 msgstr ""
@@ -4606,6 +4625,7 @@ msgstr "UUID"
 msgid "Uncertain"
 msgstr "Incertain"
 
+#, fuzzy
 msgctxt "Notification Type"
 msgid "Unchanged Case"
 msgstr ""
@@ -4627,6 +4647,7 @@ msgstr "Inconnu"
 msgid "Unknown Error"
 msgstr "Erreur inconnue"
 
+#, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "Unmanaged Tenant"
 msgstr ""
@@ -4680,6 +4701,7 @@ msgstr "Vacciné"
 msgid "Vaccination"
 msgstr "Vaccination"
 
+#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Vaccination"
 msgstr ""
@@ -4689,6 +4711,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Vaccination"
 msgstr "Vaccination"
 
+#, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "Vaccination Failure"
 msgstr ""
@@ -4729,12 +4752,15 @@ msgstr "En attendant les résultats..."
 msgid "Warning! When importing the same rows multiple times, they will be re-assigned from the old import to the current import. Therefore rows might appear missing from an import later on."
 msgstr "Attention ! Lorsque vous importez les mêmes lignes plusieurs fois, elles sont réaffectées de l'ancienne importation à l'importation actuelle. Par conséquent, des lignes peuvent apparaître manquantes dans une importation ultérieure."
 
+#, fuzzy
 msgid "We will forward you to the recording of people that you were in contact with and could possibly have passed the infection on."
 msgstr ""
 
+#, fuzzy
 msgid "We wish you a speedy recovery."
 msgstr ""
 
+#, fuzzy
 msgid "We would like to ask you to fill out the information on the following pages as precisely and completely as possible."
 msgstr ""
 
@@ -4751,6 +4777,7 @@ msgctxt "Versioning Origin"
 msgid "Website"
 msgstr "Site web"
 
+#, fuzzy
 msgid "What symptoms did you experience?"
 msgstr ""
 
@@ -4759,6 +4786,7 @@ msgctxt "Phase Create Modal"
 msgid "When Saving, the following changes will also be applied:"
 msgstr "Lors de la sauvegarde, les modifications suivantes seront également appliquées :"
 
+#, fuzzy
 msgid "When did the symptoms start?"
 msgstr ""
 
@@ -4835,6 +4863,7 @@ msgstr "Vous avez eu des contacts pendant plus de 15 minutes le même jour."
 msgid "You have been logged out!"
 msgstr "Vous avez été déconnecté !"
 
+#, fuzzy
 msgid "You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support."
 msgstr ""
 
@@ -4850,6 +4879,7 @@ msgstr "Vous avez sélectionné un type de fichier inacceptable"
 msgid "You must provide a reason for completing a phase."
 msgstr "Vous devez justifier l'achèvement d'une phase."
 
+#, fuzzy
 msgid "Your Tests"
 msgstr ""
 
@@ -4857,6 +4887,7 @@ msgstr ""
 msgid "Your isolation started on %{start_date} and applies up to and including %{end_date}."
 msgstr "Votre isolement a commencé le %{start_date} et s'applique jusqu'au %{end_date} inclus."
 
+#, fuzzy
 msgid "Your occupation does not appear in the list or it is not correct? Please enter it manually."
 msgstr ""
 
@@ -4886,6 +4917,7 @@ msgstr "toutes les subdivisions"
 msgid "another place"
 msgstr "un autre endroit"
 
+#, fuzzy
 msgctxt "Item Table"
 msgid "auto_tracings"
 msgstr ""
@@ -4922,6 +4954,7 @@ msgctxt "Notification"
 msgid "deleted"
 msgstr "supprimé"
 
+#, fuzzy
 msgctxt "Notification"
 msgid "did not execute the self service process"
 msgstr ""
@@ -4945,6 +4978,7 @@ msgctxt "Notification"
 msgid "failed to send email."
 msgstr "a échoué dans l'envoi de l'email."
 
+#, fuzzy
 msgctxt "Notification"
 msgid "has declared a premature release."
 msgstr ""
