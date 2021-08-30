@@ -4,11 +4,13 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.Repo
   alias Hygeia.TenantContext
+  alias Hygeia.TenantContext.Tenant
   alias Surface.Components.Form
   alias Surface.Components.Form.Inputs
   alias Surface.Components.LiveRedirect
@@ -96,36 +98,81 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
           person.address
       end
 
-    unmanaged_tenant =
-      case TenantContext.get_tenant_by_region(%{
-             country: isolation_address.country,
-             subdivision: isolation_address.subdivision
-           }) do
-        nil ->
-          true
+    auto_tracing =
+      case {person.address, detect_tenant(person.address), detect_tenant(isolation_address)} do
+        {_person_address, {true, redidency_tenant},
+         {_isolation_tenant_internal, _isolation_tenant}} ->
+          {:ok, _case} = CaseContext.update_case(case, %{tenant_uuid: redidency_tenant.uuid})
 
-        %TenantContext.Tenant{} = tenant ->
-          {:ok, _case} = CaseContext.update_case(case, %{tenant_uuid: tenant.uuid})
+          {:ok, auto_tracing} =
+            AutoTracingContext.auto_tracing_remove_problem(
+              socket.assigns.auto_tracing,
+              :unmanaged_tenant
+            )
 
-          not TenantContext.Tenant.is_internal_managed_tenant?(tenant)
-      end
+          {:ok, auto_tracing} =
+            AutoTracingContext.auto_tracing_remove_problem(
+              auto_tracing,
+              :residency_outside_country
+            )
 
-    {:ok, auto_tracing} =
-      if unmanaged_tenant do
-        AutoTracingContext.auto_tracing_add_problem(
-          socket.assigns.auto_tracing,
-          :unmanaged_tenant
-        )
-      else
-        AutoTracingContext.auto_tracing_remove_problem(
-          socket.assigns.auto_tracing,
-          :unmanaged_tenant
-        )
+          auto_tracing
+
+        {%Address{country: country}, {false, nil}, {true, isolation_tenant}}
+        when country != "CH" ->
+          {:ok, _case} = CaseContext.update_case(case, %{tenant_uuid: isolation_tenant.uuid})
+
+          {:ok, auto_tracing} =
+            AutoTracingContext.auto_tracing_remove_problem(
+              socket.assigns.auto_tracing,
+              :unmanaged_tenant
+            )
+
+          {:ok, auto_tracing} =
+            AutoTracingContext.auto_tracing_add_problem(
+              auto_tracing,
+              :residency_outside_country
+            )
+
+          auto_tracing
+
+        {_person_address, {false, %Tenant{} = residency_tenant},
+         {_isolation_tenant_internal, _isolation_tenant}} ->
+          {:ok, _case} = CaseContext.update_case(case, %{tenant_uuid: residency_tenant.uuid})
+
+          {:ok, auto_tracing} =
+            AutoTracingContext.auto_tracing_add_problem(
+              socket.assigns.auto_tracing,
+              :unmanaged_tenant
+            )
+
+          {:ok, auto_tracing} =
+            AutoTracingContext.auto_tracing_remove_problem(
+              auto_tracing,
+              :residency_outside_country
+            )
+
+          auto_tracing
+
+        {_person_address, {false, nil}, {_isolation_tenant_internal, _isolation_tenant}} ->
+          {:ok, auto_tracing} =
+            AutoTracingContext.auto_tracing_add_problem(
+              socket.assigns.auto_tracing,
+              :unmanaged_tenant
+            )
+
+          {:ok, auto_tracing} =
+            AutoTracingContext.auto_tracing_remove_problem(
+              auto_tracing,
+              :residency_outside_country
+            )
+
+          auto_tracing
       end
 
     socket = assign(socket, auto_tracing: auto_tracing)
 
-    if unmanaged_tenant do
+    if AutoTracing.has_problem?(auto_tracing, :unmanaged_tenant) do
       {:noreply,
        push_redirect(socket,
          to:
@@ -148,6 +195,19 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
              socket.assigns.auto_tracing.case_uuid
            )
        )}
+    end
+  end
+
+  defp detect_tenant(%Address{country: country, subdivision: subdivision}) do
+    case TenantContext.get_tenant_by_region(%{
+           country: country,
+           subdivision: subdivision
+         }) do
+      nil ->
+        {false, nil}
+
+      %TenantContext.Tenant{} = tenant ->
+        {TenantContext.Tenant.is_internal_managed_tenant?(tenant), tenant}
     end
   end
 end
