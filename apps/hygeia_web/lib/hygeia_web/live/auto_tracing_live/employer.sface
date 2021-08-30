@@ -62,6 +62,7 @@
       :if={Ecto.Changeset.get_field(@changeset, :employed)}
       class="hy-card-grid-2-cols large-grid-gap"
     >
+      <ErrorTag field={:occupations} class="d-block invalid-feedback" />
       <Inputs for={:occupations}>
         <HiddenInput field={:uuid} />
         <InputContext assigns={assigns} :let={form: occupation}>
