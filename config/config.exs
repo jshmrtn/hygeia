@@ -12,7 +12,9 @@ import Config
 # Configure Mix tasks and generators
 config :hygeia,
   ecto_repos: [Hygeia.Repo],
-  phone_number_parsing_origin_country: "CH"
+  phone_number_parsing_origin_country: "CH",
+  vaccine_validity: {1, :year},
+  immune_validity: {6, :month}
 
 config :hygeia, Hygeia.Repo,
   migration_timestamps: [type: :utc_datetime_usec],
