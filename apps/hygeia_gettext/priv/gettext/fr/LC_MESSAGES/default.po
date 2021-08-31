@@ -373,6 +373,10 @@ msgid "Auto Tracing Problem"
 msgstr "Problème d'auto-traçage"
 
 #, fuzzy
+msgid "Auto Tracing active"
+msgstr "Auto Tracing"
+
+#, fuzzy
 msgctxt "Versioning Origin"
 msgid "Automated Case Close Email"
 msgstr "Courriel automatisé de clôture de dossier"
@@ -1169,6 +1173,9 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Directly Close Cases"
 msgstr "Fermer directement les dossiers"
 
+msgid "Disable"
+msgstr ""
+
 #, fuzzy
 msgid "Discard"
 msgstr "Jeter"
@@ -1397,6 +1404,10 @@ msgstr "Employeurs"
 #, fuzzy
 msgid "Employment"
 msgstr "Emploi"
+
+#, fuzzy
+msgid "Enable"
+msgstr "Activer DKIM"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
@@ -2801,6 +2812,10 @@ msgstr "Pas de suivi"
 #, fuzzy
 msgid "No Order"
 msgstr "Pas de commande"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "No Problems detected."
+msgstr ""
 
 #, fuzzy
 msgctxt "Auto Tracing Problem"

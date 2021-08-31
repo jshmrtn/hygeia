@@ -292,6 +292,10 @@ msgstr "Auto Tracing"
 msgid "Auto Tracing Problem"
 msgstr "Auto Tracing Problem"
 
+#, fuzzy
+msgid "Auto Tracing active"
+msgstr "Auto Tracing"
+
 msgctxt "Versioning Origin"
 msgid "Automated Case Close Email"
 msgstr "Automatisches Fall-Abschluss-Email"
@@ -922,6 +926,9 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Directly Close Cases"
 msgstr "Den Fallstatus direkt auf \"Erledigt\" setzen"
 
+msgid "Disable"
+msgstr ""
+
 msgid "Discard"
 msgstr "Verwerfen"
 
@@ -1100,6 +1107,10 @@ msgstr "Arbeitgeber"
 
 msgid "Employment"
 msgstr "Arbeit"
+
+#, fuzzy
+msgid "Enable"
+msgstr "DKIM aktivieren"
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Enable DKIM"
@@ -2194,6 +2205,10 @@ msgstr "Kein erneuter Kontakt"
 
 msgid "No Order"
 msgstr "Nicht verordnet"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "No Problems detected."
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "No Reaction"
