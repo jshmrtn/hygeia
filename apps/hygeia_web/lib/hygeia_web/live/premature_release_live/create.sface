@@ -20,10 +20,12 @@
     <div class="alert alert-info">
       {#case Ecto.Changeset.fetch_field!(@changeset, :reason)}
         {#match :vaccinated}{gettext(
-            "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
+            "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago.",
+            validity: HygeiaCldr.Unit.to_string!(Hygeia.vaccine_validity_cldr())
           )}
         {#match :immune}{gettext(
-            "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
+            "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)",
+            validity: HygeiaCldr.Unit.to_string!(Hygeia.vaccine_validity_cldr())
           )}
         {#match :negative_test}{gettext("I did a COVID test in the last 4 days of quarantine. The result is negative.")}
       {/case}

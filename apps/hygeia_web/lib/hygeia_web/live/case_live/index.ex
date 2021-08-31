@@ -166,13 +166,16 @@ defmodule HygeiaWeb.CaseLive.Index do
           )
 
         {:fully_vaccinated, "true"}, query ->
+          {vaccine_validity_amount, vaccine_validity_unit} = Hygeia.vaccine_validity()
+
           where(
             query,
             [case, person: person],
             fragment("(?->>'done')::boolean", person.vaccination) and
               fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >=
                 2 and
-              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >= ago(6, "month")
+              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >=
+                ago(^vaccine_validity_amount, ^vaccine_validity_unit)
           )
 
         {:vaccination_failures, "false"}, query ->
