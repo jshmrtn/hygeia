@@ -1,13 +1,13 @@
 msgid ""
 msgstr ""
-"Language: de\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Project-Id-Version: Hygeia\n"
-"Language-Team: JOSHMARTIN GmbH https://joshmartin.ch\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"Language: de"
+"Plural-Forms: nplurals=2; plural=(n != 1);"
+"Project-Id-Version: Hygeia"
+"Language-Team: JOSHMARTIN GmbH https://joshmartin.ch"
+"MIME-Version: 1.0"
+"Content-Type: text/plain; charset=UTF-8"
+"Content-Transfer-Encoding: 8bit"
+"X-Poedit-SourceCharset: UTF-8"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr "\"Fusionieren\" und \"Ziel\" dürfen nicht die selben sein"
@@ -18,7 +18,7 @@ msgstr[0] "%{count} neue Benachrichtigung"
 msgstr[1] "%{count} neue Benachrichtigungen"
 
 msgid "%{tenant} - Contact Tracing"
-msgstr ""
+msgstr "%{tenant} – Contact Tracing"
 
 msgid "0-1 contact person"
 msgstr "0-1 Kontaktperson"
@@ -221,6 +221,9 @@ msgstr "Anwenden"
 
 msgid "April"
 msgstr "April"
+
+msgid "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
+msgstr "Sind Sie Schüler oder Lehrer? Haben Sie in den Tagen vor Ihrem positiven Test eine schulische Einrichtung besucht?"
 
 msgid "Are you employed?"
 msgstr "Sind Sie angestellt?"
@@ -558,6 +561,13 @@ msgstr "Kontaktmethoden"
 msgctxt "Possible Index Type"
 msgid "Contact Person"
 msgstr "Kontaktperson"
+
+msgid "Contact Persons"
+msgstr "Kontaktpersonen"
+
+msgctxt "Auto Tracing Step"
+msgid "Contact Persons"
+msgstr "Kontaktpersonen"
 
 msgctxt "Home"
 msgid "Contact Tracing for SARS-CoV-2"
@@ -932,6 +942,9 @@ msgstr "Keine Notiz anhängen"
 
 msgid "Do not create Auto Tracing"
 msgstr "Auto Tracing nicht auslösen"
+
+msgid "Do you have any contact persons to submit?"
+msgstr "Haben Sie Kontaktpersonen anzugeben?"
 
 msgid "Do you have symptoms?"
 msgstr "Haben Sie Symptome?"
@@ -1469,10 +1482,9 @@ msgstr "Wenn Sie eine autorisierte Person des Contact Tracing Teams sind, loggen
 msgid "If you're having trouble recalling what you did since then, here are some examples:"
 msgstr "Wenn Sie Schwierigkeiten haben, sich daran zu erinnern, was Sie seitdem getan haben, hier sind einige Beispiele:"
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "If you've entered the wrong address or forgot to enter the correct isolation location, you can return and correct the address."
-msgstr ""
+msgstr "Wenn Sie eine falsche Adresse eingegeben haben oder vergessen haben, den richtigen Isolationsort einzugeben, können Sie zurückgehen und die Adresse korrigieren."
 
 msgctxt "Possible Index End Reason"
 msgid "Immune"
@@ -1643,10 +1655,9 @@ msgstr "Isolationsperiode Ende"
 msgid "Isolations Per Organisation"
 msgstr "Indexfälle pro Organisation"
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "It seems like we are not responsible for your case."
-msgstr ""
+msgstr "Es scheint, als wären wir nicht für Ihren Fall verantwortlich."
 
 msgid "It's difficult speaking in English. A translator is required"
 msgstr "Es ist schwierig das Gespräch auf Deutsch zu führen. Es braucht eine Übersetzungsperson"
@@ -2114,6 +2125,10 @@ msgstr "Nächster Kontakt vereinbart"
 msgid "No"
 msgstr "Nein"
 
+msgctxt "Auto Tracing Problem"
+msgid "No Contact Method"
+msgstr "Keine Kontaktmethoden"
+
 msgctxt "Index End Reason"
 msgid "No Follow Up"
 msgstr "Kein erneuter Kontakt"
@@ -2547,6 +2562,10 @@ msgctxt "Case Phase Type"
 msgid "Possible Index"
 msgstr "Möglicher Index"
 
+msgctxt "Auto Tracing Problem"
+msgid "Possible Index Submission"
+msgstr "Möglicher-Index Einsendungen"
+
 msgid "Possible Index Submissions"
 msgstr "Möglicher-Index Einsendungen"
 
@@ -2837,10 +2856,9 @@ msgstr "Abgeglichen"
 msgid "Resolved Rows"
 msgstr "Abgeglichene Zeilen"
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "Responsibility"
-msgstr ""
+msgstr "Verantwortung"
 
 msgid "Restaurant"
 msgstr "Restaurant"
@@ -2905,6 +2923,10 @@ msgstr "Schule"
 
 msgid "School / scout camp"
 msgstr "Schul-/Pfadfinderlager"
+
+msgctxt "Auto Tracing Problem"
+msgid "School Related"
+msgstr "Schule"
 
 msgctxt "Test Reason"
 msgid "Screening"
@@ -3412,10 +3434,9 @@ msgstr "Vielen Dank für Ihre Informationen!"
 msgid "Thanks for your help!"
 msgstr "Vielen Dank für Ihre Hilfe!"
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "That depends mostly on your place of residence. We will forward your data to the entity accountable for tracing you."
-msgstr ""
+msgstr "Das hängt vor allem von Ihrem Wohnsitz ab. Wir leiten Ihre Daten an die Stelle weiter, die für das Tracing mit Ihnen zuständig ist."
 
 msgctxt "Phase Create Modal"
 msgid "The automated case close email for the %{type} phase will be disabled."
@@ -3983,6 +4004,9 @@ msgstr "Organisationen"
 msgctxt "Item Table"
 msgid "people"
 msgstr "Personen"
+
+msgid "please add at least one occupation"
+msgstr "bitte fügen Sie mindestens eine Beschäftigung hinzu"
 
 msgctxt "Item Table"
 msgid "positions"
