@@ -4,6 +4,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CommunicationContext
@@ -26,23 +27,30 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
       |> Repo.preload(person: [], hospitalizations: [organisation: []], auto_tracing: [])
 
     socket =
-      if authorized?(case, :auto_tracing, get_auth(socket)) do
-        assign(socket,
-          case: case,
-          case_changeset: %Ecto.Changeset{
-            CaseContext.change_case(case, %{}, %{symptoms_required: true})
-            | action: :validate
-          },
-          auto_tracing: case.auto_tracing
-        )
-      else
-        push_redirect(socket,
-          to:
-            Routes.auth_login_path(socket, :login,
-              person_uuid: case.person_uuid,
-              return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
-            )
-        )
+      cond do
+        !authorized?(case, :auto_tracing, get_auth(socket)) ->
+          push_redirect(socket,
+            to:
+              Routes.auth_login_path(socket, :login,
+                person_uuid: case.person_uuid,
+                return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+              )
+          )
+
+        !AutoTracing.step_available?(case.auto_tracing, :clinical) ->
+          push_redirect(socket,
+            to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+          )
+
+        true ->
+          assign(socket,
+            case: case,
+            case_changeset: %Ecto.Changeset{
+              CaseContext.change_case(case, %{}, %{symptoms_required: true})
+              | action: :validate
+            },
+            auto_tracing: case.auto_tracing
+          )
       end
 
     {:noreply, socket}
