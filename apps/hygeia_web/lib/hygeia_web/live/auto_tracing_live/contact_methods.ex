@@ -8,6 +8,7 @@ defmodule HygeiaWeb.AutoTracingLive.ContactMethods do
   import Ecto.Changeset
 
   alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.Repo
 
@@ -33,25 +34,32 @@ defmodule HygeiaWeb.AutoTracingLive.ContactMethods do
       |> Repo.preload(person: [], auto_tracing: [])
 
     socket =
-      if authorized?(case, :auto_tracing, get_auth(socket)) do
-        step = struct(__MODULE__, get_contact_methods(case.person))
-        changeset = changeset(step)
+      cond do
+        !authorized?(case, :auto_tracing, get_auth(socket)) ->
+          push_redirect(socket,
+            to:
+              Routes.auth_login_path(socket, :login,
+                person_uuid: case.person_uuid,
+                return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+              )
+          )
 
-        assign(socket,
-          case: case,
-          person: case.person,
-          auto_tracing: case.auto_tracing,
-          step: step,
-          changeset: %Ecto.Changeset{changeset | action: :validate}
-        )
-      else
-        push_redirect(socket,
-          to:
-            Routes.auth_login_path(socket, :login,
-              person_uuid: case.person_uuid,
-              return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
-            )
-        )
+        !AutoTracing.step_available?(case.auto_tracing, :contact_methods) ->
+          push_redirect(socket,
+            to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+          )
+
+        true ->
+          step = struct(__MODULE__, get_contact_methods(case.person))
+          changeset = changeset(step)
+
+          assign(socket,
+            case: case,
+            person: case.person,
+            auto_tracing: case.auto_tracing,
+            step: step,
+            changeset: %Ecto.Changeset{changeset | action: :validate}
+          )
       end
 
     {:noreply, socket}

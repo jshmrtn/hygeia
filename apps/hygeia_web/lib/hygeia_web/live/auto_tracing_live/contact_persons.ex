@@ -4,6 +4,7 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.Repo
   alias Surface.Components.Form
@@ -19,26 +20,33 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
     case = load_case(case_uuid)
 
     socket =
-      if authorized?(case, :auto_tracing, get_auth(socket)) do
-        assign(socket,
-          case: case,
-          person: case.person,
-          auto_tracing: case.auto_tracing,
-          auto_tracing_changeset: %Ecto.Changeset{
-            AutoTracingContext.change_auto_tracing(case.auto_tracing, %{}, %{
-              has_contact_persons_required: true
-            })
-            | action: :validate
-          }
-        )
-      else
-        push_redirect(socket,
-          to:
-            Routes.auth_login_path(socket, :login,
-              person_uuid: case.person_uuid,
-              return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
-            )
-        )
+      cond do
+        !authorized?(case, :auto_tracing, get_auth(socket)) ->
+          push_redirect(socket,
+            to:
+              Routes.auth_login_path(socket, :login,
+                person_uuid: case.person_uuid,
+                return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+              )
+          )
+
+        !AutoTracing.step_available?(case.auto_tracing, :contact_persons) ->
+          push_redirect(socket,
+            to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+          )
+
+        true ->
+          assign(socket,
+            case: case,
+            person: case.person,
+            auto_tracing: case.auto_tracing,
+            auto_tracing_changeset: %Ecto.Changeset{
+              AutoTracingContext.change_auto_tracing(case.auto_tracing, %{}, %{
+                has_contact_persons_required: true
+              })
+              | action: :validate
+            }
+          )
       end
 
     {:noreply, socket}
