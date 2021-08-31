@@ -59,13 +59,17 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
           },
           %{has_contact_persons_required: true}
         )
-        | action: :update
+        | action: :validate
       })
 
     {:ok, _} =
-      AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing_changeset, %{}, %{
-        has_contact_persons_required: true
-      })
+      AutoTracingContext.update_auto_tracing(
+        %Ecto.Changeset{socket.assigns.auto_tracing_changeset | action: nil},
+        %{},
+        %{
+          has_contact_persons_required: true
+        }
+      )
 
     {:noreply, socket}
   end
@@ -93,9 +97,13 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
   @impl Phoenix.LiveView
   def handle_event("advance", _params, socket) do
     {:ok, auto_tracing} =
-      AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing_changeset, %{}, %{
-        has_contact_persons_required: true
-      })
+      AutoTracingContext.update_auto_tracing(
+        %Ecto.Changeset{socket.assigns.auto_tracing_changeset | action: nil},
+        %{},
+        %{
+          has_contact_persons_required: true
+        }
+      )
 
     {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :contact_persons)
 
