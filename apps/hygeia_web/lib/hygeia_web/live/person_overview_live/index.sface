@@ -75,13 +75,13 @@
       <LiveRedirect
         class="btn btn-lg btn-primary"
         to={Routes.auto_tracing_auto_tracing_path(@socket, :auto_tracing, @active_case)}
+        :if={not is_nil(@active_case.auto_tracing)}
       >
-        {#case @active_case.auto_tracing}
-          {#match %AutoTracing{last_completed_step: :transmission}}
-            {gettext("Correct Data")}
-          {#match _other}
-            {gettext("Complete Data")}
-        {/case}
+        {#if AutoTracing.completed?(@active_case.auto_tracing)}
+          {gettext("Correct Data")}
+        {#else}
+          {gettext("Complete Data")}
+        {/if}
       </LiveRedirect>
     </div>
 

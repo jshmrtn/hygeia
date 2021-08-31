@@ -206,13 +206,15 @@ defmodule HygeiaWeb.RowLive.Apply do
     end)
   end
 
-  def handle_event(
-        "change_auto_tracing",
-        %{"change_auto_tracing" => %{"create" => create, "index" => index}} = _params,
-        socket
-      ) do
+  def handle_event("enable_auto_tracing", %{"index" => index} = _params, socket) do
     patch_action_plan(socket, index, fn %Action.CreateAutoTracing{} = action ->
-      %Action.CreateAutoTracing{action | action: :append, create: String.to_existing_atom(create)}
+      %Action.CreateAutoTracing{action | action: :create}
+    end)
+  end
+
+  def handle_event("disable_auto_tracing", %{"index" => index} = _params, socket) do
+    patch_action_plan(socket, index, fn %Action.CreateAutoTracing{} = action ->
+      %Action.CreateAutoTracing{action | action: :skip}
     end)
   end
 
@@ -224,7 +226,7 @@ defmodule HygeiaWeb.RowLive.Apply do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], tenant: [], tests: [], hospitalizations: [])
+      |> Repo.preload(person: [], tenant: [], tests: [], hospitalizations: [], auto_tracing: [])
 
     unless authorized?(case, :details, get_auth(socket)) do
       raise "unauthorized"

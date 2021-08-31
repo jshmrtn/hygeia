@@ -4,8 +4,7 @@ defmodule Hygeia.ImportContext.Planner.Action.CreateAutoTracing do
   """
 
   @type t :: %__MODULE__{
-          action: :append | :skip,
-          create: boolean
+          action: :create | :skip
         }
 
   defstruct [:action, :create]
@@ -17,14 +16,14 @@ defmodule Hygeia.ImportContext.Planner.Action.CreateAutoTracing do
     def execute(%CreateAutoTracing{action: :skip}, _preceding_results, _row), do: {:ok, %{}}
 
     def execute(
-          %CreateAutoTracing{action: :append, create: create},
+          %CreateAutoTracing{action: :create},
           _preceding_results,
           _row
         ),
         do:
           {:ok,
            %{
-             create_auto_tracing: create
+             create_auto_tracing: true
            }}
   end
 end

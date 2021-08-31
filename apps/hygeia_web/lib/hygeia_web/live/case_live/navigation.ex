@@ -3,6 +3,7 @@ defmodule HygeiaWeb.CaseLive.Navigation do
 
   use HygeiaWeb, :surface_live_component
 
+  alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
@@ -93,10 +94,14 @@ defmodule HygeiaWeb.CaseLive.Navigation do
   end
 
   def handle_event("open_sms_modal", params, socket) do
+    maybe_create_auto_tracing(socket.assigns.case, params["create_auto_tracing"])
+
     {:noreply, assign(socket, sms_modal: params)}
   end
 
   def handle_event("open_email_modal", params, socket) do
+    maybe_create_auto_tracing(socket.assigns.case, params["create_auto_tracing"])
+
     {:noreply, assign(socket, email_modal: params)}
   end
 
@@ -123,4 +128,14 @@ defmodule HygeiaWeb.CaseLive.Navigation do
   defp has_index_phase?(case) do
     Enum.any?(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1))
   end
+
+  defp maybe_create_auto_tracing(case, enable)
+
+  defp maybe_create_auto_tracing(case, "true") do
+    {:ok, _auto_tracing} = AutoTracingContext.create_auto_tracing(case)
+
+    :ok
+  end
+
+  defp maybe_create_auto_tracing(_case, _enable), do: :ok
 end

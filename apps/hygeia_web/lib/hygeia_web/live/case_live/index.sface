@@ -149,12 +149,28 @@
                 </FieldContext>
               </Field>
 
-              <!-- <Field name="auto_tracing_problem" class="form-group">
-                <Label class="checkbox-label">
-                  <Checkbox />
-                  {gettext("Auto Tracing Problem")}
-                </Label>
-              </Field> -->
+              <div class="form-group">
+                <label class="d-block">{gettext("Auto Tracing active")}</label>
+                <Field name="auto_tracing_active" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="" />
+                    {gettext("Any")}
+                  </label>
+                </Field>
+                <Field name="auto_tracing_active" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value />
+                    {gettext("Yes")}
+                  </label>
+                </Field>
+                <Field name="auto_tracing_active" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value={false} />
+                    {gettext("False")}
+                  </label>
+                </Field>
+              </div>
+
               <div class="form-group">
                 <label class="d-block">{gettext("Auto Tracing Problem")}</label>
                 <label :for={{name, key} <- AutoTracing.Problem.map()} class="d-block checkbox-label">

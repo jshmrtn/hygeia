@@ -374,26 +374,33 @@
               <span :if={action.action == :skip}>
                 {gettext("Do not create Auto Tracing")}
               </span>
-              <span :if={action.action == :append}>
+              <span :if={action.action == :create}>
                 {gettext("Create Auto Tracing")}
               </span>
             </div>
           </summary>
 
-          <Form
-            for={%{create: action.create}}
-            change="change_auto_tracing"
-            opts={autocomplete: "off", id: "auto_tracing-form", class: "card-body container"}
-            as={:change_auto_tracing}
-          >
-            <HiddenInput field={:index} value={index} />
-            <Field name={:create} class="form-check">
-              <label class="checkbox-label">
-                <Checkbox class="form-check-input" unchecked_value={false} />
-                {gettext("Create")}
-              </label>
-            </Field>
-          </Form>
+          <div class="card-body container">
+            <button
+              class="btn btn-primary"
+              :on-click="enable_auto_tracing"
+              phx-value-index={index}
+              phx-disable-with={gettext("Saving...")}
+              :if={action.action == :skip}
+            >
+              {gettext("Enable")}
+            </button>
+
+            <button
+              class="btn btn-danger"
+              :on-click="disable_auto_tracing"
+              phx-value-index={index}
+              phx-disable-with={gettext("Saving...")}
+              :if={action.action == :create}
+            >
+              {gettext("Disable")}
+            </button>
+          </div>
         {/if}
         {#if match?(%Action.PatchAssignee{}, action)}
           <summary class="card-header">

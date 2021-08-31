@@ -182,6 +182,10 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     end
   end
 
+  @spec completed?(auto_tracing :: t) :: boolean
+  def completed?(%__MODULE__{} = auto_tracing),
+    do: step_completed?(auto_tracing, :contact_persons)
+
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.Authorization.Resource
     alias Hygeia.AutoTracingContext.AutoTracing

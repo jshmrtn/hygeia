@@ -6,6 +6,8 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
 
   import HygeiaGettext
 
+  alias Hygeia.AutoTracingContext.AutoTracing
+  alias Hygeia.CaseContext.Case
   alias Hygeia.ImportContext.Planner
   alias Hygeia.ImportContext.Planner.Action.CreateAutoTracing
   alias Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11
@@ -142,8 +144,23 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
            preceeding_action_plan :: [Planner.Action.t()] ->
              {Planner.certainty(), Planner.Action.t()})
   defp create_auto_tracing do
-    fn %Row{}, _params, _preceeding_steps ->
-      {:certain, %CreateAutoTracing{action: :append, create: true}}
+    fn %Row{}, _params, preceeding_steps ->
+      {_certainty,
+       %Planner.Action.SelectCase{case: case, suppress_quarantine: suppress_quarantine}} =
+        Enum.find(preceeding_steps, &match?({_certainty, %Planner.Action.SelectCase{}}, &1))
+
+      {_certainty, %Planner.Action.PatchPhases{action: patch_phase_action}} =
+        Enum.find(preceeding_steps, &match?({_certainty, %Planner.Action.PatchPhases{}}, &1))
+
+      action =
+        cond do
+          suppress_quarantine -> :skip
+          patch_phase_action == :skip -> :skip
+          match?(%Case{auto_tracing: %AutoTracing{}}, case) -> :skip
+          true -> :create
+        end
+
+      {:certain, %CreateAutoTracing{action: action}}
     end
   end
 end

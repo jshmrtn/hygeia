@@ -656,8 +656,10 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   end
 
   defp preload_case(case),
-    do: Repo.preload(case, person: [], tenant: [], tests: [], hospitalizations: [])
+    do:
+      Repo.preload(case, person: [], tenant: [], tests: [], hospitalizations: [], auto_tracing: [])
 
   defp preload_person(person),
-    do: Repo.preload(person, cases: [tenant: [], tests: [], hospitalizations: []])
+    do:
+      Repo.preload(person, cases: [tenant: [], tests: [], hospitalizations: [], auto_tracing: []])
 end
