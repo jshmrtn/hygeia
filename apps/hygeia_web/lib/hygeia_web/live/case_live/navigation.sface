@@ -157,7 +157,10 @@
             else: ""}
         >
           <a
-            class={"dropdown-item", disabled: not CaseContext.auto_tracing_open?(@case)}
+            class={
+              "dropdown-item",
+              disabled: match?(%AutoTracing{last_completed_step: :contact_persons}, @case.auto_tracing)
+            }
             href="#"
             :on-click="open_sms_modal"
             phx-value-message={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_sms(@case)}
@@ -169,7 +172,10 @@
             {gettext("Send SMS Auto Tracing Invitation")}
           </a>
           <a
-            class={"dropdown-item", disabled: not CaseContext.auto_tracing_open?(@case)}
+            class={
+              "dropdown-item",
+              disabled: match?(%AutoTracing{last_completed_step: :contact_persons}, @case.auto_tracing)
+            }
             href="#"
             :on-click="open_email_modal"
             phx-value-subject={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_subject(@case)}

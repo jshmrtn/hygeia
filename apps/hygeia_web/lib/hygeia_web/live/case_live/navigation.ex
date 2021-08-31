@@ -3,6 +3,7 @@ defmodule HygeiaWeb.CaseLive.Navigation do
 
   use HygeiaWeb, :surface_live_component
 
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
