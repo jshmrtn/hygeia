@@ -69,7 +69,7 @@ defmodule Hygeia.Umbrella.MixProject do
       {:jason, "~> 1.1"},
       {:hackney, "~> 1.8"},
       # TODO: Remove when issue in apps/hygeia_gettext/mix.exs is solved
-      {:gettext, "~> 0.13", github: "jshmrtn/gettext", branch: "keep_flags", override: true}
+      {:gettext, "~> 0.13", github: "elixir-gettext/gettext", branch: "master", override: true}
     ]
   end
 
