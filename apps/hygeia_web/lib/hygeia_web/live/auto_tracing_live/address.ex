@@ -209,6 +209,8 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
     end
   end
 
+  defp detect_tenant(nil), do: {false, nil}
+
   defp detect_tenant(%Address{country: country, subdivision: subdivision}) do
     case TenantContext.get_tenant_by_region(%{
            country: country,
