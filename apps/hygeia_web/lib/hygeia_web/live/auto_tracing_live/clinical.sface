@@ -1,10 +1,15 @@
 <div id="step_clinical" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
 
-  <Form for={@case_changeset} change="validate" submit="save" class="mb-5">
+  <Form
+    for={@case_changeset}
+    change="validate"
+    submit="save"
+    class={"mb-5", "p-2 rounded-3 border border-2 border-danger": not @case_changeset.valid?}
+  >
     <div class="row gx-7">
       <div class="col-6">
-        <ErrorTag class="d-block invalid-feedback" field={:clinical} />
+        <ErrorTag class="d-block p-1 alert alert-danger" field={:clinical} />
         <Inputs for={:clinical}>
           <div class="mb-5">
             <InputContext assigns={assigns} :let={form: form}>

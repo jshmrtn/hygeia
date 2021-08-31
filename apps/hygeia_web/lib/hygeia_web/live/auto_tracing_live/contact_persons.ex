@@ -24,7 +24,12 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
           case: case,
           person: case.person,
           auto_tracing: case.auto_tracing,
-          auto_tracing_changeset: AutoTracingContext.change_auto_tracing(case.auto_tracing)
+          auto_tracing_changeset: %Ecto.Changeset{
+            AutoTracingContext.change_auto_tracing(case.auto_tracing, %{}, %{
+              has_contact_persons_required: true
+            })
+            | action: :validate
+          }
         )
       else
         push_redirect(socket,
@@ -47,13 +52,20 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
       ) do
     socket =
       assign(socket, :auto_tracing_changeset, %Ecto.Changeset{
-        AutoTracingContext.change_auto_tracing(socket.assigns.auto_tracing, %{
-          has_contact_persons: has_contact_persons
-        })
+        AutoTracingContext.change_auto_tracing(
+          socket.assigns.auto_tracing,
+          %{
+            has_contact_persons: has_contact_persons
+          },
+          %{has_contact_persons_required: true}
+        )
         | action: :update
       })
 
-    {:ok, _} = AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing_changeset)
+    {:ok, _} =
+      AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing_changeset, %{}, %{
+        has_contact_persons_required: true
+      })
 
     {:noreply, socket}
   end
@@ -81,7 +93,9 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
   @impl Phoenix.LiveView
   def handle_event("advance", _params, socket) do
     {:ok, auto_tracing} =
-      AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing_changeset)
+      AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing_changeset, %{}, %{
+        has_contact_persons_required: true
+      })
 
     {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :contact_persons)
 
