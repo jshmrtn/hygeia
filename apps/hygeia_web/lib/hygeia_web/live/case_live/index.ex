@@ -149,6 +149,9 @@ defmodule HygeiaWeb.CaseLive.Index do
     {cursor_fields, query} = sort_params(socket)
     user_not_assigned = Atom.to_string(:user_not_assigned)
 
+    {vaccine_validity_amount, vaccine_validity_unit} = Hygeia.vaccine_validity()
+    vaccine_validity_unit = Atom.to_string(vaccine_validity_unit)
+
     %Paginator.Page{entries: entries, metadata: metadata} =
       socket.assigns.filters
       |> Enum.map(fn {key, value} ->
@@ -166,8 +169,6 @@ defmodule HygeiaWeb.CaseLive.Index do
           )
 
         {:fully_vaccinated, "true"}, query ->
-          {vaccine_validity_amount, vaccine_validity_unit} = Hygeia.vaccine_validity()
-
           where(
             query,
             [case, person: person],
@@ -188,7 +189,8 @@ defmodule HygeiaWeb.CaseLive.Index do
             fragment("(?->>'done')::boolean", person.vaccination) and
               fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >=
                 2 and
-              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >= ago(6, "month") and
+              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >=
+                ago(^vaccine_validity_amount, ^vaccine_validity_unit) and
               case.inserted_at >= fragment("(?->'jab_dates'->>-1)::date", person.vaccination)
           )
 
