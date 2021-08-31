@@ -233,6 +233,9 @@ msgstr ""
 msgid "April"
 msgstr ""
 
+msgid "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
+msgstr ""
+
 msgid "Are you employed?"
 msgstr ""
 
@@ -570,6 +573,13 @@ msgctxt "Possible Index Type"
 msgid "Contact Person"
 msgstr ""
 
+msgid "Contact Persons"
+msgstr ""
+
+msgctxt "Auto Tracing Step"
+msgid "Contact Persons"
+msgstr ""
+
 msgctxt "Home"
 msgid "Contact Tracing for SARS-CoV-2"
 msgstr ""
@@ -609,7 +619,6 @@ msgstr ""
 msgid "Correct address"
 msgstr ""
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "Correct address"
 msgstr ""
@@ -943,6 +952,9 @@ msgid "Do not append Note"
 msgstr ""
 
 msgid "Do not create Auto Tracing"
+msgstr ""
+
+msgid "Do you have any contact persons to submit?"
 msgstr ""
 
 msgid "Do you have symptoms?"
@@ -1481,7 +1493,6 @@ msgstr ""
 msgid "If you're having trouble recalling what you did since then, here are some examples:"
 msgstr ""
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "If you've entered the wrong address or forgot to enter the correct isolation location, you can return and correct the address."
 msgstr ""
@@ -1621,7 +1632,6 @@ msgstr ""
 msgid "Is the Swiss CovidApp installed / in operation on your smartphone?"
 msgstr ""
 
-#, elixir-format
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
 msgstr ""
 
@@ -1656,7 +1666,6 @@ msgstr ""
 msgid "Isolations Per Organisation"
 msgstr ""
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "It seems like we are not responsible for your case."
 msgstr ""
@@ -2127,6 +2136,10 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+msgctxt "Auto Tracing Problem"
+msgid "No Contact Method"
+msgstr ""
+
 msgctxt "Index End Reason"
 msgid "No Follow Up"
 msgstr ""
@@ -2560,6 +2573,10 @@ msgctxt "Case Phase Type"
 msgid "Possible Index"
 msgstr ""
 
+msgctxt "Auto Tracing Problem"
+msgid "Possible Index Submission"
+msgstr ""
+
 msgid "Possible Index Submissions"
 msgstr ""
 
@@ -2850,7 +2867,6 @@ msgstr ""
 msgid "Resolved Rows"
 msgstr ""
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "Responsibility"
 msgstr ""
@@ -2917,6 +2933,10 @@ msgid "School"
 msgstr ""
 
 msgid "School / scout camp"
+msgstr ""
+
+msgctxt "Auto Tracing Problem"
+msgid "School Related"
 msgstr ""
 
 msgctxt "Test Reason"
@@ -3031,7 +3051,6 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a Covid App Code to the person."
 msgstr ""
 
-#, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a SwissCovid App Code to the person."
 msgstr ""
@@ -3244,17 +3263,14 @@ msgstr ""
 msgid "Swiss CovidApp"
 msgstr ""
 
-#, elixir-format
 msgctxt "Auto Tracing Problem"
 msgid "SwissCovid App"
 msgstr ""
 
-#, elixir-format
 msgctxt "Auto Tracing Step"
 msgid "SwissCovid App"
 msgstr ""
 
-#, elixir-format
 msgid "SwissCovid App"
 msgstr ""
 
@@ -3428,7 +3444,6 @@ msgstr ""
 msgid "Thanks for your help!"
 msgstr ""
 
-#, elixir-format
 msgctxt "Auto Tracing Exit"
 msgid "That depends mostly on your place of residence. We will forward your data to the entity accountable for tracing you."
 msgstr ""
@@ -3998,6 +4013,9 @@ msgstr ""
 
 msgctxt "Item Table"
 msgid "people"
+msgstr ""
+
+msgid "please add at least one occupation"
 msgstr ""
 
 msgctxt "Item Table"

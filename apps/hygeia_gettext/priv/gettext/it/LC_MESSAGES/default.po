@@ -1,23 +1,25 @@
 msgid ""
 msgstr ""
-"Language: it\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Project-Id-Version: Hygeia\n"
-"Language-Team: JOSHMARTIN GmbH https://joshmartin.ch\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"Language: it"
+"Plural-Forms: nplurals=2; plural=(n != 1);"
+"Project-Id-Version: Hygeia"
+"Language-Team: JOSHMARTIN GmbH https://joshmartin.ch"
+"MIME-Version: 1.0"
+"Content-Type: text/plain; charset=UTF-8"
+"Content-Transfer-Encoding: 8bit"
+"X-Poedit-SourceCharset: UTF-8"
 
 #, fuzzy
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr "\"Merge\" e \"Into\" non devono essere la stessa cosa"
 
+#, fuzzy
 msgid "%{count} New Notification"
 msgid_plural "%{count} New Notifications"
 msgstr[0] "%{count} Nuova notifica"
 msgstr[1] "%{count} Nuove notifiche"
 
+#, fuzzy
 msgid "%{tenant} - Contact Tracing"
 msgstr ""
 
@@ -283,6 +285,9 @@ msgstr "Applica"
 #, fuzzy
 msgid "April"
 msgstr "Aprile"
+
+msgid "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
+msgstr ""
 
 #, fuzzy
 msgid "Are you employed?"
@@ -722,6 +727,13 @@ msgctxt "Possible Index Type"
 msgid "Contact Person"
 msgstr "Persona di contatto"
 
+msgid "Contact Persons"
+msgstr "Persone di contatto"
+
+msgctxt "Auto Tracing Step"
+msgid "Contact Persons"
+msgstr "Persone di contatto"
+
 #, fuzzy
 msgctxt "Home"
 msgid "Contact Tracing for SARS-CoV-2"
@@ -1102,6 +1114,11 @@ msgid "Details"
 msgstr "Dettagli"
 
 #, fuzzy
+msgctxt "Versioning Origin"
+msgid "Detect No Reaction Cases"
+msgstr ""
+
+#, fuzzy
 msgid "Did you get infected from a specific person? If so please enter the details."
 msgstr ""
 
@@ -1197,6 +1214,9 @@ msgstr "Non aggiungere Nota"
 
 #, fuzzy
 msgid "Do not create Auto Tracing"
+msgstr ""
+
+msgid "Do you have any contact persons to submit?"
 msgstr ""
 
 #, fuzzy
@@ -1889,7 +1909,7 @@ msgstr "Se sei una persona autorizzata del team di ricerca dei contatti, accedi 
 msgid "If you're having trouble recalling what you did since then, here are some examples:"
 msgstr "Se hai problemi a ricordare cosa hai fatto da allora, ecco alcuni esempi:"
 
-#, elixir-format
+#, fuzzy
 msgctxt "Auto Tracing Exit"
 msgid "If you've entered the wrong address or forgot to enter the correct isolation location, you can return and correct the address."
 msgstr ""
@@ -2114,7 +2134,7 @@ msgstr "Fine del periodo di isolamento"
 msgid "Isolations Per Organisation"
 msgstr "Isolamenti per organizzazione"
 
-#, elixir-format
+#, fuzzy
 msgctxt "Auto Tracing Exit"
 msgid "It seems like we are not responsible for your case."
 msgstr ""
@@ -2723,6 +2743,10 @@ msgstr "Prossimo contatto concordato"
 msgid "No"
 msgstr "No"
 
+msgctxt "Auto Tracing Problem"
+msgid "No Contact Method"
+msgstr "Nessun metodo di contatto"
+
 #, fuzzy
 msgctxt "Index End Reason"
 msgid "No Follow Up"
@@ -2736,6 +2760,11 @@ msgstr "Nessun follow-up"
 #, fuzzy
 msgid "No Order"
 msgstr "Nessun ordine"
+
+#, fuzzy
+msgctxt "Auto Tracing Problem"
+msgid "No Reaction"
+msgstr ""
 
 #, fuzzy
 msgid "No Symptoms"
@@ -3276,6 +3305,10 @@ msgctxt "Case Phase Type"
 msgid "Possible Index"
 msgstr "Indice possibile"
 
+msgctxt "Auto Tracing Problem"
+msgid "Possible Index Submission"
+msgstr "Possibili invii all'indice"
+
 #, fuzzy
 msgid "Possible Index Submissions"
 msgstr "Possibili invii all'indice"
@@ -3634,6 +3667,7 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Residency Address"
 msgstr ""
 
+#, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "Residency Outside Country"
 msgstr ""
@@ -3647,7 +3681,7 @@ msgstr "Risolto"
 msgid "Resolved Rows"
 msgstr "Righe risolte"
 
-#, elixir-format
+#, fuzzy
 msgctxt "Auto Tracing Exit"
 msgid "Responsibility"
 msgstr ""
@@ -3733,6 +3767,10 @@ msgstr "Scuola"
 #, fuzzy
 msgid "School / scout camp"
 msgstr "Campo scuola/scout"
+
+msgctxt "Auto Tracing Problem"
+msgid "School Related"
+msgstr "Scuola"
 
 #, fuzzy
 msgctxt "Test Reason"
@@ -3952,6 +3990,7 @@ msgstr "Mostra le statistiche"
 msgid "Show all"
 msgstr "Mostra tutto"
 
+#, fuzzy
 msgid "Showing %{count} of %{total} entries"
 msgstr "Mostra %{count} di %{total} voci"
 
@@ -4385,7 +4424,7 @@ msgstr ""
 msgid "Thanks for your help!"
 msgstr ""
 
-#, elixir-format
+#, fuzzy
 msgctxt "Auto Tracing Exit"
 msgid "That depends mostly on your place of residence. We will forward your data to the entity accountable for tracing you."
 msgstr ""
@@ -5120,6 +5159,9 @@ msgstr "organizzazioni"
 msgctxt "Item Table"
 msgid "people"
 msgstr "persone"
+
+msgid "please add at least one occupation"
+msgstr ""
 
 #, fuzzy
 msgctxt "Item Table"
