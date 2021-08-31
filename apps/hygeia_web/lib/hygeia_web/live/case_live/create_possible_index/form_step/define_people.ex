@@ -493,7 +493,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   def update_step_data(form_data), do: form_data
 
   @spec valid?(form_data :: map()) :: boolean()
-  def valid?(bindings)
+  def valid?(form_data)
 
   def valid?(%{bindings: bindings}) do
     Enum.reduce(bindings, length(bindings) > 0, fn %{person_changeset: person_changeset}, truth ->

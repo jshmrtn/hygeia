@@ -4,7 +4,7 @@
       for={@search_changeset}
       change="suggest_people"
       submit="new_person_modal"
-      opts={autocomplete: "off", id: "search-people-form", "phx-hook": "BlockNavigation"}
+      opts={autocomplete: "off", id: "search-people-form"}
     >
       <div class="input-group">
         <Field name={:first_name} class="form-group">
@@ -190,8 +190,7 @@
         opts={
           autocomplete: "off",
           id: "create-person-form",
-          class: "component-person-base-data",
-          "phx-hook": "BlockNavigation"
+          class: "component-person-base-data"
         }
       >
         <div class="form-grid">

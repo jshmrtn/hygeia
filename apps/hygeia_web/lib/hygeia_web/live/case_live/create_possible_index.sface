@@ -1,4 +1,4 @@
-<div class="component-case-create-case">
+<div id="create-possible-index" class="component-case-create-case" phx-hook="BlockNavigation">
   <h1 class="container mb-4">{gettext("Create Possible Index Cases")}</h1>
 
   <HiddenInput field={:possible_index_submission_uuid} />

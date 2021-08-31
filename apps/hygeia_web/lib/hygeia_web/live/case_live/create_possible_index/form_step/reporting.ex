@@ -11,6 +11,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
 
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
 
   alias Surface.Components.Form.Checkbox
@@ -260,15 +263,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
   @spec valid?(form_data :: map()) :: boolean()
   def valid?(form_data)
 
-  def valid?(%{bindings: bindings}) do
-    Enum.reduce(bindings, length(bindings) > 0, fn %{
-                                                     person_changeset: person_changeset,
-                                                     case_changeset: case_changeset
-                                                   },
-                                                   truth ->
-      person_changeset.valid? and case_changeset.valid? and truth
-    end)
+  def valid?(form_data) do
+    DefineTransmission.valid?(form_data) and DefinePeople.valid?(form_data) and
+      DefineOptions.valid?(form_data)
   end
-
-  def valid?(_form_data), do: false
 end

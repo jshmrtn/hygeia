@@ -3,7 +3,7 @@
     {#for %{person_changeset: person_cs, case_changeset: case_cs, reporting: reporting} <-
         @form_data.bindings}
       <div class="w-100">
-        <Form for={case_cs} change="validate" opts={autocomplete: "off", "phx-hook": "BlockNavigation"}>
+        <Form for={case_cs} change="validate" opts={autocomplete: "off"}>
           <PersonCard person_changeset={person_cs}>
             <:feature>
               <div class="ml-auto">

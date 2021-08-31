@@ -128,7 +128,8 @@ defmodule HygeiaWeb.CaseLiveTest do
         mobile: mobile,
         email: email
       })
-      |> test_define_people_step(context, %{
+      |> test_define_people_step_create_person_modal(context, %{})
+      |> test_define_people_step_submit_person_modal(context, %{
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
@@ -269,7 +270,6 @@ defmodule HygeiaWeb.CaseLiveTest do
       assert {:ok, view, _html} =
                live(conn, Routes.case_create_possible_index_path(conn, :create))
 
-      type = :travel
       date = Date.add(Date.utc_today(), -5)
       comment = "Simple comment."
 
@@ -293,7 +293,6 @@ defmodule HygeiaWeb.CaseLiveTest do
       view
       |> test_transmission_step(context, %{
         type: :contact_person,
-        # propagator_internal: false,
         date: date,
         comment: comment
       })
@@ -309,13 +308,13 @@ defmodule HygeiaWeb.CaseLiveTest do
         "case" => %{status: case_status}
       })
       |> test_next_button(context, %{to_step: "reporting"})
-      |> test_navigation(context, %{to_step: "transmission"})
+      |> test_navigation(context, %{live_action: :index, to_step: "transmission", path_params: []})
       |> test_transmission_step(context, %{
-        type: type,
+        type: :travel,
         date: date,
         comment: comment
       })
-      |> test_navigation(context, %{to_step: "reporting"})
+      |> test_navigation(context, %{live_action: :index, to_step: "reporting", path_params: []})
       |> test_reporting_step(context)
 
       assert [
@@ -335,7 +334,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                  status: ^case_status,
                  phases: [
                    %Case.Phase{
-                     details: %Case.Phase.PossibleIndex{type: ^type},
+                     details: %Case.Phase.PossibleIndex{type: :travel},
                      quarantine_order: true,
                      start: ^start_date,
                      end: ^end_date
@@ -535,7 +534,8 @@ defmodule HygeiaWeb.CaseLiveTest do
         mobile: mobile,
         email: email
       })
-      |> test_define_people_step(context, %{
+      |> test_define_people_step_create_person_modal(context, %{})
+      |> test_define_people_step_submit_person_modal(context, %{
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
@@ -625,7 +625,8 @@ defmodule HygeiaWeb.CaseLiveTest do
         mobile: mobile,
         email: email
       })
-      |> test_define_people_step(context, %{
+      |> test_define_people_step_create_person_modal(context, %{})
+      |> test_define_people_step_submit_person_modal(context, %{
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
@@ -643,6 +644,233 @@ defmodule HygeiaWeb.CaseLiveTest do
       assert [] = CaseContext.list_cases()
 
       assert [] = CaseContext.list_transmissions()
+    end
+
+    ## IMPORT Test cases
+
+    test "import (from Transmissions set propagator_internal and propagator_case) - type: contact_person, new person, new case, status: done",
+         %{conn: conn, user: user} = context do
+      type = :contact_person
+      date = Date.add(Date.utc_today(), -5)
+      comment = "Simple comment."
+
+      first_name_propagator = "Karl"
+      last_name_propagator = "Muster"
+
+      first_name_person = "John"
+      last_name_person = "Doe"
+      mobile = "+41 78 724 57 90"
+      email = "john.doe@gmail.com"
+
+      index = 0
+
+      case_status = :done
+
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      propagator_case =
+        tenant
+        |> person_fixture(%{
+          first_name: first_name_propagator,
+          last_name: last_name_propagator,
+          address: %{
+            address: "Teststrasse 2"
+          }
+        })
+        |> case_fixture()
+
+      assert {:ok, view, _html} =
+               live(
+                 conn,
+                 Routes.case_create_possible_index_path(conn, :create,
+                   propagator_internal: true,
+                   propagator_case_uuid: propagator_case.uuid
+                 )
+               )
+
+      view
+      |> test_transmission_step(context, %{
+        type: type,
+        date: date,
+        comment: comment
+      })
+      |> test_next_button(context, %{to_step: "people"})
+      |> test_define_people_step_search(context, %{
+        first_name: first_name_person,
+        last_name: last_name_person,
+        mobile: mobile,
+        email: email
+      })
+      |> test_define_people_step_create_person_modal(context, %{})
+      |> test_define_people_step_submit_person_modal(context, %{
+        tenant_uuid: tenant.uuid,
+        address: %{
+          address: "Teststrasse 2"
+        }
+      })
+      |> test_next_button(context, %{to_step: "options"})
+      |> test_define_options_step(context, %{
+        "index" => index,
+        "case" => %{status: case_status}
+      })
+      |> test_next_button(context, %{to_step: "reporting"})
+      |> test_reporting_step(context)
+
+      assert [
+               %Person{
+                 uuid: propagator_uuid,
+                 first_name: ^first_name_propagator,
+                 last_name: ^last_name_propagator
+               },
+               %Person{
+                 uuid: person_uuid,
+                 first_name: ^first_name_person,
+                 last_name: ^last_name_person,
+                 contact_methods: [
+                   %{type: :mobile, value: ^mobile},
+                   %{type: :email, value: ^email}
+                 ]
+               }
+             ] = CaseContext.list_people()
+
+      {start_date, end_date} = Service.phase_dates(date)
+
+      assert [
+               %Case{
+                 uuid: propagator_case_uuid,
+                 person_uuid: ^propagator_uuid
+               },
+               %Case{
+                 uuid: case_uuid,
+                 person_uuid: ^person_uuid,
+                 status: ^case_status,
+                 phases: [
+                   %Case.Phase{
+                     details: %Case.Phase.PossibleIndex{type: ^type},
+                     quarantine_order: true,
+                     start: ^start_date,
+                     end: ^end_date
+                   }
+                 ]
+               }
+             ] = CaseContext.list_cases()
+
+      assert [
+               %Transmission{
+                 comment: ^comment,
+                 date: ^date,
+                 recipient_internal: true,
+                 recipient_case_uuid: ^case_uuid,
+                 propagator_case_uuid: ^propagator_case_uuid,
+                 propagator_internal: true
+               }
+             ] = CaseContext.list_transmissions()
+    end
+
+    test "import (from possible_index_submission_uuid) - type: contact_person, new person, new case, status: done",
+         %{conn: conn, user: user} = context do
+      date = ~D[2020-01-25]
+
+      first_name_propagator = "Karl"
+      last_name_propagator = "Muster"
+
+      first_name_person = "Corinne"
+      last_name_person = "Weber"
+      mobile = "+41 78 898 04 51"
+      landline = "+41 52 233 06 89"
+      email = "corinne.weber@gmx.ch"
+
+      index = 0
+
+      case_status = :done
+
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      propagator_case =
+        tenant
+        |> person_fixture(%{
+          first_name: first_name_propagator,
+          last_name: last_name_propagator,
+          address: %{
+            address: "Teststrasse 2"
+          }
+        })
+        |> case_fixture()
+
+      possible_index_submission = possible_index_submission_fixture(propagator_case)
+
+      assert {:ok, view, _html} =
+               live(
+                 conn,
+                 Routes.case_create_possible_index_path(conn, :create,
+                   possible_index_submission_uuid: possible_index_submission.uuid
+                 )
+               )
+
+      view
+      |> test_transmission_step(context, %{})
+      |> test_next_button(context, %{to_step: "people"})
+      |> test_navigation(context, %{live_action: :edit, to_step: "people", path_params: index})
+      |> test_define_people_step_submit_person_modal(context, %{
+        tenant_uuid: tenant.uuid
+      })
+      |> test_next_button(context, %{to_step: "options"})
+      |> test_define_options_step(context, %{
+        "index" => index,
+        "case" => %{status: case_status}
+      })
+      |> test_next_button(context, %{to_step: "reporting"})
+      |> test_reporting_step(context)
+
+      assert [
+               %Person{
+                 uuid: propagator_uuid,
+                 first_name: ^first_name_propagator,
+                 last_name: ^last_name_propagator
+               },
+               %Person{
+                 uuid: person_uuid,
+                 first_name: ^first_name_person,
+                 last_name: ^last_name_person,
+                 contact_methods: [
+                   %{type: :mobile, value: ^mobile},
+                   %{type: :landline, value: ^landline},
+                   %{type: :email, value: ^email}
+                 ]
+               }
+             ] = CaseContext.list_people()
+
+      {start_date, end_date} = Service.phase_dates(date)
+
+      assert [
+               %Case{
+                 uuid: propagator_case_uuid,
+                 person_uuid: ^propagator_uuid
+               },
+               %Case{
+                 uuid: case_uuid,
+                 person_uuid: ^person_uuid,
+                 status: ^case_status,
+                 phases: [
+                   %Case.Phase{
+                     details: %Case.Phase.PossibleIndex{type: :contact_person},
+                     quarantine_order: true,
+                     start: ^start_date,
+                     end: ^end_date
+                   }
+                 ]
+               }
+             ] = CaseContext.list_cases()
+
+      assert [
+               %Transmission{
+                 date: ^date,
+                 recipient_internal: true,
+                 recipient_case_uuid: ^case_uuid,
+                 propagator_case_uuid: ^propagator_case_uuid,
+                 propagator_internal: true
+               }
+             ] = CaseContext.list_transmissions()
     end
   end
 end

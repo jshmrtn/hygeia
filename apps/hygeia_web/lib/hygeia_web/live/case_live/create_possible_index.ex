@@ -151,6 +151,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           end)
 
         socket
+        |> unblock_navigation()
         |> assign(form_data: Map.put(form_data, :bindings, new_bindings))
         |> assign(visited_steps: visit_step([], "summary"))
         |> put_flash(:info, gettext("Cases inserted successfully."))
@@ -177,7 +178,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       |> Map.merge(changed_data)
       |> update_form_data()
 
-    {:noreply, assign(socket, :form_data, updated_data)}
+    {:noreply, socket |> block_navigation() |> assign(:form_data, updated_data)}
   end
 
   def handle_info({:push_patch, path, replace?}, socket) do
@@ -221,9 +222,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
               last_name: last_name,
               sex: sex,
               birth_date: birth_date,
-              mobile: mobile,
-              landline: landline,
-              email: email,
+              contact_methods:
+                []
+                |> append_if(mobile != nil and String.length(mobile) > 0, %{
+                  type: :mobile,
+                  value: mobile
+                })
+                |> append_if(landline != nil and String.length(landline) > 0, %{
+                  type: :landline,
+                  value: landline
+                })
+                |> append_if(email != nil and String.length(email) > 0, %{
+                  type: :email,
+                  value: email
+                }),
               address: Map.from_struct(address)
             }),
           case_changeset: CaseContext.change_case(%Case{})
@@ -261,6 +273,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     else
       save(socket)
     end
+  end
+
+  @spec get_form_steps() :: [FormStep.t()]
+  def get_form_steps do
+    @form_steps
   end
 
   @spec visit_step(visited :: list(String.t()), form_step :: String.t()) :: list()
@@ -313,8 +330,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     end
   end
 
-  @spec get_form_steps() :: [FormStep.t()]
-  def get_form_steps do
-    @form_steps
+  defp block_navigation(socket), do: push_event(socket, "block_navigation", %{})
+
+  defp unblock_navigation(socket), do: push_event(socket, "unblock_navigation", %{})
+
+  defp append_if(list, condition, item) do
+    if condition, do: list ++ [item], else: list
   end
 end

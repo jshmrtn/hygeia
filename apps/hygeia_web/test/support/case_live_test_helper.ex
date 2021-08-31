@@ -46,10 +46,21 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
           LiveViewTest.t()
   def test_navigation(view, context, params)
 
-  def test_navigation(view, %{conn: conn}, %{to_step: to_step}) do
-    assert render_patch(view, Routes.case_create_possible_index_path(conn, :index, to_step))
+  def test_navigation(view, %{conn: conn}, %{
+        live_action: live_action,
+        to_step: to_step,
+        path_params: path_params
+      }) do
+    assert render_patch(
+             view,
+             Routes.case_create_possible_index_path(conn, live_action, to_step, path_params)
+           )
 
-    assert_patch(view, Routes.case_create_possible_index_path(conn, :index, to_step))
+    assert_patch(
+      view,
+      Routes.case_create_possible_index_path(conn, live_action, to_step, path_params)
+    )
+
     view
   end
 
@@ -101,19 +112,32 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
     view
   end
 
-  @spec test_define_people_step(view :: LiveViewTest.t(), context :: map(), params :: map()) ::
+  @spec test_define_people_step_create_person_modal(
+          view :: LiveViewTest.t(),
+          context :: map(),
+          params :: map()
+        ) ::
           LiveViewTest.t()
-  def test_define_people_step(view, context, params)
+  def test_define_people_step_create_person_modal(view, context, params)
 
-  def test_define_people_step(view, %{conn: conn}, params) do
+  def test_define_people_step_create_person_modal(view, %{conn: conn}, params) do
     assert view
            |> element("#search-people-form")
            |> render_submit()
 
     assert_patch(view, Routes.case_create_possible_index_path(conn, :new, "people"))
+    view
+  end
 
-    # Inside the create person modal
+  @spec test_define_people_step_submit_person_modal(
+          view :: LiveViewTest.t(),
+          context :: map(),
+          params :: map()
+        ) ::
+          LiveViewTest.t()
+  def test_define_people_step_submit_person_modal(view, context, params)
 
+  def test_define_people_step_submit_person_modal(view, %{conn: conn}, params) do
     assert view
            |> form("#create-person-form")
            |> render_submit(person: params)

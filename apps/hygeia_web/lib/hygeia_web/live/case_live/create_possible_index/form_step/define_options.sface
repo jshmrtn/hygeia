@@ -6,7 +6,7 @@
         <Form
           for={%{case_cs | action: :validate}}
           change="validate"
-          opts={autocomplete: "off", id: "define-options-form", "phx-hook": "BlockNavigation"}
+          opts={autocomplete: "off", id: "define-options-form"}
         >
           <HiddenInput name="index" value={index} />
           <PersonCard person_changeset={person_cs}>
