@@ -74,27 +74,29 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       |> CaseContext.get_case!()
       |> Repo.preload(person: [affiliations: []], auto_tracing: [])
 
-    propagator_internal =
-      case case.auto_tracing.transmission do
-        %AutoTracing.Transmission{propagator_known: true} -> true
-        _other -> nil
-      end
-
-    auto_tracing =
-      if params["resolve_problem"] do
-        {:ok, auto_tracing} =
-          AutoTracingContext.auto_tracing_resolve_problem(
-            case.auto_tracing,
-            String.to_existing_atom(params["resolve_problem"])
-          )
-
-        auto_tracing
-      else
-        case.auto_tracing
-      end
-
     socket =
-      if authorized?(auto_tracing, :resolve_problems, get_auth(socket)) do
+      if authorized?(case.auto_tracing, :resolve_problems, get_auth(socket)) do
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "auto_tracings:#{case.auto_tracing.uuid}")
+
+        propagator_internal =
+          case case.auto_tracing.transmission do
+            %AutoTracing.Transmission{propagator_known: true} -> true
+            _other -> nil
+          end
+
+        auto_tracing =
+          if params["resolve_problem"] do
+            {:ok, auto_tracing} =
+              AutoTracingContext.auto_tracing_resolve_problem(
+                case.auto_tracing,
+                String.to_existing_atom(params["resolve_problem"])
+              )
+
+            auto_tracing
+          else
+            case.auto_tracing
+          end
+
         assign(socket,
           case: case,
           person: case.person,
@@ -264,4 +266,18 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
 
     {:noreply, assign(socket, person: person, auto_tracing: auto_tracing)}
   end
+
+  @impl Phoenix.LiveView
+  def handle_info({:updated, %AutoTracing{} = auto_tracing, _version}, socket) do
+    {:noreply, assign(socket, auto_tracing: auto_tracing)}
+  end
+
+  def handle_info({:deleted, %AutoTracing{}, _version}, socket) do
+    {:noreply,
+     redirect(socket, to: Routes.case_base_data_path(socket, :show, socket.assigns.case))}
+  end
+
+  def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
+
+  def handle_info(_other, socket), do: {:noreply, socket}
 end
