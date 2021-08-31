@@ -139,6 +139,10 @@ msgstr "Aggiungere riferimenti esterni se non esiste."
 msgid "Add hospitalization"
 msgstr "Aggiungere l'ospedalizzazione"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Add the mobile number or e-mail address to the person data."
+msgstr ""
+
 #, fuzzy
 msgctxt "Phase Create Modal"
 msgid "Additional Changes"
@@ -313,6 +317,18 @@ msgstr "Lavori in un'associazione?"
 msgid "Army, Civil Protection"
 msgstr "Esercito, protezione civile"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case back to the case admininistration."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case back to the case administration."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case to yourself."
+msgstr ""
+
 #, fuzzy
 msgid "Association"
 msgstr "Associazione"
@@ -430,6 +446,14 @@ msgstr "Dolori al corpo"
 msgid "Call"
 msgstr "Chiama"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Call the existing number (if there is one) or send them an e-mail to find out why they did not react."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Call the existing number (if there is one) to get a mobile number or e-mail address."
+msgstr ""
+
 #, fuzzy
 msgctxt "Case Status"
 msgid "Canceled"
@@ -535,6 +559,10 @@ msgstr "Cambiamenti"
 #, fuzzy
 msgid "Check Duplicates"
 msgstr "Controlla i duplicati"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Check and apply all possible index submissions."
+msgstr ""
 
 #, fuzzy
 msgid "Children's home, home for the disabled"
@@ -1805,12 +1833,20 @@ msgid "I did a COVID test in the last 4 days of quarantine. The result is negati
 msgstr "Ho fatto un test COVID negli ultimi 4 giorni di quarantena. Il risultato è negativo."
 
 #, fuzzy
+msgid "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
+msgstr "Ho avuto la COVID negli ultimi sei mesi e sono di nuovo sano. Posso confermare la malattia (certificato Covid, test PCR positivo, conferma dell'isolamento)"
+
+#, fuzzy
 msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
 msgstr "Ho avuto la COVID negli ultimi sei mesi e sono di nuovo sano. Posso confermare la malattia (certificato Covid, test PCR positivo, conferma dell'isolamento)"
 
 #, fuzzy
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
 msgstr "Ho la documentazione ufficiale per terminare la quarantena (vaccinato, immune, test negativo)."
+
+#, fuzzy
+msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago."
+msgstr "Ho ricevuto almeno due vaccinazioni COVID autorizzate in Svizzera e l'ultima è stata somministrata meno di 6 mesi fa."
 
 #, fuzzy
 msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
@@ -1879,6 +1915,10 @@ msgctxt "Elixir.Hygeia.ImportContext.Row Field"
 msgid "Identifiers"
 msgstr "Identificatori"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "If necessary, trace the person while on the phone. If the person is willing to continue in Auto Tracing mode, make a note and assign it back to the case administration."
+msgstr ""
+
 #, fuzzy
 msgid "If there are no known contact methods for the person, a contact method for a close person (relative, roommate, caretaker) can be entered instead."
 msgstr "Se non ci sono metodi di contatto noti per la persona, può essere inserito invece un metodo di contatto per una persona vicina (parente, compagno di stanza, custode)."
@@ -1890,6 +1930,10 @@ msgstr "Se ci sono ricoveri aperti, lo stato non può essere impostato su \"fatt
 #, fuzzy
 msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
 msgstr "Se ci sono fasi senza ordini di quarantena/isolamento decisi e sconosciuti, lo stato non deve essere \"fatto\" / \"annullato\"."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "If there is no number, try to get it from the doctor."
+msgstr ""
 
 #, fuzzy
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
@@ -2055,6 +2099,10 @@ msgstr "Info"
 msgctxt "Home"
 msgid "Info Website"
 msgstr "Info sito web"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Initiate Auto Tracing after getting a contact method."
+msgstr ""
 
 #, fuzzy
 msgid "Input needed"
@@ -2354,6 +2402,14 @@ msgstr "Basso"
 msgctxt "Case Complexity"
 msgid "Low"
 msgstr "Basso"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Make sure all possible index submissions are persisted."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Make sure person is traced correctly."
+msgstr ""
 
 #, fuzzy
 msgid "Male"
@@ -3924,6 +3980,11 @@ msgstr "Invia un codice Covid App alla persona."
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a SwissCovid App Code to the person."
 msgstr "Inviare un codice SwissCovid App alla persona."
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Send the Auto Tracing invitation."
+msgstr "Inviare l'invito al rintracciamento automatico via e-mail"
 
 #, fuzzy
 msgid "Sent at %{date}"

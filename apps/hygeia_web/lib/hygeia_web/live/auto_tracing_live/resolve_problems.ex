@@ -15,6 +15,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.TextInput
+  alias Surface.Components.LiveRedirect
 
   data case, :map
   data auto_tracing, :map

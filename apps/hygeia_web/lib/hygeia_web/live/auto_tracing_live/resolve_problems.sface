@@ -197,32 +197,95 @@
                       </Form>
                     </div>
                   {#match :hospitalization}
-                    <p>{pgettext("Auto Tracing Resolve Problems", "TODO: directions")}</p>
+                    <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
                     <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                       {pgettext("Auto Tracing Resolve Problems", "Done")}
                     </button>
                   {#match :school_related}
-                    <p>{pgettext("Auto Tracing Resolve Problems", "TODO: directions")}</p>
+                    <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
                     <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                       {pgettext("Auto Tracing Resolve Problems", "Done")}
                     </button>
                   {#match :residency_outside_country}
-                    <p>{pgettext("Auto Tracing Resolve Problems", "TODO: directions")}</p>
+                    <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
                     <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                       {pgettext("Auto Tracing Resolve Problems", "Done")}
                     </button>
                   {#match :no_contact_method}
-                    <p>{pgettext("Auto Tracing Resolve Problems", "TODO: directions")}</p>
+                    <p>{pgettext("Auto Tracing Resolve Problems", "Initiate Auto Tracing after getting a contact method.")}</p>
+                    <ul>
+                      <li>
+                        {pgettext("Auto Tracing Resolve Problems", "Assign the case to yourself.")}
+                      </li>
+                      <li>
+                        {pgettext(
+                          "Auto Tracing Resolve Problems",
+                          "Call the existing number (if there is one) to get a mobile number or e-mail address."
+                        )}
+                      </li>
+                      <li>
+                        {pgettext("Auto Tracing Resolve Problems", "If there is no number, try to get it from the doctor.")}
+                      </li>
+                      <li>
+                        {pgettext(
+                          "Auto Tracing Resolve Problems",
+                          "Add the mobile number or e-mail address to the person data."
+                        )}
+                      </li>
+                      <li>
+                        {pgettext("Auto Tracing Resolve Problems", "Send the Auto Tracing invitation.")}
+                      </li>
+                      <li>
+                        {pgettext("Auto Tracing Resolve Problems", "Assign the case back to the case administration.")}
+                      </li>
+                    </ul>
                     <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                       {pgettext("Auto Tracing Resolve Problems", "Done")}
                     </button>
                   {#match :no_reaction}
-                    <p>{pgettext("Auto Tracing Resolve Problems", "TODO: directions")}</p>
+                    <p>{pgettext("Auto Tracing Resolve Problems", "Make sure person is traced correctly.")}</p>
+                    <ul>
+                      <li>
+                        {pgettext("Auto Tracing Resolve Problems", "Assign the case to yourself.")}
+                      </li>
+                      <li>
+                        {pgettext(
+                          "Auto Tracing Resolve Problems",
+                          "Call the existing number (if there is one) or send them an e-mail to find out why they did not react."
+                        )}
+                      </li>
+                      <li>
+                        {pgettext(
+                          "Auto Tracing Resolve Problems",
+                          "If necessary, trace the person while on the phone. If the person is willing to continue in Auto Tracing mode, make a note and assign it back to the case administration."
+                        )}
+                      </li>
+                    </ul>
                     <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                       {pgettext("Auto Tracing Resolve Problems", "Done")}
                     </button>
                   {#match :possible_index_submission}
-                    <p>{pgettext("Auto Tracing Resolve Problems", "TODO: directions")}</p>
+                    <p>{pgettext(
+                        "Auto Tracing Resolve Problems",
+                        "Make sure all possible index submissions are persisted."
+                      )}</p>
+                    <ul>
+                      <li>
+                        {pgettext("Auto Tracing Resolve Problems", "Assign the case to yourself.")}
+                      </li>
+                      <li>
+                        {pgettext("Auto Tracing Resolve Problems", "Check and apply all possible index submissions.")}
+                      </li>
+                      <li>
+                        {pgettext("Auto Tracing Resolve Problems", "Assign the case back to the case admininistration.")}
+                      </li>
+                    </ul>
+                    <LiveRedirect
+                      class="btn btn-primary"
+                      to={Routes.possible_index_submission_index_path(@socket, :index, @case)}
+                    >
+                      {gettext("Submit contact persons")}
+                    </LiveRedirect>
                     <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                       {pgettext("Auto Tracing Resolve Problems", "Done")}
                     </button>

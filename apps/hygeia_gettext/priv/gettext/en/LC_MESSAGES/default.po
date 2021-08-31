@@ -108,6 +108,10 @@ msgstr "Add external references if it does not exist."
 msgid "Add hospitalization"
 msgstr "Add hospitalization"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Add the mobile number or e-mail address to the person data."
+msgstr ""
+
 msgctxt "Phase Create Modal"
 msgid "Additional Changes"
 msgstr "Additional Changes"
@@ -243,6 +247,18 @@ msgstr "Are you working in an association?"
 msgid "Army, Civil Protection"
 msgstr "Army, Civil Protection"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case back to the case admininistration."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case back to the case administration."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case to yourself."
+msgstr ""
+
 msgid "Association"
 msgstr "Association"
 
@@ -333,6 +349,14 @@ msgstr "Body Aches"
 msgid "Call"
 msgstr "Call"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Call the existing number (if there is one) or send them an e-mail to find out why they did not react."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Call the existing number (if there is one) to get a mobile number or e-mail address."
+msgstr ""
+
 msgctxt "Case Status"
 msgid "Canceled"
 msgstr "Canceled"
@@ -414,6 +438,10 @@ msgstr "Changes"
 
 msgid "Check Duplicates"
 msgstr "Check Duplicates"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Check and apply all possible index submissions."
+msgstr ""
 
 msgid "Children's home, home for the disabled"
 msgstr "Children's home, home for the disabled"
@@ -1407,11 +1435,19 @@ msgstr "I confirm that all the data above is correct. This may be inspected!"
 msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
 msgstr "I did a COVID test in the last 4 days of quarantine. The result is negative."
 
+#, fuzzy
+msgid "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
+msgstr "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
+
 msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
 msgstr "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
 
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
 msgstr "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
+
+#, fuzzy
+msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago."
+msgstr "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
 
 msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
 msgstr "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
@@ -1466,6 +1502,10 @@ msgctxt "Elixir.Hygeia.ImportContext.Row Field"
 msgid "Identifiers"
 msgstr "Identifiers"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "If necessary, trace the person while on the phone. If the person is willing to continue in Auto Tracing mode, make a note and assign it back to the case administration."
+msgstr ""
+
 msgid "If there are no known contact methods for the person, a contact method for a close person (relative, roommate, caretaker) can be entered instead."
 msgstr "If there are no known contact methods for the person, a contact method for a close person (relative, roommate, caretaker) can be entered instead."
 
@@ -1474,6 +1514,10 @@ msgstr "If there are open hospitalizations, the status can not be set to \"done\
 
 msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
 msgstr "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "If there is no number, try to get it from the doctor."
+msgstr ""
 
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
 msgstr "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
@@ -1601,6 +1645,10 @@ msgstr "Info"
 msgctxt "Home"
 msgid "Info Website"
 msgstr "Info Website"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Initiate Auto Tracing after getting a contact method."
+msgstr ""
 
 msgid "Input needed"
 msgstr "Input needed"
@@ -1832,6 +1880,14 @@ msgstr "Low"
 msgctxt "Case Complexity"
 msgid "Low"
 msgstr "Low"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Make sure all possible index submissions are persisted."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Make sure person is traced correctly."
+msgstr ""
 
 msgid "Male"
 msgstr "Male"
@@ -3048,6 +3104,11 @@ msgstr "Send a Covid App Code to the person."
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a SwissCovid App Code to the person."
 msgstr "Send a SwissCovid App Code to the person."
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Send the Auto Tracing invitation."
+msgstr "Send Email Auto Tracing Invitation"
 
 msgid "Sent at %{date}"
 msgstr "Sent at %{date}"
