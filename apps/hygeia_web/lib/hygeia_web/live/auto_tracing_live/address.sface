@@ -26,11 +26,25 @@
       <Form for={@case_changeset} change="validate" submit="save">
         <ErrorTag field={:monitoring} class="d-block invalid-feedback" />
         <Inputs for={:monitoring}>
-          <ErrorTag field={:address} class="d-block invalid-feedback" />
-
+          <Field class="form-group" name={:location}>
+            <HygeiaWeb.FieldLabel />
+            <Select
+              class="form-control"
+              opts={prompt: gettext("Choose location")}
+              field={:location}
+              options={isolation_locations()}
+            />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+          <Field class="form-group" name={:location_details}>
+            <HygeiaWeb.FieldLabel />
+            <TextArea class="form-control" field={:location_details} />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
           <Inputs for={:address}>
             <HygeiaWeb.AddressForm id="monitoring_address" />
           </Inputs>
+          <ErrorTag field={:address} class="d-block invalid-feedback" />
         </Inputs>
       </Form>
     </div>
