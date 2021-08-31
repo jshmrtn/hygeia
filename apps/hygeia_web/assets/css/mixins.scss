@@ -28,6 +28,10 @@
     left: calc(100% / var(--progress-bar-items) / 2);
     right: calc(100% / var(--progress-bar-items) / 2);
     top: 1rem;
+
+    @include media-breakpoint-down(md) {
+      top: 0.8rem;
+    }
   }
 
   a.progress-step,
@@ -65,6 +69,13 @@
       border-radius: 10000px;
       background-color: $white;
       border: 2px solid $gray-200;
+
+      @include media-breakpoint-down(md) {
+        font-size: 0.8rem;
+        width: 1.6rem;
+        height: 1.6rem;
+        margin-bottom: 0.8rem;
+      }
     }
 
     &.completed {

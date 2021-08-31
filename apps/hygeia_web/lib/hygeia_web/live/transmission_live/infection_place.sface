@@ -18,12 +18,12 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-6">
+    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
       <div :if={Ecto.Changeset.get_field(form.source, :known) == true}>
         <div class="card">
           <div class="card-body">
             <div class="row">
-              <div class="col">
+              <div class="col-12 col-lg-6">
                 <Field name={:type} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <Select
@@ -59,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div class="col-6" :if={Ecto.Changeset.get_field(form.source, :known) == true}>
+    <div class="col-12 col-lg-6" :if={Ecto.Changeset.get_field(form.source, :known) == true}>
       <div class="card">
         <div class="card-body">
           <Inputs for={:address}>

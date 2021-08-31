@@ -8,7 +8,7 @@
     class={"mb-5", "p-2 rounded-3 border border-2 border-danger": not @case_changeset.valid?}
   >
     <div class="row gx-7">
-      <div class="col-6">
+      <div class="col-12 col-lg-6 mb-5 mb-lg-0">
         <ErrorTag class="d-block p-1 alert alert-danger" field={:clinical} />
         <Inputs for={:clinical}>
           <div class="mb-5">
@@ -86,7 +86,7 @@
         </Inputs>
       </div>
 
-      <div class="col-6">
+      <div class="col-12 col-lg-6">
         <h4>{gettext("Hospitalizations")}
         </h4>
 

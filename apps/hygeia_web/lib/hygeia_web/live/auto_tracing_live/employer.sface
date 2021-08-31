@@ -10,7 +10,7 @@
     class={"mb-4", "p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}
   >
     <div class="row gx-7">
-      <div class="col-6">
+      <div class="col-12 col-lg-6">
         <p class="mb-4">{gettext(
             "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
           )}</p>
