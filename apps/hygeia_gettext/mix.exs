@@ -43,7 +43,8 @@ defmodule HygeiaGettext.MixProject do
     [
       # TODO: Revert back to released version when the following commit is released:
       # - https://github.com/elixir-gettext/gettext/commit/565b965cb90d88259d8ed9f686337010ca8a4d43
-      {:gettext, "~> 0.13", github: "elixir-gettext/gettext", branch: "master", override: true}
+      {:gettext, "~> 0.13", github: "elixir-gettext/gettext", branch: "master", override: true},
+      {:ex_cldr_messages, "~> 0.10.0"}
     ]
   end
 
