@@ -98,7 +98,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         assign(socket,
           case: case,
           person: case.person,
-          auto_tracing: case.auto_tracing,
+          auto_tracing: auto_tracing,
           link_propagator_opts_changeset:
             LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, %{
               propagator_internal: propagator_internal
@@ -164,14 +164,10 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
      })}
   end
 
-  def handle_event(
-        "link_propagator_opts_submit",
-        %{"link_propagator_opts" => link_propagator_opts} = _params,
-        socket
-      ) do
+  def handle_event("link_propagator_opts_submit", params, socket) do
     socket =
       %LinkPropagatorOpts{}
-      |> LinkPropagatorOpts.changeset(link_propagator_opts)
+      |> LinkPropagatorOpts.changeset(params["link_propagator_opts"] || %{})
       |> Ecto.Changeset.apply_action(:apply)
       |> case do
         {:ok, opts} ->
@@ -192,7 +188,11 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
                   recipient_internal: true,
                   recipient_case_uuid: socket.assigns.case,
                   type: :contact_person,
-                  date: Date.to_iso8601(date),
+                  date:
+                    case date do
+                      %Date{} -> Date.to_iso8601(date)
+                      nil -> nil
+                    end,
                   infection_place:
                     Map.merge(
                       Map.take(infection_place, [
