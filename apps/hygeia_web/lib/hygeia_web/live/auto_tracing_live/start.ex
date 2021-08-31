@@ -43,6 +43,14 @@ defmodule HygeiaWeb.AutoTracingLive.Start do
     {:ok, _auto_tracing} =
       AutoTracingContext.advance_one_step(socket.assigns.auto_tracing, :start)
 
+    if is_nil(socket.assigns.case.monitoring) or
+         is_nil(socket.assigns.case.monitoring.first_contact) do
+      {:ok, _case} =
+        CaseContext.update_case(socket.assigns.case, %{
+          monitoring: %{first_contact: DateTime.utc_now()}
+        })
+    end
+
     {:noreply,
      push_redirect(socket,
        to:

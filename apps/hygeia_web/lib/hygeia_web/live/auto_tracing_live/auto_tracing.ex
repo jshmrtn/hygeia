@@ -7,6 +7,7 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
   alias Hygeia.CaseContext
   alias Hygeia.Repo
 
+  defp route(nil), do: &Routes.auto_tracing_start_path(&1, :start, &2)
   defp route(:start), do: &Routes.auto_tracing_start_path(&1, :start, &2)
   defp route(:address), do: &Routes.auto_tracing_address_path(&1, :address, &2)
 

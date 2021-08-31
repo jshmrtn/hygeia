@@ -32,7 +32,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t(),
           current_step: Step.t(),
-          last_completed_step: Step.t(),
+          last_completed_step: Step.t() | nil,
           employed: boolean() | nil,
           occupations: [Occupation.t()] | nil,
           transmission: Transmission.t() | nil,
@@ -57,7 +57,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   schema "auto_tracings" do
     field :current_step, Step, default: :start
-    field :last_completed_step, Step, default: :start
+    field :last_completed_step, Step
     field :covid_app, :boolean
     field :has_contact_persons, :boolean
     field :scholar, :boolean
@@ -115,7 +115,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :problems,
       :solved_problems
     ])
-    |> validate_required([:current_step, :last_completed_step, :case_uuid])
+    |> validate_required([:current_step, :case_uuid])
     |> cast_embed(:occupations)
     |> cast_embed(:transmission)
   end
@@ -149,22 +149,38 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     if has_problem?(auto_tracing, :unmanaged_tenant) do
       step_index <= Enum.find_index(steps, &(&1 == :address))
     else
-      step_index <= Enum.find_index(steps, &(&1 == auto_tracing.last_completed_step)) + 1
+      case auto_tracing.last_completed_step do
+        nil ->
+          step_index <= 0
+
+        _other ->
+          step_index <= Enum.find_index(steps, &(&1 == auto_tracing.last_completed_step)) + 1
+      end
     end
   end
 
   @spec step_completed?(auto_tracing :: t, step :: Step.t()) :: boolean()
   def step_completed?(auto_tracing, step) do
-    steps = Step.__enum_map__()
+    case auto_tracing.last_completed_step do
+      nil ->
+        false
 
-    Enum.find_index(steps, &(&1 == step)) <=
-      Enum.find_index(steps, &(&1 == auto_tracing.last_completed_step))
+      _other ->
+        steps = Step.__enum_map__()
+
+        Enum.find_index(steps, &(&1 == step)) <=
+          Enum.find_index(steps, &(&1 == auto_tracing.last_completed_step))
+    end
   end
 
   @spec first_not_completed_step?(auto_tracing :: t, step :: Step.t()) ::
           boolean()
-  def first_not_completed_step?(auto_tracing, step),
-    do: Step.get_next_step(auto_tracing.last_completed_step) == step
+  def first_not_completed_step?(auto_tracing, step) do
+    case auto_tracing.last_completed_step do
+      nil -> :start
+      _other -> Step.get_next_step(auto_tracing.last_completed_step) == step
+    end
+  end
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.Authorization.Resource
