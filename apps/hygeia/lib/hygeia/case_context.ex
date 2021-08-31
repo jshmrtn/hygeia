@@ -2881,11 +2881,4 @@ defmodule Hygeia.CaseContext do
         ) :: Ecto.Changeset.t(PrematureRelease.t())
   def change_premature_release(%PrematureRelease{} = premature_release, attrs \\ %{}),
     do: PrematureRelease.changeset(premature_release, attrs)
-
-  @spec auto_tracing_open?(case :: Case.t()) :: boolean
-  def auto_tracing_open?(case) do
-    case = Repo.preload(case, :auto_tracing)
-
-    not is_nil(case.auto_tracing) and case.auto_tracing.last_completed_step != :transmission
-  end
 end
