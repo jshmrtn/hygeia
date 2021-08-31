@@ -49,7 +49,7 @@
           <h2>
             {gettext("Who did you meet or who do you live with?")}
           </h2>
-          
+
           <hr>
 
           <section>
@@ -200,7 +200,10 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
-                <div :if={Ecto.Changeset.get_field(form.source, :type) == :other} class="col-12 col-lg-6 offset-lg-6">
+                <div
+                  :if={Ecto.Changeset.get_field(form.source, :type) == :other}
+                  class="col-12 col-lg-6 offset-lg-6"
+                >
                   <Field name={:type_other} class="form-group">
                     <HygeiaWeb.FieldLabel />
                     <TextInput class="form-control" />
