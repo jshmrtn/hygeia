@@ -63,35 +63,49 @@
         <th>{gettext("Type")}</th>
         <th>{gettext("Value")}</th>
         <th>{gettext("Comment")}</th>
+        <th />
       </tr>
     </thead>
     <tbody>
       <Inputs for={:contact_methods}>
-        <tr>
-          <td>
-            <Field name={:type}>
-              <Select
-                class="form-control"
-                opts={prompt: gettext("Choose Type")}
-                field={:type}
-                options={Person.ContactMethod.Type.map()}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td>
-            <Field name={:value}>
-              <TextInput class="form-control" field={:value} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-          <td>
-            <Field name={:comment}>
-              <TextInput class="form-control" field={:comment} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </td>
-        </tr>
+        <InputContext assigns={assigns} :let={form: contact_method}>
+          <HiddenInput field={:uuid} />
+          <tr>
+            <td>
+              <Field name={:type}>
+                <Select
+                  class="form-control"
+                  opts={prompt: gettext("Choose Type")}
+                  field={:type}
+                  options={Person.ContactMethod.Type.map()}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <Field name={:value}>
+                <TextInput class="form-control" field={:value} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <Field name={:comment}>
+                <TextInput class="form-control" field={:comment} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-danger"
+                :on-click="remove_contact_method"
+                value={Ecto.Changeset.fetch_field!(contact_method.source, :uuid)}
+              >
+                <span class="oi oi-trash" aria-hidden="true" />
+              </button>
+            </td>
+          </tr>
+        </InputContext>
       </Inputs>
     </tbody>
   </table>
