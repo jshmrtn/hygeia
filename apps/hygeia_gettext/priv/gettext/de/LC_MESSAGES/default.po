@@ -108,6 +108,10 @@ msgstr "Externe Referenz hinzufügen, falls diese noch nicht existiert."
 msgid "Add hospitalization"
 msgstr "Krankenhausaufenthalt hinzufügen"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Add the mobile number or e-mail address to the person data."
+msgstr "Die Mobiltelefonnummer oder E-Mail Adresse den Personendaten hinzufügen."
+
 msgctxt "Phase Create Modal"
 msgid "Additional Changes"
 msgstr "Weitere Änderungen"
@@ -243,6 +247,18 @@ msgstr "Wirken Sie in einem Verein mit?"
 msgid "Army, Civil Protection"
 msgstr "Armee, Zivilschutz"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case back to the case admininistration."
+msgstr "Den Fall wieder der Fall-Administration zuweisen."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case back to the case administration."
+msgstr "Den Fall wieder der Fall-Administration zuweisen."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case to yourself."
+msgstr "Den Fall sich selbst zuweisen."
+
 msgid "Association"
 msgstr "Verein"
 
@@ -333,6 +349,14 @@ msgstr "Gliederschmerzen"
 msgid "Call"
 msgstr "Anruf"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Call the existing number (if there is one) or send them an e-mail to find out why they did not react."
+msgstr "Die existierende Nummer (wenn eine vorhanden) anrufen oder eine E-Mail senden um herauszufinden warum es keine Reaktion gab."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Call the existing number (if there is one) to get a mobile number or e-mail address."
+msgstr "Die existierende Nummer (wenn eine vorhanden) anrufen um eine Mobiltelefonnummer oder E-Mail Adresse zu erfragen."
+
 msgctxt "Case Status"
 msgid "Canceled"
 msgstr "Tracing abgebrochen"
@@ -414,6 +438,10 @@ msgstr "Änderungen"
 
 msgid "Check Duplicates"
 msgstr "Überprüfen von Duplikaten"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Check and apply all possible index submissions."
+msgstr "Alle Möglicher Index Einsendungen überprüfen und anwenden."
 
 msgid "Children's home, home for the disabled"
 msgstr "Kinderheim, Behindertenheim"
@@ -1403,11 +1431,17 @@ msgstr "Ich bestätige, dass alle Angaben korrekt sind. Dies kann überprüft we
 msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
 msgstr "Ich habe einen Covid-19 Test ab frühestens dem 4. Tag vor Ablauf der Quarantäne gemacht. Das Testresultat ist negativ."
 
+msgid "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
+msgstr "Ich war innerhalb %{validity} an Covid-19 erkrankt und bin bereits genesen. Die Erkrankung kann ich offiziell nachweisen (Covid Zertifikat, positiver PCR-Test, Isolationsbestätigung)."
+
 msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
 msgstr "Ich war innerhalb der letzten sechs Monate an Covid-19 erkrankt und bin bereits genesen. Die Erkrankung kann ich offiziell nachweisen (Covid Zertifikat, positiver PCR-Test, Isolationsbestätigung)."
 
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
 msgstr "Ich verfüge über einen offiziellen Nachweis (geimpft, immun, negativer Test) um die Quarantäne zu beenden."
+
+msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago."
+msgstr "Ich habe mindestens zwei Covid-19 Impfungen mit einem in der Schweiz zugelassenen Impfstoff erhalten und die letzte Impfung liegt weniger als %{validity} zurück."
 
 msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
 msgstr "Ich habe mindestens zwei Covid-19 Impfungen mit einem in der Schweiz zugelassenen Impfstoff erhalten und die letzte Impfung liegt weniger als sechs Monate zurück."
@@ -1462,6 +1496,10 @@ msgctxt "Elixir.Hygeia.ImportContext.Row Field"
 msgid "Identifiers"
 msgstr "Identifikationen"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "If necessary, trace the person while on the phone. If the person is willing to continue in Auto Tracing mode, make a note and assign it back to the case administration."
+msgstr "Wenn nötig, die Person am Telefon tracen. Falls die Person gewillt ist, das Auto Tracing auszuführen; eine Notiz erstellen und den Fall wieder der Fall-Administration zuweisen."
+
 msgid "If there are no known contact methods for the person, a contact method for a close person (relative, roommate, caretaker) can be entered instead."
 msgstr "Falls für die Person keine Kontaktmethoden bekannt sind, kann auch die Kontaktmethode einer nahestehenden Person (Verwandte, Mitbewohnerin, Pflegerin) eingegeben werden."
 
@@ -1470,6 +1508,10 @@ msgstr "Falls es laufende Hospitalisierungen gibt, darf der Status nicht auf \"E
 
 msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
 msgstr "Falls es Phasen gibt wo nicht entschieden wurde ob eine Quarantäne / Isolation verordnet wird, darf der Status nicht auf \"Erledigt\" / \"Tracing abgeschlossen\" gesetzt werden."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "If there is no number, try to get it from the doctor."
+msgstr "Wenn keine Nummer vorhanden ist, versuchen eine via Arzt zu erfragen."
 
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
 msgstr "Falls sie enge Kontakte zu unbekannten Personen hatten (z.B. in einem Restaurant, in der Kirche etc.), besprechen Sie das Vorgehen zur Kontaktaufnahme oder anderer Massnahmen mit Ihrem Tracer oder Ihrer Tracerin."
@@ -1597,6 +1639,10 @@ msgstr "Info"
 msgctxt "Home"
 msgid "Info Website"
 msgstr "Info Webseite"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Initiate Auto Tracing after getting a contact method."
+msgstr "Das Auto Tracing auslösen nachdem eine Kontaktmethode erfragt wurde."
 
 msgid "Input needed"
 msgstr "Angaben benötigt"
@@ -1828,6 +1874,14 @@ msgstr "Niedrig"
 msgctxt "Case Complexity"
 msgid "Low"
 msgstr "Niedrig"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Make sure all possible index submissions are persisted."
+msgstr "Sicherstellen dass alle Möglicher Index Einsendungen angewendet werden."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Make sure person is traced correctly."
+msgstr "Sicherstellen dass die Person korrekt getraced wird."
 
 msgid "Male"
 msgstr "Männlich"
@@ -3044,6 +3098,10 @@ msgstr "Senden Sie der Person einen Covid App Code zu."
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a SwissCovid App Code to the person."
 msgstr "Senden Sie der Person einen SwissCovid App Code zu."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Send the Auto Tracing invitation."
+msgstr "Auto Tracing Einladung senden"
 
 msgid "Sent at %{date}"
 msgstr "Gesendet am %{date}"
