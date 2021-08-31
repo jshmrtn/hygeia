@@ -8,7 +8,7 @@ defmodule Hygeia.Umbrella.MixProject do
     [
       name: "Hygeia",
       apps_path: "apps",
-      version: "1.28.7",
+      version: "1.28.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
