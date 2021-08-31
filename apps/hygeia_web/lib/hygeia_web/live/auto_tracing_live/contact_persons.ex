@@ -53,6 +53,8 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
         | action: :update
       })
 
+    {:ok, _} = AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing_changeset)
+
     {:noreply, socket}
   end
 
