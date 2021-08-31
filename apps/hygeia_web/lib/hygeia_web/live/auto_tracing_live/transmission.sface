@@ -42,14 +42,14 @@
           </div>
 
           <div :show={Ecto.Changeset.get_field(form.source, :known) == true} class="row mb-5 gx-7">
-            <div class="col-6">
+            <div class="col-12 col-lg-6 mb-5 mb-lg-0">
               <h4>{gettext("Details")}</h4>
               <p class="mb-4">
                 {gettext("Please give us the details.")}
               </p>
 
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <Field name={:date} class="form-group">
                     <HygeiaWeb.FieldLabel />
                     <DateInput class="form-control" />
@@ -64,7 +64,7 @@
                   </Inputs>
                 </div>
                 <Inputs for={:infection_place}>
-                  <div class="col-6">
+                  <div class="col-12 col-md-6">
                     <Field name={:type} class="form-group">
                       <HygeiaWeb.FieldLabel />
                       <Select
@@ -89,7 +89,7 @@
               </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-12 col-lg-6">
               <h4>{gettext("Person")}</h4>
 
               <p class="mb-4">
@@ -119,7 +119,7 @@
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
               <div :if={Ecto.Changeset.get_field(form.source, :propagator_known) == true} class="row mt-4">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <Field name={:propagator_first_name} class="form-group">
                     <HygeiaWeb.FieldLabel />
                     <TextInput class="form-control" />
@@ -131,7 +131,7 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <Field name={:propagator_last_name} class="form-group">
                     <HygeiaWeb.FieldLabel />
                     <TextInput class="form-control" />

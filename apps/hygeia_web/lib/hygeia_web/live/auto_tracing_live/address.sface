@@ -1,7 +1,7 @@
 <div id="step_address" class="container">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
   <div class="row gx-7 mb-5">
-    <div class="col-6">
+    <div class="col-12 col-lg-6 mb-5 mb-lg-0">
       <h4>{gettext("Address")}</h4>
       <p class="mb-4">{gettext("Please enter your place of residence.")}</p>
       <Form
@@ -17,7 +17,7 @@
         </Inputs>
       </Form>
     </div>
-    <div class="col-6">
+    <div class="col-12 col-lg-6">
       <h4>{gettext("Isolation Address")}</h4>
       <p class="mb-4">
         {gettext(

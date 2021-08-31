@@ -8,10 +8,10 @@
         <th>
           {schema_field_name(:last_name, PossibleIndexSubmission)}
         </th>
-        <th>
+        <th class="d-none d-lg-table-cell">
           {schema_field_name(:address, PossibleIndexSubmission)}
         </th>
-        <th>
+        <th class="d-none d-lg-table-cell">
           {schema_field_name(:birth_date, PossibleIndexSubmission)}
         </th>
 
@@ -32,10 +32,10 @@
         <td>
           {possible_index_submission.last_name}
         </td>
-        <td>
+        <td class="d-none d-lg-table-cell">
           {format_address(possible_index_submission.address)}
         </td>
-        <td>
+        <td class="d-none d-lg-table-cell">
           {case possible_index_submission.birth_date do
             nil -> nil
             date -> Cldr.Date.to_string!(date, HygeiaCldr)
