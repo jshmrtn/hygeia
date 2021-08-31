@@ -24,7 +24,7 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], auto_tracing: [])
+      |> Repo.preload(tenant: [], person: [], auto_tracing: [])
 
     socket =
       cond do
@@ -48,7 +48,11 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
             case_changeset: %Ecto.Changeset{CaseContext.change_case(case) | action: :validate},
             person: case.person,
             person_changeset: %Ecto.Changeset{
-              CaseContext.change_person(case.person, %{}, %{address_required: true})
+              CaseContext.change_person(
+                case.person,
+                %{address: %{subdivision: case.tenant.subdivision, country: case.tenant.country}},
+                %{address_required: true}
+              )
               | action: :validate
             },
             auto_tracing: case.auto_tracing
