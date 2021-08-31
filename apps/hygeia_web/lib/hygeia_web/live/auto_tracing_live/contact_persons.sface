@@ -28,9 +28,9 @@
 
   <Form for={@auto_tracing_changeset} change="validate" submit="save">
     <InputContext assigns={assigns} :let={form: form}>
-      <div class="row">
-        <div class="col-6">
-          <Field name={:has_contact_persons} class="form-group mb-4">
+      <div class="row mb-4">
+        <div class={"col-6", "p-2 rounded-3 border border-2 border-danger": not @auto_tracing_changeset.valid?}>
+          <Field name={:has_contact_persons} class="form-group">
             <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
               <label class={
                 "btn",

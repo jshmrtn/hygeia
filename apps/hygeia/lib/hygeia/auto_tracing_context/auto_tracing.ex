@@ -49,6 +49,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   @type changeset_options :: %{
           optional(:covid_app_required) => boolean,
+          optional(:has_contact_persons_required) => boolean,
           optional(:transmission_required) => boolean
         }
 
@@ -87,6 +88,12 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     auto_tracing
     |> changeset(attrs, %{changeset_options | covid_app_required: false})
     |> validate_required([:covid_app])
+  end
+
+  def changeset(auto_tracing, attrs, %{has_contact_persons_required: true} = changeset_options) do
+    auto_tracing
+    |> changeset(attrs, %{changeset_options | has_contact_persons_required: false})
+    |> validate_required([:has_contact_persons])
   end
 
   def changeset(auto_tracing, attrs, %{transmission_required: true} = changeset_options) do
