@@ -7,6 +7,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.Transmission
   alias Hygeia.CaseContext.Transmission.InfectionPlace
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.Repo
@@ -171,11 +172,12 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       |> Ecto.Changeset.apply_action(:apply)
       |> case do
         {:ok, opts} ->
-          %AutoTracing.Transmission{
-            date: date,
-            known: known,
+          %Transmission{
             infection_place: %InfectionPlace{address: address} = infection_place
           } = socket.assigns.auto_tracing.transmission
+
+          date = nil
+          known = false
 
           push_redirect(socket,
             to:
