@@ -3,9 +3,25 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
 
   use HygeiaWeb, :surface_view
 
-  alias Hygeia.AutoTracingContext
   alias Hygeia.CaseContext
   alias Hygeia.Repo
+
+  defmodule AutoTracingNotFoundError do
+    @moduledoc false
+    defexception plug_status: 404,
+                 message: "auto tracing not found",
+                 case_uuid: nil
+
+    @impl Exception
+    def exception(opts) do
+      case_uuid = Keyword.fetch!(opts, :case_uuid)
+
+      %__MODULE__{
+        message: "the auto tracing was not found for the case #{case_uuid}",
+        case_uuid: case_uuid
+      }
+    end
+  end
 
   defp route(nil), do: &Routes.auto_tracing_start_path(&1, :start, &2)
   defp route(:start), do: &Routes.auto_tracing_start_path(&1, :start, &2)
@@ -44,7 +60,7 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
         {:ok, auto_tracing} =
           case case.auto_tracing do
             nil ->
-              AutoTracingContext.create_auto_tracing(case)
+              raise AutoTracingNotFoundError, case_uuid: case.uuid
 
             auto_tracing ->
               {:ok, auto_tracing}
