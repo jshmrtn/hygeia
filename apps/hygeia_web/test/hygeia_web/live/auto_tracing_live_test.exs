@@ -48,6 +48,12 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     setup [:create_case]
 
     test "starts auto tracing", %{conn: conn, case_model: case} do
+      assert_raise HygeiaWeb.AutoTracingLive.AutoTracing.AutoTracingNotFoundError, fn ->
+        live(conn, Routes.auto_tracing_auto_tracing_path(conn, :auto_tracing, case))
+      end
+
+      create_auto_tracing(%{case_model: case})
+
       assert {:error, {:live_redirect, %{to: path}}} =
                live(conn, Routes.auto_tracing_auto_tracing_path(conn, :auto_tracing, case))
 

@@ -37,9 +37,11 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_DeathTest do
   end
 
   test "runs correct plan for new case", %{
-    import: %Import{rows: [row | _others]},
+    import: %Import{rows: rows},
     tenant_sg: %Tenant{uuid: tenant_sg_uuid}
   } do
+    row = Enum.find(rows, &(&1.data["Fall ID"] == 2_327_500))
+
     {true, action_plan_suggestion} = Planner.generate_action_plan_suggestion(row)
 
     action_plan = Enum.map(action_plan_suggestion, &elem(&1, 1))
