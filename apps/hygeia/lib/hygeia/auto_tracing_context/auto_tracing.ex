@@ -25,6 +25,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           has_contact_persons: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
           case_uuid: Ecto.UUID.t() | nil,
+          started_at: DateTime.t() | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -43,6 +44,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           has_contact_persons: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()),
           case_uuid: Ecto.UUID.t(),
+          started_at: DateTime.t(),
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -65,6 +67,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :problems, {:array, Problem}, default: []
     field :solved_problems, {:array, Problem}, default: []
     field :unsolved_problems, {:array, Problem}, read_after_writes: true
+    field :started_at, :utc_datetime_usec, autogenerate: {DateTime, :utc_now, []}
 
     embeds_many :occupations, Occupation, on_replace: :delete
 
@@ -113,7 +116,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :employed,
       :has_contact_persons,
       :problems,
-      :solved_problems
+      :solved_problems,
+      :started_at
     ])
     |> validate_required([:current_step, :case_uuid])
     |> cast_embed(:occupations)

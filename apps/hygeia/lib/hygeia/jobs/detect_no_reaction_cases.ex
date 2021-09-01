@@ -57,9 +57,11 @@ defmodule Hygeia.Jobs.DetectNoReactionCases do
           case in Case,
           join: auto_tracing in assoc(case, :auto_tracing),
           where:
-            auto_tracing.inserted_at <= ago(^@no_reaction_limit_amount, ^@no_reaction_limit_unit) and
+            auto_tracing.started_at <= ago(^@no_reaction_limit_amount, ^@no_reaction_limit_unit) and
               (is_nil(auto_tracing.last_completed_step) or
-                 auto_tracing.last_completed_step != :contact_persons),
+                 auto_tracing.last_completed_step != :contact_persons) and
+              case.status not in [:done, :canceled] and
+              not fragment("'no_contact_method' = ANY(?)", auto_tracing.unsolved_problems),
           preload: [auto_tracing: auto_tracing]
         )
       )
