@@ -260,7 +260,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
       end
 
     phase_start = Date.utc_today()
-    phase_end = Date.add(start_date, 10)
+    phase_end = Date.add(start_date, 9)
 
     phase_end =
       case Date.compare(phase_end, phase_start) do
