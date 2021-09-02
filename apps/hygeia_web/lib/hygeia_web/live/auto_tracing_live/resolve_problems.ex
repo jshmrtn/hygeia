@@ -80,7 +80,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         _other -> nil
       end
 
-    auto_tracing =
+    {auto_tracing, should_redirect?} =
       if params["resolve_problem"] do
         {:ok, auto_tracing} =
           AutoTracingContext.auto_tracing_resolve_problem(
@@ -88,32 +88,32 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
             String.to_existing_atom(params["resolve_problem"])
           )
 
-        auto_tracing
+        {auto_tracing, true}
       else
-        case.auto_tracing
+        {case.auto_tracing, false}
       end
 
     socket =
       if authorized?(auto_tracing, :resolve_problems, get_auth(socket)) do
-        socket =
-          assign(
-            socket,
-            case: case,
-            person: case.person,
-            auto_tracing: auto_tracing,
-            link_propagator_opts_changeset:
-              LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, %{
-                propagator_internal: propagator_internal
-              })
-          )
-
-        if params["resolve_problem"] do
-          push_redirect(socket,
-            to: Routes.auto_tracing_resolve_problems_path(socket, :resolve_problems, case.uuid)
-          )
-        else
-          socket
-        end
+        socket
+        |> assign(
+          case: case,
+          person: case.person,
+          auto_tracing: auto_tracing,
+          link_propagator_opts_changeset:
+            LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, %{
+              propagator_internal: propagator_internal
+            })
+        )
+        |> then(fn socket ->
+            if should_redirect? do
+              push_redirect(socket,
+                to: Routes.auto_tracing_resolve_problems_path(socket, :resolve_problems, case.uuid)
+              )
+            else
+              socket
+            end
+        end)
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))
