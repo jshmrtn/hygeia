@@ -1,0 +1,13 @@
+image:
+  file: gitpod/.gitpod.Dockerfile
+ports:
+  - port: 4000
+    onOpen: open-preview 
+tasks:
+  - name: phx
+    init: gitpod/init.sh
+    command: gitpod/start.sh
+vscode:
+  extensions:
+    - elixir-lsp.elixir-ls
+    - pantajoe.vscode-elixir-credo
