@@ -2122,7 +2122,8 @@ defmodule Hygeia.CaseContext do
   """
   @spec update_transmission(
           transmission :: Transmission.t() | Ecto.Changeset.t(Transmission.t()),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: Transmission.changeset_params()
         ) :: {:ok, Transmission.t()} | {:error, Ecto.Changeset.t(Transmission.t())}
   def update_transmission(transmission, attrs \\ %{}, changeset_params \\ %{})
 
