@@ -74,8 +74,8 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       |> Repo.preload(person: [affiliations: []], auto_tracing: [])
 
     propagator_internal =
-      case case.auto_tracing.transmission do
-        %AutoTracing.Transmission{propagator_known: true} -> true
+      case case.auto_tracing do
+        %AutoTracing{propagator_known: true} -> true
         _other -> nil
       end
 
