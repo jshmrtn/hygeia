@@ -207,19 +207,12 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
           {:ok, person} = CaseContext.update_person(person_changeset)
 
-          person = Repo.preload(person, affiliations: [:organisation])
-
           auto_tracing_changeset = add_unknown_occupations(auto_tracing, step)
 
           {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
 
           {:ok, auto_tracing} =
-            if auto_tracing.scholar or
-                 Enum.any?(
-                   person.affiliations,
-                   &(match?(%Affiliation{kind: :scholar}, &1) or
-                       match?(%Affiliation{organisation: %Organisation{type: :school}}, &1))
-                 ) do
+            if auto_tracing.scholar do
               {:ok, _auto_tracing} =
                 AutoTracingContext.auto_tracing_add_problem(auto_tracing, :school_related)
             else

@@ -11,6 +11,7 @@ defmodule HygeiaWeb.CaseLive.TransmissionTable do
   prop transmissions, :list, required: true
   prop show_recipient, :boolean, default: true
   prop show_propagator, :boolean, default: true
+  prop id_prefix, :string, default: "transmission"
 
   @impl Phoenix.LiveComponent
   def mount(socket) do
