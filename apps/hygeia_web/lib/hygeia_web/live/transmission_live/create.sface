@@ -67,7 +67,11 @@
               :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}
             >
               <HygeiaWeb.FieldLabel />
-              <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
+              <HygeiaWeb.CaseLive.Choose
+                id="propagator_case"
+                change="change_propagator_case"
+                id_prefix="propagator_case_value_recordview"
+              />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
 
@@ -116,7 +120,11 @@
               :if={Ecto.Changeset.get_field(@changeset, :recipient_internal) == true}
             >
               <HygeiaWeb.FieldLabel />
-              <HygeiaWeb.CaseLive.Choose id="recipient_case" change="change_recipient_case" />
+              <HygeiaWeb.CaseLive.Choose
+                id="recipient_case"
+                change="change_recipient_case"
+                id_prefix="recipient_case_value_recordview"
+              />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
 

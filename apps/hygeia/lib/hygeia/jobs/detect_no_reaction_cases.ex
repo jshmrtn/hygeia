@@ -12,7 +12,7 @@ defmodule Hygeia.Jobs.DetectNoReactionCases do
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
 
-  @default_refresh_interval_ms :timer.hours(1)
+  @default_refresh_interval_ms :timer.minutes(5)
 
   @no_reaction_limit_amount 2
   @no_reaction_limit_unit "hour"
@@ -55,13 +55,18 @@ defmodule Hygeia.Jobs.DetectNoReactionCases do
       Repo.all(
         from(
           case in Case,
+          join: auto_tracing in assoc(case, :auto_tracing),
           where:
-            case.status == "first_contact" and
-              case.updated_at <= ago(^@no_reaction_limit_amount, ^@no_reaction_limit_unit)
+            auto_tracing.started_at <= ago(^@no_reaction_limit_amount, ^@no_reaction_limit_unit) and
+              (is_nil(auto_tracing.last_completed_step) or
+                 auto_tracing.last_completed_step != :contact_persons) and
+              case.status not in [:done, :canceled] and
+              not fragment("'no_contact_method' = ANY(?)", auto_tracing.unsolved_problems),
+          preload: [auto_tracing: auto_tracing]
         )
       )
 
-    Enum.each(cases, fn case -> add_problem_as_needed(Repo.preload(case, auto_tracing: [])) end)
+    Enum.each(cases, &add_problem_as_needed/1)
   end
 
   defp add_problem_as_needed(%{auto_tracing: nil}), do: nil

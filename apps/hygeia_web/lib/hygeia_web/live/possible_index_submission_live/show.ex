@@ -22,7 +22,11 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
   def mount(params, _session, socket) do
     socket =
       assign(socket,
-        return_url: params["return_url"]
+        return_url:
+          case params["return_url"] do
+            "/" <> _url_rest = url -> url
+            _other -> nil
+          end
       )
 
     {:ok, socket}

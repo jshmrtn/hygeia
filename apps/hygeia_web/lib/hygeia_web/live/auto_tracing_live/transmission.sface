@@ -58,41 +58,43 @@
               <HiddenInput field={:recipient_internal} value />
               <HiddenInput field={:recipient_case_uuid} value={@case.uuid} />
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <Field name={:date} class="form-group">
                     <HygeiaWeb.FieldLabel />
                     <DateInput class="form-control" />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   <Inputs for={:infection_place}>
-                    <InputContext assigns={assigns} :let={form: infection_place}>
-                      <HiddenInput field={:uuid} value={fetch_field!(infection_place.source, :uuid)} />
-                      <Field name={:name} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                      <Field name={:type} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <Select
-                          class="form-control"
-                          options={infection_place_type_options()}
-                          opts={prompt: gettext("Choose Type")}
-                        />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                      <Field name={:flight_information} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                      <Inputs for={:address}>
-                        <InputContext assigns={assigns} :let={form: address}>
-                          <HiddenInput field={:uuid} value={fetch_field!(address.source, :uuid)} />
-                          <HygeiaWeb.AddressForm id="infection_place_address" />
-                        </InputContext>
-                      </Inputs>
-                    </InputContext>
+                    <Field name={:name} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </Inputs>
+                </div>
+                <div class="col-12 col-md-6">
+                  <Inputs for={:infection_place}>
+                    <Field name={:type} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <Select
+                        class="form-control"
+                        options={infection_place_type_options()}
+                        opts={prompt: gettext("Choose Type")}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                    <Field name={:flight_information} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </Inputs>
+                </div>
+                <div class="col-12">
+                  <Inputs for={:infection_place}>
+                    <Inputs for={:address}>
+                      <HygeiaWeb.AddressForm id="infection_place_address" />
+                    </Inputs>
                   </Inputs>
                 </div>
               </div>

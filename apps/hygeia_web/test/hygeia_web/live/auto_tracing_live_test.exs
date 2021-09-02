@@ -35,20 +35,25 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     %{auto_tracing: auto_tracing}
   end
 
-  # defp update_auto_tracing(auto_tracing, current_step, last_completed_step) do
-  #   {:ok, auto_tracing} =
-  #     AutoTracingContext.update_auto_tracing(auto_tracing, %{
-  #       current_step: current_step,
-  #       last_completed_step: last_completed_step
-  #     })
+  defp set_last_completed_step(auto_tracing, last_completed_step) do
+    {:ok, auto_tracing} =
+      AutoTracingContext.update_auto_tracing(auto_tracing, %{
+        last_completed_step: last_completed_step
+      })
 
-  #   auto_tracing
-  # end
+    auto_tracing
+  end
 
   describe "Start" do
     setup [:create_case]
 
     test "starts auto tracing", %{conn: conn, case_model: case} do
+      assert_raise HygeiaWeb.AutoTracingLive.AutoTracing.AutoTracingNotFoundError, fn ->
+        live(conn, Routes.auto_tracing_auto_tracing_path(conn, :auto_tracing, case))
+      end
+
+      create_auto_tracing(%{case_model: case})
+
       assert {:error, {:live_redirect, %{to: path}}} =
                live(conn, Routes.auto_tracing_auto_tracing_path(conn, :auto_tracing, case))
 
@@ -69,7 +74,9 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
   describe "Address" do
     setup [:create_case, :create_auto_tracing]
 
-    test "changes address", %{conn: conn, case_model: case, auto_tracing: _auto_tracing} do
+    test "changes address", %{conn: conn, case_model: case, auto_tracing: auto_tracing} do
+      set_last_completed_step(auto_tracing, :address)
+
       {:ok, address_view, _html} =
         live(conn, Routes.auto_tracing_address_path(conn, :address, case))
 
@@ -78,7 +85,9 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
              ) =~ "Neugasse 52"
     end
 
-    test "changes isolation address", %{conn: conn, case_model: case, auto_tracing: _auto_tracing} do
+    test "changes isolation address", %{conn: conn, case_model: case, auto_tracing: auto_tracing} do
+      set_last_completed_step(auto_tracing, :address)
+
       {:ok, address_view, _html} =
         live(conn, Routes.auto_tracing_address_path(conn, :address, case))
 
@@ -94,8 +103,10 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     test "advances to employer", %{
       conn: conn,
       case_model: case,
-      auto_tracing: _auto_tracing
+      auto_tracing: auto_tracing
     } do
+      set_last_completed_step(auto_tracing, :contact_methods)
+
       {:ok, contact_methods_view, html} =
         live(conn, Routes.auto_tracing_contact_methods_path(conn, :contact_methods, case))
 
@@ -114,8 +125,10 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     test "change mobile phone with valid data", %{
       conn: conn,
       case_model: case,
-      auto_tracing: _auto_tracing
+      auto_tracing: auto_tracing
     } do
+      set_last_completed_step(auto_tracing, :contact_methods)
+
       {:ok, contact_methods_view, _html} =
         live(conn, Routes.auto_tracing_contact_methods_path(conn, :contact_methods, case))
 
@@ -127,8 +140,10 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     test "change mobile phone with invalid data returns error", %{
       conn: conn,
       case_model: case,
-      auto_tracing: _auto_tracing
+      auto_tracing: auto_tracing
     } do
+      set_last_completed_step(auto_tracing, :contact_methods)
+
       {:ok, contact_methods_view, _html} =
         live(conn, Routes.auto_tracing_contact_methods_path(conn, :contact_methods, case))
 
@@ -189,8 +204,10 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     test "can not advance to covid_app", %{
       conn: conn,
       case_model: case,
-      auto_tracing: _auto_tracing
+      auto_tracing: auto_tracing
     } do
+      set_last_completed_step(auto_tracing, :vaccination)
+
       {:ok, vaccination_view, html} =
         live(conn, Routes.auto_tracing_vaccination_path(conn, :vaccination, case))
 
@@ -206,8 +223,9 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     test "sets vaccination and advances to covid_app", %{
       conn: conn,
       case_model: case,
-      auto_tracing: _auto_tracing
+      auto_tracing: auto_tracing
     } do
+      set_last_completed_step(auto_tracing, :vaccination)
       case = Repo.preload(case, :person)
 
       {:ok, _person} =
@@ -233,8 +251,10 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     test "can not advance to clinical", %{
       conn: conn,
       case_model: case,
-      auto_tracing: _auto_tracing
+      auto_tracing: auto_tracing
     } do
+      set_last_completed_step(auto_tracing, :covid_app)
+
       {:ok, covid_app_view, html} =
         live(conn, Routes.auto_tracing_covid_app_path(conn, :covid_app, case))
 
@@ -252,8 +272,10 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       case_model: case,
       auto_tracing: auto_tracing
     } do
-      {:ok, _auto_tracing} =
+      {:ok, auto_tracing} =
         AutoTracingContext.update_auto_tracing(auto_tracing, %{"covid_app" => true})
+
+      set_last_completed_step(auto_tracing, :covid_app)
 
       {:ok, covid_app_view, _html} =
         live(conn, Routes.auto_tracing_covid_app_path(conn, :covid_app, case))
@@ -275,8 +297,10 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     test "advances to transmission", %{
       conn: conn,
       case_model: case,
-      auto_tracing: _auto_tracing
+      auto_tracing: auto_tracing
     } do
+      set_last_completed_step(auto_tracing, :clinical)
+
       {:ok, clinical_view, html} =
         live(conn, Routes.auto_tracing_clinical_path(conn, :clinical, case))
 
@@ -307,8 +331,10 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     test "can not advance to end", %{
       conn: conn,
       case_model: case,
-      auto_tracing: _auto_tracing
+      auto_tracing: auto_tracing
     } do
+      set_last_completed_step(auto_tracing, :transmission)
+
       {:ok, transmission_view, html} =
         live(conn, Routes.auto_tracing_transmission_path(conn, :transmission, case))
 
@@ -326,10 +352,12 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       case_model: case,
       auto_tracing: auto_tracing
     } do
-      {:ok, _auto_tracing} =
+      {:ok, auto_tracing} =
         AutoTracingContext.update_auto_tracing(auto_tracing, %{
           transmission_known: false
         })
+
+      set_last_completed_step(auto_tracing, :transmission)
 
       {:ok, transmission_view, _html} =
         live(conn, Routes.auto_tracing_transmission_path(conn, :transmission, case))

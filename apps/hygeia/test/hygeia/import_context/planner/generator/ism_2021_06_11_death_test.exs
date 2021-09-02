@@ -13,6 +13,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_DeathTest do
   alias Hygeia.ImportContext.Import
   alias Hygeia.ImportContext.Planner
   alias Hygeia.ImportContext.Row
+  alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
 
   @moduletag origin: :test
@@ -22,12 +23,18 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_DeathTest do
   @path Application.app_dir(:hygeia, "priv/test/import/example_ism_2021_06_11_death.xlsx")
   @external_resource @path
 
-  setup do
-    tenant_ar = tenant_fixture(%{subdivision: "AR", country: "CH"})
-    tenant_sg = tenant_fixture(%{subdivision: "SG", country: "CH"})
+  setup tags do
+    tenant_ar =
+      tenant_fixture(%{subdivision: "AR", country: "CH", iam_domain: "ar.covid19-tracing.ch"})
+
+    tenant_sg =
+      tenant_fixture(%{subdivision: "SG", country: "CH", iam_domain: "sg.covid19-tracing.ch"})
+
+    tenant_for_import =
+      Enum.find(TenantContext.list_tenants(), &(&1.subdivision == tags[:use_tenant] || "SG"))
 
     {:ok, import} =
-      ImportContext.create_import(tenant_ar, @mime, @path, %{
+      ImportContext.create_import(tenant_for_import, @mime, @path, %{
         type: :ism_2021_06_11_death
       })
 
@@ -37,9 +44,11 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_DeathTest do
   end
 
   test "runs correct plan for new case", %{
-    import: %Import{rows: [row | _others]},
+    import: %Import{rows: rows},
     tenant_sg: %Tenant{uuid: tenant_sg_uuid}
   } do
+    row = Enum.find(rows, &(&1.data["Fall ID"] == 2_327_500))
+
     {true, action_plan_suggestion} = Planner.generate_action_plan_suggestion(row)
 
     action_plan = Enum.map(action_plan_suggestion, &elem(&1, 1))

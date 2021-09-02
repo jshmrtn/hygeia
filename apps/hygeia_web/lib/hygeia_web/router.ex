@@ -156,7 +156,7 @@ defmodule HygeiaWeb.Router do
          AutoTracingLive.Address,
          :address
 
-    live "/cases/:case_uuid/auto-tracing/contact_methods",
+    live "/cases/:case_uuid/auto-tracing/contact-methods",
          AutoTracingLive.ContactMethods,
          :contact_methods
 
@@ -168,7 +168,7 @@ defmodule HygeiaWeb.Router do
          AutoTracingLive.Vaccination,
          :vaccination
 
-    live "/cases/:case_uuid/auto-tracing/covid_app",
+    live "/cases/:case_uuid/auto-tracing/covid-app",
          AutoTracingLive.CovidApp,
          :covid_app
 

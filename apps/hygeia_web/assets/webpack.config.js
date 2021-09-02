@@ -12,7 +12,11 @@ module.exports = (env, options) => {
   return {
     optimization: {
       minimizer: [
-        new TerserPlugin({}),
+        new TerserPlugin({
+          terserOptions: {
+            mangle: false
+          }
+        }),
         new CssMinimizerPlugin({}),
       ],
     },

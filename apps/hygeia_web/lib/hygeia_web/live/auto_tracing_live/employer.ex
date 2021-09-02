@@ -7,11 +7,11 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   alias Phoenix.LiveView.Socket
 
   alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.CaseContext
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
-  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
@@ -41,44 +41,51 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
       |> Repo.preload(person: [:affiliations], auto_tracing: [])
 
     socket =
-      if authorized?(case, :auto_tracing, get_auth(socket)) do
-        person_occupations =
-          Enum.map(
-            case.person.affiliations,
-            &%Occupation{
-              uuid: Ecto.UUID.generate(),
-              kind: &1.kind,
-              kind_other: &1.kind_other,
-              known_organisation_uuid: &1.organisation_uuid
-            }
+      cond do
+        !authorized?(case, :auto_tracing, get_auth(socket)) ->
+          push_redirect(socket,
+            to:
+              Routes.auth_login_path(socket, :login,
+                person_uuid: case.person_uuid,
+                return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+              )
           )
 
-        occupations = person_occupations ++ case.auto_tracing.occupations
+        !AutoTracing.step_available?(case.auto_tracing, :employer) ->
+          push_redirect(socket,
+            to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+          )
 
-        step = %__MODULE__{
-          scholar: case.auto_tracing.scholar,
-          employed:
-            case occupations do
-              [_occupations | _rest] -> true
-              [] -> case.auto_tracing.employed
-            end,
-          occupations: occupations
-        }
-
-        assign(socket,
-          step: step,
-          changeset: %Ecto.Changeset{changeset(step) | action: :validate},
-          person: case.person,
-          auto_tracing: case.auto_tracing
-        )
-      else
-        push_redirect(socket,
-          to:
-            Routes.auth_login_path(socket, :login,
-              person_uuid: case.person_uuid,
-              return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+        true ->
+          person_occupations =
+            Enum.map(
+              case.person.affiliations,
+              &%Occupation{
+                uuid: Ecto.UUID.generate(),
+                kind: &1.kind,
+                kind_other: &1.kind_other,
+                known_organisation_uuid: &1.organisation_uuid
+              }
             )
-        )
+
+          occupations = person_occupations ++ case.auto_tracing.occupations
+
+          step = %__MODULE__{
+            scholar: case.auto_tracing.scholar,
+            employed:
+              case occupations do
+                [_occupations | _rest] -> true
+                [] -> case.auto_tracing.employed
+              end,
+            occupations: occupations
+          }
+
+          assign(socket,
+            step: step,
+            changeset: %Ecto.Changeset{changeset(step) | action: :validate},
+            person: case.person,
+            auto_tracing: case.auto_tracing
+          )
       end
 
     {:noreply, socket}
@@ -197,21 +204,14 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
         {:ok, step} ->
           person_changeset = add_affiliations_to_person(person, step)
 
-          {:ok, person} = CaseContext.update_person(person_changeset)
-
-          person = Repo.preload(person, affiliations: [:organisation])
+          {:ok, _person} = CaseContext.update_person(person_changeset)
 
           auto_tracing_changeset = add_unknown_occupations(auto_tracing, step)
 
           {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
 
           {:ok, auto_tracing} =
-            if auto_tracing.scholar or
-                 Enum.any?(
-                   person.affiliations,
-                   &(match?(%Affiliation{kind: :scholar}, &1) or
-                       match?(%Affiliation{organisation: %Organisation{type: :school}}, &1))
-                 ) do
+            if auto_tracing.scholar do
               {:ok, _auto_tracing} =
                 AutoTracingContext.auto_tracing_add_problem(auto_tracing, :school_related)
             else

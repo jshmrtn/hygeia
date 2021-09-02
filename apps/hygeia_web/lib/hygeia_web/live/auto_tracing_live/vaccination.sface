@@ -4,11 +4,10 @@
   <h2 class="mb-4 mt-5">{gettext("Vaccination")}</h2>
 
   <div class="row">
-    <div class="col-6">
+    <div class="col-12 col-lg-6">
       <Form
         for={@person_changeset}
         change="validate"
-        submit="save"
         class={"p-2 rounded-3 border border-2 border-danger": not @person_changeset.valid?}
       >
         <ErrorTag class="d-block p-1 alert alert-danger" field={:vaccination} />
@@ -39,14 +38,14 @@
             </Field>
             <div class="mt-4 mb-5" :if={Ecto.Changeset.get_field(form.source, :done)}>
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <HygeiaWeb.FieldLabel field={:name} />
                   <Field name={:name} class="form-group">
                     <TextInput class="form-control" />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <HygeiaWeb.FieldLabel field={:jab_dates} />
                   <Field name={:jab_dates} class="form-group">
                     <div

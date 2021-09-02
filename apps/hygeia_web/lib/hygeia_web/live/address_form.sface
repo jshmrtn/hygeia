@@ -6,14 +6,14 @@
   </Field>
 
   <div class="row">
-    <div class="col">
+    <div class="col-12 col-md-6">
       <Field name={:zip} class="form-group">
         <HygeiaWeb.FieldLabel />
         <TextInput opts={disabled: @disabled} class="form-control" field={:zip} />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
-    <div class="col">
+    <div class="col-12 col-md-6">
       <Field name={:place} class="form-group">
         <HygeiaWeb.FieldLabel />
         <TextInput opts={foo: :bar, disabled: @disabled} class="form-control" field={:place} />
@@ -23,7 +23,7 @@
   </div>
 
   <div class="row">
-    <div class="col">
+    <div class="col-12 col-md-6">
       <Field name={:country} class="form-group">
         <HygeiaWeb.FieldLabel />
         <Select
@@ -35,7 +35,7 @@
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>
-    <div class="col">
+    <div class="col-12 col-md-6">
       <Field name={:subdivision} class="form-group">
         <HygeiaWeb.FieldLabel />
         <InputContext assigns={assigns} :let={form: form}>

@@ -80,7 +80,7 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
     |> validate_required(:type)
   end
 
-  def changeset(infection_place, attrs, changeset_params) do
+  def changeset(infection_place, attrs, _changeset_params) do
     infection_place
     |> cast(attrs, [
       :known,

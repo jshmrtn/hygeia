@@ -3,6 +3,7 @@ defmodule HygeiaWeb.AutoTracingLive.End do
 
   use HygeiaWeb, :surface_view
 
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.Repo
   alias Surface.Components.LiveRedirect
@@ -16,20 +17,27 @@ defmodule HygeiaWeb.AutoTracingLive.End do
       |> Repo.preload(person: [], auto_tracing: [])
 
     socket =
-      if authorized?(case, :auto_tracing, get_auth(socket)) do
-        assign(socket,
-          case: case,
-          person: case.person,
-          auto_tracing: case.auto_tracing
-        )
-      else
-        push_redirect(socket,
-          to:
-            Routes.auth_login_path(socket, :login,
-              person_uuid: case.person_uuid,
-              return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
-            )
-        )
+      cond do
+        !authorized?(case, :auto_tracing, get_auth(socket)) ->
+          push_redirect(socket,
+            to:
+              Routes.auth_login_path(socket, :login,
+                person_uuid: case.person_uuid,
+                return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+              )
+          )
+
+        !AutoTracing.step_available?(case.auto_tracing, :end) ->
+          push_redirect(socket,
+            to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+          )
+
+        true ->
+          assign(socket,
+            case: case,
+            person: case.person,
+            auto_tracing: case.auto_tracing
+          )
       end
 
     {:noreply, socket}

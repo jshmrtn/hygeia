@@ -92,6 +92,7 @@ defmodule HygeiaWeb.PersonOverviewLive.Index do
 
     untraced_index_cases =
       for case <- person.cases,
+          match?(%Case{auto_tracing: %AutoTracing{}}, case),
           phase <- case.phases,
           match?(%Phase{details: %Phase.Index{}, quarantine_order: nil}, phase) do
         case

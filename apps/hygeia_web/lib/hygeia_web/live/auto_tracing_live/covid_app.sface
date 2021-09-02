@@ -10,10 +10,13 @@
   />
 
   <p>{gettext("Is the SwissCovid App installed / in operation on your smartphone?")}</p>
-  <Form for={@auto_tracing_changeset} change="validate" submit="save">
+  <Form for={@auto_tracing_changeset} change="validate">
     <InputContext assigns={assigns} :let={form: form}>
       <div class="row">
-        <div class={"col-6", "p-2 rounded-3 border border-2 border-danger": not @auto_tracing_changeset.valid?}>
+        <div class={
+          "col-12 col-lg-6",
+          "p-2 rounded-3 border border-2 border-danger": not @auto_tracing_changeset.valid?
+        }>
           <Field name={:covid_app} class="form-group mb-4">
             <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
               <label class={

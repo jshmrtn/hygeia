@@ -159,11 +159,12 @@
           <a
             class={
               "dropdown-item",
-              disabled: match?(%AutoTracing{last_completed_step: :contact_persons}, @case.auto_tracing)
+              disabled: not is_nil(@case.auto_tracing) and AutoTracing.completed?(@case.auto_tracing)
             }
             href="#"
             :on-click="open_sms_modal"
             phx-value-message={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_sms(@case)}
+            phx-value-create_auto_tracing="true"
             :if={authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
               CaseContext.person_has_mobile_number?(@case.person) and
               TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
@@ -174,10 +175,11 @@
           <a
             class={
               "dropdown-item",
-              disabled: match?(%AutoTracing{last_completed_step: :contact_persons}, @case.auto_tracing)
+              disabled: not is_nil(@case.auto_tracing) and AutoTracing.completed?(@case.auto_tracing)
             }
             href="#"
             :on-click="open_email_modal"
+            phx-value-create_auto_tracing="true"
             phx-value-subject={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_subject(@case)}
             phx-value-body={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_body(@case, :email)}
             :if={authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and

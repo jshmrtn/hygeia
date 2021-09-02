@@ -66,105 +66,108 @@
       </Link>
       <p class="mt-4">{gettext("Additional actions:")}</p>
       <LiveRedirect
-        class="btn btn-lg btn-primary"
+        class="btn btn-lg btn-primary mb-2"
         to={Routes.possible_index_submission_index_path(@socket, :index, @active_case)}
       >
         {gettext("Submit contact persons")}
       </LiveRedirect>
+      <br>
       <LiveRedirect
         class="btn btn-lg btn-primary"
         to={Routes.auto_tracing_auto_tracing_path(@socket, :auto_tracing, @active_case)}
+        :if={not is_nil(@active_case.auto_tracing)}
       >
-        {#case @active_case.auto_tracing}
-          {#match %AutoTracing{last_completed_step: :transmission}}
-            {gettext("Correct Data")}
-          {#match _other}
-            {gettext("Complete Data")}
-        {/case}
+        {#if AutoTracing.completed?(@active_case.auto_tracing)}
+          {gettext("Correct Data")}
+        {#else}
+          {gettext("Complete Data")}
+        {/if}
       </LiveRedirect>
     </div>
 
     <h3>{gettext("History")}</h3>
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th>{gettext("Case")}</th>
-          <th>{gettext("Phase")}</th>
-          <th>{gettext("Start Date")}</th>
-          <th>{gettext("End Date")}</th>
-          <th>{gettext("Tracer")}</th>
-          <th class="text-end">{gettext("Actions")}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr :for={{phase, case} <- @sorted_case_phases}>
-          <td>
-            {case_display_type(case)}<br>
-            <small class="text-nowrap text-muted">
-              {case_display_date(case, timezone)}
-            </small>
-          </td>
-          <td>
-            {case_phase_type_translation(phase.details)}
-          </td>
-          <td>
-            <div class="text-nowrap" :if={not is_nil(phase.start)}>
-              {HygeiaCldr.Date.to_string!(phase.start)}
-            </div>
-          </td>
-          <td>
-            <div class="text-nowrap" :if={not is_nil(phase.end)}>
-              {HygeiaCldr.Date.to_string!(phase.end)}
-            </div>
-          </td>
-          <td>
-            <div :if={not is_nil(case.tracer)}>
-              {case.tracer.display_name}
-            </div>
-            <small class="text-muted">{case.tenant.from_email}</small>
-          </td>
-          <td class="text-end">
-            {#case phase}
-              {#match %Phase{details: %Phase.Index{}}}
-                <LiveRedirect
-                  class="btn btn-sm btn-outline-primary ms-2 mb-2"
-                  to={Routes.possible_index_submission_index_path(@socket, :index, case)}
-                >
-                  {gettext("Submit contact persons")}
-                </LiveRedirect>
-                <Link
-                  class={
-                    "btn btn-sm btn-outline-primary ms-2 mb-2",
-                    disabled: not Phase.can_generate_pdf_confirmation?(phase, case.tenant)
-                  }
-                  to={Routes.pdf_path(@socket, :isolation_confirmation, case.uuid, phase.uuid)}
-                >
-                  {gettext("Isolation Confirmation")}
-                </Link>
-                <Link
-                  class={
-                    "btn btn-sm btn-outline-primary ms-2 mb-2",
-                    disabled: not Phase.can_generate_pdf_end_confirmation?(phase, case.tenant)
-                  }
-                  to={Routes.pdf_path(@socket, :isolation_end_confirmation, case.uuid, phase.uuid)}
-                >
-                  {gettext("Isolation End Confirmation")}
-                </Link>
-              {#match %Phase{details: %Phase.PossibleIndex{}}}
-                <Link
-                  class={
-                    "btn btn-sm btn-outline-primary ms-2",
-                    disabled: not Phase.can_generate_pdf_confirmation?(phase, case.tenant)
-                  }
-                  to={Routes.pdf_path(@socket, :quarantine_confirmation, case.uuid, phase.uuid)}
-                >
-                  {gettext("Quarantine Confirmation")}
-                </Link>
-            {/case}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="overflow-x-auto">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>{gettext("Case")}</th>
+            <th class="d-none d-md-table-cell">{gettext("Phase")}</th>
+            <th>{gettext("Start Date")}</th>
+            <th>{gettext("End Date")}</th>
+            <th>{gettext("Tracer")}</th>
+            <th class="text-end">{gettext("Actions")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr :for={{phase, case} <- @sorted_case_phases}>
+            <td>
+              {case_display_type(case)}<br>
+              <small class="text-nowrap text-muted">
+                {case_display_date(case, timezone)}
+              </small>
+            </td>
+            <td class="d-none d-md-table-cell">
+              {case_phase_type_translation(phase.details)}
+            </td>
+            <td>
+              <div class="text-nowrap" :if={not is_nil(phase.start)}>
+                {HygeiaCldr.Date.to_string!(phase.start)}
+              </div>
+            </td>
+            <td>
+              <div class="text-nowrap" :if={not is_nil(phase.end)}>
+                {HygeiaCldr.Date.to_string!(phase.end)}
+              </div>
+            </td>
+            <td>
+              <div :if={not is_nil(case.tracer)}>
+                {case.tracer.display_name}
+              </div>
+              <small class="text-muted">{case.tenant.from_email}</small>
+            </td>
+            <td class="text-end">
+              {#case phase}
+                {#match %Phase{details: %Phase.Index{}}}
+                  <LiveRedirect
+                    class="btn btn-sm btn-outline-primary ms-2 mb-2"
+                    to={Routes.possible_index_submission_index_path(@socket, :index, case)}
+                  >
+                    {gettext("Submit contact persons")}
+                  </LiveRedirect>
+                  <Link
+                    class={
+                      "btn btn-sm btn-outline-primary ms-2 mb-2",
+                      disabled: not Phase.can_generate_pdf_confirmation?(phase, case.tenant)
+                    }
+                    to={Routes.pdf_path(@socket, :isolation_confirmation, case.uuid, phase.uuid)}
+                  >
+                    {gettext("Isolation Confirmation")}
+                  </Link>
+                  <Link
+                    class={
+                      "btn btn-sm btn-outline-primary ms-2 mb-2",
+                      disabled: not Phase.can_generate_pdf_end_confirmation?(phase, case.tenant)
+                    }
+                    to={Routes.pdf_path(@socket, :isolation_end_confirmation, case.uuid, phase.uuid)}
+                  >
+                    {gettext("Isolation End Confirmation")}
+                  </Link>
+                {#match %Phase{details: %Phase.PossibleIndex{}}}
+                  <Link
+                    class={
+                      "btn btn-sm btn-outline-primary ms-2",
+                      disabled: not Phase.can_generate_pdf_confirmation?(phase, case.tenant)
+                    }
+                    to={Routes.pdf_path(@socket, :quarantine_confirmation, case.uuid, phase.uuid)}
+                  >
+                    {gettext("Quarantine Confirmation")}
+                  </Link>
+              {/case}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </Context>
 </div>

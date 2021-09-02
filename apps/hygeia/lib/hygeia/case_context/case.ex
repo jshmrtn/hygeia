@@ -68,7 +68,7 @@ defmodule Hygeia.CaseContext.Case do
           clinical: Clinical.t(),
           external_references: [ExternalReference.t()],
           hospitalizations: Ecto.Schema.has_many(Hospitalization.t()),
-          monitoring: Monitoring.t(),
+          monitoring: Monitoring.t() | nil,
           phases: [Phase.t()],
           person_uuid: Ecto.UUID.t(),
           person: Ecto.Schema.belongs_to(Person.t()),

@@ -74,14 +74,14 @@
           <hr>
 
           <div class="row">
-            <div class="col">
+            <div class="col-12 col-lg-6">
               <Field name={:first_name} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <TextInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
-            <div class="col">
+            <div class="col-12 col-lg-6">
               <Field name={:last_name} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <TextInput class="form-control" />
@@ -91,14 +91,14 @@
           </div>
 
           <div class="row">
-            <div class="col">
+            <div class="col-12 col-lg-6">
               <Field name={:sex} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <Select class="form-control" options={person_sex_map()} opts={prompt: gettext("Choose Sex")} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
-            <div class="col">
+            <div class="col-12 col-lg-6">
               <Field name={:birth_date} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <DateInput class="form-control" />
@@ -139,7 +139,7 @@
           </p>
 
           <div class="row">
-            <div class="col">
+            <div class="col-12">
               <Field name={:transmission_date} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <DateInput class="form-control" />
@@ -162,57 +162,70 @@
 
         <div :show={@step == :infection_place} id="step_infection_place">
           <Inputs for={:infection_place}>
-            <h2>
-              {gettext(
-                "Where did you meet %{first_name} %{last_name} last?",
-                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-              )}
-            </h2>
+            <InputContext assigns={assigns} :let={form: form}>
+              <h2>
+                {gettext(
+                  "Where did you meet %{first_name} %{last_name} last?",
+                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+                )}
+              </h2>
 
-            <p>
-              {gettext(
-                "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field.",
-                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-              )}
-            </p>
+              <p>
+                {gettext(
+                  "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field.",
+                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+                )}
+              </p>
 
-            <HiddenInput field={:known} value />
+              <HiddenInput field={:known} value />
 
-            <div class="row">
-              <div class="col">
-                <Field name={:name} class="form-group">
-                  <HygeiaWeb.FieldLabel />
-                  <TextInput class="form-control" />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
+              <div class="row">
+                <div class="col-12 col-lg-6">
+                  <Field name={:name} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <Field name={:type} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <Select
+                      class="form-control"
+                      options={infection_place_type_options()}
+                      opts={prompt: gettext("Choose Type")}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+                <div
+                  :if={Ecto.Changeset.get_field(form.source, :type) == :other}
+                  class="col-12 col-lg-6 offset-lg-6"
+                >
+                  <Field name={:type_other} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
               </div>
-              <div class="col">
-                <Field name={:type} class="form-group">
-                  <HygeiaWeb.FieldLabel />
-                  <Select
-                    class="form-control"
-                    options={infection_place_type_options()}
-                    opts={prompt: gettext("Choose Type")}
-                  />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </div>
-            </div>
 
-            <button
-              class="btn btn-primary"
-              type="button"
-              :on-click="advance"
-              disabled={errors_in?(@changeset, [
-                {:infection_place, :known},
-                {:infection_place, :name},
-                {:infection_place, :type}
-              ])}
-            >
-              {gettext("Continue")}
-            </button>
+              <button
+                class="btn btn-primary"
+                type="button"
+                :on-click="advance"
+                disabled={errors_in?(@changeset, [
+                  {:infection_place, :known},
+                  {:infection_place, :name},
+                  {:infection_place, :type},
+                  {:infection_place, :type_other}
+                ])}
+              >
+                {gettext("Continue")}
+              </button>
+            </InputContext>
           </Inputs>
         </div>
 
@@ -298,14 +311,14 @@
           </p>
 
           <div class="row">
-            <div class="col">
+            <div class="col-12 col-lg-6">
               <Field name={:mobile} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <TelephoneInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
-            <div class="col">
+            <div class="col-12 col-lg-6">
               <Field name={:landline} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <TelephoneInput class="form-control" />
@@ -315,7 +328,7 @@
           </div>
 
           <div class="row">
-            <div class="col">
+            <div class="col-12">
               <Field name={:email} class="form-group">
                 <HygeiaWeb.FieldLabel />
                 <EmailInput class="form-control" />

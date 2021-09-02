@@ -146,14 +146,24 @@ defmodule Hygeia.AutoTracingContext do
         %AutoTracing{problems: problems, solved_problems: solved_problems} = auto_tracing,
         problem
       ) do
-    update_auto_tracing(auto_tracing, %{
-      solved_problems:
+    update_params =
+      case problem do
+        :no_contact_method -> %{started_at: DateTime.utc_now()}
+        _other -> %{}
+      end
+
+    update_auto_tracing(
+      auto_tracing,
+      Map.put(
+        update_params,
+        :solved_problems,
         if problem in problems do
           Enum.uniq(solved_problems ++ [problem])
         else
           solved_problems
         end
-    })
+      )
+    )
   end
 
   @doc """

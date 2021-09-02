@@ -14,6 +14,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.TextInput
+  alias Surface.Components.LiveRedirect
 
   data case, :map
   data auto_tracing, :map
@@ -259,4 +260,18 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
 
     {:noreply, assign(socket, person: person, auto_tracing: auto_tracing)}
   end
+
+  @impl Phoenix.LiveView
+  def handle_info({:updated, %AutoTracing{} = auto_tracing, _version}, socket) do
+    {:noreply, assign(socket, auto_tracing: auto_tracing)}
+  end
+
+  def handle_info({:deleted, %AutoTracing{}, _version}, socket) do
+    {:noreply,
+     redirect(socket, to: Routes.case_base_data_path(socket, :show, socket.assigns.case))}
+  end
+
+  def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
+
+  def handle_info(_other, socket), do: {:noreply, socket}
 end

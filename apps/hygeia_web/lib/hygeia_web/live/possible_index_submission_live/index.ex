@@ -45,7 +45,8 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
 
     socket = load_data(socket, socket.assigns.case.uuid)
 
-    if Enum.empty?(socket.assigns.case.possible_index_submissions) do
+    if Enum.empty?(socket.assigns.case.possible_index_submissions) and
+         not is_nil(socket.assigns.case.auto_tracing) do
       AutoTracingContext.auto_tracing_remove_problem(
         socket.assigns.case.auto_tracing,
         :possible_index_submission

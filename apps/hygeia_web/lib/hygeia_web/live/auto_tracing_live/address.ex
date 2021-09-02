@@ -24,28 +24,39 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], auto_tracing: [])
+      |> Repo.preload(tenant: [], person: [], auto_tracing: [])
 
     socket =
-      if authorized?(case, :auto_tracing, get_auth(socket)) do
-        assign(socket,
-          case: case,
-          case_changeset: %Ecto.Changeset{CaseContext.change_case(case) | action: :validate},
-          person: case.person,
-          person_changeset: %Ecto.Changeset{
-            CaseContext.change_person(case.person, %{}, %{address_required: true})
-            | action: :validate
-          },
-          auto_tracing: case.auto_tracing
-        )
-      else
-        push_redirect(socket,
-          to:
-            Routes.auth_login_path(socket, :login,
-              person_uuid: case.person_uuid,
-              return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
-            )
-        )
+      cond do
+        !authorized?(case, :auto_tracing, get_auth(socket)) ->
+          push_redirect(socket,
+            to:
+              Routes.auth_login_path(socket, :login,
+                person_uuid: case.person_uuid,
+                return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+              )
+          )
+
+        !AutoTracing.step_available?(case.auto_tracing, :address) ->
+          push_redirect(socket,
+            to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+          )
+
+        true ->
+          assign(socket,
+            case: case,
+            case_changeset: %Ecto.Changeset{CaseContext.change_case(case) | action: :validate},
+            person: case.person,
+            person_changeset: %Ecto.Changeset{
+              CaseContext.change_person(
+                case.person,
+                %{address: %{subdivision: case.tenant.subdivision, country: case.tenant.country}},
+                %{address_required: true}
+              )
+              | action: :validate
+            },
+            auto_tracing: case.auto_tracing
+          )
       end
 
     {:noreply, socket}
