@@ -6,7 +6,6 @@
   <Form
     for={@changeset}
     change="validate"
-    submit="save"
     class={"mb-4", "p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}
   >
     <div class="row gx-7">

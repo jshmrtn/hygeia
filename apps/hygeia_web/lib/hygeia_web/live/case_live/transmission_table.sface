@@ -26,7 +26,7 @@
           :for={transmission <- @transmissions}
           resource={transmission}
           action={:list}
-          id={"transmission-#{transmission.uuid}"}
+          id={"#{@id_prefix}-#{transmission.uuid}"}
           wrapper_tag={:tr}
         >
           <td :if={@show_recipient}>

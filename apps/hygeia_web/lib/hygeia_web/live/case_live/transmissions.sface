@@ -28,6 +28,7 @@
           transmissions={@case.received_transmissions}
           show_recipient={false}
           id="received_transmissions"
+          id_prefix="transmission-received"
         />
 
         <div class="d-flex justify-content-between mb-1 mt-5">
@@ -71,6 +72,7 @@
           transmissions={@case.propagated_transmissions}
           show_propagator={false}
           id="propagated_transmissions"
+          id_prefix="transmission-propagated"
         />
       </div>
     </div>

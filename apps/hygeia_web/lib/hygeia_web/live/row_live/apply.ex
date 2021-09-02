@@ -198,6 +198,16 @@ defmodule HygeiaWeb.RowLive.Apply do
 
   def handle_event(
         "add_note",
+        %{"add_note" => %{"note" => "", "index" => index}} = _params,
+        socket
+      ) do
+    patch_action_plan(socket, index, fn %Action.AddNote{} = action ->
+      %Action.AddNote{action | action: :skip}
+    end)
+  end
+
+  def handle_event(
+        "add_note",
         %{"add_note" => %{"note" => note, "pinned" => pinned, "index" => index}} = _params,
         socket
       ) do
