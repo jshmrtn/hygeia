@@ -29,7 +29,7 @@ defmodule Hygeia.CaseContext.Case.Monitoring do
           first_contact: Date.t() | nil,
           location: IsolationLocation.t() | nil,
           location_details: String.t() | nil,
-          address: Address.t()
+          address: Address.t() | nil
         }
 
   embedded_schema do
