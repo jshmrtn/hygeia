@@ -10,7 +10,7 @@
   />
 
   <p>{gettext("Is the SwissCovid App installed / in operation on your smartphone?")}</p>
-  <Form for={@auto_tracing_changeset} change="validate" submit="save">
+  <Form for={@auto_tracing_changeset} change="validate">
     <InputContext assigns={assigns} :let={form: form}>
       <div class="row">
         <div class={

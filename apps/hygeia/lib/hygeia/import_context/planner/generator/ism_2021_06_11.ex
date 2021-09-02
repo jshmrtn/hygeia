@@ -73,7 +73,14 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
                Row.get_change_field(data, [field_mapping.tenant_subdivision]),
              %Tenant{} = tenant <-
                Enum.find(tenants, &match?(%Tenant{subdivision: ^subdivision}, &1)) do
-          {:certain, tenant}
+          certainty =
+            cond do
+              !Tenant.is_internal_managed_tenant?(tenant) -> :input_needed
+              tenant.uuid != row_tenant.uuid -> :uncertain
+              true -> :certain
+            end
+
+          {certainty, tenant}
         else
           nil -> {:uncertain, row_tenant}
         end
