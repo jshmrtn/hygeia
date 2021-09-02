@@ -7,7 +7,6 @@
       <Form
         for={@person_changeset}
         change="validate"
-        submit="save"
         class={"p-2 rounded-3 border border-2 border-danger": not @person_changeset.valid?}
         opts={autocomplete: "off", id: "person_address-form"}
       >
@@ -27,7 +26,6 @@
       <Form
         for={@case_changeset}
         change="validate"
-        submit="save"
         opts={class: if(not @case_changeset.valid?, do: "p-2 rounded-3 border border-2 border-danger")}
       >
         <ErrorTag field={:monitoring} class="d-block p-1 alert alert-danger" />

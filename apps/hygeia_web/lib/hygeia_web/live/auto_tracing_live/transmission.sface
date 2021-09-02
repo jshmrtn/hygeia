@@ -5,7 +5,7 @@
     {gettext("Transmission")}
   </h2>
 
-  <Form for={@auto_tracing_changeset} change="validate" submit="save">
+  <Form for={@auto_tracing_changeset} change="validate">
     <ErrorTag class="d-block p-1 alert alert-danger" field={:transmission} />
     <Inputs for={:transmission}>
       <InputContext assigns={assigns} :let={form: form}>

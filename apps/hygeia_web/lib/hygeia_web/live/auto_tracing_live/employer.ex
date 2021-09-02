@@ -12,7 +12,6 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   alias Hygeia.CaseContext
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
-  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
@@ -205,7 +204,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
         {:ok, step} ->
           person_changeset = add_affiliations_to_person(person, step)
 
-          {:ok, person} = CaseContext.update_person(person_changeset)
+          {:ok, _person} = CaseContext.update_person(person_changeset)
 
           auto_tracing_changeset = add_unknown_occupations(auto_tracing, step)
 

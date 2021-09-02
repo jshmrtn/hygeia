@@ -16,6 +16,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
   alias Hygeia.ImportContext.Import
   alias Hygeia.ImportContext.Planner
   alias Hygeia.ImportContext.Row
+  alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
 
   @moduletag origin: :test
@@ -25,12 +26,18 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
   @path Application.app_dir(:hygeia, "priv/test/import/example_ism_2021_06_11_test.xlsx")
   @external_resource @path
 
-  setup do
-    tenant_ar = tenant_fixture(%{subdivision: "AR", country: "CH"})
-    tenant_sg = tenant_fixture(%{subdivision: "SG", country: "CH"})
+  setup tags do
+    tenant_ar =
+      tenant_fixture(%{subdivision: "AR", country: "CH", iam_domain: "ar.covid19-tracing.ch"})
+
+    tenant_sg =
+      tenant_fixture(%{subdivision: "SG", country: "CH", iam_domain: "sg.covid19-tracing.ch"})
+
+    tenant_for_import =
+      Enum.find(TenantContext.list_tenants(), &(&1.subdivision == tags[:use_tenant] || "SG"))
 
     {:ok, import} =
-      ImportContext.create_import(tenant_ar, @mime, @path, %{
+      ImportContext.create_import(tenant_for_import, @mime, @path, %{
         type: :ism_2021_06_11_test
       })
 
@@ -242,5 +249,19 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
              },
              tenant_uuid: ^tenant_sg_uuid
            } = person
+  end
+
+  @tag use_tenant: "AR"
+  test "warns when using the wrong tenant", %{
+    import: %Import{rows: rows},
+    tenant_sg: %Tenant{uuid: tenant_sg_uuid}
+  } do
+    row = Enum.find(rows, &(&1.data["Meldung ID"] == 1_794_060))
+
+    assert {true,
+            [
+              {:uncertain, %Planner.Action.ChooseTenant{tenant: %Tenant{uuid: ^tenant_sg_uuid}}}
+              | _others
+            ]} = Planner.generate_action_plan_suggestion(row)
   end
 end

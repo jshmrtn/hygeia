@@ -8,7 +8,6 @@
       <Form
         for={@person_changeset}
         change="validate"
-        submit="save"
         class={"p-2 rounded-3 border border-2 border-danger": not @person_changeset.valid?}
       >
         <ErrorTag class="d-block p-1 alert alert-danger" field={:vaccination} />
