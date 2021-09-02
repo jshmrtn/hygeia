@@ -9,27 +9,27 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Propagator do
   alias Hygeia.CaseContext.Address
 
   @type t :: %__MODULE__{
-          propagator_first_name: String.t() | nil,
-          propagator_last_name: String.t() | nil,
-          propagator_address: Address.t() | nil,
-          propagator_phone: String.t() | nil,
-          propagator_email: String.t() | nil
+          first_name: String.t() | nil,
+          last_name: String.t() | nil,
+          address: Address.t() | nil,
+          phone: String.t() | nil,
+          email: String.t() | nil
         }
 
   @type empty :: %__MODULE__{
-          propagator_first_name: String.t() | nil,
-          propagator_last_name: String.t() | nil,
-          propagator_address: Address.t() | nil,
-          propagator_phone: String.t() | nil,
-          propagator_email: String.t() | nil
+          first_name: String.t() | nil,
+          last_name: String.t() | nil,
+          address: Address.t() | nil,
+          phone: String.t() | nil,
+          email: String.t() | nil
         }
 
   embedded_schema do
-    field :propagator_first_name, :string
-    field :propagator_last_name, :string
-    field :propagator_phone, :string
-    field :propagator_email, :string
-    embeds_one :propagator_address, Address, on_replace: :update
+    field :first_name, :string
+    field :last_name, :string
+    field :phone, :string
+    field :email, :string
+    embeds_one :address, Address, on_replace: :update
   end
 
   @spec changeset(transmission :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
@@ -37,12 +37,12 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Propagator do
   def changeset(transmission, attrs) do
     transmission
     |> cast(attrs, [
-      :propagator_first_name,
-      :propagator_last_name,
-      :propagator_phone,
-      :propagator_email
+      :first_name,
+      :last_name,
+      :phone,
+      :email
     ])
-    |> validate_and_normalize_phone(:propagator_phone, fn
+    |> validate_and_normalize_phone(:phone, fn
       :mobile -> :ok
       :fixed_line -> :ok
       :fixed_line_or_mobile -> :ok
@@ -52,15 +52,15 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Propagator do
       :unknown -> :ok
       _other -> {:error, "not a phone number"}
     end)
-    |> validate_email(:propagator_email)
-    |> cast_embed(:propagator_address)
+    |> validate_email(:email)
+    |> cast_embed(:address)
     |> validate_propagator_contact_method_required()
   end
 
   defp validate_propagator_contact_method_required(changeset) do
-    case {fetch_field!(changeset, :propagator_phone), fetch_field!(changeset, :propagator_email)} do
+    case {fetch_field!(changeset, :phone), fetch_field!(changeset, :email)} do
       {nil, nil} ->
-        validate_required(changeset, [:propagator_phone],
+        validate_required(changeset, [:phone],
           message: dgettext("errors", "at least one contact method must be provided")
         )
 
@@ -68,5 +68,4 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Propagator do
         changeset
     end
   end
-
 end

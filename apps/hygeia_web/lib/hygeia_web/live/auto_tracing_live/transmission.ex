@@ -7,8 +7,9 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
 
   import HygeiaGettext
 
+  alias Phoenix.LiveView.Socket
+
   alias Hygeia.AutoTracingContext
-  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Propagator
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Transmission
@@ -19,6 +20,7 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
+  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
@@ -40,6 +42,7 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
           transmission: Transmission.t() | nil
         }
 
+  @primary_key false
   embedded_schema do
     field :known, :boolean
     field :propagator_known, :boolean
@@ -54,7 +57,7 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], auto_tracing: [])
+      |> Repo.preload(auto_tracing: [])
 
     socket =
       if authorized?(case, :auto_tracing, get_auth(socket)) do
@@ -70,11 +73,10 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
           propagator: case.auto_tracing.propagator
         }
 
-
         assign(socket,
           changeset: %Ecto.Changeset{changeset(step) | action: :validate},
+          transmission: transmission,
           case: case,
-          person: case.person,
           auto_tracing: case.auto_tracing
         )
       else
@@ -96,45 +98,105 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
         %{"transmission" => transmission},
         socket
       ) do
-IO.inspect(transmission)
-    {:noreply, assign(socket, :changeset,  %Ecto.Changeset{changeset(%__MODULE__{}, transmission) | action: :validate}|>IO.inspect())}
+    {:noreply,
+     assign(socket, :changeset, %Ecto.Changeset{
+       changeset(%__MODULE__{}, transmission)
+       | action: :validate
+     })}
   end
 
   @impl Phoenix.LiveView
-  def handle_event("advance", _params, socket) do
-    {:ok, auto_tracing} =
-      AutoTracingContext.update_auto_tracing(
-        %Ecto.Changeset{socket.assigns.auto_tracing_changeset | action: nil},
-        %{},
-        %{transmission_required: true}
-      )
+  def handle_event(
+        "save",
+        _params,
+        %Socket{
+          assigns: %{changeset: changeset, auto_tracing: auto_tracing, transmission: transmission}
+        } = socket
+      ) do
+    transmission = if transmission == nil, do: %Transmission{}, else: transmission
 
-    {:ok, auto_tracing} =
-      case auto_tracing do
-        %AutoTracing{transmission: %AutoTracing.Transmission{known: true}} ->
-          AutoTracingContext.auto_tracing_add_problem(
-            socket.assigns.auto_tracing,
-            :link_propagator
-          )
+    socket =
+      changeset
+      |> apply_action(:validate)
+      |> case do
+        {:error, changeset} ->
+          assign(socket, changeset: changeset)
 
-        %AutoTracing{} ->
-          AutoTracingContext.auto_tracing_remove_problem(
-            socket.assigns.auto_tracing,
-            :link_propagator
+        {:ok, step} ->
+          {:ok, auto_tracing} =
+            if fetch_field!(changeset, :known) do
+              transmission_params =
+                step.transmission
+                |> Map.take([:date, :recipient_internal, :recipient_case_uuid])
+                |> Map.put(:infection_place, unpack(step.transmission.infection_place))
+
+              transmission_changeset =
+                CaseContext.change_transmission(transmission, transmission_params, %{
+                  place_type_required: true
+                })
+
+              {:ok, transmission} =
+                if transmission.uuid do
+                  CaseContext.update_transmission(transmission_changeset)
+                else
+                  CaseContext.create_transmission(apply_changes(transmission_changeset), %{})
+                end
+
+              auto_tracing_changeset =
+                AutoTracingContext.change_auto_tracing(auto_tracing, %{
+                  transmission_known: true,
+                  transmission_uuid: transmission.uuid
+                })
+
+              {:ok, _auto_tracing} =
+                if fetch_field!(changeset, :propagator_known) do
+                  {:ok, auto_tracing} =
+                    auto_tracing_changeset
+                    |> AutoTracingContext.change_auto_tracing(%{propagator_known: true})
+                    |> put_embed(:propagator, fetch_field!(changeset, :propagator))
+                    |> AutoTracingContext.update_auto_tracing()
+
+                  AutoTracingContext.auto_tracing_add_problem(auto_tracing, :link_propagator)
+                else
+                  {:ok, auto_tracing} =
+                    auto_tracing_changeset
+                    |> AutoTracingContext.change_auto_tracing(%{propagator_known: false})
+                    |> put_change(:propagator, nil)
+                    |> AutoTracingContext.update_auto_tracing()
+
+                  AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :link_propagator)
+                end
+            else
+              if auto_tracing.transmission_uuid do
+                {:ok, _transmission} = CaseContext.delete_transmission(transmission)
+              end
+
+              {:ok, auto_tracing} =
+                auto_tracing
+                |> AutoTracingContext.change_auto_tracing(%{
+                  transmission_known: false,
+                  propagator_known: nil
+                })
+                |> put_change(:propagator, nil)
+                |> put_change(:transmission_uuid, nil)
+                |> AutoTracingContext.update_auto_tracing()
+
+              AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :link_propagator)
+            end
+
+          {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :transmission)
+
+          push_redirect(socket,
+            to:
+              Routes.auto_tracing_contact_persons_path(
+                socket,
+                :contact_persons,
+                socket.assigns.auto_tracing.case_uuid
+              )
           )
       end
 
-    {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :transmission)
-
-    {:noreply,
-     push_redirect(socket,
-       to:
-         Routes.auto_tracing_contact_persons_path(
-           socket,
-           :contact_persons,
-           socket.assigns.auto_tracing.case_uuid
-         )
-     )}
+    {:noreply, socket}
   end
 
   @spec changeset(transmission :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
@@ -146,22 +208,27 @@ IO.inspect(transmission)
       :propagator_known
     ])
     |> validate_required(:known)
-    |> validate_location_required()
+    |> validate_transmission_required()
     |> validate_propagator_required()
   end
 
-  defp validate_location_required(changeset) do
+  defp validate_transmission_required(changeset) do
     changeset
     |> fetch_field!(:known)
     |> case do
       true ->
         cast_embed(changeset, :transmission,
+          with: &Transmission.changeset(&1, &2, %{place_type_required: true}),
           required: true,
-          required_message: gettext("please fill in the information about the place where you contracted the virus")
+          required_message:
+            gettext(
+              "please fill in the information about the place where you contracted the virus"
+            )
         )
 
       _else ->
         put_change(changeset, :transmission, nil)
+        put_change(changeset, :propagator_known, nil)
     end
   end
 
@@ -172,11 +239,21 @@ IO.inspect(transmission)
       true ->
         cast_embed(changeset, :propagator,
           required: true,
-          required_message: gettext("please fill in the information of the person who passed on the virus to you")
+          required_message:
+            gettext("please fill in the information of the person who passed on the virus to you")
         )
 
       _else ->
         put_change(changeset, :propagator, nil)
     end
   end
+
+  defp unpack(struct) when is_struct(struct) do
+    struct
+    |> Map.from_struct()
+    |> Enum.map(fn {key, value} -> {key, unpack(value)} end)
+    |> Map.new()
+  end
+
+  defp unpack(other), do: other
 end

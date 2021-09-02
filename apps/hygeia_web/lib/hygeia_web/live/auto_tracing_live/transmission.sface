@@ -5,7 +5,12 @@
     {gettext("Transmission")}
   </h2>
 
-  <Form for={@changeset} change="validate" submit="save">
+  <Form
+    opts={id: "auto-tracing-transmission-form"}
+    for={@changeset}
+    change="validate"
+    submit="save"
+  >
     <div class={"p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}>
       <div class="row mb-4">
         <div class="col-12">
@@ -42,45 +47,56 @@
         <div class="col-6">
           <h4>{gettext("Details")}</h4>
           <p class="mb-4">
-            {gettext("Please give us the details.")}
+            {gettext(
+              "If you were present at this location for multiple days, enter the last day into the date field."
+            )}
           </p>
           <ErrorTag field={:transmission} class="d-block invalid-feedback" />
           <Inputs for={:transmission}>
-            <HiddenInput field={:recipient_internal} value={true} />
-            <HiddenInput field={:recipient_case_uuid} value={@case.uuid} />
-            <div class="row">
-              <div class="col-6">
-                <Field name={:date} class="form-group">
-                  <HygeiaWeb.FieldLabel />
-                  <DateInput class="form-control" />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-                <Inputs for={:infection_place}>
-                  <Field name={:name} class="form-group">
+            <InputContext assigns={assigns} :let={form: transmission}>
+              <HiddenInput field={:uuid} value={fetch_field!(transmission.source, :uuid)} />
+              <HiddenInput field={:recipient_internal} value />
+              <HiddenInput field={:recipient_case_uuid} value={@case.uuid} />
+              <div class="row">
+                <div class="col-6">
+                  <Field name={:date} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <TextInput class="form-control" />
+                    <DateInput class="form-control" />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
-                  <Field name={:type} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <Select
-                      class="form-control"
-                      options={infection_place_type_options()}
-                      opts={prompt: gettext("Choose Type")}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                  <Field name={:flight_information} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <TextInput class="form-control" />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                  <Inputs for={:address}>
-                    <HygeiaWeb.AddressForm id="infection_place_address" />
+                  <Inputs for={:infection_place}>
+                    <InputContext assigns={assigns} :let={form: infection_place}>
+                      <HiddenInput field={:uuid} value={fetch_field!(infection_place.source, :uuid)} />
+                      <Field name={:name} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field name={:type} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <Select
+                          class="form-control"
+                          options={infection_place_type_options()}
+                          opts={prompt: gettext("Choose Type")}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field name={:flight_information} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Inputs for={:address}>
+                        <InputContext assigns={assigns} :let={form: address}>
+                          <HiddenInput field={:uuid} value={fetch_field!(address.source, :uuid)} />
+                          <HygeiaWeb.AddressForm id="infection_place_address" />
+                        </InputContext>
+                      </Inputs>
+                    </InputContext>
                   </Inputs>
-                </Inputs>
+                </div>
               </div>
-            </div>
+            </InputContext>
           </Inputs>
         </div>
 
@@ -114,33 +130,34 @@
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
           <div :if={Ecto.Changeset.get_field(@changeset, :propagator_known)} class="row mt-4">
+            <ErrorTag field={:propagator} class="d-block invalid-feedback" />
             <Inputs for={:propagator}>
               <div class="col-6">
-                <Field name={:propagator_first_name} class="form-group">
+                <Field name={:first_name} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <TextInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
-                <Field name={:propagator_phone} class="form-group">
+                <Field name={:phone} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <TelephoneInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
               <div class="col-6">
-                <Field name={:propagator_last_name} class="form-group">
+                <Field name={:last_name} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <TextInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
-                <Field name={:propagator_email} class="form-group">
+                <Field name={:email} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <EmailInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
               <div class="col-12">
-                <Inputs for={:propagator_address}>
+                <Inputs for={:address}>
                   <HygeiaWeb.AddressForm id="propagator_address" />
                 </Inputs>
               </div>
@@ -159,12 +176,7 @@
       >
         {gettext("Back")}
       </LiveRedirect>
-      <button
-        class="btn btn-primary"
-        type="button"
-        :on-click="advance"
-        disabled={not @changeset.valid?}
-      >
+      <button class="btn btn-primary" type="submit" disabled={not @changeset.valid?}>
         {gettext("Continue")}
       </button>
     </div>

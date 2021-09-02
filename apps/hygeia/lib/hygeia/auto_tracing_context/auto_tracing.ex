@@ -72,7 +72,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
     embeds_many :occupations, Occupation, on_replace: :delete
 
-    embeds_one :propagator, Propagator, on_replace: :update
+    embeds_one :propagator, Propagator, on_replace: :delete
+
     belongs_to :transmission, Transmission,
       foreign_key: :transmission_uuid,
       references: :uuid
@@ -121,10 +122,13 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :has_contact_persons,
       :problems,
       :solved_problems,
-      :transmission_uuid
+      :transmission_uuid,
+      :transmission_known,
+      :propagator_known
     ])
     |> validate_required([:current_step, :case_uuid])
     |> cast_embed(:occupations)
+    |> foreign_key_constraint(:transmission_uuid)
   end
 
   defp validate_transmission_required(changeset) do

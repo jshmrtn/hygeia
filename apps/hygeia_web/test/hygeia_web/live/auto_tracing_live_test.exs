@@ -328,15 +328,15 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     } do
       {:ok, _auto_tracing} =
         AutoTracingContext.update_auto_tracing(auto_tracing, %{
-          "transmission" => %{"known" => false}
+          transmission_known: false
         })
 
       {:ok, transmission_view, _html} =
         live(conn, Routes.auto_tracing_transmission_path(conn, :transmission, case))
 
       assert transmission_view
-             |> element("button", "Continue")
-             |> render_click()
+             |> form("#auto-tracing-transmission-form")
+             |> render_submit()
 
       assert_redirect(
         transmission_view,

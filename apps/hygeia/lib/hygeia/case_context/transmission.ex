@@ -51,6 +51,8 @@ defmodule Hygeia.CaseContext.Transmission do
           updated_at: DateTime.t() | nil
         }
 
+  @type changeset_params :: %{optional(:place_type_required) => boolean()}
+
   @derive {Phoenix.Param, key: :uuid}
 
   schema "transmissions" do
@@ -71,11 +73,27 @@ defmodule Hygeia.CaseContext.Transmission do
     timestamps()
   end
 
-  @spec changeset(transmission :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec changeset(
+          transmission :: t | empty | Ecto.Changeset.t(t | empty),
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: changeset_params
+        ) ::
           Ecto.Changeset.t(t)
-  def changeset(transmission, attrs) do
+  def changeset(transmission, attrs \\ %{}, changeset_params \\ %{})
+
+  def changeset(transmission, attrs, %{place_type_required: true} = changeset_params) do
+    transmission
+    |> changeset(attrs, %{changeset_params | place_type_required: false})
+    |> cast_embed(:infection_place,
+      with: &InfectionPlace.changeset(&1, &2, %{type_required: true}),
+      required: true
+    )
+  end
+
+  def changeset(transmission, attrs, _changeset_params) do
     transmission
     |> cast(attrs, [
+      :uuid,
       :date,
       :comment,
       :recipient_internal,
