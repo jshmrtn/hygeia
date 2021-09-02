@@ -105,14 +105,14 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
               propagator_internal: propagator_internal
             })
         )
-        |> then(fn socket ->
-            if should_redirect? do
-              push_redirect(socket,
-                to: Routes.auto_tracing_resolve_problems_path(socket, :resolve_problems, case.uuid)
-              )
-            else
-              socket
-            end
+        |> Kernel.then(fn socket ->
+          if should_redirect? do
+            push_redirect(socket,
+              to: Routes.auto_tracing_resolve_problems_path(socket, :resolve_problems, case.uuid)
+            )
+          else
+            socket
+          end
         end)
       else
         socket
