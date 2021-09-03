@@ -6,6 +6,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
   use Hygeia, :model
 
   import EctoEnum
+  import HygeiaGettext
 
   defenum TestReason, :test_reason, [
     "symptoms",
@@ -83,7 +84,18 @@ defmodule Hygeia.CaseContext.Case.Clinical do
       :symptom_start
     ])
     |> validate_required([])
+    |> validate_past_date(:symptom_start)
     |> clear_symptoms()
+  end
+
+  defp validate_past_date(changeset, field) do
+    validate_change(changeset, field, fn ^field, value ->
+      if Date.compare(value, Date.utc_today()) in [:lt, :eq] do
+        []
+      else
+        [{field, dgettext("errors", "date must be in the past")}]
+      end
+    end)
   end
 
   defp validate_required_when_has_symptoms(changeset) do
