@@ -7,9 +7,11 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.AutoTracingContext.AutoTracing.Problem
+  alias Hygeia.AutoTracingContext.AutoTracing.Propagator
   alias Hygeia.AutoTracingContext.AutoTracing.Step
-  alias Hygeia.AutoTracingContext.AutoTracing.Transmission
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.Transmission
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
@@ -67,11 +69,17 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :problems, {:array, Problem}, default: []
     field :solved_problems, {:array, Problem}, default: []
     field :unsolved_problems, {:array, Problem}, read_after_writes: true
+    field :transmission_known, :boolean
+    field :propagator_known, :boolean
     field :started_at, :utc_datetime_usec, autogenerate: {DateTime, :utc_now, []}
 
     embeds_many :occupations, Occupation, on_replace: :delete
 
-    embeds_one :transmission, Transmission, on_replace: :update
+    embeds_one :propagator, Propagator, on_replace: :delete
+
+    belongs_to :transmission, Transmission,
+      foreign_key: :transmission_uuid,
+      references: :uuid
 
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
 
@@ -117,11 +125,14 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :has_contact_persons,
       :problems,
       :solved_problems,
+      :transmission_uuid,
+      :transmission_known,
+      :propagator_known,
       :started_at
     ])
     |> validate_required([:current_step, :case_uuid])
     |> cast_embed(:occupations)
-    |> cast_embed(:transmission)
+    |> foreign_key_constraint(:transmission_uuid)
   end
 
   defp validate_transmission_required(changeset) do

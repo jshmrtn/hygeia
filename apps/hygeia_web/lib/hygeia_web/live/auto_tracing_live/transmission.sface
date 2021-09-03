@@ -5,49 +5,58 @@
     {gettext("Transmission")}
   </h2>
 
-  <Form for={@auto_tracing_changeset} change="validate">
-    <ErrorTag class="d-block p-1 alert alert-danger" field={:transmission} />
-    <Inputs for={:transmission}>
-      <InputContext assigns={assigns} :let={form: form}>
-        <div class={"p-2 rounded-3 border border-2 border-danger": not @auto_tracing_changeset.valid?}>
-          <div class="row mb-4">
-            <div class="col-12">
-              <p>
-                {gettext("Do you know how you got infected?")}
-              </p>
-              <Field name={:known} class="form-group">
-                <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                  <label class={
-                    "btn",
-                    "btn-sm",
-                    "btn-outline-primary",
-                    active: Ecto.Changeset.get_field(form.source, :known) == true
-                  }>
-                    <RadioButton value />
-                    {gettext("Yes")}
-                  </label>
-                  <label class={
-                    "btn",
-                    "btn-sm",
-                    "btn-outline-primary",
-                    active: Ecto.Changeset.get_field(form.source, :known) == false
-                  }>
-                    <RadioButton value={false} />
-                    {gettext("No")}
-                  </label>
-                </div>
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
+  <Form
+    opts={id: "auto-tracing-transmission-form"}
+    for={@changeset}
+    change="validate"
+    submit="save"
+  >
+    <div class={"p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}>
+      <div class="row mb-4">
+        <div class="col-12">
+          <p>
+            {gettext("Do you know how you got infected?")}
+          </p>
+          <Field name={:known} class="form-group">
+            <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(@changeset, :known)
+              }>
+                <RadioButton value />
+                {gettext("Yes")}
+              </label>
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(@changeset, :known) == false
+              }>
+                <RadioButton value={false} />
+                {gettext("No")}
+              </label>
             </div>
-          </div>
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </div>
+      </div>
 
-          <div :show={Ecto.Changeset.get_field(form.source, :known) == true} class="row mb-5 gx-7">
-            <div class="col-12 col-lg-6 mb-5 mb-lg-0">
-              <h4>{gettext("Details")}</h4>
-              <p class="mb-4">
-                {gettext("Please give us the details.")}
-              </p>
-
+      <div :show={Ecto.Changeset.get_field(@changeset, :known)} class="row mb-5 gx-7">
+        <div class="col-12 col-lg-6 mb-5 mb-lg-0">
+          <h4>{gettext("Details")}</h4>
+          <p class="mb-4">
+            {gettext(
+              "If you were present at this location for multiple days, enter the last day into the date field."
+            )}
+          </p>
+          <ErrorTag field={:transmission} class="d-block invalid-feedback" />
+          <Inputs for={:transmission}>
+            <InputContext assigns={assigns} :let={form: transmission}>
+              <HiddenInput field={:uuid} value={fetch_field!(transmission.source, :uuid)} />
+              <HiddenInput field={:recipient_internal} value />
+              <HiddenInput field={:recipient_case_uuid} value={@case.uuid} />
               <div class="row">
                 <div class="col-12 col-md-6">
                   <Field name={:date} class="form-group">
@@ -63,8 +72,8 @@
                     </Field>
                   </Inputs>
                 </div>
-                <Inputs for={:infection_place}>
-                  <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6">
+                  <Inputs for={:infection_place}>
                     <Field name={:type} class="form-group">
                       <HygeiaWeb.FieldLabel />
                       <Select
@@ -79,99 +88,99 @@
                       <TextInput class="form-control" />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
-                  </div>
-                  <div class="col-12">
+                  </Inputs>
+                </div>
+                <div class="col-12">
+                  <Inputs for={:infection_place}>
                     <Inputs for={:address}>
                       <HygeiaWeb.AddressForm id="infection_place_address" />
                     </Inputs>
-                  </div>
-                </Inputs>
-              </div>
-            </div>
-
-            <div class="col-12 col-lg-6">
-              <h4>{gettext("Person")}</h4>
-
-              <p class="mb-4">
-                {gettext("Did you get infected from a specific person? If so please enter the details.")}
-              </p>
-              <Field name={:propagator_known}>
-                <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                  <label class={
-                    "btn",
-                    "btn-sm",
-                    "btn-outline-primary",
-                    active: Ecto.Changeset.get_field(form.source, :propagator_known) == true
-                  }>
-                    <RadioButton value />
-                    {gettext("Yes")}
-                  </label>
-                  <label class={
-                    "btn",
-                    "btn-sm",
-                    "btn-outline-primary",
-                    active: Ecto.Changeset.get_field(form.source, :propagator_known) == false
-                  }>
-                    <RadioButton value={false} />
-                    {gettext("No")}
-                  </label>
-                </div>
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-              <div :if={Ecto.Changeset.get_field(form.source, :propagator_known) == true} class="row mt-4">
-                <div class="col-12 col-md-6">
-                  <Field name={:propagator_first_name} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <TextInput class="form-control" />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                  <Field name={:propagator_phone} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <TelephoneInput class="form-control" />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-                <div class="col-12 col-md-6">
-                  <Field name={:propagator_last_name} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <TextInput class="form-control" />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                  <Field name={:propagator_email} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <EmailInput class="form-control" />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-                <div class="col-12">
-                  <Inputs for={:propagator_address}>
-                    <HygeiaWeb.AddressForm id="propagator_address" />
                   </Inputs>
                 </div>
               </div>
+            </InputContext>
+          </Inputs>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <h4>{gettext("Person")}</h4>
+
+          <p class="mb-4">
+            {gettext("Did you get infected from a specific person? If so please enter the details.")}
+          </p>
+          <Field name={:propagator_known}>
+            <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(@changeset, :propagator_known)
+              }>
+                <RadioButton value />
+                {gettext("Yes")}
+              </label>
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(@changeset, :propagator_known) == false
+              }>
+                <RadioButton value={false} />
+                {gettext("No")}
+              </label>
             </div>
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+          <div :if={Ecto.Changeset.get_field(@changeset, :propagator_known)} class="row mt-4">
+            <ErrorTag field={:propagator} class="d-block invalid-feedback" />
+            <Inputs for={:propagator}>
+              <div class="col-12 col-md-6">
+                <Field name={:first_name} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TextInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+                <Field name={:phone} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TelephoneInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+              <div class="col-12 col-md-6">
+                <Field name={:last_name} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TextInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+                <Field name={:email} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <EmailInput class="form-control" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+              <div class="col-12">
+                <Inputs for={:address}>
+                  <HygeiaWeb.AddressForm id="propagator_address" />
+                </Inputs>
+              </div>
+            </Inputs>
           </div>
         </div>
+      </div>
+    </div>
 
-        <hr class="mb-4">
+    <hr class="mb-4">
 
-        <div>
-          <LiveRedirect
-            to={Routes.auto_tracing_clinical_path(@socket, :clinical, @auto_tracing.case_uuid)}
-            class="btn btn-outline-primary"
-          >
-            {gettext("Back")}
-          </LiveRedirect>
-          <button
-            class="btn btn-primary"
-            type="button"
-            :on-click="advance"
-            disabled={not @auto_tracing_changeset.valid?}
-          >
-            {gettext("Continue")}
-          </button>
-        </div>
-      </InputContext>
-    </Inputs>
+    <div>
+      <LiveRedirect
+        to={Routes.auto_tracing_clinical_path(@socket, :clinical, @case.uuid)}
+        class="btn btn-outline-primary"
+      >
+        {gettext("Back")}
+      </LiveRedirect>
+      <button class="btn btn-primary" type="submit" disabled={not @changeset.valid?}>
+        {gettext("Continue")}
+      </button>
+    </div>
   </Form>
 </div>

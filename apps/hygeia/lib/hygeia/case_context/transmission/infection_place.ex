@@ -53,6 +53,8 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
 
   @type t :: empty
 
+  @type changeset_params :: %{optional(:type_required) => boolean()}
+
   embedded_schema do
     field :known, :boolean, default: false
     field :name, :string
@@ -64,9 +66,21 @@ defmodule Hygeia.CaseContext.Transmission.InfectionPlace do
   end
 
   @doc false
-  @spec changeset(infection_place :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec changeset(
+          infection_place :: t | empty,
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: changeset_params
+        ) ::
           Changeset.t()
-  def changeset(infection_place, attrs) do
+  def changeset(infection_place, attrs \\ %{}, changeset_params \\ %{})
+
+  def changeset(infection_place, attrs, %{type_required: true} = changeset_params) do
+    infection_place
+    |> changeset(attrs, %{changeset_params | type_required: false})
+    |> validate_required(:type)
+  end
+
+  def changeset(infection_place, attrs, _changeset_params) do
     infection_place
     |> cast(attrs, [
       :known,

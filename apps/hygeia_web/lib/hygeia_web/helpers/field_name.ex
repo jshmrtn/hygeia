@@ -347,6 +347,15 @@ defmodule HygeiaWeb.Helpers.FieldName do
       originator: "Author",
       type: "Type"
     },
+    HygeiaWeb.AutoTracingLive.ContactMethods => %{
+      email: "Email",
+      landline: "Landline",
+      mobile: "Mobile"
+    },
+    HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts => %{
+      propagator_case: "Propagator Case",
+      propagator_ism_id: "Propagator ISM ID"
+    },
     Hygeia.AutoTracingContext.AutoTracing => %{
       mobile: "Mobile",
       landline: "Landline",
@@ -360,21 +369,11 @@ defmodule HygeiaWeb.Helpers.FieldName do
       known_organisation: "Organisation",
       not_found: "Organisation not found"
     },
-    HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts => %{
-      propagator_case: "Propagator Case",
-      propagator_ism_id: "Propagator ISM ID"
-    },
-    Hygeia.AutoTracingContext.AutoTracing.Transmission => %{
-      propagator_first_name: "First Name",
-      propagator_last_name: "Last Name",
-      propagator_phone: "Phone",
-      propagator_email: "Email",
-      date: "Date"
-    },
-    HygeiaWeb.AutoTracingLive.ContactMethods => %{
-      email: "Email",
-      landline: "Landline",
-      mobile: "Mobile"
+    Hygeia.AutoTracingContext.AutoTracing.Propagator => %{
+      first_name: "First Name",
+      last_name: "Last Name",
+      phone: "Phone",
+      email: "Email"
     }
   }
 

@@ -3,6 +3,8 @@ defmodule HygeiaWeb.TransmissionLive.Show do
 
   use HygeiaWeb, :surface_view
 
+  alias Phoenix.LiveView.Socket
+
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.Repo
@@ -14,6 +16,18 @@ defmodule HygeiaWeb.TransmissionLive.Show do
   alias Surface.Components.Form.TextArea
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
+
+  @impl Phoenix.LiveView
+  def mount(params, _session, socket) do
+    socket =
+      if params["return_url"] do
+        assign(socket, return_url: params["return_url"])
+      else
+        socket
+      end
+
+    {:ok, socket}
+  end
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
@@ -96,7 +110,13 @@ defmodule HygeiaWeb.TransmissionLive.Show do
          socket
          |> load_data(transmission)
          |> put_flash(:info, gettext("Transmission updated successfully"))
-         |> push_patch(to: Routes.transmission_show_path(socket, :show, transmission))}
+         |> case do
+           %Socket{assigns: %{return_url: return_url}} = socket ->
+             push_redirect(socket, to: return_url)
+
+           socket ->
+             push_patch(socket, to: Routes.transmission_show_path(socket, :show, transmission))
+         end}
 
       {:error, changeset} ->
         {:noreply,

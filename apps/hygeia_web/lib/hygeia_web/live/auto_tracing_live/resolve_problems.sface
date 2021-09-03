@@ -107,21 +107,20 @@
                           {pgettext("Auto Tracing Resolve Problems", "Done")}
                         </button>
                       {#match :link_propagator}
-                        <div :if={@auto_tracing.transmission.propagator_known}>
+                        <div :if={@auto_tracing.propagator_known}>
                           <p>
-                            {@auto_tracing.transmission.propagator_first_name}
-                            {@auto_tracing.transmission.propagator_last_name}
+                            {@auto_tracing.propagator.first_name}
+                            {@auto_tracing.propagator.last_name}
                           </p>
                           <dl>
                             <dt>{gettext("Phone")}</dt>
-                            <dd>{@auto_tracing.transmission.propagator_phone}</dd>
+                            <dd>{@auto_tracing.propagator.phone}</dd>
                             <dt>{gettext("Email")}</dt>
-                            <dd>{@auto_tracing.transmission.propagator_email}</dd>
+                            <dd>{@auto_tracing.propagator.email}</dd>
                             <dt>{gettext("Address")}</dt>
-                            <dd>{Address.to_string(@auto_tracing.transmission.propagator_address, :long)}</dd>
+                            <dd>{Address.to_string(@auto_tracing.propagator.address, :long)}</dd>
                           </dl>
                         </div>
-
                         <Form
                           for={@link_propagator_opts_changeset}
                           change="link_propagator_opts_change"
@@ -190,7 +189,6 @@
                         <div :for={occupation <- @auto_tracing.occupations}>
                           <strong>{occupation.unknown_organisation.name}</strong>
                           <div class="mb-3">{Address.to_string(occupation.unknown_organisation.address, :long)}</div>
-
                           <Form for={@occupation_form}>
                             <Field name={:organisation_uuid}>
                               <HygeiaWeb.OrganisationLive.Choose

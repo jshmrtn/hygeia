@@ -7,7 +7,6 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
-  alias Hygeia.CaseContext.Transmission.InfectionPlace
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.Repo
   alias Surface.Components.Form
@@ -76,41 +75,41 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       |> Repo.preload(person: [affiliations: []], auto_tracing: [])
 
     socket =
-      if authorized?(case.auto_tracing, :resolve_problems, get_auth(socket)) do
-        Phoenix.PubSub.subscribe(Hygeia.PubSub, "auto_tracings:#{case.auto_tracing.uuid}")
+      cond do
+        !authorized?(case.auto_tracing, :resolve_problems, get_auth(socket)) ->
+          socket
+          |> push_redirect(to: Routes.home_index_path(socket, :index))
+          |> put_flash(:error, gettext("You are not authorized to do this action."))
 
-        propagator_internal =
-          case case.auto_tracing.transmission do
-            %AutoTracing.Transmission{propagator_known: true} -> true
-            _other -> nil
-          end
+        not is_nil(params["resolve_problem"]) ->
+          {:ok, _auto_tracing} =
+            AutoTracingContext.auto_tracing_resolve_problem(
+              case.auto_tracing,
+              String.to_existing_atom(params["resolve_problem"])
+            )
 
-        auto_tracing =
-          if params["resolve_problem"] do
-            {:ok, auto_tracing} =
-              AutoTracingContext.auto_tracing_resolve_problem(
-                case.auto_tracing,
-                String.to_existing_atom(params["resolve_problem"])
-              )
+          push_redirect(socket,
+            to: Routes.auto_tracing_resolve_problems_path(socket, :resolve_problems, case.uuid)
+          )
 
-            auto_tracing
-          else
-            case.auto_tracing
-          end
+        true ->
+          Phoenix.PubSub.subscribe(Hygeia.PubSub, "auto_tracings:#{case.auto_tracing.uuid}")
 
-        assign(socket,
-          case: case,
-          person: case.person,
-          auto_tracing: auto_tracing,
-          link_propagator_opts_changeset:
-            LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, %{
-              propagator_internal: propagator_internal
-            })
-        )
-      else
-        socket
-        |> push_redirect(to: Routes.home_index_path(socket, :index))
-        |> put_flash(:error, gettext("You are not authorized to do this action."))
+          propagator_internal =
+            case case.auto_tracing do
+              %AutoTracing{propagator_known: true} -> true
+              _other -> nil
+            end
+
+          assign(socket,
+            case: case,
+            person: case.person,
+            auto_tracing: case.auto_tracing,
+            link_propagator_opts_changeset:
+              LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, %{
+                propagator_internal: propagator_internal
+              })
+          )
       end
 
     {:noreply, socket}
@@ -152,6 +151,14 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
      )}
   end
 
+  def handle_event(
+        "link_propagator_opts_change",
+        _params,
+        socket
+      ) do
+    {:noreply, socket}
+  end
+
   def handle_event("change_propagator_case", params, socket) do
     {:noreply,
      assign(socket, :link_propagator_opts_changeset, %{
@@ -174,42 +181,20 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       |> Ecto.Changeset.apply_action(:apply)
       |> case do
         {:ok, opts} ->
-          %AutoTracing.Transmission{
-            date: date,
-            known: known,
-            infection_place: %InfectionPlace{address: address} = infection_place
-          } = socket.assigns.auto_tracing.transmission
+          {:ok, transmission} =
+            socket.assigns.auto_tracing.transmission_uuid
+            |> CaseContext.get_transmission!()
+            |> CaseContext.update_transmission(
+              Map.take(opts, [:propagator_case_uuid, :propagator_ism_id, :propagator_internal])
+            )
 
           push_redirect(socket,
             to:
-              Routes.transmission_create_path(
+              Routes.transmission_show_path(
                 socket,
-                :create,
-                opts
-                |> Map.take([:propagator_case_uuid, :propagator_ism_id, :propagator_internal])
-                |> Map.merge(%{
-                  recipient_internal: true,
-                  recipient_case_uuid: socket.assigns.case,
-                  type: :contact_person,
-                  date:
-                    case date do
-                      %Date{} -> Date.to_iso8601(date)
-                      nil -> nil
-                    end,
-                  infection_place:
-                    Map.merge(
-                      Map.take(infection_place, [
-                        :type,
-                        :type_other,
-                        :name,
-                        :flight_information
-                      ]),
-                      %{
-                        known: known,
-                        address:
-                          Map.take(address, [:address, :zip, :place, :country, :subdivision])
-                      }
-                    ),
+                :edit,
+                transmission.uuid,
+                %{
                   return_url:
                     Routes.auto_tracing_resolve_problems_path(
                       socket,
@@ -217,7 +202,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
                       socket.assigns.case,
                       resolve_problem: :link_propagator
                     )
-                })
+                }
               )
           )
 
