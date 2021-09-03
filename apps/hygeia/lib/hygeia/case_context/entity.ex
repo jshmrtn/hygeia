@@ -66,23 +66,6 @@ defmodule Hygeia.CaseContext.Entity do
     |> cast_embed(:address)
   end
 
-  defp validate_embed_required(changeset, embed, type) do
-    changeset
-    |> fetch_field!(embed)
-    |> case do
-      nil ->
-        add_error(changeset, embed, "is required")
-
-      other ->
-        other
-        |> type.changeset(%{}, %{required: true})
-        |> case do
-          %Ecto.Changeset{valid?: true} -> changeset
-          %Ecto.Changeset{valid?: false} -> add_error(changeset, embed, "is invalid")
-        end
-    end
-  end
-
   @spec merge(old :: t() | Changeset.t(t()), new :: t() | Changeset.t(t())) :: Changeset.t(t())
   def merge(old, new) do
     merge(old, new, __MODULE__, fn embed, old_embed, new_embed when embed in [:address] ->

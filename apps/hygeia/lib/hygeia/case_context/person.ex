@@ -159,23 +159,6 @@ defmodule Hygeia.CaseContext.Person do
     |> detect_duplicates(:email)
   end
 
-  defp validate_embed_required(changeset, embed, type) do
-    changeset
-    |> fetch_field!(embed)
-    |> case do
-      nil ->
-        add_error(changeset, embed, "is required")
-
-      other ->
-        other
-        |> type.changeset(%{}, %{required: true})
-        |> case do
-          %Ecto.Changeset{valid?: true} -> changeset
-          %Ecto.Changeset{valid?: false} -> add_error(changeset, embed, "is invalid")
-        end
-    end
-  end
-
   defp validate_profession_category(changeset) do
     changeset
     |> fetch_change(:profession_category)
