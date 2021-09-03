@@ -44,7 +44,7 @@
       </div>
 
       <div :show={Ecto.Changeset.get_field(@changeset, :known)} class="row mb-5 gx-7">
-        <div class="col-6">
+        <div class="col-12 col-lg-6 mb-5 mb-lg-0">
           <h4>{gettext("Details")}</h4>
           <p class="mb-4">
             {gettext(
@@ -102,7 +102,7 @@
           </Inputs>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <h4>{gettext("Person")}</h4>
 
           <p class="mb-4">
@@ -134,7 +134,7 @@
           <div :if={Ecto.Changeset.get_field(@changeset, :propagator_known)} class="row mt-4">
             <ErrorTag field={:propagator} class="d-block invalid-feedback" />
             <Inputs for={:propagator}>
-              <div class="col-6">
+              <div class="col-12 col-md-6">
                 <Field name={:first_name} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <TextInput class="form-control" />
@@ -146,7 +146,7 @@
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
-              <div class="col-6">
+              <div class="col-12 col-md-6">
                 <Field name={:last_name} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <TextInput class="form-control" />

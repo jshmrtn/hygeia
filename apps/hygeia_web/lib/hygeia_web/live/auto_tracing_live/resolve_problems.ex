@@ -74,50 +74,42 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       |> CaseContext.get_case!()
       |> Repo.preload(person: [affiliations: []], auto_tracing: [])
 
-    propagator_internal =
-      case case.auto_tracing do
-        %AutoTracing{propagator_known: true} -> true
-        _other -> nil
-      end
+    socket =
+      cond do
+        !authorized?(case.auto_tracing, :resolve_problems, get_auth(socket)) ->
+          socket
+          |> push_redirect(to: Routes.home_index_path(socket, :index))
+          |> put_flash(:error, gettext("You are not authorized to do this action."))
 
-    {auto_tracing, should_redirect?} =
-      if params["resolve_problem"] do
-        {:ok, auto_tracing} =
-          AutoTracingContext.auto_tracing_resolve_problem(
-            case.auto_tracing,
-            String.to_existing_atom(params["resolve_problem"])
+        not is_nil(params["resolve_problem"]) ->
+          {:ok, _auto_tracing} =
+            AutoTracingContext.auto_tracing_resolve_problem(
+              case.auto_tracing,
+              String.to_existing_atom(params["resolve_problem"])
+            )
+
+          push_redirect(socket,
+            to: Routes.auto_tracing_resolve_problems_path(socket, :resolve_problems, case.uuid)
           )
 
-        {auto_tracing, true}
-      else
-        {case.auto_tracing, false}
-      end
+        true ->
+          Phoenix.PubSub.subscribe(Hygeia.PubSub, "auto_tracings:#{case.auto_tracing.uuid}")
 
-    socket =
-      if authorized?(auto_tracing, :resolve_problems, get_auth(socket)) do
-        socket
-        |> assign(
-          case: case,
-          person: case.person,
-          auto_tracing: auto_tracing,
-          link_propagator_opts_changeset:
-            LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, %{
-              propagator_internal: propagator_internal
-            })
-        )
-        |> Kernel.then(fn socket ->
-          if should_redirect? do
-            push_redirect(socket,
-              to: Routes.auto_tracing_resolve_problems_path(socket, :resolve_problems, case.uuid)
-            )
-          else
-            socket
-          end
-        end)
-      else
-        socket
-        |> push_redirect(to: Routes.home_index_path(socket, :index))
-        |> put_flash(:error, gettext("You are not authorized to do this action."))
+          propagator_internal =
+            case case.auto_tracing do
+              %AutoTracing{propagator_known: true} -> true
+              _other -> nil
+            end
+
+          assign(socket,
+            case: case,
+            person: case.person,
+            auto_tracing: case.auto_tracing,
+            link_propagator_opts_changeset:
+              LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, %{
+                propagator_internal: propagator_internal
+              })
+          )
       end
 
     {:noreply, socket}
