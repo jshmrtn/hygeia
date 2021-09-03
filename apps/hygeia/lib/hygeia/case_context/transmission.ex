@@ -124,18 +124,18 @@ defmodule Hygeia.CaseContext.Transmission do
     |> case do
       nil ->
         changeset
-        |> validate_inclusion(ism_id_key, [nil])
-        |> validate_inclusion(case_relation_key, [nil])
+        |> put_change(ism_id_key, nil)
+        |> put_change(case_relation_key, nil)
 
       true ->
         changeset
-        |> validate_inclusion(ism_id_key, [nil])
+        |> put_change(ism_id_key, nil)
         |> validate_required([case_relation_key])
 
       false ->
         changeset
         |> validate_required([ism_id_key])
-        |> validate_inclusion(case_relation_key, [nil])
+        |> put_change(case_relation_key, nil)
     end
   end
 

@@ -182,7 +182,7 @@
                             phx-disable-with={gettext("Saving...")}
                             disabled={not @link_propagator_opts_changeset.valid?}
                           >
-                            {gettext("Create Transmission")}
+                            {gettext("Update Transmission")}
                           </button>
                         </Form>
                       {#match :new_employer}

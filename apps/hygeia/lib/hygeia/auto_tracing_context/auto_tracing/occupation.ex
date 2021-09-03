@@ -59,7 +59,10 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
     |> case do
       true ->
         changeset
-        |> cast_embed(:unknown_organisation, required: true)
+        |> cast_embed(:unknown_organisation,
+          required: true,
+          with: &Entity.changeset(&1, &2, %{name_required: true, address_required: true})
+        )
         |> put_change(:known_organisation_uuid, nil)
 
       _else ->

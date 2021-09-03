@@ -131,7 +131,7 @@ defmodule HygeiaWeb.CaseLive.Navigation do
 
   defp maybe_create_auto_tracing(case, enable)
 
-  defp maybe_create_auto_tracing(case, "true") do
+  defp maybe_create_auto_tracing(%Case{auto_tracing: nil} = case, "true") do
     {:ok, _auto_tracing} = AutoTracingContext.create_auto_tracing(case)
 
     :ok

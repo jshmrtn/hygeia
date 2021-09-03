@@ -35,7 +35,13 @@
                   <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
                   <small class="d-block text-muted">{case_display_date(case, timezone)}</small>
                 </HygeiaWeb.RecordView>
-                <button class="btn btn-danger" :on-click={@change} type="button" phx-value-subject={@subject}>
+                <button
+                  class="btn btn-danger"
+                  :on-click={@change}
+                  type="button"
+                  phx-value-subject={@subject}
+                  :if={not @disabled}
+                >
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </div>

@@ -13,25 +13,22 @@ defmodule HygeiaWeb.TransmissionLive.Show do
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Inputs
+  alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.TextArea
+  alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
 
   @impl Phoenix.LiveView
-  def mount(params, _session, socket) do
+  def handle_params(%{"id" => id} = params, _uri, socket) do
+    transmission = CaseContext.get_transmission!(id)
+
     socket =
       if params["return_url"] do
         assign(socket, return_url: params["return_url"])
       else
         socket
       end
-
-    {:ok, socket}
-  end
-
-  @impl Phoenix.LiveView
-  def handle_params(%{"id" => id}, _uri, socket) do
-    transmission = CaseContext.get_transmission!(id)
 
     socket =
       if authorized?(
@@ -44,7 +41,7 @@ defmodule HygeiaWeb.TransmissionLive.Show do
          ) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "transmission:#{id}")
 
-        load_data(socket, transmission)
+        load_data(socket, transmission, params)
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))
@@ -126,7 +123,7 @@ defmodule HygeiaWeb.TransmissionLive.Show do
     end
   end
 
-  defp load_data(socket, transmission) do
+  defp load_data(socket, transmission, attrs \\ %{}) do
     transmission =
       Repo.preload(transmission,
         recipient: [tenant: []],
@@ -135,7 +132,7 @@ defmodule HygeiaWeb.TransmissionLive.Show do
         propagator_case: [tenant: []]
       )
 
-    changeset = CaseContext.change_transmission(transmission)
+    changeset = CaseContext.change_transmission(transmission, attrs)
 
     socket
     |> assign(

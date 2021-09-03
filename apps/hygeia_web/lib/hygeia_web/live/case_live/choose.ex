@@ -24,6 +24,8 @@ defmodule HygeiaWeb.CaseLive.Choose do
 
   prop id_prefix, :string, default: "case_value_recordview"
 
+  prop disabled, :boolean, default: false
+
   data modal_open, :boolean, default: false
   data query, :string, default: ""
   data tenants, :list, default: nil

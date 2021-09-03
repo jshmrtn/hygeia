@@ -67,15 +67,35 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
     end
   end
 
+  defmodule AutoTracingNotFoundError do
+    @moduledoc false
+    defexception plug_status: 404,
+                 message: "auto tracing not found",
+                 case_uuid: nil
+
+    @impl Exception
+    def exception(opts) do
+      case_uuid = Keyword.fetch!(opts, :case_uuid)
+
+      %__MODULE__{
+        message: "the auto tracing was not found for the case #{case_uuid}",
+        case_uuid: case_uuid
+      }
+    end
+  end
+
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = params, _uri, socket) do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [affiliations: []], auto_tracing: [])
+      |> Repo.preload(person: [affiliations: []], auto_tracing: [transmission: []])
 
     socket =
       cond do
+        is_nil(case.auto_tracing) ->
+          raise AutoTracingNotFoundError, case_uuid: case_uuid
+
         !authorized?(case.auto_tracing, :resolve_problems, get_auth(socket)) ->
           socket
           |> push_redirect(to: Routes.home_index_path(socket, :index))
@@ -95,10 +115,26 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         true ->
           Phoenix.PubSub.subscribe(Hygeia.PubSub, "auto_tracings:#{case.auto_tracing.uuid}")
 
-          propagator_internal =
-            case case.auto_tracing do
-              %AutoTracing{propagator_known: true} -> true
-              _other -> nil
+          propagator_attrs =
+            case case.auto_tracing.transmission do
+              nil ->
+                %{}
+
+              transmission ->
+                Map.take(transmission, [
+                  :propagator_internal,
+                  :propagator_ism_id,
+                  :propagator_case_uuid
+                ])
+            end
+
+          propagator_attrs =
+            case {case.auto_tracing, propagator_attrs[:propagator_internal]} do
+              {%AutoTracing{propagator_known: true}, nil} ->
+                Map.put(propagator_attrs, :propagator_internal, true)
+
+              _other ->
+                propagator_attrs
             end
 
           assign(socket,
@@ -106,9 +142,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
             person: case.person,
             auto_tracing: case.auto_tracing,
             link_propagator_opts_changeset:
-              LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, %{
-                propagator_internal: propagator_internal
-              })
+              LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, propagator_attrs)
           )
       end
 
@@ -161,17 +195,21 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
 
   def handle_event("change_propagator_case", params, socket) do
     {:noreply,
-     assign(socket, :link_propagator_opts_changeset, %{
-       LinkPropagatorOpts.changeset(
-         %LinkPropagatorOpts{},
-         update_changeset_param(
-           socket.assigns.link_propagator_opts_changeset,
-           :propagator_case_uuid,
-           fn _value_before -> params["uuid"] end
+     assign(
+       socket,
+       :link_propagator_opts_changeset,
+       %Ecto.Changeset{
+         LinkPropagatorOpts.changeset(
+           %LinkPropagatorOpts{},
+           update_changeset_param(
+             socket.assigns.link_propagator_opts_changeset,
+             :propagator_case_uuid,
+             fn _value_before -> params["uuid"] end
+           )
          )
-       )
-       | action: :validate
-     })}
+         | action: :validate
+       }
+     )}
   end
 
   def handle_event("link_propagator_opts_submit", params, socket) do
@@ -181,28 +219,24 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       |> Ecto.Changeset.apply_action(:apply)
       |> case do
         {:ok, opts} ->
-          {:ok, transmission} =
-            socket.assigns.auto_tracing.transmission_uuid
-            |> CaseContext.get_transmission!()
-            |> CaseContext.update_transmission(
-              Map.take(opts, [:propagator_case_uuid, :propagator_ism_id, :propagator_internal])
-            )
-
           push_redirect(socket,
             to:
               Routes.transmission_show_path(
                 socket,
                 :edit,
-                transmission.uuid,
-                %{
-                  return_url:
-                    Routes.auto_tracing_resolve_problems_path(
-                      socket,
-                      :resolve_problems,
-                      socket.assigns.case,
-                      resolve_problem: :link_propagator
-                    )
-                }
+                socket.assigns.auto_tracing.transmission_uuid,
+                Map.merge(
+                  Map.take(opts, [:propagator_case_uuid, :propagator_ism_id, :propagator_internal]),
+                  %{
+                    return_url:
+                      Routes.auto_tracing_resolve_problems_path(
+                        socket,
+                        :resolve_problems,
+                        socket.assigns.case,
+                        resolve_problem: :link_propagator
+                      )
+                  }
+                )
               )
           )
 
