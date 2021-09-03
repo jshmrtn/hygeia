@@ -90,7 +90,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
   defp validate_past_date(changeset, field) do
     validate_change(changeset, field, fn ^field, value ->
-      if Date.compare(value, Date.utc_today()) in [:lte, :eq] do
+      if Date.compare(value, Date.utc_today()) in [:lt, :eq] do
         []
       else
         [{field, dgettext("errors", "date must be in the past")}]
