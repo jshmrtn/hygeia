@@ -5,6 +5,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
   alias HygeiaWeb.DateInput
@@ -25,6 +26,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
   @impl Phoenix.LiveView
   def mount(%{"case_uuid" => case_uuid} = params, _session, socket) do
     case = case_uuid |> CaseContext.get_case!() |> Repo.preload(auto_tracing: [])
+    auth = get_auth(socket)
 
     socket =
       assign(socket,
@@ -32,22 +34,28 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
       )
 
     socket =
-      if authorized?(PossibleIndexSubmission, :create, get_auth(socket), %{case: case}) do
-        assign(socket,
-          case: case,
-          changeset:
-            case
-            |> Ecto.build_assoc(:possible_index_submissions)
-            |> CaseContext.change_possible_index_submission(params)
-        )
-      else
-        push_redirect(socket,
-          to:
-            Routes.auth_login_path(socket, :login,
-              person_uuid: case.person_uuid,
-              return_url: Routes.possible_index_submission_create_path(socket, :create, case)
-            )
-        )
+      cond do
+        Case.closed?(case) and not authorized?(case, :details, auth) and
+            authorized?(case, :partial_details, auth) ->
+          raise HygeiaWeb.AutoTracingLive.AutoTracing.CaseClosedError, case_uuid: case.uuid
+
+        !authorized?(PossibleIndexSubmission, :create, auth, %{case: case}) ->
+          push_redirect(socket,
+            to:
+              Routes.auth_login_path(socket, :login,
+                person_uuid: case.person_uuid,
+                return_url: Routes.possible_index_submission_create_path(socket, :create, case)
+              )
+          )
+
+        true ->
+          assign(socket,
+            case: case,
+            changeset:
+              case
+              |> Ecto.build_assoc(:possible_index_submissions)
+              |> CaseContext.change_possible_index_submission(params)
+          )
       end
 
     {:ok, socket}

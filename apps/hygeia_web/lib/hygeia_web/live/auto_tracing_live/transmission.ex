@@ -10,8 +10,10 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
   alias Phoenix.LiveView.Socket
 
   alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Propagator
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.Repo
   alias Surface.Components.Form
@@ -60,33 +62,43 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
       |> Repo.preload(auto_tracing: [])
 
     socket =
-      if authorized?(case, :auto_tracing, get_auth(socket)) do
-        transmission =
-          if uuid = case.auto_tracing.transmission_uuid do
-            CaseContext.get_transmission!(uuid)
-          end
+      cond do
+        Case.closed?(case) ->
+          raise HygeiaWeb.AutoTracingLive.AutoTracing.CaseClosedError, case_uuid: case.uuid
 
-        step = %__MODULE__{
-          known: case.auto_tracing.transmission_known,
-          propagator_known: case.auto_tracing.propagator_known,
-          transmission: transmission,
-          propagator: case.auto_tracing.propagator
-        }
+        !authorized?(case, :auto_tracing, get_auth(socket)) ->
+          push_redirect(socket,
+            to:
+              Routes.auth_login_path(socket, :login,
+                person_uuid: case.person_uuid,
+                return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+              )
+          )
 
-        assign(socket,
-          changeset: %Ecto.Changeset{changeset(step) | action: :validate},
-          transmission: transmission,
-          case: case,
-          auto_tracing: case.auto_tracing
-        )
-      else
-        push_redirect(socket,
-          to:
-            Routes.auth_login_path(socket, :login,
-              person_uuid: case.person_uuid,
-              return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
-            )
-        )
+        !AutoTracing.step_available?(case.auto_tracing, :transmission) ->
+          push_redirect(socket,
+            to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+          )
+
+        true ->
+          transmission =
+            if uuid = case.auto_tracing.transmission_uuid do
+              CaseContext.get_transmission!(uuid)
+            end
+
+          step = %__MODULE__{
+            known: case.auto_tracing.transmission_known,
+            propagator_known: case.auto_tracing.propagator_known,
+            transmission: transmission,
+            propagator: case.auto_tracing.propagator
+          }
+
+          assign(socket,
+            changeset: %Ecto.Changeset{changeset(step) | action: :validate},
+            transmission: transmission,
+            case: case,
+            auto_tracing: case.auto_tracing
+          )
       end
 
     {:noreply, socket}
