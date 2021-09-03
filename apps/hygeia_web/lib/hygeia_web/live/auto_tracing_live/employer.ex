@@ -10,6 +10,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.Repo
@@ -42,6 +43,9 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
     socket =
       cond do
+        Case.closed?(case) ->
+          raise HygeiaWeb.AutoTracingLive.AutoTracing.CaseClosedError, case_uuid: case.uuid
+
         !authorized?(case, :auto_tracing, get_auth(socket)) ->
           push_redirect(socket,
             to:

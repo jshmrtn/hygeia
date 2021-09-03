@@ -365,6 +365,9 @@ defmodule Hygeia.CaseContext.Case do
     end)
   end
 
+  @spec closed?(case :: t) :: boolean
+  def closed?(case), do: case.status in [:done, :canceled]
+
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Case
     alias Hygeia.Repo

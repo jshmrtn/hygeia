@@ -64,25 +64,27 @@
       >
         {gettext("Isolation Confirmation")}
       </Link>
-      <p class="mt-4">{gettext("Additional actions:")}</p>
-      <LiveRedirect
-        class="btn btn-lg btn-primary mb-2"
-        to={Routes.possible_index_submission_index_path(@socket, :index, @active_case)}
-      >
-        {gettext("Submit contact persons")}
-      </LiveRedirect>
-      <br>
-      <LiveRedirect
-        class="btn btn-lg btn-primary"
-        to={Routes.auto_tracing_auto_tracing_path(@socket, :auto_tracing, @active_case)}
-        :if={not is_nil(@active_case.auto_tracing)}
-      >
-        {#if AutoTracing.completed?(@active_case.auto_tracing)}
-          {gettext("Correct Data")}
-        {#else}
-          {gettext("Complete Data")}
-        {/if}
-      </LiveRedirect>
+      <div :if={!Case.closed?(@active_case)}>
+        <p class="mt-4">{gettext("Additional actions:")}</p>
+        <LiveRedirect
+          class="btn btn-lg btn-primary mb-2"
+          to={Routes.possible_index_submission_index_path(@socket, :index, @active_case)}
+        >
+          {gettext("Submit contact persons")}
+        </LiveRedirect>
+        <br>
+        <LiveRedirect
+          class="btn btn-lg btn-primary"
+          to={Routes.auto_tracing_auto_tracing_path(@socket, :auto_tracing, @active_case)}
+          :if={not is_nil(@active_case.auto_tracing)}
+        >
+          {#if AutoTracing.completed?(@active_case.auto_tracing)}
+            {gettext("Correct Data")}
+          {#else}
+            {gettext("Complete Data")}
+          {/if}
+        </LiveRedirect>
+      </div>
     </div>
 
     <h3>{gettext("History")}</h3>
@@ -130,6 +132,7 @@
               {#case phase}
                 {#match %Phase{details: %Phase.Index{}}}
                   <LiveRedirect
+                    :if={!Case.closed?(case)}
                     class="btn btn-sm btn-outline-primary ms-2 mb-2"
                     to={Routes.possible_index_submission_index_path(@socket, :index, case)}
                   >

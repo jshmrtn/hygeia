@@ -5,6 +5,7 @@ defmodule HygeiaWeb.AutoTracingLive.Start do
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Test.Kind
   alias Hygeia.CaseContext.Test.Result
@@ -19,20 +20,25 @@ defmodule HygeiaWeb.AutoTracingLive.Start do
       |> Repo.preload(person: [], tests: [:mutation], auto_tracing: [], tenant: [])
 
     socket =
-      if authorized?(case, :auto_tracing, get_auth(socket)) do
-        assign(socket,
-          case: case,
-          person: case.person,
-          auto_tracing: case.auto_tracing
-        )
-      else
-        push_redirect(socket,
-          to:
-            Routes.auth_login_path(socket, :login,
-              person_uuid: case.person_uuid,
-              return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
-            )
-        )
+      cond do
+        Case.closed?(case) ->
+          raise HygeiaWeb.AutoTracingLive.AutoTracing.CaseClosedError, case_uuid: case.uuid
+
+        !authorized?(case, :auto_tracing, get_auth(socket)) ->
+          push_redirect(socket,
+            to:
+              Routes.auth_login_path(socket, :login,
+                person_uuid: case.person_uuid,
+                return_url: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
+              )
+          )
+
+        true ->
+          assign(socket,
+            case: case,
+            person: case.person,
+            auto_tracing: case.auto_tracing
+          )
       end
 
     {:noreply, socket}
