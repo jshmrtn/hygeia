@@ -25,7 +25,7 @@
           )}
         {#match :immune}{gettext(
             "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)",
-            validity: HygeiaCldr.Unit.to_string!(Hygeia.vaccine_validity_cldr())
+            validity: HygeiaCldr.Unit.to_string!(Hygeia.immune_validity_cldr())
           )}
         {#match :negative_test}{gettext("I did a COVID test in the last 4 days of quarantine. The result is negative.")}
       {/case}
