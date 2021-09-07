@@ -66,7 +66,7 @@ config :hygeia_gettext, HygeiaGettext, fuzzy_languages: ["it", "fr"]
 config :hygeia_telemetry, server: true
 
 # OIDC
-config :oidcc, http_request_timeout: 60
+config :oidcc, http_request_timeout: 60, cert_depth: 5
 
 # Nebulex Sessions
 config :hygeia_web, HygeiaWeb.SessionStorage.Storage,
