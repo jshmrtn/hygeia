@@ -122,6 +122,20 @@
         </LiveRedirect>
       </UriActiveContext>
     </li>
+    <li
+      class="nav-item"
+      :if={@case.auto_tracing != nil and authorized?(@case.auto_tracing, :resolve_problems, auth) and
+        Enum.any?(@case.phases, &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))}
+    >
+      <UriActiveContext
+        to={Routes.auto_tracing_resolve_problems_path(@socket, :resolve_problems, @case)}
+        :let={to: to, active: active}
+      >
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {gettext("Auto Tracing")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
 
     <HygeiaWeb.Dropdown
       class="ms-auto"
@@ -142,6 +156,39 @@
             do: gettext("Phase start- and end-dates must be set to create Isolation Confirmations."),
             else: ""}
         >
+          <a
+            class={
+              "dropdown-item",
+              disabled: not is_nil(@case.auto_tracing) and AutoTracing.completed?(@case.auto_tracing)
+            }
+            href="#"
+            :on-click="open_sms_modal"
+            phx-value-message={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_sms(@case)}
+            phx-value-create_auto_tracing="true"
+            :if={authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
+              CaseContext.person_has_mobile_number?(@case.person) and
+              TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
+          >
+            <span class="oi oi-phone me-1" aria-hidden="true" />
+            {gettext("Send SMS Auto Tracing Invitation")}
+          </a>
+          <a
+            class={
+              "dropdown-item",
+              disabled: not is_nil(@case.auto_tracing) and AutoTracing.completed?(@case.auto_tracing)
+            }
+            href="#"
+            :on-click="open_email_modal"
+            phx-value-create_auto_tracing="true"
+            phx-value-subject={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_subject(@case)}
+            phx-value-body={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_body(@case, :email)}
+            :if={authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
+              CaseContext.person_has_email?(@case.person) and
+              TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
+          >
+            <span class="oi oi-envelope-closed me-1" aria-hidden="true" />
+            {gettext("Send Email Auto Tracing Invitation")}
+          </a>
           <Link
             class={"dropdown-item", disabled: not Phase.can_generate_pdf_confirmation?(phase, @case.tenant)}
             to={Routes.pdf_path(@socket, :isolation_confirmation, @case.uuid, uuid)}

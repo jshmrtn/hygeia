@@ -44,7 +44,7 @@
               </LiveRedirect>
             </UriActiveContext>
           </li>
-          <li class="nav-item dropdown" phx-update="ignore" id="nav-ignore">
+          <li class="nav-item dropdown" phx-update="ignore" id="nav-ignore-more">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -162,6 +162,31 @@
               <Link to={Routes.auth_login_path(@socket, :login)} class="nav-link">
                 {gettext("Login")}
               </Link>
+            </div>
+          </li>
+          <li class="nav-item dropdown" phx-update="ignore" id="nav-ignore-language">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              aria-haspopup="true"
+              aria-expanded="false"
+              data-bs-toggle="dropdown"
+            >
+              {HygeiaCldr.get_locale().language()
+              |> (&HygeiaCldr.Language.to_string(&1, locale: &1)).()
+              |> elem(1)}
+            </a>
+            <div class="dropdown-menu dropdown-menu-end">
+              <Context get={HygeiaWeb, uri: uri}>
+                <Link
+                  :for={locale <- HygeiaCldr.known_gettext_locale_names()}
+                  to={Routes.locale_path(@socket, :set_locale, locale, uri)}
+                  class="dropdown-item"
+                >
+                  {locale |> (&HygeiaCldr.Language.to_string(&1, locale: &1)).() |> elem(1)}
+                </Link>
+              </Context>
             </div>
           </li>
         </div>

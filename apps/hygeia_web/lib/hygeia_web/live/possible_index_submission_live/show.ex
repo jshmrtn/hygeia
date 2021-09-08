@@ -19,6 +19,20 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
+  def mount(params, _session, socket) do
+    socket =
+      assign(socket,
+        return_url:
+          case params["return_url"] do
+            "/" <> _url_rest = url -> url
+            _other -> nil
+          end
+      )
+
+    {:ok, socket}
+  end
+
+  @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
     possible_index_submission =
       id
@@ -60,15 +74,19 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
     {:noreply, assign(socket, :possible_index_submission, possible_index_submission)}
   end
 
-  def handle_info({:deleted, %PossibleIndexSubmission{}, _version}, socket) do
+  def handle_info(
+        {:deleted, %PossibleIndexSubmission{}, _version},
+        socket
+      ) do
     {:noreply,
      redirect(socket,
        to:
-         Routes.possible_index_submission_index_path(
-           socket,
-           :index,
-           socket.assigns.possible_index_submission.case
-         )
+         socket.assigns.return_url ||
+           Routes.possible_index_submission_index_path(
+             socket,
+             :index,
+             socket.assigns.possible_index_submission.case
+           )
      )}
   end
 
@@ -116,11 +134,12 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Show do
      |> put_flash(:info, gettext("PossibleIndexSubmission deleted successfully"))
      |> redirect(
        to:
-         Routes.possible_index_submission_index_path(
-           socket,
-           :index,
-           socket.assigns.possible_index_submission.case
-         )
+         socket.assigns.return_url ||
+           Routes.possible_index_submission_index_path(
+             socket,
+             :index,
+             socket.assigns.possible_index_submission.case
+           )
      )}
   end
 

@@ -144,6 +144,54 @@ defmodule HygeiaWeb.Router do
          PossibleIndexSubmissionLive.Create,
          :create
 
+    live "/cases/:case_uuid/auto-tracing",
+         AutoTracingLive.AutoTracing,
+         :auto_tracing
+
+    live "/cases/:case_uuid/auto-tracing/start",
+         AutoTracingLive.Start,
+         :start
+
+    live "/cases/:case_uuid/auto-tracing/address",
+         AutoTracingLive.Address,
+         :address
+
+    live "/cases/:case_uuid/auto-tracing/contact-methods",
+         AutoTracingLive.ContactMethods,
+         :contact_methods
+
+    live "/cases/:case_uuid/auto-tracing/employer",
+         AutoTracingLive.Employer,
+         :employer
+
+    live "/cases/:case_uuid/auto-tracing/vaccination",
+         AutoTracingLive.Vaccination,
+         :vaccination
+
+    live "/cases/:case_uuid/auto-tracing/covid-app",
+         AutoTracingLive.CovidApp,
+         :covid_app
+
+    live "/cases/:case_uuid/auto-tracing/clinical",
+         AutoTracingLive.Clinical,
+         :clinical
+
+    live "/cases/:case_uuid/auto-tracing/transmission",
+         AutoTracingLive.Transmission,
+         :transmission
+
+    live "/cases/:case_uuid/auto-tracing/contact-persons",
+         AutoTracingLive.ContactPersons,
+         :contact_persons
+
+    live "/cases/:case_uuid/auto-tracing/end",
+         AutoTracingLive.End,
+         :end
+
+    live "/cases/:case_uuid/auto-tracing/tenant-exit",
+         AutoTracingLive.TenantExit,
+         :tenant_exit
+
     live "/people/:person_uuid/overview", PersonOverviewLive.Index, :index
 
     live "/cases/:case_uuid/:phase_uuid/create-premature-release",
@@ -173,6 +221,10 @@ defmodule HygeiaWeb.Router do
     live "/people/:id", PersonLive.BaseData, :show
     live "/people/:id/edit", PersonLive.BaseData, :edit
     live "/people/:cursor_direction/:cursor", PersonLive.Index, :index
+
+    live "/cases/:case_uuid/auto-tracing/resolve-problems",
+         AutoTracingLive.ResolveProblems,
+         :resolve_problems
 
     live "/cases/new", CaseLive.Create, :create
     live "/cases/new/possible-index/", CaseLive.CreatePossibleIndex, :create
@@ -284,6 +336,8 @@ defmodule HygeiaWeb.Router do
     get "/statistics/:tenant_uuid/export/:type/:from/:to", StatisticsController, :export
 
     live "/system_messages", SystemMessageLive.Index, :index
+
+    get "/locale/:locale/:redirect_uri", LocaleController, :set_locale
 
     get "/pdf/isolation/:case_uuid/:phase_uuid", PdfController, :isolation_confirmation
     get "/pdf/quarantine/:case_uuid/:phase_uuid", PdfController, :quarantine_confirmation

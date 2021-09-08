@@ -6,6 +6,7 @@ defmodule Hygeia.CaseContext.Case.Clinical do
   use Hygeia, :model
 
   import EctoEnum
+  import HygeiaGettext
 
   defenum TestReason, :test_reason, [
     "symptoms",
@@ -50,6 +51,8 @@ defmodule Hygeia.CaseContext.Case.Clinical do
           symptom_start: Date.t() | nil
         }
 
+  @type changeset_params :: %{optional(:symptoms_required) => boolean()}
+
   embedded_schema do
     field :reasons_for_test, {:array, TestReason}
     field :has_symptoms, :boolean
@@ -58,8 +61,21 @@ defmodule Hygeia.CaseContext.Case.Clinical do
   end
 
   @doc false
-  @spec changeset(clinical :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
-  def changeset(clinical, attrs) do
+  @spec changeset(
+          clinical :: t | empty,
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: changeset_params
+        ) :: Changeset.t()
+  def changeset(clinical, attrs, changeset_params \\ %{})
+
+  def changeset(clinical, attrs, %{symptoms_required: true} = changeset_params) do
+    clinical
+    |> changeset(attrs, %{changeset_params | symptoms_required: false})
+    |> validate_required([:has_symptoms])
+    |> validate_required_when_has_symptoms()
+  end
+
+  def changeset(clinical, attrs, _changeset_params) do
     clinical
     |> cast(attrs, [
       :reasons_for_test,
@@ -68,7 +84,35 @@ defmodule Hygeia.CaseContext.Case.Clinical do
       :symptom_start
     ])
     |> validate_required([])
+    |> validate_past_date(:symptom_start)
     |> clear_symptoms()
+  end
+
+  defp validate_past_date(changeset, field) do
+    validate_change(changeset, field, fn ^field, value ->
+      if Date.compare(value, Date.utc_today()) in [:lt, :eq] do
+        []
+      else
+        [{field, dgettext("errors", "date must be in the past")}]
+      end
+    end)
+  end
+
+  defp validate_required_when_has_symptoms(changeset) do
+    changeset
+    |> fetch_field!(:has_symptoms)
+    |> case do
+      nil ->
+        changeset
+
+      true ->
+        changeset
+        |> validate_required([:symptoms, :symptom_start])
+        |> validate_length(:symptoms, min: 1)
+
+      false ->
+        changeset
+    end
   end
 
   defp clear_symptoms(changeset) do

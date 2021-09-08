@@ -3,6 +3,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
 
   use HygeiaWeb, :surface_view
 
+  alias Hygeia.AutoTracingContext
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
@@ -10,27 +11,33 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
   alias Surface.Components.Context
-  alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
   def mount(%{"case_uuid" => case_uuid} = _params, _session, socket) do
     case = CaseContext.get_case!(case_uuid)
+    auth = get_auth(socket)
 
     socket =
-      if authorized?(PossibleIndexSubmission, :list, get_auth(socket), %{case: case}) do
-        Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{case_uuid}")
-        Phoenix.PubSub.subscribe(Hygeia.PubSub, "possible_index_submissions")
+      cond do
+        Case.closed?(case) and not authorized?(case, :details, auth) and
+            authorized?(case, :partial_details, auth) ->
+          raise HygeiaWeb.AutoTracingLive.AutoTracing.CaseClosedError, case_uuid: case.uuid
 
-        load_data(socket, case_uuid)
-      else
-        push_redirect(socket,
-          to:
-            Routes.auth_login_path(socket, :login,
-              person_uuid: case.person_uuid,
-              return_url: Routes.possible_index_submission_index_path(socket, :index, case)
-            )
-        )
+        !authorized?(PossibleIndexSubmission, :list, auth, %{case: case}) ->
+          push_redirect(socket,
+            to:
+              Routes.auth_login_path(socket, :login,
+                person_uuid: case.person_uuid,
+                return_url: Routes.possible_index_submission_index_path(socket, :index, case)
+              )
+          )
+
+        true ->
+          Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{case_uuid}")
+          Phoenix.PubSub.subscribe(Hygeia.PubSub, "possible_index_submissions")
+
+          load_data(socket, case_uuid)
       end
 
     {:ok, socket}
@@ -43,6 +50,16 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
     true = authorized?(possible_index_submission, :delete, get_auth(socket))
 
     {:ok, _} = CaseContext.delete_possible_index_submission(possible_index_submission)
+
+    socket = load_data(socket, socket.assigns.case.uuid)
+
+    if Enum.empty?(socket.assigns.case.possible_index_submissions) and
+         not is_nil(socket.assigns.case.auto_tracing) do
+      AutoTracingContext.auto_tracing_remove_problem(
+        socket.assigns.case.auto_tracing,
+        :possible_index_submission
+      )
+    end
 
     {:noreply, socket}
   end
@@ -57,7 +74,12 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [tenant: []], possible_index_submissions: [], tenant: [])
+      |> Repo.preload(
+        auto_tracing: [],
+        person: [tenant: []],
+        possible_index_submissions: [],
+        tenant: []
+      )
 
     has_index_phase? = Enum.any?(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1))
 

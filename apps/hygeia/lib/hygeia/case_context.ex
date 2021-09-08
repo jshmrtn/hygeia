@@ -308,20 +308,24 @@ defmodule Hygeia.CaseContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_person(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec update_person(
+          person :: Person.t() | Ecto.Changeset.t(Person.t()),
+          attrs :: Hygeia.ecto_changeset_params(),
+          opts :: Person.changeset_options()
+        ) ::
           {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
-  def update_person(%Person{} = person, attrs),
+  def update_person(person, attrs \\ %{}, changeset_opts \\ %{})
+
+  def update_person(%Person{} = person, attrs, changeset_opts),
     do:
       person
-      |> change_person(attrs)
-      |> update_person()
+      |> change_person(attrs, changeset_opts)
+      |> update_person(%{}, changeset_opts)
 
-  @spec update_person(changeset :: Ecto.Changeset.t(Person.t())) ::
-          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
-  def update_person(%Ecto.Changeset{data: %Person{}} = changeset),
+  def update_person(%Ecto.Changeset{data: %Person{}} = changeset, attrs, changeset_opts),
     do:
       changeset
-      |> Person.changeset(%{})
+      |> change_person(attrs, changeset_opts)
       |> versioning_update()
       |> broadcast("people", :update)
       |> versioning_extract()
@@ -359,14 +363,15 @@ defmodule Hygeia.CaseContext do
   """
   @spec change_person(
           person :: Person.t() | Person.empty() | Changeset.t(Person.t() | Person.empty()),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          opts :: Person.changeset_options()
         ) ::
           Ecto.Changeset.t(Person.t())
-  def change_person(person, attrs \\ %{})
-  def change_person(%Person{} = person, attrs), do: Person.changeset(person, attrs)
+  def change_person(person, attrs \\ %{}, opts \\ %{})
+  def change_person(%Person{} = person, attrs, opts), do: Person.changeset(person, attrs, opts)
 
-  def change_person(%Changeset{data: %Person{}} = person, attrs),
-    do: Person.changeset(person, attrs)
+  def change_person(%Changeset{data: %Person{}} = person, attrs, opts),
+    do: Person.changeset(person, attrs, opts)
 
   @spec change_new_person(tenant :: Tenant.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           Ecto.Changeset.t(Person.t())
@@ -1974,19 +1979,26 @@ defmodule Hygeia.CaseContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_case(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec update_case(
+          case :: Case.t() | Ecto.Changeset.t(Case.t()),
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: Case.changeset_params()
+        ) ::
           {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
-  def update_case(%Case{} = case, attrs),
+  def update_case(case, attrs \\ %{}, changeset_params \\ %{})
+
+  def update_case(%Case{} = case, attrs, changeset_params),
     do:
       case
-      |> change_case(attrs)
+      |> change_case(attrs, changeset_params)
       |> update_case()
 
   @spec update_case(changeset :: Ecto.Changeset.t(Case.t())) ::
           {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
-  def update_case(%Ecto.Changeset{data: %Case{}} = changeset),
+  def update_case(%Ecto.Changeset{data: %Case{}} = changeset, attrs, changeset_params),
     do:
       changeset
+      |> change_case(attrs, changeset_params)
       |> versioning_update()
       |> broadcast("cases", :update)
       |> versioning_extract()
@@ -2043,12 +2055,17 @@ defmodule Hygeia.CaseContext do
   """
   @spec change_case(
           case :: Case.t() | Case.empty() | Changeset.t(Case.t() | Case.empty()),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: Case.changeset_params()
         ) ::
           Ecto.Changeset.t(Case.t())
-  def change_case(case, attrs \\ %{})
-  def change_case(%Case{} = case, attrs), do: Case.changeset(case, attrs)
-  def change_case(%Changeset{data: %Case{}} = case, attrs), do: Case.changeset(case, attrs)
+  def change_case(case, attrs \\ %{}, changeset_params \\ %{})
+
+  def change_case(%Case{} = case, attrs, changeset_params),
+    do: Case.changeset(case, attrs, changeset_params)
+
+  def change_case(%Changeset{data: %Case{}} = case, attrs, changeset_params),
+    do: Case.changeset(case, attrs, changeset_params)
 
   @spec change_new_case(
           person :: Person.t(),
@@ -2135,6 +2152,24 @@ defmodule Hygeia.CaseContext do
       )
       |> versioning_extract()
 
+  @spec create_transmission(
+          transmission :: Transmission.t() | Ecto.Changeset.t(Transmission.t()),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          {:ok, Transmission.t()} | {:error, Ecto.Changeset.t(Transmission.t())}
+  def create_transmission(transmission, attrs),
+    do:
+      transmission
+      |> change_transmission(attrs)
+      |> versioning_insert()
+      |> broadcast(
+        "transmissions",
+        :create,
+        & &1.uuid,
+        &["cases:#{&1.recipient_case_uuid}", "cases:#{&1.propagator_case_uuid}"]
+      )
+      |> versioning_extract()
+
   @doc """
   Updates a transmission.
 
@@ -2148,21 +2183,34 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec update_transmission(
-          transmission :: Transmission.t(),
-          attrs :: Hygeia.ecto_changeset_params()
+          transmission :: Transmission.t() | Ecto.Changeset.t(Transmission.t()),
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: Transmission.changeset_params()
         ) :: {:ok, Transmission.t()} | {:error, Ecto.Changeset.t(Transmission.t())}
-  def update_transmission(%Transmission{} = transmission, attrs),
+  def update_transmission(transmission, attrs \\ %{}, changeset_params \\ %{})
+
+  def update_transmission(%Transmission{} = transmission, attrs, changeset_params),
     do:
       transmission
-      |> change_transmission(attrs)
-      |> versioning_update()
-      |> broadcast(
-        "transmissions",
-        :update,
-        & &1.uuid,
-        &["cases:#{&1.recipient_case_uuid}", "cases:#{&1.propagator_case_uuid}"]
-      )
-      |> versioning_extract()
+      |> change_transmission(attrs, changeset_params)
+      |> update_transmission()
+
+  def update_transmission(
+        %Ecto.Changeset{data: %Transmission{}} = changeset,
+        attrs,
+        changeset_params
+      ),
+      do:
+        changeset
+        |> change_transmission(attrs, changeset_params)
+        |> versioning_update()
+        |> broadcast(
+          "transmissions",
+          :update,
+          & &1.uuid,
+          &["cases:#{&1.recipient_case_uuid}", "cases:#{&1.propagator_case_uuid}"]
+        )
+        |> versioning_extract()
 
   @doc """
   Deletes a transmission.
@@ -2181,7 +2229,6 @@ defmodule Hygeia.CaseContext do
   def delete_transmission(%Transmission{} = transmission),
     do:
       transmission
-      |> change_transmission()
       |> versioning_delete()
       |> broadcast(
         "transmissions",
@@ -2201,12 +2248,25 @@ defmodule Hygeia.CaseContext do
 
   """
   @spec change_transmission(
-          tenant :: Transmission.t() | Transmission.empty(),
-          attrs :: Hygeia.ecto_changeset_params()
+          transmission ::
+            Transmission.t()
+            | Transmission.empty()
+            | Changeset.t(Transmission.t() | Transmission.empty()),
+          attrs :: Hygeia.ecto_changeset_params(),
+          changeset_params :: Transmission.changeset_params()
         ) ::
           Ecto.Changeset.t(Transmission.t())
-  def change_transmission(%Transmission{} = transmission, attrs \\ %{}),
-    do: Transmission.changeset(transmission, attrs)
+  def change_transmission(transmission, attrs \\ %{}, changeset_params \\ %{})
+
+  def change_transmission(%Transmission{} = transmission, attrs, changeset_params),
+    do: Transmission.changeset(transmission, attrs, changeset_params)
+
+  def change_transmission(
+        %Ecto.Changeset{data: %Transmission{}} = transmission,
+        attrs,
+        changeset_params
+      ),
+      do: Transmission.changeset(transmission, attrs, changeset_params)
 
   @doc """
   Returns the list of notes.

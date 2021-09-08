@@ -516,7 +516,6 @@
                       disabled={@live_action == :show}
                       source={@case}
                       id="hospitalizations"
-                      organisations={@organisations}
                       add_hospitalization="add_hospitalization"
                       remove_hospitalization="remove_hospitalization"
                     />

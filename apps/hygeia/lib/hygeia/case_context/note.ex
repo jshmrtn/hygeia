@@ -61,7 +61,7 @@ defmodule Hygeia.CaseContext.Note do
 
     @spec authorized?(
             resource :: Note.t(),
-            action :: :create,
+            action :: :create | :list,
             user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
@@ -74,6 +74,13 @@ defmodule Hygeia.CaseContext.Note do
         do: false
 
     def authorized?(_note, :create, user, %{case: %Case{tenant_uuid: tenant_uuid}}),
+      do:
+        Enum.any?(
+          [:tracer, :supervisor, :super_user, :admin],
+          &User.has_role?(user, &1, tenant_uuid)
+        )
+
+    def authorized?(_note, :list, user, %{person: %Person{tenant_uuid: tenant_uuid}}),
       do:
         Enum.any?(
           [:tracer, :supervisor, :super_user, :admin],

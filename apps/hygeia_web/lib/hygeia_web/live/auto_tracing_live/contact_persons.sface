@@ -1,0 +1,101 @@
+<div id="step_covid_app" class="container">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+  <h2 class="mb-4">
+    {gettext("Contact Persons")}
+  </h2>
+
+  <section>
+    <p>
+      {gettext(
+        "To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious."
+      )}
+    </p>
+    <p>
+      {gettext("Relevant will be all contacts you have where ALL of the following is true:")}
+    </p>
+    <ul>
+      <li>{gettext(
+          "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
+        )}</li>
+      <li>{gettext("You had contact for more than 15 minutes on the same day.")}</li>
+      <li>{gettext("Either you or the other person did not weark a mask.")}</li>
+      <li>{gettext("You did not keep a safe distance of at least 1.5 meters.")}</li>
+    </ul>
+    <p>
+      {gettext("Do you have any contact persons to submit?")}
+    </p>
+  </section>
+
+  <Form for={@auto_tracing_changeset} change="validate">
+    <InputContext assigns={assigns} :let={form: form}>
+      <div class="row mb-4">
+        <div class={"col-6", "p-2 rounded-3 border border-2 border-danger": not @auto_tracing_changeset.valid?}>
+          <Field name={:has_contact_persons} class="form-group">
+            <HiddenInput />
+            <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(form.source, :has_contact_persons) == true
+              }>
+                <RadioButton value />
+                {gettext("Yes")}
+              </label>
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(form.source, :has_contact_persons) == false
+              }>
+                <RadioButton value={false} />
+                {gettext("No")}
+              </label>
+            </div>
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </div>
+      </div>
+
+      <div class="mb-5" :if={Ecto.Changeset.get_field(form.source, :has_contact_persons)}>
+        <div class="d-flex">
+          <LiveRedirect
+            class="me-2"
+            to={Routes.possible_index_submission_create_path(@socket, :create, @case,
+              return_url: Routes.auto_tracing_contact_persons_path(@socket, :contact_persons, @case)
+            )}
+          >
+            <button type="button" class="mb-2 mt-3 btn btn-primary">
+              <span class="oi oi-plus" aria-hidden="true" />
+              {gettext("New Possible Index Submission")}
+            </button>
+          </LiveRedirect>
+        </div>
+        <HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable
+          case={@case}
+          return_url={Routes.auto_tracing_contact_persons_path(@socket, :contact_persons, @case)}
+        />
+      </div>
+
+      <hr class="mb-4">
+
+      <div>
+        <LiveRedirect
+          to={Routes.auto_tracing_transmission_path(@socket, :transmission, @auto_tracing.case_uuid)}
+          class="btn btn-outline-primary"
+        >
+          {gettext("Back")}
+        </LiveRedirect>
+        <button
+          class="btn btn-primary"
+          type="button"
+          :on-click="advance"
+          disabled={is_nil(Ecto.Changeset.get_field(form.source, :has_contact_persons)) or
+            not @auto_tracing_changeset.valid?}
+        >
+          {gettext("Continue")}
+        </button>
+      </div>
+    </InputContext>
+  </Form>
+</div>

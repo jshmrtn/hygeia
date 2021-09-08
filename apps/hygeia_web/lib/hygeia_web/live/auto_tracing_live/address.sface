@@ -1,0 +1,73 @@
+<div id="step_address" class="container">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+  <div class="row gx-7 mb-5">
+    <div class="col-12 col-lg-6 mb-5 mb-lg-0">
+      <h4>{gettext("Address")}</h4>
+      <p class="mb-4">{gettext("Please enter your place of residence.")}</p>
+      <Form
+        for={@person_changeset}
+        change="validate"
+        class={"p-2 rounded-3 border border-2 border-danger": not @person_changeset.valid?}
+        opts={autocomplete: "off", id: "person_address-form"}
+      >
+        <ErrorTag field={:address} class="d-block p-1 alert alert-danger" />
+        <Inputs for={:address}>
+          <HygeiaWeb.AddressForm id="person_address" />
+        </Inputs>
+      </Form>
+    </div>
+    <div class="col-12 col-lg-6">
+      <h4>{gettext("Isolation Address")}</h4>
+      <p class="mb-4">
+        {gettext(
+          "Are you planning to move to a different address for your isolation? If so, at which address?"
+        )}
+      </p>
+      <Form
+        for={@case_changeset}
+        change="validate"
+        opts={class: if(not @case_changeset.valid?, do: "p-2 rounded-3 border border-2 border-danger")}
+      >
+        <ErrorTag field={:monitoring} class="d-block p-1 alert alert-danger" />
+        <Inputs for={:monitoring}>
+          <Field class="form-group" name={:location}>
+            <HygeiaWeb.FieldLabel />
+            <Select
+              class="form-control"
+              opts={prompt: gettext("Choose location")}
+              field={:location}
+              options={isolation_locations()}
+            />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+          <Field class="form-group" name={:location_details}>
+            <HygeiaWeb.FieldLabel />
+            <TextArea class="form-control" field={:location_details} />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+          <Inputs for={:address}>
+            <HygeiaWeb.AddressForm id="monitoring_address" />
+          </Inputs>
+          <ErrorTag field={:address} class="d-block invalid-feedback" />
+        </Inputs>
+      </Form>
+    </div>
+  </div>
+
+  <hr class="mb-4">
+
+  <LiveRedirect
+    to={Routes.auto_tracing_start_path(@socket, :start, @auto_tracing.case_uuid)}
+    class="btn btn-outline-primary"
+  >
+    {gettext("Back")}
+  </LiveRedirect>
+  <button
+    class="btn btn-primary"
+    type="button"
+    :on-click="advance"
+    disabled={not @case_changeset.valid? or not @person_changeset.valid?}
+  >
+    {gettext("Continue")}
+  </button>
+</div>

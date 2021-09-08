@@ -7,18 +7,18 @@
 # # Run "mix gettext.extract" to bring this file up to
 # # date. Leave "msgstr"s empty as changing them here as no
 # # effect: edit them in PO (.po) files instead.
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Hygeia\n"
+"Project-Id-Version: HygeiaPOT-Creation-Date: PO-Revision-Date: Last-Translator: Language-Team: JOSHMARTIN GmbH https://joshmartin.chMIME-Version: 1.0Content-Type: text/plain; charset=UTF-8Content-Transfer-Encoding: 8bitX-Generator: Poedit 3.0X-Poedit-SourceCharset: UTF-8\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
-"Language-Team: JOSHMARTIN GmbH https://joshmartin.ch\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr ""
@@ -27,6 +27,9 @@ msgid "%{count} New Notification"
 msgid_plural "%{count} New Notifications"
 msgstr[0] ""
 msgstr[1] ""
+
+msgid "%{tenant} - Contact Tracing"
+msgstr ""
 
 msgid "0-1 contact person"
 msgstr ""
@@ -107,25 +110,33 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+msgid "Add an occupation"
+msgstr ""
+
 msgid "Add external references if it does not exist."
 msgstr ""
 
 msgid "Add hospitalization"
 msgstr ""
 
-msgid "Add replace field in Person."
-msgstr ""
-
-msgid "Add test"
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Add the mobile number or e-mail address to the person data."
 msgstr ""
 
 msgctxt "Phase Create Modal"
 msgid "Additional Changes"
 msgstr ""
 
+msgid "Additional actions:"
+msgstr ""
+
 msgid "Additional inquiries"
 msgstr ""
 
+msgid "Address"
+msgstr ""
+
+msgctxt "Auto Tracing Step"
 msgid "Address"
 msgstr ""
 
@@ -226,6 +237,15 @@ msgstr ""
 msgid "April"
 msgstr ""
 
+msgid "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
+msgstr ""
+
+msgid "Are you employed?"
+msgstr ""
+
+msgid "Are you planning to move to a different address for your isolation? If so, at which address?"
+msgstr ""
+
 msgid "Are you sure?"
 msgstr ""
 
@@ -236,6 +256,18 @@ msgid "Are you working in an association?"
 msgstr ""
 
 msgid "Army, Civil Protection"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case back to the case admininistration."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case back to the case administration."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Assign the case to yourself."
 msgstr ""
 
 msgid "Association"
@@ -265,6 +297,15 @@ msgctxt "Login"
 msgid "Authorized Personel"
 msgstr ""
 
+msgid "Auto Tracing"
+msgstr ""
+
+msgid "Auto Tracing Problem"
+msgstr ""
+
+msgid "Auto Tracing active"
+msgstr ""
+
 msgctxt "Versioning Origin"
 msgid "Automated Case Close Email"
 msgstr ""
@@ -288,7 +329,13 @@ msgstr ""
 msgid "BAG MED 16122020 (Contact; Hygeia Extended Fields)"
 msgstr ""
 
+msgid "Back"
+msgstr ""
+
 msgid "Back to List"
+msgstr ""
+
+msgid "Back to list"
 msgstr ""
 
 msgid "Base Data"
@@ -316,6 +363,14 @@ msgstr ""
 msgid "Call"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Call the existing number (if there is one) or send them an e-mail to find out why they did not react."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Call the existing number (if there is one) to get a mobile number or e-mail address."
+msgstr ""
+
 msgctxt "Case Status"
 msgid "Canceled"
 msgstr ""
@@ -324,6 +379,10 @@ msgid "Case"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
+msgid "Case"
+msgstr ""
+
+msgctxt "Inbox Row Apply Person"
 msgid "Case"
 msgstr ""
 
@@ -352,6 +411,10 @@ msgid "Case deleted successfully"
 msgstr ""
 
 msgid "Case updated successfully"
+msgstr ""
+
+msgctxt "Inbox Row Apply Person"
+msgid "Case:"
 msgstr ""
 
 msgid "Cases"
@@ -388,6 +451,10 @@ msgid "Changes"
 msgstr ""
 
 msgid "Check Duplicates"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Check and apply all possible index submissions."
 msgstr ""
 
 msgid "Children's home, home for the disabled"
@@ -451,6 +518,10 @@ msgstr ""
 msgid "Cinema / theater / concert"
 msgstr ""
 
+msgctxt "Auto Tracing Step"
+msgid "Clinical"
+msgstr ""
+
 msgid "Clinical Information"
 msgstr ""
 
@@ -468,6 +539,9 @@ msgstr ""
 
 msgctxt "Case Status"
 msgid "Code Pending"
+msgstr ""
+
+msgid "Collect Data"
 msgstr ""
 
 msgid "Comma (,)"
@@ -496,6 +570,9 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Comment"
 msgstr ""
 
+msgid "Complete Data"
+msgstr ""
+
 msgid "Complexity"
 msgstr ""
 
@@ -515,12 +592,23 @@ msgstr ""
 msgid "Contact Methods"
 msgstr ""
 
+msgctxt "Auto Tracing Step"
+msgid "Contact Methods"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Contact Methods"
 msgstr ""
 
 msgctxt "Possible Index Type"
 msgid "Contact Person"
+msgstr ""
+
+msgid "Contact Persons"
+msgstr ""
+
+msgctxt "Auto Tracing Step"
+msgid "Contact Persons"
 msgstr ""
 
 msgctxt "Home"
@@ -559,6 +647,13 @@ msgstr ""
 msgid "Correct Data"
 msgstr ""
 
+msgid "Correct address"
+msgstr ""
+
+msgctxt "Auto Tracing Exit"
+msgid "Correct address"
+msgstr ""
+
 msgid "Correct phone number available"
 msgstr ""
 
@@ -581,8 +676,23 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Country"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
+msgid "Country"
+msgstr ""
+
+msgctxt "Auto Tracing Problem"
+msgid "Covid App"
+msgstr ""
+
+msgctxt "Auto Tracing Step"
+msgid "Covid App"
+msgstr ""
+
 msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
+msgstr ""
+
+msgid "Create"
 msgstr ""
 
 msgctxt "Division"
@@ -593,7 +703,14 @@ msgctxt "Organisation"
 msgid "Create"
 msgstr ""
 
+msgid "Create Auto Tracing"
+msgstr ""
+
 msgid "Create Contact Cases"
+msgstr ""
+
+msgctxt "Inbox Row Apply Person"
+msgid "Create New"
 msgstr ""
 
 msgid "Create Note"
@@ -603,6 +720,9 @@ msgid "Create Phase"
 msgstr ""
 
 msgid "Create Possible Index Cases"
+msgstr ""
+
+msgid "Create Transmission"
 msgstr ""
 
 msgid "Create new person"
@@ -616,6 +736,10 @@ msgstr[1] ""
 msgid "Created at %{created_at}"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Current Step"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "DKIM"
 msgstr ""
@@ -623,6 +747,10 @@ msgstr ""
 msgid "Daily Statistics"
 msgstr ""
 
+msgid "Date"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
 msgid "Date"
 msgstr ""
 
@@ -642,16 +770,135 @@ msgctxt "Protocol Entry"
 msgid "Date"
 msgstr ""
 
-msgid "Dear Sir / Madam,\n\nAs discussed via phone, you can access the information about your isolation via the following link:\n%{public_overview_link}\n\nPlease open this link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nYou will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n\nPlease read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
+msgid "Dear Sir / Madam"
 msgstr ""
 
-msgid "Dear Sir / Madam,\n\nYou have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n\nPlease open the following link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nYou will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n\nPlease read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
+msgid "Dear Sir / Madam,\n"
+"\n"
+"As discussed via phone, you can access the information about your isolation via the following link:\n"
+"%{public_overview_link}\n"
+"\n"
+"Please open this link and log in using you first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
+"\n"
+"You will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n"
+"\n"
+"Please read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
 msgstr ""
 
-msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nYou can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n\nTo access the confirmation, please log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
+msgid "Dear Sir / Madam,\n"
+"\n"
+"As discussed via phone, you can access the information about your isolation via the following link:\n"
+"%{public_overview_link}\n"
+"\n"
+"Please open this link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
+"\n"
+"You will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n"
+"\n"
+"Please read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
 msgstr ""
 
-msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
+msgid "Dear Sir / Madam,\n"
+"\n"
+"You have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n"
+"\n"
+"Please open the following link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
+"%{public_overview_link}\n"
+"\n"
+"You will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n"
+"\n"
+"Please read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
+msgstr ""
+
+msgid "Dear Sir / Madam,\n"
+"\n"
+"You have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n"
+"\n"
+"Please open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
+"%{public_overview_link}\n"
+"\n"
+"You will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n"
+"\n"
+"Please read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
+msgstr ""
+
+msgid "Dear Sir / Madam,\n"
+"\n"
+"You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n"
+"\n"
+"We would like to ask you to fill out the information on the following link:\n"
+"%{public_overview_link}\n"
+"\n"
+"Please open this link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
+"\n"
+"Thanks for your help!\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
+msgstr ""
+
+msgid "Dear Sir / Madam,\n"
+"\n"
+"You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n"
+"\n"
+"We would like to ask you to fill out the information on the following link:\n"
+"%{public_overview_link}\n"
+"\n"
+"Please open this link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
+"\n"
+"Thanks for your help!\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
+msgstr ""
+
+msgid "Dear Sir / Madam,\n"
+"\n"
+"Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n"
+"\n"
+"You can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n"
+"\n"
+"To access the confirmation, please log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
+"\n"
+"Should you continue to feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
+msgstr ""
+
+msgid "Dear Sir / Madam,\n"
+"\n"
+"Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n"
+"\n"
+"You can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n"
+"\n"
+"To access the confirmation, please log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
+"\n"
+"Should you continue to feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
+msgstr ""
+
+msgid "Dear Sir / Madam,\n"
+"\n"
+"Your quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n"
+"\n"
+"Should you feel ill, please contact your general practitioner.\n"
+"\n"
+"Kind Regards,\n"
+"%{message_signature}\n"
 msgstr ""
 
 msgctxt "Index End Reason"
@@ -664,6 +911,10 @@ msgstr ""
 msgid "Default Supervisor"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
+msgid "Default Supervisor"
+msgstr ""
+
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Supervisor"
 msgstr ""
@@ -699,6 +950,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Tenant UUID"
 msgstr ""
 
+msgid "Default Tracer"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Default Tracer"
 msgstr ""
 
@@ -725,6 +980,10 @@ msgctxt "Notification"
 msgid "Delete"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Delete Person"
+msgstr ""
+
 msgid "Deleted"
 msgstr ""
 
@@ -741,8 +1000,18 @@ msgstr ""
 msgid "Despite multiple calls and inquiries regarding the phone number unavailable"
 msgstr ""
 
+msgid "Details"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Details"
+msgstr ""
+
+msgctxt "Versioning Origin"
+msgid "Detect No Reaction Cases"
+msgstr ""
+
+msgid "Did you get infected from a specific person? If so please enter the details."
 msgstr ""
 
 msgid "Did you meet any colleages?"
@@ -765,6 +1034,9 @@ msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Directly Close Cases"
+msgstr ""
+
+msgid "Disable"
 msgstr ""
 
 msgid "Discard"
@@ -814,6 +1086,18 @@ msgstr ""
 msgid "Do not append Note"
 msgstr ""
 
+msgid "Do not create Auto Tracing"
+msgstr ""
+
+msgid "Do you have any contact persons to submit?"
+msgstr ""
+
+msgid "Do you have symptoms?"
+msgstr ""
+
+msgid "Do you know how you got infected?"
+msgstr ""
+
 msgid "Do you know the address where you met with %{first_name} %{last_name}?"
 msgstr ""
 
@@ -831,6 +1115,10 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Domain"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Done"
+msgstr ""
+
 msgctxt "Case Status"
 msgid "Done"
 msgstr ""
@@ -846,7 +1134,7 @@ msgstr ""
 msgid "Download CSV"
 msgstr ""
 
-msgid "Download your:"
+msgid "Downloads:"
 msgstr ""
 
 msgid "Early end because of negative test after the 7th day of quarantine"
@@ -858,7 +1146,18 @@ msgstr ""
 msgid "Either you or the other person did not weark a mask."
 msgstr ""
 
+msgid "Email"
+msgstr ""
+
 msgctxt "Contact Method Type"
+msgid "Email"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
+msgid "Email"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
 msgid "Email"
 msgstr ""
 
@@ -870,7 +1169,15 @@ msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Email"
 msgstr ""
 
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
+msgid "Email"
+msgstr ""
+
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Email"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Email"
 msgstr ""
 
@@ -896,6 +1203,10 @@ msgstr ""
 msgid "Employer"
 msgstr ""
 
+msgctxt "Auto Tracing Step"
+msgid "Employer"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Employer"
 msgstr ""
@@ -909,6 +1220,9 @@ msgid "Employers"
 msgstr ""
 
 msgid "Employment"
+msgstr ""
+
+msgid "Enable"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
@@ -990,6 +1304,14 @@ msgstr ""
 msgid "Execute failed, contact a Super User"
 msgstr ""
 
+msgctxt "Inbox Row Apply Person"
+msgid "Existing Case"
+msgstr ""
+
+msgctxt "Inbox Row Apply Person"
+msgid "Existing Person, new case"
+msgstr ""
+
 msgid "Export"
 msgstr ""
 
@@ -1045,7 +1367,15 @@ msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "File"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.ImportContext.Import Field"
+msgid "File Name"
+msgstr ""
+
 msgid "Filter"
+msgstr ""
+
+msgctxt "Auto Tracing Step"
+msgid "Finish"
 msgstr ""
 
 msgid "Finished Isolations"
@@ -1053,6 +1383,10 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "First Contact"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
+msgid "First Name"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
@@ -1064,6 +1398,10 @@ msgid "First Name"
 msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "First Name"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "First Name"
 msgstr ""
 
@@ -1119,6 +1457,9 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
 msgstr ""
 
+msgid "Have you been or are you in a hospital?"
+msgstr ""
+
 msgid "Headaches"
 msgstr ""
 
@@ -1136,7 +1477,13 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-msgid "Hi %{name},\n\nThere's new notifications available on Hygeia for you:\n%{totals}\n\nBest,\nHygeia\n"
+msgid "Hi %{name},\n"
+"\n"
+"There's new notifications available on Hygeia for you:\n"
+"%{totals}\n"
+"\n"
+"Best,\n"
+"Hygeia\n"
 msgstr ""
 
 msgid "High"
@@ -1157,6 +1504,18 @@ msgid "Home Resident"
 msgstr ""
 
 msgid "Hospital"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.CaseContext.Hospitalization Field"
+msgid "Hospital"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.CaseContext.Hospitalization Field"
+msgid "Hospital UUID"
+msgstr ""
+
+msgctxt "Auto Tracing Problem"
+msgid "Hospitalization"
 msgstr ""
 
 msgctxt "Case Status"
@@ -1206,10 +1565,16 @@ msgstr ""
 msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
 msgstr ""
 
-msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation COnfirmation)"
+msgid "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
+msgstr ""
+
+msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
 msgstr ""
 
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
+msgstr ""
+
+msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago."
 msgstr ""
 
 msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
@@ -1265,6 +1630,10 @@ msgctxt "Elixir.Hygeia.ImportContext.Row Field"
 msgid "Identifiers"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "If necessary, trace the person while on the phone. If the person is willing to continue in Auto Tracing mode, make a note and assign it back to the case administration."
+msgstr ""
+
 msgid "If there are no known contact methods for the person, a contact method for a close person (relative, roommate, caretaker) can be entered instead."
 msgstr ""
 
@@ -1274,16 +1643,27 @@ msgstr ""
 msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "If there is no number, try to get it from the doctor."
+msgstr ""
+
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
 msgstr ""
 
 msgid "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test."
 msgstr ""
 
+msgid "If you were present at this location for multiple days, enter the last day into the date field."
+msgstr ""
+
 msgid "If you're an authorized person of the contact tracing team, log in instead:"
 msgstr ""
 
 msgid "If you're having trouble recalling what you did since then, here are some examples:"
+msgstr ""
+
+msgctxt "Auto Tracing Exit"
+msgid "If you've entered the wrong address or forgot to enter the correct isolation location, you can return and correct the address."
 msgstr ""
 
 msgctxt "Possible Index End Reason"
@@ -1297,13 +1677,18 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-msgid "Import Data"
-msgstr ""
-
 msgid "Import created successfully"
 msgstr ""
 
 msgid "Import deleted successfully"
+msgstr ""
+
+msgctxt "Import Row Apply"
+msgid "Imported Data"
+msgstr ""
+
+msgctxt "Inbox Row Show"
+msgid "Imported Data"
 msgstr ""
 
 msgid "Imports - Inbox"
@@ -1322,6 +1707,9 @@ msgid "In case of service disruptions, please check the status page."
 msgstr ""
 
 msgid "In this case there are no further actions necessary. \"Done\" should be set on the index and contact person."
+msgstr ""
+
+msgid "In your e-mail inbox you will find a certificate for your employer as well as further information on isolation."
 msgstr ""
 
 msgid "Inbox"
@@ -1389,6 +1777,10 @@ msgctxt "Home"
 msgid "Info Website"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Initiate Auto Tracing after getting a contact method."
+msgstr ""
+
 msgid "Input needed"
 msgstr ""
 
@@ -1410,11 +1802,20 @@ msgstr ""
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr ""
 
+msgid "Is the Swiss CovidApp installed / in operation on your smartphone?"
+msgstr ""
+
+msgid "Is the SwissCovid App installed / in operation on your smartphone?"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Is truthful"
 msgstr ""
 
 msgid "Isolation"
+msgstr ""
+
+msgid "Isolation Address"
 msgstr ""
 
 msgid "Isolation Confirmation"
@@ -1436,6 +1837,10 @@ msgid "Isolation Period End"
 msgstr ""
 
 msgid "Isolations Per Organisation"
+msgstr ""
+
+msgctxt "Auto Tracing Exit"
+msgid "It seems like we are not responsible for your case."
 msgstr ""
 
 msgid "It's difficult speaking in English. A translator is required"
@@ -1467,6 +1872,13 @@ msgstr ""
 msgid "Keep Status"
 msgstr ""
 
+msgid "Keep personal data"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Kind"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Kind"
 msgstr ""
@@ -1490,11 +1902,22 @@ msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Laboratory report date"
 msgstr ""
 
+msgid "Landline"
+msgstr ""
+
 msgctxt "Contact Method Type"
 msgid "Landline"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
+msgid "Landline"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
+msgid "Landline"
+msgstr ""
+
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
 msgid "Landline"
 msgstr ""
 
@@ -1503,6 +1926,14 @@ msgid "Landline"
 msgstr ""
 
 msgid "Language"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Last Change"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
+msgid "Last Name"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
@@ -1515,6 +1946,14 @@ msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Last Name"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
+msgid "Last Name"
+msgstr ""
+
+msgctxt "Auto Tracing Problem"
+msgid "Link Propagator"
 msgstr ""
 
 msgid "Listing Cases"
@@ -1575,6 +2014,14 @@ msgstr ""
 
 msgctxt "Case Complexity"
 msgid "Low"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Make sure all possible index submissions are persisted."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Make sure person is traced correctly."
 msgstr ""
 
 msgid "Male"
@@ -1649,11 +2096,22 @@ msgstr ""
 msgid "Missing phone number"
 msgstr ""
 
+msgid "Mobile"
+msgstr ""
+
 msgctxt "Contact Method Type"
 msgid "Mobile"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
+msgid "Mobile"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
+msgid "Mobile"
+msgstr ""
+
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
 msgid "Mobile"
 msgstr ""
 
@@ -1666,6 +2124,10 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Monitoring"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Monitoring Address"
 msgstr ""
 
 msgid "More"
@@ -1699,6 +2161,10 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Employer Field"
+msgid "Name"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Name"
 msgstr ""
@@ -1725,6 +2191,9 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
+msgstr ""
+
+msgid "Need help"
 msgstr ""
 
 msgctxt "Test Result"
@@ -1754,6 +2223,10 @@ msgstr ""
 msgid "New Email"
 msgstr ""
 
+msgctxt "Auto Tracing Problem"
+msgid "New Employer"
+msgstr ""
+
 msgid "New Import"
 msgstr ""
 
@@ -1778,10 +2251,10 @@ msgstr ""
 msgid "New Premature Release"
 msgstr ""
 
-msgid "New Registered Cases First Contact"
+msgid "New Registered Cases (Processed)"
 msgstr ""
 
-msgid "New Registered Cases Not First Contact"
+msgid "New Registered Cases (Unprocessed)"
 msgstr ""
 
 msgid "New SMS"
@@ -1791,6 +2264,9 @@ msgid "New System Message"
 msgstr ""
 
 msgid "New Tenant"
+msgstr ""
+
+msgid "New Test"
 msgstr ""
 
 msgid "New Transmission"
@@ -1829,6 +2305,9 @@ msgstr ""
 msgid "New tenant"
 msgstr ""
 
+msgid "New test"
+msgstr ""
+
 msgid "New transmission"
 msgstr ""
 
@@ -1842,6 +2321,10 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+msgctxt "Auto Tracing Problem"
+msgid "No Contact Method"
+msgstr ""
+
 msgctxt "Index End Reason"
 msgid "No Follow Up"
 msgstr ""
@@ -1851,6 +2334,14 @@ msgid "No Follow Up"
 msgstr ""
 
 msgid "No Order"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "No Problems detected."
+msgstr ""
+
+msgctxt "Auto Tracing Problem"
+msgid "No Reaction"
 msgstr ""
 
 msgid "No Symptoms"
@@ -1877,9 +2368,6 @@ msgstr ""
 msgid "No submissions have been entered yet. Please submit all relevant people. Previous submissions can also be viewed, edited and deleted later."
 msgstr ""
 
-msgid "No tests"
-msgstr ""
-
 msgid "No verson entries found"
 msgstr ""
 
@@ -1888,6 +2376,9 @@ msgstr ""
 
 msgctxt "vaccination_done"
 msgid "Not Done"
+msgstr ""
+
+msgid "Not responsible"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
@@ -1929,7 +2420,7 @@ msgstr ""
 msgid "Organisation"
 msgstr ""
 
-msgctxt "Elixir.Hygeia.CaseContext.Hospitalization Field"
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Organisation"
 msgstr ""
 
@@ -1944,10 +2435,6 @@ msgstr ""
 msgid "Organisation Positions"
 msgstr ""
 
-msgctxt "Elixir.Hygeia.CaseContext.Hospitalization Field"
-msgid "Organisation UUID"
-msgstr ""
-
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Organisation UUID"
 msgstr ""
@@ -1960,6 +2447,10 @@ msgid "Organisation created successfully"
 msgstr ""
 
 msgid "Organisation deleted successfully"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Organisation not found"
 msgstr ""
 
 msgid "Organisation updated successfully"
@@ -2070,6 +2561,10 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Overview"
+msgstr ""
+
 msgid "Own Household"
 msgstr ""
 
@@ -2125,6 +2620,10 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person"
 msgstr ""
 
+msgctxt "Inbox Row Apply Person"
+msgid "Person"
+msgstr ""
+
 msgctxt "Login"
 msgid "Person"
 msgstr ""
@@ -2160,6 +2659,14 @@ msgstr ""
 msgid "Person updated successfully"
 msgstr ""
 
+msgctxt "ISM 2021-06-11 Death Field Group"
+msgid "Personal"
+msgstr ""
+
+msgctxt "ISM 2021-06-11 Test Field Group"
+msgid "Personal"
+msgstr ""
+
 msgid "Personal service with physical contact (e.g. hairdressers, massage studio)"
 msgstr ""
 
@@ -2192,6 +2699,17 @@ msgstr ""
 msgid "Phoenix Dashboard"
 msgstr ""
 
+msgid "Phone"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
+msgid "Phone"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
+msgid "Phone"
+msgstr ""
+
 msgid "Phone number can only be obtained at the residents' registration office, index doesn't own a phone, no E-Mail address"
 msgstr ""
 
@@ -2213,6 +2731,15 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
+msgstr ""
+
+msgid "Please enter your place of residence."
+msgstr ""
+
+msgid "Please give us the details."
+msgstr ""
+
+msgid "Please indicate how we can reach you:"
 msgstr ""
 
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
@@ -2237,6 +2764,10 @@ msgstr ""
 
 msgctxt "Case Phase Type"
 msgid "Possible Index"
+msgstr ""
+
+msgctxt "Auto Tracing Problem"
+msgid "Possible Index Submission"
 msgstr ""
 
 msgid "Possible Index Submissions"
@@ -2270,6 +2801,22 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Private Key"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Problem solved"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Problems"
+msgstr ""
+
+msgctxt "Inbox Row Index"
+msgid "Process"
+msgstr ""
+
+msgctxt "Inbox Row Show"
+msgid "Processed Data"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Profession"
 msgstr ""
@@ -2295,6 +2842,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Case"
 msgstr ""
 
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts Field"
+msgid "Propagator Case"
+msgstr ""
+
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Propagator Case"
 msgstr ""
@@ -2308,6 +2859,10 @@ msgid "Propagator Case UUID"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
+msgid "Propagator ISM ID"
+msgstr ""
+
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts Field"
 msgid "Propagator ISM ID"
 msgstr ""
 
@@ -2382,6 +2937,9 @@ msgstr ""
 msgid "Reasons for test help"
 msgstr ""
 
+msgid "Reasons for the test"
+msgstr ""
+
 msgid "Received"
 msgstr ""
 
@@ -2438,6 +2996,14 @@ msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "References"
 msgstr ""
 
+msgctxt "ISM 2021-06-11 Death Field Group"
+msgid "References"
+msgstr ""
+
+msgctxt "ISM 2021-06-11 Test Field Group"
+msgid "References"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Related Tenants"
 msgstr ""
@@ -2458,6 +3024,14 @@ msgstr ""
 msgid "Repetitive preventative tests of specific groups (e.g. care centers, schools, companies etc.)"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Report case to the appropriate authority and delete person & case."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Report case to your supervisor."
+msgstr ""
+
 msgid "Reporting unit"
 msgstr ""
 
@@ -2471,11 +3045,23 @@ msgstr ""
 msgid "Reset tracer & supervisor"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Residency Address"
+msgstr ""
+
+msgctxt "Auto Tracing Problem"
+msgid "Residency Outside Country"
+msgstr ""
+
 msgctxt "Case Import Row Status"
 msgid "Resolved"
 msgstr ""
 
 msgid "Resolved Rows"
+msgstr ""
+
+msgctxt "Auto Tracing Exit"
+msgid "Responsibility"
 msgstr ""
 
 msgid "Restaurant"
@@ -2542,6 +3128,10 @@ msgstr ""
 msgid "School / scout camp"
 msgstr ""
 
+msgctxt "Auto Tracing Problem"
+msgid "School Related"
+msgstr ""
+
 msgctxt "Test Reason"
 msgid "Screening"
 msgstr ""
@@ -2598,6 +3188,10 @@ msgstr ""
 msgid "Select tenant"
 msgstr ""
 
+msgctxt "Notification Type"
+msgid "Self Service Help Request"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Send Automated Close Email"
 msgstr ""
@@ -2611,6 +3205,9 @@ msgid "Send Confirmation SMS"
 msgstr ""
 
 msgid "Send Email"
+msgstr ""
+
+msgid "Send Email Auto Tracing Invitation"
 msgstr ""
 
 msgid "Send Email Isolation Confirmation"
@@ -2628,6 +3225,9 @@ msgstr ""
 msgid "Send SMS"
 msgstr ""
 
+msgid "Send SMS Auto Tracing Invitation"
+msgstr ""
+
 msgid "Send SMS Isolation Confirmation"
 msgstr ""
 
@@ -2638,6 +3238,18 @@ msgid "Send SMS Quarantine Confirmation"
 msgstr ""
 
 msgid "Send SMS Quarantine End Confirmation"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Send a Covid App Code to the person."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Send a SwissCovid App Code to the person."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Send the Auto Tracing invitation."
 msgstr ""
 
 msgid "Sent at %{date}"
@@ -2720,6 +3332,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Sponsor"
 msgstr ""
 
+msgctxt "Auto Tracing Step"
+msgid "Start"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Start"
 msgstr ""
@@ -2789,6 +3405,9 @@ msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr ""
 
+msgid "Submit contact persons"
+msgstr ""
+
 msgctxt "Email Status"
 msgid "Success"
 msgstr ""
@@ -2803,11 +3422,19 @@ msgstr ""
 msgid "Supervisor"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Supervisor"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Supervisor"
 msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Supervisor"
+msgstr ""
+
+msgctxt "Inbox Row Apply Assignee"
 msgid "Supervisor"
 msgstr ""
 
@@ -2830,12 +3457,29 @@ msgstr ""
 msgid "Suppress quarantine"
 msgstr ""
 
+msgid "Swiss CovidApp"
+msgstr ""
+
+msgctxt "Auto Tracing Problem"
+msgid "SwissCovid App"
+msgstr ""
+
+msgctxt "Auto Tracing Step"
+msgid "SwissCovid App"
+msgstr ""
+
+msgid "SwissCovid App"
+msgstr ""
+
 msgctxt "Division Merge"
 msgid "Switch"
 msgstr ""
 
 msgctxt "Organisation Merge"
 msgid "Switch"
+msgstr ""
+
+msgid "Symptoms"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
@@ -2863,6 +3507,10 @@ msgid "System Message updated successfully"
 msgstr ""
 
 msgid "System Messages"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "TODO: directions"
 msgstr ""
 
 msgid "Take Me Home"
@@ -2902,6 +3550,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tenant"
 msgstr ""
 
+msgctxt "Inbox Row Apply Tenant"
+msgid "Tenant"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tenant UUID"
 msgstr ""
@@ -2934,6 +3586,13 @@ msgstr ""
 msgid "Tenants"
 msgstr ""
 
+msgid "Test"
+msgstr ""
+
+msgctxt "ISM 2021-06-11 Test Field Group"
+msgid "Test"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Test Kind"
 msgstr ""
@@ -2944,8 +3603,14 @@ msgstr ""
 msgid "Test by order from CT"
 msgstr ""
 
+msgid "Test created successfully"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Test date"
+msgstr ""
+
+msgid "Test deleted successfully"
 msgstr ""
 
 msgid "Test during quarantine without ending it"
@@ -2957,6 +3622,9 @@ msgstr ""
 msgid "Test required by professional activity"
 msgstr ""
 
+msgid "Test updated successfully"
+msgstr ""
+
 msgid "Testing based on a message via app"
 msgstr ""
 
@@ -2965,6 +3633,16 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Text"
+msgstr ""
+
+msgid "Thank you for your information!"
+msgstr ""
+
+msgid "Thanks for your help!"
+msgstr ""
+
+msgctxt "Auto Tracing Exit"
+msgid "That depends mostly on your place of residence. We will forward your data to the entity accountable for tracing you."
 msgstr ""
 
 msgctxt "Phase Create Modal"
@@ -2978,6 +3656,9 @@ msgid "The contact person didn't develop any symptoms during quarantine"
 msgstr ""
 
 msgid "The contact person has developed symptoms, did a test and became an index"
+msgstr ""
+
+msgid "The displayed language was translated mechanically."
 msgstr ""
 
 msgctxt "Phase Create Modal"
@@ -2994,7 +3675,13 @@ msgstr ""
 msgid "The index phase end reason will be set to %{end_reason}."
 msgstr ""
 
+msgid "The link is no longer available"
+msgstr ""
+
 msgid "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
+msgstr ""
+
+msgid "The quarantine can be ended because of a negative test the earliest on %{date}."
 msgstr ""
 
 msgctxt "Phase Create Modal"
@@ -3062,11 +3749,19 @@ msgstr ""
 msgid "Tracer"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Tracer"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tracer"
 msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Tracer"
+msgstr ""
+
+msgctxt "Inbox Row Apply Assignee"
 msgid "Tracer"
 msgstr ""
 
@@ -3081,6 +3776,10 @@ msgstr ""
 msgid "Tracing"
 msgstr ""
 
+msgid "Transmission"
+msgstr ""
+
+msgctxt "Auto Tracing Step"
 msgid "Transmission"
 msgstr ""
 
@@ -3195,6 +3894,16 @@ msgstr ""
 msgid "Unknown Error"
 msgstr ""
 
+msgctxt "Auto Tracing Problem"
+msgid "Unmanaged Tenant"
+msgstr ""
+
+msgid "Update Transmission"
+msgstr ""
+
+msgid "Update personal data"
+msgstr ""
+
 msgctxt "Field"
 msgid "Updated At"
 msgstr ""
@@ -3230,8 +3939,16 @@ msgstr ""
 msgid "Vaccination"
 msgstr ""
 
+msgctxt "Auto Tracing Step"
+msgid "Vaccination"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Vaccination"
+msgstr ""
+
+msgctxt "Auto Tracing Problem"
+msgid "Vaccination Failure"
 msgstr ""
 
 msgid "Vaccination Failures"
@@ -3262,6 +3979,15 @@ msgstr ""
 msgid "Warning! When importing the same rows multiple times, they will be re-assigned from the old import to the current import. Therefore rows might appear missing from an import later on."
 msgstr ""
 
+msgid "We will forward you to the recording of people that you were in contact with and could possibly have passed the infection on."
+msgstr ""
+
+msgid "We wish you a speedy recovery."
+msgstr ""
+
+msgid "We would like to ask you to fill out the information on the following pages as precisely and completely as possible."
+msgstr ""
+
 msgid "We're having difficulty connecting to the database."
 msgstr ""
 
@@ -3272,8 +3998,14 @@ msgctxt "Versioning Origin"
 msgid "Website"
 msgstr ""
 
+msgid "What symptoms did you experience?"
+msgstr ""
+
 msgctxt "Phase Create Modal"
 msgid "When Saving, the following changes will also be applied:"
+msgstr ""
+
+msgid "When did the symptoms start?"
 msgstr ""
 
 msgid "When did you meet %{first_name} %{last_name} last?"
@@ -3313,7 +4045,7 @@ msgstr ""
 msgid "You are not authorized to do this action."
 msgstr ""
 
-msgid "You can also end quarantine early, if you do a COVID-19 test in the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
+msgid "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
 msgstr ""
 
 msgid "You can lift quarantine if you're fully vaccinated or if you verifiably had COVID-19 in the last six months."
@@ -3331,6 +4063,9 @@ msgstr ""
 msgid "You have been logged out!"
 msgstr ""
 
+msgid "You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support."
+msgstr ""
+
 msgid "You have been requested to enter personal data from all persons with which you have had contact with for more than 15 minutes without wearing a mask."
 msgstr ""
 
@@ -3340,10 +4075,16 @@ msgstr ""
 msgid "You must provide a reason for completing a phase."
 msgstr ""
 
-msgid "Your isolation started on %{start_date} and is expected to end on %{end_date}."
+msgid "Your Tests"
 msgstr ""
 
-msgid "Your quarantine started on %{start_date} and is expected to end on %{end_date}."
+msgid "Your isolation started on %{start_date} and applies up to and including %{end_date}."
+msgstr ""
+
+msgid "Your occupation does not appear in the list or it is not correct? Please enter it manually."
+msgstr ""
+
+msgid "Your quarantine started on %{start_date} and applies up to and including %{end_date}."
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
@@ -3361,6 +4102,10 @@ msgid "all subdivisions"
 msgstr ""
 
 msgid "another place"
+msgstr ""
+
+msgctxt "Item Table"
+msgid "auto_tracings"
 msgstr ""
 
 msgctxt "Item Table"
@@ -3388,6 +4133,10 @@ msgctxt "Notification"
 msgid "deleted"
 msgstr ""
 
+msgctxt "Notification"
+msgid "did not execute the self service process"
+msgstr ""
+
 msgctxt "Item Table"
 msgid "divisions"
 msgstr ""
@@ -3404,7 +4153,7 @@ msgid "failed to send email."
 msgstr ""
 
 msgctxt "Notification"
-msgid "has ndeclared a premature release."
+msgid "has declared a premature release."
 msgstr ""
 
 msgctxt "Item Table"
@@ -3443,6 +4192,10 @@ msgctxt "Item Table"
 msgid "mutations"
 msgstr ""
 
+msgctxt "Notification"
+msgid "needs help with self-service."
+msgstr ""
+
 msgctxt "Item Table"
 msgid "notes"
 msgstr ""
@@ -3463,6 +4216,15 @@ msgstr ""
 
 msgctxt "Item Table"
 msgid "people"
+msgstr ""
+
+msgid "please add at least one occupation"
+msgstr ""
+
+msgid "please fill in the information about the place where you contracted the virus"
+msgstr ""
+
+msgid "please fill in the information of the person who passed on the virus to you"
 msgstr ""
 
 msgctxt "Item Table"
@@ -3579,3 +4341,4 @@ msgstr ""
 msgctxt "Notification"
 msgid "was assigned to you."
 msgstr ""
+

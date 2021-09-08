@@ -158,13 +158,13 @@ defmodule HygeiaWeb.RowLive.Apply do
     end
 
     patch_action_plan(socket, index, fn %Action.SelectCase{} = action ->
-      %Action.SelectCase{action | person: person, case: nil}
+      %Action.SelectCase{action | person: person, case: nil, suppress_quarantine: false}
     end)
   end
 
   def handle_event("select_person", %{"subject" => index, "value" => ""} = _params, socket) do
     patch_action_plan(socket, index, fn %Action.SelectCase{} = action ->
-      %Action.SelectCase{action | person: nil, case: nil}
+      %Action.SelectCase{action | person: nil, case: nil, suppress_quarantine: false}
     end)
   end
 
@@ -192,7 +192,17 @@ defmodule HygeiaWeb.RowLive.Apply do
     {:ok, status} = Case.Status.cast(status)
 
     patch_action_plan(socket, index, fn %Action.PatchStatus{} = action ->
-      %Action.PatchStatus{action | status: status}
+      %Action.PatchStatus{action | status: status, action: :change}
+    end)
+  end
+
+  def handle_event(
+        "add_note",
+        %{"add_note" => %{"note" => "", "index" => index}} = _params,
+        socket
+      ) do
+    patch_action_plan(socket, index, fn %Action.AddNote{} = action ->
+      %Action.AddNote{action | action: :skip}
     end)
   end
 
@@ -206,6 +216,18 @@ defmodule HygeiaWeb.RowLive.Apply do
     end)
   end
 
+  def handle_event("enable_auto_tracing", %{"index" => index} = _params, socket) do
+    patch_action_plan(socket, index, fn %Action.CreateAutoTracing{} = action ->
+      %Action.CreateAutoTracing{action | action: :create}
+    end)
+  end
+
+  def handle_event("disable_auto_tracing", %{"index" => index} = _params, socket) do
+    patch_action_plan(socket, index, fn %Action.CreateAutoTracing{} = action ->
+      %Action.CreateAutoTracing{action | action: :skip}
+    end)
+  end
+
   def handle_event(
         "select_case",
         %{"subject" => index, "uuid" => case_uuid} = _params,
@@ -214,20 +236,20 @@ defmodule HygeiaWeb.RowLive.Apply do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], tenant: [], tests: [])
+      |> Repo.preload(person: [], tenant: [], tests: [], hospitalizations: [], auto_tracing: [])
 
     unless authorized?(case, :details, get_auth(socket)) do
       raise "unauthorized"
     end
 
     patch_action_plan(socket, index, fn %Action.SelectCase{} = action ->
-      %Action.SelectCase{action | person: case.person, case: case}
+      %Action.SelectCase{action | person: case.person, case: case, suppress_quarantine: false}
     end)
   end
 
   def handle_event("select_case", %{"subject" => index, "value" => ""} = _params, socket) do
     patch_action_plan(socket, index, fn %Action.SelectCase{} = action ->
-      %Action.SelectCase{action | person: nil, case: nil}
+      %Action.SelectCase{action | case: nil, suppress_quarantine: false}
     end)
   end
 

@@ -1,6 +1,8 @@
 defmodule Hygeia.Helpers.Empty do
   @moduledoc false
 
+  import Ecto.Changeset
+
   alias Ecto.Changeset
 
   @spec is_empty?(changeset :: Changeset.t(), extra_ignore_fields :: [atom()]) :: boolean
@@ -19,4 +21,24 @@ defmodule Hygeia.Helpers.Empty do
   end
 
   defp drop_recursively(changes, _extra_ignore_fields), do: changes
+
+  @spec validate_embed_required(changeset :: Changeset.t(resource), embed :: atom, type :: module) ::
+          Changeset.t(resource)
+        when resource: term
+  def validate_embed_required(changeset, embed, type) do
+    changeset
+    |> fetch_field!(embed)
+    |> case do
+      nil ->
+        add_error(changeset, embed, "is required")
+
+      other ->
+        other
+        |> type.changeset(%{}, %{required: true})
+        |> case do
+          %Ecto.Changeset{valid?: true} -> changeset
+          %Ecto.Changeset{valid?: false} -> add_error(changeset, embed, "is invalid")
+        end
+    end
+  end
 end

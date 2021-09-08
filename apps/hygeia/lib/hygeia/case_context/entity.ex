@@ -23,6 +23,11 @@ defmodule Hygeia.CaseContext.Entity do
           address: Address.t()
         }
 
+  @type changeset_options :: %{
+          optional(:name_required) => boolean,
+          optional(:address_required) => boolean
+        }
+
   embedded_schema do
     field :name, :string
     field :division, :string
@@ -33,8 +38,27 @@ defmodule Hygeia.CaseContext.Entity do
   end
 
   @doc false
-  @spec changeset(entity :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
-  def changeset(entity, attrs) do
+  @spec changeset(
+          entity :: t | empty,
+          attrs :: Hygeia.ecto_changeset_params(),
+          opts :: changeset_options
+        ) :: Changeset.t()
+  def changeset(entity, attrs \\ %{}, changeset_options \\ %{})
+
+  def changeset(entity, attrs, %{name_required: true} = changeset_options) do
+    entity
+    |> changeset(attrs, %{changeset_options | name_required: false})
+    |> validate_required([:name])
+  end
+
+  def changeset(entity, attrs, %{address_required: true} = changeset_options) do
+    entity
+    |> changeset(attrs, %{changeset_options | address_required: false})
+    |> cast_embed(:address, with: &Address.changeset(&1, &2, %{required: true}), required: true)
+    |> validate_embed_required(:address, Address)
+  end
+
+  def changeset(entity, attrs, _changeset_options) do
     entity
     |> cast(attrs, [:uuid, :name, :division, :person_first_name, :person_last_name])
     |> fill_uuid

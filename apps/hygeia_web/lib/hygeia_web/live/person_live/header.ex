@@ -4,6 +4,7 @@ defmodule HygeiaWeb.PersonLive.Header do
   use HygeiaWeb, :surface_live_component
 
   alias Ecto.Changeset
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.Repo
   alias HygeiaWeb.UriActiveContext

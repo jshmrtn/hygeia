@@ -54,15 +54,10 @@
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
                     <label class="d-block">{schema_field_name(:status, Case)}</label>
-                    <label
-                      :for={{name, key} <- Status.map()}
-                      class="d-block checkbox-label"
-                      data-disabled={@live_action == :show}
-                    >
+                    <label :for={{name, key} <- Status.map()}>
                       <input
                         type="checkbox"
                         name={input_name(form, :status) <> "[]"}
-                        disabled={@live_action == :show}
                         checked={Atom.to_string(key) in (form.source["status"] || [])}
                         value={key}
                       />
@@ -73,15 +68,10 @@
                 <div class="col-md-6 col-sm-12">
                   <div class="form-group">
                     <label class="d-block">{schema_field_name(:complexity, Case)}</label>
-                    <label
-                      :for={{name, key} <- Case.Complexity.map()}
-                      class="d-block checkbox-label"
-                      data-disabled={@live_action == :show}
-                    >
+                    <label :for={{name, key} <- Case.Complexity.map()} class="d-block checkbox-label">
                       <input
                         type="checkbox"
                         name={input_name(form, :complexity) <> "[]"}
-                        disabled={@live_action == :show}
                         checked={Atom.to_string(key) in (form.source["complexity"] || [])}
                         value={key}
                       />
@@ -133,36 +123,65 @@
                 </Field>
               </div>
 
+              <Field name="fully_vaccinated" class="form-group">
+                <Label class="checkbox-label">
+                  <Checkbox />
+                  {gettext("Fully Vaccinated")}
+                </Label>
+              </Field>
+
+              <Field name="vaccination_failures" class="form-group">
+                <Label class="checkbox-label">
+                  <Checkbox />
+                  {gettext("Vaccination Failures")}
+                </Label>
+              </Field>
+
+              <Field name="inserted_at" class="form-group">
+                <Label class="d-block">{schema_field_name(:inserted_at, Case)}</Label>
+
+                <FieldContext name={:inserted_at_from}>
+                  <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                </FieldContext>
+                {pgettext("Date Range", "until")}
+                <FieldContext name={:inserted_at_to}>
+                  <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                </FieldContext>
+              </Field>
+
               <div class="form-group">
-                <Field name="fully_vaccinated" class="form-group">
-                  <Label class="checkbox-label">
-                    <Checkbox />
-                    {gettext("Fully Vaccinated")}
-                  </Label>
+                <label class="d-block">{gettext("Auto Tracing active")}</label>
+                <Field name="auto_tracing_active" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="" />
+                    {gettext("Any")}
+                  </label>
+                </Field>
+                <Field name="auto_tracing_active" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value />
+                    {gettext("Yes")}
+                  </label>
+                </Field>
+                <Field name="auto_tracing_active" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value={false} />
+                    {gettext("False")}
+                  </label>
                 </Field>
               </div>
 
               <div class="form-group">
-                <Field name="vaccination_failures" class="form-group">
-                  <Label class="checkbox-label">
-                    <Checkbox />
-                    {gettext("Vaccination Failures")}
-                  </Label>
-                </Field>
-              </div>
-
-              <div class="form-group">
-                <Field name="inserted_at" class="form-group">
-                  <Label class="d-block">{schema_field_name(:inserted_at, Case)}</Label>
-
-                  <FieldContext name={:inserted_at_from}>
-                    <HygeiaWeb.DateTimeLocalInput class="form-control" />
-                  </FieldContext>
-                  {pgettext("Date Range", "until")}
-                  <FieldContext name={:inserted_at_to}>
-                    <HygeiaWeb.DateTimeLocalInput class="form-control" />
-                  </FieldContext>
-                </Field>
+                <label class="d-block">{gettext("Auto Tracing Problem")}</label>
+                <label :for={{name, key} <- AutoTracing.Problem.map()} class="d-block checkbox-label">
+                  <input
+                    type="checkbox"
+                    name={input_name(form, :auto_tracing_problem) <> "[]"}
+                    checked={Atom.to_string(key) in (form.source["auto_tracing_problem"] || [])}
+                    value={key}
+                  />
+                  {name}
+                </label>
               </div>
             </InputContext>
           </Form>

@@ -47,11 +47,20 @@ Extract all translation strings to create `*.pot`-files:
 mix gettext.extract.umbrella
 ```
 
+Next, clean wrongly inserted comments from the `*.pot` files.
+
+```console
+cat apps/hygeia_gettext/priv/gettext/default.pot | grep -v elixir-format | sponge apps/hygeia_gettext/priv/gettext/default.pot
+```
+
 Then merge those into the localized `*.po`-files:
 
 ```console
 cd apps/hygeia_gettext
-mix gettext.merge priv/gettext --locale=de &  mix gettext.merge priv/gettext --locale=en
+mix gettext.merge priv/gettext --locale=en && \
+mix gettext.merge priv/gettext --locale=de && \
+mix gettext.merge priv/gettext --locale=it && \
+mix gettext.merge priv/gettext --locale=fr
 ```
 
 You can now edit the translations using [Poedit](https://poedit.net/) or similar software.

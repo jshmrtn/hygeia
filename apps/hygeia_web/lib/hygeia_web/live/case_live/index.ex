@@ -5,6 +5,7 @@ defmodule HygeiaWeb.CaseLive.Index do
 
   import Ecto.Query
 
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Status
@@ -140,12 +141,17 @@ defmodule HygeiaWeb.CaseLive.Index do
     "fully_vaccinated" => :fully_vaccinated,
     "vaccination_failures" => :vaccination_failures,
     "inserted_at_from" => :inserted_at_from,
-    "inserted_at_to" => :inserted_at_to
+    "inserted_at_to" => :inserted_at_to,
+    "auto_tracing_problem" => :auto_tracing_problem,
+    "auto_tracing_active" => :auto_tracing_active
   }
 
   defp list_cases(socket) do
     {cursor_fields, query} = sort_params(socket)
     user_not_assigned = Atom.to_string(:user_not_assigned)
+
+    {vaccine_validity_amount, vaccine_validity_unit} = Hygeia.vaccine_validity()
+    vaccine_validity_unit = Atom.to_string(vaccine_validity_unit)
 
     %Paginator.Page{entries: entries, metadata: metadata} =
       socket.assigns.filters
@@ -157,6 +163,21 @@ defmodule HygeiaWeb.CaseLive.Index do
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
       |> Enum.reduce(query, fn
+        {:auto_tracing_active, "true"}, query ->
+          from(case in query, join: auto_tracing in assoc(case, :auto_tracing))
+
+        {:auto_tracing_active, "false"}, query ->
+          from(case in query,
+            left_join: auto_tracing in assoc(case, :auto_tracing),
+            where: is_nil(auto_tracing)
+          )
+
+        {:auto_tracing_problem, problems}, query ->
+          from(case in query,
+            join: auto_tracing in assoc(case, :auto_tracing),
+            where: fragment("? && ?", ^problems, auto_tracing.unsolved_problems)
+          )
+
         {:fully_vaccinated, "true"}, query ->
           where(
             query,
@@ -164,7 +185,8 @@ defmodule HygeiaWeb.CaseLive.Index do
             fragment("(?->>'done')::boolean", person.vaccination) and
               fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >=
                 2 and
-              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >= ago(6, "month")
+              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >=
+                ago(^vaccine_validity_amount, ^vaccine_validity_unit)
           )
 
         {:vaccination_failures, "false"}, query ->
@@ -177,7 +199,8 @@ defmodule HygeiaWeb.CaseLive.Index do
             fragment("(?->>'done')::boolean", person.vaccination) and
               fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >=
                 2 and
-              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >= ago(6, "month") and
+              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >=
+                ago(^vaccine_validity_amount, ^vaccine_validity_unit) and
               case.inserted_at >= fragment("(?->'jab_dates'->>-1)::date", person.vaccination)
           )
 

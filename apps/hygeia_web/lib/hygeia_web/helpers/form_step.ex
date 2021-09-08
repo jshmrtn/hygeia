@@ -36,19 +36,9 @@ defmodule HygeiaWeb.Helpers.FormStep do
   end
 
   defp get_step_by_direction(steps, current_step_name, direction) when is_atom(direction) do
-    steps
-    |> get_step(current_step_name)
-    |> case do
-      nil ->
-        nil
-
-      step ->
-        step
-        |> Map.get(direction)
-        |> case do
-          nil -> nil
-          desired_step -> desired_step
-        end
+    case get_step(steps, current_step_name) do
+      %{^direction => desired_step_name} -> desired_step_name
+      nil -> nil
     end
   end
 

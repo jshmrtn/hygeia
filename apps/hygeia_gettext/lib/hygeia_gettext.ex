@@ -21,4 +21,9 @@ defmodule HygeiaGettext do
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
   use Gettext, otp_app: :hygeia_gettext
+
+  @fuzzy_languages Application.compile_env(:hygeia_gettext, [__MODULE__, :fuzzy_languages], [])
+
+  @spec is_fuzzy_language?(language :: String.t()) :: boolean
+  def is_fuzzy_language?(language), do: language in @fuzzy_languages
 end

@@ -160,6 +160,11 @@ case System.fetch_env("PDF_CONFIRMATION_TEMPLATE_ROOT") do
   :error -> nil
 end
 
+case System.fetch_env("TENANT_LOGO_TEMPLATE_ROOT") do
+  {:ok, path} -> config :hygeia_web, tenant_logo_root_path: path
+  :error -> nil
+end
+
 case Code.ensure_loaded(Sentry.LoggerBackend) do
   {:module, Sentry.LoggerBackend} -> config :logger, backends: [:console, Sentry.LoggerBackend]
   {:error, :nofile} -> nil

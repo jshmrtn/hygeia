@@ -79,4 +79,12 @@ defmodule HygeiaWeb.PrematureReleaseLive.Create do
         {:noreply, assign(socket, :changeset, changeset)}
     end
   end
+
+  defp negative_test_too_early?(type, phase)
+
+  defp negative_test_too_early?(:negative_test, %Phase{end: end_date}) do
+    Date.compare(Date.utc_today(), Date.add(end_date, -3)) == :lt
+  end
+
+  defp negative_test_too_early?(_type, _phase), do: false
 end

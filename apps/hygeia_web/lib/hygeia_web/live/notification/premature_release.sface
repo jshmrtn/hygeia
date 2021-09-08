@@ -1,32 +1,34 @@
 <div>
-  <LiveRedirect
-    class="d-inline-block"
-    to={Routes.premature_release_index_path(@socket, :index, @body.premature_release.case_uuid)}
-  >
-    <HygeiaWeb.RecordView
-      :if={not is_nil(@body.premature_release)}
-      resource={@body.premature_release}
-      action={:list}
-      id={"#{@id}_record_view_#{@body.premature_release_uuid}"}
-      wrapper_tag={:strong}
+  <Context get={HygeiaWeb, timezone: timezone}>
+    <LiveRedirect
+      class="d-inline-block"
+      to={Routes.premature_release_index_path(@socket, :index, @body.premature_release.case_uuid)}
     >
-      {case_display_type(@body.premature_release.case)}
-      <span class="date ms-2">
-        {case_display_date(@body.premature_release.case)}
-      </span>
       <HygeiaWeb.RecordView
-        resource={@body.premature_release.case.person}
+        :if={not is_nil(@body.premature_release)}
+        resource={@body.premature_release}
         action={:list}
-        id={"#{@id}_record_view_person_#{@body.premature_release.case.person.uuid}"}
-        wrapper_tag={:span}
+        id={"#{@id}_record_view_#{@body.premature_release_uuid}"}
+        wrapper_tag={:strong}
       >
-        ({@body.premature_release.case.person.first_name} {@body.premature_release.case.person.last_name})
+        {case_display_type(@body.premature_release.case)}
+        <span class="date ms-2">
+          {case_display_date(@body.premature_release.case, timezone)}
+        </span>
+        <HygeiaWeb.RecordView
+          resource={@body.premature_release.case.person}
+          action={:list}
+          id={"#{@id}_record_view_person_#{@body.premature_release.case.person.uuid}"}
+          wrapper_tag={:span}
+        >
+          ({@body.premature_release.case.person.first_name} {@body.premature_release.case.person.last_name})
+        </HygeiaWeb.RecordView>
       </HygeiaWeb.RecordView>
-    </HygeiaWeb.RecordView>
-    <em :if={is_nil(@body.premature_release.case)}>
-      {pgettext("Notification", "deleted")}
-    </em>
+      <em :if={is_nil(@body.premature_release.case)}>
+        {pgettext("Notification", "deleted")}
+      </em>
 
-    {pgettext("Notification", "has ndeclared a premature release.")}
-  </LiveRedirect>
+      {pgettext("Notification", "has declared a premature release.")}
+    </LiveRedirect>
+  </Context>
 </div>

@@ -391,7 +391,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("New Registered Cases First Contact")
+                    text: gettext("New Registered Cases (Unprocessed)")
                   },
                   doughnutlabel: %{
                     labels: [
@@ -415,7 +415,7 @@
             class="d-flex justify-content-center align-items-center"
             :if={@new_registered_cases_per_day_first_contact == []}
           >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("New Registered Cases First Contact")} />
+            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("New Registered Cases (Unprocessed)")} />
           </div>
         </div>
         <div class="col-12 col-xl-6">
@@ -444,7 +444,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("New Registered Cases Not First Contact")
+                    text: gettext("New Registered Cases (Processed)")
                   }
                 }
               }
@@ -454,7 +454,7 @@
             class="d-flex justify-content-center align-items-center"
             :if={@new_registered_cases_per_day_not_first_contact == []}
           >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("New Registered Cases Not First Contact")} />
+            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("New Registered Cases (Processed)")} />
           </div>
         </div>
       </div>

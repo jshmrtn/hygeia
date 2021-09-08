@@ -46,7 +46,7 @@ defmodule HygeiaWeb.AuthLive.Login do
       )
 
     socket =
-      if first_name_difference + last_name_difference >= 1.8 do
+      if first_name_difference + last_name_difference >= 1.7 do
         push_redirect(socket,
           to:
             Routes.auth_path(socket, :request, "person",

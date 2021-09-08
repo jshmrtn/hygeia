@@ -2,7 +2,9 @@ defmodule HygeiaWeb.TestLive.Index do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
+
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Test.Kind
   alias Hygeia.CaseContext.Test.Result
@@ -33,6 +35,7 @@ defmodule HygeiaWeb.TestLive.Index do
     case =
       Repo.preload(
         case,
+        tenant: [],
         tests: [mutation: []],
         person: [tenant: []]
       )
@@ -46,9 +49,13 @@ defmodule HygeiaWeb.TestLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({_type, %Test{}, _version}, socket) do
+  def handle_info({_type, %module{}, _version}, socket) when module in [Test, Case] do
     {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
   end
+
+  def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
+
+  def handle_info(_other, socket), do: {:noreply, socket}
 
   @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id} = _params, socket) do

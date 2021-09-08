@@ -42,8 +42,8 @@
           </Context>
         </div>
 
-        <div :if={value in [nil, ""] and not @disabled}>
-          <button class="btn btn-outline-primary" :on-click="open_modal" type="button">
+        <div :if={value in [nil, ""]}>
+          <button disabled={@disabled} class="btn btn-outline-primary" :on-click="open_modal" type="button">
             {gettext("Choose organisation")}
           </button>
 
@@ -75,6 +75,7 @@
                     class="input-group-text text-nowrap"
                     to={Routes.organisation_create_path(@socket, :create, popup: true)}
                     opts={target: "_blank", rel: "opener"}
+                    :if={authorized?(Organisation, :create, auth)}
                   >
                     <span class="oi oi-plus" />
                     {pgettext("Organisation", "Create")}

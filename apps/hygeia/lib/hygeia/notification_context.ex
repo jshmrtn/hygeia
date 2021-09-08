@@ -5,6 +5,7 @@ defmodule Hygeia.NotificationContext do
 
   use Hygeia, :context
 
+  alias Hygeia.CaseContext.Case
   alias Hygeia.NotificationContext.Notification
   alias Hygeia.UserContext.User
 
@@ -64,6 +65,18 @@ defmodule Hygeia.NotificationContext do
   """
   @spec get_notification!(id :: Ecto.UUID.t()) :: Notification.t()
   def get_notification!(id), do: Repo.get!(Notification, id)
+
+  @spec get_notification_by_type_and_case(type :: String.t(), case :: Case.t()) ::
+          Notification.t() | nil
+  def get_notification_by_type_and_case(type, case),
+    do:
+      Repo.one(
+        from(notification in Notification,
+          where:
+            fragment("?->>'__type__'", notification.body) == ^type and
+              fragment("?->>'case_uuid'", notification.body) == ^case.uuid
+        )
+      )
 
   @doc """
   Creates a notification.

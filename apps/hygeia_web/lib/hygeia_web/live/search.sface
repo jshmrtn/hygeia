@@ -1,5 +1,5 @@
 <form class="component-search" :on-change="search">
-  <Context get={HygeiaWeb, auth: auth}>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
     <div class="input-group">
       <span class="input-group-text border-0">
         <span class="oi oi-magnifying-glass" aria-hidden="true" />
@@ -51,7 +51,7 @@
                 {item.person.first_name}
                 {item.person.last_name}
               </small>
-              <small class="d-block text-muted">{case_display_date(item)}</small>
+              <small class="d-block text-muted">{case_display_date(item, timezone)}</small>
             </Link>
             <Link
               class="dropdown-item"

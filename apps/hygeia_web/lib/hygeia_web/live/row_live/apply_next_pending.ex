@@ -25,7 +25,7 @@ defmodule HygeiaWeb.RowLive.ApplyNextPending do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~F"""
-    {gettext("Redirecting")}
+    <span>{gettext("Redirecting")}</span>
     """
   end
 end

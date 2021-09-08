@@ -11,11 +11,15 @@
   )
 ) %>
 
-<main role="main" class="layout-live-main">
+<main role="main" class="layout-live-main px-3 px-sm-2">
   <div class="container">
     <p class="alert alert-info" role="alert"
       phx-click="lv:clear-flash"
       phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+
+    <p class="alert alert-warning" role="alert"
+      phx-click="lv:clear-flash"
+      phx-value-key="warning"><%= live_flash(@flash, :warning) %></p>
 
     <p class="alert alert-danger" role="alert"
       phx-click="lv:clear-flash"

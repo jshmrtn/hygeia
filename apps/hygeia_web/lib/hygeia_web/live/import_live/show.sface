@@ -56,6 +56,14 @@
           </div>
           <div class="form-group">
             <div>
+              {schema_field_name(:filename, Import)}
+            </div>
+            <div class="value">
+              {@import.filename}
+            </div>
+          </div>
+          <div class="form-group">
+            <div>
               {schema_field_name(:closed_at, Import)}
             </div>
             <div class="value">

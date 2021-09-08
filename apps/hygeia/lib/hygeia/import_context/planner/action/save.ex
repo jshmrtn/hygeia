@@ -8,9 +8,13 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
   defstruct []
 
   defimpl Hygeia.ImportContext.Planner.Action do
+    alias Hygeia.AutoTracingContext
+    alias Hygeia.AutoTracingContext.AutoTracingCommunication
     alias Hygeia.CaseContext
+    alias Hygeia.CommunicationContext
     alias Hygeia.ImportContext
     alias Hygeia.ImportContext.Planner.Action.Save
+    alias Hygeia.Repo
 
     @impl Hygeia.ImportContext.Planner.Action
     def execute(
@@ -21,7 +25,7 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
             case_changeset: case_changeset,
             person_changeset: person_changeset,
             note_changeset: note_changeset
-          },
+          } = params,
           row
         ) do
       person_changeset = CaseContext.change_person(person_changeset)
@@ -30,6 +34,8 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
            case_changeset = CaseContext.change_case(case_changeset, %{person_uuid: person.uuid}),
            {:ok, case} <- CaseContext.create_case(case_changeset),
            {:ok, _note} <- create_note_as_needed(case, note_changeset),
+           {:ok, _auto_tracing} <-
+             create_auto_tracing_as_needed(case, params[:create_auto_tracing]),
            {:ok, row} <- ImportContext.update_row(row, %{status: :resolved, case_uuid: case.uuid}) do
         {:ok,
          %{
@@ -51,7 +57,7 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
             case_changeset: case_changeset,
             person_changeset: person_changeset,
             note_changeset: note_changeset
-          },
+          } = params,
           row
         ) do
       person_changeset = CaseContext.change_person(person_changeset)
@@ -60,6 +66,8 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
            case_changeset = CaseContext.change_case(case_changeset, %{person_uuid: person.uuid}),
            {:ok, case} <- CaseContext.create_case(case_changeset),
            {:ok, _note} <- create_note_as_needed(case, note_changeset),
+           {:ok, _auto_tracing} <-
+             create_auto_tracing_as_needed(case, params[:create_auto_tracing]),
            {:ok, row} <- ImportContext.update_row(row, %{status: :resolved, case_uuid: case.uuid}) do
         {:ok,
          %{
@@ -81,7 +89,7 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
             case_changeset: case_changeset,
             person_changeset: person_changeset,
             note_changeset: note_changeset
-          },
+          } = params,
           row
         ) do
       person_changeset = CaseContext.change_person(person_changeset)
@@ -90,6 +98,8 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
            case_changeset = CaseContext.change_case(case_changeset),
            {:ok, case} <- CaseContext.update_case(case_changeset),
            {:ok, _note} <- create_note_as_needed(case, note_changeset),
+           {:ok, _auto_tracing} <-
+             create_auto_tracing_as_needed(case, params[:create_auto_tracing]),
            {:ok, row} <- ImportContext.update_row(row, %{status: :resolved, case_uuid: case.uuid}) do
         {:ok,
          %{
@@ -108,5 +118,44 @@ defmodule Hygeia.ImportContext.Planner.Action.Save do
 
     defp create_note_as_needed(case, changeset),
       do: CaseContext.create_note(case, changeset.changes)
+
+    defp create_auto_tracing_as_needed(case, create_auto_tracing)
+
+    defp create_auto_tracing_as_needed(case, true) do
+      case = Repo.preload(case, person: [], tenant: [])
+
+      {:ok, auto_tracing} = AutoTracingContext.create_auto_tracing(case)
+
+      sms_sent? =
+        case
+        |> CommunicationContext.create_outgoing_sms(
+          AutoTracingCommunication.auto_tracing_sms(case)
+        )
+        |> case do
+          {:ok, _sms} -> true
+          {:error, :no_mobile_number} -> false
+          {:error, :sms_config_missing} -> nil
+        end
+
+      email_sent? =
+        case
+        |> CommunicationContext.create_outgoing_email(
+          AutoTracingCommunication.auto_tracing_email_subject(case),
+          AutoTracingCommunication.auto_tracing_email_body(case, :email)
+        )
+        |> case do
+          {:ok, _email} -> true
+          {:error, :no_email} -> false
+          {:error, :no_outgoing_mail_configuration} -> nil
+        end
+
+      if sms_sent? == false and email_sent? == false do
+        AutoTracingContext.auto_tracing_add_problem(auto_tracing, :no_contact_method)
+      else
+        {:ok, auto_tracing}
+      end
+    end
+
+    defp create_auto_tracing_as_needed(_case, _nil_or_false), do: {:ok, nil}
   end
 end

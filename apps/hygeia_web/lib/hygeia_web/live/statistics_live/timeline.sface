@@ -732,7 +732,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("New Registered Cases First Contact")
+                    text: gettext("New Registered Cases (Unprocessed)")
                   }
                 },
                 scales: %{
@@ -808,7 +808,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("New Registered Cases Not First Contact")
+                    text: gettext("New Registered Cases (Processed)")
                   }
                 },
                 scales: %{

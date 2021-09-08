@@ -73,126 +73,115 @@
                   <div class="card-body">
                     <h4 class="card-title">{gettext("Base Data")}</h4>
                     <div class="row">
-                      <div class="from-group col">
-                        <label>{gettext("Recipient")}</label>
-                        <div :if={@transmission.recipient_internal == true}>
-                          <em :if={is_nil(@transmission.recipient)}>
-                            {gettext("deleted")}
-                          </em>
-                          <span :if={not is_nil(@transmission.recipient)}>
-                            <Link
-                              to={Routes.person_base_data_path(@socket, :show, @transmission.recipient)}
-                              :if={authorized?(@transmission.recipient, :details, auth)}
-                            >
-                              <HygeiaWeb.RecordView
-                                :if={not is_nil(@transmission.recipient)}
-                                resource={@transmission.recipient}
-                                action={:list}
-                                id={"transmission_recipient_record_view_#{@transmission.recipient.uuid}"}
-                                wrapper_tag={:span}
-                              >
-                                {@transmission.recipient.first_name}
-                                {@transmission.recipient.last_name}
-                              </HygeiaWeb.RecordView>
-                            </Link>
-                            <span :if={not authorized?(@transmission.recipient, :details, auth)}>
-                              {@transmission.recipient.tenant.subdivision}
-                              /
-                              {@transmission.recipient.human_readable_id}
-                            </span>
-                          </span>
-                          <span class="mx-2">|</span>
-                          <em :if={is_nil(@transmission.recipient_case)}>
-                            {gettext("deleted")}
-                          </em>
-                          <span :if={not is_nil(@transmission.recipient_case)}>
-                            <Link
-                              class="d-flex align-items-center"
-                              to={Routes.case_base_data_path(@socket, :show, @transmission.recipient_case)}
-                              :if={authorized?(@transmission.recipient_case, :details, auth)}
-                            >
-                              <HygeiaWeb.RecordView
-                                :if={not is_nil(@transmission.recipient_case)}
-                                resource={@transmission.recipient_case}
-                                action={:list}
-                                id={"transmission_recipient_case_record_view_#{@transmission.recipient_case.uuid}"}
-                                wrapper_tag={:span}
-                              >
-                                {case_display_type(@transmission.recipient_case)}
-                                <small class="ms-1">({case_display_date(@transmission.recipient_case)})</small>
-                              </HygeiaWeb.RecordView>
-                            </Link>
-                            <span :if={not authorized?(@transmission.recipient_case, :details, auth)}>
-                              {@transmission.recipient_case.tenant.subdivision}
-                              /
-                              {@transmission.recipient_case.human_readable_id}
-                            </span>
-                          </span>
-                        </div>
-                        <div :if={@transmission.recipient_internal == false}>
-                          {gettext("ISM-ID: %{id}", id: @transmission.recipient_ism_id)}
-                        </div>
+                      <div class="col-12 col-sm-6">
+                        <Field name={:propagator_internal} class="form-group">
+                          <div class="btn-group btn-group-toggle btn-radio-group">
+                            <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
+                            <label class={
+                              "btn",
+                              "btn-outline-primary",
+                              active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil
+                            }>
+                              <RadioButton value="" opts={disabled: @live_action == :show} />
+                              {gettext("No propagator")}
+                            </label>
+                            <label class={
+                              "btn",
+                              "btn-outline-primary",
+                              active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true
+                            }>
+                              <RadioButton value="true" opts={disabled: @live_action == :show} />
+                              {gettext("Internal")}
+                            </label>
+                            <label class={
+                              "btn",
+                              "btn-outline-primary",
+                              active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false
+                            }>
+                              <RadioButton value="false" opts={disabled: @live_action == :show} />
+                              {gettext("External")}
+                            </label>
+                          </div>
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        <Field
+                          name={:propagator_ism_id}
+                          class="form-group"
+                          :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}
+                        >
+                          <HygeiaWeb.FieldLabel />
+                          <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        <Field
+                          name={:propagator_case_uuid}
+                          class="form-group"
+                          :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}
+                        >
+                          <HygeiaWeb.FieldLabel />
+                          <HygeiaWeb.CaseLive.Choose
+                            id="propagator_case"
+                            change="change_propagator_case"
+                            id_prefix="propagator_case_value_recordview"
+                            disabled={@live_action == :show}
+                          />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
                       </div>
-                      <div class="from-group col">
-                        <label>{gettext("Propagator")}</label>
-                        <div :if={@transmission.propagator_internal == true}>
-                          <em :if={is_nil(@transmission.propagator)}>
-                            {gettext("deleted")}
-                          </em>
-                          <span :if={not is_nil(@transmission.propagator)}>
-                            <Link
-                              to={Routes.person_base_data_path(@socket, :show, @transmission.propagator)}
-                              :if={authorized?(@transmission.propagator, :details, auth)}
-                            >
-                              <HygeiaWeb.RecordView
-                                :if={not is_nil(@transmission.propagator)}
-                                resource={@transmission.propagator}
-                                action={:list}
-                                id={"transmission_propagator_record_view_#{@transmission.propagator.uuid}"}
-                                wrapper_tag={:span}
-                              >
-                                {@transmission.propagator.first_name}
-                                {@transmission.propagator.last_name}
-                              </HygeiaWeb.RecordView>
-                            </Link>
-                            <span :if={not authorized?(@transmission.propagator, :details, auth)}>
-                              {@transmission.propagator.tenant.subdivision}
-                              /
-                              {@transmission.propagator.human_readable_id}
-                            </span>
-                          </span>
-                          <span class="mx-2">|</span>
-                          <em :if={is_nil(@transmission.propagator_case)}>
-                            {gettext("deleted")}
-                          </em>
-                          <span :if={not is_nil(@transmission.propagator_case)}>
-                            <Link
-                              class="d-flex align-items-center"
-                              to={Routes.case_base_data_path(@socket, :show, @transmission.propagator_case)}
-                              :if={authorized?(@transmission.propagator_case, :details, auth)}
-                            >
-                              <HygeiaWeb.RecordView
-                                :if={not is_nil(@transmission.propagator_case)}
-                                resource={@transmission.propagator_case}
-                                action={:list}
-                                id={"transmission_propagator_case_record_view_#{@transmission.propagator_case.uuid}"}
-                                wrapper_tag={:span}
-                              >
-                                {case_display_type(@transmission.propagator_case)}
-                                <small class="ms-1">({case_display_date(@transmission.propagator_case)})</small>
-                              </HygeiaWeb.RecordView>
-                            </Link>
-                            <span :if={not authorized?(@transmission.propagator_case, :details, auth)}>
-                              {@transmission.propagator_case.tenant.subdivision}
-                              /
-                              {@transmission.propagator_case.human_readable_id}
-                            </span>
-                          </span>
-                        </div>
-                        <div :if={@transmission.propagator_internal == false}>
-                          {gettext("ISM-ID: %{id}", id: @transmission.propagator_ism_id)}
-                        </div>
-                      </div>
+                      <div class="col-12 col-sm-6">
+                        <Field name={:recipient_internal} class="form-group">
+                          <div class="btn-group btn-group-toggle btn-radio-group">
+                            <label class="input-group-text input-sm">{gettext("Recipient")}:</label>
+                            <label class={
+                              "btn",
+                              "btn-outline-primary",
+                              active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == nil
+                            }>
+                              <RadioButton value="" opts={disabled: @live_action == :show} />
+                              {gettext("No recipient")}
+                            </label>
+                            <label class={
+                              "btn",
+                              "btn-outline-primary",
+                              active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == true
+                            }>
+                              <RadioButton value="true" opts={disabled: @live_action == :show} />
+                              {gettext("Internal")}
+                            </label>
+                            <label class={
+                              "btn",
+                              "btn-outline-primary",
+                              active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == false
+                            }>
+                              <RadioButton value="false" opts={disabled: @live_action == :show} />
+                              {gettext("External")}
+                            </label>
+                          </div>
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        <Field
+                          name={:recipient_ism_id}
+                          class="form-group"
+                          :if={Ecto.Changeset.get_field(@changeset, :recipient_internal) == false}
+                        >
+                          <HygeiaWeb.FieldLabel />
+                          <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        <Field
+                          name={:recipient_case_uuid}
+                          class="form-group"
+                          :if={Ecto.Changeset.get_field(@changeset, :recipient_internal) == true}
+                        >
+                          <HygeiaWeb.FieldLabel />
+                          <HygeiaWeb.CaseLive.Choose
+                            id="recipient_case"
+                            change="change_recipient_case"
+                            id_prefix="recipient_case_value_recordview"
+                            disabled={@live_action == :show}
+                          />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field></div>
                     </div>
                     <Field name={:date} class="form-group">
                       <HygeiaWeb.FieldLabel />

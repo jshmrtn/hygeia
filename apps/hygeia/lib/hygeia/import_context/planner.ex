@@ -94,5 +94,5 @@ defmodule Hygeia.ImportContext.Planner do
   def limit_certainty(certainty, :certain), do: certainty
   def limit_certainty(:input_needed, :uncertain), do: :input_needed
   def limit_certainty(_certainty, :uncertain), do: :uncertain
-  def limit_certainty(:_certainty, :input_needed), do: :input_needed
+  def limit_certainty(_certainty, :input_needed), do: :input_needed
 end

@@ -11,7 +11,6 @@ defmodule HygeiaWeb.CaseLive.Hospitalizations do
   alias Surface.Components.Form.Inputs
 
   prop source, :map, required: true
-  prop organisations, :list, required: true
   prop add_hospitalization, :event, required: true
   prop remove_hospitalization, :event, required: true
   prop disabled, :boolean, default: false

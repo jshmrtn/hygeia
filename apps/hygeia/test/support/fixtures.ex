@@ -3,6 +3,8 @@ defmodule Hygeia.Fixtures do
   Model Fixtures Helper
   """
 
+  alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Hospitalization
@@ -106,10 +108,10 @@ defmodule Hygeia.Fixtures do
   @valid_attrs %{
     complexity: :medium,
     status: :first_contact,
-    hospitalizations: [
-      %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
-      %{start: ~D[2020-10-16], end: ~D[2020-10-17]}
-    ],
+    # hospitalizations: [
+    #   %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
+    #   %{start: ~D[2020-10-16], end: ~D[2020-10-17]}
+    # ],
     tests: [
       %{
         tested_at: ~D[2020-10-11],
@@ -435,11 +437,22 @@ defmodule Hygeia.Fixtures do
     end: ~D[2020-01-01]
   }
 
-  @spec hospitalization_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec hospitalization_fixture(
+          case :: Case.t(),
+          organisation :: Organisation.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
           Hospitalization.t()
-  def hospitalization_fixture(case \\ case_fixture(), attrs \\ %{}) do
+  def hospitalization_fixture(
+        case \\ case_fixture(),
+        organisation \\ organisation_fixture(),
+        attrs \\ %{}
+      ) do
     {:ok, hospitalization} =
-      CaseContext.create_hospitalization(case, Enum.into(attrs, @valid_attrs))
+      CaseContext.create_hospitalization(
+        case,
+        @valid_attrs |> Map.merge(%{organisation_uuid: organisation.uuid}) |> Map.merge(attrs)
+      )
 
     hospitalization
   end
@@ -502,5 +515,16 @@ defmodule Hygeia.Fixtures do
       )
 
     CaseContext.get_premature_release!(uuid)
+  end
+
+  @valid_attrs %{current_step: :contact_methods}
+
+  @spec auto_tracing_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          AutoTracing.t()
+  def auto_tracing_fixture(case \\ case_fixture(), attrs \\ %{}) do
+    {:ok, auto_tracing} =
+      AutoTracingContext.create_auto_tracing(case, Enum.into(attrs, @valid_attrs))
+
+    auto_tracing
   end
 end

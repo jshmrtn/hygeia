@@ -1,5 +1,5 @@
 <div class="component-row-show container">
-  <Context get={HygeiaWeb, auth: auth}>
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
     <HygeiaWeb.ImportLive.Header import={@row.import} id="header" />
 
     <div>
@@ -34,7 +34,14 @@
     <div class="mb-2 card data-card">
       <details id="row_data">
         <summary class="card-header">
-          {gettext("Import Data")}
+          {#case @row.status}
+            {#match :pending}
+              {pgettext("Inbox Row Show", "Imported Data")}
+            {#match :discarded}
+              {pgettext("Inbox Row Show", "Imported Data")}
+            {#match :resolved}
+              {pgettext("Inbox Row Show", "Processed Data")}
+          {/case}
         </summary>
         <div class="card-body hy-readonly-form">
           <HygeiaWeb.RowLive.Changes
@@ -84,7 +91,7 @@
                 wrapper_tag={:span}
               >
                 <small class="d-block">{case_display_type(@row.case)}</small>
-                <small class="d-block">{case_display_date(@row.case)}</small>
+                <small class="d-block">{case_display_date(@row.case, timezone)}</small>
               </HygeiaWeb.RecordView>
             </Link>
             <span :if={not authorized?(@row.case, :details, auth)}>

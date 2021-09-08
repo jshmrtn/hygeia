@@ -38,6 +38,29 @@ defmodule Hygeia.TenantContext do
   @spec get_tenant!(id :: Ecto.UUID.t()) :: Tenant.t()
   def get_tenant!(id), do: Repo.get!(Tenant, id)
 
+  @spec get_tenant_by_region(
+          region :: %{
+            required(:country) => Hygeia.EctoType.Country.t(),
+            optional(:subdivision) => String.t()
+          }
+        ) :: Tenant.t() | nil
+  def get_tenant_by_region(%{country: country, subdivision: subdivision})
+      when is_binary(country) and is_binary(subdivision),
+      do:
+        Repo.one(
+          from(tenant in Tenant,
+            where:
+              tenant.country == ^country and
+                (is_nil(tenant.subdivision) or tenant.subdivision == ^subdivision)
+          )
+        )
+
+  def get_tenant_by_region(%{country: country}) when is_binary(country),
+    do:
+      Repo.one(
+        from(tenant in Tenant, where: tenant.country == ^country and is_nil(tenant.subdivision))
+      )
+
   @doc """
   Creates a tenant.
 

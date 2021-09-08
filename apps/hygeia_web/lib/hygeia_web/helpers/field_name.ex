@@ -44,6 +44,12 @@ defmodule HygeiaWeb.Helpers.FieldName do
       symptoms: "Symptoms",
       symptom_start: "Symptoms start date"
     },
+    Hygeia.CaseContext.Hospitalization => %{
+      end: "End",
+      organisation: "Hospital",
+      organisation_uuid: "Hospital UUID",
+      start: "Start"
+    },
     Hygeia.CaseContext.Case.Monitoring => %{
       address: "Address",
       first_contact: "First Contact",
@@ -195,7 +201,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       file: "File",
       tenant: "Tenant",
       tenant_uuid: "Tenant UUID",
-      type: "Type"
+      type: "Type",
+      filename: "File Name"
     },
     Hygeia.ImportContext.Row => %{
       identifiers: "Identifiers",
@@ -319,6 +326,41 @@ defmodule HygeiaWeb.Helpers.FieldName do
       status: "Status",
       supervisor_uuid: "Supervisor UUID",
       tracer_uuid: "Tracer UUID"
+    },
+    Hygeia.VersionContext.Version => %{
+      date: "Date",
+      item_changes: "Changes",
+      origin: "Origin",
+      originator: "Author",
+      type: "Type"
+    },
+    HygeiaWeb.AutoTracingLive.ContactMethods => %{
+      email: "Email",
+      landline: "Landline",
+      mobile: "Mobile"
+    },
+    HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts => %{
+      propagator_case: "Propagator Case",
+      propagator_ism_id: "Propagator ISM ID"
+    },
+    Hygeia.AutoTracingContext.AutoTracing => %{
+      mobile: "Mobile",
+      landline: "Landline",
+      email: "Email"
+    },
+    Hygeia.AutoTracingContext.AutoTracing.Employer => %{
+      name: "Name"
+    },
+    Hygeia.AutoTracingContext.AutoTracing.Occupation => %{
+      kind: "Kind",
+      known_organisation: "Organisation",
+      not_found: "Organisation not found"
+    },
+    Hygeia.AutoTracingContext.AutoTracing.Propagator => %{
+      first_name: "First Name",
+      last_name: "Last Name",
+      phone: "Phone",
+      email: "Email"
     }
   }
 

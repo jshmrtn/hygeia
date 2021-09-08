@@ -3,21 +3,34 @@ defmodule HygeiaWeb.CaseLive.Navigation do
 
   use HygeiaWeb, :surface_live_component
 
+  alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.Test
+  alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias HygeiaWeb.UriActiveContext
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
   prop case, :map, required: true
+
   data note_modal, :map, default: nil
   data sms_modal, :map, default: nil
   data email_modal, :map, default: nil
   data phase_create_modal, :map, default: nil
+
+  @impl Phoenix.LiveComponent
+  def preload(assign_list),
+    do:
+      preload_assigns_one(
+        assign_list,
+        :case,
+        &Repo.preload(&1, tenant: [], auto_tracing: [])
+      )
 
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
@@ -81,10 +94,14 @@ defmodule HygeiaWeb.CaseLive.Navigation do
   end
 
   def handle_event("open_sms_modal", params, socket) do
+    maybe_create_auto_tracing(socket.assigns.case, params["create_auto_tracing"])
+
     {:noreply, assign(socket, sms_modal: params)}
   end
 
   def handle_event("open_email_modal", params, socket) do
+    maybe_create_auto_tracing(socket.assigns.case, params["create_auto_tracing"])
+
     {:noreply, assign(socket, email_modal: params)}
   end
 
@@ -111,4 +128,14 @@ defmodule HygeiaWeb.CaseLive.Navigation do
   defp has_index_phase?(case) do
     Enum.any?(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1))
   end
+
+  defp maybe_create_auto_tracing(case, enable)
+
+  defp maybe_create_auto_tracing(%Case{auto_tracing: nil} = case, "true") do
+    {:ok, _auto_tracing} = AutoTracingContext.create_auto_tracing(case)
+
+    :ok
+  end
+
+  defp maybe_create_auto_tracing(_case, _enable), do: :ok
 end

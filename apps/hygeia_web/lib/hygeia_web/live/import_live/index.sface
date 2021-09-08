@@ -27,6 +27,9 @@
             {schema_field_name(:type, Import)}
           </th>
           <th>
+            {schema_field_name(:filename, Import)}
+          </th>
+          <th>
             {schema_field_name(:closed_at, Import)}
           </th>
 
@@ -51,6 +54,9 @@
           </td>
           <td>
             {Type.translate(import.type)}
+          </td>
+          <td>
+            {import.filename}
           </td>
           <td>
             {case import.closed_at do

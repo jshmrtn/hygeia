@@ -33,6 +33,9 @@ tenant_root = Enum.find(tenants, &match?(%{name: "Hygeia - Covid19 Tracing"}, &1
 {:ok, _mutation} = create_mutation(%{name: "SARS-CoV-2 - N501Y", ism_code: 1173})
 {:ok, _mutation} = create_mutation(%{name: "SARS-CoV-2 - B.1.1.7", ism_code: 1174})
 {:ok, _mutation} = create_mutation(%{name: "SARS-CoV-2 - N501Y & E484K", ism_code: 1180})
+{:ok, _mutation} = create_mutation(%{name: "SARS-CoV-2-L452R", ism_code: 1186})
+{:ok, _mutation} = create_mutation(%{name: "SARS-CoV-2-B.1.617.2", ism_code: 1183})
+{:ok, _mutation} = create_mutation(%{name: "SARS-CoV-2-E484K", ism_code: 1181})
 
 if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
   {:ok, _sedex_export_sg} =
@@ -213,7 +216,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       supervisor_uuid: user_jony.uuid,
       hospitalizations: [
         %{start: ~D[2020-10-13], end: ~D[2020-10-15], organisation_uuid: organisation_kssg.uuid},
-        %{start: ~D[2020-10-16], end: nil}
+        %{start: ~D[2020-10-16], end: nil, organisation_uuid: organisation_kssg.uuid}
       ],
       tests: [
         %{

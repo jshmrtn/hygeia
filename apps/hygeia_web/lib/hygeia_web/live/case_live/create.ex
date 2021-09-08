@@ -17,11 +17,11 @@ defmodule HygeiaWeb.CaseLive.Create do
   alias Surface.Components.Form.Select
 
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     socket =
       if authorized?(Case, :create, get_auth(socket), tenant: :any) do
         assign(socket,
-          changeset: CaseContext.change_case(%Case{}),
+          changeset: CaseContext.change_case(%Case{}, params),
           page_title: gettext("New Case"),
           tenants:
             Enum.filter(

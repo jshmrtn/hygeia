@@ -30,6 +30,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     birth_date: [:birth_date],
     sex: [:sex],
     phone: [:phone],
+    email: [:email],
     address: [:address, :address],
     zip: [:address, :zip],
     place: [:address, :place],
@@ -72,7 +73,14 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
                Row.get_change_field(data, [field_mapping.tenant_subdivision]),
              %Tenant{} = tenant <-
                Enum.find(tenants, &match?(%Tenant{subdivision: ^subdivision}, &1)) do
-          {:certain, tenant}
+          certainty =
+            cond do
+              !Tenant.is_internal_managed_tenant?(tenant) -> :input_needed
+              tenant.uuid != row_tenant.uuid -> :uncertain
+              true -> :certain
+            end
+
+          {certainty, tenant}
         else
           nil -> {:uncertain, row_tenant}
         end
@@ -89,7 +97,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   def select_case(field_mapping, relevance_date_field) do
     fn
       _row, %{predecessor: %Row{case: %Case{} = case}}, _preceeding_steps ->
-        case = Repo.preload(case, person: [], tenant: [], tests: [])
+        case = preload_case(case)
         {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}
 
       _row, %{changes: changes, data: data}, _preceeding_steps ->
@@ -179,7 +187,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
 
   defp find_case_by_external_reference(type, id) do
     with [case | _] <- CaseContext.list_cases_by_external_reference(type, to_string(id)),
-         case <- Repo.preload(case, person: [], tenant: [], tests: []) do
+         case <- preload_case(case) do
       {:ok, {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}}
     else
       [] -> :error
@@ -192,7 +200,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
 
   defp find_person_by_external_reference(type, id, relevance_date) do
     with [person | _] <- CaseContext.list_people_by_external_reference(type, to_string(id)),
-         person <- Repo.preload(person, cases: [tenant: [], tests: []]) do
+         person <- preload_person(person) do
       {:ok, select_active_cases(person, relevance_date)}
     else
       [] -> :error
@@ -211,16 +219,29 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp find_person_by_name(first_name, last_name, changes, field_mapping, relevance_date) do
     first_name
     |> CaseContext.list_people_by_name(last_name)
-    |> Repo.preload(cases: [person: [], tenant: [], tests: []])
-    |> Enum.map(
-      &{person_phone_matches?(&1, Row.get_change_field(changes, [field_mapping.phone])), &1}
-    )
-    |> Enum.sort()
+    |> preload_person()
+    |> Enum.reduce({[], []}, fn person, {acc_phone_match, acc_phone_no_match} ->
+      if person_phone_matches?(person, Row.get_change_field(changes, [field_mapping.phone])) do
+        {acc_phone_match ++ [person], acc_phone_no_match}
+      else
+        {acc_phone_match, acc_phone_no_match ++ [person]}
+      end
+    end)
     |> case do
-      [] -> :error
-      [{true, person}] -> {:ok, select_active_cases(person, relevance_date)}
-      [{false, person}] -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
-      [{_phone_matches, person} | _others] -> {:ok, select_active_cases(person, relevance_date)}
+      {[], []} ->
+        :error
+
+      {[person], []} ->
+        {:ok, select_active_cases(person, relevance_date)}
+
+      {[], [person]} ->
+        {:ok, select_active_cases(person, relevance_date, :input_needed)}
+
+      {[person | _others], _no_matches} ->
+        {:ok, select_active_cases(person, relevance_date, :input_needed)}
+
+      {[], [person | _others]} ->
+        {:ok, select_active_cases(person, relevance_date, :input_needed)}
     end
   end
 
@@ -235,7 +256,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     ]
     |> List.flatten()
     |> Enum.uniq_by(& &1.uuid)
-    |> Repo.preload(cases: [person: [], tenant: [], tests: []])
+    |> preload_person()
     |> case do
       [] -> :error
       [person | _others] -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
@@ -249,7 +270,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp find_person_by_email(email, relevance_date) do
     :email
     |> CaseContext.list_people_by_contact_method(email)
-    |> Repo.preload(cases: [person: [], tenant: [], tests: []])
+    |> preload_person()
     |> case do
       [] -> :error
       [person | _others] -> {:ok, select_active_cases(person, relevance_date, :input_needed)}
@@ -389,6 +410,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
              {destination_path, Row.get_change_field(changes, [field_name])}
            end)
            |> Enum.reject(&match?({_path, nil}, &1))
+           |> Enum.reject(&match?({_path, ""}, &1))
            |> Enum.map(&normalize_person_data/1)
            |> extract_field_changes()
        }}
@@ -423,14 +445,20 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp normalize_person_data({[:phone] = path, value}) when is_binary(value) do
     with {:ok, parsed_number} <-
            ExPhoneNumber.parse(value, @origin_country),
-         true <- ExPhoneNumber.is_valid_number?(parsed_number),
-         phone_number_type when phone_number_type in [:fixed_line, :voip] <-
-           ExPhoneNumber.Validation.get_number_type(parsed_number) do
-      [{[:contact_methods, 0, :type], :landline}, {[:contact_methods, 0, :value], value}]
+         formatted_phone <- ExPhoneNumber.Formatting.format(parsed_number, :international),
+         {:ok, parsed_number} <- ExPhoneNumber.parse(formatted_phone, @origin_country),
+         true <- ExPhoneNumber.is_valid_number?(parsed_number) do
+      field =
+        case ExPhoneNumber.Validation.get_number_type(parsed_number) do
+          :mobile -> :mobile
+          :fixed_line_or_mobile -> :mobile
+          _other -> :landline
+        end
+
+      [{[field], formatted_phone}]
     else
       {:error, _reason} -> {path, nil}
       false -> {path, nil}
-      _other -> [{[:contact_methods, 0, :type], :mobile}, {[:contact_methods, 0, :value], value}]
     end
   end
 
@@ -483,14 +511,14 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
            preceeding_action_plan :: [Planner.Action.t()] ->
              {Planner.certainty(), Planner.Action.t()})
   def patch_tests(field_mapping) do
-    fn row, %{changes: changes}, preceeding_steps ->
+    fn row, %{data: data}, preceeding_steps ->
       test_attrs =
         @test_field_path
         |> Enum.map(fn {common_field_identifier, destination_path} ->
           {field_mapping[common_field_identifier], destination_path}
         end)
         |> Enum.map(fn {field_name, destination_path} ->
-          {destination_path, Row.get_change_field(changes, [field_name])}
+          {destination_path, Row.get_change_field(data, [field_name])}
         end)
         |> Enum.reject(&match?({_path, nil}, &1))
         |> Enum.map(&normalize_test_data/1)
@@ -633,4 +661,12 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
       {:certain, %Planner.Action.AddNote{action: :skip}}
     end
   end
+
+  defp preload_case(case),
+    do:
+      Repo.preload(case, person: [], tenant: [], tests: [], hospitalizations: [], auto_tracing: [])
+
+  defp preload_person(person),
+    do:
+      Repo.preload(person, cases: [tenant: [], tests: [], hospitalizations: [], auto_tracing: []])
 end

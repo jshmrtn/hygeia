@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 13.2 (Debian 13.2-1.pgdg100+1)
--- Dumped by pg_dump version 13.3 (Ubuntu 13.3-1.pgdg20.04+1)
+-- Dumped by pg_dump version 13.4 (Ubuntu 13.4-1.pgdg20.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -39,6 +39,37 @@ CREATE TYPE public.affiliation_kind AS ENUM (
     'scholar',
     'member',
     'other'
+);
+
+
+--
+-- Name: auto_tracing_problem; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.auto_tracing_problem AS ENUM (
+    'unmanaged_tenant',
+    'covid_app',
+    'vaccination_failure',
+    'hospitalization',
+    'new_employer',
+    'link_propagator'
+);
+
+
+--
+-- Name: auto_tracing_step; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.auto_tracing_step AS ENUM (
+    'start',
+    'address',
+    'contact_methods',
+    'employer',
+    'vaccination',
+    'covid_app',
+    'clinical',
+    'transmission',
+    'end'
 );
 
 
@@ -2218,7 +2249,8 @@ CREATE TYPE public.versioning_origin AS ENUM (
     'case_close_email_job',
     'email_sender',
     'sms_sender',
-    'migration'
+    'migration',
+    'detect_unchanged_cases_job'
 );
 
 
@@ -2282,6 +2314,55 @@ BEGIN
       user_grants.role = 'supervisor'
     ) THEN
     NEW.supervisor_uuid = NULL;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+
+--
+-- Name: check_user_authorization_on_import(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.check_user_authorization_on_import() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF (
+    NEW.default_tracer_uuid IS NOT NULL AND
+    NOT EXISTS (
+      SELECT * FROM user_grants
+      WHERE user_grants.tenant_uuid = NEW.tenant_uuid AND
+        user_grants.user_uuid = NEW.default_tracer_uuid AND
+        user_grants.role = 'tracer'
+    )
+  ) THEN
+    RAISE check_violation
+      USING
+        MESSAGE = 'user does not have tracer authorization on tenant',
+        HINT = 'A user with a tracer authorization should be set into default_tracer_uuid.',
+        CONSTRAINT = 'default_tracer_uuid',
+        COLUMN = 'default_tracer_uuid',
+        TABLE = TG_TABLE_NAME,
+        SCHEMA = TG_TABLE_SCHEMA;
+  END IF;
+  IF (
+    NEW.default_supervisor_uuid IS NOT NULL AND
+    NOT EXISTS (
+      SELECT * FROM user_grants
+      WHERE user_grants.tenant_uuid = NEW.tenant_uuid AND
+        user_grants.user_uuid = NEW.default_supervisor_uuid AND
+        user_grants.role = 'supervisor'
+    )
+  ) THEN
+    RAISE check_violation
+      USING
+        MESSAGE = 'user does not have supervisor authorization on tenant',
+        HINT = 'A user with a tracer authorization should be set into default_supervisor_uuid.',
+        CONSTRAINT = 'default_supervisor_uuid',
+        COLUMN = 'default_supervisor_uuid',
+        TABLE = TG_TABLE_NAME,
+        SCHEMA = TG_TABLE_SCHEMA;
   END IF;
   RETURN NEW;
 END;
@@ -2498,7 +2579,11 @@ CREATE FUNCTION public.premature_release_update_case() RETURNS trigger
             phase AS search_phase,
             JSONB_SET(
               JSONB_SET(
-                phase,
+                JSONB_SET(
+                  phase,
+                  '{send_automated_close_email}',
+                  TO_JSONB(FALSE)
+                ),
                 '{end}',
                 TO_JSONB(CURRENT_DATE)
               ),
@@ -2686,6 +2771,27 @@ END)
 
 
 --
+-- Name: auto_tracings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.auto_tracings (
+    uuid uuid NOT NULL,
+    current_step public.auto_tracing_step,
+    last_completed_step public.auto_tracing_step,
+    problems public.auto_tracing_problem[] DEFAULT ARRAY[]::public.auto_tracing_problem[],
+    solved_problems public.auto_tracing_problem[] DEFAULT ARRAY[]::public.auto_tracing_problem[],
+    unsolved_problems boolean DEFAULT false,
+    covid_app boolean,
+    employed boolean,
+    occupations jsonb[],
+    transmission jsonb,
+    case_uuid uuid,
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: cases; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2791,7 +2897,10 @@ CREATE TABLE public.imports (
     change_date timestamp without time zone NOT NULL,
     tenant_uuid uuid NOT NULL,
     inserted_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    default_tracer_uuid uuid,
+    default_supervisor_uuid uuid,
+    filename character varying(255)
 );
 
 
@@ -3296,6 +3405,35 @@ CREATE MATERIALIZED VIEW public.statistics_new_cases_per_day AS
 
 
 --
+-- Name: statistics_new_registered_cases_per_day; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.statistics_new_registered_cases_per_day AS
+ WITH phases AS (
+         SELECT cases.tenant_uuid,
+            cases.person_uuid,
+            ((phase.phase -> 'details'::text) ->> '__type__'::text) AS count_type,
+            COALESCE(((phase.phase ->> 'inserted_at'::text))::date, (cases.inserted_at)::date) AS count_date,
+            (cases.status = 'first_contact'::public.case_status) AS first_contact
+           FROM (public.cases
+             CROSS JOIN LATERAL unnest(cases.phases) phase(phase))
+        )
+ SELECT tenants.uuid AS tenant_uuid,
+    type.type,
+    (date.date)::date AS date,
+    phases.first_contact,
+    count(DISTINCT phases.*) AS count
+   FROM (((generate_series(LEAST((( SELECT min(phases_1.count_date) AS min
+           FROM phases phases_1))::timestamp without time zone, (CURRENT_DATE - '1 year'::interval)), (CURRENT_DATE)::timestamp without time zone, '1 day'::interval) date(date)
+     CROSS JOIN unnest(ARRAY['index'::text, 'possible_index'::text]) type(type))
+     CROSS JOIN public.tenants)
+     LEFT JOIN phases ON (((tenants.uuid = phases.tenant_uuid) AND (date.date = phases.count_date) AND (phases.count_type = type.type))))
+  GROUP BY phases.first_contact, date.date, type.type, tenants.uuid
+  ORDER BY phases.first_contact, ((date.date)::date), type.type, tenants.uuid
+  WITH NO DATA;
+
+
+--
 -- Name: statistics_transmission_country_cases_per_day; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
 
@@ -3421,6 +3559,14 @@ CREATE TABLE public.versions (
 
 ALTER TABLE ONLY public.affiliations
     ADD CONSTRAINT affiliations_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: auto_tracings auto_tracings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auto_tracings
+    ADD CONSTRAINT auto_tracings_pkey PRIMARY KEY (uuid);
 
 
 --
@@ -4128,6 +4274,41 @@ CREATE INDEX statistics_new_cases_per_day_type_index ON public.statistics_new_ca
 
 
 --
+-- Name: statistics_new_registered_cases_per_day_date_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX statistics_new_registered_cases_per_day_date_index ON public.statistics_new_registered_cases_per_day USING btree (date);
+
+
+--
+-- Name: statistics_new_registered_cases_per_day_first_contact_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX statistics_new_registered_cases_per_day_first_contact_index ON public.statistics_new_registered_cases_per_day USING btree (first_contact);
+
+
+--
+-- Name: statistics_new_registered_cases_per_day_tenant_uuid_date_type_f; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX statistics_new_registered_cases_per_day_tenant_uuid_date_type_f ON public.statistics_new_registered_cases_per_day USING btree (tenant_uuid, date, type, first_contact);
+
+
+--
+-- Name: statistics_new_registered_cases_per_day_tenant_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX statistics_new_registered_cases_per_day_tenant_uuid_index ON public.statistics_new_registered_cases_per_day USING btree (tenant_uuid);
+
+
+--
+-- Name: statistics_new_registered_cases_per_day_type_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX statistics_new_registered_cases_per_day_type_index ON public.statistics_new_registered_cases_per_day USING btree (type);
+
+
+--
 -- Name: statistics_transmission_country_cases_per_day_country_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4233,6 +4414,27 @@ CREATE TRIGGER affiliations_versioning_update AFTER UPDATE ON public.affiliation
 
 
 --
+-- Name: auto_tracings auto_tracing_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER auto_tracing_versioning_delete AFTER DELETE ON public.auto_tracings FOR EACH ROW EXECUTE FUNCTION public.versioning_delete();
+
+
+--
+-- Name: auto_tracings auto_tracing_versioning_insert; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER auto_tracing_versioning_insert AFTER INSERT ON public.auto_tracings FOR EACH ROW EXECUTE FUNCTION public.versioning_insert();
+
+
+--
+-- Name: auto_tracings auto_tracing_versioning_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER auto_tracing_versioning_update AFTER UPDATE ON public.auto_tracings FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
+
+
+--
 -- Name: cases cases_assignee_changed; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -4265,6 +4467,13 @@ CREATE TRIGGER cases_versioning_update AFTER UPDATE ON public.cases FOR EACH ROW
 --
 
 CREATE TRIGGER check_user_authorization_on_case BEFORE INSERT OR UPDATE ON public.cases FOR EACH ROW EXECUTE FUNCTION public.check_user_authorization_on_case();
+
+
+--
+-- Name: imports check_user_authorization_on_import; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER check_user_authorization_on_import BEFORE INSERT OR UPDATE ON public.imports FOR EACH ROW EXECUTE FUNCTION public.check_user_authorization_on_import();
 
 
 --
@@ -4768,6 +4977,14 @@ ALTER TABLE ONLY public.affiliations
 
 
 --
+-- Name: auto_tracings auto_tracings_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auto_tracings
+    ADD CONSTRAINT auto_tracings_case_uuid_fkey FOREIGN KEY (case_uuid) REFERENCES public.cases(uuid) ON DELETE CASCADE;
+
+
+--
 -- Name: cases cases_person_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4861,6 +5078,22 @@ ALTER TABLE ONLY public.import_rows
 
 ALTER TABLE ONLY public.import_rows
     ADD CONSTRAINT import_rows_import_uuid_fkey FOREIGN KEY (import_uuid) REFERENCES public.imports(uuid) ON DELETE CASCADE;
+
+
+--
+-- Name: imports imports_default_supervisor_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.imports
+    ADD CONSTRAINT imports_default_supervisor_uuid_fkey FOREIGN KEY (default_supervisor_uuid) REFERENCES public.users(uuid);
+
+
+--
+-- Name: imports imports_default_tracer_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.imports
+    ADD CONSTRAINT imports_default_tracer_uuid_fkey FOREIGN KEY (default_tracer_uuid) REFERENCES public.users(uuid);
 
 
 --
@@ -5106,4 +5339,10 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210616130134);
 INSERT INTO public."schema_migrations" (version) VALUES (20210623093359);
 INSERT INTO public."schema_migrations" (version) VALUES (20210628141251);
 INSERT INTO public."schema_migrations" (version) VALUES (20210713101131);
+INSERT INTO public."schema_migrations" (version) VALUES (20210719100312);
 INSERT INTO public."schema_migrations" (version) VALUES (20210719122928);
+INSERT INTO public."schema_migrations" (version) VALUES (20210728145003);
+INSERT INTO public."schema_migrations" (version) VALUES (20210819125948);
+INSERT INTO public."schema_migrations" (version) VALUES (20210825152555);
+INSERT INTO public."schema_migrations" (version) VALUES (20210827100229);
+INSERT INTO public."schema_migrations" (version) VALUES (20210827112204);

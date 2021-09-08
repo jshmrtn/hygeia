@@ -7,7 +7,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.Case.Status
-  alias Hygeia.OrganisationContext
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
@@ -55,15 +54,13 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
         supervisor_users = UserContext.list_users_with_role(:supervisor, tenants)
         tracer_users = UserContext.list_users_with_role(:tracer, tenants)
-        organisations = OrganisationContext.list_organisations()
 
         socket
         |> load_data(case)
         |> assign(
           tenants: tenants,
           supervisor_users: supervisor_users,
-          tracer_users: tracer_users,
-          organisations: organisations
+          tracer_users: tracer_users
         )
       else
         socket
@@ -122,7 +119,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   def handle_event("validate", %{"case" => case_params}, socket) do
     case_params =
       case_params
-      |> Map.put_new("tests", [])
       |> Map.put_new("hospitalizations", [])
       |> Map.put_new("external_references", [])
 
@@ -138,7 +134,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   def handle_event("save", %{"case" => case_params}, socket) do
     case_params =
       case_params
-      |> Map.put_new("tests", [])
       |> Map.put_new("hospitalizations", [])
       |> Map.put_new("phases", [])
       |> Map.put_new("external_references", [])

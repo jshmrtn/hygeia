@@ -12,7 +12,9 @@ import Config
 # Configure Mix tasks and generators
 config :hygeia,
   ecto_repos: [Hygeia.Repo],
-  phone_number_parsing_origin_country: "CH"
+  phone_number_parsing_origin_country: "CH",
+  vaccine_validity: {1, :year},
+  immune_validity: {6, :month}
 
 config :hygeia, Hygeia.Repo,
   migration_timestamps: [type: :utc_datetime_usec],
@@ -58,11 +60,13 @@ config :cadastre, Cadastre.I18n,
   default_locale: "en",
   allowed_locales: ["de", "en", "fr", "it"]
 
+config :hygeia_gettext, HygeiaGettext, fuzzy_languages: ["it", "fr"]
+
 # Prometheus Exporter
 config :hygeia_telemetry, server: true
 
 # OIDC
-config :oidcc, http_request_timeout: 60
+config :oidcc, http_request_timeout: 60, cert_depth: 5
 
 # Nebulex Sessions
 config :hygeia_web, HygeiaWeb.SessionStorage.Storage,
@@ -98,6 +102,9 @@ config :sentry,
 
 config :hygeia, Hygeia.Jobs.SendCaseClosedEmail,
   url_generator: HygeiaWeb.SendCaseClosedEmailUrlGenerator
+
+config :hygeia, Hygeia.AutoTracingContext.AutoTracingCommunication,
+  url_generator: HygeiaWeb.AutoTracingCommunicationUrlGenerator
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

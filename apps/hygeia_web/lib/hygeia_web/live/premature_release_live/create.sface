@@ -20,43 +20,54 @@
     <div class="alert alert-info">
       {#case Ecto.Changeset.fetch_field!(@changeset, :reason)}
         {#match :vaccinated}{gettext(
-            "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
+            "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago.",
+            validity: HygeiaCldr.Unit.to_string!(Hygeia.vaccine_validity_cldr())
           )}
         {#match :immune}{gettext(
-            "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation COnfirmation)"
+            "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)",
+            validity: HygeiaCldr.Unit.to_string!(Hygeia.immune_validity_cldr())
           )}
         {#match :negative_test}{gettext("I did a COVID test in the last 4 days of quarantine. The result is negative.")}
       {/case}
     </div>
 
-    <div class="form-group">
-      <Field name={:has_documentation} class="form-check">
-        <Label class="mb-0 checkbox-label">
-          <Checkbox class="form-check-input" />
-          {gettext(
-            "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
-          )}
-        </Label>
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
+    {#if negative_test_too_early?(Ecto.Changeset.fetch_field!(@changeset, :reason), @phase)}
+      <div class="alert alert-danger">
+        {gettext("The quarantine can be ended because of a negative test the earliest on %{date}.",
+          date: HygeiaCldr.Date.to_string!(Date.add(@phase.end, -3))
+        )}
+      </div>
+    {#else}
+      <div class="form-group">
+        <Field name={:has_documentation} class="form-check">
+          <Label class="mb-0 checkbox-label">
+            <Checkbox class="form-check-input" />
+            {gettext(
+              "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
+            )}
+          </Label>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+      </div>
 
-    <div class="form-group">
-      <Field name={:truthful} class="form-check">
-        <Label class="mb-0 checkbox-label">
-          <Checkbox class="form-check-input" />
-          {gettext("I confirm that all the data above is correct. This may be inspected!")}
-        </Label>
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
+      <div class="form-group">
+        <Field name={:truthful} class="form-check">
+          <Label class="mb-0 checkbox-label">
+            <Checkbox class="form-check-input" />
+            {gettext("I confirm that all the data above is correct. This may be inspected!")}
+          </Label>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+      </div>
+    {/if}
   {/if}
 
   <button
     class="mt-1 btn btn-primary"
     type="submit"
     phx-disable-with={gettext("Saving...")}
-    disabled={not @changeset.valid?}
+    disabled={not @changeset.valid? or
+      negative_test_too_early?(Ecto.Changeset.fetch_field!(@changeset, :reason), @phase)}
   >
     {gettext("Save")}
   </button>

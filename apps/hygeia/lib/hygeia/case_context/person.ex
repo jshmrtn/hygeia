@@ -70,6 +70,11 @@ defmodule Hygeia.CaseContext.Person do
           updated_at: DateTime.t()
         }
 
+  @type changeset_options :: %{
+          optional(:address_required) => boolean,
+          optional(:vaccination_required) => boolean
+        }
+
   schema "people" do
     field :birth_date, :date
     field :first_name, :string
@@ -104,9 +109,29 @@ defmodule Hygeia.CaseContext.Person do
   @doc false
   @spec changeset(
           person :: t | empty | Changeset.t(t | empty),
-          attrs :: Hygeia.ecto_changeset_params()
+          attrs :: Hygeia.ecto_changeset_params(),
+          opts :: changeset_options
         ) :: Changeset.t()
-  def changeset(person, attrs) do
+  def changeset(person, attrs, opts \\ %{})
+
+  def changeset(person, attrs, %{address_required: true} = opts) do
+    person
+    |> changeset(attrs, %{opts | address_required: false})
+    |> cast_embed(:address, with: &Address.changeset(&1, &2, %{required: true}), required: true)
+    |> validate_embed_required(:address, Address)
+  end
+
+  def changeset(person, attrs, %{vaccination_required: true} = opts) do
+    person
+    |> changeset(attrs, %{opts | vaccination_required: false})
+    |> cast_embed(:vaccination,
+      with: &Vaccination.changeset(&1, &2, %{required: true}),
+      required: true
+    )
+    |> validate_embed_required(:vaccination, Vaccination)
+  end
+
+  def changeset(person, attrs, _opts) do
     person
     |> cast(attrs, [
       :uuid,

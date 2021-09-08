@@ -11,6 +11,8 @@ defmodule HygeiaWeb.PersonLive.Create do
 
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
+  alias Surface.Components.Form.HiddenInput
+  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
 
   alias Surface.Components.Form.Select
@@ -48,16 +50,31 @@ defmodule HygeiaWeb.PersonLive.Create do
   end
 
   def handle_event("add_contact_method", _params, socket) do
-    contact_methods = Ecto.Changeset.get_field(socket.assigns.changeset, :contact_methods, [])
+    {:noreply,
+     assign(
+       socket,
+       :changeset,
+       CaseContext.change_person(
+         %Person{},
+         changeset_add_to_params(socket.assigns.changeset, :contact_methods, %{
+           uuid: Ecto.UUID.generate()
+         })
+       )
+     )}
+  end
 
-    changeset =
-      Ecto.Changeset.put_change(
-        socket.assigns.changeset,
-        :contact_methods,
-        contact_methods ++ [%{}]
-      )
-
-    {:noreply, assign(socket, :changeset, changeset)}
+  def handle_event("remove_contact_method", %{"value" => contact_method_uuid}, socket) do
+    {:noreply,
+     assign(
+       socket,
+       :changeset,
+       CaseContext.change_person(
+         %Person{},
+         changeset_remove_from_params_by_id(socket.assigns.changeset, :contact_methods, %{
+           uuid: contact_method_uuid
+         })
+       )
+     )}
   end
 
   def handle_event(
