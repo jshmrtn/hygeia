@@ -123,13 +123,14 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
   end
 
   defp validate_contact_methods(changeset) do
-    with nil <- get_field(changeset, :landline),
-         nil <- get_field(changeset, :email) do
-      validate_required(changeset, [:mobile],
-        message: dgettext("errors", "at least one contact method must be provided")
-      )
-    else
-      _other_value -> changeset
+    case get_field(changeset, :email) do
+      nil ->
+        validate_required(changeset, [:mobile],
+          message: dgettext("errors", "at least email / mobile must be provided")
+        )
+
+      _other_value ->
+        changeset
     end
   end
 
