@@ -159,21 +159,18 @@ defmodule HygeiaWeb.AutoTracingLive.ContactMethods do
       _other -> {:error, "not a landline number"}
     end)
     |> validate_email(:email)
-    |> validate_one_required()
+    |> validate_contact_methods()
   end
 
-  defp validate_one_required(changeset) do
-    [:mobile, :landline, :email]
-    |> Enum.map(&fetch_field!(changeset, &1))
-    |> Enum.all?(&is_nil/1)
-    |> if do
-      add_error(
-        changeset,
-        :mobile,
-        dgettext("errors", "at least one contact method must be provided")
-      )
-    else
-      changeset
+  defp validate_contact_methods(changeset) do
+    case get_field(changeset, :email) do
+      nil ->
+        validate_required(changeset, [:mobile],
+          message: dgettext("errors", "at least email / mobile must be provided")
+        )
+
+      _other_value ->
+        changeset
     end
   end
 end
