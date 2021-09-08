@@ -7,7 +7,6 @@
 # # Run `mix gettext.extract` to bring this file up to
 # # date. Leave `msgstr`s empty as changing them here has no
 # # effect: edit them in PO (`.po`) files instead.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: HygeiaPOT-Creation-Date: PO-Revision-Date: Last-Translator: Language-Team: JOSHMARTIN GmbH https://joshmartin.chMIME-Version: 1.0Content-Type: text/plain; charset=UTF-8Content-Transfer-Encoding: 8bitX-Generator: Poedit 2.4.1X-Poedit-SourceCharset: UTF-8\n"
@@ -21,6 +20,10 @@ msgstr ""
 "X-Generator: Poedit 3.0\n"
 
 msgid "are still associated with this entry"
+msgstr ""
+
+#, elixir-format
+msgid "at least email / mobile must be provided"
 msgstr ""
 
 msgid "at least one contact method must be provided"
@@ -126,4 +129,3 @@ msgstr[1] ""
 
 msgid "start must be before end"
 msgstr ""
-

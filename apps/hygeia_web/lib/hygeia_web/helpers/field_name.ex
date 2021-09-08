@@ -119,7 +119,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
     Hygeia.CaseContext.Person.Vaccination => %{
       done: "Done",
       jab_dates: "Jab Dates",
-      name: "Name"
+      name: "Name of Vaccine"
     },
     Hygeia.CaseContext.PossibleIndexSubmission => %{
       address: "Address",

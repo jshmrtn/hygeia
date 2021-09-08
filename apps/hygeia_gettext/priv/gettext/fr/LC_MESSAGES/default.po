@@ -819,10 +819,6 @@ msgid "Correct Data"
 msgstr "Données correctes"
 
 #, fuzzy
-msgid "Correct address"
-msgstr "Adresse correcte"
-
-#, fuzzy
 msgctxt "Auto Tracing Exit"
 msgid "Correct address"
 msgstr "Adresse correcte"
@@ -862,23 +858,9 @@ msgid "Country"
 msgstr "Pays"
 
 #, fuzzy
-msgctxt "Auto Tracing Problem"
-msgid "Covid App"
-msgstr "Application Covid"
-
-#, fuzzy
-msgctxt "Auto Tracing Step"
-msgid "Covid App"
-msgstr "Application Covid"
-
-#, fuzzy
 msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
 msgstr "Alerte CovidApp"
-
-#, fuzzy
-msgid "Create"
-msgstr "Créer"
 
 #, fuzzy
 msgctxt "Division"
@@ -916,10 +898,6 @@ msgid "Create Possible Index Cases"
 msgstr "Créer des cas d'indexation possibles"
 
 #, fuzzy
-msgid "Create Transmission"
-msgstr "Créer une transmission"
-
-#, fuzzy
 msgid "Create new person"
 msgstr "Créer une nouvelle personne"
 
@@ -950,11 +928,6 @@ msgid "Date"
 msgstr "Date"
 
 #, fuzzy
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
-msgid "Date"
-msgstr "Date"
-
-#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Date"
 msgstr "Date"
@@ -979,134 +952,20 @@ msgid "Dear Sir / Madam"
 msgstr "Madame, Monsieur"
 
 #, fuzzy
-msgid "Dear Sir / Madam,\n"
-"\n"
-"As discussed via phone, you can access the information about your isolation via the following link:\n"
-"%{public_overview_link}\n"
-"\n"
-"Please open this link and log in using you first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"You will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n"
-"\n"
-"Please read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nAs discussed via phone, you can access the information about your isolation via the following link:\n%{public_overview_link}\n\nPlease open this link and log in using you first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nYou will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n\nPlease read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
 msgstr "Madame, Monsieur,\n\nComme nous en avons discuté par téléphone, vous pouvez accéder aux informations relatives à votre isolement via le lien suivant : \n%{public_overview_link}\n\nVeuillez ouvrir ce lien et vous connecter en utilisant votre prénom et votre nom. (Initiales : %{initial_first_name}. %{initial_last_name}.)\n\nVous pourrez télécharger votre confirmation d'isolement et soumettre les personnes avec lesquelles vous avez été en contact. Vous pourrez également télécharger une confirmation de fin d'isolement à la fin de votre séjour.\n\nVeuillez lire les informations relatives à votre isolement dans votre document de confirmation ainsi que les liens et les méthodes de contact mentionnés.\n\nBien à vous,\n%{message_signature}\n"
 
-msgid "Dear Sir / Madam,\n"
-"\n"
-"As discussed via phone, you can access the information about your isolation via the following link:\n"
-"%{public_overview_link}\n"
-"\n"
-"Please open this link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"You will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n"
-"\n"
-"Please read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
-msgstr "Madame, Monsieur,\n\nComme nous en avons discuté par téléphone, vous pouvez accéder aux informations relatives à votre isolement via le lien suivant : \n%{public_overview_link}\n\nVeuillez ouvrir ce lien et vous connecter en utilisant votre prénom et votre nom. (Initiales : %{initial_first_name}. %{initial_last_name}.)\n\nVous pourrez télécharger votre confirmation d'isolement et soumettre les personnes avec lesquelles vous avez été en contact. Vous pourrez également télécharger une confirmation de fin d'isolement à la fin de votre séjour.\n\nVeuillez lire les informations relatives à votre isolement dans votre document de confirmation ainsi que les liens et les méthodes de contact mentionnés.\n\nBien à vous,\n%{message_signature}\n"
-
-msgid "Dear Sir / Madam,\n"
-"\n"
-"You have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n"
-"\n"
-"Please open the following link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"%{public_overview_link}\n"
-"\n"
-"You will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n"
-"\n"
-"Please read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
-msgstr "Madame, Monsieur,\n\nVous avez été identifié comme personne de contact d'une personne atteinte de corona. Pour cette raison, vous allez devoir quantifier pendant 10 jours. \n\nVeuillez ouvrir le lien suivant et vous connecter en utilisant vos nom et prénom. (initiales : %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nVous pourrez télécharger votre confirmation de quarantaine et éventuellement raccourcir / lever votre quarantaine.\n\nVeuillez lire les informations relatives à votre quarantaine dans votre document de confirmation ainsi que les liens et les méthodes de contact mentionnés.\n\nBien à vous,\n%{message_signature}\n"
-
-msgid "Dear Sir / Madam,\n"
-"\n"
-"You have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n"
-"\n"
-"Please open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"%{public_overview_link}\n"
-"\n"
-"You will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n"
-"\n"
-"Please read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nYou have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n\nPlease open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nYou will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n\nPlease read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
 msgstr "Madame, Monsieur,\n\nVous avez été identifié comme personne de contact d'une personne atteinte de corona. Pour cette raison, vous allez devoir quantifier pendant 10 jours. \n\nVeuillez ouvrir le lien suivant et vous connecter en utilisant vos nom et prénom. (initiales : %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nVous pourrez télécharger votre confirmation de quarantaine et éventuellement raccourcir / lever votre quarantaine.\n\nVeuillez lire les informations relatives à votre quarantaine dans votre document de confirmation ainsi que les liens et les méthodes de contact mentionnés.\n\nBien à vous,\n%{message_signature}\n"
 
 #, fuzzy
-msgid "Dear Sir / Madam,\n"
-"\n"
-"You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n"
-"\n"
-"We would like to ask you to fill out the information on the following link:\n"
-"%{public_overview_link}\n"
-"\n"
-"Please open this link and log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Thanks for your help!\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
-msgstr "Madame, Monsieur,\n\nVous avez récemment été testé positif au Coronavirus. Afin de contenir la propagation, le service de recherche des contacts compte sur votre soutien.\n\nNous vous demandons de bien vouloir remplir les informations sur le lien suivant :\n%{public_overview_link}\n\nVeuillez ouvrir ce lien et vous connecter en utilisant votre prénom et votre nom. (initiales : %{initial_first_name}. %{initial_last_name}.)\n\nMerci pour votre aide !\n\nSalutations distinguées,\n%{message_signature}\n"
-
-#, fuzzy
-msgid "Dear Sir / Madam,\n"
-"\n"
-"You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n"
-"\n"
-"We would like to ask you to fill out the information on the following link:\n"
-"%{public_overview_link}\n"
-"\n"
-"Please open this link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Thanks for your help!\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nYou have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n\nWe would like to ask you to fill out the information on the following link:\n%{public_overview_link}\n\nPlease open this link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nThanks for your help!\n\nKind Regards,\n%{message_signature}\n"
 msgstr "Madame, Monsieur,\n\nVous avez récemment été testé positif au Coronavirus. Afin de contenir la propagation, le service de recherche des contacts compte sur votre soutien.\n\nNous vous demandons de bien vouloir remplir les informations sur le lien suivant :\n%{public_overview_link}\n\nVeuillez ouvrir ce lien et vous connecter en utilisant votre prénom et votre nom de famille. (initiales : %{initial_first_name}. %{initial_last_name}.)\n\nMerci de votre aide !\n\nSalutations distinguées,\n%{message_signature}\n"
 
-msgid "Dear Sir / Madam,\n"
-"\n"
-"Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n"
-"\n"
-"You can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n"
-"\n"
-"To access the confirmation, please log in using you firstname & lastname. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Should you continue to feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nYou can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n\nTo access the confirmation, please log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
 msgstr "Madame, Monsieur,\n\nVotre période d'isolement se termine demain %{date}. Si vous n'avez pas eu de fièvre ou de toux avec expectoration, vous êtes autorisé à quitter l'isolement.\n\nVous pouvez trouver la confirmation de fin d'isolement via le lien suivant :\n%{isolation_end_confirmation_link}\n\nPour accéder à la confirmation, veuillez vous connecter en utilisant votre prénom et votre nom. (initiales : %{initial_first_name}. %{initial_last_name}.)\n\nSi vous continuez à vous sentir mal, veuillez contacter votre médecin traitant.\n\nNous vous prions d'agréer, l'expression de nos salutations distinguées,\n%{message_signature}\n"
 
-msgid "Dear Sir / Madam,\n"
-"\n"
-"Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n"
-"\n"
-"You can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n"
-"\n"
-"To access the confirmation, please log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Should you continue to feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
-msgstr "Madame, Monsieur,\n\nVotre période d'isolement se termine demain %{date}. Si vous n'avez pas eu de fièvre ou de toux avec expectoration, vous êtes autorisé à quitter l'isolement.\n\nVous pouvez trouver la confirmation de fin d'isolement via le lien suivant :\n%{isolation_end_confirmation_link}\n\nPour accéder à la confirmation, veuillez vous connecter en utilisant votre prénom et votre nom. (initiales : %{initial_first_name}. %{initial_last_name}.)\n\nSi vous continuez à vous sentir mal, veuillez contacter votre médecin traitant.\n\nNous vous prions d'agréer, l'expression de nos salutations distinguées,\n%{message_signature}\n"
-
-msgid "Dear Sir / Madam,\n"
-"\n"
-"Your quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n"
-"\n"
-"Should you feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
 msgstr "Madame, Monsieur,\n\nVotre période de quarantaine se termine demain %{date}. Si vous ne ressentez actuellement aucun symptôme, vous êtes autorisé à quitter la quarantaine.\n\nSi vous vous sentez mal, veuillez contacter votre médecin généraliste.\n\nBien à vous,\n%{message_signature}\n"
 
 #, fuzzy
@@ -1440,7 +1299,7 @@ msgid "Email"
 msgstr "Courriel :"
 
 #, fuzzy
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Email"
 msgstr "Courriel :"
 
@@ -1461,11 +1320,6 @@ msgstr "Courriel :"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Email"
-msgstr "Courriel :"
-
-#, fuzzy
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Email"
 msgstr "Courriel :"
 
@@ -1732,7 +1586,7 @@ msgid "First Contact"
 msgstr "Premier contact"
 
 #, fuzzy
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "First Name"
 msgstr "Prénom"
 
@@ -1748,11 +1602,6 @@ msgstr "Prénom"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "First Name"
-msgstr "Prénom"
-
-#, fuzzy
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "First Name"
 msgstr "Prénom"
 
@@ -1849,13 +1698,7 @@ msgstr "Soins de santé"
 msgid "Help"
 msgstr "Aide"
 
-msgid "Hi %{name},\n"
-"\n"
-"There's new notifications available on Hygeia for you:\n"
-"%{totals}\n"
-"\n"
-"Best,\n"
-"Hygeia\n"
+msgid "Hi %{name},\n\nThere's new notifications available on Hygeia for you:\n%{totals}\n\nBest,\nHygeia\n"
 msgstr "Bonjour %{name},\n\nIl y a de nouvelles notifications disponibles sur Hygeia pour vous :\n%{totals}\n\nBest,\nHygeia - COVID19 Tracing\n"
 
 #, fuzzy
@@ -1963,19 +1806,11 @@ msgid "I had COVID in the last %{validity} and I am healthy again. I can confirm
 msgstr "J'ai eu le COVID au cours des derniers %{validity} et je suis à nouveau en bonne santé. Je peux confirmer la maladie (certificat Covid, test PCR positif, confirmation de l'isolement)."
 
 #, fuzzy
-msgid "I had COVID in the last six months and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
-msgstr "J'ai eu le COVID au cours des six derniers mois et je suis à nouveau en bonne santé. Je peux confirmer la maladie (certificat Covid, test PCR positif, confirmation de l'isolement)."
-
-#, fuzzy
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
 msgstr "J'ai la documentation officielle pour mettre fin à la quarantaine (vacciné, immunisé, test négatif)."
 
 msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago."
 msgstr "J'ai reçu au moins deux vaccins COVID autorisés en Suisse et la dernière injection date de moins de %{validity}."
-
-#, fuzzy
-msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than 6 months ago."
-msgstr "J'ai reçu au moins deux vaccins COVID autorisés en Suisse et la dernière injection date de moins de 6 mois."
 
 #, fuzzy
 msgid "IAM Configuration"
@@ -2261,10 +2096,6 @@ msgid "Invalid Person Details, if you believe this is an error, contact the trac
 msgstr "Détails de la personne non valides. Si vous pensez qu'il s'agit d'une erreur, contactez l'équipe de recherche."
 
 #, fuzzy
-msgid "Is the Swiss CovidApp installed / in operation on your smartphone?"
-msgstr "La Swiss CovidApp est-elle installée / en service sur votre smartphone ?"
-
-#, fuzzy
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
 msgstr "L'application SwissCovid est-elle installée / en service sur votre smartphone ?"
 
@@ -2429,7 +2260,7 @@ msgid "Last Change"
 msgstr "Dernier changement"
 
 #, fuzzy
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Last Name"
 msgstr "Nom de famille"
 
@@ -2445,11 +2276,6 @@ msgstr "Nom de famille"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Last Name"
-msgstr "Nom de famille"
-
-#, fuzzy
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Last Name"
 msgstr "Nom de famille"
 
@@ -2740,11 +2566,6 @@ msgid "Name"
 msgstr "Nom"
 
 #, fuzzy
-msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
-msgid "Name"
-msgstr "Nom"
-
-#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Name"
 msgstr "Nom"
@@ -2763,6 +2584,10 @@ msgstr "Nom"
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
 msgstr "Nom"
+
+msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
+msgid "Name of Vaccine"
+msgstr ""
 
 #, fuzzy
 msgid "Need help"
@@ -3005,10 +2830,6 @@ msgstr "Aucun"
 msgctxt "vaccination_done"
 msgid "Not Done"
 msgstr "Pas fait"
-
-#, fuzzy
-msgid "Not responsible"
-msgstr "Non responsable"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
@@ -3421,11 +3242,6 @@ msgid "Phone"
 msgstr "Téléphone"
 
 #, fuzzy
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Transmission Field"
-msgid "Phone"
-msgstr "Téléphone"
-
-#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Phone"
 msgstr "Téléphone"
@@ -3463,10 +3279,6 @@ msgstr "Lieu"
 #, fuzzy
 msgid "Please enter your place of residence."
 msgstr "Veuillez indiquer votre lieu de résidence."
-
-#, fuzzy
-msgid "Please give us the details."
-msgstr "Veuillez nous donner les détails."
 
 #, fuzzy
 msgid "Please indicate how we can reach you:"
@@ -4115,11 +3927,6 @@ msgstr "Envoyer un SMS de confirmation de fin de quarantaine"
 
 #, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
-msgid "Send a Covid App Code to the person."
-msgstr "Envoyez un code d'application Covid à la personne."
-
-#, fuzzy
-msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a SwissCovid App Code to the person."
 msgstr "Envoyez un code SwissCovid App à la personne."
 
@@ -4391,8 +4198,8 @@ msgid "Suppress quarantine"
 msgstr "Supprimer la quarantaine"
 
 #, fuzzy
-msgid "Swiss CovidApp"
-msgstr "Swiss CovidApp"
+msgid "SwissCovid App"
+msgstr "Application SwissCovid"
 
 #, fuzzy
 msgctxt "Auto Tracing Problem"
@@ -4401,10 +4208,6 @@ msgstr "Application SwissCovid"
 
 #, fuzzy
 msgctxt "Auto Tracing Step"
-msgid "SwissCovid App"
-msgstr "Application SwissCovid"
-
-#, fuzzy
 msgid "SwissCovid App"
 msgstr "Application SwissCovid"
 
@@ -4455,11 +4258,6 @@ msgstr "Message système mis à jour avec succès"
 #, fuzzy
 msgid "System Messages"
 msgstr "Messages du système"
-
-#, fuzzy
-msgctxt "Auto Tracing Resolve Problems"
-msgid "TODO: directions"
-msgstr "TODO : directions"
 
 #, fuzzy
 msgid "Take Me Home"
@@ -5245,11 +5043,6 @@ msgstr "supprimé"
 msgctxt "Notification"
 msgid "deleted"
 msgstr "supprimé"
-
-#, fuzzy
-msgctxt "Notification"
-msgid "did not execute the self service process"
-msgstr "n'a pas exécuté le processus de libre-service"
 
 #, fuzzy
 msgctxt "Item Table"
