@@ -52,11 +52,7 @@ defmodule HygeiaApi.MixProject do
     [
       {:absinthe, "~> 1.5"},
       {:absinthe_error_payload, "1.0.1"},
-      # TODO: Revert to released version when this commit is released
-      # - https://github.com/absinthe-graphql/absinthe_phoenix/commit/fdcf5e33a9c44044f53a536b0f9e2c7ed160893d
-      {:absinthe_phoenix, "~> 2.0",
-       github: "absinthe-graphql/absinthe_phoenix",
-       ref: "fdcf5e33a9c44044f53a536b0f9e2c7ed160893d"},
+      {:absinthe_phoenix, "~> 2.0.2"},
       {:absinthe_relay, "~> 1.5"},
       {:cors_plug, "~> 2.0"},
       {:dataloader, "~> 1.0"},
