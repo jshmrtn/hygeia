@@ -1,0 +1,34 @@
+<footer class="footer mt-auto bg-light">
+  <main class="container">
+    <ul class="component-home-live-index__list my-5">
+      <li :for={tenant <- @tenants, is_nil(@subject) or tenant.uuid == @subject.uuid}>
+        <img
+          :if={TenantHelper.logo_exists?(tenant)}
+          src={TenantHelper.logo_uri(tenant, @socket)}
+          alt={"#{tenant.name} Logo"}
+          class="mb-3"
+        />
+        <p :if={tenant.contact_phone} class="mb-0">
+          <Link to={tenant.contact_phone
+          |> ExPhoneNumber.parse("CH")
+          |> case do
+            {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
+            _ -> nil
+          end}>
+            {tenant.contact_phone
+            |> ExPhoneNumber.parse("CH")
+            |> case do
+              {:ok, number} -> ExPhoneNumber.format(number, :international)
+              _ -> nil
+            end}
+          </Link>
+        </p>
+        <p :if={tenant.contact_email} class="mb-0">
+          <Link to={"mailto:#{tenant.contact_email}"}>
+            {tenant.contact_email}
+          </Link>
+        </p>
+      </li>
+    </ul>
+  </main>
+</footer>

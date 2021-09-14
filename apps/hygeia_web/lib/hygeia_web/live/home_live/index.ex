@@ -8,6 +8,8 @@ defmodule HygeiaWeb.HomeLive.Index do
   alias HygeiaWeb.Helpers.Tenant, as: TenantHelper
   alias Surface.Components.Link
 
+  data hide_footer, :boolean, default: true
+
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     auth = get_auth(socket)
@@ -23,10 +25,7 @@ defmodule HygeiaWeb.HomeLive.Index do
         {:ok,
          assign(socket,
            tenants:
-             TenantContext.list_tenants()
-             |> Enum.filter(&match?(%Tenant{case_management_enabled: true}, &1))
-             |> Enum.reject(&match?(%Tenant{iam_domain: nil}, &1))
-             |> Enum.filter(&TenantHelper.logo_exists?/1)
+             Enum.filter(TenantContext.list_tenants(), &Tenant.is_internal_managed_tenant?/1)
          )}
     end
   end

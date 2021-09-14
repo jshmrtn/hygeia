@@ -5,7 +5,7 @@
     {gettext("Dear Sir / Madam")}
   </h2>
 
-  <div class="row">
+  <div class="row mb-5">
     <div class="col-12 col-lg-6">
       <p>
         {gettext(
@@ -20,15 +20,32 @@
       <p class="mb-5">
         {gettext("Thanks for your help!")}
       </p>
-      <p :if={TenantHelper.logo_exists?(@case.tenant)}>
+      <p :if={TenantHelper.logo_exists?(@case.tenant)} class="mb-0">
         <img
           src={TenantHelper.logo_uri(@case.tenant, @socket)}
           alt={"#{@case.tenant.name} Logo"}
-          class="component-auto-tracing-live-start__logo"
+          class="component-auto-tracing-live-start__logo mb-3"
         />
       </p>
-      <p class="mb-5" :if={@case.tenant.template_parameters}>
-        {@case.tenant.template_parameters.sms_signature}
+      <p :if={@case.tenant.contact_phone} class="mb-0">
+        <Link to={@case.tenant.contact_phone
+        |> ExPhoneNumber.parse("CH")
+        |> case do
+          {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
+          _ -> nil
+        end}>
+          {@case.tenant.contact_phone
+          |> ExPhoneNumber.parse("CH")
+          |> case do
+            {:ok, number} -> ExPhoneNumber.format(number, :international)
+            _ -> nil
+          end}
+        </Link>
+      </p>
+      <p :if={@case.tenant.contact_email} class="mb-0">
+        <Link to={"mailto:#{@case.tenant.contact_email}"}>
+          {@case.tenant.contact_email}
+        </Link>
       </p>
     </div>
   </div>

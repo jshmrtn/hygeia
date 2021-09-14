@@ -11,6 +11,7 @@ defmodule HygeiaWeb.AutoTracingLive.Start do
   alias Hygeia.CaseContext.Test.Result
   alias Hygeia.Repo
   alias HygeiaWeb.Helpers.Tenant, as: TenantHelper
+  alias Surface.Components.Link
 
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
