@@ -236,6 +236,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
     },
     Hygeia.TenantContext.Tenant => %{
       case_management_enabled: "Case Management Enabled",
+      contact_email: "Contact Email",
+      contact_phone: "Contact Phone",
       country: "Country",
       from_email: "From Email",
       iam_domain: "IAM Domain",

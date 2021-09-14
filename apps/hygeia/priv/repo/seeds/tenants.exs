@@ -77,7 +77,9 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
            9001 St.Gallen
            https://www.sg.ch/tools/informationen-coronavirus.html
            """
-         }
+         },
+         contact_phone: "+41 71 521 26 10",
+         contact_email: "info.contacttracing@sg.ch"
        }}
 
     %Cadastre.Subdivision{id: "AR"} = subdivision ->
@@ -119,7 +121,9 @@ yz5QUsfOxhiiVdmtD9rlrB2XlOme2IQNysVtH1hwTxtExTYseT7Gy0hk2HozvLET
            9102 Herisau
            www.ar.ch
            """
-         }
+         },
+         contact_phone: "+41 71 521 26 10",
+         contact_email: "info.contacttracing@sg.ch"
        }}
 
     %Cadastre.Subdivision{id: "AI"} = subdivision ->

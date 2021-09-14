@@ -1,29 +1,48 @@
-<%= live_component(
-  HygeiaWeb.Header,
-  Surface.build_assigns(
-    assigns[:__context__],
-    [],
-    %{},
-    [],
-    %{},
+<div class="page-container">
+  <%= live_component(
     HygeiaWeb.Header,
-    HygeiaWeb.Header
-  )
-) %>
+    Surface.build_assigns(
+      assigns[:__context__],
+      [],
+      %{},
+      [],
+      %{},
+      HygeiaWeb.Header,
+      HygeiaWeb.Header
+    )
+  ) %>
 
-<main role="main" class="layout-live-main px-3 px-sm-2">
-  <div class="container">
-    <p class="alert alert-info" role="alert"
-      phx-click="lv:clear-flash"
-      phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+  <main role="main" class="layout-live-main px-3 px-sm-2">
+    <div class="container">
+      <p class="alert alert-info" role="alert"
+        phx-click="lv:clear-flash"
+        phx-value-key="info"><%= live_flash(@flash, :info) %></p>
 
-    <p class="alert alert-warning" role="alert"
-      phx-click="lv:clear-flash"
-      phx-value-key="warning"><%= live_flash(@flash, :warning) %></p>
+      <p class="alert alert-warning" role="alert"
+        phx-click="lv:clear-flash"
+        phx-value-key="warning"><%= live_flash(@flash, :warning) %></p>
 
-    <p class="alert alert-danger" role="alert"
-      phx-click="lv:clear-flash"
-      phx-value-key="error"><%= live_flash(@flash, :error) %></p>
-  </div>
-  <%= @inner_content %>
-</main>
+      <p class="alert alert-danger" role="alert"
+        phx-click="lv:clear-flash"
+        phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+    </div>
+    <%= @inner_content %>
+  </main>
+
+  <%= unless assigns[:hide_footer] === true do %>
+    <%= live_component(
+      HygeiaWeb.Footer,
+      Surface.build_assigns(
+        assigns[:__context__],
+        [],
+        assigns
+        |> Map.take([:tenants, :tenant, :case, :person, :auto_tracing])
+        |> Map.put(:id, "global-footer"),
+        [],
+        %{},
+        HygeiaWeb.Footer,
+        HygeiaWeb.Footer
+      )
+    ) %>
+  <% end %>
+</div>

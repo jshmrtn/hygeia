@@ -4,7 +4,32 @@
 
     <ul class="component-home-live-index__list my-5">
       <li :for={tenant <- @tenants}>
-        <img src={TenantHelper.logo_uri(tenant, @socket)} alt={"#{tenant.name} Logo"}>
+        <img
+          :if={TenantHelper.logo_exists?(tenant)}
+          src={TenantHelper.logo_uri(tenant, @socket)}
+          alt={"#{tenant.name} Logo"}
+          class="mb-3"
+        />
+        <p :if={tenant.contact_phone} class="mb-0">
+          <Link to={tenant.contact_phone
+          |> ExPhoneNumber.parse("CH")
+          |> case do
+            {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
+            _ -> nil
+          end}>
+            {tenant.contact_phone
+            |> ExPhoneNumber.parse("CH")
+            |> case do
+              {:ok, number} -> ExPhoneNumber.format(number, :international)
+              _ -> nil
+            end}
+          </Link>
+        </p>
+        <p :if={tenant.contact_email} class="mb-0">
+          <Link to={"mailto:#{tenant.contact_email}"}>
+            {tenant.contact_email}
+          </Link>
+        </p>
       </li>
     </ul>
 
@@ -25,27 +50,19 @@
       )}
     </p>
     <hr class="my-4">
+    <p class="col-md-8">{pgettext("Home", "In case of service disruptions, please check the status page.")}</p>
+    <Link class="btn" to="https://status.covid19-tracing.ch" opts={role: "button", target: "_blank"}>
+      <span class="oi oi-external-link" aria-hidden="true" />
+      {pgettext("Home", "Status Page")}
+    </Link>
+    <hr class="my-4">
     <p class="col-md-8">{pgettext(
         "Home",
         "Various information regarding the applications functionality as well as details regarding using Hygeia are available on the website."
       )}</p>
-    <Link
-      class="btn btn-primary btn-lg"
-      to="https://info.covid19-tracing.ch/"
-      opts={role: "button", target: "_blank"}
-    >
+    <Link class="btn" to="https://info.covid19-tracing.ch/" opts={role: "button", target: "_blank"}>
       <span class="oi oi-external-link" aria-hidden="true" />
       {pgettext("Home", "Info Website")}
-    </Link>
-    <hr class="my-4">
-    <p class="col-md-8">{pgettext("Home", "In case of service disruptions, please check the status page.")}</p>
-    <Link
-      class="btn btn-primary btn-lg"
-      to="https://status.covid19-tracing.ch"
-      opts={role: "button", target: "_blank"}
-    >
-      <span class="oi oi-external-link" aria-hidden="true" />
-      {pgettext("Home", "Status Page")}
     </Link>
   </section>
 </div>

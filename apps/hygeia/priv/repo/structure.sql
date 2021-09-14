@@ -52,7 +52,12 @@ CREATE TYPE public.auto_tracing_problem AS ENUM (
     'vaccination_failure',
     'hospitalization',
     'new_employer',
-    'link_propagator'
+    'link_propagator',
+    'residency_outside_country',
+    'school_related',
+    'no_reaction',
+    'no_contact_method',
+    'possible_index_submission'
 );
 
 
@@ -69,7 +74,8 @@ CREATE TYPE public.auto_tracing_step AS ENUM (
     'covid_app',
     'clinical',
     'transmission',
-    'end'
+    'end',
+    'contact_persons'
 );
 
 
@@ -2250,8 +2256,27 @@ CREATE TYPE public.versioning_origin AS ENUM (
     'email_sender',
     'sms_sender',
     'migration',
-    'detect_unchanged_cases_job'
+    'detect_unchanged_cases_job',
+    'detect_no_reaction_cases_job'
 );
+
+
+--
+-- Name: array_disjoint(anyarray, anyarray); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.array_disjoint(a anyarray, b anyarray) RETURNS anyarray
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $$
+    SELECT
+      ARRAY(
+        SELECT
+          UNNEST(a)
+        EXCEPT
+        SELECT
+          UNNEST(b)
+      )
+  $$;
 
 
 --
@@ -2780,14 +2805,20 @@ CREATE TABLE public.auto_tracings (
     last_completed_step public.auto_tracing_step,
     problems public.auto_tracing_problem[] DEFAULT ARRAY[]::public.auto_tracing_problem[],
     solved_problems public.auto_tracing_problem[] DEFAULT ARRAY[]::public.auto_tracing_problem[],
-    unsolved_problems boolean DEFAULT false,
     covid_app boolean,
     employed boolean,
     occupations jsonb[],
-    transmission jsonb,
     case_uuid uuid,
     inserted_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    scholar boolean,
+    has_contact_persons boolean,
+    unsolved_problems public.auto_tracing_problem[] GENERATED ALWAYS AS (public.array_disjoint(problems, solved_problems)) STORED,
+    propagator_known boolean,
+    transmission_known boolean,
+    propagator jsonb,
+    transmission_uuid uuid,
+    started_at timestamp without time zone NOT NULL
 );
 
 
@@ -3149,6 +3180,8 @@ CREATE TABLE public.tenants (
     template_parameters jsonb,
     subdivision character varying(255),
     country character varying(255),
+    contact_phone character varying(255),
+    contact_email character varying(255),
     CONSTRAINT sedex_export_must_be_provided CHECK ((((sedex_export_enabled = true) AND (sedex_export_configuration IS NOT NULL)) OR ((sedex_export_enabled = false) AND (sedex_export_configuration IS NULL))))
 );
 
@@ -4985,6 +5018,14 @@ ALTER TABLE ONLY public.auto_tracings
 
 
 --
+-- Name: auto_tracings auto_tracings_transmission_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.auto_tracings
+    ADD CONSTRAINT auto_tracings_transmission_uuid_fkey FOREIGN KEY (transmission_uuid) REFERENCES public.transmissions(uuid) ON DELETE SET NULL;
+
+
+--
 -- Name: cases cases_person_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5346,3 +5387,15 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210819125948);
 INSERT INTO public."schema_migrations" (version) VALUES (20210825152555);
 INSERT INTO public."schema_migrations" (version) VALUES (20210827100229);
 INSERT INTO public."schema_migrations" (version) VALUES (20210827112204);
+INSERT INTO public."schema_migrations" (version) VALUES (20210830092733);
+INSERT INTO public."schema_migrations" (version) VALUES (20210830093531);
+INSERT INTO public."schema_migrations" (version) VALUES (20210830101202);
+INSERT INTO public."schema_migrations" (version) VALUES (20210830102654);
+INSERT INTO public."schema_migrations" (version) VALUES (20210830111044);
+INSERT INTO public."schema_migrations" (version) VALUES (20210830114650);
+INSERT INTO public."schema_migrations" (version) VALUES (20210830121213);
+INSERT INTO public."schema_migrations" (version) VALUES (20210830125241);
+INSERT INTO public."schema_migrations" (version) VALUES (20210830133345);
+INSERT INTO public."schema_migrations" (version) VALUES (20210831165759);
+INSERT INTO public."schema_migrations" (version) VALUES (20210901135323);
+INSERT INTO public."schema_migrations" (version) VALUES (20210914093248);

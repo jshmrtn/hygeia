@@ -39,6 +39,8 @@ defmodule Hygeia.TenantContext.Tenant do
           related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()) | nil,
           subdivision: String.t() | nil,
           country: Country.t() | nil,
+          contact_phone: String.t() | nil,
+          contact_email: String.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -64,6 +66,8 @@ defmodule Hygeia.TenantContext.Tenant do
           related_system_messages: Ecto.Schema.many_to_many(SystemMessage.t()),
           subdivision: String.t() | nil,
           country: Country.t() | nil,
+          contact_phone: String.t() | nil,
+          contact_email: String.t() | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -79,6 +83,8 @@ defmodule Hygeia.TenantContext.Tenant do
     field :sedex_export_enabled, :boolean, default: false
     field :subdivision, :string
     field :country, Country
+    field :contact_phone, :string
+    field :contact_email, :string
 
     has_many :people, Person
     has_many :cases, Case
@@ -134,7 +140,9 @@ defmodule Hygeia.TenantContext.Tenant do
       :from_email,
       :sedex_export_enabled,
       :subdivision,
-      :country
+      :country,
+      :contact_phone,
+      :contact_email
     ])
     |> validate_required([:name, :public_statistics, :case_management_enabled])
     |> validate_subdivision(:subdivision, :country)
@@ -143,6 +151,8 @@ defmodule Hygeia.TenantContext.Tenant do
     |> cast_embed(:template_parameters)
     |> maybe_cast_embed(:sedex_export_configuration, :sedex_export_enabled)
     |> validate_url(:override_url)
+    |> validate_email(:contact_email)
+    |> validate_and_normalize_phone(:contact_phone)
     |> clear_fields_when_management_disabled()
     |> clear_fields_when_no_iam_disabled()
     |> foreign_key_constraint(:people,
@@ -177,7 +187,9 @@ defmodule Hygeia.TenantContext.Tenant do
         country: nil,
         outgoing_sms_configuration: nil,
         template_variation: nil,
-        sedex_export_enabled: false
+        sedex_export_enabled: false,
+        contact_phone: nil,
+        contact_email: nil
       })
       |> put_embed(:template_parameters, nil)
     end
@@ -193,7 +205,9 @@ defmodule Hygeia.TenantContext.Tenant do
         outgoing_sms_configuration: nil,
         template_variation: nil,
         sedex_export_enabled: false,
-        from_email: nil
+        from_email: nil,
+        contact_phone: nil,
+        contact_email: nil
       })
       |> put_embed(:template_parameters, nil)
     else
