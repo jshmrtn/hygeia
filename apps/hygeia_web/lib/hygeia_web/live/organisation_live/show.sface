@@ -151,6 +151,17 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </div>
+                <div :if={Ecto.Changeset.get_field(@changeset, :type) == :school} class="col">
+                  <Field name={:school_type} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <Select
+                      class="form-control"
+                      options={organisation_school_types()}
+                      opts={prompt: gettext("Select school type"), disabled: @live_action == :show}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
                 <div :if={Ecto.Changeset.get_field(@changeset, :type) == :other} class="col">
                   <Field name={:type_other} class="form-group">
                     <HygeiaWeb.FieldLabel />

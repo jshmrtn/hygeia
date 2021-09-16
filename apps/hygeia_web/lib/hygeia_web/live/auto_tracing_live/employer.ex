@@ -4,11 +4,14 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   use HygeiaWeb, :surface_view
   use Hygeia, :model
 
+  import Ecto.Query
+
   alias Phoenix.LiveView.Socket
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
+  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.OrganisationContext
@@ -30,6 +33,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   embedded_schema do
     field :employed, :boolean
     field :scholar, :boolean
+    embeds_many :school_visits, SchoolVisit, on_replace: :delete
 
     embeds_many :occupations, Occupation, on_replace: :delete
   end
@@ -76,6 +80,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
           step = %__MODULE__{
             scholar: case.auto_tracing.scholar,
+            school_visits: case.auto_tracing.school_visits,
             employed:
               case occupations do
                 [_occupations | _rest] -> true
@@ -93,6 +98,94 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
       end
 
     {:noreply, socket}
+  end
+
+  def handle_event(
+        "add_visited_school",
+        _params,
+        %Socket{assigns: %{step: step, changeset: changeset}} = socket
+      ) do
+    {:noreply,
+     assign(socket,
+       changeset: %Changeset{
+         changeset(
+           step,
+           changeset_add_to_params(changeset, :school_visits, %{
+             uuid: Ecto.UUID.generate()
+           })
+         )
+         | action: :validate
+       }
+     )}
+  end
+
+  def handle_event(
+        "remove_visited_school",
+        %{"value" => school_uuid},
+        %Socket{assigns: %{step: step, changeset: changeset}} = socket
+      ) do
+    {:noreply,
+     assign(
+       socket,
+       :changeset,
+       %Changeset{
+         changeset(
+           step,
+           changeset_remove_from_params_by_id(changeset, :school_visits, %{uuid: school_uuid})
+         )
+         | action: :validate
+       }
+     )}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event(
+        "select_school",
+        %{"uuid" => organisation_uuid, "subject" => school_uuid} = _params,
+        %{assigns: %{step: step, changeset: changeset}} = socket
+      ) do
+    {:noreply,
+     assign(
+       socket,
+       :changeset,
+       %Changeset{
+         changeset(
+           step,
+           changeset_update_params_by_id(
+             changeset,
+             :school_visits,
+             %{uuid: school_uuid},
+             &Map.put(&1, "known_school_uuid", organisation_uuid)
+           )
+         )
+         | action: :validate
+       }
+     )}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event(
+        "select_school",
+        %{"subject" => school_uuid} = _params,
+        %{assigns: %{step: step, changeset: changeset}} = socket
+      ) do
+    {:noreply,
+     assign(
+       socket,
+       :changeset,
+       %Changeset{
+         changeset(
+           step,
+           changeset_update_params_by_id(
+             changeset,
+             :school_visits,
+             %{uuid: school_uuid},
+             &Map.put(&1, "known_school_uuid", nil)
+           )
+         )
+         | action: :validate
+       }
+     )}
   end
 
   @impl Phoenix.LiveView
@@ -210,7 +303,10 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
           {:ok, _person} = CaseContext.update_person(person_changeset)
 
-          auto_tracing_changeset = add_unknown_occupations(auto_tracing, step)
+          auto_tracing_changeset =
+            auto_tracing
+            |> add_visited_schools(step)
+            |> add_unknown_occupations(step)
 
           {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
 
@@ -253,7 +349,25 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     schema
     |> cast(attrs, [:scholar, :employed])
     |> validate_required([:scholar, :employed])
+    |> validate_school_related()
     |> validate_occupation()
+  end
+
+  @spec validate_school_related(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def validate_school_related(changeset) do
+    changeset
+    |> fetch_field!(:scholar)
+    |> case do
+      true ->
+        cast_embed(changeset, :school_visits,
+          required: true,
+          required_message: gettext("please add at least one school that you visited during the period in consideration")
+        )
+
+      _else ->
+        IO.inspect(changeset, label: "BEFORE")
+        put_embed(changeset, :school_visits, [])|>IO.inspect(label: "CSSS")
+    end
   end
 
   @spec validate_occupation(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
@@ -305,6 +419,17 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     person
     |> CaseContext.change_person()
     |> put_assoc(:affiliations, keep_affiliations ++ new_affiliations)
+  end
+
+  defp add_visited_schools(auto_tracing, %__MODULE__{
+         school_visits: school_visits
+       }) do
+    auto_tracing
+    |> AutoTracingContext.change_auto_tracing()
+    |> put_embed(
+      :school_visits,
+      school_visits
+    )
   end
 
   defp add_unknown_occupations(auto_tracing, %__MODULE__{

@@ -11,6 +11,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
           uuid: Ecto.UUID.t() | nil,
           kind: Kind.t() | nil,
           kind_other: String.t() | nil,
+          not_found: boolean() | nil,
           known_organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_organisation: Entity.t() | nil
         }
@@ -19,6 +20,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
           uuid: Ecto.UUID.t(),
           kind: Kind.t() | nil,
           kind_other: String.t() | nil,
+          not_found: boolean() | nil,
           known_organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_organisation: Entity.t() | nil
         }

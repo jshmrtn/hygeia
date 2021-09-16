@@ -11,7 +11,7 @@
     <div class="row gx-7">
       <div class="col-12 col-lg-6">
         <p class="mb-4">{gettext(
-            "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
+            "Did you visit an educational institution in the 48 hours before the onset of symptoms or 48 hours before the test?"
           )}</p>
         <Field name={:scholar} class="form-group">
           <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
@@ -19,7 +19,7 @@
               "btn",
               "btn-sm",
               "btn-outline-primary",
-              active: Ecto.Changeset.get_field(@changeset, :scholar) == true
+              active: get_field(@changeset, :scholar) == true
             }>
               <RadioButton value />
               {gettext("Yes")}
@@ -28,7 +28,7 @@
               "btn",
               "btn-sm",
               "btn-outline-primary",
-              active: Ecto.Changeset.get_field(@changeset, :scholar) == false
+              active: get_field(@changeset, :scholar) == false
             }>
               <RadioButton value={false} />
               {gettext("No")}
@@ -36,6 +36,90 @@
           </div>
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
+      </div>
+    </div>
+    <div :if={get_field(@changeset, :scholar)}>
+      <div class="hy-card-grid-2-cols large-grid-gap">
+        <Inputs for={:school_visits}>
+          <HiddenInput field={:uuid} />
+          <InputContext assigns={assigns} :let={form: school}>
+            <div>
+              <Field class="form-group" name={:known_school_uuid}>
+                <HygeiaWeb.FieldLabel />
+                <HygeiaWeb.OrganisationLive.Choose
+                  disabled={fetch_field!(school.source, :not_found)}
+                  id={"visited_#{fetch_field!(school.source, :uuid)}_school"}
+                  change="select_school"
+                  subject={fetch_field!(school.source, :uuid)}
+                  query_clauses={[&(from o in &1, where: o.type == :school)]}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+              <Field
+                :if={fetch_field!(school.source, :known_school_uuid) === nil}
+                class="form-group"
+                name={:not_found}
+              >
+                <HygeiaWeb.FieldLabel class="me-2" />
+                <Checkbox opts={
+                  checked:
+                    if fetch_field!(school.source, :not_found) do
+                      "true"
+                    end
+                } />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+
+              <div :if={fetch_field!(school.source, :not_found)}>
+                <Inputs for={:unknown_school}>
+                  <p class="mb-4">
+                    {gettext(
+                      "Your institution does not appear in the list or it is not correct? Please enter it manually."
+                    )}
+                  </p>
+                  <Field name={:name} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                  <Inputs for={:address}>
+                    <HygeiaWeb.AddressForm id={"visited_school_#{fetch_field!(school.source, :uuid)}_unknown_school_address"} />
+                  </Inputs>
+                </Inputs>
+              </div>
+
+              <Field name={:visit_reason} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <Select
+                  class="form-control"
+                  opts={prompt: pgettext("Reason", "Choose reason")}
+                  options={SchoolVisit.visit_reason()}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+
+              <button
+                class="btn btn-danger mb-4"
+                type="button"
+                :on-click="remove_visited_school"
+                value={fetch_field!(school.source, :uuid)}
+              >
+                <span class="oi oi-trash" aria-hidden="true" />
+              </button>
+            </div>
+          </InputContext>
+        </Inputs>
+      </div>
+      <div class="mb-2">
+        <button class="btn btn-outline-primary" type="button" :on-click="add_visited_school">
+          {gettext("Add an institution")}
+        </button>
+      </div>
+      <ErrorTag field={:school_visits} class="d-block invalid-feedback" />
+    </div>
+
+    <div class="row gx-7">
+      <div class="col-12 col-lg-6">
         <p class="mb-4">{gettext("Are you employed?")}</p>
         <Field name={:employed} class="form-group">
           <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
@@ -43,7 +127,7 @@
               "btn",
               "btn-sm",
               "btn-outline-primary",
-              active: Ecto.Changeset.get_field(@changeset, :employed) == true
+              active: get_field(@changeset, :employed) == true
             }>
               <RadioButton value />
               {gettext("Yes")}
@@ -52,7 +136,7 @@
               "btn",
               "btn-sm",
               "btn-outline-primary",
-              active: Ecto.Changeset.get_field(@changeset, :employed) == false
+              active: get_field(@changeset, :employed) == false
             }>
               <RadioButton value={false} />
               {gettext("No")}
@@ -63,7 +147,7 @@
       </div>
     </div>
     <div
-      :if={Ecto.Changeset.get_field(@changeset, :employed)}
+      :if={get_field(@changeset, :employed)}
       class="hy-card-grid-2-cols large-grid-gap"
     >
       <Inputs for={:occupations}>
@@ -80,7 +164,7 @@
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
             <Field
-              :if={Ecto.Changeset.fetch_field!(occupation.source, :kind) == :other}
+              :if={fetch_field!(occupation.source, :kind) == :other}
               name={:kind_other}
               class="form-group"
             >
@@ -92,7 +176,7 @@
               <Field class="form-group" name={:known_organisation_uuid}>
                 <HygeiaWeb.FieldLabel />
                 <HygeiaWeb.OrganisationLive.Choose
-                  disabled={Ecto.Changeset.fetch_field!(occupation.source, :not_found)}
+                  disabled={fetch_field!(occupation.source, :not_found)}
                   id={"occupation_#{fetch_field!(occupation.source, :uuid)}_organisation"}
                   change="select_affiliation_organisation"
                   subject={fetch_field!(occupation.source, :uuid)}
@@ -102,14 +186,14 @@
             </div>
             <div>
               <Field
-                :if={Ecto.Changeset.fetch_field!(occupation.source, :known_organisation_uuid) === nil}
+                :if={fetch_field!(occupation.source, :known_organisation_uuid) === nil}
                 class="form-group"
                 name={:not_found}
               >
                 <HygeiaWeb.FieldLabel class="me-2" />
                 <Checkbox opts={
                   checked:
-                    if Ecto.Changeset.fetch_field!(occupation.source, :not_found) do
+                    if fetch_field!(occupation.source, :not_found) do
                       "true"
                     end
                 } />
@@ -117,7 +201,7 @@
               </Field>
             </div>
 
-            <div :if={Ecto.Changeset.fetch_field!(occupation.source, :not_found)}>
+            <div :if={fetch_field!(occupation.source, :not_found)}>
               <Inputs for={:unknown_organisation}>
                 <p class="mb-4">
                   {gettext(
@@ -146,7 +230,7 @@
         </InputContext>
       </Inputs>
     </div>
-    <div class="mb-2" :if={Ecto.Changeset.get_field(@changeset, :employed)}>
+    <div class="mb-2" :if={get_field(@changeset, :employed)}>
       <button class="btn btn-outline-primary" type="button" :on-click="add_occupation">
         {gettext("Add an occupation")}
       </button>

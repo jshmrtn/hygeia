@@ -225,6 +225,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       address: "Address",
       name: "Name",
       notes: "Notes",
+      school_type: "School Type",
       type: "Type",
       type_other: "Type Other"
     },
@@ -373,7 +374,12 @@ defmodule HygeiaWeb.Helpers.FieldName do
       last_name: "Last Name",
       phone: "Phone",
       email: "Email"
-    }
+    },
+    Hygeia.AutoTracingContext.AutoTracing.SchoolVisit => %{
+      visit_reason: "Reason for you visit",
+      known_school: "Educational institution",
+      not_found: "Institution not found"
+    },
   }
 
   schema_type =
