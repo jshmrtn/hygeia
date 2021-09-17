@@ -16,49 +16,61 @@
         </button>
       </LiveRedirect>
 
-      <HygeiaWeb.Dropdown
-        class="ms-auto"
-        trigger_class="mt-3"
-        dropdown_class="dropdown-menu-end p-3 filter-dropdown"
-        id="filter-dropdown"
-      >
-        <:trigger>
-          <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
-            <span class="oi oi-cog" aria-hidden="true" />
-            {gettext("Filter")}
-          </button>
-        </:trigger>
-        <:default>
-          <h4>{gettext("Filter")}</h4>
-          <Form
-            for={@filters}
-            change="filter"
-            submit="filter"
-            opts={autocomplete: "off", id: "filter-form", as: :filter}
-          >
-            <div class="form-group">
-              <Field class="form-group" name="country">
-                <HygeiaWeb.FieldLabel schema={Hygeia.CaseContext.Address} />
-                <Select class="form-control" opts={prompt: "Any" |> gettext} options={countries()} />
-              </Field>
-            </div>
+      <div class="d-flex ms-auto">
+        <Form
+          for={@filters}
+          change="filter"
+          submit="filter"
+          opts={autocomplete: "off", id: "search-filter-form", as: :filter}
+        >
+          <Field name={:search} class="form-group mt-3 me-2">
+            <TextInput class="form-control" opts={placeholder: gettext("Search")} />
+          </Field>
+        </Form>
 
-            <div class="form-group">
-              <Field name={:subdivision} class="form-group">
-                <HygeiaWeb.FieldLabel schema={Hygeia.CaseContext.Address} />
-                <InputContext assigns={assigns} :let={form: form}>
-                  <Select
-                    class="form-control"
-                    opts={prompt: gettext("Choose subdivision")}
-                    field={:subdivision}
-                    options={subdivisions(form.source)}
-                  />
-                </InputContext>
-              </Field>
-            </div>
-          </Form>
-        </:default>
-      </HygeiaWeb.Dropdown>
+        <HygeiaWeb.Dropdown
+          trigger_class="mt-3"
+          dropdown_class="dropdown-menu-end p-3 filter-dropdown"
+          id="filter-dropdown"
+        >
+          <:trigger>
+            <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
+              <span class="oi oi-cog" aria-hidden="true" />
+              {gettext("Filter")}
+            </button>
+          </:trigger>
+          <:default>
+            <h4>{gettext("Filter")}</h4>
+            <Form
+              for={@filters}
+              change="filter"
+              submit="filter"
+              opts={autocomplete: "off", id: "filter-form", as: :filter}
+            >
+              <div class="form-group">
+                <Field class="form-group" name="country">
+                  <HygeiaWeb.FieldLabel schema={Hygeia.CaseContext.Address} />
+                  <Select class="form-control" opts={prompt: "Any" |> gettext} options={countries()} />
+                </Field>
+              </div>
+
+              <div class="form-group">
+                <Field name={:subdivision} class="form-group">
+                  <HygeiaWeb.FieldLabel schema={Hygeia.CaseContext.Address} />
+                  <InputContext assigns={assigns} :let={form: form}>
+                    <Select
+                      class="form-control"
+                      opts={prompt: gettext("Choose subdivision")}
+                      field={:subdivision}
+                      options={subdivisions(form.source)}
+                    />
+                  </InputContext>
+                </Field>
+              </div>
+            </Form>
+          </:default>
+        </HygeiaWeb.Dropdown>
+      </div>
     </div>
 
     <table class="table">

@@ -14,6 +14,7 @@ defmodule HygeiaWeb.OrganisationLive.Index do
   alias Surface.Components.Form.Input.InputContext
 
   alias Surface.Components.Form.Select
+  alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
@@ -69,6 +70,7 @@ defmodule HygeiaWeb.OrganisationLive.Index do
   def handle_info(_other, socket), do: {:noreply, socket}
 
   @allowed_filter_fields %{
+    "search" => :search,
     "country" => :country,
     "subdivision" => :subdivision
   }
@@ -85,6 +87,9 @@ defmodule HygeiaWeb.OrganisationLive.Index do
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, ""}, &1))
       |> Enum.reduce(OrganisationContext.list_organisations_query(), fn
+        {:search, term}, _query ->
+          OrganisationContext.fulltext_organisation_search_query(term)
+
         {:country, value}, query ->
           where(query, [organisation], fragment("?->'country'", organisation.address) == ^value)
 
