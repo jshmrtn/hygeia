@@ -80,7 +80,7 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
       |> Enum.reduce(query, fn clause, q ->
         clause.(q)
       end)
-      |> then(&from(organisation in &1, limit: 25))
+      |> Kernel.then(&from(organisation in &1, limit: 25))
       |> Repo.all()
 
     assign(socket, organisations: organisations)
