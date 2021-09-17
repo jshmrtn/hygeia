@@ -289,13 +289,11 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
     {:noreply, assign(socket, person: person, auto_tracing: auto_tracing)}
   end
 
-
   def handle_event(
         "select_school",
         %{"subject" => school_visit_uuid, "uuid" => organisation_uuid},
         socket
       ) do
-
     {:ok, auto_tracing} =
       socket.assigns.auto_tracing
       |> AutoTracingContext.change_auto_tracing(
@@ -303,7 +301,11 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
           AutoTracingContext.change_auto_tracing(socket.assigns.auto_tracing),
           :school_visits,
           %{uuid: school_visit_uuid},
-          &Map.merge(&1, %{"known_school_uuid" => organisation_uuid, "not_found" => false, "unknown_school" => nil})
+          &Map.merge(&1, %{
+            "known_school_uuid" => organisation_uuid,
+            "not_found" => false,
+            "unknown_school" => nil
+          })
         )
       )
       |> AutoTracingContext.update_auto_tracing()

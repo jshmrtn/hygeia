@@ -206,10 +206,13 @@
                           {pgettext("Auto Tracing Resolve Problems", "Done")}
                         </button>
                       {#match :school_related}
-                        {#if schools = Enum.group_by(@auto_tracing.school_visits, &( &1.not_found ))}
-                          <p>{pgettext("Auto Tracing Resolve Problems", "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test:")}</p>
-                          
-                          {#if known_school_visits = Map.get(schools, :false)}
+                        {#if schools = Enum.group_by(@auto_tracing.school_visits, & &1.not_found)}
+                          <p>{pgettext(
+                              "Auto Tracing Resolve Problems",
+                              "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test:"
+                            )}</p>
+
+                          {#if known_school_visits = Map.get(schools, false)}
                             <p>{pgettext("Auto Tracing Resolve Problems", "Known institutions:")}</p>
                             <div class="hy-card-grid-2-cols">
                               <div :for={school_visit <- Enum.map(known_school_visits, &Repo.preload(&1, [:known_school]))}>
@@ -218,12 +221,14 @@
                                   {HygeiaWeb.Helpers.Organisation.organisation_type_name(school_visit.known_school)}
                                 </small>
                                 <small class="d-block text-muted">{Address.to_string(school_visit.known_school.address, :long)}</small>
-                                <div class="mb-3">{gettext("Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(school_visit.visit_reason)}</div>
+                                <div class="mb-3">{gettext("Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(
+                                    school_visit.visit_reason
+                                  )}</div>
                               </div>
                             </div>
                           {/if}
-                          <hr />
-                          {#if unknown_school_visits = Map.get(schools, :true)}
+                          <hr>
+                          {#if unknown_school_visits = Map.get(schools, true)}
                             <p>{pgettext("Auto Tracing Resolve Problems", "Unknown institutions:")}</p>
                             <div class="hy-card-grid-2-cols">
                               <div :for={school_visit <- unknown_school_visits}>
@@ -236,11 +241,13 @@
                                       change="select_school"
                                       subject={school_visit.uuid}
                                       value={nil}
-                                      query_clauses={[&(from o in &1, where: o.type == :school)]}
+                                      query_clauses={[&from(o in &1, where: o.type == :school)]}
                                     />
                                   </Field>
                                 </Form>
-                                <div class="mb-3">Visit reason: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(school_visit.visit_reason)}</div>
+                                <div class="mb-3">Visit reason: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(
+                                    school_visit.visit_reason
+                                  )}</div>
                               </div>
                             </div>
                           {/if}

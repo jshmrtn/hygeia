@@ -379,7 +379,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       visit_reason: "Reason for you visit",
       known_school: "Educational institution",
       not_found: "Institution not found"
-    },
+    }
   }
 
   schema_type =

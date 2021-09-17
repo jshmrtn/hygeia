@@ -34,9 +34,14 @@ defmodule HygeiaWeb.Helpers.Organisation do
   @spec organisation_type_name(organisation :: Organisation.t()) :: String.t() | nil
   def organisation_type_name(organisation)
   def organisation_type_name(%Organisation{type: nil}), do: nil
-  def organisation_type_name(%Organisation{type: :school, school_type: nil}), do: organisation_type_translation(:school)
+
+  def organisation_type_name(%Organisation{type: :school, school_type: nil}),
+    do: organisation_type_translation(:school)
+
   def organisation_type_name(%Organisation{type: :school, school_type: school_type}),
-    do: "#{organisation_type_translation(:school)}: #{organisation_school_type_translation(school_type)}"
+    do:
+      "#{organisation_type_translation(:school)}: #{organisation_school_type_translation(school_type)}"
+
   def organisation_type_name(%Organisation{type: type}), do: organisation_type_translation(type)
 
   def organisation_type_name(%Organisation{type: :other, type_other: other}),
@@ -62,9 +67,16 @@ defmodule HygeiaWeb.Helpers.Organisation do
 
   @spec organisation_school_type_translation(type :: Organisation.SchoolType.t()) :: String.t()
   def organisation_school_type_translation(:preschool), do: pgettext("School Type", "Preschool")
-  def organisation_school_type_translation(:primary_school), do: pgettext("School Type", "Primary school")
-  def organisation_school_type_translation(:secondary_school), do: pgettext("School Type", "Secondary school")
-  def organisation_school_type_translation(:cantonal_school_or_other_middle_school), do: pgettext("School Type", "Cantonal school or other middle school")
+
+  def organisation_school_type_translation(:primary_school),
+    do: pgettext("School Type", "Primary school")
+
+  def organisation_school_type_translation(:secondary_school),
+    do: pgettext("School Type", "Secondary school")
+
+  def organisation_school_type_translation(:cantonal_school_or_other_middle_school),
+    do: pgettext("School Type", "Cantonal school or other middle school")
+
   def organisation_school_type_translation(:professional_school),
     do: pgettext("School Type", "Professional school")
 

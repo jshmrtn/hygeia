@@ -77,7 +77,7 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
 
     organisations =
       socket.assigns.query_clauses
-      |> Enum.reduce(query, fn (clause, q) ->
+      |> Enum.reduce(query, fn clause, q ->
         clause.(q)
       end)
       |> then(&from(organisation in &1, limit: 25))

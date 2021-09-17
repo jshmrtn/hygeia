@@ -55,7 +55,7 @@
                           id={"visited_#{fetch_field!(school.source, :uuid)}_school"}
                           change="select_school"
                           subject={fetch_field!(school.source, :uuid)}
-                          query_clauses={[&(from o in &1, where: o.type == :school)]}
+                          query_clauses={[&from(o in &1, where: o.type == :school)]}
                         />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
@@ -155,10 +155,7 @@
               </Field>
             </div>
           </div>
-          <div
-            :if={get_field(@changeset, :employed)}
-            class="hy-card-grid-2-cols"
-          >
+          <div :if={get_field(@changeset, :employed)} class="hy-card-grid-2-cols">
             <Inputs for={:occupations}>
               <InputContext assigns={assigns} :let={form: occupation}>
                 <div class="card">

@@ -364,12 +364,14 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
       true ->
         cast_embed(changeset, :school_visits,
           required: true,
-          required_message: gettext("please add at least one school that you visited during the period in consideration")
+          required_message:
+            gettext(
+              "please add at least one school that you visited during the period in consideration"
+            )
         )
 
       _else ->
-        IO.inspect(changeset, label: "BEFORE")
-        put_embed(changeset, :school_visits, [])|>IO.inspect(label: "CSSS")
+        put_embed(changeset, :school_visits, [])
     end
   end
 
