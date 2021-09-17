@@ -14,7 +14,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
     "student",
     "professor",
     "employee",
-    "visitor"
+    "visitor",
+    "other"
   ]
 
   @type empty :: %__MODULE__{
@@ -91,5 +92,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
   def visit_reason_translation(:student), do: pgettext("School visit reason", "Student")
   def visit_reason_translation(:professor), do: pgettext("School visit reason", "Professor")
   def visit_reason_translation(:employee), do: pgettext("School visit reason", "Employee")
-  def visit_reason_translation(:visitor), do: pgettext("School visit reason", "Visitor ")
+  def visit_reason_translation(:visitor), do: pgettext("School visit reason", "Visitor")
+  def visit_reason_translation(:other), do: pgettext("School visit reason", "Other")
 end

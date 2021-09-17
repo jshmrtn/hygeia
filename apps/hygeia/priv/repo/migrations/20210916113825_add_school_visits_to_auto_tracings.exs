@@ -1,5 +1,5 @@
 # credo:disable-for-this-file Credo.Check.Readability.Specs
-defmodule Hygeia.Repo.Migrations.AddVisitedSchoolsToAutoTracings do
+defmodule Hygeia.Repo.Migrations.AddSchoolVisitsToAutoTracings do
   @moduledoc false
 
   use Hygeia, :migration
