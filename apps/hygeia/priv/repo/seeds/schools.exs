@@ -12,6 +12,7 @@ alias Hygeia.Repo
     &%{
       name: &1["name"],
       type: :school,
+      school_type: :other,
       address: %{
         address: &1["address"],
         zip: &1["zip"],

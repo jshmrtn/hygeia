@@ -36,7 +36,7 @@ defmodule HygeiaWeb.Helpers.Organisation do
   def organisation_type_name(%Organisation{type: nil}), do: nil
   def organisation_type_name(%Organisation{type: :school, school_type: nil}), do: organisation_type_translation(:school)
   def organisation_type_name(%Organisation{type: :school, school_type: school_type}),
-    do: "#{organisation_type_translation(:school)}: #{school_type}"
+    do: "#{organisation_type_translation(:school)}: #{organisation_school_type_translation(school_type)}"
   def organisation_type_name(%Organisation{type: type}), do: organisation_type_translation(type)
 
   def organisation_type_name(%Organisation{type: :other, type_other: other}),

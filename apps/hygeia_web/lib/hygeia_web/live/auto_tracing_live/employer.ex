@@ -277,7 +277,10 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   end
 
   def handle_event("validate", %{"employer" => params}, socket) do
-    params = Map.put_new(params, "occupations", [])
+    params =
+      params
+      |> Map.put_new("occupations", [])
+      |> Map.put_new("school_visits", [])
 
     {:noreply,
      assign(socket,
