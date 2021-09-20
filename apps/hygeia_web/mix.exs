@@ -63,7 +63,7 @@ defmodule HygeiaWeb.MixProject do
       {:hygeia_pdf_confirmation, in_umbrella: true},
       {:hygeia_telemetry, in_umbrella: true},
       {:jason, "~> 1.1"},
-      {:mime, "~> 1.5"},
+      {:mime, "~> 1.5 or ~> 2.0"},
       {:nebulex, "~> 2.0-rc"},
       {:oidcc, "~> 1.8.1"},
       {:phoenix, "~> 1.5"},
@@ -91,7 +91,7 @@ defmodule HygeiaWeb.MixProject do
       {:surface, "0.5.1"},
       {:surface_formatter, "~> 0.2"},
       {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"}
+      {:telemetry_poller, "~> 0.4 or ~> 1.0"}
     ]
   end
 
