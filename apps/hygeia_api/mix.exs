@@ -70,7 +70,7 @@ defmodule HygeiaApi.MixProject do
       {:remote_ip, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"}
+      {:telemetry_poller, "~> 0.4 or ~> 1.0"}
     ]
   end
 
