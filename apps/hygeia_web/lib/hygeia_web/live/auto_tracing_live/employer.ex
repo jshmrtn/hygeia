@@ -282,9 +282,15 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
       |> Map.put_new("occupations", [])
       |> Map.put_new("school_visits", [])
 
+    changeset =
+      socket.assigns.step
+      |> changeset(params)
+      |> merge_visits_to_occupations()
+      #|> set_employed()
+
     {:noreply,
      assign(socket,
-       changeset: %Changeset{changeset(socket.assigns.step, params) | action: :validate}
+       changeset: %Changeset{changeset | action: :validate}
      )}
   end
 
@@ -391,6 +397,62 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     end
   end
 
+  defp merge_visits_to_occupations(changeset) do
+    changeset
+    |> get_field(:school_visits, [])
+    |> Enum.reduce(changeset, fn
+      %SchoolVisit{
+        uuid: school_visit_uuid,
+        known_school_uuid: known_school_uuid,
+        unknown_school: unknown_school,
+        is_occupied: true
+      } = school_visit,
+      changeset
+      when not is_nil(known_school_uuid) or not is_nil(unknown_school) ->
+        changeset
+        |> remove_school_visit_from_occupations(school_visit_uuid)
+        |> add_school_visit_to_occupations(school_visit)
+
+      %SchoolVisit{uuid: school_visit_uuid}, changeset ->
+        remove_school_visit_from_occupations(changeset, school_visit_uuid)
+    end)
+  end
+
+  defp add_school_visit_to_occupations(changeset, %SchoolVisit{
+         uuid: school_visit_uuid,
+         visit_reason: visit_reason,
+         known_school_uuid: known_school_uuid,
+         unknown_school: unknown_school
+       }) do
+
+    changeset(
+      apply_changes(changeset),
+      changeset_add_to_params(changeset, :occupations, %{
+        uuid: Ecto.UUID.generate(),
+        kind: visit_reason_to_kind(visit_reason),
+        related_school_visit_uuid: school_visit_uuid,
+        known_organisation_uuid: known_school_uuid,
+        not_found: if(unknown_school, do: true, else: false),
+        unknown_organisation: unstruct(unknown_school)
+      })
+    )
+  end
+
+  defp remove_school_visit_from_occupations(changeset, school_visit_uuid) do
+    occupation_uuid =
+      Enum.find_value(
+        get_field(changeset, :occupations),
+        fn occupation ->
+          if match?(^school_visit_uuid, occupation.related_school_visit_uuid), do: occupation.uuid
+        end
+      )
+
+    changeset(
+      apply_changes(changeset),
+      changeset_remove_from_params_by_id(changeset, :occupations, %{uuid: occupation_uuid})
+    )
+  end
+
   defp add_affiliations_to_person(person, %__MODULE__{occupations: occupations}) do
     existing_organisation_uuids = Enum.map(person.affiliations, & &1.organisation_uuid)
     new_occupation_organisation_uuids = Enum.map(occupations, & &1.known_organisation_uuid)
@@ -451,4 +513,28 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     |> put_change(:scholar, scholar)
     |> put_change(:employed, employed)
   end
+
+  defp set_employed(changeset) do
+    if length(get_field(changeset, :occupations)) > 0, do: put_change(changeset, :employed, true)|>IO.inspect(label: "OK"), else: put_change(changeset, :employed, false)|>IO.inspect(label: "NOK")
+  end
+
+  defp visit_reason_to_kind(:student), do: :scholar
+
+  defp visit_reason_to_kind(visit_reason) when visit_reason in [:professor, :employee],
+    do: :employee
+
+  defp unstruct(struct) when is_struct(struct) do
+    struct
+    |> Map.from_struct()
+    |> Enum.map(fn {key, val} ->
+      {key, unstruct(val)}
+    end)
+    |> Map.new()
+  end
+
+  defp unstruct(list) when is_list(list) do
+    Enum.map(list, &unstruct/1)
+  end
+
+  defp unstruct(other), do: other
 end
