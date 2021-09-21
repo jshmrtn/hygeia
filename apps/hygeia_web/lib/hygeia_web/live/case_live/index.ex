@@ -147,6 +147,7 @@ defmodule HygeiaWeb.CaseLive.Index do
     "auto_tracing_active" => :auto_tracing_active
   }
 
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   defp list_cases(socket) do
     {cursor_fields, query} = sort_params(socket)
     user_not_assigned = Atom.to_string(:user_not_assigned)
