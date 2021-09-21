@@ -49,8 +49,6 @@ defmodule HygeiaWeb.CaseLive.Protocol do
     {:noreply, assign(socket, now: DateTime.utc_now())}
   end
 
-  def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
-
   def handle_info({:updated, %Case{} = case, _version}, socket) do
     {:noreply, load_data(socket, case)}
   end

@@ -65,6 +65,7 @@ defmodule HygeiaWeb do
       on_mount(HygeiaWeb.Init.Auth)
       on_mount(HygeiaWeb.Init.Context)
       on_mount(HygeiaWeb.Init.Locale)
+      on_mount(HygeiaWeb.Init.PutFlash)
 
       unquote(view_helpers())
     end
@@ -82,6 +83,7 @@ defmodule HygeiaWeb do
       on_mount(HygeiaWeb.Init.Auth)
       on_mount(HygeiaWeb.Init.Context)
       on_mount(HygeiaWeb.Init.Locale)
+      on_mount(HygeiaWeb.Init.PutFlash)
 
       unquote(view_helpers())
     end
@@ -98,6 +100,7 @@ defmodule HygeiaWeb do
       on_mount(HygeiaWeb.Init.Auth)
       on_mount(HygeiaWeb.Init.Context)
       on_mount(HygeiaWeb.Init.Locale)
+      on_mount(HygeiaWeb.Init.PutFlash)
 
       unquote(view_helpers())
     end
