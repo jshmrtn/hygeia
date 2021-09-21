@@ -80,8 +80,6 @@ defmodule HygeiaWeb.CaseLive.BaseData do
     {:noreply, redirect(socket, to: Routes.case_index_path(socket, :index))}
   end
 
-  def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
-
   def handle_info(
         {:hospitalisation_change_organisation, uuid, organisation_uuid},
         %{assigns: %{changeset: changeset, case: case}} = socket

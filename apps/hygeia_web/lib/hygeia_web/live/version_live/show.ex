@@ -66,8 +66,6 @@ defmodule HygeiaWeb.VersionLive.Show do
     {:noreply, assign(socket, now: DateTime.utc_now())}
   end
 
-  def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
-
   def handle_info(_other, socket), do: {:noreply, socket}
 
   @impl Phoenix.LiveView

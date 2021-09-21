@@ -323,7 +323,5 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
      redirect(socket, to: Routes.case_base_data_path(socket, :show, socket.assigns.case))}
   end
 
-  def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
-
   def handle_info(_other, socket), do: {:noreply, socket}
 end

@@ -62,7 +62,7 @@ defmodule Hygeia.MixProject do
       {:csv, "~> 2.4"},
       {:ecto_boot_migration, "~> 0.2"},
       {:ecto_enum, "~> 1.4"},
-      {:ecto, "~> 3.6.2"},
+      {:ecto, "~> 3.7"},
       {:ecto_sql, "~> 3.4"},
       {:email_checker, "~> 0.1"},
       {:erlsom, "~> 1.5"},

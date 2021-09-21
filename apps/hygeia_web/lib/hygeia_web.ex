@@ -17,9 +17,9 @@ defmodule HygeiaWeb do
   and import those modules here.
   """
 
-  alias Hygeia.CaseContext.Person
-  alias Hygeia.Helpers.Versioning
-  alias Hygeia.UserContext.User
+  import Phoenix.LiveView, only: [assign: 3]
+
+  alias Phoenix.LiveView.Socket
 
   @doc false
   @spec controller :: Macro.t()
@@ -60,7 +60,12 @@ defmodule HygeiaWeb do
       use Phoenix.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
-      use HygeiaWeb.LiveView
+      import HygeiaWeb, only: [context_get: 3, context_get: 2]
+
+      on_mount(HygeiaWeb.Init.Auth)
+      on_mount(HygeiaWeb.Init.Context)
+      on_mount(HygeiaWeb.Init.Locale)
+      on_mount(HygeiaWeb.Init.PutFlash)
 
       unquote(view_helpers())
     end
@@ -73,7 +78,12 @@ defmodule HygeiaWeb do
       use Surface.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
-      use HygeiaWeb.LiveView
+      import HygeiaWeb, only: [context_get: 3, context_get: 2]
+
+      on_mount(HygeiaWeb.Init.Auth)
+      on_mount(HygeiaWeb.Init.Context)
+      on_mount(HygeiaWeb.Init.Locale)
+      on_mount(HygeiaWeb.Init.PutFlash)
 
       unquote(view_helpers())
     end
@@ -85,7 +95,12 @@ defmodule HygeiaWeb do
       use Surface.LiveView,
         layout: {HygeiaWeb.LayoutView, "live.html"}
 
-      use HygeiaWeb.LiveView, only: [:mount]
+      import HygeiaWeb, only: [context_get: 3, context_get: 2]
+
+      on_mount(HygeiaWeb.Init.Auth)
+      on_mount(HygeiaWeb.Init.Context)
+      on_mount(HygeiaWeb.Init.Locale)
+      on_mount(HygeiaWeb.Init.PutFlash)
 
       unquote(view_helpers())
     end
@@ -183,42 +198,36 @@ defmodule HygeiaWeb do
     end
   end
 
-  @doc false
-  @spec setup_live_view(session :: map) :: :ok
-  def setup_live_view(session) do
-    import Cldr.Plug.SetLocale, only: [session_key: 0]
-
-    unless is_nil(session[session_key()]) do
-      HygeiaCldr.put_locale(session[session_key()])
-      Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
-
-      Sentry.Context.set_tags_context(%{locale: session[session_key()]})
-    end
-
-    case session["auth"] do
-      %{uuid: id, email: email, display_name: name} ->
-        Sentry.Context.set_user_context(%{id: id, email: email, name: name})
-
-      _other ->
-        :ok
-    end
-
-    Versioning.put_origin(:web)
-
-    case session["auth"] do
-      %User{} = user -> Versioning.put_originator(user)
-      # TODO: Incorporate Person into Versioning
-      %Person{} -> Versioning.put_originator(:noone)
-      nil -> Versioning.put_originator(:noone)
-    end
-
-    :ok
-  end
-
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
+
+  @spec context_assign(socket :: Socket.t(), key :: atom, value :: term) :: Socket.t()
+  def context_assign(socket, key, value),
+    do:
+      assign(
+        socket,
+        :__context__,
+        socket.assigns
+        |> Map.get(:__context__, %{})
+        |> Map.put({__MODULE__, key}, value)
+      )
+
+  @spec context_get(socket :: Socket.t(), key :: atom, default :: default) :: term | default
+        when default: term
+  def context_get(socket, key, default \\ nil)
+
+  def context_get(%Socket{assigns: %{__context__: context}}, key, default) do
+    context
+    |> Map.fetch({__MODULE__, key})
+    |> case do
+      :error -> default
+      {:ok, value} -> value
+    end
+  end
+
+  def context_get(_socket, _key, default), do: default
 end
