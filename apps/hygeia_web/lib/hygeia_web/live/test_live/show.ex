@@ -121,8 +121,6 @@ defmodule HygeiaWeb.TestLive.Show do
     {:noreply, load_data(socket, CaseContext.get_test!(socket.assigns.test.uuid))}
   end
 
-  def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
-
   def handle_info(_other, socket), do: {:noreply, socket}
 
   defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do

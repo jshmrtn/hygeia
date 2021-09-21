@@ -586,7 +586,7 @@ defmodule Hygeia.CaseContext do
           # street_name
           fragment("?->>'address'", person.address),
           # street_number
-          nil,
+          ^nil,
           # location
           fragment("?->>'place'", person.address),
           # postal_code
@@ -610,7 +610,7 @@ defmodule Hygeia.CaseContext do
           # work_place_street
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'address'", employer.address)),
           # work_place_street_number
-          nil,
+          ^nil,
           # work_place_location
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'place'", employer.address)),
           # work_place_postal_code
@@ -905,7 +905,7 @@ defmodule Hygeia.CaseContext do
             received_transmission.infection_place
           ),
           # exp_loc_street_number
-          nil,
+          ^nil,
           # exp_loc_location
           fragment(
             "(ARRAY_AGG(?->'address'->>'place'))[1]",
@@ -954,7 +954,7 @@ defmodule Hygeia.CaseContext do
           # iso_loc_street
           fragment("?->'address'->>'address'", case.monitoring),
           # iso_loc_street_number
-          nil,
+          ^nil,
           # iso_loc_location
           fragment("?->'address'->>'place'", case.monitoring),
           # iso_loc_postal_code
@@ -1281,7 +1281,7 @@ defmodule Hygeia.CaseContext do
           # street_name
           fragment("?->>'address'", person.address),
           # street_number
-          nil,
+          ^nil,
           # location
           fragment("?->>'place'", person.address),
           # postal_code
@@ -1545,7 +1545,7 @@ defmodule Hygeia.CaseContext do
             received_transmission.infection_place
           ),
           # exp_loc_street_number
-          nil,
+          ^nil,
           # exp_loc_location
           fragment(
             "(ARRAY_AGG(?->'address'->>'place'))[1]",

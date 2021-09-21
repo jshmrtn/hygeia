@@ -53,8 +53,6 @@ defmodule HygeiaWeb.TestLive.Index do
     {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
   end
 
-  def handle_info({:put_flash, type, msg}, socket), do: {:noreply, put_flash(socket, type, msg)}
-
   def handle_info(_other, socket), do: {:noreply, socket}
 
   @impl Phoenix.LiveView

@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @import "../node_modules/nprogress/nprogress.css";
 @import "./open-iconic-bootstrap.scss";
 @import "./fonts.scss";
@@ -249,7 +251,7 @@ table {
 
 .navbar-brand {
   margin-right: $grid-gutter-width * 3;
-  padding-left: $grid-gutter-width / 2;
+  padding-left: math.div($grid-gutter-width, 2);
   .logo {
     height: 30px;
     width: 90px;
