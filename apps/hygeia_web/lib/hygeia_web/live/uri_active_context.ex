@@ -21,7 +21,7 @@ defmodule HygeiaWeb.UriActiveContext do
     %URI{path: path, query: query} = URI.parse(uri)
 
     PhoenixActiveLink.active_path?(
-      %{request_path: path, query_string: query, private: %{}},
+      %{request_path: path || "/", query_string: query, private: %{}},
       opts ++ [to: to]
     )
   end
