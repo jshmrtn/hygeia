@@ -142,10 +142,12 @@ defmodule HygeiaWeb.CaseLive.Index do
     "vaccination_failures" => :vaccination_failures,
     "inserted_at_from" => :inserted_at_from,
     "inserted_at_to" => :inserted_at_to,
+    "no_auto_tracing_problems" => :no_auto_tracing_problems,
     "auto_tracing_problem" => :auto_tracing_problem,
     "auto_tracing_active" => :auto_tracing_active
   }
 
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   defp list_cases(socket) do
     {cursor_fields, query} = sort_params(socket)
     user_not_assigned = Atom.to_string(:user_not_assigned)
@@ -171,6 +173,17 @@ defmodule HygeiaWeb.CaseLive.Index do
             left_join: auto_tracing in assoc(case, :auto_tracing),
             where: is_nil(auto_tracing)
           )
+
+        {:no_auto_tracing_problems, "true"}, query ->
+          from(case in query,
+            left_join: auto_tracing in assoc(case, :auto_tracing),
+            where:
+              is_nil(auto_tracing) or is_nil(auto_tracing.unsolved_problems) or
+                fragment("? = '{}'", auto_tracing.unsolved_problems)
+          )
+
+        {:no_auto_tracing_problems, "false"}, query ->
+          query
 
         {:auto_tracing_problem, problems}, query ->
           from(case in query,

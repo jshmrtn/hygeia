@@ -173,6 +173,14 @@
 
               <div class="form-group">
                 <label class="d-block">{gettext("Auto Tracing Problem")}</label>
+
+                <Field name="no_auto_tracing_problems">
+                  <Label class="d-block checkbox-label">
+                    <Checkbox />
+                    {gettext("No Auto Tracing Problems")}
+                  </Label>
+                </Field>
+
                 <label :for={{name, key} <- AutoTracing.Problem.map()} class="d-block checkbox-label">
                   <input
                     type="checkbox"
