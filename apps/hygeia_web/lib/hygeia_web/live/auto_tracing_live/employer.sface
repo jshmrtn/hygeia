@@ -118,7 +118,7 @@
                           <div class="btn-group btn-group-toggle btn-radio-group">
                             <label class="input-group-text input-sm">
                               {#if get_field(school_visit.source, :visit_reason) == :student}
-                                {gettext("Are you a student at this educational institution?")}
+                                {gettext("Are you a enrolled at this educational institution?")}
                               {#else}
                                 {gettext("Are you employed by this educational institution?")}
                               {/if}
@@ -145,7 +145,7 @@
                       <button
                         class="btn btn-danger mb-4"
                         type="button"
-                        :on-click="remove_visited_school"
+                        :on-click="remove_school_visit"
                         value={fetch_field!(school_visit.source, :uuid)}
                       >
                         <span class="oi oi-trash" aria-hidden="true" />
@@ -156,7 +156,7 @@
               </Inputs>
             </div>
             <div class="mt-4">
-              <button class="btn btn-outline-primary" type="button" :on-click="add_visited_school">
+              <button class="btn btn-outline-primary" type="button" :on-click="add_school_visit">
                 {gettext("Add an institution")}
               </button>
             </div>
@@ -178,7 +178,7 @@
                     "btn-outline-primary",
                     active: get_field(@changeset, :employed) == true
                   }>
-                    <RadioButton value />
+                    <RadioButton value opts={disabled: length(get_field(@changeset, :school_visit_occupations)) > 0} />
                     {gettext("Yes")}
                   </label>
                   <label class={
@@ -187,7 +187,7 @@
                     "btn-outline-primary",
                     active: get_field(@changeset, :employed) == false
                   }>
-                    <RadioButton value={false} />
+                    <RadioButton value={false} opts={disabled: length(get_field(@changeset, :school_visit_occupations)) > 0} />
                     {gettext("No")}
                   </label>
                 </div>
@@ -196,6 +196,92 @@
             </div>
           </div>
           <div :if={get_field(@changeset, :employed)} class="hy-card-grid-2-cols">
+            <Inputs for={:school_visit_occupations}>
+              <InputContext assigns={assigns} :let={form: occupation}>
+                <div class="card">
+                  <div class="card-body">
+                    <HiddenInput field={:uuid} />
+                    <HiddenInput field={:related_school_visit_uuid} />
+                    <Field name={:kind} class="form-group">
+                      <HygeiaWeb.FieldLabel />
+                      <Select
+                        class="form-control"
+                        opts={disabled: fetch_field!(occupation.source, :related_school_visit_uuid), prompt: pgettext("Affiliation", "Choose Kind")}
+                        options={affiliation_kinds()}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                    <Field
+                      :if={fetch_field!(occupation.source, :kind) == :other}
+                      name={:kind_other}
+                      class="form-group"
+                    >
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                    <div>
+                      <Field class="form-group" name={:known_organisation_uuid}>
+                        <HygeiaWeb.FieldLabel />
+                        <HygeiaWeb.OrganisationLive.Choose
+                          disabled={fetch_field!(occupation.source, :not_found)}
+                          id={"occupation_#{fetch_field!(occupation.source, :uuid)}_organisation"}
+                          change="select_affiliation_organisation"
+                          subject={fetch_field!(occupation.source, :uuid)}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                    <div>
+                      <Field
+                        :if={fetch_field!(occupation.source, :known_organisation_uuid) === nil}
+                        class="form-group"
+                        name={:not_found}
+                      >
+                        <HygeiaWeb.FieldLabel class="me-2" />
+                        <Checkbox opts={
+                          checked:
+                            if fetch_field!(occupation.source, :not_found) do
+                              "true"
+                            end
+                        } />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+
+                    <div :if={fetch_field!(occupation.source, :not_found)}>
+                      <Inputs for={:unknown_organisation}>
+                        <p class="mb-4">
+                          {gettext(
+                            "Your occupation does not appear in the list or it is not correct? Please enter it manually."
+                          )}
+                        </p>
+                        <Field name={:name} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <TextInput class="form-control" />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        <Inputs for={:address}>
+                          <HygeiaWeb.AddressForm id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_organisation_address"} />
+                        </Inputs>
+                      </Inputs>
+                    </div>
+                    <div :if={fetch_field!(occupation.source, :related_school_visit_uuid)}>
+                      <small>{gettext("This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above.")}</small>
+                    </div>
+                    <button
+                      :if={fetch_field!(occupation.source, :related_school_visit_uuid) in [nil, false]}
+                      class="btn btn-danger mb-4"
+                      type="button"
+                      :on-click="remove_occupation"
+                      value={fetch_field!(occupation.source, :uuid)}
+                    >
+                      <span class="oi oi-trash" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+              </InputContext>
+            </Inputs>
             <Inputs for={:occupations}>
               <InputContext assigns={assigns} :let={form: occupation}>
                 <div class="card">
