@@ -227,24 +227,11 @@
                               </div>
                             </div>
                           {/if}
-                          <hr>
                           {#if unknown_school_visits = Map.get(schools, true)}
-                            <p>{pgettext("Auto Tracing Resolve Problems", "Unknown institutions:")}</p>
                             <div class="hy-card-grid-2-cols">
                               <div :for={school_visit <- unknown_school_visits}>
                                 <strong>{school_visit.unknown_school.name}</strong>
                                 <small class="d-block text-muted">{Address.to_string(school_visit.unknown_school.address, :long)}</small>
-                                <Form for={@occupation_form}>
-                                  <Field name={:organisation_uuid}>
-                                    <HygeiaWeb.OrganisationLive.Choose
-                                      id={"school_visit_#{school_visit.uuid}_organisation"}
-                                      change="select_school"
-                                      subject={school_visit.uuid}
-                                      value={nil}
-                                      query_clauses={[&from(o in &1, where: o.type == :school)]}
-                                    />
-                                  </Field>
-                                </Form>
                                 <div class="mb-3">Visit reason: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(
                                     school_visit.visit_reason
                                   )}</div>

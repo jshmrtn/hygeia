@@ -268,7 +268,8 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
               uuid: Ecto.UUID.generate(),
               kind: occupation.kind,
               kind_other: occupation.kind_other,
-              organisation_uuid: organisation_uuid
+              organisation_uuid: organisation_uuid,
+              related_school_visit_uuid: occupation.related_school_visit_uuid
             }
           ]
       )
@@ -287,30 +288,6 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       end
 
     {:noreply, assign(socket, person: person, auto_tracing: auto_tracing)}
-  end
-
-  def handle_event(
-        "select_school",
-        %{"subject" => school_visit_uuid, "uuid" => organisation_uuid},
-        socket
-      ) do
-    {:ok, auto_tracing} =
-      socket.assigns.auto_tracing
-      |> AutoTracingContext.change_auto_tracing(
-        changeset_update_params_by_id(
-          AutoTracingContext.change_auto_tracing(socket.assigns.auto_tracing),
-          :school_visits,
-          %{uuid: school_visit_uuid},
-          &Map.merge(&1, %{
-            "known_school_uuid" => organisation_uuid,
-            "not_found" => false,
-            "unknown_school" => nil
-          })
-        )
-      )
-      |> AutoTracingContext.update_auto_tracing()
-
-    {:noreply, assign(socket, auto_tracing: auto_tracing)}
   end
 
   @impl Phoenix.LiveView

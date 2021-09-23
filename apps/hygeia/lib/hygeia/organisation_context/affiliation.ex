@@ -55,7 +55,10 @@ defmodule Hygeia.OrganisationContext.Affiliation do
 
     belongs_to :person, Person, references: :uuid, foreign_key: :person_uuid
     belongs_to :organisation, Organisation, references: :uuid, foreign_key: :organisation_uuid
-    belongs_to :related_school_visit, SchoolVisit, references: :uuid, foreign_key: :related_school_visit_uuid
+
+    belongs_to :related_school_visit, SchoolVisit,
+      references: :uuid,
+      foreign_key: :related_school_visit_uuid
 
     belongs_to :division, Division, references: :uuid, foreign_key: :division_uuid
     has_one :tenant, through: [:person, :tenant]

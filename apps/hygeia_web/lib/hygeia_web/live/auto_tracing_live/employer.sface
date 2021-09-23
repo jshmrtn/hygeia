@@ -112,7 +112,7 @@
                           </Field>
                         </div>
                       </div>
-                      
+
                       {#if get_field(school_visit.source, :visit_reason) in [:professor, :student, :employee]}
                         <Field name={:is_occupied} class="form-group">
                           <div class="btn-group btn-group-toggle btn-radio-group">
@@ -179,7 +179,10 @@
                     active: get_field(@changeset, :employed) == true,
                     disabled: length(get_field(@changeset, :school_visit_occupations)) > 0
                   }>
-                    <RadioButton value opts={disabled: length(get_field(@changeset, :school_visit_occupations)) > 0} />
+                    <RadioButton
+                      value
+                      opts={disabled: length(get_field(@changeset, :school_visit_occupations)) > 0}
+                    />
                     {gettext("Yes")}
                   </label>
                   <label class={
@@ -189,7 +192,10 @@
                     active: get_field(@changeset, :employed) == false,
                     disabled: length(get_field(@changeset, :school_visit_occupations)) > 0
                   }>
-                    <RadioButton value={false} opts={disabled: length(get_field(@changeset, :school_visit_occupations)) > 0} />
+                    <RadioButton
+                      value={false}
+                      opts={disabled: length(get_field(@changeset, :school_visit_occupations)) > 0}
+                    />
                     {gettext("No")}
                   </label>
                 </div>
@@ -208,7 +214,10 @@
                       <HygeiaWeb.FieldLabel />
                       <Select
                         class="form-control"
-                        opts={disabled: fetch_field!(occupation.source, :related_school_visit_uuid), prompt: pgettext("Affiliation", "Choose Kind")}
+                        opts={
+                          disabled: fetch_field!(occupation.source, :related_school_visit_uuid),
+                          prompt: pgettext("Affiliation", "Choose Kind")
+                        }
                         options={affiliation_kinds()}
                       />
                       <ErrorTag class="d-block invalid-feedback" />
@@ -246,7 +255,8 @@
                           checked:
                             if fetch_field!(occupation.source, :not_found) do
                               "true"
-                            end
+                            end,
+                          disabled: fetch_field!(occupation.source, :related_school_visit_uuid)
                         } />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
@@ -261,16 +271,24 @@
                         </p>
                         <Field name={:name} class="form-group">
                           <HygeiaWeb.FieldLabel />
-                          <TextInput class="form-control" />
+                          <TextInput
+                            class="form-control"
+                            opts={disabled: fetch_field!(occupation.source, :related_school_visit_uuid)}
+                          />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                         <Inputs for={:address}>
-                          <HygeiaWeb.AddressForm id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_organisation_address"} />
+                          <HygeiaWeb.AddressForm
+                            id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_organisation_address"}
+                            disabled={fetch_field!(occupation.source, :related_school_visit_uuid)}
+                          />
                         </Inputs>
                       </Inputs>
                     </div>
                     <div :if={fetch_field!(occupation.source, :related_school_visit_uuid)}>
-                      <small>{gettext("This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above.")}</small>
+                      <small>{gettext(
+                          "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
+                        )}</small>
                     </div>
                     <button
                       :if={fetch_field!(occupation.source, :related_school_visit_uuid) in [nil, false]}
@@ -295,7 +313,10 @@
                       <HygeiaWeb.FieldLabel />
                       <Select
                         class="form-control"
-                        opts={disabled: fetch_field!(occupation.source, :related_school_visit_uuid), prompt: pgettext("Affiliation", "Choose Kind")}
+                        opts={
+                          disabled: fetch_field!(occupation.source, :related_school_visit_uuid),
+                          prompt: pgettext("Affiliation", "Choose Kind")
+                        }
                         options={affiliation_kinds()}
                       />
                       <ErrorTag class="d-block invalid-feedback" />
@@ -356,7 +377,9 @@
                       </Inputs>
                     </div>
                     <div :if={fetch_field!(occupation.source, :related_school_visit_uuid)}>
-                      <small>{gettext("This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above.")}</small>
+                      <small>{gettext(
+                          "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
+                        )}</small>
                     </div>
                     <button
                       :if={fetch_field!(occupation.source, :related_school_visit_uuid) in [nil, false]}

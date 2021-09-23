@@ -66,7 +66,6 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
           )
 
         true ->
-
           person_occupations =
             case.person.affiliations
             |> Enum.filter(&is_nil(&1.related_school_visit_uuid))
@@ -81,7 +80,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
           person_school_visit_occupations =
             case.person.affiliations
-            |> Enum.filter(&not is_nil(&1.related_school_visit_uuid))
+            |> Enum.filter(&(not is_nil(&1.related_school_visit_uuid)))
             |> Enum.map(
               &%Occupation{
                 uuid: Ecto.UUID.generate(),
@@ -94,7 +93,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
           auto_tracing_school_visit_occupations =
             case.auto_tracing.occupations
-            |> Enum.filter(&not is_nil(&1.related_school_visit_uuid))
+            |> Enum.filter(&(not is_nil(&1.related_school_visit_uuid)))
             |> Enum.map(
               &%Occupation{
                 uuid: Ecto.UUID.generate(),
@@ -118,7 +117,9 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
             )
 
           occupations = person_occupations ++ auto_tracing_occupations
-          school_visit_occupations = person_school_visit_occupations ++ auto_tracing_school_visit_occupations
+
+          school_visit_occupations =
+            person_school_visit_occupations ++ auto_tracing_school_visit_occupations
 
           step = %__MODULE__{
             scholar: case.auto_tracing.scholar,
@@ -172,10 +173,12 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
        socket,
        :changeset,
        %Changeset{
-         step
-         |> changeset(
-           changeset_remove_from_params_by_id(changeset, :school_visits, %{uuid: school_visit_uuid})
-         )
+         (step
+          |> changeset(
+            changeset_remove_from_params_by_id(changeset, :school_visits, %{
+              uuid: school_visit_uuid
+            })
+          ))
          | action: :validate
        }
      )}
@@ -324,15 +327,10 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
       params
       |> Map.put_new("occupations", [])
       |> Map.put_new("school_visits", [])
-      |>IO.inspect()
-
-      cs =
-        socket.assigns.step
-        |> changeset(params)
 
     {:noreply,
      assign(socket,
-       changeset: %Changeset{cs | action: :validate}
+       changeset: %Changeset{changeset(socket.assigns.step, params) | action: :validate}
      )}
   end
 
@@ -431,7 +429,10 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     |> fetch_field!(:employed)
     |> case do
       true ->
-        if length(fetch_field!(changeset, :school_visit_occupations) ++ fetch_field!(changeset, :occupations)) == 0 do
+        if Enum.empty?(
+             fetch_field!(changeset, :school_visit_occupations) ++
+               fetch_field!(changeset, :occupations)
+           ) do
           cast_embed(changeset, :occupations,
             required: true,
             required_message: gettext("please add at least one occupation")
@@ -449,7 +450,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     visit_uuids =
       changeset
       |> get_field(:school_visits, [])
-      |> Enum.map(&(&1.uuid))
+      |> Enum.map(& &1.uuid)
 
     visits_to_add =
       changeset
@@ -465,19 +466,20 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
         acc
         when not is_nil(known_school_uuid) or not is_nil(unknown_school) ->
           acc ++
-          [%Occupation{
-            uuid: Ecto.UUID.generate(),
-            kind: visit_reason_to_kind(visit_reason),
-            related_school_visit_uuid: school_visit_uuid,
-            known_organisation_uuid: known_school_uuid,
-            not_found: if(unknown_school, do: true, else: false),
-            unknown_organisation: unknown_school
-          }]
+            [
+              %Occupation{
+                uuid: Ecto.UUID.generate(),
+                kind: visit_reason_to_kind(visit_reason),
+                related_school_visit_uuid: school_visit_uuid,
+                known_organisation_uuid: known_school_uuid,
+                not_found: if(unknown_school, do: true, else: false),
+                unknown_organisation: unknown_school
+              }
+            ]
 
         %SchoolVisit{uuid: school_visit_uuid}, acc ->
           acc
       end)
-
 
     changeset
     |> put_embed(
@@ -486,7 +488,10 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     )
   end
 
-  defp add_affiliations_to_person(person, %__MODULE__{occupations: occupations, school_visit_occupations: school_visit_occupations}) do
+  defp add_affiliations_to_person(person, %__MODULE__{
+         occupations: occupations,
+         school_visit_occupations: school_visit_occupations
+       }) do
     existing_organisation_uuids = Enum.map(person.affiliations, & &1.organisation_uuid)
     new_occupation_organisation_uuids = Enum.map(occupations, & &1.known_organisation_uuid)
 
@@ -532,7 +537,10 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
     person
     |> CaseContext.change_person()
-    |> put_assoc(:affiliations, keep_affiliations ++ new_affiliations ++ school_visit_affiliations)
+    |> put_assoc(
+      :affiliations,
+      keep_affiliations ++ new_affiliations ++ school_visit_affiliations
+    )
   end
 
   defp add_visited_schools(auto_tracing, %__MODULE__{
@@ -556,9 +564,11 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     |> AutoTracingContext.change_auto_tracing()
     |> put_embed(
       :occupations,
-      Enum.filter(occupations, &match?(%Occupation{known_organisation_uuid: nil}, &1))
-      ++
-      Enum.filter(school_visit_occupations, &match?(%Occupation{known_organisation_uuid: nil}, &1))
+      Enum.filter(occupations, &match?(%Occupation{known_organisation_uuid: nil}, &1)) ++
+        Enum.filter(
+          school_visit_occupations,
+          &match?(%Occupation{known_organisation_uuid: nil}, &1)
+        )
     )
     |> put_change(:scholar, scholar)
     |> put_change(:employed, employed)
@@ -574,5 +584,4 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
   defp visit_reason_to_kind(visit_reason) when visit_reason in [:professor, :employee],
     do: :employee
-
 end
