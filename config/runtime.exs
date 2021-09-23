@@ -3,7 +3,6 @@ import Config
 case config_env() do
   :prod ->
     config :hygeia_web, HygeiaWeb.Endpoint, server: true
-    config :hygeia_api, HygeiaApi.Endpoint, server: true
 
   _env ->
     nil
@@ -52,29 +51,6 @@ config :hygeia_web, HygeiaWeb.Endpoint,
   ],
   http: [
     port: web_port,
-    transport_options: [socket_opts: [:inet6]]
-  ],
-  secret_key_base: System.fetch_env!("SECRET_KEY_BASE")
-
-api_port =
-  String.to_integer(
-    System.get_env(
-      "API_PORT",
-      case config_env() do
-        :test -> "5001"
-        _env -> "4001"
-      end
-    )
-  )
-
-config :hygeia_api, HygeiaApi.Endpoint,
-  url: [
-    host: System.get_env("API_EXTERNAL_HOST", "localhost"),
-    port: System.get_env("API_EXTERNAL_PORT", "#{api_port}"),
-    scheme: System.get_env("API_EXTERNAL_SCHEME", "http")
-  ],
-  http: [
-    port: api_port,
     transport_options: [socket_opts: [:inet6]]
   ],
   secret_key_base: System.fetch_env!("SECRET_KEY_BASE")

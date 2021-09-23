@@ -37,7 +37,6 @@ defmodule Hygeia.Umbrella.MixProject do
         hygeia: [
           applications: [
             hygeia_web: :permanent,
-            hygeia_api: :permanent,
             sentry_event_filter: :permanent
           ]
         ]
