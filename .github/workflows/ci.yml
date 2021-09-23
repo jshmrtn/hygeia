@@ -343,7 +343,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    container: elixir:1.11-slim
+    container: elixir:1.12-slim
 
     needs: ['compile_assets']
 
