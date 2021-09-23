@@ -102,6 +102,9 @@ msgstr "Aktivitätskartierung ausgeführt"
 msgid "Add"
 msgstr "Hinzufügen"
 
+msgid "Add an institution"
+msgstr ""
+
 msgid "Add an occupation"
 msgstr "Beschäftigung hinzufügen"
 
@@ -229,8 +232,14 @@ msgstr "Anwenden"
 msgid "April"
 msgstr "April"
 
+msgid "Are you a enrolled at this educational institution?"
+msgstr "Sind Sie als Stundent akkreditiert oder Schüler bei dieser Bildungseinrichtung?"
+
 msgid "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
 msgstr "Sind Sie Schüler oder Lehrer? Haben Sie in den Tagen vor Ihrem positiven Test eine schulische Einrichtung besucht?"
+
+msgid "Are you employed by this educational institution?"
+msgstr "Sind Sie bei dieser Bildungseinrichtung angestellt?"
 
 msgid "Are you employed?"
 msgstr "Sind Sie angestellt?"
@@ -367,6 +376,10 @@ msgctxt "Case Status"
 msgid "Canceled"
 msgstr "Tracing abgebrochen"
 
+msgctxt "School Type"
+msgid "Cantonal school or other middle school"
+msgstr "Kantonsschule oder andere Mittelschule"
+
 msgid "Case"
 msgstr "Fall"
 
@@ -498,6 +511,10 @@ msgstr "Person wählen"
 msgid "Choose profession category"
 msgstr "Wählen Sie die Berufskategorie"
 
+msgctxt "Reason"
+msgid "Choose reason"
+msgstr "Grunde wählen"
+
 msgid "Choose subdivision"
 msgstr "Kanton wählen"
 
@@ -581,6 +598,10 @@ msgstr "Bedingung"
 msgid "Confirmation PDF Template"
 msgstr "Bestätigung PDF Vorlage"
 
+msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
+msgid "Contact Email"
+msgstr "Kontakt Tracing"
+
 msgid "Contact Methods"
 msgstr "Kontaktmethoden"
 
@@ -602,6 +623,10 @@ msgstr "Kontaktpersonen"
 msgctxt "Auto Tracing Step"
 msgid "Contact Persons"
 msgstr "Kontaktpersonen"
+
+msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
+msgid "Contact Phone"
+msgstr "Kontaktperson"
 
 msgctxt "Home"
 msgid "Contact Tracing for SARS-CoV-2"
@@ -744,20 +769,7 @@ msgstr "Datum"
 msgid "Dear Sir / Madam"
 msgstr "Sehr geehrte Damen & Herren"
 
-msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"As discussed via phone, you can access the information about your isolation via the following link:\n"
-"%{public_overview_link}\n"
-"\n"
-"Please open this link and log in using you first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"You will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n"
-"\n"
-"Please read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nAs discussed via phone, you can access the information about your isolation via the following link:\n%{public_overview_link}\n\nPlease open this link and log in using you first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nYou will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n\nPlease read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 "Sehr geehrte Damen und Herren,\n"
 "\n"
@@ -773,20 +785,7 @@ msgstr ""
 "Besten Dank und freundliche Grüsse,\n"
 "%{message_signature}\n"
 
-msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"You have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n"
-"\n"
-"Please open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"%{public_overview_link}\n"
-"\n"
-"You will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n"
-"\n"
-"Please read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nYou have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n\nPlease open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nYou will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n\nPlease read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 "Sehr geehrte Damen und Herren,\n"
 "\n"
@@ -802,20 +801,7 @@ msgstr ""
 "Besten Dank und freundliche Grüsse,\n"
 "%{message_signature}\n"
 
-msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n"
-"\n"
-"We would like to ask you to fill out the information on the following link:\n"
-"%{public_overview_link}\n"
-"\n"
-"Please open this link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Thanks for your help!\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nYou have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n\nWe would like to ask you to fill out the information on the following link:\n%{public_overview_link}\n\nPlease open this link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nThanks for your help!\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 "Sehr geehrte Damen & Herren,\n"
 "\n"
@@ -831,19 +817,7 @@ msgstr ""
 "Beste Grüsse,\n"
 "%{message_signature}\n"
 
-msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n"
-"\n"
-"You can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n"
-"\n"
-"To access the confirmation, please log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Should you continue to feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nYou can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n\nTo access the confirmation, please log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 "Sehr geehrte Damen und Herren,\n"
 "\n"
@@ -859,15 +833,7 @@ msgstr ""
 "Freundliche Grüsse\n"
 "%{message_signature}\n"
 
-msgid ""
-"Dear Sir / Madam,\n"
-"\n"
-"Your quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n"
-"\n"
-"Should you feel ill, please contact your general practitioner.\n"
-"\n"
-"Kind Regards,\n"
-"%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 "Sehr geehrte Damen und Herren,\n"
 "\n"
@@ -1002,6 +968,9 @@ msgstr "Haben Sie vor kurzem ein Fitnessstudio besucht?"
 msgid "Did you visit a pub / restaurant / event recently?"
 msgstr "Haben Sie vor kurzem eine Bar / Restaurant / Veranstaltung besucht?"
 
+msgid "Did you visit an educational institution in the 48 hours before the onset of symptoms or 48 hours before the test?"
+msgstr "Waren Sie im infektiösen Zeitraum (in den 48 Stunden vor Symptombeginn oder bei Personen ohne Symptome 48 Stunden vor Testzeitpunkt) in einer Schule?"
+
 msgid "Difficult living situation, further inquiries necessary"
 msgstr "Schwierige Wohnsituation, weitere Abklärungen nötig"
 
@@ -1119,6 +1088,10 @@ msgstr "Vorzeitiges Ende durch negativen Test nach dem 7. Tag der Quarantäne"
 msgid "Edit"
 msgstr "Bearbeiten"
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Educational institution"
+msgstr "Bildungseinrichtung"
+
 msgid "Either you or the other person did not weark a mask."
 msgstr "Entweder Sie oder die andere Person haben keine Maske getragen."
 
@@ -1169,6 +1142,10 @@ msgid "Email created successfully"
 msgstr "E-Mail erfolgreich erstellt"
 
 msgctxt "Affiliation Kind"
+msgid "Employee"
+msgstr "Mitarbeiter"
+
+msgctxt "School visit reason"
 msgid "Employee"
 msgstr "Mitarbeiter"
 
@@ -1445,14 +1422,7 @@ msgstr "Gesundheitswesen"
 msgid "Help"
 msgstr "Hilfe"
 
-msgid ""
-"Hi %{name},\n"
-"\n"
-"There's new notifications available on Hygeia for you:\n"
-"%{totals}\n"
-"\n"
-"Best,\n"
-"Hygeia\n"
+msgid "Hi %{name},\n\nThere's new notifications available on Hygeia for you:\n%{totals}\n\nBest,\nHygeia\n"
 msgstr ""
 "Hallo %{name},\n"
 "\n"
@@ -1758,6 +1728,10 @@ msgctxt "Field"
 msgid "Inserted At"
 msgstr "Erstellt Am"
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Institution not found"
+msgstr "Schule nicht gefunden"
+
 msgid "Internal"
 msgstr "Intern"
 
@@ -1864,6 +1838,10 @@ msgstr "Bekannt"
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Known"
 msgstr "Bekannt"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Known institutions:"
+msgstr "Bekannte Schulen:"
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Laboratory report date"
@@ -2124,10 +2102,6 @@ msgstr "Mutationen"
 msgid "Name"
 msgstr "Name"
 
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Employer Field"
-msgid "Name"
-msgstr "Name"
-
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Name"
 msgstr "Name"
@@ -2283,6 +2257,9 @@ msgstr "Nächster Kontakt vereinbart"
 
 msgid "No"
 msgstr "Nein"
+
+msgid "No Auto Tracing Problems"
+msgstr "Keine Auto Tracing Probleme"
 
 msgctxt "Auto Tracing Problem"
 msgid "No Contact Method"
@@ -2462,6 +2439,14 @@ msgid "Other"
 msgstr "Anderer Grund"
 
 msgctxt "Sex"
+msgid "Other"
+msgstr "Andere"
+
+msgctxt "School Type"
+msgid "Other"
+msgstr "Andere"
+
+msgctxt "School visit reason"
 msgid "Other"
 msgstr "Andere"
 
@@ -2698,6 +2683,10 @@ msgstr "Bitte geben Sie an wie wir Sie erreichen können:"
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
 msgstr "Bitte beachten Sie, dass die Eingabe der Kontaktpersonen nur in aktuellen Versionen der folgenden Browser funktioniert:"
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Please specify your reason"
+msgstr "Grund für Ihren Besuch"
+
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Port"
 msgstr "Port"
@@ -2744,11 +2733,19 @@ msgstr "Vorzeitige Quarantäneentlassung"
 msgid "Premature release created successfully"
 msgstr "Vorzeitige Quarantäneentlassung erfolgreich erstellt"
 
+msgctxt "School Type"
+msgid "Preschool"
+msgstr "Kindergarten"
+
 msgid "Preview"
 msgstr "Vorschau"
 
 msgid "Previous"
 msgstr "Zurück"
+
+msgctxt "School Type"
+msgid "Primary school"
+msgstr "Primarschule"
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Private Key"
@@ -2777,6 +2774,14 @@ msgstr "Berufsfeld"
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Profession Category"
 msgstr "Berufskategorie"
+
+msgctxt "School Type"
+msgid "Professional school"
+msgstr "Berufsschule"
+
+msgctxt "School visit reason"
+msgid "Professor"
+msgstr "Professor"
 
 msgid "Profile"
 msgstr "Profil"
@@ -2882,6 +2887,10 @@ msgstr "Quarantäneperiode Ende"
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Reason"
 msgstr "Grund"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Reason for you visit"
+msgstr "Grund für Ihren Besuch"
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Reasons for test"
@@ -3085,12 +3094,20 @@ msgctxt "Auto Tracing Problem"
 msgid "School Related"
 msgstr "Schule"
 
+msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
+msgid "School Type"
+msgstr "Schulart"
+
 msgctxt "Test Reason"
 msgid "Screening"
 msgstr "Cohort Screening"
 
 msgid "Search"
 msgstr "Suche"
+
+msgctxt "School Type"
+msgid "Secondary school"
+msgstr "Sekundarschule"
 
 msgid "Sedex Configuration"
 msgstr "Sedex-Konfiguration"
@@ -3134,6 +3151,9 @@ msgstr "Mutation wählen"
 
 msgid "Select reason"
 msgstr "Grund wählen"
+
+msgid "Select school type"
+msgstr "Schulart wählen"
 
 msgid "Select status"
 msgstr "Status wählen"
@@ -3338,6 +3358,10 @@ msgstr "Statusseite"
 
 msgid "Status help"
 msgstr "Statushilfe"
+
+msgctxt "School visit reason"
+msgid "Student"
+msgstr "Student"
 
 msgid "Sub-Type"
 msgstr "Untertyp"
@@ -3640,6 +3664,9 @@ msgstr "Der Status dient als Überblick in welcher Phase sich das Tracing bei di
 msgid "This case is not in an index phase."
 msgstr "Dieser Fall befindet sich nicht in einer Indexphase."
 
+msgid "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
+msgstr "Dieser Eintrag kann nicht bearbeitet werden, da er die Konsequenz der Informationen, welche bei den Bildungseinrichtungen eingegeben wurden, ist."
+
 msgid "This organisation has a possible duplicate."
 msgid_plural "This organisation has %{count} possible duplicates."
 msgstr[0] "Diese Organisation ist möglicherweise ein Duplikat."
@@ -3658,6 +3685,10 @@ msgstr "Diese Person ist möglicherweise ein Duplikat von %{name_link}, überpr�
 
 msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr "Diese Person ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie dies bitte."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test:"
+msgstr "Diese Person hat eine Bildungseinrichtung besucht in den letzten 48 Stunden bevor Symptombeginn oder vor dem Test:"
 
 msgid "This row is already resolved."
 msgstr "Diese Zeile ist bereits abgeglichen."
@@ -3911,6 +3942,14 @@ msgctxt "Home"
 msgid "Various information regarding the applications functionality as well as details regarding using Hygeia are available on the website."
 msgstr "Verschiedenste Informationen zur Funktionsweise der Applikation sowie zur Nutzung von Hygeia finden Sie auf der Website."
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Visit reason"
+msgstr "Grund Besuch"
+
+msgctxt "School visit reason"
+msgid "Visitor"
+msgstr "Besucher"
+
 msgctxt "Case Status"
 msgid "Wainting for Contact Person List"
 msgstr "Warten auf KP-Liste"
@@ -4019,6 +4058,9 @@ msgstr "Bei “Phasen” soll für die Beendigung des Tracings bzw. der Isolatio
 
 msgid "Your Tests"
 msgstr "Ihre Tests"
+
+msgid "Your institution does not appear in the list or it is not correct? Please enter it manually."
+msgstr "Ihr Bildungseinrichtung ist nicht in der Liste oder ist falsch? Bitte geben Sie ihn manuell ein."
 
 msgid "Your isolation started on %{start_date} and applies up to and including %{end_date}."
 msgstr "Ihre Isolation startete am %{start_date} und gilt bis und mit %{end_date}."
@@ -4155,6 +4197,9 @@ msgstr "Organisationen"
 msgctxt "Item Table"
 msgid "people"
 msgstr "Personen"
+
+msgid "please add at least one educational institution that you visited during the period in consideration"
+msgstr "Bitte geben Sie mindestens eine Bildungseinrichtung ein, welche Sie währen dem Zeitraum besucht haben."
 
 msgid "please add at least one occupation"
 msgstr "bitte fügen Sie mindestens eine Beschäftigung hinzu"

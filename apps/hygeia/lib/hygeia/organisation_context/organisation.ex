@@ -22,6 +22,15 @@ defmodule Hygeia.OrganisationContext.Organisation do
     "other"
   ]
 
+  defenum SchoolType, :school_type, [
+    "preschool",
+    "primary_school",
+    "secondary_school",
+    "cantonal_school_or_other_middle_school",
+    "professional_school",
+    "other"
+  ]
+
   @derive {Phoenix.Param, key: :uuid}
 
   @type empty :: %__MODULE__{
@@ -29,6 +38,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           name: String.t() | nil,
           type: Type.t() | nil,
           type_other: String.t() | nil,
+          school_type: SchoolType.t() | nil,
           address: Address.t() | nil,
           notes: String.t() | nil,
           positions: Ecto.Schema.has_many(Position.t()) | nil,
@@ -43,6 +53,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           name: String.t(),
           type: Type.t() | nil,
           type_other: String.t() | nil,
+          school_type: SchoolType.t() | nil,
           address: Address.t(),
           notes: String.t() | nil,
           positions: Ecto.Schema.has_many(Position.t()),
@@ -58,6 +69,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
     field :notes, :string
     field :type, Type
     field :type_other, :string
+    field :school_type, SchoolType
 
     embeds_one :address, Address, on_replace: :delete
     has_many :positions, Position, foreign_key: :organisation_uuid, on_replace: :delete
@@ -78,12 +90,22 @@ defmodule Hygeia.OrganisationContext.Organisation do
           Changeset.t()
   def changeset(organisation, attrs) do
     organisation
-    |> cast(attrs, [:name, :notes, :type, :type_other])
+    |> cast(attrs, [:name, :notes, :type, :type_other, :school_type])
     |> validate_required([:name])
     |> cast_embed(:address)
     |> cast_assoc(:positions)
     |> check_duplicates()
     |> validate_type_other()
+    |> validate_school_type()
+  end
+
+  defp validate_school_type(changeset) do
+    changeset
+    |> fetch_field!(:type)
+    |> case do
+      :school -> validate_required(changeset, [:school_type])
+      _defined -> put_change(changeset, :school_type, nil)
+    end
   end
 
   defp validate_type_other(changeset) do

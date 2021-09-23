@@ -30,9 +30,15 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
 
   data modal_open, :boolean, default: false
   data query, :string, default: nil
+  prop query_clauses, :list, default: []
 
   @impl Phoenix.LiveComponent
-  def mount(socket), do: {:ok, load_organisations(socket)}
+  def mount(socket), do: {:ok, socket}
+
+  @impl Phoenix.LiveComponent
+  def update(assigns, socket) do
+    {:ok, socket |> assign(assigns) |> load_organisations()}
+  end
 
   @impl Phoenix.LiveComponent
   def handle_event("open_modal", _params, socket),
@@ -70,11 +76,12 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
       end
 
     organisations =
-      Repo.all(
-        from(organisation in query,
-          limit: 25
-        )
-      )
+      socket.assigns.query_clauses
+      |> Enum.reduce(query, fn clause, q ->
+        clause.(q)
+      end)
+      |> Kernel.then(&from(organisation in &1, limit: 25))
+      |> Repo.all()
 
     assign(socket, organisations: organisations)
   end

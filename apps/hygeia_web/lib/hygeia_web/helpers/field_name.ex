@@ -225,6 +225,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       address: "Address",
       name: "Name",
       notes: "Notes",
+      school_type: "School Type",
       type: "Type",
       type_other: "Type Other"
     },
@@ -363,9 +364,6 @@ defmodule HygeiaWeb.Helpers.FieldName do
       landline: "Landline",
       email: "Email"
     },
-    Hygeia.AutoTracingContext.AutoTracing.Employer => %{
-      name: "Name"
-    },
     Hygeia.AutoTracingContext.AutoTracing.Occupation => %{
       kind: "Kind",
       known_organisation: "Organisation",
@@ -376,6 +374,12 @@ defmodule HygeiaWeb.Helpers.FieldName do
       last_name: "Last Name",
       phone: "Phone",
       email: "Email"
+    },
+    Hygeia.AutoTracingContext.AutoTracing.SchoolVisit => %{
+      visit_reason: "Reason for you visit",
+      other_reason: "Please specify your reason",
+      known_school: "Educational institution",
+      not_found: "Institution not found"
     }
   }
 

@@ -266,7 +266,8 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
               uuid: Ecto.UUID.generate(),
               kind: occupation.kind,
               kind_other: occupation.kind_other,
-              organisation_uuid: organisation_uuid
+              organisation_uuid: organisation_uuid,
+              related_school_visit_uuid: occupation.related_school_visit_uuid
             }
           ]
       )

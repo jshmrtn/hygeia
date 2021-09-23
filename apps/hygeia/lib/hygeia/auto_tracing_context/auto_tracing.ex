@@ -8,6 +8,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.AutoTracingContext.AutoTracing.Problem
   alias Hygeia.AutoTracingContext.AutoTracing.Propagator
+  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
   alias Hygeia.AutoTracingContext.AutoTracing.Step
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
@@ -25,6 +26,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           unsolved_problems: [Problem.t()] | nil,
           covid_app: boolean() | nil,
           has_contact_persons: boolean() | nil,
+          scholar: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
           case_uuid: Ecto.UUID.t() | nil,
           started_at: DateTime.t() | nil,
@@ -44,6 +46,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           unsolved_problems: [Problem.t()],
           covid_app: boolean() | nil,
           has_contact_persons: boolean() | nil,
+          scholar: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()),
           case_uuid: Ecto.UUID.t(),
           started_at: DateTime.t(),
@@ -73,6 +76,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :propagator_known, :boolean
     field :started_at, :utc_datetime_usec, autogenerate: {DateTime, :utc_now, []}
 
+    embeds_many :school_visits, SchoolVisit, on_replace: :delete
     embeds_many :occupations, Occupation, on_replace: :delete
 
     embeds_one :propagator, Propagator, on_replace: :delete
@@ -121,6 +125,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :last_completed_step,
       :case_uuid,
       :covid_app,
+      :scholar,
       :employed,
       :has_contact_persons,
       :problems,
@@ -131,6 +136,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :started_at
     ])
     |> validate_required([:current_step, :case_uuid])
+    |> cast_embed(:school_visits)
     |> cast_embed(:occupations)
     |> foreign_key_constraint(:transmission_uuid)
   end

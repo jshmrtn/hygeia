@@ -7,6 +7,7 @@ defmodule Hygeia.OrganisationContext.Affiliation do
 
   import HygeiaGettext
 
+  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.OrganisationContext.Division
@@ -20,6 +21,8 @@ defmodule Hygeia.OrganisationContext.Affiliation do
           person: Ecto.Schema.belongs_to(Person.t()) | nil,
           organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
+          related_school_visit_uuid: Ecto.UUID.t() | nil,
+          related_school_visit: Ecto.Schema.belongs_to(SchoolVisit.t()) | nil,
           division_uuid: Ecto.UUID.t() | nil,
           division: Ecto.Schema.belongs_to(Division.t()) | nil,
           tenant: Ecto.Schema.has_one(Tenant.t()) | nil,
@@ -35,6 +38,8 @@ defmodule Hygeia.OrganisationContext.Affiliation do
           person: Ecto.Schema.belongs_to(Person.t()),
           organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
+          related_school_visit_uuid: Ecto.UUID.t() | nil,
+          related_school_visit: Ecto.Schema.belongs_to(SchoolVisit.t()) | nil,
           division_uuid: Ecto.UUID.t() | nil,
           division: Ecto.Schema.belongs_to(Division.t()) | nil,
           tenant: Ecto.Schema.has_one(Tenant.t()),
@@ -50,6 +55,11 @@ defmodule Hygeia.OrganisationContext.Affiliation do
 
     belongs_to :person, Person, references: :uuid, foreign_key: :person_uuid
     belongs_to :organisation, Organisation, references: :uuid, foreign_key: :organisation_uuid
+
+    belongs_to :related_school_visit, SchoolVisit,
+      references: :uuid,
+      foreign_key: :related_school_visit_uuid
+
     belongs_to :division, Division, references: :uuid, foreign_key: :division_uuid
     has_one :tenant, through: [:person, :tenant]
 

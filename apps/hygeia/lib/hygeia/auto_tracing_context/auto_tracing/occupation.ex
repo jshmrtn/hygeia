@@ -3,6 +3,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
 
   use Hygeia, :model
 
+  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
   alias Hygeia.CaseContext.Entity
   alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.OrganisationContext.Organisation
@@ -11,6 +12,9 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
           uuid: Ecto.UUID.t() | nil,
           kind: Kind.t() | nil,
           kind_other: String.t() | nil,
+          related_school_visit_uuid: Ecto.UUID.t() | nil,
+          related_school_visit: Ecto.Schema.belongs_to(SchoolVisit.t()) | nil,
+          not_found: boolean() | nil,
           known_organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_organisation: Entity.t() | nil
         }
@@ -19,6 +23,9 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
           uuid: Ecto.UUID.t(),
           kind: Kind.t() | nil,
           kind_other: String.t() | nil,
+          related_school_visit_uuid: Ecto.UUID.t() | nil,
+          related_school_visit: Ecto.Schema.belongs_to(SchoolVisit.t()) | nil,
+          not_found: boolean() | nil,
           known_organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_organisation: Entity.t() | nil
         }
@@ -26,6 +33,10 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
   embedded_schema do
     field :kind, Kind
     field :kind_other, :string
+
+    belongs_to :related_school_visit, SchoolVisit,
+      foreign_key: :related_school_visit_uuid,
+      references: :uuid
 
     belongs_to :known_organisation, Organisation,
       foreign_key: :known_organisation_uuid,
@@ -45,7 +56,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
       :kind,
       :kind_other,
       :not_found,
-      :known_organisation_uuid
+      :known_organisation_uuid,
+      :related_school_visit_uuid
     ])
     |> fill_uuid()
     |> validate_required([:kind])
