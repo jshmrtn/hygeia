@@ -209,11 +209,11 @@
                         {#if schools = Enum.group_by(@auto_tracing.school_visits, & &1.not_found)}
                           <p>{pgettext(
                               "Auto Tracing Resolve Problems",
-                              "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test:"
-                            )}</p>
+                              "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
+                            )}:</p>
 
                           {#if known_school_visits = Map.get(schools, false)}
-                            <p>{pgettext("Auto Tracing Resolve Problems", "Known institutions:")}</p>
+                            <p>{pgettext("Auto Tracing Resolve Problems", "Known institutions")}:</p>
                             <div class="hy-card-grid-2-cols">
                               <div :for={school_visit <- Enum.map(known_school_visits, &Repo.preload(&1, [:known_school]))}>
                                 <strong>{school_visit.known_school.name}</strong>
