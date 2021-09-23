@@ -176,7 +176,8 @@
                     "btn",
                     "btn-sm",
                     "btn-outline-primary",
-                    active: get_field(@changeset, :employed) == true
+                    active: get_field(@changeset, :employed) == true,
+                    disabled: length(get_field(@changeset, :school_visit_occupations)) > 0
                   }>
                     <RadioButton value opts={disabled: length(get_field(@changeset, :school_visit_occupations)) > 0} />
                     {gettext("Yes")}
@@ -185,7 +186,8 @@
                     "btn",
                     "btn-sm",
                     "btn-outline-primary",
-                    active: get_field(@changeset, :employed) == false
+                    active: get_field(@changeset, :employed) == false,
+                    disabled: length(get_field(@changeset, :school_visit_occupations)) > 0
                   }>
                     <RadioButton value={false} opts={disabled: length(get_field(@changeset, :school_visit_occupations)) > 0} />
                     {gettext("No")}
@@ -227,6 +229,7 @@
                           disabled={fetch_field!(occupation.source, :not_found)}
                           id={"occupation_#{fetch_field!(occupation.source, :uuid)}_organisation"}
                           change="select_affiliation_organisation"
+                          disabled={fetch_field!(occupation.source, :related_school_visit_uuid)}
                           subject={fetch_field!(occupation.source, :uuid)}
                         />
                         <ErrorTag class="d-block invalid-feedback" />

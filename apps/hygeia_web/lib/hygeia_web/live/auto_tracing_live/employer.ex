@@ -575,18 +575,4 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   defp visit_reason_to_kind(visit_reason) when visit_reason in [:professor, :employee],
     do: :employee
 
-  defp unstruct(struct) when is_struct(struct) do
-    struct
-    |> Map.from_struct()
-    |> Enum.map(fn {key, val} ->
-      {key, unstruct(val)}
-    end)
-    |> Map.new()
-  end
-
-  defp unstruct(list) when is_list(list) do
-    Enum.map(list, &unstruct/1)
-  end
-
-  defp unstruct(other), do: other
 end
