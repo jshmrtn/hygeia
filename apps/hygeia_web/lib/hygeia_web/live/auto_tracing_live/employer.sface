@@ -235,10 +235,10 @@
                       <Field class="form-group" name={:known_organisation_uuid}>
                         <HygeiaWeb.FieldLabel />
                         <HygeiaWeb.OrganisationLive.Choose
-                          disabled={fetch_field!(occupation.source, :not_found)}
                           id={"occupation_#{fetch_field!(occupation.source, :uuid)}_organisation"}
                           change="select_affiliation_organisation"
-                          disabled={fetch_field!(occupation.source, :related_school_visit_uuid)}
+                          disabled={fetch_field!(occupation.source, :not_found) or
+                            fetch_field!(occupation.source, :related_school_visit_uuid)}
                           subject={fetch_field!(occupation.source, :uuid)}
                         />
                         <ErrorTag class="d-block invalid-feedback" />

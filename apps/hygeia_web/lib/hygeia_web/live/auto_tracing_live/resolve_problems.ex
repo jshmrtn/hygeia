@@ -3,8 +3,6 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
 
   use HygeiaWeb, :surface_view
 
-  import Ecto.Query
-
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext

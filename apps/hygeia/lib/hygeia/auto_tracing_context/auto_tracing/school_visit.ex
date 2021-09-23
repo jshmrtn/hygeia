@@ -1,5 +1,5 @@
 defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
-  @moduledoc false
+  @moduledoc "Module responsible for tracking school visits within the auto tracing context."
 
   use Hygeia, :model
 

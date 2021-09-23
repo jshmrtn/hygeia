@@ -101,6 +101,9 @@ msgstr "Activity Mapping Executed"
 msgid "Add"
 msgstr "Add"
 
+msgid "Add an institution"
+msgstr ""
+
 msgid "Add an occupation"
 msgstr "Add an occupation"
 
@@ -228,8 +231,14 @@ msgstr "Apply"
 msgid "April"
 msgstr "April"
 
+msgid "Are you a enrolled at this educational institution?"
+msgstr ""
+
 msgid "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
 msgstr "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
+
+msgid "Are you employed by this educational institution?"
+msgstr ""
 
 msgid "Are you employed?"
 msgstr "Are you employed?"
@@ -366,6 +375,10 @@ msgctxt "Case Status"
 msgid "Canceled"
 msgstr "Canceled"
 
+msgctxt "School Type"
+msgid "Cantonal school or other middle school"
+msgstr ""
+
 msgid "Case"
 msgstr "Case"
 
@@ -497,6 +510,11 @@ msgstr "Choose person"
 msgid "Choose profession category"
 msgstr "Choose profession category"
 
+#, fuzzy
+msgctxt "Reason"
+msgid "Choose reason"
+msgstr "Choose person"
+
 msgid "Choose subdivision"
 msgstr "Choose subdivision"
 
@@ -580,6 +598,11 @@ msgstr "Condition"
 msgid "Confirmation PDF Template"
 msgstr "Confirmation PDF Template"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
+msgid "Contact Email"
+msgstr "Contact tracing"
+
 msgid "Contact Methods"
 msgstr "Contact Methods"
 
@@ -601,6 +624,11 @@ msgstr "Contact Persons"
 msgctxt "Auto Tracing Step"
 msgid "Contact Persons"
 msgstr "Contact Persons"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
+msgid "Contact Phone"
+msgstr "Contact Person"
 
 msgctxt "Home"
 msgid "Contact Tracing for SARS-CoV-2"
@@ -945,6 +973,9 @@ msgstr "Did you visit a gym recently?"
 msgid "Did you visit a pub / restaurant / event recently?"
 msgstr "Did you visit a pub / restaurant / event recently?"
 
+msgid "Did you visit an educational institution in the 48 hours before the onset of symptoms or 48 hours before the test?"
+msgstr ""
+
 msgid "Difficult living situation, further inquiries necessary"
 msgstr "Difficult living situation, further inquiries necessary"
 
@@ -1062,6 +1093,10 @@ msgstr "Early end because of negative test after the 7th day of quarantine"
 msgid "Edit"
 msgstr "Edit"
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Educational institution"
+msgstr ""
+
 msgid "Either you or the other person did not weark a mask."
 msgstr "Either you or the other person did not weark a mask."
 
@@ -1113,6 +1148,11 @@ msgid "Email created successfully"
 msgstr "Email created successfully"
 
 msgctxt "Affiliation Kind"
+msgid "Employee"
+msgstr "Employee"
+
+#, fuzzy
+msgctxt "School visit reason"
 msgid "Employee"
 msgstr "Employee"
 
@@ -1696,6 +1736,11 @@ msgctxt "Field"
 msgid "Inserted At"
 msgstr "Inserted At"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Institution not found"
+msgstr "Organisation not found"
+
 msgid "Internal"
 msgstr "Internal"
 
@@ -1802,6 +1847,10 @@ msgstr "Known"
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Known"
 msgstr "Known"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Known institutions:"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Laboratory report date"
@@ -2219,6 +2268,10 @@ msgstr "Next Contact Agreed"
 msgid "No"
 msgstr "No"
 
+#, fuzzy
+msgid "No Auto Tracing Problems"
+msgstr "Auto Tracing Problem"
+
 msgctxt "Auto Tracing Problem"
 msgid "No Contact Method"
 msgstr "No Contact Method"
@@ -2397,6 +2450,16 @@ msgid "Other"
 msgstr "Other"
 
 msgctxt "Sex"
+msgid "Other"
+msgstr "Other"
+
+#, fuzzy
+msgctxt "School Type"
+msgid "Other"
+msgstr "Other"
+
+#, fuzzy
+msgctxt "School visit reason"
 msgid "Other"
 msgstr "Other"
 
@@ -2634,6 +2697,10 @@ msgstr "Please indicate how we can reach you:"
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
 msgstr "Please note that submitting contact persons only works in recent versions of the following browsers:"
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Please specify your reason"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Port"
 msgstr "Port"
@@ -2680,11 +2747,19 @@ msgstr "Premature Releases"
 msgid "Premature release created successfully"
 msgstr "Premature release created successfully"
 
+msgctxt "School Type"
+msgid "Preschool"
+msgstr ""
+
 msgid "Preview"
 msgstr "Preview"
 
 msgid "Previous"
 msgstr "Previous"
+
+msgctxt "School Type"
+msgid "Primary school"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Private Key"
@@ -2713,6 +2788,16 @@ msgstr "Profession"
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Profession Category"
 msgstr "Profession Category"
+
+#, fuzzy
+msgctxt "School Type"
+msgid "Professional school"
+msgstr "Profession"
+
+#, fuzzy
+msgctxt "School visit reason"
+msgid "Professor"
+msgstr "Profession"
 
 msgid "Profile"
 msgstr "Profile"
@@ -2818,6 +2903,10 @@ msgstr "Quarantine Period End"
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Reason"
 msgstr "Reason"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Reason for you visit"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Reasons for test"
@@ -3021,12 +3110,21 @@ msgctxt "Auto Tracing Problem"
 msgid "School Related"
 msgstr "School Related"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
+msgid "School Type"
+msgstr "School"
+
 msgctxt "Test Reason"
 msgid "Screening"
 msgstr "Screening"
 
 msgid "Search"
 msgstr "Search"
+
+msgctxt "School Type"
+msgid "Secondary school"
+msgstr ""
 
 msgid "Sedex Configuration"
 msgstr "Sedex Configuration"
@@ -3070,6 +3168,10 @@ msgstr "Select mutation"
 
 msgid "Select reason"
 msgstr "Select reason"
+
+#, fuzzy
+msgid "Select school type"
+msgstr "Select Type"
 
 msgid "Select status"
 msgstr "Select status"
@@ -3274,6 +3376,10 @@ msgstr "Status Page"
 
 msgid "Status help"
 msgstr "Status help"
+
+msgctxt "School visit reason"
+msgid "Student"
+msgstr ""
 
 msgid "Sub-Type"
 msgstr "Sub-Type"
@@ -3576,6 +3682,9 @@ msgstr "The status serves as an overview of the current tracing phase of the per
 msgid "This case is not in an index phase."
 msgstr "This case is not in an index phase."
 
+msgid "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
+msgstr ""
+
 msgid "This organisation has a possible duplicate."
 msgid_plural "This organisation has %{count} possible duplicates."
 msgstr[0] "This organisation has a possible duplicate."
@@ -3594,6 +3703,10 @@ msgstr "This person is possibly a duplicate of %{name_link} please check."
 
 msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr "This person is possibly a duplicate of %{name_link}, please check."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test:"
+msgstr ""
 
 msgid "This row is already resolved."
 msgstr "This row is already resolved."
@@ -3848,6 +3961,15 @@ msgctxt "Home"
 msgid "Various information regarding the applications functionality as well as details regarding using Hygeia are available on the website."
 msgstr "Various information regarding the applications functionality as well as details regarding using Hygeia are available on the website."
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Visit reason"
+msgstr ""
+
+#, fuzzy
+msgctxt "School visit reason"
+msgid "Visitor"
+msgstr "History"
+
 msgctxt "Case Status"
 msgid "Wainting for Contact Person List"
 msgstr "Wainting for Contact Person List"
@@ -3956,6 +4078,10 @@ msgstr "You must provide a reason for completing a phase."
 
 msgid "Your Tests"
 msgstr "Your Tests"
+
+#, fuzzy
+msgid "Your institution does not appear in the list or it is not correct? Please enter it manually."
+msgstr "Your occupation does not appear in the list or it is not correct? Please enter it manually."
 
 msgid "Your isolation started on %{start_date} and applies up to and including %{end_date}."
 msgstr "Your isolation started on %{start_date} and applies up to and including %{end_date}."
@@ -4092,6 +4218,9 @@ msgstr "organisations"
 msgctxt "Item Table"
 msgid "people"
 msgstr "people"
+
+msgid "please add at least one educational institution that you visited during the period in consideration"
+msgstr ""
 
 msgid "please add at least one occupation"
 msgstr "please add at least one occupation"

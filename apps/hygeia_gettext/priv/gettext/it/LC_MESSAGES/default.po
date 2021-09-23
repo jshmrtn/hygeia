@@ -1,13 +1,16 @@
 msgid ""
 msgstr ""
-"Language: it"
-"Plural-Forms: nplurals=2; plural=(n != 1);"
-"Project-Id-Version: Hygeia"
-"Language-Team: JOSHMARTIN GmbH https://joshmartin.ch"
-"MIME-Version: 1.0"
-"Content-Type: text/plain; charset=UTF-8"
-"Content-Transfer-Encoding: 8bit"
-"X-Poedit-SourceCharset: UTF-8"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
 
 #, fuzzy
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -126,6 +129,9 @@ msgstr "Mappatura delle attività eseguita"
 #, fuzzy
 msgid "Add"
 msgstr "Aggiungi"
+
+msgid "Add an institution"
+msgstr "Aggiungi un istituto d'istruzione "
 
 #, fuzzy
 msgid "Add an occupation"
@@ -291,9 +297,15 @@ msgstr "Applica"
 msgid "April"
 msgstr "Aprile"
 
+msgid "Are you a enrolled at this educational institution?"
+msgstr "Sei immatricolato persso questo instituto?"
+
 #, fuzzy
 msgid "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
 msgstr "È uno studente o un insegnante? Ha visitato qualche struttura educativa nei giorni precedenti al suo test?"
+
+msgid "Are you employed by this educational institution?"
+msgstr "Sei un impiegato di questa istituzione?"
 
 #, fuzzy
 msgid "Are you employed?"
@@ -470,6 +482,10 @@ msgctxt "Case Status"
 msgid "Canceled"
 msgstr "Annullato"
 
+msgctxt "School Type"
+msgid "Cantonal school or other middle school"
+msgstr "Scuola cantonale o altra scuola media"
+
 #, fuzzy
 msgid "Case"
 msgstr "Caso"
@@ -642,6 +658,11 @@ msgid "Choose profession category"
 msgstr "Scegliere la categoria della professione"
 
 #, fuzzy
+msgctxt "Reason"
+msgid "Choose reason"
+msgstr "Scegliere la persona"
+
+#, fuzzy
 msgid "Choose subdivision"
 msgstr "Scegliere la suddivisione"
 
@@ -749,6 +770,11 @@ msgid "Confirmation PDF Template"
 msgstr "Modello PDF di conferma"
 
 #, fuzzy
+msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
+msgid "Contact Email"
+msgstr "Rintracciamento dei contatti"
+
+#, fuzzy
 msgid "Contact Methods"
 msgstr "Metodi di contatto"
 
@@ -774,6 +800,11 @@ msgstr "Persona di contatto"
 #, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Contact Persons"
+msgstr "Persona di contatto"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
+msgid "Contact Phone"
 msgstr "Persona di contatto"
 
 #, fuzzy
@@ -959,21 +990,80 @@ msgstr "Caro signore / signora"
 
 #, fuzzy
 msgid "Dear Sir / Madam,\n\nAs discussed via phone, you can access the information about your isolation via the following link:\n%{public_overview_link}\n\nPlease open this link and log in using you first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nYou will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n\nPlease read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
-msgstr "Gentile signore / signora,\n\nCome discusso al telefono, può accedere alle informazioni sul suo isolamento tramite il seguente link:\n%{public_overview_link}\n\non aprire questo link e accedi usando il tuo nome e cognome. (iniziali: %{initial_first_name}. %{initial_last_name}.)\n\npotrai scaricare la conferma del tuo isolamento e presentare le persone con cui sei stato in contatto. Potrà anche scaricare una conferma finale del suo isolamento alla fine.\n\nLa preghiamo di leggere le informazioni sul suo isolamento nel suo documento di conferma e i link menzionati e i metodi di contatto.\n\nCordiali saluti,\n%{message_signature}\n"
+msgstr ""
+"Gentile signore / signora,\n"
+"\n"
+"Come discusso al telefono, può accedere alle informazioni sul suo isolamento tramite il seguente link:\n"
+"%{public_overview_link}\n"
+"\n"
+"on aprire questo link e accedi usando il tuo nome e cognome. (iniziali: %{initial_first_name}. %{initial_last_name}.)\n"
+"\n"
+"potrai scaricare la conferma del tuo isolamento e presentare le persone con cui sei stato in contatto. Potrà anche scaricare una conferma finale del suo isolamento alla fine.\n"
+"\n"
+"La preghiamo di leggere le informazioni sul suo isolamento nel suo documento di conferma e i link menzionati e i metodi di contatto.\n"
+"\n"
+"Cordiali saluti,\n"
+"%{message_signature}\n"
 
 msgid "Dear Sir / Madam,\n\nYou have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n\nPlease open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nYou will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n\nPlease read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
-msgstr "Gentile signore / signora,\n\nlei è stato identificato come referente di una persona con la corona. Per questo motivo dovrà quanrantinarsi per 10 giorni.\n\nPer favore, apra il seguente link ed effettui il login usando il suo nome e cognome. (iniziali: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nsarà in grado di scaricare la sua conferma di quarantena e possibilmente abbreviare/eliminare la sua quarantena.\n\nLa preghiamo di leggere le informazioni sulla sua quarantena nel suo documento di conferma e i link menzionati e i metodi di contatto.\n\nCordiali saluti,\n%{message_signature}\n"
+msgstr ""
+"Gentile signore / signora,\n"
+"\n"
+"lei è stato identificato come referente di una persona con la corona. Per questo motivo dovrà quanrantinarsi per 10 giorni.\n"
+"\n"
+"Per favore, apra il seguente link ed effettui il login usando il suo nome e cognome. (iniziali: %{initial_first_name}. %{initial_last_name}.)\n"
+"%{public_overview_link}\n"
+"\n"
+"sarà in grado di scaricare la sua conferma di quarantena e possibilmente abbreviare/eliminare la sua quarantena.\n"
+"\n"
+"La preghiamo di leggere le informazioni sulla sua quarantena nel suo documento di conferma e i link menzionati e i metodi di contatto.\n"
+"\n"
+"Cordiali saluti,\n"
+"%{message_signature}\n"
 
 #, fuzzy
 msgid "Dear Sir / Madam,\n\nYou have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n\nWe would like to ask you to fill out the information on the following link:\n%{public_overview_link}\n\nPlease open this link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nThanks for your help!\n\nKind Regards,\n%{message_signature}\n"
-msgstr "Gentile signore / signora,\n\nLei è stato recentemente testato come positivo al Coronavirus. Per contenere l'ulteriore diffusione il Contact Tracing conta sul suo supporto.\n\nVorremmo chiederle di compilare le informazioni sul seguente link:\n%{public_overview_link}\n\nPer favore, apri questo link e accedi usando il tuo nome e cognome. (iniziali: %{initial_first_name}. %{initial_last_name}.\n\nGrazie per il tuo aiuto!\n\nCordiali saluti,\n%{message_signature}\n"
+msgstr ""
+"Gentile signore / signora,\n"
+"\n"
+"Lei è stato recentemente testato come positivo al Coronavirus. Per contenere l'ulteriore diffusione il Contact Tracing conta sul suo supporto.\n"
+"\n"
+"Vorremmo chiederle di compilare le informazioni sul seguente link:\n"
+"%{public_overview_link}\n"
+"\n"
+"Per favore, apri questo link e accedi usando il tuo nome e cognome. (iniziali: %{initial_first_name}. %{initial_last_name}.\n"
+"\n"
+"Grazie per il tuo aiuto!\n"
+"\n"
+"Cordiali saluti,\n"
+"%{message_signature}\n"
 
 msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nYou can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n\nTo access the confirmation, please log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
-msgstr "Gentile signore / signora,\n\nil suo periodo di isolamento termina domani %{date}. Se non ha avuto febbre o tosse con espettorato, può lasciare l'isolamento.\n\nLa conferma definitiva dell'isolamento può essere trovata al seguente link:\n%{isolation_end_confirmation_link}\n\nPer accedere alla conferma, fai il login usando il tuo nome e cognome. (iniziali: %{initial_first_name}. %{initial_last_name}.)\n\nNel caso in cui continuasse a sentirsi male, la preghiamo di contattare il suo medico di base.\n\nN Cordiali saluti,\n%{message_signature}\n"
+msgstr ""
+"Gentile signore / signora,\n"
+"\n"
+"il suo periodo di isolamento termina domani %{date}. Se non ha avuto febbre o tosse con espettorato, può lasciare l'isolamento.\n"
+"\n"
+"La conferma definitiva dell'isolamento può essere trovata al seguente link:\n"
+"%{isolation_end_confirmation_link}\n"
+"\n"
+"Per accedere alla conferma, fai il login usando il tuo nome e cognome. (iniziali: %{initial_first_name}. %{initial_last_name}.)\n"
+"\n"
+"Nel caso in cui continuasse a sentirsi male, la preghiamo di contattare il suo medico di base.\n"
+"\n"
+"N Cordiali saluti,\n"
+"%{message_signature}\n"
 
 #, fuzzy
 msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
-msgstr "Gentile signore / signora,\n\nil suo periodo di quarantena termina domani %{date}. Se al momento non avverte alcun sintomo, può lasciare la quarantena.\n\nSe dovesse sentirsi male, la preghiamo di contattare il suo medico di famiglia.\n\n%{message_signature}\n"
+msgstr ""
+"Gentile signore / signora,\n"
+"\n"
+"il suo periodo di quarantena termina domani %{date}. Se al momento non avverte alcun sintomo, può lasciare la quarantena.\n"
+"\n"
+"Se dovesse sentirsi male, la preghiamo di contattare il suo medico di famiglia.\n"
+"\n"
+"%{message_signature}\n"
 
 #, fuzzy
 msgctxt "Index End Reason"
@@ -1135,6 +1225,9 @@ msgstr "Hai visitato una palestra di recente?"
 msgid "Did you visit a pub / restaurant / event recently?"
 msgstr "Hai visitato un pub / ristorante / evento di recente?"
 
+msgid "Did you visit an educational institution in the 48 hours before the onset of symptoms or 48 hours before the test?"
+msgstr "Hai visitato un istituto d'istruzione nelle 48 ore prima del insorgenza dei sintomi oppure nelle 48 ore prima del test?"
+
 #, fuzzy
 msgid "Difficult living situation, further inquiries necessary"
 msgstr "Situazione di vita difficile, sono necessarie ulteriori indagini"
@@ -1287,6 +1380,10 @@ msgstr "Fine anticipata a causa di un test negativo dopo il 7° giorno di quaran
 msgid "Edit"
 msgstr "Modifica"
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Educational institution"
+msgstr "Instituto d'instruzione"
+
 #, fuzzy
 msgid "Either you or the other person did not weark a mask."
 msgstr "O voi o l'altra persona non ha indossato una maschera."
@@ -1351,6 +1448,11 @@ msgstr "Email creata con successo"
 
 #, fuzzy
 msgctxt "Affiliation Kind"
+msgid "Employee"
+msgstr "Dipendente"
+
+#, fuzzy
+msgctxt "School visit reason"
 msgid "Employee"
 msgstr "Dipendente"
 
@@ -1708,7 +1810,14 @@ msgstr "Aiuto"
 
 #, fuzzy
 msgid "Hi %{name},\n\nThere's new notifications available on Hygeia for you:\n%{totals}\n\nBest,\nHygeia\n"
-msgstr "Ciao %{name},\n\nc'è una nuova notifica disponibile su Hygeia per te:\n%{totals}\n\nBest,\nHygeia - COVID19 Tracing\n"
+msgstr ""
+"Ciao %{name},\n"
+"\n"
+"c'è una nuova notifica disponibile su Hygeia per te:\n"
+"%{totals}\n"
+"\n"
+"Best,\n"
+"Hygeia - COVID19 Tracing\n"
 
 #, fuzzy
 msgid "High"
@@ -1916,7 +2025,7 @@ msgid "If you met %{first_name} %{last_name} multiple times, select the last dat
 msgstr "Se hai incontrato %{first_name} %{last_name} più volte, seleziona l'ultima data in cui hai avuto un contatto stretto e non protetto. Considera che potresti essere stato infetto 48 ore prima dell'inizio dei tuoi sintomi. Se non hai sintomi, considera 48 ore prima del test."
 
 msgid "If you were present at this location for multiple days, enter the last day into the date field."
-msgstr ""
+msgstr "Se hai visitato questo luogo in più occasioni, inserisci la data dell'ultima visita."
 
 #, fuzzy
 msgid "If you're an authorized person of the contact tracing team, log in instead:"
@@ -2090,6 +2199,11 @@ msgid "Inserted At"
 msgstr "Inserito a"
 
 #, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Institution not found"
+msgstr "Organizzazione non trovata"
+
+#, fuzzy
 msgid "Internal"
 msgstr "Interno"
 
@@ -2227,6 +2341,10 @@ msgstr "Conosciuto"
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Known"
 msgstr "Conosciuto"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Known institutions:"
+msgstr "Instituti conosciuti:"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
@@ -2594,7 +2712,7 @@ msgstr "Nome"
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name of Vaccine"
-msgstr ""
+msgstr "Nome del vaccino"
 
 #, fuzzy
 msgid "Need help"
@@ -2764,6 +2882,10 @@ msgstr "Prossimo contatto concordato"
 #, fuzzy
 msgid "No"
 msgstr "No"
+
+#, fuzzy
+msgid "No Auto Tracing Problems"
+msgstr "Problema di tracciamento automatico"
 
 #, fuzzy
 msgctxt "Auto Tracing Problem"
@@ -2995,6 +3117,16 @@ msgstr "Altro"
 
 #, fuzzy
 msgctxt "Sex"
+msgid "Other"
+msgstr "Altro"
+
+#, fuzzy
+msgctxt "School Type"
+msgid "Other"
+msgstr "Altro"
+
+#, fuzzy
+msgctxt "School visit reason"
 msgid "Other"
 msgstr "Altro"
 
@@ -3296,6 +3428,10 @@ msgstr "Si prega di indicare come possiamo raggiungerti:"
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
 msgstr "Si prega di notare che l'invio di contatti funziona solo nelle versioni recenti dei seguenti browser:"
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Please specify your reason"
+msgstr "Specifica la ragione"
+
 #, fuzzy
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Port"
@@ -3355,6 +3491,10 @@ msgstr "Rilasci prematuri"
 msgid "Premature release created successfully"
 msgstr "Rilascio prematuro creato con successo"
 
+msgctxt "School Type"
+msgid "Preschool"
+msgstr "Scuola materna"
+
 #, fuzzy
 msgid "Preview"
 msgstr "Anteprima"
@@ -3362,6 +3502,10 @@ msgstr "Anteprima"
 #, fuzzy
 msgid "Previous"
 msgstr "Precedente"
+
+msgctxt "School Type"
+msgid "Primary school"
+msgstr "Scuola primaria"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
@@ -3397,6 +3541,16 @@ msgstr "Professione"
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Profession Category"
 msgstr "Categoria professionale"
+
+#, fuzzy
+msgctxt "School Type"
+msgid "Professional school"
+msgstr "Professione"
+
+#, fuzzy
+msgctxt "School visit reason"
+msgid "Professor"
+msgstr "Professione"
 
 #, fuzzy
 msgid "Profile"
@@ -3532,6 +3686,10 @@ msgstr "Fine del periodo di quarantena"
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Reason"
 msgstr "Motivo"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Reason for you visit"
+msgstr "Ragione della visita:"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
@@ -3792,6 +3950,11 @@ msgid "School Related"
 msgstr "Scuola"
 
 #, fuzzy
+msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
+msgid "School Type"
+msgstr "Scuola"
+
+#, fuzzy
 msgctxt "Test Reason"
 msgid "Screening"
 msgstr "Screening"
@@ -3799,6 +3962,10 @@ msgstr "Screening"
 #, fuzzy
 msgid "Search"
 msgstr "Cerca"
+
+msgctxt "School Type"
+msgid "Secondary school"
+msgstr "Scuola secondaria"
 
 #, fuzzy
 msgid "Sedex Configuration"
@@ -3856,6 +4023,10 @@ msgstr "Seleziona la mutazione"
 #, fuzzy
 msgid "Select reason"
 msgstr "Seleziona il motivo"
+
+#, fuzzy
+msgid "Select school type"
+msgstr "Selezionare il tipo"
 
 #, fuzzy
 msgid "Select status"
@@ -4120,6 +4291,10 @@ msgstr "Pagina di stato"
 #, fuzzy
 msgid "Status help"
 msgstr "Aiuto di stato"
+
+msgctxt "School visit reason"
+msgid "Student"
+msgstr "Studente"
 
 #, fuzzy
 msgid "Sub-Type"
@@ -4478,7 +4653,7 @@ msgid "The index phase end reason will be set to %{end_reason}."
 msgstr "Il motivo di fine fase dell'indice sarà impostato a %{end_reason}."
 
 msgid "The link is no longer available"
-msgstr ""
+msgstr "Il link non è più visibile"
 
 #, fuzzy
 msgid "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
@@ -4506,6 +4681,9 @@ msgstr "Lo stato serve come una panoramica della fase di rintracciamento attuale
 msgid "This case is not in an index phase."
 msgstr "Questo caso non è in una fase di indice."
 
+msgid "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
+msgstr "Questa informazione non può essere modificata perché fa parte delle istituzioni inserite al passo precedente (vedi sopra)."
+
 #, fuzzy
 msgid "This organisation has a possible duplicate."
 msgid_plural "This organisation has %{count} possible duplicates."
@@ -4529,6 +4707,10 @@ msgstr "Questa persona è probabilmente un duplicato di %{name_link} per favore 
 #, fuzzy
 msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr "Questa persona è probabilmente un duplicato di %{name_link}, per favore controlla."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test:"
+msgstr "Questa persona ha visitato le seguenti istituzioni d'istruzione nelle 48 ore prima del insorgenza dei sintomi oppure nelle 48 ore prima del test:"
 
 #, fuzzy
 msgid "This row is already resolved."
@@ -4851,6 +5033,15 @@ msgctxt "Home"
 msgid "Various information regarding the applications functionality as well as details regarding using Hygeia are available on the website."
 msgstr "Diverse informazioni sulla funzionalità delle applicazioni e i dettagli sull'uso di Hygeia sono disponibili sul sito web."
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Visit reason"
+msgstr "Ragione della visita"
+
+#, fuzzy
+msgctxt "School visit reason"
+msgid "Visitor"
+msgstr "Storia"
+
 #, fuzzy
 msgctxt "Case Status"
 msgid "Wainting for Contact Person List"
@@ -4990,6 +5181,10 @@ msgstr "È necessario fornire una ragione per il completamento di una fase."
 #, fuzzy
 msgid "Your Tests"
 msgstr "I vostri test"
+
+#, fuzzy
+msgid "Your institution does not appear in the list or it is not correct? Please enter it manually."
+msgstr "La tua occupazione non appare nella lista o non è corretta? Per favore, inseriscila manualmente."
 
 #, fuzzy
 msgid "Your isolation started on %{start_date} and applies up to and including %{end_date}."
@@ -5165,15 +5360,18 @@ msgctxt "Item Table"
 msgid "people"
 msgstr "persone"
 
+msgid "please add at least one educational institution that you visited during the period in consideration"
+msgstr "aggiungi almento un instituto d'istruzione che hai visitato durante il periodo in considerazione"
+
 #, fuzzy
 msgid "please add at least one occupation"
 msgstr "si prega di aggiungere almeno un'occupazione"
 
 msgid "please fill in the information about the place where you contracted the virus"
-msgstr ""
+msgstr "inserisci il luogo dove hai contratto il virus"
 
 msgid "please fill in the information of the person who passed on the virus to you"
-msgstr ""
+msgstr "inserisci le informazioni della persona che ti ha trasmesso il virus"
 
 #, fuzzy
 msgctxt "Item Table"

@@ -221,7 +221,7 @@
                                   {HygeiaWeb.Helpers.Organisation.organisation_type_name(school_visit.known_school)}
                                 </small>
                                 <small class="d-block text-muted">{Address.to_string(school_visit.known_school.address, :long)}</small>
-                                <div class="mb-3">{gettext("Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(
+                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(
                                     school_visit.visit_reason
                                   )}</div>
                               </div>
@@ -232,7 +232,7 @@
                               <div :for={school_visit <- unknown_school_visits}>
                                 <strong>{school_visit.unknown_school.name}</strong>
                                 <small class="d-block text-muted">{Address.to_string(school_visit.unknown_school.address, :long)}</small>
-                                <div class="mb-3">Visit reason: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(
+                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(
                                     school_visit.visit_reason
                                   )}</div>
                               </div>

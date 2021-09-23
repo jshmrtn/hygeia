@@ -40,6 +40,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   end
 
   @impl Phoenix.LiveView
+  # credo:disable-for-next-line Credo.Check.Refactor.ABCSize
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
     case =
       case_uuid
@@ -173,12 +174,12 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
        socket,
        :changeset,
        %Changeset{
-         (step
-          |> changeset(
-            changeset_remove_from_params_by_id(changeset, :school_visits, %{
-              uuid: school_visit_uuid
-            })
-          ))
+         changeset(
+           step,
+           changeset_remove_from_params_by_id(changeset, :school_visits, %{
+             uuid: school_visit_uuid
+           })
+         )
          | action: :validate
        }
      )}
@@ -326,6 +327,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     params =
       params
       |> Map.put_new("occupations", [])
+      |> Map.put_new("school_visit_occupations", [])
       |> Map.put_new("school_visits", [])
 
     {:noreply,
@@ -354,7 +356,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
           auto_tracing_changeset =
             auto_tracing
-            |> add_visited_schools(step)
+            |> add_visited_schools(fetch_change!(changeset, :school_visits))
             |> add_unknown_occupations(step)
 
           {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
@@ -442,16 +444,11 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
         end
 
       _else ->
-        put_change(changeset, :occupations, [])
+        put_embed(changeset, :occupations, [])
     end
   end
 
   defp merge_visit_occupations(changeset) do
-    visit_uuids =
-      changeset
-      |> get_field(:school_visits, [])
-      |> Enum.map(& &1.uuid)
-
     visits_to_add =
       changeset
       |> get_field(:school_visits, [])
@@ -462,7 +459,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
           known_school_uuid: known_school_uuid,
           unknown_school: unknown_school,
           is_occupied: true
-        } = school_visit,
+        },
         acc
         when not is_nil(known_school_uuid) or not is_nil(unknown_school) ->
           acc ++
@@ -477,12 +474,12 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
               }
             ]
 
-        %SchoolVisit{uuid: school_visit_uuid}, acc ->
+        %SchoolVisit{}, acc ->
           acc
       end)
 
-    changeset
-    |> put_embed(
+    put_embed(
+      changeset,
       :school_visit_occupations,
       visits_to_add
     )
@@ -543,9 +540,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     )
   end
 
-  defp add_visited_schools(auto_tracing, %__MODULE__{
-         school_visits: school_visits
-       }) do
+  defp add_visited_schools(auto_tracing, school_visits) do
     auto_tracing
     |> AutoTracingContext.change_auto_tracing()
     |> put_embed(
