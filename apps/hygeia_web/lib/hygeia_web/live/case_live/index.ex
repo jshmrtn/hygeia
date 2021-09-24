@@ -176,9 +176,9 @@ defmodule HygeiaWeb.CaseLive.Index do
 
         {:no_auto_tracing_problems, "true"}, query ->
           from(case in query,
-            left_join: auto_tracing in assoc(case, :auto_tracing),
+            join: auto_tracing in assoc(case, :auto_tracing),
             where:
-              is_nil(auto_tracing) or is_nil(auto_tracing.unsolved_problems) or
+              is_nil(auto_tracing.unsolved_problems) or
                 fragment("? = '{}'", auto_tracing.unsolved_problems)
           )
 
