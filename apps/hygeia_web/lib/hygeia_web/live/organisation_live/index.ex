@@ -7,6 +7,7 @@ defmodule HygeiaWeb.OrganisationLive.Index do
 
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Organisation.Type
   alias Hygeia.Repo
   alias Surface.Components.Context
   alias Surface.Components.Form

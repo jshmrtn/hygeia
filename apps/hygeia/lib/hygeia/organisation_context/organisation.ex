@@ -5,31 +5,14 @@ defmodule Hygeia.OrganisationContext.Organisation do
 
   use Hygeia, :model
 
-  import EctoEnum
-
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
+  alias Hygeia.OrganisationContext.Organisation.SchoolType
+  alias Hygeia.OrganisationContext.Organisation.Type
   alias Hygeia.OrganisationContext.Position
-
-  defenum Type, :organisation_type, [
-    "club",
-    "school",
-    "healthcare",
-    "corporation",
-    "other"
-  ]
-
-  defenum SchoolType, :school_type, [
-    "preschool",
-    "primary_school",
-    "secondary_school",
-    "cantonal_school_or_other_middle_school",
-    "professional_school",
-    "other"
-  ]
 
   @derive {Phoenix.Param, key: :uuid}
 

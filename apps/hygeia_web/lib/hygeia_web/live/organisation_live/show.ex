@@ -7,6 +7,8 @@ defmodule HygeiaWeb.OrganisationLive.Show do
   alias Hygeia.Helpers.Empty
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Organisation.SchoolType
+  alias Hygeia.OrganisationContext.Organisation.Type
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag

@@ -145,7 +145,7 @@
                     <HygeiaWeb.FieldLabel />
                     <Select
                       class="form-control"
-                      options={organisation_types()}
+                      options={Type.map()}
                       opts={prompt: gettext("Select Type"), disabled: @live_action == :show}
                     />
                     <ErrorTag class="d-block invalid-feedback" />
@@ -156,7 +156,7 @@
                     <HygeiaWeb.FieldLabel />
                     <Select
                       class="form-control"
-                      options={organisation_school_types()}
+                      options={SchoolType.map()}
                       opts={prompt: gettext("Select school type"), disabled: @live_action == :show}
                     />
                     <ErrorTag class="d-block invalid-feedback" />

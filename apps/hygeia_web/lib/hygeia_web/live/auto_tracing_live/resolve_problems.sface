@@ -218,12 +218,11 @@
                               <div :for={school_visit <- Enum.map(known_school_visits, &Repo.preload(&1, [:known_school]))}>
                                 <strong>{school_visit.known_school.name}</strong>
                                 <small class="d-block text-muted">
-                                  {HygeiaWeb.Helpers.Organisation.organisation_type_name(school_visit.known_school)}
+                                  {Type.organisation_type_name(school_visit.known_school)}
                                 </small>
                                 <small class="d-block text-muted">{Address.to_string(school_visit.known_school.address, :long)}</small>
-                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(
-                                    school_visit.visit_reason
-                                  )}</div>
+                                <div>{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(school_visit.visit_reason)}</div>
+                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Date of last visit")}: {HygeiaCldr.Date.to_string!(school_visit.visited_at)}</div>
                               </div>
                             </div>
                           {/if}
@@ -232,9 +231,8 @@
                               <div :for={school_visit <- unknown_school_visits}>
                                 <strong>{school_visit.unknown_school.name}</strong>
                                 <small class="d-block text-muted">{Address.to_string(school_visit.unknown_school.address, :long)}</small>
-                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.visit_reason_translation(
-                                    school_visit.visit_reason
-                                  )}</div>
+                                <div>{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(school_visit.visit_reason)}</div>
+                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Date of last visit")}: {HygeiaCldr.Date.to_string!(school_visit.visited_at)}</div>
                               </div>
                             </div>
                           {/if}

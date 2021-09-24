@@ -860,7 +860,7 @@ defmodule Hygeia.StatisticsContext do
             [organisation, division, nil, count]
 
           [organisation, division, affiliation_kind, count] ->
-            [organisation, division, Kind.translate_affiliation_kind(affiliation_kind), count]
+            [organisation, division, Kind.translate(affiliation_kind), count]
         end
       )
     )

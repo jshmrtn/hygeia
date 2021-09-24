@@ -9,6 +9,7 @@ defmodule HygeiaWeb.AffiliationLive.Index do
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.Repo
   alias Surface.Components.Context
   alias Surface.Components.Form

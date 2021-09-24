@@ -83,7 +83,7 @@
             {organisation.name}
           </td>
           <td>
-            {organisation_type_name(organisation)}
+            {Type.organisation_type_name(organisation)}
           </td>
           <td>
             {format_address(organisation.address)}

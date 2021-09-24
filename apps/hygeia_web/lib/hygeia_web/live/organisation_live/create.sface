@@ -39,11 +39,7 @@
           <div class="col">
             <Field name={:type} class="form-group">
               <HygeiaWeb.FieldLabel />
-              <Select
-                class="form-control"
-                options={organisation_types()}
-                opts={prompt: gettext("Select Type")}
-              />
+              <Select class="form-control" options={Type.map()} opts={prompt: gettext("Select Type")} />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
@@ -52,7 +48,7 @@
               <HygeiaWeb.FieldLabel />
               <Select
                 class="form-control"
-                options={organisation_school_types()}
+                options={SchoolType.map()}
                 opts={prompt: gettext("Select school type")}
               />
               <ErrorTag class="d-block invalid-feedback" />
