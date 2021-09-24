@@ -187,18 +187,26 @@
                         </Form>
                       {#match :new_employer}
                         <div :for={occupation <- @auto_tracing.occupations}>
-                          <strong>{occupation.unknown_organisation.name}</strong>
-                          <div class="mb-3">{Address.to_string(occupation.unknown_organisation.address, :long)}</div>
-                          <Form for={@occupation_form}>
-                            <Field name={:organisation_uuid}>
-                              <HygeiaWeb.OrganisationLive.Choose
-                                id={"occupation_#{occupation.uuid}_organisation"}
-                                change="select_occupation_organisation"
-                                subject={occupation.uuid}
-                                value={nil}
-                              />
-                            </Field>
-                          </Form>
+                          {#if occupation.unknown_organisation}
+                            <strong>{occupation.unknown_organisation.name}</strong>
+                            <div class="mb-3">{Address.to_string(occupation.unknown_organisation.address, :long)}</div>
+                            <Form for={@occupation_form}>
+                              <Field name={:organisation_uuid}>
+                                <HygeiaWeb.OrganisationLive.Choose
+                                  id={"occupation_#{occupation.uuid}_organisation"}
+                                  change="select_occupation_organisation"
+                                  subject={occupation.uuid}
+                                  value={nil}
+                                />
+                              </Field>
+                            </Form>
+                          {#else}
+                            <!-- TODO: Make sure that this can't be entered anymore (https://github.com/jshmrtn/hygeia/issues/570) -->
+                            <p>{pgettext(
+                                "Auto Tracing Resolve Problems",
+                                "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
+                              )}</p>
+                          {/if}
                         </div>
                       {#match :hospitalization}
                         <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
