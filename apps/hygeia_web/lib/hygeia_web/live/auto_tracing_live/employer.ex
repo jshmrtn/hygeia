@@ -356,8 +356,16 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
           auto_tracing_changeset =
             auto_tracing
-            |> add_visited_schools(fetch_change!(changeset, :school_visits))
+            |> AutoTracingContext.change_auto_tracing()
             |> add_unknown_occupations(step)
+            |> put_embed(:school_visits, [])
+
+          {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
+
+          auto_tracing_changeset =
+            auto_tracing
+            |> AutoTracingContext.change_auto_tracing()
+            |> add_visited_schools(step)
 
           {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
 
@@ -540,23 +548,17 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     )
   end
 
-  defp add_visited_schools(auto_tracing, school_visits) do
-    auto_tracing
-    |> AutoTracingContext.change_auto_tracing()
-    |> put_embed(
-      :school_visits,
-      school_visits
-    )
+  defp add_visited_schools(auto_tracing_changeset, %__MODULE__{school_visits: school_visits}) do
+    put_embed(auto_tracing_changeset, :school_visits, school_visits)
   end
 
-  defp add_unknown_occupations(auto_tracing, %__MODULE__{
+  defp add_unknown_occupations(auto_tracing_changeset, %__MODULE__{
          occupations: occupations,
          school_visit_occupations: school_visit_occupations,
          scholar: scholar,
          employed: employed
        }) do
-    auto_tracing
-    |> AutoTracingContext.change_auto_tracing()
+    auto_tracing_changeset
     |> put_embed(
       :occupations,
       Enum.filter(occupations, &match?(%Occupation{known_organisation_uuid: nil}, &1)) ++
