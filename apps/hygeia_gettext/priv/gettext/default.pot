@@ -242,9 +242,6 @@ msgstr ""
 msgid "Are you a enrolled at this educational institution?"
 msgstr ""
 
-msgid "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
-msgstr ""
-
 msgid "Are you employed by this educational institution?"
 msgstr ""
 
@@ -1684,6 +1681,10 @@ msgctxt "Organisation Merge"
 msgid "Into"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
+msgstr ""
+
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr ""
 
@@ -1782,10 +1783,6 @@ msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Known institutions"
-msgstr ""
-
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Known institutions:"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
@@ -2383,15 +2380,15 @@ msgctxt "Possible Index Type"
 msgid "Other"
 msgstr ""
 
-msgctxt "Sex"
-msgid "Other"
-msgstr ""
-
 msgctxt "School Type"
 msgid "Other"
 msgstr ""
 
 msgctxt "School visit reason"
+msgid "Other"
+msgstr ""
+
+msgctxt "Sex"
 msgid "Other"
 msgstr ""
 
@@ -3633,10 +3630,6 @@ msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
-msgstr ""
-
-msgctxt "Auto Tracing Resolve Problems"
-msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test:"
 msgstr ""
 
 msgid "This row is already resolved."

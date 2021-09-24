@@ -296,10 +296,6 @@ msgstr "Avril"
 msgid "Are you a enrolled at this educational institution?"
 msgstr ""
 
-#, fuzzy
-msgid "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
-msgstr "Êtes-vous un étudiant ou un enseignant ? Avez-vous visité des établissements d'enseignement dans les jours qui ont précédé votre test positif ?"
-
 msgid "Are you employed by this educational institution?"
 msgstr ""
 
@@ -2136,6 +2132,10 @@ msgctxt "Organisation Merge"
 msgid "Into"
 msgstr "Sur"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
+msgstr ""
+
 #, fuzzy
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr "Détails de la personne non valides. Si vous pensez qu'il s'agit d'une erreur, contactez l'équipe de recherche."
@@ -2264,10 +2264,6 @@ msgstr "Connu"
 #, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Known institutions"
-msgstr ""
-
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Known institutions:"
 msgstr ""
 
 #, fuzzy
@@ -3039,17 +3035,17 @@ msgid "Other"
 msgstr "Autre"
 
 #, fuzzy
-msgctxt "Sex"
-msgid "Other"
-msgstr "Autre"
-
-#, fuzzy
 msgctxt "School Type"
 msgid "Other"
 msgstr "Autre"
 
 #, fuzzy
 msgctxt "School visit reason"
+msgid "Other"
+msgstr "Autre"
+
+#, fuzzy
+msgctxt "Sex"
 msgid "Other"
 msgstr "Autre"
 
@@ -4624,10 +4620,6 @@ msgstr "Cette personne est peut-être un doublon de %{name_link}, veuillez véri
 #, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
-msgstr ""
-
-msgctxt "Auto Tracing Resolve Problems"
-msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test:"
 msgstr ""
 
 #, fuzzy
