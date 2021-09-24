@@ -253,9 +253,6 @@ msgstr "Aprile"
 msgid "Are you a enrolled at this educational institution?"
 msgstr "Sei immatricolato persso questo instituto?"
 
-msgid "Are you a student or teacher? Did you visit any educational facilities during the days before you tested positive?"
-msgstr "Sei uno studente o un insegnante? Hai visitato qualche struttura educativa nei giorni precedenti al tuo test?"
-
 msgid "Are you employed by this educational institution?"
 msgstr "Sei un impiegato di questo instituto?"
 
@@ -1892,6 +1889,10 @@ msgctxt "Organisation Merge"
 msgid "Into"
 msgstr "In"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
+msgstr ""
+
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr "Informazioni della persona invalide, se credi che questo sia un errore, contatta il team di rintracciamento."
 
@@ -1999,10 +2000,6 @@ msgstr "Conosciuto"
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Known institutions"
 msgstr "Instituti conosciuti"
-
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Known institutions:"
-msgstr "Instituti conosciuti:"
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Laboratory report date"
@@ -2741,15 +2738,15 @@ msgctxt "Possible Index Type"
 msgid "Other"
 msgstr "Altro"
 
-msgctxt "Sex"
-msgid "Other"
-msgstr "Altro"
-
 msgctxt "School Type"
 msgid "Other"
 msgstr "Altro"
 
 msgctxt "School visit reason"
+msgid "Other"
+msgstr "Altro"
+
+msgctxt "Sex"
 msgid "Other"
 msgstr "Altro"
 
@@ -4210,10 +4207,6 @@ msgstr "Questa persona è probabilmente un duplicato di %{name_link}, per favore
 #, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
-msgstr "Questa persona ha visitato le seguenti istituzioni d'istruzione nelle 48 ore prima del insorgenza dei sintomi oppure nelle 48 ore prima del test:"
-
-msgctxt "Auto Tracing Resolve Problems"
-msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test:"
 msgstr "Questa persona ha visitato le seguenti istituzioni d'istruzione nelle 48 ore prima del insorgenza dei sintomi oppure nelle 48 ore prima del test:"
 
 #, fuzzy
