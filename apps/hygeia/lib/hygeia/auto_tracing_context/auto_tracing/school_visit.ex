@@ -21,9 +21,9 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           is_occupied: boolean() | nil,
-          visit_reason: Reason.t() | nil,
+          visit_reason: Reason.t(),
           other_reason: String.t() | nil,
-          visited_at: Date.t() | nil,
+          visited_at: Date.t(),
           not_found: boolean() | nil,
           known_school: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_school: Entity.t() | nil
