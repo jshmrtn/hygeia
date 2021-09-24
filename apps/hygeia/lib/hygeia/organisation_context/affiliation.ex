@@ -105,6 +105,14 @@ defmodule Hygeia.OrganisationContext.Affiliation do
     end
   end
 
+  @spec kind_name(affiliation :: t()) :: String.t() | nil
+  def kind_name(%__MODULE__{kind: nil}), do: nil
+
+  def kind_name(%__MODULE__{kind: :other, kind_other: kind_other}),
+    do: "#{Kind.translate(:other)} / #{kind_other}"
+
+  def kind_name(%__MODULE__{kind: kind}), do: Kind.translate(kind)
+
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person
     alias Hygeia.OrganisationContext.Affiliation

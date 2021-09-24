@@ -7,7 +7,6 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
 
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
-  alias Hygeia.OrganisationContext.Organisation.Type
   alias Hygeia.Repo
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
@@ -93,7 +92,7 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
     ~F"""
     {organisation.name}
     <small class="d-block text-muted" :if={not is_nil(organisation.type)}>
-      {Type.organisation_type_name(organisation)}
+      {Organisation.type_name(organisation)}
     </small>
     <small class="d-block text-muted">{format_address(organisation.address)}</small>
     """

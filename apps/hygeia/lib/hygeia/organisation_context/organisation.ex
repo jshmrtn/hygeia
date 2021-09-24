@@ -113,6 +113,19 @@ defmodule Hygeia.OrganisationContext.Organisation do
 
   defp check_duplicates(changeset), do: changeset
 
+  @spec type_name(organisation :: t()) :: String.t() | nil
+  def type_name(organisation)
+  def type_name(%__MODULE__{type: nil}), do: nil
+  def type_name(%__MODULE__{type: :school, school_type: nil}), do: Type.translate(:school)
+
+  def type_name(%__MODULE__{type: :school, school_type: school_type}),
+    do: "#{Type.translate(:school)}: #{SchoolType.translate(school_type)}"
+
+  def type_name(%__MODULE__{type: type}), do: Type.translate(type)
+
+  def type_name(%__MODULE__{type: :other, type_other: other}),
+    do: "#{Type.translate(:other)}: #{other}"
+
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person
     alias Hygeia.OrganisationContext

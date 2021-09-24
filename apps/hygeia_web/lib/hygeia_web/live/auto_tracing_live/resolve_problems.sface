@@ -226,7 +226,7 @@
                               <div :for={school_visit <- Enum.map(known_school_visits, &Repo.preload(&1, [:known_school]))}>
                                 <strong>{school_visit.known_school.name}</strong>
                                 <small class="d-block text-muted">
-                                  {Type.organisation_type_name(school_visit.known_school)}
+                                  {Organisation.type_name(school_visit.known_school)}
                                 </small>
                                 <small class="d-block text-muted">{Address.to_string(school_visit.known_school.address, :long)}</small>
                                 <div>{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(school_visit.visit_reason)}</div>

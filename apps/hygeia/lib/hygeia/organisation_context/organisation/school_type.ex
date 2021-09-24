@@ -4,7 +4,7 @@ defmodule Hygeia.OrganisationContext.Organisation.SchoolType do
   """
 
   use EctoEnum,
-    type: :type,
+    type: :school_type,
     enums: [
       :preschool,
       :primary_school,

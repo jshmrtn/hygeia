@@ -8,7 +8,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.OrganisationContext.Affiliation
-  alias Hygeia.OrganisationContext.Organisation.Type
+  alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
