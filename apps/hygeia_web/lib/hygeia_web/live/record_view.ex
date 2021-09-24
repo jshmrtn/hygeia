@@ -13,60 +13,34 @@ defmodule HygeiaWeb.RecordView do
   slot default
 
   @impl Phoenix.LiveComponent
-  def render(%{wrapper_tag: :div} = assigns) do
-    trigger(assigns)
-
-    ~F"""
-    <div>
-      <#slot />
-    </div>
-    """
+  for wrapper_tag <- [:div, :tr, :span, :strong] do
+    def render(%{wrapper_tag: unquote(wrapper_tag)} = assigns) do
+      ~F"""
+      <Context get={HygeiaWeb, auth: auth, ip_address: ip_address, uri: uri}>
+        {raw("<#{@wrapper_tag}>")}
+        {trigger(assigns, %{auth: auth, ip_address: ip_address, uri: uri})}
+        <#slot />
+        {raw("</#{@wrapper_tag}>")}
+      </Context>
+      """
+    end
   end
 
-  def render(%{wrapper_tag: :tr} = assigns) do
-    trigger(assigns)
-
-    ~F"""
-    <tr>
-      <#slot />
-    </tr>
-    """
-  end
-
-  def render(%{wrapper_tag: :span} = assigns) do
-    trigger(assigns)
-
-    ~F"""
-    <span>
-      <#slot />
-    </span>
-    """
-  end
-
-  def render(%{wrapper_tag: :strong} = assigns) do
-    trigger(assigns)
-
-    ~F"""
-    <strong>
-      <#slot />
-    </strong>
-    """
-  end
-
-  defp trigger(assigns) do
-    if Map.has_key?(assigns.__changed__, :resource) or Map.has_key?(assigns.__changed__, :action) or
-         Map.has_key?(assigns.__changed__, :__context__) do
+  defp trigger(assigns, %{auth: auth, ip_address: ip_address, uri: uri}) do
+    if Enum.any?([:resource, :action, :__context__], &changed?(assigns, &1)) do
       AuditContext.log_view(
         assigns.socket.id,
         case get_auth(assigns.socket) do
-          :anonymous -> assigns.__context__[{HygeiaWeb, :auth}] || :anonymous
+          :anonymous -> auth || :anonymous
           other -> other
         end,
-        assigns.__context__[{HygeiaWeb, :ip_address}],
-        assigns.__context__[{HygeiaWeb, :uri}],
+        ip_address,
+        uri,
         assigns.action,
         assigns.resource
       )
     end
+
+    nil
   end
 end
