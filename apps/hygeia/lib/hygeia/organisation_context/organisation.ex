@@ -5,31 +5,14 @@ defmodule Hygeia.OrganisationContext.Organisation do
 
   use Hygeia, :model
 
-  import EctoEnum
-
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
+  alias Hygeia.OrganisationContext.Organisation.SchoolType
+  alias Hygeia.OrganisationContext.Organisation.Type
   alias Hygeia.OrganisationContext.Position
-
-  defenum Type, :organisation_type, [
-    "club",
-    "school",
-    "healthcare",
-    "corporation",
-    "other"
-  ]
-
-  defenum SchoolType, :school_type, [
-    "preschool",
-    "primary_school",
-    "secondary_school",
-    "cantonal_school_or_other_middle_school",
-    "professional_school",
-    "other"
-  ]
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -129,6 +112,19 @@ defmodule Hygeia.OrganisationContext.Organisation do
       )
 
   defp check_duplicates(changeset), do: changeset
+
+  @spec type_name(organisation :: t()) :: String.t() | nil
+  def type_name(organisation)
+  def type_name(%__MODULE__{type: nil}), do: nil
+  def type_name(%__MODULE__{type: :school, school_type: nil}), do: Type.translate(:school)
+
+  def type_name(%__MODULE__{type: :school, school_type: school_type}),
+    do: "#{Type.translate(:school)}: #{SchoolType.translate(school_type)}"
+
+  def type_name(%__MODULE__{type: type}), do: Type.translate(type)
+
+  def type_name(%__MODULE__{type: :other, type_other: other}),
+    do: "#{Type.translate(:other)}: #{other}"
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person

@@ -9,6 +9,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Hygeia.EctoType.NOGA
   alias Hygeia.Helpers.Empty
   alias Hygeia.OrganisationContext
+  alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias HygeiaWeb.DateInput

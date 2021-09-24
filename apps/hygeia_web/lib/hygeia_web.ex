@@ -185,7 +185,6 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.Import
       import HygeiaWeb.Helpers.InfectionPlace
       import HygeiaWeb.Helpers.Monitoring
-      import HygeiaWeb.Helpers.Organisation
       import HygeiaWeb.Helpers.Person
       import HygeiaWeb.Helpers.Preload
       import HygeiaWeb.Helpers.Region

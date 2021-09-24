@@ -91,8 +91,8 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   defp render_organisation(assigns, organisation) do
     ~F"""
     {organisation.name}
-    <small class="d-block text-muted" :if={not is_nil(organisation_type_name(organisation))}>
-      {organisation_type_name(organisation)}
+    <small class="d-block text-muted" :if={not is_nil(organisation.type)}>
+      {Organisation.type_name(organisation)}
     </small>
     <small class="d-block text-muted">{format_address(organisation.address)}</small>
     """

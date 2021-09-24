@@ -12,9 +12,12 @@ defmodule Hygeia.OrganisationContext.Affiliation.Kind do
 
   import HygeiaGettext
 
-  @spec translate_affiliation_kind(type :: atom) :: String.t()
-  def translate_affiliation_kind(:employee), do: pgettext("Affiliation Kind", "Employee")
-  def translate_affiliation_kind(:scholar), do: pgettext("Affiliation Kind", "Scholar")
-  def translate_affiliation_kind(:member), do: pgettext("Affiliation Kind", "Member")
-  def translate_affiliation_kind(:other), do: pgettext("Affiliation Kind", "Other")
+  @spec map :: [{String.t(), t}]
+  def map, do: Enum.map(__enum_map__(), &{translate(&1), &1})
+
+  @spec translate(type :: atom) :: String.t()
+  def translate(:employee), do: pgettext("Affiliation Kind", "Employee")
+  def translate(:scholar), do: pgettext("Affiliation Kind", "Scholar")
+  def translate(:member), do: pgettext("Affiliation Kind", "Member")
+  def translate(:other), do: pgettext("Affiliation Kind", "Other")
 end

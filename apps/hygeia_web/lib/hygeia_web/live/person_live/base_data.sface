@@ -334,7 +334,7 @@
                                     prompt: pgettext("Affiliation", "Choose Kind"),
                                     disabled: @live_action == :show
                                   }
-                                  options={affiliation_kinds()}
+                                  options={Kind.map()}
                                 />
                                 <ErrorTag class="d-block invalid-feedback" />
                               </Field>

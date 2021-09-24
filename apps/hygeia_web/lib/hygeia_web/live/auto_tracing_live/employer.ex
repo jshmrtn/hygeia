@@ -16,9 +16,11 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   alias Hygeia.CaseContext.Case
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
+  alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
@@ -407,11 +409,11 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   def changeset(schema, attrs \\ %{}) do
     schema
     |> cast(attrs, [:scholar, :employed])
-    |> validate_required([:scholar, :employed])
     |> validate_school_related()
     |> merge_visit_occupations()
     |> check_employed()
     |> validate_occupation()
+    |> validate_required([:scholar, :employed])
   end
 
   @spec validate_school_related(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()

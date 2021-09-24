@@ -100,7 +100,7 @@
               {affiliation.division_uuid}
             </span>
           </td>
-          <td>{affilation_kind(affiliation)}</td>
+          <td>{Affiliation.kind_name(affiliation)}</td>
           <td>
             {case affiliation.comment do
               nil -> nil

@@ -3,25 +3,16 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
 
   use Hygeia, :model
 
-  import EctoEnum
-
-  import HygeiaGettext
-
+  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason
   alias Hygeia.CaseContext.Entity
   alias Hygeia.OrganisationContext.Organisation
-
-  defenum Reason, :school_visit_reason, [
-    "student",
-    "professor",
-    "employee",
-    "visitor",
-    "other"
-  ]
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           is_occupied: boolean() | nil,
           visit_reason: Reason.t() | nil,
+          other_reason: String.t() | nil,
+          visited_at: Date.t() | nil,
           not_found: boolean() | nil,
           known_school: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_school: Entity.t() | nil
@@ -30,7 +21,9 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           is_occupied: boolean() | nil,
-          visit_reason: Reason.t() | nil,
+          visit_reason: Reason.t(),
+          other_reason: String.t() | nil,
+          visited_at: Date.t(),
           not_found: boolean() | nil,
           known_school: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_school: Entity.t() | nil
@@ -40,6 +33,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
     field :is_occupied, :boolean
     field :visit_reason, Reason
     field :other_reason, :string
+    field :visited_at, :date
 
     belongs_to :known_school, Organisation,
       foreign_key: :known_school_uuid,
@@ -59,11 +53,12 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
       :is_occupied,
       :visit_reason,
       :other_reason,
+      :visited_at,
       :not_found,
       :known_school_uuid
     ])
     |> fill_uuid()
-    |> validate_required([:visit_reason])
+    |> validate_required([:visit_reason, :visited_at])
     |> validate_occupied()
     |> validate_other_reason()
     |> validate_existent_school()
@@ -108,19 +103,4 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
       _defined -> put_change(changeset, :other_reason, nil)
     end
   end
-
-  @spec visit_reason :: [{String.t(), Reason.t()}]
-  def visit_reason,
-    do:
-      Enum.map(
-        Reason.__enum_map__(),
-        &{visit_reason_translation(&1), &1}
-      )
-
-  @spec visit_reason_translation(type :: Reason.t()) :: String.t()
-  def visit_reason_translation(:student), do: pgettext("School visit reason", "Student")
-  def visit_reason_translation(:professor), do: pgettext("School visit reason", "Professor")
-  def visit_reason_translation(:employee), do: pgettext("School visit reason", "Employee")
-  def visit_reason_translation(:visitor), do: pgettext("School visit reason", "Visitor")
-  def visit_reason_translation(:other), do: pgettext("School visit reason", "Other")
 end

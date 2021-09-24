@@ -92,6 +92,12 @@
                         </Inputs>
                       </div>
 
+                      <Field name={:visited_at} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <DateInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+
                       <div class="row">
                         <div class="col">
                           <Field name={:visit_reason} class="form-group">
@@ -99,7 +105,7 @@
                             <Select
                               class="form-control"
                               opts={prompt: pgettext("Reason", "Choose reason")}
-                              options={SchoolVisit.visit_reason()}
+                              options={SchoolVisit.Reason.map()}
                             />
                             <ErrorTag class="d-block invalid-feedback" />
                           </Field>
@@ -218,7 +224,7 @@
                           disabled: fetch_field!(occupation.source, :related_school_visit_uuid),
                           prompt: pgettext("Affiliation", "Choose Kind")
                         }
-                        options={affiliation_kinds()}
+                        options={Kind.map()}
                       />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
@@ -317,7 +323,7 @@
                           disabled: fetch_field!(occupation.source, :related_school_visit_uuid),
                           prompt: pgettext("Affiliation", "Choose Kind")
                         }
-                        options={affiliation_kinds()}
+                        options={Kind.map()}
                       />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
