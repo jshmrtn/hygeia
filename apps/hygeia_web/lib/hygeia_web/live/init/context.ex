@@ -18,7 +18,26 @@ defmodule HygeiaWeb.Init.Context do
           session :: map,
           socket :: Phoenix.LiveView.Socket.t()
         ) :: {:cont | :halt, Phoenix.LiveView.Socket.t()}
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
+    socket =
+      socket
+      |> context_assign(:auth, get_auth(socket))
+      |> context_assign(:logged_in, is_logged_in?(socket))
+      |> context_assign(:browser_features, browser_features(socket))
+      |> context_assign(:ip_address, get_ip_address(socket))
+      |> context_assign(:uri, uri(socket))
+      |> context_assign(:timezone, timezone(socket))
+
+    socket =
+      case params do
+        :not_mounted_at_router -> socket
+        _params -> attach_hook(socket, __MODULE__, :handle_params, &handle_params/3)
+      end
+
+    {:cont, socket}
+  end
+
+  defp timezone(socket) do
     timezone =
       with true <- connected?(socket),
            %{} <- socket.private[:connect_params],
@@ -33,43 +52,32 @@ defmodule HygeiaWeb.Init.Context do
 
     :ok = LocalizedNaiveDatetime.put_timezone(timezone)
 
-    socket =
-      socket
-      |> context_assign(:auth, get_auth(socket))
-      |> context_assign(:logged_in, is_logged_in?(socket))
-      |> context_assign(
-        :browser_features,
-        if connected?(socket) and not is_nil(socket.private[:connect_params]) do
-          get_connect_params(socket)["browser_features"]
-        end
-      )
-      |> context_assign(
-        :ip_address,
-        if connected?(socket) and not is_nil(socket.private[:connect_info]) do
-          get_ip_address(socket)
-        end
-      )
-      |> context_assign(
-        :uri,
-        case {socket.host_uri, socket.private[:connect_info][:uri]} do
-          {%URI{} = uri, _connect_uri} -> URI.to_string(uri)
-          {:not_mounted_at_router, %URI{} = uri} -> URI.to_string(uri)
-          _other -> nil
-        end
-      )
-      |> context_assign(:timezone, timezone)
-      |> attach_hook(__MODULE__, :handle_params, &handle_params/3)
+    timezone
+  end
 
-    {:cont, socket}
+  defp uri(socket) do
+    case {socket.host_uri, socket.private[:connect_info][:uri]} do
+      {%URI{} = uri, _connect_uri} -> URI.to_string(uri)
+      {:not_mounted_at_router, %URI{} = uri} -> URI.to_string(uri)
+      _other -> nil
+    end
+  end
+
+  defp browser_features(socket) do
+    if connected?(socket) and not is_nil(socket.private[:connect_params]) do
+      get_connect_params(socket)["browser_features"]
+    end
   end
 
   defp get_ip_address(socket) do
-    case get_connect_info(socket) do
-      %{peer_data: peer_data} ->
-        peer_data.address
+    if connected?(socket) and not is_nil(socket.private[:connect_info]) do
+      case get_connect_info(socket) do
+        %{peer_data: peer_data} ->
+          peer_data.address
 
-      _other ->
-        nil
+        _other ->
+          nil
+      end
     end
   end
 

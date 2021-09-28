@@ -8,7 +8,7 @@
             <%= @inner_content %>
         </div>
         <div class="error-actions mt-5">
-          <a href="<%= Routes.home_index_url(@conn, :index) %>" class="btn btn-primary btn-lg">
+          <a href={Routes.home_index_url(@conn, :index)} class="btn btn-primary btn-lg">
             <span class="oi oi-home"></span>
             <%= gettext("Take Me Home") %>
           </a>
@@ -25,7 +25,7 @@
   <% {event_id, :plug} when is_binary(event_id) -> %>
     <div
       id="sentry-report"
-      data-report-options="<%= Jason.encode!(%{eventId: event_id}) %>"
+      data-report-options={Jason.encode!(%{eventId: event_id})}
     ></div>
   <% _ -> %>
 <% end %>

@@ -81,7 +81,7 @@ defmodule Hygeia.MixProject do
       {:mail, "~> 0.2"},
       {:mox, "~> 1.0", only: :test},
       {:paginator, "~> 1.0"},
-      {:phoenix, "~> 1.5.6"},
+      {:phoenix, "~> 1.6"},
       {:phoenix_pubsub, "~> 2.0"},
       {:polymorphic_embed, "~> 1.7"},
       {:postgrex, ">= 0.0.0"},
