@@ -672,6 +672,22 @@ defmodule Hygeia.CaseContextTest do
             sex: :male
           })
 
+        # ~D[2020-10-06]
+        date_case_jony_phase_index_start = Date.utc_today()
+
+        date_case_jony_phase_index_start_string =
+          Date.to_iso8601(date_case_jony_phase_index_start)
+
+        # ~D[2020-10-04]
+        date_case_jony_symptom_start = Date.add(date_case_jony_phase_index_start, -2)
+        date_case_jony_symptom_start_string = Date.to_iso8601(date_case_jony_symptom_start)
+        # ~D[2020-10-05]
+        date_case_jony_test = Date.add(date_case_jony_phase_index_start, -1)
+        date_case_jony_test_string = Date.to_iso8601(date_case_jony_test)
+        # ~D[2020-10-16]
+        date_case_jony_phase_index_end = Date.add(date_case_jony_phase_index_start, 10)
+        date_case_jony_phase_index_end_string = Date.to_iso8601(date_case_jony_phase_index_end)
+
         case_jony =
           case_fixture(person_jony, user, user, %{
             uuid: "ca98a59b-64c5-4476-9abd-d91d2d1d24e3",
@@ -697,8 +713,8 @@ defmodule Hygeia.CaseContextTest do
                   type: :contact_person,
                   end_reason: :healed
                 },
-                start: ~D[2020-10-06],
-                end: ~D[2020-10-16],
+                start: date_case_jony_phase_index_start,
+                end: date_case_jony_phase_index_end,
                 quarantine_order: true
               }
             ],
@@ -706,18 +722,36 @@ defmodule Hygeia.CaseContextTest do
               has_symptoms: true,
               symptoms: [:fever],
               reasons_for_test: [:symptoms],
-              symptom_start: ~D[2020-10-04]
+              symptom_start: date_case_jony_symptom_start
             },
             tests: [
               %{
                 kind: :serology,
                 result: :positive,
-                tested_at: ~D[2020-10-05]
+                tested_at: date_case_jony_test
               }
             ]
           })
 
         _note_case_jony = sms_fixture(case_jony, %{inserted_at: ~U[2021-01-05 11:55:10.783294Z]})
+
+        # ~D[2020-10-06]
+        date_case_jay_phase_possible_index_start = date_case_jony_phase_index_start
+
+        date_case_jay_phase_possible_index_start_string =
+          Date.to_iso8601(date_case_jay_phase_possible_index_start)
+
+        # ~D[2020-10-09]
+        date_case_jay_phase_possible_index_end =
+          Date.add(date_case_jay_phase_possible_index_start, 4)
+
+        # ~D[2020-10-10]
+        date_case_jay_phase_index_start = Date.add(date_case_jay_phase_possible_index_end, 1)
+        date_case_jay_phase_index_start_string = Date.to_iso8601(date_case_jay_phase_index_start)
+        # ~D[2020-10-20]
+        date_case_jay_phase_index_end = Date.add(date_case_jay_phase_index_start, 10)
+
+        date_case_jay_phase_index_end_string = Date.to_iso8601(date_case_jay_phase_index_end)
 
         case_jay =
           case_fixture(person_jay, user, user, %{
@@ -731,8 +765,8 @@ defmodule Hygeia.CaseContextTest do
                   __type__: :possible_index,
                   type: :contact_person
                 },
-                start: ~D[2020-10-06],
-                end: ~D[2020-10-09],
+                start: date_case_jay_phase_possible_index_start,
+                end: date_case_jay_phase_possible_index_end,
                 quarantine_order: true
               },
               %{
@@ -740,8 +774,8 @@ defmodule Hygeia.CaseContextTest do
                   __type__: :index,
                   type: :contact_person
                 },
-                start: ~D[2020-10-10],
-                end: ~D[2020-10-20],
+                start: date_case_jay_phase_index_start,
+                end: date_case_jay_phase_index_end,
                 quarantine_order: true
               }
             ],
@@ -807,7 +841,7 @@ defmodule Hygeia.CaseContextTest do
                    "country" => "8100",
                    "date_of_birth" => "1993-01-30",
                    "e_mail_address" => "",
-                   "end_of_iso_dt" => "2020-10-16",
+                   "end_of_iso_dt" => ^date_case_jony_phase_index_end_string,
                    "exp_country" => "8215",
                    "exp_loc_dt" => ^transmission_jony_date,
                    "exp_loc_flightdetail" => "LX332",
@@ -863,7 +897,7 @@ defmodule Hygeia.CaseContextTest do
                    "last_name" => "Männchen",
                    "location" => "Speicher",
                    "mobile_number" => "+41787245790",
-                   "onset_iso_dt" => "2020-10-06",
+                   "onset_iso_dt" => ^date_case_jony_phase_index_start_string,
                    "onset_quar_dt" => "",
                    "other_exp_loc_type" => "",
                    "other_exp_loc_type_yn" => "0",
@@ -876,11 +910,11 @@ defmodule Hygeia.CaseContextTest do
                    "quar_yn" => "2",
                    "reason_end_of_iso" => "",
                    "reason_quar" => "2",
-                   "sampling_dt" => "2020-10-05",
+                   "sampling_dt" => ^date_case_jony_test_string,
                    "sex" => "1",
                    "street_name" => "Erlen 4",
                    "street_number" => "",
-                   "symptom_onset_dt" => "2020-10-04",
+                   "symptom_onset_dt" => ^date_case_jony_symptom_start_string,
                    "symptoms_yn" => "1",
                    "test_reason_app" => "0",
                    "test_reason_cohort" => "0",
@@ -913,7 +947,7 @@ defmodule Hygeia.CaseContextTest do
                    "country" => "8100",
                    "date_of_birth" => "1992-03-27",
                    "e_mail_address" => "",
-                   "end_of_iso_dt" => "2020-10-20",
+                   "end_of_iso_dt" => ^date_case_jay_phase_index_end_string,
                    "exp_country" => "8100",
                    "exp_loc_dt" => ^transmission_jony_jay_date,
                    "exp_loc_flightdetail" => "",
@@ -969,8 +1003,8 @@ defmodule Hygeia.CaseContextTest do
                    "last_name" => "Zahner",
                    "location" => "St. Gallen",
                    "mobile_number" => "+41797945783",
-                   "onset_iso_dt" => "2020-10-10",
-                   "onset_quar_dt" => "2020-10-06",
+                   "onset_iso_dt" => ^date_case_jay_phase_index_start_string,
+                   "onset_quar_dt" => ^date_case_jay_phase_possible_index_start_string,
                    "other_exp_loc_type" => "",
                    "other_exp_loc_type_yn" => "0",
                    "other_iso_loc" => "",
@@ -1086,6 +1120,18 @@ defmodule Hygeia.CaseContextTest do
             sex: :male
           })
 
+        # ~D[2020-10-06]
+        date_case_jony_phase_index_start = Date.utc_today()
+
+        # ~D[2020-10-04]
+        date_case_jony_symptom_start = Date.add(date_case_jony_phase_index_start, -2)
+        date_case_jony_symptom_start_string = Date.to_iso8601(date_case_jony_symptom_start)
+        # ~D[2020-10-05]
+        date_case_jony_test = Date.add(date_case_jony_phase_index_start, -1)
+        date_case_jony_test_string = Date.to_iso8601(date_case_jony_test)
+        # ~D[2020-10-16]
+        date_case_jony_phase_index_end = Date.add(date_case_jony_phase_index_start, 10)
+
         case_jony =
           case_fixture(person_jony, user, user, %{
             uuid: "7c8004f3-d4bc-4042-8914-265761ffc49c",
@@ -1109,8 +1155,8 @@ defmodule Hygeia.CaseContextTest do
                   type: :contact_person,
                   end_reason: :healed
                 },
-                start: ~D[2020-10-06],
-                end: ~D[2020-10-16],
+                start: date_case_jony_phase_index_start,
+                end: date_case_jony_phase_index_end,
                 quarantine_order: true
               }
             ],
@@ -1118,16 +1164,29 @@ defmodule Hygeia.CaseContextTest do
               has_symptoms: true,
               symptoms: [:fever],
               reasons_for_test: [:symptoms],
-              symptom_start: ~D[2020-10-04]
+              symptom_start: date_case_jony_symptom_start
             },
             tests: [
               %{
                 kind: :serology,
                 result: :positive,
-                tested_at: ~D[2020-10-05]
+                tested_at: date_case_jony_test
               }
             ]
           })
+
+        # ~D[2020-10-06]
+        date_case_jay_phase_possible_index_start = date_case_jony_phase_index_start
+
+        date_case_jay_phase_possible_index_start_string =
+          Date.to_iso8601(date_case_jay_phase_possible_index_start)
+
+        # ~D[2020-10-10]
+        date_case_jay_phase_possible_index_end =
+          Date.add(date_case_jay_phase_possible_index_start, 10)
+
+        date_case_jay_phase_possible_index_end_string =
+          Date.to_iso8601(date_case_jay_phase_possible_index_end)
 
         case_jay =
           case_fixture(person_jay, user, user, %{
@@ -1142,8 +1201,8 @@ defmodule Hygeia.CaseContextTest do
                   type: :contact_person,
                   end_reason: :negative_test
                 },
-                start: ~D[2020-10-06],
-                end: ~D[2020-10-10],
+                start: date_case_jay_phase_possible_index_start,
+                end: date_case_jay_phase_possible_index_end,
                 quarantine_order: true
               }
             ],
@@ -1262,11 +1321,11 @@ defmodule Hygeia.CaseContextTest do
                    "profession" => "",
                    "quar_loc_type" => "1",
                    "reason_end_quar" => "",
-                   "sampling_dt" => "2020-10-05",
+                   "sampling_dt" => ^date_case_jony_test_string,
                    "sex" => "1",
                    "street_name" => "Erlen 4",
                    "street_number" => "",
-                   "symptom_onset_dt" => "2020-10-04",
+                   "symptom_onset_dt" => ^date_case_jony_symptom_start_string,
                    "test_reason_quarantine" => "0",
                    "test_reason_quarantine_end" => "0",
                    "test_reason_symptoms" => "1",
@@ -1287,7 +1346,7 @@ defmodule Hygeia.CaseContextTest do
                    "case_link_ktn_internal_id" => "7c8004f3-d4bc-4042-8914-265761ffc49c",
                    "country" => "8100",
                    "date_of_birth" => "1992-03-27",
-                   "end_quar_dt" => "2020-10-10",
+                   "end_quar_dt" => ^date_case_jay_phase_possible_index_end_string,
                    "exp_country" => "8100",
                    "exp_loc_dt" => ^transmission_jony_jay_date,
                    "exp_loc_flightdetail" => "",
@@ -1333,7 +1392,7 @@ defmodule Hygeia.CaseContextTest do
                    "last_name" => "Zahner",
                    "location" => "St. Gallen",
                    "mobile_number" => "+41797945783",
-                   "onset_quar_dt" => "2020-10-06",
+                   "onset_quar_dt" => ^date_case_jay_phase_possible_index_start_string,
                    "other_exp_loc_type" => "",
                    "other_exp_loc_type_yn" => "0",
                    "other_quar_loc_type" => "",
