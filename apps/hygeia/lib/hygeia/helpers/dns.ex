@@ -13,28 +13,33 @@ defmodule Hygeia.Helpers.DNS do
         []
 
       ^field, hostname ->
-        hostname = String.to_charlist(hostname)
+        try do
+          hostname = String.to_charlist(hostname)
 
-        cond do
-          match?({:ok, _address}, :inet.parse_address(hostname)) ->
-            []
+          cond do
+            match?({:ok, _address}, :inet.parse_address(hostname)) ->
+              []
 
-          match?({:ok, _address}, :inet.getaddr(hostname, :inet)) ->
-            []
+            match?({:ok, _address}, :inet.getaddr(hostname, :inet)) ->
+              []
 
-          match?({:ok, _address}, :inet.getaddr(hostname, :inet6)) ->
-            []
+            match?({:ok, _address}, :inet.getaddr(hostname, :inet6)) ->
+              []
 
-          match?({:ok, _address}, :inet.getaddr(hostname, :local)) ->
-            []
+            match?({:ok, _address}, :inet.getaddr(hostname, :local)) ->
+              []
 
-          match?(
-            [{_priority, _host} | _others],
-            :inet_res.lookup(hostname, :in, :mx, timeout: :timer.seconds(10))
-          ) ->
-            []
+            match?(
+              [{_priority, _host} | _others],
+              :inet_res.lookup(hostname, :in, :mx, timeout: :timer.seconds(10))
+            ) ->
+              []
 
-          true ->
+            true ->
+              [{field, dgettext("errors", "is not a valid hostname")}]
+          end
+        rescue
+          FunctionClauseError ->
             [{field, dgettext("errors", "is not a valid hostname")}]
         end
     end)
