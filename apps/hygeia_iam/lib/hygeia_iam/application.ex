@@ -7,8 +7,6 @@ defmodule HygeiaIam.Application do
 
   @impl Application
   def start(_type, _args) do
-    :application.set_env(:oidcc, :cacertfile, :certifi.cacertfile())
-
     for {provider, config} <- Application.fetch_env!(:hygeia_iam, :providers) do
       :oidcc.add_openid_provider(
         Keyword.fetch!(config, :issuer_or_config_endpoint),

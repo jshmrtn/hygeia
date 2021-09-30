@@ -65,7 +65,8 @@ defmodule HygeiaWeb.MixProject do
       {:jason, "~> 1.1"},
       {:mime, "~> 1.5 or ~> 2.0"},
       {:nebulex, "~> 2.0-rc"},
-      {:oidcc, "~> 1.8.1"},
+      # TODO: Use released version when Hex Publish worked
+      {:oidcc, "~> 1.8.1", github: "Erlang-Openid/oidcc", branch: "master"},
       {:phoenix, "~> 1.5"},
       # TODO: Revert to released version when this PR is merged and released:
       # - https://github.com/danhper/phoenix-active-link/pull/19

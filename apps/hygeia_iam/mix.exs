@@ -43,7 +43,8 @@ defmodule HygeiaIam.MixProject do
       {:certifi, "~> 2.5"},
       {:jason, "~> 1.0"},
       {:jose, "~> 1.10"},
-      {:oidcc, "~> 1.8.1"},
+      # TODO: Use released version when Hex Publish worked
+      {:oidcc, "~> 1.8.1", github: "Erlang-Openid/oidcc", branch: "master"},
       {:sentry, "~> 8.0"}
     ]
   end
