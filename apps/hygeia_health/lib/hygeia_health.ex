@@ -121,7 +121,7 @@ defmodule HygeiaHealth do
         from(email in CommunicationContext.Email,
           select:
             coalesce(
-              avg(email.last_try - email.inserted_at),
+              avg(coalesce(email.last_try, fragment("NOW()")) - email.inserted_at),
               fragment("INTERVAL '0 seconds'")
             ),
           where: email.status == :in_progress
