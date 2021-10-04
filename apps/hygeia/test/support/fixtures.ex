@@ -105,6 +105,21 @@ defmodule Hygeia.Fixtures do
     person
   end
 
+  # ~D[2020-10-10]
+  date_case_possible_index_start = Date.add(Date.utc_today(), -20)
+  # ~D[2020-10-10]
+  date_case_symptom_start = date_case_possible_index_start
+  # ~D[2020-10-11]
+  date_case_tested_at = Date.add(date_case_possible_index_start, 1)
+  # ~D[2020-10-12]
+  date_case_laboratory_report = Date.add(date_case_tested_at, 1)
+  # ~D[2020-10-12]
+  date_case_possible_index_end = date_case_laboratory_report
+  # ~D[2020-10-12]
+  date_case_index_start = Date.add(date_case_possible_index_end, 1)
+  # ~D[2020-10-22]
+  date_case_index_end = Date.add(date_case_index_start, 10)
+
   @valid_attrs %{
     complexity: :medium,
     status: :first_contact,
@@ -114,8 +129,8 @@ defmodule Hygeia.Fixtures do
     # ],
     tests: [
       %{
-        tested_at: ~D[2020-10-11],
-        laboratory_reported_at: ~D[2020-10-12],
+        tested_at: date_case_tested_at,
+        laboratory_reported_at: date_case_laboratory_report,
         kind: :pcr,
         result: :positive
       }
@@ -123,7 +138,7 @@ defmodule Hygeia.Fixtures do
     clinical: %{
       reasons_for_test: [:symptoms, :outbreak_examination],
       symptoms: [:fever],
-      symptom_start: ~D[2020-10-10]
+      symptom_start: date_case_symptom_start
     },
     external_references: [
       %{
@@ -137,7 +152,7 @@ defmodule Hygeia.Fixtures do
       }
     ],
     monitoring: %{
-      first_contact: ~D[2020-10-12],
+      first_contact: date_case_index_start,
       location: :home,
       location_details: "Bei Mutter zuhause",
       address: %{
@@ -155,8 +170,8 @@ defmodule Hygeia.Fixtures do
           type: :contact_person,
           end_reason: :converted_to_index
         },
-        start: ~D[2020-10-10],
-        end: ~D[2020-10-11],
+        start: date_case_possible_index_start,
+        end: date_case_possible_index_end,
         quarantine_order: true
       },
       %{
@@ -164,8 +179,8 @@ defmodule Hygeia.Fixtures do
           __type__: :index,
           end_reason: :healed
         },
-        start: ~D[2020-10-12],
-        end: ~D[2020-10-22],
+        start: date_case_index_start,
+        end: date_case_index_end,
         quarantine_order: true
       }
     ]
