@@ -310,6 +310,8 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   end
 
   def handle_event("save", %{"person" => person_params}, socket) do
+    true = authorized?(socket.assigns.person, :update, get_auth(socket))
+
     person_params =
       person_params
       |> Map.put_new("affiliations", [])

@@ -130,6 +130,8 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   end
 
   def handle_event("save", %{"case" => case_params}, socket) do
+    true = authorized?(socket.assigns.case, :update, get_auth(socket))
+
     case_params =
       case_params
       |> Map.put_new("hospitalizations", [])
