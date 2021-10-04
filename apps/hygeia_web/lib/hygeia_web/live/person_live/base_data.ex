@@ -4,6 +4,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   use HygeiaWeb, :surface_view
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.EctoType.NOGA
