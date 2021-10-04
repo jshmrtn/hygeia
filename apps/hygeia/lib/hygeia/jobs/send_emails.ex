@@ -20,7 +20,7 @@ defmodule Hygeia.Jobs.SendEmails do
 
   @default_send_interval_ms (case(Mix.env()) do
                                :dev -> :timer.seconds(30)
-                               _env -> :timer.minutes(5)
+                               _env -> :timer.minutes(1)
                              end)
   @default_abort_interval_ms (case(Mix.env()) do
                                 :dev -> :timer.seconds(30)
