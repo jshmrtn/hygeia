@@ -86,6 +86,8 @@ defmodule HygeiaWeb.TestLive.Show do
 
   @impl Phoenix.LiveView
   def handle_event("save", %{"test" => test_params}, socket) do
+    true = authorized?(socket.assigns.test, :update, get_auth(socket))
+
     socket.assigns.test
     |> CaseContext.update_test(test_params)
     |> case do
