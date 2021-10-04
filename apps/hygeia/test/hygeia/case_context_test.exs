@@ -329,6 +329,21 @@ defmodule Hygeia.CaseContextTest do
   end
 
   describe "cases" do
+    # ~D[2020-10-10]
+    @date_case_possible_index_start Date.add(Date.utc_today(), -20)
+    # ~D[2020-10-10]
+    @date_case_symptom_start @date_case_possible_index_start
+    # ~D[2020-10-11]
+    @date_case_tested_at Date.add(@date_case_possible_index_start, 1)
+    # ~D[2020-10-12]
+    @date_case_laboratory_report Date.add(@date_case_tested_at, 1)
+    # ~D[2020-10-12]
+    @date_case_possible_index_end @date_case_laboratory_report
+    # ~D[2020-10-12]
+    @date_case_index_start Date.add(@date_case_possible_index_end, 1)
+    # ~D[2020-10-22]
+    @date_case_index_end Date.add(@date_case_index_start, 10)
+
     @valid_attrs %{
       complexity: :high,
       status: :first_contact,
@@ -336,12 +351,12 @@ defmodule Hygeia.CaseContextTest do
         reasons_for_test: [:symptoms, :outbreak_examination],
         has_symptoms: true,
         symptoms: [:fever],
-        symptom_start: ~D[2020-10-10]
+        symptom_start: @date_case_symptom_start
       },
       tests: [
         %{
-          tested_at: ~D[2020-10-11],
-          laboratory_reported_at: ~D[2020-10-12],
+          tested_at: @date_case_tested_at,
+          laboratory_reported_at: @date_case_laboratory_report,
           kind: :pcr,
           result: :positive
         }
@@ -358,7 +373,7 @@ defmodule Hygeia.CaseContextTest do
         }
       ],
       monitoring: %{
-        first_contact: ~D[2020-10-12],
+        first_contact: @date_case_index_start,
         location: :home,
         location_details: "Bei Mutter zuhause",
         address: %{
@@ -376,8 +391,8 @@ defmodule Hygeia.CaseContextTest do
             type: :contact_person,
             end_reason: :converted_to_index
           },
-          start: ~D[2020-10-10],
-          end: ~D[2020-10-11],
+          start: @date_case_possible_index_start,
+          end: @date_case_possible_index_end,
           quarantine_order: true
         },
         %{
@@ -385,8 +400,8 @@ defmodule Hygeia.CaseContextTest do
             __type__: :index,
             end_reason: :healed
           },
-          start: ~D[2020-10-12],
-          end: ~D[2020-10-22],
+          start: @date_case_index_start,
+          end: @date_case_index_end,
           quarantine_order: true
         }
       ]
@@ -452,7 +467,7 @@ defmodule Hygeia.CaseContextTest do
                  has_symptoms: true,
                  symptoms: [:fever],
                  uuid: _,
-                 symptom_start: ~D[2020-10-10]
+                 symptom_start: @date_case_symptom_start
                },
                complexity: :high,
                external_references: [
@@ -475,7 +490,7 @@ defmodule Hygeia.CaseContextTest do
                    uuid: _,
                    zip: "8405"
                  },
-                 first_contact: ~D[2020-10-12],
+                 first_contact: @date_case_index_start,
                  location: :home,
                  location_details: "Bei Mutter zuhause",
                  uuid: _
@@ -486,16 +501,16 @@ defmodule Hygeia.CaseContextTest do
                      type: :contact_person,
                      end_reason: :converted_to_index
                    },
-                   end: ~D[2020-10-11],
-                   start: ~D[2020-10-10],
+                   end: @date_case_possible_index_end,
+                   start: @date_case_possible_index_start,
                    uuid: _
                  },
                  %Phase{
                    details: %Phase.Index{
                      end_reason: :healed
                    },
-                   end: ~D[2020-10-22],
-                   start: ~D[2020-10-12],
+                   end: @date_case_index_end,
+                   start: @date_case_index_start,
                    uuid: _
                  }
                ],
