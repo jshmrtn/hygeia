@@ -32,16 +32,20 @@
           </summary>
           <div
             :for={%Person{first_name: first_name, last_name: last_name, address: address} = person <-
-              duplicate_persons}
+              Repo.preload(duplicate_persons, :tenant)}
             class="card mt-2 card-body"
           >
             <div>
               {"This person is possibly a duplicate of %{name_link} please check."
               |> gettext(
                 name_link:
-                  "#{first_name} #{last_name} #{if(address, do: "(#{address.place})")}"
-                  |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
-                  |> safe_to_string
+                  if authorized?(person, :details, auth) do
+                    "#{first_name} #{last_name} #{if(address, do: "(#{Address.to_string(address)})")}"
+                    |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
+                    |> safe_to_string
+                  else
+                    "#{person.tenant.subdivision} / #{person.human_readable_id}"
+                  end
               )
               |> raw}
             </div>
