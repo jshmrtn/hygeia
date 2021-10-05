@@ -20,7 +20,7 @@ defmodule Hygeia.Umbrella.MixProject do
           list_unused_filters: true,
           plt_add_apps: [:mix]
         ] ++
-          if (System.get_env("DIALYZER_PLT_PRIV") || "false") in ["1", "true"] do
+          if System.get_env("DIALYZER_PLT_PRIV", "false") in ["1", "true"] do
             [plt_file: {:no_warn, "priv/plts/dialyzer.plt"}]
           else
             []
