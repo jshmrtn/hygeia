@@ -38,6 +38,7 @@ defmodule Hygeia.TenantContext.Tenant.Smtp.DKIM do
     |> validate_dkim_certificate(:private_key)
   end
 
+  # sobelow_skip ["Traversal"]
   @spec to_gen_smtp_opts(dkim :: t) :: Keyword.t()
   def to_gen_smtp_opts(%__MODULE__{
         private_key: private_key,

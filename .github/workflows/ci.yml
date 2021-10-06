@@ -495,3 +495,32 @@ jobs:
         env:
           SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
         if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v') && !contains(steps.branch_name.outputs.SOURCE_TAG, '-beta.')
+
+  sobelow:
+    runs-on: ubuntu-latest
+    name: Sobelow Job
+
+    strategy:
+      fail-fast: false
+      matrix:
+        app:
+          - hygeia
+          - hygeia_cldr
+          - hygeia_cluster
+          - hygeia_gettext
+          - hygeia_health
+          - hygeia_iam
+          - hygeia_pdf_confirmation
+          - hygeia_telemetry
+          - hygeia_web
+          - sentry_event_filter
+
+    steps:
+      - uses: actions/checkout@v2
+      - id: run-action
+        uses: sobelow/action@v1
+        with:
+          flags: '--skip --root apps/${{matrix.app}}'
+      - uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: results.sarif

@@ -38,6 +38,7 @@ defmodule HygeiaPdfConfirmation do
   def render_pdf(nil, template, assigns),
     do: render_pdf(hd(template_variations()), template, assigns)
 
+  # sobelow_skip ["Traversal"]
   def render_pdf(variation, template, assigns) do
     {:ok, header_html_path} = Briefly.create(extname: ".html")
 
@@ -113,6 +114,7 @@ defmodule HygeiaPdfConfirmation do
     render(variation, type, assigns)
   end
 
+  # sobelow_skip ["RCE.EEx"]
   defp render(variation, type, assigns),
     do:
       EEx.eval_file(

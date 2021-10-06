@@ -1,6 +1,7 @@
 defmodule HygeiaWeb.Helpers.CSP do
   @moduledoc false
 
+  # sobelow_skip ["Traversal.FileModule"]
   @spec integrity_hash(priv_path :: Path.t()) :: String.t() | nil
   def integrity_hash(priv_path) do
     %{path: priv_path} = URI.parse(priv_path)
