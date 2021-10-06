@@ -1061,7 +1061,7 @@ defmodule Hygeia.CaseContextTest do
                ] =
                  tenant
                  |> CaseContext.case_export(:bag_med_16122020_case)
-                 |> CSV.decode!(headers: true)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
                  |> Enum.to_list()
       end)
     end
@@ -1440,7 +1440,7 @@ defmodule Hygeia.CaseContextTest do
                ] =
                  tenant
                  |> CaseContext.case_export(:bag_med_16122020_contact)
-                 |> CSV.decode!(headers: true)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
                  |> Enum.to_list()
       end)
     end

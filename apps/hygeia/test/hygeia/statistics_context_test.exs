@@ -165,7 +165,7 @@ defmodule Hygeia.StatisticsContextTest do
                ] =
                  :active_isolation_cases_per_day
                  |> StatisticsContext.export(tenant, day_1, day_4)
-                 |> CSV.decode!()
+                 |> CSV.decode!(escape_formulas: true)
                  |> Enum.to_list()
       end)
     end
@@ -326,7 +326,7 @@ defmodule Hygeia.StatisticsContextTest do
                    day_1,
                    day_4
                  )
-                 |> CSV.decode!()
+                 |> CSV.decode!(escape_formulas: true)
                  |> Enum.to_list()
 
         assert length(entries) == 21
@@ -489,7 +489,7 @@ defmodule Hygeia.StatisticsContextTest do
                    day_1,
                    day_4
                  )
-                 |> CSV.decode!()
+                 |> CSV.decode!(escape_formulas: true)
                  |> Enum.to_list()
 
         assert length(entries) == 21
@@ -669,7 +669,7 @@ defmodule Hygeia.StatisticsContextTest do
                    day_1,
                    day_4
                  )
-                 |> CSV.decode!()
+                 |> CSV.decode!(escape_formulas: true)
                  |> Enum.to_list()
 
         assert length(entries) ==
@@ -835,7 +835,7 @@ defmodule Hygeia.StatisticsContextTest do
                    day_1,
                    day_4
                  )
-                 |> CSV.decode!()
+                 |> CSV.decode!(escape_formulas: true)
                  |> Enum.to_list()
 
         assert length(entries) == 25
@@ -926,7 +926,7 @@ defmodule Hygeia.StatisticsContextTest do
                    day_1,
                    day_4
                  )
-                 |> CSV.decode!()
+                 |> CSV.decode!(escape_formulas: true)
                  |> Enum.to_list()
 
         assert length(entries) == 5
@@ -1092,7 +1092,7 @@ defmodule Hygeia.StatisticsContextTest do
                    day_1,
                    day_4
                  )
-                 |> CSV.decode!()
+                 |> CSV.decode!(escape_formulas: true)
                  |> Enum.to_list()
 
         assert length(entries) == 21
@@ -1248,7 +1248,7 @@ defmodule Hygeia.StatisticsContextTest do
                    day_1,
                    day_4
                  )
-                 |> CSV.decode!()
+                 |> CSV.decode!(escape_formulas: true)
                  |> Enum.to_list()
 
         assert length(entries) == 125
@@ -1367,7 +1367,7 @@ defmodule Hygeia.StatisticsContextTest do
                    day_1,
                    day_4
                  )
-                 |> CSV.decode!()
+                 |> CSV.decode!(escape_formulas: true)
                  |> Enum.to_list()
 
         assert length(entries) == 5
