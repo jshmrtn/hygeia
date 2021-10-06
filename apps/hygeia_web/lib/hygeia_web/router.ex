@@ -20,6 +20,7 @@ defmodule HygeiaWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
+    plug :protect_from_forgery
     plug :put_root_layout, {HygeiaWeb.LayoutView, :root}
     plug :put_secure_browser_headers
 
@@ -123,10 +124,6 @@ defmodule HygeiaWeb.Router do
     plug HygeiaWeb.Plug.SetupVersioning
   end
 
-  pipeline :csrf do
-    plug :protect_from_forgery
-  end
-
   pipeline :protected do
     plug HygeiaWeb.Plug.RequireAuthentication
   end
@@ -136,7 +133,7 @@ defmodule HygeiaWeb.Router do
   end
 
   scope "/", HygeiaWeb do
-    pipe_through [:browser, :csrf]
+    pipe_through [:browser]
 
     live "/cases/:case_uuid/possible-index-submissions", PossibleIndexSubmissionLive.Index, :index
 
@@ -200,7 +197,7 @@ defmodule HygeiaWeb.Router do
   end
 
   scope "/", HygeiaWeb do
-    pipe_through [:browser, :csrf, :protected]
+    pipe_through [:browser, :protected]
 
     live "/tenants/new", TenantLive.Create, :create
     live "/tenants/:id", TenantLive.Show, :show
@@ -304,7 +301,7 @@ defmodule HygeiaWeb.Router do
   end
 
   scope "/", HygeiaWeb do
-    pipe_through [:browser, :csrf]
+    pipe_through [:browser]
 
     live "/", HomeLive.Index, :index
 
@@ -350,7 +347,7 @@ defmodule HygeiaWeb.Router do
   end
 
   scope "/dashboard" do
-    pipe_through [:browser, :csrf, :protected, :protected_webmaster]
+    pipe_through [:browser, :protected, :protected_webmaster]
 
     live_dashboard "/",
       metrics: {HygeiaTelemetry, :dashboard_metrics},

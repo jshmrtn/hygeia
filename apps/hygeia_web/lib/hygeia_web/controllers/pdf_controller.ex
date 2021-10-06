@@ -69,6 +69,7 @@ defmodule HygeiaWeb.PdfController do
           Plug.Conn.t()
   def isolation_end_confirmation(conn, params), do: confirmation(conn, params, IsolationEnd)
 
+  # sobelow_skip ["XSS.SendResp"]
   defp confirmation(
          %Plug.Conn{request_path: request_path} = conn,
          %{
