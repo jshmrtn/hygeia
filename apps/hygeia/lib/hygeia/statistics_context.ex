@@ -634,7 +634,7 @@ defmodule Hygeia.StatisticsContext do
         )
       )
     )
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   @spec export(
@@ -657,7 +657,7 @@ defmodule Hygeia.StatisticsContext do
         )
       )
     )
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   @spec export(
@@ -679,7 +679,7 @@ defmodule Hygeia.StatisticsContext do
         )
       )
     )
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   @spec export(
@@ -703,7 +703,7 @@ defmodule Hygeia.StatisticsContext do
         )
       )
     )
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   @spec export(
@@ -726,7 +726,7 @@ defmodule Hygeia.StatisticsContext do
         )
       )
     )
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   @spec export(
@@ -752,7 +752,7 @@ defmodule Hygeia.StatisticsContext do
         )
       )
     )
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   @spec export(
@@ -779,7 +779,7 @@ defmodule Hygeia.StatisticsContext do
         )
       )
     )
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   @spec export(
@@ -806,7 +806,7 @@ defmodule Hygeia.StatisticsContext do
         )
       )
     )
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   @spec export(
@@ -833,7 +833,7 @@ defmodule Hygeia.StatisticsContext do
         )
       )
     )
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   # Export for only "from" day !
@@ -864,7 +864,7 @@ defmodule Hygeia.StatisticsContext do
         end
       )
     )
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   defp list_active_cases_per_day_organisation_division_kind_query(

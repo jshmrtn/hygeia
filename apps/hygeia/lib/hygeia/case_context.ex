@@ -1116,7 +1116,7 @@ defmodule Hygeia.CaseContext do
 
     [@bag_med_16122020_case_fields]
     |> Stream.concat(cases)
-    |> CSV.encode()
+    |> CSV.encode(escape_formulas: true)
   end
 
   @bag_med_16122020_contact_fields [
@@ -1802,7 +1802,7 @@ defmodule Hygeia.CaseContext do
         end)
       end
 
-    CSV.encode(export)
+    CSV.encode(export, escape_formulas: true)
   end
 
   defp normalize_boolean_field(row, field_number) do

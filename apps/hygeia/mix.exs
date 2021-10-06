@@ -59,7 +59,10 @@ defmodule Hygeia.MixProject do
     [
       {:cadastre, "~> 0.2.0"},
       {:crontab, "~> 1.1"},
-      {:csv, "~> 2.4"},
+      # TODO: Revert back to the released version when the following PR is
+      # merged and released:
+      # - https://github.com/beatrichartz/csv/pull/104
+      {:csv, "~> 2.4", github: "jshmrtn/csv", branch: "formular_escaping"},
       {:ecto_boot_migration, "~> 0.2"},
       {:ecto_enum, "~> 1.4"},
       {:ecto, "~> 3.7"},
