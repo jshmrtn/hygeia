@@ -274,7 +274,7 @@
                 >
                   <Field name={:access_token} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                    <PasswordInput class="form-control" opts={disabled: @live_action == :show} />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </PolimorphicInputs>
