@@ -27,7 +27,6 @@ defmodule Hygeia.TenantContext.Tenant.Websms do
   def changeset(websms, attrs) do
     websms
     |> cast(attrs, [:access_token])
-    |> 
     |> validate_required([:access_token])
   end
 
