@@ -1,4340 +1,4273 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: de\n"
-"Project-Id-Version: \n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
-msgstr "\"Fusionieren\" und \"Ziel\" dürfen nicht die selben sein"
+msgstr ""
 
 msgid "%{count} New Notification"
 msgid_plural "%{count} New Notifications"
-msgstr[0] "%{count} neue Benachrichtigung"
-msgstr[1] "%{count} neue Benachrichtigungen"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "%{tenant} - Contact Tracing"
-msgstr "%{tenant} – Contact Tracing"
+msgstr ""
 
 msgid "0-1 contact person"
-msgstr "0-1 Kontaktperson"
+msgstr ""
 
 msgid "1 call"
-msgstr "1 Telefonanruf"
+msgstr ""
 
 msgid "2-5 contact persons"
-msgstr "2-5 Kontaktpersonen"
+msgstr ""
 
 msgid "24 Hours"
-msgstr "24 Stunden"
+msgstr ""
 
 msgid "24 Hours Statistics"
-msgstr "24 Stunden Statistiken"
+msgstr ""
 
 msgid "6 or more contact persons"
-msgstr "6 und mehr Kontaktpersonen"
+msgstr ""
 
 msgid "< 15 Min."
-msgstr "< 15 Min."
+msgstr ""
 
 msgid "< 30 Min."
-msgstr "< 30 Min."
+msgstr ""
 
 msgid "> 15 Min."
-msgstr "> 15 Min."
+msgstr ""
 
 msgid "> 30 Min."
-msgstr "> 30 Min."
+msgstr ""
 
 msgid "A lot of contact persons from different places, clubs affected, gastronomy affected, hospital/nursing home affected"
-msgstr "Viele Kontaktpersonen aus unterschiedlichen Orten, Vereine betroffen, Gastronomie betroffen, Spital/Heim betroffen"
+msgstr ""
 
 msgid "A lot of contact persons/places that must be determined / assignment to team lead"
-msgstr "Viele verschiedene Kontaktpersonen/ Orte, die abgeklärt werden müssen / Übergabe an die Teamleitung"
+msgstr ""
 
 msgid "A minimum of 2 points must be fulfilled"
-msgstr "Mind. 2 Punkte müssen erfüllt sein"
+msgstr ""
 
 msgid "A minimum of 3 points must be fulfilled"
-msgstr "Mind. 3 Punkte müssen erfüllt sein"
+msgstr ""
 
 msgid "A phase will be appended."
-msgstr "Eine neue Phase wird angehängt."
+msgstr ""
 
 msgctxt "Versioning Origin"
 msgid "API"
-msgstr "Schnittstelle"
+msgstr ""
 
 msgid "Accept"
-msgstr "Akzeptieren"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Websms Field"
 msgid "Access Token"
-msgstr "Access Token"
+msgstr ""
 
 msgid "Acquiring Lock..."
-msgstr "Exklusive Bearbeitungsrechte werden angefordert…"
+msgstr ""
 
 msgid "Actions"
-msgstr "Aktionen"
+msgstr ""
 
 msgid "Active Cases"
-msgstr "Aktuelle Fälle"
+msgstr ""
 
 msgid "Activity Mapping"
-msgstr "Aktivitätskartierung"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Activity Mapping"
-msgstr "Aktivitätskartierung"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Activity Mapping Executed"
-msgstr "Aktivitätskartierung ausgeführt"
+msgstr ""
 
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr ""
 
 msgid "Add an institution"
-msgstr "Bildungseinrichtung hinzufügen"
+msgstr ""
 
 msgid "Add an occupation"
-msgstr "Beschäftigung hinzufügen"
+msgstr ""
 
 msgid "Add external references if it does not exist."
-msgstr "Externe Referenz hinzufügen, falls diese noch nicht existiert."
+msgstr ""
 
 msgid "Add hospitalization"
-msgstr "Krankenhausaufenthalt hinzufügen"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Add the mobile number or e-mail address to the person data."
-msgstr "Die Mobiltelefonnummer oder E-Mail-Adresse den Personendaten hinzufügen."
+msgstr ""
 
 msgctxt "Phase Create Modal"
 msgid "Additional Changes"
-msgstr "Weitere Änderungen"
+msgstr ""
 
 msgid "Additional actions:"
-msgstr "Weitere Aktionen:"
+msgstr ""
 
 msgid "Additional inquiries"
-msgstr "Weitere Abklärungen"
+msgstr ""
 
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Auto Tracing Step"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Address"
-msgstr "Adresse"
+msgstr ""
 
 msgid "Adress"
-msgstr "Adresse"
+msgstr ""
 
 msgid "Adult salon / prostitution services"
-msgstr "Erotiksalon / Prostitutionsdienste"
+msgstr ""
 
 msgid "Affiliations"
-msgstr "Zugehörigkeiten"
+msgstr ""
 
 msgid "Agreed with index that had been in contact that no further contact is necessary"
-msgstr "Mit dem Index, der mit der Kontaktperson in Verbindung war, abgemacht, dass kein erneuter Kontakt nötig ist (momentan der Normalfall)"
+msgstr ""
 
 msgid "Agreed with index that no further contact is necessary"
-msgstr "Mit Index abgemacht, dass kein erneuter Kontakt nötig ist (momentan der Normalfall)"
+msgstr ""
 
 msgid "Airplane or travel"
-msgstr "Flugzeug oder Reise"
+msgstr ""
 
 msgid "All points must be fulfilled"
-msgstr "Alle Punkte müssen erfüllt sein"
+msgstr ""
 
 msgid "Always work from Top to Bottom. Otherwise changes may be lost!"
-msgstr "Immer von Oben nach Unten arbeiten. Ansonsten gehen Änderungen verloren!"
+msgstr ""
 
 msgid "An unknown error happened during registration. Report this to your webmaster."
-msgstr "Bei der Registrierung ist ein unbekannter Fehler aufgetreten. Melden Sie dies Ihrem Webmaster."
+msgstr ""
 
 msgctxt "Test Kind"
 msgid "Antibody"
-msgstr "Antikörper"
+msgstr ""
 
 msgctxt "Test Kind"
 msgid "Antigen Quick"
-msgstr "Antigen-Schnelltest"
+msgstr ""
 
 msgid "Any"
-msgstr "Beliebig"
+msgstr ""
 
 msgctxt "Test Reason"
 msgid "App report"
-msgstr "Swiss-Covid-App Meldung"
+msgstr ""
 
 msgid "Append Note"
-msgstr "Notiz hinzufügen"
+msgstr ""
 
 msgid "Append Phase"
-msgstr "Phase anhängen"
+msgstr ""
 
 msgid "Append new Test"
-msgstr "Neuer Test hinzufügen"
+msgstr ""
 
 msgid "Apply"
-msgstr "Anwenden"
+msgstr ""
 
 msgid "April"
-msgstr "April"
+msgstr ""
 
 msgid "Are you a enrolled at this educational institution?"
-msgstr "Sind Sie als Student akkreditiert oder Schüler bei dieser Bildungseinrichtung?"
+msgstr ""
 
 msgid "Are you employed by this educational institution?"
-msgstr "Sind Sie bei dieser Bildungseinrichtung angestellt?"
+msgstr ""
 
 msgid "Are you employed, student or a club member?"
-msgstr "Sind Sie berufstätig, Schüler*in oder Vereinsmitglied?"
+msgstr ""
 
 msgid "Are you planning to move to a different address for your isolation? If so, at which address?"
-msgstr "Verbringen Sie Ihre Isolation an einem anderen Ort? Falls ja, wo genau?"
+msgstr ""
 
 msgid "Are you sure?"
-msgstr "Sind Sie sicher?"
+msgstr ""
 
 msgid "Are you sure? There are affiliations assigned!"
-msgstr "Sind Sie sicher? Es existieren Zugehörigkeiten!"
+msgstr ""
 
 msgid "Are you working in an association?"
-msgstr "Wirken Sie in einem Verein mit?"
+msgstr ""
 
 msgid "Army, Civil Protection"
-msgstr "Armee, Zivilschutz"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Assign the case back to the case admininistration."
-msgstr "Den Fall wieder der Fall-Administration zuweisen."
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Assign the case back to the case administration."
-msgstr "Den Fall wieder der Fall-Administration zuweisen."
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Assign the case to yourself."
-msgstr "Den Fall sich selbst zuweisen."
+msgstr ""
 
 msgid "Association"
-msgstr "Verein"
+msgstr ""
 
 msgid "Asylum Center"
-msgstr "Asylzentrum"
+msgstr ""
 
 msgid "Asylum center"
-msgstr "Asylzentrum"
+msgstr ""
 
 msgctxt "Possible Index End Reason"
 msgid "Asymptomatic"
-msgstr "Asymptomatisch"
+msgstr ""
 
 msgid "At least one phase is required"
-msgstr "Mindestens eine Phase wird benötigt"
+msgstr ""
 
 msgid "August"
-msgstr "August"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Author"
-msgstr "Autor"
+msgstr ""
 
 msgctxt "Login"
 msgid "Authorized Personel"
-msgstr "Autorisiertes Personal"
+msgstr ""
 
 msgid "Auto Tracing"
-msgstr "Auto Tracing"
+msgstr ""
 
 msgid "Auto Tracing Problem"
-msgstr "Auto Tracing Problem"
+msgstr ""
 
 msgid "Auto Tracing active"
-msgstr "Auto Tracing aktiv"
+msgstr ""
 
 msgctxt "Versioning Origin"
 msgid "Automated Case Close Email"
-msgstr "Automatisches Fall-Abschluss-Email"
+msgstr ""
 
 msgid "Automated Close Email"
-msgstr "Automatisches Fall-Abschluss-Email"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Automated close email sent"
-msgstr "Automatisches Fall-Abschluss-Email gesendet"
+msgstr ""
 
 msgid "BAG MED 16122020 (Case)"
-msgstr "BAG MED 16122020 (Fall)"
+msgstr ""
 
 msgid "BAG MED 16122020 (Case; Hygeia Extended Fields)"
-msgstr "BAG MED 16122020 (Fall; mit Hygeia-Zusatz-Felden)"
+msgstr ""
 
 msgid "BAG MED 16122020 (Contact)"
-msgstr "BAG MED 16122020 (Kontakt)"
+msgstr ""
 
 msgid "BAG MED 16122020 (Contact; Hygeia Extended Fields)"
-msgstr "BAG MED 16122020 (Kontakt; mit Hygeia-Zusatz-Felden)"
+msgstr ""
 
 msgid "Back"
-msgstr "Zurück"
+msgstr ""
 
 msgid "Back to List"
-msgstr "Zurück zur Liste"
+msgstr ""
 
 msgid "Back to list"
-msgstr "Zurück zur Liste"
+msgstr ""
 
 msgid "Base Data"
-msgstr "Basisdaten"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Birth Date"
-msgstr "Geburtsdatum"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Birth Date"
-msgstr "Geburtsdatum"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Birth Date"
-msgstr "Geburtsdatum"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Body"
-msgstr "Inhalt"
+msgstr ""
 
 msgid "Body Aches"
-msgstr "Gliederschmerzen"
+msgstr ""
 
 msgid "Call"
-msgstr "Anruf"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Call the existing number (if there is one) or send them an e-mail to find out why they did not react."
-msgstr "Die existierende Nummer (wenn eine vorhanden) anrufen oder eine E-Mail senden um herauszufinden warum es keine Reaktion gab."
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Call the existing number (if there is one) to get a mobile number or e-mail address."
-msgstr "Die existierende Nummer (wenn eine vorhanden) anrufen um eine Mobiltelefonnummer oder E-Mail-Adresse zu erfragen."
+msgstr ""
 
 msgctxt "Case Status"
 msgid "Canceled"
-msgstr "Tracing abgebrochen"
+msgstr ""
 
 msgctxt "School Type"
 msgid "Cantonal school or other middle school"
-msgstr "Kantonsschule oder andere Mittelschule"
+msgstr ""
 
 msgid "Case"
-msgstr "Fall"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case"
-msgstr "Fall"
+msgstr ""
 
 msgctxt "Inbox Row Apply Person"
 msgid "Case"
-msgstr "Fall"
+msgstr ""
 
 msgid "Case Administration"
-msgstr "Fall-Administration"
+msgstr ""
 
 msgctxt "Notification Type"
 msgid "Case Assignee Changed"
-msgstr "Fall-Zuweisung geändert"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Case Management Enabled"
-msgstr "Fallverwaltung aktiviert"
+msgstr ""
 
 msgid "Case Phase Type must be unique"
-msgstr "Der Phasen Typ muss einmalig sein"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case UUID"
-msgstr "Fall UUID"
+msgstr ""
 
 msgid "Case created successfully"
-msgstr "Fall wurde erfolgreich erstellt"
+msgstr ""
 
 msgid "Case deleted successfully"
-msgstr "Fall erfolgreich gelöscht"
+msgstr ""
 
 msgid "Case updated successfully"
-msgstr "Fall erfolgreich aktualisiert"
+msgstr ""
 
 msgctxt "Inbox Row Apply Person"
 msgid "Case:"
-msgstr "Fall:"
+msgstr ""
 
 msgid "Cases"
-msgstr "Fälle"
+msgstr ""
 
 msgid "Certain"
-msgstr "Sicher"
+msgstr ""
 
 msgid "Change Assignees"
-msgstr "Zuweisung anpassen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Change Date"
-msgstr "Änderungsdatum"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Change Password"
-msgstr "Passwort ändern"
+msgstr ""
 
 msgid "Change Status"
-msgstr "Status anpassen"
+msgstr ""
 
 msgid "Change Status to %{status}"
-msgstr "Status auf %{status} anpassen"
+msgstr ""
 
 msgid "Change Tenant"
-msgstr "Mandant wählen"
+msgstr ""
 
 msgid "Change Tracer to %{tracer} and supervisor to %{supervisor}"
-msgstr "Tracer auf %{tracer} und Supervisor auf %{supervisor} anpassen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Changes"
-msgstr "Änderungen"
+msgstr ""
 
 msgid "Check Duplicates"
-msgstr "Überprüfen von Duplikaten"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Check and apply all possible index submissions."
-msgstr "Alle Möglicher Index Einsendungen überprüfen und anwenden."
+msgstr ""
 
 msgid "Children's home, home for the disabled"
-msgstr "Kinderheim, Behindertenheim"
+msgstr ""
 
 msgid "Choir, Choral Society, Orchstra"
-msgstr "Chor, Gesangsverein, Orchester"
+msgstr ""
 
 msgid "Choose %{case}"
-msgstr "%{case} auswählen"
+msgstr ""
 
 msgctxt "Affiliation"
 msgid "Choose Kind"
-msgstr "Art wählen"
+msgstr ""
 
 msgid "Choose Sex"
-msgstr "Biologisches Geschlecht wählen"
+msgstr ""
 
 msgid "Choose Tenant"
-msgstr "Mandant wählen"
+msgstr ""
 
 msgid "Choose Type"
-msgstr "Typ wählen"
+msgstr ""
 
 msgid "Choose case"
-msgstr "Fall wählen"
+msgstr ""
 
 msgid "Choose country"
-msgstr "Land wählen"
+msgstr ""
 
 msgid "Choose division"
-msgstr "Abteilung / Klasse wählen"
+msgstr ""
 
 msgid "Choose existing person"
-msgstr "Bestehende Person wählen"
+msgstr ""
 
 msgid "Choose file"
-msgstr "Datei wählen"
+msgstr ""
 
 msgid "Choose location"
-msgstr "Standort wählen"
+msgstr ""
 
 msgid "Choose organisation"
-msgstr "Organisation wählen"
+msgstr ""
 
 msgid "Choose person"
-msgstr "Person wählen"
+msgstr ""
 
 msgid "Choose profession category"
-msgstr "Wählen Sie die Berufskategorie"
+msgstr ""
 
 msgctxt "Reason"
 msgid "Choose reason"
-msgstr "Grund wählen"
+msgstr ""
 
 msgid "Choose subdivision"
-msgstr "Kanton wählen"
+msgstr ""
 
 msgid "Choose test kind"
-msgstr "Testart wählen"
+msgstr ""
 
 msgid "Choose test result"
-msgstr "Testergebnis wählen"
+msgstr ""
 
 msgid "Cinema / theater / concert"
-msgstr "Kino / Theater / Konzert"
+msgstr ""
 
 msgctxt "Auto Tracing Step"
 msgid "Clinical"
-msgstr "Klinisch"
+msgstr ""
 
 msgid "Clinical Information"
-msgstr "Klinische Informationen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Clinical Information"
-msgstr "Klinische Informationen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Closed At"
-msgstr "Geschlossen am"
+msgstr ""
 
 msgctxt "Organisation Type"
 msgid "Club"
-msgstr "Verein"
+msgstr ""
 
 msgctxt "Case Status"
 msgid "Code Pending"
-msgstr "Versand Code noch offen"
+msgstr ""
 
 msgid "Collect Data"
-msgstr "Daten eingeben"
+msgstr ""
 
 msgid "Comma (,)"
-msgstr "Komma (,)"
+msgstr ""
 
 msgid "Comment"
-msgstr "Kommentar"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.ContactMethod Field"
 msgid "Comment"
-msgstr "Kommentar"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Comment"
-msgstr "Kommentar"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Comment"
-msgstr "Kommentar"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Comment"
-msgstr "Kommentar"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Comment"
-msgstr "Kommentar"
+msgstr ""
 
 msgid "Complete Data"
-msgstr "Daten vervollständigen"
+msgstr ""
 
 msgid "Complexity"
-msgstr "Komplexität"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Complexity"
-msgstr "Komplexität"
+msgstr ""
 
 msgid "Compulsory school"
-msgstr "Obligatorische Schule"
+msgstr ""
 
 msgid "Condition"
-msgstr "Bedingung"
+msgstr ""
 
 msgid "Confirmation PDF Template"
-msgstr "Bestätigung PDF Vorlage"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Contact Email"
-msgstr "Kontakt Tracing"
+msgstr ""
 
 msgid "Contact Methods"
-msgstr "Kontaktmethoden"
+msgstr ""
 
 msgctxt "Auto Tracing Step"
 msgid "Contact Methods"
-msgstr "Kontaktmethoden"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Contact Methods"
-msgstr "Kontaktmethoden"
+msgstr ""
 
 msgctxt "Possible Index Type"
 msgid "Contact Person"
-msgstr "Kontaktperson"
+msgstr ""
 
 msgid "Contact Persons"
-msgstr "Kontaktpersonen"
+msgstr ""
 
 msgctxt "Auto Tracing Step"
 msgid "Contact Persons"
-msgstr "Kontaktpersonen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Contact Phone"
-msgstr "Kontaktperson"
+msgstr ""
 
 msgctxt "Home"
 msgid "Contact Tracing for SARS-CoV-2"
-msgstr "Contact Tracing für SARS-CoV-2"
+msgstr ""
 
 msgid "Contact persons"
-msgstr "Kontaktpersonen"
+msgstr ""
 
 msgctxt "Test Reason"
 msgid "Contact tracing"
-msgstr "Kontakt Tracing"
+msgstr ""
 
 msgid "Continue"
-msgstr "Weiter"
+msgstr ""
 
 msgctxt "Test Reason"
 msgid "Convenience"
-msgstr "Convenience"
+msgstr ""
 
 msgid "Converted to Index"
-msgstr "Zu Indexfall umgewandelt"
+msgstr ""
 
 msgctxt "Possible Index End Reason"
 msgid "Converted to Index"
-msgstr "Zu Indexfall umgewandelt"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Copy Address From Propagator"
-msgstr "Adresse vom Anstecker kopieren"
+msgstr ""
 
 msgctxt "Organisation Type"
 msgid "Corporation"
-msgstr "Unternehmen"
+msgstr ""
 
 msgid "Correct Data"
-msgstr "Daten korrigieren"
+msgstr ""
 
 msgctxt "Auto Tracing Exit"
 msgid "Correct address"
-msgstr "Adresse korrigieren"
+msgstr ""
 
 msgid "Correct phone number available"
-msgstr "Telefonnummer korrekt vorhanden"
+msgstr ""
 
 msgid "Correctional facility"
-msgstr "Justizvollzugsanstalt"
+msgstr ""
 
 msgid "Cough"
-msgstr "Husten"
+msgstr ""
 
 msgid "Count"
-msgstr "Anzahl"
+msgstr ""
 
 msgid "Countries"
-msgstr "Länder"
+msgstr ""
 
 msgid "Country"
-msgstr "Land"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Country"
-msgstr "Land"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Country"
-msgstr "Land"
+msgstr ""
 
 msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
-msgstr "SwissCovidApp-Meldung"
+msgstr ""
 
 msgctxt "Division"
 msgid "Create"
-msgstr "Erstellen"
+msgstr ""
 
 msgctxt "Organisation"
 msgid "Create"
-msgstr "Erstellen"
+msgstr ""
 
 msgid "Create Auto Tracing"
-msgstr "Auto Tracing auslösen"
+msgstr ""
 
 msgid "Create Contact Cases"
-msgstr "Kontaktfälle erstellen"
+msgstr ""
 
 msgctxt "Inbox Row Apply Person"
 msgid "Create New"
-msgstr "Neu erstellen"
+msgstr ""
 
 msgid "Create Note"
-msgstr "Notiz anlegen"
+msgstr ""
 
 msgid "Create Phase"
-msgstr "Phase erstellen"
+msgstr ""
 
 msgid "Create Possible Index Cases"
-msgstr "Mögliche Indexfälle erstellen"
+msgstr ""
 
 msgid "Create new person"
-msgstr "Neue Person erstellen"
+msgstr ""
 
 msgid "Created Case"
 msgid_plural "Created %{n} Cases"
-msgstr[0] "Fall erstellt"
-msgstr[1] "%{n} Fälle erstellt"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Created at %{created_at}"
-msgstr "Erstellt am %{created_at}"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Current Step"
-msgstr "Aktueller Schritt"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "DKIM"
-msgstr "DKIM"
+msgstr ""
 
 msgid "Daily Statistics"
-msgstr "Tagesstatistik"
+msgstr ""
 
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
 msgctxt "Protocol Entry"
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Date of last visit"
-msgstr "Datum des letzten Besuchs"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Date of last visit"
-msgstr "Datum des letzten Besuchs"
+msgstr ""
 
 msgid "Dear Sir / Madam"
-msgstr "Sehr geehrte Damen & Herren"
+msgstr ""
 
 msgid "Dear Sir / Madam,\n\nAs discussed via phone, you can access the information about your isolation via the following link:\n%{public_overview_link}\n\nPlease open this link and log in using you first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nYou will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n\nPlease read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
-"Sehr geehrte Damen und Herren,\n"
-"\n"
-"Unter folgendem Link erhalten Sie Zugriff zu den Daten Ihres Falles:\n"
-"%{public_overview_link}\n"
-"\n"
-"Bitte öffnen Sie diesen Link und verifizieren sich dort mit Ihrem Vor- und Nachnamen. (Initialen: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Sie können nun Ihre Isolationsbestätigung herunterladen und mögliche Kontaktpersonen erfassen. Außerdem können Sie am Ende Ihrer Isolation eine Endbestätigung herunterladen. \n"
-"\n"
-"Bitte beachten Sie die Informationen zur Isolation in Ihrer Bestätigung und die dort angegebenen Links und Kontaktmöglichkeiten. \n"
-"\n"
-"Besten Dank und freundliche Grüsse,\n"
-"%{message_signature}\n"
 
 msgid "Dear Sir / Madam,\n\nYou have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n\nPlease open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nYou will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n\nPlease read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
-"Sehr geehrte Damen und Herren,\n"
-"\n"
-"Sie hatten engen Kontakt zu einer auf Covid-19 positiv getesteten Person. Aus diesem Grund müssen Sie für 10 Tage in Quarantäne.\n"
-"\n"
-"Bitte öffnen Sie folgenden Link und verifizieren sich anschließend mit Ihrem Vor- und Nachnamen. (Initialen: %{initial_first_name}. %{initial_last_name}.)\n"
-"%{public_overview_link}\n"
-"\n"
-"Unter diesem Link können Sie Ihre Quarantänebestätigung herunterladen und gegebenenfalls die Quarantäne verkürzen bzw. sich von der Quarantäne befreien lassen. \n"
-"\n"
-"Bitte beachten Sie die Informationen zur Quarantäne in Ihrer Bestätigung und die dort angegebenen Links und Kontaktmöglichkeiten. \n"
-"\n"
-"Besten Dank und freundliche Grüsse,\n"
-"%{message_signature}\n"
 
 msgid "Dear Sir / Madam,\n\nYou have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n\nWe would like to ask you to fill out the information on the following link:\n%{public_overview_link}\n\nPlease open this link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nThanks for your help!\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
-"Sehr geehrte Damen & Herren,\n"
-"\n"
-"Sie wurden kürzlich positiv auf COVID-19 getestet. Um die weitere Ausbreitung zu verhindern ist das Contact Tracing auf Ihre Unterstützung angewiesen.\n"
-"\n"
-"Wir würden Sie bitten, die Angaben unter folgendem Link auszufüllen:\n"
-"%{public_overview_link}\n"
-"\n"
-"Bitte öffnen Sie den Link und melden Sie sich mit Ihrem Namen an. (Initialen: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Vielen Dank für Ihre Hilfe!\n"
-"\n"
-"Beste Grüsse,\n"
-"%{message_signature}\n"
 
 msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nYou can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}\n\nTo access the confirmation, please log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
-"Sehr geehrte Damen und Herren,\n"
-"\n"
-"Ihre Isolation endet morgen %{date}. Sofern Sie seit 48h kein Fieber und keinen Husten mit Auswurf mehr haben, dürfen Sie die Isolation verlassen.\n"
-"\n"
-"Die Isolations-Endbestätigung finden Sie unter folgendem Link:\n"
-"%{isolation_end_confirmation_link}\n"
-"\n"
-"Um Ihre Bestätigung zu erhalten, öffnen Sie bitte folgenden Link und verifizieren sich dort mit Ihrem Vor- und Nachname. (Initialen: %{initial_first_name}. %{initial_last_name}.)\n"
-"\n"
-"Sollten Sie sich weiter krank fühlen, kontaktieren Sie bitte ihren Hausarzt.\n"
-"\n"
-"Freundliche Grüsse\n"
-"%{message_signature}\n"
 
 msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
-"Sehr geehrte Damen und Herren,\n"
-"\n"
-"Ihre Quarantäne endet morgen %{date}. Sofern Sie aktuell keine Symptome haben, dürfen Sie die Quarantäne verlassen. \n"
-"Sollten Sie sich krank fühlen, kontaktieren Sie bitte ihren Hausarzt.  \n"
-"\n"
-"Freundliche Grüsse\n"
-"%{message_signature}\n"
 
 msgctxt "Index End Reason"
 msgid "Death"
-msgstr "Tod"
+msgstr ""
 
 msgid "December"
-msgstr "Dezember"
+msgstr ""
 
 msgid "Default Supervisor"
-msgstr "Standard-Teamleiter"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Default Supervisor"
-msgstr "Standard-Teamleiter"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Supervisor"
-msgstr "Standard-Teamleiter"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Supervisor"
-msgstr "Standard-Teamleiter"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Supervisor UUID"
-msgstr "Standard-Supervisor-UUID"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Supervisor UUID"
-msgstr "Standard-Supervisor-UUID"
+msgstr ""
 
 msgid "Default Tenant"
-msgstr "Standard-Mandant"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Tenant"
-msgstr "Standard-Mandant"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Tenant"
-msgstr "Standard-Mandant"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Tenant UUID"
-msgstr "Standard-Mandant-UUID"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Tenant UUID"
-msgstr "Standard-Mandant-UUID"
+msgstr ""
 
 msgid "Default Tracer"
-msgstr "Standard-Tracer"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Default Tracer"
-msgstr "Standard-Tracer"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Tracer"
-msgstr "Standard-Tracer"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Tracer"
-msgstr "Standard-Tracer"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
 msgid "Default Tracer UUID"
-msgstr "Standard-Tracer-UUID"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Default Tracer UUID"
-msgstr "Standard-Tracer-UUID"
+msgstr ""
 
 msgid "Delete"
-msgstr "Löschen"
+msgstr ""
 
 msgctxt "Notification"
 msgid "Delete"
-msgstr "Löschen"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Delete Person"
-msgstr "Person löschen"
+msgstr ""
 
 msgid "Deleted"
-msgstr "Gelöscht"
+msgstr ""
 
 msgid "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field."
-msgstr "Geben Sie an, wo genau Sie sich mit %{first_name} %{last_name} getroffen haben. Falls der Kontakt in ihrem Haushalt stattgefunden hat, lassen sie das linke Feld leer und wählen unter Typ «Eigener Haushalt». Falls Sie sich im Restaurant getroffen haben, wählen Sie «Restaurant, Bar» als Typ und schreiben den Namen des Restaurants in das linke Feld."
+msgstr ""
 
 msgid "Describe your encounter with %{first_name} %{last_name}. Under which circumstances did you meet? What kind of activity happened during your encounter (e.g. «wedding with lunch, sat at same table next to each other» or «living in same household, sharing kitchen and bathroom»)."
-msgstr "Beschreiben Sie Ihre Begegnung mit %{first_name} %{last_name}. Unter welchen Umständen hatten Sie Kontakt? Welcher Art von Aktivität sind Sie während Ihrer Begegnung nachgegangen (z.B. «Hochzeit mit Mittagessen. Sassen am selben Tisch» oder «leben im selben Haushalt, teilen uns Küche und Bad»)."
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Description"
-msgstr "Beschreibung"
+msgstr ""
 
 msgid "Despite multiple calls and inquiries regarding the phone number unavailable"
-msgstr "Trotz mehrfachen Anrufe und Abklärungen zur Telefonnummer nicht erreichbar"
+msgstr ""
 
 msgid "Details"
-msgstr "Details"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Details"
-msgstr "Details"
+msgstr ""
 
 msgctxt "Versioning Origin"
 msgid "Detect No Reaction Cases"
-msgstr "Fälle ohne Reaktion erkennen"
+msgstr ""
 
 msgid "Did you get infected from a specific person? If so please enter the details."
-msgstr "Haben Sie sich bei einer bestimmten Person angesteckt? Falls ja, geben Sie bitte die entsprechenden Details an."
+msgstr ""
 
 msgid "Did you meet any colleages?"
-msgstr "Haben Sie Arbeitskollegen getroffen?"
+msgstr ""
 
 msgid "Did you meet your family or friends recently?"
-msgstr "Haben Sie vor kurzem Ihre Familie oder Freunde getroffen?"
+msgstr ""
 
 msgid "Did you visit a gym recently?"
-msgstr "Haben Sie vor kurzem ein Fitnessstudio besucht?"
+msgstr ""
 
 msgid "Did you visit a pub / restaurant / event recently?"
-msgstr "Haben Sie vor kurzem eine Bar / Restaurant / Veranstaltung besucht?"
+msgstr ""
 
 msgid "Did you visit an educational institution in the 48 hours before the onset of symptoms or 48 hours before the test?"
-msgstr "Waren Sie im infektiösen Zeitraum (in den 48 Stunden vor Symptombeginn oder bei Personen ohne Symptome 48 Stunden vor Testzeitpunkt) in einer Schule?"
+msgstr ""
 
 msgid "Difficult living situation, further inquiries necessary"
-msgstr "Schwierige Wohnsituation, weitere Abklärungen nötig"
+msgstr ""
 
 msgid "Diificulty Breathing"
-msgstr "Atembeschwerden"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Directly Close Cases"
-msgstr "Den Fallstatus direkt auf \"Erledigt\" setzen"
+msgstr ""
 
 msgid "Disable"
-msgstr "Deaktivieren"
+msgstr ""
 
 msgid "Discard"
-msgstr "Verwerfen"
+msgstr ""
 
 msgctxt "Case Import Row Status"
 msgid "Discarded"
-msgstr "Verworfen"
+msgstr ""
 
 msgid "Discarded Rows"
-msgstr "Verworfene Zeilen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Display Name"
-msgstr "Anzeigename"
+msgstr ""
 
 msgid "Division"
-msgstr "Abteilung / Klasse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
 msgid "Division"
-msgstr "Abteilung / Klasse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division"
-msgstr "Abteilung / Klasse"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division UUID"
-msgstr "Abteilung / Klasse UUID"
+msgstr ""
 
 msgid "Division created successfully"
-msgstr "Abteilung / Klasse wurde erfolgreich erstellt"
+msgstr ""
 
 msgid "Division deleted successfully"
-msgstr "Abteilung / Klasse erfolgreich gelöscht"
+msgstr ""
 
 msgid "Division updated successfully"
-msgstr "Abteilung / Klasse wurde erfolgreich aktualisiert"
+msgstr ""
 
 msgid "Divisions"
-msgstr "Abteilungen / Klassen"
+msgstr ""
 
 msgid "Divisions merged successfully"
-msgstr "Abteilungen / Klassen erfolgreich fusioniert"
+msgstr ""
 
 msgid "Do not append Note"
-msgstr "Keine Notiz anhängen"
+msgstr ""
 
 msgid "Do not create Auto Tracing"
-msgstr "Auto Tracing nicht auslösen"
+msgstr ""
 
 msgid "Do you have any contact persons to submit?"
-msgstr "Haben Sie Kontaktpersonen anzugeben?"
+msgstr ""
 
 msgid "Do you have symptoms?"
-msgstr "Haben Sie Symptome?"
+msgstr ""
 
 msgid "Do you know how you got infected?"
-msgstr "Wissen Sie wie Sie sich angesteckt haben?"
+msgstr ""
 
 msgid "Do you know the address where you met with %{first_name} %{last_name}?"
-msgstr "Geben Sie die Adresse an, an der Sie sich mit %{first_name} %{last_name} getroffen haben."
+msgstr ""
 
 msgid "Do you really want to continue without saving?"
-msgstr "Möchten Sie fortfahren, ohne die Änderungen zu speichern?"
+msgstr ""
 
 msgid "Do you really want to discard your changes?"
-msgstr "Möchten Sie Ihre Änderungen wirklich verwerfen?"
+msgstr ""
 
 msgctxt "Person Login Form"
 msgid "Doe"
-msgstr "Muster"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Domain"
-msgstr "Domain"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Done"
-msgstr "Erledigt"
+msgstr ""
 
 msgctxt "Case Status"
 msgid "Done"
-msgstr "Erledigt"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Done"
-msgstr "Erledigt"
+msgstr ""
 
 msgctxt "vaccination_done"
 msgid "Done"
-msgstr "Erledigt"
+msgstr ""
 
 msgid "Download CSV"
-msgstr "CSV herunterladen"
+msgstr ""
 
 msgid "Downloads:"
-msgstr "Downloads:"
+msgstr ""
 
 msgid "Early end because of negative test after the 7th day of quarantine"
-msgstr "Vorzeitiges Ende durch negativen Test nach dem 7. Tag der Quarantäne"
+msgstr ""
 
 msgid "Edit"
-msgstr "Bearbeiten"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Educational institution"
-msgstr "Bildungseinrichtung"
+msgstr ""
 
 msgid "Either you or the other person did not weark a mask."
-msgstr "Entweder Sie oder die andere Person haben keine Maske getragen."
+msgstr ""
 
 msgid "Email"
-msgstr "E-Mail"
+msgstr ""
 
 msgctxt "Contact Method Type"
 msgid "Email"
-msgstr "E-Mail"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
 msgid "Email"
-msgstr "E-Mail"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Email"
-msgstr "E-Mail"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Email"
-msgstr "E-Mail"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Email"
-msgstr "E-Mail"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
 msgid "Email"
-msgstr "E-Mail"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Email"
-msgstr "E-Mail"
+msgstr ""
 
 msgctxt "Notification Type"
 msgid "Email Send Failed"
-msgstr "E-Mail Versand fehlgeschlagen"
+msgstr ""
 
 msgctxt "Versioning Origin"
 msgid "Email Sender"
-msgstr "E-Mail-Absender"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.TemplateParameters Field"
 msgid "Email Signature"
-msgstr "E-Mail Signatur"
+msgstr ""
 
 msgid "Email created successfully"
-msgstr "E-Mail erfolgreich erstellt"
+msgstr ""
 
 msgctxt "Affiliation Kind"
 msgid "Employee"
-msgstr "Mitarbeiter"
+msgstr ""
 
 msgctxt "School visit reason"
 msgid "Employee"
-msgstr "Mitarbeiter"
+msgstr ""
 
 msgid "Employer"
-msgstr "Arbeitgeber"
+msgstr ""
 
 msgctxt "Auto Tracing Step"
 msgid "Employer"
-msgstr "Arbeitgeber"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Employer"
-msgstr "Arbeitgeber"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Employer"
-msgstr "Arbeitgeber"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Employers"
-msgstr "Arbeitgeber"
+msgstr ""
 
 msgid "Employment"
-msgstr "Arbeit"
+msgstr ""
 
 msgid "Enable"
-msgstr "Aktivieren"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Enable DKIM"
-msgstr "DKIM aktivieren"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Enable Relay"
-msgstr "Relay aktivieren"
+msgstr ""
 
 msgid "Enable Vision Impaired Mode"
-msgstr "Schlechte-Sicht-Modus aktivieren"
+msgstr ""
 
 msgid "Encoding"
-msgstr "Codierung"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "End"
-msgstr "Ende"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Hospitalization Field"
 msgid "End"
-msgstr "Ende"
+msgstr ""
 
 msgid "End Date"
-msgstr "Enddatum"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "End Date"
-msgstr "Enddatum"
+msgstr ""
 
 msgid "End Quarantine"
-msgstr "Quarantäne beenden"
+msgstr ""
 
 msgid "End Reason"
-msgstr "Grund für Ende"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.Index Field"
 msgid "End Reason"
-msgstr "Grund für Ende"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "End Reason"
-msgstr "Grund für Ende"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.Index Field"
 msgid "End Reason Set Date"
-msgstr "Grund für Ende Datum"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "End Reason Set Date"
-msgstr "Grund für Ende Datum"
+msgstr ""
 
 msgid "End reason help"
-msgstr "Grund für Ende"
+msgstr ""
 
 msgid "Enter Possible Transmissions"
-msgstr "Mögliche Übertragungen eingeben"
+msgstr ""
 
 msgctxt "Protocol Entry"
 msgid "Entry"
-msgstr "Eintrag"
+msgstr ""
 
 msgid "Error while authenticating."
-msgstr "Fehler beim Authentifizieren."
+msgstr ""
 
 msgid "Establishment of upper secondary level, tertiary educational institution or further training facility"
-msgstr "Einrichtung der Sekundarstufe II, tertiäre Bildungseinrichtung oder Weiterbildungsstätte"
+msgstr ""
 
 msgid "Events"
-msgstr "Veranstaltungen"
+msgstr ""
 
 msgid "Execute & Go to Next"
-msgstr "Ausführen & zur nächsten Zeile"
+msgstr ""
 
 msgid "Execute & Show Row"
-msgstr "Ausführen & Zeilendetails anzeigen"
+msgstr ""
 
 msgid "Execute failed, contact a Super User"
-msgstr "Ausführung fehlgeschlagen. Bitte kontaktiere einen Super User"
+msgstr ""
 
 msgctxt "Inbox Row Apply Person"
 msgid "Existing Case"
-msgstr "Existierender Fall"
+msgstr ""
 
 msgctxt "Inbox Row Apply Person"
 msgid "Existing Person, new case"
-msgstr "Existierende Person, neuer Fall"
+msgstr ""
 
 msgid "Export"
-msgstr "Export"
+msgstr ""
 
 msgid "Export Data"
-msgstr "Daten exportieren"
+msgstr ""
 
 msgid "External"
-msgstr "Extern"
+msgstr ""
 
 msgid "Extreme"
-msgstr "Extrem"
+msgstr ""
 
 msgctxt "Case Complexity"
 msgid "Extreme"
-msgstr "Extrem"
+msgstr ""
 
 msgid "Facility for supplementary childcare"
-msgstr "Einrichtung zur familienergänzenden Kinderbetreuung"
+msgstr ""
 
 msgid "Failed email contact (%{failed_mail}) deleted"
-msgstr "E-Mail-Adresse (%{failed_mail}) wegen Unzustellbarkeit gelöscht"
+msgstr ""
 
 msgctxt "SMS Status"
 msgid "Failure"
-msgstr "Fehler"
+msgstr ""
 
 msgid "False"
-msgstr "Falsch"
+msgstr ""
 
 msgid "Families in the same household"
-msgstr "Familien im gleichen Haushalt"
+msgstr ""
 
 msgid "Family / Friends"
-msgstr "Familie / Freunde"
+msgstr ""
 
 msgid "Fatigue"
-msgstr "Müdigkeit"
+msgstr ""
 
 msgid "February"
-msgstr "Februar"
+msgstr ""
 
 msgid "Female"
-msgstr "Weiblich"
+msgstr ""
 
 msgctxt "Sex"
 msgid "Female"
-msgstr "Weiblich"
+msgstr ""
 
 msgid "Fever"
-msgstr "Fieber"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "File"
-msgstr "Datei"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "File Name"
-msgstr "Dateiname"
+msgstr ""
 
 msgid "Filter"
-msgstr "Filter"
+msgstr ""
 
 msgctxt "Auto Tracing Step"
 msgid "Finish"
-msgstr "Abschliessen"
+msgstr ""
 
 msgid "Finished Isolations"
-msgstr "Abgeschlossene Isolierungen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "First Contact"
-msgstr "Erster Kontakt"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "First Name"
-msgstr "Vorname"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "First Name"
-msgstr "Vorname"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "First Name"
-msgstr "Vorname"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "First Name"
-msgstr "Vorname"
+msgstr ""
 
 msgctxt "Case Status"
 msgid "First contact"
-msgstr "Erster Kontakt"
+msgstr ""
 
 msgctxt "Case Status"
 msgid "First contact, unreachable"
-msgstr "Erster Kontakt, tel. nicht erreicht"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
-msgstr "Fluginformationen"
+msgstr ""
 
 msgid "Found no results"
-msgstr "Keine Ergebnisse gefunden"
+msgstr ""
 
 msgid "From"
-msgstr "Von"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "From Email"
-msgstr "Absender-E-Mail-Adresse"
+msgstr ""
 
 msgid "Fully Vaccinated"
-msgstr "Vollständig geimpft"
+msgstr ""
 
 msgid "Gastrointestinal"
-msgstr "Magen-Darm"
+msgstr ""
 
 msgid "General Weakness"
-msgstr "Allgemeine Schwäche"
+msgstr ""
 
 msgid "Generally there are no follow-up calls. If an index is for example very anxious and single or in a generally bad state, a next contact can be agreed. Always create a note in the protocol with the time of the next contact. If possible always set the date to a day when you will be working."
-msgstr "Grundsätzlich werden keine Folgetelefonate gemacht. Wenn ein Index z.b sehr ängstlich und alleinstehend ist oder einen schlechten Allgemeinzustand hat, kann ein nächster Kontakt vereinbart werden. Hierzu immer eine Notiz im Protokoll hinterlegen, wann der Index erneut kontaktiert wird. Wenn immer möglich das Folgetelefonat auf einen Tag legen, an dem ihr arbeitet."
+msgstr ""
 
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Grants"
-msgstr "Authorisierungen"
+msgstr ""
 
 msgid "Gym"
-msgstr "Fitnessstudio"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Has Documentation"
-msgstr "Dokumentation vorhanden"
+msgstr ""
 
 msgid "Has Symptoms"
-msgstr "Hat Symptome"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
-msgstr "Hat Symptome"
+msgstr ""
 
 msgid "Have you been or are you in a hospital?"
-msgstr "Waren Sie in einem Krankenhaus oder sind es noch?"
+msgstr ""
 
 msgid "Headaches"
-msgstr "Kopfschmerzen"
+msgstr ""
 
 msgctxt "Index End Reason"
 msgid "Healed"
-msgstr "Geheilt"
+msgstr ""
 
 msgid "Health care facility (hospital, clinic, doctor's practice, health care practice, establishment of health professionals according to federal and cantonal law)"
-msgstr "Gesundheitseinrichtung (Spital, Klinik, Arztpraxis, Praxis für Gesundheitspflege, Einrichtung von Gesundheitsfachpersonen nach Bundesrecht und kantonalem Recht)"
+msgstr ""
 
 msgctxt "Organisation Type"
 msgid "Healthcare"
-msgstr "Gesundheitswesen"
+msgstr ""
 
 msgid "Help"
-msgstr "Hilfe"
+msgstr ""
 
 msgid "Hi %{name},\n\nThere's new notifications available on Hygeia for you:\n%{totals}\n\nBest,\nHygeia\n"
 msgstr ""
-"Hallo %{name},\n"
-"\n"
-"Es warten neue Benachrichtigungen auf dich:\n"
-"%{totals}\n"
-"\n"
-"Beste Grüsse,\n"
-"Hygeia – COVID19 Tracing\n"
 
 msgid "High"
-msgstr "Hoch"
+msgstr ""
 
 msgctxt "Case Complexity"
 msgid "High"
-msgstr "Hoch"
+msgstr ""
 
 msgid "History"
-msgstr "Änderungsverlauf"
+msgstr ""
 
 msgid "Home"
-msgstr "Eigener Haushalt"
+msgstr ""
 
 msgctxt "Case Status"
 msgid "Home Resident"
-msgstr "Heimbewohner"
+msgstr ""
 
 msgid "Hospital"
-msgstr "Krankenhaus"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Hospitalization Field"
 msgid "Hospital"
-msgstr "Krankenhaus"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Hospitalization Field"
 msgid "Hospital UUID"
-msgstr "Krankenhaus UUID"
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "Hospitalization"
-msgstr "Hospitalisation"
+msgstr ""
 
 msgctxt "Case Status"
 msgid "Hospitalization"
-msgstr "Spitalaufenthalt"
+msgstr ""
 
 msgid "Hospitalizations"
-msgstr "Krankenhausaufenthalte"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Hospitalizations"
-msgstr "Krankenhausaufenthalte"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Hostname"
-msgstr "Hostname"
+msgstr ""
 
 msgid "Hotel"
-msgstr "Hotel"
+msgstr ""
 
 msgid "Hotel, place of accommodation, campsite, parking space for mobile homes"
-msgstr "Hotel, Unterkunftsort, Campingplatz, Stellplatz für Wohnmobile"
+msgstr ""
 
 msgid "How can we contact %{first_name} %{last_name}?"
-msgstr "Wie können wir %{first_name} %{last_name} kontaktieren?"
+msgstr ""
 
 msgid "How did you travel there and back?"
-msgstr "Wie sind Sie hin- und zurück gereist?"
+msgstr ""
 
 msgid "How did your encounter with %{first_name} %{last_name} happen?"
-msgstr "Wie lief Ihre Begegnung mit %{first_name} %{last_name} ab?"
+msgstr ""
 
 msgid "Human Readable ID"
-msgstr "Menschlich lesbare ID"
+msgstr ""
 
 msgctxt "Field"
 msgid "Human Readable ID"
-msgstr "Menschlich lesbare ID"
+msgstr ""
 
 msgctxt "Home"
 msgid "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «%{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing."
-msgstr "Hygeia ist darauf ausgelegt, fehleranfällige Prozesse klar und einheitlich zu strukturieren, Standards wie das «%{link_med}» des BAG einzuhalten, Anbindungen wie diejenige an die BAG-Datenbank zu gewährleisten und die fürs Contact Tracing notwendigen Personal-Mittel zu reduzieren."
+msgstr ""
 
 msgid "I confirm that all the data above is correct. This may be inspected!"
-msgstr "Ich bestätige, dass alle Angaben korrekt sind. Dies kann überprüft werden!"
+msgstr ""
 
 msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
-msgstr "Ich habe einen Covid-19 Test ab frühestens dem 4. Tag vor Ablauf der Quarantäne gemacht. Das Testresultat ist negativ."
+msgstr ""
 
 msgid "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
-msgstr "Ich war innerhalb %{validity} an Covid-19 erkrankt und bin bereits genesen. Die Erkrankung kann ich offiziell nachweisen (Covid Zertifikat, positiver PCR-Test, Isolationsbestätigung)."
+msgstr ""
 
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
-msgstr "Ich verfüge über einen offiziellen Nachweis (geimpft, immun, negativer Test) um die Quarantäne zu beenden."
+msgstr ""
 
 msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago."
-msgstr "Ich habe mindestens zwei Covid-19 Impfungen mit einem in der Schweiz zugelassenen Impfstoff erhalten und die letzte Impfung liegt weniger als %{validity} zurück."
+msgstr ""
 
 msgid "IAM Configuration"
-msgstr "IAM-Konfiguration"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "IAM Domain"
-msgstr "IAM-Domain"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "IAM Subject"
-msgstr "IAM Subjekt"
+msgstr ""
 
 msgctxt "Case Import Type"
 msgid "ISM (06/11/2021) Death"
-msgstr "ISM Todesliste (Stand 06.11.2021)"
+msgstr ""
 
 msgctxt "Case Import Type"
 msgid "ISM (06/11/2021) Test"
-msgstr "ISM Testliste (Stand 06.11.2021)"
+msgstr ""
 
 msgctxt "External Reference Type"
 msgid "ISM Case"
-msgstr "ISM-Fall"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "ISM Case ID"
-msgstr "ISM-Fall-ID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.MutationContext.Mutation Field"
 msgid "ISM Code"
-msgstr "ISM Code"
+msgstr ""
 
 msgctxt "External Reference Type"
 msgid "ISM Patient"
-msgstr "ISM-Patient-ID"
+msgstr ""
 
 msgctxt "External Reference Type"
 msgid "ISM Report"
-msgstr "ISM Meldung"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "ISM Report ID"
-msgstr "ISM-Meldung-ID"
+msgstr ""
 
 msgid "ISM-ID: %{id}"
-msgstr "ISM-ID: %{id}"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Row Field"
 msgid "Identifiers"
-msgstr "Identifikationen"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "If necessary, trace the person while on the phone. If the person is willing to continue in Auto Tracing mode, make a note and assign it back to the case administration."
-msgstr "Wenn nötig, die Person am Telefon tracen. Falls die Person gewillt ist, das Auto Tracing auszuführen; eine Notiz erstellen und den Fall wieder der Fall-Administration zuweisen."
+msgstr ""
 
 msgid "If there are no known contact methods for the person, a contact method for a close person (relative, roommate, caretaker) can be entered instead."
-msgstr "Falls für die Person keine Kontaktmethoden bekannt sind, kann auch die Kontaktmethode einer nahestehenden Person (Verwandte, Mitbewohnerin, Pflegerin) eingegeben werden."
+msgstr ""
 
 msgid "If there are open hospitalizations, the status can not be set to \"done\" / \"canceled\"."
-msgstr "Falls es laufende Hospitalisierungen gibt, darf der Status nicht auf \"Erledigt\" / \"Tracing abgeschlossen\" gesetzt werden."
+msgstr ""
 
 msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
-msgstr "Falls es Phasen gibt wo nicht entschieden wurde ob eine Quarantäne / Isolation verordnet wird, darf der Status nicht auf \"Erledigt\" / \"Tracing abgeschlossen\" gesetzt werden."
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "If there is no number, try to get it from the doctor."
-msgstr "Wenn keine Nummer vorhanden ist, versuchen eine via Arzt zu erfragen."
+msgstr ""
 
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
-msgstr "Falls sie enge Kontakte zu unbekannten Personen hatten (z.B. in einem Restaurant, in der Kirche etc.), besprechen Sie das Vorgehen zur Kontaktaufnahme oder anderer Massnahmen mit Ihrem Tracer oder Ihrer Tracerin."
+msgstr ""
 
 msgid "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test."
-msgstr "Wenn Sie %{first_name} %{last_name} mehrmals getroffen haben, geben Sie bitte das letzte Datum an, an dem Sie sich ohne Schutzmassnahmen getroffen haben. Bedenken Sie, dass sie schon 48h vor Symptombeginn ansteckend waren (falls Sie keine Symptome haben 48h vor dem Test)."
+msgstr ""
 
 msgid "If you were present at this location for multiple days, enter the last day into the date field."
-msgstr "Wenn Sie mehrere Tage an diesem Ort waren, geben Sie den letzten Tag in das Datumsfeld ein."
+msgstr ""
 
 msgid "If you're an authorized person of the contact tracing team, log in instead:"
-msgstr "Wenn Sie eine autorisierte Person des Contact Tracing Teams sind, loggen Sie sich stattdessen hier ein:"
+msgstr ""
 
 msgid "If you're having trouble recalling what you did since then, here are some examples:"
-msgstr "Wenn Sie Schwierigkeiten haben, sich daran zu erinnern, was Sie seitdem getan haben, hier sind einige Beispiele:"
+msgstr ""
 
 msgctxt "Auto Tracing Exit"
 msgid "If you've entered the wrong address or forgot to enter the correct isolation location, you can return and correct the address."
-msgstr "Wenn Sie eine falsche Adresse eingegeben haben oder vergessen haben, den richtigen Isolationsort einzugeben, können Sie zurückgehen und die Adresse korrigieren."
+msgstr ""
 
 msgctxt "Possible Index End Reason"
 msgid "Immune"
-msgstr "Immun"
+msgstr ""
 
 msgctxt "Premature Release Reason"
 msgid "Immune"
-msgstr "Immun"
+msgstr ""
 
 msgid "Import"
-msgstr "Importieren"
+msgstr ""
 
 msgid "Import created successfully"
-msgstr "Import wurde erfolgreich erstellt"
+msgstr ""
 
 msgid "Import deleted successfully"
-msgstr "Import wurde erfolgreich gelöscht"
+msgstr ""
 
 msgctxt "Import Row Apply"
 msgid "Imported Data"
-msgstr "Importierte Daten"
+msgstr ""
 
 msgctxt "Inbox Row Show"
 msgid "Imported Data"
-msgstr "Importierte Daten"
+msgstr ""
 
 msgid "Imports - Inbox"
-msgstr "Imports - Inbox"
+msgstr ""
 
 msgctxt "Email Status"
 msgid "In Progress"
-msgstr "In Bearbeitung"
+msgstr ""
 
 msgctxt "SMS Status"
 msgid "In Progress"
-msgstr "In Bearbeitung"
+msgstr ""
 
 msgctxt "Home"
 msgid "In case of service disruptions, please check the status page."
-msgstr "Im Falle von Störungen des Systems kann die Status-Seite konsultiert werden."
+msgstr ""
 
 msgid "In this case there are no further actions necessary. \"Done\" should be set on the index and contact person."
-msgstr "In diesem Fall sind beim Index keine weiteren Aktionen nötig. Tracing abgeschlossen soll bei Index und KP angepasst werden."
+msgstr ""
 
 msgid "In your e-mail inbox you will find a certificate for your employer as well as further information on isolation."
-msgstr "In Ihrem Posteingang werden Sie ein Dokument für Ihren Arbeitgeber sowie weitere Informationen zur Isolation vorfinden."
+msgstr ""
 
 msgid "Inbox"
-msgstr "Inbox"
+msgstr ""
 
 msgid "Includes Phase Type"
-msgstr "Beinhaltet Phase"
+msgstr ""
 
 msgctxt "Test Result"
 msgid "Inconclusive"
-msgstr "Nicht bestimmbar"
+msgstr ""
 
 msgid "Index"
-msgstr "Index"
+msgstr ""
 
 msgctxt "Case Phase Type"
 msgid "Index"
-msgstr "Index"
+msgstr ""
 
 msgid "Index could not be reached by phone. Always create a note in the protocol with all steps taken to reach the person. For example: Tried to call three times, asked about the number at their general practitioner, SMS sent to the index that we are CT and ask them to please answer the phone."
-msgstr "Index konnte telefonisch nicht erreicht werden. Dazu immer auch eine Notiz im Protokoll hinterlegen, was alles unternommen wurde, um ihn zu erreichen. Z.b Index 3x angerufen, bei Hausarzt nachgefragt ob die Telefonnummer stimmt, SMS Nachricht an Index verschickt, dass wir vom CT sind und sie das Telefon bitte entgegennehmen sollen."
+msgstr ""
 
 msgid "Index died"
-msgstr "Index ist verstorben"
+msgstr ""
 
 msgid "Index doesn't understand English and can't express themselves in a European language. No communication without translator possible."
-msgstr "Index versteht kein Deutsch. Kann sich auch nicht in einer europäischen Sprache ausdrücken. Ohne Übersetzung kann nicht kommuniziert werden."
+msgstr ""
 
 msgid "Index is a nursing home resident, e.g. nursing home, home for the handicapped, etc... Always inform the team lead"
-msgstr "Index ist ein Heimbewohner z.B. Altersheim, Behindertenheim, etc… Immer Info an Teamleitung"
+msgstr ""
 
 msgid "Index is completely healed and isolation is completed"
-msgstr "Index ist vollständig genesen und die Isolation ist beendet"
+msgstr ""
 
 msgid "Index is hospitalized because of Covid19. Set the \"Start Date\" at hospitalizations and choose an \"Organisation\", then create a note why the index is hospitalized and how they are, in the end inform the team lead."
-msgstr "Index befindet sich aufgrund von Covid19 im Spital. Bei Krankheitsaufenthalt “Startdatum” setzten und “Organisation” auswählen, dann Notiz anlegen warum Index im Spital ist und wie es ihm geht, am Schluss Info an Teamleitung."
+msgstr ""
 
 msgid "Index understands and speaks English"
-msgstr "Index versteht und spricht Deutsch"
+msgstr ""
 
 msgid "Index understands and speaks English, but several explanations are necessary"
-msgstr "Index versteht und spricht Deutsch, doch braucht es etliche Erklärungen"
+msgstr ""
 
 msgid "Indoor Sport activities"
-msgstr "Sportliche Betätigung in der Halle"
+msgstr ""
 
 msgid "Infection Place"
-msgstr "Infektionsort"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Infection Place"
-msgstr "Infektionsort"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Infection Place"
-msgstr "Infektionsort"
+msgstr ""
 
 msgid "Infection place"
-msgstr "Infektionsort"
+msgstr ""
 
 msgid "Info"
-msgstr "Info"
+msgstr ""
 
 msgctxt "Home"
 msgid "Info Website"
-msgstr "Info Webseite"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Initiate Auto Tracing after getting a contact method."
-msgstr "Das Auto Tracing auslösen, nachdem eine Kontaktmethode erfragt wurde."
+msgstr ""
 
 msgid "Input needed"
-msgstr "Angaben benötigt"
+msgstr ""
 
 msgctxt "Field"
 msgid "Inserted At"
-msgstr "Erstellt Am"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Institution not found"
-msgstr "Schule nicht gefunden"
+msgstr ""
 
 msgid "Internal"
-msgstr "Intern"
+msgstr ""
 
 msgctxt "Division Merge"
 msgid "Into"
-msgstr "Ziel"
+msgstr ""
 
 msgctxt "Organisation Merge"
 msgid "Into"
-msgstr "Ziel"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
-msgstr "Ungültige Daten wurden eingegeben für diese Zugehörigkeit. Bitte schliessen Sie dieses Problem, falls keine anderen Zugehörigkeiten existieren."
+msgstr ""
 
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
-msgstr "Ungültige Kontaktangaben. Falls Sie glauben, dass diese Meldung falsch ist, kontaktieren Sie bitte das Kontakt Tracing Team."
+msgstr ""
 
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
-msgstr "Haben Sie die SwissCovid App auf Ihrem Telefon installiert bzw. in Betrieb?"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Is truthful"
-msgstr "Wahrheitsgetreu"
+msgstr ""
 
 msgid "Isolation"
-msgstr "Isolation"
+msgstr ""
 
 msgid "Isolation Address"
-msgstr "Adresse Isolation"
+msgstr ""
 
 msgid "Isolation Confirmation"
-msgstr "Isolationsbestätigung"
+msgstr ""
 
 msgid "Isolation End"
-msgstr "Isolationsende"
+msgstr ""
 
 msgid "Isolation End Confirmation"
-msgstr "Isolations-Endbestätigung"
+msgstr ""
 
 msgid "Isolation Order"
-msgstr "Isolationsverordnung"
+msgstr ""
 
 msgid "Isolation Ordered"
-msgstr "Isolation verordnet"
+msgstr ""
 
 msgid "Isolation Period End"
-msgstr "Isolationsperiode Ende"
+msgstr ""
 
 msgid "Isolations Per Organisation"
-msgstr "Indexfälle pro Organisation"
+msgstr ""
 
 msgctxt "Auto Tracing Exit"
 msgid "It seems like we are not responsible for your case."
-msgstr "Es scheint, als wären wir nicht für Ihren Fall verantwortlich."
+msgstr ""
 
 msgid "It's difficult speaking in English. A translator is required"
-msgstr "Es ist schwierig das Gespräch auf Deutsch zu führen. Es braucht eine Übersetzungsperson"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Jab Dates"
-msgstr "Impfungs-Termine"
+msgstr ""
 
 msgctxt "Person Login Form"
 msgid "Jane"
-msgstr "Max"
+msgstr ""
 
 msgid "January"
-msgstr "Januar"
+msgstr ""
 
 msgid "July"
-msgstr "Juli"
+msgstr ""
 
 msgid "June"
-msgstr "Juni"
+msgstr ""
 
 msgid "Keep Assignees"
-msgstr "Zuweisung nicht anpassen"
+msgstr ""
 
 msgid "Keep Phases"
-msgstr "Phasen nicht anpassen"
+msgstr ""
 
 msgid "Keep Status"
-msgstr "Status nicht anpassen"
+msgstr ""
 
 msgid "Keep personal data"
-msgstr "Persönliche Daten nicht anpassen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Kind"
-msgstr "Art"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Kind"
-msgstr "Art"
+msgstr ""
 
 msgctxt "Field"
 msgid "Kind"
-msgstr "Art"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Kind Other"
-msgstr "Andere Art"
+msgstr ""
 
 msgid "Known"
-msgstr "Bekannt"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Known"
-msgstr "Bekannt"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Known institutions"
-msgstr "Bekannte Schulen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Laboratory report date"
-msgstr "Datum des Laborberichts"
+msgstr ""
 
 msgid "Landline"
-msgstr "Festnetz"
+msgstr ""
 
 msgctxt "Contact Method Type"
 msgid "Landline"
-msgstr "Festnetz"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
 msgid "Landline"
-msgstr "Festnetz"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Landline"
-msgstr "Festnetztelefon"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
 msgid "Landline"
-msgstr "Festnetz"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Landline"
-msgstr "Festnetz"
+msgstr ""
 
 msgid "Language"
-msgstr "Sprache"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Last Change"
-msgstr "Letzte Anpassung"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Last Name"
-msgstr "Nachname"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Last Name"
-msgstr "Nachname"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Last Name"
-msgstr "Nachname"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Last Name"
-msgstr "Nachname"
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "Link Propagator"
-msgstr "Anstecker verknüpfen"
+msgstr ""
 
 msgid "Listing Cases"
-msgstr "Fallliste"
+msgstr ""
 
 msgid "Listing Imports"
-msgstr "Importliste"
+msgstr ""
 
 msgid "Listing Mutations"
-msgstr "Mutationsliste"
+msgstr ""
 
 msgid "Listing Organisations"
-msgstr "Organisationsliste"
+msgstr ""
 
 msgid "Listing People"
-msgstr "Personenliste"
+msgstr ""
 
 msgid "Listing Rows"
-msgstr "Zeilenliste"
+msgstr ""
 
 msgid "Listing System Messages"
-msgstr "Systemnachrichtenliste"
+msgstr ""
 
 msgid "Listing Tenants"
-msgstr "Mandantliste"
+msgstr ""
 
 msgid "Listing Users"
-msgstr "Benutzerliste"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Location"
-msgstr "Standort"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Location Details"
-msgstr "Standort Details"
+msgstr ""
 
 msgid "Log In"
-msgstr "Anmelden"
+msgstr ""
 
 msgid "Logging In..."
-msgstr "Anmelden…"
+msgstr ""
 
 msgid "Login"
-msgstr "Anmelden"
+msgstr ""
 
 msgid "Logout"
-msgstr "Abmelden"
+msgstr ""
 
 msgid "Loss of smell"
-msgstr "Geruchsverlust"
+msgstr ""
 
 msgid "Loss of taste"
-msgstr "Geschmacksverlust"
+msgstr ""
 
 msgid "Low"
-msgstr "Niedrig"
+msgstr ""
 
 msgctxt "Case Complexity"
 msgid "Low"
-msgstr "Niedrig"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Make sure all possible index submissions are persisted."
-msgstr "Sicherstellen, dass alle Möglicher Index Einsendungen angewendet werden."
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Make sure person is traced correctly."
-msgstr "Sicherstellen, dass die Person korrekt getraced wird."
+msgstr ""
 
 msgid "Male"
-msgstr "Männlich"
+msgstr ""
 
 msgctxt "Sex"
 msgid "Male"
-msgstr "Männlich"
+msgstr ""
 
 msgid "Manual Export"
-msgstr "Manueller Export"
+msgstr ""
 
 msgid "March"
-msgstr "März"
+msgstr ""
 
 msgid "May"
-msgstr "Mai"
+msgstr ""
 
 msgid "Maybe inform the team lead if not already done, create a protocol entry (status for exceptional cases)"
-msgstr "Evt Info an Teamleitung die noch nicht erfolgt ist, dazu Eintrag im Protokoll (Status für aussergewöhnliches)"
+msgstr ""
 
 msgid "Medium"
-msgstr "Mittel"
+msgstr ""
 
 msgctxt "Case Complexity"
 msgid "Medium"
-msgstr "Mittel"
+msgstr ""
 
 msgid "Meet Address"
-msgstr "Adresse Kontakt"
+msgstr ""
 
 msgid "Meeting with family / friends"
-msgstr "Treffen mit Familie / Freunden"
+msgstr ""
 
 msgctxt "Affiliation Kind"
 msgid "Member"
-msgstr "Mitglied"
+msgstr ""
 
 msgctxt "Division"
 msgid "Merge"
-msgstr "Fusionieren"
+msgstr ""
 
 msgctxt "Division Merge"
 msgid "Merge"
-msgstr "Fusionieren"
+msgstr ""
 
 msgctxt "Organisation"
 msgid "Merge"
-msgstr "Fusionieren"
+msgstr ""
 
 msgctxt "Organisation Merge"
 msgid "Merge"
-msgstr "Fusionieren"
+msgstr ""
 
 msgid "Merge Divisions"
-msgstr "Abteilungen / Klassen fusionieren"
+msgstr ""
 
 msgid "Merge Organisations"
-msgstr "Organisationen fusionieren"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Message"
-msgstr "Nachricht"
+msgstr ""
 
 msgctxt "Versioning Origin"
 msgid "Migration"
-msgstr "Daten-Migration"
+msgstr ""
 
 msgid "Minimal Essential Dataset"
-msgstr "Minimal Essential Dataset"
+msgstr ""
 
 msgid "Missing phone number"
-msgstr "Fehlende Telefonnummer"
+msgstr ""
 
 msgid "Mobile"
-msgstr "Mobiltelefon"
+msgstr ""
 
 msgctxt "Contact Method Type"
 msgid "Mobile"
-msgstr "Mobiltelefon"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
 msgid "Mobile"
-msgstr "Mobiltelefon"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Mobile"
-msgstr "Mobiltelefon"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
 msgid "Mobile"
-msgstr "Mobiltelefon"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Mobile"
-msgstr "Mobiltelefon"
+msgstr ""
 
 msgid "Monitoring"
-msgstr "Monitoring"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Monitoring"
-msgstr "Monitoring"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Monitoring Address"
-msgstr "Monitoring Adresse"
+msgstr ""
 
 msgid "More"
-msgstr "Mehr"
+msgstr ""
 
 msgid "Multiple calls for first contact"
-msgstr "Mehrfach Anruf für Erstkontakt"
+msgstr ""
 
 msgid "Muscle Pain"
-msgstr "Muskelschmerzen"
+msgstr ""
 
 msgid "Mutation"
-msgstr "Mutation"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Mutation"
-msgstr "Mutation"
+msgstr ""
 
 msgid "Mutation created successfully"
-msgstr "Mutation erfolgreich erstellt"
+msgstr ""
 
 msgid "Mutation deleted successfully"
-msgstr "Mutation erfolgreich gelöscht"
+msgstr ""
 
 msgid "Mutation updated successfully"
-msgstr "Mutation wurde erfolgreich aktualisiert"
+msgstr ""
 
 msgid "Mutations"
-msgstr "Mutationen"
+msgstr ""
 
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.MutationContext.Mutation Field"
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name of Vaccine"
-msgstr "Name Impfstoff"
+msgstr ""
 
 msgid "Need help"
-msgstr "Benötige Hilfe"
+msgstr ""
 
 msgctxt "Test Result"
 msgid "Negative"
-msgstr "Negativ"
+msgstr ""
 
 msgctxt "Possible Index End Reason"
 msgid "Negative Test"
-msgstr "Negativer Test"
+msgstr ""
 
 msgctxt "Premature Release Reason"
 msgid "Negative Test"
-msgstr "Negativer Test"
+msgstr ""
 
 msgid "New Case"
-msgstr "Fall erstellen"
+msgstr ""
 
 msgid "New Cases"
-msgstr "Neue Fälle"
+msgstr ""
 
 msgid "New Division"
-msgstr "Neue Abteilung / Klasse"
+msgstr ""
 
 msgid "New Division for %{organisation}"
-msgstr "Neue Abteilung / Klasse für %{organisation}"
+msgstr ""
 
 msgid "New Email"
-msgstr "Neue E-Mail"
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "New Employer"
-msgstr "Neuer Arbeitgeber"
+msgstr ""
 
 msgid "New Import"
-msgstr "Neuer Import"
+msgstr ""
 
 msgid "New Mutation"
-msgstr "Neue Mutation"
+msgstr ""
 
 msgid "New Organisation"
-msgstr "Neue Organisation"
+msgstr ""
 
 msgid "New Person"
-msgstr "Neue Person"
+msgstr ""
 
 msgid "New Phase"
-msgstr "Neue Phase"
+msgstr ""
 
 msgid "New Possible Index"
-msgstr "Neuer möglicher Indexfall"
+msgstr ""
 
 msgid "New Possible Index Submission"
-msgstr "Neue Kontaktperson einsenden"
+msgstr ""
 
 msgid "New Premature Release"
-msgstr "Neue vorzeitige Quarantäneentlassung"
+msgstr ""
 
 msgid "New Registered Cases (Processed)"
-msgstr "Neu eingetragene Fälle (Bearbeitet)"
+msgstr ""
 
 msgid "New Registered Cases (Unprocessed)"
-msgstr "Neu eingetragene Fälle (Unbearbeitet)"
+msgstr ""
 
 msgid "New SMS"
-msgstr "Neue SMS"
+msgstr ""
 
 msgid "New System Message"
-msgstr "Neue Systemnachricht"
+msgstr ""
 
 msgid "New Tenant"
-msgstr "Neuer Mandant"
+msgstr ""
 
 msgid "New Test"
-msgstr "Neuer Test"
+msgstr ""
 
 msgid "New Transmission"
-msgstr "Neue Übertragung"
+msgstr ""
 
 msgid "New affiliation"
-msgstr "Neue Zugehörigkeit"
+msgstr ""
 
 msgid "New cases"
-msgstr "Neue Fälle"
+msgstr ""
 
 msgid "New contact method"
-msgstr "Neue Kontaktmethode"
+msgstr ""
 
 msgid "New date"
-msgstr "Neues Datum"
+msgstr ""
 
 msgid "New mutation"
-msgstr "Neue Mutation"
+msgstr ""
 
 msgid "New note"
-msgstr "Neue Notiz"
+msgstr ""
 
 msgid "New organisation"
-msgstr "Neue Organisation"
+msgstr ""
 
 msgid "New person"
-msgstr "Neue Person"
+msgstr ""
 
 msgid "New possible index submission"
-msgstr "Neuer möglicher Indexfall einsenden"
+msgstr ""
 
 msgid "New reference"
-msgstr "Neue Referenz"
+msgstr ""
 
 msgid "New tenant"
-msgstr "Neuer Mandant"
+msgstr ""
 
 msgid "New test"
-msgstr "Neuer Test"
+msgstr ""
 
 msgid "New transmission"
-msgstr "Neue Übertragung"
+msgstr ""
 
 msgid "Next"
-msgstr "Weiter"
+msgstr ""
 
 msgctxt "Case Status"
 msgid "Next Contact Agreed"
-msgstr "Nächster Kontakt vereinbart"
+msgstr ""
 
 msgid "No"
-msgstr "Nein"
+msgstr ""
 
 msgid "No Auto Tracing Problems"
-msgstr "Keine Auto Tracing Probleme"
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "No Contact Method"
-msgstr "Keine Kontaktmethoden"
+msgstr ""
 
 msgctxt "Index End Reason"
 msgid "No Follow Up"
-msgstr "Kein erneuter Kontakt"
+msgstr ""
 
 msgctxt "Possible Index End Reason"
 msgid "No Follow Up"
-msgstr "Kein erneuter Kontakt"
+msgstr ""
 
 msgid "No Order"
-msgstr "Nicht verordnet"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "No Problems detected."
-msgstr "Keine Probleme festgestellt."
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "No Reaction"
-msgstr "Keine Reaktion"
+msgstr ""
 
 msgid "No Symptoms"
-msgstr "Keine Symptome"
+msgstr ""
 
 msgid "No data to display"
-msgstr "Keine Daten anzuzeigen"
+msgstr ""
 
 msgid "No data to show"
-msgstr "Keine Daten anzuzeigen"
+msgstr ""
 
 msgid "No further inquiries"
-msgstr "Keine weiteren Abklärungen"
+msgstr ""
 
 msgid "No hospitalizations"
-msgstr "Keine Krankenhausaufenthalte"
+msgstr ""
 
 msgid "No propagator"
-msgstr "Kein Anstecker"
+msgstr ""
 
 msgid "No recipient"
-msgstr "Kein Empfänger"
+msgstr ""
 
 msgid "No submissions have been entered yet. Please submit all relevant people. Previous submissions can also be viewed, edited and deleted later."
-msgstr "Es wurden noch keine Einsendungen erfasst. Bitte reichen Sie alle relevanten Personen ein. Vorherige Einsendungen können später angesehen, bearbeitet und gelöscht werden."
+msgstr ""
 
 msgid "No verson entries found"
-msgstr "Es wurden keine Versions-Einträge gefunden"
+msgstr ""
 
 msgid "None"
-msgstr "Keine"
+msgstr ""
 
 msgctxt "vaccination_done"
 msgid "Not Done"
-msgstr "Nicht Erledigt"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
 msgid "Note"
-msgstr "Notiz"
+msgstr ""
 
 msgid "Note created successfully"
-msgstr "Notiz wurde erfolgreich erstellt"
+msgstr ""
 
 msgid "Notes"
-msgstr "Notizen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Notes"
-msgstr "Notizen"
+msgstr ""
 
 msgid "Notifications"
-msgstr "Benachrichtigungen"
+msgstr ""
 
 msgid "November"
-msgstr "November"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Number"
-msgstr "Nummer"
+msgstr ""
 
 msgid "Occupation / Employment"
-msgstr "Tätigkeiten / Arbeit"
+msgstr ""
 
 msgid "October"
-msgstr "Oktober"
+msgstr ""
 
 msgid "Oops!"
-msgstr "Hoppla!"
+msgstr ""
 
 msgid "Ordered"
-msgstr "Verordnet"
+msgstr ""
 
 msgid "Organisation"
-msgstr "Organisation"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Organisation"
-msgstr "Organisation"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Organisation"
-msgstr "Organisation"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Organisation"
-msgstr "Organisation"
+msgstr ""
 
 msgid "Organisation Positions"
-msgstr "Organisationspositionen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Organisation UUID"
-msgstr "Organisation UUID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Organisation UUID"
-msgstr "Organisation UUID"
+msgstr ""
 
 msgid "Organisation created successfully"
-msgstr "Organisation erfolgreich erstellt"
+msgstr ""
 
 msgid "Organisation deleted successfully"
-msgstr "Organisation erfolgreich gelöscht"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Organisation not found"
-msgstr "Organisation nicht gefunden"
+msgstr ""
 
 msgid "Organisation updated successfully"
-msgstr "Mandant wurde erfolgreich aktualisiert"
+msgstr ""
 
 msgid "Organisations"
-msgstr "Organisationen"
+msgstr ""
 
 msgid "Organisations merged successfully"
-msgstr "Organisationen erfolgreich fusioniert"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Origin"
-msgstr "Herkunft"
+msgstr ""
 
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "Affiliation Kind"
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "Contact Method Type"
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "External Reference Type"
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "Index End Reason"
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "Organisation Type"
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "Possible Index End Reason"
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "Possible Index Type"
 msgid "Other"
-msgstr "Anderer Grund"
+msgstr ""
 
 msgctxt "School Type"
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "School visit reason"
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "Sex"
 msgid "Other"
-msgstr "Andere"
+msgstr ""
 
 msgctxt "Case Status"
 msgid "Other Actions To Do"
-msgstr "Sonstige Aktion noch durchzuführen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.Index Field"
 msgid "Other End Reason"
-msgstr "Anderer Endgrund"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "Other End Reason"
-msgstr "Anderer Endgrund"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "Other Type"
-msgstr "Anderer Typ"
+msgstr ""
 
 msgctxt "Possible Index Type"
 msgid "Outbreak Examination"
-msgstr "Ausbruchsuntersuchung"
+msgstr ""
 
 msgctxt "Test Reason"
 msgid "Outbreak examination"
-msgstr "Ausbruchsuntersuchung"
+msgstr ""
 
 msgid "Outdoor Sport activities"
-msgstr "Sportliche Betätigung im Freien"
+msgstr ""
 
 msgid "Outgoing Email Configuration"
-msgstr "Ausgehende E-Mail-Konfiguration"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Outgoing Mail Configuration"
-msgstr "Ausgehende E-Mail-Konfiguration"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Outgoing Mail Configuration Type"
-msgstr "Ausgehende E-Mail-Konfiguration"
+msgstr ""
 
 msgid "Outgoing SMS Configuration"
-msgstr "Ausgehende SMS-Konfiguration"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Outgoing SMS Configuration"
-msgstr "Ausgehende SMS-Konfiguration"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Outgoing SMS Configuration Type"
-msgstr "Ausgehende SMS-Konfiguration"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Override URL"
-msgstr "Externe URL"
+msgstr ""
 
 msgid "Overview"
-msgstr "Übersicht"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Overview"
-msgstr "Übersicht"
+msgstr ""
 
 msgid "Own Household"
-msgstr "Eigener Haushalt"
+msgstr ""
 
 msgctxt "Test Kind"
 msgid "PCR"
-msgstr "PCR"
+msgstr ""
 
 msgctxt "Test Kind"
 msgid "PCR Quick"
-msgstr "PCR-Schnelltest"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Password"
-msgstr "Passwort"
+msgstr ""
 
 msgid "Patch existing Test"
-msgstr "Test anpassen"
+msgstr ""
 
 msgctxt "Case Import Row Status"
 msgid "Pending"
-msgstr "Offen"
+msgstr ""
 
 msgid "Pending Rows"
-msgstr "Offene Zeilen"
+msgstr ""
 
 msgid "People"
-msgstr "Personen"
+msgstr ""
 
 msgid "People in Hospital"
-msgstr "Personen im Krankenhaus"
+msgstr ""
 
 msgid "People in Isolation"
-msgstr "Personen in Isolation"
+msgstr ""
 
 msgid "People in Quarantine"
-msgstr "Personen in Quarantäne"
+msgstr ""
 
 msgid "Percentage"
-msgstr "Anteil"
+msgstr ""
 
 msgctxt "Email Status"
 msgid "Permanent Failure"
-msgstr "Permanenter Fehler"
+msgstr ""
 
 msgid "Person"
-msgstr "Person"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Person"
-msgstr "Person"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person"
-msgstr "Person"
+msgstr ""
 
 msgctxt "Inbox Row Apply Person"
 msgid "Person"
-msgstr "Person"
+msgstr ""
 
 msgctxt "Login"
 msgid "Person"
-msgstr "Person"
+msgstr ""
 
 msgid "Person Base Data"
-msgstr "Basisdaten Person"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
 msgid "Person Firstname"
-msgstr "Person Vorname"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
 msgid "Person Lastname"
-msgstr "Person Nachname"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Person UUID"
-msgstr "Person UUID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person UUID"
-msgstr "Person UUID"
+msgstr ""
 
 msgid "Person created successfully"
-msgstr "Person wurde erfolgreich erstellt"
+msgstr ""
 
 msgid "Person deleted successfully"
-msgstr "Person erfolgreich gelöscht"
+msgstr ""
 
 msgid "Person is symptomatic and therefore tested"
-msgstr "Person ist symptomatisch und wird darum getestet"
+msgstr ""
 
 msgid "Person updated successfully"
-msgstr "Person wurde erfolgreich aktualisiert"
+msgstr ""
 
 msgctxt "ISM 2021-06-11 Death Field Group"
 msgid "Personal"
-msgstr "Person"
+msgstr ""
 
 msgctxt "ISM 2021-06-11 Test Field Group"
 msgid "Personal"
-msgstr "Person"
+msgstr ""
 
 msgid "Personal service with physical contact (e.g. hairdressers, massage studio)"
-msgstr "Persönliche Dienstleistung mit Körperkontakt (z. B. Friseure, Massagestudio)"
+msgstr ""
 
 msgid "Phase"
-msgstr "Phase"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Phase"
-msgstr "Phase"
+msgstr ""
 
 msgid "Phase Quarantine / Isolation Orders must not overlap."
-msgstr "Phasen Quarantäne- / Isolations-Verodnungen dürfen nicht überlappen."
+msgstr ""
 
 msgid "Phase Type already exists on the case"
-msgstr "Der Phasen Typ wird im Fall bereits verwendet"
+msgstr ""
 
 msgid "Phase created successfully"
-msgstr "Phase wurde erfolgreich erstellt"
+msgstr ""
 
 msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
-msgstr "Phasenanfangs- und Enddatum müssen festgelegt werden, um Isolationsbestätigungen zu erstellen."
+msgstr ""
 
 msgid "Phases"
-msgstr "Phasen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Phases"
-msgstr "Phasen"
+msgstr ""
 
 msgid "Phoenix Dashboard"
-msgstr "Phoenix Dashboard"
+msgstr ""
 
 msgid "Phone"
-msgstr "Telefon"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Phone"
-msgstr "Telefon"
+msgstr ""
 
 msgid "Phone number can only be obtained at the residents' registration office, index doesn't own a phone, no E-Mail address"
-msgstr "Telefonnummer kann nur über die Einwohnerkontrolle eingeholt werden, Index besitzt kein Telefon, keine E-Mail-Adresse"
+msgstr ""
 
 msgid "Phone number incorrect or missing, multiple calls required"
-msgstr "Telefonnummer nicht korrekt oder nicht vorhanden, es braucht mehrere Rückrufe"
+msgstr ""
 
 msgid "Phone number must be requested from the doctor"
-msgstr "Telefonnummer muss beim Arzt erfragt werden"
+msgstr ""
 
 msgid "Pin Note"
-msgstr "Notiz anheften"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
 msgid "Pinned"
-msgstr "Angeheftet"
+msgstr ""
 
 msgid "Place"
-msgstr "Ort"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
-msgstr "Ort"
+msgstr ""
 
 msgid "Please enter your place of residence."
-msgstr "Bitte geben Sie Ihren Wohnort an."
+msgstr ""
 
 msgid "Please indicate how we can reach you:"
-msgstr "Bitte geben Sie an wie wir Sie erreichen können:"
+msgstr ""
 
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
-msgstr "Bitte beachten Sie, dass die Eingabe der Kontaktpersonen nur in aktuellen Versionen der folgenden Browser funktioniert:"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Please specify your reason"
-msgstr "Grund für Ihren Besuch"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Port"
-msgstr "Port"
+msgstr ""
 
 msgid "Position"
-msgstr "Position"
+msgstr ""
 
 msgid "Positions"
-msgstr "Positionen"
+msgstr ""
 
 msgctxt "Test Result"
 msgid "Positive"
-msgstr "Positiv"
+msgstr ""
 
 msgid "Possible Index"
-msgstr "Möglicher Index"
+msgstr ""
 
 msgctxt "Case Phase Type"
 msgid "Possible Index"
-msgstr "Möglicher Index"
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "Possible Index Submission"
-msgstr "Möglicher-Index Einsendungen"
+msgstr ""
 
 msgid "Possible Index Submissions"
-msgstr "Möglicher-Index Einsendungen"
+msgstr ""
 
 msgid "Possible index submission created successfully"
-msgstr "Mögliche Indexübermittlung erfolgreich erstellt"
+msgstr ""
 
 msgid "Possible index submissions can only be managed for cases with an index phase."
-msgstr "Mögliche Indexübermittlungen können nur für Fälle mit einer Indexphase verwaltet werden."
+msgstr ""
 
 msgid "PossibleIndexSubmission deleted successfully"
-msgstr "Mögliche Indexübermittlung erfolgreich gelöscht"
+msgstr ""
 
 msgid "PossibleIndexSubmission updated successfully"
-msgstr "Mögliche Indexübermittlung erfolgreich bearbeitet"
+msgstr ""
 
 msgid "Premature Releases"
-msgstr "Vorzeitige Quarantäneentlassung"
+msgstr ""
 
 msgid "Premature release created successfully"
-msgstr "Vorzeitige Quarantäneentlassung erfolgreich erstellt"
+msgstr ""
 
 msgctxt "School Type"
 msgid "Preschool"
-msgstr "Kindergarten"
+msgstr ""
 
 msgid "Preview"
-msgstr "Vorschau"
+msgstr ""
 
 msgid "Previous"
-msgstr "Zurück"
+msgstr ""
 
 msgctxt "School Type"
 msgid "Primary school"
-msgstr "Primarschule"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Private Key"
-msgstr "Privater Schlüssel"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Problem solved"
-msgstr "Problem gelöst"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Problems"
-msgstr "Probleme"
+msgstr ""
 
 msgctxt "Inbox Row Index"
 msgid "Process"
-msgstr "Verarbeiten"
+msgstr ""
 
 msgctxt "Inbox Row Show"
 msgid "Processed Data"
-msgstr "Verarbeitete Daten"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Profession"
-msgstr "Berufsfeld"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Profession Category"
-msgstr "Berufskategorie"
+msgstr ""
 
 msgctxt "School Type"
 msgid "Professional school"
-msgstr "Berufsschule"
+msgstr ""
 
 msgctxt "School visit reason"
 msgid "Professor"
-msgstr "Dozent/Professor/Lehrerin"
+msgstr ""
 
 msgid "Profile"
-msgstr "Profil"
+msgstr ""
 
 msgid "Propagated"
-msgstr "Weitergegeben"
+msgstr ""
 
 msgid "Propagator"
-msgstr "Anstecker"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator"
-msgstr "Anstecker"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Case"
-msgstr "Anstecker Fall"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts Field"
 msgid "Propagator Case"
-msgstr "Anstecker Fall"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Propagator Case"
-msgstr "Anstecker Fall"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Case UUID"
-msgstr "Anstecker Fall UUID"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Propagator Case UUID"
-msgstr "Anstecker Fall UUID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator ISM ID"
-msgstr "Anstecker ISM IS"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts Field"
 msgid "Propagator ISM ID"
-msgstr "Anstecker ISM ID"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Propagator ISM ID"
-msgstr "Anstecker ISM ID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Internal"
-msgstr "Anstecker Intern"
+msgstr ""
 
 msgid "Protocol"
-msgstr "Protokoll"
+msgstr ""
 
 msgid "Pub, Discotheque, Dance club, Night club"
-msgstr "Bar, Diskothek, Tanzclub, Nachtclub"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Public Statistics"
-msgstr "Öffentliche Statistik"
+msgstr ""
 
 msgid "Public or private event < 300 people"
-msgstr "Öffentliche oder private Veranstaltung <300 Personen"
+msgstr ""
 
 msgid "Public or private event > 300 people"
-msgstr "Öffentliche oder private Veranstaltung >300 Personen"
+msgstr ""
 
 msgid "Public transport, cable cars"
-msgstr "Öffentliche Verkehrsmittel, Seilbahnen"
+msgstr ""
 
 msgid "Quarantine"
-msgstr "Quarantäne"
+msgstr ""
 
 msgctxt "Test Reason"
 msgid "Quarantine"
-msgstr "Quarantäne"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Quarantine / Isolation"
-msgstr "Quarantäne / Isolation"
+msgstr ""
 
 msgid "Quarantine Confirmation"
-msgstr "Quarantänebestätigung"
+msgstr ""
 
 msgid "Quarantine Confirmations are only available for contact persons."
-msgstr "Quarantänebestätigungen sind nur für Kontaktpersonen verfügbar."
+msgstr ""
 
 msgctxt "Test Reason"
 msgid "Quarantine End"
-msgstr "Ende der Quarantäne"
+msgstr ""
 
 msgid "Quarantine End Reasons"
-msgstr "Quarantäne-Endgründe"
+msgstr ""
 
 msgid "Quarantine Order"
-msgstr "Quarantäneverordnung"
+msgstr ""
 
 msgid "Quarantine Ordered"
-msgstr "Quarantäne verordnet"
+msgstr ""
 
 msgid "Quarantine Period End"
-msgstr "Quarantäneperiode Ende"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Reason"
-msgstr "Grund"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Reason for you visit"
-msgstr "Grund für Ihren Besuch"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Reasons for test"
-msgstr "Gründe für Test"
+msgstr ""
 
 msgid "Reasons for test help"
-msgstr "Gründe für Test Hilfe"
+msgstr ""
 
 msgid "Reasons for the test"
-msgstr "Gründe für den Test"
+msgstr ""
 
 msgid "Received"
-msgstr "Erhalten"
+msgstr ""
 
 msgid "Recipient"
-msgstr "Empfänger"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Recipient"
-msgstr "Empfänger"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Recipient"
-msgstr "Empfänger"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Recipient Case"
-msgstr "Empfängerfall"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Recipient Case UUID"
-msgstr "Empfängerfall UUID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
 msgid "Recipient ID"
-msgstr "Empfänger ID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Recipient ISM ID"
-msgstr "Empfänger ISM ID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Recipient Internal"
-msgstr "Empfänger Intern"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
 msgid "Recipient Public Key"
-msgstr "Empfänger öffentlicher Schlüssel"
+msgstr ""
 
 msgid "Redirecting"
-msgstr "Weiterleiten"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Reference"
-msgstr "Referenzen"
+msgstr ""
 
 msgid "References"
-msgstr "Referenzen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "References"
-msgstr "Referenzen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "References"
-msgstr "Referenzen"
+msgstr ""
 
 msgctxt "ISM 2021-06-11 Death Field Group"
 msgid "References"
-msgstr "Referenzen"
+msgstr ""
 
 msgctxt "ISM 2021-06-11 Test Field Group"
 msgid "References"
-msgstr "Referenzen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Related Tenants"
-msgstr "Mandant wählen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
 msgid "Relay"
-msgstr "Relay"
+msgstr ""
 
 msgid "Relevant will be all contacts you have where ALL of the following is true:"
-msgstr "Relevant sind alle Kontakte bei denen ALLE der folgenden Bedingungen zutreffen:"
+msgstr ""
 
 msgid "Religious gatherings / funerals"
-msgstr "Religiöse Versammlungen / Beerdigungen"
+msgstr ""
 
 msgid "Remove"
-msgstr "Entfernen"
+msgstr ""
 
 msgid "Repetitive preventative tests of specific groups (e.g. care centers, schools, companies etc.)"
-msgstr "Repetitive präventive Tests von umschriebenen Gruppen (z.B. Pflegezentren, Schulen, Firmen etc.)"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Report case to the appropriate authority and delete person & case."
-msgstr "Melden Sie den Fall den entsprechenden Behörden und löschen Sie danach Person & Fall."
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Report case to your supervisor."
-msgstr "Melden Sie den Fall Ihrem Vorgesetzten."
+msgstr ""
 
 msgid "Reporting unit"
-msgstr "Meldeeinheit"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Reporting unit"
-msgstr "Meldeeinheit"
+msgstr ""
 
 msgid "Requested document is currently unavailable"
-msgstr "Das verlangte Dokument ist momentan nicht verfügbar"
+msgstr ""
 
 msgid "Reset tracer & supervisor"
-msgstr "Tracer & Supervisor zurücksetzen"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Residency Address"
-msgstr "Wohnadresse"
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "Residency Outside Country"
-msgstr "Wohnadresse im Ausland"
+msgstr ""
 
 msgctxt "Case Import Row Status"
 msgid "Resolved"
-msgstr "Abgeglichen"
+msgstr ""
 
 msgid "Resolved Rows"
-msgstr "Abgeglichene Zeilen"
+msgstr ""
 
 msgctxt "Auto Tracing Exit"
 msgid "Responsibility"
-msgstr "Verantwortung"
+msgstr ""
 
 msgid "Restaurant"
-msgstr "Restaurant"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Result"
-msgstr "Resultat"
+msgstr ""
 
 msgid "Resulting Changes"
-msgstr "Resultierende Änderungen"
+msgstr ""
 
 msgid "Retirement / nursing home"
-msgstr "Alters-/Pflegeheim"
+msgstr ""
 
 msgctxt "Email Status"
 msgid "Retries Exceeded"
-msgstr "Zu oft fehlgeschlagen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Roles"
-msgstr "Rollen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Roles"
-msgstr "Rollen"
+msgstr ""
 
 msgid "Rows"
-msgstr "Zeilen"
+msgstr ""
 
 msgctxt "Versioning Origin"
 msgid "SMS Sender"
-msgstr "SMS-Absender"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.TemplateParameters Field"
 msgid "SMS Signature"
-msgstr "SMS Signatur"
+msgstr ""
 
 msgid "SMS created successfully"
-msgstr "SMS wurde erfolgreich erstellt"
+msgstr ""
 
 msgid "Save"
-msgstr "Speichern"
+msgstr ""
 
 msgid "Saving..."
-msgstr "Speichern…"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
 msgid "Schedule"
-msgstr "Zeitplan"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
 msgid "Scheduling Date"
-msgstr "Ausführungsdatum"
+msgstr ""
 
 msgctxt "Affiliation Kind"
 msgid "Scholar"
-msgstr "Schüler"
+msgstr ""
 
 msgctxt "Organisation Type"
 msgid "School"
-msgstr "Schule"
+msgstr ""
 
 msgid "School / scout camp"
-msgstr "Schul-/Pfadfinderlager"
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "School Related"
-msgstr "Schule"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "School Type"
-msgstr "Schulart"
+msgstr ""
 
 msgctxt "Test Reason"
 msgid "Screening"
-msgstr "Cohort Screening"
+msgstr ""
 
 msgid "Search"
-msgstr "Suche"
+msgstr ""
 
 msgctxt "School Type"
 msgid "Secondary school"
-msgstr "Sekundarschule"
+msgstr ""
 
 msgid "Sedex Configuration"
-msgstr "Sedex-Konfiguration"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Sedex Export Enabled"
-msgstr "Sedex-Export aktiviert"
+msgstr ""
 
 msgid "Sedex Exports"
-msgstr "Sedex Exporte"
+msgstr ""
 
 msgid "Select Case"
-msgstr "Fall auswählen"
+msgstr ""
 
 msgid "Select Division"
-msgstr "Abteilung / Klasse wählen"
+msgstr ""
 
 msgid "Select Organisation"
-msgstr "Organisation wählen"
+msgstr ""
 
 msgid "Select Person"
-msgstr "Person wählen"
+msgstr ""
 
 msgid "Select Tenant"
-msgstr "Mandant wählen"
+msgstr ""
 
 msgid "Select Type"
-msgstr "Typ wählen"
+msgstr ""
 
 msgid "Select complexity"
-msgstr "Komplexität wählen"
+msgstr ""
 
 msgid "Select end reason"
-msgstr "Endgrund auswählen"
+msgstr ""
 
 msgid "Select existing person"
-msgstr "Vorhandene Person auswählen"
+msgstr ""
 
 msgid "Select mutation"
-msgstr "Mutation wählen"
+msgstr ""
 
 msgid "Select reason"
-msgstr "Grund wählen"
+msgstr ""
 
 msgid "Select school type"
-msgstr "Schulart wählen"
+msgstr ""
 
 msgid "Select status"
-msgstr "Status wählen"
+msgstr ""
 
 msgid "Select tenant"
-msgstr "Mandant wählen"
+msgstr ""
 
 msgctxt "Notification Type"
 msgid "Self Service Help Request"
-msgstr "Self-Service Hilfeanforderung"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Send Automated Close Email"
-msgstr "Automatisches Fall-Abschluss-Email senden"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Send Confirmation Email"
-msgstr "E-Mail-Bestätigung senden"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Send Confirmation SMS"
-msgstr "SMS-Bestätigung senden"
+msgstr ""
 
 msgid "Send Email"
-msgstr "E-Mail senden"
+msgstr ""
 
 msgid "Send Email Auto Tracing Invitation"
-msgstr "Auto Tracing Einladung via E-Mail senden"
+msgstr ""
 
 msgid "Send Email Isolation Confirmation"
-msgstr "E-Mail-Isolationsbestätigung senden"
+msgstr ""
 
 msgid "Send Email Isolation End Confirmation"
-msgstr "E-Mail-Isolations-Endbestätigung senden"
+msgstr ""
 
 msgid "Send Email Quarantine Confirmation"
-msgstr "E-Mail-Quarantänebestätigung senden"
+msgstr ""
 
 msgid "Send Email Quarantine End Confirmation"
-msgstr "E-Mail-Quarantäne-Endbestätigung senden"
+msgstr ""
 
 msgid "Send SMS"
-msgstr "SMS senden"
+msgstr ""
 
 msgid "Send SMS Auto Tracing Invitation"
-msgstr "Auto Tracing Einladung via SMS senden"
+msgstr ""
 
 msgid "Send SMS Isolation Confirmation"
-msgstr "SMS-Isolationsbestätigung senden"
+msgstr ""
 
 msgid "Send SMS Isolation End Confirmation"
-msgstr "SMS-Isolations-Endbestätigung senden"
+msgstr ""
 
 msgid "Send SMS Quarantine Confirmation"
-msgstr "SMS-Quarantänebestätigung senden"
+msgstr ""
 
 msgid "Send SMS Quarantine End Confirmation"
-msgstr "SMS-Quarantäne-Endbestätigung senden"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a SwissCovid App Code to the person."
-msgstr "Senden Sie der Person einen SwissCovid App Code zu."
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Send the Auto Tracing invitation."
-msgstr "Auto Tracing Einladung senden"
+msgstr ""
 
 msgid "Sent at %{date}"
-msgstr "Gesendet am %{date}"
+msgstr ""
 
 msgid "Separator"
-msgstr "Trennzeichen"
+msgstr ""
 
 msgid "September"
-msgstr "September"
+msgstr ""
 
 msgctxt "Test Kind"
 msgid "Serology"
-msgstr "Serologie"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Server"
-msgstr "Server"
+msgstr ""
 
 msgid "Set end rason %{end_reason}"
-msgstr "%{end_reason} als End-Grund setzen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Sex"
-msgstr "Biologisches Geschlecht"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Sex"
-msgstr "Biologisches Geschlecht"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Sex"
-msgstr "Biologisches Geschlecht"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Shares Address"
-msgstr "Teilt Hauptadresse"
+msgstr ""
 
 msgid "Shops / market"
-msgstr "Läden / Markt"
+msgstr ""
 
 msgid "Should you feel ill, please contact your general practitioner."
-msgstr "Sollten Sie sich krank fühlen, kontaktieren Sie bitte Ihren Hausarzt."
+msgstr ""
 
 msgid "Show"
-msgstr "Anzeigen"
+msgstr ""
 
 msgid "Show Statistics"
-msgstr "Statistiken anzeigen"
+msgstr ""
 
 msgid "Show all"
-msgstr "Alle anzeigen"
+msgstr ""
 
 msgid "Showing %{count} of %{total} entries"
-msgstr "Zeige %{count} von %{total} Einträgen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Signing Domain Identifier"
-msgstr "Signing Domain Identifier"
+msgstr ""
 
 msgid "Skin Rash"
-msgstr "Hautausschläge"
+msgstr ""
 
 msgid "Smtp"
-msgstr "SMTP"
+msgstr ""
 
 msgid "Social medical facility"
-msgstr "Sozialmedizinische Einrichtung"
+msgstr ""
 
 msgid "Someone else is currently editing this resource. Wait until they finished their work."
-msgstr "Eine andere Person bearbeitet diese Ressource derzeit. Warten Sie, bis diese ihre Arbeit beendet haben."
+msgstr ""
 
 msgid "Sore Throat"
-msgstr "Halsschmerzen"
+msgstr ""
 
 msgid "Sponsor"
-msgstr "Auftraggeber"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Sponsor"
-msgstr "Auftraggeber"
+msgstr ""
 
 msgctxt "Auto Tracing Step"
 msgid "Start"
-msgstr "Start"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Start"
-msgstr "Start"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Hospitalization Field"
 msgid "Start"
-msgstr "Start"
+msgstr ""
 
 msgid "Start Date"
-msgstr "Startdatum"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Start Date"
-msgstr "Startdatum"
+msgstr ""
 
 msgid "Statistics"
-msgstr "Statistiken"
+msgstr ""
 
 msgid "Statistics for %{tenant}"
-msgstr "Statistiken für %{tenant}"
+msgstr ""
 
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Row Field"
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 msgid "Status Page"
-msgstr "Statusseite"
+msgstr ""
 
 msgctxt "Home"
 msgid "Status Page"
-msgstr "Statusseite"
+msgstr ""
 
 msgid "Status help"
-msgstr "Statushilfe"
+msgstr ""
 
 msgctxt "School visit reason"
 msgid "Student"
-msgstr "Schüler/Studentin"
+msgstr ""
 
 msgid "Sub-Type"
-msgstr "Untertyp"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Subdivision"
-msgstr "Kanton"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Subdivision"
-msgstr "Kanton"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
-msgstr "Betreff"
+msgstr ""
 
 msgid "Submit contact persons"
-msgstr "Kontaktpersonen erfassen"
+msgstr ""
 
 msgctxt "Email Status"
 msgid "Success"
-msgstr "Zugestellt"
+msgstr ""
 
 msgctxt "SMS Status"
 msgid "Success"
-msgstr "Zugestellt"
+msgstr ""
 
 msgid "Successfully authenticated."
-msgstr "Erfolgreich angemeldet."
+msgstr ""
 
 msgid "Supervisor"
-msgstr "Teamleiter"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Supervisor"
-msgstr "Teamleiter"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Supervisor"
-msgstr "Teamleiter"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Supervisor"
-msgstr "Teamleiter"
+msgstr ""
 
 msgctxt "Inbox Row Apply Assignee"
 msgid "Supervisor"
-msgstr "Teamleiter"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Supervisor Name"
-msgstr "Name des Vorgesetzen"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Supervisor Phone"
-msgstr "Telefon"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Supervisor UUID"
-msgstr "Teamleiter UUID"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Supervisor UUID"
-msgstr "Teamleiter UUID"
+msgstr ""
 
 msgid "Suppress quarantine"
-msgstr "Quarantäne / Isolation unterdrücken"
+msgstr ""
 
 msgid "SwissCovid App"
-msgstr "SwissCovid App"
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "SwissCovid App"
-msgstr "SwissCovid App"
+msgstr ""
 
 msgctxt "Auto Tracing Step"
 msgid "SwissCovid App"
-msgstr "SwissCovid App"
+msgstr ""
 
 msgctxt "Division Merge"
 msgid "Switch"
-msgstr "Wechseln"
+msgstr ""
 
 msgctxt "Organisation Merge"
 msgid "Switch"
-msgstr "Wechseln"
+msgstr ""
 
 msgid "Symptoms"
-msgstr "Symptome"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms"
-msgstr "Symptome"
+msgstr ""
 
 msgctxt "Test Reason"
 msgid "Symptoms"
-msgstr "Symptome"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
-msgstr "Startdatum Symptome"
+msgstr ""
 
 msgid "System Message"
-msgstr "Systemnachricht"
+msgstr ""
 
 msgid "System Message created succesfully"
-msgstr "Systemnachricht erfolgreich erstellt"
+msgstr ""
 
 msgid "System Message deleted successfully"
-msgstr "Systemnachricht erfolgreich gelöscht"
+msgstr ""
 
 msgid "System Message updated successfully"
-msgstr "Systemnachricht erfolgreich aktualisiert"
+msgstr ""
 
 msgid "System Messages"
-msgstr "Systemnachrichten"
+msgstr ""
 
 msgid "Take Me Home"
-msgstr "Zurück zur Startseite"
+msgstr ""
 
 msgid "Template Parameters"
-msgstr "Parameter"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Template Variation"
-msgstr "Variationen"
+msgstr ""
 
 msgctxt "Email Status"
 msgid "Temporary Failure"
-msgstr "Vorübergehender Fehler"
+msgstr ""
 
 msgid "Tenant"
-msgstr "Mandant"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tenant"
-msgstr "Mandant"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Tenant"
-msgstr "Mandant"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Tenant"
-msgstr "Mandant"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
 msgid "Tenant"
-msgstr "Mandant"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tenant"
-msgstr "Mandant"
+msgstr ""
 
 msgctxt "Inbox Row Apply Tenant"
 msgid "Tenant"
-msgstr "Mandant"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tenant UUID"
-msgstr "Mandant UUID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Tenant UUID"
-msgstr "Mandant UUID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Tenant UUID"
-msgstr "Mandant UUID"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
 msgid "Tenant UUID"
-msgstr "Mandant UUID"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tenant UUID"
-msgstr "Mandant UUID"
+msgstr ""
 
 msgid "Tenant created successfully"
-msgstr "Mandant wurde erfolgreich erstellt"
+msgstr ""
 
 msgid "Tenant deleted successfully"
-msgstr "Mandant wurde erfolgreich aktualisiert"
+msgstr ""
 
 msgid "Tenant updated successfully"
-msgstr "Mandant wurde erfolgreich aktualisiert"
+msgstr ""
 
 msgid "Tenants"
-msgstr "Mandanten"
+msgstr ""
 
 msgid "Test"
-msgstr "Test"
+msgstr ""
 
 msgctxt "ISM 2021-06-11 Test Field Group"
 msgid "Test"
-msgstr "Test"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Test Kind"
-msgstr "Testart"
+msgstr ""
 
 msgid "Test as part of a planned trip"
-msgstr "Test im Rahmen einer geplanten Reise"
+msgstr ""
 
 msgid "Test by order from CT"
-msgstr "Test auf Anordnung vom CT"
+msgstr ""
 
 msgid "Test created successfully"
-msgstr "Test wurde erfolgreich erstellt"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Test date"
-msgstr "Testdatum"
+msgstr ""
 
 msgid "Test deleted successfully"
-msgstr "Test erfolgreich gelöscht"
+msgstr ""
 
 msgid "Test during quarantine without ending it"
-msgstr "Test im Laufe der Quarantäne, ohne diese zu beenden"
+msgstr ""
 
 msgid "Test for early termination of quarantine"
-msgstr "Test zur frühzeitigen Beendigung der Quarantäne"
+msgstr ""
 
 msgid "Test required by professional activity"
-msgstr "Test im Rahmen der beruflichen Tätigkeit"
+msgstr ""
 
 msgid "Test updated successfully"
-msgstr "Test wurde erfolgreich aktualisiert"
+msgstr ""
 
 msgid "Testing based on a message via app"
-msgstr "Testung aufgrund einer Meldung via App"
+msgstr ""
 
 msgid "Tests"
-msgstr "Tests"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Text"
-msgstr "Text"
+msgstr ""
 
 msgid "Thank you for your information!"
-msgstr "Vielen Dank für Ihre Informationen!"
+msgstr ""
 
 msgid "Thanks for your help!"
-msgstr "Vielen Dank für Ihre Hilfe!"
+msgstr ""
 
 msgctxt "Auto Tracing Exit"
 msgid "That depends mostly on your place of residence. We will forward your data to the entity accountable for tracing you."
-msgstr "Das hängt vor allem von Ihrem Wohnsitz ab. Wir leiten Ihre Daten an die Stelle weiter, die für das Tracing mit Ihnen zuständig ist."
+msgstr ""
 
 msgctxt "Phase Create Modal"
 msgid "The automated case close email for the %{type} phase will be disabled."
-msgstr "Das automatische Fall-Abschluss-Email für die %{type} Phase wird deaktiviert."
+msgstr ""
 
 msgid "The case administraton sends cases like this. Index has not been contacted"
-msgstr "Falladministration verschickt die neuen Fälle so. Es wurde noch keinen Kontakt zu Index aufgenommen"
+msgstr ""
 
 msgid "The contact person didn't develop any symptoms during quarantine"
-msgstr "Die Kontaktperson hat während der Quarantäne keine Symptome entwickelt"
+msgstr ""
 
 msgid "The contact person has developed symptoms, did a test and became an index"
-msgstr "Die Kontaktperson hat Symptome entwickelt, sich testen lassen und wurde zum Index"
+msgstr ""
 
 msgid "The displayed language was translated mechanically."
-msgstr "Die angezeigte Sprache wurde maschinell übersetzt."
+msgstr ""
 
 msgctxt "Phase Create Modal"
 msgid "The end date of the %{type} phase will be changed from \"%{old_end_date}\" to \"%{new_end_date}\"."
-msgstr "Das Enddatum von der %{type} Phase wird von \"%{old_end_date}\" zu \"%{new_end_date}\" angepasst."
+msgstr ""
 
 msgctxt "Phase Create Modal"
 msgid "The end reason of the %{type} phase will be changed from \"%{old_end_reason}\" to \"%{new_end_reason}\"."
-msgstr "Der Endgrund von der %{type} Phase wird von \"%{old_end_reason}\" zu \"%{new_end_reason}\" angepasst."
+msgstr ""
 
 msgid "The file was too large"
-msgstr "Die Datei war zu gross"
+msgstr ""
 
 msgid "The index phase end reason will be set to %{end_reason}."
-msgstr "Der Index-Phase-End-Grund wird auf %{end_reason} gesetzt."
+msgstr ""
 
 msgid "The link is no longer available"
-msgstr "Der Link ist nicht mehr verfügbar"
+msgstr ""
 
 msgid "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
-msgstr "Der Link mit dem Index Self-Service wurde verschickt. Der Index hat seine Kontaktpersonen noch nicht eingetragen. Dies kann bei \"%{link}\" kontrolliert werden."
+msgstr ""
 
 msgid "The quarantine can be ended because of a negative test the earliest on %{date}."
-msgstr "Die Quarantäne kann aufgrund eines negativen Tests frühestens am %{date} beendet werden."
+msgstr ""
 
 msgctxt "Phase Create Modal"
 msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
-msgstr "Die Quarantäneverordnung der %{type} Phase wird entfernt, da die Verordnung vor dem neuen Startdatum beginnt."
+msgstr ""
 
 msgctxt "Phase Create Modal"
 msgid "The status of the case will be changed from \"%{old_status}\" to \"%{new_status}\"."
-msgstr "Der Status des Falles wird von \"%{old_status}\" zu \"%{new_status}\" angepasst."
+msgstr ""
 
 msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."
-msgstr "Der Status dient als Überblick in welcher Phase sich das Tracing bei dieser Person befindet. Anhand dieses Status kann im Filter gesucht werden. Die Fälle werden von der Falladministration immer als Status “Erster Kontakt” eingefügt. Nachdem der Fall bearbeitet wurde, muss der Status angepasst werden."
+msgstr ""
 
 msgid "This case is not in an index phase."
-msgstr "Dieser Fall befindet sich nicht in einer Indexphase."
+msgstr ""
 
 msgid "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
-msgstr "Dieser Eintrag kann nicht bearbeitet werden, da er die Konsequenz der Informationen, welche bei den Bildungseinrichtungen eingegeben wurden, ist."
+msgstr ""
 
 msgid "This organisation has a possible duplicate."
 msgid_plural "This organisation has %{count} possible duplicates."
-msgstr[0] "Diese Organisation ist möglicherweise ein Duplikat."
-msgstr[1] "Diese Organisation hat %{count} mögliche Duplikate."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "This organisation is possibly a duplicate of %{name_link}, please check."
-msgstr "Diese Organisation ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie dies bitte."
+msgstr ""
 
 msgid "This person has a possible duplicate."
 msgid_plural "This person has %{count} possible duplicates."
-msgstr[0] "Diese Person ist möglicherweise ein Duplikat."
-msgstr[1] "Diese Person hat %{count} Duplikate."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "This person is possibly a duplicate of %{name_link} please check."
-msgstr "Diese Person ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie dies bitte."
+msgstr ""
 
 msgid "This person is possibly a duplicate of %{name_link}, please check."
-msgstr "Diese Person ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie dies bitte."
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
-msgstr "Diese Person hat eine Bildungseinrichtung besucht in den letzten 48 Stunden bevor Symptombeginn oder vor dem Test"
+msgstr ""
 
 msgid "This row is already resolved."
-msgstr "Diese Zeile ist bereits abgeglichen."
+msgstr ""
 
 msgid "Time expenditure"
-msgstr "Zeitaufwand"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Title"
-msgstr "Titel"
+msgstr ""
 
 msgid "To"
-msgstr "Bis"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "To"
-msgstr "An"
+msgstr ""
 
 msgid "To fulfill all needs regarding the tracing of contacts you will need to enter personal details of people you met while being potentially infectious."
-msgstr "Um das Contact Tracing zu ermöglichen, müssen Sie die persönlichen Daten aller Kontakte erfassen, die Sie hatten, während Sie möglicherweise ansteckend waren."
+msgstr ""
 
 msgid "To show the requested information, we need to verify your identity."
-msgstr "Um die angefragten Daten anzeigen zu können, müssen wir Ihre Identität bestätigen."
+msgstr ""
 
 msgid "Today is your last day of quarantine. If you do not experience any symptoms, you're allowed to leave quarantine."
-msgstr "Heute ist Ihr letzter Tag der Quarantäne. Wenn Sie keine Symptome haben, dürfen Sie die Quarantäne verlassen."
+msgstr ""
 
 msgid "Too many files were selected"
-msgstr "Zu viele Dateien wurden ausgewählt"
+msgstr ""
 
 msgid "Tracer"
-msgstr "Tracer"
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Tracer"
-msgstr "Tracer"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tracer"
-msgstr "Tracer"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tracer"
-msgstr "Tracer"
+msgstr ""
 
 msgctxt "Inbox Row Apply Assignee"
 msgid "Tracer"
-msgstr "Tracer"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tracer UUID"
-msgstr "Tracer UUID"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tracer UUID"
-msgstr "Tracer UUID"
+msgstr ""
 
 msgid "Tracing"
-msgstr "Tracing"
+msgstr ""
 
 msgid "Transmission"
-msgstr "Übertragung"
+msgstr ""
 
 msgctxt "Auto Tracing Step"
 msgid "Transmission"
-msgstr "Übertragung"
+msgstr ""
 
 msgid "Transmission Date"
-msgstr "Übertragungsdatum"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Transmission Date"
-msgstr "Übertragungsdatum"
+msgstr ""
 
 msgid "Transmission created successfully"
-msgstr "Übertragung erfolgreich erstellt"
+msgstr ""
 
 msgid "Transmission deleted successfully"
-msgstr "Übertragung erfolgreich gelöscht"
+msgstr ""
 
 msgid "Transmission updated successfully"
-msgstr "Mandant wurde erfolgreich aktualisiert"
+msgstr ""
 
 msgid "Transmissions"
-msgstr "Übertragungen"
+msgstr ""
 
 msgctxt "Possible Index Type"
 msgid "Travel"
-msgstr "Reisen"
+msgstr ""
 
 msgid "True"
-msgstr "Wahr"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.ContactMethod Field"
 msgid "Typ"
-msgstr "Typ"
+msgstr ""
 
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.ExternalReference Field"
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.VersionContext.Version Field"
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Protocol Entry"
 msgid "Type"
-msgstr "Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Type Other"
-msgstr "Anderer Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Type Other"
-msgstr "Anderer Typ"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.ExternalReference Field"
 msgid "Type name"
-msgstr "Typname"
+msgstr ""
 
 msgid "UTF-8"
-msgstr "UTF-8"
+msgstr ""
 
 msgid "UUID"
-msgstr "UUID"
+msgstr ""
 
 msgctxt "Field"
 msgid "UUID"
-msgstr "UUID"
+msgstr ""
 
 msgid "Uncertain"
-msgstr "Unsicher"
+msgstr ""
 
 msgid "Undocumented"
-msgstr "Nicht erfasst"
+msgstr ""
 
 #, elixir-format
 msgctxt "School Type"
 msgid "University or college"
-msgstr "Universität oder Hochschule"
+msgstr ""
 
 msgid "Unknown"
-msgstr "Unbekannt"
+msgstr ""
 
 msgctxt "vaccination_done"
 msgid "Unknown"
-msgstr "Unbekannt"
+msgstr ""
 
 msgid "Unknown Error"
-msgstr "Unbekannter Fehler"
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "Unmanaged Tenant"
-msgstr "Nicht verwalteter Mandant"
+msgstr ""
 
 msgid "Update Transmission"
-msgstr "Übertragung aktualisieren"
+msgstr ""
 
 msgid "Update personal data"
-msgstr "Persönliche Daten aktualisieren"
+msgstr ""
 
 msgctxt "Field"
 msgid "Updated At"
-msgstr "Aktualisiert Am"
+msgstr ""
 
 msgid "User"
-msgstr "Benutzer"
+msgstr ""
 
 msgctxt "Versioning Origin"
 msgid "User Sync"
-msgstr "Benutzersynchronisierung"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Username"
-msgstr "Benutzername"
+msgstr ""
 
 msgid "Users"
-msgstr "Benutzer"
+msgstr ""
 
 msgid "Users can not be edited here since they are synchronized with the IAM."
-msgstr "Benutzer können hier nicht bearbeitet werden, da sie mit dem IAM synchronisiert werden."
+msgstr ""
 
 msgid "Vacation"
-msgstr "Ferien"
+msgstr ""
 
 msgctxt "Possible Index End Reason"
 msgid "Vaccinated"
-msgstr "Geimpft"
+msgstr ""
 
 msgctxt "Premature Release Reason"
 msgid "Vaccinated"
-msgstr "Geimpft"
+msgstr ""
 
 msgid "Vaccination"
-msgstr "Impfung"
+msgstr ""
 
 msgctxt "Auto Tracing Step"
 msgid "Vaccination"
-msgstr "Impfung"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Vaccination"
-msgstr "Impfung"
+msgstr ""
 
 msgctxt "Auto Tracing Problem"
 msgid "Vaccination Failure"
-msgstr "Impfversagen"
+msgstr ""
 
 msgid "Vaccination Failures"
-msgstr "Impfversager"
+msgstr ""
 
 msgid "Value"
-msgstr "Wert"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.ExternalReference Field"
 msgid "Value"
-msgstr "Wert"
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.ContactMethod Field"
 msgid "Value"
-msgstr "Wert"
+msgstr ""
 
 msgctxt "Home"
 msgid "Various information regarding the applications functionality as well as details regarding using Hygeia are available on the website."
-msgstr "Verschiedenste Informationen zur Funktionsweise der Applikation sowie zur Nutzung von Hygeia finden Sie auf der Website."
+msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Visit reason"
-msgstr "Grund Besuch"
+msgstr ""
 
 msgctxt "School visit reason"
 msgid "Visitor"
-msgstr "Besucher"
+msgstr ""
 
 msgctxt "Case Status"
 msgid "Wainting for Contact Person List"
-msgstr "Warten auf KP-Liste"
+msgstr ""
 
 msgid "Waiting for results..."
-msgstr "Warten auf Ergebnisse…"
+msgstr ""
 
 msgid "Warning! When importing the same rows multiple times, they will be re-assigned from the old import to the current import. Therefore rows might appear missing from an import later on."
-msgstr "Achtung! Wenn ein Import Zeilen enthält, welche in früheren Imports identisch enthalten sind, werden diese Zeilen vom alten Import auf den Neuen zugewiesen. Daher kann es aussehen, als würde ein alter Import Daten verlieren."
+msgstr ""
 
 msgid "We will forward you to the recording of people that you were in contact with and could possibly have passed the infection on."
-msgstr "Wir werden Sie nun zur Aufnahme jener Personen weiterleiten, mit denen Sie Kontakt gehabt haben und an die Sie die Infektion möglicherweise weitergegeben haben könnten."
+msgstr ""
 
 msgid "We wish you a speedy recovery."
-msgstr "Wir wünschen Ihnen gute Besserung."
+msgstr ""
 
 msgid "We would like to ask you to fill out the information on the following pages as precisely and completely as possible."
-msgstr "Wir bitten Sie, die Informationen auf den folgenden Seiten so vollständig und genau wie möglich auszufüllen."
+msgstr ""
 
 msgid "We're having difficulty connecting to the database."
-msgstr "Wir haben Schwierigkeiten, eine Verbindung mit der Datenbank herzustellen."
+msgstr ""
 
 msgid "Web-SMS"
-msgstr "Web-SMS"
+msgstr ""
 
 msgctxt "Versioning Origin"
 msgid "Website"
-msgstr "Webseite"
+msgstr ""
 
 msgid "What symptoms did you experience?"
-msgstr "Welche Symptome hatten Sie?"
+msgstr ""
 
 msgctxt "Phase Create Modal"
 msgid "When Saving, the following changes will also be applied:"
-msgstr "Beim Speichern werden folgende Änderungen ebenfalls angewendet:"
+msgstr ""
 
 msgid "When did the symptoms start?"
-msgstr "Wann haben die Symptome begonnen?"
+msgstr ""
 
 msgid "When did you meet %{first_name} %{last_name} last?"
-msgstr "Wann haben Sie %{first_name} %{last_name} zuletzt getroffen?"
+msgstr ""
 
 msgid "Where did you meet %{first_name} %{last_name} last?"
-msgstr "Wo haben Sie %{first_name} %{last_name} zuletzt getroffen?"
+msgstr ""
 
 msgid "Where does %{first_name} %{last_name} live?"
-msgstr "Wo wohnt %{first_name} %{last_name}?"
+msgstr ""
 
 msgid "Where does %{first_name} %{last_name} work?"
-msgstr "Wo arbeitet %{first_name} %{last_name}?"
+msgstr ""
 
 msgid "Who did you meet or who do you live with?"
-msgstr "Wen haben Sie getroffen oder mit wem wohnen Sie zusammen?"
+msgstr ""
 
 msgid "Work Place"
-msgstr "Arbeitsplatz"
+msgstr ""
 
 msgctxt "Test Reason"
 msgid "Work related"
-msgstr "Arbeitsbedingt"
+msgstr ""
 
 msgid "Workplace/school testing ordered by CT"
-msgstr "Vom CT angeordnete Durchtestung am Arbeitsplatz/Schule"
+msgstr ""
 
 msgid "Yes"
-msgstr "Ja"
+msgstr ""
 
 msgid "You are currently in"
-msgstr "Sie sind momentan in"
+msgstr ""
 
 msgid "You are currently not quarantined or in isolation."
-msgstr "Sie befinden sich momentan nicht in Quarantäne oder Isolation."
+msgstr ""
 
 msgid "You are not authorized to do this action."
-msgstr "Sie sind nicht berechtigt, diese Aktion auszuführen."
+msgstr ""
 
 msgid "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
-msgstr "Ausserdem können Sie die Quarantäne vorzeitig beenden, indem Sie innert der letzten 4 Tage vor Ablauf der Quarantäne einen Test durchführen lassen, welcher negativ ausfällt. Der Test muss von einer offiziellen Teststelle durchgeführt werden."
+msgstr ""
 
 msgid "You can lift quarantine if you're fully vaccinated or if you verifiably had COVID-19 in the last six months."
-msgstr "Sie können sich von der Quarantäne befreien lassen, wenn sie bereits vollständig geimpft sind oder nachweislich in den letzten sechs Monaten an Covid-19 erkrankt waren und genesen sind."
+msgstr ""
 
 msgid "You did not keep a safe distance of at least 1.5 meters."
-msgstr "Sie waren sich näher als 1.5 Meter."
+msgstr ""
 
 msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
-msgstr "Kontakt zwischen jetzt und 48 Stunden vor Beginn der Symptome (falls Sie keine Symptome haben 48 Stunden vor dem Test)."
+msgstr ""
 
 msgid "You had contact for more than 15 minutes on the same day."
-msgstr "Der Kontakt dauerte länger als 15 Minuten."
+msgstr ""
 
 msgid "You have been logged out!"
-msgstr "Sie wurden abgemeldet!"
+msgstr ""
 
 msgid "You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support."
-msgstr "Sie wurden kürzlich positiv auf COVID-19 getestet. Um die weitere Verbreitung zu verhindern ist das Contact Tracing auf Ihre Unterstützung angewiesen."
+msgstr ""
 
 msgid "You have been requested to enter personal data from all persons with which you have had contact with for more than 15 minutes without wearing a mask."
-msgstr "Sie wurden aufgefordert, die persönlichen Daten aller Kontakte zu erfassen, zu denen Sie in einem Abstand von weniger als 1.5 m und länger als 15 Min ohne Maske zusammen waren."
+msgstr ""
 
 msgid "You have selected an unacceptable file type"
-msgstr "Sie haben einen ungültigen Dateityp ausgewählt"
+msgstr ""
 
 msgid "You must provide a reason for completing a phase."
-msgstr "Bei “Phasen” soll für die Beendigung des Tracings bzw. der Isolation ein Grund angegeben werden."
+msgstr ""
 
 msgid "Your Tests"
-msgstr "Ihre Tests"
+msgstr ""
 
 msgid "Your institution does not appear in the list or it is not correct? Please enter it manually."
-msgstr "Ihr Bildungseinrichtung ist nicht in der Liste oder ist falsch? Bitte geben Sie sie manuell ein."
+msgstr ""
 
 msgid "Your isolation started on %{start_date} and applies up to and including %{end_date}."
-msgstr "Ihre Isolation startete am %{start_date} und gilt bis und mit %{end_date}."
+msgstr ""
 
 msgid "Your occupation does not appear in the list or it is not correct? Please enter it manually."
-msgstr "Ihr Beschäftigungsort ist nicht in der Liste oder ist falsch? Bitte geben Sie ihn manuell ein."
+msgstr ""
 
 msgid "Your quarantine started on %{start_date} and applies up to and including %{end_date}."
-msgstr "Ihre Quarantäne startete am %{start_date} und gilt bis und mit %{end_date}."
+msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "ZIP"
-msgstr "PLZ"
+msgstr ""
 
 msgid "Zoos, animal parks, gardens"
-msgstr "Zoos, Tierparks, Gärten"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "affiliations"
-msgstr "Zugehörigkeiten"
+msgstr ""
 
 msgid "all subdivisions"
-msgstr "alle Kantone"
+msgstr ""
 
 msgid "another place"
-msgstr "anderer Ort"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "auto_tracings"
-msgstr "auto_tracings"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "cases"
-msgstr "Fälle"
+msgstr ""
 
 msgid "choose"
-msgstr "Auswählen"
+msgstr ""
 
 msgid "choose sex"
-msgstr "Geschlecht wählen"
+msgstr ""
 
 msgctxt "versioning_event"
 msgid "delete"
-msgstr "Gelöscht"
+msgstr ""
 
 msgctxt "Notification"
 msgid "delete all"
-msgstr "Alle löschen"
+msgstr ""
 
 msgid "deleted"
-msgstr "Gelöscht"
+msgstr ""
 
 msgctxt "Notification"
 msgid "deleted"
-msgstr "Gelöscht"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "divisions"
-msgstr "Abteilungen / Klassen"
+msgstr ""
 
 msgid "either organisation or comment must be filled"
-msgstr "Organisation oder Kommentar müssen ausgefüllt werden"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "emails"
-msgstr "E-Mails"
+msgstr ""
 
 msgctxt "Notification"
 msgid "failed to send email."
-msgstr "E-Mail Versand fehlgeschlagen."
+msgstr ""
 
 msgctxt "Notification"
 msgid "has declared a premature release."
-msgstr "hat eine vorzeitige Entlassung deklariert."
+msgstr ""
 
 msgctxt "Item Table"
 msgid "hospitalizations"
-msgstr "Krankenhausaufenthalte"
+msgstr ""
 
 msgid "https://www.apple.com/safari/"
-msgstr "https://www.apple.com/safari/"
+msgstr ""
 
 msgid "https://www.google.com/chrome/"
-msgstr "https://www.google.com/chrome/"
+msgstr ""
 
 msgid "https://www.microsoft.com/en-us/edge"
-msgstr "https://www.microsoft.com/de-de/edge"
+msgstr ""
 
 msgid "https://www.mozilla.org/en-US/firefox/new/"
-msgstr "https://www.mozilla.org/de/firefox/new/"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "import_rows"
-msgstr "Import Zeilen"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "imports"
-msgstr "Imports"
+msgstr ""
 
 msgctxt "versioning_event"
 msgid "insert"
-msgstr "Eingefügt"
+msgstr ""
 
 msgctxt "Notification"
 msgid "mark all as read"
-msgstr "Alle als gelesen markieren"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "mutations"
-msgstr "Mutationen"
+msgstr ""
 
 msgctxt "Notification"
 msgid "needs help with self-service."
-msgstr "benötigt Hilfe mit dem Self-Service."
+msgstr ""
 
 msgctxt "Item Table"
 msgid "notes"
-msgstr "Notizen"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "notifications"
-msgstr "Benachrichtigungen"
+msgstr ""
 
 msgid "on \"From\" Day"
-msgstr "am \"Von\" Tag"
+msgstr ""
 
 msgid "or"
-msgstr "oder"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "organisations"
-msgstr "Organisationen"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "people"
-msgstr "Personen"
+msgstr ""
 
 msgid "please add at least one educational institution that you visited during the period in consideration"
-msgstr "Bitte geben Sie mindestens eine Bildungseinrichtung ein, welche Sie währen dem Zeitraum besucht haben."
+msgstr ""
 
 msgid "please add at least one occupation"
-msgstr "bitte fügen Sie mindestens eine Beschäftigung hinzu"
+msgstr ""
 
 msgid "please fill in the information about the place where you contracted the virus"
-msgstr "Bitte geben Sie die Informationen zu dem Ort ein, an dem Sie sich mit dem Virus infiziert haben"
+msgstr ""
 
 msgid "please fill in the information of the person who passed on the virus to you"
-msgstr "Bitte geben Sie die Informationen der Person ein, die das Virus an Sie weitergegeben hat"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "positions"
-msgstr "Positionen"
+msgstr ""
 
 msgctxt "Notification"
 msgid "possible index submitted."
-msgstr "Möglicher-Index eingereicht."
+msgstr ""
 
 msgctxt "Item Table"
 msgid "possible_index_submissions"
-msgstr "Möglicher-Index Einsendungen"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "premature_releases"
-msgstr "Vorzeitige Quarantäneentlassung"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "resource_views"
-msgstr "Ressourcen Ansichten"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "sedex_exports"
-msgstr "Sedex Exporte"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "sms"
-msgstr "SMS"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_active_cases_per_day_and_organisation"
-msgstr "Aktive Fälle / Tag / Organisation"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_active_complexity_cases_per_day"
-msgstr "Aktive Fälle / Tag / Komplexität"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_active_hospitalization_cases_per_day"
-msgstr "Aktive Hospitalisierungen / Tag"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_active_infection_place_cases_per_day"
-msgstr "Aktive Fälle / Infektionsort / Tag"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_active_isolation_cases_per_day"
-msgstr "Aktive Isolationen / Tag"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_active_quarantine_cases_per_day"
-msgstr "Aktive Quarantänen / Tag"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_cumulative_index_case_end_reasons"
-msgstr "Kumulative Index Fälle Ende Gründe"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_cumulative_possible_index_case_end_reasons"
-msgstr "Kumulative mögliche Index Fälle Ende Gründe"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_new_cases_per_day"
-msgstr "Neue Fälle / Tag"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_new_registered_cases_per_day"
-msgstr "Neue Fälle / Tag"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "statistics_transmission_country_cases_per_day"
-msgstr "Übertragungen / Land / Tag"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "system_messages"
-msgstr "Systemnachrichten"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "tenants"
-msgstr "Mandanten"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "tests"
-msgstr "Tests"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "transmissions"
-msgstr "Übertragungen"
+msgstr ""
 
 msgid "unknown"
-msgstr "unbekannt"
+msgstr ""
 
 msgctxt "Date Range"
 msgid "until"
-msgstr "bis"
+msgstr ""
 
 msgctxt "versioning_event"
 msgid "update"
-msgstr "Aktualisiert"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "user_grants"
-msgstr "Autorisierungen"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "users"
-msgstr "Benutzer"
+msgstr ""
 
 msgctxt "Item Table"
 msgid "versions"
-msgstr "Versionen"
+msgstr ""
 
 msgctxt "Notification"
 msgid "was assigned to you."
-msgstr "wurde zugewiesen."
+msgstr ""

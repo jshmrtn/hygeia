@@ -520,7 +520,12 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
         |> Enum.map(fn {field_name, destination_path} ->
           {destination_path, Row.get_change_field(data, [field_name])}
         end)
-        |> Enum.reject(&match?({_path, nil}, &1))
+        |> Enum.reduce([], fn
+          {[:tested_at], nil}, acc -> acc ++ [{[:tested_at], Row.get_change_field(data, ["Testdatum"])}]
+          {_path, nil}, acc -> acc
+          element, acc -> acc ++ [element]
+        end)
+        #|> Enum.reject(&match?({_path, nil}, &1))
         |> Enum.map(&normalize_test_data/1)
         |> extract_field_changes()
 
@@ -573,7 +578,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp normalize_test_data({path, date})
        when is_binary(date) and path in [[:tested_at], [:laboratory_reported_at]] do
     case Date.from_iso8601(date) do
-      {:ok, date} -> {path, date}
+      {:ok, date} -> {path, date}|> IO.inspect(label: "SUCC")
       {:error, _reason} -> {path, nil}
     end
   end

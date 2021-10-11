@@ -1,0 +1,121 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2\n"
+
+msgid "are still associated with this entry"
+msgstr ""
+
+msgid "at least email / mobile must be provided"
+msgstr ""
+
+msgid "at least one contact method must be provided"
+msgstr ""
+
+msgid "can't be blank"
+msgstr ""
+
+msgid "date is to far away from today"
+msgstr ""
+
+msgid "date must be in the past"
+msgstr ""
+
+msgid "date must not be in the future"
+msgstr ""
+
+# # From Ecto.Changeset.validate_confirmation/3
+msgid "does not match confirmation"
+msgstr ""
+
+msgid "end must be after start"
+msgstr ""
+
+# # From Ecto.Changeset.unique_constraint/3
+msgid "has already been taken"
+msgstr ""
+
+# # From Ecto.Changeset.validate_subset/3
+msgid "has an invalid entry"
+msgstr ""
+
+# # From Ecto.Changeset.validate_format/3
+msgid "has invalid format"
+msgstr ""
+
+# # From Ecto.Changeset.put_change/3
+msgid "is invalid"
+msgstr ""
+
+msgid "is not a valid hostname"
+msgstr ""
+
+# # From Ecto.Changeset.validate_exclusion/3
+msgid "is reserved"
+msgstr ""
+
+# # From Ecto.Changeset.no_assoc_constraint/3
+msgid "is still associated with this entry"
+msgstr ""
+
+# # From Ecto.Changeset.validate_acceptance/3
+msgid "must be accepted"
+msgstr ""
+
+msgid "must be equal to %{number}"
+msgstr ""
+
+msgid "must be greater than %{number}"
+msgstr ""
+
+msgid "must be greater than or equal to %{number}"
+msgstr ""
+
+# # From Ecto.Changeset.validate_number/3
+msgid "must be less than %{number}"
+msgstr ""
+
+msgid "must be less than or equal to %{number}"
+msgstr ""
+
+# # From Ecto.Changeset.validate_length/3
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "start must be before end"
+msgstr ""
