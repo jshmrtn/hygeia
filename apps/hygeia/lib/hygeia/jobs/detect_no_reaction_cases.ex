@@ -14,7 +14,7 @@ defmodule Hygeia.Jobs.DetectNoReactionCases do
 
   @default_refresh_interval_ms :timer.minutes(5)
 
-  @no_reaction_limit_amount 2
+  @no_reaction_limit_amount 6
   @no_reaction_limit_unit "hour"
 
   @spec start_link(otps :: Keyword.t()) :: GenServer.on_start()
