@@ -17,7 +17,7 @@
               <p class="mb-4">{gettext("Do you have or have had symptoms?")}</p>
               <Field name={:has_symptoms} class="form-group mb-4">
                 <HiddenInput />
-                <div class="btn-group-vertical disabled display-only btn-group-toggle btn-radio-group">
+                <div class="disabled display-only btn-group-toggle btn-radio-group">
                   <label class={
                     "btn",
                     "btn-sm",
