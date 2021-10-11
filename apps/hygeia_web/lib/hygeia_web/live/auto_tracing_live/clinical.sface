@@ -14,7 +14,7 @@
             <InputContext assigns={assigns} :let={form: form}>
               <h4>{gettext("Symptoms")}
               </h4>
-              <p class="mb-4">{gettext("Do you have symptoms?")}</p>
+              <p class="mb-4">{gettext("Do you have or have had symptoms?")}</p>
               <Field name={:has_symptoms} class="form-group mb-4">
                 <HiddenInput />
                 <div class="btn-group-vertical disabled display-only btn-group-toggle btn-radio-group">
@@ -26,7 +26,7 @@
                     active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true
                   }>
                     <RadioButton value />
-                    {gettext("Has Symptoms")}
+                    {gettext("Yes")}
                   </label>
                   <label class={
                     "btn",
@@ -36,7 +36,7 @@
                     active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false
                   }>
                     <RadioButton value={false} />
-                    {gettext("No Symptoms")}
+                    {gettext("No")}
                   </label>
                 </div>
                 <ErrorTag class="d-block invalid-feedback" />
