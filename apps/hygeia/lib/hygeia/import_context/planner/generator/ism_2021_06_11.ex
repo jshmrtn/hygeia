@@ -578,7 +578,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp normalize_test_data({path, date})
        when is_binary(date) and path in [[:tested_at], [:laboratory_reported_at]] do
     case Date.from_iso8601(date) do
-      {:ok, date} -> {path, date}|> IO.inspect(label: "SUCC")
+      {:ok, date} -> {path, date}
       {:error, _reason} -> {path, nil}
     end
   end
