@@ -615,7 +615,10 @@ defmodule Hygeia.StatisticsContext do
             ^to
           ) and
           (^include_zero_values or transmission_country_cases_per_day.count > 0),
-      order_by: transmission_country_cases_per_day.date
+      order_by: [
+        transmission_country_cases_per_day.date,
+        desc: transmission_country_cases_per_day.count
+      ]
     )
   end
 
