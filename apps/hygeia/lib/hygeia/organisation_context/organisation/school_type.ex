@@ -11,6 +11,7 @@ defmodule Hygeia.OrganisationContext.Organisation.SchoolType do
       :secondary_school,
       :cantonal_school_or_other_middle_school,
       :professional_school,
+      :university_or_college,
       :other
     ]
 
@@ -33,6 +34,9 @@ defmodule Hygeia.OrganisationContext.Organisation.SchoolType do
 
   def translate(:professional_school),
     do: pgettext("School Type", "Professional school")
+
+  def translate(:university_or_college),
+    do: pgettext("School Type", "University or college")
 
   def translate(:other), do: pgettext("School Type", "Other")
 end
