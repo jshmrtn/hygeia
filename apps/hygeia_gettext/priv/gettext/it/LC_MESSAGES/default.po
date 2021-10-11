@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 
 #, fuzzy
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -210,9 +210,8 @@ msgstr "Aereo o viaggio"
 msgid "All points must be fulfilled"
 msgstr "Tutti i punti devono essere soddisfatti"
 
-#, fuzzy
 msgid "Always work from Top to Bottom. Otherwise changes may be lost!"
-msgstr "Lavorare sempre dall'alto verso il basso. Altrimenti le modifiche possono andare perse!"
+msgstr "Apporta le modifiche sempre dall'alto verso il basso. Altrimenti le modifiche potrebbero andare perse!"
 
 #, fuzzy
 msgid "An unknown error happened during registration. Report this to your webmaster."
@@ -1895,7 +1894,7 @@ msgstr "In"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
-msgstr "Le informazioni fornite per questo impiego non sono corrette. Cancella questo problea se non ci sono altre affiliazioni collegate."
+msgstr "Le informazioni fornite per questo impiego non sono corrette. Cancella questo problema se non ci sono altre affiliazioni collegate."
 
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr "Informazioni della persona invalide, se credi che questo sia un errore, contatta il team di rintracciamento."
@@ -4423,7 +4422,6 @@ msgstr "Incerto"
 msgid "Undocumented"
 msgstr "Non documentato"
 
-#, elixir-format
 msgctxt "School Type"
 msgid "University or college"
 msgstr "Università o scuola universitaria professionale"
