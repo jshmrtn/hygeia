@@ -36,9 +36,9 @@ defmodule Hygeia.TenantContext.Tenant.Websms do
     |> get_change(:access_token)
     |> case do
       token when token in [nil, ""] ->
-        put_change(changeset, :access_token, changeset.data.access_token)
+        delete_change(changeset, :access_token)
 
-      good_token ->
+      _good_token ->
         changeset
     end
   end
