@@ -274,7 +274,13 @@
                 >
                   <Field name={:access_token} class="form-group">
                     <HygeiaWeb.FieldLabel />
-                    <PasswordInput class="form-control" opts={disabled: @live_action == :show} />
+                    <PasswordInput
+                      class="form-control"
+                      opts={
+                        placeholder: generate_websms_token_mask(form.data.outgoing_sms_configuration),
+                        disabled: @live_action == :show
+                      }
+                    />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                 </PolimorphicInputs>
