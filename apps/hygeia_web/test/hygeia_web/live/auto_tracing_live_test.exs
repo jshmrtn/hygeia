@@ -304,7 +304,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       {:ok, clinical_view, html} =
         live(conn, Routes.auto_tracing_clinical_path(conn, :clinical, case))
 
-      assert html =~ gettext("Do you have symptoms?")
+      assert html =~ gettext("Do you have or have had symptoms?")
 
       assert render_change(clinical_view, :validate,
                case: %{

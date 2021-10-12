@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 
 #, fuzzy
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -210,9 +210,8 @@ msgstr "Aereo o viaggio"
 msgid "All points must be fulfilled"
 msgstr "Tutti i punti devono essere soddisfatti"
 
-#, fuzzy
 msgid "Always work from Top to Bottom. Otherwise changes may be lost!"
-msgstr "Lavorare sempre dall'alto verso il basso. Altrimenti le modifiche possono andare perse!"
+msgstr "Apporta le modifiche sempre dall'alto verso il basso. Altrimenti le modifiche potrebbero andare perse!"
 
 #, fuzzy
 msgid "An unknown error happened during registration. Report this to your webmaster."
@@ -834,7 +833,7 @@ msgstr "Data dell'ultima visita"
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Date of last visit"
-msgstr ""
+msgstr "Data di ultima visita"
 
 msgid "Dear Sir / Madam"
 msgstr "Gentile signore / signora"
@@ -1131,6 +1130,9 @@ msgstr "Non creare il tracciamento automatico"
 
 msgid "Do you have any contact persons to submit?"
 msgstr "Hai qualche persona con cui sei stato in contatto da presentare?"
+
+msgid "Do you have or have had symptoms?"
+msgstr "Hai o hai avuto sintomi?"
 
 msgid "Do you have symptoms?"
 msgstr "Hai dei sintomi?"
@@ -1895,7 +1897,7 @@ msgstr "In"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
-msgstr ""
+msgstr "Le informazioni fornite per questo impiego non sono corrette. Cancella questo problema se non ci sono altre affiliazioni collegate."
 
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr "Informazioni della persona invalide, se credi che questo sia un errore, contatta il team di rintracciamento."
@@ -4136,9 +4138,8 @@ msgstr "La persona di contatto non ha sviluppato alcun sintomo durante la quaran
 msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr "Il referente ha sviluppato dei sintomi, ha fatto un test ed è diventato un indice"
 
-#, fuzzy
 msgid "The displayed language was translated mechanically."
-msgstr "La lingua visualizzata è stata tradotta meccanicamente."
+msgstr "Il testo visualizzato è stato tradotto meccanicamente."
 
 msgctxt "Phase Create Modal"
 msgid "The end date of the %{type} phase will be changed from \"%{old_end_date}\" to \"%{new_end_date}\"."
@@ -4423,6 +4424,10 @@ msgstr "Incerto"
 #, fuzzy
 msgid "Undocumented"
 msgstr "Non documentato"
+
+msgctxt "School Type"
+msgid "University or college"
+msgstr "Università o scuola universitaria professionale"
 
 #, fuzzy
 msgid "Unknown"
