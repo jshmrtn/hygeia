@@ -148,4 +148,10 @@ defmodule HygeiaWeb.TenantLive.Show do
       push_event(socket, "block_navigation", %{})
     end
   end
+
+  defp generate_websms_token_mask(nil), do: ""
+
+  defp generate_websms_token_mask(%Websms{access_token: access_token}) do
+    String.duplicate("•", String.length(access_token))
+  end
 end
