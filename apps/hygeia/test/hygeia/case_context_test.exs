@@ -382,7 +382,8 @@ defmodule Hygeia.CaseContextTest do
           place: "Winterthur",
           subdivision: "ZH",
           country: "CH"
-        }
+        },
+        different_location: true
       },
       phases: [
         %{
@@ -482,7 +483,7 @@ defmodule Hygeia.CaseContextTest do
                human_readable_id: _,
                inserted_at: _,
                monitoring: %Monitoring{
-                 address: %Address{
+                 address: %{
                    address: "Helmweg 48",
                    country: "CH",
                    place: "Winterthur",
@@ -711,8 +712,16 @@ defmodule Hygeia.CaseContextTest do
               %{type: :ism_case, value: "ISM ID"}
             ],
             monitoring: %{
-              location: :home,
-              location_details: "Bei Mutter zuhause"
+              location: :hotel,
+              location_details: "Bei Mutter zuhause",
+              address: %{
+                address: "Helmweg 48",
+                country: "CH",
+                place: "Winterthur",
+                subdivision: "ZH",
+                zip: "8405"
+              },
+              different_location: true
             },
             phases: [
               %{
@@ -901,12 +910,12 @@ defmodule Hygeia.CaseContextTest do
                    "fall_id_ism" => "",
                    "first_name" => "Jonatan",
                    "follow_up_dt" => "2021-01-05",
-                   "iso_loc_country" => "",
-                   "iso_loc_location" => "",
-                   "iso_loc_postal_code" => "",
-                   "iso_loc_street" => "",
+                   "iso_loc_country" => "8100",
+                   "iso_loc_location" => "Winterthur",
+                   "iso_loc_postal_code" => "8405",
+                   "iso_loc_street" => "Helmweg 48",
                    "iso_loc_street_number" => "",
-                   "iso_loc_type" => "1",
+                   "iso_loc_type" => "4",
                    "ktn_internal_id" => "ca98a59b-64c5-4476-9abd-d91d2d1d24e3",
                    "lab_report_dt" => "",
                    "last_name" => "Männchen",
@@ -1007,10 +1016,10 @@ defmodule Hygeia.CaseContextTest do
                    "fall_id_ism" => "7000",
                    "first_name" => "Jeremy",
                    "follow_up_dt" => "",
-                   "iso_loc_country" => "",
-                   "iso_loc_location" => "",
-                   "iso_loc_postal_code" => "",
-                   "iso_loc_street" => "",
+                   "iso_loc_country" => "8100",
+                   "iso_loc_location" => "St. Gallen",
+                   "iso_loc_postal_code" => "9000",
+                   "iso_loc_street" => "Hebelstrasse 20",
                    "iso_loc_street_number" => "",
                    "iso_loc_type" => "1",
                    "ktn_internal_id" => "dd1911a3-a79f-4594-8439-5b0455569e9e",
@@ -1155,7 +1164,15 @@ defmodule Hygeia.CaseContextTest do
             ],
             monitoring: %{
               location: :home,
-              location_details: "Bei Mutter zuhause"
+              location_details: "Bei Mutter zuhause",
+              address: %{
+                address: "Helmweg 48",
+                country: "CH",
+                place: "Winterthur",
+                subdivision: "ZH",
+                zip: "8405"
+              },
+              different_location: true
             },
             phases: [
               %{
@@ -1416,7 +1433,7 @@ defmodule Hygeia.CaseContextTest do
                    "phone_number" => "",
                    "postal_code" => "9000",
                    "profession" => "",
-                   "quar_loc_type" => "1",
+                   "quar_loc_type" => "6",
                    "reason_end_quar" => "4",
                    "sampling_dt" => "",
                    "sex" => "1",
