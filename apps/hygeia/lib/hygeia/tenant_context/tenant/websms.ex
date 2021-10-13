@@ -27,7 +27,20 @@ defmodule Hygeia.TenantContext.Tenant.Websms do
   def changeset(websms, attrs) do
     websms
     |> cast(attrs, [:access_token])
+    |> verify_websms_token_existence()
     |> validate_required([:access_token])
+  end
+
+  defp verify_websms_token_existence(changeset) do
+    changeset
+    |> get_change(:access_token)
+    |> case do
+      token when token in [nil, ""] ->
+        delete_change(changeset, :access_token)
+
+      _good_token ->
+        changeset
+    end
   end
 
   defimpl Hygeia.SmsSender do
