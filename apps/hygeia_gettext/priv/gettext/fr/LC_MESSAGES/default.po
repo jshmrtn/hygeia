@@ -128,6 +128,9 @@ msgstr "Cartographie des activités exécutée"
 msgid "Add"
 msgstr "Ajouter"
 
+msgid "Add a flight"
+msgstr ""
+
 msgid "Add an institution"
 msgstr ""
 
@@ -1209,6 +1212,9 @@ msgstr "Avez-vous rencontré des collègues ?"
 msgid "Did you meet your family or friends recently?"
 msgstr "Avez-vous rencontré votre famille ou vos amis récemment ?"
 
+msgid "Did you travel by plane between %{start_date} and %{end_date}?"
+msgstr ""
+
 #, fuzzy
 msgid "Did you visit a gym recently?"
 msgstr "Avez-vous visité une salle de sport récemment ?"
@@ -1218,6 +1224,9 @@ msgid "Did you visit a pub / restaurant / event recently?"
 msgstr "Avez-vous visité un pub / restaurant / événement récemment ?"
 
 msgid "Did you visit an educational institution in the 48 hours before the onset of symptoms or 48 hours before the test?"
+msgstr ""
+
+msgid "Did you wear the mask during the whole flight?"
 msgstr ""
 
 #, fuzzy
@@ -1725,6 +1734,35 @@ msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
 msgstr "Informations sur les vols"
 
+msgctxt "Auto Tracing Problem"
+msgid "Flight Related"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Flight date"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Flight date"
+msgstr ""
+
+#, fuzzy
+msgid "Flight information"
+msgstr "Informations sur les vols"
+
+#, fuzzy
+msgctxt "Auto Tracing Step"
+msgid "Flight information"
+msgstr "Informations sur les vols"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Flight number"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Flight number"
+msgstr ""
+
 #, fuzzy
 msgid "Found no results"
 msgstr "Aucun résultat trouvé"
@@ -1763,6 +1801,10 @@ msgstr "Subventions"
 msgid "Gym"
 msgstr "Gym"
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Had mask"
+msgstr ""
+
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Has Documentation"
@@ -1776,6 +1818,10 @@ msgstr "A des symptômes"
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
 msgstr "A des symptômes"
+
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Flights Field"
+msgid "Has flown"
+msgstr ""
 
 #, fuzzy
 msgid "Have you been or are you in a hospital?"
@@ -3957,6 +4003,16 @@ msgstr "Dépistage"
 msgid "Search"
 msgstr "Recherche"
 
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Seat number"
+msgstr "Septembre"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Seat number"
+msgstr "Septembre"
+
 msgctxt "School Type"
 msgid "Secondary school"
 msgstr ""
@@ -4693,6 +4749,10 @@ msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr "Cette personne est peut-être un doublon de %{name_link}, veuillez vérifier."
 
 msgctxt "Auto Tracing Resolve Problems"
+msgid "This person took the following flights"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
 msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
 msgstr ""
 
@@ -5101,6 +5161,10 @@ msgstr "Où travaille %{first_name} %{last_name}?"
 msgid "Who did you meet or who do you live with?"
 msgstr "Qui avez-vous rencontré ou avec qui vivez-vous ?"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Wore a mask during the whole flight?"
+msgstr ""
+
 #, fuzzy
 msgid "Work Place"
 msgstr "Lieu de travail"
@@ -5351,6 +5415,10 @@ msgid "people"
 msgstr "personnes"
 
 msgid "please add at least one educational institution that you visited during the period in consideration"
+msgstr ""
+
+#, fuzzy
+msgid "please add at least one flight that you took during the period in consideration"
 msgstr ""
 
 #, fuzzy

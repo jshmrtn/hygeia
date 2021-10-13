@@ -102,6 +102,9 @@ msgstr "Aktivitätskartierung ausgeführt"
 msgid "Add"
 msgstr "Hinzufügen"
 
+msgid "Add a flight"
+msgstr "Flug hinzufügen"
+
 msgid "Add an institution"
 msgstr "Bildungseinrichtung hinzufügen"
 
@@ -964,6 +967,9 @@ msgstr "Haben Sie Arbeitskollegen getroffen?"
 msgid "Did you meet your family or friends recently?"
 msgstr "Haben Sie vor kurzem Ihre Familie oder Freunde getroffen?"
 
+msgid "Did you travel by plane between %{start_date} and %{end_date}?"
+msgstr "Sind Sie zwischen % {start_date} und % {end_date} mit dem Flugzeug gereist?"
+
 msgid "Did you visit a gym recently?"
 msgstr "Haben Sie vor kurzem ein Fitnessstudio besucht?"
 
@@ -972,6 +978,9 @@ msgstr "Haben Sie vor kurzem eine Bar / Restaurant / Veranstaltung besucht?"
 
 msgid "Did you visit an educational institution in the 48 hours before the onset of symptoms or 48 hours before the test?"
 msgstr "Waren Sie im infektiösen Zeitraum (in den 48 Stunden vor Symptombeginn oder bei Personen ohne Symptome 48 Stunden vor Testzeitpunkt) in einer Schule?"
+
+msgid "Did you wear the mask during the whole flight?"
+msgstr "Haben Sie die Maske während des gesamten Fluges getragen?"
 
 msgid "Difficult living situation, further inquiries necessary"
 msgstr "Schwierige Wohnsituation, weitere Abklärungen nötig"
@@ -1367,6 +1376,33 @@ msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
 msgstr "Fluginformationen"
 
+msgctxt "Auto Tracing Problem"
+msgid "Flight Related"
+msgstr "Flugbezogen"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Flight date"
+msgstr "Flugdatum"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Flight date"
+msgstr "Flugdatum"
+
+msgid "Flight information"
+msgstr "Fluginformationen"
+
+msgctxt "Auto Tracing Step"
+msgid "Flight information"
+msgstr "Fluginformationen"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Flight number"
+msgstr "Flugnummer"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Flight number"
+msgstr "Flugnummer"
+
 msgid "Found no results"
 msgstr "Keine Ergebnisse gefunden"
 
@@ -1396,6 +1432,10 @@ msgstr "Authorisierungen"
 msgid "Gym"
 msgstr "Fitnessstudio"
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Had mask"
+msgstr "Hatte Maske"
+
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Has Documentation"
 msgstr "Dokumentation vorhanden"
@@ -1406,6 +1446,10 @@ msgstr "Hat Symptome"
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
 msgstr "Hat Symptome"
+
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Flights Field"
+msgid "Has flown"
+msgstr "Ist geflogen "
 
 msgid "Have you been or are you in a hospital?"
 msgstr "Waren Sie in einem Krankenhaus oder sind es noch?"
@@ -3114,6 +3158,14 @@ msgstr "Cohort Screening"
 msgid "Search"
 msgstr "Suche"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Seat number"
+msgstr "Sitznummer"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Seat number"
+msgstr "Sitznummer"
+
 msgctxt "School Type"
 msgid "Secondary school"
 msgstr "Sekundarschule"
@@ -3696,6 +3748,10 @@ msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr "Diese Person ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie dies bitte."
 
 msgctxt "Auto Tracing Resolve Problems"
+msgid "This person took the following flights"
+msgstr "Diese Person hat die folgenden Flüge gemacht"
+
+msgctxt "Auto Tracing Resolve Problems"
 msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
 msgstr "Diese Person hat eine Bildungseinrichtung besucht in den letzten 48 Stunden bevor Symptombeginn oder vor dem Test"
 
@@ -4020,6 +4076,10 @@ msgstr "Wo arbeitet %{first_name} %{last_name}?"
 msgid "Who did you meet or who do you live with?"
 msgstr "Wen haben Sie getroffen oder mit wem wohnen Sie zusammen?"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Wore a mask during the whole flight?"
+msgstr "Während des gesamten Fluges eine Maske getragen? "
+
 msgid "Work Place"
 msgstr "Arbeitsplatz"
 
@@ -4215,6 +4275,9 @@ msgid "people"
 msgstr "Personen"
 
 msgid "please add at least one educational institution that you visited during the period in consideration"
+msgstr "Bitte geben Sie mindestens eine Bildungseinrichtung ein, welche Sie währen dem Zeitraum besucht haben."
+
+msgid "please add at least one flight that you took during the period in consideration"
 msgstr "Bitte geben Sie mindestens eine Bildungseinrichtung ein, welche Sie währen dem Zeitraum besucht haben."
 
 msgid "please add at least one occupation"
