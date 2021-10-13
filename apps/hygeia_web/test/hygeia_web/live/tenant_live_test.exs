@@ -6,6 +6,9 @@ defmodule HygeiaWeb.TenantLiveTest do
 
   import Phoenix.LiveViewTest
 
+  alias Hygeia.TenantContext
+  alias Hygeia.TenantContext.Tenant
+
   @moduletag origin: :test
   @moduletag originator: :noone
   @moduletag log_in: [roles: [:webmaster]]
@@ -29,6 +32,11 @@ defmodule HygeiaWeb.TenantLiveTest do
         change_password: true,
         password: "test1"
       }
+    },
+    outgoing_sms_configuration_type: "websms",
+    outgoing_sms_configuration: %{
+      __type__: "websms",
+      access_token: "test1111"
     }
   }
   @invalid_attrs %{name: nil}
@@ -99,6 +107,8 @@ defmodule HygeiaWeb.TenantLiveTest do
              |> form("#tenant-form",
                tenant:
                  Map.drop(@update_attrs, [
+                   :outgoing_sms_configuration,
+                   :outgoing_sms_configuration_type,
                    :outgoing_mail_configuration,
                    :outgoing_mail_configuration_type,
                    :from_email
@@ -108,7 +118,11 @@ defmodule HygeiaWeb.TenantLiveTest do
 
       assert show_live
              |> form("#tenant-form",
-               tenant: Map.drop(@update_attrs, [:outgoing_mail_configuration])
+               tenant:
+                 Map.drop(@update_attrs, [
+                   :outgoing_sms_configuration,
+                   :outgoing_mail_configuration
+                 ])
              )
              |> render_change()
 
@@ -139,6 +153,89 @@ defmodule HygeiaWeb.TenantLiveTest do
 
       assert html =~ "Tenant updated successfully"
       assert html =~ "some updated name"
+    end
+
+    test "updates tenant without inserting websms token, keeps old websms token", %{
+      conn: conn,
+      tenant: tenant
+    } do
+      {:ok, show_live, _html} = live(conn, Routes.tenant_show_path(conn, :show, tenant))
+
+      assert show_live |> element("a", "Edit") |> render_click()
+
+      assert_patch(show_live, Routes.tenant_show_path(conn, :edit, tenant))
+
+      assert show_live
+             |> form("#tenant-form",
+               tenant:
+                 Map.drop(@update_attrs, [
+                   :outgoing_sms_configuration,
+                   :outgoing_sms_configuration_type,
+                   :outgoing_mail_configuration,
+                   :outgoing_mail_configuration_type,
+                   :from_email
+                 ])
+             )
+             |> render_change()
+
+      assert show_live
+             |> form("#tenant-form",
+               tenant:
+                 Map.drop(@update_attrs, [
+                   :outgoing_sms_configuration,
+                   :outgoing_mail_configuration
+                 ])
+             )
+             |> render_change()
+
+      assert show_live
+             |> form("#tenant-form",
+               tenant:
+                 update_in(@update_attrs, [:outgoing_mail_configuration], &Map.drop(&1, [:relay]))
+             )
+             |> render_change()
+
+      assert show_live
+             |> form("#tenant-form",
+               tenant:
+                 update_in(
+                   @update_attrs,
+                   [:outgoing_mail_configuration, :relay],
+                   &Map.drop(&1, [:password])
+                 )
+             )
+             |> render_change()
+
+      assert html =
+               show_live
+               |> form("#tenant-form", tenant: @update_attrs)
+               |> render_submit()
+
+      assert_patch(show_live, Routes.tenant_show_path(conn, :show, tenant))
+
+      assert html =~ "Tenant updated successfully"
+
+      assert show_live |> element("a", "Edit") |> render_click()
+
+      assert html =
+               show_live
+               |> form("#tenant-form",
+                 tenant:
+                   @update_attrs
+                   |> Map.drop([:outgoing_mail_configuration, :outgoing_mail_configuration_type])
+                   |> update_in(
+                     [:outgoing_sms_configuration],
+                     &Map.drop(&1, [:access_token])
+                   )
+               )
+               |> render_submit()
+
+      assert_patch(show_live, Routes.tenant_show_path(conn, :show, tenant))
+
+      assert html =~ "Tenant updated successfully"
+
+      assert [%Tenant{outgoing_sms_configuration: %{access_token: "test1111"}}] =
+               TenantContext.list_tenants()
     end
   end
 end
