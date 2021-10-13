@@ -355,6 +355,9 @@ defmodule HygeiaWeb.Helpers.FieldName do
       landline: "Landline",
       mobile: "Mobile"
     },
+    HygeiaWeb.AutoTracingLive.Flights => %{
+      has_flown: "Has flown"
+    },
     HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts => %{
       propagator_case: "Propagator Case",
       propagator_ism_id: "Propagator ISM ID"
@@ -363,6 +366,12 @@ defmodule HygeiaWeb.Helpers.FieldName do
       mobile: "Mobile",
       landline: "Landline",
       email: "Email"
+    },
+    Hygeia.AutoTracingContext.AutoTracing.Flight => %{
+      flight_date: "Flight date",
+      flight_number: "Flight number",
+      had_mask: "Had mask",
+      seat_number: "Seat number"
     },
     Hygeia.AutoTracingContext.AutoTracing.Occupation => %{
       kind: "Kind",

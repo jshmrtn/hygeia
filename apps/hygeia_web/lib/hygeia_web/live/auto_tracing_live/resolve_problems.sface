@@ -248,6 +248,23 @@
                         <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                           {pgettext("Auto Tracing Resolve Problems", "Done")}
                         </button>
+                      {#match :flight_related}
+                        <p>{pgettext(
+                            "Auto Tracing Resolve Problems",
+                            "This person took the following flights"
+                          )}:</p>
+                        <div class="hy-card-grid-2-cols mb-2">
+                          <div :for={flight <- @auto_tracing.flights}>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Flight number")}:<strong>
+                                {flight.flight_number}</strong></div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Flight date")}: {HygeiaCldr.Date.to_string!(flight.flight_date)}</div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Seat number")}: {flight.seat_number}</div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Wore a mask during the whole flight?")} {if flight.had_mask, do: gettext("Yes"), else: gettext("No")}</div>
+                          </div>
+                        </div>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
                       {#match :residency_outside_country}
                         <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
                         <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
