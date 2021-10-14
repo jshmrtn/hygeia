@@ -206,7 +206,8 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
   end
 
   defp get_inquiry_dates(%Case{inserted_at: inserted_at}) do
-    {calculate_date(inserted_at, 2, :past), DateTime.to_date(inserted_at)}
+    date = DateTime.to_date(inserted_at)
+    {calculate_date(date, 2, :past), date}
   end
 
   defp generate_question(start_date, end_date) do
