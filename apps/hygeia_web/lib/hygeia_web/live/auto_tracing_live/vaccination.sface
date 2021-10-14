@@ -4,7 +4,7 @@
   <h2 class="mb-4 mt-5">{gettext("Vaccination")}</h2>
 
   <div class="row">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-8">
       <Form
         for={@person_changeset}
         change="validate"
@@ -37,8 +37,14 @@
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
             <div class="mt-4 mb-5" :if={Ecto.Changeset.get_field(form.source, :done)}>
+              <p class="mb-4">
+                {pgettext(
+                  "Auto Tracing Vaccination",
+                  "If you are fully vaccinated, please insert both vaccination dates."
+                )}
+              </p>
               <div class="row">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6 pe-4">
                   <HygeiaWeb.FieldLabel field={:name} />
                   <Field name={:name} class="form-group">
                     <TextInput class="form-control" />
@@ -48,32 +54,46 @@
                 <div class="col-12 col-md-6">
                   <HygeiaWeb.FieldLabel field={:jab_dates} />
                   <Field name={:jab_dates} class="form-group">
-                    <div
-                      class="d-flex mb-2"
-                      :for={{date, index} <-
-                        Enum.with_index(Ecto.Changeset.get_field(form.source, :jab_dates, [nil]) || [nil])}
-                    >
-                      <DateInput
-                        class="form-control"
-                        opts={
-                          name: input_name(form, :jab_dates) <> "[]",
-                          value:
-                            case date do
-                              nil -> nil
-                              date -> Date.to_iso8601(date)
-                            end
-                        }
-                      />
-                      <button
-                        type="button"
-                        class="ms-2 btn btn-danger"
-                        :on-click="remove_vaccination_jab_date"
-                        phx-value-index={index}
-                      >
-                        <span class="oi oi-trash" aria-hidden="true" />
-                      </button>
-                    </div>
-                    <ErrorTag class="d-block invalid-feedback" />
+                    <table class="table table-borderless">
+                      <tbody>
+                        {#for {date, index} <- Enum.with_index(Ecto.Changeset.fetch_field!(form.source, :jab_dates))}
+                          <tr>
+                            <td>
+                              <label class="small py-2">{pgettext("Auto Tracing Vaccination", "%{ordering} jab date",
+                                  ordering:
+                                    (index + 1) |> HygeiaCldr.Number.to_string!(format: :spellout_ordinal) |> String.capitalize()
+                                )}</label>
+                            </td>
+                            <td>
+                              <div class="d-flex">
+                                <DateInput
+                                  class="form-control"
+                                  opts={
+                                    name: input_name(form, :jab_dates) <> "[]",
+                                    value:
+                                      case date do
+                                        nil -> nil
+                                        date -> Date.to_iso8601(date)
+                                      end,
+                                    max: Date.utc_today()
+                                  }
+                                />
+                                <button
+                                  type="button"
+                                  class="ms-2 btn btn-danger"
+                                  :on-click="remove_vaccination_jab_date"
+                                  phx-value-index={index}
+                                >
+                                  <span class="oi oi-trash" aria-hidden="true" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        {/for}
+                      </tbody>
+                    </table>
+                    <ErrorTag class="d-block invalid-feedback mb-2" />
+
                     <div>
                       <button type="button" class="btn btn-outline-primary" :on-click="add_vaccination_jab_date">
                         <span class="oi oi-plus me-1" aria-hidden="true" />

@@ -77,7 +77,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
       )
       |> update_changeset_param(
         :jab_dates,
-        &(&1 |> Kernel.||([]) |> Enum.concat([nil]) |> Enum.uniq())
+        &(&1 |> Kernel.||([]) |> Enum.concat([nil]))
       )
 
     params =
@@ -121,15 +121,19 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   def handle_event("validate", %{"person" => person_params}, socket) do
     person_params =
       Map.update(person_params, "vaccination", %{"jab_dates" => []}, fn vaccination ->
-        Map.update(
-          vaccination,
-          "jab_dates",
-          [],
-          &Enum.map(&1, fn
-            "" -> nil
-            other -> other
-          end)
-        )
+        if match?("true", vaccination["done"]) do
+          Map.update(
+            vaccination,
+            "jab_dates",
+            [nil, nil],
+            &Enum.map(&1, fn
+              "" -> nil
+              other -> other
+            end)
+          )
+        else
+          %{"done" => "false", "jab_dates" => []}
+        end
       end)
 
     {:noreply,
