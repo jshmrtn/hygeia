@@ -370,7 +370,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
     Hygeia.AutoTracingContext.AutoTracing.Flight => %{
       flight_date: "Flight date",
       flight_number: "Flight number",
-      had_mask: "Had mask",
+      wore_mask: "Wore mask",
       seat_number: "Seat number"
     },
     Hygeia.AutoTracingContext.AutoTracing.Occupation => %{

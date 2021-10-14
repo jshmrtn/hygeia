@@ -195,12 +195,12 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
       |> case do
         nil ->
           case.inserted_at
-          |> DateTime.to_date()
-          |> Date.add(-2)
 
         test_date ->
           test_date
       end
+      |> DateTime.to_date()
+      |> Date.add(-2)
 
     {start_date, calculate_date(start_date, 2, :future)}
   end

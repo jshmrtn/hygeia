@@ -68,13 +68,13 @@
                     </Field>
 
                     <p>{gettext("Did you wear the mask during the whole flight?")}</p>
-                    <Field name={:had_mask} class="form-group">
+                    <Field name={:wore_mask} class="form-group">
                       <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
                         <label class={
                           "btn",
                           "btn-sm",
                           "btn-outline-primary",
-                          active: get_field(flight.source, :had_mask) == true
+                          active: get_field(flight.source, :wore_mask) == true
                         }>
                           <RadioButton value />
                           {gettext("Yes")}
@@ -83,7 +83,7 @@
                           "btn",
                           "btn-sm",
                           "btn-outline-primary",
-                          active: get_field(flight.source, :had_mask) == false
+                          active: get_field(flight.source, :wore_mask) == false
                         }>
                           <RadioButton value={false} />
                           {gettext("No")}

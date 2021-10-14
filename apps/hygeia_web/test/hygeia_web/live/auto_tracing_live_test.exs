@@ -571,7 +571,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
                      flight_date: "2021-04-17",
                      flight_number: "FNDORL",
                      seat_number: "B-23",
-                     had_mask: false
+                     wore_mask: false
                    }
                  }
                }
