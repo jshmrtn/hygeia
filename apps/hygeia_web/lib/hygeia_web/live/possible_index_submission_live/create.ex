@@ -3,6 +3,10 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
 
   use HygeiaWeb, :surface_view
 
+  import Ecto.Changeset
+
+  alias Phoenix.LiveView.Socket
+
   alias Hygeia.AutoTracingContext
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
@@ -21,11 +25,11 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
   alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
 
-  data step, :atom, default: :base
+  data step, :atom, default: :address
 
   @impl Phoenix.LiveView
   def mount(%{"case_uuid" => case_uuid} = params, _session, socket) do
-    case = case_uuid |> CaseContext.get_case!() |> Repo.preload(auto_tracing: [])
+    case = case_uuid |> CaseContext.get_case!() |> Repo.preload(person: [], auto_tracing: [])
     auth = get_auth(socket)
 
     socket =
@@ -51,6 +55,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
         true ->
           assign(socket,
             case: case,
+            person: case.person,
             changeset:
               case
               |> Ecto.build_assoc(:possible_index_submissions)
@@ -74,6 +79,10 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
         |> CaseContext.change_possible_index_submission(possible_index_submission_params))
        | action: :validate
      })}
+  end
+
+  def handle_event("copy_household_to_address", _params, %Socket{assigns: %{changeset: changeset, person: person}} = socket) do
+    {:noreply, assign(socket, changeset: put_embed(changeset, :address, person.address))}
   end
 
   def handle_event("goto_step", %{"active" => "1", "step" => step}, socket),
@@ -144,7 +153,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
   defp has_error?(%Ecto.Changeset{errors: errors} = changeset, [relation_or_embed | path_tail]) do
     Keyword.has_key?(errors, relation_or_embed) ||
       changeset
-      |> Ecto.Changeset.get_change(relation_or_embed)
+      |> get_change(relation_or_embed)
       |> has_error?(path_tail)
   end
 
