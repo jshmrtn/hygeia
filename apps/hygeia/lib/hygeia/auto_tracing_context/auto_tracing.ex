@@ -5,6 +5,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   use Hygeia, :model
 
+  alias Hygeia.AutoTracingContext.AutoTracing.Flight
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.AutoTracingContext.AutoTracing.Problem
   alias Hygeia.AutoTracingContext.AutoTracing.Propagator
@@ -67,6 +68,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :last_completed_step, Step
     field :covid_app, :boolean
     field :has_contact_persons, :boolean
+    field :has_flown, :boolean
     field :scholar, :boolean
     field :employed, :boolean
     field :problems, {:array, Problem}, default: []
@@ -78,6 +80,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
     embeds_many :school_visits, SchoolVisit, on_replace: :delete
     embeds_many :occupations, Occupation, on_replace: :delete
+    embeds_many :flights, Flight, on_replace: :delete
 
     embeds_one :propagator, Propagator, on_replace: :delete
 
@@ -174,8 +177,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
         nil ->
           step_index <= 0
 
-        _other ->
-          step_index <= Enum.find_index(steps, &(&1 == auto_tracing.last_completed_step)) + 1
+        last_completed_step ->
+          step_index <= Enum.find_index(steps, &(&1 == last_completed_step)) + 1
       end
     end
   end

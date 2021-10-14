@@ -173,7 +173,7 @@
 
     <div>
       <LiveRedirect
-        to={Routes.auto_tracing_clinical_path(@socket, :clinical, @case.uuid)}
+        to={Routes.auto_tracing_flights_path(@socket, :flights, @case.uuid)}
         class="btn btn-outline-primary"
       >
         {gettext("Back")}

@@ -20,7 +20,6 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
-  alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput

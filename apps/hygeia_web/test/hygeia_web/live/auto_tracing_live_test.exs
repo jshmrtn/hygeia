@@ -8,6 +8,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
   import Phoenix.LiveViewTest
 
   alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.TenantContext
 
@@ -170,51 +171,212 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     end
   end
 
-  # TODO: @Antonio, reenable
-  # describe "Employer" do
-  #   setup [:create_case, :create_auto_tracing]
+  describe "Employer" do
+    setup [:create_case, :create_auto_tracing]
 
-  #   test "can not advance to vaccination", %{
-  #     conn: conn,
-  #     case_model: case,
-  #     auto_tracing: _auto_tracing
-  #   } do
-  #     {:ok, employer_view, _html} =
-  #       live(conn, Routes.auto_tracing_employer_path(conn, :employer, case))
+    test "cannot advance to vaccination", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      set_last_completed_step(auto_tracing, :employer)
 
-  #     assert_raise ArgumentError, fn ->
-  #       employer_view
-  #       |> element("button", "Continue")
-  #       |> render_click()
-  #     end
-  #   end
+      {:ok, employer_view, _html} =
+        live(conn, Routes.auto_tracing_employer_path(conn, :employer, case))
 
-  #   test "sets employement and advances to vaccination", %{
-  #     conn: conn,
-  #     case_model: case,
-  #     auto_tracing: auto_tracing
-  #   } do
-  #     {:ok, _auto_tracing} =
-  #       AutoTracingContext.update_auto_tracing(auto_tracing, %{"employed" => false})
+      assert_raise ArgumentError, fn ->
+        employer_view
+        |> element("button", "Continue")
+        |> render_click()
+      end
+    end
 
-  #     {:ok, employer_view, _html} =
-  #       live(conn, Routes.auto_tracing_employer_path(conn, :employer, case))
+    test "sets school visit and no occupation and advances to vaccination", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      set_last_completed_step(auto_tracing, :employer)
 
-  #     assert employer_view
-  #            |> element("button", "Continue")
-  #            |> render_click()
+      {:ok, employer_view, _html} =
+        live(conn, Routes.auto_tracing_employer_path(conn, :employer, case))
 
-  #     assert_redirect(
-  #       employer_view,
-  #       Routes.auto_tracing_vaccination_path(conn, :vaccination, case)
-  #     )
-  #   end
-  # end
+      assert employer_view
+             |> form("#employer-form", employer: %{scholar: true, employed: false})
+             |> render_change() =~
+               "please add at least one educational institution that you visited during the period in consideration"
+
+      assert employer_view
+             |> form("#employer-form")
+             |> render_change(
+               employer: %{
+                 school_visits: %{
+                   "0" => %{
+                     visit_reason: :professor,
+                     visited_at: "2021-04-17",
+                     not_found: true
+                   }
+                 }
+               }
+             )
+
+      assert employer_view
+             |> form("#employer-form")
+             |> render_change(
+               employer: %{
+                 school_visits: %{
+                   0 => %{
+                     is_occupied: false,
+                     unknown_school: %{
+                       name: "test_school",
+                       address: %{address: "teststrasse 10", country: "CH", subdivision: "ZH"}
+                     }
+                   }
+                 }
+               }
+             )
+
+      assert employer_view
+             |> element("button", "Continue")
+             |> render_click()
+
+      assert_redirect(
+        employer_view,
+        Routes.auto_tracing_vaccination_path(conn, :vaccination, case)
+      )
+
+      assert %AutoTracing{
+               employed: false,
+               scholar: true,
+               school_visits: [_],
+               occupations: [],
+               unsolved_problems: [:school_related]
+             } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+    end
+
+    test "sets school visit with employment and no occupation and advances to vaccination", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      set_last_completed_step(auto_tracing, :employer)
+
+      {:ok, employer_view, _html} =
+        live(conn, Routes.auto_tracing_employer_path(conn, :employer, case))
+
+      assert employer_view
+             |> form("#employer-form", employer: %{scholar: true, employed: false})
+             |> render_change() =~
+               "please add at least one educational institution that you visited during the period in consideration"
+
+      assert employer_view
+             |> form("#employer-form")
+             |> render_change(
+               employer: %{
+                 school_visits: %{
+                   "0" => %{
+                     visit_reason: :professor,
+                     visited_at: "2021-04-17",
+                     not_found: true
+                   }
+                 }
+               }
+             )
+
+      assert employer_view
+             |> form("#employer-form")
+             |> render_change(
+               employer: %{
+                 school_visits: %{
+                   0 => %{
+                     is_occupied: true,
+                     unknown_school: %{
+                       name: "test_school",
+                       address: %{address: "teststrasse 10", country: "CH", subdivision: "ZH"}
+                     }
+                   }
+                 }
+               }
+             )
+
+      assert employer_view
+             |> element("button", "Continue")
+             |> render_click()
+
+      assert_redirect(
+        employer_view,
+        Routes.auto_tracing_vaccination_path(conn, :vaccination, case)
+      )
+
+      assert %AutoTracing{
+               employed: true,
+               scholar: true,
+               occupations: [_],
+               unsolved_problems: [:new_employer, :school_related]
+             } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+    end
+
+    test "sets no school visit and one occupation and advances to vaccination", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      set_last_completed_step(auto_tracing, :employer)
+
+      {:ok, employer_view, _html} =
+        live(conn, Routes.auto_tracing_employer_path(conn, :employer, case))
+
+      assert employer_view
+             |> form("#employer-form", employer: %{scholar: false, employed: true})
+             |> render_change() =~
+               "please add at least one occupation"
+
+      assert employer_view
+             |> form("#employer-form")
+             |> render_change(
+               employer: %{
+                 occupations: %{
+                   "0" => %{
+                     kind: :employee,
+                     not_found: true
+                   }
+                 }
+               }
+             )
+
+      assert employer_view
+             |> form("#employer-form")
+             |> render_change(
+               employer: %{
+                 occupations: %{
+                   0 => %{
+                     unknown_organisation: %{
+                       name: "test_organisation",
+                       address: %{address: "teststrasse 10", country: "CH", subdivision: "ZH"}
+                     }
+                   }
+                 }
+               }
+             )
+
+      assert employer_view
+             |> element("button", "Continue")
+             |> render_click()
+
+      assert_redirect(
+        employer_view,
+        Routes.auto_tracing_vaccination_path(conn, :vaccination, case)
+      )
+
+      assert %AutoTracing{employed: true, occupations: [_], unsolved_problems: [:new_employer]} =
+               AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+    end
+  end
 
   describe "Vaccination" do
     setup [:create_case, :create_auto_tracing]
 
-    test "can not advance to covid_app", %{
+    test "cannot advance to covid_app", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
@@ -261,7 +423,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
   describe "SwissCovid App" do
     setup [:create_case, :create_auto_tracing]
 
-    test "can not advance to clinical", %{
+    test "cannot advance to clinical", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
@@ -307,7 +469,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
   describe "Clinical" do
     setup [:create_case, :create_auto_tracing]
 
-    test "advances to transmission", %{
+    test "advances to flights", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
@@ -333,15 +495,106 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
 
       assert_redirect(
         clinical_view,
+        Routes.auto_tracing_flights_path(conn, :flights, case)
+      )
+    end
+  end
+
+  describe "Flights" do
+    setup [:create_case, :create_auto_tracing]
+
+    test "cannot advance to transmission", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      set_last_completed_step(auto_tracing, :flights)
+
+      {:ok, employer_view, _html} =
+        live(conn, Routes.auto_tracing_flights_path(conn, :flights, case))
+
+      assert_raise ArgumentError, fn ->
+        employer_view
+        |> element("button", "Continue")
+        |> render_click()
+      end
+    end
+
+    test "sets no flight and advances to transmission", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      set_last_completed_step(auto_tracing, :flights)
+
+      {:ok, employer_view, _html} =
+        live(conn, Routes.auto_tracing_flights_path(conn, :flights, case))
+
+      assert employer_view
+             |> form("#flights-form", flights: %{has_flown: false})
+             |> render_change()
+
+      assert employer_view
+             |> element("button", "Continue")
+             |> render_click()
+
+      assert_redirect(
+        employer_view,
         Routes.auto_tracing_transmission_path(conn, :transmission, case)
       )
+
+      assert %AutoTracing{has_flown: false, flights: []} =
+               AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+    end
+
+    test "sets one flight and advances to transmission", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      set_last_completed_step(auto_tracing, :flights)
+
+      {:ok, employer_view, _html} =
+        live(conn, Routes.auto_tracing_flights_path(conn, :flights, case))
+
+      assert employer_view
+             |> form("#flights-form", flights: %{has_flown: true})
+             |> render_change() =~
+               "please add at least one flight that you took during the period in consideration"
+
+      assert employer_view
+             |> form("#flights-form")
+             |> render_change(
+               flights: %{
+                 flights: %{
+                   "0" => %{
+                     flight_date: "2021-04-17",
+                     flight_number: "FNDORL",
+                     seat_number: "B-23",
+                     wore_mask: false
+                   }
+                 }
+               }
+             )
+
+      assert employer_view
+             |> element("button", "Continue")
+             |> render_click()
+
+      assert_redirect(
+        employer_view,
+        Routes.auto_tracing_transmission_path(conn, :transmission, case)
+      )
+
+      assert %AutoTracing{has_flown: true, flights: [_], unsolved_problems: [:flight_related]} =
+               AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
   end
 
   describe "Transmission" do
     setup [:create_case, :create_auto_tracing]
 
-    test "can not advance to end", %{
+    test "cannot advance to end", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing

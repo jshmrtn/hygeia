@@ -11,6 +11,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Step do
       :vaccination,
       :covid_app,
       :clinical,
+      :flights,
       :transmission,
       :contact_persons,
       :end
@@ -29,6 +30,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Step do
   def translate(:vaccination), do: pgettext("Auto Tracing Step", "Vaccination")
   def translate(:covid_app), do: pgettext("Auto Tracing Step", "SwissCovid App")
   def translate(:clinical), do: pgettext("Auto Tracing Step", "Clinical")
+  def translate(:flights), do: pgettext("Auto Tracing Step", "Flight information")
   def translate(:transmission), do: pgettext("Auto Tracing Step", "Transmission")
   def translate(:contact_persons), do: pgettext("Auto Tracing Step", "Contact Persons")
   def translate(:end), do: pgettext("Auto Tracing Step", "Finish")

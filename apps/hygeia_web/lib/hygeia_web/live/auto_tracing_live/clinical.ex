@@ -159,9 +159,9 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
     {:noreply,
      push_redirect(socket,
        to:
-         Routes.auto_tracing_transmission_path(
+         Routes.auto_tracing_flights_path(
            socket,
-           :transmission,
+           :flights,
            socket.assigns.auto_tracing.case_uuid
          )
      )}
