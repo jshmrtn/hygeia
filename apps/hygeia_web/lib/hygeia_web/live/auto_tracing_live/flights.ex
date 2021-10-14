@@ -220,7 +220,6 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
   defp calculate_date(start_date, days_to_add, :past) do
     start_date
     |> Date.add(-days_to_add)
-    |> limit_date_to_today()
   end
 
   defp calculate_date(start_date, days_to_add, :future) do
