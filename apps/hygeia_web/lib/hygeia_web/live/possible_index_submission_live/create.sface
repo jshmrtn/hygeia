@@ -360,7 +360,9 @@
                 last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
               )}
             </h2>
-            <button :on-click="copy_household_to_address" type="button" class="btn btn-outline-info ms-auto">{gettext("Same household")}</button>
+            <button type="button" class="btn btn-outline-info ms-auto" :on-click="copy_household_address">
+              {gettext("Use my household address")}
+            </button>
           </div>
 
           <Inputs for={:address}>

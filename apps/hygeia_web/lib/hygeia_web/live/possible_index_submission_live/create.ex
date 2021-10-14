@@ -25,7 +25,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
   alias Surface.Components.Form.TextArea
   alias Surface.Components.Form.TextInput
 
-  data step, :atom, default: :address
+  data step, :atom, default: :base
 
   @impl Phoenix.LiveView
   def mount(%{"case_uuid" => case_uuid} = params, _session, socket) do
@@ -81,7 +81,11 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
      })}
   end
 
-  def handle_event("copy_household_to_address", _params, %Socket{assigns: %{changeset: changeset, person: person}} = socket) do
+  def handle_event(
+        "copy_household_address",
+        _params,
+        %Socket{assigns: %{changeset: changeset, person: person}} = socket
+      ) do
     {:noreply, assign(socket, changeset: put_embed(changeset, :address, person.address))}
   end
 
