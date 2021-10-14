@@ -1,41 +1,77 @@
 <div class="component-case-monitoring">
   <Inputs for={:monitoring}>
-    <div class="row">
-      <div class="col">
-        <Field class="form-group" name={:first_contact}>
-          <HygeiaWeb.FieldLabel />
-          <DateInput class="form-control" field={:first_contact} opts={disabled: @disabled} />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
+    <InputContext assigns={assigns} :let={form: form}>
+      <div class="row mb-4">
+        <div class="col">
+          <Field class="form-group" name={:first_contact}>
+            <HygeiaWeb.FieldLabel />
+            <DateInput class="form-control" field={:first_contact} opts={disabled: @disabled} />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </div>
       </div>
-      <div class="col">
-        <Field class="form-group" name={:location}>
-          <HygeiaWeb.FieldLabel />
-          <Select
-            class="form-control"
-            opts={prompt: gettext("Choose location"), disabled: @disabled}
-            field={:location}
-            options={isolation_locations()}
-          />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
+      <p class="mb-3">
+        {gettext("Different quarantine / isolation address?")}
+      </p>
+      <div class="row">
+        <div class="col">
+          <Field name={:different_location} class="form-group">
+            <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(form.source, :different_location) == true,
+                disabled: @disabled
+              }>
+                <RadioButton value opts={disabled: @disabled} />
+                {gettext("Yes")}
+              </label>
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(form.source, :different_location) == false,
+                disabled: @disabled
+              }>
+                <RadioButton value={false} opts={disabled: @disabled} />
+                {gettext("No")}
+              </label>
+            </div>
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </div>
+        <div class="col" :if={Ecto.Changeset.get_field(form.source, :different_location) == true}>
+          <Field class="form-group" name={:location}>
+            <HygeiaWeb.FieldLabel />
+            <Select
+              class="form-control"
+              opts={prompt: gettext("Choose location"), disabled: @disabled}
+              field={:location}
+              options={isolation_locations()}
+            />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <Field class="form-group" name={:location_details}>
-          <HygeiaWeb.FieldLabel />
-          <TextArea class="form-control" field={:location_details} opts={disabled: @disabled} />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
+      <div :if={Ecto.Changeset.get_field(form.source, :different_location) == true}>
+        <div class="row">
+          <div class="col">
+            <Field class="form-group" name={:location_details}>
+              <HygeiaWeb.FieldLabel />
+              <TextArea class="form-control" field={:location_details} opts={disabled: @disabled} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <Inputs for={:address}>
+              <HygeiaWeb.AddressForm disabled={@disabled} id="address" />
+            </Inputs>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <Inputs for={:address}>
-          <HygeiaWeb.AddressForm disabled={@disabled} id="address" />
-        </Inputs>
-      </div>
-    </div>
+    </InputContext>
   </Inputs>
 </div>

@@ -92,7 +92,20 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         live(conn, Routes.auto_tracing_address_path(conn, :address, case))
 
       assert render_change(address_view, :validate,
-               case: %{"monitoring" => %{"address" => %{"address" => "Neugasse 53"}}}
+               case: %{
+                 "monitoring" => %{
+                   "location" => "hotel",
+                   "location_details" => "Hotel Mama",
+                   "different_location" => "true",
+                   "address" => %{
+                     "address" => "Neugasse 53",
+                     "country" => "CH",
+                     "place" => "St. Gallen",
+                     "subdivision" => "SG",
+                     "zip" => "8405"
+                   }
+                 }
+               }
              ) =~ "Neugasse 53"
     end
   end

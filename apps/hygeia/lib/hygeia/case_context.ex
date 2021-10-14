@@ -946,21 +946,46 @@ defmodule Hygeia.CaseContext do
           fragment("(ARRAY_AGG(?))[1]", fragment("?->>'start'", index_phase)),
           # iso_loc_type
           type(
-            fragment("(?->>'location')", case.monitoring),
+            fragment(
+              "CASE WHEN ? THEN ? ELSE ? END",
+              fragment("(?->>'different_location')::boolean", case.monitoring),
+              fragment("(?->>'location')", case.monitoring),
+              "home"
+            ),
             Case.Monitoring.IsolationLocation
           ),
           # other_iso_loc
           fragment("?->>'location_details'", case.monitoring),
           # iso_loc_street
-          fragment("?->'address'->>'address'", case.monitoring),
+          fragment(
+            "CASE WHEN ? THEN ? ELSE ? END",
+            fragment("(?->>'different_location')::boolean", case.monitoring),
+            fragment("?->'address'->>'address'", case.monitoring),
+            fragment("?->>'address'", person.address)
+          ),
           # iso_loc_street_number
           ^nil,
           # iso_loc_location
-          fragment("?->'address'->>'place'", case.monitoring),
+          fragment(
+            "CASE WHEN ? THEN ? ELSE ? END",
+            fragment("(?->>'different_location')::boolean", case.monitoring),
+            fragment("?->'address'->>'place'", case.monitoring),
+            fragment("?->>'place'", person.address)
+          ),
           # iso_loc_postal_code
-          fragment("?->'address'->>'zip'", case.monitoring),
+          fragment(
+            "CASE WHEN ? THEN ? ELSE ? END",
+            fragment("(?->>'different_location')::boolean", case.monitoring),
+            fragment("?->'address'->>'zip'", case.monitoring),
+            fragment("?->>'zip'", person.address)
+          ),
           # iso_loc_country
-          fragment("?->'address'->>'country'", case.monitoring),
+          fragment(
+            "CASE WHEN ? THEN ? ELSE ? END",
+            fragment("(?->>'different_location')::boolean", case.monitoring),
+            fragment("?->'address'->>'country'", case.monitoring),
+            fragment("?->>'country'", person.address)
+          ),
           # follow_up_dt
           fragment(
             "GREATEST(?, ?)",
