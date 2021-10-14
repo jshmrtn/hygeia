@@ -2,6 +2,8 @@ defmodule HygeiaWeb.Endpoint do
   use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :hygeia_web
 
+  import PlugDynamic.Builder
+
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
@@ -57,7 +59,17 @@ defmodule HygeiaWeb.Endpoint do
 
   plug Plug.MethodOverride
   plug Plug.Head
-  plug Plug.Session, @session_options
+
+  dynamic_plug Plug.Session, reevaluate: :first_usage do
+    :hygeia_web
+    |> Application.fetch_env!(HygeiaWeb.Endpoint)
+    |> Keyword.get(:url)
+    |> Keyword.get(:scheme)
+    |> case do
+      "https" -> @session_options ++ [secure: true]
+      _other -> @session_options
+    end
+  end
 
   plug HygeiaWeb.Router
 
