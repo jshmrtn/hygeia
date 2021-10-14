@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Language: frplural\n"
+"Language: fr\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
@@ -9,7 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #, fuzzy
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -5009,6 +5010,9 @@ msgstr "Mise à jour des données personnelles"
 msgctxt "Field"
 msgid "Updated At"
 msgstr "Mis à jour à"
+
+msgid "Use my household address"
+msgstr "Utiliser mon adresse personnelle "
 
 #, fuzzy
 msgid "User"
