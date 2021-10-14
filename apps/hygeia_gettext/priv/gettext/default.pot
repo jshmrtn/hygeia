@@ -109,6 +109,9 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+msgid "Add a flight"
+msgstr ""
+
 msgid "Add an institution"
 msgstr ""
 
@@ -912,6 +915,9 @@ msgstr ""
 msgid "Did you meet your family or friends recently?"
 msgstr ""
 
+msgid "Did you travel by plane between %{start_date} and %{end_date}?"
+msgstr ""
+
 msgid "Did you visit a gym recently?"
 msgstr ""
 
@@ -919,6 +925,9 @@ msgid "Did you visit a pub / restaurant / event recently?"
 msgstr ""
 
 msgid "Did you visit an educational institution in the 48 hours before the onset of symptoms or 48 hours before the test?"
+msgstr ""
+
+msgid "Did you wear the mask during the whole flight?"
 msgstr ""
 
 msgid "Different quarantine / isolation address?"
@@ -1318,6 +1327,33 @@ msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
 msgstr ""
 
+msgctxt "Auto Tracing Problem"
+msgid "Flight Related"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Flight date"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Flight date"
+msgstr ""
+
+msgid "Flight information"
+msgstr ""
+
+msgctxt "Auto Tracing Step"
+msgid "Flight information"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Flight number"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Flight number"
+msgstr ""
+
 msgid "Found no results"
 msgstr ""
 
@@ -1347,6 +1383,10 @@ msgstr ""
 msgid "Gym"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Had mask"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Has Documentation"
 msgstr ""
@@ -1356,6 +1396,10 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
+msgstr ""
+
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Flights Field"
+msgid "Has flown"
 msgstr ""
 
 msgid "Have you been or are you in a hospital?"
@@ -3058,6 +3102,14 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Seat number"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Seat number"
+msgstr ""
+
 msgctxt "School Type"
 msgid "Secondary school"
 msgstr ""
@@ -3640,6 +3692,10 @@ msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
+msgid "This person took the following flights"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
 msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
 msgstr ""
 
@@ -3967,6 +4023,10 @@ msgstr ""
 msgid "Who did you meet or who do you live with?"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Wore a mask during the whole flight?"
+msgstr ""
+
 msgid "Work Place"
 msgstr ""
 
@@ -4162,6 +4222,9 @@ msgid "people"
 msgstr ""
 
 msgid "please add at least one educational institution that you visited during the period in consideration"
+msgstr ""
+
+msgid "please add at least one flight that you took during the period in consideration"
 msgstr ""
 
 msgid "please add at least one occupation"

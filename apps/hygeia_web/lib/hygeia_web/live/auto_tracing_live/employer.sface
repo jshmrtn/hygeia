@@ -7,6 +7,7 @@
     for={@changeset}
     change="validate"
     class={"mb-4", "p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}
+    opts={id: "employer-form"}
   >
     <div>
       <div class="card mb-5">
@@ -94,7 +95,7 @@
 
                       <Field name={:visited_at} class="form-group">
                         <HygeiaWeb.FieldLabel />
-                        <DateInput class="form-control" />
+                        <HygeiaWeb.DateInput class="form-control" />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
 

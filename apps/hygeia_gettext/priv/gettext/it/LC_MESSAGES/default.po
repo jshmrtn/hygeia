@@ -12,7 +12,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.3\n"
 
-#, fuzzy
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr "\"Merge\" e \"Into\" non devono essere la stessa cosa"
 
@@ -111,6 +110,9 @@ msgstr "Mappatura delle attività eseguita"
 
 msgid "Add"
 msgstr "Aggiungi"
+
+msgid "Add a flight"
+msgstr "Aggiungi un volo"
 
 msgid "Add an institution"
 msgstr "Aggiungi un istituto d'istruzione "
@@ -1049,6 +1051,9 @@ msgstr "Hai incontrato qualche collega?"
 msgid "Did you meet your family or friends recently?"
 msgstr "Hai incontrato la tua famiglia o i tuoi amici di recente?"
 
+msgid "Did you travel by plane between %{start_date} and %{end_date}?"
+msgstr "Hai viaggiato in aereo tra %{start_date} e %{end_date}?"
+
 msgid "Did you visit a gym recently?"
 msgstr "Hai visitato una palestra di recente?"
 
@@ -1058,8 +1063,11 @@ msgstr "Hai visitato un pub / ristorante / evento di recente?"
 msgid "Did you visit an educational institution in the 48 hours before the onset of symptoms or 48 hours before the test?"
 msgstr "Hai visitato un istituto d'istruzione nelle 48 ore prima del insorgenza dei sintomi oppure nelle 48 ore prima del test?"
 
+msgid "Did you wear the mask during the whole flight?"
+msgstr "Hai indossato la mascherina durante la durata di tutto il volo?"
+
 msgid "Different quarantine / isolation address?"
-msgstr "Indirizzo di quarantena/isolamento diverso?"
+msgstr "Indirizzo di quarantena / isolamento diverso?"
 
 #, fuzzy
 msgid "Difficult living situation, further inquiries necessary"
@@ -1481,6 +1489,33 @@ msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
 msgstr "Informazioni sul volo"
 
+msgctxt "Auto Tracing Problem"
+msgid "Flight Related"
+msgstr "Relativo ad un volo"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Flight date"
+msgstr "Data del volo"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Flight date"
+msgstr "Data del volo"
+
+msgid "Flight information"
+msgstr "Informazioni sul volo"
+
+msgctxt "Auto Tracing Step"
+msgid "Flight information"
+msgstr "Informazioni sul volo"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Flight number"
+msgstr "Numero del volo"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Flight number"
+msgstr "Numero del volo"
+
 #, fuzzy
 msgid "Found no results"
 msgstr "Trovato nessun risultato"
@@ -1513,6 +1548,10 @@ msgstr "Sovvenzioni"
 msgid "Gym"
 msgstr "Palestra"
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Had mask"
+msgstr "Aveva la mascherina"
+
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Has Documentation"
 msgstr "Ha una documentazione"
@@ -1523,6 +1562,10 @@ msgstr "Ha sintomi"
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
 msgstr "Ha sintomi"
+
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Flights Field"
+msgid "Has flown"
+msgstr "Ha volato"
 
 #, fuzzy
 msgid "Have you been or are you in a hospital?"
@@ -2931,7 +2974,6 @@ msgstr "Persona creata con successo"
 msgid "Person deleted successfully"
 msgstr "Persona eliminata con successo"
 
-#, fuzzy
 msgid "Person is symptomatic and therefore tested"
 msgstr "La persona è sintomatica e quindi testata"
 
@@ -3530,6 +3572,16 @@ msgstr "Screening"
 msgid "Search"
 msgstr "Cerca"
 
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Seat number"
+msgstr "Settembre"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Seat number"
+msgstr "Settembre"
+
 msgctxt "School Type"
 msgid "Secondary school"
 msgstr "Scuola secondaria"
@@ -3626,7 +3678,6 @@ msgstr "Invia l'invito al rintracciamento automatico via e-mail"
 msgid "Send Email Isolation Confirmation"
 msgstr "Invia e-mail di conferma dell'isolamento"
 
-#, fuzzy
 msgid "Send Email Isolation End Confirmation"
 msgstr "Invia e-mail di conferma della fine dell'isolamento"
 
@@ -3851,7 +3902,6 @@ msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr "Oggetto"
 
-#, fuzzy
 msgid "Submit contact persons"
 msgstr "Invia le persone di contatto"
 
@@ -4134,7 +4184,6 @@ msgstr "L'email di chiusura automatica del caso per la fase %{type} sarà disabi
 msgid "The case administraton sends cases like this. Index has not been contacted"
 msgstr "L'amministrazione del caso invia casi come questo. L'indice non è stato contattato"
 
-#, fuzzy
 msgid "The contact person didn't develop any symptoms during quarantine"
 msgstr "La persona di contatto non ha sviluppato alcun sintomo durante la quarantena"
 
@@ -4211,6 +4260,10 @@ msgstr "Questa persona è probabilmente un duplicato di %{name_link} per favore 
 #, fuzzy
 msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr "Questa persona è probabilmente un duplicato di %{name_link}, per favore controlla."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "This person took the following flights"
+msgstr "Questa persona ha preso i seguenti voli"
 
 #, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
@@ -4606,6 +4659,10 @@ msgstr "Dove lavora %{first_name} %{last_name}?"
 msgid "Who did you meet or who do you live with?"
 msgstr "Chi hai incontrato o con chi vivi?"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Wore a mask during the whole flight?"
+msgstr "Ha indossato la mascherina durante tutto il volo?"
+
 #, fuzzy
 msgid "Work Place"
 msgstr "Posto di lavoro"
@@ -4832,6 +4889,9 @@ msgid "people"
 msgstr "persone"
 
 msgid "please add at least one educational institution that you visited during the period in consideration"
+msgstr "aggiungi almento un instituto d'istruzione che hai visitato durante il periodo in considerazione"
+
+msgid "please add at least one flight that you took during the period in consideration"
 msgstr "aggiungi almento un instituto d'istruzione che hai visitato durante il periodo in considerazione"
 
 #, fuzzy

@@ -1,0 +1,134 @@
+<div id="step_employer" class="container component-auto-tracing-employer">
+  <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
+  <h4>
+    {gettext("Flight information")}
+  </h4>
+
+  <Form
+    for={@changeset}
+    change="validate"
+    class={"mb-4", "p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}
+    opts={id: "flights-form"}
+  >
+    <div class="card mb-5">
+      <div class="card-body">
+        <div class="row gx-7">
+          <div class="col-12 col-lg-6">
+            <p class="mb-4">{generate_flight_question(@case)}</p>
+            <Field name={:has_flown} class="form-group">
+              <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+                <label class={
+                  "btn",
+                  "btn-sm",
+                  "btn-outline-primary",
+                  active: get_field(@changeset, :has_flown) == true
+                }>
+                  <RadioButton value />
+                  {gettext("Yes")}
+                </label>
+                <label class={
+                  "btn",
+                  "btn-sm",
+                  "btn-outline-primary",
+                  active: get_field(@changeset, :has_flown) == false
+                }>
+                  <RadioButton value={false} />
+                  {gettext("No")}
+                </label>
+              </div>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+        <div :if={get_field(@changeset, :has_flown)}>
+          <div class="hy-card-grid-2-cols">
+            <Inputs for={:flights}>
+              <InputContext assigns={assigns} :let={form: flight}>
+                <div class="card">
+                  <div class="card-body">
+                    <HiddenInput field={:uuid} />
+                    <Field class="form-group" name={:flight_date}>
+                      <HygeiaWeb.FieldLabel />
+                      <HygeiaWeb.DateInput
+                        class="form-control"
+                        opts={Enum.zip([:min, :max], @case |> get_inquiry_dates() |> Tuple.to_list())}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                    <Field class="form-group" name={:flight_number}>
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <Field class="form-group" name={:seat_number}>
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <p>{gettext("Did you wear the mask during the whole flight?")}</p>
+                    <Field name={:wore_mask} class="form-group">
+                      <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+                        <label class={
+                          "btn",
+                          "btn-sm",
+                          "btn-outline-primary",
+                          active: get_field(flight.source, :wore_mask) == true
+                        }>
+                          <RadioButton value />
+                          {gettext("Yes")}
+                        </label>
+                        <label class={
+                          "btn",
+                          "btn-sm",
+                          "btn-outline-primary",
+                          active: get_field(flight.source, :wore_mask) == false
+                        }>
+                          <RadioButton value={false} />
+                          {gettext("No")}
+                        </label>
+                      </div>
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <button
+                      class="btn btn-danger mb-4"
+                      type="button"
+                      :on-click="remove_flight"
+                      value={fetch_field!(flight.source, :uuid)}
+                    >
+                      <span class="oi oi-trash" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+              </InputContext>
+            </Inputs>
+          </div>
+          <div class="mt-4">
+            <button class="btn btn-outline-primary" type="button" :on-click="add_flight">
+              {gettext("Add a flight")}
+            </button>
+          </div>
+          <ErrorTag field={:flights} class="d-block invalid-feedback" />
+        </div>
+      </div>
+    </div>
+  </Form>
+
+  <hr class="mb-5">
+  <LiveRedirect
+    to={Routes.auto_tracing_clinical_path(@socket, :clinical, @auto_tracing.case_uuid)}
+    class="btn btn-outline-primary"
+  >
+    {gettext("Back")}
+  </LiveRedirect>
+  <button
+    class="btn btn-primary"
+    type="button"
+    :on-click="advance"
+    disabled={not @changeset.valid?}
+  >
+    {gettext("Continue")}
+  </button>
+</div>
