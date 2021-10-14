@@ -49,7 +49,10 @@
                     <HiddenInput field={:uuid} />
                     <Field class="form-group" name={:flight_date}>
                       <HygeiaWeb.FieldLabel />
-                      <HygeiaWeb.DateInput class="form-control" />
+                      <HygeiaWeb.DateInput
+                        class="form-control"
+                        opts={Enum.zip([:min, :max], @case |> get_inquiry_dates() |> Tuple.to_list())}
+                      />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                     <Field class="form-group" name={:flight_number}>

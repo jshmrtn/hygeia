@@ -170,38 +170,43 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
     {:noreply, socket}
   end
 
-  defp generate_flight_question(%Case{
-         clinical: %Clinical{has_symptoms: true, symptom_start: start_date}
-       }) do
-    generate_question(start_date, calculate_end_date(start_date))
+  defp generate_flight_question(case) do
+    {start_date, end_date} = get_inquiry_dates(case)
+
+    generate_question(start_date, end_date)
   end
 
-  defp generate_flight_question(
-         %Case{tests: tests, clinical: %Clinical{has_symptoms: false}} = case
-       )
+  defp get_inquiry_dates(%Case{
+         clinical: %Clinical{has_symptoms: true, symptom_start: symptom_start}
+       })
+       when is_struct(symptom_start) do
+    {calculate_date(symptom_start, 2, :past), symptom_start}
+  end
+
+  defp get_inquiry_dates(%Case{tests: tests, clinical: %Clinical{has_symptoms: false}} = case)
        when is_list(tests) and length(tests) > 0 do
     start_date =
       tests
       |> Enum.reject(&(&1.result == :negative))
-      |> Enum.sort(&(&1.laboratory_reported_at >= &2.laboratory_reported_at))
+      |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
+      |> Enum.reject(&is_nil/1)
+      |> Enum.sort(Date)
       |> List.first()
       |> case do
         nil ->
           case.inserted_at
+          |> DateTime.to_date()
+          |> Date.add(-2)
 
-        positive_test ->
-          if positive_test.tested_at do
-            positive_test.tested_at
-          else
-            positive_test.laboratory_reported_at
-          end
+        test_date ->
+          test_date
       end
 
-    generate_question(start_date, calculate_end_date(start_date))
+    {start_date, calculate_date(start_date, 2, :future)}
   end
 
-  defp generate_flight_question(%Case{inserted_at: start_date}) do
-    generate_question(start_date, calculate_end_date(start_date))
+  defp get_inquiry_dates(%Case{inserted_at: inserted_at}) do
+    {calculate_date(inserted_at, 2, :past), DateTime.to_date(inserted_at)}
   end
 
   defp generate_question(start_date, end_date) do
@@ -211,17 +216,25 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
     )
   end
 
-  defp calculate_end_date(start_date) do
+  defp calculate_date(start_date, days_to_add, :past) do
     start_date
-    |> Date.add(2)
-    |> Kernel.then(fn result_date ->
-      result_date
-      |> Date.compare(Date.utc_today())
-      |> case do
-        :gt -> Date.utc_today()
-        _else -> result_date
-      end
-    end)
+    |> Date.add(-days_to_add)
+    |> limit_date_to_today()
+  end
+
+  defp calculate_date(start_date, days_to_add, :future) do
+    start_date
+    |> Date.add(days_to_add)
+    |> limit_date_to_today()
+  end
+
+  defp limit_date_to_today(date) do
+    date
+    |> Date.compare(Date.utc_today())
+    |> case do
+      :gt -> Date.utc_today()
+      _else -> date
+    end
   end
 
   @spec changeset(schema :: %__MODULE__{}, attrs :: map()) ::
