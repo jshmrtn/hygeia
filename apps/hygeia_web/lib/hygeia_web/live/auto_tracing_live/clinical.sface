@@ -56,15 +56,18 @@
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 <p class="my-4">{gettext("When did the symptoms start?")}</p>
-                {#case index_phase_dates(Ecto.Changeset.apply_changes(@changeset))}
-                  {#match {_, _, [:phase_date_inconsistent]}}
-                    <div class="p-2 mb-2 bg-warning text-dark">Date inconsistent! What should we diplay here?</div>
-                  {#match _else}
-                {/case}
                 <Field name={:symptom_start} class="form-group">
                   <DateInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
+                {#case index_phase_dates(Ecto.Changeset.apply_changes(@changeset))}
+                  {#match {_, _, [:phase_date_inconsistent]}}
+                    <div class="p-2 mb-2 alert alert-warning" role="alert">{pgettext(
+                        "Auto Tracing Clinical",
+                        "Is this the correct date? The date is too far back and will trigger an inspection."
+                      )}</div>
+                  {#match _else}
+                {/case}
               </div>
             </InputContext>
           </div>

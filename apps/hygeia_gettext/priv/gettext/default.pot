@@ -416,6 +416,10 @@ msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case UUID"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Case created at"
+msgstr ""
+
 msgid "Case created successfully"
 msgstr ""
 
@@ -1323,6 +1327,10 @@ msgctxt "Case Status"
 msgid "First contact, unreachable"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "First positive test date"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
 msgstr ""
@@ -1744,6 +1752,10 @@ msgid "Invalid Person Details, if you believe this is an error, contact the trac
 msgstr ""
 
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
+msgstr ""
+
+msgctxt "Auto Tracing Clinical"
+msgid "Is this the correct date? The date is too far back and will trigger an inspection."
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
@@ -3469,6 +3481,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Symptoms start date"
+msgstr ""
+
 msgid "System Message"
 msgstr ""
 
@@ -3664,6 +3680,14 @@ msgid "The status of the case will be changed from \"%{old_status}\" to \"%{new_
 msgstr ""
 
 msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
+msgstr ""
+
+msgctxt "Auto Tracing Hints"
+msgid "The symptoms start date is too far back and will trigger an inspection."
 msgstr ""
 
 msgid "This case is not in an index phase."
@@ -4025,6 +4049,10 @@ msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Wore a mask during the whole flight?"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Wore mask"
 msgstr ""
 
 msgid "Work Place"

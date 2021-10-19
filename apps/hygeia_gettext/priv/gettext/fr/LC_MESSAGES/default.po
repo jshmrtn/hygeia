@@ -519,6 +519,10 @@ msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case UUID"
 msgstr "Cas UUID"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Case created at"
+msgstr ""
+
 #, fuzzy
 msgid "Case created successfully"
 msgstr "Cas créé avec succès"
@@ -1732,6 +1736,10 @@ msgctxt "Case Status"
 msgid "First contact, unreachable"
 msgstr "Premier contact, injoignable"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "First positive test date"
+msgstr ""
+
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
@@ -2268,6 +2276,10 @@ msgstr "Détails de la personne non valides. Si vous pensez qu'il s'agit d'une e
 #, fuzzy
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
 msgstr "L'application SwissCovid est-elle installée / en service sur votre smartphone ?"
+
+msgctxt "Auto Tracing Clinical"
+msgid "Is this the correct date? The date is too far back and will trigger an inspection."
+msgstr ""
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
@@ -4477,6 +4489,11 @@ msgid "Symptoms start date"
 msgstr "Date de début des symptômes"
 
 #, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Symptoms start date"
+msgstr "Date de début des symptômes"
+
+#, fuzzy
 msgid "System Message"
 msgstr "Message du système"
 
@@ -4722,6 +4739,14 @@ msgstr "Le statut de l'affaire sera modifié de \"%{old_status}\" à \"%{new_sta
 #, fuzzy
 msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."
 msgstr "Le statut sert d'aperçu de la phase de recherche actuelle de la personne. Ce statut peut être utilisé pour effectuer une recherche dans le filtre. Les cas sont toujours créés avec le statut \"Premier contact\" par l'administration des cas. Une fois que le cas a été traité, le statut doit être ajusté."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
+msgstr ""
+
+msgctxt "Auto Tracing Hints"
+msgid "The symptoms start date is too far back and will trigger an inspection."
+msgstr ""
 
 #, fuzzy
 msgid "This case is not in an index phase."
@@ -5169,6 +5194,10 @@ msgstr "Qui avez-vous rencontré ou avec qui vivez-vous ?"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Wore a mask during the whole flight?"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Wore mask"
 msgstr ""
 
 #, fuzzy
