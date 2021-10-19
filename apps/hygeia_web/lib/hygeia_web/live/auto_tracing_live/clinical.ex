@@ -66,9 +66,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
   @impl Phoenix.LiveView
   def handle_event("validate", %{"case" => case_params}, socket) do
-    case_params =
-      case_params
-      |> Map.put_new("hospitalizations", [])
+    case_params = Map.put_new(case_params, "hospitalizations", [])
 
     {:noreply,
      assign(
