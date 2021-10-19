@@ -112,6 +112,8 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
       false ->
         changeset
+        |> put_change(:symptom_start, nil)
+        |> put_change(:symptoms, [])
     end
   end
 

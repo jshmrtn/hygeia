@@ -69,16 +69,6 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
     case_params =
       case_params
       |> Map.put_new("hospitalizations", [])
-      |> Kernel.then(fn case_params ->
-        if String.equivalent?("false", Map.get(case_params["clinical"], "has_symptoms")),
-          do:
-            Map.put(
-              case_params,
-              "clinical",
-              Map.put(case_params["clinical"], "symptom_start", "")
-            ),
-          else: case_params
-      end)
 
     {:noreply,
      assign(

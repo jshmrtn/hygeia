@@ -1,7 +1,7 @@
 defmodule HygeiaWeb.AutoTracingLive.Hints do
   @moduledoc false
 
-  use HygeiaWeb, :surface_live_component
+  use HygeiaWeb, :surface_component
 
   prop auto_tracing, :map, required: true
 
@@ -17,7 +17,7 @@ defmodule HygeiaWeb.AutoTracingLive.Hints do
   defp hint(:phase_date_inconsistent) do
     pgettext(
       "Auto Tracing Hints",
-      "The symptoms start date is too far back and will trigger an inspection."
+      "The current case information is being inspected. Expect changes to the isolation period."
     )
   end
 
