@@ -59,7 +59,6 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
       :jab_dates, _else ->
         []
     end)
-    |> clean()
   end
 
   defp validate_details_required(changeset) do
@@ -81,7 +80,7 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
     |> fetch_field!(:jab_dates)
     |> case do
       nil -> changeset
-      dates -> put_change(changeset, :jab_dates, Enum.reject(dates, &is_nil/1))
+      dates -> put_change(changeset, :jab_dates, dates |> Enum.uniq())
     end
   end
 end

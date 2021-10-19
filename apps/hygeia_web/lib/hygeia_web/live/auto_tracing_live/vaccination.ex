@@ -143,12 +143,29 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
 
   @impl Phoenix.LiveView
   def handle_event("advance", _params, socket) do
+
+    vaccination_params =
+      socket.assigns.changeset
+      |> Ecto.Changeset.get_change(
+        :vaccination,
+        Person.Vaccination.changeset(
+          Ecto.Changeset.get_field(socket.assigns.changeset, :vaccination, %Person.Vaccination{}),
+          %{}
+        )
+      )
+      |> update_changeset_param(
+        :jab_dates,
+        &(&1 |> Kernel.||([]) |> Enum.reject(fn date -> is_nil(date) end) |> Enum.uniq())
+      )
+
+    params = update_changeset_param(socket.assigns.changeset, :vaccination, fn _input -> vaccination_params end)
+
     {:ok, person} =
       CaseContext.update_person(
         %Ecto.Changeset{socket.assigns.changeset | action: nil},
-        %{},
+        params,
         %{vaccination_required: true}
-      )
+      )|>IO.inspect()
 
     {:ok, auto_tracing} =
       case person do
