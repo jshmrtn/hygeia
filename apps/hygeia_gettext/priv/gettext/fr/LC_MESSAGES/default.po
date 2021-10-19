@@ -12,7 +12,6 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#, fuzzy
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr "\"Fusionner\" et \"Entrer\" ne doivent pas être identiques."
 
@@ -20,6 +19,10 @@ msgid "%{count} New Notification"
 msgid_plural "%{count} New Notifications"
 msgstr[0] "%{count} Nouvelle notification"
 msgstr[1] "%{count} Nouvelles notifications"
+
+msgctxt "Auto Tracing Vaccination"
+msgid "%{ordering} jab date"
+msgstr "%{ordering} vaccin"
 
 #, fuzzy
 msgid "%{tenant} - Contact Tracing"
@@ -133,7 +136,7 @@ msgid "Add a flight"
 msgstr ""
 
 msgid "Add an institution"
-msgstr ""
+msgstr "Ajouter un établissement"
 
 #, fuzzy
 msgid "Add an occupation"
@@ -300,13 +303,13 @@ msgid "April"
 msgstr "Avril"
 
 msgid "Are you a enrolled at this educational institution?"
-msgstr ""
+msgstr "Êtes-vous inscrit dans cet établissement d'enseignement?"
 
 msgid "Are you employed by this educational institution?"
-msgstr ""
+msgstr "Êtes-vous employé par cet établissement d'enseignement?"
 
 msgid "Are you employed, student or a club member?"
-msgstr ""
+msgstr "Vous êtes salarié, étudiant ou membre d'un club?"
 
 msgid "Are you planning to move to a different address for your isolation?"
 msgstr "Prévoyez-vous de déménager à une autre adresse pour votre isolement?"
@@ -480,7 +483,7 @@ msgstr "Annulé"
 
 msgctxt "School Type"
 msgid "Cantonal school or other middle school"
-msgstr ""
+msgstr "Ecole cantonale ou autre collège"
 
 #, fuzzy
 msgid "Case"
@@ -977,11 +980,11 @@ msgstr "Date"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Date of last visit"
-msgstr ""
+msgstr "Date de la dernière visite"
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Date of last visit"
-msgstr ""
+msgstr "Date de la dernière visite"
 
 #, fuzzy
 msgid "Dear Sir / Madam"
@@ -1228,7 +1231,7 @@ msgid "Did you visit a pub / restaurant / event recently?"
 msgstr "Avez-vous visité un pub / restaurant / événement récemment ?"
 
 msgid "Did you visit an educational institution in the 48 hours before the onset of symptoms or 48 hours before the test?"
-msgstr ""
+msgstr "Avez-vous visité un établissement d'enseignement dans les 48 heures précédant l'apparition des symptômes ou 48 heures avant le test?"
 
 msgid "Did you wear the mask during the whole flight?"
 msgstr "Avez-vous porté le masque tout au long du vol?"
@@ -1394,7 +1397,7 @@ msgstr "Modifier"
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Educational institution"
-msgstr ""
+msgstr "Établissement d'enseignement"
 
 #, fuzzy
 msgid "Either you or the other person did not weark a mask."
@@ -2065,6 +2068,10 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "If there is no number, try to get it from the doctor."
 msgstr "S'il n'y a pas de numéro, essayez de l'obtenir auprès du médecin."
 
+msgctxt "Auto Tracing Vaccination"
+msgid "If you are fully vaccinated, please insert both vaccination dates."
+msgstr "Si vous êtes complètement vacciné, veuillez insérer les deux dates de vaccination."
+
 #, fuzzy
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
 msgstr "Si vous avez eu un contact étroit avec des personnes que vous ne connaissez pas (par exemple dans un restaurant ou une église), veuillez en parler à votre traceur pour connaître la meilleure procédure et les mesures de contact à prendre."
@@ -2073,7 +2080,7 @@ msgid "If you met %{first_name} %{last_name} multiple times, select the last dat
 msgstr "Si vous avez rencontré %{first_name} %{last_name} plusieurs fois, sélectionnez la dernière date à laquelle vous avez eu un contact étroit et non protégé. Considérez que vous avez pu être contagieux 48 heures avant le début de vos symptômes. Si vous n'avez pas de symptômes, considérez que vous avez été contagieux 48 heures avant le test."
 
 msgid "If you were present at this location for multiple days, enter the last day into the date field."
-msgstr ""
+msgstr "Si vous étiez présent à cet endroit pendant plusieurs jours, entrez le dernier jour dans le champ de date."
 
 #, fuzzy
 msgid "If you're an authorized person of the contact tracing team, log in instead:"
@@ -2267,7 +2274,7 @@ msgstr "Sur"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
-msgstr ""
+msgstr "Des données non valides ont été fournies pour cette profession. Veuillez jeter ce problème s'il n'y a plus d'autres affiliations."
 
 #, fuzzy
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
@@ -2400,7 +2407,7 @@ msgstr "Connu"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Known institutions"
-msgstr ""
+msgstr "Établissements connus"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
@@ -2768,7 +2775,7 @@ msgstr "Nom"
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name of Vaccine"
-msgstr ""
+msgstr "Nom du vaccin"
 
 #, fuzzy
 msgid "Need help"
@@ -3488,7 +3495,7 @@ msgstr "Veuillez noter que la soumission des personnes de contact ne fonctionne 
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Please specify your reason"
-msgstr ""
+msgstr "Veuillez préciser votre raison"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
@@ -3551,7 +3558,7 @@ msgstr "Libération prématurée créée avec succès"
 
 msgctxt "School Type"
 msgid "Preschool"
-msgstr ""
+msgstr "Préscolaire"
 
 #, fuzzy
 msgid "Preview"
@@ -3563,7 +3570,7 @@ msgstr "Précédent"
 
 msgctxt "School Type"
 msgid "Primary school"
-msgstr ""
+msgstr "École primaire"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
@@ -3747,7 +3754,7 @@ msgstr "Raison"
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Reason for you visit"
-msgstr ""
+msgstr "Raison de votre visite"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
@@ -4033,7 +4040,7 @@ msgstr "Septembre"
 
 msgctxt "School Type"
 msgid "Secondary school"
-msgstr ""
+msgstr "École secondaire"
 
 #, fuzzy
 msgid "Sedex Configuration"
@@ -4361,7 +4368,7 @@ msgstr "Aide au statut"
 
 msgctxt "School visit reason"
 msgid "Student"
-msgstr ""
+msgstr "Étudiante"
 
 #, fuzzy
 msgid "Sub-Type"
@@ -4723,7 +4730,7 @@ msgid "The index phase end reason will be set to %{end_reason}."
 msgstr "La raison de la fin de la phase d'indexation sera définie par %{end_reason}."
 
 msgid "The link is no longer available"
-msgstr ""
+msgstr "Le lien n'est plus disponible"
 
 msgid "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
 msgstr "Le lien vers les soumissions possibles à l'index a été envoyé. L'index n'a pas encore saisi les soumissions. Ceci peut être vérifié sous %{link}."
@@ -4756,7 +4763,7 @@ msgid "This case is not in an index phase."
 msgstr "Cette affaire n'est pas en phase d'indexation."
 
 msgid "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
-msgstr ""
+msgstr "Cette entrée ne peut pas être modifiée car elle est une conséquence des informations fournies dans un établissement d'enseignement inséré ci-dessus."
 
 msgid "This organisation has a possible duplicate."
 msgid_plural "This organisation has %{count} possible duplicates."
@@ -4785,7 +4792,7 @@ msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
-msgstr ""
+msgstr "Cette personne a visité les établissements d'enseignement suivants dans les 48 heures précédant l'apparition des symptômes ou 48 heures avant le test"
 
 #, fuzzy
 msgid "This row is already resolved."
@@ -5006,7 +5013,7 @@ msgstr "Sans-papiers"
 
 msgctxt "School Type"
 msgid "University or college"
-msgstr ""
+msgstr "Université ou collège"
 
 #, fuzzy
 msgid "Unknown"
@@ -5121,7 +5128,7 @@ msgstr "Diverses informations concernant la fonctionnalité des applications ain
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Visit reason"
-msgstr ""
+msgstr "Raison de la visite"
 
 #, fuzzy
 msgctxt "School visit reason"
@@ -5453,7 +5460,7 @@ msgid "people"
 msgstr "personnes"
 
 msgid "please add at least one educational institution that you visited during the period in consideration"
-msgstr ""
+msgstr "veuillez ajouter au moins un établissement d'enseignement que vous avez visité au cours de la période considérée"
 
 #, fuzzy
 msgid "please add at least one flight that you took during the period in consideration"
@@ -5464,10 +5471,10 @@ msgid "please add at least one occupation"
 msgstr "veuillez ajouter au moins une profession"
 
 msgid "please fill in the information about the place where you contracted the virus"
-msgstr ""
+msgstr "veuillez remplir les informations sur l'endroit où vous avez contracté le virus"
 
 msgid "please fill in the information of the person who passed on the virus to you"
-msgstr ""
+msgstr "merci de renseigner les coordonnées de la personne qui vous a transmis le virus"
 
 #, fuzzy
 msgctxt "Item Table"
