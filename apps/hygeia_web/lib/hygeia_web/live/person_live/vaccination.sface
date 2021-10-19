@@ -16,7 +16,7 @@
               {#for {date, index} <- Enum.with_index(fill_dates(fetch_field!(form.source, :jab_dates)))}
                 <tr>
                   <td>
-                    <label class="small py-2">{pgettext("Auto Tracing Vaccination", "%{ordering} jab date",
+                    <label class="small">{pgettext("Auto Tracing Vaccination", "%{ordering} jab date",
                         ordering:
                           (index + 1) |> HygeiaCldr.Number.to_string!(format: :spellout_ordinal) |> String.capitalize()
                       )}</label>

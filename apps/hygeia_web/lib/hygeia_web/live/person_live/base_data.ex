@@ -323,10 +323,16 @@ defmodule HygeiaWeb.PersonLive.BaseData do
           vaccination,
           "jab_dates",
           [],
-          &Enum.map(&1, fn
-            "" -> nil
-            other -> other
-          end)
+          fn dates ->
+            dates
+            |> Enum.map(fn
+              "" -> nil
+              other -> other
+            end)
+            |> Enum.reject(&is_nil/1)
+            |> Enum.uniq()
+            |> Enum.sort_by(&Date.from_iso8601!/1, {:asc, Date})
+          end
         )
       end)
 

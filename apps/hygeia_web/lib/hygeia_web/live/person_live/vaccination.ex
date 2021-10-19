@@ -18,7 +18,7 @@ defmodule HygeiaWeb.PersonLive.Vaccination do
   prop add_event, :event
   prop remove_event, :event
 
-  def at_least_two_dates(changeset) do
+  defp at_least_two_dates(changeset) do
     changeset
     |> fetch_field!(:vaccination)
     |> case do
@@ -27,13 +27,13 @@ defmodule HygeiaWeb.PersonLive.Vaccination do
 
       vaccination ->
         vaccination
-        |> Map.get(:jab_dates)
+        |> Map.get(:jab_dates, [])
         |> Enum.reject(&is_nil/1)
         |> length() >= 2
     end
   end
 
-  def fill_dates(dates) do
+  defp fill_dates(dates) do
     case length(dates) do
       0 -> [nil, nil]
       1 -> dates ++ [nil]

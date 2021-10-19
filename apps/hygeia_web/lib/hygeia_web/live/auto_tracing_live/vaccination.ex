@@ -117,18 +117,20 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   def handle_event("validate", %{"person" => person_params}, socket) do
     person_params =
       Map.update(person_params, "vaccination", %{"jab_dates" => []}, fn vaccination ->
-        if match?("true", vaccination["done"]) do
-          Map.update(
-            vaccination,
-            "jab_dates",
-            [nil, nil],
-            &Enum.map(&1, fn
-              "" -> nil
-              other -> other
-            end)
-          )
-        else
-          %{"done" => "false", "jab_dates" => []}
+        case vaccination["done"] do
+          "true" ->
+            Map.update(
+              vaccination,
+              "jab_dates",
+              [nil, nil],
+              &Enum.map(&1, fn
+                "" -> nil
+                other -> other
+              end)
+            )
+
+          _else ->
+            %{"done" => "false", "jab_dates" => []}
         end
       end)
 
@@ -143,7 +145,6 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
 
   @impl Phoenix.LiveView
   def handle_event("advance", _params, socket) do
-
     vaccination_params =
       socket.assigns.changeset
       |> Ecto.Changeset.get_change(
@@ -155,17 +156,30 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
       )
       |> update_changeset_param(
         :jab_dates,
-        &(&1 |> Kernel.||([]) |> Enum.reject(fn date -> is_nil(date) end) |> Enum.uniq())
+        &(&1
+          |> Kernel.||([])
+          |> Enum.reject(fn date -> is_nil(date) end)
+          |> Enum.uniq()
+          |> Enum.sort_by(
+            fn
+              date when is_binary(date) -> Date.from_iso8601!(date)
+              date -> date
+            end,
+            {:asc, Date}
+          ))
       )
 
-    params = update_changeset_param(socket.assigns.changeset, :vaccination, fn _input -> vaccination_params end)
+    params =
+      update_changeset_param(socket.assigns.changeset, :vaccination, fn _input ->
+        vaccination_params
+      end)
 
     {:ok, person} =
       CaseContext.update_person(
         %Ecto.Changeset{socket.assigns.changeset | action: nil},
         params,
         %{vaccination_required: true}
-      )|>IO.inspect()
+      )
 
     {:ok, auto_tracing} =
       case person do

@@ -74,13 +74,4 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
         |> put_change(:jab_dates, nil)
     end
   end
-
-  defp clean(changeset) do
-    changeset
-    |> fetch_field!(:jab_dates)
-    |> case do
-      nil -> changeset
-      dates -> put_change(changeset, :jab_dates, dates |> Enum.uniq())
-    end
-  end
 end
