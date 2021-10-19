@@ -456,51 +456,14 @@
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
 
-                    <div class="vaccination-grid" :if={Ecto.Changeset.get_field(form.source, :done)}>
-                      <h6><HygeiaWeb.FieldLabel field={:name} /></h6>
-                      <h6><HygeiaWeb.FieldLabel field={:jab_dates} /></h6>
-
-                      <Field name={:name} class="form-group">
-                        <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                      <Field name={:jab_dates} class="form-group">
-                        <div
-                          class="d-flex mb-2"
-                          :for={{date, index} <-
-                            Enum.with_index(Ecto.Changeset.get_field(form.source, :jab_dates, [nil]) || [nil])}
-                        >
-                          <DateInput
-                            class="form-control"
-                            opts={
-                              disabled: @live_action == :show,
-                              name: input_name(form, :jab_dates) <> "[]",
-                              value:
-                                case date do
-                                  nil -> nil
-                                  date -> Date.to_iso8601(date)
-                                end
-                            }
-                          />
-                          <button
-                            :if={@live_action == :edit}
-                            type="button"
-                            class="ms-2 btn btn-danger"
-                            :on-click="remove_vaccination_jab_date"
-                            phx-value-index={index}
-                          >
-                            <span class="oi oi-trash" aria-hidden="true" />
-                          </button>
-                        </div>
-                        <ErrorTag class="d-block invalid-feedback" />
-                        <div :if={@live_action == :edit}>
-                          <button type="button" class="btn btn-outline-primary" :on-click="add_vaccination_jab_date">
-                            <span class="oi oi-plus me-1" aria-hidden="true" />
-                            {gettext("New date")}
-                          </button>
-                        </div>
-                      </Field>
-                    </div>
+                    <HygeiaWeb.PersonLive.Vaccination
+                      id="vaccination"
+                      disabled={@live_action == :show}
+                      changeset={@changeset}
+                      person={@person}
+                      add_event="add_vaccination_jab_date"
+                      remove_event="remove_vaccination_jab_date"
+                    />
                   </InputContext>
                 </Inputs>
               </div>

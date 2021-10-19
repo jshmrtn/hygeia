@@ -4,11 +4,11 @@
   <h2 class="mb-4 mt-5">{gettext("Vaccination")}</h2>
 
   <div class="row">
-    <div class="col-12 col-lg-8">
+    <div class="col-12 col-lg-6">
       <Form
-        for={@person_changeset}
+        for={@changeset}
         change="validate"
-        class={"p-2 rounded-3 border border-2 border-danger": not @person_changeset.valid?}
+        class={"p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}
       >
         <ErrorTag class="d-block p-1 alert alert-danger" field={:vaccination} />
         <Inputs for={:vaccination}>
@@ -22,7 +22,7 @@
                   active: Ecto.Changeset.get_field(form.source, :done) == true
                 }>
                   <RadioButton value />
-                  {pgettext("vaccination_done", "Done")}
+                  {pgettext("Auto Tracing Vaccination", "Done")}
                 </label>
                 <label class={
                   "btn",
@@ -31,79 +31,26 @@
                   active: Ecto.Changeset.get_field(form.source, :done) == false
                 }>
                   <RadioButton value={false} />
-                  {pgettext("vaccination_done", "Not Done")}
+                  {pgettext("Auto Tracing Vaccination", "Not Done")}
                 </label>
               </div>
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-            <div class="mt-4 mb-5" :if={Ecto.Changeset.get_field(form.source, :done)}>
+            <div :if={Ecto.Changeset.fetch_field!(form.source, :done)}>
               <p class="mb-4">
                 {pgettext(
                   "Auto Tracing Vaccination",
                   "If you are fully vaccinated, please insert both vaccination dates."
                 )}
               </p>
-              <div class="row">
-                <div class="col-12 col-md-6 pe-4">
-                  <HygeiaWeb.FieldLabel field={:name} />
-                  <Field name={:name} class="form-group">
-                    <TextInput class="form-control" />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-                <div class="col-12 col-md-6">
-                  <HygeiaWeb.FieldLabel field={:jab_dates} />
-                  <Field name={:jab_dates} class="form-group">
-                    <table class="table table-borderless">
-                      <tbody>
-                        {#for {date, index} <- Enum.with_index(Ecto.Changeset.fetch_field!(form.source, :jab_dates))}
-                          <tr>
-                            <td>
-                              <label class="small py-2">{pgettext("Auto Tracing Vaccination", "%{ordering} jab date",
-                                  ordering:
-                                    (index + 1) |> HygeiaCldr.Number.to_string!(format: :spellout_ordinal) |> String.capitalize()
-                                )}</label>
-                            </td>
-                            <td>
-                              <div class="d-flex">
-                                <DateInput
-                                  class="form-control"
-                                  opts={
-                                    name: input_name(form, :jab_dates) <> "[]",
-                                    value:
-                                      case date do
-                                        nil -> nil
-                                        date -> Date.to_iso8601(date)
-                                      end,
-                                    max: Date.utc_today()
-                                  }
-                                />
-                                <button
-                                  type="button"
-                                  class="ms-2 btn btn-danger"
-                                  :on-click="remove_vaccination_jab_date"
-                                  phx-value-index={index}
-                                >
-                                  <span class="oi oi-trash" aria-hidden="true" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        {/for}
-                      </tbody>
-                    </table>
-                    <ErrorTag class="d-block invalid-feedback mb-2" />
-
-                    <div>
-                      <button type="button" class="btn btn-outline-primary" :on-click="add_vaccination_jab_date">
-                        <span class="oi oi-plus me-1" aria-hidden="true" />
-                        {gettext("New date")}
-                      </button>
-                    </div>
-                  </Field>
-                </div>
-              </div>
             </div>
+            <HygeiaWeb.PersonLive.Vaccination
+              id="auto_tracing-vaccination"
+              changeset={@changeset}
+              person={@person}
+              add_event="add_vaccination_jab_date"
+              remove_event="remove_vaccination_jab_date"
+            />
           </InputContext>
         </Inputs>
       </Form>
@@ -121,7 +68,7 @@
       class="btn btn-primary"
       type="button"
       :on-click="advance"
-      disabled={not @person_changeset.valid?}
+      disabled={not @changeset.valid?}
     >
       {gettext("Continue")}
     </button>

@@ -43,13 +43,23 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
     vaccination
     |> cast(attrs, [:uuid, :done, :name, :jab_dates])
     |> fill_uuid
-    |> validate_change(:jab_dates, fn :jab_dates, jab_dates ->
-      if Enum.member?(jab_dates, nil) do
-        [jab_dates: dgettext("errors", "can't be blank")]
-      else
+    |> validate_change(:jab_dates, fn
+      :jab_dates, [_, _ | rest] = all ->
+        cond do
+          Enum.member?(rest, nil) ->
+            [jab_dates: dgettext("errors", "can't be blank")]
+
+          not Enum.any?(all) ->
+            [jab_dates: dgettext("errors", "at least one date must be provided")]
+
+          true ->
+            []
+        end
+
+      :jab_dates, _else ->
         []
-      end
     end)
+    |> clean()
   end
 
   defp validate_details_required(changeset) do
@@ -63,6 +73,15 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
         changeset
         |> put_change(:name, nil)
         |> put_change(:jab_dates, nil)
+    end
+  end
+
+  defp clean(changeset) do
+    changeset
+    |> fetch_field!(:jab_dates)
+    |> case do
+      nil -> changeset
+      dates -> put_change(changeset, :jab_dates, Enum.reject(dates, &is_nil/1))
     end
   end
 end

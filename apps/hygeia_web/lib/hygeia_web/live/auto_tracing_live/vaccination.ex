@@ -11,13 +11,11 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   alias Hygeia.Repo
 
   alias Surface.Components.Form
-  alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.RadioButton
-  alias Surface.Components.Form.TextInput
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
@@ -50,7 +48,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
           assign(socket,
             case: case,
             person: case.person,
-            person_changeset: %Ecto.Changeset{
+            changeset: %Ecto.Changeset{
               CaseContext.change_person(case.person, %{}, %{vaccination_required: true})
               | action: :validate
             },
@@ -64,14 +62,14 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   def handle_event(
         "add_vaccination_jab_date",
         _params,
-        %{assigns: %{person_changeset: person_changeset, person: person}} = socket
+        %{assigns: %{changeset: changeset, person: person}} = socket
       ) do
     vaccination_params =
-      person_changeset
+      changeset
       |> Ecto.Changeset.get_change(
         :vaccination,
         Person.Vaccination.changeset(
-          Ecto.Changeset.get_field(person_changeset, :vaccination, %Person.Vaccination{}),
+          Ecto.Changeset.get_field(changeset, :vaccination, %Person.Vaccination{}),
           %{}
         )
       )
@@ -80,11 +78,10 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
         &(&1 |> Kernel.||([]) |> Enum.concat([nil]))
       )
 
-    params =
-      update_changeset_param(person_changeset, :vaccination, fn _input -> vaccination_params end)
+    params = update_changeset_param(changeset, :vaccination, fn _input -> vaccination_params end)
 
     {:noreply,
-     assign(socket, :person_changeset, %Ecto.Changeset{
+     assign(socket, :changeset, %Ecto.Changeset{
        CaseContext.change_person(person, params, %{vaccination_required: true})
        | action: :validate
      })}
@@ -93,26 +90,25 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   def handle_event(
         "remove_vaccination_jab_date",
         %{"index" => index} = _params,
-        %{assigns: %{person_changeset: person_changeset, person: person}} = socket
+        %{assigns: %{changeset: changeset, person: person}} = socket
       ) do
     index = String.to_integer(index)
 
     vaccination_params =
-      person_changeset
+      changeset
       |> Ecto.Changeset.get_change(
         :vaccination,
         Person.Vaccination.changeset(
-          Ecto.Changeset.get_field(person_changeset, :vaccination, %Person.Vaccination{}),
+          Ecto.Changeset.get_field(changeset, :vaccination, %Person.Vaccination{}),
           %{}
         )
       )
       |> update_changeset_param(:jab_dates, &List.delete_at(&1, index))
 
-    params =
-      update_changeset_param(person_changeset, :vaccination, fn _input -> vaccination_params end)
+    params = update_changeset_param(changeset, :vaccination, fn _input -> vaccination_params end)
 
     {:noreply,
-     assign(socket, :person_changeset, %Ecto.Changeset{
+     assign(socket, :changeset, %Ecto.Changeset{
        CaseContext.change_person(person, params, %{vaccination_required: true})
        | action: :validate
      })}
@@ -137,7 +133,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
       end)
 
     {:noreply,
-     assign(socket, :person_changeset, %Ecto.Changeset{
+     assign(socket, :changeset, %Ecto.Changeset{
        CaseContext.change_person(socket.assigns.person, person_params, %{
          vaccination_required: true
        })
@@ -149,7 +145,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   def handle_event("advance", _params, socket) do
     {:ok, person} =
       CaseContext.update_person(
-        %Ecto.Changeset{socket.assigns.person_changeset | action: nil},
+        %Ecto.Changeset{socket.assigns.changeset | action: nil},
         %{},
         %{vaccination_required: true}
       )

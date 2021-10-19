@@ -94,7 +94,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
         Map.update(
           vaccination,
           "jab_dates",
-          [],
+          [nil, nil],
           &Enum.map(&1, fn
             "" -> nil
             other -> other
@@ -273,7 +273,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
       )
       |> update_changeset_param(
         :jab_dates,
-        &(&1 |> Kernel.||([]) |> Enum.concat([nil]) |> Enum.uniq())
+        &(&1 |> Kernel.||([]) |> Enum.concat([nil]))
       )
 
     params = update_changeset_param(changeset, :vaccination, fn _input -> vaccination_params end)
