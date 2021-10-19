@@ -1,0 +1,73 @@
+<InputContext assigns={assigns} :let={form: form}>
+  <div class="mt-4 mb-5" :if={get_field(form.source, :done)}>
+    <div class="row">
+      <div class="col-12 col-md-5 pe-4">
+        <HygeiaWeb.FieldLabel field={:name} />
+        <Field name={:name} class="form-group mt-2">
+          <TextInput opts={disabled: @disabled |> IO.inspect()} class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+      </div>
+      <div class="col-12 col-md-7">
+        <HygeiaWeb.FieldLabel field={:jab_dates} />
+        <Field name={:jab_dates} class="form-group">
+          <table class="table table-borderless">
+            <tbody>
+              {#for {date, index} <- Enum.with_index(fill_dates(fetch_field!(form.source, :jab_dates)))}
+                <tr>
+                  <td>
+                    <label class="small">{pgettext("Auto Tracing Vaccination", "%{ordering} jab date",
+                        ordering:
+                          (index + 1) |> HygeiaCldr.Number.to_string!(format: :spellout_ordinal) |> String.capitalize()
+                      )}</label>
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <DateInput
+                        class="form-control"
+                        opts={
+                          name: input_name(form, :jab_dates) <> "[]",
+                          value:
+                            case date do
+                              nil -> nil
+                              date -> Date.to_iso8601(date)
+                            end,
+                          max: Date.utc_today(),
+                          disabled: @disabled
+                        }
+                      />
+                      <button
+                        :if={index > 1}
+                        type="button"
+                        class="ms-2 btn btn-danger"
+                        :on-click={@remove_event}
+                        phx-value-index={index}
+                        disabled={@disabled}
+                      >
+                        <span class="oi oi-trash" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              {/for}
+            </tbody>
+          </table>
+          <ErrorTag class="d-block invalid-feedback mb-2" />
+
+          <div>
+            <button
+              :if={at_least_two_dates(@changeset)}
+              disabled={@disabled}
+              type="button"
+              class="btn btn-outline-primary"
+              :on-click={@add_event}
+            >
+              <span class="oi oi-plus me-1" aria-hidden="true" />
+              {gettext("New date")}
+            </button>
+          </div>
+        </Field>
+      </div>
+    </div>
+  </div>
+</InputContext>

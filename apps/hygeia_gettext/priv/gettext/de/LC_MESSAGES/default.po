@@ -20,6 +20,10 @@ msgid_plural "%{count} New Notifications"
 msgstr[0] "%{count} neue Benachrichtigung"
 msgstr[1] "%{count} neue Benachrichtigungen"
 
+msgctxt "Auto Tracing Vaccination"
+msgid "%{ordering} jab date"
+msgstr "%{ordering} Impftermine"
+
 msgid "%{tenant} - Contact Tracing"
 msgstr "%{tenant} – Contact Tracing"
 
@@ -1638,6 +1642,10 @@ msgstr "Falls es Phasen gibt wo nicht entschieden wurde ob eine Quarantäne / Is
 msgctxt "Auto Tracing Resolve Problems"
 msgid "If there is no number, try to get it from the doctor."
 msgstr "Wenn keine Nummer vorhanden ist, versuchen eine via Arzt zu erfragen."
+
+msgctxt "Auto Tracing Vaccination"
+msgid "If you are fully vaccinated, please insert both vaccination dates."
+msgstr "Wenn sie vollständig geimpft sind, geben Sie bitte zwingend beide Daten der Impfungen an."
 
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
 msgstr "Falls sie enge Kontakte zu unbekannten Personen hatten (z.B. in einem Restaurant, in der Kirche etc.), besprechen Sie das Vorgehen zur Kontaktaufnahme oder anderer Massnahmen mit Ihrem Tracer oder Ihrer Tracerin."
