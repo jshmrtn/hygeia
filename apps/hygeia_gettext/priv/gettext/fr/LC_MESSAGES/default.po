@@ -3304,6 +3304,9 @@ msgstr "Les personnes isolées"
 msgid "People in Quarantine"
 msgstr "Les personnes en quarantaine"
 
+msgid "People that live in the same household as you also count as contact persons. Please also register all children."
+msgstr "Toutes les personnes qui vivent dans le même ménage que vous sont également comptées comme personnes de contact. Veuillez également indiquer tous les enfants."
+
 #, fuzzy
 msgid "Percentage"
 msgstr "Pourcentage"
@@ -5176,6 +5179,10 @@ msgstr "Qui avez-vous rencontré ou avec qui vivez-vous ?"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Wore a mask during the whole flight?"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Wore mask"
 msgstr ""
 
 #, fuzzy
