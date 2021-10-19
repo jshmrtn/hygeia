@@ -4,6 +4,8 @@
       {gettext("Auto Tracing")}
     </h1>
 
+    <HygeiaWeb.AutoTracingLive.Hints auto_tracing={@auto_tracing} />
+
     <nav class="mb-4 progress-steps" id="progressbar">
       <div aria-hidden="false" class="progress-bar" />
       {#for %{step: step, route: route} <- @steps}

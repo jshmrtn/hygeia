@@ -90,7 +90,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [affiliations: []], auto_tracing: [transmission: []])
+      |> Repo.preload(person: [affiliations: []], auto_tracing: [transmission: []], tests: [])
 
     socket =
       cond do

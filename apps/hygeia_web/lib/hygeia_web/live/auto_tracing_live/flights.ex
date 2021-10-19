@@ -177,9 +177,8 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
   end
 
   defp get_inquiry_dates(%Case{
-         clinical: %Clinical{has_symptoms: true, symptom_start: symptom_start}
-       })
-       when is_struct(symptom_start) do
+         clinical: %Clinical{has_symptoms: true, symptom_start: %Date{} = symptom_start}
+       }) do
     {calculate_date(symptom_start, 2, :past), symptom_start}
   end
 
@@ -190,16 +189,15 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
       |> Enum.reject(&(&1.result == :negative))
       |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
       |> Enum.reject(&is_nil/1)
-      |> Enum.sort(Date)
+      |> Enum.sort({:desc, Date})
       |> List.first()
       |> case do
         nil ->
-          case.inserted_at
+          DateTime.to_date(case.inserted_at)
 
         test_date ->
           test_date
       end
-      |> DateTime.to_date()
       |> Date.add(-2)
 
     {start_date, calculate_date(start_date, 2, :future)}

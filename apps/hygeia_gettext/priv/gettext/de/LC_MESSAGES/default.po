@@ -413,6 +413,10 @@ msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case UUID"
 msgstr "Fall UUID"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Case created at"
+msgstr "Fall erstellt am"
+
 msgid "Case created successfully"
 msgstr "Fall wurde erfolgreich erstellt"
 
@@ -1379,6 +1383,10 @@ msgctxt "Case Status"
 msgid "First contact, unreachable"
 msgstr "Erster Kontakt, tel. nicht erreicht"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "First positive test date"
+msgstr "Erster positiver Testtermin"
+
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
 msgstr "Fluginformationen"
@@ -1812,6 +1820,10 @@ msgstr "Ungültige Kontaktangaben. Falls Sie glauben, dass diese Meldung falsch 
 
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
 msgstr "Haben Sie die SwissCovid App auf Ihrem Telefon installiert bzw. in Betrieb?"
+
+msgctxt "Auto Tracing Clinical"
+msgid "Is this the correct date? The date is too far back and will trigger an inspection."
+msgstr "Sind Sie sich sicher, dass dies das korrekte Datum ist? Diese Eingabe löst eine manuelle Überprüfung aus."
 
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Is truthful"
@@ -3539,6 +3551,11 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
 msgstr "Startdatum Symptome"
 
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Symptoms start date"
+msgstr "Startdatum Symptome"
+
 msgid "System Message"
 msgstr "Systemnachricht"
 
@@ -3735,6 +3752,14 @@ msgstr "Der Status des Falles wird von \"%{old_status}\" zu \"%{new_status}\" an
 
 msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."
 msgstr "Der Status dient als Überblick in welcher Phase sich das Tracing bei dieser Person befindet. Anhand dieses Status kann im Filter gesucht werden. Die Fälle werden von der Falladministration immer als Status “Erster Kontakt” eingefügt. Nachdem der Fall bearbeitet wurde, muss der Status angepasst werden."
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
+msgstr "Das Symptom-Startdatum liegt weit vor vor dem ersten Testdatum / Fall-Erstellungsdatum. Bitte prüfen Sie, dass die getracte Person nicht versucht die Isolation zu umgehen."
+
+msgctxt "Auto Tracing Hints"
+msgid "The current case information is being inspected. Expect changes to the isolation period."
+msgstr "Die Fallinformationen werden zur Zeit überprüft. Eine Änderung vom Isolationszeitraum wird erwartet."
 
 msgid "This case is not in an index phase."
 msgstr "Dieser Fall befindet sich nicht in einer Indexphase."
@@ -4099,7 +4124,7 @@ msgstr "Während des gesamten Fluges eine Maske getragen? "
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Wore mask"
-msgstr ""
+msgstr "Maske getragen"
 
 msgid "Work Place"
 msgstr "Arbeitsplatz"

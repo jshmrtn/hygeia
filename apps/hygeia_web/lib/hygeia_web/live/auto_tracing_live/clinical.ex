@@ -24,7 +24,12 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], hospitalizations: [organisation: []], auto_tracing: [])
+      |> Repo.preload(
+        person: [],
+        hospitalizations: [organisation: []],
+        auto_tracing: [],
+        tests: []
+      )
 
     socket =
       cond do
@@ -48,7 +53,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
         true ->
           assign(socket,
             case: case,
-            case_changeset: %Ecto.Changeset{
+            changeset: %Ecto.Changeset{
               CaseContext.change_case(case, %{}, %{symptoms_required: true})
               | action: :validate
             },
@@ -66,10 +71,10 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
     {:noreply,
      assign(
        socket,
-       :case_changeset,
+       :changeset,
        %Ecto.Changeset{
          CaseContext.change_case(socket.assigns.case, case_params, %{symptoms_required: true})
-         | action: :update
+         | action: :validate
        }
      )}
   end
@@ -77,16 +82,16 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   def handle_event(
         "add_hospitalization",
         _params,
-        %{assigns: %{case_changeset: case_changeset, case: case}} = socket
+        %{assigns: %{changeset: changeset, case: case}} = socket
       ) do
     {:noreply,
      assign(
        socket,
-       :case_changeset,
+       :changeset,
        %Ecto.Changeset{
          CaseContext.change_case(
            case,
-           changeset_add_to_params(case_changeset, :hospitalizations, %{
+           changeset_add_to_params(changeset, :hospitalizations, %{
              uuid: Ecto.UUID.generate()
            }),
            %{symptoms_required: true}
@@ -99,16 +104,16 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   def handle_event(
         "remove_hospitalization",
         %{"changeset-uuid" => uuid} = _params,
-        %{assigns: %{case_changeset: case_changeset, case: case}} = socket
+        %{assigns: %{changeset: changeset, case: case}} = socket
       ) do
     {:noreply,
      assign(
        socket,
-       :case_changeset,
+       :changeset,
        %Ecto.Changeset{
          CaseContext.change_case(
            case,
-           changeset_remove_from_params_by_id(case_changeset, :hospitalizations, %{uuid: uuid}),
+           changeset_remove_from_params_by_id(changeset, :hospitalizations, %{uuid: uuid}),
            %{symptoms_required: true}
          )
          | action: :validate
@@ -119,25 +124,36 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   def handle_event("advance", _params, socket) do
     {:ok, case} =
       CaseContext.update_case(
-        %Ecto.Changeset{socket.assigns.case_changeset | action: nil},
+        %Ecto.Changeset{socket.assigns.changeset | action: nil},
         %{},
         %{symptoms_required: true}
       )
 
     case = Repo.preload(case, hospitalizations: [], tests: [])
 
-    index_phase = Enum.find(case.phases, &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
-
-    {phase_start, phase_end} = index_phase_dates(case, index_phase)
+    {phase_start, phase_end, problems} = index_phase_dates(case)
 
     changeset =
       case
       |> shorten_phases_before(phase_start)
-      |> append_phase(phase_start, phase_end, index_phase)
+      |> append_phase(phase_start, phase_end)
 
     {:ok, case} = CaseContext.update_case(case, changeset)
 
     :ok = send_notifications(case, socket)
+
+    {:ok, _auto_tracing} =
+      if Enum.any?(problems, &match?(:phase_date_inconsistent, &1)) do
+        AutoTracingContext.auto_tracing_add_problem(
+          socket.assigns.auto_tracing,
+          :phase_date_inconsistent
+        )
+      else
+        AutoTracingContext.auto_tracing_remove_problem(
+          socket.assigns.auto_tracing,
+          :phase_date_inconsistent
+        )
+      end
 
     {:ok, auto_tracing} =
       case case do
@@ -170,17 +186,17 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   @impl Phoenix.LiveView
   def handle_info(
         {:hospitalisation_change_organisation, uuid, organisation_uuid},
-        %{assigns: %{case_changeset: case_changeset, case: case}} = socket
+        %{assigns: %{changeset: changeset, case: case}} = socket
       ) do
     {:noreply,
      assign(
        socket,
-       :case_changeset,
+       :changeset,
        %Ecto.Changeset{
          CaseContext.change_case(
            case,
            changeset_update_params_by_id(
-             case_changeset,
+             changeset,
              :hospitalizations,
              %{uuid: uuid},
              &Map.put(&1, "organisation_uuid", organisation_uuid)
@@ -193,7 +209,13 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp append_phase(changeset, phase_start, phase_end, index_phase) do
+  defp append_phase(changeset, phase_start, phase_end) do
+    index_phase =
+      Enum.find(
+        Ecto.Changeset.fetch_field!(changeset, :phases),
+        &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1)
+      )
+
     changeset_update_params_by_id(changeset, :phases, %{uuid: index_phase.uuid}, fn params ->
       Map.merge(params, %{
         "quarantine_order" => true,
@@ -245,22 +267,8 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
     end)
   end
 
-  defp index_phase_dates(case, index_phase) do
-    start_date =
-      case case do
-        %Case{clinical: %Case.Clinical{symptom_start: %Date{} = symptom_start}} ->
-          symptom_start
-
-        %Case{tests: tests} ->
-          tests
-          |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
-          |> Enum.reject(&is_nil/1)
-          |> Enum.sort({:asc, Date})
-          |> case do
-            [] -> DateTime.to_date(index_phase.inserted_at)
-            [date | _others] -> date
-          end
-      end
+  defp index_phase_dates(case) do
+    {start_date, problems} = index_phase_start_date(case, days_before_test: 4)
 
     phase_start = Date.utc_today()
     phase_end = Date.add(start_date, 9)
@@ -271,7 +279,49 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
         _other -> phase_end
       end
 
-    {phase_start, phase_end}
+    {phase_start, phase_end, problems}
+  end
+
+  defp index_phase_start_date(
+         %Case{clinical: %Case.Clinical{symptom_start: %Date{} = symptom_start}, tests: tests},
+         opts
+       ) do
+    days_before_test = Keyword.get(opts, :days_before_test)
+
+    problems =
+      tests
+      |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
+      |> Enum.reject(&is_nil/1)
+      |> Enum.sort({:asc, Date})
+      |> case do
+        [] ->
+          []
+
+        [date | _others] ->
+          if Date.diff(date, symptom_start) > days_before_test do
+            [:phase_date_inconsistent]
+          else
+            []
+          end
+      end
+
+    {symptom_start, problems}
+  end
+
+  defp index_phase_start_date(%Case{tests: tests, phases: phases}, _opts) do
+    index_phase = Enum.find(phases, &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
+
+    start_date =
+      tests
+      |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
+      |> Enum.reject(&is_nil/1)
+      |> Enum.sort({:asc, Date})
+      |> case do
+        [] -> DateTime.to_date(index_phase.inserted_at)
+        [date | _others] -> date
+      end
+
+    {start_date, []}
   end
 
   defp send_notifications(case, socket) do
