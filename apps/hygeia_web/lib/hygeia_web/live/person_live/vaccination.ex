@@ -40,4 +40,12 @@ defmodule HygeiaWeb.PersonLive.Vaccination do
       _else -> dates
     end
   end
+
+  defp number_format(number, formats)
+
+  defp number_format(number, [format | other_formats]) do
+    HygeiaCldr.Number.to_string!(number, format: format)
+  rescue
+    Cldr.Rbnf.NoRule -> number_format(number, other_formats)
+  end
 end

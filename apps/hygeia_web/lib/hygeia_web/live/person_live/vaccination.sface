@@ -4,7 +4,7 @@
       <div class="col-12 col-md-5 pe-4">
         <HygeiaWeb.FieldLabel field={:name} />
         <Field name={:name} class="form-group mt-2">
-          <TextInput opts={disabled: @disabled |> IO.inspect()} class="form-control" />
+          <TextInput opts={disabled: @disabled} class="form-control" />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
       </div>
@@ -16,9 +16,13 @@
               {#for {date, index} <- Enum.with_index(fill_dates(fetch_field!(form.source, :jab_dates)))}
                 <tr>
                   <td>
-                    <label class="small">{pgettext("Auto Tracing Vaccination", "%{ordering} jab date",
+                    <label class="small">{pgettext(
+                        "Auto Tracing Vaccination",
+                        "%{ordering} jab date",
                         ordering:
-                          (index + 1) |> HygeiaCldr.Number.to_string!(format: :spellout_ordinal) |> String.capitalize()
+                          String.capitalize(
+                            number_format(index + 1, [:spellout_ordinal, :orginal, :spellout, :standard])
+                          )
                       )}</label>
                   </td>
                   <td>
