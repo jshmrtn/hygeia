@@ -144,7 +144,8 @@ defmodule HygeiaWeb.CaseLive.Index do
     "inserted_at_to" => :inserted_at_to,
     "no_auto_tracing_problems" => :no_auto_tracing_problems,
     "auto_tracing_problem" => :auto_tracing_problem,
-    "auto_tracing_active" => :auto_tracing_active
+    "auto_tracing_active" => :auto_tracing_active,
+    "case_management" => :case_management
   }
 
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
@@ -255,6 +256,19 @@ defmodule HygeiaWeb.CaseLive.Index do
         {:phase_type, phase_type}, query ->
           phase_match = %{details: %{__type__: phase_type}}
           where(query, [case], fragment("? <@ ANY (?)", ^phase_match, case.phases))
+
+        {:case_management, "managed"}, query ->
+          where(
+            query,
+            [case],
+            case.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid)
+          )
+
+        {:case_management, "unmanaged"}, query ->
+          from(case in query,
+            join: tenant in assoc(case, :tenant),
+            where: is_nil(tenant.iam_domain)
+          )
       end)
       |> Repo.paginate(
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: cursor_fields)
@@ -272,10 +286,9 @@ defmodule HygeiaWeb.CaseLive.Index do
     ArgumentError -> reraise HygeiaWeb.InvalidPaginationParamsError, __STACKTRACE__
   end
 
-  defp base_query(socket),
+  defp base_query(_socket),
     do:
       from(case in CaseContext.list_cases_query(),
-        where: case.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid),
         join: person in assoc(case, :person),
         as: :person,
         preload: [person: person],

@@ -191,6 +191,22 @@
                   {name}
                 </label>
               </div>
+
+              <div class="form-group">
+                <label class="d-block">{gettext("Case Management")}</label>
+                <Field name="case_management" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="managed" checked />
+                    {gettext("Managed")}
+                  </label>
+                </Field>
+                <Field name="case_management" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="unmanaged" />
+                    {gettext("Unmanaged")}
+                  </label>
+                </Field>
+              </div>
             </InputContext>
           </Form>
         </:default>
