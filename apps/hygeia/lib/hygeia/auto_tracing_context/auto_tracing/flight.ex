@@ -6,6 +6,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Flight do
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           flight_date: Date.t(),
+          departure_place: String.t() | nil,
+          arrival_place: String.t() | nil,
           flight_number: String.t() | nil,
           seat_number: String.t() | nil,
           wore_mask: boolean() | nil
@@ -14,6 +16,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Flight do
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           flight_date: Date.t(),
+          departure_place: String.t() | nil,
+          arrival_place: String.t() | nil,
           flight_number: String.t() | nil,
           seat_number: String.t() | nil,
           wore_mask: boolean() | nil
@@ -21,6 +25,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Flight do
 
   embedded_schema do
     field :flight_date, :date
+    field :departure_place, :string
+    field :arrival_place, :string
     field :flight_number, :string
     field :seat_number, :string
     field :wore_mask, :boolean
@@ -30,7 +36,22 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Flight do
           Ecto.Changeset.t(t())
   def changeset(schema, attrs \\ %{}) do
     schema
-    |> cast(attrs, [:uuid, :flight_date, :flight_number, :seat_number, :wore_mask])
-    |> validate_required([:flight_date, :flight_number, :seat_number, :wore_mask])
+    |> cast(attrs, [
+      :uuid,
+      :departure_place,
+      :arrival_place,
+      :flight_date,
+      :flight_number,
+      :seat_number,
+      :wore_mask
+    ])
+    |> validate_required([
+      :departure_place,
+      :arrival_place,
+      :flight_date,
+      :flight_number,
+      :seat_number,
+      :wore_mask
+    ])
   end
 end
