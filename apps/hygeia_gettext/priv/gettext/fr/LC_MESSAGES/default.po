@@ -1380,6 +1380,11 @@ msgid "Done"
 msgstr "Terminé"
 
 #, fuzzy
+msgctxt "Auto Tracing Vaccination"
+msgid "Done"
+msgstr "Terminé"
+
+#, fuzzy
 msgid "Download CSV"
 msgstr "Télécharger CSV"
 
@@ -2166,6 +2171,10 @@ msgstr "Comprend le type de phase"
 msgctxt "Test Result"
 msgid "Inconclusive"
 msgstr "Non concluant"
+
+msgctxt "Auto Tracing Problem"
+msgid "Inconsistent Phase Date"
+msgstr ""
 
 #, fuzzy
 msgid "Index"
@@ -3024,6 +3033,11 @@ msgid "Not Done"
 msgstr "Pas fait"
 
 #, fuzzy
+msgctxt "Auto Tracing Vaccination"
+msgid "Not Done"
+msgstr "Pas fait"
+
+#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
 msgid "Note"
 msgstr "Note"
@@ -3480,6 +3494,24 @@ msgstr "Lieu"
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Lieu"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of arrival"
+msgstr ""
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of arrival"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of departure"
+msgstr ""
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of departure"
+msgstr ""
 
 #, fuzzy
 msgid "Please enter your place of residence."
@@ -4709,6 +4741,10 @@ msgstr "La personne de contact n'a développé aucun symptôme pendant la quaran
 msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr "La personne de contact a développé des symptômes, a fait un test et est devenue un indice"
 
+msgctxt "Auto Tracing Hints"
+msgid "The current case information is being inspected. Expect changes to the isolation period."
+msgstr ""
+
 #, fuzzy
 msgid "The displayed language was translated mechanically."
 msgstr "La langue affichée était traduite mécaniquement."
@@ -4752,10 +4788,6 @@ msgstr "Le statut sert d'aperçu de la phase de recherche actuelle de la personn
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
-msgstr ""
-
-msgctxt "Auto Tracing Hints"
-msgid "The current case information is being inspected. Expect changes to the isolation period."
 msgstr ""
 
 #, fuzzy

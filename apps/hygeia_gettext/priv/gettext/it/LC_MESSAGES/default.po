@@ -1196,6 +1196,11 @@ msgid "Done"
 msgstr "Completato"
 
 #, fuzzy
+msgctxt "Auto Tracing Vaccination"
+msgid "Done"
+msgstr "Completato"
+
+#, fuzzy
 msgid "Download CSV"
 msgstr "Scarica CSV"
 
@@ -1870,6 +1875,10 @@ msgstr "Include il tipo di fase"
 msgctxt "Test Result"
 msgid "Inconclusive"
 msgstr "Inconcludente"
+
+msgctxt "Auto Tracing Problem"
+msgid "Inconsistent Phase Date"
+msgstr "Il periodo della fase è incoerente"
 
 msgid "Index"
 msgstr "Indice"
@@ -2666,6 +2675,11 @@ msgid "Not Done"
 msgstr "Non Fatto"
 
 #, fuzzy
+msgctxt "Auto Tracing Vaccination"
+msgid "Not Done"
+msgstr "Non Fatto"
+
+#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
 msgid "Note"
 msgstr "Nota"
@@ -3083,6 +3097,24 @@ msgstr "Posto"
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Posto"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of arrival"
+msgstr "Luogo di partenza"
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of arrival"
+msgstr "Luogo di partenza"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of departure"
+msgstr "Luogo di arrivo"
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of departure"
+msgstr "Luogo di arrivo"
 
 msgid "Please enter your place of residence."
 msgstr "Inserisci il tuo luogo di residenza."
@@ -4218,6 +4250,10 @@ msgstr "La persona di contatto non ha sviluppato alcun sintomo durante la quaran
 msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr "Il referente ha sviluppato dei sintomi, ha fatto un test ed è diventato un indice"
 
+msgctxt "Auto Tracing Hints"
+msgid "The current case information is being inspected. Expect changes to the isolation period."
+msgstr "Le informazioni sul caso attuale saranno ispezionate. Potrebbero esserci delle modifiche sul periodo di isolamento."
+
 msgid "The displayed language was translated mechanically."
 msgstr "Il testo visualizzato è stato tradotto meccanicamente."
 
@@ -4261,10 +4297,6 @@ msgstr "Lo stato serve come una panoramica della fase di rintracciamento attuale
 msgctxt "Auto Tracing Resolve Problems"
 msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
 msgstr "La data di inizio dei sintomi precede la data del primo test/data di creazione del caso. Verifica che la data sia corretta e che la persona non stia evitando l'isolamento. "
-
-msgctxt "Auto Tracing Hints"
-msgid "The current case information is being inspected. Expect changes to the isolation period."
-msgstr "Le informazioni sul caso attuale saranno ispezionate. Potrebbero esserci delle modifiche sul periodo di isolamento."
 
 #, fuzzy
 msgid "This case is not in an index phase."
