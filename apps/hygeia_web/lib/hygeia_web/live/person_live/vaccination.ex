@@ -43,12 +43,19 @@ defmodule HygeiaWeb.PersonLive.Vaccination do
 
   defp number_format(number, formats)
 
+  defp number_format(number, [{locale, format} | other_formats]) do
+    case HygeiaCldr.get_locale() do
+      %Cldr.LanguageTag{canonical_locale_name: ^locale} ->
+        HygeiaCldr.Number.to_string!(number, format: format)
+
+      _other ->
+        number_format(number, other_formats)
+    end
+  end
+
   defp number_format(number, [format | other_formats]) do
     HygeiaCldr.Number.to_string!(number, format: format)
   rescue
     Cldr.Rbnf.NoRule -> number_format(number, other_formats)
-    # TODO: Remove when the following Issue is resolved:
-    # - https://github.com/elixir-cldr/cldr/issues/157
-    RuntimeError -> number_format(number, other_formats)
   end
 end
