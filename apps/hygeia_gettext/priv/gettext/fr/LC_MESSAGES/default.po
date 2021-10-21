@@ -239,6 +239,10 @@ msgstr "Salon pour adultes / services de prostitution"
 msgid "Affiliations"
 msgstr "Affiliations"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "After checking the data, please manually send an isolation confirmation from the system."
+msgstr ""
+
 #, fuzzy
 msgid "Agreed with index that had been in contact that no further contact is necessary"
 msgstr "Il a été convenu avec l'index qui avait été en contact qu'aucun autre contact n'était nécessaire."
@@ -304,6 +308,10 @@ msgstr "Avril"
 
 msgid "Are you a enrolled at this educational institution?"
 msgstr "Êtes-vous inscrit dans cet établissement d'enseignement?"
+
+msgctxt "Auto Tracing Clinical"
+msgid "Are you certain that this is the correct date? If yes, a contact tracing employee will contact you."
+msgstr ""
 
 msgid "Are you employed by this educational institution?"
 msgstr "Êtes-vous employé par cet établissement d'enseignement?"
@@ -1380,6 +1388,11 @@ msgid "Done"
 msgstr "Terminé"
 
 #, fuzzy
+msgctxt "Auto Tracing Vaccination"
+msgid "Done"
+msgstr "Terminé"
+
+#, fuzzy
 msgid "Download CSV"
 msgstr "Télécharger CSV"
 
@@ -2166,6 +2179,10 @@ msgstr "Comprend le type de phase"
 msgctxt "Test Result"
 msgid "Inconclusive"
 msgstr "Non concluant"
+
+msgctxt "Auto Tracing Problem"
+msgid "Inconsistent Phase Date"
+msgstr ""
 
 #, fuzzy
 msgid "Index"
@@ -3020,6 +3037,11 @@ msgstr "Aucun"
 
 #, fuzzy
 msgctxt "vaccination_done"
+msgid "Not Done"
+msgstr "Pas fait"
+
+#, fuzzy
+msgctxt "Auto Tracing Vaccination"
 msgid "Not Done"
 msgstr "Pas fait"
 
@@ -4709,6 +4731,10 @@ msgstr "La personne de contact n'a développé aucun symptôme pendant la quaran
 msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr "La personne de contact a développé des symptômes, a fait un test et est devenue un indice"
 
+msgctxt "Auto Tracing Hints"
+msgid "The current case information is being inspected. Expect changes to the isolation period."
+msgstr ""
+
 #, fuzzy
 msgid "The displayed language was translated mechanically."
 msgstr "La langue affichée était traduite mécaniquement."
@@ -4752,10 +4778,6 @@ msgstr "Le statut sert d'aperçu de la phase de recherche actuelle de la personn
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
-msgstr ""
-
-msgctxt "Auto Tracing Hints"
-msgid "The current case information is being inspected. Expect changes to the isolation period."
 msgstr ""
 
 #, fuzzy

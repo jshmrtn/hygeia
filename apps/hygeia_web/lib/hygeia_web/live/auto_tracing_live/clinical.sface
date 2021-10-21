@@ -57,14 +57,14 @@
                 </Field>
                 <p class="my-4">{gettext("When did the symptoms start?")}</p>
                 <Field name={:symptom_start} class="form-group">
-                  <DateInput class="form-control" />
+                  <HygeiaWeb.DateInput class="form-control" opts={max: Date.utc_today()} />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 {#case index_phase_dates(Ecto.Changeset.apply_changes(@changeset))}
                   {#match {_, _, [:phase_date_inconsistent]}}
                     <div class="p-2 mb-2 alert alert-warning" role="alert">{pgettext(
                         "Auto Tracing Clinical",
-                        "Is this the correct date? The date is too far back and will trigger an inspection."
+                        "Are you certain that this is the correct date? If yes, a contact tracing employee will contact you."
                       )}</div>
                   {#match _else}
                 {/case}

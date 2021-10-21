@@ -203,6 +203,10 @@ msgstr "Salone per adulti / servizi di prostituzione"
 msgid "Affiliations"
 msgstr "Affiliazioni"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "After checking the data, please manually send an isolation confirmation from the system."
+msgstr "Dopo aver verificato i dati, invia manualmente una conferma di isolamento."
+
 msgid "Agreed with index that had been in contact that no further contact is necessary"
 msgstr "Concordato con l'indice che era stato in contatto che non è necessario un ulteriore contatto"
 
@@ -257,6 +261,10 @@ msgstr "Aprile"
 
 msgid "Are you a enrolled at this educational institution?"
 msgstr "Sei immatricolato persso questo instituto?"
+
+msgctxt "Auto Tracing Clinical"
+msgid "Are you certain that this is the correct date? If yes, a contact tracing employee will contact you."
+msgstr "Sei sicuro / sicura che questa sia la data corretta? Se è corretta, verrai contattato da un nostro operatore."
 
 msgid "Are you employed by this educational institution?"
 msgstr "Sei un impiegato di questo instituto?"
@@ -1196,6 +1204,11 @@ msgid "Done"
 msgstr "Completato"
 
 #, fuzzy
+msgctxt "Auto Tracing Vaccination"
+msgid "Done"
+msgstr "Completato"
+
+#, fuzzy
 msgid "Download CSV"
 msgstr "Scarica CSV"
 
@@ -1870,6 +1883,10 @@ msgstr "Include il tipo di fase"
 msgctxt "Test Result"
 msgid "Inconclusive"
 msgstr "Inconcludente"
+
+msgctxt "Auto Tracing Problem"
+msgid "Inconsistent Phase Date"
+msgstr ""
 
 msgid "Index"
 msgstr "Indice"
@@ -2662,6 +2679,11 @@ msgstr "Nessuno"
 
 #, fuzzy
 msgctxt "vaccination_done"
+msgid "Not Done"
+msgstr "Non Fatto"
+
+#, fuzzy
+msgctxt "Auto Tracing Vaccination"
 msgid "Not Done"
 msgstr "Non Fatto"
 
@@ -4218,6 +4240,10 @@ msgstr "La persona di contatto non ha sviluppato alcun sintomo durante la quaran
 msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr "Il referente ha sviluppato dei sintomi, ha fatto un test ed è diventato un indice"
 
+msgctxt "Auto Tracing Hints"
+msgid "The current case information is being inspected. Expect changes to the isolation period."
+msgstr "Le informazioni sul caso attuale saranno ispezionate. Potrebbero esserci delle modifiche sul periodo di isolamento."
+
 msgid "The displayed language was translated mechanically."
 msgstr "Il testo visualizzato è stato tradotto meccanicamente."
 
@@ -4261,10 +4287,6 @@ msgstr "Lo stato serve come una panoramica della fase di rintracciamento attuale
 msgctxt "Auto Tracing Resolve Problems"
 msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
 msgstr "La data di inizio dei sintomi precede la data del primo test/data di creazione del caso. Verifica che la data sia corretta e che la persona non stia evitando l'isolamento. "
-
-msgctxt "Auto Tracing Hints"
-msgid "The current case information is being inspected. Expect changes to the isolation period."
-msgstr "Le informazioni sul caso attuale saranno ispezionate. Potrebbero esserci delle modifiche sul periodo di isolamento."
 
 #, fuzzy
 msgid "This case is not in an index phase."
