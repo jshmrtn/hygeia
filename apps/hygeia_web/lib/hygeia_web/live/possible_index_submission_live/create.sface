@@ -161,24 +161,24 @@
         </div>
 
         <div :show={@step == :infection_place} id="step_infection_place">
+          <h2>
+            {gettext(
+              "Where did you meet %{first_name} %{last_name} last?",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            )}
+          </h2>
+
+          <p>
+            {gettext(
+              "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field.",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            )}
+          </p>
+
           <Inputs for={:infection_place}>
             <InputContext assigns={assigns} :let={form: form}>
-              <h2>
-                {gettext(
-                  "Where did you meet %{first_name} %{last_name} last?",
-                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-                )}
-              </h2>
-
-              <p>
-                {gettext(
-                  "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field.",
-                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-                )}
-              </p>
-
               <HiddenInput field={:known} value />
 
               <div class="row">
@@ -265,16 +265,15 @@
         </div>
 
         <div :show={@step == :infection_place_address} id="step_infection_place_address">
+          <h2>
+            {gettext(
+              "Do you know the address where you met with %{first_name} %{last_name}?",
+              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+            )}
+          </h2>
           <Inputs for={:infection_place}>
             <Inputs for={:address}>
-              <h2>
-                {gettext(
-                  "Do you know the address where you met with %{first_name} %{last_name}?",
-                  first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-                  last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-                )}
-              </h2>
-
               <HygeiaWeb.AddressForm id="infection_place_address" />
             </Inputs>
           </Inputs>
