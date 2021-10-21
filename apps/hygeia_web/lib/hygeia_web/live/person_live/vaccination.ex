@@ -47,5 +47,8 @@ defmodule HygeiaWeb.PersonLive.Vaccination do
     HygeiaCldr.Number.to_string!(number, format: format)
   rescue
     Cldr.Rbnf.NoRule -> number_format(number, other_formats)
+    # TODO: Remove when the following Issue is resolved:
+    # - https://github.com/elixir-cldr/cldr/issues/157
+    RuntimeError -> number_format(number, other_formats)
   end
 end
