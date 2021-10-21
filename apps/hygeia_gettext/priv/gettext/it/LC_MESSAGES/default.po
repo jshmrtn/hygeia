@@ -1886,7 +1886,7 @@ msgstr "Inconcludente"
 
 msgctxt "Auto Tracing Problem"
 msgid "Inconsistent Phase Date"
-msgstr ""
+msgstr "Il periodo della fase è incoerente"
 
 msgid "Index"
 msgstr "Indice"
@@ -3105,6 +3105,24 @@ msgstr "Posto"
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Posto"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of arrival"
+msgstr "Luogo di partenza"
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of arrival"
+msgstr "Luogo di partenza"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of departure"
+msgstr "Luogo di arrivo"
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of departure"
+msgstr "Luogo di arrivo"
 
 msgid "Please enter your place of residence."
 msgstr "Inserisci il tuo luogo di residenza."

@@ -9,4 +9,6 @@ defmodule HygeiaCldr do
     providers: [Cldr.Number, Cldr.List, Cldr.Calendar, Cldr.DateTime, Cldr.Unit, Cldr.Language],
     generate_docs: true,
     force_locale_download: false
+
+  @before_compile HygeiaCldr.Compiler
 end

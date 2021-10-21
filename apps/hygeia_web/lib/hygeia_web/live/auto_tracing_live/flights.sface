@@ -55,6 +55,19 @@
                       />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
+
+                    <Field class="form-group" name={:departure_place}>
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <Field class="form-group" name={:arrival_place}>
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
                     <Field class="form-group" name={:flight_number}>
                       <HygeiaWeb.FieldLabel />
                       <TextInput class="form-control" />

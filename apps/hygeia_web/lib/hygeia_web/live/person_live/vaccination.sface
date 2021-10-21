@@ -21,7 +21,13 @@
                         "%{ordering} jab date",
                         ordering:
                           String.capitalize(
-                            number_format(index + 1, [:spellout_ordinal, :orginal, :spellout, :standard])
+                            number_format(index + 1, [
+                              :spellout_ordinal,
+                              {"fr", :spellout_ordinal_feminine},
+                              {"fr-CH", :spellout_ordinal_feminine},
+                              :ordinal,
+                              :standard
+                            ])
                           )
                       )}</label>
                   </td>

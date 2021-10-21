@@ -258,6 +258,8 @@
                             <div>{pgettext("Auto Tracing Resolve Problems", "Flight number")}:<strong>
                                 {flight.flight_number}</strong></div>
                             <div>{pgettext("Auto Tracing Resolve Problems", "Flight date")}: {HygeiaCldr.Date.to_string!(flight.flight_date)}</div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Place of departure")}: {flight.departure_place}</div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Place of arrival")}: {flight.arrival_place}</div>
                             <div>{pgettext("Auto Tracing Resolve Problems", "Seat number")}: {flight.seat_number}</div>
                             <div>{pgettext("Auto Tracing Resolve Problems", "Wore a mask during the whole flight?")} {if flight.wore_mask, do: gettext("Yes"), else: gettext("No")}</div>
                           </div>

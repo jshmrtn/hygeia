@@ -22,7 +22,7 @@ msgstr[1] "%{count} neue Benachrichtigungen"
 
 msgctxt "Auto Tracing Vaccination"
 msgid "%{ordering} jab date"
-msgstr "%{ordering} Impftermine"
+msgstr "%{ordering} Impfung"
 
 msgid "%{tenant} - Contact Tracing"
 msgstr "%{tenant} – Contact Tracing"
@@ -984,7 +984,7 @@ msgid "Did you meet your family or friends recently?"
 msgstr "Haben Sie vor kurzem Ihre Familie oder Freunde getroffen?"
 
 msgid "Did you travel by plane between %{start_date} and %{end_date}?"
-msgstr "Sind Sie zwischen % {start_date} und % {end_date} mit dem Flugzeug gereist?"
+msgstr "Sind Sie zwischen %{start_date} und %{end_date} mit dem Flugzeug gereist?"
 
 msgid "Did you visit a gym recently?"
 msgstr "Haben Sie vor kurzem ein Fitnessstudio besucht?"
@@ -2772,6 +2772,24 @@ msgstr "Ort"
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Ort"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of arrival"
+msgstr "Ankunftsort"
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of arrival"
+msgstr "Ankunftsort"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of departure"
+msgstr "Abfahrtsort"
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of departure"
+msgstr "Abfahrtsort"
 
 msgid "Please enter your place of residence."
 msgstr "Bitte geben Sie Ihren Wohnort an."
