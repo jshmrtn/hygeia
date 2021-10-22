@@ -15,6 +15,7 @@ defmodule HygeiaWeb.PersonLive.Index do
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Label
+  alias Surface.Components.Form.MultipleSelect
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
   alias Surface.Components.Link
@@ -29,6 +30,7 @@ defmodule HygeiaWeb.PersonLive.Index do
 
         assign(socket,
           page_title: gettext("People"),
+          tenants: TenantContext.list_tenants(),
           authorized_tenants:
             Enum.filter(
               TenantContext.list_tenants(),
@@ -53,7 +55,7 @@ defmodule HygeiaWeb.PersonLive.Index do
         _other -> []
       end
 
-    filter = params["filter"] || %{}
+    filter = Map.put_new(params["filter"] || %{}, "tenant_persons", Enum.map(socket.assigns.authorized_tenants, & &1.uuid))
 
     socket =
       case params["sort"] do
@@ -99,6 +101,7 @@ defmodule HygeiaWeb.PersonLive.Index do
   def handle_info(_other, socket), do: {:noreply, socket}
 
   @allowed_filter_fields %{
+    "tenant_persons" => :tenant_persons,
     "profession_category_main" => :profession_category_main,
     "sex" => :sex,
     "country" => :country,
@@ -119,6 +122,13 @@ defmodule HygeiaWeb.PersonLive.Index do
       # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
       |> Enum.reject(&match?({_key, []}, &1))
       |> Enum.reduce(query, fn
+        {:tenant_persons, selected_tenant_uuids}, query ->
+          where(
+            query,
+            [person],
+            person.tenant_uuid in ^selected_tenant_uuids
+          )
+
         {:fully_vaccinated, "true"}, query ->
           where(
             query,
@@ -197,11 +207,8 @@ defmodule HygeiaWeb.PersonLive.Index do
     {cursor_fields, query}
   end
 
-  defp base_query(socket) do
-    from(person in CaseContext.list_people_query(),
-      where: person.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid),
-      preload: [:tenant]
-    )
+  defp base_query(_socket) do
+    from(person in CaseContext.list_people_query(), preload: [:tenant])
   end
 
   defp page_url(socket, pagination_params, filters, sort)

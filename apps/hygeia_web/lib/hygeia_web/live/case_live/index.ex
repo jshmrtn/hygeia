@@ -44,6 +44,7 @@ defmodule HygeiaWeb.CaseLive.Index do
           page_title: gettext("Cases"),
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
+          tenants: TenantContext.list_tenants(),
           authorized_tenants:
             Enum.filter(
               TenantContext.list_tenants(),
@@ -83,7 +84,8 @@ defmodule HygeiaWeb.CaseLive.Index do
                         [:done, :hospitalization, :home_resident, :canceled],
                       &Atom.to_string/1
                     ),
-                  "tracer_uuid" => [get_auth(socket).uuid]
+                  "tracer_uuid" => [get_auth(socket).uuid],
+                  "tenant_cases" => Enum.map(socket.assigns.authorized_tenants, & &1.uuid)
                 },
                 sort
               )
@@ -145,7 +147,7 @@ defmodule HygeiaWeb.CaseLive.Index do
     "no_auto_tracing_problems" => :no_auto_tracing_problems,
     "auto_tracing_problem" => :auto_tracing_problem,
     "auto_tracing_active" => :auto_tracing_active,
-    "case_management" => :case_management
+    "tenant_cases" => :tenant_cases
   }
 
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
@@ -250,6 +252,13 @@ defmodule HygeiaWeb.CaseLive.Index do
             is_nil(field(case, :supervisor_uuid)) or field(case, :supervisor_uuid) in ^value
           )
 
+        {:tenant_cases, selected_tenant_uuids}, query ->
+          where(
+            query,
+            [case],
+            case.tenant_uuid in ^selected_tenant_uuids
+          )
+
         {key, value}, query when is_list(value) ->
           where(query, [case], field(case, ^key) in ^value)
 
@@ -257,18 +266,6 @@ defmodule HygeiaWeb.CaseLive.Index do
           phase_match = %{details: %{__type__: phase_type}}
           where(query, [case], fragment("? <@ ANY (?)", ^phase_match, case.phases))
 
-        {:case_management, "managed"}, query ->
-          where(
-            query,
-            [case],
-            case.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid)
-          )
-
-        {:case_management, "unmanaged"}, query ->
-          from(case in query,
-            join: tenant in assoc(case, :tenant),
-            where: is_nil(tenant.iam_domain)
-          )
       end)
       |> Repo.paginate(
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: cursor_fields)

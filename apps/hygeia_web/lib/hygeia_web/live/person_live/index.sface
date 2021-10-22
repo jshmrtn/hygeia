@@ -29,9 +29,15 @@
           </button>
         </:trigger>
         <:default>
-          <h4>
-            {gettext("Filter")}
-          </h4>
+          <div class="d-flex mb-3">
+            <h4 class="m-0">{gettext("Filter")}</h4>
+            <LivePatch class="ms-auto" to={page_url(@socket, [], %{}, %{})}>
+              <button class="btn btn-outline-info" type="button" aria-haspopup="true" aria-expanded="false">
+                <span class="oi oi-reload" aria-hidden="true" />
+                {gettext("Reset filters")}
+              </button>
+            </LivePatch>
+          </div>
           <Form
             for={@filters}
             change="filter"
@@ -39,6 +45,14 @@
             opts={autocomplete: "off", id: "filter-form", as: :filter}
           >
             <InputContext assigns={assigns} :let={form: form}>
+              <Field name="tenant_persons" class="form-group">
+                <Label class="checkbox-label">{gettext("Person Tenant")}</Label>
+                  <MultipleSelect
+                    class="form-control"
+                    options={Enum.map(@tenants, &{&1.name, &1.uuid})}
+                    opts={size: 15}
+                  />
+              </Field>
               <div class="form-group">
                 <label class="d-block">{schema_field_name(:sex, Person)}</label>
                 <Field name="sex" class="form-check form-check-inline">

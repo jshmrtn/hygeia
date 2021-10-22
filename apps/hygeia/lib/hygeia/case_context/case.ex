@@ -436,18 +436,10 @@ defmodule Hygeia.CaseContext.Case do
         do: User.has_role?(user, :supervisor, :any)
 
     def authorized?(%Case{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
-        when action in [:versioning, :update, :delete],
+        when action in [:details, :partial_details, :versioning, :update, :delete, :auto_tracing],
         do:
           Enum.any?(
             [:super_user, :supervisor, :admin],
-            &User.has_role?(user, &1, :any)
-          )
-
-    def authorized?(%Case{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
-        when action in [:details, :partial_details, :auto_tracing],
-        do:
-          Enum.any?(
-            [:tracer, :super_user, :supervisor, :admin],
             &User.has_role?(user, &1, :any)
           )
 
