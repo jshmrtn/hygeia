@@ -353,7 +353,7 @@
                       {#match :phase_date_inconsistent}
                         <p>{pgettext(
                             "Auto Tracing Resolve Problems",
-                            "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
+                            "After checking the data, please manually send an isolation confirmation from the system."
                           )}</p>
                         <div class="mb-2">
                           <div>{pgettext("Auto Tracing Resolve Problems", "Symptoms start date")}: {HygeiaCldr.Date.to_string!(@case.clinical.symptom_start)}</div>
