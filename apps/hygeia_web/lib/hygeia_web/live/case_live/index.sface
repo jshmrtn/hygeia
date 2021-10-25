@@ -90,7 +90,7 @@
               </div>
 
               <Field name="tenant_cases" class="form-group">
-                <Label class="checkbox-label">{gettext("Case Tenant")}</Label>
+                <Label class="checkbox-label">{gettext("Tenant")}</Label>
                   <MultipleSelect
                     class="form-control"
                     options={Enum.map(@tenants, &{&1.name, &1.uuid})}

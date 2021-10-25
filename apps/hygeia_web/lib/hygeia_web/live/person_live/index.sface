@@ -46,7 +46,7 @@
           >
             <InputContext assigns={assigns} :let={form: form}>
               <Field name="tenant_persons" class="form-group">
-                <Label class="checkbox-label">{gettext("Person Tenant")}</Label>
+                <Label class="checkbox-label">{gettext("Tenant")}</Label>
                   <MultipleSelect
                     class="form-control"
                     options={Enum.map(@tenants, &{&1.name, &1.uuid})}

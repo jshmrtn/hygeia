@@ -255,8 +255,8 @@ defmodule HygeiaWeb.CaseLive.Index do
         {:tenant_cases, selected_tenant_uuids}, query ->
           where(
             query,
-            [case],
-            case.tenant_uuid in ^selected_tenant_uuids
+            [case, tenant: tenant],
+            case.tenant_uuid in ^selected_tenant_uuids and tenant.case_management_enabled
           )
 
         {key, value}, query when is_list(value) ->
@@ -298,6 +298,8 @@ defmodule HygeiaWeb.CaseLive.Index do
         left_join:
           phase in fragment("UNNEST(ARRAY[?[ARRAY_UPPER(?, 1)]])", case.phases, case.phases),
         as: :phase,
+        left_join: tenant in assoc(case, :tenant),
+        as: :tenant,
         preload: [:tenant]
       )
 

@@ -125,8 +125,8 @@ defmodule HygeiaWeb.PersonLive.Index do
         {:tenant_persons, selected_tenant_uuids}, query ->
           where(
             query,
-            [person],
-            person.tenant_uuid in ^selected_tenant_uuids
+            [person, tenant: tenant],
+            person.tenant_uuid in ^selected_tenant_uuids and tenant.case_management_enabled
           )
 
         {:fully_vaccinated, "true"}, query ->
@@ -208,7 +208,10 @@ defmodule HygeiaWeb.PersonLive.Index do
   end
 
   defp base_query(_socket) do
-    from(person in CaseContext.list_people_query(), preload: [:tenant])
+    from(person in CaseContext.list_people_query(),
+      left_join: tenant in assoc(person, :tenant),
+      as: :tenant,
+      preload: [:tenant])
   end
 
   defp page_url(socket, pagination_params, filters, sort)
