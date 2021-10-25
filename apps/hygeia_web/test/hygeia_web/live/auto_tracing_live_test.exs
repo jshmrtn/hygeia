@@ -569,6 +569,8 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
                  flights: %{
                    "0" => %{
                      flight_date: "2021-04-17",
+                     departure_place: "Zürich",
+                     arrival_place: "Rome",
                      flight_number: "FNDORL",
                      seat_number: "B-23",
                      wore_mask: false

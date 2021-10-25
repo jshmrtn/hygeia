@@ -22,7 +22,7 @@ msgstr[1] "%{count} neue Benachrichtigungen"
 
 msgctxt "Auto Tracing Vaccination"
 msgid "%{ordering} jab date"
-msgstr "%{ordering} Impftermine"
+msgstr "%{ordering} Impfung"
 
 msgid "%{tenant} - Contact Tracing"
 msgstr "%{tenant} – Contact Tracing"
@@ -191,6 +191,10 @@ msgstr "Erotiksalon / Prostitutionsdienste"
 msgid "Affiliations"
 msgstr "Zugehörigkeiten"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "After checking the data, please manually send an isolation confirmation from the system."
+msgstr "Bitte senden nach Überprüfung der Daten manuell eine Isoaltionsbestätigung aus dem System."
+
 msgid "Agreed with index that had been in contact that no further contact is necessary"
 msgstr "Mit dem Index, der mit der Kontaktperson in Verbindung war, abgemacht, dass kein erneuter Kontakt nötig ist (momentan der Normalfall)"
 
@@ -241,6 +245,10 @@ msgstr "April"
 
 msgid "Are you a enrolled at this educational institution?"
 msgstr "Sind Sie als Student akkreditiert oder Schüler bei dieser Bildungseinrichtung?"
+
+msgctxt "Auto Tracing Clinical"
+msgid "Are you certain that this is the correct date? If yes, a contact tracing employee will contact you."
+msgstr "Sind Sie sich sicher, dass dies das korrekte Datum ist? Falls ja wird sich ein Mitarbeiter des Contact Tracing Teams bei Ihnen melden."
 
 msgid "Are you employed by this educational institution?"
 msgstr "Sind Sie bei dieser Bildungseinrichtung angestellt?"
@@ -976,7 +984,7 @@ msgid "Did you meet your family or friends recently?"
 msgstr "Haben Sie vor kurzem Ihre Familie oder Freunde getroffen?"
 
 msgid "Did you travel by plane between %{start_date} and %{end_date}?"
-msgstr "Sind Sie zwischen % {start_date} und % {end_date} mit dem Flugzeug gereist?"
+msgstr "Sind Sie zwischen %{start_date} und %{end_date} mit dem Flugzeug gereist?"
 
 msgid "Did you visit a gym recently?"
 msgstr "Haben Sie vor kurzem ein Fitnessstudio besucht?"
@@ -1098,6 +1106,10 @@ msgid "Done"
 msgstr "Erledigt"
 
 msgctxt "vaccination_done"
+msgid "Done"
+msgstr "Erledigt"
+
+msgctxt "Auto Tracing Vaccination"
 msgid "Done"
 msgstr "Erledigt"
 
@@ -1729,6 +1741,10 @@ msgstr "Beinhaltet Phase"
 msgctxt "Test Result"
 msgid "Inconclusive"
 msgstr "Nicht bestimmbar"
+
+msgctxt "Auto Tracing Problem"
+msgid "Inconsistent Phase Date"
+msgstr "Inkonsistentes Phasendatum"
 
 msgid "Index"
 msgstr "Index"
@@ -2394,6 +2410,10 @@ msgctxt "vaccination_done"
 msgid "Not Done"
 msgstr "Nicht Erledigt"
 
+msgctxt "Auto Tracing Vaccination"
+msgid "Not Done"
+msgstr "Nicht Erledigt"
+
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
 msgid "Note"
 msgstr "Notiz"
@@ -2752,6 +2772,24 @@ msgstr "Ort"
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Ort"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of arrival"
+msgstr "Ankunftsort"
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of arrival"
+msgstr "Ankunftsort"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of departure"
+msgstr "Abfahrtsort"
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of departure"
+msgstr "Abfahrtsort"
 
 msgid "Please enter your place of residence."
 msgstr "Bitte geben Sie Ihren Wohnort an."
@@ -3551,7 +3589,6 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
 msgstr "Startdatum Symptome"
 
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Symptoms start date"
 msgstr "Startdatum Symptome"
@@ -3716,6 +3753,10 @@ msgstr "Die Kontaktperson hat während der Quarantäne keine Symptome entwickelt
 msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr "Die Kontaktperson hat Symptome entwickelt, sich testen lassen und wurde zum Index"
 
+msgctxt "Auto Tracing Hints"
+msgid "The current case information is being inspected. Expect changes to the isolation period."
+msgstr "Die Fallinformationen werden zur Zeit überprüft. Eine Änderung vom Isolationszeitraum wird erwartet."
+
 msgid "The displayed language was translated mechanically."
 msgstr "Die angezeigte Sprache wurde maschinell übersetzt."
 
@@ -3756,10 +3797,6 @@ msgstr "Der Status dient als Überblick in welcher Phase sich das Tracing bei di
 msgctxt "Auto Tracing Resolve Problems"
 msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
 msgstr "Das Symptom-Startdatum liegt weit vor vor dem ersten Testdatum / Fall-Erstellungsdatum. Bitte prüfen Sie, dass die getracte Person nicht versucht die Isolation zu umgehen."
-
-msgctxt "Auto Tracing Hints"
-msgid "The current case information is being inspected. Expect changes to the isolation period."
-msgstr "Die Fallinformationen werden zur Zeit überprüft. Eine Änderung vom Isolationszeitraum wird erwartet."
 
 msgid "This case is not in an index phase."
 msgstr "Dieser Fall befindet sich nicht in einer Indexphase."
