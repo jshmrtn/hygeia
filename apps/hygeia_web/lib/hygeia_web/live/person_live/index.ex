@@ -30,7 +30,7 @@ defmodule HygeiaWeb.PersonLive.Index do
 
         assign(socket,
           page_title: gettext("People"),
-          tenants: TenantContext.list_tenants(),
+          tenants: Enum.filter(TenantContext.list_tenants(), & &1.case_management_enabled),
           authorized_tenants:
             Enum.filter(
               TenantContext.list_tenants(),
@@ -55,7 +55,12 @@ defmodule HygeiaWeb.PersonLive.Index do
         _other -> []
       end
 
-    filter = Map.put_new(params["filter"] || %{}, "tenant_persons", Enum.map(socket.assigns.authorized_tenants, & &1.uuid))
+    filter =
+      Map.put_new(
+        params["filter"] || %{},
+        "tenant_persons",
+        Enum.map(socket.assigns.authorized_tenants, & &1.uuid)
+      )
 
     socket =
       case params["sort"] do
@@ -126,7 +131,7 @@ defmodule HygeiaWeb.PersonLive.Index do
           where(
             query,
             [person, tenant: tenant],
-            person.tenant_uuid in ^selected_tenant_uuids and tenant.case_management_enabled
+            person.tenant_uuid in ^selected_tenant_uuids
           )
 
         {:fully_vaccinated, "true"}, query ->
@@ -208,10 +213,7 @@ defmodule HygeiaWeb.PersonLive.Index do
   end
 
   defp base_query(_socket) do
-    from(person in CaseContext.list_people_query(),
-      left_join: tenant in assoc(person, :tenant),
-      as: :tenant,
-      preload: [:tenant])
+    from(person in CaseContext.list_people_query(), preload: [:tenant])
   end
 
   defp page_url(socket, pagination_params, filters, sort)

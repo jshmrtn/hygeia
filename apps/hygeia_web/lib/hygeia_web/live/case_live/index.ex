@@ -44,7 +44,7 @@ defmodule HygeiaWeb.CaseLive.Index do
           page_title: gettext("Cases"),
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
-          tenants: TenantContext.list_tenants(),
+          tenants: Enum.filter(TenantContext.list_tenants(), & &1.case_management_enabled),
           authorized_tenants:
             Enum.filter(
               TenantContext.list_tenants(),
@@ -256,7 +256,7 @@ defmodule HygeiaWeb.CaseLive.Index do
           where(
             query,
             [case, tenant: tenant],
-            case.tenant_uuid in ^selected_tenant_uuids and tenant.case_management_enabled
+            case.tenant_uuid in ^selected_tenant_uuids
           )
 
         {key, value}, query when is_list(value) ->
@@ -265,7 +265,6 @@ defmodule HygeiaWeb.CaseLive.Index do
         {:phase_type, phase_type}, query ->
           phase_match = %{details: %{__type__: phase_type}}
           where(query, [case], fragment("? <@ ANY (?)", ^phase_match, case.phases))
-
       end)
       |> Repo.paginate(
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: cursor_fields)
@@ -298,8 +297,6 @@ defmodule HygeiaWeb.CaseLive.Index do
         left_join:
           phase in fragment("UNNEST(ARRAY[?[ARRAY_UPPER(?, 1)]])", case.phases, case.phases),
         as: :phase,
-        left_join: tenant in assoc(case, :tenant),
-        as: :tenant,
         preload: [:tenant]
       )
 
