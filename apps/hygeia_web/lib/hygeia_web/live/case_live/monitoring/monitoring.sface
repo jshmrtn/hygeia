@@ -48,7 +48,7 @@
               class="form-control"
               opts={prompt: gettext("Choose location"), disabled: @disabled}
               field={:location}
-              options={isolation_locations()}
+              options={IsolationLocation.map()}
             />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>

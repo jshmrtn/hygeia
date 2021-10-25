@@ -59,7 +59,7 @@
                   class="form-control"
                   opts={prompt: gettext("Choose location")}
                   field={:location}
-                  options={isolation_locations()}
+                  options={Enum.reject(IsolationLocation.map(), &match?("Home", elem(&1, 0)))}
                 />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
