@@ -32,14 +32,8 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
           Changeset.t()
   def changeset(vaccination, attrs \\ %{}, changeset_options \\ %{})
 
-  def changeset(vaccination, attrs, %{required: true} = changeset_options) do
-    vaccination
-    |> changeset(attrs, %{changeset_options | required: false})
-    |> validate_required([:done])
-    |> validate_details_required()
-  end
 
-  def changeset(vaccination, attrs, _changeset_options) do
+  def changeset(vaccination, attrs, %{required: true, clean_nil_jab_dates: false} = changeset_options) do
     vaccination
     |> cast(attrs, [:uuid, :done, :name, :jab_dates])
     |> fill_uuid
@@ -58,6 +52,48 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
 
       :jab_dates, _else ->
         []
+    end)
+  end
+
+  def changeset(vaccination, attrs, %{required: true, clean_nil_jab_dates: true} = changeset_options) do
+    vaccination
+    |> cast(attrs, [:uuid, :done, :name, :jab_dates])
+    |> fill_uuid
+    |> validate_change(:jab_dates, fn
+      :jab_dates, [_, _ | rest] = all ->
+        cond do
+          Enum.member?(rest, nil) ->
+            [jab_dates: dgettext("errors", "can't be blank")]
+
+          not Enum.any?(all) ->
+            [jab_dates: dgettext("errors", "at least one date must be provided")]
+
+          true ->
+            []
+        end
+
+      :jab_dates, _else ->
+        []
+    end)
+  end
+
+  def changeset(vaccination, attrs, %{required: true} = changeset_options) do
+    vaccination
+    |> changeset(attrs, %{changeset_options | required: false})
+    |> validate_required([:done])
+    |> validate_details_required()
+  end
+
+  def changeset(vaccination, attrs, _changeset_options) do
+    vaccination
+    |> cast(attrs, [:uuid, :done, :name, :jab_dates])
+    |> fill_uuid
+    |> validate_change(:jab_dates, fn :jab_dates, jab_dates ->
+      if Enum.member?(jab_dates, nil) do
+        [jab_dates: dgettext("errors", "can't be blank")]
+      else
+        []
+      end
     end)
   end
 

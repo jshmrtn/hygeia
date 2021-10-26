@@ -49,7 +49,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
             case: case,
             person: case.person,
             changeset: %Ecto.Changeset{
-              CaseContext.change_person(case.person, %{}, %{vaccination_required: true})
+              CaseContext.change_person(case.person, %{}, %{vaccination_required: true, clean_nil_jab_dates: true})
               | action: :validate
             },
             auto_tracing: case.auto_tracing
@@ -82,7 +82,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
 
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
-       CaseContext.change_person(person, params, %{vaccination_required: true})
+       CaseContext.change_person(person, params, %{vaccination_required: true, clean_nil_jab_dates: true})
        | action: :validate
      })}
   end
@@ -109,7 +109,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
 
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
-       CaseContext.change_person(person, params, %{vaccination_required: true})
+       CaseContext.change_person(person, params, %{vaccination_required: true, clean_nil_jab_dates: true})
        | action: :validate
      })}
   end
@@ -137,7 +137,8 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
        CaseContext.change_person(socket.assigns.person, person_params, %{
-         vaccination_required: true
+         vaccination_required: true,
+         clean_nil_jab_dates: true
        })
        | action: :validate
      })}
@@ -178,7 +179,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
       CaseContext.update_person(
         %Ecto.Changeset{socket.assigns.changeset | action: nil},
         params,
-        %{vaccination_required: true}
+        %{vaccination_required: true, clean_nil_jab_dates: false}
       )
 
     {:ok, auto_tracing} =

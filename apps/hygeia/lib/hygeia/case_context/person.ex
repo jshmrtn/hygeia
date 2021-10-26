@@ -121,6 +121,16 @@ defmodule Hygeia.CaseContext.Person do
     |> validate_embed_required(:address, Address)
   end
 
+  def changeset(person, attrs, %{vaccination_required: true, clean_nil_jab_dates: true} = opts) do
+    person
+    |> changeset(attrs, %{opts | vaccination_required: false})
+    |> cast_embed(:vaccination,
+      with: &Vaccination.changeset(&1, &2, %{required: true, clean_nil_jab_dates: true}),
+      required: true
+    )
+    |> validate_embed_required(:vaccination, Vaccination)
+  end
+
   def changeset(person, attrs, %{vaccination_required: true} = opts) do
     person
     |> changeset(attrs, %{opts | vaccination_required: false})
