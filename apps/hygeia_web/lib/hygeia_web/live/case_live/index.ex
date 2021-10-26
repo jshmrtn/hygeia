@@ -12,6 +12,7 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
+  alias Hygeia.UserContext.User
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.Field
@@ -44,6 +45,7 @@ defmodule HygeiaWeb.CaseLive.Index do
           page_title: gettext("Cases"),
           supervisor_users: supervisor_users,
           tracer_users: tracer_users,
+          tenants: Enum.filter(TenantContext.list_tenants(), & &1.case_management_enabled),
           authorized_tenants:
             Enum.filter(
               TenantContext.list_tenants(),
@@ -83,7 +85,8 @@ defmodule HygeiaWeb.CaseLive.Index do
                         [:done, :hospitalization, :home_resident, :canceled],
                       &Atom.to_string/1
                     ),
-                  "tracer_uuid" => [get_auth(socket).uuid]
+                  "tracer_uuid" => [get_auth(socket).uuid],
+                  "tenant_cases" => Enum.map(socket.assigns.authorized_tenants, & &1.uuid)
                 },
                 sort
               )
@@ -144,7 +147,8 @@ defmodule HygeiaWeb.CaseLive.Index do
     "inserted_at_to" => :inserted_at_to,
     "no_auto_tracing_problems" => :no_auto_tracing_problems,
     "auto_tracing_problem" => :auto_tracing_problem,
-    "auto_tracing_active" => :auto_tracing_active
+    "auto_tracing_active" => :auto_tracing_active,
+    "tenant_cases" => :tenant_cases
   }
 
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
@@ -249,6 +253,13 @@ defmodule HygeiaWeb.CaseLive.Index do
             is_nil(field(case, :supervisor_uuid)) or field(case, :supervisor_uuid) in ^value
           )
 
+        {:tenant_cases, selected_tenant_uuids}, query ->
+          where(
+            query,
+            [case, tenant: tenant],
+            case.tenant_uuid in ^selected_tenant_uuids
+          )
+
         {key, value}, query when is_list(value) ->
           where(query, [case], field(case, ^key) in ^value)
 
@@ -272,24 +283,33 @@ defmodule HygeiaWeb.CaseLive.Index do
     ArgumentError -> reraise HygeiaWeb.InvalidPaginationParamsError, __STACKTRACE__
   end
 
-  defp base_query(socket),
-    do:
-      from(case in CaseContext.list_cases_query(),
-        where: case.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid),
-        join: person in assoc(case, :person),
-        as: :person,
-        preload: [person: person],
-        left_join: tracer in assoc(case, :tracer),
-        as: :tracer,
-        preload: [tracer: tracer],
-        left_join: supervisor in assoc(case, :supervisor),
-        as: :supervisor,
-        preload: [supervisor: supervisor],
-        left_join:
-          phase in fragment("UNNEST(ARRAY[?[ARRAY_UPPER(?, 1)]])", case.phases, case.phases),
-        as: :phase,
-        preload: [:tenant]
-      )
+  defp base_query(socket) do
+    %User{uuid: uuid} = user = get_auth(socket)
+
+    from(case in CaseContext.list_cases_query(),
+      join: person in assoc(case, :person),
+      as: :person,
+      preload: [person: person],
+      left_join: tracer in assoc(case, :tracer),
+      as: :tracer,
+      preload: [tracer: tracer],
+      left_join: supervisor in assoc(case, :supervisor),
+      as: :supervisor,
+      preload: [supervisor: supervisor],
+      left_join:
+        phase in fragment("UNNEST(ARRAY[?[ARRAY_UPPER(?, 1)]])", case.phases, case.phases),
+      as: :phase,
+      left_join: tenant in assoc(case, :tenant),
+      as: :tenant,
+      preload: [tenant: tenant],
+      where:
+        case.tracer_uuid == ^uuid or case.supervisor_uuid == ^uuid or
+          case.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid) or
+          (is_nil(tenant.iam_domain) and
+             (^User.has_role?(user, :supervisor, :any) or ^User.has_role?(user, :super_user, :any) or
+                ^User.has_role?(user, :admin, :any)))
+    )
+  end
 
   @sort_mapping %{
     "person_last_name" => {:person, :last_name},
