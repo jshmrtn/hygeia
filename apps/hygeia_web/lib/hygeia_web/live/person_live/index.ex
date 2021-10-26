@@ -10,6 +10,7 @@ defmodule HygeiaWeb.PersonLive.Index do
   alias Hygeia.EctoType.NOGA
   alias Hygeia.Repo
   alias Hygeia.TenantContext
+  alias Hygeia.UserContext.User
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.Field
@@ -212,8 +213,19 @@ defmodule HygeiaWeb.PersonLive.Index do
     {cursor_fields, query}
   end
 
-  defp base_query(_socket) do
-    from(person in CaseContext.list_people_query(), preload: [:tenant])
+  defp base_query(socket) do
+    %User{} = user = get_auth(socket)
+
+    from(person in CaseContext.list_people_query(),
+      left_join: tenant in assoc(person, :tenant),
+      as: :tenant,
+      preload: [tenant: tenant],
+      where:
+        person.tenant_uuid in ^Enum.map(socket.assigns.authorized_tenants, & &1.uuid) or
+          (is_nil(tenant.iam_domain) and
+             (^User.has_role?(user, :supervisor, :any) or ^User.has_role?(user, :super_user, :any) or
+                ^User.has_role?(user, :admin, :any)))
+    )
   end
 
   defp page_url(socket, pagination_params, filters, sort)
