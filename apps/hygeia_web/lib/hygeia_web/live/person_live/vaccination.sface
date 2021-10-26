@@ -22,9 +22,13 @@
                         ordering:
                           String.capitalize(
                             number_format(index + 1, [
-                              :spellout_ordinal,
                               {"fr", :spellout_ordinal_feminine},
                               {"fr-CH", :spellout_ordinal_feminine},
+                              {"de", :spellout_ordinal_r},
+                              {"de-CH", :spellout_ordinal_r},
+                              {"it", :spellout_ordinal_feminine},
+                              {"it-CH", :spellout_ordinal_feminine},
+                              :spellout_ordinal,
                               :ordinal,
                               :standard
                             ])

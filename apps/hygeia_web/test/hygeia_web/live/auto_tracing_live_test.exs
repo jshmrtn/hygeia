@@ -312,8 +312,12 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
                employed: true,
                scholar: true,
                occupations: [_],
-               unsolved_problems: [:new_employer, :school_related]
+               unsolved_problems: unsolved_problems
              } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+
+      expected_unsolved_problems = [:new_employer, :school_related]
+
+      assert Enum.sort(unsolved_problems) == Enum.sort(expected_unsolved_problems)
     end
 
     test "sets no school visit and one occupation and advances to vaccination", %{
