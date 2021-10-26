@@ -15,7 +15,7 @@ config :email_checker,
   validations: [EmailChecker.Check.Format]
 
 # Prometheus Exporter
-config :hygeia_telemetry, server: false
+config :hygeia, HygeiaTelemetry, server: false
 
 # Print only warnings and errors during test
 config :logger, level: :debug
