@@ -265,13 +265,23 @@
         </div>
 
         <div :show={@step == :infection_place_address} id="step_infection_place_address">
-          <h2>
-            {gettext(
-              "Do you know the address where you met with %{first_name} %{last_name}?",
-              first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
-              last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
-            )}
-          </h2>
+          <div class="d-flex">
+            <h2>
+              {gettext(
+                "Do you know the address where you met with %{first_name} %{last_name}?",
+                first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
+                last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
+              )}
+            </h2>
+            <button
+              type="button"
+              class="btn btn-outline-info ms-4"
+              :on-click="copy_household_address_to_infection_place_address"
+            >
+              {gettext("Use my household address")}
+            </button>
+          </div>
+
           <Inputs for={:infection_place}>
             <Inputs for={:address}>
               <HygeiaWeb.AddressForm id="infection_place_address" />

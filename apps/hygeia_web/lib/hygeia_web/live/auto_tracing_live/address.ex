@@ -8,6 +8,7 @@ defmodule HygeiaWeb.AutoTracingLive.Address do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Case.Monitoring.IsolationLocation
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant

@@ -5,18 +5,8 @@ defmodule Hygeia.CaseContext.Case.Monitoring do
 
   use Hygeia, :model
 
-  import EctoEnum
-
   alias Hygeia.CaseContext.Address
-
-  defenum IsolationLocation, :isolation_location, [
-    "home",
-    "social_medical_facility",
-    "hospital",
-    "hotel",
-    "asylum_center",
-    "other"
-  ]
+  alias Hygeia.CaseContext.Case.Monitoring.IsolationLocation
 
   @type empty :: %__MODULE__{
           first_contact: Date.t() | nil,
@@ -50,6 +40,7 @@ defmodule Hygeia.CaseContext.Case.Monitoring do
     monitoring
     |> cast(attrs, [:first_contact, :location, :location_details, :different_location])
     |> validate_different_location()
+    |> validate_location_other()
   end
 
   defp validate_different_location(changeset) do
@@ -58,7 +49,7 @@ defmodule Hygeia.CaseContext.Case.Monitoring do
     |> case do
       true ->
         changeset
-        |> validate_required([:location, :location_details])
+        |> validate_required([:location])
         |> cast_embed(:address,
           with: &Address.changeset(&1, &2, %{required: true}),
           required: true
@@ -70,6 +61,18 @@ defmodule Hygeia.CaseContext.Case.Monitoring do
         |> put_change(:location, nil)
         |> put_change(:location_details, nil)
         |> put_change(:address, nil)
+    end
+  end
+
+  defp validate_location_other(changeset) do
+    changeset
+    |> fetch_field!(:location)
+    |> case do
+      :other ->
+        validate_required(changeset, [:location_details])
+
+      _else ->
+        changeset
     end
   end
 end
