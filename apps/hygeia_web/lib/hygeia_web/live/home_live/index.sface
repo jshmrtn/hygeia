@@ -3,7 +3,10 @@
     <h1 class="display-4">{pgettext("Home", "Contact Tracing for SARS-CoV-2")}</h1>
 
     <ul class="component-home-live-index__list my-5">
-      <li :for={tenant <- @tenants}>
+      <li :for={
+        tenant <- @tenants,
+        Tenant.is_internal_managed_tenant?(tenant)
+      }>
         <img
           :if={TenantHelper.logo_exists?(tenant)}
           src={TenantHelper.logo_uri(tenant, @socket)}
