@@ -8,7 +8,7 @@ defmodule HygeiaWeb.UriActiveContext do
   prop to, :string, required: true
   prop opts, :keyword, default: [active: :exact]
 
-  @impl Phoenix.LiveComponent
+  @impl Surface.Component
   def render(assigns) do
     ~F"""
     <Context get={HygeiaWeb, uri: uri}>
