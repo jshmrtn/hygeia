@@ -21,6 +21,10 @@ msgid "at least one contact method must be provided"
 msgstr "au moins une méthode de contact doit être fournie"
 
 #, fuzzy
+msgid "at least one date must be provided"
+msgstr "au moins une méthode de contact doit être fournie"
+
+#, fuzzy
 msgid "can't be blank"
 msgstr "ne peut pas être vide"
 
@@ -55,6 +59,9 @@ msgstr "a une entrée invalide"
 msgid "has invalid format"
 msgstr "a un format invalide"
 
+msgid "has no outgoing email configuration"
+msgstr ""
+
 #, fuzzy
 msgid "is invalid"
 msgstr "n'est pas valide"
@@ -62,6 +69,9 @@ msgstr "n'est pas valide"
 #, fuzzy
 msgid "is not a valid hostname"
 msgstr "n'est pas un nom d'hôte valide"
+
+msgid "is required"
+msgstr ""
 
 #, fuzzy
 msgid "is reserved"

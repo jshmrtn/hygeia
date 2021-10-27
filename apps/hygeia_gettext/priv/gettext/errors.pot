@@ -28,6 +28,9 @@ msgstr ""
 msgid "at least one contact method must be provided"
 msgstr ""
 
+msgid "at least one date must be provided"
+msgstr ""
+
 msgid "can't be blank"
 msgstr ""
 
@@ -59,11 +62,17 @@ msgstr ""
 msgid "has invalid format"
 msgstr ""
 
+msgid "has no outgoing email configuration"
+msgstr ""
+
 # # From Ecto.Changeset.put_change/3
 msgid "is invalid"
 msgstr ""
 
 msgid "is not a valid hostname"
+msgstr ""
+
+msgid "is required"
 msgstr ""
 
 # # From Ecto.Changeset.validate_exclusion/3

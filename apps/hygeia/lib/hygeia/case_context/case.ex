@@ -189,12 +189,15 @@ defmodule Hygeia.CaseContext.Case do
         clinical
         |> Clinical.changeset(%{}, %{symptoms_required: true})
         |> case do
-          %Ecto.Changeset{valid?: true} -> changeset
-          %Ecto.Changeset{valid?: false} -> add_error(changeset, :clinical, "is invalid")
+          %Ecto.Changeset{valid?: true} ->
+            changeset
+
+          %Ecto.Changeset{valid?: false} ->
+            add_error(changeset, :clinical, dgettext("errors", "is invalid"))
         end
 
       nil ->
-        add_error(changeset, :clinical, "is invalid")
+        add_error(changeset, :clinical, dgettext("errors", "is invalid"))
     end
   end
 

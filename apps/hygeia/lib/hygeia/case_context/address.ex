@@ -5,6 +5,8 @@ defmodule Hygeia.CaseContext.Address do
 
   use Hygeia, :model
 
+  import HygeiaGettext
+
   alias Hygeia.EctoType.Country
 
   @type empty :: %__MODULE__{
@@ -44,7 +46,7 @@ defmodule Hygeia.CaseContext.Address do
   def changeset(nil, _attrs, %{required: true} = _opts) do
     %__MODULE__{}
     |> change()
-    |> add_error(:address, "is invalid")
+    |> add_error(:address, dgettext("errors", "is invalid"))
   end
 
   def changeset(address, attrs, %{required: true} = opts) do

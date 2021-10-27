@@ -2,6 +2,7 @@ defmodule Hygeia.Helpers.Empty do
   @moduledoc false
 
   import Ecto.Changeset
+  import HygeiaGettext
 
   alias Ecto.Changeset
 
@@ -30,14 +31,17 @@ defmodule Hygeia.Helpers.Empty do
     |> fetch_field!(embed)
     |> case do
       nil ->
-        add_error(changeset, embed, "is required")
+        add_error(changeset, embed, dgettext("errors", "is required"))
 
       other ->
         other
         |> type.changeset(%{}, %{required: true})
         |> case do
-          %Ecto.Changeset{valid?: true} -> changeset
-          %Ecto.Changeset{valid?: false} -> add_error(changeset, embed, "is invalid")
+          %Ecto.Changeset{valid?: true} ->
+            changeset
+
+          %Ecto.Changeset{valid?: false} ->
+            add_error(changeset, embed, dgettext("errors", "is invalid"))
         end
     end
   end

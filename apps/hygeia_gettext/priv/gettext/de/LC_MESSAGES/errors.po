@@ -21,6 +21,9 @@ msgstr "mindestens E-Mail / Handy muss angegeben werden"
 msgid "at least one contact method must be provided"
 msgstr "Mindestens eine Kontaktmethode muss angegeben werden"
 
+msgid "at least one date must be provided"
+msgstr "mindestens ein Datum muss angegeben werden"
+
 msgid "can't be blank"
 msgstr "kann nicht leer sein"
 
@@ -48,11 +51,17 @@ msgstr "hat einen ungültigen Eintrag"
 msgid "has invalid format"
 msgstr "hat ungültiges Format"
 
+msgid "has no outgoing email configuration"
+msgstr "hatt keine ausgehende Email Konfiguration"
+
 msgid "is invalid"
 msgstr "ist ungültig"
 
 msgid "is not a valid hostname"
 msgstr "ist kein gültiger Hostname"
+
+msgid "is required"
+msgstr "wird benötigt"
 
 msgid "is reserved"
 msgstr "ist reserviert"

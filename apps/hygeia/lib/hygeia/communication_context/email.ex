@@ -6,6 +6,7 @@ defmodule Hygeia.CommunicationContext.Email do
   use Hygeia, :model
 
   import EctoEnum
+  import HygeiaGettext
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CommunicationContext.Direction
@@ -177,7 +178,7 @@ defmodule Hygeia.CommunicationContext.Email do
         )
       )
     else
-      add_error(changeset, :tenant, "has no outgoing email configuration")
+      add_error(changeset, :tenant, dgettext("errors", "has no outgoing email configuration"))
     end
   end
 

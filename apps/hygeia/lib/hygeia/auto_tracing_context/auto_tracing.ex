@@ -5,6 +5,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   use Hygeia, :model
 
+  import HygeiaGettext
+
   alias Hygeia.AutoTracingContext.AutoTracing.Flight
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.AutoTracingContext.AutoTracing.Problem
@@ -152,12 +154,15 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
         transmission
         |> Transmission.changeset(%{})
         |> case do
-          %Ecto.Changeset{valid?: true} -> changeset
-          %Ecto.Changeset{valid?: false} -> add_error(changeset, :transmission, "is invalid")
+          %Ecto.Changeset{valid?: true} ->
+            changeset
+
+          %Ecto.Changeset{valid?: false} ->
+            add_error(changeset, :transmission, dgettext("errors", "is invalid"))
         end
 
       nil ->
-        add_error(changeset, :transmission, "is invalid")
+        add_error(changeset, :transmission, dgettext("errors", "is invalid"))
     end
   end
 
