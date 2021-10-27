@@ -32,7 +32,7 @@
       <HygeiaWeb.Dropdown
         class="ms-auto"
         trigger_class="mt-3"
-        dropdown_class="dropdown-menu-end p-3 filter-dropdown"
+        dropdown_class="dropdown-menu-end p-3 filter-dropdown container"
         id="filter-dropdown"
       >
         <:trigger>
@@ -59,10 +59,45 @@
           >
             <InputContext assigns={assigns} :let={form: form}>
               <div class="row">
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-4 col-sm-12">
+                  <Field name="tenant_cases" class="form-group">
+                    <Label class="checkbox-label">{gettext("Tenant")}</Label>
+                    <MultipleSelect
+                      class="form-control"
+                      options={Enum.map(@tenants, &{&1.name, &1.uuid})}
+                      opts={size: 15}
+                    />
+                  </Field>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                  <div class="form-group">
+                    <label class="d-block">{schema_field_name(:tracer, Case)}</label>
+                    <FieldContext name={:tracer_uuid}>
+                      <MultipleSelect
+                        class="form-control"
+                        options={Enum.map(@tracer_users, &{&1.display_name, &1.uuid})}
+                        opts={size: 15}
+                      />
+                    </FieldContext>
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                  <div class="form-group">
+                    <label class="d-block">{schema_field_name(:supervisor, Case)}</label>
+                    <FieldContext name={:supervisor_uuid}>
+                      <MultipleSelect
+                        class="form-control"
+                        options={Enum.map(@supervisor_users, &{&1.display_name, &1.uuid})}
+                        opts={size: 15}
+                      />
+                    </FieldContext>
+                  </div>
+                </div></div>
+              <div class="row">
+                <div class="col-md-4 col-sm-12">
                   <div class="form-group">
                     <label class="d-block">{schema_field_name(:status, Case)}</label>
-                    <label :for={{name, key} <- Status.map()}>
+                    <label class="d-block" :for={{name, key} <- Status.map()}>
                       <input
                         type="checkbox"
                         name={input_name(form, :status) <> "[]"}
@@ -73,7 +108,7 @@
                     </label>
                   </div>
                 </div>
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-4 col-sm-12">
                   <div class="form-group">
                     <label class="d-block">{schema_field_name(:complexity, Case)}</label>
                     <label :for={{name, key} <- Case.Complexity.map()} class="d-block checkbox-label">
@@ -87,126 +122,114 @@
                     </label>
                   </div>
                 </div>
+                <div class="col-md-4 col-sm-12">
+                  <div class="form-group">
+                    <label class="d-block">{gettext("Includes Phase Type")}</label>
+                    <Field name="phase_type" class="form-check form-check-inline">
+                      <label class="form-check-label radio-label">
+                        <RadioButton class="form-check-input" value="" />
+                        {gettext("Any")}
+                      </label>
+                    </Field>
+                    <Field name="phase_type" class="form-check form-check-inline">
+                      <label class="form-check-label radio-label">
+                        <RadioButton class="form-check-input" value="index" />
+                        {gettext("Index")}
+                      </label>
+                    </Field>
+                    <Field name="phase_type" class="form-check form-check-inline">
+                      <label class="form-check-label radio-label">
+                        <RadioButton class="form-check-input" value="possible_index" />
+                        {gettext("Possible Index")}
+                      </label>
+                    </Field>
+                  </div>
+                </div>
               </div>
 
-              <Field name="tenant_cases" class="form-group">
-                <Label class="checkbox-label">{gettext("Tenant")}</Label>
-                <MultipleSelect
-                  class="form-control"
-                  options={Enum.map(@tenants, &{&1.name, &1.uuid})}
-                  opts={size: 15}
-                />
-              </Field>
+              <div class="row">
+                <div class="col-md-6 col-sm-12">
+                  <Field name="fully_vaccinated" class="form-group">
+                    <Label class="checkbox-label">
+                      <Checkbox />
+                      {gettext("Fully Vaccinated")}
+                    </Label>
+                  </Field>
+                </div>
 
-              <div class="form-group">
-                <label class="d-block">{schema_field_name(:tracer, Case)}</label>
-                <FieldContext name={:tracer_uuid}>
-                  <MultipleSelect
-                    class="form-control"
-                    options={Enum.map(@tracer_users, &{&1.display_name, &1.uuid})}
-                  />
-                </FieldContext>
-              </div>
-
-              <div class="form-group">
-                <label class="d-block">{schema_field_name(:supervisor, Case)}</label>
-                <FieldContext name={:supervisor_uuid}>
-                  <MultipleSelect
-                    class="form-control"
-                    options={Enum.map(@supervisor_users, &{&1.display_name, &1.uuid})}
-                  />
-                </FieldContext>
-              </div>
-
-              <div class="form-group">
-                <label class="d-block">{gettext("Includes Phase Type")}</label>
-                <Field name="phase_type" class="form-check form-check-inline">
-                  <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value="" />
-                    {gettext("Any")}
-                  </label>
-                </Field>
-                <Field name="phase_type" class="form-check form-check-inline">
-                  <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value="index" />
-                    {gettext("Index")}
-                  </label>
-                </Field>
-                <Field name="phase_type" class="form-check form-check-inline">
-                  <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value="possible_index" />
-                    {gettext("Possible Index")}
-                  </label>
-                </Field>
-              </div>
-
-              <Field name="fully_vaccinated" class="form-group">
-                <Label class="checkbox-label">
-                  <Checkbox />
-                  {gettext("Fully Vaccinated")}
-                </Label>
-              </Field>
-
-              <Field name="vaccination_failures" class="form-group">
-                <Label class="checkbox-label">
-                  <Checkbox />
-                  {gettext("Vaccination Failures")}
-                </Label>
-              </Field>
+                <div class="col-md-6 col-sm-12">
+                  <Field name="vaccination_failures" class="form-group">
+                    <Label class="checkbox-label">
+                      <Checkbox />
+                      {gettext("Vaccination Failures")}
+                    </Label>
+                  </Field>
+                </div></div>
 
               <Field name="inserted_at" class="form-group">
-                <Label class="d-block">{schema_field_name(:inserted_at, Case)}</Label>
+                <div class="row">
+                  <div class="col-md-6 col-sm-12">
+                    <Label class="d-block">{schema_field_name(:inserted_at, Case)}</Label>
 
-                <FieldContext name={:inserted_at_from}>
-                  <HygeiaWeb.DateTimeLocalInput class="form-control" />
-                </FieldContext>
-                {pgettext("Date Range", "until")}
-                <FieldContext name={:inserted_at_to}>
-                  <HygeiaWeb.DateTimeLocalInput class="form-control" />
-                </FieldContext>
+                    <FieldContext name={:inserted_at_from}>
+                      <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                    </FieldContext>
+                  </div>
+                  <div class="col-md-6 col-sm-12">
+                    <Label class="d-block">{pgettext("Date Range", "until")}</Label>
+                    <FieldContext name={:inserted_at_to}>
+                      <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                    </FieldContext>
+                  </div>
+                </div>
               </Field>
 
-              <div class="form-group">
-                <label class="d-block">{gettext("Auto Tracing active")}</label>
-                <Field name="auto_tracing_active" class="form-check form-check-inline">
-                  <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value="" />
-                    {gettext("Any")}
-                  </label>
-                </Field>
-                <Field name="auto_tracing_active" class="form-check form-check-inline">
-                  <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value />
-                    {gettext("Yes")}
-                  </label>
-                </Field>
-                <Field name="auto_tracing_active" class="form-check form-check-inline">
-                  <label class="form-check-label radio-label">
-                    <RadioButton class="form-check-input" value={false} />
-                    {gettext("False")}
-                  </label>
-                </Field>
-              </div>
+              <div class="row">
+                <div class="col-md-6 col-sm-12">
+                  <div class="form-group">
+                    <label class="d-block">{gettext("Auto Tracing Problem")}</label>
 
-              <div class="form-group">
-                <label class="d-block">{gettext("Auto Tracing Problem")}</label>
+                    <Field name="no_auto_tracing_problems">
+                      <Label class="d-block checkbox-label">
+                        <Checkbox />
+                        {gettext("No Auto Tracing Problems")}
+                      </Label>
+                    </Field>
 
-                <Field name="no_auto_tracing_problems">
-                  <Label class="d-block checkbox-label">
-                    <Checkbox />
-                    {gettext("No Auto Tracing Problems")}
-                  </Label>
-                </Field>
-
-                <label :for={{name, key} <- AutoTracing.Problem.map()} class="d-block checkbox-label">
-                  <input
-                    type="checkbox"
-                    name={input_name(form, :auto_tracing_problem) <> "[]"}
-                    checked={Atom.to_string(key) in (form.source["auto_tracing_problem"] || [])}
-                    value={key}
-                  />
-                  {name}
-                </label>
+                    <label :for={{name, key} <- AutoTracing.Problem.map()} class="d-block checkbox-label">
+                      <input
+                        type="checkbox"
+                        name={input_name(form, :auto_tracing_problem) <> "[]"}
+                        checked={Atom.to_string(key) in (form.source["auto_tracing_problem"] || [])}
+                        value={key}
+                      />
+                      {name}
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                  <div class="form-group">
+                    <label class="d-block">{gettext("Auto Tracing active")}</label>
+                    <Field name="auto_tracing_active" class="form-check form-check-inline">
+                      <label class="form-check-label radio-label">
+                        <RadioButton class="form-check-input" value="" />
+                        {gettext("Any")}
+                      </label>
+                    </Field>
+                    <Field name="auto_tracing_active" class="form-check form-check-inline">
+                      <label class="form-check-label radio-label">
+                        <RadioButton class="form-check-input" value />
+                        {gettext("Yes")}
+                      </label>
+                    </Field>
+                    <Field name="auto_tracing_active" class="form-check form-check-inline">
+                      <label class="form-check-label radio-label">
+                        <RadioButton class="form-check-input" value={false} />
+                        {gettext("False")}
+                      </label>
+                    </Field>
+                  </div>
+                </div>
               </div>
             </InputContext>
           </Form>
