@@ -459,8 +459,10 @@
                     <HygeiaWeb.PersonLive.Vaccination
                       id="vaccination"
                       disabled={@live_action == :show}
+                      show_buttons={@live_action == :edit}
                       changeset={@changeset}
                       person={@person}
+                      preset_date_count={0}
                       add_event="add_vaccination_jab_date"
                       remove_event="remove_vaccination_jab_date"
                     />

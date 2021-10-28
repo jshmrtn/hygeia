@@ -72,7 +72,8 @@ defmodule Hygeia.CaseContext.Person do
 
   @type changeset_options :: %{
           optional(:address_required) => boolean,
-          optional(:vaccination_required) => boolean
+          optional(:vaccination_required) => boolean,
+          optional(:initial_nil_jab_date_count) => integer
         }
 
   schema "people" do
@@ -121,11 +122,38 @@ defmodule Hygeia.CaseContext.Person do
     |> validate_embed_required(:address, Address)
   end
 
-  def changeset(person, attrs, %{vaccination_required: true, clean_nil_jab_dates: true} = opts) do
+  def changeset(
+        person,
+        attrs,
+        %{vaccination_required: true, initial_nil_jab_date_count: nil_count}
+      ) do
     person
-    |> changeset(attrs, %{opts | vaccination_required: false})
+    |> cast(attrs, [
+      :uuid,
+      :first_name,
+      :last_name,
+      :sex,
+      :birth_date,
+      :tenant_uuid,
+      :profession_category_main,
+      :profession_category
+    ])
+    |> fill_uuid
+    |> fill_human_readable_id
+    |> validate_required([:uuid, :human_readable_id, :tenant_uuid, :first_name])
+    |> validate_profession_category()
+    |> cast_assoc(:affiliations)
+    |> cast_embed(:external_references)
+    |> cast_embed(:address)
+    |> cast_embed(:contact_methods)
+    |> foreign_key_constraint(:tenant_uuid)
+    |> detect_name_duplicates
+    |> detect_duplicates(:mobile)
+    |> detect_duplicates(:landline)
+    |> detect_duplicates(:email)
     |> cast_embed(:vaccination,
-      with: &Vaccination.changeset(&1, &2, %{required: true, clean_nil_jab_dates: true}),
+      with:
+        &Vaccination.changeset(&1, &2, %{required: true, initial_nil_jab_date_count: nil_count}),
       required: true
     )
     |> validate_embed_required(:vaccination, Vaccination)
