@@ -13,7 +13,8 @@
         <Field name={:jab_dates} class="form-group">
           <table class="table table-borderless">
             <tbody>
-              {#for {date, index} <- Enum.with_index(fill_dates(fetch_field!(form.source, :jab_dates)))}
+              {#for {date, index} <-
+                  Enum.with_index(fetch_field!(form.source, :jab_dates))}
                 <tr>
                   <td>
                     <label class="small">{pgettext(
@@ -51,7 +52,7 @@
                         }
                       />
                       <button
-                        :if={index > 1}
+                        :if={@show_buttons and index >= @preset_date_count}
                         type="button"
                         class="ms-2 btn btn-danger"
                         :on-click={@remove_event}
@@ -70,7 +71,7 @@
 
           <div>
             <button
-              :if={at_least_two_dates(@changeset)}
+              :if={@show_buttons}
               disabled={@disabled}
               type="button"
               class="btn btn-outline-primary"

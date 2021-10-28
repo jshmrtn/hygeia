@@ -94,7 +94,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
         Map.update(
           vaccination,
           "jab_dates",
-          [nil, nil],
+          [],
           &Enum.map(&1, fn
             "" -> nil
             other -> other

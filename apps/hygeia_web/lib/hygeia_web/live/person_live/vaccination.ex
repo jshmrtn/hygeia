@@ -11,35 +11,14 @@ defmodule HygeiaWeb.PersonLive.Vaccination do
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.TextInput
 
+  prop preset_date_count, :integer, default: 2
   prop disabled, :boolean, default: false
+  prop show_buttons, :boolean, default: true
   prop changeset, :map
   prop person, :map
 
   prop add_event, :event
   prop remove_event, :event
-
-  defp at_least_two_dates(changeset) do
-    changeset
-    |> fetch_field!(:vaccination)
-    |> case do
-      nil ->
-        false
-
-      vaccination ->
-        vaccination
-        |> Map.get(:jab_dates, [])
-        |> Enum.reject(&is_nil/1)
-        |> length() >= 2
-    end
-  end
-
-  defp fill_dates(dates) do
-    case length(dates) do
-      0 -> [nil, nil]
-      1 -> dates ++ [nil]
-      _else -> dates
-    end
-  end
 
   defp number_format(number, formats)
 

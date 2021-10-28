@@ -49,7 +49,10 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
             case: case,
             person: case.person,
             changeset: %Ecto.Changeset{
-              CaseContext.change_person(case.person, %{}, %{vaccination_required: true})
+              CaseContext.change_person(case.person, %{}, %{
+                vaccination_required: true,
+                initial_nil_jab_date_count: 2
+              })
               | action: :validate
             },
             auto_tracing: case.auto_tracing
@@ -82,7 +85,10 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
 
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
-       CaseContext.change_person(person, params, %{vaccination_required: true})
+       CaseContext.change_person(person, params, %{
+         vaccination_required: true,
+         initial_nil_jab_date_count: 2
+       })
        | action: :validate
      })}
   end
@@ -109,7 +115,10 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
 
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
-       CaseContext.change_person(person, params, %{vaccination_required: true})
+       CaseContext.change_person(person, params, %{
+         vaccination_required: true,
+         initial_nil_jab_date_count: 2
+       })
        | action: :validate
      })}
   end
@@ -130,14 +139,15 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
             )
 
           _else ->
-            %{"done" => "false", "jab_dates" => []}
+            %{"done" => "false", "name" => "", "jab_dates" => []}
         end
       end)
 
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
        CaseContext.change_person(socket.assigns.person, person_params, %{
-         vaccination_required: true
+         vaccination_required: true,
+         initial_nil_jab_date_count: 2
        })
        | action: :validate
      })}
@@ -178,7 +188,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
       CaseContext.update_person(
         %Ecto.Changeset{socket.assigns.changeset | action: nil},
         params,
-        %{vaccination_required: true}
+        %{vaccination_required: true, initial_nil_jab_date_count: 0}
       )
 
     {:ok, auto_tracing} =
