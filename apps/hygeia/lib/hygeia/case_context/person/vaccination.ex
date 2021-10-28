@@ -96,7 +96,7 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
 
       _other ->
         changeset
-        |> put_change(:name, "")
+        |> put_change(:name, nil)
         |> put_change(:jab_dates, nil)
     end
   end
