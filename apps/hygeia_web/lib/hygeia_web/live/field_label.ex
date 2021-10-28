@@ -29,7 +29,7 @@ defmodule HygeiaWeb.FieldLabel do
   """
   slot default, args: [:name, :schema, :field]
 
-  @impl Phoenix.LiveComponent
+  @impl Surface.Component
   def render(assigns) do
     helper_opts = props_to_opts(assigns, [:schema])
 

@@ -3,6 +3,8 @@ defmodule Hygeia.Helpers.Email do
 
   import Ecto.Changeset
 
+  import HygeiaGettext
+
   alias Ecto.Changeset
 
   @spec validate_email(changeset :: Changeset.t(), field :: atom) :: Changeset.t()
@@ -20,7 +22,7 @@ defmodule Hygeia.Helpers.Email do
         if EmailChecker.valid?(email) do
           changeset
         else
-          add_error(changeset, field, "is invalid")
+          add_error(changeset, field, dgettext("errors", "is invalid"))
         end
     end
   end

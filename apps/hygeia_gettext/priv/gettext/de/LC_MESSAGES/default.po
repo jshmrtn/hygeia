@@ -22,7 +22,7 @@ msgstr[1] "%{count} neue Benachrichtigungen"
 
 msgctxt "Auto Tracing Vaccination"
 msgid "%{ordering} jab date"
-msgstr "%{ordering} Impfung"
+msgstr "%{ordering} Impftermin"
 
 msgid "%{tenant} - Contact Tracing"
 msgstr "%{tenant} – Contact Tracing"
@@ -2777,7 +2777,6 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of arrival"
 msgstr "Ankunftsort"
 
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
 msgstr "Ankunftsort"
@@ -2786,7 +2785,6 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of departure"
 msgstr "Abflugort"
 
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of departure"
 msgstr "Abflugort"
@@ -3120,6 +3118,9 @@ msgstr "Meldeeinheit"
 
 msgid "Requested document is currently unavailable"
 msgstr "Das verlangte Dokument ist momentan nicht verfügbar"
+
+msgid "Reset filters"
+msgstr "Filter zurücksetzen"
 
 msgid "Reset tracer & supervisor"
 msgstr "Tracer & Supervisor zurücksetzen"

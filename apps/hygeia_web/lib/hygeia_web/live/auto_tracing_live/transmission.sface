@@ -74,20 +74,27 @@
                 </div>
                 <div class="col-12 col-md-6">
                   <Inputs for={:infection_place}>
-                    <Field name={:type} class="form-group">
-                      <HygeiaWeb.FieldLabel />
-                      <Select
-                        class="form-control"
-                        options={infection_place_type_options()}
-                        opts={prompt: gettext("Choose Type")}
-                      />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
-                    <Field name={:flight_information} class="form-group">
-                      <HygeiaWeb.FieldLabel />
-                      <TextInput class="form-control" />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+                    <InputContext assigns={assigns} :let={form: form}>
+                      <Field name={:type} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <Select
+                          class="form-control"
+                          options={infection_place_type_options()}
+                          opts={prompt: gettext("Choose Type")}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field :if={fetch_field!(form.source, :type) == :other} name={:type_other} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field name={:flight_information} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </InputContext>
                   </Inputs>
                 </div>
                 <div class="col-12">

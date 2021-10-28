@@ -1,7 +1,11 @@
 <footer class="footer mt-auto bg-light">
   <main class="container">
     <ul class="component-home-live-index__list my-5">
-      <li :for={tenant <- @tenants, is_nil(@subject) or tenant.uuid == @subject.uuid}>
+      <li :for={
+        tenant <- @tenants,
+        Tenant.is_internal_managed_tenant?(tenant),
+        is_nil(@subject) or tenant.uuid == @subject.uuid
+      }>
         <img
           :if={TenantHelper.logo_exists?(tenant)}
           src={TenantHelper.logo_uri(tenant, @socket)}

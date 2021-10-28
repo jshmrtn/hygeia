@@ -11,7 +11,7 @@ defmodule HygeiaWeb.DateTimeLocalInput do
   prop input_opts, :keyword, default: []
   prop select_opts, :keyword, default: []
 
-  @impl Phoenix.LiveComponent
+  @impl Surface.Component
   def render(assigns) do
     year_now = Date.utc_today().year
 

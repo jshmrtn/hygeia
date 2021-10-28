@@ -5,7 +5,7 @@ defmodule HygeiaWeb.StatisticsLive.NoDataWarning do
 
   prop title, :string, default: nil
 
-  @impl Phoenix.LiveComponent
+  @impl Surface.Component
   def render(assigns) do
     ~F"""
     <div class="card justify-content-center align-items-center p-5">

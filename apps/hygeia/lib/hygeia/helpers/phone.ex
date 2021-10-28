@@ -2,6 +2,7 @@ defmodule Hygeia.Helpers.Phone do
   @moduledoc false
 
   import Ecto.Changeset
+  import HygeiaGettext
 
   alias Ecto.Changeset
 
@@ -32,10 +33,10 @@ defmodule Hygeia.Helpers.Phone do
         add_error(changeset, field, reason)
 
       {:error, _reason} ->
-        add_error(changeset, field, "is invalid")
+        add_error(changeset, field, dgettext("errors", "is invalid"))
 
       false ->
-        add_error(changeset, field, "is invalid")
+        add_error(changeset, field, dgettext("errors", "is invalid"))
     end
   end
 end
