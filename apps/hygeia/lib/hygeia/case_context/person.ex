@@ -128,29 +128,7 @@ defmodule Hygeia.CaseContext.Person do
         %{vaccination_required: true, initial_nil_jab_date_count: nil_count}
       ) do
     person
-    |> cast(attrs, [
-      :uuid,
-      :first_name,
-      :last_name,
-      :sex,
-      :birth_date,
-      :tenant_uuid,
-      :profession_category_main,
-      :profession_category
-    ])
-    |> fill_uuid
-    |> fill_human_readable_id
-    |> validate_required([:uuid, :human_readable_id, :tenant_uuid, :first_name])
-    |> validate_profession_category()
-    |> cast_assoc(:affiliations)
-    |> cast_embed(:external_references)
-    |> cast_embed(:address)
-    |> cast_embed(:contact_methods)
-    |> foreign_key_constraint(:tenant_uuid)
-    |> detect_name_duplicates
-    |> detect_duplicates(:mobile)
-    |> detect_duplicates(:landline)
-    |> detect_duplicates(:email)
+    |> do_changeset(attrs)
     |> cast_embed(:vaccination,
       with:
         &Vaccination.changeset(&1, &2, %{required: true, initial_nil_jab_date_count: nil_count}),
@@ -171,6 +149,12 @@ defmodule Hygeia.CaseContext.Person do
 
   def changeset(person, attrs, _opts) do
     person
+    |> do_changeset(attrs)
+    |> cast_embed(:vaccination)
+  end
+
+  defp do_changeset(person, attrs) do
+    person
     |> cast(attrs, [
       :uuid,
       :first_name,
@@ -189,7 +173,6 @@ defmodule Hygeia.CaseContext.Person do
     |> cast_embed(:external_references)
     |> cast_embed(:address)
     |> cast_embed(:contact_methods)
-    |> cast_embed(:vaccination)
     |> foreign_key_constraint(:tenant_uuid)
     |> detect_name_duplicates
     |> detect_duplicates(:mobile)

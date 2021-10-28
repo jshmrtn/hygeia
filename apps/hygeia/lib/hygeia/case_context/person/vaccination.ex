@@ -41,8 +41,7 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
         %{required: true, initial_nil_jab_date_count: 0}
       ) do
     vaccination
-    |> cast(attrs, [:uuid, :done, :name, :jab_dates])
-    |> fill_uuid
+    |> do_changeset(attrs)
     |> remove_nil_jab_dates()
     |> validate_details_required()
   end
@@ -53,8 +52,7 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
         %{required: true, initial_nil_jab_date_count: nil_count}
       ) do
     vaccination
-    |> cast(attrs, [:uuid, :done, :name, :jab_dates])
-    |> fill_uuid
+    |> do_changeset(attrs)
     |> validate_details_required()
     |> validate_initial_jab_dates(nil_count)
   end
@@ -68,8 +66,7 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
 
   def changeset(vaccination, attrs, _changeset_options) do
     vaccination
-    |> cast(attrs, [:uuid, :done, :name, :jab_dates])
-    |> fill_uuid
+    |> do_changeset(attrs)
     |> validate_details_required()
     |> validate_change(:jab_dates, fn :jab_dates, jab_dates ->
       if Enum.member?(jab_dates, nil) do
@@ -78,6 +75,12 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
         []
       end
     end)
+  end
+
+  defp do_changeset(vaccination, attrs) do
+    vaccination
+    |> cast(attrs, [:uuid, :done, :name, :jab_dates])
+    |> fill_uuid
   end
 
   defp validate_details_required(changeset) do
