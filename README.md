@@ -33,8 +33,8 @@ $ docker run \
 - Load Local `.env` file
   - For `zsh` users I recommend https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/dotenv
   - Using `` npx dotenv-cli `ps -o fname --no-headers $$ `` you can load all env variables into a new shell instead
-- Create and migrate your database with `mix ecto.setup` inside the `apps/hygeia` directory
-- Install Node.js dependencies with `npm install` inside the `apps/hygeia_web/assets` directory
+- Create and migrate your database with `mix ecto.setup`
+- Install Node.js dependencies with `npm install` inside the `assets` directory
 - Start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
@@ -44,19 +44,18 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 Extract all translation strings to create `*.pot`-files:
 
 ```console
-mix gettext.extract.umbrella
+mix gettext.extract
 ```
 
 Next, clean wrongly inserted comments from the `*.pot` files.
 
 ```console
-cat apps/hygeia_gettext/priv/gettext/default.pot | grep -v elixir-format | sponge apps/hygeia_gettext/priv/gettext/default.pot
+cat priv/gettext/default.pot | grep -v elixir-format | sponge priv/gettext/default.pot
 ```
 
 Then merge those into the localized `*.po`-files:
 
 ```console
-cd apps/hygeia_gettext
 mix gettext.merge priv/gettext
 ```
 

@@ -1,12 +1,3 @@
-# This file is responsible for configuring your umbrella
-# and **all applications** and their dependencies with the
-# help of Mix.Config.
-#
-# Note that all applications in your umbrella share the
-# same configuration and dependencies, which is why they
-# all use the same configuration file. If you want different
-# configurations or dependencies per app, it is best to
-# move said applications out of the umbrella.
 import Config
 
 # Configure Mix tasks and generators
@@ -14,19 +5,16 @@ config :hygeia,
   ecto_repos: [Hygeia.Repo],
   phone_number_parsing_origin_country: "CH",
   vaccine_validity: {1, :year},
-  immune_validity: {6, :month}
+  immune_validity: {6, :month},
+  generators: [context_app: :hygeia, binary_id: true]
 
 config :hygeia, Hygeia.Repo,
   migration_timestamps: [type: :utc_datetime_usec],
   migration_primary_key: [name: :uuid, type: :binary_id],
   migration_foreign_key: [column: :uuid, type: :binary_id]
 
-config :hygeia_web,
-  ecto_repos: [Hygeia.Repo],
-  generators: [context_app: :hygeia, binary_id: true]
-
 # Configures the endpoint
-config :hygeia_web, HygeiaWeb.Endpoint,
+config :hygeia, HygeiaWeb.Endpoint,
   render_errors: [
     view: HygeiaWeb.ErrorView,
     accepts: ~w(html json),
@@ -51,16 +39,16 @@ config :cadastre, Cadastre.I18n,
   default_locale: "en",
   allowed_locales: ["de", "en", "fr", "it"]
 
-config :hygeia_gettext, HygeiaGettext, fuzzy_languages: ["it", "fr"]
+config :hygeia, HygeiaGettext, fuzzy_languages: ["it", "fr"]
 
 # Prometheus Exporter
-config :hygeia_telemetry, server: true
+config :hygeia, HygeiaTelemetry, server: true
 
 # OIDC
 config :oidcc, http_request_timeout: 60, cert_depth: 5
 
 # Nebulex Sessions
-config :hygeia_web, HygeiaWeb.SessionStorage.Storage,
+config :hygeia, HygeiaWeb.SessionStorage.Storage,
   stats: true,
   primary: [
     # 100Mb
@@ -86,10 +74,7 @@ config :surface, :components, [
 config :ex_aws,
   json_codec: Jason
 
-config :sentry,
-  enable_source_code_context: true,
-  root_source_code_path:
-    __ENV__.file |> Path.dirname() |> Path.dirname() |> Path.join("apps/*") |> Path.wildcard()
+config :sentry, enable_source_code_context: true, root_source_code_path: File.cwd!()
 
 config :hygeia, Hygeia.Jobs.SendCaseClosedEmail,
   url_generator: HygeiaWeb.SendCaseClosedEmailUrlGenerator

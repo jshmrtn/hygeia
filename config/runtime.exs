@@ -2,7 +2,7 @@ import Config
 
 case config_env() do
   :prod ->
-    config :hygeia_web, HygeiaWeb.Endpoint, server: true
+    config :hygeia, HygeiaWeb.Endpoint, server: true
 
   _env ->
     nil
@@ -43,7 +43,7 @@ web_port =
     )
   )
 
-config :hygeia_web, HygeiaWeb.Endpoint,
+config :hygeia, HygeiaWeb.Endpoint,
   url: [
     host: System.get_env("WEB_EXTERNAL_HOST", "localhost"),
     port: System.get_env("WEB_EXTERNAL_PORT", "#{web_port}"),
@@ -56,7 +56,8 @@ config :hygeia_web, HygeiaWeb.Endpoint,
   secret_key_base: System.fetch_env!("SECRET_KEY_BASE")
 
 # Prometheus Exporter
-config :hygeia_telemetry, port: "METRICS_PORT" |> System.get_env("9568") |> String.to_integer()
+config :hygeia, HygeiaTelemetry,
+  port: "METRICS_PORT" |> System.get_env("9568") |> String.to_integer()
 
 # IAM
 iam_config = [
@@ -73,11 +74,12 @@ iam_config = [
   request_scopes: ["openid", "profile", "email", "offline_access"]
 ]
 
-config :hygeia_iam, :providers, zitadel: iam_config
-
-config :hygeia_iam, :service_accounts,
-  user_sync: [
-    login: System.fetch_env!("IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN")
+config :hygeia, HygeiaIam,
+  providers: [zitadel: iam_config],
+  service_accounts: [
+    user_sync: [
+      login: System.fetch_env!("IAM_SERVICE_ACCOUNT_USER_SYNC_LOGIN")
+    ]
   ]
 
 case System.fetch_env("DKIM_PATH") do
@@ -108,7 +110,7 @@ config :hygeia, Hygeia.TenantContext, sedex_sender_id: System.fetch_env!("SEDEX_
 config :hygeia, Hygeia.TenantContext.Tenant.Smtp,
   sender_hostname: System.get_env("SMTP_SENDER_HOSTNAME", "localhost")
 
-config :hygeia_iam,
+config :hygeia, HygeiaIam,
   organisation_id: System.fetch_env!("IAM_ORGANISATION_ID"),
   project_id: System.fetch_env!("IAM_PROJECT_ID")
 
@@ -119,12 +121,12 @@ config :sentry,
   included_environments: [System.get_env("SENTRY_ENV")]
 
 case System.fetch_env("PDF_CONFIRMATION_TEMPLATE_ROOT") do
-  {:ok, path} -> config :hygeia_pdf_confirmation, template_root_path: path
+  {:ok, path} -> config :hygeia, HygeiaPdfConfirmation, template_root_path: path
   :error -> nil
 end
 
 case System.fetch_env("TENANT_LOGO_TEMPLATE_ROOT") do
-  {:ok, path} -> config :hygeia_web, tenant_logo_root_path: path
+  {:ok, path} -> config :hygeia, tenant_logo_root_path: path
   :error -> nil
 end
 

@@ -24,10 +24,10 @@ erl_crash.dump
 !/chart/charts/.gitkeep
 
 # BFS Country List
-apps/hygeia/lib/hygeia/ecto_type/country/*.hrl
+lib/hygeia/ecto_type/country/*.hrl
 
 # CLDR Locales
-/apps/hygeia_cldr/priv/cldr
+/priv/cldr
 
 # .mo Files
 *.mo
@@ -41,4 +41,9 @@ apps/hygeia/lib/hygeia/ecto_type/country/*.hrl
 
 # Temp Dirs
 /temp
-/apps/*/temp
+
+# Phoenix Assets
+/priv/static
+
+# Node Modules
+/assets/node_modules

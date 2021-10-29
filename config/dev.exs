@@ -9,7 +9,7 @@ config :hygeia, Hygeia.Repo, show_sensitive_data_on_connection_error: true
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :hygeia_web, HygeiaWeb.Endpoint,
+config :hygeia, HygeiaWeb.Endpoint,
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -20,7 +20,7 @@ config :hygeia_web, HygeiaWeb.Endpoint,
       "development",
       "--watch",
       "--watch-options-stdin",
-      cd: Path.expand("../apps/hygeia_web/assets", __DIR__)
+      cd: Path.expand("../assets", __DIR__)
     ]
   ]
 
@@ -49,7 +49,7 @@ config :hygeia_web, HygeiaWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :hygeia_web, HygeiaWeb.Endpoint,
+config :hygeia, HygeiaWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",

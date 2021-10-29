@@ -46,16 +46,16 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: .ci-npm-cache
-          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('apps/hygeia_web/assets/package-lock.json') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('assets/package-lock.json') }}
           restore-keys: |
             deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             deps-${{ secrets.CACHE_VERSION }}-
-      - run: npm ci --prefix=apps/hygeia_web/assets
-      - run: npm run deploy --prefix=apps/hygeia_web/assets
+      - run: npm ci --prefix=assets
+      - run: npm run deploy --prefix=assets
       - uses: actions/upload-artifact@v2
         with:
           name: compile_assets
-          path: apps/hygeia_web/priv/static
+          path: priv/static
 
   format:
     name: Check Formatting
@@ -110,7 +110,7 @@ jobs:
           restore-keys: |
             compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_dev-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - run: mix surface.format --check-formatted
 
@@ -170,7 +170,7 @@ jobs:
           restore-keys: |
             compile_test-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_test-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - run: |
           sudo apt-get update -yqq
@@ -181,7 +181,7 @@ jobs:
       - run: mix ecto.migrate
         env:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
-      - run: mix coveralls.github --umbrella || mix test
+      - run: mix coveralls.github || mix test
         env:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
 
@@ -214,7 +214,7 @@ jobs:
           restore-keys: |
             compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_dev-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - run: mix credo --strict
 
@@ -247,7 +247,7 @@ jobs:
           restore-keys: |
             compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_dev-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - uses: actions/cache@v2
         with:
@@ -293,7 +293,7 @@ jobs:
           restore-keys: |
             compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_dev-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - uses: actions/download-artifact@v2
         with:
@@ -330,7 +330,7 @@ jobs:
           restore-keys: |
             compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_dev-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - run: mix docs
       - uses: actions/upload-artifact@v2
@@ -372,7 +372,7 @@ jobs:
           restore-keys: |
             compile_docker_prod-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_docker_prod-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
         env:
           MIX_ENV: prod
       - run: mix compile --warning-as-errors
@@ -381,7 +381,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: compile_assets
-          path: apps/hygeia_web/priv/static
+          path: priv/static
       - run: mix phx.digest
       - run: mix release
       - run: tar -czvf release.tar.gz _build/prod/rel/hygeia
@@ -500,27 +500,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Sobelow Job
 
-    strategy:
-      fail-fast: false
-      matrix:
-        app:
-          - hygeia
-          - hygeia_cldr
-          - hygeia_cluster
-          - hygeia_gettext
-          - hygeia_health
-          - hygeia_iam
-          - hygeia_pdf_confirmation
-          - hygeia_telemetry
-          - hygeia_web
-          - sentry_event_filter
-
     steps:
       - uses: actions/checkout@v2
       - id: run-action
         uses: sobelow/action@v1
         with:
-          flags: '--skip --root apps/${{matrix.app}}'
+          flags: '--skip'
       - uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: results.sarif
