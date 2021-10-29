@@ -74,7 +74,7 @@ config :surface, :components, [
 config :ex_aws,
   json_codec: Jason
 
-config :sentry, enable_source_code_context: true
+config :sentry, enable_source_code_context: true, root_source_code_path: File.cwd!()
 
 config :hygeia, Hygeia.Jobs.SendCaseClosedEmail,
   url_generator: HygeiaWeb.SendCaseClosedEmailUrlGenerator
