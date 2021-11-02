@@ -93,6 +93,56 @@
                         </Inputs>
                       </div>
 
+                      {#if fetch_field!(school_visit.source, :known_school_uuid)}
+                        <Field
+                          class="form-group"
+                          name={:known_division_uuid}
+                        >
+                          <HygeiaWeb.FieldLabel />
+                          <HygeiaWeb.DivisionLive.Choose
+                            id={"school_#{fetch_field!(school_visit.source, :uuid)}_division"}
+                            change="select_school_division"
+                            subject={fetch_field!(school_visit.source, :uuid)}
+                            organisation={OrganisationContext.get_organisation!(fetch_field!(school_visit.source, :known_school_uuid))}
+                            disabled={fetch_field!(school_visit.source, :division_not_found)}
+                          />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+
+                        <Field
+                          :if={fetch_field!(school_visit.source, :known_division_uuid) === nil}
+                          class="form-group"
+                          name={:division_not_found}
+                        >
+                          <HygeiaWeb.FieldLabel class="me-2" />
+                          <Checkbox opts={
+                            checked:
+                              if fetch_field!(school_visit.source, :division_not_found) do
+                                "true"
+                              end
+                          } />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                      {/if}
+
+                      <div class="card mb-3" :if={fetch_field!(school_visit.source, :division_not_found) or fetch_field!(school_visit.source, :not_found)}>
+                        <div class="card-body">
+                          <h5>{gettext("Class or division")}</h5>
+                          <Inputs for={:unknown_division}>
+                            <InputContext assigns={assigns} :let={form: division}>
+                              <Field name={:name} class="form-group">
+                                <HygeiaWeb.FieldLabel />
+                                <TextInput class="form-control" />
+                                <ErrorTag class="d-block invalid-feedback" />
+                              </Field>
+                              <Inputs for={:address}>
+                                <HygeiaWeb.AddressForm id={"visited_school_#{fetch_field!(school_visit.source, :uuid)}_unknown_division_address"} />
+                              </Inputs>
+                            </InputContext>
+                          </Inputs>
+                        </div>
+                      </div>
+
                       <Field name={:visited_at} class="form-group">
                         <HygeiaWeb.FieldLabel />
                         <HygeiaWeb.DateInput class="form-control" />
@@ -383,6 +433,58 @@
                         </Inputs>
                       </Inputs>
                     </div>
+
+                    {#if fetch_field!(occupation.source, :known_organisation_uuid)}
+                      <Field
+                        class="form-group"
+                        name={:known_division_uuid}
+                      >
+                        <HygeiaWeb.FieldLabel />
+                        <HygeiaWeb.DivisionLive.Choose
+                          id={"organisation_#{fetch_field!(occupation.source, :uuid)}_division"}
+                          change="select_school_division"
+                          subject={fetch_field!(occupation.source, :uuid)}
+                          organisation={OrganisationContext.get_organisation!(fetch_field!(occupation.source, :known_organisation_uuid))}
+                          disabled={fetch_field!(occupation.source, :division_not_found)}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+
+                      <Field
+                        :if={fetch_field!(occupation.source, :known_division_uuid) === nil}
+                        class="form-group"
+                        name={:division_not_found}
+                      >
+                        <HygeiaWeb.FieldLabel class="me-2" />
+                        <Checkbox opts={
+                          checked:
+                            if fetch_field!(occupation.source, :division_not_found) do
+                              "true"
+                            end
+                        } />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    {/if}
+
+                    <div class="card mb-3" :if={fetch_field!(occupation.source, :division_not_found) or fetch_field!(occupation.source, :not_found)}>
+                      <div class="card-body">
+                        <h5>{gettext("Division")}</h5>
+                        <Inputs for={:unknown_division}>
+                          <InputContext assigns={assigns} :let={form: division}>
+                            <Field name={:name} class="form-group">
+                              <HygeiaWeb.FieldLabel />
+                              <TextInput class="form-control" />
+                              <ErrorTag class="d-block invalid-feedback" />
+                            </Field>
+                            <Inputs for={:address}>
+                              <HygeiaWeb.AddressForm id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_division_address"} />
+                            </Inputs>
+                          </InputContext>
+                        </Inputs>
+                      </div>
+                    </div>
+
+
                     <div :if={fetch_field!(occupation.source, :related_school_visit_uuid)}>
                       <small>{gettext(
                           "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."

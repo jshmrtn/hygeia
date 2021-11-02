@@ -69,20 +69,26 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
         true ->
           person_occupations =
-            case.person.affiliations
+            case.auto_tracing.occupations
             |> Enum.filter(&is_nil(&1.related_school_visit_uuid))
             |> Enum.map(
               &%Occupation{
                 uuid: Ecto.UUID.generate(),
                 kind: &1.kind,
                 kind_other: &1.kind_other,
-                known_organisation_uuid: &1.organisation_uuid
+                known_organisation_uuid: &1.known_organisation_uuid,
+                unknown_organisation: &1.unknown_organisation,
+                related_school_visit_uuid: &1.related_school_visit_uuid,
+                division_not_found: &1.division_not_found,
+                known_division_uuid: &1.known_division_uuid,
+                unknown_division: &1.unknown_division
               }
             )
 
           person_school_visit_occupations =
             case.person.affiliations
             |> Enum.filter(&(not is_nil(&1.related_school_visit_uuid)))
+
             |> Enum.map(
               &%Occupation{
                 uuid: Ecto.UUID.generate(),
@@ -106,20 +112,6 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
               }
             )
 
-          auto_tracing_occupations =
-            case.auto_tracing.occupations
-            |> Enum.filter(&is_nil(&1.related_school_visit_uuid))
-            |> Enum.map(
-              &%Occupation{
-                uuid: Ecto.UUID.generate(),
-                kind: &1.kind,
-                kind_other: &1.kind_other,
-                unknown_organisation: &1.unknown_organisation
-              }
-            )
-
-          occupations = person_occupations ++ auto_tracing_occupations
-
           school_visit_occupations =
             person_school_visit_occupations ++ auto_tracing_school_visit_occupations
 
@@ -127,13 +119,15 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
             scholar: case.auto_tracing.scholar,
             school_visits: case.auto_tracing.school_visits,
             employed:
-              case occupations do
+              case person_occupations do
                 [_occupations | _rest] -> true
                 [] -> case.auto_tracing.employed
               end,
-            occupations: occupations,
+            occupations: person_occupations,
             school_visit_occupations: school_visit_occupations
           }
+
+          IO.inspect(case.person.affiliations)
 
           assign(socket,
             step: step,
@@ -358,7 +352,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
           auto_tracing_changeset =
             auto_tracing
             |> AutoTracingContext.change_auto_tracing()
-            |> add_unknown_occupations(step)
+            |> add_occupations(step)
             |> put_embed(:school_visits, [])
 
           {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
@@ -498,6 +492,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
          occupations: occupations,
          school_visit_occupations: school_visit_occupations
        }) do
+        IO.inspect(person.affiliations, label: "PER")
     existing_organisation_uuids = Enum.map(person.affiliations, & &1.organisation_uuid)
     new_occupation_organisation_uuids = Enum.map(occupations, & &1.known_organisation_uuid)
 
@@ -530,7 +525,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     school_visit_affiliations =
       school_visit_occupations
       |> Enum.reject(&match?(%Occupation{known_organisation_uuid: nil}, &1))
-      |> Enum.reject(&(&1.known_organisation_uuid in existing_organisation_uuids))
+      #|> Enum.reject(&(&1.known_organisation_uuid in existing_organisation_uuids))
       |> Enum.map(
         &%Affiliation{
           uuid: Ecto.UUID.generate(),
@@ -553,7 +548,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     put_embed(auto_tracing_changeset, :school_visits, school_visits)
   end
 
-  defp add_unknown_occupations(auto_tracing_changeset, %__MODULE__{
+  defp add_occupations(auto_tracing_changeset, %__MODULE__{
          occupations: occupations,
          school_visit_occupations: school_visit_occupations,
          scholar: scholar,
@@ -562,11 +557,12 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     auto_tracing_changeset
     |> put_embed(
       :occupations,
-      Enum.filter(occupations, &match?(%Occupation{known_organisation_uuid: nil}, &1)) ++
-        Enum.filter(
-          school_visit_occupations,
-          &match?(%Occupation{known_organisation_uuid: nil}, &1)
-        )
+      occupations ++ school_visit_occupations
+      # Enum.filter(occupations, &match?(%Occupation{known_organisation_uuid: nil}, &1)) ++
+      #   Enum.filter(
+      #     school_visit_occupations,
+      #     &match?(%Occupation{known_organisation_uuid: nil}, &1)
+      #   )
     )
     |> put_change(:scholar, scholar)
     |> put_change(:employed, employed)

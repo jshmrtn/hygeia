@@ -37,8 +37,8 @@
           </Context>
         </div>
 
-        <div :if={value in [nil, ""] and not @disabled}>
-          <button class="btn btn-outline-primary" :on-click="open_modal" type="button">
+        <div :if={value in [nil, ""]}>
+          <button class="btn btn-outline-primary" :on-click="open_modal" type="button" disabled={@disabled}>
             {gettext("Choose division")}
           </button>
 

@@ -377,8 +377,11 @@ defmodule HygeiaWeb.Helpers.FieldName do
     },
     Hygeia.AutoTracingContext.AutoTracing.Occupation => %{
       kind: "Kind",
+      kind_other: "Kind other",
       known_organisation: "Organisation",
-      not_found: "Organisation not found"
+      not_found: "Organisation not found",
+      division_not_found: "Division not found",
+      known_division: "Division"
     },
     Hygeia.AutoTracingContext.AutoTracing.Propagator => %{
       first_name: "First Name",
@@ -391,7 +394,9 @@ defmodule HygeiaWeb.Helpers.FieldName do
       other_reason: "Please specify your reason",
       visited_at: "Date of last visit",
       known_school: "Educational institution",
-      not_found: "Institution not found"
+      not_found: "Institution not found",
+      division_not_found: "Class or division not found",
+      known_division: "Class or division"
     }
   }
 
