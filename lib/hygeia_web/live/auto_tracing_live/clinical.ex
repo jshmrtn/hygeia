@@ -18,6 +18,8 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.LiveRedirect
 
+  @days_before_test 4
+
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
     case =
@@ -267,7 +269,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   end
 
   defp index_phase_dates(case) do
-    {start_date, problems} = index_phase_start_date(case, days_before_test: 4)
+    {start_date, problems} = index_phase_start_date(case, days_before_test: @days_before_test)
 
     phase_start = Date.utc_today()
     phase_end = Date.add(start_date, 9)
@@ -297,7 +299,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
           []
 
         [date | _others] ->
-          if Date.diff(date, symptom_start) > days_before_test do
+          if Date.diff(date, symptom_start) >= days_before_test do
             [:phase_date_inconsistent]
           else
             []
