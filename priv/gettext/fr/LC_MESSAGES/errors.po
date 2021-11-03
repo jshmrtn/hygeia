@@ -13,39 +13,29 @@ msgstr ""
 msgid "are still associated with this entry"
 msgstr "sont toujours associés à cette entrée"
 
-#: lib/hygeia/case_context/possible_index_submission.ex:129
-#: lib/hygeia_web/live/auto_tracing_live/contact_methods.ex:169
 msgid "at least email / mobile must be provided"
 msgstr ""
 
 #, fuzzy
-#: lib/hygeia/auto_tracing_context/auto_tracing/propagator.ex:64
 msgid "at least one contact method must be provided"
 msgstr "au moins une méthode de contact doit être fournie"
 
 #, fuzzy
-#: lib/hygeia/case_context/person/vaccination.ex:94
 msgid "at least one date must be provided"
 msgstr "au moins une méthode de contact doit être fournie"
 
 #, fuzzy
-#: lib/hygeia/case_context/person/vaccination.ex:73
-#: lib/hygeia/case_context/person/vaccination.ex:117
 msgid "can't be blank"
 msgstr "ne peut pas être vide"
 
 #, fuzzy
-#: lib/hygeia/case_context/case/phase.ex:124
 msgid "date is to far away from today"
 msgstr "la date est trop éloignée d'aujourd'hui"
 
-#: lib/hygeia/case_context/case/clinical.ex:96
 msgid "date must be in the past"
 msgstr ""
 
 #, fuzzy
-#: lib/hygeia/case_context/transmission.ex:160
-#: lib/hygeia_web/live/case_live/create_possible_index/create_schema.ex:135
 msgid "date must not be in the future"
 msgstr "la date ne doit pas être dans le futur"
 
@@ -54,7 +44,6 @@ msgid "does not match confirmation"
 msgstr "ne correspond pas à la confirmation"
 
 #, fuzzy
-#: lib/hygeia/case_context/case/phase.ex:95
 msgid "end must be after start"
 msgstr "la fin doit être après le début"
 
@@ -70,30 +59,17 @@ msgstr "a une entrée invalide"
 msgid "has invalid format"
 msgstr "a un format invalide"
 
-#: lib/hygeia/communication_context/email.ex:181
 msgid "has no outgoing email configuration"
 msgstr ""
 
 #, fuzzy
-#: lib/hygeia/auto_tracing_context/auto_tracing.ex:156
-#: lib/hygeia/auto_tracing_context/auto_tracing.ex:160
-#: lib/hygeia/case_context/address.ex:49
-#: lib/hygeia/case_context/case.ex:196
-#: lib/hygeia/case_context/case.ex:200
-#: lib/hygeia/helpers/email.ex:25
-#: lib/hygeia/helpers/empty.ex:44
-#: lib/hygeia/helpers/phone.ex:36
-#: lib/hygeia/helpers/phone.ex:39
 msgid "is invalid"
 msgstr "n'est pas valide"
 
 #, fuzzy
-#: lib/hygeia/helpers/dns.ex:39
-#: lib/hygeia/helpers/dns.ex:43
 msgid "is not a valid hostname"
 msgstr "n'est pas un nom d'hôte valide"
 
-#: lib/hygeia/helpers/empty.ex:34
 msgid "is required"
 msgstr ""
 
@@ -165,6 +141,5 @@ msgstr[0] "devrait avoir au plus %{count} élément"
 msgstr[1] "devrait avoir au plus %{count} éléments"
 
 #, fuzzy
-#: lib/hygeia/case_context/case/phase.ex:89
 msgid "start must be before end"
 msgstr "le début doit être avant la fin"

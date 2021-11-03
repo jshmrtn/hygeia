@@ -79,7 +79,6 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
                 known_organisation_uuid: &1.organisation_uuid,
                 not_found: if(&1.unknown_organisation, do: true, else: false),
                 unknown_organisation: &1.unknown_organisation,
-                # related_school_visit_uuid: &1.related_school_visit_uuid,
                 division_not_found: if(&1.unknown_division, do: true, else: false),
                 known_division_uuid: &1.division_uuid,
                 unknown_division: &1.unknown_division
