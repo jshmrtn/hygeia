@@ -172,15 +172,16 @@
                       </div>
 
                       {#if get_field(school_visit.source, :visit_reason) in [:professor, :student, :employee]}
-                        <Field name={:is_occupied} class="form-group">
-                          <div class="btn-group btn-group-toggle btn-radio-group">
-                            <label class="input-group-text input-sm">
+                        <Field name={:is_occupied} class="form-group mb-4">
+                          <div class="btn-group-toggle btn-radio-group">
+                            <label class="d-block">
                               {#if get_field(school_visit.source, :visit_reason) == :student}
                                 {gettext("Are you a enrolled at this educational institution?")}
                               {#else}
                                 {gettext("Are you employed by this educational institution?")}
                               {/if}
                             </label>
+
                             <label class={
                               "btn btn-outline-primary",
                               active: get_field(school_visit.source, :is_occupied) == true
