@@ -377,6 +377,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
     },
     Hygeia.AutoTracingContext.AutoTracing.Occupation => %{
       kind: "Kind",
+      kind_other: "Kind other",
       known_organisation: "Organisation",
       not_found: "Organisation not found"
     },
