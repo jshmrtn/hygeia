@@ -61,7 +61,7 @@
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                       <Field
-                        :if={fetch_field!(school_visit.source, :known_school_uuid) === nil}
+                        :if={fetch_field!(school_visit.source, :known_school_uuid) == nil}
                         class="form-group"
                         name={:not_found}
                       >
@@ -107,7 +107,7 @@
                         </Field>
 
                         <Field
-                          :if={fetch_field!(school_visit.source, :known_division_uuid) === nil}
+                          :if={fetch_field!(school_visit.source, :known_division_uuid) == nil}
                           class="form-group"
                           name={:division_not_found}
                         >

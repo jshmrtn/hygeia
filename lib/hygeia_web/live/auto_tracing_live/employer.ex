@@ -524,6 +524,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     do: :employee
 
   defp filter_unknown_division(%Entity{
+         name: nil,
          address: %Address{address: nil, zip: nil, place: nil, subdivision: nil, country: "CH"}
        }),
        do: nil
