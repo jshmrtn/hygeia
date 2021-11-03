@@ -189,6 +189,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Address"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Address"
+msgstr ""
+
 msgid "Adress"
 msgstr ""
 
@@ -548,6 +552,17 @@ msgid "Choose test result"
 msgstr ""
 
 msgid "Cinema / theater / concert"
+msgstr ""
+
+msgid "Class or division"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division not found"
 msgstr ""
 
 msgctxt "Auto Tracing Step"
@@ -987,6 +1002,14 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Division"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Division"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division UUID"
 msgstr ""
@@ -995,6 +1018,14 @@ msgid "Division created successfully"
 msgstr ""
 
 msgid "Division deleted successfully"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Division not found"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Division not provided."
 msgstr ""
 
 msgid "Division updated successfully"
@@ -2357,6 +2388,10 @@ msgstr ""
 
 msgctxt "Auto Tracing Vaccination"
 msgid "Not Done"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Not provided"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
@@ -3787,6 +3822,10 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Title"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Title"
+msgstr ""
+
 msgid "To"
 msgstr ""
 
@@ -3959,6 +3998,12 @@ msgid "Unknown"
 msgstr ""
 
 msgid "Unknown Error"
+msgstr ""
+
+msgid "Unknown division"
+msgstr ""
+
+msgid "Unknown organisation"
 msgstr ""
 
 msgctxt "Auto Tracing Problem"
@@ -4161,6 +4206,10 @@ msgstr ""
 msgid "You must provide a reason for completing a phase."
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "You must resolve the organisation before choosing the right division."
+msgstr ""
+
 msgid "Your Tests"
 msgstr ""
 
@@ -4224,6 +4273,9 @@ msgstr ""
 
 msgctxt "Item Table"
 msgid "divisions"
+msgstr ""
+
+msgid "either an existing organisation, an unknown organisation or a comment must be filled"
 msgstr ""
 
 msgid "either organisation or comment must be filled"

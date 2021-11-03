@@ -8,7 +8,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
   import HygeiaGettext
 
   alias Hygeia.AutoTracingContext.AutoTracing.Flight
-  alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.AutoTracingContext.AutoTracing.Problem
   alias Hygeia.AutoTracingContext.AutoTracing.Propagator
   alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
@@ -22,7 +21,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           current_step: Step.t() | nil,
           last_completed_step: Step.t() | nil,
           employed: boolean() | nil,
-          occupations: [Occupation.t()] | nil,
           transmission: Transmission.t() | nil,
           problems: [Problem.t()] | nil,
           solved_problems: [Problem.t()] | nil,
@@ -42,7 +40,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           current_step: Step.t(),
           last_completed_step: Step.t() | nil,
           employed: boolean() | nil,
-          occupations: [Occupation.t()] | nil,
           transmission: Transmission.t() | nil,
           problems: [Problem.t()],
           solved_problems: [Problem.t()],
@@ -81,7 +78,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :started_at, :utc_datetime_usec, autogenerate: {DateTime, :utc_now, []}
 
     embeds_many :school_visits, SchoolVisit, on_replace: :delete
-    embeds_many :occupations, Occupation, on_replace: :delete
     embeds_many :flights, Flight, on_replace: :delete
 
     embeds_one :propagator, Propagator, on_replace: :delete
@@ -142,7 +138,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     ])
     |> validate_required([:current_step, :case_uuid])
     |> cast_embed(:school_visits)
-    |> cast_embed(:occupations)
     |> foreign_key_constraint(:transmission_uuid)
   end
 

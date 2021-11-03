@@ -8,6 +8,7 @@ defmodule Hygeia.OrganisationContext.Affiliation do
   import HygeiaGettext
 
   alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
+  alias Hygeia.CaseContext.Entity
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.OrganisationContext.Division
@@ -21,10 +22,12 @@ defmodule Hygeia.OrganisationContext.Affiliation do
           person: Ecto.Schema.belongs_to(Person.t()) | nil,
           organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
+          unknown_organisation: Entity.t() | nil,
           related_school_visit_uuid: Ecto.UUID.t() | nil,
           related_school_visit: Ecto.Schema.belongs_to(SchoolVisit.t()) | nil,
           division_uuid: Ecto.UUID.t() | nil,
           division: Ecto.Schema.belongs_to(Division.t()) | nil,
+          unknown_division: Entity.t() | nil,
           tenant: Ecto.Schema.has_one(Tenant.t()) | nil,
           comment: String.t() | nil,
           inserted_at: DateTime.t() | nil,
@@ -38,10 +41,12 @@ defmodule Hygeia.OrganisationContext.Affiliation do
           person: Ecto.Schema.belongs_to(Person.t()),
           organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
+          unknown_organisation: Entity.t() | nil,
           related_school_visit_uuid: Ecto.UUID.t() | nil,
           related_school_visit: Ecto.Schema.belongs_to(SchoolVisit.t()) | nil,
           division_uuid: Ecto.UUID.t() | nil,
           division: Ecto.Schema.belongs_to(Division.t()) | nil,
+          unknown_division: Entity.t() | nil,
           tenant: Ecto.Schema.has_one(Tenant.t()),
           comment: String.t() | nil,
           inserted_at: DateTime.t(),
@@ -56,12 +61,16 @@ defmodule Hygeia.OrganisationContext.Affiliation do
     belongs_to :person, Person, references: :uuid, foreign_key: :person_uuid
     belongs_to :organisation, Organisation, references: :uuid, foreign_key: :organisation_uuid
 
+    embeds_one :unknown_organisation, Entity, on_replace: :delete
+
     belongs_to :related_school_visit, SchoolVisit,
       references: :uuid,
       foreign_key: :related_school_visit_uuid
 
     belongs_to :division, Division, references: :uuid, foreign_key: :division_uuid
     has_one :tenant, through: [:person, :tenant]
+
+    embeds_one :unknown_division, Entity, on_replace: :delete
 
     timestamps()
   end
@@ -86,13 +95,43 @@ defmodule Hygeia.OrganisationContext.Affiliation do
       |> assoc_constraint(:division)
       |> validate_kind_other()
       |> validate_organisation_or_comment()
+      |> validate_organisation()
+      |> validate_division()
 
   defp validate_organisation_or_comment(changeset) do
     with nil <- fetch_field!(changeset, :organisation_uuid),
+         nil <- fetch_field!(changeset, :unknown_organisation),
          nil <- fetch_field!(changeset, :comment) do
-      add_error(changeset, :comment, gettext("either organisation or comment must be filled"))
+      add_error(
+        changeset,
+        :comment,
+        gettext(
+          "either an existing organisation, an unknown organisation or a comment must be filled"
+        )
+      )
     else
       _other -> changeset
+    end
+  end
+
+  defp validate_organisation(changeset) do
+    changeset
+    |> fetch_field!(:organisation_uuid)
+    |> case do
+      nil ->
+        cast_embed(changeset, :unknown_organisation)
+
+      _else ->
+        put_embed(changeset, :unknown_organisation, nil)
+    end
+  end
+
+  defp validate_division(changeset) do
+    changeset
+    |> fetch_field!(:division_uuid)
+    |> case do
+      nil -> cast_embed(changeset, :unknown_division)
+      _else -> put_embed(changeset, :unknown_division, nil)
     end
   end
 

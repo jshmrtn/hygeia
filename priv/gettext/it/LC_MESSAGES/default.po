@@ -193,6 +193,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Address"
 msgstr "Indirizzo"
 
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Address"
+msgstr "Indirizzo"
+
 msgid "Adress"
 msgstr "Indirizzo"
 
@@ -585,6 +590,17 @@ msgstr "Scegliere il risultato del test"
 
 msgid "Cinema / theater / concert"
 msgstr "Cinema / teatro / concerto"
+
+msgid "Class or division"
+msgstr "Classe o divisione"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division"
+msgstr "Classe o divisione"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division not found"
+msgstr "Classe o divisione non trovata"
 
 msgctxt "Auto Tracing Step"
 msgid "Clinical"
@@ -1128,6 +1144,16 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division"
 msgstr "Sezione"
 
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Division"
+msgstr "Sezione"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Division"
+msgstr "Sezione"
+
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division UUID"
 msgstr "UUID della sezione"
@@ -1137,6 +1163,15 @@ msgstr "Sezione creata con successo"
 
 msgid "Division deleted successfully"
 msgstr "Sezione cancellata con successo"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Division not found"
+msgstr "Sezione"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Division not provided."
+msgstr "Divisione non fornita."
 
 msgid "Division updated successfully"
 msgstr "Sezione aggiornata con successo"
@@ -2692,6 +2727,10 @@ msgctxt "Auto Tracing Vaccination"
 msgid "Not Done"
 msgstr "Non Fatto"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Not provided"
+msgstr "Non fornito"
+
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
 msgid "Note"
@@ -3519,7 +3558,7 @@ msgid "Requested document is currently unavailable"
 msgstr "Il documento richiesto non è attualmente disponibile"
 
 msgid "Reset filters"
-msgstr ""
+msgstr "Reimposta filtri predefiniti"
 
 msgid "Reset tracer & supervisor"
 msgstr "Ripristina il tracciatore e il supervisore"
@@ -4367,6 +4406,11 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Title"
 msgstr "Titolo"
 
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Title"
+msgstr "Titolo"
+
 msgid "To"
 msgstr "A"
 
@@ -4580,6 +4624,12 @@ msgstr "Sconosciuto"
 
 msgid "Unknown Error"
 msgstr "Errore sconosciuto"
+
+msgid "Unknown division"
+msgstr "Classe / divisione sconosciuta"
+
+msgid "Unknown organisation"
+msgstr "Organizzazione sconosciuta"
 
 msgctxt "Auto Tracing Problem"
 msgid "Unmanaged Tenant"
@@ -4815,6 +4865,10 @@ msgstr "Hai selezionato un tipo di file inaccettabile"
 msgid "You must provide a reason for completing a phase."
 msgstr "È necessario fornire una ragione per completare una fase."
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "You must resolve the organisation before choosing the right division."
+msgstr "È necessario risolvere l'organizzazione prima di scegliere la divisione giusta."
+
 msgid "Your Tests"
 msgstr "I tuoi test"
 
@@ -4888,6 +4942,9 @@ msgstr "cancellato"
 msgctxt "Item Table"
 msgid "divisions"
 msgstr "sezioni"
+
+msgid "either an existing organisation, an unknown organisation or a comment must be filled"
+msgstr "inserisci un'organizzazione esistente, una nuova organizzazione oppure un commento"
 
 #, fuzzy
 msgid "either organisation or comment must be filled"

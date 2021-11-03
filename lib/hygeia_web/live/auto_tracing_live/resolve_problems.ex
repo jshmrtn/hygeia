@@ -7,7 +7,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
-  alias Hygeia.OrganisationContext.Affiliation
+  alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
   alias Surface.Components.Form
@@ -90,7 +90,11 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [affiliations: []], auto_tracing: [transmission: []], tests: [])
+      |> Repo.preload(
+        person: [affiliations: [:organisation, :division]],
+        auto_tracing: [transmission: []],
+        tests: []
+      )
 
     socket =
       cond do
@@ -249,41 +253,68 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   end
 
   def handle_event(
-        "select_occupation_organisation",
-        %{"subject" => occupation_uuid, "uuid" => organisation_uuid},
+        "select_affiliation_organisation",
+        %{"subject" => affiliation_uuid, "uuid" => organisation_uuid},
         socket
       ) do
-    {[occupation], rest} =
-      Enum.split_with(socket.assigns.auto_tracing.occupations, &(&1.uuid == occupation_uuid))
+    {:ok, affiliation} =
+      socket.assigns.person.affiliations
+      |> Enum.find(&match?(^affiliation_uuid, &1.uuid))
+      |> OrganisationContext.update_affiliation(%{
+        organisation_uuid: organisation_uuid,
+        unknown_organisation: nil
+      })
 
-    {:ok, person} =
-      socket.assigns.person
-      |> CaseContext.change_person()
-      |> Ecto.Changeset.put_assoc(
-        :affiliations,
-        socket.assigns.person.affiliations ++
-          [
-            %Affiliation{
-              uuid: Ecto.UUID.generate(),
-              kind: occupation.kind,
-              kind_other: occupation.kind_other,
-              organisation_uuid: organisation_uuid,
-              related_school_visit_uuid: occupation.related_school_visit_uuid
-            }
-          ]
-      )
-      |> CaseContext.update_person()
+    person =
+      affiliation.person_uuid
+      |> CaseContext.get_person!()
+      |> Repo.preload(affiliations: [:organisation, :division])
 
     {:ok, auto_tracing} =
-      socket.assigns.auto_tracing
-      |> AutoTracingContext.change_auto_tracing()
-      |> Ecto.Changeset.put_embed(:occupations, rest)
-      |> AutoTracingContext.update_auto_tracing()
+      if Enum.any?(
+           person.affiliations,
+           &(is_map(&1.unknown_organisation) or is_map(&1.unknown_division))
+         ) do
+        {:ok, socket.assigns.auto_tracing}
+      else
+        AutoTracingContext.auto_tracing_resolve_problem(
+          socket.assigns.auto_tracing,
+          :new_employer
+        )
+      end
+
+    {:noreply, assign(socket, person: person, auto_tracing: auto_tracing)}
+  end
+
+  def handle_event(
+        "select_organisation_division",
+        %{"subject" => affiliation_uuid, "uuid" => division_uuid},
+        socket
+      ) do
+    {:ok, affiliation} =
+      socket.assigns.person.affiliations
+      |> Enum.find(&match?(^affiliation_uuid, &1.uuid))
+      |> OrganisationContext.update_affiliation(%{
+        division_uuid: division_uuid,
+        unknown_division: nil
+      })
+
+    person =
+      affiliation.person_uuid
+      |> CaseContext.get_person!()
+      |> Repo.preload(affiliations: [:organisation, :division])
 
     {:ok, auto_tracing} =
-      case rest do
-        [] -> AutoTracingContext.auto_tracing_resolve_problem(auto_tracing, :new_employer)
-        _more -> {:ok, auto_tracing}
+      if Enum.any?(
+           person.affiliations,
+           &(is_map(&1.unknown_organisation) or is_map(&1.unknown_division))
+         ) do
+        {:ok, socket.assigns.auto_tracing}
+      else
+        AutoTracingContext.auto_tracing_resolve_problem(
+          socket.assigns.auto_tracing,
+          :new_employer
+        )
       end
 
     {:noreply, assign(socket, person: person, auto_tracing: auto_tracing)}

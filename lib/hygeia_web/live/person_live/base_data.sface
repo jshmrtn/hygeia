@@ -11,7 +11,7 @@
         put={
           duplicate_persons:
             @changeset
-            |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+            |> fetch_field!(:suspected_duplicates_uuid)
             |> load_people_by_id
         }
         get={duplicate_persons: duplicate_persons}
@@ -67,7 +67,7 @@
         <LivePatch
           class="me-2"
           to={Routes.case_create_path(@socket, :create,
-            tenant_uuid: Ecto.Changeset.fetch_field!(@changeset, :tenant_uuid),
+            tenant_uuid: fetch_field!(@changeset, :tenant_uuid),
             person_uuid: @person,
             return_to: Routes.case_index_path(@socket, :index)
           )}
@@ -234,12 +234,12 @@
                           class="form-control"
                           field={:value}
                           opts={disabled: @live_action == :show}
-                          :if={@live_action == :edit or Ecto.Changeset.fetch_field!(form.source, :type) == :other}
+                          :if={@live_action == :edit or fetch_field!(form.source, :type) == :other}
                         />
                         <Link
-                          :if={@live_action == :show and Ecto.Changeset.fetch_field!(form.source, :type) in [:mobile, :landline]}
+                          :if={@live_action == :show and fetch_field!(form.source, :type) in [:mobile, :landline]}
                           to={form.source
-                          |> Ecto.Changeset.fetch_field!(:value)
+                          |> fetch_field!(:value)
                           |> ExPhoneNumber.parse("CH")
                           |> case do
                             {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
@@ -247,7 +247,7 @@
                           end}
                         >
                           {form.source
-                          |> Ecto.Changeset.fetch_field!(:value)
+                          |> fetch_field!(:value)
                           |> ExPhoneNumber.parse("CH")
                           |> case do
                             {:ok, number} -> ExPhoneNumber.format(number, :international)
@@ -255,10 +255,10 @@
                           end}
                         </Link>
                         <Link
-                          :if={@live_action == :show and Ecto.Changeset.fetch_field!(form.source, :type) in [:email]}
-                          to={"mailto:#{Ecto.Changeset.fetch_field!(form.source, :value)}"}
+                          :if={@live_action == :show and fetch_field!(form.source, :type) in [:email]}
+                          to={"mailto:#{fetch_field!(form.source, :value)}"}
                         >
-                          {Ecto.Changeset.fetch_field!(form.source, :value)}
+                          {fetch_field!(form.source, :value)}
                         </Link>
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
@@ -272,7 +272,7 @@
                           type="button"
                           class="btn btn-danger"
                           :on-click="remove_contact_method"
-                          phx-value-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
+                          phx-value-uuid={fetch_field!(form.source, :uuid)}
                         >
                           <span class="oi oi-trash" aria-hidden="true" />
                         </button>
@@ -312,7 +312,7 @@
                       <Select
                         class="form-control"
                         opts={prompt: gettext("Choose profession category"), disabled: @live_action == :show}
-                        options={case Ecto.Changeset.get_field(@changeset, :profession_category_main) do
+                        options={case get_field(@changeset, :profession_category_main) do
                           nil -> []
                           section -> NOGA.Code.select_options(section)
                         end}
@@ -326,7 +326,7 @@
                   <Inputs for={:affiliations}>
                     <HiddenInput field={:uuid} />
                     <InputContext assigns={assigns} :let={form: form}>
-                      <div class="card" id={"affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}>
+                      <div class="card" id={"affiliations_#{fetch_field!(form.source, :uuid)}"}>
                         <div class="card-body">
                           <div class="row">
                             <div class="col">
@@ -343,7 +343,7 @@
                                 <ErrorTag class="d-block invalid-feedback" />
                               </Field>
                             </div>
-                            <div :if={Ecto.Changeset.fetch_field!(form.source, :kind) == :other} class="col">
+                            <div :if={fetch_field!(form.source, :kind) == :other} class="col">
                               <Field name={:kind_other} class="form-group">
                                 <HygeiaWeb.FieldLabel />
                                 <TextInput class="form-control" opts={disabled: @live_action == :show} />
@@ -358,39 +358,64 @@
                             <ErrorTag class="d-block invalid-feedback" />
                           </Field>
 
-                          <Field class="form-group" name={:organisation_uuid}>
-                            <HygeiaWeb.FieldLabel />
-                            <HygeiaWeb.OrganisationLive.Choose
-                              id={"affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}_organisation"}
-                              change="select_affiliation_organisation"
-                              subject={Ecto.Changeset.fetch_field!(form.source, :uuid)}
-                              disabled={@live_action == :show}
-                            />
-                            <ErrorTag class="d-block invalid-feedback" />
-                          </Field>
+                          {#if unknown_organisation = fetch_field!(form.source, :unknown_organisation)}
+                            <div>{gettext("Unknown organisation")}</div>
+                            <div class="p-3">
+                              <strong>{unknown_organisation.name}</strong>
+                              <div class="mb-3">{Address.to_string(unknown_organisation.address, :long)}</div>
+                            </div>
+                          {/if}
 
-                          <Field
-                            :if={Ecto.Changeset.fetch_field!(form.source, :organisation_uuid)}
-                            class="form-group"
-                            name={:division_uuid}
-                          >
-                            <HygeiaWeb.FieldLabel />
-                            <HygeiaWeb.DivisionLive.Choose
-                              id={"affiliations_#{Ecto.Changeset.fetch_field!(form.source, :uuid)}_division"}
-                              change="select_affiliation_division"
-                              subject={Ecto.Changeset.fetch_field!(form.source, :uuid)}
-                              organisation={load_organisation(Ecto.Changeset.fetch_field!(form.source, :organisation_uuid))}
-                              disabled={@live_action == :show}
-                            />
-                            <ErrorTag class="d-block invalid-feedback" />
-                          </Field>
+                          {#unless is_nil(fetch_field!(form.source, :organisation_uuid)) and @live_action == :show}
+                            <Field class="form-group" name={:organisation_uuid}>
+                              <HygeiaWeb.FieldLabel />
+                              <HygeiaWeb.OrganisationLive.Choose
+                                id={"affiliations_#{fetch_field!(form.source, :uuid)}_organisation"}
+                                change="select_affiliation_organisation"
+                                subject={fetch_field!(form.source, :uuid)}
+                                disabled={@live_action == :show}
+                              />
+                              <ErrorTag class="d-block invalid-feedback" />
+                            </Field>
+                          {/unless}
+
+                          {#if unknown_division = fetch_field!(form.source, :unknown_division)}
+                            <p :if={is_nil(fetch_field!(form.source, :organisation_uuid)) and @live_action == :edit}>{pgettext(
+                                "Auto Tracing Resolve Problems",
+                                "You must resolve the organisation before choosing the right division."
+                              )}</p>
+                            <div>{gettext("Unknown division")}</div>
+                            <div class="p-3">
+                              <strong>{unknown_division.name}</strong>
+                              <div class="mb-3">{Address.to_string(unknown_division.address, :long)}</div>
+                            </div>
+                          {/if}
+
+                          {#unless is_nil(fetch_field!(form.source, :division_uuid)) and @live_action == :show}
+                            <Field
+                              :if={fetch_field!(form.source, :organisation_uuid)}
+                              class="form-group"
+                              name={:division_uuid}
+                            >
+                              <HygeiaWeb.FieldLabel />
+                              <HygeiaWeb.DivisionLive.Choose
+                                id={"affiliations_#{fetch_field!(form.source, :uuid)}_division"}
+                                change="select_affiliation_division"
+                                subject={fetch_field!(form.source, :uuid)}
+                                organisation={load_organisation(fetch_field!(form.source, :organisation_uuid))}
+                                disabled={@live_action == :show}
+                                show_buttons={@live_action == :edit}
+                              />
+                              <ErrorTag class="d-block invalid-feedback" />
+                            </Field>
+                          {/unless}
 
                           <div :if={@live_action == :edit}>
                             <button
                               type="button"
                               class="btn btn-danger"
                               :on-click="remove_affiliation"
-                              phx-value-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
+                              phx-value-uuid={fetch_field!(form.source, :uuid)}
                             >
                               <span class="oi oi-trash" aria-hidden="true" />
                             </button>
@@ -425,8 +450,8 @@
                           "btn",
                           "btn-sm",
                           "btn-outline-primary",
-                          disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != nil,
-                          active: Ecto.Changeset.get_field(form.source, :done) == nil
+                          disabled: @live_action == :show && get_field(form.source, :done) != nil,
+                          active: get_field(form.source, :done) == nil
                         }>
                           <RadioButton value={nil} opts={disabled: @live_action == :show} />
                           {pgettext("vaccination_done", "Unknown")}
@@ -436,8 +461,8 @@
                           "btn",
                           "btn-sm",
                           "btn-outline-primary",
-                          disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != true,
-                          active: Ecto.Changeset.get_field(form.source, :done) == true
+                          disabled: @live_action == :show && get_field(form.source, :done) != true,
+                          active: get_field(form.source, :done) == true
                         }>
                           <RadioButton value opts={disabled: @live_action == :show} />
                           {pgettext("vaccination_done", "Done")}
@@ -446,8 +471,8 @@
                           "btn",
                           "btn-sm",
                           "btn-outline-primary",
-                          disabled: @live_action == :show && Ecto.Changeset.get_field(form.source, :done) != false,
-                          active: Ecto.Changeset.get_field(form.source, :done) == false
+                          disabled: @live_action == :show && get_field(form.source, :done) != false,
+                          active: get_field(form.source, :done) == false
                         }>
                           <RadioButton value={false} opts={disabled: @live_action == :show} />
                           {pgettext("vaccination_done", "Not Done")}

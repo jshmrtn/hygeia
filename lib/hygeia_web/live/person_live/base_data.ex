@@ -3,6 +3,8 @@ defmodule HygeiaWeb.PersonLive.BaseData do
 
   use HygeiaWeb, :surface_view
 
+  import Ecto.Changeset
+
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case

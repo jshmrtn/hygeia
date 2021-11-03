@@ -186,27 +186,82 @@
                           </button>
                         </Form>
                       {#match :new_employer}
-                        <div :for={occupation <- @auto_tracing.occupations}>
-                          {#if occupation.unknown_organisation}
-                            <strong>{occupation.unknown_organisation.name}</strong>
-                            <div class="mb-3">{Address.to_string(occupation.unknown_organisation.address, :long)}</div>
-                            <Form for={@occupation_form}>
-                              <Field name={:organisation_uuid}>
-                                <HygeiaWeb.OrganisationLive.Choose
-                                  id={"occupation_#{occupation.uuid}_organisation"}
-                                  change="select_occupation_organisation"
-                                  subject={occupation.uuid}
-                                  value={nil}
-                                />
-                              </Field>
-                            </Form>
-                          {#else}
-                            <!-- TODO: Make sure that this can't be entered anymore (https://github.com/jshmrtn/hygeia/issues/570) -->
-                            <p>{pgettext(
-                                "Auto Tracing Resolve Problems",
-                                "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
-                              )}</p>
-                          {/if}
+                        <div class="hy-card-grid-2-cols">
+                          <div :for={affiliation <- @person.affiliations} class="card card-body">
+                            {#if affiliation.unknown_organisation}
+                              <strong>{affiliation.unknown_organisation.name}</strong>
+                              <div class="mb-3">{Address.to_string(affiliation.unknown_organisation.address, :long)}</div>
+                              <Form for={@occupation_form}>
+                                <Field name={:organisation_uuid}>
+                                  <HygeiaWeb.OrganisationLive.Choose
+                                    id={"affiliation_#{affiliation.uuid}_organisation"}
+                                    change="select_affiliation_organisation"
+                                    subject={affiliation.uuid}
+                                  />
+                                </Field>
+                              </Form>
+                            {#else}
+                              <strong>{affiliation.organisation.name}</strong>
+                              <div class="mb-3">{Address.to_string(affiliation.organisation.address, :long)}</div>
+                            {/if}
+
+                            <div class="mt-2"><strong>{pgettext("Auto Tracing Resolve Problems", "Division")}:</strong></div>
+
+                            {#if is_map(affiliation.unknown_organisation) and is_map(affiliation.unknown_division)}
+                              <div class="my-2">{pgettext(
+                                  "Auto Tracing Resolve Problems",
+                                  "You must resolve the organisation before choosing the right division."
+                                )}</div>
+                              <div>
+                                {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                {affiliation.unknown_division.name}
+                              </div>
+                              <div class="mb-3">
+                                {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                {Address.to_string(affiliation.unknown_division.address, :long)}
+                              </div>
+                            {#else}
+                              {#case {affiliation.division, affiliation.unknown_division}}
+                                {#match {nil, nil}}
+                                  <div>{pgettext("Auto Tracing Resolve Problems", "Division not provided.")}</div>
+                                {#match {division, nil}}
+                                  <div>
+                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {division.title}
+                                  </div>
+                                  <div class="mb-3">
+                                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                    {address = if division.shares_address, do: affiliation.organisation.address, else: division.address
+                                    
+                                    if address do
+                                      Address.to_string(address, :long)
+                                    else
+                                      pgettext("Auto Tracing Resolve Problems", "Not provided")
+                                    end}
+                                  </div>
+                                {#match {nil, unknown_division}}
+                                  <div>
+                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {unknown_division.name}
+                                  </div>
+                                  <div class="mb-3">
+                                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                    {Address.to_string(unknown_division.address, :long)}
+                                  </div>
+
+                                  <Form for={@occupation_form}>
+                                    <Field name={:division_uuid}>
+                                      <HygeiaWeb.DivisionLive.Choose
+                                        id={"affiliation_#{affiliation.uuid}_organisation_division"}
+                                        change="select_organisation_division"
+                                        subject={affiliation.uuid}
+                                        organisation={affiliation.organisation}
+                                      />
+                                    </Field>
+                                  </Form>
+                              {/case}
+                            {/if}
+                          </div>
                         </div>
                       {#match :hospitalization}
                         <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
@@ -214,38 +269,63 @@
                           {pgettext("Auto Tracing Resolve Problems", "Done")}
                         </button>
                       {#match :school_related}
-                        {#if schools = Enum.group_by(@auto_tracing.school_visits, & &1.not_found)}
-                          <p>{pgettext(
-                              "Auto Tracing Resolve Problems",
-                              "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
-                            )}:</p>
-
-                          {#if known_school_visits = Map.get(schools, false)}
-                            <p>{pgettext("Auto Tracing Resolve Problems", "Known institutions")}:</p>
-                            <div class="hy-card-grid-2-cols">
-                              <div :for={school_visit <- Enum.map(known_school_visits, &Repo.preload(&1, [:known_school]))}>
-                                <strong>{school_visit.known_school.name}</strong>
+                        <p>{pgettext(
+                            "Auto Tracing Resolve Problems",
+                            "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
+                          )}:</p>
+                        <div class="hy-card-grid-2-cols">
+                          {#for school <-
+                              Enum.map(@auto_tracing.school_visits, &Repo.preload(&1, [:known_school, :known_division]))}
+                            <div class="card card-body">
+                              {#if school.not_found}
+                                <strong>{school.unknown_school.name}</strong>
+                                <small class="d-block text-muted">{Address.to_string(school.unknown_school.address, :long)}</small>
+                                <div>{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(school.visit_reason)}</div>
+                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Date of last visit")}: {HygeiaCldr.Date.to_string!(school.visited_at)}</div>
+                              {#else}
+                                <strong>{school.known_school.name}</strong>
                                 <small class="d-block text-muted">
-                                  {Organisation.type_name(school_visit.known_school)}
+                                  {Organisation.type_name(school.known_school)}
                                 </small>
-                                <small class="d-block text-muted">{Address.to_string(school_visit.known_school.address, :long)}</small>
-                                <div>{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(school_visit.visit_reason)}</div>
-                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Date of last visit")}: {HygeiaCldr.Date.to_string!(school_visit.visited_at)}</div>
-                              </div>
+                                <small class="d-block text-muted">{Address.to_string(school.known_school.address, :long)}</small>
+                                <div>{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(school.visit_reason)}</div>
+                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Date of last visit")}: {HygeiaCldr.Date.to_string!(school.visited_at)}</div>
+                              {/if}
+
+                              <div class="mt-2"><strong>{pgettext("Auto Tracing Resolve Problems", "Division")}:</strong></div>
+
+                              {#case {school.known_division, school.unknown_division}}
+                                {#match {nil, nil}}
+                                  <div>{pgettext("Auto Tracing Resolve Problems", "Division not provided.")}</div>
+                                {#match {division, nil}}
+                                  <div>
+                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {division.title}
+                                  </div>
+                                  <div class="mb-3">
+                                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                    {address = if division.shares_address, do: school.known_school.address, else: division.address
+                                    
+                                    if address do
+                                      Address.to_string(address, :long)
+                                    else
+                                      pgettext("Auto Tracing Resolve Problems", "Not provided")
+                                    end}
+                                  </div>
+                                {#match {nil, unknown_division}}
+                                  <div>
+                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {unknown_division.name}
+                                  </div>
+                                  <div class="mb-3">
+                                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                    {Address.to_string(unknown_division.address, :long)}
+                                  </div>
+                              {/case}
                             </div>
-                          {/if}
-                          {#if unknown_school_visits = Map.get(schools, true)}
-                            <div class="hy-card-grid-2-cols">
-                              <div :for={school_visit <- unknown_school_visits}>
-                                <strong>{school_visit.unknown_school.name}</strong>
-                                <small class="d-block text-muted">{Address.to_string(school_visit.unknown_school.address, :long)}</small>
-                                <div>{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(school_visit.visit_reason)}</div>
-                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Date of last visit")}: {HygeiaCldr.Date.to_string!(school_visit.visited_at)}</div>
-                              </div>
-                            </div>
-                          {/if}
-                        {/if}
-                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {/for}
+                        </div>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary mt-2">
                           {pgettext("Auto Tracing Resolve Problems", "Done")}
                         </button>
                       {#match :flight_related}

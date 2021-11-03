@@ -5,6 +5,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
 
   alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason
   alias Hygeia.CaseContext.Entity
+  alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
 
   @type empty :: %__MODULE__{
@@ -15,7 +16,10 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
           visited_at: Date.t() | nil,
           not_found: boolean() | nil,
           known_school: Ecto.Schema.belongs_to(Organisation.t()) | nil,
-          unknown_school: Entity.t() | nil
+          unknown_school: Entity.t() | nil,
+          division_not_found: boolean() | nil,
+          known_division: Ecto.Schema.belongs_to(Division.t()) | nil,
+          unknown_division: Entity.t() | nil
         }
 
   @type t :: %__MODULE__{
@@ -26,7 +30,10 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
           visited_at: Date.t(),
           not_found: boolean() | nil,
           known_school: Ecto.Schema.belongs_to(Organisation.t()) | nil,
-          unknown_school: Entity.t() | nil
+          unknown_school: Entity.t() | nil,
+          division_not_found: boolean() | nil,
+          known_division: Ecto.Schema.belongs_to(Division.t()) | nil,
+          unknown_division: Entity.t() | nil
         }
 
   embedded_schema do
@@ -42,6 +49,14 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
     field :not_found, :boolean, default: false
 
     embeds_one :unknown_school, Entity, on_replace: :delete
+
+    belongs_to :known_division, Division,
+      foreign_key: :known_division_uuid,
+      references: :uuid
+
+    field :division_not_found, :boolean, default: false
+
+    embeds_one :unknown_division, Entity, on_replace: :delete
   end
 
   @spec changeset(schema :: t | empty, attrs :: map()) ::
@@ -55,13 +70,16 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
       :other_reason,
       :visited_at,
       :not_found,
-      :known_school_uuid
+      :known_school_uuid,
+      :division_not_found,
+      :known_division_uuid
     ])
     |> fill_uuid()
     |> validate_required([:visit_reason, :visited_at])
     |> validate_occupied()
     |> validate_other_reason()
     |> validate_existent_school()
+    |> validate_division()
   end
 
   defp validate_occupied(changeset) do
@@ -87,6 +105,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
           with: &Entity.changeset(&1, &2, %{name_required: true, address_required: true})
         )
         |> put_change(:known_school_uuid, nil)
+        |> put_change(:division_not_found, true)
 
       _else ->
         changeset
@@ -101,6 +120,20 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
     |> case do
       :other -> validate_required(changeset, [:other_reason])
       _defined -> put_change(changeset, :other_reason, nil)
+    end
+  end
+
+  defp validate_division(changeset) do
+    changeset
+    |> fetch_field!(:division_not_found)
+    |> case do
+      true ->
+        changeset
+        |> cast_embed(:unknown_division)
+        |> put_change(:known_division_uuid, nil)
+
+      _else ->
+        put_change(changeset, :unknown_division, nil)
     end
   end
 end

@@ -22,6 +22,8 @@ defmodule HygeiaWeb.DivisionLive.Choose do
 
   prop disabled, :boolean, default: false
 
+  prop show_buttons, :boolean, default: true
+
   prop subject, :any, default: nil
 
   @doc "Value to pre-populated the input"

@@ -182,6 +182,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Address"
 msgstr "Adresse"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Address"
+msgstr "Adresse"
+
 msgid "Adress"
 msgstr "Adresse"
 
@@ -542,6 +546,17 @@ msgstr "Testergebnis wählen"
 
 msgid "Cinema / theater / concert"
 msgstr "Kino / Theater / Konzert"
+
+msgid "Class or division"
+msgstr "Abteilung / Klasse"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division"
+msgstr "Abteilung / Klasse"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division not found"
+msgstr "Abteilung / Klasse nicht gefunden"
 
 msgctxt "Auto Tracing Step"
 msgid "Clinical"
@@ -1039,6 +1054,14 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division"
 msgstr "Abteilung / Klasse"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Division"
+msgstr "Abteilung / Klasse"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Division"
+msgstr "Abteilung / Klasse"
+
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division UUID"
 msgstr "Abteilung / Klasse UUID"
@@ -1048,6 +1071,14 @@ msgstr "Abteilung / Klasse wurde erfolgreich erstellt"
 
 msgid "Division deleted successfully"
 msgstr "Abteilung / Klasse erfolgreich gelöscht"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Division not found"
+msgstr "Abteilung / Klasse nicht gefunden"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Division not provided."
+msgstr "Abteilung / Klasse nicht angegeben."
 
 msgid "Division updated successfully"
 msgstr "Abteilung / Klasse wurde erfolgreich aktualisiert"
@@ -1924,7 +1955,6 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Kind Other"
 msgstr "Andere Art"
 
-#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Kind other"
 msgstr "Andere Art"
@@ -2418,6 +2448,10 @@ msgstr "Nicht Erledigt"
 msgctxt "Auto Tracing Vaccination"
 msgid "Not Done"
 msgstr "Nicht Erledigt"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Not provided"
+msgstr "Nicht bereitgestellt"
 
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
 msgid "Note"
@@ -3847,6 +3881,10 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Title"
 msgstr "Titel"
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Title"
+msgstr "Titel"
+
 msgid "To"
 msgstr "Bis"
 
@@ -4020,6 +4058,12 @@ msgstr "Unbekannt"
 
 msgid "Unknown Error"
 msgstr "Unbekannter Fehler"
+
+msgid "Unknown division"
+msgstr "Unbekannte Abteilung / Klasse"
+
+msgid "Unknown organisation"
+msgstr "Unbekannte Organisation"
 
 msgctxt "Auto Tracing Problem"
 msgid "Unmanaged Tenant"
@@ -4221,6 +4265,10 @@ msgstr "Sie haben einen ungültigen Dateityp ausgewählt"
 msgid "You must provide a reason for completing a phase."
 msgstr "Bei “Phasen” soll für die Beendigung des Tracings bzw. der Isolation ein Grund angegeben werden."
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "You must resolve the organisation before choosing the right division."
+msgstr "Sie müssen die Organisation auswählen, bevor Sie die Abteilung / Klasse auswählen können."
+
 msgid "Your Tests"
 msgstr "Ihre Tests"
 
@@ -4285,6 +4333,9 @@ msgstr "Gelöscht"
 msgctxt "Item Table"
 msgid "divisions"
 msgstr "Abteilungen / Klassen"
+
+msgid "either an existing organisation, an unknown organisation or a comment must be filled"
+msgstr "entweder eine bestehende Organisation, eine unbekannte Organisation oder ein Kommentar muss ausgefüllt werden"
 
 msgid "either organisation or comment must be filled"
 msgstr "Organisation oder Kommentar müssen ausgefüllt werden"

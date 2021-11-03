@@ -228,6 +228,11 @@ msgid "Address"
 msgstr "Adresse"
 
 #, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Address"
+msgstr "Adresse"
+
+#, fuzzy
 msgid "Adress"
 msgstr "Adresse"
 
@@ -685,6 +690,17 @@ msgstr "Choisir le résultat du test"
 #, fuzzy
 msgid "Cinema / theater / concert"
 msgstr "Cinéma / théâtre / concert"
+
+msgid "Class or division"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division not found"
+msgstr ""
 
 #, fuzzy
 msgctxt "Auto Tracing Step"
@@ -1297,6 +1313,16 @@ msgid "Division"
 msgstr "Division"
 
 #, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Division"
+msgstr "Division"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Division"
+msgstr "Division"
+
+#, fuzzy
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division UUID"
 msgstr "UUID de la division"
@@ -1308,6 +1334,15 @@ msgstr "Division créée avec succès"
 #, fuzzy
 msgid "Division deleted successfully"
 msgstr "Division supprimée avec succès"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Division not found"
+msgstr "Division"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Division not provided."
+msgstr ""
 
 #, fuzzy
 msgid "Division updated successfully"
@@ -3049,6 +3084,10 @@ msgstr "Pas fait"
 msgctxt "Auto Tracing Vaccination"
 msgid "Not Done"
 msgstr "Pas fait"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Not provided"
+msgstr ""
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
@@ -4856,6 +4895,11 @@ msgid "Title"
 msgstr "Titre"
 
 #, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Title"
+msgstr "Titre"
+
+#, fuzzy
 msgid "To"
 msgstr "A"
 
@@ -5075,6 +5119,13 @@ msgstr "Inconnu"
 #, fuzzy
 msgid "Unknown Error"
 msgstr "Erreur inconnue"
+
+#, fuzzy
+msgid "Unknown division"
+msgstr "Inconnu"
+
+msgid "Unknown organisation"
+msgstr ""
 
 #, fuzzy
 msgctxt "Auto Tracing Problem"
@@ -5327,6 +5378,10 @@ msgstr "Vous avez sélectionné un type de fichier inacceptable"
 msgid "You must provide a reason for completing a phase."
 msgstr "Vous devez justifier l'achèvement d'une phase."
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "You must resolve the organisation before choosing the right division."
+msgstr ""
+
 #, fuzzy
 msgid "Your Tests"
 msgstr "Vos tests"
@@ -5409,6 +5464,9 @@ msgstr "supprimé"
 msgctxt "Item Table"
 msgid "divisions"
 msgstr "divisions"
+
+msgid "either an existing organisation, an unknown organisation or a comment must be filled"
+msgstr ""
 
 #, fuzzy
 msgid "either organisation or comment must be filled"
