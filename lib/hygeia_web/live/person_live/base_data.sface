@@ -364,7 +364,9 @@
                               <strong>{unknown_organisation.name}</strong>
                               <div class="mb-3">{Address.to_string(unknown_organisation.address, :long)}</div>
                             </div>
-                          {#else}
+                          {/if}
+
+                          {#unless is_nil(fetch_field!(form.source, :organisation_uuid)) and @live_action == :show}
                             <Field class="form-group" name={:organisation_uuid}>
                               <HygeiaWeb.FieldLabel />
                               <HygeiaWeb.OrganisationLive.Choose
@@ -375,32 +377,38 @@
                               />
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
-                          {/if}
-
-                          <Field
-                            :if={fetch_field!(form.source, :organisation_uuid)}
-                            class="form-group"
-                            name={:division_uuid}
-                          >
-                            <HygeiaWeb.FieldLabel />
-                            <HygeiaWeb.DivisionLive.Choose
-                              id={"affiliations_#{fetch_field!(form.source, :uuid)}_division"}
-                              change="select_affiliation_division"
-                              subject={fetch_field!(form.source, :uuid)}
-                              organisation={load_organisation(fetch_field!(form.source, :organisation_uuid))}
-                              disabled={@live_action == :show}
-                              show_buttons={@live_action == :edit}
-                            />
-                            <ErrorTag class="d-block invalid-feedback" />
-                          </Field>
+                          {/unless}
 
                           {#if unknown_division = fetch_field!(form.source, :unknown_division)}
+                            <p :if={is_nil(fetch_field!(form.source, :organisation_uuid)) and @live_action == :edit}>{pgettext(
+                                "Auto Tracing Resolve Problems",
+                                "You must resolve the organisation before choosing the right division."
+                              )}</p>
                             <div>{gettext("Unknown division")}</div>
                             <div class="p-3">
                               <strong>{unknown_division.name}</strong>
                               <div class="mb-3">{Address.to_string(unknown_division.address, :long)}</div>
                             </div>
                           {/if}
+
+                          {#unless is_nil(fetch_field!(form.source, :division_uuid)) and @live_action == :show}
+                            <Field
+                              :if={fetch_field!(form.source, :organisation_uuid)}
+                              class="form-group"
+                              name={:division_uuid}
+                            >
+                              <HygeiaWeb.FieldLabel />
+                              <HygeiaWeb.DivisionLive.Choose
+                                id={"affiliations_#{fetch_field!(form.source, :uuid)}_division"}
+                                change="select_affiliation_division"
+                                subject={fetch_field!(form.source, :uuid)}
+                                organisation={load_organisation(fetch_field!(form.source, :organisation_uuid))}
+                                disabled={@live_action == :show}
+                                show_buttons={@live_action == :edit}
+                              />
+                              <ErrorTag class="d-block invalid-feedback" />
+                            </Field>
+                          {/unless}
 
                           <div :if={@live_action == :edit}>
                             <button

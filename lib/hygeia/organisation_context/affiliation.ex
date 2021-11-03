@@ -95,8 +95,8 @@ defmodule Hygeia.OrganisationContext.Affiliation do
       |> assoc_constraint(:division)
       |> validate_kind_other()
       |> validate_organisation_or_comment()
-      |> cast_embed(:unknown_organisation)
-      |> cast_embed(:unknown_division)
+      |> validate_organisation()
+      |> validate_division()
 
   defp validate_organisation_or_comment(changeset) do
     with nil <- fetch_field!(changeset, :organisation_uuid),
@@ -111,6 +111,27 @@ defmodule Hygeia.OrganisationContext.Affiliation do
       )
     else
       _other -> changeset
+    end
+  end
+
+  defp validate_organisation(changeset) do
+    changeset
+    |> fetch_field!(:organisation_uuid)
+    |> case do
+      nil ->
+        cast_embed(changeset, :unknown_organisation)
+
+      _else ->
+        put_embed(changeset, :unknown_organisation, nil)
+    end
+  end
+
+  defp validate_division(changeset) do
+    changeset
+    |> fetch_field!(:division_uuid)
+    |> case do
+      nil -> cast_embed(changeset, :unknown_division)
+      _else -> put_embed(changeset, :unknown_division, nil)
     end
   end
 

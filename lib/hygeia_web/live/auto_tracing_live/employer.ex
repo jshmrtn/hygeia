@@ -13,7 +13,9 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Entity
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Affiliation.Kind
@@ -486,7 +488,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
           unknown_organisation: &1.unknown_organisation,
           related_school_visit_uuid: &1.related_school_visit_uuid,
           division_uuid: &1.known_division_uuid,
-          unknown_division: &1.unknown_division
+          unknown_division: filter_unknown_division(&1.unknown_division)
         }
       )
 
@@ -499,6 +501,14 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   end
 
   defp add_visited_schools(auto_tracing_changeset, %__MODULE__{school_visits: school_visits}) do
+    school_visits =
+      Enum.map(
+        school_visits,
+        &Map.update(&1, :unknown_division, nil, fn unknown_division ->
+          filter_unknown_division(unknown_division)
+        end)
+      )
+
     put_embed(auto_tracing_changeset, :school_visits, school_visits)
   end
 
@@ -512,4 +522,11 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
   defp visit_reason_to_kind(visit_reason) when visit_reason in [:professor, :employee],
     do: :employee
+
+  defp filter_unknown_division(%Entity{
+         address: %Address{address: nil, zip: nil, place: nil, subdivision: nil, country: "CH"}
+       }),
+       do: nil
+
+  defp filter_unknown_division(division), do: division
 end
