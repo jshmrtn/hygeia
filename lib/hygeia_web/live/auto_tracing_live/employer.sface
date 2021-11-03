@@ -94,10 +94,7 @@
                       </div>
 
                       {#if fetch_field!(school_visit.source, :known_school_uuid)}
-                        <Field
-                          class="form-group"
-                          name={:known_division_uuid}
-                        >
+                        <Field class="form-group" name={:known_division_uuid}>
                           <HygeiaWeb.FieldLabel />
                           <HygeiaWeb.DivisionLive.Choose
                             id={"school_#{fetch_field!(school_visit.source, :uuid)}_division"}
@@ -125,7 +122,11 @@
                         </Field>
                       {/if}
 
-                      <div class="card mb-3" :if={fetch_field!(school_visit.source, :division_not_found) or fetch_field!(school_visit.source, :not_found)}>
+                      <div
+                        class="card mb-3"
+                        :if={fetch_field!(school_visit.source, :division_not_found) or
+                          fetch_field!(school_visit.source, :not_found)}
+                      >
                         <div class="card-body">
                           <h5>{gettext("Class or division")}</h5>
                           <Inputs for={:unknown_division}>
@@ -136,7 +137,7 @@
                                 <ErrorTag class="d-block invalid-feedback" />
                               </Field>
                               <Inputs for={:address}>
-                                <HygeiaWeb.AddressForm id={"visited_school_#{fetch_field!(school_visit.source, :uuid)}_unknown_division_address"} />
+                                <HygeiaWeb.AddressForm id={"visited_school_#{fetch_field!(division.source, :uuid)}_unknown_division_address"} />
                               </Inputs>
                             </InputContext>
                           </Inputs>
@@ -145,7 +146,7 @@
 
                       <Field name={:visited_at} class="form-group">
                         <HygeiaWeb.FieldLabel />
-                        <HygeiaWeb.DateInput class="form-control" />
+                        <HygeiaWeb.DateInput class="form-control" opts={max: Date.utc_today()} />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
 
@@ -272,7 +273,7 @@
                       <Select
                         class="form-control"
                         opts={
-                          disabled: fetch_field!(occupation.source, :related_school_visit_uuid),
+                          disabled: true,
                           prompt: pgettext("Affiliation", "Choose Kind")
                         }
                         options={Kind.map()}
@@ -294,8 +295,7 @@
                         <HygeiaWeb.OrganisationLive.Choose
                           id={"occupation_#{fetch_field!(occupation.source, :uuid)}_organisation"}
                           change="select_affiliation_organisation"
-                          disabled={fetch_field!(occupation.source, :not_found) or
-                            fetch_field!(occupation.source, :related_school_visit_uuid)}
+                          disabled
                           subject={fetch_field!(occupation.source, :uuid)}
                         />
                         <ErrorTag class="d-block invalid-feedback" />
@@ -313,7 +313,7 @@
                             if fetch_field!(occupation.source, :not_found) do
                               "true"
                             end,
-                          disabled: fetch_field!(occupation.source, :related_school_visit_uuid)
+                          disabled: true
                         } />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
@@ -328,20 +328,73 @@
                         </p>
                         <Field name={:name} class="form-group">
                           <HygeiaWeb.FieldLabel />
-                          <TextInput
-                            class="form-control"
-                            opts={disabled: fetch_field!(occupation.source, :related_school_visit_uuid)}
-                          />
+                          <TextInput class="form-control" opts={disabled: true} />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                         <Inputs for={:address}>
                           <HygeiaWeb.AddressForm
                             id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_organisation_address"}
-                            disabled={fetch_field!(occupation.source, :related_school_visit_uuid)}
+                            disabled
                           />
                         </Inputs>
                       </Inputs>
                     </div>
+
+                    {#if fetch_field!(occupation.source, :known_organisation_uuid)}
+                      <Field class="form-group" name={:known_division_uuid}>
+                        <HygeiaWeb.FieldLabel />
+                        <HygeiaWeb.DivisionLive.Choose
+                          id={"organisation_#{fetch_field!(occupation.source, :uuid)}_division"}
+                          change="select_affiliation_division"
+                          subject={fetch_field!(occupation.source, :uuid)}
+                          organisation={OrganisationContext.get_organisation!(fetch_field!(occupation.source, :known_organisation_uuid))}
+                          disabled
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+
+                      <Field
+                        :if={fetch_field!(occupation.source, :known_division_uuid) === nil}
+                        class="form-group"
+                        name={:division_not_found}
+                      >
+                        <HygeiaWeb.FieldLabel class="me-2" />
+                        <Checkbox opts={
+                          checked:
+                            if fetch_field!(occupation.source, :division_not_found) do
+                              "true"
+                            end,
+                          disabled: true
+                        } />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    {/if}
+
+                    <div
+                      class="card mb-3"
+                      :if={fetch_field!(occupation.source, :division_not_found) or
+                        fetch_field!(occupation.source, :not_found)}
+                    >
+                      <div class="card-body">
+                        <h5>{gettext("Division")}</h5>
+                        <Inputs for={:unknown_division}>
+                          <InputContext assigns={assigns} :let={form: division}>
+                            <Field name={:name} class="form-group">
+                              <HygeiaWeb.FieldLabel />
+                              <TextInput class="form-control" opts={disabled: true} />
+                              <ErrorTag class="d-block invalid-feedback" />
+                            </Field>
+                            <Inputs for={:address}>
+                              <HygeiaWeb.AddressForm
+                                id={"occupation_#{fetch_field!(division.source, :uuid)}_unknown_division_address"}
+                                disabled
+                              />
+                            </Inputs>
+                          </InputContext>
+                        </Inputs>
+                      </div>
+                    </div>
+
                     <div :if={fetch_field!(occupation.source, :related_school_visit_uuid)}>
                       <small>{gettext(
                           "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
@@ -371,7 +424,6 @@
                       <Select
                         class="form-control"
                         opts={
-                          disabled: fetch_field!(occupation.source, :related_school_visit_uuid),
                           prompt: pgettext("Affiliation", "Choose Kind")
                         }
                         options={Kind.map()}
@@ -435,14 +487,11 @@
                     </div>
 
                     {#if fetch_field!(occupation.source, :known_organisation_uuid)}
-                      <Field
-                        class="form-group"
-                        name={:known_division_uuid}
-                      >
+                      <Field class="form-group" name={:known_division_uuid}>
                         <HygeiaWeb.FieldLabel />
                         <HygeiaWeb.DivisionLive.Choose
                           id={"organisation_#{fetch_field!(occupation.source, :uuid)}_division"}
-                          change="select_school_division"
+                          change="select_affiliation_division"
                           subject={fetch_field!(occupation.source, :uuid)}
                           organisation={OrganisationContext.get_organisation!(fetch_field!(occupation.source, :known_organisation_uuid))}
                           disabled={fetch_field!(occupation.source, :division_not_found)}
@@ -466,7 +515,11 @@
                       </Field>
                     {/if}
 
-                    <div class="card mb-3" :if={fetch_field!(occupation.source, :division_not_found) or fetch_field!(occupation.source, :not_found)}>
+                    <div
+                      class="card mb-3"
+                      :if={fetch_field!(occupation.source, :division_not_found) or
+                        fetch_field!(occupation.source, :not_found)}
+                    >
                       <div class="card-body">
                         <h5>{gettext("Division")}</h5>
                         <Inputs for={:unknown_division}>
@@ -477,21 +530,14 @@
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                             <Inputs for={:address}>
-                              <HygeiaWeb.AddressForm id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_division_address"} />
+                              <HygeiaWeb.AddressForm id={"occupation_#{fetch_field!(division.source, :uuid)}_unknown_division_address"} />
                             </Inputs>
                           </InputContext>
                         </Inputs>
                       </div>
                     </div>
 
-
-                    <div :if={fetch_field!(occupation.source, :related_school_visit_uuid)}>
-                      <small>{gettext(
-                          "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
-                        )}</small>
-                    </div>
                     <button
-                      :if={fetch_field!(occupation.source, :related_school_visit_uuid) in [nil, false]}
                       class="btn btn-danger mb-4"
                       type="button"
                       :on-click="remove_occupation"

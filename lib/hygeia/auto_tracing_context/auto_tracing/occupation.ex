@@ -94,6 +94,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
           with: &Entity.changeset(&1, &2, %{name_required: true, address_required: true})
         )
         |> put_change(:known_organisation_uuid, nil)
+        |> put_change(:division_not_found, true)
 
       _else ->
         changeset
@@ -121,8 +122,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
         |> put_change(:known_division_uuid, nil)
 
       _else ->
-        changeset
-        |> put_change(:unknown_division, nil)
+        put_change(changeset, :unknown_division, nil)
     end
   end
 end

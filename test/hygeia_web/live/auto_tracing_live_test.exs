@@ -249,7 +249,6 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
                employed: false,
                scholar: true,
                school_visits: [_],
-               occupations: [],
                unsolved_problems: [:school_related]
              } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
@@ -311,7 +310,6 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       assert %AutoTracing{
                employed: true,
                scholar: true,
-               occupations: [_],
                unsolved_problems: unsolved_problems
              } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
 
@@ -372,7 +370,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         Routes.auto_tracing_vaccination_path(conn, :vaccination, case)
       )
 
-      assert %AutoTracing{employed: true, occupations: [_], unsolved_problems: [:new_employer]} =
+      assert %AutoTracing{employed: true, unsolved_problems: [:new_employer]} =
                AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
   end

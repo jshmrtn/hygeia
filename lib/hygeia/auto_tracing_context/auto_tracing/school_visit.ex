@@ -133,8 +133,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
         |> put_change(:known_division_uuid, nil)
 
       _else ->
-        changeset
-        |> put_change(:unknown_division, nil)
+        put_change(changeset, :unknown_division, nil)
     end
   end
 end

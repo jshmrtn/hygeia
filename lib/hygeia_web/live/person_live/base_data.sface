@@ -381,6 +381,7 @@
                               subject={Ecto.Changeset.fetch_field!(form.source, :uuid)}
                               organisation={load_organisation(Ecto.Changeset.fetch_field!(form.source, :organisation_uuid))}
                               disabled={@live_action == :show}
+                              show_buttons={@live_action == :edit}
                             />
                             <ErrorTag class="d-block invalid-feedback" />
                           </Field>
