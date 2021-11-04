@@ -113,10 +113,10 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
         changeset
         |> fetch_field!(:known_school_uuid)
         |> case do
-          nil ->  add_error(changeset, :known_school_uuid, dgettext("errors", "is required"))
+          nil -> add_error(changeset, :known_school_uuid, dgettext("errors", "is required"))
           _else -> changeset
         end
-        |> put_change(:unknown_school, nil)
+        |> put_embed(:unknown_school, nil)
     end
   end
 
@@ -136,10 +136,10 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
       true ->
         changeset
         |> cast_embed(:unknown_division)
-        #|> put_change(:known_division_uuid, nil)
+        |> put_change(:known_division_uuid, nil)
 
       _else ->
-        put_change(changeset, :unknown_division, nil)
+        put_embed(changeset, :unknown_division, nil)
     end
   end
 end

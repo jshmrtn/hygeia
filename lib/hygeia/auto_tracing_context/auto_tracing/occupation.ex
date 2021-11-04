@@ -81,22 +81,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
     |> fill_uuid()
     |> validate_required([:kind])
     |> validate_kind_other()
-    #|> validate_org()
     |> validate_organisation()
     |> validate_division()
-  end
-
-  defp validate_org(changeset) do
-    changeset
-    |> fetch_field!(:known_organisation_uuid)
-    |> case do
-      nil ->
-        changeset
-        |> put_change(:not_found, false)
-
-      _else ->
-        changeset
-    end
   end
 
   defp validate_organisation(changeset) do
@@ -113,15 +99,13 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
         |> put_change(:division_not_found, true)
 
       _else ->
-        IO.puts("OKOKOK")
-
         changeset
         |> fetch_field!(:known_organisation_uuid)
         |> case do
-          nil ->  add_error(changeset, :known_organisation_uuid, dgettext("errors", "is required"))
+          nil -> add_error(changeset, :known_organisation_uuid, dgettext("errors", "is required"))
           _else -> changeset
         end
-        |> put_change(:unknown_organisation, nil)
+        |> put_embed(:unknown_organisation, nil)
     end
   end
 
@@ -129,7 +113,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
     changeset
     |> fetch_field!(:kind)
     |> case do
-      :other -> validate_required(changeset, [:kind_other])
+      :other -> validate_required(changeset, :kind_other)
       _defined -> put_change(changeset, :kind_other, nil)
     end
   end
@@ -144,7 +128,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
         |> put_change(:known_division_uuid, nil)
 
       _else ->
-        put_change(changeset, :unknown_division, nil)
+        put_embed(changeset, :unknown_division, nil)
     end
   end
 end
