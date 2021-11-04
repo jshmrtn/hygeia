@@ -187,7 +187,10 @@
                         </Form>
                       {#match :new_employer}
                         <div class="hy-card-grid-2-cols">
-                          <div :for={affiliation <- @person.affiliations} class="card card-body">
+                          <div
+                            :for={affiliation <- Enum.sort_by(@person.affiliations, & &1.uuid, :asc)}
+                            class="card card-body"
+                          >
                             {#if affiliation.unknown_organisation}
                               <strong>{affiliation.unknown_organisation.name}</strong>
                               <div class="mb-3">{Address.to_string(affiliation.unknown_organisation.address, :long)}</div>
