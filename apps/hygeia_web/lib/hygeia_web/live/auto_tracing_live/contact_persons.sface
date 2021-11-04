@@ -78,6 +78,7 @@
           case={@case}
           return_url={Routes.auto_tracing_contact_persons_path(@socket, :contact_persons, @case)}
           id={"#{@case.uuid}_submissions_table"}
+          delete="delete"
         />
       </div>
 
