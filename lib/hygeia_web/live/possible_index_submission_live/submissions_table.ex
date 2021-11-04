@@ -12,4 +12,6 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable do
 
   prop case, :map, required: true
   prop return_url, :string, default: nil
+
+  prop delete, :event, required: true
 end
