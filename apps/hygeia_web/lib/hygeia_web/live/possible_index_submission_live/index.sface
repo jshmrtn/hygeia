@@ -70,7 +70,10 @@
           </LiveRedirect>
         </div>
 
-        <HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable case={@case} />
+        <HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable
+          case={@case}
+          id={"#{@case.uuid}_submissions_table"}
+        />
       </div>
     </div>
   </Context>

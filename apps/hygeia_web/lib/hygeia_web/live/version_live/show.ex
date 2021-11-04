@@ -79,7 +79,11 @@ defmodule HygeiaWeb.VersionLive.Show do
           <HygeiaWeb.CaseLive.Navigation case={case} id="navigation" />
         </div>
         <div class="card-body">
-          {render_table(assigns)}
+          <HygeiaWeb.VersionLive.Table
+            versions={@versions}
+            now={@now}
+            id={"resource_#{@id}_version_table"}
+          />
         </div>
       </div>
     </div>
@@ -91,7 +95,11 @@ defmodule HygeiaWeb.VersionLive.Show do
     <div class="component-versioning person container">
       <HygeiaWeb.PersonLive.Header person={person} id="header" />
 
-      {render_table(assigns)}
+      <HygeiaWeb.VersionLive.Table
+        versions={@versions}
+        now={@now}
+        id={"resource_#{@id}_version_table"}
+      />
     </div>
     """
   end
@@ -101,7 +109,11 @@ defmodule HygeiaWeb.VersionLive.Show do
     <div class="component-versioning transmission container">
       <HygeiaWeb.TransmissionLive.Header transmission={transmission} id="header" />
 
-      {render_table(assigns)}
+      <HygeiaWeb.VersionLive.Table
+        versions={@versions}
+        now={@now}
+        id={"resource_#{@id}_version_table"}
+      />
     </div>
     """
   end
@@ -111,7 +123,11 @@ defmodule HygeiaWeb.VersionLive.Show do
     <div class="component-versioning user container">
       <HygeiaWeb.UserLive.Header user={user} id="header" />
 
-      {render_table(assigns)}
+      <HygeiaWeb.VersionLive.Table
+        versions={@versions}
+        now={@now}
+        id={"resource_#{@id}_version_table"}
+      />
     </div>
     """
   end
@@ -121,7 +137,11 @@ defmodule HygeiaWeb.VersionLive.Show do
     <div class="component-versioning tenant container">
       <HygeiaWeb.TenantLive.Header tenant={tenant} id="header" />
 
-      {render_table(assigns)}
+      <HygeiaWeb.VersionLive.Table
+        versions={@versions}
+        now={@now}
+        id={"resource_#{@id}_version_table"}
+      />
     </div>
     """
   end
@@ -131,7 +151,11 @@ defmodule HygeiaWeb.VersionLive.Show do
     <div class="component-versioning division container">
       <HygeiaWeb.DivisionLive.Header division={division} id="header" />
 
-      {render_table(assigns)}
+      <HygeiaWeb.VersionLive.Table
+        versions={@versions}
+        now={@now}
+        id={"resource_#{@id}_version_table"}
+      />
     </div>
     """
   end
@@ -141,7 +165,11 @@ defmodule HygeiaWeb.VersionLive.Show do
     <div class="component-versioning organisation container">
       <HygeiaWeb.OrganisationLive.Header organisation={organisation} id="header" />
 
-      {render_table(assigns)}
+      <HygeiaWeb.VersionLive.Table
+        versions={@versions}
+        now={@now}
+        id={"resource_#{@id}_version_table"}
+      />
     </div>
     """
   end
@@ -151,7 +179,11 @@ defmodule HygeiaWeb.VersionLive.Show do
     <div class="component-versioning import container">
       <HygeiaWeb.ImportLive.Header import={import} id="header" />
 
-      {render_table(assigns)}
+      <HygeiaWeb.VersionLive.Table
+        versions={@versions}
+        now={@now}
+        id={"resource_#{@id}_version_table"}
+      />
     </div>
     """
   end
@@ -164,18 +196,13 @@ defmodule HygeiaWeb.VersionLive.Show do
         /
         {@id}
       </h1>
-      {render_table(assigns)}
-    </div>
-    """
-  end
 
-  defp render_table(assigns) do
-    ~F"""
-    <HygeiaWeb.VersionLive.Table
-      versions={@versions}
-      now={@now}
-      id={"resource_#{@id}_version_table"}
-    />
+      <HygeiaWeb.VersionLive.Table
+        versions={@versions}
+        now={@now}
+        id={"resource_#{@id}_version_table"}
+      />
+    </div>
     """
   end
 
