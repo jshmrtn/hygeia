@@ -66,12 +66,7 @@
                         name={:not_found}
                       >
                         <HygeiaWeb.FieldLabel class="me-2" />
-                        <Checkbox opts={
-                          checked:
-                            if fetch_field!(school_visit.source, :not_found) do
-                              "true"
-                            end
-                        } />
+                        <Checkbox opts={checked: fetch_field!(school_visit.source, :not_found)} />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
 
@@ -113,10 +108,7 @@
                         >
                           <HygeiaWeb.FieldLabel class="me-2" />
                           <Checkbox opts={
-                            checked:
-                              if fetch_field!(school_visit.source, :division_not_found) do
-                                "true"
-                              end
+                            checked: fetch_field!(school_visit.source, :division_not_found)
                           } />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
@@ -310,10 +302,7 @@
                       >
                         <HygeiaWeb.FieldLabel class="me-2" />
                         <Checkbox opts={
-                          checked:
-                            if fetch_field!(occupation.source, :not_found) do
-                              "true"
-                            end,
+                          checked: fetch_field!(occupation.source, :not_found),
                           disabled: true
                         } />
                         <ErrorTag class="d-block invalid-feedback" />
@@ -361,10 +350,7 @@
                       >
                         <HygeiaWeb.FieldLabel class="me-2" />
                         <Checkbox opts={
-                          checked:
-                            if fetch_field!(occupation.source, :division_not_found) do
-                              "true"
-                            end,
+                          checked: fetch_field!(occupation.source, :division_not_found),
                           disabled: true
                         } />
                         <ErrorTag class="d-block invalid-feedback" />
@@ -459,12 +445,7 @@
                         name={:not_found}
                       >
                         <HygeiaWeb.FieldLabel class="me-2" />
-                        <Checkbox opts={
-                          checked:
-                            if fetch_field!(occupation.source, :not_found) do
-                              "true"
-                            end
-                        } />
+                        <Checkbox opts={checked: fetch_field!(occupation.source, :not_found)} />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </div>
@@ -507,10 +488,7 @@
                       >
                         <HygeiaWeb.FieldLabel class="me-2" />
                         <Checkbox opts={
-                          checked:
-                            if fetch_field!(occupation.source, :division_not_found) do
-                              "true"
-                            end
+                          checked: fetch_field!(occupation.source, :division_not_found)
                         } />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
