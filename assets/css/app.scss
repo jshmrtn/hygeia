@@ -1,0 +1,316 @@
+@use "sass:math";
+
+@import "../node_modules/nprogress/nprogress.css";
+@import "./open-iconic-bootstrap.scss";
+@import "./fonts.scss";
+
+// LiveView specific classes for your customizations
+.phx-no-feedback.invalid-feedback,
+.phx-no-feedback .invalid-feedback {
+  display: none;
+}
+
+.phx-click-loading {
+  opacity: 0.5;
+  transition: opacity 1s ease-out;
+}
+
+.phx-disconnected {
+  cursor: wait;
+}
+.phx-disconnected * {
+  pointer-events: none;
+}
+
+.live-modal {
+  opacity: 1 !important;
+  display: block !important;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+// Alerts and form errors
+.alert:empty {
+  display: none;
+}
+
+// bootstrap theming options
+@import "bootstrap/scss/_functions";
+
+$min-contrast-ratio: 0.5;
+$table-striped-bg-factor: 0.02;
+
+$body-bg: #fdfdfd;
+$body-color: #111;
+$enable-rounded: true;
+$border-radius: 3px;
+
+$primary: #37b8c0;
+$secondary: #ffac7b;
+$dark: #3c3c3b;
+$info: #919191;
+
+$grid-gutter-width: 0.5rem;
+
+$font-weight-light: 100;
+$font-weight-normal: 300;
+$font-weight-bold: 500;
+$headings-font-weight: 300;
+
+$font-family-sans-serif: "Museo Sans",
+  // Safari for OS X and iOS (San Francisco)
+  -apple-system,
+  // Chrome < 56 for OS X (San Francisco)
+  BlinkMacSystemFont,
+  // Windows
+  "Segoe UI",
+  // Android
+  "Roboto",
+  // Basic web fallback
+  "Helvetica Neue",
+  Arial, sans-serif,
+  // Emoji fonts
+  "Apple Color Emoji",
+  "Segoe UI Emoji", "Segoe UI Symbol" !default;
+
+$spacer: 1rem;
+$gutters: (
+  0: 0,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  6: $spacer * 4.5,
+  7: $spacer * 6,
+);
+
+@import "bootstrap/scss/bootstrap";
+
+// Globals
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.25),
+    only screen and (min-device-pixel-ratio: 1.25),
+    only screen and (min-resolution: 200dpi),
+    only screen and (min-resolution: 1.25dppx) {
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+a,
+a:hover {
+  text-decoration: none;
+}
+
+[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  height: 1rem;
+  width: 1rem;
+  border: 2px solid $primary;
+  border-radius: 50%;
+
+  &:checked {
+    background-image: none !important;
+    background-color: $primary;
+  }
+
+  &:focus {
+    background-image: none !important;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+[type="checkbox"] {
+  appearance: none;
+  outline: none;
+  height: 0.9rem;
+  width: 0.9rem;
+  border: 2px solid $primary;
+  border-radius: $border-radius;
+
+  &:checked {
+    background-color: $primary;
+    background-image: none !important;
+  }
+
+  &:disabled {
+    border-color: $gray-500;
+
+    &:checked {
+      background-color: $gray-500;
+    }
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+.radio-label,
+.checkbox-label {
+  cursor: pointer;
+  color: $gray-700;
+
+  &[data-disabled] {
+    color: $gray-600;
+    cursor: default;
+  }
+}
+
+.table.no-end-padding {
+  th:first-child,
+  td:first-child {
+    padding-left: 0;
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: 0;
+  }
+}
+
+.no-autofill-background {
+  &:-webkit-autofill,
+  input:-webkit-autofill {
+    color: inherit !important;
+    transition-delay: 1e9s;
+    transition-property: background-color;
+  }
+}
+
+select {
+  &:not(:disabled):not([multiple]) {
+    background: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0Ljk1IDEwIj48ZGVmcz48c3R5bGU+LmNscy0ye2ZpbGw6IzQ0NDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmFycm93czwvdGl0bGU+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjEuNDEgNC42NyAyLjQ4IDMuMTggMy41NCA0LjY3IDEuNDEgNC42NyIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIzLjU0IDUuMzMgMi40OCA2LjgyIDEuNDEgNS4zMyAzLjU0IDUuMzMiLz48L3N2Zz4=)
+      no-repeat right 2px center;
+  }
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+table {
+  empty-cells: show;
+}
+
+.btn-group-toggle {
+  input {
+    display: none;
+  }
+}
+
+@import "./mixins.scss";
+@import "../../lib/**/*.scss";
+
+.hy-readonly-form {
+  @include readonly-form;
+}
+
+.hy-card-grid-1-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-gap: 1.5rem;
+}
+
+.hy-card-grid-2-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-gap: 1.5rem;
+
+  @include media-breakpoint-down(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hy-button-card {
+  &:hover {
+    cursor: pointer;
+    background-color: $gray-100;
+  }
+}
+
+.navbar-brand {
+  margin-right: $grid-gutter-width * 3;
+  padding-left: math.div($grid-gutter-width, 2);
+  .logo {
+    height: 30px;
+    width: 90px;
+  }
+}
+
+.dropdown-submenu.loading {
+  display: flex;
+  justify-content: center;
+}
+
+.home-jumbo {
+  background-color: $body-bg;
+}
+
+.btn > .oi {
+  vertical-align: text-bottom;
+  line-height: 1.3em;
+}
+
+.btn.btn-lg > .oi {
+  line-height: 1.1em;
+}
+
+@include media-breakpoint-down(md) {
+  .layout-header {
+    padding: $grid-gutter-width $grid-gutter-width * 2;
+    > .container {
+      > div {
+        flex-direction: column;
+        > .nav {
+          margin-bottom: $grid-gutter-width * 2;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.btn-secondary.disabled.active {
+  background-color: #b55e2b;
+  color: white;
+}
+
+.btn-outline-primary.disabled.active {
+  background-color: $primary;
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  label {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.badge-outline-primary {
+  border: 1px solid $primary;
+  color: $primary;
+}

@@ -1,0 +1,9 @@
+{#case organise_problems(@auto_tracing.problems)}
+  {#match []}
+  {#match hints when is_list(hints)}
+    <div class="alert alert-warning" role="alert">
+      {#for hint <- hints}
+        <div>{hint}</div>
+      {/for}
+    </div>
+{/case}

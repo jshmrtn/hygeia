@@ -1,0 +1,160 @@
+<div class="component-organisation-index container">
+  <Context get={HygeiaWeb, auth: auth}>
+    <h1>
+      {gettext("Listing Organisations")}
+    </h1>
+
+    <div class="d-flex">
+      <LiveRedirect
+        class="me-2"
+        to={Routes.organisation_create_path(@socket, :create)}
+        :if={authorized?(Organisation, :create, auth)}
+      >
+        <button type="button" class="mb-2 mt-3 btn btn-primary">
+          <span class="oi oi-plus" aria-hidden="true" />
+          {gettext("New Organisation")}
+        </button>
+      </LiveRedirect>
+
+      <HygeiaWeb.Dropdown
+        class="ms-auto"
+        trigger_class="mt-3"
+        dropdown_class="dropdown-menu-end p-3 filter-dropdown"
+        id="filter-dropdown"
+      >
+        <:trigger>
+          <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="oi oi-cog" aria-hidden="true" />
+            {gettext("Filter")}
+          </button>
+        </:trigger>
+        <:default>
+          <h4>{gettext("Filter")}</h4>
+          <Form
+            for={@filters}
+            change="filter"
+            submit="filter"
+            opts={autocomplete: "off", id: "filter-form", as: :filter}
+          >
+            <div class="form-group">
+              <Field class="form-group" name="country">
+                <HygeiaWeb.FieldLabel schema={Hygeia.CaseContext.Address} />
+                <Select class="form-control" opts={prompt: "Any" |> gettext} options={countries()} />
+              </Field>
+            </div>
+
+            <div class="form-group">
+              <Field name={:subdivision} class="form-group">
+                <HygeiaWeb.FieldLabel schema={Hygeia.CaseContext.Address} />
+                <InputContext assigns={assigns} :let={form: form}>
+                  <Select
+                    class="form-control"
+                    opts={prompt: gettext("Choose subdivision")}
+                    field={:subdivision}
+                    options={subdivisions(form.source)}
+                  />
+                </InputContext>
+              </Field>
+            </div>
+          </Form>
+        </:default>
+      </HygeiaWeb.Dropdown>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            {schema_field_name(:name, Organisation)}
+          </th>
+          <th>
+            {schema_field_name(:type, Organisation)}
+          </th>
+          <th>
+            {schema_field_name(:address, Organisation)}
+          </th>
+
+          <th />
+        </tr>
+      </thead>
+      <tbody id="organisations">
+        <tr :for={organisation <- @organisations} id={"organisation-#{organisation.uuid}"}>
+          <td>
+            {organisation.name}
+          </td>
+          <td>
+            {Organisation.type_name(organisation)}
+          </td>
+          <td>
+            {format_address(organisation.address)}
+          </td>
+
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LiveRedirect
+                to={Routes.organisation_show_path(@socket, :show, organisation)}
+                :if={authorized?(organisation, :details, auth)}
+              >
+                <button class="ms-auto btn btn-sm btn-outline-primary">
+                  {gettext("Show")}
+                </button>
+              </LiveRedirect>
+              <LiveRedirect
+                to={Routes.organisation_show_path(@socket, :edit, organisation)}
+                :if={authorized?(organisation, :update, auth)}
+              >
+                <button class="ms-1 btn btn-sm btn-outline-primary">
+                  <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+                </button>
+              </LiveRedirect>
+              <Link
+                to="#"
+                click="delete"
+                class="delete"
+                opts={
+                  title: gettext("Delete"),
+                  data: [confirm: gettext("Are you sure?")],
+                  "phx-value-id": organisation.uuid
+                }
+                :if={authorized?(organisation, :delete, auth) and
+                  not OrganisationContext.has_affiliations?(organisation)}
+              >
+                <button class="ms-1 btn btn-sm btn-danger">
+                  <span class="oi oi-trash" aria-hidden="true" />
+                </button>
+              </Link>
+              <Link
+                to="#"
+                click="delete"
+                class="delete"
+                opts={
+                  title: gettext("Delete"),
+                  data: [confirm: gettext("Are you sure? There are affiliations assigned!")],
+                  "phx-value-id": organisation.uuid
+                }
+                :if={authorized?(organisation, :delete, auth) and OrganisationContext.has_affiliations?(organisation)}
+              >
+                <button class="ms-1 btn btn-sm border-dark btn-danger">
+                  <span class="oi oi-trash" aria-hidden="true" />
+                </button>
+              </Link>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <HygeiaWeb.Pagination
+      pagination={@pagination}
+      :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
+      id="pagination"
+    >
+      <LiveRedirect
+        class="page-link"
+        to={Routes.organisation_index_path(@socket, :index, cursor_direction, cursor)}
+      >
+        {text}
+      </LiveRedirect>
+    </HygeiaWeb.Pagination>
+  </Context>
+</div>

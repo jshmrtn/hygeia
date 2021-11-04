@@ -1,0 +1,462 @@
+<div class="component-auto_tracing-resolve_problems container">
+  <Context get={HygeiaWeb, auth: auth}>
+    <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
+
+    <div class="card">
+      <div class="card-header">
+        <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
+      </div>
+      <div class="card-body hy-readonly-form">
+        <h2 class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Overview")}</h2>
+        <div class="form-group">
+          <div>
+            {pgettext("Auto Tracing Resolve Problems", "Current Step")}
+          </div>
+          <div class="value">
+            {AutoTracing.Step.translate(@auto_tracing.current_step)}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div>
+            {pgettext("Auto Tracing Resolve Problems", "Last Change")}
+          </div>
+          <div class="value">
+            <HygeiaWeb.RelativeTime
+              time={@auto_tracing.updated_at}
+              id="auto_tracing_updated_at"
+              component_id="auto_tracing_updated_at"
+            />
+          </div>
+        </div>
+
+        <h2 class="mb-3 mt-5">{pgettext("Auto Tracing Resolve Problems", "Problems")}</h2>
+
+        {#case @auto_tracing.problems}
+          {#match []}
+            <div class="alert alert-success">
+              {pgettext("Auto Tracing Resolve Problems", "No Problems detected.")}
+            </div>
+          {#match problems}
+            <div
+              :for={problem <- problems}
+              class={"mb-3 card problem-card", solved: problem in @auto_tracing.solved_problems}
+              :id={"auto_tracing_problem_#{problem}"}
+            >
+              <details open>
+                <summary class="card-header d-flex align-items-center justify-content-between">
+                  <strong>{AutoTracing.Problem.translate(problem)}</strong>
+                  <span :if={problem in @auto_tracing.solved_problems}>
+                    <span class="oi oi-check" aria-hidden="true" />
+                  </span>
+
+                  <button
+                    :on-click="resolve"
+                    phx-value-problem={problem}
+                    class="btn btn-sm btn-danger"
+                    :if={problem not in @auto_tracing.solved_problems}
+                  >
+                    <span class="oi oi-trash" aria-hidden="true" />
+                  </button>
+                </summary>
+
+                <div class="card-body">
+                  {#if problem in @auto_tracing.solved_problems}
+                    {pgettext("Auto Tracing Resolve Problems", "Problem solved")}
+                  {#else}
+                    {#case problem}
+                      {#match :covid_app}
+                        <p>{pgettext("Auto Tracing Resolve Problems", "Send a SwissCovid App Code to the person.")}</p>
+
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
+                      {#match :unmanaged_tenant}
+                        <p>
+                          <strong>{pgettext("Auto Tracing Resolve Problems", "Tracer")}:</strong>
+                          {pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}
+                        </p>
+                        <p>
+                          <strong>{pgettext("Auto Tracing Resolve Problems", "Supervisor")}:</strong>
+                          {pgettext(
+                            "Auto Tracing Resolve Problems",
+                            "Report case to the appropriate authority and delete person & case."
+                          )}
+                        </p>
+
+                        <p>
+                          <strong>{pgettext("Auto Tracing Resolve Problems", "Residency Address")}:</strong>
+                          {Address.to_string(@case.person.address, :long)}
+                        </p>
+
+                        <p :if={@case.monitoring != nil and @case.monitoring.address != nil}>
+                          <strong>{pgettext("Auto Tracing Resolve Problems", "Monitoring Address")}:</strong>
+                          {Address.to_string(@case.monitoring.address, :long)}
+                        </p>
+
+                        <button
+                          class="btn btn-danger"
+                          :if={authorized?(@case.person, :delete, auth)}
+                          :on-click="delete_person"
+                        >
+                          {pgettext("Auto Tracing Resolve Problems", "Delete Person")}
+                        </button>
+                      {#match :vaccination_failure}
+                        <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
+                      {#match :link_propagator}
+                        <div :if={@auto_tracing.propagator_known}>
+                          <p>
+                            {@auto_tracing.propagator.first_name}
+                            {@auto_tracing.propagator.last_name}
+                          </p>
+                          <dl>
+                            <dt>{gettext("Phone")}</dt>
+                            <dd>{@auto_tracing.propagator.phone}</dd>
+                            <dt>{gettext("Email")}</dt>
+                            <dd>{@auto_tracing.propagator.email}</dd>
+                            <dt>{gettext("Address")}</dt>
+                            <dd>{Address.to_string(@auto_tracing.propagator.address, :long)}</dd>
+                          </dl>
+                        </div>
+                        <Form
+                          for={@link_propagator_opts_changeset}
+                          change="link_propagator_opts_change"
+                          as={:link_propagator_opts}
+                          submit="link_propagator_opts_submit"
+                        >
+                          <Field name={:propagator_internal} class="form-group">
+                            <div class="btn-group btn-group-toggle btn-radio-group">
+                              <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
+                              <label class={
+                                "btn",
+                                "btn-outline-primary",
+                                active: Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == nil
+                              }>
+                                <RadioButton value="" />
+                                {gettext("No propagator")}
+                              </label>
+                              <label class={
+                                "btn",
+                                "btn-outline-primary",
+                                active: Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == true
+                              }>
+                                <RadioButton value="true" />
+                                {gettext("Internal")}
+                              </label>
+                              <label class={
+                                "btn",
+                                "btn-outline-primary",
+                                active: Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == false
+                              }>
+                                <RadioButton value="false" />
+                                {gettext("External")}
+                              </label>
+                            </div>
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+                          <Field
+                            name={:propagator_ism_id}
+                            class="form-group"
+                            :if={Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == false}
+                          >
+                            <HygeiaWeb.FieldLabel />
+                            <TextInput class="form-control" />
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+                          <Field
+                            name={:propagator_case_uuid}
+                            class="form-group"
+                            :if={Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == true}
+                          >
+                            <HygeiaWeb.FieldLabel />
+                            <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+
+                          <button
+                            class="btn btn-primary"
+                            type="submit"
+                            phx-disable-with={gettext("Saving...")}
+                            disabled={not @link_propagator_opts_changeset.valid?}
+                          >
+                            {gettext("Update Transmission")}
+                          </button>
+                        </Form>
+                      {#match :new_employer}
+                        <div class="hy-card-grid-2-cols">
+                          <div :for={affiliation <- @person.affiliations} class="card card-body">
+                            {#if affiliation.unknown_organisation}
+                              <strong>{affiliation.unknown_organisation.name}</strong>
+                              <div class="mb-3">{Address.to_string(affiliation.unknown_organisation.address, :long)}</div>
+                              <Form for={@occupation_form}>
+                                <Field name={:organisation_uuid}>
+                                  <HygeiaWeb.OrganisationLive.Choose
+                                    id={"affiliation_#{affiliation.uuid}_organisation"}
+                                    change="select_affiliation_organisation"
+                                    subject={affiliation.uuid}
+                                  />
+                                </Field>
+                              </Form>
+                            {#else}
+                              <strong>{affiliation.organisation.name}</strong>
+                              <div class="mb-3">{Address.to_string(affiliation.organisation.address, :long)}</div>
+                            {/if}
+
+                            <div class="mt-2"><strong>{pgettext("Auto Tracing Resolve Problems", "Division")}:</strong></div>
+
+                            {#if is_map(affiliation.unknown_organisation) and is_map(affiliation.unknown_division)}
+                              <div class="my-2">{pgettext(
+                                  "Auto Tracing Resolve Problems",
+                                  "You must resolve the organisation before choosing the right division."
+                                )}</div>
+                              <div>
+                                {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                {affiliation.unknown_division.name}
+                              </div>
+                              <div class="mb-3">
+                                {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                {Address.to_string(affiliation.unknown_division.address, :long)}
+                              </div>
+                            {#else}
+                              {#case {affiliation.division, affiliation.unknown_division}}
+                                {#match {nil, nil}}
+                                  <div>{pgettext("Auto Tracing Resolve Problems", "Division not provided.")}</div>
+                                {#match {division, nil}}
+                                  <div>
+                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {division.title}
+                                  </div>
+                                  <div class="mb-3">
+                                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                    {address = if division.shares_address, do: affiliation.organisation.address, else: division.address
+                                    
+                                    if address do
+                                      Address.to_string(address, :long)
+                                    else
+                                      pgettext("Auto Tracing Resolve Problems", "Not provided")
+                                    end}
+                                  </div>
+                                {#match {nil, unknown_division}}
+                                  <div>
+                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {unknown_division.name}
+                                  </div>
+                                  <div class="mb-3">
+                                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                    {Address.to_string(unknown_division.address, :long)}
+                                  </div>
+
+                                  <Form for={@occupation_form}>
+                                    <Field name={:division_uuid}>
+                                      <HygeiaWeb.DivisionLive.Choose
+                                        id={"affiliation_#{affiliation.uuid}_organisation_division"}
+                                        change="select_organisation_division"
+                                        subject={affiliation.uuid}
+                                        organisation={affiliation.organisation}
+                                      />
+                                    </Field>
+                                  </Form>
+                              {/case}
+                            {/if}
+                          </div>
+                        </div>
+                      {#match :hospitalization}
+                        <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
+                      {#match :school_related}
+                        <p>{pgettext(
+                            "Auto Tracing Resolve Problems",
+                            "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
+                          )}:</p>
+                        <div class="hy-card-grid-2-cols">
+                          {#for school <-
+                              Enum.map(@auto_tracing.school_visits, &Repo.preload(&1, [:known_school, :known_division]))}
+                            <div class="card card-body">
+                              {#if school.not_found}
+                                <strong>{school.unknown_school.name}</strong>
+                                <small class="d-block text-muted">{Address.to_string(school.unknown_school.address, :long)}</small>
+                                <div>{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(school.visit_reason)}</div>
+                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Date of last visit")}: {HygeiaCldr.Date.to_string!(school.visited_at)}</div>
+                              {#else}
+                                <strong>{school.known_school.name}</strong>
+                                <small class="d-block text-muted">
+                                  {Organisation.type_name(school.known_school)}
+                                </small>
+                                <small class="d-block text-muted">{Address.to_string(school.known_school.address, :long)}</small>
+                                <div>{pgettext("Auto Tracing Resolve Problems", "Visit reason")}: {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(school.visit_reason)}</div>
+                                <div class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Date of last visit")}: {HygeiaCldr.Date.to_string!(school.visited_at)}</div>
+                              {/if}
+
+                              <div class="mt-2"><strong>{pgettext("Auto Tracing Resolve Problems", "Division")}:</strong></div>
+
+                              {#case {school.known_division, school.unknown_division}}
+                                {#match {nil, nil}}
+                                  <div>{pgettext("Auto Tracing Resolve Problems", "Division not provided.")}</div>
+                                {#match {division, nil}}
+                                  <div>
+                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {division.title}
+                                  </div>
+                                  <div class="mb-3">
+                                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                    {address = if division.shares_address, do: school.known_school.address, else: division.address
+                                    
+                                    if address do
+                                      Address.to_string(address, :long)
+                                    else
+                                      pgettext("Auto Tracing Resolve Problems", "Not provided")
+                                    end}
+                                  </div>
+                                {#match {nil, unknown_division}}
+                                  <div>
+                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {unknown_division.name}
+                                  </div>
+                                  <div class="mb-3">
+                                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                    {Address.to_string(unknown_division.address, :long)}
+                                  </div>
+                              {/case}
+                            </div>
+                          {/for}
+                        </div>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary mt-2">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
+                      {#match :flight_related}
+                        <p>{pgettext(
+                            "Auto Tracing Resolve Problems",
+                            "This person took the following flights"
+                          )}:</p>
+                        <div class="hy-card-grid-2-cols mb-2">
+                          <div :for={flight <- @auto_tracing.flights}>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Flight number")}:<strong>
+                                {flight.flight_number}</strong></div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Flight date")}: {HygeiaCldr.Date.to_string!(flight.flight_date)}</div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Place of departure")}: {flight.departure_place}</div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Place of arrival")}: {flight.arrival_place}</div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Seat number")}: {flight.seat_number}</div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Wore a mask during the whole flight?")} {if flight.wore_mask, do: gettext("Yes"), else: gettext("No")}</div>
+                          </div>
+                        </div>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
+                      {#match :residency_outside_country}
+                        <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
+                      {#match :no_contact_method}
+                        <p>{pgettext("Auto Tracing Resolve Problems", "Initiate Auto Tracing after getting a contact method.")}</p>
+                        <ul>
+                          <li>
+                            {pgettext("Auto Tracing Resolve Problems", "Assign the case to yourself.")}
+                          </li>
+                          <li>
+                            {pgettext(
+                              "Auto Tracing Resolve Problems",
+                              "Call the existing number (if there is one) to get a mobile number or e-mail address."
+                            )}
+                          </li>
+                          <li>
+                            {pgettext("Auto Tracing Resolve Problems", "If there is no number, try to get it from the doctor.")}
+                          </li>
+                          <li>
+                            {pgettext(
+                              "Auto Tracing Resolve Problems",
+                              "Add the mobile number or e-mail address to the person data."
+                            )}
+                          </li>
+                          <li>
+                            {pgettext("Auto Tracing Resolve Problems", "Send the Auto Tracing invitation.")}
+                          </li>
+                          <li>
+                            {pgettext("Auto Tracing Resolve Problems", "Assign the case back to the case administration.")}
+                          </li>
+                        </ul>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
+                      {#match :no_reaction}
+                        <p>{pgettext("Auto Tracing Resolve Problems", "Make sure person is traced correctly.")}</p>
+                        <ul>
+                          <li>
+                            {pgettext("Auto Tracing Resolve Problems", "Assign the case to yourself.")}
+                          </li>
+                          <li>
+                            {pgettext(
+                              "Auto Tracing Resolve Problems",
+                              "Call the existing number (if there is one) or send them an e-mail to find out why they did not react."
+                            )}
+                          </li>
+                          <li>
+                            {pgettext(
+                              "Auto Tracing Resolve Problems",
+                              "If necessary, trace the person while on the phone. If the person is willing to continue in Auto Tracing mode, make a note and assign it back to the case administration."
+                            )}
+                          </li>
+                        </ul>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
+                      {#match :possible_index_submission}
+                        <p>{pgettext(
+                            "Auto Tracing Resolve Problems",
+                            "Make sure all possible index submissions are persisted."
+                          )}</p>
+                        <ul>
+                          <li>
+                            {pgettext("Auto Tracing Resolve Problems", "Assign the case to yourself.")}
+                          </li>
+                          <li>
+                            {pgettext("Auto Tracing Resolve Problems", "Check and apply all possible index submissions.")}
+                          </li>
+                          <li>
+                            {pgettext("Auto Tracing Resolve Problems", "Assign the case back to the case admininistration.")}
+                          </li>
+                        </ul>
+                        <LiveRedirect
+                          class="btn btn-primary"
+                          to={Routes.possible_index_submission_index_path(@socket, :index, @case)}
+                        >
+                          {gettext("Submit contact persons")}
+                        </LiveRedirect>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
+                      {#match :phase_date_inconsistent}
+                        <p>{pgettext(
+                            "Auto Tracing Resolve Problems",
+                            "After checking the data, please manually send an isolation confirmation from the system."
+                          )}</p>
+                        <div class="mb-2">
+                          <div>{pgettext("Auto Tracing Resolve Problems", "Symptoms start date")}: {HygeiaCldr.Date.to_string!(@case.clinical.symptom_start)}</div>
+                          <div>{pgettext("Auto Tracing Resolve Problems", "First positive test date")}: {@case.tests
+                            |> Enum.sort({:desc, Date})
+                            |> List.first()
+                            |> Kernel.then(&(&1.tested_at || &1.laboratory_reported_at))
+                            |> case do
+                              nil -> ""
+                              date -> HygeiaCldr.Date.to_string!(date)
+                            end}</div>
+                          <div>{pgettext("Auto Tracing Resolve Problems", "Case created at")}: {HygeiaCldr.Date.to_string!(@case.inserted_at)}</div>
+                        </div>
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
+                    {/case}
+                  {/if}
+                </div>
+              </details>
+            </div>
+        {/case}
+      </div>
+    </div>
+  </Context>
+</div>

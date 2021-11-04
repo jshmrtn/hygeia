@@ -7,12 +7,10 @@
         included: [
           "{mix,.formatter,.credo}.exs",
           "config/*.exs",
-          "apps/*/{mix,.formatter,.credo}.exs",
-          "apps/*/lib/",
-          "apps/*/src/",
-          "apps/*/test/",
-          "apps/*/web/",
-          "apps/*/priv/repo/"
+          "lib/",
+          "src/",
+          "test/",
+          "priv/repo/"
         ],
         excluded: [~r"/_build/", ~r"/deps/", ~r"/node_modules/"]
       },

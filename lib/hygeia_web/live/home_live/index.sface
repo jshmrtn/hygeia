@@ -1,0 +1,71 @@
+<div class="jumbotron home-jumbo">
+  <section class="container">
+    <h1 class="display-4">{pgettext("Home", "Contact Tracing for SARS-CoV-2")}</h1>
+
+    <ul class="component-home-live-index__list my-5">
+      <li :for={
+        tenant <- @tenants,
+        Tenant.is_internal_managed_tenant?(tenant)
+      }>
+        <img
+          :if={TenantHelper.logo_exists?(tenant)}
+          src={TenantHelper.logo_uri(tenant, @socket)}
+          alt={"#{tenant.name} Logo"}
+          class="mb-3"
+        />
+        <p :if={tenant.contact_phone} class="mb-0">
+          <Link to={tenant.contact_phone
+          |> ExPhoneNumber.parse("CH")
+          |> case do
+            {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
+            _ -> nil
+          end}>
+            {tenant.contact_phone
+            |> ExPhoneNumber.parse("CH")
+            |> case do
+              {:ok, number} -> ExPhoneNumber.format(number, :international)
+              _ -> nil
+            end}
+          </Link>
+        </p>
+        <p :if={tenant.contact_email} class="mb-0">
+          <Link to={"mailto:#{tenant.contact_email}"}>
+            {tenant.contact_email}
+          </Link>
+        </p>
+      </li>
+    </ul>
+
+    <p class="lead col-md-10">
+      {raw(
+        pgettext(
+          "Home",
+          "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «%{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing.",
+          link_med:
+            safe_to_string(
+              link(gettext("Minimal Essential Dataset"),
+                to:
+                  "https://www.bag.admin.ch/dam/bag/de/dokumente/mt/k-und-i/aktuelle-ausbrueche-pandemien/2019-nCoV/weisung-kantone-ct-und-kontrolle-dezember-2020.PDF.download.PDF/Weisung%20Kantone%20CT%20und%20Kontrolle.pdf.PDF",
+                target: "_blank"
+              )
+            )
+        )
+      )}
+    </p>
+    <hr class="my-4">
+    <p class="col-md-8">{pgettext("Home", "In case of service disruptions, please check the status page.")}</p>
+    <Link class="btn" to="https://status.covid19-tracing.ch" opts={role: "button", target: "_blank"}>
+      <span class="oi oi-external-link" aria-hidden="true" />
+      {pgettext("Home", "Status Page")}
+    </Link>
+    <hr class="my-4">
+    <p class="col-md-8">{pgettext(
+        "Home",
+        "Various information regarding the applications functionality as well as details regarding using Hygeia are available on the website."
+      )}</p>
+    <Link class="btn" to="https://info.covid19-tracing.ch/" opts={role: "button", target: "_blank"}>
+      <span class="oi oi-external-link" aria-hidden="true" />
+      {pgettext("Home", "Info Website")}
+    </Link>
+  </section>
+</div>

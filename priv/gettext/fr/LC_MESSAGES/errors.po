@@ -1,0 +1,145 @@
+msgid ""
+msgstr ""
+"Language: fr"
+"Plural-Forms: nplurals=2; plural=(n > 1);"
+"Project-Id-Version: Hygeia"
+"Language-Team: JOSHMARTIN GmbH https://joshmartin.ch"
+"MIME-Version: 1.0"
+"Content-Type: text/plain; charset=UTF-8"
+"Content-Transfer-Encoding: 8bit"
+"X-Poedit-SourceCharset: UTF-8"
+
+#, fuzzy
+msgid "are still associated with this entry"
+msgstr "sont toujours associés à cette entrée"
+
+msgid "at least email / mobile must be provided"
+msgstr ""
+
+#, fuzzy
+msgid "at least one contact method must be provided"
+msgstr "au moins une méthode de contact doit être fournie"
+
+#, fuzzy
+msgid "at least one date must be provided"
+msgstr "au moins une méthode de contact doit être fournie"
+
+#, fuzzy
+msgid "can't be blank"
+msgstr "ne peut pas être vide"
+
+#, fuzzy
+msgid "date is to far away from today"
+msgstr "la date est trop éloignée d'aujourd'hui"
+
+msgid "date must be in the past"
+msgstr ""
+
+#, fuzzy
+msgid "date must not be in the future"
+msgstr "la date ne doit pas être dans le futur"
+
+#, fuzzy
+msgid "does not match confirmation"
+msgstr "ne correspond pas à la confirmation"
+
+#, fuzzy
+msgid "end must be after start"
+msgstr "la fin doit être après le début"
+
+#, fuzzy
+msgid "has already been taken"
+msgstr "a déjà été prise"
+
+#, fuzzy
+msgid "has an invalid entry"
+msgstr "a une entrée invalide"
+
+#, fuzzy
+msgid "has invalid format"
+msgstr "a un format invalide"
+
+msgid "has no outgoing email configuration"
+msgstr ""
+
+#, fuzzy
+msgid "is invalid"
+msgstr "n'est pas valide"
+
+#, fuzzy
+msgid "is not a valid hostname"
+msgstr "n'est pas un nom d'hôte valide"
+
+msgid "is required"
+msgstr ""
+
+#, fuzzy
+msgid "is reserved"
+msgstr "est réservé"
+
+#, fuzzy
+msgid "is still associated with this entry"
+msgstr "est toujours associé à cette entrée"
+
+#, fuzzy
+msgid "must be accepted"
+msgstr "doit être accepté"
+
+#, fuzzy
+msgid "must be equal to %{number}"
+msgstr "doit être égal à %{number}"
+
+#, fuzzy
+msgid "must be greater than %{number}"
+msgstr "doit être supérieur à %{number}"
+
+#, fuzzy
+msgid "must be greater than or equal to %{number}"
+msgstr "doit être supérieure ou égale à %{number}"
+
+#, fuzzy
+msgid "must be less than %{number}"
+msgstr "doit être inférieur à %{number}"
+
+#, fuzzy
+msgid "must be less than or equal to %{number}"
+msgstr "doit être inférieur ou égal à %{number}"
+
+#, fuzzy
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "devrait être %{count} caractère"
+msgstr[1] "devrait être %{count} caractères"
+
+#, fuzzy
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "doit comporter au moins %{count} caractère"
+msgstr[1] "doit comporter au moins %{count} caractères"
+
+#, fuzzy
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "doit comporter au maximum %{count} caractère"
+msgstr[1] "doit comporter au maximum %{count} caractères"
+
+#, fuzzy
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "devrait avoir %{count} article"
+msgstr[1] "devrait avoir %{count} articles"
+
+#, fuzzy
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "devrait avoir au moins %{count} article"
+msgstr[1] "devrait avoir au moins %{count} articles"
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "devrait avoir au plus %{count} élément"
+msgstr[1] "devrait avoir au plus %{count} éléments"
+
+#, fuzzy
+msgid "start must be before end"
+msgstr "le début doit être avant la fin"

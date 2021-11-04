@@ -6,7 +6,7 @@ updates:
     interval: daily
   open-pull-requests-limit: 10
 - package-ecosystem: npm
-  directory: "/apps/hygeia_web/assets/"
+  directory: "assets/"
   schedule:
     interval: daily
   open-pull-requests-limit: 10

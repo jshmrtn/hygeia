@@ -29,8 +29,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: erlef/setup-elixir@v1
         with:
-          otp-version: 24.0
-          elixir-version: 1.12.1
+          otp-version: 24.1.1
+          elixir-version: 1.12.3
       - uses: actions/cache@v2
         with:
           path: deps
@@ -46,16 +46,16 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: .ci-npm-cache
-          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('apps/hygeia_web/assets/package-lock.json') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('assets/package-lock.json') }}
           restore-keys: |
             deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             deps-${{ secrets.CACHE_VERSION }}-
-      - run: npm ci --prefix=apps/hygeia_web/assets
-      - run: npm run deploy --prefix=apps/hygeia_web/assets
+      - run: npm ci --prefix=assets
+      - run: npm run deploy --prefix=assets
       - uses: actions/upload-artifact@v2
         with:
           name: compile_assets
-          path: apps/hygeia_web/priv/static
+          path: priv/static
 
   format:
     name: Check Formatting
@@ -69,8 +69,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: erlef/setup-elixir@v1
         with:
-          otp-version: 24.0
-          elixir-version: 1.12.1
+          otp-version: 24.1.1
+          elixir-version: 1.12.3
       - uses: actions/cache@v2
         with:
           path: deps
@@ -93,8 +93,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: erlef/setup-elixir@v1
         with:
-          otp-version: 24.0
-          elixir-version: 1.12.1
+          otp-version: 24.1.1
+          elixir-version: 1.12.3
       - uses: actions/cache@v2
         with:
           path: deps
@@ -110,7 +110,7 @@ jobs:
           restore-keys: |
             compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_dev-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - run: mix surface.format --check-formatted
 
@@ -153,8 +153,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: erlef/setup-elixir@v1
         with:
-          otp-version: 24.0
-          elixir-version: 1.12.1
+          otp-version: 24.1.1
+          elixir-version: 1.12.3
       - uses: actions/cache@v2
         with:
           path: deps
@@ -170,7 +170,7 @@ jobs:
           restore-keys: |
             compile_test-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_test-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - run: |
           sudo apt-get update -yqq
@@ -181,7 +181,7 @@ jobs:
       - run: mix ecto.migrate
         env:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
-      - run: mix coveralls.github --umbrella || mix test
+      - run: mix coveralls.github || mix test
         env:
           DATABASE_PORT: ${{ job.services.postgres.ports[5432] }}
 
@@ -197,8 +197,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: erlef/setup-elixir@v1
         with:
-          otp-version: 24.0
-          elixir-version: 1.12.1
+          otp-version: 24.1.1
+          elixir-version: 1.12.3
       - uses: actions/cache@v2
         with:
           path: deps
@@ -214,7 +214,7 @@ jobs:
           restore-keys: |
             compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_dev-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - run: mix credo --strict
 
@@ -230,8 +230,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: erlef/setup-elixir@v1
         with:
-          otp-version: 24.0
-          elixir-version: 1.12.1
+          otp-version: 24.1.1
+          elixir-version: 1.12.3
       - uses: actions/cache@v2
         with:
           path: deps
@@ -247,7 +247,7 @@ jobs:
           restore-keys: |
             compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_dev-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - uses: actions/cache@v2
         with:
@@ -276,8 +276,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: erlef/setup-elixir@v1
         with:
-          otp-version: 24.0
-          elixir-version: 1.12.1
+          otp-version: 24.1.1
+          elixir-version: 1.12.3
       - uses: actions/cache@v2
         with:
           path: deps
@@ -293,7 +293,7 @@ jobs:
           restore-keys: |
             compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_dev-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - uses: actions/download-artifact@v2
         with:
@@ -313,8 +313,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: erlef/setup-elixir@v1
         with:
-          otp-version: 24.0
-          elixir-version: 1.12.1
+          otp-version: 24.1.1
+          elixir-version: 1.12.3
       - uses: actions/cache@v2
         with:
           path: deps
@@ -330,7 +330,7 @@ jobs:
           restore-keys: |
             compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_dev-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
       - run: mix compile --warning-as-errors
       - run: mix docs
       - uses: actions/upload-artifact@v2
@@ -343,7 +343,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    container: elixir:1.11-slim
+    container: elixir:1.12-slim
 
     needs: ['compile_assets']
 
@@ -372,7 +372,7 @@ jobs:
           restore-keys: |
             compile_docker_prod-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
             compile_docker_prod-${{ secrets.CACHE_VERSION }}-
-      - run: mix deps.compile --skip-umbrella-children
+      - run: mix deps.compile
         env:
           MIX_ENV: prod
       - run: mix compile --warning-as-errors
@@ -381,7 +381,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: compile_assets
-          path: apps/hygeia_web/priv/static
+          path: priv/static
       - run: mix phx.digest
       - run: mix release
       - run: tar -czvf release.tar.gz _build/prod/rel/hygeia
@@ -495,3 +495,17 @@ jobs:
         env:
           SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
         if: github.event_name == 'push' && startsWith(steps.branch_name.outputs.SOURCE_TAG, 'v') && !contains(steps.branch_name.outputs.SOURCE_TAG, '-beta.')
+
+  sobelow:
+    runs-on: ubuntu-latest
+    name: Sobelow Job
+
+    steps:
+      - uses: actions/checkout@v2
+      - id: run-action
+        uses: sobelow/action@v1
+        with:
+          flags: '--skip'
+      - uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: results.sarif

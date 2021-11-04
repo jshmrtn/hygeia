@@ -1,0 +1,253 @@
+<div class="component-person-index container">
+  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
+    <h1 class="mb-3">
+      {gettext("Listing People")}
+    </h1>
+
+    <div class="d-flex">
+      <LiveRedirect
+        class="me-2"
+        to={Routes.person_create_path(@socket, :create)}
+        :if={authorized?(Person, :create, auth, tenant: :any)}
+      >
+        <button type="button" class="mb-2 mt-3 btn btn-primary">
+          <span class="oi oi-plus" aria-hidden="true" />
+          {gettext("New Person")}
+        </button>
+      </LiveRedirect>
+
+      <HygeiaWeb.Dropdown
+        class="ms-auto"
+        trigger_class="mt-3"
+        dropdown_class="dropdown-menu-end p-3 filter-dropdown"
+        id="filter-dropdown"
+      >
+        <:trigger>
+          <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
+            <span class="oi oi-cog" aria-hidden="true" />
+            {gettext("Filter")}
+          </button>
+        </:trigger>
+        <:default>
+          <div class="d-flex mb-3">
+            <h4 class="m-0">{gettext("Filter")}</h4>
+            <LivePatch class="ms-auto" to={page_url(@socket, [], %{}, %{})}>
+              <button class="btn btn-outline-info" type="button" aria-haspopup="true" aria-expanded="false">
+                <span class="oi oi-reload" aria-hidden="true" />
+                {gettext("Reset filters")}
+              </button>
+            </LivePatch>
+          </div>
+          <Form
+            for={@filters}
+            change="filter"
+            submit="filter"
+            opts={autocomplete: "off", id: "filter-form", as: :filter}
+          >
+            <InputContext assigns={assigns} :let={form: form}>
+              <Field name="tenant_persons" class="form-group">
+                <Label class="checkbox-label">{gettext("Tenant")}</Label>
+                <MultipleSelect
+                  class="form-control"
+                  options={Enum.map(@tenants, &{&1.name, &1.uuid})}
+                  opts={size: 15}
+                />
+              </Field>
+              <div class="form-group">
+                <label class="d-block">{schema_field_name(:sex, Person)}</label>
+                <Field name="sex" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="" />
+                    {gettext("Any")}
+                  </label>
+                </Field>
+                <Field name="sex" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="male" />
+                    {gettext("Male")}
+                  </label>
+                </Field>
+                <Field name="sex" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="female" />
+                    {gettext("Female")}
+                  </label>
+                </Field>
+              </div>
+
+              <div class="form-group">
+                <Field class="form-group" name={:profession_category_main}>
+                  <HygeiaWeb.FieldLabel schema={Person} />
+                  <Select
+                    class="form-control"
+                    opts={prompt: gettext("Any")}
+                    options={NOGA.Section.select_options()}
+                  />
+                </Field>
+              </div>
+
+              <div class="form-group">
+                <Field class="form-group" name="country">
+                  <HygeiaWeb.FieldLabel schema={Hygeia.CaseContext.Address} />
+                  <Select class="form-control" opts={prompt: gettext("Any")} options={countries()} />
+                </Field>
+              </div>
+
+              <div
+                class="form-group"
+                :if={Phoenix.HTML.FormData.input_value(form.source, form, "country") not in ["", nil]}
+              >
+                <Field name="subdivision" class="form-group">
+                  <HygeiaWeb.FieldLabel schema={Hygeia.CaseContext.Address} />
+                  <Select
+                    class="form-control"
+                    opts={prompt: gettext("Choose subdivision")}
+                    field={:subdivision}
+                    options={subdivisions(form.source)}
+                  />
+                </Field>
+              </div>
+
+              <div class="form-group">
+                <Field name="fully_vaccinated" class="form-group">
+                  <Label class="checkbox-label">
+                    <Checkbox />
+                    {gettext("Fully Vaccinated")}
+                  </Label>
+                </Field>
+              </div>
+            </InputContext>
+          </Form>
+        </:default>
+      </HygeiaWeb.Dropdown>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            <HygeiaWeb.Sort
+              params={["first_name", "last_name"]}
+              current_params={@sort}
+              id="sort_first_name"
+              :let={sort_params: sort_params}
+            >
+              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+                {schema_field_name(:first_name, Person)}
+              </LivePatch>
+            </HygeiaWeb.Sort>
+          </th>
+          <th>
+            <HygeiaWeb.Sort
+              params={["last_name", "first_name"]}
+              current_params={@sort}
+              id="sort_last_name"
+              :let={sort_params: sort_params}
+            >
+              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+                {schema_field_name(:last_name, Person)}
+              </LivePatch>
+            </HygeiaWeb.Sort>
+          </th>
+          <th>
+            <HygeiaWeb.Sort
+              params={["birth_date"]}
+              current_params={@sort}
+              id="sort_birth_date"
+              :let={sort_params: sort_params}
+            >
+              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+                {schema_field_name(:birth_date, Person)}
+              </LivePatch>
+            </HygeiaWeb.Sort>
+          </th>
+          <th>
+            {schema_field_name(:address, Person)}
+          </th>
+          <th>
+            <HygeiaWeb.Sort
+              params={["inserted_at"]}
+              current_params={@sort}
+              id="sort_inserted_at"
+              :let={sort_params: sort_params}
+            >
+              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+                {schema_field_name(:inserted_at, Person)}
+              </LivePatch>
+            </HygeiaWeb.Sort>
+          </th>
+          <th />
+        </tr>
+      </thead>
+      <tbody id="people">
+        <tr :for={person <- @people} id={"person-#{person.uuid}"}>
+          <HygeiaWeb.RecordView resource={person} action={:list} id={"person_recordview_#{person.uuid}"} />
+          <td>{person.first_name}</td>
+          <td>{person.last_name}</td>
+          <td>{case person.birth_date do
+              nil -> nil
+              date -> Cldr.Date.to_string!(date, HygeiaCldr)
+            end}</td>
+          <td>{format_address(person.address)}</td>
+          <td>
+            {person.inserted_at
+            |> DateTime.shift_zone!(timezone)
+            |> HygeiaCldr.DateTime.to_string!(format: :short)}
+          </td>
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LiveRedirect
+                to={Routes.person_base_data_path(@socket, :show, person)}
+                :if={authorized?(person, :details, auth)}
+              >
+                <button class="ms-auto btn btn-sm btn-outline-primary">{"Show" |> gettext}</button>
+              </LiveRedirect>
+              <LivePatch
+                to={Routes.person_base_data_path(@socket, :edit, person)}
+                :if={authorized?(person, :update, auth)}
+              >
+                <button class="ms-1 btn btn-sm btn-outline-primary">
+                  <span class="oi oi-pencil" title={"Edit" |> gettext} aria-hidden="true" />
+                </button>
+              </LivePatch>
+              <Link
+                to="#"
+                click="delete"
+                opts={
+                  title: "Delete" |> gettext,
+                  data: [confirm: "Are you sure?" |> gettext],
+                  "phx-value-id": person.uuid
+                }
+                :if={authorized?(person, :delete, auth)}
+              >
+                <button class="ms-1 btn btn-sm btn-danger">
+                  <span class="oi oi-trash" aria-hidden="true" />
+                </button>
+              </Link>
+            </div>
+          </td>
+        </tr>
+        <tr :if={length(@people) == 0}>
+          <td colspan="6">
+            <div class="d-flex justify-content-center py-3">
+              {gettext("No data to display")}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <HygeiaWeb.Pagination
+      pagination={@pagination}
+      :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
+      id="pagination"
+    >
+      <LivePatch
+        class="page-link"
+        to={page_url(@socket, [{cursor_direction, cursor}], @filters, @sort)}
+      >
+        {text}
+      </LivePatch>
+    </HygeiaWeb.Pagination>
+  </Context>
+</div>
