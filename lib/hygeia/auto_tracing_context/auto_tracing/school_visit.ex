@@ -3,6 +3,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
 
   use Hygeia, :model
 
+  import HygeiaGettext
+
   alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason
   alias Hygeia.CaseContext.Entity
   alias Hygeia.OrganisationContext.Division
@@ -78,7 +80,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
     |> validate_required([:visit_reason, :visited_at])
     |> validate_occupied()
     |> validate_other_reason()
-    |> validate_existent_school()
+    |> validate_school()
     |> validate_division()
   end
 
@@ -94,7 +96,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
     end
   end
 
-  defp validate_existent_school(changeset) do
+  defp validate_school(changeset) do
     changeset
     |> fetch_field!(:not_found)
     |> case do
@@ -109,7 +111,11 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
 
       _else ->
         changeset
-        |> validate_required(:known_school_uuid)
+        |> fetch_field!(:known_school_uuid)
+        |> case do
+          nil ->  add_error(changeset, :known_school_uuid, dgettext("errors", "is required"))
+          _else -> changeset
+        end
         |> put_change(:unknown_school, nil)
     end
   end
@@ -130,7 +136,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
       true ->
         changeset
         |> cast_embed(:unknown_division)
-        |> put_change(:known_division_uuid, nil)
+        #|> put_change(:known_division_uuid, nil)
 
       _else ->
         put_change(changeset, :unknown_division, nil)

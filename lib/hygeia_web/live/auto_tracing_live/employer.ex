@@ -231,7 +231,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
              :occupations,
              %{uuid: occupation_uuid},
              &Map.put(&1, "known_organisation_uuid", params["uuid"])
-           )
+           )|>IO.inspect()
          )
          | action: :validate
        }
@@ -307,6 +307,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
       |> Map.put_new("occupations", [])
       |> Map.put_new("school_visit_occupations", [])
       |> Map.put_new("school_visits", [])
+      |>IO.inspect(label: "PARAMS")
 
     {:noreply,
      assign(socket,
