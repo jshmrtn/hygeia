@@ -49,7 +49,35 @@
                 )}
               </time>
             </small>
-            <div :on-click="read" phx-value-uuid={uuid}>{render_body(assigns, notification)}</div>
+            <div :on-click="read" phx-value-uuid={uuid}>
+              {#case notification.body}
+                {#match %Notification.CaseAssignee{} = body}
+                  <HygeiaWeb.Notification.CaseAssignee
+                    id={"notifications_tray_notification_body_#{uuid}"}
+                    body={body}
+                  />
+                {#match %Notification.PossibleIndexSubmitted{} = body}
+                  <HygeiaWeb.Notification.PossibleIndexSubmitted
+                    id={"notifications_tray_notification_body_#{uuid}"}
+                    body={body}
+                  />
+                {#match %Notification.EmailSendFailed{} = body}
+                  <HygeiaWeb.Notification.EmailSendFailed
+                    id={"notifications_tray_notification_body_#{uuid}"}
+                    body={body}
+                  />
+                {#match %Notification.PrematureRelease{} = body}
+                  <HygeiaWeb.Notification.PrematureRelease
+                    id={"notifications_tray_notification_body_#{uuid}"}
+                    body={body}
+                  />
+                {#match %Notification.SelfServiceHelpRequest{} = body}
+                  <HygeiaWeb.Notification.SelfServiceHelpRequest
+                    id={"notifications_tray_notification_body_#{uuid}"}
+                    body={body}
+                  />
+              {/case}
+            </div>
           </div>
           <button
             class="remove-notification btn float-right btn-link btn-sm text-dark"

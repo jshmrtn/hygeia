@@ -1,7 +1,8 @@
 defmodule HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable do
   @moduledoc false
 
-  use HygeiaWeb, :surface_component
+  # TODO: Figure out why this has to be a live component to receive a socket assign
+  use HygeiaWeb, :surface_live_component
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.PossibleIndexSubmission
