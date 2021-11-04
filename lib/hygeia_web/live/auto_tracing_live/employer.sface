@@ -350,10 +350,7 @@
                       >
                         <HygeiaWeb.FieldLabel class="me-2" />
                         <Checkbox opts={
-                          checked:
-                            if fetch_field!(occupation.source, :division_not_found) do
-                              "true"
-                            end,
+                          checked: fetch_field!(occupation.source, :division_not_found),
                           disabled: true
                         } />
                         <ErrorTag class="d-block invalid-feedback" />
