@@ -89,7 +89,11 @@
                       </div>
 
                       {#if fetch_field!(school_visit.source, :known_school_uuid)}
-                        <Field class="form-group" name={:known_division_uuid}>
+                        <Field
+                          :if={!fetch_field!(school_visit.source, :division_not_found)}
+                          class="form-group"
+                          name={:known_division_uuid}
+                        >
                           <HygeiaWeb.FieldLabel />
                           <HygeiaWeb.DivisionLive.Choose
                             id={"school_#{fetch_field!(school_visit.source, :uuid)}_division"}
@@ -106,10 +110,10 @@
                           class="form-group"
                           name={:division_not_found}
                         >
-                          <HygeiaWeb.FieldLabel class="me-2" />
                           <Checkbox opts={
                             checked: fetch_field!(school_visit.source, :division_not_found)
                           } />
+                          <HygeiaWeb.FieldLabel class="me-2" />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                       {/if}
@@ -122,15 +126,12 @@
                         <div class="card-body">
                           <h5>{gettext("Class or division")}</h5>
                           <Inputs for={:unknown_division}>
-                            <InputContext assigns={assigns} :let={form: division}>
+                            <InputContext assigns={assigns}>
                               <Field name={:name} class="form-group">
                                 <HygeiaWeb.FieldLabel />
                                 <TextInput class="form-control" />
                                 <ErrorTag class="d-block invalid-feedback" />
                               </Field>
-                              <Inputs for={:address}>
-                                <HygeiaWeb.AddressForm id={"visited_school_#{fetch_field!(division.source, :uuid)}_unknown_division_address"} />
-                              </Inputs>
                             </InputContext>
                           </Inputs>
                         </div>
@@ -331,7 +332,11 @@
                     </div>
 
                     {#if fetch_field!(occupation.source, :known_organisation_uuid)}
-                      <Field class="form-group" name={:known_division_uuid}>
+                      <Field
+                        :if={!fetch_field!(occupation.source, :division_not_found)}
+                        class="form-group"
+                        name={:known_division_uuid}
+                      >
                         <HygeiaWeb.FieldLabel />
                         <HygeiaWeb.DivisionLive.Choose
                           id={"organisation_#{fetch_field!(occupation.source, :uuid)}_division"}
@@ -348,11 +353,11 @@
                         class="form-group"
                         name={:division_not_found}
                       >
-                        <HygeiaWeb.FieldLabel class="me-2" />
                         <Checkbox opts={
                           checked: fetch_field!(occupation.source, :division_not_found),
                           disabled: true
                         } />
+                        <HygeiaWeb.FieldLabel class="me-2" />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     {/if}
@@ -469,7 +474,11 @@
                     </div>
 
                     {#if fetch_field!(occupation.source, :known_organisation_uuid)}
-                      <Field class="form-group" name={:known_division_uuid}>
+                      <Field
+                        :if={!fetch_field!(occupation.source, :division_not_found)}
+                        class="form-group"
+                        name={:known_division_uuid}
+                      >
                         <HygeiaWeb.FieldLabel />
                         <HygeiaWeb.DivisionLive.Choose
                           id={"organisation_#{fetch_field!(occupation.source, :uuid)}_division"}
@@ -486,10 +495,10 @@
                         class="form-group"
                         name={:division_not_found}
                       >
-                        <HygeiaWeb.FieldLabel class="me-2" />
                         <Checkbox opts={
                           checked: fetch_field!(occupation.source, :division_not_found)
                         } />
+                        <HygeiaWeb.FieldLabel class="me-2" />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     {/if}

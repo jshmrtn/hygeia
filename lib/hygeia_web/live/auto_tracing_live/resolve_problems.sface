@@ -229,7 +229,7 @@
                                   <div>{pgettext("Auto Tracing Resolve Problems", "Division not provided.")}</div>
                                 {#match {division, nil}}
                                   <div>
-                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {pgettext("Auto Tracing Resolve Problems", "Name")}:
                                     {division.title}
                                   </div>
                                   <div class="mb-3">
@@ -244,13 +244,15 @@
                                   </div>
                                 {#match {nil, unknown_division}}
                                   <div>
-                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {pgettext("Auto Tracing Resolve Problems", "Name")}:
                                     {unknown_division.name}
                                   </div>
-                                  <div class="mb-3">
-                                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
-                                    {Address.to_string(unknown_division.address, :long)}
-                                  </div>
+                                  {#if unknown_division.address}
+                                    <div class="mb-3">
+                                      {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                      {Address.to_string(unknown_division.address, :long)}
+                                    </div>
+                                  {/if}
 
                                   <Form for={@occupation_form}>
                                     <Field name={:division_uuid}>
@@ -302,7 +304,7 @@
                                   <div>{pgettext("Auto Tracing Resolve Problems", "Division not provided.")}</div>
                                 {#match {division, nil}}
                                   <div>
-                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {pgettext("Auto Tracing Resolve Problems", "Name")}:
                                     {division.title}
                                   </div>
                                   <div class="mb-3">
@@ -317,13 +319,15 @@
                                   </div>
                                 {#match {nil, unknown_division}}
                                   <div>
-                                    {pgettext("Auto Tracing Resolve Problems", "Title")}:
+                                    {pgettext("Auto Tracing Resolve Problems", "Name")}:
                                     {unknown_division.name}
                                   </div>
-                                  <div class="mb-3">
-                                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
-                                    {Address.to_string(unknown_division.address, :long)}
-                                  </div>
+                                  {#if unknown_division.address}
+                                    <div class="mb-3">
+                                      {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                                      {Address.to_string(unknown_division.address, :long)}
+                                    </div>
+                                  {/if}
                               {/case}
                             </div>
                           {/for}
