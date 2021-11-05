@@ -25,7 +25,8 @@ defmodule HygeiaWeb.DivisionLive.Choose do
 
   prop show_buttons, :boolean, default: true
 
-  prop no_results_message, :string, default: gettext("Divisions not found, please insert one manually.")
+  prop no_results_message, :string,
+    default: gettext("Divisions not found, please insert one manually.")
 
   prop subject, :any, default: nil
 
