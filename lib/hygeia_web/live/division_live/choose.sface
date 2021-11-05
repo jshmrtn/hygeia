@@ -70,6 +70,7 @@
                     class="input-group-text text-nowrap"
                     to={Routes.division_create_path(@socket, :create, @organisation.uuid, popup: true)}
                     opts={target: "_blank", rel: "opener"}
+                    :if={authorized?(Division, :create, auth)}
                   >
                     <span class="oi oi-plus" />
                     {pgettext("Division", "Create")}
@@ -79,6 +80,10 @@
             </div>
 
             <div>
+              <div :if={Enum.empty?(@divisions)} class="pt-3 text-center">
+                <span>{@no_results_message}</span>
+              </div>
+
               <div
                 role="button"
                 class="card hy-button-card mt-2"

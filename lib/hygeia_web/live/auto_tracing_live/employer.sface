@@ -100,6 +100,9 @@
                             change="select_school_division"
                             subject={fetch_field!(school_visit.source, :uuid)}
                             organisation={OrganisationContext.get_organisation!(fetch_field!(school_visit.source, :known_school_uuid))}
+                            no_results_message={gettext(
+                              "No class or division found, please close this popup and insert one manually in the dedicated fields."
+                            )}
                             disabled={fetch_field!(school_visit.source, :division_not_found)}
                           />
                           <ErrorTag class="d-block invalid-feedback" />
@@ -485,6 +488,9 @@
                           change="select_affiliation_division"
                           subject={fetch_field!(occupation.source, :uuid)}
                           organisation={OrganisationContext.get_organisation!(fetch_field!(occupation.source, :known_organisation_uuid))}
+                          no_results_message={gettext(
+                            "Divisions not found, please close this popup and insert one manually in the dedicated fields."
+                          )}
                           disabled={fetch_field!(occupation.source, :division_not_found)}
                         />
                         <ErrorTag class="d-block invalid-feedback" />
