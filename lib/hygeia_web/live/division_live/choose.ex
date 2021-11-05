@@ -6,6 +6,7 @@ defmodule HygeiaWeb.DivisionLive.Choose do
   import Ecto.Query
 
   alias Hygeia.OrganisationContext
+  alias Hygeia.OrganisationContext.Division
   alias Hygeia.Repo
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
@@ -23,6 +24,8 @@ defmodule HygeiaWeb.DivisionLive.Choose do
   prop disabled, :boolean, default: false
 
   prop show_buttons, :boolean, default: true
+
+  prop no_results_message, :string, default: gettext("Divisions not found, please insert one manually.")
 
   prop subject, :any, default: nil
 
