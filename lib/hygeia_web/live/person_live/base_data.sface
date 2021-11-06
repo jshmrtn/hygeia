@@ -387,7 +387,7 @@
                             <div>{gettext("Unknown division")}</div>
                             <div class="p-3">
                               <strong>{unknown_division.name}</strong>
-                              <div class="mb-3">{Address.to_string(unknown_division.address, :long)}</div>
+                              <div class="mb-3" :if={not is_nil(unknown_division.address)}>{Address.to_string(unknown_division.address, :long)}</div>
                             </div>
                           {/if}
 
