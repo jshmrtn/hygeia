@@ -471,9 +471,9 @@
                         <div class="mb-2">
                           <div>{pgettext("Auto Tracing Resolve Problems", "Symptoms start date")}: {HygeiaCldr.Date.to_string!(@case.clinical.symptom_start)}</div>
                           <div>{pgettext("Auto Tracing Resolve Problems", "First positive test date")}: {@case.tests
+                            |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
                             |> Enum.sort({:desc, Date})
                             |> List.first()
-                            |> Kernel.then(&(&1.tested_at || &1.laboratory_reported_at))
                             |> case do
                               nil -> ""
                               date -> HygeiaCldr.Date.to_string!(date)
