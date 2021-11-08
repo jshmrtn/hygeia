@@ -191,29 +191,39 @@
                             :for={affiliation <- Enum.sort_by(@person.affiliations, & &1.uuid, :asc)}
                             class="card card-body"
                           >
-                            {#if not is_nil(affiliation.unknown_organisation)}
-                              <strong>{affiliation.unknown_organisation.name}</strong>
-                              <div class="mb-3">{Address.to_string(affiliation.unknown_organisation.address, :long)}</div>
-                              <Form for={@occupation_form}>
-                                <Field name={:organisation_uuid}>
-                                  <HygeiaWeb.OrganisationLive.Choose
-                                    id={"affiliation_#{affiliation.uuid}_organisation"}
-                                    change="select_affiliation_organisation"
-                                    subject={affiliation.uuid}
-                                  />
-                                </Field>
-                              </Form>
-                            {#else}
-                              <strong>{affiliation.organisation.name}</strong>
-                              <div class="mb-3">{Address.to_string(affiliation.organisation.address, :long)}</div>
-                            {/if}
+                            {#case affiliation}
+                              {#match %Affiliation{unknown_organisation: nil, organisation: nil, comment: comment}
+                                when is_binary(comment)}
+                                <strong>{gettext("Comment")}:</strong>
+                                <h6>{comment}</h6>
+                              {#match %Affiliation{unknown_organisation: %Entity{} = unknown_organisation, organisation: nil}}
+                                <strong>{unknown_organisation.name}</strong>
+                                <div class="mb-3">{Address.to_string(unknown_organisation.address, :long)}</div>
+                                <Form for={@occupation_form}>
+                                  <Field name={:organisation_uuid}>
+                                    <HygeiaWeb.OrganisationLive.Choose
+                                      id={"affiliation_#{affiliation.uuid}_organisation"}
+                                      change="select_affiliation_organisation"
+                                      subject={affiliation.uuid}
+                                    />
+                                  </Field>
+                                </Form>
+                                <div class="mt-2"><strong>{pgettext("Auto Tracing Resolve Problems", "Division")}:</strong></div>
+                              {#match %Affiliation{unknown_organisation: nil, organisation: %Organisation{} = organisation}}
+                                <strong>{organisation.name}</strong>
+                                <div class="mb-3">{Address.to_string(organisation.address, :long)}</div>
+                                <div class="mt-2"><strong>{pgettext("Auto Tracing Resolve Problems", "Division")}:</strong></div>
+                            {/case}
 
-                            <div class="mt-2"><strong>{pgettext("Auto Tracing Resolve Problems", "Division")}:</strong></div>
-
-                            {#case {affiliation.unknown_organisation, affiliation.division, affiliation.unknown_division}}
-                              {#match {_unknown_organisation, nil, nil}}
+                            {#case affiliation}
+                              {#match %Affiliation{unknown_organisation: nil, organisation: nil}}
+                              {#match %Affiliation{division: nil, unknown_division: nil}}
                                 <div>{pgettext("Auto Tracing Resolve Problems", "Division not provided.")}</div>
-                              {#match {%Entity{}, nil, %Entity{} = unknown_division}}
+                              {#match %Affiliation{
+                                  unknown_organisation: %Entity{},
+                                  division: nil,
+                                  unknown_division: %Entity{} = unknown_division
+                                }}
                                 <div class="my-2">{pgettext(
                                     "Auto Tracing Resolve Problems",
                                     "You must resolve the organisation before choosing the right division."
@@ -226,7 +236,7 @@
                                   {pgettext("Auto Tracing Resolve Problems", "Address")}:
                                   {Address.to_string(unknown_division.address, :long)}
                                 </div>
-                              {#match {_unknown_organisation, %Division{} = division, nil}}
+                              {#match %Affiliation{division: %Division{} = division, unknown_division: nil}}
                                 <div>
                                   {pgettext("Auto Tracing Resolve Problems", "Name")}:
                                   {division.title}
@@ -244,7 +254,11 @@
                                     %Address{} = address -> Address.to_string(address, :long)
                                   end}
                                 </div>
-                              {#match {nil, nil, %Entity{} = unknown_division}}
+                              {#match %Affiliation{
+                                  unknown_organisation: nil,
+                                  division: nil,
+                                  unknown_division: %Entity{} = unknown_division
+                                }}
                                 <div>
                                   {pgettext("Auto Tracing Resolve Problems", "Name")}:
                                   {unknown_division.name}
