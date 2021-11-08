@@ -17,7 +17,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
 
@@ -127,8 +127,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     {:noreply, assign(socket, :params, params)}
   end
 
-  defp save(%Socket{assigns: %{form_data: %{bindings: bindings} = form_data}} = socket) do
-    case Service.upsert(bindings, form_data) do
+  defp save(%Socket{assigns: %{form_data: form_data}} = socket) do
+    case Service.upsert(form_data) do
       {:error, _} ->
         put_flash(
           socket,
@@ -138,21 +138,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           )
         )
 
-      {:ok, tuples} ->
-        :ok = Service.send_confirmations(socket, tuples, form_data[:type])
-
-        new_bindings =
-          Enum.map(tuples, fn {person, case, reporting_data} ->
-            %{
-              person_changeset: CaseContext.change_person(person),
-              case_changeset: Ecto.Changeset.change(case),
-              reporting: reporting_data
-            }
-          end)
+      :ok ->
+        :ok = Service.send_confirmations(socket, form_data)
 
         socket
         |> unblock_navigation()
-        |> assign(form_data: Map.put(form_data, :bindings, new_bindings))
         |> assign(visited_steps: visit_step([], "summary"))
         |> put_flash(:info, gettext("Cases inserted successfully."))
         |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, "summary"))
@@ -303,7 +293,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   defp valid_step?("reporting", form_data) do
-    Reporting.valid?(form_data)
+    DefineContactMethods.valid?(form_data)
   end
 
   defp update_form_data(current_data) do
@@ -311,7 +301,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     |> DefineTransmission.update_step_data()
     |> DefinePeople.update_step_data()
     |> DefineOptions.update_step_data()
-    |> Reporting.update_step_data()
+    |> DefineContactMethods.update_step_data()
   end
 
   defp decide_nav_class(current_step, target_step, visited_steps, current_data) do

@@ -73,7 +73,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     normalized_params = normalize_params(params)
     send(self(), {:feed, normalized_params})
 
-    {:noreply, assign(socket, :changeset, validation_changeset(__MODULE__, params))}
+    {:noreply, assign(socket, changeset: %Changeset{changeset(%__MODULE__{}, params) | action: :validate})}
   end
 
   @impl Phoenix.LiveComponent
@@ -104,7 +104,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
        }}
     )
 
-    {:noreply, assign(socket, :changeset, validation_changeset(__MODULE__, updated_params))}
+    {:noreply, assign(socket, changeset: %Changeset{changeset(%__MODULE__{}, updated_params) | action: :validate})}
   end
 
   @impl Phoenix.LiveComponent
@@ -126,12 +126,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
       :comment
     ])
     |> cast_embed(:infection_place)
-    |> validate_changeset()
-  end
-
-  @spec validate_changeset(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def validate_changeset(changeset) do
-    changeset
     |> validate_required([
       :type,
       :date
@@ -145,8 +139,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     )
   end
 
-  @spec validate_type_other(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def validate_type_other(changeset) do
+  defp validate_type_other(changeset) do
     changeset
     |> fetch_field!(:type)
     |> case do
@@ -155,8 +148,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     end
   end
 
-  @spec validate_date(changeset :: Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def validate_date(changeset) do
+  defp validate_date(changeset) do
     validate_change(changeset, :date, fn :date, value ->
       diff = Date.diff(Date.utc_today(), value)
 
@@ -187,9 +179,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
   defp get_propagator_from_case_uuid(nil), do: nil
 
   defp get_propagator_from_case_uuid(case_uuid) do
-    case = CaseContext.get_case_with_preload!(case_uuid, [:person])
-    person = Map.get(case, :person)
-    {person, case}
+    case = case_uuid |> CaseContext.get_case!() |> Repo.preload(:person)
+    {case.person, case}
   end
 
   defp normalize_params(params) do

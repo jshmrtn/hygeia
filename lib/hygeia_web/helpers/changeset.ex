@@ -144,25 +144,6 @@ defmodule HygeiaWeb.Helpers.Changeset do
     )
   end
 
-  @spec validation_changeset(module :: atom(), data :: map() | keyword()) :: Changeset.t()
-  def validation_changeset(module, data) do
-    module
-    |> Kernel.struct()
-    |> module.changeset(data)
-    |> Map.put(:action, :validate)
-  end
-
-  @spec validation_changeset(
-          struct_or_changeset :: struct() | Changeset.t(),
-          module :: atom(),
-          data :: map() | keyword()
-        ) :: Changeset.t()
-  def validation_changeset(struct_or_changeset, module, data) do
-    struct_or_changeset
-    |> module.changeset(data)
-    |> Map.put(:action, :validate)
-  end
-
   @spec existing_entity?(changeset :: Changeset.t()) :: boolean
   def existing_entity?(%Changeset{data: entity} = _changeset),
     do: Ecto.get_meta(entity, :state) == :loaded

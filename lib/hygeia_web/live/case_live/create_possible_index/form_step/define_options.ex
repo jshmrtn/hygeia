@@ -79,7 +79,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
     |> Enum.find_value(
       [],
       fn {tenant_uuid, assignees} ->
-        if tenant_uuid == target_tenant_uuid,
+        if match?(^tenant_uuid, target_tenant_uuid),
           do: assignees
       end
     )
@@ -90,19 +90,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
   def update_step_data(form_data)
 
   def update_step_data(%{bindings: bindings} = form_data) do
-    type = form_data[:type]
-    date = form_data[:date]
-    type_other = form_data[:type_other]
-    propagator = form_data[:propagator]
-
     Map.put(
       form_data,
       :bindings,
       Enum.map(bindings, fn %{case_changeset: case_changeset} = binding ->
         case_changeset =
           case_changeset
-          |> merge_phases(%{type: type, type_other: type_other, date: date})
-          |> merge_propagator_administrators(%{propagator: propagator})
+          |> merge_phases(%{type: form_data[:type], type_other: form_data[:type_other], date: form_data[:date]})
+          |> merge_propagator_administrators(%{propagator: form_data[:propagator]})
 
         Map.put(binding, :case_changeset, case_changeset)
       end)
@@ -129,8 +124,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
          propagator: {_propagator, propagator_case}
        }) do
     CaseContext.change_case(case_changeset, %{
-      supervisor_uuid: Map.fetch!(propagator_case, :supervisor_uuid),
-      tracer_uuid: Map.fetch!(propagator_case, :tracer_uuid)
+      supervisor_uuid: propagator_case.supervisor_uuid,
+      tracer_uuid: propagator_case.tracer_uuid
     })
   end
 

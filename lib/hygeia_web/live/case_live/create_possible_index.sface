@@ -40,7 +40,7 @@
           {=@tracer_users}
         />
       {#match "reporting"}
-        <Reporting id={@form_step} {=@form_step} {=@live_action} {=@form_data} />
+        <DefineContactMethods id={@form_step} {=@form_step} {=@live_action} {=@form_data} />
       {#match "summary"}
         <Summary {=@form_step} {=@live_action} {=@form_data} {=@supervisor_users} {=@tracer_users} />
     {/case}

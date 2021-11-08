@@ -15,44 +15,36 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
   alias Hygeia.Repo
 
-  @spec upsert(bindings :: list(), transmission_data :: map()) ::
-          {:ok, [tuple()]} | {:error, String.t()}
-  def upsert(bindings, transmission_data) do
+  @spec upsert(form_data :: map()) ::
+          :ok | {:error, String.t()}
+  def upsert(form_data) do
     Repo.transaction(fn ->
-      Enum.map(bindings, fn %{
+      Enum.map(form_data.bindings, fn %{
                               person_changeset: person_changeset,
                               case_changeset: case_changeset,
-                              reporting: reporting
+                              selected_contact_methods: selected_contact_methods
                             } ->
-        person =
-          case fetch_field!(person_changeset, :inserted_at) do
-            nil ->
-              {:ok, person} = CaseContext.create_person(person_changeset)
-              person
 
-            _date ->
-              apply_changes(person_changeset)
+        :ok =
+          if fetch_field!(person_changeset, :inserted_at) do
+              :ok
+          else
+              {:ok, _person} = CaseContext.create_person(person_changeset)
+              :ok
           end
 
         case =
-          case_changeset
-          |> fetch_field!(:inserted_at)
-          |> case do
-            nil ->
-              {:ok, case} = CaseContext.create_case(case_changeset)
-
-              case
-
-            _date ->
-              {:ok, case} = CaseContext.update_case(case_changeset)
-
-              case
+          if fetch_field!(case_changeset, :inserted_at) do
+            {:ok, case} = CaseContext.create_case(case_changeset)
+            case
+          else
+            {:ok, case} = CaseContext.update_case(case_changeset)
+            case
           end
-          |> Hygeia.Repo.preload(:person)
 
-        {:ok, _} = insert_transmission(case, transmission_data)
-
-        {person, case, reporting}
+        {:ok, _} = insert_transmission(case, form_data)
+        
+        :ok
       end)
     end)
   end
@@ -62,25 +54,23 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
           tuples :: [tuple()],
           transmission_type :: atom()
         ) :: :ok
-  def send_confirmations(socket, tuples, transmission_type)
+  def send_confirmations(socket, bindings, transmission_type)
 
-  def send_confirmations(socket, tuples, :contact_person) when is_list(tuples) do
-    Enum.each(tuples, fn {person, case, reporting} ->
+  def send_confirmations(socket, bindings, :contact_person) when is_list(bindings) do
+    Enum.each(bindings, fn %{case_changeset: case_changeset, seleccted_contact_methods: contact_methods} ->
       email_addresses =
-        person
-        |> Map.fetch!(:contact_methods)
-        |> Enum.filter(&(&1.type == :email and &1.uuid in reporting))
+        contact_methods
+        |> Enum.filter(&(&1.type == :email))
         |> Enum.map(& &1.value)
 
       phone_numbers =
-        person
-        |> Map.fetch!(:contact_methods)
-        |> Enum.filter(&(&1.type == :mobile and &1.uuid in reporting))
+        contact_methods
+        |> Enum.filter(&(&1.type == :mobile))
         |> Enum.map(& &1.value)
 
       [] =
         Task.async(fn ->
-          send_confirmation_emails(socket, case, email_addresses, :contact_person)
+          send_confirmation_emails(socket, apply_changes(case_changeset), email_addresses, :contact_person)
         end)
         |> Task.await()
         |> Enum.reject(&match?({:ok, _}, &1))
@@ -88,7 +78,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
         |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
 
       [] =
-        Task.async(fn -> send_confirmation_sms(socket, case, phone_numbers, :contact_person) end)
+        Task.async(fn -> send_confirmation_sms(socket, apply_changes(case_changeset), phone_numbers, :contact_person) end)
         |> Task.await()
         |> Enum.reject(&match?({:ok, _}, &1))
         |> Enum.reject(&match?({:error, :sms_config_missing}, &1))

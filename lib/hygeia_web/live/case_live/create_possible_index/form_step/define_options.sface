@@ -4,7 +4,7 @@
         Enum.with_index(@form_data.bindings)}
       <div class="w-100">
         <Form
-          for={%{case_cs | action: :validate}}
+          for={case_cs}
           change="validate"
           opts={autocomplete: "off", id: "define-options-form"}
         >

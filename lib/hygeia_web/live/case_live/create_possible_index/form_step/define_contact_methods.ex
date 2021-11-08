@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Reporting do
+defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
