@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="row mt-5">
   <div class="row">
     {#for %{person_changeset: person_cs, case_changeset: case_cs, reporting: reporting} <-
         @form_data.bindings}
@@ -33,7 +33,10 @@
                     <HygeiaWeb.FieldLabel />
                     <Select
                       class="form-control"
-                      options={DefineOptions.form_options_administrators(@supervisor_users, get_field(case_cs, :tenant_uuid))}
+                      options={DefineAdministration.form_options_administrators(
+                        @supervisor_users,
+                        fetch_field!(case_cs, :tenant_uuid)
+                      )}
                       opts={prompt: gettext("Case Administration"), disabled: true}
                     />
                     <ErrorTag class="d-block invalid-feedback" />
@@ -46,7 +49,10 @@
                     <HygeiaWeb.FieldLabel />
                     <Select
                       class="form-control"
-                      options={DefineOptions.form_options_administrators(@supervisor_users, get_field(case_cs, :tenant_uuid))}
+                      options={DefineAdministration.form_options_administrators(
+                        @supervisor_users,
+                        fetch_field!(case_cs, :tenant_uuid)
+                      )}
                       opts={prompt: gettext("Case Administration"), disabled: true}
                     />
                     <ErrorTag class="d-block invalid-feedback" />
@@ -100,10 +106,10 @@
       </div>
     {/for}
   </div>
-</div>
 
-<div class="row mb-3">
-  <LiveRedirect to={Routes.case_create_possible_index_path(@socket, :create)}>
-    {gettext("Create new possible index submission")}
-  </LiveRedirect>
+  <div class="row">
+    <LiveRedirect to={Routes.case_create_possible_index_path(@socket, :create)}>
+      {gettext("Create new possible index submission")}
+    </LiveRedirect>
+  </div>
 </div>

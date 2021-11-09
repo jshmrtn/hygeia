@@ -16,8 +16,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CaseContext.Transmission.InfectionPlace
+  alias Hygeia.Repo
 
-  alias HygeiaWeb.DateInput
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
@@ -73,7 +73,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     normalized_params = normalize_params(params)
     send(self(), {:feed, normalized_params})
 
-    {:noreply, assign(socket, changeset: %Changeset{changeset(%__MODULE__{}, params) | action: :validate})}
+    {:noreply,
+     assign(socket, changeset: %Changeset{changeset(%__MODULE__{}, params) | action: :validate})}
   end
 
   @impl Phoenix.LiveComponent
@@ -104,7 +105,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
        }}
     )
 
-    {:noreply, assign(socket, changeset: %Changeset{changeset(%__MODULE__{}, updated_params) | action: :validate})}
+    {:noreply,
+     assign(socket,
+       changeset: %Changeset{changeset(%__MODULE__{}, updated_params) | action: :validate}
+     )}
   end
 
   @impl Phoenix.LiveComponent

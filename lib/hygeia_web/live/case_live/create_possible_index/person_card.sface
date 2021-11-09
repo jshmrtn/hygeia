@@ -20,7 +20,7 @@
             </div>
           </div>
           <span :if={fetch_field!(@person_changeset, :inserted_at)} class="text-muted">
-            {gettext("This person is in the database")}
+            {gettext("This person is in database")}
           </span>
         </div>
 

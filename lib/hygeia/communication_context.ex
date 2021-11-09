@@ -163,18 +163,16 @@ defmodule Hygeia.CommunicationContext do
   def create_outgoing_email(%Case{} = case, to_email, subject, body) do
     %Case{tenant: tenant} = Repo.preload(case, tenant: [])
 
-    cond do
-      !TenantContext.tenant_has_outgoing_mail_configuration?(tenant) ->
-        {:error, :no_outgoing_mail_configuration}
-
-      true ->
-        create_email(case, %{
-          recipient: to_email,
-          subject: subject,
-          body: body,
-          status: :in_progress,
-          direction: :outgoing
-        })
+    if TenantContext.tenant_has_outgoing_mail_configuration?(tenant) do
+      create_email(case, %{
+        recipient: to_email,
+        subject: subject,
+        body: body,
+        status: :in_progress,
+        direction: :outgoing
+      })
+    else
+      {:error, :no_outgoing_mail_configuration}
     end
   end
 
@@ -365,17 +363,15 @@ defmodule Hygeia.CommunicationContext do
   def create_outgoing_sms(case, phone_number, message) do
     %Case{person: %Person{tenant: %Tenant{} = tenant}} = Repo.preload(case, person: :tenant)
 
-    cond do
-      !TenantContext.tenant_has_outgoing_sms_configuration?(tenant) ->
-        {:error, :sms_config_missing}
-
-      true ->
-        create_sms(case, %{
-          direction: :outgoing,
-          status: :in_progress,
-          message: message,
-          number: phone_number
-        })
+    if TenantContext.tenant_has_outgoing_sms_configuration?(tenant) do
+      create_sms(case, %{
+        direction: :outgoing,
+        status: :in_progress,
+        message: message,
+        number: phone_number
+      })
+    else
+      {:error, :sms_config_missing}
     end
   end
 

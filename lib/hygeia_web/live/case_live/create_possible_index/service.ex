@@ -3,6 +3,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
   import Ecto.Changeset
   import HygeiaWeb.Helpers.Confirmation
+  import HygeiaWeb.Helpers.Changeset
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
@@ -15,75 +16,92 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
   alias Hygeia.Repo
 
-  @spec upsert(form_data :: map()) ::
-          :ok | {:error, String.t()}
+  @spec upsert(form_data :: map()) :: {:ok, any()} | {:error, atom()}
   def upsert(form_data) do
-    Repo.transaction(fn ->
-      Enum.map(form_data.bindings, fn %{
-                              person_changeset: person_changeset,
-                              case_changeset: case_changeset,
-                              selected_contact_methods: selected_contact_methods
-                            } ->
-
-        :ok =
-          if fetch_field!(person_changeset, :inserted_at) do
-              :ok
-          else
-              {:ok, _person} = CaseContext.create_person(person_changeset)
-              :ok
+    success =
+      Repo.transaction(fn ->
+        Enum.map(form_data.bindings, fn %{
+                                          person_changeset: person_changeset,
+                                          case_changeset: case_changeset
+                                        } ->
+          if not existing_entity?(person_changeset) do
+            {:ok, _person} = CaseContext.create_person(person_changeset)
           end
 
-        case =
-          if fetch_field!(case_changeset, :inserted_at) do
-            {:ok, case} = CaseContext.create_case(case_changeset)
-            case
-          else
-            {:ok, case} = CaseContext.update_case(case_changeset)
-            case
-          end
+          case =
+            if existing_entity?(case_changeset) do
+              {:ok, case} = CaseContext.update_case(case_changeset)
+              case
+            else
+              {:ok, case} = CaseContext.create_case(case_changeset)
+              case
+            end
 
-        {:ok, _} = insert_transmission(case, form_data)
-        
-        :ok
+          {:ok, _} = insert_transmission(case, form_data)
+        end)
       end)
-    end)
+
+    case success do
+      {:ok, results} -> {:ok, results}
+      _errors -> {:error, :transaction_failed}
+    end
   end
 
   @spec send_confirmations(
           socket :: Phoenix.LiveView.Socket.t(),
-          tuples :: [tuple()],
+          bindings :: [map()] | [],
           transmission_type :: atom()
         ) :: :ok
   def send_confirmations(socket, bindings, transmission_type)
 
   def send_confirmations(socket, bindings, :contact_person) when is_list(bindings) do
-    Enum.each(bindings, fn %{case_changeset: case_changeset, seleccted_contact_methods: contact_methods} ->
-      email_addresses =
-        contact_methods
-        |> Enum.filter(&(&1.type == :email))
-        |> Enum.map(& &1.value)
+    Enum.each(bindings, fn
+      %{person_changeset: person_changeset, case_changeset: case_changeset, reporting: reporting} ->
+        email_addresses =
+          person_changeset
+          |> fetch_field!(:contact_methods)
+          |> Enum.filter(&(&1.type == :email and &1.uuid in reporting))
+          |> Enum.map(& &1.value)
 
-      phone_numbers =
-        contact_methods
-        |> Enum.filter(&(&1.type == :mobile))
-        |> Enum.map(& &1.value)
+        phone_numbers =
+          person_changeset
+          |> fetch_field!(:contact_methods)
+          |> Enum.filter(&(&1.type == :mobile and &1.uuid in reporting))
+          |> Enum.map(& &1.value)
 
-      [] =
-        Task.async(fn ->
-          send_confirmation_emails(socket, apply_changes(case_changeset), email_addresses, :contact_person)
-        end)
-        |> Task.await()
-        |> Enum.reject(&match?({:ok, _}, &1))
-        |> Enum.reject(&match?({:error, :no_outgoing_mail_configuration}, &1))
-        |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
+        [] =
+          fn ->
+            send_confirmation_emails(
+              socket,
+              apply_changes(case_changeset),
+              email_addresses,
+              :contact_person
+            )
+          end
+          |> Task.async()
+          |> Task.await()
+          |> Enum.reject(&match?({:ok, _}, &1))
+          |> Enum.reject(&match?({:error, :no_outgoing_mail_configuration}, &1))
+          |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
 
-      [] =
-        Task.async(fn -> send_confirmation_sms(socket, apply_changes(case_changeset), phone_numbers, :contact_person) end)
-        |> Task.await()
-        |> Enum.reject(&match?({:ok, _}, &1))
-        |> Enum.reject(&match?({:error, :sms_config_missing}, &1))
-        |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
-        |> Enum.reject(&match?({:error, :no_quarantine_ordered}, &1))
+        [] =
+          fn ->
+            send_confirmation_sms(
+              socket,
+              apply_changes(case_changeset),
+              phone_numbers,
+              :contact_person
+            )
+          end
+          |> Task.async()
+          |> Task.await()
+          |> Enum.reject(&match?({:ok, _}, &1))
+          |> Enum.reject(&match?({:error, :sms_config_missing}, &1))
+          |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
+          |> Enum.reject(&match?({:error, :no_quarantine_ordered}, &1))
+
+      binding ->
+        binding
     end)
   end
 

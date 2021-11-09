@@ -11,7 +11,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
 
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
@@ -22,9 +22,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
   prop live_action, :atom, required: true
   prop form_data, :map, required: true
 
+  #
+
   @impl Phoenix.LiveComponent
-  def update(assigns, socket) do
-    {:ok, assign(socket, assigns)}
+  def update(%{form_data: form_data} = assigns, socket) do
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> assign(form_data: prefill_reporting_data(form_data))}
   end
 
   @impl Phoenix.LiveComponent
@@ -41,12 +46,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
       List.update_at(
         form_data.bindings,
         String.to_integer(index),
-        fn %{reporting: reporting} = binding ->
-          Map.put(binding, :reporting, add_contact_uuid(reporting, contact_uuid))
+        fn binding ->
+          Map.update(binding, :reporting, [], &add_contact_uuid(&1, contact_uuid))
         end
       )
 
-    {:noreply, assign(socket, bindings: updated_bindings)}
+    send(self(), {:feed, %{bindings: updated_bindings}})
+
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveComponent
@@ -62,12 +69,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
       List.update_at(
         form_data.bindings,
         String.to_integer(index),
-        fn %{reporting: reporting} = binding ->
-          Map.put(binding, :reporting, remove_contact_uuid(reporting, contact_uuid))
+        fn binding ->
+          Map.update(binding, :reporting, [], &remove_contact_uuid(&1, contact_uuid))
         end
       )
 
-    {:noreply, assign(socket, bindings: updated_bindings)}
+    send(self(), {:feed, %{bindings: updated_bindings}})
+
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveComponent
@@ -84,16 +93,22 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
       List.update_at(
         form_data.bindings,
         String.to_integer(index),
-        fn %{reporting: reporting} = binding ->
-          Map.put(
+        fn binding ->
+          Map.update(
             binding,
             :reporting,
-            add_contact_uuids(reporting, to_deserialized_uuids(contact_uuids))
+            [],
+            &add_contact_uuids(
+              &1,
+              to_deserialized_uuids(contact_uuids)
+            )
           )
         end
       )
 
-    {:noreply, assign(socket, bindings: updated_bindings)}
+    send(self(), {:feed, %{bindings: updated_bindings}})
+
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveComponent
@@ -109,16 +124,19 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
       List.update_at(
         form_data.bindings,
         String.to_integer(index),
-        fn %{reporting: reporting} = binding ->
-          Map.put(
+        fn binding ->
+          Map.update(
             binding,
             :reporting,
-            remove_contact_uuids(reporting, to_deserialized_uuids(contact_uuids))
+            [],
+            &remove_contact_uuids(&1, to_deserialized_uuids(contact_uuids))
           )
         end
       )
 
-    {:noreply, assign(socket, bindings: updated_bindings)}
+    send(self(), {:feed, %{bindings: updated_bindings}})
+
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveComponent
@@ -148,61 +166,67 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
   @spec update_step_data(form_data :: map()) :: map()
   def update_step_data(form_data)
 
-  def update_step_data(%{bindings: bindings} = form_data) do
-    type = form_data[:type]
-
-    Map.put(
+  def update_step_data(form_data) do
+    Map.update(
       form_data,
       :bindings,
-      bindings
-      |> clean_reporting_data()
-      |> prefill_reporting_data(type)
+      [],
+      &clean_reporting_data(&1)
     )
   end
 
-  def update_step_data(form_data), do: form_data
-
   defp clean_reporting_data(bindings) do
-    Enum.map(bindings, fn %{person_changeset: person_changeset} = binding ->
-      reporting = Map.get(binding, :reporting, [])
+    Enum.map(bindings, fn
+      %{person_changeset: person_changeset, reporting: reporting} = binding ->
+        updated_reporting =
+          person_changeset
+          |> fetch_field!(:contact_methods)
+          |> Enum.reduce([], fn contact, acc ->
+            if Enum.member?(reporting, contact.uuid) do
+              add_contact_uuid(acc, contact.uuid)
+            else
+              acc
+            end
+          end)
 
-      updated_reporting =
-        person_changeset
-        |> get_field(:contact_methods, [])
-        |> Enum.reduce([], fn contact, acc ->
-          if Enum.member?(reporting, contact.uuid) do
-            add_contact_uuid(acc, contact.uuid)
-          else
-            acc
-          end
+        Map.put(binding, :reporting, updated_reporting)
+
+      binding ->
+        binding
+    end)
+  end
+
+  defp prefill_reporting_data(%{type: type} = form_data) do
+    Map.update(form_data, :bindings, [], fn bindings ->
+      updated_bindings =
+        Enum.map(bindings, fn
+          %{reporting: reporting} = binding when is_list(reporting) ->
+            binding
+
+          %{person_changeset: person_changeset, case_changeset: case_changeset} = binding ->
+            if should_contact_person(case_changeset, type) do
+              Map.put(
+                binding,
+                :reporting,
+                add_contact_uuids(
+                  [],
+                  person_changeset
+                  |> fetch_field!(:contact_methods)
+                  |> Enum.map(& &1.uuid)
+                )
+              )
+            else
+              binding
+            end
         end)
 
-      Map.put(binding, :reporting, updated_reporting)
+      send(self(), {:feed, %{bindings: updated_bindings}})
+
+      updated_bindings
     end)
   end
 
-  defp prefill_reporting_data(bindings, type) do
-    Enum.map(bindings, fn %{
-                            person_changeset: person_changeset,
-                            case_changeset: case_changeset,
-                            reporting: reporting
-                          } = binding ->
-      if should_contact_person(case_changeset, type) do
-        Map.put(
-          binding,
-          :reporting,
-          add_contact_uuids(
-            reporting,
-            person_changeset
-            |> fetch_field!(:contact_methods)
-            |> Enum.map(& &1.uuid)
-          )
-        )
-      else
-        binding
-      end
-    end)
-  end
+  defp prefill_reporting_data(form_data), do: form_data
 
   defp should_contact_person(case_changeset, type),
     do: not has_index_phase?(case_changeset) and is_right_type?(type)
@@ -265,6 +289,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
 
   def valid?(form_data) do
     DefineTransmission.valid?(form_data) and DefinePeople.valid?(form_data) and
-      DefineOptions.valid?(form_data)
+      DefineAdministration.valid?(form_data)
   end
 end

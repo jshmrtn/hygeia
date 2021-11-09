@@ -95,12 +95,6 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type_name: "Type name",
       value: "Value"
     },
-    Hygeia.CaseContext.Hospitalization => %{
-      end: "End",
-      organisation: "Organisation",
-      organisation_uuid: "Organisation UUID",
-      start: "Start"
-    },
     Hygeia.CaseContext.Note => %{note: "Note", pinned: "Pinned"},
     Hygeia.CaseContext.Person => %{
       address: "Address",
@@ -310,7 +304,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       originator: "Author",
       type: "Type"
     },
-    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions => %{
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration => %{
       status: "Status",
       supervisor_uuid: "Supervisor UUID",
       tracer_uuid: "Tracer UUID"
@@ -329,13 +323,6 @@ defmodule HygeiaWeb.Helpers.FieldName do
       status: "Status",
       supervisor_uuid: "Supervisor UUID",
       tracer_uuid: "Tracer UUID"
-    },
-    Hygeia.VersionContext.Version => %{
-      date: "Date",
-      item_changes: "Changes",
-      origin: "Origin",
-      originator: "Author",
-      type: "Type"
     },
     HygeiaWeb.AutoTracingLive.ContactMethods => %{
       email: "Email",

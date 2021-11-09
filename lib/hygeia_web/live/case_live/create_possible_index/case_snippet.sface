@@ -15,7 +15,7 @@
               <div class="card-body">
                 <InputContext assigns={assigns} :let={form: form}>
                   <Context
-                    put={__MODULE__, phase_details: Ecto.Changeset.get_field(form.source, :details)}
+                    put={__MODULE__, phase_details: Ecto.Changeset.fetch_field!(form.source, :details)}
                     get={__MODULE__, phase_details: phase_details}
                   >
                     <div class="form-group">
@@ -34,7 +34,7 @@
                           "btn",
                           "btn-sm",
                           "btn-secondary",
-                          active: Ecto.Changeset.get_field(form.source, :quarantine_order) == nil,
+                          active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == nil,
                           disabled: true
                         }>
                           <RadioButton value={nil} opts={disabled: true} />
@@ -44,7 +44,7 @@
                           "btn",
                           "btn-sm",
                           "btn-secondary",
-                          active: Ecto.Changeset.get_field(form.source, :quarantine_order) == true,
+                          active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == true,
                           disabled: true
                         }>
                           <RadioButton value opts={disabled: true} />
@@ -54,7 +54,7 @@
                           "btn",
                           "btn-sm",
                           "btn-secondary",
-                          active: Ecto.Changeset.get_field(form.source, :quarantine_order) == false,
+                          active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == false,
                           disabled: true
                         }>
                           <RadioButton value={false} opts={disabled: true} />
@@ -64,7 +64,7 @@
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
 
-                    <div class="row" :if={Ecto.Changeset.get_field(form.source, :quarantine_order) == true}>
+                    <div class="row" :if={Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == true}>
                       <div class="col">
                         <Field name={:start} class="form-group">
                           <HygeiaWeb.FieldLabel />
@@ -81,10 +81,9 @@
                       </div>
                     </div>
 
-                    <div class="row" :if={Ecto.Changeset.get_field(form.source, :quarantine_order) != true}>
+                    <div class="row" :if={Ecto.Changeset.fetch_field!(form.source, :quarantine_order) != true}>
                       <label>Phase created at:</label>
-                      {!-- TODO: verify --}
-                      <span>{Ecto.Changeset.get_field(@case_changeset, :inserted_at)}</span>
+                      <span>{Ecto.Changeset.fetch_field!(@case_changeset, :inserted_at)}</span>
                     </div>
                   </Context>
                 </InputContext>

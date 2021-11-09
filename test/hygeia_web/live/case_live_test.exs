@@ -91,7 +91,7 @@ defmodule HygeiaWeb.CaseLiveTest do
       assert {:error, {:live_redirect, %{to: _}}} =
                live(
                  conn,
-                 Routes.case_create_possible_index_path(conn, :index, "reporting")
+                 Routes.case_create_possible_index_path(conn, :index, "contact_methods")
                )
     end
   end
@@ -135,12 +135,12 @@ defmodule HygeiaWeb.CaseLiveTest do
           address: "Teststrasse 2"
         }
       })
-      |> test_next_button(context, %{to_step: "options"})
+      |> test_next_button(context, %{to_step: "administration"})
       |> test_define_options_step(context, %{
         "index" => "0",
         "case" => %{status: case_status}
       })
-      |> test_next_button(context, %{to_step: "reporting"})
+      |> test_next_button(context, %{to_step: "contact_methods"})
       |> test_reporting_step(context)
 
       assert [
@@ -221,12 +221,12 @@ defmodule HygeiaWeb.CaseLiveTest do
         last_name: last_name
       })
       |> test_define_people_step_select_person_suggestion(context)
-      |> test_next_button(context, %{to_step: "options"})
+      |> test_next_button(context, %{to_step: "administration"})
       |> test_define_options_step(context, %{
         "index" => index,
         "case" => %{status: case_status}
       })
-      |> test_next_button(context, %{to_step: "reporting"})
+      |> test_next_button(context, %{to_step: "contact_methods"})
       |> test_reporting_step(context)
 
       assert [
@@ -302,19 +302,23 @@ defmodule HygeiaWeb.CaseLiveTest do
         last_name: last_name
       })
       |> test_define_people_step_select_person_suggestion(context)
-      |> test_next_button(context, %{to_step: "options"})
+      |> test_next_button(context, %{to_step: "administration"})
       |> test_define_options_step(context, %{
         "index" => index,
         "case" => %{status: case_status}
       })
-      |> test_next_button(context, %{to_step: "reporting"})
+      |> test_next_button(context, %{to_step: "contact_methods"})
       |> test_navigation(context, %{live_action: :index, to_step: "transmission", path_params: []})
       |> test_transmission_step(context, %{
         type: :travel,
         date: date,
         comment: comment
       })
-      |> test_navigation(context, %{live_action: :index, to_step: "reporting", path_params: []})
+      |> test_navigation(context, %{
+        live_action: :index,
+        to_step: "contact_methods",
+        path_params: []
+      })
       |> test_reporting_step(context)
 
       assert [
@@ -397,7 +401,7 @@ defmodule HygeiaWeb.CaseLiveTest do
         last_name: last_name
       })
       |> test_define_people_step_select_person_suggestion(context)
-      |> test_next_button(context, %{to_step: "options"})
+      |> test_next_button(context, %{to_step: "administration"})
       |> test_define_options_step(context, %{
         "index" => index,
         "case" => %{status: case_status}
@@ -453,12 +457,12 @@ defmodule HygeiaWeb.CaseLiveTest do
         last_name: last_name
       })
       |> test_define_people_step_select_person_suggestion(context)
-      |> test_next_button(context, %{to_step: "options"})
+      |> test_next_button(context, %{to_step: "administration"})
       |> test_define_options_step(context, %{
         "index" => index,
         "case" => %{status: case_status}
       })
-      |> test_next_button(context, %{to_step: "reporting"})
+      |> test_next_button(context, %{to_step: "contact_methods"})
       |> test_reporting_step(context)
 
       assert [
@@ -541,12 +545,12 @@ defmodule HygeiaWeb.CaseLiveTest do
           address: "Teststrasse 2"
         }
       })
-      |> test_next_button(context, %{to_step: "options"})
+      |> test_next_button(context, %{to_step: "administration"})
       |> test_define_options_step(context, %{
         "index" => index,
         "case" => %{status: case_status}
       })
-      |> test_next_button(context, %{to_step: "reporting"})
+      |> test_next_button(context, %{to_step: "contact_methods"})
       |> test_reporting_step(context)
 
       assert [
@@ -632,7 +636,7 @@ defmodule HygeiaWeb.CaseLiveTest do
           address: "Teststrasse 2"
         }
       })
-      |> test_next_button(context, %{to_step: "options"})
+      |> test_next_button(context, %{to_step: "administration"})
       |> test_define_options_step(context, %{
         "index" => index,
         "case" => %{status: case_status}
@@ -708,12 +712,12 @@ defmodule HygeiaWeb.CaseLiveTest do
           address: "Teststrasse 2"
         }
       })
-      |> test_next_button(context, %{to_step: "options"})
+      |> test_next_button(context, %{to_step: "administration"})
       |> test_define_options_step(context, %{
         "index" => index,
         "case" => %{status: case_status}
       })
-      |> test_next_button(context, %{to_step: "reporting"})
+      |> test_next_button(context, %{to_step: "contact_methods"})
       |> test_reporting_step(context)
 
       assert [
@@ -814,12 +818,12 @@ defmodule HygeiaWeb.CaseLiveTest do
       |> test_define_people_step_submit_person_modal(context, %{
         tenant_uuid: tenant.uuid
       })
-      |> test_next_button(context, %{to_step: "options"})
+      |> test_next_button(context, %{to_step: "administration"})
       |> test_define_options_step(context, %{
         "index" => index,
         "case" => %{status: case_status}
       })
-      |> test_next_button(context, %{to_step: "reporting"})
+      |> test_next_button(context, %{to_step: "contact_methods"})
       |> test_reporting_step(context)
 
       assert [

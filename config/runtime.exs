@@ -66,18 +66,6 @@ api_port =
     )
   )
 
-config :hygeia_api, HygeiaApi.Endpoint,
-  url: [
-    host: System.get_env("API_EXTERNAL_HOST", "localhost"),
-    port: System.get_env("API_EXTERNAL_PORT", "#{api_port}"),
-    scheme: System.get_env("API_EXTERNAL_SCHEME", "http")
-  ],
-  http: [
-    port: api_port,
-    transport_options: [socket_opts: [:inet6]]
-  ],
-  secret_key_base: System.fetch_env!("SECRET_KEY_BASE")
-
 config :logger,
   level:
     String.to_existing_atom(

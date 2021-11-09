@@ -120,7 +120,7 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
           LiveViewTest.t()
   def test_define_people_step_create_person_modal(view, context, params)
 
-  def test_define_people_step_create_person_modal(view, %{conn: conn}, params) do
+  def test_define_people_step_create_person_modal(view, %{conn: conn}, _params) do
     assert view
            |> element("#search-people-form")
            |> render_submit()
@@ -183,7 +183,7 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
 
   def test_define_options_step(view, _context, params) do
     assert view
-           |> element("#define-options-form")
+           |> element("#define-administration-form")
            |> render_change(params)
 
     view

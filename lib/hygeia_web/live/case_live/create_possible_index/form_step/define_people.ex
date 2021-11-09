@@ -111,7 +111,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
   @impl Phoenix.LiveComponent
   def handle_event("validate_person", %{"person" => params}, socket) do
-    {:noreply, assign(socket, :changeset, %Ecto.Changeset{CaseContext.change_person(params) | action: :validate})}
+    {:noreply,
+     assign(socket, :changeset, %Ecto.Changeset{
+       CaseContext.change_person(%Person{}, params)
+       | action: :validate
+     })}
   end
 
   @impl Phoenix.LiveComponent
@@ -231,7 +235,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       case_changeset:
         person
         |> Ecto.build_assoc(:cases)
-        |> CaseContext.change_case(%{tenant_uuid: person.tenant_uuid, status: decide_case_status(form_data[:type])})
+        |> CaseContext.change_case(%{
+          tenant_uuid: person.tenant_uuid,
+          status: decide_case_status(form_data[:type])
+        })
     }
     |> add_binding(form_data[:bindings])
     |> then(&send(self(), {:feed, %{bindings: &1}}))
@@ -300,7 +307,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       case_changeset:
         person
         |> Ecto.build_assoc(:cases)
-        |> CaseContext.change_case(%{tenant_uuid: person.tenant_uuid, status: decide_case_status(form_data[:type])})
+        |> CaseContext.change_case(%{
+          tenant_uuid: person.tenant_uuid,
+          status: decide_case_status(form_data[:type])
+        })
     }
     |> include_binding(form_data[:bindings], live_action, params)
     |> then(&send(self(), {:feed, %{bindings: &1}}))

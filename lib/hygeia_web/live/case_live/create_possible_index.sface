@@ -30,8 +30,8 @@
           {=@form_data}
           {=@tenants}
         />
-      {#match "options"}
-        <DefineOptions
+      {#match "administration"}
+        <DefineAdministration
           id={@form_step}
           {=@form_step}
           {=@live_action}
@@ -39,10 +39,17 @@
           {=@supervisor_users}
           {=@tracer_users}
         />
-      {#match "reporting"}
+      {#match "contact_methods"}
         <DefineContactMethods id={@form_step} {=@form_step} {=@live_action} {=@form_data} />
       {#match "summary"}
-        <Summary {=@form_step} {=@live_action} {=@form_data} {=@supervisor_users} {=@tracer_users} />
+        <Summary
+          id={@form_step}
+          {=@form_step}
+          {=@live_action}
+          {=@form_data}
+          {=@supervisor_users}
+          {=@tracer_users}
+        />
     {/case}
   </div>
 </div>

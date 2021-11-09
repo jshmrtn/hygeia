@@ -14,10 +14,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
 
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
 
@@ -29,9 +29,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   @default_form_step "transmission"
   @form_steps [
     %FormStep{name: "transmission", prev: nil, next: "people"},
-    %FormStep{name: "people", prev: "transmission", next: "options"},
-    %FormStep{name: "options", prev: "people", next: "reporting"},
-    %FormStep{name: "reporting", prev: "options", next: nil},
+    %FormStep{name: "people", prev: "transmission", next: "administration"},
+    %FormStep{name: "administration", prev: "people", next: "contact_methods"},
+    %FormStep{name: "contact_methods", prev: "administration", next: nil},
     %FormStep{name: "summary", prev: nil, next: nil}
   ]
 
@@ -129,23 +129,28 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   defp save(%Socket{assigns: %{form_data: form_data}} = socket) do
     case Service.upsert(form_data) do
-      {:error, _} ->
-        put_flash(
-          socket,
-          :info,
-          gettext(
-            "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
-          )
-        )
-
-      :ok ->
-        :ok = Service.send_confirmations(socket, form_data)
+      {:ok, _success} ->
+        :ok = Service.send_confirmations(socket, form_data.bindings, form_data.type)
 
         socket
         |> unblock_navigation()
         |> assign(visited_steps: visit_step([], "summary"))
+        |> assign(form_data: form_data)
         |> put_flash(:info, gettext("Cases inserted successfully."))
         |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, "summary"))
+
+      _error ->
+        socket
+        |> put_flash(
+          :info,
+          pgettext(
+            "errors",
+            "There was an error while submitting the form. Please try resubmitting the form again or contact your administrator if the problem persists."
+          )
+        )
+        |> push_patch(
+          to: Routes.case_create_possible_index_path(socket, :index, @default_form_step)
+        )
     end
   end
 
@@ -288,11 +293,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     DefinePeople.valid?(form_data)
   end
 
-  defp valid_step?("options", form_data) do
-    DefineOptions.valid?(form_data)
+  defp valid_step?("administration", form_data) do
+    DefineAdministration.valid?(form_data)
   end
 
-  defp valid_step?("reporting", form_data) do
+  defp valid_step?("contact_methods", form_data) do
     DefineContactMethods.valid?(form_data)
   end
 
@@ -300,7 +305,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     current_data
     |> DefineTransmission.update_step_data()
     |> DefinePeople.update_step_data()
-    |> DefineOptions.update_step_data()
+    |> DefineAdministration.update_step_data()
     |> DefineContactMethods.update_step_data()
   end
 

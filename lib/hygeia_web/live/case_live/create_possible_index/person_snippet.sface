@@ -28,10 +28,7 @@
     <div>{@person.address.country || gettext("Unknown")}</div>
   </div>
   <div>
-    <Link
-      to={Routes.person_base_data_path(@socket, :show, @person.uuid)}
-      opts={target: "_blank", rel: "noopener noreferrer"}
-    >
+    <Link to={@path} opts={target: "_blank", rel: "noopener noreferrer"}>
       <small>{gettext("Open in new tab")}</small>
     </Link>
   </div>

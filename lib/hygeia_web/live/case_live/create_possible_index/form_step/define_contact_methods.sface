@@ -38,7 +38,7 @@
                           <td>{contact.value}</td>
                           <td>{contact.comment}</td>
                           <td><Checkbox opts={
-                              checked: if(has_contact_uuid?(reporting, contact.uuid), do: true),
+                              checked: has_contact_uuid?(reporting, contact.uuid),
                               hidden_input: "false",
                               phx_click: "contact_method_checked",
                               phx_target: @myself,
@@ -62,20 +62,22 @@
       </div>
     {/for}
   </div>
-</div>
 
-<div class="row mb-3">
-  <button id="back-button" class="btn btn-warning mt-5" type="button" :on-click="back">
-    {gettext("Back")}
-  </button>
-  <button
-    id="next-button"
-    class="btn btn-primary mt-5"
-    type="submit"
-    :on-click="next"
-    phx-disable-with={gettext("Saving...")}
-    disabled={not valid?(@form_data)}
-  >
-    {gettext("Submit and send")}
-  </button>
+  <div class="row">
+    <div class="col">
+      <button id="back-button" class="btn btn-warning mt-5" type="button" :on-click="back">
+        {gettext("Back")}
+      </button>
+      <button
+        id="next-button"
+        class="btn btn-primary mt-5"
+        type="submit"
+        :on-click="next"
+        phx-disable-with={gettext("Saving...")}
+        disabled={not valid?(@form_data)}
+      >
+        {gettext("Submit and send")}
+      </button>
+    </div>
+  </div>
 </div>

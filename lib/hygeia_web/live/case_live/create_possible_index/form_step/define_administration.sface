@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="row">
   <div class="row mb-3">
     {#for {%{person_changeset: person_cs, case_changeset: case_cs}, index} <-
         Enum.with_index(@form_data.bindings)}
@@ -6,7 +6,7 @@
         <Form
           for={case_cs}
           change="validate"
-          opts={autocomplete: "off", id: "define-options-form"}
+          opts={autocomplete: "off", id: "define-administration-form"}
         >
           <HiddenInput name="index" value={index} />
           <PersonCard person_changeset={person_cs}>
@@ -81,20 +81,22 @@
       </div>
     {/for}
   </div>
-</div>
 
-<div class="row mb-3">
-  <button id="back-button" class="btn btn-warning mt-5" type="button" :on-click="back">
-    {gettext("Back")}
-  </button>
-  <button
-    id="next-button"
-    class="btn btn-primary mt-5"
-    type="submit"
-    :on-click="next"
-    phx-disable-with={gettext("Saving...")}
-    disabled={not valid?(@form_data)}
-  >
-    {gettext("Next")}
-  </button>
+  <div class="row">
+    <div class="col">
+      <button id="back-button" class="btn btn-warning mt-5" type="button" :on-click="back">
+        {gettext("Back")}
+      </button>
+      <button
+        id="next-button"
+        class="btn btn-primary mt-5"
+        type="submit"
+        :on-click="next"
+        phx-disable-with={gettext("Saving...")}
+        disabled={not valid?(@form_data)}
+      >
+        {gettext("Next")}
+      </button>
+    </div>
+  </div>
 </div>

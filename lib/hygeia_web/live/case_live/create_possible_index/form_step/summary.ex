@@ -1,7 +1,7 @@
 defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary do
   @moduledoc false
 
-  use HygeiaWeb, :surface_component
+  use HygeiaWeb, :surface_live_component
 
   import Ecto.Changeset
   import HygeiaGettext
@@ -19,7 +19,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary do
 
   alias Hygeia.CaseContext.Case.Status
 
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods
 
   prop form_step, :string, required: true

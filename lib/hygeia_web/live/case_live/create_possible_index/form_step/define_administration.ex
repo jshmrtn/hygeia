@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
+defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
@@ -96,7 +96,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineOptions do
       Enum.map(bindings, fn %{case_changeset: case_changeset} = binding ->
         case_changeset =
           case_changeset
-          |> merge_phases(%{type: form_data[:type], type_other: form_data[:type_other], date: form_data[:date]})
+          |> merge_phases(%{
+            type: form_data[:type],
+            type_other: form_data[:type_other],
+            date: form_data[:date]
+          })
           |> merge_propagator_administrators(%{propagator: form_data[:propagator]})
 
         Map.put(binding, :case_changeset, case_changeset)
