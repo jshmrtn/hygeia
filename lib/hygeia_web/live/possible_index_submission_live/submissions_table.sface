@@ -67,7 +67,7 @@
               </LiveRedirect>
               <Link
                 to="#"
-                click="delete"
+                click={@delete}
                 class="delete"
                 opts={
                   title: gettext("Delete"),

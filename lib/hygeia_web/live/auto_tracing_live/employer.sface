@@ -66,12 +66,7 @@
                         name={:not_found}
                       >
                         <HygeiaWeb.FieldLabel class="me-2" />
-                        <Checkbox opts={
-                          checked:
-                            if fetch_field!(school_visit.source, :not_found) do
-                              "true"
-                            end
-                        } />
+                        <Checkbox opts={checked: fetch_field!(school_visit.source, :not_found)} />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
 
@@ -94,13 +89,20 @@
                       </div>
 
                       {#if fetch_field!(school_visit.source, :known_school_uuid)}
-                        <Field class="form-group" name={:known_division_uuid}>
+                        <Field
+                          :if={!fetch_field!(school_visit.source, :division_not_found)}
+                          class="form-group"
+                          name={:known_division_uuid}
+                        >
                           <HygeiaWeb.FieldLabel />
                           <HygeiaWeb.DivisionLive.Choose
                             id={"school_#{fetch_field!(school_visit.source, :uuid)}_division"}
                             change="select_school_division"
                             subject={fetch_field!(school_visit.source, :uuid)}
                             organisation={OrganisationContext.get_organisation!(fetch_field!(school_visit.source, :known_school_uuid))}
+                            no_results_message={gettext(
+                              "No class or division found, please close this popup and insert one manually in the dedicated fields."
+                            )}
                             disabled={fetch_field!(school_visit.source, :division_not_found)}
                           />
                           <ErrorTag class="d-block invalid-feedback" />
@@ -111,13 +113,10 @@
                           class="form-group"
                           name={:division_not_found}
                         >
-                          <HygeiaWeb.FieldLabel class="me-2" />
                           <Checkbox opts={
-                            checked:
-                              if fetch_field!(school_visit.source, :division_not_found) do
-                                "true"
-                              end
+                            checked: fetch_field!(school_visit.source, :division_not_found)
                           } />
+                          <HygeiaWeb.FieldLabel class="me-2" />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                       {/if}
@@ -130,15 +129,12 @@
                         <div class="card-body">
                           <h5>{gettext("Class or division")}</h5>
                           <Inputs for={:unknown_division}>
-                            <InputContext assigns={assigns} :let={form: division}>
+                            <InputContext assigns={assigns}>
                               <Field name={:name} class="form-group">
                                 <HygeiaWeb.FieldLabel />
                                 <TextInput class="form-control" />
                                 <ErrorTag class="d-block invalid-feedback" />
                               </Field>
-                              <Inputs for={:address}>
-                                <HygeiaWeb.AddressForm id={"visited_school_#{fetch_field!(division.source, :uuid)}_unknown_division_address"} />
-                              </Inputs>
                             </InputContext>
                           </Inputs>
                         </div>
@@ -310,10 +306,7 @@
                       >
                         <HygeiaWeb.FieldLabel class="me-2" />
                         <Checkbox opts={
-                          checked:
-                            if fetch_field!(occupation.source, :not_found) do
-                              "true"
-                            end,
+                          checked: fetch_field!(occupation.source, :not_found),
                           disabled: true
                         } />
                         <ErrorTag class="d-block invalid-feedback" />
@@ -342,7 +335,11 @@
                     </div>
 
                     {#if fetch_field!(occupation.source, :known_organisation_uuid)}
-                      <Field class="form-group" name={:known_division_uuid}>
+                      <Field
+                        :if={!fetch_field!(occupation.source, :division_not_found)}
+                        class="form-group"
+                        name={:known_division_uuid}
+                      >
                         <HygeiaWeb.FieldLabel />
                         <HygeiaWeb.DivisionLive.Choose
                           id={"organisation_#{fetch_field!(occupation.source, :uuid)}_division"}
@@ -359,14 +356,11 @@
                         class="form-group"
                         name={:division_not_found}
                       >
-                        <HygeiaWeb.FieldLabel class="me-2" />
                         <Checkbox opts={
-                          checked:
-                            if fetch_field!(occupation.source, :division_not_found) do
-                              "true"
-                            end,
+                          checked: fetch_field!(occupation.source, :division_not_found),
                           disabled: true
                         } />
+                        <HygeiaWeb.FieldLabel class="me-2" />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     {/if}
@@ -459,12 +453,7 @@
                         name={:not_found}
                       >
                         <HygeiaWeb.FieldLabel class="me-2" />
-                        <Checkbox opts={
-                          checked:
-                            if fetch_field!(occupation.source, :not_found) do
-                              "true"
-                            end
-                        } />
+                        <Checkbox opts={checked: fetch_field!(occupation.source, :not_found)} />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </div>
@@ -488,13 +477,20 @@
                     </div>
 
                     {#if fetch_field!(occupation.source, :known_organisation_uuid)}
-                      <Field class="form-group" name={:known_division_uuid}>
+                      <Field
+                        :if={!fetch_field!(occupation.source, :division_not_found)}
+                        class="form-group"
+                        name={:known_division_uuid}
+                      >
                         <HygeiaWeb.FieldLabel />
                         <HygeiaWeb.DivisionLive.Choose
                           id={"organisation_#{fetch_field!(occupation.source, :uuid)}_division"}
                           change="select_affiliation_division"
                           subject={fetch_field!(occupation.source, :uuid)}
                           organisation={OrganisationContext.get_organisation!(fetch_field!(occupation.source, :known_organisation_uuid))}
+                          no_results_message={gettext(
+                            "Divisions not found, please close this popup and insert one manually in the dedicated fields."
+                          )}
                           disabled={fetch_field!(occupation.source, :division_not_found)}
                         />
                         <ErrorTag class="d-block invalid-feedback" />
@@ -505,13 +501,10 @@
                         class="form-group"
                         name={:division_not_found}
                       >
-                        <HygeiaWeb.FieldLabel class="me-2" />
                         <Checkbox opts={
-                          checked:
-                            if fetch_field!(occupation.source, :division_not_found) do
-                              "true"
-                            end
+                          checked: fetch_field!(occupation.source, :division_not_found)
                         } />
+                        <HygeiaWeb.FieldLabel class="me-2" />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     {/if}

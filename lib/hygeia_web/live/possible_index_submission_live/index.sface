@@ -73,6 +73,7 @@
         <HygeiaWeb.PossibleIndexSubmissionLive.SubmissionsTable
           case={@case}
           id={"#{@case.uuid}_submissions_table"}
+          delete="delete"
         />
       </div>
     </div>

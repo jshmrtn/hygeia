@@ -529,5 +529,11 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
        }),
        do: nil
 
+  defp filter_unknown_division(%Entity{
+         name: nil,
+         address: nil
+       }),
+       do: nil
+
   defp filter_unknown_division(division), do: division
 end
