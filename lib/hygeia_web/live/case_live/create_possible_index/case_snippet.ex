@@ -13,4 +13,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet do
   alias Surface.Components.Form.RadioButton
 
   prop case_changeset, :map, default: nil
+  prop class, :string
+
+  slot top
 end

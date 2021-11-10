@@ -30,11 +30,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
   prop tracer_users, :map, required: true
 
   @impl Phoenix.LiveComponent
-  def update(assigns, socket) do
-    {:ok, assign(socket, assigns)}
-  end
-
-  @impl Phoenix.LiveComponent
   def handle_event(
         "validate",
         %{"index" => index, "case" => case_params},
@@ -102,6 +97,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
             date: form_data[:date]
           })
           |> merge_propagator_administrators(%{propagator: form_data[:propagator]})
+          |> CaseContext.change_case()
 
         Map.put(binding, :case_changeset, case_changeset)
       end)
@@ -186,48 +182,36 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
                 phase
             end)
 
-          CaseContext.change_case(
+          put_embed(
             changeset,
-            update_changeset_param(
-              changeset,
-              :phases,
-              fn _old_phases ->
-                status_changed_phases ++
-                  [
-                    %{
-                      details: %{
-                        __type__: :possible_index,
-                        type: global_type,
-                        type_other: nil
-                      },
-                      quarantine_order: true,
-                      order_date: DateTime.utc_now(),
-                      start: start_date,
-                      end: end_date
-                    }
-                  ]
-              end
-            )
+            :phases,
+            status_changed_phases ++
+              [
+                %Case.Phase{
+                  details: %Case.Phase.PossibleIndex{
+                    type: global_type,
+                    type_other: nil
+                  },
+                  quarantine_order: true,
+                  order_date: DateTime.utc_now(),
+                  start: start_date,
+                  end: end_date
+                }
+              ]
           )
         else
-          CaseContext.change_case(
+          put_embed(
             changeset,
-            update_changeset_param(
-              changeset,
-              :phases,
-              fn _old_phases ->
-                existing_phases ++
-                  [
-                    %{
-                      details: %{
-                        __type__: :possible_index,
-                        type: global_type,
-                        type_other: global_type_other
-                      }
-                    }
-                  ]
-              end
-            )
+            :phases,
+            existing_phases ++
+              [
+                %Case.Phase{
+                  details: %Case.Phase.PossibleIndex{
+                    type: global_type,
+                    type_other: global_type_other
+                  }
+                }
+              ]
           )
         end
 

@@ -6,7 +6,7 @@
         <Form for={case_cs} change="validate" opts={autocomplete: "off"}>
           <PersonCard person_changeset={person_cs}>
             <:feature>
-              <div class="ml-auto">
+              <div class="ms-auto">
                 <Link
                   to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
                   opts={target: "_blank", rel: "noopener noreferrer"}

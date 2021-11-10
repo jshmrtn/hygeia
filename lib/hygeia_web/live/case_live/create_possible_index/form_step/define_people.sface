@@ -53,13 +53,13 @@
               <div class="d-flex w-100">
                 <div class="w-100">
                   <span class={if contains?(person.first_name, get_field(@search_changeset, :first_name)),
-                    do: "font-weight-bold"}>
+                    do: "fw-bold"}>
                     {person.first_name}
                   </span>
                 </div>
                 <div class="w-100">
                   <span class={if contains?(person.last_name, get_field(@search_changeset, :last_name)),
-                    do: "font-weight-bold"}>
+                    do: "fw-bold"}>
                     {person.last_name}
                   </span>
                 </div>
@@ -70,7 +70,7 @@
                         if contact.type == :mobile and contact.value == get_field(@search_changeset, :mobile),
                           do: contact.value
                       end)}
-                    <span class="font-weight-bold">
+                    <span class="fw-bold">
                       {mobile}
                     </span>
                   {#else}
@@ -86,7 +86,7 @@
                         if contact.type == :landline and contact.value == get_field(@search_changeset, :landline),
                           do: contact.value
                       end)}
-                    <span class="font-weight-bold">
+                    <span class="fw-bold">
                       {landline}
                     </span>
                   {#else}
@@ -102,7 +102,7 @@
                         if contact.type == :email and contact.value == get_field(@search_changeset, :email),
                           do: contact.value
                       end)}
-                    <span class="font-weight-bold">
+                    <span class="fw-bold">
                       {email}
                     </span>
                   {#else}
@@ -120,25 +120,30 @@
             </:left>
             <:bottom>
               <div id="suggestion-cases" class="mb-4">
+                <h5>{gettext("Cases")}</h5>
                 <div class="list-group">
                   {#for case <- person.cases}
                     <div class="list-group-item list-group-item-action">
-                      <CaseSnippet case_changeset={change(case)} />
-                      <Link
-                        to={Routes.case_base_data_path(@socket, :show, case.uuid)}
-                        opts={target: "_blank", rel: "noopener noreferrer"}
-                      >
-                        {gettext("Open case in new tab")}
-                      </Link>
-                      <button
-                        class="btn btn-primary"
-                        type="button"
-                        :on-click="case_selected"
-                        phx-value-person_uuid={person.uuid}
-                        value={case.uuid}
-                      >
-                        {gettext("Select case")}
-                      </button>
+                      <div class="p-3">
+                        <Link
+                          to={Routes.case_base_data_path(@socket, :show, case.uuid)}
+                          opts={target: "_blank", rel: "noopener noreferrer"}
+                        >
+                          {gettext("Open case in new tab")}
+                        </Link>
+                      </div>
+                      <CaseSnippet case_changeset={change(case)} class="me-2" />
+                      <div class="p-3">
+                        <button
+                          class="btn btn-primary"
+                          type="button"
+                          :on-click="case_selected"
+                          phx-value-person_uuid={person.uuid}
+                          value={case.uuid}
+                        >
+                          {gettext("Select case")}
+                        </button>
+                      </div>
                     </div>
                   {/for}
                 </div>
@@ -377,8 +382,12 @@
     </div>
   </div>
 
-  <div class="row" :if={not Enum.empty?(Map.get(@form_data, :bindings, []))}>
+  <div
+    class="d-flex flex-row align-items-center my-4"
+    :if={not Enum.empty?(Map.get(@form_data, :bindings, []))}
+  >
     <Checkbox
+      class="p-2 me-3"
       hidden_input="false"
       opts={
         checked: is_all_checked?(@form_data.bindings, @bulk_action_elements),
@@ -399,77 +408,77 @@
     </Link>
   </div>
 
-  <div class="row">
+  <div class="d-flex flex-row">
     {#for {%{person_changeset: person_cs, case_changeset: case_cs}, index} <-
         Enum.with_index(Map.get(@form_data, :bindings, []))}
-      <div class="w-100">
-        <Checkbox
-          class="form-check-input"
-          hidden_input="false"
-          opts={
-            checked: in_bulk_action?(@bulk_action_elements, index),
-            phx_target: @myself,
-            phx_click: "person_checked",
-            phx_value_index: index
-          }
-        />
-        <PersonCard person_changeset={person_cs}>
-          <:feature>
-            {#if not existing_entity?(person_cs)}
-              {#if length(fetch_field!(person_cs, :suspected_duplicates_uuid)) > 0}
-                <div>
-                  <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace>
-                    <span class="text-info">{gettext("There are possible duplicates for this person. Click to resolve.")}</span>
-                  </LivePatch>
-                </div>
-              {/if}
+      <Checkbox
+        class="p-2 me-3"
+        hidden_input="false"
+        opts={
+          checked: in_bulk_action?(@bulk_action_elements, index),
+          phx_target: @myself,
+          phx_click: "person_checked",
+          phx_value_index: index
+        }
+      />
+      <PersonCard person_changeset={person_cs} class="flex-grow-1">
+        <:feature>
+          {#if not existing_entity?(person_cs)}
+            {#if length(fetch_field!(person_cs, :suspected_duplicates_uuid)) > 0}
+              <div>
+                <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace>
+                  <span class="text-info">{gettext("There are possible duplicates for this person. Click to resolve.")}</span>
+                </LivePatch>
+              </div>
             {/if}
-          </:feature>
-          <:left>
-            <LivePatch to={Routes.case_create_possible_index_path(@socket, :show, @form_step, index)} replace>
-              <button class="btn btn-secondary" type="button">
-                {gettext("View")}
-              </button>
-            </LivePatch>
-            <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace>
-              <button :if={not existing_entity?(person_cs)} class="btn btn-primary">
-                <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                {gettext("Edit")}
-              </button>
-            </LivePatch>
-          </:left>
+          {/if}
+        </:feature>
+        <:left>
+          <LivePatch to={Routes.case_create_possible_index_path(@socket, :show, @form_step, index)} replace>
+            <button class="btn btn-secondary" type="button">
+              {gettext("View")}
+            </button>
+          </LivePatch>
+          <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace>
+            <button :if={not existing_entity?(person_cs)} class="btn btn-primary">
+              <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+              {gettext("Edit")}
+            </button>
+          </LivePatch>
+        </:left>
 
-          <:right>
-            <Link
-              to="#"
-              click="delete_person"
-              opts={
-                title: gettext("Delete"),
-                data: [confirm: gettext("Are you sure?")],
-                "phx-value-index": index
-              }
-            >
-              <button class="btn btn-danger">
-                <span class="oi oi-trash" aria-hidden="true" />
-                {gettext("Delete")}
-              </button>
-            </Link>
-          </:right>
+        <:right>
+          <Link
+            to="#"
+            click="delete_person"
+            opts={
+              title: gettext("Delete"),
+              data: [confirm: gettext("Are you sure?")],
+              "phx-value-index": index
+            }
+          >
+            <button class="btn btn-danger">
+              <span class="oi oi-trash" aria-hidden="true" />
+              {gettext("Delete")}
+            </button>
+          </Link>
+        </:right>
 
-          <:bottom>
-            {#if existing_entity?(case_cs)}
-              <span>Associated case:</span>
-              <CaseSnippet case_changeset={case_cs} />
+        <:bottom>
+          {#if existing_entity?(case_cs)}
+            <span>Associated case:</span>
+            <CaseSnippet case_changeset={case_cs} />
+            <div class="p-3">
               <Link
                 to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
                 opts={target: "_blank", rel: "noopener noreferrer"}
               >
                 {gettext("Open case in new tab")}
               </Link>
-            {/if}
-          </:bottom>
-        </PersonCard>
-      </div>
+            </div>
+          {/if}
+        </:bottom>
+      </PersonCard>
     {/for}
   </div>
 

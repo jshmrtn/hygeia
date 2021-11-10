@@ -11,7 +11,7 @@
           <HiddenInput name="index" value={index} />
           <PersonCard person_changeset={person_cs}>
             <:feature>
-              <div class="ml-auto">
+              <div class="ms-auto">
                 <Field name={:status} class="input-group">
                   <HygeiaWeb.FieldLabel class="mb-0">
                     <span class="input-group-text">
@@ -66,14 +66,16 @@
               {#if existing_entity?(case_cs)}
                 <span>Associated case:</span>
                 <CaseSnippet case_changeset={case_cs} />
-                <Link
-                  to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
-                  opts={target: "_blank", rel: "noopener noreferrer"}
-                >
-                  {gettext("Open case in new tab")}
-                </Link>
+                <div class="p-3">
+                  <Link
+                    to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
+                    opts={target: "_blank", rel: "noopener noreferrer"}
+                  >
+                    {gettext("Open case in new tab")}
+                  </Link>
+                </div>
               {#else}
-                {gettext("A new case will be created for this person.")}
+                <div class="p-3">{gettext("A new case will be created for this person.")}</div>
               {/if}
             </:bottom>
           </PersonCard>

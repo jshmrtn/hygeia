@@ -4,7 +4,7 @@
   <HiddenInput field={:possible_index_submission_uuid} />
 
   <div class="container">
-    <div class="row" :if={@form_step != "summary"}>
+    <div class="row mb-4" :if={@form_step != "summary"}>
       <div class="text-center w-100">
         {#for {step, index} <- get_form_steps() |> Enum.reject(&(&1.name == "summary")) |> Enum.with_index()}
           <LivePatch to={Routes.case_create_possible_index_path(@socket, :index, step.name)}>

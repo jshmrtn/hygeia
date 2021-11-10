@@ -6,6 +6,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard do
   import Ecto.Changeset
 
   prop person_changeset, :any, default: nil
+  prop class, :string
 
   slot header
   slot feature

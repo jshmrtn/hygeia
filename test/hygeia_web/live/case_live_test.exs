@@ -591,7 +591,8 @@ defmodule HygeiaWeb.CaseLiveTest do
              ] = CaseContext.list_transmissions()
     end
 
-    test "type: other, new person, new case, status: done", %{conn: conn, user: user} = context do
+    test "type: travel then other, new person, new case, status: done",
+         %{conn: conn, user: user} = context do
       assert {:ok, view, _html} =
                live(conn, Routes.case_create_possible_index_path(conn, :create))
 
@@ -615,10 +616,7 @@ defmodule HygeiaWeb.CaseLiveTest do
 
       view
       |> test_transmission_step(context, %{
-        type: type,
-        type_other: type_other,
-        propagator_internal: propagator_internal,
-        propagator_ism_id: propagator_ism_id,
+        type: :travel,
         date: date,
         comment: comment
       })
@@ -641,6 +639,18 @@ defmodule HygeiaWeb.CaseLiveTest do
         "index" => index,
         "case" => %{status: case_status}
       })
+      |> test_back_button(context, %{to_step: "people"})
+      |> test_back_button(context, %{to_step: "transmission"})
+      |> test_transmission_step(context, %{
+        type: type,
+        type_other: type_other,
+        propagator_internal: propagator_internal,
+        propagator_ism_id: propagator_ism_id,
+        date: date,
+        comment: comment
+      })
+      |> test_next_button(context, %{to_step: "people"})
+      |> test_next_button(context, %{to_step: "administration"})
       |> test_disabled_button(context, %{button_id: "#next-button"})
 
       assert [] = CaseContext.list_people()
