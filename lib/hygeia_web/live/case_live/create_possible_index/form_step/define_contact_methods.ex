@@ -198,29 +198,32 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
 
   defp prefill_reporting_data(%{type: type} = form_data) do
     Map.update(form_data, :bindings, [], fn bindings ->
-      updated_bindings =
-        Enum.map(bindings, fn
-          %{reporting: reporting} = binding when is_list(reporting) ->
-            binding
+      {updated_bindings, should_feed} =
+        Enum.map_reduce(bindings, false, fn
+          %{reporting: reporting} = binding, should_feed when is_list(reporting) ->
+            {binding, should_feed or false}
 
-          %{person_changeset: person_changeset, case_changeset: case_changeset} = binding ->
+          %{person_changeset: person_changeset, case_changeset: case_changeset} = binding,
+          should_feed ->
             if should_contact_person(case_changeset, type) do
-              Map.put(
-                binding,
-                :reporting,
-                add_contact_uuids(
-                  [],
-                  person_changeset
-                  |> fetch_field!(:contact_methods)
-                  |> Enum.map(& &1.uuid)
-                )
-              )
+              {Map.put(
+                 binding,
+                 :reporting,
+                 add_contact_uuids(
+                   [],
+                   person_changeset
+                   |> fetch_field!(:contact_methods)
+                   |> Enum.map(& &1.uuid)
+                 )
+               ), true}
             else
-              binding
+              {Map.put(binding, :reporting, []), true}
             end
         end)
 
-      send(self(), {:feed, %{bindings: updated_bindings}})
+      if should_feed do
+        send(self(), {:feed, %{bindings: updated_bindings}})
+      end
 
       updated_bindings
     end)

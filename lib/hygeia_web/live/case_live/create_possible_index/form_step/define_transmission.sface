@@ -1,107 +1,109 @@
 <div class="row">
-  <Form
-    for={@changeset}
-    change="validate"
-    submit="save"
-    opts={autocomplete: "off", id: "define-transmission-form"}
-  >
-    <div class="row mb-3">
-      <div class="col-12 col-lg-6">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col">
-                <Field name={:type} class="form-group">
-                  <HygeiaWeb.FieldLabel />
-                  <Select
-                    class="form-control"
-                    options={Phase.PossibleIndex.Type.map()}
-                    opts={prompt: gettext("Select Type")}
-                  />
+  <div class="col-12 col-lg-9">
+    <Form
+      for={@changeset}
+      change="validate"
+      submit="save"
+      opts={autocomplete: "off", id: "define-transmission-form"}
+    >
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <Field name={:type} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <Select
+                      class="form-control"
+                      options={Phase.PossibleIndex.Type.map()}
+                      opts={prompt: gettext("Select Type")}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+                <div :if={Ecto.Changeset.get_field(@changeset, :type) == :other} class="col">
+                  <Field name={:type_other} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+              </div>
+              <div :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true or
+                Ecto.Changeset.get_field(@changeset, :type) not in [nil, :travel]}>
+                <Field name={:propagator_internal} class="form-group">
+                  <div class="btn-group btn-group-toggle btn-radio-group">
+                    <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
+                    <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal)}>
+                      <RadioButton value="" />
+                      {gettext("No propagator")}
+                    </label>
+                    <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}>
+                      <RadioButton value="true" />
+                      {gettext("Internal")}
+                    </label>
+                    <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}>
+                      <RadioButton value="false" />
+                      {gettext("External")}
+                    </label>
+                  </div>
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
-              </div>
-              <div :if={Ecto.Changeset.get_field(@changeset, :type) == :other} class="col">
-                <Field name={:type_other} class="form-group">
+                <Field
+                  name={:propagator_ism_id}
+                  class="form-group"
+                  :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}
+                >
                   <HygeiaWeb.FieldLabel />
                   <TextInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
+                <Field
+                  name={:propagator_case_uuid}
+                  class="form-group"
+                  :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}
+                >
+                  <HygeiaWeb.FieldLabel />
+                  <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
               </div>
-            </div>
-            <div :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true or
-              Ecto.Changeset.get_field(@changeset, :type) not in [nil, :travel]}>
-              <Field name={:propagator_internal} class="form-group">
-                <div class="btn-group btn-group-toggle btn-radio-group">
-                  <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
-                  <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal)}>
-                    <RadioButton value="" />
-                    {gettext("No propagator")}
-                  </label>
-                  <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}>
-                    <RadioButton value="true" />
-                    {gettext("Internal")}
-                  </label>
-                  <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}>
-                    <RadioButton value="false" />
-                    {gettext("External")}
-                  </label>
-                </div>
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-              <Field
-                name={:propagator_ism_id}
-                class="form-group"
-                :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}
-              >
-                <HygeiaWeb.FieldLabel />
-                <TextInput class="form-control" />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-              <Field
-                name={:propagator_case_uuid}
-                class="form-group"
-                :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}
-              >
-                <HygeiaWeb.FieldLabel />
-                <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </div>
 
-            <Field name={:date} class="form-group">
-              <HygeiaWeb.FieldLabel />
-              <HygeiaWeb.DateInput class="form-control" opts={max: Date.utc_today()} />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
+              <Field name={:date} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <HygeiaWeb.DateInput class="form-control" opts={max: Date.utc_today()} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <Field name={:comment} class="form-group">
-      <HygeiaWeb.FieldLabel />
-      <TextArea class="form-control" />
-      <ErrorTag class="d-block invalid-feedback" />
-    </Field>
+      <Field name={:comment} class="form-group">
+        <HygeiaWeb.FieldLabel />
+        <TextArea class="form-control" />
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
 
-    <Inputs for={:infection_place}>
-      <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
-    </Inputs>
-  </Form>
+      <Inputs for={:infection_place}>
+        <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
+      </Inputs>
+    </Form>
 
-  <div class="row">
-    <div class="col">
-      <button
-        id="next-button"
-        class="btn btn-primary mt-5"
-        type="submit"
-        :on-click="next"
-        phx-disable-with={gettext("Saving...")}
-        disabled={not valid?(@form_data)}
-      >
-        {gettext("Next")}
-      </button>
+    <div class="row">
+      <div class="col">
+        <button
+          id="next-button"
+          class="btn btn-primary mt-5"
+          type="submit"
+          :on-click="next"
+          phx-disable-with={gettext("Saving...")}
+          disabled={not valid?(@form_data)}
+        >
+          {gettext("Next")}
+        </button>
+      </div>
     </div>
   </div>
 </div>

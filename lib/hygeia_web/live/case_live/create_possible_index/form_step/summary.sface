@@ -1,6 +1,6 @@
 <div class="row mt-5">
   <div class="row">
-    {#for %{person_changeset: person_cs, case_changeset: case_cs, reporting: reporting} <-
+    {#for %{person_changeset: person_cs, case_changeset: case_cs} = binding <-
         @form_data.bindings}
       <div class="w-100">
         <Form for={case_cs} change="validate" opts={autocomplete: "off"}>
@@ -62,40 +62,41 @@
             </:right>
 
             <:bottom>
-              {#if DefineContactMethods.empty_reporting?(reporting)}
-                <span>{gettext("This person has not been notified.")}</span>
-              {#else}
-                <span>{gettext("This person has been notified on the following contact methods")}:</span>
-                {#for {contact_type, contact_type_members} <- DefineContactMethods.group_contacts_by_type(person_cs)}
-                  <div class="mb-4">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">{contact_type}</th>
-                          <th scope="col">{gettext("Comment")}</th>
-                          <th />
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {#for {contact, i} <- Enum.with_index(contact_type_members)}
+              {#case binding[:reporting]}
+                {#match reporting when is_list(reporting) and length(reporting) > 0}
+                  <span>{gettext("This person has been notified on the following contact methods")}:</span>
+                  {#for {contact_type, contact_type_members} <- DefineContactMethods.group_contacts_by_type(person_cs)}
+                    <div class="mb-4">
+                      <table class="table">
+                        <thead>
                           <tr>
-                            <td>{i + 1}</td>
-                            <td>{contact.value}</td>
-                            <td>{contact.comment}</td>
-                            <td><Checkbox opts={
-                                checked: if(DefineContactMethods.has_contact_uuid?(reporting, contact.uuid), do: true),
-                                hidden_input: "false",
-                                disabled: true
-                              } />
-                            </td>
+                            <th scope="col">#</th>
+                            <th scope="col">{contact_type}</th>
+                            <th scope="col">{gettext("Comment")}</th>
+                            <th />
                           </tr>
-                        {/for}
-                      </tbody>
-                    </table>
-                  </div>
-                {/for}
-              {/if}
+                        </thead>
+                        <tbody>
+                          {#for {contact, i} <- Enum.with_index(contact_type_members)}
+                            <tr>
+                              <td>{i + 1}</td>
+                              <td>{contact.value}</td>
+                              <td>{contact.comment}</td>
+                              <td><Checkbox opts={
+                                  checked: if(DefineContactMethods.has_contact_uuid?(reporting, contact.uuid), do: true),
+                                  hidden_input: "false",
+                                  disabled: true
+                                } />
+                              </td>
+                            </tr>
+                          {/for}
+                        </tbody>
+                      </table>
+                    </div>
+                  {/for}
+                {#match _else}
+                  <span>{gettext("This person has not been notified.")}</span>
+              {/case}
               <div>
                 <span>Associated case:</span>
                 <CaseSnippet case_changeset={case_cs} />

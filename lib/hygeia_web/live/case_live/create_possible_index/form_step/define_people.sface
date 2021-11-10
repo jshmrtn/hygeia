@@ -155,15 +155,16 @@
       <HygeiaWeb.Modal
         :if={@live_action in [:new, :edit, :show]}
         title={gettext("Create new person")}
+        size="xl"
         id="modal"
         close="close_modal"
       >
-        <div class="card">
+        <div class="card" :if={not Enum.empty?(fetch_field!(@changeset, :suspected_duplicates_uuid))}>
           <div class="card-body">
             <h4 class="card-title">{gettext("Suggested duplicates")}</h4>
             <div class="list-group">
               {#for person <-
-                  @changeset |> get_field(:suspected_duplicates_uuid) |> Enum.map(&CaseContext.get_person!/1)}
+                  @changeset |> fetch_field!(:suspected_duplicates_uuid) |> Enum.map(&CaseContext.get_person!/1)}
                 <div class="list-group-item list-group-item-action">
                   <div class="d-flex">
                     <PersonSnippet person={person} path={Routes.person_base_data_path(@socket, :show, person.uuid)} />

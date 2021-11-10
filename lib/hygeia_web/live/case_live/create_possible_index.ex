@@ -135,14 +135,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         socket
         |> unblock_navigation()
         |> assign(visited_steps: visit_step([], "summary"))
-        |> assign(form_data: form_data)
+        #        |> assign(form_data: form_data)
         |> put_flash(:info, gettext("Cases inserted successfully."))
         |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, "summary"))
 
       _error ->
         socket
         |> put_flash(
-          :info,
+          :error,
           pgettext(
             "errors",
             "There was an error while submitting the form. Please try resubmitting the form again or contact your administrator if the problem persists."
