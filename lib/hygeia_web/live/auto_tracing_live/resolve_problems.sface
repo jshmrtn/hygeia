@@ -217,10 +217,16 @@
 
                             {#case affiliation}
                               {#match %Affiliation{unknown_organisation: nil, organisation: nil}}
-                              {#match %Affiliation{division: nil, unknown_division: nil}}
+                              {#match %Affiliation{
+                                  unknown_organisation: _unknown_organisation,
+                                  organisation: _organisation,
+                                  division: nil,
+                                  unknown_division: nil
+                                }}
                                 <div>{pgettext("Auto Tracing Resolve Problems", "Division not provided.")}</div>
                               {#match %Affiliation{
                                   unknown_organisation: %Entity{},
+                                  organisation: nil,
                                   division: nil,
                                   unknown_division: %Entity{} = unknown_division
                                 }}
@@ -236,7 +242,12 @@
                                   {pgettext("Auto Tracing Resolve Problems", "Address")}:
                                   {Address.to_string(unknown_division.address, :long)}
                                 </div>
-                              {#match %Affiliation{division: %Division{} = division, unknown_division: nil}}
+                              {#match %Affiliation{
+                                  unknown_organisation: nil,
+                                  organisation: %Organisation{},
+                                  division: %Division{} = division,
+                                  unknown_division: nil
+                                }}
                                 <div>
                                   {pgettext("Auto Tracing Resolve Problems", "Name")}:
                                   {division.title}
@@ -256,6 +267,7 @@
                                 </div>
                               {#match %Affiliation{
                                   unknown_organisation: nil,
+                                  organisation: %Organisation{},
                                   division: nil,
                                   unknown_division: %Entity{} = unknown_division
                                 }}
