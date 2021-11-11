@@ -29,7 +29,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
             if existing_entity?(person_changeset) do
               apply_changes(person_changeset)
             else
-              {:ok, _person} = CaseContext.create_person(person_changeset)
+              {:ok, person} = CaseContext.create_person(person_changeset)
+              person
             end
 
           case =
