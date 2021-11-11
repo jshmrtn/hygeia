@@ -145,9 +145,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
             case_changeset:
               person_changeset
               |> apply_changes()
-              |> Ecto.build_assoc(:cases)
-              |> CaseContext.change_case(%{
+              |> Ecto.build_assoc(:cases, %{
                 tenant_uuid: fetch_field!(person_changeset, :tenant_uuid),
+                tenant: fetch_field!(person_changeset, :tenant)
+              })
+              |> CaseContext.change_case(%{
                 status: decide_case_status(form_data[:type])
               })
           },
@@ -183,7 +185,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         %Ecto.Changeset{valid?: true} = changeset ->
           changeset
           |> apply_changes()
-          |> CaseContext.suggest_people_by_params([:tenant, cases: [:hospitalizations]])
+          |> CaseContext.suggest_people_by_params([:tenant, cases: [:hospitalizations, :tenant]])
           |> discard_used_suggestions(form_data[:bindings])
 
         %Ecto.Changeset{valid?: false} ->
@@ -239,9 +241,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       person_changeset: CaseContext.change_person(person),
       case_changeset:
         person
-        |> Ecto.build_assoc(:cases)
+        |> Ecto.build_assoc(:cases, %{tenant_uuid: person.tenant_uuid, tenant: person.tenant})
         |> CaseContext.change_case(%{
-          tenant_uuid: person.tenant_uuid,
           status: decide_case_status(form_data[:type])
         })
     })
@@ -316,6 +317,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
           |> Ecto.build_assoc(:cases)
           |> CaseContext.change_case(%{
             tenant_uuid: person.tenant_uuid,
+            tenant: person.tenant,
             status: decide_case_status(form_data[:type])
           })
       },
@@ -472,7 +474,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   @impl Phoenix.LiveComponent
   def handle_event(
         "delete_person",
-        %{"index" => index},
+        %{"value" => index},
         %Socket{assigns: %{form_data: form_data, bulk_action_elements: elements}} = socket
       ) do
     send(

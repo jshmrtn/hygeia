@@ -10,6 +10,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
+  alias Hygeia.TenantContext
+  alias Hygeia.TenantContext.Tenant
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople
@@ -196,29 +198,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
     end)
   end
 
-  defp prefill_reporting_data(%{type: type} = form_data) do
+  defp prefill_reporting_data(%{type: transmission_type} = form_data) do
     Map.update(form_data, :bindings, [], fn bindings ->
       {updated_bindings, should_feed} =
         Enum.map_reduce(bindings, false, fn
           %{reporting: reporting} = binding, should_feed when is_list(reporting) ->
             {binding, should_feed or false}
 
-          %{person_changeset: person_changeset, case_changeset: case_changeset} = binding,
-          should_feed ->
-            if should_contact_person(case_changeset, type) do
-              {Map.put(
-                 binding,
-                 :reporting,
-                 add_contact_uuids(
-                   [],
-                   person_changeset
-                   |> fetch_field!(:contact_methods)
-                   |> Enum.map(& &1.uuid)
-                 )
-               ), true}
-            else
-              {Map.put(binding, :reporting, []), true}
-            end
+          binding, _should_feed ->
+            reporting =
+              []
+              |> prefill_contact_methods_type(binding, transmission_type, :email)
+              |> prefill_contact_methods_type(binding, transmission_type, :mobile)
+
+            {Map.put(binding, :reporting, reporting), true}
         end)
 
       if should_feed do
@@ -231,8 +224,38 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
 
   defp prefill_reporting_data(form_data), do: form_data
 
-  defp should_contact_person(case_changeset, type),
-    do: not has_index_phase?(case_changeset) and is_right_type?(type)
+  defp prefill_contact_methods_type(
+         reporting,
+         %{person_changeset: person_changeset, case_changeset: case_changeset},
+         transmission_type,
+         contact_type
+       ) do
+    if can_contact_person?(case_changeset, transmission_type) and
+         contact_type_eligible?(case_changeset, contact_type) do
+      add_contact_uuids(
+        reporting,
+        person_changeset
+        |> fetch_field!(:contact_methods)
+        |> Enum.filter(&match?(^contact_type, &1.type))
+        |> Enum.map(& &1.uuid)
+      )
+    else
+      reporting
+    end
+  end
+
+  defp can_contact_person?(case_changeset, type),
+    do:
+      not has_index_phase?(case_changeset) and is_right_type?(type) and
+        is_right_tenant?(case_changeset)
+
+  defp contact_type_eligible?(case_changeset, :email),
+    do:
+      TenantContext.tenant_has_outgoing_mail_configuration?(fetch_field!(case_changeset, :tenant))
+
+  defp contact_type_eligible?(case_changeset, :mobile),
+    do:
+      TenantContext.tenant_has_outgoing_sms_configuration?(fetch_field!(case_changeset, :tenant))
 
   defp has_index_phase?(case_changeset) do
     case_changeset
@@ -240,13 +263,79 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
     |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
     |> case do
       nil -> false
-      %Case.Phase{} -> true
+      %Case.Phase{details: %Case.Phase.Index{}} -> true
     end
   end
 
   defp is_right_type?(transmission_type)
-  defp is_right_type?(:contact_person), do: false
-  defp is_right_type?(_other), do: true
+  defp is_right_type?(:contact_person), do: true
+  defp is_right_type?(_other), do: false
+
+  defp is_right_tenant?(case_changeset) do
+    case_changeset
+    |> fetch_field!(:tenant)
+    |> Tenant.is_internal_managed_tenant?()
+  end
+
+  defp disabled_contact_reason(case_changeset, type, contact_type \\ nil)
+
+  defp disabled_contact_reason(case_changeset, type, nil) do
+    gettext("This person cannot be contacted because: %{reasons}.",
+      reasons:
+        []
+        |> index_phase_reason(case_changeset)
+        |> type_reason(type)
+        |> tenant_reason(case_changeset)
+        |> Enum.join(", ")
+    )
+  end
+
+  defp disabled_contact_reason(case_changeset, _type, :email) do
+    gettext("This person cannot be contacted by email because: %{reasons}.",
+      reasons: [] |> tenant_email_config_reason(case_changeset) |> List.first()
+    )
+  end
+
+  defp disabled_contact_reason(case_changeset, _type, :mobile) do
+    gettext("This person cannot be contacted by sms because: %{reasons}.",
+      reasons: [] |> tenant_sms_config_reason(case_changeset) |> List.first()
+    )
+  end
+
+  defp index_phase_reason(reasons, case_changeset),
+    do:
+      if(has_index_phase?(case_changeset),
+        do: reasons ++ [gettext("the case contains an index phase")],
+        else: reasons
+      )
+
+  defp type_reason(reasons, type),
+    do:
+      if(is_right_type?(type),
+        do: reasons,
+        else: reasons ++ [gettext("the transmission type is not \"contact person\"")]
+      )
+
+  defp tenant_reason(reasons, case_changeset),
+    do:
+      if(is_right_tenant?(case_changeset),
+        do: reasons,
+        else: reasons ++ [gettext("the case is managed by an unmanaged tenant")]
+      )
+
+  defp tenant_email_config_reason(reasons, case_changeset),
+    do:
+      if(contact_type_eligible?(case_changeset, :email),
+        do: reasons,
+        else: reasons ++ [gettext("the assigned tenant has not configured email notifications")]
+      )
+
+  defp tenant_sms_config_reason(reasons, case_changeset),
+    do:
+      if(contact_type_eligible?(case_changeset, :mobile),
+        do: reasons,
+        else: reasons ++ [gettext("the assigned tenant has not configured sms notifications")]
+      )
 
   defp add_contact_uuid(reporting, contact_uuid) do
     [contact_uuid] ++ reporting

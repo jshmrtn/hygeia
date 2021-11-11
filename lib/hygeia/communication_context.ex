@@ -241,11 +241,12 @@ defmodule Hygeia.CommunicationContext do
     %Case{tenant: tenant} = case = Repo.preload(case, tenant: [])
 
     case
-    |> Ecto.build_assoc(:emails)
-    |> Map.put(:case, case)
-    |> Map.put(:case_uuid, case.uuid)
-    |> Map.put(:tenant, tenant)
-    |> Map.put(:tenant_uuid, tenant.uuid)
+    |> Ecto.build_assoc(:emails, %{
+      case: case,
+      case_uuid: case.uuid,
+      tenant: tenant,
+      tenant_uuid: tenant.uuid
+    })
     |> change_email(attrs)
   end
 

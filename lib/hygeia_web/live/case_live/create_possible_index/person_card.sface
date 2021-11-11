@@ -35,21 +35,21 @@
         <tbody>
           <tr>
             <td>{gettext("Tenant")}:</td>
-            <td>{fetch_field!(@person_changeset, :tenant) |> show_field(:name, gettext("N/A"))}</td>
+            <td>{fetch_field!(@person_changeset, :tenant) |> show_field(:name, gettext("-"))}</td>
             <td>{gettext("Address")}:</td>
-            <td>{fetch_field!(@person_changeset, :address) |> show_field(:address, gettext("N/A"))}</td>
+            <td>{fetch_field!(@person_changeset, :address) |> show_field(:address, gettext("-"))}</td>
           </tr>
           <tr>
             <td>{gettext("Birth date")}:</td>
-            <td>{get_field(@person_changeset, :birth_date, gettext("N/A"))}</td>
+            <td>{get_field(@person_changeset, :birth_date, gettext("-"))}</td>
             <td>{gettext("Place")}:</td>
-            <td>{fetch_field!(@person_changeset, :address) |> show_field(:place, gettext("N/A"))}</td>
+            <td>{fetch_field!(@person_changeset, :address) |> show_field(:place, gettext("-"))}</td>
           </tr>
           <tr>
             <td>{gettext("Sex")}:</td>
-            <td>{get_field(@person_changeset, :sex, gettext("N/A"))}</td>
+            <td>{get_field(@person_changeset, :sex, gettext("-"))}</td>
             <td>{gettext("Country")}:</td>
-            <td>{fetch_field!(@person_changeset, :address) |> show_field(:country, gettext("N/A"))}</td>
+            <td>{fetch_field!(@person_changeset, :address) |> show_field(:country, gettext("-"))}</td>
           </tr>
         </tbody>
       </table>
@@ -61,7 +61,7 @@
       {#if not @person_changeset.valid?}
         <span class="d-block invalid-feedback">
           {gettext(
-            "This person requires further processing, please click on edit to correct the availabe information."
+            "This person requires further processing, please click on edit to correct the available information."
           )}
         </span>
       {/if}

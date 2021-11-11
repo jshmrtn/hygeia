@@ -16,28 +16,39 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
   alias Hygeia.Repo
 
-  @spec upsert(form_data :: map()) :: {:ok, any()} | {:error, atom()}
+  @spec upsert(form_data :: map()) :: {:ok, [tuple()]} | {:error, atom()}
   def upsert(form_data) do
     success =
       Repo.transaction(fn ->
         Enum.map(form_data.bindings, fn %{
                                           person_changeset: person_changeset,
-                                          case_changeset: case_changeset
+                                          case_changeset: case_changeset,
+                                          reporting: reporting
                                         } ->
-          if not existing_entity?(person_changeset) do
-            {:ok, _person} = CaseContext.create_person(person_changeset)
-          end
-
-          case =
-            if existing_entity?(case_changeset) do
-              {:ok, case} = CaseContext.update_case(case_changeset)
-              case
+          person =
+            if existing_entity?(person_changeset) do
+              apply_changes(person_changeset)
             else
-              {:ok, case} = CaseContext.create_case(case_changeset)
-              case
+              {:ok, _person} = CaseContext.create_person(person_changeset)
             end
 
+          case =
+            case_changeset
+            |> existing_entity?()
+            |> case do
+              true ->
+                {:ok, case} = CaseContext.update_case(case_changeset)
+                case
+
+              false ->
+                {:ok, case} = CaseContext.create_case(case_changeset)
+                case
+            end
+            |> Map.put(:person, person)
+
           {:ok, _} = insert_transmission(case, form_data)
+
+          {person, case, reporting}
         end)
       end)
 
@@ -49,23 +60,21 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
   @spec send_confirmations(
           socket :: Phoenix.LiveView.Socket.t(),
-          bindings :: [map()] | [],
+          tuples :: [tuple()] | [],
           transmission_type :: atom()
         ) :: :ok
-  def send_confirmations(socket, bindings, transmission_type)
+  def send_confirmations(socket, tuples, transmission_type)
 
-  def send_confirmations(socket, bindings, :contact_person) when is_list(bindings) do
-    Enum.each(bindings, fn
-      %{person_changeset: person_changeset, case_changeset: case_changeset, reporting: reporting} ->
+  def send_confirmations(socket, tuples, :contact_person) when is_list(tuples) do
+    Enum.each(tuples, fn
+      {person, case, reporting} ->
         email_addresses =
-          person_changeset
-          |> fetch_field!(:contact_methods)
+          person.contact_methods
           |> Enum.filter(&(&1.type == :email and &1.uuid in reporting))
           |> Enum.map(& &1.value)
 
         phone_numbers =
-          person_changeset
-          |> fetch_field!(:contact_methods)
+          person.contact_methods
           |> Enum.filter(&(&1.type == :mobile and &1.uuid in reporting))
           |> Enum.map(& &1.value)
 
@@ -73,7 +82,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
           fn ->
             send_confirmation_emails(
               socket,
-              apply_changes(case_changeset),
+              case,
               email_addresses,
               :contact_person
             )
@@ -88,7 +97,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
           fn ->
             send_confirmation_sms(
               socket,
-              apply_changes(case_changeset),
+              case,
               phone_numbers,
               :contact_person
             )
@@ -137,6 +146,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
     case List.last(case.phases) do
       %Phase{details: %Phase.PossibleIndex{type: ^transmission_type}} = phase ->
         Gettext.put_locale(HygeiaGettext, locale)
+
+        case = Hygeia.Repo.preload(case, [:person])
 
         Enum.map(
           email_addresses,

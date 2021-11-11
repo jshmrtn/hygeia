@@ -27,6 +27,9 @@ msgstr "%{ordering} vaccinazione"
 msgid "%{tenant} - Contact Tracing"
 msgstr "%{inquilino} - Rintracciamento di contatti"
 
+msgid "-"
+msgstr "-"
+
 msgid "0-1 contact person"
 msgstr "0-1 persona di contatto"
 
@@ -73,6 +76,9 @@ msgstr "Un minimo di 2 punti deve essere soddisfatto"
 #, fuzzy
 msgid "A minimum of 3 points must be fulfilled"
 msgstr "Un minimo di 3 punti deve essere soddisfatto"
+
+msgid "A new case will be created for this person."
+msgstr "Verrà creato un nuovo caso per questa persona."
 
 #, fuzzy
 msgid "A phase will be appended."
@@ -193,9 +199,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Address"
 msgstr "Indirizzo"
 
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Address"
+msgstr "Indirizzo"
+
+msgid "Address:"
 msgstr "Indirizzo"
 
 msgid "Adress"
@@ -288,7 +296,6 @@ msgstr "Sei sicuro?"
 msgid "Are you sure? There are affiliations assigned!"
 msgstr "Sei sicuro? Ci sono affiliazioni assegnate!"
 
-#, fuzzy
 msgid "Are you working in an association?"
 msgstr "Lavori in un'associazione?"
 
@@ -396,6 +403,9 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Birth Date"
 msgstr "Data di nascita"
 
+msgid "Birth date"
+msgstr "Data di nascita"
+
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Body"
 msgstr "Corpo"
@@ -471,6 +481,9 @@ msgstr "Caso:"
 msgid "Cases"
 msgstr "Casi"
 
+msgid "Cases inserted successfully."
+msgstr "Il caso è stato creato con successo"
+
 msgid "Certain"
 msgstr "Alcuni"
 
@@ -513,6 +526,10 @@ msgstr "Casa per bambini, casa per disabili"
 
 msgid "Choir, Choral Society, Orchstra"
 msgstr "Coro, gruppo corale, orchstra"
+
+#, fuzzy
+msgid "Choose"
+msgstr "scegliere"
 
 #, fuzzy
 msgid "Choose %{case}"
@@ -602,6 +619,9 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Class or division not found"
 msgstr "Classe o divisione non trovata"
 
+msgid "Clear"
+msgstr "Cancella"
+
 msgctxt "Auto Tracing Step"
 msgid "Clinical"
 msgstr "Clinica"
@@ -653,6 +673,10 @@ msgid "Comment"
 msgstr "Commento"
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
+msgid "Comment"
+msgstr "Commento"
+
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Comment"
 msgstr "Commento"
 
@@ -732,6 +756,14 @@ msgstr "Rintracciamento dei contatti"
 msgid "Continue"
 msgstr "Continua"
 
+#, fuzzy
+msgid "Contry"
+msgstr "Paese"
+
+#, fuzzy
+msgid "Contry:"
+msgstr "Paese"
+
 msgctxt "Test Reason"
 msgid "Convenience"
 msgstr "Convenienza"
@@ -745,6 +777,13 @@ msgstr "Convertito in indice"
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Copy Address From Propagator"
+msgstr "Copia l'indirizzo dal propagatore"
+
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
+msgid "Copy Address From Propagator"
+msgstr "Copia l'indirizzo dal propagatore"
+
+msgid "Copy address from propagator"
 msgstr "Copia l'indirizzo dal propagatore"
 
 msgctxt "Organisation Type"
@@ -821,6 +860,10 @@ msgstr "Crea possibili casi indice"
 msgid "Create new person"
 msgstr "Crea una nuova persona"
 
+#, fuzzy
+msgid "Create new possible index submission"
+msgstr "Nuova possibile presentazione dell'indice"
+
 msgid "Created Case"
 msgid_plural "Created %{n} Cases"
 msgstr[0] "Caso creato"
@@ -860,6 +903,13 @@ msgstr "Data"
 msgctxt "Protocol Entry"
 msgid "Date"
 msgstr "Data"
+
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
+msgid "Date"
+msgstr "Data"
+
+msgid "Date of birth"
+msgstr "Data di nascita"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Date of last visit"
@@ -1044,6 +1094,9 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Delete Person"
 msgstr "Rimuovi la persona"
 
+msgid "Delete selected"
+msgstr "Elimina selezionato"
+
 msgid "Deleted"
 msgstr "Cancellato"
 
@@ -1056,6 +1109,9 @@ msgstr "Descrivi il tuo incontro con %{first_name} %{last_name}. In quali circos
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Description"
 msgstr "Descrizione"
+
+msgid "Deselect all"
+msgstr "cancella tutti"
 
 #, fuzzy
 msgid "Despite multiple calls and inquiries regarding the phone number unavailable"
@@ -1244,7 +1300,6 @@ msgctxt "vaccination_done"
 msgid "Done"
 msgstr "Completato"
 
-#, fuzzy
 msgctxt "Auto Tracing Vaccination"
 msgid "Done"
 msgstr "Completato"
@@ -1547,6 +1602,14 @@ msgctxt "Case Status"
 msgid "First contact, unreachable"
 msgstr "Primo contatto, irraggiungibile"
 
+#, fuzzy
+msgid "First name"
+msgstr "Nome"
+
+#, fuzzy
+msgid "First name:"
+msgstr "Nome"
+
 msgctxt "Auto Tracing Resolve Problems"
 msgid "First positive test date"
 msgstr "Primo test risultato positivo"
@@ -1637,7 +1700,6 @@ msgstr "Ha volato"
 msgid "Have you been or are you in a hospital?"
 msgstr "Sei stato o sei in un ospedale?"
 
-#, fuzzy
 msgid "Headaches"
 msgstr "Mal di testa"
 
@@ -1963,21 +2025,17 @@ msgstr "L'indice capisce e parla inglese, ma servono diverse spiegazioni"
 msgid "Indoor Sport activities"
 msgstr "Attività sportive al coperto"
 
-#, fuzzy
 msgid "Infection Place"
 msgstr "Luogo di infezione"
 
-#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Infection Place"
 msgstr "Luogo di infezione"
 
-#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Infection Place"
 msgstr "Luogo di infezione"
 
-#, fuzzy
 msgid "Infection place"
 msgstr "Luogo di infezione"
 
@@ -2022,7 +2080,6 @@ msgstr "Le informazioni fornite per questo impiego non sono corrette. Cancella q
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr "Informazioni della persona invalide, se credi che questo sia un errore, contatta il team di rintracciamento."
 
-#, fuzzy
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
 msgstr "La SwissCovid App è installata / in funzione sul suo smartphone?"
 
@@ -2081,7 +2138,6 @@ msgstr "Jane"
 msgid "January"
 msgstr "Gennaio"
 
-#, fuzzy
 msgid "July"
 msgstr "Luglio"
 
@@ -2140,36 +2196,29 @@ msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Laboratory report date"
 msgstr "Data del rapporto di laboratorio"
 
-#, fuzzy
 msgid "Landline"
 msgstr "Linea fissa"
 
-#, fuzzy
 msgctxt "Contact Method Type"
 msgid "Landline"
 msgstr "Linea fissa"
 
-#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
 msgid "Landline"
 msgstr "Linea fissa"
 
-#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Landline"
 msgstr "Linea fissa"
 
-#, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
 msgid "Landline"
 msgstr "Linea fissa"
 
-#, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Landline"
 msgstr "Linea fissa"
 
-#, fuzzy
 msgid "Language"
 msgstr "Lingua"
 
@@ -2196,6 +2245,14 @@ msgstr "Nome"
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Last Name"
+msgstr "Nome"
+
+#, fuzzy
+msgid "Last name"
+msgstr "Nome"
+
+#, fuzzy
+msgid "Last name:"
 msgstr "Nome"
 
 #, fuzzy
@@ -2226,7 +2283,6 @@ msgstr "Righe di elenchi"
 msgid "Listing System Messages"
 msgstr "Elenca i messaggi di sistema"
 
-#, fuzzy
 msgid "Listing Tenants"
 msgstr "Lista inquilini"
 
@@ -2251,7 +2307,6 @@ msgstr "Sto accedendo..."
 msgid "Login"
 msgstr "Accesso"
 
-#, fuzzy
 msgid "Logout"
 msgstr "Logout"
 
@@ -2294,7 +2349,6 @@ msgstr "Esportazione manuale"
 msgid "March"
 msgstr "Marzo"
 
-#, fuzzy
 msgid "May"
 msgstr "Maggio"
 
@@ -2444,6 +2498,9 @@ msgstr "Mutazione aggiornata con successo"
 msgid "Mutations"
 msgstr "Mutazioni"
 
+msgid "N/A"
+msgstr "N / A"
+
 #, fuzzy
 msgid "Name"
 msgstr "Nome"
@@ -2475,6 +2532,11 @@ msgstr "Nome"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
+msgid "Name"
+msgstr "Nome"
+
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
 msgid "Name"
 msgstr "Nome"
 
@@ -2783,6 +2845,12 @@ msgstr "Ottobre"
 msgid "Oops!"
 msgstr "Ops!"
 
+msgid "Open case in new tab"
+msgstr "Apri caso in una nuova scheda"
+
+msgid "Open in new tab"
+msgstr "Apri in una nuova scheda"
+
 #, fuzzy
 msgid "Ordered"
 msgstr "Ordinato"
@@ -2894,6 +2962,10 @@ msgid "Other"
 msgstr "Altro"
 
 msgctxt "Sex"
+msgid "Other"
+msgstr "Altro"
+
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Other"
 msgstr "Altro"
 
@@ -3106,10 +3178,12 @@ msgstr "Gli ordini di quarantena/isolamento di fase non devono sovrapporsi."
 msgid "Phase Type already exists on the case"
 msgstr "Il tipo di fase esiste già sul caso"
 
+msgid "Phase created at"
+msgstr "Caso creato il"
+
 msgid "Phase created successfully"
 msgstr "Fase creata con successo"
 
-#, fuzzy
 msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
 msgstr "Le date di inizio e fine fase devono essere impostate per creare conferme di isolamento."
 
@@ -3163,7 +3237,6 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of arrival"
 msgstr "Luogo di partenza"
 
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
 msgstr "Luogo di partenza"
@@ -3172,10 +3245,13 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of departure"
 msgstr "Luogo di arrivo"
 
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of departure"
 msgstr "Luogo di arrivo"
+
+#, fuzzy
+msgid "Place:"
+msgstr "Posto"
 
 msgid "Please enter your place of residence."
 msgstr "Inserisci il tuo luogo di residenza."
@@ -3332,6 +3408,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Propagator Case"
 msgstr "Caso del propagatore"
 
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
+msgid "Propagator Case"
+msgstr "Caso del propagatore"
+
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Case UUID"
@@ -3339,6 +3419,11 @@ msgstr "Propagatore Caso UUID"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
+msgid "Propagator Case UUID"
+msgstr "Propagatore Caso UUID"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Propagator Case UUID"
 msgstr "Propagatore Caso UUID"
 
@@ -3354,6 +3439,11 @@ msgstr "Propagatore ISM ID"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
+msgid "Propagator ISM ID"
+msgstr "Propagatore ISM ID"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Propagator ISM ID"
 msgstr "Propagatore ISM ID"
 
@@ -3402,7 +3492,6 @@ msgstr "Quarantena / Isolamento"
 msgid "Quarantine Confirmation"
 msgstr "Conferma della quarantena"
 
-#, fuzzy
 msgid "Quarantine Confirmations are only available for contact persons."
 msgstr "Le conferme di quarantena sono disponibili solo per le persone di contatto."
 
@@ -3739,6 +3828,13 @@ msgstr "Seleziona inquilino"
 msgid "Select Type"
 msgstr "Selezionare il tipo"
 
+msgid "Select all"
+msgstr "cancella tutti"
+
+#, fuzzy
+msgid "Select case"
+msgstr "Seleziona il caso"
+
 #, fuzzy
 msgid "Select complexity"
 msgstr "Seleziona la complessità"
@@ -3754,6 +3850,10 @@ msgstr "Seleziona la persona esistente"
 #, fuzzy
 msgid "Select mutation"
 msgstr "Seleziona la mutazione"
+
+#, fuzzy
+msgid "Select person"
+msgstr "Selezionare la persona"
 
 #, fuzzy
 msgid "Select reason"
@@ -3869,6 +3969,14 @@ msgstr "Sesso"
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Sex"
+msgstr "Sesso"
+
+#, fuzzy
+msgid "Sex"
+msgstr "Sesso"
+
+#, fuzzy
+msgid "Sex:"
 msgstr "Sesso"
 
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
@@ -3987,6 +4095,16 @@ msgid "Status"
 msgstr "Stato"
 
 #, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration Field"
+msgid "Status"
+msgstr "Stato"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary Field"
+msgid "Status"
+msgstr "Stato"
+
+#, fuzzy
 msgid "Status Page"
 msgstr "Pagina di stato"
 
@@ -4021,6 +4139,9 @@ msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr "Oggetto"
 
+msgid "Submit and send"
+msgstr "Conferma e invia"
+
 msgid "Submit contact persons"
 msgstr "Invia le persone di contatto"
 
@@ -4036,6 +4157,9 @@ msgstr "Successo"
 
 msgid "Successfully authenticated."
 msgstr "Autenticato con successo."
+
+msgid "Suggested duplicates"
+msgstr "Duplicati suggeriti"
 
 #, fuzzy
 msgid "Supervisor"
@@ -4082,6 +4206,16 @@ msgid "Supervisor UUID"
 msgstr "UUID del supervisore"
 
 #, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration Field"
+msgid "Supervisor UUID"
+msgstr "UUID del supervisore"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary Field"
+msgid "Supervisor UUID"
+msgstr "UUID del supervisore"
+
+#, fuzzy
 msgid "Suppress quarantine"
 msgstr "Sopprimere la quarantena"
 
@@ -4122,7 +4256,6 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
 msgstr "Data di inizio dei sintomi"
 
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Symptoms start date"
 msgstr "Data di inizio dei sintomi"
@@ -4341,7 +4474,6 @@ msgstr "Il link non è più visibile"
 msgid "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
 msgstr "Il link alle presentazioni di indici presunti è stato inviato. L'indice non ha ancora inserito i presunti indici. Questo può essere controllato sotto %{link}."
 
-#, fuzzy
 msgid "The quarantine can be ended because of a negative test the earliest on %{date}."
 msgstr "La quarantena può essere terminata a causa di un test negativo al più presto il %{date}."
 
@@ -4349,18 +4481,23 @@ msgctxt "Phase Create Modal"
 msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
 msgstr "L'ordine di quarantena della fase %{type} sarà revocato poiché l'ordine inizia più tardi della nuova data di inizio."
 
-#, fuzzy
 msgctxt "Phase Create Modal"
 msgid "The status of the case will be changed from \"%{old_status}\" to \"%{new_status}\"."
 msgstr "Lo stato del caso sarà cambiato da \"%{old_status}\" a \"%{new_status}\"."
 
-#, fuzzy
 msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."
 msgstr "Lo stato serve come una panoramica della fase di rintracciamento attuale della persona. Questo stato può essere utilizzato per la ricerca nel filtro. I casi sono sempre creati con lo stato \"Primo contatto\" dall'amministrazione dei casi. Dopo che il caso è stato elaborato, lo stato deve essere modificato."
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
 msgstr "La data di inizio dei sintomi precede la data del primo test/data di creazione del caso. Verifica che la data sia corretta e che la persona non stia evitando l'isolamento. "
+
+msgid "There are possible duplicates for this person. Click to resolve."
+msgstr "Ci sono possibili duplicati per questa persona. Clicca per risolvere."
+
+msgctxt "errors"
+msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
+msgstr "Si è verificato un errore durante l'invio del modulo. Prova a inviare nuovamente il modulo e contatta l'amministratore se il problema persiste."
 
 #, fuzzy
 msgid "This case is not in an index phase."
@@ -4379,11 +4516,30 @@ msgstr[1] "Questa organizzazione ha %{count} possibili duplicati."
 msgid "This organisation is possibly a duplicate of %{name_link}, please check."
 msgstr "Questa organizzazione è probabilmente un duplicato di %{name_link}, per favore controlla."
 
+msgid "This person cannot be contacted because: %{reasons}."
+msgstr "Questa persona non può essere contattata per le seguenti ragioni %{reasons}."
+
+msgid "This person cannot be contacted by email because: %{reasons}."
+msgstr "Questa persona non può essere contattata via e-mail perché: %{reasons}."
+
+msgid "This person cannot be contacted by sms because: %{reasons}."
+msgstr "Questa persona non può essere contattata via sms perché: %{reasons}."
+
 #, fuzzy
 msgid "This person has a possible duplicate."
 msgid_plural "This person has %{count} possible duplicates."
 msgstr[0] "Questa persona ha un possibile duplicato."
 msgstr[1] "Questa persona ha %{count} possibili duplicati."
+
+msgid "This person has been notified on the following contact methods"
+msgstr "Questa persona è stata informata sui seguenti metodi di contatto"
+
+msgid "This person has not been notified."
+msgstr "Questa persona non è stata informata."
+
+#, fuzzy
+msgid "This person is in the database"
+msgstr "Questa persona ha un possibile duplicato."
 
 #, fuzzy
 msgid "This person is possibly a duplicate of %{name_link} please check."
@@ -4392,6 +4548,9 @@ msgstr "Questa persona è probabilmente un duplicato di %{name_link} per favore 
 #, fuzzy
 msgid "This person is possibly a duplicate of %{name_link}, please check."
 msgstr "Questa persona è probabilmente un duplicato di %{name_link}, per favore controlla."
+
+msgid "This person requires further processing, please click on edit to correct the available information."
+msgstr "Questa persona richiede un'ulteriore elaborazione, fai clic su modifica per correggere le informazioni disponibili."
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "This person took the following flights"
@@ -4474,6 +4633,16 @@ msgstr "UUID del tracciatore"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Tracer UUID"
+msgstr "UUID del tracciatore"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration Field"
+msgid "Tracer UUID"
+msgstr "UUID del tracciatore"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary Field"
 msgid "Tracer UUID"
 msgstr "UUID del tracciatore"
 
@@ -4580,6 +4749,11 @@ msgstr "Tipo"
 
 #, fuzzy
 msgctxt "Protocol Entry"
+msgid "Type"
+msgstr "Tipo"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Type"
 msgstr "Tipo"
 
@@ -4731,6 +4905,9 @@ msgctxt "Home"
 msgid "Various information regarding the applications functionality as well as details regarding using Hygeia are available on the website."
 msgstr "Diverse informazioni sulla funzionalità delle applicazioni e i dettagli sull'uso di Hygeia sono disponibili sul sito web."
 
+msgid "View"
+msgstr "Vedi"
+
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Visit reason"
 msgstr "Ragione della visita"
@@ -4753,11 +4930,9 @@ msgstr "Attenzione! Quando si importano le stesse righe più volte, esse saranno
 msgid "We will forward you to the recording of people that you were in contact with and could possibly have passed the infection on."
 msgstr "Vi inoltreremo la registrazione delle persone con cui siete stati in contatto e che potrebbero aver trasmesso l'infezione."
 
-#, fuzzy
 msgid "We wish you a speedy recovery."
 msgstr "Le auguriamo una pronta guarigione."
 
-#, fuzzy
 msgid "We would like to ask you to fill out the information on the following pages as precisely and completely as possible."
 msgstr "Le chiediamo di compilare le informazioni delle pagine seguenti nel modo più preciso e completo possibile."
 
@@ -4814,7 +4989,6 @@ msgstr "Ha indossato la mascherina"
 msgid "Work Place"
 msgstr "Posto di lavoro"
 
-#, fuzzy
 msgctxt "Test Reason"
 msgid "Work related"
 msgstr "Lavoro correlato"
@@ -4864,7 +5038,6 @@ msgstr "Sei stato disconnesso!"
 msgid "You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support."
 msgstr "Sei stato recentemente testato come positivo al Coronavirus. Per contenere l'ulteriore diffusione il Contact Tracing conta sul tuo supporto."
 
-#, fuzzy
 msgid "You have been requested to enter personal data from all persons with which you have had contact with for more than 15 minutes without wearing a mask."
 msgstr "Le è stato richiesto di inserire i dati personali di tutte le persone con cui ha avuto contatti per più di 15 minuti senza indossare una maschera."
 
@@ -4881,18 +5054,15 @@ msgstr "È necessario risolvere l'organizzazione prima di scegliere la divisione
 msgid "Your Tests"
 msgstr "I tuoi test"
 
-#, fuzzy
 msgid "Your institution does not appear in the list or it is not correct? Please enter it manually."
 msgstr "La tua occupazione non appare nella lista o non è corretta? Per favore, inseriscila manualmente."
 
 msgid "Your isolation started on %{start_date} and applies up to and including %{end_date}."
 msgstr "Il tuo isolamento è iniziato il %{start_date} e si applica fino a data %{end_date} compresa."
 
-#, fuzzy
 msgid "Your occupation does not appear in the list or it is not correct? Please enter it manually."
 msgstr "La tua occupazione non appare nella lista o non è corretta? Per favore, inseriscila manualmente."
 
-#, fuzzy
 msgid "Your quarantine started on %{start_date} and applies up to and including %{end_date}."
 msgstr "La tua quarantena è iniziata il %{start_date} e si applica fino al %{end_date} compreso."
 
@@ -5161,6 +5331,21 @@ msgstr "inquilini"
 msgctxt "Item Table"
 msgid "tests"
 msgstr "test"
+
+msgid "the assigned tenant has not configured email notifications"
+msgstr "l'inquilino assegnato non ha configurato le notifiche e-mail"
+
+msgid "the assigned tenant has not configured sms notifications"
+msgstr "l'inquilino assegnato non ha configurato le notifiche sms"
+
+msgid "the case contains an index phase"
+msgstr "il caso contiene una fase indice"
+
+msgid "the case is managed by an unmanaged tenant"
+msgstr "il caso è gestito da un inquilino non gestito"
+
+msgid "the transmission type is not \"contact person\""
+msgstr "il tipo di trasmissione non è \"persona di contatto\""
 
 #, fuzzy
 msgctxt "Item Table"

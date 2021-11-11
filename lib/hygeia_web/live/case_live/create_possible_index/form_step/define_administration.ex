@@ -97,7 +97,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
             date: form_data[:date]
           })
           |> merge_propagator_administrators(%{propagator: form_data[:propagator]})
-          |> CaseContext.change_case()
 
         Map.put(binding, :case_changeset, case_changeset)
       end)
@@ -161,59 +160,62 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
       nil ->
         changeset = case_changeset |> Map.put(:errors, []) |> Map.put(:valid?, true)
 
-        if global_type in [:contact_person, :travel] do
-          {start_date, end_date} = Service.phase_dates(Date.from_iso8601!(date))
+        case_changeset =
+          if global_type in [:contact_person, :travel] do
+            {start_date, end_date} = Service.phase_dates(Date.from_iso8601!(date))
 
-          status_changed_phases =
-            Enum.map(existing_phases, fn
-              %Case.Phase{quarantine_order: true, start: old_phase_start} = phase ->
-                if Date.compare(old_phase_start, start_date) == :lt do
+            status_changed_phases =
+              Enum.map(existing_phases, fn
+                %Case.Phase{quarantine_order: true, start: old_phase_start} = phase ->
+                  if Date.compare(old_phase_start, start_date) == :lt do
+                    %Case.Phase{
+                      phase
+                      | end: start_date,
+                        send_automated_close_email: false
+                    }
+                  else
+                    %Case.Phase{phase | quarantine_order: false}
+                  end
+
+                %Case.Phase{quarantine_order: quarantine_order} = phase
+                when quarantine_order in [false, nil] ->
+                  phase
+              end)
+
+            put_embed(
+              changeset,
+              :phases,
+              status_changed_phases ++
+                [
                   %Case.Phase{
-                    phase
-                    | end: start_date,
-                      send_automated_close_email: false
+                    details: %Case.Phase.PossibleIndex{
+                      type: global_type,
+                      type_other: nil
+                    },
+                    quarantine_order: true,
+                    order_date: DateTime.utc_now(),
+                    start: start_date,
+                    end: end_date
                   }
-                else
-                  %Case.Phase{phase | quarantine_order: false}
-                end
-
-              %Case.Phase{quarantine_order: quarantine_order} = phase
-              when quarantine_order in [false, nil] ->
-                phase
-            end)
-
-          put_embed(
-            changeset,
-            :phases,
-            status_changed_phases ++
-              [
-                %Case.Phase{
-                  details: %Case.Phase.PossibleIndex{
-                    type: global_type,
-                    type_other: nil
-                  },
-                  quarantine_order: true,
-                  order_date: DateTime.utc_now(),
-                  start: start_date,
-                  end: end_date
-                }
-              ]
-          )
-        else
-          put_embed(
-            changeset,
-            :phases,
-            existing_phases ++
-              [
-                %Case.Phase{
-                  details: %Case.Phase.PossibleIndex{
-                    type: global_type,
-                    type_other: global_type_other
+                ]
+            )
+          else
+            put_embed(
+              changeset,
+              :phases,
+              existing_phases ++
+                [
+                  %Case.Phase{
+                    details: %Case.Phase.PossibleIndex{
+                      type: global_type,
+                      type_other: global_type_other
+                    }
                   }
-                }
-              ]
-          )
-        end
+                ]
+            )
+          end
+
+        CaseContext.change_case(case_changeset)
 
       %Case.Phase{} ->
         case_changeset

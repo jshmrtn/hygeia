@@ -60,7 +60,7 @@
           <div class="col">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">{gettext("DefineContactMethods unit")}</h4>
+                <h4 class="card-title">{gettext("Reporting unit")}</h4>
                 <Inputs for={:reporting_unit}>
                   <div class="row">
                     <div class="col">

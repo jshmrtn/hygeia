@@ -395,17 +395,16 @@
         phx_click: "all_checked"
       }
     />
-    <Link to="#" click="delete_person" opts={data: [confirm: gettext("Are you sure?")]}>
-      <button
-        disabled={Enum.empty?(@bulk_action_elements)}
-        class="btn btn-danger"
-        :on-click="apply_bulk_action"
-        type="submit"
-      >
-        <span class="oi oi-trash" aria-hidden="true" />
-        {gettext("Delete selected")}
-      </button>
-    </Link>
+    <button
+      :on-click="apply_bulk_action"
+      disabled={Enum.empty?(@bulk_action_elements)}
+      class="btn btn-danger phoenix link click"
+      type="submit"
+      data-confirm={gettext("Are you sure?")}
+    >
+      <span class="oi oi-trash" aria-hidden="true" />
+      {gettext("Delete selected")}
+    </button>
   </div>
 
   <div class="d-flex flex-row">
@@ -448,20 +447,15 @@
         </:left>
 
         <:right>
-          <Link
-            to="#"
-            click="delete_person"
-            opts={
-              title: gettext("Delete"),
-              data: [confirm: gettext("Are you sure?")],
-              "phx-value-index": index
-            }
+          <button
+            :on-click="delete_person"
+            class="btn btn-danger phoenix link click"
+            data-confirm={gettext("Are you sure?")}
+            value={index}
           >
-            <button class="btn btn-danger">
-              <span class="oi oi-trash" aria-hidden="true" />
-              {gettext("Delete")}
-            </button>
-          </Link>
+            <span class="oi oi-trash" aria-hidden="true" />
+            {gettext("Delete")}
+          </button>
         </:right>
 
         <:bottom>

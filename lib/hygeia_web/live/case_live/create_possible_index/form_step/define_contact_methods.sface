@@ -5,57 +5,59 @@
       <div class="w-100">
         <PersonCard person_changeset={person_cs}>
           <:bottom>
-            {#if should_contact_person(case_cs, @form_data.type)}
+            {#if can_contact_person?(case_cs, @form_data.type)}
               {#for {contact_type, contact_type_members} <- group_contacts_by_type(person_cs)}
-                <div class="mb-4">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">{contact_type}</th>
-                        <th scope="col">{gettext("Comment")}</th>
-                        <th>
-                          <Checkbox opts={
-                            checked: all_checked?(reporting, contact_type_members),
-                            hidden_input: "false",
-                            phx_click: "all_checked",
-                            phx_target: @myself,
-                            phx_value_index: index,
-                            phx_value_contact_uuids: to_serialized_uuids(contact_type_members)
-                          } />
-                          {#if all_checked?(reporting, contact_type_members)}
-                            {gettext("Deselect all")}
-                          {#else}
-                            {gettext("Select all")}
-                          {/if}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {#for {contact, i} <- Enum.with_index(contact_type_members)}
+                {#if contact_type_eligible?(case_cs, contact_type)}
+                  <div class="mb-4">
+                    <table class="table">
+                      <thead>
                         <tr>
-                          <td>{i + 1}</td>
-                          <td>{contact.value}</td>
-                          <td>{contact.comment}</td>
-                          <td><Checkbox opts={
-                              checked: has_contact_uuid?(reporting, contact.uuid),
+                          <th scope="col">#</th>
+                          <th scope="col">{contact_type}</th>
+                          <th scope="col">{gettext("Comment")}</th>
+                          <th>
+                            <Checkbox opts={
+                              checked: all_checked?(reporting, contact_type_members),
                               hidden_input: "false",
-                              phx_click: "contact_method_checked",
+                              phx_click: "all_checked",
                               phx_target: @myself,
                               phx_value_index: index,
-                              phx_value_contact_uuid: contact.uuid
+                              phx_value_contact_uuids: to_serialized_uuids(contact_type_members)
                             } />
-                          </td>
+                            {#if all_checked?(reporting, contact_type_members)}
+                              {gettext("Deselect all")}
+                            {#else}
+                              {gettext("Select all")}
+                            {/if}
+                          </th>
                         </tr>
-                      {/for}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {#for {contact, i} <- Enum.with_index(contact_type_members)}
+                          <tr>
+                            <td>{i + 1}</td>
+                            <td>{contact.value}</td>
+                            <td>{contact.comment}</td>
+                            <td><Checkbox opts={
+                                checked: has_contact_uuid?(reporting, contact.uuid),
+                                hidden_input: "false",
+                                phx_click: "contact_method_checked",
+                                phx_target: @myself,
+                                phx_value_index: index,
+                                phx_value_contact_uuid: contact.uuid
+                              } />
+                            </td>
+                          </tr>
+                        {/for}
+                      </tbody>
+                    </table>
+                  </div>
+                {#else}
+                  <span>{disabled_contact_reason(case_cs, @form_data.type, contact_type)}</span>
+                {/if}
               {/for}
             {#else}
-              <span>{gettext(
-                  "This person cannot be contacted because the case contains an index phase, or, is of type \"contact person\"."
-                )}</span>
+              <span>{disabled_contact_reason(case_cs, @form_data.type)}</span>
             {/if}
           </:bottom>
         </PersonCard>

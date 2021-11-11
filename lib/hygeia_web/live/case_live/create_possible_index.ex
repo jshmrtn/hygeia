@@ -129,13 +129,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   defp save(%Socket{assigns: %{form_data: form_data}} = socket) do
     case Service.upsert(form_data) do
-      {:ok, _success} ->
-        :ok = Service.send_confirmations(socket, form_data.bindings, form_data.type)
+      {:ok, tuples} ->
+        :ok = Service.send_confirmations(socket, tuples, form_data.type)
 
         socket
         |> unblock_navigation()
         |> assign(visited_steps: visit_step([], "summary"))
-        #        |> assign(form_data: form_data)
         |> put_flash(:info, gettext("Cases inserted successfully."))
         |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, "summary"))
 
@@ -145,7 +144,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           :error,
           pgettext(
             "errors",
-            "There was an error while submitting the form. Please try resubmitting the form again or contact your administrator if the problem persists."
+            "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
           )
         )
         |> push_patch(
@@ -195,7 +194,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       mobile: mobile,
       landline: landline,
       email: email,
-      address: address
+      address: address,
+      employer: employer
     } = CaseContext.get_possible_index_submission!(uuid)
 
     %{
@@ -207,8 +207,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       infection_place:
         infection_place
         |> Map.from_struct()
-        |> Map.put(:address, Map.from_struct(infection_place.address))
-        |> Map.drop([:type]),
+        |> Map.put(:address, Map.from_struct(infection_place.address)),
       bindings: [
         %{
           person_changeset:
@@ -231,7 +230,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
                   type: :email,
                   value: email
                 }),
-              address: Map.from_struct(address)
+              address: Map.from_struct(address),
+              affiliations: [%{comment: employer}]
             }),
           case_changeset: CaseContext.change_case(%Case{})
         }
