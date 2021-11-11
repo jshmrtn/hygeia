@@ -35,7 +35,7 @@
                 <Field name={:propagator_internal} class="form-group">
                   <div class="btn-group btn-group-toggle btn-radio-group">
                     <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
-                    <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal)}>
+                    <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil}>
                       <RadioButton value="" />
                       {gettext("No propagator")}
                     </label>

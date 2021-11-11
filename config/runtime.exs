@@ -55,17 +55,6 @@ config :hygeia, HygeiaWeb.Endpoint,
   ],
   secret_key_base: System.fetch_env!("SECRET_KEY_BASE")
 
-api_port =
-  String.to_integer(
-    System.get_env(
-      "API_PORT",
-      case config_env() do
-        :test -> "5001"
-        _env -> "4001"
-      end
-    )
-  )
-
 config :logger,
   level:
     String.to_existing_atom(
