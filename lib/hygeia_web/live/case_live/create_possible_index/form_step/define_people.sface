@@ -204,6 +204,10 @@
             <div class="card">
               <div class="card-body">
                 <h4 class="card-title">{gettext("Base Data")}</h4>
+                <Inputs for={:affiliations}>
+                  <HiddenInput field={:uuid} />
+                  <HiddenInput field={:comment} />
+                </Inputs>
 
                 <Field name={:tenant_uuid} class="form-group">
                   <HygeiaWeb.FieldLabel />

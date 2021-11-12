@@ -12,6 +12,7 @@ defmodule HygeiaWeb.CaseLiveTest do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.OrganisationContext.Affiliation
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
 
@@ -793,6 +794,7 @@ defmodule HygeiaWeb.CaseLiveTest do
       mobile = "+41 78 898 04 51"
       landline = "+41 52 233 06 89"
       email = "corinne.weber@gmx.ch"
+      employer = "Unknown GmbH"
 
       index = 0
 
@@ -850,9 +852,10 @@ defmodule HygeiaWeb.CaseLiveTest do
                    %{type: :mobile, value: ^mobile},
                    %{type: :landline, value: ^landline},
                    %{type: :email, value: ^email}
-                 ]
+                 ],
+                 affiliations: [%Affiliation{comment: ^employer}]
                }
-             ] = CaseContext.list_people()
+             ] = Hygeia.Repo.preload(CaseContext.list_people(), :affiliations)
 
       {start_date, end_date} = Service.phase_dates(date)
 

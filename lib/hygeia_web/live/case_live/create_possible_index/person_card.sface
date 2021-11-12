@@ -35,21 +35,21 @@
         <tbody>
           <tr>
             <td>{gettext("Tenant")}:</td>
-            <td>{fetch_field!(@person_changeset, :tenant) |> show_field(:name, gettext("-"))}</td>
+            <td>{fetch_field!(@person_changeset, :tenant) |> show_field(:name, "-")}</td>
             <td>{gettext("Address")}:</td>
-            <td>{fetch_field!(@person_changeset, :address) |> show_field(:address, gettext("-"))}</td>
+            <td>{fetch_field!(@person_changeset, :address) |> show_field(:address, "-")}</td>
           </tr>
           <tr>
             <td>{gettext("Birth date")}:</td>
-            <td>{get_field(@person_changeset, :birth_date, gettext("-"))}</td>
+            <td>{get_field(@person_changeset, :birth_date, "-")}</td>
             <td>{gettext("Place")}:</td>
-            <td>{fetch_field!(@person_changeset, :address) |> show_field(:place, gettext("-"))}</td>
+            <td>{fetch_field!(@person_changeset, :address) |> show_field(:place, "-")}</td>
           </tr>
           <tr>
             <td>{gettext("Sex")}:</td>
-            <td>{get_field(@person_changeset, :sex, gettext("-"))}</td>
+            <td>{get_field(@person_changeset, :sex, "-")}</td>
             <td>{gettext("Country")}:</td>
-            <td>{fetch_field!(@person_changeset, :address) |> show_field(:country, gettext("-"))}</td>
+            <td>{fetch_field!(@person_changeset, :address) |> show_field(:country, "-")}</td>
           </tr>
         </tbody>
       </table>

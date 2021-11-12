@@ -231,7 +231,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
                   value: email
                 }),
               address: Map.from_struct(address),
-              affiliations: [%{comment: employer}]
+              affiliations:
+                if(not is_nil(employer) and String.length(employer) > 0,
+                  do: [%{comment: employer}]
+                )
             }),
           case_changeset: CaseContext.change_case(%Case{})
         }
