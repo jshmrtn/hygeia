@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr "\"Merge\" e \"Into\" non devono essere la stessa cosa"
@@ -1749,20 +1749,20 @@ msgctxt "Home"
 msgid "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «%{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing."
 msgstr "Hygeia è progettato per strutturare processi complicati, per soddisfare standard come il \"%{link_med}\" dell'UFSP, per connettersi alla banca dati dell'UFSP e per ridurre il personale necessario per il rintracciamento di persone."
 
+msgid "I am in possession of a \"Convalescent Certificate\""
+msgstr "Sono in possesso di un \"Certificato di Convalescenza\""
+
+msgid "I am in possession of a valid vaccination certificate."
+msgstr "Sono in possesso di un certificato di vaccinazione valido."
+
 msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Confermo che tutti i dati di cui sopra sono corretti. I dati potrebbero essere ispezionati!"
 
 msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
 msgstr "Ho fatto un test COVID negli ultimi 4 giorni di quarantena. Il risultato è negativo."
 
-msgid "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
-msgstr "Ho avuto la COVID negli ultimi %{validity} e sono di nuovo sano. Posso confermare la malattia (certificato Covid, test PCR positivo, conferma dell'isolamento)"
-
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
 msgstr "Ho la documentazione ufficiale per terminare la quarantena (vaccinato, immune, test negativo)."
-
-msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago."
-msgstr "Ho ricevuto almeno due vaccinazioni COVID autorizzate in Svizzera e l'ultima è stata somministrata meno di %{validity} fa."
 
 msgid "IAM Configuration"
 msgstr "Configurazione IAM"
@@ -2478,6 +2478,11 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
 msgstr "Nome"
 
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Name"
+msgstr "Nome"
+
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name of Vaccine"
 msgstr "Nome del vaccino"
@@ -2552,10 +2557,6 @@ msgstr "Nuovo indice possibile"
 #, fuzzy
 msgid "New Possible Index Submission"
 msgstr "Nuova possibile presentazione dell'indice"
-
-#, fuzzy
-msgid "New Premature Release"
-msgstr "Nuovo rilascio prematuro"
 
 #, fuzzy
 msgid "New Registered Cases (Processed)"
@@ -3239,6 +3240,10 @@ msgstr "PossibleIndexSubmission cancellato con successo"
 #, fuzzy
 msgid "PossibleIndexSubmission updated successfully"
 msgstr "PossibleIndexSubmission aggiornato con successo"
+
+#, fuzzy
+msgid "Premature Release"
+msgstr "Rilascio prematuro"
 
 #, fuzzy
 msgid "Premature Releases"

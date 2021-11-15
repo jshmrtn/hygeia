@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -2020,6 +2020,12 @@ msgctxt "Home"
 msgid "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «%{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing."
 msgstr "Hygeia est conçu pour structurer des processus complexes, pour remplir des standards comme le \"%{link_med}\" de l'OFSP, pour se connecter à la base de données de l'OFSP et pour réduire le personnel nécessaire à la recherche de contacts."
 
+msgid "I am in possession of a \"Convalescent Certificate\""
+msgstr "Je suis en possession d'un « Certificat de convalescence »"
+
+msgid "I am in possession of a valid vaccination certificate."
+msgstr "Je suis en possession d'un certificat de vaccination valide."
+
 #, fuzzy
 msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Je confirme que toutes les données ci-dessus sont correctes. Ceci peut être inspecté !"
@@ -2028,15 +2034,9 @@ msgstr "Je confirme que toutes les données ci-dessus sont correctes. Ceci peut 
 msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
 msgstr "J'ai fait un test COVID dans les 4 derniers jours de quarantaine. Le résultat est négatif."
 
-msgid "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
-msgstr "J'ai eu le COVID au cours des derniers %{validity} et je suis à nouveau en bonne santé. Je peux confirmer la maladie (certificat Covid, test PCR positif, confirmation de l'isolement)."
-
 #, fuzzy
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
 msgstr "J'ai la documentation officielle pour mettre fin à la quarantaine (vacciné, immunisé, test négatif)."
-
-msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago."
-msgstr "J'ai reçu au moins deux vaccins COVID autorisés en Suisse et la dernière injection date de moins de %{validity}."
 
 #, fuzzy
 msgid "IAM Configuration"
@@ -2836,6 +2836,11 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
 msgstr "Nom"
 
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Name"
+msgstr "Nom"
+
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name of Vaccine"
 msgstr "Nom du vaccin"
@@ -2910,10 +2915,6 @@ msgstr "Nouvel indice possible"
 #, fuzzy
 msgid "New Possible Index Submission"
 msgstr "Nouvelle soumission d'index possible"
-
-#, fuzzy
-msgid "New Premature Release"
-msgstr "Nouvelle libération prématurée"
 
 #, fuzzy
 msgid "New Registered Cases (Processed)"
@@ -3560,7 +3561,6 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of arrival"
 msgstr ""
 
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
 msgstr ""
@@ -3569,7 +3569,6 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of departure"
 msgstr ""
 
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of departure"
 msgstr ""
@@ -3640,6 +3639,10 @@ msgstr "PossibleIndexSubmission supprimé avec succès"
 #, fuzzy
 msgid "PossibleIndexSubmission updated successfully"
 msgstr "PossibleIndexSubmission mis à jour avec succès"
+
+#, fuzzy
+msgid "Premature Release"
+msgstr "Libération prématurée"
 
 #, fuzzy
 msgid "Premature Releases"
@@ -5577,7 +5580,6 @@ msgstr "personnes"
 msgid "please add at least one educational institution that you visited during the period in consideration"
 msgstr "veuillez ajouter au moins un établissement d'enseignement que vous avez visité au cours de la période considérée"
 
-#, fuzzy
 msgid "please add at least one flight that you took during the period in consideration"
 msgstr ""
 
