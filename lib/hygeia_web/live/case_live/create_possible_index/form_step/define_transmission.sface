@@ -6,8 +6,8 @@
       submit="save"
       opts={autocomplete: "off", id: "define-transmission-form"}
     >
-      <div class="row">
-        <div class="col-12 col-lg-6">
+      <div class="row mb-4">
+        <div class="col-12 col-xl-6">
           <div class="card">
             <div class="card-body">
               <div class="row">
@@ -35,15 +35,24 @@
                 <Field name={:propagator_internal} class="form-group">
                   <div class="btn-group btn-group-toggle btn-radio-group">
                     <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
-                    <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil}>
+                    <label class={
+                      "btn btn-outline-primary",
+                      active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil
+                    }>
                       <RadioButton value="" />
                       {gettext("No propagator")}
                     </label>
-                    <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}>
+                    <label class={
+                      "btn btn-outline-primary",
+                      active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true
+                    }>
                       <RadioButton value="true" />
                       {gettext("Internal")}
                     </label>
-                    <label class={"btn btn-secondary", active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}>
+                    <label class={
+                      "btn btn-outline-primary",
+                      active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false
+                    }>
                       <RadioButton value="false" />
                       {gettext("External")}
                     </label>

@@ -1,27 +1,32 @@
-<div id="create-possible-index" class="component-case-create-case" phx-hook="BlockNavigation">
-  <h1 class="container mb-4">{gettext("Create Possible Index Cases")}</h1>
+<div
+  id="create-possible-index"
+  class="component-create-possible-index"
+  phx-hook="BlockNavigation"
+>
+  <h1 class="container mb-5">{gettext("Create Possible Index Cases")}</h1>
 
   <HiddenInput field={:possible_index_submission_uuid} />
 
   <div class="container">
-    <div class="row mb-4" :if={@form_step != "summary"}>
-      <div class="text-center w-100">
-        {#for {step, index} <- get_form_steps() |> Enum.reject(&(&1.name == "summary")) |> Enum.with_index()}
-          <LivePatch to={Routes.case_create_possible_index_path(@socket, :index, step.name)}>
-            <button
-              class={decide_nav_class(@form_step, step.name, @visited_steps, @form_data)}
-              disabled={if not visited_step?(@visited_steps, step.name), do: true}
-            >
-              {index}
-            </button>
-          </LivePatch>
-        {/for}
-      </div>
-    </div>
+    <nav class="mb-5 progress-steps" id="progressbar" :if={@form_step != :summary}>
+      <div aria-hidden="true" class="progress-bar" />
+      {#for {step, index} <- get_form_steps() |> Enum.reject(&(&1.name == :summary)) |> Enum.with_index()}
+        <LivePatch
+          class={"progress-step", decide_nav_class(@form_step, step.name, @visited_steps, @form_data)}
+          to={Routes.case_create_possible_index_path(@socket, :index, step.name)}
+          disabled={not visited_step?(@visited_steps, step.name)}
+        >
+          <small class="d-none d-lg-block">
+            {translate_step(step.name)}
+          </small>
+        </LivePatch>
+      {/for}
+    </nav>
+
     {#case @form_step}
-      {#match "transmission"}
+      {#match :transmission}
         <DefineTransmission id={@form_step} {=@form_step} {=@live_action} {=@form_data} />
-      {#match "people"}
+      {#match :people}
         <DefinePeople
           id={@form_step}
           {=@form_step}
@@ -30,7 +35,7 @@
           {=@form_data}
           {=@tenants}
         />
-      {#match "administration"}
+      {#match :administration}
         <DefineAdministration
           id={@form_step}
           {=@form_step}
@@ -39,9 +44,9 @@
           {=@supervisor_users}
           {=@tracer_users}
         />
-      {#match "contact_methods"}
+      {#match :contact_methods}
         <DefineContactMethods id={@form_step} {=@form_step} {=@live_action} {=@form_data} />
-      {#match "summary"}
+      {#match :summary}
         <Summary
           id={@form_step}
           {=@form_step}

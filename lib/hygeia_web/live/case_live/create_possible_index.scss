@@ -1,0 +1,6 @@
+.component-create-possible-index {
+  .progress-steps {
+    --progress-bar-items: 4;
+    @include progress-steps;
+  }
+}

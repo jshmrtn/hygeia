@@ -26,13 +26,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.LivePatch
 
-  @default_form_step "transmission"
+  @default_form_step :transmission
   @form_steps [
-    %FormStep{name: "transmission", prev: nil, next: "people"},
-    %FormStep{name: "people", prev: "transmission", next: "administration"},
-    %FormStep{name: "administration", prev: "people", next: "contact_methods"},
-    %FormStep{name: "contact_methods", prev: "administration", next: nil},
-    %FormStep{name: "summary", prev: nil, next: nil}
+    %FormStep{name: :transmission, prev: nil, next: :people},
+    %FormStep{name: :people, prev: :transmission, next: :administration},
+    %FormStep{name: :administration, prev: :people, next: :contact_methods},
+    %FormStep{name: :contact_methods, prev: :administration, next: nil},
+    %FormStep{name: :summary, prev: nil, next: nil}
   ]
 
   @impl Phoenix.LiveView
@@ -113,7 +113,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   def handle_params(params, _uri, socket) do
     %{assigns: %{visited_steps: visited_steps}} = socket
 
-    form_step = validate_form_step(@form_steps, params["form_step"])
+    form_step = validate_form_step(@form_steps, case params["form_step"] do
+      nil -> nil
+      step_name -> String.to_atom(step_name)
+    end)
 
     socket =
       if visited_step?(visited_steps, form_step) do
@@ -134,9 +137,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
         socket
         |> unblock_navigation()
-        |> assign(visited_steps: visit_step([], "summary"))
+        |> assign(visited_steps: visit_step([], :summary))
         |> put_flash(:info, gettext("Cases inserted successfully."))
-        |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, "summary"))
+        |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, :summary))
 
       _error ->
         socket
@@ -288,19 +291,19 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   def visited_step?([form_step | _t], form_step), do: true
   def visited_step?([_ | t], form_step), do: visited_step?(t, form_step)
 
-  defp valid_step?("transmission", form_data) do
+  defp valid_step?(:transmission, form_data) do
     DefineTransmission.valid?(form_data)
   end
 
-  defp valid_step?("people", form_data) do
+  defp valid_step?(:people, form_data) do
     DefinePeople.valid?(form_data)
   end
 
-  defp valid_step?("administration", form_data) do
+  defp valid_step?(:administration, form_data) do
     DefineAdministration.valid?(form_data)
   end
 
-  defp valid_step?("contact_methods", form_data) do
+  defp valid_step?(:contact_methods, form_data) do
     DefineContactMethods.valid?(form_data)
   end
 
@@ -315,16 +318,16 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   defp decide_nav_class(current_step, target_step, visited_steps, current_data) do
     cond do
       match?(^current_step, target_step) ->
-        "bg-warning"
+        "active"
 
       valid_step?(target_step, current_data) and visited_step?(visited_steps, target_step) ->
-        "bg-success"
+        "completed"
 
       not visited_step?(visited_steps, target_step) ->
-        ""
+        "interactive"
 
       true ->
-        "bg-danger"
+        "interactive"
     end
   end
 
@@ -335,4 +338,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   defp append_if(list, condition, item) do
     if condition, do: list ++ [item], else: list
   end
+
+  defp translate_step(:transmission), do: pgettext("Create Possible Index Step", "Transmission")
+  defp translate_step(:people), do: pgettext("Create Possible Index Step", "People")
+  defp translate_step(:administration), do: pgettext("Create Possible Index Step", "Administration")
+  defp translate_step(:contact_methods), do: pgettext("Create Possible Index Step", "Contact Methods")
+  defp translate_step(:summary), do: pgettext("Create Possible Index Step", "Summary")
 end

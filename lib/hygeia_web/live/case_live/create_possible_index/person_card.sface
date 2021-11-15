@@ -1,25 +1,19 @@
-<div class={"card", "mb-3", if(not @person_changeset.valid?, do: "border border-danger"), @class}>
+<div class={
+  "component-person-card card",
+  "mb-3",
+  if(not @person_changeset.valid?, do: "border border-danger"),
+  @class
+}>
   <div class="card-header">
     <#slot name="header">
       <div class="d-flex">
         <div>
           <div>
-            <div class="d-inline-block">
-              <small>{gettext("First name")}:</small>
-              <h4 class="d-inline-block font-weight-bold">
-                {fetch_field!(@person_changeset, :first_name)}
-              </h4>
-            </div>
-            &nbsp;
-            &nbsp;
-            <div class="d-inline-block">
-              <small>{gettext("Last name")}:</small>
-              <h4 class="d-inline-block font-weight-bold">
-                {fetch_field!(@person_changeset, :last_name)}
-              </h4>
-            </div>
+            <div class="d-inline-block me-1">
+              {fetch_field!(@person_changeset, :first_name)}</div>
+            <div class="d-inline-block">{fetch_field!(@person_changeset, :last_name)}</div>
           </div>
-          <span :if={fetch_field!(@person_changeset, :inserted_at)} class="text-muted">
+          <span :if={fetch_field!(@person_changeset, :inserted_at)} class="text-muted small">
             {gettext("This person is in the database")}
           </span>
         </div>
@@ -28,34 +22,48 @@
       </div>
     </#slot>
   </div>
-  <div class="card-body py-2 px-3">
-    <div class="d-flex justify-content-between align-items-center">
+  <div class="card-body p-3">
+    <div class="d-flex">
       <#slot name="left" />
-      <table class="table table-sm table-borderless">
-        <tbody>
-          <tr>
-            <td>{gettext("Tenant")}:</td>
-            <td>{fetch_field!(@person_changeset, :tenant) |> show_field(:name, "-")}</td>
-            <td>{gettext("Address")}:</td>
-            <td>{fetch_field!(@person_changeset, :address) |> show_field(:address, "-")}</td>
-          </tr>
-          <tr>
-            <td>{gettext("Birth date")}:</td>
-            <td>{get_field(@person_changeset, :birth_date, "-")}</td>
-            <td>{gettext("Place")}:</td>
-            <td>{fetch_field!(@person_changeset, :address) |> show_field(:place, "-")}</td>
-          </tr>
-          <tr>
-            <td>{gettext("Sex")}:</td>
-            <td>{get_field(@person_changeset, :sex, "-")}</td>
-            <td>{gettext("Country")}:</td>
-            <td>{fetch_field!(@person_changeset, :address) |> show_field(:country, "-")}</td>
-          </tr>
-        </tbody>
-      </table>
-      <div>
-        <#slot name="right" />
+      <div class="value-pairs">
+        <div>
+          <label class="small text-muted">{gettext("Tenant")}:</label>
+          <div class="value">{fetch_field!(@person_changeset, :tenant) |> show_field(:name, "-")}</div>
+        </div>
+        <div>
+          <label class="small text-muted">{gettext("Address")}:</label>
+          <div class="value">{fetch_field!(@person_changeset, :address) |> show_field(:address, "-")}</div>
+        </div>
+        <div>
+          <label class="small text-muted">{gettext("Birth date")}:</label>
+          <div class="value">
+            {#if get_field(@person_changeset, :birth_date)}
+              {get_field(@person_changeset, :birth_date) |> HygeiaCldr.Date.to_string!()}
+            {#else}
+              -
+            {/if}
+          </div>
+        </div>
+        <div>
+          <label class="small text-muted">{gettext("Place")}:</label>
+          <div class="value">{fetch_field!(@person_changeset, :address) |> show_field(:place, "-")}</div>
+        </div>
+        <div>
+          <label class="small text-muted">{gettext("Sex")}:</label>
+          <div class="value">
+            {#if get_field(@person_changeset, :sex)}
+              {translate_person_sex(get_field(@person_changeset, :sex))}
+            {#else}
+              -
+            {/if}
+          </div>
+        </div>
+        <div>
+          <label class="small text-muted">{gettext("Country")}:</label>
+          <div class="value">{fetch_field!(@person_changeset, :address) |> show_field(:country, "-")}</div>
+        </div>
       </div>
+      <#slot name="right" />
     </div>
     <#slot name="error">
       {#if not @person_changeset.valid?}

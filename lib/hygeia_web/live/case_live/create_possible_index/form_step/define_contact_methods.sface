@@ -53,11 +53,11 @@
                     </table>
                   </div>
                 {#else}
-                  <span>{disabled_contact_reason(case_cs, @form_data.type, contact_type)}</span>
+                  <div class="mt-3">{disabled_contact_reason(case_cs, @form_data.type, contact_type)}</div>
                 {/if}
               {/for}
             {#else}
-              <span>{disabled_contact_reason(case_cs, @form_data.type)}</span>
+              <div class="mt-3">{disabled_contact_reason(case_cs, @form_data.type)}</div>
             {/if}
           </:bottom>
         </PersonCard>
@@ -67,7 +67,7 @@
 
   <div class="row">
     <div class="col">
-      <button id="back-button" class="btn btn-warning mt-5" type="button" :on-click="back">
+      <button id="back-button" class="btn btn-outline-primary mt-5 me-2" type="button" :on-click="back">
         {gettext("Back")}
       </button>
       <button

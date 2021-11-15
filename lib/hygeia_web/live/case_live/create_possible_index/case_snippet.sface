@@ -1,16 +1,19 @@
-<div class={"card border-0", @class}>
+<div class={@class}>
   <Form
     for={@case_changeset}
     opts={autocomplete: "off", id: "case-snippet-form", "phx-hook": "BlockNavigation"}
   >
-    <h5 class="card-title mb-0 px-3 py-2">{gettext("Phases")}</h5>
-    <div class="card-body">
+    <h5
+      :if={not Enum.empty?(Ecto.Changeset.fetch_field!(@case_changeset, :phases))}
+      class="card-title mb-2"
+    >{gettext("Phases")}</h5>
+    <div>
       <#slot name="top" />
       <ErrorTag class="d-block invalid-feedback" field={:phases} />
-      <div class="d-flex flex-row">
+      <div class="d-flex gap-2 flex-row mb-3">
         <Inputs for={:phases}>
-          <div class="card me-2">
-            <div class="card-body">
+          <div class="card">
+            <div class="card-body hy-readonly-form">
               <InputContext assigns={assigns} :let={form: form}>
                 <Context
                   put={__MODULE__, phase_details: Ecto.Changeset.fetch_field!(form.source, :details)}
@@ -31,7 +34,7 @@
                       <label class={
                         "btn",
                         "btn-sm",
-                        "btn-secondary",
+                        "btn-outline-primary",
                         active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == nil,
                         disabled: true
                       }>
@@ -41,7 +44,7 @@
                       <label class={
                         "btn",
                         "btn-sm",
-                        "btn-secondary",
+                        "btn-outline-primary",
                         active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == true,
                         disabled: true
                       }>
@@ -51,7 +54,7 @@
                       <label class={
                         "btn",
                         "btn-sm",
-                        "btn-secondary",
+                        "btn-outline-primary",
                         active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == false,
                         disabled: true
                       }>
@@ -79,10 +82,13 @@
                     </div>
                   </div>
 
-                  <div :if={Ecto.Changeset.fetch_field!(form.source, :quarantine_order) != true and
-                    is_map(Ecto.Changeset.fetch_field!(@case_changeset, :inserted_at))}>
-                    <div>{gettext("Phase created at")}:</div>
-                    <span>{@case_changeset |> Ecto.Changeset.fetch_field!(:inserted_at) |> HygeiaCldr.DateTime.to_string!()}</span>
+                  <div
+                    class="form-group mb-0"
+                    :if={Ecto.Changeset.fetch_field!(form.source, :quarantine_order) != true and
+                      is_map(Ecto.Changeset.fetch_field!(@case_changeset, :inserted_at))}
+                  >
+                    <label>{gettext("Phase created at")}</label>
+                    <div class="value">{@case_changeset |> Ecto.Changeset.fetch_field!(:inserted_at) |> HygeiaCldr.DateTime.to_string!()}</div>
                   </div>
                 </Context>
               </InputContext>
