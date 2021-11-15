@@ -196,22 +196,31 @@ defmodule Hygeia.CaseContext do
             ),
         order_by: [
           desc:
-            (fragment("(? <<-> ?)", person.first_name, ^first_name) +
-               fragment("(? <<-> ?)", person.last_name, ^last_name)) / 2.0 +
-              fragment(
-                ~S[(?::jsonb <@ ANY (?))::int],
-                ^%{type: :email, value: email},
-                person.contact_methods
+            (coalesce(fragment("(? <<-> ?)", person.first_name, ^first_name), 0.0) +
+               coalesce(fragment("(? <<-> ?)", person.last_name, ^last_name), 0.0)) / 2.0 +
+              coalesce(
+                fragment(
+                  ~S[(?::jsonb <@ ANY (?))::int],
+                  ^%{type: :email, value: email},
+                  person.contact_methods
+                ),
+                0.0
               ) +
-              fragment(
-                ~S[(?::jsonb <@ ANY (?))::int],
-                ^%{type: :mobile, value: email},
-                person.contact_methods
+              coalesce(
+                fragment(
+                  ~S[(?::jsonb <@ ANY (?))::int],
+                  ^%{type: :mobile, value: email},
+                  person.contact_methods
+                ),
+                0.0
               ) +
-              fragment(
-                ~S[(?::jsonb <@ ANY (?))::int],
-                ^%{type: :landline, value: email},
-                person.contact_methods
+              coalesce(
+                fragment(
+                  ~S[(?::jsonb <@ ANY (?))::int],
+                  ^%{type: :landline, value: email},
+                  person.contact_methods
+                ),
+                0.0
               )
         ],
         preload: ^preload,
