@@ -177,8 +177,8 @@ defmodule Hygeia.CaseContext do
     Repo.all(
       from(person in Person,
         where:
-          fragment("(? <% ?)", person.first_name, ^first_name) or
-            fragment("(? <% ?)", person.last_name, ^last_name) or
+          (fragment("(? <% ?)", person.first_name, ^first_name) and
+             fragment("(? <% ?)", person.last_name, ^last_name)) or
             fragment(
               ~S[(?::jsonb <@ ANY (?))],
               ^%{type: :email, value: email},
