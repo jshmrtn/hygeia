@@ -1559,19 +1559,19 @@ msgctxt "Home"
 msgid "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «%{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing."
 msgstr ""
 
+msgid "I am in possession of a \"Convalescent Certificate\""
+msgstr ""
+
+msgid "I am in possession of a valid vaccination certificate."
+msgstr ""
+
 msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr ""
 
 msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
 msgstr ""
 
-msgid "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
-msgstr ""
-
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
-msgstr ""
-
-msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago."
 msgstr ""
 
 msgid "IAM Configuration"
@@ -2200,6 +2200,10 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Name"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name of Vaccine"
 msgstr ""
@@ -2257,9 +2261,6 @@ msgid "New Possible Index"
 msgstr ""
 
 msgid "New Possible Index Submission"
-msgstr ""
-
-msgid "New Premature Release"
 msgstr ""
 
 msgid "New Registered Cases (Processed)"
@@ -2829,6 +2830,9 @@ msgid "PossibleIndexSubmission deleted successfully"
 msgstr ""
 
 msgid "PossibleIndexSubmission updated successfully"
+msgstr ""
+
+msgid "Premature Release"
 msgstr ""
 
 msgid "Premature Releases"

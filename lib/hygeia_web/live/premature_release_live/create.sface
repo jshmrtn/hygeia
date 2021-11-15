@@ -4,7 +4,7 @@
   submit="save"
   opts={autocomplete: "off", id: "premature-release-form", class: "container col-lg-6"}
 >
-  <h1 class="mb-4">{gettext("New Premature Release")}</h1>
+  <h1 class="mb-4">{gettext("Premature Release")}</h1>
 
   <Field name={:reason} class="form-group">
     <HygeiaWeb.FieldLabel />
@@ -20,11 +20,11 @@
     <div class="alert alert-info">
       {#case Ecto.Changeset.fetch_field!(@changeset, :reason)}
         {#match :vaccinated}{gettext(
-            "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago.",
+            "I am in possession of a valid vaccination certificate.",
             validity: HygeiaCldr.Unit.to_string!(Hygeia.vaccine_validity_cldr())
           )}
         {#match :immune}{gettext(
-            "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)",
+            "I am in possession of a \"Convalescent Certificate\"",
             validity: HygeiaCldr.Unit.to_string!(Hygeia.immune_validity_cldr())
           )}
         {#match :negative_test}{gettext("I did a COVID test in the last 4 days of quarantine. The result is negative.")}
