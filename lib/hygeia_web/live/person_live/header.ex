@@ -15,7 +15,7 @@ defmodule HygeiaWeb.PersonLive.Header do
 
   @impl Phoenix.LiveComponent
   def update(
-        %{person: %Changeset{data: data} = changeset} = _assings,
+        %{person: %Changeset{data: data} = changeset} = _assigns,
         socket
       ) do
     {:ok,
@@ -25,7 +25,7 @@ defmodule HygeiaWeb.PersonLive.Header do
      )}
   end
 
-  def update(%{person: %Person{} = person} = _assings, socket) do
+  def update(%{person: %Person{} = person} = _assigns, socket) do
     {:ok,
      assign(socket,
        person_display_name: person_display_name(person),

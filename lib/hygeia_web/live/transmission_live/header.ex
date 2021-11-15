@@ -16,7 +16,7 @@ defmodule HygeiaWeb.TransmissionLive.Header do
 
   @impl Phoenix.LiveComponent
   def update(
-        %{transmission: %Changeset{data: data} = changeset} = _assings,
+        %{transmission: %Changeset{data: data} = changeset} = _assigns,
         socket
       ) do
     {:ok,
@@ -26,7 +26,7 @@ defmodule HygeiaWeb.TransmissionLive.Header do
      )}
   end
 
-  def update(%{transmission: %Transmission{} = transmission} = _assings, socket) do
+  def update(%{transmission: %Transmission{} = transmission} = _assigns, socket) do
     {:ok,
      assign(socket,
        display_name: display_name(transmission),

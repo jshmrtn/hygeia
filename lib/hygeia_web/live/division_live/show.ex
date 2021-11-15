@@ -60,7 +60,7 @@ defmodule HygeiaWeb.DivisionLive.Show do
     {:noreply,
      socket
      |> load_data(socket.assigns.division)
-     |> push_patch(to: Routes.division_show_path(socket, :show, socket.assings.division))
+     |> push_patch(to: Routes.division_show_path(socket, :show, socket.assigns.division))
      |> maybe_block_navigation()}
   end
 

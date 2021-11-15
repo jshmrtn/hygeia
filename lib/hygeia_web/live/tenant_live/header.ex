@@ -15,7 +15,7 @@ defmodule HygeiaWeb.TenantLive.Header do
 
   @impl Phoenix.LiveComponent
   def update(
-        %{tenant: %Changeset{data: data} = changeset} = _assings,
+        %{tenant: %Changeset{data: data} = changeset} = _assigns,
         socket
       ) do
     {:ok,
@@ -25,7 +25,7 @@ defmodule HygeiaWeb.TenantLive.Header do
      )}
   end
 
-  def update(%{tenant: %Tenant{} = tenant} = _assings, socket) do
+  def update(%{tenant: %Tenant{} = tenant} = _assigns, socket) do
     {:ok,
      assign(socket,
        display_name: tenant.name,
