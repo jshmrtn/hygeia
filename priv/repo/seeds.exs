@@ -215,13 +215,21 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       tracer_uuid: user_jony.uuid,
       supervisor_uuid: user_jony.uuid,
       hospitalizations: [
-        %{start: ~D[2020-10-13], end: ~D[2020-10-15], organisation_uuid: organisation_kssg.uuid},
-        %{start: ~D[2020-10-16], end: nil, organisation_uuid: organisation_kssg.uuid}
+        %{
+          start: Date.add(Date.utc_today(), 1),
+          end: Date.add(Date.utc_today(), 3),
+          organisation_uuid: organisation_kssg.uuid
+        },
+        %{
+          start: Date.add(Date.utc_today(), 4),
+          end: nil,
+          organisation_uuid: organisation_kssg.uuid
+        }
       ],
       tests: [
         %{
-          tested_at: ~D[2020-10-11],
-          laboratory_reported_at: ~D[2020-10-12],
+          tested_at: Date.add(Date.utc_today(), -1),
+          laboratory_reported_at: Date.utc_today(),
           kind: :pcr,
           result: :positive
         }
@@ -229,7 +237,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
       clinical: %{
         reasons_for_test: [:symptoms, :outbreak_examination],
         symptoms: [:fever],
-        symptom_start: ~D[2020-10-10]
+        symptom_start: Date.add(Date.utc_today(), -2)
       },
       external_references: [
         %{
@@ -243,7 +251,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         }
       ],
       monitoring: %{
-        first_contact: ~D[2020-10-12],
+        first_contact: Date.utc_today(),
         location: :home,
         location_details: "Bei Mutter zuhause",
         address: %{
@@ -261,16 +269,16 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
             type: :contact_person,
             end_reason: :converted_to_index
           },
-          start: ~D[2020-10-10],
-          end: ~D[2020-10-12]
+          start: Date.add(Date.utc_today(), -2),
+          end: Date.utc_today()
         },
         %{
           details: %{
             __type__: "index",
             end_reason: :healed
           },
-          start: ~D[2020-10-12],
-          end: ~D[2020-10-22]
+          start: Date.utc_today(),
+          end: Date.add(Date.utc_today(), 10)
         }
       ]
     })
@@ -312,7 +320,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
 
   if System.get_env("LOAD_STATISTICS_SEEDS", "false") in ["1", "true"] do
     {:ok, stats_people} =
-      1..1000
+      1..10000
       |> Enum.reduce(Ecto.Multi.new(), fn i, acc ->
         noga_code = Enum.random(Hygeia.EctoType.NOGA.Code.__enum_map__())
         noga_section = Hygeia.EctoType.NOGA.Code.section(noga_code)
@@ -434,7 +442,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         }
       ],
       monitoring: %{
-        first_contact: ~D[2020-10-12],
+        first_contact: Date.add(Date.utc_today(), 2),
         location: :home,
         address: %{
           address: "Hebelstrasse 20",
@@ -451,8 +459,8 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
             type: :contact_person,
             end_reason: :no_follow_up
           },
-          start: ~D[2020-10-10],
-          end: ~D[2020-10-20]
+          start: Date.utc_today(),
+          end: Date.add(Date.utc_today(), 10)
         }
       ]
     })
