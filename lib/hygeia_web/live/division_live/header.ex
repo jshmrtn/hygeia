@@ -27,7 +27,7 @@ defmodule HygeiaWeb.DivisionLive.Header do
 
   @impl Phoenix.LiveComponent
   def update(
-        %{division: %Changeset{data: data} = changeset} = _assings,
+        %{division: %Changeset{data: data} = changeset} = _assigns,
         socket
       ) do
     {:ok,
@@ -37,7 +37,7 @@ defmodule HygeiaWeb.DivisionLive.Header do
      )}
   end
 
-  def update(%{division: %Division{} = division} = _assings, socket) do
+  def update(%{division: %Division{} = division} = _assigns, socket) do
     {:ok,
      assign(socket,
        display_name: division.title,

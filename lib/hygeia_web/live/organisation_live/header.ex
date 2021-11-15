@@ -17,7 +17,7 @@ defmodule HygeiaWeb.OrganisationLive.Header do
 
   @impl Phoenix.LiveComponent
   def update(
-        %{organisation: %Changeset{data: data} = changeset} = _assings,
+        %{organisation: %Changeset{data: data} = changeset} = _assigns,
         socket
       ) do
     {:ok,
@@ -27,7 +27,7 @@ defmodule HygeiaWeb.OrganisationLive.Header do
      )}
   end
 
-  def update(%{organisation: %Organisation{} = organisation} = _assings, socket) do
+  def update(%{organisation: %Organisation{} = organisation} = _assigns, socket) do
     {:ok,
      assign(socket,
        display_name: organisation.name,

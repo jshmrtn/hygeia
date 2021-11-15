@@ -93,7 +93,7 @@ defmodule HygeiaWeb.ResourceTable do
     """
   end
 
-  defp render_tree(string, schema, _assings, _timezone, _extra_fields)
+  defp render_tree(string, schema, _assigns, _timezone, _extra_fields)
        when schema in [:string, :binary_id],
        do: string
 
@@ -199,7 +199,7 @@ defmodule HygeiaWeb.ResourceTable do
   defp render_tree(true, :boolean, _assigns, _timezone, _extra_fields), do: gettext("True")
   defp render_tree(false, :boolean, _assigns, _timezone, _extra_fields), do: gettext("False")
 
-  defp render_tree(other, schema, _assings, _timezone, _extra_fields) do
+  defp render_tree(other, schema, _assigns, _timezone, _extra_fields) do
     Logger.warn("""
     #{__MODULE__}.render_tree/4 for #{inspect(schema)} not implemented
     """)
