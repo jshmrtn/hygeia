@@ -320,7 +320,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
 
   if System.get_env("LOAD_STATISTICS_SEEDS", "false") in ["1", "true"] do
     {:ok, stats_people} =
-      1..10000
+      1..10_000
       |> Enum.reduce(Ecto.Multi.new(), fn i, acc ->
         noga_code = Enum.random(Hygeia.EctoType.NOGA.Code.__enum_map__())
         noga_section = Hygeia.EctoType.NOGA.Code.section(noga_code)
