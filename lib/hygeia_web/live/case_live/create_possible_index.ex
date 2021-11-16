@@ -113,10 +113,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   def handle_params(params, _uri, socket) do
     %{assigns: %{visited_steps: visited_steps}} = socket
 
-    form_step = validate_form_step(@form_steps, case params["form_step"] do
-      nil -> nil
-      step_name -> String.to_atom(step_name)
-    end)
+    form_step =
+      validate_form_step(
+        @form_steps,
+        case params["form_step"] do
+          nil -> nil
+          step_name -> String.to_existing_atom(step_name)
+        end
+      )
 
     socket =
       if visited_step?(visited_steps, form_step) do
@@ -281,12 +285,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     @form_steps
   end
 
-  @spec visit_step(visited :: list(String.t()), form_step :: String.t()) :: list()
+  @spec visit_step(visited :: list(atom()), form_step :: atom()) :: list()
   def visit_step([], form_step), do: [form_step]
   def visit_step([form_step | _t] = visited, form_step), do: visited
   def visit_step([h | t], form_step), do: [h | visit_step(t, form_step)]
 
-  @spec visited_step?(visited :: list(String.t()), form_step :: String.t()) :: boolean()
+  @spec visited_step?(visited :: list(atom()), form_step :: atom()) :: boolean()
   def visited_step?([], _form_step), do: false
   def visited_step?([form_step | _t], form_step), do: true
   def visited_step?([_ | t], form_step), do: visited_step?(t, form_step)
@@ -341,7 +345,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   defp translate_step(:transmission), do: pgettext("Create Possible Index Step", "Transmission")
   defp translate_step(:people), do: pgettext("Create Possible Index Step", "People")
-  defp translate_step(:administration), do: pgettext("Create Possible Index Step", "Administration")
-  defp translate_step(:contact_methods), do: pgettext("Create Possible Index Step", "Contact Methods")
+
+  defp translate_step(:administration),
+    do: pgettext("Create Possible Index Step", "Administration")
+
+  defp translate_step(:contact_methods),
+    do: pgettext("Create Possible Index Step", "Contact Methods")
+
   defp translate_step(:summary), do: pgettext("Create Possible Index Step", "Summary")
 end

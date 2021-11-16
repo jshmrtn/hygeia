@@ -3,34 +3,35 @@ defmodule HygeiaWeb.Helpers.FormStep do
               with next step and previous step transitions."
 
   @type empty :: %__MODULE__{
-          name: String.t() | nil,
-          prev: String.t() | nil,
-          next: String.t() | nil
+          name: String.t() | atom() | nil,
+          prev: String.t() | atom() | nil,
+          next: String.t() | atom() | nil
         }
 
   @type t :: %__MODULE__{
-          name: String.t() | nil,
-          prev: String.t() | nil,
-          next: String.t() | nil
+          name: String.t() | atom() | nil,
+          prev: String.t() | atom() | nil,
+          next: String.t() | atom() | nil
         }
 
   defstruct [:name, :prev, :next]
 
-  @spec member?(steps :: list(__MODULE__.t()), current_step_name :: String.t()) :: boolean()
+  @spec member?(steps :: list(__MODULE__.t()), current_step_name :: String.t() | atom()) ::
+          boolean()
   def member?(steps, step_name) do
     steps
     |> get_step_names()
     |> Enum.member?(step_name)
   end
 
-  @spec get_previous_step(steps :: list(__MODULE__.t()), current_step_name :: String.t()) ::
-          String.t() | nil
+  @spec get_previous_step(steps :: list(__MODULE__.t()), current_step_name :: String.t() | atom()) ::
+          String.t() | atom() | nil
   def get_previous_step(steps, current_step_name) do
     get_step_by_direction(steps, current_step_name, :prev)
   end
 
-  @spec get_next_step(steps :: list(__MODULE__.t()), current_step_name :: String.t()) ::
-          String.t() | nil
+  @spec get_next_step(steps :: list(__MODULE__.t()), current_step_name :: String.t() | atom()) ::
+          String.t() | atom() | nil
   def get_next_step(steps, current_step_name) do
     get_step_by_direction(steps, current_step_name, :next)
   end
