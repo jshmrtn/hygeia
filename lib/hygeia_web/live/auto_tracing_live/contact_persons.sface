@@ -21,7 +21,7 @@
       <li>{gettext("Either you or the other person did not weark a mask.")}</li>
       <li>{gettext("You did not keep a safe distance of at least 1.5 meters.")}</li>
     </ul>
-    <p>{gettext(
+    <p class="alert alert-info">{gettext(
         "People that live in the same household as you also count as contact persons. Please also register all children."
       )}</p>
     <p>
