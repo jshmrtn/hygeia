@@ -3,6 +3,7 @@ defmodule HygeiaWeb.AutoTracingLive.End do
 
   use HygeiaWeb, :surface_view
 
+  alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
@@ -19,9 +20,6 @@ defmodule HygeiaWeb.AutoTracingLive.End do
 
     socket =
       cond do
-        Case.closed?(case) ->
-          raise HygeiaWeb.AutoTracingLive.AutoTracing.CaseClosedError, case_uuid: case.uuid
-
         !authorized?(case, :auto_tracing, get_auth(socket)) ->
           push_redirect(socket,
             to:
@@ -31,16 +29,22 @@ defmodule HygeiaWeb.AutoTracingLive.End do
               )
           )
 
+        Case.closed?(case) ->
+          raise HygeiaWeb.AutoTracingLive.AutoTracing.CaseClosedError, case_uuid: case.uuid
+
         !AutoTracing.step_available?(case.auto_tracing, :end) ->
           push_redirect(socket,
             to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
           )
 
         true ->
+          {:ok, auto_tracing} =
+            AutoTracingContext.auto_tracing_remove_problem(case.auto_tracing, :no_reaction)
+
           assign(socket,
             case: case,
             person: case.person,
-            auto_tracing: case.auto_tracing
+            auto_tracing: auto_tracing
           )
       end
 
