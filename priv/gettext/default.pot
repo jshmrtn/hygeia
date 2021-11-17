@@ -145,6 +145,10 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Address"
+msgstr ""
+
 msgctxt "Auto Tracing Step"
 msgid "Address"
 msgstr ""
@@ -186,10 +190,6 @@ msgid "Address"
 msgstr ""
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Address"
-msgstr ""
-
-msgctxt "Auto Tracing Resolve Problems"
 msgid "Address"
 msgstr ""
 
@@ -994,19 +994,19 @@ msgstr ""
 msgid "Division"
 msgstr ""
 
-msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
-msgid "Division"
-msgstr ""
-
-msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
-msgid "Division"
-msgstr ""
-
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Division"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Division"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
+msgid "Division"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division"
 msgstr ""
 
@@ -1055,9 +1055,6 @@ msgstr ""
 msgid "Do you have or have had symptoms?"
 msgstr ""
 
-msgid "Do you have symptoms?"
-msgstr ""
-
 msgid "Do you know how you got infected?"
 msgstr ""
 
@@ -1082,6 +1079,10 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Done"
 msgstr ""
 
+msgctxt "Auto Tracing Vaccination"
+msgid "Done"
+msgstr ""
+
 msgctxt "Case Status"
 msgid "Done"
 msgstr ""
@@ -1091,10 +1092,6 @@ msgid "Done"
 msgstr ""
 
 msgctxt "vaccination_done"
-msgid "Done"
-msgstr ""
-
-msgctxt "Auto Tracing Vaccination"
 msgid "Done"
 msgstr ""
 
@@ -1444,10 +1441,6 @@ msgstr ""
 msgid "Gym"
 msgstr ""
 
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
-msgid "Had mask"
-msgstr ""
-
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Has Documentation"
 msgstr ""
@@ -1559,10 +1552,6 @@ msgctxt "Home"
 msgid "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «%{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing."
 msgstr ""
 
-msgid "I am in possession of a \"Convalescent Certificate\""
-msgstr ""
-
-#, elixir-format
 msgid "I am in possession of a valid \"Convalescent Certificate\""
 msgstr ""
 
@@ -1809,18 +1798,10 @@ msgctxt "Organisation Merge"
 msgid "Into"
 msgstr ""
 
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
-msgstr ""
-
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr ""
 
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
-msgstr ""
-
-msgctxt "Auto Tracing Clinical"
-msgid "Is this the correct date? The date is too far back and will trigger an inspection."
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
@@ -1915,10 +1896,6 @@ msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Known"
-msgstr ""
-
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Known institutions"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
@@ -2180,6 +2157,10 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Name"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Name"
 msgstr ""
@@ -2201,10 +2182,6 @@ msgid "Name"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
-msgid "Name"
-msgstr ""
-
-msgctxt "Auto Tracing Resolve Problems"
 msgid "Name"
 msgstr ""
 
@@ -2396,11 +2373,11 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-msgctxt "vaccination_done"
+msgctxt "Auto Tracing Vaccination"
 msgid "Not Done"
 msgstr ""
 
-msgctxt "Auto Tracing Vaccination"
+msgctxt "vaccination_done"
 msgid "Not Done"
 msgstr ""
 
@@ -2767,19 +2744,19 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr ""
 
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
-msgid "Place of arrival"
-msgstr ""
-
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of arrival"
+msgstr ""
+
+msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of departure"
 msgstr ""
 
-msgctxt "Auto Tracing Resolve Problems"
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of departure"
 msgstr ""
 
@@ -3583,11 +3560,11 @@ msgctxt "Test Reason"
 msgid "Symptoms"
 msgstr ""
 
-msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
+msgctxt "Auto Tracing Resolve Problems"
 msgid "Symptoms start date"
 msgstr ""
 
-msgctxt "Auto Tracing Resolve Problems"
+msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
 msgstr ""
 
@@ -3792,8 +3769,7 @@ msgstr ""
 msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."
 msgstr ""
 
-msgctxt "Auto Tracing Resolve Problems"
-msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
+msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
 msgstr ""
 
 msgid "This case is not in an index phase."
@@ -3835,11 +3811,11 @@ msgstr ""
 msgid "Time expenditure"
 msgstr ""
 
-msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
+msgctxt "Auto Tracing Resolve Problems"
 msgid "Title"
 msgstr ""
 
-msgctxt "Auto Tracing Resolve Problems"
+msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Title"
 msgstr ""
 
@@ -4119,9 +4095,6 @@ msgstr ""
 msgid "Warning! When importing the same rows multiple times, they will be re-assigned from the old import to the current import. Therefore rows might appear missing from an import later on."
 msgstr ""
 
-msgid "We will forward you to the recording of people that you were in contact with and could possibly have passed the infection on."
-msgstr ""
-
 msgid "We wish you a speedy recovery."
 msgstr ""
 
@@ -4295,9 +4268,6 @@ msgstr ""
 msgid "either an existing organisation, an unknown organisation or a comment must be filled"
 msgstr ""
 
-msgid "either organisation or comment must be filled"
-msgstr ""
-
 msgctxt "Item Table"
 msgid "emails"
 msgstr ""
@@ -4396,15 +4366,7 @@ msgid "possible index submitted."
 msgstr ""
 
 msgctxt "Item Table"
-msgid "possible_index_submissions"
-msgstr ""
-
-msgctxt "Item Table"
 msgid "premature_releases"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "resource_views"
 msgstr ""
 
 msgctxt "Item Table"
@@ -4413,50 +4375,6 @@ msgstr ""
 
 msgctxt "Item Table"
 msgid "sms"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_active_cases_per_day_and_organisation"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_active_complexity_cases_per_day"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_active_hospitalization_cases_per_day"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_active_infection_place_cases_per_day"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_active_isolation_cases_per_day"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_active_quarantine_cases_per_day"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_cumulative_index_case_end_reasons"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_cumulative_possible_index_case_end_reasons"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_new_cases_per_day"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_new_registered_cases_per_day"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "statistics_transmission_country_cases_per_day"
 msgstr ""
 
 msgctxt "Item Table"
@@ -4492,10 +4410,6 @@ msgstr ""
 
 msgctxt "Item Table"
 msgid "users"
-msgstr ""
-
-msgctxt "Item Table"
-msgid "versions"
 msgstr ""
 
 msgctxt "Notification"
