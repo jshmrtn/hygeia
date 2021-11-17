@@ -201,17 +201,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Address"
 msgstr "Indirizzo"
 
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Address"
-msgstr "Indirizzo"
-
 #, fuzzy
 msgctxt "Create Possible Index Step"
 msgid "Administration"
 msgstr "Amministrazione dei casi"
-
-msgid "Adress"
-msgstr "Indirizzo"
 
 #, fuzzy
 msgid "Adult salon / prostitution services"
@@ -1316,6 +1309,11 @@ msgid "Done"
 msgstr "Completato"
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
+msgid "Done"
+msgstr "Completato"
+
+#, fuzzy
+msgctxt "vaccination_done"
 msgid "Done"
 msgstr "Completato"
 
@@ -2540,11 +2538,6 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
 msgstr "Nome"
 
-#, fuzzy
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Name"
-msgstr "Nome"
-
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name of Vaccine"
 msgstr "Nome del vaccino"
@@ -3255,6 +3248,10 @@ msgstr "Luogo di partenza"
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of departure"
 msgstr "Luogo di partenza"
+
+#, fuzzy
+msgid "Place:"
+msgstr "Posto"
 
 msgid "Please enter your place of residence."
 msgstr "Inserisci il tuo luogo di residenza."
@@ -4948,9 +4945,6 @@ msgstr "Sto aspettando i risultati..."
 
 msgid "Warning! When importing the same rows multiple times, they will be re-assigned from the old import to the current import. Therefore rows might appear missing from an import later on."
 msgstr "Attenzione! Quando si importano le stesse righe più volte, esse saranno riassegnate dall'importazione precedente a quella corrente. Pertanto le righe potrebbero apparire mancanti da un'importazione in seguito."
-
-msgid "We will forward you to the recording of people that you were in contact with and could possibly have passed the infection on."
-msgstr "Vi inoltreremo la registrazione delle persone con cui siete stati in contatto e che potrebbero aver trasmesso l'infezione."
 
 #, fuzzy
 msgid "We wish you a speedy recovery."
