@@ -190,6 +190,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   defp possible_index_submission_attrs(uuid) do
     %PossibleIndexSubmission{
+      uuid: possible_index_submission_uuid,
       case_uuid: case_uuid,
       comment: comment,
       transmission_date: transmission_date,
@@ -206,6 +207,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     } = CaseContext.get_possible_index_submission!(uuid)
 
     %{
+      possible_index_submission_uuid: possible_index_submission_uuid,
       comment: comment,
       propagator_internal: true,
       propagator_case_uuid: case_uuid,
@@ -239,8 +241,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
                 }),
               address: Map.from_struct(address),
               affiliations:
-                if(not is_nil(employer) and String.length(employer) > 0,
-                  do: [%{comment: employer}]
+                if(not is_nil(employer),
+                  do: [%{unknown_organisation: %{name: employer}, kind: :employee}]
                 )
             }),
           case_changeset: CaseContext.change_case(%Case{})

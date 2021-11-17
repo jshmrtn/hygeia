@@ -853,7 +853,9 @@ defmodule HygeiaWeb.CaseLiveTest do
                    %{type: :landline, value: ^landline},
                    %{type: :email, value: ^email}
                  ],
-                 affiliations: [%Affiliation{comment: ^employer}]
+                 affiliations: [
+                   %Affiliation{kind: :employee, unknown_organisation: %{name: ^employer}}
+                 ]
                }
              ] = Hygeia.Repo.preload(CaseContext.list_people(), :affiliations)
 

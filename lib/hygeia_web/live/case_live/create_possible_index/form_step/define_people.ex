@@ -16,6 +16,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonSnippet
 
+  alias Surface.Components.Context
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.DateInput

@@ -54,8 +54,17 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
       end)
 
     case success do
-      {:ok, results} -> {:ok, results}
-      _errors -> {:error, :transaction_failed}
+      {:ok, results} ->
+        if form_data[:possible_index_submission_uuid] do
+          CaseContext.delete_possible_index_submission(
+            CaseContext.get_possible_index_submission!(form_data.possible_index_submission_uuid)
+          )
+        end
+
+        {:ok, results}
+
+      _errors ->
+        {:error, :transaction_failed}
     end
   end
 

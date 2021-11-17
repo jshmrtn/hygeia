@@ -240,6 +240,11 @@ msgid "Address:"
 msgstr "Adresse"
 
 #, fuzzy
+msgctxt "Create Possible Index Step"
+msgid "Administration"
+msgstr "Administration des cas"
+
+#, fuzzy
 msgid "Adress"
 msgstr "Adresse"
 
@@ -725,6 +730,10 @@ msgid "Clear"
 msgstr ""
 
 #, fuzzy
+msgid "Clear search"
+msgstr ""
+
+#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Clinical"
 msgstr "Clinique"
@@ -836,6 +845,11 @@ msgstr "Méthodes de contact"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
+msgid "Contact Methods"
+msgstr "Méthodes de contact"
+
+#, fuzzy
+msgctxt "Create Possible Index Step"
 msgid "Contact Methods"
 msgstr "Méthodes de contact"
 
@@ -968,6 +982,10 @@ msgstr "Créer"
 
 #, fuzzy
 msgctxt "Organisation"
+msgid "Create"
+msgstr "Créer"
+
+#, fuzzy
 msgid "Create"
 msgstr "Créer"
 
@@ -3479,6 +3497,11 @@ msgid "People"
 msgstr "Personnes"
 
 #, fuzzy
+msgctxt "Create Possible Index Step"
+msgid "People"
+msgstr "Personnes"
+
+#, fuzzy
 msgid "People in Hospital"
 msgstr "Personnes hospitalisées"
 
@@ -4246,6 +4269,9 @@ msgstr "Dépistage"
 msgid "Search"
 msgstr "Recherche"
 
+msgid "Search or create person"
+msgstr ""
+
 #, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Seat number"
@@ -4659,6 +4685,13 @@ msgid "Successfully authenticated."
 msgstr "Authentification réussie."
 
 msgid "Suggested duplicates"
+msgstr ""
+
+msgid "Suggestions"
+msgstr ""
+
+msgctxt "Create Possible Index Step"
+msgid "Summary"
 msgstr ""
 
 #, fuzzy
@@ -5187,6 +5220,11 @@ msgctxt "Auto Tracing Step"
 msgid "Transmission"
 msgstr "Transmission"
 
+#, fuzzy
+msgctxt "Create Possible Index Step"
+msgid "Transmission"
+msgstr "Transmission"
+
 msgid "Transmission Countries"
 msgstr "Pays de transmission"
 
@@ -5561,6 +5599,9 @@ msgstr "Vous n'êtes pas actuellement en quarantaine ou en isolement."
 #, fuzzy
 msgid "You are not authorized to do this action."
 msgstr "Vous n'êtes pas autorisé à faire cette action."
+
+msgid "You are not authorized to view this person. Please provide the code <%{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
+msgstr ""
 
 #, fuzzy
 msgid "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."

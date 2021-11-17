@@ -11,7 +11,6 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.PossibleIndexSubmission
-  alias Hygeia.CaseContext.Transmission.InfectionPlace
   alias Hygeia.Repo
   alias HygeiaWeb.DateInput
   alias Surface.Components.Form
@@ -97,7 +96,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
       ) do
     infection_place =
       changeset
-      |> get_field(:infection_place, %InfectionPlace{})
+      |> fetch_field!(:infection_place)
       |> Map.put(:address, person.address)
 
     {:noreply, assign(socket, changeset: put_embed(changeset, :infection_place, infection_place))}

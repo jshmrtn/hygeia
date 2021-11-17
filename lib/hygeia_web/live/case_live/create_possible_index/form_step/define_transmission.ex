@@ -37,6 +37,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     field :propagator_ism_id, :string
     field :propagator_internal, :boolean
 
+    field :possible_index_submission_uuid, :string
+
     embeds_one :propagator, Person
     embeds_one :infection_place, InfectionPlace
 

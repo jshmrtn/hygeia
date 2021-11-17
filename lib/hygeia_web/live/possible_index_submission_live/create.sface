@@ -101,7 +101,7 @@
             <div class="col-12 col-lg-6">
               <Field name={:birth_date} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <DateInput class="form-control" />
+                <DateInput class="form-control" opts={max: Date.utc_today()} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
@@ -142,7 +142,7 @@
             <div class="col-12">
               <Field name={:transmission_date} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <DateInput class="form-control" />
+                <DateInput class="form-control" opts={max: Date.utc_today()} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
@@ -275,7 +275,7 @@
             </h2>
             <button
               type="button"
-              class="btn btn-outline-info ms-4"
+              class="btn btn-outline-info ms-auto"
               :on-click="copy_household_address_to_infection_place_address"
             >
               {gettext("Use my household address")}

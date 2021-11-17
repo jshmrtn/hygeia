@@ -10,11 +10,10 @@
   <div class="container">
     <nav class="mb-5 progress-steps" id="progressbar" :if={@form_step != :summary}>
       <div aria-hidden="true" class="progress-bar" />
-      {#for {step, index} <- get_form_steps() |> Enum.reject(&(&1.name == :summary)) |> Enum.with_index()}
+      {#for step <- Enum.reject(get_form_steps(), &(&1.name == :summary))}
         <LivePatch
           class={"progress-step", decide_nav_class(@form_step, step.name, @visited_steps, @form_data)}
           to={Routes.case_create_possible_index_path(@socket, :index, step.name)}
-          disabled={not visited_step?(@visited_steps, step.name)}
         >
           <small class="d-none d-lg-block">
             {translate_step(step.name)}
