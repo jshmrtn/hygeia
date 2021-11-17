@@ -178,6 +178,12 @@ defmodule HygeiaWeb.CaseLive.Index do
             where: is_nil(auto_tracing)
           )
 
+        {:auto_tracing_active, "complete"}, query ->
+          from(case in query,
+            join: auto_tracing in assoc(case, :auto_tracing),
+            where: auto_tracing.last_completed_step >= :contact_persons
+          )
+
         {:no_auto_tracing_problems, "true"}, query ->
           from(case in query,
             join: auto_tracing in assoc(case, :auto_tracing),
