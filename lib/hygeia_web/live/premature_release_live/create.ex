@@ -24,7 +24,7 @@ defmodule HygeiaWeb.PrematureReleaseLive.Create do
       if authorized?(PrematureRelease, :create, get_auth(socket), case: case) do
         assign(socket,
           changeset: CaseContext.change_new_premature_release(case, phase),
-          page_title: gettext("New Premature Release"),
+          page_title: gettext("Premature Release"),
           case: case,
           phase: phase
         )

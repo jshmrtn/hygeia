@@ -8,6 +8,7 @@ defmodule HygeiaWeb.CaseLiveTest do
   import Phoenix.LiveViewTest
   import HygeiaWeb.CaseLiveTestHelper
 
+  alias Hygeia.AutoTracingContext
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
@@ -41,6 +42,58 @@ defmodule HygeiaWeb.CaseLiveTest do
 
       assert html =~ "Listing Cases"
       assert html =~ Case.Complexity.translate(case.complexity)
+    end
+
+    test "filters no auto tracing problems", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      problem_case = case_fixture(person_fixture(tenant))
+      {:ok, problem_auto_tracing} = AutoTracingContext.create_auto_tracing(problem_case)
+
+      {:ok, _problem_auto_tracing} =
+        AutoTracingContext.auto_tracing_add_problem(problem_auto_tracing, :no_reaction)
+
+      no_problem_case = case_fixture(person_fixture(tenant))
+      {:ok, _no_problem_auto_tracing} = AutoTracingContext.create_auto_tracing(no_problem_case)
+
+      {:ok, _index_live, html} =
+        live(
+          conn,
+          Routes.case_index_path(conn, :index,
+            filter: %{no_auto_tracing_problems: "true"},
+            sort: ["asc_inserted_at"]
+          )
+        )
+
+      assert html =~ no_problem_case.uuid
+      refute html =~ problem_case.uuid
+    end
+
+    test "filters complete auto tracing", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      complete_case = case_fixture(person_fixture(tenant))
+
+      {:ok, _complete_auto_tracing} =
+        AutoTracingContext.create_auto_tracing(complete_case, %{
+          current_step: :end,
+          last_completed_step: :end
+        })
+
+      incomplete_case = case_fixture(person_fixture(tenant))
+      {:ok, _incomplete_auto_tracing} = AutoTracingContext.create_auto_tracing(incomplete_case)
+
+      {:ok, _index_live, html} =
+        live(
+          conn,
+          Routes.case_index_path(conn, :index,
+            filter: %{auto_tracing_active: "complete"},
+            sort: ["asc_inserted_at"]
+          )
+        )
+
+      assert html =~ complete_case.uuid
+      refute html =~ incomplete_case.uuid
     end
   end
 

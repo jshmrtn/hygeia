@@ -10,7 +10,6 @@ defmodule Hygeia.CommunicationContext.Email do
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CommunicationContext.Direction
-  alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.TenantContext.Tenant.Smtp.DKIM
@@ -117,17 +116,10 @@ defmodule Hygeia.CommunicationContext.Email do
 
   defp generate_message(%Changeset{valid?: false} = changeset), do: changeset
 
-  defp generate_message(
-         %Changeset{valid?: true, data: %__MODULE__{case: %Case{} = case}} = changeset
-       ) do
-    %Case{person: person} = Repo.preload(case, person: [])
-
-    to_name =
-      [person.first_name, person.last_name]
-      |> Enum.reject(&(&1 in ["", nil]))
-      |> Enum.join(" ")
-
-    generate_message(changeset, to_name)
+  defp generate_message(%Changeset{valid?: true, data: %__MODULE__{case: %Case{}}} = changeset) do
+    # The `to_name` is not set, since that leaks the persons name,
+    # which is used to authenticate the person
+    generate_message(changeset, "")
   end
 
   defp generate_message(

@@ -9,6 +9,12 @@
     class="component-auto-tracing-live-covid-app__logo mb-4"
   />
 
+  <p>
+    {gettext(
+      "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
+    )}
+  </p>
+
   <p>{gettext("Is the SwissCovid App installed / in operation on your smartphone?")}</p>
   <Form for={@auto_tracing_changeset} change="validate">
     <InputContext assigns={assigns} :let={form: form}>

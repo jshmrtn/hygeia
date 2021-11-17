@@ -42,7 +42,7 @@
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
               <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
-                <p class="my-4">{gettext("What symptoms did you experience?")}</p>
+                <p class="my-4">{gettext("What symptoms do/did you experience?")}</p>
                 <Field name={:symptoms}>
                   <label :for={{name, key} <- symptoms()} class="d-block checkbox-label">
                     <input

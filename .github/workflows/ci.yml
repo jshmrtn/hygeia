@@ -338,6 +338,39 @@ jobs:
           name: docs
           path: doc
   
+  gettext_up_to_date:
+    name: "Gettext Translations up-to-date"
+
+    runs-on: ubuntu-latest
+
+    env:
+      MIX_ENV: dev
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: 24.1.1
+          elixir-version: 1.12.3
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            deps-${{ secrets.CACHE_VERSION }}-
+      - run: mix deps.get
+      - uses: actions/cache@v2
+        with:
+          path: _build/dev
+          key: compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            compile_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
+            compile_dev-${{ secrets.CACHE_VERSION }}-
+      - run: mix deps.compile
+      - run: mix compile --warning-as-errors
+      - run: mix gettext.extract --check-up-to-date
+
   mix_release:
     name: "Mix Release"
 

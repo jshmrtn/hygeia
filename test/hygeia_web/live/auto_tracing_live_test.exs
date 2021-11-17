@@ -642,4 +642,38 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       )
     end
   end
+
+  describe "End" do
+    setup [:create_case, :create_auto_tracing]
+
+    test "loads", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      set_last_completed_step(auto_tracing, :contact_persons)
+
+      {:ok, _transmission_view, html} = live(conn, Routes.auto_tracing_end_path(conn, :end, case))
+
+      assert html =~ "Thank you for your information!"
+    end
+
+    test "removes exisitng no_reaction problem", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      {:ok, auto_tracing} =
+        AutoTracingContext.auto_tracing_add_problem(auto_tracing, :no_reaction)
+
+      set_last_completed_step(auto_tracing, :contact_persons)
+
+      {:ok, _transmission_view, _html} =
+        live(conn, Routes.auto_tracing_end_path(conn, :end, case))
+
+      auto_tracing = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+
+      refute AutoTracingContext.AutoTracing.has_problem?(auto_tracing, :no_reaction)
+    end
+  end
 end

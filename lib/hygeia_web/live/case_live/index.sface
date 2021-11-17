@@ -228,6 +228,12 @@
                         {gettext("False")}
                       </label>
                     </Field>
+                    <Field name="auto_tracing_active" class="form-check form-check-inline">
+                      <label class="form-check-label radio-label">
+                        <RadioButton class="form-check-input" value="complete" />
+                        {gettext("Complete")}
+                      </label>
+                    </Field>
                   </div>
                 </div>
               </div>

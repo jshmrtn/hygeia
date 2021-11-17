@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr "\"Merge\" e \"Into\" non devono essere la stessa cosa"
@@ -152,6 +152,11 @@ msgstr "Richieste aggiuntive"
 msgid "Address"
 msgstr "Indirizzo"
 
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Address"
+msgstr "Indirizzo"
+
 msgctxt "Auto Tracing Step"
 msgid "Address"
 msgstr "Indirizzo"
@@ -198,9 +203,6 @@ msgstr "Indirizzo"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Address"
-msgstr "Indirizzo"
-
-msgid "Address:"
 msgstr "Indirizzo"
 
 #, fuzzy
@@ -685,6 +687,10 @@ msgstr "Commento"
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Comment"
 msgstr "Commento"
+
+#, fuzzy
+msgid "Complete"
+msgstr "Completo"
 
 msgid "Complete Data"
 msgstr "Dati completi"
@@ -1207,14 +1213,6 @@ msgstr "Nome del display"
 msgid "Division"
 msgstr "Sezione"
 
-msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
-msgid "Division"
-msgstr "Sezione"
-
-msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
-msgid "Division"
-msgstr "Sezione"
-
 #, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Division"
@@ -1222,6 +1220,14 @@ msgstr "Sezione"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
+msgid "Division"
+msgstr "Sezione"
+
+msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
+msgid "Division"
+msgstr "Sezione"
+
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division"
 msgstr "Sezione"
 
@@ -1273,9 +1279,6 @@ msgstr "Hai qualche persona con cui sei stato in contatto da presentare?"
 msgid "Do you have or have had symptoms?"
 msgstr "Hai o hai avuto sintomi?"
 
-msgid "Do you have symptoms?"
-msgstr "Hai dei sintomi?"
-
 #, fuzzy
 msgid "Do you know how you got infected?"
 msgstr "Sai come sei stato infettato?"
@@ -1303,19 +1306,16 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Done"
 msgstr "Completato"
 
+#, fuzzy
+msgctxt "Auto Tracing Vaccination"
+msgid "Done"
+msgstr "Completato"
+
 msgctxt "Case Status"
 msgid "Done"
 msgstr "Completato"
 
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
-msgid "Done"
-msgstr "Completato"
-
-msgctxt "vaccination_done"
-msgid "Done"
-msgstr "Completato"
-
-msgctxt "Auto Tracing Vaccination"
 msgid "Done"
 msgstr "Completato"
 
@@ -1692,10 +1692,6 @@ msgstr "Sovvenzioni"
 msgid "Gym"
 msgstr "Palestra"
 
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
-msgid "Had mask"
-msgstr "Aveva la mascherina"
-
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Has Documentation"
 msgstr "Ha una documentazione"
@@ -1826,20 +1822,21 @@ msgctxt "Home"
 msgid "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «%{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing."
 msgstr "Hygeia è progettato per strutturare processi complicati, per soddisfare standard come il \"%{link_med}\" dell'UFSP, per connettersi alla banca dati dell'UFSP e per ridurre il personale necessario per il rintracciamento di persone."
 
+#, fuzzy
+msgid "I am in possession of a valid \"Convalescent Certificate\""
+msgstr "Sono in possesso di un \"Certificato di Convalescenza\""
+
+msgid "I am in possession of a valid vaccination certificate."
+msgstr "Sono in possesso di un certificato di vaccinazione valido."
+
 msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Confermo che tutti i dati di cui sopra sono corretti. I dati potrebbero essere ispezionati!"
 
 msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
 msgstr "Ho fatto un test COVID negli ultimi 4 giorni di quarantena. Il risultato è negativo."
 
-msgid "I had COVID in the last %{validity} and I am healthy again. I can confirm the sickness (Covid Certificate, positive PCR test, Isolation Confirmation)"
-msgstr "Ho avuto la COVID negli ultimi %{validity} e sono di nuovo sano. Posso confermare la malattia (certificato Covid, test PCR positivo, conferma dell'isolamento)"
-
 msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
 msgstr "Ho la documentazione ufficiale per terminare la quarantena (vaccinato, immune, test negativo)."
-
-msgid "I have received at least two COVID vaccinations that are licensed in Switzerland and the last shot was administered less than %{validity} ago."
-msgstr "Ho ricevuto almeno due vaccinazioni COVID autorizzate in Svizzera e l'ultima è stata somministrata meno di %{validity} fa."
 
 msgid "IAM Configuration"
 msgstr "Configurazione IAM"
@@ -2088,19 +2085,11 @@ msgctxt "Organisation Merge"
 msgid "Into"
 msgstr "In"
 
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Invalid Data was supplied for this occupation. Please discard this issue if there are no other affiliations are left."
-msgstr "Le informazioni fornite per questo impiego non sono corrette. Cancella questo problema se non ci sono altre affiliazioni collegate."
-
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr "Informazioni della persona invalide, se credi che questo sia un errore, contatta il team di rintracciamento."
 
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
 msgstr "La SwissCovid App è installata / in funzione sul suo smartphone?"
-
-msgctxt "Auto Tracing Clinical"
-msgid "Is this the correct date? The date is too far back and will trigger an inspection."
-msgstr "È questa la data corretta? La data è troppo vecchia e farà scattare un'ispezione. "
 
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Is truthful"
@@ -2202,10 +2191,6 @@ msgstr "Conosciuto"
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Known"
 msgstr "Conosciuto"
-
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Known institutions"
-msgstr "Instituti conosciuti"
 
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Laboratory report date"
@@ -2521,6 +2506,11 @@ msgid "Name"
 msgstr "Nome"
 
 #, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Name"
+msgstr "Nome"
+
+#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Employer Field"
 msgid "Name"
 msgstr "Nome"
@@ -2629,10 +2619,6 @@ msgstr "Nuovo indice possibile"
 #, fuzzy
 msgid "New Possible Index Submission"
 msgstr "Nuova possibile presentazione dell'indice"
-
-#, fuzzy
-msgid "New Premature Release"
-msgstr "Nuovo rilascio prematuro"
 
 #, fuzzy
 msgid "New Registered Cases (Processed)"
@@ -2804,12 +2790,12 @@ msgid "None"
 msgstr "Nessuno"
 
 #, fuzzy
-msgctxt "vaccination_done"
+msgctxt "Auto Tracing Vaccination"
 msgid "Not Done"
 msgstr "Non Fatto"
 
 #, fuzzy
-msgctxt "Auto Tracing Vaccination"
+msgctxt "vaccination_done"
 msgid "Not Done"
 msgstr "Non Fatto"
 
@@ -3253,25 +3239,22 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Posto"
 
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
-msgid "Place of arrival"
-msgstr "Luogo di partenza"
-
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Place of arrival"
-msgstr "Luogo di partenza"
-
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
-msgid "Place of departure"
-msgstr "Luogo di arrivo"
-
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Place of departure"
-msgstr "Luogo di arrivo"
-
 #, fuzzy
-msgid "Place:"
-msgstr "Posto"
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of arrival"
+msgstr "Luogo di arrivo"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of arrival"
+msgstr "Luogo di arrivo"
+
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Place of departure"
+msgstr "Luogo di partenza"
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Place of departure"
+msgstr "Luogo di partenza"
 
 msgid "Please enter your place of residence."
 msgstr "Inserisci il tuo luogo di residenza."
@@ -3335,6 +3318,10 @@ msgstr "PossibleIndexSubmission cancellato con successo"
 #, fuzzy
 msgid "PossibleIndexSubmission updated successfully"
 msgstr "PossibleIndexSubmission aggiornato con successo"
+
+#, fuzzy
+msgid "Premature Release"
+msgstr "Rilascio prematuro"
 
 #, fuzzy
 msgid "Premature Releases"
@@ -4282,11 +4269,12 @@ msgctxt "Test Reason"
 msgid "Symptoms"
 msgstr "Sintomi"
 
-msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
+#, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
 msgid "Symptoms start date"
 msgstr "Data di inizio dei sintomi"
 
-msgctxt "Auto Tracing Resolve Problems"
+msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
 msgstr "Data di inizio dei sintomi"
 
@@ -4518,9 +4506,8 @@ msgstr "Lo stato del caso sarà cambiato da \"%{old_status}\" a \"%{new_status}\
 msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."
 msgstr "Lo stato serve come una panoramica della fase di rintracciamento attuale della persona. Questo stato può essere utilizzato per la ricerca nel filtro. I casi sono sempre creati con lo stato \"Primo contatto\" dall'amministrazione dei casi. Dopo che il caso è stato elaborato, lo stato deve essere modificato."
 
-msgctxt "Auto Tracing Resolve Problems"
-msgid "The symptom start date is early in respect to the first test date / case creation date. Please check that this date is correct and the person is not avoiding isolation."
-msgstr "La data di inizio dei sintomi precede la data del primo test/data di creazione del caso. Verifica che la data sia corretta e che la persona non stia evitando l'isolamento. "
+msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
+msgstr ""
 
 msgid "There are possible duplicates for this person. Click to resolve."
 msgstr "Ci sono possibili duplicati per questa persona. Clicca per risolvere."
@@ -4600,12 +4587,12 @@ msgid "Time expenditure"
 msgstr "Spese di tempo"
 
 #, fuzzy
-msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
+msgctxt "Auto Tracing Resolve Problems"
 msgid "Title"
 msgstr "Titolo"
 
 #, fuzzy
-msgctxt "Auto Tracing Resolve Problems"
+msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Title"
 msgstr "Titolo"
 
@@ -4965,6 +4952,7 @@ msgstr "Attenzione! Quando si importano le stesse righe più volte, esse saranno
 msgid "We will forward you to the recording of people that you were in contact with and could possibly have passed the infection on."
 msgstr "Vi inoltreremo la registrazione delle persone con cui siete stati in contatto e che potrebbero aver trasmesso l'infezione."
 
+#, fuzzy
 msgid "We wish you a speedy recovery."
 msgstr "Le auguriamo una pronta guarigione."
 
@@ -4984,7 +4972,7 @@ msgid "Website"
 msgstr "Sito web"
 
 #, fuzzy
-msgid "What symptoms did you experience?"
+msgid "What symptoms do/did you experience?"
 msgstr "Quali sintomi ha riscontrato?"
 
 #, fuzzy
@@ -5163,10 +5151,6 @@ msgstr "sezioni"
 msgid "either an existing organisation, an unknown organisation or a comment must be filled"
 msgstr "inserisci un'organizzazione esistente, una nuova organizzazione oppure un commento"
 
-#, fuzzy
-msgid "either organisation or comment must be filled"
-msgstr "sia l'organizzazione che il commento devono essere riempiti"
-
 msgctxt "Item Table"
 msgid "emails"
 msgstr "e-mail"
@@ -5278,18 +5262,8 @@ msgstr "possibile indice presentato."
 
 #, fuzzy
 msgctxt "Item Table"
-msgid "possible_index_submissions"
-msgstr "possibili invii_indice"
-
-#, fuzzy
-msgctxt "Item Table"
 msgid "premature_releases"
 msgstr "rilasci_precoci"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "resource_views"
-msgstr "viste_risorse"
 
 #, fuzzy
 msgctxt "Item Table"
@@ -5300,61 +5274,6 @@ msgstr "sedex_exports"
 msgctxt "Item Table"
 msgid "sms"
 msgstr "sms"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_active_cases_per_day_and_organisation"
-msgstr "statistiche_casi_attivi_al_giorno_e_organizzazione"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_active_complexity_cases_per_day"
-msgstr "statistiche_complessità_attiva_casi_per_giorno"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_active_hospitalization_cases_per_day"
-msgstr "statistiche_ospedalizzazione_attiva_casi_per_giorno"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_active_infection_place_cases_per_day"
-msgstr "statistica_attivo_infezione_luogo_casi_per_giorno"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_active_isolation_cases_per_day"
-msgstr "statistiche_isolamento_attivo_casi_per_giorno"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_active_quarantine_cases_per_day"
-msgstr "statistiche_attiva_quarantena_casi_per_giorno"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_cumulative_index_case_end_reasons"
-msgstr "statistiche_cumulative_index_case_end_reasons"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_cumulative_possible_index_case_end_reasons"
-msgstr "statistiche_cumulative_possibili_indici_fine_caso"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_new_cases_per_day"
-msgstr "statistiche nuovi casi al giorno"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_new_registered_cases_per_day"
-msgstr "statistiche nuovi casi registrati al giorno"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "statistics_transmission_country_cases_per_day"
-msgstr "statistiche_transmission_country_cases_per_day"
 
 #, fuzzy
 msgctxt "Item Table"
@@ -5411,11 +5330,6 @@ msgstr "sovvenzioni_utente"
 msgctxt "Item Table"
 msgid "users"
 msgstr "utenti"
-
-#, fuzzy
-msgctxt "Item Table"
-msgid "versions"
-msgstr "versioni"
 
 msgctxt "Notification"
 msgid "was assigned to you."
