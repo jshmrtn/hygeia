@@ -175,7 +175,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       activity_mapping_executed: "Activity Mapping Executed",
       flight_information: "Flight Information",
       known: "Known",
-      name: "Name",
+      name: "Name of the Place",
       type: "Type",
       type_other: "Type Other"
     },
