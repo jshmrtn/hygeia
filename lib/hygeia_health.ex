@@ -158,6 +158,8 @@ defmodule HygeiaHealth do
     end
   end
 
-  @spec checks :: [%PlugCheckup.Check{}]
+  # Official Type is not correct
+  # credo:disable-for-next-line Credo.Check.Warning.SpecWithStruct
+  @spec checks :: [%PlugCheckup.Check{name: String.t(), module: module(), function: atom()}]
   def checks, do: @checks
 end
