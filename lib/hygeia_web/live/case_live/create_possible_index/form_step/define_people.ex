@@ -186,7 +186,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         %Ecto.Changeset{valid?: true} = changeset ->
           changeset
           |> apply_changes()
-          |> CaseContext.suggest_people_by_params([:tenant, cases: [:hospitalizations, :tenant]])
+          |> CaseContext.suggest_people_by_params([
+            :tenant,
+            [:affiliations, cases: [:hospitalizations, :tenant]]
+          ])
           |> discard_used_suggestions(form_data[:bindings])
 
         %Ecto.Changeset{valid?: false} ->

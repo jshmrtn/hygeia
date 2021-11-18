@@ -714,8 +714,6 @@ defmodule HygeiaWeb.CaseLiveTest do
       assert [] = CaseContext.list_transmissions()
     end
 
-    ## IMPORT Test cases
-
     test "import (from Transmissions set propagator_internal and propagator_case) - type: contact_person, new person, new case, status: done",
          %{conn: conn, user: user} = context do
       type = :contact_person
