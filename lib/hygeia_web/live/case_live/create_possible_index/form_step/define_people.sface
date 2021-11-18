@@ -49,109 +49,135 @@
         <h3 class="mb-4">{gettext("Suggestions")}</h3>
         <div id="suggestions" class="w-100">
           {#for person <- @suggestions}
-            <PersonCard person_changeset={CaseContext.change_person(person)}>
-              <:header>
-                <div class="d-flex">
-                  <div class="flex-fill">
-                    <span class={"bg-warning": contains?(person.first_name, get_field(@search_changeset, :first_name))}>
-                      {person.first_name}
-                    </span>
+            {#if authorized?(person, :details, auth)}
+              <PersonCard person_changeset={CaseContext.change_person(person)}>
+                <:header>
+                  <div class="d-flex">
+                    <div class="flex-fill">
+                      <span class={"bg-warning": contains?(person.first_name, get_field(@search_changeset, :first_name))}>
+                        {person.first_name}
+                      </span>
+                    </div>
+                    <div class="flex-fill">
+                      <span class={"bg-warning": contains?(person.last_name, get_field(@search_changeset, :last_name))}>
+                        {person.last_name}
+                      </span>
+                    </div>
+                    <div class="flex-fill">
+                      {#if mobile =
+                          person.contact_methods
+                          |> Enum.find_value(fn contact ->
+                            if contact.type == :mobile and contact.value == get_field(@search_changeset, :mobile),
+                              do: contact.value
+                          end)}
+                        <span class="bg-warning">
+                          {mobile}
+                        </span>
+                      {#else}
+                        <span>
+                          —
+                        </span>
+                      {/if}
+                    </div>
+                    <div class="flex-fill">
+                      {#if landline =
+                          person.contact_methods
+                          |> Enum.find_value(fn contact ->
+                            if contact.type == :landline and contact.value == get_field(@search_changeset, :landline),
+                              do: contact.value
+                          end)}
+                        <span class="bg-warning">
+                          {landline}
+                        </span>
+                      {#else}
+                        <span>
+                          —
+                        </span>
+                      {/if}
+                    </div>
+                    <div class="flex-fill">
+                      {#if email =
+                          person.contact_methods
+                          |> Enum.find_value(fn contact ->
+                            if contact.type == :email and contact.value == get_field(@search_changeset, :email),
+                              do: contact.value
+                          end)}
+                        <span class="bg-warning">
+                          {email}
+                        </span>
+                      {#else}
+                        <span>
+                          —
+                        </span>
+                      {/if}
+                    </div>
                   </div>
-                  <div class="flex-fill">
-                    <span class={"bg-warning": contains?(person.last_name, get_field(@search_changeset, :last_name))}>
-                      {person.last_name}
-                    </span>
-                  </div>
-                  <div class="flex-fill">
-                    {#if mobile =
-                        person.contact_methods
-                        |> Enum.find_value(fn contact ->
-                          if contact.type == :mobile and contact.value == get_field(@search_changeset, :mobile),
-                            do: contact.value
-                        end)}
-                      <span class="bg-warning">
-                        {mobile}
-                      </span>
-                    {#else}
-                      <span>
-                        —
-                      </span>
-                    {/if}
-                  </div>
-                  <div class="flex-fill">
-                    {#if landline =
-                        person.contact_methods
-                        |> Enum.find_value(fn contact ->
-                          if contact.type == :landline and contact.value == get_field(@search_changeset, :landline),
-                            do: contact.value
-                        end)}
-                      <span class="bg-warning">
-                        {landline}
-                      </span>
-                    {#else}
-                      <span>
-                        —
-                      </span>
-                    {/if}
-                  </div>
-                  <div class="flex-fill">
-                    {#if email =
-                        person.contact_methods
-                        |> Enum.find_value(fn contact ->
-                          if contact.type == :email and contact.value == get_field(@search_changeset, :email),
-                            do: contact.value
-                        end)}
-                      <span class="bg-warning">
-                        {email}
-                      </span>
-                    {#else}
-                      <span>
-                        —
-                      </span>
-                    {/if}
-                  </div>
-                </div>
-              </:header>
-              <:left>
-                <button
-                  class="btn btn-primary align-self-start me-3"
-                  type="button"
-                  :on-click="person_selected"
-                  value={person.uuid}
-                >
-                  {gettext("Select person")}
-                </button>
-              </:left>
-              <:bottom>
-                <div id="suggestion-cases">
-                  <h5>{gettext("Cases")}</h5>
-                  <div class="list-group">
-                    {#for case <- person.cases}
-                      <div class="list-group-item list-group-item-action p-3">
-                        <CaseSnippet case_changeset={change(case)} class="me-2" />
-                        <div>
-                          <button
-                            class="btn btn-primary me-2"
-                            type="button"
-                            :on-click="case_selected"
-                            phx-value-person_uuid={person.uuid}
-                            value={case.uuid}
-                          >
-                            {gettext("Select case")}
-                          </button>
-                          <Link
-                            to={Routes.case_base_data_path(@socket, :show, case.uuid)}
-                            opts={target: "_blank", rel: "noopener noreferrer"}
-                          >
-                            {gettext("Open case in new tab")}
-                          </Link>
+                </:header>
+                <:left>
+                  <button
+                    class="btn btn-primary align-self-start me-3"
+                    type="button"
+                    :on-click="person_selected"
+                    value={person.uuid}
+                  >
+                    {gettext("Select person")}
+                  </button>
+                </:left>
+                <:bottom>
+                  <div id="suggestion-cases" :if={!Enum.empty?(person.cases)}>
+                    <h5>{gettext("Cases")}</h5>
+                    <div class="list-group">
+                      {#for case <- person.cases}
+                        <div class="list-group-item list-group-item-action p-3">
+                          {#if authorized?(case, :details, auth)}
+                            <CaseSnippet case_changeset={change(case)} class="me-2" />
+                            <div>
+                              <button
+                                class="btn btn-primary me-2"
+                                type="button"
+                                :on-click="case_selected"
+                                phx-value-person_uuid={person.uuid}
+                                value={case.uuid}
+                              >
+                                {gettext("Select case")}
+                              </button>
+                              <Link
+                                to={Routes.case_base_data_path(@socket, :show, case.uuid)}
+                                opts={target: "_blank", rel: "noopener noreferrer"}
+                              >
+                                {gettext("Open case in new tab")}
+                              </Link>
+                            </div>
+                          {#else}
+                            <div class="alert alert-warning mb-0" role="alert">
+                              {gettext(
+                                "You are not authorized to view this case. Please provide the code \<%{country} / %{subdivision} / %{person_hr_id}\> to your supervisor to identify the case.",
+                                %{
+                                  country: case.tenant.country,
+                                  subdivision: case.tenant.subdivision,
+                                  person_hr_id: case.human_readable_id
+                                }
+                              )}
+                            </div>
+                          {/if}
                         </div>
-                      </div>
-                    {/for}
+                      {/for}
+                    </div>
                   </div>
-                </div>
-              </:bottom>
-            </PersonCard>
+                </:bottom>
+              </PersonCard>
+            {#else}
+              <div class="alert alert-warning mb-0" role="alert">
+                {gettext(
+                  "You are not authorized to view this person. Please provide the code \<%{country} / %{subdivision} / %{person_hr_id}\> to your supervisor to identify the person.",
+                  %{
+                    country: person.tenant.country,
+                    subdivision: person.tenant.subdivision,
+                    person_hr_id: person.human_readable_id
+                  }
+                )}
+              </div>
+            {/if}
           {/for}
         </div>
       {/if}
@@ -181,24 +207,28 @@
                     <div class="d-flex">
                       {#if authorized?(person, :details, auth)}
                         <PersonSnippet person={person} path={Routes.person_base_data_path(@socket, :show, person.uuid)} />
+                        <div class="ms-3 d-flex align-items-center">
+                          <button
+                            class="btn btn-primary"
+                            type="button"
+                            :on-click="duplicate_person_selected"
+                            value={person.uuid}
+                          >
+                            {gettext("Choose")}
+                          </button>
+                        </div>
                       {#else}
                         <div class="alert alert-warning mb-0" role="alert">
                           {gettext(
-                            "You are not authorized to view this person. Please provide the code \<%{subdivision} / %{person_hr_id}\> to your supervisor to identify the person.",
-                            %{subdivision: person.tenant.subdivision, person_hr_id: person.human_readable_id}
+                            "You are not authorized to view this person. Please provide the code \<%{country} / %{subdivision} / %{person_hr_id}\> to your supervisor to identify the person.",
+                            %{
+                              country: person.tenant.country,
+                              subdivision: person.tenant.subdivision,
+                              person_hr_id: person.human_readable_id
+                            }
                           )}
                         </div>
                       {/if}
-                      <div class="ms-3 d-flex align-items-center">
-                        <button
-                          class="btn btn-primary"
-                          type="button"
-                          :on-click="duplicate_person_selected"
-                          value={person.uuid}
-                        >
-                          {gettext("Choose")}
-                        </button>
-                      </div>
                     </div>
                   </div>
                 {/for}

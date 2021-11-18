@@ -63,30 +63,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             nil ->
               normalized_params
 
-            # TODO: add more predefined cases.
-            # alias Hygeia.CaseContext.Person
-
-            # %Person{tenant_uuid: tenant_uuid} =
-            #   person1 =
-            #   CaseContext.get_person!("34e23d8c-777d-40e8-bd77-50838ba7404b")
-            #   |> Hygeia.Repo.preload([:tenant, :cases])
-
-            # %{
-            #   type: :travel,
-            #   date: Date.add(Date.utc_today(), -5) |> Date.to_iso8601(),
-            #   bindings: [
-            #     %{
-            #       person_changeset: person1 |> CaseContext.change_person(),
-            #       # case_changeset: List.first(person1.cases) |> Ecto.Changeset.change()
-            #       # EMPTY CASE
-            #       case_changeset:
-            #         Ecto.build_assoc(person1, :cases, %{tenant_uuid: tenant_uuid, status: :done})
-            #         |> CaseContext.change_case()
-            #     }
-            #   ]
-            # }
-            # |> Map.merge(normalized_params)
-
             uuid ->
               Map.merge(normalized_params, possible_index_submission_attrs(uuid))
           end

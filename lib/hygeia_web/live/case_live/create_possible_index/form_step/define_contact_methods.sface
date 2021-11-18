@@ -78,7 +78,11 @@
         phx-disable-with={gettext("Saving...")}
         disabled={not valid?(@form_data)}
       >
-        {gettext("Submit and send")}
+        {#if Enum.all?(@form_data.bindings, &Enum.empty?(&1.reporting))}
+          {gettext("Submit")}
+        {#else}
+          {gettext("Submit and send")}
+        {/if}
       </button>
     </div>
   </div>

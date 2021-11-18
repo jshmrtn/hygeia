@@ -309,7 +309,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
           }
         } = socket
       ) do
-    person = person_uuid |> CaseContext.get_person!() |> Hygeia.Repo.preload(:tenant)
+    person =
+      person_uuid
+      |> CaseContext.get_person!()
+      |> Hygeia.Repo.preload(tenant: [], affiliations: [])
 
     form_data
     |> Map.get(:bindings, [])

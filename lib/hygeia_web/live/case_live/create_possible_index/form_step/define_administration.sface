@@ -29,9 +29,6 @@
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
-              <div :if={not existing_entity?(case_cs) and @form_data.type not in [:travel, :contact_person]}>
-                <h4>(?)</h4>
-              </div>
             </:feature>
 
             <:right>

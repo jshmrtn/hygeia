@@ -157,7 +157,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
     Enum.empty?(reporting)
   end
 
-  @spec group_contacts_by_type(Ecto.Changeset.t(%Person{})) :: list()
+  @spec group_contacts_by_type(Ecto.Changeset.t(Person.t())) :: list()
   def group_contacts_by_type(person_changeset) do
     person_changeset
     |> get_field(:contact_methods)
@@ -356,9 +356,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
   end
 
   defp to_serialized_uuids(contacts) when is_list(contacts) do
-    contacts
-    |> Enum.map(& &1.uuid)
-    |> Enum.join(",")
+    Enum.map_join(contacts, & &1.uuid, ",")
   end
 
   defp to_deserialized_uuids(string_list) when is_binary(string_list) do
