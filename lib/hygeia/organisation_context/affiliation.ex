@@ -7,12 +7,12 @@ defmodule Hygeia.OrganisationContext.Affiliation do
 
   import HygeiaGettext
 
-  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
   alias Hygeia.CaseContext.Entity
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Visit
   alias Hygeia.TenantContext.Tenant
 
   @type empty :: %__MODULE__{
@@ -23,8 +23,8 @@ defmodule Hygeia.OrganisationContext.Affiliation do
           organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_organisation: Entity.t() | nil,
-          related_school_visit_uuid: Ecto.UUID.t() | nil,
-          related_school_visit: Ecto.Schema.belongs_to(SchoolVisit.t()) | nil,
+          related_visit_uuid: Ecto.UUID.t() | nil,
+          related_visit: Ecto.Schema.belongs_to(Visit.t()) | nil,
           division_uuid: Ecto.UUID.t() | nil,
           division: Ecto.Schema.belongs_to(Division.t()) | nil,
           unknown_division: Entity.t() | nil,
@@ -42,8 +42,8 @@ defmodule Hygeia.OrganisationContext.Affiliation do
           organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_organisation: Entity.t() | nil,
-          related_school_visit_uuid: Ecto.UUID.t() | nil,
-          related_school_visit: Ecto.Schema.belongs_to(SchoolVisit.t()) | nil,
+          related_visit_uuid: Ecto.UUID.t() | nil,
+          related_visit: Ecto.Schema.belongs_to(Visit.t()) | nil,
           division_uuid: Ecto.UUID.t() | nil,
           division: Ecto.Schema.belongs_to(Division.t()) | nil,
           unknown_division: Entity.t() | nil,
@@ -63,9 +63,9 @@ defmodule Hygeia.OrganisationContext.Affiliation do
 
     embeds_one :unknown_organisation, Entity, on_replace: :delete
 
-    belongs_to :related_school_visit, SchoolVisit,
+    belongs_to :related_visit, Visit,
       references: :uuid,
-      foreign_key: :related_school_visit_uuid
+      foreign_key: :related_visit_uuid
 
     belongs_to :division, Division, references: :uuid, foreign_key: :division_uuid
     has_one :tenant, through: [:person, :tenant]

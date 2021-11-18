@@ -119,9 +119,9 @@ defmodule HygeiaWeb.AutoTracingLive.ContactMethods do
 
           push_redirect(socket,
             to:
-              Routes.auto_tracing_employer_path(
+              Routes.auto_tracing_visits_path(
                 socket,
-                :employer,
+                :visits,
                 socket.assigns.auto_tracing.case_uuid
               )
           )

@@ -4,14 +4,11 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   use HygeiaWeb, :surface_view
   use Hygeia, :model
 
-  import Ecto.Query
-
   alias Phoenix.LiveView.Socket
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
-  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
@@ -35,7 +32,6 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   @primary_key false
   embedded_schema do
     field :employed, :boolean
-
     embeds_many :occupations, Occupation, on_replace: :delete
   end
 
@@ -257,8 +253,6 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   def changeset(schema, attrs \\ %{}) do
     schema
     |> cast(attrs, [:employed])
-    |> merge_visit_occupations()
-    |> check_employed()
     |> validate_occupation()
     |> validate_required([:employed])
   end

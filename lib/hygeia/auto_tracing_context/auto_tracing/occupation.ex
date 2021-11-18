@@ -5,18 +5,18 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
 
   import HygeiaGettext
 
-  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
   alias Hygeia.CaseContext.Entity
   alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Visit
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           kind: Kind.t() | nil,
           kind_other: String.t() | nil,
-          related_school_visit_uuid: Ecto.UUID.t() | nil,
-          related_school_visit: Ecto.Schema.belongs_to(SchoolVisit.t()) | nil,
+          related_visit_uuid: Ecto.UUID.t() | nil,
+          related_visit: Ecto.Schema.belongs_to(Visit.t()) | nil,
           not_found: boolean() | nil,
           known_organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_organisation: Entity.t() | nil,
@@ -29,8 +29,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
           uuid: Ecto.UUID.t(),
           kind: Kind.t() | nil,
           kind_other: String.t() | nil,
-          related_school_visit_uuid: Ecto.UUID.t() | nil,
-          related_school_visit: Ecto.Schema.belongs_to(SchoolVisit.t()) | nil,
+          related_visit_uuid: Ecto.UUID.t() | nil,
+          related_visit: Ecto.Schema.belongs_to(Visit.t()) | nil,
           not_found: boolean() | nil,
           known_organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_organisation: Entity.t() | nil,
@@ -43,8 +43,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
     field :kind, Kind
     field :kind_other, :string
 
-    belongs_to :related_school_visit, SchoolVisit,
-      foreign_key: :related_school_visit_uuid,
+    belongs_to :related_visit, Visit,
+      foreign_key: :related_visit_uuid,
       references: :uuid
 
     belongs_to :known_organisation, Organisation,
@@ -74,7 +74,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Occupation do
       :kind_other,
       :not_found,
       :known_organisation_uuid,
-      :related_school_visit_uuid,
+      :related_visit_uuid,
       :division_not_found,
       :known_division_uuid
     ])

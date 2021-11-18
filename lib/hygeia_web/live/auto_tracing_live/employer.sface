@@ -21,12 +21,10 @@
                     "btn",
                     "btn-sm",
                     "btn-outline-primary",
-                    active: get_field(@changeset, :employed) == true,
-                    disabled: length(get_field(@changeset, :school_visit_occupations)) > 0
+                    active: get_field(@changeset, :employed) == true
                   }>
                     <RadioButton
                       value
-                      opts={disabled: length(get_field(@changeset, :school_visit_occupations)) > 0}
                     />
                     {gettext("Yes")}
                   </label>
@@ -34,12 +32,10 @@
                     "btn",
                     "btn-sm",
                     "btn-outline-primary",
-                    active: get_field(@changeset, :employed) == false,
-                    disabled: length(get_field(@changeset, :school_visit_occupations)) > 0
+                    active: get_field(@changeset, :employed) == false
                   }>
                     <RadioButton
                       value={false}
-                      opts={disabled: length(get_field(@changeset, :school_visit_occupations)) > 0}
                     />
                     {gettext("No")}
                   </label>
@@ -54,7 +50,7 @@
                 <div class="card">
                   <div class="card-body">
                     <HiddenInput field={:uuid} />
-                    <HiddenInput field={:related_school_visit_uuid} />
+                    <HiddenInput field={:related_visit_uuid} />
                     <Field name={:kind} class="form-group">
                       <HygeiaWeb.FieldLabel />
                       <Select

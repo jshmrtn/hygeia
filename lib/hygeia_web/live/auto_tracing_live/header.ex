@@ -16,6 +16,7 @@ defmodule HygeiaWeb.AutoTracingLive.Header do
       %{step: :start, route: &Routes.auto_tracing_start_path/3},
       %{step: :address, route: &Routes.auto_tracing_address_path/3},
       %{step: :contact_methods, route: &Routes.auto_tracing_contact_methods_path/3},
+      %{step: :visits, route: &Routes.auto_tracing_visits_path/3},
       %{step: :employer, route: &Routes.auto_tracing_employer_path/3},
       %{step: :vaccination, route: &Routes.auto_tracing_vaccination_path/3},
       %{step: :covid_app, route: &Routes.auto_tracing_covid_app_path/3},

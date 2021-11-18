@@ -16,6 +16,7 @@ defmodule Hygeia.CaseContext.Person do
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Position
+  alias Hygeia.OrganisationContext.Visit
   alias Hygeia.TenantContext.Tenant
 
   @derive {Phoenix.Param, key: :uuid}
@@ -170,6 +171,7 @@ defmodule Hygeia.CaseContext.Person do
     |> fill_human_readable_id
     |> validate_required([:uuid, :human_readable_id, :tenant_uuid, :first_name])
     |> validate_profession_category()
+    |> cast_assoc(:visits)
     |> cast_assoc(:affiliations)
     |> cast_embed(:external_references)
     |> cast_embed(:address)

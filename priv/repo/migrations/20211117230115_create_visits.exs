@@ -10,17 +10,17 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
     Reason.create_type()
 
     create table(:visits) do
-      add :visit_reason, Reason.type()
+      add :reason, Reason.type()
       add :other_reason, :string
-      add :last_visit_at, :utc_datetime
+      add :last_visit_at, :date
 
       add :person_uuid, references(:people, on_delete: :delete_all), null: false
 
-      add :known_organisation_uuid, references(:organisations, on_delete: :nothing, type: :binary_id),
+      add :organisation_uuid, references(:organisations, on_delete: :nothing, type: :binary_id),
         null: true
       add :unknown_organisation, :map
 
-      add :known_division_uuid, references(:divisions, on_delete: :nothing, type: :binary_id),
+      add :division_uuid, references(:divisions, on_delete: :nothing, type: :binary_id),
         null: true
       add :unknown_division, :map
 
