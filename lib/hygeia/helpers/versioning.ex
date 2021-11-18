@@ -13,7 +13,7 @@ defmodule Hygeia.Helpers.Versioning do
   def versioning_extract(result), do: result
 
   @spec versioning_insert(changeset :: Ecto.Changeset.t(resource)) ::
-          {:ok, %{model: resource, version: %Version{}}}
+          {:ok, %{model: resource, version: Version.t()}}
           | {:error, Ecto.Changeset.t(resource)}
         when resource: term
   def versioning_insert(changeset) do
@@ -21,7 +21,7 @@ defmodule Hygeia.Helpers.Versioning do
   end
 
   @spec versioning_update(changeset :: Ecto.Changeset.t(resource)) ::
-          {:ok, %{model: resource, version: %Version{}}}
+          {:ok, %{model: resource, version: Version.t()}}
           | {:error, Ecto.Changeset.t(resource)}
         when resource: term
   def versioning_update(changeset) do
@@ -29,7 +29,7 @@ defmodule Hygeia.Helpers.Versioning do
   end
 
   @spec versioning_delete(changeset_or_resource :: Ecto.Changeset.t(resource) | resource) ::
-          {:ok, %{model: resource, version: %Version{}}}
+          {:ok, %{model: resource, version: Version.t()}}
           | {:error, Ecto.Changeset.t(resource)}
         when resource: Ecto.Schema.t()
   def versioning_delete(changeset_or_resource) do

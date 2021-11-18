@@ -15,6 +15,8 @@
         excluded: [~r"/_build/", ~r"/deps/", ~r"/node_modules/"]
       },
       checks: [
+        # Remove Rule because two rejects improve readability and performance is not an issue
+        {Credo.Check.Refactor.RejectReject, false},
         {Credo.Check.Design.TagTODO, exit_status: 0},
         {Credo.Check.Design.TagFIXME, exit_status: 0},
         {Credo.Check.Readability.StrictModuleLayout, []},

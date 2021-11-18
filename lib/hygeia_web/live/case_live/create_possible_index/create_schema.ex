@@ -164,7 +164,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema do
   end
 
   @spec upsert_case(
-          {create_person_schema :: %CreatePersonSchema{}, person :: Person.t()},
+          {create_person_schema :: CreatePersonSchema.t(), person :: Person.t()},
           schema :: %__MODULE__{}
         ) :: Case.t()
   def upsert_case(

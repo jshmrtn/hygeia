@@ -147,10 +147,9 @@ defmodule Hygeia.Jobs.NotificationReminder do
       |> Enum.reduce(%{}, fn type, acc ->
         Map.update(acc, type, 1, &(&1 + 1))
       end)
-      |> Enum.map(fn {type, count} ->
+      |> Enum.map_join("\n", fn {type, count} ->
         "* #{translate_type(type)} - #{HygeiaCldr.Number.to_string!(count)}"
       end)
-      |> Enum.join("\n")
 
     gettext(
       """
