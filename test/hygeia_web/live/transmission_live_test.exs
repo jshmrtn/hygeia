@@ -31,8 +31,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
         country: "CH"
       },
       name: "BrüW",
-      known: true,
-      flight_information: "xyz"
+      known: true
     }
   }
   @update_attrs %{
@@ -47,8 +46,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
         country: "CH"
       },
       name: "BrüW",
-      known: true,
-      flight_information: "xyz"
+      known: true
     }
   }
   @invalid_attrs %{date: nil}
@@ -110,6 +108,53 @@ defmodule HygeiaWeb.TransmissionLiveTest do
         |> follow_redirect(conn)
 
       assert html =~ "BrüW"
+    end
+
+    test "saves new flight transmission", %{conn: conn, user: user} do
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      recipient_case = case_fixture(person_fixture(tenant))
+      propagator_case = case_fixture(person_fixture(tenant))
+
+      {:ok, create_live, _html} =
+        live(
+          conn,
+          Routes.transmission_create_path(conn, :create,
+            propagator_internal: true,
+            recipient_internal: true,
+            propagator_case_uuid: propagator_case.uuid,
+            recipient_case_uuid: recipient_case.uuid
+          )
+        )
+
+      assert create_live
+             |> form("#transmission-form", transmission: @invalid_attrs)
+             |> render_change() =~ "can&#39;t be blank"
+
+      create_live
+      |> form("#transmission-form", transmission: %{infection_place: %{known: true}})
+      |> render_change()
+
+      create_live
+      |> form("#transmission-form", transmission: %{infection_place: %{type: :flight}})
+      |> render_change()
+
+      {:ok, _, html} =
+        create_live
+        |> form("#transmission-form",
+          transmission:
+            Map.update(
+              @create_attrs,
+              :infection_place,
+              %{},
+              &Map.put(&1, :flight_information, "flight xyz")
+            )
+        )
+        |> render_submit()
+        |> follow_redirect(conn)
+
+      assert html =~ "BrüW"
+      assert html =~ "flight xyz"
     end
   end
 

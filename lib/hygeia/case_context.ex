@@ -1807,77 +1807,77 @@ defmodule Hygeia.CaseContext do
         |> normalize_country(@bag_med_16122020_contact_fields_index.country)
         |> normalize_country(@bag_med_16122020_contact_fields_index.work_place_country)
         |> normalize_country(@bag_med_16122020_contact_fields_index.exp_country)
-        |> (fn list ->
-              case Enum.at(list, @bag_med_16122020_contact_fields_index.reason_end_quar) do
-                :negative_test ->
-                  list
-                  |> put_in(
-                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
-                    4
-                  )
-                  |> put_in(
-                    [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
-                    "Negative Test"
-                  )
+        |> Kernel.then(fn list ->
+          case Enum.at(list, @bag_med_16122020_contact_fields_index.reason_end_quar) do
+            :negative_test ->
+              list
+              |> put_in(
+                [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                4
+              )
+              |> put_in(
+                [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
+                "Negative Test"
+              )
 
-                :immune ->
-                  list
-                  |> put_in(
-                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
-                    4
-                  )
-                  |> put_in(
-                    [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
-                    "Immune"
-                  )
+            :immune ->
+              list
+              |> put_in(
+                [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                4
+              )
+              |> put_in(
+                [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
+                "Immune"
+              )
 
-                :vaccinated ->
-                  list
-                  |> put_in(
-                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
-                    4
-                  )
-                  |> put_in(
-                    [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
-                    "Vaccinated"
-                  )
+            :vaccinated ->
+              list
+              |> put_in(
+                [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                4
+              )
+              |> put_in(
+                [Access.at!(@bag_med_16122020_contact_fields_index.other_reason_end_quar)],
+                "Vaccinated"
+              )
 
-                :asymptomatic ->
-                  put_in(
-                    list,
-                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
-                    1
-                  )
+            :asymptomatic ->
+              put_in(
+                list,
+                [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                1
+              )
 
-                :converted_to_index ->
-                  put_in(
-                    list,
-                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
-                    2
-                  )
+            :converted_to_index ->
+              put_in(
+                list,
+                [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                2
+              )
 
-                :no_follow_up ->
-                  put_in(
-                    list,
-                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
-                    3
-                  )
+            :no_follow_up ->
+              put_in(
+                list,
+                [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                3
+              )
 
-                :other ->
-                  put_in(
-                    list,
-                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
-                    4
-                  )
+            :other ->
+              put_in(
+                list,
+                [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                4
+              )
 
-                nil ->
-                  put_in(
-                    list,
-                    [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
-                    nil
-                  )
-              end
-            end).()
+            nil ->
+              put_in(
+                list,
+                [Access.at!(@bag_med_16122020_contact_fields_index.reason_end_quar)],
+                nil
+              )
+          end
+        end)
       end)
 
     export = Stream.concat([@bag_med_16122020_contact_fields], cases)
