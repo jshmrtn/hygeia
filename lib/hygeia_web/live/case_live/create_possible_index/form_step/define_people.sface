@@ -448,9 +448,9 @@
             <:feature>
               {#if not existing_entity?(person_cs)}
                 {#if length(fetch_field!(person_cs, :suspected_duplicates_uuid)) > 0}
-                  <div>
+                  <div class="small d-flex align-items-center">
                     <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace>
-                      <span class="text-info">{gettext("There are possible duplicates for this person. Click to resolve.")}</span>
+                      <span class="text-info small ms-2">{gettext("There are possible duplicates for this person. Click to resolve.")}</span>
                     </LivePatch>
                   </div>
                 {/if}

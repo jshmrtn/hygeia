@@ -12,25 +12,24 @@
           <PersonCard person_changeset={person_cs}>
             <:feature>
               <div class="ms-auto">
-                <Field name={:status} class="input-group">
-                  <HygeiaWeb.FieldLabel class="mb-0">
-                    <span class="input-group-text">
-                      {gettext("Status")}
-                    </span>
-                  </HygeiaWeb.FieldLabel>
-                  <Select
-                    class="form-control bg-white"
-                    options={if existing_entity?(case_cs) do
-                      Status.map()
-                    else
-                      manage_statuses(@form_data[:type], Status.map())
-                    end}
-                  />
+                <Field name={:status}>
+                  <div class="input-group">
+                    <HygeiaWeb.FieldLabel class="mb-0">
+                      <span class="input-group-text">
+                        {gettext("Status")}
+                      </span>
+                    </HygeiaWeb.FieldLabel>
+                    <Select
+                      class="form-control bg-white"
+                      options={if existing_entity?(case_cs) do
+                        Status.map()
+                      else
+                        manage_statuses(@form_data[:type], Status.map())
+                      end}
+                    />
+                  </div>
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
-              </div>
-              <div :if={not existing_entity?(case_cs) and @form_data.type not in [:travel, :contact_person]}>
-                <h4>(?)</h4>
               </div>
             </:feature>
 

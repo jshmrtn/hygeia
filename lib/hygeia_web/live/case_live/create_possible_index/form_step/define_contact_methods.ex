@@ -10,6 +10,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
 

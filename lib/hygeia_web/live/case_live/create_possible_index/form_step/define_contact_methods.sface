@@ -8,14 +8,11 @@
             {#if can_contact_person?(case_cs, @form_data.type)}
               {#for {contact_type, contact_type_members} <- group_contacts_by_type(person_cs)}
                 {#if contact_type_eligible?(case_cs, contact_type)}
-                  <div class="mb-4">
+                  <div class="mt-4 mb-4">
                     <table class="table">
                       <thead>
                         <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">{contact_type}</th>
-                          <th scope="col">{gettext("Comment")}</th>
-                          <th>
+                          <th class="col-1">
                             <Checkbox opts={
                               checked: all_checked?(reporting, contact_type_members),
                               hidden_input: "false",
@@ -24,20 +21,15 @@
                               phx_value_index: index,
                               phx_value_contact_uuids: to_serialized_uuids(contact_type_members)
                             } />
-                            {#if all_checked?(reporting, contact_type_members)}
-                              {gettext("Deselect all")}
-                            {#else}
-                              {gettext("Select all")}
-                            {/if}
                           </th>
+                          <th class="col-1" scope="col">#</th>
+                          <th class="col-5" scope="col">{ContactMethod.Type.translate(contact_type)}</th>
+                          <th class="col-5" scope="col">{gettext("Comment")}</th>
                         </tr>
                       </thead>
                       <tbody>
                         {#for {contact, i} <- Enum.with_index(contact_type_members)}
                           <tr>
-                            <td>{i + 1}</td>
-                            <td>{contact.value}</td>
-                            <td>{contact.comment}</td>
                             <td><Checkbox opts={
                                 checked: has_contact_uuid?(reporting, contact.uuid),
                                 hidden_input: "false",
@@ -47,6 +39,9 @@
                                 phx_value_contact_uuid: contact.uuid
                               } />
                             </td>
+                            <td>{i + 1}</td>
+                            <td>{contact.value}</td>
+                            <td>{contact.comment}</td>
                           </tr>
                         {/for}
                       </tbody>
