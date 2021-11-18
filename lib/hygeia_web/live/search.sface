@@ -10,7 +10,8 @@
           placeholder: gettext("Search"),
           name: "query",
           autocomplete: "off",
-          "phx-focus": "open"
+          "phx-focus": "open",
+          id: "search_query"
         }
         value={@query}
       />

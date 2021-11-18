@@ -73,10 +73,10 @@
                       <table class="table">
                         <thead>
                           <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">{contact_type}</th>
-                            <th scope="col">{gettext("Comment")}</th>
-                            <th />
+                            <th class="col-1" scope="col">#</th>
+                            <th class="col-5" scope="col">{ContactMethod.Type.translate(contact_type)}</th>
+                            <th class="col-5" scope="col">{gettext("Comment")}</th>
+                            <th class="col-1" />
                           </tr>
                         </thead>
                         <tbody>
