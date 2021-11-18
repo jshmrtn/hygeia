@@ -6,6 +6,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary do
   import Ecto.Changeset
   import HygeiaGettext
 
+  alias Hygeia.CaseContext.Person.ContactMethod
+
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
 
