@@ -157,9 +157,9 @@ defmodule HygeiaWeb.Router do
          AutoTracingLive.ContactMethods,
          :contact_methods
 
-    live "/cases/:case_uuid/auto-tracing/flights",
-         AutoTracingLive.Flights,
-         :flights
+    live "/cases/:case_uuid/auto-tracing/visits",
+         AutoTracingLive.Visits,
+         :visits
 
     live "/cases/:case_uuid/auto-tracing/employer",
          AutoTracingLive.Employer,
@@ -176,6 +176,10 @@ defmodule HygeiaWeb.Router do
     live "/cases/:case_uuid/auto-tracing/clinical",
          AutoTracingLive.Clinical,
          :clinical
+
+    live "/cases/:case_uuid/auto-tracing/flights",
+         AutoTracingLive.Flights,
+         :flights
 
     live "/cases/:case_uuid/auto-tracing/transmission",
          AutoTracingLive.Transmission,

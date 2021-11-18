@@ -94,6 +94,7 @@ defmodule Hygeia.CaseContext.Person do
     has_many :cases, Case
     has_many :positions, Position, foreign_key: :person_uuid
     has_many :affiliations, Affiliation, foreign_key: :person_uuid, on_replace: :delete
+    has_many :visits, Visit, foreign_key: :person_uuid, on_replace: :delete
 
     has_many :employee_affiliations, Affiliation,
       foreign_key: :person_uuid,
