@@ -357,7 +357,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods d
   end
 
   defp to_serialized_uuids(contacts) when is_list(contacts) do
-    Enum.map_join(contacts, & &1.uuid, ",")
+    Enum.map_join(contacts, ",", & &1.uuid)
   end
 
   defp to_deserialized_uuids(string_list) when is_binary(string_list) do
