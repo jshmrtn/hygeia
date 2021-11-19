@@ -13,6 +13,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
   alias Hygeia.OrganisationContext.Organisation.SchoolType
   alias Hygeia.OrganisationContext.Organisation.Type
   alias Hygeia.OrganisationContext.Position
+  alias Hygeia.OrganisationContext.Visit
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -25,6 +26,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           address: Address.t() | nil,
           notes: String.t() | nil,
           positions: Ecto.Schema.has_many(Position.t()) | nil,
+          visits: Ecto.Schema.has_many(Visit.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           divisions: Ecto.Schema.has_many(Division.t()) | nil,
           hospitalizations: Ecto.Schema.has_many(Hospitalization.t()) | nil,
@@ -40,6 +42,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
           address: Address.t(),
           notes: String.t() | nil,
           positions: Ecto.Schema.has_many(Position.t()),
+          visits: Ecto.Schema.has_many(Visit.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()),
           divisions: Ecto.Schema.has_many(Division.t()),
           hospitalizations: Ecto.Schema.has_many(Hospitalization.t()),
@@ -56,6 +59,7 @@ defmodule Hygeia.OrganisationContext.Organisation do
 
     embeds_one :address, Address, on_replace: :delete
     has_many :positions, Position, foreign_key: :organisation_uuid, on_replace: :delete
+    has_many :visits, Visit, foreign_key: :organisation_uuid, on_replace: :delete
     has_many :affiliations, Affiliation, foreign_key: :organisation_uuid, on_replace: :delete
     has_many :divisions, Division, foreign_key: :organisation_uuid, on_replace: :delete
 
@@ -169,7 +173,8 @@ defmodule Hygeia.OrganisationContext.Organisation do
           true
 
         Enum.any?([:tracer], &User.has_role?(user, &1, :any)) ->
-          not OrganisationContext.has_affiliations?(organisation)
+          not OrganisationContext.has_affiliations?(organisation) and
+          not OrganisationContext.has_visits?(organisation)
 
         true ->
           false

@@ -221,14 +221,16 @@ defmodule HygeiaWeb.Router do
     live "/users", UserLive.Index, :index
     live "/users/:id", UserLive.Show, :show
 
+    live "/people/:id/visits", VisitLive.Index, :show
+    live "/people/:id/visits/new", VisitLive.Create, :create
+    live "/people/visits/:visit_id", VisitLive.Show, :show
+    live "/people/visits/:visit_id/edit", VisitLive.Show, :edit
+
     live "/people", PersonLive.Index, :index
     live "/people/new", PersonLive.Create, :create
     live "/people/:id", PersonLive.BaseData, :show
     live "/people/:id/edit", PersonLive.BaseData, :edit
     live "/people/:cursor_direction/:cursor", PersonLive.Index, :index
-
-    live "/people/:id/visits", PersonLive.Visits, :show
-    live "/people/:id/visits/edit", PersonLive.Visits, :edit
 
     live "/cases/:case_uuid/auto-tracing/resolve-problems",
          AutoTracingLive.ResolveProblems,

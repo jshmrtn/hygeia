@@ -21,10 +21,12 @@
                     "btn",
                     "btn-sm",
                     "btn-outline-primary",
-                    active: get_field(@changeset, :employed) == true
+                    active: get_field(@changeset, :employed) == true,
+                    disabled: has_related_visit_occupations?(@changeset)
                   }>
                     <RadioButton
                       value
+                      opts={disabled: has_related_visit_occupations?(@changeset)}
                     />
                     {gettext("Yes")}
                   </label>
@@ -36,6 +38,7 @@
                   }>
                     <RadioButton
                       value={false}
+                      opts={disabled: has_related_visit_occupations?(@changeset)}
                     />
                     {gettext("No")}
                   </label>
@@ -56,6 +59,7 @@
                       <Select
                         class="form-control"
                         opts={
+                          disabled: is_visit_related?(occupation.source),
                           prompt: pgettext("Affiliation", "Choose Kind")
                         }
                         options={Kind.map()}
@@ -68,7 +72,7 @@
                       class="form-group"
                     >
                       <HygeiaWeb.FieldLabel />
-                      <TextInput class="form-control" />
+                      <TextInput class="form-control" opts={disabled: is_visit_related?(occupation.source)} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                     <div>
@@ -79,6 +83,7 @@
                           id={"occupation_#{fetch_field!(occupation.source, :uuid)}_organisation"}
                           change="select_affiliation_organisation"
                           subject={fetch_field!(occupation.source, :uuid)}
+                          disabled={is_visit_related?(occupation.source)}
                         />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
@@ -90,7 +95,10 @@
                         name={:not_found}
                       >
                         <HygeiaWeb.FieldLabel class="me-2" />
-                        <Checkbox opts={checked: fetch_field!(occupation.source, :not_found)} />
+                        <Checkbox opts={
+                          checked: fetch_field!(occupation.source, :not_found),
+                          disabled: is_visit_related?(occupation.source)
+                        } />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
                     </div>
@@ -104,11 +112,14 @@
                         </p>
                         <Field name={:name} class="form-group">
                           <HygeiaWeb.FieldLabel />
-                          <TextInput class="form-control" />
+                          <TextInput class="form-control" opts={disabled: is_visit_related?(occupation.source)} />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                         <Inputs for={:address}>
-                          <HygeiaWeb.AddressForm id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_organisation_address"} />
+                          <HygeiaWeb.AddressForm 
+                            id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_organisation_address"}
+                            disabled={is_visit_related?(occupation.source)}
+                          />
                         </Inputs>
                       </Inputs>
                     </div>
@@ -128,7 +139,7 @@
                           no_results_message={gettext(
                             "Divisions not found, please close this popup and insert one manually in the dedicated fields."
                           )}
-                          disabled={fetch_field!(occupation.source, :division_not_found)}
+                          disabled={fetch_field!(occupation.source, :division_not_found) or is_visit_related?(occupation.source)}
                         />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
@@ -139,7 +150,8 @@
                         name={:division_not_found}
                       >
                         <Checkbox opts={
-                          checked: fetch_field!(occupation.source, :division_not_found)
+                          checked: fetch_field!(occupation.source, :division_not_found),
+                          disabled: is_visit_related?(occupation.source)
                         } />
                         <HygeiaWeb.FieldLabel class="me-2" />
                         <ErrorTag class="d-block invalid-feedback" />
@@ -157,18 +169,28 @@
                           <InputContext assigns={assigns} :let={form: division}>
                             <Field name={:name} class="form-group">
                               <HygeiaWeb.FieldLabel />
-                              <TextInput class="form-control" />
+                              <TextInput class="form-control" opts={disabled: is_visit_related?(occupation.source)} />
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                             <Inputs for={:address}>
-                              <HygeiaWeb.AddressForm id={"occupation_#{fetch_field!(division.source, :uuid)}_unknown_division_address"} />
+                              <HygeiaWeb.AddressForm 
+                                id={"occupation_#{fetch_field!(division.source, :uuid)}_unknown_division_address"}
+                                disabled={is_visit_related?(occupation.source)}
+                              />
                             </Inputs>
                           </InputContext>
                         </Inputs>
                       </div>
                     </div>
 
+                    <div :if={is_visit_related?(occupation.source)}>
+                      <small>{gettext(
+                          "This entry cannot be modified because it is a consequence of the information provided in the previous step."
+                        )}</small>
+                    </div>
+
                     <button
+                      :if={is_visit_related?(occupation.source) == nil}
                       class="btn btn-danger mb-4"
                       type="button"
                       :on-click="remove_occupation"

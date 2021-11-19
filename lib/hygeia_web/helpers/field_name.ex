@@ -373,7 +373,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       email: "Email"
     },
     Hygeia.AutoTracingContext.AutoTracing.SchoolVisit => %{
-      visit_reason: "Reason for you visit",
+      visit_reason: "Reason for your visit",
       other_reason: "Please specify your reason",
       visited_at: "Date of last visit",
       known_school: "Educational institution",

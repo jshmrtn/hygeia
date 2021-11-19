@@ -6,6 +6,7 @@ defmodule Hygeia.OrganisationContext.Visit do
   use Hygeia, :model
 
   alias Hygeia.CaseContext.Entity
+  alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
@@ -128,5 +129,42 @@ defmodule Hygeia.OrganisationContext.Visit do
       nil -> changeset
       _else -> put_change(changeset, :division_uuid, nil)
     end
+  end
+
+  defimpl Hygeia.Authorization.Resource do
+    alias Hygeia.CaseContext.Person
+    alias Hygeia.OrganisationContext.Visit
+    alias Hygeia.Repo
+    alias Hygeia.UserContext.User
+
+    @spec preload(resource :: Visit.t()) :: Visit.t()
+    def preload(resource), do: resource
+
+    @spec authorized?(
+            resource :: Visit.t(),
+            action :: :create | :details | :partial_details | :list | :update | :delete,
+            user :: :anonymous | User.t() | Person.t(),
+            meta :: %{atom() => term}
+          ) :: boolean
+    def authorized?(_visit, action, :anonymous, _meta)
+        when action in [:list, :create, :details, :partial_details, :update, :delete],
+        do: false
+
+    def authorized?(_visit, action, %Person{}, _meta)
+        when action in [:list, :create, :details, :partial_details, :update, :delete],
+        do: false
+
+    def authorized?(_visit, action, user, _meta)
+        when action in [:details, :list, :versioning, :deleted_versioning],
+        do:
+          Enum.any?(
+            [:viewer, :tracer, :super_user, :supervisor, :admin],
+            &User.has_role?(user, &1, :any)
+          )
+
+    def authorized?(_visit, action, user, _meta)
+        when action in [:create, :update, :delete],
+        do:
+          Enum.any?([:tracer, :super_user, :supervisor, :admin], &User.has_role?(user, &1, :any))
   end
 end

@@ -707,6 +707,22 @@ defmodule Hygeia.OrganisationContext do
     end)
   end
 
+  @spec has_visits?(organisation :: Organisation.t()) :: boolean
+  def has_visits?(%Organisation{} = organisation) do
+    case Repo.preload(organisation, :visits) do
+      %Organisation{visits: []} -> false
+      %Organisation{} -> true
+    end
+  end
+
+  @spec has_visits?(division :: Division.t()) :: boolean
+  def has_visits?(%Division{} = division) do
+    case Repo.preload(division, :visits) do
+      %Division{visits: []} -> false
+      %Division{} -> true
+    end
+  end
+
   @spec has_affiliations?(organisation :: Organisation.t()) :: boolean
   def has_affiliations?(%Organisation{} = organisation) do
     case Repo.preload(organisation, :affiliations) do

@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.PersonLive.Visits do
+defmodule HygeiaWeb.VisitLive.Create do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
@@ -13,6 +13,7 @@ defmodule HygeiaWeb.PersonLive.Visits do
   alias Hygeia.Helpers.Empty
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation.Kind
+  alias Hygeia.OrganisationContext.Visit
   alias Hygeia.OrganisationContext.Visit.Reason
   alias Hygeia.Repo
   alias Hygeia.TenantContext
@@ -29,73 +30,24 @@ defmodule HygeiaWeb.PersonLive.Visits do
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
+  alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
     person = CaseContext.get_person!(id)
 
     socket =
-      if authorized?(person, :list, get_auth(socket)) do
+      if authorized?(Visit, :list, get_auth(socket), person) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "people:#{id}")
 
-        socket
-        |> assign(
-          page_title: "#{person.first_name} #{person.last_name} - #{gettext("Visits")} - #{gettext("Person")}"
-        )
-        |> load_data(person)
+        load_data(socket, person)
       else
-        IO.puts "FUCK"
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))
         |> put_flash(:error, gettext("You are not authorized to do this action."))
       end
 
     {:noreply, socket}
-  end
-
-  @impl Phoenix.LiveView
-  def handle_info({:updated, %Person{} = person, _version}, socket) do
-    {:noreply, load_data(socket, person)}
-  end
-
-  def handle_info({:deleted, %Person{}, _version}, socket) do
-    {:noreply, redirect(socket, to: Routes.person_index_path(socket, :index))}
-  end
-
-  def handle_info(_other, socket), do: {:noreply, socket}
-
-  def handle_event(
-        "add_visit",
-        _params,
-        %{assigns: %{changeset: changeset, person: person}} = socket
-      ) do
-    {:noreply,
-     socket
-     |> assign(
-       :changeset,
-       CaseContext.change_person(
-         person,
-         changeset_add_to_params(changeset, :visits, %{uuid: Ecto.UUID.generate()})
-       )
-     )
-     |> maybe_block_navigation()}
-  end
-
-  def handle_event(
-        "remove_visit",
-        %{"uuid" => uuid} = _params,
-        %{assigns: %{changeset: changeset, person: person}} = socket
-      ) do
-    {:noreply,
-     socket
-     |> assign(
-       :changeset,
-       CaseContext.change_person(
-         person,
-         changeset_remove_from_params_by_id(changeset, :visits, %{uuid: uuid})
-       )
-     )
-     |> maybe_block_navigation()}
   end
 
   def handle_event(
@@ -168,10 +120,13 @@ defmodule HygeiaWeb.PersonLive.Visits do
   defp load_data(socket, person) do
     person = Repo.preload(person, tenant: [], visits: [])
 
-    changeset = CaseContext.change_person(person)
+    changeset = OrganisationContext.change_visit(Ecto.build_assoc(person, :visits))
 
     socket
     |> assign(person: person, changeset: changeset)
+    |> assign(
+      page_title: "#{person.first_name} #{person.last_name} - #{gettext("Visits")} - #{gettext("Person")}"
+    )
     |> maybe_block_navigation()
   end
 

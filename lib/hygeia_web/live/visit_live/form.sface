@@ -1,0 +1,96 @@
+<div class="component-case-tests-form hy-readonly-form">
+    <InputContext assigns={assigns} :let={form: form}>
+      <div class="card" id={"visits_#{fetch_field!(form.source, :uuid)}"}>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <Field name={:reason} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <Select
+                  class="form-control"
+                  opts={
+                    prompt: pgettext("Affiliation", "Choose reason")
+                  }
+                  options={Reason.map()}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+            <div :if={fetch_field!(form.source, :reason) == :other} class="col">
+              <Field name={:other_reason} class="form-group">
+                <HygeiaWeb.FieldLabel />
+                <TextInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
+          </div>
+
+          <Field name={:last_visit_at} class="form-group">
+            <HygeiaWeb.FieldLabel />
+            <DateInput class="form-control" />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+
+          {#if unknown_organisation = fetch_field!(form.source, :unknown_organisation)}
+            <div>{gettext("Unknown organisation")}</div>
+            <div class="p-3">
+              <strong>{unknown_organisation.name}</strong>
+              <div class="mb-3">{Address.to_string(unknown_organisation.address, :long)}</div>
+            </div>
+          {/if}
+
+          {#unless is_nil(fetch_field!(form.source, :organisation_uuid))}
+            <Field class="form-group" name={:organisation_uuid}>
+              <HygeiaWeb.FieldLabel />
+              <HygeiaWeb.OrganisationLive.Choose
+                id={"visits_#{fetch_field!(form.source, :uuid)}_organisation"}
+                change="select_visit_organisation"
+                subject={fetch_field!(form.source, :uuid)}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          {/unless}
+
+          {#if unknown_division = fetch_field!(form.source, :unknown_division)}
+            <p :if={is_nil(fetch_field!(form.source, :organisation_uuid))}>{pgettext(
+                "Auto Tracing Resolve Problems",
+                "You must resolve the organisation before choosing the right division."
+              )}</p>
+            <div>{gettext("Unknown division")}</div>
+            <div class="p-3">
+              <strong>{unknown_division.name}</strong>
+              <div class="mb-3" :if={not is_nil(unknown_division.address)}>{Address.to_string(unknown_division.address, :long)}</div>
+            </div>
+          {/if}
+
+          {#unless is_nil(fetch_field!(form.source, :division_uuid))}
+            <Field
+              :if={fetch_field!(form.source, :organisation_uuid)}
+              class="form-group"
+              name={:division_uuid}
+            >
+              <HygeiaWeb.FieldLabel />
+              <HygeiaWeb.DivisionLive.Choose
+                id={"visits_#{fetch_field!(form.source, :uuid)}_division"}
+                change="select_visit_division"
+                subject={fetch_field!(form.source, :uuid)}
+                organisation={OrganisationContext.get_organisation!(fetch_field!(form.source, :organisation_uuid))}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          {/unless}
+
+          <div>
+            <button
+              type="button"
+              class="btn btn-danger"
+              :on-click="remove_visit"
+              phx-value-uuid={fetch_field!(form.source, :uuid)}
+            >
+              <span class="oi oi-trash" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </InputContext>
+</div>

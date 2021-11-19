@@ -75,15 +75,17 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
                 unknown_organisation: &1.unknown_organisation,
                 division_not_found: if(&1.unknown_division, do: true, else: false),
                 known_division_uuid: &1.division_uuid,
-                unknown_division: &1.unknown_division
+                unknown_division: &1.unknown_division,
+                related_visit_uuid: &1.related_visit_uuid
               }
             )
 
           step = %__MODULE__{
             employed:
-              case occupations do
-                [_occupations | _rest] -> true
-                [] -> case.auto_tracing.employed
+              cond do
+                Enum.any?(occupations) -> true
+                case.auto_tracing.employed and Enum.empty?(occupations) -> nil
+                true -> false
               end,
             occupations: occupations
           }
@@ -296,6 +298,22 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
       :affiliations,
       affiliations
     )
+  end
+
+  defp is_visit_related?(changeset) do
+    changeset
+    |> fetch_field!(:related_visit_uuid)
+    |> case do
+      nil -> false
+      _uuid -> true
+    end
+  end
+
+  defp has_related_visit_occupations?(changeset) do
+    changeset
+    |> fetch_field!(:occupations)
+    |> Enum.filter(& not is_nil(&1.related_visit_uuid))
+    |> Enum.any?()
   end
 
   defp filter_unknown_division(%Entity{

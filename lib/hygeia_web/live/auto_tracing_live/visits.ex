@@ -240,18 +240,6 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
                 AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :school_related)
             end
 
-          {:ok, auto_tracing} =
-            if Enum.any?(
-                 step.school_visits,
-                 &(is_map(&1.unknown_school) or is_map(&1.unknown_division))
-               ) do
-              {:ok, _auto_tracing} =
-                AutoTracingContext.auto_tracing_add_problem(auto_tracing, :new_employer)
-            else
-              {:ok, _auto_tracing} =
-                AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :new_employer)
-            end
-
           {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :employer)
 
           push_redirect(socket,
