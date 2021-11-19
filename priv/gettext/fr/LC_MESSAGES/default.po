@@ -4641,6 +4641,9 @@ msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr "Sujet"
 
+msgid "Submit"
+msgstr ""
+
 msgid "Submit and send"
 msgstr ""
 
@@ -5353,6 +5356,11 @@ msgid "Unknown"
 msgstr "Inconnu"
 
 #, fuzzy
+msgctxt "Sex"
+msgid "Unknown"
+msgstr "Inconnu"
+
+#, fuzzy
 msgid "Unknown Error"
 msgstr "Erreur inconnue"
 
@@ -5573,6 +5581,14 @@ msgstr "Vous n'êtes pas actuellement en quarantaine ou en isolement."
 #, fuzzy
 msgid "You are not authorized to do this action."
 msgstr "Vous n'êtes pas autorisé à faire cette action."
+
+#, fuzzy
+msgid "You are not authorized to view this case. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the case."
+msgstr ""
+
+#, fuzzy
+msgid "You are not authorized to view this person. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
+msgstr ""
 
 msgid "You are not authorized to view this person. Please provide the code <%{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
 msgstr ""

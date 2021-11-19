@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr "\"Merge\" e \"Into\" non devono essere la stessa cosa"
@@ -4150,6 +4150,9 @@ msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr "Oggetto"
 
+msgid "Submit"
+msgstr "Conferma"
+
 msgid "Submit and send"
 msgstr "Conferma e invia"
 
@@ -4508,7 +4511,7 @@ msgid "The status serves as an overview of the current tracing phase of the pers
 msgstr "Lo stato serve come una panoramica della fase di rintracciamento attuale della persona. Questo stato può essere utilizzato per la ricerca nel filtro. I casi sono sempre creati con lo stato \"Primo contatto\" dall'amministrazione dei casi. Dopo che il caso è stato elaborato, lo stato deve essere modificato."
 
 msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
-msgstr ""
+msgstr "L'app swiss covid è l'app ufficiale per il tracciamento dei contatti della svizzera. L'app aiuta a tracciare e prevenire la diffusione del virus COVID-19."
 
 msgid "There are possible duplicates for this person. Click to resolve."
 msgstr "Ci sono possibili duplicati per questa persona. Clicca per risolvere."
@@ -4828,6 +4831,11 @@ msgctxt "vaccination_done"
 msgid "Unknown"
 msgstr "Sconosciuto"
 
+#, fuzzy
+msgctxt "Sex"
+msgid "Unknown"
+msgstr "Sconosciuto"
+
 msgid "Unknown Error"
 msgstr "Errore sconosciuto"
 
@@ -5032,6 +5040,14 @@ msgstr "Al momento non sei in quarantena o in isolamento."
 #, fuzzy
 msgid "You are not authorized to do this action."
 msgstr "Non sei autorizzato a fare questa azione."
+
+#, fuzzy
+msgid "You are not authorized to view this case. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the case."
+msgstr "Non sei autorizzato a visualizzare questa persona. Fornisci il codice <%{subdivision} / %{person_hr_id}> al tuo supervisore per identificare la persona."
+
+#, fuzzy
+msgid "You are not authorized to view this person. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
+msgstr "Non sei autorizzato a visualizzare questa persona. Fornisci il codice <%{subdivision} / %{person_hr_id}> al tuo supervisore per identificare la persona."
 
 msgid "You are not authorized to view this person. Please provide the code <%{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
 msgstr "Non sei autorizzato a visualizzare questa persona. Fornisci il codice <%{subdivision} / %{person_hr_id}> al tuo supervisore per identificare la persona."

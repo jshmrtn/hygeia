@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -3707,6 +3707,9 @@ msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr "Betreff"
 
+msgid "Submit"
+msgstr "Einreichen"
+
 msgid "Submit and send"
 msgstr "Bestätigen und senden"
 
@@ -4291,6 +4294,11 @@ msgctxt "vaccination_done"
 msgid "Unknown"
 msgstr "Unbekannt"
 
+#, fuzzy
+msgctxt "Sex"
+msgid "Unknown"
+msgstr "Unbekannt"
+
 msgid "Unknown Error"
 msgstr "Unbekannter Fehler"
 
@@ -4469,6 +4477,14 @@ msgstr "Sie befinden sich momentan nicht in Quarantäne oder Isolation."
 
 msgid "You are not authorized to do this action."
 msgstr "Sie sind nicht berechtigt, diese Aktion auszuführen."
+
+#, fuzzy
+msgid "You are not authorized to view this case. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the case."
+msgstr "Sie sind nicht berechtigt, diese Person anzuzeigen. Bitte teilen Sie Ihrem Vorgesetzten den Code <%{subdivision} / %{person_hr_id}> mit, um die Person zu identifizieren."
+
+#, fuzzy
+msgid "You are not authorized to view this person. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
+msgstr "Sie sind nicht berechtigt, diese Person anzuzeigen. Bitte teilen Sie Ihrem Vorgesetzten den Code <%{subdivision} / %{person_hr_id}> mit, um die Person zu identifizieren."
 
 msgid "You are not authorized to view this person. Please provide the code <%{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
 msgstr "Sie sind nicht berechtigt, diese Person anzuzeigen. Bitte teilen Sie Ihrem Vorgesetzten den Code <%{subdivision} / %{person_hr_id}> mit, um die Person zu identifizieren."
