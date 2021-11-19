@@ -400,7 +400,9 @@ jobs:
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
-          path: _build/prod
+          path: |
+            _build/prod
+            !_build/prod/rel
           key: compile_docker_prod-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
             compile_docker_prod-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
