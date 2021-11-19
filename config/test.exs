@@ -17,9 +17,6 @@ config :email_checker,
 # Prometheus Exporter
 config :hygeia, HygeiaTelemetry, server: false
 
-# Print only warnings and errors during test
-config :logger, level: :debug
-
 # Bamboo Mailer
 config :hygeia, Hygeia.EmailSender.Smtp, adapter: Bamboo.TestAdapter
 

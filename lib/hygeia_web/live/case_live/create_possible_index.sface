@@ -1,225 +1,59 @@
-<div class="component-case-create-case">
-  <h1 class="container mb-4">{gettext("Create Possible Index Cases")}</h1>
+<div
+  id="create-possible-index"
+  class="component-create-possible-index"
+  phx-hook="BlockNavigation"
+>
+  <h1 class="container mb-5">{gettext("Create Possible Index Cases")}</h1>
 
-  <Form
-    :if={not @loading}
-    for={@changeset}
-    change="validate"
-    submit="save"
-    opts={autocomplete: "off", id: "case-create-form", "phx-hook": "BlockNavigation"}
-  >
-    <HiddenInput field={:possible_index_submission_uuid} />
+  <HiddenInput field={:possible_index_submission_uuid} />
 
-    <InputContext assigns={assigns} :let={form: form}>
-      <div class="container">
-        <div class="row mb-3">
-          <div class="col-12 col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col">
-                    <Field name={:type} class="form-group">
-                      <HygeiaWeb.FieldLabel />
-                      <Select
-                        class="form-control"
-                        options={Phase.PossibleIndex.Type.map()}
-                        opts={prompt: gettext("Select Type")}
-                      />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
-                  </div>
-                  <div :if={Ecto.Changeset.get_field(@changeset, :type) == :other} class="col">
-                    <Field name={:type_other} class="form-group">
-                      <HygeiaWeb.FieldLabel />
-                      <TextInput class="form-control" />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
-                  </div>
-                </div>
-                <div :if={Ecto.Changeset.get_field(@changeset, :type) != :travel}>
-                  <Field name={:propagator_internal} class="form-group">
-                    <div class="btn-group btn-group-toggle btn-radio-group">
-                      <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
-                      <label class={
-                        "btn btn-outline-primary",
-                        active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil
-                      }>
-                        <RadioButton value="" />
-                        {gettext("No propagator")}
-                      </label>
-                      <label class={
-                        "btn btn-outline-primary",
-                        active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true
-                      }>
-                        <RadioButton value="true" />
-                        {gettext("Internal")}
-                      </label>
-                      <label class={
-                        "btn btn-outline-primary",
-                        active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false
-                      }>
-                        <RadioButton value="false" />
-                        {gettext("External")}
-                      </label>
-                    </div>
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                  <Field
-                    name={:propagator_ism_id}
-                    class="form-group"
-                    :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}
-                  >
-                    <HygeiaWeb.FieldLabel />
-                    <TextInput class="form-control" />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                  <Field
-                    name={:propagator_case_uuid}
-                    class="form-group"
-                    :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}
-                  >
-                    <HygeiaWeb.FieldLabel />
-                    <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-
-                <Field name={:date} class="form-group">
-                  <HygeiaWeb.FieldLabel />
-                  <DateInput class="form-control" />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <Field name={:comment} class="form-group">
-          <HygeiaWeb.FieldLabel />
-          <TextArea class="form-control" />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-
-        <Inputs for={:infection_place}>
-          <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
-        </Inputs>
-      </div>
-
-      <div class="container mt-5">
-        <div class="row">
-          <div class="col">
-            <Field name={:send_confirmation_sms} class="form-check">
-              <Checkbox class="form-check-input" />
-              <HygeiaWeb.FieldLabel class="form-check-label" />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-          <div class="col">
-            <Field name={:send_confirmation_email} class="form-check">
-              <Checkbox class="form-check-input" />
-              <HygeiaWeb.FieldLabel class="form-check-label" />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <Field name={:directly_close_cases} class="form-check">
-              <Checkbox class="form-check-input" />
-              <HygeiaWeb.FieldLabel class="form-check-label" />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-          <div class="col">
-            <Field
-              :if={Phoenix.HTML.FormData.input_value(form.source, form, :propagator_internal)}
-              name={:copy_address_from_propagator}
-              class="form-check"
-            >
-              <Checkbox class="form-check-input" />
-              <HygeiaWeb.FieldLabel class="form-check-label" />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-        </div>
-      </div>
-
-      <div class="container mt-5">
-        <div class="row mb-2">
-          <div class="col">
-            <Field name={:default_tenant_uuid} class="input-group">
-              <HygeiaWeb.FieldLabel class="mb-0" :let={name: name}>
-                <span class="input-group-text">
-                  {name}
-                </span>
-              </HygeiaWeb.FieldLabel>
-              <Select
-                class="form-control"
-                options={Enum.map(@tenants, &{&1.name, &1.uuid})}
-                opts={prompt: gettext("Select Tenant")}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-          <div class="col">
-            <HiddenInput field={:default_supervisor_uuid} />
-
-            <Field name={:default_supervisor_uuid} class="input-group">
-              <HygeiaWeb.FieldLabel class="mb-0" :let={name: name}>
-                <span class="input-group-text">
-                  {name}
-                </span>
-              </HygeiaWeb.FieldLabel>
-              <Select
-                class="form-control"
-                options={Enum.map(@supervisor_users, &{&1.display_name, &1.uuid})}
-                opts={prompt: gettext("Case Administration")}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-        </div>
-        <div class="row mb-2">
-          <div class="col">
-            <HiddenInput field={:default_tracer_uuid} />
-
-            <Field name={:default_tracer_uuid} class="input-group">
-              <HygeiaWeb.FieldLabel class="mb-0" :let={name: name}>
-                <span class="input-group-text">
-                  {name}
-                </span>
-              </HygeiaWeb.FieldLabel>
-              <Select
-                class="form-control"
-                options={Enum.map(@tracer_users, &{&1.display_name, &1.uuid})}
-                opts={prompt: gettext("Case Administration")}
-              />
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-        </div>
-      </div>
-
-      <div class="mx-auto person-table">
-        <HygeiaWeb.CaseLive.PersonCreateTable
-          id="person-table"
-          tenants={@tenants}
-          supervisor_users={@supervisor_users}
-          tracer_users={@tracer_users}
-          show_address={Phoenix.HTML.FormData.input_value(form.source, form, :copy_address_from_propagator) != true}
-        />
-      </div>
-
-      <div class="container">
-        <button
-          class="btn btn-primary mt-5"
-          type="submit"
-          phx-disable-with={gettext("Saving...")}
-          disabled={not @changeset.valid?}
+  <div class="container">
+    <nav class="mb-5 progress-steps" id="progressbar" :if={@form_step != :summary}>
+      <div aria-hidden="true" class="progress-bar" />
+      {#for step <- Enum.reject(get_form_steps(), &(&1.name == :summary))}
+        <LivePatch
+          class={"progress-step", decide_nav_class(@form_step, step.name, @visited_steps, @form_data)}
+          to={Routes.case_create_possible_index_path(@socket, :index, step.name)}
         >
-          {gettext("Save")}
-        </button>
-      </div>
-    </InputContext>
-  </Form>
+          <small class="d-none d-lg-block">
+            {translate_step(step.name)}
+          </small>
+        </LivePatch>
+      {/for}
+    </nav>
+
+    {#case @form_step}
+      {#match :transmission}
+        <DefineTransmission id={@form_step} {=@form_step} {=@live_action} {=@form_data} />
+      {#match :people}
+        <DefinePeople
+          id={@form_step}
+          {=@form_step}
+          {=@live_action}
+          {=@params}
+          {=@form_data}
+          {=@tenants}
+        />
+      {#match :administration}
+        <DefineAdministration
+          id={@form_step}
+          {=@form_step}
+          {=@live_action}
+          {=@form_data}
+          {=@supervisor_users}
+          {=@tracer_users}
+        />
+      {#match :contact_methods}
+        <DefineContactMethods id={@form_step} {=@form_step} {=@live_action} {=@form_data} />
+      {#match :summary}
+        <Summary
+          id={@form_step}
+          {=@form_step}
+          {=@live_action}
+          {=@form_data}
+          {=@supervisor_users}
+          {=@tracer_users}
+        />
+    {/case}
+  </div>
 </div>

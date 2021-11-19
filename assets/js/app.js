@@ -16,7 +16,7 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import NProgress from "nprogress";
 import { LiveSocket } from "phoenix_live_view";
-import BSN from "bootstrap.native";
+import {init as BSNInit} from "./bsn";
 import BlockNavigation from "./block-navigation.hook";
 import PostMessage from "./post-message.hook";
 import Chart from "./chart.hook";
@@ -42,7 +42,7 @@ const liveSocket = new LiveSocket("/live", Socket, {
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", (info) => NProgress.start());
 window.addEventListener("phx:page-loading-stop", (info) => {
-  BSN.initCallback(document.body);
+  BSNInit();
 
   document.querySelectorAll(".stop-propagation").forEach((d) => {
     d.addEventListener("click", (e) => e.stopPropagation());

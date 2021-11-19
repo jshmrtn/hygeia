@@ -1,0 +1,104 @@
+<div class="component-define-administration row">
+  <div class="row mb-3">
+    {#for {%{person_changeset: person_cs, case_changeset: case_cs}, index} <-
+        Enum.with_index(@form_data.bindings)}
+      <div>
+        <Form
+          for={%Ecto.Changeset{case_cs | action: :validate}}
+          change="validate"
+          opts={autocomplete: "off", id: "define-administration-form"}
+        >
+          <HiddenInput name="index" value={index} />
+          <PersonCard person_changeset={person_cs}>
+            <:feature>
+              <div class="ms-auto">
+                <Field name={:status}>
+                  <div class="input-group">
+                    <HygeiaWeb.FieldLabel class="mb-0">
+                      <span class="input-group-text">
+                        {gettext("Status")}
+                      </span>
+                    </HygeiaWeb.FieldLabel>
+                    <Select
+                      class="form-control bg-white"
+                      options={if existing_entity?(case_cs) do
+                        Status.map()
+                      else
+                        manage_statuses(@form_data[:type], Status.map())
+                      end}
+                    />
+                  </div>
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+            </:feature>
+
+            <:right>
+              <div class="case-administrators">
+                <div class="row mb-2">
+                  <div class="col">
+                    <Field name={:supervisor_uuid}>
+                      <HygeiaWeb.FieldLabel />
+                      <Select
+                        class="form-control"
+                        options={form_options_administrators(@supervisor_users, get_field(case_cs, :tenant_uuid))}
+                        opts={prompt: gettext("Case Administration")}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                    <Field name={:tracer_uuid}>
+                      <HygeiaWeb.FieldLabel />
+                      <Select
+                        class="form-control"
+                        options={form_options_administrators(@tracer_users, fetch_field!(case_cs, :tenant_uuid))}
+                        opts={prompt: gettext("Case Administration")}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </div>
+              </div>
+            </:right>
+            <:bottom>
+              {#if existing_entity?(case_cs)}
+                <CaseSnippet case_changeset={case_cs} />
+                <div class="mt-3">
+                  <Link
+                    to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
+                    opts={target: "_blank", rel: "noopener noreferrer"}
+                  >
+                    {gettext("Open case in new tab")}
+                  </Link>
+                </div>
+              {#else}
+                <div class="mt-3">{gettext("A new case will be created for this person.")}</div>
+              {/if}
+            </:bottom>
+          </PersonCard>
+        </Form>
+      </div>
+    {/for}
+  </div>
+
+  <div class="row mt-5">
+    <div class="col">
+      <button id="back-button" class="btn btn-outline-primary me-2" type="button" :on-click="back">
+        {gettext("Back")}
+      </button>
+      <button
+        id="next-button"
+        class="btn btn-primary"
+        type="submit"
+        :on-click="next"
+        phx-disable-with={gettext("Saving...")}
+        disabled={not valid?(@form_data)}
+      >
+        {gettext("Next")}
+      </button>
+    </div>
+  </div>
+</div>

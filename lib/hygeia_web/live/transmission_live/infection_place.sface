@@ -50,7 +50,11 @@
               <TextInput class="form-control" opts={disabled: @disabled} />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-            <Field name={:flight_information} class="form-group">
+            <Field
+              :if={Ecto.Changeset.get_field(form.source, :type) == :flight}
+              name={:flight_information}
+              class="form-group"
+            >
               <HygeiaWeb.FieldLabel />
               <TextInput class="form-control" opts={disabled: @disabled} />
               <ErrorTag class="d-block invalid-feedback" />

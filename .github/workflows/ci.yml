@@ -400,7 +400,9 @@ jobs:
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
-          path: _build/prod
+          path: |
+            _build/prod
+            !_build/prod/rel
           key: compile_docker_prod-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
             compile_docker_prod-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-
@@ -416,7 +418,7 @@ jobs:
           name: compile_assets
           path: priv/static
       - run: mix phx.digest
-      - run: mix release
+      - run: mix release --overwrite
       - run: tar -czvf release.tar.gz _build/prod/rel/hygeia
       - uses: actions/upload-artifact@v2
         with:

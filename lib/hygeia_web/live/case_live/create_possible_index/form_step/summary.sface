@@ -1,0 +1,118 @@
+<div class="row mt-5">
+  <div class="row">
+    {#for %{person_changeset: person_cs, case_changeset: case_cs} = binding <-
+        @form_data.bindings}
+      <div>
+        <Form for={case_cs} change="validate" opts={autocomplete: "off"}>
+          <PersonCard person_changeset={person_cs}>
+            <:feature>
+              <div class="ms-auto">
+                <Link
+                  class="d-block mb-2"
+                  to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
+                  opts={target: "_blank", rel: "noopener noreferrer"}
+                >
+                  {gettext("Open case in new tab")}
+                </Link>
+
+                <Field name={:status} class="input-group">
+                  <HygeiaWeb.FieldLabel class="mb-0">
+                    <span class="input-group-text">
+                      {gettext("Status")}
+                    </span>
+                  </HygeiaWeb.FieldLabel>
+                  <Select class="form-control" options={Status.map()} opts={disabled: true} />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+            </:feature>
+
+            <:right>
+              <div>
+                <div class="row mb-2">
+                  <div class="col">
+                    <Field name={:supervisor_uuid}>
+                      <HygeiaWeb.FieldLabel />
+                      <Select
+                        class="form-control"
+                        options={DefineAdministration.form_options_administrators(
+                          @supervisor_users,
+                          fetch_field!(case_cs, :tenant_uuid)
+                        )}
+                        opts={prompt: gettext("Case Administration"), disabled: true}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                    <Field name={:tracer_uuid}>
+                      <HygeiaWeb.FieldLabel />
+                      <Select
+                        class="form-control"
+                        options={DefineAdministration.form_options_administrators(
+                          @supervisor_users,
+                          fetch_field!(case_cs, :tenant_uuid)
+                        )}
+                        opts={prompt: gettext("Case Administration"), disabled: true}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+                  </div>
+                </div>
+              </div>
+            </:right>
+
+            <:bottom>
+              {#case binding[:reporting]}
+                {#match reporting when is_list(reporting) and length(reporting) > 0}
+                  <span>{gettext("This person has been notified on the following contact methods")}:</span>
+                  {#for {contact_type, contact_type_members} <- DefineContactMethods.group_contacts_by_type(person_cs)}
+                    <div class="mb-4">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th class="col-1" scope="col">#</th>
+                            <th class="col-5" scope="col">{ContactMethod.Type.translate(contact_type)}</th>
+                            <th class="col-5" scope="col">{gettext("Comment")}</th>
+                            <th class="col-1" />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {#for {contact, i} <- Enum.with_index(contact_type_members)}
+                            <tr>
+                              <td>{i + 1}</td>
+                              <td>{contact.value}</td>
+                              <td>{contact.comment}</td>
+                              <td><Checkbox opts={
+                                  checked: if(DefineContactMethods.has_contact_uuid?(reporting, contact.uuid), do: true),
+                                  hidden_input: "false",
+                                  disabled: true
+                                } />
+                              </td>
+                            </tr>
+                          {/for}
+                        </tbody>
+                      </table>
+                    </div>
+                  {/for}
+                {#match _else}
+                  <div class="mt-3">{gettext("This person has not been notified.")}</div>
+              {/case}
+              <div class="mt-3">
+                <CaseSnippet case_changeset={case_cs} />
+              </div>
+            </:bottom>
+          </PersonCard>
+        </Form>
+      </div>
+    {/for}
+  </div>
+
+  <div class="row">
+    <LiveRedirect to={Routes.case_create_possible_index_path(@socket, :create)}>
+      {gettext("Create new possible index submission")}
+    </LiveRedirect>
+  </div>
+</div>

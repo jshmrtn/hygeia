@@ -93,6 +93,7 @@ defmodule Hygeia.OrganisationContext.Affiliation do
       |> assoc_constraint(:person)
       |> assoc_constraint(:organisation)
       |> assoc_constraint(:division)
+      |> cast_embed(:unknown_organisation)
       |> validate_kind_other()
       |> validate_organisation_or_comment()
       |> validate_organisation()

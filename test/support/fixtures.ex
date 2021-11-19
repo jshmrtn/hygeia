@@ -319,7 +319,8 @@ defmodule Hygeia.Fixtures do
     last_name: "Weber",
     mobile: "+41 78 898 04 51",
     sex: :female,
-    transmission_date: ~D[2020-01-25]
+    transmission_date: ~D[2020-01-25],
+    employer: "Unknown GmbH"
   }
 
   @spec possible_index_submission_fixture(

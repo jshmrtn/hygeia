@@ -152,6 +152,30 @@ defmodule Hygeia.CommunicationContext do
     end
   end
 
+  @spec create_outgoing_email(
+          case :: Case.t(),
+          to_email :: String.t(),
+          subject :: String.t(),
+          body :: String.t()
+        ) ::
+          {:ok, Email.t()}
+          | {:error, Ecto.Changeset.t(Email.t()) | :no_outgoing_mail_configuration}
+  def create_outgoing_email(%Case{} = case, to_email, subject, body) do
+    %Case{tenant: tenant} = Repo.preload(case, tenant: [])
+
+    if TenantContext.tenant_has_outgoing_mail_configuration?(tenant) do
+      create_email(case, %{
+        recipient: to_email,
+        subject: subject,
+        body: body,
+        status: :in_progress,
+        direction: :outgoing
+      })
+    else
+      {:error, :no_outgoing_mail_configuration}
+    end
+  end
+
   @doc """
   Updates an email.
 
@@ -217,11 +241,12 @@ defmodule Hygeia.CommunicationContext do
     %Case{tenant: tenant} = case = Repo.preload(case, tenant: [])
 
     case
-    |> Ecto.build_assoc(:emails)
-    |> Map.put(:case, case)
-    |> Map.put(:case_uuid, case.uuid)
-    |> Map.put(:tenant, tenant)
-    |> Map.put(:tenant_uuid, tenant.uuid)
+    |> Ecto.build_assoc(:emails, %{
+      case: case,
+      case_uuid: case.uuid,
+      tenant: tenant,
+      tenant_uuid: tenant.uuid
+    })
     |> change_email(attrs)
   end
 
@@ -330,6 +355,24 @@ defmodule Hygeia.CommunicationContext do
           message: message,
           number: phone_number
         })
+    end
+  end
+
+  @spec create_outgoing_sms(case :: Case.t(), phone_number :: String.t(), message :: String.t()) ::
+          {:ok, SMS.t()}
+          | {:error, Ecto.Changeset.t(SMS.t()) | :sms_config_missing}
+  def create_outgoing_sms(case, phone_number, message) do
+    %Case{person: %Person{tenant: %Tenant{} = tenant}} = Repo.preload(case, person: :tenant)
+
+    if TenantContext.tenant_has_outgoing_sms_configuration?(tenant) do
+      create_sms(case, %{
+        direction: :outgoing,
+        status: :in_progress,
+        message: message,
+        number: phone_number
+      })
+    else
+      {:error, :sms_config_missing}
     end
   end
 
