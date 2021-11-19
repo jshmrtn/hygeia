@@ -182,11 +182,17 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       employer: employer
     } = CaseContext.get_possible_index_submission!(uuid)
 
+    propagator_case =
+      case_uuid
+      |> CaseContext.get_case!()
+      |> Hygeia.Repo.preload(:person)
+
     %{
       possible_index_submission_uuid: possible_index_submission_uuid,
       comment: comment,
       propagator_internal: true,
       propagator_case_uuid: case_uuid,
+      propagator_case: propagator_case,
       type: :contact_person,
       date: Date.to_iso8601(transmission_date),
       infection_place:
@@ -221,7 +227,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
                   do: [%{unknown_organisation: %{name: employer}, kind: :employee}]
                 )
             }),
-          case_changeset: CaseContext.change_case(%Case{})
+          case_changeset:
+            CaseContext.change_case(%Case{}, %{
+              tracer_uuid: propagator_case.tracer_uuid,
+              supervisor_uuid: propagator_case.supervisor_uuid
+            })
         }
       ]
     }
