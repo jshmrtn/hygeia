@@ -316,15 +316,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
     form_data
     |> Map.get(:bindings, [])
+    |> Enum.reject(&match?(^person_uuid, fetch_field!(&1.person_changeset, :uuid)))
     |> add_binding(
       %{
         person_changeset: CaseContext.change_person(person),
         case_changeset:
           person
-          |> Ecto.build_assoc(:cases)
+          |> Ecto.build_assoc(:cases, %{tenant_uuid: person.tenant_uuid, tenant: person.tenant})
           |> CaseContext.change_case(%{
-            tenant_uuid: person.tenant_uuid,
-            tenant: person.tenant,
             status: decide_case_status(form_data[:type])
           })
       },
