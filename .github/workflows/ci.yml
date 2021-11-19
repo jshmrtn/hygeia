@@ -416,7 +416,7 @@ jobs:
           name: compile_assets
           path: priv/static
       - run: mix phx.digest
-      - run: mix release
+      - run: mix release --overwrite
       - run: tar -czvf release.tar.gz _build/prod/rel/hygeia
       - uses: actions/upload-artifact@v2
         with:
