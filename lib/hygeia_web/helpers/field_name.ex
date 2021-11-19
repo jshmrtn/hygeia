@@ -229,6 +229,15 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type: "Type",
       type_other: "Type Other"
     },
+    Hygeia.OrganisationContext.Visit => %{
+      reason: "Reason",
+      other_reason: "Other reason",
+      last_visit_at: "Date of last visit",
+      organisation: "Organisation",
+      unknown_organisation: "Unknown organisation",
+      division: "Division",
+      unknown_division: "Unknown division"
+    },
     Hygeia.TenantContext.SedexExport => %{
       scheduling_date: "Scheduling Date",
       status: "Status",

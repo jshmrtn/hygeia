@@ -227,6 +227,9 @@ defmodule HygeiaWeb.Router do
     live "/people/:id/edit", PersonLive.BaseData, :edit
     live "/people/:cursor_direction/:cursor", PersonLive.Index, :index
 
+    live "/people/:id/visits", PersonLive.Visits, :show
+    live "/people/:id/visits/edit", PersonLive.Visits, :edit
+
     live "/cases/:case_uuid/auto-tracing/resolve-problems",
          AutoTracingLive.ResolveProblems,
          :resolve_problems
