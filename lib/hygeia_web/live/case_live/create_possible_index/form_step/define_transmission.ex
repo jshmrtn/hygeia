@@ -103,7 +103,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
       {:feed,
        %{
          propagator_case_uuid: params["uuid"],
-         propagator: get_propagator_from_case_uuid(params["uuid"])
+         propagator_case: get_propagator_case(params["uuid"])
        }}
     )
 
@@ -181,12 +181,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     |> then(& &1.valid?)
   end
 
-  defp get_propagator_from_case_uuid(case_uuid)
-  defp get_propagator_from_case_uuid(nil), do: nil
+  defp get_propagator_case(case_uuid)
+  defp get_propagator_case(nil), do: nil
 
-  defp get_propagator_from_case_uuid(case_uuid) do
-    case = case_uuid |> CaseContext.get_case!() |> Repo.preload(:person)
-    {case.person, case}
+  defp get_propagator_case(case_uuid) do
+    case_uuid
+    |> CaseContext.get_case!()
+    |> Repo.preload(:person)
   end
 
   defp normalize_params(params) do

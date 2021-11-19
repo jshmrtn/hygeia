@@ -96,7 +96,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
             type_other: form_data[:type_other],
             date: form_data[:date]
           })
-          |> merge_propagator_administrators(%{propagator: form_data[:propagator]})
+          |> merge_propagator_administrators(form_data[:propagator_case])
 
         Map.put(binding, :case_changeset, case_changeset)
       end)
@@ -117,18 +117,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
     end)
   end
 
-  defp merge_propagator_administrators(case_changeset, data)
+  defp merge_propagator_administrators(case_changeset, nil), do: case_changeset
 
-  defp merge_propagator_administrators(case_changeset, %{
-         propagator: {_propagator, propagator_case}
-       }) do
+  defp merge_propagator_administrators(case_changeset, propagator_case) do
     CaseContext.change_case(case_changeset, %{
-      supervisor_uuid: propagator_case.supervisor_uuid,
-      tracer_uuid: propagator_case.tracer_uuid
+      supervisor_uuid:
+        get_change(case_changeset, :supervisor_uuid) || propagator_case.supervisor_uuid,
+      tracer_uuid: get_change(case_changeset, :tracer_uuid) || propagator_case.tracer_uuid
     })
   end
-
-  defp merge_propagator_administrators(case_changeset, _data), do: case_changeset
 
   defp merge_phases(case_changeset, data) do
     existing_phases = case_changeset.data.phases
