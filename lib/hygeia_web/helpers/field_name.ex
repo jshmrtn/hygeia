@@ -202,6 +202,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       identifiers: "Identifiers",
       status: "Status"
     },
+    Hygeia.MutationContext.Mutation => %{name: "Name", ism_code: "ISM Code"},
     Hygeia.OrganisationContext.Affiliation => %{
       comment: "Comment",
       division: "Division",
@@ -228,6 +229,13 @@ defmodule HygeiaWeb.Helpers.FieldName do
       school_type: "School Type",
       type: "Type",
       type_other: "Type Other"
+    },
+    Hygeia.SystemMessageContext.SystemMessage => %{
+      text: "Text",
+      start_date: "Start Date",
+      end_date: "End Date",
+      roles: "Roles",
+      related_tenants: "Related Tenants"
     },
     Hygeia.TenantContext.SedexExport => %{
       scheduling_date: "Scheduling Date",
@@ -289,66 +297,32 @@ defmodule HygeiaWeb.Helpers.FieldName do
       iam_sub: "IAM Subject",
       roles: "Roles"
     },
-    Hygeia.SystemMessageContext.SystemMessage => %{
-      text: "Text",
-      start_date: "Start Date",
-      end_date: "End Date",
-      roles: "Roles",
-      related_tenants: "Related Tenants"
-    },
-    Hygeia.MutationContext.Mutation => %{name: "Name", ism_code: "ISM Code"},
-    HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema => %{
-      address: "Address",
-      birth_date: "Birth Date",
-      email: "Email",
-      employer: "Employer",
-      first_name: "First Name",
-      ism_case_id: "ISM Case ID",
-      ism_report_id: "ISM Report ID",
-      landline: "Landline",
-      last_name: "Last Name",
-      mobile: "Mobile",
-      sex: "Sex",
-      supervisor: "Supervisor",
-      supervisor_uuid: "Supervisor UUID",
-      tenant: "Tenant",
-      tenant_uuid: "Tenant UUID",
-      tracer: "Tracer",
-      tracer_uuid: "Tracer UUID"
-    },
-    HygeiaWeb.CaseLive.CreateIndex.CreateSchema => %{
-      default_supervisor: "Default Supervisor",
-      default_supervisor_uuid: "Default Supervisor UUID",
-      default_tenant: "Default Tenant",
-      default_tenant_uuid: "Default Tenant UUID",
-      default_tracer: "Default Tracer",
-      default_tracer_uuid: "Default Tracer UUID"
-    },
-    HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema => %{
-      comment: "Comment",
-      copy_address_from_propagator: "Copy Address From Propagator",
-      date: "Date",
-      default_supervisor: "Default Supervisor",
-      default_supervisor_uuid: "Default Supervisor UUID",
-      default_tenant: "Default Tenant",
-      default_tenant_uuid: "Default Tenant UUID",
-      default_tracer: "Default Tracer",
-      default_tracer_uuid: "Default Tracer UUID",
-      directly_close_cases: "Directly Close Cases",
-      propagator_case: "Propagator Case",
-      propagator_case_uuid: "Propagator Case UUID",
-      propagator_ism_id: "Propagator ISM ID",
-      send_confirmation_email: "Send Confirmation Email",
-      send_confirmation_sms: "Send Confirmation SMS",
-      type: "Type",
-      type_other: "Other"
-    },
     Hygeia.VersionContext.Version => %{
       date: "Date",
       item_changes: "Changes",
       origin: "Origin",
       originator: "Author",
       type: "Type"
+    },
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration => %{
+      status: "Status",
+      supervisor_uuid: "Supervisor UUID",
+      tracer_uuid: "Tracer UUID"
+    },
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission => %{
+      type: "Type",
+      type_other: "Other",
+      comment: "Comment",
+      copy_address_from_propagator: "Copy Address From Propagator",
+      date: "Date",
+      propagator_case: "Propagator Case",
+      propagator_case_uuid: "Propagator Case UUID",
+      propagator_ism_id: "Propagator ISM ID"
+    },
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary => %{
+      status: "Status",
+      supervisor_uuid: "Supervisor UUID",
+      tracer_uuid: "Tracer UUID"
     },
     HygeiaWeb.AutoTracingLive.ContactMethods => %{
       email: "Email",

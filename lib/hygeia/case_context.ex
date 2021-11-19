@@ -165,6 +165,70 @@ defmodule Hygeia.CaseContext do
         )
       )
 
+  @spec suggest_people_by_params(params :: map(), preload :: list(atom()), limit :: pos_integer()) ::
+          [Person.t()]
+  def suggest_people_by_params(params, preload, limit \\ 9) do
+    first_name = Map.get(params, :first_name, "")
+    last_name = Map.get(params, :last_name, "")
+    email = Map.get(params, :email, "")
+    mobile = Map.get(params, :mobile, "")
+    landline = Map.get(params, :landline, "")
+
+    Repo.all(
+      from(person in Person,
+        where:
+          (fragment("(? <% ?)", person.first_name, ^first_name) and
+             fragment("(? <% ?)", person.last_name, ^last_name)) or
+            fragment(
+              ~S[(?::jsonb <@ ANY (?))],
+              ^%{type: :email, value: email},
+              person.contact_methods
+            ) or
+            fragment(
+              ~S[(?::jsonb <@ ANY (?))],
+              ^%{type: :mobile, value: mobile},
+              person.contact_methods
+            ) or
+            fragment(
+              ~S[(?::jsonb <@ ANY (?))],
+              ^%{type: :landline, value: landline},
+              person.contact_methods
+            ),
+        order_by: [
+          desc:
+            (coalesce(fragment("(? <<-> ?)", person.first_name, ^first_name), 0.0) +
+               coalesce(fragment("(? <<-> ?)", person.last_name, ^last_name), 0.0)) / 2.0 +
+              coalesce(
+                fragment(
+                  ~S[(?::jsonb <@ ANY (?))::int],
+                  ^%{type: :email, value: email},
+                  person.contact_methods
+                ),
+                0.0
+              ) +
+              coalesce(
+                fragment(
+                  ~S[(?::jsonb <@ ANY (?))::int],
+                  ^%{type: :mobile, value: email},
+                  person.contact_methods
+                ),
+                0.0
+              ) +
+              coalesce(
+                fragment(
+                  ~S[(?::jsonb <@ ANY (?))::int],
+                  ^%{type: :landline, value: email},
+                  person.contact_methods
+                ),
+                0.0
+              )
+        ],
+        preload: ^preload,
+        limit: ^limit
+      )
+    )
+  end
+
   @spec fulltext_person_search(query :: String.t(), limit :: pos_integer()) :: [Person.t()]
   def fulltext_person_search(query, limit \\ 10),
     do: Repo.all(fulltext_person_search_query(query, limit))
@@ -1883,6 +1947,13 @@ defmodule Hygeia.CaseContext do
   """
   @spec get_case!(id :: Ecto.UUID.t()) :: Case.t()
   def get_case!(id), do: Repo.get!(Case, id)
+
+  @spec get_case_with_preload!(id :: Ecto.UUID.t(), preloads :: list()) :: Case.t()
+  def get_case_with_preload!(id, preloads) when is_list(preloads) do
+    Case
+    |> preload(^preloads)
+    |> Repo.get!(id)
+  end
 
   @spec get_case_with_lock!(id :: Ecto.UUID.t()) :: Case.t()
   def get_case_with_lock!(id),

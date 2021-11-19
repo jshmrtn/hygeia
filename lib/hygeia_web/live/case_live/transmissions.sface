@@ -43,9 +43,6 @@
                   :create,
                   propagator_internal: true,
                   propagator_case_uuid: @case.uuid,
-                  default_tenant_uuid: @case.tenant_uuid,
-                  default_tracer_uuid: @case.tracer_uuid,
-                  default_supervisor_uuid: @case.supervisor_uuid,
                   return_to: URI.parse(uri).path
                 )}
                 class="btn btn-primary me-1"

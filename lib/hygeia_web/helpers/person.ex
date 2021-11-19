@@ -6,6 +6,7 @@ defmodule HygeiaWeb.Helpers.Person do
   alias Hygeia.CaseContext.Person
 
   @spec translate_person_sex(sex :: Person.Sex.t()) :: String.t()
+  def translate_person_sex(nil), do: pgettext("Sex", "Unknown")
   def translate_person_sex(:male), do: pgettext("Sex", "Male")
   def translate_person_sex(:female), do: pgettext("Sex", "Female")
   def translate_person_sex(:other), do: pgettext("Sex", "Other")

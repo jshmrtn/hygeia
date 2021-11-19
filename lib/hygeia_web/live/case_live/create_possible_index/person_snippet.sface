@@ -1,0 +1,41 @@
+<div class="component-person-snippet d-flex gap-4 flex-grow-1">
+  <div>
+    <small class="text-muted">{gettext("First name")}:</small>
+    <div>{@person.first_name}</div>
+  </div>
+  <div>
+    <small class="text-muted">{gettext("Last name")}:</small>
+    <div>{@person.last_name}</div>
+  </div>
+  <div>
+    <small class="text-muted">{gettext("Sex")}:</small>
+    <div>{translate_person_sex(@person.sex)}</div>
+  </div>
+  <div>
+    <small class="text-muted">{gettext("Date of birth")}:</small>
+    <div>
+      {#if @person.birth_date}
+        {HygeiaCldr.Date.to_string!(@person.birth_date)}
+      {#else}
+        {gettext("Unknown")}
+      {/if}
+    </div>
+  </div>
+  <div>
+    <small class="text-muted">{gettext("Address")}:</small>
+    <div>{@person.address.address || gettext("Unknown")}</div>
+  </div>
+  <div>
+    <small class="text-muted">{gettext("Place")}:</small>
+    <div>{@person.address.place || gettext("Unknown")}</div>
+  </div>
+  <div>
+    <small class="text-muted">{gettext("Country")}:</small>
+    <div>{@person.address.country || gettext("Unknown")}</div>
+  </div>
+  <div class="d-flex align-items-center">
+    <Link to={@path} opts={target: "_blank", rel: "noopener noreferrer"}>
+      <small>{gettext("Open in new tab")}</small>
+    </Link>
+  </div>
+</div>
