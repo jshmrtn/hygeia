@@ -121,8 +121,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
 
   defp merge_propagator_administrators(case_changeset, propagator_case) do
     CaseContext.change_case(case_changeset, %{
-      supervisor_uuid: propagator_case.supervisor_uuid,
-      tracer_uuid: propagator_case.tracer_uuid
+      supervisor_uuid:
+        get_change(case_changeset, :supervisor_uuid) || propagator_case.supervisor_uuid,
+      tracer_uuid: get_change(case_changeset, :tracer_uuid) || propagator_case.tracer_uuid
     })
   end
 
