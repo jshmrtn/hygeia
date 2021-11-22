@@ -90,10 +90,11 @@ defmodule Hygeia.OrganisationContext.Visit do
       :division_uuid
     ])
     |> assoc_constraint(:person)
-    |> validate_required([:reason])
+    |> validate_required([:reason, :last_visit_at])
     |> validate_other_reason()
     |> validate_organisation()
     |> validate_division()
+    |> validate_organisation_required()
   end
 
   defp validate_other_reason(changeset) do
@@ -123,6 +124,15 @@ defmodule Hygeia.OrganisationContext.Visit do
     |> case do
       nil -> cast_embed(changeset, :unknown_division)
       _else -> put_embed(changeset, :unknown_division, nil)
+    end
+  end
+
+  defp validate_organisation_required(changeset) do
+    if is_nil(fetch_field!(changeset, :organisation_uuid)) and
+         is_nil(fetch_field!(changeset, :unknown_organisation)) do
+      validate_required(changeset, :organisation_uuid)
+    else
+      changeset
     end
   end
 

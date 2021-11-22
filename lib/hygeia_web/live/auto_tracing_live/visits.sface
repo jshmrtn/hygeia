@@ -48,7 +48,7 @@
                 <div class="card">
                   <div class="card-body">
                     <HiddenInput field={:uuid} />
-                    <Field class="form-group" name={:known_school_uuid}>
+                    <Field class="form-group" name={:organisation_uuid}>
                       <HygeiaWeb.FieldLabel />
                       <HygeiaWeb.OrganisationLive.Choose
                         disabled={fetch_field!(organisation_visit.source, :not_found)}
@@ -60,7 +60,7 @@
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                     <Field
-                      :if={fetch_field!(organisation_visit.source, :known_school_uuid) == nil}
+                      :if={fetch_field!(organisation_visit.source, :organisation_uuid) == nil}
                       class="form-group"
                       name={:not_found}
                     >
@@ -70,7 +70,7 @@
                     </Field>
 
                     <div :if={fetch_field!(organisation_visit.source, :not_found)}>
-                      <Inputs for={:unknown_school}>
+                      <Inputs for={:unknown_organisation}>
                         <p class="mb-4">
                           {gettext(
                             "Your institution does not appear in the list or it is not correct? Please enter it manually."
@@ -87,7 +87,7 @@
                       </Inputs>
                     </div>
 
-                    {#if fetch_field!(organisation_visit.source, :known_school_uuid)}
+                    {#if fetch_field!(organisation_visit.source, :organisation_uuid)}
                       <Field
                         :if={!fetch_field!(organisation_visit.source, :division_not_found)}
                         class="form-group"
@@ -98,7 +98,7 @@
                           id={"school_#{fetch_field!(organisation_visit.source, :uuid)}_division"}
                           change="select_school_division"
                           subject={fetch_field!(organisation_visit.source, :uuid)}
-                          organisation={OrganisationContext.get_organisation!(fetch_field!(organisation_visit.source, :known_school_uuid))}
+                          organisation={OrganisationContext.get_organisation!(fetch_field!(organisation_visit.source, :organisation_uuid))}
                           no_results_message={gettext(
                             "No class or division found, please close this popup and insert one manually in the dedicated fields."
                           )}

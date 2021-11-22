@@ -47,7 +47,7 @@ defmodule HygeiaWeb.VisitLive.Show do
        socket,
        :changeset,
        OrganisationContext.change_visit(
-         changeset,
+        Ecto.Changeset.apply_changes(changeset),
          %{organisation_uuid: params["uuid"]}
        )
      )}

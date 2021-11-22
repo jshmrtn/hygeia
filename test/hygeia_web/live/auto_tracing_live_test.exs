@@ -226,7 +226,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
                  organisation_visits: %{
                    0 => %{
                      is_occupied: false,
-                     unknown_school: %{
+                     unknown_organisation: %{
                        name: "test_school",
                        address: %{address: "teststrasse 10", country: "CH", subdivision: "ZH"}
                      }
@@ -293,7 +293,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
                  organisation_visits: %{
                    0 => %{
                      is_occupied: true,
-                     unknown_school: %{
+                     unknown_organisation: %{
                        name: "test_school",
                        address: %{address: "teststrasse 10", country: "CH", subdivision: "ZH"}
                      }

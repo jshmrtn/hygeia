@@ -306,23 +306,12 @@
                         <div class="hy-card-grid-2-cols">
                           {#for visit <- @person.visits}
                             <div class="card card-body">
-                              {#if visit.unknown_organisation}
-                                <strong>{visit.unknown_organisation.name}</strong>
-                                <small class="d-block text-muted" :if={visit.unknown_organisation.address}>{Address.to_string(visit.unknown_organisation.address, :long)}</small>
-                                <div>
-                                  {pgettext("Auto Tracing Resolve Problems", "Visit reason")}:
-                                  {Hygeia.OrganisationContext.Visit.Reason.translate(visit.reason)}
-                                </div>
-                                <div class="mb-3">
-                                  {pgettext("Auto Tracing Resolve Problems", "Date of last visit")}:
-                                  {HygeiaCldr.Date.to_string!(visit.last_visit_at)}
-                                </div>
-                              {#else}
-                                <strong>{visit.organisation.name}</strong>
-                                <small class="d-block text-muted">
+                              {#if organisation = visit.organisation || visit.unknown_organisation}
+                                <strong>{organisation.name}</strong>
+                                <small :if={organisation.type} class="d-block text-muted">
                                   {Organisation.type_name(visit.organisation)}
                                 </small>
-                                <small class="d-block text-muted" :if={visit.organisation.address}>{Address.to_string(visit.organisation.address, :long)}</small>
+                                <small class="d-block text-muted" :if={organisation.address}>{Address.to_string(organisation.address, :long)}</small>
                                 <div>
                                   {pgettext("Auto Tracing Resolve Problems", "Visit reason")}:
                                   {Hygeia.OrganisationContext.Visit.Reason.translate(visit.reason)}

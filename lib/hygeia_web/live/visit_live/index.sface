@@ -53,18 +53,12 @@
           <td class="align-middle">{format_date(visit.last_visit_at)}</td>
           <td class="align-middle">
             <div class="card card-body">
-              {#if visit.unknown_organisation}
+              {#if organisation = visit.organisation || visit.unknown_organisation}
                 <div class="d-fled">
-                  <strong>{visit.unknown_organisation.name}</strong>
-                  <span class="badge rounded-pill bg-warning text-dark ms-auto">{pgettext("Person Visits", "Unknown")}</span>
+                  <strong>{organisation.name}</strong>
+                  <span :if={visit.unknown_organisation} class="badge rounded-pill bg-warning text-dark ms-auto">{pgettext("Person Visits", "Unknown")}</span>
                 </div>
-                <small class="d-block text-muted" :if={visit.unknown_organisation.address}>{Address.to_string(visit.unknown_organisation.address, :long)}</small>
-              {#else}
-                <strong>{visit.organisation.name}</strong>
-                <small class="d-block text-muted">
-                  {Organisation.type_name(visit.organisation)}
-                </small>
-                <small class="d-block text-muted" :if={visit.organisation.address}>{Address.to_string(visit.organisation.address, :long)}</small>
+                <small class="d-block text-muted" :if={organisation.address}>{Address.to_string(organisation.address, :long)}</small>
               {/if}
             </div>
           </td>
@@ -123,6 +117,7 @@
                 </button>
               </LivePatch>
               <Link
+                id={"visit-#{visit.uuid}"}
                 to="#"
                 click="delete"
                 opts={

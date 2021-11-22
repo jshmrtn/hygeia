@@ -370,7 +370,19 @@ defmodule Hygeia.OrganisationContextTest do
     end
 
     test "create_visit/1 with valid data creates a visit" do
-      valid_attrs = %{reason: :visitor}
+      valid_attrs = %{
+        reason: :visitor,
+        last_visit_at: Date.add(Date.utc_today(), -5),
+        unknown_organisation: %{
+          address: %{
+            address: "Torstrasse 25",
+            zip: "9000",
+            place: "St. Gallen",
+            subdivision: "SG",
+            country: "CH"
+          }
+        }
+      }
 
       assert {:ok, %Visit{}} = OrganisationContext.create_visit(person_fixture(), valid_attrs)
     end

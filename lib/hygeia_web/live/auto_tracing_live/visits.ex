@@ -75,8 +75,8 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
                 other_reason: &1.other_reason,
                 visited_at: &1.last_visit_at,
                 not_found: if(&1.unknown_organisation, do: true, else: false),
-                known_school_uuid: &1.organisation_uuid,
-                unknown_school: &1.unknown_organisation,
+                organisation_uuid: &1.organisation_uuid,
+                unknown_organisation: &1.unknown_organisation,
                 division_not_found: if(&1.unknown_division, do: true, else: false),
                 known_division_uuid: &1.division_uuid,
                 unknown_division: &1.unknown_division
@@ -160,7 +160,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
              changeset,
              :organisation_visits,
              %{uuid: school_uuid},
-             &Map.put(&1, "known_school_uuid", params["uuid"])
+             &Map.put(&1, "organisation_uuid", params["uuid"])
            )
          )
          | action: :validate
@@ -293,8 +293,8 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
           reason: &1.visit_reason,
           other_reason: &1.other_reason,
           last_visit_at: &1.visited_at,
-          organisation_uuid: &1.known_school_uuid,
-          unknown_organisation: &1.unknown_school,
+          organisation_uuid: &1.organisation_uuid,
+          unknown_organisation: &1.unknown_organisation,
           division_uuid: &1.known_division_uuid,
           unknown_division: filter_unknown_division(&1.unknown_division)
         }
@@ -317,8 +317,8 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
         &%Affiliation{
           uuid: Ecto.UUID.generate(),
           kind: visit_reason_to_kind(&1.visit_reason),
-          organisation_uuid: &1.known_school_uuid,
-          unknown_organisation: &1.unknown_school,
+          organisation_uuid: &1.organisation_uuid,
+          unknown_organisation: &1.unknown_organisation,
           related_visit_uuid: &1.uuid,
           division_uuid: &1.known_division_uuid,
           unknown_division: filter_unknown_division(&1.unknown_division)

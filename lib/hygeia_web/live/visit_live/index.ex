@@ -16,7 +16,6 @@ defmodule HygeiaWeb.VisitLive.Index do
   alias Hygeia.CaseContext.Entity
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Division
-  alias Hygeia.OrganisationContext.Organisation
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => person_id}, _uri, socket) do
@@ -64,7 +63,8 @@ defmodule HygeiaWeb.VisitLive.Index do
 
     {:ok, _} = OrganisationContext.delete_visit(visit)
 
-    {:noreply, socket}
+    {:noreply,
+     push_patch(socket, to: Routes.visit_index_path(socket, :index, socket.assigns.person))}
   end
 
   defp format_date(nil), do: nil

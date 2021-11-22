@@ -376,7 +376,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       visit_reason: "Reason for your visit",
       other_reason: "Please specify your reason",
       visited_at: "Date of last visit",
-      known_school: "Educational institution",
+      organisation: "Educational institution",
       not_found: "Institution not found",
       division_not_found: "Class or division not found",
       known_division: "Class or division"
