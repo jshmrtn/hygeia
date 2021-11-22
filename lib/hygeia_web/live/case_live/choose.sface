@@ -20,7 +20,7 @@
                   <HygeiaWeb.RecordView
                     resource={case.person}
                     action={:list}
-                    id={"case_person_value_recordview_#{case.uuid}_#{case.person.uuid}"}
+                    id={"#{@id_prefix}_case_person_value_recordview_#{case.uuid}_#{case.person.uuid}"}
                     :if={authorized?(case.person, :details, auth)}
                     wrapper_tag={:span}
                   >
