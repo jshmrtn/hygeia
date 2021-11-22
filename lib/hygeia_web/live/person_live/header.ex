@@ -21,7 +21,7 @@ defmodule HygeiaWeb.PersonLive.Header do
     {:ok,
      assign(socket,
        person_display_name: person_display_name(changeset),
-       person: Repo.preload(data, :cases)
+       person: Repo.preload(data, cases: [], tenant: [])
      )}
   end
 
@@ -29,7 +29,7 @@ defmodule HygeiaWeb.PersonLive.Header do
     {:ok,
      assign(socket,
        person_display_name: person_display_name(person),
-       person: Repo.preload(person, :cases)
+       person: Repo.preload(person, cases: [], tenant: [])
      )}
   end
 
