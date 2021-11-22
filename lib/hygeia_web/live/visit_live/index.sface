@@ -42,7 +42,7 @@
       </thead>
       <tbody>
         <HygeiaWeb.RecordView
-          :for={visit <- @person.visits}
+          :for={visit <- Enum.sort_by(@person.visits, & &1.last_visit_at, {:desc, Date})}
           resource={visit}
           action={:list}
           id={"visit-#{visit.uuid}"}
@@ -52,7 +52,7 @@
           <td class="align-middle">{visit.other_reason}</td>
           <td class="align-middle">{format_date(visit.last_visit_at)}</td>
           <td class="align-middle">
-            <div class="card card-body">
+            <div>
               {#if organisation = visit.organisation || visit.unknown_organisation}
                 <div class="d-fled">
                   <strong>{organisation.name}</strong>
@@ -64,7 +64,7 @@
           </td>
 
           <td class="align-middle">
-            <div class="card card-body">
+            <div>
               {#case {visit.division, visit.unknown_division}}
                 {#match {nil, nil}}
                   <div>{pgettext("Person Visits", "Division not provided")}</div>
