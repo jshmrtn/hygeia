@@ -183,7 +183,7 @@
                     </div>
 
                     <button
-                      :if={is_visit_related?(occupation.source)}
+                      :if={not is_visit_related?(occupation.source)}
                       class="btn btn-danger mb-4"
                       type="button"
                       :on-click="remove_occupation"

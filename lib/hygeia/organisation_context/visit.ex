@@ -32,7 +32,7 @@ defmodule Hygeia.OrganisationContext.Visit do
 
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
-          reason: Reason.t() | nil,
+          reason: Reason.t(),
           other_reason: String.t() | nil,
           last_visit_at: Date.t() | nil,
           person_uuid: Ecto.UUID.t() | nil,
