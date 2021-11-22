@@ -116,7 +116,7 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
 
     if auto_tracing do
       {:ok, _} =
-        AutoTracingContext.auto_tracing_add_problem_if_not_exists(
+        AutoTracingContext.auto_tracing_add_problem(
           auto_tracing,
           :possible_index_submission
         )
