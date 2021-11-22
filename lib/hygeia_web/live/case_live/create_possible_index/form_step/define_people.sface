@@ -444,6 +444,7 @@
       :if={not Enum.empty?(Map.get(@form_data, :bindings, []))}
     >
       <Checkbox
+        id="check-all-checkbox"
         class="p-2 me-3"
         hidden_input="false"
         opts={
@@ -469,6 +470,7 @@
           Enum.with_index(Map.get(@form_data, :bindings, []))}
         <div class="d-flex">
           <Checkbox
+            id="check-person-checkbox"
             class="p-2 me-3"
             hidden_input="false"
             opts={
