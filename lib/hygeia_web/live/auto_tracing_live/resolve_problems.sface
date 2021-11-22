@@ -308,7 +308,7 @@
                             <div class="card card-body">
                               {#if organisation = visit.organisation || visit.unknown_organisation}
                                 <strong>{organisation.name}</strong>
-                                <small :if={organisation.type} class="d-block text-muted">
+                                <small :if={visit.organisation} class="d-block text-muted">
                                   {Organisation.type_name(visit.organisation)}
                                 </small>
                                 <small class="d-block text-muted" :if={organisation.address}>{Address.to_string(organisation.address, :long)}</small>
