@@ -38,10 +38,8 @@ defmodule HygeiaWeb.VisitLive.Index do
   defp load_data(socket, person) do
     person = Repo.preload(person, tenant: [], visits: [:organisation, :division])
 
-    changeset = CaseContext.change_person(person)
-
     socket
-    |> assign(person: person, changeset: changeset)
+    |> assign(person: person)
     |> assign(
       page_title:
         "#{person.first_name} #{person.last_name} - #{gettext("Visits")} - #{gettext("Person")}"
