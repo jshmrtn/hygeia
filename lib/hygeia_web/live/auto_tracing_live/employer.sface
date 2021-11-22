@@ -24,10 +24,7 @@
                     active: get_field(@changeset, :employed) == true,
                     disabled: has_related_visit_occupations?(@changeset)
                   }>
-                    <RadioButton
-                      value
-                      opts={disabled: has_related_visit_occupations?(@changeset)}
-                    />
+                    <RadioButton value opts={disabled: has_related_visit_occupations?(@changeset)} />
                     {gettext("Yes")}
                   </label>
                   <label class={
@@ -36,10 +33,7 @@
                     "btn-outline-primary",
                     active: get_field(@changeset, :employed) == false
                   }>
-                    <RadioButton
-                      value={false}
-                      opts={disabled: has_related_visit_occupations?(@changeset)}
-                    />
+                    <RadioButton value={false} opts={disabled: has_related_visit_occupations?(@changeset)} />
                     {gettext("No")}
                   </label>
                 </div>
@@ -79,11 +73,10 @@
                       <Field class="form-group" name={:known_organisation_uuid}>
                         <HygeiaWeb.FieldLabel />
                         <HygeiaWeb.OrganisationLive.Choose
-                          disabled={fetch_field!(occupation.source, :not_found)}
+                          disabled={fetch_field!(occupation.source, :not_found) or is_visit_related?(occupation.source)}
                           id={"occupation_#{fetch_field!(occupation.source, :uuid)}_organisation"}
                           change="select_affiliation_organisation"
                           subject={fetch_field!(occupation.source, :uuid)}
-                          disabled={is_visit_related?(occupation.source)}
                         />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
@@ -116,7 +109,7 @@
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                         <Inputs for={:address}>
-                          <HygeiaWeb.AddressForm 
+                          <HygeiaWeb.AddressForm
                             id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_organisation_address"}
                             disabled={is_visit_related?(occupation.source)}
                           />
@@ -173,7 +166,7 @@
                               <ErrorTag class="d-block invalid-feedback" />
                             </Field>
                             <Inputs for={:address}>
-                              <HygeiaWeb.AddressForm 
+                              <HygeiaWeb.AddressForm
                                 id={"occupation_#{fetch_field!(division.source, :uuid)}_unknown_division_address"}
                                 disabled={is_visit_related?(occupation.source)}
                               />
@@ -190,7 +183,7 @@
                     </div>
 
                     <button
-                      :if={is_visit_related?(occupation.source) == nil}
+                      :if={is_visit_related?(occupation.source)}
                       class="btn btn-danger mb-4"
                       type="button"
                       :on-click="remove_occupation"

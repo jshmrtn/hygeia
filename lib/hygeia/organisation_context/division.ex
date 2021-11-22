@@ -8,6 +8,7 @@ defmodule Hygeia.OrganisationContext.Division do
   alias Hygeia.CaseContext.Address
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Visit
 
   @derive {Phoenix.Param, key: :uuid}
 

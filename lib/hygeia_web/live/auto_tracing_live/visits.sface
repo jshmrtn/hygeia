@@ -1,4 +1,4 @@
-<div id="step_visits" class="container component-auto-tracing-employer">
+<div id="step_visits" class="container component-auto-tracing-visits">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
   <h4>
     {gettext("Visits to educational institutions")}

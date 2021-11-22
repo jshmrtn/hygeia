@@ -3,33 +3,10 @@ defmodule HygeiaWeb.VisitLive.Create do
 
   use HygeiaWeb, :surface_view
 
-  import Ecto.Changeset
-
   alias Hygeia.CaseContext
-  alias Hygeia.CaseContext.Address
-  alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Person
-  alias Hygeia.EctoType.NOGA
-  alias Hygeia.Helpers.Empty
   alias Hygeia.OrganisationContext
-  alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.OrganisationContext.Visit
-  alias Hygeia.OrganisationContext.Visit.Reason
-  alias Hygeia.Repo
-  alias Hygeia.TenantContext
-  alias HygeiaWeb.DateInput
   alias Surface.Components.Form
-  alias Surface.Components.Form.ErrorTag
-  alias Surface.Components.Form.Field
-  alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
-  alias Surface.Components.Form.Inputs
-  alias Surface.Components.Form.RadioButton
-  alias Surface.Components.Form.Select
-  alias Surface.Components.Form.TextArea
-  alias Surface.Components.Form.TextInput
-  alias Surface.Components.Link
-  alias Surface.Components.LivePatch
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
@@ -52,95 +29,68 @@ defmodule HygeiaWeb.VisitLive.Create do
 
   def handle_event(
         "select_visit_organisation",
-        %{"subject" => visit_uuid} = params,
-        %{assigns: %{changeset: changeset, person: person}} = socket
+        params,
+        %{assigns: %{changeset: changeset}} = socket
       ) do
     {:noreply,
-     socket
-     |> assign(
+     assign(
+       socket,
        :changeset,
-       CaseContext.change_person(
-         person,
-         changeset_update_params_by_id(
-           changeset,
-           :visits,
-           %{uuid: visit_uuid},
-           &Map.put(&1, "organisation_uuid", params["uuid"])
-         )
+       OrganisationContext.change_visit(
+         changeset,
+         %{organisation_uuid: params["uuid"]}
        )
-     )
-     |> maybe_block_navigation()}
+     )}
   end
 
   def handle_event(
         "select_visit_division",
-        %{"subject" => visit_uuid} = params,
-        %{assigns: %{changeset: changeset, person: person}} = socket
+        params,
+        %{assigns: %{changeset: changeset}} = socket
       ) do
     {:noreply,
-     socket
-     |> assign(
+     assign(
+       socket,
        :changeset,
-       CaseContext.change_person(
-         person,
-         changeset_update_params_by_id(
-           changeset,
-           :visits,
-           %{uuid: visit_uuid},
-           &Map.put(&1, "division_uuid", params["uuid"])
-         )
+       OrganisationContext.change_visit(
+         changeset,
+         %{division_uuid: params["uuid"]}
        )
-     )
-     |> maybe_block_navigation()}
+     )}
   end
 
-  def handle_event("save", %{"person" => person_params}, socket) do
-    true = authorized?(socket.assigns.person, :update, get_auth(socket))
+  @impl Phoenix.LiveView
+  def handle_event("validate", %{"visit" => visit_params}, socket) do
+    {:noreply,
+     assign(socket, :changeset, %{
+       OrganisationContext.change_visit(%Visit{}, visit_params)
+       | action: :validate
+     })}
+  end
 
-    person_params = Map.put_new(person_params, "visits", [])
-
+  def handle_event("save", %{"visit" => visit_params}, socket) do
     socket.assigns.person
-    |> CaseContext.update_person(person_params)
+    |> OrganisationContext.create_visit(visit_params)
     |> case do
-      {:ok, person} ->
+      {:ok, visit} ->
         {:noreply,
          socket
-         |> load_data(person)
-         |> put_flash(:info, gettext("Visits updated successfully"))
-         |> push_patch(to: Routes.person_visits_path(socket, :index, person))}
+         |> put_flash(:info, gettext("Visit created successfully"))
+         |> redirect(to: Routes.visit_index_path(socket, :index, visit.person_uuid))}
 
       {:error, changeset} ->
-        {:noreply,
-         socket
-         |> assign(changeset: changeset)
-         |> maybe_block_navigation()}
+        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 
   defp load_data(socket, person) do
-    person = Repo.preload(person, tenant: [], visits: [])
-
     changeset = OrganisationContext.change_visit(Ecto.build_assoc(person, :visits))
 
     socket
     |> assign(person: person, changeset: changeset)
     |> assign(
-      page_title: "#{person.first_name} #{person.last_name} - #{gettext("Visits")} - #{gettext("Person")}"
+      page_title:
+        "#{person.first_name} #{person.last_name} - #{gettext("Visits")} - #{gettext("Person")}"
     )
-    |> maybe_block_navigation()
-  end
-
-  defp load_people_by_id(ids) do
-    CaseContext.list_people_by_ids(ids)
-  end
-
-  defp load_organisation(id), do: OrganisationContext.get_organisation!(id)
-
-  defp maybe_block_navigation(%{assigns: %{changeset: changeset}} = socket) do
-    if Empty.is_empty?(changeset, [:suspected_duplicates_uuid]) do
-      push_event(socket, "unblock_navigation", %{})
-    else
-      push_event(socket, "block_navigation", %{})
-    end
   end
 end

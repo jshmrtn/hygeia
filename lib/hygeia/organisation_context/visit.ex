@@ -12,36 +12,41 @@ defmodule Hygeia.OrganisationContext.Visit do
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Visit.Reason
 
-
   @type empty :: %__MODULE__{
-    reason: Reason.t() | nil,
-    other_reason: String.t() | nil,
-    last_visit_at: Date.t() | nil,
-    organisation_uuid: Ecto.UUID.t() | nil,
-    organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
-    unknown_organisation: Entity.t() | nil,
-    division_uuid: Ecto.UUID.t() | nil,
-    division: Ecto.Schema.belongs_to(Division.t()) | nil,
-    unknown_division: Entity.t() | nil,
-    affiliation: Ecto.Schema.has_many(Affiliation.t()),
-    inserted_at: DateTime.t() | nil,
-    updated_at: DateTime.t() | nil
-  }
+          uuid: Ecto.UUID.t() | nil,
+          reason: Reason.t() | nil,
+          other_reason: String.t() | nil,
+          last_visit_at: Date.t() | nil,
+          person_uuid: Ecto.UUID.t() | nil,
+          person: Ecto.Schema.belongs_to(Person.t()) | nil,
+          organisation_uuid: Ecto.UUID.t() | nil,
+          organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
+          unknown_organisation: Entity.t() | nil,
+          division_uuid: Ecto.UUID.t() | nil,
+          division: Ecto.Schema.belongs_to(Division.t()) | nil,
+          unknown_division: Entity.t() | nil,
+          affiliation: Ecto.Schema.has_one(Affiliation.t()),
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
+        }
 
-@type t :: %__MODULE__{
-    reason: Reason.t() | nil,
-    other_reason: String.t() | nil,
-    last_visit_at: Date.t() | nil,
-    organisation_uuid: Ecto.UUID.t() | nil,
-    organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
-    unknown_organisation: Entity.t() | nil,
-    division_uuid: Ecto.UUID.t() | nil,
-    division: Ecto.Schema.belongs_to(Division.t()) | nil,
-    unknown_division: Entity.t() | nil,
-    affiliation: Ecto.Schema.has_one(Affiliation.t()),
-    inserted_at: DateTime.t() | nil,
-    updated_at: DateTime.t() | nil
-  }
+  @type t :: %__MODULE__{
+          uuid: Ecto.UUID.t() | nil,
+          reason: Reason.t() | nil,
+          other_reason: String.t() | nil,
+          last_visit_at: Date.t() | nil,
+          person_uuid: Ecto.UUID.t() | nil,
+          person: Ecto.Schema.belongs_to(Person.t()) | nil,
+          organisation_uuid: Ecto.UUID.t() | nil,
+          organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
+          unknown_organisation: Entity.t() | nil,
+          division_uuid: Ecto.UUID.t() | nil,
+          division: Ecto.Schema.belongs_to(Division.t()) | nil,
+          unknown_division: Entity.t() | nil,
+          affiliation: Ecto.Schema.has_one(Affiliation.t()),
+          inserted_at: DateTime.t() | nil,
+          updated_at: DateTime.t() | nil
+        }
 
   schema "visits" do
     field :reason, Reason
@@ -49,6 +54,7 @@ defmodule Hygeia.OrganisationContext.Visit do
     field :last_visit_at, :date
 
     belongs_to :person, Person, references: :uuid, foreign_key: :person_uuid
+
     belongs_to :organisation, Organisation,
       foreign_key: :organisation_uuid,
       references: :uuid
@@ -61,11 +67,16 @@ defmodule Hygeia.OrganisationContext.Visit do
 
     embeds_one :unknown_division, Entity, on_replace: :delete
 
-    has_one :affiliation, Affiliation, foreign_key: :related_visit_uuid, on_replace: :update, on_delete: :delete_all
+    has_one :affiliation, Affiliation,
+      foreign_key: :related_visit_uuid,
+      on_replace: :update,
+      on_delete: :delete_all
 
     timestamps()
   end
 
+  @spec changeset(visit :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
+          Changeset.t()
   @doc false
   def changeset(visit, attrs) do
     visit
@@ -78,12 +89,11 @@ defmodule Hygeia.OrganisationContext.Visit do
       :organisation_uuid,
       :division_uuid
     ])
+    |> assoc_constraint(:person)
     |> validate_required([:reason])
     |> validate_other_reason()
     |> validate_organisation()
-    |> validate_unknown_organisation()
     |> validate_division()
-    |> validate_unknown_division()
   end
 
   defp validate_other_reason(changeset) do
@@ -99,17 +109,11 @@ defmodule Hygeia.OrganisationContext.Visit do
     changeset
     |> fetch_field!(:organisation_uuid)
     |> case do
-      nil -> changeset
-      _uuid -> put_embed(changeset, :unknown_organisation, nil)
-    end
-  end
+      nil ->
+        cast_embed(changeset, :unknown_organisation)
 
-  defp validate_unknown_organisation(changeset) do
-    changeset
-    |> fetch_field!(:unknown_organisation)
-    |> case do
-      nil -> changeset
-      _uuid -> put_change(changeset, :organisation_uuid, nil)
+      _else ->
+        put_embed(changeset, :unknown_organisation, nil)
     end
   end
 
@@ -117,24 +121,49 @@ defmodule Hygeia.OrganisationContext.Visit do
     changeset
     |> fetch_field!(:division_uuid)
     |> case do
-      nil -> changeset
+      nil -> cast_embed(changeset, :unknown_division)
       _else -> put_embed(changeset, :unknown_division, nil)
     end
   end
 
-  defp validate_unknown_division(changeset) do
-    changeset
-    |> fetch_field!(:unknown_division)
-    |> case do
-      nil -> changeset
-      _else -> put_change(changeset, :division_uuid, nil)
-    end
-  end
+  # defp validate_organisation(changeset) do
+  #   changeset
+  #   |> fetch_field!(:organisation_uuid)
+  #   |> case do
+  #     nil -> changeset
+  #     _uuid -> put_embed(changeset, :unknown_organisation, nil)
+  #   end
+  # end
+
+  # defp validate_unknown_organisation(changeset) do
+  #   changeset
+  #   |> fetch_field!(:unknown_organisation)
+  #   |> case do
+  #     nil -> changeset
+  #     _uuid -> put_change(changeset, :organisation_uuid, nil)
+  #   end
+  # end
+
+  # defp validate_division(changeset) do
+  #   changeset
+  #   |> fetch_field!(:division_uuid)
+  #   |> case do
+  #     nil -> changeset
+  #     _else -> put_embed(changeset, :unknown_division, nil)
+  #   end
+  # end
+
+  # defp validate_unknown_division(changeset) do
+  #   changeset
+  #   |> fetch_field!(:unknown_division)
+  #   |> case do
+  #     nil -> changeset
+  #     _else -> put_change(changeset, :division_uuid, nil)
+  #   end
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person
     alias Hygeia.OrganisationContext.Visit
-    alias Hygeia.Repo
     alias Hygeia.UserContext.User
 
     @spec preload(resource :: Visit.t()) :: Visit.t()

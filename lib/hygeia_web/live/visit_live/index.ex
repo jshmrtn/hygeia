@@ -5,7 +5,6 @@ defmodule HygeiaWeb.VisitLive.Index do
 
   alias Hygeia.CaseContext
   alias Hygeia.OrganisationContext
-  alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.OrganisationContext.Visit
   alias Hygeia.OrganisationContext.Visit.Reason
   alias Hygeia.Repo
@@ -16,7 +15,6 @@ defmodule HygeiaWeb.VisitLive.Index do
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Entity
   alias Hygeia.OrganisationContext
-  alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
 
@@ -46,7 +44,8 @@ defmodule HygeiaWeb.VisitLive.Index do
     socket
     |> assign(person: person, changeset: changeset)
     |> assign(
-      page_title: "#{person.first_name} #{person.last_name} - #{gettext("Visits")} - #{gettext("Person")}"
+      page_title:
+        "#{person.first_name} #{person.last_name} - #{gettext("Visits")} - #{gettext("Person")}"
     )
   end
 

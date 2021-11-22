@@ -274,6 +274,10 @@ msgstr "Sind Sie sicher?"
 msgid "Are you sure? There are affiliations assigned!"
 msgstr "Sind Sie sicher? Es existieren Zugehörigkeiten!"
 
+#, fuzzy
+msgid "Are you sure? There are visits assigned!"
+msgstr "Sind Sie sicher? Es existieren Zugehörigkeiten!"
+
 msgid "Are you working in an association?"
 msgstr "Wirken Sie in einem Verein mit?"
 
@@ -549,6 +553,11 @@ msgid "Choose profession category"
 msgstr "Wählen Sie die Berufskategorie"
 
 msgctxt "Reason"
+msgid "Choose reason"
+msgstr "Grund wählen"
+
+#, fuzzy
+msgctxt "Affiliation"
 msgid "Choose reason"
 msgstr "Grund wählen"
 
@@ -870,6 +879,11 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Date of last visit"
 msgstr "Datum des letzten Besuchs"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
+msgid "Date of last visit"
+msgstr "Datum des letzten Besuchs"
+
 msgid "Dear Sir / Madam"
 msgstr "Sehr geehrte Damen & Herren"
 
@@ -1137,6 +1151,11 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division"
 msgstr "Abteilung / Klasse"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
+msgid "Division"
+msgstr "Abteilung / Klasse"
+
 msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division UUID"
 msgstr "Abteilung / Klasse UUID"
@@ -1150,6 +1169,11 @@ msgstr "Abteilung / Klasse erfolgreich gelöscht"
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Division not found"
 msgstr "Abteilung / Klasse nicht gefunden"
+
+#, fuzzy
+msgctxt "Visits"
+msgid "Division not provided"
+msgstr "Abteilung / Klasse nicht angegeben."
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Division not provided."
@@ -1292,6 +1316,11 @@ msgid "Employee"
 msgstr "Mitarbeiter"
 
 msgctxt "School visit reason"
+msgid "Employee"
+msgstr "Mitarbeiter"
+
+#, fuzzy
+msgctxt "Visit reason"
 msgid "Employee"
 msgstr "Mitarbeiter"
 
@@ -2422,6 +2451,10 @@ msgstr "Neuer Test"
 msgid "New Transmission"
 msgstr "Neue Übertragung"
 
+#, fuzzy
+msgid "New Visit"
+msgstr "Neuer Test"
+
 msgid "New affiliation"
 msgstr "Neue Zugehörigkeit"
 
@@ -2460,6 +2493,10 @@ msgstr "Neuer Test"
 
 msgid "New transmission"
 msgstr "Neue Übertragung"
+
+#, fuzzy
+msgid "New visit"
+msgstr "Neuer Test"
 
 msgid "Next"
 msgstr "Weiter"
@@ -2599,6 +2636,11 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Organisation"
 msgstr "Organisation"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
+msgid "Organisation"
+msgstr "Organisation"
+
 msgid "Organisation Positions"
 msgstr "Organisationspositionen"
 
@@ -2685,6 +2727,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmissi
 msgid "Other"
 msgstr "Andere"
 
+#, fuzzy
+msgctxt "Visit reason"
+msgid "Other"
+msgstr "Andere"
+
 msgctxt "Case Status"
 msgid "Other Actions To Do"
 msgstr "Sonstige Aktion noch durchzuführen"
@@ -2700,6 +2747,11 @@ msgstr "Anderer Endgrund"
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "Other Type"
 msgstr "Anderer Typ"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
+msgid "Other reason"
+msgstr "Anderer Endgrund"
 
 msgctxt "Possible Index Type"
 msgid "Outbreak Examination"
@@ -3053,6 +3105,11 @@ msgctxt "School visit reason"
 msgid "Professor"
 msgstr "Dozent/Professor/Lehrerin"
 
+#, fuzzy
+msgctxt "Visit reason"
+msgid "Professor"
+msgstr "Dozent/Professor/Lehrerin"
+
 msgid "Profile"
 msgstr "Profil"
 
@@ -3173,8 +3230,18 @@ msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Reason"
 msgstr "Grund"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
+msgid "Reason"
+msgstr "Grund"
+
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Reason for you visit"
+msgstr "Grund für Ihren Besuch"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Reason for your visit"
 msgstr "Grund für Ihren Besuch"
 
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
@@ -3692,6 +3759,11 @@ msgctxt "School visit reason"
 msgid "Student"
 msgstr "Schüler/Studentin"
 
+#, fuzzy
+msgctxt "Visit reason"
+msgid "Student"
+msgstr "Schüler/Studentin"
+
 msgid "Sub-Type"
 msgstr "Untertyp"
 
@@ -4040,6 +4112,10 @@ msgstr "Dieser Fall befindet sich nicht in einer Indexphase."
 msgid "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
 msgstr "Dieser Eintrag kann nicht bearbeitet werden, da er die Konsequenz der Informationen, welche bei den Bildungseinrichtungen eingegeben wurden, ist."
 
+#, fuzzy
+msgid "This entry cannot be modified because it is a consequence of the information provided in the previous step."
+msgstr "Dieser Eintrag kann nicht bearbeitet werden, da er die Konsequenz der Informationen, welche bei den Bildungseinrichtungen eingegeben wurden, ist."
+
 msgid "This organisation has a possible duplicate."
 msgid_plural "This organisation has %{count} possible duplicates."
 msgstr[0] "Diese Organisation ist möglicherweise ein Duplikat."
@@ -4299,12 +4375,27 @@ msgctxt "Sex"
 msgid "Unknown"
 msgstr "Unbekannt"
 
+#, fuzzy
+msgctxt "Visits"
+msgid "Unknown"
+msgstr "Unbekannt"
+
 msgid "Unknown Error"
 msgstr "Unbekannter Fehler"
 
 msgid "Unknown division"
 msgstr "Unbekannte Abteilung / Klasse"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
+msgid "Unknown division"
+msgstr "Unbekannte Abteilung / Klasse"
+
+msgid "Unknown organisation"
+msgstr "Unbekannte Organisation"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Unknown organisation"
 msgstr "Unbekannte Organisation"
 
@@ -4389,13 +4480,46 @@ msgstr "Verschiedenste Informationen zur Funktionsweise der Applikation sowie zu
 msgid "View"
 msgstr "Ansehen"
 
+#, fuzzy
+msgid "Visit"
+msgstr "Besucher"
+
+#, fuzzy
+msgid "Visit created successfully"
+msgstr "Test wurde erfolgreich erstellt"
+
+#, fuzzy
+msgid "Visit deleted successfully"
+msgstr "Organisation erfolgreich gelöscht"
+
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Visit reason"
 msgstr "Grund Besuch"
 
+#, fuzzy
+msgid "Visit updated successfully"
+msgstr "Test wurde erfolgreich aktualisiert"
+
 msgctxt "School visit reason"
 msgid "Visitor"
 msgstr "Besucher"
+
+#, fuzzy
+msgctxt "Visit reason"
+msgid "Visitor"
+msgstr "Besucher"
+
+#, fuzzy
+msgid "Visits"
+msgstr "Besucher"
+
+#, fuzzy
+msgctxt "Auto Tracing Step"
+msgid "Visits"
+msgstr "Besucher"
+
+msgid "Visits to educational institutions"
+msgstr "Besuche in Bildungseinrichtungen"
 
 msgctxt "Case Status"
 msgid "Wainting for Contact Person List"

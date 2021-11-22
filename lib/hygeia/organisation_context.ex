@@ -12,6 +12,7 @@ defmodule Hygeia.OrganisationContext do
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Position
+  alias Hygeia.OrganisationContext.Visit
 
   @doc """
   Returns the list of organisations.
@@ -739,8 +740,6 @@ defmodule Hygeia.OrganisationContext do
     end
   end
 
-  alias Hygeia.OrganisationContext.Visit
-
   @doc """
   Returns the list of visits.
 
@@ -750,6 +749,7 @@ defmodule Hygeia.OrganisationContext do
       [%Visit{}, ...]
 
   """
+  @spec list_visits :: [Visit.t()]
   def list_visits do
     Repo.all(Visit)
   end
@@ -768,6 +768,7 @@ defmodule Hygeia.OrganisationContext do
       ** (Ecto.NoResultsError)
 
   """
+  @spec get_visit!(id :: Ecto.UUID.t()) :: Visit.t()
   def get_visit!(id), do: Repo.get!(Visit, id)
 
   @doc """
@@ -782,11 +783,16 @@ defmodule Hygeia.OrganisationContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_visit(attrs \\ %{}) do
-    %Visit{}
-    |> Visit.changeset(attrs)
-    |> Repo.insert()
-  end
+  @spec create_visit(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Visit.t()} | {:error, Ecto.Changeset.t(Visit.t())}
+  def create_visit(person, attrs),
+    do:
+      person
+      |> Ecto.build_assoc(:visits)
+      |> change_visit(attrs)
+      |> versioning_insert()
+      |> broadcast("visits", :create, & &1.uuid, &["persons:#{&1.person_uuid}"])
+      |> versioning_extract()
 
   @doc """
   Updates a visit.
@@ -800,10 +806,17 @@ defmodule Hygeia.OrganisationContext do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec update_visit(
+          visit :: Visit.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          {:ok, Visit.t()} | {:error, Ecto.Changeset.t(Visit.t())}
   def update_visit(%Visit{} = visit, attrs) do
     visit
-    |> Visit.changeset(attrs)
-    |> Repo.update()
+    |> change_visit(attrs)
+    |> versioning_update()
+    |> broadcast("visits", :update)
+    |> versioning_extract()
   end
 
   @doc """
@@ -818,8 +831,14 @@ defmodule Hygeia.OrganisationContext do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec delete_visit(visit :: Visit.t()) ::
+          {:ok, Visit.t()} | {:error, Ecto.Changeset.t(Visit.t())}
   def delete_visit(%Visit{} = visit) do
-    Repo.delete(visit)
+    visit
+    |> change_visit()
+    |> versioning_delete()
+    |> broadcast("visits", :delete)
+    |> versioning_extract()
   end
 
   @doc """
@@ -831,7 +850,49 @@ defmodule Hygeia.OrganisationContext do
       %Ecto.Changeset{data: %Visit{}}
 
   """
-  def change_visit(%Visit{} = visit, attrs \\ %{}) do
+  @spec change_visit(
+          visit :: Visit.t() | Ecto.Changeset.t(Visit.t()),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Ecto.Changeset.t(Visit.t())
+  def change_visit(visit, attrs \\ %{}) do
     Visit.changeset(visit, attrs)
+  end
+
+  @spec propagate_organisation_and_division(subject :: Visit.t() | Affiliation.t()) :: :ok
+  def propagate_organisation_and_division(%Visit{} = visit) do
+    visit
+    |> Repo.preload(:affiliation)
+    |> Map.get(:affiliation)
+    |> case do
+      nil ->
+        :ok
+
+      affiliation ->
+        {:ok, _affiliation} =
+          update_affiliation(affiliation, %{
+            organisation_uuid: visit.organisation_uuid,
+            division_uuid: visit.division_uuid
+          })
+
+        :ok
+    end
+  end
+
+  def propagate_organisation_and_division(%Affiliation{} = affiliation) do
+    affiliation
+    |> Map.get(:related_visit_uuid)
+    |> case do
+      nil ->
+        :ok
+
+      visit_uuid ->
+        {:ok, _visit} =
+          update_visit(get_visit!(visit_uuid), %{
+            organisation_uuid: affiliation.organisation_uuid,
+            division_uuid: affiliation.division_uuid
+          })
+
+        :ok
+    end
   end
 end

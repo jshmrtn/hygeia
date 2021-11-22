@@ -221,7 +221,7 @@ defmodule HygeiaWeb.Router do
     live "/users", UserLive.Index, :index
     live "/users/:id", UserLive.Show, :show
 
-    live "/people/:id/visits", VisitLive.Index, :show
+    live "/people/:id/visits", VisitLive.Index, :index
     live "/people/:id/visits/new", VisitLive.Create, :create
     live "/people/visits/:visit_id", VisitLive.Show, :show
     live "/people/visits/:visit_id/edit", VisitLive.Show, :edit

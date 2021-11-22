@@ -3,23 +3,14 @@ defmodule HygeiaWeb.VisitLive.Show do
 
   use HygeiaWeb, :surface_view
 
-  alias Hygeia.CaseContext
-  alias Hygeia.OrganisationContext
-  alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.OrganisationContext.Visit
-  alias Hygeia.OrganisationContext.Visit.Reason
   alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
   alias Surface.Components.LiveRedirect
 
-  alias Hygeia.CaseContext.Address
-  alias Hygeia.CaseContext.Entity
   alias Hygeia.OrganisationContext
-  alias Hygeia.OrganisationContext.Affiliation
-  alias Hygeia.OrganisationContext.Division
-  alias Hygeia.OrganisationContext.Organisation
 
   @impl Phoenix.LiveView
   def handle_params(%{"visit_id" => visit_id}, _uri, socket) do
@@ -27,7 +18,7 @@ defmodule HygeiaWeb.VisitLive.Show do
 
     socket =
       if authorized?(
-          visit,
+           visit,
            case socket.assigns.live_action do
              :edit -> :update
              :show -> :details
@@ -46,28 +37,45 @@ defmodule HygeiaWeb.VisitLive.Show do
     {:noreply, socket}
   end
 
-  defp load_data(socket, visit) do
-    visit = Repo.preload(visit, [:organisation, :division, :person])
+  def handle_event(
+        "select_visit_organisation",
+        params,
+        %{assigns: %{changeset: changeset}} = socket
+      ) do
+    {:noreply,
+     assign(
+       socket,
+       :changeset,
+       OrganisationContext.change_visit(
+         changeset,
+         %{organisation_uuid: params["uuid"]}
+       )
+     )}
+  end
 
-    changeset = OrganisationContext.change_visit(visit)
-
-    socket
-    |> assign(
-      visit: visit,
-      person: visit.person,
-      changeset: changeset,
-      page_title: gettext("Visit")
-    )
-    |> maybe_block_navigation()
+  def handle_event(
+        "select_visit_division",
+        params,
+        %{assigns: %{changeset: changeset}} = socket
+      ) do
+    {:noreply,
+     assign(
+       socket,
+       :changeset,
+       OrganisationContext.change_visit(
+         changeset,
+         %{division_uuid: params["uuid"]}
+       )
+     )}
   end
 
   @impl Phoenix.LiveView
-  def handle_event("validate", %{"visit" => visit}, socket) do
+  def handle_event("validate", %{"visit" => visit_params}, socket) do
     {:noreply,
      socket
      |> assign(
        changeset: %{
-         OrganisationContext.change_visit(%Visit{}, visit)
+         OrganisationContext.change_visit(socket.assigns.visit, visit_params)
          | action: :validate
        }
      )
@@ -98,6 +106,8 @@ defmodule HygeiaWeb.VisitLive.Show do
     |> OrganisationContext.update_visit(visit_params)
     |> case do
       {:ok, visit} ->
+        :ok = OrganisationContext.propagate_organisation_and_division(visit)
+
         {:noreply,
          socket
          |> load_data(visit)
@@ -121,7 +131,7 @@ defmodule HygeiaWeb.VisitLive.Show do
     {:noreply,
      socket
      |> put_flash(:info, gettext("Visit deleted successfully"))
-     |> redirect(to: Routes.visit_index_path(socket, :show, visit.person.uuid))}
+     |> redirect(to: Routes.visit_index_path(socket, :index, visit.person.uuid))}
   end
 
   @impl Phoenix.LiveView
@@ -130,6 +140,21 @@ defmodule HygeiaWeb.VisitLive.Show do
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
+
+  defp load_data(socket, visit) do
+    visit = Repo.preload(visit, [:organisation, :division, :person])
+
+    changeset = OrganisationContext.change_visit(visit)
+
+    socket
+    |> assign(
+      visit: visit,
+      person: visit.person,
+      changeset: changeset,
+      page_title: gettext("Visit")
+    )
+    |> maybe_block_navigation()
+  end
 
   defp maybe_block_navigation(%{assigns: %{changeset: %{changes: changes}}} = socket) do
     if changes == %{} do

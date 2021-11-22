@@ -16,12 +16,15 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
 
       add :person_uuid, references(:people, on_delete: :delete_all), null: false
 
-      add :organisation_uuid, references(:organisations, on_delete: :delete_all, type: :binary_id),
-        null: true
+      add :organisation_uuid,
+          references(:organisations, on_delete: :delete_all, type: :binary_id),
+          null: true
+
       add :unknown_organisation, :map
 
-      add :division_uuid, references(:divisions, on_delete: :nillify_all, type: :binary_id),
+      add :division_uuid, references(:divisions, on_delete: :nilify_all, type: :binary_id),
         null: true
+
       add :unknown_division, :map
 
       timestamps()

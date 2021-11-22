@@ -28,6 +28,7 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Visit
   alias Hygeia.Repo
   alias Hygeia.SystemMessageContext
   alias Hygeia.SystemMessageContext.SystemMessage
@@ -239,6 +240,16 @@ defmodule Hygeia.Fixtures do
       |> OrganisationContext.create_organisation()
 
     organisation
+  end
+
+  @doc """
+  Generate a visit.
+  """
+  @spec visit_fixture(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) :: Visit.t()
+  def visit_fixture(person, attrs \\ %{}) do
+    {:ok, visit} = Hygeia.OrganisationContext.create_visit(person, attrs)
+
+    visit
   end
 
   @valid_attrs %{

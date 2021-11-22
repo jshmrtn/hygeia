@@ -37,6 +37,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
   @impl Phoenix.LiveView
   # credo:disable-for-next-line Credo.Check.Refactor.ABCSize
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
     case =
       case_uuid
@@ -84,6 +85,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
             employed:
               cond do
                 Enum.any?(occupations) -> true
+                is_nil(case.auto_tracing.employed) -> nil
                 case.auto_tracing.employed and Enum.empty?(occupations) -> nil
                 true -> false
               end,
@@ -212,20 +214,17 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
           assign(socket, changeset: changeset)
 
         {:ok, %__MODULE__{employed: employed} = step} ->
-          person_changeset = add_affiliations_to_person(person, step)
+          {:ok, person} =
+            person
+            |> add_affiliations_to_person(step)
+            |> CaseContext.update_person()
 
-          {:ok, _person} = CaseContext.update_person(person_changeset)
-
-          auto_tracing_changeset =
-            auto_tracing
-            |> AutoTracingContext.change_auto_tracing()
-            |> put_change(:employed, employed)
-
-          {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
+          {:ok, auto_tracing} =
+            AutoTracingContext.update_auto_tracing(auto_tracing, %{employed: employed})
 
           {:ok, auto_tracing} =
             if Enum.any?(
-                 step.occupations,
+                 person.affiliations,
                  &(is_map(&1.unknown_organisation) or is_map(&1.unknown_division))
                ) do
               {:ok, _auto_tracing} =
@@ -312,7 +311,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
   defp has_related_visit_occupations?(changeset) do
     changeset
     |> fetch_field!(:occupations)
-    |> Enum.filter(& not is_nil(&1.related_visit_uuid))
+    |> Enum.filter(&(not is_nil(&1.related_visit_uuid)))
     |> Enum.any?()
   end
 

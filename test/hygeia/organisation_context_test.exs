@@ -7,6 +7,8 @@ defmodule Hygeia.OrganisationContextTest do
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Position
+  alias Hygeia.OrganisationContext.Visit
 
   @moduletag origin: :test
   @moduletag originator: :noone
@@ -137,8 +139,6 @@ defmodule Hygeia.OrganisationContextTest do
   end
 
   describe "positions" do
-    alias Hygeia.OrganisationContext.Position
-
     @valid_attrs %{position: "some position"}
     @update_attrs %{position: "some updated position"}
     @invalid_attrs %{position: nil}
@@ -355,53 +355,52 @@ defmodule Hygeia.OrganisationContextTest do
   end
 
   describe "visits" do
-    alias Hygeia.OrganisationContext.Visit
-
-    import Hygeia.OrganisationContextFixtures
-
-    @invalid_attrs %{}
+    @invalid_attrs %{
+      reason: :wrong
+    }
 
     test "list_visits/0 returns all visits" do
-      visit = visit_fixture()
+      visit = visit_fixture(person_fixture(), %{reason: :student})
       assert OrganisationContext.list_visits() == [visit]
     end
 
     test "get_visit!/1 returns the visit with given id" do
-      visit = visit_fixture()
-      assert OrganisationContext.get_visit!(visit.id) == visit
+      visit = visit_fixture(person_fixture(), %{reason: :student})
+      assert OrganisationContext.get_visit!(visit.uuid) == visit
     end
 
     test "create_visit/1 with valid data creates a visit" do
-      valid_attrs = %{}
+      valid_attrs = %{reason: :visitor}
 
-      assert {:ok, %Visit{} = visit} = OrganisationContext.create_visit(valid_attrs)
+      assert {:ok, %Visit{}} = OrganisationContext.create_visit(person_fixture(), valid_attrs)
     end
 
     test "create_visit/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = OrganisationContext.create_visit(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               OrganisationContext.create_visit(person_fixture(), @invalid_attrs)
     end
 
     test "update_visit/2 with valid data updates the visit" do
-      visit = visit_fixture()
-      update_attrs = %{}
+      visit = visit_fixture(person_fixture(), %{reason: :student})
+      update_attrs = %{reason: :visitor}
 
-      assert {:ok, %Visit{} = visit} = OrganisationContext.update_visit(visit, update_attrs)
+      assert {:ok, %Visit{}} = OrganisationContext.update_visit(visit, update_attrs)
     end
 
     test "update_visit/2 with invalid data returns error changeset" do
-      visit = visit_fixture()
+      visit = visit_fixture(person_fixture(), %{reason: :student})
       assert {:error, %Ecto.Changeset{}} = OrganisationContext.update_visit(visit, @invalid_attrs)
-      assert visit == OrganisationContext.get_visit!(visit.id)
+      assert visit == OrganisationContext.get_visit!(visit.uuid)
     end
 
     test "delete_visit/1 deletes the visit" do
-      visit = visit_fixture()
+      visit = visit_fixture(person_fixture(), %{reason: :student})
       assert {:ok, %Visit{}} = OrganisationContext.delete_visit(visit)
-      assert_raise Ecto.NoResultsError, fn -> OrganisationContext.get_visit!(visit.id) end
+      assert_raise Ecto.NoResultsError, fn -> OrganisationContext.get_visit!(visit.uuid) end
     end
 
     test "change_visit/1 returns a visit changeset" do
-      visit = visit_fixture()
+      visit = visit_fixture(person_fixture(), %{reason: :student})
       assert %Ecto.Changeset{} = OrganisationContext.change_visit(visit)
     end
   end

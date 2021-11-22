@@ -66,8 +66,8 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
 
         true ->
           visits =
-            case.person.visits
-            |> Enum.map(
+            Enum.map(
+              case.person.visits,
               &%SchoolVisit{
                 uuid: Ecto.UUID.generate(),
                 is_occupied: not is_nil(&1.affiliation),
@@ -89,7 +89,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
                 [_visits | _rest] -> true
                 [] -> case.auto_tracing.scholar
               end,
-            school_visits: visits,
+            school_visits: visits
           }
 
           assign(socket,
