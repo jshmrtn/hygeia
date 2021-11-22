@@ -18,7 +18,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.LiveRedirect
 
-  @days_before_test 4
+  @days_before_test 6
 
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
