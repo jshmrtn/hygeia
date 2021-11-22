@@ -1172,6 +1172,7 @@ defmodule Hygeia.CaseContext do
           :quick -> 2
           :antigen_quick -> 3
           :antigen -> 4
+          :antibody -> 4
         end)
         |> List.update_at(@bag_med_16122020_case_fields_index.test_result, fn
           :positive -> 1
@@ -1796,6 +1797,7 @@ defmodule Hygeia.CaseContext do
           :quick -> 2
           :antigen_quick -> 3
           :antigen -> 4
+          :antibody -> 4
         end)
         |> List.update_at(@bag_med_16122020_contact_fields_index.test_result, fn
           :positive -> 1
