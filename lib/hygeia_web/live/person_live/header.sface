@@ -34,6 +34,8 @@
             </LiveRedirect>
           </UriActiveContext>
         </li>
+      {/if}
+      {#if authorized?(Visit, :list, auth, person: @person)}
         <li class="nav-item">
           <UriActiveContext
             to={Routes.visit_index_path(@socket, :index, @person)}

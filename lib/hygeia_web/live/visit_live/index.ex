@@ -60,7 +60,7 @@ defmodule HygeiaWeb.VisitLive.Index do
   def handle_event("delete", %{"id" => id} = _params, socket) do
     visit = Enum.find(socket.assigns.person.visits, &match?(%Visit{uuid: ^id}, &1))
 
-    true = authorized?(visit, :delete, get_auth(socket), %{person: socket.assigns.person})
+    true = authorized?(visit, :delete, get_auth(socket))
 
     {:ok, _} = OrganisationContext.delete_visit(visit)
 

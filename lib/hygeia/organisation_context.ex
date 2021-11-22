@@ -851,13 +851,14 @@ defmodule Hygeia.OrganisationContext do
 
   """
   @spec change_visit(
-          visit :: Visit.t() | Ecto.Changeset.t(Visit.t()),
+          visit :: Visit.t() | Visit.empty() | Ecto.Changeset.t(Visit.t() | Visit.empty()),
           attrs :: Hygeia.ecto_changeset_params()
         ) :: Ecto.Changeset.t(Visit.t())
   def change_visit(visit, attrs \\ %{}) do
     Visit.changeset(visit, attrs)
   end
 
+  # TODO: replace this with an event/trigger based approach
   @spec propagate_organisation_and_division(subject :: Visit.t() | Affiliation.t()) :: :ok
   def propagate_organisation_and_division(%Visit{} = visit) do
     visit

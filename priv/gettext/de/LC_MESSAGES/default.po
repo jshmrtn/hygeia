@@ -190,6 +190,11 @@ msgid "Address"
 msgstr "Adresse"
 
 #, fuzzy
+msgctxt "Person Visits"
+msgid "Address"
+msgstr "Adresse"
+
+#, fuzzy
 msgctxt "Create Possible Index Step"
 msgid "Administration"
 msgstr "Fall-Administration"
@@ -580,7 +585,17 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Class or division"
 msgstr "Abteilung / Klasse"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
+msgid "Class or division"
+msgstr "Abteilung / Klasse"
+
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division not found"
+msgstr "Abteilung / Klasse nicht gefunden"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
 msgstr "Abteilung / Klasse nicht gefunden"
 
@@ -884,6 +899,11 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Date of last visit"
 msgstr "Datum des letzten Besuchs"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
+msgid "Date of last visit"
+msgstr "Datum des letzten Besuchs"
+
 msgid "Dear Sir / Madam"
 msgstr "Sehr geehrte Damen & Herren"
 
@@ -1175,6 +1195,11 @@ msgctxt "Visits"
 msgid "Division not provided"
 msgstr "Abteilung / Klasse nicht angegeben."
 
+#, fuzzy
+msgctxt "Person Visits"
+msgid "Division not provided"
+msgstr "Abteilung / Klasse nicht angegeben."
+
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Division not provided."
 msgstr "Abteilung / Klasse nicht angegeben."
@@ -1259,6 +1284,11 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Educational institution"
+msgstr "Bildungseinrichtung"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Educational institution"
 msgstr "Bildungseinrichtung"
 
@@ -1958,6 +1988,11 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Institution not found"
 msgstr "Schule nicht gefunden"
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
+msgid "Institution not found"
+msgstr "Schule nicht gefunden"
+
 msgid "Internal"
 msgstr "Intern"
 
@@ -2367,6 +2402,11 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
 msgstr "Name"
 
+#, fuzzy
+msgctxt "Person Visits"
+msgid "Name"
+msgstr "Name"
+
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name of Vaccine"
 msgstr "Name Impfstoff"
@@ -2576,6 +2616,11 @@ msgid "Not Done"
 msgstr "Nicht Erledigt"
 
 msgctxt "Auto Tracing Resolve Problems"
+msgid "Not provided"
+msgstr "Nicht bereitgestellt"
+
+#, fuzzy
+msgctxt "Person Visits"
 msgid "Not provided"
 msgstr "Nicht bereitgestellt"
 
@@ -2887,6 +2932,10 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person UUID"
 msgstr "Person UUID"
 
+#, fuzzy
+msgid "Person Visits"
+msgstr "Person"
+
 msgid "Person created successfully"
 msgstr "Person wurde erfolgreich erstellt"
 
@@ -3003,6 +3052,11 @@ msgid "Please note that submitting contact persons only works in recent versions
 msgstr "Bitte beachten Sie, dass die Eingabe der Kontaktpersonen nur in aktuellen Versionen der folgenden Browser funktioniert:"
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Please specify your reason"
+msgstr "Grund für Ihren Besuch"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Please specify your reason"
 msgstr "Grund für Ihren Besuch"
 
@@ -3241,6 +3295,11 @@ msgstr "Grund für Ihren Besuch"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Reason for your visit"
+msgstr "Grund für Ihren Besuch"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Reason for your visit"
 msgstr "Grund für Ihren Besuch"
 
@@ -4377,6 +4436,11 @@ msgstr "Unbekannt"
 
 #, fuzzy
 msgctxt "Visits"
+msgid "Unknown"
+msgstr "Unbekannt"
+
+#, fuzzy
+msgctxt "Person Visits"
 msgid "Unknown"
 msgstr "Unbekannt"
 

@@ -196,6 +196,10 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Address"
 msgstr ""
 
+msgctxt "Person Visits"
+msgid "Address"
+msgstr ""
+
 msgctxt "Create Possible Index Step"
 msgid "Administration"
 msgstr ""
@@ -581,7 +585,15 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Class or division"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
+msgid "Class or division"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division not found"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
 msgstr ""
 
@@ -876,6 +888,10 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Date of last visit"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
+msgid "Date of last visit"
+msgstr ""
+
 msgid "Dear Sir / Madam"
 msgstr ""
 
@@ -1105,6 +1121,10 @@ msgctxt "Visits"
 msgid "Division not provided"
 msgstr ""
 
+msgctxt "Person Visits"
+msgid "Division not provided"
+msgstr ""
+
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Division not provided."
 msgstr ""
@@ -1189,6 +1209,10 @@ msgid "Edit"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Educational institution"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Educational institution"
 msgstr ""
 
@@ -1878,6 +1902,10 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Institution not found"
 msgstr ""
 
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
+msgid "Institution not found"
+msgstr ""
+
 msgid "Internal"
 msgstr ""
 
@@ -2285,6 +2313,10 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
 msgstr ""
 
+msgctxt "Person Visits"
+msgid "Name"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name of Vaccine"
 msgstr ""
@@ -2492,6 +2524,10 @@ msgid "Not Done"
 msgstr ""
 
 msgctxt "Auto Tracing Resolve Problems"
+msgid "Not provided"
+msgstr ""
+
+msgctxt "Person Visits"
 msgid "Not provided"
 msgstr ""
 
@@ -2798,6 +2834,9 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person UUID"
 msgstr ""
 
+msgid "Person Visits"
+msgstr ""
+
 msgid "Person created successfully"
 msgstr ""
 
@@ -2912,6 +2951,10 @@ msgid "Please note that submitting contact persons only works in recent versions
 msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Please specify your reason"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Please specify your reason"
 msgstr ""
 
@@ -3144,6 +3187,10 @@ msgid "Reason for you visit"
 msgstr ""
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Reason for your visit"
+msgstr ""
+
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Reason for your visit"
 msgstr ""
 
@@ -4262,6 +4309,10 @@ msgid "Unknown"
 msgstr ""
 
 msgctxt "Visits"
+msgid "Unknown"
+msgstr ""
+
+msgctxt "Person Visits"
 msgid "Unknown"
 msgstr ""
 

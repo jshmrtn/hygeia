@@ -236,6 +236,11 @@ msgid "Address"
 msgstr "Adresse"
 
 #, fuzzy
+msgctxt "Person Visits"
+msgid "Address"
+msgstr "Adresse"
+
+#, fuzzy
 msgctxt "Create Possible Index Step"
 msgid "Administration"
 msgstr "Administration des cas"
@@ -723,7 +728,17 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Class or division"
 msgstr ""
 
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
+msgid "Class or division"
+msgstr ""
+
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Class or division not found"
+msgstr ""
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
 msgstr ""
 
@@ -1095,6 +1110,11 @@ msgid "Date of last visit"
 msgstr "Date de la dernière visite"
 
 #, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
+msgid "Date of last visit"
+msgstr "Date de la dernière visite"
+
+#, fuzzy
 msgid "Dear Sir / Madam"
 msgstr "Madame, Monsieur"
 
@@ -1441,6 +1461,11 @@ msgctxt "Visits"
 msgid "Division not provided"
 msgstr ""
 
+#, fuzzy
+msgctxt "Person Visits"
+msgid "Division not provided"
+msgstr ""
+
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Division not provided."
 msgstr ""
@@ -1547,6 +1572,11 @@ msgid "Edit"
 msgstr "Modifier"
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Educational institution"
+msgstr "Établissement d'enseignement"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Educational institution"
 msgstr "Établissement d'enseignement"
 
@@ -2424,6 +2454,11 @@ msgid "Institution not found"
 msgstr "Organisation non trouvée"
 
 #, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
+msgid "Institution not found"
+msgstr "Organisation non trouvée"
+
+#, fuzzy
 msgid "Internal"
 msgstr "Interne"
 
@@ -2947,6 +2982,11 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Name"
 msgstr "Nom"
 
+#, fuzzy
+msgctxt "Person Visits"
+msgid "Name"
+msgstr "Nom"
+
 msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Name of Vaccine"
 msgstr "Nom du vaccin"
@@ -3214,6 +3254,11 @@ msgid "Not Done"
 msgstr "Pas fait"
 
 msgctxt "Auto Tracing Resolve Problems"
+msgid "Not provided"
+msgstr ""
+
+#, fuzzy
+msgctxt "Person Visits"
 msgid "Not provided"
 msgstr ""
 
@@ -3600,6 +3645,10 @@ msgid "Person UUID"
 msgstr "UUID de la personne"
 
 #, fuzzy
+msgid "Person Visits"
+msgstr "Personne"
+
+#, fuzzy
 msgid "Person created successfully"
 msgstr "Personne créée avec succès"
 
@@ -3743,6 +3792,11 @@ msgid "Please note that submitting contact persons only works in recent versions
 msgstr "Veuillez noter que la soumission des personnes de contact ne fonctionne que dans les versions récentes des navigateurs suivants :"
 
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Please specify your reason"
+msgstr "Veuillez préciser votre raison"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Please specify your reason"
 msgstr "Veuillez préciser votre raison"
 
@@ -4036,6 +4090,11 @@ msgstr "Raison de votre visite"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
+msgid "Reason for your visit"
+msgstr "Raison de votre visite"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Reason for your visit"
 msgstr "Raison de votre visite"
 
@@ -5438,6 +5497,11 @@ msgstr "Inconnu"
 
 #, fuzzy
 msgctxt "Visits"
+msgid "Unknown"
+msgstr "Inconnu"
+
+#, fuzzy
+msgctxt "Person Visits"
 msgid "Unknown"
 msgstr "Inconnu"
 

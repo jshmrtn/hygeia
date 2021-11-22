@@ -43,33 +43,33 @@
         </div>
         <div :if={get_field(@changeset, :has_visited)}>
           <div class="hy-card-grid-2-cols">
-            <Inputs for={:school_visits}>
-              <InputContext assigns={assigns} :let={form: school_visit}>
+            <Inputs for={:organisation_visits}>
+              <InputContext assigns={assigns} :let={form: organisation_visit}>
                 <div class="card">
                   <div class="card-body">
                     <HiddenInput field={:uuid} />
                     <Field class="form-group" name={:known_school_uuid}>
                       <HygeiaWeb.FieldLabel />
                       <HygeiaWeb.OrganisationLive.Choose
-                        disabled={fetch_field!(school_visit.source, :not_found)}
-                        id={"visited_#{fetch_field!(school_visit.source, :uuid)}_school"}
+                        disabled={fetch_field!(organisation_visit.source, :not_found)}
+                        id={"visited_#{fetch_field!(organisation_visit.source, :uuid)}_school"}
                         change="select_school"
-                        subject={fetch_field!(school_visit.source, :uuid)}
+                        subject={fetch_field!(organisation_visit.source, :uuid)}
                         query_clauses={[&from(o in &1, where: o.type == :school)]}
                       />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                     <Field
-                      :if={fetch_field!(school_visit.source, :known_school_uuid) == nil}
+                      :if={fetch_field!(organisation_visit.source, :known_school_uuid) == nil}
                       class="form-group"
                       name={:not_found}
                     >
                       <HygeiaWeb.FieldLabel class="me-2" />
-                      <Checkbox opts={checked: fetch_field!(school_visit.source, :not_found)} />
+                      <Checkbox opts={checked: fetch_field!(organisation_visit.source, :not_found)} />
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
 
-                    <div :if={fetch_field!(school_visit.source, :not_found)}>
+                    <div :if={fetch_field!(organisation_visit.source, :not_found)}>
                       <Inputs for={:unknown_school}>
                         <p class="mb-4">
                           {gettext(
@@ -82,38 +82,38 @@
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                         <Inputs for={:address}>
-                          <HygeiaWeb.AddressForm id={"visited_school_#{fetch_field!(school_visit.source, :uuid)}_unknown_school_address"} />
+                          <HygeiaWeb.AddressForm id={"visited_school_#{fetch_field!(organisation_visit.source, :uuid)}_unknown_school_address"} />
                         </Inputs>
                       </Inputs>
                     </div>
 
-                    {#if fetch_field!(school_visit.source, :known_school_uuid)}
+                    {#if fetch_field!(organisation_visit.source, :known_school_uuid)}
                       <Field
-                        :if={!fetch_field!(school_visit.source, :division_not_found)}
+                        :if={!fetch_field!(organisation_visit.source, :division_not_found)}
                         class="form-group"
                         name={:known_division_uuid}
                       >
                         <HygeiaWeb.FieldLabel />
                         <HygeiaWeb.DivisionLive.Choose
-                          id={"school_#{fetch_field!(school_visit.source, :uuid)}_division"}
+                          id={"school_#{fetch_field!(organisation_visit.source, :uuid)}_division"}
                           change="select_school_division"
-                          subject={fetch_field!(school_visit.source, :uuid)}
-                          organisation={OrganisationContext.get_organisation!(fetch_field!(school_visit.source, :known_school_uuid))}
+                          subject={fetch_field!(organisation_visit.source, :uuid)}
+                          organisation={OrganisationContext.get_organisation!(fetch_field!(organisation_visit.source, :known_school_uuid))}
                           no_results_message={gettext(
                             "No class or division found, please close this popup and insert one manually in the dedicated fields."
                           )}
-                          disabled={fetch_field!(school_visit.source, :division_not_found)}
+                          disabled={fetch_field!(organisation_visit.source, :division_not_found)}
                         />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
 
                       <Field
-                        :if={fetch_field!(school_visit.source, :known_division_uuid) == nil}
+                        :if={fetch_field!(organisation_visit.source, :known_division_uuid) == nil}
                         class="form-group"
                         name={:division_not_found}
                       >
                         <Checkbox opts={
-                          checked: fetch_field!(school_visit.source, :division_not_found)
+                          checked: fetch_field!(organisation_visit.source, :division_not_found)
                         } />
                         <HygeiaWeb.FieldLabel class="me-2" />
                         <ErrorTag class="d-block invalid-feedback" />
@@ -122,8 +122,8 @@
 
                     <div
                       class="card mb-3"
-                      :if={fetch_field!(school_visit.source, :division_not_found) or
-                        fetch_field!(school_visit.source, :not_found)}
+                      :if={fetch_field!(organisation_visit.source, :division_not_found) or
+                        fetch_field!(organisation_visit.source, :not_found)}
                     >
                       <div class="card-body">
                         <h5>{gettext("Class or division")}</h5>
@@ -152,12 +152,12 @@
                           <Select
                             class="form-control"
                             opts={prompt: pgettext("Reason", "Choose reason")}
-                            options={SchoolVisit.Reason.map()}
+                            options={Visit.Reason.map()}
                           />
                           <ErrorTag class="d-block invalid-feedback" />
                         </Field>
                       </div>
-                      <div :if={get_field(school_visit.source, :visit_reason) == :other} class="col">
+                      <div :if={get_field(organisation_visit.source, :visit_reason) == :other} class="col">
                         <Field name={:other_reason} class="form-group">
                           <HygeiaWeb.FieldLabel />
                           <TextInput class="form-control" />
@@ -166,11 +166,11 @@
                       </div>
                     </div>
 
-                    {#if get_field(school_visit.source, :visit_reason) in [:professor, :student, :employee]}
+                    {#if get_field(organisation_visit.source, :visit_reason) in [:professor, :student, :employee]}
                       <Field name={:is_occupied} class="form-group mb-4">
                         <div class="btn-group-toggle btn-radio-group">
                           <label class="d-block">
-                            {#if get_field(school_visit.source, :visit_reason) == :student}
+                            {#if get_field(organisation_visit.source, :visit_reason) == :student}
                               {gettext("Are you a enrolled at this educational institution?")}
                             {#else}
                               {gettext("Are you employed by this educational institution?")}
@@ -179,14 +179,14 @@
 
                           <label class={
                             "btn btn-outline-primary",
-                            active: get_field(school_visit.source, :is_occupied) == true
+                            active: get_field(organisation_visit.source, :is_occupied) == true
                           }>
                             <RadioButton value="true" />
                             {gettext("Yes")}
                           </label>
                           <label class={
                             "btn btn-outline-primary",
-                            active: get_field(school_visit.source, :is_occupied) == false
+                            active: get_field(organisation_visit.source, :is_occupied) == false
                           }>
                             <RadioButton value="false" />
                             {gettext("No")}
@@ -199,8 +199,8 @@
                     <button
                       class="btn btn-danger mb-4"
                       type="button"
-                      :on-click="remove_school_visit"
-                      value={fetch_field!(school_visit.source, :uuid)}
+                      :on-click="remove_organisation_visit"
+                      value={fetch_field!(organisation_visit.source, :uuid)}
                     >
                       <span class="oi oi-trash" aria-hidden="true" />
                     </button>
@@ -210,11 +210,11 @@
             </Inputs>
           </div>
           <div class="mt-4">
-            <button class="btn btn-outline-primary" type="button" :on-click="add_school_visit">
+            <button class="btn btn-outline-primary" type="button" :on-click="add_organisation_visit">
               {gettext("Add an institution")}
             </button>
           </div>
-          <ErrorTag field={:school_visits} class="d-block invalid-feedback" />
+          <ErrorTag field={:organisation_visits} class="d-block invalid-feedback" />
         </div>
       </div>
     </div>

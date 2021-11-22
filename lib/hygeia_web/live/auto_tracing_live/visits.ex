@@ -10,7 +10,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
-  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
+  alias Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
@@ -34,7 +34,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
   @primary_key false
   embedded_schema do
     field :has_visited, :boolean
-    embeds_many :school_visits, SchoolVisit, on_replace: :delete
+    embeds_many :organisation_visits, OrganisationVisit, on_replace: :delete
   end
 
   @impl Phoenix.LiveView
@@ -68,7 +68,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
           visits =
             Enum.map(
               case.person.visits,
-              &%SchoolVisit{
+              &%OrganisationVisit{
                 uuid: Ecto.UUID.generate(),
                 is_occupied: not is_nil(&1.affiliation),
                 visit_reason: &1.reason,
@@ -89,7 +89,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
                 [_visits | _rest] -> true
                 [] -> case.auto_tracing.scholar
               end,
-            school_visits: visits
+            organisation_visits: visits
           }
 
           assign(socket,
@@ -104,7 +104,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
   end
 
   def handle_event(
-        "add_school_visit",
+        "add_organisation_visit",
         _params,
         %Socket{assigns: %{step: step, changeset: changeset}} = socket
       ) do
@@ -113,7 +113,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
        changeset: %Changeset{
          changeset(
            step,
-           changeset_add_to_params(changeset, :school_visits, %{
+           changeset_add_to_params(changeset, :organisation_visits, %{
              uuid: Ecto.UUID.generate()
            })
          )
@@ -123,8 +123,8 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
   end
 
   def handle_event(
-        "remove_school_visit",
-        %{"value" => school_visit_uuid},
+        "remove_organisation_visit",
+        %{"value" => organisation_visit_uuid},
         %Socket{assigns: %{step: step, changeset: changeset}} = socket
       ) do
     {:noreply,
@@ -134,8 +134,8 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
        %Changeset{
          changeset(
            step,
-           changeset_remove_from_params_by_id(changeset, :school_visits, %{
-             uuid: school_visit_uuid
+           changeset_remove_from_params_by_id(changeset, :organisation_visits, %{
+             uuid: organisation_visit_uuid
            })
          )
          | action: :validate
@@ -158,7 +158,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
            step,
            changeset_update_params_by_id(
              changeset,
-             :school_visits,
+             :organisation_visits,
              %{uuid: school_uuid},
              &Map.put(&1, "known_school_uuid", params["uuid"])
            )
@@ -183,7 +183,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
            step,
            changeset_update_params_by_id(
              changeset,
-             :school_visits,
+             :organisation_visits,
              %{uuid: school_uuid},
              &Map.put(&1, "known_division_uuid", params["uuid"])
            )
@@ -194,7 +194,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
   end
 
   def handle_event("validate", %{"visits" => params}, socket) do
-    params = Map.put_new(params, "school_visits", [])
+    params = Map.put_new(params, "organisation_visits", [])
 
     {:noreply,
      assign(socket,
@@ -260,16 +260,16 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
   def changeset(schema, attrs \\ %{}) do
     schema
     |> cast(attrs, [:has_visited])
-    |> validate_school_visit()
+    |> validate_organisation_visit()
     |> validate_required([:has_visited])
   end
 
-  defp validate_school_visit(changeset) do
+  defp validate_organisation_visit(changeset) do
     changeset
     |> fetch_field!(:has_visited)
     |> case do
       true ->
-        cast_embed(changeset, :school_visits,
+        cast_embed(changeset, :organisation_visits,
           required: true,
           required_message:
             gettext(
@@ -278,16 +278,16 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
         )
 
       _else ->
-        put_embed(changeset, :school_visits, [])
+        put_embed(changeset, :organisation_visits, [])
     end
   end
 
   defp add_visits_to_person(changeset, %__MODULE__{
-         school_visits: school_visits
+         organisation_visits: organisation_visits
        }) do
     visits =
       Enum.map(
-        school_visits,
+        organisation_visits,
         &%Visit{
           uuid: &1.uuid,
           reason: &1.visit_reason,
@@ -307,9 +307,11 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
     )
   end
 
-  defp add_visited_affiliations_to_person(changeset, %__MODULE__{school_visits: school_visits}) do
+  defp add_visited_affiliations_to_person(changeset, %__MODULE__{
+         organisation_visits: organisation_visits
+       }) do
     new_affiliations =
-      school_visits
+      organisation_visits
       |> Enum.filter(& &1.is_occupied)
       |> Enum.map(
         &%Affiliation{

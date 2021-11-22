@@ -209,7 +209,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
              |> form("#visits-form")
              |> render_change(
                visits: %{
-                 school_visits: %{
+                 organisation_visits: %{
                    "0" => %{
                      visit_reason: :professor,
                      visited_at: "2021-04-17",
@@ -223,7 +223,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
              |> form("#visits-form")
              |> render_change(
                visits: %{
-                 school_visits: %{
+                 organisation_visits: %{
                    0 => %{
                      is_occupied: false,
                      unknown_school: %{
@@ -276,7 +276,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
              |> form("#visits-form")
              |> render_change(
                visits: %{
-                 school_visits: %{
+                 organisation_visits: %{
                    "0" => %{
                      visit_reason: :professor,
                      visited_at: "2021-04-17",
@@ -290,7 +290,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
              |> form("#visits-form")
              |> render_change(
                visits: %{
-                 school_visits: %{
+                 organisation_visits: %{
                    0 => %{
                      is_occupied: true,
                      unknown_school: %{

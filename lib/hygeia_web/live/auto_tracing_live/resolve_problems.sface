@@ -311,7 +311,7 @@
                                 <small class="d-block text-muted" :if={visit.unknown_organisation.address}>{Address.to_string(visit.unknown_organisation.address, :long)}</small>
                                 <div>
                                   {pgettext("Auto Tracing Resolve Problems", "Visit reason")}:
-                                  {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(visit.reason)}
+                                  {Hygeia.OrganisationContext.Visit.Reason.translate(visit.reason)}
                                 </div>
                                 <div class="mb-3">
                                   {pgettext("Auto Tracing Resolve Problems", "Date of last visit")}:
@@ -325,7 +325,7 @@
                                 <small class="d-block text-muted" :if={visit.organisation.address}>{Address.to_string(visit.organisation.address, :long)}</small>
                                 <div>
                                   {pgettext("Auto Tracing Resolve Problems", "Visit reason")}:
-                                  {Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason.translate(visit.reason)}
+                                  {Hygeia.OrganisationContext.Visit.Reason.translate(visit.reason)}
                                 </div>
                                 <div class="mb-3">
                                   {pgettext("Auto Tracing Resolve Problems", "Date of last visit")}:

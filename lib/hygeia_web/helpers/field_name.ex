@@ -372,7 +372,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       phone: "Phone",
       email: "Email"
     },
-    Hygeia.AutoTracingContext.AutoTracing.SchoolVisit => %{
+    Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit => %{
       visit_reason: "Reason for your visit",
       other_reason: "Please specify your reason",
       visited_at: "Date of last visit",

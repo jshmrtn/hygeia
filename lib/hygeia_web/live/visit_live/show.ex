@@ -124,7 +124,7 @@ defmodule HygeiaWeb.VisitLive.Show do
 
   @impl Phoenix.LiveView
   def handle_event("delete", _params, %{assigns: %{visit: visit}} = socket) do
-    true = authorized?(visit, :delete, get_auth(socket), %{person: visit.person})
+    true = authorized?(visit, :delete, get_auth(socket))
 
     {:ok, _} = OrganisationContext.delete_visit(visit)
 

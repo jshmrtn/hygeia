@@ -3,7 +3,7 @@
     <HygeiaWeb.PersonLive.Header person={@person} id="header" />
 
     <div class="d-flex justify-content-between mb-1">
-      <h3>{gettext("Visits")}</h3>
+      <h3>{gettext("Person Visits")}</h3>
 
       <div :if={authorized?(Visit, :create, auth, %{person: @person})}>
         <LiveRedirect
@@ -56,7 +56,7 @@
               {#if visit.unknown_organisation}
                 <div class="d-fled">
                   <strong>{visit.unknown_organisation.name}</strong>
-                  <span class="badge rounded-pill bg-warning text-dark ms-auto">{pgettext("Visits", "Unknown")}</span>
+                  <span class="badge rounded-pill bg-warning text-dark ms-auto">{pgettext("Person Visits", "Unknown")}</span>
                 </div>
                 <small class="d-block text-muted" :if={visit.unknown_organisation.address}>{Address.to_string(visit.unknown_organisation.address, :long)}</small>
               {#else}
@@ -73,14 +73,14 @@
             <div class="card card-body">
               {#case {visit.division, visit.unknown_division}}
                 {#match {nil, nil}}
-                  <div>{pgettext("Visits", "Division not provided")}</div>
+                  <div>{pgettext("Person Visits", "Division not provided")}</div>
                 {#match {%Division{} = division, nil}}
                   <div>
-                    {pgettext("Auto Tracing Resolve Problems", "Name")}:
+                    {pgettext("Person Visits", "Name")}:
                     {division.title}
                   </div>
                   <div class="mb-3">
-                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                    {pgettext("Person Visits", "Address")}:
                     {division.shares_address
                     |> if do
                       visit.organisation.address
@@ -88,18 +88,18 @@
                       division.address
                     end
                     |> case do
-                      nil -> pgettext("Auto Tracing Resolve Problems", "Not provided")
+                      nil -> pgettext("Person Visits", "Not provided")
                       %Address{} = address -> Address.to_string(address, :long)
                     end}
                   </div>
                 {#match {nil, %Entity{} = unknown_division}}
                   <div class="d-fled">
-                    {pgettext("Auto Tracing Resolve Problems", "Name")}:
+                    {pgettext("Person Visits", "Name")}:
                     {unknown_division.name}
-                    <span class="badge rounded-pill bg-warning text-dark ms-auto">{pgettext("Visits", "Unknown")}</span>
+                    <span class="badge rounded-pill bg-warning text-dark ms-auto">{pgettext("Person Visits", "Unknown")}</span>
                   </div>
                   <div class="mb-3" :if={unknown_division.address}>
-                    {pgettext("Auto Tracing Resolve Problems", "Address")}:
+                    {pgettext("Person Visits", "Address")}:
                     {Address.to_string(unknown_division.address, :long)}
                   </div>
               {/case}

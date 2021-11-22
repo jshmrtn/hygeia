@@ -1,14 +1,14 @@
-defmodule Hygeia.AutoTracingContext.AutoTracing.SchoolVisit do
+defmodule Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit do
   @moduledoc "Module responsible for tracking school visits within the auto tracing context."
 
   use Hygeia, :model
 
   import HygeiaGettext
 
-  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit.Reason
   alias Hygeia.CaseContext.Entity
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Visit.Reason
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,

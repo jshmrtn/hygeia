@@ -14,7 +14,7 @@ defmodule HygeiaWeb.VisitLive.Create do
     person = CaseContext.get_person!(id)
 
     socket =
-      if authorized?(Visit, :list, get_auth(socket), person) do
+      if authorized?(Visit, :create, get_auth(socket), person: person) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "people:#{id}")
 
         load_data(socket, person)
