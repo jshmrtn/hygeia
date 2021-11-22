@@ -54,7 +54,7 @@ defmodule HygeiaWeb.Router do
         default_src: ~w('none'),
         script_src: ~w(),
         style_src: @style_src,
-        img_src: ~w('self' data:),
+        img_src: ~w('self' data: https://i.vimeocdn.com),
         font_src: ~w('self' data:),
         # TODO: Remove when https://bugs.webkit.org/show_bug.cgi?id=201591 is fixed
         connect_src: [ws_url | ~w('self')],

@@ -13,8 +13,7 @@
         <Field name={:jab_dates} class="form-group">
           <table class="table table-borderless">
             <tbody>
-              {#for {date, index} <-
-                  Enum.with_index(fetch_field!(form.source, :jab_dates))}
+              {#for {date, index} <- Enum.with_index(fetch_field!(form.source, :jab_dates) || [])}
                 <tr>
                   <td>
                     <label class="small">{pgettext(
