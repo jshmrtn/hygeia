@@ -28,7 +28,7 @@
 
         <Field name={:last_visit_at} class="form-group">
           <HygeiaWeb.FieldLabel />
-          <DateInput class="form-control" opts={disabled: @disabled} />
+          <DateInput class="form-control" opts={max: Date.utc_today(), disabled: @disabled} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
 
