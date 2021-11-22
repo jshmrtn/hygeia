@@ -342,6 +342,11 @@ defmodule HygeiaWeb.PersonLive.BaseData do
     |> CaseContext.update_person(person_params)
     |> case do
       {:ok, person} ->
+        :ok =
+          Enum.each(person.affiliations, fn affiliation ->
+            OrganisationContext.propagate_organisation_and_division(affiliation)
+          end)
+
         {:noreply,
          socket
          |> load_data(person)

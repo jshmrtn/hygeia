@@ -230,6 +230,15 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type: "Type",
       type_other: "Type Other"
     },
+    Hygeia.OrganisationContext.Visit => %{
+      reason: "Reason",
+      other_reason: "Other reason",
+      last_visit_at: "Date of last visit",
+      organisation: "Organisation",
+      unknown_organisation: "Unknown organisation",
+      division: "Division",
+      unknown_division: "Unknown division"
+    },
     Hygeia.SystemMessageContext.SystemMessage => %{
       text: "Text",
       start_date: "Start Date",
@@ -363,11 +372,11 @@ defmodule HygeiaWeb.Helpers.FieldName do
       phone: "Phone",
       email: "Email"
     },
-    Hygeia.AutoTracingContext.AutoTracing.SchoolVisit => %{
-      visit_reason: "Reason for you visit",
+    Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit => %{
+      visit_reason: "Reason for your visit",
       other_reason: "Please specify your reason",
       visited_at: "Date of last visit",
-      known_school: "Educational institution",
+      organisation: "Educational institution",
       not_found: "Institution not found",
       division_not_found: "Class or division not found",
       known_division: "Class or division"

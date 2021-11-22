@@ -8,6 +8,7 @@ defmodule Hygeia.OrganisationContext.Division do
   alias Hygeia.CaseContext.Address
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Visit
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -16,6 +17,7 @@ defmodule Hygeia.OrganisationContext.Division do
           description: String.t() | nil,
           organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
+          visits: Ecto.Schema.has_many(Visit.t()) | nil,
           affiliations: Ecto.Schema.belongs_to(Affiliation.t()) | nil,
           shares_address: boolean() | nil,
           address: Address.t() | nil,
@@ -28,6 +30,7 @@ defmodule Hygeia.OrganisationContext.Division do
           description: String.t() | nil,
           organisation_uuid: Ecto.UUID.t(),
           organisation: Ecto.Schema.belongs_to(Organisation.t()),
+          visits: Ecto.Schema.has_many(Visit.t()) | nil,
           affiliations: Ecto.Schema.belongs_to(Affiliation.t()),
           shares_address: boolean(),
           address: Address.t() | nil,
@@ -43,6 +46,7 @@ defmodule Hygeia.OrganisationContext.Division do
     embeds_one :address, Address, on_replace: :update
 
     belongs_to :organisation, Organisation, references: :uuid, foreign_key: :organisation_uuid
+    has_many :visits, Visit, foreign_key: :organisation_uuid, on_replace: :delete
     has_many :affiliations, Affiliation, foreign_key: :division_uuid, on_replace: :delete
 
     timestamps()

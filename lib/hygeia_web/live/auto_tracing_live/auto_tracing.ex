@@ -48,6 +48,7 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
   defp route(:contact_methods),
     do: &Routes.auto_tracing_contact_methods_path(&1, :contact_methods, &2)
 
+  defp route(:visits), do: &Routes.auto_tracing_visits_path(&1, :visits, &2)
   defp route(:employer), do: &Routes.auto_tracing_employer_path(&1, :employer, &2)
   defp route(:vaccination), do: &Routes.auto_tracing_vaccination_path(&1, :vaccination, &2)
   defp route(:covid_app), do: &Routes.auto_tracing_covid_app_path(&1, :covid_app, &2)

@@ -10,7 +10,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
   alias Hygeia.AutoTracingContext.AutoTracing.Flight
   alias Hygeia.AutoTracingContext.AutoTracing.Problem
   alias Hygeia.AutoTracingContext.AutoTracing.Propagator
-  alias Hygeia.AutoTracingContext.AutoTracing.SchoolVisit
   alias Hygeia.AutoTracingContext.AutoTracing.Step
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
@@ -77,7 +76,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :propagator_known, :boolean
     field :started_at, :utc_datetime_usec, autogenerate: {DateTime, :utc_now, []}
 
-    embeds_many :school_visits, SchoolVisit, on_replace: :delete
     embeds_many :flights, Flight, on_replace: :delete
 
     embeds_one :propagator, Propagator, on_replace: :delete
@@ -137,7 +135,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :started_at
     ])
     |> validate_required([:current_step, :case_uuid])
-    |> cast_embed(:school_visits)
     |> foreign_key_constraint(:transmission_uuid)
   end
 

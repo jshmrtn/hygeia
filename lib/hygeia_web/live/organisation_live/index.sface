@@ -113,28 +113,24 @@
                 class="delete"
                 opts={
                   title: gettext("Delete"),
-                  data: [confirm: gettext("Are you sure?")],
+                  data: [
+                    confirm:
+                      cond do
+                        OrganisationContext.has_affiliations?(organisation) ->
+                          gettext("Are you sure? There are affiliations assigned!")
+                
+                        OrganisationContext.has_visits?(organisation) ->
+                          gettext("Are you sure? There are visits assigned!")
+                
+                        true ->
+                          gettext("Are you sure?")
+                      end
+                  ],
                   "phx-value-id": organisation.uuid
                 }
-                :if={authorized?(organisation, :delete, auth) and
-                  not OrganisationContext.has_affiliations?(organisation)}
+                :if={authorized?(organisation, :delete, auth)}
               >
                 <button class="ms-1 btn btn-sm btn-danger">
-                  <span class="oi oi-trash" aria-hidden="true" />
-                </button>
-              </Link>
-              <Link
-                to="#"
-                click="delete"
-                class="delete"
-                opts={
-                  title: gettext("Delete"),
-                  data: [confirm: gettext("Are you sure? There are affiliations assigned!")],
-                  "phx-value-id": organisation.uuid
-                }
-                :if={authorized?(organisation, :delete, auth) and OrganisationContext.has_affiliations?(organisation)}
-              >
-                <button class="ms-1 btn btn-sm border-dark btn-danger">
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
               </Link>

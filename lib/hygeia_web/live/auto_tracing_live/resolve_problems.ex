@@ -94,7 +94,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       case_uuid
       |> CaseContext.get_case!()
       |> Repo.preload(
-        person: [affiliations: [:organisation, :division]],
+        person: [affiliations: [:organisation, :division], visits: [:organisation, :division]],
         auto_tracing: [transmission: []],
         tests: []
       )
@@ -268,10 +268,15 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         unknown_organisation: nil
       })
 
+    :ok = OrganisationContext.propagate_organisation_and_division(affiliation)
+
     person =
       affiliation.person_uuid
       |> CaseContext.get_person!()
-      |> Repo.preload(affiliations: [:organisation, :division])
+      |> Repo.preload(
+        affiliations: [:organisation, :division],
+        visits: [:organisation, :division]
+      )
 
     {:ok, auto_tracing} =
       if Enum.any?(
@@ -302,10 +307,15 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         unknown_division: nil
       })
 
+    :ok = OrganisationContext.propagate_organisation_and_division(affiliation)
+
     person =
       affiliation.person_uuid
       |> CaseContext.get_person!()
-      |> Repo.preload(affiliations: [:organisation, :division])
+      |> Repo.preload(
+        affiliations: [:organisation, :division],
+        visits: [:organisation, :division]
+      )
 
     {:ok, auto_tracing} =
       if Enum.any?(

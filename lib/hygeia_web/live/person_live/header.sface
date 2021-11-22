@@ -23,16 +23,30 @@
     />
 
     <ul class="nav nav-tabs">
-      <li class="nav-item" :if={authorized?(@person, :details, auth)}>
-        <UriActiveContext
-          to={Routes.person_base_data_path(@socket, :show, @person)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            {gettext("Base Data")}
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
+      {#if authorized?(@person, :details, auth)}
+        <li class="nav-item">
+          <UriActiveContext
+            to={Routes.person_base_data_path(@socket, :show, @person)}
+            :let={to: to, active: active}
+          >
+            <LiveRedirect to={to} class={"nav-link", active: active}>
+              {gettext("Base Data")}
+            </LiveRedirect>
+          </UriActiveContext>
+        </li>
+      {/if}
+      {#if authorized?(Visit, :list, auth, person: @person)}
+        <li class="nav-item">
+          <UriActiveContext
+            to={Routes.visit_index_path(@socket, :index, @person)}
+            :let={to: to, active: active}
+          >
+            <LiveRedirect to={to} class={"nav-link", active: active}>
+              {gettext("Visits")}
+            </LiveRedirect>
+          </UriActiveContext>
+        </li>
+      {/if}
       <li class="nav-item" :if={authorized?(@person, :versioning, auth)}>
         <UriActiveContext
           to={Routes.version_show_path(@socket, :show, Person.__schema__(:source), @person)}

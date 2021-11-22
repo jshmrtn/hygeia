@@ -12,6 +12,7 @@ defmodule Hygeia.OrganisationContext do
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Position
+  alias Hygeia.OrganisationContext.Visit
 
   @doc """
   Returns the list of organisations.
@@ -707,6 +708,22 @@ defmodule Hygeia.OrganisationContext do
     end)
   end
 
+  @spec has_visits?(organisation :: Organisation.t()) :: boolean
+  def has_visits?(%Organisation{} = organisation) do
+    case Repo.preload(organisation, :visits) do
+      %Organisation{visits: []} -> false
+      %Organisation{} -> true
+    end
+  end
+
+  @spec has_visits?(division :: Division.t()) :: boolean
+  def has_visits?(%Division{} = division) do
+    case Repo.preload(division, :visits) do
+      %Division{visits: []} -> false
+      %Division{} -> true
+    end
+  end
+
   @spec has_affiliations?(organisation :: Organisation.t()) :: boolean
   def has_affiliations?(%Organisation{} = organisation) do
     case Repo.preload(organisation, :affiliations) do
@@ -720,6 +737,163 @@ defmodule Hygeia.OrganisationContext do
     case Repo.preload(division, :affiliations) do
       %Division{affiliations: []} -> false
       %Division{} -> true
+    end
+  end
+
+  @doc """
+  Returns the list of visits.
+
+  ## Examples
+
+      iex> list_visits()
+      [%Visit{}, ...]
+
+  """
+  @spec list_visits :: [Visit.t()]
+  def list_visits do
+    Repo.all(Visit)
+  end
+
+  @doc """
+  Gets a single visit.
+
+  Raises `Ecto.NoResultsError` if the Visit does not exist.
+
+  ## Examples
+
+      iex> get_visit!(123)
+      %Visit{}
+
+      iex> get_visit!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_visit!(id :: Ecto.UUID.t()) :: Visit.t()
+  def get_visit!(id), do: Repo.get!(Visit, id)
+
+  @doc """
+  Creates a visit.
+
+  ## Examples
+
+      iex> create_visit(%{field: value})
+      {:ok, %Visit{}}
+
+      iex> create_visit(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec create_visit(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+          {:ok, Visit.t()} | {:error, Ecto.Changeset.t(Visit.t())}
+  def create_visit(person, attrs),
+    do:
+      person
+      |> Ecto.build_assoc(:visits)
+      |> change_visit(attrs)
+      |> versioning_insert()
+      |> broadcast("visits", :create, & &1.uuid, &["persons:#{&1.person_uuid}"])
+      |> versioning_extract()
+
+  @doc """
+  Updates a visit.
+
+  ## Examples
+
+      iex> update_visit(visit, %{field: new_value})
+      {:ok, %Visit{}}
+
+      iex> update_visit(visit, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_visit(
+          visit :: Visit.t(),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) ::
+          {:ok, Visit.t()} | {:error, Ecto.Changeset.t(Visit.t())}
+  def update_visit(%Visit{} = visit, attrs) do
+    visit
+    |> change_visit(attrs)
+    |> versioning_update()
+    |> broadcast("visits", :update)
+    |> versioning_extract()
+  end
+
+  @doc """
+  Deletes a visit.
+
+  ## Examples
+
+      iex> delete_visit(visit)
+      {:ok, %Visit{}}
+
+      iex> delete_visit(visit)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_visit(visit :: Visit.t()) ::
+          {:ok, Visit.t()} | {:error, Ecto.Changeset.t(Visit.t())}
+  def delete_visit(%Visit{} = visit) do
+    visit
+    |> change_visit()
+    |> versioning_delete()
+    |> broadcast("visits", :delete)
+    |> versioning_extract()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking visit changes.
+
+  ## Examples
+
+      iex> change_visit(visit)
+      %Ecto.Changeset{data: %Visit{}}
+
+  """
+  @spec change_visit(
+          visit :: Visit.t() | Visit.empty() | Ecto.Changeset.t(Visit.t() | Visit.empty()),
+          attrs :: Hygeia.ecto_changeset_params()
+        ) :: Ecto.Changeset.t(Visit.t())
+  def change_visit(visit, attrs \\ %{}) do
+    Visit.changeset(visit, attrs)
+  end
+
+  # TODO: replace this with an event/trigger based approach
+  @spec propagate_organisation_and_division(subject :: Visit.t() | Affiliation.t()) :: :ok
+  def propagate_organisation_and_division(%Visit{} = visit) do
+    visit
+    |> Repo.preload(:affiliation)
+    |> Map.get(:affiliation)
+    |> case do
+      nil ->
+        :ok
+
+      affiliation ->
+        {:ok, _affiliation} =
+          update_affiliation(affiliation, %{
+            organisation_uuid: visit.organisation_uuid,
+            division_uuid: visit.division_uuid
+          })
+
+        :ok
+    end
+  end
+
+  def propagate_organisation_and_division(%Affiliation{} = affiliation) do
+    affiliation
+    |> Map.get(:related_visit_uuid)
+    |> case do
+      nil ->
+        :ok
+
+      visit_uuid ->
+        {:ok, _visit} =
+          update_visit(get_visit!(visit_uuid), %{
+            organisation_uuid: affiliation.organisation_uuid,
+            division_uuid: affiliation.division_uuid
+          })
+
+        :ok
     end
   end
 end

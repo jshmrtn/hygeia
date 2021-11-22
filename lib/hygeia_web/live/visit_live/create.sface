@@ -1,0 +1,47 @@
+<div class="component-person-base-data container">
+  <Context get={HygeiaWeb, auth: _auth}>
+    <HygeiaWeb.RecordView
+      resource={@person}
+      action={:details}
+      id={"person_recordview_#{@person.uuid}"}
+    >
+      <HygeiaWeb.PersonLive.Header person={@person} id="header" />
+
+      <Form
+        for={@changeset}
+        change="validate"
+        submit="save"
+        opts={autocomplete: "off", id: "visit-form", "phx-hook": "BlockNavigation"}
+      >
+        <LiveRedirect
+          to={Routes.visit_index_path(@socket, :index, @person)}
+          class="btn btn-outline-primary mb-4"
+        >
+          <span class="oi oi-arrow-left me-1" aria-hidden="true" />
+          {gettext("Back to list")}
+        </LiveRedirect>
+
+        <h1 class="mb-3">
+          {gettext("New visit")}
+        </h1>
+
+        <div class="col-12 col-md-6">
+          <HygeiaWeb.VisitLive.Form
+            id="visit-create"
+            select_organisation="select_visit_organisation"
+            select_division="select_visit_division"
+          />
+        </div>
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+          phx-disable-with={gettext("Saving...")}
+          disabled={not @changeset.valid?}
+        >
+          {gettext("Save")}
+        </button>
+      </Form>
+    </HygeiaWeb.RecordView>
+  </Context>
+</div>
