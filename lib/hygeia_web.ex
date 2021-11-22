@@ -62,6 +62,7 @@ defmodule HygeiaWeb do
 
       import HygeiaWeb, only: [context_get: 3, context_get: 2]
 
+      on_mount(HygeiaWeb.Init.Sentry)
       on_mount(HygeiaWeb.Init.Auth)
       on_mount(HygeiaWeb.Init.Context)
       on_mount(HygeiaWeb.Init.Locale)
@@ -81,6 +82,7 @@ defmodule HygeiaWeb do
 
       import HygeiaWeb, only: [context_get: 3, context_get: 2]
 
+      on_mount(HygeiaWeb.Init.Sentry)
       on_mount(HygeiaWeb.Init.Auth)
       on_mount(HygeiaWeb.Init.Context)
       on_mount(HygeiaWeb.Init.Locale)
@@ -99,6 +101,7 @@ defmodule HygeiaWeb do
 
       import HygeiaWeb, only: [context_get: 3, context_get: 2]
 
+      on_mount(HygeiaWeb.Init.Sentry)
       on_mount(HygeiaWeb.Init.Auth)
       on_mount(HygeiaWeb.Init.Context)
       on_mount(HygeiaWeb.Init.Locale)
