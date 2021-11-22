@@ -123,6 +123,28 @@ defmodule HygeiaWeb.TransmissionLive.Show do
     end
   end
 
+  def handle_event("change_propagator_case", params, socket) do
+    {:noreply,
+     assign(socket, :changeset, %{
+       CaseContext.change_transmission(
+         socket.assigns.transmission,
+         Map.put(socket.assigns.changeset.params, "propagator_case_uuid", params["uuid"])
+       )
+       | action: :validate
+     })}
+  end
+
+  def handle_event("change_recipient_case", params, socket) do
+    {:noreply,
+     assign(socket, :changeset, %{
+       CaseContext.change_transmission(
+         socket.assigns.transmission,
+         Map.put(socket.assigns.changeset.params, "recipient_case_uuid", params["uuid"])
+       )
+       | action: :validate
+     })}
+  end
+
   defp load_data(socket, transmission, attrs \\ %{}) do
     transmission =
       Repo.preload(transmission,
