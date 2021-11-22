@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html
   lang={HygeiaCldr.get_locale().cldr_locale_name}
-  data-sentry-enabled={sentry_enabled?()}
+  data-sentry-enabled={inspect(sentry_enabled?())}
   data-sentry-dsn={Sentry.Config.dsn()}
   data-sentry-user={sentry_user(@conn)}
 >
