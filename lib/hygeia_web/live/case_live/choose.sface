@@ -32,8 +32,17 @@
                     /
                     {case.person.human_readable_id}
                   </span>
-                  <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
-                  <small class="d-block text-muted">{case_display_date(case, timezone)}</small>
+                  <LiveRedirect
+                    :if={@disabled and authorized?(case, :details, auth)}
+                    to={Routes.case_base_data_path(@socket, :show, case)}
+                  >
+                    <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
+                    <small class="d-block text-muted">{case_display_date(case, timezone)}</small>
+                  </LiveRedirect>
+                  <div :if={not @disabled or not authorized?(case, :details, auth)}>
+                    <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
+                    <small class="d-block text-muted">{case_display_date(case, timezone)}</small>
+                  </div>
                 </HygeiaWeb.RecordView>
                 <button
                   class="btn btn-danger"

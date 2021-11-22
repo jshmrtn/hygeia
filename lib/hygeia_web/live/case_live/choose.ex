@@ -11,6 +11,7 @@ defmodule HygeiaWeb.CaseLive.Choose do
   alias Hygeia.TenantContext
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
+  alias Surface.Components.LiveRedirect
 
   @doc "An identifier for the form"
   prop form, :form

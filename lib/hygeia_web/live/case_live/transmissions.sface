@@ -15,7 +15,8 @@
                 @socket,
                 :create,
                 recipient_internal: true,
-                recipient_case_uuid: @case.uuid
+                recipient_case_uuid: @case.uuid,
+                return_url: Routes.case_transmissions_path(@socket, :show, @case)
               )}
               class="btn btn-primary"
             >
@@ -56,7 +57,8 @@
                 @socket,
                 :create,
                 propagator_internal: true,
-                propagator_case_uuid: @case.uuid
+                propagator_case_uuid: @case.uuid,
+                return_url: Routes.case_transmissions_path(@socket, :show, @case)
               )}
               class="btn btn-primary"
             >

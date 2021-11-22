@@ -90,7 +90,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   data changeset, :map
   data search_changeset, :map
   data bulk_action_elements, :map, default: %{}
-  data propagator, :map, default: nil
+  data propagator_case, :map, default: nil
   data suggestions, :list, default: []
 
   @impl Phoenix.LiveComponent
@@ -106,7 +106,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(propagator: form_data[:propagator])
+     |> assign(propagator_case: form_data[:propagator_case])
      |> handle_action(assigns.live_action, assigns.params)}
   end
 
@@ -214,12 +214,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   def handle_event(
         "copy_address_from_propagator",
         _params,
-        %Socket{assigns: %{changeset: changeset, propagator: {propagator, _case}}} = socket
+        %Socket{assigns: %{changeset: changeset, propagator_case: propagator_case}} = socket
       ) do
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
        CaseContext.change_person(changeset, %{
-         address: Map.from_struct(propagator.address)
+         address: Map.from_struct(propagator_case.person.address)
        })
        | action: :validate
      })}
