@@ -10,14 +10,14 @@ defmodule HygeiaWeb.VisitLiveTest do
   @moduletag originator: :noone
   @moduletag log_in: [roles: [:admin]]
 
-  # @create_attrs %{
-  #   reason: :student,
-  #   last_visit_at: Date.add(Date.utc_today(), -5)
-  # }
-  # @invalid_attrs %{
-  #   reason: nil,
-  #   last_visit_at: "2021-04-17"
-  # }
+  @create_attrs %{
+    reason: :student,
+    last_visit_at: Date.add(Date.utc_today(), -5)
+  }
+  @invalid_attrs %{
+    reason: nil,
+    last_visit_at: "2021-04-17"
+  }
 
   defp create_person(tags) do
     [%{tenant: tenant} | _other_grants] = tags.user.grants
@@ -36,6 +36,7 @@ defmodule HygeiaWeb.VisitLiveTest do
 
       assert html =~ "Visits"
       assert html =~ "Visitor"
+      assert html =~ visit.uuid
     end
 
     test "deletes visit in listing", %{conn: conn, person: person} do
@@ -49,27 +50,30 @@ defmodule HygeiaWeb.VisitLiveTest do
     end
   end
 
-  # TODO: Fix test case
-  # describe "Create" do
-  #   setup [:create_person]
+  describe "Create" do
+    setup [:create_person]
 
-  #   test "saves new visit", %{conn: conn, person: person} do
-  #     organisation = organisation_fixture()
+    test "saves new visit", %{conn: conn, person: person} do
+      organisation = organisation_fixture()
 
-  #     {:ok, create_live, _html} = live(conn, Routes.visit_create_path(conn, :create, person.uuid))
+      {:ok, create_live, _html} = live(conn, Routes.visit_create_path(conn, :create, person.uuid))
 
-  #     assert create_live
-  #            |> form("#visit-form", visit: @invalid_attrs)
-  #            |> render_change() =~ "can&#39;t be blank"
+      assert create_live
+             |> form("#visit-form", visit: @invalid_attrs)
+             |> render_change() =~ "can&#39;t be blank"
 
-  #     {:ok, _, html} =
-  #       create_live
-  #       |> form("#visit-form", visit: Map.merge(@create_attrs, %{organisation_uuid: organisation.uuid}))
-  #       |> render_submit()
-  #       |> follow_redirect(conn)
+      render_hook(create_live, :select_visit_organisation, %{"uuid" => organisation.uuid})
 
-  #     assert html =~ "Visit created successfully"
-  #     assert html =~ "test"
-  #   end
-  # end
+      {:ok, _, html} =
+        create_live
+        |> form("#visit-form",
+          visit: Map.merge(@create_attrs, %{organisation_uuid: organisation.uuid})
+        )
+        |> render_submit()
+        |> follow_redirect(conn)
+
+      assert html =~ "Visit created successfully"
+      assert html =~ organisation.name
+    end
+  end
 end

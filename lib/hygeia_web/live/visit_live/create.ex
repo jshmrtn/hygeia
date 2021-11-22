@@ -76,7 +76,7 @@ defmodule HygeiaWeb.VisitLive.Create do
         {:noreply,
          socket
          |> put_flash(:info, gettext("Visit created successfully"))
-         |> redirect(to: Routes.visit_index_path(socket, :index, visit.person_uuid))}
+         |> push_redirect(to: Routes.visit_index_path(socket, :index, visit.person_uuid))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
