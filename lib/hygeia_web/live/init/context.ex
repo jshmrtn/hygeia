@@ -19,6 +19,20 @@ defmodule HygeiaWeb.Init.Context do
           socket :: Phoenix.LiveView.Socket.t()
         ) :: {:cont | :halt, Phoenix.LiveView.Socket.t()}
   def mount(params, _session, socket) do
+    :ok =
+      Sentry.Context.set_extra_context(%{
+        timezone: timezone(socket),
+        ip_address: get_ip_address(socket)
+      })
+
+    :ok =
+      Sentry.Context.set_request_context(%{
+        env: %{
+          "REMOTE_ADDR" => get_ip_address(socket),
+          "REMOTE_PORT" => get_remote_port(socket)
+        }
+      })
+
     socket =
       socket
       |> context_assign(:auth, get_auth(socket))
@@ -74,6 +88,18 @@ defmodule HygeiaWeb.Init.Context do
       case get_connect_info(socket) do
         %{peer_data: peer_data} ->
           peer_data.address
+
+        _other ->
+          nil
+      end
+    end
+  end
+
+  defp get_remote_port(socket) do
+    if connected?(socket) and not is_nil(socket.private[:connect_info]) do
+      case get_connect_info(socket) do
+        %{peer_data: peer_data} ->
+          peer_data.port
 
         _other ->
           nil
