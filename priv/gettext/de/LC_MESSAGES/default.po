@@ -279,9 +279,8 @@ msgstr "Sind Sie sicher?"
 msgid "Are you sure? There are affiliations assigned!"
 msgstr "Sind Sie sicher? Es existieren Zugehörigkeiten!"
 
-#, fuzzy
 msgid "Are you sure? There are visits assigned!"
-msgstr "Sind Sie sicher? Es existieren Zugehörigkeiten!"
+msgstr "Sind Sie sicher? Es sind Besuche zugeordnet!"
 
 msgid "Are you working in an association?"
 msgstr "Wirken Sie in einem Verein mit?"
@@ -2491,9 +2490,8 @@ msgstr "Neuer Test"
 msgid "New Transmission"
 msgstr "Neue Übertragung"
 
-#, fuzzy
 msgid "New Visit"
-msgstr "Neuer Test"
+msgstr "Neuer Besuch"
 
 msgid "New affiliation"
 msgstr "Neue Zugehörigkeit"
@@ -2534,9 +2532,8 @@ msgstr "Neuer Test"
 msgid "New transmission"
 msgstr "Neue Übertragung"
 
-#, fuzzy
 msgid "New visit"
-msgstr "Neuer Test"
+msgstr "Neuer Besuch"
 
 msgid "Next"
 msgstr "Weiter"
@@ -2932,9 +2929,8 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Person UUID"
 msgstr "Person UUID"
 
-#, fuzzy
 msgid "Person Visits"
-msgstr "Person"
+msgstr "Besuche"
 
 msgid "Person created successfully"
 msgstr "Person wurde erfolgreich erstellt"
@@ -4544,25 +4540,21 @@ msgstr "Verschiedenste Informationen zur Funktionsweise der Applikation sowie zu
 msgid "View"
 msgstr "Ansehen"
 
-#, fuzzy
 msgid "Visit"
-msgstr "Besucher"
+msgstr "Besuch"
 
-#, fuzzy
 msgid "Visit created successfully"
-msgstr "Test wurde erfolgreich erstellt"
+msgstr "Besuch erfolgreich erstellt"
 
-#, fuzzy
 msgid "Visit deleted successfully"
-msgstr "Organisation erfolgreich gelöscht"
+msgstr "Besuch erfolgreich gelöscht"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Visit reason"
 msgstr "Grund Besuch"
 
-#, fuzzy
 msgid "Visit updated successfully"
-msgstr "Test wurde erfolgreich aktualisiert"
+msgstr "Besuch erfolgreich aktualisiert"
 
 msgctxt "School visit reason"
 msgid "Visitor"
@@ -4573,14 +4565,12 @@ msgctxt "Visit reason"
 msgid "Visitor"
 msgstr "Besucher"
 
-#, fuzzy
 msgid "Visits"
-msgstr "Besucher"
+msgstr "Besuche"
 
-#, fuzzy
 msgctxt "Auto Tracing Step"
 msgid "Visits"
-msgstr "Besucher"
+msgstr "Besuche"
 
 msgid "Visits to educational institutions"
 msgstr "Besuche in Bildungseinrichtungen"

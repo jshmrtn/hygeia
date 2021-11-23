@@ -40,10 +40,7 @@ defmodule HygeiaWeb.VisitLive.Index do
 
     socket
     |> assign(person: person)
-    |> assign(
-      page_title:
-        "#{person.first_name} #{person.last_name} - #{gettext("Visits")} - #{gettext("Person")}"
-    )
+    |> assign(page_title: "#{person.first_name} #{person.last_name} - #{gettext("Visits")}")
   end
 
   @impl Phoenix.LiveView
