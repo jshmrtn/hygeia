@@ -42,7 +42,7 @@ defmodule HygeiaWeb.VisitLive.Index do
     |> assign(person: person)
     |> assign(
       page_title:
-        "#{person.first_name} #{person.last_name} - #{gettext("Visits")} - #{gettext("Person")}"
+        "#{person.first_name} #{person.last_name} - #{gettext("Visits")}"
     )
   end
 
