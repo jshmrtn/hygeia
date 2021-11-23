@@ -24,8 +24,13 @@
                     :if={authorized?(case.person, :details, auth)}
                     wrapper_tag={:span}
                   >
-                    {case.person.first_name}
-                    {case.person.last_name}
+                    <LiveRedirect
+                      :if={@disabled and authorized?(case, :details, auth)}
+                      to={Routes.person_base_data_path(@socket, :show, case.person)}
+                    >
+                      {case.person.first_name}
+                      {case.person.last_name}
+                    </LiveRedirect>
                   </HygeiaWeb.RecordView>
                   <span :if={not authorized?(case.person, :details, auth)}>
                     {case.person.tenant.subdivision}
@@ -36,8 +41,8 @@
                     :if={@disabled and authorized?(case, :details, auth)}
                     to={Routes.case_base_data_path(@socket, :show, case)}
                   >
-                    <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
-                    <small class="d-block text-muted">{case_display_date(case, timezone)}</small>
+                    <small class="d-block">{case_phase_type_translation(List.last(case.phases))}</small>
+                    <small class="d-block">{case_display_date(case, timezone)}</small>
                   </LiveRedirect>
                   <div :if={not @disabled or not authorized?(case, :details, auth)}>
                     <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
