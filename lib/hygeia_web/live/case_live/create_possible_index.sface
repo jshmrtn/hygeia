@@ -43,8 +43,6 @@
           {=@supervisor_users}
           {=@tracer_users}
         />
-      {#match :contact_methods}
-        <DefineContactMethods id={@form_step} {=@form_step} {=@live_action} {=@form_data} />
       {#match :summary}
         <Summary
           id={@form_step}

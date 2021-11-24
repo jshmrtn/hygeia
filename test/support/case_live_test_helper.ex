@@ -8,7 +8,7 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
 
   @spec test_next_button(view :: LiveViewTest.t(), context :: map(), params :: map()) ::
           LiveViewTest.t()
-  def test_next_button(view, context, params)
+  def test_next_button(view, context, params \\ %{})
 
   def test_next_button(view, %{conn: conn}, %{to_step: to_step}) do
     assert view
@@ -16,6 +16,14 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
            |> render_click()
 
     assert_patch(view, Routes.case_create_possible_index_path(conn, :index, to_step))
+    view
+  end
+
+  def test_next_button(view, _config, %{}) do
+    assert view
+           |> element("#next-button")
+           |> render_click()
+
     view
   end
 
@@ -174,31 +182,18 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
     view
   end
 
-  @spec test_define_options_step(
+  @spec test_define_administration_step(
           view :: LiveViewTest.t(),
           context :: map(),
           params :: map()
         ) :: LiveViewTest.t()
-  def test_define_options_step(view, context, params)
+  def test_define_administration_step(view, context, params)
 
-  def test_define_options_step(view, _context, params) do
+  def test_define_administration_step(view, _context, params) do
     assert view
            |> element("#define-administration-form")
            |> render_change(params)
 
-    view
-  end
-
-  @spec test_reporting_step(view :: LiveViewTest.t(), context :: map()) ::
-          LiveViewTest.t()
-  def test_reporting_step(view, context) do
-    %{conn: conn} = context
-
-    assert view
-           |> element("#next-button")
-           |> render_click()
-
-    assert_patch(view, Routes.case_create_possible_index_path(conn, :index, "summary"))
     view
   end
 end

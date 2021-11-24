@@ -68,7 +68,7 @@
               {#case binding[:reporting]}
                 {#match reporting when is_list(reporting) and length(reporting) > 0}
                   <span>{gettext("This person has been notified on the following contact methods")}:</span>
-                  {#for {contact_type, contact_type_members} <- DefineContactMethods.group_contacts_by_type(person_cs)}
+                  {#for {contact_type, contact_type_members} <- DefineAdministration.group_contacts_by_type(person_cs)}
                     <div class="mb-4">
                       <table class="table">
                         <thead>
@@ -86,7 +86,7 @@
                               <td>{contact.value}</td>
                               <td>{contact.comment}</td>
                               <td><Checkbox opts={
-                                  checked: if(DefineContactMethods.has_contact_uuid?(reporting, contact.uuid), do: true),
+                                  checked: if(DefineAdministration.has_contact_uuid?(reporting, contact.uuid), do: true),
                                   hidden_input: "false",
                                   disabled: true
                                 } />
@@ -112,7 +112,7 @@
 
   <div class="row">
     <LiveRedirect to={Routes.case_create_possible_index_path(@socket, :create)}>
-      {gettext("Create new possible index submission")}
+      {gettext("Create new possible index case")}
     </LiveRedirect>
   </div>
 </div>
