@@ -18,13 +18,20 @@ defmodule HygeiaWeb.Search do
   data query, :string, default: ""
   data results, :map, default: %{}
   data pending_search, :any, default: nil
+  data debouncer, :pid
+  data debouncing, :boolean, default: false
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, tenants: TenantContext.list_tenants())}
+    {:ok, debouncer} = Debounce.start_link({__MODULE__, :search, []}, :timer.seconds(1), [])
+    {:ok, assign(socket, tenants: TenantContext.list_tenants(), debouncer: debouncer)}
   end
 
   @impl Phoenix.LiveView
+
+  def handle_info({:start_search, task}, socket),
+    do: {:noreply, assign(socket, pending_search: task, results: %{}, debouncing: false)}
+
   def handle_info(
         {:clear_pending_search, pid},
         %{assigns: %{pending_search: %Task{pid: pid}}} = socket
@@ -55,31 +62,46 @@ defmodule HygeiaWeb.Search do
   end
 
   def handle_event("search", %{"query" => query} = _params, socket) do
-    {:noreply, search_results(socket, query)}
+    Debounce.apply(socket.assigns.debouncer, [socket, self(), query])
+    {:noreply, assign(socket, query: query, debouncing: true)}
   end
 
-  defp search_results(socket, ""),
-    do: assign(socket, results: %{}, query: "", pending_search: nil)
+  @doc false
+  @spec search(socket :: Phoenix.LiveView.Socket.t(), pid :: pid, query :: String.t()) :: :ok
+  def search(socket, pid, query)
 
-  defp search_results(socket, query) do
-    pid = self()
+  def search(_socket, pid, "") do
+    send(
+      pid,
+      {:start_search,
+       Task.async(fn ->
+         send(pid, {:clear_pending_search, pid})
+       end)}
+    )
 
-    task =
-      Task.async(fn ->
-        task_pid = self()
+    :ok
+  end
 
-        query
-        |> search_fns(socket)
-        |> Enum.reject(&match?({_key, nil}, &1))
-        |> Enum.map(fn {key, callback} ->
-          Task.async(fn -> run_search(key, callback, pid, task_pid) end)
-        end)
-        |> Enum.each(&Task.await/1)
+  def search(socket, pid, query) do
+    send(
+      pid,
+      {:start_search,
+       Task.async(fn ->
+         task_pid = self()
 
-        send(pid, {:clear_pending_search, task_pid})
-      end)
+         query
+         |> search_fns(socket)
+         |> Enum.reject(&match?({_key, nil}, &1))
+         |> Enum.map(fn {key, callback} ->
+           Task.async(fn -> run_search(key, callback, pid, task_pid) end)
+         end)
+         |> Enum.each(&Task.await/1)
 
-    assign(socket, query: query, results: %{}, pending_search: task)
+         send(pid, {:clear_pending_search, task_pid})
+       end)}
+    )
+
+    :ok
   end
 
   defp run_search(key, callback, pid, task_pid) do

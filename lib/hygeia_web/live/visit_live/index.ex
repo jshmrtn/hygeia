@@ -18,14 +18,14 @@ defmodule HygeiaWeb.VisitLive.Index do
   alias Hygeia.OrganisationContext.Division
 
   @impl Phoenix.LiveView
-  def handle_params(%{"id" => person_id}, _uri, socket) do
-    person = CaseContext.get_person!(person_id)
+  def handle_params(%{"id" => case_id}, _uri, socket) do
+    case = CaseContext.get_case!(case_id)
 
     socket =
-      if authorized?(Visit, :list, get_auth(socket), person: person) do
-        Phoenix.PubSub.subscribe(Hygeia.PubSub, "people:#{person_id}")
+      if authorized?(Visit, :list, get_auth(socket), case: case) do
+        Phoenix.PubSub.subscribe(Hygeia.PubSub, "cases:#{case_id}")
 
-        load_data(socket, person)
+        load_data(socket, case)
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))
@@ -35,31 +35,35 @@ defmodule HygeiaWeb.VisitLive.Index do
     {:noreply, socket}
   end
 
-  defp load_data(socket, person) do
-    person = Repo.preload(person, tenant: [], visits: [:organisation, :division])
+  defp load_data(socket, case) do
+    case =
+      Repo.preload(case, tenant: [], visits: [:organisation, :division], person: [tenant: []])
 
     socket
-    |> assign(person: person)
-    |> assign(page_title: "#{person.first_name} #{person.last_name} - #{gettext("Visits")}")
+    |> assign(case: case)
+    |> assign(
+      page_title:
+        "#{case.person.first_name} #{case.person.last_name} - #{gettext("Visits")} - #{gettext("Case")}"
+    )
   end
 
   @impl Phoenix.LiveView
-  def handle_info({_type, %module{}, _version}, socket) when module in [Visit, Person] do
-    {:noreply, load_data(socket, CaseContext.get_person!(socket.assigns.person.uuid))}
+  def handle_info({_type, %module{}, _version}, socket) when module in [Visit, Case] do
+    {:noreply, load_data(socket, CaseContext.get_case!(socket.assigns.case.uuid))}
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
   @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id} = _params, socket) do
-    visit = Enum.find(socket.assigns.person.visits, &match?(%Visit{uuid: ^id}, &1))
+    visit = Enum.find(socket.assigns.case.visits, &match?(%Visit{uuid: ^id}, &1))
 
     true = authorized?(visit, :delete, get_auth(socket))
 
     {:ok, _} = OrganisationContext.delete_visit(visit)
 
     {:noreply,
-     push_patch(socket, to: Routes.visit_index_path(socket, :index, socket.assigns.person))}
+     push_patch(socket, to: Routes.visit_index_path(socket, :index, socket.assigns.case))}
   end
 
   defp format_date(nil), do: nil

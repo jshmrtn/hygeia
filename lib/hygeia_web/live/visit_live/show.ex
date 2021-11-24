@@ -131,7 +131,7 @@ defmodule HygeiaWeb.VisitLive.Show do
     {:noreply,
      socket
      |> put_flash(:info, gettext("Visit deleted successfully"))
-     |> redirect(to: Routes.visit_index_path(socket, :index, visit.person.uuid))}
+     |> push_redirect(to: Routes.visit_index_path(socket, :index, visit.case.uuid))}
   end
 
   @impl Phoenix.LiveView
@@ -142,14 +142,13 @@ defmodule HygeiaWeb.VisitLive.Show do
   def handle_info(_other, socket), do: {:noreply, socket}
 
   defp load_data(socket, visit) do
-    visit = Repo.preload(visit, [:organisation, :division, :person])
+    visit = Repo.preload(visit, [:organisation, :division, case: [:person]])
 
     changeset = OrganisationContext.change_visit(visit)
 
     socket
     |> assign(
       visit: visit,
-      person: visit.person,
       changeset: changeset,
       page_title: gettext("Visit")
     )

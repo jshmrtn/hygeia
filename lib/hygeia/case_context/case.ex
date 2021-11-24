@@ -22,6 +22,7 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
+  alias Hygeia.OrganisationContext.Visit
   alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
@@ -53,6 +54,7 @@ defmodule Hygeia.CaseContext.Case do
           sms: Ecto.Schema.has_many(SMS.t()) | nil,
           notes: Ecto.Schema.has_many(Note.t()) | nil,
           pinned_notes: Ecto.Schema.has_many(Note.t()) | nil,
+          visits: Ecto.Schema.has_many(Visit.t()),
           tests: Ecto.Schema.has_many(Test.t()) | nil,
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()) | nil,
           auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
@@ -83,6 +85,7 @@ defmodule Hygeia.CaseContext.Case do
           sms: Ecto.Schema.has_many(SMS.t()),
           notes: Ecto.Schema.has_many(Note.t()),
           pinned_notes: Ecto.Schema.has_many(Note.t()),
+          visits: Ecto.Schema.has_many(Visit.t()),
           tests: Ecto.Schema.has_many(Test.t()),
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()),
           auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
@@ -118,6 +121,7 @@ defmodule Hygeia.CaseContext.Case do
     has_many :notes, Note, foreign_key: :case_uuid
     has_many :pinned_notes, Note, foreign_key: :case_uuid, where: [pinned: true]
     has_many :hospitalizations, Hospitalization, foreign_key: :case_uuid, on_replace: :delete
+    has_many :visits, Visit, foreign_key: :case_uuid, on_replace: :delete
     has_many :tests, Test, foreign_key: :case_uuid, on_replace: :delete
     has_many :premature_releases, PrematureRelease, foreign_key: :case_uuid, on_replace: :delete
 
@@ -170,6 +174,7 @@ defmodule Hygeia.CaseContext.Case do
     |> cast_embed(:clinical)
     |> cast_embed(:external_references)
     |> cast_assoc(:hospitalizations)
+    |> cast_assoc(:visits)
     |> cast_assoc(:tests)
     |> cast_embed(:monitoring)
     |> cast_embed(:phases, required: true)

@@ -1,12 +1,11 @@
-<div class="component-person-base-data container">
-  <Context get={HygeiaWeb, auth: _auth}>
-    <HygeiaWeb.RecordView
-      resource={@person}
-      action={:details}
-      id={"person_recordview_#{@person.uuid}"}
-    >
-      <HygeiaWeb.PersonLive.Header person={@person} id="header" />
+<div class="component-case-visit-create container">
+  <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
 
+  <div class="card">
+    <div class="card-header">
+      <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
+    </div>
+    <div class="card-body">
       <Form
         for={@changeset}
         change="validate"
@@ -14,7 +13,7 @@
         opts={autocomplete: "off", id: "visit-form", "phx-hook": "BlockNavigation"}
       >
         <LiveRedirect
-          to={Routes.visit_index_path(@socket, :index, @person)}
+          to={Routes.visit_index_path(@socket, :index, @case)}
           class="btn btn-outline-primary mb-4"
         >
           <span class="oi oi-arrow-left me-1" aria-hidden="true" />
@@ -42,6 +41,6 @@
           {gettext("Save")}
         </button>
       </Form>
-    </HygeiaWeb.RecordView>
-  </Context>
+    </div>
+  </div>
 </div>

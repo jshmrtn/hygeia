@@ -6,18 +6,19 @@ defmodule HygeiaWeb.VisitLive.Create do
   alias Hygeia.CaseContext
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Visit
+  alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
-    person = CaseContext.get_person!(id)
+    case = CaseContext.get_case!(id)
 
     socket =
-      if authorized?(Visit, :create, get_auth(socket), person: person) do
+      if authorized?(Visit, :create, get_auth(socket), case: case) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "people:#{id}")
 
-        load_data(socket, person)
+        load_data(socket, case)
       else
         socket
         |> push_redirect(to: Routes.home_index_path(socket, :index))
@@ -69,28 +70,25 @@ defmodule HygeiaWeb.VisitLive.Create do
   end
 
   def handle_event("save", %{"visit" => visit_params}, socket) do
-    socket.assigns.person
+    socket.assigns.case
     |> OrganisationContext.create_visit(visit_params)
     |> case do
       {:ok, visit} ->
         {:noreply,
          socket
          |> put_flash(:info, gettext("Visit created successfully"))
-         |> push_redirect(to: Routes.visit_index_path(socket, :index, visit.person_uuid))}
+         |> push_redirect(to: Routes.visit_index_path(socket, :index, visit.case_uuid))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
   end
 
-  defp load_data(socket, person) do
-    changeset = OrganisationContext.change_visit(Ecto.build_assoc(person, :visits))
+  defp load_data(socket, case) do
+    changeset = OrganisationContext.change_visit(Ecto.build_assoc(case, :visits))
 
     socket
-    |> assign(person: person, changeset: changeset)
-    |> assign(
-      page_title:
-        "#{person.first_name} #{person.last_name} - #{gettext("Visits")} - #{gettext("Person")}"
-    )
+    |> assign(case: Repo.preload(case, person: []), changeset: changeset)
+    |> assign(page_title: gettext("New Visit"))
   end
 end
