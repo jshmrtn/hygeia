@@ -101,7 +101,7 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
           (school_visit->>'visit_reason')::#{Reason.type()},
           school_visit->>'other_reason',
           (school_visit->>'visited_at')::date,
-          cases.uuid,
+          auto_tracing.case_uuid,
           organisation.uuid,
           school_visit->'unknown_school',
           division.uuid,
