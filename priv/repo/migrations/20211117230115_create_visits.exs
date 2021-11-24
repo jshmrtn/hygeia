@@ -83,13 +83,7 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
       &noop/0
     )
 
-    execute(
-      """
-        ALTER TABLE affiliations
-        RENAME COLUMN related_school_visit_uuid TO related_visit_uuid;
-      """,
-      &noop/0
-    )
+    rename table(:affiliations), :related_school_visit_uuid, to: :related_visit_uuid
 
     execute(
       """
