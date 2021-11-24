@@ -14,8 +14,8 @@ defmodule Hygeia.Jobs.RefreshMaterializedView do
   alias Hygeia.Repo
 
   case Mix.env() do
-    :dev -> @default_refresh_interval_ms :timer.seconds(30)
-    _env -> @default_refresh_interval_ms :timer.minutes(5)
+    :dev -> @default_refresh_interval_ms :timer.minutes(5)
+    _env -> @default_refresh_interval_ms :timer.minutes(30)
   end
 
   @spec start_link(opts :: Keyword.t()) :: GenServer.on_start()
