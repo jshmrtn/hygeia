@@ -196,6 +196,130 @@
             class="card mb-3"
             :if={not Enum.empty?(fetch_field!(@changeset, :suspected_duplicates_uuid))}
           >
+            <div class="candidate-card card flex-row">
+              <div class="card-header card-vertical-header">
+                <table class="candidate-table">
+                  <tr>
+                    <th>{gettext("Name")}</th>
+                    <td>
+                      {Ecto.Changeset.fetch_field!(form.source, :first_name)}
+                      {Ecto.Changeset.fetch_field!(form.source, :last_name)}
+                      <br>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>{schema_field_name(:birth_date, CreatePersonSchema)}</th>
+                    <td>{form.source |> Ecto.Changeset.fetch_field!(:birth_date) |> format_date()}</td>
+                  </tr>
+                  <tr>
+                    <th>{schema_field_name(:mobile, CreatePersonSchema)}</th>
+                    <td>{Ecto.Changeset.fetch_field!(form.source, :mobile)}</td>
+                  </tr>
+                  <tr>
+                    <th>{schema_field_name(:landline, CreatePersonSchema)}</th>
+                    <td>{Ecto.Changeset.fetch_field!(form.source, :landline)}</td>
+                  </tr>
+                  <tr>
+                    <th>{schema_field_name(:email, CreatePersonSchema)}</th>
+                    <td>{Ecto.Changeset.fetch_field!(form.source, :email)}</td>
+                  </tr>
+                  <tr>
+                    <th>{schema_field_name(:tenant, CreatePersonSchema)}</th>
+                    <td>
+                      {form.source
+                      |> Ecto.Changeset.fetch_field!(:tenant_uuid)
+                      |> case do
+                        nil -> nil
+                        uuid -> get_tenant(@tenants, uuid).name
+                      end}
+                    </td>
+                  </tr>
+                </table>
+                <input
+                  type="button"
+                  class="btn btn-primary mt-3"
+                  checked={accepted_duplicate and is_nil(Ecto.Changeset.fetch_field!(form.source, :accepted_duplicate_uuid))}
+                  phx-click="decline_duplicate"
+                  phx-target={@myself}
+                  value={gettext("Create new person")}
+                />
+              </div>
+              <div class="card-body">
+                <div class="candidates">
+                  <div
+                    :for={
+                      person_uuid <-
+                        String.split(Ecto.Changeset.fetch_field!(form.source, :suspected_duplicate_uuids), ","),
+                      person = get_person(person_uuid)
+                    }
+                    class="candidate"
+                  >
+                    <HygeiaWeb.RecordView
+                      :if={authorized?(person, :details, auth)}
+                      resource={person}
+                      action={:details}
+                      id={"duplicate_person_value_recordview_#{person.uuid}"}
+                    >
+                      <table class="candidate-table">
+                        <tr>
+                          <td>{get_person_name(person)}<br></td>
+                        </tr>
+                        <tr>
+                          <td>{format_date(person.birth_date)}<br></td>
+                        </tr>
+                        <tr>
+                          <td>{get_contact_method(person, :mobile)}</td>
+                        </tr>
+                        <tr>
+                          <td>{get_contact_method(person, :landline)}</td>
+                        </tr>
+                        <tr>
+                          <td>{get_contact_method(person, :email)}</td>
+                        </tr>
+                        <tr>
+                          <td>{get_tenant(@tenants, person.tenant_uuid).name}</td>
+                        </tr>
+                      </table>
+                    </HygeiaWeb.RecordView>
+
+                    <span :if={not authorized?(person, :details, auth)}>
+                      {person.tenant.subdivision}
+                      /
+                      {person.human_readable_id}
+                    </span>
+
+                    <input
+                      type="button"
+                      :for={case <- person.cases}
+                      class="btn btn-primary mt-3 d-block"
+                      phx-click="select_accepted_duplicate"
+                      phx-value-person-uuid={person_uuid}
+                      phx-value-case-uuid={case.uuid}
+                      phx-value-type="case"
+                      phx-target={@myself}
+                      value={gettext("Choose %{case}", case: case_display_name(case, timezone))}
+                    />
+
+                    <input
+                      type="button"
+                      class={
+                        "btn",
+                        "mt-3",
+                        "d-block",
+                        "btn-primary": match?([], person.cases),
+                        "btn-outline-primary": match?([_ | _], person.cases)
+                      }
+                      phx-click="select_accepted_duplicate"
+                      phx-value-person-uuid={person_uuid}
+                      phx-value-type="person"
+                      phx-target={@myself}
+                      value={gettext("Choose existing person")}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="card-body">
               <h4 class="card-title mb-3">{gettext("Suggested duplicates")}</h4>
               <div class="list-group">
