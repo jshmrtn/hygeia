@@ -18,14 +18,17 @@
     </div>
 
     <ul :if={@open and @query not in ["", nil]} class="d-block dropdown-menu dropdown-menu-end">
-      <li class="dropdown-submenu loading" :if={not is_nil(@pending_search)}>
+      <li class="dropdown-submenu loading" :if={not is_nil(@pending_search) or @debouncing}>
         <div class="d-flex align-items-center gap-2">
           <div class="spinner-border text-primary" role="status">
           </div>
           <span class="sr-only">{gettext("Waiting for results...")}</span>
         </div>
       </li>
-      <li class="dropdown-submenu" :if={map_size(@results) == 0 and is_nil(@pending_search)}>
+      <li
+        class="dropdown-submenu"
+        :if={map_size(@results) == 0 and is_nil(@pending_search) and not @debouncing}
+      >
         <span class="dropdown-item">
           {gettext("Found no results")}
         </span>

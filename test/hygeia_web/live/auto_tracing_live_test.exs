@@ -10,6 +10,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
   alias Hygeia.TenantContext
 
@@ -250,12 +251,13 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
              } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
 
       assert %Person{
-               visits: [_],
                affiliations: []
              } =
                case.person_uuid
                |> CaseContext.get_person!()
-               |> Repo.preload([:visits, :affiliations])
+               |> Repo.preload(:affiliations)
+
+      assert %Case{visits: [_]} = case.uuid |> CaseContext.get_case!() |> Repo.preload(:visits)
     end
 
     test "sets school visit with employment and advances to employer", %{
@@ -321,12 +323,13 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       assert Enum.sort(unsolved_problems) == Enum.sort(expected_unsolved_problems)
 
       assert %Person{
-               visits: [_],
                affiliations: [_]
              } =
                case.person_uuid
                |> CaseContext.get_person!()
-               |> Repo.preload([:visits, :affiliations])
+               |> Repo.preload(:affiliations)
+
+      assert %Case{visits: [_]} = case.uuid |> CaseContext.get_case!() |> Repo.preload(:visits)
     end
   end
 

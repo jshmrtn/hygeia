@@ -22,7 +22,7 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
       add :other_reason, :string
       add :last_visit_at, :date
 
-      add :person_uuid, references(:people, on_delete: :delete_all), null: false
+      add :case_uuid, references(:cases, on_delete: :delete_all), null: false
 
       add :organisation_uuid,
           references(:organisations, on_delete: :delete_all, type: :binary_id),
@@ -83,25 +83,19 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
       &noop/0
     )
 
-    execute(
-      """
-        ALTER TABLE affiliations
-        RENAME COLUMN related_school_visit_uuid TO related_visit_uuid;
-      """,
-      &noop/0
-    )
+    rename table(:affiliations), :related_school_visit_uuid, to: :related_visit_uuid
 
     execute(
       """
       INSERT
         INTO visits
-        (uuid, reason, other_reason, last_visit_at, person_uuid, organisation_uuid, unknown_organisation, division_uuid, unknown_division, inserted_at, updated_at)
+        (uuid, reason, other_reason, last_visit_at, case_uuid, organisation_uuid, unknown_organisation, division_uuid, unknown_division, inserted_at, updated_at)
         SELECT
           (school_visit->>'uuid')::uuid,
           (school_visit->>'visit_reason')::#{Reason.type()},
           school_visit->>'other_reason',
           (school_visit->>'visited_at')::date,
-          cases.person_uuid,
+          auto_tracing.case_uuid,
           organisation.uuid,
           school_visit->'unknown_school',
           division.uuid,
@@ -114,9 +108,6 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
           CROSS JOIN
             UNNEST(auto_tracing.school_visits)
             AS school_visit
-          JOIN
-            cases
-            ON cases.uuid = auto_tracing.case_uuid
           LEFT JOIN
             organisations
             AS organisation

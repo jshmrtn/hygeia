@@ -5,8 +5,8 @@ defmodule Hygeia.OrganisationContext.Visit do
 
   use Hygeia, :model
 
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Entity
-  alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
@@ -17,8 +17,8 @@ defmodule Hygeia.OrganisationContext.Visit do
           reason: Reason.t() | nil,
           other_reason: String.t() | nil,
           last_visit_at: Date.t() | nil,
-          person_uuid: Ecto.UUID.t() | nil,
-          person: Ecto.Schema.belongs_to(Person.t()) | nil,
+          case_uuid: Ecto.UUID.t() | nil,
+          case: Ecto.Schema.belongs_to(Case.t()) | nil,
           organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_organisation: Entity.t() | nil,
@@ -35,8 +35,8 @@ defmodule Hygeia.OrganisationContext.Visit do
           reason: Reason.t() | nil,
           other_reason: String.t() | nil,
           last_visit_at: Date.t() | nil,
-          person_uuid: Ecto.UUID.t() | nil,
-          person: Ecto.Schema.belongs_to(Person.t()) | nil,
+          case_uuid: Ecto.UUID.t() | nil,
+          case: Ecto.Schema.belongs_to(Case.t()) | nil,
           organisation_uuid: Ecto.UUID.t() | nil,
           organisation: Ecto.Schema.belongs_to(Organisation.t()) | nil,
           unknown_organisation: Entity.t() | nil,
@@ -53,7 +53,7 @@ defmodule Hygeia.OrganisationContext.Visit do
     field :other_reason, :string
     field :last_visit_at, :date
 
-    belongs_to :person, Person, references: :uuid, foreign_key: :person_uuid
+    belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
 
     belongs_to :organisation, Organisation,
       foreign_key: :organisation_uuid,
@@ -70,7 +70,7 @@ defmodule Hygeia.OrganisationContext.Visit do
     has_one :affiliation, Affiliation,
       foreign_key: :related_visit_uuid,
       on_replace: :update,
-      on_delete: :delete_all
+      on_delete: :nilify_all
 
     timestamps()
   end
@@ -85,11 +85,11 @@ defmodule Hygeia.OrganisationContext.Visit do
       :reason,
       :other_reason,
       :last_visit_at,
-      :person_uuid,
+      :case_uuid,
       :organisation_uuid,
       :division_uuid
     ])
-    |> assoc_constraint(:person)
+    |> assoc_constraint(:case)
     |> validate_required([:reason, :last_visit_at])
     |> validate_other_reason()
     |> validate_organisation()
@@ -143,7 +143,7 @@ defmodule Hygeia.OrganisationContext.Visit do
     alias Hygeia.UserContext.User
 
     @spec preload(resource :: Visit.t()) :: Visit.t()
-    def preload(resource), do: Repo.preload(resource, person: [])
+    def preload(resource), do: Repo.preload(resource, case: [])
 
     @spec authorized?(
             resource :: Visit.t(),
@@ -155,7 +155,7 @@ defmodule Hygeia.OrganisationContext.Visit do
           _visit,
           :create,
           user,
-          %{person: %Person{tenant_uuid: tenant_uuid}}
+          %{case: %Case{tenant_uuid: tenant_uuid}}
         ),
         do:
           Enum.any?(
@@ -167,7 +167,7 @@ defmodule Hygeia.OrganisationContext.Visit do
           _visit,
           :list,
           user,
-          %{person: %Person{tenant_uuid: tenant_uuid}}
+          %{case: %Case{tenant_uuid: tenant_uuid}}
         ),
         do:
           Enum.any?(
@@ -176,7 +176,7 @@ defmodule Hygeia.OrganisationContext.Visit do
           )
 
     def authorized?(
-          %Visit{person: %Person{tenant_uuid: tenant_uuid}},
+          %Visit{case: %Case{tenant_uuid: tenant_uuid}},
           :details,
           user,
           _meta
@@ -188,7 +188,7 @@ defmodule Hygeia.OrganisationContext.Visit do
           )
 
     def authorized?(
-          %Visit{person: %Person{tenant_uuid: tenant_uuid}},
+          %Visit{case: %Case{tenant_uuid: tenant_uuid}},
           action,
           user,
           _meta
