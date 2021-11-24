@@ -478,7 +478,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
          original_phases,
          %{type: global_type, type_other: global_type_other, date: date}
        ) do
-        original_phases
+    original_phases
     |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.PossibleIndex{type: ^global_type}}, &1))
     |> case do
       nil ->
@@ -527,15 +527,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
             put_embed(
               changeset,
               :phases,
-              (original_phases ++
-                 [
-                   %Case.Phase{
-                     details: %Case.Phase.PossibleIndex{
-                       type: global_type,
-                       type_other: global_type_other
-                     }
-                   }
-                 ])
+              original_phases ++
+                [
+                  %Case.Phase{
+                    details: %Case.Phase.PossibleIndex{
+                      type: global_type,
+                      type_other: global_type_other
+                    }
+                  }
+                ]
             )
           end
 
