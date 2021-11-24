@@ -77,6 +77,7 @@ defmodule Hygeia.MixProject do
       # merged and released:
       # - https://github.com/beatrichartz/csv/pull/104
       {:csv, "~> 2.4", github: "jshmrtn/csv", branch: "formular_escaping"},
+      {:debounce, "~> 1.0"},
       {:dialyxir, "~> 1.0", runtime: false, only: [:dev]},
       {:earmark, "~> 1.1"},
       {:ecto, "~> 3.7"},
