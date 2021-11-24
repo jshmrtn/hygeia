@@ -14,7 +14,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonSnippet
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.Suggestion
 
   alias Surface.Components.Context
   alias Surface.Components.Form
@@ -326,6 +326,49 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
           |> CaseContext.change_case(%{
             status: decide_case_status(form_data[:type])
           })
+      },
+      params["index"]
+    )
+    |> then(&send(self(), {:feed, %{bindings: &1}}))
+
+    send(
+      self(),
+      {:push_patch, Routes.case_create_possible_index_path(socket, :index, form_step), true}
+    )
+
+    {:noreply,
+     socket
+     |> clear_person()
+     |> clear_search()
+     |> clear_suggestions()}
+  end
+
+  @impl Phoenix.LiveComponent
+  def handle_event(
+        "duplicate_person_case_selected",
+        %{"value" => case_uuid},
+        %Socket{
+          assigns: %{
+            form_data: form_data,
+            form_step: form_step,
+            params: params
+          }
+        } = socket
+      ) do
+    case =
+      case_uuid
+      |> CaseContext.get_case!()
+      |> Hygeia.Repo.preload(person: [:tenant, :affiliations], tenant: [])
+
+    person_uuid = case.person.uuid
+
+    form_data
+    |> Map.get(:bindings, [])
+    |> Enum.reject(&match?(^person_uuid, fetch_field!(&1.person_changeset, :uuid)))
+    |> add_binding(
+      %{
+        person_changeset: CaseContext.change_person(case.person),
+        case_changeset: CaseContext.change_case(case)
       },
       params["index"]
     )
@@ -664,20 +707,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     assign(socket, :bulk_action_elements, %{})
   end
 
-  defp contains?(nil, _text2), do: false
-  defp contains?(_text1, nil), do: false
-
-  defp contains?(text1, text2) do
-    String.contains?(
-      String.downcase(text1),
-      String.downcase(text2)
-    ) or
-      String.contains?(
-        String.downcase(text2),
-        String.downcase(text1)
-      )
-  end
-
   defp merge_contact_method(changeset, type, value)
   defp merge_contact_method(changeset, _type, nil), do: changeset
   defp merge_contact_method(changeset, _type, ""), do: changeset
@@ -701,6 +730,23 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       :tenant,
       Enum.find(tenants, &match?(^tenant_uuid, &1.uuid))
     )
+  end
+
+  defp person_from_search_changeset(search_changeset) do
+    %{
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      mobile: mobile,
+      landline: landline
+    } = apply_changes(search_changeset)
+
+    %Person{}
+    |> CaseContext.change_person(%{first_name: first_name, last_name: last_name})
+    |> merge_contact_method(:mobile, mobile)
+    |> merge_contact_method(:landline, landline)
+    |> merge_contact_method(:email, email)
+    |> apply_changes()
   end
 
   defp decide_case_status(type) when type in [:contact_person, :travel], do: :done

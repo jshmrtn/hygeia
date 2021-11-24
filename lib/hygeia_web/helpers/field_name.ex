@@ -313,6 +313,11 @@ defmodule HygeiaWeb.Helpers.FieldName do
       originator: "Author",
       type: "Type"
     },
+    HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search => %{
+      email: "Email",
+      landline: "Landline",
+      mobile: "Mobile"
+    },
     HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration => %{
       status: "Status",
       supervisor_uuid: "Supervisor UUID",
