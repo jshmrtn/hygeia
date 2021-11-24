@@ -114,9 +114,6 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
           CROSS JOIN
             UNNEST(auto_tracing.school_visits)
             AS school_visit
-          JOIN
-            cases
-            ON cases.uuid = auto_tracing.case_uuid
           LEFT JOIN
             organisations
             AS organisation
