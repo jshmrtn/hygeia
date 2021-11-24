@@ -6,7 +6,6 @@ defmodule HygeiaWeb.PersonLive.Header do
   alias Ecto.Changeset
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
-  alias Hygeia.OrganisationContext.Visit
   alias Hygeia.Repo
   alias HygeiaWeb.UriActiveContext
   alias Surface.Components.LiveRedirect

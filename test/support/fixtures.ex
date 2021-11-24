@@ -260,9 +260,9 @@ defmodule Hygeia.Fixtures do
   @doc """
   Generate a visit.
   """
-  @spec visit_fixture(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) :: Visit.t()
-  def visit_fixture(person, attrs \\ %{}) do
-    {:ok, visit} = Hygeia.OrganisationContext.create_visit(person, Enum.into(attrs, @valid_attrs))
+  @spec visit_fixture(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) :: Visit.t()
+  def visit_fixture(case, attrs \\ %{}) do
+    {:ok, visit} = Hygeia.OrganisationContext.create_visit(case, Enum.into(attrs, @valid_attrs))
 
     visit
   end

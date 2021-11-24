@@ -1,90 +1,98 @@
 <div class="component-case-test-show container">
   <Context get={HygeiaWeb, auth: auth}>
-    <HygeiaWeb.PersonLive.Header person={@person} id="header" />
-    <Form
-      for={@changeset}
-      change="validate"
-      submit="save"
-      opts={autocomplete: "off", id: "visits-form"}
-    >
-      <LiveRedirect
-        to={Routes.visit_index_path(@socket, :index, @person.uuid)}
-        class="btn btn-outline-primary mb-4"
-      >
-        <span class="oi oi-arrow-left me-1" aria-hidden="true" />
-        {gettext("Back to list")}
-      </LiveRedirect>
+    <HygeiaWeb.PersonLive.Header person={@visit.case.person} id="header" />
 
-      <h1 class="mb-3">
-        {gettext("Visit")}
-      </h1>
-
-      <div class="mt-4" :if={@live_action == :show}>
-        <LivePatch
-          :if={authorized?(@visit, :update, auth)}
-          to={Routes.visit_show_path(@socket, :edit, @visit.uuid)}
-        >
-          <button class="btn btn-primary mb-3" id="test-edit">
-            <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-            {gettext("Edit")}
-          </button>
-        </LivePatch>
-        <Link
-          to="#"
-          click="delete"
-          opts={
-            title: gettext("Delete"),
-            data: [confirm: gettext("Are you sure?")]
-          }
-          :if={authorized?(@visit, :delete, auth)}
-        >
-          <button class="btn btn-danger mb-3">
-            <span class="oi oi-trash" aria-hidden="true" />
-            {gettext("Delete")}
-          </button>
-        </Link>
+    <div class="card">
+      <div class="card-header">
+        <HygeiaWeb.CaseLive.Navigation case={@visit.case} id="navigation" />
       </div>
+      <div class="card-body">
+        <Form
+          for={@changeset}
+          change="validate"
+          submit="save"
+          opts={autocomplete: "off", id: "visit-form"}
+        >
+          <LiveRedirect
+            to={Routes.visit_index_path(@socket, :index, @visit.case.uuid)}
+            class="btn btn-outline-primary mb-4"
+          >
+            <span class="oi oi-arrow-left me-1" aria-hidden="true" />
+            {gettext("Back to list")}
+          </LiveRedirect>
 
-      <div class="mb-4" :if={@live_action == :edit}>
-        <button
-          class="btn btn-primary me-2"
-          type="submit"
-          disabled={not @changeset.valid?}
-          phx-disable-with={gettext("Saving...")}
-        >
-          <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
-          {gettext("Save")}
-        </button>
-        <button
-          :on-click="reset"
-          class="btn btn-warning"
-          type="button"
-          data-confirm={if @changeset.changes != %{} do
-            gettext("Do you really want to discard your changes?")
-          else
-            nil
-          end}
-        >
-          <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
-          {gettext("Discard")}
-        </button>
+          <h1 class="mb-3">
+            {gettext("Visit")}
+          </h1>
+
+          <div class="mt-4" :if={@live_action == :show}>
+            <LivePatch
+              :if={authorized?(@visit, :update, auth)}
+              to={Routes.visit_show_path(@socket, :edit, @visit.uuid)}
+            >
+              <button class="btn btn-primary mb-3" id="test-edit">
+                <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+                {gettext("Edit")}
+              </button>
+            </LivePatch>
+            <Link
+              to="#"
+              click="delete"
+              opts={
+                title: gettext("Delete"),
+                data: [confirm: gettext("Are you sure?")]
+              }
+              :if={authorized?(@visit, :delete, auth)}
+            >
+              <button class="btn btn-danger mb-3">
+                <span class="oi oi-trash" aria-hidden="true" />
+                {gettext("Delete")}
+              </button>
+            </Link>
+          </div>
+
+          <div class="mb-4" :if={@live_action == :edit}>
+            <button
+              class="btn btn-primary me-2"
+              type="submit"
+              disabled={not @changeset.valid?}
+              phx-disable-with={gettext("Saving...")}
+            >
+              <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+              {gettext("Save")}
+            </button>
+            <button
+              :on-click="reset"
+              class="btn btn-warning"
+              type="button"
+              data-confirm={if @changeset.changes != %{} do
+                gettext("Do you really want to discard your changes?")
+              else
+                nil
+              end}
+            >
+              <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+              {gettext("Discard")}
+            </button>
+          </div>
+
+          <HygeiaWeb.Lock
+            id={"lock_visit_#{@visit.uuid}"}
+            resource={{Visit, @visit.uuid}}
+            lock={@live_action == :edit}
+          >
+            <div class="col-12 col-md-6">
+              <HygeiaWeb.VisitLive.Form
+                disabled={@live_action == :show}
+                show_buttons={@live_action == :edit}
+                id="visit-show"
+                select_organisation="select_visit_organisation"
+                select_division="select_visit_division"
+              />
+            </div>
+          </HygeiaWeb.Lock>
+        </Form>
       </div>
-
-      <HygeiaWeb.Lock
-        id={"lock_visit_#{@visit.uuid}"}
-        resource={{Visit, @visit.uuid}}
-        lock={@live_action == :edit}
-      >
-        <div class="col-12 col-md-6">
-          <HygeiaWeb.VisitLive.Form
-            disabled={@live_action == :show}
-            show_buttons={@live_action == :edit}
-            id="visit-show"
-            select_organisation="select_visit_organisation"
-            select_division="select_visit_division"
-          />
-        </div>
-      </HygeiaWeb.Lock>
-    </Form>
+    </div>
   </Context>
 </div>

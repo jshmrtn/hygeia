@@ -39,11 +39,12 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
 
   @impl Phoenix.LiveView
   # credo:disable-for-next-line Credo.Check.Refactor.ABCSize
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [:affiliations, visits: [:affiliation]], auto_tracing: [])
+      |> Repo.preload(person: [:affiliations], auto_tracing: [], visits: [:affiliation])
 
     socket =
       cond do
@@ -67,7 +68,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
         true ->
           visits =
             Enum.map(
-              case.person.visits,
+              case.visits,
               &%OrganisationVisit{
                 uuid: Ecto.UUID.generate(),
                 is_occupied: not is_nil(&1.affiliation),
@@ -85,9 +86,11 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
 
           step = %__MODULE__{
             has_visited:
-              case visits do
-                [_visits | _rest] -> true
-                [] -> case.auto_tracing.scholar
+              cond do
+                Enum.any?(visits) -> true
+                is_nil(case.auto_tracing.scholar) -> nil
+                case.auto_tracing.scholar and Enum.empty?(visits) -> nil
+                true -> false
               end,
             organisation_visits: visits
           }
@@ -95,6 +98,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
           assign(socket,
             step: step,
             changeset: %Ecto.Changeset{changeset(step) | action: :validate},
+            case: case,
             person: case.person,
             auto_tracing: case.auto_tracing
           )
@@ -205,8 +209,9 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
   def handle_event(
         "advance",
         _params,
-        %Socket{assigns: %{person: person, changeset: changeset, auto_tracing: auto_tracing}} =
-          socket
+        %Socket{
+          assigns: %{case: case, person: person, changeset: changeset, auto_tracing: auto_tracing}
+        } = socket
       ) do
     socket =
       changeset
@@ -219,10 +224,16 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
           person_changeset =
             person
             |> CaseContext.change_person()
-            |> add_visits_to_person(step)
             |> add_visited_affiliations_to_person(step)
 
           {:ok, _person} = CaseContext.update_person(person_changeset)
+
+          case_changeset =
+            case
+            |> CaseContext.change_case()
+            |> add_visits_to_case(step)
+
+          {:ok, _case} = CaseContext.update_case(case_changeset)
 
           auto_tracing_changeset =
             auto_tracing
@@ -282,7 +293,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
     end
   end
 
-  defp add_visits_to_person(changeset, %__MODULE__{
+  defp add_visits_to_case(changeset, %__MODULE__{
          organisation_visits: organisation_visits
        }) do
     visits =

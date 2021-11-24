@@ -360,12 +360,12 @@ defmodule Hygeia.OrganisationContextTest do
     }
 
     test "list_visits/0 returns all visits" do
-      visit = visit_fixture(person_fixture(), %{reason: :student})
+      visit = visit_fixture(case_fixture(), %{reason: :student})
       assert OrganisationContext.list_visits() == [visit]
     end
 
     test "get_visit!/1 returns the visit with given id" do
-      visit = visit_fixture(person_fixture(), %{reason: :student})
+      visit = visit_fixture(case_fixture(), %{reason: :student})
       assert OrganisationContext.get_visit!(visit.uuid) == visit
     end
 
@@ -384,35 +384,35 @@ defmodule Hygeia.OrganisationContextTest do
         }
       }
 
-      assert {:ok, %Visit{}} = OrganisationContext.create_visit(person_fixture(), valid_attrs)
+      assert {:ok, %Visit{}} = OrganisationContext.create_visit(case_fixture(), valid_attrs)
     end
 
     test "create_visit/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} =
-               OrganisationContext.create_visit(person_fixture(), @invalid_attrs)
+               OrganisationContext.create_visit(case_fixture(), @invalid_attrs)
     end
 
     test "update_visit/2 with valid data updates the visit" do
-      visit = visit_fixture(person_fixture(), %{reason: :student})
+      visit = visit_fixture(case_fixture(), %{reason: :student})
       update_attrs = %{reason: :visitor}
 
       assert {:ok, %Visit{}} = OrganisationContext.update_visit(visit, update_attrs)
     end
 
     test "update_visit/2 with invalid data returns error changeset" do
-      visit = visit_fixture(person_fixture(), %{reason: :student})
+      visit = visit_fixture(case_fixture(), %{reason: :student})
       assert {:error, %Ecto.Changeset{}} = OrganisationContext.update_visit(visit, @invalid_attrs)
       assert visit == OrganisationContext.get_visit!(visit.uuid)
     end
 
     test "delete_visit/1 deletes the visit" do
-      visit = visit_fixture(person_fixture(), %{reason: :student})
+      visit = visit_fixture(case_fixture(), %{reason: :student})
       assert {:ok, %Visit{}} = OrganisationContext.delete_visit(visit)
       assert_raise Ecto.NoResultsError, fn -> OrganisationContext.get_visit!(visit.uuid) end
     end
 
     test "change_visit/1 returns a visit changeset" do
-      visit = visit_fixture(person_fixture(), %{reason: :student})
+      visit = visit_fixture(case_fixture(), %{reason: :student})
       assert %Ecto.Changeset{} = OrganisationContext.change_visit(visit)
     end
   end

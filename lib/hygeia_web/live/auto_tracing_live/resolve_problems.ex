@@ -94,8 +94,9 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       case_uuid
       |> CaseContext.get_case!()
       |> Repo.preload(
-        person: [affiliations: [:organisation, :division], visits: [:organisation, :division]],
+        person: [affiliations: [:organisation, :division]],
         auto_tracing: [transmission: []],
+        visits: [:organisation, :division],
         tests: []
       )
 
@@ -270,13 +271,12 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
 
     :ok = OrganisationContext.propagate_organisation_and_division(affiliation)
 
+    case = Repo.preload(socket.assigns.case, visits: [:organisation, :division])
+
     person =
       affiliation.person_uuid
       |> CaseContext.get_person!()
-      |> Repo.preload(
-        affiliations: [:organisation, :division],
-        visits: [:organisation, :division]
-      )
+      |> Repo.preload(affiliations: [:organisation, :division])
 
     {:ok, auto_tracing} =
       if Enum.any?(
@@ -291,7 +291,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         )
       end
 
-    {:noreply, assign(socket, person: person, auto_tracing: auto_tracing)}
+    {:noreply, assign(socket, case: case, person: person, auto_tracing: auto_tracing)}
   end
 
   def handle_event(
@@ -309,13 +309,12 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
 
     :ok = OrganisationContext.propagate_organisation_and_division(affiliation)
 
+    case = Repo.preload(socket.assigns.case, visits: [:organisation, :division])
+
     person =
       affiliation.person_uuid
       |> CaseContext.get_person!()
-      |> Repo.preload(
-        affiliations: [:organisation, :division],
-        visits: [:organisation, :division]
-      )
+      |> Repo.preload(affiliations: [:organisation, :division])
 
     {:ok, auto_tracing} =
       if Enum.any?(
@@ -330,7 +329,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         )
       end
 
-    {:noreply, assign(socket, person: person, auto_tracing: auto_tracing)}
+    {:noreply, assign(socket, case: case, person: person, auto_tracing: auto_tracing)}
   end
 
   @impl Phoenix.LiveView
