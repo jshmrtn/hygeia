@@ -22,7 +22,7 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
       add :other_reason, :string
       add :last_visit_at, :date
 
-      add :person_uuid, references(:people, on_delete: :delete_all), null: false
+      add :case_uuid, references(:cases, on_delete: :delete_all), null: false
 
       add :organisation_uuid,
           references(:organisations, on_delete: :delete_all, type: :binary_id),
@@ -95,13 +95,13 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
       """
       INSERT
         INTO visits
-        (uuid, reason, other_reason, last_visit_at, person_uuid, organisation_uuid, unknown_organisation, division_uuid, unknown_division, inserted_at, updated_at)
+        (uuid, reason, other_reason, last_visit_at, case_uuid, organisation_uuid, unknown_organisation, division_uuid, unknown_division, inserted_at, updated_at)
         SELECT
           (school_visit->>'uuid')::uuid,
           (school_visit->>'visit_reason')::#{Reason.type()},
           school_visit->>'other_reason',
           (school_visit->>'visited_at')::date,
-          cases.person_uuid,
+          cases.uuid,
           organisation.uuid,
           school_visit->'unknown_school',
           division.uuid,

@@ -6,6 +6,7 @@ defmodule Hygeia.OrganisationContext do
   use Hygeia, :context
 
   alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Hospitalization
   alias Hygeia.CaseContext.Person
   alias Hygeia.OrganisationContext.Affiliation
@@ -783,15 +784,15 @@ defmodule Hygeia.OrganisationContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_visit(person :: Person.t(), attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec create_visit(case :: Case.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           {:ok, Visit.t()} | {:error, Ecto.Changeset.t(Visit.t())}
-  def create_visit(person, attrs),
+  def create_visit(case, attrs),
     do:
-      person
+      case
       |> Ecto.build_assoc(:visits)
       |> change_visit(attrs)
       |> versioning_insert()
-      |> broadcast("visits", :create, & &1.uuid, &["persons:#{&1.person_uuid}"])
+      |> broadcast("visits", :create, & &1.uuid, &["cases:#{&1.case_uuid}"])
       |> versioning_extract()
 
   @doc """

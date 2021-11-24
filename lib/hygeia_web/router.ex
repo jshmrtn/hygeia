@@ -221,11 +221,6 @@ defmodule HygeiaWeb.Router do
     live "/users", UserLive.Index, :index
     live "/users/:id", UserLive.Show, :show
 
-    live "/people/:id/visits", VisitLive.Index, :index
-    live "/people/:id/visits/new", VisitLive.Create, :create
-    live "/people/visits/:visit_id", VisitLive.Show, :show
-    live "/people/visits/:visit_id/edit", VisitLive.Show, :edit
-
     live "/people", PersonLive.Index, :index
     live "/people/new", PersonLive.Create, :create
     live "/people/:id", PersonLive.BaseData, :show
@@ -250,6 +245,11 @@ defmodule HygeiaWeb.Router do
     live "/cases/:id/tests/new", TestLive.Create, :create
     live "/cases/tests/:test_id", TestLive.Show, :show
     live "/cases/tests/:test_id/edit", TestLive.Show, :edit
+
+    live "/cases/:id/visits", VisitLive.Index, :index
+    live "/cases/:id/visits/new", VisitLive.Create, :create
+    live "/cases/visits/:visit_id", VisitLive.Show, :show
+    live "/cases/visits/:visit_id/edit", VisitLive.Show, :edit
 
     live "/transmissions/new", TransmissionLive.Create, :create
     live "/transmissions/:id", TransmissionLive.Show, :show

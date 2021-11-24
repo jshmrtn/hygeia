@@ -304,7 +304,7 @@
                             "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
                           )}:</p>
                         <div class="hy-card-grid-2-cols">
-                          {#for visit <- @person.visits}
+                          {#for visit <- @case.visits}
                             <div class="card card-body">
                               {#if organisation = visit.organisation || visit.unknown_organisation}
                                 <strong>{organisation.name}</strong>
