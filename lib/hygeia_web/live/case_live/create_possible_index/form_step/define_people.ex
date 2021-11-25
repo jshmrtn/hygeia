@@ -14,9 +14,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonSnippet
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.Suggestions
 
-  alias Surface.Components.Context
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.DateInput
@@ -37,6 +36,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
     use Hygeia, :model
 
+    @type changeset_options :: %{
+            optional(:person_compatible) => boolean
+          }
+
     @primary_key false
     embedded_schema do
       field :first_name, :string
@@ -44,21 +47,33 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       field :email, :string
       field :mobile, :string
       field :landline, :string
+
+      belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     end
 
     @spec changeset(
-            person :: %__MODULE__{} | Changeset.t(),
-            attrs :: Hygeia.ecto_changeset_params()
+            search :: %__MODULE__{} | Changeset.t(),
+            attrs :: Hygeia.ecto_changeset_params(),
+            opts :: changeset_options
           ) ::
             Ecto.Changeset.t()
-    def changeset(person \\ %__MODULE__{}, attrs \\ %{}) do
-      person
+    def changeset(search, attrs \\ %{}, opts \\ %{})
+
+    def changeset(search, attrs, %{person_compatible: true} = opts) do
+      search
+      |> changeset(attrs, %{opts | person_compatible: false})
+      |> validate_required([:first_name, :tenant_uuid])
+    end
+
+    def changeset(search, attrs, _opts) do
+      search
       |> cast(attrs, [
         :first_name,
         :last_name,
         :email,
         :mobile,
-        :landline
+        :landline,
+        :tenant_uuid
       ])
       |> validate_email(:email)
       |> validate_and_normalize_phone(:mobile, fn
@@ -136,27 +151,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     |> CaseContext.change_person(person_params)
     |> case do
       %Ecto.Changeset{valid?: true} = changeset ->
-        person_changeset = merge_tenant(changeset, tenants)
-
-        form_data
-        |> Map.get(:bindings, [])
-        |> add_binding(
-          %{
-            person_changeset: person_changeset,
-            case_changeset:
-              person_changeset
-              |> apply_changes()
-              |> Ecto.build_assoc(:cases, %{
-                tenant_uuid: fetch_field!(person_changeset, :tenant_uuid),
-                tenant: fetch_field!(person_changeset, :tenant)
-              })
-              |> CaseContext.change_case(%{
-                status: decide_case_status(form_data[:type])
-              })
-          },
-          params["index"]
-        )
-        |> then(&send(self(), {:feed, %{bindings: &1}}))
+        add_new_person(changeset, form_data, tenants, params)
 
         send(
           self(),
@@ -345,6 +340,49 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
   @impl Phoenix.LiveComponent
   def handle_event(
+        "duplicate_person_case_selected",
+        %{"value" => case_uuid},
+        %Socket{
+          assigns: %{
+            form_data: form_data,
+            form_step: form_step,
+            params: params
+          }
+        } = socket
+      ) do
+    case =
+      case_uuid
+      |> CaseContext.get_case!()
+      |> Hygeia.Repo.preload(person: [:tenant, :affiliations], tenant: [])
+
+    person_uuid = case.person.uuid
+
+    form_data
+    |> Map.get(:bindings, [])
+    |> Enum.reject(&match?(^person_uuid, fetch_field!(&1.person_changeset, :uuid)))
+    |> add_binding(
+      %{
+        person_changeset: CaseContext.change_person(case.person),
+        case_changeset: CaseContext.change_case(case)
+      },
+      params["index"]
+    )
+    |> then(&send(self(), {:feed, %{bindings: &1}}))
+
+    send(
+      self(),
+      {:push_patch, Routes.case_create_possible_index_path(socket, :index, form_step), true}
+    )
+
+    {:noreply,
+     socket
+     |> clear_person()
+     |> clear_search()
+     |> clear_suggestions()}
+  end
+
+  @impl Phoenix.LiveComponent
+  def handle_event(
         "person_checked",
         %{"index" => index, "value" => "true"},
         %Socket{assigns: %{bulk_action_elements: bulk_action_elements}} = socket
@@ -449,32 +487,45 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
   @impl Phoenix.LiveComponent
   def handle_event(
-        "new_person_modal",
-        %{"search" => params},
-        %Socket{assigns: %{form_step: form_step}} = socket
+        "new_person",
+        %{"search" => person_params},
+        %Socket{
+          assigns: %{form_data: form_data, form_step: form_step, tenants: tenants, params: params}
+        } = socket
       ) do
-    send(
-      self(),
-      {:push_patch, Routes.case_create_possible_index_path(socket, :new, form_step), true}
-    )
-
     %{
       "mobile" => mobile,
       "landline" => landline,
       "email" => email
-    } = params
+    } = person_params
 
-    {:noreply,
-     socket
-     |> assign(:changeset, %{
-       (%Person{}
-        |> CaseContext.change_person(params)
-        |> merge_contact_method(:mobile, mobile)
-        |> merge_contact_method(:landline, landline)
-        |> merge_contact_method(:email, email))
-       | action: :validate
-     })
-     |> clear_bulk_action()}
+    changeset =
+      %Person{}
+      |> CaseContext.change_person(person_params)
+      |> merge_contact_method(:mobile, mobile)
+      |> merge_contact_method(:landline, landline)
+      |> merge_contact_method(:email, email)
+
+    socket =
+      case changeset do
+        %Ecto.Changeset{valid?: true} = changeset ->
+          add_new_person(changeset, form_data, tenants, params)
+
+          socket
+          |> clear_search()
+          |> clear_suggestions()
+          |> clear_bulk_action()
+
+        %Ecto.Changeset{valid?: false} ->
+          send(
+            self(),
+            {:push_patch, Routes.case_create_possible_index_path(socket, :new, form_step), true}
+          )
+
+          assign(socket, :changeset, %{changeset | action: :validate})
+      end
+
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveComponent
@@ -664,20 +715,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     assign(socket, :bulk_action_elements, %{})
   end
 
-  defp contains?(nil, _text2), do: false
-  defp contains?(_text1, nil), do: false
-
-  defp contains?(text1, text2) do
-    String.contains?(
-      String.downcase(text1),
-      String.downcase(text2)
-    ) or
-      String.contains?(
-        String.downcase(text2),
-        String.downcase(text1)
-      )
-  end
-
   defp merge_contact_method(changeset, type, value)
   defp merge_contact_method(changeset, _type, nil), do: changeset
   defp merge_contact_method(changeset, _type, ""), do: changeset
@@ -701,6 +738,47 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       :tenant,
       Enum.find(tenants, &match?(^tenant_uuid, &1.uuid))
     )
+  end
+
+  defp person_from_search_changeset(search_changeset) do
+    %{
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      mobile: mobile,
+      landline: landline
+    } = apply_changes(search_changeset)
+
+    %Person{}
+    |> CaseContext.change_person(%{first_name: first_name, last_name: last_name})
+    |> merge_contact_method(:mobile, mobile)
+    |> merge_contact_method(:landline, landline)
+    |> merge_contact_method(:email, email)
+    |> apply_changes()
+  end
+
+  defp add_new_person(changeset, form_data, tenants, params) do
+    person_changeset = merge_tenant(changeset, tenants)
+
+    form_data
+    |> Map.get(:bindings, [])
+    |> add_binding(
+      %{
+        person_changeset: person_changeset,
+        case_changeset:
+          person_changeset
+          |> apply_changes()
+          |> Ecto.build_assoc(:cases, %{
+            tenant_uuid: fetch_field!(person_changeset, :tenant_uuid),
+            tenant: fetch_field!(person_changeset, :tenant)
+          })
+          |> CaseContext.change_case(%{
+            status: decide_case_status(form_data[:type])
+          })
+      },
+      params["index"]
+    )
+    |> then(&send(self(), {:feed, %{bindings: &1}}))
   end
 
   defp decide_case_status(type) when type in [:contact_person, :travel], do: :done

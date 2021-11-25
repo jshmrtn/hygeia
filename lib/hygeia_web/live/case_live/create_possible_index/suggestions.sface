@@ -1,0 +1,120 @@
+<Context get={HygeiaWeb, auth: auth, timezone: timezone}>
+  <div class="candidate-card card flex-row">
+    <div class="card-header card-vertical-header p-3">
+      <table class="candidate-table">
+        <tr>
+          <th>{gettext("Name")}</th>
+          <td>
+            {@person.first_name}
+            {@person.last_name}
+            <br>
+          </td>
+        </tr>
+        <tr>
+          <th>{schema_field_name(:birth_date, Person)}</th>
+          <td>{format_date(@person.birth_date)}<br></td>
+        </tr>
+        <tr>
+          <th>{schema_field_name(:mobile, Search)}</th>
+          <td>{get_contact_methods(@person, :mobile)}<br></td>
+        </tr>
+        <tr>
+          <th>{schema_field_name(:landline, Search)}</th>
+          <td>{get_contact_methods(@person, :landline)}<br></td>
+        </tr>
+        <tr>
+          <th>{schema_field_name(:email, Search)}</th>
+          <td>{get_contact_methods(@person, :email)}<br></td>
+        </tr>
+        <tr>
+          <th>{schema_field_name(:tenant, Person)}</th>
+          <td>
+            {@person
+            |> Map.get(:tenant)
+            |> case do
+              %Tenant{} = tenant -> tenant.name
+              _ -> nil
+            end}<br>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="card-body p-3">
+      <div class="candidates">
+        {#for person <- @suggestions}
+          <div class="candidate">
+            {#if authorized?(person, :details, auth)}
+              <HygeiaWeb.RecordView
+                id={"#{Ecto.UUID.generate()}_suggestion_#{person.uuid}"}
+                resource={person}
+                action={:details}
+              >
+                <table class="candidate-table">
+                  <tr>
+                    <td>
+                      {person.first_name}
+                      {person.last_name}
+                      <br>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>{format_date(person.birth_date)}<br></td>
+                  </tr>
+                  <tr>
+                    <td>{get_contact_methods(person, :mobile)}<br></td>
+                  </tr>
+                  <tr>
+                    <td>{get_contact_methods(person, :landline)}<br></td>
+                  </tr>
+                  <tr>
+                    <td>{get_contact_methods(person, :email)}<br></td>
+                  </tr>
+                  <tr>
+                    <td>{person.tenant.name}<br></td>
+                  </tr>
+                </table>
+              </HygeiaWeb.RecordView>
+
+              <button
+                type="button"
+                :for={case <- person.cases}
+                class="btn btn-primary mt-3 d-block"
+                :on-click={@case_selected}
+                phx-value-person_uuid={person.uuid}
+                value={case.uuid}
+              >
+                {gettext("Choose %{case}", case: case_display_name(case, timezone))}
+              </button>
+
+              <button
+                type="button"
+                class={
+                  "btn",
+                  "mt-3",
+                  "d-block",
+                  "btn-primary": match?([], person.cases),
+                  "btn-outline-primary": match?([_ | _], person.cases)
+                }
+                :on-click={@person_selected}
+                value={person.uuid}
+              >
+                {gettext("Choose existing person")}
+              </button>
+            {#else}
+              <div class="alert alert-warning mb-0" role="alert">
+                {gettext(
+                  "You are not authorized to view this person. Please provide the code \<%{country} / %{subdivision} / %{person_hr_id}\> to your supervisor to identify the person.",
+                  %{
+                    country: person.tenant.country,
+                    subdivision: person.tenant.subdivision,
+                    person_hr_id: person.human_readable_id
+                  }
+                )}
+              </div>
+            {/if}
+          </div>
+        {/for}
+      </div>
+    </div>
+  </div>
+</Context>

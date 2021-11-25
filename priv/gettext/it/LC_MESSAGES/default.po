@@ -901,6 +901,9 @@ msgstr "Crea una nuova persona"
 msgid "Create new possible index submission"
 msgstr "Nuova possibile presentazione dell'indice"
 
+msgid "Create person now"
+msgstr "Crea persona ora"
+
 msgid "Created Case"
 msgid_plural "Created %{n} Cases"
 msgstr[0] "Caso creato"
@@ -1421,6 +1424,11 @@ msgid "Email"
 msgstr "Email"
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Email"
+msgstr "Email"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Email"
 msgstr "Email"
 
@@ -2280,6 +2288,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Landline"
 msgstr "Linea fissa"
 
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Landline"
+msgstr "Linea fissa"
+
 msgid "Language"
 msgstr "Lingua"
 
@@ -2508,6 +2521,11 @@ msgstr "Mobile"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Mobile"
+msgstr "Mobile"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Mobile"
 msgstr "Mobile"
 
@@ -4467,6 +4485,11 @@ msgid "Tenant"
 msgstr "Inquilino"
 
 msgctxt "Inbox Row Apply Tenant"
+msgid "Tenant"
+msgstr "Inquilino"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Tenant"
 msgstr "Inquilino"
 
