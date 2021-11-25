@@ -1050,6 +1050,10 @@ msgstr "Nouvelle soumission d'index possible"
 msgid "Create new possible index submission"
 msgstr "Nouvelle soumission d'index possible"
 
+#, fuzzy
+msgid "Create person now"
+msgstr "Créer une nouvelle personne"
+
 msgid "Created Case"
 msgid_plural "Created %{n} Cases"
 msgstr[0] "Cas créé"
@@ -1629,6 +1633,11 @@ msgstr "Courriel :"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Email"
+msgstr "Courriel :"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Email"
 msgstr "Courriel :"
 
@@ -2646,6 +2655,11 @@ msgid "Landline"
 msgstr "Ligne fixe"
 
 #, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Landline"
+msgstr "Ligne fixe"
+
+#, fuzzy
 msgid "Language"
 msgstr "Langue"
 
@@ -2895,6 +2909,11 @@ msgstr "Mobile"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Mobile"
+msgstr "Mobile"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Mobile"
 msgstr "Mobile"
 
@@ -5000,6 +5019,11 @@ msgid "Tenant"
 msgstr "Locataire"
 
 #, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Tenant"
+msgstr "Locataire"
+
+#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tenant UUID"
 msgstr "UUID du locataire"
@@ -5194,6 +5218,10 @@ msgid "This case is not in an index phase."
 msgstr "Cette affaire n'est pas en phase d'indexation."
 
 msgid "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
+msgstr "Cette entrée ne peut pas être modifiée car elle est une conséquence des informations fournies dans un établissement d'enseignement inséré ci-dessus."
+
+#, fuzzy
+msgid "This entry cannot be modified because it is a consequence of the information provided in the Visits step."
 msgstr "Cette entrée ne peut pas être modifiée car elle est une conséquence des informations fournies dans un établissement d'enseignement inséré ci-dessus."
 
 #, fuzzy

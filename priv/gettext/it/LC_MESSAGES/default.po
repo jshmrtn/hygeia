@@ -910,6 +910,9 @@ msgstr "Nuova possibile presentazione dell'indice"
 msgid "Create new possible index submission"
 msgstr "Nuova possibile presentazione dell'indice"
 
+msgid "Create person now"
+msgstr "Crea persona ora"
+
 msgid "Created Case"
 msgid_plural "Created %{n} Cases"
 msgstr[0] "Caso creato"
@@ -1430,6 +1433,11 @@ msgid "Email"
 msgstr "Email"
 
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Email"
+msgstr "Email"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Email"
 msgstr "Email"
 
@@ -2289,6 +2297,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Landline"
 msgstr "Linea fissa"
 
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Landline"
+msgstr "Linea fissa"
+
 msgid "Language"
 msgstr "Lingua"
 
@@ -2517,6 +2530,11 @@ msgstr "Mobile"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgid "Mobile"
+msgstr "Mobile"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Mobile"
 msgstr "Mobile"
 
@@ -4486,6 +4504,11 @@ msgid "Tenant"
 msgstr "Inquilino"
 
 #, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Tenant"
+msgstr "Inquilino"
+
+#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tenant UUID"
 msgstr "UUID dell'inquilino"
@@ -4666,6 +4689,9 @@ msgstr "Questo caso non è in una fase di indice."
 
 msgid "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
 msgstr "Questa informazione non può essere modificata perché fa parte di un instituto inserito al passo precedente (vedi sopra)."
+
+msgid "This entry cannot be modified because it is a consequence of the information provided in the Visits step."
+msgstr "Questa informazione non può essere modificata perché fa parte di un instituto inserito al passo Visite."
 
 #, fuzzy
 msgid "This entry cannot be modified because it is a consequence of the information provided in the previous step."
