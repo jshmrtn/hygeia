@@ -1,4 +1,4 @@
-<div class="component-define-administration row">
+<div class="component-define-action row">
   <div class="row mb-3">
     {#for {%{person_changeset: person_cs, case_changeset: case_cs, reporting: reporting}, index} <-
         Enum.with_index(@form_data.bindings)}
@@ -6,7 +6,7 @@
         <Form
           for={%Ecto.Changeset{case_cs | action: :validate}}
           change="validate"
-          opts={autocomplete: "off", id: "define-administration-form"}
+          opts={autocomplete: "off", id: "define-action-form"}
         >
           <HiddenInput name="index" value={index} />
           <PersonCard person_changeset={person_cs}>
@@ -78,7 +78,7 @@
                 <div class="mt-3">{gettext("A new case will be created for this person.")}</div>
               {/if}
 
-              {#if can_contact_person?(case_cs, @form_data.type)}
+              {#if can_contact_person?(person_cs, case_cs, @form_data.type)}
                 {#for {contact_type, contact_type_members} <- group_contacts_by_type(person_cs)}
                   {#if contact_type_eligible?(case_cs, contact_type)}
                     <div class="mt-4 mb-4">
@@ -121,11 +121,16 @@
                       </table>
                     </div>
                   {#else}
-                    <div class="mt-3">{disabled_contact_reason(case_cs, @form_data.type, contact_type)}</div>
+                    <div class="mt-3">{disabled_contact_reason(person_cs, case_cs, @form_data.type, contact_type)}</div>
                   {/if}
                 {/for}
               {#else}
-                <div class="mt-3">{disabled_contact_reason(case_cs, @form_data.type)}</div>
+                <div class="mt-3">{disabled_contact_reason(person_cs, case_cs, @form_data.type)}</div>
+              {/if}
+              {#if can_contact_person?(person_cs, case_cs, @form_data.type) and not Enum.empty?(reporting)}
+                <div class="alert alert-success mt-3">{gettext("Quarantine confirmation will be sent on the selected contact methods.")}</div>
+              {#else}
+                <div class="alert alert-warning mt-3">{gettext("Quarantine confirmation will not be sent to this person.")}</div>
               {/if}
             </:bottom>
           </PersonCard>

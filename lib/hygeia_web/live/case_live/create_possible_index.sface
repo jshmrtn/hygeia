@@ -34,8 +34,8 @@
           {=@form_data}
           {=@tenants}
         />
-      {#match :administration}
-        <DefineAdministration
+      {#match :action}
+        <DefineAction
           id={@form_step}
           {=@form_step}
           {=@live_action}

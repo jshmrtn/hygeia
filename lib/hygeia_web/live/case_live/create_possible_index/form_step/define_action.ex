@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration do
+defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
   @moduledoc false
 
   use HygeiaWeb, :surface_live_component
@@ -292,7 +292,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
          transmission_type,
          contact_type
        ) do
-    if can_contact_person?(case_changeset, transmission_type) and
+    if can_contact_person?(person_changeset, case_changeset, transmission_type) and
          contact_type_eligible?(case_changeset, contact_type) do
       add_contact_uuids(
         reporting,
@@ -306,10 +306,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
     end
   end
 
-  defp can_contact_person?(case_changeset, type),
+  defp can_contact_person?(person_changeset, case_changeset, type),
     do:
       not has_index_phase?(case_changeset) and is_right_type?(type) and
-        is_right_tenant?(case_changeset)
+        is_right_tenant?(case_changeset) and has_contact_methods?(person_changeset)
 
   defp contact_type_eligible?(case_changeset, :email),
     do:
@@ -318,6 +318,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
   defp contact_type_eligible?(case_changeset, :mobile),
     do:
       TenantContext.tenant_has_outgoing_sms_configuration?(fetch_field!(case_changeset, :tenant))
+
+  defp has_contact_methods?(person_changeset) do
+    person_changeset
+    |> fetch_field!(:contact_methods)
+    |> case do
+      [_one | _more] -> true
+      _else -> false
+    end
+  end
 
   defp has_index_phase?(case_changeset) do
     case_changeset
@@ -344,12 +353,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
     |> Tenant.is_internal_managed_tenant?()
   end
 
-  defp disabled_contact_reason(case_changeset, type, contact_type \\ nil)
+  defp disabled_contact_reason(person_cs, case_changeset, type, contact_type \\ nil)
 
-  defp disabled_contact_reason(case_changeset, type, nil) do
+  defp disabled_contact_reason(person_cs, case_changeset, type, nil) do
     gettext("This person cannot be contacted because: %{reasons}.",
       reasons:
         []
+        |> no_contact_method_reason(person_cs)
         |> index_phase_reason(case_changeset)
         |> type_reason(type)
         |> tenant_reason(case_changeset)
@@ -357,17 +367,24 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
     )
   end
 
-  defp disabled_contact_reason(case_changeset, _type, :email) do
+  defp disabled_contact_reason(_person_cs, case_changeset, _type, :email) do
     gettext("This person cannot be contacted by email because: %{reasons}.",
       reasons: [] |> tenant_email_config_reason(case_changeset) |> List.first()
     )
   end
 
-  defp disabled_contact_reason(case_changeset, _type, :mobile) do
+  defp disabled_contact_reason(_person_cs, case_changeset, _type, :mobile) do
     gettext("This person cannot be contacted by sms because: %{reasons}.",
       reasons: [] |> tenant_sms_config_reason(case_changeset) |> List.first()
     )
   end
+
+  defp no_contact_method_reason(reasons, person_changeset),
+    do:
+      if(has_contact_methods?(person_changeset),
+        do: reasons,
+        else: reasons ++ [gettext("the person does not have contact methods")]
+      )
 
   defp index_phase_reason(reasons, case_changeset),
     do:
@@ -542,7 +559,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration d
         CaseContext.change_case(case_changeset)
 
       %Case.Phase{} ->
-        case_changeset
+        put_embed(case_changeset, :phases, original_phases)
     end
   end
 

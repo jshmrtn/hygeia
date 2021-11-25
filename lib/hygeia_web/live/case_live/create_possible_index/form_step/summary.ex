@@ -21,7 +21,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary do
 
   alias Hygeia.CaseContext.Case.Status
 
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction
 
   prop form_step, :string, required: true
   prop live_action, :atom, required: true

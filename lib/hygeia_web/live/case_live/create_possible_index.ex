@@ -14,7 +14,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
 
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary
@@ -28,8 +28,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   @default_form_step :transmission
   @form_steps [
     %FormStep{name: :transmission, prev: nil, next: :people},
-    %FormStep{name: :people, prev: :transmission, next: :administration},
-    %FormStep{name: :administration, prev: :people, next: nil},
+    %FormStep{name: :people, prev: :transmission, next: :action},
+    %FormStep{name: :action, prev: :people, next: nil},
     %FormStep{name: :summary, prev: nil, next: nil}
   ]
 
@@ -302,15 +302,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     DefinePeople.valid?(form_data)
   end
 
-  defp valid_step?(:administration, form_data) do
-    DefineAdministration.valid?(form_data)
+  defp valid_step?(:action, form_data) do
+    DefineAction.valid?(form_data)
   end
 
   defp update_form_data(current_data) do
     current_data
     |> DefineTransmission.update_step_data()
     |> DefinePeople.update_step_data()
-    |> DefineAdministration.update_step_data()
+    |> DefineAction.update_step_data()
   end
 
   defp decide_nav_class(current_step, target_step, visited_steps, current_data) do
@@ -339,9 +339,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   defp translate_step(:transmission), do: pgettext("Create Possible Index Step", "Transmission")
   defp translate_step(:people), do: pgettext("Create Possible Index Step", "People")
-
-  defp translate_step(:administration),
-    do: pgettext("Create Possible Index Step", "Administration")
-
+  defp translate_step(:action), do: pgettext("Create Possible Index Step", "Actions")
   defp translate_step(:summary), do: pgettext("Create Possible Index Step", "Summary")
 end

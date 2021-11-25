@@ -182,16 +182,16 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
     view
   end
 
-  @spec test_define_administration_step(
+  @spec test_define_action_step(
           view :: LiveViewTest.t(),
           context :: map(),
           params :: map()
         ) :: LiveViewTest.t()
-  def test_define_administration_step(view, context, params)
+  def test_define_action_step(view, context, params)
 
-  def test_define_administration_step(view, _context, params) do
+  def test_define_action_step(view, _context, params) do
     assert view
-           |> element("#define-administration-form")
+           |> element("#define-action-form")
            |> render_change(params)
 
     view
