@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Suggestion do
+defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Suggestions do
   @moduledoc false
 
   use HygeiaWeb, :surface_component
@@ -9,9 +9,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Suggestion do
   alias Surface.Components.Context
 
   prop person, :map, required: true
-  prop suggestion, :map, required: true
+  prop suggestions, :list, required: true
 
-  prop target, :any
   prop person_selected, :event
   prop case_selected, :event
 

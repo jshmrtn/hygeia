@@ -316,7 +316,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
     HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search => %{
       email: "Email",
       landline: "Landline",
-      mobile: "Mobile"
+      mobile: "Mobile",
+      tenant: "Tenant"
     },
     HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration => %{
       status: "Status",

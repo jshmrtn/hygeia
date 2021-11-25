@@ -1041,6 +1041,10 @@ msgstr "Créer une nouvelle personne"
 msgid "Create new possible index submission"
 msgstr "Nouvelle soumission d'index possible"
 
+#, fuzzy
+msgid "Create person now"
+msgstr "Créer une nouvelle personne"
+
 msgid "Created Case"
 msgid_plural "Created %{n} Cases"
 msgstr[0] "Cas créé"
@@ -4995,6 +4999,11 @@ msgstr "Locataire"
 
 #, fuzzy
 msgctxt "Inbox Row Apply Tenant"
+msgid "Tenant"
+msgstr "Locataire"
+
+#, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Tenant"
 msgstr "Locataire"
 
