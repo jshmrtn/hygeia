@@ -98,6 +98,11 @@ msgstr "Acquisizione del lock..."
 msgid "Actions"
 msgstr "Azioni"
 
+#, fuzzy
+msgctxt "Create Possible Index Step"
+msgid "Actions"
+msgstr "Azioni"
+
 msgid "Active Cases"
 msgstr "Casi attivi"
 
@@ -3633,6 +3638,12 @@ msgstr "Quarantena ordinata"
 msgid "Quarantine Period End"
 msgstr "Fine del periodo di quarantena"
 
+msgid "Quarantine confirmation will be sent on the selected contact methods."
+msgstr "La conferma della quarantena verrà inviata sui metodi di contatto selezionati"
+
+msgid "Quarantine confirmation will not be sent to this person."
+msgstr "La conferma della quarantena non verrà inviata a questa persona"
+
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Reason"
@@ -5495,6 +5506,9 @@ msgstr "il caso contiene una fase indice"
 
 msgid "the case is managed by an unmanaged tenant"
 msgstr "il caso è gestito da un inquilino non gestito"
+
+msgid "the person does not have contact methods"
+msgstr "la persona non ha metodi di contatto"
 
 msgid "the transmission type is not \"contact person\""
 msgstr "il tipo di trasmissione non è \"persona di contatto\""

@@ -99,6 +99,10 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
+msgctxt "Create Possible Index Step"
+msgid "Actions"
+msgstr ""
+
 msgid "Active Cases"
 msgstr ""
 
@@ -3177,6 +3181,12 @@ msgstr ""
 msgid "Quarantine Period End"
 msgstr ""
 
+msgid "Quarantine confirmation will be sent on the selected contact methods."
+msgstr ""
+
+msgid "Quarantine confirmation will not be sent to this person."
+msgstr ""
+
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Reason"
 msgstr ""
@@ -4774,6 +4784,9 @@ msgid "the case contains an index phase"
 msgstr ""
 
 msgid "the case is managed by an unmanaged tenant"
+msgstr ""
+
+msgid "the person does not have contact methods"
 msgstr ""
 
 msgid "the transmission type is not \"contact person\""

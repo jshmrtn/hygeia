@@ -92,6 +92,11 @@ msgstr "Exklusive Bearbeitungsrechte werden angefordert…"
 msgid "Actions"
 msgstr "Aktionen"
 
+#, fuzzy
+msgctxt "Create Possible Index Step"
+msgid "Actions"
+msgstr "Aktionen"
+
 msgid "Active Cases"
 msgstr "Aktuelle Fälle"
 
@@ -584,7 +589,6 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
 msgid "Class or division"
 msgstr "Abteilung / Klasse"
 
-#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division"
 msgstr "Abteilung / Klasse"
@@ -1174,7 +1178,6 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
 msgid "Division"
 msgstr "Abteilung / Klasse"
 
-#, fuzzy
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Division"
 msgstr "Abteilung / Klasse"
@@ -3280,6 +3283,12 @@ msgstr "Quarantäne verordnet"
 msgid "Quarantine Period End"
 msgstr "Quarantäneperiode Ende"
 
+msgid "Quarantine confirmation will be sent on the selected contact methods."
+msgstr "Die Quarantänebestätigung wird über die ausgewählten Kontaktmethoden gesendet"
+
+msgid "Quarantine confirmation will not be sent to this person."
+msgstr "Diese Person erhält keine Quarantänebestätigung"
+
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Reason"
 msgstr "Grund"
@@ -4905,6 +4914,9 @@ msgstr "der Fall enthält eine Indexphase"
 
 msgid "the case is managed by an unmanaged tenant"
 msgstr "der Fall wird von einem nicht verwalteten Mandanten verwaltet"
+
+msgid "the person does not have contact methods"
+msgstr "die Person hat keine Kontaktmethoden"
 
 msgid "the transmission type is not \"contact person\""
 msgstr "die Übermittlungsart ist nicht \"Kontaktperson\""
