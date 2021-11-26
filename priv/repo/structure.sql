@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 13.2 (Debian 13.2-1.pgdg100+1)
--- Dumped by pg_dump version 13.4 (Ubuntu 13.4-1.pgdg20.04+1)
+-- Dumped from database version 14.0 (Debian 14.0-1.pgdg110+1)
+-- Dumped by pg_dump version 14.1 (Ubuntu 14.1-1.pgdg21.10+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -57,7 +57,9 @@ CREATE TYPE public.auto_tracing_problem AS ENUM (
     'school_related',
     'no_reaction',
     'no_contact_method',
-    'possible_index_submission'
+    'possible_index_submission',
+    'flight_related',
+    'phase_date_inconsistent'
 );
 
 
@@ -69,10 +71,12 @@ CREATE TYPE public.auto_tracing_step AS ENUM (
     'start',
     'address',
     'contact_methods',
+    'visits',
     'employer',
     'vaccination',
     'covid_app',
     'clinical',
+    'flights',
     'transmission',
     'end',
     'contact_persons'
@@ -2137,6 +2141,21 @@ CREATE TYPE public.resource_view_auth_type AS ENUM (
 
 
 --
+-- Name: school_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.school_type AS ENUM (
+    'preschool',
+    'primary_school',
+    'secondary_school',
+    'cantonal_school_or_other_middle_school',
+    'professional_school',
+    'university_or_college',
+    'other'
+);
+
+
+--
 -- Name: sedex_export_status; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -2258,6 +2277,19 @@ CREATE TYPE public.versioning_origin AS ENUM (
     'migration',
     'detect_unchanged_cases_job',
     'detect_no_reaction_cases_job'
+);
+
+
+--
+-- Name: visit_reason; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.visit_reason AS ENUM (
+    'student',
+    'professor',
+    'employee',
+    'visitor',
+    'other'
 );
 
 
@@ -2786,12 +2818,15 @@ CREATE TABLE public.affiliations (
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     division_uuid uuid,
-    CONSTRAINT comment_required CHECK (((organisation_uuid IS NOT NULL) OR (comment IS NOT NULL))),
+    related_visit_uuid uuid,
+    unknown_organisation jsonb,
+    unknown_division jsonb,
     CONSTRAINT kind_other_required CHECK (
 CASE
     WHEN (kind = 'other'::public.affiliation_kind) THEN (kind_other IS NOT NULL)
     ELSE (kind_other IS NULL)
-END)
+END),
+    CONSTRAINT organisation_info_required CHECK (((organisation_uuid IS NOT NULL) OR (unknown_organisation IS NOT NULL) OR (comment IS NOT NULL)))
 );
 
 
@@ -2807,7 +2842,6 @@ CREATE TABLE public.auto_tracings (
     solved_problems public.auto_tracing_problem[] DEFAULT ARRAY[]::public.auto_tracing_problem[],
     covid_app boolean,
     employed boolean,
-    occupations jsonb[],
     case_uuid uuid,
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -2818,7 +2852,9 @@ CREATE TABLE public.auto_tracings (
     transmission_known boolean,
     propagator jsonb,
     transmission_uuid uuid,
-    started_at timestamp without time zone NOT NULL
+    started_at timestamp without time zone NOT NULL,
+    has_flown boolean,
+    flights jsonb[]
 );
 
 
@@ -2990,7 +3026,8 @@ CREATE TABLE public.organisations (
     updated_at timestamp without time zone NOT NULL,
     fulltext tsvector GENERATED ALWAYS AS ((((to_tsvector('german'::regconfig, (uuid)::text) || to_tsvector('german'::regconfig, (name)::text)) || to_tsvector('german'::regconfig, (COALESCE(notes, ''::character varying))::text)) || COALESCE(jsonb_to_tsvector('german'::regconfig, address, '["all"]'::jsonb), to_tsvector('german'::regconfig, ''::text)))) STORED,
     type public.organisation_type,
-    type_other character varying(255)
+    type_other character varying(255),
+    school_type public.school_type
 );
 
 
@@ -3587,6 +3624,25 @@ CREATE TABLE public.versions (
 
 
 --
+-- Name: visits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.visits (
+    uuid uuid NOT NULL,
+    reason public.visit_reason,
+    other_reason character varying(255),
+    last_visit_at date,
+    case_uuid uuid NOT NULL,
+    organisation_uuid uuid,
+    unknown_organisation jsonb,
+    division_uuid uuid,
+    unknown_division jsonb,
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: affiliations affiliations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3800,6 +3856,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.versions
     ADD CONSTRAINT versions_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: visits visits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.visits
+    ADD CONSTRAINT visits_pkey PRIMARY KEY (uuid);
 
 
 --
@@ -4986,6 +5050,27 @@ CREATE TRIGGER users_versioning_update AFTER UPDATE ON public.users FOR EACH ROW
 
 
 --
+-- Name: visits visit_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER visit_versioning_delete AFTER DELETE ON public.visits FOR EACH ROW EXECUTE FUNCTION public.versioning_delete();
+
+
+--
+-- Name: visits visit_versioning_insert; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER visit_versioning_insert AFTER INSERT ON public.visits FOR EACH ROW EXECUTE FUNCTION public.versioning_insert();
+
+
+--
+-- Name: visits visit_versioning_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER visit_versioning_update AFTER UPDATE ON public.visits FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
+
+
+--
 -- Name: affiliations affiliations_division_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5290,6 +5375,30 @@ ALTER TABLE ONLY public.versions
 
 
 --
+-- Name: visits visits_case_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.visits
+    ADD CONSTRAINT visits_case_uuid_fkey FOREIGN KEY (case_uuid) REFERENCES public.cases(uuid) ON DELETE CASCADE;
+
+
+--
+-- Name: visits visits_division_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.visits
+    ADD CONSTRAINT visits_division_uuid_fkey FOREIGN KEY (division_uuid) REFERENCES public.divisions(uuid) ON DELETE SET NULL;
+
+
+--
+-- Name: visits visits_organisation_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.visits
+    ADD CONSTRAINT visits_organisation_uuid_fkey FOREIGN KEY (organisation_uuid) REFERENCES public.organisations(uuid) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -5399,3 +5508,14 @@ INSERT INTO public."schema_migrations" (version) VALUES (20210830133345);
 INSERT INTO public."schema_migrations" (version) VALUES (20210831165759);
 INSERT INTO public."schema_migrations" (version) VALUES (20210901135323);
 INSERT INTO public."schema_migrations" (version) VALUES (20210914093248);
+INSERT INTO public."schema_migrations" (version) VALUES (20210915111748);
+INSERT INTO public."schema_migrations" (version) VALUES (20210916113825);
+INSERT INTO public."schema_migrations" (version) VALUES (20210922180638);
+INSERT INTO public."schema_migrations" (version) VALUES (20211010093048);
+INSERT INTO public."schema_migrations" (version) VALUES (20211012150640);
+INSERT INTO public."schema_migrations" (version) VALUES (20211012170218);
+INSERT INTO public."schema_migrations" (version) VALUES (20211012203320);
+INSERT INTO public."schema_migrations" (version) VALUES (20211012213226);
+INSERT INTO public."schema_migrations" (version) VALUES (20211015083935);
+INSERT INTO public."schema_migrations" (version) VALUES (20211103105723);
+INSERT INTO public."schema_migrations" (version) VALUES (20211117230115);
