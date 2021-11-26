@@ -162,7 +162,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
           Map.put(
             binding,
             :case_changeset,
-            CaseContext.change_case(apply_changes(case_changeset), case_params)
+            CaseContext.change_case(case_changeset, case_params)
           )
         end
       )
