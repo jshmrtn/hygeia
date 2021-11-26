@@ -47,12 +47,6 @@ Extract all translation strings to create `*.pot`-files:
 mix gettext.extract
 ```
 
-Next, clean wrongly inserted comments from the `*.pot` files.
-
-```console
-cat priv/gettext/default.pot | grep -v elixir-format | sponge priv/gettext/default.pot
-```
-
 Then merge those into the localized `*.po`-files:
 
 ```console
