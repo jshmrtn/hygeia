@@ -331,11 +331,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
   defp has_index_phase?(case_changeset) do
     case_changeset
     |> fetch_field!(:phases)
-    |> contains_index_phase?()
-  end
-
-  defp contains_index_phase?(phases) do
-    phases
     |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
     |> case do
       nil -> false
@@ -480,22 +475,23 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
     })
   end
 
-  defp merge_phases(case_changeset, data) do
-    original_phases = case_changeset.data.phases
+  defp merge_phases(case_changeset, form_data) do
+    original_case_changeset = delete_change(case_changeset, :phases)
 
-    if contains_index_phase?(original_phases) do
+    if has_index_phase?(original_case_changeset) do
       case_changeset
     else
-      manage_existing_phases(case_changeset, original_phases, data)
+      manage_existing_phases(original_case_changeset, form_data)
     end
   end
 
   defp manage_existing_phases(
          case_changeset,
-         original_phases,
          %{type: global_type, type_other: global_type_other, date: date}
        ) do
-    original_phases
+    existing_phases = fetch_field!(case_changeset, :phases)
+
+    existing_phases
     |> Enum.find(&match?(%Case.Phase{details: %Case.Phase.PossibleIndex{type: ^global_type}}, &1))
     |> case do
       nil ->
@@ -506,7 +502,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
             {start_date, end_date} = Service.phase_dates(Date.from_iso8601!(date))
 
             status_changed_phases =
-              Enum.map(original_phases, fn
+              Enum.map(existing_phases, fn
                 %Case.Phase{quarantine_order: true, start: old_phase_start} = phase ->
                   if Date.compare(old_phase_start, start_date) == :lt do
                     %Case.Phase{
@@ -544,7 +540,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
             put_embed(
               changeset,
               :phases,
-              original_phases ++
+              existing_phases ++
                 [
                   %Case.Phase{
                     details: %Case.Phase.PossibleIndex{
@@ -559,7 +555,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
         CaseContext.change_case(case_changeset)
 
       %Case.Phase{} ->
-        put_embed(case_changeset, :phases, original_phases)
+        put_embed(case_changeset, :phases, existing_phases)
     end
   end
 
