@@ -236,19 +236,9 @@ msgid "Address"
 msgstr "Adresse"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Address"
-msgstr "Adresse"
-
-#, fuzzy
 msgctxt "Person Visits"
 msgid "Address"
 msgstr "Adresse"
-
-#, fuzzy
-msgctxt "Create Possible Index Step"
-msgid "Administration"
-msgstr "Administration des cas"
 
 #, fuzzy
 msgid "Adult salon / prostitution services"
@@ -480,11 +470,6 @@ msgid "Birth Date"
 msgstr "Date de naissance"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Birth Date"
-msgstr "Date de naissance"
-
-#, fuzzy
 msgid "Birth date"
 msgstr "Date de naissance"
 
@@ -624,10 +609,6 @@ msgid "Changes"
 msgstr "Changements"
 
 #, fuzzy
-msgid "Check Duplicates"
-msgstr "Vérifier les doublons"
-
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Check and apply all possible index submissions."
 msgstr "Vérifiez et appliquez toutes les soumissions d'index possibles."
@@ -639,10 +620,6 @@ msgstr "Maison d'enfants, maison pour handicapés"
 #, fuzzy
 msgid "Choir, Choral Society, Orchstra"
 msgstr "Chorale, Société chorale, Orchstra"
-
-#, fuzzy
-msgid "Choose"
-msgstr "choisissez"
 
 msgid "Choose %{case}"
 msgstr "Choisissez %{case}"
@@ -701,12 +678,12 @@ msgid "Choose profession category"
 msgstr "Choisir la catégorie de profession"
 
 #, fuzzy
-msgctxt "Reason"
+msgctxt "Affiliation"
 msgid "Choose reason"
 msgstr "Choisir la personne"
 
 #, fuzzy
-msgctxt "Affiliation"
+msgctxt "Reason"
 msgid "Choose reason"
 msgstr "Choisir la personne"
 
@@ -729,25 +706,14 @@ msgstr "Cinéma / théâtre / concert"
 msgid "Class or division"
 msgstr ""
 
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
-msgid "Class or division"
-msgstr ""
-
 #, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division"
 msgstr ""
 
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
-msgid "Class or division not found"
-msgstr ""
-
 #, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
-msgstr ""
-
-msgid "Clear"
 msgstr ""
 
 #, fuzzy
@@ -816,11 +782,6 @@ msgid "Comment"
 msgstr "Commentaire"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Comment"
-msgstr "Commentaire"
-
-#, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Comment"
 msgstr "Commentaire"
@@ -873,11 +834,6 @@ msgid "Contact Methods"
 msgstr "Méthodes de contact"
 
 #, fuzzy
-msgctxt "Create Possible Index Step"
-msgid "Contact Methods"
-msgstr "Méthodes de contact"
-
-#, fuzzy
 msgctxt "Possible Index Type"
 msgid "Contact Person"
 msgstr "Personne de contact"
@@ -915,14 +871,6 @@ msgid "Continue"
 msgstr "Continuer"
 
 #, fuzzy
-msgid "Contry"
-msgstr "Pays"
-
-#, fuzzy
-msgid "Contry:"
-msgstr "Pays"
-
-#, fuzzy
 msgctxt "Test Reason"
 msgid "Convenience"
 msgstr "Commodité"
@@ -935,11 +883,6 @@ msgstr "Converti en indice"
 msgctxt "Possible Index End Reason"
 msgid "Converted to Index"
 msgstr "Converti en indice"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Copy Address From Propagator"
-msgstr "Copie de l'adresse du propagateur"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
@@ -1000,16 +943,16 @@ msgid "CovidApp Alert"
 msgstr "Alerte CovidApp"
 
 #, fuzzy
+msgid "Create"
+msgstr "Créer"
+
+#, fuzzy
 msgctxt "Division"
 msgid "Create"
 msgstr "Créer"
 
 #, fuzzy
 msgctxt "Organisation"
-msgid "Create"
-msgstr "Créer"
-
-#, fuzzy
 msgid "Create"
 msgstr "Créer"
 
@@ -1047,17 +990,8 @@ msgid "Create new possible index case"
 msgstr "Nouvelle soumission d'index possible"
 
 #, fuzzy
-msgid "Create new possible index submission"
-msgstr "Nouvelle soumission d'index possible"
-
-#, fuzzy
 msgid "Create person now"
 msgstr "Créer une nouvelle personne"
-
-msgid "Created Case"
-msgid_plural "Created %{n} Cases"
-msgstr[0] "Cas créé"
-msgstr[1] "Créé %{n} Dossiers"
 
 msgid "Created at %{created_at}"
 msgstr "Créé à %{created_at}"
@@ -1091,7 +1025,7 @@ msgid "Date"
 msgstr "Date"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Date"
 msgstr "Date"
 
@@ -1100,30 +1034,17 @@ msgctxt "Protocol Entry"
 msgid "Date"
 msgstr "Date"
 
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
-msgid "Date"
-msgstr "Date"
-
-#, fuzzy
-msgid "Date of birth"
-msgstr ""
-
 msgctxt "Auto Tracing Resolve Problems"
-msgid "Date of last visit"
-msgstr "Date de la dernière visite"
-
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
-msgid "Date of last visit"
-msgstr "Date de la dernière visite"
-
-#, fuzzy
-msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Date of last visit"
 msgstr "Date de la dernière visite"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
+msgid "Date of last visit"
+msgstr "Date de la dernière visite"
+
+#, fuzzy
+msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Date of last visit"
 msgstr "Date de la dernière visite"
 
@@ -1218,86 +1139,14 @@ msgid "December"
 msgstr "Décembre"
 
 #, fuzzy
-msgid "Default Supervisor"
-msgstr "Superviseur par défaut"
-
-#, fuzzy
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Default Supervisor"
 msgstr "Superviseur par défaut"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
-msgid "Default Supervisor"
-msgstr "Superviseur par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Default Supervisor"
-msgstr "Superviseur par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
-msgid "Default Supervisor UUID"
-msgstr "UUID du superviseur par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Default Supervisor UUID"
-msgstr "UUID du superviseur par défaut"
-
-#, fuzzy
-msgid "Default Tenant"
-msgstr "Locataire par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
-msgid "Default Tenant"
-msgstr "Locataire par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Default Tenant"
-msgstr "Locataire par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
-msgid "Default Tenant UUID"
-msgstr "UUID du locataire par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Default Tenant UUID"
-msgstr "UUID du locataire par défaut"
-
-#, fuzzy
-msgid "Default Tracer"
-msgstr "Traceur par défaut"
-
-#, fuzzy
 msgctxt "Elixir.Hygeia.ImportContext.Import Field"
 msgid "Default Tracer"
 msgstr "Traceur par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
-msgid "Default Tracer"
-msgstr "Traceur par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Default Tracer"
-msgstr "Traceur par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreateIndex.CreateSchema Field"
-msgid "Default Tracer UUID"
-msgstr "UUID du traceur par défaut"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Default Tracer UUID"
-msgstr "UUID du traceur par défaut"
 
 #, fuzzy
 msgid "Delete"
@@ -1332,10 +1181,6 @@ msgstr "Décrivez votre rencontre avec %{first_name} %{last_name}. Dans quelles 
 msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
 msgid "Description"
 msgstr "Description"
-
-#, fuzzy
-msgid "Deselect all"
-msgstr "supprimer tout"
 
 #, fuzzy
 msgid "Despite multiple calls and inquiries regarding the phone number unavailable"
@@ -1394,11 +1239,6 @@ msgstr "Situation de vie difficile, enquêtes complémentaires nécessaires"
 #, fuzzy
 msgid "Diificulty Breathing"
 msgstr "Difficultés respiratoires"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Directly Close Cases"
-msgstr "Fermer directement les dossiers"
 
 #, fuzzy
 msgid "Disable"
@@ -1468,11 +1308,6 @@ msgstr "Division supprimée avec succès"
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Division not found"
 msgstr "Division"
-
-#, fuzzy
-msgctxt "Visits"
-msgid "Division not provided"
-msgstr ""
 
 #, fuzzy
 msgctxt "Person Visits"
@@ -1584,10 +1419,6 @@ msgstr "Fin anticipée en raison d'un test négatif après le 7e jour de quarant
 msgid "Edit"
 msgstr "Modifier"
 
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
-msgid "Educational institution"
-msgstr "Établissement d'enseignement"
-
 #, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Educational institution"
@@ -1632,11 +1463,6 @@ msgid "Email"
 msgstr "Courriel :"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Email"
-msgstr "Courriel :"
-
-#, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Email"
 msgstr "Courriel :"
@@ -1666,11 +1492,6 @@ msgid "Employee"
 msgstr "Employé"
 
 #, fuzzy
-msgctxt "School visit reason"
-msgid "Employee"
-msgstr "Employé"
-
-#, fuzzy
 msgctxt "Visit reason"
 msgid "Employee"
 msgstr "Employé"
@@ -1686,11 +1507,6 @@ msgstr "Employeur"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
-msgid "Employer"
-msgstr "Employeur"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Employer"
 msgstr "Employeur"
 
@@ -1929,11 +1745,6 @@ msgid "First Name"
 msgstr "Prénom"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "First Name"
-msgstr "Prénom"
-
-#, fuzzy
 msgctxt "Case Status"
 msgid "First contact"
 msgstr "Premier contact"
@@ -1942,14 +1753,6 @@ msgstr "Premier contact"
 msgctxt "Case Status"
 msgid "First contact, unreachable"
 msgstr "Premier contact, injoignable"
-
-#, fuzzy
-msgid "First name"
-msgstr "Prénom"
-
-#, fuzzy
-msgid "First name:"
-msgstr "Prénom"
 
 msgctxt "Auto Tracing Resolve Problems"
 msgid "First positive test date"
@@ -2223,11 +2026,6 @@ msgid "ISM Case"
 msgstr "Cas de l'ISM"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "ISM Case ID"
-msgstr "ID du cas ISM"
-
-#, fuzzy
 msgctxt "Elixir.Hygeia.MutationContext.Mutation Field"
 msgid "ISM Code"
 msgstr "Code ISM"
@@ -2241,11 +2039,6 @@ msgstr "ISM Patient"
 msgctxt "External Reference Type"
 msgid "ISM Report"
 msgstr "Rapport ISM"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "ISM Report ID"
-msgstr "ID du rapport ISM"
 
 msgid "ISM-ID: %{id}"
 msgstr "ISM-ID : %{id}"
@@ -2467,11 +2260,6 @@ msgid "Inserted At"
 msgstr "Inséré à"
 
 #, fuzzy
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
-msgid "Institution not found"
-msgstr "Organisation non trouvée"
-
-#, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Institution not found"
 msgstr "Organisation non trouvée"
@@ -2650,11 +2438,6 @@ msgid "Landline"
 msgstr "Ligne fixe"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Landline"
-msgstr "Ligne fixe"
-
-#, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Landline"
 msgstr "Ligne fixe"
@@ -2681,19 +2464,6 @@ msgstr "Nom de famille"
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Last Name"
-msgstr "Nom de famille"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Last Name"
-msgstr "Nom de famille"
-
-#, fuzzy
-msgid "Last name"
-msgstr "Nom de famille"
-
-#, fuzzy
-msgid "Last name:"
 msgstr "Nom de famille"
 
 #, fuzzy
@@ -2908,11 +2678,6 @@ msgid "Mobile"
 msgstr "Mobile"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Mobile"
-msgstr "Mobile"
-
-#, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Mobile"
 msgstr "Mobile"
@@ -2968,9 +2733,6 @@ msgstr "Mutation mise à jour avec succès"
 msgid "Mutations"
 msgstr "Mutations"
 
-msgid "N/A"
-msgstr ""
-
 #, fuzzy
 msgid "Name"
 msgstr "Nom"
@@ -2987,11 +2749,6 @@ msgstr "Nom"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
-msgid "Name"
-msgstr "Nom"
-
-#, fuzzy
-msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Name"
 msgstr "Nom"
 
@@ -3336,9 +3093,6 @@ msgstr "Oups !"
 msgid "Open case in new tab"
 msgstr ""
 
-msgid "Open in new tab"
-msgstr ""
-
 #, fuzzy
 msgid "Ordered"
 msgstr "Commandé"
@@ -3426,7 +3180,7 @@ msgid "Other"
 msgstr "Autre"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Other"
 msgstr "Autre"
 
@@ -3461,17 +3215,7 @@ msgid "Other"
 msgstr "Autre"
 
 #, fuzzy
-msgctxt "School visit reason"
-msgid "Other"
-msgstr "Autre"
-
-#, fuzzy
 msgctxt "Sex"
-msgid "Other"
-msgstr "Autre"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Other"
 msgstr "Autre"
 
@@ -3673,10 +3417,6 @@ msgid "Person UUID"
 msgstr "UUID de la personne"
 
 #, fuzzy
-msgid "Person Visits"
-msgstr "Personne"
-
-#, fuzzy
 msgid "Person created successfully"
 msgstr "Personne créée avec succès"
 
@@ -3804,10 +3544,6 @@ msgid "Place of departure"
 msgstr ""
 
 #, fuzzy
-msgid "Place:"
-msgstr "Lieu"
-
-#, fuzzy
 msgid "Please enter your place of residence."
 msgstr "Veuillez indiquer votre lieu de résidence."
 
@@ -3818,10 +3554,6 @@ msgstr "Veuillez indiquer comment nous pouvons vous joindre :"
 #, fuzzy
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
 msgstr "Veuillez noter que la soumission des personnes de contact ne fonctionne que dans les versions récentes des navigateurs suivants :"
-
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
-msgid "Please specify your reason"
-msgstr "Veuillez préciser votre raison"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
@@ -3948,11 +3680,6 @@ msgid "Professional school"
 msgstr "Profession"
 
 #, fuzzy
-msgctxt "School visit reason"
-msgid "Professor"
-msgstr "Profession"
-
-#, fuzzy
 msgctxt "Visit reason"
 msgid "Professor"
 msgstr "Profession"
@@ -3985,22 +3712,12 @@ msgid "Propagator Case"
 msgstr "Cas du propagateur"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Propagator Case"
-msgstr "Cas du propagateur"
-
-#, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Propagator Case"
 msgstr "Cas du propagateur"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
-msgid "Propagator Case UUID"
-msgstr "UUID du cas du propageur"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Propagator Case UUID"
 msgstr "UUID du cas du propageur"
 
@@ -4016,11 +3733,6 @@ msgstr "Propagateur ISM ID"
 
 #, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts Field"
-msgid "Propagator ISM ID"
-msgstr "Propagateur ISM ID"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
 msgid "Propagator ISM ID"
 msgstr "Propagateur ISM ID"
 
@@ -4118,15 +3830,6 @@ msgstr "Raison"
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Reason"
 msgstr "Raison"
-
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
-msgid "Reason for you visit"
-msgstr "Raison de votre visite"
-
-#, fuzzy
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.SchoolVisit Field"
-msgid "Reason for your visit"
-msgstr "Raison de votre visite"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
@@ -4455,20 +4158,8 @@ msgid "Select Person"
 msgstr "Sélectionner la personne"
 
 #, fuzzy
-msgid "Select Tenant"
-msgstr "Sélectionnez le locataire"
-
-#, fuzzy
 msgid "Select Type"
 msgstr "Sélectionnez le type"
-
-#, fuzzy
-msgid "Select all"
-msgstr "supprimer tout"
-
-#, fuzzy
-msgid "Select case"
-msgstr "Sélectionner le cas"
 
 #, fuzzy
 msgid "Select complexity"
@@ -4479,16 +4170,8 @@ msgid "Select end reason"
 msgstr "Sélectionner la raison de la fin"
 
 #, fuzzy
-msgid "Select existing person"
-msgstr "Sélectionner une personne existante"
-
-#, fuzzy
 msgid "Select mutation"
 msgstr "Sélectionner la mutation"
-
-#, fuzzy
-msgid "Select person"
-msgstr "Sélectionner la personne"
 
 #, fuzzy
 msgid "Select reason"
@@ -4515,16 +4198,6 @@ msgstr "Demande d'aide en libre-service"
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Send Automated Close Email"
 msgstr "Envoyer un courriel de fermeture automatique"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Send Confirmation Email"
-msgstr "Envoyer le courriel de confirmation"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
-msgid "Send Confirmation SMS"
-msgstr "Envoyer un SMS de confirmation"
 
 #, fuzzy
 msgid "Send Email"
@@ -4611,6 +4284,10 @@ msgid "Set end rason %{end_reason}"
 msgstr "Définir la raison de la fin %{end_reason}"
 
 #, fuzzy
+msgid "Sex"
+msgstr "Sexe"
+
+#, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Sex"
 msgstr "Sexe"
@@ -4618,19 +4295,6 @@ msgstr "Sexe"
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Sex"
-msgstr "Sexe"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Sex"
-msgstr "Sexe"
-
-#, fuzzy
-msgid "Sex"
-msgstr "Sexe"
-
-#, fuzzy
-msgid "Sex:"
 msgstr "Sexe"
 
 #, fuzzy
@@ -4779,10 +4443,6 @@ msgstr "Page d'état"
 msgid "Status help"
 msgstr "Aide au statut"
 
-msgctxt "School visit reason"
-msgid "Student"
-msgstr "Étudiante"
-
 #, fuzzy
 msgctxt "Visit reason"
 msgid "Student"
@@ -4842,21 +4502,12 @@ msgid "Summary"
 msgstr ""
 
 #, fuzzy
-msgid "Supervisor"
-msgstr "Superviseur"
-
-#, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Supervisor"
 msgstr "Superviseur"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
-msgid "Supervisor"
-msgstr "Superviseur"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Supervisor"
 msgstr "Superviseur"
 
@@ -4877,11 +4528,6 @@ msgstr "Téléphone du superviseur"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
-msgid "Supervisor UUID"
-msgstr "UUID du superviseur"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Supervisor UUID"
 msgstr "UUID du superviseur"
 
@@ -5009,17 +4655,12 @@ msgid "Tenant"
 msgstr "Locataire"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Tenant"
 msgstr "Locataire"
 
 #, fuzzy
 msgctxt "Inbox Row Apply Tenant"
-msgid "Tenant"
-msgstr "Locataire"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Tenant"
 msgstr "Locataire"
 
@@ -5040,11 +4681,6 @@ msgstr "UUID du locataire"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.TenantContext.SedexExport Field"
-msgid "Tenant UUID"
-msgstr "UUID du locataire"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tenant UUID"
 msgstr "UUID du locataire"
 
@@ -5217,15 +4853,8 @@ msgstr ""
 msgid "This case is not in an index phase."
 msgstr "Cette affaire n'est pas en phase d'indexation."
 
-msgid "This entry cannot be modified because it is a consequence of the information provided in an educational institution inserted above."
-msgstr "Cette entrée ne peut pas être modifiée car elle est une conséquence des informations fournies dans un établissement d'enseignement inséré ci-dessus."
-
 #, fuzzy
 msgid "This entry cannot be modified because it is a consequence of the information provided in the Visits step."
-msgstr "Cette entrée ne peut pas être modifiée car elle est une conséquence des informations fournies dans un établissement d'enseignement inséré ci-dessus."
-
-#, fuzzy
-msgid "This entry cannot be modified because it is a consequence of the information provided in the previous step."
 msgstr "Cette entrée ne peut pas être modifiée car elle est une conséquence des informations fournies dans un établissement d'enseignement inséré ci-dessus."
 
 msgid "This organisation has a possible duplicate."
@@ -5337,22 +4966,12 @@ msgid "Tracer"
 msgstr "Traceur"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
-msgid "Tracer"
-msgstr "Traceur"
-
-#, fuzzy
 msgctxt "Inbox Row Apply Assignee"
 msgid "Tracer"
 msgstr "Traceur"
 
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
-msgid "Tracer UUID"
-msgstr "UUID du traceur"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreatePersonSchema Field"
 msgid "Tracer UUID"
 msgstr "UUID du traceur"
 
@@ -5471,17 +5090,12 @@ msgid "Type"
 msgstr "Type"
 
 #, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.CreateSchema Field"
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Type"
 msgstr "Type"
 
 #, fuzzy
 msgctxt "Protocol Entry"
-msgid "Type"
-msgstr "Type"
-
-#, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Type"
 msgstr "Type"
 
@@ -5530,7 +5144,7 @@ msgid "Unknown"
 msgstr "Inconnu"
 
 #, fuzzy
-msgctxt "vaccination_done"
+msgctxt "Person Visits"
 msgid "Unknown"
 msgstr "Inconnu"
 
@@ -5540,12 +5154,7 @@ msgid "Unknown"
 msgstr "Inconnu"
 
 #, fuzzy
-msgctxt "Visits"
-msgid "Unknown"
-msgstr "Inconnu"
-
-#, fuzzy
-msgctxt "Person Visits"
+msgctxt "vaccination_done"
 msgid "Unknown"
 msgstr "Inconnu"
 
@@ -5692,11 +5301,6 @@ msgid "Visit updated successfully"
 msgstr "Test mis à jour avec succès"
 
 #, fuzzy
-msgctxt "School visit reason"
-msgid "Visitor"
-msgstr "Histoire"
-
-#, fuzzy
 msgctxt "Visit reason"
 msgid "Visitor"
 msgstr "Histoire"
@@ -5815,14 +5419,7 @@ msgid "You are not authorized to do this action."
 msgstr "Vous n'êtes pas autorisé à faire cette action."
 
 #, fuzzy
-msgid "You are not authorized to view this case. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the case."
-msgstr ""
-
-#, fuzzy
 msgid "You are not authorized to view this person. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
-msgstr ""
-
-msgid "You are not authorized to view this person. Please provide the code <%{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
 msgstr ""
 
 #, fuzzy
@@ -5923,10 +5520,6 @@ msgstr "cas"
 #, fuzzy
 msgid "choose"
 msgstr "choisissez"
-
-#, fuzzy
-msgid "choose sex"
-msgstr "choisir le sexe"
 
 #, fuzzy
 msgctxt "versioning_event"
