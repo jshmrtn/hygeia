@@ -42,11 +42,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
                 case
 
               false ->
-                {:ok, case} =
-                  case_changeset
-                  |> apply_changes()
-                  |> CaseContext.change_case()
-                  |> CaseContext.create_case()
+                {:ok, case} = CaseContext.create_case(case_changeset)
 
                 case
             end
