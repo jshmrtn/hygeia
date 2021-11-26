@@ -555,7 +555,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
         CaseContext.change_case(case_changeset)
 
       %Case.Phase{} ->
-        put_embed(case_changeset, :phases, existing_phases)
+        case_changeset
     end
   end
 
