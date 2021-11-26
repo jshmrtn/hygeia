@@ -114,6 +114,11 @@ msgid "Actions"
 msgstr "Actions"
 
 #, fuzzy
+msgctxt "Create Possible Index Step"
+msgid "Actions"
+msgstr "Actions"
+
+#, fuzzy
 msgid "Active Cases"
 msgstr "Cas actifs"
 
@@ -1036,6 +1041,10 @@ msgstr "Créer des cas d'indexation possibles"
 #, fuzzy
 msgid "Create new person"
 msgstr "Créer une nouvelle personne"
+
+#, fuzzy
+msgid "Create new possible index case"
+msgstr "Nouvelle soumission d'index possible"
 
 #, fuzzy
 msgid "Create new possible index submission"
@@ -4093,6 +4102,13 @@ msgstr "Quarantaine ordonnée"
 msgid "Quarantine Period End"
 msgstr "Fin de la période de quarantaine"
 
+msgid "Quarantine confirmation will be sent on the selected contact methods."
+msgstr ""
+
+#, fuzzy
+msgid "Quarantine confirmation will not be sent to this person."
+msgstr "Les confirmations de quarantaine ne sont disponibles que pour les personnes de contact."
+
 #, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Reason"
@@ -6098,6 +6114,9 @@ msgid "the case contains an index phase"
 msgstr ""
 
 msgid "the case is managed by an unmanaged tenant"
+msgstr ""
+
+msgid "the person does not have contact methods"
 msgstr ""
 
 msgid "the transmission type is not \"contact person\""

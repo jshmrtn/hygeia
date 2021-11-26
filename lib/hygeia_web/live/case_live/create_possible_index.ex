@@ -14,8 +14,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
 
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAdministration
-  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineContactMethods
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.Summary
@@ -29,9 +28,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   @default_form_step :transmission
   @form_steps [
     %FormStep{name: :transmission, prev: nil, next: :people},
-    %FormStep{name: :people, prev: :transmission, next: :administration},
-    %FormStep{name: :administration, prev: :people, next: :contact_methods},
-    %FormStep{name: :contact_methods, prev: :administration, next: nil},
+    %FormStep{name: :people, prev: :transmission, next: :action},
+    %FormStep{name: :action, prev: :people, next: nil},
     %FormStep{name: :summary, prev: nil, next: nil}
   ]
 
@@ -115,11 +113,24 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       {:ok, tuples} ->
         :ok = Service.send_confirmations(socket, tuples, form_data.type)
 
-        socket
-        |> unblock_navigation()
-        |> assign(visited_steps: visit_step([], :summary))
-        |> put_flash(:info, gettext("Cases inserted successfully."))
-        |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, :summary))
+        socket =
+          socket
+          |> unblock_navigation()
+          |> assign(visited_steps: visit_step([], :summary))
+          |> put_flash(:info, gettext("Cases inserted successfully."))
+
+        if form_data[:possible_index_submission_uuid] do
+          push_redirect(socket,
+            to:
+              Routes.possible_index_submission_index_path(
+                socket,
+                :index,
+                form_data.propagator_case.uuid
+              )
+          )
+        else
+          push_patch(socket, to: Routes.case_create_possible_index_path(socket, :index, :summary))
+        end
 
       _error ->
         socket
@@ -291,20 +302,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     DefinePeople.valid?(form_data)
   end
 
-  defp valid_step?(:administration, form_data) do
-    DefineAdministration.valid?(form_data)
-  end
-
-  defp valid_step?(:contact_methods, form_data) do
-    DefineContactMethods.valid?(form_data)
+  defp valid_step?(:action, form_data) do
+    DefineAction.valid?(form_data)
   end
 
   defp update_form_data(current_data) do
     current_data
     |> DefineTransmission.update_step_data()
     |> DefinePeople.update_step_data()
-    |> DefineAdministration.update_step_data()
-    |> DefineContactMethods.update_step_data()
+    |> DefineAction.update_step_data()
   end
 
   defp decide_nav_class(current_step, target_step, visited_steps, current_data) do
@@ -333,12 +339,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   defp translate_step(:transmission), do: pgettext("Create Possible Index Step", "Transmission")
   defp translate_step(:people), do: pgettext("Create Possible Index Step", "People")
-
-  defp translate_step(:administration),
-    do: pgettext("Create Possible Index Step", "Administration")
-
-  defp translate_step(:contact_methods),
-    do: pgettext("Create Possible Index Step", "Contact Methods")
-
+  defp translate_step(:action), do: pgettext("Create Possible Index Step", "Actions")
   defp translate_step(:summary), do: pgettext("Create Possible Index Step", "Summary")
 end

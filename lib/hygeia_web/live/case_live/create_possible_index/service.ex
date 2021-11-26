@@ -43,6 +43,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
               false ->
                 {:ok, case} = CaseContext.create_case(case_changeset)
+
                 case
             end
             |> Map.put(:person, person)
