@@ -90,31 +90,23 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
           |> Enum.map(& &1.value)
 
         [] =
-          fn ->
-            send_confirmation_emails(
-              socket,
-              case,
-              email_addresses,
-              :contact_person
-            )
-          end
-          |> Task.async()
-          |> Task.await()
+          socket
+          |> send_confirmation_emails(
+            case,
+            email_addresses,
+            :contact_person
+          )
           |> Enum.reject(&match?({:ok, _}, &1))
           |> Enum.reject(&match?({:error, :no_outgoing_mail_configuration}, &1))
           |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
 
         [] =
-          fn ->
-            send_confirmation_sms(
-              socket,
-              case,
-              phone_numbers,
-              :contact_person
-            )
-          end
-          |> Task.async()
-          |> Task.await()
+          socket
+          |> send_confirmation_sms(
+            case,
+            phone_numbers,
+            :contact_person
+          )
           |> Enum.reject(&match?({:ok, _}, &1))
           |> Enum.reject(&match?({:error, :sms_config_missing}, &1))
           |> Enum.reject(&match?({:error, :not_latest_phase}, &1))
@@ -152,12 +144,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
         email_addresses,
         transmission_type
       ) do
-    locale = Gettext.get_locale(HygeiaGettext)
-
     case List.last(case.phases) do
       %Phase{details: %Phase.PossibleIndex{type: ^transmission_type}} = phase ->
-        Gettext.put_locale(HygeiaGettext, locale)
-
         case = Hygeia.Repo.preload(case, [:person])
 
         Enum.map(
@@ -200,16 +188,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
         phone_numbers,
         transmission_type
       ) do
-    locale = Gettext.get_locale(HygeiaGettext)
-
     case List.last(case.phases) do
       %Phase{details: %Phase.PossibleIndex{type: ^transmission_type}, quarantine_order: false} ->
         {:error, :no_quarantine_ordered}
 
       %Phase{details: %Phase.PossibleIndex{type: ^transmission_type}, quarantine_order: true} =
           phase ->
-        Gettext.put_locale(HygeiaGettext, locale)
-
         Enum.map(
           phone_numbers,
           &CommunicationContext.create_outgoing_sms(case, &1, quarantine_sms(socket, case, phase))
