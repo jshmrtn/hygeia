@@ -21,8 +21,8 @@
                 </Link>
               {#else}
                 <div>
-                    <div class="d-inline-block me-1">{fetch_field!(person_cs, :first_name)}</div>
-                    <div class="d-inline-block">{fetch_field!(person_cs, :last_name)}</div>
+                  <div class="d-inline-block me-1">{fetch_field!(person_cs, :first_name)}</div>
+                  <div class="d-inline-block">{fetch_field!(person_cs, :last_name)}</div>
                 </div>
               {/if}
             </:header>
