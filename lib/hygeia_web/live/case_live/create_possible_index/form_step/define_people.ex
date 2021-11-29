@@ -116,7 +116,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   end
 
   @impl Phoenix.LiveComponent
-  def update(%{form_data: form_data} = assigns, socket) do
+  def update(assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
@@ -197,7 +197,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   end
 
   @impl Phoenix.LiveComponent
-  def handle_event("clear_search", _params, %Socket{assigns: %{form_data: form_data}} = socket) do
+  def handle_event("clear_search", _params, socket) do
     {:noreply,
      socket
      |> clear_search()

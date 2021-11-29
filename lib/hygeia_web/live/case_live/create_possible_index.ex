@@ -200,7 +200,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
     person_changeset =
       CaseContext.change_person(
-        %Person{tenant_uuid: propagator_case.tenant_uuid, tenant: propagator_case.tenant},
+        Map.merge(
+          %Person{},
+          possible_index_submission_tenant_preset(infection_place, propagator_case)
+        ),
         %{
           first_name: first_name,
           last_name: last_name,
@@ -246,13 +249,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           case_changeset:
             person_changeset
             |> Ecto.Changeset.apply_changes()
-            |> Ecto.build_assoc(:cases, %{
+            |> Ecto.build_assoc(
+              :cases,
+              possible_index_submission_tenant_preset(infection_place, propagator_case)
+            )
+            |> CaseContext.change_case(%{
               tracer_uuid: propagator_case.tracer_uuid,
-              supervisor_uuid: propagator_case.supervisor_uuid,
-              tenant_uuid: propagator_case.tenant_uuid,
-              tenant: propagator_case.tenant
+              supervisor_uuid: propagator_case.supervisor_uuid
             })
-            |> CaseContext.change_case()
         }
       ]
     }
@@ -286,6 +290,19 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, new_step))
     else
       save(socket)
+    end
+  end
+
+  defp possible_index_submission_tenant_preset(nil, _propagator_case), do: %{}
+
+  defp possible_index_submission_tenant_preset(infection_place, propagator_case) do
+    if match?(:hh, infection_place.type) do
+      %{
+        tenant_uuid: propagator_case.tenant_uuid,
+        tenant: propagator_case.tenant
+      }
+    else
+      %{}
     end
   end
 
