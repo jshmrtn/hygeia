@@ -9,8 +9,7 @@
       <div class="d-flex">
         <div>
           <div>
-            <div class="d-inline-block me-1">
-              {fetch_field!(@person_changeset, :first_name)}</div>
+            <div class="d-inline-block me-1">{fetch_field!(@person_changeset, :first_name)}</div>
             <div class="d-inline-block">{fetch_field!(@person_changeset, :last_name)}</div>
           </div>
           <span :if={fetch_field!(@person_changeset, :inserted_at)} class="text-muted small">

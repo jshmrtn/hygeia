@@ -10,6 +10,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
+  alias Hygeia.TenantContext.Tenant
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search
