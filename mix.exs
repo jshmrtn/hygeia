@@ -8,7 +8,7 @@ defmodule Hygeia.MixProject do
     [
       app: :hygeia,
       name: "Hygeia",
-      version: "1.34.0-beta.10",
+      version: "1.34.0-beta.11",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
