@@ -196,7 +196,37 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     propagator_case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Hygeia.Repo.preload(:person)
+      |> Hygeia.Repo.preload([:person, :tenant])
+
+    person_changeset =
+      CaseContext.change_person(
+        %Person{tenant_uuid: propagator_case.tenant_uuid, tenant: propagator_case.tenant},
+        %{
+          first_name: first_name,
+          last_name: last_name,
+          sex: sex,
+          birth_date: birth_date,
+          contact_methods:
+            []
+            |> append_if(mobile != nil and String.length(mobile) > 0, %{
+              type: :mobile,
+              value: mobile
+            })
+            |> append_if(landline != nil and String.length(landline) > 0, %{
+              type: :landline,
+              value: landline
+            })
+            |> append_if(email != nil and String.length(email) > 0, %{
+              type: :email,
+              value: email
+            }),
+          address: Map.from_struct(address),
+          affiliations:
+            if(not is_nil(employer),
+              do: [%{unknown_organisation: %{name: employer}, kind: :employee}]
+            )
+        }
+      )
 
     %{
       possible_index_submission_uuid: possible_index_submission_uuid,
@@ -212,37 +242,17 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         |> Map.put(:address, Map.from_struct(infection_place.address)),
       bindings: [
         %{
-          person_changeset:
-            CaseContext.change_person(%Person{}, %{
-              first_name: first_name,
-              last_name: last_name,
-              sex: sex,
-              birth_date: birth_date,
-              contact_methods:
-                []
-                |> append_if(mobile != nil and String.length(mobile) > 0, %{
-                  type: :mobile,
-                  value: mobile
-                })
-                |> append_if(landline != nil and String.length(landline) > 0, %{
-                  type: :landline,
-                  value: landline
-                })
-                |> append_if(email != nil and String.length(email) > 0, %{
-                  type: :email,
-                  value: email
-                }),
-              address: Map.from_struct(address),
-              affiliations:
-                if(not is_nil(employer),
-                  do: [%{unknown_organisation: %{name: employer}, kind: :employee}]
-                )
-            }),
+          person_changeset: person_changeset,
           case_changeset:
-            CaseContext.change_case(%Case{}, %{
+            person_changeset
+            |> Ecto.Changeset.apply_changes()
+            |> Ecto.build_assoc(:cases, %{
               tracer_uuid: propagator_case.tracer_uuid,
-              supervisor_uuid: propagator_case.supervisor_uuid
+              supervisor_uuid: propagator_case.supervisor_uuid,
+              tenant_uuid: propagator_case.tenant_uuid,
+              tenant: propagator_case.tenant
             })
+            |> CaseContext.change_case()
         }
       ]
     }

@@ -177,7 +177,7 @@
               <div class="card-body">
                 <div class="d-flex">
                   <h4 class="card-title">{gettext("Address")}</h4>
-                  {#if @live_action in [:new, :edit] and @propagator_case}
+                  {#if @live_action in [:new, :edit] and has_propagator_case?(@form_data)}
                     <button
                       type="button"
                       class="btn btn-outline-info ms-auto"
