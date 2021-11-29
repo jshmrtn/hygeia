@@ -1789,6 +1789,11 @@ msgid "First positive test date"
 msgstr ""
 
 #, elixir-format, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Firstname"
+msgstr "Prénom"
+
+#, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
 msgstr "Informations sur les vols"
@@ -2508,6 +2513,11 @@ msgstr "Nom de famille"
 #, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Last Name"
+msgstr "Nom de famille"
+
+#, elixir-format, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Lastname"
 msgstr "Nom de famille"
 
 #, elixir-format, fuzzy

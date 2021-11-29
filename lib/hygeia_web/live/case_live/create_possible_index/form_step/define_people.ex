@@ -25,7 +25,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
-  alias Surface.Components.Form.Label
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
 

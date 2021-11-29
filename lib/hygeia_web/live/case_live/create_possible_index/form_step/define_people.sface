@@ -10,27 +10,27 @@
         <h3 class="mb-4">{gettext("Search or create person")}</h3>
         <div class="row">
           <Field name={:first_name} class="form-group col-12 col-md-6 col-lg-2">
-            <Label />
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" opts={phx_debounce: debounce()} />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
           <Field name={:last_name} class="form-group col-12 col-md-6 col-lg-2">
-            <Label />
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" opts={phx_debounce: debounce()} />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
           <Field name={:mobile} class="form-group col-12 col-md-6 col-lg-2">
-            <Label />
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" opts={phx_debounce: debounce()} />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
           <Field name={:landline} class="form-group col-12 col-md-6 col-lg-2">
-            <Label />
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" opts={phx_debounce: debounce()} />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
           <Field name={:email} class="form-group col-12 col-md-6 col-lg-2">
-            <Label />
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" opts={phx_debounce: debounce()} />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
