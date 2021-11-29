@@ -50,7 +50,7 @@
             {#if Search.changeset(@search_changeset, %{}, %{person_compatible: true}).valid?}
               {gettext("Create new person now")}
             {#else}
-              {gettext("Create new person ")}
+              {gettext("Create new person")}
             {/if}
           </button>
           <a class="btn btn-warning" :on-click="clear_search">{gettext("Clear search")}</a>
