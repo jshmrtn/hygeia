@@ -314,6 +314,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type: "Type"
     },
     HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search => %{
+      first_name: "Firstname",
+      last_name: "Lastname",
       email: "Email",
       landline: "Landline",
       mobile: "Mobile",

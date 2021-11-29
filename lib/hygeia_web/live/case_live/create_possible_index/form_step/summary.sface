@@ -5,16 +5,17 @@
       <div>
         <Form for={case_cs} change="validate" opts={autocomplete: "off"}>
           <PersonCard person_changeset={person_cs}>
+            <:header>
+              <Link
+                to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
+                opts={target: "_blank", rel: "noopener noreferrer"}
+              >
+                <div class="d-inline-block me-1">{fetch_field!(person_cs, :first_name)}</div>
+                <div class="d-inline-block">{fetch_field!(person_cs, :last_name)}</div>
+              </Link>
+            </:header>
             <:feature>
               <div class="ms-auto">
-                <Link
-                  class="d-block mb-2"
-                  to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
-                  opts={target: "_blank", rel: "noopener noreferrer"}
-                >
-                  {gettext("Open case in new tab")}
-                </Link>
-
                 <Field name={:status} class="input-group">
                   <HygeiaWeb.FieldLabel class="mb-0">
                     <span class="input-group-text">

@@ -10,6 +10,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
+  alias Hygeia.TenantContext.Tenant
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search
@@ -24,7 +25,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
-  alias Surface.Components.Form.Label
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
 

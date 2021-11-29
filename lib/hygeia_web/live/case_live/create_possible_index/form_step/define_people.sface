@@ -10,27 +10,27 @@
         <h3 class="mb-4">{gettext("Search or create person")}</h3>
         <div class="row">
           <Field name={:first_name} class="form-group col-12 col-md-6 col-lg-2">
-            <Label />
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" opts={phx_debounce: debounce()} />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
           <Field name={:last_name} class="form-group col-12 col-md-6 col-lg-2">
-            <Label />
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" opts={phx_debounce: debounce()} />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
           <Field name={:mobile} class="form-group col-12 col-md-6 col-lg-2">
-            <Label />
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" opts={phx_debounce: debounce()} />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
           <Field name={:landline} class="form-group col-12 col-md-6 col-lg-2">
-            <Label />
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" opts={phx_debounce: debounce()} />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
           <Field name={:email} class="form-group col-12 col-md-6 col-lg-2">
-            <Label />
+            <HygeiaWeb.FieldLabel />
             <TextInput class="form-control" opts={phx_debounce: debounce()} />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
@@ -48,9 +48,9 @@
         <div>
           <button class="btn btn-outline-primary">
             {#if Search.changeset(@search_changeset, %{}, %{person_compatible: true}).valid?}
-              {gettext("Create person now")}
+              {gettext("Create new person now")}
             {#else}
-              {gettext("Create")}
+              {gettext("Create new person")}
             {/if}
           </button>
           <a class="btn btn-warning" :on-click="clear_search">{gettext("Clear search")}</a>
@@ -61,7 +61,7 @@
 
   <div class="row">
     {#if length(@suggestions) > 0}
-      <h3 class="mb-4">{gettext("Suggestions")}</h3>
+      <h3 class="mb-4">{gettext("Similar persons in the system")}</h3>
       <div id="suggestions" class="w-100">
         <Suggestions
           person={person_from_search_changeset(@search_changeset)}

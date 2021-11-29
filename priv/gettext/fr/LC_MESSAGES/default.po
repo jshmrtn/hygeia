@@ -962,10 +962,6 @@ msgid "CovidApp Alert"
 msgstr "Alerte CovidApp"
 
 #, elixir-format, fuzzy
-msgid "Create"
-msgstr "Créer"
-
-#, elixir-format, fuzzy
 msgctxt "Division"
 msgid "Create"
 msgstr "Créer"
@@ -1005,12 +1001,12 @@ msgid "Create new person"
 msgstr "Créer une nouvelle personne"
 
 #, elixir-format, fuzzy
-msgid "Create new possible index case"
-msgstr "Nouvelle soumission d'index possible"
+msgid "Create new person now"
+msgstr "Créer une nouvelle personne"
 
 #, elixir-format, fuzzy
-msgid "Create person now"
-msgstr "Créer une nouvelle personne"
+msgid "Create new possible index case"
+msgstr "Nouvelle soumission d'index possible"
 
 #, elixir-format
 msgid "Created at %{created_at}"
@@ -1793,6 +1789,11 @@ msgid "First positive test date"
 msgstr ""
 
 #, elixir-format, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Firstname"
+msgstr "Prénom"
+
+#, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
 msgstr "Informations sur les vols"
@@ -2512,6 +2513,11 @@ msgstr "Nom de famille"
 #, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Last Name"
+msgstr "Nom de famille"
+
+#, elixir-format, fuzzy
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Lastname"
 msgstr "Nom de famille"
 
 #, elixir-format, fuzzy
@@ -4399,6 +4405,10 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Signing Domain Identifier"
 msgstr "Identifiant de domaine de signature"
 
+#, elixir-format
+msgid "Similar persons in the system"
+msgstr ""
+
 #, elixir-format, fuzzy
 msgid "Skin Rash"
 msgstr "Éruption cutanée"
@@ -4564,10 +4574,6 @@ msgstr "Authentification réussie."
 
 #, elixir-format
 msgid "Suggested duplicates"
-msgstr ""
-
-#, elixir-format
-msgid "Suggestions"
 msgstr ""
 
 #, elixir-format
