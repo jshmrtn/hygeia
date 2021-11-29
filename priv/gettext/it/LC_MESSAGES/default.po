@@ -961,10 +961,6 @@ msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
 msgstr "Allarme CovidApp"
 
-#, elixir-format, fuzzy
-msgid "Create"
-msgstr "Crea"
-
 #, elixir-format
 msgctxt "Division"
 msgid "Create"
@@ -1004,13 +1000,13 @@ msgstr "Crea possibili casi indice"
 msgid "Create new person"
 msgstr "Crea una nuova persona"
 
+#, elixir-format
+msgid "Create new person now"
+msgstr "Crea una nuova persona ora"
+
 #, elixir-format, fuzzy
 msgid "Create new possible index case"
 msgstr "Nuova possibile presentazione dell'indice"
-
-#, elixir-format
-msgid "Create person now"
-msgstr "Crea persona ora"
 
 #, elixir-format
 msgid "Created at %{created_at}"
@@ -4399,6 +4395,10 @@ msgid "Signing Domain Identifier"
 msgstr "Identificatore del dominio di firma"
 
 #, elixir-format
+msgid "Similar persons in the system"
+msgstr "Persone simili nel sistema"
+
+#, elixir-format
 msgid "Skin Rash"
 msgstr "Eruzione cutanea"
 
@@ -4564,10 +4564,6 @@ msgstr "Autenticato con successo."
 #, elixir-format
 msgid "Suggested duplicates"
 msgstr "Duplicati suggeriti"
-
-#, elixir-format
-msgid "Suggestions"
-msgstr "Suggerimenti"
 
 #, elixir-format
 msgctxt "Create Possible Index Step"

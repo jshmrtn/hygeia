@@ -48,9 +48,9 @@
         <div>
           <button class="btn btn-outline-primary">
             {#if Search.changeset(@search_changeset, %{}, %{person_compatible: true}).valid?}
-              {gettext("Create person now")}
+              {gettext("Create new person now")}
             {#else}
-              {gettext("Create")}
+              {gettext("Create new person")}
             {/if}
           </button>
           <a class="btn btn-warning" :on-click="clear_search">{gettext("Clear search")}</a>
@@ -61,7 +61,7 @@
 
   <div class="row">
     {#if length(@suggestions) > 0}
-      <h3 class="mb-4">{gettext("Suggestions")}</h3>
+      <h3 class="mb-4">{gettext("Similar persons in the system")}</h3>
       <div id="suggestions" class="w-100">
         <Suggestions
           person={person_from_search_changeset(@search_changeset)}
