@@ -407,7 +407,7 @@
                                   </button>
                                 </div>
                                 <label
-                                  :for={{name, key} <- test_reasons()}
+                                  :for={{name, key} <- Case.Clinical.TestReason.map()}
                                   class="d-block checkbox-label"
                                   data-disabled={@live_action == :show}
                                 >
@@ -469,7 +469,7 @@
                               <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
                                 <Field name={:symptoms}>
                                   <label
-                                    :for={{name, key} <- symptoms()}
+                                    :for={{name, key} <- Case.Clinical.Symptom.map()}
                                     class="d-block checkbox-label"
                                     data-disabled={@live_action == :show}
                                   >
@@ -705,41 +705,41 @@
     <table class="table table-sm table-striped">
       <tbody>
         <tr>
-          <td><b>{translate_clinical_test_reason(:symptoms)}</b></td>
+          <td><b>{Case.Clinical.TestReason.translate(:symptoms)}</b></td>
           <td>{gettext("Person is symptomatic and therefore tested")}</td>
         </tr>
         <tr>
-          <td><b>{translate_clinical_test_reason(:outbreak_examination)}</b></td>
+          <td><b>{Case.Clinical.TestReason.translate(:outbreak_examination)}</b></td>
           <td>{gettext("Workplace/school testing ordered by CT")}</td>
         </tr>
         <tr>
-          <td><b>{translate_clinical_test_reason(:screening)}</b></td>
+          <td><b>{Case.Clinical.TestReason.translate(:screening)}</b></td>
           <td>{gettext(
               "Repetitive preventative tests of specific groups (e.g. care centers, schools, companies etc.)"
             )}</td>
         </tr>
         <tr>
-          <td><b>{translate_clinical_test_reason(:work_related)}</b></td>
+          <td><b>{Case.Clinical.TestReason.translate(:work_related)}</b></td>
           <td>{gettext("Test required by professional activity")}</td>
         </tr>
         <tr>
-          <td><b>{translate_clinical_test_reason(:quarantine)}</b></td>
+          <td><b>{Case.Clinical.TestReason.translate(:quarantine)}</b></td>
           <td>{gettext("Test during quarantine without ending it")}</td>
         </tr>
         <tr>
-          <td><b>{translate_clinical_test_reason(:app_report)}</b></td>
+          <td><b>{Case.Clinical.TestReason.translate(:app_report)}</b></td>
           <td>{gettext("Testing based on a message via app")}</td>
         </tr>
         <tr>
-          <td><b>{translate_clinical_test_reason(:convenience)}</b></td>
+          <td><b>{Case.Clinical.TestReason.translate(:convenience)}</b></td>
           <td>{gettext("Test as part of a planned trip")}</td>
         </tr>
         <tr>
-          <td><b>{translate_clinical_test_reason(:contact_tracing)}</b></td>
+          <td><b>{Case.Clinical.TestReason.translate(:contact_tracing)}</b></td>
           <td>{gettext("Test by order from CT")}</td>
         </tr>
         <tr>
-          <td><b>{translate_clinical_test_reason(:quarantine_end)}</b></td>
+          <td><b>{Case.Clinical.TestReason.translate(:quarantine_end)}</b></td>
           <td>{gettext("Test for early termination of quarantine")}</td>
         </tr>
       </tbody>
