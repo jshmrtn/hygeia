@@ -938,6 +938,126 @@ defmodule HygeiaWeb.CaseLiveTest do
                  propagator_internal: true
                }
              ] = CaseContext.list_transmissions()
+
+      assert [] = CaseContext.list_possible_index_submissions()
+    end
+
+    test "import (from possible_index_submission_uuid) infection place is own household - type: contact_person, new person, new case, status: done",
+         %{conn: conn, user: user} = context do
+      date = ~D[2020-01-25]
+
+      first_name_propagator = "Karl"
+      last_name_propagator = "Muster"
+
+      first_name_person = "Corinne"
+      last_name_person = "Weber"
+      mobile = "+41 78 898 04 51"
+      landline = "+41 52 233 06 89"
+      email = "corinne.weber@gmx.ch"
+      employer = "Unknown GmbH"
+
+      index = 0
+
+      case_status = :done
+
+      [%{tenant: tenant} | _other_grants] = user.grants
+
+      propagator_case =
+        tenant
+        |> person_fixture(%{
+          first_name: first_name_propagator,
+          last_name: last_name_propagator,
+          address: %{
+            address: "Teststrasse 2"
+          }
+        })
+        |> case_fixture()
+
+      propagator_tenant_uuid = propagator_case.tenant_uuid
+
+      possible_index_submission =
+        possible_index_submission_fixture(propagator_case, %{
+          infection_place: %{type: :hh, address: %{}}
+        })
+
+      assert {:ok, view, _html} =
+               live(
+                 conn,
+                 Routes.case_create_possible_index_path(conn, :create,
+                   possible_index_submission_uuid: possible_index_submission.uuid
+                 )
+               )
+
+      view
+      |> test_transmission_step(context, %{})
+      |> test_next_button(context, %{to_step: "people"})
+      |> test_next_button(context, %{to_step: "action"})
+      |> test_define_action_step(context, %{
+        "index" => index,
+        "case" => %{status: case_status}
+      })
+      |> test_next_button(context)
+      |> assert_redirect(
+        Routes.possible_index_submission_index_path(conn, :index, propagator_case.uuid),
+        :timer.seconds(5)
+      )
+
+      assert [
+               %Person{
+                 uuid: propagator_uuid,
+                 first_name: ^first_name_propagator,
+                 last_name: ^last_name_propagator
+               },
+               %Person{
+                 uuid: person_uuid,
+                 first_name: ^first_name_person,
+                 last_name: ^last_name_person,
+                 contact_methods: [
+                   %{type: :mobile, value: ^mobile},
+                   %{type: :landline, value: ^landline},
+                   %{type: :email, value: ^email}
+                 ],
+                 affiliations: [
+                   %Affiliation{kind: :employee, unknown_organisation: %{name: ^employer}}
+                 ]
+               }
+             ] = Hygeia.Repo.preload(CaseContext.list_people(), :affiliations)
+
+      {start_date, end_date} = Service.phase_dates(date)
+
+      assert [
+               %Case{
+                 uuid: propagator_case_uuid,
+                 person_uuid: ^propagator_uuid,
+                 tenant_uuid: ^propagator_tenant_uuid
+               },
+               %Case{
+                 uuid: case_uuid,
+                 person_uuid: ^person_uuid,
+                 tenant_uuid: ^propagator_tenant_uuid,
+                 status: ^case_status,
+                 phases: [
+                   %Case.Phase{
+                     details: %Case.Phase.PossibleIndex{type: :contact_person},
+                     quarantine_order: true,
+                     start: ^start_date,
+                     end: ^end_date
+                   }
+                 ]
+               }
+             ] = CaseContext.list_cases()
+
+      assert [
+               %Transmission{
+                 date: ^date,
+                 recipient_internal: true,
+                 recipient_case_uuid: ^case_uuid,
+                 propagator_case_uuid: ^propagator_case_uuid,
+                 propagator_internal: true
+               }
+             ] = CaseContext.list_transmissions()
+
+      assert [] = CaseContext.list_possible_index_submissions()
     end
   end
 end

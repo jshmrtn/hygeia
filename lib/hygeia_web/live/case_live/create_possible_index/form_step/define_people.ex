@@ -105,7 +105,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   data changeset, :map
   data search_changeset, :map
   data bulk_action_elements, :map, default: %{}
-  data propagator_case, :map, default: nil
   data suggestions, :list, default: []
 
   @impl Phoenix.LiveComponent
@@ -117,11 +116,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   end
 
   @impl Phoenix.LiveComponent
-  def update(%{form_data: form_data} = assigns, socket) do
+  def update(assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(propagator_case: form_data[:propagator_case])
+     |> preset_search()
      |> handle_action(assigns.live_action, assigns.params)}
   end
 
@@ -209,12 +208,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   def handle_event(
         "copy_address_from_propagator",
         _params,
-        %Socket{assigns: %{changeset: changeset, propagator_case: propagator_case}} = socket
+        %Socket{assigns: %{changeset: changeset, form_data: form_data}} = socket
       ) do
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
        CaseContext.change_person(changeset, %{
-         address: Map.from_struct(propagator_case.person.address)
+         address: Map.from_struct(form_data.propagator_case.person.address)
        })
        | action: :validate
      })}
@@ -703,8 +702,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     assign(socket, :changeset, CaseContext.change_person(%Person{}))
   end
 
-  defp clear_search(socket) do
-    assign(socket, :search_changeset, Search.changeset(%Search{}))
+  defp clear_search(socket, params \\ %{}) do
+    assign(socket, :search_changeset, Search.changeset(%Search{}, params))
   end
 
   defp clear_suggestions(socket) do
@@ -738,6 +737,38 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       :tenant,
       Enum.find(tenants, &match?(^tenant_uuid, &1.uuid))
     )
+  end
+
+  defp has_propagator_case?(form_data) do
+    not is_nil(form_data[:propagator_case])
+  end
+
+  defp preset_search(
+         %Socket{assigns: %{form_data: form_data, search_changeset: search_changeset}} = socket
+       ) do
+    if fetch_field!(search_changeset, :tenant_uuid) do
+      socket
+    else
+      clear_search(socket, search_data_preset(form_data))
+    end
+  end
+
+  defp is_infection_place_type?(nil, _type), do: false
+
+  defp is_infection_place_type?(infection_place, type) do
+    match?(^type, infection_place[:type])
+  end
+
+  defp search_data_preset(form_data) do
+    if has_propagator_case?(form_data) and
+         is_infection_place_type?(form_data[:infection_place], :hh) do
+      %{
+        tenant_uuid: form_data.propagator_case.tenant_uuid,
+        tenant: form_data.propagator_case.tenant
+      }
+    else
+      %{}
+    end
   end
 
   defp person_from_search_changeset(search_changeset) do

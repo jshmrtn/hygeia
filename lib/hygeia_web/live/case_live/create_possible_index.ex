@@ -196,7 +196,40 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     propagator_case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Hygeia.Repo.preload(:person)
+      |> Hygeia.Repo.preload([:person, :tenant])
+
+    person_changeset =
+      CaseContext.change_person(
+        Map.merge(
+          %Person{},
+          possible_index_submission_tenant_preset(infection_place, propagator_case)
+        ),
+        %{
+          first_name: first_name,
+          last_name: last_name,
+          sex: sex,
+          birth_date: birth_date,
+          contact_methods:
+            []
+            |> append_if(mobile != nil and String.length(mobile) > 0, %{
+              type: :mobile,
+              value: mobile
+            })
+            |> append_if(landline != nil and String.length(landline) > 0, %{
+              type: :landline,
+              value: landline
+            })
+            |> append_if(email != nil and String.length(email) > 0, %{
+              type: :email,
+              value: email
+            }),
+          address: Map.from_struct(address),
+          affiliations:
+            if(not is_nil(employer),
+              do: [%{unknown_organisation: %{name: employer}, kind: :employee}]
+            )
+        }
+      )
 
     %{
       possible_index_submission_uuid: possible_index_submission_uuid,
@@ -212,34 +245,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
         |> Map.put(:address, Map.from_struct(infection_place.address)),
       bindings: [
         %{
-          person_changeset:
-            CaseContext.change_person(%Person{}, %{
-              first_name: first_name,
-              last_name: last_name,
-              sex: sex,
-              birth_date: birth_date,
-              contact_methods:
-                []
-                |> append_if(mobile != nil and String.length(mobile) > 0, %{
-                  type: :mobile,
-                  value: mobile
-                })
-                |> append_if(landline != nil and String.length(landline) > 0, %{
-                  type: :landline,
-                  value: landline
-                })
-                |> append_if(email != nil and String.length(email) > 0, %{
-                  type: :email,
-                  value: email
-                }),
-              address: Map.from_struct(address),
-              affiliations:
-                if(not is_nil(employer),
-                  do: [%{unknown_organisation: %{name: employer}, kind: :employee}]
-                )
-            }),
+          person_changeset: person_changeset,
           case_changeset:
-            CaseContext.change_case(%Case{}, %{
+            person_changeset
+            |> Ecto.Changeset.apply_changes()
+            |> Ecto.build_assoc(
+              :cases,
+              possible_index_submission_tenant_preset(infection_place, propagator_case)
+            )
+            |> CaseContext.change_case(%{
               tracer_uuid: propagator_case.tracer_uuid,
               supervisor_uuid: propagator_case.supervisor_uuid
             })
@@ -276,6 +290,19 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       |> push_patch(to: Routes.case_create_possible_index_path(socket, :index, new_step))
     else
       save(socket)
+    end
+  end
+
+  defp possible_index_submission_tenant_preset(nil, _propagator_case), do: %{}
+
+  defp possible_index_submission_tenant_preset(infection_place, propagator_case) do
+    if match?(:hh, infection_place.type) do
+      %{
+        tenant_uuid: propagator_case.tenant_uuid,
+        tenant: propagator_case.tenant
+      }
+    else
+      %{}
     end
   end
 
