@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, elixir-format
@@ -733,6 +733,10 @@ msgstr "Abteilung / Klasse"
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
 msgstr "Abteilung / Klasse nicht gefunden"
+
+#, elixir-format
+msgid "Clear"
+msgstr "Köschen"
 
 #, elixir-format
 msgctxt "Auto Tracing Step"
@@ -5379,9 +5383,9 @@ msgstr "Verschiedenste Informationen zur Funktionsweise der Applikation sowie zu
 msgid "View"
 msgstr "Ansehen"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "View person"
-msgstr "Neue Person"
+msgstr "Person anzeigen"
 
 #, elixir-format
 msgid "Visit"

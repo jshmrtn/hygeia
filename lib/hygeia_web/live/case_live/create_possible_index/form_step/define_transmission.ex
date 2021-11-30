@@ -137,12 +137,22 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
       :date
     ])
     |> validate_date()
+    |> validate_type_travel()
     |> validate_type_other()
     |> Transmission.validate_case(
       :propagator_internal,
       :propagator_ism_id,
       :propagator_case_uuid
     )
+  end
+
+  defp validate_type_travel(changeset) do
+    changeset
+    |> fetch_field!(:type)
+    |> case do
+      :travel -> put_change(changeset, :propagator_internal, nil)
+      _other -> changeset
+    end
   end
 
   defp validate_type_other(changeset) do

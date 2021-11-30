@@ -117,7 +117,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           socket
           |> unblock_navigation()
           |> assign(visited_steps: visit_step([], :summary))
-          |> put_flash(:info, gettext("Cases inserted successfully."))
+          |> put_flash(:success, gettext("Cases inserted successfully."))
 
         if form_data[:possible_index_submission_uuid] do
           push_redirect(socket,

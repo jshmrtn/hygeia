@@ -165,8 +165,8 @@
         </div>
       </div>
     </div>
-    {#if slot_assigned?(:footer)}
-      <#slot name="footer" />
-    {/if}
   </div>
+  {#if slot_assigned?(:footer)}
+    <#slot name="footer" />
+  {/if}
 </Form>

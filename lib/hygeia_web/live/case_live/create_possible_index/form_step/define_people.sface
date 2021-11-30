@@ -1,4 +1,4 @@
-<div class="row">
+<div id={@form_step} class="row">
   {#if has_possible_index_submission?(@form_data)}
   {#else}
     <div class="row">
@@ -175,23 +175,26 @@
     <div class="row">
       <div class="col-12">
         <HygeiaWeb.PersonLive.CreateForm
-          changeset={%Ecto.Changeset{@changeset | action: :validate}}
+          changeset={@changeset}
           tenants={@tenants}
           change="validate"
-          submit="save"
+          submit="add_new_person"
           form_id="person-form"
           add_contact_method="add_contact_method"
           remove_contact_method="remove_contact_method"
         >
           <:footer>
-            <h4 :if={not Enum.empty?(fetch_field!(@changeset, :suspected_duplicates_uuid))} class="mb-0">{gettext("Similar persons in the system")}</h4>
-            <HygeiaWeb.CaseLive.Suggestions
-              person_changeset={@changeset}
-              id="person_suggestions"
-              new_selected="add_new_person"
-              person_selected="duplicate_person_selected"
-              case_selected="duplicate_person_case_selected"
-            />
+            {#if not Enum.empty?(Map.drop(@changeset.changes, [:human_readable_id, :uuid]))}
+              <h4 class="my-3">{gettext("Similar persons in the system")}</h4>
+              <HygeiaWeb.CaseLive.Suggestions
+                person_changeset={@changeset}
+                id="person_suggestions"
+                new_selected="add_new_person"
+                person_selected="duplicate_person_selected"
+                case_selected="duplicate_person_case_selected"
+              />
+              <button type="button" class="btn btn-warning mt-3" :on-click="clear_person">{gettext("Clear")}</button>
+            {/if}
           </:footer>
         </HygeiaWeb.PersonLive.CreateForm>
       </div>

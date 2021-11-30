@@ -72,6 +72,16 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
     view
   end
 
+  @spec test_edit_possible_index_submission(view :: LiveViewTest.t(), context :: map(), params :: map()) ::
+          LiveViewTest.t()
+  def test_edit_possible_index_submission(view, context, params) do
+    assert view
+           |> element("#people form")
+           |> render_change(params)
+
+    view
+  end
+
   @spec test_transmission_step(view :: LiveViewTest.t(), context :: map(), params :: map()) ::
           LiveViewTest.t()
   def test_transmission_step(view, context, params)
@@ -104,16 +114,16 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
     view
   end
 
-  @spec test_define_people_step_search(
+  @spec test_define_people_step_form(
           view :: LiveViewTest.t(),
           context :: map(),
           params :: map()
         ) ::
           LiveViewTest.t()
-  def test_define_people_step_search(view, _context, params) do
+  def test_define_people_step_form(view, _context, params) do
     assert view
-           |> form("#search-people-form",
-             search: params
+           |> form("#person-form",
+             person: params
            )
            |> render_change()
 
@@ -145,12 +155,11 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
           LiveViewTest.t()
   def test_define_people_step_submit_person_modal(view, context, params)
 
-  def test_define_people_step_submit_person_modal(view, %{conn: conn}, params) do
+  def test_define_people_step_submit_person_modal(view, _context, params) do
     assert view
-           |> form("#create-person-form")
+           |> form("#person-form")
            |> render_submit(person: params)
 
-    assert_patch(view, Routes.case_create_possible_index_path(conn, :index, "people"))
     view
   end
 
@@ -162,7 +171,7 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
 
   def test_define_people_step_select_person_suggestion(view, _context) do
     assert view
-           |> element("#suggestions button")
+           |> element("#person_suggestions button[phx-click=\"duplicate_person_selected\"]")
            |> render_click()
 
     view

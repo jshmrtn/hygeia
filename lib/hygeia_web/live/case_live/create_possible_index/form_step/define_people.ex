@@ -51,20 +51,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         %{"person" => params},
         %Socket{assigns: %{form_data: form_data, tenants: tenants}} = socket
       ) do
-    binding =
-      form_data.bindings
-      |> Enum.at(String.to_integer(params["subject"]))
-      |> Map.put(
-        :person_changeset,
-        %Person{}
-        |> CaseContext.change_person(params)
-        |> merge_tenant(tenants)
-      )
-
-    form_data
-    |> Map.get(:bindings, [])
-    |> add_binding(binding, params["subject"])
-    |> then(&send(self(), {:feed, %{bindings: &1}}))
+    add_person(
+      %Person{}
+      |> CaseContext.change_person(params)
+      |> merge_tenant(tenants),
+      form_data,
+      tenants,
+      params["subject"]
+    )
 
     {:noreply, socket}
   end
@@ -92,7 +86,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       ) do
     case changeset do
       %Ecto.Changeset{valid?: true} = changeset ->
-        add_new_person(changeset, form_data, tenants)
+        add_person(%Ecto.Changeset{changeset | action: :insert}, form_data, tenants)
 
         {:noreply, clear_person(socket)}
 
@@ -157,7 +151,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
             status: decide_case_status(form_data[:type])
           })
       },
-      params["index"]
+      params["subject"]
     )
     |> then(&send(self(), {:feed, %{bindings: &1}}))
 
@@ -193,7 +187,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         person_changeset: CaseContext.change_person(case.person),
         case_changeset: CaseContext.change_case(case)
       },
-      params["index"]
+      params["subject"]
     )
     |> then(&send(self(), {:feed, %{bindings: &1}}))
 
@@ -414,20 +408,20 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     socket
   end
 
-  defp add_binding(bindings, binding, at_index \\ nil)
+  defp add_binding(bindings, binding, at_index)
 
   defp add_binding(nil, binding, _any), do: [binding]
 
   defp add_binding(bindings, binding, nil) when is_list(bindings) do
-    [binding] ++ bindings
+    bindings ++ [binding]
   end
 
-  defp add_binding(bindings, binding, index) when is_list(bindings) and is_binary(index) do
-    add_binding(bindings, binding, String.to_integer(index))
+  defp add_binding(bindings, binding, at_index) when is_list(bindings) and is_binary(at_index) do
+    add_binding(bindings, binding, String.to_integer(at_index))
   end
 
-  defp add_binding(bindings, binding, index) when is_list(bindings) and is_integer(index) do
-    List.replace_at(bindings, index, binding)
+  defp add_binding(bindings, binding, at_index) when is_list(bindings) and is_integer(at_index) do
+    List.replace_at(bindings, at_index, binding)
   end
 
   defp add_to_bulk_action(bulk_action_elements, index) do
@@ -475,7 +469,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   end
 
   defp merge_tenant(changeset, tenants) do
-    tenant_uuid = get_field(changeset, :tenant_uuid)
+    tenant_uuid = fetch_field!(changeset, :tenant_uuid)
 
     put_assoc(
       changeset,
@@ -514,24 +508,27 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     end
   end
 
-  defp add_new_person(changeset, form_data, tenants) do
+  defp add_person(changeset, form_data, tenants, at_index \\ nil) do
     person_changeset = merge_tenant(changeset, tenants)
 
     form_data
     |> Map.get(:bindings, [])
-    |> add_binding(%{
-      person_changeset: person_changeset,
-      case_changeset:
-        person_changeset
-        |> apply_changes()
-        |> Ecto.build_assoc(:cases, %{
-          tenant_uuid: fetch_field!(person_changeset, :tenant_uuid),
-          tenant: fetch_field!(person_changeset, :tenant)
-        })
-        |> CaseContext.change_case(%{
-          status: decide_case_status(form_data[:type])
-        })
-    })
+    |> add_binding(
+      %{
+        person_changeset: person_changeset,
+        case_changeset:
+          person_changeset
+          |> apply_changes()
+          |> Ecto.build_assoc(:cases, %{
+            tenant_uuid: fetch_field!(person_changeset, :tenant_uuid),
+            tenant: fetch_field!(person_changeset, :tenant)
+          })
+          |> CaseContext.change_case(%{
+            status: decide_case_status(form_data[:type])
+          })
+      },
+      at_index
+    )
     |> then(&send(self(), {:feed, %{bindings: &1}}))
   end
 

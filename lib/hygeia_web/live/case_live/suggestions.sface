@@ -1,4 +1,4 @@
-<div class="candidate-card card flex-row">
+<div id={@id} class="candidate-card card flex-row">
   <Context get={HygeiaWeb, auth: auth, timezone: timezone} :if={not @empty or @show_empty}>
     <div class="card-header card-vertical-header p-3">
       <table class="candidate-table">
