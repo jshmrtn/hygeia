@@ -1,0 +1,165 @@
+<Form
+  for={@changeset}
+  change={@change}
+  submit={@submit}
+  opts={
+    autocomplete: "off",
+    id: @form_id,
+    class: "component-person-base-data pb-0"
+  }
+>
+  <div class="form-grid">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{gettext("Base Data")}</h4>
+        <Inputs for={:affiliations}>
+          <HiddenInput field={:uuid} />
+          <HiddenInput field={:kind} />
+          <Inputs for={:unknown_organisation}>
+            <HiddenInput field={:name} />
+          </Inputs>
+        </Inputs>
+
+        <Field name={:tenant_uuid} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <Select
+            class="form-control"
+            opts={prompt: gettext("Select tenant"), disabled: @disabled}
+            field={:tenant_uuid}
+            options={Enum.map(@tenants, &{&1.name, &1.uuid})}
+          />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <div class="row">
+          <div class="col">
+            <Field name={:first_name} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <TextInput field={:first_name} class="form-control" opts={disabled: @disabled} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <Field name={:last_name} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <TextInput field={:last_name} class="form-control" opts={disabled: @disabled} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <Field name={:sex} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <Select opts={disabled: @disabled} class="form-control" field={:sex} options={person_sex_map()} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div class="col">
+            <Field name={:birth_date} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <DateInput opts={disabled: @disabled} class="form-control" field={:birth_date} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex">
+          <h4 class="card-title">{gettext("Address")}</h4>
+
+          <#slot name="address_actions" />
+        </div>
+
+        <Inputs for={:address}>
+          <HygeiaWeb.AddressForm disabled={@disabled} id="address" />
+        </Inputs>
+      </div>
+    </div>
+
+    <div class="card employment">
+      <div class="card-body">
+        <h4 class="card-title">{gettext("Contact Methods")}</h4>
+
+        <div class="contact-method-grid">
+          <h6>{gettext("Type")}</h6>
+          <h6>{gettext("Value")}</h6>
+          <h6>{gettext("Comment")}</h6>
+          <div aria-hidden="true" />
+
+          <Inputs for={:contact_methods}>
+            <InputContext assigns={assigns} :let={form: form}>
+              <HiddenInput field={:uuid} />
+              <Field name={:type}>
+                <Select
+                  class="form-control"
+                  opts={prompt: gettext("Choose Type"), disabled: @disabled}
+                  field={:type}
+                  options={Person.ContactMethod.Type.map()}
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+              <Field name={:value}>
+                <TextInput class="form-control" field={:value} :if={not @disabled} />
+                <Link
+                  :if={@disabled and Ecto.Changeset.fetch_field!(form.source, :type) in [:mobile, :landline]}
+                  to={form.source
+                  |> Ecto.Changeset.fetch_field!(:value)
+                  |> ExPhoneNumber.parse("CH")
+                  |> case do
+                    {:ok, number} -> ExPhoneNumber.format(number, :rfc3966)
+                    _ -> nil
+                  end}
+                >
+                  {form.source
+                  |> Ecto.Changeset.fetch_field!(:value)
+                  |> ExPhoneNumber.parse("CH")
+                  |> case do
+                    {:ok, number} -> ExPhoneNumber.format(number, :international)
+                    _ -> nil
+                  end}
+                </Link>
+                <Link
+                  :if={@disabled and Ecto.Changeset.fetch_field!(form.source, :type) in [:email]}
+                  to={"mailto:#{Ecto.Changeset.fetch_field!(form.source, :value)}"}
+                >
+                  {Ecto.Changeset.fetch_field!(form.source, :value)}
+                </Link>
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+              <Field name={:comment}>
+                <TextInput class="form-control" field={:comment} opts={disabled: @disabled} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+              <div>
+                <button
+                  :if={not @disabled and not is_nil(@remove_contact_method)}
+                  type="button"
+                  class="btn btn-danger"
+                  :on-click={@remove_contact_method}
+                  phx-value-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
+                >
+                  <span class="oi oi-trash" aria-hidden="true" />
+                </button>
+              </div>
+            </InputContext>
+          </Inputs>
+
+          <div class="add-button mt-2" :if={not @disabled and not is_nil(@add_contact_method)}>
+            <button type="button" class="btn btn-outline-primary" :on-click={@add_contact_method}>
+              <span class="oi oi-plus me-1" aria-hidden="true" />
+              {gettext("New contact method")}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {#if slot_assigned?(:footer)}
+      <#slot name="footer" />
+    {/if}
+  </div>
+</Form>
