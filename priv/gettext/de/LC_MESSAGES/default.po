@@ -1495,6 +1495,11 @@ msgid "Email"
 msgstr "E-Mail"
 
 #, elixir-format
+msgctxt "Case Suggestions"
+msgid "Email"
+msgstr "E-Mail"
+
+#, elixir-format
 msgctxt "Notification Type"
 msgid "Email Send Failed"
 msgstr "E-Mail Versand fehlgeschlagen"
@@ -2491,6 +2496,11 @@ msgid "Landline"
 msgstr "Festnetz"
 
 #, elixir-format
+msgctxt "Case Suggestions"
+msgid "Landline"
+msgstr "Festnetz"
+
+#, elixir-format
 msgid "Language"
 msgstr "Sprache"
 
@@ -2732,6 +2742,11 @@ msgstr "Mobiltelefon"
 
 #, elixir-format
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Mobile"
+msgstr "Mobiltelefon"
+
+#, elixir-format
+msgctxt "Case Suggestions"
 msgid "Mobile"
 msgstr "Mobiltelefon"
 
@@ -4987,14 +5002,6 @@ msgstr "Diese Person wurde nicht benachrichtigt."
 #, elixir-format
 msgid "This person is in the database"
 msgstr "Diese Person ist möglicherweise ein Duplikat."
-
-#, elixir-format
-msgid "This person is possibly a duplicate of %{name_link} please check."
-msgstr "Diese Person ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie dies bitte."
-
-#, elixir-format
-msgid "This person is possibly a duplicate of %{name_link}, please check."
-msgstr "Diese Person ist möglicherweise ein Duplikat von %{name_link}, überprüfen Sie dies bitte."
 
 #, elixir-format
 msgid "This person requires further processing, please click on edit to correct the available information."

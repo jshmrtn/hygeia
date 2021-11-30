@@ -88,13 +88,11 @@
         >
           <div class="card-body">
             <h4 class="card-title mb-3">{gettext("Suggested duplicates")}</h4>
-            <Suggestions
-              person={apply_changes(@changeset)}
-              suggestions={@changeset
-              |> fetch_field!(:suspected_duplicates_uuid)
-              |> Enum.map(&(&1 |> CaseContext.get_person!() |> Hygeia.Repo.preload([:tenant, :cases])))}
+            <HygeiaWeb.CaseLive.Suggestions
+              person_changeset={@changeset}
               person_selected="duplicate_person_selected"
               case_selected="duplicate_person_case_selected"
+              id="edit_person_suggestions"
             />
           </div>
         </div>
