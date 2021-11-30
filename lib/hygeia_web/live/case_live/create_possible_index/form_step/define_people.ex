@@ -15,6 +15,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonFormCard
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.Suggestions
 
   alias Surface.Components.Form
@@ -126,6 +127,25 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   end
 
   @impl Phoenix.LiveComponent
+  def handle_event(
+        "update_person",
+        %{"person" => params},
+        %Socket{assigns: %{form_data: form_data}} = socket
+      ) do
+    binding =
+      form_data.bindings
+      |> Enum.at(String.to_integer(params["index"]))
+      |> Map.put(:person_changeset, CaseContext.change_person(%Person{}, params))
+
+    form_data
+    |> Map.get(:bindings, [])
+    |> add_binding(binding, params["index"])
+    |> then(&send(self(), {:feed, %{bindings: &1}}))
+
+    {:noreply, socket}
+  end
+
+  @impl Phoenix.LiveComponent
   def handle_event("validate_person", %{"person" => params}, socket) do
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
@@ -208,16 +228,24 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   @impl Phoenix.LiveComponent
   def handle_event(
         "copy_address_from_propagator",
-        _params,
-        %Socket{assigns: %{changeset: changeset, propagator_case: propagator_case}} = socket
+        %{"index" => index},
+        %Socket{assigns: %{form_data: form_data, propagator_case: propagator_case}} = socket
       ) do
-    {:noreply,
-     assign(socket, :changeset, %Ecto.Changeset{
-       CaseContext.change_person(changeset, %{
-         address: Map.from_struct(propagator_case.person.address)
-       })
-       | action: :validate
-     })}
+    binding =
+      form_data.bindings
+      |> Enum.at(String.to_integer(index))
+      |> Map.update(:person_changeset, CaseContext.change_person(%Person{}), fn changeset ->
+        CaseContext.change_person(changeset, %{
+          address: Map.from_struct(propagator_case.person.address)
+        })
+      end)
+
+    form_data
+    |> Map.get(:bindings, [])
+    |> add_binding(binding, index)
+    |> then(&send(self(), {:feed, %{bindings: &1}}))
+
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveComponent
@@ -434,34 +462,48 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
   def handle_event(
         "add_contact_method",
-        _params,
-        %Socket{assigns: %{changeset: changeset}} = socket
+        %{"index" => index},
+        %Socket{assigns: %{form_data: form_data}} = socket
       ) do
-    {:noreply,
-     assign(
-       socket,
-       :changeset,
-       CaseContext.change_person(
-         %Person{},
-         changeset_add_to_params(changeset, :contact_methods, %{uuid: Ecto.UUID.generate()})
-       )
-     )}
+    binding =
+      form_data.bindings
+      |> Enum.at(String.to_integer(index))
+      |> Map.update(:person_changeset, CaseContext.change_person(%Person{}), fn changeset ->
+        CaseContext.change_person(
+          %Person{},
+          changeset_add_to_params(changeset, :contact_methods, %{uuid: Ecto.UUID.generate()})
+        )
+      end)
+
+    form_data
+    |> Map.get(:bindings, [])
+    |> add_binding(binding, index)
+    |> then(&send(self(), {:feed, %{bindings: &1}}))
+
+    {:noreply, socket}
   end
 
   def handle_event(
         "remove_contact_method",
-        %{"uuid" => uuid} = _params,
-        %Socket{assigns: %{changeset: changeset}} = socket
+        %{"index" => index, "uuid" => uuid} = _params,
+        %Socket{assigns: %{form_data: form_data}} = socket
       ) do
-    {:noreply,
-     assign(
-       socket,
-       :changeset,
-       CaseContext.change_person(
-         %Person{},
-         changeset_remove_from_params_by_id(changeset, :contact_methods, %{uuid: uuid})
-       )
-     )}
+    binding =
+      form_data.bindings
+      |> Enum.at(String.to_integer(index))
+      |> Map.update(:person_changeset, CaseContext.change_person(%Person{}), fn changeset ->
+        CaseContext.change_person(
+          %Person{},
+          changeset_remove_from_params_by_id(changeset, :contact_methods, %{uuid: uuid})
+        )
+      end)
+
+    form_data
+    |> Map.get(:bindings, [])
+    |> add_binding(binding, index)
+    |> then(&send(self(), {:feed, %{bindings: &1}}))
+
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveComponent
@@ -784,6 +826,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   defp decide_case_status(type) when type in [:contact_person, :travel], do: :done
 
   defp decide_case_status(_type), do: :first_contact
+
+  defp has_possible_index_submission?(form_data) do
+    not is_nil(form_data[:possible_index_submission_uuid])
+  end
 
   defp debounce do
     @search_debounce
