@@ -19,6 +19,7 @@ defmodule HygeiaWeb.PersonLive.CreateForm do
   prop disabled, :boolean, default: false
   prop tenants, :list, required: true
   prop form_id, :string, default: "create-person-form"
+  prop subject, :any, default: nil
 
   prop change, :event
   prop submit, :event

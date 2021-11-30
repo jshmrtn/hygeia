@@ -735,10 +735,6 @@ msgid "Class or division not found"
 msgstr "Abteilung / Klasse nicht gefunden"
 
 #, elixir-format
-msgid "Clear search"
-msgstr "Suche löschen"
-
-#, elixir-format
 msgctxt "Auto Tracing Step"
 msgid "Clinical"
 msgstr "Klinisch"
@@ -999,10 +995,6 @@ msgstr "Mögliche Indexfälle erstellen"
 #, elixir-format
 msgid "Create new person"
 msgstr "Neue Person erstellen"
-
-#, elixir-format
-msgid "Create new person now"
-msgstr "Jetzt neue Person erstellen"
 
 #, elixir-format
 msgid "Create new possible index case"
@@ -4198,10 +4190,6 @@ msgid "Search"
 msgstr "Suche"
 
 #, elixir-format
-msgid "Search or create person"
-msgstr "Person suchen oder erstellen"
-
-#, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Seat number"
 msgstr "Sitznummer"
@@ -4947,10 +4935,6 @@ msgid "The swiss covid app is the official contact tracing app of switzerland. T
 msgstr "Die Swiss Covid App ist die offizielle Contact Tracing App der Schweiz. Sie trägt zur Eindämmung und Rückverfolgungen neuer möglicher Ansteckungen des Covid-19 Virus bei."
 
 #, elixir-format
-msgid "There are possible duplicates for this person. Click to resolve."
-msgstr "Es gibt mögliche Duplikate für diese Person. Klicken Sie hier, um das Problem zu lösen."
-
-#, elixir-format
 msgctxt "errors"
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
 msgstr "Beim Absenden des Formulars ist ein Fehler aufgetreten. Bitte versuchen Sie das Formular erneut zu senden und wenden Sie sich an Ihren Administrator, wenn das Problem weiterhin besteht."
@@ -5394,6 +5378,10 @@ msgstr "Verschiedenste Informationen zur Funktionsweise der Applikation sowie zu
 #, elixir-format
 msgid "View"
 msgstr "Ansehen"
+
+#, elixir-format, fuzzy
+msgid "View person"
+msgstr "Neue Person"
 
 #, elixir-format
 msgid "Visit"

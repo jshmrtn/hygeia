@@ -17,7 +17,6 @@ defmodule HygeiaWeb.CaseLive.Suggestions do
   prop show_empty, :boolean, default: false
   # Instead of a `new_selected`, use a submit button
   prop new_as_submit, :boolean, default: false
-
   prop subject, :any, default: nil
 
   prop new_selected, :event

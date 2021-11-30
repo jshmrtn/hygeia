@@ -45,7 +45,7 @@
         class="btn btn-primary mt-3 d-block"
         :on-click={@new_selected}
       >
-        {gettext("New Person")}
+        {gettext("Create new person")}
       </button>
 
       <button
