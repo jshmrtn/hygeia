@@ -7,16 +7,6 @@ defmodule HygeiaWeb.PersonLive.Create do
   alias Hygeia.CaseContext.Person
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
-  alias Surface.Components.Form.ErrorTag
-
-  alias Surface.Components.Form
-  alias Surface.Components.Form.Field
-  alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
-  alias Surface.Components.Form.Inputs
-
-  alias Surface.Components.Form.Select
-  alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
@@ -63,7 +53,7 @@ defmodule HygeiaWeb.PersonLive.Create do
      )}
   end
 
-  def handle_event("remove_contact_method", %{"value" => contact_method_uuid}, socket) do
+  def handle_event("remove_contact_method", %{"uuid" => contact_method_uuid}, socket) do
     {:noreply,
      assign(
        socket,
