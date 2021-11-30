@@ -6,24 +6,6 @@
 >
   <h1 class="mb-4">{gettext("New person")}</h1>
 
-  <div
-    :for={%Person{first_name: first_name, last_name: last_name} = person <-
-      @changeset
-      |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-      |> Enum.take(5)
-      |> load_people_by_id}
-    class="alert alert-warning"
-  >
-    {"This person is possibly a duplicate of %{name_link}, please check."
-    |> gettext(
-      name_link:
-        "#{first_name} #{last_name}"
-        |> link(to: Routes.person_base_data_path(@socket, :show, person), target: "_blank")
-        |> safe_to_string
-    )
-    |> raw}
-  </div>
-
   <Field name={:tenant_uuid} class="form-group">
     <HygeiaWeb.FieldLabel />
     <Select
@@ -114,7 +96,9 @@
     {gettext("New contact method")}
   </button>
 
-  <button class="btn btn-primary" type="submit" phx-disable-with={"Saving..." |> gettext}>
-    {"Save" |> gettext}
-  </button>
+  <HygeiaWeb.CaseLive.Suggestions
+    person_changeset={@changeset}
+    id="person_suggestions"
+    new_as_submit
+  />
 </Form>

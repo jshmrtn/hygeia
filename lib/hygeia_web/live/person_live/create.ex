@@ -19,11 +19,11 @@ defmodule HygeiaWeb.PersonLive.Create do
   alias Surface.Components.Form.TextInput
 
   @impl Phoenix.LiveView
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     socket =
       if authorized?(Person, :create, get_auth(socket), tenant: :any) do
         assign(socket,
-          changeset: CaseContext.change_person(%Person{}),
+          changeset: CaseContext.change_person(%Person{}, params),
           page_title: gettext("New Person"),
           tenants:
             Enum.filter(
@@ -104,9 +104,5 @@ defmodule HygeiaWeb.PersonLive.Create do
       invalid_changeset ->
         {:noreply, assign(socket, :changeset, invalid_changeset)}
     end
-  end
-
-  defp load_people_by_id(ids) do
-    CaseContext.list_people_by_ids(ids)
   end
 end
