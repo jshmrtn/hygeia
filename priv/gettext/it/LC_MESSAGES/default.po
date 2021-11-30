@@ -1494,6 +1494,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Sea
 msgid "Email"
 msgstr "Email"
 
+#, elixir-format, fuzzy
+msgctxt "Case Suggestions"
+msgid "Email"
+msgstr "Email"
+
 #, elixir-format
 msgctxt "Notification Type"
 msgid "Email Send Failed"
@@ -2490,6 +2495,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Sea
 msgid "Landline"
 msgstr "Linea fissa"
 
+#, elixir-format, fuzzy
+msgctxt "Case Suggestions"
+msgid "Landline"
+msgstr "Linea fissa"
+
 #, elixir-format
 msgid "Language"
 msgstr "Lingua"
@@ -2732,6 +2742,11 @@ msgstr "Mobile"
 
 #, elixir-format, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Mobile"
+msgstr "Mobile"
+
+#, elixir-format, fuzzy
+msgctxt "Case Suggestions"
 msgid "Mobile"
 msgstr "Mobile"
 
@@ -4987,14 +5002,6 @@ msgstr "Questa persona non è stata informata."
 #, elixir-format, fuzzy
 msgid "This person is in the database"
 msgstr "Questa persona ha un possibile duplicato."
-
-#, elixir-format, fuzzy
-msgid "This person is possibly a duplicate of %{name_link} please check."
-msgstr "Questa persona è probabilmente un duplicato di %{name_link} per favore controlla."
-
-#, elixir-format, fuzzy
-msgid "This person is possibly a duplicate of %{name_link}, please check."
-msgstr "Questa persona è probabilmente un duplicato di %{name_link}, per favore controlla."
 
 #, elixir-format
 msgid "This person requires further processing, please click on edit to correct the available information."

@@ -1496,6 +1496,11 @@ msgid "Email"
 msgstr "Courriel :"
 
 #, elixir-format, fuzzy
+msgctxt "Case Suggestions"
+msgid "Email"
+msgstr "Courriel :"
+
+#, elixir-format, fuzzy
 msgctxt "Notification Type"
 msgid "Email Send Failed"
 msgstr "Échec de l'envoi de l'e-mail"
@@ -2492,6 +2497,11 @@ msgid "Landline"
 msgstr "Ligne fixe"
 
 #, elixir-format, fuzzy
+msgctxt "Case Suggestions"
+msgid "Landline"
+msgstr "Ligne fixe"
+
+#, elixir-format, fuzzy
 msgid "Language"
 msgstr "Langue"
 
@@ -2733,6 +2743,11 @@ msgstr "Mobile"
 
 #, elixir-format, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgid "Mobile"
+msgstr "Mobile"
+
+#, elixir-format, fuzzy
+msgctxt "Case Suggestions"
 msgid "Mobile"
 msgstr "Mobile"
 
@@ -4988,14 +5003,6 @@ msgstr ""
 #, elixir-format, fuzzy
 msgid "This person is in the database"
 msgstr "Cette personne a un double possible."
-
-#, elixir-format, fuzzy
-msgid "This person is possibly a duplicate of %{name_link} please check."
-msgstr "Cette personne est peut-être un doublon de %{name_link}, veuillez vérifier."
-
-#, elixir-format
-msgid "This person is possibly a duplicate of %{name_link}, please check."
-msgstr "Cette personne est peut-être un doublon de %{name_link}, veuillez vérifier."
 
 #, elixir-format
 msgid "This person requires further processing, please click on edit to correct the available information."

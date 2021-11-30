@@ -190,13 +190,15 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
     |> Repo.preload(:person)
   end
 
-  defp normalize_params(params) do
+  defp normalize_params(params) when is_map(params) do
     Map.new(params, fn
       {"type", type} ->
         {:type, String.to_existing_atom(type)}
 
       {k, v} ->
-        {String.to_existing_atom(k), v}
+        {String.to_existing_atom(k), normalize_params(v)}
     end)
   end
+
+  defp normalize_params(params), do: params
 end

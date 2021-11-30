@@ -89,21 +89,14 @@
           id="modal"
           close="close_modal"
         >
-          <div
-            class="card mb-3"
-            :if={not Enum.empty?(fetch_field!(@changeset, :suspected_duplicates_uuid))}
-          >
-            <div class="card-body">
-              <h4 class="card-title mb-3">{gettext("Suggested duplicates")}</h4>
-              <Suggestions
-                person={apply_changes(@changeset)}
-                suggestions={@changeset
-                |> fetch_field!(:suspected_duplicates_uuid)
-                |> Enum.map(&(&1 |> CaseContext.get_person!() |> Hygeia.Repo.preload([:tenant, :cases])))}
-                person_selected="duplicate_person_selected"
-                case_selected="duplicate_person_case_selected"
-              />
-            </div>
+          <div class="card-body">
+            <h4 class="card-title mb-3">{gettext("Suggested duplicates")}</h4>
+            <HygeiaWeb.CaseLive.Suggestions
+              person_changeset={@changeset}
+              person_selected="duplicate_person_selected"
+              case_selected="duplicate_person_case_selected"
+              id="edit_person_suggestions"
+            />
           </div>
 
           <Form
@@ -180,20 +173,20 @@
                 </div>
               </div>
 
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex">
-                    <h4 class="card-title">{gettext("Address")}</h4>
-                    {#if @live_action in [:new, :edit] and @propagator_case}
-                      <button
-                        type="button"
-                        class="btn btn-outline-info ms-auto"
-                        :on-click="copy_address_from_propagator"
-                      >
-                        {gettext("Copy address from propagator")}
-                      </button>
-                    {/if}
-                  </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex">
+                  <h4 class="card-title">{gettext("Address")}</h4>
+                  {#if @live_action in [:new, :edit] and has_propagator_case?(@form_data)}
+                    <button
+                      type="button"
+                      class="btn btn-outline-info ms-auto"
+                      :on-click="copy_address_from_propagator"
+                    >
+                      {gettext("Copy address from propagator")}
+                    </button>
+                  {/if}
+                </div>
 
                   <Inputs for={:address}>
                     <HygeiaWeb.AddressForm disabled={@live_action == :show} id="address" />
