@@ -1,64 +1,64 @@
 <div class="row">
   {#unless has_possible_index_submission?(@form_data)}
-  <div class="row">
-    <div class="col-12">
-      <Form
-        for={@search_changeset}
-        change="suggest_people"
-        submit="new_person"
-        opts={autocomplete: "off", id: "search-people-form", class: "mb-5"}
-      >
-        <h3 class="mb-4">{gettext("Search or create person")}</h3>
-        <div class="row">
-          <Field name={:first_name} class="form-group col-12 col-md-6 col-lg-2">
-            <HygeiaWeb.FieldLabel />
-            <TextInput class="form-control" opts={phx_debounce: debounce()} />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-          <Field name={:last_name} class="form-group col-12 col-md-6 col-lg-2">
-            <HygeiaWeb.FieldLabel />
-            <TextInput class="form-control" opts={phx_debounce: debounce()} />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-          <Field name={:mobile} class="form-group col-12 col-md-6 col-lg-2">
-            <HygeiaWeb.FieldLabel />
-            <TextInput class="form-control" opts={phx_debounce: debounce()} />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-          <Field name={:landline} class="form-group col-12 col-md-6 col-lg-2">
-            <HygeiaWeb.FieldLabel />
-            <TextInput class="form-control" opts={phx_debounce: debounce()} />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-          <Field name={:email} class="form-group col-12 col-md-6 col-lg-2">
-            <HygeiaWeb.FieldLabel />
-            <TextInput class="form-control" opts={phx_debounce: debounce()} />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-          <Field name={:tenant_uuid} class="form-group col-12 col-md-6 col-lg-2">
-            <HygeiaWeb.FieldLabel />
-            <Select
-              class="form-control"
-              opts={prompt: gettext("Select tenant")}
-              field={:tenant_uuid}
-              options={Enum.map(@tenants, &{&1.name, &1.uuid})}
-            />
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </div>
-        <div>
-          <button class="btn btn-outline-primary">
-            {#if Search.changeset(@search_changeset, %{}, %{person_compatible: true}).valid?}
-              {gettext("Create new person now")}
-            {#else}
-              {gettext("Create new person")}
-            {/if}
-          </button>
-          <a class="btn btn-warning" :on-click="clear_search">{gettext("Clear search")}</a>
-        </div>
-      </Form>
+    <div class="row">
+      <div class="col-12">
+        <Form
+          for={@search_changeset}
+          change="suggest_people"
+          submit="new_person"
+          opts={autocomplete: "off", id: "search-people-form", class: "mb-5"}
+        >
+          <h3 class="mb-4">{gettext("Search or create person")}</h3>
+          <div class="row">
+            <Field name={:first_name} class="form-group col-12 col-md-6 col-lg-2">
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" opts={phx_debounce: debounce()} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field name={:last_name} class="form-group col-12 col-md-6 col-lg-2">
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" opts={phx_debounce: debounce()} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field name={:mobile} class="form-group col-12 col-md-6 col-lg-2">
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" opts={phx_debounce: debounce()} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field name={:landline} class="form-group col-12 col-md-6 col-lg-2">
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" opts={phx_debounce: debounce()} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field name={:email} class="form-group col-12 col-md-6 col-lg-2">
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" opts={phx_debounce: debounce()} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Field name={:tenant_uuid} class="form-group col-12 col-md-6 col-lg-2">
+              <HygeiaWeb.FieldLabel />
+              <Select
+                class="form-control"
+                opts={prompt: gettext("Select tenant")}
+                field={:tenant_uuid}
+                options={Enum.map(@tenants, &{&1.name, &1.uuid})}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+          <div>
+            <button class="btn btn-outline-primary">
+              {#if Search.changeset(@search_changeset, %{}, %{person_compatible: true}).valid?}
+                {gettext("Create new person now")}
+              {#else}
+                {gettext("Create new person")}
+              {/if}
+            </button>
+            <a class="btn btn-warning" :on-click="clear_search">{gettext("Clear search")}</a>
+          </div>
+        </Form>
+      </div>
     </div>
-  </div>
   {/unless}
 
   {#unless has_possible_index_submission?(@form_data)}
@@ -78,7 +78,6 @@
   {/unless}
 
   {#if has_possible_index_submission?(@form_data)}
-
   {#else}
     <div class="row">
       <div class="col-12">
@@ -173,20 +172,20 @@
                 </div>
               </div>
 
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex">
-                  <h4 class="card-title">{gettext("Address")}</h4>
-                  {#if @live_action in [:new, :edit] and has_propagator_case?(@form_data)}
-                    <button
-                      type="button"
-                      class="btn btn-outline-info ms-auto"
-                      :on-click="copy_address_from_propagator"
-                    >
-                      {gettext("Copy address from propagator")}
-                    </button>
-                  {/if}
-                </div>
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex">
+                    <h4 class="card-title">{gettext("Address")}</h4>
+                    {#if @live_action in [:new, :edit] and has_propagator_case?(@form_data)}
+                      <button
+                        type="button"
+                        class="btn btn-outline-info ms-auto"
+                        :on-click="copy_address_from_propagator"
+                      >
+                        {gettext("Copy address from propagator")}
+                      </button>
+                    {/if}
+                  </div>
 
                   <Inputs for={:address}>
                     <HygeiaWeb.AddressForm disabled={@live_action == :show} id="address" />
@@ -303,7 +302,6 @@
     </div>
   {/if}
 
-  
   {#unless has_possible_index_submission?(@form_data)}
     <div
       class="d-flex flex-row align-items-center my-4"
@@ -351,17 +349,6 @@
         {/unless}
         {#if existing_entity?(person_cs)}
           <PersonCard person_changeset={person_cs} class="flex-grow-1">
-            <:feature>
-              {#if not existing_entity?(person_cs)}
-                {#if length(fetch_field!(person_cs, :suspected_duplicates_uuid)) > 0}
-                  <div class="small d-flex align-items-center">
-                    <LivePatch to={Routes.case_create_possible_index_path(@socket, :edit, @form_step, index)} replace>
-                      <span class="text-info small ms-2">{gettext("There are possible duplicates for this person. Click to resolve.")}</span>
-                    </LivePatch>
-                  </div>
-                {/if}
-              {/if}
-            </:feature>
             <:left>
               <div class="me-3">
                 <LivePatch
@@ -409,7 +396,7 @@
             </:bottom>
           </PersonCard>
         {#else}
-          <PersonFormCard 
+          <PersonFormCard
             index={index}
             changeset={person_cs}
             tenants={@tenants}
@@ -418,8 +405,8 @@
             remove_contact_method="remove_contact_method"
             class="flex-grow-1 mb-3"
           >
-           <:address_title_right>
-              {#if @propagator_case}
+            <:address_title_right>
+              {#if has_propagator_case?(@form_data)}
                 <button
                   type="button"
                   class="btn btn-outline-info ms-auto"
@@ -429,7 +416,22 @@
                   {gettext("Copy address from propagator")}
                 </button>
               {/if}
-           </:address_title_right>
+            </:address_title_right>
+
+            <:bottom>
+              <div class="card mt-3" :if={not Enum.empty?(fetch_field!(person_cs, :suspected_duplicates_uuid))}>
+                <div class="card-body">
+                  <h4 class="card-title mb-3">{gettext("Suggested duplicates")}</h4>
+                  <HygeiaWeb.CaseLive.Suggestions
+                    id={"person_#{fetch_field!(person_cs, :uuid)}_suggestions"}
+                    subject={index}
+                    person_changeset={person_cs}
+                    person_selected="duplicate_person_selected"
+                    case_selected="duplicate_person_case_selected"
+                  />
+                </div>
+              </div>
+            </:bottom>
           </PersonFormCard>
         {/if}
       </div>

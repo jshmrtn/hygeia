@@ -3,9 +3,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.PersonFormCard do
 
   use HygeiaWeb, :surface_component
 
-  import Ecto.Changeset
-
-  alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
 
   alias Surface.Components.Form
@@ -29,5 +26,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.PersonFormCard do
   prop remove_contact_method, :event, required: true
 
   slot address_title_right
+  slot bottom
   slot error
 end

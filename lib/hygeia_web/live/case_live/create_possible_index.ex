@@ -212,14 +212,17 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           contact_methods:
             []
             |> append_if(mobile != nil and String.length(mobile) > 0, %{
+              uuid: Ecto.UUID.generate(),
               type: :mobile,
               value: mobile
             })
             |> append_if(landline != nil and String.length(landline) > 0, %{
+              uuid: Ecto.UUID.generate(),
               type: :landline,
               value: landline
             })
             |> append_if(email != nil and String.length(email) > 0, %{
+              uuid: Ecto.UUID.generate(),
               type: :email,
               value: email
             }),

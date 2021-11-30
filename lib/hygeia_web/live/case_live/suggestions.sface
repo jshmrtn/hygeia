@@ -104,6 +104,7 @@
                 :for={case <- person.cases}
                 class="btn btn-primary mt-3 d-block"
                 :on-click={@case_selected}
+                phx-value-subject={@subject}
                 phx-value-person_uuid={person.uuid}
                 value={case.uuid}
               >
@@ -121,6 +122,7 @@
                   "btn-outline-primary": match?([_ | _], person.cases)
                 }
                 :on-click={@person_selected}
+                phx-value-subject={@subject}
                 value={person.uuid}
               >
                 {gettext("Choose existing person")}

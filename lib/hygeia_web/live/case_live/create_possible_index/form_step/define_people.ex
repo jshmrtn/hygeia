@@ -129,12 +129,17 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   def handle_event(
         "update_person",
         %{"person" => params},
-        %Socket{assigns: %{form_data: form_data}} = socket
+        %Socket{assigns: %{form_data: form_data, tenants: tenants}} = socket
       ) do
     binding =
       form_data.bindings
       |> Enum.at(String.to_integer(params["index"]))
-      |> Map.put(:person_changeset, CaseContext.change_person(%Person{}, params))
+      |> Map.put(
+        :person_changeset,
+        %Person{}
+        |> CaseContext.change_person(params)
+        |> merge_tenant(tenants)
+      )
 
     form_data
     |> Map.get(:bindings, [])
@@ -228,14 +233,14 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   def handle_event(
         "copy_address_from_propagator",
         %{"index" => index},
-        %Socket{assigns: %{form_data: form_data, propagator_case: propagator_case}} = socket
+        %Socket{assigns: %{form_data: form_data}} = socket
       ) do
     binding =
       form_data.bindings
       |> Enum.at(String.to_integer(index))
       |> Map.update(:person_changeset, CaseContext.change_person(%Person{}), fn changeset ->
         CaseContext.change_person(changeset, %{
-          address: Map.from_struct(propagator_case.person.address)
+          address: Map.from_struct(form_data.propagator_case.person.address)
         })
       end)
 
@@ -322,12 +327,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   @impl Phoenix.LiveComponent
   def handle_event(
         "duplicate_person_selected",
-        %{"value" => person_uuid},
+        %{"subject" => index, "value" => person_uuid},
         %Socket{
           assigns: %{
-            form_data: form_data,
-            form_step: form_step,
-            params: params
+            form_data: form_data
           }
         } = socket
       ) do
@@ -349,14 +352,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
             status: decide_case_status(form_data[:type])
           })
       },
-      params["index"]
+      index
     )
     |> then(&send(self(), {:feed, %{bindings: &1}}))
 
-    send(
-      self(),
-      {:push_patch, Routes.case_create_possible_index_path(socket, :index, form_step), true}
-    )
+    if has_possible_index_submission?(form_data) do
+      send(self(), :proceed)
+    end
 
     {:noreply,
      socket
@@ -368,12 +370,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
   @impl Phoenix.LiveComponent
   def handle_event(
         "duplicate_person_case_selected",
-        %{"value" => case_uuid},
+        %{"subject" => index, "value" => case_uuid},
         %Socket{
           assigns: %{
-            form_data: form_data,
-            form_step: form_step,
-            params: params
+            form_data: form_data
           }
         } = socket
       ) do
@@ -392,14 +392,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
         person_changeset: CaseContext.change_person(case.person),
         case_changeset: CaseContext.change_case(case)
       },
-      params["index"]
+      index
     )
     |> then(&send(self(), {:feed, %{bindings: &1}}))
 
-    send(
-      self(),
-      {:push_patch, Routes.case_create_possible_index_path(socket, :index, form_step), true}
-    )
+    if has_possible_index_submission?(form_data) do
+      send(self(), :proceed)
+    end
 
     {:noreply,
      socket
