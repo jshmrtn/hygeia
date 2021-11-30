@@ -1,104 +1,21 @@
-<Form
-  for={@changeset}
-  change="validate"
-  submit="save"
-  opts={autocomplete: "off", id: "person-form", class: "container"}
->
+<div class="container">
   <h1 class="mb-4">{gettext("New person")}</h1>
 
-  <Field name={:tenant_uuid} class="form-group">
-    <HygeiaWeb.FieldLabel />
-    <Select
-      class="form-control"
-      opts={prompt: "Select tenant" |> gettext}
-      field={:tenant_uuid}
-      options={Enum.map(@tenants, &{&1.name, &1.uuid})}
-    />
-    <ErrorTag class="d-block invalid-feedback" />
-  </Field>
-
-  <div class="row">
-    <div class="col">
-      <Field name={:first_name} class="form-group">
-        <HygeiaWeb.FieldLabel />
-        <TextInput field={:first_name} class="form-control" />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
-    <div class="col">
-      <Field name={:last_name} class="form-group">
-        <HygeiaWeb.FieldLabel />
-        <TextInput class="form-control" field={:last_name} />
-        <ErrorTag class="d-block invalid-feedback" />
-      </Field>
-    </div>
-  </div>
-
-  <Inputs for={:address}>
-    <HygeiaWeb.AddressForm id="address" />
-  </Inputs>
-
-  <h3 class="mb-3">{gettext("Contact Methods")}</h3>
-  <table class="table mb-2">
-    <thead>
-      <tr>
-        <th>{gettext("Type")}</th>
-        <th>{gettext("Value")}</th>
-        <th>{gettext("Comment")}</th>
-        <th />
-      </tr>
-    </thead>
-    <tbody>
-      <Inputs for={:contact_methods}>
-        <InputContext assigns={assigns} :let={form: contact_method}>
-          <HiddenInput field={:uuid} />
-          <tr>
-            <td>
-              <Field name={:type}>
-                <Select
-                  class="form-control"
-                  opts={prompt: gettext("Choose Type")}
-                  field={:type}
-                  options={Person.ContactMethod.Type.map()}
-                />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </td>
-            <td>
-              <Field name={:value}>
-                <TextInput class="form-control" field={:value} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </td>
-            <td>
-              <Field name={:comment}>
-                <TextInput class="form-control" field={:comment} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </td>
-            <td>
-              <button
-                type="button"
-                class="btn btn-danger"
-                :on-click="remove_contact_method"
-                value={Ecto.Changeset.fetch_field!(contact_method.source, :uuid)}
-              >
-                <span class="oi oi-trash" aria-hidden="true" />
-              </button>
-            </td>
-          </tr>
-        </InputContext>
-      </Inputs>
-    </tbody>
-  </table>
-  <button type="button" class="btn btn-outline-primary d-block mb-4" :on-click="add_contact_method">
-    <span class="oi oi-plus" aria-hidden="true" />
-    {gettext("New contact method")}
-  </button>
-
-  <HygeiaWeb.CaseLive.Suggestions
-    person_changeset={@changeset}
-    id="person_suggestions"
-    new_as_submit
-  />
-</Form>
+  <HygeiaWeb.PersonLive.CreateForm
+    changeset={@changeset}
+    tenants={@tenants}
+    change="validate"
+    submit="save"
+    form_id="person-form"
+    add_contact_method="add_contact_method"
+    remove_contact_method="remove_contact_method"
+  >
+    <:footer>
+      <HygeiaWeb.CaseLive.Suggestions
+        person_changeset={@changeset}
+        id="person_suggestions"
+        new_as_submit
+      />
+    </:footer>
+  </HygeiaWeb.PersonLive.CreateForm>
+</div>
