@@ -16,8 +16,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
       :residency_outside_country,
       :no_contact_method,
       :no_reaction,
-      :possible_index_submission,
-      :phase_date_inconsistent
+      :possible_index_submission
     ]
 
   import HygeiaGettext
@@ -46,7 +45,4 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
 
   def translate(:possible_index_submission),
     do: pgettext("Auto Tracing Problem", "Possible Index Submission")
-
-  def translate(:phase_date_inconsistent),
-    do: pgettext("Auto Tracing Problem", "Inconsistent Phase Date")
 end

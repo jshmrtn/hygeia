@@ -18,7 +18,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.LiveRedirect
 
-  @days_before_test 4
+  @days_before_test 5
 
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
@@ -132,7 +132,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     case = Repo.preload(case, hospitalizations: [], tests: [])
 
-    {phase_start, phase_end, problems} = index_phase_dates(case)
+    {phase_start, phase_end, _problems} = index_phase_dates(case)
 
     changeset =
       case
@@ -142,19 +142,6 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
     {:ok, case} = CaseContext.update_case(case, changeset)
 
     :ok = send_notifications(case, socket)
-
-    {:ok, _auto_tracing} =
-      if Enum.any?(problems, &match?(:phase_date_inconsistent, &1)) do
-        AutoTracingContext.auto_tracing_add_problem(
-          socket.assigns.auto_tracing,
-          :phase_date_inconsistent
-        )
-      else
-        AutoTracingContext.auto_tracing_remove_problem(
-          socket.assigns.auto_tracing,
-          :phase_date_inconsistent
-        )
-      end
 
     {:ok, auto_tracing} =
       case case do
@@ -269,47 +256,38 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   end
 
   defp index_phase_dates(case) do
-    {start_date, problems} = index_phase_start_date(case, days_before_test: @days_before_test)
+    {start_date, problems} = index_phase_start_date(case)
 
     phase_start = Date.utc_today()
-    phase_end = Date.add(start_date, 9)
 
-    phase_end =
-      case Date.compare(phase_end, phase_start) do
-        :lt -> phase_start
-        _other -> phase_end
-      end
-
-    {phase_start, phase_end, problems}
+    {phase_start, Date.add(start_date, 9), problems}
   end
 
-  defp index_phase_start_date(
-         %Case{clinical: %Case.Clinical{symptom_start: %Date{} = symptom_start}, tests: tests},
-         opts
-       ) do
-    days_before_test = Keyword.get(opts, :days_before_test)
-
-    problems =
+  defp index_phase_start_date(%Case{
+         clinical: %Case.Clinical{symptom_start: %Date{} = symptom_start},
+         tests: tests
+       }) do
+    {status, start_date} =
       tests
       |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
       |> Enum.reject(&is_nil/1)
       |> Enum.sort({:asc, Date})
       |> case do
         [] ->
-          []
+          Case.Phase.correct_phase_start_date_as_needed(symptom_start)
 
         [date | _others] ->
-          if Date.diff(date, symptom_start) >= days_before_test do
-            [:phase_date_inconsistent]
-          else
-            []
-          end
+          Case.Phase.correct_phase_start_date_as_needed(symptom_start, date)
       end
 
-    {symptom_start, problems}
+    if status == :corrected do
+      {start_date, [:phase_start_date_corrected]}
+    else
+      {start_date, []}
+    end
   end
 
-  defp index_phase_start_date(%Case{tests: tests, phases: phases}, _opts) do
+  defp index_phase_start_date(%Case{tests: tests, phases: phases}) do
     index_phase = Enum.find(phases, &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
 
     start_date =

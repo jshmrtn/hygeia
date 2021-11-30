@@ -463,26 +463,6 @@
                         <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                           {pgettext("Auto Tracing Resolve Problems", "Done")}
                         </button>
-                      {#match :phase_date_inconsistent}
-                        <p>{pgettext(
-                            "Auto Tracing Resolve Problems",
-                            "After checking the data, please manually send an isolation confirmation from the system."
-                          )}</p>
-                        <div class="mb-2">
-                          <div>{pgettext("Auto Tracing Resolve Problems", "Symptoms start date")}: {HygeiaCldr.Date.to_string!(@case.clinical.symptom_start)}</div>
-                          <div>{pgettext("Auto Tracing Resolve Problems", "First positive test date")}: {@case.tests
-                            |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
-                            |> Enum.sort({:desc, Date})
-                            |> List.first()
-                            |> case do
-                              nil -> ""
-                              date -> HygeiaCldr.Date.to_string!(date)
-                            end}</div>
-                          <div>{pgettext("Auto Tracing Resolve Problems", "Case created at")}: {HygeiaCldr.Date.to_string!(@case.inserted_at)}</div>
-                        </div>
-                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
-                          {pgettext("Auto Tracing Resolve Problems", "Done")}
-                        </button>
                     {/case}
                   {/if}
                 </div>

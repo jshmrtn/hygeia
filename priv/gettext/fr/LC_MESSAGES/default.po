@@ -254,11 +254,6 @@ msgstr "Salon pour adultes / services de prostitution"
 msgid "Affiliations"
 msgstr "Affiliations"
 
-#, elixir-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "After checking the data, please manually send an isolation confirmation from the system."
-msgstr ""
-
 #, elixir-format, fuzzy
 msgid "Agreed with index that had been in contact that no further contact is necessary"
 msgstr "Il a été convenu avec l'index qui avait été en contact qu'aucun autre contact n'était nécessaire."
@@ -327,11 +322,6 @@ msgid "Are you a enrolled at this educational institution?"
 msgstr "Êtes-vous inscrit dans cet établissement d'enseignement?"
 
 #, elixir-format
-msgctxt "Auto Tracing Clinical"
-msgid "Are you certain that this is the correct date? If yes, a contact tracing employee will contact you."
-msgstr ""
-
-#, elixir-format
 msgid "Are you employed by this educational institution?"
 msgstr "Êtes-vous employé par cet établissement d'enseignement?"
 
@@ -354,6 +344,11 @@ msgstr "Vous êtes sûr ? Il y a des affiliations attribuées !"
 #, elixir-format, fuzzy
 msgid "Are you sure? There are visits assigned!"
 msgstr "Vous êtes sûr ? Il y a des affiliations attribuées !"
+
+#, elixir-format
+msgctxt "Auto Tracing Clinical"
+msgid "Are you sure? This date is unusual far in the past."
+msgstr "Vous êtes sûr ? Cette date est inhabituelle loin dans le passé."
 
 #, elixir-format, fuzzy
 msgid "Are you working in an association?"
@@ -555,11 +550,6 @@ msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case UUID"
 msgstr "Cas UUID"
 
-#, elixir-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Case created at"
-msgstr ""
-
 #, elixir-format, fuzzy
 msgid "Case created successfully"
 msgstr "Cas créé avec succès"
@@ -724,12 +714,12 @@ msgstr "Cinéma / théâtre / concert"
 msgid "Class or division"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
 msgstr ""
@@ -1330,7 +1320,7 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Division not found"
 msgstr "Division"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Person Visits"
 msgid "Division not provided"
 msgstr ""
@@ -1784,11 +1774,6 @@ msgctxt "Case Status"
 msgid "First contact, unreachable"
 msgstr "Premier contact, injoignable"
 
-#, elixir-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "First positive test date"
-msgstr ""
-
 #, elixir-format, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Firstname"
@@ -2217,11 +2202,6 @@ msgstr "Comprend le type de phase"
 msgctxt "Test Result"
 msgid "Inconclusive"
 msgstr "Non concluant"
-
-#, elixir-format
-msgctxt "Auto Tracing Problem"
-msgid "Inconsistent Phase Date"
-msgstr ""
 
 #, elixir-format, fuzzy
 msgid "Index"
@@ -3112,7 +3092,7 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Not provided"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Person Visits"
 msgid "Not provided"
 msgstr ""
@@ -3537,7 +3517,7 @@ msgstr "Les ordres de quarantaine/isolement de phase ne doivent pas se chevauche
 msgid "Phase Type already exists on the case"
 msgstr "Le type de phase existe déjà sur le boîtier"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "Phase created at"
 msgstr ""
 
@@ -4671,11 +4651,6 @@ msgid "Symptoms"
 msgstr "Symptômes"
 
 #, elixir-format, fuzzy
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Symptoms start date"
-msgstr "Date de début des symptômes"
-
-#, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
 msgstr "Date de début des symptômes"
@@ -4881,11 +4856,6 @@ msgstr "La personne de contact n'a développé aucun symptôme pendant la quaran
 #, elixir-format, fuzzy
 msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr "La personne de contact a développé des symptômes, a fait un test et est devenue un indice"
-
-#, elixir-format
-msgctxt "Auto Tracing Hints"
-msgid "The current case information is being inspected. Expect changes to the isolation period."
-msgstr ""
 
 #, elixir-format, fuzzy
 msgid "The displayed language was translated mechanically."
@@ -5275,7 +5245,7 @@ msgstr "Inconnu"
 msgid "Unknown organisation"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Unknown organisation"
 msgstr ""
@@ -5533,7 +5503,7 @@ msgstr "Vous n'êtes pas actuellement en quarantaine ou en isolement."
 msgid "You are not authorized to do this action."
 msgstr "Vous n'êtes pas autorisé à faire cette action."
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "You are not authorized to view this person. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
 msgstr ""
 

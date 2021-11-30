@@ -12,6 +12,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
   alias Hygeia.CaseContext.Case.Phase.Type, as: PhaseType
   alias Hygeia.TenantContext.Tenant
 
+  @max_days_for_phase_start_in_the_past 5
+
   @type empty :: %__MODULE__{
           quarantine_order: boolean() | nil,
           order_date: DateTime.t() | nil,
@@ -96,6 +98,28 @@ defmodule Hygeia.CaseContext.Case.Phase do
     )
     |> validate_quarantine_order()
     |> set_order_date()
+  end
+
+  @doc """
+  This function is used for correction of symptom start date entered by person which would be too far in the past,
+  so the isolation period ends for sure at least 5 days(including start date) after test date or case create date!
+
+    Today(Case creation): 11.10.2021
+    Test: 10.10.2021
+    Symptom-Start(Person in Autotracing): 1.10.2021
+    Phase Start: 11.10.2021
+    Phase End: 14.10.2021
+
+    If there is no Test-Date then Phase End would be 15.10.2021
+  """
+  @spec correct_phase_start_date_as_needed(symptom_start :: Date.t(), start_date :: Date.t()) ::
+          {:corrected, Date.t()} | {:ok, Date.t()}
+  def correct_phase_start_date_as_needed(symptom_start, start_date \\ Date.utc_today()) do
+    if Date.diff(start_date, symptom_start) > @max_days_for_phase_start_in_the_past do
+      {:corrected, Date.add(start_date, -@max_days_for_phase_start_in_the_past)}
+    else
+      {:ok, symptom_start}
+    end
   end
 
   defp validate_date_relative(changeset, field, cmp_equality, cmp_field, message) do

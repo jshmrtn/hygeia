@@ -107,7 +107,7 @@ defmodule Hygeia.Fixtures do
   end
 
   # ~D[2020-10-10]
-  date_case_possible_index_start = Date.add(Date.utc_today(), -20)
+  date_case_possible_index_start = Date.add(Date.utc_today(), -5)
   # ~D[2020-10-10]
   date_case_symptom_start = date_case_possible_index_start
   # ~D[2020-10-11]
@@ -139,7 +139,8 @@ defmodule Hygeia.Fixtures do
     clinical: %{
       reasons_for_test: [:symptoms, :outbreak_examination],
       symptoms: [:fever],
-      symptom_start: date_case_symptom_start
+      symptom_start: date_case_symptom_start,
+      has_symptoms: true
     },
     external_references: [
       %{

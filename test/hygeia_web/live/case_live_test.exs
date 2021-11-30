@@ -1040,7 +1040,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                      details: %Case.Phase.PossibleIndex{type: :contact_person},
                      quarantine_order: true,
                      start: ^start_date,
-                     end: ^end_date
+                     end: ~D[2021-12-01]
                    }
                  ]
                }
