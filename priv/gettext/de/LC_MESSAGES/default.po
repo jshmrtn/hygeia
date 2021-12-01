@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, elixir-format
@@ -438,6 +438,11 @@ msgstr "Automatisches Fall-Abschluss-Email"
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Automated close email sent"
 msgstr "Automatisches Fall-Abschluss-Email gesendet"
+
+#, elixir-format
+msgctxt "Auto Tracing Travel"
+msgid "BAG"
+msgstr "BAG"
 
 #, elixir-format
 msgid "BAG MED 16122020 (Case)"
@@ -957,6 +962,16 @@ msgid "Country"
 msgstr "Land"
 
 #, elixir-format
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Country"
+msgstr "Land"
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Travel Field"
+msgid "Country"
+msgstr "Land"
+
+#, elixir-format
 msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
 msgstr "SwissCovidApp-Meldung"
@@ -1060,6 +1075,16 @@ msgstr "Datum des letzten Besuchs"
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Date of last visit"
 msgstr "Datum des letzten Besuchs"
+
+#, elixir-format
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Date of return"
+msgstr "Datum der Rückkehr"
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Travel Field"
+msgid "Date of return"
+msgstr "Datum der Rückkehr"
 
 #, elixir-format
 msgid "Dear Sir / Madam"
@@ -1818,11 +1843,6 @@ msgid "Flight information"
 msgstr "Fluginformationen"
 
 #, elixir-format
-msgctxt "Auto Tracing Step"
-msgid "Flight information"
-msgstr "Fluginformationen"
-
-#, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Flight number"
 msgstr "Flugnummer"
@@ -1885,13 +1905,23 @@ msgid "Has Symptoms"
 msgstr "Hat Symptome"
 
 #, elixir-format
-msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Flights Field"
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Travel Field"
 msgid "Has flown"
 msgstr "Ist geflogen"
 
 #, elixir-format
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Travel Field"
+msgid "Has travelled"
+msgstr "Ist gereist"
+
+#, elixir-format
 msgid "Have you been or are you in a hospital?"
 msgstr "Waren Sie in einem Krankenhaus oder sind es noch?"
+
+#, elixir-format
+msgctxt "Auto Tracing Travel"
+msgid "Have you visited a high risk country %{link} (link will open in a new tab) within the last 14 days (between %{start_date} and %{end_date})?"
+msgstr "Haben Sie in den letzten 14 Tagen (zwischen %{start_date} und %{end_date}) ein Hochrisikoland %{link} (Link wird in einem neuen Tab geöffnet) besucht?"
 
 #, elixir-format
 msgid "Headaches"
@@ -1934,6 +1964,11 @@ msgstr "Hoch"
 msgctxt "Case Complexity"
 msgid "High"
 msgstr "Hoch"
+
+#, elixir-format
+msgctxt "Auto Tracing Problem"
+msgid "High Risk Country Travel"
+msgstr "Reisen in Länder mit hohem Risiko"
 
 #, elixir-format
 msgid "History"
@@ -2127,6 +2162,11 @@ msgstr "Falls sie enge Kontakte zu unbekannten Personen hatten (z.B. in einem Re
 #, elixir-format
 msgid "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test."
 msgstr "Wenn Sie %{first_name} %{last_name} mehrmals getroffen haben, geben Sie bitte das letzte Datum an, an dem Sie sich ohne Schutzmassnahmen getroffen haben. Bedenken Sie, dass sie schon 48h vor Symptombeginn ansteckend waren (falls Sie keine Symptome haben 48h vor dem Test)."
+
+#, elixir-format
+msgctxt "Auto Tracing Travel"
+msgid "If you traveled via plane, please add your flight below."
+msgstr "Wenn Sie mit dem Flugzeug angereist sind, fügen Sie bitte unten Ihren Flug hinzu."
 
 #, elixir-format
 msgid "If you were present at this location for multiple days, enter the last day into the date field."
@@ -5002,6 +5042,11 @@ msgstr "Diese Person hat die folgenden Flüge genommen"
 
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
+msgid "This person travelled in the following high risk country"
+msgstr "Diese Person reiste in das folgende Hochrisikoland"
+
+#, elixir-format
+msgctxt "Auto Tracing Resolve Problems"
 msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
 msgstr "Diese Person hat eine Bildungseinrichtung besucht in den letzten 48 Stunden bevor Symptombeginn oder vor dem Test"
 
@@ -5131,6 +5176,11 @@ msgstr "Übertragungen"
 
 #, elixir-format
 msgctxt "Possible Index Type"
+msgid "Travel"
+msgstr "Reisen"
+
+#, elixir-format
+msgctxt "Auto Tracing Step"
 msgid "Travel"
 msgstr "Reisen"
 
@@ -5783,6 +5833,10 @@ msgstr "Bitte geben Sie die Informationen zu dem Ort ein, an dem Sie sich mit de
 #, elixir-format
 msgid "please fill in the information of the person who passed on the virus to you"
 msgstr "Bitte geben Sie die Informationen der Person ein, die das Virus an Sie weitergegeben hat"
+
+#, elixir-format
+msgid "please provide the information about your travel"
+msgstr "Bitte geben Sie die Informationen zu Ihrer Reise an"
 
 #, elixir-format
 msgctxt "Item Table"
