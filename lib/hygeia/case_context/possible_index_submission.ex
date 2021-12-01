@@ -115,11 +115,22 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
       :unknown -> :ok
       _other -> {:error, "not a landline number"}
     end)
+    |> validate_birth_date()
     |> validate_contact_methods()
     |> detect_name_duplicates
     |> detect_duplicates(:mobile)
     |> detect_duplicates(:landline)
     |> detect_duplicates(:email)
+  end
+
+  defp validate_birth_date(changeset) do
+    validate_change(changeset, :birth_date, fn :birth_date, birth_date ->
+      if Date.compare(birth_date, Date.utc_today()) in [:lt, :eq] do
+        []
+      else
+        [birth_date: dgettext("errors", "date must be in the past")]
+      end
+    end)
   end
 
   defp validate_contact_methods(changeset) do

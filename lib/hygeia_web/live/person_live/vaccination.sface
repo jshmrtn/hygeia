@@ -46,7 +46,6 @@
                               nil -> nil
                               date -> Date.to_iso8601(date)
                             end,
-                          max: Date.utc_today(),
                           disabled: @disabled
                         }
                       />

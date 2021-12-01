@@ -104,7 +104,7 @@
             <div class="col-12 col-lg-6">
               <Field name={:birth_date} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <DateInput class="form-control" opts={max: Date.utc_today()} />
+                <DateInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
