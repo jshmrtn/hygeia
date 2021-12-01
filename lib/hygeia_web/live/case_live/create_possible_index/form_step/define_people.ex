@@ -152,6 +152,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
           person
           |> Ecto.build_assoc(:cases, %{tenant_uuid: person.tenant_uuid, tenant: person.tenant})
           |> CaseContext.change_case(%{
+            hospitalizations: [],
             status: decide_case_status(form_data[:type])
           })
       },
@@ -179,7 +180,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Hygeia.Repo.preload(person: [:tenant, :affiliations], tenant: [])
+      |> Hygeia.Repo.preload(person: [:tenant, :affiliations], tenant: [], hospitalizations: [])
 
     person_uuid = case.person.uuid
 
@@ -527,6 +528,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
             tenant: fetch_field!(person_changeset, :tenant)
           })
           |> CaseContext.change_case(%{
+            hospitalizations: [],
             status: decide_case_status(form_data[:type])
           })
       },

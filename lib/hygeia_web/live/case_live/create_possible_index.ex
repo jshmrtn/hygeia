@@ -263,7 +263,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
               tracer_uuid: propagator_case.tracer_uuid,
               supervisor_uuid: propagator_case.supervisor_uuid,
               tenant_uuid:
-                possible_index_submission_tenant_uuid_preset(infection_place, propagator_case)
+                possible_index_submission_tenant_uuid_preset(infection_place, propagator_case),
+              hospitalizations: []
             })
         }
       ]
