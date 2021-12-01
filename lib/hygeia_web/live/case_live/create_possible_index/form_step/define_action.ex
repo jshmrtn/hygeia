@@ -193,7 +193,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
     person_changeset
     |> get_field(:contact_methods)
     |> Enum.group_by(& &1.type)
-    |> Enum.filter(fn {type, _} -> type != :landline end)
+    |> Enum.reject(fn {type, _} -> type in [:landline, :other] end)
   end
 
   @spec form_options_administrators(
@@ -309,7 +309,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
   defp can_contact_person?(person_changeset, case_changeset, type),
     do:
       not has_index_phase?(case_changeset) and is_right_type?(type) and
-        is_right_tenant?(case_changeset) and has_contact_methods?(person_changeset)
+        is_right_tenant?(case_changeset) and has_right_contact_methods?(person_changeset)
 
   defp contact_type_eligible?(case_changeset, :email),
     do:
@@ -319,9 +319,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
     do:
       TenantContext.tenant_has_outgoing_sms_configuration?(fetch_field!(case_changeset, :tenant))
 
-  defp has_contact_methods?(person_changeset) do
+  defp contact_type_eligible?(_case_changeset, _other), do: false
+
+  defp has_right_contact_methods?(person_changeset) do
     person_changeset
     |> fetch_field!(:contact_methods)
+    |> Enum.reject(&(&1.type in [:landline, :other]))
     |> case do
       [_one | _more] -> true
       _else -> false
@@ -376,7 +379,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
 
   defp no_contact_method_reason(reasons, person_changeset),
     do:
-      if(has_contact_methods?(person_changeset),
+      if(has_right_contact_methods?(person_changeset),
         do: reasons,
         else: reasons ++ [gettext("the person does not have contact methods")]
       )
