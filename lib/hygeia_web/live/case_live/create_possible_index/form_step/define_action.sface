@@ -88,7 +88,7 @@
               {/if}
 
               {#if can_contact_person?(person_cs, case_cs, @form_data.type)}
-                {#for {contact_type, contact_type_members} <- group_contacts_by_type(person_cs)}
+                {#for {contact_type, contact_type_members} <- group_contacts_by_type(person_cs) |> IO.inspect()}
                   {#if contact_type_eligible?(case_cs, contact_type)}
                     <div class="mt-4 mb-4">
                       <table class="table">
