@@ -200,7 +200,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
     person_changeset =
       CaseContext.change_person(
-        %Person{},
+        %Person{
+          tenant: possible_index_submission_tenant_preset(infection_place, propagator_case)
+        },
         %{
           first_name: first_name,
           last_name: last_name,
@@ -255,7 +257,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             |> Ecto.Changeset.apply_changes()
             |> Ecto.build_assoc(
               :cases,
-              %{}
+              %{tenant: possible_index_submission_tenant_preset(infection_place, propagator_case)}
             )
             |> CaseContext.change_case(%{
               tracer_uuid: propagator_case.tracer_uuid,
@@ -303,6 +305,12 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   defp possible_index_submission_tenant_uuid_preset(infection_place, propagator_case) do
     if match?(:hh, infection_place.type), do: propagator_case.tenant_uuid, else: nil
+  end
+
+  defp possible_index_submission_tenant_preset(nil, _propagator_case), do: %{}
+
+  defp possible_index_submission_tenant_preset(infection_place, propagator_case) do
+    if match?(:hh, infection_place.type), do: propagator_case.tenant, else: nil
   end
 
   @spec get_form_steps() :: [FormStep.t()]
