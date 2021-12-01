@@ -228,7 +228,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             case employer do
               nil -> []
               "" -> []
-              name -> [%{unknown_organisation: %{name: employer}, kind: :employee}]
+              _name -> [%{unknown_organisation: %{name: employer}, kind: :employee}]
             end,
           tenant_uuid:
             possible_index_submission_tenant_uuid_preset(infection_place, propagator_case)
