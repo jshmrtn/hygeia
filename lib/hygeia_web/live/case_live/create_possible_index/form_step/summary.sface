@@ -12,8 +12,12 @@
               >
                 <div class="d-inline-block me-1">{fetch_field!(person_cs, :first_name)}</div>
                 <div class="d-inline-block">{fetch_field!(person_cs, :last_name)}</div>
+                {#if get_field(person_cs, :birth_date)}
+                  <div class="d-inline-block">({fetch_field!(person_cs, :birth_date) |> HygeiaCldr.Date.to_string!()})</div>
+                {/if}
               </Link>
             </:header>
+
             <:feature>
               <div class="ms-auto">
                 <Field name={:status} class="input-group">
@@ -28,8 +32,47 @@
               </div>
             </:feature>
 
-            <:right>
-              <div>
+            <:center>
+              <div class="action-center-container col-4 pe-4 border-end">
+                <CaseSnippet case_changeset={case_cs} />
+              </div>
+
+              <div class="action-center-container  col-8 ps-4">
+                <h5 class="mb-3">{gettext("Notifications")}</h5>
+
+                {#case binding[:reporting]}
+                  {#match reporting when is_list(reporting) and length(reporting) > 0}
+                    <div class="mb-3">{gettext("This person has been notified on the following contact methods")}:</div>
+                    {#for {contact_type, contact_type_members} <- DefineAction.group_contacts_by_type(person_cs)}
+                      <div class="d-flex">
+                        <h6>{ContactMethod.Type.translate(contact_type)}</h6>
+                      </div>
+                      <ul class="list-unstyled">
+                        {#for {contact, _i} <- Enum.with_index(contact_type_members)}
+                          <li class="ms-3">
+                            <Checkbox opts={
+                              checked: if(DefineAction.has_contact_uuid?(reporting, contact.uuid), do: true),
+                              hidden_input: "false",
+                              disabled: true
+                            } />
+                            {contact.value}
+                            {contact.comment}
+                          </li>
+                        {/for}
+                      </ul>
+                    {/for}
+                  {#match _else}
+                    <div class="mt-3">{gettext("This person has not been notified.")}</div>
+                {/case}
+              </div>
+            </:center>
+
+            <:bottom>
+              <hr class="my-4">
+
+              <h5 class="mb-3">{gettext("Case Administration")}</h5>
+
+              <div class="case-administrators">
                 <div class="row mb-2">
                   <div class="col">
                     <Field name={:supervisor_uuid}>
@@ -45,8 +88,6 @@
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                   </div>
-                </div>
-                <div class="row mb-2">
                   <div class="col">
                     <Field name={:tracer_uuid}>
                       <HygeiaWeb.FieldLabel />
@@ -62,47 +103,6 @@
                     </Field>
                   </div>
                 </div>
-              </div>
-            </:right>
-
-            <:bottom>
-              {#case binding[:reporting]}
-                {#match reporting when is_list(reporting) and length(reporting) > 0}
-                  <span>{gettext("This person has been notified on the following contact methods")}:</span>
-                  {#for {contact_type, contact_type_members} <- DefineAction.group_contacts_by_type(person_cs)}
-                    <div class="mb-4">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th class="col-1" scope="col">#</th>
-                            <th class="col-5" scope="col">{ContactMethod.Type.translate(contact_type)}</th>
-                            <th class="col-5" scope="col">{gettext("Comment")}</th>
-                            <th class="col-1" />
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {#for {contact, i} <- Enum.with_index(contact_type_members)}
-                            <tr>
-                              <td>{i + 1}</td>
-                              <td>{contact.value}</td>
-                              <td>{contact.comment}</td>
-                              <td><Checkbox opts={
-                                  checked: if(DefineAction.has_contact_uuid?(reporting, contact.uuid), do: true),
-                                  hidden_input: "false",
-                                  disabled: true
-                                } />
-                              </td>
-                            </tr>
-                          {/for}
-                        </tbody>
-                      </table>
-                    </div>
-                  {/for}
-                {#match _else}
-                  <div class="mt-3">{gettext("This person has not been notified.")}</div>
-              {/case}
-              <div class="mt-3">
-                <CaseSnippet case_changeset={case_cs} />
               </div>
             </:bottom>
           </PersonCard>

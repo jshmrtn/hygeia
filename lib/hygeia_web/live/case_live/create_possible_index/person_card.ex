@@ -11,6 +11,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard do
   slot header
   slot feature
   slot left
+  slot center
   slot right
   slot bottom
   slot error

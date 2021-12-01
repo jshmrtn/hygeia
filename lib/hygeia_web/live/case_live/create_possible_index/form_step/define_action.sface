@@ -18,11 +18,17 @@
                 >
                   <div class="d-inline-block me-1">{fetch_field!(person_cs, :first_name)}</div>
                   <div class="d-inline-block">{fetch_field!(person_cs, :last_name)}</div>
+                  {#if get_field(person_cs, :birth_date)}
+                    <div class="d-inline-block">({fetch_field!(person_cs, :birth_date) |> HygeiaCldr.Date.to_string!()})</div>
+                  {/if}
                 </Link>
               {#else}
                 <div>
                   <div class="d-inline-block me-1">{fetch_field!(person_cs, :first_name)}</div>
                   <div class="d-inline-block">{fetch_field!(person_cs, :last_name)}</div>
+                  {#if get_field(person_cs, :birth_date)}
+                    <div class="d-inline-block">({fetch_field!(person_cs, :birth_date) |> HygeiaCldr.Date.to_string!()})</div>
+                  {/if}
                 </div>
               {/if}
             </:header>
@@ -50,7 +56,71 @@
               </div>
             </:feature>
 
-            <:right>
+            <:center>
+              <div class="action-center-container col-4 pe-4 border-end">
+                <h5 class="mb-3">{gettext("Case")}</h5>
+
+                {#if existing_entity?(case_cs)}
+                  <CaseSnippet case_changeset={case_cs} />
+                {#else}
+                  <div class="mt-3">{gettext("A new case will be created for this person.")}</div>
+                {/if}
+              </div>
+
+              <div class="action-center-container  col-8 ps-4">
+                <h5 class="mb-3">{gettext("Notifications")}</h5>
+
+                {#if can_contact_person?(person_cs, case_cs, @form_data.type)}
+                  {#for {contact_type, contact_type_members} <- group_contacts_by_type(person_cs)}
+                    {#if contact_type_eligible?(case_cs, contact_type)}
+                      <div class="d-flex">
+                        <Checkbox opts={
+                          checked: all_checked?(reporting, contact_type_members),
+                          hidden_input: "false",
+                          phx_click: "all_checked",
+                          phx_target: @myself,
+                          phx_value_index: index,
+                          phx_value_contact_uuids: to_serialized_uuids(contact_type_members)
+                        } />
+                        <h6 class="ms-2">{ContactMethod.Type.translate(contact_type)}</h6>
+                      </div>
+                      <ul class="list-unstyled">
+                        {#for {contact, _i} <- Enum.with_index(contact_type_members)}
+                          <li class="ms-3">
+                            <Checkbox opts={
+                              checked: has_contact_uuid?(reporting, contact.uuid),
+                              hidden_input: "false",
+                              phx_click: "contact_method_checked",
+                              phx_target: @myself,
+                              phx_value_index: index,
+                              phx_value_contact_uuid: contact.uuid
+                            } />
+                            {contact.value}
+                            {contact.comment}
+                          </li>
+                        {/for}
+                      </ul>
+                    {#else}
+                      <div class="mt-3">{disabled_contact_reason(person_cs, case_cs, @form_data.type, contact_type)}</div>
+                    {/if}
+                  {/for}
+                {#else}
+                  <div class="mt-3">{disabled_contact_reason(person_cs, case_cs, @form_data.type)}</div>
+                {/if}
+
+                {#if can_contact_person?(person_cs, case_cs, @form_data.type) and not Enum.empty?(reporting)}
+                  <div class="alert alert-success mt-3">{gettext("Quarantine confirmation will be sent on the selected contact methods.")}</div>
+                {#else}
+                  <div class="alert alert-warning mt-3">{gettext("Quarantine confirmation will not be sent to this person.")}</div>
+                {/if}
+              </div>
+            </:center>
+
+            <:bottom>
+              <hr class="my-4">
+
+              <h5 class="mb-3">{gettext("Case Administration")}</h5>
+
               <div class="case-administrators">
                 <div class="row mb-2">
                   <div class="col">
@@ -64,8 +134,6 @@
                       <ErrorTag class="d-block invalid-feedback" />
                     </Field>
                   </div>
-                </div>
-                <div class="row mb-2">
                   <div class="col">
                     <Field name={:tracer_uuid}>
                       <HygeiaWeb.FieldLabel />
@@ -79,68 +147,6 @@
                   </div>
                 </div>
               </div>
-            </:right>
-            <:bottom>
-              {#if existing_entity?(case_cs)}
-                <CaseSnippet case_changeset={case_cs} />
-              {#else}
-                <div class="mt-3">{gettext("A new case will be created for this person.")}</div>
-              {/if}
-
-              {#if can_contact_person?(person_cs, case_cs, @form_data.type)}
-                {#for {contact_type, contact_type_members} <- group_contacts_by_type(person_cs)}
-                  {#if contact_type_eligible?(case_cs, contact_type)}
-                    <div class="mt-4 mb-4">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th class="col-1">
-                              <Checkbox opts={
-                                checked: all_checked?(reporting, contact_type_members),
-                                hidden_input: "false",
-                                phx_click: "all_checked",
-                                phx_target: @myself,
-                                phx_value_index: index,
-                                phx_value_contact_uuids: to_serialized_uuids(contact_type_members)
-                              } />
-                            </th>
-                            <th class="col-1" scope="col">#</th>
-                            <th class="col-5" scope="col">{ContactMethod.Type.translate(contact_type)}</th>
-                            <th class="col-5" scope="col">{gettext("Comment")}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {#for {contact, i} <- Enum.with_index(contact_type_members)}
-                            <tr>
-                              <td><Checkbox opts={
-                                  checked: has_contact_uuid?(reporting, contact.uuid),
-                                  hidden_input: "false",
-                                  phx_click: "contact_method_checked",
-                                  phx_target: @myself,
-                                  phx_value_index: index,
-                                  phx_value_contact_uuid: contact.uuid
-                                } />
-                              </td>
-                              <td>{i + 1}</td>
-                              <td>{contact.value}</td>
-                              <td>{contact.comment}</td>
-                            </tr>
-                          {/for}
-                        </tbody>
-                      </table>
-                    </div>
-                  {#else}
-                    <div class="mt-3">{disabled_contact_reason(person_cs, case_cs, @form_data.type, contact_type)}</div>
-                  {/if}
-                {/for}
-              {#else}
-                <div class="mt-3">{disabled_contact_reason(person_cs, case_cs, @form_data.type)}</div>
-              {/if}
-              {#if can_contact_person?(person_cs, case_cs, @form_data.type) and not Enum.empty?(reporting)}
-                <div class="alert alert-success mt-3">{gettext("Quarantine confirmation will be sent on the selected contact methods.")}</div>
-              {#else}
-                <div class="alert alert-warning mt-3">{gettext("Quarantine confirmation will not be sent to this person.")}</div>
-              {/if}
             </:bottom>
           </PersonCard>
         </Form>

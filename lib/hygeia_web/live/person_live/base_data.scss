@@ -29,6 +29,14 @@
     }
   }
 
+  .define-people {
+    grid-column: span 2;
+
+    @include media-breakpoint-down(md) {
+      grid-column: 1;
+    }
+  }
+
   .employment {
     grid-column: span 2;
 
