@@ -150,8 +150,6 @@ defmodule HygeiaWeb.CaseLiveTest do
     end
   end
 
-  # TODO: Fix problems with contact methods
-
   describe "CreatePossibleIndex" do
     test "type: travel, new person, new case, status: first_contact",
          %{conn: conn, user: user} = context do
