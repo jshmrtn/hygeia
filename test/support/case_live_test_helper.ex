@@ -72,7 +72,11 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
     view
   end
 
-  @spec test_edit_possible_index_submission(view :: LiveViewTest.t(), context :: map(), params :: map()) ::
+  @spec test_edit_possible_index_submission(
+          view :: LiveViewTest.t(),
+          context :: map(),
+          params :: map()
+        ) ::
           LiveViewTest.t()
   def test_edit_possible_index_submission(view, context, params) do
     assert view

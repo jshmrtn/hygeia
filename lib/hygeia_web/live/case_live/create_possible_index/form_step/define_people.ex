@@ -486,7 +486,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     if fetch_field!(changeset, :tenant_uuid) do
       socket
     else
-      clear_person(socket, search_data_preset(form_data))
+      clear_person(socket, preset_person_tenant(form_data))
     end
   end
 
@@ -496,12 +496,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
     match?(^type, infection_place[:type])
   end
 
-  defp search_data_preset(form_data) do
+  defp preset_person_tenant(form_data) do
     if has_propagator_case?(form_data) and
          is_infection_place_type?(form_data[:infection_place], :hh) do
       %{
-        tenant_uuid: form_data.propagator_case.tenant_uuid,
-        tenant: form_data.propagator_case.tenant
+        tenant_uuid: form_data.propagator_case.tenant_uuid
       }
     else
       %{}

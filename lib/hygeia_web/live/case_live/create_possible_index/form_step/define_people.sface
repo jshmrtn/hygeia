@@ -112,7 +112,7 @@
               <:footer>
                 {#if not Enum.empty?(fetch_field!(person_cs, :suspected_duplicates_uuid)) and
                     has_propagator_case?(@form_data)}
-                  <div class="card mt-3">
+                  <div class="card employment">
                     <div class="card-body">
                       <h4 class="card-title mb-3">{gettext("Suggested duplicates")}</h4>
                       <HygeiaWeb.CaseLive.Suggestions
