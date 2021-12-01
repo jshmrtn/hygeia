@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, elixir-format
@@ -5618,6 +5618,11 @@ msgstr "Zugehörigkeiten"
 #, elixir-format
 msgid "all subdivisions"
 msgstr "alle Kantone"
+
+#, elixir-format
+msgctxt "Notification Tray"
+msgid "and %{count} more"
+msgstr "und %{count} mehr"
 
 #, elixir-format
 msgid "another place"

@@ -22,12 +22,13 @@ defmodule Hygeia.NotificationContext do
   def list_notifications, do: Repo.all(Notification)
 
   @spec list_notifications(user :: User.t()) :: [Notification.t()]
-  def list_notifications(user),
+  def list_notifications(user), do: user |> list_notifications_query() |> Repo.all()
+
+  @spec list_notifications_query(user :: User.t()) :: Ecto.Query.t()
+  def list_notifications_query(user),
     do:
-      Repo.all(
-        from(notification in Ecto.assoc(user, :notifications),
-          order_by: [desc: notification.inserted_at, desc: notification.uuid]
-        )
+      from(notification in Ecto.assoc(user, :notifications),
+        order_by: [desc: notification.inserted_at, desc: notification.uuid]
       )
 
   @spec list_and_lock_users_with_pending_notification_reminders :: [User.t()]

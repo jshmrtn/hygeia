@@ -9,7 +9,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard do
   prop class, :string
 
   slot header
-  slot feature
   slot left
   slot center
   slot right
