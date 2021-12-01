@@ -11,44 +11,43 @@
           <HiddenInput name="index" value={index} />
           <PersonCard person_changeset={person_cs}>
             <:header>
-              {#if existing_entity?(case_cs)}
-                <Link
-                  to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
-                  opts={target: "_blank", rel: "noopener noreferrer"}
-                >
-                  <div class="d-inline-block me-1">{fetch_field!(person_cs, :first_name)}</div>
-                  <div class="d-inline-block">{fetch_field!(person_cs, :last_name)}</div>
-                </Link>
-              {#else}
-                <div>
-                  <div class="d-inline-block me-1">{fetch_field!(person_cs, :first_name)}</div>
-                  <div class="d-inline-block">{fetch_field!(person_cs, :last_name)}</div>
-                </div>
-              {/if}
-            </:header>
-
-            <:feature>
-              <div class="ms-auto">
-                <Field name={:status}>
-                  <div class="input-group">
-                    <HygeiaWeb.FieldLabel class="mb-0">
-                      <span class="input-group-text">
-                        {gettext("Status")}
-                      </span>
-                    </HygeiaWeb.FieldLabel>
-                    <Select
-                      class="form-control bg-white"
-                      options={if existing_entity?(case_cs) do
-                        Status.map()
-                      else
-                        manage_statuses(@form_data[:type], Status.map())
-                      end}
-                    />
+              <div class="d-flex">
+                {#if existing_entity?(case_cs)}
+                  <Link
+                    to={Routes.case_base_data_path(@socket, :show, fetch_field!(case_cs, :uuid))}
+                    opts={target: "_blank", rel: "noopener noreferrer"}
+                  >
+                    <div class="d-inline-block me-1">{fetch_field!(person_cs, :first_name)}</div>
+                    <div class="d-inline-block">{fetch_field!(person_cs, :last_name)}</div>
+                  </Link>
+                {#else}
+                  <div>
+                    <div class="d-inline-block me-1">{fetch_field!(person_cs, :first_name)}</div>
+                    <div class="d-inline-block">{fetch_field!(person_cs, :last_name)}</div>
                   </div>
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
+                {/if}
+                <div class="ms-auto">
+                  <Field name={:status}>
+                    <div class="input-group">
+                      <HygeiaWeb.FieldLabel class="mb-0">
+                        <span class="input-group-text">
+                          {gettext("Status")}
+                        </span>
+                      </HygeiaWeb.FieldLabel>
+                      <Select
+                        class="form-control bg-white"
+                        options={if existing_entity?(case_cs) do
+                          Status.map()
+                        else
+                          manage_statuses(@form_data[:type], Status.map())
+                        end}
+                      />
+                    </div>
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
               </div>
-            </:feature>
+            </:header>
 
             <:right>
               <div class="case-administrators">

@@ -6,18 +6,14 @@
 }>
   <div class="card-header">
     <#slot name="header">
-      <div class="d-flex">
+      <div>
         <div>
-          <div>
-            <div class="d-inline-block me-1">{fetch_field!(@person_changeset, :first_name)}</div>
-            <div class="d-inline-block">{fetch_field!(@person_changeset, :last_name)}</div>
-          </div>
-          <span :if={fetch_field!(@person_changeset, :inserted_at)} class="text-muted small">
-            {gettext("This person is in the database")}
-          </span>
+          <div class="d-inline-block me-1">{fetch_field!(@person_changeset, :first_name)}</div>
+          <div class="d-inline-block">{fetch_field!(@person_changeset, :last_name)}</div>
         </div>
-
-        <#slot name="feature" />
+        <span :if={fetch_field!(@person_changeset, :inserted_at)} class="text-muted small">
+          {gettext("This person is in the database")}
+        </span>
       </div>
     </#slot>
   </div>
