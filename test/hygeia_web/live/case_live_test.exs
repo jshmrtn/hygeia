@@ -161,8 +161,8 @@ defmodule HygeiaWeb.CaseLiveTest do
 
       first_name = "Karl"
       last_name = "Muster"
-      # mobile = "+41 78 724 57 90"
-      # email = "karl.muster@gmail.com"
+      mobile = "+41 78 724 57 90"
+      email = "karl.muster@gmail.com"
 
       case_status = :first_contact
 
@@ -181,10 +181,10 @@ defmodule HygeiaWeb.CaseLiveTest do
       |> test_define_people_step_form(context, %{
         first_name: first_name,
         last_name: last_name,
-        # contact_methods: [
-        #   %{type: :mobile, value: mobile},
-        #   %{type: :email, value: email}
-        # ],
+        contact_methods: %{
+          0 => %{type: :mobile, value: mobile},
+          1 => %{type: :email, value: email}
+        },
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
@@ -202,11 +202,11 @@ defmodule HygeiaWeb.CaseLiveTest do
                %Person{
                  uuid: person_uuid,
                  first_name: ^first_name,
-                 last_name: ^last_name
-                 #  contact_methods: [
-                 #    %{type: :mobile, value: ^mobile},
-                 #    %{type: :email, value: ^email}
-                 #  ]
+                 last_name: ^last_name,
+                 contact_methods: [
+                   %{type: :mobile, value: ^mobile},
+                   %{type: :email, value: ^email}
+                 ]
                }
              ] = CaseContext.list_people()
 
@@ -565,8 +565,8 @@ defmodule HygeiaWeb.CaseLiveTest do
 
       first_name = "Karl"
       last_name = "Muster"
-      # mobile = "+41 78 724 57 90"
-      # email = "karl.muster@gmail.com"
+      mobile = "+41 78 724 57 90"
+      email = "karl.muster@gmail.com"
 
       index = 0
 
@@ -590,9 +590,11 @@ defmodule HygeiaWeb.CaseLiveTest do
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
+        },
+        contact_methods: %{
+          0 => %{type: :mobile, value: mobile},
+          1 => %{type: :email, value: email}
         }
-        # mobile: mobile,
-        # email: email
       })
       |> test_define_people_step_submit_person_modal(context, %{})
       |> test_next_button(context, %{to_step: "action"})
@@ -606,11 +608,11 @@ defmodule HygeiaWeb.CaseLiveTest do
                %Person{
                  uuid: person_uuid,
                  first_name: ^first_name,
-                 last_name: ^last_name
-                 #  contact_methods: [
-                 #    %{type: :mobile, value: ^mobile},
-                 #    %{type: :email, value: ^email}
-                 #  ]
+                 last_name: ^last_name,
+                 contact_methods: [
+                   %{type: :mobile, value: ^mobile},
+                   %{type: :email, value: ^email}
+                 ]
                }
              ] = CaseContext.list_people()
 
@@ -654,8 +656,8 @@ defmodule HygeiaWeb.CaseLiveTest do
 
       first_name = "Karl"
       last_name = "Muster"
-      # mobile = "+41 78 724 57 90"
-      # email = "karl.muster@gmail.com"
+      mobile = "+41 78 724 57 90"
+      email = "karl.muster@gmail.com"
 
       index = 0
 
@@ -676,9 +678,11 @@ defmodule HygeiaWeb.CaseLiveTest do
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
+        },
+        contact_methods: %{
+          0 => %{type: :mobile, value: mobile},
+          1 => %{type: :email, value: email}
         }
-        # mobile: mobile,
-        # email: email
       })
       |> test_define_people_step_submit_person_modal(context, %{})
       |> test_next_button(context, %{to_step: "action"})
@@ -718,8 +722,8 @@ defmodule HygeiaWeb.CaseLiveTest do
 
       first_name_person = "John"
       last_name_person = "Doe"
-      # mobile = "+41 78 724 57 90"
-      # email = "john.doe@gmail.com"
+      mobile = "+41 78 724 57 90"
+      email = "john.doe@gmail.com"
 
       index = 0
 
@@ -760,9 +764,11 @@ defmodule HygeiaWeb.CaseLiveTest do
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
+        },
+        contact_methods: %{
+          0 => %{type: :mobile, value: mobile},
+          1 => %{type: :email, value: email}
         }
-        # mobile: mobile,
-        # email: email
       })
       |> test_define_people_step_submit_person_modal(context, %{})
       |> test_next_button(context, %{to_step: "action"})
@@ -781,11 +787,11 @@ defmodule HygeiaWeb.CaseLiveTest do
                %Person{
                  uuid: person_uuid,
                  first_name: ^first_name_person,
-                 last_name: ^last_name_person
-                 #  contact_methods: [
-                 #    %{type: :mobile, value: ^mobile},
-                 #    %{type: :email, value: ^email}
-                 #  ]
+                 last_name: ^last_name_person,
+                 contact_methods: [
+                   %{type: :mobile, value: ^mobile},
+                   %{type: :email, value: ^email}
+                 ]
                }
              ] = CaseContext.list_people()
 
