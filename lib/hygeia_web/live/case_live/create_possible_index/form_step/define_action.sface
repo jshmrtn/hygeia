@@ -58,7 +58,7 @@
                       <HygeiaWeb.FieldLabel />
                       <Select
                         class="form-control"
-                        options={form_options_administrators(@supervisor_users, get_field(case_cs, :tenant_uuid))}
+                        options={form_options_administrators(@supervisor_users, fetch_field!(case_cs, :tenant_uuid))}
                         opts={prompt: gettext("Case Administration")}
                       />
                       <ErrorTag class="d-block invalid-feedback" />

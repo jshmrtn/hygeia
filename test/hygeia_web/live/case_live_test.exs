@@ -176,19 +176,19 @@ defmodule HygeiaWeb.CaseLiveTest do
         comment: comment
       })
       |> test_next_button(context, %{to_step: "people"})
-      |> test_define_people_step_search(context, %{
+      |> test_define_people_step_form(context, %{
         first_name: first_name,
         last_name: last_name,
-        mobile: mobile,
-        email: email
-      })
-      |> test_define_people_step_create_person_modal(context, %{})
-      |> test_define_people_step_submit_person_modal(context, %{
+        contact_methods: %{
+          0 => %{type: :mobile, value: mobile},
+          1 => %{type: :email, value: email}
+        },
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
         }
       })
+      |> test_define_people_step_submit_person_modal(context, %{})
       |> test_next_button(context, %{to_step: "action"})
       |> test_define_action_step(context, %{
         "index" => "0",
@@ -269,7 +269,7 @@ defmodule HygeiaWeb.CaseLiveTest do
         comment: comment
       })
       |> test_next_button(context, %{to_step: "people"})
-      |> test_define_people_step_search(context, %{
+      |> test_define_people_step_form(context, %{
         first_name: first_name,
         last_name: last_name
       })
@@ -349,7 +349,7 @@ defmodule HygeiaWeb.CaseLiveTest do
         comment: comment
       })
       |> test_next_button(context, %{to_step: "people"})
-      |> test_define_people_step_search(context, %{
+      |> test_define_people_step_form(context, %{
         first_name: first_name,
         last_name: last_name
       })
@@ -447,7 +447,7 @@ defmodule HygeiaWeb.CaseLiveTest do
         comment: comment
       })
       |> test_next_button(context, %{to_step: "people"})
-      |> test_define_people_step_search(context, %{
+      |> test_define_people_step_form(context, %{
         first_name: first_name,
         last_name: last_name
       })
@@ -503,7 +503,7 @@ defmodule HygeiaWeb.CaseLiveTest do
         comment: comment
       })
       |> test_next_button(context, %{to_step: "people"})
-      |> test_define_people_step_search(context, %{
+      |> test_define_people_step_form(context, %{
         first_name: first_name,
         last_name: last_name
       })
@@ -582,19 +582,19 @@ defmodule HygeiaWeb.CaseLiveTest do
         comment: comment
       })
       |> test_next_button(context, %{to_step: "people"})
-      |> test_define_people_step_search(context, %{
+      |> test_define_people_step_form(context, %{
         first_name: first_name,
         last_name: last_name,
-        mobile: mobile,
-        email: email
-      })
-      |> test_define_people_step_create_person_modal(context, %{})
-      |> test_define_people_step_submit_person_modal(context, %{
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
+        },
+        contact_methods: %{
+          0 => %{type: :mobile, value: mobile},
+          1 => %{type: :email, value: email}
         }
       })
+      |> test_define_people_step_submit_person_modal(context, %{})
       |> test_next_button(context, %{to_step: "action"})
       |> test_define_action_step(context, %{
         "index" => index,
@@ -670,19 +670,19 @@ defmodule HygeiaWeb.CaseLiveTest do
         comment: comment
       })
       |> test_next_button(context, %{to_step: "people"})
-      |> test_define_people_step_search(context, %{
+      |> test_define_people_step_form(context, %{
         first_name: first_name,
         last_name: last_name,
-        mobile: mobile,
-        email: email
-      })
-      |> test_define_people_step_create_person_modal(context, %{})
-      |> test_define_people_step_submit_person_modal(context, %{
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
+        },
+        contact_methods: %{
+          0 => %{type: :mobile, value: mobile},
+          1 => %{type: :email, value: email}
         }
       })
+      |> test_define_people_step_submit_person_modal(context, %{})
       |> test_next_button(context, %{to_step: "action"})
       |> test_define_action_step(context, %{
         "index" => index,
@@ -756,19 +756,19 @@ defmodule HygeiaWeb.CaseLiveTest do
         comment: comment
       })
       |> test_next_button(context, %{to_step: "people"})
-      |> test_define_people_step_search(context, %{
+      |> test_define_people_step_form(context, %{
         first_name: first_name_person,
         last_name: last_name_person,
-        mobile: mobile,
-        email: email
-      })
-      |> test_define_people_step_create_person_modal(context, %{})
-      |> test_define_people_step_submit_person_modal(context, %{
         tenant_uuid: tenant.uuid,
         address: %{
           address: "Teststrasse 2"
+        },
+        contact_methods: %{
+          0 => %{type: :mobile, value: mobile},
+          1 => %{type: :email, value: email}
         }
       })
+      |> test_define_people_step_submit_person_modal(context, %{})
       |> test_next_button(context, %{to_step: "action"})
       |> test_define_action_step(context, %{
         "index" => index,
@@ -871,9 +871,8 @@ defmodule HygeiaWeb.CaseLiveTest do
       view
       |> test_transmission_step(context, %{})
       |> test_next_button(context, %{to_step: "people"})
-      |> test_navigation(context, %{live_action: :edit, to_step: "people", path_params: index})
-      |> test_define_people_step_submit_person_modal(context, %{
-        tenant_uuid: tenant.uuid
+      |> test_edit_possible_index_submission(context, %{
+        person: %{tenant_uuid: tenant.uuid}
       })
       |> test_next_button(context, %{to_step: "action"})
       |> test_define_action_step(context, %{

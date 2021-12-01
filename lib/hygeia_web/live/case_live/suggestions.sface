@@ -1,4 +1,4 @@
-<div class="candidate-card card flex-row">
+<div id={@id} class="candidate-card card flex-row">
   <Context get={HygeiaWeb, auth: auth, timezone: timezone} :if={not @empty or @show_empty}>
     <div class="card-header card-vertical-header p-3">
       <table class="candidate-table">
@@ -45,7 +45,7 @@
         class="btn btn-primary mt-3 d-block"
         :on-click={@new_selected}
       >
-        {gettext("New Person")}
+        {gettext("Create new person")}
       </button>
 
       <button
@@ -104,6 +104,7 @@
                 :for={case <- person.cases}
                 class="btn btn-primary mt-3 d-block"
                 :on-click={@case_selected}
+                phx-value-subject={@subject}
                 phx-value-person_uuid={person.uuid}
                 value={case.uuid}
               >
@@ -121,6 +122,7 @@
                   "btn-outline-primary": match?([_ | _], person.cases)
                 }
                 :on-click={@person_selected}
+                phx-value-subject={@subject}
                 value={person.uuid}
               >
                 {gettext("Choose existing person")}

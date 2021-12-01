@@ -117,7 +117,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           socket
           |> unblock_navigation()
           |> assign(visited_steps: visit_step([], :summary))
-          |> put_flash(:info, gettext("Cases inserted successfully."))
+          |> put_flash(:success, gettext("Cases inserted successfully."))
 
         if form_data[:possible_index_submission_uuid] do
           push_redirect(socket,
@@ -200,10 +200,9 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
     person_changeset =
       CaseContext.change_person(
-        Map.merge(
-          %Person{},
-          possible_index_submission_tenant_preset(infection_place, propagator_case)
-        ),
+        %Person{
+          tenant: possible_index_submission_tenant_preset(infection_place, propagator_case)
+        },
         %{
           first_name: first_name,
           last_name: last_name,
@@ -212,22 +211,29 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
           contact_methods:
             []
             |> append_if(mobile != nil and String.length(mobile) > 0, %{
+              uuid: Ecto.UUID.generate(),
               type: :mobile,
               value: mobile
             })
             |> append_if(landline != nil and String.length(landline) > 0, %{
+              uuid: Ecto.UUID.generate(),
               type: :landline,
               value: landline
             })
             |> append_if(email != nil and String.length(email) > 0, %{
+              uuid: Ecto.UUID.generate(),
               type: :email,
               value: email
             }),
           address: Map.from_struct(address),
           affiliations:
-            if(not is_nil(employer),
-              do: [%{unknown_organisation: %{name: employer}, kind: :employee}]
-            )
+            case employer do
+              nil -> []
+              "" -> []
+              _name -> [%{unknown_organisation: %{name: employer}, kind: :employee}]
+            end,
+          tenant_uuid:
+            possible_index_submission_tenant_uuid_preset(infection_place, propagator_case)
         }
       )
 
@@ -251,11 +257,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             |> Ecto.Changeset.apply_changes()
             |> Ecto.build_assoc(
               :cases,
-              possible_index_submission_tenant_preset(infection_place, propagator_case)
+              %{tenant: possible_index_submission_tenant_preset(infection_place, propagator_case)}
             )
             |> CaseContext.change_case(%{
               tracer_uuid: propagator_case.tracer_uuid,
-              supervisor_uuid: propagator_case.supervisor_uuid
+              supervisor_uuid: propagator_case.supervisor_uuid,
+              tenant_uuid:
+                possible_index_submission_tenant_uuid_preset(infection_place, propagator_case)
             })
         }
       ]
@@ -293,17 +301,16 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
     end
   end
 
+  defp possible_index_submission_tenant_uuid_preset(nil, _propagator_case), do: %{}
+
+  defp possible_index_submission_tenant_uuid_preset(infection_place, propagator_case) do
+    if match?(:hh, infection_place.type), do: propagator_case.tenant_uuid, else: nil
+  end
+
   defp possible_index_submission_tenant_preset(nil, _propagator_case), do: %{}
 
   defp possible_index_submission_tenant_preset(infection_place, propagator_case) do
-    if match?(:hh, infection_place.type) do
-      %{
-        tenant_uuid: propagator_case.tenant_uuid,
-        tenant: propagator_case.tenant
-      }
-    else
-      %{}
-    end
+    if match?(:hh, infection_place.type), do: propagator_case.tenant, else: nil
   end
 
   @spec get_form_steps() :: [FormStep.t()]

@@ -8,6 +8,8 @@
     class: "component-person-base-data pb-0"
   }
 >
+  <HiddenInput field={:uuid} />
+  <HiddenInput :if={@subject} field={:subject} value={@subject} />
   <div class="form-grid">
     <div class="card">
       <div class="card-body">
@@ -76,7 +78,7 @@
         </div>
 
         <Inputs for={:address}>
-          <HygeiaWeb.AddressForm disabled={@disabled} id="address" />
+          <HygeiaWeb.AddressForm disabled={@disabled} id={"#{@form_id}_address"} />
         </Inputs>
       </div>
     </div>
@@ -141,6 +143,7 @@
                   type="button"
                   class="btn btn-danger"
                   :on-click={@remove_contact_method}
+                  phx-value-subject={@subject}
                   phx-value-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
                 >
                   <span class="oi oi-trash" aria-hidden="true" />
@@ -150,7 +153,12 @@
           </Inputs>
 
           <div class="add-button mt-2" :if={not @disabled and not is_nil(@add_contact_method)}>
-            <button type="button" class="btn btn-outline-primary" :on-click={@add_contact_method}>
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              :on-click={@add_contact_method}
+              phx-value-subject={@subject}
+            >
               <span class="oi oi-plus me-1" aria-hidden="true" />
               {gettext("New contact method")}
             </button>

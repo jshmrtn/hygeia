@@ -734,8 +734,8 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
 msgstr ""
 
-#, elixir-format, fuzzy
-msgid "Clear search"
+#, elixir-format
+msgid "Clear"
 msgstr ""
 
 #, elixir-format, fuzzy
@@ -998,10 +998,6 @@ msgstr "Créer des cas d'indexation possibles"
 
 #, elixir-format, fuzzy
 msgid "Create new person"
-msgstr "Créer une nouvelle personne"
-
-#, elixir-format, fuzzy
-msgid "Create new person now"
 msgstr "Créer une nouvelle personne"
 
 #, elixir-format, fuzzy
@@ -4198,10 +4194,6 @@ msgstr "Dépistage"
 msgid "Search"
 msgstr "Recherche"
 
-#, elixir-format
-msgid "Search or create person"
-msgstr ""
-
 #, elixir-format, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Seat number"
@@ -4948,10 +4940,6 @@ msgid "The swiss covid app is the official contact tracing app of switzerland. T
 msgstr ""
 
 #, elixir-format
-msgid "There are possible duplicates for this person. Click to resolve."
-msgstr ""
-
-#, elixir-format
 msgctxt "errors"
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
 msgstr ""
@@ -5395,6 +5383,10 @@ msgstr "Diverses informations concernant la fonctionnalité des applications ain
 #, elixir-format
 msgid "View"
 msgstr ""
+
+#, elixir-format, fuzzy
+msgid "View person"
+msgstr "Nouvelle personne"
 
 #, elixir-format, fuzzy
 msgid "Visit"
