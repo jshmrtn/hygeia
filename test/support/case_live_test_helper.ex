@@ -78,7 +78,7 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
           params :: map()
         ) ::
           LiveViewTest.t()
-  def test_edit_possible_index_submission(view, context, params) do
+  def test_edit_possible_index_submission(view, _context, params) do
     assert view
            |> element("#people form")
            |> render_change(params)
@@ -125,10 +125,14 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
         ) ::
           LiveViewTest.t()
   def test_define_people_step_form(view, _context, params) do
+    for _contact_method <- params[:contact_methods] || [] do
+      view
+      |> element("#person-form .add-button button")
+      |> render_click(%{})
+    end
+
     assert view
-           |> form("#person-form",
-             person: params
-           )
+           |> form("#person-form", person: params)
            |> render_change()
 
     view
