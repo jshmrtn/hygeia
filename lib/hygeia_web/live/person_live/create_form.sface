@@ -8,6 +8,7 @@
     class: "component-person-base-data pb-0"
   }
 >
+  <HiddenInput field={:uuid} />
   <HiddenInput :if={@subject} field={:subject} value={@subject} />
   <div class="form-grid">
     <div class="card">
