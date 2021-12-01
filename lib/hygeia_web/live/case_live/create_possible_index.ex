@@ -225,9 +225,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
             }),
           address: Map.from_struct(address),
           affiliations:
-            if(not is_nil(employer),
-              do: [%{unknown_organisation: %{name: employer}, kind: :employee}]
-            ),
+            case employer do
+              nil -> []
+              "" -> []
+              name -> [%{unknown_organisation: %{name: employer}, kind: :employee}]
+            end,
           tenant_uuid:
             possible_index_submission_tenant_uuid_preset(infection_place, propagator_case)
         }
