@@ -20,7 +20,7 @@
                   "Have you visited a high risk country %{link} (link will open in a new tab) within the last 14 days (between %{start_date} and %{end_date})?",
                   %{
                     link:
-                      pgettext("Auto Tracing Travel", "BAG")
+                      pgettext("Auto Tracing Travel", "FOPH")
                       |> Phoenix.HTML.Link.link(
                         to: get_bag_link(),
                         target: "_blank",

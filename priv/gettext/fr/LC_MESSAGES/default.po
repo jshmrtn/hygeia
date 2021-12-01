@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #, elixir-format
@@ -439,11 +439,6 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Automated close email sent"
 msgstr "Envoi d'un e-mail de clôture automatisé"
 
-#, elixir-format
-msgctxt "Auto Tracing Travel"
-msgid "BAG"
-msgstr ""
-
 #, elixir-format, fuzzy
 msgid "BAG MED 16122020 (Case)"
 msgstr "BAG MED 16122020 (étui)"
@@ -729,12 +724,12 @@ msgstr "Cinéma / théâtre / concert"
 msgid "Class or division"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
 msgstr ""
@@ -1355,7 +1350,7 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
 msgid "Division not found"
 msgstr "Division"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Person Visits"
 msgid "Division not provided"
 msgstr ""
@@ -1710,6 +1705,11 @@ msgctxt "Case Complexity"
 msgid "Extreme"
 msgstr "Extrême"
 
+#, elixir-format
+msgctxt "Auto Tracing Travel"
+msgid "FOPH"
+msgstr "OFSP"
+
 #, elixir-format, fuzzy
 msgid "Facility for supplementary childcare"
 msgstr "Dispositif de garde complémentaire d'enfants"
@@ -1905,7 +1905,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
 msgstr "A des symptômes"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Travel Field"
 msgid "Has flown"
 msgstr ""
@@ -3152,7 +3152,7 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Not provided"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Person Visits"
 msgid "Not provided"
 msgstr ""
@@ -3577,7 +3577,7 @@ msgstr "Les ordres de quarantaine/isolement de phase ne doivent pas se chevauche
 msgid "Phase Type already exists on the case"
 msgstr "Le type de phase existe déjà sur le boîtier"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "Phase created at"
 msgstr ""
 
@@ -5325,7 +5325,7 @@ msgstr "Inconnu"
 msgid "Unknown organisation"
 msgstr ""
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Unknown organisation"
 msgstr ""
@@ -5583,7 +5583,7 @@ msgstr "Vous n'êtes pas actuellement en quarantaine ou en isolement."
 msgid "You are not authorized to do this action."
 msgstr "Vous n'êtes pas autorisé à faire cette action."
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "You are not authorized to view this person. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
 msgstr ""
 

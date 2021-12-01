@@ -28,7 +28,10 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   alias Surface.Components.Form.TextInput
   alias Surface.Components.LiveRedirect
 
-  @bag_link "https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#1158844945"
+  @en_foph_link "https://www.bag.admin.ch/bag/en/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#858610174"
+  @de_bag_link "https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#1158844945"
+  @fr_ofsp_link "https://www.bag.admin.ch/bag/fr/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#-1701760666"
+  @it_ufsp_link "https://www.bag.admin.ch/bag/it/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#-1398083337"
 
   @primary_key false
   embedded_schema do
@@ -304,6 +307,11 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   end
 
   defp get_bag_link do
-    @bag_link
+    case HygeiaCldr.get_locale().language() do
+      lang when lang in ["de", "de-CH"] -> @de_bag_link
+      lang when lang in ["fr", "fr-CH"] -> @fr_ofsp_link
+      lang when lang in ["it", "it-CH"] -> @it_ufsp_link
+      _other -> @en_foph_link
+    end
   end
 end

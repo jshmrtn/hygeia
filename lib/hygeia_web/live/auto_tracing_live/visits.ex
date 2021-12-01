@@ -251,7 +251,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
                 AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :school_related)
             end
 
-          {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :employer)
+          {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :visits)
 
           push_redirect(socket,
             to:

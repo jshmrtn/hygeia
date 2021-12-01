@@ -440,11 +440,6 @@ msgid "Automated close email sent"
 msgstr "Automatisches Fall-Abschluss-Email gesendet"
 
 #, elixir-format
-msgctxt "Auto Tracing Travel"
-msgid "BAG"
-msgstr "BAG"
-
-#, elixir-format
 msgid "BAG MED 16122020 (Case)"
 msgstr "BAG MED 16122020 (Fall)"
 
@@ -1708,6 +1703,11 @@ msgstr "Extrem"
 msgctxt "Case Complexity"
 msgid "Extreme"
 msgstr "Extrem"
+
+#, elixir-format
+msgctxt "Auto Tracing Travel"
+msgid "FOPH"
+msgstr "BAG"
 
 #, elixir-format
 msgid "Facility for supplementary childcare"
