@@ -193,7 +193,9 @@
                 person_selected="duplicate_person_selected"
                 case_selected="duplicate_person_case_selected"
               />
-              <button type="button" class="btn btn-warning mt-3" :on-click="clear_person">{gettext("Clear")}</button>
+              <div>
+                <button type="button" class="btn btn-warning mt-3" :on-click="clear_person">{gettext("Clear")}</button>
+              </div>
             {/if}
           </:footer>
         </HygeiaWeb.PersonLive.CreateForm>

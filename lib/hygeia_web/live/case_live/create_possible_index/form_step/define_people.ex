@@ -111,7 +111,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
       |> Enum.at(String.to_integer(index))
       |> Map.update(:person_changeset, CaseContext.change_person(%Person{}), fn changeset ->
         CaseContext.change_person(changeset, %{
-          address: Map.from_struct(form_data.propagator_case.person.address)
+          address:
+            case form_data.propagator_case.person.address do
+              nil -> nil
+              address -> Map.from_struct(address)
+            end
         })
       end)
 
