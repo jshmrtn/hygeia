@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.AutoTracingLive.Flights do
+defmodule HygeiaWeb.AutoTracingLive.Travel do
   @moduledoc false
 
   use HygeiaWeb, :surface_view
@@ -11,6 +11,7 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Flight
+  alias Hygeia.AutoTracingContext.AutoTracing.Travel
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Clinical
@@ -23,11 +24,20 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
   alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.RadioButton
+  alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
   alias Surface.Components.LiveRedirect
 
+  @en_foph_link "https://www.bag.admin.ch/bag/en/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#858610174"
+  @de_bag_link "https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#1158844945"
+  @fr_ofsp_link "https://www.bag.admin.ch/bag/fr/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#-1701760666"
+  @it_ufsp_link "https://www.bag.admin.ch/bag/it/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#-1398083337"
+
   @primary_key false
   embedded_schema do
+    field :has_travelled, :boolean
+    embeds_one :travel, Travel, on_replace: :delete
+
     field :has_flown, :boolean
     embeds_many :flights, Flight, on_replace: :delete
   end
@@ -54,13 +64,15 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
               )
           )
 
-        !AutoTracing.step_available?(case.auto_tracing, :flights) ->
+        !AutoTracing.step_available?(case.auto_tracing, :travel) ->
           push_redirect(socket,
             to: Routes.auto_tracing_auto_tracing_path(socket, :auto_tracing, case)
           )
 
         true ->
           step = %__MODULE__{
+            has_travelled: case.auto_tracing.has_travelled,
+            travel: case.auto_tracing.travel,
             has_flown: case.auto_tracing.has_flown,
             flights: case.auto_tracing.flights
           }
@@ -116,7 +128,7 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
      )}
   end
 
-  def handle_event("validate", %{"flights" => params}, socket) do
+  def handle_event("validate", %{"travel" => params}, socket) do
     params = Map.put_new(params, "flights", [])
 
     {:noreply,
@@ -141,10 +153,27 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
           auto_tracing_changeset =
             auto_tracing
             |> AutoTracingContext.change_auto_tracing()
+            |> put_change(:has_travelled, step.has_travelled)
+            |> put_embed(:travel, step.travel)
             |> put_change(:has_flown, step.has_flown)
             |> put_embed(:flights, step.flights)
 
           {:ok, auto_tracing} = AutoTracingContext.update_auto_tracing(auto_tracing_changeset)
+
+          {:ok, auto_tracing} =
+            if auto_tracing.has_travelled do
+              {:ok, _auto_tracing} =
+                AutoTracingContext.auto_tracing_add_problem(
+                  auto_tracing,
+                  :high_risk_country_travel
+                )
+            else
+              {:ok, _auto_tracing} =
+                AutoTracingContext.auto_tracing_remove_problem(
+                  auto_tracing,
+                  :high_risk_country_travel
+                )
+            end
 
           {:ok, auto_tracing} =
             if auto_tracing.has_flown do
@@ -155,7 +184,7 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
                 AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :flight_related)
             end
 
-          {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :flights)
+          {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :travel)
 
           push_redirect(socket,
             to:
@@ -238,9 +267,25 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
           Ecto.Changeset.t()
   def changeset(schema, attrs \\ %{}) do
     schema
-    |> cast(attrs, [:has_flown])
-    |> validate_required([:has_flown])
+    |> cast(attrs, [:has_travelled, :has_flown])
+    |> validate_required([:has_travelled, :has_flown])
+    |> validate_travel()
     |> validate_flight()
+  end
+
+  defp validate_travel(changeset) do
+    changeset
+    |> fetch_field!(:has_travelled)
+    |> case do
+      true ->
+        cast_embed(changeset, :travel,
+          required: true,
+          required_message: gettext("please provide the information about your travel")
+        )
+
+      _else ->
+        put_embed(changeset, :travel, nil)
+    end
   end
 
   defp validate_flight(changeset) do
@@ -258,6 +303,15 @@ defmodule HygeiaWeb.AutoTracingLive.Flights do
 
       _else ->
         changeset
+    end
+  end
+
+  defp get_bag_link do
+    case HygeiaCldr.get_locale().language() do
+      lang when lang in ["de", "de-CH"] -> @de_bag_link
+      lang when lang in ["fr", "fr-CH"] -> @fr_ofsp_link
+      lang when lang in ["it", "it-CH"] -> @it_ufsp_link
+      _other -> @en_foph_link
     end
   end
 end
