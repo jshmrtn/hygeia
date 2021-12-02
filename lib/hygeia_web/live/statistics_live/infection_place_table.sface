@@ -20,7 +20,7 @@
           fn
             %{count: count, infection_place_type: nil} ->
               %{count: count, infection_place_type: gettext("unknown")}
-      
+
             %{count: count, infection_place_type: infection_place_type} ->
               %{
                 count: count,

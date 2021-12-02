@@ -160,10 +160,10 @@
             {case transmission.infection_place.type do
               nil ->
                 nil
-            
+
               :other ->
                 "#{translate_infection_place_type(:other)}: #{transmission.infection_place.type_other}"
-            
+
               type ->
                 translate_infection_place_type(type)
             end}
