@@ -19,6 +19,8 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.LiveRedirect
 
+  @days_after_start 9
+
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
     case =
@@ -259,7 +261,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     phase_start = Date.utc_today()
 
-    {phase_start, Date.add(start_date, 9), problems}
+    {phase_start, Date.add(start_date, @days_after_start), problems}
   end
 
   defp index_phase_start_date(%Case{
