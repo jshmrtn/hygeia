@@ -171,7 +171,7 @@
   {/unless}
 
   {#unless has_possible_index_submission?(@form_data)}
-    <hr>
+    <hr class="my-5">
     <div class="row">
       <div class="col-12">
         <HygeiaWeb.PersonLive.CreateForm
@@ -185,16 +185,18 @@
         >
           <:footer>
             {#if not Enum.empty?(Map.drop(@changeset.changes, [:human_readable_id, :uuid]))}
-              <h4 class="my-3">{gettext("Similar persons in the system")}</h4>
-              <HygeiaWeb.CaseLive.Suggestions
-                person_changeset={@changeset}
-                id="person_suggestions"
-                new_selected="add_new_person"
-                person_selected="duplicate_person_selected"
-                case_selected="duplicate_person_case_selected"
-              />
-              <div>
+              <div class="define-people">
                 <button type="button" class="btn btn-warning mt-3" :on-click="clear_person">{gettext("Clear")}</button>
+              </div>
+              <div class="define-people">
+                <h4 class="my-3">{gettext("Similar persons in the system")}</h4>
+                <HygeiaWeb.CaseLive.Suggestions
+                  person_changeset={@changeset}
+                  id="person_suggestions"
+                  new_selected="add_new_person"
+                  person_selected="duplicate_person_selected"
+                  case_selected="duplicate_person_case_selected"
+                />
               </div>
             {/if}
           </:footer>
