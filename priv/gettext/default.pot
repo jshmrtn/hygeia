@@ -262,11 +262,6 @@ msgid "Affiliations"
 msgstr ""
 
 #, elixir-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "After checking the data, please manually send an isolation confirmation from the system."
-msgstr ""
-
-#, elixir-format
 msgid "Agreed with index that had been in contact that no further contact is necessary"
 msgstr ""
 
@@ -334,11 +329,6 @@ msgid "Are you a enrolled at this educational institution?"
 msgstr ""
 
 #, elixir-format
-msgctxt "Auto Tracing Clinical"
-msgid "Are you certain that this is the correct date? If yes, a contact tracing employee will contact you."
-msgstr ""
-
-#, elixir-format
 msgid "Are you employed by this educational institution?"
 msgstr ""
 
@@ -360,6 +350,11 @@ msgstr ""
 
 #, elixir-format
 msgid "Are you sure? There are visits assigned!"
+msgstr ""
+
+#, elixir-format
+msgctxt "Auto Tracing Clinical"
+msgid "Are you sure? This date is unusual far in the past."
 msgstr ""
 
 #, elixir-format
@@ -580,11 +575,6 @@ msgstr ""
 #, elixir-format
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case UUID"
-msgstr ""
-
-#, elixir-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Case created at"
 msgstr ""
 
 #, elixir-format
@@ -1781,17 +1771,12 @@ msgid "First contact, unreachable"
 msgstr ""
 
 #, elixir-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "First positive test date"
-msgstr ""
-
-#, elixir-format
-msgctxt "Breakthrough Infection Export"
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Firstname"
 msgstr ""
 
 #, elixir-format
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgctxt "Breakthrough Infection Export"
 msgid "Firstname"
 msgstr ""
 
@@ -2228,11 +2213,6 @@ msgstr ""
 #, elixir-format
 msgctxt "Test Result"
 msgid "Inconclusive"
-msgstr ""
-
-#, elixir-format
-msgctxt "Auto Tracing Problem"
-msgid "Inconsistent Phase Date"
 msgstr ""
 
 #, elixir-format
@@ -4723,11 +4703,6 @@ msgid "Symptoms"
 msgstr ""
 
 #, elixir-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Symptoms start date"
-msgstr ""
-
-#, elixir-format
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
 msgstr ""
@@ -4936,11 +4911,6 @@ msgstr ""
 
 #, elixir-format
 msgid "The contact person has developed symptoms, did a test and became an index"
-msgstr ""
-
-#, elixir-format
-msgctxt "Auto Tracing Hints"
-msgid "The current case information is being inspected. Expect changes to the isolation period."
 msgstr ""
 
 #, elixir-format

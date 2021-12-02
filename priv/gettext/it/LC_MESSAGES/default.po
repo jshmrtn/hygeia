@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 
 #, elixir-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -255,11 +255,6 @@ msgid "Affiliations"
 msgstr "Affiliazioni"
 
 #, elixir-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "After checking the data, please manually send an isolation confirmation from the system."
-msgstr "Dopo aver verificato i dati, invia manualmente una conferma di isolamento."
-
-#, elixir-format
 msgid "Agreed with index that had been in contact that no further contact is necessary"
 msgstr "Concordato con l'indice che era stato in contatto che non è necessario un ulteriore contatto"
 
@@ -327,11 +322,6 @@ msgid "Are you a enrolled at this educational institution?"
 msgstr "Sei immatricolato persso questo instituto?"
 
 #, elixir-format
-msgctxt "Auto Tracing Clinical"
-msgid "Are you certain that this is the correct date? If yes, a contact tracing employee will contact you."
-msgstr "Sei sicuro / sicura che questa sia la data corretta? Se è corretta, verrai contattato da un nostro operatore."
-
-#, elixir-format
 msgid "Are you employed by this educational institution?"
 msgstr "Sei un impiegato di questo instituto?"
 
@@ -354,6 +344,11 @@ msgstr "Sei sicuro? Ci sono affiliazioni assegnate!"
 #, elixir-format
 msgid "Are you sure? There are visits assigned!"
 msgstr "Sei sicuro? Ci sono visite assegnate!"
+
+#, elixir-format
+msgctxt "Auto Tracing Clinical"
+msgid "Are you sure? This date is unusual far in the past."
+msgstr "Sei sicuro? Questa data è insolita nel lontano passato."
 
 #, elixir-format
 msgid "Are you working in an association?"
@@ -574,11 +569,6 @@ msgstr "Il tipo di fase del caso deve essere unico"
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Case UUID"
 msgstr "UUID del caso"
-
-#, elixir-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Case created at"
-msgstr "Caso creato il"
 
 #, elixir-format
 msgid "Case created successfully"
@@ -1832,18 +1822,13 @@ msgctxt "Case Status"
 msgid "First contact, unreachable"
 msgstr "Primo contatto, irraggiungibile"
 
-#, elixir-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "First positive test date"
-msgstr "Primo test risultato positivo"
-
 #, elixir-format, fuzzy
-msgctxt "Breakthrough Infection Export"
+msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Firstname"
 msgstr "Nome"
 
 #, elixir-format, fuzzy
-msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
+msgctxt "Breakthrough Infection Export"
 msgid "Firstname"
 msgstr "Nome"
 
@@ -2288,11 +2273,6 @@ msgstr "Include il tipo di fase"
 msgctxt "Test Result"
 msgid "Inconclusive"
 msgstr "Inconcludente"
-
-#, elixir-format
-msgctxt "Auto Tracing Problem"
-msgid "Inconsistent Phase Date"
-msgstr "Il periodo della fase è incoerente"
 
 #, elixir-format
 msgid "Index"
@@ -4781,11 +4761,6 @@ msgctxt "Test Reason"
 msgid "Symptoms"
 msgstr "Sintomi"
 
-#, elixir-format, fuzzy
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Symptoms start date"
-msgstr "Data di inizio dei sintomi"
-
 #, elixir-format
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Symptoms start date"
@@ -4996,11 +4971,6 @@ msgstr "La persona di contatto non ha sviluppato alcun sintomo durante la quaran
 #, elixir-format
 msgid "The contact person has developed symptoms, did a test and became an index"
 msgstr "Il referente ha sviluppato dei sintomi, ha fatto un test ed è diventato un indice"
-
-#, elixir-format
-msgctxt "Auto Tracing Hints"
-msgid "The current case information is being inspected. Expect changes to the isolation period."
-msgstr "Le informazioni sul caso attuale saranno ispezionate. Potrebbero esserci delle modifiche sul periodo di isolamento."
 
 #, elixir-format
 msgid "The displayed language was translated mechanically."

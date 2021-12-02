@@ -61,10 +61,10 @@
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 {#case index_phase_dates(Ecto.Changeset.apply_changes(@changeset))}
-                  {#match {_, _, [:phase_date_inconsistent]}}
+                  {#match {_, _, [:phase_start_date_corrected]}}
                     <div class="p-2 mb-2 alert alert-warning" role="alert">{pgettext(
                         "Auto Tracing Clinical",
-                        "Are you certain that this is the correct date? If yes, a contact tracing employee will contact you."
+                        "Are you sure? This date is unusual far in the past."
                       )}</div>
                   {#match _else}
                 {/case}
