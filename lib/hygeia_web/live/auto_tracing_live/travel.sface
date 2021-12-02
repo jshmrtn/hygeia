@@ -27,7 +27,7 @@
                         rel: "noopener noreferrer"
                       )
                       |> Phoenix.HTML.safe_to_string(),
-                    start_date: HygeiaCldr.Date.to_string!(Date.add(Date.utc_today(), -14)),
+                    start_date: HygeiaCldr.Date.to_string!(Date.add(Date.utc_today(), -13)),
                     end_date: HygeiaCldr.Date.to_string!(Date.utc_today())
                   }
                 )
