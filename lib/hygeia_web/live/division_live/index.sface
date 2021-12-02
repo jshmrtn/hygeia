@@ -56,10 +56,10 @@
                       cond do
                         OrganisationContext.has_affiliations?(division) ->
                           gettext("Are you sure? There are affiliations assigned!")
-                
+
                         OrganisationContext.has_visits?(division) ->
                           gettext("Are you sure? There are visits assigned!")
-                
+
                         true ->
                           gettext("Are you sure?")
                       end

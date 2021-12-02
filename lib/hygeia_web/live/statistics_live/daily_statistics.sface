@@ -57,7 +57,7 @@
                   Enum.map(@cumulative_index_case_end_reasons, fn
                     %StatisticsContext.CumulativeIndexCaseEndReasons{end_reason: nil} ->
                       gettext("unknown")
-            
+
                     %StatisticsContext.CumulativeIndexCaseEndReasons{end_reason: end_reason} ->
                       Hygeia.CaseContext.Case.Phase.Index.EndReason.translate(end_reason)
                   end)
@@ -155,7 +155,7 @@
                         %StatisticsContext.CumulativePossibleIndexCaseEndReasons{end_reason: nil, type: type} ->
                           Phase.PossibleIndex.Type.translate(type) <>
                             " / " <> gettext("unknown")
-            
+
                         %StatisticsContext.CumulativePossibleIndexCaseEndReasons{
                           end_reason: end_reason,
                           type: type
@@ -206,7 +206,7 @@
                   Enum.map(@new_cases_per_day, fn
                     %StatisticsContext.NewCasesPerDay{type: :index, sub_type: nil} ->
                       gettext("Index")
-            
+
                     %StatisticsContext.NewCasesPerDay{type: :possible_index, sub_type: sub_type} ->
                       Phase.PossibleIndex.Type.translate(sub_type)
                   end)
@@ -237,7 +237,7 @@
                 {case @active_hospitalization_cases_per_day do
                   [%StatisticsContext.ActiveHospitalizationCasesPerDay{count: count}] ->
                     HygeiaCldr.Number.to_string!(count)
-                
+
                   [] ->
                     "?"
                 end}
@@ -269,7 +269,7 @@
                   Enum.map(@active_complexity_cases_per_day, fn
                     %StatisticsContext.ActiveComplexityCasesPerDay{case_complexity: nil} ->
                       gettext("unknown")
-            
+
                     %StatisticsContext.ActiveComplexityCasesPerDay{case_complexity: case_complexity} ->
                       Case.Complexity.translate(case_complexity)
                   end)
@@ -382,7 +382,7 @@
                   Enum.map(@new_registered_cases_per_day_first_contact, fn
                     %StatisticsContext.NewRegisteredCasesPerDay{type: :index} ->
                       gettext("Index")
-            
+
                     %StatisticsContext.NewRegisteredCasesPerDay{type: :possible_index} ->
                       gettext("Possible Index")
                   end)
@@ -435,7 +435,7 @@
                   Enum.map(@new_registered_cases_per_day_not_first_contact, fn
                     %StatisticsContext.NewRegisteredCasesPerDay{type: :index} ->
                       gettext("Index")
-            
+
                     %StatisticsContext.NewRegisteredCasesPerDay{type: :possible_index} ->
                       gettext("Possible Index")
                   end)
