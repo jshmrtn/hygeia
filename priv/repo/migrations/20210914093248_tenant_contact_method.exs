@@ -28,6 +28,4 @@ defmodule Hygeia.Repo.Migrations.TenantContactMethod do
       &noop/0
     )
   end
-
-  defp noop, do: :ok
 end

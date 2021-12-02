@@ -65,6 +65,8 @@ defmodule Hygeia do
 
       import Ecto.Query
       import Hygeia.Helpers.Versioning
+
+      defp noop, do: :ok
     end
   end
 
