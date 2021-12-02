@@ -346,8 +346,9 @@ defmodule HygeiaWeb.Helpers.FieldName do
       landline: "Landline",
       mobile: "Mobile"
     },
-    HygeiaWeb.AutoTracingLive.Flights => %{
-      has_flown: "Has flown"
+    HygeiaWeb.AutoTracingLive.Travel => %{
+      has_flown: "Has flown",
+      has_travelled: "Has travelled"
     },
     HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts => %{
       propagator_case: "Propagator Case",
@@ -388,6 +389,10 @@ defmodule HygeiaWeb.Helpers.FieldName do
       not_found: "Institution not found",
       division_not_found: "Class or division not found",
       known_division: "Class or division"
+    },
+    Hygeia.AutoTracingContext.AutoTracing.Travel => %{
+      return_date: "Date of return",
+      country: "Country"
     }
   }
 

@@ -8,11 +8,88 @@
     for={@changeset}
     change="validate"
     class={"mb-4", "p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}
-    opts={id: "flights-form"}
+    opts={id: "travel-form"}
   >
     <div class="card mb-5">
       <div class="card-body">
         <div class="row gx-7">
+          <div class="col-12 col-lg-6">
+            <p class="mb-4">{Phoenix.HTML.raw(
+                pgettext(
+                  "Auto Tracing Travel",
+                  "Have you visited a high risk country %{link} (link will open in a new tab) within the last 14 days (between %{start_date} and %{end_date})?",
+                  %{
+                    link:
+                      pgettext("Auto Tracing Travel", "FOPH")
+                      |> Phoenix.HTML.Link.link(
+                        to: get_bag_link(),
+                        target: "_blank",
+                        rel: "noopener noreferrer"
+                      )
+                      |> Phoenix.HTML.safe_to_string(),
+                    start_date: HygeiaCldr.Date.to_string!(Date.add(Date.utc_today(), -13)),
+                    end_date: HygeiaCldr.Date.to_string!(Date.utc_today())
+                  }
+                )
+              )}</p>
+            <Field name={:has_travelled} class="form-group">
+              <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+                <label class={
+                  "btn",
+                  "btn-sm",
+                  "btn-outline-primary",
+                  active: get_field(@changeset, :has_travelled) == true
+                }>
+                  <RadioButton value />
+                  {gettext("Yes")}
+                </label>
+                <label class={
+                  "btn",
+                  "btn-sm",
+                  "btn-outline-primary",
+                  active: get_field(@changeset, :has_travelled) == false
+                }>
+                  <RadioButton value={false} />
+                  {gettext("No")}
+                </label>
+              </div>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+          </div>
+        </div>
+        <div :if={get_field(@changeset, :has_travelled)}>
+          <div class="hy-card-grid-2-cols">
+            <Inputs for={:travel}>
+              <div class="card">
+                <div class="card-body">
+                  <p class="mb-4">
+                    {pgettext("Auto Tracing Travel", "If you traveled via plane, please add your flight below.")}
+                  </p>
+                  <HiddenInput field={:uuid} />
+                  <Field class="form-group" name={:return_date}>
+                    <HygeiaWeb.FieldLabel />
+                    <HygeiaWeb.DateInput class="form-control" opts={max: Date.utc_today()} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+
+                  <Field class="form-group" name={:country}>
+                    <HygeiaWeb.FieldLabel />
+                    <Select
+                      class="form-control"
+                      opts={prompt: gettext("Choose country")}
+                      field={:country}
+                      options={countries()}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+              </div>
+            </Inputs>
+          </div>
+          <ErrorTag field={:travel} class="d-block invalid-feedback" />
+        </div>
+
+        <div class="row gx-7 mt-5">
           <div class="col-12 col-lg-6">
             <p class="mb-4">{generate_flight_question(@case)}</p>
             <Field name={:has_flown} class="form-group">
