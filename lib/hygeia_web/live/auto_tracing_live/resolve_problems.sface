@@ -369,7 +369,7 @@
                             )}:</p>
                           <div class="card card-body mb-2">
                             <div>{pgettext("Auto Tracing Resolve Problems", "Country")}:<strong>
-                                {@auto_tracing.travel.country}</strong></div>
+                                {country_name(@auto_tracing.travel.country)}</strong></div>
                             <div>{pgettext("Auto Tracing Resolve Problems", "Date of return")}: {HygeiaCldr.Date.to_string!(@auto_tracing.travel.return_date)}</div>
                           </div>
                           <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
