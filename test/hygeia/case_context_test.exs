@@ -1638,6 +1638,76 @@ defmodule Hygeia.CaseContextTest do
     end)
   end
 
+  test "case_export/3 exports :breakthrough_infection even with empty person vaccination" do
+    Repo.transaction(fn ->
+      user = user_fixture()
+      tenant = tenant_fixture()
+
+      person_jony =
+        person_fixture(tenant, %{
+          uuid: "13eaaf3a-11e9-4f8b-b0e0-b52a65facd94",
+          first_name: "Jonatan",
+          last_name: "Männchen",
+          sex: :male,
+          birth_date: ~D[1993-01-30],
+          address: %{
+            address: "Erlen 4",
+            zip: "9042",
+            place: "Speicher",
+            subdivision: "AR",
+            country: "CH"
+          },
+          contact_methods: [
+            %{type: :mobile, value: "+41787245790"},
+            %{type: :landline, value: "+41522330689"}
+          ],
+          vaccination: %{}
+        })
+
+      # 3 months ago
+      date_case_jony_after_vaccination_phase_index_start = Date.add(Date.utc_today(), -90)
+
+      date_case_jony_after_vaccination_test =
+        Date.add(date_case_jony_after_vaccination_phase_index_start, -1)
+
+      date_case_jony_after_vaccination_phase_index_end =
+        Date.add(date_case_jony_after_vaccination_phase_index_start, 10)
+
+      case_fixture(person_jony, user, user, %{
+        uuid: "86438dad-dc4b-4b87-9332-388cd8f62546",
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: date_case_jony_after_vaccination_phase_index_start,
+            end: date_case_jony_after_vaccination_phase_index_end,
+            quarantine_order: true
+          }
+        ],
+        clinical: %{
+          has_symptoms: true,
+          symptoms: [:fever, :cough],
+          symptom_start: nil
+        },
+        tests: [
+          %{
+            kind: :pcr,
+            result: :positive,
+            tested_at: date_case_jony_after_vaccination_test
+          }
+        ]
+      })
+
+      assert [] =
+               tenant
+               |> CaseContext.case_export(:breakthrough_infection)
+               |> CSV.decode!(headers: true, escape_formulas: true)
+               |> Enum.to_list()
+    end)
+  end
+
   describe "transmissions" do
     @valid_attrs %{
       date: Date.add(Date.utc_today(), -5)

@@ -1898,9 +1898,6 @@ defmodule Hygeia.CaseContext do
         join: index_phase in fragment("UNNEST(?)", case.phases),
         on: fragment("?->>?", fragment("?->?", index_phase, "details"), "__type__") == "index",
         join: person in assoc(case, :person),
-        on:
-          not is_nil(person.vaccination["done"]) and
-            type(person.vaccination["done"], :boolean) == true,
         left_join: last_positive_test in subquery(last_positive_test_date),
         on: last_positive_test.case_uuid == case.uuid,
         select: [
@@ -1936,12 +1933,13 @@ defmodule Hygeia.CaseContext do
           type(last_positive_test.test_date, :date)
         ],
         where:
-          last_positive_test.test_date
-          |> type(:date)
-          |> coalesce(type(fragment("(?->>?)", index_phase, "order_date"), :date))
-          |> coalesce(type(fragment("(?->>?)", index_phase, "inserted_at"), :date))
-          |> coalesce(case.inserted_at) >
-            type(fragment("(?->>?)", person.vaccination["jab_dates"], 1), :date)
+          person.vaccination["done"] == fragment("TO_JSONB(?)", true) and
+            last_positive_test.test_date
+            |> type(:date)
+            |> coalesce(type(fragment("(?->>?)", index_phase, "order_date"), :date))
+            |> coalesce(type(fragment("(?->>?)", index_phase, "inserted_at"), :date))
+            |> coalesce(case.inserted_at) >
+              type(fragment("(?->>?)", person.vaccination["jab_dates"], 1), :date)
       )
       |> Repo.stream()
       |> Stream.map(fn row ->
