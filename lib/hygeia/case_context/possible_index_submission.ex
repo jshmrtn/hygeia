@@ -67,8 +67,6 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
     embeds_one :address, Address, on_replace: :update
     embeds_one :infection_place, InfectionPlace, on_replace: :update
 
-    field :suspected_duplicates_uuid, {:array, :binary_id}, virtual: true, default: []
-
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
 
     timestamps()
@@ -117,10 +115,6 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
     end)
     |> validate_birth_date()
     |> validate_contact_methods()
-    |> detect_name_duplicates
-    |> detect_duplicates(:mobile)
-    |> detect_duplicates(:landline)
-    |> detect_duplicates(:email)
   end
 
   defp validate_birth_date(changeset) do
