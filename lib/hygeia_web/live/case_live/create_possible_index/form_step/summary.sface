@@ -55,7 +55,9 @@
                               disabled: true
                             } />
                             {contact.value}
-                            {contact.comment}
+                            {#if contact.comment}
+                              - {contact.comment}
+                            {/if}
                           </li>
                         {/for}
                       </ul>
@@ -114,5 +116,10 @@
     <LiveRedirect to={Routes.case_create_possible_index_path(@socket, :create)}>
       {gettext("Create new possible index case")}
     </LiveRedirect>
+    {#if @form_data[:propagator_internal] == "true"}
+      <LiveRedirect to={Routes.case_transmissions_path(@socket, :show, @form_data.propagator_case_uuid)}>
+        {gettext("Go to propagator case")}
+      </LiveRedirect>
+    {/if}
   </div>
 </div>

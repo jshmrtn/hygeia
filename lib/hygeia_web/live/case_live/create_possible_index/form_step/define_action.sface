@@ -95,7 +95,9 @@
                               phx_value_contact_uuid: contact.uuid
                             } />
                             {contact.value}
-                            {contact.comment}
+                            {#if contact.comment}
+                              - {contact.comment}
+                            {/if}
                           </li>
                         {/for}
                       </ul>
