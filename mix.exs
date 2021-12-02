@@ -71,6 +71,8 @@ defmodule Hygeia.MixProject do
       {:briefly, "~> 0.3"},
       {:cadastre, "~> 0.2.0"},
       {:certifi, "~> 2.5"},
+      # Force cowboy update
+      {:cowboy, "~> 2.9", override: true},
       {:credo, "~> 1.4", runtime: false, only: [:dev]},
       {:crontab, "~> 1.1"},
       # TODO: Revert back to the released version when the following PR is
@@ -100,8 +102,10 @@ defmodule Hygeia.MixProject do
       {:floki, ">= 0.27.0", only: :test},
       {:gen_smtp, "~> 1.0"},
       {:gettext, "~> 0.13", github: "elixir-gettext/gettext", branch: "master", override: true},
+      # Get latest master that works with up-to-date cowboy
+      {:grpc, "~> 0.5-beta", github: "elixir-grpc/grpc", override: true},
       # Override Reason: https://github.com/elixir-grpc/grpc#grpc-elixir
-      {:gun, "~> 2.0.0", hex: :grpc_gun, override: true},
+      {:gun, "~> 2.0-beta", override: true},
       {:hackney, "~> 1.8"},
       {:highlander, "~> 0.2"},
       {:human_readable_identifier_generator, "~> 1.0"},
