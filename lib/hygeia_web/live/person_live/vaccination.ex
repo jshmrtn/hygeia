@@ -5,7 +5,8 @@ defmodule HygeiaWeb.PersonLive.Vaccination do
 
   import Ecto.Changeset
 
-  alias Surface.Components.Form.DateInput
+  alias HygeiaWeb.DateInput
+
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext

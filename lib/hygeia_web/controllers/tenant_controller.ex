@@ -7,7 +7,7 @@ defmodule HygeiaWeb.TenantController do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
 
-  @formats [:bag_med_16122020_case, :bag_med_16122020_contact]
+  @formats [:bag_med_16122020_case, :bag_med_16122020_contact, :breakthrough_infection]
   @string_formats Enum.map(@formats, &Atom.to_string/1)
 
   @spec export(conn :: Plug.Conn.t(), params :: %{String.t() => String.t()}) ::

@@ -5,37 +5,10 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
   use Hygeia, :model
 
-  import EctoEnum
   import HygeiaGettext
 
-  defenum TestReason, :test_reason, [
-    "symptoms",
-    "outbreak_examination",
-    "screening",
-    "work_related",
-    "quarantine",
-    "app_report",
-    "convenience",
-    "contact_tracing",
-    "quarantine_end"
-  ]
-
-  defenum Symptom, :symptom, [
-    "fever",
-    "cough",
-    "sore_throat",
-    "loss_of_smell",
-    "loss_of_taste",
-    "body_aches",
-    "headaches",
-    "fatigue",
-    "difficulty_breathing",
-    "muscle_pain",
-    "general_weakness",
-    "gastrointestinal",
-    "skin_rash",
-    "other"
-  ]
+  alias Hygeia.CaseContext.Case.Clinical.Symptom
+  alias Hygeia.CaseContext.Case.Clinical.TestReason
 
   @type empty :: %__MODULE__{
           reasons_for_test: [TestReason.t()] | nil,

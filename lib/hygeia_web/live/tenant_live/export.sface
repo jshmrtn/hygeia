@@ -35,6 +35,14 @@
           {gettext("BAG MED 16122020 (Contact; Hygeia Extended Fields)")}
         </Link>
       </li>
+      <li :if={authorized?(@tenant, :export_data, auth, format: :breakthrough_infection)}>
+        <Link
+          to={Routes.tenant_path(@socket, :export, @tenant, :breakthrough_infection, extended: true)}
+          opts={download: "breakthrough_infections - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
+        >
+          {gettext("Breakthrough Infections")}
+        </Link>
+      </li>
     </ul>
   </Context>
 </div>

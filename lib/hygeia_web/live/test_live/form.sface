@@ -54,6 +54,25 @@
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
           </div>
+          <div class="col d-flex">
+            <Field name={:reference} class="form-group flex-grow-1">
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" opts={disabled: @disabled} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <div :if={not @disabled} class="form-group">
+              <label>&nbsp;</label>
+              <button
+                type="button"
+                class="d-block ms-1 btn btn-info"
+                data-bs-toggle="tooltip"
+                data-placement="top"
+                title={gettext("Test reference given by the laboratory.")}
+              >
+                <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
+              </button>
+            </div>
+          </div>
         </div>
 
         <div class="row">

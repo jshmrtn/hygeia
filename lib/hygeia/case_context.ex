@@ -5,6 +5,8 @@ defmodule Hygeia.CaseContext do
 
   use Hygeia, :context
 
+  import HygeiaGettext
+
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Hospitalization
@@ -1894,6 +1896,138 @@ defmodule Hygeia.CaseContext do
       end
 
     CSV.encode(export, escape_formulas: true)
+  end
+
+  @breakthrough_infection_case_fields [
+    :person_uuid,
+    :person_human_readable_id,
+    :person_first_name,
+    :person_last_name,
+    :person_birth_date,
+    :vaccination_name,
+    :vaccination_jab_date_one,
+    :vaccination_jab_date_two,
+    :vaccination_jab_date_three,
+    :vaccination_jab_date_four,
+    :case_uuid,
+    :case_human_readable_id,
+    :clinical_symptom_start_date,
+    :clinical_symptoms,
+    :test_last_date
+  ]
+
+  @breakthrough_infection_case_fields_index @breakthrough_infection_case_fields
+                                            |> Enum.with_index()
+                                            |> Map.new()
+
+  @spec case_export(tenant :: Tenant.t(), format :: :breakthrough_infection, extended :: boolean) ::
+          Enumerable.t()
+  # credo:disable-for-next-line Credo.Check.Refactor.ABCSize
+  def case_export(tenant, :breakthrough_infection, _extended) do
+    case_field_labels = %{
+      person_uuid: pgettext("Breakthrough Infection Export", "Person ID"),
+      person_human_readable_id:
+        pgettext("Breakthrough Infection Export", "Person Human Readable ID"),
+      person_first_name: pgettext("Breakthrough Infection Export", "Firstname"),
+      person_last_name: pgettext("Breakthrough Infection Export", "Lastname"),
+      person_birth_date: pgettext("Breakthrough Infection Export", "Birth Date"),
+      vaccination_name: pgettext("Breakthrough Infection Export", "Vaccination Name"),
+      vaccination_jab_date_one:
+        pgettext("Breakthrough Infection Export", "Vaccination 1st Jab Date"),
+      vaccination_jab_date_two:
+        pgettext("Breakthrough Infection Export", "Vaccination 2nd Jab Date"),
+      vaccination_jab_date_three:
+        pgettext("Breakthrough Infection Export", "Vaccination 3rd Jab Date"),
+      vaccination_jab_date_four:
+        pgettext("Breakthrough Infection Export", "Vaccination 4th Jab Date"),
+      case_uuid: pgettext("Breakthrough Infection Export", "Case ID"),
+      case_human_readable_id: pgettext("Breakthrough Infection Export", "Case Human Readable ID"),
+      clinical_symptom_start_date:
+        pgettext("Breakthrough Infection Export", "Symptom Start Date"),
+      clinical_symptoms: pgettext("Breakthrough Infection Export", "Symptoms"),
+      test_last_date: pgettext("Breakthrough Infection Export", "Last Test Date")
+    }
+
+    last_positive_test_date =
+      from(test in Test,
+        select: %{
+          case_uuid: test.case_uuid,
+          test_date: max(coalesce(test.tested_at, test.laboratory_reported_at))
+        },
+        group_by: test.case_uuid
+      )
+
+    cases =
+      from(case in Ecto.assoc(tenant, :cases),
+        join: index_phase in fragment("UNNEST(?)", case.phases),
+        on: fragment("?->>?", fragment("?->?", index_phase, "details"), "__type__") == "index",
+        join: person in assoc(case, :person),
+        left_join: last_positive_test in subquery(last_positive_test_date),
+        on: last_positive_test.case_uuid == case.uuid,
+        select: [
+          # person_uuid
+          person.uuid,
+          # person_human_readable_id
+          person.human_readable_id,
+          # person_first_name
+          person.first_name,
+          # person_last_name
+          person.last_name,
+          # person_birth_date
+          person.birth_date,
+          # vaccination_name
+          person.vaccination["name"],
+          # vaccination_jab_date_one
+          type(fragment("(?->>?)", person.vaccination["jab_dates"], 0), :date),
+          # vaccination_jab_date_two
+          type(fragment("(?->>?)", person.vaccination["jab_dates"], 1), :date),
+          # vaccination_jab_date_three
+          type(fragment("(?->>?)", person.vaccination["jab_dates"], 2), :date),
+          # vaccination_jab_date_four
+          type(fragment("(?->>?)", person.vaccination["jab_dates"], 3), :date),
+          # case_uuid
+          case.uuid,
+          # case_human_readable_id
+          case.human_readable_id,
+          # clinical_symptom_start_date
+          case.clinical["symptom_start"],
+          # clinical_symptoms
+          case.clinical["symptoms"],
+          # test_last_date
+          type(last_positive_test.test_date, :date)
+        ],
+        where:
+          type(person.vaccination["done"], :boolean) and
+            last_positive_test.test_date
+            |> type(:date)
+            |> coalesce(type(fragment("(?->>?)", index_phase, "order_date"), :date))
+            |> coalesce(type(fragment("(?->>?)", index_phase, "inserted_at"), :date))
+            |> coalesce(case.inserted_at) >
+              type(fragment("(?->>?)", person.vaccination["jab_dates"], 1), :date)
+      )
+      |> Repo.stream()
+      |> Stream.map(fn row ->
+        alias Case.Clinical.Symptom
+
+        List.update_at(
+          row,
+          @breakthrough_infection_case_fields_index.clinical_symptoms,
+          fn
+            nil ->
+              nil
+
+            symptoms ->
+              Enum.map_join(symptoms, ", ", fn symptom ->
+                {:ok, symptom} = Symptom.cast(symptom)
+                Symptom.translate(symptom)
+              end)
+          end
+        )
+      end)
+
+    [Enum.map(@breakthrough_infection_case_fields, &case_field_labels[&1])]
+    |> Stream.concat(cases)
+    |> CSV.encode(escape_formulas: true)
   end
 
   defp normalize_boolean_field(row, field_number) do

@@ -472,6 +472,11 @@ msgid "Base Data"
 msgstr "Données de base"
 
 #, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Birth Date"
+msgstr "Date de naissance"
+
+#, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Person Field"
 msgid "Birth Date"
 msgstr "Date de naissance"
@@ -491,8 +496,13 @@ msgid "Body"
 msgstr "Corps"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Body Aches"
 msgstr "Maux du corps"
+
+#, elixir-format
+msgid "Breakthrough Infections"
+msgstr ""
 
 #, elixir-format, fuzzy
 msgid "Call"
@@ -540,6 +550,16 @@ msgstr "Administration des cas"
 msgctxt "Notification Type"
 msgid "Case Assignee Changed"
 msgstr "Changement de destinataire de l'affaire"
+
+#, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Case Human Readable ID"
+msgstr "ID lisible par l'homme"
+
+#, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Case ID"
+msgstr "Cas UUID"
 
 #, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
@@ -935,6 +955,7 @@ msgid "Correctional facility"
 msgstr "Établissement correctionnel"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Cough"
 msgstr "Toux"
 
@@ -1278,6 +1299,7 @@ msgid "Difficult living situation, further inquiries necessary"
 msgstr "Situation de vie difficile, enquêtes complémentaires nécessaires"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Diificulty Breathing"
 msgstr "Difficultés respiratoires"
 
@@ -1736,6 +1758,7 @@ msgid "Family / Friends"
 msgstr "Famille / Amis"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Fatigue"
 msgstr "Fatigue"
 
@@ -1753,6 +1776,7 @@ msgid "Female"
 msgstr "Femme"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Fever"
 msgstr "Fièvre"
 
@@ -1815,6 +1839,11 @@ msgid "First positive test date"
 msgstr ""
 
 #, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Firstname"
+msgstr "Prénom"
+
+#, elixir-format, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Firstname"
 msgstr "Prénom"
@@ -1871,10 +1900,12 @@ msgid "Fully Vaccinated"
 msgstr "Entièrement vacciné"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Gastrointestinal"
 msgstr "Gastro-intestinal"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "General Weakness"
 msgstr "Faiblesse générale"
 
@@ -1925,6 +1956,7 @@ msgid "Have you visited a high risk country %{link} (link will open in a new tab
 msgstr ""
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Headaches"
 msgstr "Maux de tête"
 
@@ -2561,6 +2593,16 @@ msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Last Name"
 msgstr "Nom de famille"
 
+#, elixir-format
+msgctxt "Breakthrough Infection Export"
+msgid "Last Test Date"
+msgstr ""
+
+#, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Lastname"
+msgstr "Nom de famille"
+
 #, elixir-format, fuzzy
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Lastname"
@@ -2634,10 +2676,12 @@ msgid "Logout"
 msgstr "Déconnexion"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Loss of smell"
 msgstr "Perte de l'odorat"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Loss of taste"
 msgstr "Perte du goût"
 
@@ -2810,6 +2854,7 @@ msgid "Multiple calls for first contact"
 msgstr "Plusieurs appels pour un premier contact"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Muscle Pain"
 msgstr "Douleurs musculaires"
 
@@ -3286,6 +3331,11 @@ msgid "Other"
 msgstr "Autre"
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
+msgid "Other"
+msgstr "Autre"
+
+#, elixir-format, fuzzy
 msgctxt "Contact Method Type"
 msgid "Other"
 msgstr "Autre"
@@ -3514,6 +3564,16 @@ msgstr "Données de base sur les personnes"
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
 msgid "Person Firstname"
 msgstr "Prénom de la personne"
+
+#, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Person Human Readable ID"
+msgstr "ID lisible par l'homme"
+
+#, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Person ID"
+msgstr "UUID de la personne"
 
 #, elixir-format
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
@@ -4457,6 +4517,7 @@ msgid "Similar persons in the system"
 msgstr ""
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Skin Rash"
 msgstr "Éruption cutanée"
 
@@ -4473,6 +4534,7 @@ msgid "Someone else is currently editing this resource. Wait until they finished
 msgstr "Quelqu'un d'autre est en train de modifier cette ressource. Attendez qu'il ait terminé son travail."
 
 #, elixir-format, fuzzy
+msgctxt "Clinical Symptom"
 msgid "Sore Throat"
 msgstr "Mal de gorge"
 
@@ -4697,6 +4759,16 @@ msgid "Switch"
 msgstr "Interrupteur"
 
 #, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Symptom Start Date"
+msgstr "Date de début des symptômes"
+
+#, elixir-format, fuzzy
+msgid "Symptoms"
+msgstr "Symptômes"
+
+#, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
 msgid "Symptoms"
 msgstr "Symptômes"
 
@@ -4870,6 +4942,10 @@ msgstr "Test pendant la quarantaine sans la terminer"
 #, elixir-format, fuzzy
 msgid "Test for early termination of quarantine"
 msgstr "Test pour la fin anticipée de la quarantaine"
+
+#, elixir-format
+msgid "Test reference given by the laboratory."
+msgstr ""
 
 #, elixir-format, fuzzy
 msgid "Test required by professional activity"
@@ -5403,6 +5479,26 @@ msgid "Vaccination"
 msgstr "Vaccination"
 
 #, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 1st Jab Date"
+msgstr "Vaccination"
+
+#, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 2nd Jab Date"
+msgstr "Vaccination"
+
+#, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 3rd Jab Date"
+msgstr "Vaccination"
+
+#, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 4th Jab Date"
+msgstr "Vaccination"
+
+#, elixir-format, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "Vaccination Failure"
 msgstr "Échec de la vaccination"
@@ -5410,6 +5506,11 @@ msgstr "Échec de la vaccination"
 #, elixir-format, fuzzy
 msgid "Vaccination Failures"
 msgstr "Échecs de la vaccination"
+
+#, elixir-format, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Vaccination Name"
+msgstr "Vaccination"
 
 #, elixir-format, fuzzy
 msgid "Value"
