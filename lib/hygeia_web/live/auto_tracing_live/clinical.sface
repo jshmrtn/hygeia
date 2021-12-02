@@ -57,6 +57,10 @@
                 </Field>
                 <p class="my-4">{gettext("When did the symptoms start?")}</p>
                 <Field name={:symptom_start} class="form-group">
+                  <!--
+                    TODO: Re-add min/max one https://github.com/jshmrtn/hygeia/issues/930#issuecomment-984785198 is resolved,
+                    opts={max: Date.utc_today()}
+                  -->
                   <HygeiaWeb.DateInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
