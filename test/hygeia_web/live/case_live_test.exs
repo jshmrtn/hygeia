@@ -885,26 +885,41 @@ defmodule HygeiaWeb.CaseLiveTest do
         :timer.seconds(5)
       )
 
-      assert [
-               %Person{
-                 uuid: propagator_uuid,
-                 first_name: ^first_name_propagator,
-                 last_name: ^last_name_propagator
-               },
-               %Person{
-                 uuid: person_uuid,
-                 first_name: ^first_name_person,
-                 last_name: ^last_name_person,
-                 contact_methods: [
-                   %{type: :mobile, value: ^mobile},
-                   %{type: :landline, value: ^landline},
-                   %{type: :email, value: ^email}
-                 ],
-                 affiliations: [
-                   %Affiliation{kind: :employee, unknown_organisation: %{name: ^employer}}
-                 ]
-               }
-             ] = Hygeia.Repo.preload(CaseContext.list_people(), :affiliations)
+      people = Hygeia.Repo.preload(CaseContext.list_people(), :affiliations)
+
+      assert length(people) == 2
+
+      assert %Person{uuid: propagator_uuid} =
+               Enum.find(
+                 people,
+                 &match?(
+                   %Person{
+                     first_name: ^first_name_propagator,
+                     last_name: ^last_name_propagator
+                   },
+                   &1
+                 )
+               )
+
+      assert %Person{uuid: person_uuid} =
+               Enum.find(
+                 people,
+                 &match?(
+                   %Person{
+                     first_name: ^first_name_person,
+                     last_name: ^last_name_person,
+                     contact_methods: [
+                       %{type: :mobile, value: ^mobile},
+                       %{type: :landline, value: ^landline},
+                       %{type: :email, value: ^email}
+                     ],
+                     affiliations: [
+                       %Affiliation{kind: :employee, unknown_organisation: %{name: ^employer}}
+                     ]
+                   },
+                   &1
+                 )
+               )
 
       {start_date, end_date} = Service.phase_dates(date)
 

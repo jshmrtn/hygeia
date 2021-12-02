@@ -30,6 +30,4 @@ defmodule Hygeia.Repo.Migrations.RemovePhaseDateInconsistentFromAutotracingProbl
       &noop/0
     )
   end
-
-  defp noop, do: :ok
 end

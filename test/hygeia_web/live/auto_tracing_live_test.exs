@@ -661,8 +661,11 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
                has_flown: true,
                flights: [_],
                travel: %{uuid: _uuid},
-               unsolved_problems: [:high_risk_country_travel, :flight_related]
-             } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+               unsolved_problems: [_, _]
+             } = auto_tracing = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+
+      assert AutoTracing.has_problem?(auto_tracing, :high_risk_country_travel)
+      assert AutoTracing.has_problem?(auto_tracing, :flight_related)
     end
   end
 
