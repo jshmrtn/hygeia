@@ -1,10 +1,9 @@
 defmodule Hygeia.Helpers.Calendar do
-  @moduledoc false
+  @moduledoc "Ecto Changeset Date Helpers"
 
   import Ecto.Changeset
   import HygeiaGettext
 
-  @doc false
   @spec validate_past_date(
           changeset :: Ecto.Changeset.t(any),
           field :: atom()
@@ -12,7 +11,6 @@ defmodule Hygeia.Helpers.Calendar do
   def validate_past_date(changeset, field),
     do: validate_past_date(changeset, field, dgettext("errors", "date must be in the past"))
 
-  @doc false
   @spec validate_past_date(
           changeset :: Ecto.Changeset.t(any),
           field :: atom(),
