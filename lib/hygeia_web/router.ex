@@ -177,9 +177,9 @@ defmodule HygeiaWeb.Router do
          AutoTracingLive.Clinical,
          :clinical
 
-    live "/cases/:case_uuid/auto-tracing/flights",
-         AutoTracingLive.Flights,
-         :flights
+    live "/cases/:case_uuid/auto-tracing/travel",
+         AutoTracingLive.Travel,
+         :travel
 
     live "/cases/:case_uuid/auto-tracing/transmission",
          AutoTracingLive.Transmission,

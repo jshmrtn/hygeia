@@ -534,7 +534,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
   describe "Clinical" do
     setup [:create_case, :create_auto_tracing]
 
-    test "advances to flights", %{
+    test "advances to travel", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
@@ -560,12 +560,12 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
 
       assert_redirect(
         clinical_view,
-        Routes.auto_tracing_flights_path(conn, :flights, case)
+        Routes.auto_tracing_travel_path(conn, :travel, case)
       )
     end
   end
 
-  describe "Flights" do
+  describe "Travel" do
     setup [:create_case, :create_auto_tracing]
 
     test "cannot advance to transmission", %{
@@ -573,10 +573,10 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       case_model: case,
       auto_tracing: auto_tracing
     } do
-      set_last_completed_step(auto_tracing, :flights)
+      set_last_completed_step(auto_tracing, :travel)
 
       {:ok, employer_view, _html} =
-        live(conn, Routes.auto_tracing_flights_path(conn, :flights, case))
+        live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
 
       assert_raise ArgumentError, fn ->
         employer_view
@@ -585,18 +585,18 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       end
     end
 
-    test "sets no flight and advances to transmission", %{
+    test "sets no travel, no flight and advances to transmission", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
     } do
-      set_last_completed_step(auto_tracing, :flights)
+      set_last_completed_step(auto_tracing, :travel)
 
       {:ok, employer_view, _html} =
-        live(conn, Routes.auto_tracing_flights_path(conn, :flights, case))
+        live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
 
       assert employer_view
-             |> form("#flights-form", flights: %{has_flown: false})
+             |> form("#travel-form", travel: %{has_flown: false, has_travelled: false})
              |> render_change()
 
       assert employer_view
@@ -608,29 +608,33 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         Routes.auto_tracing_transmission_path(conn, :transmission, case)
       )
 
-      assert %AutoTracing{has_flown: false, flights: []} =
+      assert %AutoTracing{has_flown: false, flights: [], travel: nil} =
                AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
 
-    test "sets one flight and advances to transmission", %{
+    test "sets tavel one flight and advances to transmission", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
     } do
-      set_last_completed_step(auto_tracing, :flights)
+      set_last_completed_step(auto_tracing, :travel)
 
       {:ok, employer_view, _html} =
-        live(conn, Routes.auto_tracing_flights_path(conn, :flights, case))
+        live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
 
       assert employer_view
-             |> form("#flights-form", flights: %{has_flown: true})
+             |> form("#travel-form", travel: %{has_flown: true, has_travelled: true})
              |> render_change() =~
                "please add at least one flight that you took during the period in consideration"
 
       assert employer_view
-             |> form("#flights-form")
+             |> form("#travel-form")
              |> render_change(
-               flights: %{
+               travel: %{
+                 travel: %{
+                   country: "CH",
+                   return_date: "2021-04-17"
+                 },
                  flights: %{
                    "0" => %{
                      flight_date: "2021-04-17",
@@ -653,8 +657,12 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         Routes.auto_tracing_transmission_path(conn, :transmission, case)
       )
 
-      assert %AutoTracing{has_flown: true, flights: [_], unsolved_problems: [:flight_related]} =
-               AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+      assert %AutoTracing{
+               has_flown: true,
+               flights: [_],
+               travel: %{uuid: _uuid},
+               unsolved_problems: [:high_risk_country_travel, :flight_related]
+             } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
   end
 

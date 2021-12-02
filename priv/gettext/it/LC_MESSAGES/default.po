@@ -117,7 +117,7 @@ msgstr "Acquisizione del lock..."
 msgid "Actions"
 msgstr "Azioni"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Create Possible Index Step"
 msgid "Actions"
 msgstr "Azioni"
@@ -977,6 +977,16 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Country"
 msgstr "Paese"
 
+#, elixir-format, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Country"
+msgstr "Paese"
+
+#, elixir-format, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Travel Field"
+msgid "Country"
+msgstr "Paese"
+
 #, elixir-format
 msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
@@ -1081,6 +1091,16 @@ msgstr "Data dell'ultima visita"
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Date of last visit"
 msgstr "Data dell'ultima visita"
+
+#, elixir-format
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Date of return"
+msgstr "Data di ritorno"
+
+#, elixir-format
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Travel Field"
+msgid "Date of return"
+msgstr "Data di ritorno"
 
 #, elixir-format
 msgid "Dear Sir / Madam"
@@ -1706,6 +1726,11 @@ msgctxt "Case Complexity"
 msgid "Extreme"
 msgstr "Estremo"
 
+#, elixir-format
+msgctxt "Auto Tracing Travel"
+msgid "FOPH"
+msgstr "UFSP"
+
 #, elixir-format, fuzzy
 msgid "Facility for supplementary childcare"
 msgstr "Struttura per l'assistenza supplementare ai bambini"
@@ -1847,11 +1872,6 @@ msgid "Flight information"
 msgstr "Informazioni sul volo"
 
 #, elixir-format
-msgctxt "Auto Tracing Step"
-msgid "Flight information"
-msgstr "Informazioni sul volo"
-
-#, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Flight number"
 msgstr "Numero del volo"
@@ -1915,14 +1935,24 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
 msgstr "Ha sintomi"
 
-#, elixir-format
-msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Flights Field"
+#, elixir-format, fuzzy
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Travel Field"
 msgid "Has flown"
 msgstr "Ha volato"
+
+#, elixir-format
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Travel Field"
+msgid "Has travelled"
+msgstr "Ha viaggiato"
 
 #, elixir-format, fuzzy
 msgid "Have you been or are you in a hospital?"
 msgstr "Sei stato o sei in un ospedale?"
+
+#, elixir-format
+msgctxt "Auto Tracing Travel"
+msgid "Have you visited a high risk country %{link} (link will open in a new tab) within the last 14 days (between %{start_date} and %{end_date})?"
+msgstr "Hai visitato un paese ad alto rischio %{link} (il link si aprirà in una nuova scheda) negli ultimi 14 giorni (tra %{start_date} e %{end_date})?"
 
 #, elixir-format, fuzzy
 msgctxt "Clinical Symptom"
@@ -1966,6 +1996,11 @@ msgstr "Alto"
 msgctxt "Case Complexity"
 msgid "High"
 msgstr "Alto"
+
+#, elixir-format
+msgctxt "Auto Tracing Problem"
+msgid "High Risk Country Travel"
+msgstr "Viaggio in stati ad alto rischio"
 
 #, elixir-format, fuzzy
 msgid "History"
@@ -2159,6 +2194,11 @@ msgstr "Se hai avuto un contatto ravvicinato con persone che non conosci (ad ese
 #, elixir-format, fuzzy
 msgid "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test."
 msgstr "Se hai incontrato %{first_name} %{last_name} più volte, seleziona l'ultima data in cui hai avuto un contatto stretto e non protetto. Considera che potresti essere stato infetto 48 ore prima dell'inizio dei tuoi sintomi. Se non hai sintomi, considera 48 ore prima del test."
+
+#, elixir-format
+msgctxt "Auto Tracing Travel"
+msgid "If you traveled via plane, please add your flight below."
+msgstr "Se hai viaggiato in aereo, aggiungi il tuo volo qui sotto."
 
 #, elixir-format
 msgid "If you were present at this location for multiple days, enter the last day into the date field."
@@ -3339,7 +3379,7 @@ msgctxt "Sex"
 msgid "Other"
 msgstr "Altro"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Visit reason"
 msgid "Other"
 msgstr "Altro"
@@ -5076,6 +5116,11 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "This person took the following flights"
 msgstr "Questa persona ha preso i seguenti voli"
 
+#, elixir-format
+msgctxt "Auto Tracing Resolve Problems"
+msgid "This person travelled in the following high risk country"
+msgstr "Questa persona ha viaggiato nel seguente paese ad alto rischio"
+
 #, elixir-format, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "This person visited the following educational institutions in the 48 hours before the onset of symptoms or 48 hours before the test"
@@ -5207,6 +5252,11 @@ msgstr "Trasmissioni"
 
 #, elixir-format, fuzzy
 msgctxt "Possible Index Type"
+msgid "Travel"
+msgstr "Viaggio"
+
+#, elixir-format, fuzzy
+msgctxt "Auto Tracing Step"
 msgid "Travel"
 msgstr "Viaggio"
 
@@ -5723,7 +5773,7 @@ msgstr "tutte le suddivisioni"
 #, elixir-format
 msgctxt "Notification Tray"
 msgid "and %{count} more"
-msgstr ""
+msgstr "e %{count} in più"
 
 #, elixir-format, fuzzy
 msgid "another place"
@@ -5884,6 +5934,10 @@ msgstr "inserisci il luogo dove hai contratto il virus"
 #, elixir-format
 msgid "please fill in the information of the person who passed on the virus to you"
 msgstr "inserisci le informazioni della persona che ti ha trasmesso il virus"
+
+#, elixir-format
+msgid "please provide the information about your travel"
+msgstr "per favore fornisci le informazioni sul tuo viaggio"
 
 #, elixir-format, fuzzy
 msgctxt "Item Table"
