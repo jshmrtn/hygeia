@@ -57,7 +57,7 @@
                 </Field>
                 <p class="my-4">{gettext("When did the symptoms start?")}</p>
                 <Field name={:symptom_start} class="form-group">
-                  <HygeiaWeb.DateInput class="form-control" opts={max: Date.utc_today()} />
+                  <HygeiaWeb.DateInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
                 {#case index_phase_dates(Ecto.Changeset.apply_changes(@changeset))}

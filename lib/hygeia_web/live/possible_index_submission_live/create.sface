@@ -145,7 +145,7 @@
             <div class="col-12">
               <Field name={:transmission_date} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <DateInput class="form-control" opts={max: Date.utc_today()} />
+                <DateInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>

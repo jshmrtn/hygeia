@@ -38,6 +38,7 @@ defmodule Hygeia do
 
       import Ecto.Changeset
 
+      import Hygeia.Helpers.Calendar
       import Hygeia.Helpers.Country
       import Hygeia.Helpers.DNS
       import Hygeia.Helpers.Email

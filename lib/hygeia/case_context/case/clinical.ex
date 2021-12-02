@@ -5,8 +5,6 @@ defmodule Hygeia.CaseContext.Case.Clinical do
 
   use Hygeia, :model
 
-  import HygeiaGettext
-
   alias Hygeia.CaseContext.Case.Clinical.Symptom
   alias Hygeia.CaseContext.Case.Clinical.TestReason
 
@@ -59,16 +57,6 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     |> validate_required([])
     |> validate_past_date(:symptom_start)
     |> clear_symptoms()
-  end
-
-  defp validate_past_date(changeset, field) do
-    validate_change(changeset, field, fn ^field, value ->
-      if Date.compare(value, Date.utc_today()) in [:lt, :eq] do
-        []
-      else
-        [{field, dgettext("errors", "date must be in the past")}]
-      end
-    end)
   end
 
   defp validate_required_when_has_symptoms(changeset) do

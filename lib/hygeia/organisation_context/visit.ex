@@ -91,6 +91,7 @@ defmodule Hygeia.OrganisationContext.Visit do
     ])
     |> assoc_constraint(:case)
     |> validate_required([:reason, :last_visit_at])
+    |> validate_past_date(:last_visit_at)
     |> validate_other_reason()
     |> validate_organisation()
     |> validate_division()

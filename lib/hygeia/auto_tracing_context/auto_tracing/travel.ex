@@ -35,5 +35,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Travel do
       :return_date,
       :country
     ])
+    |> validate_past_date(:return_date)
   end
 end

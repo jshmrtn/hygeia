@@ -136,7 +136,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
       :type,
       :date
     ])
-    |> validate_date()
+    |> validate_past_date(:date)
     |> validate_type_travel()
     |> validate_type_other()
     |> Transmission.validate_case(
@@ -162,22 +162,6 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission do
       :other -> validate_required(changeset, [:type_other])
       _defined -> put_change(changeset, :type_other, nil)
     end
-  end
-
-  defp validate_date(changeset) do
-    validate_change(changeset, :date, fn :date, value ->
-      diff = Date.diff(Date.utc_today(), value)
-
-      # TODO: Correct Validation Rules
-      # diff > 10 ->
-      #   [{:date, dgettext("errors", "date must not be older than 10 days")}]
-
-      if diff < 0 do
-        [{:date, dgettext("errors", "date must not be in the future")}]
-      else
-        []
-      end
-    end)
   end
 
   @spec update_step_data(form_data :: map()) :: map()

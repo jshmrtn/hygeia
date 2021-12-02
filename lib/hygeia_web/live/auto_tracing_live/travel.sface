@@ -68,7 +68,7 @@
                   <HiddenInput field={:uuid} />
                   <Field class="form-group" name={:return_date}>
                     <HygeiaWeb.FieldLabel />
-                    <HygeiaWeb.DateInput class="form-control" opts={max: Date.utc_today()} />
+                    <HygeiaWeb.DateInput class="form-control" />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
 
