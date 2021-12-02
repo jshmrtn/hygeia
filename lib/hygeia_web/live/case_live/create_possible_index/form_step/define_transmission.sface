@@ -81,7 +81,11 @@
 
               <Field name={:date} class="form-group">
                 <HygeiaWeb.FieldLabel />
-                <HygeiaWeb.DateInput class="form-control" opts={max: Date.utc_today()} />
+                <!--
+                  TODO: Re-add min/max one https://github.com/jshmrtn/hygeia/issues/930#issuecomment-984785198 is resolved,
+                  opts={max: Date.utc_today()}
+                -->
+                <HygeiaWeb.DateInput class="form-control" />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>

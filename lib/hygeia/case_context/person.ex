@@ -168,6 +168,7 @@ defmodule Hygeia.CaseContext.Person do
     |> fill_uuid
     |> fill_human_readable_id
     |> validate_required([:uuid, :human_readable_id, :tenant_uuid, :first_name])
+    |> validate_past_date(:birth_date)
     |> validate_profession_category()
     |> cast_assoc(:affiliations)
     |> cast_embed(:external_references)

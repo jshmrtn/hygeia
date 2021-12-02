@@ -28,7 +28,11 @@
 
         <Field name={:last_visit_at} class="form-group">
           <HygeiaWeb.FieldLabel />
-          <DateInput class="form-control" opts={max: Date.utc_today(), disabled: @disabled} />
+          <!--
+            TODO: Re-add min/max one https://github.com/jshmrtn/hygeia/issues/930#issuecomment-984785198 is resolved,
+            opts={max: Date.utc_today()}
+          -->
+          <DateInput class="form-control" opts={disabled: @disabled} />
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
 

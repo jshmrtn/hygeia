@@ -78,6 +78,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit do
     ])
     |> fill_uuid()
     |> validate_required([:visit_reason, :visited_at])
+    |> validate_past_date(:visited_at)
     |> validate_occupied()
     |> validate_other_reason()
     |> validate_organisation()
