@@ -131,6 +131,4 @@ defmodule Hygeia.Repo.Migrations.CreateVisits do
       :ok = run_authentication(repo(), origin: :migration, originator: :noone)
     end)
   end
-
-  defp noop, do: :ok
 end

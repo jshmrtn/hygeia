@@ -77,6 +77,4 @@ defmodule Hygeia.Repo.Migrations.TenantLocation do
       &noop/0
     )
   end
-
-  defp noop, do: :ok
 end
