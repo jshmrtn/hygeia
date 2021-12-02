@@ -44,7 +44,7 @@
               <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
                 <p class="my-4">{gettext("What symptoms do/did you experience?")}</p>
                 <Field name={:symptoms}>
-                  <label :for={{name, key} <- symptoms()} class="d-block checkbox-label">
+                  <label :for={{name, key} <- Clinical.Symptom.map()} class="d-block checkbox-label">
                     <input
                       type="checkbox"
                       name={input_name(form, :symptoms) <> "[]"}
@@ -76,7 +76,7 @@
             <InputContext assigns={assigns} :let={form: form}>
               <div class="form-group">
                 <Field name={:reasons_for_test}>
-                  <label :for={{name, key} <- test_reasons()} class="d-block checkbox-label">
+                  <label :for={{name, key} <- Clinical.TestReason.map()} class="d-block checkbox-label">
                     <input
                       type="checkbox"
                       name={input_name(form, :reasons_for_test) <> "[]"}

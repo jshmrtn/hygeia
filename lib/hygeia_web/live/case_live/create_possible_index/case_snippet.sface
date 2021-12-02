@@ -10,9 +10,9 @@
     <div>
       <#slot name="top" />
       <ErrorTag class="d-block invalid-feedback" field={:phases} />
-      <div class="d-flex gap-2 flex-row mb-3">
+      <div class="d-flex gap-2 flex-row mb-3 flex-wrap">
         <Inputs for={:phases}>
-          <div class="card">
+          <div class="card flex-grow-1">
             <div class="card-body hy-readonly-form">
               <InputContext assigns={assigns} :let={form: form}>
                 <Context

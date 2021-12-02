@@ -610,7 +610,7 @@ defmodule Hygeia.CaseContextTest do
       assert %Ecto.Changeset{} = CaseContext.change_case(case)
     end
 
-    test "case_export/1 exports :bag_med_16122020_case" do
+    test "case_export/3 exports :bag_med_16122020_case" do
       Repo.transaction(fn ->
         user = user_fixture()
         tenant = tenant_fixture()
@@ -1075,7 +1075,7 @@ defmodule Hygeia.CaseContextTest do
       end)
     end
 
-    test "case_export/1 exports :bag_med_16122020_contact" do
+    test "case_export/3 exports :bag_med_16122020_contact" do
       Repo.transaction(fn ->
         user = user_fixture()
         tenant = tenant_fixture()
@@ -1461,6 +1461,181 @@ defmodule Hygeia.CaseContextTest do
                  |> Enum.to_list()
       end)
     end
+  end
+
+  test "case_export/3 exports :breakthrough_infection" do
+    Repo.transaction(fn ->
+      user = user_fixture()
+      tenant = tenant_fixture()
+
+      # 8 months ago
+      date_jony_vaccination_1 = Date.add(Date.utc_today(), -244)
+      date_jony_vaccination_1_string = Date.to_iso8601(date_jony_vaccination_1)
+      # 7 months ago
+      date_jony_vaccination_2 = Date.add(Date.utc_today(), -214)
+      date_jony_vaccination_2_string = Date.to_iso8601(date_jony_vaccination_2)
+      # 1 month ago
+      date_jony_vaccination_3 = Date.add(Date.utc_today(), -30)
+      date_jony_vaccination_3_string = Date.to_iso8601(date_jony_vaccination_3)
+
+      person_jony =
+        person_fixture(tenant, %{
+          uuid: "13eaaf3a-11e9-4f8b-b0e0-b52a65facd94",
+          first_name: "Jonatan",
+          last_name: "Männchen",
+          sex: :male,
+          birth_date: ~D[1993-01-30],
+          address: %{
+            address: "Erlen 4",
+            zip: "9042",
+            place: "Speicher",
+            subdivision: "AR",
+            country: "CH"
+          },
+          contact_methods: [
+            %{type: :mobile, value: "+41787245790"},
+            %{type: :landline, value: "+41522330689"}
+          ],
+          vaccination: %{
+            done: true,
+            name: "Moderna",
+            jab_dates: [
+              date_jony_vaccination_1,
+              date_jony_vaccination_2,
+              date_jony_vaccination_3
+            ]
+          }
+        })
+
+      person_jan =
+        person_fixture(tenant, %{
+          uuid: "c4524c2a-1cee-4fe6-959d-4ca18e658ec3",
+          first_name: "Jan",
+          last_name: "Mrnak"
+        })
+
+      # 10 months ago
+      date_case_jony_before_vaccination_phase_index_start = Date.add(Date.utc_today(), -300)
+
+      date_case_jony_before_vaccination_test =
+        Date.add(date_case_jony_before_vaccination_phase_index_start, -1)
+
+      date_case_jony_before_vaccination_phase_index_end =
+        Date.add(date_case_jony_before_vaccination_phase_index_start, 10)
+
+      case_fixture(person_jony, user, user, %{
+        uuid: "2c11959a-c631-4b66-b64c-fee8fd4aed1c",
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: date_case_jony_before_vaccination_phase_index_start,
+            end: date_case_jony_before_vaccination_phase_index_end,
+            quarantine_order: true
+          }
+        ],
+        tests: [
+          %{
+            kind: :pcr,
+            result: :positive,
+            tested_at: date_case_jony_before_vaccination_test
+          }
+        ],
+        clinical: nil
+      })
+
+      # 3 months ago
+      date_case_jony_after_vaccination_phase_index_start = Date.add(Date.utc_today(), -90)
+
+      date_case_jony_after_vaccination_symptom_start =
+        Date.add(date_case_jony_after_vaccination_phase_index_start, -2)
+
+      date_case_jony_after_vaccination_symptom_start_string =
+        Date.to_iso8601(date_case_jony_after_vaccination_symptom_start)
+
+      date_case_jony_after_vaccination_test =
+        Date.add(date_case_jony_after_vaccination_phase_index_start, -1)
+
+      date_case_jony_after_vaccination_test_string =
+        Date.to_iso8601(date_case_jony_after_vaccination_test)
+
+      date_case_jony_after_vaccination_phase_index_end =
+        Date.add(date_case_jony_after_vaccination_phase_index_start, 10)
+
+      case_fixture(person_jony, user, user, %{
+        uuid: "86438dad-dc4b-4b87-9332-388cd8f62546",
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: date_case_jony_after_vaccination_phase_index_start,
+            end: date_case_jony_after_vaccination_phase_index_end,
+            quarantine_order: true
+          }
+        ],
+        clinical: %{
+          has_symptoms: true,
+          symptoms: [:fever, :cough],
+          symptom_start: date_case_jony_after_vaccination_symptom_start
+        },
+        tests: [
+          %{
+            kind: :pcr,
+            result: :positive,
+            tested_at: date_case_jony_after_vaccination_test
+          }
+        ]
+      })
+
+      # 3 months ago
+      date_case_jan_no_vaccination_phase_index_start = Date.add(Date.utc_today(), -90)
+
+      date_case_jan_no_vaccination_phase_index_end =
+        Date.add(date_case_jan_no_vaccination_phase_index_start, 10)
+
+      case_fixture(person_jan, user, user, %{
+        uuid: "e98ace13-83d6-45d7-8ae9-9dd9de76ee95",
+        phases: [
+          %{
+            details: %{
+              __type__: :index,
+              end_reason: :healed
+            },
+            start: date_case_jan_no_vaccination_phase_index_start,
+            end: date_case_jan_no_vaccination_phase_index_end,
+            quarantine_order: true
+          }
+        ]
+      })
+
+      assert [
+               %{
+                 "Birth Date" => "1993-01-30",
+                 "Case Human Readable ID" => "componet-contingentis-73",
+                 "Case ID" => "86438dad-dc4b-4b87-9332-388cd8f62546",
+                 "Firstname" => "Jonatan",
+                 "Last Test Date" => ^date_case_jony_after_vaccination_test_string,
+                 "Lastname" => "Männchen",
+                 "Person Human Readable ID" => "virginum-praedicabas-50",
+                 "Person ID" => "13eaaf3a-11e9-4f8b-b0e0-b52a65facd94",
+                 "Symptom Start Date" => ^date_case_jony_after_vaccination_symptom_start_string,
+                 "Symptoms" => "Fever, Cough",
+                 "Vaccination 1st Jab Date" => ^date_jony_vaccination_1_string,
+                 "Vaccination 2nd Jab Date" => ^date_jony_vaccination_2_string,
+                 "Vaccination 3rd Jab Date" => ^date_jony_vaccination_3_string,
+                 "Vaccination 4th Jab Date" => "",
+                 "Vaccination Name" => "Moderna"
+               }
+             ] =
+               tenant
+               |> CaseContext.case_export(:breakthrough_infection)
+               |> CSV.decode!(headers: true, escape_formulas: true)
+               |> Enum.to_list()
+    end)
   end
 
   describe "transmissions" do

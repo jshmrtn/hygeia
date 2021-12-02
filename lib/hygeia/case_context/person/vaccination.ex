@@ -81,6 +81,17 @@ defmodule Hygeia.CaseContext.Person.Vaccination do
     vaccination
     |> cast(attrs, [:uuid, :done, :name, :jab_dates])
     |> fill_uuid
+    |> validate_dates()
+  end
+
+  defp validate_dates(changeset) do
+    validate_change(changeset, :jab_dates, fn :jab_dates, jab_dates ->
+      if Enum.all?(jab_dates, &(is_nil(&1) or Date.compare(&1, Date.utc_today()) in [:lt, :eq])) do
+        []
+      else
+        [jab_dates: dgettext("errors", "jab dates must be in the past")]
+      end
+    end)
   end
 
   defp validate_details_required(changeset) do

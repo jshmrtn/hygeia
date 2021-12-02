@@ -183,7 +183,6 @@ defmodule HygeiaWeb do
       import HygeiaWeb.Helpers.Auth
       import HygeiaWeb.Helpers.Case
       import HygeiaWeb.Helpers.Changeset
-      import HygeiaWeb.Helpers.Clinical
       import HygeiaWeb.Helpers.Communication
       import HygeiaWeb.Helpers.Confirmation
       import HygeiaWeb.Helpers.CSP

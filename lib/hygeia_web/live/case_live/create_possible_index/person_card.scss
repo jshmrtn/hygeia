@@ -1,4 +1,7 @@
 .component-person-card {
+  .action-center-container {
+    border-color: var(--bs-body-color);
+  }
   .value-pairs {
     flex: 1 1;
     display: grid;
