@@ -102,7 +102,7 @@
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
                     }
-            
+
                     Map.update(acc, end_reason, [entry], &[entry | &1])
                   end)
                   |> Enum.map(fn
@@ -112,7 +112,7 @@
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
-            
+
                     {end_reason, entries} ->
                       %{
                         label: Hygeia.CaseContext.Case.Phase.Index.EndReason.translate(end_reason),
@@ -176,7 +176,7 @@
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
                     }
-            
+
                     Map.update(acc, type, [entry], &[entry | &1])
                   end)
                   |> Enum.map(fn {type, entries} ->
@@ -245,7 +245,7 @@
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
                     }
-            
+
                     Map.update(acc, {type, end_reason}, [entry], &[entry | &1])
                   end)
                   |> Enum.map(fn
@@ -255,7 +255,7 @@
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
-            
+
                     {{type, end_reason}, entries} ->
                       %{
                         label:
@@ -330,7 +330,7 @@
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
                     }
-            
+
                     Map.update(acc, {type, sub_type}, [entry], &[entry | &1])
                   end)
                   |> Enum.map(fn
@@ -340,7 +340,7 @@
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
-            
+
                     {{:possible_index, sub_type}, entries} ->
                       %{
                         label: Phase.PossibleIndex.Type.translate(sub_type),
@@ -469,7 +469,7 @@
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
                     }
-            
+
                     Map.update(acc, case_complexity, [entry], &[entry | &1])
                   end)
                   |> Enum.map(fn
@@ -479,7 +479,7 @@
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
-            
+
                     {case_complexity, entries} ->
                       %{
                         label: Case.Complexity.translate(case_complexity),
@@ -545,7 +545,7 @@
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
                     }
-            
+
                     Map.update(acc, infection_place_type, [entry], &[entry | &1])
                   end)
                   |> Enum.map(fn
@@ -555,7 +555,7 @@
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
-            
+
                     {infection_place_type, entries} ->
                       %{
                         label: translate_infection_place_type(infection_place_type),
@@ -627,7 +627,7 @@
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
                     }
-            
+
                     Map.update(acc, country, [entry], &[entry | &1])
                   end)
                   |> Enum.map(fn
@@ -637,7 +637,7 @@
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
-            
+
                     {country, entries} ->
                       %{
                         label: country_name(country),
@@ -709,7 +709,7 @@
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
                     }
-            
+
                     Map.update(acc, type, [entry], &[entry | &1])
                   end)
                   |> Enum.map(fn
@@ -719,7 +719,7 @@
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
-            
+
                     {:possible_index, entries} ->
                       %{
                         label: gettext("Possible Index"),
@@ -785,7 +785,7 @@
                       x: date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                       y: count
                     }
-            
+
                     Map.update(acc, type, [entry], &[entry | &1])
                   end)
                   |> Enum.map(fn
@@ -795,7 +795,7 @@
                         fill: %{target: "origin"},
                         data: Enum.reverse(entries)
                       }
-            
+
                     {:possible_index, entries} ->
                       %{
                         label: gettext("Possible Index"),
