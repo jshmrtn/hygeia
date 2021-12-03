@@ -257,51 +257,15 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   end
 
   defp index_phase_dates(case) do
-    {start_date, problems} = index_phase_start_date(case)
+    {start_date, problems} =
+      case Case.earliest_self_service_phase_start_date(case, Case.Phase.Index) do
+        {:corrected, date} -> {date, [:phase_start_date_corrected]}
+        {:ok, date} -> {date, []}
+      end
 
     phase_start = Date.utc_today()
 
     {phase_start, Date.add(start_date, @days_after_start), problems}
-  end
-
-  defp index_phase_start_date(%Case{
-         clinical: %Case.Clinical{symptom_start: %Date{} = symptom_start},
-         tests: tests
-       }) do
-    {status, start_date} =
-      tests
-      |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
-      |> Enum.reject(&is_nil/1)
-      |> Enum.sort({:asc, Date})
-      |> case do
-        [] ->
-          Case.Phase.correct_phase_start_date_as_needed(symptom_start)
-
-        [date | _others] ->
-          Case.Phase.correct_phase_start_date_as_needed(symptom_start, date)
-      end
-
-    if status == :corrected do
-      {start_date, [:phase_start_date_corrected]}
-    else
-      {start_date, []}
-    end
-  end
-
-  defp index_phase_start_date(%Case{tests: tests, phases: phases}) do
-    index_phase = Enum.find(phases, &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
-
-    start_date =
-      tests
-      |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
-      |> Enum.reject(&is_nil/1)
-      |> Enum.sort({:asc, Date})
-      |> case do
-        [] -> DateTime.to_date(index_phase.inserted_at)
-        [date | _others] -> date
-      end
-
-    {start_date, []}
   end
 
   defp send_notifications(case, socket) do

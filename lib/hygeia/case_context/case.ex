@@ -27,6 +27,8 @@ defmodule Hygeia.CaseContext.Case do
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
+  @max_days_for_phase_start_in_the_past 5
+
   @phase_type_order [:outbreak, :covid_app, :travel, :contact_person, :other, :index]
                     |> Enum.with_index()
                     |> Map.new()
@@ -371,6 +373,71 @@ defmodule Hygeia.CaseContext.Case do
         _map -> []
       end
     end)
+  end
+
+  @doc """
+  This function is used to detect when a phase could have started the earliest.
+  This is used to check self service inputs. Tracers are allowed to override.
+
+    Today(Case creation): 11.10.2021
+    Test: 10.10.2021
+    Symptom-Start(Person in Autotracing): 1.10.2021
+    Phase Start: 11.10.2021
+    Phase End: 14.10.2021
+
+    If there is no Test-Date then Phase End would be 15.10.2021
+  """
+  @spec earliest_self_service_phase_start_date(
+          case :: t,
+          phase_type :: Phase.Index | Phase.PossibleIndex
+        ) ::
+          {:corrected | :ok, Date.t()}
+  def earliest_self_service_phase_start_date(
+        %__MODULE__{tests: tests, phases: phases, inserted_at: inserted_at, clinical: clinical} =
+          _case,
+        phase_type
+      ) do
+    first_test_date =
+      tests
+      |> Enum.filter(&match?(%Test{result: :positive}, &1))
+      |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
+      |> Enum.reject(&is_nil/1)
+      |> Enum.sort({:asc, Date})
+      |> List.first()
+
+    index_phase_start_date =
+      Enum.find_value(phases, fn
+        %Phase{details: %^phase_type{}, inserted_at: inserted_at} ->
+          DateTime.to_date(inserted_at)
+
+        _phase ->
+          false
+      end)
+
+    phase_start =
+      [
+        first_test_date,
+        index_phase_start_date,
+        DateTime.to_date(inserted_at)
+      ]
+      |> Enum.reject(&is_nil/1)
+      |> List.first()
+
+    case clinical do
+      %Clinical{symptom_start: %Date{} = symptom_start} ->
+        earliest_start_date = Date.add(phase_start, -@max_days_for_phase_start_in_the_past)
+
+        earliest_start_date
+        |> Date.compare(symptom_start)
+        |> case do
+          :eq -> {:ok, symptom_start}
+          :gt -> {:corrected, earliest_start_date}
+          :lt -> {:ok, symptom_start}
+        end
+
+      _clinical ->
+        {:ok, phase_start}
+    end
   end
 
   @spec closed?(case :: t) :: boolean

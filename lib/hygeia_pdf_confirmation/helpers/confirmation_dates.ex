@@ -5,14 +5,10 @@ defmodule HygeiaPdfConfirmation.Helpers.ConfirmationDates do
 
   alias Hygeia.CaseContext.Case
 
-  @spec isolation_start_date(case :: Case.t(), phase_start :: Date.t()) :: start_date :: Date.t()
-  def isolation_start_date(case, phase_start) do
-    clinical = if is_nil(case.clinical), do: nil, else: Map.from_struct(case.clinical)
-
-    Enum.find(
-      [clinical[:symptom_start], clinical[:test], clinical[:laboratory_report], phase_start],
-      nil,
-      &(not is_nil(&1))
-    )
+  @spec isolation_start_date(case :: Case.t(), phase_start :: Date.t()) :: Date.t()
+  @doc deprecated: "Use #{Case}.earliest_self_service_phase_start_date/2 instead"
+  def isolation_start_date(case, _phase_start) do
+    {_status, date} = Case.earliest_self_service_phase_start_date(case, Case.Phase.Index)
+    date
   end
 end
