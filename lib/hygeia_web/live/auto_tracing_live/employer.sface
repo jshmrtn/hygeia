@@ -159,19 +159,17 @@
                       <div class="card-body">
                         <h5>{gettext("Division")}</h5>
                         <Inputs for={:unknown_division}>
-                          <InputContext assigns={assigns} :let={form: division}>
-                            <Field name={:name} class="form-group">
-                              <HygeiaWeb.FieldLabel />
-                              <TextInput class="form-control" opts={disabled: is_visit_related?(occupation.source)} />
-                              <ErrorTag class="d-block invalid-feedback" />
-                            </Field>
-                            <Inputs for={:address}>
-                              <HygeiaWeb.AddressForm
-                                id={"occupation_#{fetch_field!(division.source, :uuid)}_unknown_division_address"}
-                                disabled={is_visit_related?(occupation.source)}
-                              />
-                            </Inputs>
-                          </InputContext>
+                          <Field name={:name} class="form-group">
+                            <HygeiaWeb.FieldLabel />
+                            <TextInput class="form-control" opts={disabled: is_visit_related?(occupation.source)} />
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+                          <Inputs for={:address}>
+                            <HygeiaWeb.AddressForm
+                              id={"occupation_#{fetch_field!(occupation.source, :uuid)}_unknown_division_address"}
+                              disabled={is_visit_related?(occupation.source)}
+                            />
+                          </Inputs>
                         </Inputs>
                       </div>
                     </div>
