@@ -80,41 +80,16 @@ jobs:
           path: deps
           key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}
-      - run: mix deps.get
-      - run: mix format --check-formatted
-
-  surface_format:
-    name: Check Surface Formatting
-    
-    runs-on: ubuntu-latest
-
-    env:
-      MIX_ENV: dev
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: erlef/setup-elixir@v1
-        id: setupBEAM
-        with:
-          otp-version: ${{ env.DEFAULT_ERLANG_VERSION }}
-          elixir-version: ${{ env.DEFAULT_ELIXIR_VERSION }}
-      - uses: actions/cache@v2
-        with:
-          path: deps
-          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('mix.lock') }}
-          restore-keys: |
             deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
-          path: _build/dev
+          path: _build/test
           key: compile-${{ env.MIX_ENV }}-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
             compile-${{ env.MIX_ENV }}-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-
       - run: mix deps.compile
-      - run: mix compile --warning-as-errors
-      - run: mix surface.format --check-formatted
+      - run: mix format --check-formatted
 
 
   test:
