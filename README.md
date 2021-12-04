@@ -55,10 +55,6 @@ mix gettext.merge priv/gettext
 
 You can now edit the translations using [Poedit](https://poedit.net/) or similar software.
 
-### Formatting
-
-Run `mix surface.format` to format all `*.sface` template files.
-
 ## Environment Variables
 
 See [`.env.example`](./.env.example)

@@ -6,8 +6,8 @@
     "*.{ex,exs}",
     "priv/*/seeds.exs",
     "priv/repo/seeds/*.exs",
-    "{config,lib,test}/**/*.{ex,exs}"
+    "{config,lib,test}/**/*.{ex,exs,sface}"
   ],
   subdirectories: ["priv/*/migrations"],
-  surface_inputs: ["lib/**/*.{ex,sface}"]
+  plugins: [Surface.Formatter.Plugin]
 ]
