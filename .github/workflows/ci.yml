@@ -18,9 +18,14 @@ env:
   BUILD_EMBEDDED: true
   DIALYZER_PLT_PRIV: true
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  DEFAULT_NODE_VERSION: 16.13.1
+
+  # When chaning those values, the versions of `container` of release stage has to be replaced manually
   DEFAULT_ELIXIR_VERSION: 1.13.0
   DEFAULT_ERLANG_VERSION: 24.1.6
-  DEFAULT_NODE_VERSION: 16.13.1
+  RELEASE_HEX_PM_OS: debian
+  RELEASE_HEX_PM_OS_VERSION: bullseye-20210902-slim
 
 jobs:
   compile_assets:
@@ -97,12 +102,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    # TODO: Remove Matrix when using Elixir 1.13 exclusively
-    strategy:
-      fail-fast: false
-      matrix:
-        elixir: [1.12.3, 1.13.0]
-
     env:
       MIX_ENV: test
       SECRET_KEY_BASE: invalid
@@ -139,7 +138,7 @@ jobs:
         id: setupBEAM
         with:
           otp-version: ${{ env.DEFAULT_ERLANG_VERSION }}
-          elixir-version: ${{ matrix.elixir }}
+          elixir-version: ${{ env.DEFAULT_ELIXIR_VERSION }}
       - uses: actions/cache@v2
         with:
           path: deps
@@ -353,8 +352,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    # TODO: Switch to 1.13.0 when the image is available
-    container: elixir:1.12-slim
+    container:
+      image: hexpm/elixir:1.13.0-erlang-24.1.6-debian-bullseye-20210902-slim
 
     needs: ['compile_assets']
 
@@ -371,18 +370,18 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: deps
-          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.ELIXIR_VERSION }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.DEFAULT_ELIXIR_VERSION }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.ELIXIR_VERSION }}-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.DEFAULT_ELIXIR_VERSION }}-
       - run: mix deps.get
       - uses: actions/cache@v2
         with:
           path: |
             _build/prod
             !_build/prod/rel
-          key: compile_docker-${{ env.MIX_ENV }}-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.ELIXIR_VERSION }}-${{ hashFiles('mix.lock') }}
+          key: compile_docker-${{ env.MIX_ENV }}-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.DEFAULT_ELIXIR_VERSION }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            compile_docker-${{ env.MIX_ENV }}-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.ELIXIR_VERSION }}-
+            compile_docker-${{ env.MIX_ENV }}-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.DEFAULT_ELIXIR_VERSION }}-
       - run: mix deps.compile
         env:
           MIX_ENV: prod
@@ -435,7 +434,15 @@ jobs:
             docker-${{ runner.os }}-${{ steps.branch_name.outputs.SOURCE_BRANCH }}
             docker-${{ runner.os }}-
             docker-
-      - run: docker build -t ghcr.io/${{ github.repository }}:$GITHUB_SHA .
+      - run: |
+          docker \
+            build \
+            --tag ghcr.io/${{ github.repository }}:$GITHUB_SHA \
+            --build-arg ELIXIR_VERSION="${{ env.DEFAULT_ELIXIR_VERSION }}" \
+            --build-arg ERLANG_VERSION="${{ env.DEFAULT_ERLANG_VERSION }}" \
+            --build-arg HEXPM_BOB_OS="${{ env.RELEASE_HEX_PM_OS }}" \
+            --build-arg HEXPM_BOB_OS_VERSION="${{ env.RELEASE_HEX_PM_OS_VERSION }}" \
+            .
       - run: docker push ghcr.io/${{ github.repository }}:$GITHUB_SHA
         if: github.event_name == 'push' && steps.branch_name.outputs.SOURCE_BRANCH == 'master'
       - run: docker tag ghcr.io/${{ github.repository }}:$GITHUB_SHA ghcr.io/${{ github.repository }}:${{ steps.branch_name.outputs.SOURCE_TAG }}
