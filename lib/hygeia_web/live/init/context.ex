@@ -22,13 +22,13 @@ defmodule HygeiaWeb.Init.Context do
     :ok =
       Sentry.Context.set_extra_context(%{
         timezone: timezone(socket),
-        ip_address: get_ip_address(socket)
+        ip_address: socket |> get_ip_address() |> ip_to_string()
       })
 
     :ok =
       Sentry.Context.set_request_context(%{
         env: %{
-          "REMOTE_ADDR" => get_ip_address(socket),
+          "REMOTE_ADDR" => socket |> get_ip_address() |> ip_to_string(),
           "REMOTE_PORT" => get_remote_port(socket)
         }
       })
@@ -94,6 +94,10 @@ defmodule HygeiaWeb.Init.Context do
       end
     end
   end
+
+  defp ip_to_string(ip)
+  defp ip_to_string(nil), do: nil
+  defp ip_to_string(ip), do: ip |> :inet.ntoa() |> List.to_string()
 
   defp get_remote_port(socket) do
     if connected?(socket) and not is_nil(socket.private[:connect_info]) do
