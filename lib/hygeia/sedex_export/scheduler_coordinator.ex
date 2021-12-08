@@ -33,10 +33,9 @@ defmodule Hygeia.SedexExport.SchedulerCoordinator do
   def init(opts) do
     Phoenix.PubSub.subscribe(Hygeia.PubSub, "tenants")
 
-    refresh_interval_ms = Keyword.get(opts, :refresh_interval_ms, @default_refresh_interval_ms)
+    interval_ms = Keyword.get(opts, :refresh_interval_ms, @default_refresh_interval_ms)
 
-    :timer.send_interval(refresh_interval_ms, :refresh)
-    send(self(), :refresh)
+    Process.send_after(self(), {:start_interval, interval_ms}, :rand.uniform(interval_ms))
 
     {:ok,
      %__MODULE__{
@@ -46,6 +45,13 @@ defmodule Hygeia.SedexExport.SchedulerCoordinator do
   end
 
   @impl GenServer
+  def handle_info({:start_interval, interval_ms}, state) do
+    :timer.send_interval(interval_ms, :refresh)
+    send(self(), :refresh)
+
+    {:noreply, state}
+  end
+
   def handle_info(:refresh, state), do: {:noreply, refresh_schedulers(state)}
 
   def handle_info({_action, %Tenant{} = _tenant, _version}, state),
