@@ -3,6 +3,8 @@ defmodule HygeiaWeb.Init.Auth do
   Load Auth on mount
   """
 
+  import Phoenix.LiveView, only: [connected?: 1, get_connect_info: 1]
+
   alias Hygeia.CaseContext.Person
   alias Hygeia.Helpers.Versioning
   alias Hygeia.UserContext.User
@@ -13,13 +15,28 @@ defmodule HygeiaWeb.Init.Auth do
           socket :: Phoenix.LiveView.Socket.t()
         ) :: {:cont | :halt, Phoenix.LiveView.Socket.t()}
   def mount(_params, session, socket) do
-    case session["auth"] do
-      %{uuid: id, email: email, display_name: name} ->
-        Sentry.Context.set_user_context(%{id: id, email: email, name: name})
+    ip = socket |> get_ip_address() |> ip_to_string()
 
-      _other ->
-        :ok
-    end
+    attrs =
+      case session["auth"] do
+        nil ->
+          %{}
+
+        %User{uuid: uuid, email: email, display_name: display_name} ->
+          %{
+            id: uuid,
+            email: email,
+            username: display_name
+          }
+
+        %Person{uuid: uuid} ->
+          %{
+            id: uuid,
+            username: "Person / #{uuid}"
+          }
+      end
+
+    Sentry.Context.set_user_context(Map.merge(attrs, %{ip_address: ip}))
 
     Versioning.put_origin(:web)
 
@@ -32,4 +49,20 @@ defmodule HygeiaWeb.Init.Auth do
 
     {:cont, socket}
   end
+
+  defp get_ip_address(socket) do
+    if connected?(socket) and not is_nil(socket.private[:connect_info]) do
+      case get_connect_info(socket) do
+        %{peer_data: peer_data} ->
+          peer_data.address
+
+        _other ->
+          nil
+      end
+    end
+  end
+
+  defp ip_to_string(ip)
+  defp ip_to_string(nil), do: nil
+  defp ip_to_string(ip), do: ip |> :inet.ntoa() |> List.to_string()
 end

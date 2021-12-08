@@ -8,6 +8,7 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
   import Plug.Conn
   import Phoenix.Controller
 
+  alias Hygeia.CaseContext.Person
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
   alias Hygeia.TenantContext
@@ -31,6 +32,7 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
       nil -> conn
       {tokens, provider} -> handle_login(tokens, provider, conn)
     end
+    |> Kernel.tap(&sentry_context/1)
   end
 
   defp handle_login(
@@ -42,14 +44,7 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
     tokens
     |> upsert_user_with_tokens(provider)
     |> case do
-      {:ok, %User{uuid: uuid, email: email, display_name: display_name, iam_sub: iam_sub} = user} ->
-        Sentry.Context.set_user_context(%{
-          uuid: uuid,
-          email: email,
-          display_name: display_name,
-          iam_sub: iam_sub
-        })
-
+      {:ok, user} ->
         {:ok,
          conn
          |> put_session(:auth, user)
@@ -149,5 +144,35 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
       iam_sub: sub,
       grants: grants
     })
+  end
+
+  defp sentry_context(conn) do
+    ip =
+      conn
+      |> get_peer_data()
+      |> Map.fetch!(:address)
+      |> :inet.ntoa()
+      |> List.to_string()
+
+    attrs =
+      case get_session(conn, :auth) do
+        nil ->
+          %{}
+
+        %User{uuid: uuid, email: email, display_name: display_name} ->
+          %{
+            id: uuid,
+            email: email,
+            username: display_name
+          }
+
+        %Person{uuid: uuid} ->
+          %{
+            id: uuid,
+            username: "Person / #{uuid}"
+          }
+      end
+
+    Sentry.Context.set_user_context(Map.merge(attrs, %{ip_address: ip}))
   end
 end
