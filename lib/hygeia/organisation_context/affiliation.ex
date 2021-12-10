@@ -98,6 +98,7 @@ defmodule Hygeia.OrganisationContext.Affiliation do
       |> validate_organisation_or_comment()
       |> validate_organisation()
       |> validate_division()
+      |> check_constraint(:organisation_uuid, name: :organisation_info_required)
 
   defp validate_organisation_or_comment(changeset) do
     with nil <- fetch_field!(changeset, :organisation_uuid),
