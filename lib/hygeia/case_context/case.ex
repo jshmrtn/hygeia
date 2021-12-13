@@ -421,7 +421,6 @@ defmodule Hygeia.CaseContext.Case do
         DateTime.to_date(inserted_at)
       ]
       |> Enum.reject(&is_nil/1)
-      |> Enum.sort({:asc, Date})
       |> List.first()
 
     case clinical do
