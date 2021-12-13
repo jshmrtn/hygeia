@@ -260,6 +260,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
               %{tenant: possible_index_submission_tenant_preset(infection_place, propagator_case)}
             )
             |> CaseContext.change_case(%{
+              status: Service.decide_case_status(:contact_person),
               tracer_uuid: propagator_case.tracer_uuid,
               supervisor_uuid: propagator_case.supervisor_uuid,
               tenant_uuid:
