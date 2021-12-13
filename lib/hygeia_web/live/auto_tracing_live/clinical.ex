@@ -265,7 +265,16 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     phase_start = Date.utc_today()
 
-    {phase_start, Date.add(start_date, @days_after_start), problems}
+    phase_end =
+      start_date
+      |> Date.add(@days_after_start)
+      |> Date.compare(phase_start)
+      |> case do
+        :lt -> phase_start
+        _gt_eq -> Date.add(start_date, @days_after_start)
+      end
+
+    {phase_start, phase_end, problems}
   end
 
   defp send_notifications(case, socket) do

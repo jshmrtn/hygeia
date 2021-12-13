@@ -421,6 +421,7 @@ defmodule Hygeia.CaseContext.Case do
         DateTime.to_date(inserted_at)
       ]
       |> Enum.reject(&is_nil/1)
+      |> Enum.sort({:asc, Date})
       |> List.first()
 
     case clinical do
@@ -430,9 +431,8 @@ defmodule Hygeia.CaseContext.Case do
         earliest_start_date
         |> Date.compare(symptom_start)
         |> case do
-          :eq -> {:ok, symptom_start}
           :gt -> {:corrected, earliest_start_date}
-          :lt -> {:ok, symptom_start}
+          _lt_eq -> {:ok, symptom_start}
         end
 
       _clinical ->
