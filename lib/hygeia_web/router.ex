@@ -314,6 +314,12 @@ defmodule HygeiaWeb.Router do
 
     live "/mutations/:id", MutationLive.Show, :show
     live "/mutations/:id/edit", MutationLive.Show, :edit
+
+    live "/political_territories", PoliticalTerritoryLive.Index, :index
+    live "/political_territories/new", PoliticalTerritoryLive.Create, :create
+
+    live "/political_territories/:id", PoliticalTerritoryLive.Show, :show
+    live "/political_territories/:id/edit", PoliticalTerritoryLive.Show, :edit
   end
 
   scope "/", HygeiaWeb do

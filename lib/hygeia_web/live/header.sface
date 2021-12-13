@@ -107,6 +107,13 @@
                 >
                   {gettext("Mutations")}
                 </Link>
+                <Link
+                  to={Routes.political_territory_index_path(@socket, :index)}
+                  class="dropdown-item"
+                  :if={authorized?(Hygeia.PoliticalTerritoryContext.PoliticalTerritory, :list, auth)}
+                >
+                  {gettext("Political Territories")}
+                </Link>
               </div>
             </li>
           </ul>
