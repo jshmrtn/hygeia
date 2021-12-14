@@ -20,6 +20,4 @@ defmodule Hygeia.Repo.Migrations.TenantCaseManagementSwitch do
       &noop/0
     )
   end
-
-  defp noop, do: nil
 end
