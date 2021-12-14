@@ -13,6 +13,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
 
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
 
   alias Surface.Components.Form.Checkbox
 
@@ -153,7 +154,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
           |> Ecto.build_assoc(:cases, %{tenant_uuid: person.tenant_uuid, tenant: person.tenant})
           |> CaseContext.change_case(%{
             hospitalizations: [],
-            status: decide_case_status(form_data[:type])
+            status: Service.decide_case_status(form_data[:type])
           })
       },
       params["subject"]
@@ -529,17 +530,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople do
           })
           |> CaseContext.change_case(%{
             hospitalizations: [],
-            status: decide_case_status(form_data[:type])
+            status: Service.decide_case_status(form_data[:type])
           })
       },
       at_index
     )
     |> then(&send(self(), {:feed, %{bindings: &1}}))
   end
-
-  defp decide_case_status(type) when type in [:contact_person, :travel], do: :done
-
-  defp decide_case_status(_type), do: :first_contact
 
   defp has_possible_index_submission?(form_data) do
     not is_nil(form_data[:possible_index_submission_uuid])

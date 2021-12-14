@@ -834,7 +834,7 @@ defmodule HygeiaWeb.CaseLiveTest do
              ] = CaseContext.list_transmissions()
     end
 
-    test "import (from possible_index_submission_uuid) - type: contact_person, new person, new case, status: done",
+    test "import (from possible_index_submission_uuid) - type: contact_person, new person, new case, status preset to done",
          %{conn: conn, user: user} = context do
       date = ~D[2020-01-25]
 
@@ -847,10 +847,6 @@ defmodule HygeiaWeb.CaseLiveTest do
       landline = "+41 52 233 06 89"
       email = "corinne.weber@gmx.ch"
       employer = "Unknown GmbH"
-
-      index = 0
-
-      case_status = :done
 
       [%{tenant: tenant} | _other_grants] = user.grants
 
@@ -882,10 +878,7 @@ defmodule HygeiaWeb.CaseLiveTest do
         person: %{tenant_uuid: tenant.uuid}
       })
       |> test_next_button(context, %{to_step: "action"})
-      |> test_define_action_step(context, %{
-        "index" => index,
-        "case" => %{status: case_status}
-      })
+      |> test_define_action_step(context, %{})
       |> test_next_button(context)
       |> assert_redirect(
         Routes.possible_index_submission_index_path(conn, :index, propagator_case.uuid),
@@ -943,7 +936,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                  &match?(
                    %Case{
                      person_uuid: ^person_uuid,
-                     status: ^case_status,
+                     status: :done,
                      phases: [
                        %Case.Phase{
                          details: %Case.Phase.PossibleIndex{type: :contact_person},
@@ -970,7 +963,7 @@ defmodule HygeiaWeb.CaseLiveTest do
       assert [] = CaseContext.list_possible_index_submissions()
     end
 
-    test "import (from possible_index_submission_uuid) infection place is own household - type: contact_person, new person, new case, status: done",
+    test "import (from possible_index_submission_uuid) infection place is own household - type: contact_person, new person, new case, status preset to done",
          %{conn: conn, user: user} = context do
       date = ~D[2020-01-25]
 
@@ -983,10 +976,6 @@ defmodule HygeiaWeb.CaseLiveTest do
       landline = "+41 52 233 06 89"
       email = "corinne.weber@gmx.ch"
       employer = "Unknown GmbH"
-
-      index = 0
-
-      case_status = :done
 
       [%{tenant: tenant} | _other_grants] = user.grants
 
@@ -1020,10 +1009,7 @@ defmodule HygeiaWeb.CaseLiveTest do
       |> test_transmission_step(context, %{})
       |> test_next_button(context, %{to_step: "people"})
       |> test_next_button(context, %{to_step: "action"})
-      |> test_define_action_step(context, %{
-        "index" => index,
-        "case" => %{status: case_status}
-      })
+      |> test_define_action_step(context, %{})
       |> test_next_button(context)
       |> assert_redirect(
         Routes.possible_index_submission_index_path(conn, :index, propagator_case.uuid),
@@ -1088,7 +1074,7 @@ defmodule HygeiaWeb.CaseLiveTest do
                    %Case{
                      person_uuid: ^person_uuid,
                      tenant_uuid: ^propagator_tenant_uuid,
-                     status: ^case_status,
+                     status: :done,
                      phases: [
                        %Case.Phase{
                          details: %Case.Phase.PossibleIndex{type: :contact_person},
