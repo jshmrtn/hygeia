@@ -118,6 +118,9 @@ defmodule HygeiaWeb.PersonLive.Index do
   defp list_people(socket) do
     {cursor_fields, query} = sort_params(socket)
 
+    {vaccine_validity_amount, vaccine_validity_unit} = Hygeia.vaccine_validity()
+    vaccine_validity_unit = Atom.to_string(vaccine_validity_unit)
+
     %Paginator.Page{entries: entries, metadata: metadata} =
       socket.assigns.filters
       |> Enum.map(fn {key, value} ->
@@ -139,10 +142,10 @@ defmodule HygeiaWeb.PersonLive.Index do
           where(
             query,
             [person],
-            fragment("(?->>'done')::boolean", person.vaccination) and
-              fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >=
-                2 and
-              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >= ago(6, "month")
+            person.vaccination["done"] == fragment("TO_JSONB(?)", true) and
+              not is_nil(fragment("(?->>?)", person.vaccination["jab_dates"], 1)) and
+              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >=
+                ago(^vaccine_validity_amount, ^vaccine_validity_unit)
           )
 
         {:fully_vaccinated, "false"}, query ->
