@@ -205,9 +205,8 @@ defmodule HygeiaWeb.CaseLive.Index do
           where(
             query,
             [case, person: person],
-            fragment("(?->>'done')::boolean", person.vaccination) and
-              fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >=
-                2 and
+            person.vaccination["done"] == fragment("TO_JSONB(?)", true) and
+              not is_nil(fragment("(?->>?)", person.vaccination["jab_dates"], 1)) and
               fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >=
                 ago(^vaccine_validity_amount, ^vaccine_validity_unit)
           )
@@ -219,12 +218,12 @@ defmodule HygeiaWeb.CaseLive.Index do
           where(
             query,
             [case, person: person],
-            fragment("(?->>'done')::boolean", person.vaccination) and
-              fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination)) >=
-                2 and
+            person.vaccination["done"] == fragment("TO_JSONB(?)", true) and
+              not is_nil(fragment("(?->>?)", person.vaccination["jab_dates"], 1)) and
               fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >=
                 ago(^vaccine_validity_amount, ^vaccine_validity_unit) and
-              case.inserted_at >= fragment("(?->'jab_dates'->>-1)::date", person.vaccination)
+              case.inserted_at >=
+                fragment("(?->>?)::date", person.vaccination["jab_dates"], -1)
           )
 
         {:fully_vaccinated, "false"}, query ->
