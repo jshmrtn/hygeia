@@ -457,6 +457,10 @@ jobs:
 
     needs: ['docker_build', 'dialyzer_test', 'test', 'format', 'credo', 'docs']
 
+    permissions:
+      pull-requests: write
+      contents: write
+
     steps:
       - uses: fastify/github-action-merge-dependabot@v3.0.2
         with:
