@@ -27,7 +27,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           unsolved_problems: [Problem.t()] | nil,
           covid_app: boolean() | nil,
           has_contact_persons: boolean() | nil,
-          has_travelled: boolean() | nil,
+          has_travelled_in_risk_country: boolean() | nil,
           has_flown: boolean() | nil,
           scholar: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
@@ -48,7 +48,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           unsolved_problems: [Problem.t()],
           covid_app: boolean() | nil,
           has_contact_persons: boolean() | nil,
-          has_travelled: boolean() | nil,
+          has_travelled_in_risk_country: boolean() | nil,
           has_flown: boolean() | nil,
           scholar: boolean() | nil,
           case: Ecto.Schema.belongs_to(Case.t()),
@@ -71,7 +71,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :last_completed_step, Step
     field :covid_app, :boolean
     field :has_contact_persons, :boolean
-    field :has_travelled, :boolean
+    field :has_travelled_in_risk_country, :boolean
     field :has_flown, :boolean
     field :scholar, :boolean
     field :employed, :boolean
@@ -82,7 +82,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :propagator_known, :boolean
     field :started_at, :utc_datetime_usec, autogenerate: {DateTime, :utc_now, []}
 
-    embeds_one :travel, Travel, on_replace: :delete
+    embeds_many :travels, Travel, on_replace: :delete
     embeds_many :flights, Flight, on_replace: :delete
 
     embeds_one :propagator, Propagator, on_replace: :delete
@@ -134,7 +134,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :scholar,
       :employed,
       :has_contact_persons,
-      :has_travelled,
+      :has_travelled_in_risk_country,
       :has_flown,
       :problems,
       :solved_problems,

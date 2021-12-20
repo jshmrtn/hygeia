@@ -362,15 +362,15 @@
                           {pgettext("Auto Tracing Resolve Problems", "Done")}
                         </button>
                       {#match :high_risk_country_travel}
-                        {#if @auto_tracing.has_travelled}
+                        {#if @auto_tracing.has_travelled_in_risk_country}
                           <p>{pgettext(
                               "Auto Tracing Resolve Problems",
-                              "This person travelled in the following high risk country"
+                              "This person travelled in the following high risk countries"
                             )}:</p>
-                          <div class="card card-body mb-2">
+                          <div :for={travel <- @auto_tracing.travels} class="card card-body mb-2">
                             <div>{pgettext("Auto Tracing Resolve Problems", "Country")}:<strong>
-                                {country_name(@auto_tracing.travel.country)}</strong></div>
-                            <div>{pgettext("Auto Tracing Resolve Problems", "Date of return")}: {HygeiaCldr.Date.to_string!(@auto_tracing.travel.return_date)}</div>
+                                {country_name(travel.country)}</strong></div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Date of return")}: {HygeiaCldr.Date.to_string!(travel.return_date)}</div>
                           </div>
                           <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                             {pgettext("Auto Tracing Resolve Problems", "Done")}

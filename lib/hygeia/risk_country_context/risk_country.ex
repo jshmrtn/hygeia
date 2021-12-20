@@ -1,6 +1,6 @@
-defmodule Hygeia.PoliticalTerritoryContext.PoliticalTerritory do
+defmodule Hygeia.RiskCountryContext.RiskCountry do
   @moduledoc """
-  Model for Political Territories.
+  Model for Risk Countries.
   """
 
   use Hygeia, :model
@@ -11,43 +11,38 @@ defmodule Hygeia.PoliticalTerritoryContext.PoliticalTerritory do
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
-          country: Country.t() | nil,
-          risk_related: boolean() | nil
+          country: Country.t() | nil
         }
 
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t(),
-          country: Country.t(),
-          risk_related: boolean()
+          country: Country.t()
         }
 
-  schema "political_territories" do
+  schema "risk_countries" do
     field :country, Country
-    field :risk_related, :boolean
-
-    timestamps()
   end
 
   @doc false
-  @spec changeset(political_territory :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec changeset(risk_country :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
           Changeset.t()
-  def changeset(political_territory, attrs) do
-    political_territory
-    |> cast(attrs, [:country, :risk_related])
-    |> validate_required([:country, :risk_related])
+  def changeset(risk_country, attrs) do
+    risk_country
+    |> cast(attrs, [:country])
+    |> validate_required([:country])
     |> unique_constraint(:country)
   end
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person
-    alias Hygeia.PoliticalTerritoryContext.PoliticalTerritory
+    alias Hygeia.RiskCountryContext.RiskCountry
     alias Hygeia.UserContext.User
 
-    @spec preload(resource :: PoliticalTerritory.t()) :: PoliticalTerritory.t()
+    @spec preload(resource :: RiskCountry.t()) :: RiskCountry.t()
     def preload(resource), do: resource
 
     @spec authorized?(
-            resource :: PoliticalTerritory.t(),
+            resource :: RiskCountry.t(),
             action :: :create | :list | :details | :update | :delete,
             user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}

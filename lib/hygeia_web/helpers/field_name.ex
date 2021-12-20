@@ -239,6 +239,9 @@ defmodule HygeiaWeb.Helpers.FieldName do
       division: "Division",
       unknown_division: "Unknown division"
     },
+    Hygeia.RiskCountryContext.RiskCountry => %{
+      country: "Country"
+    },
     Hygeia.SystemMessageContext.SystemMessage => %{
       text: "Text",
       start_date: "Start Date",

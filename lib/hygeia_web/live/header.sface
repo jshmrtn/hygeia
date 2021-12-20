@@ -108,11 +108,11 @@
                   {gettext("Mutations")}
                 </Link>
                 <Link
-                  to={Routes.political_territory_index_path(@socket, :index)}
+                  to={Routes.risk_country_index_path(@socket, :index)}
                   class="dropdown-item"
-                  :if={authorized?(Hygeia.PoliticalTerritoryContext.PoliticalTerritory, :list, auth)}
+                  :if={authorized?(Hygeia.RiskCountryContext.RiskCountry, :list, auth)}
                 >
-                  {gettext("Political Territories")}
+                  {gettext("Risk Countries")}
                 </Link>
               </div>
             </li>
