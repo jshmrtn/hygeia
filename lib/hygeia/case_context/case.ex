@@ -430,8 +430,9 @@ defmodule Hygeia.CaseContext.Case do
         earliest_start_date
         |> Date.compare(symptom_start)
         |> case do
+          :eq -> {:ok, symptom_start}
           :gt -> {:corrected, earliest_start_date}
-          _lt_eq -> {:ok, symptom_start}
+          :lt -> {:ok, symptom_start}
         end
 
       _clinical ->
