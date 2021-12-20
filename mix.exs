@@ -8,7 +8,7 @@ defmodule Hygeia.MixProject do
     [
       app: :hygeia,
       name: "Hygeia",
-      version: "1.36.0-beta.3",
+      version: "1.36.0-beta.5",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -101,7 +101,7 @@ defmodule Hygeia.MixProject do
       {:ex_phone_number, "~> 0.2"},
       {:floki, ">= 0.27.0", only: :test},
       {:gen_smtp, "~> 1.0"},
-      {:gettext, "~> 0.13", github: "elixir-gettext/gettext", branch: "master", override: true},
+      {:gettext, "~> 0.13", github: "elixir-gettext/gettext", branch: "main", override: true},
       # Get latest master that works with up-to-date cowboy
       {:grpc, "~> 0.5-beta", github: "elixir-grpc/grpc", override: true},
       # Override Reason: https://github.com/elixir-grpc/grpc#grpc-elixir
