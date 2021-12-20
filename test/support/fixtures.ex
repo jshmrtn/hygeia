@@ -106,87 +106,89 @@ defmodule Hygeia.Fixtures do
     person
   end
 
-  # ~D[2020-10-10]
-  date_case_possible_index_start = Date.add(Date.utc_today(), -5)
-  # ~D[2020-10-10]
-  date_case_symptom_start = date_case_possible_index_start
-  # ~D[2020-10-11]
-  date_case_tested_at = Date.add(date_case_possible_index_start, 1)
-  # ~D[2020-10-12]
-  date_case_laboratory_report = Date.add(date_case_tested_at, 1)
-  # ~D[2020-10-12]
-  date_case_possible_index_end = date_case_laboratory_report
-  # ~D[2020-10-12]
-  date_case_index_start = Date.add(date_case_possible_index_end, 1)
-  # ~D[2020-10-22]
-  date_case_index_end = Date.add(date_case_index_start, 10)
+  defp case_fixture_attrs do
+    # ~D[2020-10-10]
+    date_case_possible_index_start = Date.add(Date.utc_today(), -5)
+    # ~D[2020-10-10]
+    date_case_symptom_start = date_case_possible_index_start
+    # ~D[2020-10-11]
+    date_case_tested_at = Date.add(date_case_possible_index_start, 1)
+    # ~D[2020-10-12]
+    date_case_laboratory_report = Date.add(date_case_tested_at, 1)
+    # ~D[2020-10-12]
+    date_case_possible_index_end = date_case_laboratory_report
+    # ~D[2020-10-12]
+    date_case_index_start = Date.add(date_case_possible_index_end, 1)
+    # ~D[2020-10-22]
+    date_case_index_end = Date.add(date_case_index_start, 10)
 
-  @valid_attrs %{
-    complexity: :medium,
-    status: :first_contact,
-    # hospitalizations: [
-    #   %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
-    #   %{start: ~D[2020-10-16], end: ~D[2020-10-17]}
-    # ],
-    tests: [
-      %{
-        tested_at: date_case_tested_at,
-        laboratory_reported_at: date_case_laboratory_report,
-        kind: :pcr,
-        result: :positive
-      }
-    ],
-    clinical: %{
-      reasons_for_test: [:symptoms, :outbreak_examination],
-      symptoms: [:fever],
-      symptom_start: date_case_symptom_start,
-      has_symptoms: true
-    },
-    external_references: [
-      %{
-        type: :ism_case,
-        value: "7000"
+    %{
+      complexity: :medium,
+      status: :first_contact,
+      # hospitalizations: [
+      #   %{start: ~D[2020-10-13], end: ~D[2020-10-15]},
+      #   %{start: ~D[2020-10-16], end: ~D[2020-10-17]}
+      # ],
+      tests: [
+        %{
+          tested_at: date_case_tested_at,
+          laboratory_reported_at: date_case_laboratory_report,
+          kind: :pcr,
+          result: :positive
+        }
+      ],
+      clinical: %{
+        reasons_for_test: [:symptoms, :outbreak_examination],
+        symptoms: [:fever],
+        symptom_start: date_case_symptom_start,
+        has_symptoms: true
       },
-      %{
-        type: :other,
-        type_name: "foo",
-        value: "7000"
-      }
-    ],
-    monitoring: %{
-      first_contact: date_case_index_start,
-      location: :home,
-      location_details: "Bei Mutter zuhause",
-      address: %{
-        address: "Helmweg 48",
-        zip: "8405",
-        place: "Winterthur",
-        subdivision: "ZH",
-        country: "CH"
-      }
-    },
-    phases: [
-      %{
-        details: %{
-          __type__: :possible_index,
-          type: :contact_person,
-          end_reason: :converted_to_index
+      external_references: [
+        %{
+          type: :ism_case,
+          value: "7000"
         },
-        start: date_case_possible_index_start,
-        end: date_case_possible_index_end,
-        quarantine_order: true
+        %{
+          type: :other,
+          type_name: "foo",
+          value: "7000"
+        }
+      ],
+      monitoring: %{
+        first_contact: date_case_index_start,
+        location: :home,
+        location_details: "Bei Mutter zuhause",
+        address: %{
+          address: "Helmweg 48",
+          zip: "8405",
+          place: "Winterthur",
+          subdivision: "ZH",
+          country: "CH"
+        }
       },
-      %{
-        details: %{
-          __type__: :index,
-          end_reason: :healed
+      phases: [
+        %{
+          details: %{
+            __type__: :possible_index,
+            type: :contact_person,
+            end_reason: :converted_to_index
+          },
+          start: date_case_possible_index_start,
+          end: date_case_possible_index_end,
+          quarantine_order: true
         },
-        start: date_case_index_start,
-        end: date_case_index_end,
-        quarantine_order: true
-      }
-    ]
-  }
+        %{
+          details: %{
+            __type__: :index,
+            end_reason: :healed
+          },
+          start: date_case_index_start,
+          end: date_case_index_end,
+          quarantine_order: true
+        }
+      ]
+    }
+  end
 
   @spec case_fixture(
           person :: Person.t(),
@@ -214,7 +216,7 @@ defmodule Hygeia.Fixtures do
       CaseContext.create_case(
         person,
         attrs
-        |> Enum.into(@valid_attrs)
+        |> Enum.into(case_fixture_attrs())
         |> Map.put_new(:tracer_uuid, tracer.uuid)
         |> Map.put_new(:supervisor_uuid, supervisor.uuid)
       )

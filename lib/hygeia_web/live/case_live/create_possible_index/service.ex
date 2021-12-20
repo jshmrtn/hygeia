@@ -248,6 +248,11 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
     {start_date, end_date}
   end
 
+  @spec decide_case_status(atom()) :: atom()
+  def decide_case_status(type) when type in [:contact_person, :travel], do: :done
+
+  def decide_case_status(_type), do: :first_contact
+
   @spec unstruct(map()) :: map()
   defp unstruct(struct) when is_struct(struct) do
     struct

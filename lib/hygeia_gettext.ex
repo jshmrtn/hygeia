@@ -20,7 +20,7 @@ defmodule HygeiaGettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :hygeia
+  use Gettext, otp_app: :hygeia, split_module_by: [:locale, :domain]
 
   @fuzzy_languages Application.compile_env(:hygeia, [__MODULE__, :fuzzy_languages], [])
 
