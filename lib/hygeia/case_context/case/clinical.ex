@@ -54,7 +54,6 @@ defmodule Hygeia.CaseContext.Case.Clinical do
       :symptoms,
       :symptom_start
     ])
-    |> validate_required([])
     |> validate_past_date(:symptom_start)
     |> clear_symptoms()
   end
@@ -74,35 +73,18 @@ defmodule Hygeia.CaseContext.Case.Clinical do
       false ->
         changeset
         |> put_change(:symptom_start, nil)
-        |> put_change(:symptoms, [])
+        |> put_change(:symptoms, nil)
     end
   end
 
   defp clear_symptoms(changeset) do
-    current_symptoms = Ecto.Changeset.get_field(changeset, :symptoms)
-
     changeset
-    |> Ecto.Changeset.fetch_change(:has_symptoms)
+    |> Ecto.Changeset.fetch_field!(:has_symptoms)
     |> case do
-      :error ->
-        changeset
-
-      {:ok, nil} when is_nil(current_symptoms) ->
-        changeset
-
-      {:ok, nil} ->
+      false ->
         Ecto.Changeset.put_change(changeset, :symptoms, nil)
 
-      {:ok, false} when is_nil(current_symptoms) ->
-        changeset
-
-      {:ok, false} ->
-        Ecto.Changeset.put_change(changeset, :symptoms, nil)
-
-      {:ok, true} when is_nil(current_symptoms) ->
-        Ecto.Changeset.put_change(changeset, :symptoms, [])
-
-      {:ok, true} ->
+      _else ->
         changeset
     end
   end
