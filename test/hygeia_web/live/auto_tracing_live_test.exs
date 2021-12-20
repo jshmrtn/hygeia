@@ -625,9 +625,14 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       assert %Case.Phase{} =
                Enum.find(
                  phases,
-                 &(Date.compare(&1.start, Date.utc_today()) == :eq and
-                     Date.compare(&1.end, Date.utc_today()) == :eq)
+                 &(not is_nil(&1.end) and Date.compare(&1.end, Date.utc_today()) == :lt)
                )
+
+      assert %AutoTracing{
+               unsolved_problems: [_]
+             } = auto_tracing = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+
+      assert AutoTracing.has_problem?(auto_tracing, :phase_ends_in_the_past)
     end
   end
 

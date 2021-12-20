@@ -133,7 +133,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     case = Repo.preload(case, hospitalizations: [], tests: [])
 
-    {phase_start, phase_end, _problems} = index_phase_dates(case)
+    {phase_start, phase_end, problems} = index_phase_dates(case)
 
     changeset =
       case
@@ -157,6 +157,19 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
             socket.assigns.auto_tracing,
             :hospitalization
           )
+      end
+
+    {:ok, auto_tracing} =
+      if Enum.any?(problems, &match?(:phase_ends_in_the_past, &1)) do
+        AutoTracingContext.auto_tracing_add_problem(
+          auto_tracing,
+          :phase_ends_in_the_past
+        )
+      else
+        AutoTracingContext.auto_tracing_remove_problem(
+          auto_tracing,
+          :phase_ends_in_the_past
+        )
       end
 
     {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :clinical)
@@ -265,16 +278,14 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     phase_start = Date.utc_today()
 
-    phase_end =
-      start_date
-      |> Date.add(@days_after_start)
-      |> Date.compare(phase_start)
-      |> case do
-        :lt -> phase_start
-        _gt_eq -> Date.add(start_date, @days_after_start)
-      end
+    phase_end = Date.add(start_date, @days_after_start)
 
-    {phase_start, phase_end, problems}
+    phase_start
+    |> Date.compare(phase_end)
+    |> case do
+      :gt -> {start_date, phase_end, [:phase_ends_in_the_past] ++ problems}
+      _lt_eq -> {phase_start, phase_end, problems}
+    end
   end
 
   defp send_notifications(case, socket) do

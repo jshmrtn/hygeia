@@ -65,14 +65,14 @@
                   <HygeiaWeb.DateInput class="form-control" />
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
-                {#case index_phase_dates(Ecto.Changeset.apply_changes(@changeset))}
-                  {#match {_, _, [:phase_start_date_corrected]}}
-                    <div class="p-2 mb-2 alert alert-warning" role="alert">{pgettext(
-                        "Auto Tracing Clinical",
-                        "Are you sure? This date is unusual far in the past."
-                      )}</div>
-                  {#match _else}
-                {/case}
+                {#if index_phase_dates(Ecto.Changeset.apply_changes(@changeset))
+                  |> elem(2)
+                  |> Enum.any?(&match?(:phase_start_date_corrected, &1))}
+                  <div class="p-2 mb-2 alert alert-warning" role="alert">{pgettext(
+                      "Auto Tracing Clinical",
+                      "Are you sure? This date is unusual far in the past."
+                    )}</div>
+                {/if}
               </div>
             </InputContext>
           </div>
