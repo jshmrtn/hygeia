@@ -633,7 +633,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
                travel: %{
                  travel: %{
                    country: "CH",
-                   return_date: "2021-04-17"
+                   last_departure_date: "2021-04-17"
                  },
                  flights: %{
                    "0" => %{

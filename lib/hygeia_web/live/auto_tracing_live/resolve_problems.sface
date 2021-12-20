@@ -370,7 +370,7 @@
                           <div :for={travel <- @auto_tracing.travels} class="card card-body mb-2">
                             <div>{pgettext("Auto Tracing Resolve Problems", "Country")}:<strong>
                                 {country_name(travel.country)}</strong></div>
-                            <div>{pgettext("Auto Tracing Resolve Problems", "Date of return")}: {HygeiaCldr.Date.to_string!(travel.return_date)}</div>
+                            <div>{pgettext("Auto Tracing Resolve Problems", "Date of last departure")}: {HygeiaCldr.Date.to_string!(travel.last_departure_date)}</div>
                           </div>
                           <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                             {pgettext("Auto Tracing Resolve Problems", "Done")}

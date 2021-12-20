@@ -62,8 +62,6 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
         %{"index" => selected_countries},
         %Socket{assigns: %{changeset: changeset}} = socket
       ) do
-    current_risk_countries = RiskCountryContext.list_risk_countries()
-
     changeset
     |> changeset(selected_countries)
     |> apply_action(:validate)
@@ -74,7 +72,6 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
           |> Map.get(:countries)
           |> Enum.filter(& &1.is_risk_country)
           |> Enum.map(&%{country: &1.country})
-          |> IO.inspect()
 
         Ecto.Multi.new()
         |> Ecto.Multi.delete_all(:delete_all, RiskCountry)

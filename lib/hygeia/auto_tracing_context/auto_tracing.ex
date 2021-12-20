@@ -143,6 +143,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :propagator_known,
       :started_at
     ])
+    |> cast_embed(:travels, with: &Travel.changeset(&1, &2, %{require_last_departure_date: true}))
     |> validate_required([:current_step, :case_uuid])
     |> foreign_key_constraint(:transmission_uuid)
   end

@@ -33,11 +33,6 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   alias Surface.Components.LiveRedirect
   alias HygeiaWeb.AutoTracingLive.Travel.SelectedTravel
 
-  @en_foph_link "https://www.bag.admin.ch/bag/en/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#858610174"
-  @de_bag_link "https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#1158844945"
-  @fr_ofsp_link "https://www.bag.admin.ch/bag/fr/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#-1701760666"
-  @it_ufsp_link "https://www.bag.admin.ch/bag/it/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/empfehlungen-fuer-reisende/liste.html#-1398083337"
-
   defmodule SelectedTravel do
     use Hygeia, :model
 
@@ -67,7 +62,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
       |> case do
         true ->
           cast_embed(changeset, :travel,
-            with: &Travel.changeset(&1, &2, %{require_return_date: true}),
+            with: &Travel.changeset(&1, &2, %{require_last_departure_date: true}),
             required: true,
             required_message: gettext("please provide the information about your travel")
           )
@@ -185,11 +180,9 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
         %Socket{assigns: %{risk_countries: risk_countries}} = socket
       ) do
     params = Map.put_new(params, "flights", [])
-    IO.inspect(params)
 
     changeset =
       if Enum.empty?(risk_countries) do
-        IO.inspect("WRONG CS !!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         changeset(socket.assigns.step, params)
       else
         changeset(socket.assigns.step, params, %{risk_countries: true})
@@ -404,15 +397,6 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
 
       _else ->
         changeset
-    end
-  end
-
-  defp get_bag_link do
-    case HygeiaCldr.get_locale().language() do
-      lang when lang in ["de", "de-CH"] -> @de_bag_link
-      lang when lang in ["fr", "fr-CH"] -> @fr_ofsp_link
-      lang when lang in ["it", "it-CH"] -> @it_ufsp_link
-      _other -> @en_foph_link
     end
   end
 end
