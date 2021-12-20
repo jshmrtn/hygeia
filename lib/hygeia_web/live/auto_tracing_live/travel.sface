@@ -3,181 +3,191 @@
   <h4>
     {gettext("Tavel")}
   </h4>
-    <Form
-      for={@changeset}
-      change="validate"
-      class={"mb-4", "p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}
-      opts={id: "travel-form"}
-    >
-      <div class="card mb-5">
-        <div class="card-body">
-          {#if not Enum.empty?(@risk_countries)}
-            <div class="row gx-7 mb-5">
-              <div class="col-12 col-lg-6">
-                <p class="mb-4">{pgettext(
-                    "Auto Tracing Travel",
-                    "Have you visited one of the following countries within the last 14 days (between %{start_date} and %{end_date})?",
-                    %{
-                      start_date: HygeiaCldr.Date.to_string!(Date.add(Date.utc_today(), -13)),
-                      end_date: HygeiaCldr.Date.to_string!(Date.utc_today())
-                    }
-                  )}</p>
-                <Inputs for={:risk_countries_travelled} :let={form: form}>
-                  <div class="d-flex">
-                    <div class="me-3">
-                      <Field name={:is_selected}>
-                        <Checkbox opts={checked: fetch_field!(form.source, :is_selected)} />
-                      </Field>
-                    </div>
-                    <div>
-                      <Inputs for={:travel} :let={form: travel}>
-                        {country_name(fetch_field!(travel.source, :country))}
-                        <HiddenInput field={:uuid} />
-                        <HiddenInput field={:country} />
-                        {#if fetch_field!(form.source, :is_selected)}
-                          <Field class="form-group" name={:last_departure_date}>
-                            <HygeiaWeb.FieldLabel />
-                            <!--
+  <Form
+    for={@changeset}
+    change="validate"
+    class={"mb-4", "p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}
+    opts={id: "travel-form"}
+  >
+    <div class="card mb-5">
+      <div class="card-body">
+        {#if not Enum.empty?(@risk_countries)}
+          <div class="row gx-7 mb-5">
+            <div class="col-12 col-lg-6">
+              <p class="mb-4">{pgettext(
+                  "Auto Tracing Travel",
+                  "Have you visited one of the following countries within the last 14 days (between %{start_date} and %{end_date})?",
+                  %{
+                    start_date: HygeiaCldr.Date.to_string!(Date.add(Date.utc_today(), -13)),
+                    end_date: HygeiaCldr.Date.to_string!(Date.utc_today())
+                  }
+                )}</p>
+              <Inputs for={:risk_countries_travelled} :let={form: form}>
+                <div class="d-flex my-3">
+                  <div class="me-3">
+                    <Field name={:is_selected}>
+                      <Checkbox opts={
+                        checked: fetch_field!(form.source, :is_selected),
+                        disabled: fetch_field!(@changeset, :has_not_travelled_in_risk_country)
+                      } />
+                    </Field>
+                  </div>
+                  <div>
+                    <Inputs for={:travel} :let={form: travel}>
+                      {country_name(fetch_field!(travel.source, :country))}
+                      <HiddenInput field={:uuid} />
+                      <HiddenInput field={:country} />
+                      {#if fetch_field!(form.source, :is_selected)}
+                        <Field class="form-group" name={:last_departure_date}>
+                          <HygeiaWeb.FieldLabel />
+                          <!--
                               TODO: Re-add min/max one https://github.com/jshmrtn/hygeia/issues/930#issuecomment-984785198 is resolved,
                               opts={max: Date.utc_today()}
                             -->
-                            <HygeiaWeb.DateInput class="form-control" />
-                            <ErrorTag class="d-block invalid-feedback" />
-                          </Field>
+                          <HygeiaWeb.DateInput class="form-control" />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                        {#if Enum.member?(
+                            @case |> get_inquiry_dates() |> then(&Date.range(elem(&1, 0), elem(&1, 1))),
+                            fetch_field!(travel.source, :last_departure_date)
+                          )}
+                          {gettext("If you traveled via plane, please add your flight below.")}
                         {/if}
-                      </Inputs>
-                    </div>
+                      {/if}
+                    </Inputs>
                   </div>
-                </Inputs>
-                <Field name={:has_not_travelled_in_risk_country} class="form-group">
-                  <Checkbox
-                    class="me-3"
-                    opts={checked: fetch_field!(@changeset, :has_not_travelled_in_risk_country)}
-                  />
-                  <Label text={gettext("I have not visited any of the above countries")} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </div>
-            </div>
-          {/if}
-
-          <div class="row gx-7">
-            <div class="col-12 col-lg-6">
-              <p class="mb-4">{generate_flight_question(@case)}</p>
-              <Field name={:has_flown} class="form-group">
-                <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                  <label class={
-                    "btn",
-                    "btn-sm",
-                    "btn-outline-primary",
-                    active: get_field(@changeset, :has_flown) == true
-                  }>
-                    <RadioButton value />
-                    {gettext("Yes")}
-                  </label>
-                  <label class={
-                    "btn",
-                    "btn-sm",
-                    "btn-outline-primary",
-                    active: get_field(@changeset, :has_flown) == false
-                  }>
-                    <RadioButton value={false} />
-                    {gettext("No")}
-                  </label>
                 </div>
+              </Inputs>
+              <Field name={:has_not_travelled_in_risk_country} class="form-group">
+                <Checkbox
+                  class="me-3"
+                  opts={checked: fetch_field!(@changeset, :has_not_travelled_in_risk_country)}
+                />
+                <Label text={gettext("I have not visited any of the above countries")} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
+              <ErrorTag field={:risk_countries_travelled} class="d-block invalid-feedback" />
             </div>
           </div>
+        {/if}
 
-          <div :if={get_field(@changeset, :has_flown)}>
-            <div class="hy-card-grid-2-cols">
-              <Inputs for={:flights}>
-                <InputContext assigns={assigns} :let={form: flight}>
-                  <div class="card">
-                    <div class="card-body">
-                      <HiddenInput field={:uuid} />
-                      <Field class="form-group" name={:flight_date}>
-                        <HygeiaWeb.FieldLabel />
-                        <HygeiaWeb.DateInput
-                          class="form-control"
-                          opts={Enum.zip([:min, :max], @case |> get_inquiry_dates() |> Tuple.to_list())}
-                        />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-
-                      <Field class="form-group" name={:departure_place}>
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-
-                      <Field class="form-group" name={:arrival_place}>
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-
-                      <Field class="form-group" name={:flight_number}>
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-
-                      <Field class="form-group" name={:seat_number}>
-                        <HygeiaWeb.FieldLabel />
-                        <TextInput class="form-control" />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-
-                      <p>{gettext("Did you wear the mask during the whole flight?")}</p>
-                      <Field name={:wore_mask} class="form-group">
-                        <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                          <label class={
-                            "btn",
-                            "btn-sm",
-                            "btn-outline-primary",
-                            active: get_field(flight.source, :wore_mask) == true
-                          }>
-                            <RadioButton value />
-                            {gettext("Yes")}
-                          </label>
-                          <label class={
-                            "btn",
-                            "btn-sm",
-                            "btn-outline-primary",
-                            active: get_field(flight.source, :wore_mask) == false
-                          }>
-                            <RadioButton value={false} />
-                            {gettext("No")}
-                          </label>
-                        </div>
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-
-                      <button
-                        class="btn btn-danger mb-4"
-                        type="button"
-                        :on-click="remove_flight"
-                        value={fetch_field!(flight.source, :uuid)}
-                      >
-                        <span class="oi oi-trash" aria-hidden="true" />
-                      </button>
-                    </div>
-                  </div>
-                </InputContext>
-              </Inputs>
-            </div>
-            <div class="mt-4">
-              <button class="btn btn-outline-primary" type="button" :on-click="add_flight">
-                {gettext("Add a flight")}
-              </button>
-            </div>
-            <ErrorTag field={:flights} class="d-block invalid-feedback" />
+        <div class="row gx-7">
+          <div class="col-12 col-lg-6">
+            <p class="mb-4">{generate_flight_question(@case)}</p>
+            <Field name={:has_flown} class="form-group">
+              <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+                <label class={
+                  "btn",
+                  "btn-sm",
+                  "btn-outline-primary",
+                  active: get_field(@changeset, :has_flown) == true
+                }>
+                  <RadioButton value />
+                  {gettext("Yes")}
+                </label>
+                <label class={
+                  "btn",
+                  "btn-sm",
+                  "btn-outline-primary",
+                  active: get_field(@changeset, :has_flown) == false
+                }>
+                  <RadioButton value={false} />
+                  {gettext("No")}
+                </label>
+              </div>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
           </div>
         </div>
+
+        <div :if={get_field(@changeset, :has_flown)}>
+          <div class="hy-card-grid-2-cols">
+            <Inputs for={:flights}>
+              <InputContext assigns={assigns} :let={form: flight}>
+                <div class="card">
+                  <div class="card-body">
+                    <HiddenInput field={:uuid} />
+                    <Field class="form-group" name={:flight_date}>
+                      <HygeiaWeb.FieldLabel />
+                      <HygeiaWeb.DateInput
+                        class="form-control"
+                        opts={Enum.zip([:min, :max], @case |> get_inquiry_dates() |> Tuple.to_list())}
+                      />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <Field class="form-group" name={:departure_place}>
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <Field class="form-group" name={:arrival_place}>
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <Field class="form-group" name={:flight_number}>
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <Field class="form-group" name={:seat_number}>
+                      <HygeiaWeb.FieldLabel />
+                      <TextInput class="form-control" />
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <p>{gettext("Did you wear the mask during the whole flight?")}</p>
+                    <Field name={:wore_mask} class="form-group">
+                      <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+                        <label class={
+                          "btn",
+                          "btn-sm",
+                          "btn-outline-primary",
+                          active: get_field(flight.source, :wore_mask) == true
+                        }>
+                          <RadioButton value />
+                          {gettext("Yes")}
+                        </label>
+                        <label class={
+                          "btn",
+                          "btn-sm",
+                          "btn-outline-primary",
+                          active: get_field(flight.source, :wore_mask) == false
+                        }>
+                          <RadioButton value={false} />
+                          {gettext("No")}
+                        </label>
+                      </div>
+                      <ErrorTag class="d-block invalid-feedback" />
+                    </Field>
+
+                    <button
+                      class="btn btn-danger mb-4"
+                      type="button"
+                      :on-click="remove_flight"
+                      value={fetch_field!(flight.source, :uuid)}
+                    >
+                      <span class="oi oi-trash" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
+              </InputContext>
+            </Inputs>
+          </div>
+          <div class="mt-4">
+            <button class="btn btn-outline-primary" type="button" :on-click="add_flight">
+              {gettext("Add a flight")}
+            </button>
+          </div>
+          <ErrorTag field={:flights} class="d-block invalid-feedback" />
+        </div>
       </div>
-    </Form>
+    </div>
+  </Form>
 
   <hr class="mb-5">
   <LiveRedirect

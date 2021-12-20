@@ -4,7 +4,7 @@
       for={@changeset}
       change="validate"
       submit="save"
-      opts={autocomplete: "off", id: "political-territories-form"}
+      opts={autocomplete: "off", id: "risk-countries-form"}
     >
       <div class="row">
         <h1>
@@ -23,78 +23,85 @@
             </button>
           </LiveRedirect>
         {#else}
-          <div class="d-flex mb-2 mt-3">
+          <div class="mb-2 mt-3">
             <LiveRedirect to={Routes.risk_country_index_path(@socket, :index)}>
-              <button type="button" class="btn btn-primary">
+              <button type="button" class="btn btn-outline-primary">
+                <span class="oi oi-arrow-left me-1" aria-hidden="true" />
                 {gettext("Back to list")}
               </button>
             </LiveRedirect>
-            <div class="ms-auto">
-              <button
-                class="btn btn-primary"
-                type="submit"
-                phx-disable-with={gettext("Saving...")}
-                disabled={not @changeset.valid?}
-              >
-                {gettext("Save")}
-              </button>
-            </div>
           </div>
         {/if}
 
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-3">
           <table class="table">
             <thead>
               <tr>
                 <th>
                   {schema_field_name(:country, RiskCountry)}
                 </th>
-                <th />
               </tr>
             </thead>
-            <tbody id="risk_countries" class="fixed-height">
+            <tbody class="fixed-height">
               <tr
-                :for={%{country: country, is_risk_country: risk_country?} <- fetch_field!(@changeset, :countries)}
+                :for={%{country: country} <- @changeset |> fetch_field!(:countries) |> Enum.filter(& &1.is_risk_country)}
                 id={"risk_country-#{country}"}
               >
-                {#if risk_country?}
-                  <td>
-                    {country_name(country)}
-                  </td>
-                  <td />
-                {/if}
+                <td>
+                  <div class="d-flex">
+                    <div>{country_name(country)}</div>
+                    <span
+                      :if={@live_action == :edit}
+                      class="btn btn-danger ms-auto"
+                      :on-click="remove_country"
+                      phx-value-country={country}
+                    >
+                      <span class="oi oi-trash" aria-hidden="true" />
+                    </span>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
         {#if @live_action == :edit}
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-3">
             <table class="table">
               <thead>
                 <tr>
                   <th>
-                    {schema_field_name(:country, RiskCountry)}
+                    {gettext("Select country")}
                   </th>
-                  <th />
                 </tr>
               </thead>
               <tbody id="risk_countries" class="fixed-height">
                 <Inputs for={:countries} :let={form: form}>
                   <tr id={"risk_country-#{fetch_field!(form.source, :country)}"}>
-                    <td>
-                      {country_name(fetch_field!(form.source, :country))}
-                      <HiddenInput field={:country} />
-                    </td>
-                    <td>
-                      <Field name={:is_risk_country}>
+                    <td class="d-flex">
+                      <div>
+                        {country_name(fetch_field!(form.source, :country))}
+                        <HiddenInput field={:country} />
+                      </div>
+
+                      <Field name={:is_risk_country} class="ms-auto">
                         <Checkbox opts={checked: fetch_field!(form.source, :is_risk_country)} />
                       </Field>
                     </td>
-                    <td />
                   </tr>
                 </Inputs>
               </tbody>
             </table>
+          </div>
+
+          <div class="mt-3">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              phx-disable-with={gettext("Saving...")}
+              disabled={not @changeset.valid?}
+            >
+              {gettext("Save")}
+            </button>
           </div>
         {/if}
       </div>

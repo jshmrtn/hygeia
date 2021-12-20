@@ -19,7 +19,7 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
 
   @primary_key false
   embedded_schema do
-    embeds_many :countries, SelectedCountry do
+    embeds_many :countries, SelectedCountry, primary_key: false do
       field :country, Country
       field :is_risk_country, :boolean
     end
@@ -42,6 +42,25 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
       end
 
     {:ok, socket}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event(
+        "remove_country",
+        %{"country" => country_code},
+        %Socket{assigns: %{changeset: changeset}} = socket
+      ) do
+    countries =
+      changeset
+      |> fetch_field!(:countries)
+      |> Enum.map(
+        &if match?(^country_code, &1.country), do: %{&1 | is_risk_country: false}, else: &1
+      )
+
+    {:noreply,
+     assign(socket,
+       changeset: %Ecto.Changeset{put_embed(changeset, :countries, countries) | action: :validate}
+     )}
   end
 
   @impl Phoenix.LiveView
@@ -69,7 +88,7 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
       {:ok, selected_countries} ->
         risk_countries =
           selected_countries
-          |> Map.get(:countries)
+          |> Map.get(:countries, [])
           |> Enum.filter(& &1.is_risk_country)
           |> Enum.map(&%{country: &1.country})
 
@@ -89,27 +108,13 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("delete", %{"id" => id}, socket) do
-    risk_country = RiskCountryContext.get_risk_country!(id)
-
-    true = authorized?(risk_country, :delete, get_auth(socket))
-
-    {:ok, _} = RiskCountryContext.delete_risk_country(risk_country)
-
-    {:noreply,
-     socket
-     |> put_flash(:info, gettext("Risk Country deleted successfully"))
-     |> assign(risk_countries: RiskCountryContext.list_risk_countries())}
-  end
-
-  @impl Phoenix.LiveView
   def handle_info({_type, %RiskCountry{}, _version}, socket) do
     {:noreply, assign(socket, risk_countries: RiskCountryContext.list_risk_countries())}
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp get_countries() do
+  defp get_countries do
     all_countries = countries()
     risk_country_codes = Enum.map(RiskCountryContext.list_risk_countries(), & &1.country)
 

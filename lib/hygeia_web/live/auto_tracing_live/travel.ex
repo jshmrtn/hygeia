@@ -15,9 +15,9 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Clinical
+  alias Hygeia.Repo
   alias Hygeia.RiskCountryContext
   alias Hygeia.RiskCountryContext.RiskCountry
-  alias Hygeia.Repo
 
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
@@ -31,9 +31,12 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
   alias Surface.Components.LiveRedirect
+
   alias HygeiaWeb.AutoTracingLive.Travel.SelectedTravel
 
   defmodule SelectedTravel do
+    @moduledoc false
+
     use Hygeia, :model
 
     import Ecto.Changeset
@@ -66,7 +69,9 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
             required: true,
             required_message: gettext("please provide the information about your travel")
           )
-        _else -> cast_embed(changeset, :travel)
+
+        _else ->
+          cast_embed(changeset, :travel)
       end
     end
   end
@@ -110,11 +115,11 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
         true ->
           step = %__MODULE__{
             has_not_travelled_in_risk_country:
-              (case case.auto_tracing.has_travelled_in_risk_country do
+              case case.auto_tracing.has_travelled_in_risk_country do
                 nil -> false
                 true -> false
                 false -> true
-              end),
+              end,
             risk_countries_travelled: get_risk_countries_travelled(case.auto_tracing.travels),
             has_flown: case.auto_tracing.has_flown,
             flights: case.auto_tracing.flights
@@ -126,7 +131,9 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
             case: case,
             step: step,
             changeset: %Ecto.Changeset{
-              (if Enum.empty?(risk_countries), do: changeset(step), else: changeset(step, %{}, %{risk_countries: true})) | action: :validate},
+              changeset(step, %{}, %{risk_countries: not Enum.empty?(risk_countries)})
+              | action: :validate
+            },
             auto_tracing: case.auto_tracing,
             risk_countries: risk_countries
           )
@@ -139,7 +146,8 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   def handle_event(
         "add_flight",
         _params,
-        %Socket{assigns: %{step: step, changeset: changeset}} = socket
+        %Socket{assigns: %{step: step, changeset: changeset, risk_countries: risk_countries}} =
+          socket
       ) do
     {:noreply,
      assign(socket,
@@ -148,7 +156,8 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
            step,
            changeset_add_to_params(changeset, :flights, %{
              uuid: Ecto.UUID.generate()
-           })
+           }),
+           %{risk_countries: not Enum.empty?(risk_countries)}
          )
          | action: :validate
        }
@@ -158,7 +167,8 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   def handle_event(
         "remove_flight",
         %{"value" => flight_uuid},
-        %Socket{assigns: %{step: step, changeset: changeset}} = socket
+        %Socket{assigns: %{step: step, changeset: changeset, risk_countries: risk_countries}} =
+          socket
       ) do
     {:noreply,
      assign(
@@ -167,7 +177,8 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
        %Changeset{
          changeset(
            step,
-           changeset_remove_from_params_by_id(changeset, :flights, %{uuid: flight_uuid})
+           changeset_remove_from_params_by_id(changeset, :flights, %{uuid: flight_uuid}),
+           %{risk_countries: not Enum.empty?(risk_countries)}
          )
          | action: :validate
        }
@@ -182,15 +193,11 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
     params = Map.put_new(params, "flights", [])
 
     changeset =
-      if Enum.empty?(risk_countries) do
-        changeset(socket.assigns.step, params)
-      else
-        changeset(socket.assigns.step, params, %{risk_countries: true})
-      end
+      changeset(socket.assigns.step, params, %{risk_countries: not Enum.empty?(risk_countries)})
 
     {:noreply,
      assign(socket,
-       changeset: %Changeset{(changeset |> IO.inspect()) | action: :validate}
+       changeset: %Changeset{changeset | action: :validate}
      )}
   end
 
@@ -207,12 +214,14 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
           assign(socket, changeset: changeset)
 
         {:ok, step} ->
-          travels = Enum.reduce(step.risk_countries_travelled, [], fn
-            %SelectedTravel{travel: travel, is_selected: true}, acc ->
-              acc ++ [travel]
-            %SelectedTravel{travel: travel, is_selected: false}, acc ->
-              acc
-          end)
+          travels =
+            Enum.reduce(step.risk_countries_travelled, [], fn
+              %SelectedTravel{travel: travel, is_selected: true}, acc ->
+                acc ++ [travel]
+
+              %SelectedTravel{travel: travel, is_selected: false}, acc ->
+                acc
+            end)
 
           auto_tracing_changeset =
             auto_tracing
@@ -355,6 +364,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
     |> validate_required([:has_not_travelled_in_risk_country])
     |> cast_embed(:risk_countries_travelled)
     |> validate_travels()
+    |> validate_choice()
   end
 
   defp changeset(schema, attrs, _opts) do
@@ -370,7 +380,8 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
     |> case do
       true ->
         all_travels_unselected =
-          fetch_field!(changeset, :risk_countries_travelled)
+          changeset
+          |> fetch_field!(:risk_countries_travelled)
           |> Enum.map(fn selected_travel ->
             %SelectedTravel{selected_travel | is_selected: false}
           end)
@@ -379,6 +390,27 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
 
       _else ->
         changeset
+    end
+  end
+
+  defp validate_choice(changeset) do
+    changeset
+    |> fetch_field!(:has_not_travelled_in_risk_country)
+    |> case do
+      true ->
+        changeset
+
+      false ->
+        changeset
+        |> fetch_field!(:risk_countries_travelled)
+        |> Enum.any?(& &1.is_selected)
+        |> case do
+          true ->
+            changeset
+
+          false ->
+            add_error(changeset, :risk_countries_travelled, dgettext("errors", "is required"))
+        end
     end
   end
 

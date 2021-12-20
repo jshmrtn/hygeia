@@ -608,7 +608,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         Routes.auto_tracing_transmission_path(conn, :transmission, case)
       )
 
-      assert %AutoTracing{has_flown: false, flights: [], travel: nil} =
+      assert %AutoTracing{has_flown: false, flights: [], travels: nil} =
                AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
 
@@ -631,7 +631,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
              |> form("#travel-form")
              |> render_change(
                travel: %{
-                 travel: %{
+                 travels: %{
                    country: "CH",
                    last_departure_date: "2021-04-17"
                  },

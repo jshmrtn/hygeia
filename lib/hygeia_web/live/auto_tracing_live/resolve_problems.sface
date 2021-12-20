@@ -367,10 +367,36 @@
                               "Auto Tracing Resolve Problems",
                               "This person travelled in the following high risk countries"
                             )}:</p>
-                          <div :for={travel <- @auto_tracing.travels} class="card card-body mb-2">
-                            <div>{pgettext("Auto Tracing Resolve Problems", "Country")}:<strong>
-                                {country_name(travel.country)}</strong></div>
-                            <div>{pgettext("Auto Tracing Resolve Problems", "Date of last departure")}: {HygeiaCldr.Date.to_string!(travel.last_departure_date)}</div>
+                          <div class="hy-card-grid-2-cols mb-2">
+                            <div
+                              :for={travel <- Enum.filter(@auto_tracing.travels, &(&1.country in @risk_countries))}
+                              class="card card-body d-flex flex-row"
+                            >
+                              <div>
+                                <div>{pgettext("Auto Tracing Resolve Problems", "Country")}:<strong>
+                                    {country_name(travel.country)}</strong></div>
+                                <div>{pgettext("Auto Tracing Resolve Problems", "Date of last departure")}: {HygeiaCldr.Date.to_string!(travel.last_departure_date)}</div>
+                              </div>
+                              <div class="ms-auto">
+                                <LiveRedirect
+                                  class="btn btn-primary"
+                                  to={Routes.transmission_create_path(@socket, :create,
+                                    type: :travel,
+                                    date: Date.to_iso8601(travel.last_departure_date),
+                                    recipient_internal: true,
+                                    recipient_case_uuid: @case.uuid,
+                                    infection_place: %{
+                                      known: true,
+                                      type: :flight,
+                                      address: %{country: travel.country}
+                                    },
+                                    return_url: Routes.auto_tracing_resolve_problems_path(@socket, :resolve_problems, @case.uuid)
+                                  )}
+                                >
+                                  {gettext("Create transmission")}
+                                </LiveRedirect>
+                              </div>
+                            </div>
                           </div>
                           <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                             {pgettext("Auto Tracing Resolve Problems", "Done")}
