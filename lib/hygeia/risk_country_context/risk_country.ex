@@ -47,15 +47,15 @@ defmodule Hygeia.RiskCountryContext.RiskCountry do
             user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
-    def authorized?(_mutation, action, :anonymous, _meta)
+    def authorized?(_risk_country, action, :anonymous, _meta)
         when action in [:list, :create, :details, :update, :delete],
         do: false
 
-    def authorized?(_mutation, action, %Person{}, _meta)
+    def authorized?(_risk_country, action, %Person{}, _meta)
         when action in [:list, :create, :details, :update, :delete],
         do: false
 
-    def authorized?(_mutation, action, user, _meta)
+    def authorized?(_risk_country, action, user, _meta)
         when action in [:details, :list, :versioning, :deleted_versioning],
         do:
           Enum.any?(
@@ -63,7 +63,7 @@ defmodule Hygeia.RiskCountryContext.RiskCountry do
             &User.has_role?(user, &1, :any)
           )
 
-    def authorized?(_mutation, action, user, _meta)
+    def authorized?(_risk_country, action, user, _meta)
         when action in [:create, :update, :delete],
         do: Enum.any?([:admin], &User.has_role?(user, &1, :any))
   end

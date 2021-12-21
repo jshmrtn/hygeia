@@ -44,8 +44,8 @@
             </thead>
             <tbody class="fixed-height">
               <tr
-                :for={%{country: country} <- @changeset |> fetch_field!(:countries) |> Enum.filter(& &1.is_risk_country)}
-                id={"risk_country-#{country}"}
+                :for={{%{country: country}, index} <- Enum.with_index(@changeset |> fetch_field!(:countries) |> Enum.filter(& &1.is_risk_country))}
+                id={"risk_country-#{index}-#{country}"}
               >
                 <td>
                   <div class="d-flex">

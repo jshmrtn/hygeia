@@ -81,6 +81,9 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
         %{"index" => selected_countries},
         %Socket{assigns: %{changeset: changeset}} = socket
       ) do
+
+    true = authorized?(_, :delete, get_auth(socket))
+
     changeset
     |> changeset(selected_countries)
     |> apply_action(:validate)
