@@ -6,6 +6,7 @@ defmodule HygeiaWeb.AuthLive.Login do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Person
   alias Hygeia.UserContext.User
+  alias HygeiaWeb.AuthLive.LockoutPerson
   alias HygeiaWeb.Endpoint
   alias Phoenix.Token
   alias Surface.Components.Form
@@ -55,6 +56,8 @@ defmodule HygeiaWeb.AuthLive.Login do
             )
         )
       else
+        LockoutPerson.handle_failed_login(socket.assigns.person.uuid)
+
         socket
         |> assign(form: %{first_name: first_name, last_name: last_name})
         |> put_flash(
