@@ -68,7 +68,15 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
   @impl Phoenix.LiveView
   def handle_event("validate", %{"case" => case_params}, socket) do
-    case_params = Map.put_new(case_params, "hospitalizations", [])
+    case_params =
+      case_params
+      |> Map.put_new("hospitalizations", [])
+      |> Map.update("clinical", nil, fn clinical ->
+        clinical
+        |> Map.put_new("reasons_for_test", [])
+        |> Map.put_new("symptom_start", nil)
+        |> Map.put_new("symptoms", [])
+      end)
 
     {:noreply,
      assign(
@@ -133,16 +141,27 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     case = Repo.preload(case, hospitalizations: [], tests: [])
 
-    {phase_start, phase_end, _problems} = index_phase_dates(case)
+    {phase_start, phase_end, problems} = index_phase_dates(case)
 
-    changeset =
-      case
-      |> shorten_phases_before(phase_start)
-      |> append_phase(phase_start, phase_end)
+    problems =
+      phase_start
+      |> Date.compare(phase_end)
+      |> case do
+        :gt ->
+          [:phase_ends_in_the_past] ++ problems
 
-    {:ok, case} = CaseContext.update_case(case, changeset)
+        _lt_eq ->
+          changeset =
+            case
+            |> shorten_phases_before(phase_start)
+            |> change_phase_dates(phase_start, phase_end)
 
-    :ok = send_notifications(case, socket)
+          {:ok, case} = CaseContext.update_case(case, changeset)
+
+          :ok = send_notifications(case, socket)
+
+          problems
+      end
 
     {:ok, auto_tracing} =
       case case do
@@ -157,6 +176,19 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
             socket.assigns.auto_tracing,
             :hospitalization
           )
+      end
+
+    {:ok, auto_tracing} =
+      if Enum.any?(problems, &match?(:phase_ends_in_the_past, &1)) do
+        AutoTracingContext.auto_tracing_add_problem(
+          auto_tracing,
+          :phase_ends_in_the_past
+        )
+      else
+        AutoTracingContext.auto_tracing_remove_problem(
+          auto_tracing,
+          :phase_ends_in_the_past
+        )
       end
 
     {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :clinical)
@@ -198,7 +230,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp append_phase(changeset, phase_start, phase_end) do
+  defp change_phase_dates(changeset, phase_start, phase_end) do
     index_phase =
       Enum.find(
         Ecto.Changeset.fetch_field!(changeset, :phases),
@@ -264,8 +296,9 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
       end
 
     phase_start = Date.utc_today()
+    phase_end = Date.add(start_date, @days_after_start)
 
-    {phase_start, Date.add(start_date, @days_after_start), problems}
+    {phase_start, phase_end, problems}
   end
 
   defp send_notifications(case, socket) do

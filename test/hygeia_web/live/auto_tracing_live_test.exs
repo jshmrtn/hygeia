@@ -29,7 +29,15 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         }
       })
 
-    %{case_model: case_fixture(person_fixture(tenant))}
+    %{
+      case_model:
+        case_fixture(
+          person_fixture(tenant),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          %{clinical: nil}
+        )
+    }
   end
 
   defp create_auto_tracing(%{case_model: case}) do
@@ -562,6 +570,69 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         clinical_view,
         Routes.auto_tracing_travel_path(conn, :travel, case)
       )
+    end
+
+    test "symptoms far back and recent positive test, advances to travel", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      test_date = Date.add(Date.utc_today(), -7)
+
+      test_fixture(case, %{tested_at: test_date, laboratory_reported_at: test_date})
+
+      set_last_completed_step(auto_tracing, :clinical)
+
+      {:ok, clinical_view, html} =
+        live(conn, Routes.auto_tracing_clinical_path(conn, :clinical, case))
+
+      assert html =~ gettext("Do you have or have had symptoms?")
+
+      assert clinical_view
+             |> form("#autotracing-clinical-form",
+               case: %{
+                 "clinical" => %{
+                   "has_symptoms" => true
+                 }
+               }
+             )
+             |> render_change(
+               case: %{
+                 "clinical" => %{
+                   "symptoms" => [
+                     :fever,
+                     :cough
+                   ],
+                   "symptom_start" => Date.add(Date.utc_today(), -60)
+                 }
+               }
+             ) =~ gettext("Are you sure? This date is unusual far in the past.")
+
+      assert clinical_view
+             |> element("button", "Continue")
+             |> render_click()
+
+      assert_redirect(
+        clinical_view,
+        Routes.auto_tracing_travel_path(conn, :travel, case)
+      )
+
+      phases =
+        case.uuid
+        |> CaseContext.get_case!()
+        |> Map.get(:phases)
+
+      assert %Case.Phase{} =
+               Enum.find(
+                 phases,
+                 &(not is_nil(&1.end) and Date.compare(&1.end, Date.utc_today()) == :lt)
+               )
+
+      assert %AutoTracing{
+               unsolved_problems: [_]
+             } = auto_tracing = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+
+      assert AutoTracing.has_problem?(auto_tracing, :phase_ends_in_the_past)
     end
   end
 

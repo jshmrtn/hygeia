@@ -119,6 +119,12 @@ defmodule HygeiaWeb.CaseLive.BaseData do
       case_params
       |> Map.put_new("hospitalizations", [])
       |> Map.put_new("external_references", [])
+      |> Map.update("clinical", nil, fn clinical ->
+        clinical
+        |> Map.put_new("reasons_for_test", [])
+        |> Map.put_new("symptom_start", nil)
+        |> Map.put_new("symptoms", [])
+      end)
 
     {:noreply,
      socket
@@ -137,6 +143,12 @@ defmodule HygeiaWeb.CaseLive.BaseData do
       |> Map.put_new("hospitalizations", [])
       |> Map.put_new("phases", [])
       |> Map.put_new("external_references", [])
+      |> Map.update("clinical", nil, fn clinical ->
+        clinical
+        |> Map.put_new("reasons_for_test", [])
+        |> Map.put_new("symptom_start", nil)
+        |> Map.put_new("symptoms", [])
+      end)
 
     socket.assigns.case
     |> CaseContext.update_case(case_params)
