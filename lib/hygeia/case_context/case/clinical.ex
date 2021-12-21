@@ -62,27 +62,24 @@ defmodule Hygeia.CaseContext.Case.Clinical do
     changeset
     |> fetch_field!(:has_symptoms)
     |> case do
-      nil ->
-        changeset
-
       true ->
         changeset
         |> validate_required([:symptoms, :symptom_start])
         |> validate_length(:symptoms, min: 1)
 
-      false ->
+      _else ->
         changeset
-        |> put_change(:symptom_start, nil)
-        |> put_change(:symptoms, nil)
     end
   end
 
   defp clear_symptoms(changeset) do
     changeset
-    |> Ecto.Changeset.fetch_field!(:has_symptoms)
+    |> fetch_field!(:has_symptoms)
     |> case do
       false ->
-        Ecto.Changeset.put_change(changeset, :symptoms, nil)
+        changeset
+        |> put_change(:symptom_start, nil)
+        |> put_change(:symptoms, [])
 
       _else ->
         changeset

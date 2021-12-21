@@ -143,14 +143,25 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     {phase_start, phase_end, problems} = index_phase_dates(case)
 
-    changeset =
-      case
-      |> shorten_phases_before(phase_start)
-      |> append_phase(phase_start, phase_end)
+    problems =
+      phase_start
+      |> Date.compare(phase_end)
+      |> case do
+        :gt ->
+          [:phase_ends_in_the_past] ++ problems
 
-    {:ok, case} = CaseContext.update_case(case, changeset)
+        _lt_eq ->
+          changeset =
+            case
+            |> shorten_phases_before(phase_start)
+            |> change_phase_dates(phase_start, phase_end)
 
-    :ok = send_notifications(case, socket)
+          {:ok, case} = CaseContext.update_case(case, changeset)
+
+          :ok = send_notifications(case, socket)
+
+          problems
+      end
 
     {:ok, auto_tracing} =
       case case do
@@ -219,7 +230,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp append_phase(changeset, phase_start, phase_end) do
+  defp change_phase_dates(changeset, phase_start, phase_end) do
     index_phase =
       Enum.find(
         Ecto.Changeset.fetch_field!(changeset, :phases),
@@ -285,15 +296,9 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
       end
 
     phase_start = Date.utc_today()
-
     phase_end = Date.add(start_date, @days_after_start)
 
-    phase_start
-    |> Date.compare(phase_end)
-    |> case do
-      :gt -> {start_date, phase_end, [:phase_ends_in_the_past] ++ problems}
-      _lt_eq -> {phase_start, phase_end, problems}
-    end
+    {phase_start, phase_end, problems}
   end
 
   defp send_notifications(case, socket) do
