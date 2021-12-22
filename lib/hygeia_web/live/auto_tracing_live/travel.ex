@@ -17,7 +17,6 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.Repo
   alias Hygeia.RiskCountryContext
-  alias Hygeia.RiskCountryContext.RiskCountry
 
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
@@ -28,7 +27,6 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.RadioButton
-  alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
   alias Surface.Components.LiveRedirect
 
@@ -219,7 +217,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
               %SelectedTravel{travel: travel, is_selected: true}, acc ->
                 acc ++ [travel]
 
-              %SelectedTravel{travel: travel, is_selected: false}, acc ->
+              %SelectedTravel{is_selected: false}, acc ->
                 acc
             end)
 
@@ -355,11 +353,9 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
     end)
   end
 
-  defp changeset(schema, attrs \\ %{}, opts \\ %{})
-
-  defp changeset(schema, attrs, %{risk_countries: true}) do
+  defp changeset(schema, attrs, %{risk_countries: true} = opts) do
     schema
-    |> changeset(attrs, %{risk_countries: false})
+    |> changeset(attrs, %{opts | risk_countries: false})
     |> cast(attrs, [:has_not_travelled_in_risk_country])
     |> validate_required([:has_not_travelled_in_risk_country])
     |> cast_embed(:risk_countries_travelled)

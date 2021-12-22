@@ -148,13 +148,13 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
     end)
   end
 
-  defp changeset(schema, attrs \\ %{}) do
+  defp changeset(schema, attrs) do
     schema
     |> cast(attrs, [])
     |> cast_embed(:countries, with: &selected_risk_country_changeset/2)
   end
 
-  defp selected_risk_country_changeset(schema, attrs \\ %{}) do
+  defp selected_risk_country_changeset(schema, attrs) do
     cast(schema, attrs, [:country, :is_risk_country])
   end
 end

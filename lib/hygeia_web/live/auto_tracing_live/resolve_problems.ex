@@ -15,7 +15,6 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
-  alias Hygeia.RiskCountryContext
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
