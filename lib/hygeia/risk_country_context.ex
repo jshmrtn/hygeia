@@ -36,11 +36,6 @@ defmodule Hygeia.RiskCountryContext do
   @spec get_risk_country!(id :: Ecto.UUID.t()) :: RiskCountry.t()
   def get_risk_country!(id), do: Repo.get!(RiskCountry, id)
 
-  @spec get_risk_country_by_ism_code(ism_code :: integer()) :: RiskCountry.t() | nil
-  def get_risk_country_by_ism_code(ism_code)
-      when is_integer(ism_code),
-      do: Repo.get_by(RiskCountry, ism_code: ism_code)
-
   @doc """
   Creates a risk country.
 
@@ -61,31 +56,6 @@ defmodule Hygeia.RiskCountryContext do
       |> change_risk_country(attrs)
       |> versioning_insert()
       |> broadcast("risk_countries", :create)
-      |> versioning_extract()
-
-  @doc """
-  Updates a risk country.
-
-  ## Examples
-
-      iex> update_risk_country(risk_country, %{field: new_value})
-      {:ok, %RiskCountry{}}
-
-      iex> update_risk_country(risk_country, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec update_risk_country(
-          risk_country :: RiskCountry.t(),
-          attrs :: Hygeia.ecto_changeset_params()
-        ) ::
-          {:ok, RiskCountry.t()} | {:error, Ecto.Changeset.t(RiskCountry.t())}
-  def update_risk_country(%RiskCountry{} = risk_country, attrs),
-    do:
-      risk_country
-      |> change_risk_country(attrs)
-      |> versioning_update()
-      |> broadcast("risk_countries", :update)
       |> versioning_extract()
 
   @doc """

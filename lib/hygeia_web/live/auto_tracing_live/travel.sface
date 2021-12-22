@@ -38,21 +38,23 @@
                       <HiddenInput field={:uuid} />
                       <HiddenInput field={:country} />
                       {#if fetch_field!(form.source, :is_selected)}
-                        <Field class="form-group" name={:last_departure_date}>
-                          <HygeiaWeb.FieldLabel />
-                          <!--
-                              TODO: Re-add min/max one https://github.com/jshmrtn/hygeia/issues/930#issuecomment-984785198 is resolved,
-                              opts={max: Date.utc_today()}
-                            -->
-                          <HygeiaWeb.DateInput class="form-control" />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                        {#if Enum.member?(
-                            @case |> get_inquiry_dates() |> then(&Date.range(elem(&1, 0), elem(&1, 1))),
-                            fetch_field!(travel.source, :last_departure_date)
-                          )}
-                          {gettext("If you traveled via plane, please add your flight below.")}
-                        {/if}
+                        <div class="card card-body">
+                          <Field class="form-group" name={:last_departure_date}>
+                            <HygeiaWeb.FieldLabel />
+                            <!--
+                                TODO: Re-add min/max one https://github.com/jshmrtn/hygeia/issues/930#issuecomment-984785198 is resolved,
+                                opts={max: Date.utc_today()}
+                              -->
+                            <HygeiaWeb.DateInput class="form-control" />
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+                          {#if Enum.member?(
+                              @case |> get_inquiry_dates() |> then(&Date.range(elem(&1, 0), elem(&1, 1))),
+                              fetch_field!(travel.source, :last_departure_date)
+                            )}
+                            {gettext("If you traveled via plane, please add your flight below.")}
+                          {/if}
+                        </div>
                       {/if}
                     </Inputs>
                   </div>

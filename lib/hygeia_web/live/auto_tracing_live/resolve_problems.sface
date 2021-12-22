@@ -374,7 +374,17 @@
                             )}:</p>
                           <div class="hy-card-grid-2-cols mb-2">
                             <div
-                              :for={travel <- Enum.filter(@auto_tracing.travels, &(&1.country in @risk_countries))}
+                              :for={travel <-
+                                Enum.reject(
+                                  @auto_tracing.travels,
+                                  &Enum.find_value(@case.received_transmissions, fn
+                                    %Transmission{infection_place: %InfectionPlace{address: %Address{country: country}}} ->
+                                      country == &1.country
+
+                                    _other_transmission ->
+                                      false
+                                  end)
+                                )}
                               class="card card-body d-flex flex-row"
                             >
                               <div>

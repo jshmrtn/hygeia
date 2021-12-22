@@ -4,6 +4,8 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
   use HygeiaWeb, :surface_view
   use Hygeia, :model
 
+  import Ecto.Query
+
   alias Hygeia.EctoType.Country
   alias Hygeia.RiskCountryContext
   alias Hygeia.RiskCountryContext.RiskCountry
@@ -28,7 +30,12 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     socket =
-      if authorized?(RiskCountry, :list, get_auth(socket)) do
+      if (socket.assigns.live_action != :edit and
+            authorized?(RiskCountry, :list, get_auth(socket))) or
+           (socket.assigns.live_action == :edit and
+              authorized?(RiskCountry, :create, get_auth(socket)) and
+              authorized?(RiskCountry, :update, get_auth(socket)) and
+              authorized?(RiskCountry, :delete, get_auth(socket))) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "risk_countries")
 
         assign(socket,
@@ -81,8 +88,10 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
         %{"index" => selected_countries},
         %Socket{assigns: %{changeset: changeset}} = socket
       ) do
-
-    true = authorized?(_, :delete, get_auth(socket))
+    true =
+      authorized?(RiskCountry, :create, get_auth(socket)) and
+        authorized?(RiskCountry, :delete, get_auth(socket)) and
+        authorized?(RiskCountry, :update, get_auth(socket))
 
     changeset
     |> changeset(selected_countries)
@@ -93,11 +102,20 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
           selected_countries
           |> Map.get(:countries, [])
           |> Enum.filter(& &1.is_risk_country)
-          |> Enum.map(&%{country: &1.country})
+          |> Enum.map(& &1.country)
 
         Ecto.Multi.new()
-        |> Ecto.Multi.delete_all(:delete_all, RiskCountry)
-        |> Ecto.Multi.insert_all(:insert_all, RiskCountry, risk_countries)
+        |> Ecto.Multi.delete_all(
+          :delete_all,
+          from(r in RiskCountry, where: r.country not in ^risk_countries)
+        )
+        |> Ecto.Multi.insert_all(
+          :insert_all,
+          RiskCountry,
+          Enum.map(risk_countries, &%{country: &1}),
+          conflict_target: [:country],
+          on_conflict: :nothing
+        )
         |> Hygeia.Repo.transaction()
 
         {:noreply, push_redirect(socket, to: Routes.risk_country_index_path(socket, :index))}

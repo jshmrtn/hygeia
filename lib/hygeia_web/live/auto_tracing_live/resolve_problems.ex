@@ -8,6 +8,8 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Entity
+  alias Hygeia.CaseContext.Transmission
+  alias Hygeia.CaseContext.Transmission.InfectionPlace
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
@@ -98,6 +100,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         person: [affiliations: [:organisation, :division]],
         auto_tracing: [transmission: []],
         visits: [:organisation, :division],
+        received_transmissions: [],
         tests: []
       )
 
@@ -151,7 +154,6 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
             case: case,
             person: case.person,
             auto_tracing: case.auto_tracing,
-            risk_countries: Enum.map(RiskCountryContext.list_risk_countries(), & &1.country),
             link_propagator_opts_changeset:
               LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, propagator_attrs)
           )

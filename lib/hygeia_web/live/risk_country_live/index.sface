@@ -16,6 +16,7 @@
             class="me-2"
             to={Routes.risk_country_index_path(@socket, :edit)}
             :if={authorized?(RiskCountry, :create, auth)}
+            opts={id: "edit_list"}
           >
             <button type="button" class="mb-2 mt-3 btn btn-primary">
               <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
@@ -44,13 +45,14 @@
             </thead>
             <tbody class="fixed-height">
               <tr
-                :for={{%{country: country}, index} <- Enum.with_index(@changeset |> fetch_field!(:countries) |> Enum.filter(& &1.is_risk_country))}
-                id={"risk_country-#{index}-#{country}"}
+                :for={%{country: country} <- @changeset |> fetch_field!(:countries) |> Enum.filter(& &1.is_risk_country)}
+                id={"risk_country-#{country}"}
               >
                 <td>
                   <div class="d-flex">
                     <div>{country_name(country)}</div>
                     <span
+                      id={"remove_country-#{country}"}
                       :if={@live_action == :edit}
                       class="btn btn-danger ms-auto"
                       :on-click="remove_country"
@@ -76,7 +78,7 @@
               </thead>
               <tbody id="risk_countries" class="fixed-height">
                 <Inputs for={:countries} :let={form: form}>
-                  <tr id={"risk_country-#{fetch_field!(form.source, :country)}"}>
+                  <tr id={"select-risk_country-#{fetch_field!(form.source, :country)}"}>
                     <td class="d-flex">
                       <div>
                         {country_name(fetch_field!(form.source, :country))}
@@ -84,7 +86,10 @@
                       </div>
 
                       <Field name={:is_risk_country} class="ms-auto">
-                        <Checkbox opts={checked: fetch_field!(form.source, :is_risk_country)} />
+                        <Checkbox opts={
+                          id: "checkbox-risk_country-#{fetch_field!(form.source, :country)}",
+                          checked: fetch_field!(form.source, :is_risk_country)
+                        } />
                       </Field>
                     </td>
                   </tr>
