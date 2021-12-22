@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 
 #, elixir-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -497,7 +497,7 @@ msgstr "Dolori al corpo"
 
 #, elixir-format
 msgid "Breakthrough Infections"
-msgstr ""
+msgstr "Infezioni inaspettate"
 
 #, elixir-format
 msgid "Call"
@@ -2579,7 +2579,7 @@ msgstr "Nome"
 #, elixir-format
 msgctxt "Breakthrough Infection Export"
 msgid "Last Test Date"
-msgstr ""
+msgstr "Data dell'ultimo test"
 
 #, elixir-format, fuzzy
 msgctxt "Breakthrough Infection Export"
@@ -3627,6 +3627,16 @@ msgstr "Caso creato il"
 #, elixir-format
 msgid "Phase created successfully"
 msgstr "Fase creata con successo"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Phase dates must be set manually."
+msgstr "Le date della fase devono essere impostate manualmente."
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Problem"
+msgid "Phase ends in the past"
+msgstr "La fase finisce nel passato"
 
 #, elixir-format
 msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
@@ -4923,7 +4933,7 @@ msgstr "Test per la cessazione anticipata della quarantena"
 
 #, elixir-format
 msgid "Test reference given by the laboratory."
-msgstr ""
+msgstr "Riferimento del test fornito dal laboratorio."
 
 #, elixir-format, fuzzy
 msgid "Test required by professional activity"

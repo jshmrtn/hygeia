@@ -89,7 +89,7 @@ msgstr "Un minimum de 3 points doit être rempli"
 
 #, elixir-format
 msgid "A new case will be created for this person."
-msgstr ""
+msgstr "Un nouveau dossier sera créé pour cette personne."
 
 #, elixir-format, fuzzy
 msgid "A phase will be appended."
@@ -146,7 +146,7 @@ msgstr "Ajouter"
 
 #, elixir-format
 msgid "Add a flight"
-msgstr ""
+msgstr "Ajouter un vol"
 
 #, elixir-format
 msgid "Add an institution"
@@ -497,7 +497,7 @@ msgstr "Maux du corps"
 
 #, elixir-format
 msgid "Breakthrough Infections"
-msgstr ""
+msgstr "Infections inattendues"
 
 #, elixir-format, fuzzy
 msgid "Call"
@@ -732,21 +732,21 @@ msgstr "Cinéma / théâtre / concert"
 
 #, elixir-format
 msgid "Class or division"
-msgstr ""
+msgstr "Classe ou division"
 
 #, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division"
-msgstr ""
+msgstr "Classe ou division"
 
 #, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
-msgstr ""
+msgstr "Classe ou division introuvable"
 
 #, elixir-format
 msgid "Clear"
-msgstr ""
+msgstr "Réinitialiser"
 
 #, elixir-format, fuzzy
 msgctxt "Auto Tracing Step"
@@ -1085,12 +1085,12 @@ msgstr "Date de la dernière visite"
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Date of return"
-msgstr ""
+msgstr "Date de retour"
 
 #, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Travel Field"
 msgid "Date of return"
-msgstr ""
+msgstr "Date de retour"
 
 #, elixir-format, fuzzy
 msgid "Dear Sir / Madam"
@@ -1211,7 +1211,7 @@ msgstr "Supprimer la personne"
 
 #, elixir-format
 msgid "Delete selected"
-msgstr ""
+msgstr "Supprimer sélectionnée"
 
 #, elixir-format, fuzzy
 msgid "Deleted"
@@ -1262,7 +1262,7 @@ msgstr "Avez-vous rencontré votre famille ou vos amis récemment ?"
 
 #, elixir-format
 msgid "Did you travel by plane between %{start_date} and %{end_date}?"
-msgstr ""
+msgstr "Avez-vous voyagé en avion entre le %{start_date} et le %{end_date} ?"
 
 #, elixir-format, fuzzy
 msgid "Did you visit a gym recently?"
@@ -1365,12 +1365,12 @@ msgstr "Division"
 #, elixir-format
 msgctxt "Person Visits"
 msgid "Division not provided"
-msgstr ""
+msgstr "Division non fournie"
 
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Division not provided."
-msgstr ""
+msgstr "Division non fournie."
 
 #, elixir-format, fuzzy
 msgid "Division updated successfully"
@@ -1386,11 +1386,11 @@ msgstr "Les divisions ont fusionné avec succès"
 
 #, elixir-format
 msgid "Divisions not found, please close this popup and insert one manually in the dedicated fields."
-msgstr ""
+msgstr "Divisions introuvables, veuillez fermer cette fenêtre contextuelle et en insérer une manuellement dans les champs dédiés."
 
 #, elixir-format
 msgid "Divisions not found, please insert one manually."
-msgstr ""
+msgstr "Divisions introuvables, veuillez en insérer une manuellement."
 
 #, elixir-format, fuzzy
 msgid "Do not append Note"
@@ -1841,17 +1841,17 @@ msgstr "Informations sur les vols"
 #, elixir-format
 msgctxt "Auto Tracing Problem"
 msgid "Flight Related"
-msgstr ""
+msgstr "Lié au vol"
 
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Flight date"
-msgstr ""
+msgstr "Date de vol"
 
 #, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Flight date"
-msgstr ""
+msgstr "Date de vol"
 
 #, elixir-format, fuzzy
 msgid "Flight information"
@@ -1860,12 +1860,12 @@ msgstr "Informations sur les vols"
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Flight number"
-msgstr ""
+msgstr "Numéro de vol"
 
 #, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Flight number"
-msgstr ""
+msgstr "Numéro de vol"
 
 #, elixir-format, fuzzy
 msgid "Found no results"
@@ -1928,12 +1928,12 @@ msgstr "A des symptômes"
 #, elixir-format
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Travel Field"
 msgid "Has flown"
-msgstr ""
+msgstr "A volé"
 
 #, elixir-format
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Travel Field"
 msgid "Has travelled"
-msgstr ""
+msgstr "A voyagé"
 
 #, elixir-format, fuzzy
 msgid "Have you been or are you in a hospital?"
@@ -1942,7 +1942,7 @@ msgstr "Avez-vous été ou êtes-vous dans un hôpital ?"
 #, elixir-format
 msgctxt "Auto Tracing Travel"
 msgid "Have you visited a high risk country %{link} (link will open in a new tab) within the last 14 days (between %{start_date} and %{end_date})?"
-msgstr ""
+msgstr "Avez-vous visité un pays à haut risque %{link} (le lien s'ouvrira dans un nouvel onglet) au cours des 14 derniers jours (entre le %{start_date} et le %{end_date}) ?"
 
 #, elixir-format, fuzzy
 msgctxt "Clinical Symptom"
@@ -1990,7 +1990,7 @@ msgstr "Haut"
 #, elixir-format
 msgctxt "Auto Tracing Problem"
 msgid "High Risk Country Travel"
-msgstr ""
+msgstr "Voyage dans un pays à haut risque"
 
 #, elixir-format, fuzzy
 msgid "History"
@@ -2188,7 +2188,7 @@ msgstr "Si vous avez rencontré %{first_name} %{last_name} plusieurs fois, séle
 #, elixir-format
 msgctxt "Auto Tracing Travel"
 msgid "If you traveled via plane, please add your flight below."
-msgstr ""
+msgstr "Si vous avez voyagé en avion, veuillez ajouter votre vol ci-dessous."
 
 #, elixir-format
 msgid "If you were present at this location for multiple days, enter the last day into the date field."
@@ -2580,7 +2580,7 @@ msgstr "Nom de famille"
 #, elixir-format
 msgctxt "Breakthrough Infection Export"
 msgid "Last Test Date"
-msgstr ""
+msgstr "Date du dernier test"
 
 #, elixir-format, fuzzy
 msgctxt "Breakthrough Infection Export"
@@ -3128,7 +3128,7 @@ msgstr "Aucun symptôme"
 
 #, elixir-format
 msgid "No class or division found, please close this popup and insert one manually in the dedicated fields."
-msgstr ""
+msgstr "Aucune classe ou division trouvée, veuillez fermer cette fenêtre contextuelle et en insérer une manuellement dans les champs dédiés."
 
 #, elixir-format, fuzzy
 msgid "No data to display"
@@ -3179,12 +3179,12 @@ msgstr "Pas fait"
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Not provided"
-msgstr ""
+msgstr "Non fourni"
 
 #, elixir-format
 msgctxt "Person Visits"
 msgid "Not provided"
-msgstr ""
+msgstr "Non fourni"
 
 #, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Note Field"
@@ -3231,7 +3231,7 @@ msgstr "Oups !"
 
 #, elixir-format
 msgid "Open case in new tab"
-msgstr ""
+msgstr "Ouvrir le cas dans un nouvel onglet"
 
 #, elixir-format, fuzzy
 msgid "Ordered"
@@ -3623,11 +3623,21 @@ msgstr "Le type de phase existe déjà sur le boîtier"
 
 #, elixir-format
 msgid "Phase created at"
-msgstr ""
+msgstr "Phase créée à"
 
 #, elixir-format, fuzzy
 msgid "Phase created successfully"
 msgstr "Phase créée avec succès"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Phase dates must be set manually."
+msgstr "Les dates de phase doivent être définies manuellement."
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Problem"
+msgid "Phase ends in the past"
+msgstr "La phase se termine dans le passé"
 
 #, elixir-format, fuzzy
 msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
@@ -3688,22 +3698,22 @@ msgstr "Lieu"
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
-msgstr ""
+msgstr "Lieu d'arrivée"
 
 #, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of arrival"
-msgstr ""
+msgstr "Lieu d'arrivée"
 
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of departure"
-msgstr ""
+msgstr "Lieu de départ"
 
 #, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of departure"
-msgstr ""
+msgstr "Lieu de départ"
 
 #, elixir-format, fuzzy
 msgid "Please enter your place of residence."
@@ -3981,7 +3991,7 @@ msgstr "Fin de la période de quarantaine"
 
 #, elixir-format
 msgid "Quarantine confirmation will be sent on the selected contact methods."
-msgstr ""
+msgstr "Une confirmation de quarantaine sera envoyée sur les méthodes de contact sélectionnées."
 
 #, elixir-format, fuzzy
 msgid "Quarantine confirmation will not be sent to this person."
@@ -4147,7 +4157,7 @@ msgstr "Le document demandé est actuellement indisponible"
 
 #, elixir-format
 msgid "Reset filters"
-msgstr ""
+msgstr "Réinitialiser les filtres"
 
 #, elixir-format, fuzzy
 msgid "Reset tracer & supervisor"
@@ -4498,7 +4508,7 @@ msgstr "Identifiant de domaine de signature"
 
 #, elixir-format
 msgid "Similar persons in the system"
-msgstr ""
+msgstr "Personnes similaires dans le système"
 
 #, elixir-format, fuzzy
 msgctxt "Clinical Symptom"
@@ -4641,11 +4651,11 @@ msgstr "Sujet"
 
 #, elixir-format
 msgid "Submit"
-msgstr ""
+msgstr "Soumettre"
 
 #, elixir-format
 msgid "Submit and send"
-msgstr ""
+msgstr "Soumettre et envoyer"
 
 #, elixir-format, fuzzy
 msgid "Submit contact persons"
@@ -4667,12 +4677,12 @@ msgstr "Authentification réussie."
 
 #, elixir-format
 msgid "Suggested duplicates"
-msgstr ""
+msgstr "Doublons suggérés"
 
 #, elixir-format
 msgctxt "Create Possible Index Step"
 msgid "Summary"
-msgstr ""
+msgstr "Sommaire"
 
 #, elixir-format, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
@@ -4924,7 +4934,7 @@ msgstr "Test pour la fin anticipée de la quarantaine"
 
 #, elixir-format
 msgid "Test reference given by the laboratory."
-msgstr ""
+msgstr "Référence d'essai donnée par le laboratoire."
 
 #, elixir-format, fuzzy
 msgid "Test required by professional activity"
@@ -5027,12 +5037,12 @@ msgstr "Le statut sert d'aperçu de la phase de recherche actuelle de la personn
 
 #, elixir-format
 msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
-msgstr ""
+msgstr "L'application suisse covid est l'application officielle de recherche de contacts de la suisse. L'application aide à tracer et à empêcher la propagation du virus COVID-19."
 
 #, elixir-format
 msgctxt "errors"
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
-msgstr ""
+msgstr "Une erreur s'est produite lors de l'envoi du formulaire. Veuillez réessayer de soumettre le formulaire et contactez votre administrateur si le problème persiste."
 
 #, elixir-format, fuzzy
 msgid "This case is not in an index phase."
@@ -5054,15 +5064,15 @@ msgstr "Cette organisation est peut-être un doublon de %{name_link}, veuillez v
 
 #, elixir-format
 msgid "This person cannot be contacted because: %{reasons}."
-msgstr ""
+msgstr "Cette personne ne peut pas être contactée car : %{reasons}."
 
 #, elixir-format
 msgid "This person cannot be contacted by email because: %{reasons}."
-msgstr ""
+msgstr "Cette personne ne peut pas être contactée par e-mail car : %{reasons}."
 
 #, elixir-format
 msgid "This person cannot be contacted by sms because: %{reasons}."
-msgstr ""
+msgstr "Cette personne ne peut pas être contactée par sms car : %{reasons}."
 
 #, elixir-format, fuzzy
 msgid "This person has a possible duplicate."
@@ -5072,11 +5082,11 @@ msgstr[1] "Cette personne a {count} de doublons possibles."
 
 #, elixir-format
 msgid "This person has been notified on the following contact methods"
-msgstr ""
+msgstr "Cette personne a été notifiée sur les méthodes de contact suivantes"
 
 #, elixir-format
 msgid "This person has not been notified."
-msgstr ""
+msgstr "Cette personne n'a pas été prévenue."
 
 #, elixir-format, fuzzy
 msgid "This person is in the database"
@@ -5084,17 +5094,17 @@ msgstr "Cette personne a un double possible."
 
 #, elixir-format
 msgid "This person requires further processing, please click on edit to correct the available information."
-msgstr ""
+msgstr "Cette personne nécessite un traitement supplémentaire, veuillez cliquer sur modifier pour corriger les informations disponibles."
 
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "This person took the following flights"
-msgstr ""
+msgstr "Cette personne a effectué les vols suivants"
 
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "This person travelled in the following high risk country"
-msgstr ""
+msgstr "Cette personne a voyagé dans le pays à haut risque suivant"
 
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
@@ -5373,12 +5383,12 @@ msgstr "Inconnu"
 
 #, elixir-format
 msgid "Unknown organisation"
-msgstr ""
+msgstr "Organisation inconnue"
 
 #, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Unknown organisation"
-msgstr ""
+msgstr "Organisation inconnue"
 
 #, elixir-format, fuzzy
 msgctxt "Auto Tracing Problem"
@@ -5507,7 +5517,7 @@ msgstr "Diverses informations concernant la fonctionnalité des applications ain
 
 #, elixir-format
 msgid "View"
-msgstr ""
+msgstr "Voir"
 
 #, elixir-format, fuzzy
 msgid "View person"
@@ -5550,7 +5560,7 @@ msgstr "Histoire"
 
 #, elixir-format
 msgid "Visits to educational institutions"
-msgstr ""
+msgstr "Visites d'établissements d'enseignement"
 
 #, elixir-format, fuzzy
 msgctxt "Case Status"
@@ -5622,12 +5632,12 @@ msgstr "Qui avez-vous rencontré ou avec qui vivez-vous ?"
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Wore a mask during the whole flight?"
-msgstr ""
+msgstr "Portez un masque pendant tout le vol?"
 
 #, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Wore mask"
-msgstr ""
+msgstr "Portait un masque"
 
 #, elixir-format, fuzzy
 msgid "Work Place"
@@ -5660,7 +5670,7 @@ msgstr "Vous n'êtes pas autorisé à faire cette action."
 
 #, elixir-format
 msgid "You are not authorized to view this person. Please provide the code <%{country} / %{subdivision} / %{person_hr_id}> to your supervisor to identify the person."
-msgstr ""
+msgstr "Vous n'êtes pas autorisé à voir cette personne. Veuillez fournir le code <%{country} / %{subdivision} / %{person_hr_id}> à votre superviseur pour identifier la personne."
 
 #, elixir-format, fuzzy
 msgid "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
@@ -5705,7 +5715,7 @@ msgstr "Vous devez justifier l'achèvement d'une phase."
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "You must resolve the organisation before choosing the right division."
-msgstr ""
+msgstr "Vous devez résoudre l'organisation avant de choisir la bonne division."
 
 #, elixir-format, fuzzy
 msgid "Your Tests"
@@ -5748,7 +5758,7 @@ msgstr "toutes les subdivisions"
 #, elixir-format
 msgctxt "Notification Tray"
 msgid "and %{count} more"
-msgstr ""
+msgstr "et %{count} de plus"
 
 #, elixir-format, fuzzy
 msgid "another place"
@@ -5794,7 +5804,7 @@ msgstr "divisions"
 
 #, elixir-format
 msgid "either an existing organisation, an unknown organisation or a comment must be filled"
-msgstr ""
+msgstr "soit une organisation existante, soit une organisation inconnue ou un commentaire doit être rempli"
 
 #, elixir-format, fuzzy
 msgctxt "Item Table"
@@ -5896,7 +5906,7 @@ msgstr "veuillez ajouter au moins un établissement d'enseignement que vous avez
 
 #, elixir-format
 msgid "please add at least one flight that you took during the period in consideration"
-msgstr ""
+msgstr "veuillez ajouter au moins un vol que vous avez effectué pendant la période considérée"
 
 #, elixir-format, fuzzy
 msgid "please add at least one occupation"
@@ -5912,7 +5922,7 @@ msgstr "merci de renseigner les coordonnées de la personne qui vous a transmis 
 
 #, elixir-format
 msgid "please provide the information about your travel"
-msgstr ""
+msgstr "veuillez fournir les informations sur votre voyage"
 
 #, elixir-format, fuzzy
 msgctxt "Item Table"
@@ -5956,27 +5966,27 @@ msgstr "tests"
 
 #, elixir-format
 msgid "the assigned tenant has not configured email notifications"
-msgstr ""
+msgstr "le locataire affecté n'a pas configuré les notifications par e-mail"
 
 #, elixir-format
 msgid "the assigned tenant has not configured sms notifications"
-msgstr ""
+msgstr "le locataire affecté n'a pas configuré les notifications sms"
 
 #, elixir-format
 msgid "the case contains an index phase"
-msgstr ""
+msgstr "le boîtier contient une phase d'index"
 
 #, elixir-format
 msgid "the case is managed by an unmanaged tenant"
-msgstr ""
+msgstr "le dossier est géré par un locataire non géré"
 
 #, elixir-format
 msgid "the person does not have contact methods"
-msgstr ""
+msgstr "la personne n'a pas de méthodes de contact"
 
 #, elixir-format
 msgid "the transmission type is not \"contact person\""
-msgstr ""
+msgstr "le type de transmission n'est pas \"personne à contacter\""
 
 #, elixir-format, fuzzy
 msgctxt "Item Table"
