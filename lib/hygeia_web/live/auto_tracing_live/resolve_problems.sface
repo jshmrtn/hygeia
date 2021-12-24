@@ -106,6 +106,162 @@
                         <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                           {pgettext("Auto Tracing Resolve Problems", "Done")}
                         </button>
+                      {#match :possible_transmission}
+                        {#if not Enum.empty?(@case.received_transmissions)}
+                          <p>{pgettext("Auto Tracing Resolve Problems", "Existing Transmissions")}:</p>
+                          <div class="hy-card-grid-2-cols">
+                            {#for transmission <- @case.received_transmissions}
+                              <div class="card card-body">
+                                <dl>
+                                  <dt>{gettext("Date")}</dt>
+                                  <dd>{transmission.date}</dd>
+                                  {#if infection_place = transmission.infection_place}
+                                    <dt>{gettext("Place Name")}</dt>
+                                    <dd>{infection_place.name}</dd>
+                                    <dt>{gettext("Type")}</dt>
+                                    <dd :if={infection_place.type}>{translate_infection_place_type(infection_place.type)}</dd>
+                                    {#if infection_place.type == :flight}
+                                      <dt>{gettext("Flight information")}</dt>
+                                      <dd>{infection_place.flight_information}</dd>
+                                    {/if}
+                                    <dt>{gettext("Address")}</dt>
+                                    <dd :if={infection_place.address}>{Address.to_string(infection_place.address, :long)}</dd>
+                                  {/if}
+                                </dl>
+                                <dl>
+                                  <dt>{gettext("Propagator internal")}</dt>
+                                  <dd>{transmission.propagator_internal || gettext("Unknown ")}</dd>
+                                  {#if transmission.propagator_case_uuid}
+                                    <dt>{gettext("Propagator")}</dt>
+                                    <dd>{transmission.propagator.first_name} {transmission.propagator.last_name}</dd>
+                                    <dt>{gettext("Type")}</dt>
+                                    <dd :if={infection_place.type}>{translate_infection_place_type(infection_place.type)}</dd>
+                                  {/if}
+                                  {#if transmission.propagator_ism_id}
+                                    <dt>{gettext("Propagator ISN ID")}</dt>
+                                    <dd>{transmission.propagator_ism_id}</dd> 
+                                  {/if}
+                                </dl>
+                                <Link to={Routes.transmission_show_path(@socket, :show, transmission.uuid)} opts={target: "_blank", rel: "noopener noreferrer"}>
+                                  {gettext("Open transmission in new tab")}
+                                </Link>
+                              </div>
+                            {/for}
+                          </div>
+                        {/if}
+
+                        <p class="my-3">{pgettext("Auto Tracing Resolve Problems", "Possible Transmission")}:</p>
+
+                        <div class="card card-body mb-3">
+                          <div class="hy-card-grid-2-cols">
+                            <dl>
+                              <dt>{gettext("Date")}</dt>
+                              <dd>{Ecto.Changeset.fetch_field!(@possible_transmission_changeset, :date)}</dd>
+                              {#if infection_place = Ecto.Changeset.fetch_field!(@possible_transmission_changeset, :infection_place)}
+                                <dt>{gettext("Place Name")}</dt>
+                                <dd>{infection_place.name}</dd>
+                                <dt>{gettext("Type")}</dt>
+                                <dd :if={infection_place.type}>{translate_infection_place_type(infection_place.type)}</dd>
+                                {#if infection_place.type == :flight}
+                                  <dt>{gettext("Flight information")}</dt>
+                                  <dd>{infection_place.flight_information}</dd>
+                                {/if}
+                                <dt>{gettext("Address")}</dt>
+                                <dd :if={infection_place.address}>{Address.to_string(infection_place.address, :long)}</dd>
+                              {/if}
+                            </dl>
+                            <div :if={@auto_tracing.propagator_known} class="card">
+                              <div class="card-header">{pgettext("Auto Tracing Resolve Problems", "Provided Propagator")}</div>
+                              <div class="card-body">
+                                <p>
+                                  {@auto_tracing.propagator.first_name}
+                                  {@auto_tracing.propagator.last_name}
+                                </p>
+                                <dl>
+                                  <dt>{gettext("Phone")}</dt>
+                                  <dd>{@auto_tracing.propagator.phone}</dd>
+                                  <dt>{gettext("Email")}</dt>
+                                  <dd>{@auto_tracing.propagator.email}</dd>
+                                  <dt>{gettext("Address")}</dt>
+                                  <dd :if={@auto_tracing.propagator.address}>{Address.to_string(@auto_tracing.propagator.address, :long)}</dd>
+                                </dl>
+                                <Form
+                                  for={@possible_transmission_changeset}
+                                  change="possible_transmission_change"
+                                  as={:possible_transmission}
+                                  submit="possible_transmission_submit"
+                                >
+                                  <Field name={:propagator_internal} class="form-group">
+                                    <div class="btn-group btn-group-toggle btn-radio-group">
+                                      <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
+                                      <label class={
+                                        "btn",
+                                        "btn-outline-primary",
+                                        active: Ecto.Changeset.get_field(@possible_transmission_changeset, :propagator_internal) == nil
+                                      }>
+                                        <RadioButton value="" />
+                                        {gettext("No propagator")}
+                                      </label>
+                                      <label class={
+                                        "btn",
+                                        "btn-outline-primary",
+                                        active: Ecto.Changeset.get_field(@possible_transmission_changeset, :propagator_internal) == true
+                                      }>
+                                        <RadioButton value="true" />
+                                        {gettext("Internal")}
+                                      </label>
+                                      <label class={
+                                        "btn",
+                                        "btn-outline-primary",
+                                        active:
+                                          Ecto.Changeset.get_field(@possible_transmission_changeset, :propagator_internal) == false
+                                      }>
+                                        <RadioButton value="false" />
+                                        {gettext("External")}
+                                      </label>
+                                    </div>
+                                    <ErrorTag class="d-block invalid-feedback" />
+                                  </Field>
+                                  <Field
+                                    name={:propagator_ism_id}
+                                    class="form-group"
+                                    :if={Ecto.Changeset.get_field(@possible_transmission_changeset, :propagator_internal) == false}
+                                  >
+                                    <HygeiaWeb.FieldLabel />
+                                    <TextInput class="form-control" />
+                                    <ErrorTag class="d-block invalid-feedback" />
+                                  </Field>
+                                  <Field
+                                    name={:propagator_case_uuid}
+                                    class="form-group"
+                                    :if={Ecto.Changeset.get_field(@possible_transmission_changeset, :propagator_internal) == true}
+                                  >
+                                    <HygeiaWeb.FieldLabel />
+                                    <HygeiaWeb.CaseLive.Choose
+                                      id="possible_transmission_propagator_case"
+                                      change="change_possible_transmission_propagator_case"
+                                    />
+                                    <ErrorTag class="d-block invalid-feedback" />
+                                  </Field>
+                                </Form>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mt-3">
+                            <button
+                              :on-click="create_transmission"
+                              class="btn btn-primary"
+                              phx-disable-with={gettext("Saving...")}
+                              disabled={not @possible_transmission_changeset.valid?}
+                            >
+                              {gettext("Create Transmission")}
+                            </button>
+                          </div>
+                        </div>
+
+                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
+                          {pgettext("Auto Tracing Resolve Problems", "Done")}
+                        </button>
                       {#match :link_propagator}
                         <div :if={@auto_tracing.propagator_known}>
                           <p>

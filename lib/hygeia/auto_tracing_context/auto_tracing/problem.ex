@@ -14,6 +14,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
       :high_risk_country_travel,
       :flight_related,
       :new_employer,
+      :possible_transmission,
+      # TODO: Deprecaded, to remove once it is not present in production. Remove related code.
       :link_propagator,
       :residency_outside_country,
       :no_contact_method,
@@ -45,6 +47,10 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
 
   def translate(:flight_related), do: pgettext("Auto Tracing Problem", "Flight Related")
   def translate(:new_employer), do: pgettext("Auto Tracing Problem", "New Employer")
+
+  def translate(:possible_transmission),
+    do: pgettext("Auto Tracing Problem", "Possible Transmission")
+
   def translate(:link_propagator), do: pgettext("Auto Tracing Problem", "Link Propagator")
 
   def translate(:residency_outside_country),

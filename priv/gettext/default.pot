@@ -1024,6 +1024,10 @@ msgstr ""
 msgid "Create Possible Index Cases"
 msgstr ""
 
+#, elixir-format, ex-autogen
+msgid "Create Transmission"
+msgstr ""
+
 #, elixir-format
 msgid "Create new person"
 msgstr ""
@@ -1641,6 +1645,11 @@ msgstr ""
 #, elixir-format
 msgctxt "Inbox Row Apply Person"
 msgid "Existing Person, new case"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Existing Transmissions"
 msgstr ""
 
 #, elixir-format
@@ -3173,6 +3182,10 @@ msgstr ""
 msgid "Open case in new tab"
 msgstr ""
 
+#, elixir-format, ex-autogen
+msgid "Open transmission in new tab"
+msgstr ""
+
 #, elixir-format
 msgid "Ordered"
 msgstr ""
@@ -3635,6 +3648,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr ""
 
+#, elixir-format, ex-autogen
+msgid "Place Name"
+msgstr ""
+
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
@@ -3706,6 +3723,16 @@ msgstr ""
 
 #, elixir-format
 msgid "Possible Index Submissions"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Problem"
+msgid "Possible Transmission"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Possible Transmission"
 msgstr ""
 
 #, elixir-format
@@ -3856,13 +3883,26 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmissi
 msgid "Propagator ISM ID"
 msgstr ""
 
+#, elixir-format, ex-autogen
+msgid "Propagator ISN ID"
+msgstr ""
+
 #, elixir-format
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Internal"
 msgstr ""
 
+#, elixir-format, ex-autogen
+msgid "Propagator internal"
+msgstr ""
+
 #, elixir-format
 msgid "Protocol"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Provided Propagator"
 msgstr ""
 
 #, elixir-format
@@ -5306,6 +5346,10 @@ msgstr ""
 #, elixir-format
 msgctxt "vaccination_done"
 msgid "Unknown"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "Unknown "
 msgstr ""
 
 #, elixir-format

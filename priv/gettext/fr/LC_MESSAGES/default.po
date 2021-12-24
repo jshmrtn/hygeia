@@ -27,7 +27,7 @@ msgctxt "Auto Tracing Vaccination"
 msgid "%{ordering} jab date"
 msgstr "%{ordering} vaccin"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "%{tenant} - Contact Tracing"
 msgstr "%{locataire} - Recherche de contacts"
 
@@ -55,7 +55,7 @@ msgstr "Statistiques 24 heures"
 msgid "6 or more contact persons"
 msgstr "6 personnes de contact ou plus"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgid "< 15 Min."
 msgstr "< 15 Min."
 
@@ -1017,6 +1017,10 @@ msgstr "Phase de création"
 msgid "Create Possible Index Cases"
 msgstr "Créer des cas d'indexation possibles"
 
+#, elixir-format, ex-autogen, fuzzy
+msgid "Create Transmission"
+msgstr "Créer une transmission"
+
 #, elixir-format, fuzzy
 msgid "Create new person"
 msgstr "Créer une nouvelle personne"
@@ -1695,6 +1699,11 @@ msgstr "Cas existant"
 msgctxt "Inbox Row Apply Person"
 msgid "Existing Person, new case"
 msgstr "Personne existante, nouvelle affaire"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Existing Transmissions"
+msgstr "Transmissions existantes"
 
 #, elixir-format, fuzzy
 msgid "Export"
@@ -3233,6 +3242,10 @@ msgstr "Oups !"
 msgid "Open case in new tab"
 msgstr "Ouvrir le cas dans un nouvel onglet"
 
+#, elixir-format, ex-autogen
+msgid "Open transmission in new tab"
+msgstr "Ouvrir la transmission dans un nouvel onglet"
+
 #, elixir-format, fuzzy
 msgid "Ordered"
 msgstr "Commandé"
@@ -3695,6 +3708,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Lieu"
 
+#, elixir-format, ex-autogen, fuzzy
+msgid "Place Name"
+msgstr "Lieu"
+
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
@@ -3767,6 +3784,16 @@ msgstr "Soumissions possibles à l'index"
 #, elixir-format, fuzzy
 msgid "Possible Index Submissions"
 msgstr "Soumissions possibles à l'index"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Auto Tracing Problem"
+msgid "Possible Transmission"
+msgstr "Entrer les transmissions possibles"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Possible Transmission"
+msgstr "Entrer les transmissions possibles"
 
 #, elixir-format, fuzzy
 msgid "Possible index submission created successfully"
@@ -3916,14 +3943,27 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmissi
 msgid "Propagator ISM ID"
 msgstr "Propagateur ISM ID"
 
+#, elixir-format, ex-autogen, fuzzy
+msgid "Propagator ISN ID"
+msgstr "Propagateur ISM ID"
+
 #, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Internal"
 msgstr "Propagateur interne"
 
+#, elixir-format, ex-autogen, fuzzy
+msgid "Propagator internal"
+msgstr "Propagateur interne"
+
 #, elixir-format, fuzzy
 msgid "Protocol"
 msgstr "Protocole"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Provided Propagator"
+msgstr "Propagateur fourni"
 
 #, elixir-format, fuzzy
 msgid "Pub, Discotheque, Dance club, Night club"
@@ -5366,6 +5406,10 @@ msgstr "Inconnu"
 #, elixir-format, fuzzy
 msgctxt "vaccination_done"
 msgid "Unknown"
+msgstr "Inconnu"
+
+#, elixir-format, ex-autogen, fuzzy
+msgid "Unknown "
 msgstr "Inconnu"
 
 #, elixir-format, fuzzy

@@ -1017,6 +1017,10 @@ msgstr "Phase erstellen"
 msgid "Create Possible Index Cases"
 msgstr "Mögliche Indexfälle erstellen"
 
+#, elixir-format, ex-autogen
+msgid "Create Transmission"
+msgstr "Übertragung erstellen"
+
 #, elixir-format
 msgid "Create new person"
 msgstr "Neue Person erstellen"
@@ -1694,6 +1698,11 @@ msgstr "Existierender Fall"
 msgctxt "Inbox Row Apply Person"
 msgid "Existing Person, new case"
 msgstr "Existierende Person, neuer Fall"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Existing Transmissions"
+msgstr "Bestehende Übertragungen"
 
 #, elixir-format
 msgid "Export"
@@ -3232,6 +3241,10 @@ msgstr "Hoppla!"
 msgid "Open case in new tab"
 msgstr "Fall in neuem Tab öffnen"
 
+#, elixir-format, ex-autogen
+msgid "Open transmission in new tab"
+msgstr "Übertragung in neuem Tab öffnen"
+
 #, elixir-format
 msgid "Ordered"
 msgstr "Verordnet"
@@ -3694,6 +3707,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Ort"
 
+#, elixir-format, ex-autogen
+msgid "Place Name"
+msgstr "Ortsname"
+
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
@@ -3766,6 +3783,16 @@ msgstr "Möglicher-Index Einsendungen"
 #, elixir-format
 msgid "Possible Index Submissions"
 msgstr "Möglicher-Index Einsendungen"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Problem"
+msgid "Possible Transmission"
+msgstr "Mögliche Übertragungen eingeben"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Possible Transmission"
+msgstr "Mögliche Übertragungen eingeben"
 
 #, elixir-format
 msgid "Possible index submission created successfully"
@@ -3915,14 +3942,27 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmissi
 msgid "Propagator ISM ID"
 msgstr "Anstecker ISM IS"
 
+#, elixir-format, ex-autogen
+msgid "Propagator ISN ID"
+msgstr "Anstecker ISM ID"
+
 #, elixir-format
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Internal"
 msgstr "Anstecker Intern"
 
+#, elixir-format, ex-autogen
+msgid "Propagator internal"
+msgstr "Anstecker Intern"
+
 #, elixir-format
 msgid "Protocol"
 msgstr "Protokoll"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Provided Propagator"
+msgstr "Bereitgestellter Anstecker"
 
 #, elixir-format
 msgid "Pub, Discotheque, Dance club, Night club"
@@ -5365,6 +5405,10 @@ msgstr "Unbekannt"
 #, elixir-format
 msgctxt "vaccination_done"
 msgid "Unknown"
+msgstr "Unbekannt"
+
+#, elixir-format, ex-autogen
+msgid "Unknown "
 msgstr "Unbekannt"
 
 #, elixir-format

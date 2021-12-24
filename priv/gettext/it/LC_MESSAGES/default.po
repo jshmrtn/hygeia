@@ -734,12 +734,12 @@ msgstr "Cinema / teatro / concerto"
 msgid "Class or division"
 msgstr "Classe o divisione"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division"
 msgstr "Classe o divisione"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
 msgstr "Classe o divisione non trovata"
@@ -1016,6 +1016,10 @@ msgstr "Crea una fase"
 #, elixir-format
 msgid "Create Possible Index Cases"
 msgstr "Crea possibili casi indice"
+
+#, elixir-format, ex-autogen, fuzzy
+msgid "Create Transmission"
+msgstr "Crea una trasmissione"
 
 #, elixir-format
 msgid "Create new person"
@@ -1694,6 +1698,11 @@ msgstr "Caso esistente"
 msgctxt "Inbox Row Apply Person"
 msgid "Existing Person, new case"
 msgstr "Persona esistente, nuovo caso"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Existing Transmissions"
+msgstr "Trasmissioni esistenti"
 
 #, elixir-format
 msgid "Export"
@@ -3232,6 +3241,10 @@ msgstr "Ops!"
 msgid "Open case in new tab"
 msgstr "Apri caso in una nuova scheda"
 
+#, elixir-format, ex-autogen
+msgid "Open transmission in new tab"
+msgstr "Apri trasmissione in una nuova scheda"
+
 #, elixir-format, fuzzy
 msgid "Ordered"
 msgstr "Ordinato"
@@ -3313,7 +3326,7 @@ msgctxt "Affiliation Kind"
 msgid "Other"
 msgstr "Altro"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Clinical Symptom"
 msgid "Other"
 msgstr "Altro"
@@ -3694,6 +3707,10 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Posto"
 
+#, elixir-format, ex-autogen, fuzzy
+msgid "Place Name"
+msgstr "Posto"
+
 #, elixir-format, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
@@ -3766,6 +3783,16 @@ msgstr "Possibili invii all'indice"
 #, elixir-format, fuzzy
 msgid "Possible Index Submissions"
 msgstr "Possibili invii all'indice"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Auto Tracing Problem"
+msgid "Possible Transmission"
+msgstr "Inserire le trasmissioni presunte"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Possible Transmission"
+msgstr "Inserire le trasmissioni presunte"
 
 #, elixir-format, fuzzy
 msgid "Possible index submission created successfully"
@@ -3915,14 +3942,27 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmissi
 msgid "Propagator ISM ID"
 msgstr "Propagatore ISM ID"
 
+#, elixir-format, ex-autogen, fuzzy
+msgid "Propagator ISN ID"
+msgstr "Propagatore ISM ID"
+
 #, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Internal"
 msgstr "Propagatore Interno"
 
+#, elixir-format, ex-autogen, fuzzy
+msgid "Propagator internal"
+msgstr "Propagatore Interno"
+
 #, elixir-format, fuzzy
 msgid "Protocol"
 msgstr "Protocollo"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Provided Propagator"
+msgstr "Propagatore fornito"
 
 #, elixir-format, fuzzy
 msgid "Pub, Discotheque, Dance club, Night club"
@@ -5367,6 +5407,10 @@ msgctxt "vaccination_done"
 msgid "Unknown"
 msgstr "Sconosciuto"
 
+#, elixir-format, ex-autogen, fuzzy
+msgid "Unknown "
+msgstr "Sconosciuto"
+
 #, elixir-format
 msgid "Unknown Error"
 msgstr "Errore sconosciuto"
@@ -5375,7 +5419,7 @@ msgstr "Errore sconosciuto"
 msgid "Unknown division"
 msgstr "Classe / divisione sconosciuta"
 
-#, elixir-format, fuzzy
+#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Unknown division"
 msgstr "Classe / divisione sconosciuta"
