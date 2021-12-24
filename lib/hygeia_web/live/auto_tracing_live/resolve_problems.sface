@@ -139,10 +139,13 @@
                                   {/if}
                                   {#if transmission.propagator_ism_id}
                                     <dt>{gettext("Propagator ISN ID")}</dt>
-                                    <dd>{transmission.propagator_ism_id}</dd> 
+                                    <dd>{transmission.propagator_ism_id}</dd>
                                   {/if}
                                 </dl>
-                                <Link to={Routes.transmission_show_path(@socket, :show, transmission.uuid)} opts={target: "_blank", rel: "noopener noreferrer"}>
+                                <Link
+                                  to={Routes.transmission_show_path(@socket, :show, transmission.uuid)}
+                                  opts={target: "_blank", rel: "noopener noreferrer"}
+                                >
                                   {gettext("Open transmission in new tab")}
                                 </Link>
                               </div>
