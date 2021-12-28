@@ -148,6 +148,13 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
       |> Date.compare(phase_end)
       |> case do
         :gt ->
+          changeset =
+            case
+            |> CaseContext.change_case()
+            |> set_quarantine_order_false()
+
+          {:ok, _case} = CaseContext.update_case(case, changeset)
+
           [:phase_ends_in_the_past] ++ problems
 
         _lt_eq ->
@@ -285,6 +292,18 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
       %Case.Phase{}, acc ->
         acc
+    end)
+  end
+
+  defp set_quarantine_order_false(changeset) do
+    index_phase =
+      Enum.find(
+        Ecto.Changeset.fetch_field!(changeset, :phases),
+        &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1)
+      )
+
+    changeset_update_params_by_id(changeset, :phases, %{uuid: index_phase.uuid}, fn params ->
+      Map.merge(params, %{"quarantine_order" => false})
     end)
   end
 
