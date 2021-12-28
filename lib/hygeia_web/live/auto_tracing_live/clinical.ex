@@ -303,7 +303,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
       )
 
     changeset_update_params_by_id(changeset, :phases, %{uuid: index_phase.uuid}, fn params ->
-      Map.merge(params, %{"quarantine_order" => false})
+      Map.put(params, "quarantine_order", false)
     end)
   end
 
