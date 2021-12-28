@@ -109,41 +109,50 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   defp save(%Socket{assigns: %{form_data: form_data}} = socket) do
-    case Service.upsert(form_data) do
-      {:ok, tuples} ->
-        :ok = Service.send_confirmations(socket, tuples, form_data.type)
+    if valid_form?(form_data) do
+      case Service.upsert(form_data) do
+        {:ok, tuples} ->
+          :ok = Service.send_confirmations(socket, tuples, form_data.type)
 
-        socket =
+          socket =
+            socket
+            |> unblock_navigation()
+            |> assign(visited_steps: visit_step([], :summary))
+            |> put_flash(:info, gettext("Cases inserted successfully."))
+
+          if form_data[:possible_index_submission_uuid] do
+            push_redirect(socket,
+              to:
+                Routes.possible_index_submission_index_path(
+                  socket,
+                  :index,
+                  form_data.propagator_case.uuid
+                )
+            )
+          else
+            push_patch(socket,
+              to: Routes.case_create_possible_index_path(socket, :index, :summary)
+            )
+          end
+
+        _error ->
           socket
-          |> unblock_navigation()
-          |> assign(visited_steps: visit_step([], :summary))
-          |> put_flash(:info, gettext("Cases inserted successfully."))
-
-        if form_data[:possible_index_submission_uuid] do
-          push_redirect(socket,
-            to:
-              Routes.possible_index_submission_index_path(
-                socket,
-                :index,
-                form_data.propagator_case.uuid
-              )
+          |> put_flash(
+            :error,
+            gettext(
+              "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
+            )
           )
-        else
-          push_patch(socket, to: Routes.case_create_possible_index_path(socket, :index, :summary))
-        end
-
-      _error ->
-        socket
-        |> put_flash(
-          :error,
-          pgettext(
-            "errors",
-            "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
+          |> push_patch(
+            to: Routes.case_create_possible_index_path(socket, :index, @default_form_step)
           )
-        )
-        |> push_patch(
-          to: Routes.case_create_possible_index_path(socket, :index, @default_form_step)
-        )
+      end
+    else
+      socket
+      |> put_flash(:error, gettext("Form data is invalid."))
+      |> push_patch(
+        to: Routes.case_create_possible_index_path(socket, :index, @default_form_step)
+      )
     end
   end
 
@@ -329,6 +338,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   def visited_step?([], _form_step), do: false
   def visited_step?([form_step | _t], form_step), do: true
   def visited_step?([_ | t], form_step), do: visited_step?(t, form_step)
+
+  @spec valid_form?(form_data :: map()) :: boolean()
+  def valid_form?(form_data) do
+    valid_step?(:transmission, form_data) and
+      valid_step?(:people, form_data) and
+      valid_step?(:action, form_data)
+  end
 
   defp valid_step?(:transmission, form_data) do
     DefineTransmission.valid?(form_data)

@@ -3,7 +3,7 @@ defmodule Hygeia.Repo do
     otp_app: :hygeia,
     adapter: Ecto.Adapters.Postgres
 
-  use Paginator,
+    use Paginator,
     limit: 25,
     maximum_limit: 100,
     include_total_count: true,
