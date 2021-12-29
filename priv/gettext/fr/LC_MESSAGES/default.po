@@ -2181,6 +2181,10 @@ msgstr "Si vous êtes complètement vacciné, veuillez insérer les deux dates d
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
 msgstr "Si vous avez eu un contact étroit avec des personnes que vous ne connaissez pas (par exemple dans un restaurant ou une église), veuillez en parler à votre traceur pour connaître la meilleure procédure et les mesures de contact à prendre."
 
+#, elixir-format, ex-autogen
+msgid "If you have a positive PCR test, you can apply for your Covid certificate under the following link: %{link}"
+msgstr "Si vous avez un test PCR positif, vous pouvez demander votre certificat Covid au lien suivant :% {link}"
+
 #, elixir-format
 msgid "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test."
 msgstr "Si vous avez rencontré %{first_name} %{last_name} plusieurs fois, sélectionnez la dernière date à laquelle vous avez eu un contact étroit et non protégé. Considérez que vous avez pu être contagieux 48 heures avant le début de vos symptômes. Si vous n'avez pas de symptômes, considérez que vous avez été contagieux 48 heures avant le test."
@@ -4173,6 +4177,11 @@ msgctxt "Auto Tracing Problem"
 msgid "Residency Outside Country"
 msgstr "Résidence hors du pays"
 
+#, elixir-format, ex-autogen
+msgctxt "Affiliation Kind"
+msgid "Resident"
+msgstr "Résident"
+
 #, elixir-format, fuzzy
 msgctxt "Case Import Row Status"
 msgid "Resolved"
@@ -5676,9 +5685,9 @@ msgstr "Vous n'êtes pas autorisé à voir cette personne. Veuillez fournir le c
 msgid "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
 msgstr "Vous pouvez également mettre fin à la quarantaine de manière anticipée, si vous faites un test COVID-19 dans les 4 derniers jours de votre quarantaine avec un résultat négatif. Le test doit être effectué par un centre de test officiel."
 
-#, elixir-format, fuzzy
-msgid "You can lift quarantine if you're fully vaccinated or if you verifiably had COVID-19 in the last six months."
-msgstr "Vous pouvez lever la quarantaine si vous êtes entièrement vacciné ou si vous avez eu le COVID-19 de manière vérifiable au cours des six derniers mois."
+#, elixir-format, ex-autogen
+msgid "You can lift quarantine if you're fully vaccinated or if you are in possession of a valid Covid certificate."
+msgstr "Vous pouvez lever la quarantaine si vous êtes complètement vacciné ou si vous êtes en possession d'un certificat Covid valide."
 
 #, elixir-format, fuzzy
 msgid "You did not keep a safe distance of at least 1.5 meters."

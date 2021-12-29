@@ -7,6 +7,7 @@ defmodule Hygeia.OrganisationContext.Affiliation.Kind do
       :employee,
       :scholar,
       :member,
+      :resident,
       :other
     ]
 
@@ -19,5 +20,6 @@ defmodule Hygeia.OrganisationContext.Affiliation.Kind do
   def translate(:employee), do: pgettext("Affiliation Kind", "Employee")
   def translate(:scholar), do: pgettext("Affiliation Kind", "Scholar")
   def translate(:member), do: pgettext("Affiliation Kind", "Member")
+  def translate(:resident), do: pgettext("Affiliation Kind", "Resident")
   def translate(:other), do: pgettext("Affiliation Kind", "Other")
 end
