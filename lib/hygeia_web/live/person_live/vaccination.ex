@@ -10,13 +10,18 @@ defmodule HygeiaWeb.PersonLive.Vaccination do
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.Input.InputContext
+  alias Surface.Components.Form.Inputs
+  alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextInput
+
+  alias Hygeia.CaseContext.Person.VaccinationShot.VaccineType
 
   prop preset_date_count, :integer, default: 2
   prop disabled, :boolean, default: false
   prop show_buttons, :boolean, default: true
   prop changeset, :map
   prop person, :map
+  prop subject, :any, default: nil
 
   prop add_event, :event
   prop remove_event, :event

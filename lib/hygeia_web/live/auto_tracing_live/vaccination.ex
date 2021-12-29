@@ -1,6 +1,7 @@
 defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   @moduledoc false
 
+  use Hygeia, :model
   use HygeiaWeb, :surface_view
 
   alias Hygeia.AutoTracingContext
@@ -8,22 +9,29 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person
+  alias Hygeia.CaseContext.Person.VaccinationShot
   alias Hygeia.Repo
 
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
-  alias Surface.Components.Form.Input.InputContext
-  alias Surface.Components.Form.Inputs
+  alias Surface.Components.Form.NumberInput
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.LiveRedirect
+
+  @primary_key false
+  embedded_schema do
+    field :received_vaccine, :boolean
+    field :number_of_vaccine_shots, :integer
+    embeds_many :vaccination_shots, VaccinationShot, on_replace: :delete
+  end
 
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
     case =
       case_uuid
       |> CaseContext.get_case!()
-      |> Repo.preload(person: [], auto_tracing: [])
+      |> Repo.preload(person: [vaccination_shots: []], auto_tracing: [])
 
     socket =
       cond do
@@ -45,16 +53,22 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
           )
 
         true ->
+          step = %__MODULE__{
+            received_vaccine: case.person.is_vaccinated,
+            number_of_vaccine_shots:
+              if(
+                is_nil(case.person.vaccination_shots) or
+                  Enum.empty?(case.person.vaccination_shots),
+                do: nil,
+                else: length(case.person.vaccination_shots)
+              ),
+            vaccination_shots: case.person.vaccination_shots
+          }
+
           assign(socket,
             case: case,
             person: case.person,
-            changeset: %Ecto.Changeset{
-              CaseContext.change_person(case.person, %{}, %{
-                vaccination_required: true,
-                initial_nil_jab_date_count: 2
-              })
-              | action: :validate
-            },
+            changeset: %Ecto.Changeset{changeset(step) | action: :validate},
             auto_tracing: case.auto_tracing
           )
       end
@@ -62,93 +76,10 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
     {:noreply, socket}
   end
 
-  def handle_event(
-        "add_vaccination_jab_date",
-        _params,
-        %{assigns: %{changeset: changeset, person: person}} = socket
-      ) do
-    vaccination_params =
-      changeset
-      |> Ecto.Changeset.get_change(
-        :vaccination,
-        Person.Vaccination.changeset(
-          Ecto.Changeset.get_field(changeset, :vaccination, %Person.Vaccination{}),
-          %{}
-        )
-      )
-      |> update_changeset_param(
-        :jab_dates,
-        &(&1 |> Kernel.||([]) |> Enum.concat([nil]))
-      )
-
-    params = update_changeset_param(changeset, :vaccination, fn _input -> vaccination_params end)
-
+  def handle_event("validate", %{"vaccination" => vaccination_params}, socket) do
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
-       CaseContext.change_person(person, params, %{
-         vaccination_required: true,
-         initial_nil_jab_date_count: 2
-       })
-       | action: :validate
-     })}
-  end
-
-  def handle_event(
-        "remove_vaccination_jab_date",
-        %{"index" => index} = _params,
-        %{assigns: %{changeset: changeset, person: person}} = socket
-      ) do
-    index = String.to_integer(index)
-
-    vaccination_params =
-      changeset
-      |> Ecto.Changeset.get_change(
-        :vaccination,
-        Person.Vaccination.changeset(
-          Ecto.Changeset.get_field(changeset, :vaccination, %Person.Vaccination{}),
-          %{}
-        )
-      )
-      |> update_changeset_param(:jab_dates, &List.delete_at(&1, index))
-
-    params = update_changeset_param(changeset, :vaccination, fn _input -> vaccination_params end)
-
-    {:noreply,
-     assign(socket, :changeset, %Ecto.Changeset{
-       CaseContext.change_person(person, params, %{
-         vaccination_required: true,
-         initial_nil_jab_date_count: 2
-       })
-       | action: :validate
-     })}
-  end
-
-  def handle_event("validate", %{"person" => person_params}, socket) do
-    person_params =
-      Map.update(person_params, "vaccination", %{"jab_dates" => []}, fn vaccination ->
-        case vaccination["done"] do
-          "true" ->
-            Map.update(
-              vaccination,
-              "jab_dates",
-              [nil, nil],
-              &Enum.map(&1, fn
-                "" -> nil
-                other -> other
-              end)
-            )
-
-          _else ->
-            %{"done" => "false", "name" => "", "jab_dates" => []}
-        end
-      end)
-
-    {:noreply,
-     assign(socket, :changeset, %Ecto.Changeset{
-       CaseContext.change_person(socket.assigns.person, person_params, %{
-         vaccination_required: true,
-         initial_nil_jab_date_count: 2
-       })
+       changeset(apply_changes(socket.assigns.changeset), vaccination_params)
        | action: :validate
      })}
   end
@@ -193,7 +124,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
 
     {:ok, auto_tracing} =
       case person do
-        %Person{vaccination: %Person.Vaccination{done: true}} ->
+        %Person{is_vaccinated: true} ->
           AutoTracingContext.auto_tracing_add_problem(
             socket.assigns.auto_tracing,
             :vaccination_failure
@@ -217,5 +148,61 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
            socket.assigns.auto_tracing.case_uuid
          )
      )}
+  end
+
+  defp changeset(schema, attrs \\ %{}) do
+    schema
+    |> cast(attrs, [
+      :received_vaccine,
+      :number_of_vaccine_shots
+    ])
+    |> validate_required([:received_vaccine])
+    |> validate_vaccine_received()
+    |> prefill_number_of_vaccines_received()
+  end
+
+  defp validate_vaccine_received(changeset) do
+    changeset
+    |> fetch_field!(:received_vaccine)
+    |> case do
+      true ->
+        changeset
+        |> validate_required([:number_of_vaccine_shots])
+        |> validate_number(:number_of_vaccine_shots, greater_than: 0, less_than: 15)
+
+      _else ->
+        changeset
+        |> put_change(:number_of_vaccine_shots, nil)
+        |> put_embed(:vaccination_shots, [])
+    end
+  end
+
+  defp prefill_number_of_vaccines_received(changeset) do
+    if fetch_field!(changeset, :received_vaccine) != true or
+         is_nil(fetch_field!(changeset, :number_of_vaccine_shots)) do
+      put_embed(changeset, :vaccination_shots, [])
+    else
+      vaccination_shots = fetch_field!(changeset, :vaccination_shots)
+
+      number_provided = fetch_field!(changeset, :number_of_vaccine_shots)
+
+      number_available = if is_nil(vaccination_shots), do: 0, else: length(vaccination_shots)
+
+      vaccination_shots =
+        if number_provided > number_available do
+          padding =
+            Enum.reduce(1..(number_provided - number_available), [], fn _i, acc ->
+              [%{}] ++ acc
+            end)
+
+          vaccination_shots ++ padding
+        else
+          Enum.take(vaccination_shots, number_provided)
+        end
+
+      changeset
+      |> put_embed(:vaccination_shots, vaccination_shots)
+      |> cast_embed(:vaccination_shots, required: true)
+    end
   end
 end

@@ -427,58 +427,55 @@
             <div class="card">
               <div class="card-body">
                 <h4 class="card-title">{gettext("Vaccination")}</h4>
+                <Field name={:is_vaccinated} class="form-group">
+                  <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+                    <label class={
+                      "btn",
+                      "btn-sm",
+                      "btn-outline-primary",
+                      disabled: @live_action == :show && get_field(@changeset, :is_vaccinated) != nil,
+                      active: get_field(@changeset, :is_vaccinated) == nil
+                    }>
+                      <RadioButton value={nil} opts={disabled: @live_action == :show} />
+                      {pgettext("vaccination_done", "Unknown")}
+                    </label>
 
-                <Inputs for={:vaccination}>
-                  <InputContext assigns={assigns} :let={form: form}>
-                    <Field name={:done} class="form-group">
-                      <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                        <label class={
-                          "btn",
-                          "btn-sm",
-                          "btn-outline-primary",
-                          disabled: @live_action == :show && get_field(form.source, :done) != nil,
-                          active: get_field(form.source, :done) == nil
-                        }>
-                          <RadioButton value={nil} opts={disabled: @live_action == :show} />
-                          {pgettext("vaccination_done", "Unknown")}
-                        </label>
+                    <label class={
+                      "btn",
+                      "btn-sm",
+                      "btn-outline-primary",
+                      disabled: @live_action == :show && get_field(@changeset, :is_vaccinated) != true,
+                      active: get_field(@changeset, :is_vaccinated) == true
+                    }>
+                      <RadioButton value opts={disabled: @live_action == :show} />
+                      {pgettext("vaccination_done", "Done")}
+                    </label>
+                    <label class={
+                      "btn",
+                      "btn-sm",
+                      "btn-outline-primary",
+                      disabled: @live_action == :show && get_field(@changeset, :is_vaccinated) != false,
+                      active: get_field(@changeset, :is_vaccinated) == false
+                    }>
+                      <RadioButton value={false} opts={disabled: @live_action == :show} />
+                      {pgettext("vaccination_done", "Not Done")}
+                    </label>
+                  </div>
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
 
-                        <label class={
-                          "btn",
-                          "btn-sm",
-                          "btn-outline-primary",
-                          disabled: @live_action == :show && get_field(form.source, :done) != true,
-                          active: get_field(form.source, :done) == true
-                        }>
-                          <RadioButton value opts={disabled: @live_action == :show} />
-                          {pgettext("vaccination_done", "Done")}
-                        </label>
-                        <label class={
-                          "btn",
-                          "btn-sm",
-                          "btn-outline-primary",
-                          disabled: @live_action == :show && get_field(form.source, :done) != false,
-                          active: get_field(form.source, :done) == false
-                        }>
-                          <RadioButton value={false} opts={disabled: @live_action == :show} />
-                          {pgettext("vaccination_done", "Not Done")}
-                        </label>
-                      </div>
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
-
-                    <HygeiaWeb.PersonLive.Vaccination
-                      id="vaccination"
-                      disabled={@live_action == :show}
-                      show_buttons={@live_action == :edit}
-                      changeset={@changeset}
-                      person={@person}
-                      preset_date_count={0}
-                      add_event="add_vaccination_jab_date"
-                      remove_event="remove_vaccination_jab_date"
-                    />
-                  </InputContext>
-                </Inputs>
+                {#if fetch_field!(@changeset, :is_vaccinated)}
+                  <HygeiaWeb.PersonLive.Vaccination
+                    id="vaccination"
+                    disabled={@live_action == :show}
+                    show_buttons={@live_action == :edit}
+                    changeset={@changeset}
+                    person={@person}
+                    preset_date_count={0}
+                    add_event="add_vaccination_shot"
+                    remove_event="remove_vaccination_shot"
+                  />
+                {/if}
               </div>
             </div>
           </div>

@@ -4,55 +4,54 @@
   <h2 class="mb-4 mt-5">{gettext("Vaccination")}</h2>
 
   <div class="row">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-9">
       <Form
         for={@changeset}
         change="validate"
         class={"p-2 rounded-3 border border-2 border-danger": not @changeset.valid?}
       >
-        <ErrorTag class="d-block p-1 alert alert-danger" field={:vaccination} />
-        <Inputs for={:vaccination}>
-          <InputContext assigns={assigns} :let={form: form}>
-            <Field name={:done} class="form-group mb-4">
-              <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                <label class={
-                  "btn",
-                  "btn-sm",
-                  "btn-outline-primary",
-                  active: Ecto.Changeset.get_field(form.source, :done) == true
-                }>
-                  <RadioButton value />
-                  {pgettext("Auto Tracing Vaccination", "Done")}
-                </label>
-                <label class={
-                  "btn",
-                  "btn-sm",
-                  "btn-outline-primary",
-                  active: Ecto.Changeset.get_field(form.source, :done) == false
-                }>
-                  <RadioButton value={false} />
-                  {pgettext("Auto Tracing Vaccination", "Not Done")}
-                </label>
-              </div>
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-            <div :if={Ecto.Changeset.fetch_field!(form.source, :done)}>
-              <p class="mb-4">
-                {pgettext(
-                  "Auto Tracing Vaccination",
-                  "If you are fully vaccinated, please insert both vaccination dates."
-                )}
-              </p>
-            </div>
-            <HygeiaWeb.PersonLive.Vaccination
-              id="auto_tracing-vaccination"
-              changeset={@changeset}
-              person={@person}
-              add_event="add_vaccination_jab_date"
-              remove_event="remove_vaccination_jab_date"
-            />
-          </InputContext>
-        </Inputs>
+        <Field name={:received_vaccine} class="form-group mb-4">
+          <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+            <label class={
+              "btn",
+              "btn-sm",
+              "btn-outline-primary",
+              active: Ecto.Changeset.fetch_field!(@changeset, :received_vaccine) == true
+            }>
+              <RadioButton value />
+              {pgettext("Auto Tracing Vaccination", "Done")}
+            </label>
+            <label class={
+              "btn",
+              "btn-sm",
+              "btn-outline-primary",
+              active: Ecto.Changeset.fetch_field!(@changeset, :received_vaccine) == false
+            }>
+              <RadioButton value={false} />
+              {pgettext("Auto Tracing Vaccination", "Not Done")}
+            </label>
+          </div>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <Field
+          :if={Ecto.Changeset.fetch_field!(@changeset, :received_vaccine)}
+          name={:number_of_vaccine_shots}
+          class="form-group mb-4"
+        >
+          <HygeiaWeb.FieldLabel />
+          <NumberInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <div class="mt-4 mb-5" :if={fetch_field!(@changeset, :received_vaccine)}>
+          <HygeiaWeb.PersonLive.Vaccination
+            id="auto_tracing-vaccination"
+            changeset={@changeset}
+            person={@person}
+            show_buttons={false}
+          />
+        </div>
       </Form>
     </div>
   </div>

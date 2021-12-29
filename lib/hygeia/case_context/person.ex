@@ -11,7 +11,7 @@ defmodule Hygeia.CaseContext.Person do
   alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.Person.Sex
-  alias Hygeia.CaseContext.Person.Vaccination
+  alias Hygeia.CaseContext.Person.VaccinationShot
   alias Hygeia.EctoType.NOGA
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
@@ -32,11 +32,12 @@ defmodule Hygeia.CaseContext.Person do
           external_references: [ExternalReference.t()] | nil,
           profession_category: NOGA.Code.t() | nil,
           profession_category_main: NOGA.Section.t() | nil,
+          is_vaccinated: boolean() | nil,
           tenant_uuid: Ecto.UUID.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
           positions: Ecto.Schema.has_many(Position.t()) | nil,
-          vaccination: Vaccination.t() | nil,
+          vaccination_shots: Ecto.Schema.has_many(VaccinationShot.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employers: Ecto.Schema.has_many(Organisation.t()) | nil,
@@ -57,11 +58,12 @@ defmodule Hygeia.CaseContext.Person do
           external_references: [ExternalReference.t()],
           profession_category: NOGA.Code.t() | nil,
           profession_category_main: NOGA.Section.t() | nil,
+          is_vaccinated: boolean() | nil,
           tenant_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
           cases: Ecto.Schema.has_many(Case.t()),
           positions: Ecto.Schema.has_many(Position.t()),
-          vaccination: Vaccination.t(),
+          vaccination_shots: Ecto.Schema.has_many(VaccinationShot.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employers: Ecto.Schema.has_many(Organisation.t()),
@@ -84,11 +86,15 @@ defmodule Hygeia.CaseContext.Person do
     field :sex, Sex
     field :profession_category, NOGA.Code
     field :profession_category_main, NOGA.Section
-
+    field :is_vaccinated, :boolean
+    # field has_recovered_externally, :boolean
     embeds_one :address, Address, on_replace: :update
     embeds_many :contact_methods, ContactMethod, on_replace: :delete
     embeds_many :external_references, ExternalReference, on_replace: :delete
-    embeds_one :vaccination, Vaccination, on_replace: :update
+
+    has_many :vaccination_shots, VaccinationShot,
+      foreign_key: :person_uuid,
+      on_replace: :delete
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     has_many :cases, Case
@@ -122,38 +128,14 @@ defmodule Hygeia.CaseContext.Person do
     |> validate_embed_required(:address, Address)
   end
 
-  def changeset(
-        person,
-        attrs,
-        %{vaccination_required: true, initial_nil_jab_date_count: nil_count}
-      ) do
-    person
-    |> do_changeset(attrs)
-    |> cast_embed(:vaccination,
-      with:
-        &Vaccination.changeset(&1, &2, %{required: true, initial_nil_jab_date_count: nil_count}),
-      required: true
-    )
-    |> validate_embed_required(:vaccination, Vaccination)
-  end
-
   def changeset(person, attrs, %{vaccination_required: true} = opts) do
     person
     |> changeset(attrs, %{opts | vaccination_required: false})
-    |> cast_embed(:vaccination,
-      with: &Vaccination.changeset(&1, &2, %{required: true}),
-      required: true
-    )
-    |> validate_embed_required(:vaccination, Vaccination)
+    |> validate_required([:is_vaccinated])
+    |> validate_vaccination_shots()
   end
 
   def changeset(person, attrs, _opts) do
-    person
-    |> do_changeset(attrs)
-    |> cast_embed(:vaccination)
-  end
-
-  defp do_changeset(person, attrs) do
     person
     |> cast(attrs, [
       :uuid,
@@ -163,13 +145,15 @@ defmodule Hygeia.CaseContext.Person do
       :birth_date,
       :tenant_uuid,
       :profession_category_main,
-      :profession_category
+      :profession_category,
+      :is_vaccinated
     ])
     |> fill_uuid
     |> fill_human_readable_id
     |> validate_required([:uuid, :human_readable_id, :tenant_uuid, :first_name])
     |> validate_past_date(:birth_date)
     |> validate_profession_category()
+    |> cast_assoc(:vaccination_shots)
     |> cast_assoc(:affiliations)
     |> cast_embed(:external_references)
     |> cast_embed(:address)
@@ -193,6 +177,15 @@ defmodule Hygeia.CaseContext.Person do
 
       {:ok, code} ->
         validate_inclusion(changeset, :profession_category_main, [NOGA.Code.section(code)])
+    end
+  end
+
+  defp validate_vaccination_shots(changeset) do
+    changeset
+    |> fetch_change(:is_vaccinated)
+    |> case do
+      true -> validate_required(changeset, :vaccination_shots)
+      _else -> put_change(changeset, :vaccination_shots, nil)
     end
   end
 
