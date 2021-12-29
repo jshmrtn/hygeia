@@ -2121,6 +2121,10 @@ msgstr ""
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
 msgstr ""
 
+#, elixir-format, ex-autogen
+msgid "If you have a positive PCR test, you can apply for your Covid certificate under the following link: %{link}"
+msgstr ""
+
 #, elixir-format
 msgid "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test."
 msgstr ""
@@ -5621,8 +5625,8 @@ msgstr ""
 msgid "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
 msgstr ""
 
-#, elixir-format
-msgid "You can lift quarantine if you're fully vaccinated or if you verifiably had COVID-19 in the last six months."
+#, elixir-format, ex-autogen
+msgid "You can lift quarantine if you're fully vaccinated or if you are in possession of a valid Covid certificate."
 msgstr ""
 
 #, elixir-format

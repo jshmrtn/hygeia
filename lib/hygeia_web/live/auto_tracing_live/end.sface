@@ -12,6 +12,17 @@
           "In your e-mail inbox you will find a certificate for your employer as well as further information on isolation."
         )}
       </p>
+      <p>
+        {Phoenix.HTML.raw(
+          gettext(
+            "If you have a positive PCR test, you can apply for your Covid certificate under the following link: %{link}",
+            link:
+              safe_to_string(
+                Phoenix.HTML.Link.link(get_covid_certificate_link(), to: get_covid_certificate_link())
+              )
+          )
+        )}
+      </p>
       <p class="mb-5">
         {gettext("We wish you a speedy recovery.")}
       </p>
