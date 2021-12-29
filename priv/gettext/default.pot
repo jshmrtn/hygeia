@@ -1814,6 +1814,10 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Flight number"
 msgstr ""
 
+#, elixir-format, ex-autogen
+msgid "Form data is invalid."
+msgstr ""
+
 #, elixir-format
 msgid "Found no results"
 msgstr ""
@@ -4988,8 +4992,7 @@ msgstr ""
 msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
 msgstr ""
 
-#, elixir-format
-msgctxt "errors"
+#, elixir-format, ex-autogen
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
 msgstr ""
 

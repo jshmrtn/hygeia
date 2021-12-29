@@ -1866,6 +1866,10 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Flight number"
 msgstr "Numero del volo"
 
+#, elixir-format, ex-autogen
+msgid "Form data is invalid."
+msgstr "I dati del modulo non sono validi."
+
 #, elixir-format, fuzzy
 msgid "Found no results"
 msgstr "Trovato nessun risultato"
@@ -5047,8 +5051,7 @@ msgstr "Lo stato serve come una panoramica della fase di rintracciamento attuale
 msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
 msgstr "L'app swiss covid è l'app ufficiale per il tracciamento dei contatti della svizzera. L'app aiuta a tracciare e prevenire la diffusione del virus COVID-19."
 
-#, elixir-format
-msgctxt "errors"
+#, elixir-format, ex-autogen, fuzzy
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
 msgstr "Si è verificato un errore durante l'invio del modulo. Prova a inviare nuovamente il modulo e contatta l'amministratore se il problema persiste."
 
