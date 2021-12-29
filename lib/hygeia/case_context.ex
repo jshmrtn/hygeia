@@ -1171,6 +1171,7 @@ defmodule Hygeia.CaseContext do
     :case_link_ktn_internal_id,
     :case_link_contact_dt,
     :hygeia_case_link_region_subdivision,
+    :hygeia_person_email,
     :exp_loc_dt,
     :exp_country,
     :exp_loc_type_work_place,
@@ -1231,7 +1232,7 @@ defmodule Hygeia.CaseContext do
     :vacc_dt_last
   ]
 
-  @extended_fields [:hygeia_case_link_region_subdivision]
+  @extended_fields [:hygeia_case_link_region_subdivision, :hygeia_person_email]
                    |> Enum.map(fn field ->
                      Enum.find_index(@bag_med_16122020_contact_fields, &(field == &1))
                    end)
@@ -1279,6 +1280,8 @@ defmodule Hygeia.CaseContext do
         on: fragment("?->>'type'", mobile_contact_method) == "mobile",
         left_join: landline_contact_method in fragment("UNNEST(?)", person.contact_methods),
         on: fragment("?->>'type'", landline_contact_method) == "landline",
+        left_join: email_contact_method in fragment("UNNEST(?)", person.contact_methods),
+        on: fragment("?->>'type'", email_contact_method) == "email",
         left_join: received_transmission_id in subquery(first_transmission_query),
         on: received_transmission_id.case_uuid == case.uuid,
         left_join: received_transmission in assoc(case, :received_transmissions),
@@ -1372,6 +1375,8 @@ defmodule Hygeia.CaseContext do
             "(ARRAY_AGG(?))[1]",
             received_transmission_case_tenant.subdivision
           ),
+          # hygeia_person_email
+          max(fragment("?->>'value'", email_contact_method)),
           # exp_loc_dt
           fragment("(ARRAY_AGG(?))[1]", received_transmission.date),
           # exp_country
