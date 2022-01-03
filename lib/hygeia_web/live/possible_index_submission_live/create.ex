@@ -29,7 +29,11 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Create do
 
   @impl Phoenix.LiveView
   def mount(%{"case_uuid" => case_uuid} = params, _session, socket) do
-    case = case_uuid |> CaseContext.get_case!() |> Repo.preload(person: [], auto_tracing: [])
+    case =
+      case_uuid
+      |> CaseContext.get_case!()
+      |> Repo.preload(person: [], auto_tracing: [], tests: [])
+
     auth = get_auth(socket)
 
     socket =

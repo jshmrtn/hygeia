@@ -886,6 +886,14 @@ msgctxt "Home"
 msgid "Contact Tracing for SARS-CoV-2"
 msgstr "Recherche des contacts pour le SRAS-CoV-2"
 
+#, elixir-format, ex-autogen
+msgid "Contact between %{date} and now. (48 hours before symptom start)"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "Contact between %{date} and now. (48 hours before the first positive test)"
+msgstr ""
+
 #, elixir-format, ex-autogen, fuzzy
 msgid "Contact persons"
 msgstr "Personnes de contact"
@@ -3516,6 +3524,10 @@ msgid "People that live in the same household as you also count as contact perso
 msgstr "Toutes les personnes qui vivent dans le même ménage que vous sont également comptées comme personnes de contact. Veuillez également indiquer tous les enfants."
 
 #, elixir-format, ex-autogen, fuzzy
+msgid "People that live in the same household as you count as contact persons. Please also register all children."
+msgstr "Toutes les personnes qui vivent dans le même ménage que vous sont également comptées comme personnes de contact. Veuillez également indiquer tous les enfants."
+
+#, elixir-format, ex-autogen, fuzzy
 msgid "Percentage"
 msgstr "Pourcentage"
 
@@ -3593,6 +3605,10 @@ msgstr "Personne supprimée avec succès"
 #, elixir-format, ex-autogen, fuzzy
 msgid "Person is symptomatic and therefore tested"
 msgstr "La personne est symptomatique et donc testée"
+
+#, elixir-format, ex-autogen
+msgid "Person living in the same household or in an intimate relationship. (e.g. couple that is not living together)"
+msgstr ""
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "Person updated successfully"
@@ -5637,9 +5653,9 @@ msgstr "Où habite %{first_name} %{last_name}?"
 msgid "Where does %{first_name} %{last_name} work?"
 msgstr "Où travaille %{first_name} %{last_name}?"
 
-#, elixir-format, ex-autogen, fuzzy
-msgid "Who did you meet or who do you live with?"
-msgstr "Qui avez-vous rencontré ou avec qui vivez-vous ?"
+#, elixir-format, ex-autogen
+msgid "With who do you live in the same household?"
+msgstr ""
 
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
@@ -5695,10 +5711,6 @@ msgstr "Vous pouvez lever la quarantaine si vous êtes complètement vacciné ou
 #, elixir-format, ex-autogen, fuzzy
 msgid "You did not keep a safe distance of at least 1.5 meters."
 msgstr "Vous n'avez pas respecté une distance de sécurité d'au moins 1,5 mètre."
-
-#, elixir-format, ex-autogen, fuzzy
-msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
-msgstr "Vous avez eu un contact entre maintenant et 48 heures avant le début de vos symptômes ou (si vous n'avez pas de symptômes) avant le test."
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "You had contact for more than 15 minutes on the same day."

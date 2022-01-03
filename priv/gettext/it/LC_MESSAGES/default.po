@@ -886,6 +886,14 @@ msgctxt "Home"
 msgid "Contact Tracing for SARS-CoV-2"
 msgstr "Ricerca di contatti per la SARS-CoV-2"
 
+#, elixir-format, ex-autogen
+msgid "Contact between %{date} and now. (48 hours before symptom start)"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "Contact between %{date} and now. (48 hours before the first positive test)"
+msgstr ""
+
 #, elixir-format, ex-autogen, fuzzy
 msgid "Contact persons"
 msgstr "Persone di contatto"
@@ -3515,6 +3523,10 @@ msgid "People that live in the same household as you also count as contact perso
 msgstr "Vengono conteggiate come persone di contatto anche tutte le persone che vivono nella stessa economia domestica. Si prega di indicare anche tutti i bambini."
 
 #, elixir-format, ex-autogen, fuzzy
+msgid "People that live in the same household as you count as contact persons. Please also register all children."
+msgstr "Vengono conteggiate come persone di contatto anche tutte le persone che vivono nella stessa economia domestica. Si prega di indicare anche tutti i bambini."
+
+#, elixir-format, ex-autogen, fuzzy
 msgid "Percentage"
 msgstr "Percentuale"
 
@@ -3592,6 +3604,10 @@ msgstr "Persona eliminata con successo"
 #, elixir-format, ex-autogen
 msgid "Person is symptomatic and therefore tested"
 msgstr "La persona è sintomatica e quindi testata"
+
+#, elixir-format, ex-autogen
+msgid "Person living in the same household or in an intimate relationship. (e.g. couple that is not living together)"
+msgstr ""
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "Person updated successfully"
@@ -5637,8 +5653,8 @@ msgid "Where does %{first_name} %{last_name} work?"
 msgstr "Dove lavora %{first_name} %{last_name}?"
 
 #, elixir-format, ex-autogen
-msgid "Who did you meet or who do you live with?"
-msgstr "Chi hai incontrato o con chi vivi?"
+msgid "With who do you live in the same household?"
+msgstr ""
 
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
@@ -5694,10 +5710,6 @@ msgstr "Puoi terminare la quarantena se sei completamente vaccinato o se sei in 
 #, elixir-format, ex-autogen, fuzzy
 msgid "You did not keep a safe distance of at least 1.5 meters."
 msgstr "Non hai mantenuto una distanza di sicurezza di almeno 1,5 metri."
-
-#, elixir-format, ex-autogen
-msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
-msgstr "Hai avuto contatti da adesso e 48 ore prima dell'inizio dei sintomi o (se non hai sintomi) prima del test."
 
 #, elixir-format, ex-autogen
 msgid "You had contact for more than 15 minutes on the same day."
