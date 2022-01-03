@@ -2089,8 +2089,8 @@ msgid "Hygeia is deisgned to structure complicated processes, to fullfill standa
 msgstr "Hygeia ist darauf ausgelegt, fehleranfällige Prozesse klar und einheitlich zu strukturieren, Standards wie das «%{link_med}» des BAG einzuhalten, Anbindungen wie diejenige an die BAG-Datenbank zu gewährleisten und die fürs Contact Tracing notwendigen Personal-Mittel zu reduzieren."
 
 #, elixir-format, ex-autogen
-msgid "I am in possession of a valid \"Convalescent Certificate\""
-msgstr "Ich bin im Besitz eines gültigen \"Genesen Zertifikates\""
+msgid "I am in possession of a valid \"Convalescent Certificate\"."
+msgstr "Ich bin im Besitz eines gültigen \"Genesen Zertifikates\"."
 
 #, elixir-format, ex-autogen
 msgid "I am in possession of a valid vaccination certificate."
@@ -2101,12 +2101,12 @@ msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Ich bestätige, dass alle Angaben korrekt sind. Dies kann überprüft werden!"
 
 #, elixir-format, ex-autogen
-msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
-msgstr "Ich habe einen Covid-19 Test ab frühestens dem 4. Tag vor Ablauf der Quarantäne gemacht. Das Testresultat ist negativ."
+msgid "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
+msgstr "Ich verfüge über einen offiziellen Genesenen-Nachweis um die Quarantäne zu beenden. Die Genesung liegt weniger als 4 Monate zurück."
 
 #, elixir-format, ex-autogen
-msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
-msgstr "Ich verfüge über einen offiziellen Nachweis (geimpft, immun, negativer Test) um die Quarantäne zu beenden."
+msgid "I have official vacination documentation to end the quarantine. The vaccination base immunization or the booster were completed less than four months ago."
+msgstr "Ich verfüge über einen offiziellen Impfnachweis um die Quarantäne zu beenden. Die Grundimmunisierung oder die Boosterimpfung liegen weniger als 4 Monate zurück."
 
 #, elixir-format, ex-autogen
 msgid "IAM Configuration"
@@ -5046,10 +5046,6 @@ msgid "The link to the possible index submissions was sent. The Index did not en
 msgstr "Der Link mit dem Index Self-Service wurde verschickt. Der Index hat seine Kontaktpersonen noch nicht eingetragen. Dies kann bei \"%{link}\" kontrolliert werden."
 
 #, elixir-format, ex-autogen
-msgid "The quarantine can be ended because of a negative test the earliest on %{date}."
-msgstr "Die Quarantäne kann aufgrund eines negativen Tests frühestens am %{date} beendet werden."
-
-#, elixir-format, ex-autogen
 msgctxt "Phase Create Modal"
 msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
 msgstr "Die Quarantäneverordnung der %{type} Phase wird entfernt, da die Verordnung vor dem neuen Startdatum beginnt."
@@ -5700,12 +5696,8 @@ msgid "You are not authorized to view this person. Please provide the code <%{co
 msgstr "Sie sind nicht berechtigt, diese Person anzuzeigen. Bitte teilen Sie Ihrem Vorgesetzten den Code <%{subdivision} / %{person_hr_id}> mit, um die Person zu identifizieren."
 
 #, elixir-format, ex-autogen
-msgid "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
-msgstr "Ausserdem können Sie die Quarantäne vorzeitig beenden, indem Sie innert der letzten 4 Tage vor Ablauf der Quarantäne einen Test durchführen lassen, welcher negativ ausfällt. Der Test muss von einer offiziellen Teststelle durchgeführt werden."
-
-#, elixir-format, ex-autogen
-msgid "You can lift quarantine if you're fully vaccinated or if you are in possession of a valid Covid certificate."
-msgstr "Sie können sich von der Quarantäne befreien lassen, wenn Sie im Besitz eines gültigen Covid-Zertifikates sind."
+msgid "You can lift quarantine if you're in possession of a valid Covid certificate and one of the following applies to you:"
+msgstr "Sie können sich von der Quarantäne befreien lassen, wenn Sie im Besitz eines gültigen Covid-Zertifikates sind und folgende Punkte zutreffen:"
 
 #, elixir-format, ex-autogen
 msgid "You did not keep a safe distance of at least 1.5 meters."
@@ -5739,6 +5731,18 @@ msgstr "Bei “Phasen” soll für die Beendigung des Tracings bzw. der Isolatio
 msgctxt "Auto Tracing Resolve Problems"
 msgid "You must resolve the organisation before choosing the right division."
 msgstr "Sie müssen die Organisation auswählen, bevor Sie die Abteilung / Klasse auswählen können."
+
+#, elixir-format, ex-autogen
+msgid "You received a vaccination booster less than four months ago."
+msgstr "Sie haben vor weniger als 4 Monaten eine Booster Impfung erhalten."
+
+#, elixir-format, ex-autogen
+msgid "You're vaccinated and completed your basic immunization less than four months ago."
+msgstr "Sie sind geimpft und haben ihre Grundimmunisierung vor weniger als 4 Monaten abgeschlossen."
+
+#, elixir-format, ex-autogen
+msgid "You've been tested positive for covid and are healthy again less than four months ago."
+msgstr "Sie sind  positiv auf eine Infektion mit dem Coronavirus getestet worden uns sind seit weniger als 4 Monaten genesen."
 
 #, elixir-format, ex-autogen
 msgid "Your Tests"
