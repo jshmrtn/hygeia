@@ -12,13 +12,5 @@ defmodule Hygeia.Repo.Migrations.CreateRiskCountries do
     end
 
     create unique_index(:risk_countries, [:country])
-
-    # TODO Create migration query
-    rename table(:auto_tracings), :has_travelled, to: :has_travelled_in_risk_country
-
-    alter table(:auto_tracings) do
-      remove :travel
-      add :travels, {:array, :map}
-    end
   end
 end
