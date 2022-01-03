@@ -1,0 +1,161 @@
+on:
+  workflow_call:
+    inputs:
+      elixirVersion:
+        required: true
+        type: string
+      otpVersion:
+        required: true
+        type: string
+      nodeVersion:
+        required: true
+        type: string
+      releaseHexPmOS:
+        required: false
+        type: string
+        default: debian
+      releaseHexPmOSVersion:
+        required: false
+        type: string
+        default: bullseye-20210902-slim
+      dockerTag:
+        required: false
+        type: string
+    secrets:
+      CACHE_VERSION:
+        required: true
+
+name: "Build"
+
+jobs:
+  compile_assets:
+    name: Compile Assets
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        id: setupBEAM
+        with:
+          otp-version: ${{ inputs.otpVersion }}
+          elixir-version: ${{ inputs.elixirVersion }}
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-
+      - run: mix deps.get
+      - uses: actions/setup-node@v2
+        id: setupNode
+        with:
+          node-version: ${{ inputs.nodeVersion }}
+      - run: npm config set cache $GITHUB_WORKSPACE/.ci-npm-cache
+      - uses: actions/cache@v2
+        with:
+          path: .ci-npm-cache
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('assets/package-lock.json') }}
+          restore-keys: |
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupNode.outputs.node-version }}-
+      - run: npm ci --prefix=assets
+      - run: npm run deploy --prefix=assets
+      - uses: actions/upload-artifact@v2
+        with:
+          name: compile_assets
+          path: priv/static
+
+  mix_release:
+    name: "Mix Release"
+
+    runs-on: ubuntu-latest
+
+    container:
+      image: hexpm/elixir:${{ inputs.elixirVersion }}-erlang-${{ inputs.otpVersion }}-${{ inputs.releaseHexPmOS }}-${{ inputs.releaseHexPmOSVersion }}
+
+    needs: ['compile_assets']
+
+    env:
+      MIX_ENV: prod
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          apt-get update -yqq
+          apt-get install -yqq git
+          mix local.hex --force
+          mix local.rebar --force
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.DEFAULT_ELIXIR_VERSION }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.DEFAULT_ELIXIR_VERSION }}-
+      - run: mix deps.get
+      - uses: actions/cache@v2
+        with:
+          path: |
+            _build/prod
+            !_build/prod/rel
+          key: compile_docker-${{ env.MIX_ENV }}-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.DEFAULT_ELIXIR_VERSION }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            compile_docker-${{ env.MIX_ENV }}-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.DEFAULT_ELIXIR_VERSION }}-
+      - run: mix deps.compile
+        env:
+          MIX_ENV: prod
+      - run: mix compile --warning-as-errors
+        env:
+          MIX_ENV: prod
+      - uses: actions/download-artifact@v2
+        with:
+          name: compile_assets
+          path: priv/static
+      - run: mix phx.digest
+      - run: mix release --overwrite
+      - run: tar -czvf release.tar.gz _build/prod/rel/hygeia
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mix_release
+          path: release.tar.gz
+
+  docker_build:
+    name: "Docker Build"
+
+    runs-on: ubuntu-latest
+
+    needs: ['mix_release']
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: mix_release
+          path: .
+      - run: tar -zxvf release.tar.gz
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        # Ignore the failure of a step and avoid terminating the job.
+        continue-on-error: true
+        with:
+          key: docker-${{ runner.os }}-${{ inputs.elixirVersion }}-erlang-${{ inputs.otpVersion }}-${{ inputs.releaseHexPmOS }}-${{ inputs.releaseHexPmOSVersion }}-${{ hashFiles('Dockerfile') }}
+          restore-keys: |
+            ocker-${{ runner.os }}-${{ inputs.elixirVersion }}-erlang-${{ inputs.otpVersion }}-${{ inputs.releaseHexPmOS }}-${{ inputs.releaseHexPmOSVersion }}-
+      - run: |
+          docker \
+            build \
+            --tag ghcr.io/${{ github.repository }}:$GITHUB_SHA \
+            --build-arg ELIXIR_VERSION="${{ inputs.elixirVersion }}" \
+            --build-arg ERLANG_VERSION="${{ inputs.otpVersion }}" \
+            --build-arg HEXPM_BOB_OS="${{ inputs.releaseHexPmOS }}" \
+            --build-arg HEXPM_BOB_OS_VERSION="${{ inputs.releaseHexPmOSVersion }}" \
+            .
+      - run: docker push ghcr.io/${{ github.repository }}:$GITHUB_SHA
+      - run: docker tag ghcr.io/${{ github.repository }}:$GITHUB_SHA ghcr.io/${{ github.repository }}:${{ inputs.dockerTag }}
+        if: ${{ inputs.dockerTag }}
+      - run: docker push ghcr.io/${{ github.repository }}:${{ inputs.dockerTag }}
+        if: ${{ inputs.dockerTag }}
