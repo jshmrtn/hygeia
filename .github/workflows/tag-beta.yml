@@ -1,0 +1,66 @@
+on:
+  push:
+    tags:
+      - "v[12].[0-9]+.[0-9]+-beta.[0-9]+"
+
+name: "Beta Tag"
+
+# Secrets:
+# * CACHE_VERSION - Set to `date +%s`, set new when the cache should be busted
+# * JM_GITLAB_REF - Branch to trigger CI on. (Even though the name includes "ref", GitLab does only allow branch names)
+# * JM_GITLAB_TOKEN - Auth token to trigger GitLab CI
+# * JM_GITLAB_URL - CI Trigger URL
+
+jobs:
+  detectToolVersions:
+    name: "Detect Tool Versions"
+
+    uses: jshmrtn/hygeia/.github/workflows/part_tool_versioning.yml@main
+
+  release:
+    name: "Release"
+
+    uses: jshmrtn/hygeia/.github/workflows/part_release.yml@main
+    with:
+      releaseName: "${{ github.ref_name }}"
+
+  build:
+    name: "Build"
+
+    needs: ['detectToolVersions']
+
+    uses: jshmrtn/hygeia/.github/workflows/part_build.yml@main
+    with:
+      elixirVersion: "${{ needs.detectToolVersions.outputs.elixirVersion }}"
+      otpVersion: "${{ needs.detectToolVersions.outputs.otpVersion }}"
+      nodeVersion: "${{ needs.detectToolVersions.outputs.nodeVersion }}"
+      dockerTag: "${{ github.ref_name }}"
+    secrets:
+      CACHE_VERSION: "${{ secrets.CACHE_VERSION }}"
+
+  docs:
+    name: "Docs"
+
+    needs: ['release', 'detectToolVersions']
+
+    uses: jshmrtn/hygeia/.github/workflows/part_docs.yml@main
+    with:
+      elixirVersion: "${{ needs.detectToolVersions.outputs.elixirVersion }}"
+      otpVersion: "${{ needs.detectToolVersions.outputs.otpVersion }}"
+      releaseName: "${{ github.ref_name }}"
+    secrets:
+      CACHE_VERSION: "${{ secrets.CACHE_VERSION }}"
+
+  deploy:
+    name: "Deploy"
+
+    needs: ['build']
+
+    uses: jshmrtn/hygeia/.github/workflows/part_deploy.yml@main
+    with:
+      environment: staging
+      version: "${{ github.ref_name }}"
+    secrets:
+      JM_GITLAB_TOKEN: ${{ secrets.JM_GITLAB_TOKEN }}
+      JM_GITLAB_REF: ${{ secrets.JM_GITLAB_REF }}
+      JM_GITLAB_URL: ${{ secrets.JM_GITLAB_URL }}

@@ -1,9 +1,9 @@
 # Hygeia
 
-[![.github/workflows/ci.yml](https://github.com/jshmrtn/hygeia/actions/workflows/ci.yml/badge.svg)](https://github.com/jshmrtn/hygeia/actions/workflows/ci.yml)
-[![Coverage Status](https://coveralls.io/repos/github/jshmrtn/hygeia/badge.svg?branch=master)](https://coveralls.io/github/jshmrtn/hygeia?branch=master)
+[![.github/workflows/branch_main.yml](https://github.com/jshmrtn/hygeia/actions/workflows/branch_main.yml/badge.svg)](https://github.com/jshmrtn/hygeia/actions/workflows/branch_main.yml)
+[![Coverage Status](https://coveralls.io/repos/github/jshmrtn/hygeia/badge.svg?branch=main)](https://coveralls.io/github/jshmrtn/hygeia?branch=main)
 [![License](https://img.shields.io/badge/License-BSL%201.1%20%2F%20Apache%202.0-blue.svg)](https://mariadb.com/bsl11/)
-[![Last Updated](https://img.shields.io/github/last-commit/jshmrtn/hygeia.svg)](https://github.com/jshmrtn/hygeia/commits/master)
+[![Last Updated](https://img.shields.io/github/last-commit/jshmrtn/hygeia.svg)](https://github.com/jshmrtn/hygeia/commits/main)
 
 ## Development
 
