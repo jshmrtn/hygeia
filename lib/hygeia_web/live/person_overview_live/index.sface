@@ -32,7 +32,7 @@
         <ul>
           <li>{gettext("You're vaccinated and completed your basic immunization less than four months ago.")}</li>
           <li>{gettext("You received a vaccination booster less than four months ago.")}</li>
-          <li>{gettext("You've been tested positive for covid and are healthy again less than four months ago.")}</li>
+          <li>{gettext("You've been tested positive for covid and recovered less than four months ago.")}</li>
         </ul>
         <LiveRedirect
           class="btn btn-lg btn-outline-primary"
