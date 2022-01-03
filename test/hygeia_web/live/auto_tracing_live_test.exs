@@ -577,7 +577,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       case_model: case,
       auto_tracing: auto_tracing
     } do
-      test_date = Date.add(Date.utc_today(), -7)
+      test_date = Date.add(Date.utc_today(), -20)
 
       test_fixture(case, %{tested_at: test_date, laboratory_reported_at: test_date})
 
@@ -603,7 +603,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
                      :fever,
                      :cough
                    ],
-                   "symptom_start" => Date.add(Date.utc_today(), -60)
+                   "symptom_start" => Date.add(Date.utc_today(), -70)
                  }
                }
              ) =~ gettext("Are you sure? This date is unusual far in the past.")
@@ -622,14 +622,14 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         |> CaseContext.get_case!()
         |> Map.get(:phases)
 
-      assert %Case.Phase{} =
+      assert %Case.Phase{details: %Case.Phase.Index{}, quarantine_order: false} =
                Enum.find(
                  phases,
-                 &(not is_nil(&1.end) and Date.compare(&1.end, Date.utc_today()) == :lt)
+                 &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1)
                )
 
       assert %AutoTracing{
-               unsolved_problems: [_]
+               unsolved_problems: [:phase_ends_in_the_past]
              } = auto_tracing = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
 
       assert AutoTracing.has_problem?(auto_tracing, :phase_ends_in_the_past)
