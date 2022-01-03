@@ -19,55 +19,46 @@
   {#if Ecto.Changeset.fetch_field!(@changeset, :reason) !== nil}
     <div class="alert alert-info">
       {#case Ecto.Changeset.fetch_field!(@changeset, :reason)}
-        {#match :vaccinated}{gettext(
-            "I am in possession of a valid vaccination certificate.",
-            validity: HygeiaCldr.Unit.to_string!(Hygeia.vaccine_validity_cldr())
-          )}
-        {#match :immune}{gettext(
-            ~S(I am in possession of a valid "Convalescent Certificate"),
-            validity: HygeiaCldr.Unit.to_string!(Hygeia.immune_validity_cldr())
-          )}
-        {#match :negative_test}{gettext("I did a COVID test in the last 4 days of quarantine. The result is negative.")}
+        {#match :vaccinated}{gettext("I am in possession of a valid vaccination certificate.")}
+        {#match :immune}{gettext(~S(I am in possession of a valid "Convalescent Certificate".))}
       {/case}
     </div>
 
-    {#if negative_test_too_early?(Ecto.Changeset.fetch_field!(@changeset, :reason), @phase)}
-      <div class="alert alert-danger">
-        {gettext("The quarantine can be ended because of a negative test the earliest on %{date}.",
-          date: HygeiaCldr.Date.to_string!(Date.add(@phase.end, -3))
-        )}
-      </div>
-    {#else}
-      <div class="form-group">
-        <Field name={:has_documentation} class="form-check">
-          <Label class="mb-0 checkbox-label">
-            <Checkbox class="form-check-input" />
-            {gettext(
-              "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
-            )}
-          </Label>
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-      </div>
+    <div class="form-group">
+      <Field name={:has_documentation} class="form-check">
+        <Label class="mb-0 checkbox-label">
+          <Checkbox class="form-check-input" />
+          {#case Ecto.Changeset.fetch_field!(@changeset, :reason)}
+            {#match :vaccinated}
+              {gettext(
+                "I have official vacination documentation to end the quarantine. The vaccination base immunization or the booster were completed less than four months ago."
+              )}
+            {#match :immune}
+              {gettext(
+                "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
+              )}
+          {/case}
+        </Label>
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
+    </div>
 
-      <div class="form-group">
-        <Field name={:truthful} class="form-check">
-          <Label class="mb-0 checkbox-label">
-            <Checkbox class="form-check-input" />
-            {gettext("I confirm that all the data above is correct. This may be inspected!")}
-          </Label>
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-      </div>
-    {/if}
+    <div class="form-group">
+      <Field name={:truthful} class="form-check">
+        <Label class="mb-0 checkbox-label">
+          <Checkbox class="form-check-input" />
+          {gettext("I confirm that all the data above is correct. This may be inspected!")}
+        </Label>
+        <ErrorTag class="d-block invalid-feedback" />
+      </Field>
+    </div>
   {/if}
 
   <button
     class="mt-1 btn btn-primary"
     type="submit"
     phx-disable-with={gettext("Saving...")}
-    disabled={not @changeset.valid? or
-      negative_test_too_early?(Ecto.Changeset.fetch_field!(@changeset, :reason), @phase)}
+    disabled={not @changeset.valid?}
   >
     {gettext("Save")}
   </button>

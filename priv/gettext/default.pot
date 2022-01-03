@@ -2030,7 +2030,7 @@ msgid "Hygeia is deisgned to structure complicated processes, to fullfill standa
 msgstr ""
 
 #, elixir-format, ex-autogen
-msgid "I am in possession of a valid \"Convalescent Certificate\""
+msgid "I am in possession of a valid \"Convalescent Certificate\"."
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -2042,11 +2042,11 @@ msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr ""
 
 #, elixir-format, ex-autogen
-msgid "I did a COVID test in the last 4 days of quarantine. The result is negative."
+msgid "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
 msgstr ""
 
 #, elixir-format, ex-autogen
-msgid "I have official documentation to end the quarantine (vaccinated, immune, negative test)."
+msgid "I have official vacination documentation to end the quarantine. The vaccination base immunization or the booster were completed less than four months ago."
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -4987,10 +4987,6 @@ msgid "The link to the possible index submissions was sent. The Index did not en
 msgstr ""
 
 #, elixir-format, ex-autogen
-msgid "The quarantine can be ended because of a negative test the earliest on %{date}."
-msgstr ""
-
-#, elixir-format, ex-autogen
 msgctxt "Phase Create Modal"
 msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
 msgstr ""
@@ -5641,11 +5637,7 @@ msgid "You are not authorized to view this person. Please provide the code <%{co
 msgstr ""
 
 #, elixir-format, ex-autogen
-msgid "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
-msgstr ""
-
-#, elixir-format, ex-autogen
-msgid "You can lift quarantine if you're fully vaccinated or if you are in possession of a valid Covid certificate."
+msgid "You can lift quarantine if you're in possession of a valid Covid certificate and one of the following applies to you:"
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -5679,6 +5671,18 @@ msgstr ""
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
 msgid "You must resolve the organisation before choosing the right division."
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "You received a vaccination booster less than four months ago."
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "You're vaccinated and completed your basic immunization less than four months ago."
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "You've been tested positive for covid and are healthy again less than four months ago."
 msgstr ""
 
 #, elixir-format, ex-autogen
