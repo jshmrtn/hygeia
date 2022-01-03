@@ -15,14 +15,25 @@
     </p>
     <ul>
       <li>{gettext(
-          "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
+          "Person living in the same household or in an intimate relationship. (e.g. couple that is not living together)"
         )}</li>
+      <li>{case Case.fist_known_phase_date(@case, Case.Phase.Index) do
+          {:symptom_start, symptom_start} ->
+            gettext("Contact between %{date} and now. (48 hours before symptom start)",
+              date: HygeiaCldr.Date.to_string!(Date.add(symptom_start, -2))
+            )
+
+          {_other, date} ->
+            gettext("Contact between %{date} and now. (48 hours before the first positive test)",
+              date: HygeiaCldr.Date.to_string!(Date.add(date, -2))
+            )
+        end}</li>
       <li>{gettext("You had contact for more than 15 minutes on the same day.")}</li>
       <li>{gettext("Either you or the other person did not weark a mask.")}</li>
       <li>{gettext("You did not keep a safe distance of at least 1.5 meters.")}</li>
     </ul>
     <p class="alert alert-info">{gettext(
-        "People that live in the same household as you also count as contact persons. Please also register all children."
+        "People that live in the same household as you count as contact persons. Please also register all children."
       )}</p>
     <p>
       {gettext("Do you have any contact persons to submit?")}

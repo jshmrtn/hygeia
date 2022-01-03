@@ -1,0 +1,34 @@
+on:
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        required: true
+      version:
+        default: "${{ github.sha }}"
+        type: string
+    secrets:
+      JM_GITLAB_TOKEN:
+        required: true
+      JM_GITLAB_REF:
+        required: true
+      JM_GITLAB_URL:
+        required: true
+
+name: "Deploy"
+
+jobs:
+  notify_jm_gitlab:
+    name: "Notify JM GitLab"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: |
+          curl -X POST \
+            --form "token=${{ secrets.JM_GITLAB_TOKEN }}" \
+            --form "ref=${{ secrets.JM_GITLAB_REF }}" \
+            --form "variables[DEPLOY_ENV]=${{ inputs.environment }}" \
+            --form "variables[DEPLOY_VERSION]=${{ inputs.version }}" \
+            --fail \
+            "${{ secrets.JM_GITLAB_URL }}"

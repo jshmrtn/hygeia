@@ -8,7 +8,7 @@ defmodule Hygeia.MixProject do
     [
       app: :hygeia,
       name: "Hygeia",
-      version: "1.38.0",
+      version: "1.39.0-beta.3",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -121,10 +121,7 @@ defmodule Hygeia.MixProject do
       {:paginator, "~> 1.0"},
       {:pdf_generator, "~> 0.6.2"},
       {:phoenix, "~> 1.6"},
-      # TODO: Revert to released version when this PR is merged and released:
-      # - https://github.com/danhper/phoenix-active-link/pull/19
-      {:phoenix_active_link, "~> 0.3.1",
-       github: "jshmrtn/phoenix-active-link", branch: "phoenix_html_v3"},
+      {:phoenix_active_link, "~> 0.3.2"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11 or ~> 3.0"},
       {:phoenix_live_dashboard, "~> 0.4"},

@@ -229,7 +229,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
   @spec phase_dates(Date.t()) :: {Date.t(), Date.t()}
   def phase_dates(contact_date) do
     start_date = contact_date
-    end_date = Date.add(start_date, 9)
+    end_date = Date.add(start_date, Phase.PossibleIndex.default_length_days())
 
     start_date =
       if Date.compare(start_date, Date.utc_today()) == :lt do

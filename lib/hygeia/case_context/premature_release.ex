@@ -72,6 +72,7 @@ defmodule Hygeia.CaseContext.PrematureRelease do
     |> validate_required([:has_documentation, :truthful])
     |> validate_acceptance(:has_documentation)
     |> validate_acceptance(:truthful)
+    |> validate_exclusion(:reason, Reason.deprecated_options())
   end
 
   defimpl Hygeia.Authorization.Resource do
