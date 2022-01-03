@@ -30,9 +30,9 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   alias Surface.Components.Form.TextInput
   alias Surface.Components.LiveRedirect
 
-  alias HygeiaWeb.AutoTracingLive.Travel.SelectedTravel
+  alias HygeiaWeb.AutoTracingLive.Travel.PossibleTravel
 
-  defmodule SelectedTravel do
+  defmodule PossibleTravel do
     @moduledoc false
 
     use Hygeia, :model
@@ -77,7 +77,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   @primary_key false
   embedded_schema do
     field :has_not_travelled_in_risk_country, :boolean
-    embeds_many :risk_countries_travelled, SelectedTravel, on_replace: :delete
+    embeds_many :risk_countries_travelled, PossibleTravel, on_replace: :delete
 
     field :has_flown, :boolean
     embeds_many :flights, Flight, on_replace: :delete
@@ -214,10 +214,10 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
         {:ok, step} ->
           travels =
             Enum.reduce(step.risk_countries_travelled, [], fn
-              %SelectedTravel{travel: travel, is_selected: true}, acc ->
+              %PossibleTravel{travel: travel, is_selected: true}, acc ->
                 acc ++ [travel]
 
-              %SelectedTravel{is_selected: false}, acc ->
+              %PossibleTravel{is_selected: false}, acc ->
                 acc
             end)
 
@@ -342,9 +342,9 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
 
     Enum.map(risk_countries, fn %{country: code} ->
       if travel = Enum.find(travels, &match?(^code, &1.country)) do
-        %SelectedTravel{uuid: Ecto.UUID.generate(), travel: travel, is_selected: true}
+        %PossibleTravel{uuid: Ecto.UUID.generate(), travel: travel, is_selected: true}
       else
-        %SelectedTravel{
+        %PossibleTravel{
           uuid: Ecto.UUID.generate(),
           travel: %Travel{country: code},
           is_selected: false
@@ -379,7 +379,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
           changeset
           |> fetch_field!(:risk_countries_travelled)
           |> Enum.map(fn selected_travel ->
-            %SelectedTravel{selected_travel | is_selected: false}
+            %PossibleTravel{selected_travel | is_selected: false}
           end)
 
         put_embed(changeset, :risk_countries_travelled, all_travels_unselected)

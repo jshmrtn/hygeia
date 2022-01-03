@@ -21,7 +21,7 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
 
   @primary_key false
   embedded_schema do
-    embeds_many :countries, SelectedCountry, primary_key: false do
+    embeds_many :countries, PossibleRiskCountry, primary_key: false do
       field :country, Country
       field :is_risk_country, :boolean
     end
