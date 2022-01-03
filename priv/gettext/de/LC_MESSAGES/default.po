@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, elixir-format, ex-autogen
@@ -885,6 +885,14 @@ msgstr "Kontaktperson"
 msgctxt "Home"
 msgid "Contact Tracing for SARS-CoV-2"
 msgstr "Contact Tracing für SARS-CoV-2"
+
+#, elixir-format, ex-autogen
+msgid "Contact between %{date} and now. (48 hours before symptom start)"
+msgstr "Kontakt zwischen %{date} und jetzt. (48 Stunden vor Beginn der Symptome)"
+
+#, elixir-format, ex-autogen
+msgid "Contact between %{date} and now. (48 hours before the first positive test)"
+msgstr "Kontakt zwischen %{date} und jetzt. (48 Stunden vor dem Test)"
 
 #, elixir-format, ex-autogen
 msgid "Contact persons"
@@ -3515,6 +3523,10 @@ msgid "People that live in the same household as you also count as contact perso
 msgstr "Als Kontaktpersonen zählen auch alle Personen, die mit Ihnen im selben Haushalt leben. Bitte geben Sie auch alle Kinder an."
 
 #, elixir-format, ex-autogen
+msgid "People that live in the same household as you count as contact persons. Please also register all children."
+msgstr "Als Kontaktpersonen zählen alle Personen, die mit Ihnen im selben Haushalt leben. Bitte geben Sie auch alle Kinder an."
+
+#, elixir-format, ex-autogen
 msgid "Percentage"
 msgstr "Anteil"
 
@@ -3592,6 +3604,10 @@ msgstr "Person erfolgreich gelöscht"
 #, elixir-format, ex-autogen
 msgid "Person is symptomatic and therefore tested"
 msgstr "Person ist symptomatisch und wird darum getestet"
+
+#, elixir-format, ex-autogen
+msgid "Person living in the same household or in an intimate relationship. (e.g. couple that is not living together)"
+msgstr "Personen vom selben Haushalt oder mit intimem Kontakt. ( z.B. Paar, das nicht zusammen lebt)"
 
 #, elixir-format, ex-autogen
 msgid "Person updated successfully"
@@ -5101,7 +5117,7 @@ msgstr "Diese Person wurde nicht benachrichtigt."
 
 #, elixir-format, ex-autogen
 msgid "This person is in the database"
-msgstr "Diese Person ist möglicherweise ein Duplikat."
+msgstr "Diese Person existiert bereits."
 
 #, elixir-format, ex-autogen
 msgid "This person requires further processing, please click on edit to correct the available information."
@@ -5637,8 +5653,8 @@ msgid "Where does %{first_name} %{last_name} work?"
 msgstr "Wo arbeitet %{first_name} %{last_name}?"
 
 #, elixir-format, ex-autogen
-msgid "Who did you meet or who do you live with?"
-msgstr "Wen haben Sie getroffen oder mit wem wohnen Sie zusammen?"
+msgid "With who do you live in the same household?"
+msgstr "Mit wem wohnen Sie zusammen?"
 
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
@@ -5694,10 +5710,6 @@ msgstr "Sie können sich von der Quarantäne befreien lassen, wenn Sie im Besitz
 #, elixir-format, ex-autogen
 msgid "You did not keep a safe distance of at least 1.5 meters."
 msgstr "Sie waren sich näher als 1.5 Meter."
-
-#, elixir-format, ex-autogen
-msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
-msgstr "Kontakt zwischen jetzt und 48 Stunden vor Beginn der Symptome (falls Sie keine Symptome haben 48 Stunden vor dem Test)."
 
 #, elixir-format, ex-autogen
 msgid "You had contact for more than 15 minutes on the same day."

@@ -376,6 +376,46 @@ defmodule Hygeia.CaseContext.Case do
   end
 
   @doc """
+  First positive test date of case
+  """
+  @spec first_positive_test_date(case :: t) :: Date.t() | nil
+  def first_positive_test_date(%__MODULE__{tests: tests}),
+    do:
+      tests
+      |> Enum.filter(&match?(%Test{result: :positive}, &1))
+      |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
+      |> Enum.reject(&is_nil/1)
+      |> Enum.sort({:asc, Date})
+      |> List.first()
+
+  defp phase_inserted_at_date(%__MODULE__{phases: phases} = _case, phase_type) do
+    Enum.find_value(phases, fn
+      %Phase{details: %^phase_type{}, inserted_at: inserted_at} ->
+        DateTime.to_date(inserted_at)
+
+      _phase ->
+        false
+    end)
+  end
+
+  defp phase_dates(%__MODULE__{inserted_at: inserted_at} = case, phase_type) do
+    Enum.reject(
+      [
+        {:test, first_positive_test_date(case)},
+        {:symptom_start, get_in(case, [Access.key(:clinical), Access.key(:symptom_start)])},
+        {:phase_inserted_at, phase_inserted_at_date(case, phase_type)},
+        {:inserted_at, DateTime.to_date(inserted_at)}
+      ],
+      &match?({_type, nil}, &1)
+    )
+  end
+
+  @spec fist_known_phase_date(case :: t, phase_type :: Phase.Index | Phase.PossibleIndex) ::
+          {:symptom_start | :test | :phase_inserted_at | :inserted_at, Date.t()}
+  def fist_known_phase_date(%__MODULE__{} = case, phase_type),
+    do: List.first(phase_dates(case, phase_type))
+
+  @doc """
   This function is used to detect when a phase could have started the earliest.
   This is used to check self service inputs. Tracers are allowed to override.
 
@@ -392,36 +432,11 @@ defmodule Hygeia.CaseContext.Case do
           phase_type :: Phase.Index | Phase.PossibleIndex
         ) ::
           {:corrected | :ok, Date.t()}
-  def earliest_self_service_phase_start_date(
-        %__MODULE__{tests: tests, phases: phases, inserted_at: inserted_at, clinical: clinical} =
-          _case,
-        phase_type
-      ) do
-    first_test_date =
-      tests
-      |> Enum.filter(&match?(%Test{result: :positive}, &1))
-      |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
-      |> Enum.reject(&is_nil/1)
-      |> Enum.sort({:asc, Date})
-      |> List.first()
-
-    index_phase_start_date =
-      Enum.find_value(phases, fn
-        %Phase{details: %^phase_type{}, inserted_at: inserted_at} ->
-          DateTime.to_date(inserted_at)
-
-        _phase ->
-          false
-      end)
-
-    phase_start =
-      [
-        first_test_date,
-        index_phase_start_date,
-        DateTime.to_date(inserted_at)
-      ]
-      |> Enum.reject(&is_nil/1)
-      |> List.first()
+  def earliest_self_service_phase_start_date(%__MODULE__{clinical: clinical} = case, phase_type) do
+    [{_type, phase_start} | _rest] =
+      case
+      |> phase_dates(phase_type)
+      |> Enum.reject(&match?({:symptom_start, _date}, &1))
 
     case clinical do
       %Clinical{symptom_start: %Date{} = symptom_start} ->

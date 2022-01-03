@@ -134,6 +134,6 @@ defmodule HygeiaWeb.AutoTracingLive.ContactPersons do
   defp load_case(case_uuid) do
     case_uuid
     |> CaseContext.get_case!()
-    |> Repo.preload(person: [], auto_tracing: [], possible_index_submissions: [])
+    |> Repo.preload(person: [], auto_tracing: [], possible_index_submissions: [], tests: [])
   end
 end

@@ -894,6 +894,14 @@ msgid "Contact Tracing for SARS-CoV-2"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "Contact between %{date} and now. (48 hours before symptom start)"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "Contact between %{date} and now. (48 hours before the first positive test)"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Contact persons"
 msgstr ""
 
@@ -3456,6 +3464,10 @@ msgid "People that live in the same household as you also count as contact perso
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "People that live in the same household as you count as contact persons. Please also register all children."
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Percentage"
 msgstr ""
 
@@ -3532,6 +3544,10 @@ msgstr ""
 
 #, elixir-format, ex-autogen
 msgid "Person is symptomatic and therefore tested"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "Person living in the same household or in an intimate relationship. (e.g. couple that is not living together)"
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -5578,7 +5594,7 @@ msgid "Where does %{first_name} %{last_name} work?"
 msgstr ""
 
 #, elixir-format, ex-autogen
-msgid "Who did you meet or who do you live with?"
+msgid "With who do you live in the same household?"
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -5634,10 +5650,6 @@ msgstr ""
 
 #, elixir-format, ex-autogen
 msgid "You did not keep a safe distance of at least 1.5 meters."
-msgstr ""
-
-#, elixir-format, ex-autogen
-msgid "You had contact between now and 48 hours before your symptoms started or (if you don't have symptoms) before the test."
 msgstr ""
 
 #, elixir-format, ex-autogen
