@@ -203,6 +203,7 @@ jobs:
 
     env:
       MIX_ENV: dev
+      DIALYZER_PLT_PRIV: true
 
     steps:
       - uses: actions/checkout@v2
