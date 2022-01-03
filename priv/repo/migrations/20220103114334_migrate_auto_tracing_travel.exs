@@ -26,8 +26,8 @@ defmodule Hygeia.Repo.Migrations.MigrateAutoTracingTravel do
           WHEN at.travel IS NULL
           THEN ARRAY[]::jsonb[]
           ELSE ARRAY[
-              at.travel - 'returned_at' ||
-              jsonb_build_object('last_departure_date', at.travel->'returned_at')
+              at.travel - 'return_date' ||
+              jsonb_build_object('last_departure_date', at.travel->'return_date')
           ]::jsonb[]
         END;
       """,
@@ -58,11 +58,11 @@ defmodule Hygeia.Repo.Migrations.MigrateAutoTracingTravel do
       UPDATE auto_tracings at
       SET travel =
         CASE
-          WHEN at.travels[0] IS NULL
+          WHEN at.travels[0]::jsonb IS NULL
           THEN '{}'::jsonb
           ELSE
             at.travels[0] - 'last_departure_date' ||
-            jsonb_build_object('returned_at', at.travels[0]->'last_departure_date')
+            jsonb_build_object('return_date', at.travels[0]->'last_departure_date')
         END;
       """,
       &noop/0
