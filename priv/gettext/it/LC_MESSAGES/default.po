@@ -466,7 +466,7 @@ msgstr "Torna alla lista"
 msgid "Base Data"
 msgstr "Dati generali"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgctxt "Breakthrough Infection Export"
 msgid "Birth Date"
 msgstr "Data di nascita"
@@ -734,12 +734,12 @@ msgstr "Cinema / teatro / concerto"
 msgid "Class or division"
 msgstr "Classe o divisione"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division"
 msgstr "Classe o divisione"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Class or division not found"
 msgstr "Classe o divisione non trovata"
@@ -814,7 +814,7 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmissi
 msgid "Comment"
 msgstr "Commento"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgid "Complete"
 msgstr "Completo"
 
@@ -1109,7 +1109,7 @@ msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Date of last visit"
 msgstr "Data dell'ultima visita"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgid "Dear Sir / Madam"
 msgstr "Gentile signore / signora"
 
@@ -1455,7 +1455,7 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Done"
 msgstr "Completato"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgctxt "Auto Tracing Vaccination"
 msgid "Done"
 msgstr "Completato"
@@ -1470,7 +1470,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Done"
 msgstr "Completato"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgctxt "vaccination_done"
 msgid "Done"
 msgstr "Completato"
@@ -2103,6 +2103,10 @@ msgstr "Sono in possesso di un certificato di vaccinazione valido."
 #, elixir-format, ex-autogen
 msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Confermo che tutti i dati di cui sopra sono corretti. I dati potrebbero essere ispezionati!"
+
+#, elixir-format, ex-autogen
+msgid "I have not visited any of the above countries"
+msgstr "Non ho visitato nessuno dei paesi sopra indicati"
 
 #, elixir-format, ex-autogen
 msgid "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
@@ -4799,7 +4803,7 @@ msgctxt "Organisation Merge"
 msgid "Switch"
 msgstr "Cambia"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgctxt "Breakthrough Infection Export"
 msgid "Symptom Start Date"
 msgstr "Data di inizio dei sintomi"
@@ -5238,16 +5242,16 @@ msgstr "UUID del tracciatore"
 msgid "Tracing"
 msgstr "Rintracciare"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgid "Transmission"
 msgstr "Trasmissione"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgctxt "Auto Tracing Step"
 msgid "Transmission"
 msgstr "Trasmissione"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgctxt "Create Possible Index Step"
 msgid "Transmission"
 msgstr "Trasmissione"
@@ -5273,7 +5277,7 @@ msgstr "Trasmissione creata con successo"
 msgid "Transmission deleted successfully"
 msgstr "Trasmissione cancellata con successo"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgid "Transmission updated successfully"
 msgstr "Trasmissione aggiornata con successo"
 
@@ -5422,7 +5426,7 @@ msgstr "Errore sconosciuto"
 msgid "Unknown division"
 msgstr "Classe / divisione sconosciuta"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Unknown division"
 msgstr "Classe / divisione sconosciuta"

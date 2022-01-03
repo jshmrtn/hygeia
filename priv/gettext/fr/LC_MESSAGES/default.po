@@ -1099,17 +1099,17 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Date of last visit"
 msgstr "Date de la dernière visite"
 
-#, elixir-format, ex-autogen, fuzzy
+#, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Date of last visit"
 msgstr "Date de la dernière visite"
 
-#, elixir-format, ex-autogen, fuzzy
+#, elixir-format, fuzzy
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Date of last visit"
 msgstr "Date de la dernière visite"
 
-#, elixir-format, fuzzy
+#, elixir-format, ex-autogen, fuzzy
 msgid "Dear Sir / Madam"
 msgstr "Madame, Monsieur"
 
@@ -2104,6 +2104,10 @@ msgstr "Je suis en possession d'un certificat de vaccination valide."
 #, elixir-format, ex-autogen, fuzzy
 msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Je confirme que toutes les données ci-dessus sont correctes. Ceci peut être inspecté !"
+
+#, elixir-format, ex-autogen
+msgid "I have not visited any of the above countries"
+msgstr "Je n'ai visité aucun des pays ci-dessus"
 
 #, elixir-format, ex-autogen
 msgid "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
