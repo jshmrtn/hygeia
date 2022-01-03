@@ -10,6 +10,8 @@ defmodule HygeiaWeb.AutoTracingLive.End do
   alias Hygeia.Repo
   alias Surface.Components.LiveRedirect
 
+  @covid_certificate_link "https://covidcertificate-form.admin.ch/"
+
   @impl Phoenix.LiveView
   # credo:disable-for-next-line Credo.Check.Design.DuplicatedCode
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
@@ -54,5 +56,9 @@ defmodule HygeiaWeb.AutoTracingLive.End do
   @impl Phoenix.LiveView
   def handle_event("advance", _params, socket) do
     {:noreply, socket}
+  end
+
+  defp get_covid_certificate_link do
+    @covid_certificate_link
   end
 end

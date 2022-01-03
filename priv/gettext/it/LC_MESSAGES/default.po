@@ -1870,6 +1870,10 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Flight number"
 msgstr "Numero del volo"
 
+#, elixir-format, ex-autogen
+msgid "Form data is invalid."
+msgstr "I dati del modulo non sono validi."
+
 #, elixir-format, fuzzy
 msgid "Found no results"
 msgstr "Trovato nessun risultato"
@@ -2187,6 +2191,10 @@ msgstr "Se hai completato il ciclo vaccinale, inserisci entrambe le date di vacc
 #, elixir-format, fuzzy
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
 msgstr "Se hai avuto un contatto ravvicinato con persone che non conosci (ad esempio in un ristorante o in una chiesa), parla con il tuo tracciatore per la procedura migliore e più misure di contatto."
+
+#, elixir-format, ex-autogen
+msgid "If you have a positive PCR test, you can apply for your Covid certificate under the following link: %{link}"
+msgstr "Se hai un test PCR positivo, puoi richiedere il tuo certificato Covid al seguente link: %{link}"
 
 #, elixir-format, fuzzy
 msgid "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test."
@@ -3331,7 +3339,7 @@ msgstr "Altro"
 #, elixir-format
 msgctxt "Clinical Symptom"
 msgid "Other"
-msgstr "Altro"
+msgstr "Altros"
 
 #, elixir-format
 msgctxt "Contact Method Type"
@@ -4186,6 +4194,11 @@ msgstr "Indirizzo di residenza"
 msgctxt "Auto Tracing Problem"
 msgid "Residency Outside Country"
 msgstr "Residenza fuori dal paese"
+
+#, elixir-format, ex-autogen
+msgctxt "Affiliation Kind"
+msgid "Resident"
+msgstr "Residente"
 
 #, elixir-format, fuzzy
 msgctxt "Case Import Row Status"
@@ -5065,8 +5078,7 @@ msgstr "Lo stato serve come una panoramica della fase di rintracciamento attuale
 msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
 msgstr "L'app swiss covid è l'app ufficiale per il tracciamento dei contatti della svizzera. L'app aiuta a tracciare e prevenire la diffusione del virus COVID-19."
 
-#, elixir-format
-msgctxt "errors"
+#, elixir-format, ex-autogen, fuzzy
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
 msgstr "Si è verificato un errore durante l'invio del modulo. Prova a inviare nuovamente il modulo e contatta l'amministratore se il problema persiste."
 
@@ -5702,9 +5714,9 @@ msgstr "Non sei autorizzato a visualizzare questa persona. Fornisci il codice <%
 msgid "You can also end quarantine early, if you do a COVID-19 test within the last 4 days of your quarantine with a negative result. The test has to be conducted by an official test center."
 msgstr "Puoi anche terminare la quarantena in anticipo, se fai un test COVID-19 negli ultimi 4 giorni della tua quarantena con un risultato negativo. Il test deve essere condotto da un centro ufficiale."
 
-#, elixir-format, fuzzy
-msgid "You can lift quarantine if you're fully vaccinated or if you verifiably had COVID-19 in the last six months."
-msgstr "Si può togliere la quarantena se si è completamente vaccinati o se si è verificata la COVID-19 negli ultimi sei mesi."
+#, elixir-format, ex-autogen
+msgid "You can lift quarantine if you're fully vaccinated or if you are in possession of a valid Covid certificate."
+msgstr "Puoi terminare la quarantena se sei completamente vaccinato o se sei in possesso di un certificato Covid valido."
 
 #, elixir-format, fuzzy
 msgid "You did not keep a safe distance of at least 1.5 meters."

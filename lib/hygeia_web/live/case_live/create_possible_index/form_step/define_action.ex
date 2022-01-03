@@ -15,6 +15,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.TenantContext
   alias Hygeia.TenantContext.Tenant
+  alias HygeiaWeb.CaseLive.CreatePossibleIndex
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.PersonCard
   alias HygeiaWeb.CaseLive.CreatePossibleIndex.Service
@@ -488,10 +489,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
     end
   end
 
+  defp manage_existing_phases(case_changeset, %{date: ""}), do: case_changeset
+
   defp manage_existing_phases(
          case_changeset,
          %{type: global_type, type_other: global_type_other, date: date}
-       ) do
+       )
+       when is_binary(date) do
     existing_phases = fetch_field!(case_changeset, :phases)
 
     existing_phases
@@ -561,6 +565,8 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
         case_changeset
     end
   end
+
+  defp manage_existing_phases(case_changeset, _form_data), do: case_changeset
 
   @spec valid?(form_data :: map()) :: boolean()
   def valid?(form_data)

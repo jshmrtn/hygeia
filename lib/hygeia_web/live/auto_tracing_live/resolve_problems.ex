@@ -162,6 +162,19 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   end
 
   @impl Phoenix.LiveView
+  def handle_event("resolve", %{"problem" => "no_reaction"}, socket) do
+    {:ok, auto_tracing} =
+      AutoTracingContext.update_auto_tracing(socket.assigns.auto_tracing, %{
+        started_at: DateTime.utc_now()
+      })
+
+    {:ok, auto_tracing} =
+      AutoTracingContext.auto_tracing_resolve_problem(auto_tracing, :no_reaction)
+
+    {:noreply, assign(socket, auto_tracing: auto_tracing)}
+  end
+
+  @impl Phoenix.LiveView
   def handle_event("resolve", %{"problem" => problem}, socket) do
     {:ok, auto_tracing} =
       AutoTracingContext.auto_tracing_resolve_problem(

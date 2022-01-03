@@ -166,7 +166,7 @@
         type="submit"
         :on-click="next"
         phx-disable-with={gettext("Saving...")}
-        disabled={not valid?(@form_data)}
+        disabled={not CreatePossibleIndex.valid_form?(@form_data)}
       >
         {#if Enum.all?(@form_data.bindings, &Enum.empty?(&1.reporting))}
           {gettext("Submit")}
