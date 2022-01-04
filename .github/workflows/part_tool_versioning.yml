@@ -29,7 +29,7 @@ jobs:
       - name: "Read .tool-versions"
         id: toolVersions
         run: |
-          ELIXIR_VERSION="$(cat .tool-versions | grep elixir | cut -d' ' -f2-)"
+          ELIXIR_VERSION="$(cat .tool-versions | grep elixir | cut -d' ' -f2- | sed 's/-otp-[0-9]*//')"
           echo Elixir: $ELIXIR_VERSION
           echo ::set-output name=ELIXIR_VERSION::${ELIXIR_VERSION}
 
