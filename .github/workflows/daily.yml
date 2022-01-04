@@ -1,0 +1,32 @@
+on:
+  schedule:
+    # Every Day Midnight
+    - cron: '0 0 * * *'
+
+name: "Daily"
+
+jobs:
+  checkAsdfUpdatesElixir:
+    name: "ASDF Update Elixir"
+
+    uses: jshmrtn/hygeia/.github/workflows/part_asdf_update.yml@main
+    with:
+      plugin: "elixir"
+      constraint: "1"
+
+  checkAsdfUpdatesErlang:
+    name: "ASDF Update Erlang"
+
+    uses: jshmrtn/hygeia/.github/workflows/part_asdf_update.yml@main
+    with:
+      plugin: "erlang"
+      constraint: "24"
+
+  checkAsdfUpdatesNodeJs:
+    name: "ASDF Update Node.js"
+
+    uses: jshmrtn/hygeia/.github/workflows/part_asdf_update.yml@main
+    with:
+      plugin: "nodejs"
+      constraint: "16"
+
