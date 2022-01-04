@@ -379,7 +379,8 @@ defmodule HygeiaWeb.Helpers.FieldName do
       first_name: "First Name",
       last_name: "Last Name",
       phone: "Phone",
-      email: "Email"
+      email: "Email",
+      address: "Address"
     },
     Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit => %{
       visit_reason: "Reason for your visit",

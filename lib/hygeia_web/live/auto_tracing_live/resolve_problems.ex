@@ -270,8 +270,13 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
                 socket,
                 :create,
                 %{
+                  type: :contact_person,
                   date: if(transmission.date, do: Date.to_iso8601(transmission.date), else: nil),
-                  infection_place: unpack(transmission.infection_place),
+                  infection_place:
+                    Map.merge(
+                      unpack(transmission.infection_place),
+                      %{known: true}
+                    ),
                   propagator_internal: transmission.propagator_internal,
                   propagator_case_uuid: transmission.propagator_case_uuid,
                   propagator_ism_id: transmission.propagator_ism_id,
@@ -467,4 +472,9 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   end
 
   defp unpack(other), do: other
+
+  defp phone_to_uri(number) do
+    {:ok, parsed} = ExPhoneNumber.parse(number, "CH")
+    ExPhoneNumber.format(parsed, :rfc3966)
+  end
 end

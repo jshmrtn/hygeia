@@ -81,16 +81,30 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
           )
 
         true ->
+          # TODO: Remove Fallback as soon as all cases are moved to the new model
+          transmission =
+            case case.auto_tracing.possible_transmission do
+              nil ->
+                if uuid = case.auto_tracing.transmission_uuid do
+                  CaseContext.get_transmission!(uuid)
+                else
+                  %Transmission{}
+                end
+
+              %Transmission{} = at_transmission ->
+                at_transmission
+            end
+
           step = %__MODULE__{
             known: case.auto_tracing.transmission_known,
             propagator_known: case.auto_tracing.propagator_known,
-            transmission: case.auto_tracing.possible_transmission,
+            transmission: transmission,
             propagator: case.auto_tracing.propagator
           }
 
           assign(socket,
             changeset: %Ecto.Changeset{changeset(step) | action: :validate},
-            transmission: case.auto_tracing.possible_transmission,
+            transmission: transmission,
             case: case,
             auto_tracing: case.auto_tracing
           )
@@ -119,11 +133,9 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
         "save",
         _params,
         %Socket{
-          assigns: %{changeset: changeset, auto_tracing: auto_tracing, transmission: transmission}
+          assigns: %{changeset: changeset, auto_tracing: auto_tracing}
         } = socket
       ) do
-    transmission = if transmission == nil, do: %Transmission{}, else: transmission
-
     socket =
       changeset
       |> apply_action(:validate)
@@ -140,27 +152,14 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
                 |> AutoTracingContext.change_auto_tracing(%{transmission_known: true})
                 |> put_embed(:possible_transmission, step.transmission)
 
-              {:ok, _auto_tracing} =
+              {:ok, auto_tracing} =
                 if fetch_field!(changeset, :propagator_known) do
-                  # TODO: Remove when :link_propagator is no longer needed
-                  if auto_tracing.transmission_uuid,
-                    do:
-                      AutoTracingContext.auto_tracing_add_problem(auto_tracing, :link_propagator)
-
                   {:ok, _auto_tracing} =
                     auto_tracing_changeset
                     |> AutoTracingContext.change_auto_tracing(%{propagator_known: true})
                     |> put_embed(:propagator, fetch_field!(changeset, :propagator))
                     |> AutoTracingContext.update_auto_tracing()
                 else
-                  # TODO: Remove when :link_propagator is no longer needed
-                  if auto_tracing.transmission_uuid,
-                    do:
-                      AutoTracingContext.auto_tracing_remove_problem(
-                        auto_tracing,
-                        :link_propagator
-                      )
-
                   {:ok, _auto_tracing} =
                     auto_tracing_changeset
                     |> AutoTracingContext.change_auto_tracing(%{propagator_known: false})
@@ -168,14 +167,15 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
                     |> AutoTracingContext.update_auto_tracing()
                 end
 
+              {:ok, auto_tracing} =
+                AutoTracingContext.auto_tracing_remove_problem(
+                  auto_tracing,
+                  :link_propagator
+                )
+
               {:ok, _auto_tracing} =
                 AutoTracingContext.auto_tracing_add_problem(auto_tracing, :possible_transmission)
             else
-              # TODO: Remove when :link_propagator is no longer needed
-              if auto_tracing.transmission_uuid do
-                {:ok, _transmission} = CaseContext.delete_transmission(transmission)
-              end
-
               {:ok, auto_tracing} =
                 auto_tracing
                 |> AutoTracingContext.change_auto_tracing(%{
@@ -187,11 +187,11 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
                 |> put_change(:possible_transmission, nil)
                 |> AutoTracingContext.update_auto_tracing()
 
-              # TODO: Remove when :link_propagator is no longer needed
-              if auto_tracing.transmission_uuid,
-                do: AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :link_propagator)
-
-              AutoTracingContext.auto_tracing_remove_problem(auto_tracing, :possible_transmission)
+              {:ok, _auto_tracing} =
+                AutoTracingContext.auto_tracing_remove_problem(
+                  auto_tracing,
+                  :possible_transmission
+                )
             end
 
           {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :transmission)

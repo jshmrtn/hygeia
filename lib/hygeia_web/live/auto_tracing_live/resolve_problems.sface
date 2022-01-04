@@ -9,24 +9,36 @@
       <div class="card-body hy-readonly-form">
         <h2 class="mb-3">{pgettext("Auto Tracing Resolve Problems", "Overview")}</h2>
         <div class="form-group">
-          <div>
-            {pgettext("Auto Tracing Resolve Problems", "Current Step")}
-          </div>
-          <div class="value">
-            {AutoTracing.Step.translate(@auto_tracing.current_step)}
-          </div>
-        </div>
+          <div class="row">
+            <div class="col">
+              <div>
+                {pgettext("Auto Tracing Resolve Problems", "Current Step")}
+              </div>
+              <div class="value">
+                {AutoTracing.Step.translate(@auto_tracing.current_step)}
+              </div>
+            </div>
 
-        <div class="form-group">
-          <div>
-            {pgettext("Auto Tracing Resolve Problems", "Last Change")}
-          </div>
-          <div class="value">
-            <HygeiaWeb.RelativeTime
-              time={@auto_tracing.updated_at}
-              id="auto_tracing_updated_at"
-              component_id="auto_tracing_updated_at"
-            />
+            <div class="col">
+              <div>
+                {pgettext("Auto Tracing Resolve Problems", "Last Completed Step")}
+              </div>
+              <div class="value">
+                {AutoTracing.Step.translate(@auto_tracing.last_completed_step)}
+              </div>
+            </div>
+            <div class="col">
+              <div>
+                {pgettext("Auto Tracing Resolve Problems", "Last Change")}
+              </div>
+              <div class="value">
+                <HygeiaWeb.RelativeTime
+                  time={@auto_tracing.updated_at}
+                  id="auto_tracing_updated_at"
+                  component_id="auto_tracing_updated_at"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -113,32 +125,41 @@
                             {#for transmission <- @case.received_transmissions}
                               <div class="card card-body">
                                 <dl>
-                                  <dt>{gettext("Date")}</dt>
-                                  <dd>{transmission.date}</dd>
+                                  <dt>{schema_field_name(:date, Transmission)}</dt>
+                                  <dd>
+                                    {case transmission.date do
+                                      nil -> nil
+                                      %Date{} = date -> HygeiaCldr.Date.to_string!(date)
+                                    end}
+                                  </dd>
                                   {#if infection_place = transmission.infection_place}
-                                    <dt>{gettext("Place Name")}</dt>
+                                    <dt>{schema_field_name(:name, Transmission.InfectionPlace)}</dt>
                                     <dd>{infection_place.name}</dd>
-                                    <dt>{gettext("Type")}</dt>
+                                    <dt>{schema_field_name(:type, Transmission.InfectionPlace)}</dt>
                                     <dd :if={infection_place.type}>{translate_infection_place_type(infection_place.type)}</dd>
                                     {#if infection_place.type == :flight}
-                                      <dt>{gettext("Flight information")}</dt>
+                                      <dt>{schema_field_name(:flight_information, Transmission.InfectionPlace)}</dt>
                                       <dd>{infection_place.flight_information}</dd>
                                     {/if}
-                                    <dt>{gettext("Address")}</dt>
+                                    <dt>{schema_field_name(:address, Transmission.InfectionPlace)}</dt>
                                     <dd :if={infection_place.address}>{Address.to_string(infection_place.address, :long)}</dd>
                                   {/if}
                                 </dl>
                                 <dl>
-                                  <dt>{gettext("Propagator internal")}</dt>
-                                  <dd>{transmission.propagator_internal || gettext("Unknown ")}</dd>
+                                  <dt>{schema_field_name(:propagator_internal, Transmission)}</dt>
+                                  <dd>
+                                    {case transmission.propagator_internal do
+                                      nil -> gettext("No propagator")
+                                      true -> gettext("Internal")
+                                      false -> gettext("External")
+                                    end}
+                                  </dd>
                                   {#if transmission.propagator_case_uuid}
-                                    <dt>{gettext("Propagator")}</dt>
+                                    <dt>{schema_field_name(:propagator_case, Transmission)}</dt>
                                     <dd>{transmission.propagator.first_name} {transmission.propagator.last_name}</dd>
-                                    <dt>{gettext("Type")}</dt>
-                                    <dd :if={infection_place.type}>{translate_infection_place_type(infection_place.type)}</dd>
                                   {/if}
                                   {#if transmission.propagator_ism_id}
-                                    <dt>{gettext("Propagator ISN ID")}</dt>
+                                    <dt>{schema_field_name(:propagator_ism_id, Transmission)}</dt>
                                     <dd>{transmission.propagator_ism_id}</dd>
                                   {/if}
                                 </dl>
@@ -158,18 +179,23 @@
                         <div class="card card-body mb-3">
                           <div class="hy-card-grid-2-cols">
                             <dl>
-                              <dt>{gettext("Date")}</dt>
-                              <dd>{Ecto.Changeset.fetch_field!(@possible_transmission_changeset, :date)}</dd>
+                              <dt>{schema_field_name(:date, Transmission)}</dt>
+                              <dd>
+                                {case Ecto.Changeset.fetch_field!(@possible_transmission_changeset, :date) do
+                                  nil -> nil
+                                  %Date{} = date -> HygeiaCldr.Date.to_string!(date)
+                                end}
+                              </dd>
                               {#if infection_place = Ecto.Changeset.fetch_field!(@possible_transmission_changeset, :infection_place)}
-                                <dt>{gettext("Place Name")}</dt>
+                                <dt>{schema_field_name(:name, Transmission.InfectionPlace)}</dt>
                                 <dd>{infection_place.name}</dd>
-                                <dt>{gettext("Type")}</dt>
+                                <dt>{schema_field_name(:type, Transmission.InfectionPlace)}</dt>
                                 <dd :if={infection_place.type}>{translate_infection_place_type(infection_place.type)}</dd>
                                 {#if infection_place.type == :flight}
-                                  <dt>{gettext("Flight information")}</dt>
+                                  <dt>{schema_field_name(:flight_information, Transmission.InfectionPlace)}</dt>
                                   <dd>{infection_place.flight_information}</dd>
                                 {/if}
-                                <dt>{gettext("Address")}</dt>
+                                <dt>{schema_field_name(:address, Transmission.InfectionPlace)}</dt>
                                 <dd :if={infection_place.address}>{Address.to_string(infection_place.address, :long)}</dd>
                               {/if}
                             </dl>
@@ -181,11 +207,15 @@
                                   {@auto_tracing.propagator.last_name}
                                 </p>
                                 <dl>
-                                  <dt>{gettext("Phone")}</dt>
-                                  <dd>{@auto_tracing.propagator.phone}</dd>
-                                  <dt>{gettext("Email")}</dt>
-                                  <dd>{@auto_tracing.propagator.email}</dd>
-                                  <dt>{gettext("Address")}</dt>
+                                  <dt>{schema_field_name(:phone, AutoTracing.Propagator)}</dt>
+                                  <dd>
+                                    <Link :if={@auto_tracing.propagator.phone} to={phone_to_uri(@auto_tracing.propagator.phone)}>{@auto_tracing.propagator.phone}</Link>
+                                  </dd>
+                                  <dt>{schema_field_name(:email, AutoTracing.Propagator)}</dt>
+                                  <dd>
+                                    <Link :if={@auto_tracing.propagator.email} to={"mailto:#{@auto_tracing.propagator.email}"}>{@auto_tracing.propagator.email}</Link>
+                                  </dd>
+                                  <dt>{schema_field_name(:address, AutoTracing.Propagator)}</dt>
                                   <dd :if={@auto_tracing.propagator.address}>{Address.to_string(@auto_tracing.propagator.address, :long)}</dd>
                                 </dl>
                                 <Form
