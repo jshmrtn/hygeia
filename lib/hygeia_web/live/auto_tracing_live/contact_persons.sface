@@ -15,7 +15,7 @@
     </p>
     <ul>
       <li>{gettext(
-          "Person living in the same household or in an intimate relationship. (e.g. couple that is not living together)"
+          "Person living in the same household or in a very close relationship. (e.g. couple that is not living together)"
         )}</li>
       <li>{case Case.fist_known_phase_date(@case, Case.Phase.Index) do
           {:symptom_start, symptom_start} ->
