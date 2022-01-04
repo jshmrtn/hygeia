@@ -59,7 +59,7 @@ defmodule Hygeia.Repo.Migrations.MigrateAutoTracingTravel do
       SET travel =
         CASE
           WHEN at.travels[1]::jsonb IS NULL
-          THEN '{}'::jsonb
+          THEN 'NULL
           ELSE
             at.travels[1] - 'last_departure_date' ||
             jsonb_build_object('return_date', at.travels[1]->'last_departure_date')
