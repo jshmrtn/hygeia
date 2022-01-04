@@ -86,6 +86,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     embeds_many :flights, Flight, on_replace: :delete
 
     embeds_one :propagator, Propagator, on_replace: :delete
+    embeds_one :possible_transmission, Transmission, on_replace: :delete
 
     belongs_to :transmission, Transmission,
       foreign_key: :transmission_uuid,

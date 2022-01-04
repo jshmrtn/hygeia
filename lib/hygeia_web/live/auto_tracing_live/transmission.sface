@@ -74,6 +74,7 @@
                 </div>
                 <div class="col-12 col-md-6">
                   <Inputs for={:infection_place}>
+                    <HiddenInput field={:known} value />
                     <InputContext assigns={assigns} :let={form: form}>
                       <Field name={:type} class="form-group">
                         <HygeiaWeb.FieldLabel />

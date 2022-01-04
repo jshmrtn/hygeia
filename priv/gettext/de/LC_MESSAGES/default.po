@@ -246,6 +246,11 @@ msgctxt "Person Visits"
 msgid "Address"
 msgstr "Adresse"
 
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
+msgid "Address"
+msgstr "Adresse"
+
 #, elixir-format, ex-autogen
 msgid "Adult salon / prostitution services"
 msgstr "Erotiksalon / Prostitutionsdienste"
@@ -1031,6 +1036,10 @@ msgid "Create Possible Index Cases"
 msgstr "Mögliche Indexfälle erstellen"
 
 #, elixir-format, ex-autogen
+msgid "Create Transmission"
+msgstr "Übertragung erstellen"
+
+#, elixir-format
 msgid "Create new person"
 msgstr "Neue Person erstellen"
 
@@ -1717,6 +1726,11 @@ msgid "Existing Person, new case"
 msgstr "Existierende Person, neuer Fall"
 
 #, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Existing Transmissions"
+msgstr "Bestehende Übertragungen"
+
+#, elixir-format
 msgid "Export"
 msgstr "Export"
 
@@ -2583,6 +2597,11 @@ msgstr "Sprache"
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Last Change"
 msgstr "Letzte Anpassung"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Last Completed Step"
+msgstr ""
 
 #, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
@@ -3737,7 +3756,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Ort"
 
-#, elixir-format, ex-autogen
+#, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
 msgstr "Ankunftsort"
@@ -3811,6 +3830,16 @@ msgid "Possible Index Submissions"
 msgstr "Möglicher-Index Einsendungen"
 
 #, elixir-format, ex-autogen
+msgctxt "Auto Tracing Problem"
+msgid "Possible Transmission"
+msgstr "Mögliche Übertragung"
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Possible Transmission"
+msgstr "Eingegebene Mögliche Übertragung"
+
+#, elixir-format
 msgid "Possible index submission created successfully"
 msgstr "Mögliche Indexübermittlung erfolgreich erstellt"
 
@@ -3958,16 +3987,21 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmissi
 msgid "Propagator ISM ID"
 msgstr "Anstecker ISM IS"
 
-#, elixir-format, ex-autogen
+#, elixir-format
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Internal"
 msgstr "Anstecker Intern"
 
-#, elixir-format, ex-autogen
+#, elixir-format
 msgid "Protocol"
 msgstr "Protokoll"
 
 #, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Provided Propagator"
+msgstr "Bereitgestellter Anstecker"
+
+#, elixir-format
 msgid "Pub, Discotheque, Dance club, Night club"
 msgstr "Bar, Diskothek, Tanzclub, Nachtclub"
 
@@ -5422,7 +5456,7 @@ msgctxt "vaccination_done"
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#, elixir-format, ex-autogen
+#, elixir-format
 msgid "Unknown Error"
 msgstr "Unbekannter Fehler"
 

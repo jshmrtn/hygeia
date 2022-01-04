@@ -831,20 +831,21 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       end
     end
 
-    test "sets transmission and advances to contact persons", %{
+    test "sets transmission known false and advances to contact persons", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
     } do
-      {:ok, auto_tracing} =
-        AutoTracingContext.update_auto_tracing(auto_tracing, %{
-          transmission_known: false
-        })
-
       set_last_completed_step(auto_tracing, :transmission)
 
       {:ok, transmission_view, _html} =
         live(conn, Routes.auto_tracing_transmission_path(conn, :transmission, case))
+
+      assert transmission_view
+             |> form("#auto-tracing-transmission-form", %{
+               transmission: %{known: false}
+             })
+             |> render_change()
 
       assert transmission_view
              |> form("#auto-tracing-transmission-form")
@@ -854,6 +855,49 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         transmission_view,
         Routes.auto_tracing_contact_persons_path(conn, :contact_persons, case)
       )
+    end
+
+    test "sets transmission and advances to contact persons", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      set_last_completed_step(auto_tracing, :transmission)
+
+      {:ok, transmission_view, _html} =
+        live(conn, Routes.auto_tracing_transmission_path(conn, :transmission, case))
+
+      assert transmission_view
+             |> form("#auto-tracing-transmission-form", %{
+               transmission: %{known: true}
+             })
+             |> render_change()
+
+      assert transmission_view
+             |> form("#auto-tracing-transmission-form")
+             |> render_change(%{
+               transmission: %{
+                 transmission: %{
+                   date: "2021-04-17",
+                   infection_place: %{type: :flight}
+                 }
+               }
+             })
+
+      assert transmission_view
+             |> form("#auto-tracing-transmission-form")
+             |> render_submit()
+
+      assert_redirect(
+        transmission_view,
+        Routes.auto_tracing_contact_persons_path(conn, :contact_persons, case)
+      )
+
+      assert %AutoTracing{
+               transmission_known: true,
+               transmission_uuid: nil,
+               problems: [:possible_transmission]
+             } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
   end
 

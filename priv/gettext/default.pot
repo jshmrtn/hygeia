@@ -254,6 +254,11 @@ msgid "Address"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
+msgid "Address"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Adult salon / prostitution services"
 msgstr ""
 
@@ -1038,6 +1043,10 @@ msgid "Create Possible Index Cases"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "Create Transmission"
+msgstr ""
+
+#, elixir-format
 msgid "Create new person"
 msgstr ""
 
@@ -1665,6 +1674,11 @@ msgid "Existing Person, new case"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Existing Transmissions"
+msgstr ""
+
+#, elixir-format
 msgid "Export"
 msgstr ""
 
@@ -2523,6 +2537,11 @@ msgstr ""
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Last Change"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Last Completed Step"
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -3678,7 +3697,7 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr ""
 
-#, elixir-format, ex-autogen
+#, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
 msgstr ""
@@ -3752,6 +3771,16 @@ msgid "Possible Index Submissions"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Auto Tracing Problem"
+msgid "Possible Transmission"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Possible Transmission"
+msgstr ""
+
+#, elixir-format
 msgid "Possible index submission created successfully"
 msgstr ""
 
@@ -3899,16 +3928,21 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmissi
 msgid "Propagator ISM ID"
 msgstr ""
 
-#, elixir-format, ex-autogen
+#, elixir-format
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Internal"
 msgstr ""
 
-#, elixir-format, ex-autogen
+#, elixir-format
 msgid "Protocol"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Provided Propagator"
+msgstr ""
+
+#, elixir-format
 msgid "Pub, Discotheque, Dance club, Night club"
 msgstr ""
 
@@ -5363,7 +5397,7 @@ msgctxt "vaccination_done"
 msgid "Unknown"
 msgstr ""
 
-#, elixir-format, ex-autogen
+#, elixir-format
 msgid "Unknown Error"
 msgstr ""
 

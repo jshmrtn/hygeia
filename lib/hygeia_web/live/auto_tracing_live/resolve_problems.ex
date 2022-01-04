@@ -3,6 +3,8 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
 
   use HygeiaWeb, :surface_view
 
+  alias Phoenix.LiveView.Socket
+
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
@@ -92,6 +94,8 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   end
 
   @impl Phoenix.LiveView
+  # credo:disable-for-lines:2 Credo.Check.Refactor.ABCSize
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   def handle_params(%{"case_uuid" => case_uuid} = params, _uri, socket) do
     case =
       case_uuid
@@ -154,6 +158,11 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
             case: case,
             person: case.person,
             auto_tracing: case.auto_tracing,
+            possible_transmission_changeset:
+              CaseContext.change_transmission(
+                case.auto_tracing.possible_transmission || %Transmission{}
+              ),
+            # TODO: Deprecaded, remove once :link_propagator problem is removed
             link_propagator_opts_changeset:
               LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, propagator_attrs)
           )
@@ -195,6 +204,101 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
      socket
      |> put_flash(:info, gettext("Person deleted successfully"))
      |> redirect(to: Routes.person_index_path(socket, :index))}
+  end
+
+  def handle_event(
+        "possible_transmission_change",
+        %{"possible_transmission" => possible_transmission_opts} = _params,
+        %Socket{assigns: %{auto_tracing: auto_tracing}} = socket
+      ) do
+    {:noreply,
+     assign(socket,
+       possible_transmission_changeset: %{
+         CaseContext.change_transmission(
+           auto_tracing.possible_transmission,
+           possible_transmission_opts
+         )
+         | action: :validate
+       }
+     )}
+  end
+
+  def handle_event(
+        "possible_transmission_change",
+        _params,
+        socket
+      ) do
+    {:noreply, socket}
+  end
+
+  def handle_event(
+        "change_possible_transmission_propagator_case",
+        params,
+        %Socket{assigns: %{auto_tracing: auto_tracing}} = socket
+      ) do
+    {:noreply,
+     assign(
+       socket,
+       :possible_transmission_changeset,
+       %Ecto.Changeset{
+         CaseContext.change_transmission(
+           auto_tracing.possible_transmission,
+           update_changeset_param(
+             socket.assigns.possible_transmission_changeset,
+             :propagator_case_uuid,
+             fn _value_before -> params["uuid"] end
+           )
+         )
+         | action: :validate
+       }
+     )}
+  end
+
+  def handle_event(
+        "create_transmission",
+        _params,
+        %Socket{assigns: %{possible_transmission_changeset: possible_transmission_changeset}} =
+          socket
+      ) do
+    socket =
+      possible_transmission_changeset
+      |> Ecto.Changeset.apply_action(:apply)
+      |> case do
+        {:ok, transmission} ->
+          push_redirect(socket,
+            to:
+              Routes.transmission_create_path(
+                socket,
+                :create,
+                %{
+                  type: :contact_person,
+                  date: if(transmission.date, do: Date.to_iso8601(transmission.date), else: nil),
+                  infection_place:
+                    Map.merge(
+                      unpack(transmission.infection_place),
+                      %{known: true}
+                    ),
+                  propagator_internal: transmission.propagator_internal,
+                  propagator_case_uuid: transmission.propagator_case_uuid,
+                  propagator_ism_id: transmission.propagator_ism_id,
+                  recipient_internal: transmission.recipient_internal,
+                  recipient_case_uuid: transmission.recipient_case_uuid,
+                  return_url:
+                    Routes.auto_tracing_resolve_problems_path(
+                      socket,
+                      :resolve_problems,
+                      socket.assigns.case,
+                      resolve_problem: :possible_transmission
+                    )
+                }
+              )
+          )
+
+        {:error, changeset} ->
+          assign(socket, possible_transmission_changeset: changeset)
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event(
@@ -377,5 +481,19 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         {travel, transmission}
       end
     )
+  end
+
+  defp unpack(struct) when is_struct(struct) do
+    struct
+    |> Map.from_struct()
+    |> Enum.map(fn {key, value} -> {key, unpack(value)} end)
+    |> Map.new()
+  end
+
+  defp unpack(other), do: other
+
+  defp phone_to_uri(number) do
+    {:ok, parsed} = ExPhoneNumber.parse(number, "CH")
+    ExPhoneNumber.format(parsed, :rfc3966)
   end
 end
