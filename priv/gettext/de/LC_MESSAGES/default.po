@@ -246,6 +246,11 @@ msgctxt "Person Visits"
 msgid "Address"
 msgstr "Adresse"
 
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
+msgid "Address"
+msgstr "Adresse"
+
 #, elixir-format, ex-autogen
 msgid "Adult salon / prostitution services"
 msgstr "Erotiksalon / Prostitutionsdienste"
@@ -2587,6 +2592,11 @@ msgid "Last Change"
 msgstr "Letzte Anpassung"
 
 #, elixir-format, ex-autogen
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Last Completed Step"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Last Name"
 msgstr "Nachname"
@@ -3731,10 +3741,6 @@ msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "Place"
 msgstr "Ort"
 
-#, elixir-format, ex-autogen
-msgid "Place Name"
-msgstr "Ortsname"
-
 #, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Place of arrival"
@@ -3966,17 +3972,9 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmissi
 msgid "Propagator ISM ID"
 msgstr "Anstecker ISM IS"
 
-#, elixir-format, ex-autogen
-msgid "Propagator ISN ID"
-msgstr "Anstecker ISM ID"
-
 #, elixir-format
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator Internal"
-msgstr "Anstecker Intern"
-
-#, elixir-format, ex-autogen
-msgid "Propagator internal"
 msgstr "Anstecker Intern"
 
 #, elixir-format
@@ -5429,10 +5427,6 @@ msgstr "Unbekannt"
 #, elixir-format, ex-autogen
 msgctxt "vaccination_done"
 msgid "Unknown"
-msgstr "Unbekannt"
-
-#, elixir-format, ex-autogen
-msgid "Unknown "
 msgstr "Unbekannt"
 
 #, elixir-format
