@@ -80,6 +80,26 @@ defmodule Hygeia.RiskCountryContext do
       |> broadcast("risk_countries", :delete)
       |> versioning_extract()
 
+  @spec patch_risk_countries(risk_countries :: [String.t()] | []) ::
+          {:ok, any()}
+          | {:error, any()}
+          | {:error, Ecto.Multi.name(), any(), %{required(Ecto.Multi.name()) => any()}}
+  def patch_risk_countries(risk_countries) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.delete_all(
+      :delete_all,
+      from(r in RiskCountry, where: r.country not in ^risk_countries)
+    )
+    |> Ecto.Multi.insert_all(
+      :insert_all,
+      RiskCountry,
+      Enum.map(risk_countries, &%{country: &1}),
+      conflict_target: [:country],
+      on_conflict: :nothing
+    )
+    |> Hygeia.Repo.transaction()
+  end
+
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking risk country changes.
 

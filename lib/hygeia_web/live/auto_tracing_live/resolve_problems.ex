@@ -20,6 +20,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.TextInput
+  alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
   data case, :map
@@ -359,4 +360,22 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
+
+  defp get_risk_travels_zip(travels, transmissions) do
+    Enum.map(
+      travels,
+      fn travel ->
+        transmission =
+          Enum.find(transmissions, fn
+            %Transmission{infection_place: %InfectionPlace{address: %Address{country: country}}} ->
+              country == travel.country
+
+            _other_transmission ->
+              false
+          end)
+
+        {travel, transmission}
+      end
+    )
+  end
 end

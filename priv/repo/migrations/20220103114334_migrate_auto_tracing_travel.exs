@@ -5,12 +5,9 @@ defmodule Hygeia.Repo.Migrations.MigrateAutoTracingTravel do
   use Hygeia, :migration
 
   def up do
-    execute(
-      fn ->
-        :ok = run_authentication(repo(), origin: :migration, originator: :noone)
-      end,
-      &noop/0
-    )
+    execute(fn ->
+      :ok = run_authentication(repo(), origin: :migration, originator: :noone)
+    end)
 
     rename table(:auto_tracings), :has_travelled, to: :has_travelled_in_risk_country
 
@@ -40,12 +37,9 @@ defmodule Hygeia.Repo.Migrations.MigrateAutoTracingTravel do
   end
 
   def down do
-    execute(
-      fn ->
-        :ok = run_authentication(repo(), origin: :migration, originator: :noone)
-      end,
-      &noop/0
-    )
+    execute(fn ->
+      :ok = run_authentication(repo(), origin: :migration, originator: :noone)
+    end)
 
     rename table(:auto_tracings), :has_travelled_in_risk_country, to: :has_travelled
 

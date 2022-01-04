@@ -4,11 +4,10 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
   use HygeiaWeb, :surface_view
   use Hygeia, :model
 
-  import Ecto.Query
-
   alias Hygeia.EctoType.Country
   alias Hygeia.RiskCountryContext
   alias Hygeia.RiskCountryContext.RiskCountry
+
   alias Surface.Components.Context
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
@@ -104,19 +103,7 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
           |> Enum.filter(& &1.is_risk_country)
           |> Enum.map(& &1.country)
 
-        Ecto.Multi.new()
-        |> Ecto.Multi.delete_all(
-          :delete_all,
-          from(r in RiskCountry, where: r.country not in ^risk_countries)
-        )
-        |> Ecto.Multi.insert_all(
-          :insert_all,
-          RiskCountry,
-          Enum.map(risk_countries, &%{country: &1}),
-          conflict_target: [:country],
-          on_conflict: :nothing
-        )
-        |> Hygeia.Repo.transaction()
+        {:ok, _any} = RiskCountryContext.patch_risk_countries(risk_countries)
 
         {:noreply, push_redirect(socket, to: Routes.risk_country_index_path(socket, :index))}
 
