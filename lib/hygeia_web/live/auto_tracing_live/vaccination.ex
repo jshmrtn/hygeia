@@ -76,6 +76,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
     {:noreply, socket}
   end
 
+  @impl Phoenix.LiveView
   def handle_event("validate", %{"vaccination" => vaccination_params}, socket) do
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
@@ -84,71 +85,70 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
      })}
   end
 
-  @impl Phoenix.LiveView
-  def handle_event("advance", _params, socket) do
-    vaccination_params =
-      socket.assigns.changeset
-      |> Ecto.Changeset.get_change(
-        :vaccination,
-        Person.Vaccination.changeset(
-          Ecto.Changeset.get_field(socket.assigns.changeset, :vaccination, %Person.Vaccination{}),
-          %{}
-        )
-      )
-      |> update_changeset_param(
-        :jab_dates,
-        &(&1
-          |> Kernel.||([])
-          |> Enum.reject(fn date -> is_nil(date) end)
-          |> Enum.uniq()
-          |> Enum.sort_by(
-            fn
-              date when is_binary(date) -> Date.from_iso8601!(date)
-              date -> date
-            end,
-            {:asc, Date}
-          ))
-      )
+  # def handle_event("advance", _params, socket) do
+  #   vaccination_params =
+  #     socket.assigns.changeset
+  #     |> Ecto.Changeset.get_change(
+  #       :vaccination,
+  #       Person.Vaccination.changeset(
+  #         Ecto.Changeset.get_field(socket.assigns.changeset, :vaccination, %Person.Vaccination{}),
+  #         %{}
+  #       )
+  #     )
+  #     |> update_changeset_param(
+  #       :jab_dates,
+  #       &(&1
+  #         |> Kernel.||([])
+  #         |> Enum.reject(fn date -> is_nil(date) end)
+  #         |> Enum.uniq()
+  #         |> Enum.sort_by(
+  #           fn
+  #             date when is_binary(date) -> Date.from_iso8601!(date)
+  #             date -> date
+  #           end,
+  #           {:asc, Date}
+  #         ))
+  #     )
 
-    params =
-      update_changeset_param(socket.assigns.changeset, :vaccination, fn _input ->
-        vaccination_params
-      end)
+  #   params =
+  #     update_changeset_param(socket.assigns.changeset, :vaccination, fn _input ->
+  #       vaccination_params
+  #     end)
 
-    {:ok, person} =
-      CaseContext.update_person(
-        %Ecto.Changeset{socket.assigns.changeset | action: nil},
-        params,
-        %{vaccination_required: true, initial_nil_jab_date_count: 0}
-      )
+  #   {:ok, person} =
+  #     CaseContext.update_person(
+  #       %Ecto.Changeset{socket.assigns.changeset | action: nil},
+  #       params,
+  #       %{vaccination_required: true, initial_nil_jab_date_count: 0}
+  #     )
 
-    {:ok, auto_tracing} =
-      case person do
-        %Person{is_vaccinated: true} ->
-          AutoTracingContext.auto_tracing_add_problem(
-            socket.assigns.auto_tracing,
-            :vaccination_failure
-          )
+  #   {:ok, auto_tracing} =
+  #     case person do
+  #       %Person{is_vaccinated: true} ->
+  #         AutoTracingContext.auto_tracing_add_problem(
+  #           socket.assigns.auto_tracing,
+  #           :vaccination_failure
+  #         )
 
-        %Person{} ->
-          AutoTracingContext.auto_tracing_remove_problem(
-            socket.assigns.auto_tracing,
-            :vaccination_failure
-          )
-      end
+  #       %Person{} ->
+  #         AutoTracingContext.auto_tracing_remove_problem(
+  #           socket.assigns.auto_tracing,
+  #           :vaccination_failure
+  #         )
+  #     end
 
-    {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :vaccination)
+  #   {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :vaccination)
 
-    {:noreply,
-     push_redirect(socket,
-       to:
-         Routes.auto_tracing_covid_app_path(
-           socket,
-           :covid_app,
-           socket.assigns.auto_tracing.case_uuid
-         )
-     )}
-  end
+  #   {:noreply,
+  #    push_redirect(socket,
+  #      to:
+  #        Routes.auto_tracing_covid_app_path(
+  #          socket,
+  #          :covid_app,
+  #          socket.assigns.auto_tracing.case_uuid
+  #        )
+  #    )}
+  # end
 
   defp changeset(schema, attrs \\ %{}) do
     schema

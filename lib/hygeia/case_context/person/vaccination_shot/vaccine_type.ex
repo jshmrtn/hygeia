@@ -19,6 +19,8 @@ defmodule Hygeia.CaseContext.Person.VaccinationShot.VaccineType do
       :other
     ]
 
+  import HygeiaGettext
+
   @spec map :: [{String.t(), t}]
   def map, do: Enum.map(__enum_map__(), &{translate(&1), &1})
 
@@ -31,5 +33,5 @@ defmodule Hygeia.CaseContext.Person.VaccinationShot.VaccineType do
   def translate(:sinovac), do: "Sinovac (CoronaVac)"
   def translate(:covaxin), do: "COVAXIN®"
   def translate(:novavax), do: "Novavax (NVX-CoV2373 / Nuvaxovid™/ CovovaxTM)"
-  def translate(:other), do: "Other"
+  def translate(:other), do: pgettext("Vaccine Type", "Other")
 end

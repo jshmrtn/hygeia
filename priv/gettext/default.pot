@@ -739,6 +739,10 @@ msgid "Choose test result"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "Choose vaccine"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Cinema / theater / concert"
 msgstr ""
 
@@ -920,6 +924,11 @@ msgid "Continue"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Person Field"
+msgid "Convalescent Externally"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgctxt "Test Reason"
 msgid "Convenience"
 msgstr ""
@@ -1097,6 +1106,11 @@ msgstr ""
 
 #, elixir-format, ex-autogen
 msgctxt "Protocol Entry"
+msgid "Date"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
 msgid "Date"
 msgstr ""
 
@@ -1419,11 +1433,6 @@ msgstr ""
 
 #, elixir-format, ex-autogen
 msgctxt "Case Status"
-msgid "Done"
-msgstr ""
-
-#, elixir-format, ex-autogen
-msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Done"
 msgstr ""
 
@@ -2147,8 +2156,8 @@ msgid "If there is no number, try to get it from the doctor."
 msgstr ""
 
 #, elixir-format, ex-autogen
-msgctxt "Auto Tracing Vaccination"
-msgid "If you are fully vaccinated, please insert both vaccination dates."
+msgctxt "Person Convalescent Externally"
+msgid "If this person is convalescent and the case was not handeled, set to yes. This is used to calculate vaccination validity."
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -2417,11 +2426,6 @@ msgstr ""
 
 #, elixir-format, ex-autogen
 msgid "It's difficult speaking in English. A translator is required"
-msgstr ""
-
-#, elixir-format, ex-autogen
-msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
-msgid "Jab Dates"
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -2897,7 +2901,7 @@ msgid "Name"
 msgstr ""
 
 #, elixir-format, ex-autogen
-msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
+msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
 msgid "Name of Vaccine"
 msgstr ""
 
@@ -3076,6 +3080,11 @@ msgid "Next Contact Agreed"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "No"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Person Convalescent Externally"
 msgid "No"
 msgstr ""
 
@@ -3360,6 +3369,11 @@ msgstr ""
 
 #, elixir-format, ex-autogen
 msgctxt "Visit reason"
+msgid "Other"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Vaccine Type"
 msgid "Other"
 msgstr ""
 
@@ -5052,6 +5066,11 @@ msgid "The link to the possible index submissions was sent. The Index did not en
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Person Show"
+msgid "The person is not considered fully vaccinated for breakthrough infections."
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgctxt "Phase Create Modal"
 msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
 msgstr ""
@@ -5070,7 +5089,17 @@ msgid "The swiss covid app is the official contact tracing app of switzerland. T
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Person Show"
+msgid "The validity is only calculated for vaccinations that are used in Switzerland at the moment to detect breakthrough infections."
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Person Show"
+msgid "Therefore currently only Modena, Pfizer and Janssen are considered."
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -5526,6 +5555,16 @@ msgid "Vaccination Name"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Person Show"
+msgid "Vaccination Validity (breakthrough detection)"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
+msgid "Vaccine"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Value"
 msgstr ""
 
@@ -5682,6 +5721,11 @@ msgid "Workplace/school testing ordered by CT"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "Yes"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Person Convalescent Externally"
 msgid "Yes"
 msgstr ""
 

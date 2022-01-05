@@ -100,6 +100,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       address: "Address",
       birth_date: "Birth Date",
       contact_methods: "Contact Methods",
+      convalescent_externally: "Convalescent Externally",
       employers: "Employers",
       external_references: "References",
       first_name: "First Name",
@@ -115,11 +116,6 @@ defmodule HygeiaWeb.Helpers.FieldName do
       comment: "Comment",
       type: "Typ",
       value: "Value"
-    },
-    Hygeia.CaseContext.Person.Vaccination => %{
-      done: "Done",
-      jab_dates: "Jab Dates",
-      name: "Name of Vaccine"
     },
     Hygeia.CaseContext.Person.VaccinationShot => %{
       vaccine_type: "Vaccine",

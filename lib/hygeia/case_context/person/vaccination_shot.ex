@@ -7,6 +7,7 @@ defmodule Hygeia.CaseContext.Person.VaccinationShot do
 
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.VaccinationShot.VaccineType
+  alias Hygeia.CaseContext.Person.VaccinationShot.Validity
 
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
@@ -26,7 +27,10 @@ defmodule Hygeia.CaseContext.Person.VaccinationShot do
     field :vaccine_type, VaccineType
     field :vaccine_type_other, :string
     field :date, :date
+
     belongs_to :person, Person, foreign_key: :person_uuid, references: :uuid
+
+    has_one :validity, Validity
 
     timestamps()
   end
@@ -45,5 +49,6 @@ defmodule Hygeia.CaseContext.Person.VaccinationShot do
     |> validate_required([:vaccine_type, :date])
     |> fill_uuid
     |> validate_past_date(:date)
+    |> unique_constraint(:date, name: :vaccination_shots_person_uuid_date_index)
   end
 end

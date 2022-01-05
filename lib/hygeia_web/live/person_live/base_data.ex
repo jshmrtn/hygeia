@@ -297,6 +297,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
       |> Map.put_new("affiliations", [])
       |> Map.put_new("contact_methods", [])
       |> Map.put_new("external_references", [])
+      |> Map.put_new("vaccination_shots", [])
 
     socket.assigns.person
     |> CaseContext.update_person(person_params)
@@ -334,11 +335,16 @@ defmodule HygeiaWeb.PersonLive.BaseData do
 
   defp load_data(socket, person) do
     person =
-      Repo.preload(person,
-        positions: [organisation: []],
-        tenant: [],
-        affiliations: [],
-        vaccination_shots: []
+      Repo.preload(
+        person,
+        [
+          positions: [organisation: []],
+          tenant: [],
+          affiliations: [],
+          vaccination_shots: [],
+          vaccination_shot_validities: []
+        ],
+        force: true
       )
 
     changeset = CaseContext.change_person(person)

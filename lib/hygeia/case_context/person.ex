@@ -33,11 +33,13 @@ defmodule Hygeia.CaseContext.Person do
           profession_category: NOGA.Code.t() | nil,
           profession_category_main: NOGA.Section.t() | nil,
           is_vaccinated: boolean() | nil,
+          convalescent_externally: boolean() | nil,
           tenant_uuid: Ecto.UUID.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
           positions: Ecto.Schema.has_many(Position.t()) | nil,
           vaccination_shots: Ecto.Schema.has_many(VaccinationShot.t()) | nil,
+          vaccination_shot_validities: Ecto.Schema.has_many(VaccinationShot.Validity.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employers: Ecto.Schema.has_many(Organisation.t()) | nil,
@@ -59,11 +61,13 @@ defmodule Hygeia.CaseContext.Person do
           profession_category: NOGA.Code.t() | nil,
           profession_category_main: NOGA.Section.t() | nil,
           is_vaccinated: boolean() | nil,
+          convalescent_externally: boolean(),
           tenant_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
           cases: Ecto.Schema.has_many(Case.t()),
           positions: Ecto.Schema.has_many(Position.t()),
-          vaccination_shots: Ecto.Schema.has_many(VaccinationShot.t()) | nil,
+          vaccination_shots: Ecto.Schema.has_many(VaccinationShot.t()),
+          vaccination_shot_validities: Ecto.Schema.has_many(VaccinationShot.Validity.t()),
           affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employers: Ecto.Schema.has_many(Organisation.t()),
@@ -87,7 +91,8 @@ defmodule Hygeia.CaseContext.Person do
     field :profession_category, NOGA.Code
     field :profession_category_main, NOGA.Section
     field :is_vaccinated, :boolean
-    # field has_recovered_externally, :boolean
+    field :convalescent_externally, :boolean, default: false
+
     embeds_one :address, Address, on_replace: :update
     embeds_many :contact_methods, ContactMethod, on_replace: :delete
     embeds_many :external_references, ExternalReference, on_replace: :delete
@@ -95,6 +100,8 @@ defmodule Hygeia.CaseContext.Person do
     has_many :vaccination_shots, VaccinationShot,
       foreign_key: :person_uuid,
       on_replace: :delete
+
+    has_many :vaccination_shot_validities, VaccinationShot.Validity, foreign_key: :person_uuid
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     has_many :cases, Case
@@ -146,11 +153,18 @@ defmodule Hygeia.CaseContext.Person do
       :tenant_uuid,
       :profession_category_main,
       :profession_category,
-      :is_vaccinated
+      :is_vaccinated,
+      :convalescent_externally
     ])
     |> fill_uuid
     |> fill_human_readable_id
-    |> validate_required([:uuid, :human_readable_id, :tenant_uuid, :first_name])
+    |> validate_required([
+      :uuid,
+      :human_readable_id,
+      :tenant_uuid,
+      :first_name,
+      :convalescent_externally
+    ])
     |> validate_past_date(:birth_date)
     |> validate_profession_category()
     |> cast_assoc(:vaccination_shots)

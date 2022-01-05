@@ -73,6 +73,11 @@ defmodule Hygeia.Repo.Migrations.CreateVaccinationShots do
       timestamps()
     end
 
+    create index(:vaccination_shots, [:vaccine_type])
+    create index(:vaccination_shots, [:person_uuid])
+    create index(:vaccination_shots, [:person_uuid, :vaccine_type])
+    create unique_index(:vaccination_shots, [:person_uuid, :date])
+
     create constraint(:vaccination_shots, :vaccine_type_other_required,
              check: """
              CASE
@@ -198,6 +203,70 @@ defmodule Hygeia.Repo.Migrations.CreateVaccinationShots do
     alter table(:people) do
       remove :vaccination, :map
     end
+
+    execute(
+      """
+      CREATE
+        VIEW vaccination_shot_validity
+        AS
+          SELECT
+            result.person_uuid,
+            result.vaccination_shot_uuid,
+            result.range
+            FROM (
+              SELECT
+                people.uuid AS person_uuid,
+                vaccination_shots.uuid AS vaccination_shot_uuid,
+                CASE
+                  WHEN (
+                    ROW_NUMBER() OVER (
+                      PARTITION BY people.uuid
+                      ORDER BY vaccination_shots.date
+                    ) >= 2 OR
+                    people.convalescent_externally OR
+                    index_phases IS NOT NULL
+                  ) THEN
+                    DATERANGE(
+                      vaccination_shots.date,
+                      (vaccination_shots.date + INTERVAL '1 year')::date
+                    )
+                  ELSE NULL
+                END AS range
+                FROM people
+                JOIN
+                  vaccination_shots
+                  ON vaccination_shots.person_uuid = people.uuid
+                LEFT JOIN
+                  cases
+                  ON cases.person_uuid = people.uuid
+                LEFT JOIN
+                  UNNEST(cases.phases)
+                  AS index_phases
+                  ON index_phases->'details'->>'__type__' = 'index'
+                WHERE
+                  vaccination_shots.vaccine_type IN ('pfizer', 'moderna')
+            ) AS result
+            WHERE result.range IS NOT NULL
+          UNION
+          SELECT
+          people.uuid AS person_uuid,
+          vaccination_shots.uuid,
+          DATERANGE(
+            (vaccination_shots.date + INTERVAL '22 day')::date,
+            (vaccination_shots.date + INTERVAL '1 year 22 day')::date
+          ) AS range
+          FROM people
+          JOIN
+            vaccination_shots
+            ON vaccination_shots.person_uuid = people.uuid
+          WHERE
+            vaccination_shots.vaccine_type = 'janssen';
+      """,
+      """
+      DROP
+        VIEW vaccination_shot_validity;
+      """
+    )
 
     execute(&noop/0, fn ->
       :ok = run_authentication(repo(), origin: :migration, originator: :noone)

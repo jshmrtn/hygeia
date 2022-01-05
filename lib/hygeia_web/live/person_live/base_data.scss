@@ -56,6 +56,10 @@
     }
   }
 
+  .vaccination {
+    grid-column: span 2;
+  }
+
   .candidate-card {
     grid-column: span 2;
   }
