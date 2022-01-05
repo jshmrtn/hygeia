@@ -1911,7 +1911,8 @@ defmodule Hygeia.CaseContext do
           case_uuid: test.case_uuid,
           test_date: max(coalesce(test.tested_at, test.laboratory_reported_at))
         },
-        group_by: test.case_uuid
+        group_by: test.case_uuid,
+        where: test.result == :positive
       )
 
     breakthrough_cases =
@@ -1919,6 +1920,7 @@ defmodule Hygeia.CaseContext do
         join: person in assoc(case, :person),
         join: vaccination_shot_validities in assoc(person, :vaccination_shot_validities),
         join: index_phase in fragment("UNNEST(?)", case.phases),
+        on: fragment("?->>?", fragment("?->?", index_phase, "details"), "__type__") == "index",
         left_join: last_positive_test in subquery(last_positive_test_date),
         on: last_positive_test.case_uuid == case.uuid,
         where:

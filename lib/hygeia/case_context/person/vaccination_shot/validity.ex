@@ -9,9 +9,9 @@ defmodule Hygeia.CaseContext.Person.VaccinationShot.Validity do
   alias Hygeia.CaseContext.Person.VaccinationShot
 
   @type t :: %__MODULE__{
-          vaccination_shot: Ecto.Changeset.belongs_to(VaccinationShot.t()),
+          vaccination_shot: Ecto.Schema.belongs_to(VaccinationShot.t()),
           vaccination_shot_uuid: Ecto.UUID.t(),
-          person: Ecto.Changeset.belongs_to(Person.t()),
+          person: Ecto.Schema.belongs_to(Person.t()),
           person_uuid: Ecto.UUID.t(),
           range: Hygeia.EctoType.DateRange.t()
         }

@@ -3845,6 +3845,11 @@ msgid "Possible Index Submissions"
 msgstr "Soumissions possibles à l'index"
 
 #, elixir-format, ex-autogen, fuzzy
+msgctxt "Notification Type"
+msgid "Possible Index Submitted"
+msgstr "indice possible soumis."
+
+#, elixir-format, ex-autogen, fuzzy
 msgctxt "Auto Tracing Problem"
 msgid "Possible Transmission"
 msgstr "Entrer les transmissions possibles"
@@ -5587,7 +5592,17 @@ msgstr "Vaccination"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 1st Jab Name"
+msgstr "Vaccination"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Breakthrough Infection Export"
 msgid "Vaccination 2nd Jab Date"
+msgstr "Vaccination"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 2nd Jab Name"
 msgstr "Vaccination"
 
 #, elixir-format, ex-autogen, fuzzy
@@ -5597,7 +5612,17 @@ msgstr "Vaccination"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 3rd Jab Name"
+msgstr "Vaccination"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Breakthrough Infection Export"
 msgid "Vaccination 4th Jab Date"
+msgstr "Vaccination"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 4th Jab Name"
 msgstr "Vaccination"
 
 #, elixir-format, ex-autogen, fuzzy
@@ -5608,11 +5633,6 @@ msgstr "Échec de la vaccination"
 #, elixir-format, ex-autogen, fuzzy
 msgid "Vaccination Failures"
 msgstr "Échecs de la vaccination"
-
-#, elixir-format, ex-autogen, fuzzy
-msgctxt "Breakthrough Infection Export"
-msgid "Vaccination Name"
-msgstr "Vaccination"
 
 #, elixir-format, ex-autogen
 msgctxt "Person Show"

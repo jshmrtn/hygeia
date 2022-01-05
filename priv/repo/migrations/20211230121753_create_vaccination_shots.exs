@@ -224,7 +224,11 @@ defmodule Hygeia.Repo.Migrations.CreateVaccinationShots do
                       ORDER BY vaccination_shots.date
                     ) >= 2 OR
                     people.convalescent_externally OR
-                    index_phases IS NOT NULL
+                    COALESCE(
+                      (index_phases->>'order_date')::date,
+                      (index_phases->>'inserted_at')::date,
+                      cases.inserted_at::date
+                    ) >= vaccination_shots.date
                   ) THEN
                     DATERANGE(
                       vaccination_shots.date,

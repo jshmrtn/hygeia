@@ -174,6 +174,9 @@ defmodule Hygeia.Jobs.NotificationReminder do
   defp translate_type("self_service_help_request"),
     do: pgettext("Notification Type", "Self Service Help Request")
 
+  defp translate_type("possible_index_submitted"),
+    do: pgettext("Notification Type", "Possible Index Submitted")
+
   defp translate_type(type) do
     Logger.warn("Unknown Notification Type #{inspect(type)}")
     type
