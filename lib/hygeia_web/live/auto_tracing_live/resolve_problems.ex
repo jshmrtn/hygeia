@@ -104,7 +104,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         person: [affiliations: [:organisation, :division]],
         auto_tracing: [transmission: []],
         visits: [:organisation, :division],
-        received_transmissions: [],
+        received_transmissions: [propagator: []],
         tests: []
       )
 
