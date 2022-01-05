@@ -44,7 +44,7 @@
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
                   {#if fetch_field!(form.source, :vaccine_type) == :other}
-                    <Field name={:other_vaccine_name} class="form-group">
+                    <Field name={:vaccine_type_other} class="form-group">
                       <HygeiaWeb.FieldLabel />
                       <TextInput opts={disabled: @disabled} class="form-control" />
                       <ErrorTag class="d-block invalid-feedback" />

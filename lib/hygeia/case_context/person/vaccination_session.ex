@@ -11,7 +11,7 @@ defmodule Hygeia.CaseContext.Person.VaccinationShot do
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           vaccine_type: VaccineType.t() | nil,
-          other_vaccine_name: String.t() | nil,
+          vaccine_type_other: String.t() | nil,
           date: Date.t() | nil
         }
 
@@ -24,7 +24,7 @@ defmodule Hygeia.CaseContext.Person.VaccinationShot do
 
   schema "vaccination_shots" do
     field :vaccine_type, VaccineType
-    field :other_vaccine_name, :string
+    field :vaccine_type_other, :string
     field :date, :date
     belongs_to :person, Person, foreign_key: :person_uuid, references: :uuid
 
@@ -41,7 +41,7 @@ defmodule Hygeia.CaseContext.Person.VaccinationShot do
 
   def changeset(vaccination_shot, attrs) do
     vaccination_shot
-    |> cast(attrs, [:uuid, :vaccine_type, :other_vaccine_name, :date])
+    |> cast(attrs, [:uuid, :vaccine_type, :vaccine_type_other, :date])
     |> validate_required([:vaccine_type, :date])
     |> fill_uuid
     |> validate_past_date(:date)
