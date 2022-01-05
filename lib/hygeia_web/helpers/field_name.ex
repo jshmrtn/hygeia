@@ -239,6 +239,9 @@ defmodule HygeiaWeb.Helpers.FieldName do
       division: "Division",
       unknown_division: "Unknown division"
     },
+    Hygeia.RiskCountryContext.RiskCountry => %{
+      country: "Country"
+    },
     Hygeia.SystemMessageContext.SystemMessage => %{
       text: "Text",
       start_date: "Start Date",
@@ -392,7 +395,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       known_division: "Class or division"
     },
     Hygeia.AutoTracingContext.AutoTracing.Travel => %{
-      return_date: "Date of return",
+      last_departure_date: "Date of last departure",
       country: "Country"
     }
   }
