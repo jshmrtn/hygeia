@@ -571,6 +571,7 @@ defmodule Hygeia.CaseContext do
         left_join: sms in assoc(case, :sms),
         left_join: employer in assoc(person, :employers),
         left_join: test in assoc(case, :tests),
+        left_join: vaccination_shots in assoc(person, :vaccination_shots),
         where:
           case.tenant_uuid == ^tenant_uuid and
             fragment("?->'details'->>'__type__'", phase) == "index",
@@ -1004,20 +1005,21 @@ defmodule Hygeia.CaseContext do
             fragment("?->'detail'->>'other_end_reason'", index_phase)
           ),
           # vacc_yn
-          fragment("(?->>'done')::boolean", person.vaccination),
+          person.is_vaccinated,
           # vacc_name
-          fragment("?->>'name'", person.vaccination),
-          # vacc_dose
           fragment(
             "CASE WHEN ? THEN ? ELSE ? END",
-            is_nil(fragment("?->>'jab_dates'", person.vaccination)),
-            nil,
-            fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination))
+            type(max(vaccination_shots.vaccine_type), Person.VaccinationShot.VaccineType) ==
+              :other,
+            max(vaccination_shots.vaccine_type_other),
+            type(max(vaccination_shots.vaccine_type), :string)
           ),
+          # vacc_dose
+          count(vaccination_shots.uuid),
           # vacc_dt_first
-          fragment("(?->'jab_dates'->>0)", person.vaccination),
+          min(vaccination_shots.date),
           # vacc_dt_last
-          fragment("(?->'jab_dates'->>-1)", person.vaccination)
+          max(vaccination_shots.date)
         ]
       )
       |> Repo.stream()
@@ -1140,6 +1142,7 @@ defmodule Hygeia.CaseContext do
           :covid_app -> 4
           :other -> 5
         end)
+        |> normalize_vacc_name_field(@bag_med_16122020_case_fields_index.vacc_name)
       end)
 
     [@bag_med_16122020_case_fields]
@@ -1297,6 +1300,7 @@ defmodule Hygeia.CaseContext do
         on: fragment("?->>'type'", received_transmission_case_ism_id) == "ism_case",
         left_join: employer in assoc(person, :employers),
         left_join: test in assoc(case, :tests),
+        left_join: vaccination_shots in assoc(person, :vaccination_shots),
         where:
           case.tenant_uuid == ^tenant_uuid and
             fragment("?->'details'->>'__type__'", phase) == "possible_index",
@@ -1626,20 +1630,21 @@ defmodule Hygeia.CaseContext do
           # other_reason_end_quar
           fragment("(ARRAY_AGG(?))[1]", fragment("?->'details'->>'other_end_reason'", phase)),
           # vacc_yn
-          fragment("(?->>'done')::boolean", person.vaccination),
+          person.is_vaccinated,
           # vacc_name
-          fragment("?->>'name'", person.vaccination),
-          # vacc_dose
           fragment(
             "CASE WHEN ? THEN ? ELSE ? END",
-            is_nil(fragment("?->>'jab_dates'", person.vaccination)),
-            nil,
-            fragment("JSONB_ARRAY_LENGTH(?)", fragment("?->'jab_dates'", person.vaccination))
+            type(max(vaccination_shots.vaccine_type), Person.VaccinationShot.VaccineType) ==
+              :other,
+            max(vaccination_shots.vaccine_type_other),
+            type(max(vaccination_shots.vaccine_type), :string)
           ),
+          # vacc_dose
+          count(vaccination_shots.uuid),
           # vacc_dt_first
-          fragment("(?->'jab_dates'->>0)", person.vaccination),
+          min(vaccination_shots.date),
           # vacc_dt_last
-          fragment("(?->'jab_dates'->>-1)", person.vaccination)
+          max(vaccination_shots.date)
         ]
       )
       |> Repo.stream()
@@ -1823,6 +1828,7 @@ defmodule Hygeia.CaseContext do
               )
           end
         end)
+        |> normalize_vacc_name_field(@bag_med_16122020_contact_fields_index.vacc_name)
       end)
 
     export = Stream.concat([@bag_med_16122020_contact_fields], cases)
@@ -1845,11 +1851,14 @@ defmodule Hygeia.CaseContext do
     :person_first_name,
     :person_last_name,
     :person_birth_date,
-    :vaccination_name,
     :vaccination_jab_date_one,
+    :vaccination_jab_name_one,
     :vaccination_jab_date_two,
+    :vaccination_jab_name_two,
     :vaccination_jab_date_three,
+    :vaccination_jab_name_three,
     :vaccination_jab_date_four,
+    :vaccination_jab_name_four,
     :case_uuid,
     :case_human_readable_id,
     :clinical_symptom_start_date,
@@ -1872,15 +1881,22 @@ defmodule Hygeia.CaseContext do
       person_first_name: pgettext("Breakthrough Infection Export", "Firstname"),
       person_last_name: pgettext("Breakthrough Infection Export", "Lastname"),
       person_birth_date: pgettext("Breakthrough Infection Export", "Birth Date"),
-      vaccination_name: pgettext("Breakthrough Infection Export", "Vaccination Name"),
       vaccination_jab_date_one:
         pgettext("Breakthrough Infection Export", "Vaccination 1st Jab Date"),
+      vaccination_jab_name_one:
+        pgettext("Breakthrough Infection Export", "Vaccination 1st Jab Name"),
       vaccination_jab_date_two:
         pgettext("Breakthrough Infection Export", "Vaccination 2nd Jab Date"),
+      vaccination_jab_name_two:
+        pgettext("Breakthrough Infection Export", "Vaccination 2nd Jab Name"),
       vaccination_jab_date_three:
         pgettext("Breakthrough Infection Export", "Vaccination 3rd Jab Date"),
+      vaccination_jab_name_three:
+        pgettext("Breakthrough Infection Export", "Vaccination 3rd Jab Name"),
       vaccination_jab_date_four:
         pgettext("Breakthrough Infection Export", "Vaccination 4th Jab Date"),
+      vaccination_jab_name_four:
+        pgettext("Breakthrough Infection Export", "Vaccination 4th Jab Name"),
       case_uuid: pgettext("Breakthrough Infection Export", "Case ID"),
       case_human_readable_id: pgettext("Breakthrough Infection Export", "Case Human Readable ID"),
       clinical_symptom_start_date:
@@ -1898,13 +1914,33 @@ defmodule Hygeia.CaseContext do
         group_by: test.case_uuid
       )
 
-    cases =
+    breakthrough_cases =
       from(case in Ecto.assoc(tenant, :cases),
+        join: person in assoc(case, :person),
+        join: vaccination_shot_validities in assoc(person, :vaccination_shot_validities),
         join: index_phase in fragment("UNNEST(?)", case.phases),
-        on: fragment("?->>?", fragment("?->?", index_phase, "details"), "__type__") == "index",
+        left_join: last_positive_test in subquery(last_positive_test_date),
+        on: last_positive_test.case_uuid == case.uuid,
+        where:
+          person.is_vaccinated and
+            fragment(
+              "? @> ?",
+              vaccination_shot_validities.range,
+              last_positive_test.test_date
+              |> type(:date)
+              |> coalesce(type(fragment("(?->>?)", index_phase, "order_date"), :date))
+              |> coalesce(type(fragment("(?->>?)", index_phase, "inserted_at"), :date))
+              |> coalesce(type(case.inserted_at, :date))
+            ),
+        group_by: case.uuid
+      )
+
+    cases =
+      from(case in subquery(breakthrough_cases),
         join: person in assoc(case, :person),
         left_join: last_positive_test in subquery(last_positive_test_date),
         on: last_positive_test.case_uuid == case.uuid,
+        join: vaccination_shots in assoc(person, :vaccination_shots),
         select: [
           # person_uuid
           person.uuid,
@@ -1916,16 +1952,62 @@ defmodule Hygeia.CaseContext do
           person.last_name,
           # person_birth_date
           person.birth_date,
-          # vaccination_name
-          person.vaccination["name"],
           # vaccination_jab_date_one
-          type(fragment("(?->>?)", person.vaccination["jab_dates"], 0), :date),
+          fragment(
+            "(ARRAY_AGG(? ORDER BY ? ASC))[?]",
+            vaccination_shots.date,
+            vaccination_shots.date,
+            1
+          ),
+          # vaccination_jab_name_one
+          fragment(
+            "(ARRAY_AGG(? ORDER BY ? ASC))[?]",
+            vaccination_shots.vaccine_type,
+            vaccination_shots.date,
+            1
+          ),
           # vaccination_jab_date_two
-          type(fragment("(?->>?)", person.vaccination["jab_dates"], 1), :date),
+          fragment(
+            "(ARRAY_AGG(? ORDER BY ? ASC))[?]",
+            vaccination_shots.date,
+            vaccination_shots.date,
+            2
+          ),
+          # vaccination_jab_name_two
+          fragment(
+            "(ARRAY_AGG(? ORDER BY ? ASC))[?]",
+            vaccination_shots.vaccine_type,
+            vaccination_shots.date,
+            2
+          ),
           # vaccination_jab_date_three
-          type(fragment("(?->>?)", person.vaccination["jab_dates"], 2), :date),
+          fragment(
+            "(ARRAY_AGG(? ORDER BY ? ASC))[?]",
+            vaccination_shots.date,
+            vaccination_shots.date,
+            3
+          ),
+          # vaccination_jab_name_three
+          fragment(
+            "(ARRAY_AGG(? ORDER BY ? ASC))[?]",
+            vaccination_shots.vaccine_type,
+            vaccination_shots.date,
+            3
+          ),
           # vaccination_jab_date_four
-          type(fragment("(?->>?)", person.vaccination["jab_dates"], 3), :date),
+          fragment(
+            "(ARRAY_AGG(? ORDER BY ? ASC))[?]",
+            vaccination_shots.date,
+            vaccination_shots.date,
+            4
+          ),
+          # vaccination_jab_name_four
+          fragment(
+            "(ARRAY_AGG(? ORDER BY ? ASC))[?]",
+            vaccination_shots.vaccine_type,
+            vaccination_shots.date,
+            4
+          ),
           # case_uuid
           case.uuid,
           # case_human_readable_id
@@ -1937,21 +2019,24 @@ defmodule Hygeia.CaseContext do
           # test_last_date
           type(last_positive_test.test_date, :date)
         ],
-        where:
-          person.vaccination["done"] == fragment("TO_JSONB(?)", true) and
-            last_positive_test.test_date
-            |> type(:date)
-            |> coalesce(type(fragment("(?->>?)", index_phase, "order_date"), :date))
-            |> coalesce(type(fragment("(?->>?)", index_phase, "inserted_at"), :date))
-            |> coalesce(case.inserted_at) >
-              type(fragment("(?->>?)", person.vaccination["jab_dates"], 1), :date)
+        group_by: [
+          person.uuid,
+          person.human_readable_id,
+          person.first_name,
+          person.last_name,
+          case.uuid,
+          case.human_readable_id,
+          case.clinical,
+          last_positive_test.test_date
+        ],
+        order_by: [last_positive_test.test_date, case.human_readable_id]
       )
       |> Repo.stream()
       |> Stream.map(fn row ->
         alias Case.Clinical.Symptom
 
-        List.update_at(
-          row,
+        row
+        |> List.update_at(
           @breakthrough_infection_case_fields_index.clinical_symptoms,
           fn
             nil ->
@@ -1963,6 +2048,18 @@ defmodule Hygeia.CaseContext do
                 Symptom.translate(symptom)
               end)
           end
+        )
+        |> normalize_vacc_name_field(
+          @breakthrough_infection_case_fields_index.vaccination_jab_name_one
+        )
+        |> normalize_vacc_name_field(
+          @breakthrough_infection_case_fields_index.vaccination_jab_name_two
+        )
+        |> normalize_vacc_name_field(
+          @breakthrough_infection_case_fields_index.vaccination_jab_name_three
+        )
+        |> normalize_vacc_name_field(
+          @breakthrough_infection_case_fields_index.vaccination_jab_name_four
         )
       end)
 
@@ -2004,6 +2101,19 @@ defmodule Hygeia.CaseContext do
           {id, ""} -> id
           {_id, _rest} -> nil
           :error -> nil
+        end
+    end)
+  end
+
+  defp normalize_vacc_name_field(row, field_number) do
+    List.update_at(row, field_number, fn
+      nil ->
+        nil
+
+      name ->
+        case Person.VaccinationShot.VaccineType.cast(name) do
+          {:ok, name} -> Person.VaccinationShot.VaccineType.translate(name)
+          :error -> name
         end
     end)
   end
