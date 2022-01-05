@@ -2108,13 +2108,15 @@ defmodule Hygeia.CaseContext do
   end
 
   defp normalize_vacc_name_field(row, field_number) do
+    alias Person.VaccinationShot.VaccineType
+
     List.update_at(row, field_number, fn
       nil ->
         nil
 
       name ->
-        case Person.VaccinationShot.VaccineType.cast(name) do
-          {:ok, name} -> Person.VaccinationShot.VaccineType.translate(name)
+        case VaccineType.cast(name) do
+          {:ok, name} -> VaccineType.translate(name)
           :error -> name
         end
     end)
