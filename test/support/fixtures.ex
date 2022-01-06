@@ -30,6 +30,8 @@ defmodule Hygeia.Fixtures do
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Visit
   alias Hygeia.Repo
+  alias Hygeia.RiskCountryContext
+  alias Hygeia.RiskCountryContext.RiskCountry
   alias Hygeia.SystemMessageContext
   alias Hygeia.SystemMessageContext.SystemMessage
   alias Hygeia.TenantContext
@@ -545,6 +547,18 @@ defmodule Hygeia.Fixtures do
       |> MutationContext.create_mutation()
 
     mutation
+  end
+
+  @valid_attrs %{country: "CH"}
+
+  @spec risk_country_fixture(attrs :: Hygeia.ecto_changeset_params()) :: RiskCountry.t()
+  def risk_country_fixture(attrs \\ %{}) do
+    {:ok, risk_country} =
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> RiskCountryContext.create_risk_country()
+
+    risk_country
   end
 
   @valid_attrs %{reason: :immune, has_documentation: true, truthful: true}

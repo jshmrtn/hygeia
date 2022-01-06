@@ -11,6 +11,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Entity
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.CaseContext.Transmission.InfectionPlace
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
@@ -103,8 +104,8 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         person: [affiliations: [:organisation, :division]],
         auto_tracing: [transmission: []],
         visits: [:organisation, :division],
-        tests: [],
-        received_transmissions: [propagator: []]
+        received_transmissions: [propagator: []],
+        tests: []
       )
 
     socket =
@@ -463,6 +464,24 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
+
+  defp get_risk_travels_zip(travels, transmissions) do
+    Enum.map(
+      travels,
+      fn travel ->
+        transmission =
+          Enum.find(transmissions, fn
+            %Transmission{infection_place: %InfectionPlace{address: %Address{country: country}}} ->
+              country == travel.country
+
+            _other_transmission ->
+              false
+          end)
+
+        {travel, transmission}
+      end
+    )
+  end
 
   defp unpack(struct) when is_struct(struct) do
     struct

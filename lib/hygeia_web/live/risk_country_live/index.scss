@@ -1,0 +1,11 @@
+.fixed-height {
+  display: block;
+  height: 500px;
+  overflow-y: auto;
+}
+
+.fixed-height tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}

@@ -1,9 +1,8 @@
 <div id="step_employer" class="container component-auto-tracing-employer">
   <HygeiaWeb.AutoTracingLive.Header auto_tracing={@auto_tracing} id="header" />
   <h4>
-    {gettext("Flight information")}
+    {gettext("Tavel")}
   </h4>
-
   <Form
     for={@changeset}
     change="validate"
@@ -12,88 +11,69 @@
   >
     <div class="card mb-5">
       <div class="card-body">
-        <div class="row gx-7">
-          <div class="col-12 col-lg-6">
-            <p class="mb-4">{Phoenix.HTML.raw(
-                pgettext(
+        {#if not Enum.empty?(@risk_countries)}
+          <div class="row gx-7 mb-5">
+            <div class="col-12 col-lg-6">
+              <p class="mb-4">{pgettext(
                   "Auto Tracing Travel",
-                  "Have you visited a high risk country %{link} (link will open in a new tab) within the last 14 days (between %{start_date} and %{end_date})?",
+                  "Have you visited one of the following countries within the last 14 days (between %{start_date} and %{end_date})?",
                   %{
-                    link:
-                      pgettext("Auto Tracing Travel", "FOPH")
-                      |> Phoenix.HTML.Link.link(
-                        to: get_bag_link(),
-                        target: "_blank",
-                        rel: "noopener noreferrer"
-                      )
-                      |> Phoenix.HTML.safe_to_string(),
                     start_date: HygeiaCldr.Date.to_string!(Date.add(Date.utc_today(), -13)),
                     end_date: HygeiaCldr.Date.to_string!(Date.utc_today())
                   }
-                )
-              )}</p>
-            <Field name={:has_travelled} class="form-group">
-              <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                <label class={
-                  "btn",
-                  "btn-sm",
-                  "btn-outline-primary",
-                  active: get_field(@changeset, :has_travelled) == true
-                }>
-                  <RadioButton value />
-                  {gettext("Yes")}
-                </label>
-                <label class={
-                  "btn",
-                  "btn-sm",
-                  "btn-outline-primary",
-                  active: get_field(@changeset, :has_travelled) == false
-                }>
-                  <RadioButton value={false} />
-                  {gettext("No")}
-                </label>
-              </div>
-              <ErrorTag class="d-block invalid-feedback" />
-            </Field>
-          </div>
-        </div>
-        <div :if={get_field(@changeset, :has_travelled)}>
-          <div class="hy-card-grid-2-cols">
-            <Inputs for={:travel}>
-              <div class="card">
-                <div class="card-body">
-                  <p class="mb-4">
-                    {pgettext("Auto Tracing Travel", "If you traveled via plane, please add your flight below.")}
-                  </p>
-                  <HiddenInput field={:uuid} />
-                  <Field class="form-group" name={:return_date}>
-                    <HygeiaWeb.FieldLabel />
-                    <!--
-                      TODO: Re-add min/max one https://github.com/jshmrtn/hygeia/issues/930#issuecomment-984785198 is resolved,
-                      opts={max: Date.utc_today()}
-                    -->
-                    <HygeiaWeb.DateInput class="form-control" />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-
-                  <Field class="form-group" name={:country}>
-                    <HygeiaWeb.FieldLabel />
-                    <Select
-                      class="form-control"
-                      opts={prompt: gettext("Choose country")}
-                      field={:country}
-                      options={countries()}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
+                )}</p>
+              <Inputs for={:risk_countries_travelled} :let={form: form}>
+                <div class="d-flex my-3">
+                  <div class="me-3">
+                    <Field name={:is_selected}>
+                      <Checkbox opts={
+                        checked: fetch_field!(form.source, :is_selected),
+                        disabled: fetch_field!(@changeset, :has_not_travelled_in_risk_country)
+                      } />
+                    </Field>
+                  </div>
+                  <div>
+                    <Inputs for={:travel} :let={form: travel}>
+                      {country_name(fetch_field!(travel.source, :country))}
+                      <HiddenInput field={:uuid} />
+                      <HiddenInput field={:country} />
+                      {#if fetch_field!(form.source, :is_selected)}
+                        <div class="card card-body">
+                          <Field class="form-group" name={:last_departure_date}>
+                            <HygeiaWeb.FieldLabel />
+                            <!--
+                                TODO: Re-add min/max one https://github.com/jshmrtn/hygeia/issues/930#issuecomment-984785198 is resolved,
+                                opts={max: Date.utc_today()}
+                              -->
+                            <HygeiaWeb.DateInput class="form-control" />
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+                          {#if Enum.member?(
+                              @case |> get_inquiry_dates() |> then(&Date.range(elem(&1, 0), elem(&1, 1))),
+                              fetch_field!(travel.source, :last_departure_date)
+                            )}
+                            {gettext("If you traveled via plane, please add your flight below.")}
+                          {/if}
+                        </div>
+                      {/if}
+                    </Inputs>
+                  </div>
                 </div>
-              </div>
-            </Inputs>
+              </Inputs>
+              <Field name={:has_not_travelled_in_risk_country} class="form-group">
+                <Checkbox
+                  class="me-3"
+                  opts={checked: fetch_field!(@changeset, :has_not_travelled_in_risk_country)}
+                />
+                <Label text={gettext("I have not visited any of the above countries")} />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+              <ErrorTag field={:risk_countries_travelled} class="d-block invalid-feedback" />
+            </div>
           </div>
-          <ErrorTag field={:travel} class="d-block invalid-feedback" />
-        </div>
+        {/if}
 
-        <div class="row gx-7 mt-5">
+        <div class="row gx-7">
           <div class="col-12 col-lg-6">
             <p class="mb-4">{generate_flight_question(@case)}</p>
             <Field name={:has_flown} class="form-group">
@@ -121,6 +101,7 @@
             </Field>
           </div>
         </div>
+
         <div :if={get_field(@changeset, :has_flown)}>
           <div class="hy-card-grid-2-cols">
             <Inputs for={:flights}>

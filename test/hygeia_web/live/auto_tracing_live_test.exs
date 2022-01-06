@@ -14,6 +14,8 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
   alias Hygeia.CaseContext.Person
   alias Hygeia.TenantContext
 
+  alias HygeiaWeb.Helpers.Region
+
   @moduletag origin: :test
   @moduletag originator: :noone
   @moduletag log_in: [roles: [:admin]]
@@ -646,65 +648,132 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
     } do
       set_last_completed_step(auto_tracing, :travel)
 
-      {:ok, employer_view, _html} =
-        live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
+      {:ok, travel_view, _html} = live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
 
       assert_raise ArgumentError, fn ->
-        employer_view
+        travel_view
         |> element("button", "Continue")
         |> render_click()
       end
     end
 
-    test "sets no travel, no flight and advances to transmission", %{
+    test "sets no flight and advances to transmission", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
     } do
       set_last_completed_step(auto_tracing, :travel)
 
-      {:ok, employer_view, _html} =
-        live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
+      {:ok, travel_view, _html} = live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
 
-      assert employer_view
-             |> form("#travel-form", travel: %{has_flown: false, has_travelled: false})
+      assert travel_view
+             |> form("#travel-form", travel: %{has_flown: false})
              |> render_change()
 
-      assert employer_view
+      assert travel_view
              |> element("button", "Continue")
              |> render_click()
 
       assert_redirect(
-        employer_view,
+        travel_view,
         Routes.auto_tracing_transmission_path(conn, :transmission, case)
       )
 
-      assert %AutoTracing{has_flown: false, flights: [], travel: nil} =
+      assert %AutoTracing{has_flown: false, flights: [], travels: []} =
                AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
 
-    test "sets tavel one flight and advances to transmission", %{
+    test "sets no flight and cannot advance to transmission when there is a risk country", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
     } do
+      risk_country = risk_country_fixture()
+
       set_last_completed_step(auto_tracing, :travel)
 
-      {:ok, employer_view, _html} =
-        live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
+      {:ok, travel_view, html} = live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
 
-      assert employer_view
-             |> form("#travel-form", travel: %{has_flown: true, has_travelled: true})
+      assert html =~ Region.country_name(risk_country.country)
+
+      assert travel_view
+             |> form("#travel-form", travel: %{has_flown: false})
+             |> render_change()
+
+      assert_raise ArgumentError, fn ->
+        travel_view
+        |> element("button", "Continue")
+        |> render_click()
+      end
+
+      assert %AutoTracing{has_flown: nil, flights: [], travels: []} =
+               AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+    end
+
+    test "sets no risk travel, no flight and advances to transmission", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      risk_country = risk_country_fixture()
+
+      set_last_completed_step(auto_tracing, :travel)
+
+      {:ok, travel_view, html} = live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
+
+      assert html =~ Region.country_name(risk_country.country)
+
+      assert travel_view
+             |> form("#travel-form",
+               travel: %{has_not_travelled_in_risk_country: true, has_flown: false}
+             )
+             |> render_change()
+
+      assert travel_view
+             |> element("button", "Continue")
+             |> render_click()
+
+      assert_redirect(
+        travel_view,
+        Routes.auto_tracing_transmission_path(conn, :transmission, case)
+      )
+
+      assert %AutoTracing{has_flown: false, flights: [], travels: []} =
+               AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+    end
+
+    test "sets one risk tavel and related flight and advances to transmission", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      risk_country_fixture()
+
+      set_last_completed_step(auto_tracing, :travel)
+
+      {:ok, travel_view, html} = live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
+
+      assert travel_view
+             |> form("#travel-form",
+               travel: %{has_not_travelled_in_risk_country: false, has_flown: true}
+             )
              |> render_change() =~
                "please add at least one flight that you took during the period in consideration"
 
-      assert employer_view
+      assert html =~ "is required"
+
+      assert travel_view
              |> form("#travel-form")
              |> render_change(
                travel: %{
-                 travel: %{
-                   country: "CH",
-                   return_date: "2021-04-17"
+                 risk_countries_travelled: %{
+                   0 => %{
+                     is_selected: true,
+                     travel: %{
+                       country: "CH",
+                       last_departure_date: "2021-04-17"
+                     }
+                   }
                  },
                  flights: %{
                    "0" => %{
@@ -719,19 +788,19 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
                }
              )
 
-      assert employer_view
+      assert travel_view
              |> element("button", "Continue")
              |> render_click()
 
       assert_redirect(
-        employer_view,
+        travel_view,
         Routes.auto_tracing_transmission_path(conn, :transmission, case)
       )
 
       assert %AutoTracing{
                has_flown: true,
                flights: [_],
-               travel: %{uuid: _uuid},
+               travels: [_],
                unsolved_problems: [_, _]
              } = auto_tracing = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
 

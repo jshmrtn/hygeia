@@ -147,14 +147,18 @@
     <Inputs for={:infection_place}>
       <HygeiaWeb.TransmissionLive.InfectionPlace id="infection_place" />
     </Inputs>
-  </div>
 
-  <button
-    class="btn btn-primary"
-    type="submit"
-    phx-disable-with={gettext("Saving...")}
-    disabled={not @changeset.valid?}
-  >
-    {gettext("Save")}
-  </button>
+    <div class="row">
+      <div class="mt-3">
+        <button
+          class="btn btn-primary"
+          type="submit"
+          phx-disable-with={gettext("Saving...")}
+          disabled={not @changeset.valid?}
+        >
+          {gettext("Save")}
+        </button>
+      </div>
+    </div>
+  </div>
 </Form>

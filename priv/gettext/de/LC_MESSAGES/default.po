@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, elixir-format, ex-autogen
@@ -991,6 +991,11 @@ msgid "Country"
 msgstr "Land"
 
 #, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.RiskCountryContext.RiskCountry Field"
+msgid "Country"
+msgstr "Land"
+
+#, elixir-format
 msgctxt "Possible Index Type"
 msgid "CovidApp Alert"
 msgstr "SwissCovidApp-Meldung"
@@ -1043,6 +1048,10 @@ msgid "Create new possible index case"
 msgstr "Neuer möglicher Indexfall einsenden"
 
 #, elixir-format, ex-autogen
+msgid "Create transmission"
+msgstr "Übertragung erstellen"
+
+#, elixir-format
 msgid "Created at %{created_at}"
 msgstr "Erstellt am %{created_at}"
 
@@ -1086,28 +1095,28 @@ msgstr "Datum"
 
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
+msgid "Date of last departure"
+msgstr "Datum der letzten Ausreise"
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Travel Field"
+msgid "Date of last departure"
+msgstr "Datum der letzten Ausreise"
+
+#, elixir-format
+msgctxt "Auto Tracing Resolve Problems"
 msgid "Date of last visit"
 msgstr "Datum des letzten Besuchs"
 
-#, elixir-format, ex-autogen
+#, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Date of last visit"
 msgstr "Datum des letzten Besuchs"
 
-#, elixir-format, ex-autogen
+#, elixir-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Date of last visit"
 msgstr "Datum des letzten Besuchs"
-
-#, elixir-format, ex-autogen
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Date of return"
-msgstr "Datum der Rückkehr"
-
-#, elixir-format, ex-autogen
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Travel Field"
-msgid "Date of return"
-msgstr "Datum der Rückkehr"
 
 #, elixir-format, ex-autogen
 msgid "Dear Sir / Madam"
@@ -1492,6 +1501,10 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #, elixir-format, ex-autogen
+msgid "Edit list"
+msgstr "Bearbeiten"
+
+#, elixir-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Educational institution"
 msgstr "Bildungseinrichtung"
@@ -1738,12 +1751,7 @@ msgctxt "Case Complexity"
 msgid "Extreme"
 msgstr "Extrem"
 
-#, elixir-format, ex-autogen
-msgctxt "Auto Tracing Travel"
-msgid "FOPH"
-msgstr "BAG"
-
-#, elixir-format, ex-autogen
+#, elixir-format
 msgid "Facility for supplementary childcare"
 msgstr "Einrichtung zur familienergänzenden Kinderbetreuung"
 
@@ -1874,11 +1882,7 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Flight date"
 msgstr "Flugdatum"
 
-#, elixir-format, ex-autogen
-msgid "Flight information"
-msgstr "Fluginformationen"
-
-#, elixir-format, ex-autogen
+#, elixir-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Flight number"
 msgstr "Flugnummer"
@@ -1966,8 +1970,8 @@ msgstr "Waren Sie in einem Krankenhaus oder sind es noch?"
 
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Travel"
-msgid "Have you visited a high risk country %{link} (link will open in a new tab) within the last 14 days (between %{start_date} and %{end_date})?"
-msgstr "Haben Sie in den letzten 14 Tagen (zwischen %{start_date} und %{end_date}) ein Hochrisikoland %{link} (Link wird in einem neuen Tab geöffnet) besucht?"
+msgid "Have you visited one of the following countries within the last 14 days (between %{start_date} and %{end_date})?"
+msgstr "Haben Sie in den letzten 14 Tagen (zwischen %{start_date} und %{end_date}) eines der folgenden Länder besucht?"
 
 #, elixir-format, ex-autogen
 msgctxt "Clinical Symptom"
@@ -2115,6 +2119,10 @@ msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Ich bestätige, dass alle Angaben korrekt sind. Dies kann überprüft werden!"
 
 #, elixir-format, ex-autogen
+msgid "I have not visited any of the above countries"
+msgstr "Ich habe keines der oben genannten Länder besucht"
+
+#, elixir-format, ex-autogen
 msgid "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
 msgstr "Ich verfüge über einen offiziellen Genesenen-Nachweis um die Quarantäne zu beenden. Die Genesung liegt weniger als 4 Monate zurück."
 
@@ -2215,7 +2223,6 @@ msgid "If you met %{first_name} %{last_name} multiple times, select the last dat
 msgstr "Wenn Sie %{first_name} %{last_name} mehrmals getroffen haben, geben Sie bitte das letzte Datum an, an dem Sie sich ohne Schutzmassnahmen getroffen haben. Bedenken Sie, dass sie schon 48h vor Symptombeginn ansteckend waren (falls Sie keine Symptome haben 48h vor dem Test)."
 
 #, elixir-format, ex-autogen
-msgctxt "Auto Tracing Travel"
 msgid "If you traveled via plane, please add your flight below."
 msgstr "Wenn Sie mit dem Flugzeug angereist sind, fügen Sie bitte unten Ihren Flug hinzu."
 
@@ -2632,6 +2639,10 @@ msgid "Link Propagator"
 msgstr "Anstecker verknüpfen"
 
 #, elixir-format, ex-autogen
+msgid "List of high risk countries"
+msgstr "Liste der Hochrisikoländer"
+
+#, elixir-format
 msgid "Listing Cases"
 msgstr "Fallliste"
 
@@ -2668,6 +2679,10 @@ msgid "Listing Users"
 msgstr "Benutzerliste"
 
 #, elixir-format, ex-autogen
+msgid "Listing high risk countries"
+msgstr "Liste der Hochrisikoländer"
+
+#, elixir-format
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Location"
 msgstr "Standort"
@@ -3271,7 +3286,7 @@ msgstr "Fall in neuem Tab öffnen"
 msgid "Open transmission in new tab"
 msgstr "Übertragung in neuem Tab öffnen"
 
-#, elixir-format
+#, elixir-format, ex-autogen
 msgid "Ordered"
 msgstr "Verordnet"
 
@@ -4276,6 +4291,10 @@ msgid "Retries Exceeded"
 msgstr "Zu oft fehlgeschlagen"
 
 #, elixir-format, ex-autogen
+msgid "Risk Countries"
+msgstr "Risikoländer"
+
+#, elixir-format
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Roles"
 msgstr "Rollen"
@@ -4407,6 +4426,10 @@ msgid "Select complexity"
 msgstr "Komplexität wählen"
 
 #, elixir-format, ex-autogen
+msgid "Select country"
+msgstr "Land auswählen"
+
+#, elixir-format
 msgid "Select end reason"
 msgstr "Endgrund auswählen"
 
@@ -4872,6 +4895,10 @@ msgid "Take Me Home"
 msgstr "Zurück zur Startseite"
 
 #, elixir-format, ex-autogen
+msgid "Tavel"
+msgstr "Reisen"
+
+#, elixir-format
 msgid "Template Parameters"
 msgstr "Parameter"
 
@@ -5164,8 +5191,8 @@ msgstr "Diese Person hat die folgenden Flüge genommen"
 
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
-msgid "This person travelled in the following high risk country"
-msgstr "Diese Person reiste in das folgende Hochrisikoland"
+msgid "This person travelled in the following high risk countries"
+msgstr "Diese Person reiste in die folgenden Hochrisikoländer"
 
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"

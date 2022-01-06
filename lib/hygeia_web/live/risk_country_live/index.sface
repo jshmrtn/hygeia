@@ -1,0 +1,115 @@
+<div class="component-risk_country-index container">
+  <Context get={HygeiaWeb, auth: auth}>
+    <Form
+      for={@changeset}
+      change="validate"
+      submit="save"
+      opts={autocomplete: "off", id: "risk-countries-form"}
+    >
+      <div class="row">
+        <h1>
+          {gettext("Listing high risk countries")}
+        </h1>
+
+        {#if @live_action == :index}
+          <LiveRedirect
+            class="me-2"
+            to={Routes.risk_country_index_path(@socket, :edit)}
+            :if={authorized?(RiskCountry, :create, auth)}
+            opts={id: "edit_list"}
+          >
+            <button type="button" class="mb-2 mt-3 btn btn-primary">
+              <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+              {gettext("Edit list")}
+            </button>
+          </LiveRedirect>
+        {#else}
+          <div class="mb-2 mt-3">
+            <LiveRedirect to={Routes.risk_country_index_path(@socket, :index)}>
+              <button type="button" class="btn btn-outline-primary">
+                <span class="oi oi-arrow-left me-1" aria-hidden="true" />
+                {gettext("Back to list")}
+              </button>
+            </LiveRedirect>
+          </div>
+        {/if}
+
+        <div class="col-12 col-md-3">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>
+                  {schema_field_name(:country, RiskCountry)}
+                </th>
+              </tr>
+            </thead>
+            <tbody class="fixed-height">
+              <tr
+                :for={%{country: country} <- @changeset |> fetch_field!(:countries) |> Enum.filter(& &1.is_risk_country)}
+                id={"risk_country-#{country}"}
+              >
+                <td>
+                  <div class="d-flex">
+                    <div>{country_name(country)}</div>
+                    <span
+                      id={"remove_country-#{country}"}
+                      :if={@live_action == :edit}
+                      class="btn btn-danger ms-auto"
+                      :on-click="remove_country"
+                      phx-value-country={country}
+                    >
+                      <span class="oi oi-trash" aria-hidden="true" />
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        {#if @live_action == :edit}
+          <div class="col-12 col-md-3">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>
+                    {gettext("Select country")}
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="risk_countries" class="fixed-height">
+                <Inputs for={:countries} :let={form: form}>
+                  <tr id={"select-risk_country-#{fetch_field!(form.source, :country)}"}>
+                    <td class="d-flex">
+                      <div>
+                        {country_name(fetch_field!(form.source, :country))}
+                        <HiddenInput field={:country} />
+                      </div>
+
+                      <Field name={:is_risk_country} class="ms-auto">
+                        <Checkbox opts={
+                          id: "checkbox-risk_country-#{fetch_field!(form.source, :country)}",
+                          checked: fetch_field!(form.source, :is_risk_country)
+                        } />
+                      </Field>
+                    </td>
+                  </tr>
+                </Inputs>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-3">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              phx-disable-with={gettext("Saving...")}
+              disabled={not @changeset.valid?}
+            >
+              {gettext("Save")}
+            </button>
+          </div>
+        {/if}
+      </div>
+    </Form>
+  </Context>
+</div>

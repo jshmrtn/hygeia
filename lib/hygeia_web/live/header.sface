@@ -107,6 +107,13 @@
                 >
                   {gettext("Mutations")}
                 </Link>
+                <Link
+                  to={Routes.risk_country_index_path(@socket, :index)}
+                  class="dropdown-item"
+                  :if={authorized?(Hygeia.RiskCountryContext.RiskCountry, :list, auth)}
+                >
+                  {gettext("Risk Countries")}
+                </Link>
               </div>
             </li>
           </ul>

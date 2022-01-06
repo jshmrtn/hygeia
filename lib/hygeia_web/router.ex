@@ -314,6 +314,9 @@ defmodule HygeiaWeb.Router do
 
     live "/mutations/:id", MutationLive.Show, :show
     live "/mutations/:id/edit", MutationLive.Show, :edit
+
+    live "/risk_countries", RiskCountryLive.Index, :index
+    live "/risk_countries/edit", RiskCountryLive.Index, :edit
   end
 
   scope "/", HygeiaWeb do

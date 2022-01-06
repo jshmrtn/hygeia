@@ -556,15 +556,53 @@
                           {pgettext("Auto Tracing Resolve Problems", "Done")}
                         </button>
                       {#match :high_risk_country_travel}
-                        {#if @auto_tracing.has_travelled}
+                        {#if @auto_tracing.has_travelled_in_risk_country}
                           <p>{pgettext(
                               "Auto Tracing Resolve Problems",
-                              "This person travelled in the following high risk country"
+                              "This person travelled in the following high risk countries"
                             )}:</p>
-                          <div class="card card-body mb-2">
-                            <div>{pgettext("Auto Tracing Resolve Problems", "Country")}:<strong>
-                                {country_name(@auto_tracing.travel.country)}</strong></div>
-                            <div>{pgettext("Auto Tracing Resolve Problems", "Date of return")}: {HygeiaCldr.Date.to_string!(@auto_tracing.travel.return_date)}</div>
+                          <div class="hy-card-grid-2-cols mb-2">
+                            <div
+                              :for={{travel, transmission} <-
+                                get_risk_travels_zip(@auto_tracing.travels, @case.received_transmissions)}
+                              class={["card card-body d-flex flex-row", "border-success": not is_nil(transmission)]}
+                            >
+                              <div>
+                                <div>{pgettext("Auto Tracing Resolve Problems", "Country")}:<strong>
+                                    {country_name(travel.country)}</strong></div>
+                                <div>{pgettext("Auto Tracing Resolve Problems", "Date of last departure")}: {HygeiaCldr.Date.to_string!(travel.last_departure_date)}</div>
+                                <Link
+                                  :if={transmission}
+                                  to={Routes.transmission_show_path(@socket, :show, transmission)}
+                                  opts={target: "_blank", rel: "noopener noreferrer"}
+                                >
+                                  {gettext("Open transmission in new tab")}
+                                </Link>
+                              </div>
+                              <div class="ms-auto">
+                                {#if transmission}
+                                  <span class="oi oi-check" />
+                                {#else}
+                                  <LiveRedirect
+                                    class="btn btn-primary"
+                                    to={Routes.transmission_create_path(@socket, :create,
+                                      type: :travel,
+                                      date: Date.to_iso8601(travel.last_departure_date),
+                                      recipient_internal: true,
+                                      recipient_case_uuid: @case.uuid,
+                                      infection_place: %{
+                                        known: true,
+                                        type: :flight,
+                                        address: %{country: travel.country}
+                                      },
+                                      return_url: Routes.auto_tracing_resolve_problems_path(@socket, :resolve_problems, @case.uuid)
+                                    )}
+                                  >
+                                    {gettext("Create transmission")}
+                                  </LiveRedirect>
+                                {/if}
+                              </div>
+                            </div>
                           </div>
                           <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                             {pgettext("Auto Tracing Resolve Problems", "Done")}
