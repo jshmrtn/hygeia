@@ -276,6 +276,10 @@ msgid "All points must be fulfilled"
 msgstr "Alle Punkte müssen erfüllt sein"
 
 #, elixir-format, ex-autogen
+msgid "Allow"
+msgstr "Erlauben"
+
+#, elixir-format, ex-autogen
 msgid "Always work from Top to Bottom. Otherwise changes may be lost!"
 msgstr "Immer von Oben nach Unten arbeiten. Ansonsten gehen Änderungen verloren!"
 
@@ -1264,6 +1268,10 @@ msgstr "Ausgewählte löschen"
 #, elixir-format, ex-autogen
 msgid "Deleted"
 msgstr "Gelöscht"
+
+#, elixir-format, ex-autogen
+msgid "Deny"
+msgstr "Verweigern"
 
 #, elixir-format, ex-autogen
 msgid "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field."
@@ -2496,6 +2504,10 @@ msgid "Isolations Per Organisation"
 msgstr "Indexfälle pro Organisation"
 
 #, elixir-format, ex-autogen
+msgid "It is not possible for you to end the quarantine early. Please contact the tracing team to get more information."
+msgstr "Eine vorzeitige Beendigung der Quarantäne ist für Sie nicht möglich. Bitte kontaktieren Sie das Tracing-Team, um weitere Informationen zu erhalten."
+
+#, elixir-format, ex-autogen
 msgctxt "Auto Tracing Exit"
 msgid "It seems like we are not responsible for your case."
 msgstr "Es scheint, als wären wir nicht für Ihren Fall verantwortlich."
@@ -3464,6 +3476,11 @@ msgid "Other"
 msgstr "Andere"
 
 #, elixir-format, ex-autogen
+msgctxt "Premature Release Disabled Reason"
+msgid "Other"
+msgstr "Andere"
+
+#, elixir-format, ex-autogen
 msgctxt "Case Status"
 msgid "Other Actions To Do"
 msgstr "Sonstige Aktion noch durchzuführen"
@@ -3473,8 +3490,8 @@ msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.Index Field"
 msgid "Other End Reason"
 msgstr "Anderer Endgrund"
 
-#, elixir-format, ex-autogen
-msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Other End Reason"
 msgstr "Anderer Endgrund"
 
@@ -3487,6 +3504,11 @@ msgstr "Anderer Typ"
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Other reason"
 msgstr "Anderer Endgrund"
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
+msgid "Other reason for disabling premature release"
+msgstr "Anderer Grund für die Deaktivierung der vorzeitigen Freisetzung"
 
 #, elixir-format, ex-autogen
 msgctxt "Possible Index Type"
@@ -3918,6 +3940,14 @@ msgid "Premature release created successfully"
 msgstr "Vorzeitige Quarantäneentlassung erfolgreich erstellt"
 
 #, elixir-format, ex-autogen
+msgid "Premature release disabled help"
+msgstr "Vorzeitige Quarantäneentlassung Hilfe"
+
+#, elixir-format, ex-autogen, fuzzy
+msgid "Premature release permission"
+msgstr "Vorzeitige Quarantäneentlassung"
+
+#, elixir-format, ex-autogen
 msgctxt "School Type"
 msgid "Preschool"
 msgstr "Kindergarten"
@@ -4137,6 +4167,11 @@ msgstr "Grund"
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Reason"
 msgstr "Grund"
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
+msgid "Reason for disabling premature release"
+msgstr "Grund für die Deaktivierung der vorzeitigen Entlassung"
 
 #, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
@@ -4493,6 +4528,10 @@ msgid "Select mutation"
 msgstr "Mutation wählen"
 
 #, elixir-format, ex-autogen
+msgid "Select premature release disabled reason"
+msgstr "Wählen Sie den Grund für die Deaktivierung der vorzeitigen Freigabe"
+
+#, elixir-format, ex-autogen
 msgid "Select reason"
 msgstr "Grund wählen"
 
@@ -4675,6 +4714,10 @@ msgstr "Eine andere Person bearbeitet diese Ressource derzeit. Warten Sie, bis d
 msgctxt "Clinical Symptom"
 msgid "Sore Throat"
 msgstr "Halsschmerzen"
+
+#, elixir-format, ex-autogen
+msgid "Specify the reason for this decision in the provided field. The reason specified here won't be shown to the user"
+msgstr "Geben Sie den Grund für diese Entscheidung in das dafür vorgesehene Feld ein. Der hier angegebene Grund wird dem Benutzer nicht angezeigt"
 
 #, elixir-format, ex-autogen
 msgid "Sponsor"
@@ -5169,6 +5212,10 @@ msgstr "Der Link mit dem Index Self-Service wurde verschickt. Der Index hat sein
 msgctxt "Person Show"
 msgid "The person is not considered fully vaccinated for breakthrough infections."
 msgstr "Die Person gilt nicht als vollständig gegen Durchbruchinfektionen geimpft."
+
+#, elixir-format, ex-autogen
+msgid "The person is suspected of having contracted a variant in consideration"
+msgstr "Die Person steht im Verdacht, eine Gegenleistungsvariante abgeschlossen zu haben"
 
 #, elixir-format, ex-autogen
 msgctxt "Phase Create Modal"
@@ -5739,6 +5786,11 @@ msgid "View person"
 msgstr "Person anzeigen"
 
 #, elixir-format, ex-autogen
+msgctxt "Premature Release Disabled Reason"
+msgid "Virus variant"
+msgstr "Virusvariante"
+
+#, elixir-format, ex-autogen
 msgid "Visit"
 msgstr "Besuch"
 
@@ -5829,6 +5881,10 @@ msgid "When did you meet %{first_name} %{last_name} last?"
 msgstr "Wann haben Sie %{first_name} %{last_name} zuletzt getroffen?"
 
 #, elixir-format, ex-autogen
+msgid "When premature release permission is denied it means that the person will not be allowed to end the quarantine prematurely. You must provide a reason for disabling the premature release."
+msgstr "Wenn die Erlaubnis zur vorzeitigen Entlassung verweigert wird, bedeutet dies, dass die Person die Quarantäne nicht vorzeitig beenden darf. Die Sperrung der vorzeitigen Entlassung müssen Sie begründen."
+
+#, elixir-format, ex-autogen
 msgid "Where did you meet %{first_name} %{last_name} last?"
 msgstr "Wo haben Sie %{first_name} %{last_name} zuletzt getroffen?"
 
@@ -5904,6 +5960,10 @@ msgstr "Sie können sich von der Quarantäne befreien lassen, wenn Sie im Besitz
 #, elixir-format, ex-autogen
 msgid "You did not keep a safe distance of at least 1.5 meters."
 msgstr "Sie waren sich näher als 1.5 Meter."
+
+#, elixir-format, ex-autogen
+msgid "You entered Switzerland from a country with a worrying virus variant. For this reason, according to the FOPH, it is not possible for you to end the quarantine early."
+msgstr "Sie sind aus einem Land mit besorgniserregender Virusvariante in die Schweiz eingereist. Aus diesem Grund, ist es laut Vorgaben vom BAG nicht für Sie möglich, die Quarantäne vorzeitig zu beenden."
 
 #, elixir-format, ex-autogen
 msgid "You had contact for more than 15 minutes on the same day."

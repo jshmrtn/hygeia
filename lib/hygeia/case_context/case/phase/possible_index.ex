@@ -36,7 +36,13 @@ defmodule Hygeia.CaseContext.Case.Phase.PossibleIndex do
           Changeset.t()
   def changeset(possible_index, attrs) do
     possible_index
-    |> cast(attrs, [:type, :type_other, :end_reason, :other_end_reason, :end_reason_date])
+    |> cast(attrs, [
+      :type,
+      :type_other,
+      :end_reason,
+      :other_end_reason,
+      :end_reason_date
+    ])
     |> validate_required([:type])
     |> validate_type_other()
     |> validate_end_reason_other()

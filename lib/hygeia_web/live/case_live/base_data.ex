@@ -7,6 +7,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.Case.Status
+  alias Hygeia.CaseContext.PrematureRelease.DisabledReason
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
@@ -30,6 +31,7 @@ defmodule HygeiaWeb.CaseLive.BaseData do
   data show_case_status_help, :boolean, default: false
   data show_index_phase_end_reason_help, :boolean, default: false
   data show_possible_index_phase_end_reason_help, :boolean, default: false
+  data show_premature_release_disabled_reason_help, :boolean, default: false
   data show_reasons_for_test_help, :boolean, default: false
 
   @impl Phoenix.LiveView
@@ -309,6 +311,14 @@ defmodule HygeiaWeb.CaseLive.BaseData do
 
   def handle_event("hide_possible_index_phase_end_reason_help", _params, socket) do
     {:noreply, assign(socket, show_possible_index_phase_end_reason_help: false)}
+  end
+
+  def handle_event("show_premature_release_disabled_reason_help", _params, socket) do
+    {:noreply, assign(socket, show_premature_release_disabled_reason_help: true)}
+  end
+
+  def handle_event("hide_premature_release_disabled_reason_help", _params, socket) do
+    {:noreply, assign(socket, show_premature_release_disabled_reason_help: false)}
   end
 
   def handle_event("show_reasons_for_test_help", _params, socket) do
