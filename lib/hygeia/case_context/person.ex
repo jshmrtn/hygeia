@@ -78,6 +78,7 @@ defmodule Hygeia.CaseContext.Person do
 
   @type changeset_options :: %{
           optional(:address_required) => boolean,
+          optional(:vaccination) => boolean,
           optional(:vaccination_required) => boolean,
           optional(:initial_nil_jab_date_count) => integer
         }
@@ -137,8 +138,13 @@ defmodule Hygeia.CaseContext.Person do
 
   def changeset(person, attrs, %{vaccination_required: true} = opts) do
     person
-    |> changeset(attrs, %{opts | vaccination_required: false})
+    |> changeset(attrs, %{opts | vaccination: true})
     |> validate_required([:is_vaccinated])
+  end
+
+  def changeset(person, attrs, %{vaccination: true} = opts) do
+    person
+    |> changeset(attrs, %{opts | vaccination: false})
     |> validate_vaccination_shots()
   end
 
@@ -167,11 +173,11 @@ defmodule Hygeia.CaseContext.Person do
     ])
     |> validate_past_date(:birth_date)
     |> validate_profession_category()
-    |> cast_assoc(:vaccination_shots)
     |> cast_assoc(:affiliations)
     |> cast_embed(:external_references)
     |> cast_embed(:address)
     |> cast_embed(:contact_methods)
+    |> cast_assoc(:vaccination_shots)
     |> foreign_key_constraint(:tenant_uuid)
     |> detect_name_duplicates
     |> detect_duplicates(:mobile)
@@ -196,10 +202,10 @@ defmodule Hygeia.CaseContext.Person do
 
   defp validate_vaccination_shots(changeset) do
     changeset
-    |> fetch_change(:is_vaccinated)
+    |> fetch_field!(:is_vaccinated)
     |> case do
-      true -> validate_required(changeset, :vaccination_shots)
-      _else -> put_change(changeset, :vaccination_shots, nil)
+      true -> cast_assoc(changeset, :vaccination_shots, required: true)
+      _else -> put_assoc(changeset, :vaccination_shots, [])
     end
   end
 

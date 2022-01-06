@@ -424,7 +424,7 @@
               </div>
             </div>
 
-            <div class="card vaccination">
+            <div class="card employment">
               <div class="card-body">
                 <h4 class="card-title">{gettext("Vaccination")}</h4>
                 <Field name={:is_vaccinated} class="form-group">
@@ -514,7 +514,6 @@
                     show_buttons={@live_action == :edit}
                     changeset={@changeset}
                     person={@person}
-                    preset_date_count={0}
                     add_event="add_vaccination_shot"
                     remove_event="remove_vaccination_shot"
                   />

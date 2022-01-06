@@ -1,0 +1,10 @@
+.vaccination-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto;
+  grid-gap: $grid-gutter-width;
+
+  .add-button {
+    grid-column: span 4;
+  }
+}

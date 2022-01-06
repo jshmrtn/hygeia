@@ -63,11 +63,4 @@
   .candidate-card {
     grid-column: span 2;
   }
-
-  .vaccination-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    grid-gap: $grid-gutter-width;
-  }
 }

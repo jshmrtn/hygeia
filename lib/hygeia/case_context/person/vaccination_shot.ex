@@ -46,9 +46,27 @@ defmodule Hygeia.CaseContext.Person.VaccinationShot do
   def changeset(vaccination_shot, attrs) do
     vaccination_shot
     |> cast(attrs, [:uuid, :vaccine_type, :vaccine_type_other, :date])
-    |> validate_required([:vaccine_type, :date])
     |> fill_uuid
+    |> validate_required([:date])
     |> validate_past_date(:date)
+    |> validate_type_other()
     |> unique_constraint(:date, name: :vaccination_shots_person_uuid_date_index)
+  end
+
+  defp validate_type_other(changeset) do
+    changeset
+    |> fetch_field!(:vaccine_type)
+    |> case do
+      nil ->
+        changeset
+        |> validate_required([:vaccine_type_other])
+        |> put_change(:vaccine_type_other, nil)
+
+      :other ->
+        validate_required(changeset, [:vaccine_type_other])
+
+      _defined ->
+        put_change(changeset, :vaccine_type_other, nil)
+    end
   end
 end
