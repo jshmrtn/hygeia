@@ -35,12 +35,14 @@ defmodule Hygeia.LoginRateLimiter do
       {:error, {:already_started, _pid}} -> :ok
     end
 
-    GenServer.call({:global, {Worker, person_uuid}}, {:login, callback})
+    GenStateMachine.call({:global, {Worker, person_uuid}}, {:login, callback})
   end
 
+  @spec locked?(person_uuid :: Ecto.UUID.t()) :: boolean
   def locked?(person_uuid) do
-    GenServer.call({:global, {Worker, person_uuid}}, :locked?)
+    GenStateMachine.call({:global, {Worker, person_uuid}}, :locked?)
   catch
-    :exit, {:noproc, {GenServer, :call, [{:global, {Worker, ^person_uuid}} | _args]}} -> false
+    :exit, {:noproc, {:gen_statem, :call, [{:global, {Worker, ^person_uuid}} | _args]}} ->
+      false
   end
 end

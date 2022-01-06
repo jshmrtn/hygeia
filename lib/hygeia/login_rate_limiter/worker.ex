@@ -1,10 +1,20 @@
 defmodule Hygeia.LoginRateLimiter.Worker do
   @moduledoc false
 
-  use GenServer, restart: :transient
+  #                              ┌─────── unlock  ─────┐
+  #                              │                     │
+  #                              ▼                     │
+  # ┌──────────┐            ┌──────────┐           ┌───┴────┐            ┌──────────┐
+  # │ Start    ├───────────►│ Unlocked │           │ Locked │            │ End      │
+  # └──────────┘            └────┬─────┘           └────────┘            └──────────┘
+  #                              │                                             ▲
+  #                              │                                             │
+  #                              └──────────  expire ──────────────────────────┘
+
+  use GenStateMachine
 
   @enforce_keys [:minimal_terminate_timeout, :timeout, :person_uuid]
-  defstruct @enforce_keys ++ [:timer, :terminate_timer]
+  defstruct @enforce_keys
 
   case Mix.env() do
     :dev ->
@@ -21,86 +31,108 @@ defmodule Hygeia.LoginRateLimiter.Worker do
   @spec start_link(opts :: Keyword.t()) :: GenServer.on_start()
   def start_link(opts),
     do:
-      GenServer.start_link(__MODULE__, opts,
+      GenStateMachine.start_link(__MODULE__, opts,
         name: {:global, {__MODULE__, Keyword.fetch!(opts, :person_uuid)}}
       )
 
   @spec child_spec(opts :: Keyword.t()) :: Supervisor.child_spec()
   def child_spec(opts) do
     person_uuid = Keyword.fetch!(opts, :person_uuid)
-    %{super(opts) | id: {__MODULE__, person_uuid}}
+    Map.merge(super(opts), %{id: {__MODULE__, person_uuid}, restart: :transient})
   end
 
-  @impl GenServer
+  @impl GenStateMachine
+  # Initial State: unlocked
+  # Timeout after @minimal_terminate_timeout
   def init(args) do
-    {:ok,
-     %__MODULE__{
-       timeout: Keyword.get(args, :initial_timeout, @initial_timeout),
-       person_uuid: Keyword.fetch!(args, :person_uuid),
-       minimal_terminate_timeout:
-         Keyword.get(args, :minimal_terminate_timeout, @minimal_terminate_timeout)
-     }}
+    minimal_terminate_timeout =
+      Keyword.get(args, :minimal_terminate_timeout, @minimal_terminate_timeout)
+
+    data = %__MODULE__{
+      timeout: Keyword.get(args, :initial_timeout, @initial_timeout),
+      person_uuid: Keyword.fetch!(args, :person_uuid),
+      minimal_terminate_timeout: minimal_terminate_timeout
+    }
+
+    {:ok, :unlocked, data,
+     [
+       {:state_timeout, minimal_terminate_timeout, :expire}
+     ]}
   end
 
-  @impl GenServer
-  def handle_call(
+  @impl GenStateMachine
+  # On successful Login: Shut Down State Machine
+  # On failed Login: Switch to locked state and set timeout to `timeout * @timeout_multiplication_factor`
+  def handle_event(
+        {:call, from},
         {:login, callback},
-        _from,
-        %__MODULE__{
-          timeout: timeout,
-          person_uuid: person_uuid,
-          timer: nil
-        } = state
+        :unlocked,
+        %__MODULE__{timeout: timeout, person_uuid: person_uuid} = data
       ) do
     {success, result} = callback.()
 
     if success do
-      {:reply, {:ok, result}, state}
+      {:stop_and_reply, :normal,
+       [
+         {:reply, from, {:ok, result}}
+       ], data}
     else
-      case state.terminate_timer do
-        nil -> :ok
-        timer -> Process.cancel_timer(timer)
-      end
-
       Phoenix.PubSub.broadcast(Hygeia.PubSub, "login_lockout:#{person_uuid}", {:lock, timeout})
 
-      {:reply, {:ok, result},
-       %__MODULE__{
-         state
-         | timeout: timeout * @timeout_multiplication_factor,
-           timer: Process.send_after(self(), :unlock, timeout)
-       }}
+      data = %__MODULE__{data | timeout: timeout * @timeout_multiplication_factor}
+
+      {:next_state, :locked, data,
+       [
+         {:state_timeout, timeout, :unlock},
+         {:reply, from, {:ok, result}}
+       ]}
     end
   end
 
-  def handle_call({:login, _callback}, _from, %__MODULE__{timer: _timer} = state),
-    do: {:reply, {:error, :locked}, state}
+  # On login while locked: Cancel Request
+  def handle_event({:call, from}, {:login, _callback}, :locked, _data),
+    do:
+      {:keep_state_and_data,
+       [
+         {:reply, from, {:error, :locked}}
+       ]}
 
-  def handle_call(:locked?, _from, %__MODULE__{timer: nil} = state), do: {:reply, false, state}
-  def handle_call(:locked?, _from, %__MODULE__{timer: _timer} = state), do: {:reply, true, state}
+  # Answer Call if currently locked
+  def handle_event({:call, from}, :locked?, :locked, _data),
+    do:
+      {:keep_state_and_data,
+       [
+         {:reply, from, true}
+       ]}
 
-  @impl GenServer
-  def handle_info(
+  def handle_event({:call, from}, :locked?, :unlocked, _data),
+    do:
+      {:keep_state_and_data,
+       [
+         {:reply, from, false}
+       ]}
+
+  # Unlock State Machine when timeout for lock expired
+  def handle_event(
+        :state_timeout,
         :unlock,
+        :locked,
         %__MODULE__{
           person_uuid: person_uuid,
           minimal_terminate_timeout: minimal_terminate_timeout,
           timeout: timeout
-        } = state
+        } = data
       ) do
-    terminate_timeout = max(timeout, minimal_terminate_timeout)
-
     Phoenix.PubSub.broadcast(Hygeia.PubSub, "login_lockout:#{person_uuid}", :unlock)
 
-    {:noreply,
-     %__MODULE__{
-       state
-       | timer: nil,
-         terminate_timer: Process.send_after(self(), :timeout, terminate_timeout)
-     }}
+    terminate_timeout = max(timeout, minimal_terminate_timeout)
+
+    {:next_state, :unlocked, data,
+     [
+       {:state_timeout, terminate_timeout, :expire}
+     ]}
   end
 
-  def handle_info(:timeout, state) do
-    {:stop, :normal, state}
-  end
+  # Shut Down State Machine when unlocked state expires
+  def handle_event(:state_timeout, :expire, :unlocked, data), do: {:stop, :normal, data}
 end

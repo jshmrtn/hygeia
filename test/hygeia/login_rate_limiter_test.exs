@@ -1,4 +1,4 @@
-defmodule HygeiaWeb.AuthLive.LockoutPersonTest do
+defmodule Hygeia.LoginRateLimiterTest do
   @moduledoc false
   use ExUnit.Case
 
