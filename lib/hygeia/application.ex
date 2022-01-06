@@ -6,8 +6,14 @@ defmodule Hygeia.Application do
   use Application
 
   case Mix.env() do
-    :test -> @workers []
-    _others -> @workers [Hygeia.SedexExport, Hygeia.SystemMessageContext.SystemMessageCache]
+    :test ->
+      @workers []
+
+    _others ->
+      @workers [
+        Hygeia.SedexExport,
+        Hygeia.SystemMessageContext.SystemMessageCache
+      ]
   end
 
   @impl Application
@@ -34,6 +40,7 @@ defmodule Hygeia.Application do
         # Other Workers
         Hygeia.Jobs.Supervisor,
         HygeiaWeb.SessionStorage.Storage,
+        Hygeia.LoginRateLimiter,
         HygeiaWeb.Endpoint | @workers
       ],
       strategy: :one_for_one,
