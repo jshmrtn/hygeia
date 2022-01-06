@@ -10,7 +10,6 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.VaccinationShot
   alias Hygeia.Repo
 
@@ -23,9 +22,9 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
 
   @primary_key false
   embedded_schema do
-    field :is_externally_convalescent, :boolean
-    field :has_received_vaccine, :boolean
-    field :number_of_vaccine_shots, :integer
+    field :convalescent_externally, :boolean
+    field :is_vaccinated, :boolean
+    field :number_of_vaccination_shots, :integer
     embeds_many :vaccination_shots, VaccinationShot, on_replace: :delete
   end
 
@@ -57,9 +56,9 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
 
         true ->
           step = %__MODULE__{
-            is_externally_convalescent: case.person.convalescent_externally,
-            has_received_vaccine: case.person.is_vaccinated,
-            number_of_vaccine_shots:
+            convalescent_externally: case.person.convalescent_externally,
+            is_vaccinated: case.person.is_vaccinated,
+            number_of_vaccination_shots:
               if(Enum.empty?(case.person.vaccination_shots),
                 do: nil,
                 else: length(case.person.vaccination_shots)
@@ -101,28 +100,26 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
           assign(socket, changeset: changeset)
 
         {:ok, step} ->
-          {:ok, person} =
+          {:ok, _person} =
             socket.assigns.person
-            |> CaseContext.change_person(%{
-              is_vaccinated: step.has_received_vaccine,
-              convalescent_externally: step.is_externally_convalescent
+            |> change(%{
+              is_vaccinated: step.is_vaccinated,
+              convalescent_externally: step.convalescent_externally
             })
             |> put_assoc(:vaccination_shots, step.vaccination_shots)
             |> CaseContext.update_person()
 
           {:ok, auto_tracing} =
-            case person do
-              %Person{is_vaccinated: true} ->
-                AutoTracingContext.auto_tracing_add_problem(
-                  auto_tracing,
-                  :vaccination_failure
-                )
-
-              %Person{} ->
-                AutoTracingContext.auto_tracing_remove_problem(
-                  auto_tracing,
-                  :vaccination_failure
-                )
+            if CaseContext.is_case_vaccination_breakthrough?(socket.assigns.case) do
+              AutoTracingContext.auto_tracing_add_problem(
+                auto_tracing,
+                :vaccination_failure
+              )
+            else
+              AutoTracingContext.auto_tracing_remove_problem(
+                auto_tracing,
+                :vaccination_failure
+              )
             end
 
           {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :vaccination)
@@ -143,46 +140,46 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   defp changeset(schema, attrs \\ %{}) do
     schema
     |> cast(attrs, [
-      :has_received_vaccine,
-      :number_of_vaccine_shots,
-      :is_externally_convalescent
+      :is_vaccinated,
+      :number_of_vaccination_shots,
+      :convalescent_externally
     ])
-    |> validate_required([:has_received_vaccine])
+    |> validate_required([:is_vaccinated])
     |> validate_vaccine_received()
     |> prefill_number_of_vaccines_received()
   end
 
   defp validate_vaccine_received(changeset) do
     changeset
-    |> fetch_field!(:has_received_vaccine)
+    |> fetch_field!(:is_vaccinated)
     |> case do
       true ->
         changeset
-        |> validate_required([:is_externally_convalescent])
-        |> fetch_field!(:number_of_vaccine_shots)
+        |> validate_required([:convalescent_externally])
+        |> fetch_field!(:number_of_vaccination_shots)
         |> case do
           nil ->
             changeset
-            |> validate_required([:number_of_vaccine_shots])
-            |> put_change(:number_of_vaccine_shots, nil)
+            |> validate_required([:number_of_vaccination_shots])
+            |> put_change(:number_of_vaccination_shots, nil)
 
           _else ->
             changeset
-            |> validate_required([:number_of_vaccine_shots])
-            |> validate_number(:number_of_vaccine_shots, greater_than: 0, less_than: 15)
+            |> validate_required([:number_of_vaccination_shots])
+            |> validate_number(:number_of_vaccination_shots, greater_than: 0, less_than: 15)
         end
 
       _else ->
         changeset
-        |> put_change(:is_externally_convalescent, false)
-        |> put_change(:number_of_vaccine_shots, nil)
+        |> put_change(:convalescent_externally, false)
+        |> put_change(:number_of_vaccination_shots, nil)
         |> put_embed(:vaccination_shots, [])
     end
   end
 
   defp prefill_number_of_vaccines_received(changeset) do
-    if fetch_field!(changeset, :has_received_vaccine) != true or
-         is_nil(fetch_field!(changeset, :number_of_vaccine_shots)) do
+    if fetch_field!(changeset, :is_vaccinated) != true or
+         is_nil(fetch_field!(changeset, :number_of_vaccination_shots)) do
       put_embed(changeset, :vaccination_shots, [])
     else
       changeset = cast_embed(changeset, :vaccination_shots, required: true)
@@ -195,7 +192,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
           Enum.map(vaccination_shots, &VaccinationShot.changeset/1)
         )
 
-      number_provided = fetch_field!(changeset, :number_of_vaccine_shots)
+      number_provided = fetch_field!(changeset, :number_of_vaccination_shots)
 
       number_available = length(vaccination_shots)
 

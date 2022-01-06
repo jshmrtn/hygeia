@@ -151,6 +151,63 @@ defmodule Hygeia.CaseContext do
         )
       )
 
+  defp last_positive_test_date_query(queryable \\ Test),
+    do:
+      from(test in queryable,
+        select: %{
+          case_uuid: test.case_uuid,
+          test_date: max(coalesce(test.tested_at, test.laboratory_reported_at))
+        },
+        group_by: test.case_uuid,
+        where: test.result == :positive
+      )
+
+  @spec list_vaccination_breakthrough_cases_query(queryable :: Ecto.Queryable.t()) ::
+          Ecto.Queryable.t()
+  def list_vaccination_breakthrough_cases_query(
+        queryable \\ from(case in Case,
+          join: person in assoc(case, :person),
+          as: :person,
+          group_by: case.uuid
+        )
+      ) do
+    from([case, person: person] in queryable,
+      join: vaccination_shot_validity in assoc(person, :vaccination_shot_validities),
+      join: index_phase in fragment("UNNEST(?)", case.phases),
+      on: fragment("?->>?", fragment("?->?", index_phase, "details"), "__type__") == "index",
+      left_join: last_positive_test in subquery(last_positive_test_date_query()),
+      on: last_positive_test.case_uuid == case.uuid,
+      where:
+        person.is_vaccinated and
+          fragment(
+            "? @> ?",
+            vaccination_shot_validity.range,
+            last_positive_test.test_date
+            |> type(:date)
+            |> coalesce(type(fragment("(?->>?)", case.clinical, "symptom_start"), :date))
+            |> coalesce(type(fragment("(?->>?)", index_phase, "order_date"), :date))
+            |> coalesce(type(fragment("(?->>?)", index_phase, "inserted_at"), :date))
+            |> coalesce(type(case.inserted_at, :date))
+          )
+    )
+  end
+
+  @spec is_case_vaccination_breakthrough?(case :: Case.t()) :: boolean
+  def is_case_vaccination_breakthrough?(%Case{uuid: uuid}) do
+    from(case in Case,
+      join: person in assoc(case, :person),
+      as: :person,
+      group_by: case.uuid,
+      where: case.uuid == ^uuid
+    )
+    |> list_vaccination_breakthrough_cases_query()
+    |> Repo.one()
+    |> case do
+      %Case{} -> true
+      nil -> false
+    end
+  end
+
   @spec list_people_by_name(first_name :: String.t(), last_name :: String.t()) :: [Person.t()]
   def list_people_by_name(first_name, last_name),
     do:
@@ -1905,42 +1962,19 @@ defmodule Hygeia.CaseContext do
       test_last_date: pgettext("Breakthrough Infection Export", "Last Test Date")
     }
 
-    last_positive_test_date =
-      from(test in Test,
-        select: %{
-          case_uuid: test.case_uuid,
-          test_date: max(coalesce(test.tested_at, test.laboratory_reported_at))
-        },
-        group_by: test.case_uuid,
-        where: test.result == :positive
-      )
-
     breakthrough_cases =
-      from(case in Ecto.assoc(tenant, :cases),
-        join: person in assoc(case, :person),
-        join: vaccination_shot_validities in assoc(person, :vaccination_shot_validities),
-        join: index_phase in fragment("UNNEST(?)", case.phases),
-        on: fragment("?->>?", fragment("?->?", index_phase, "details"), "__type__") == "index",
-        left_join: last_positive_test in subquery(last_positive_test_date),
-        on: last_positive_test.case_uuid == case.uuid,
-        where:
-          person.is_vaccinated and
-            fragment(
-              "? @> ?",
-              vaccination_shot_validities.range,
-              last_positive_test.test_date
-              |> type(:date)
-              |> coalesce(type(fragment("(?->>?)", index_phase, "order_date"), :date))
-              |> coalesce(type(fragment("(?->>?)", index_phase, "inserted_at"), :date))
-              |> coalesce(type(case.inserted_at, :date))
-            ),
-        group_by: case.uuid
+      list_vaccination_breakthrough_cases_query(
+        from(case in Ecto.assoc(tenant, :cases),
+          join: person in assoc(case, :person),
+          as: :person,
+          group_by: case.uuid
+        )
       )
 
     cases =
       from(case in subquery(breakthrough_cases),
         join: person in assoc(case, :person),
-        left_join: last_positive_test in subquery(last_positive_test_date),
+        left_join: last_positive_test in subquery(last_positive_test_date_query()),
         on: last_positive_test.case_uuid == case.uuid,
         join: vaccination_shots in assoc(person, :vaccination_shots),
         select: [

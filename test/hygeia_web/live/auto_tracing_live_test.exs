@@ -485,19 +485,19 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         live(conn, Routes.auto_tracing_vaccination_path(conn, :vaccination, case))
 
       assert vaccination_view
-             |> form("#vaccination-form", vaccination: %{has_received_vaccine: true})
+             |> form("#vaccination-form", vaccination: %{is_vaccinated: true})
              |> render_change() =~
                "How many vaccination shots have you received?"
 
       assert vaccination_view
-             |> form("#vaccination-form", vaccination: %{number_of_vaccine_shots: 2})
+             |> form("#vaccination-form", vaccination: %{number_of_vaccination_shots: 2})
              |> render_change()
 
       assert vaccination_view
              |> form("#vaccination-form")
              |> render_change(
                vaccination: %{
-                 is_externally_convalescent: true,
+                 convalescent_externally: true,
                  vaccination_shots: %{
                    "0" => %{
                      date: "2022-01-02",

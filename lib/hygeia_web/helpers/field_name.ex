@@ -355,9 +355,9 @@ defmodule HygeiaWeb.Helpers.FieldName do
       has_travelled: "Has travelled"
     },
     HygeiaWeb.AutoTracingLive.Vaccination => %{
-      received_vaccine: "Is vaccinated",
-      number_of_vaccine_shots: "Number of vaccine shots received",
-      vaccination_shots: "Vaccine shots"
+      is_vaccinated: "Is vaccinated",
+      number_of_vaccination_shots: "Number of vaccination shots received",
+      vaccination_shots: "Vaccination shots"
     },
     HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts => %{
       propagator_case: "Propagator Case",

@@ -702,9 +702,9 @@ msgstr "Datei wählen"
 msgid "Choose location"
 msgstr "Standort wählen"
 
-#, elixir-format, ex-autogen, fuzzy
+#, elixir-format, ex-autogen
 msgid "Choose number"
-msgstr "Person wählen"
+msgstr "Zahl wählen"
 
 #, elixir-format, ex-autogen
 msgid "Choose organisation"
@@ -1984,7 +1984,7 @@ msgstr "Waren Sie in einem Krankenhaus oder sind es noch?"
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Vaccination"
 msgid "Have you recovered from covid-19 in the past?"
-msgstr "Haben Sie sich in der Vergangenheit von Covid-19 erholt?"
+msgstr "Hatten Sie in der Vergangenheit bereits einmal COVID und sind genesen?"
 
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Travel"
@@ -3289,9 +3289,9 @@ msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Number"
 msgstr "Nummer"
 
-#, elixir-format, ex-autogen
+#, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
-msgid "Number of vaccine shots received"
+msgid "Number of vaccination shots received"
 msgstr "Anzahl der erhaltenen Impfungen"
 
 #, elixir-format, ex-autogen
@@ -5657,6 +5657,11 @@ msgctxt "Person Show"
 msgid "Vaccination Validity (breakthrough detection)"
 msgstr "Gültigkeit Impfung (Erkennung von Durchbruchsinfektionen)"
 
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
+msgid "Vaccination shots"
+msgstr "Impfung"
+
 #, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
 msgid "Vaccine"
@@ -5665,11 +5670,6 @@ msgstr "Impfstoff"
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
 msgid "Vaccine name"
-msgstr "Impfstoff"
-
-#, elixir-format, ex-autogen, fuzzy
-msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
-msgid "Vaccine shots"
 msgstr "Impfstoff"
 
 #, elixir-format, ex-autogen

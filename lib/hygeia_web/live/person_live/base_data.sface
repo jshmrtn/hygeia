@@ -424,7 +424,7 @@
               </div>
             </div>
 
-            <div class="card employment">
+            <div class="card vaccination">
               <div class="card-body">
                 <h4 class="card-title">{gettext("Vaccination")}</h4>
                 <Field name={:is_vaccinated} class="form-group">

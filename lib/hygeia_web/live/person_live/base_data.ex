@@ -97,7 +97,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
     {:noreply,
      socket
      |> assign(:changeset, %{
-       CaseContext.change_person(socket.assigns.person, person_params, %{vaccination: true})
+       CaseContext.change_person(socket.assigns.person, person_params)
        | action: :validate
      })
      |> maybe_block_navigation()}
@@ -114,8 +114,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
        :changeset,
        CaseContext.change_person(
          person,
-         changeset_add_to_params(changeset, :contact_methods, %{uuid: Ecto.UUID.generate()}),
-         %{vaccination: true}
+         changeset_add_to_params(changeset, :contact_methods, %{uuid: Ecto.UUID.generate()})
        )
      )
      |> maybe_block_navigation()}
@@ -132,8 +131,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
        :changeset,
        CaseContext.change_person(
          person,
-         changeset_remove_from_params_by_id(changeset, :contact_methods, %{uuid: uuid}),
-         %{vaccination: true}
+         changeset_remove_from_params_by_id(changeset, :contact_methods, %{uuid: uuid})
        )
      )
      |> maybe_block_navigation()}
@@ -150,8 +148,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
        :changeset,
        CaseContext.change_person(
          person,
-         changeset_add_to_params(changeset, :external_references, %{uuid: Ecto.UUID.generate()}),
-         %{vaccination: true}
+         changeset_add_to_params(changeset, :external_references, %{uuid: Ecto.UUID.generate()})
        )
      )
      |> maybe_block_navigation()}
@@ -168,8 +165,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
        :changeset,
        CaseContext.change_person(
          person,
-         changeset_remove_from_params_by_id(changeset, :external_references, %{uuid: uuid}),
-         %{vaccination: true}
+         changeset_remove_from_params_by_id(changeset, :external_references, %{uuid: uuid})
        )
      )
      |> maybe_block_navigation()}
@@ -186,8 +182,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
        :changeset,
        CaseContext.change_person(
          person,
-         changeset_add_to_params(changeset, :affiliations, %{uuid: Ecto.UUID.generate()}),
-         %{vaccination: true}
+         changeset_add_to_params(changeset, :affiliations, %{uuid: Ecto.UUID.generate()})
        )
      )
      |> maybe_block_navigation()}
@@ -204,8 +199,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
        :changeset,
        CaseContext.change_person(
          person,
-         changeset_remove_from_params_by_id(changeset, :affiliations, %{uuid: uuid}),
-         %{vaccination: true}
+         changeset_remove_from_params_by_id(changeset, :affiliations, %{uuid: uuid})
        )
      )
      |> maybe_block_navigation()}
@@ -227,8 +221,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
            :affiliations,
            %{uuid: affiliation_uuid},
            &Map.put(&1, "organisation_uuid", params["uuid"])
-         ),
-         %{vaccination: true}
+         )
        )
      )
      |> maybe_block_navigation()}
@@ -250,8 +243,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
            :affiliations,
            %{uuid: affiliation_uuid},
            &Map.put(&1, "division_uuid", params["uuid"])
-         ),
-         %{vaccination: true}
+         )
        )
      )
      |> maybe_block_navigation()}
@@ -270,8 +262,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
            person,
            changeset_add_to_params(changeset, :vaccination_shots, %{
              uuid: Ecto.UUID.generate()
-           }),
-           %{vaccination: true}
+           })
          )
          | action: :validate
        }
@@ -291,8 +282,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
        %Ecto.Changeset{
          CaseContext.change_person(
            person,
-           changeset_remove_from_params_by_id(changeset, :vaccination_shots, %{uuid: uuid}),
-           %{vaccination: true}
+           changeset_remove_from_params_by_id(changeset, :vaccination_shots, %{uuid: uuid})
          )
          | action: :validate
        }
@@ -311,7 +301,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
       |> Map.put_new("vaccination_shots", [])
 
     socket.assigns.person
-    |> CaseContext.update_person(person_params, %{vaccination: true})
+    |> CaseContext.update_person(person_params)
     |> case do
       {:ok, person} ->
         :ok =
@@ -358,7 +348,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
         force: true
       )
 
-    changeset = CaseContext.change_person(person, %{}, %{vaccination: true})
+    changeset = CaseContext.change_person(person, %{})
 
     socket
     |> assign(person: person, changeset: changeset)

@@ -210,25 +210,7 @@ defmodule HygeiaWeb.CaseLive.Index do
           query
 
         {:vaccination_failures, "true"}, query ->
-          from([case, person: person] in query,
-            join: vaccination_shot_validity in assoc(person, :vaccination_shot_validities),
-            join: index_phase in fragment("UNNEST(?)", case.phases),
-            on:
-              fragment("?->>?", fragment("?->?", index_phase, "details"), "__type__") == "index",
-            where:
-              person.is_vaccinated and
-                fragment(
-                  "? @> ?",
-                  vaccination_shot_validity.range,
-                  coalesce(
-                    type(fragment("(?->>?)", index_phase, "order_date"), :date),
-                    coalesce(
-                      type(fragment("(?->>?)", index_phase, "inserted_at"), :date),
-                      type(case.inserted_at, :date)
-                    )
-                  )
-                )
-          )
+          CaseContext.list_vaccination_breakthrough_cases_query(query)
 
         {:fully_vaccinated, "false"}, query ->
           query

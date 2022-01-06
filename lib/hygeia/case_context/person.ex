@@ -100,7 +100,8 @@ defmodule Hygeia.CaseContext.Person do
 
     has_many :vaccination_shots, VaccinationShot,
       foreign_key: :person_uuid,
-      on_replace: :delete
+      on_replace: :delete,
+      preload_order: [asc: :date]
 
     has_many :vaccination_shot_validities, VaccinationShot.Validity, foreign_key: :person_uuid
 
@@ -138,14 +139,8 @@ defmodule Hygeia.CaseContext.Person do
 
   def changeset(person, attrs, %{vaccination_required: true} = opts) do
     person
-    |> changeset(attrs, %{opts | vaccination: true})
+    |> changeset(attrs, %{opts | vaccination_required: false})
     |> validate_required([:is_vaccinated])
-  end
-
-  def changeset(person, attrs, %{vaccination: true} = opts) do
-    person
-    |> changeset(attrs, %{opts | vaccination: false})
-    |> validate_vaccination_shots()
   end
 
   def changeset(person, attrs, _opts) do
@@ -178,6 +173,7 @@ defmodule Hygeia.CaseContext.Person do
     |> cast_embed(:address)
     |> cast_embed(:contact_methods)
     |> cast_assoc(:vaccination_shots)
+    |> validate_vaccination_shots()
     |> foreign_key_constraint(:tenant_uuid)
     |> detect_name_duplicates
     |> detect_duplicates(:mobile)
@@ -202,10 +198,12 @@ defmodule Hygeia.CaseContext.Person do
 
   defp validate_vaccination_shots(changeset) do
     changeset
-    |> fetch_field!(:is_vaccinated)
+    |> fetch_change(:is_vaccinated)
     |> case do
-      true -> cast_assoc(changeset, :vaccination_shots, required: true)
-      _else -> put_assoc(changeset, :vaccination_shots, [])
+      :error -> changeset
+      {:ok, nil} -> changeset
+      {:ok, true} -> cast_assoc(changeset, :vaccination_shots, required: true)
+      {:ok, false} -> put_assoc(changeset, :vaccination_shots, [])
     end
   end
 

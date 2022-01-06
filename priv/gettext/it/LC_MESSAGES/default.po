@@ -3289,9 +3289,9 @@ msgctxt "Elixir.Hygeia.CommunicationContext.SMS Field"
 msgid "Number"
 msgstr "Numero"
 
-#, elixir-format, ex-autogen
+#, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
-msgid "Number of vaccine shots received"
+msgid "Number of vaccination shots received"
 msgstr "Numero di vaccini ricevuti"
 
 #, elixir-format, ex-autogen, fuzzy
@@ -5658,6 +5658,11 @@ msgid "Vaccination Validity (breakthrough detection)"
 msgstr "Validità della vaccinazione (rilevamento di casi di infezioni inaspettate)"
 
 #, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
+msgid "Vaccination shots"
+msgstr "Vaccinazione"
+
+#, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
 msgid "Vaccine"
 msgstr "Vaccinati"
@@ -5665,11 +5670,6 @@ msgstr "Vaccinati"
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
 msgid "Vaccine name"
-msgstr "Vaccinati"
-
-#, elixir-format, ex-autogen, fuzzy
-msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
-msgid "Vaccine shots"
 msgstr "Vaccinati"
 
 #, elixir-format, ex-autogen, fuzzy

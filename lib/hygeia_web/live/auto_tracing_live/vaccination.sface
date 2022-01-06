@@ -13,13 +13,13 @@
       >
         <div class="card card-body">
           <p>{pgettext("Auto Tracing Vaccination", "Are you vaccinated?")}</p>
-          <Field name={:has_received_vaccine} class="form-group mb-4">
+          <Field name={:is_vaccinated} class="form-group mb-4">
             <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
               <label class={
                 "btn",
                 "btn-sm",
                 "btn-outline-primary",
-                active: Ecto.Changeset.fetch_field!(@changeset, :has_received_vaccine) == true
+                active: Ecto.Changeset.fetch_field!(@changeset, :is_vaccinated) == true
               }>
                 <RadioButton value />
                 {pgettext("Auto Tracing Vaccination", "Yes")}
@@ -28,7 +28,7 @@
                 "btn",
                 "btn-sm",
                 "btn-outline-primary",
-                active: Ecto.Changeset.fetch_field!(@changeset, :has_received_vaccine) == false
+                active: Ecto.Changeset.fetch_field!(@changeset, :is_vaccinated) == false
               }>
                 <RadioButton value={false} />
                 {pgettext("Auto Tracing Vaccination", "No")}
@@ -37,15 +37,15 @@
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
 
-          {#if Ecto.Changeset.fetch_field!(@changeset, :has_received_vaccine)}
+          {#if Ecto.Changeset.fetch_field!(@changeset, :is_vaccinated)}
             <p>{pgettext("Auto Tracing Vaccination", "Have you recovered from covid-19 in the past?")}</p>
-            <Field name={:is_externally_convalescent} class="form-group mb-4">
+            <Field name={:convalescent_externally} class="form-group mb-4">
               <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
                 <label class={
                   "btn",
                   "btn-sm",
                   "btn-outline-primary",
-                  active: Ecto.Changeset.fetch_field!(@changeset, :is_externally_convalescent) == true
+                  active: Ecto.Changeset.fetch_field!(@changeset, :convalescent_externally) == true
                 }>
                   <RadioButton value />
                   {pgettext("Auto Tracing Vaccination", "Yes")}
@@ -54,7 +54,7 @@
                   "btn",
                   "btn-sm",
                   "btn-outline-primary",
-                  active: Ecto.Changeset.fetch_field!(@changeset, :is_externally_convalescent) == false
+                  active: Ecto.Changeset.fetch_field!(@changeset, :convalescent_externally) == false
                 }>
                   <RadioButton value={false} />
                   {pgettext("Auto Tracing Vaccination", "No")}
@@ -64,7 +64,7 @@
             </Field>
             <div class="col-6">
               <p>{pgettext("Auto Tracing Vaccination", "How many vaccination shots have you received?")}</p>
-              <Field name={:number_of_vaccine_shots} class="form-group mb-4">
+              <Field name={:number_of_vaccination_shots} class="form-group mb-4">
                 <Select class="form-control" opts={prompt: gettext("Choose number")} options={1..10} />
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
