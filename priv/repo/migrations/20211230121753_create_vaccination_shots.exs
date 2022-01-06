@@ -272,6 +272,78 @@ defmodule Hygeia.Repo.Migrations.CreateVaccinationShots do
       """
     )
 
+    execute(
+      """
+      CREATE MATERIALIZED VIEW statistics_vaccination_breakthroughs_per_day
+        (tenant_uuid, date, count)
+        AS
+          WITH
+            last_positive_test_dates AS (
+              SELECT
+                tests.case_uuid AS case_uuid,
+                MAX(COALESCE(tests.tested_at, tests.laboratory_reported_at)) AS test_date
+                FROM tests
+                GROUP BY tests.case_uuid
+            ),
+            case_count_dates AS (
+              SELECT
+                cases.uuid AS uuid,
+                cases.tenant_uuid AS tenant_uuid,
+                cases.person_uuid AS person_uuid,
+                COALESCE(
+                  last_positive_test_dates.test_date,
+                  (cases.clinical->>'symptom_start')::date,
+                  (index_phases->>'order_date')::date,
+                  (index_phases->>'inserted_at')::date,
+                  cases.inserted_at::date
+                ) AS count_date
+                FROM cases
+                JOIN
+                  UNNEST(cases.phases)
+                  AS index_phases
+                  ON index_phases->'details'->>'__type__' = 'index'
+                LEFT JOIN
+                  last_positive_test_dates
+                  ON last_positive_test_dates.case_uuid = cases.uuid
+            )
+          SELECT
+            tenants.uuid AS tenant_uuid,
+            date::date,
+            COUNT(DISTINCT vaccination_shot_validity.person_uuid) AS count
+            FROM GENERATE_SERIES(
+              LEAST((SELECT MIN(count_date) from case_count_dates), CURRENT_DATE - INTERVAL '1 year'),
+              CURRENT_DATE,
+              interval '1 day'
+            ) AS date
+            CROSS JOIN tenants
+            LEFT JOIN
+              case_count_dates
+              ON
+                tenants.uuid = case_count_dates.tenant_uuid AND
+                date = case_count_dates.count_date
+            LEFT JOIN
+              vaccination_shot_validity
+              ON
+                vaccination_shot_validity.range @> date::date AND
+                vaccination_shot_validity.person_uuid = case_count_dates.person_uuid
+            GROUP BY
+              date,
+              tenants.uuid
+            ORDER BY
+              date,
+              tenants.uuid
+      """,
+      """
+      DROP
+        MATERIALIZED VIEW statistics_vaccination_breakthroughs_per_day
+      """
+    )
+
+    create unique_index(:statistics_vaccination_breakthroughs_per_day, [:tenant_uuid, :date])
+
+    create index(:statistics_vaccination_breakthroughs_per_day, [:tenant_uuid])
+    create index(:statistics_vaccination_breakthroughs_per_day, [:date])
+
     execute(&noop/0, fn ->
       :ok = run_authentication(repo(), origin: :migration, originator: :noone)
     end)

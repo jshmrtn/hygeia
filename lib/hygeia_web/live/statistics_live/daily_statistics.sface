@@ -250,6 +250,31 @@
           />
         </div>
       </div>
+      <div class="row mt-5">
+        <div class="col-12 col-xl-6 mt-5 mt-xl-0 text-center h-full d-flex justify-content-center align-items-center">
+          <div
+            :if={@vaccination_breakthroughs_per_day != []}
+            class="card justify-content-center align-items-center"
+          >
+            <div class="card-body p-5">
+              <h5 class="card-title mb-5 text-muted">{gettext("Vaccination Breakthroughs")}</h5>
+              <p class="display-1 m-0">
+                {case @vaccination_breakthroughs_per_day do
+                  [%StatisticsContext.VaccinationBreakthroughsPerDay{count: count}] ->
+                    HygeiaCldr.Number.to_string!(count)
+
+                  [] ->
+                    "?"
+                end}
+              </p>
+            </div>
+          </div>
+          <HygeiaWeb.StatisticsLive.NoDataWarning
+            :if={@vaccination_breakthroughs_per_day == []}
+            title={gettext("Vaccination Breakthroughs")}
+          />
+        </div>
+      </div>
 
       <div class="row mt-5">
         <div class="col-12 col-xl-6">

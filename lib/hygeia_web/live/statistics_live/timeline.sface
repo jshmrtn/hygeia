@@ -452,6 +452,69 @@
       <div class="row mt-5">
         <div class="col-12 col-xl-6">
           <HygeiaWeb.Chart
+            id="vaccination_breakthroughs_per_day"
+            dom_id="vaccination_breakthroughs_per_day"
+            config={%{
+              type: "line",
+              data: %{
+                datasets: [
+                  %{
+                    label: gettext("Count"),
+                    fill: %{target: "origin"},
+                    data:
+                      Enum.map(
+                        @vaccination_breakthroughs_per_day,
+                        &%{
+                          x: &1.date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
+                          y: &1.count
+                        }
+                      )
+                  }
+                ]
+              },
+              options: %{
+                plugins: %{
+                  title: %{
+                    display: true,
+                    text: gettext("Vaccination Breakthroughs")
+                  }
+                },
+                scales: %{
+                  x: %{
+                    title: %{
+                      display: true,
+                      text: gettext("Date")
+                    },
+                    type: "time",
+                    time: %{
+                      unit: "day",
+                      tooltipFormat: "DDDD",
+                      displayFormats: %{
+                        day: "D"
+                      }
+                    }
+                  },
+                  y: %{
+                    stacked: true,
+                    title: %{
+                      display: true,
+                      text: gettext("Cases")
+                    },
+                    beginAtZero: true,
+                    ticks: %{
+                      stepSize: 1
+                    }
+                  }
+                }
+              }
+            }}
+          />
+        </div>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-12 col-xl-6">
+          <HygeiaWeb.Chart
             id="active_complexity_cases_per_day"
             dom_id="active_complexity_cases_per_day"
             config={%{
