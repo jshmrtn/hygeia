@@ -113,7 +113,10 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
         true ->
           step = %__MODULE__{
             has_not_travelled_in_risk_country:
-              (if is_nil(case.auto_tracing.has_travelled_in_risk_country), do: nil, else: not case.auto_tracing.has_travelled_in_risk_country),
+              if(is_nil(case.auto_tracing.has_travelled_in_risk_country),
+                do: nil,
+                else: not case.auto_tracing.has_travelled_in_risk_country
+              ),
             risk_countries_travelled: get_risk_countries_travelled(case.auto_tracing.travels),
             has_flown: case.auto_tracing.has_flown,
             flights: case.auto_tracing.flights
@@ -222,7 +225,10 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
             |> AutoTracingContext.change_auto_tracing()
             |> put_change(
               :has_travelled_in_risk_country,
-              (if is_nil(step.has_not_travelled_in_risk_country), do: nil, else: not step.has_not_travelled_in_risk_country)
+              if(is_nil(step.has_not_travelled_in_risk_country),
+                do: nil,
+                else: not step.has_not_travelled_in_risk_country
+              )
             )
             |> put_embed(:travels, travels)
             |> put_change(:has_flown, step.has_flown)
