@@ -8,7 +8,7 @@ defmodule Hygeia.CaseContext.PrematureRelease.DisabledReason do
   use EctoEnum,
     type: :premature_release_disabled_reason,
     enums: [
-      :virus_variant,
+      :virus_variant_of_concern,
       :other
     ]
 
@@ -18,8 +18,8 @@ defmodule Hygeia.CaseContext.PrematureRelease.DisabledReason do
   def map, do: Enum.map(__enum_map__(), &{translate(&1), &1})
 
   @spec translate(event :: t) :: String.t()
-  def translate(:virus_variant),
-    do: pgettext("Premature Release Disabled Reason", "Virus variant")
+  def translate(:virus_variant_of_concern),
+    do: pgettext("Premature Release Disabled Reason", "Virus variant of concern")
 
   def translate(:other), do: pgettext("Premature Release Disabled Reason", "Other")
 end

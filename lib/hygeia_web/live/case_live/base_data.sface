@@ -350,25 +350,13 @@
                                   <div class="row">
                                     <div class="col">
                                       <Field name={:premature_release_permission} class="form-group">
-                                        <label>
+                                        <label data-disabled={@live_action == :show}>
                                           {gettext("Premature release permission")}
-                                          <label
-                                            class={
-                                              "btn mb-0",
-                                              active: Ecto.Changeset.get_field(form.source, :premature_release_permission) == true
-                                            }
-                                            data-disabled={@live_action == :show}
-                                          >
+                                          <label class="btn mb-0" data-disabled={@live_action == :show}>
                                             <RadioButton value="true" opts={disabled: @live_action == :show} />
                                             {gettext("Allow")}
                                           </label>
-                                          <label
-                                            class={
-                                              "btn mb-0",
-                                              active: Ecto.Changeset.get_field(form.source, :premature_release_permission) == false
-                                            }
-                                            data-disabled={@live_action == :show}
-                                          >
+                                          <label class="btn mb-0" data-disabled={@live_action == :show}>
                                             <RadioButton value="false" opts={disabled: @live_action == :show} />
                                             {gettext("Deny")}
                                           </label>
@@ -783,7 +771,7 @@
     <table class="table table-sm table-striped">
       <tbody>
         <tr>
-          <td><b>{DisabledReason.translate(:virus_variant)}</b></td>
+          <td><b>{DisabledReason.translate(:virus_variant_of_concern)}</b></td>
           <td>{gettext("The person is suspected of having contracted a variant in consideration")}</td>
         </tr>
         <tr>

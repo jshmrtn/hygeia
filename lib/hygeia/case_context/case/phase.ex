@@ -21,7 +21,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
           end: Date.t() | nil,
           details: Index.t() | PossibleIndex.t() | nil,
           inserted_at: DateTime.t() | nil,
-          premature_release_permission: boolean() | nil,
+          premature_release_permission: boolean(),
           premature_release_disabled_reason: DisabledReason.t() | nil,
           premature_release_disabled_reason_other: String.t() | nil
         }
@@ -35,7 +35,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
             end: Date.t(),
             details: Index.t() | PossibleIndex.t(),
             inserted_at: DateTime.t(),
-            premature_release_permission: boolean() | nil,
+            premature_release_permission: boolean(),
             premature_release_disabled_reason: DisabledReason.t() | nil,
             premature_release_disabled_reason_other: String.t() | nil
           }
@@ -46,7 +46,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
               end: nil,
               details: Index.t() | PossibleIndex.t(),
               inserted_at: DateTime.t(),
-              premature_release_permission: boolean() | nil,
+              premature_release_permission: boolean(),
               premature_release_disabled_reason: DisabledReason.t() | nil,
               premature_release_disabled_reason_other: String.t() | nil
             }

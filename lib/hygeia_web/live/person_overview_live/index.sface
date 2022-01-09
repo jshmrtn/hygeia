@@ -43,9 +43,9 @@
           </LiveRedirect>
         {#else}
           {#case @active_phase.premature_release_disabled_reason}
-            {#match :virus_variant}
+            {#match :virus_variant_of_concern}
               <p>{gettext(
-                  "You entered Switzerland from a country with a worrying virus variant. For this reason, according to the FOPH, it is not possible for you to end the quarantine early."
+                  "You entered Switzerland from a country with a virus variant of concern. For this reason, according to the FOPH, it is not possible for you to end the quarantine early."
                 )}</p>
             {#match :other}
               <p>{gettext(
