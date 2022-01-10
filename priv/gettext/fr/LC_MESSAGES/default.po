@@ -22,8 +22,8 @@ msgid_plural "%{count} New Notifications"
 msgstr[0] "%{count} Nouvelle notification"
 msgstr[1] "%{count} Nouvelles notifications"
 
-#, elixir-format, ex-autogen
-msgctxt "Auto Tracing Vaccination"
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Person Vaccination"
 msgid "%{ordering} jab date"
 msgstr "%{ordering} vaccin"
 
@@ -5673,7 +5673,15 @@ msgid "Vaccine"
 msgstr "Vacciné"
 
 #, elixir-format, ex-autogen, fuzzy
+msgid "Vaccine"
+msgstr "Vacciné"
+
+#, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
+msgid "Vaccine name"
+msgstr "Vacciné"
+
+#, elixir-format, ex-autogen, fuzzy
 msgid "Vaccine name"
 msgstr "Vacciné"
 

@@ -1,73 +1,72 @@
 <div class="row">
   <div class="col-12">
-    <table>
-      <tbody>
-        <Inputs for={:vaccination_shots}>
-          <tr>
-            <HiddenInput field={:uuid} />
-            <InputContext assigns={assigns} :let={form: form}>
-              <td>
-                <label class="fw-bold small">{pgettext(
-                    "Auto Tracing Vaccination",
-                    "%{ordering} jab date",
-                    ordering:
-                      String.capitalize(
-                        number_format(form.index + 1, [
-                          {"fr", :spellout_ordinal_feminine},
-                          {"fr-CH", :spellout_ordinal_feminine},
-                          {"de", :spellout_ordinal_r},
-                          {"de-CH", :spellout_ordinal_r},
-                          {"it", :spellout_ordinal_feminine},
-                          {"it-CH", :spellout_ordinal_feminine},
-                          :spellout_ordinal,
-                          :ordinal,
-                          :standard
-                        ])
-                      )
-                  )}
-                </label>
-              </td>
-              <td class="d-flex">
-                <Field name={:date} class="form-group me-2">
-                  <HygeiaWeb.FieldLabel />
-                  <DateInput class="form-control" opts={disabled: @disabled} />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-                <Field name={:vaccine_type} class="form-group me-2">
-                  <HygeiaWeb.FieldLabel />
-                  <Select
-                    class="form-control"
-                    opts={prompt: gettext("Choose vaccine"), disabled: @disabled}
-                    field={:vaccine_type}
-                    options={VaccineType.map()}
-                  />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-                {#if fetch_field!(form.source, :vaccine_type) == :other}
-                  <Field name={:vaccine_type_other} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <TextInput opts={disabled: @disabled} class="form-control" />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                {/if}
-                <div>
-                  <button
-                    :if={@show_buttons}
-                    type="button"
-                    class="ms-2 btn btn-danger ms-2"
-                    :on-click={@remove_event}
-                    phx-value-uuid={fetch_field!(form.source, :uuid)}
-                    disabled={@disabled}
-                  >
-                    <span class="oi oi-trash" aria-hidden="true" />
-                  </button>
-                </div>
-              </td>
-            </InputContext>
-          </tr>
-        </Inputs>
-      </tbody>
-    </table>
+    <div class="vaccination-grid">
+      <Inputs for={:vaccination_shots}>
+        <HiddenInput field={:uuid} />
+        <InputContext assigns={assigns} :let={form: form}>
+          <div aria-hidden="true" />
+          <h6>{gettext("Date")}</h6>
+          <h6>{gettext("Vaccine")}</h6>
+          <div aria-hidden="true" />
+
+          <label class="fw-bold small">{pgettext(
+              "Person Vaccination",
+              "%{ordering} jab date",
+              ordering:
+                String.capitalize(
+                  number_format(form.index + 1, [
+                    {"fr", :spellout_ordinal_feminine},
+                    {"fr-CH", :spellout_ordinal_feminine},
+                    {"de", :spellout_ordinal_r},
+                    {"de-CH", :spellout_ordinal_r},
+                    {"it", :spellout_ordinal_feminine},
+                    {"it-CH", :spellout_ordinal_feminine},
+                    :spellout_ordinal,
+                    :ordinal,
+                    :standard
+                  ])
+                )
+            )}
+          </label>
+          <Field name={:date} class="form-group me-2">
+            <DateInput class="form-control" opts={disabled: @disabled} />
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+          <div class="d-flex">
+            <Field name={:vaccine_type} class="form-group me-2 flex-fill">
+              <Select
+                class="form-control"
+                opts={prompt: gettext("Choose vaccine"), disabled: @disabled}
+                field={:vaccine_type}
+                options={VaccineType.map()}
+              />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            {#if fetch_field!(form.source, :vaccine_type) == :other}
+              <Field name={:vaccine_type_other} class="form-group">
+                <TextInput
+                  opts={disabled: @disabled, placeholder: gettext("Vaccine name")}
+                  class="form-control"
+                />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            {/if}
+          </div>
+          <div>
+            <button
+              :if={@show_buttons}
+              type="button"
+              class="ms-2 btn btn-danger ms-2"
+              :on-click={@remove_event}
+              phx-value-uuid={fetch_field!(form.source, :uuid)}
+              disabled={@disabled}
+            >
+              <span class="oi oi-trash" aria-hidden="true" />
+            </button>
+          </div>
+        </InputContext>
+      </Inputs>
+    </div>
     <div class="mt-3">
       <button
         :if={@show_buttons}
