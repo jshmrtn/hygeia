@@ -399,15 +399,14 @@ defmodule Hygeia.CaseContext.Case do
   end
 
   defp phase_dates(%__MODULE__{inserted_at: inserted_at} = case, phase_type) do
-    Enum.reject(
-      [
-        {:test, first_positive_test_date(case)},
-        {:symptom_start, get_in(case, [Access.key(:clinical), Access.key(:symptom_start)])},
-        {:phase_inserted_at, phase_inserted_at_date(case, phase_type)},
-        {:inserted_at, DateTime.to_date(inserted_at)}
-      ],
-      &match?({_type, nil}, &1)
-    )
+    [
+      {:test, first_positive_test_date(case)},
+      {:symptom_start, get_in(case, [Access.key(:clinical), Access.key(:symptom_start)])},
+      {:phase_inserted_at, phase_inserted_at_date(case, phase_type)},
+      {:inserted_at, DateTime.to_date(inserted_at)}
+    ]
+    |> Enum.reject(&match?({_type, nil}, &1))
+    |> Enum.sort_by(&elem(&1, 1), Date)
   end
 
   @spec fist_known_phase_date(case :: t, phase_type :: Phase.Index | Phase.PossibleIndex) ::
