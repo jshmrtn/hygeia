@@ -24,7 +24,10 @@
                 {pgettext("Auto Tracing Resolve Problems", "Last Completed Step")}
               </div>
               <div class="value">
-                {AutoTracing.Step.translate(@auto_tracing.last_completed_step)}
+                {case @auto_tracing.last_completed_step do
+                  nil -> nil
+                  step -> AutoTracing.Step.translate(step)
+                end}
               </div>
             </div>
             <div class="col">
