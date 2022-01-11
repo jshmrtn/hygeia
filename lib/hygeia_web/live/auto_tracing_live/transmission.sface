@@ -53,6 +53,7 @@
           </p>
           <ErrorTag field={:transmission} class="d-block invalid-feedback" />
           <Inputs for={:transmission}>
+            <HiddenInput field={:type} />
             <InputContext assigns={assigns} :let={form: transmission}>
               <HiddenInput field={:uuid} value={fetch_field!(transmission.source, :uuid)} />
               <HiddenInput field={:recipient_internal} value />

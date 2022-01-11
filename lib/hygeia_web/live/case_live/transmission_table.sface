@@ -3,6 +3,9 @@
     <table class="table table-sm">
       <thead>
         <tr>
+          <th>
+            {schema_field_name(:type, Transmission)}
+          </th>
           <th :if={@show_recipient}>
             {schema_field_name(:recipient, Transmission)}
           </th>
@@ -16,7 +19,7 @@
             {schema_field_name(:known, Transmission.InfectionPlace)}
           </th>
           <th>
-            {schema_field_name(:type, Transmission.InfectionPlace)}
+            {schema_field_name(:address, Transmission.InfectionPlace)}
           </th>
           <th />
         </tr>
@@ -29,6 +32,23 @@
           id={"#{@id_prefix}-#{transmission.uuid}"}
           wrapper_tag={:tr}
         >
+          <td>
+            {[
+              PossibleIndexType.translate(transmission.type),
+              case transmission.infection_place.type do
+                nil ->
+                  nil
+
+                :other ->
+                  "#{translate_infection_place_type(:other)}: #{transmission.infection_place.type_other}"
+
+                type ->
+                  translate_infection_place_type(type)
+              end
+            ]
+            |> Enum.reject(&is_nil/1)
+            |> Enum.join(" / ")}
+          </td>
           <td :if={@show_recipient}>
             <div :if={transmission.recipient_internal == true} class="d-flex align-items-center">
               <em :if={is_nil(transmission.recipient)}>
@@ -157,15 +177,9 @@
             end}
           </td>
           <td>
-            {case transmission.infection_place.type do
-              nil ->
-                nil
-
-              :other ->
-                "#{translate_infection_place_type(:other)}: #{transmission.infection_place.type_other}"
-
-              type ->
-                translate_infection_place_type(type)
+            {case transmission.infection_place.address do
+              nil -> nil
+              %Address{} = address -> Address.to_string(address, :short)
             end}
           </td>
           <td>
@@ -203,7 +217,7 @@
           </td>
         </HygeiaWeb.RecordView>
         <tr :if={length(@transmissions) == 0}>
-          <td colspan="5">
+          <td colspan="6">
             <div class="d-flex justify-content-center py-3">
               {"No data to display" |> gettext}
             </div>
