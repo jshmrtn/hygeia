@@ -77,7 +77,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       """
       Dear Sir / Madam,
 
-      You have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please
+      You have been identified as a contact person of a person with corona. For this reason you will have to quarantine for %{quarantine_length}.
 
       Please open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)
       %{public_overview_link}
@@ -89,6 +89,10 @@ defmodule HygeiaWeb.Helpers.Confirmation do
       Kind Regards,
       %{message_signature}
       """,
+      quarantine_length:
+        :day
+        |> Cldr.Unit.new!(Phase.PossibleIndex.default_length_days() + 1)
+        |> HygeiaCldr.Unit.to_string!(),
       public_overview_link: public_overview_link(conn_or_socket, case),
       message_signature: Tenant.get_message_signature_text(case.tenant, message_type),
       initial_first_name: String.slice(case.person.first_name, 0..0),
