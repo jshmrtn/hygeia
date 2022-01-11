@@ -4,6 +4,8 @@ defmodule HygeiaWeb.CaseLive.TransmissionTable do
   use HygeiaWeb, :surface_live_component
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type, as: PossibleIndexType
   alias Hygeia.CaseContext.Transmission
   alias Surface.Components.Link
   alias Surface.Components.LivePatch

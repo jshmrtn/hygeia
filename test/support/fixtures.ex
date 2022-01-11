@@ -273,6 +273,7 @@ defmodule Hygeia.Fixtures do
   end
 
   @valid_attrs %{
+    type: :contact_person,
     date: Date.add(Date.utc_today(), -5),
     comment: "Drank beer, kept distance to other people",
     infection_place: %{

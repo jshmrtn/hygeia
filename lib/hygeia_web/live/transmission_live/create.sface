@@ -22,7 +22,11 @@
               />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-            <Field name={:propagator_internal} class="form-group">
+            <Field
+              name={:propagator_internal}
+              class="form-group"
+              :if={Ecto.Changeset.fetch_field!(@changeset, :type) in [:contact_person, :other]}
+            >
               <div class="btn-group btn-group-toggle btn-radio-group">
                 <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
                 <label class={
