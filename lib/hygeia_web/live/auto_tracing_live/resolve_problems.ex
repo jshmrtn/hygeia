@@ -158,10 +158,20 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
             case: case,
             person: case.person,
             auto_tracing: case.auto_tracing,
-            possible_transmission_changeset:
+            possible_transmission_changeset: %Ecto.Changeset{
               CaseContext.change_transmission(
-                case.auto_tracing.possible_transmission || %Transmission{}
-              ),
+                case.auto_tracing.possible_transmission || %Transmission{},
+                %{
+                  propagator_internal:
+                    case case.auto_tracing.propagator_known do
+                      true -> true
+                      nil -> nil
+                      false -> nil
+                    end
+                }
+              )
+              | action: :validate
+            },
             # TODO: Deprecaded, remove once :link_propagator problem is removed
             link_propagator_opts_changeset:
               LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, propagator_attrs)
