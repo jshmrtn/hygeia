@@ -27,8 +27,7 @@
                   <div class="me-3">
                     <Field name={:is_selected}>
                       <Checkbox opts={
-                        checked: fetch_field!(form.source, :is_selected),
-                        disabled: fetch_field!(@changeset, :has_not_travelled_in_risk_country)
+                        checked: fetch_field!(form.source, :is_selected)
                       } />
                     </Field>
                   </div>
