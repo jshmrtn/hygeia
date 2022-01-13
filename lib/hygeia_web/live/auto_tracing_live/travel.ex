@@ -181,8 +181,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   def handle_event(
         "validate",
         %{"travel" => params},
-        %Socket{assigns: %{step: step, risk_countries: risk_countries}} =
-          socket
+        %Socket{assigns: %{step: step, risk_countries: risk_countries}} = socket
       ) do
     params = Map.put_new(params, "flights", [])
 
