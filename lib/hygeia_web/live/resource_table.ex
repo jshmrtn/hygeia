@@ -114,6 +114,7 @@ defmodule HygeiaWeb.ResourceTable do
         Hygeia.CaseContext.ExternalReference.Type,
         Hygeia.ImportContext.Import.Type,
         Hygeia.CaseContext.Person.Sex,
+        Hygeia.CaseContext.Case.Clinical.Symptom,
         Hygeia.CaseContext.Case.Status,
         Hygeia.CaseContext.Case.Complexity,
         Hygeia.CaseContext.Test.Kind,

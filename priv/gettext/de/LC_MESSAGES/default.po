@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.0\n"
 
 #, elixir-format, ex-autogen
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -1304,6 +1304,11 @@ msgstr "Waren Sie im infektiösen Zeitraum (in den 48 Stunden vor Symptombeginn 
 #, elixir-format, ex-autogen
 msgid "Did you wear the mask during the whole flight?"
 msgstr "Haben Sie die Maske während des gesamten Fluges getragen?"
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
+msgid "Different Location"
+msgstr "Anderer Standort"
 
 #, elixir-format, ex-autogen
 msgid "Different quarantine / isolation address?"
@@ -3281,6 +3286,11 @@ msgstr "Fall in neuem Tab öffnen"
 #, elixir-format, ex-autogen
 msgid "Open transmission in new tab"
 msgstr "Übertragung in neuem Tab öffnen"
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
+msgid "Order Date"
+msgstr "Verordnungszeitpunkt"
 
 #, elixir-format, ex-autogen
 msgid "Ordered"
