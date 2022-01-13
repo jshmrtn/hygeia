@@ -9,6 +9,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
+  alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type, as: PossibleIndexType
   alias Hygeia.CaseContext.Entity
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CaseContext.Transmission.InfectionPlace
@@ -20,6 +21,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
+  alias Surface.Components.Form.HiddenInput
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.TextInput
   alias Surface.Components.Link
@@ -158,10 +160,21 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
             case: case,
             person: case.person,
             auto_tracing: case.auto_tracing,
-            possible_transmission_changeset:
+            possible_transmission_changeset: %Ecto.Changeset{
               CaseContext.change_transmission(
-                case.auto_tracing.possible_transmission || %Transmission{}
-              ),
+                case.auto_tracing.possible_transmission || %Transmission{},
+                %{
+                  type: :contact_person,
+                  propagator_internal:
+                    case case.auto_tracing.propagator_known do
+                      true -> true
+                      nil -> nil
+                      false -> nil
+                    end
+                }
+              )
+              | action: :validate
+            },
             # TODO: Deprecaded, remove once :link_propagator problem is removed
             link_propagator_opts_changeset:
               LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, propagator_attrs)
