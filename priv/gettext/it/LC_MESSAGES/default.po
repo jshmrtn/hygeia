@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"Language: it\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #, elixir-format, ex-autogen
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -1163,11 +1163,11 @@ msgstr ""
 "%{message_signature}\n"
 
 #, elixir-format, ex-autogen
-msgid "Dear Sir / Madam,\n\nYou have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n\nPlease open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nYou will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n\nPlease read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nYou have been identified as a contact person of a person with corona. For this reason you will have to quarantine for %{quarantine_length}.\n\nPlease open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nYou will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n\nPlease read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 "Gentile signore / signora,\n"
 "\n"
-"lei è stato identificato come referente di una persona con la corona. Per questo motivo dovrà quanrantinarsi per 10 giorni.\n"
+"lei è stato identificato come referente di una persona con la corona. Per questo motivo dovete mettervi in quarantena per %{quarantine_length}.\n"
 "\n"
 "Per favore, apra il seguente link ed effettui il login usando il suo nome e cognome. (iniziali: %{initial_first_name}. %{initial_last_name}.)\n"
 "%{public_overview_link}\n"
@@ -1327,6 +1327,11 @@ msgstr "Hai visitato un istituto d'istruzione nelle 48 ore prima del insorgenza 
 #, elixir-format, ex-autogen
 msgid "Did you wear the mask during the whole flight?"
 msgstr "Hai indossato la mascherina durante la durata di tutto il volo?"
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
+msgid "Different Location"
+msgstr ""
 
 #, elixir-format, ex-autogen
 msgid "Different quarantine / isolation address?"
@@ -2142,10 +2147,6 @@ msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Confermo che tutti i dati di cui sopra sono corretti. I dati potrebbero essere ispezionati!"
 
 #, elixir-format, ex-autogen
-msgid "I have not visited any of the above countries"
-msgstr "Non ho visitato nessuno dei paesi sopra indicati"
-
-#, elixir-format, ex-autogen
 msgid "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
 msgstr "Ho la documentazione ufficiale di convalescenza per terminare la quarantena. La convalescenza della mia infezione da covid è avvenuta meno di quattro mesi fa."
 
@@ -2621,7 +2622,7 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Last Change"
 msgstr "Ultimo cambiamento"
 
-#, elixir-format, ex-autogen
+#, elixir-format, ex-autogen, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Last Completed Step"
 msgstr "Ultimo passo completato"
@@ -3315,6 +3316,11 @@ msgid "Open transmission in new tab"
 msgstr "Apri trasmissione in una nuova scheda"
 
 #, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
+msgid "Order Date"
+msgstr "Ordinato"
+
+#, elixir-format, ex-autogen, fuzzy
 msgid "Ordered"
 msgstr "Ordinato"
 
@@ -3820,6 +3826,10 @@ msgstr "Si prega di indicare come possiamo raggiungerti:"
 #, elixir-format, ex-autogen, fuzzy
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
 msgstr "Si prega di notare che l'invio di contatti funziona solo nelle versioni recenti dei seguenti browser:"
+
+#, elixir-format, ex-autogen
+msgid "Please select the countries you have visited"
+msgstr "Seleziona i paesi che hai visitato"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"

@@ -10,12 +10,14 @@ defmodule Hygeia.CaseContext.Transmission do
   use Hygeia, :model
 
   alias Hygeia.CaseContext.Case
+  alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type, as: PossibleIndexType
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Transmission.InfectionPlace
 
   @type t :: %__MODULE__{
           uuid: Ecto.UUID.t(),
           date: Date.t() | nil,
+          type: PossibleIndexType.t(),
           comment: String.t() | nil,
           propagator_internal: boolean,
           propagator_ism_id: String.t() | nil,
@@ -33,6 +35,7 @@ defmodule Hygeia.CaseContext.Transmission do
   @type empty :: %__MODULE__{
           uuid: Ecto.UUID.t() | nil,
           date: Date.t() | nil,
+          type: PossibleIndexType.t() | nil,
           comment: String.t() | nil,
           propagator_internal: boolean | nil,
           propagator_ism_id: String.t() | nil,
@@ -55,6 +58,7 @@ defmodule Hygeia.CaseContext.Transmission do
 
   schema "transmissions" do
     field :date, :date
+    field :type, PossibleIndexType
     field :comment, :string
     field :propagator_ism_id, :string
     field :propagator_internal, :boolean
@@ -93,6 +97,7 @@ defmodule Hygeia.CaseContext.Transmission do
     |> cast(attrs, [
       :uuid,
       :date,
+      :type,
       :comment,
       :recipient_internal,
       :recipient_ism_id,
@@ -102,7 +107,7 @@ defmodule Hygeia.CaseContext.Transmission do
       :recipient_case_uuid
     ])
     |> cast_embed(:infection_place)
-    |> validate_required([:date])
+    |> validate_required([:date, :type])
     |> validate_past_date(:date)
     |> validate_case(:propagator_internal, :propagator_ism_id, :propagator_case_uuid)
     |> validate_case(:recipient_internal, :recipient_ism_id, :recipient_case_uuid)

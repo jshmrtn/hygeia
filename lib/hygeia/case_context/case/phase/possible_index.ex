@@ -75,7 +75,7 @@ defmodule Hygeia.CaseContext.Case.Phase.PossibleIndex do
   This includes the start date, so always the regulated amount of days - 1.
   """
   @spec default_length_days :: pos_integer()
-  def default_length_days, do: 6
+  def default_length_days, do: 4
 
   # Fix for polymorphic embed inside embed
   defimpl Jason.Encoder do

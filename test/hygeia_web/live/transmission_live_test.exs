@@ -17,7 +17,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
     recipient_internal: nil
   }
   @create_attrs %{
-    type: :travel,
+    type: :contact_person,
     date: Date.add(Date.utc_today(), -5),
     propagator_internal: true,
     recipient_internal: true,
@@ -76,6 +76,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
         live(
           conn,
           Routes.transmission_create_path(conn, :create,
+            type: :contact_person,
             propagator_internal: true,
             recipient_internal: true,
             propagator_case_uuid: propagator_case.uuid,
@@ -89,13 +90,13 @@ defmodule HygeiaWeb.TransmissionLiveTest do
 
       create_live
       |> form("#transmission-form",
-        transmission: %{infection_place: %{known: true}}
+        transmission: %{type: :contact_person, infection_place: %{known: true}}
       )
       |> render_change()
 
       create_live
       |> form("#transmission-form",
-        transmission: %{infection_place: %{known: true}}
+        transmission: %{type: :contact_person, infection_place: %{known: true}}
       )
       |> render_change()
 
@@ -114,15 +115,13 @@ defmodule HygeiaWeb.TransmissionLiveTest do
       [%{tenant: tenant} | _other_grants] = user.grants
 
       recipient_case = case_fixture(person_fixture(tenant))
-      propagator_case = case_fixture(person_fixture(tenant))
 
       {:ok, create_live, _html} =
         live(
           conn,
           Routes.transmission_create_path(conn, :create,
-            propagator_internal: true,
+            type: :travel,
             recipient_internal: true,
-            propagator_case_uuid: propagator_case.uuid,
             recipient_case_uuid: recipient_case.uuid
           )
         )
@@ -132,11 +131,15 @@ defmodule HygeiaWeb.TransmissionLiveTest do
              |> render_change() =~ "can&#39;t be blank"
 
       create_live
-      |> form("#transmission-form", transmission: %{infection_place: %{known: true}})
+      |> form("#transmission-form",
+        transmission: %{type: :travel, infection_place: %{known: true}}
+      )
       |> render_change()
 
       create_live
-      |> form("#transmission-form", transmission: %{infection_place: %{type: :flight}})
+      |> form("#transmission-form",
+        transmission: %{type: :travel, infection_place: %{type: :flight}}
+      )
       |> render_change()
 
       {:ok, _, html} =
@@ -144,7 +147,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
         |> form("#transmission-form",
           transmission:
             Map.update(
-              @create_attrs,
+              Map.drop(@create_attrs, [:propagator_internal]),
               :infection_place,
               %{},
               &Map.put(&1, :flight_information, "flight xyz")

@@ -52,6 +52,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
     },
     Hygeia.CaseContext.Case.Monitoring => %{
       address: "Address",
+      different_location: "Different Location",
       first_contact: "First Contact",
       location: "Location",
       location_details: "Location Details"
@@ -60,6 +61,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       automated_close_email_sent: "Automated close email sent",
       details: "Details",
       end: "End",
+      order_date: "Order Date",
       quarantine_order: "Quarantine / Isolation",
       send_automated_close_email: "Send Automated Close Email",
       start: "Start",

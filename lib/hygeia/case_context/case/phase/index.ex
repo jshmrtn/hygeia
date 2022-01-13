@@ -38,6 +38,14 @@ defmodule Hygeia.CaseContext.Case.Phase.Index do
     end
   end
 
+  @doc """
+  Default Phase Length in days
+
+  This includes the start date, so always the regulated amount of days - 1.
+  """
+  @spec default_length_days :: pos_integer()
+  def default_length_days, do: 4
+
   # Fix for polymorphic embed inside embed
   defimpl Jason.Encoder do
     @spec encode(Hygeia.CaseContext.Case.Phase.Index.t(), Jason.Encoder.opts()) :: iodata()
