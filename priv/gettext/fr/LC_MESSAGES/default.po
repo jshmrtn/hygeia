@@ -1307,6 +1307,11 @@ msgid "Did you wear the mask during the whole flight?"
 msgstr "Avez-vous porté le masque tout au long du vol?"
 
 #, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
+msgid "Different Location"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Different quarantine / isolation address?"
 msgstr "Adresse de quarantaine/isolement différente?"
 
@@ -3282,6 +3287,11 @@ msgstr "Ouvrir le cas dans un nouvel onglet"
 #, elixir-format, ex-autogen
 msgid "Open transmission in new tab"
 msgstr "Ouvrir la transmission dans un nouvel onglet"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
+msgid "Order Date"
+msgstr "Commandé"
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "Ordered"
