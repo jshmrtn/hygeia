@@ -215,6 +215,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.Service do
 
     {:ok, _transmission} =
       CaseContext.create_transmission(%{
+        type: transmission_data[:type],
         comment: comment,
         date: date,
         recipient_internal: true,

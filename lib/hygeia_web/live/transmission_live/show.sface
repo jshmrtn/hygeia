@@ -73,8 +73,21 @@
                   <div class="card-body">
                     <h4 class="card-title">{gettext("Base Data")}</h4>
                     <div class="row">
+                      <div class="col-12">
+                        <Field name={:type} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <span class="form-control">
+                            {PossibleIndexType.translate(Ecto.Changeset.fetch_field!(@changeset, :type))}
+                          </span>
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                      </div>
                       <div class="col-12 col-sm-6">
-                        <Field name={:propagator_internal} class="form-group">
+                        <Field
+                          name={:propagator_internal}
+                          class="form-group"
+                          :if={Ecto.Changeset.fetch_field!(@changeset, :type) in [:contact_person, :other]}
+                        >
                           <div class="btn-group btn-group-toggle btn-radio-group">
                             <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
                             <label class={

@@ -6,6 +6,7 @@ defmodule HygeiaWeb.TransmissionLive.Show do
   alias Phoenix.LiveView.Socket
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Case.Phase.PossibleIndex.Type, as: PossibleIndexType
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.Repo
   alias HygeiaWeb.DateInput
