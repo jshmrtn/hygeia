@@ -16,7 +16,6 @@ defmodule Hygeia.Repo.Migrations.CreatePrematureReleaseDisabledReason do
 
     DisabledReason.create_type()
 
-    # TODO: Complete queries.
     execute(
       """
       UPDATE cases update_case
