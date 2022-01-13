@@ -6,6 +6,9 @@ defmodule HygeiaWeb.PersonLiveTest do
 
   import Phoenix.LiveViewTest
 
+  alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Person
+
   @moduletag origin: :test
   @moduletag originator: :noone
   @moduletag log_in: [roles: [:admin]]
@@ -86,6 +89,43 @@ defmodule HygeiaWeb.PersonLiveTest do
              |> form("#person-form", person: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
+      assert edit_live
+             |> form("#person-form", person: %{is_vaccinated: true})
+             |> render_change()
+
+      assert render_hook(edit_live, :add_vaccination_shot)
+      assert render_hook(edit_live, :add_vaccination_shot)
+
+      assert edit_live
+             |> form("#person-form",
+               person: %{
+                 convalescent_externally: true,
+                 vaccination_shots: %{
+                   "0" => %{
+                     date: "2022-01-02",
+                     vaccine_type: :pfizer
+                   },
+                   "1" => %{
+                     date: "2022-01-03",
+                     vaccine_type: :other
+                   }
+                 }
+               }
+             )
+             |> render_change()
+
+      assert edit_live
+             |> form("#person-form",
+               person: %{
+                 vaccination_shots: %{
+                   "1" => %{
+                     vaccine_type_other: "Pizza"
+                   }
+                 }
+               }
+             )
+             |> render_change()
+
       html =
         edit_live
         |> form("#person-form", person: @update_attrs)
@@ -95,6 +135,14 @@ defmodule HygeiaWeb.PersonLiveTest do
 
       assert html =~ "Person updated successfully"
       assert html =~ "some updated first_name"
+
+      assert %Person{
+               first_name: "some updated first_name",
+               last_name: "some updated last_name",
+               is_vaccinated: true,
+               convalescent_externally: true,
+               vaccination_shots: [_, _]
+             } = person.uuid |> CaseContext.get_person!() |> Repo.preload([:vaccination_shots])
     end
   end
 end

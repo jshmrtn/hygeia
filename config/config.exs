@@ -4,8 +4,6 @@ import Config
 config :hygeia,
   ecto_repos: [Hygeia.Repo],
   phone_number_parsing_origin_country: "CH",
-  vaccine_validity: {1, :year},
-  immune_validity: {6, :month},
   generators: [context_app: :hygeia, binary_id: true]
 
 config :hygeia, Hygeia.Repo,
