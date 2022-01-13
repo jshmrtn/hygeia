@@ -2120,10 +2120,6 @@ msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Je confirme que toutes les données ci-dessus sont correctes. Ceci peut être inspecté !"
 
 #, elixir-format, ex-autogen
-msgid "I have not visited any of the above countries"
-msgstr "Je n'ai visité aucun des pays ci-dessus"
-
-#, elixir-format, ex-autogen
 msgid "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
 msgstr "J'ai les documents officiels de convalescence pour finir la quarantaine. Mon infection à covid s'est rétablie il y a moins de quatre mois."
 
@@ -2602,7 +2598,7 @@ msgstr "Dernier changement"
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Last Completed Step"
-msgstr ""
+msgstr "Dernière étape terminée"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
@@ -3788,6 +3784,10 @@ msgstr "Veuillez indiquer comment nous pouvons vous joindre :"
 #, elixir-format, ex-autogen, fuzzy
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
 msgstr "Veuillez noter que la soumission des personnes de contact ne fonctionne que dans les versions récentes des navigateurs suivants :"
+
+#, elixir-format, ex-autogen
+msgid "Please select the countries you have visited"
+msgstr "Veuillez sélectionner les pays que vous avez visités"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"

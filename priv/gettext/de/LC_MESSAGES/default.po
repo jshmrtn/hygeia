@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, elixir-format, ex-autogen
@@ -2119,10 +2119,6 @@ msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Ich bestätige, dass alle Angaben korrekt sind. Dies kann überprüft werden!"
 
 #, elixir-format, ex-autogen
-msgid "I have not visited any of the above countries"
-msgstr "Ich habe keines der oben genannten Länder besucht"
-
-#, elixir-format, ex-autogen
 msgid "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
 msgstr "Ich verfüge über einen offiziellen Genesenen-Nachweis um die Quarantäne zu beenden. Die Genesung liegt weniger als 4 Monate zurück."
 
@@ -3787,6 +3783,10 @@ msgstr "Bitte geben Sie an wie wir Sie erreichen können:"
 #, elixir-format, ex-autogen
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
 msgstr "Bitte beachten Sie, dass die Eingabe der Kontaktpersonen nur in aktuellen Versionen der folgenden Browser funktioniert:"
+
+#, elixir-format, ex-autogen
+msgid "Please select the countries you have visited"
+msgstr "Bitte wählen Sie die Länder aus, die Sie besucht haben"
 
 #, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
