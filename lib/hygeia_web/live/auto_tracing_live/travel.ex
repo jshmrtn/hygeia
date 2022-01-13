@@ -53,6 +53,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
     def changeset(schema, attrs \\ %{}) do
       schema
       |> cast(attrs, [:uuid, :is_selected])
+      |> fill_uuid()
       |> validate_travel()
     end
 
