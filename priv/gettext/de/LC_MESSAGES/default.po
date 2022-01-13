@@ -2554,7 +2554,7 @@ msgstr "Bekannt"
 #, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Laboratory report date"
-msgstr "Datum des Laborberichts"
+msgstr "Labormeldung Datum"
 
 #, elixir-format, ex-autogen
 msgid "Landline"
@@ -3901,6 +3901,11 @@ msgid "Private Key"
 msgstr "Privater Schlüssel"
 
 #, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
+msgid "Probing date"
+msgstr "Probeentnahme Datum"
+
+#, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Problem solved"
 msgstr "Problem gelöst"
@@ -5017,11 +5022,6 @@ msgstr "Test auf Anordnung vom CT"
 #, elixir-format, ex-autogen
 msgid "Test created successfully"
 msgstr "Test wurde erfolgreich erstellt"
-
-#, elixir-format, ex-autogen
-msgctxt "Elixir.Hygeia.CaseContext.Test Field"
-msgid "Test date"
-msgstr "Testdatum"
 
 #, elixir-format, ex-autogen
 msgid "Test deleted successfully"
