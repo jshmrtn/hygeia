@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #, elixir-format, ex-autogen
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -2135,20 +2135,12 @@ msgid "Hygeia is deisgned to structure complicated processes, to fullfill standa
 msgstr "Hygeia ist darauf ausgelegt, fehleranfällige Prozesse klar und einheitlich zu strukturieren, Standards wie das «%{link_med}» des BAG einzuhalten, Anbindungen wie diejenige an die BAG-Datenbank zu gewährleisten und die fürs Contact Tracing notwendigen Personal-Mittel zu reduzieren."
 
 #, elixir-format, ex-autogen
-msgid "I am in possession of a valid \"Convalescent Certificate\"."
-msgstr "Ich bin im Besitz eines gültigen \"Genesen Zertifikates\"."
-
-#, elixir-format, ex-autogen
-msgid "I am in possession of a valid vaccination certificate."
-msgstr "Ich bin im Besitz eines gültigen Impfzertifikates."
-
-#, elixir-format, ex-autogen
 msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Ich bestätige, dass alle Angaben korrekt sind. Dies kann überprüft werden!"
 
 #, elixir-format, ex-autogen
-msgid "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
-msgstr "Ich verfüge über einen offiziellen Genesenen-Nachweis um die Quarantäne zu beenden. Die Genesung liegt weniger als 4 Monate zurück."
+msgid "I have official convalescence documentation (PCR test or rapid antigen test carried out by qualified personnel or antibody detection with a valid certificate) to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
+msgstr "Ich verfüge über einen offiziellen Genesenen-Nachweis (PCR Test oder Antigenschnelltest durch Fachpersonal durchgeführt oder Antikörper-Nachweis mit gültigem Zertifikat) um die Quarantäne zu beenden. Die Genesung liegt weniger als 4 Monate zurück."
 
 #, elixir-format, ex-autogen
 msgid "I have official vacination documentation to end the quarantine. The vaccination base immunization or the booster were completed less than four months ago."
