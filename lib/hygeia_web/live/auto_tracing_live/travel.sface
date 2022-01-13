@@ -14,24 +14,57 @@
         {#if not Enum.empty?(@risk_countries)}
           <div class="row gx-7 mb-5">
             <div class="col-12 col-lg-6">
-              <p class="mb-4">{pgettext(
+              <p class="mb-4">
+                {pgettext(
                   "Auto Tracing Travel",
                   "Have you visited one of the following countries within the last 14 days (between %{start_date} and %{end_date})?",
                   %{
                     start_date: HygeiaCldr.Date.to_string!(Date.add(Date.utc_today(), -13)),
                     end_date: HygeiaCldr.Date.to_string!(Date.utc_today())
                   }
-                )}</p>
-              <Inputs for={:risk_countries_travelled} :let={form: form}>
+                )}<br>
+                {@risk_countries
+                |> Enum.map(& &1.country)
+                |> Enum.map(&country_name/1)
+                |> Enum.sort()
+                |> HygeiaCldr.List.to_string!(format: :or_short)}
+              </p>
+
+              <Field name={:has_travelled_in_risk_country} class="form-group">
+                <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+                  <label class={
+                    "btn",
+                    "btn-sm",
+                    "btn-outline-primary",
+                    active: get_field(@changeset, :has_travelled_in_risk_country) == true
+                  }>
+                    <RadioButton value />
+                    {gettext("Yes")}
+                  </label>
+                  <label class={
+                    "btn",
+                    "btn-sm",
+                    "btn-outline-primary",
+                    active: get_field(@changeset, :has_travelled_in_risk_country) == false
+                  }>
+                    <RadioButton value={false} />
+                    {gettext("No")}
+                  </label>
+                </div>
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+
+              <ErrorTag field={:risk_countries_travelled} class="d-block invalid-feedback mb-2" />
+
+              <Inputs
+                for={:risk_countries_travelled}
+                :let={form: form}
+                :if={fetch_field!(@changeset, :has_travelled_in_risk_country)}
+              >
                 <div class="d-flex my-3">
                   <div class="me-3">
                     <Field name={:is_selected}>
-                      <Checkbox
-                        :if={fetch_field!(@changeset, :has_travelled_in_risk_country)}
-                        opts={
-                          checked: fetch_field!(form.source, :is_selected)
-                        }
-                      />
+                      <Checkbox opts={checked: fetch_field!(form.source, :is_selected)} />
                     </Field>
                   </div>
                   <div>
@@ -62,31 +95,6 @@
                   </div>
                 </div>
               </Inputs>
-              <ErrorTag field={:risk_countries_travelled} class="d-block invalid-feedback mb-2" />
-
-              <Field name={:has_travelled_in_risk_country} class="form-group">
-                <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                  <label class={
-                    "btn",
-                    "btn-sm",
-                    "btn-outline-primary",
-                    active: get_field(@changeset, :has_travelled_in_risk_country) == true
-                  }>
-                    <RadioButton value />
-                    {gettext("Yes")}
-                  </label>
-                  <label class={
-                    "btn",
-                    "btn-sm",
-                    "btn-outline-primary",
-                    active: get_field(@changeset, :has_travelled_in_risk_country) == false
-                  }>
-                    <RadioButton value={false} />
-                    {gettext("No")}
-                  </label>
-                </div>
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
             </div>
           </div>
         {/if}
