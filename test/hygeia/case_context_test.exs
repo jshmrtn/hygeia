@@ -650,11 +650,11 @@ defmodule Hygeia.CaseContextTest do
                 organisation_uuid: organisation_jm.uuid
               }
             ],
-            vaccination: %{
-              done: true,
-              name: "Biontech",
-              jab_dates: [~D[2021-01-01], ~D[2021-02-03]]
-            },
+            is_vaccinated: true,
+            vaccination_shots: [
+              %{vaccine_type: :pfizer, date: ~D[2021-01-01]},
+              %{vaccine_type: :pfizer, date: ~D[2021-02-03]}
+            ],
             profession_category: :"74",
             profession_category_main: :M
           })
@@ -952,7 +952,7 @@ defmodule Hygeia.CaseContextTest do
                    "vacc_dose" => "2",
                    "vacc_dt_first" => "2021-01-01",
                    "vacc_dt_last" => "2021-02-03",
-                   "vacc_name" => "Biontech",
+                   "vacc_name" => "Pfizer/BioNTech (BNT162b2 / Comirnaty® / Tozinameran)",
                    "vacc_yn" => "1",
                    "work_place_country" => "8100",
                    "work_place_location" => "St. Gallen",
@@ -1055,7 +1055,7 @@ defmodule Hygeia.CaseContextTest do
                    "test_reason_work_screening" => "0",
                    "test_result" => "3",
                    "test_type" => "5",
-                   "vacc_dose" => "",
+                   "vacc_dose" => "0",
                    "vacc_dt_first" => "",
                    "vacc_dt_last" => "",
                    "vacc_name" => "",
@@ -1364,7 +1364,7 @@ defmodule Hygeia.CaseContextTest do
           "test_reason_symptoms" => "1",
           "test_result" => "1",
           "test_type" => "5",
-          "vacc_dose" => "",
+          "vacc_dose" => "0",
           "vacc_dt_first" => "",
           "vacc_dt_last" => "",
           "vacc_name" => "",
@@ -1447,7 +1447,7 @@ defmodule Hygeia.CaseContextTest do
           "test_reason_symptoms" => "0",
           "test_result" => "3",
           "test_type" => "5",
-          "vacc_dose" => "",
+          "vacc_dose" => "0",
           "vacc_dt_first" => "",
           "vacc_dt_last" => "",
           "vacc_name" => "",
@@ -1520,15 +1520,12 @@ defmodule Hygeia.CaseContextTest do
             %{type: :mobile, value: "+41787245790"},
             %{type: :landline, value: "+41522330689"}
           ],
-          vaccination: %{
-            done: true,
-            name: "Moderna",
-            jab_dates: [
-              date_jony_vaccination_1,
-              date_jony_vaccination_2,
-              date_jony_vaccination_3
-            ]
-          }
+          is_vaccinated: true,
+          vaccination_shots: [
+            %{vaccine_type: :moderna, date: date_jony_vaccination_1},
+            %{vaccine_type: :moderna, date: date_jony_vaccination_2},
+            %{vaccine_type: :pfizer, date: date_jony_vaccination_3}
+          ]
         })
 
       person_jan =
@@ -1649,10 +1646,16 @@ defmodule Hygeia.CaseContextTest do
                  "Symptom Start Date" => ^date_case_jony_after_vaccination_symptom_start_string,
                  "Symptoms" => "Fever, Cough",
                  "Vaccination 1st Jab Date" => ^date_jony_vaccination_1_string,
+                 "Vaccination 1st Jab Name" =>
+                   "Moderna (mRNA-1273 / Spikevax / COVID-19 vaccine Moderna)",
                  "Vaccination 2nd Jab Date" => ^date_jony_vaccination_2_string,
+                 "Vaccination 2nd Jab Name" =>
+                   "Moderna (mRNA-1273 / Spikevax / COVID-19 vaccine Moderna)",
                  "Vaccination 3rd Jab Date" => ^date_jony_vaccination_3_string,
+                 "Vaccination 3rd Jab Name" =>
+                   "Pfizer/BioNTech (BNT162b2 / Comirnaty® / Tozinameran)",
                  "Vaccination 4th Jab Date" => "",
-                 "Vaccination Name" => "Moderna"
+                 "Vaccination 4th Jab Name" => ""
                }
              ] =
                tenant
@@ -1685,7 +1688,7 @@ defmodule Hygeia.CaseContextTest do
             %{type: :mobile, value: "+41787245790"},
             %{type: :landline, value: "+41522330689"}
           ],
-          vaccination: %{}
+          vaccination_shots: []
         })
 
       # 3 months ago
@@ -1734,7 +1737,8 @@ defmodule Hygeia.CaseContextTest do
 
   describe "transmissions" do
     @valid_attrs %{
-      date: Date.add(Date.utc_today(), -5)
+      date: Date.add(Date.utc_today(), -5),
+      type: :contact_person
     }
     @update_attrs %{
       date: Date.add(Date.utc_today(), -7)

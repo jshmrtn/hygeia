@@ -24,7 +24,10 @@
                 {pgettext("Auto Tracing Resolve Problems", "Last Completed Step")}
               </div>
               <div class="value">
-                {AutoTracing.Step.translate(@auto_tracing.last_completed_step)}
+                {case @auto_tracing.last_completed_step do
+                  nil -> nil
+                  step -> AutoTracing.Step.translate(step)
+                end}
               </div>
             </div>
             <div class="col">
@@ -125,6 +128,10 @@
                             {#for transmission <- @case.received_transmissions}
                               <div class="card card-body">
                                 <dl>
+                                  <dt>{schema_field_name(:type, Transmission)}</dt>
+                                  <dd>
+                                    {PossibleIndexType.translate(transmission.type)}
+                                  </dd>
                                   <dt>{schema_field_name(:date, Transmission)}</dt>
                                   <dd>
                                     {case transmission.date do
@@ -224,6 +231,7 @@
                                   as={:possible_transmission}
                                   submit="possible_transmission_submit"
                                 >
+                                  <HiddenInput field={:type} />
                                   <Field name={:propagator_internal} class="form-group">
                                     <div class="btn-group btn-group-toggle btn-radio-group">
                                       <label class="input-group-text input-sm">{gettext("Propagator")}:</label>

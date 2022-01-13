@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"Language: fr\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #, elixir-format, ex-autogen
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -22,8 +22,8 @@ msgid_plural "%{count} New Notifications"
 msgstr[0] "%{count} Nouvelle notification"
 msgstr[1] "%{count} Nouvelles notifications"
 
-#, elixir-format, ex-autogen
-msgctxt "Auto Tracing Vaccination"
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Person Vaccination"
 msgid "%{ordering} jab date"
 msgstr "%{ordering} vaccin"
 
@@ -59,7 +59,7 @@ msgstr "6 personnes de contact ou plus"
 msgid "< 15 Min."
 msgstr "< 15 Min."
 
-#, elixir-format, ex-autogen, fuzzy
+#, elixir-format, ex-autogen
 msgid "< 30 Min."
 msgstr "< 30 Min."
 
@@ -354,6 +354,11 @@ msgstr "Vous êtes sûr ? Il y a des affiliations attribuées !"
 msgctxt "Auto Tracing Clinical"
 msgid "Are you sure? This date is unusual far in the past."
 msgstr "Vous êtes sûr ? Cette date est inhabituelle loin dans le passé."
+
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Vaccination"
+msgid "Are you vaccinated?"
+msgstr "Êtes-vous vacciné?"
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "Are you working in an association?"
@@ -698,6 +703,10 @@ msgid "Choose location"
 msgstr "Choisir l'emplacement"
 
 #, elixir-format, ex-autogen, fuzzy
+msgid "Choose number"
+msgstr "Choisir la personne"
+
+#, elixir-format, ex-autogen, fuzzy
 msgid "Choose organisation"
 msgstr "Choisir l'organisation"
 
@@ -730,6 +739,10 @@ msgstr "Choisissez le type de test"
 #, elixir-format, ex-autogen, fuzzy
 msgid "Choose test result"
 msgstr "Choisir le résultat du test"
+
+#, elixir-format, ex-autogen, fuzzy
+msgid "Choose vaccine"
+msgstr "Choisir le cas"
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "Cinema / theater / concert"
@@ -911,6 +924,11 @@ msgstr "Recherche des contacts"
 #, elixir-format, ex-autogen, fuzzy
 msgid "Continue"
 msgstr "Continuer"
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Person Field"
+msgid "Convalescent Externally"
+msgstr "Convalescent à l'extérieur"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Test Reason"
@@ -1094,6 +1112,11 @@ msgid "Date"
 msgstr "Date"
 
 #, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
+msgid "Date"
+msgstr "Date"
+
+#, elixir-format, ex-autogen, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Date of last departure"
 msgstr "Lieu de départ"
@@ -1140,11 +1163,11 @@ msgstr ""
 "%{message_signature}\n"
 
 #, elixir-format, ex-autogen
-msgid "Dear Sir / Madam,\n\nYou have been identified as a contact person of a person with corona. For this reason you will have to quanrantine for 10 days. Please\n\nPlease open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nYou will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n\nPlease read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nYou have been identified as a contact person of a person with corona. For this reason you will have to quarantine for %{quarantine_length}.\n\nPlease open the following link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)\n%{public_overview_link}\n\nYou will be able to download your quarantine confirmation and possibly shorten / lift your quarantine.\n\nPlease read the information about your quarantine in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n%{message_signature}\n"
 msgstr ""
 "Madame, Monsieur,\n"
 "\n"
-"Vous avez été identifié comme personne de contact d'une personne atteinte de corona. Pour cette raison, vous allez devoir quantifier pendant 10 jours. \n"
+"Vous avez été identifié comme personne de contact d'une personne atteinte de corona. Pour cette raison, vous allez devoir quarantifier pendant %{quarantine_length}. \n"
 "\n"
 "Veuillez ouvrir le lien suivant et vous connecter en utilisant vos nom et prénom. (initiales : %{initial_first_name}. %{initial_last_name}.)\n"
 "%{public_overview_link}\n"
@@ -1307,6 +1330,11 @@ msgid "Did you wear the mask during the whole flight?"
 msgstr "Avez-vous porté le masque tout au long du vol?"
 
 #, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
+msgid "Different Location"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Different quarantine / isolation address?"
 msgstr "Adresse de quarantaine/isolement différente?"
 
@@ -1466,17 +1494,7 @@ msgid "Done"
 msgstr "Terminé"
 
 #, elixir-format, ex-autogen, fuzzy
-msgctxt "Auto Tracing Vaccination"
-msgid "Done"
-msgstr "Terminé"
-
-#, elixir-format, ex-autogen, fuzzy
 msgctxt "Case Status"
-msgid "Done"
-msgstr "Terminé"
-
-#, elixir-format, ex-autogen, fuzzy
-msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
 msgid "Done"
 msgstr "Terminé"
 
@@ -1970,6 +1988,11 @@ msgid "Have you been or are you in a hospital?"
 msgstr "Avez-vous été ou êtes-vous dans un hôpital ?"
 
 #, elixir-format, ex-autogen
+msgctxt "Auto Tracing Vaccination"
+msgid "Have you recovered from covid-19 in the past?"
+msgstr "Vous êtes-vous remis du covid-19 dans le passé?"
+
+#, elixir-format, ex-autogen
 msgctxt "Auto Tracing Travel"
 msgid "Have you visited one of the following countries within the last 14 days (between %{start_date} and %{end_date})?"
 msgstr "Avez-vous visité l'un des pays suivants au cours des 14 derniers jours (entre le %{start_date} et le %{end_date})?"
@@ -2093,6 +2116,11 @@ msgstr "Comment avez-vous fait l'aller-retour ?"
 msgid "How did your encounter with %{first_name} %{last_name} happen?"
 msgstr "Comment s'est passée votre rencontre avec %{first_name} %{last_name}?"
 
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Vaccination"
+msgid "How many vaccination shots have you received?"
+msgstr "Combien de vaccins avez-vous reçus?"
+
 #, elixir-format, ex-autogen, fuzzy
 msgid "Human Readable ID"
 msgstr "ID lisible par l'homme"
@@ -2108,24 +2136,12 @@ msgid "Hygeia is deisgned to structure complicated processes, to fullfill standa
 msgstr "Hygeia est conçu pour structurer des processus complexes, pour remplir des standards comme le \"%{link_med}\" de l'OFSP, pour se connecter à la base de données de l'OFSP et pour réduire le personnel nécessaire à la recherche de contacts."
 
 #, elixir-format, ex-autogen, fuzzy
-msgid "I am in possession of a valid \"Convalescent Certificate\"."
-msgstr "Je suis en possession d'un « Certificat de convalescence »"
-
-#, elixir-format, ex-autogen
-msgid "I am in possession of a valid vaccination certificate."
-msgstr "Je suis en possession d'un certificat de vaccination valide."
-
-#, elixir-format, ex-autogen, fuzzy
 msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Je confirme que toutes les données ci-dessus sont correctes. Ceci peut être inspecté !"
 
 #, elixir-format, ex-autogen
-msgid "I have not visited any of the above countries"
-msgstr "Je n'ai visité aucun des pays ci-dessus"
-
-#, elixir-format, ex-autogen
-msgid "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
-msgstr "J'ai les documents officiels de convalescence pour finir la quarantaine. Mon infection à covid s'est rétablie il y a moins de quatre mois."
+msgid "I have official convalescence documentation (PCR test or rapid antigen test carried out by qualified personnel or antibody detection with a valid certificate) to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
+msgstr "J'ai les documents officiels de convalescence (test PCR ou test rapide d’antigène réalisé par personnel spécialisé ou preuve d’anticorps avec un certificat valide) pour finir la quarantaine. Mon infection à covid s'est rétablie il y a moins de quatre mois."
 
 #, elixir-format, ex-autogen
 msgid "I have official vacination documentation to end the quarantine. The vaccination base immunization or the booster were completed less than four months ago."
@@ -2207,9 +2223,9 @@ msgid "If there is no number, try to get it from the doctor."
 msgstr "S'il n'y a pas de numéro, essayez de l'obtenir auprès du médecin."
 
 #, elixir-format, ex-autogen
-msgctxt "Auto Tracing Vaccination"
-msgid "If you are fully vaccinated, please insert both vaccination dates."
-msgstr "Si vous êtes complètement vacciné, veuillez insérer les deux dates de vaccination."
+msgctxt "Person Convalescent Externally"
+msgid "If this person is convalescent and the case was not handeled, set to yes. This is used to calculate vaccination validity."
+msgstr "Si cette personne est en convalescence et que le dossier n'a pas été traité, définissez sur oui. Ceci est utilisé pour calculer la validité de la vaccination."
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "If you had close contact with people you do not know (e.g. in a restaurant or a church), please talk to your tracer for the best procedure and more measures of contact."
@@ -2435,6 +2451,11 @@ msgid "Is truthful"
 msgstr "est véridique"
 
 #, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
+msgid "Is vaccinated"
+msgstr "Vacciné"
+
+#, elixir-format, ex-autogen, fuzzy
 msgid "Isolation"
 msgstr "Isolation"
 
@@ -2478,11 +2499,6 @@ msgstr "Il semble que nous ne soyons pas responsables de votre cas."
 #, elixir-format, ex-autogen, fuzzy
 msgid "It's difficult speaking in English. A translator is required"
 msgstr "Il est difficile de parler en anglais. Un traducteur est nécessaire"
-
-#, elixir-format, ex-autogen, fuzzy
-msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
-msgid "Jab Dates"
-msgstr "Jab Dates"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Person Login Form"
@@ -2602,7 +2618,7 @@ msgstr "Dernier changement"
 #, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Last Completed Step"
-msgstr ""
+msgstr "Dernière étape terminée"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
@@ -2957,11 +2973,6 @@ msgid "Name"
 msgstr "Nom"
 
 #, elixir-format, ex-autogen
-msgctxt "Elixir.Hygeia.CaseContext.Person.Vaccination Field"
-msgid "Name of Vaccine"
-msgstr "Nom du vaccin"
-
-#, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Name of the Place"
 msgstr "Nom du lieu"
@@ -3140,6 +3151,16 @@ msgid "No"
 msgstr "Non"
 
 #, elixir-format, ex-autogen, fuzzy
+msgctxt "Person Convalescent Externally"
+msgid "No"
+msgstr "Non"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Auto Tracing Vaccination"
+msgid "No"
+msgstr "Non"
+
+#, elixir-format, ex-autogen, fuzzy
 msgid "No Auto Tracing Problems"
 msgstr "Problème d'auto-traçage"
 
@@ -3217,11 +3238,6 @@ msgid "None"
 msgstr "Aucun"
 
 #, elixir-format, ex-autogen, fuzzy
-msgctxt "Auto Tracing Vaccination"
-msgid "Not Done"
-msgstr "Pas fait"
-
-#, elixir-format, ex-autogen, fuzzy
 msgctxt "vaccination_done"
 msgid "Not Done"
 msgstr "Pas fait"
@@ -3268,6 +3284,11 @@ msgid "Number"
 msgstr "Numéro"
 
 #, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
+msgid "Number of vaccination shots received"
+msgstr "Nombre de vaccins reçus"
+
+#, elixir-format, ex-autogen, fuzzy
 msgid "Occupation / Employment"
 msgstr "Profession / Emploi"
 
@@ -3286,6 +3307,11 @@ msgstr "Ouvrir le cas dans un nouvel onglet"
 #, elixir-format, ex-autogen
 msgid "Open transmission in new tab"
 msgstr "Ouvrir la transmission dans un nouvel onglet"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
+msgid "Order Date"
+msgstr "Commandé"
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "Ordered"
@@ -3420,6 +3446,11 @@ msgstr "Autre"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Visit reason"
+msgid "Other"
+msgstr "Autre"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Vaccine Type"
 msgid "Other"
 msgstr "Autre"
 
@@ -3789,6 +3820,10 @@ msgstr "Veuillez indiquer comment nous pouvons vous joindre :"
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
 msgstr "Veuillez noter que la soumission des personnes de contact ne fonctionne que dans les versions récentes des navigateurs suivants :"
 
+#, elixir-format, ex-autogen
+msgid "Please select the countries you have visited"
+msgstr "Veuillez sélectionner les pays que vous avez visités"
+
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
 msgid "Please specify your reason"
@@ -3829,6 +3864,11 @@ msgstr "Soumissions possibles à l'index"
 #, elixir-format, ex-autogen, fuzzy
 msgid "Possible Index Submissions"
 msgstr "Soumissions possibles à l'index"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Notification Type"
+msgid "Possible Index Submitted"
+msgstr "indice possible soumis."
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Auto Tracing Problem"
@@ -5112,6 +5152,11 @@ msgid "The link to the possible index submissions was sent. The Index did not en
 msgstr "Le lien vers les soumissions possibles à l'index a été envoyé. L'index n'a pas encore saisi les soumissions. Ceci peut être vérifié sous %{link}."
 
 #, elixir-format, ex-autogen
+msgctxt "Person Show"
+msgid "The person is not considered fully vaccinated for breakthrough infections."
+msgstr "La personne n'est pas considérée comme complètement vaccinée contre les infections à percée."
+
+#, elixir-format, ex-autogen
 msgctxt "Phase Create Modal"
 msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
 msgstr "L'ordre de quarantaine de la phase %{type} sera levé puisque l'ordre commence plus tard que la nouvelle date de début."
@@ -5129,9 +5174,19 @@ msgstr "Le statut sert d'aperçu de la phase de recherche actuelle de la personn
 msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
 msgstr "L'application suisse covid est l'application officielle de recherche de contacts de la suisse. L'application aide à tracer et à empêcher la propagation du virus COVID-19."
 
+#, elixir-format, ex-autogen
+msgctxt "Person Show"
+msgid "The validity is only calculated for vaccinations that are used in Switzerland at the moment to detect breakthrough infections."
+msgstr "La validité n'est calculée que pour les vaccinations actuellement utilisées en Suisse pour détecter les infections à percée."
+
 #, elixir-format, ex-autogen, fuzzy
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
 msgstr "Une erreur s'est produite lors de l'envoi du formulaire. Veuillez réessayer de soumettre le formulaire et contactez votre administrateur si le problème persiste."
+
+#, elixir-format, ex-autogen
+msgctxt "Person Show"
+msgid "Therefore currently only Modena, Pfizer and Janssen are considered."
+msgstr "Par conséquent, actuellement, seuls Modène, Pfizer et Janssen sont pris en compte."
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "This case is not in an index phase."
@@ -5558,7 +5613,17 @@ msgstr "Vaccination"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 1st Jab Name"
+msgstr "Vaccination"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Breakthrough Infection Export"
 msgid "Vaccination 2nd Jab Date"
+msgstr "Vaccination"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 2nd Jab Name"
 msgstr "Vaccination"
 
 #, elixir-format, ex-autogen, fuzzy
@@ -5568,7 +5633,21 @@ msgstr "Vaccination"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 3rd Jab Name"
+msgstr "Vaccination"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Breakthrough Infection Export"
 msgid "Vaccination 4th Jab Date"
+msgstr "Vaccination"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Breakthrough Infection Export"
+msgid "Vaccination 4th Jab Name"
+msgstr "Vaccination"
+
+#, elixir-format, ex-autogen, fuzzy
+msgid "Vaccination Breakthroughs"
 msgstr "Vaccination"
 
 #, elixir-format, ex-autogen, fuzzy
@@ -5580,10 +5659,33 @@ msgstr "Échec de la vaccination"
 msgid "Vaccination Failures"
 msgstr "Échecs de la vaccination"
 
+#, elixir-format, ex-autogen
+msgctxt "Person Show"
+msgid "Vaccination Validity (breakthrough detection)"
+msgstr "Validité de la vaccination (détection de percée)"
+
 #, elixir-format, ex-autogen, fuzzy
-msgctxt "Breakthrough Infection Export"
-msgid "Vaccination Name"
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
+msgid "Vaccination shots"
 msgstr "Vaccination"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
+msgid "Vaccine"
+msgstr "Vacciné"
+
+#, elixir-format, ex-autogen, fuzzy
+msgid "Vaccine"
+msgstr "Vacciné"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Elixir.Hygeia.CaseContext.Person.VaccinationShot Field"
+msgid "Vaccine name"
+msgstr "Vacciné"
+
+#, elixir-format, ex-autogen, fuzzy
+msgid "Vaccine name"
+msgstr "Vacciné"
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "Value"
@@ -5742,6 +5844,16 @@ msgid "Workplace/school testing ordered by CT"
 msgstr "Tests sur le lieu de travail/à l'école ordonnés par le CT"
 
 #, elixir-format, ex-autogen, fuzzy
+msgid "Yes"
+msgstr "Oui"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Person Convalescent Externally"
+msgid "Yes"
+msgstr "Oui"
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Auto Tracing Vaccination"
 msgid "Yes"
 msgstr "Oui"
 

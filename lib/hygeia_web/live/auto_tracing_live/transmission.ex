@@ -88,11 +88,11 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
                 if uuid = case.auto_tracing.transmission_uuid do
                   CaseContext.get_transmission!(uuid)
                 else
-                  %Transmission{}
+                  %Transmission{type: :contact_person}
                 end
 
               %Transmission{} = at_transmission ->
-                at_transmission
+                %Transmission{at_transmission | type: :contact_person}
             end
 
           step = %__MODULE__{
@@ -103,7 +103,11 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
           }
 
           assign(socket,
-            changeset: %Ecto.Changeset{changeset(step) | action: :validate},
+            step: step,
+            changeset: %Ecto.Changeset{
+              changeset(step)
+              | action: :validate
+            },
             transmission: transmission,
             case: case,
             auto_tracing: case.auto_tracing
@@ -121,7 +125,7 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
       ) do
     {:noreply,
      assign(socket, :changeset, %Ecto.Changeset{
-       changeset(%__MODULE__{}, transmission)
+       changeset(socket.assigns.step, transmission)
        | action: :validate
      })}
   end

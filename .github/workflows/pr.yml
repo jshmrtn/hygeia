@@ -29,19 +29,6 @@ jobs:
     secrets:
       CACHE_VERSION: "${{ secrets.CACHE_VERSION }}"
 
-  build:
-    name: "Build"
-
-    needs: ['detectToolVersions']
-
-    uses: jshmrtn/hygeia/.github/workflows/part_build.yml@main
-    with:
-      elixirVersion: "${{ needs.detectToolVersions.outputs.elixirVersion }}"
-      otpVersion: "${{ needs.detectToolVersions.outputs.otpVersion }}"
-      nodeVersion: "${{ needs.detectToolVersions.outputs.nodeVersion }}"
-    secrets:
-      CACHE_VERSION: "${{ secrets.CACHE_VERSION }}"
-
   docs:
     name: "Docs"
 
@@ -57,6 +44,6 @@ jobs:
   dependabot:
     name: "Dependabot"
 
-    needs: ['test', 'build', 'docs']
+    needs: ['test', 'docs']
 
     uses: jshmrtn/hygeia/.github/workflows/part_dependabot.yml@main
