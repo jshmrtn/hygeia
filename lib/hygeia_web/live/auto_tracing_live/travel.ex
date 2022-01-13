@@ -120,6 +120,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
           risk_countries = RiskCountryContext.list_risk_countries()
 
           assign(socket,
+            step: step,
             case: case,
             changeset: %Ecto.Changeset{
               changeset(step, %{}, %{risk_countries: not Enum.empty?(risk_countries)})
@@ -137,13 +138,14 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   def handle_event(
         "add_flight",
         _params,
-        %Socket{assigns: %{changeset: changeset, risk_countries: risk_countries}} = socket
+        %Socket{assigns: %{step: step, changeset: changeset, risk_countries: risk_countries}} =
+          socket
       ) do
     {:noreply,
      assign(socket,
        changeset: %Changeset{
          changeset(
-           apply_changes(changeset),
+           step,
            changeset_add_to_params(changeset, :flights, %{
              uuid: Ecto.UUID.generate()
            }),
@@ -157,7 +159,8 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   def handle_event(
         "remove_flight",
         %{"value" => flight_uuid},
-        %Socket{assigns: %{changeset: changeset, risk_countries: risk_countries}} = socket
+        %Socket{assigns: %{step: step, changeset: changeset, risk_countries: risk_countries}} =
+          socket
       ) do
     {:noreply,
      assign(
@@ -165,7 +168,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
        :changeset,
        %Changeset{
          changeset(
-           apply_changes(changeset),
+           step,
            changeset_remove_from_params_by_id(changeset, :flights, %{uuid: flight_uuid}),
            %{risk_countries: not Enum.empty?(risk_countries)}
          )
@@ -177,18 +180,19 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   def handle_event(
         "validate",
         %{"travel" => params},
-        %Socket{assigns: %{risk_countries: risk_countries, changeset: changeset}} = socket
+        %Socket{assigns: %{step: step, risk_countries: risk_countries}} =
+          socket
       ) do
     params = Map.put_new(params, "flights", [])
 
-    changeset =
-      changeset(apply_changes(changeset), params, %{
-        risk_countries: not Enum.empty?(risk_countries)
-      })
-
     {:noreply,
      assign(socket,
-       changeset: %Changeset{changeset | action: :validate}
+       changeset: %Changeset{
+         changeset(step, params, %{
+           risk_countries: not Enum.empty?(risk_countries)
+         })
+         | action: :validate
+       }
      )}
   end
 
