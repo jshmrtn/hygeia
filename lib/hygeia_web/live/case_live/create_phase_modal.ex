@@ -179,11 +179,13 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
   defp additional_actions_phase_quarantine_order(changeset, case) do
     with true <- Ecto.Changeset.fetch_field!(changeset, :quarantine_order),
          new_start_date = Ecto.Changeset.fetch_field!(changeset, :start),
+         new_end_date = Ecto.Changeset.fetch_field!(changeset, :end),
          [_ | _] = overlapping_phases <-
            case.phases
            |> Enum.filter(&match?(%Phase{quarantine_order: true}, &1))
            |> Enum.reject(&(Date.compare(&1.end, new_start_date) in [:lt, :eq]))
-           |> Enum.reject(&(Date.compare(&1.start, new_start_date) in [:lt, :eq])) do
+           |> Enum.reject(&(Date.compare(&1.start, new_start_date) in [:lt, :eq]))
+           |> Enum.reject(&(Date.compare(&1.start, new_end_date) in [:gt, :eq])) do
       Enum.map(overlapping_phases, &{:phase_quarantine_order, &1, false})
     else
       nil -> []
