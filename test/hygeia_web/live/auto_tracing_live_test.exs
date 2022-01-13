@@ -725,7 +725,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
 
       assert travel_view
              |> form("#travel-form",
-               travel: %{has_not_travelled_in_risk_country: true, has_flown: false}
+               travel: %{has_travelled_in_risk_country: false, has_flown: false}
              )
              |> render_change()
 
@@ -751,16 +751,14 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
 
       set_last_completed_step(auto_tracing, :travel)
 
-      {:ok, travel_view, html} = live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
+      {:ok, travel_view, _html} = live(conn, Routes.auto_tracing_travel_path(conn, :travel, case))
 
       assert travel_view
              |> form("#travel-form",
-               travel: %{has_not_travelled_in_risk_country: false, has_flown: true}
+               travel: %{has_travelled_in_risk_country: true, has_flown: true}
              )
              |> render_change() =~
                "please add at least one flight that you took during the period in consideration"
-
-      assert html =~ "is required"
 
       assert travel_view
              |> form("#travel-form")

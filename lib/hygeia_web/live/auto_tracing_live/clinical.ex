@@ -8,6 +8,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Clinical
+  alias Hygeia.CaseContext.Case.Phase.Index
   alias Hygeia.CommunicationContext
   alias Hygeia.Repo
   alias Surface.Components.Form
@@ -18,8 +19,6 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.LiveRedirect
-
-  @days_after_start 9
 
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
@@ -241,7 +240,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
     index_phase =
       Enum.find(
         Ecto.Changeset.fetch_field!(changeset, :phases),
-        &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1)
+        &match?(%Case.Phase{details: %Index{}}, &1)
       )
 
     changeset_update_params_by_id(changeset, :phases, %{uuid: index_phase.uuid}, fn params ->
@@ -299,7 +298,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
     index_phase =
       Enum.find(
         Ecto.Changeset.fetch_field!(changeset, :phases),
-        &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1)
+        &match?(%Case.Phase{details: %Index{}}, &1)
       )
 
     changeset_update_params_by_id(changeset, :phases, %{uuid: index_phase.uuid}, fn params ->
@@ -309,13 +308,13 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
   defp index_phase_dates(case) do
     {start_date, problems} =
-      case Case.earliest_self_service_phase_start_date(case, Case.Phase.Index) do
+      case Case.earliest_self_service_phase_start_date(case, Index) do
         {:corrected, date} -> {date, [:phase_start_date_corrected]}
         {:ok, date} -> {date, []}
       end
 
     phase_start = Date.utc_today()
-    phase_end = Date.add(start_date, @days_after_start)
+    phase_end = Date.add(start_date, Index.default_length_days())
 
     {phase_start, phase_end, problems}
   end
@@ -323,7 +322,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   defp send_notifications(case, socket) do
     case = Repo.preload(case, person: [])
 
-    index_phase = Enum.find(case.phases, &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))
+    index_phase = Enum.find(case.phases, &match?(%Case.Phase{details: %Index{}}, &1))
 
     :ok =
       case

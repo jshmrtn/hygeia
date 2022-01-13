@@ -1734,7 +1734,8 @@ defmodule Hygeia.CaseContextTest do
 
   describe "transmissions" do
     @valid_attrs %{
-      date: Date.add(Date.utc_today(), -5)
+      date: Date.add(Date.utc_today(), -5),
+      type: :contact_person
     }
     @update_attrs %{
       date: Date.add(Date.utc_today(), -7)
