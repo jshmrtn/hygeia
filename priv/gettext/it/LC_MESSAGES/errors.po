@@ -92,60 +92,60 @@ msgid "must be accepted"
 msgstr "deve essere accettato"
 
 #, fuzzy
-msgid "must be equal to %{number}"
-msgstr "deve essere uguale a %{number}"
+msgid "must be equal to {number}"
+msgstr "deve essere uguale a {number}"
 
 #, fuzzy
-msgid "must be greater than %{number}"
-msgstr "deve essere maggiore di %{number}"
+msgid "must be greater than or equal to {number}"
+msgstr "deve essere maggiore o uguale a {number}"
 
 #, fuzzy
-msgid "must be greater than or equal to %{number}"
-msgstr "deve essere maggiore o uguale a %{number}"
+msgid "must be greater than {number}"
+msgstr "deve essere maggiore di {number}"
 
 #, fuzzy
-msgid "must be less than %{number}"
-msgstr "deve essere inferiore a %{number}"
+msgid "must be less than or equal to {number}"
+msgstr "deve essere minore o uguale a {number}"
 
 #, fuzzy
-msgid "must be less than or equal to %{number}"
-msgstr "deve essere minore o uguale a %{number}"
+msgid "must be less than {number}"
+msgstr "deve essere inferiore a {number}"
 
 #, fuzzy
-msgid "should be %{count} character(s)"
-msgid_plural "should be %{count} character(s)"
-msgstr[0] "dovrebbe essere %{count} carattere"
-msgstr[1] "dovrebbe essere %{count} caratteri"
+msgid "should be at least {count} character(s)"
+msgid_plural "should be at least {count} character(s)"
+msgstr[0] "dovrebbe essere almeno {count} carattere"
+msgstr[1] "dovrebbe essere almeno {count} caratteri"
 
 #, fuzzy
-msgid "should be at least %{count} character(s)"
-msgid_plural "should be at least %{count} character(s)"
-msgstr[0] "dovrebbe essere almeno %{count} carattere"
-msgstr[1] "dovrebbe essere almeno %{count} caratteri"
+msgid "should be at most {count} character(s)"
+msgid_plural "should be at most {count} character(s)"
+msgstr[0] "dovrebbe essere al massimo {count} di caratteri"
+msgstr[1] "dovrebbe essere al massimo {count} di caratteri"
 
 #, fuzzy
-msgid "should be at most %{count} character(s)"
-msgid_plural "should be at most %{count} character(s)"
-msgstr[0] "dovrebbe essere al massimo %{count} di caratteri"
-msgstr[1] "dovrebbe essere al massimo %{count} di caratteri"
+msgid "should be {count} character(s)"
+msgid_plural "should be {count} character(s)"
+msgstr[0] "dovrebbe essere {count} carattere"
+msgstr[1] "dovrebbe essere {count} caratteri"
 
 #, fuzzy
-msgid "should have %{count} item(s)"
-msgid_plural "should have %{count} item(s)"
-msgstr[0] "dovrebbe avere %{count} elemento"
-msgstr[1] "dovrebbe avere %{count} elementi"
+msgid "should have at least {count} item(s)"
+msgid_plural "should have at least {count} item(s)"
+msgstr[0] "dovrebbe avere almeno {count} elemento"
+msgstr[1] "dovrebbe avere almeno {count} elementi"
 
 #, fuzzy
-msgid "should have at least %{count} item(s)"
-msgid_plural "should have at least %{count} item(s)"
-msgstr[0] "dovrebbe avere almeno %{count} elemento"
-msgstr[1] "dovrebbe avere almeno %{count} elementi"
+msgid "should have at most {count} item(s)"
+msgid_plural "should have at most {count} item(s)"
+msgstr[0] "dovrebbe avere al massimo {count} elemento"
+msgstr[1] "dovrebbe avere al massimo {count} elementi"
 
 #, fuzzy
-msgid "should have at most %{count} item(s)"
-msgid_plural "should have at most %{count} item(s)"
-msgstr[0] "dovrebbe avere al massimo %{count} elemento"
-msgstr[1] "dovrebbe avere al massimo %{count} elementi"
+msgid "should have {count} item(s)"
+msgid_plural "should have {count} item(s)"
+msgstr[0] "dovrebbe avere {count} elemento"
+msgstr[1] "dovrebbe avere {count} elementi"
 
 #, fuzzy
 msgid "start must be before end"

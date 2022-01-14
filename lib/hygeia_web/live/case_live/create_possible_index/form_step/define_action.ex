@@ -355,7 +355,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
   defp disabled_contact_reason(person_cs, case_changeset, type, contact_type \\ nil)
 
   defp disabled_contact_reason(person_cs, case_changeset, type, nil) do
-    gettext("This person cannot be contacted because: %{reasons}.",
+    gettext("This person cannot be contacted because: {reasons}.",
       reasons:
         []
         |> no_contact_method_reason(person_cs)
@@ -367,13 +367,13 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineAction do
   end
 
   defp disabled_contact_reason(_person_cs, case_changeset, _type, :email) do
-    gettext("This person cannot be contacted by email because: %{reasons}.",
+    gettext("This person cannot be contacted by email because: {reasons}.",
       reasons: [] |> tenant_email_config_reason(case_changeset) |> List.first()
     )
   end
 
   defp disabled_contact_reason(_person_cs, case_changeset, _type, :mobile) do
-    gettext("This person cannot be contacted by sms because: %{reasons}.",
+    gettext("This person cannot be contacted by sms because: {reasons}.",
       reasons: [] |> tenant_sms_config_reason(case_changeset) |> List.first()
     )
   end

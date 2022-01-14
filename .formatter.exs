@@ -9,5 +9,5 @@
     "{config,lib,test}/**/*.{ex,exs,sface}"
   ],
   subdirectories: ["priv/*/migrations"],
-  plugins: [Surface.Formatter.Plugin]
+  plugins: [Surface.Formatter.Plugin, Cldr.Formatter.Plugin]
 ]

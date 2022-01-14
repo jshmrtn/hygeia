@@ -103,7 +103,7 @@
               </div>
             </div>
             <div :if={transmission.recipient_internal == false}>
-              {gettext("ISM-ID: %{id}", id: transmission.recipient_ism_id)}
+              {gettext("ISM-ID: {id}", id: transmission.recipient_ism_id)}
             </div>
           </td>
           <td :if={@show_propagator}>
@@ -160,7 +160,7 @@
               </div>
             </div>
             <div :if={transmission.propagator_internal == false}>
-              {gettext("ISM-ID: %{id}", id: transmission.propagator_ism_id)}
+              {gettext("ISM-ID: {id}", id: transmission.propagator_ism_id)}
             </div>
           </td>
           <td>

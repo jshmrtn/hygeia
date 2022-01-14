@@ -174,7 +174,9 @@ defmodule HygeiaWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
+      # Gettext Requirements
       import HygeiaGettext
+      import Cldr.Message.Sigil
 
       import Hygeia.Authorization
 

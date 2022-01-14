@@ -5,7 +5,7 @@
   opts={autocomplete: "off", id: "division-form", class: "container"}
 >
   <h1 class="mb-3">
-    {gettext("New Division for %{organisation}", organisation: @organisation.name)}
+    {gettext("New Division for {organisation}", organisation: @organisation.name)}
   </h1>
 
   <div class="hy-card-grid-2-cols">

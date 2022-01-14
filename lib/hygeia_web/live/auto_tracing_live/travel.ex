@@ -306,9 +306,9 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   end
 
   defp generate_question(start_date, end_date) do
-    gettext("Did you travel by plane between %{start_date} and %{end_date}?",
-      start_date: HygeiaCldr.Date.to_string!(start_date),
-      end_date: HygeiaCldr.Date.to_string!(end_date)
+    gettext("Did you travel by plane between {start_date} and {end_date}?",
+      start_date: start_date,
+      end_date: end_date
     )
   end
 
