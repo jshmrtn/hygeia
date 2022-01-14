@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 2.3\n"
 
 #, elixir-format, ex-autogen
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -1331,7 +1331,7 @@ msgstr "Hai indossato la mascherina durante la durata di tutto il volo?"
 #, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
 msgid "Different Location"
-msgstr ""
+msgstr "Luogo diverso"
 
 #, elixir-format, ex-autogen
 msgid "Different quarantine / isolation address?"
@@ -5108,6 +5108,11 @@ msgctxt "Phase Create Modal"
 msgid "The automated case close email for the %{type} phase will be disabled."
 msgstr "L'email di chiusura automatica del caso per la fase %{type} sarà disabilitata."
 
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Phase Create Modal"
+msgid "The automated case close email for the %{type} phase will be enabled."
+msgstr "L'email di chiusura automatica del caso per la fase %{type} sarà disabilitata."
+
 #, elixir-format, ex-autogen
 msgid "The case administraton sends cases like this. Index has not been contacted"
 msgstr "L'amministrazione del caso invia casi come questo. L'indice non è stato contattato"
@@ -5157,8 +5162,18 @@ msgstr "La persona non è considerata completamente vaccinata per le infezioni i
 
 #, elixir-format, ex-autogen
 msgctxt "Phase Create Modal"
-msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
-msgstr "L'ordine di quarantena della fase %{type} sarà revocato poiché l'ordine inizia più tardi della nuova data di inizio."
+msgid "The quarantine order of the %{type} phase will be lifted since the new phase is contained in it."
+msgstr "L'ordine di quarantena della fase %{type} verrà revocato poiché la nuova fase è contenuta in esso."
+
+#, elixir-format, ex-autogen
+msgctxt "Phase Create Modal"
+msgid "The quarantine order of the %{type} phase will be lifted since the new phase is covering it completely."
+msgstr "L'ordine di quarantena della fase %{type} verrà revocato poiché la nuova fase lo copre completamente."
+
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Phase Create Modal"
+msgid "The start date of the %{type} phase will be changed from \"%{old_start_date}\" to \"%{new_start_date}\"."
+msgstr "Il motivo di fine fase %{type} sarà cambiato da \"%{old_end_reason}\" a \"%{new_end_reason}\"."
 
 #, elixir-format, ex-autogen
 msgctxt "Phase Create Modal"

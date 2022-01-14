@@ -114,6 +114,20 @@
                 new_status: Status.translate(new_status)
               )}
             </li>
+            <li :for={{:phase_start_date, %Phase{start: old_start_date} = phase, new_start_date} <-
+              additional_actions(@changeset, @case)}>
+              {pgettext(
+                "Phase Create Modal",
+                ~S(The start date of the %{type} phase will be changed from "%{old_start_date}" to "%{new_start_date}".),
+                type: case_phase_type_translation(phase),
+                old_start_date:
+                  case old_start_date do
+                    nil -> nil
+                    %Date{} = old_start_date -> HygeiaCldr.Date.to_string!(old_start_date)
+                  end,
+                new_start_date: HygeiaCldr.Date.to_string!(new_start_date)
+              )}
+            </li>
             <li :for={{:phase_end_date, %Phase{end: old_end_date} = phase, new_end_date} <-
               additional_actions(@changeset, @case)}>
               {pgettext(
@@ -157,10 +171,24 @@
                 new_end_reason: Phase.Index.EndReason.translate(new_end_reason)
               )}
             </li>
-            <li :for={{:phase_quarantine_order, phase, false} <- additional_actions(@changeset, @case)}>
+            <li :for={{:phase_quarantine_order, :cover, phase, false} <- additional_actions(@changeset, @case)}>
               {pgettext(
                 "Phase Create Modal",
-                ~S(The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date.),
+                ~S(The quarantine order of the %{type} phase will be lifted since the new phase is covering it completely.),
+                type: case_phase_type_translation(phase)
+              )}
+            </li>
+            <li :for={{:phase_quarantine_order, :contain, phase, false} <- additional_actions(@changeset, @case)}>
+              {pgettext(
+                "Phase Create Modal",
+                ~S(The quarantine order of the %{type} phase will be lifted since the new phase is contained in it.),
+                type: case_phase_type_translation(phase)
+              )}
+            </li>
+            <li :for={{:phase_send_automated_close_email, phase, true} <- additional_actions(@changeset, @case)}>
+              {pgettext(
+                "Phase Create Modal",
+                ~S(The automated case close email for the %{type} phase will be enabled.),
                 type: case_phase_type_translation(phase)
               )}
             </li>
