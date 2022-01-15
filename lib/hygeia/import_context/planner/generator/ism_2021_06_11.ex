@@ -563,6 +563,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     {path,
      cond do
        String.downcase(kind) == String.downcase("Antigen ++ Schnelltest") -> :antigen_quick
+       String.downcase(kind) == String.downcase("Antigen ++ unbestimmt") -> :antigen_quick
        String.downcase(kind) == String.downcase("Nukleinsäure ++ PCR") -> :pcr
        String.downcase(kind) == String.downcase("PCR") -> :pcr
        String.downcase(kind) == String.downcase("Serologie") -> :serology
