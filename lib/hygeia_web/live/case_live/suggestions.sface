@@ -44,6 +44,7 @@
         :if={@new_selected}
         class="btn btn-primary mt-3 d-block"
         :on-click={@new_selected}
+        phx-target={@target}
       >
         {gettext("Create new person")}
       </button>
@@ -106,6 +107,7 @@
                 :on-click={@case_selected}
                 phx-value-subject={@subject}
                 phx-value-person_uuid={person.uuid}
+                phx-target={@target}
                 value={case.uuid}
               >
                 {gettext("Choose %{case}", case: case_display_name(case, timezone))}
@@ -123,6 +125,7 @@
                 }
                 :on-click={@person_selected}
                 phx-value-subject={@subject}
+                phx-target={@target}
                 value={person.uuid}
               >
                 {gettext("Choose existing person")}

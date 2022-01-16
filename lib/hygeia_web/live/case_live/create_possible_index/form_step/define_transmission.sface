@@ -111,6 +111,7 @@
           class="btn btn-primary mt-5"
           type="submit"
           :on-click="next"
+          phx-target={@myself}
           phx-disable-with={gettext("Saving...")}
           disabled={not valid?(@form_data)}
         >

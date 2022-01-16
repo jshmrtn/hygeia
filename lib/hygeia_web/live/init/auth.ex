@@ -9,12 +9,13 @@ defmodule HygeiaWeb.Init.Auth do
   alias Hygeia.Helpers.Versioning
   alias Hygeia.UserContext.User
 
-  @spec mount(
+  @spec on_mount(
+          context :: atom(),
           Phoenix.LiveView.unsigned_params() | :not_mounted_at_router,
           session :: map,
           socket :: Phoenix.LiveView.Socket.t()
         ) :: {:cont | :halt, Phoenix.LiveView.Socket.t()}
-  def mount(_params, session, socket) do
+  def on_mount(:default, _params, session, socket) do
     ip = socket |> get_ip_address() |> ip_to_string()
 
     attrs =

@@ -58,6 +58,7 @@
 
             <:right>
               <button
+                phx-target={@myself}
                 :on-click="delete_person"
                 class="btn btn-danger align-self-start ms-3"
                 data-confirm={gettext("Are you sure?")}
@@ -95,6 +96,7 @@
               change="update_person"
               add_contact_method="add_contact_method_to_card"
               remove_contact_method="remove_contact_method_to_card"
+              target={@myself}
             >
               <:address_actions>
                 {#if has_propagator_case?(@form_data)}
@@ -103,6 +105,7 @@
                     class="btn btn-outline-info ms-auto"
                     :on-click="copy_address_from_propagator"
                     phx-value-index={index}
+                    phx-target={@myself}
                   >
                     {gettext("Copy address from propagator")}
                   </button>
@@ -121,6 +124,7 @@
                         person_changeset={person_cs}
                         person_selected="duplicate_person_selected"
                         case_selected="duplicate_person_case_selected"
+                        target={@myself}
                       />
                     </div>
                   </div>
@@ -129,6 +133,7 @@
             </HygeiaWeb.PersonLive.CreateForm>
             <button
               :on-click="delete_person"
+              phx-target={@myself}
               class="btn btn-danger align-self-start mt-3 ms-auto"
               data-confirm={gettext("Are you sure?")}
               value={index}
@@ -159,6 +164,7 @@
       />
       <button
         :on-click="apply_bulk_action"
+        phx-target={@myself}
         disabled={Enum.empty?(@bulk_action_elements)}
         class="btn btn-danger phoenix link click"
         type="submit"
@@ -182,11 +188,12 @@
           form_id="person-form"
           add_contact_method="add_contact_method"
           remove_contact_method="remove_contact_method"
+          target={@myself}
         >
           <:footer>
             {#if not Enum.empty?(Map.drop(@changeset.changes, [:human_readable_id, :uuid]))}
               <div class="define-people">
-                <button type="button" class="btn btn-warning mt-3" :on-click="clear_person">{gettext("Clear")}</button>
+                <button type="button" class="btn btn-warning mt-3" :on-click="clear_person" phx-target={@myself}>{gettext("Clear")}</button>
               </div>
               <div class="define-people">
                 <h4 class="my-3">{gettext("Similar persons in the system")}</h4>
@@ -196,6 +203,7 @@
                   new_selected="add_new_person"
                   person_selected="duplicate_person_selected"
                   case_selected="duplicate_person_case_selected"
+                  target={@myself}
                 />
               </div>
             {/if}
@@ -207,7 +215,13 @@
 
   <div class="row mt-4">
     <div class="col">
-      <button id="back-button" class="btn btn-outline-primary me-2" type="button" :on-click="back">
+      <button
+        id="back-button"
+        class="btn btn-outline-primary me-2"
+        type="button"
+        :on-click="back"
+        phx-target={@myself}
+      >
         {gettext("Back")}
       </button>
       <button
@@ -216,6 +230,7 @@
         type="submit"
         :on-click="next"
         phx-disable-with={gettext("Saving...")}
+        phx-target={@myself}
         disabled={not valid?(@form_data)}
       >
         {gettext("Next")}

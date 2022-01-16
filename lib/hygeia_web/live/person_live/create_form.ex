@@ -25,6 +25,7 @@ defmodule HygeiaWeb.PersonLive.CreateForm do
   prop submit, :event
   prop add_contact_method, :event
   prop remove_contact_method, :event
+  prop target, :any
 
   slot footer, required: false
   slot address_actions, required: false

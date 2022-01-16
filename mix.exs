@@ -124,9 +124,9 @@ defmodule Hygeia.MixProject do
       {:phoenix_active_link, "~> 0.3.2"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11 or ~> 3.0"},
-      {:phoenix_live_dashboard, "~> 0.4"},
+      {:phoenix_live_dashboard, "~> 0.6.2"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.16"},
+      {:phoenix_live_view, "~> 0.17.5"},
       {:phoenix_pubsub, "~> 2.0"},
       {:plug, "~> 1.12.1"},
       # TODO: Revert to released version when this PR is merged and released:
@@ -143,7 +143,7 @@ defmodule Hygeia.MixProject do
       {:shards, "~> 1.0"},
       # TODO: Update Surface
       # Pinned because of https://github.com/jshmrtn/hygeia/runs/3278558991?check_suite_focus=true
-      {:surface, "~> 0.6.1"},
+      {:surface, "~> 0.7.0"},
       {:surface_formatter, "~> 0.2"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_metrics_prometheus, "~> 1.0"},

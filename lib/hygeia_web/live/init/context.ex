@@ -13,12 +13,13 @@ defmodule HygeiaWeb.Init.Context do
 
   @default_timezone "Europe/Zurich"
 
-  @spec mount(
+  @spec on_mount(
+          context :: atom(),
           Phoenix.LiveView.unsigned_params() | :not_mounted_at_router,
           session :: map,
           socket :: Phoenix.LiveView.Socket.t()
         ) :: {:cont | :halt, Phoenix.LiveView.Socket.t()}
-  def mount(params, _session, socket) do
+  def on_mount(:default, params, _session, socket) do
     :ok =
       Sentry.Context.set_extra_context(%{
         timezone: timezone(socket),
