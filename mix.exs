@@ -141,8 +141,6 @@ defmodule Hygeia.MixProject do
       {:sedex, "~> 1.0"},
       {:sentry, "~> 8.0"},
       {:shards, "~> 1.0"},
-      # TODO: Update Surface
-      # Pinned because of https://github.com/jshmrtn/hygeia/runs/3278558991?check_suite_focus=true
       {:surface, "~> 0.7.0"},
       {:surface_formatter, "~> 0.2"},
       {:telemetry_metrics, "~> 0.4"},
