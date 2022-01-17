@@ -22,16 +22,16 @@ defmodule Hygeia.EctoType.DateRange do
   @impl Ecto.Type
   def load(term)
 
-  def load(%Postgrex.Range{lower: lower, lower_inclusive: false} = range),
+  def load(%Postgrex.Range{lower: %Date{} = lower, lower_inclusive: false} = range),
     do: load(%Postgrex.Range{range | lower_inclusive: true, lower: Date.add(lower, 1)})
 
-  def load(%Postgrex.Range{upper: upper, upper_inclusive: false} = range),
+  def load(%Postgrex.Range{upper: %Date{} = upper, upper_inclusive: false} = range),
     do: load(%Postgrex.Range{range | upper_inclusive: true, upper: Date.add(upper, -1)})
 
   def load(%Postgrex.Range{
-        lower: lower,
+        lower: %Date{} = lower,
         lower_inclusive: true,
-        upper: upper,
+        upper: %Date{} = upper,
         upper_inclusive: true
       }),
       do: {:ok, Date.range(lower, upper)}

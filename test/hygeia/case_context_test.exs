@@ -2249,4 +2249,197 @@ defmodule Hygeia.CaseContextTest do
       end
     end
   end
+
+  describe "vaccination_shot_validity" do
+    test "counts mixed mrna vaccinations" do
+      vaccination_1_date = Date.add(Date.utc_today(), -180)
+      vaccination_2_date = Date.add(Date.utc_today(), -150)
+
+      validity =
+        Date.range(
+          vaccination_2_date,
+          vaccination_2_date |> Date.add(-1) |> Cldr.Calendar.plus(:years, 1)
+        )
+
+      person =
+        person_fixture(tenant_fixture(), %{
+          is_vaccinated: true,
+          vaccination_shots: [
+            %{
+              vaccine_type: :moderna,
+              date: vaccination_1_date
+            },
+            %{
+              vaccine_type: :pfizer,
+              date: vaccination_2_date
+            }
+          ]
+        })
+
+      assert %Person{
+               vaccination_shot_validities: [
+                 %Person.VaccinationShot.Validity{
+                   range: ^validity
+                 }
+               ]
+             } = Repo.preload(person, :vaccination_shot_validities)
+    end
+
+    test "counts janssen vaccination" do
+      vaccination_date = Date.add(Date.utc_today(), -180)
+
+      validity_start_date = Date.add(vaccination_date, 22)
+
+      validity =
+        Date.range(
+          validity_start_date,
+          validity_start_date |> Date.add(-1) |> Cldr.Calendar.plus(:years, 1)
+        )
+
+      person =
+        person_fixture(tenant_fixture(), %{
+          is_vaccinated: true,
+          vaccination_shots: [
+            %{
+              vaccine_type: :janssen,
+              date: vaccination_date
+            }
+          ]
+        })
+
+      assert %Person{
+               vaccination_shot_validities: [
+                 %Person.VaccinationShot.Validity{
+                   range: ^validity
+                 }
+               ]
+             } = Repo.preload(person, :vaccination_shot_validities)
+    end
+
+    test "counts one mrna vaccination after external convalescence" do
+      vaccination_date = Date.add(Date.utc_today(), -180)
+
+      validity =
+        Date.range(
+          vaccination_date,
+          vaccination_date |> Date.add(-1) |> Cldr.Calendar.plus(:years, 1)
+        )
+
+      person =
+        person_fixture(tenant_fixture(), %{
+          convalescent_externally: true,
+          is_vaccinated: true,
+          vaccination_shots: [
+            %{
+              vaccine_type: :moderna,
+              date: vaccination_date
+            }
+          ]
+        })
+
+      assert %Person{
+               vaccination_shot_validities: [
+                 %Person.VaccinationShot.Validity{
+                   range: ^validity
+                 }
+               ]
+             } = Repo.preload(person, :vaccination_shot_validities)
+    end
+
+    test "counts one mrna vaccination after internal convalescence" do
+      vaccination_date = Cldr.Calendar.plus(Date.utc_today(), :months, -1)
+
+      order_date = DateTime.new!(Cldr.Calendar.plus(Date.utc_today(), :months, -5), ~T[12:00:00])
+      order_start_date = DateTime.to_date(order_date)
+      order_end_date = Date.add(order_start_date, 10)
+
+      validity =
+        Date.range(
+          vaccination_date,
+          vaccination_date |> Date.add(-1) |> Cldr.Calendar.plus(:years, 1)
+        )
+
+      person =
+        person_fixture(tenant_fixture(), %{
+          is_vaccinated: true,
+          vaccination_shots: [
+            %{
+              vaccine_type: :moderna,
+              date: vaccination_date
+            }
+          ]
+        })
+
+      _case =
+        case_fixture(person, nil, nil, %{
+          phases: [
+            %{
+              details: %{__type__: :index},
+              order_date: order_date,
+              quarantine_order: true,
+              start: order_start_date,
+              end: order_end_date
+            }
+          ],
+          tests: [],
+          clinical: nil
+        })
+
+      assert %Person{
+               vaccination_shot_validities: [
+                 %Person.VaccinationShot.Validity{
+                   range: ^validity
+                 }
+               ]
+             } = Repo.preload(person, :vaccination_shot_validities)
+    end
+
+    test "counts one mrna vaccination before internal convalescence" do
+      vaccination_date = Cldr.Calendar.plus(Date.utc_today(), :months, -4)
+
+      order_date = DateTime.new!(Cldr.Calendar.plus(Date.utc_today(), :months, -2), ~T[12:00:00])
+      order_start_date = DateTime.to_date(order_date)
+      order_end_date = Date.add(order_start_date, 10)
+
+      validity =
+        Date.range(
+          Cldr.Calendar.plus(order_end_date, :weeks, 4),
+          vaccination_date |> Date.add(-1) |> Cldr.Calendar.plus(:years, 1)
+        )
+
+      person =
+        person_fixture(tenant_fixture(), %{
+          is_vaccinated: true,
+          vaccination_shots: [
+            %{
+              vaccine_type: :moderna,
+              date: vaccination_date
+            }
+          ]
+        })
+
+      _case =
+        case_fixture(person, nil, nil, %{
+          phases: [
+            %{
+              details: %{__type__: :index},
+              order_date: order_date,
+              quarantine_order: true,
+              start: order_start_date,
+              end: order_end_date
+            }
+          ],
+          tests: [],
+          clinical: nil
+        })
+
+      assert %Person{
+               vaccination_shot_validities: [
+                 %Person.VaccinationShot.Validity{
+                   range: ^validity
+                 }
+               ]
+             } = Repo.preload(person, :vaccination_shot_validities)
+    end
+  end
 end
