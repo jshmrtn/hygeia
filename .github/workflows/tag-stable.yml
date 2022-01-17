@@ -23,6 +23,7 @@ jobs:
     uses: jshmrtn/hygeia/.github/workflows/part_release.yml@main
     with:
       releaseName: "${{ github.ref_name }}"
+      stable: true
 
   build:
     name: "Build"

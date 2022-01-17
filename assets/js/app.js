@@ -27,6 +27,9 @@ import Input from "./input.hook";
 import { init as sentryInit } from "./sentry";
 import browserFeatures from "./feature-detect";
 
+document.body.classList.remove('no-js');
+document.body.classList.add('js');
+
 const DEFAULT_TIMEZONE = "Europe/Zurich";
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
