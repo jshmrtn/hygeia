@@ -17,13 +17,6 @@
   </Field>
 
   {#if Ecto.Changeset.fetch_field!(@changeset, :reason) !== nil}
-    <div class="alert alert-info">
-      {#case Ecto.Changeset.fetch_field!(@changeset, :reason)}
-        {#match :vaccinated}{gettext("I am in possession of a valid vaccination certificate.")}
-        {#match :immune}{gettext(~S(I am in possession of a valid "Convalescent Certificate".))}
-      {/case}
-    </div>
-
     <div class="form-group">
       <Field name={:has_documentation} class="form-check">
         <Label class="mb-0 checkbox-label">
@@ -35,7 +28,7 @@
               )}
             {#match :immune}
               {gettext(
-                "I have official convalescence documentation to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
+                "I have official convalescence documentation (PCR test or rapid antigen test carried out by qualified personnel or antibody detection with a valid certificate) to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
               )}
           {/case}
         </Label>

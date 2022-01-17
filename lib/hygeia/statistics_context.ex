@@ -20,6 +20,7 @@ defmodule Hygeia.StatisticsContext do
   alias Hygeia.StatisticsContext.NewCasesPerDay
   alias Hygeia.StatisticsContext.NewRegisteredCasesPerDay
   alias Hygeia.StatisticsContext.TransmissionCountryCasesPerDay
+  alias Hygeia.StatisticsContext.VaccinationBreakthroughsPerDay
   alias Hygeia.TenantContext.Tenant
 
   @doc """
@@ -870,6 +871,25 @@ defmodule Hygeia.StatisticsContext do
     |> CSV.encode(escape_formulas: true)
   end
 
+  @spec export(
+          type :: :vaccination_breakthroughs_per_day,
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t()
+        ) :: Enumerable.t()
+  def export(:vaccination_breakthroughs_per_day, tenant, from, to) do
+    [[gettext("Date"), gettext("Count")]]
+    |> Stream.concat(
+      Repo.stream(
+        from(
+          cases_per_day in list_vaccination_breakthroughs_per_day_query(tenant, from, to),
+          select: [cases_per_day.date, cases_per_day.count]
+        )
+      )
+    )
+    |> CSV.encode(escape_formulas: true)
+  end
+
   defp list_active_cases_per_day_organisation_division_kind_query(
          %Tenant{uuid: tenant_uuid} = _tenant,
          date
@@ -1117,6 +1137,80 @@ defmodule Hygeia.StatisticsContext do
              (^include_zero_values and is_nil(registered_cases_per_day.first_contact))) and
           (^include_zero_values or registered_cases_per_day.count > 0),
       order_by: registered_cases_per_day.date
+    )
+  end
+
+  @doc """
+  Returns the list of vaccination_breakthroughs_per_day.
+
+  ## Examples
+
+      iex> list_vaccination_breakthroughs_per_day()
+      [%VaccinationBreakthroughsPerDay{}, ...]
+
+  """
+
+  @spec list_vaccination_breakthroughs_per_day_query(queryable :: Ecto.Queryable.t()) ::
+          Ecto.Query.t()
+  def list_vaccination_breakthroughs_per_day_query(queryable \\ VaccinationBreakthroughsPerDay),
+    do:
+      from(vaccination_breakthroughs_per_day in queryable,
+        order_by: vaccination_breakthroughs_per_day.date
+      )
+
+  @spec list_vaccination_breakthroughs_per_day :: [VaccinationBreakthroughsPerDay.t()]
+  def list_vaccination_breakthroughs_per_day,
+    do: Repo.all(list_vaccination_breakthroughs_per_day_query())
+
+  @spec list_vaccination_breakthroughs_per_day(tenant :: Tenant.t()) :: [
+          VaccinationBreakthroughsPerDay.t()
+        ]
+  def list_vaccination_breakthroughs_per_day(%Tenant{uuid: tenant_uuid} = _tenant),
+    do:
+      Repo.all(
+        from(vaccination_breakthroughs_per_day in list_vaccination_breakthroughs_per_day_query(),
+          where: vaccination_breakthroughs_per_day.tenant_uuid == ^tenant_uuid
+        )
+      )
+
+  @spec list_vaccination_breakthroughs_per_day(
+          tenant :: Tenant.t(),
+          from :: Date.t(),
+          to :: Date.t(),
+          include_zero_values :: boolean()
+        ) :: [VaccinationBreakthroughsPerDay.t()]
+  def list_vaccination_breakthroughs_per_day(
+        tenant,
+        from,
+        to,
+        include_zero_values \\ true
+      ),
+      do:
+        Repo.all(
+          list_vaccination_breakthroughs_per_day_query(
+            tenant,
+            from,
+            to,
+            include_zero_values
+          )
+        )
+
+  defp list_vaccination_breakthroughs_per_day_query(
+         %Tenant{uuid: tenant_uuid} = _tenant,
+         from,
+         to,
+         include_zero_values \\ true
+       ) do
+    from(vaccination_breakthroughs_per_day in list_vaccination_breakthroughs_per_day_query(),
+      where:
+        vaccination_breakthroughs_per_day.tenant_uuid == ^tenant_uuid and
+          fragment(
+            "? BETWEEN ?::date AND ?::date",
+            vaccination_breakthroughs_per_day.date,
+            ^from,
+            ^to
+          ) and
+          (^include_zero_values or vaccination_breakthroughs_per_day.count > 0)
     )
   end
 end

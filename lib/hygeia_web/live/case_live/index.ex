@@ -156,9 +156,6 @@ defmodule HygeiaWeb.CaseLive.Index do
     {cursor_fields, query} = sort_params(socket)
     user_not_assigned = Atom.to_string(:user_not_assigned)
 
-    {vaccine_validity_amount, vaccine_validity_unit} = Hygeia.vaccine_validity()
-    vaccine_validity_unit = Atom.to_string(vaccine_validity_unit)
-
     %Paginator.Page{entries: entries, metadata: metadata} =
       socket.assigns.filters
       |> Enum.map(fn {key, value} ->
@@ -202,29 +199,18 @@ defmodule HygeiaWeb.CaseLive.Index do
           )
 
         {:fully_vaccinated, "true"}, query ->
-          where(
-            query,
-            [case, person: person],
-            person.vaccination["done"] == fragment("TO_JSONB(?)", true) and
-              not is_nil(fragment("(?->>?)", person.vaccination["jab_dates"], 1)) and
-              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >=
-                ago(^vaccine_validity_amount, ^vaccine_validity_unit)
+          from([case, person: person] in query,
+            join: vaccination_shot_validity in assoc(person, :vaccination_shot_validities),
+            where:
+              person.is_vaccinated and
+                fragment("? @> ?", vaccination_shot_validity.range, fragment("CURRENT_DATE"))
           )
 
         {:vaccination_failures, "false"}, query ->
           query
 
         {:vaccination_failures, "true"}, query ->
-          where(
-            query,
-            [case, person: person],
-            person.vaccination["done"] == fragment("TO_JSONB(?)", true) and
-              not is_nil(fragment("(?->>?)", person.vaccination["jab_dates"], 1)) and
-              fragment("(?->'jab_dates'->>-1)::date", person.vaccination) >=
-                ago(^vaccine_validity_amount, ^vaccine_validity_unit) and
-              case.inserted_at >=
-                fragment("(?->>?)::date", person.vaccination["jab_dates"], -1)
-          )
+          CaseContext.list_vaccination_breakthrough_cases_query(query)
 
         {:fully_vaccinated, "false"}, query ->
           query

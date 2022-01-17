@@ -23,18 +23,32 @@
               <HygeiaWeb.FieldLabel schema={Person} />
               <TextInput
                 class="form-control"
-                opts={placeholder: pgettext("Person Login Form", "Jane"), required: true, autofocus: true}
+                opts={
+                  placeholder: pgettext("Person Login Form", "Jane"),
+                  required: true,
+                  autofocus: true,
+                  disabled: not connected?(@socket)
+                }
               />
             </Field>
             <Field class="form-group" name={:last_name}>
               <HygeiaWeb.FieldLabel schema={Person} />
               <TextInput
                 class="form-control"
-                opts={placeholder: pgettext("Person Login Form", "Doe"), required: true}
+                opts={
+                  placeholder: pgettext("Person Login Form", "Doe"),
+                  required: true,
+                  disabled: not connected?(@socket)
+                }
               />
             </Field>
 
-            <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Logging In...")}>
+            <button
+              class="btn btn-primary me-2"
+              type="submit"
+              phx-disable-with={gettext("Logging In...")}
+              disabled={not connected?(@socket)}
+            >
               <span class="oi oi-account-login me-1" title={gettext("Log In")} aria-hidden="true" />
               {gettext("Log In")}
             </button>
