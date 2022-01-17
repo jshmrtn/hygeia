@@ -253,12 +253,12 @@ defmodule Hygeia.Repo.Migrations.CreateVaccinationShots do
             WHERE result.range IS NOT NULL
           UNION
           SELECT
-          people.uuid AS person_uuid,
-          vaccination_shots.uuid,
-          DATERANGE(
-            (vaccination_shots.date + INTERVAL '22 day')::date,
-            (vaccination_shots.date + INTERVAL '1 year 22 day')::date
-          ) AS range
+            people.uuid AS person_uuid,
+            vaccination_shots.uuid,
+            DATERANGE(
+              (vaccination_shots.date + INTERVAL '22 day')::date,
+              (vaccination_shots.date + INTERVAL '1 year 22 day')::date
+            ) AS range
           FROM people
           JOIN
             vaccination_shots
