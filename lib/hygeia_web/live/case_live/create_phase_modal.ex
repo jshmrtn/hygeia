@@ -174,12 +174,12 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
               Date.compare(new_end_date, phase.end) in [:lt, :eq] ->
             nil
 
-          Date.compare(phase.start, new_end_date) in [:lt, :eq] and
-              Date.compare(new_end_date, phase.end) in [:lt, :eq] ->
+          Date.compare(phase.start, new_end_date) == :lt and
+              Date.compare(new_end_date, phase.end) == :lt ->
             {:phase_start_date, phase, new_end_date}
 
-          Date.compare(phase.start, new_start_date) in [:lt, :eq] and
-              Date.compare(new_start_date, phase.end) in [:lt, :eq] ->
+          Date.compare(phase.start, new_start_date) == :lt and
+              Date.compare(new_start_date, phase.end) == :lt ->
             {:phase_end_date, phase, new_start_date}
 
           true ->
