@@ -37,7 +37,7 @@
       |> Map.new(&({&1, Gettext.gettext(HygeiaGettext, &1)}))
       |> Jason.encode!()} />
   </head>
-  <body class="layout-root">
+  <body class={ ["layout-root", "no-js", (if assigns[:no_js_required], do: "no-js-required")] }>
     <%= @inner_content %>
   </body>
 </html>
