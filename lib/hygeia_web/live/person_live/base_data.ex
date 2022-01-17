@@ -92,17 +92,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
       |> Map.put_new("affiliations", [])
       |> Map.put_new("contact_methods", [])
       |> Map.put_new("external_references", [])
-      |> Map.update("vaccination", %{"jab_dates" => []}, fn vaccination ->
-        Map.update(
-          vaccination,
-          "jab_dates",
-          [],
-          &Enum.map(&1, fn
-            "" -> nil
-            other -> other
-          end)
-        )
-      end)
+      |> Map.put_new("vaccination_shots", [])
 
     {:noreply,
      socket
@@ -260,55 +250,43 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   end
 
   def handle_event(
-        "add_vaccination_jab_date",
+        "add_vaccination_shot",
         _params,
         %{assigns: %{changeset: changeset, person: person}} = socket
       ) do
-    vaccination_params =
-      changeset
-      |> Ecto.Changeset.get_change(
-        :vaccination,
-        Person.Vaccination.changeset(
-          Ecto.Changeset.get_field(changeset, :vaccination, %Person.Vaccination{}),
-          %{}
-        )
-      )
-      |> update_changeset_param(
-        :jab_dates,
-        &(&1 |> Kernel.||([]) |> Enum.concat([nil]))
-      )
-
-    params = update_changeset_param(changeset, :vaccination, fn _input -> vaccination_params end)
-
     {:noreply,
      socket
-     |> assign(:changeset, CaseContext.change_person(person, params))
+     |> assign(
+       changeset: %Ecto.Changeset{
+         CaseContext.change_person(
+           person,
+           changeset_add_to_params(changeset, :vaccination_shots, %{
+             uuid: Ecto.UUID.generate()
+           })
+         )
+         | action: :validate
+       }
+     )
      |> maybe_block_navigation()}
   end
 
   def handle_event(
-        "remove_vaccination_jab_date",
-        %{"index" => index} = _params,
+        "remove_vaccination_shot",
+        %{"uuid" => uuid} = _params,
         %{assigns: %{changeset: changeset, person: person}} = socket
       ) do
-    index = String.to_integer(index)
-
-    vaccination_params =
-      changeset
-      |> Ecto.Changeset.get_change(
-        :vaccination,
-        Person.Vaccination.changeset(
-          Ecto.Changeset.get_field(changeset, :vaccination, %Person.Vaccination{}),
-          %{}
-        )
-      )
-      |> update_changeset_param(:jab_dates, &List.delete_at(&1, index))
-
-    params = update_changeset_param(changeset, :vaccination, fn _input -> vaccination_params end)
-
     {:noreply,
      socket
-     |> assign(:changeset, CaseContext.change_person(person, params))
+     |> assign(
+       :changeset,
+       %Ecto.Changeset{
+         CaseContext.change_person(
+           person,
+           changeset_remove_from_params_by_id(changeset, :vaccination_shots, %{uuid: uuid})
+         )
+         | action: :validate
+       }
+     )
      |> maybe_block_navigation()}
   end
 
@@ -320,23 +298,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
       |> Map.put_new("affiliations", [])
       |> Map.put_new("contact_methods", [])
       |> Map.put_new("external_references", [])
-      |> Map.update("vaccination", %{"jab_dates" => []}, fn vaccination ->
-        Map.update(
-          vaccination,
-          "jab_dates",
-          [],
-          fn dates ->
-            dates
-            |> Enum.map(fn
-              "" -> nil
-              other -> other
-            end)
-            |> Enum.reject(&is_nil/1)
-            |> Enum.uniq()
-            |> Enum.sort_by(&Date.from_iso8601!/1, {:asc, Date})
-          end
-        )
-      end)
+      |> Map.put_new("vaccination_shots", [])
 
     socket.assigns.person
     |> CaseContext.update_person(person_params)
@@ -373,9 +335,20 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   end
 
   defp load_data(socket, person) do
-    person = Repo.preload(person, positions: [organisation: []], tenant: [], affiliations: [])
+    person =
+      Repo.preload(
+        person,
+        [
+          positions: [organisation: []],
+          tenant: [],
+          affiliations: [],
+          vaccination_shots: [],
+          vaccination_shot_validities: []
+        ],
+        force: true
+      )
 
-    changeset = CaseContext.change_person(person)
+    changeset = CaseContext.change_person(person, %{})
 
     socket
     |> assign(person: person, changeset: changeset)

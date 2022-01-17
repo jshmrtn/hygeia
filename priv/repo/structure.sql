@@ -38,7 +38,8 @@ CREATE TYPE public.affiliation_kind AS ENUM (
     'employee',
     'scholar',
     'member',
-    'other'
+    'other',
+    'resident'
 );
 
 
@@ -59,7 +60,10 @@ CREATE TYPE public.auto_tracing_problem AS ENUM (
     'no_contact_method',
     'possible_index_submission',
     'flight_related',
-    'phase_date_inconsistent'
+    'phase_date_inconsistent',
+    'high_risk_country_travel',
+    'phase_ends_in_the_past',
+    'possible_transmission'
 );
 
 
@@ -76,6 +80,7 @@ CREATE TYPE public.auto_tracing_step AS ENUM (
     'vaccination',
     'covid_app',
     'clinical',
+    'travel',
     'flights',
     'transmission',
     'end',
@@ -2253,6 +2258,23 @@ CREATE TYPE public.test_result AS ENUM (
 
 
 --
+-- Name: vaccine_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.vaccine_type AS ENUM (
+    'pfizer',
+    'moderna',
+    'janssen',
+    'astra_zeneca',
+    'sinopharm',
+    'sinovac',
+    'covaxin',
+    'novavax',
+    'other'
+);
+
+
+--
 -- Name: versioning_event; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -2854,8 +2876,25 @@ CREATE TABLE public.auto_tracings (
     transmission_uuid uuid,
     started_at timestamp without time zone NOT NULL,
     has_flown boolean,
-    flights jsonb[]
+    flights jsonb[],
+    has_travelled_in_risk_country boolean,
+    possible_transmission jsonb,
+    travels jsonb[]
 );
+
+
+--
+-- Name: case_phase_dates; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.case_phase_dates AS
+SELECT
+    NULL::uuid AS case_uuid,
+    NULL::uuid AS phase_uuid,
+    NULL::date AS first_test_date,
+    NULL::date AS last_test_date,
+    NULL::timestamp without time zone AS case_first_known_date,
+    NULL::timestamp without time zone AS case_last_known_date;
 
 
 --
@@ -3048,10 +3087,11 @@ CREATE TABLE public.people (
     tenant_uuid uuid,
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    vaccination jsonb,
     profession_category public.noga_code,
     profession_category_main public.noga_section,
-    fulltext tsvector GENERATED ALWAYS AS (((((((to_tsvector('german'::regconfig, (uuid)::text) || to_tsvector('german'::regconfig, (human_readable_id)::text)) || to_tsvector('german'::regconfig, (COALESCE(first_name, ''::character varying))::text)) || to_tsvector('german'::regconfig, (COALESCE(last_name, ''::character varying))::text)) || public.jsonb_array_to_tsvector_with_path(contact_methods, '$[*]."value"'::jsonpath)) || public.jsonb_array_to_tsvector_with_path(external_references, '$[*]."value"'::jsonpath)) || COALESCE(jsonb_to_tsvector('german'::regconfig, address, '["all"]'::jsonb), to_tsvector('german'::regconfig, ''::text)))) STORED
+    fulltext tsvector GENERATED ALWAYS AS (((((((to_tsvector('german'::regconfig, (uuid)::text) || to_tsvector('german'::regconfig, (human_readable_id)::text)) || to_tsvector('german'::regconfig, (COALESCE(first_name, ''::character varying))::text)) || to_tsvector('german'::regconfig, (COALESCE(last_name, ''::character varying))::text)) || public.jsonb_array_to_tsvector_with_path(contact_methods, '$[*]."value"'::jsonpath)) || public.jsonb_array_to_tsvector_with_path(external_references, '$[*]."value"'::jsonpath)) || COALESCE(jsonb_to_tsvector('german'::regconfig, address, '["all"]'::jsonb), to_tsvector('german'::regconfig, ''::text)))) STORED,
+    is_vaccinated boolean,
+    convalescent_externally boolean DEFAULT false NOT NULL
 );
 
 
@@ -3121,6 +3161,16 @@ CREATE TABLE public.resource_views (
     action public.resource_view_action NOT NULL,
     resource_table character varying(255) NOT NULL,
     resource_pk jsonb NOT NULL
+);
+
+
+--
+-- Name: risk_countries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.risk_countries (
+    uuid uuid NOT NULL,
+    country text NOT NULL
 );
 
 
@@ -3293,7 +3343,8 @@ CREATE TABLE public.transmissions (
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     infection_place jsonb,
-    comment text
+    comment text,
+    type public.case_phase_possible_index_type DEFAULT 'contact_person'::public.case_phase_possible_index_type NOT NULL
 );
 
 
@@ -3536,6 +3587,69 @@ CREATE MATERIALIZED VIEW public.statistics_transmission_country_cases_per_day AS
 
 
 --
+-- Name: tests; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tests (
+    uuid uuid NOT NULL,
+    tested_at date,
+    laboratory_reported_at date,
+    kind public.test_kind NOT NULL,
+    result public.test_result,
+    sponsor jsonb,
+    reporting_unit jsonb,
+    case_uuid uuid NOT NULL,
+    reference character varying(255),
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    mutation_uuid uuid
+);
+
+
+--
+-- Name: vaccination_shot_validity; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.vaccination_shot_validity AS
+SELECT
+    NULL::uuid AS person_uuid,
+    NULL::uuid AS vaccination_shot_uuid,
+    NULL::daterange AS range;
+
+
+--
+-- Name: statistics_vaccination_breakthroughs_per_day; Type: MATERIALIZED VIEW; Schema: public; Owner: -
+--
+
+CREATE MATERIALIZED VIEW public.statistics_vaccination_breakthroughs_per_day AS
+ WITH last_positive_test_dates AS (
+         SELECT tests.case_uuid,
+            max(COALESCE(tests.tested_at, tests.laboratory_reported_at)) AS test_date
+           FROM public.tests
+          GROUP BY tests.case_uuid
+        ), case_count_dates AS (
+         SELECT cases.uuid,
+            cases.tenant_uuid,
+            cases.person_uuid,
+            COALESCE(last_positive_test_dates.test_date, ((cases.clinical ->> 'symptom_start'::text))::date, ((index_phases.index_phases ->> 'order_date'::text))::date, ((index_phases.index_phases ->> 'inserted_at'::text))::date, (cases.inserted_at)::date) AS count_date
+           FROM ((public.cases
+             JOIN LATERAL unnest(cases.phases) index_phases(index_phases) ON ((((index_phases.index_phases -> 'details'::text) ->> '__type__'::text) = 'index'::text)))
+             LEFT JOIN last_positive_test_dates ON ((last_positive_test_dates.case_uuid = cases.uuid)))
+        )
+ SELECT tenants.uuid AS tenant_uuid,
+    (date.date)::date AS date,
+    count(DISTINCT vaccination_shot_validity.person_uuid) AS count
+   FROM (((generate_series(LEAST((( SELECT min(case_count_dates_1.count_date) AS min
+           FROM case_count_dates case_count_dates_1))::timestamp without time zone, (CURRENT_DATE - '1 year'::interval)), (CURRENT_DATE)::timestamp without time zone, '1 day'::interval) date(date)
+     CROSS JOIN public.tenants)
+     LEFT JOIN case_count_dates ON (((tenants.uuid = case_count_dates.tenant_uuid) AND (date.date = case_count_dates.count_date))))
+     LEFT JOIN public.vaccination_shot_validity ON (((vaccination_shot_validity.range @> (date.date)::date) AND (vaccination_shot_validity.person_uuid = case_count_dates.person_uuid))))
+  GROUP BY date.date, tenants.uuid
+  ORDER BY ((date.date)::date), tenants.uuid
+  WITH NO DATA;
+
+
+--
 -- Name: system_message_tenants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3557,26 +3671,6 @@ CREATE TABLE public.system_messages (
     roles public.grant_role[] DEFAULT ARRAY[]::public.grant_role[],
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: tests; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.tests (
-    uuid uuid NOT NULL,
-    tested_at date,
-    laboratory_reported_at date,
-    kind public.test_kind NOT NULL,
-    result public.test_result,
-    sponsor jsonb,
-    reporting_unit jsonb,
-    case_uuid uuid NOT NULL,
-    reference character varying(255),
-    inserted_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    mutation_uuid uuid
 );
 
 
@@ -3604,6 +3698,26 @@ CREATE TABLE public.users (
     iam_sub character varying(255),
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: vaccination_shots; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.vaccination_shots (
+    uuid uuid NOT NULL,
+    vaccine_type public.vaccine_type NOT NULL,
+    vaccine_type_other character varying(255),
+    date date NOT NULL,
+    person_uuid uuid NOT NULL,
+    inserted_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT vaccine_type_other_required CHECK (
+CASE
+    WHEN (vaccine_type = 'other'::public.vaccine_type) THEN (vaccine_type_other IS NOT NULL)
+    ELSE (vaccine_type_other IS NULL)
+END)
 );
 
 
@@ -3771,6 +3885,14 @@ ALTER TABLE ONLY public.premature_releases
 
 
 --
+-- Name: risk_countries risk_countries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.risk_countries
+    ADD CONSTRAINT risk_countries_pkey PRIMARY KEY (uuid);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3848,6 +3970,14 @@ ALTER TABLE ONLY public.user_grants
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (uuid);
+
+
+--
+-- Name: vaccination_shots vaccination_shots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vaccination_shots
+    ADD CONSTRAINT vaccination_shots_pkey PRIMARY KEY (uuid);
 
 
 --
@@ -4095,6 +4225,13 @@ CREATE INDEX premature_releases_case_uuid_index ON public.premature_releases USI
 --
 
 CREATE UNIQUE INDEX resource_views_request_id_action_resource_table_resource_pk_ind ON public.resource_views USING btree (request_id, action, resource_table, resource_pk);
+
+
+--
+-- Name: risk_countries_country_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX risk_countries_country_index ON public.risk_countries USING btree (country);
 
 
 --
@@ -4434,6 +4571,27 @@ CREATE INDEX statistics_transmission_country_cases_per_day_tenant_uuid_index ON 
 
 
 --
+-- Name: statistics_vaccination_breakthroughs_per_day_date_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX statistics_vaccination_breakthroughs_per_day_date_index ON public.statistics_vaccination_breakthroughs_per_day USING btree (date);
+
+
+--
+-- Name: statistics_vaccination_breakthroughs_per_day_tenant_uuid_date_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX statistics_vaccination_breakthroughs_per_day_tenant_uuid_date_i ON public.statistics_vaccination_breakthroughs_per_day USING btree (tenant_uuid, date);
+
+
+--
+-- Name: statistics_vaccination_breakthroughs_per_day_tenant_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX statistics_vaccination_breakthroughs_per_day_tenant_uuid_index ON public.statistics_vaccination_breakthroughs_per_day USING btree (tenant_uuid);
+
+
+--
 -- Name: tenants_iam_domain_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4476,6 +4634,34 @@ CREATE UNIQUE INDEX users_iam_sub_index ON public.users USING btree (iam_sub);
 
 
 --
+-- Name: vaccination_shots_person_uuid_date_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX vaccination_shots_person_uuid_date_index ON public.vaccination_shots USING btree (person_uuid, date);
+
+
+--
+-- Name: vaccination_shots_person_uuid_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX vaccination_shots_person_uuid_index ON public.vaccination_shots USING btree (person_uuid);
+
+
+--
+-- Name: vaccination_shots_person_uuid_vaccine_type_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX vaccination_shots_person_uuid_vaccine_type_index ON public.vaccination_shots USING btree (person_uuid, vaccine_type);
+
+
+--
+-- Name: vaccination_shots_vaccine_type_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX vaccination_shots_vaccine_type_index ON public.vaccination_shots USING btree (vaccine_type);
+
+
+--
 -- Name: versions_item_pk_item_table_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4487,6 +4673,94 @@ CREATE INDEX versions_item_pk_item_table_index ON public.versions USING btree (i
 --
 
 CREATE INDEX versions_originator_id_index ON public.versions USING btree (originator_id);
+
+
+--
+-- Name: vaccination_shot_validity _RETURN; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE OR REPLACE VIEW public.vaccination_shot_validity AS
+ SELECT vaccination_shots.person_uuid,
+    vaccination_shots.uuid AS vaccination_shot_uuid,
+    daterange(((vaccination_shots.date + '22 days'::interval))::date, ((vaccination_shots.date + '1 year 22 days'::interval))::date) AS range
+   FROM public.vaccination_shots
+  WHERE (vaccination_shots.vaccine_type = 'janssen'::public.vaccine_type)
+UNION
+ SELECT result.person_uuid,
+    result.vaccination_shot_uuid,
+    result.range
+   FROM ( SELECT vaccination_shots.person_uuid,
+            vaccination_shots.uuid AS vaccination_shot_uuid,
+                CASE
+                    WHEN (row_number() OVER (PARTITION BY vaccination_shots.person_uuid ORDER BY vaccination_shots.date) >= 2) THEN daterange(vaccination_shots.date, ((vaccination_shots.date + '1 year'::interval))::date)
+                    ELSE NULL::daterange
+                END AS range
+           FROM public.vaccination_shots
+          WHERE (vaccination_shots.vaccine_type = ANY (ARRAY['pfizer'::public.vaccine_type, 'moderna'::public.vaccine_type, 'astra_zeneca'::public.vaccine_type]))) result
+  WHERE (result.range IS NOT NULL)
+UNION
+ SELECT result.person_uuid,
+    result.vaccination_shot_uuid,
+    result.range
+   FROM ( SELECT vaccination_shots.person_uuid,
+            vaccination_shots.uuid AS vaccination_shot_uuid,
+                CASE
+                    WHEN (row_number() OVER (PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type ORDER BY vaccination_shots.date) >= 2) THEN daterange(vaccination_shots.date, ((vaccination_shots.date + '1 year'::interval))::date)
+                    ELSE NULL::daterange
+                END AS range
+           FROM public.vaccination_shots
+          WHERE (vaccination_shots.vaccine_type = ANY (ARRAY['astra_zeneca'::public.vaccine_type, 'pfizer'::public.vaccine_type, 'moderna'::public.vaccine_type, 'sinopharm'::public.vaccine_type, 'sinovac'::public.vaccine_type, 'covaxin'::public.vaccine_type]))) result
+  WHERE (result.range IS NOT NULL)
+UNION
+ SELECT result.person_uuid,
+    result.vaccination_shot_uuid,
+    result.range
+   FROM ( SELECT vaccination_shots.person_uuid,
+            vaccination_shots.uuid AS vaccination_shot_uuid,
+                CASE
+                    WHEN (row_number() OVER (PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type ORDER BY vaccination_shots.date) = 1) THEN daterange(vaccination_shots.date, ((vaccination_shots.date + '1 year'::interval))::date)
+                    ELSE NULL::daterange
+                END AS range
+           FROM (public.people
+             JOIN public.vaccination_shots ON ((vaccination_shots.person_uuid = people.uuid)))
+          WHERE (people.convalescent_externally AND (vaccination_shots.vaccine_type = ANY (ARRAY['astra_zeneca'::public.vaccine_type, 'pfizer'::public.vaccine_type, 'moderna'::public.vaccine_type, 'sinopharm'::public.vaccine_type, 'sinovac'::public.vaccine_type, 'covaxin'::public.vaccine_type])))) result
+  WHERE (result.range IS NOT NULL)
+UNION
+ SELECT result.person_uuid,
+    result.vaccination_shot_uuid,
+    result.range
+   FROM ( SELECT people.uuid AS person_uuid,
+            vaccination_shots.uuid AS vaccination_shot_uuid,
+                CASE
+                    WHEN ((row_number() OVER (PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type ORDER BY vaccination_shots.date) = 1) AND (daterange(((COALESCE((case_phase_dates.first_test_date)::timestamp without time zone, case_phase_dates.case_first_known_date) - '28 days'::interval))::date, ((COALESCE((case_phase_dates.last_test_date)::timestamp without time zone, case_phase_dates.case_last_known_date) + '28 days'::interval))::date) << daterange(vaccination_shots.date, ((vaccination_shots.date + '1 year'::interval))::date))) THEN daterange(vaccination_shots.date, ((vaccination_shots.date + '1 year'::interval))::date)
+                    WHEN ((row_number() OVER (PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type ORDER BY vaccination_shots.date) = 1) AND (daterange(((COALESCE((case_phase_dates.first_test_date)::timestamp without time zone, case_phase_dates.case_first_known_date) - '28 days'::interval))::date, ((COALESCE((case_phase_dates.last_test_date)::timestamp without time zone, case_phase_dates.case_last_known_date) + '28 days'::interval))::date) >> daterange(vaccination_shots.date, ((vaccination_shots.date + '1 year'::interval))::date))) THEN NULL::daterange
+                    WHEN ((row_number() OVER (PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type ORDER BY vaccination_shots.date) = 1) AND (daterange(((COALESCE((case_phase_dates.first_test_date)::timestamp without time zone, case_phase_dates.case_first_known_date) - '28 days'::interval))::date, ((COALESCE((case_phase_dates.last_test_date)::timestamp without time zone, case_phase_dates.case_last_known_date) + '28 days'::interval))::date) && daterange(vaccination_shots.date, ((vaccination_shots.date + '1 year'::interval))::date))) THEN daterange(((COALESCE((case_phase_dates.last_test_date)::timestamp without time zone, case_phase_dates.case_last_known_date) + '28 days'::interval))::date, ((vaccination_shots.date + '1 year'::interval))::date)
+                    ELSE NULL::daterange
+                END AS range
+           FROM ((((public.people
+             JOIN public.vaccination_shots ON ((vaccination_shots.person_uuid = people.uuid)))
+             JOIN public.cases ON ((cases.person_uuid = people.uuid)))
+             JOIN LATERAL unnest(cases.phases) index_phases(index_phases) ON ((((index_phases.index_phases -> 'details'::text) ->> '__type__'::text) = 'index'::text)))
+             JOIN public.case_phase_dates ON (((case_phase_dates.case_uuid = cases.uuid) AND (case_phase_dates.phase_uuid = ((index_phases.index_phases ->> 'uuid'::text))::uuid))))
+          WHERE (vaccination_shots.vaccine_type = ANY (ARRAY['astra_zeneca'::public.vaccine_type, 'pfizer'::public.vaccine_type, 'moderna'::public.vaccine_type, 'sinopharm'::public.vaccine_type, 'sinovac'::public.vaccine_type, 'covaxin'::public.vaccine_type]))) result
+  WHERE (result.range IS NOT NULL);
+
+
+--
+-- Name: case_phase_dates _RETURN; Type: RULE; Schema: public; Owner: -
+--
+
+CREATE OR REPLACE VIEW public.case_phase_dates AS
+ SELECT cases.uuid AS case_uuid,
+    ((phase.phase ->> 'uuid'::text))::uuid AS phase_uuid,
+    LEAST(min(tests.tested_at), min(tests.laboratory_reported_at)) AS first_test_date,
+    GREATEST(max(tests.tested_at), max(tests.laboratory_reported_at)) AS last_test_date,
+    COALESCE((LEAST(min(tests.tested_at), min(tests.laboratory_reported_at), ((cases.clinical ->> 'symptom_start'::text))::date, ((phase.phase ->> 'start'::text))::date))::timestamp without time zone, (((phase.phase ->> 'order_date'::text))::date)::timestamp without time zone, (((phase.phase ->> 'inserted_at'::text))::date)::timestamp without time zone, cases.inserted_at) AS case_first_known_date,
+    COALESCE((GREATEST(max(tests.tested_at), max(tests.laboratory_reported_at), ((cases.clinical ->> 'symptom_start'::text))::date, ((phase.phase ->> 'end'::text))::date))::timestamp without time zone, (((phase.phase ->> 'order_date'::text))::date)::timestamp without time zone, (((phase.phase ->> 'inserted_at'::text))::date)::timestamp without time zone, cases.inserted_at) AS case_last_known_date
+   FROM ((public.cases
+     CROSS JOIN LATERAL unnest(cases.phases) phase(phase))
+     LEFT JOIN public.tests ON (((tests.case_uuid = cases.uuid) AND (tests.result = 'positive'::public.test_result))))
+  GROUP BY cases.uuid, phase.phase;
 
 
 --
@@ -5050,6 +5324,27 @@ CREATE TRIGGER users_versioning_update AFTER UPDATE ON public.users FOR EACH ROW
 
 
 --
+-- Name: vaccination_shots vaccination_shots_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER vaccination_shots_versioning_delete AFTER DELETE ON public.vaccination_shots FOR EACH ROW EXECUTE FUNCTION public.versioning_delete();
+
+
+--
+-- Name: vaccination_shots vaccination_shots_versioning_insert; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER vaccination_shots_versioning_insert AFTER INSERT ON public.vaccination_shots FOR EACH ROW EXECUTE FUNCTION public.versioning_insert();
+
+
+--
+-- Name: vaccination_shots vaccination_shots_versioning_update; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER vaccination_shots_versioning_update AFTER UPDATE ON public.vaccination_shots FOR EACH ROW EXECUTE FUNCTION public.versioning_update();
+
+
+--
 -- Name: visits visit_versioning_delete; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -5367,6 +5662,14 @@ ALTER TABLE ONLY public.user_grants
 
 
 --
+-- Name: vaccination_shots vaccination_shots_person_uuid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vaccination_shots
+    ADD CONSTRAINT vaccination_shots_person_uuid_fkey FOREIGN KEY (person_uuid) REFERENCES public.people(uuid);
+
+
+--
 -- Name: versions versions_originator_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5519,3 +5822,16 @@ INSERT INTO public."schema_migrations" (version) VALUES (20211012213226);
 INSERT INTO public."schema_migrations" (version) VALUES (20211015083935);
 INSERT INTO public."schema_migrations" (version) VALUES (20211103105723);
 INSERT INTO public."schema_migrations" (version) VALUES (20211117230115);
+INSERT INTO public."schema_migrations" (version) VALUES (20211130150556);
+INSERT INTO public."schema_migrations" (version) VALUES (20211201143102);
+INSERT INTO public."schema_migrations" (version) VALUES (20211202171922);
+INSERT INTO public."schema_migrations" (version) VALUES (20211208094932);
+INSERT INTO public."schema_migrations" (version) VALUES (20211220095509);
+INSERT INTO public."schema_migrations" (version) VALUES (20211223101132);
+INSERT INTO public."schema_migrations" (version) VALUES (20211227102423);
+INSERT INTO public."schema_migrations" (version) VALUES (20211230121753);
+INSERT INTO public."schema_migrations" (version) VALUES (20220103114333);
+INSERT INTO public."schema_migrations" (version) VALUES (20220103114334);
+INSERT INTO public."schema_migrations" (version) VALUES (20220111093904);
+INSERT INTO public."schema_migrations" (version) VALUES (20220117182843);
+INSERT INTO public."schema_migrations" (version) VALUES (20220117220433);

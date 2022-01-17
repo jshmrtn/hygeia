@@ -26,6 +26,22 @@
         phx-click="lv:clear-flash"
         phx-value-key="error"><%= live_flash(@flash, :error) %></p>
     </div>
+
+    <%= unless assigns[:no_js_required] do %>
+      <noscript>
+        <div class="container">
+          <p class="alert alert-danger" role="alert">
+            <%= pgettext("Layout", "JavaScript is required to use this application.") %><br />
+            <%= link(
+              pgettext("Layout", "Here are the instructions how to enable JavaScript in your web browser."),
+              to: "https://www.enable-javascript.com/",
+              target: "_blank"
+            ) %>
+          </p>
+        </div>
+      </noscript>
+    <% end %>
+
     <%= @inner_content %>
   </main>
 

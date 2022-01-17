@@ -21,6 +21,10 @@ on:
       dockerTag:
         required: false
         type: string
+      dockerBuild:
+        required: false
+        type: boolean
+        default: true
     secrets:
       CACHE_VERSION:
         required: true
@@ -124,6 +128,8 @@ jobs:
     runs-on: ubuntu-latest
 
     needs: ['mix_release']
+
+    if: ${{ inputs.dockerBuild }}
 
     steps:
       - uses: actions/checkout@v2

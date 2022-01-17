@@ -102,6 +102,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       address: "Address",
       birth_date: "Birth Date",
       contact_methods: "Contact Methods",
+      convalescent_externally: "Convalescent Externally",
       employers: "Employers",
       external_references: "References",
       first_name: "First Name",
@@ -118,10 +119,10 @@ defmodule HygeiaWeb.Helpers.FieldName do
       type: "Typ",
       value: "Value"
     },
-    Hygeia.CaseContext.Person.Vaccination => %{
-      done: "Done",
-      jab_dates: "Jab Dates",
-      name: "Name of Vaccine"
+    Hygeia.CaseContext.Person.VaccinationShot => %{
+      vaccine_type: "Vaccine",
+      date: "Date",
+      vaccine_type_other: "Vaccine name"
     },
     Hygeia.CaseContext.PossibleIndexSubmission => %{
       address: "Address",
@@ -354,6 +355,11 @@ defmodule HygeiaWeb.Helpers.FieldName do
     HygeiaWeb.AutoTracingLive.Travel => %{
       has_flown: "Has flown",
       has_travelled: "Has travelled"
+    },
+    HygeiaWeb.AutoTracingLive.Vaccination => %{
+      is_vaccinated: "Is vaccinated",
+      number_of_vaccination_shots: "Number of vaccination shots received",
+      vaccination_shots: "Vaccination shots"
     },
     HygeiaWeb.AutoTracingLive.ResolveProblems.LinkPropagatorOpts => %{
       propagator_case: "Propagator Case",

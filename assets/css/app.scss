@@ -15,10 +15,12 @@
   transition: opacity 1s ease-out;
 }
 
-.phx-disconnected {
+.phx-disconnected,
+.no-js:not(.no-js-required) {
   cursor: wait;
 }
-.phx-disconnected * {
+.phx-disconnected *,
+.no-js:not(.no-js-required) .page-container > main {
   pointer-events: none;
 }
 
