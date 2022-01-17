@@ -9,6 +9,7 @@ defmodule HygeiaWeb.HomeLive.Index do
   alias Surface.Components.Link
 
   data hide_footer, :boolean, default: true
+  data no_js_required, :boolean, default: true
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do

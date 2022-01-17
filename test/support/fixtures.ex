@@ -204,23 +204,45 @@ defmodule Hygeia.Fixtures do
         supervisor \\ user_fixture(%{iam_sub: Ecto.UUID.generate()}),
         attrs \\ %{}
       ) do
-    tracer = Repo.preload(tracer, :grants)
+    tracer_uuid =
+      case tracer do
+        nil ->
+          nil
 
-    UserContext.update_user(tracer, %{grants: [%{role: :tracer, tenant_uuid: person.tenant_uuid}]})
+        %User{} ->
+          tracer = Repo.preload(tracer, :grants)
 
-    supervisor = Repo.preload(supervisor, :grants)
+          {:ok, tracer} =
+            UserContext.update_user(tracer, %{
+              grants: [%{role: :tracer, tenant_uuid: person.tenant_uuid}]
+            })
 
-    UserContext.update_user(supervisor, %{
-      grants: [%{role: :supervisor, tenant_uuid: person.tenant_uuid}]
-    })
+          tracer.uuid
+      end
+
+    supervisor_uuid =
+      case tracer do
+        nil ->
+          nil
+
+        %User{} ->
+          supervisor = Repo.preload(supervisor, :grants)
+
+          {:ok, supervisor} =
+            UserContext.update_user(supervisor, %{
+              grants: [%{role: :supervisor, tenant_uuid: person.tenant_uuid}]
+            })
+
+          supervisor.uuid
+      end
 
     {:ok, case} =
       CaseContext.create_case(
         person,
         attrs
         |> Enum.into(case_fixture_attrs())
-        |> Map.put_new(:tracer_uuid, tracer.uuid)
-        |> Map.put_new(:supervisor_uuid, supervisor.uuid)
+        |> Map.put_new(:tracer_uuid, tracer_uuid)
+        |> Map.put_new(:supervisor_uuid, supervisor_uuid)
       )
 
     case

@@ -16,6 +16,7 @@ defmodule Hygeia.StatisticsContextTest do
   alias Hygeia.StatisticsContext.CumulativePossibleIndexCaseEndReasons
   alias Hygeia.StatisticsContext.NewCasesPerDay
   alias Hygeia.StatisticsContext.TransmissionCountryCasesPerDay
+  alias Hygeia.StatisticsContext.VaccinationBreakthroughsPerDay
 
   @moduletag origin: :test
   @moduletag originator: :noone
@@ -1501,6 +1502,109 @@ defmodule Hygeia.StatisticsContextTest do
                  day_1,
                  day_4
                )
+    end
+  end
+
+  describe "vaccination_breakthroughs_per_day" do
+    test "counts positive cases with vaccination" do
+      vaccine_one_date = Date.add(Date.utc_today(), -30)
+      vaccine_two_date = Date.add(Date.utc_today(), -60)
+
+      [day_1, day_2, day_3] =
+        Enum.to_list(Date.range(Date.add(Date.utc_today(), -2), Date.utc_today()))
+
+      tenant = tenant_fixture()
+
+      person =
+        person_fixture(tenant, %{
+          is_vaccinated: true,
+          vaccination_shots: [
+            %{vaccine_type: :moderna, date: vaccine_one_date},
+            %{vaccine_type: :moderna, date: vaccine_two_date}
+          ]
+        })
+
+      user = user_fixture()
+
+      _index_case =
+        case_fixture(person, user, user, %{
+          phases: [
+            %{
+              details: %{
+                __type__: :index
+              }
+            }
+          ],
+          tests: [],
+          clinical: %{
+            symptom_start: day_2
+          }
+        })
+
+      execute_materialized_view_refresh(:statistics_vaccination_breakthroughs_per_day)
+
+      assert [
+               %VaccinationBreakthroughsPerDay{count: 0, date: ^day_1},
+               %VaccinationBreakthroughsPerDay{count: 1, date: ^day_2},
+               %VaccinationBreakthroughsPerDay{count: 0, date: ^day_3}
+             ] =
+               StatisticsContext.list_vaccination_breakthroughs_per_day(
+                 tenant,
+                 day_1,
+                 day_3
+               )
+    end
+
+    test "exports breakthrough cases" do
+      vaccine_one_date = Date.add(Date.utc_today(), -30)
+      vaccine_two_date = Date.add(Date.utc_today(), -60)
+
+      [day_1, day_2, day_3] =
+        Enum.to_list(Date.range(Date.add(Date.utc_today(), -2), Date.utc_today()))
+
+      tenant = tenant_fixture()
+
+      person =
+        person_fixture(tenant, %{
+          is_vaccinated: true,
+          vaccination_shots: [
+            %{vaccine_type: :moderna, date: vaccine_one_date},
+            %{vaccine_type: :moderna, date: vaccine_two_date}
+          ]
+        })
+
+      user = user_fixture()
+
+      _index_case =
+        case_fixture(person, user, user, %{
+          phases: [
+            %{
+              details: %{
+                __type__: :index
+              }
+            }
+          ],
+          tests: [],
+          clinical: %{
+            symptom_start: day_2
+          }
+        })
+
+      execute_materialized_view_refresh(:statistics_vaccination_breakthroughs_per_day)
+
+      Repo.transaction(fn ->
+        assert entries =
+                 :vaccination_breakthroughs_per_day
+                 |> StatisticsContext.export(
+                   tenant,
+                   day_1,
+                   day_3
+                 )
+                 |> CSV.decode!(escape_formulas: true)
+                 |> Enum.to_list()
+
+        assert length(entries) == 4
+      end)
     end
   end
 end
