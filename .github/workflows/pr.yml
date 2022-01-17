@@ -58,6 +58,6 @@ jobs:
   dependabot:
     name: "Dependabot"
 
-    needs: ['test', 'docs']
+    needs: ['test', 'docs', 'build']
 
     uses: jshmrtn/hygeia/.github/workflows/part_dependabot.yml@main
