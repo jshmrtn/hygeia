@@ -29,7 +29,8 @@ defmodule HygeiaWeb.StatisticsLive.Timeline do
        active_infection_place_cases_per_day: [],
        transmission_country_cases_per_day: [],
        new_registered_cases_per_day_first_contact: [],
-       new_registered_cases_per_day_not_first_contact: []
+       new_registered_cases_per_day_not_first_contact: [],
+       vaccination_breakthroughs_per_day: []
      ]}
   end
 
@@ -128,7 +129,9 @@ defmodule HygeiaWeb.StatisticsLive.Timeline do
       new_registered_cases_per_day_first_contact:
         StatisticsContext.list_new_registered_cases_per_day(tenant, from, to, true),
       new_registered_cases_per_day_not_first_contact:
-        StatisticsContext.list_new_registered_cases_per_day(tenant, from, to, false)
+        StatisticsContext.list_new_registered_cases_per_day(tenant, from, to, false),
+      vaccination_breakthroughs_per_day:
+        StatisticsContext.list_vaccination_breakthroughs_per_day(tenant, from, to)
     )
   end
 end

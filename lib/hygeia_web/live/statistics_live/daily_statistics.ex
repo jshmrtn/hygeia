@@ -33,7 +33,8 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
        transmission_country_cases_per_day: [],
        active_cases_per_day_and_organisation: [],
        new_registered_cases_per_day_first_contact: [],
-       new_registered_cases_per_day_not_first_contact: []
+       new_registered_cases_per_day_not_first_contact: [],
+       vaccination_breakthroughs_per_day: []
      ]}
   end
 
@@ -150,7 +151,9 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
       new_registered_cases_per_day_first_contact:
         StatisticsContext.list_new_registered_cases_per_day(tenant, date, date, true),
       new_registered_cases_per_day_not_first_contact:
-        StatisticsContext.list_new_registered_cases_per_day(tenant, date, date, false)
+        StatisticsContext.list_new_registered_cases_per_day(tenant, date, date, false),
+      vaccination_breakthroughs_per_day:
+        StatisticsContext.list_vaccination_breakthroughs_per_day(tenant, date, date)
     )
   end
 end

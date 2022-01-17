@@ -92,38 +92,4 @@ defmodule Hygeia do
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end
-
-  @vaccine_validity Application.compile_env!(:hygeia, [:vaccine_validity])
-
-  @doc """
-  Get Vaccine Validity
-  """
-  @spec vaccine_validity :: validity_timeframe
-  def vaccine_validity, do: @vaccine_validity
-
-  {amount, unit} = @vaccine_validity
-  @vaccine_validity_cldr Cldr.Unit.new!(amount, unit)
-
-  @doc """
-  Get Vaccine Validity as Cldr Unit
-  """
-  @spec vaccine_validity_cldr :: Cldr.Unit.t()
-  def vaccine_validity_cldr, do: @vaccine_validity_cldr
-
-  @immune_validity Application.compile_env!(:hygeia, [:immune_validity])
-
-  @doc """
-  Get Immune Validity
-  """
-  @spec immune_validity :: validity_timeframe
-  def immune_validity, do: @immune_validity
-
-  {amount, unit} = @immune_validity
-  @immune_validity_cldr Cldr.Unit.new!(amount, unit)
-
-  @doc """
-  Get Immune Validity as Cldr Unit
-  """
-  @spec immune_validity_cldr :: Cldr.Unit.t()
-  def immune_validity_cldr, do: @immune_validity_cldr
 end

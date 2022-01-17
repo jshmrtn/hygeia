@@ -461,7 +461,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       {:ok, vaccination_view, html} =
         live(conn, Routes.auto_tracing_vaccination_path(conn, :vaccination, case))
 
-      assert html =~ gettext("Not Done")
+      assert html =~ gettext("Are you vaccinated?")
 
       assert_raise ArgumentError, fn ->
         vaccination_view
@@ -483,6 +483,34 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
 
       {:ok, vaccination_view, _html} =
         live(conn, Routes.auto_tracing_vaccination_path(conn, :vaccination, case))
+
+      assert vaccination_view
+             |> form("#vaccination-form", vaccination: %{is_vaccinated: true})
+             |> render_change() =~
+               "How many vaccination shots have you received?"
+
+      assert vaccination_view
+             |> form("#vaccination-form", vaccination: %{number_of_vaccination_shots: 2})
+             |> render_change()
+
+      assert vaccination_view
+             |> form("#vaccination-form")
+             |> render_change(
+               vaccination: %{
+                 convalescent_externally: true,
+                 vaccination_shots: %{
+                   "0" => %{
+                     date: "2022-01-02",
+                     vaccine_type: :moderna
+                   },
+                   "1" => %{
+                     date: "2022-01-03",
+                     vaccine_type: :other,
+                     vaccine_type_other: "Moderno"
+                   }
+                 }
+               }
+             )
 
       assert vaccination_view
              |> element("button", "Continue")
