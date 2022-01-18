@@ -34,7 +34,6 @@ defmodule HygeiaWeb.Footer do
     {:ok,
      socket
      |> assign(:subject, nil)
-     |> assign(:tenants, nil)
      |> assign(assigns)
      |> ensure_data_exists()}
   end

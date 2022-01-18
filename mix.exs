@@ -142,7 +142,6 @@ defmodule Hygeia.MixProject do
       {:sentry, "~> 8.0"},
       {:shards, "~> 1.0"},
       {:surface, "~> 0.7.0"},
-      {:surface_formatter, "~> 0.2"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_metrics_prometheus, "~> 1.0"},
       {:telemetry_poller, "~> 0.4 or ~> 1.0"},

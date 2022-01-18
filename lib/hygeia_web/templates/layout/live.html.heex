@@ -2,7 +2,15 @@
   <.live_component
     module={HygeiaWeb.Header}
     id="global-header"
-    __context__={assigns[:__context__]} />
+    {Surface.build_assigns(
+        assigns[:__context__],
+        [],
+        %{},
+        HygeiaWeb.Header,
+        HygeiaWeb.Header,
+        __ENV__
+      )
+    } />
 
   <main role="main" class="layout-live-main px-3 px-sm-2">
     <div class="container">
@@ -41,6 +49,16 @@
     <.live_component
     module={HygeiaWeb.Footer}
     id="global-footer"
-    {Map.take(assigns, [:__context__, :tenants, :tenant, :case, :person, :auto_tracing])} />
+    {Surface.build_assigns(
+        assigns[:__context__],
+        [],
+        assigns
+        |> Map.take([:tenants, :tenant, :case, :person, :auto_tracing])
+        |> Map.put(:id, "global-footer"),
+        HygeiaWeb.Footer,
+        HygeiaWeb.Footer,
+        __ENV__
+      )
+    } />
   <% end %>
 </div>
