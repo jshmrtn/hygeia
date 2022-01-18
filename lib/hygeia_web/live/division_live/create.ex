@@ -26,7 +26,7 @@ defmodule HygeiaWeb.DivisionLive.Create do
         assign(socket,
           organisation: organisation,
           changeset: OrganisationContext.change_new_division(organisation),
-          page_title: gettext("New Division for %{organisation}", organisation: organisation.name)
+          page_title: gettext("New Division for {organisation}", organisation: organisation.name)
         )
       else
         socket

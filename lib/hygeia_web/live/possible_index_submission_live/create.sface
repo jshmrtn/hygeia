@@ -67,13 +67,13 @@
                 )}</li>
               <li>{case Case.fist_known_phase_date(@case, Case.Phase.Index) do
                   {:symptom_start, symptom_start} ->
-                    gettext("Contact between %{date} and now. (48 hours before symptom start)",
-                      date: HygeiaCldr.Date.to_string!(Date.add(symptom_start, -2))
+                    gettext("Contact between {date} and now. (48 hours before symptom start)",
+                      date: Date.add(symptom_start, -2)
                     )
 
                   {_other, date} ->
-                    gettext("Contact between %{date} and now. (48 hours before the first positive test)",
-                      date: HygeiaCldr.Date.to_string!(Date.add(date, -2))
+                    gettext("Contact between {date} and now. (48 hours before the first positive test)",
+                      date: Date.add(date, -2)
                     )
                 end}</li>
               <li>{gettext("You had contact for more than 15 minutes on the same day.")}</li>
@@ -138,7 +138,7 @@
         <div :show={@step == :transmission_date} id="step_transmission_date">
           <h2>
             {gettext(
-              "When did you meet %{first_name} %{last_name} last?",
+              "When did you meet {first_name} {last_name} last?",
               first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
               last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
             )}
@@ -146,7 +146,7 @@
 
           <p>
             {gettext(
-              "If you met %{first_name} %{last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test.",
+              "If you met {first_name} {last_name} multiple times, select the last date you have had close, unprotected contact. Consider, that you may have been infectious 48 hours before your symptoms started. If you don't have symptoms, consider 48 hours before the test.",
               first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
               last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
             )}
@@ -181,7 +181,7 @@
         <div :show={@step == :infection_place} id="step_infection_place">
           <h2>
             {gettext(
-              "Where did you meet %{first_name} %{last_name} last?",
+              "Where did you meet {first_name} {last_name} last?",
               first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
               last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
             )}
@@ -189,7 +189,7 @@
 
           <p>
             {gettext(
-              "Describe where you met %{first_name} %{last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field.",
+              "Describe where you met {first_name} {last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field.",
               first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
               last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
             )}
@@ -250,7 +250,7 @@
         <div :show={@step == :comment} id="step_comment">
           <h2>
             {gettext(
-              "How did your encounter with %{first_name} %{last_name} happen?",
+              "How did your encounter with {first_name} {last_name} happen?",
               first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
               last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
             )}
@@ -258,7 +258,7 @@
 
           <p>
             {gettext(
-              "Describe your encounter with %{first_name} %{last_name}. Under which circumstances did you meet? What kind of activity happened during your encounter (e.g. «wedding with lunch, sat at same table next to each other» or «living in same household, sharing kitchen and bathroom»).",
+              "Describe your encounter with {first_name} {last_name}. Under which circumstances did you meet? What kind of activity happened during your encounter (e.g. «wedding with lunch, sat at same table next to each other» or «living in same household, sharing kitchen and bathroom»).",
               first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
               last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
             )}
@@ -286,7 +286,7 @@
           <div class="d-flex">
             <h2>
               {gettext(
-                "Do you know the address where you met with %{first_name} %{last_name}?",
+                "Do you know the address where you met with {first_name} {last_name}?",
                 first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
                 last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
               )}
@@ -325,7 +325,7 @@
         <div :show={@step == :contact_methods} id="step_contact_methods">
           <h2>
             {gettext(
-              "How can we contact %{first_name} %{last_name}?",
+              "How can we contact {first_name} {last_name}?",
               first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
               last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
             )}
@@ -382,7 +382,7 @@
           <div class="d-flex">
             <h2>
               {gettext(
-                "Where does %{first_name} %{last_name} live?",
+                "Where does {first_name} {last_name} live?",
                 first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
                 last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
               )}
@@ -409,7 +409,7 @@
         <div :show={@step == :employer} id="step_employer">
           <h2>
             {gettext(
-              "Where does %{first_name} %{last_name} work?",
+              "Where does {first_name} {last_name} work?",
               first_name: Phoenix.HTML.FormData.input_value(form.source, form, :first_name),
               last_name: Phoenix.HTML.FormData.input_value(form.source, form, :last_name)
             )}

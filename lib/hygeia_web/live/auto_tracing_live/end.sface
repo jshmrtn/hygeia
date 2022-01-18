@@ -15,7 +15,7 @@
       <p>
         {Phoenix.HTML.raw(
           gettext(
-            "If you have a positive PCR test, you can apply for your Covid certificate under the following link: %{link}",
+            "If you have a positive PCR test, you can apply for your Covid certificate under the following link: {link}",
             link:
               safe_to_string(
                 Phoenix.HTML.Link.link(get_covid_certificate_link(), to: get_covid_certificate_link())

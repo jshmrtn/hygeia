@@ -13,7 +13,7 @@
       <p class="mb-1">{gettext("You are currently in")}</p>
       <p class="mt-0 display-4">{gettext("Quarantine")}</p>
       <p class="mb-5">{gettext(
-          "Your quarantine started on %{start_date} and applies up to and including %{end_date}.",
+          "Your quarantine started on {start_date} and applies up to and including {end_date}.",
           start_date: "<b>" <> HygeiaCldr.Date.to_string!(@active_phase.start) <> "</b>",
           end_date: "<b>" <> HygeiaCldr.Date.to_string!(@active_phase.end) <> "</b>"
         )
@@ -67,7 +67,7 @@
       <p class="mb-1">{gettext("You are currently in")}</p>
       <p class="mt-0 display-4">{gettext("Isolation")}</p>
       <p class="mb-5">{gettext(
-          "Your isolation started on %{start_date} and applies up to and including %{end_date}.",
+          "Your isolation started on {start_date} and applies up to and including {end_date}.",
           start_date: "<b>" <> HygeiaCldr.Date.to_string!(@active_phase.start) <> "</b>",
           end_date: "<b>" <> HygeiaCldr.Date.to_string!(@active_phase.end) <> "</b>"
         )

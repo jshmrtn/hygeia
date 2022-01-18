@@ -25,22 +25,4 @@ defmodule HygeiaWeb.PersonLive.Vaccination do
 
   prop add_event, :event
   prop remove_event, :event
-
-  defp number_format(number, formats)
-
-  defp number_format(number, [{locale, format} | other_formats]) do
-    case HygeiaCldr.get_locale() do
-      %Cldr.LanguageTag{canonical_locale_name: ^locale} ->
-        HygeiaCldr.Number.to_string!(number, format: format)
-
-      _other ->
-        number_format(number, other_formats)
-    end
-  end
-
-  defp number_format(number, [format | other_formats]) do
-    HygeiaCldr.Number.to_string!(number, format: format)
-  rescue
-    Cldr.Rbnf.NoRule -> number_format(number, other_formats)
-  end
 end

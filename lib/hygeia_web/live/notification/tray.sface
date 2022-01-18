@@ -92,7 +92,7 @@
           id="notifications_tray_notification_overflow"
           class="dropdown-item notification overflow"
         >
-          {pgettext("Notification Tray", "and %{count} more", count: @total_count - length(@notifications))}
+          {pgettext("Notification Tray", "and {count} more", count: @total_count - length(@notifications))}
         </div>
       </div>
     </Context>

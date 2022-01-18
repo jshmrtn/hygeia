@@ -94,6 +94,7 @@ defmodule Hygeia.MixProject do
       {:ex_cldr_dates_times, "~> 2.10"},
       {:ex_cldr_languages, "~> 0.3"},
       {:ex_cldr_lists, "~> 2.9"},
+      {:ex_cldr_messages, "~> 0.13.2 or ~> 0.14"},
       {:ex_cldr_numbers, "~> 2.23"},
       {:ex_cldr_units, "~> 3.8"},
       {:excoveralls, "~> 0.4", runtime: false, only: [:test]},

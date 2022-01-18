@@ -21,7 +21,7 @@ defmodule HygeiaWeb.Pagination do
       </li>
       <li class="page-item disabled">
         <span class="page-link">
-          {gettext("Showing %{count} of %{total} entries",
+          {gettext("Showing {count} of {total} entries",
             count: min(@pagination.limit, @pagination.total_count),
             total: @pagination.total_count
           )}

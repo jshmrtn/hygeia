@@ -172,7 +172,7 @@ defmodule Hygeia.Jobs.SendEmails do
     Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
 
     CaseContext.create_note(email.case, %{
-      note: gettext("Failed email contact (%{failed_mail}) deleted", failed_mail: to_mail)
+      note: gettext("Failed email contact ({failed_mail}) deleted", failed_mail: to_mail)
     })
   end
 

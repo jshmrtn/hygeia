@@ -20,7 +20,7 @@ defmodule HygeiaWeb.PersonLive.VaccinationValidity do
 
   defp explanation_text do
     gettext_comment(
-      "surounding text: The validity is only calculated for vaccines that are %{link}."
+      "surounding text: The validity is only calculated for vaccines that are {link}."
     )
 
     link_text = pgettext("Vaccination Validity", "recognized by the FOPH")
@@ -30,7 +30,7 @@ defmodule HygeiaWeb.PersonLive.VaccinationValidity do
     raw(
       pgettext(
         "Vaccination Validity",
-        "The validity is only calculated for vaccines that are %{link}.",
+        "The validity is only calculated for vaccines that are {link}.",
         link:
           safe_to_string(
             link(link_text,
