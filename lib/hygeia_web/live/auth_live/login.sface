@@ -47,10 +47,13 @@
               class="btn btn-primary me-2"
               type="submit"
               phx-disable-with={gettext("Logging In...")}
-              disabled={not connected?(@socket)}
+              disabled={@login_disabled or not connected?(@socket)}
             >
               <span class="oi oi-account-login me-1" title={gettext("Log In")} aria-hidden="true" />
               {gettext("Log In")}
+              {#if @login_disabled}
+                ({format_remaining_time(@login_lock_remaining)})
+              {/if}
             </button>
           </Form>
         </div>
