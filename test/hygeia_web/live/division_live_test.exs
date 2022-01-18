@@ -78,7 +78,7 @@ defmodule HygeiaWeb.DivisionLiveTest do
              |> form("#division-form", division: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         create_live
         |> form("#division-form", division: @create_attrs)
         |> render_submit()

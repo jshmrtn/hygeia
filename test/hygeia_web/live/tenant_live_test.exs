@@ -73,7 +73,7 @@ defmodule HygeiaWeb.TenantLiveTest do
              |> form("#tenant-form", tenant: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         create_live
         |> form("#tenant-form", tenant: @create_attrs)
         |> render_submit()

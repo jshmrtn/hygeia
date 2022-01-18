@@ -124,7 +124,7 @@ defmodule HygeiaWeb.CaseLiveTest do
              )
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         create_live
         |> form("#case-form", case: Map.merge(%{"tenant_uuid" => tenant.uuid}, @valid_attrs))
         |> render_submit(%{

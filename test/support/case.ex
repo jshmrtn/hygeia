@@ -17,7 +17,7 @@ defmodule HygeiaPdfConfirmation.Case do
 
   @spec pdf_string(pdf_binary :: binary) :: String.t()
   def pdf_string(pdf_binary) do
-    assert "%PDF" <> _ = pdf_binary
+    assert "%PDF" <> _rest = pdf_binary
 
     {:ok, pdf_path} = Briefly.create(extname: ".pdf")
     File.write(pdf_path, pdf_binary)

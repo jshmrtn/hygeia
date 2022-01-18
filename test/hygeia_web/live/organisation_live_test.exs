@@ -71,7 +71,7 @@ defmodule HygeiaWeb.OrganisationLiveTest do
              |> form("#organisation-form", organisation: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         create_live
         |> form("#organisation-form", organisation: @create_attrs)
         |> render_submit()
