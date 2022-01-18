@@ -1,16 +1,16 @@
 <div class="page-container">
-  <%= live_component(
-    HygeiaWeb.Header,
-    Surface.build_assigns(
-      assigns[:__context__],
-      [],
-      %{},
-      [],
-      %{},
-      HygeiaWeb.Header,
-      HygeiaWeb.Header
-    )
-  ) %>
+  <.live_component
+    module={HygeiaWeb.Header}
+    id="global-header"
+    {Surface.build_assigns(
+        assigns[:__context__],
+        [],
+        %{},
+        HygeiaWeb.Header,
+        HygeiaWeb.Header,
+        __ENV__
+      )
+    } />
 
   <main role="main" class="layout-live-main px-3 px-sm-2">
     <div class="container">
@@ -46,19 +46,19 @@
   </main>
 
   <%= unless assigns[:hide_footer] === true do %>
-    <%= live_component(
-      HygeiaWeb.Footer,
-      Surface.build_assigns(
+    <.live_component
+    module={HygeiaWeb.Footer}
+    id="global-footer"
+    {Surface.build_assigns(
         assigns[:__context__],
         [],
         assigns
         |> Map.take([:tenants, :tenant, :case, :person, :auto_tracing])
         |> Map.put(:id, "global-footer"),
-        [],
-        %{},
         HygeiaWeb.Footer,
-        HygeiaWeb.Footer
+        HygeiaWeb.Footer,
+        __ENV__
       )
-    ) %>
+    } />
   <% end %>
 </div>

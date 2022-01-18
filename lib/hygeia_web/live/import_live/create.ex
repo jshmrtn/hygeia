@@ -63,7 +63,7 @@ defmodule HygeiaWeb.ImportLive.Create do
   def handle_event("save", %{"import" => %{"tenant_uuid" => tenant_uuid} = import_params}, socket) do
     tenant = Enum.find(socket.assigns.tenants, &match?(%Tenant{uuid: ^tenant_uuid}, &1))
 
-    [response] =
+    [socket] =
       consume_uploaded_entries(socket, :file, fn %{path: path},
                                                  %{client_type: mime, client_name: client_name} ->
         tenant
@@ -74,16 +74,16 @@ defmodule HygeiaWeb.ImportLive.Create do
         )
         |> case do
           {:ok, import} ->
-            {:noreply,
+            {:ok,
              socket
              |> put_flash(:info, gettext("Import created successfully"))
              |> push_redirect(to: Routes.import_show_path(socket, :show, import))}
 
           {:error, changeset} ->
-            {:noreply, assign(socket, :changeset, changeset)}
+            {:ok, assign(socket, :changeset, changeset)}
         end
       end)
 
-    response
+    {:noreply, socket}
   end
 end

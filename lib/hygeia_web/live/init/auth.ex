@@ -3,18 +3,19 @@ defmodule HygeiaWeb.Init.Auth do
   Load Auth on mount
   """
 
-  import Phoenix.LiveView, only: [connected?: 1, get_connect_info: 1]
+  import Phoenix.LiveView, only: [connected?: 1, get_connect_info: 2]
 
   alias Hygeia.CaseContext.Person
   alias Hygeia.Helpers.Versioning
   alias Hygeia.UserContext.User
 
-  @spec mount(
+  @spec on_mount(
+          context :: atom(),
           Phoenix.LiveView.unsigned_params() | :not_mounted_at_router,
           session :: map,
           socket :: Phoenix.LiveView.Socket.t()
         ) :: {:cont | :halt, Phoenix.LiveView.Socket.t()}
-  def mount(_params, session, socket) do
+  def on_mount(:default, _params, session, socket) do
     ip = socket |> get_ip_address() |> ip_to_string()
 
     attrs =
@@ -52,12 +53,9 @@ defmodule HygeiaWeb.Init.Auth do
 
   defp get_ip_address(socket) do
     if connected?(socket) and not is_nil(socket.private[:connect_info]) do
-      case get_connect_info(socket) do
-        %{peer_data: peer_data} ->
-          peer_data.address
-
-        _other ->
-          nil
+      case get_connect_info(socket, :peer_data) do
+        %{address: address} -> address
+        nil -> nil
       end
     end
   end

@@ -252,7 +252,7 @@
             <HygeiaWeb.ResourceTable
               :if={map_size(action.person_attrs) > 0}
               subject={action.person_attrs}
-              module={CaseContext.Person}
+              mod={CaseContext.Person}
               id="patch_person_changes"
               extra_fields={%{
                 CaseContext.Person => %{
@@ -286,7 +286,7 @@
           <div class="card-body">
             <HygeiaWeb.ResourceTable
               subject={action.test_attrs}
-              module={CaseContext.Test}
+              mod={CaseContext.Test}
               id="patch_test_changes"
             />
           </div>
