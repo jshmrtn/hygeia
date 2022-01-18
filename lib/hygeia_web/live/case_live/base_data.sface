@@ -342,6 +342,69 @@
                                   </InputContext>
                                 </PolimorphicInputs>
 
+                                <div
+                                  :if={match?(%Phase.PossibleIndex{}, phase_details) or
+                                    match?(%Ecto.Changeset{data: %Phase.PossibleIndex{}}, phase_details)}
+                                  class="mt-2"
+                                >
+                                  <div class="row">
+                                    <div class="col">
+                                      <Field name={:premature_release_permission} class="form-group">
+                                        <label data-disabled={@live_action == :show}>
+                                          {gettext("Premature release permission")}
+                                          <label class="btn mb-0" data-disabled={@live_action == :show}>
+                                            <RadioButton value="true" opts={disabled: @live_action == :show} />
+                                            {gettext("Allow")}
+                                          </label>
+                                          <label class="btn mb-0" data-disabled={@live_action == :show}>
+                                            <RadioButton value="false" opts={disabled: @live_action == :show} />
+                                            {gettext("Deny")}
+                                          </label>
+                                        </label>
+                                        <ErrorTag class="d-block invalid-feedback" />
+                                      </Field>
+                                    </div>
+                                  </div>
+                                  <div
+                                    :if={not Ecto.Changeset.fetch_field!(form.source, :premature_release_permission)}
+                                    class="row mb-3"
+                                  >
+                                    <div class="col">
+                                      <div class="d-flex">
+                                        <Field name={:premature_release_disabled_reason} class="form-group flex-grow-1">
+                                          <HygeiaWeb.FieldLabel />
+                                          <Select
+                                            class="form-control"
+                                            opts={prompt: gettext("Select premature release disabled reason"), disabled: @live_action == :show}
+                                            options={DisabledReason.map()}
+                                          />
+                                          <ErrorTag class="d-block invalid-feedback" />
+                                        </Field>
+                                      </div>
+                                    </div>
+                                    <div
+                                      :if={Ecto.Changeset.get_field(form.source, :premature_release_disabled_reason) == :other}
+                                      class="col"
+                                    >
+                                      <Field name={:premature_release_disabled_reason_other} class="form-group">
+                                        <HygeiaWeb.FieldLabel />
+                                        <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                                        <ErrorTag class="d-block invalid-feedback" />
+                                      </Field>
+                                    </div>
+                                    <div :if={@live_action != :show} class="col-auto form-group">
+                                      <label>&nbsp;</label>
+                                      <button
+                                        type="button"
+                                        class="d-block ms-1 btn btn-info"
+                                        :on-click="show_premature_release_disabled_reason_help"
+                                      >
+                                        <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+
                                 <div class="row" :if={Ecto.Changeset.get_field(form.source, :quarantine_order) == true}>
                                   <div class="col">
                                     <Field
@@ -690,6 +753,32 @@
         <tr>
           <td><b>{Phase.PossibleIndex.EndReason.translate(:negative_test)}</b></td>
           <td>{gettext("Early end because of negative test after the 7th day of quarantine")}</td>
+        </tr>
+      </tbody>
+    </table>
+  </HygeiaWeb.Modal>
+
+  <HygeiaWeb.Modal
+    :if={@show_premature_release_disabled_reason_help}
+    id="premature_release_disabled_reason_help"
+    title={gettext("Premature release disabled help")}
+    close="hide_premature_release_disabled_reason_help"
+    size="xl"
+  >
+    <p>{gettext(
+        "When premature release permission is denied it means that the person will not be allowed to end the quarantine prematurely. You must provide a reason for disabling the premature release."
+      )}</p>
+    <table class="table table-sm table-striped">
+      <tbody>
+        <tr>
+          <td><b>{DisabledReason.translate(:virus_variant_of_concern)}</b></td>
+          <td>{gettext("The person is suspected of having contracted a variant in consideration")}</td>
+        </tr>
+        <tr>
+          <td><b>{DisabledReason.translate(:other)}</b></td>
+          <td>{gettext(
+              "Specify the reason for this decision in the provided field. The reason specified here won't be shown to the user"
+            )}</td>
         </tr>
       </tbody>
     </table>

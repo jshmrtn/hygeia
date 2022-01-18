@@ -65,7 +65,10 @@ defmodule HygeiaWeb.Helpers.FieldName do
       quarantine_order: "Quarantine / Isolation",
       send_automated_close_email: "Send Automated Close Email",
       start: "Start",
-      type: "Type"
+      type: "Type",
+      other_end_reason: "Other End Reason",
+      premature_release_disabled_reason: "Reason for disabling premature release",
+      premature_release_disabled_reason_other: "Other reason for disabling premature release"
     },
     Hygeia.CaseContext.Case.Phase.Index => %{
       end_reason: "End Reason",
@@ -76,8 +79,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
       end_reason: "End Reason",
       end_reason_date: "End Reason Set Date",
       type: "Type",
-      type_other: "Other Type",
-      other_end_reason: "Other End Reason"
+      type_other: "Other Type"
     },
     Hygeia.CaseContext.Employer => %{
       address: "Address",

@@ -283,6 +283,10 @@ msgid "All points must be fulfilled"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "Allow"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Always work from Top to Bottom. Otherwise changes may be lost!"
 msgstr ""
 
@@ -1211,6 +1215,10 @@ msgstr ""
 
 #, elixir-format, ex-autogen
 msgid "Deleted"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "Deny"
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -2437,6 +2445,10 @@ msgid "Isolations Per Organisation"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "It is not possible for you to end the quarantine early. Please contact the tracing team to get more information."
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgctxt "Auto Tracing Exit"
 msgid "It seems like we are not responsible for your case."
 msgstr ""
@@ -3405,6 +3417,11 @@ msgid "Other"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Premature Release Disabled Reason"
+msgid "Other"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgctxt "Case Status"
 msgid "Other Actions To Do"
 msgstr ""
@@ -3415,7 +3432,7 @@ msgid "Other End Reason"
 msgstr ""
 
 #, elixir-format, ex-autogen
-msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Other End Reason"
 msgstr ""
 
@@ -3427,6 +3444,11 @@ msgstr ""
 #, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Other reason"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
+msgid "Other reason for disabling premature release"
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -3859,6 +3881,14 @@ msgid "Premature release created successfully"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "Premature release disabled help"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "Premature release permission"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgctxt "School Type"
 msgid "Preschool"
 msgstr ""
@@ -4077,6 +4107,11 @@ msgstr ""
 #, elixir-format, ex-autogen
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Reason"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
+msgid "Reason for disabling premature release"
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -4434,6 +4469,10 @@ msgid "Select mutation"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "Select premature release disabled reason"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Select reason"
 msgstr ""
 
@@ -4615,6 +4654,10 @@ msgstr ""
 #, elixir-format, ex-autogen
 msgctxt "Clinical Symptom"
 msgid "Sore Throat"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "Specify the reason for this decision in the provided field. The reason specified here won't be shown to the user"
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -5109,6 +5152,10 @@ msgstr ""
 #, elixir-format, ex-autogen
 msgctxt "Person Show"
 msgid "The person is not considered fully vaccinated for breakthrough infections."
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "The person is suspected of having contracted a variant in consideration"
 msgstr ""
 
 #, elixir-format, ex-autogen
@@ -5680,6 +5727,11 @@ msgid "View person"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Premature Release Disabled Reason"
+msgid "Virus variant of concern"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Visit"
 msgstr ""
 
@@ -5770,6 +5822,10 @@ msgid "When did you meet %{first_name} %{last_name} last?"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgid "When premature release permission is denied it means that the person will not be allowed to end the quarantine prematurely. You must provide a reason for disabling the premature release."
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "Where did you meet %{first_name} %{last_name} last?"
 msgstr ""
 
@@ -5844,6 +5900,10 @@ msgstr ""
 
 #, elixir-format, ex-autogen
 msgid "You did not keep a safe distance of at least 1.5 meters."
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgid "You entered Switzerland from a country with a virus variant of concern. For this reason, according to the FOPH, it is not possible for you to end the quarantine early."
 msgstr ""
 
 #, elixir-format, ex-autogen

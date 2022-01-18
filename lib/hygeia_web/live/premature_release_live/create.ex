@@ -21,7 +21,8 @@ defmodule HygeiaWeb.PrematureReleaseLive.Create do
       Enum.find(case.phases, &match?(%Phase{uuid: ^phase_uuid}, &1)) || raise Ecto.NoResultsError
 
     socket =
-      if authorized?(PrematureRelease, :create, get_auth(socket), case: case) do
+      if authorized?(PrematureRelease, :create, get_auth(socket), case: case) and
+           phase.premature_release_permission != false do
         assign(socket,
           changeset: CaseContext.change_new_premature_release(case, phase),
           page_title: gettext("Premature Release"),

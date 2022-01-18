@@ -10,6 +10,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
   alias Hygeia.CaseContext.Case.Phase.Index
   alias Hygeia.CaseContext.Case.Phase.PossibleIndex
   alias Hygeia.CaseContext.Case.Phase.Type, as: PhaseType
+  alias Hygeia.CaseContext.PrematureRelease.DisabledReason
   alias Hygeia.TenantContext.Tenant
 
   @type empty :: %__MODULE__{
@@ -19,7 +20,10 @@ defmodule Hygeia.CaseContext.Case.Phase do
           start: Date.t() | nil,
           end: Date.t() | nil,
           details: Index.t() | PossibleIndex.t() | nil,
-          inserted_at: DateTime.t() | nil
+          inserted_at: DateTime.t() | nil,
+          premature_release_permission: boolean(),
+          premature_release_disabled_reason: DisabledReason.t() | nil,
+          premature_release_disabled_reason_other: String.t() | nil
         }
 
   @type t ::
@@ -30,7 +34,10 @@ defmodule Hygeia.CaseContext.Case.Phase do
             start: Date.t(),
             end: Date.t(),
             details: Index.t() | PossibleIndex.t(),
-            inserted_at: DateTime.t()
+            inserted_at: DateTime.t(),
+            premature_release_permission: boolean(),
+            premature_release_disabled_reason: DisabledReason.t() | nil,
+            premature_release_disabled_reason_other: String.t() | nil
           }
           | %__MODULE__{
               quarantine_order: false | nil,
@@ -38,7 +45,10 @@ defmodule Hygeia.CaseContext.Case.Phase do
               start: nil,
               end: nil,
               details: Index.t() | PossibleIndex.t(),
-              inserted_at: DateTime.t()
+              inserted_at: DateTime.t(),
+              premature_release_permission: boolean(),
+              premature_release_disabled_reason: DisabledReason.t() | nil,
+              premature_release_disabled_reason_other: String.t() | nil
             }
 
   @derive {Phoenix.Param, key: :uuid}
@@ -51,6 +61,10 @@ defmodule Hygeia.CaseContext.Case.Phase do
     field :type, PhaseType, virtual: true
     field :send_automated_close_email, :boolean, default: true
     field :automated_close_email_sent, :utc_datetime_usec
+
+    field :premature_release_permission, :boolean, default: true
+    field :premature_release_disabled_reason, DisabledReason
+    field :premature_release_disabled_reason_other, :string
 
     field :details, PolymorphicEmbed,
       types: [
@@ -76,7 +90,10 @@ defmodule Hygeia.CaseContext.Case.Phase do
       :end,
       :type,
       :send_automated_close_email,
-      :automated_close_email_sent
+      :automated_close_email_sent,
+      :premature_release_permission,
+      :premature_release_disabled_reason,
+      :premature_release_disabled_reason_other
     ])
     |> cast_polymorphic_embed(:details)
     |> validate_required([:details])
@@ -96,6 +113,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
     )
     |> validate_quarantine_order()
     |> set_order_date()
+    |> validate_premature_release_permission()
+    |> validate_premature_release_disabled_reason_other()
   end
 
   defp validate_date_relative(changeset, field, cmp_equality, cmp_field, message) do
@@ -144,6 +163,34 @@ defmodule Hygeia.CaseContext.Case.Phase do
       {:ok, false} -> put_change(changeset, :order_date, nil)
       {:ok, nil} -> put_change(changeset, :order_date, nil)
       :error -> changeset
+    end
+  end
+
+  defp validate_premature_release_permission(changeset) do
+    changeset
+    |> fetch_field!(:premature_release_permission)
+    |> case do
+      true ->
+        changeset
+        |> put_change(:premature_release_disabled_reason, nil)
+        |> put_change(:premature_release_disabled_reason_other, nil)
+
+      _defined ->
+        changeset
+        |> put_change(:premature_release_permission, false)
+        |> validate_required([:premature_release_disabled_reason])
+    end
+  end
+
+  defp validate_premature_release_disabled_reason_other(changeset) do
+    changeset
+    |> fetch_field!(:premature_release_disabled_reason)
+    |> case do
+      :other ->
+        validate_required(changeset, [:premature_release_disabled_reason_other])
+
+      _defined ->
+        put_change(changeset, :premature_release_disabled_reason_other, nil)
     end
   end
 
