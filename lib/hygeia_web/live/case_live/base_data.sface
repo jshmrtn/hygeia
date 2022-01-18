@@ -429,12 +429,11 @@
 
                                       <div class="value">
                                         {gettext(
-                                          "Sent at %{date}",
+                                          "Sent at {date}",
                                           date:
                                             form.source
                                             |> Ecto.Changeset.get_field(:automated_close_email_sent)
                                             |> DateTime.shift_zone!(timezone)
-                                            |> HygeiaCldr.DateTime.to_string!()
                                         )}
                                       </div>
                                     </div>
@@ -865,7 +864,7 @@
         </tr>
         <tr>
           <td><b>{Status.translate(:waiting_for_contact_person_list)}</b></td>
-          <td>{"The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
+          <td>{"The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under {link}."
             |> gettext(
               link:
                 "Possible Index Submissions"

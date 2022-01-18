@@ -17,11 +17,9 @@
               <p class="mb-4">
                 {pgettext(
                   "Auto Tracing Travel",
-                  "Have you visited one of the following countries within the last 14 days (between %{start_date} and %{end_date})?",
-                  %{
-                    start_date: HygeiaCldr.Date.to_string!(Date.add(Date.utc_today(), -13)),
-                    end_date: HygeiaCldr.Date.to_string!(Date.utc_today())
-                  }
+                  "Have you visited one of the following countries within the last 14 days (between {start_date} and {end_date})?",
+                  start_date: Date.add(Date.utc_today(), -13),
+                  end_date: Date.utc_today()
                 )}<br>
                 {@risk_countries
                 |> Enum.map(& &1.country)

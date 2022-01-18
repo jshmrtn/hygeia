@@ -6,6 +6,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
   use GenServer
 
   import HygeiaGettext
+  import Cldr.Message.Sigil
 
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
@@ -74,21 +75,21 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
   @spec text(phase :: Phase.t(), case :: Case.t(), message_type :: atom) :: String.t()
   defp text(%Phase{details: %Phase.Index{}} = phase, case, message_type) do
     gettext(
-      """
+      ~M"""
       Dear Sir / Madam,
 
-      Your isolation period ends tomorrow %{date}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
+      Your isolation period ends tomorrow {date, date, full}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
 
-      You can find the isolation end confirmation via the following link: %{isolation_end_confirmation_link}
+      You can find the isolation end confirmation via the following link: {isolation_end_confirmation_link}
 
-      To access the confirmation, please log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)
+      To access the confirmation, please log in using your first name & last name. (initials: {initial_first_name}. {initial_last_name}.)
 
       Should you continue to feel ill, please contact your general practitioner.
 
       Kind Regards,
-      %{message_signature}
+      {message_signature}
       """,
-      date: HygeiaCldr.Date.to_string!(Date.add(phase.end, 1), format: :full),
+      date: Date.add(phase.end, 1),
       isolation_end_confirmation_link: @url_generator.pdf_url(case, phase),
       message_signature: Tenant.get_message_signature_text(case.tenant, message_type),
       initial_first_name: String.slice(case.person.first_name, 0..0),
@@ -99,17 +100,17 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
   defp text(%Phase{details: %Phase.PossibleIndex{}} = phase, case, message_type),
     do:
       gettext(
-        """
+        ~M"""
         Dear Sir / Madam,
 
-        Your quarantine period ends tomorrow %{date}. If you do not currently experience any symptoms, you're allowed to leave quarantine.
+        Your quarantine period ends tomorrow {date, date, full}. If you do not currently experience any symptoms, you're allowed to leave quarantine.
 
         Should you feel ill, please contact your general practitioner.
 
         Kind Regards,
-        %{message_signature}
+        {message_signature}
         """,
-        date: HygeiaCldr.Date.to_string!(Date.add(phase.end, 1), format: :full),
+        date: Date.add(phase.end, 1),
         message_signature: Tenant.get_message_signature_text(case.tenant, message_type)
       )
 

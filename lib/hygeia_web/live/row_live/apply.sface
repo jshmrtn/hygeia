@@ -200,12 +200,12 @@
               <span class="d-block small certainty-label">
                 {translate_certainty(certainty)}
               </span>
-              {gettext("Set end rason %{end_reason}", end_reason: Case.Phase.Index.EndReason.translate(:death))}
+              {gettext("Set end rason {end_reason}", end_reason: Case.Phase.Index.EndReason.translate(:death))}
             </div>
           </summary>
 
           <div class="card-body">
-            {gettext("The index phase end reason will be set to %{end_reason}.",
+            {gettext("The index phase end reason will be set to {end_reason}.",
               end_reason: Case.Phase.Index.EndReason.translate(:death)
             )}
           </div>
@@ -302,7 +302,7 @@
                 {gettext("Keep Status")}
               </span>
               <span :if={action.action == :change}>
-                {gettext("Change Status to %{status}", status: Case.Status.translate(action.status))}
+                {gettext("Change Status to {status}", status: Case.Status.translate(action.status))}
               </span>
             </div>
           </summary>
@@ -416,7 +416,7 @@
                 {gettext("Reset tracer & supervisor")}
               </span>
               <span :if={action.action == :change and (action.tracer_uuid != nil or action.supervisor_uuid != nil)}>
-                {gettext("Change Tracer to %{tracer} and supervisor to %{supervisor}",
+                {gettext("Change Tracer to {tracer} and supervisor to {supervisor}",
                   tracer: user_name(@tracers, action.tracer_uuid),
                   supervisor: user_name(@supervisors, action.supervisor_uuid)
                 )}

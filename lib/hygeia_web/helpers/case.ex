@@ -33,16 +33,10 @@ defmodule HygeiaWeb.Helpers.Case do
 
     case {start_date, end_date} do
       {nil, _end_date} ->
-        gettext("Created at %{created_at}",
-          created_at:
-            inserted_at |> DateTime.shift_zone!(timezone) |> Cldr.DateTime.to_string!(HygeiaCldr)
-        )
+        gettext("Created at {created_at}", created_at: DateTime.shift_zone!(inserted_at, timezone))
 
       {_start_date, nil} ->
-        gettext("Created at %{created_at}",
-          created_at:
-            inserted_at |> DateTime.shift_zone!(timezone) |> Cldr.DateTime.to_string!(HygeiaCldr)
-        )
+        gettext("Created at {created_at}", created_at: DateTime.shift_zone!(inserted_at, timezone))
 
       {start_date, end_date} ->
         range =

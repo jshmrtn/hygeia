@@ -7,6 +7,7 @@ defmodule Hygeia.Jobs.NotificationReminder do
 
   import Ecto.Query, only: [from: 2]
   import HygeiaGettext
+  import Cldr.Message.Sigil
 
   alias Hygeia.CommunicationContext
   alias Hygeia.Helpers.Versioning
@@ -128,7 +129,7 @@ defmodule Hygeia.Jobs.NotificationReminder do
     Ecto.Multi.run(multi, user, fn _repo, _others ->
       CommunicationContext.create_outgoing_email(
         user,
-        ngettext("%{count} New Notification", "%{count} New Notifications", total_count,
+        ngettext(~M"{count} New Notification", ~M"{count} New Notifications", total_count,
           count: total_count
         ),
         email_message(user, types)
@@ -152,11 +153,11 @@ defmodule Hygeia.Jobs.NotificationReminder do
       end)
 
     gettext(
-      """
-      Hi %{name},
+      ~M"""
+      Hi {name},
 
       There's new notifications available on Hygeia for you:
-      %{totals}
+      {totals}
 
       Best,
       Hygeia

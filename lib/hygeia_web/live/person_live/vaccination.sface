@@ -9,23 +9,11 @@
           <h6>{gettext("Vaccine")}</h6>
           <div aria-hidden="true" />
 
-          <label class="fw-bold small">{pgettext(
+          <label class="fw-bold small">
+            {pgettext(
               "Person Vaccination",
-              "%{ordering} jab date",
-              ordering:
-                String.capitalize(
-                  number_format(form.index + 1, [
-                    {"fr", :spellout_ordinal_feminine},
-                    {"fr-CH", :spellout_ordinal_feminine},
-                    {"de", :spellout_ordinal_r},
-                    {"de-CH", :spellout_ordinal_r},
-                    {"it", :spellout_ordinal_feminine},
-                    {"it-CH", :spellout_ordinal_feminine},
-                    :spellout_ordinal,
-                    :ordinal,
-                    :standard
-                  ])
-                )
+              "{ordering,number,:spellout_ordinal} jab date",
+              ordering: form.index + 1
             )}
           </label>
           <Field name={:date} class="form-group me-2">

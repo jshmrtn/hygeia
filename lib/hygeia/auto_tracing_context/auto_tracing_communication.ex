@@ -2,6 +2,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracingCommunication do
   @moduledoc false
 
   import HygeiaGettext
+  import Cldr.Message.Sigil
 
   alias Hygeia.CaseContext.Case
   alias Hygeia.TenantContext.Tenant
@@ -14,25 +15,25 @@ defmodule Hygeia.AutoTracingContext.AutoTracingCommunication do
 
   @spec auto_tracing_email_subject(case :: Case.t()) :: String.t()
   def auto_tracing_email_subject(case),
-    do: gettext("%{tenant} - Contact Tracing", tenant: case.tenant.name)
+    do: gettext(~M"{tenant} - Contact Tracing", tenant: case.tenant.name)
 
   @spec auto_tracing_email_body(case :: Case.t(), message_type :: atom) :: String.t()
   def auto_tracing_email_body(case, message_type) do
     gettext(
-      """
+      ~M"""
       Dear Sir / Madam,
 
       You have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.
 
       We would like to ask you to fill out the information on the following link:
-      %{public_overview_link}
+      {public_overview_link}
 
-      Please open this link and log in using your first name & last name. (initials: %{initial_first_name}. %{initial_last_name}.)
+      Please open this link and log in using your first name & last name. (initials: {initial_first_name}. {initial_last_name}.)
 
       Thanks for your help!
 
       Kind Regards,
-      %{message_signature}
+      {message_signature}
       """,
       public_overview_link: @url_generator.overview_url(case),
       message_signature: Tenant.get_message_signature_text(case.tenant, message_type),

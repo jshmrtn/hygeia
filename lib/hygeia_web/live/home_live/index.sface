@@ -40,7 +40,7 @@
       {raw(
         pgettext(
           "Home",
-          "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «%{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing.",
+          "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing.",
           link_med:
             safe_to_string(
               link(gettext("Minimal Essential Dataset"),

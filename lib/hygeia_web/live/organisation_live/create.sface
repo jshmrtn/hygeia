@@ -16,7 +16,7 @@
       |> OrganisationContext.list_organisations_by_ids()}
     class="alert alert-warning"
   >
-    {"This organisation is possibly a duplicate of %{name_link}, please check."
+    {"This organisation is possibly a duplicate of {name_link}, please check."
     |> gettext(
       name_link:
         name

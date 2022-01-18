@@ -19,13 +19,13 @@
         )}</li>
       <li>{case Case.fist_known_phase_date(@case, Case.Phase.Index) do
           {:symptom_start, symptom_start} ->
-            gettext("Contact between %{date} and now. (48 hours before symptom start)",
-              date: HygeiaCldr.Date.to_string!(Date.add(symptom_start, -2))
+            gettext("Contact between {date} and now. (48 hours before symptom start)",
+              date: Date.add(symptom_start, -2)
             )
 
           {_other, date} ->
-            gettext("Contact between %{date} and now. (48 hours before the first positive test)",
-              date: HygeiaCldr.Date.to_string!(Date.add(date, -2))
+            gettext("Contact between {date} and now. (48 hours before the first positive test)",
+              date: Date.add(date, -2)
             )
         end}</li>
       <li>{gettext("You had contact for more than 15 minutes on the same day.")}</li>
