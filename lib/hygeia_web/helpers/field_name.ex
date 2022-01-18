@@ -149,7 +149,7 @@ defmodule HygeiaWeb.Helpers.FieldName do
     Hygeia.CaseContext.Test => %{
       result: "Result",
       sponsor: "Sponsor",
-      tested_at: "Test date",
+      tested_at: "Probing date",
       kind: "Test Kind",
       laboratory_reported_at: "Laboratory report date",
       reporting_unit: "Reporting unit",

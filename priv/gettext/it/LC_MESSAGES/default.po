@@ -3940,6 +3940,11 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Private Key"
 msgstr "Chiave privata"
 
+#, elixir-format, ex-autogen
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
+msgid "Probing date"
+msgstr "Data del test"
+
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Problem solved"
@@ -5057,11 +5062,6 @@ msgstr "Test per ordine di CT"
 #, elixir-format, ex-autogen, fuzzy
 msgid "Test created successfully"
 msgstr "Test creato con successo"
-
-#, elixir-format, ex-autogen
-msgctxt "Elixir.Hygeia.CaseContext.Test Field"
-msgid "Test date"
-msgstr "Data del test"
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "Test deleted successfully"
