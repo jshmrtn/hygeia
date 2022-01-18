@@ -11,7 +11,7 @@ defmodule HygeiaWeb.ResourceTable do
   require Logger
 
   prop subject, :map, required: true
-  prop module, :atom, required: true
+  prop mod, :atom, required: true
   prop extra_fields, :map, required: false, default: %{}
 
   @impl Phoenix.LiveComponent
@@ -19,7 +19,7 @@ defmodule HygeiaWeb.ResourceTable do
     ~F"""
     <div class="component-resource-table">
       <Context get={HygeiaWeb, timezone: timezone}>
-        {render_tree(@subject, @module, assigns, timezone, @extra_fields)}
+        {render_tree(@subject, @mod, assigns, timezone, @extra_fields)}
       </Context>
     </div>
     """

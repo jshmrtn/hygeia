@@ -179,7 +179,7 @@ defmodule HygeiaWeb.CaseLiveTestHelper do
 
   def test_define_people_step_select_person_suggestion(view, _context) do
     assert view
-           |> element("#person_suggestions button[phx-click=\"duplicate_person_selected\"]")
+           |> element("#person_suggestions button", "Choose existing person")
            |> render_click()
 
     view

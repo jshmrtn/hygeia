@@ -65,7 +65,7 @@
         <td phx-update="ignore" id={"version_#{uuid}_table"}>
           <HygeiaWeb.ResourceTable
             subject={version.item_changes}
-            module={item_table_to_module(version.item_table)}
+            mod={item_table_to_module(version.item_table)}
             id={"version_#{uuid}_changes"}
           />
         </td>

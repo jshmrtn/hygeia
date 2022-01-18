@@ -14,11 +14,18 @@ defmodule HygeiaWeb.Helpers.Auth do
 
   def get_auth(%Plug.Conn{} = _conn), do: :anonymous
 
-  def get_auth(%Phoenix.LiveView.Socket{} = socket) do
-    socket.private[:conn_session]["auth"] || socket.private[:connect_info][:session]["auth"] ||
-      case socket.assigns do
+  def get_auth(%Phoenix.LiveView.Socket{private: private, assigns: assigns} = socket) do
+    private[:conn_session]["auth"] || socket_session(socket)["auth"] ||
+      case assigns do
         %{__context__: ctx} -> ctx[{HygeiaWeb, :auth}]
         _other -> :anonymous
       end || :anonymous
+  end
+
+  defp socket_session(%Phoenix.LiveView.Socket{private: private}) do
+    case private[:connect_info] do
+      %{session: session} -> session
+      _other -> nil
+    end
   end
 end
