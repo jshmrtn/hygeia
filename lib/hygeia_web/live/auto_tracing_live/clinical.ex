@@ -20,6 +20,8 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.LiveRedirect
 
+  data show_reasons_for_test_help, :boolean, default: false
+
   @impl Phoenix.LiveView
   def handle_params(%{"case_uuid" => case_uuid} = _params, _uri, socket) do
     case =
@@ -208,6 +210,14 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
            socket.assigns.auto_tracing.case_uuid
          )
      )}
+  end
+
+  def handle_event("show_reasons_for_test_help", _params, socket) do
+    {:noreply, assign(socket, show_reasons_for_test_help: true)}
+  end
+
+  def handle_event("hide_reasons_for_test_help", _params, socket) do
+    {:noreply, assign(socket, show_reasons_for_test_help: false)}
   end
 
   @impl Phoenix.LiveView

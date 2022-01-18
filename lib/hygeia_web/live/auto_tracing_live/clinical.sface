@@ -81,6 +81,16 @@
             <InputContext assigns={assigns} :let={form: form}>
               <div class="form-group">
                 <Field name={:reasons_for_test}>
+                  <div class="mb-2 d-flex align-items-center">
+                    <HygeiaWeb.FieldLabel class="mb-0" />
+                    <button
+                      type="button"
+                      class="d-block ms-2 btn btn-info btn-sm"
+                      :on-click="show_reasons_for_test_help"
+                    >
+                      <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
+                    </button>
+                  </div>
                   <label :for={{name, key} <- Clinical.TestReason.map()} class="d-block checkbox-label">
                     <input
                       type="checkbox"
@@ -129,4 +139,55 @@
   >
     {gettext("Continue")}
   </button>
+
+  <HygeiaWeb.Modal
+    :if={@show_reasons_for_test_help}
+    id="reasons_for_test_help"
+    title={gettext("Reasons for test help")}
+    close="hide_reasons_for_test_help"
+    size="xl"
+  >
+    <table class="table table-sm table-striped">
+      <tbody>
+        <tr>
+          <td><b>{Case.Clinical.TestReason.translate(:symptoms)}</b></td>
+          <td>{gettext("Person is symptomatic and therefore tested")}</td>
+        </tr>
+        <tr>
+          <td><b>{Case.Clinical.TestReason.translate(:outbreak_examination)}</b></td>
+          <td>{gettext("Workplace/school testing ordered by CT")}</td>
+        </tr>
+        <tr>
+          <td><b>{Case.Clinical.TestReason.translate(:screening)}</b></td>
+          <td>{gettext(
+              "Repetitive preventative tests of specific groups (e.g. care centers, schools, companies etc.)"
+            )}</td>
+        </tr>
+        <tr>
+          <td><b>{Case.Clinical.TestReason.translate(:work_related)}</b></td>
+          <td>{gettext("Test required by professional activity")}</td>
+        </tr>
+        <tr>
+          <td><b>{Case.Clinical.TestReason.translate(:quarantine)}</b></td>
+          <td>{gettext("Test during quarantine without ending it")}</td>
+        </tr>
+        <tr>
+          <td><b>{Case.Clinical.TestReason.translate(:app_report)}</b></td>
+          <td>{gettext("Testing based on a message via app")}</td>
+        </tr>
+        <tr>
+          <td><b>{Case.Clinical.TestReason.translate(:convenience)}</b></td>
+          <td>{gettext("Test as part of a planned trip")}</td>
+        </tr>
+        <tr>
+          <td><b>{Case.Clinical.TestReason.translate(:contact_tracing)}</b></td>
+          <td>{gettext("Test by order from CT")}</td>
+        </tr>
+        <tr>
+          <td><b>{Case.Clinical.TestReason.translate(:quarantine_end)}</b></td>
+          <td>{gettext("Test for early termination of quarantine")}</td>
+        </tr>
+      </tbody>
+    </table>
+  </HygeiaWeb.Modal>
 </div>
