@@ -145,7 +145,6 @@
                   :on-click={@remove_contact_method}
                   phx-value-subject={@subject}
                   phx-value-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
-                  phx-target={@target}
                 >
                   <span class="oi oi-trash" aria-hidden="true" />
                 </button>
@@ -159,7 +158,6 @@
               class="btn btn-outline-primary"
               :on-click={@add_contact_method}
               phx-value-subject={@subject}
-              phx-target={@target}
             >
               <span class="oi oi-plus me-1" aria-hidden="true" />
               {gettext("New contact method")}

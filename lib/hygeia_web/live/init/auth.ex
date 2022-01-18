@@ -3,7 +3,7 @@ defmodule HygeiaWeb.Init.Auth do
   Load Auth on mount
   """
 
-  import Phoenix.LiveView, only: [connected?: 1, get_connect_info: 1]
+  import Phoenix.LiveView, only: [connected?: 1, get_connect_info: 2]
 
   alias Hygeia.CaseContext.Person
   alias Hygeia.Helpers.Versioning
@@ -53,12 +53,9 @@ defmodule HygeiaWeb.Init.Auth do
 
   defp get_ip_address(socket) do
     if connected?(socket) and not is_nil(socket.private[:connect_info]) do
-      case get_connect_info(socket) do
-        %{peer_data: peer_data} ->
-          peer_data.address
-
-        _other ->
-          nil
+      case get_connect_info(socket, :peer_data) do
+        %{address: address} -> address
+        nil -> nil
       end
     end
   end

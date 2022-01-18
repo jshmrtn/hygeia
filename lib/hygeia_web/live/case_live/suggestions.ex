@@ -22,7 +22,6 @@ defmodule HygeiaWeb.CaseLive.Suggestions do
   prop new_selected, :event
   prop person_selected, :event
   prop case_selected, :event
-  prop target, :any
 
   data suggestions, :list, default: []
   data person, :map

@@ -7,7 +7,7 @@ defmodule HygeiaWeb.Init.Context do
   import HygeiaWeb.Helpers.Auth
 
   import Phoenix.LiveView,
-    only: [get_connect_params: 1, connected?: 1, get_connect_info: 1, attach_hook: 4]
+    only: [get_connect_params: 1, connected?: 1, get_connect_info: 2, attach_hook: 4]
 
   alias Hygeia.EctoType.LocalizedNaiveDatetime
 
@@ -71,7 +71,7 @@ defmodule HygeiaWeb.Init.Context do
   end
 
   defp uri(socket) do
-    case {socket.host_uri, socket.private[:connect_info][:uri]} do
+    case {socket.host_uri, get_uri(socket)} do
       {%URI{} = uri, _connect_uri} -> URI.to_string(uri)
       {:not_mounted_at_router, %URI{} = uri} -> URI.to_string(uri)
       _other -> nil
@@ -86,13 +86,16 @@ defmodule HygeiaWeb.Init.Context do
 
   defp get_ip_address(socket) do
     if connected?(socket) and not is_nil(socket.private[:connect_info]) do
-      case get_connect_info(socket) do
-        %{peer_data: peer_data} ->
-          peer_data.address
-
-        _other ->
-          nil
+      case get_connect_info(socket, :peer_data) do
+        %{address: address} -> address
+        nil -> nil
       end
+    end
+  end
+
+  defp get_uri(socket) do
+    if connected?(socket) and not is_nil(socket.private[:connect_info]) do
+      get_connect_info(socket, :uri)
     end
   end
 
@@ -102,12 +105,9 @@ defmodule HygeiaWeb.Init.Context do
 
   defp get_remote_port(socket) do
     if connected?(socket) and not is_nil(socket.private[:connect_info]) do
-      case get_connect_info(socket) do
-        %{peer_data: peer_data} ->
-          peer_data.port
-
-        _other ->
-          nil
+      case get_connect_info(socket, :peer_data) do
+        %{port: port} -> port
+        nil -> nil
       end
     end
   end

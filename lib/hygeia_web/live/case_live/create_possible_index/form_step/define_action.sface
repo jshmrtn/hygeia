@@ -157,13 +157,7 @@
 
   <div class="row mt-5">
     <div class="col">
-      <button
-        id="back-button"
-        class="btn btn-outline-primary me-2"
-        type="button"
-        :on-click="back"
-        phx-target={@myself}
-      >
+      <button id="back-button" class="btn btn-outline-primary me-2" type="button" :on-click="back">
         {gettext("Back")}
       </button>
       <button
@@ -172,7 +166,6 @@
         type="submit"
         :on-click="next"
         phx-disable-with={gettext("Saving...")}
-        phx-target={@myself}
         disabled={not CreatePossibleIndex.valid_form?(@form_data)}
       >
         {#if Enum.all?(@form_data.bindings, &Enum.empty?(&1.reporting))}
