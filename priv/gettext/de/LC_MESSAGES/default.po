@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 
 #, elixir-format, ex-autogen
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -5119,6 +5119,11 @@ msgid "The automated case close email for the %{type} phase will be disabled."
 msgstr "Das automatische Fall-Abschluss-Email für die %{type} Phase wird deaktiviert."
 
 #, elixir-format, ex-autogen
+msgctxt "Phase Create Modal"
+msgid "The automated case close email for the %{type} phase will be enabled."
+msgstr "Das automatische Fall-Abschluss-Email für die %{type} Phase wird aktiviert."
+
+#, elixir-format, ex-autogen
 msgid "The case administraton sends cases like this. Index has not been contacted"
 msgstr "Falladministration verschickt die neuen Fälle so. Es wurde noch keinen Kontakt zu Index aufgenommen"
 
@@ -5167,8 +5172,18 @@ msgstr "Die Person gilt nicht als vollständig gegen Durchbruchinfektionen geimp
 
 #, elixir-format, ex-autogen
 msgctxt "Phase Create Modal"
-msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
-msgstr "Die Quarantäneverordnung der %{type} Phase wird entfernt, da die Verordnung vor dem neuen Startdatum beginnt."
+msgid "The quarantine order of the %{type} phase will be lifted since the new phase is contained in it."
+msgstr "Die Quarantäneanordnung der Phase %{type} wird aufgehoben, da die neue Phase darin enthalten ist."
+
+#, elixir-format, ex-autogen
+msgctxt "Phase Create Modal"
+msgid "The quarantine order of the %{type} phase will be lifted since the new phase is covering it completely."
+msgstr "Die Quarantäneanordnung der Phase %{type} wird aufgehoben, da die neue Phase diese vollständig abdeckt."
+
+#, elixir-format, ex-autogen
+msgctxt "Phase Create Modal"
+msgid "The start date of the %{type} phase will be changed from \"%{old_start_date}\" to \"%{new_start_date}\"."
+msgstr "Das Startdatum von der %{type} Phase wird von \"%{old_end_reason}\" zu \"%{new_end_reason}\" angepasst."
 
 #, elixir-format, ex-autogen
 msgctxt "Phase Create Modal"

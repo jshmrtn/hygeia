@@ -3,6 +3,8 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
 
   use HygeiaWeb, :surface_live_component
 
+  import Ecto.Changeset
+
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
@@ -70,20 +72,20 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
         socket.assigns.case
         |> CaseContext.change_case()
         |> changeset_add_to_params(:phases, phase_params),
-        &apply_action/2
+        &execute_action/2
       )
     )
     |> handle_save_response(socket, phase_params)
   end
 
   defp validate_type_unique(changeset, case) do
-    case Ecto.Changeset.get_field(changeset, :details) do
+    case get_field(changeset, :details) do
       nil ->
         changeset
 
       %Phase.Index{} ->
         if Enum.find(case.phases, &match?(%Phase{details: %Phase.Index{}}, &1)) do
-          Ecto.Changeset.add_error(
+          add_error(
             changeset,
             :type,
             gettext("Phase Type already exists on the case")
@@ -94,7 +96,7 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
 
       %Phase.PossibleIndex{type: type} ->
         if Enum.find(case.phases, &match?(%Phase{details: %Phase.PossibleIndex{type: ^type}}, &1)) do
-          Ecto.Changeset.add_error(
+          add_error(
             changeset,
             :type,
             gettext("Phase Type already exists on the case")
@@ -145,55 +147,79 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
   defp additional_actions(%Ecto.Changeset{valid?: true} = changeset, case) do
     List.flatten([
       additional_actions_status(changeset, case),
-      additional_actions_phase_end_date(changeset, case),
+      additional_actions_phase_date(changeset, case),
       additional_actions_phase_end_reason(changeset, case),
       additional_actions_phase_quarantine_order(changeset, case),
-      additional_actions_phase_automated_case_closed_email(case)
+      additional_actions_phase_automated_case_closed_email(changeset, case)
     ])
   end
 
   defp additional_actions_status(changeset, case) do
     cond do
-      Ecto.Changeset.fetch_field!(changeset, :type) != :index -> []
+      fetch_field!(changeset, :type) != :index -> []
       case.status == :first_contact -> []
       true -> [{:status, :first_contact}]
     end
   end
 
-  defp additional_actions_phase_end_date(changeset, case) do
-    with true <- Ecto.Changeset.fetch_field!(changeset, :quarantine_order),
-         new_start_date = Ecto.Changeset.fetch_field!(changeset, :start),
-         [_ | _] = overlapping_phases <-
-           case.phases
-           |> Enum.filter(&match?(%Phase{quarantine_order: true}, &1))
-           |> Enum.reject(&(Date.compare(&1.end, new_start_date) in [:lt, :eq]))
-           |> Enum.filter(&(Date.compare(&1.start, new_start_date) in [:lt, :eq])) do
-      Enum.map(overlapping_phases, &{:phase_end_date, &1, new_start_date})
+  defp additional_actions_phase_date(changeset, case) do
+    if fetch_field!(changeset, :quarantine_order) do
+      new_start_date = fetch_field!(changeset, :start)
+      new_end_date = fetch_field!(changeset, :end)
+
+      case.phases
+      |> Enum.map(fn phase ->
+        cond do
+          Date.compare(phase.start, new_start_date) in [:lt, :eq] and
+              Date.compare(new_end_date, phase.end) in [:lt, :eq] ->
+            nil
+
+          Date.compare(phase.start, new_end_date) == :lt and
+              Date.compare(new_end_date, phase.end) == :lt ->
+            {:phase_start_date, phase, new_end_date}
+
+          Date.compare(phase.start, new_start_date) == :lt and
+              Date.compare(new_start_date, phase.end) == :lt ->
+            {:phase_end_date, phase, new_start_date}
+
+          true ->
+            nil
+        end
+      end)
+      |> Enum.reject(&is_nil/1)
     else
-      nil -> []
-      false -> []
-      [] -> []
+      []
     end
   end
 
   defp additional_actions_phase_quarantine_order(changeset, case) do
-    with true <- Ecto.Changeset.fetch_field!(changeset, :quarantine_order),
-         new_start_date = Ecto.Changeset.fetch_field!(changeset, :start),
-         [_ | _] = overlapping_phases <-
-           case.phases
-           |> Enum.filter(&match?(%Phase{quarantine_order: true}, &1))
-           |> Enum.reject(&(Date.compare(&1.end, new_start_date) in [:lt, :eq]))
-           |> Enum.reject(&(Date.compare(&1.start, new_start_date) in [:lt, :eq])) do
-      Enum.map(overlapping_phases, &{:phase_quarantine_order, &1, false})
+    if fetch_field!(changeset, :quarantine_order) do
+      new_start_date = fetch_field!(changeset, :start)
+      new_end_date = fetch_field!(changeset, :end)
+
+      case.phases
+      |> Enum.map(fn phase ->
+        cond do
+          Date.compare(new_start_date, phase.start) in [:lt, :eq] and
+              Date.compare(phase.end, new_end_date) in [:lt, :eq] ->
+            {:phase_quarantine_order, :cover, phase, false}
+
+          Date.compare(phase.start, new_start_date) in [:lt, :eq] and
+              Date.compare(new_end_date, phase.end) in [:lt, :eq] ->
+            {:phase_quarantine_order, :contain, phase, false}
+
+          true ->
+            nil
+        end
+      end)
+      |> Enum.reject(&is_nil/1)
     else
-      nil -> []
-      false -> []
-      [] -> []
+      []
     end
   end
 
   defp additional_actions_phase_end_reason(changeset, case) do
-    with :index <- Ecto.Changeset.fetch_field!(changeset, :type),
+    with :index <- fetch_field!(changeset, :type),
          [_ | _] = change_phases <-
            Enum.reject(
              case.phases,
@@ -206,17 +232,43 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
     end
   end
 
-  defp additional_actions_phase_automated_case_closed_email(case) do
-    case.phases
-    |> Enum.filter(&match?(%Phase{send_automated_close_email: true}, &1))
-    |> Enum.map(&{:phase_send_automated_close_email, &1, false})
+  defp additional_actions_phase_automated_case_closed_email(changeset, case) do
+    if fetch_field!(changeset, :quarantine_order) do
+      new_end_date = fetch_field!(changeset, :end)
+
+      case.phases
+      |> Enum.sort_by(fn %Phase{end: end_date} -> end_date end, {:asc, Date})
+      |> Enum.map(&{:phase_send_automated_close_email, &1, false})
+      |> List.update_at(-1, fn
+        {:phase_send_automated_close_email, phase, false} = action ->
+          if Date.compare(phase.end, new_end_date) in [:lt, :eq] and
+               fetch_field!(changeset, :send_automated_close_email) do
+            action
+          else
+            {:phase_send_automated_close_email, phase, true}
+          end
+      end)
+    else
+      []
+    end
   end
 
-  @spec apply_action(action :: additional_action(), acc :: map) :: map
-  defp apply_action(action, acc)
-  defp apply_action({:status, new_status}, acc), do: Map.put(acc, "status", new_status)
+  @spec execute_action(action :: additional_action(), acc :: map) :: map
+  defp execute_action(action, acc)
+  defp execute_action({:status, new_status}, acc), do: Map.put(acc, "status", new_status)
 
-  defp apply_action({:phase_end_date, %Phase{uuid: uuid}, new_end_date}, acc) do
+  defp execute_action({:phase_start_date, %Phase{uuid: uuid}, new_start_date}, acc) do
+    Map.update!(
+      acc,
+      "phases",
+      &Enum.map(&1, fn
+        %{"uuid" => ^uuid} = phase -> Map.put(phase, "start", new_start_date)
+        %{} = phase -> phase
+      end)
+    )
+  end
+
+  defp execute_action({:phase_end_date, %Phase{uuid: uuid}, new_end_date}, acc) do
     Map.update!(
       acc,
       "phases",
@@ -227,7 +279,7 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
     )
   end
 
-  defp apply_action({:phase_end_reason, %Phase{uuid: uuid}, new_end_reason}, acc) do
+  defp execute_action({:phase_end_reason, %Phase{uuid: uuid}, new_end_reason}, acc) do
     Map.update!(
       acc,
       "phases",
@@ -243,7 +295,7 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
     )
   end
 
-  defp apply_action({:phase_quarantine_order, %Phase{uuid: uuid}, false}, acc) do
+  defp execute_action({:phase_quarantine_order, _type, %Phase{uuid: uuid}, false}, acc) do
     Map.update!(
       acc,
       "phases",
@@ -254,12 +306,12 @@ defmodule HygeiaWeb.CaseLive.CreatePhaseModal do
     )
   end
 
-  defp apply_action({:phase_send_automated_close_email, %Phase{uuid: uuid}, false}, acc) do
+  defp execute_action({:phase_send_automated_close_email, %Phase{uuid: uuid}, truth}, acc) do
     Map.update!(
       acc,
       "phases",
       &Enum.map(&1, fn
-        %{"uuid" => ^uuid} = phase -> Map.put(phase, "send_automated_close_email", false)
+        %{"uuid" => ^uuid} = phase -> Map.put(phase, "send_automated_close_email", truth)
         %{} = phase -> phase
       end)
     )
