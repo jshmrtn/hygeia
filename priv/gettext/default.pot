@@ -5060,6 +5060,11 @@ msgid "The automated case close email for the %{type} phase will be disabled."
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Phase Create Modal"
+msgid "The automated case close email for the %{type} phase will be enabled."
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgid "The case administraton sends cases like this. Index has not been contacted"
 msgstr ""
 
@@ -5108,7 +5113,17 @@ msgstr ""
 
 #, elixir-format, ex-autogen
 msgctxt "Phase Create Modal"
-msgid "The quarantine order of the %{type} phase will be lifted since the order is starting laten than the new start date."
+msgid "The quarantine order of the %{type} phase will be lifted since the new phase is contained in it."
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Phase Create Modal"
+msgid "The quarantine order of the %{type} phase will be lifted since the new phase is covering it completely."
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Phase Create Modal"
+msgid "The start date of the %{type} phase will be changed from \"%{old_start_date}\" to \"%{new_start_date}\"."
 msgstr ""
 
 #, elixir-format, ex-autogen
