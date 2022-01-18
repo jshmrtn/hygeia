@@ -186,11 +186,17 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp find_case_by_external_reference(_type, nil), do: :error
 
   defp find_case_by_external_reference(type, id) do
-    with [case | _] <- CaseContext.list_cases_by_external_reference(type, to_string(id)),
-         case <- preload_case(case) do
-      {:ok, {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}}
-    else
-      [] -> :error
+    case CaseContext.list_cases_by_external_reference(type, to_string(id)) do
+      [] ->
+        :error
+
+      [case] ->
+        case = preload_case(case)
+        {:ok, {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}}
+
+      [case | _] ->
+        case = preload_case(case)
+        {:ok, {:input_needed, %Planner.Action.SelectCase{case: case, person: case.person}}}
     end
   end
 
@@ -199,11 +205,15 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp find_person_by_external_reference(_type, nil, _relevance_date), do: :error
 
   defp find_person_by_external_reference(type, id, relevance_date) do
-    with [person | _] <- CaseContext.list_people_by_external_reference(type, to_string(id)),
-         person <- preload_person(person) do
-      {:ok, select_active_cases(person, relevance_date)}
-    else
-      [] -> :error
+    case CaseContext.list_people_by_external_reference(type, to_string(id)) do
+      [] ->
+        :error
+
+      [person] ->
+        {:ok, select_active_cases(preload_person(person), relevance_date, :certain)}
+
+      [person | _] ->
+        {:ok, select_active_cases(preload_person(person), relevance_date, :input_needed)}
     end
   end
 
