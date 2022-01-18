@@ -26,20 +26,33 @@
         {gettext("Quarantine Confirmation")}
       </Link>
       {#if @active_phase.end != Date.utc_today()}
-        <p>{gettext(
-            "You can lift quarantine if you're in possession of a valid Covid certificate and one of the following applies to you:"
-          )}</p>
-        <ul>
-          <li>{gettext("You're vaccinated and completed your basic immunization less than four months ago.")}</li>
-          <li>{gettext("You received a vaccination booster less than four months ago.")}</li>
-          <li>{gettext("You've been tested positive for covid and recovered less than four months ago.")}</li>
-        </ul>
-        <LiveRedirect
-          class="btn btn-lg btn-outline-primary"
-          to={Routes.premature_release_create_path(@socket, :create, @active_case, @active_phase)}
-        >
-          {gettext("End Quarantine")}
-        </LiveRedirect>
+        {#if @active_phase.premature_release_permission}
+          <p>{gettext(
+              "You can lift quarantine if you're in possession of a valid Covid certificate and one of the following applies to you:"
+            )}</p>
+          <ul>
+            <li>{gettext("You're vaccinated and completed your basic immunization less than four months ago.")}</li>
+            <li>{gettext("You received a vaccination booster less than four months ago.")}</li>
+            <li>{gettext("You've been tested positive for covid and recovered less than four months ago.")}</li>
+          </ul>
+          <LiveRedirect
+            class="btn btn-lg btn-outline-primary"
+            to={Routes.premature_release_create_path(@socket, :create, @active_case, @active_phase)}
+          >
+            {gettext("End Quarantine")}
+          </LiveRedirect>
+        {#else}
+          {#case @active_phase.premature_release_disabled_reason}
+            {#match :virus_variant_of_concern}
+              <p>{gettext(
+                  "You entered Switzerland from a country with a virus variant of concern. For this reason, according to the FOPH, it is not possible for you to end the quarantine early."
+                )}</p>
+            {#match :other}
+              <p>{gettext(
+                  "It is not possible for you to end the quarantine early. Please contact the tracing team to get more information."
+                )}</p>
+          {/case}
+        {/if}
       {#else}
         <p>{gettext(
             "Today is your last day of quarantine. If you do not experience any symptoms, you're allowed to leave quarantine."

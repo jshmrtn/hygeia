@@ -140,6 +140,88 @@ defmodule HygeiaWeb.CaseLiveTest do
     end
   end
 
+  describe "BaseData" do
+    setup [:create_case]
+
+    test "displays case", %{conn: conn, case_model: case} do
+      {:ok, _show_live, html} = live(conn, Routes.case_base_data_path(conn, :show, case.uuid))
+
+      assert html =~ case.uuid
+    end
+
+    test "updates case phase - deny premature release with other reason", %{
+      conn: conn,
+      case_model: case
+    } do
+      {:ok, edit_live, _html} = live(conn, Routes.case_base_data_path(conn, :edit, case.uuid))
+
+      assert edit_live
+             |> form("#case-form")
+             |> render_change()
+
+      assert edit_live
+             |> form("#case-form",
+               case: %{
+                 phases: %{
+                   "0" => %{
+                     premature_release_permission: false
+                   }
+                 }
+               }
+             )
+             |> render_change()
+
+      assert edit_live
+             |> form("#case-form",
+               case: %{
+                 phases: %{
+                   "0" => %{
+                     premature_release_disabled_reason: :other
+                   }
+                 }
+               }
+             )
+             |> render_change()
+
+      assert edit_live
+             |> form("#case-form",
+               case: %{
+                 phases: %{
+                   "0" => %{
+                     premature_release_disabled_reason_other: "test"
+                   }
+                 }
+               }
+             )
+             |> render_change()
+
+      html =
+        edit_live
+        |> form("#case-form")
+        |> render_submit()
+
+      assert_patch(edit_live, Routes.case_base_data_path(conn, :show, case.uuid))
+
+      assert html =~ "Case updated successfully"
+
+      assert %Case{
+               phases: [
+                 %{
+                   details: %{
+                     type: :contact_person,
+                     end_reason: :converted_to_index
+                   },
+                   quarantine_order: true,
+                   premature_release_permission: false,
+                   premature_release_disabled_reason: :other,
+                   premature_release_disabled_reason_other: "test"
+                 }
+                 | _
+               ]
+             } = CaseContext.get_case!(case.uuid)
+    end
+  end
+
   describe "CreatePossibleIndex - Path navigation" do
     test "navigate to step without reaching it", %{conn: conn} do
       assert {:error, {:live_redirect, %{to: _}}} =
