@@ -100,6 +100,7 @@ defmodule Hygeia.MixProject do
       {:ex_doc, "~> 0.24", runtime: false, only: [:dev]},
       {:ex_phone_number, "~> 0.2"},
       {:floki, ">= 0.27.0", only: :test},
+      {:gen_state_machine, "~> 3.0"},
       {:gen_smtp, "~> 1.0"},
       {:gettext, "~> 0.19"},
       # Get latest master that works with up-to-date cowboy
