@@ -47,7 +47,7 @@ defmodule HygeiaWeb.MutationLiveTest do
              |> form("#mutation-form", mutation: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         create_live
         |> form("#mutation-form", mutation: @create_attrs)
         |> render_submit()

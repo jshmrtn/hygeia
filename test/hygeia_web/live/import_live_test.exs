@@ -83,7 +83,7 @@ defmodule HygeiaWeb.ImportLiveTest do
              |> file_input("#import-form", :file, [@valid_import_file])
              |> render_upload("example_ism_2021_06_11_test.xlsx") =~ "100%"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         create_live
         |> form("#import-form", import: Map.merge(@create_attrs, %{tenant_uuid: tenant.uuid}))
         |> render_submit()

@@ -100,7 +100,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
       )
       |> render_change()
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         create_live
         |> form("#transmission-form",
           transmission: @create_attrs
@@ -142,7 +142,7 @@ defmodule HygeiaWeb.TransmissionLiveTest do
       )
       |> render_change()
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         create_live
         |> form("#transmission-form",
           transmission:

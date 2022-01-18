@@ -64,7 +64,7 @@ defmodule HygeiaWeb.VisitLiveTest do
 
       render_hook(create_live, :select_visit_organisation, %{"uuid" => organisation.uuid})
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         create_live
         |> form("#visit-form",
           visit: Map.merge(@create_attrs, %{organisation_uuid: organisation.uuid})
