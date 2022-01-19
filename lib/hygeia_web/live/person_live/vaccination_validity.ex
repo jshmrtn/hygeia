@@ -5,7 +5,10 @@ defmodule HygeiaWeb.PersonLive.VaccinationValidity do
 
   alias Hygeia.CaseContext.Person.VaccinationShot.Validity
 
+  @vaccination_refresh_interval_ms Hygeia.Jobs.Supervisor.vaccination_refresh_interval_ms()
+
   prop validities, :list, required: true
+  prop shots, :list, required: true
 
   @foph_links %{
     "en" =>
@@ -40,5 +43,19 @@ defmodule HygeiaWeb.PersonLive.VaccinationValidity do
           )
       )
     )
+  end
+
+  defp validity_likely_outdated?(shots),
+    do:
+      Enum.any?(
+        shots,
+        &(DateTime.diff(DateTime.utc_now(), &1.updated_at, :millisecond) <
+            @vaccination_refresh_interval_ms)
+      )
+
+  defp refresh_interval do
+    unit = Cldr.Unit.new!(@vaccination_refresh_interval_ms, :millisecond)
+    lokalized = HygeiaCldr.Unit.localize(unit, HygeiaCldr, [])
+    HygeiaCldr.Unit.to_string!(lokalized, format: :short)
   end
 end

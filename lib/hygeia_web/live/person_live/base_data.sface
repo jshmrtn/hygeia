@@ -519,11 +519,12 @@
                   />
                 {/if}
 
-                {#case @live_action}
-                  {#match :show}
-                    <HygeiaWeb.PersonLive.VaccinationValidity validities={@person.vaccination_shot_validities} />
-                  {#match _other}
-                {/case}
+                {#if @live_action == :show && @person.is_vaccinated}
+                  <HygeiaWeb.PersonLive.VaccinationValidity
+                    validities={@person.vaccination_shot_validities}
+                    shots={@person.vaccination_shots}
+                  />
+                {/if}
               </div>
             </div>
           </div>

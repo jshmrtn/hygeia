@@ -7,6 +7,24 @@
     </small>
   </p>
 
+  <div
+    :if={validity_likely_outdated?(@shots)}
+    class="alert alert-warning m-0 d-flex align-items-center rounded-0 mb-3"
+  >
+    <div class="spinner-border me-2" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <small>
+      {pgettext(
+        "Vaccination Validity",
+        "Vaccination data was recently changed. The resulting validity could still be calculating.\nThat process can take up to {calculation_duration}. Use the displayed data with caution.",
+        calculation_duration: refresh_interval()
+      )
+      |> String.split("\n")
+      |> Enum.intersperse(raw("<br />"))}
+    </small>
+  </div>
+
   {#case @validities}
     {#match []}
       {pgettext(
@@ -15,7 +33,7 @@
       )}
     {#match validities}
       <ul>
-        <li :for={%Validity{range: range} <- validities}>
+        <li :for={%Validity{range: range} <- Enum.uniq_by(validities, & &1.range)}>
           {HygeiaCldr.Date.Interval.to_string!(range)}
         </li>
       </ul>
