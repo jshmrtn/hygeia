@@ -157,7 +157,7 @@ defmodule Hygeia.Repo.Migrations.CreateVaccinationShots do
           END AS vaccine_type,
           CASE
             #{for {_type, searches} <- @vaccine_type_conversion_searches, search <- searches, into: "", do: "WHEN '#{search}' <% (people.vaccination->>'name') THEN NULL "}
-            ELSE people.vaccination->>'name'
+            ELSE COALESCE(people.vaccination->>'name', 'unknown')
           END AS vaccine_type_other,
           date::date AS date,
           people.uuid AS person_uuid,
