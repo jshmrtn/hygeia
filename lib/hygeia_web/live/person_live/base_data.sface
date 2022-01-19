@@ -521,31 +521,7 @@
 
                 {#case @live_action}
                   {#match :show}
-                    <h5>{pgettext("Person Show", "Vaccination Validity (breakthrough detection)")}</h5>
-
-                    <p>
-                      <small>
-                        {pgettext(
-                          "Person Show",
-                          "The validity is only calculated for vaccinations that are used in Switzerland at the moment to detect breakthrough infections."
-                        )}<br>
-                        {pgettext("Person Show", "Therefore currently only Modena, Pfizer and Janssen are considered.")}
-                      </small>
-                    </p>
-
-                    {#case @person.vaccination_shot_validities}
-                      {#match []}
-                        {pgettext(
-                          "Person Show",
-                          "The person is not considered fully vaccinated for breakthrough infections."
-                        )}
-                      {#match validities}
-                        <ul>
-                          <li :for={%Person.VaccinationShot.Validity{range: range} <- validities}>
-                            {HygeiaCldr.Date.Interval.to_string!(range)}
-                          </li>
-                        </ul>
-                    {/case}
+                    <HygeiaWeb.PersonLive.VaccinationValidity validities={@person.vaccination_shot_validities} />
                   {#match _other}
                 {/case}
               </div>

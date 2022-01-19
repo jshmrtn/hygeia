@@ -192,7 +192,7 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
               ) = 1 AND
               DATERANGE(
                 (COALESCE(case_phase_dates.first_test_date, case_phase_dates.case_first_known_date) - INTERVAL '4 week')::date,
-                (COALESCE(case_phase_dates.last_test_date, case_phase_dates.case_last_known_date) + INTERVAL '4 week')::date
+                (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date
               ) <<
               DATERANGE(
                 vaccination_shots.date,
@@ -211,7 +211,7 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
               ) = 1 AND
               DATERANGE(
                 (COALESCE(case_phase_dates.first_test_date, case_phase_dates.case_first_known_date) - INTERVAL '4 week')::date,
-                (COALESCE(case_phase_dates.last_test_date, case_phase_dates.case_last_known_date) + INTERVAL '4 week')::date
+                (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date
               ) >>
               DATERANGE(
                 vaccination_shots.date,
@@ -227,7 +227,7 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
               ) = 1 AND
               DATERANGE(
                 (COALESCE(case_phase_dates.first_test_date, case_phase_dates.case_first_known_date) - INTERVAL '4 week')::date,
-                (COALESCE(case_phase_dates.last_test_date, case_phase_dates.case_last_known_date) + INTERVAL '4 week')::date
+                (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date
               ) &&
               DATERANGE(
                 vaccination_shots.date,
@@ -235,7 +235,7 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
               )
             ) THEN
               DATERANGE(
-                (COALESCE(case_phase_dates.last_test_date, case_phase_dates.case_last_known_date) + INTERVAL '4 week')::date,
+                (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date,
                 (vaccination_shots.date + INTERVAL '1 year')::date
               )
           END AS range
