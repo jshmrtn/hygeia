@@ -21,7 +21,7 @@ defmodule Hygeia.Repo.Migrations.CrontabDumpSelf do
             'schedule',
             JSONB_BUILD_OBJECT(
               'extended',
-              TRUE,
+              FALSE,
               'expression',
               sedex_export_configuration->'schedule'
             )
