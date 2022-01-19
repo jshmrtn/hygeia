@@ -1541,6 +1541,8 @@ defmodule Hygeia.StatisticsContextTest do
           }
         })
 
+      execute_materialized_view_refresh(:vaccination_shot_validity)
+
       execute_materialized_view_refresh(:statistics_vaccination_breakthroughs_per_day)
 
       assert [

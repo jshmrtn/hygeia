@@ -3941,6 +3941,11 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.DKIM Field"
 msgid "Private Key"
 msgstr "Clé privée"
 
+#, elixir-format, ex-autogen
+msgctxt "Auto Tracing Problem"
+msgid "Probable Vaccination Failure"
+msgstr ""
+
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Problem solved"
@@ -5657,11 +5662,6 @@ msgid "Vaccination Breakthroughs"
 msgstr "Vaccination"
 
 #, elixir-format, ex-autogen, fuzzy
-msgctxt "Auto Tracing Problem"
-msgid "Vaccination Failure"
-msgstr "Échec de la vaccination"
-
-#, elixir-format, ex-autogen, fuzzy
 msgid "Vaccination Failures"
 msgstr "Échecs de la vaccination"
 
@@ -5669,6 +5669,11 @@ msgstr "Échecs de la vaccination"
 msgctxt "Vaccination Validity"
 msgid "Vaccination Validity"
 msgstr "Vaccination"
+
+#, elixir-format, ex-autogen
+msgctxt "Vaccination Validity"
+msgid "Vaccination data was recently changed. The resulting validity could still be calculating.\nThat process can take up to %{calculation_duration}. Use the displayed data with caution."
+msgstr ""
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"

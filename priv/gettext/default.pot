@@ -3882,6 +3882,11 @@ msgid "Private Key"
 msgstr ""
 
 #, elixir-format, ex-autogen
+msgctxt "Auto Tracing Problem"
+msgid "Probable Vaccination Failure"
+msgstr ""
+
+#, elixir-format, ex-autogen
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Problem solved"
 msgstr ""
@@ -5597,17 +5602,17 @@ msgid "Vaccination Breakthroughs"
 msgstr ""
 
 #, elixir-format, ex-autogen
-msgctxt "Auto Tracing Problem"
-msgid "Vaccination Failure"
-msgstr ""
-
-#, elixir-format, ex-autogen
 msgid "Vaccination Failures"
 msgstr ""
 
 #, elixir-format, ex-autogen
 msgctxt "Vaccination Validity"
 msgid "Vaccination Validity"
+msgstr ""
+
+#, elixir-format, ex-autogen
+msgctxt "Vaccination Validity"
+msgid "Vaccination data was recently changed. The resulting validity could still be calculating.\nThat process can take up to %{calculation_duration}. Use the displayed data with caution."
 msgstr ""
 
 #, elixir-format, ex-autogen
