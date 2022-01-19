@@ -5160,8 +5160,8 @@ msgstr "Il link non è più visibile"
 msgid "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under %{link}."
 msgstr "Il link alle presentazioni di indici presunti è stato inviato. L'indice non ha ancora inserito i presunti indici. Questo può essere controllato sotto %{link}."
 
-#, elixir-format, ex-autogen
-msgctxt "Person Show"
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Vaccination Validity"
 msgid "The person is not considered fully vaccinated for breakthrough infections."
 msgstr "La persona non è considerata completamente vaccinata per le infezioni inaspettate."
 
@@ -5183,19 +5183,15 @@ msgstr "Lo stato serve come una panoramica della fase di rintracciamento attuale
 msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
 msgstr "L'app swiss covid è l'app ufficiale per il tracciamento dei contatti della svizzera. L'app aiuta a tracciare e prevenire la diffusione del virus COVID-19."
 
-#, elixir-format, ex-autogen
-msgctxt "Person Show"
-msgid "The validity is only calculated for vaccinations that are used in Switzerland at the moment to detect breakthrough infections."
+#. link text: recognized by the FOPH
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Vaccination Validity"
+msgid "The validity is only calculated for vaccines that are %{link}."
 msgstr "La validità è calcolata solo per le vaccinazioni che vengono attualmente utilizzate in Svizzera per rilevare infezioni inaspettate."
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
 msgstr "Si è verificato un errore durante l'invio del modulo. Prova a inviare nuovamente il modulo e contatta l'amministratore se il problema persiste."
-
-#, elixir-format, ex-autogen
-msgctxt "Person Show"
-msgid "Therefore currently only Modena, Pfizer and Janssen are considered."
-msgstr "Pertanto attualmente si considerano solo Modena, Pfizer e Janssen."
 
 #, elixir-format, ex-autogen, fuzzy
 msgid "This case is not in an index phase."
@@ -5668,10 +5664,10 @@ msgstr "Vacinazione fallita"
 msgid "Vaccination Failures"
 msgstr "Vaccinazioni fallite"
 
-#, elixir-format, ex-autogen
-msgctxt "Person Show"
-msgid "Vaccination Validity (breakthrough detection)"
-msgstr "Validità della vaccinazione (rilevamento di casi di infezioni inaspettate)"
+#, elixir-format, ex-autogen, fuzzy
+msgctxt "Vaccination Validity"
+msgid "Vaccination Validity"
+msgstr "Vaccinazione"
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
@@ -6152,6 +6148,12 @@ msgstr "possibile indice presentato."
 msgctxt "Item Table"
 msgid "premature_releases"
 msgstr "rilasci_precoci"
+
+#. surounding text: The validity is only calculated for vaccines that are %{link}.
+#, elixir-format, ex-autogen
+msgctxt "Vaccination Validity"
+msgid "recognized by the FOPH"
+msgstr ""
 
 #, elixir-format, ex-autogen, fuzzy
 msgctxt "Item Table"
