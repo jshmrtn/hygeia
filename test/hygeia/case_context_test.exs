@@ -2394,6 +2394,7 @@ defmodule Hygeia.CaseContextTest do
              } = Repo.preload(person, :vaccination_shot_validities)
     end
 
+    # https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/covid-zertifikat/covid-zertifikat-erhalt-gueltigkeit.html#-86956486
     test "counts one mrna vaccination before internal convalescence" do
       vaccination_date = Cldr.Calendar.plus(Date.utc_today(), :months, -4)
 
@@ -2403,8 +2404,8 @@ defmodule Hygeia.CaseContextTest do
 
       validity =
         Date.range(
-          Cldr.Calendar.plus(order_end_date, :weeks, 4),
-          vaccination_date |> Date.add(-1) |> Cldr.Calendar.plus(:years, 1)
+          order_end_date,
+          order_end_date |> Date.add(-1) |> Cldr.Calendar.plus(:years, 1)
         )
 
       person =
@@ -2440,6 +2441,46 @@ defmodule Hygeia.CaseContextTest do
                  }
                ]
              } = Repo.preload(person, :vaccination_shot_validities)
+    end
+
+    # https://www.bag.admin.ch/bag/de/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/haeufig-gestellte-fragen.html?faq-url=/covid/de/impfung/ich-bin-genesen-wie-viele-impfdosen-soll-ich-erhalten
+    # > In folgenden Fällen müssen zwei Impfdosen verabreicht werden:
+    # > Die bestätigte Coronavirus-Infektion liegt weniger als 4 Wochen zurück.
+    test "doesn't count one mrna vaccination shortly before internal convalescence" do
+      vaccination_date = Cldr.Calendar.plus(Date.utc_today(), :weeks, -5)
+
+      order_date = DateTime.new!(Cldr.Calendar.plus(Date.utc_today(), :weeks, -4), ~T[12:00:00])
+      order_start_date = DateTime.to_date(order_date)
+      order_end_date = Date.add(order_start_date, 10)
+
+      person =
+        person_fixture(tenant_fixture(), %{
+          is_vaccinated: true,
+          vaccination_shots: [
+            %{
+              vaccine_type: :moderna,
+              date: vaccination_date
+            }
+          ]
+        })
+
+      _case =
+        case_fixture(person, nil, nil, %{
+          phases: [
+            %{
+              details: %{__type__: :index},
+              order_date: order_date,
+              quarantine_order: true,
+              start: order_start_date,
+              end: order_end_date
+            }
+          ],
+          tests: [],
+          clinical: nil
+        })
+
+      assert %Person{vaccination_shot_validities: []} =
+               Repo.preload(person, :vaccination_shot_validities)
     end
   end
 end
