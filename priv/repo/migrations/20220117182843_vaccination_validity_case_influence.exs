@@ -16,11 +16,11 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
             LEAST(
               MIN(tests.tested_at),
               MIN(tests.laboratory_reported_at)
-            ) AS first_test_date,
+            )::date AS first_test_date,
             GREATEST(
               MAX(tests.tested_at),
               MAX(tests.laboratory_reported_at)
-            ) AS last_test_date,
+            )::date AS last_test_date,
             COALESCE(
               LEAST(
                 MIN(tests.tested_at),
@@ -31,7 +31,7 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
               (phase->>'order_date')::date,
               (phase->>'inserted_at')::date,
               cases.inserted_at
-            ) AS case_first_known_date,
+            )::date AS case_first_known_date,
             COALESCE(
               GREATEST(
                 MAX(tests.tested_at),
@@ -42,7 +42,7 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
               (phase->>'order_date')::date,
               (phase->>'inserted_at')::date,
               cases.inserted_at
-            ) AS case_last_known_date
+            )::date AS case_last_known_date
             FROM cases
             CROSS JOIN
               UNNEST(cases.phases)
@@ -190,53 +190,26 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
                 PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
                 ORDER BY vaccination_shots.date
               ) = 1 AND
-              DATERANGE(
-                (COALESCE(case_phase_dates.first_test_date, case_phase_dates.case_first_known_date) - INTERVAL '4 week')::date,
-                (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date
-              ) <<
-              DATERANGE(
-                vaccination_shots.date,
-                (vaccination_shots.date + INTERVAL '1 year')::date
-              )
+              vaccination_shots.date > (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date
             ) THEN
               DATERANGE(
                 vaccination_shots.date,
                 (vaccination_shots.date + INTERVAL '1 year')::date
               )
-            -- case is after shot validity, shot is not valid
+            -- case is inside shot shot start + 4 weeks and shot validity end, shot is valid after case
             WHEN (
               ROW_NUMBER() OVER (
                 PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
                 ORDER BY vaccination_shots.date
               ) = 1 AND
-              DATERANGE(
-                (COALESCE(case_phase_dates.first_test_date, case_phase_dates.case_first_known_date) - INTERVAL '4 week')::date,
-                (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date
-              ) >>
-              DATERANGE(
-                vaccination_shots.date,
-                (vaccination_shots.date + INTERVAL '1 year')::date
-              )
-            ) THEN
-              NULL
-            -- case is inside shot validity, shot is valid after case + 4 weeks
-            WHEN (
-              ROW_NUMBER() OVER (
-                PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
-                ORDER BY vaccination_shots.date
-              ) = 1 AND
-              DATERANGE(
-                (COALESCE(case_phase_dates.first_test_date, case_phase_dates.case_first_known_date) - INTERVAL '4 week')::date,
-                (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date
-              ) &&
-              DATERANGE(
-                vaccination_shots.date,
-                (vaccination_shots.date + INTERVAL '1 year')::date
-              )
+              case_phase_dates.case_last_known_date
+                BETWEEN
+                  (vaccination_shots.date + INTERVAL '4 week')::date
+                  AND (vaccination_shots.date + INTERVAL '1 year')::date
             ) THEN
               DATERANGE(
-                (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date,
-                (vaccination_shots.date + INTERVAL '1 year')::date
+                case_phase_dates.case_last_known_date,
+                (case_phase_dates.case_last_known_date + INTERVAL '1 year')::date
               )
           END AS range
           FROM people
