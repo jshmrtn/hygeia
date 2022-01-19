@@ -251,6 +251,31 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
            } = person
   end
 
+  test "input_needed when invalid email and country/subdivision combination", %{
+    import: %Import{rows: rows}
+  } do
+    row = Enum.find(rows, &(&1.data["Meldung ID"] == 1_794_060))
+
+    row = %{
+      row
+      | data: %{
+          row.data
+          | "E-Mail" => "invalid email",
+            "Patient Kanton" => "SG",
+            "Wohnsitzland" => "DE"
+        }
+    }
+
+    assert {false,
+            [
+              {:uncertain, _choose_tenant},
+              {:certain, _select_case},
+              {:certain, _patch_phases},
+              {:input_needed,
+               %Planner.Action.PatchPerson{invalid_changes: [:subdivision, :email]}}
+            ]} = Planner.generate_action_plan_suggestion(row)
+  end
+
   @tag use_tenant: "AR"
   test "warns when using the wrong tenant", %{
     import: %Import{rows: rows},

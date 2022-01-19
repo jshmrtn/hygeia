@@ -595,6 +595,7 @@ msgid "Cases inserted successfully."
 msgstr "Fall wurde erfolgreich erstellt."
 
 #, ex-autogen, icu-format
+msgctxt "Import Helpers"
 msgid "Certain"
 msgstr "Sicher"
 
@@ -1569,6 +1570,11 @@ msgid "Email"
 msgstr "E-Mail"
 
 #, ex-autogen, icu-format
+msgctxt "Import Helpers"
+msgid "Email"
+msgstr "E-Mail"
+
+#, ex-autogen, icu-format
 msgctxt "Notification Type"
 msgid "Email Send Failed"
 msgstr "E-Mail Versand fehlgeschlagen"
@@ -2407,6 +2413,7 @@ msgid "Initiate Auto Tracing after getting a contact method."
 msgstr "Das Auto Tracing auslösen, nachdem eine Kontaktmethode erfragt wurde."
 
 #, ex-autogen, icu-format
+msgctxt "Import Helpers"
 msgid "Input needed"
 msgstr "Angaben benötigt"
 
@@ -2437,6 +2444,11 @@ msgstr "Ziel"
 #, ex-autogen, icu-format
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr "Ungültige Kontaktangaben. Falls Sie glauben, dass diese Meldung falsch ist, kontaktieren Sie bitte das Kontakt Tracing Team."
+
+#, ex-autogen, icu-format
+msgctxt "Inbox Row Patch Person"
+msgid "Invalid person details"
+msgstr "Ungültige Kontaktangaben"
 
 #, ex-autogen, icu-format
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
@@ -2536,6 +2548,7 @@ msgid "Keep Status"
 msgstr "Status nicht anpassen"
 
 #, ex-autogen, icu-format
+msgctxt "Inbox Row Patch Person"
 msgid "Keep personal data"
 msgstr "Persönliche Daten nicht anpassen"
 
@@ -4817,6 +4830,11 @@ msgid "Subdivision"
 msgstr "Kanton"
 
 #, ex-autogen, icu-format
+msgctxt "Import Helpers"
+msgid "Subdivision"
+msgstr "Kanton"
+
+#, ex-autogen, icu-format
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr "Betreff"
@@ -5533,6 +5551,7 @@ msgid "UUID"
 msgstr "UUID"
 
 #, ex-autogen, icu-format
+msgctxt "Import Helpers"
 msgid "Uncertain"
 msgstr "Unsicher"
 
@@ -5596,6 +5615,7 @@ msgid "Update Transmission"
 msgstr "Übertragung aktualisieren"
 
 #, ex-autogen, icu-format
+msgctxt "Inbox Row Patch Person"
 msgid "Update personal data"
 msgstr "Persönliche Daten aktualisieren"
 

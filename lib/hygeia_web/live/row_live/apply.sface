@@ -240,17 +240,27 @@
               <span class="d-block small certainty-label">
                 {translate_certainty(certainty)}
               </span>
-              {#if map_size(action.person_attrs) == 0}
-                {gettext("Keep personal data")}
+              {#if length(action.invalid_changes) > 0}
+                {pgettext("Inbox Row Patch Person", "Invalid person details")}
+              {#elseif map_size(action.person_attrs) == 0}
+                {pgettext("Inbox Row Patch Person", "Keep personal data")}
               {#else}
-                {gettext("Update personal data")}
+                {pgettext("Inbox Row Patch Person", "Update personal data")}
               {/if}
             </div>
           </summary>
 
+          {#if length(action.invalid_changes) > 0}
+            <ul>
+              <li :for={field <- action.invalid_changes}>
+                {translate_invalid_changes(field)} {dgettext("errors", "is invalid")}
+              </li>
+            </ul>
+          {/if}
+
           <div class="card-body">
             <HygeiaWeb.ResourceTable
-              :if={map_size(action.person_attrs) > 0}
+              :if={map_size(action.person_attrs) > 0 and length(action.invalid_changes) == 0}
               subject={action.person_attrs}
               mod={CaseContext.Person}
               id="patch_person_changes"
@@ -263,7 +273,7 @@
               }}
             />
             {#if map_size(action.person_attrs) == 0}
-              {gettext("Keep personal data")}
+              {pgettext("Inbox Row Patch Person", "Keep personal data")}
             {/if}
           </div>
         {/if}

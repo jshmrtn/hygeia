@@ -135,7 +135,7 @@ msgstr "Aggiungi un volo"
 
 #, ex-autogen, icu-format
 msgid "Add an institution"
-msgstr "Aggiungi un istituto d'istruzione "
+msgstr "Aggiungi un istituto d'istruzione"
 
 #, ex-autogen, icu-format
 msgid "Add an occupation"
@@ -595,6 +595,7 @@ msgid "Cases inserted successfully."
 msgstr "Il caso è stato creato con successo"
 
 #, ex-autogen, icu-format
+msgctxt "Import Helpers"
 msgid "Certain"
 msgstr "Alcuni"
 
@@ -1568,6 +1569,11 @@ msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Sea
 msgid "Email"
 msgstr "Email"
 
+#, ex-autogen, fuzzy, icu-format
+msgctxt "Import Helpers"
+msgid "Email"
+msgstr "Email"
+
 #, ex-autogen, icu-format
 msgctxt "Notification Type"
 msgid "Email Send Failed"
@@ -2407,6 +2413,7 @@ msgid "Initiate Auto Tracing after getting a contact method."
 msgstr "Avvia il rintracciamento automatico dopo aver ottenuto un metodo di contatto."
 
 #, ex-autogen, icu-format
+msgctxt "Import Helpers"
 msgid "Input needed"
 msgstr "Input necessario"
 
@@ -2437,6 +2444,11 @@ msgstr "In"
 #, ex-autogen, icu-format
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr "Informazioni della persona invalide, se credi che questo sia un errore, contatta il team di rintracciamento."
+
+#, ex-autogen, fuzzy, icu-format
+msgctxt "Inbox Row Patch Person"
+msgid "Invalid person details"
+msgstr "Informazioni della persona invalide"
 
 #, ex-autogen, icu-format
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
@@ -2535,7 +2547,8 @@ msgstr "Mantenere le fasi"
 msgid "Keep Status"
 msgstr "Mantenere lo stato"
 
-#, ex-autogen, icu-format
+#, ex-autogen, fuzzy, icu-format
+msgctxt "Inbox Row Patch Person"
 msgid "Keep personal data"
 msgstr "Conserva i dati personali"
 
@@ -4817,6 +4830,11 @@ msgid "Subdivision"
 msgstr "Sottodivisione"
 
 #, ex-autogen, fuzzy, icu-format
+msgctxt "Import Helpers"
+msgid "Subdivision"
+msgstr "Sottodivisione"
+
+#, ex-autogen, fuzzy, icu-format
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr "Oggetto"
@@ -5533,6 +5551,7 @@ msgid "UUID"
 msgstr "UUID"
 
 #, ex-autogen, icu-format
+msgctxt "Import Helpers"
 msgid "Uncertain"
 msgstr "Incerto"
 
@@ -5595,7 +5614,8 @@ msgstr "Inquilino non gestito"
 msgid "Update Transmission"
 msgstr "Crea una trasmissione"
 
-#, ex-autogen, icu-format
+#, ex-autogen, fuzzy, icu-format
+msgctxt "Inbox Row Patch Person"
 msgid "Update personal data"
 msgstr "Aggiorna i dati personali"
 
