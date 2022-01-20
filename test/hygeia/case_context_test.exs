@@ -417,15 +417,14 @@ defmodule Hygeia.CaseContextTest do
     }
 
     test "list_cases/0 returns all cases" do
-      case = case_fixture()
-      assert Repo.preload(CaseContext.list_cases(), tests: []) == [case]
+      %Case{uuid: uuid} = case_fixture()
+      assert [%Case{uuid: ^uuid}] = CaseContext.list_cases()
     end
 
     test "get_case!/1 returns the case with given id" do
-      case = case_fixture()
+      %Case{uuid: uuid} = case_fixture()
 
-      assert case.uuid |> CaseContext.get_case!() |> Repo.preload(tests: []) ==
-               case
+      assert %Case{uuid: ^uuid} = CaseContext.get_case!(uuid)
     end
 
     test "create_case/1 with valid data creates a case" do
@@ -590,13 +589,11 @@ defmodule Hygeia.CaseContextTest do
     end
 
     test "update_case/2 with invalid data returns error changeset" do
-      case = case_fixture()
+      case = CaseContext.get_case!(case_fixture().uuid)
+
       assert {:error, %Ecto.Changeset{}} = CaseContext.update_case(case, @invalid_attrs)
 
-      assert case ==
-               case.uuid
-               |> CaseContext.get_case!()
-               |> Repo.preload(tests: [])
+      assert case == CaseContext.get_case!(case.uuid)
     end
 
     test "delete_case/1 deletes the case" do
