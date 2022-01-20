@@ -6,7 +6,6 @@ defmodule Hygeia.CaseContext.Case do
 
   import HygeiaGettext
 
-  alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.Complexity

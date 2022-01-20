@@ -142,7 +142,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     case = Repo.preload(case, hospitalizations: [], tests: [])
 
-    {phase_start, phase_end, problems} = index_phase_dates(case)
+    {phase_start, phase_end, _problems} = index_phase_dates(case)
 
     changeset =
       case
@@ -270,18 +270,6 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
       %Case.Phase{}, acc ->
         acc
-    end)
-  end
-
-  defp set_quarantine_order_false(changeset) do
-    index_phase =
-      Enum.find(
-        Ecto.Changeset.fetch_field!(changeset, :phases),
-        &match?(%Case.Phase{details: %Index{}}, &1)
-      )
-
-    changeset_update_params_by_id(changeset, :phases, %{uuid: index_phase.uuid}, fn params ->
-      Map.put(params, "quarantine_order", false)
     end)
   end
 
