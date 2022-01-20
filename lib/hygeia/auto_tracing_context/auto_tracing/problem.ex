@@ -33,7 +33,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
   def translate(:covid_app), do: pgettext("Auto Tracing Problem", "SwissCovid App")
 
   def translate(:vaccination_failure),
-    do: pgettext("Auto Tracing Problem", "Probable Vaccination Failure")
+    do: pgettext("Auto Tracing Problem", "Vaccination Failure")
 
   def translate(:hospitalization), do: pgettext("Auto Tracing Problem", "Hospitalization")
 

@@ -3,8 +3,6 @@ import Config
 # Configure your database
 config :hygeia, Hygeia.Repo, show_sensitive_data_on_connection_error: true
 
-config :hygeia, Hygeia.Jobs.Supervisor, vaccination_refresh_interval_ms: :timer.seconds(30)
-
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

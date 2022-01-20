@@ -14,189 +14,6 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
       Code.require_file("20211230121753_create_vaccination_shots.exs", Path.dirname(__ENV__.file))
   end
 
-  # janssen: min one vaccination, waiting period of 22 days, valid 1 year
-  janssen_query = """
-  SELECT
-    vaccination_shots.person_uuid AS person_uuid,
-    vaccination_shots.uuid AS vaccination_shot_uuid,
-    DATERANGE(
-      (vaccination_shots.date + INTERVAL '22 day')::date,
-      (vaccination_shots.date + INTERVAL '1 year 22 day')::date
-    ) AS range
-    FROM vaccination_shots
-    WHERE vaccination_shots.vaccine_type = 'janssen'
-  """
-
-  # 'moderna', 'pfizer', 'astra_zeneca':
-  # valid if more than two combined, no waiting period, valid 1 year
-  moderna_pfizer_astra_combo_query = """
-  SELECT
-    result.person_uuid,
-    result.vaccination_shot_uuid,
-    result.range
-    FROM (
-      SELECT
-      vaccination_shots.person_uuid AS person_uuid,
-        vaccination_shots.uuid AS vaccination_shot_uuid,
-        CASE
-          -- More than 2 vaccinations, shot is valid
-          WHEN (
-            ROW_NUMBER() OVER (
-              PARTITION BY vaccination_shots.person_uuid
-              ORDER BY vaccination_shots.date
-            ) >= 2
-          ) THEN
-            DATERANGE(
-              vaccination_shots.date,
-              (vaccination_shots.date + INTERVAL '1 year')::date
-            )
-          ELSE NULL
-        END AS range
-        FROM vaccination_shots
-        WHERE vaccination_shots.vaccine_type IN ('pfizer', 'moderna', 'astra_zeneca')
-    ) AS result
-    WHERE result.range IS NOT NULL
-  """
-
-  # 'astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac' 'covaxin':
-  # min two, no waiting period, valid 1 year
-  double_query = """
-  SELECT
-    result.person_uuid,
-    result.vaccination_shot_uuid,
-    result.range
-    FROM (
-      SELECT
-      vaccination_shots.person_uuid AS person_uuid,
-        vaccination_shots.uuid AS vaccination_shot_uuid,
-        CASE
-          -- More than 2 vaccinations, shot is valid
-          WHEN (
-            ROW_NUMBER() OVER (
-              PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
-              ORDER BY vaccination_shots.date
-            ) >= 2
-          ) THEN
-            DATERANGE(
-              vaccination_shots.date,
-              (vaccination_shots.date + INTERVAL '1 year')::date
-            )
-          ELSE NULL
-        END AS range
-        FROM vaccination_shots
-        WHERE vaccination_shots.vaccine_type IN ('astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac', 'covaxin')
-    ) AS result
-    WHERE result.range IS NOT NULL
-  """
-
-  # 'astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac', 'covaxin':
-  # externally convalescent, no waiting period, valid 1 year
-  externally_convalescent_query = """
-  SELECT
-    result.person_uuid,
-    result.vaccination_shot_uuid,
-    result.range
-    FROM (
-      SELECT
-        vaccination_shots.person_uuid AS person_uuid,
-        vaccination_shots.uuid AS vaccination_shot_uuid,
-        CASE
-          WHEN (
-            ROW_NUMBER() OVER (
-              PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
-              ORDER BY vaccination_shots.date
-            ) = 1
-          ) THEN
-            DATERANGE(
-              vaccination_shots.date,
-              (vaccination_shots.date + INTERVAL '1 year')::date
-            )
-          ELSE NULL
-        END AS range
-        FROM people
-        JOIN
-          vaccination_shots
-          ON vaccination_shots.person_uuid = people.uuid
-        WHERE
-          people.convalescent_externally AND
-          vaccination_shots.vaccine_type IN ('astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac', 'covaxin')
-    ) AS result
-    WHERE result.range IS NOT NULL
-  """
-
-  # 'astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac', 'covaxin':
-  # internally convalescent, no waiting period, valid 1 year
-  internally_convalescent_query = """
-  SELECT
-    result.person_uuid,
-    result.vaccination_shot_uuid,
-    result.range
-    FROM (
-      SELECT
-        people.uuid AS person_uuid,
-        vaccination_shots.uuid AS vaccination_shot_uuid,
-        CASE
-          -- case is more than 4 weeks old, first shot is valid
-          WHEN (
-            ROW_NUMBER() OVER (
-              PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
-              ORDER BY vaccination_shots.date
-            ) = 1 AND
-            vaccination_shots.date > (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date
-          ) THEN
-            DATERANGE(
-              vaccination_shots.date,
-              (vaccination_shots.date + INTERVAL '1 year')::date
-            )
-          -- case is inside shot shot start + 4 weeks and shot validity end, shot is valid after case
-          WHEN (
-            ROW_NUMBER() OVER (
-              PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
-              ORDER BY vaccination_shots.date
-            ) = 1 AND
-            case_phase_dates.case_last_known_date
-              BETWEEN
-                (vaccination_shots.date + INTERVAL '4 week')::date
-                AND (vaccination_shots.date + INTERVAL '1 year')::date
-          ) THEN
-            DATERANGE(
-              case_phase_dates.case_last_known_date,
-              (case_phase_dates.case_last_known_date + INTERVAL '1 year')::date
-            )
-        END AS range
-        FROM people
-        JOIN
-          vaccination_shots
-          ON vaccination_shots.person_uuid = people.uuid
-        JOIN
-          cases
-          ON cases.person_uuid = people.uuid
-        JOIN
-          UNNEST(cases.phases)
-          AS index_phases
-          ON index_phases->'details'->>'__type__' = 'index'
-        JOIN
-          case_phase_dates
-          ON
-            case_phase_dates.case_uuid = cases.uuid AND
-            case_phase_dates.phase_uuid = (index_phases->>'uuid')::uuid
-        WHERE vaccination_shots.vaccine_type IN ('astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac', 'covaxin')
-    ) AS result
-    WHERE result.range IS NOT NULL
-  """
-
-  @vaccination_shot_validity_up_query """
-  #{janssen_query}
-  UNION
-  #{moderna_pfizer_astra_combo_query}
-  UNION
-  #{double_query}
-  UNION
-  #{externally_convalescent_query}
-  UNION
-  #{internally_convalescent_query}
-  """
-
   def change do
     execute(
       """
@@ -229,7 +46,6 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
               GREATEST(
                 MAX(tests.tested_at),
                 MAX(tests.laboratory_reported_at),
-                (cases.clinical->>'symptom_start')::date,
                 (phase->>'end')::date
               ),
               (phase->>'order_date')::date,
@@ -270,5 +86,217 @@ defmodule Hygeia.Repo.Migrations.VaccinationValidityCaseInfluence do
     )
   end
 
-  def vaccination_shot_validity_up_query, do: @vaccination_shot_validity_up_query
+  def vaccination_shot_validity_up_query do
+    """
+    #{janssen_query()}
+    UNION
+    #{moderna_pfizer_astra_combo_query()}
+    UNION
+    #{double_query()}
+    UNION
+    #{externally_convalescent_query()}
+    UNION
+    #{internally_convalescent_query()}
+    """
+  end
+
+  # janssen: min one vaccination, waiting period of 22 days, valid 1 year
+  def janssen_query(person_uuid_expr \\ nil) do
+    """
+    SELECT
+      vaccination_shots.person_uuid AS person_uuid,
+      vaccination_shots.uuid AS vaccination_shot_uuid,
+      DATERANGE(
+        (vaccination_shots.date + INTERVAL '22 day')::date,
+        (vaccination_shots.date + INTERVAL '1 year 22 day')::date
+      ) AS range
+      FROM vaccination_shots
+      WHERE
+        vaccination_shots.vaccine_type = 'janssen'
+        #{case person_uuid_expr do
+      nil -> ""
+      expr -> "AND vaccination_shots.person_uuid = #{expr}"
+    end}
+    """
+  end
+
+  # 'moderna', 'pfizer', 'astra_zeneca':
+  # valid if more than two combined, no waiting period, valid 1 year
+  def moderna_pfizer_astra_combo_query(person_uuid_expr \\ nil) do
+    """
+    SELECT
+      result.person_uuid,
+      result.vaccination_shot_uuid,
+      result.range
+      FROM (
+        SELECT
+        vaccination_shots.person_uuid AS person_uuid,
+          vaccination_shots.uuid AS vaccination_shot_uuid,
+          CASE
+            -- More than 2 vaccinations, shot is valid
+            WHEN (
+              ROW_NUMBER() OVER (
+                PARTITION BY vaccination_shots.person_uuid
+                ORDER BY vaccination_shots.date
+              ) >= 2
+            ) THEN
+              DATERANGE(
+                vaccination_shots.date,
+                (vaccination_shots.date + INTERVAL '1 year')::date
+              )
+            ELSE NULL
+          END AS range
+          FROM vaccination_shots
+          WHERE
+            vaccination_shots.vaccine_type IN ('pfizer', 'moderna', 'astra_zeneca')
+            #{case person_uuid_expr do
+      nil -> ""
+      expr -> "AND vaccination_shots.person_uuid = #{expr}"
+    end}
+      ) AS result
+      WHERE result.range IS NOT NULL
+    """
+  end
+
+  # 'astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac' 'covaxin':
+  # min two, no waiting period, valid 1 year
+  def double_query(person_uuid_expr \\ nil) do
+    """
+    SELECT
+      result.person_uuid,
+      result.vaccination_shot_uuid,
+      result.range
+      FROM (
+        SELECT
+        vaccination_shots.person_uuid AS person_uuid,
+          vaccination_shots.uuid AS vaccination_shot_uuid,
+          CASE
+            -- More than 2 vaccinations, shot is valid
+            WHEN (
+              ROW_NUMBER() OVER (
+                PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
+                ORDER BY vaccination_shots.date
+              ) >= 2
+            ) THEN
+              DATERANGE(
+                vaccination_shots.date,
+                (vaccination_shots.date + INTERVAL '1 year')::date
+              )
+            ELSE NULL
+          END AS range
+          FROM vaccination_shots
+          WHERE
+            vaccination_shots.vaccine_type IN ('astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac', 'covaxin')
+            #{case person_uuid_expr do
+      nil -> ""
+      expr -> "AND vaccination_shots.person_uuid = #{expr}"
+    end}
+      ) AS result
+      WHERE result.range IS NOT NULL
+    """
+  end
+
+  # 'astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac', 'covaxin':
+  # externally convalescent, no waiting period, valid 1 year
+  def externally_convalescent_query(person_uuid_expr \\ nil) do
+    """
+    SELECT
+      result.person_uuid,
+      result.vaccination_shot_uuid,
+      result.range
+      FROM (
+        SELECT
+          vaccination_shots.person_uuid AS person_uuid,
+          vaccination_shots.uuid AS vaccination_shot_uuid,
+          CASE
+            WHEN (
+              ROW_NUMBER() OVER (
+                PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
+                ORDER BY vaccination_shots.date
+              ) = 1
+            ) THEN
+              DATERANGE(
+                vaccination_shots.date,
+                (vaccination_shots.date + INTERVAL '1 year')::date
+              )
+            ELSE NULL
+          END AS range
+          FROM people
+          JOIN
+            vaccination_shots
+            ON vaccination_shots.person_uuid = people.uuid
+          WHERE
+            people.convalescent_externally AND
+            vaccination_shots.vaccine_type IN ('astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac', 'covaxin')
+            #{case person_uuid_expr do
+      nil -> ""
+      expr -> "AND vaccination_shots.person_uuid = #{expr}"
+    end}
+      ) AS result
+      WHERE result.range IS NOT NULL
+    """
+  end
+
+  # 'astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac', 'covaxin':
+  # internally convalescent, no waiting period, valid 1 year
+  defp internally_convalescent_query do
+    """
+    SELECT
+      result.person_uuid,
+      result.vaccination_shot_uuid,
+      result.range
+      FROM (
+        SELECT
+          people.uuid AS person_uuid,
+          vaccination_shots.uuid AS vaccination_shot_uuid,
+          CASE
+            -- case is more than 4 weeks old, first shot is valid
+            WHEN (
+              ROW_NUMBER() OVER (
+                PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
+                ORDER BY vaccination_shots.date
+              ) = 1 AND
+              vaccination_shots.date > (case_phase_dates.case_last_known_date + INTERVAL '4 week')::date
+            ) THEN
+              DATERANGE(
+                vaccination_shots.date,
+                (vaccination_shots.date + INTERVAL '1 year')::date
+              )
+            -- case is inside shot shot start + 4 weeks and shot validity end, shot is valid after case
+            WHEN (
+              ROW_NUMBER() OVER (
+                PARTITION BY vaccination_shots.person_uuid, vaccination_shots.vaccine_type
+                ORDER BY vaccination_shots.date
+              ) = 1 AND
+              case_phase_dates.case_last_known_date
+                BETWEEN
+                  (vaccination_shots.date + INTERVAL '4 week')::date
+                  AND (vaccination_shots.date + INTERVAL '1 year')::date
+            ) THEN
+              DATERANGE(
+                case_phase_dates.case_last_known_date,
+                (case_phase_dates.case_last_known_date + INTERVAL '1 year')::date
+              )
+          END AS range
+          FROM people
+          JOIN
+            vaccination_shots
+            ON vaccination_shots.person_uuid = people.uuid
+          JOIN
+            cases
+            ON cases.person_uuid = people.uuid
+          JOIN
+            UNNEST(cases.phases)
+            AS index_phases
+            ON index_phases->'details'->>'__type__' = 'index'
+          JOIN
+            case_phase_dates
+            ON
+              case_phase_dates.case_uuid = cases.uuid AND
+              case_phase_dates.phase_uuid = (index_phases->>'uuid')::uuid
+          WHERE vaccination_shots.vaccine_type IN ('astra_zeneca', 'pfizer', 'moderna', 'sinopharm', 'sinovac', 'covaxin')
+      ) AS result
+      WHERE result.range IS NOT NULL
+    """
+  end
 end

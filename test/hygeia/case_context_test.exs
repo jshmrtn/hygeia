@@ -1633,8 +1633,6 @@ defmodule Hygeia.CaseContextTest do
         ]
       })
 
-      execute_materialized_view_refresh(:vaccination_shot_validity)
-
       assert [
                %{
                  "Birth Date" => "1993-01-30",
@@ -2278,8 +2276,6 @@ defmodule Hygeia.CaseContextTest do
           ]
         })
 
-      execute_materialized_view_refresh(:vaccination_shot_validity)
-
       assert %Person{
                vaccination_shot_validities: [
                  %Person.VaccinationShot.Validity{
@@ -2311,8 +2307,6 @@ defmodule Hygeia.CaseContextTest do
           ]
         })
 
-      execute_materialized_view_refresh(:vaccination_shot_validity)
-
       assert %Person{
                vaccination_shot_validities: [
                  %Person.VaccinationShot.Validity{
@@ -2342,8 +2336,6 @@ defmodule Hygeia.CaseContextTest do
             }
           ]
         })
-
-      execute_materialized_view_refresh(:vaccination_shot_validity)
 
       assert %Person{
                vaccination_shot_validities: [
@@ -2392,8 +2384,6 @@ defmodule Hygeia.CaseContextTest do
           tests: [],
           clinical: nil
         })
-
-      execute_materialized_view_refresh(:vaccination_shot_validity)
 
       assert %Person{
                vaccination_shot_validities: [
@@ -2444,8 +2434,6 @@ defmodule Hygeia.CaseContextTest do
           clinical: nil
         })
 
-      execute_materialized_view_refresh(:vaccination_shot_validity)
-
       assert %Person{
                vaccination_shot_validities: [
                  %Person.VaccinationShot.Validity{
@@ -2490,8 +2478,6 @@ defmodule Hygeia.CaseContextTest do
           tests: [],
           clinical: nil
         })
-
-      execute_materialized_view_refresh(:vaccination_shot_validity)
 
       assert %Person{vaccination_shot_validities: []} =
                Repo.preload(person, :vaccination_shot_validities)
