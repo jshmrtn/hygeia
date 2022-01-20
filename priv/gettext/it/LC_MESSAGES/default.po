@@ -3956,11 +3956,6 @@ msgid "Private Key"
 msgstr "Chiave privata"
 
 #, ex-autogen, icu-format
-msgctxt "Auto Tracing Problem"
-msgid "Probable Vaccination Failure"
-msgstr ""
-
-#, ex-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Probing date"
 msgstr ""
@@ -5708,6 +5703,11 @@ msgid "Vaccination Breakthroughs"
 msgstr "Vaccinazione"
 
 #, ex-autogen, icu-format
+msgctxt "Auto Tracing Problem"
+msgid "Vaccination Failure"
+msgstr "Vacinazione fallita"
+
+#, ex-autogen, icu-format
 msgid "Vaccination Failures"
 msgstr "Vaccinazioni fallite"
 
@@ -5715,11 +5715,6 @@ msgstr "Vaccinazioni fallite"
 msgctxt "Vaccination Validity"
 msgid "Vaccination Validity"
 msgstr "Vaccinazione"
-
-#, ex-autogen, icu-format
-msgctxt "Vaccination Validity"
-msgid "Vaccination data was recently changed. The resulting validity could still be calculating.\nThat process can take up to {calculation_duration}. Use the displayed data with caution."
-msgstr ""
 
 #, ex-autogen, fuzzy, icu-format
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"

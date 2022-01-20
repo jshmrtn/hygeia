@@ -8,11 +8,6 @@ defmodule Hygeia.Jobs.Supervisor do
   alias Hygeia.Jobs.RefreshMaterializedView
   alias HygeiaIam.ServiceUserToken
 
-  @vaccination_refresh_interval_ms Application.compile_env!(:hygeia, [
-                                     __MODULE__,
-                                     :vaccination_refresh_interval_ms
-                                   ])
-
   case Mix.env() do
     :test ->
       @jobs []
@@ -70,11 +65,6 @@ defmodule Hygeia.Jobs.Supervisor do
          {RefreshMaterializedView,
           view: :statistics_vaccination_breakthroughs_per_day,
           name: RefreshMaterializedView.VaccinationBreakthroughsPerDay}},
-        {Highlander,
-         {RefreshMaterializedView,
-          view: :vaccination_shot_validity,
-          name: RefreshMaterializedView.VaccinationShotValidity,
-          interval_ms: @vaccination_refresh_interval_ms}},
 
         # Message Triggers
         {Highlander, Hygeia.Jobs.SendCaseClosedEmail},
@@ -108,7 +98,4 @@ defmodule Hygeia.Jobs.Supervisor do
   @impl Supervisor
   def init(_opts),
     do: Supervisor.init(@jobs, strategy: :one_for_one, max_restarts: length(@jobs) * 2)
-
-  @spec vaccination_refresh_interval_ms :: pos_integer()
-  def vaccination_refresh_interval_ms, do: @vaccination_refresh_interval_ms
 end

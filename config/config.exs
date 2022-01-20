@@ -9,7 +9,8 @@ config :hygeia,
 config :hygeia, Hygeia.Repo,
   migration_timestamps: [type: :utc_datetime_usec],
   migration_primary_key: [name: :uuid, type: :binary_id],
-  migration_foreign_key: [column: :uuid, type: :binary_id]
+  migration_foreign_key: [column: :uuid, type: :binary_id],
+  start_apps_before_migration: [:ssl]
 
 # Configures the endpoint
 config :hygeia, HygeiaWeb.Endpoint,
@@ -79,8 +80,6 @@ config :hygeia, Hygeia.Jobs.SendCaseClosedEmail,
 
 config :hygeia, Hygeia.AutoTracingContext.AutoTracingCommunication,
   url_generator: HygeiaWeb.AutoTracingCommunicationUrlGenerator
-
-config :hygeia, Hygeia.Jobs.Supervisor, vaccination_refresh_interval_ms: :timer.minutes(15)
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

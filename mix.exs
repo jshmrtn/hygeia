@@ -8,7 +8,7 @@ defmodule Hygeia.MixProject do
     [
       app: :hygeia,
       name: "Hygeia",
-      version: "1.42.0-beta.2",
+      version: "1.42.0-beta.3",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -46,7 +46,7 @@ defmodule Hygeia.MixProject do
   def application do
     [
       mod: {Hygeia.Application, []},
-      extra_applications: [:logger, :runtime_tools, :eex, :os_mon]
+      extra_applications: [:logger, :runtime_tools, :eex, :os_mon, :ssl]
     ]
   end
 

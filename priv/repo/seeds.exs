@@ -467,6 +467,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
 
   {:ok, _transmission_jony_jay} =
     create_transmission(%{
+      type: :contact_person,
       date: Date.utc_today(),
       propagator_internal: true,
       propagator_case_uuid: case_jony.uuid,
@@ -490,6 +491,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
 
   {:ok, _transmission_flight_jony} =
     create_transmission(%{
+      type: :travel,
       date: Date.utc_today(),
       recipient_internal: true,
       recipient_case_uuid: case_jony.uuid,
@@ -504,6 +506,7 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
 
   {:ok, _transmission_jony_josia} =
     create_transmission(%{
+      type: :contact_person,
       date: Date.utc_today(),
       propagator_internal: true,
       propagator_case_uuid: case_jony.uuid,
