@@ -110,7 +110,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
             |> CaseContext.update_person()
 
           {:ok, auto_tracing} =
-            if step.is_vaccinated do
+            if CaseContext.is_case_vaccination_breakthrough?(socket.assigns.case) do
               AutoTracingContext.auto_tracing_add_problem(
                 auto_tracing,
                 :vaccination_failure
