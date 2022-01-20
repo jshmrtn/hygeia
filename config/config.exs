@@ -9,7 +9,8 @@ config :hygeia,
 config :hygeia, Hygeia.Repo,
   migration_timestamps: [type: :utc_datetime_usec],
   migration_primary_key: [name: :uuid, type: :binary_id],
-  migration_foreign_key: [column: :uuid, type: :binary_id]
+  migration_foreign_key: [column: :uuid, type: :binary_id],
+  start_apps_before_migration: [:ssl]
 
 # Configures the endpoint
 config :hygeia, HygeiaWeb.Endpoint,

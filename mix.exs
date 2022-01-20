@@ -46,7 +46,7 @@ defmodule Hygeia.MixProject do
   def application do
     [
       mod: {Hygeia.Application, []},
-      extra_applications: [:logger, :runtime_tools, :eex, :os_mon]
+      extra_applications: [:logger, :runtime_tools, :eex, :os_mon, :ssl]
     ]
   end
 
