@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 
 #, ex-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -655,9 +655,9 @@ msgstr "Scegliere il tipo"
 msgid "Choose Sex"
 msgstr "Scegliere il sesso"
 
-#, ex-autogen, fuzzy, icu-format
+#, ex-autogen, icu-format
 msgid "Choose Tenant"
-msgstr "Scegliere l'inquilino"
+msgstr "Scegli l'inquilino"
 
 #, ex-autogen, fuzzy, icu-format
 msgid "Choose Type"
@@ -2130,7 +2130,7 @@ msgstr "ID in linguaggio naturale"
 #, ex-autogen, icu-format
 msgctxt "Home"
 msgid "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing."
-msgstr "Hygeia è progettato per strutturare processi complicati, per soddisfare standard come il \"{link_med}\" dell'UFSP, per connettersi alla banca dati dell'UFSP e per ridurre il personale necessario per il rintracciamento di persone."
+msgstr "Hygeia è progettato per strutturare processi complicati, per soddisfare standard come il «{link_med}» dell'UFSP, per connettersi alla banca dati dell'UFSP e per ridurre il personale necessario per il rintracciamento di persone."
 
 #, ex-autogen, icu-format
 msgid "I confirm that all the data above is correct. This may be inspected!"
@@ -5169,13 +5169,13 @@ msgstr "Il testo visualizzato è stato tradotto meccanicamente."
 
 #, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The end date of the {type} phase will be changed from \"{old_end_date}\" to \"{new_end_date}\"."
-msgstr "La data di fine della fase {type} sarà cambiata da \"{old_end_date}\" a \"{new_end_date}\"."
+msgid "The end date of the {type} phase will be changed from {old_end_date} to {new_end_date}."
+msgstr "La data di fine della fase {type} sarà cambiata da {old_end_date} a {new_end_date}."
 
 #, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The end reason of the {type} phase will be changed from \"{old_end_reason}\" to \"{new_end_reason}\"."
-msgstr "Il motivo di fine fase {type} sarà cambiato da \"{old_end_reason}\" a \"{new_end_reason}\"."
+msgid "The end reason of the {type} phase will be changed from {old_end_reason} to {new_end_reason}."
+msgstr "Il motivo di fine fase {type} sarà cambiato da {old_end_reason} a {new_end_reason}."
 
 #, ex-autogen, icu-format
 msgid "The file was too large"
@@ -5212,15 +5212,15 @@ msgctxt "Phase Create Modal"
 msgid "The quarantine order of the {type} phase will be lifted since the new phase is covering it completely."
 msgstr "L'ordine di quarantena della fase {type} sarà revocato poiché l'ordine inizia più tardi della nuova data di inizio."
 
-#, ex-autogen, fuzzy, icu-format
+#, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The start date of the {type} phase will be changed from \"{old_start_date}\" to \"{new_start_date}\"."
-msgstr "Il motivo di fine fase {type} sarà cambiato da \"{old_end_reason}\" a \"{new_end_reason}\"."
+msgid "The start date of the {type} phase will be changed from {old_start_date} to {new_start_date}."
+msgstr "La data di inizio della fase {type} verrà modificata da {old_start_date} a {new_start_date}."
 
 #, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The status of the case will be changed from \"{old_status}\" to \"{new_status}\"."
-msgstr "Lo stato del caso sarà cambiato da \"{old_status}\" a \"{new_status}\"."
+msgid "The status of the case will be changed from {old_status} to {new_status}."
+msgstr "Lo stato del caso sarà cambiato da {old_status} a {new_status}."
 
 #, ex-autogen, icu-format
 msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."
@@ -6311,4 +6311,4 @@ msgstr "{ordering,number,:spellout_ordinal_feminine} vaccinazione"
 
 #, ex-autogen, icu-format
 msgid "{tenant} - Contact Tracing"
-msgstr "{inquilino} - Rintracciamento di contatti"
+msgstr "{tenant} - Rintracciamento di contatti"
