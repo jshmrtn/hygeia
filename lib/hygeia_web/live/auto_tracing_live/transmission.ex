@@ -81,15 +81,10 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
           )
 
         true ->
-          # TODO: Remove Fallback as soon as all cases are moved to the new model
           transmission =
             case case.auto_tracing.possible_transmission do
               nil ->
-                if uuid = case.auto_tracing.transmission_uuid do
-                  CaseContext.get_transmission!(uuid)
-                else
-                  %Transmission{type: :contact_person}
-                end
+                %Transmission{type: :contact_person}
 
               %Transmission{} = at_transmission ->
                 %Transmission{at_transmission | type: :contact_person}
@@ -170,12 +165,6 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
                     |> put_change(:propagator, nil)
                     |> AutoTracingContext.update_auto_tracing()
                 end
-
-              {:ok, auto_tracing} =
-                AutoTracingContext.auto_tracing_remove_problem(
-                  auto_tracing,
-                  :link_propagator
-                )
 
               {:ok, _auto_tracing} =
                 AutoTracingContext.auto_tracing_add_problem(auto_tracing, :possible_transmission)

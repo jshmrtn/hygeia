@@ -29,54 +29,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
 
   data case, :map
   data auto_tracing, :map
-  data link_propagator_opts_changeset, :map
   data occupation_form, :map, default: %{}
-
-  defmodule LinkPropagatorOpts do
-    @moduledoc false
-
-    use Hygeia, :model
-
-    alias Hygeia.CaseContext.Case
-
-    @type t :: %__MODULE__{
-            propagator_internal: boolean,
-            propagator_ism_id: String.t() | nil,
-            propagator_case: Ecto.Schema.belongs_to(Case.t()) | nil,
-            propagator_case_uuid: Ecto.UUID.t() | nil
-          }
-
-    @type empty :: %__MODULE__{
-            propagator_internal: boolean | nil,
-            propagator_ism_id: String.t() | nil,
-            propagator_case: Ecto.Schema.belongs_to(Case.t()) | nil,
-            propagator_case_uuid: Ecto.UUID.t() | nil
-          }
-
-    @primary_key false
-    embedded_schema do
-      field :propagator_ism_id, :string
-      field :propagator_internal, :boolean
-
-      belongs_to :propagator_case, Case, references: :uuid, foreign_key: :propagator_case_uuid
-    end
-
-    @spec changeset(link_propagator_opts :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
-            Ecto.Changeset.t(t)
-    def changeset(link_propagator_opts, attrs) do
-      link_propagator_opts
-      |> cast(attrs, [
-        :propagator_case_uuid,
-        :propagator_internal,
-        :propagator_ism_id
-      ])
-      |> CaseContext.Transmission.validate_case(
-        :propagator_internal,
-        :propagator_ism_id,
-        :propagator_case_uuid
-      )
-    end
-  end
 
   defmodule AutoTracingNotFoundError do
     @moduledoc false
@@ -134,28 +87,6 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
         true ->
           Phoenix.PubSub.subscribe(Hygeia.PubSub, "auto_tracings:#{case.auto_tracing.uuid}")
 
-          propagator_attrs =
-            case case.auto_tracing.transmission do
-              nil ->
-                %{}
-
-              transmission ->
-                Map.take(transmission, [
-                  :propagator_internal,
-                  :propagator_ism_id,
-                  :propagator_case_uuid
-                ])
-            end
-
-          propagator_attrs =
-            case {case.auto_tracing, propagator_attrs[:propagator_internal]} do
-              {%AutoTracing{propagator_known: true}, nil} ->
-                Map.put(propagator_attrs, :propagator_internal, true)
-
-              _other ->
-                propagator_attrs
-            end
-
           assign(socket,
             case: case,
             person: case.person,
@@ -174,10 +105,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
                 }
               )
               | action: :validate
-            },
-            # TODO: Deprecaded, remove once :link_propagator problem is removed
-            link_propagator_opts_changeset:
-              LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, propagator_attrs)
+            }
           )
       end
 
@@ -309,82 +237,6 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
 
         {:error, changeset} ->
           assign(socket, possible_transmission_changeset: changeset)
-      end
-
-    {:noreply, socket}
-  end
-
-  def handle_event(
-        "link_propagator_opts_change",
-        %{"link_propagator_opts" => link_propagator_opts} = _params,
-        socket
-      ) do
-    {:noreply,
-     assign(socket,
-       link_propagator_opts_changeset: %{
-         LinkPropagatorOpts.changeset(%LinkPropagatorOpts{}, link_propagator_opts)
-         | action: :validate
-       }
-     )}
-  end
-
-  def handle_event(
-        "link_propagator_opts_change",
-        _params,
-        socket
-      ) do
-    {:noreply, socket}
-  end
-
-  def handle_event("change_propagator_case", params, socket) do
-    {:noreply,
-     assign(
-       socket,
-       :link_propagator_opts_changeset,
-       %Ecto.Changeset{
-         LinkPropagatorOpts.changeset(
-           %LinkPropagatorOpts{},
-           update_changeset_param(
-             socket.assigns.link_propagator_opts_changeset,
-             :propagator_case_uuid,
-             fn _value_before -> params["uuid"] end
-           )
-         )
-         | action: :validate
-       }
-     )}
-  end
-
-  def handle_event("link_propagator_opts_submit", params, socket) do
-    socket =
-      %LinkPropagatorOpts{}
-      |> LinkPropagatorOpts.changeset(params["link_propagator_opts"] || %{})
-      |> Ecto.Changeset.apply_action(:apply)
-      |> case do
-        {:ok, opts} ->
-          push_redirect(socket,
-            to:
-              Routes.transmission_show_path(
-                socket,
-                :edit,
-                socket.assigns.auto_tracing.transmission_uuid,
-                Map.merge(
-                  Map.take(opts, [:propagator_case_uuid, :propagator_ism_id, :propagator_internal]),
-                  %{
-                    return_url:
-                      Routes.auto_tracing_resolve_problems_path(
-                        socket,
-                        :resolve_problems,
-                        socket.assigns.case,
-                        resolve_problem: :link_propagator
-                      )
-                  }
-                )
-              )
-          )
-
-        {:error, changeset} ->
-          assign(socket, link_propagator_opts_changeset: changeset)
       end
 
     {:noreply, socket}
