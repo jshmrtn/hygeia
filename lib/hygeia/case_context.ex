@@ -151,17 +151,6 @@ defmodule Hygeia.CaseContext do
         )
       )
 
-  defp last_positive_test_date_query(queryable \\ Test),
-    do:
-      from(test in queryable,
-        select: %{
-          case_uuid: test.case_uuid,
-          test_date: max(coalesce(test.tested_at, test.laboratory_reported_at))
-        },
-        group_by: test.case_uuid,
-        where: test.result == :positive
-      )
-
   @spec list_vaccination_breakthrough_cases_query(queryable :: Ecto.Queryable.t()) ::
           Ecto.Queryable.t()
   def list_vaccination_breakthrough_cases_query(
@@ -175,19 +164,12 @@ defmodule Hygeia.CaseContext do
       join: vaccination_shot_validity in assoc(person, :vaccination_shot_validities),
       join: index_phase in fragment("UNNEST(?)", case.phases),
       on: fragment("?->>?", fragment("?->?", index_phase, "details"), "__type__") == "index",
-      left_join: last_positive_test in subquery(last_positive_test_date_query()),
-      on: last_positive_test.case_uuid == case.uuid,
       where:
         person.is_vaccinated and
           fragment(
             "? @> ?",
             vaccination_shot_validity.range,
-            last_positive_test.test_date
-            |> type(:date)
-            |> coalesce(type(fragment("(?->>?)", case.clinical, "symptom_start"), :date))
-            |> coalesce(type(fragment("(?->>?)", index_phase, "order_date"), :date))
-            |> coalesce(type(fragment("(?->>?)", index_phase, "inserted_at"), :date))
-            |> coalesce(type(case.inserted_at, :date))
+            coalesce(case.last_test_date, case.case_index_last_known_date)
           )
     )
   end
@@ -1974,8 +1956,6 @@ defmodule Hygeia.CaseContext do
     cases =
       from(case in subquery(breakthrough_cases),
         join: person in assoc(case, :person),
-        left_join: last_positive_test in subquery(last_positive_test_date_query()),
-        on: last_positive_test.case_uuid == case.uuid,
         join: vaccination_shots in assoc(person, :vaccination_shots),
         select: [
           # person_uuid
@@ -2053,7 +2033,10 @@ defmodule Hygeia.CaseContext do
           # clinical_symptoms
           case.clinical["symptoms"],
           # test_last_date
-          type(last_positive_test.test_date, :date)
+          coalesce(
+            case.last_test_date,
+            case.case_index_last_known_date
+          )
         ],
         group_by: [
           person.uuid,
@@ -2063,9 +2046,16 @@ defmodule Hygeia.CaseContext do
           case.uuid,
           case.human_readable_id,
           case.clinical,
-          last_positive_test.test_date
+          case.last_test_date,
+          case.case_index_last_known_date
         ],
-        order_by: [last_positive_test.test_date, case.human_readable_id]
+        order_by: [
+          coalesce(
+            case.last_test_date,
+            case.case_index_last_known_date
+          ),
+          case.human_readable_id
+        ]
       )
       |> Repo.stream()
       |> Stream.map(fn row ->

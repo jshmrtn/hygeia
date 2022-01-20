@@ -104,6 +104,12 @@ defmodule Hygeia.CaseContext.Case do
     field :human_readable_id, :string
     field :status, Status, default: :first_contact
 
+    # Generated Helper fields for more effinicient queries. do not use externally
+    field :first_test_date, :date, read_after_writes: true
+    field :last_test_date, :date, read_after_writes: true
+    field :case_index_first_known_date, :date, read_after_writes: true
+    field :case_index_last_known_date, :date, read_after_writes: true
+
     embeds_one :clinical, Clinical, on_replace: :update
     embeds_many :external_references, ExternalReference, on_replace: :delete
     embeds_one :monitoring, Monitoring, on_replace: :update
