@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 
 #, ex-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -5174,13 +5174,13 @@ msgstr "Die angezeigte Sprache wurde maschinell übersetzt."
 
 #, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The end date of the {type} phase will be changed from \"{old_end_date}\" to \"{new_end_date}\"."
-msgstr "Das Enddatum von der {type} Phase wird von \"{old_end_date}\" zu \"{new_end_date}\" angepasst."
+msgid "The end date of the {type} phase will be changed from {old_end_date} to {new_end_date}."
+msgstr "Das Enddatum von der {type} Phase wird von {old_end_date} zu {new_end_date} angepasst."
 
 #, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The end reason of the {type} phase will be changed from \"{old_end_reason}\" to \"{new_end_reason}\"."
-msgstr "Der Endgrund von der {type} Phase wird von \"{old_end_reason}\" zu \"{new_end_reason}\" angepasst."
+msgid "The end reason of the {type} phase will be changed from {old_end_reason} to {new_end_reason}."
+msgstr "Der Endgrund von der {type} Phase wird von {old_end_reason} zu {new_end_reason} angepasst."
 
 #, ex-autogen, icu-format
 msgid "The file was too large"
@@ -5219,13 +5219,13 @@ msgstr "Die Quarantäneanordnung der Phase {type} wird aufgehoben, da die neue P
 
 #, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The start date of the {type} phase will be changed from \"{old_start_date}\" to \"{new_start_date}\"."
-msgstr "Das Startdatum von der {type} Phase wird von \"{old_end_reason}\" zu \"{new_end_reason}\" angepasst."
+msgid "The start date of the {type} phase will be changed from {old_start_date} to {new_start_date}."
+msgstr "Das Startdatum von der {type} Phase wird von {old_start_date} zu {new_start_date} angepasst."
 
 #, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The status of the case will be changed from \"{old_status}\" to \"{new_status}\"."
-msgstr "Der Status des Falles wird von \"{old_status}\" zu \"{new_status}\" angepasst."
+msgid "The status of the case will be changed from {old_status} to {new_status}."
+msgstr "Der Status des Falles wird von {old_status} zu {new_status} angepasst."
 
 #, ex-autogen, icu-format
 msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."

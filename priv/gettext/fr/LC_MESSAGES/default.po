@@ -1200,7 +1200,7 @@ msgstr ""
 "Si vous continuez à vous sentir mal, veuillez contacter votre médecin traitant.\n"
 "\n"
 "Nous vous prions d'agréer, l'expression de nos salutations distinguées,\n"
-"{message_signature}\n"
+"{message_signature}"
 
 #, ex-autogen, icu-format
 msgid "Dear Sir / Madam,\n\nYour quarantine period ends tomorrow {date, date, full}. If you do not currently experience any symptoms, you're allowed to leave quarantine.\n\nShould you feel ill, please contact your general practitioner.\n\nKind Regards,\n{message_signature}"
@@ -1212,7 +1212,7 @@ msgstr ""
 "Si vous vous sentez mal, veuillez contacter votre médecin généraliste.\n"
 "\n"
 "Bien à vous,\n"
-"{message_signature}\n"
+"{message_signature}"
 
 #, ex-autogen, fuzzy, icu-format
 msgctxt "Index End Reason"
@@ -2026,8 +2026,8 @@ msgstr ""
 "Il y a de nouvelles notifications disponibles sur Hygeia pour vous :\n"
 "{totals}\n"
 "\n"
-"Best,\n"
-"Hygeia - COVID19 Tracing\n"
+"Cordialement,\n"
+"Hygeia - COVID19 Tracing"
 
 #, ex-autogen, fuzzy, icu-format
 msgid "High"
@@ -2131,7 +2131,7 @@ msgstr "ID lisible par l'homme"
 #, ex-autogen, icu-format
 msgctxt "Home"
 msgid "Hygeia is deisgned to structure complicated processes, to fullfill standards like the «{link_med}» of the FOPH, connect to the FOPH database and to reduce needed personel for the contact tracing."
-msgstr "Hygeia est conçu pour structurer des processus complexes, pour remplir des standards comme le \"{link_med}\" de l'OFSP, pour se connecter à la base de données de l'OFSP et pour réduire le personnel nécessaire à la recherche de contacts."
+msgstr "Hygeia est conçu pour structurer des processus complexes, pour remplir des standards comme le «{link_med}» de l'OFSP, pour se connecter à la base de données de l'OFSP et pour réduire le personnel nécessaire à la recherche de contacts."
 
 #, ex-autogen, fuzzy, icu-format
 msgid "I confirm that all the data above is correct. This may be inspected!"
@@ -3864,9 +3864,9 @@ msgctxt "Test Result"
 msgid "Positive"
 msgstr "Positif"
 
-#, ex-autogen, fuzzy, icu-format
+#, ex-autogen, icu-format
 msgid "Possible Index"
-msgstr "Indice possible"
+msgstr "Indice éventuel"
 
 #, ex-autogen, fuzzy, icu-format
 msgctxt "Case Phase Type"
@@ -5175,13 +5175,13 @@ msgstr "La langue affichée était traduite mécaniquement."
 
 #, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The end date of the {type} phase will be changed from \"{old_end_date}\" to \"{new_end_date}\"."
-msgstr "La date de fin de la phase {type} sera modifiée de \"{old_end_date}\" à \"{new_end_date}\"."
+msgid "The end date of the {type} phase will be changed from {old_end_date} to {new_end_date}."
+msgstr "La date de fin de la phase {type} sera modifiée de {old_end_date} à {new_end_date}."
 
-#, ex-autogen, fuzzy, icu-format
+#, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The end reason of the {type} phase will be changed from \"{old_end_reason}\" to \"{new_end_reason}\"."
-msgstr "La raison de la fin de la phase {type} sera modifiée de \"{new_end_reason}\" à \"{old_end_reason}\"."
+msgid "The end reason of the {type} phase will be changed from {old_end_reason} to {new_end_reason}."
+msgstr "La raison de la fin de la phase {type} sera modifiée de {new_end_reason} à {old_end_reason}."
 
 #, ex-autogen, fuzzy, icu-format
 msgid "The file was too large"
@@ -5218,15 +5218,15 @@ msgctxt "Phase Create Modal"
 msgid "The quarantine order of the {type} phase will be lifted since the new phase is covering it completely."
 msgstr "L'ordre de quarantaine de la phase {type} sera levé puisque l'ordre commence plus tard que la nouvelle date de début."
 
-#, ex-autogen, fuzzy, icu-format
+#, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The start date of the {type} phase will be changed from \"{old_start_date}\" to \"{new_start_date}\"."
-msgstr "La raison de la fin de la phase {type} sera modifiée de \"{new_end_reason}\" à \"{old_end_reason}\"."
+msgid "The start date of the {type} phase will be changed from {old_start_date} to {new_start_date}."
+msgstr "La date de début de la phase {type} passera de {old_start_date} à {new_start_date}."
 
 #, ex-autogen, icu-format
 msgctxt "Phase Create Modal"
-msgid "The status of the case will be changed from \"{old_status}\" to \"{new_status}\"."
-msgstr "Le statut de l'affaire sera modifié de \"{old_status}\" à \"{new_status}\"."
+msgid "The status of the case will be changed from {old_status} to {new_status}."
+msgstr "Le statut de l'affaire sera modifié de {old_status} à {new_status}."
 
 #, ex-autogen, fuzzy, icu-format
 msgid "The status serves as an overview of the current tracing phase of the person. This status can be used to search in the filter. The cases are always created with the status \"First contact\" by the case administration. After the case has been processed, the status must be adjusted."
