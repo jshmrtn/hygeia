@@ -548,8 +548,8 @@ for view <- [
       :statistics_active_infection_place_cases_per_day,
       :statistics_transmission_country_cases_per_day,
       :statistics_active_cases_per_day_and_organisation,
-      :statistics_new_registered_cases_per_day
-      # :statistics_vaccination_breakthroughs_per_day
+      :statistics_new_registered_cases_per_day,
+      :statistics_vaccination_breakthroughs_per_day
     ] do
   Repo.query!("REFRESH MATERIALIZED VIEW #{view}", [], timeout: :timer.minutes(5))
 end

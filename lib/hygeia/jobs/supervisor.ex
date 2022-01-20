@@ -61,10 +61,10 @@ defmodule Hygeia.Jobs.Supervisor do
          {RefreshMaterializedView,
           view: :statistics_new_registered_cases_per_day,
           name: RefreshMaterializedView.NewRegisteredCasesPerDay}},
-        # {Highlander,
-        #  {RefreshMaterializedView,
-        #   view: :statistics_vaccination_breakthroughs_per_day,
-        #   name: RefreshMaterializedView.VaccinationBreakthroughsPerDay}},
+        {Highlander,
+         {RefreshMaterializedView,
+          view: :statistics_vaccination_breakthroughs_per_day,
+          name: RefreshMaterializedView.VaccinationBreakthroughsPerDay}},
 
         # Message Triggers
         {Highlander, Hygeia.Jobs.SendCaseClosedEmail},
