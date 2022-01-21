@@ -83,7 +83,14 @@ defmodule HygeiaWeb.AuthLive.Login do
 
   @impl Phoenix.LiveView
   def handle_info(:unlock, socket) do
-    {:ok, :cancel} = :timer.cancel(socket.assigns.login_lock_remaining_interval)
+    case socket.assigns[:login_lock_remaining_interval] do
+      nil ->
+        nil
+
+      login_lock_remaining_interval ->
+        {:ok, :cancel} = :timer.cancel(login_lock_remaining_interval)
+    end
+
     {:noreply, assign(socket, login_disabled: false, login_lock_remaining: 0)}
   end
 
