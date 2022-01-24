@@ -101,14 +101,11 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
         {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}
 
       _row, %{changes: changes, data: data}, _preceeding_steps ->
-        data
-        |> Row.get_change_field([relevance_date_field])
-        |> Date.from_iso8601()
-        |> case do
-          {:ok, date} ->
-            select_case_with_relevance_date(field_mapping, date, changes)
-
-          {:error, _reason} ->
+        with date when date != nil <- Row.get_change_field(data, [relevance_date_field]),
+             {:ok, date} <- Date.from_iso8601(date) do
+          select_case_with_relevance_date(field_mapping, date, changes)
+        else
+          _no_date_or_error ->
             select_case_with_relevance_date(
               field_mapping,
               Date.utc_today(),
