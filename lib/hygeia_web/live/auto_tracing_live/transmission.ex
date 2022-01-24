@@ -176,7 +176,6 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
                   propagator_known: nil
                 })
                 |> put_change(:propagator, nil)
-                |> put_change(:transmission_uuid, nil)
                 |> put_change(:possible_transmission, nil)
                 |> AutoTracingContext.update_auto_tracing()
 

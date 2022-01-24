@@ -925,7 +925,6 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
 
       assert %AutoTracing{
                transmission_known: true,
-               transmission_uuid: nil,
                problems: [:possible_transmission]
              } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
