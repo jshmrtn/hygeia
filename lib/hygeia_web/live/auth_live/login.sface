@@ -27,7 +27,7 @@
                   placeholder: pgettext("Person Login Form", "Jane"),
                   required: true,
                   autofocus: true,
-                  disabled: not connected?(@socket)
+                  disabled: @login_disabled or not connected?(@socket)
                 }
               />
             </Field>
@@ -38,7 +38,7 @@
                 opts={
                   placeholder: pgettext("Person Login Form", "Doe"),
                   required: true,
-                  disabled: not connected?(@socket)
+                  disabled: @login_disabled or not connected?(@socket)
                 }
               />
             </Field>
