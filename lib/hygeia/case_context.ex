@@ -2953,11 +2953,11 @@ defmodule Hygeia.CaseContext do
         from(version in Hygeia.VersionContext.Version,
           join: sms in ^Ecto.assoc(case, :sms),
           on:
-            fragment("(?->>'uuid')::uuid", version.item_pk) == sms.uuid and
+            version.item_pk == fragment("JSONB_BUILD_OBJECT('uuid', ?)", sms.uuid) and
               version.item_table == "sms" and
               version.event == :insert,
           select: {sms.uuid, {sms, version}},
-          where: fragment("?->>'uuid'", version.item_pk) in ^ids,
+          where: sms.uuid in ^ids,
           preload: [:user]
         )
       )
@@ -2968,11 +2968,11 @@ defmodule Hygeia.CaseContext do
         from(version in Hygeia.VersionContext.Version,
           join: email in ^Ecto.assoc(case, :emails),
           on:
-            fragment("(?->>'uuid')::uuid", version.item_pk) == email.uuid and
+            version.item_pk == fragment("JSONB_BUILD_OBJECT('uuid', ?)", email.uuid) and
               version.item_table == "emails" and
               version.event == :insert,
           select: {email.uuid, {email, version}},
-          where: fragment("?->>'uuid'", version.item_pk) in ^ids,
+          where: email.uuid in ^ids,
           preload: [:user]
         )
       )
@@ -2983,11 +2983,11 @@ defmodule Hygeia.CaseContext do
         from(version in Hygeia.VersionContext.Version,
           join: note in ^Ecto.assoc(case, :notes),
           on:
-            fragment("(?->>'uuid')::uuid", version.item_pk) == note.uuid and
+            version.item_pk == fragment("JSONB_BUILD_OBJECT('uuid', ?)", note.uuid) and
               version.item_table == "notes" and
               version.event == :insert,
           select: {note.uuid, {note, version}},
-          where: fragment("?->>'uuid'", version.item_pk) in ^ids,
+          where: note.uuid in ^ids,
           preload: [:user]
         )
       )
