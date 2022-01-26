@@ -128,10 +128,7 @@ defmodule Hygeia.MixProject do
       {:phoenix_html, "~> 2.11 or ~> 3.0"},
       {:phoenix_live_dashboard, "~> 0.6.2"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      # TODO: Revert to released version when this PR is merged and released:
-      # - https://github.com/phoenixframework/phoenix_live_view/pull/1725
-      {:phoenix_live_view, "~> 0.17.5",
-       github: "phoenixframework/phoenix_live_view", branch: "master", override: true},
+      {:phoenix_live_view, "~> 0.17.6"},
       {:phoenix_pubsub, "~> 2.0"},
       {:plug, "~> 1.12.1"},
       # TODO: Revert to released version when this PR is merged and released:
