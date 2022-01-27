@@ -42,7 +42,7 @@ defmodule HygeiaWeb.ImportLive.Create do
        |> allow_upload(:file,
          accept: ~w(.csv .xlsx .json),
          max_entries: 1,
-         max_file_size: 1_000_000
+         max_file_size: 10_000_000
        )
      else
        socket
