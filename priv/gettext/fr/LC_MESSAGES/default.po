@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #, ex-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -595,6 +595,7 @@ msgid "Cases inserted successfully."
 msgstr "Cas créé avec succès"
 
 #, ex-autogen, fuzzy, icu-format
+msgctxt "Import Helpers"
 msgid "Certain"
 msgstr "Certains"
 
@@ -1570,6 +1571,11 @@ msgid "Email"
 msgstr "Courriel :"
 
 #, ex-autogen, fuzzy, icu-format
+msgctxt "Import Helpers"
+msgid "Email"
+msgstr "Courriel :"
+
+#, ex-autogen, fuzzy, icu-format
 msgctxt "Notification Type"
 msgid "Email Send Failed"
 msgstr "Échec de l'envoi de l'e-mail"
@@ -2408,6 +2414,7 @@ msgid "Initiate Auto Tracing after getting a contact method."
 msgstr "Lancez la recherche automatique après avoir obtenu une méthode de contact."
 
 #, ex-autogen, fuzzy, icu-format
+msgctxt "Import Helpers"
 msgid "Input needed"
 msgstr "Contribution nécessaire"
 
@@ -2438,6 +2445,11 @@ msgstr "Sur"
 #, ex-autogen, fuzzy, icu-format
 msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
 msgstr "Détails de la personne non valides. Si vous pensez qu'il s'agit d'une erreur, contactez l'équipe de recherche."
+
+#, ex-autogen, fuzzy, icu-format
+msgctxt "Inbox Row Patch Person"
+msgid "Invalid person details"
+msgstr "Détails de la personne non valides"
 
 #, ex-autogen, fuzzy, icu-format
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
@@ -2537,6 +2549,7 @@ msgid "Keep Status"
 msgstr "Maintenir le statut"
 
 #, ex-autogen, fuzzy, icu-format
+msgctxt "Inbox Row Patch Person"
 msgid "Keep personal data"
 msgstr "Conserver les données personnelles"
 
@@ -4818,6 +4831,11 @@ msgid "Subdivision"
 msgstr "Lotissement"
 
 #, ex-autogen, fuzzy, icu-format
+msgctxt "Import Helpers"
+msgid "Subdivision"
+msgstr "Lotissement"
+
+#, ex-autogen, fuzzy, icu-format
 msgctxt "Elixir.Hygeia.CommunicationContext.Email Field"
 msgid "Subject"
 msgstr "Sujet"
@@ -5534,6 +5552,7 @@ msgid "UUID"
 msgstr "UUID"
 
 #, ex-autogen, fuzzy, icu-format
+msgctxt "Import Helpers"
 msgid "Uncertain"
 msgstr "Incertain"
 
@@ -5597,6 +5616,7 @@ msgid "Update Transmission"
 msgstr "Créer une transmission"
 
 #, ex-autogen, fuzzy, icu-format
+msgctxt "Inbox Row Patch Person"
 msgid "Update personal data"
 msgstr "Mise à jour des données personnelles"
 

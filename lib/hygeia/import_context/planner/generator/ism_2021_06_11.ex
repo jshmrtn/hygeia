@@ -3,6 +3,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   @moduledoc false
 
   alias Hygeia.CaseContext
+  alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Phase
   alias Hygeia.CaseContext.Person
@@ -406,23 +407,58 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
              {Planner.certainty(), Planner.Action.t()})
   def patch_person(field_mapping) do
     fn _row, %{changes: changes}, _preceeding_steps ->
-      {:certain,
-       %Planner.Action.PatchPerson{
-         person_attrs:
-           @person_field_path
-           |> Enum.map(fn {common_field_identifier, destination_path} ->
-             {field_mapping[common_field_identifier], destination_path}
-           end)
-           |> Enum.map(fn {field_name, destination_path} ->
-             {destination_path, Row.get_change_field(changes, [field_name])}
-           end)
-           |> Enum.reject(&match?({_path, nil}, &1))
-           |> Enum.reject(&match?({_path, ""}, &1))
-           |> Enum.map(&normalize_person_data/1)
-           |> extract_field_changes()
-       }}
+      person_attrs =
+        @person_field_path
+        |> Enum.map(fn {common_field_identifier, destination_path} ->
+          {field_mapping[common_field_identifier], destination_path}
+        end)
+        |> Enum.map(fn {field_name, destination_path} ->
+          {destination_path, Row.get_change_field(changes, [field_name])}
+        end)
+        |> Enum.reject(&match?({_path, nil}, &1))
+        |> Enum.reject(&match?({_path, ""}, &1))
+        |> Enum.map(&normalize_person_data/1)
+        |> extract_field_changes()
+
+      case get_invalid_changes(person_attrs) do
+        [] ->
+          {:certain,
+           %Planner.Action.PatchPerson{
+             person_attrs: person_attrs,
+             invalid_changes: []
+           }}
+
+        invalid_changes ->
+          {:input_needed,
+           %Planner.Action.PatchPerson{
+             person_attrs: person_attrs,
+             invalid_changes: invalid_changes
+           }}
+      end
     end
   end
+
+  defp get_invalid_changes(person_attrs),
+    do:
+      person_attrs
+      |> Enum.map(fn
+        {:email, email} ->
+          if EmailChecker.valid?(email) do
+            nil
+          else
+            :email
+          end
+
+        {:address, address} ->
+          case Address.changeset(%Address{}, address).errors do
+            [subdivision: {"is invalid", _}] -> :subdivision
+            _others -> nil
+          end
+
+        _others ->
+          nil
+      end)
+      |> Enum.reject(&is_nil/1)
 
   @spec normalize_person_data({path :: [atom], value :: term}) ::
           {path :: [atom], value :: term}

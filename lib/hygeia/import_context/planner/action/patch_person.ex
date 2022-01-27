@@ -3,9 +3,9 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchPerson do
   Patch Person
   """
 
-  @type t :: %__MODULE__{person_attrs: map}
+  @type t :: %__MODULE__{person_attrs: map, invalid_changes: list}
 
-  defstruct [:person_attrs]
+  defstruct [:person_attrs, :invalid_changes]
 
   defimpl Hygeia.ImportContext.Planner.Action do
     alias Hygeia.CaseContext.Person
