@@ -537,7 +537,7 @@ defmodule Hygeia.CaseContextTest do
     end
 
     test "update_case/2 with valid data updates the case" do
-      case = Repo.preload(case_fixture(), :hospitalizations)
+      case = Repo.preload(case_fixture(), hospitalizations: [], auto_tracing: [])
 
       assert {:ok,
               %Case{
@@ -550,14 +550,17 @@ defmodule Hygeia.CaseContextTest do
       organisation = organisation_fixture()
 
       case =
-        case_fixture(
-          person_fixture(),
-          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
-          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
-          %{
-            status: :hospitalization,
-            hospitalizations: [%{start: Date.utc_today(), organisation_uuid: organisation.uuid}]
-          }
+        Repo.preload(
+          case_fixture(
+            person_fixture(),
+            user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+            user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+            %{
+              status: :hospitalization,
+              hospitalizations: [%{start: Date.utc_today(), organisation_uuid: organisation.uuid}]
+            }
+          ),
+          :auto_tracing
         )
 
       assert {:error, _changeset} = CaseContext.update_case(case, %{status: :done})
@@ -565,22 +568,25 @@ defmodule Hygeia.CaseContextTest do
 
     test "update_case/2 status done needs phase order decision" do
       case =
-        case_fixture(
-          person_fixture(),
-          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
-          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
-          %{
-            status: :first_contact,
-            phases: [
-              %{
-                details: %{
-                  __type__: :possible_index,
-                  type: :contact_person,
-                  end_reason: :converted_to_index
+        Repo.preload(
+          case_fixture(
+            person_fixture(),
+            user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+            user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+            %{
+              status: :first_contact,
+              phases: [
+                %{
+                  details: %{
+                    __type__: :possible_index,
+                    type: :contact_person,
+                    end_reason: :converted_to_index
+                  }
                 }
-              }
-            ]
-          }
+              ]
+            }
+          ),
+          :auto_tracing
         )
 
       case = Repo.preload(case, :hospitalizations)

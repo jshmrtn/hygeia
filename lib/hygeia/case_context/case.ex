@@ -6,6 +6,7 @@ defmodule Hygeia.CaseContext.Case do
 
   import HygeiaGettext
 
+  alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.Complexity
@@ -189,6 +190,7 @@ defmodule Hygeia.CaseContext.Case do
     |> validate_at_least_one_phase()
     |> validate_phase_type_unique()
     |> validate_status_hospitalization()
+    |> validate_status_auto_tracing()
     |> sort_phases_as_needed()
     |> validate_phase_orders()
     |> validate_phase_no_overlap()
@@ -277,6 +279,25 @@ defmodule Hygeia.CaseContext.Case do
               )
             )
         end
+    end
+  end
+
+  defp validate_status_auto_tracing(changeset) do
+    with(
+      {:ok, :done} <- fetch_change(changeset, :status),
+      {:data, auto_tracing} when auto_tracing != nil <- fetch_field(changeset, :auto_tracing),
+      true <- AutoTracing.has_unsolved_problems?(auto_tracing)
+    ) do
+      add_error(
+        changeset,
+        :status,
+        pgettext(
+          "Case Validation",
+          ~S(If there are unresolved auto-tracing problems, the status can not be set to "done".)
+        )
+      )
+    else
+      _other -> changeset
     end
   end
 
