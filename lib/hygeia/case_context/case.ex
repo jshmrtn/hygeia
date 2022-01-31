@@ -406,13 +406,23 @@ defmodule Hygeia.CaseContext.Case do
   First positive test date of case
   """
   @spec first_positive_test_date(case :: t) :: Date.t() | nil
-  def first_positive_test_date(%__MODULE__{tests: tests}),
+  def first_positive_test_date(case),
+    do: positive_test_date(case, :asc)
+
+  @doc """
+  Last positive test date of case
+  """
+  @spec last_positive_test_date(case :: t) :: Date.t() | nil
+  def last_positive_test_date(case),
+    do: positive_test_date(case, :desc)
+
+  defp positive_test_date(%__MODULE__{tests: tests}, sort_order),
     do:
       tests
       |> Enum.filter(&match?(%Test{result: :positive}, &1))
       |> Enum.map(&(&1.tested_at || &1.laboratory_reported_at))
       |> Enum.reject(&is_nil/1)
-      |> Enum.sort({:asc, Date})
+      |> Enum.sort({sort_order, Date})
       |> List.first()
 
   defp phase_inserted_at_date(%__MODULE__{phases: phases} = _case, phase_type) do
