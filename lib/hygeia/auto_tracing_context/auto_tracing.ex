@@ -172,6 +172,11 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
   @spec has_problem?(t, problem :: Problem.t()) :: boolean
   def has_problem?(%__MODULE__{problems: problems}, problem), do: problem in problems
 
+  @spec has_unsolved_problems?(auto_tracing :: t()) :: boolean
+  def has_unsolved_problems?(auto_tracing)
+  def has_unsolved_problems?(%__MODULE__{unsolved_problems: []}), do: false
+  def has_unsolved_problems?(%__MODULE__{unsolved_problems: _problems}), do: true
+
   @spec step_available?(auto_tracing :: t, step :: Step.t()) :: boolean()
   def step_available?(%__MODULE__{} = auto_tracing, step) do
     steps = Step.__enum_map__()

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #, ex-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -2219,6 +2219,11 @@ msgstr "Falls es laufende Hospitalisierungen gibt, darf der Status nicht auf \"E
 #, ex-autogen, icu-format
 msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
 msgstr "Falls es Phasen gibt wo nicht entschieden wurde ob eine Quarantäne / Isolation verordnet wird, darf der Status nicht auf \"Erledigt\" / \"Tracing abgeschlossen\" gesetzt werden."
+
+#, ex-autogen, icu-format
+msgctxt "Case Validation"
+msgid "If there are unresolved auto-tracing problems, the status can not be set to \"done\"."
+msgstr "Falls es offene Auto Tracing Probleme gibt, darf der Status nicht auf „Erledigt“ gesetzt werden."
 
 #, ex-autogen, icu-format
 msgctxt "Auto Tracing Resolve Problems"

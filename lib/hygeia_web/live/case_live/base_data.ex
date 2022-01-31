@@ -343,7 +343,8 @@ defmodule HygeiaWeb.CaseLive.BaseData do
         person: [tenant: []],
         tenant: [],
         hospitalizations: [organisation: []],
-        tests: []
+        tests: [],
+        auto_tracing: []
       )
 
     changeset = CaseContext.change_case(case)

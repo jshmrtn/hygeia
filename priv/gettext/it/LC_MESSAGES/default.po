@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #, ex-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -2219,6 +2219,11 @@ msgstr "Se ci sono ricoveri aperti, lo stato non può essere impostato su \"fatt
 #, ex-autogen, fuzzy, icu-format
 msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
 msgstr "Se ci sono fasi senza ordini di quarantena/isolamento decisi e sconosciuti, lo stato non deve essere \"fatto\" / \"annullato\"."
+
+#, ex-autogen, fuzzy, icu-format
+msgctxt "Case Validation"
+msgid "If there are unresolved auto-tracing problems, the status can not be set to \"done\"."
+msgstr "Se sono presenti problemi di tracciamento automatico irrisolti, lo stato non può essere impostato su „fatto“."
 
 #, ex-autogen, fuzzy, icu-format
 msgctxt "Auto Tracing Resolve Problems"

@@ -2222,6 +2222,11 @@ msgid "If there are phases without decided unknown quarantine / isolation orders
 msgstr "S'il y a des phases sans ordres de quarantaine/isolement inconnus décidés, le statut ne doit pas être \"fait\" / \"annulé\"."
 
 #, ex-autogen, fuzzy, icu-format
+msgctxt "Case Validation"
+msgid "If there are unresolved auto-tracing problems, the status can not be set to \"done\"."
+msgstr "S’il y a un auto-traçage non résolu problèmes, le statut ne peut pas être défini comme „terminé“."
+
+#, ex-autogen, fuzzy, icu-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "If there is no number, try to get it from the doctor."
 msgstr "S'il n'y a pas de numéro, essayez de l'obtenir auprès du médecin."
