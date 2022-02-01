@@ -303,7 +303,6 @@
                         <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
                           {pgettext("Auto Tracing Resolve Problems", "Done")}
                         </button>
-                      {#match :link_propagator}
                         <div :if={@auto_tracing.propagator_known}>
                           <p>
                             {@auto_tracing.propagator.first_name}
@@ -318,70 +317,6 @@
                             <dd :if={@auto_tracing.propagator.address}>{Address.to_string(@auto_tracing.propagator.address, :long)}</dd>
                           </dl>
                         </div>
-                        <Form
-                          for={@link_propagator_opts_changeset}
-                          change="link_propagator_opts_change"
-                          as={:link_propagator_opts}
-                          submit="link_propagator_opts_submit"
-                        >
-                          <Field name={:propagator_internal} class="form-group">
-                            <div class="btn-group btn-group-toggle btn-radio-group">
-                              <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
-                              <label class={
-                                "btn",
-                                "btn-outline-primary",
-                                active: Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == nil
-                              }>
-                                <RadioButton value="" />
-                                {gettext("No propagator")}
-                              </label>
-                              <label class={
-                                "btn",
-                                "btn-outline-primary",
-                                active: Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == true
-                              }>
-                                <RadioButton value="true" />
-                                {gettext("Internal")}
-                              </label>
-                              <label class={
-                                "btn",
-                                "btn-outline-primary",
-                                active: Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == false
-                              }>
-                                <RadioButton value="false" />
-                                {gettext("External")}
-                              </label>
-                            </div>
-                            <ErrorTag class="d-block invalid-feedback" />
-                          </Field>
-                          <Field
-                            name={:propagator_ism_id}
-                            class="form-group"
-                            :if={Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == false}
-                          >
-                            <HygeiaWeb.FieldLabel />
-                            <TextInput class="form-control" />
-                            <ErrorTag class="d-block invalid-feedback" />
-                          </Field>
-                          <Field
-                            name={:propagator_case_uuid}
-                            class="form-group"
-                            :if={Ecto.Changeset.get_field(@link_propagator_opts_changeset, :propagator_internal) == true}
-                          >
-                            <HygeiaWeb.FieldLabel />
-                            <HygeiaWeb.CaseLive.Choose id="propagator_case" change="change_propagator_case" />
-                            <ErrorTag class="d-block invalid-feedback" />
-                          </Field>
-
-                          <button
-                            class="btn btn-primary"
-                            type="submit"
-                            phx-disable-with={gettext("Saving...")}
-                            disabled={not @link_propagator_opts_changeset.valid?}
-                          >
-                            {gettext("Update Transmission")}
-                          </button>
-                        </Form>
                       {#match :new_employer}
                         <div class="hy-card-grid-2-cols">
                           <div

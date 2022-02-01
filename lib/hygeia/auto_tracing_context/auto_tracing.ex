@@ -5,8 +5,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   use Hygeia, :model
 
-  import HygeiaGettext
-
   alias Hygeia.AutoTracingContext.AutoTracing.Flight
   alias Hygeia.AutoTracingContext.AutoTracing.Problem
   alias Hygeia.AutoTracingContext.AutoTracing.Propagator
@@ -21,7 +19,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           current_step: Step.t() | nil,
           last_completed_step: Step.t() | nil,
           employed: boolean() | nil,
-          transmission: Transmission.t() | nil,
           problems: [Problem.t()] | nil,
           solved_problems: [Problem.t()] | nil,
           unsolved_problems: [Problem.t()] | nil,
@@ -42,7 +39,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           current_step: Step.t(),
           last_completed_step: Step.t() | nil,
           employed: boolean() | nil,
-          transmission: Transmission.t() | nil,
           problems: [Problem.t()],
           solved_problems: [Problem.t()],
           unsolved_problems: [Problem.t()],
@@ -60,8 +56,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   @type changeset_options :: %{
           optional(:covid_app_required) => boolean,
-          optional(:has_contact_persons_required) => boolean,
-          optional(:transmission_required) => boolean
+          optional(:has_contact_persons_required) => boolean
         }
 
   @derive {Phoenix.Param, key: :uuid}
@@ -87,10 +82,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
     embeds_one :propagator, Propagator, on_replace: :delete
     embeds_one :possible_transmission, Transmission, on_replace: :delete
-
-    belongs_to :transmission, Transmission,
-      foreign_key: :transmission_uuid,
-      references: :uuid
 
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
 
@@ -118,13 +109,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     |> validate_required([:has_contact_persons])
   end
 
-  def changeset(auto_tracing, attrs, %{transmission_required: true} = changeset_options) do
-    auto_tracing
-    |> changeset(attrs, %{changeset_options | transmission_required: false})
-    |> cast_embed(:transmission, required: true)
-    |> validate_transmission_required()
-  end
-
   def changeset(auto_tracing, attrs, _changeset_options) do
     auto_tracing
     |> cast(attrs, [
@@ -139,34 +123,12 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
       :has_flown,
       :problems,
       :solved_problems,
-      :transmission_uuid,
       :transmission_known,
       :propagator_known,
       :started_at
     ])
     |> cast_embed(:travels, with: &Travel.changeset(&1, &2, %{require_last_departure_date: true}))
     |> validate_required([:current_step, :case_uuid])
-    |> foreign_key_constraint(:transmission_uuid)
-  end
-
-  defp validate_transmission_required(changeset) do
-    changeset
-    |> fetch_field!(:transmission)
-    |> case do
-      %Transmission{} = transmission ->
-        transmission
-        |> Transmission.changeset(%{})
-        |> case do
-          %Ecto.Changeset{valid?: true} ->
-            changeset
-
-          %Ecto.Changeset{valid?: false} ->
-            add_error(changeset, :transmission, dgettext("errors", "is invalid"))
-        end
-
-      nil ->
-        add_error(changeset, :transmission, dgettext("errors", "is invalid"))
-    end
   end
 
   @spec has_problem?(t, problem :: Problem.t()) :: boolean
