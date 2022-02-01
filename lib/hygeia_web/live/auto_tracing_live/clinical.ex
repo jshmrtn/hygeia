@@ -144,32 +144,14 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     {phase_start, phase_end, problems} = index_phase_dates(case)
 
-    problems =
-      phase_start
-      |> Date.compare(phase_end)
-      |> case do
-        :gt ->
-          changeset =
-            case
-            |> CaseContext.change_case()
-            |> set_quarantine_order_false()
+    changeset =
+      case
+      |> shorten_phases_before(phase_start)
+      |> change_phase_dates(phase_start, phase_end)
 
-          {:ok, _case} = CaseContext.update_case(case, changeset)
+    {:ok, case} = CaseContext.update_case(case, changeset)
 
-          [:phase_ends_in_the_past] ++ problems
-
-        _lt_eq ->
-          changeset =
-            case
-            |> shorten_phases_before(phase_start)
-            |> change_phase_dates(phase_start, phase_end)
-
-          {:ok, case} = CaseContext.update_case(case, changeset)
-
-          :ok = send_notifications(case, socket)
-
-          problems
-      end
+    :ok = send_notifications(case, socket)
 
     {:ok, auto_tracing} =
       case case do
@@ -184,19 +166,6 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
             socket.assigns.auto_tracing,
             :hospitalization
           )
-      end
-
-    {:ok, auto_tracing} =
-      if Enum.any?(problems, &match?(:phase_ends_in_the_past, &1)) do
-        AutoTracingContext.auto_tracing_add_problem(
-          auto_tracing,
-          :phase_ends_in_the_past
-        )
-      else
-        AutoTracingContext.auto_tracing_remove_problem(
-          auto_tracing,
-          :phase_ends_in_the_past
-        )
       end
 
     {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :clinical)
@@ -325,6 +294,18 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     phase_start = Date.utc_today()
     phase_end = Date.add(start_date, Index.default_length_days())
+
+    last_test_date_plus_two =
+      case Case.last_positive_test_date(case) do
+        nil -> nil
+        date -> Date.add(date, 2)
+      end
+
+    phase_end =
+      [phase_start, last_test_date_plus_two, phase_end]
+      |> Enum.reject(&is_nil/1)
+      |> Enum.sort({:desc, Date})
+      |> List.first()
 
     {phase_start, phase_end, problems}
   end

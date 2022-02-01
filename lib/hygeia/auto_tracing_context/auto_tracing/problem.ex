@@ -9,7 +9,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
       :covid_app,
       :vaccination_failure,
       :hospitalization,
-      :phase_ends_in_the_past,
       :school_related,
       :high_risk_country_travel,
       :flight_related,
@@ -36,9 +35,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
     do: pgettext("Auto Tracing Problem", "Vaccination Failure")
 
   def translate(:hospitalization), do: pgettext("Auto Tracing Problem", "Hospitalization")
-
-  def translate(:phase_ends_in_the_past),
-    do: pgettext("Auto Tracing Problem", "Phase ends in the past")
 
   def translate(:school_related), do: pgettext("Auto Tracing Problem", "School Related")
 
