@@ -57,7 +57,7 @@ defmodule HygeiaWeb.AutoTracingLive.ResolveProblems do
       |> CaseContext.get_case!()
       |> Repo.preload(
         person: [affiliations: [:organisation, :division]],
-        auto_tracing: [transmission: []],
+        auto_tracing: [],
         visits: [:organisation, :division],
         received_transmissions: [propagator: []],
         tests: []
