@@ -4,8 +4,18 @@ defmodule Hygeia.Repo.Migrations.CreateAutoTracings do
 
   use Hygeia, :migration
 
-  alias Hygeia.AutoTracingContext.AutoTracing.Problem
+  import EctoEnum
+
   alias Hygeia.AutoTracingContext.AutoTracing.Step
+
+  defenum(Problem, :auto_tracing_problem, [
+    :unmanaged_tenant,
+    :covid_app,
+    :vaccination_failure,
+    :hospitalization,
+    :new_employer,
+    :link_propagator
+  ])
 
   def change do
     Step.create_type()
