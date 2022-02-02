@@ -5,8 +5,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
   use Hygeia, :model
 
   import Ecto.Query
-
-  alias Phoenix.LiveView.Socket
+  import HygeiaWeb.Helpers.AutoTracing, only: [get_next_step_route: 1]
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
@@ -19,6 +18,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Visit
   alias Hygeia.Repo
+  alias Phoenix.LiveView.Socket
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.ErrorTag
@@ -254,12 +254,7 @@ defmodule HygeiaWeb.AutoTracingLive.Visits do
           {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :visits)
 
           push_redirect(socket,
-            to:
-              Routes.auto_tracing_employer_path(
-                socket,
-                :employer,
-                socket.assigns.auto_tracing.case_uuid
-              )
+            to: get_next_step_route(:visits).(socket, socket.assigns.auto_tracing.case_uuid)
           )
       end
 

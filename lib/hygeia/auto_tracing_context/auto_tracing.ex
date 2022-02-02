@@ -141,20 +141,27 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   @spec step_available?(auto_tracing :: t, step :: Step.t()) :: boolean()
   def step_available?(%__MODULE__{} = auto_tracing, step) do
-    steps = Step.__enum_map__()
+    steps = Step.publicly_available_steps()
 
     step_index = Enum.find_index(steps, &(&1 == step))
 
-    if has_problem?(auto_tracing, :unmanaged_tenant) do
-      step_index <= Enum.find_index(steps, &(&1 == :address))
-    else
-      case auto_tracing.last_completed_step do
-        nil ->
-          step_index <= 0
+    cond do
+      step not in steps ->
+        false
 
-        last_completed_step ->
-          step_index <= Enum.find_index(steps, &(&1 == last_completed_step)) + 1
-      end
+      has_problem?(auto_tracing, :unmanaged_tenant) ->
+        step_index <= Enum.find_index(steps, &(&1 == :address))
+
+      true ->
+        case auto_tracing.last_completed_step do
+          nil ->
+            step_index <= 0
+
+          last_completed_step ->
+            last_completed_step_index = Enum.find_index(steps, &(&1 == last_completed_step))
+
+            step_index <= last_completed_step_index + 1
+        end
     end
   end
 

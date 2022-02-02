@@ -6,9 +6,9 @@
 
     <nav class="mb-4 progress-steps" id="progressbar">
       <div aria-hidden="false" class="progress-bar" />
-      {#for %{step: step, route: route} <- @steps}
+      {#for step <- Step.publicly_available_steps()}
         {#if AutoTracing.step_available?(@auto_tracing, step)}
-          <UriActiveContext to={route.(@socket, step, @auto_tracing.case_uuid)} :let={to: to}>
+          <UriActiveContext to={get_step_route(step).(@socket, @auto_tracing.case_uuid)} :let={to: to}>
             <LiveRedirect
               to={to}
               class={

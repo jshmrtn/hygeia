@@ -8,6 +8,7 @@ defmodule Hygeia.Jobs.DetectNoReactionCases do
   import Ecto.Query, only: [from: 2]
 
   alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing.Step
   alias Hygeia.CaseContext.Case
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
@@ -51,6 +52,8 @@ defmodule Hygeia.Jobs.DetectNoReactionCases do
   end
 
   defp detect_no_reaction_cases do
+    completed_steps = Step.completed_steps()
+
     cases =
       Repo.all(
         from(
@@ -59,7 +62,7 @@ defmodule Hygeia.Jobs.DetectNoReactionCases do
           where:
             auto_tracing.started_at <= ago(^@no_reaction_limit_amount, ^@no_reaction_limit_unit) and
               (is_nil(auto_tracing.last_completed_step) or
-                 auto_tracing.last_completed_step != :contact_persons) and
+                 auto_tracing.last_completed_step not in ^completed_steps) and
               case.status not in [:done, :canceled] and
               not fragment("'no_contact_method' = ANY(?)", auto_tracing.unsolved_problems),
           preload: [auto_tracing: auto_tracing]

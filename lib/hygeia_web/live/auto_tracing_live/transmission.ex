@@ -6,8 +6,7 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
   use Hygeia, :model
 
   import HygeiaGettext
-
-  alias Phoenix.LiveView.Socket
+  import HygeiaWeb.Helpers.AutoTracing, only: [get_next_step_route: 1]
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
@@ -16,6 +15,7 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.Repo
+  alias Phoenix.LiveView.Socket
   alias Surface.Components.Form
   alias Surface.Components.Form.DateInput
   alias Surface.Components.Form.EmailInput
@@ -189,12 +189,7 @@ defmodule HygeiaWeb.AutoTracingLive.Transmission do
           {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :transmission)
 
           push_redirect(socket,
-            to:
-              Routes.auto_tracing_contact_persons_path(
-                socket,
-                :contact_persons,
-                socket.assigns.auto_tracing.case_uuid
-              )
+            to: get_next_step_route(:transmission).(socket, socket.assigns.auto_tracing.case_uuid)
           )
       end
 

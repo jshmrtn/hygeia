@@ -6,6 +6,9 @@ config :hygeia,
   phone_number_parsing_origin_country: "CH",
   generators: [context_app: :hygeia, binary_id: true]
 
+# Configures if contact persons are captured
+config :hygeia, :quarantine_enabled, false
+
 config :hygeia, Hygeia.Repo,
   migration_timestamps: [type: :utc_datetime_usec],
   migration_primary_key: [name: :uuid, type: :binary_id],

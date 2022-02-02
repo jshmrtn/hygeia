@@ -3,6 +3,8 @@ defmodule HygeiaWeb.AutoTracingLive.End do
 
   use HygeiaWeb, :surface_view
 
+  import HygeiaWeb.Helpers.AutoTracing, only: [get_previous_step_route: 1]
+
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext

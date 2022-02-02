@@ -3,12 +3,13 @@ defmodule HygeiaWeb.AutoTracingLive.CovidApp do
 
   use HygeiaWeb, :surface_view
 
+  import HygeiaWeb.Helpers.AutoTracing, only: [get_next_step_route: 1]
+
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.Repo
-
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
@@ -103,12 +104,7 @@ defmodule HygeiaWeb.AutoTracingLive.CovidApp do
 
     {:noreply,
      push_redirect(socket,
-       to:
-         Routes.auto_tracing_clinical_path(
-           socket,
-           :clinical,
-           socket.assigns.auto_tracing.case_uuid
-         )
+       to: get_next_step_route(:covid_app).(socket, socket.assigns.auto_tracing.case_uuid)
      )}
   end
 end

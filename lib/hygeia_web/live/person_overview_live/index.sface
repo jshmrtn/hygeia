@@ -81,13 +81,15 @@
       </Link>
       <div :if={!Case.closed?(@active_case)}>
         <p class="mt-4">{gettext("Additional actions:")}</p>
-        <LiveRedirect
-          class="btn btn-lg btn-primary mb-2"
-          to={Routes.possible_index_submission_index_path(@socket, :index, @active_case)}
-        >
-          {gettext("Submit contact persons")}
-        </LiveRedirect>
-        <br>
+        {#if Application.fetch_env!(:hygeia, :quarantine_enabled)}
+          <LiveRedirect
+            class="btn btn-lg btn-primary mb-2"
+            to={Routes.possible_index_submission_index_path(@socket, :index, @active_case)}
+          >
+            {gettext("Submit contact persons")}
+          </LiveRedirect>
+          <br>
+        {/if}
         <LiveRedirect
           class="btn btn-lg btn-primary"
           to={Routes.auto_tracing_auto_tracing_path(@socket, :auto_tracing, @active_case)}
@@ -146,13 +148,15 @@
             <td class="text-end">
               {#case phase}
                 {#match %Phase{details: %Phase.Index{}}}
-                  <LiveRedirect
-                    :if={!Case.closed?(case)}
-                    class="btn btn-sm btn-outline-primary ms-2 mb-2"
-                    to={Routes.possible_index_submission_index_path(@socket, :index, case)}
-                  >
-                    {gettext("Submit contact persons")}
-                  </LiveRedirect>
+                  {#if Application.fetch_env!(:hygeia, :quarantine_enabled)}
+                    <LiveRedirect
+                      :if={!Case.closed?(case)}
+                      class="btn btn-sm btn-outline-primary ms-2 mb-2"
+                      to={Routes.possible_index_submission_index_path(@socket, :index, case)}
+                    >
+                      {gettext("Submit contact persons")}
+                    </LiveRedirect>
+                  {/if}
                   <Link
                     class={
                       "btn btn-sm btn-outline-primary ms-2 mb-2",

@@ -38,8 +38,29 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Step do
   def translate(:end), do: pgettext("Auto Tracing Step", "Finish")
 
   @spec get_next_step(step :: t) :: t | nil
-  def get_next_step(step) do
-    steps = __enum_map__()
-    Enum.at(steps, Enum.find_index(steps, &(&1 == step)) + 1)
+  def get_next_step(step), do: get_relative_step(step, &(&1 + 1))
+
+  @spec get_previous_step(step :: t) :: t | nil
+  def get_previous_step(step), do: get_relative_step(step, &(&1 - 1))
+
+  defp get_relative_step(step, index_fn) do
+    steps = publicly_available_steps()
+
+    case Enum.find_index(steps, &(&1 == step)) do
+      nil -> nil
+      current_index -> Enum.at(steps, index_fn.(current_index))
+    end
   end
+
+  @spec publicly_available_steps :: [t()]
+  def publicly_available_steps do
+    if Application.fetch_env!(:hygeia, :quarantine_enabled) do
+      __enum_map__()
+    else
+      __enum_map__() -- [:contact_persons]
+    end
+  end
+
+  @spec completed_steps :: [t()]
+  def completed_steps, do: publicly_available_steps() |> Enum.reverse() |> Enum.slice(0, 2)
 end

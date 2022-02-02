@@ -3,6 +3,9 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
 
   use HygeiaWeb, :surface_view
 
+  import HygeiaWeb.Helpers.AutoTracing, only: [get_step_route: 1]
+
+  alias Hygeia.AutoTracingContext.AutoTracing.Step
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Case
   alias Hygeia.Repo
@@ -41,27 +44,6 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
     end
   end
 
-  defp route(nil), do: &Routes.auto_tracing_start_path(&1, :start, &2)
-  defp route(:start), do: &Routes.auto_tracing_start_path(&1, :start, &2)
-  defp route(:address), do: &Routes.auto_tracing_address_path(&1, :address, &2)
-
-  defp route(:contact_methods),
-    do: &Routes.auto_tracing_contact_methods_path(&1, :contact_methods, &2)
-
-  defp route(:visits), do: &Routes.auto_tracing_visits_path(&1, :visits, &2)
-  defp route(:employer), do: &Routes.auto_tracing_employer_path(&1, :employer, &2)
-  defp route(:vaccination), do: &Routes.auto_tracing_vaccination_path(&1, :vaccination, &2)
-  defp route(:covid_app), do: &Routes.auto_tracing_covid_app_path(&1, :covid_app, &2)
-  defp route(:clinical), do: &Routes.auto_tracing_clinical_path(&1, :clinical, &2)
-  defp route(:travel), do: &Routes.auto_tracing_travel_path(&1, :travel, &2)
-
-  defp route(:transmission), do: &Routes.auto_tracing_transmission_path(&1, :transmission, &2)
-
-  defp route(:contact_persons),
-    do: &Routes.auto_tracing_contact_persons_path(&1, :contact_persons, &2)
-
-  defp route(:end), do: &Routes.auto_tracing_end_path(&1, :end, &2)
-
   @impl Phoenix.LiveView
   def render(assigns) do
     ~F"""
@@ -93,9 +75,14 @@ defmodule HygeiaWeb.AutoTracingLive.AutoTracing do
               )
           )
 
+        case.auto_tracing.last_completed_step not in Step.publicly_available_steps() ->
+          push_redirect(socket,
+            to: get_step_route(:start).(socket, case.uuid)
+          )
+
         true ->
           push_redirect(socket,
-            to: route(case.auto_tracing.last_completed_step).(socket, case.uuid)
+            to: get_step_route(case.auto_tracing.last_completed_step).(socket, case.uuid)
           )
       end
 

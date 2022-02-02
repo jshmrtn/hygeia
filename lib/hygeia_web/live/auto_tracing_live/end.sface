@@ -31,10 +31,7 @@
 
   <hr class="mb-4">
 
-  <LiveRedirect
-    to={Routes.auto_tracing_contact_persons_path(@socket, :contact_persons, @case)}
-    class="btn btn-outline-primary"
-  >
+  <LiveRedirect to={get_previous_step_route(:end).(@socket, @case)} class="btn btn-outline-primary">
     {gettext("Back")}
   </LiveRedirect>
   <LiveRedirect

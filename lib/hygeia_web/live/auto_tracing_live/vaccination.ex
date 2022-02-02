@@ -4,7 +4,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   use Hygeia, :model
   use HygeiaWeb, :surface_view
 
-  alias Phoenix.LiveView.Socket
+  import HygeiaWeb.Helpers.AutoTracing, only: [get_next_step_route: 1]
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
@@ -12,7 +12,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Person.VaccinationShot
   alias Hygeia.Repo
-
+  alias Phoenix.LiveView.Socket
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
@@ -125,12 +125,7 @@ defmodule HygeiaWeb.AutoTracingLive.Vaccination do
           {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :vaccination)
 
           push_redirect(socket,
-            to:
-              Routes.auto_tracing_covid_app_path(
-                socket,
-                :covid_app,
-                auto_tracing.case_uuid
-              )
+            to: get_next_step_route(:vaccination).(socket, socket.assigns.auto_tracing.case_uuid)
           )
       end
 
