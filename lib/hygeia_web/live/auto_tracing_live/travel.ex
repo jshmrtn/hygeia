@@ -5,8 +5,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   use Hygeia, :model
 
   import Ecto.Changeset
-
-  alias Phoenix.LiveView.Socket
+  import HygeiaWeb.Helpers.AutoTracing, only: [get_next_step_route: 1]
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
@@ -17,7 +16,8 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.Repo
   alias Hygeia.RiskCountryContext
-
+  alias HygeiaWeb.AutoTracingLive.Travel.PossibleTravel
+  alias Phoenix.LiveView.Socket
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.ErrorTag
@@ -28,8 +28,6 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.TextInput
   alias Surface.Components.LiveRedirect
-
-  alias HygeiaWeb.AutoTracingLive.Travel.PossibleTravel
 
   defmodule PossibleTravel do
     @moduledoc false
@@ -255,12 +253,7 @@ defmodule HygeiaWeb.AutoTracingLive.Travel do
           {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :travel)
 
           push_redirect(socket,
-            to:
-              Routes.auto_tracing_transmission_path(
-                socket,
-                :transmission,
-                socket.assigns.auto_tracing.case_uuid
-              )
+            to: get_next_step_route(:travel).(socket, socket.assigns.auto_tracing.case_uuid)
           )
       end
 

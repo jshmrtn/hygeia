@@ -1,8 +1,8 @@
 defmodule HygeiaWeb.AutoTracingLiveTest do
   @moduledoc false
 
-  use Hygeia.DataCase
-  use HygeiaWeb.ConnCase
+  use Hygeia.DataCase, async: false
+  use HygeiaWeb.ConnCase, async: false
 
   import HygeiaGettext
   import Phoenix.LiveViewTest
@@ -55,6 +55,20 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       })
 
     auto_tracing
+  end
+
+  setup tags do
+    quarantine_enabled_before = Application.fetch_env!(:hygeia, :quarantine_enabled)
+
+    Application.put_env(
+      :hygeia,
+      :quarantine_enabled,
+      tags[:quarantine_enabled] || quarantine_enabled_before
+    )
+
+    on_exit(fn ->
+      Application.put_env(:hygeia, :quarantine_enabled, quarantine_enabled_before)
+    end)
   end
 
   describe "Start" do
@@ -861,6 +875,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       end
     end
 
+    @tag quarantine_enabled: true
     test "sets transmission known false and advances to contact persons", %{
       conn: conn,
       case_model: case,
@@ -887,6 +902,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       )
     end
 
+    @tag quarantine_enabled: true
     test "sets transmission and advances to contact persons", %{
       conn: conn,
       case_model: case,
@@ -938,7 +954,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       case_model: case,
       auto_tracing: auto_tracing
     } do
-      set_last_completed_step(auto_tracing, :contact_persons)
+      set_last_completed_step(auto_tracing, AutoTracing.Step.get_previous_step(:end))
 
       {:ok, _transmission_view, html} = live(conn, Routes.auto_tracing_end_path(conn, :end, case))
 
@@ -953,7 +969,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       {:ok, auto_tracing} =
         AutoTracingContext.auto_tracing_add_problem(auto_tracing, :no_reaction)
 
-      set_last_completed_step(auto_tracing, :contact_persons)
+      set_last_completed_step(auto_tracing, AutoTracing.Step.get_previous_step(:end))
 
       {:ok, _transmission_view, _html} =
         live(conn, Routes.auto_tracing_end_path(conn, :end, case))

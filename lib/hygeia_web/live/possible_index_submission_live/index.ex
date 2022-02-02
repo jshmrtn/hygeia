@@ -24,6 +24,11 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
             authorized?(case, :partial_details, auth) ->
           raise HygeiaWeb.AutoTracingLive.AutoTracing.CaseClosedError, case_uuid: case.uuid
 
+        not Application.fetch_env!(:hygeia, :quarantine_enabled) and
+          not authorized?(case, :details, auth) and
+            authorized?(case, :partial_details, auth) ->
+          raise HygeiaWeb.AutoTracingLive.AutoTracing.CaseClosedError, case_uuid: case.uuid
+
         !authorized?(PossibleIndexSubmission, :list, auth, %{case: case}) ->
           push_redirect(socket,
             to:

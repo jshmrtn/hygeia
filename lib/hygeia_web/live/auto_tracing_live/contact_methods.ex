@@ -5,6 +5,7 @@ defmodule HygeiaWeb.AutoTracingLive.ContactMethods do
   use Hygeia, :model
 
   import HygeiaGettext
+  import HygeiaWeb.Helpers.AutoTracing, only: [get_next_step_route: 1]
   import Ecto.Changeset
 
   alias Hygeia.AutoTracingContext
@@ -119,9 +120,8 @@ defmodule HygeiaWeb.AutoTracingLive.ContactMethods do
 
           push_redirect(socket,
             to:
-              Routes.auto_tracing_visits_path(
+              get_next_step_route(:contact_methods).(
                 socket,
-                :visits,
                 socket.assigns.auto_tracing.case_uuid
               )
           )

@@ -3,6 +3,8 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
   use HygeiaWeb, :surface_view
 
+  import HygeiaWeb.Helpers.AutoTracing, only: [get_next_step_route: 1]
+
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
@@ -172,12 +174,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     {:noreply,
      push_redirect(socket,
-       to:
-         Routes.auto_tracing_travel_path(
-           socket,
-           :travel,
-           socket.assigns.auto_tracing.case_uuid
-         )
+       to: get_next_step_route(:clinical).(socket, socket.assigns.auto_tracing.case_uuid)
      )}
   end
 
