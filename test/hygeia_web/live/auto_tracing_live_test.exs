@@ -680,7 +680,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
 
       assert %AutoTracing{
                unsolved_problems: []
-             } = auto_tracing = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+             } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
   end
 

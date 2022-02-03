@@ -176,9 +176,11 @@ defmodule HygeiaWeb.CaseLive.Index do
           )
 
         {:auto_tracing_active, "complete"}, query ->
+          completed_steps = AutoTracing.Step.completed_steps()
+
           from(case in query,
             join: auto_tracing in assoc(case, :auto_tracing),
-            where: auto_tracing.last_completed_step >= :contact_persons
+            where: auto_tracing.last_completed_step in ^completed_steps
           )
 
         {:no_auto_tracing_problems, "true"}, query ->
