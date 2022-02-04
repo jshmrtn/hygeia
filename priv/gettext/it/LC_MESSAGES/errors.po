@@ -16,10 +16,11 @@ msgstr ""
 msgid "are still associated with this entry"
 msgstr "sono ancora associati a questa voce"
 
+#, elixir-autogen
 msgid "at least email / mobile must be provided"
 msgstr "almeno e-mail / cellulare deve essere fornito"
 
-#, fuzzy
+#, elixir-autogen, fuzzy
 msgid "at least one contact method must be provided"
 msgstr "deve essere fornito almeno un metodo di contatto"
 
@@ -31,10 +32,11 @@ msgstr "deve essere fornito almeno un metodo di contatto"
 msgid "can't be blank"
 msgstr "non può essere vuoto"
 
-#, fuzzy
+#, elixir-autogen, fuzzy
 msgid "date is to far away from today"
 msgstr "la data è troppo lontana da oggi"
 
+#, elixir-autogen
 msgid "date must be in the past"
 msgstr "la data deve essere nel passato"
 
@@ -46,7 +48,7 @@ msgstr "la data non deve essere nel futuro"
 msgid "does not match confirmation"
 msgstr "non corrisponde alla conferma"
 
-#, fuzzy
+#, elixir-autogen, fuzzy
 msgid "end must be after start"
 msgstr "la fine deve essere dopo l'inizio"
 
@@ -62,17 +64,19 @@ msgstr "ha una voce non valida"
 msgid "has invalid format"
 msgstr "ha un formato non valido"
 
+#, elixir-autogen
 msgid "has no outgoing email configuration"
 msgstr "non ha configurato la posta in uscita"
 
-#, fuzzy
+#, elixir-autogen, fuzzy
 msgid "is invalid"
 msgstr "non è valido"
 
-#, fuzzy
+#, elixir-autogen, fuzzy
 msgid "is not a valid hostname"
 msgstr "non è un hostname valido"
 
+#, elixir-autogen
 msgid "is required"
 msgstr "è obbligatorio"
 
@@ -147,6 +151,6 @@ msgid_plural "should have {count} item(s)"
 msgstr[0] "dovrebbe avere {count} elemento"
 msgstr[1] "dovrebbe avere {count} elementi"
 
-#, fuzzy
+#, elixir-autogen, fuzzy
 msgid "start must be before end"
 msgstr "l'inizio deve essere prima della fine"
