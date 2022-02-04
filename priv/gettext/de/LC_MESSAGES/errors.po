@@ -15,9 +15,11 @@ msgstr ""
 msgid "are still associated with this entry"
 msgstr "sind immer noch mit diesem Eintrag verknüpft"
 
+#, elixir-autogen
 msgid "at least email / mobile must be provided"
 msgstr "mindestens E-Mail / Handy muss angegeben werden"
 
+#, elixir-autogen
 msgid "at least one contact method must be provided"
 msgstr "Mindestens eine Kontaktmethode muss angegeben werden"
 
@@ -27,9 +29,11 @@ msgstr "mindestens ein Datum muss angegeben werden"
 msgid "can't be blank"
 msgstr "kann nicht leer sein"
 
+#, elixir-autogen
 msgid "date is to far away from today"
 msgstr "Datum ist zu weit entfernt von Heute"
 
+#, elixir-autogen
 msgid "date must be in the past"
 msgstr "Datum muss in der Vergangenheit liegen"
 
@@ -39,6 +43,7 @@ msgstr "Datum darf nicht in Zukunft sein"
 msgid "does not match confirmation"
 msgstr "entspricht nicht der Bestätigung"
 
+#, elixir-autogen
 msgid "end must be after start"
 msgstr "Ende muss nach dem Start sein"
 
@@ -51,15 +56,19 @@ msgstr "hat einen ungültigen Eintrag"
 msgid "has invalid format"
 msgstr "hat ungültiges Format"
 
+#, elixir-autogen
 msgid "has no outgoing email configuration"
 msgstr "hatt keine ausgehende Email Konfiguration"
 
+#, elixir-autogen
 msgid "is invalid"
 msgstr "ist ungültig"
 
+#, elixir-autogen
 msgid "is not a valid hostname"
 msgstr "ist kein gültiger Hostname"
 
+#, elixir-autogen
 msgid "is required"
 msgstr "wird benötigt"
 
@@ -120,5 +129,6 @@ msgid_plural "should have {count} item(s)"
 msgstr[0] "sollte {count} Eintrag haben"
 msgstr[1] "sollte {count} Einträge haben"
 
+#, elixir-autogen
 msgid "start must be before end"
 msgstr "Start muss vor dem Ende sein"
