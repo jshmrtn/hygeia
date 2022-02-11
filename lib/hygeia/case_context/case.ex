@@ -426,23 +426,40 @@ defmodule Hygeia.CaseContext.Case do
 
   defp phase_inserted_at_date(%__MODULE__{phases: phases} = _case, phase_type) do
     Enum.find_value(phases, fn
-      %Phase{details: %^phase_type{}, inserted_at: inserted_at} ->
+      %Phase{details: %^phase_type{}, inserted_at: %DateTime{} = inserted_at} ->
         DateTime.to_date(inserted_at)
 
       _phase ->
-        false
+        nil
     end)
   end
 
   defp phase_dates(%__MODULE__{inserted_at: inserted_at} = case, phase_type) do
     [
-      {:test, first_positive_test_date(case)},
-      {:symptom_start, get_in(case, [Access.key(:clinical), Access.key(:symptom_start)])},
-      {:phase_inserted_at, phase_inserted_at_date(case, phase_type)},
-      {:inserted_at, DateTime.to_date(inserted_at)}
+      {:test, false, first_positive_test_date(case)},
+      {:symptom_start, false, get_in(case, [Access.key(:clinical), Access.key(:symptom_start)])},
+      {:phase_inserted_at, false, phase_inserted_at_date(case, phase_type)},
+      {:inserted_at, true, DateTime.to_date(inserted_at)}
     ]
-    |> Enum.reject(&match?({_type, nil}, &1))
-    |> Enum.sort_by(&elem(&1, 1), Date)
+    |> Enum.reject(&match?({_type, _fallback, nil}, &1))
+    |> Enum.sort(fn
+      {_name_a, fallback, date_a}, {_name_b, fallback, date_b} ->
+        Date.compare(date_a, date_b) == :lt
+
+      {_name_a, true, _date_a}, {_name_b, false, _date_b} ->
+        true
+
+      {_name_a, false, _date_a}, {_name_b, true, _date_b} ->
+        true
+    end)
+    |> case do
+      [{_name, false, _date} | _others] = list_with_normal ->
+        Enum.filter(list_with_normal, &match?({_name, false, _date}, &1))
+
+      [{_name, true, _date} | _others] = list_with_only_fallback ->
+        list_with_only_fallback
+    end
+    |> Enum.map(&{elem(&1, 0), elem(&1, 2)})
   end
 
   @spec fist_known_phase_date(case :: t, phase_type :: Phase.Index | Phase.PossibleIndex) ::
