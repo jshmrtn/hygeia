@@ -192,7 +192,7 @@
             :on-click="open_email_modal"
             phx-value-create_auto_tracing="true"
             phx-value-subject={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_subject(@case)}
-            phx-value-body={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_body(@case, :email)}
+            phx-value-body={Hygeia.AutoTracingContext.AutoTracingCommunication.auto_tracing_email_body(@case)}
             :if={authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
               CaseContext.person_has_email?(@case.person) and
               TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}

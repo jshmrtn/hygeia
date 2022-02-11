@@ -1186,6 +1186,23 @@ msgstr ""
 "Salutations distinguées,\n"
 "{message_signature}\n"
 
+#, elixir-autogen, fuzzy, icu-format
+msgid "Dear Sir / Madam,\n\nYou have been recently tested positive for Coronavirus. We would like to ask you to fill out the information on the following link:\n{public_overview_link}\n\nPlease open this link and log in using your first name & last name. (initials: {initial_first_name}. {initial_last_name}.)\n\nThanks for your help!\n\nKind Regards,\n{message_signature}"
+msgstr ""
+"Madame, Monsieur,\n"
+"\n"
+"Vous avez récemment été testé positif au Coronavirus. Afin de contenir la propagation, le service de recherche des contacts compte sur votre soutien.\n"
+"\n"
+"Nous vous demandons de bien vouloir remplir les informations sur le lien suivant :\n"
+"{public_overview_link}\n"
+"\n"
+"Veuillez ouvrir ce lien et vous connecter en utilisant votre prénom et votre nom de famille. (initiales : {initial_first_name}. {initial_last_name}.)\n"
+"\n"
+"Merci de votre aide !\n"
+"\n"
+"Salutations distinguées,\n"
+"{message_signature}\n"
+
 #, elixir-autogen, icu-format
 msgid "Dear Sir / Madam,\n\nYour isolation period ends tomorrow {date, date, full}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nYou can find the isolation end confirmation via the following link: {isolation_end_confirmation_link}\n\nTo access the confirmation, please log in using your first name & last name. (initials: {initial_first_name}. {initial_last_name}.)\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n{message_signature}"
 msgstr ""
