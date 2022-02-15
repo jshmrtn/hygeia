@@ -78,7 +78,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
       ~M"""
       Dear Sir / Madam,
 
-      Your isolation period ends tomorrow {date, date, full}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
+      Your last day of isolation is {date, date, full}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.
 
       You can find the isolation end confirmation via the following link: {isolation_end_confirmation_link}
 
@@ -89,7 +89,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
       Kind Regards,
       {message_signature}
       """,
-      date: Date.add(phase.end, 1),
+      date: phase.end,
       isolation_end_confirmation_link: @url_generator.pdf_url(case, phase),
       message_signature: Tenant.get_message_signature_text(case.tenant, message_type),
       initial_first_name: String.slice(case.person.first_name, 0..0),
@@ -103,14 +103,14 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
         ~M"""
         Dear Sir / Madam,
 
-        Your quarantine period ends tomorrow {date, date, full}. If you do not currently experience any symptoms, you're allowed to leave quarantine.
+        Your last day of quarantine is {date, date, full}. If you do not currently experience any symptoms, you're allowed to leave quarantine.
 
         Should you feel ill, please contact your general practitioner.
 
         Kind Regards,
         {message_signature}
         """,
-        date: Date.add(phase.end, 1),
+        date: phase.end,
         message_signature: Tenant.get_message_signature_text(case.tenant, message_type)
       )
 
