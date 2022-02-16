@@ -39,7 +39,7 @@ defmodule HygeiaWeb.Helpers.Confirmation do
 
       Please open this link and log in using you first name & last name. (initials: {initial_first_name}. {initial_last_name}.)
 
-      You will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.
+      You will be able download your isolation confirmation. You will also be able to download an end-confirmation of your isolation at the end.
 
       Please read the information about your isolation in your confirmation document and the mentioned links and contact methods.
 
