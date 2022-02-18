@@ -5,6 +5,13 @@ defmodule Hygeia.Repo.Migrations.CreateRowLinks do
   use Hygeia, :migration
 
   def change do
+    execute(
+      fn ->
+        :ok = run_authentication(repo(), origin: :migration, originator: :noone)
+      end,
+      &noop/0
+    )
+
     create table(:row_links, primary_key: false) do
       add :import_uuid, references(:imports, on_delete: :delete_all),
         null: false,

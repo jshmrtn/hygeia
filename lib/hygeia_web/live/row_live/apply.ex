@@ -94,8 +94,8 @@ defmodule HygeiaWeb.RowLive.Apply do
     {:noreply, load_data(socket, row)}
   end
 
-  def handle_info({:deleted, %Row{import: import}, _version}, socket) do
-    {:noreply, redirect(socket, to: Routes.import_show_path(socket, :show, import.uuid))}
+  def handle_info({:deleted, %Row{import_uuid: import_uuid}, _version}, socket) do
+    {:noreply, redirect(socket, to: Routes.import_show_path(socket, :show, import_uuid))}
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}

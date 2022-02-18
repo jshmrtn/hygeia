@@ -105,6 +105,10 @@ defmodule Hygeia.ImportContext do
           conflict_target: :data
         )
 
+      {:ok, row_ids}
+    end)
+    |> Ecto.Multi.run(:row_links, fn repo,
+                                     %{import: %Import{uuid: import_uuid} = import, rows: row_ids} ->
       {_count, nil} =
         repo.insert_all(
           RowLink,

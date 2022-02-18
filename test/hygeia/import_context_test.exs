@@ -168,13 +168,17 @@ defmodule Hygeia.ImportContextTest do
     @invalid_attrs %{corrected: nil, identifiers: nil, data: nil, status: nil}
 
     test "list_rows/0 returns all rows" do
-      _row = row_fixture()
-      assert [%Row{}] = ImportContext.list_rows()
+      row = row_fixture()
+      row_uuid = row.uuid
+
+      assert [%Row{uuid: ^row_uuid}] = ImportContext.list_rows()
     end
 
     test "get_row!/1 returns the row with given id" do
       row = row_fixture()
-      assert %Row{} = ImportContext.get_row!(row.uuid)
+      row_uuid = row.uuid
+
+      assert %Row{uuid: ^row_uuid} = ImportContext.get_row!(row.uuid)
     end
 
     test "create_row/1 with valid data creates a row" do
@@ -192,8 +196,9 @@ defmodule Hygeia.ImportContextTest do
 
     test "update_row/2 with valid data updates the row" do
       row = row_fixture()
+      row_uuid = row.uuid
 
-      assert {:ok, %Row{} = row} = ImportContext.update_row(row, @update_attrs)
+      assert {:ok, %Row{uuid: ^row_uuid} = row} = ImportContext.update_row(row, @update_attrs)
 
       assert row.corrected == %{}
       assert row.identifiers == %{}
@@ -203,15 +208,18 @@ defmodule Hygeia.ImportContextTest do
 
     test "update_row/2 with invalid data returns error changeset" do
       row = row_fixture()
+      row_uuid = row.uuid
 
       assert {:error, %Ecto.Changeset{}} = ImportContext.update_row(row, @invalid_attrs)
 
-      assert %Row{} = ImportContext.get_row!(row.uuid)
+      assert %Row{uuid: ^row_uuid} = ImportContext.get_row!(row.uuid)
     end
 
     test "delete_row/1 deletes the row" do
       row = row_fixture()
-      assert {:ok, %Row{}} = ImportContext.delete_row(row)
+      row_uuid = row.uuid
+
+      assert {:ok, %Row{uuid: ^row_uuid}} = ImportContext.delete_row(row)
       assert_raise Ecto.NoResultsError, fn -> ImportContext.get_row!(row.uuid) end
     end
 
