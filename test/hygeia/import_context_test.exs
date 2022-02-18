@@ -10,6 +10,9 @@ defmodule Hygeia.ImportContextTest do
   @moduletag origin: :test
   @moduletag originator: :noone
 
+  @mime MIME.type("xlsx")
+  @path Application.app_dir(:hygeia, "priv/test/import/example_ism_2021_06_11_test.xlsx")
+
   describe "imports" do
     @valid_attrs %{type: :ism_2021_06_11_test}
     @update_attrs %{type: :ism_2021_06_11_death}
@@ -166,12 +169,16 @@ defmodule Hygeia.ImportContextTest do
 
     test "list_rows/0 returns all rows" do
       row = row_fixture()
-      assert ImportContext.list_rows() == [row]
+      row_uuid = row.uuid
+
+      assert [%Row{uuid: ^row_uuid}] = ImportContext.list_rows()
     end
 
     test "get_row!/1 returns the row with given id" do
       row = row_fixture()
-      assert ImportContext.get_row!(row.uuid) == row
+      row_uuid = row.uuid
+
+      assert %Row{uuid: ^row_uuid} = ImportContext.get_row!(row.uuid)
     end
 
     test "create_row/1 with valid data creates a row" do
@@ -189,8 +196,9 @@ defmodule Hygeia.ImportContextTest do
 
     test "update_row/2 with valid data updates the row" do
       row = row_fixture()
+      row_uuid = row.uuid
 
-      assert {:ok, %Row{} = row} = ImportContext.update_row(row, @update_attrs)
+      assert {:ok, %Row{uuid: ^row_uuid} = row} = ImportContext.update_row(row, @update_attrs)
 
       assert row.corrected == %{}
       assert row.identifiers == %{}
@@ -200,15 +208,18 @@ defmodule Hygeia.ImportContextTest do
 
     test "update_row/2 with invalid data returns error changeset" do
       row = row_fixture()
+      row_uuid = row.uuid
 
       assert {:error, %Ecto.Changeset{}} = ImportContext.update_row(row, @invalid_attrs)
 
-      assert row == ImportContext.get_row!(row.uuid)
+      assert %Row{uuid: ^row_uuid} = ImportContext.get_row!(row.uuid)
     end
 
     test "delete_row/1 deletes the row" do
       row = row_fixture()
-      assert {:ok, %Row{}} = ImportContext.delete_row(row)
+      row_uuid = row.uuid
+
+      assert {:ok, %Row{uuid: ^row_uuid}} = ImportContext.delete_row(row)
       assert_raise Ecto.NoResultsError, fn -> ImportContext.get_row!(row.uuid) end
     end
 
@@ -255,7 +266,44 @@ defmodule Hygeia.ImportContextTest do
           identifiers: %{"Fall ID" => 77}
         })
 
-      assert row_11 == ImportContext.get_row_predecessor(row_31)
+      row_11_uuid = row_11.uuid
+
+      assert %Row{uuid: ^row_11_uuid} = ImportContext.get_row_predecessor(row_31)
+    end
+
+    test "import same rows, rows keep link to original import" do
+      tenant = tenant_fixture()
+
+      {:ok, import_1} =
+        ImportContext.create_import(tenant, @mime, @path, %{
+          type: :ism_2021_06_11_test
+        })
+
+      {:ok, import_2} =
+        ImportContext.create_import(tenant, @mime, @path, %{
+          type: :ism_2021_06_11_test
+        })
+
+      import_1_rows =
+        import_1
+        |> Repo.preload(rows: [:imports])
+        |> Map.get(:rows)
+
+      import_2_rows =
+        import_2
+        |> Repo.preload(rows: [:imports])
+        |> Map.get(:rows)
+
+      assert length(import_1_rows) == length(import_2_rows) and
+               length(import_2_rows) == length(Repo.all(Row))
+
+      assert %Row{
+               imports: [_, _]
+             } = List.first(import_1_rows)
+
+      assert %Row{
+               imports: [_, _]
+             } = List.first(import_2_rows)
     end
   end
 end

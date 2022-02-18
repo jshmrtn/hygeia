@@ -310,7 +310,7 @@ defmodule HygeiaWeb.RowLive.Apply do
   end
 
   defp load_data(socket, row) do
-    row = Repo.preload(row, import: [], tenant: [])
+    row = Repo.preload(row, import: [], imports: [tenant: []], tenant: [])
     predecessor = ImportContext.get_row_predecessor(row)
 
     {complete, action_plan_suggestion} = Planner.generate_action_plan_suggestion(row)

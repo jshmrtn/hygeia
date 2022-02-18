@@ -7,6 +7,7 @@ defmodule Hygeia.ImportContext.Row do
   alias Hygeia.CaseContext.Case
   alias Hygeia.ImportContext.Import
   alias Hygeia.ImportContext.Row.Status
+  alias Hygeia.ImportContext.RowLink
   alias Hygeia.TenantContext.Tenant
 
   @type empty :: %__MODULE__{
@@ -17,8 +18,7 @@ defmodule Hygeia.ImportContext.Row do
           status: Status.t() | nil,
           case_uuid: Ecto.UUID.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          import_uuid: Ecto.UUID.t() | nil,
-          import: Ecto.Schema.belongs_to(Import.t()) | nil,
+          imports: Ecto.Schema.has_many(Import.t()) | nil,
           tenant: Ecto.Schema.has_one(Tenant.t()) | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
@@ -32,8 +32,7 @@ defmodule Hygeia.ImportContext.Row do
           status: Status.t(),
           case_uuid: Ecto.UUID.t() | nil,
           case: Ecto.Schema.belongs_to(Case.t()) | nil,
-          import_uuid: Ecto.UUID.t(),
-          import: Ecto.Schema.belongs_to(Import.t()),
+          imports: Ecto.Schema.has_many(Import.t()),
           tenant: Ecto.Schema.has_one(Tenant.t()),
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
@@ -47,7 +46,12 @@ defmodule Hygeia.ImportContext.Row do
     field :data, :map
     field :status, Status, default: :pending
 
+    many_to_many :imports, Import,
+      join_through: RowLink,
+      join_keys: [row_uuid: :uuid, import_uuid: :uuid]
+
     belongs_to :import, Import, references: :uuid, foreign_key: :import_uuid
+
     has_one :tenant, through: [:import, :tenant]
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
 
@@ -59,8 +63,9 @@ defmodule Hygeia.ImportContext.Row do
           Changeset.t(t | empty)
   def changeset(row, attrs) do
     row
-    |> cast(attrs, [:data, :corrected, :identifiers, :status, :case_uuid])
-    |> validate_required([:data, :identifiers, :status])
+    |> cast(attrs, [:data, :corrected, :identifiers, :status, :import_uuid, :case_uuid])
+    |> cast_assoc(:imports)
+    |> validate_required([:data, :identifiers, :status, :import_uuid])
     |> unique_constraint([:data])
   end
 

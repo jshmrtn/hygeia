@@ -9,6 +9,7 @@ defmodule Hygeia.ImportContext do
 
   alias Hygeia.ImportContext.Import
   alias Hygeia.ImportContext.Row
+  alias Hygeia.ImportContext.RowLink
   alias Hygeia.TenantContext.Tenant
 
   @mime_type_csv MIME.type("csv")
@@ -83,7 +84,7 @@ defmodule Hygeia.ImportContext do
       |> change_import(attrs)
     )
     |> Ecto.Multi.run(:rows, fn repo, %{import: %Import{uuid: import_uuid} = import} ->
-      {_count, nil} =
+      {_count, row_ids} =
         repo.insert_all(
           Row,
           import
@@ -99,9 +100,28 @@ defmodule Hygeia.ImportContext do
             }
           end)
           |> Enum.to_list(),
-          returning: false,
-          on_conflict: {:replace, [:import_uuid]},
+          returning: [:uuid],
+          on_conflict: {:replace, [:import_uuid, :updated_at]},
           conflict_target: :data
+        )
+
+      {:ok, row_ids}
+    end)
+    |> Ecto.Multi.run(:row_links, fn repo,
+                                     %{import: %Import{uuid: import_uuid} = import, rows: row_ids} ->
+      {_count, nil} =
+        repo.insert_all(
+          RowLink,
+          Enum.map(
+            row_ids,
+            &%{
+              import_uuid: import_uuid,
+              row_uuid: &1.uuid,
+              inserted_at: DateTime.utc_now(),
+              updated_at: DateTime.utc_now()
+            }
+          ),
+          returning: false
         )
 
       {:ok, nil}
@@ -266,14 +286,14 @@ defmodule Hygeia.ImportContext do
   """
   @spec create_row(import :: Import.t(), attrs :: Hygeia.ecto_changeset_params()) ::
           {:ok, Row.t()} | {:error, Ecto.Changeset.t(Row.t())}
-  def create_row(%Import{} = import, attrs \\ %{}),
-    do:
-      import
-      |> Ecto.build_assoc(:rows)
-      |> change_row(attrs)
-      |> versioning_insert()
-      |> broadcast("rows", :create)
-      |> versioning_extract()
+  def create_row(%Import{} = import, attrs \\ %{}) do
+    import
+    |> Ecto.build_assoc(:rows, import_uuid: import.uuid, imports: [import])
+    |> change_row(attrs)
+    |> versioning_insert()
+    |> broadcast("rows", :create)
+    |> versioning_extract()
+  end
 
   @doc """
   Updates a row.

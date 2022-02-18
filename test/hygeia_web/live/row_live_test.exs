@@ -80,5 +80,25 @@ defmodule HygeiaWeb.RowLiveTest do
 
       assert html =~ row.uuid
     end
+
+    test "imports same rows twice, row displays two imports it originated from", %{
+      conn: conn,
+      tenant: tenant,
+      import: %Import{rows: [row | _]} = import1
+    } do
+      %{import: import2} = create_import(%{tenant: tenant})
+
+      {:ok, row_live, html} = live(conn, Routes.row_show_path(conn, :show, row))
+
+      assert html =~ row.uuid
+
+      assert row_live
+             |> element("#import-#{import1.uuid}")
+             |> has_element?()
+
+      assert row_live
+             |> element("#import-#{import2.uuid}")
+             |> has_element?()
+    end
   end
 end

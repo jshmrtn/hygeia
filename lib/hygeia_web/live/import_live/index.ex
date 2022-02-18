@@ -8,10 +8,8 @@ defmodule HygeiaWeb.ImportLive.Index do
 
   alias Hygeia.ImportContext
   alias Hygeia.ImportContext.Import
-  alias Hygeia.ImportContext.Import.Type
   alias Hygeia.Repo
   alias Hygeia.TenantContext
-  alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
   data authorized_tenants, :list
