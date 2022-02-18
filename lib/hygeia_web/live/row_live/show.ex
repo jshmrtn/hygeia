@@ -69,7 +69,12 @@ defmodule HygeiaWeb.RowLive.Show do
 
   defp load_data(socket, row) do
     assign(socket,
-      row: Repo.preload(row, import: [], tenant: [], case: [tenant: [], person: [tenant: []]])
+      row:
+        Repo.preload(row,
+          imports: [tenant: []],
+          tenant: [],
+          case: [tenant: [], person: [tenant: []]]
+        )
     )
   end
 end

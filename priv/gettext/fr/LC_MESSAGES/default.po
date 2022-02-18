@@ -10,25 +10,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.0\n"
 
 #, elixir-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
-msgstr "\"Fusionner\" et \"Entrer\" ne doivent pas être identiques."
+msgstr "\"Fusionner\" et \"Entrer\" ne doivent pas être identiques"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "0-1 contact person"
 msgstr "0-1 personne de contact"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "1 call"
 msgstr "1 appel"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "2-5 contact persons"
 msgstr "2-5 personnes de contact"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "24 Hours"
 msgstr "24 heures"
 
@@ -56,9 +56,9 @@ msgstr "> 15 Min."
 msgid "> 30 Min."
 msgstr "> 30 Min."
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "A lot of contact persons from different places, clubs affected, gastronomy affected, hospital/nursing home affected"
-msgstr "Beaucoup de personnes de contact de différents endroits, clubs concernés, gastronomie concernée, hôpital/maison de retraite concernée."
+msgstr "Beaucoup de personnes de contact de différents endroits, clubs concernés, gastronomie concernée, hôpital/maison de retraite concernée"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "A lot of contact persons/places that must be determined / assignment to team lead"
@@ -244,13 +244,13 @@ msgstr "Salon pour adultes / services de prostitution"
 msgid "Affiliations"
 msgstr "Affiliations"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "Agreed with index that had been in contact that no further contact is necessary"
-msgstr "Il a été convenu avec l'index qui avait été en contact qu'aucun autre contact n'était nécessaire."
+msgstr "Il a été convenu avec l'index qui avait été en contact qu'aucun autre contact n'était nécessaire"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "Agreed with index that no further contact is necessary"
-msgstr "Il est convenu avec l'index qu'aucun autre contact n'est nécessaire."
+msgstr "Il est convenu avec l'index qu'aucun autre contact n'est nécessaire"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Airplane or travel"
@@ -262,7 +262,7 @@ msgstr "Tous les points doivent être remplis"
 
 #, elixir-autogen, icu-format
 msgid "Allow"
-msgstr ""
+msgstr "Permettre"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Always work from Top to Bottom. Otherwise changes may be lost!"
@@ -590,9 +590,9 @@ msgstr "Cas :"
 msgid "Cases"
 msgstr "Cas"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "Cases inserted successfully."
-msgstr "Cas créé avec succès"
+msgstr "Cas créé avec succès."
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Import Helpers"
@@ -1135,8 +1135,8 @@ msgstr "Date de la dernière visite"
 msgid "Dear Sir / Madam"
 msgstr "Madame, Monsieur"
 
-#, elixir-autogen, fuzzy, icu-format
-msgid "Dear Sir / Madam,\n\nAs discussed via phone, you can access the information about your isolation via the following link:\n{public_overview_link}\n\nPlease open this link and log in using you first name & last name. (initials: {initial_first_name}. {initial_last_name}.)\n\nYou will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n\nPlease read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n{message_signature}\n"
+#, elixir-autogen, icu-format
+msgid "Dear Sir / Madam,\n\nAs discussed via phone, you can access the information about your isolation via the following link:\n{public_overview_link}\n\nPlease open this link and log in using you first name & last name. (initials: {initial_first_name}. {initial_last_name}.)\n\nYou will be able download your isolation confirmation. You will also be able to download an end-confirmation of your isolation at the end.\n\nPlease read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n{message_signature}\n"
 msgstr ""
 "Madame, Monsieur,\n"
 "\n"
@@ -1145,7 +1145,7 @@ msgstr ""
 "\n"
 "Veuillez ouvrir ce lien et vous connecter en utilisant votre prénom et votre nom. (Initiales : {initial_first_name}. {initial_last_name}.)\n"
 "\n"
-"Vous pourrez télécharger votre confirmation d'isolement et soumettre les personnes avec lesquelles vous avez été en contact. Vous pourrez également télécharger une confirmation de fin d'isolement à la fin de votre séjour.\n"
+"Vous pourrez télécharger votre confirmation d'isolement. Vous pourrez également télécharger une confirmation de fin d'isolement à la fin de votre séjour.\n"
 "\n"
 "Veuillez lire les informations relatives à votre isolement dans votre document de confirmation ainsi que les liens et les méthodes de contact mentionnés.\n"
 "\n"
@@ -1169,7 +1169,7 @@ msgstr ""
 "Bien à vous,\n"
 "{message_signature}\n"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "Dear Sir / Madam,\n\nYou have been recently tested positive for Coronavirus. To contain the further spread the Contact Tracing relies on your support.\n\nWe would like to ask you to fill out the information on the following link:\n{public_overview_link}\n\nPlease open this link and log in using your first name & last name. (initials: {initial_first_name}. {initial_last_name}.)\n\nThanks for your help!\n\nKind Regards,\n{message_signature}"
 msgstr ""
 "Madame, Monsieur,\n"
@@ -1184,9 +1184,9 @@ msgstr ""
 "Merci de votre aide !\n"
 "\n"
 "Salutations distinguées,\n"
-"{message_signature}\n"
+"{message_signature}"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "Dear Sir / Madam,\n\nYou have been recently tested positive for Coronavirus. We would like to ask you to fill out the information on the following link:\n{public_overview_link}\n\nPlease open this link and log in using your first name & last name. (initials: {initial_first_name}. {initial_last_name}.)\n\nThanks for your help!\n\nKind Regards,\n{message_signature}"
 msgstr ""
 "Madame, Monsieur,\n"
@@ -1201,7 +1201,7 @@ msgstr ""
 "Merci de votre aide !\n"
 "\n"
 "Salutations distinguées,\n"
-"{message_signature}\n"
+"{message_signature}"
 
 #, elixir-autogen, icu-format
 msgid "Dear Sir / Madam,\n\nYour last day of isolation is {date, date, full}. If you did not experience any fever or coughs with sputum, you're allowed to leave isolation.\n\nYou can find the isolation end confirmation via the following link: {isolation_end_confirmation_link}\n\nTo access the confirmation, please log in using your first name & last name. (initials: {initial_first_name}. {initial_last_name}.)\n\nShould you continue to feel ill, please contact your general practitioner.\n\nKind Regards,\n{message_signature}"
@@ -1275,7 +1275,7 @@ msgstr "Supprimé"
 
 #, elixir-autogen, icu-format
 msgid "Deny"
-msgstr ""
+msgstr "Refuser"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Describe where you met {first_name} {last_name} exactly. Choose a type of place, e.g. for living in the same household choose «own household» and leave the left field empty. If you met at a restaurant, choose «restaurant, bar» as type and enter the name of the restaurant in the left field."
@@ -1522,9 +1522,9 @@ msgstr "Télécharger CSV"
 msgid "Downloads:"
 msgstr "Téléchargements :"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "Early end because of negative test after the 7th day of quarantine"
-msgstr "Fin anticipée en raison d'un test négatif après le 7e jour de quarantaine."
+msgstr "Fin anticipée en raison d'un test négatif après le 7e jour de quarantaine"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Edit"
@@ -1543,54 +1543,54 @@ msgstr "Établissement d'enseignement"
 msgid "Either you or the other person did not weark a mask."
 msgstr "Soit vous, soit l'autre personne n'a pas porté de masque."
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "Email"
-msgstr "Courriel :"
+msgstr "Courriel"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Case Suggestions"
 msgid "Email"
-msgstr "Courriel :"
+msgstr "Courriel"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Contact Method Type"
 msgid "Email"
-msgstr "Courriel :"
+msgstr "Courriel"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing Field"
 msgid "Email"
-msgstr "Courriel :"
+msgstr "Courriel"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Email"
-msgstr "Courriel :"
+msgstr "Courriel"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Email"
-msgstr "Courriel :"
+msgstr "Courriel"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "Email"
-msgstr "Courriel :"
+msgstr "Courriel"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.ContactMethods Field"
 msgid "Email"
-msgstr "Courriel :"
+msgstr "Courriel"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefinePeople.Search Field"
 msgid "Email"
-msgstr "Courriel :"
+msgstr "Courriel"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Import Helpers"
 msgid "Email"
-msgstr "Courriel :"
+msgstr "Courriel"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Notification Type"
@@ -2039,7 +2039,7 @@ msgstr "Aide"
 #, elixir-autogen, icu-format
 msgctxt "Layout"
 msgid "Here are the instructions how to enable JavaScript in your web browser."
-msgstr ""
+msgstr "Voici les instructions pour activer JavaScript dans votre navigateur Web."
 
 #, elixir-autogen, icu-format
 msgid "Hi {name},\n\nThere's new notifications available on Hygeia for you:\n{totals}\n\nBest,\nHygeia"
@@ -2322,6 +2322,16 @@ msgstr "Données importées"
 msgid "Imports - Inbox"
 msgstr "Importations - Boîte de réception"
 
+#, elixir-autogen, icu-format
+msgctxt "Import Row Apply"
+msgid "Imports that imported this row"
+msgstr "Importations ayant importé cette ligne"
+
+#, elixir-autogen, icu-format
+msgctxt "Import Row Show"
+msgid "Imports that imported this row"
+msgstr "Importations ayant importé cette ligne"
+
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Email Status"
 msgid "In Progress"
@@ -2477,10 +2487,10 @@ msgstr "Détails de la personne non valides"
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
 msgstr "L'application SwissCovid est-elle installée / en service sur votre smartphone ?"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Is truthful"
-msgstr "est véridique"
+msgstr "Est véridique"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
@@ -2525,7 +2535,7 @@ msgstr "Isolations par organisation"
 
 #, elixir-autogen, icu-format
 msgid "It is not possible for you to end the quarantine early. Please contact the tracing team to get more information."
-msgstr ""
+msgstr "Il ne vous est pas possible de mettre fin à la quarantaine plus tôt. Veuillez contacter l'équipe de recherche pour obtenir plus d'informations."
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Auto Tracing Exit"
@@ -2548,7 +2558,7 @@ msgstr "Janvier"
 #, elixir-autogen, icu-format
 msgctxt "Layout"
 msgid "JavaScript is required to use this application."
-msgstr ""
+msgstr "JavaScript est nécessaire pour utiliser cette application."
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "July"
@@ -3280,6 +3290,11 @@ msgid "Not Done"
 msgstr "Pas fait"
 
 #, elixir-autogen, icu-format
+msgctxt "Import Table"
+msgid "Not authorised"
+msgstr "Non autorisé"
+
+#, elixir-autogen, icu-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Not provided"
 msgstr "Non fourni"
@@ -3524,7 +3539,7 @@ msgstr "Autre raison de fin"
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Other reason for disabling premature release"
-msgstr ""
+msgstr "Autre raison de désactiver la libération prématurée"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Possible Index Type"
@@ -3795,9 +3810,9 @@ msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Phone"
 msgstr "Téléphone"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "Phone number can only be obtained at the residents' registration office, index doesn't own a phone, no E-Mail address"
-msgstr "Le numéro de téléphone ne peut être obtenu qu'au bureau d'enregistrement des résidents, l'index ne possède pas de téléphone, pas d'adresse e-mail."
+msgstr "Le numéro de téléphone ne peut être obtenu qu'au bureau d'enregistrement des résidents, l'index ne possède pas de téléphone, pas d'adresse e-mail"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Phone number incorrect or missing, multiple calls required"
@@ -3902,10 +3917,10 @@ msgstr "Soumissions possibles à l'index"
 msgid "Possible Index Submissions"
 msgstr "Soumissions possibles à l'index"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Notification Type"
 msgid "Possible Index Submitted"
-msgstr "indice possible soumis."
+msgstr "Indice possible soumis"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Auto Tracing Problem"
@@ -3979,7 +3994,7 @@ msgstr "Clé privée"
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Test Field"
 msgid "Probing date"
-msgstr ""
+msgstr "Date de sondage"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Auto Tracing Resolve Problems"
@@ -4177,7 +4192,7 @@ msgstr "Raison"
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Reason for disabling premature release"
-msgstr ""
+msgstr "Raison de la désactivation de la libération prématurée"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.OrganisationVisit Field"
@@ -4535,7 +4550,7 @@ msgstr "Sélectionner la mutation"
 
 #, elixir-autogen, icu-format
 msgid "Select premature release disabled reason"
-msgstr ""
+msgstr "Sélectionnez le motif de désactivation de la libération prématurée"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Select reason"
@@ -4616,10 +4631,10 @@ msgctxt "Auto Tracing Resolve Problems"
 msgid "Send a SwissCovid App Code to the person."
 msgstr "Envoyez un code SwissCovid App à la personne."
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Send the Auto Tracing invitation."
-msgstr "Envoi d'un courriel d'invitation à la recherche automatique"
+msgstr "Envoi d'un courriel d'invitation à la recherche automatique."
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Sent at {date}"
@@ -4723,7 +4738,7 @@ msgstr "Mal de gorge"
 
 #, elixir-autogen, icu-format
 msgid "Specify the reason for this decision in the provided field. The reason specified here won't be shown to the user"
-msgstr ""
+msgstr "Précisez la raison de cette décision dans le champ prévu à cet effet. La raison spécifiée ici ne sera pas montrée à l'utilisateur"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Sponsor"
@@ -5181,9 +5196,9 @@ msgstr "L'e-mail de clôture automatique du cas pour la phase {type} sera désac
 msgid "The case administraton sends cases like this. Index has not been contacted"
 msgstr "L'administration des cas envoie des cas comme celui-ci. L'index n'a pas été contacté"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "The contact person didn't develop any symptoms during quarantine"
-msgstr "La personne de contact n'a développé aucun symptôme pendant la quarantaine."
+msgstr "La personne de contact n'a développé aucun symptôme pendant la quarantaine"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "The contact person has developed symptoms, did a test and became an index"
@@ -5226,7 +5241,7 @@ msgstr "La personne n'est pas considérée comme complètement vaccinée contre 
 
 #, elixir-autogen, icu-format
 msgid "The person is suspected of having contracted a variant in consideration"
-msgstr ""
+msgstr "La personne est soupçonnée d'avoir contracté une variante en contrepartie"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Phase Create Modal"
@@ -5260,7 +5275,7 @@ msgstr "L'application suisse covid est l'application officielle de recherche de 
 #, elixir-autogen, icu-format
 msgctxt "Vaccination Validity"
 msgid "The validity is only calculated for vaccines that are {link}."
-msgstr ""
+msgstr "La validité n'est calculée que pour les vaccins qui sont {link}."
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
@@ -5310,9 +5325,9 @@ msgstr "Cette personne a été notifiée sur les méthodes de contact suivantes"
 msgid "This person has not been notified."
 msgstr "Cette personne n'a pas été prévenue."
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "This person is in the database"
-msgstr "Cette personne a un double possible."
+msgstr "Cette personne a un double possible"
 
 #, elixir-autogen, icu-format
 msgid "This person requires further processing, please click on edit to correct the available information."
@@ -5630,7 +5645,7 @@ msgstr "Mis à jour à"
 
 #, elixir-autogen, icu-format
 msgid "Use my household address"
-msgstr "Utiliser mon adresse personnelle "
+msgstr "Utiliser mon adresse personnelle"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "User"
@@ -5641,10 +5656,10 @@ msgctxt "Versioning Origin"
 msgid "User Sync"
 msgstr "Synchronisation des utilisateurs"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Username"
-msgstr "Nom d'utilisateur :"
+msgstr "Nom d'utilisateur"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Users"
@@ -5788,7 +5803,7 @@ msgstr "Nouvelle personne"
 #, elixir-autogen, icu-format
 msgctxt "Premature Release Disabled Reason"
 msgid "Virus variant of concern"
-msgstr ""
+msgstr "Variante virale préoccupante"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Visit"
@@ -5882,7 +5897,7 @@ msgstr "Quand avez-vous rencontré {first_name} {last_name} en dernier lieu ?"
 
 #, elixir-autogen, icu-format
 msgid "When premature release permission is denied it means that the person will not be allowed to end the quarantine prematurely. You must provide a reason for disabling the premature release."
-msgstr ""
+msgstr "Lorsque l'autorisation de sortie prématurée est refusée, cela signifie que la personne ne sera pas autorisée à mettre fin prématurément à la quarantaine. Vous devez fournir une raison pour désactiver la libération prématurée."
 
 #, elixir-autogen, icu-format
 msgid "Where did you meet {first_name} {last_name} last?"
@@ -5953,9 +5968,9 @@ msgstr "Vous n'êtes pas autorisé à faire cette action."
 msgid "You are not authorized to view this person. Please provide the code <{country} / {subdivision} / {person_hr_id}> to your supervisor to identify the person."
 msgstr "Vous n'êtes pas autorisé à voir cette personne. Veuillez fournir le code <{country} / {subdivision} / {person_hr_id}> à votre superviseur pour identifier la personne."
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "You can lift quarantine if you're in possession of a valid Covid certificate and one of the following applies to you:"
-msgstr "Vous pouvez lever la quarantaine si vous êtes complètement vacciné ou si vous êtes en possession d'un certificat Covid valide."
+msgstr "Vous pouvez lever la quarantaine si vous êtes en possession d'un certificat Covid valide et que l'une des conditions suivantes s'applique à vous:"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "You did not keep a safe distance of at least 1.5 meters."
@@ -5963,7 +5978,7 @@ msgstr "Vous n'avez pas respecté une distance de sécurité d'au moins 1,5 mèt
 
 #, elixir-autogen, icu-format
 msgid "You entered Switzerland from a country with a virus variant of concern. For this reason, according to the FOPH, it is not possible for you to end the quarantine early."
-msgstr ""
+msgstr "Vous êtes entré en Suisse depuis un pays avec une variante de virus préoccupante. Pour cette raison, selon l'OFSP, il ne vous est pas possible de mettre fin à la quarantaine de manière anticipée."
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "You had contact for more than 15 minutes on the same day."
@@ -6232,7 +6247,7 @@ msgstr "libérations_prématurées"
 #, elixir-autogen, icu-format
 msgctxt "Vaccination Validity"
 msgid "recognized by the FOPH"
-msgstr ""
+msgstr "reconnu par l'OFSP"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Item Table"

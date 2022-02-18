@@ -7,6 +7,7 @@ defmodule Hygeia.ImportContext.Import do
   alias Hygeia.EctoType.LocalizedNaiveDatetime
   alias Hygeia.ImportContext.Import.Type
   alias Hygeia.ImportContext.Row
+  alias Hygeia.ImportContext.RowLink
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
@@ -57,11 +58,25 @@ defmodule Hygeia.ImportContext.Import do
     field :filename, :string
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
-    has_many :rows, Row
 
-    has_many :pending_rows, Row, where: [status: :pending]
-    has_many :discarded_rows, Row, where: [status: :discarded]
-    has_many :resolved_rows, Row, where: [status: :resolved]
+    many_to_many :rows, Row,
+      join_through: RowLink,
+      join_keys: [import_uuid: :uuid, row_uuid: :uuid]
+
+    many_to_many :pending_rows, Row,
+      join_through: RowLink,
+      join_keys: [import_uuid: :uuid, row_uuid: :uuid],
+      where: [status: :pending]
+
+    many_to_many :discarded_rows, Row,
+      join_through: RowLink,
+      join_keys: [import_uuid: :uuid, row_uuid: :uuid],
+      where: [status: :discarded]
+
+    many_to_many :resolved_rows, Row,
+      join_through: RowLink,
+      join_keys: [import_uuid: :uuid, row_uuid: :uuid],
+      where: [status: :resolved]
 
     belongs_to :default_tracer, User, references: :uuid, foreign_key: :default_tracer_uuid
     belongs_to :default_supervisor, User, references: :uuid, foreign_key: :default_supervisor_uuid
@@ -77,6 +92,7 @@ defmodule Hygeia.ImportContext.Import do
   def changeset(import, attrs) do
     import
     |> cast(attrs, [:type, :default_tracer_uuid, :default_supervisor_uuid, :filename])
+    |> cast_assoc(:rows)
     |> validate_required([:type])
     |> check_constraint(:default_tracer_uuid, name: :default_tracer_uuid)
     |> check_constraint(:default_supervisor_uuid, name: :default_supervisor_uuid)

@@ -1143,7 +1143,7 @@ msgid "Dear Sir / Madam"
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "Dear Sir / Madam,\n\nAs discussed via phone, you can access the information about your isolation via the following link:\n{public_overview_link}\n\nPlease open this link and log in using you first name & last name. (initials: {initial_first_name}. {initial_last_name}.)\n\nYou will be able download your isolation confirmation and submit people that you were in contact with. You will also be able to download an end-confirmation of your isolation at the end.\n\nPlease read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n{message_signature}\n"
+msgid "Dear Sir / Madam,\n\nAs discussed via phone, you can access the information about your isolation via the following link:\n{public_overview_link}\n\nPlease open this link and log in using you first name & last name. (initials: {initial_first_name}. {initial_last_name}.)\n\nYou will be able download your isolation confirmation. You will also be able to download an end-confirmation of your isolation at the end.\n\nPlease read the information about your isolation in your confirmation document and the mentioned links and contact methods.\n\nKind Regards,\n{message_signature}\n"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -2250,6 +2250,16 @@ msgid "Imports - Inbox"
 msgstr ""
 
 #, elixir-autogen, icu-format
+msgctxt "Import Row Apply"
+msgid "Imports that imported this row"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Import Row Show"
+msgid "Imports that imported this row"
+msgstr ""
+
+#, elixir-autogen, icu-format
 msgctxt "Email Status"
 msgid "In Progress"
 msgstr ""
@@ -3204,6 +3214,11 @@ msgstr ""
 #, elixir-autogen, icu-format
 msgctxt "vaccination_done"
 msgid "Not Done"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Import Table"
+msgid "Not authorised"
 msgstr ""
 
 #, elixir-autogen, icu-format

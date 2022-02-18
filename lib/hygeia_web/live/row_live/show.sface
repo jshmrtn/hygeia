@@ -53,6 +53,21 @@
       </details>
     </div>
 
+    <div class="mb-2 card data-card">
+      <details id="row_data">
+        <summary class="card-header">
+          {pgettext("Import Row Show", "Imports that imported this row")}
+        </summary>
+        <div class="card-body">
+          <HygeiaWeb.ImportLive.Table
+            id="imports_table"
+            imports={Enum.sort_by(@row.imports, & &1.inserted_at, {:desc, DateTime})}
+            show_controls={false}
+          />
+        </div>
+      </details>
+    </div>
+
     <div class="mt-4" :if={@row.case}>
       <label>{gettext("Case")}:</label>
 

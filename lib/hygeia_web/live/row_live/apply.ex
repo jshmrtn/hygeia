@@ -94,8 +94,8 @@ defmodule HygeiaWeb.RowLive.Apply do
     {:noreply, load_data(socket, row)}
   end
 
-  def handle_info({:deleted, %Row{import_uuid: import_uuid}, _version}, socket) do
-    {:noreply, redirect(socket, to: Routes.import_show_path(socket, :show, import_uuid))}
+  def handle_info({:deleted, %Row{import: import}, _version}, socket) do
+    {:noreply, redirect(socket, to: Routes.import_show_path(socket, :show, import.uuid))}
   end
 
   def handle_info(_other, socket), do: {:noreply, socket}
@@ -310,7 +310,7 @@ defmodule HygeiaWeb.RowLive.Apply do
   end
 
   defp load_data(socket, row) do
-    row = Repo.preload(row, import: [], tenant: [])
+    row = Repo.preload(row, import: [], imports: [tenant: []], tenant: [])
     predecessor = ImportContext.get_row_predecessor(row)
 
     {complete, action_plan_suggestion} = Planner.generate_action_plan_suggestion(row)
