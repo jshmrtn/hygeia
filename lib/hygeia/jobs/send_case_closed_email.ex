@@ -137,7 +137,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
   defp send_close_email({case, phase}) do
     Repo.transaction(fn ->
       # TODO: Get Local from Case
-      HygeiaCldr.put_locale("de-CH")
+      HygeiaCldr.put_locale(:"de-CH")
       Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
 
       with case <- CaseContext.get_case_with_lock!(case.uuid),

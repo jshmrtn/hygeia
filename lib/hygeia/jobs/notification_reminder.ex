@@ -140,7 +140,7 @@ defmodule Hygeia.Jobs.NotificationReminder do
   @spec email_message(user :: User.t(), types :: %{String.t() => pos_integer()}) :: String.t()
   defp email_message(%User{display_name: display_name} = _user, types) do
     # TODO: Get Local from User
-    HygeiaCldr.put_locale("de-CH")
+    HygeiaCldr.put_locale(:"de-CH")
     Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
 
     totals_text =

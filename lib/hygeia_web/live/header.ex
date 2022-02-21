@@ -9,4 +9,10 @@ defmodule HygeiaWeb.Header do
   alias Surface.Components.Context
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
+
+  defp get_current_language do
+    locale = HygeiaCldr.get_locale()
+    {:ok, lang} = HygeiaCldr.Language.to_string(locale.language, locale: locale)
+    lang
+  end
 end

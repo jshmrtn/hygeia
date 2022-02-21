@@ -181,9 +181,7 @@
                 aria-expanded="false"
                 data-bs-toggle="dropdown"
               >
-                {HygeiaCldr.get_locale().language()
-                |> (&HygeiaCldr.Language.to_string(&1, locale: &1)).()
-                |> elem(1)}
+                {get_current_language()}
               </a>
               <div class="dropdown-menu dropdown-menu-end">
                 <Context get={HygeiaWeb, uri: uri}>

@@ -13,8 +13,14 @@ defmodule HygeiaWeb.Init.Locale do
         ) :: {:cont | :halt, Phoenix.LiveView.Socket.t()}
   def on_mount(:default, _params, session, socket) do
     unless is_nil(session[session_key()]) do
-      HygeiaCldr.put_locale(session[session_key()])
-      Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
+      locale =
+        case HygeiaCldr.validate_locale(session[session_key()]) do
+          {:ok, locale} -> locale
+          {:error, _reason} -> HygeiaCldr.default_locale()
+        end
+
+      HygeiaCldr.put_locale(locale)
+      Gettext.put_locale(locale.gettext_locale_name || "de")
 
       Sentry.Context.set_tags_context(%{locale: session[session_key()]})
     end
