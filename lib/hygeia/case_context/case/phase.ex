@@ -93,7 +93,8 @@ defmodule Hygeia.CaseContext.Case.Phase do
       :automated_close_email_sent,
       :premature_release_permission,
       :premature_release_disabled_reason,
-      :premature_release_disabled_reason_other
+      :premature_release_disabled_reason_other,
+      :inserted_at
     ])
     |> cast_polymorphic_embed(:details)
     |> validate_required([:details])

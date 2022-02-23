@@ -161,12 +161,15 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
                 __type__: :possible_index,
                 type: :contact_person
               },
-              start: Date.utc_today(),
-              end: Date.utc_today(),
+              start: ~D[2021-03-24],
+              end: ~D[2021-03-25],
+              inserted_at: ~N[2021-03-25 08:00:00],
               quarantine_order: true
             }
           ],
-          tests: []
+          inserted_at: ~N[2021-03-25 08:00:00],
+          tests: [],
+          clinical: %{}
         }
       )
 
