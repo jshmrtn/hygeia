@@ -129,13 +129,15 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
           fn ->
             find_case_by_external_reference(
               :ism_case,
-              Row.get_change_field(changes, [field_mapping.case_id])
+              Row.get_change_field(changes, [field_mapping.case_id]),
+              relevance_date
             )
           end,
           fn ->
             find_case_by_external_reference(
               :ism_report,
-              Row.get_change_field(changes, [field_mapping.report_id])
+              Row.get_change_field(changes, [field_mapping.report_id]),
+              relevance_date
             )
           end,
           fn ->
@@ -179,18 +181,73 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     {Planner.limit_certainty(max_certainty, certainty), action}
   end
 
-  defp find_case_by_external_reference(type, id)
-  defp find_case_by_external_reference(_type, ""), do: :error
-  defp find_case_by_external_reference(_type, nil), do: :error
+  defp find_case_by_external_reference(type, id, relevance_date)
+  defp find_case_by_external_reference(_type, "", _relevance_date), do: :error
+  defp find_case_by_external_reference(_type, nil, _relevance_date), do: :error
 
-  defp find_case_by_external_reference(type, id) do
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
+  defp find_case_by_external_reference(type, id, relevance_date) do
     case CaseContext.list_cases_by_external_reference(type, to_string(id)) do
       [] ->
         :error
 
       [case] ->
         case = preload_case(case)
-        {:ok, {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}}
+
+        index_phase_date =
+          case
+          |> Case.phase_dates(Phase.Index)
+          |> Enum.map(fn {_key, value} -> value end)
+          |> Enum.max(Date)
+
+        possible_index_phase_date =
+          case
+          |> Case.phase_dates(Phase.PossibleIndex)
+          |> Enum.map(fn {_key, value} -> value end)
+          |> Enum.max(Date)
+
+        index_phase = Enum.find(case.phases, &match?(%Case.Phase{details: %Phase.Index{}}, &1))
+
+        if index_phase != nil do
+          date_diff = abs(Date.diff(index_phase_date, relevance_date))
+
+          cond do
+            date_diff <= 10 and index_phase.end != nil and index_phase.start != nil and
+                relevance_date in Date.range(index_phase.start, index_phase.end) ->
+              {:ok, {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}}
+
+            date_diff <= 10 ->
+              {:ok, {:uncertain, %Planner.Action.SelectCase{case: case, person: case.person}}}
+
+            date_diff <= 30 ->
+              {:ok,
+               {:input_needed,
+                %Planner.Action.SelectCase{
+                  case: case,
+                  person: case.person,
+                  suppress_quarantine: true
+                }}}
+
+            date_diff > 30 ->
+              {:ok,
+               {:input_needed,
+                %Planner.Action.SelectCase{
+                  case: case,
+                  person: case.person,
+                  suppress_quarantine: false
+                }}}
+          end
+        else
+          date_diff = abs(Date.diff(possible_index_phase_date, relevance_date))
+
+          cond do
+            date_diff <= 10 ->
+              {:ok, {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}}
+
+            date_diff > 10 ->
+              {:ok, {:input_needed, %Planner.Action.SelectCase{case: case, person: case.person}}}
+          end
+        end
 
       [case | _] ->
         case = preload_case(case)

@@ -434,7 +434,10 @@ defmodule Hygeia.CaseContext.Case do
     end)
   end
 
-  defp phase_dates(%__MODULE__{inserted_at: inserted_at} = case, phase_type) do
+  @spec phase_dates(case :: t, phase_type :: Phase.Index | Phase.PossibleIndex) :: [
+          {:symptom_start | :test | :phase_inserted_at | :inserted_at, Date.t()}
+        ]
+  def phase_dates(%__MODULE__{inserted_at: inserted_at} = case, phase_type) do
     [
       {:test, false, first_positive_test_date(case)},
       {:symptom_start, false, get_in(case, [Access.key(:clinical), Access.key(:symptom_start)])},
