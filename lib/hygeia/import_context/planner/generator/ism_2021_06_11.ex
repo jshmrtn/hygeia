@@ -455,6 +455,12 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
             _others -> nil
           end
 
+        {:phone, phone} ->
+          case validate_and_format_phone(phone) do
+            {true, _field, _formatted} -> nil
+            {false, _field, _formatted} -> :phone
+          end
+
         _others ->
           nil
       end)
@@ -486,22 +492,10 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   end
 
   defp normalize_person_data({[:phone] = path, value}) when is_binary(value) do
-    with {:ok, parsed_number} <-
-           ExPhoneNumber.parse(value, @origin_country),
-         formatted_phone <- ExPhoneNumber.Formatting.format(parsed_number, :international),
-         {:ok, parsed_number} <- ExPhoneNumber.parse(formatted_phone, @origin_country),
-         true <- ExPhoneNumber.is_valid_number?(parsed_number) do
-      field =
-        case ExPhoneNumber.Validation.get_number_type(parsed_number) do
-          :mobile -> :mobile
-          :fixed_line_or_mobile -> :mobile
-          _other -> :landline
-        end
-
-      [{[field], formatted_phone}]
-    else
-      {:error, _reason} -> {path, nil}
-      false -> {path, nil}
+    case validate_and_format_phone(value) do
+      {true, nil, nil} -> {path, nil}
+      {true, field, formatted} -> [{[field], formatted}]
+      {false, nil, nil} -> {path, value}
     end
   end
 
@@ -531,6 +525,29 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
       {path, to_string(value)}
     else
       {path, value}
+    end
+  end
+
+  defp validate_and_format_phone(phone)
+  defp validate_and_format_phone(nil), do: {true, nil, nil}
+
+  defp validate_and_format_phone(value) do
+    with {:ok, parsed_number} <-
+           ExPhoneNumber.parse(value, @origin_country),
+         formatted_phone <- ExPhoneNumber.Formatting.format(parsed_number, :international),
+         {:ok, parsed_number} <- ExPhoneNumber.parse(formatted_phone, @origin_country),
+         true <- ExPhoneNumber.is_valid_number?(parsed_number) do
+      field =
+        case ExPhoneNumber.Validation.get_number_type(parsed_number) do
+          :mobile -> :mobile
+          :fixed_line_or_mobile -> :mobile
+          _other -> :landline
+        end
+
+      {true, field, formatted_phone}
+    else
+      {:error, _reason} -> {false, nil, nil}
+      false -> {false, nil, nil}
     end
   end
 

@@ -107,24 +107,24 @@ defmodule Hygeia.ImportContext do
 
       {:ok, row_ids}
     end)
-    |> Ecto.Multi.run(:row_links, fn repo,
-                                     %{import: %Import{uuid: import_uuid} = import, rows: row_ids} ->
-      {_count, nil} =
-        repo.insert_all(
-          RowLink,
-          Enum.map(
-            row_ids,
-            &%{
-              import_uuid: import_uuid,
-              row_uuid: &1.uuid,
-              inserted_at: DateTime.utc_now(),
-              updated_at: DateTime.utc_now()
-            }
-          ),
-          returning: false
-        )
+    |> Ecto.Multi.run(:row_links, fn
+      repo, %{import: %Import{uuid: import_uuid}, rows: row_ids} ->
+        {_count, nil} =
+          repo.insert_all(
+            RowLink,
+            Enum.map(
+              row_ids,
+              &%{
+                import_uuid: import_uuid,
+                row_uuid: &1.uuid,
+                inserted_at: DateTime.utc_now(),
+                updated_at: DateTime.utc_now()
+              }
+            ),
+            returning: false
+          )
 
-      {:ok, nil}
+        {:ok, nil}
     end)
     |> authenticate_multi()
     |> Repo.transaction()
