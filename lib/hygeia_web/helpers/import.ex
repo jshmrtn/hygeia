@@ -11,4 +11,5 @@ defmodule HygeiaWeb.Helpers.Import do
   @spec translate_invalid_changes(type :: atom()) :: String.t()
   def translate_invalid_changes(:email), do: pgettext("Import Helpers", "Email")
   def translate_invalid_changes(:subdivision), do: pgettext("Import Helpers", "Subdivision")
+  def translate_invalid_changes(:phone), do: pgettext("Import Helpers", "Phone")
 end

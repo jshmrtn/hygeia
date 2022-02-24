@@ -262,7 +262,8 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
           row.data
           | "E-Mail" => "invalid email",
             "Patient Kanton" => "SG",
-            "Wohnsitzland" => "DE"
+            "Wohnsitzland" => "DE",
+            "Patient Telefon" => "invalid phone"
         }
     }
 
@@ -272,7 +273,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
               {:certain, _select_case},
               {:certain, _patch_phases},
               {:input_needed,
-               %Planner.Action.PatchPerson{invalid_changes: [:subdivision, :email]}}
+               %Planner.Action.PatchPerson{invalid_changes: [:subdivision, :email, :phone]}}
             ]} = Planner.generate_action_plan_suggestion(row)
   end
 
