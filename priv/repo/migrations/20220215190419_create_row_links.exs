@@ -24,15 +24,20 @@ defmodule Hygeia.Repo.Migrations.CreateRowLinks do
       timestamps()
     end
 
-    execute("""
-    INSERT INTO row_links (import_uuid, row_uuid)
-      SELECT
-        import.uuid,
-        row.uuid
-      FROM imports as import
-      INNER JOIN import_rows as row
-      ON row.import_uuid = import.uuid
-    """)
+    execute(
+      """
+      INSERT INTO row_links (import_uuid, row_uuid, inserted_at, updated_at)
+        SELECT
+          import.uuid,
+          row.uuid,
+          NOW(),
+          NOW()
+        FROM imports as import
+        INNER JOIN import_rows as row
+        ON row.import_uuid = import.uuid
+      """,
+      &noop/0
+    )
 
     execute(
       """
