@@ -6,13 +6,13 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
   use ExUnit.Case
   use Hygeia.DataCase
 
-  alias Hygeia.CaseContext
+  alias Hygeia.ImportContext
   alias Hygeia.ImportContext.Planner
 
   @moduletag origin: :test
   @moduletag originator: :noone
 
-  setup tags do
+  setup do
     tenant = tenant_fixture()
 
     import = import_fixture(tenant, %{type: :ism_2021_06_11_test})
@@ -36,7 +36,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
         external_references: [%{type: :ism_patient, value: "1673735"}]
       })
 
-    {:ok, person: person, row: row}
+    {:ok, person: person, row: row, tenant: tenant, import: import}
   end
 
   test "input_needed when same ism id for possible index case older than 10 days ", %{
@@ -50,6 +50,38 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
               {:uncertain, _choose_tenant},
               {:input_needed, _select_case}
             ]} = Planner.generate_action_plan_suggestion(row)
+  end
+
+  test "input_needed when same ism id for possible index case older than 10 days with previous import ",
+       %{
+         person: person,
+         row: row_1,
+         tenant: tenant
+       } do
+    case = import_case_fixture(person, %{__type__: :possible_index, type: :contact_person}, 15)
+
+    {:ok, _row_1} = ImportContext.update_row(row_1, %{case_uuid: case.uuid, status: :resolved})
+
+    import_2 = import_fixture(tenant, %{type: :ism_2021_06_11_test})
+
+    row_2 =
+      row_fixture(import_2, %{
+        data: %{
+          "Fall ID" => "2182953",
+          "Patient Nachname" => "Muster",
+          "Patient Vorname" => "Max",
+          "Patient ID" => "1673735",
+          "Testdatum" => Date.to_iso8601(Date.add(Date.utc_today(), -1)),
+          "new" => "key"
+        },
+        identifiers: %{"Fall ID" => "2182953"}
+      })
+
+    assert {false,
+            [
+              {:uncertain, _choose_tenant},
+              {:input_needed, _select_case}
+            ]} = Planner.generate_action_plan_suggestion(row_2)
   end
 
   test "certain when same ism id for possible index case not older than 10 days ", %{

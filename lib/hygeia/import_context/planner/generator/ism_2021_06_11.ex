@@ -96,24 +96,20 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
            preceeding_action_plan :: [Planner.Action.t()] ->
              {Planner.certainty(), Planner.Action.t()})
   def select_case(field_mapping, relevance_date_field) do
-    fn
-      _row, %{predecessor: %Row{case: %Case{} = case}}, _preceeding_steps ->
-        case = preload_case(case)
-        {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}
-
-      _row, %{changes: changes, data: data}, _preceeding_steps ->
-        with date when date != nil <- Row.get_change_field(data, [relevance_date_field]),
-             {:ok, date} <- Date.from_iso8601(date) do
-          select_case_with_relevance_date(field_mapping, date, changes)
-        else
-          _no_date_or_error ->
-            select_case_with_relevance_date(
-              field_mapping,
-              Date.utc_today(),
-              changes,
-              :input_needed
-            )
-        end
+    fn _row, %{predecessor: predecessor, changes: changes, data: data}, _preceeding_steps ->
+      with date when date != nil <- Row.get_change_field(data, [relevance_date_field]),
+           {:ok, date} <- Date.from_iso8601(date) do
+        select_case_with_relevance_date(field_mapping, date, changes, predecessor)
+      else
+        _no_date_or_error ->
+          select_case_with_relevance_date(
+            field_mapping,
+            Date.utc_today(),
+            changes,
+            predecessor,
+            :input_needed
+          )
+      end
     end
   end
 
@@ -121,7 +117,31 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
          field_mapping,
          relevance_date,
          changes,
+         predecessor,
          max_certainty \\ :certain
+       )
+
+  defp select_case_with_relevance_date(
+         _field_mapping,
+         relevance_date,
+         _changes,
+         %Row{case: %Case{} = case},
+         max_certainty
+       ) do
+    {certainty, action} =
+      case
+      |> preload_case()
+      |> select_case_certainty(relevance_date)
+
+    {Planner.limit_certainty(max_certainty, certainty), action}
+  end
+
+  defp select_case_with_relevance_date(
+         field_mapping,
+         relevance_date,
+         changes,
+         nil,
+         max_certainty
        ) do
     {certainty, action} =
       Enum.reduce_while(
@@ -185,73 +205,89 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp find_case_by_external_reference(_type, "", _relevance_date), do: :error
   defp find_case_by_external_reference(_type, nil, _relevance_date), do: :error
 
-  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   defp find_case_by_external_reference(type, id, relevance_date) do
     case CaseContext.list_cases_by_external_reference(type, to_string(id)) do
       [] ->
         :error
 
       [case] ->
-        case = preload_case(case)
-
-        index_phase_date =
-          case
-          |> Case.phase_dates(Phase.Index)
-          |> Enum.map(fn {_key, value} -> value end)
-          |> Enum.max(Date)
-
-        possible_index_phase_date =
-          case
-          |> Case.phase_dates(Phase.PossibleIndex)
-          |> Enum.map(fn {_key, value} -> value end)
-          |> Enum.max(Date)
-
-        index_phase = Enum.find(case.phases, &match?(%Case.Phase{details: %Phase.Index{}}, &1))
-
-        if index_phase != nil do
-          date_diff = abs(Date.diff(index_phase_date, relevance_date))
-
-          cond do
-            date_diff <= 10 and index_phase.end != nil and index_phase.start != nil and
-                relevance_date in Date.range(index_phase.start, index_phase.end) ->
-              {:ok, {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}}
-
-            date_diff <= 10 ->
-              {:ok, {:uncertain, %Planner.Action.SelectCase{case: case, person: case.person}}}
-
-            date_diff <= 30 ->
-              {:ok,
-               {:input_needed,
-                %Planner.Action.SelectCase{
-                  case: case,
-                  person: case.person,
-                  suppress_quarantine: true
-                }}}
-
-            date_diff > 30 ->
-              {:ok,
-               {:input_needed,
-                %Planner.Action.SelectCase{
-                  case: case,
-                  person: case.person,
-                  suppress_quarantine: false
-                }}}
-          end
-        else
-          date_diff = abs(Date.diff(possible_index_phase_date, relevance_date))
-
-          cond do
-            date_diff <= 10 ->
-              {:ok, {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}}
-
-            date_diff > 10 ->
-              {:ok, {:input_needed, %Planner.Action.SelectCase{case: case, person: case.person}}}
-          end
-        end
+        {:ok,
+         case
+         |> preload_case
+         |> select_case_certainty(relevance_date)}
 
       [case | _] ->
-        case = preload_case(case)
-        {:ok, {:input_needed, %Planner.Action.SelectCase{case: case, person: case.person}}}
+        {certainty, action} =
+          case
+          |> preload_case
+          |> select_case_certainty(relevance_date)
+
+        {:ok, {Planner.limit_certainty(:input_needed, certainty), action}}
+    end
+  end
+
+  defp select_case_certainty(case, relevance_date) do
+    index_phase_date =
+      case
+      |> Case.phase_dates(Phase.Index)
+      |> Enum.map(fn {_key, value} -> value end)
+      |> Enum.max(Date)
+
+    possible_index_phase_date =
+      case
+      |> Case.phase_dates(Phase.PossibleIndex)
+      |> Enum.map(fn {_key, value} -> value end)
+      |> Enum.max(Date)
+
+    case.phases
+    |> Enum.find(&match?(%Case.Phase{details: %Phase.Index{}}, &1))
+    |> case do
+      nil ->
+        select_case_certainty_possible_index(case, possible_index_phase_date, relevance_date)
+
+      index_phase ->
+        select_case_certainty_index(case, index_phase, index_phase_date, relevance_date)
+    end
+  end
+
+  defp select_case_certainty_index(case, index_phase, index_phase_date, relevance_date) do
+    date_diff = abs(Date.diff(index_phase_date, relevance_date))
+
+    cond do
+      date_diff <= 10 and index_phase.end != nil and index_phase.start != nil and
+          relevance_date in Date.range(index_phase.start, index_phase.end) ->
+        {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}
+
+      date_diff <= 10 ->
+        {:uncertain, %Planner.Action.SelectCase{case: case, person: case.person}}
+
+      date_diff <= 30 ->
+        {:input_needed,
+         %Planner.Action.SelectCase{
+           case: case,
+           person: case.person,
+           suppress_quarantine: true
+         }}
+
+      date_diff > 30 ->
+        {:input_needed,
+         %Planner.Action.SelectCase{
+           case: case,
+           person: case.person,
+           suppress_quarantine: false
+         }}
+    end
+  end
+
+  defp select_case_certainty_possible_index(case, possible_index_phase_date, relevance_date) do
+    date_diff = abs(Date.diff(possible_index_phase_date, relevance_date))
+
+    cond do
+      date_diff <= 10 ->
+        {:certain, %Planner.Action.SelectCase{case: case, person: case.person}}
+
+      date_diff > 10 ->
+        {:input_needed, %Planner.Action.SelectCase{case: case, person: case.person}}
     end
   end
 
