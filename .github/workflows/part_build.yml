@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: erlef/setup-elixir@v1
         id: setupBEAM
         with:
@@ -83,7 +83,7 @@ jobs:
       MIX_ENV: prod
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: |
           apt-get update -yqq
           apt-get install -yqq git
@@ -132,7 +132,7 @@ jobs:
     if: ${{ inputs.dockerBuild }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/download-artifact@v2
         with:
           name: mix_release
