@@ -45,19 +45,16 @@
                 </LiveRedirect>
               </UriActiveContext>
             </li>
-            <li class="nav-item dropdown" phx-update="ignore" id="nav-ignore-more">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-                data-bs-toggle="dropdown"
-                :if={match?(%User{}, auth)}
+            <li class="nav-item" :if={match?(%User{}, auth)}>
+              <HygeiaWeb.Dropdown
+                id="nav-more"
+                trigger_class="nav-link dropdown-toggle"
+                dropdown_class="nav-dropdown"
               >
-                {gettext("More")}
-              </a>
-              <div class="dropdown-menu">
+                <:trigger>
+                  {gettext("More")}
+                </:trigger>
+
                 <Link
                   to={Routes.live_dashboard_path(@socket, :home)}
                   class="dropdown-item"
@@ -114,7 +111,7 @@
                 >
                   {gettext("Risk Countries")}
                 </Link>
-              </div>
+              </HygeiaWeb.Dropdown>
             </li>
           </ul>
           <div class="nav nav-pills">
@@ -132,38 +129,35 @@
               <HygeiaWeb.Notification.Tray id="header_notifications_tray" />
             </li>
             <li class="nav-item" :if={logged_in}>
-              <div class="dropdown" id="profile" phx-update="ignore">
-                <a
-                  class="nav-link"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
+              <HygeiaWeb.Dropdown
+                id="profile"
+                trigger_class="nav-link"
+                dropdown_class="nav-dropdown dropdown-menu-end"
+              >
+                <:trigger>
                   <span class="oi oi-person" title={gettext("Profile")} aria-hidden="true" />
-                </a>
-                <div class="nav-dropdown dropdown-menu dropdown-menu-end">
-                  <div class="dropdown-item" :if={match?(%User{}, auth)}>
-                    {auth.display_name}
-                  </div>
-                  <div class="dropdown-item" :if={match?(%Person{}, auth)}>
-                    {auth.first_name} {auth.last_name}
-                  </div>
-                  <UriActiveContext
-                    to={Routes.user_show_path(@socket, :show, auth.uuid)}
-                    :let={to: to, active: active}
-                    :if={authorized?(auth, :details, auth)}
-                  >
-                    <LiveRedirect to={to} class={"dropdown-item", active: active}>
-                      {gettext("Profile")}
-                    </LiveRedirect>
-                  </UriActiveContext>
+                </:trigger>
 
-                  <Link to={Routes.auth_path(@socket, :delete)} class="dropdown-item">
-                    {gettext("Logout")}
-                  </Link>
+                <div class="dropdown-item" :if={match?(%User{}, auth)}>
+                  {auth.display_name}
                 </div>
-              </div>
+                <div class="dropdown-item" :if={match?(%Person{}, auth)}>
+                  {auth.first_name} {auth.last_name}
+                </div>
+                <UriActiveContext
+                  to={Routes.user_show_path(@socket, :show, auth.uuid)}
+                  :let={to: to, active: active}
+                  :if={authorized?(auth, :details, auth)}
+                >
+                  <LiveRedirect to={to} class={"dropdown-item", active: active}>
+                    {gettext("Profile")}
+                  </LiveRedirect>
+                </UriActiveContext>
+
+                <Link to={Routes.auth_path(@socket, :delete)} class="dropdown-item">
+                  {gettext("Logout")}
+                </Link>
+              </HygeiaWeb.Dropdown>
             </li>
             <li class="nav-item" :if={not logged_in}>
               <div id="profile" phx-update="ignore">
@@ -172,18 +166,16 @@
                 </Link>
               </div>
             </li>
-            <li class="nav-item dropdown" phx-update="ignore" id="nav-ignore-language">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-                data-bs-toggle="dropdown"
+            <li class="nav-item">
+              <HygeiaWeb.Dropdown
+                id="nav-language"
+                trigger_class="nav-link dropdown-toggle"
+                dropdown_class="nav-dropdown dropdown-menu-end"
               >
-                {get_current_language()}
-              </a>
-              <div class="dropdown-menu dropdown-menu-end">
+                <:trigger>
+                  {get_current_language()}
+                </:trigger>
+
                 <Context get={HygeiaWeb, uri: uri}>
                   <Link
                     :for={locale <- HygeiaCldr.known_gettext_locale_names()}
@@ -193,7 +185,7 @@
                     {locale |> (&HygeiaCldr.Language.to_string(&1, locale: &1)).() |> elem(1)}
                   </Link>
                 </Context>
-              </div>
+              </HygeiaWeb.Dropdown>
             </li>
           </div>
         </div>
