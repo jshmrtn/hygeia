@@ -168,7 +168,7 @@ defmodule Hygeia.Jobs.SendEmails do
     })
 
     # TODO: Get Local from Case
-    HygeiaCldr.put_locale("de-CH")
+    HygeiaCldr.put_locale(:"de-CH")
     Gettext.put_locale(HygeiaCldr.get_locale().gettext_locale_name || "de")
 
     CaseContext.create_note(email.case, %{
