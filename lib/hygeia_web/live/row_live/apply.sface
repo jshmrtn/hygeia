@@ -98,7 +98,7 @@
       :if={not match?(%Action.Save{}, action)}
       :id={"action_plan_#{index}"}
     >
-      <details open={certainty == :input_needed}>
+      <details open={certainty in [:input_needed, :uncertain]}>
         {#if match?(%Action.ChooseTenant{}, action)}
           <summary class="card-header">
             <div class="d-inline-block">
