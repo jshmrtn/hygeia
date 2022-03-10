@@ -6,6 +6,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
   use ExUnit.Case
   use Hygeia.DataCase
 
+  alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Entity
@@ -292,5 +293,42 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
               {:uncertain, %Planner.Action.ChooseTenant{tenant: %Tenant{uuid: ^tenant_sg_uuid}}}
               | _others
             ]} = Planner.generate_action_plan_suggestion(row)
+  end
+
+  test "input needed for same row and deleted case", %{
+    import: %Import{rows: rows},
+    tenant_sg: tenant_sg
+  } do
+    row = Enum.find(rows, &(&1.data["Meldung ID"] == 1_794_060))
+    {true, action_plan_suggestion} = Planner.generate_action_plan_suggestion(row)
+
+    action_plan = Enum.map(action_plan_suggestion, &elem(&1, 1))
+
+    assert {:ok, %{row: row, case: case}} = Planner.execute(action_plan, row)
+
+    assert %Row{case_uuid: case_uuid, status: :resolved} = row
+
+    assert {:ok, %Case{}} = CaseContext.delete_case(case)
+
+    import_2 = import_fixture(tenant_sg, %{type: :ism_2021_06_11_test})
+
+    row_2 =
+      row_fixture(import_2, %{
+        data: %{
+          "Fall ID" => "2182953",
+          "Patient Nachname" => "Licht",
+          "Patient Vorname" => "Laura",
+          "Patient ID" => "1673735",
+          "Patient Strasse" => "Teststrasse 42",
+          "Testdatum" => "2021-03-24"
+        },
+        identifiers: %{"Fall ID" => "2182953"}
+      })
+
+    assert {false,
+            [
+              {:uncertain, _choose_tenant},
+              {:input_needed, %{case: nil}}
+            ]} = Planner.generate_action_plan_suggestion(row_2)
   end
 end

@@ -140,7 +140,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
          field_mapping,
          relevance_date,
          changes,
-         nil,
+         _row_with_no_case_or_nil,
          max_certainty
        ) do
     {certainty, action} =
