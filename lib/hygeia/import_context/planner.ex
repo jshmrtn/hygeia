@@ -38,7 +38,7 @@ defmodule Hygeia.ImportContext.Planner do
       generator.before_action_plan(row, %{
         predecessor: predecessor,
         changes: Row.get_changes(row, predecessor),
-        data: row.data
+        data: Row.get_corrected_data(row, predecessor)
       })
 
     generator_functions = generator.action_plan_steps()

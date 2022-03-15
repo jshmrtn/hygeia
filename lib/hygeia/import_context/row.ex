@@ -69,6 +69,32 @@ defmodule Hygeia.ImportContext.Row do
     |> unique_constraint([:data])
   end
 
+  @spec get_corrected_data(row :: t, predecessor :: t | nil) :: map
+  def get_corrected_data(row, predecessor)
+
+  def get_corrected_data(%__MODULE__{data: data, corrected: corrected}, nil),
+    do: get_corrected_data(data, corrected, %{}, %{})
+
+  def get_corrected_data(%__MODULE__{data: data, corrected: corrected}, %__MODULE__{
+        data: predecessor_data,
+        corrected: predecessor_corrected
+      }),
+      do: get_corrected_data(data, corrected, predecessor_data, predecessor_corrected)
+
+  defp get_corrected_data(data, corrected, predecessor_data, predecessor_corrected)
+
+  defp get_corrected_data(data, nil, predecessor_data, predecessor_corrected),
+    do: get_corrected_data(data, %{}, predecessor_data, predecessor_corrected)
+
+  defp get_corrected_data(data, corrected, predecessor_data, nil),
+    do: get_corrected_data(data, corrected, predecessor_data, %{})
+
+  defp get_corrected_data(data, corrected, predecessor_data, predecessor_corrected) do
+    data
+    |> zip_corrections_and_predecessor(corrected, predecessor_data, predecessor_corrected)
+    |> Map.new(&zip_to_map/1)
+  end
+
   @spec get_changes(row :: t, predecessor :: t | nil) :: map
   def get_changes(row, predecessor)
 
@@ -90,6 +116,15 @@ defmodule Hygeia.ImportContext.Row do
     do: get_changes(data, corrected, predecessor_data, %{})
 
   defp get_changes(data, corrected, predecessor_data, predecessor_corrected) do
+    data
+    |> zip_corrections_and_predecessor(corrected, predecessor_data, predecessor_corrected)
+    |> Enum.reject(
+      &match?({_key, {{:ok, data}, :error, {:ok, data}, _predecessor_corrected}}, &1)
+    )
+    |> Map.new(&zip_to_map/1)
+  end
+
+  defp zip_corrections_and_predecessor(data, corrected, predecessor_data, predecessor_corrected) do
     [data, corrected, predecessor_data, predecessor_corrected]
     |> Enum.flat_map(&Map.keys/1)
     |> Enum.uniq()
@@ -98,20 +133,18 @@ defmodule Hygeia.ImportContext.Row do
        {Map.fetch(data, &1), Map.fetch(corrected, &1), Map.fetch(predecessor_data, &1),
         Map.fetch(predecessor_corrected, &1)}}
     )
-    |> Enum.reject(
-      &match?({_key, {{:ok, data}, :error, {:ok, data}, _predecessor_corrected}}, &1)
-    )
-    |> Map.new(fn
-      {key, {_data, {:ok, corrected}, _predecessor_data, _predecessor_corrected}} ->
-        {key, corrected}
-
-      {key, {{:ok, data}, :error, _predecessor_data, _predecessor_corrected}} ->
-        {key, data}
-
-      {key, {:error, :error, _predecessor_data, _predecessor_corrected}} ->
-        {key, nil}
-    end)
   end
+
+  defp zip_to_map(field)
+
+  defp zip_to_map({key, {_data, {:ok, corrected}, _predecessor_data, _predecessor_corrected}}),
+    do: {key, corrected}
+
+  defp zip_to_map({key, {{:ok, data}, :error, _predecessor_data, _predecessor_corrected}}),
+    do: {key, data}
+
+  defp zip_to_map({key, {:error, :error, _predecessor_data, _predecessor_corrected}}),
+    do: {key, nil}
 
   @spec get_change_field(changes :: map, path :: [String.t()], default :: default) ::
           default | term
