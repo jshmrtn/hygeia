@@ -96,16 +96,16 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
            preceeding_action_plan :: [Planner.Action.t()] ->
              {Planner.certainty(), Planner.Action.t()})
   def select_case(field_mapping, relevance_date_field) do
-    fn _row, %{predecessor: predecessor, changes: changes, data: data}, _preceeding_steps ->
+    fn _row, %{predecessor: predecessor, data: data}, _preceeding_steps ->
       with date when date != nil <- Row.get_change_field(data, [relevance_date_field]),
            {:ok, date} <- Date.from_iso8601(date) do
-        select_case_with_relevance_date(field_mapping, date, changes, predecessor)
+        select_case_with_relevance_date(field_mapping, date, data, predecessor)
       else
         _no_date_or_error ->
           select_case_with_relevance_date(
             field_mapping,
             Date.utc_today(),
-            changes,
+            data,
             predecessor,
             :input_needed
           )
@@ -116,7 +116,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp select_case_with_relevance_date(
          field_mapping,
          relevance_date,
-         changes,
+         data,
          predecessor,
          max_certainty \\ :certain
        )
@@ -124,7 +124,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp select_case_with_relevance_date(
          _field_mapping,
          relevance_date,
-         _changes,
+         _data,
          %Row{case: %Case{} = case},
          max_certainty
        ) do
@@ -139,7 +139,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
   defp select_case_with_relevance_date(
          field_mapping,
          relevance_date,
-         changes,
+         data,
          _row_with_no_case_or_nil,
          max_certainty
        ) do
@@ -149,42 +149,42 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
           fn ->
             find_case_by_external_reference(
               :ism_case,
-              Row.get_change_field(changes, [field_mapping.case_id]),
+              Row.get_change_field(data, [field_mapping.case_id]),
               relevance_date
             )
           end,
           fn ->
             find_case_by_external_reference(
               :ism_report,
-              Row.get_change_field(changes, [field_mapping.report_id]),
+              Row.get_change_field(data, [field_mapping.report_id]),
               relevance_date
             )
           end,
           fn ->
             find_person_by_external_reference(
               :ism_patient,
-              Row.get_change_field(changes, [field_mapping.patient_id]),
+              Row.get_change_field(data, [field_mapping.patient_id]),
               relevance_date
             )
           end,
           fn ->
             find_person_by_name(
-              Row.get_change_field(changes, [field_mapping.first_name]),
-              Row.get_change_field(changes, [field_mapping.last_name]),
-              changes,
+              Row.get_change_field(data, [field_mapping.first_name]),
+              Row.get_change_field(data, [field_mapping.last_name]),
+              data,
               field_mapping,
               relevance_date
             )
           end,
           fn ->
             find_person_by_phone(
-              Row.get_change_field(changes, [field_mapping.phone]),
+              Row.get_change_field(data, [field_mapping.phone]),
               relevance_date
             )
           end,
           fn ->
             find_person_by_email(
-              Row.get_change_field(changes, [field_mapping[:email]]),
+              Row.get_change_field(data, [field_mapping[:email]]),
               relevance_date
             )
           end

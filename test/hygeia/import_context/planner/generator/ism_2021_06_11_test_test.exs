@@ -295,18 +295,95 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
             ]} = Planner.generate_action_plan_suggestion(row)
   end
 
-  test "input needed for same row and deleted case", %{
-    import: %Import{rows: rows},
-    tenant_sg: tenant_sg
-  } do
-    row = Enum.find(rows, &(&1.data["Meldung ID"] == 1_794_060))
-    {true, action_plan_suggestion} = Planner.generate_action_plan_suggestion(row)
+  test "input needed for same row and deleted case", %{tenant_sg: tenant_sg} do
+    import_1 = import_fixture(tenant_sg, %{type: :ism_2021_06_11_test})
+
+    data =
+      Jason.decode!("""
+      {
+        "VOC": null,
+        "Fall": "c86656498d774781aa817b70b42a7942",
+        "Land": "Schweiz",
+        "E-Mail": null,
+        "Erreger": "SARS-CoV-2",
+        "Fall ID": 234873,
+        "Symptome": "ja",
+        "Krankheit": "COVID-19",
+        "Testdatum": "2022-03-09",
+        "Fallklasse": "Sicherer Fall",
+        "Meldung ID": 937875,
+        "Patient ID": 4107139,
+        "Patient PLZ": 9100,
+        "Typisierung": null,
+        "Erreger Code": 1150,
+        "Testresultat": "positiv",
+        "Wohnsitzland": "CH",
+        "Eingangsdatum": "2022-03-09",
+        "Entnahmedatum": "2022-03-09",
+        "Symptome Code": 1,
+        "Patient Kanton": null,
+        "Nachweismethode": "Antigen ++ Schnelltest",
+        "Patient Strasse": "Teststrasse 10",
+        "Patient Telefon": null,
+        "Patient Vorname": "Mona",
+        "Patient Wohnort": null,
+        "Auftraggeber Ort": "St. Gallen",
+        "Auftraggeber PLZ": 9000,
+        "Entnahmematerial": "Nase / Nasenraum",
+        "Meldeeinheit Ort": "St. Gallen",
+        "Meldeeinheit PLZ": 9000,
+        "Patient Nachname": "Lisa",
+        "Schnelltest Code": 1,
+        "Test Bemerkungen": null,
+        "Test ID/Referenz": "10184",
+        "Typisierung Code": null,
+        "Testresultat Code": 1,
+        "Berechtigungsrolle": "Besitzer",
+        "Eingangsdatum/Zeit": "2022-03-09T17:50:25",
+        "Patient Geschlecht": "weiblich",
+        "Zusatzinfo Erreger": null,
+        "Zuständiger Kanton": "SG",
+        "Auftraggeber Strasse": "Teststrasse 10",
+        "Auftraggeber Vorname": "Max",
+        "Meldeeinheit Strasse": "Teststrasse 10",
+        "Meldeeinheit Vorname": "Gregory",
+        "Nachweismethode Code": 17,
+        "Patient Geburtsdatum": "2000-03-26",
+        "Auftraggeber Nachname": "Muster",
+        "Entnahmematerial Code": 69,
+        "Erstellungsdatum/Zeit": "2022-03-09T17:50:25",
+        "Infektionskrankheiten": "0376925dfcef41749104a4c745eb401c",
+        "Meldeeinheit Nachname": "House",
+        "Schnelltest Name (de)": "SARS-CoV-2 Rapid Antigen Test",
+        "Meldeeinheit Kategorie": "Arztpraxis",
+        "Schnelltest Hersteller": "Roche Diagnostics (Schweiz) AG",
+        "Abstraktes Meldeformular": "ff27e8f89fc811ecbc30005056a1fbf0",
+        "Auftraggeber Institution": "Hospital",
+        "Meldeeinheit Institution": "Hospital",
+        "labTest update date time": null,
+        "labReport update date time": "2022-03-09T17:58:10",
+        "labTest creation date time": "2022-03-09T17:50:25",
+        "Aufenthaltsort/Adresse Ausland": null,
+        "Auftraggeber Abteilung/Institut": "FMH Allgemein/Innere Medizin",
+        "Meldeeinheit Abteilung/Institut": "FMH Allgemein/Innere Medizin",
+        "Ausbruchsmanagement / Kontaktmanagement": "nein",
+        "Ausbruchsmanagement / Kontaktmanagement Code": 2
+      }
+      """)
+
+    identifiers = Map.take(data, Import.Type.id_fields(:ism_2021_06_11_test))
+
+    row_1 = row_fixture(import_1, %{data: data, identifiers: identifiers})
+
+    {true, action_plan_suggestion} = Planner.generate_action_plan_suggestion(row_1)
 
     action_plan = Enum.map(action_plan_suggestion, &elem(&1, 1))
 
-    assert {:ok, %{row: row, case: case}} = Planner.execute(action_plan, row)
+    assert {:ok,
+            %{row: row_1, case: %Case{uuid: case_uuid} = case, person: %Person{uuid: person_uuid}}} =
+             Planner.execute(action_plan, row_1)
 
-    assert %Row{case_uuid: case_uuid, status: :resolved} = row
+    assert %Row{case_uuid: ^case_uuid, status: :resolved} = row_1
 
     assert {:ok, %Case{}} = CaseContext.delete_case(case)
 
@@ -314,21 +391,15 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
 
     row_2 =
       row_fixture(import_2, %{
-        data: %{
-          "Fall ID" => "2182953",
-          "Patient Nachname" => "Licht",
-          "Patient Vorname" => "Laura",
-          "Patient ID" => "1673735",
-          "Patient Strasse" => "Teststrasse 42",
-          "Testdatum" => "2021-03-24"
-        },
-        identifiers: %{"Fall ID" => "2182953"}
+        data: %{data | "Patient Geburtsdatum" => "1990-01-01"},
+        identifiers: %{"Fall ID" => 234_873}
       })
 
-    assert {false,
+    assert {true,
             [
-              {:uncertain, _choose_tenant},
-              {:input_needed, %{case: nil}}
+              {:certain, _choose_tenant},
+              {:certain, %{case: nil, person: %Person{uuid: ^person_uuid}}}
+              | _other_actions
             ]} = Planner.generate_action_plan_suggestion(row_2)
   end
 end
