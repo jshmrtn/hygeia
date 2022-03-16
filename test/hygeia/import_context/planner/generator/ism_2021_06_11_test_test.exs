@@ -139,6 +139,22 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
   } do
     row = Enum.find(rows, &(&1.data["Meldung ID"] == 1_794_060))
 
+    # 2021-03-24
+    test_date = Date.utc_today()
+    # 2021-03-25
+    end_date = Date.add(test_date, 1)
+
+    inserted_at = DateTime.new!(test_date, ~T[08:00:00])
+
+    {:ok, row} =
+      ImportContext.update_row(row, %{
+        data:
+          Map.merge(row.data, %{
+            "Entnahmedatum" => Date.to_iso8601(test_date),
+            "Testdatum" => Date.to_iso8601(test_date)
+          })
+      })
+
     person =
       person_fixture(tenant_sg, %{
         last_name: "Muster",
@@ -162,13 +178,13 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
                 __type__: :possible_index,
                 type: :contact_person
               },
-              start: ~D[2021-03-24],
-              end: ~D[2021-03-25],
-              inserted_at: ~N[2021-03-25 08:00:00],
+              start: test_date,
+              end: end_date,
+              inserted_at: inserted_at,
               quarantine_order: true
             }
           ],
-          inserted_at: ~N[2021-03-25 08:00:00],
+          inserted_at: inserted_at,
           tests: [],
           clinical: %{}
         }
@@ -207,7 +223,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
              tests: [
                %Test{
                  kind: :pcr,
-                 laboratory_reported_at: ~D[2021-03-24],
+                 laboratory_reported_at: ^test_date,
                  reference: "21 3240 0755",
                  reporting_unit: %Entity{
                    address: %Address{
@@ -233,7 +249,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
                    person_first_name: nil,
                    person_last_name: nil
                  },
-                 tested_at: ~D[2021-03-24]
+                 tested_at: ^test_date
                }
              ]
            } = case
