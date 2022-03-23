@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: 'sed -i "s/\(Change Date: *\)[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}/\1$(date --date="3 years" +%Y-%m-%d)/g" LICENSE'
-      - uses: peter-evans/create-pull-request@v3
+      - uses: peter-evans/create-pull-request@v4
         with:
           add-paths: 'LICENSE'
           commit-message: 'Update LICENSE Change Date'
