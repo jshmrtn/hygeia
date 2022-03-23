@@ -44,7 +44,7 @@ jobs:
         with:
           otp-version: ${{ inputs.otpVersion }}
           elixir-version: ${{ inputs.elixirVersion }}
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: deps
           key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('mix.lock') }}
@@ -56,7 +56,7 @@ jobs:
         with:
           node-version: ${{ inputs.nodeVersion }}
       - run: npm config set cache $GITHUB_WORKSPACE/.ci-npm-cache
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: .ci-npm-cache
           key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('assets/package-lock.json') }}
@@ -89,14 +89,14 @@ jobs:
           apt-get install -yqq git
           mix local.hex --force
           mix local.rebar --force
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: deps
           key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.DEFAULT_ELIXIR_VERSION }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
             deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ env.DEFAULT_ELIXIR_VERSION }}-
       - run: mix deps.get
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             _build/prod
