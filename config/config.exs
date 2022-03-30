@@ -9,6 +9,8 @@ config :hygeia,
 # Configures if contact persons are captured
 config :hygeia, :quarantine_enabled, false
 
+config :hygeia, :send_autotracing_enabled, false
+
 config :hygeia, Hygeia.Repo,
   migration_timestamps: [type: :utc_datetime_usec],
   migration_primary_key: [name: :uuid, type: :binary_id],
