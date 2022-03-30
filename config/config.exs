@@ -7,7 +7,9 @@ config :hygeia,
   generators: [context_app: :hygeia, binary_id: true]
 
 # Configures if contact persons are captured
-config :hygeia, :quarantine_enabled, false
+config :hygeia,
+  quarantine_enabled: false,
+  isolation_enabled: false
 
 config :hygeia, Hygeia.Repo,
   migration_timestamps: [type: :utc_datetime_usec],

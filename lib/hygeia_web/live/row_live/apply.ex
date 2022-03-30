@@ -324,7 +324,8 @@ defmodule HygeiaWeb.RowLive.Apply do
       action_plan: action_plan,
       complete: complete,
       tracers: get_users(action_plan, :tracer),
-      supervisors: get_users(action_plan, :supervisor)
+      supervisors: get_users(action_plan, :supervisor),
+      autotracing_enabled_by_default: Application.fetch_env!(:hygeia, :isolation_enabled)
     )
   end
 

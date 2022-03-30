@@ -10,11 +10,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #, elixir-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
 msgstr "\"Fusionner\" et \"Entrer\" ne doivent pas être identiques"
+
+#, elixir-autogen, icu-format
+msgctxt "Inbox Row Apply Assignee"
+msgid "(Autotracing is disabled by default)"
+msgstr "(Le traçage automatique est désactivé par défaut)"
 
 #, elixir-autogen, icu-format
 msgid "0-1 contact person"
@@ -32,7 +37,7 @@ msgstr "2-5 personnes de contact"
 msgid "24 Hours"
 msgstr "24 heures"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "24 Hours Statistics"
 msgstr "Statistiques 24 heures"
 

@@ -392,9 +392,14 @@
         {#if match?(%Action.CreateAutoTracing{}, action)}
           <summary class="card-header">
             <div class="d-inline-block">
-              <span class="d-block small certainty-label">
-                {translate_certainty(certainty)}
-              </span>
+              <div class="d-block">
+                <span class="d-inline-block small certainty-label">
+                  {translate_certainty(certainty)}
+                </span>
+                <span :if={not @autotracing_enabled_by_default} class="d-inline-block small text-danger">
+                  {pgettext("Inbox Row Apply Assignee", "(Autotracing is disabled by default)")}
+                </span>
+              </div>
 
               <span :if={action.action == :skip}>
                 {gettext("Do not create Auto Tracing")}
