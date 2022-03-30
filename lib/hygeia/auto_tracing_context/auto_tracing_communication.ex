@@ -29,7 +29,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracingCommunication do
         public_overview_link: @url_generator.overview_url(case),
         message_signature: Tenant.get_message_signature_text(case.tenant, :sms),
         initial_first_name: String.slice(case.person.first_name, 0..0),
-        initial_last_name: String.slice(case.person.last_name, 0..0)
+        initial_last_name: String.slice(case.person.last_name || "", 0..0)
       )
 
   @spec auto_tracing_email_subject(case :: Case.t()) :: String.t()
@@ -57,7 +57,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracingCommunication do
       public_overview_link: @url_generator.overview_url(case),
       message_signature: Tenant.get_message_signature_text(case.tenant, :email),
       initial_first_name: String.slice(case.person.first_name, 0..0),
-      initial_last_name: String.slice(case.person.last_name, 0..0)
+      initial_last_name: String.slice(case.person.last_name || "", 0..0)
     )
   end
 end
