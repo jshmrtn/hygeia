@@ -152,7 +152,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_Test do
       {_certainty, %Planner.Action.PatchPhases{action: patch_phase_action}} =
         Enum.find(preceeding_steps, &match?({_certainty, %Planner.Action.PatchPhases{}}, &1))
 
-      suppress_autotracing = not Application.fetch_env!(:hygeia, :send_autotracing_enabled)
+      suppress_autotracing = not Application.fetch_env!(:hygeia, :isolation_enabled)
 
       action =
         cond do

@@ -418,4 +418,86 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
               | _other_actions
             ]} = Planner.generate_action_plan_suggestion(row_2)
   end
+
+  describe "isolation is disabled in config" do
+    setup do
+      current_value = Application.fetch_env!(:hygeia, :isolation_enabled)
+
+      Application.put_env(:hygeia, :isolation_enabled, false)
+      on_exit(fn -> Application.put_env(:hygeia, :isolation_enabled, current_value) end)
+    end
+
+    test "does not start autotracing when case is inserted", %{
+      import: %Import{rows: rows}
+    } do
+      row = Enum.find(rows, &(&1.data["Meldung ID"] == 1_794_060))
+
+      {true, action_plan_suggestion} = Planner.generate_action_plan_suggestion(row)
+
+      action_plan = Enum.map(action_plan_suggestion, &elem(&1, 1))
+
+      assert {:ok,
+              %{
+                row: row,
+                case: case,
+                person: person
+              }} = Planner.execute(action_plan, row)
+
+      assert %Row{
+               case_uuid: case_uuid,
+               status: :resolved
+             } = row
+
+      assert %Case{
+               uuid: ^case_uuid,
+               person_uuid: person_uuid,
+               auto_tracing: nil
+             } = Repo.preload(case, [:auto_tracing])
+
+      assert %Person{
+               uuid: ^person_uuid
+             } = person
+    end
+  end
+
+  describe "isolation is enabled in config" do
+    setup do
+      current_value = Application.fetch_env!(:hygeia, :isolation_enabled)
+
+      Application.put_env(:hygeia, :isolation_enabled, true)
+      on_exit(fn -> Application.put_env(:hygeia, :isolation_enabled, current_value) end)
+    end
+
+    test "does start autotracing when case is inserted", %{
+      import: %Import{rows: rows}
+    } do
+      row = Enum.find(rows, &(&1.data["Meldung ID"] == 1_794_060))
+
+      {true, action_plan_suggestion} = Planner.generate_action_plan_suggestion(row)
+
+      action_plan = Enum.map(action_plan_suggestion, &elem(&1, 1))
+
+      assert {:ok,
+              %{
+                row: row,
+                case: case,
+                person: person
+              }} = Planner.execute(action_plan, row)
+
+      assert %Row{
+               case_uuid: case_uuid,
+               status: :resolved
+             } = row
+
+      assert %Case{
+               uuid: ^case_uuid,
+               person_uuid: person_uuid,
+               auto_tracing: %Hygeia.AutoTracingContext.AutoTracing{}
+             } = Repo.preload(case, [:auto_tracing])
+
+      assert %Person{
+               uuid: ^person_uuid
+             } = person
+    end
+  end
 end
