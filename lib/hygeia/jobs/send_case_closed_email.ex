@@ -93,7 +93,7 @@ defmodule Hygeia.Jobs.SendCaseClosedEmail do
       isolation_end_confirmation_link: @url_generator.pdf_url(case, phase),
       message_signature: Tenant.get_message_signature_text(case.tenant, message_type),
       initial_first_name: String.slice(case.person.first_name, 0..0),
-      initial_last_name: String.slice(case.person.last_name, 0..0)
+      initial_last_name: String.slice(case.person.last_name || "", 0..0)
     )
   end
 
