@@ -189,7 +189,7 @@ jobs:
           restore-keys: |
             dialyzer_plt_dev-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-
       - run: mix dialyzer --plt
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: dialyzer_plt_dev
           path: priv/plts/

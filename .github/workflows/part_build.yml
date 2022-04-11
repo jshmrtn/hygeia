@@ -64,7 +64,7 @@ jobs:
             deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupNode.outputs.node-version }}-
       - run: npm ci --prefix=assets
       - run: npm run deploy --prefix=assets
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: compile_assets
           path: priv/static
@@ -117,7 +117,7 @@ jobs:
       - run: mix phx.digest
       - run: mix release --overwrite
       - run: tar -czvf release.tar.gz _build/prod/rel/hygeia
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: mix_release
           path: release.tar.gz
