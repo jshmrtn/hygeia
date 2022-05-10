@@ -15,12 +15,12 @@ jobs:
   detectToolVersions:
     name: "Detect Tool Versions"
 
-    uses: jshmrtn/hygeia/.github/workflows/part_tool_versioning.yml@main
+    uses: ./.github/workflows/part_tool_versioning.yml
 
   release:
     name: "Release"
 
-    uses: jshmrtn/hygeia/.github/workflows/part_release.yml@main
+    uses: ./.github/workflows/part_release.yml
     with:
       releaseName: "${{ github.ref_name }}"
 
@@ -29,7 +29,7 @@ jobs:
 
     needs: ['detectToolVersions']
 
-    uses: jshmrtn/hygeia/.github/workflows/part_build.yml@main
+    uses: ./.github/workflows/part_build.yml
     with:
       elixirVersion: "${{ needs.detectToolVersions.outputs.elixirVersion }}"
       otpVersion: "${{ needs.detectToolVersions.outputs.otpVersion }}"
@@ -43,7 +43,7 @@ jobs:
 
     needs: ['release', 'detectToolVersions']
 
-    uses: jshmrtn/hygeia/.github/workflows/part_docs.yml@main
+    uses: ./.github/workflows/part_docs.yml
     with:
       elixirVersion: "${{ needs.detectToolVersions.outputs.elixirVersion }}"
       otpVersion: "${{ needs.detectToolVersions.outputs.otpVersion }}"
@@ -56,7 +56,7 @@ jobs:
 
     needs: ['build']
 
-    uses: jshmrtn/hygeia/.github/workflows/part_deploy.yml@main
+    uses: ./.github/workflows/part_deploy.yml
     with:
       environment: staging
       version: "${{ github.ref_name }}"
