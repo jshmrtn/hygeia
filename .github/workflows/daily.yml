@@ -10,7 +10,7 @@ jobs:
   checkAsdfUpdatesElixir:
     name: "ASDF Update Elixir"
 
-    uses: jshmrtn/hygeia/.github/workflows/part_asdf_update.yml@main
+    uses: ./.github/workflows/part_asdf_update.yml
     with:
       plugin: "elixir"
       constraint: "1"
@@ -18,7 +18,7 @@ jobs:
   checkAsdfUpdatesErlang:
     name: "ASDF Update Erlang"
 
-    uses: jshmrtn/hygeia/.github/workflows/part_asdf_update.yml@main
+    uses: ./.github/workflows/part_asdf_update.yml
     with:
       plugin: "erlang"
       constraint: "24"
@@ -26,7 +26,7 @@ jobs:
   checkAsdfUpdatesNodeJs:
     name: "ASDF Update Node.js"
 
-    uses: jshmrtn/hygeia/.github/workflows/part_asdf_update.yml@main
+    uses: ./.github/workflows/part_asdf_update.yml
     with:
       plugin: "nodejs"
       constraint: "16"
