@@ -47,9 +47,9 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: deps
-          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('mix.lock') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.otp-version }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
-            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-
+            deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.otp-version }}-${{ steps.setupBEAM.outputs.elixir-version }}-
       - run: mix deps.get
       - uses: actions/setup-node@v3
         id: setupNode
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: .ci-npm-cache
-          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('assets/package-lock.json') }}
+          key: deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupBEAM.outputs.otp-version }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('assets/package-lock.json') }}
           restore-keys: |
             deps-${{ secrets.CACHE_VERSION }}-${{ runner.os }}-${{ steps.setupNode.outputs.node-version }}-
       - run: npm ci --prefix=assets
