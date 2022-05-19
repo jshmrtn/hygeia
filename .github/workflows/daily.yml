@@ -21,7 +21,6 @@ jobs:
     uses: ./.github/workflows/part_asdf_update.yml
     with:
       plugin: "erlang"
-      constraint: "24"
 
   checkAsdfUpdatesNodeJs:
     name: "ASDF Update Node.js"
@@ -29,5 +28,4 @@ jobs:
     uses: ./.github/workflows/part_asdf_update.yml
     with:
       plugin: "nodejs"
-      constraint: "16"
 
