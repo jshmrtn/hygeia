@@ -10,21 +10,27 @@
         HygeiaWeb.Header,
         __ENV__
       )
-    } />
+    }
+  />
 
   <main role="main" class="layout-live-main px-3 px-sm-2">
     <div class="container">
-      <p class="alert alert-info" role="alert"
-        phx-click="lv:clear-flash"
-        phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+      <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info">
+        <%= live_flash(@flash, :info) %>
+      </p>
 
-      <p class="alert alert-warning" role="alert"
+      <p
+        class="alert alert-warning"
+        role="alert"
         phx-click="lv:clear-flash"
-        phx-value-key="warning"><%= live_flash(@flash, :warning) %></p>
+        phx-value-key="warning"
+      >
+        <%= live_flash(@flash, :warning) %>
+      </p>
 
-      <p class="alert alert-danger" role="alert"
-        phx-click="lv:clear-flash"
-        phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+      <p class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error">
+        <%= live_flash(@flash, :error) %>
+      </p>
     </div>
 
     <%= unless assigns[:no_js_required] do %>
@@ -33,7 +39,10 @@
           <p class="alert alert-danger" role="alert">
             <%= pgettext("Layout", "JavaScript is required to use this application.") %><br />
             <%= link(
-              pgettext("Layout", "Here are the instructions how to enable JavaScript in your web browser."),
+              pgettext(
+                "Layout",
+                "Here are the instructions how to enable JavaScript in your web browser."
+              ),
               to: "https://www.enable-javascript.com/",
               target: "_blank"
             ) %>
@@ -47,9 +56,9 @@
 
   <%= unless assigns[:hide_footer] === true do %>
     <.live_component
-    module={HygeiaWeb.Footer}
-    id="global-footer"
-    {Surface.build_assigns(
+      module={HygeiaWeb.Footer}
+      id="global-footer"
+      {Surface.build_assigns(
         assigns[:__context__],
         [],
         assigns
@@ -59,6 +68,7 @@
         HygeiaWeb.Footer,
         __ENV__
       )
-    } />
+    }
+    />
   <% end %>
 </div>

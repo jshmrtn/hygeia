@@ -6,8 +6,8 @@
     "*.{ex,exs}",
     "priv/*/seeds.exs",
     "priv/repo/seeds/*.exs",
-    "{config,lib,test}/**/*.{ex,exs,sface}"
+    "{config,lib,test}/**/*.{ex,exs,sface,heex}"
   ],
   subdirectories: ["priv/*/migrations"],
-  plugins: [Surface.Formatter.Plugin, Cldr.Formatter.Plugin]
+  plugins: [Surface.Formatter.Plugin, Cldr.Formatter.Plugin, Phoenix.LiveView.HTMLFormatter]
 ]

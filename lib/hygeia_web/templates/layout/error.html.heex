@@ -5,7 +5,7 @@
         <h1><%= gettext("Oops!") %></h1>
         <h2><%= @status %> <%= Plug.Conn.Status.reason_phrase(@status) %></h2>
         <div class="error-details">
-            <%= @inner_content %>
+          <%= @inner_content %>
         </div>
         <div class="error-actions mt-5">
           <a href={Routes.home_index_url(@conn, :index)} class="btn btn-primary btn-lg">
@@ -23,9 +23,6 @@
 </div>
 <%= case Sentry.get_last_event_id_and_source() do %>
   <% {event_id, :plug} when is_binary(event_id) -> %>
-    <div
-      id="sentry-report"
-      data-report-options={Jason.encode!(%{eventId: event_id})}
-    ></div>
+    <div id="sentry-report" data-report-options={Jason.encode!(%{eventId: event_id})}></div>
   <% _ -> %>
 <% end %>
