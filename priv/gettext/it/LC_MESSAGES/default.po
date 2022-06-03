@@ -168,7 +168,7 @@ msgstr "Modifiche aggiuntive"
 msgid "Additional actions:"
 msgstr "Azioni aggiuntive:"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "Additional inquiries"
 msgstr "Richieste aggiuntive"
 
@@ -176,7 +176,7 @@ msgstr "Richieste aggiuntive"
 msgid "Address"
 msgstr "Indirizzo"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Address"
 msgstr "Indirizzo"
@@ -186,7 +186,7 @@ msgctxt "Auto Tracing Step"
 msgid "Address"
 msgstr "Indirizzo"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "Address"
 msgstr "Indirizzo"
@@ -2164,6 +2164,11 @@ msgstr "Hygeia è progettato per strutturare processi complicati, per soddisfare
 msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Confermo che tutti i dati di cui sopra sono corretti. I dati potrebbero essere ispezionati!"
 
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Employment Status"
+msgid "I do not want to give any information about this"
+msgstr "Non voglio dare alcuna informazione a riguardo"
+
 #, elixir-autogen, icu-format
 msgid "I have official convalescence documentation (PCR test or rapid antigen test carried out by qualified personnel or antibody detection with a valid certificate) to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
 msgstr "Ho la documentazione ufficiale di convalescenza (test PCR o test antigenico rapido effettuato da personale specializzato o prova di anticorpi con certificato valido) per terminare la quarantena. La convalescenza della mia infezione da covid è avvenuta meno di quattro mesi fa."
@@ -2466,7 +2471,7 @@ msgstr "Organizzazione non trovata"
 
 #, elixir-autogen, icu-format
 msgid "Internal"
-msgstr "Interno"
+msgstr "I do not want to give any information about this"
 
 #, elixir-autogen, icu-format
 msgctxt "Division Merge"
@@ -3208,6 +3213,11 @@ msgstr "No"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Person Convalescent Externally"
+msgid "No"
+msgstr "No"
+
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Employment Status"
 msgid "No"
 msgstr "No"
 
@@ -5958,6 +5968,11 @@ msgstr "Sì"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Person Convalescent Externally"
+msgid "Yes"
+msgstr "Sì"
+
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Employment Status"
 msgid "Yes"
 msgstr "Sì"
 

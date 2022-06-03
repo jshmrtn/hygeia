@@ -377,7 +377,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       end
     end
 
-    test "sets no occupation and advances to vaccination", %{
+    test "sets no employer and advances to vaccination", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
@@ -388,7 +388,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         live(conn, Routes.auto_tracing_employer_path(conn, :employer, case))
 
       assert employer_view
-             |> form("#employer-form", employer: %{employed: false})
+             |> form("#employer-form", employer: %{employed: :no})
              |> render_change()
 
       assert employer_view
@@ -401,11 +401,11 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
       )
 
       assert %AutoTracing{
-               employed: false
+               employed: :no
              } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
 
-    test "sets one occupation and advances to vaccination", %{
+    test "sets no employer not disclosed and advances to vaccination", %{
       conn: conn,
       case_model: case,
       auto_tracing: auto_tracing
@@ -416,7 +416,35 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         live(conn, Routes.auto_tracing_employer_path(conn, :employer, case))
 
       assert employer_view
-             |> form("#employer-form", employer: %{employed: true})
+             |> form("#employer-form", employer: %{employed: :not_disclosed})
+             |> render_change()
+
+      assert employer_view
+             |> element("button", "Continue")
+             |> render_click()
+
+      assert_redirect(
+        employer_view,
+        Routes.auto_tracing_vaccination_path(conn, :vaccination, case)
+      )
+
+      assert %AutoTracing{
+               employed: :not_disclosed
+             } = AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
+    end
+
+    test "sets one employer and advances to vaccination", %{
+      conn: conn,
+      case_model: case,
+      auto_tracing: auto_tracing
+    } do
+      set_last_completed_step(auto_tracing, :employer)
+
+      {:ok, employer_view, _html} =
+        live(conn, Routes.auto_tracing_employer_path(conn, :employer, case))
+
+      assert employer_view
+             |> form("#employer-form", employer: %{employed: :yes})
              |> render_change() =~
                "please add at least one occupation"
 
@@ -457,7 +485,7 @@ defmodule HygeiaWeb.AutoTracingLiveTest do
         Routes.auto_tracing_vaccination_path(conn, :vaccination, case)
       )
 
-      assert %AutoTracing{employed: true, unsolved_problems: [:new_employer]} =
+      assert %AutoTracing{employed: :yes, unsolved_problems: [:new_employer]} =
                AutoTracingContext.get_auto_tracing!(auto_tracing.uuid)
     end
   end

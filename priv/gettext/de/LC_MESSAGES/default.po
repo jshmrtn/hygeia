@@ -144,7 +144,7 @@ msgstr "Bildungseinrichtung hinzufügen"
 
 #, elixir-autogen, icu-format
 msgid "Add an occupation"
-msgstr "Beschäftigung hinzufügen"
+msgstr "Weitere Beschäftigungen hinzufügen"
 
 #, elixir-autogen, icu-format
 msgid "Add external references if it does not exist."
@@ -2163,6 +2163,11 @@ msgid "I confirm that all the data above is correct. This may be inspected!"
 msgstr "Ich bestätige, dass alle Angaben korrekt sind. Dies kann überprüft werden!"
 
 #, elixir-autogen, icu-format
+msgctxt "Employment Status"
+msgid "I do not want to give any information about this"
+msgstr "Dazu möchte ich keine Auskunft geben"
+
+#, elixir-autogen, icu-format
 msgid "I have official convalescence documentation (PCR test or rapid antigen test carried out by qualified personnel or antibody detection with a valid certificate) to end the quarantine. The convalescence of my covid infection heppended less than four months ago."
 msgstr "Ich verfüge über einen offiziellen Genesenen-Nachweis (PCR Test oder Antigenschnelltest durch Fachpersonal durchgeführt oder Antikörper-Nachweis mit gültigem Zertifikat) um die Quarantäne zu beenden. Die Genesung liegt weniger als 4 Monate zurück."
 
@@ -3206,6 +3211,11 @@ msgstr "Nein"
 
 #, elixir-autogen, icu-format
 msgctxt "Person Convalescent Externally"
+msgid "No"
+msgstr "Nein"
+
+#, elixir-autogen, icu-format
+msgctxt "Employment Status"
 msgid "No"
 msgstr "Nein"
 
@@ -5956,6 +5966,11 @@ msgstr "Ja"
 
 #, elixir-autogen, icu-format
 msgctxt "Person Convalescent Externally"
+msgid "Yes"
+msgstr "Ja"
+
+#, elixir-autogen, icu-format
+msgctxt "Employment Status"
 msgid "Yes"
 msgstr "Ja"
 
