@@ -8,6 +8,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
   alias Hygeia.AutoTracingContext
   alias Hygeia.AutoTracingContext.AutoTracing
+  alias Hygeia.AutoTracingContext.AutoTracing.EmploymentStatus
   alias Hygeia.AutoTracingContext.AutoTracing.Occupation
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
@@ -32,7 +33,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
   @primary_key false
   embedded_schema do
-    field :employed, :boolean
+    field :employed, EmploymentStatus
     embeds_many :occupations, Occupation, on_replace: :delete
   end
 
@@ -85,10 +86,9 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
           step = %__MODULE__{
             employed:
               cond do
-                Enum.any?(occupations) -> true
-                is_nil(case.auto_tracing.employed) -> nil
-                case.auto_tracing.employed and Enum.empty?(occupations) -> nil
-                true -> false
+                Enum.any?(occupations) -> :yes
+                case.auto_tracing.employed == :yes and Enum.empty?(occupations) -> nil
+                true -> case.auto_tracing.employed
               end,
             occupations: occupations
           }
@@ -258,7 +258,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
     changeset
     |> fetch_field!(:employed)
     |> case do
-      true ->
+      :yes ->
         cast_embed(changeset, :occupations,
           required: true,
           required_message: gettext("please add at least one occupation")
@@ -289,10 +289,7 @@ defmodule HygeiaWeb.AutoTracingLive.Employer do
 
     person
     |> CaseContext.change_person()
-    |> put_assoc(
-      :affiliations,
-      affiliations
-    )
+    |> put_assoc(:affiliations, affiliations)
   end
 
   defp is_visit_related?(changeset) do

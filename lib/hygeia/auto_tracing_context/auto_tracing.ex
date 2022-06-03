@@ -5,6 +5,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
 
   use Hygeia, :model
 
+  alias Hygeia.AutoTracingContext.AutoTracing.EmploymentStatus
   alias Hygeia.AutoTracingContext.AutoTracing.Flight
   alias Hygeia.AutoTracingContext.AutoTracing.Problem
   alias Hygeia.AutoTracingContext.AutoTracing.Propagator
@@ -18,7 +19,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           uuid: Ecto.UUID.t() | nil,
           current_step: Step.t() | nil,
           last_completed_step: Step.t() | nil,
-          employed: boolean() | nil,
+          employed: EmploymentStatus.t() | nil,
           problems: [Problem.t()] | nil,
           solved_problems: [Problem.t()] | nil,
           unsolved_problems: [Problem.t()] | nil,
@@ -38,7 +39,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
           uuid: Ecto.UUID.t(),
           current_step: Step.t(),
           last_completed_step: Step.t() | nil,
-          employed: boolean() | nil,
+          employed: EmploymentStatus.t() | nil,
           problems: [Problem.t()],
           solved_problems: [Problem.t()],
           unsolved_problems: [Problem.t()],
@@ -69,7 +70,7 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
     field :has_travelled_in_risk_country, :boolean
     field :has_flown, :boolean
     field :scholar, :boolean
-    field :employed, :boolean
+    field :employed, EmploymentStatus
     field :problems, {:array, Problem}, default: []
     field :solved_problems, {:array, Problem}, default: []
     field :unsolved_problems, {:array, Problem}, read_after_writes: true

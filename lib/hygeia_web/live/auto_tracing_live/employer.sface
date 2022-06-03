@@ -21,27 +21,36 @@
                     "btn",
                     "btn-sm",
                     "btn-outline-primary",
-                    active: get_field(@changeset, :employed) == true,
+                    active: fetch_field!(@changeset, :employed) == :yes,
                     disabled: has_related_visit_occupations?(@changeset)
                   }>
-                    <RadioButton value opts={disabled: has_related_visit_occupations?(@changeset)} />
-                    {gettext("Yes")}
+                    <RadioButton value={:yes} opts={disabled: has_related_visit_occupations?(@changeset)} />
+                    {EmploymentStatus.translate(:yes)}
                   </label>
                   <label class={
                     "btn",
                     "btn-sm",
                     "btn-outline-primary",
-                    active: get_field(@changeset, :employed) == false
+                    active: fetch_field!(@changeset, :employed) == :no
                   }>
-                    <RadioButton value={false} opts={disabled: has_related_visit_occupations?(@changeset)} />
-                    {gettext("No")}
+                    <RadioButton value={:no} opts={disabled: has_related_visit_occupations?(@changeset)} />
+                    {EmploymentStatus.translate(:no)}
+                  </label>
+                  <label class={
+                    "btn",
+                    "btn-sm",
+                    "btn-outline-primary",
+                    active: fetch_field!(@changeset, :employed) == :not_disclosed
+                  }>
+                    <RadioButton value={:not_disclosed} opts={disabled: has_related_visit_occupations?(@changeset)} />
+                    {EmploymentStatus.translate(:not_disclosed)}
                   </label>
                 </div>
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
             </div>
           </div>
-          <div :if={get_field(@changeset, :employed)} class="hy-card-grid-2-cols">
+          <div :if={fetch_field!(@changeset, :employed) == :yes} class="hy-card-grid-2-cols">
             <Inputs for={:occupations}>
               <InputContext assigns={assigns} :let={form: occupation}>
                 <div class="card">
@@ -194,7 +203,7 @@
               </InputContext>
             </Inputs>
           </div>
-          <div class="mt-4" :if={get_field(@changeset, :employed)}>
+          <div class="mt-4" :if={fetch_field!(@changeset, :employed) == :yes}>
             <button class="btn btn-outline-primary" type="button" :on-click="add_occupation">
               {gettext("Add an occupation")}
             </button>
