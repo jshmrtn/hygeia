@@ -64,7 +64,11 @@ defmodule Hygeia.Helpers.Phone do
 
   defp interpret_phone_type(:fixed_line), do: [:landline]
 
-  defp interpret_phone_type(:fixed_line_or_mobile), do: [:landline, :mobile]
+  defp interpret_phone_type(:voip), do: [:landline]
 
-  defp interpret_phone_type(type), do: [type]
+  defp interpret_phone_type(:uan), do: [:landline]
+
+  defp interpret_phone_type(:mobile), do: [:mobile]
+
+  defp interpret_phone_type(_other_type), do: [:mobile, :landline]
 end
