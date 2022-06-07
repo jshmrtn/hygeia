@@ -6,6 +6,7 @@ defmodule HygeiaWeb.Search do
   import Ecto.Query
 
   alias Hygeia.CaseContext
+  alias Hygeia.Helpers.Phone
   alias Hygeia.OrganisationContext
   alias Hygeia.Repo
   alias Hygeia.TenantContext
@@ -130,11 +131,19 @@ defmodule HygeiaWeb.Search do
             )
 
           fn ->
-            from(case in CaseContext.fulltext_person_search_query(query),
-              where: case.tenant_uuid in ^Enum.map(tenants, & &1.uuid)
-            )
-            |> Repo.all()
-            |> Enum.map(&{&1.uuid, &1})
+            if Phone.is_valid_number?(query) do
+              query
+              |> Phone.get_number_type()
+              |> Enum.flat_map(&CaseContext.list_people_by_contact_method(&1, query))
+              |> Enum.map(&{&1.uuid, &1})
+              |> Enum.uniq_by(&elem(&1, 0))
+            else
+              from(case in CaseContext.fulltext_person_search_query(query),
+                where: case.tenant_uuid in ^Enum.map(tenants, & &1.uuid)
+              )
+              |> Repo.all()
+              |> Enum.map(&{&1.uuid, &1})
+            end
           end
         end,
       case:
