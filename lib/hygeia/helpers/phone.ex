@@ -39,4 +39,36 @@ defmodule Hygeia.Helpers.Phone do
         add_error(changeset, field, dgettext("errors", "is invalid"))
     end
   end
+
+  @spec is_valid_number?(string :: String.t()) :: boolean()
+  def is_valid_number?(string) do
+    case ExPhoneNumber.parse(string, @origin_country) do
+      {:ok, parsed_number} -> ExPhoneNumber.is_valid_number?(parsed_number)
+      {:error, _reason} -> false
+    end
+  end
+
+  @spec get_number_type(string :: String.t()) :: [atom()]
+  def get_number_type(string) do
+    string
+    |> ExPhoneNumber.parse(@origin_country)
+    |> case do
+      {:ok, parsed_number} -> ExPhoneNumber.Validation.get_number_type(parsed_number)
+      {:error, _reason} -> :unknown
+    end
+    |> interpret_phone_type()
+  end
+
+  @spec get_origin_country :: String.t()
+  def get_origin_country, do: @origin_country
+
+  defp interpret_phone_type(:fixed_line), do: [:landline]
+
+  defp interpret_phone_type(:voip), do: [:landline]
+
+  defp interpret_phone_type(:uan), do: [:landline]
+
+  defp interpret_phone_type(:mobile), do: [:mobile]
+
+  defp interpret_phone_type(_other_type), do: [:mobile, :landline]
 end

@@ -84,17 +84,25 @@ defmodule Hygeia.CaseContext do
     end)
   end
 
-  @spec list_people_by_contact_method(type :: ContactMethod.Type.t(), value :: String.t()) :: [
+  @spec list_people_by_contact_method(
+          type :: ContactMethod.Type.t(),
+          value :: String.t(),
+          tenants :: [Ecto.UUID.t()]
+        ) :: [
           Person.t()
         ]
 
-  def list_people_by_contact_method(type, value) when type in [:mobile, :landline] do
+  def list_people_by_contact_method(type, value, tenants \\ [])
+
+  def list_people_by_contact_method(type, value, tenants)
+      when type in [:mobile, :landline] do
     with {:ok, parsed_number} <-
            ExPhoneNumber.parse(value, @origin_country),
          true <- ExPhoneNumber.is_valid_number?(parsed_number) do
       _list_people_by_contact_method(
         type,
-        ExPhoneNumber.Formatting.format(parsed_number, :international)
+        ExPhoneNumber.Formatting.format(parsed_number, :international),
+        tenants
       )
     else
       false -> []
@@ -102,20 +110,33 @@ defmodule Hygeia.CaseContext do
     end
   end
 
-  def list_people_by_contact_method(type, value), do: _list_people_by_contact_method(type, value)
+  def list_people_by_contact_method(type, value, tenants),
+    do: _list_people_by_contact_method(type, value, tenants)
 
-  defp _list_people_by_contact_method(type, value),
-    do:
-      Repo.all(
-        from(person in Person,
-          where:
-            fragment(
-              ~S[?::jsonb <@ ANY (?)],
-              ^%{type: type, value: value},
-              person.contact_methods
-            )
+  @spec list_people_by_contact_method_query(
+          type :: atom(),
+          value :: String.t(),
+          tenants :: [Ecto.UUID.t()]
+        ) :: Ecto.Query.t()
+  def list_people_by_contact_method_query(type, value, []) do
+    from(person in Person,
+      where:
+        fragment(
+          ~S[?::jsonb <@ ANY (?)],
+          ^%{type: type, value: value},
+          person.contact_methods
         )
-      )
+    )
+  end
+
+  def list_people_by_contact_method_query(type, value, tenants) when is_list(tenants) do
+    type
+    |> list_people_by_contact_method_query(value, [])
+    |> where([p], p.tenant_uuid in ^tenants)
+  end
+
+  defp _list_people_by_contact_method(type, value, tenants),
+    do: type |> list_people_by_contact_method_query(value, tenants) |> Repo.all()
 
   @spec list_people_by_external_reference(type :: ExternalReference.Type.t(), value: String.t()) ::
           [

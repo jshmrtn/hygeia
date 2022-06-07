@@ -6,6 +6,7 @@ defmodule HygeiaWeb.Search do
   import Ecto.Query
 
   alias Hygeia.CaseContext
+  alias Hygeia.Helpers.Phone
   alias Hygeia.OrganisationContext
   alias Hygeia.Repo
   alias Hygeia.TenantContext
@@ -124,30 +125,36 @@ defmodule HygeiaWeb.Search do
       person:
         if authorized?(CaseContext.Person, :list, get_auth(socket), tenant: :any) do
           tenants =
-            Enum.filter(
-              socket.assigns.tenants,
-              &authorized?(CaseContext.Person, :list, get_auth(socket), tenant: &1)
-            )
+            socket.assigns.tenants
+            |> Enum.filter(&authorized?(CaseContext.Person, :list, get_auth(socket), tenant: &1))
+            |> Enum.map(& &1.uuid)
 
           fn ->
-            from(case in CaseContext.fulltext_person_search_query(query),
-              where: case.tenant_uuid in ^Enum.map(tenants, & &1.uuid)
-            )
-            |> Repo.all()
-            |> Enum.map(&{&1.uuid, &1})
+            if Phone.is_valid_number?(query) do
+              query
+              |> Phone.get_number_type()
+              |> Enum.flat_map(&CaseContext.list_people_by_contact_method(&1, query, tenants))
+              |> Enum.map(&{&1.uuid, &1})
+              |> Enum.uniq_by(&elem(&1, 0))
+            else
+              from(case in CaseContext.fulltext_person_search_query(query),
+                where: case.tenant_uuid in ^tenants
+              )
+              |> Repo.all()
+              |> Enum.map(&{&1.uuid, &1})
+            end
           end
         end,
       case:
         if authorized?(CaseContext.Case, :list, get_auth(socket), tenant: :any) do
           tenants =
-            Enum.filter(
-              socket.assigns.tenants,
-              &authorized?(CaseContext.Case, :list, get_auth(socket), tenant: &1)
-            )
+            socket.assigns.tenants
+            |> Enum.filter(&authorized?(CaseContext.Case, :list, get_auth(socket), tenant: &1))
+            |> Enum.map(& &1.uuid)
 
           fn ->
             from(case in CaseContext.fulltext_case_search_query(query),
-              where: case.tenant_uuid in ^Enum.map(tenants, & &1.uuid)
+              where: case.tenant_uuid in ^tenants
             )
             |> Repo.all()
             |> Repo.preload(:person)
