@@ -546,7 +546,7 @@ defmodule Hygeia.CaseContextTest do
               }} = CaseContext.update_case(case, @update_attrs)
     end
 
-    test "update_case/2 other status than hospitalization needs end date" do
+    test "update_case/2 case status can be set to closed without hospitalization end date" do
       organisation = organisation_fixture()
 
       case =
@@ -563,7 +563,7 @@ defmodule Hygeia.CaseContextTest do
           :auto_tracing
         )
 
-      assert {:error, _changeset} = CaseContext.update_case(case, %{status: :done})
+      assert {:ok, %Case{status: :done}} = CaseContext.update_case(case, %{status: :done})
     end
 
     test "update_case/2 status done needs phase order decision" do

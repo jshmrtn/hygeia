@@ -1,6 +1,6 @@
 defmodule Hygeia.StatisticsContext.VaccinationBreakthroughsPerDay do
   @moduledoc """
-  Model for Vaccination Breakthroughs per Day
+  Model for Vaccination breakthroughs per Day
   """
 
   use Hygeia, :model

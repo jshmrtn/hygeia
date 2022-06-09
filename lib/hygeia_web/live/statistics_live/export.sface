@@ -18,7 +18,7 @@
       <div class="col-12 col-xl-6 h-full mt-2">
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
-            <h6 class="mb-0">{gettext("People in Isolation")}</h6>
+            <h6 class="mb-0">{gettext("People in isolation")}</h6>
             <Link
               class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
@@ -38,7 +38,7 @@
       <div class="col-12 col-xl-6 h-full mt-2">
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
-            <h6 class="mb-0">{gettext("Finished Isolations")}</h6>
+            <h6 class="mb-0">{gettext("Finished isolations")}</h6>
             <Link
               class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
@@ -60,7 +60,7 @@
       <div class="col-12 col-xl-6 h-full mt-2">
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
-            <h6 class="mb-0">{gettext("People in Quarantine")}</h6>
+            <h6 class="mb-0">{gettext("People in quarantine")}</h6>
             <Link
               class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
@@ -80,7 +80,7 @@
       <div class="col-12 col-xl-6 h-full mt-2">
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
-            <h6 class="mb-0">{gettext("Quarantine End Reasons")}</h6>
+            <h6 class="mb-0">{gettext("Quarantine end reasons")}</h6>
             <Link
               class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
@@ -102,7 +102,7 @@
       <div class="col-12 col-xl-6 h-full mt-2">
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
-            <h6 class="mb-0">{gettext("New Cases")}</h6>
+            <h6 class="mb-0">{gettext("New cases")}</h6>
             <Link
               class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
@@ -122,18 +122,18 @@
       <div class="col-12 col-xl-6 h-full mt-2">
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
-            <h6 class="mb-0">{gettext("People in Hospital")}</h6>
+            <h6 class="mb-0">{gettext("People admitted in hospital")}</h6>
             <Link
               class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
                 @socket,
                 :export,
                 @tenant,
-                :active_hospitalization_cases_per_day,
+                :hospital_admission_cases_per_day,
                 Date.to_iso8601(@from),
                 Date.to_iso8601(@to)
               )}
-              opts={download: "active_hospitalization_cases_per_day#{@tenant.name}_#{@from}_#{@to}.csv"}
+              opts={download: "hospital_admission_cases_per_day#{@tenant.name}_#{@from}_#{@to}.csv"}
             >{gettext("Download CSV")}</Link>
           </div>
         </div>
@@ -164,7 +164,7 @@
       <div class="col-12 col-xl-6 h-full mt-2">
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
-            <h6 class="mb-0">{gettext("Infection Place")}</h6>
+            <h6 class="mb-0">{gettext("Infection place")}</h6>
             <Link
               class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
@@ -186,7 +186,7 @@
       <div class="col-12 col-xl-6 h-full mt-2">
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
-            <h6 class="mb-0">{gettext("Transmission Countries")}</h6>
+            <h6 class="mb-0">{gettext("Transmission countries")}</h6>
             <Link
               class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(
@@ -207,9 +207,9 @@
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
             <h6 class="mb-0">
-              {gettext("Isolations Per Organisation")}
+              {gettext("Isolations per organisation")}
               <small>
-                {gettext(~S(on "From" Day))}</small>
+                {gettext(~S(on "From" day))}</small>
             </h6>
 
             <Link
@@ -233,7 +233,7 @@
       <div class="col-12 col-xl-6 h-full mt-2">
         <div class="card">
           <div class="card-body d-flex align-items-center justify-content-between">
-            <h6 class="mb-0">{gettext("Vaccination Breakthroughs")}</h6>
+            <h6 class="mb-0">{gettext("Vaccination breakthroughs")}</h6>
             <Link
               class="btn btn-sm btn-outline-primary ms-2 flex-shrink-0"
               to={Routes.statistics_path(

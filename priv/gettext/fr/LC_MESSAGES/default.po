@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1\n"
 
 #, elixir-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -41,7 +41,7 @@ msgstr "24 heures"
 msgid "24 Hours Statistics"
 msgstr "Statistiques 24 heures"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "6 or more contact persons"
 msgstr "6 personnes de contact ou plus"
 
@@ -53,7 +53,7 @@ msgstr "< 15 Min."
 msgid "< 30 Min."
 msgstr "< 30 Min."
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "> 15 Min."
 msgstr "> 15 Min."
 
@@ -1859,7 +1859,7 @@ msgid "Finish"
 msgstr "Finition"
 
 #, elixir-autogen, fuzzy, icu-format
-msgid "Finished Isolations"
+msgid "Finished isolations"
 msgstr "Isolations terminées"
 
 #, elixir-autogen, fuzzy, icu-format
@@ -2241,10 +2241,6 @@ msgid "If there are no known contact methods for the person, a contact method fo
 msgstr "S'il n'existe aucune méthode de contact connue pour la personne, il est possible de saisir à la place la méthode de contact d'une personne proche (parent, colocataire, gardien)."
 
 #, elixir-autogen, fuzzy, icu-format
-msgid "If there are open hospitalizations, the status can not be set to \"done\" / \"canceled\"."
-msgstr "S'il y a des hospitalisations en cours, le statut ne peut pas être défini comme \"terminé\" / \"annulé\"."
-
-#, elixir-autogen, fuzzy, icu-format
 msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
 msgstr "S'il y a des phases sans ordres de quarantaine/isolement inconnus décidés, le statut ne doit pas être \"fait\" / \"annulé\"."
 
@@ -2540,7 +2536,7 @@ msgid "Isolation Period End"
 msgstr "Fin de la période d'isolement"
 
 #, elixir-autogen, fuzzy, icu-format
-msgid "Isolations Per Organisation"
+msgid "Isolations per organisation"
 msgstr "Isolations par organisation"
 
 #, elixir-autogen, icu-format
@@ -3056,10 +3052,6 @@ msgstr "Test négatif"
 #, elixir-autogen, fuzzy, icu-format
 msgid "New Case"
 msgstr "Nouveau cas"
-
-#, elixir-autogen, fuzzy, icu-format
-msgid "New Cases"
-msgstr "Nouveaux cas"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "New Division"
@@ -3653,16 +3645,16 @@ msgctxt "Create Possible Index Step"
 msgid "People"
 msgstr "Personnes"
 
-#, elixir-autogen, fuzzy, icu-format
-msgid "People in Hospital"
-msgstr "Personnes hospitalisées"
+#, elixir-autogen, icu-format
+msgid "People admitted in hospital"
+msgstr "Les personnes admises à l'hôpital"
 
 #, elixir-autogen, fuzzy, icu-format
-msgid "People in Isolation"
+msgid "People in isolation"
 msgstr "Les personnes isolées"
 
 #, elixir-autogen, fuzzy, icu-format
-msgid "People in Quarantine"
+msgid "People in quarantine"
 msgstr "Les personnes en quarantaine"
 
 #, elixir-autogen, icu-format
@@ -4176,10 +4168,6 @@ msgid "Quarantine End"
 msgstr "Fin de la quarantaine"
 
 #, elixir-autogen, fuzzy, icu-format
-msgid "Quarantine End Reasons"
-msgstr "Raisons de la fin de la quarantaine"
-
-#, elixir-autogen, fuzzy, icu-format
 msgid "Quarantine Order"
 msgstr "Ordre de quarantaine"
 
@@ -4198,6 +4186,10 @@ msgstr "Une confirmation de quarantaine sera envoyée sur les méthodes de conta
 #, elixir-autogen, fuzzy, icu-format
 msgid "Quarantine confirmation will not be sent to this person."
 msgstr "Les confirmations de quarantaine ne sont disponibles que pour les personnes de contact."
+
+#, elixir-autogen, fuzzy, icu-format
+msgid "Quarantine end reasons"
+msgstr "Raisons de la fin de la quarantaine"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
@@ -5463,10 +5455,6 @@ msgctxt "Create Possible Index Step"
 msgid "Transmission"
 msgstr "Transmission"
 
-#, elixir-autogen, icu-format
-msgid "Transmission Countries"
-msgstr "Pays de transmission"
-
 #, elixir-autogen, fuzzy, icu-format
 msgid "Transmission Date"
 msgstr "Date de transmission"
@@ -5475,6 +5463,10 @@ msgstr "Date de transmission"
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Transmission Date"
 msgstr "Date de transmission"
+
+#, elixir-autogen, fuzzy, icu-format
+msgid "Transmission countries"
+msgstr "Pays de transmission"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Transmission created successfully"
@@ -5758,16 +5750,16 @@ msgid "Vaccination 4th Jab Name"
 msgstr "Vaccination"
 
 #, elixir-autogen, fuzzy, icu-format
-msgid "Vaccination Breakthroughs"
-msgstr "Vaccination"
-
-#, elixir-autogen, fuzzy, icu-format
 msgid "Vaccination Failures"
 msgstr "Échecs de la vaccination"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Vaccination Validity"
 msgid "Vaccination Validity"
+msgstr "Vaccination"
+
+#, elixir-autogen, fuzzy, icu-format
+msgid "Vaccination breakthroughs"
 msgstr "Vaccination"
 
 #, elixir-autogen, fuzzy, icu-format
@@ -6212,7 +6204,7 @@ msgid "notifications"
 msgstr "notifications"
 
 #, elixir-autogen, fuzzy, icu-format
-msgid "on \"From\" Day"
+msgid "on \"From\" day"
 msgstr "le jour \"de\""
 
 #, elixir-autogen, fuzzy, icu-format

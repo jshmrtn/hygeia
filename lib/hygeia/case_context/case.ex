@@ -188,7 +188,6 @@ defmodule Hygeia.CaseContext.Case do
     |> cast_embed(:phases, required: true)
     |> validate_at_least_one_phase()
     |> validate_phase_type_unique()
-    |> validate_status_hospitalization()
     |> validate_status_auto_tracing()
     |> sort_phases_as_needed()
     |> validate_phase_orders()
@@ -251,34 +250,6 @@ defmodule Hygeia.CaseContext.Case do
         [phases: gettext("Case Phase Type must be unique")]
       end
     end)
-  end
-
-  defp validate_status_hospitalization(changeset) do
-    case {fetch_change(changeset, :status), fetch_change(changeset, :hospitalizations)} do
-      {:error, :error} ->
-        changeset
-
-      _other ->
-        cond do
-          Enum.all?(
-            fetch_field!(changeset, :hospitalizations),
-            &match?(%Hospitalization{start: %Date{}, end: %Date{}}, &1)
-          ) ->
-            changeset
-
-          fetch_field!(changeset, :status) not in [:done, :canceled] ->
-            changeset
-
-          true ->
-            add_error(
-              changeset,
-              :status,
-              gettext(
-                ~S(If there are open hospitalizations, the status can not be set to "done" / "canceled".)
-              )
-            )
-        end
-    end
   end
 
   defp validate_status_auto_tracing(changeset) do

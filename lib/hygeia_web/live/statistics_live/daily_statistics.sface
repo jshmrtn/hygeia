@@ -25,7 +25,7 @@
             class="card justify-content-center align-items-center"
           >
             <div class="card-body p-5">
-              <h5 class="card-title mb-5 text-muted">{gettext("People in Isolation")}</h5>
+              <h5 class="card-title mb-5 text-muted">{gettext("People in isolation")}</h5>
               <p class="display-1 m-0">
                 {case @active_isolation_cases_per_day do
                   [%{count: count}] -> HygeiaCldr.Number.to_string!(count)
@@ -36,7 +36,7 @@
           </div>
           <HygeiaWeb.StatisticsLive.NoDataWarning
             :if={@active_isolation_cases_per_day == []}
-            title={gettext("People in Isolation")}
+            title={gettext("People in isolation")}
           />
         </div>
 
@@ -66,7 +66,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("Finished Isolations")
+                    text: gettext("Finished isolations")
                   }
                 }
               }
@@ -76,7 +76,7 @@
             class="d-flex justify-content-center align-items-center"
             :if={@cumulative_index_case_end_reasons == []}
           >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Finished Isolations")} />
+            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Finished isolations")} />
           </div>
         </div>
       </div>
@@ -105,7 +105,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("People in Quarantine")
+                    text: gettext("People in quarantine")
                   }
                 }
               }
@@ -115,7 +115,7 @@
             class="d-flex justify-content-center align-items-center"
             :if={@active_quarantine_cases_per_day == []}
           >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("People in Quarantine")} />
+            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("People in quarantine")} />
           </div>
         </div>
 
@@ -170,7 +170,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("Quarantine End Reasons")
+                    text: gettext("Quarantine end reasons")
                   },
                   legend: %{
                     display: false
@@ -183,7 +183,7 @@
             class="d-flex justify-content-center align-items-center"
             :if={@cumulative_possible_index_case_end_reasons == []}
           >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Quarantine End Reasons")} />
+            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Quarantine end reasons")} />
           </div>
         </div>
       </div>
@@ -215,7 +215,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("New Cases")
+                    text: gettext("New cases")
                   }
                 }
               }
@@ -228,14 +228,14 @@
 
         <div class="col-12 col-xl-6  mt-5 mt-xl-0 text-center h-full d-flex justify-content-center align-items-center">
           <div
-            :if={@active_hospitalization_cases_per_day != []}
+            :if={@hospital_admission_cases_per_day != []}
             class="card justify-content-center align-items-center"
           >
             <div class="card-body p-5">
-              <h5 class="card-title mb-5 text-muted">{gettext("People in Hospital")}</h5>
+              <h5 class="card-title mb-5 text-muted">{gettext("People admitted in hospital")}</h5>
               <p class="display-1 m-0">
-                {case @active_hospitalization_cases_per_day do
-                  [%StatisticsContext.ActiveHospitalizationCasesPerDay{count: count}] ->
+                {case @hospital_admission_cases_per_day do
+                  [%StatisticsContext.HospitalAdmissionCasesPerDay{count: count}] ->
                     HygeiaCldr.Number.to_string!(count)
 
                   [] ->
@@ -245,8 +245,8 @@
             </div>
           </div>
           <HygeiaWeb.StatisticsLive.NoDataWarning
-            :if={@active_hospitalization_cases_per_day == []}
-            title={gettext("People in Hospital")}
+            :if={@hospital_admission_cases_per_day == []}
+            title={gettext("People admitted in hospital")}
           />
         </div>
       </div>
@@ -257,7 +257,7 @@
             class="card justify-content-center align-items-center"
           >
             <div class="card-body p-5">
-              <h5 class="card-title mb-5 text-muted">{gettext("Vaccination Breakthroughs")}</h5>
+              <h5 class="card-title mb-5 text-muted">{gettext("Vaccination breakthroughs")}</h5>
               <p class="display-1 m-0">
                 {case @vaccination_breakthroughs_per_day do
                   [%StatisticsContext.VaccinationBreakthroughsPerDay{count: count}] ->
@@ -271,7 +271,7 @@
           </div>
           <HygeiaWeb.StatisticsLive.NoDataWarning
             :if={@vaccination_breakthroughs_per_day == []}
-            title={gettext("Vaccination Breakthroughs")}
+            title={gettext("Vaccination breakthroughs")}
           />
         </div>
       </div>
@@ -318,7 +318,7 @@
         </div>
         <div class={"col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_infection_place_cases_per_day == []}>
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="mb-0">{gettext("Infection Place")}</h5>
+            <h5 class="mb-0">{gettext("Infection place")}</h5>
             <button
               class="btn btn-sm btn-outline-primary"
               :on-click="open_infection_table_modal"
@@ -334,7 +334,7 @@
           <HygeiaWeb.Modal
             id="infection_place_table_modal"
             :if={@infection_table_modal_open}
-            title={gettext("Infection Place")}
+            title={gettext("Infection place")}
             close="close_infection_table_modal"
           >
             <HygeiaWeb.StatisticsLive.InfectionPlaceTable active_infection_place_cases_per_day={@active_infection_place_cases_per_day} />
@@ -345,7 +345,7 @@
       <div class="row mt-5">
         <div class={"col-12 col-xl-6 h-full", empty: @transmission_country_cases_per_day == []}>
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="mb-2">{gettext("Transmission Countries")}</h5>
+            <h5 class="mb-2">{gettext("Transmission countries")}</h5>
             <button class="btn btn-sm btn-outline-primary" :on-click="open_country_table_modal" type="button">
               {gettext("Show all")}
             </button>
@@ -357,7 +357,7 @@
           <HygeiaWeb.Modal
             id="country_table_modal"
             :if={@country_table_modal_open}
-            title={gettext("Transmission Countries")}
+            title={gettext("Transmission countries")}
             close="close_country_table_modal"
           >
             <HygeiaWeb.StatisticsLive.CountryTable transmission_country_cases_per_day={@transmission_country_cases_per_day} />
@@ -365,7 +365,7 @@
         </div>
         <div class={"col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_cases_per_day_and_organisation == []}>
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="mb-2">{gettext("Isolations Per Organisation")}</h5>
+            <h5 class="mb-2">{gettext("Isolations per organisation")}</h5>
             <button
               class="btn btn-sm btn-outline-primary"
               :on-click="open_organisation_table_modal"
@@ -381,7 +381,7 @@
           <HygeiaWeb.Modal
             id="organisation_table_modal"
             :if={@organisation_table_modal_open}
-            title={gettext("Isolations Per Organisation")}
+            title={gettext("Isolations per organisation")}
             close="close_organisation_table_modal"
           >
             <HygeiaWeb.StatisticsLive.OrganisationTable active_cases_per_day_and_organisation={@active_cases_per_day_and_organisation} />

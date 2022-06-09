@@ -8,12 +8,12 @@ defmodule Hygeia.StatisticsContextTest do
   alias Hygeia.StatisticsContext
   alias Hygeia.StatisticsContext.ActiveCasesPerDayAndOrganisation
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
-  alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveInfectionPlaceCasesPerDay
   alias Hygeia.StatisticsContext.ActiveIsolationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveQuarantineCasesPerDay
   alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
   alias Hygeia.StatisticsContext.CumulativePossibleIndexCaseEndReasons
+  alias Hygeia.StatisticsContext.HospitalAdmissionCasesPerDay
   alias Hygeia.StatisticsContext.NewCasesPerDay
   alias Hygeia.StatisticsContext.TransmissionCountryCasesPerDay
   alias Hygeia.StatisticsContext.VaccinationBreakthroughsPerDay
@@ -844,7 +844,7 @@ defmodule Hygeia.StatisticsContextTest do
     end
   end
 
-  describe "active_hospitalization_cases_per_day" do
+  describe "hospital_admission_cases_per_day" do
     test "lists hospitalization case with date" do
       [day_1, day_2, day_3, day_4] =
         Enum.to_list(Date.range(Date.add(Date.utc_today(), -3), Date.utc_today()))
@@ -860,15 +860,15 @@ defmodule Hygeia.StatisticsContextTest do
         ]
       })
 
-      execute_materialized_view_refresh(:statistics_active_hospitalization_cases_per_day)
+      execute_materialized_view_refresh(:statistics_hospital_admission_cases_per_day)
 
       assert [
-               %ActiveHospitalizationCasesPerDay{count: 0, date: ^day_1},
-               %ActiveHospitalizationCasesPerDay{count: 1, date: ^day_2},
-               %ActiveHospitalizationCasesPerDay{count: 1, date: ^day_3},
-               %ActiveHospitalizationCasesPerDay{count: 0, date: ^day_4}
+               %HospitalAdmissionCasesPerDay{count: 0, date: ^day_1},
+               %HospitalAdmissionCasesPerDay{count: 1, date: ^day_2},
+               %HospitalAdmissionCasesPerDay{count: 0, date: ^day_3},
+               %HospitalAdmissionCasesPerDay{count: 0, date: ^day_4}
              ] =
-               StatisticsContext.list_active_hospitalization_cases_per_day(
+               StatisticsContext.list_hospital_admission_cases_per_day(
                  tenant,
                  day_1,
                  day_4
@@ -887,15 +887,15 @@ defmodule Hygeia.StatisticsContextTest do
         hospitalizations: []
       })
 
-      execute_materialized_view_refresh(:statistics_active_hospitalization_cases_per_day)
+      execute_materialized_view_refresh(:statistics_hospital_admission_cases_per_day)
 
       assert [
-               %ActiveHospitalizationCasesPerDay{count: 0, date: ^day_1},
-               %ActiveHospitalizationCasesPerDay{count: 0, date: ^day_2},
-               %ActiveHospitalizationCasesPerDay{count: 0, date: ^day_3},
-               %ActiveHospitalizationCasesPerDay{count: 0, date: ^day_4}
+               %HospitalAdmissionCasesPerDay{count: 0, date: ^day_1},
+               %HospitalAdmissionCasesPerDay{count: 0, date: ^day_2},
+               %HospitalAdmissionCasesPerDay{count: 0, date: ^day_3},
+               %HospitalAdmissionCasesPerDay{count: 0, date: ^day_4}
              ] =
-               StatisticsContext.list_active_hospitalization_cases_per_day(
+               StatisticsContext.list_hospital_admission_cases_per_day(
                  tenant,
                  day_1,
                  day_4
@@ -917,11 +917,11 @@ defmodule Hygeia.StatisticsContextTest do
         ]
       })
 
-      execute_materialized_view_refresh(:statistics_active_hospitalization_cases_per_day)
+      execute_materialized_view_refresh(:statistics_hospital_admission_cases_per_day)
 
       Repo.transaction(fn ->
         assert entries =
-                 :active_hospitalization_cases_per_day
+                 :hospital_admission_cases_per_day
                  |> StatisticsContext.export(
                    tenant,
                    day_1,

@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1\n"
 
 #, elixir-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -1856,7 +1856,7 @@ msgid "Finish"
 msgstr "Abschliessen"
 
 #, elixir-autogen, icu-format
-msgid "Finished Isolations"
+msgid "Finished isolations"
 msgstr "Abgeschlossene Isolierungen"
 
 #, elixir-autogen, icu-format
@@ -2238,10 +2238,6 @@ msgid "If there are no known contact methods for the person, a contact method fo
 msgstr "Falls für die Person keine Kontaktmethoden bekannt sind, kann auch die Kontaktmethode einer nahestehenden Person (Verwandte, Mitbewohnerin, Pflegerin) eingegeben werden."
 
 #, elixir-autogen, icu-format
-msgid "If there are open hospitalizations, the status can not be set to \"done\" / \"canceled\"."
-msgstr "Falls es laufende Hospitalisierungen gibt, darf der Status nicht auf \"Erledigt\" / \"Tracing abgeschlossen\" gesetzt werden."
-
-#, elixir-autogen, icu-format
 msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
 msgstr "Falls es Phasen gibt wo nicht entschieden wurde ob eine Quarantäne / Isolation verordnet wird, darf der Status nicht auf \"Erledigt\" / \"Tracing abgeschlossen\" gesetzt werden."
 
@@ -2537,7 +2533,7 @@ msgid "Isolation Period End"
 msgstr "Isolationsperiode Ende"
 
 #, elixir-autogen, icu-format
-msgid "Isolations Per Organisation"
+msgid "Isolations per organisation"
 msgstr "Indexfälle pro Organisation"
 
 #, elixir-autogen, icu-format
@@ -3053,10 +3049,6 @@ msgstr "Negativer Test"
 #, elixir-autogen, icu-format
 msgid "New Case"
 msgstr "Fall erstellen"
-
-#, elixir-autogen, icu-format
-msgid "New Cases"
-msgstr "Neue Fälle"
 
 #, elixir-autogen, icu-format
 msgid "New Division"
@@ -3651,15 +3643,15 @@ msgid "People"
 msgstr "Personen"
 
 #, elixir-autogen, icu-format
-msgid "People in Hospital"
-msgstr "Personen im Krankenhaus"
+msgid "People admitted in hospital"
+msgstr "Ins Krankenhaus eingelieferte Personen"
 
 #, elixir-autogen, icu-format
-msgid "People in Isolation"
+msgid "People in isolation"
 msgstr "Personen in Isolation"
 
 #, elixir-autogen, icu-format
-msgid "People in Quarantine"
+msgid "People in quarantine"
 msgstr "Personen in Quarantäne"
 
 #, elixir-autogen, icu-format
@@ -4173,10 +4165,6 @@ msgid "Quarantine End"
 msgstr "Ende der Quarantäne"
 
 #, elixir-autogen, icu-format
-msgid "Quarantine End Reasons"
-msgstr "Quarantäne-Endgründe"
-
-#, elixir-autogen, icu-format
 msgid "Quarantine Order"
 msgstr "Quarantäneverordnung"
 
@@ -4195,6 +4183,10 @@ msgstr "Die Quarantänebestätigung wird über die ausgewählten Kontaktmethoden
 #, elixir-autogen, icu-format
 msgid "Quarantine confirmation will not be sent to this person."
 msgstr "Diese Person erhält keine Quarantänebestätigung."
+
+#, elixir-autogen, icu-format
+msgid "Quarantine end reasons"
+msgstr "Quarantäne-Endgründe"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
@@ -5461,10 +5453,6 @@ msgid "Transmission"
 msgstr "Übertragung"
 
 #, elixir-autogen, icu-format
-msgid "Transmission Countries"
-msgstr "Übertragungsländer"
-
-#, elixir-autogen, icu-format
 msgid "Transmission Date"
 msgstr "Übertragungsdatum"
 
@@ -5472,6 +5460,10 @@ msgstr "Übertragungsdatum"
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Transmission Date"
 msgstr "Übertragungsdatum"
+
+#, elixir-autogen, icu-format
+msgid "Transmission countries"
+msgstr "Übertragungsländer"
 
 #, elixir-autogen, icu-format
 msgid "Transmission created successfully"
@@ -5755,10 +5747,6 @@ msgid "Vaccination 4th Jab Name"
 msgstr "4. Impfstoff"
 
 #, elixir-autogen, icu-format
-msgid "Vaccination Breakthroughs"
-msgstr "Impfversager"
-
-#, elixir-autogen, icu-format
 msgid "Vaccination Failures"
 msgstr "Impfversager"
 
@@ -5766,6 +5754,10 @@ msgstr "Impfversager"
 msgctxt "Vaccination Validity"
 msgid "Vaccination Validity"
 msgstr "Gültigkeit Impfung"
+
+#, elixir-autogen, icu-format
+msgid "Vaccination breakthroughs"
+msgstr "Impfversager"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
@@ -6209,7 +6201,7 @@ msgid "notifications"
 msgstr "Benachrichtigungen"
 
 #, elixir-autogen, icu-format
-msgid "on \"From\" Day"
+msgid "on \"From\" day"
 msgstr "am \"Von\" Tag"
 
 #, elixir-autogen, icu-format

@@ -11,12 +11,12 @@ defmodule Hygeia.StatisticsContext do
   alias Hygeia.OrganisationContext.Affiliation.Kind
   alias Hygeia.StatisticsContext.ActiveCasesPerDayAndOrganisation
   alias Hygeia.StatisticsContext.ActiveComplexityCasesPerDay
-  alias Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveInfectionPlaceCasesPerDay
   alias Hygeia.StatisticsContext.ActiveIsolationCasesPerDay
   alias Hygeia.StatisticsContext.ActiveQuarantineCasesPerDay
   alias Hygeia.StatisticsContext.CumulativeIndexCaseEndReasons
   alias Hygeia.StatisticsContext.CumulativePossibleIndexCaseEndReasons
+  alias Hygeia.StatisticsContext.HospitalAdmissionCasesPerDay
   alias Hygeia.StatisticsContext.NewCasesPerDay
   alias Hygeia.StatisticsContext.NewRegisteredCasesPerDay
   alias Hygeia.StatisticsContext.TransmissionCountryCasesPerDay
@@ -350,42 +350,42 @@ defmodule Hygeia.StatisticsContext do
   end
 
   @doc """
-  Returns the list of active_hospitalization_cases_per_day.
+  Returns the list of hospital_admission_cases_per_day.
 
   ## Examples
 
-      iex> list_active_hospitalization_cases_per_day()
-      [%ActiveHospitalizationCasesPerDay{}, ...]
+      iex> list_hospital_admission_cases_per_day()
+      [%HospitalAdmissionCasesPerDay{}, ...]
 
   """
-  @spec list_active_hospitalization_cases_per_day :: [ActiveHospitalizationCasesPerDay.t()]
-  def list_active_hospitalization_cases_per_day,
+  @spec list_hospital_admission_cases_per_day :: [HospitalAdmissionCasesPerDay.t()]
+  def list_hospital_admission_cases_per_day,
     do:
       Repo.all(
-        from(cases_per_day in ActiveHospitalizationCasesPerDay,
+        from(cases_per_day in HospitalAdmissionCasesPerDay,
           order_by: cases_per_day.date
         )
       )
 
-  @spec list_active_hospitalization_cases_per_day(tenant :: Tenant.t()) :: [
-          ActiveHospitalizationCasesPerDay.t()
+  @spec list_hospital_admission_cases_per_day(tenant :: Tenant.t()) :: [
+          HospitalAdmissionCasesPerDay.t()
         ]
-  def list_active_hospitalization_cases_per_day(%Tenant{uuid: tenant_uuid} = _tenant),
+  def list_hospital_admission_cases_per_day(%Tenant{uuid: tenant_uuid} = _tenant),
     do:
       Repo.all(
-        from(cases_per_day in ActiveHospitalizationCasesPerDay,
+        from(cases_per_day in HospitalAdmissionCasesPerDay,
           where: cases_per_day.tenant_uuid == ^tenant_uuid,
           order_by: cases_per_day.date
         )
       )
 
-  @spec list_active_hospitalization_cases_per_day(
+  @spec list_hospital_admission_cases_per_day(
           tenant :: Tenant.t(),
           from :: Date.t(),
           to :: Date.t(),
           include_zero_values :: boolean()
-        ) :: [ActiveHospitalizationCasesPerDay.t()]
-  def list_active_hospitalization_cases_per_day(
+        ) :: [HospitalAdmissionCasesPerDay.t()]
+  def list_hospital_admission_cases_per_day(
         tenant,
         from,
         to,
@@ -393,27 +393,27 @@ defmodule Hygeia.StatisticsContext do
       ),
       do:
         Repo.all(
-          list_active_hospitalization_cases_per_day_query(tenant, from, to, include_zero_values)
+          list_hospital_admission_cases_per_day_query(tenant, from, to, include_zero_values)
         )
 
-  defp list_active_hospitalization_cases_per_day_query(
+  defp list_hospital_admission_cases_per_day_query(
          %Tenant{uuid: tenant_uuid} = _tenant,
          from,
          to,
          include_zero_values \\ true
        ),
        do:
-         from(active_hospitalization_cases in ActiveHospitalizationCasesPerDay,
+         from(hospital_admission_cases in HospitalAdmissionCasesPerDay,
            where:
-             active_hospitalization_cases.tenant_uuid == ^tenant_uuid and
+             hospital_admission_cases.tenant_uuid == ^tenant_uuid and
                fragment(
                  "? BETWEEN ?::date AND ?::date",
-                 active_hospitalization_cases.date,
+                 hospital_admission_cases.date,
                  ^from,
                  ^to
                ) and
-               (^include_zero_values or active_hospitalization_cases.count > 0),
-           order_by: active_hospitalization_cases.date
+               (^include_zero_values or hospital_admission_cases.count > 0),
+           order_by: hospital_admission_cases.date
          )
 
   @doc """
@@ -734,17 +734,17 @@ defmodule Hygeia.StatisticsContext do
   end
 
   @spec export(
-          type :: :active_hospitalization_cases_per_day,
+          type :: :hospital_admission_cases_per_day,
           tenant :: Tenant.t(),
           from :: Date.t(),
           to :: Date.t()
         ) :: Enumerable.t()
-  def export(:active_hospitalization_cases_per_day, tenant, from, to) do
+  def export(:hospital_admission_cases_per_day, tenant, from, to) do
     [[gettext("Date"), gettext("Count")]]
     |> Stream.concat(
       Repo.stream(
         from(
-          cases_per_day in list_active_hospitalization_cases_per_day_query(
+          cases_per_day in list_hospital_admission_cases_per_day_query(
             tenant,
             from,
             to
