@@ -38,45 +38,53 @@ defmodule HygeiaWeb.AuthLive.Login do
         %{"person_login" => %{"first_name" => first_name, "last_name" => last_name}} = _params,
         socket
       ) do
-    {:ok, socket} =
-      LoginRateLimiter.handle_login(socket.assigns.person.uuid, fn ->
-        first_name_difference =
-          String.jaro_distance(
-            String.downcase(first_name),
-            String.downcase(socket.assigns.person.first_name)
-          )
-
-        last_name_difference =
-          String.jaro_distance(
-            String.downcase(last_name),
-            String.downcase(socket.assigns.person.last_name)
-          )
-
-        success = first_name_difference + last_name_difference >= 1.7
-
-        socket =
-          if success do
-            push_redirect(socket,
-              to:
-                Routes.auth_path(socket, :request, "person",
-                  return_url: socket.assigns.return_url,
-                  uuid: Token.sign(Endpoint, "person auth", socket.assigns.person.uuid)
-                )
-            )
-          else
-            socket
-            |> assign(form: %{first_name: first_name, last_name: last_name})
-            |> assign(login_disabled: true)
-            |> put_flash(
-              :error,
-              gettext(
-                "Invalid Person Details, if you believe this is an error, contact the tracing team."
+    socket =
+      (String.length(first_name) < 2 and String.length(last_name) < 2)
+      |> if do
+        put_flash(socket, :error, gettext("Please enter a full name."))
+      else
+        {:ok, socket} =
+          LoginRateLimiter.handle_login(socket.assigns.person.uuid, fn ->
+            first_name_difference =
+              String.jaro_distance(
+                String.downcase(first_name),
+                String.downcase(socket.assigns.person.first_name)
               )
-            )
-          end
 
-        {success, socket}
-      end)
+            last_name_difference =
+              String.jaro_distance(
+                String.downcase(last_name),
+                String.downcase(socket.assigns.person.last_name)
+              )
+
+            success = first_name_difference + last_name_difference >= 1.7
+
+            socket =
+              if success do
+                push_redirect(socket,
+                  to:
+                    Routes.auth_path(socket, :request, "person",
+                      return_url: socket.assigns.return_url,
+                      uuid: Token.sign(Endpoint, "person auth", socket.assigns.person.uuid)
+                    )
+                )
+              else
+                socket
+                |> assign(login_disabled: true)
+                |> put_flash(
+                  :error,
+                  gettext(
+                    "Invalid Person Details, if you believe this is an error, contact the tracing team."
+                  )
+                )
+              end
+
+            {success, socket}
+          end)
+
+        socket
+      end
+      |> assign(form: %{first_name: first_name, last_name: last_name})
 
     {:noreply, socket}
   end
