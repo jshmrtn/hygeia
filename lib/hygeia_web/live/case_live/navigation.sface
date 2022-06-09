@@ -351,6 +351,13 @@
           </a>
         </div>
       </div>
+      <div :if={authorized?(Hygeia.CaseContext.Note, :create, auth, %{case: @case})}>
+        <div class="dropdown-divider" />
+        <a class="dropdown-item" href="#" :on-click="open_note_modal">
+          <span class="oi oi-plus me-1" aria-hidden="true" />
+          {gettext("Create Note")}
+        </a>
+      </div>
       <div :if={authorized?(Case, :create, auth, tenant: :any)}>
         <div class="dropdown-divider" />
         <Context get={HygeiaWeb, uri: uri}>
@@ -377,13 +384,7 @@
           {gettext("Create Phase")}
         </a>
       </div>
-      <div :if={authorized?(Hygeia.CaseContext.Note, :create, auth, %{case: @case})}>
-        <div class="dropdown-divider" />
-        <a class="dropdown-item" href="#" :on-click="open_note_modal">
-          <span class="oi oi-plus me-1" aria-hidden="true" />
-          {gettext("Create Note")}
-        </a>
-      </div>
+      <div class="dropdown-divider" />
       <a
         class="dropdown-item"
         href="#"
