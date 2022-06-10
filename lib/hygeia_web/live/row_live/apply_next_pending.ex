@@ -17,8 +17,7 @@ defmodule HygeiaWeb.RowLive.ApplyNextPending do
        %Import{pending_rows: []} = import ->
          push_redirect(socket, to: Routes.import_show_path(socket, :show, import))
 
-       %Import{pending_rows: rows} ->
-         [next_row | _other] = Enum.sort_by(rows, & &1.uuid, :asc)
+       %Import{pending_rows: [next_row | _other]} ->
          push_redirect(socket, to: Routes.row_apply_path(socket, :apply, next_row))
      end}
   end

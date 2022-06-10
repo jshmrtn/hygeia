@@ -49,10 +49,8 @@ defmodule HygeiaWeb.RowLiveTest do
 
     test "displays row and redirects to next", %{
       conn: conn,
-      import: %Import{rows: rows}
+      import: %Import{rows: [row, row2 | _]}
     } do
-      [row, row2 | _] = Enum.sort_by(rows, & &1.uuid, :asc)
-
       {:ok, apply_live, html} = live(conn, Routes.row_apply_path(conn, :apply, row))
 
       assert html =~ row.uuid
