@@ -61,22 +61,26 @@ defmodule Hygeia.ImportContext.Import do
 
     many_to_many :rows, Row,
       join_through: RowLink,
-      join_keys: [import_uuid: :uuid, row_uuid: :uuid]
+      join_keys: [import_uuid: :uuid, row_uuid: :uuid],
+      preload_order: [asc: :uuid]
 
     many_to_many :pending_rows, Row,
       join_through: RowLink,
       join_keys: [import_uuid: :uuid, row_uuid: :uuid],
-      where: [status: :pending]
+      where: [status: :pending],
+      preload_order: [asc: :uuid]
 
     many_to_many :discarded_rows, Row,
       join_through: RowLink,
       join_keys: [import_uuid: :uuid, row_uuid: :uuid],
-      where: [status: :discarded]
+      where: [status: :discarded],
+      preload_order: [asc: :uuid]
 
     many_to_many :resolved_rows, Row,
       join_through: RowLink,
       join_keys: [import_uuid: :uuid, row_uuid: :uuid],
-      where: [status: :resolved]
+      where: [status: :resolved],
+      preload_order: [asc: :uuid]
 
     belongs_to :default_tracer, User, references: :uuid, foreign_key: :default_tracer_uuid
     belongs_to :default_supervisor, User, references: :uuid, foreign_key: :default_supervisor_uuid
