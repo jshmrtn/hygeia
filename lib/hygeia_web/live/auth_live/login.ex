@@ -135,11 +135,9 @@ defmodule HygeiaWeb.AuthLive.Login do
   end
 
   defp format_remaining_time(time) do
-    unit = Cldr.Unit.new!(trunc(time / 1000) + 1, :second)
-
-    case HygeiaCldr.Unit.localize(unit, HygeiaCldr, []) do
-      [] -> HygeiaCldr.Unit.to_string!(unit, format: :short, style: :short)
-      localized -> HygeiaCldr.Unit.to_string!(localized, format: :short, style: :short)
-    end
+    (trunc(time / 1000) + 1)
+    |> Cldr.Unit.new!(:second)
+    |> Cldr.Unit.localize(HygeiaCldr, [])
+    |> HygeiaCldr.Unit.to_string!(format: :short, style: :short)
   end
 end
