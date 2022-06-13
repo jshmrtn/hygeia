@@ -5,10 +5,6 @@ defmodule Hygeia.Repo.Migrations.ChangeHospitalizationStatisticsToAdmissionsOnly
   use Hygeia, :migration
 
   def up do
-    execute(fn ->
-      :ok = run_authentication(repo(), origin: :migration, originator: :noone)
-    end)
-
     execute("""
     DROP MATERIALIZED VIEW statistics_active_hospitalization_cases_per_day;
     """)
