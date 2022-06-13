@@ -11,7 +11,7 @@ defmodule HygeiaWeb.StatisticsController do
     :active_isolation_cases_per_day,
     :cumulative_index_case_end_reasons,
     :active_quarantine_cases_per_day,
-    :active_hospitalization_cases_per_day,
+    :hospital_admission_cases_per_day,
     :cumulative_possible_index_case_end_reasons,
     :new_cases_per_day,
     :active_complexity_cases_per_day,

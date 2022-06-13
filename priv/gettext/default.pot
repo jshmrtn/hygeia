@@ -1793,7 +1793,7 @@ msgid "Finish"
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "Finished Isolations"
+msgid "Finished isolations"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -2168,10 +2168,6 @@ msgid "If there are no known contact methods for the person, a contact method fo
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "If there are open hospitalizations, the status can not be set to \"done\" / \"canceled\"."
-msgstr ""
-
-#, elixir-autogen, icu-format
 msgid "If there are phases without decided unknown quarantine / isolation orders, the status must not be \"done\" / \"canceled\"."
 msgstr ""
 
@@ -2467,7 +2463,7 @@ msgid "Isolation Period End"
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "Isolations Per Organisation"
+msgid "Isolations per organisation"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -2982,10 +2978,6 @@ msgstr ""
 
 #, elixir-autogen, icu-format
 msgid "New Case"
-msgstr ""
-
-#, elixir-autogen, icu-format
-msgid "New Cases"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -3581,15 +3573,15 @@ msgid "People"
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "People in Hospital"
+msgid "People admitted in hospital"
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "People in Isolation"
+msgid "People in isolation"
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "People in Quarantine"
+msgid "People in quarantine"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -4107,10 +4099,6 @@ msgid "Quarantine End"
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "Quarantine End Reasons"
-msgstr ""
-
-#, elixir-autogen, icu-format
 msgid "Quarantine Order"
 msgstr ""
 
@@ -4128,6 +4116,10 @@ msgstr ""
 
 #, elixir-autogen, icu-format
 msgid "Quarantine confirmation will not be sent to this person."
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgid "Quarantine end reasons"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -5395,16 +5387,16 @@ msgid "Transmission"
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "Transmission Countries"
-msgstr ""
-
-#, elixir-autogen, icu-format
 msgid "Transmission Date"
 msgstr ""
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Transmission Date"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgid "Transmission countries"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -5689,16 +5681,16 @@ msgid "Vaccination 4th Jab Name"
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "Vaccination Breakthroughs"
-msgstr ""
-
-#, elixir-autogen, icu-format
 msgid "Vaccination Failures"
 msgstr ""
 
 #, elixir-autogen, icu-format
 msgctxt "Vaccination Validity"
 msgid "Vaccination Validity"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgid "Vaccination breakthroughs"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -6143,7 +6135,7 @@ msgid "notifications"
 msgstr ""
 
 #, elixir-autogen, icu-format
-msgid "on \"From\" Day"
+msgid "on \"From\" day"
 msgstr ""
 
 #, elixir-autogen, icu-format
