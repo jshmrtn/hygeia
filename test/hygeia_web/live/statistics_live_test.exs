@@ -17,7 +17,7 @@ defmodule HygeiaWeb.StatisticsLiveTest do
           :statistics_cumulative_index_case_end_reasons,
           :statistics_cumulative_possible_index_case_end_reasons,
           :statistics_new_cases_per_day,
-          :statistics_active_hospitalization_cases_per_day,
+          :statistics_hospital_admission_cases_per_day,
           :statistics_active_complexity_cases_per_day,
           :statistics_active_infection_place_cases_per_day,
           :statistics_transmission_country_cases_per_day

@@ -1,6 +1,6 @@
 defmodule Hygeia.StatisticsContext.NewCasesPerDay do
   @moduledoc """
-  Model for New Cases per Day
+  Model for New cases per Day
   """
 
   use Hygeia, :model

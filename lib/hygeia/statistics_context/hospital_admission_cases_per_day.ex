@@ -1,4 +1,4 @@
-defmodule Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay do
+defmodule Hygeia.StatisticsContext.HospitalAdmissionCasesPerDay do
   @moduledoc """
   Model for Active Hospitalization Cases Per Day
   """
@@ -15,7 +15,7 @@ defmodule Hygeia.StatisticsContext.ActiveHospitalizationCasesPerDay do
         }
 
   @primary_key false
-  schema "statistics_active_hospitalization_cases_per_day" do
+  schema "statistics_hospital_admission_cases_per_day" do
     field :count, :integer
     field :date, :date
 

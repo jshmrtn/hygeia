@@ -49,7 +49,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("People in Isolation")
+                    text: gettext("People in isolation")
                   }
                 },
                 scales: %{
@@ -125,7 +125,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("Finished Isolations")
+                    text: gettext("Finished isolations")
                   }
                 },
                 scales: %{
@@ -191,7 +191,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("People in Quarantine")
+                    text: gettext("People in quarantine")
                   }
                 },
                 scales: %{
@@ -270,7 +270,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("Quarantine End Reasons")
+                    text: gettext("Quarantine end reasons")
                   },
                   legend: %{
                     display: false
@@ -353,7 +353,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("New Cases")
+                    text: gettext("New cases")
                   }
                 },
                 scales: %{
@@ -389,8 +389,8 @@
         </div>
         <div class="col-12 col-xl-6 mt-5 mt-xl-0">
           <HygeiaWeb.Chart
-            id="active_hospitalization_cases_per_day"
-            dom_id="active_hospitalization_cases_per_day"
+            id="hospital_admission_cases_per_day"
+            dom_id="hospital_admission_cases_per_day"
             config={%{
               type: "line",
               data: %{
@@ -400,7 +400,7 @@
                     fill: %{target: "origin"},
                     data:
                       Enum.map(
-                        @active_hospitalization_cases_per_day,
+                        @hospital_admission_cases_per_day,
                         &%{
                           x: &1.date |> DateTime.new!(~T[00:00:00]) |> DateTime.to_unix(:millisecond),
                           y: &1.count
@@ -413,7 +413,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("People in Hospital")
+                    text: gettext("People admitted in hospital")
                   }
                 },
                 scales: %{
@@ -476,7 +476,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("Vaccination Breakthroughs")
+                    text: gettext("Vaccination breakthroughs")
                   }
                 },
                 scales: %{
@@ -631,7 +631,7 @@
                 plugins: %{
                   title: %{
                     display: true,
-                    text: gettext("Infection Place")
+                    text: gettext("Infection place")
                   },
                   legend: %{
                     display: false
