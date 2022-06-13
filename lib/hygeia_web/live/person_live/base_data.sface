@@ -518,12 +518,6 @@
                     remove_event="remove_vaccination_shot"
                   />
                 {/if}
-
-                {#case @live_action}
-                  {#match :show}
-                    <HygeiaWeb.PersonLive.VaccinationValidity validities={@person.vaccination_shot_validities} />
-                  {#match _other}
-                {/case}
               </div>
             </div>
           </div>
