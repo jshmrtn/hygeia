@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1\n"
 
 #, elixir-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -3879,6 +3879,10 @@ msgstr "Lieu de départ"
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
 msgid "Place of departure"
 msgstr "Lieu de départ"
+
+#, elixir-autogen, icu-format
+msgid "Please enter a full name."
+msgstr "Veuillez saisir un nom complet."
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Please enter your place of residence."

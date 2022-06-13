@@ -55,24 +55,31 @@ defmodule HygeiaWeb.AuthLive.Login do
         success = first_name_difference + last_name_difference >= 1.7
 
         socket =
-          if success do
-            push_redirect(socket,
-              to:
-                Routes.auth_path(socket, :request, "person",
-                  return_url: socket.assigns.return_url,
-                  uuid: Token.sign(Endpoint, "person auth", socket.assigns.person.uuid)
-                )
-            )
-          else
-            socket
-            |> assign(form: %{first_name: first_name, last_name: last_name})
-            |> assign(login_disabled: true)
-            |> put_flash(
-              :error,
-              gettext(
-                "Invalid Person Details, if you believe this is an error, contact the tracing team."
+          cond do
+            success ->
+              push_redirect(socket,
+                to:
+                  Routes.auth_path(socket, :request, "person",
+                    return_url: socket.assigns.return_url,
+                    uuid: Token.sign(Endpoint, "person auth", socket.assigns.person.uuid)
+                  )
               )
-            )
+
+            String.length(first_name) < 2 and String.length(last_name) < 2 ->
+              socket
+              |> assign(form: %{first_name: first_name, last_name: last_name})
+              |> put_flash(:error, gettext("Please enter a full name."))
+
+            true ->
+              socket
+              |> assign(login_disabled: true)
+              |> assign(form: %{first_name: first_name, last_name: last_name})
+              |> put_flash(
+                :error,
+                gettext(
+                  "Invalid Person Details, if you believe this is an error, contact the tracing team."
+                )
+              )
           end
 
         {success, socket}
