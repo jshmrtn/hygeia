@@ -5250,11 +5250,6 @@ msgstr "Le lien n'est plus disponible"
 msgid "The link to the possible index submissions was sent. The Index did not enter the submissions yet. This can be checked under {link}."
 msgstr "Le lien vers les soumissions possibles à l'index a été envoyé. L'index n'a pas encore saisi les soumissions. Ceci peut être vérifié sous {link}."
 
-#, elixir-autogen, fuzzy, icu-format
-msgctxt "Vaccination Validity"
-msgid "The person is not considered fully vaccinated for breakthrough infections."
-msgstr "La personne n'est pas considérée comme complètement vaccinée contre les infections à percée."
-
 #, elixir-autogen, icu-format
 msgid "The person is suspected of having contracted a variant in consideration"
 msgstr "La personne est soupçonnée d'avoir contracté une variante en contrepartie"
@@ -5286,12 +5281,6 @@ msgstr "Le statut sert d'aperçu de la phase de recherche actuelle de la personn
 #, elixir-autogen, icu-format
 msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
 msgstr "L'application suisse covid est l'application officielle de recherche de contacts de la suisse. L'application aide à tracer et à empêcher la propagation du virus COVID-19."
-
-#. link text: recognized by the FOPH
-#, elixir-autogen, icu-format
-msgctxt "Vaccination Validity"
-msgid "The validity is only calculated for vaccines that are {link}."
-msgstr "La validité n'est calculée que pour les vaccins qui sont {link}."
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
@@ -5756,11 +5745,6 @@ msgstr "Vaccination"
 #, elixir-autogen, fuzzy, icu-format
 msgid "Vaccination Failures"
 msgstr "Échecs de la vaccination"
-
-#, elixir-autogen, fuzzy, icu-format
-msgctxt "Vaccination Validity"
-msgid "Vaccination Validity"
-msgstr "Vaccination"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Vaccination breakthroughs"
@@ -6263,12 +6247,6 @@ msgstr "indice possible soumis."
 msgctxt "Item Table"
 msgid "premature_releases"
 msgstr "libérations_prématurées"
-
-#. surounding text: The validity is only calculated for vaccines that are {link}.
-#, elixir-autogen, icu-format
-msgctxt "Vaccination Validity"
-msgid "recognized by the FOPH"
-msgstr "reconnu par l'OFSP"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Item Table"

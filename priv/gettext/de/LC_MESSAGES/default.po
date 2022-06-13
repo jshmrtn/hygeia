@@ -5248,11 +5248,6 @@ msgid "The link to the possible index submissions was sent. The Index did not en
 msgstr "Der Link mit dem Index Self-Service wurde verschickt. Der Index hat seine Kontaktpersonen noch nicht eingetragen. Dies kann bei \"{link}\" kontrolliert werden."
 
 #, elixir-autogen, icu-format
-msgctxt "Vaccination Validity"
-msgid "The person is not considered fully vaccinated for breakthrough infections."
-msgstr "Die Person gilt nicht als vollständig gegen Durchbruchinfektionen geimpft."
-
-#, elixir-autogen, icu-format
 msgid "The person is suspected of having contracted a variant in consideration"
 msgstr "Die Person steht im Verdacht, eine Ansteckung mit einer besorgniserregenden Virusvariante zu haben"
 
@@ -5283,12 +5278,6 @@ msgstr "Der Status dient als Überblick in welcher Phase sich das Tracing bei di
 #, elixir-autogen, icu-format
 msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
 msgstr "Die Swiss Covid App ist die offizielle Contact Tracing App der Schweiz. Sie trägt zur Eindämmung und Rückverfolgungen neuer möglicher Ansteckungen des Covid-19 Virus bei."
-
-#. link text: recognized by the FOPH
-#, elixir-autogen, icu-format
-msgctxt "Vaccination Validity"
-msgid "The validity is only calculated for vaccines that are {link}."
-msgstr "Die Validität wird nur für Impfstoffe berechnet, die {link} sind."
 
 #, elixir-autogen, icu-format
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
@@ -5753,11 +5742,6 @@ msgstr "4. Impfstoff"
 #, elixir-autogen, icu-format
 msgid "Vaccination Failures"
 msgstr "Impfversager"
-
-#, elixir-autogen, icu-format
-msgctxt "Vaccination Validity"
-msgid "Vaccination Validity"
-msgstr "Gültigkeit Impfung"
 
 #, elixir-autogen, icu-format
 msgid "Vaccination breakthroughs"
@@ -6260,12 +6244,6 @@ msgstr "Möglicher-Index eingereicht."
 msgctxt "Item Table"
 msgid "premature_releases"
 msgstr "Vorzeitige Quarantäneentlassung"
-
-#. surounding text: The validity is only calculated for vaccines that are {link}.
-#, elixir-autogen, icu-format
-msgctxt "Vaccination Validity"
-msgid "recognized by the FOPH"
-msgstr "gemäss BAG anerkannt"
 
 #, elixir-autogen, icu-format
 msgctxt "Item Table"
