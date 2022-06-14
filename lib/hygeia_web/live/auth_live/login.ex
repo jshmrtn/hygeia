@@ -38,6 +38,15 @@ defmodule HygeiaWeb.AuthLive.Login do
         %{"person_login" => %{"first_name" => first_name, "last_name" => last_name}} = _params,
         socket
       ) do
+    # Extracting messages from `LoginRateLimiter.handle_login` since that runs in a different process
+    # and has no set locale therefore
+    initial_error_message = gettext("Please enter a full name.")
+
+    invalid_error_message =
+      gettext(
+        "Invalid Person Details, if you believe this is an error, contact the tracing team."
+      )
+
     {:ok, socket} =
       LoginRateLimiter.handle_login(socket.assigns.person.uuid, fn ->
         first_name_difference =
@@ -68,18 +77,13 @@ defmodule HygeiaWeb.AuthLive.Login do
             String.length(first_name) < 2 and String.length(last_name) < 2 ->
               socket
               |> assign(form: %{first_name: first_name, last_name: last_name})
-              |> put_flash(:error, gettext("Please enter a full name."))
+              |> put_flash(:error, initial_error_message)
 
             true ->
               socket
               |> assign(login_disabled: true)
               |> assign(form: %{first_name: first_name, last_name: last_name})
-              |> put_flash(
-                :error,
-                gettext(
-                  "Invalid Person Details, if you believe this is an error, contact the tracing team."
-                )
-              )
+              |> put_flash(:error, invalid_error_message)
           end
 
         {success, socket}
