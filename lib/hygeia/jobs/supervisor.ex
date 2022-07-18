@@ -88,7 +88,10 @@ defmodule Hygeia.Jobs.Supervisor do
         Hygeia.Jobs.ViewerLogPersistence.Supervisor,
 
         # Detect No Reaction Cases
-        Hygeia.Jobs.DetectNoReactionCases
+        Hygeia.Jobs.DetectNoReactionCases,
+
+        # Data Pruning
+        {Highlander, {Hygeia.Jobs.DataPruning, name: :resource_view}}
       ]
   end
 
