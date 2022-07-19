@@ -17,6 +17,7 @@ defmodule Hygeia.NotificationContext.Notification.PrematureRelease do
           premature_release_uuid: Ecto.UUID.t()
         }
 
+  @primary_key false
   embedded_schema do
     belongs_to :premature_release, PrematureRelease,
       references: :uuid,

@@ -26,6 +26,7 @@ defmodule Hygeia.TenantContext.Tenant.Smtp do
           dkim: DKIM.t() | nil
         }
 
+  @primary_key false
   embedded_schema do
     field :enable_relay, :boolean, default: false
     field :enable_dkim, :boolean, default: false

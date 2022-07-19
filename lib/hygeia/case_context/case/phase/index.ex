@@ -17,6 +17,7 @@ defmodule Hygeia.CaseContext.Case.Phase.Index do
           other_end_reason: String.t() | nil
         }
 
+  @primary_key false
   embedded_schema do
     field :end_reason, EndReason
     field :other_end_reason, :string
