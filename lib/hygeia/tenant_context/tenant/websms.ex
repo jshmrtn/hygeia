@@ -15,6 +15,7 @@ defmodule Hygeia.TenantContext.Tenant.Websms do
           access_token: String.t()
         }
 
+  @primary_key false
   embedded_schema do
     field :access_token, :string
   end

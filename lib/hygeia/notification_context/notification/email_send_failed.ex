@@ -22,6 +22,7 @@ defmodule Hygeia.NotificationContext.Notification.EmailSendFailed do
           email_uuid: Ecto.UUID.t()
         }
 
+  @primary_key false
   embedded_schema do
     belongs_to :case, Case, references: :uuid, foreign_key: :case_uuid
     belongs_to :email, Email, references: :uuid, foreign_key: :email_uuid

@@ -24,6 +24,7 @@ defmodule Hygeia.CaseContext.Case.Phase.PossibleIndex do
           end_reason_date: DateTime.t() | nil
         }
 
+  @primary_key false
   embedded_schema do
     field :type, Type
     field :type_other, :string
