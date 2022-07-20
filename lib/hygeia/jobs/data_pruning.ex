@@ -6,6 +6,8 @@ defmodule Hygeia.Jobs.DataPruning do
   use GenServer
   use Hygeia, :context
 
+  alias Hygeia.Helpers.Versioning
+
   @default_refresh_interval_ms :timer.hours(1)
 
   @spec start_link(otps :: Keyword.t()) :: GenServer.on_start()
@@ -23,6 +25,9 @@ defmodule Hygeia.Jobs.DataPruning do
 
   @impl GenServer
   def init(opts) do
+    Versioning.put_originator(:noone)
+    Versioning.put_origin(:data_pruning)
+
     interval_ms = Keyword.get(opts, :interval_ms, @default_refresh_interval_ms)
 
     Process.send_after(self(), {:start_interval, interval_ms}, :rand.uniform(interval_ms))
@@ -49,4 +54,17 @@ defmodule Hygeia.Jobs.DataPruning do
       Repo.delete_all(
         from resource_view in "resource_views", where: resource_view.time < ago(2, "year")
       )
+
+  defp execute_prune(:inbox) do
+    {:ok, _} =
+      Ecto.Multi.new()
+      |> Ecto.Multi.delete_all(
+        :delete,
+        from(import_row in "import_rows", where: import_row.inserted_at < ago(2, "year"))
+      )
+      |> Versioning.authenticate_multi()
+      |> Hygeia.Repo.transaction(timeout: :infinity)
+
+    :ok
+  end
 end

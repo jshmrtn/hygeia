@@ -91,7 +91,8 @@ defmodule Hygeia.Jobs.Supervisor do
         Hygeia.Jobs.DetectNoReactionCases,
 
         # Data Pruning
-        {Highlander, {Hygeia.Jobs.DataPruning, name: :resource_view}}
+        {Highlander, {Hygeia.Jobs.DataPruning, name: :resource_view}},
+        {Highlander, {Hygeia.Jobs.DataPruning, name: :inbox}}
       ]
   end
 
