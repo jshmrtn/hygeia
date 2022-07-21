@@ -28,7 +28,6 @@ defmodule Hygeia.MixProject do
             []
           end,
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
