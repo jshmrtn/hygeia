@@ -92,7 +92,8 @@ defmodule Hygeia.Jobs.Supervisor do
 
         # Data Pruning
         {Highlander, {Hygeia.Jobs.DataPruning, name: :resource_view}},
-        {Highlander, {Hygeia.Jobs.DataPruning, name: :inbox}}
+        {Highlander, {Hygeia.Jobs.DataPruning, name: :inbox}},
+        {Highlander, {Hygeia.Jobs.DataPruning, name: :version}}
       ]
   end
 
