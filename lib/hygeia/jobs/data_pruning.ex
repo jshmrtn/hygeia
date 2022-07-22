@@ -67,4 +67,62 @@ defmodule Hygeia.Jobs.DataPruning do
 
     :ok
   end
+
+  defp execute_prune(:version) do
+    {:ok, _} =
+      Ecto.Multi.new()
+      |> Ecto.Multi.delete_all(
+        :delete,
+        from(version in "versions",
+          where:
+            version.inserted_at < ago(2, "year") and
+              version.item_table not in [
+                "cases",
+                "people",
+                "auto_tracings",
+                "hospitalizations",
+                "notes",
+                "possible_index_submissions",
+                "premature_releases",
+                "tests",
+                "emails",
+                "sms",
+                "visits",
+                "transmissions",
+                "vaccination_shots",
+                "vaccination_shot_validity",
+                "affiliations"
+              ]
+        )
+      )
+      |> Ecto.Multi.update_all(
+        :update,
+        from(version in "versions",
+          where:
+            version.inserted_at < ago(2, "year") and
+              version.item_table in [
+                "cases",
+                "people",
+                "auto_tracings",
+                "hospitalizations",
+                "notes",
+                "possible_index_submissions",
+                "premature_releases",
+                "tests",
+                "emails",
+                "sms",
+                "visits",
+                "transmissions",
+                "vaccination_shots",
+                "vaccination_shot_validity",
+                "affiliations"
+              ],
+          update: [set: [item_changes: fragment(~S['{}'::jsonb])]]
+        ),
+        []
+      )
+      |> Hygeia.Repo.transaction(timeout: :infinity)
+
+    :ok
+  end
 end
