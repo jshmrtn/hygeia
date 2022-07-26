@@ -60,10 +60,17 @@ defmodule Hygeia.Fixtures do
 
   @spec user_fixture(attrs :: Hygeia.ecto_changeset_params()) :: User.t()
   def user_fixture(attrs \\ %{}) do
-    {:ok, user} =
-      attrs
-      |> Enum.into(@valid_attrs)
-      |> UserContext.create_user()
+    attrs = Enum.into(attrs, @valid_attrs)
+
+    attrs =
+      if Map.has_key?(attrs, :grants) do
+        attrs
+      else
+        tenant = tenant_fixture()
+        Map.put_new(attrs, :grants, [%{role: :tracer, tenant_uuid: tenant.uuid}])
+      end
+
+    {:ok, user} = UserContext.create_user(attrs)
 
     user
   end
@@ -221,7 +228,7 @@ defmodule Hygeia.Fixtures do
       end
 
     supervisor_uuid =
-      case tracer do
+      case supervisor do
         nil ->
           nil
 

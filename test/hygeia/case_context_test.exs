@@ -615,8 +615,19 @@ defmodule Hygeia.CaseContextTest do
 
     test "case_export/3 exports :bag_med_16122020_case" do
       Repo.transaction(fn ->
-        user = user_fixture()
         tenant = tenant_fixture()
+
+        tracer =
+          user_fixture(
+            iam_sub: Ecto.UUID.generate(),
+            grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
+          )
+
+        supervisor =
+          user_fixture(
+            iam_sub: Ecto.UUID.generate(),
+            grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+          )
 
         organisation_jm =
           organisation_fixture(%{
@@ -708,7 +719,7 @@ defmodule Hygeia.CaseContextTest do
         date_case_jony_phase_index_end_string = Date.to_iso8601(date_case_jony_phase_index_end)
 
         case_jony =
-          case_fixture(person_jony, user, user, %{
+          case_fixture(person_jony, tracer, supervisor, %{
             uuid: "ca98a59b-64c5-4476-9abd-d91d2d1d24e3",
             status: :next_contact_agreed,
             external_references: [
@@ -781,7 +792,7 @@ defmodule Hygeia.CaseContextTest do
         date_case_jay_phase_index_end_string = Date.to_iso8601(date_case_jay_phase_index_end)
 
         case_jay =
-          case_fixture(person_jay, user, user, %{
+          case_fixture(person_jay, tracer, supervisor, %{
             uuid: "dd1911a3-a79f-4594-8439-5b0455569e9e",
             monitoring: %{
               location: :home
@@ -1080,8 +1091,19 @@ defmodule Hygeia.CaseContextTest do
 
     test "case_export/3 exports :bag_med_16122020_contact" do
       Repo.transaction(fn ->
-        user = user_fixture()
         tenant = tenant_fixture()
+
+        tracer =
+          user_fixture(
+            iam_sub: Ecto.UUID.generate(),
+            grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
+          )
+
+        supervisor =
+          user_fixture(
+            iam_sub: Ecto.UUID.generate(),
+            grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+          )
 
         organisation_jm =
           organisation_fixture(%{
@@ -1162,7 +1184,7 @@ defmodule Hygeia.CaseContextTest do
         date_case_jony_phase_index_end = Date.add(date_case_jony_phase_index_start, 10)
 
         case_jony =
-          case_fixture(person_jony, user, user, %{
+          case_fixture(person_jony, tracer, supervisor, %{
             uuid: "7c8004f3-d4bc-4042-8914-265761ffc49c",
             external_references: [
               %{type: :ism_case, value: "ISM ID"}
@@ -1226,7 +1248,7 @@ defmodule Hygeia.CaseContextTest do
           Date.to_iso8601(date_case_jay_phase_possible_index_end)
 
         case_jay =
-          case_fixture(person_jay, user, user, %{
+          case_fixture(person_jay, tracer, supervisor, %{
             uuid: "fc705b72-2911-46d8-93f2-5d70b982d4d8",
             monitoring: %{
               location: :home
@@ -1492,8 +1514,19 @@ defmodule Hygeia.CaseContextTest do
 
   test "case_export/3 exports :breakthrough_infection" do
     Repo.transaction(fn ->
-      user = user_fixture()
       tenant = tenant_fixture()
+
+      tracer =
+        user_fixture(
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
+        )
+
+      supervisor =
+        user_fixture(
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+        )
 
       # 8 months ago
       date_jony_vaccination_1 = Date.add(Date.utc_today(), -244)
@@ -1547,7 +1580,7 @@ defmodule Hygeia.CaseContextTest do
       date_case_jony_before_vaccination_phase_index_end =
         Date.add(date_case_jony_before_vaccination_phase_index_start, 10)
 
-      case_fixture(person_jony, user, user, %{
+      case_fixture(person_jony, tracer, supervisor, %{
         uuid: "2c11959a-c631-4b66-b64c-fee8fd4aed1c",
         phases: [
           %{
@@ -1588,7 +1621,7 @@ defmodule Hygeia.CaseContextTest do
       date_case_jony_after_vaccination_phase_index_end =
         Date.add(date_case_jony_after_vaccination_phase_index_start, 10)
 
-      case_fixture(person_jony, user, user, %{
+      case_fixture(person_jony, tracer, supervisor, %{
         uuid: "86438dad-dc4b-4b87-9332-388cd8f62546",
         phases: [
           %{
@@ -1621,7 +1654,7 @@ defmodule Hygeia.CaseContextTest do
       date_case_jan_no_vaccination_phase_index_end =
         Date.add(date_case_jan_no_vaccination_phase_index_start, 10)
 
-      case_fixture(person_jan, user, user, %{
+      case_fixture(person_jan, tracer, supervisor, %{
         uuid: "e98ace13-83d6-45d7-8ae9-9dd9de76ee95",
         phases: [
           %{
@@ -1670,8 +1703,19 @@ defmodule Hygeia.CaseContextTest do
 
   test "case_export/3 exports :breakthrough_infection even with empty person vaccination" do
     Repo.transaction(fn ->
-      user = user_fixture()
       tenant = tenant_fixture()
+
+      tracer =
+        user_fixture(
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :tracer, tenant_uuid: tenant.uuid}]
+        )
+
+      supervisor =
+        user_fixture(
+          iam_sub: Ecto.UUID.generate(),
+          grants: [%{role: :supervisor, tenant_uuid: tenant.uuid}]
+        )
 
       person_jony =
         person_fixture(tenant, %{
@@ -1703,7 +1747,7 @@ defmodule Hygeia.CaseContextTest do
       date_case_jony_after_vaccination_phase_index_end =
         Date.add(date_case_jony_after_vaccination_phase_index_start, 10)
 
-      case_fixture(person_jony, user, user, %{
+      case_fixture(person_jony, tracer, supervisor, %{
         uuid: "86438dad-dc4b-4b87-9332-388cd8f62546",
         phases: [
           %{

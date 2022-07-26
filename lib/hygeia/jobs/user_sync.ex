@@ -154,7 +154,7 @@ defmodule Hygeia.Jobs.UserSync do
     else
       Logger.debug("Updating user #{sub}")
 
-      changeset = UserContext.change_user(user, User.anonymize_user_attrs_as_needed(attrs))
+      changeset = UserContext.change_user(user, attrs)
       Ecto.Multi.update(multi, {:update, sub}, changeset)
     end
   end
