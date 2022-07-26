@@ -7,7 +7,6 @@ defmodule Hygeia.OrganisationContextTest do
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
-  alias Hygeia.OrganisationContext.Position
   alias Hygeia.OrganisationContext.Visit
 
   @moduletag origin: :test
@@ -105,7 +104,6 @@ defmodule Hygeia.OrganisationContextTest do
 
     test "merge_organisation/2 moves all data to target and deletes source" do
       organisation_1 = organisation_fixture(%{name: "JOSHMARTIN GmbH"})
-      _position_1 = position_fixture(person_fixture(), organisation_1, %{position: "1"})
       _affiliation_1a = affiliation_fixture(person_fixture(), organisation_1, %{kind: :employee})
       division_1 = division_fixture(organisation_1, %{title: "Division 1"})
 
@@ -116,7 +114,6 @@ defmodule Hygeia.OrganisationContextTest do
         })
 
       organisation_2 = organisation_fixture(%{name: "JOHSMARTIN GmbH"})
-      _position_2 = position_fixture(person_fixture(), organisation_2, %{position: "2"})
       _affiliation_2a = affiliation_fixture(person_fixture(), organisation_2, %{kind: :scholar})
       division_2 = division_fixture(organisation_2, %{title: "Division 2"})
 
@@ -129,72 +126,12 @@ defmodule Hygeia.OrganisationContextTest do
       assert {:ok, organisation_into} =
                OrganisationContext.merge_organisations(organisation_2, organisation_1)
 
-      assert %Organisation{affiliations: [_, _, _, _], positions: [_, _], divisions: [_, _]} =
-               Repo.preload(organisation_into, affiliations: [], positions: [], divisions: [])
+      assert %Organisation{affiliations: [_, _, _, _], divisions: [_, _]} =
+               Repo.preload(organisation_into, affiliations: [], divisions: [])
 
       assert_raise Ecto.NoResultsError, fn ->
         OrganisationContext.get_organisation!(organisation_2.uuid)
       end
-    end
-  end
-
-  describe "positions" do
-    @valid_attrs %{position: "some position"}
-    @update_attrs %{position: "some updated position"}
-    @invalid_attrs %{position: nil}
-
-    test "list_positions/0 returns all positions" do
-      position = position_fixture()
-      assert OrganisationContext.list_positions() == [position]
-    end
-
-    test "get_position!/1 returns the position with given id" do
-      position = position_fixture()
-      assert OrganisationContext.get_position!(position.uuid) == position
-    end
-
-    test "create_position/1 with valid data creates a position" do
-      organisation = organisation_fixture()
-      person = person_fixture()
-
-      attrs =
-        Enum.into(%{person_uuid: person.uuid, organisation_uuid: organisation.uuid}, @valid_attrs)
-
-      assert {:ok, %Position{} = position} = OrganisationContext.create_position(attrs)
-      assert position.position == "some position"
-    end
-
-    test "create_position/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = OrganisationContext.create_position(@invalid_attrs)
-    end
-
-    test "update_position/2 with valid data updates the position" do
-      position = position_fixture()
-
-      assert {:ok, %Position{} = position} =
-               OrganisationContext.update_position(position, @update_attrs)
-
-      assert position.position == "some updated position"
-    end
-
-    test "update_position/2 with invalid data returns error changeset" do
-      position = position_fixture()
-
-      assert {:error, %Ecto.Changeset{}} =
-               OrganisationContext.update_position(position, @invalid_attrs)
-
-      assert position == OrganisationContext.get_position!(position.uuid)
-    end
-
-    test "delete_position/1 deletes the position" do
-      position = position_fixture()
-      assert {:ok, %Position{}} = OrganisationContext.delete_position(position)
-      assert_raise Ecto.NoResultsError, fn -> OrganisationContext.get_position!(position.uuid) end
-    end
-
-    test "change_position/1 returns a position changeset" do
-      position = position_fixture()
-      assert %Ecto.Changeset{} = OrganisationContext.change_position(position)
     end
   end
 

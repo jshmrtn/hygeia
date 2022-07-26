@@ -554,34 +554,6 @@
           </LivePatch>
         </HygeiaWeb.Lock>
       </Form>
-
-      <hr :if={@person.positions != []} class="my-5">
-      <div :if={@person.positions != []} class="hy-card-grid-2-cols">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">{gettext("Organisation Positions")}</h4>
-
-            <table class="table table-sm">
-              <thead>
-                <tr>
-                  <th>{gettext("Organisation")}</th>
-                  <th>{gettext("Position")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr :for={position <- @person.positions}>
-                  <td>
-                    <Link to={Routes.organisation_show_path(@socket, :show, position.organisation)}>
-                      {position.organisation.name}
-                    </Link>
-                  </td>
-                  <td>{position.position}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
     </HygeiaWeb.RecordView>
   </Context>
 </div>

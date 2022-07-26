@@ -528,13 +528,6 @@ if System.get_env("LOAD_SAMPLE_DATA", "false") in ["1", "true"] do
         flight_information: nil
       }
     })
-
-  {:ok, _position_jm_jay} =
-    create_position(%{
-      organisation_uuid: organisation_jm.uuid,
-      person_uuid: person_jay.uuid,
-      position: "CEO"
-    })
 end
 
 for view <- [
