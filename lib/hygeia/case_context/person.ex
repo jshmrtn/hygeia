@@ -42,6 +42,9 @@ defmodule Hygeia.CaseContext.Person do
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employers: Ecto.Schema.has_many(Organisation.t()) | nil,
           pinned_notes: Ecto.Schema.has_many(Note.t()) | nil,
+          redacted: boolean() | nil,
+          redaction_date: Date.t() | nil,
+          reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -69,6 +72,9 @@ defmodule Hygeia.CaseContext.Person do
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employers: Ecto.Schema.has_many(Organisation.t()),
           pinned_notes: Ecto.Schema.has_many(Note.t()),
+          redacted: boolean(),
+          redaction_date: Date.t() | nil,
+          reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -90,6 +96,9 @@ defmodule Hygeia.CaseContext.Person do
     field :profession_category_main, NOGA.Section
     field :is_vaccinated, :boolean
     field :convalescent_externally, :boolean, default: false
+    field :redacted, :boolean, default: false
+    field :redaction_date, :date
+    field :reidentification_date, :date
 
     embeds_one :address, Address, on_replace: :update
     embeds_many :contact_methods, ContactMethod, on_replace: :delete
@@ -151,7 +160,10 @@ defmodule Hygeia.CaseContext.Person do
       :profession_category_main,
       :profession_category,
       :is_vaccinated,
-      :convalescent_externally
+      :convalescent_externally,
+      :redacted,
+      :redaction_date,
+      :reidentification_date
     ])
     |> fill_uuid
     |> fill_human_readable_id

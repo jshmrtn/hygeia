@@ -60,6 +60,9 @@ defmodule Hygeia.CaseContext.Case do
           tests: Ecto.Schema.has_many(Test.t()) | nil,
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()) | nil,
           auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
+          redacted: boolean() | nil,
+          redaction_date: Date.t() | nil,
+          reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -91,6 +94,9 @@ defmodule Hygeia.CaseContext.Case do
           tests: Ecto.Schema.has_many(Test.t()),
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()),
           auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
+          redacted: boolean(),
+          redaction_date: Date.t() | nil,
+          reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -103,6 +109,9 @@ defmodule Hygeia.CaseContext.Case do
     field :complexity, Complexity
     field :human_readable_id, :string
     field :status, Status, default: :first_contact
+    field :redacted, :boolean, default: false
+    field :redaction_date, :date
+    field :reidentification_date, :date
 
     # Generated Helper fields for more effinicient queries. do not use externally
     field :first_test_date, :date, read_after_writes: true
@@ -168,7 +177,10 @@ defmodule Hygeia.CaseContext.Case do
       :supervisor_uuid,
       :tenant_uuid,
       :person_uuid,
-      :inserted_at
+      :inserted_at,
+      :redacted,
+      :redaction_date,
+      :reidentification_date
     ])
     |> fill_uuid
     |> fill_human_readable_id
