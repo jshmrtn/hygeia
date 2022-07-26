@@ -7,6 +7,7 @@ defmodule Hygeia.Jobs.DataPruning do
   use Hygeia, :context
 
   alias Hygeia.Helpers.Versioning
+  alias Hygeia.UserContext.Grant
 
   @default_refresh_interval_ms :timer.hours(1)
 

@@ -25,16 +25,22 @@ defmodule Hygeia.UserContextTest do
 
     test "list_users/0 returns all user" do
       user = user_fixture()
-      assert UserContext.list_users() == [user]
+      assert UserContext.list_users() |> List.first() |> Repo.preload(:grants) == user
     end
 
     test "get_user!/1 returns the user with given id" do
       user = user_fixture()
-      assert UserContext.get_user!(user.uuid) == user
+      assert Repo.preload(UserContext.get_user!(user.uuid), :grants) == user
     end
 
     test "create_user/1 with valid data creates a user" do
-      assert {:ok, %User{} = user} = UserContext.create_user(@valid_attrs)
+      tenant = tenant_fixture()
+
+      assert {:ok, %User{} = user} =
+               UserContext.create_user(
+                 Map.put_new(@valid_attrs, :grants, [%{role: :tracer, tenant_uuid: tenant.uuid}])
+               )
+
       assert user.display_name == "some display_name"
       assert user.email == "some_email@example.com"
       assert user.iam_sub == "8fe86005-b3c6-4d7c-9746-53e090d05e48"
@@ -55,7 +61,7 @@ defmodule Hygeia.UserContextTest do
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
       assert {:error, %Ecto.Changeset{}} = UserContext.update_user(user, @invalid_attrs)
-      assert user == UserContext.get_user!(user.uuid)
+      assert user == Repo.preload(UserContext.get_user!(user.uuid), :grants)
     end
 
     test "delete_user/1 deletes the user" do
