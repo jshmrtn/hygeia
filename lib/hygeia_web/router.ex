@@ -282,12 +282,6 @@ defmodule HygeiaWeb.Router do
 
     live "/organisations/:cursor_direction/:cursor", OrganisationLive.Index, :index
 
-    live "/organisations/:id/positions/new", OrganisationLive.Show, :position_new
-
-    live "/organisations/:id/positions/:position_id/edit",
-         OrganisationLive.Show,
-         :position_edit
-
     live "/history/:resource/:id", VersionLive.Show, :show
 
     live "/system_messages/new", SystemMessageLive.Create, :create

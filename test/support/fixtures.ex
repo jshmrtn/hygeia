@@ -323,27 +323,6 @@ defmodule Hygeia.Fixtures do
     transmission
   end
 
-  @valid_attrs %{position: "some position"}
-  @spec position_fixture(
-          person :: Person.t(),
-          organisation :: Organisation.t(),
-          attrs :: Hygeia.ecto_changeset_params()
-        ) :: Position.t()
-  def position_fixture(
-        person \\ person_fixture(),
-        organisation \\ organisation_fixture(),
-        attrs \\ %{}
-      ) do
-    {:ok, position} =
-      attrs
-      |> Enum.into(@valid_attrs)
-      |> Map.put_new(:person_uuid, person.uuid)
-      |> Map.put_new(:organisation_uuid, organisation.uuid)
-      |> OrganisationContext.create_position()
-
-    position
-  end
-
   @valid_attrs %{
     address: %{
       address: "Helmweg 481",
