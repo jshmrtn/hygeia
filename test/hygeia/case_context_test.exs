@@ -17,6 +17,7 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.PrematureRelease
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.TenantContext.Tenant
@@ -251,6 +252,60 @@ defmodule Hygeia.CaseContextTest do
                last_name: "some updated last_name",
                sex: :male
              } = Repo.preload(person, affiliations: [organisation: []])
+    end
+
+    test "redact_person/1 redacts the person" do
+      %{
+        human_readable_id: person_human_readable_id,
+        tenant_uuid: person_tenant_uuid,
+        uuid: person_uuid
+      } =
+        person =
+        Repo.preload(person_fixture(), [:affiliations, :employee_affiliations, :employers])
+
+      organisation = organisation_fixture()
+
+      assert {:ok, person} =
+               CaseContext.update_person(
+                 person,
+                 %{
+                   affiliations: [
+                     %{
+                       kind: :employee,
+                       organisation_uuid: organisation.uuid
+                     }
+                   ]
+                 }
+               )
+
+      assert {:ok, redacted_person} = CaseContext.redact_person(person)
+
+      today = Date.utc_today()
+
+      assert OrganisationContext.list_affiliations() == []
+
+      assert %Person{
+               address: nil,
+               affiliations: [],
+               birth_date: nil,
+               contact_methods: [],
+               employee_affiliations: [],
+               employers: [],
+               first_name: nil,
+               human_readable_id: ^person_human_readable_id,
+               is_vaccinated: nil,
+               last_name: nil,
+               profession_category: nil,
+               profession_category_main: nil,
+               redacted: true,
+               redaction_date: ^today,
+               reidentification_date: nil,
+               sex: nil,
+               suspected_duplicates_uuid: [],
+               tenant_uuid: ^person_tenant_uuid,
+               uuid: ^person_uuid
+             } =
+               Repo.preload(redacted_person, [:affiliations, :employee_affiliations, :employers])
     end
 
     test "update_person/2 with invalid data returns error changeset" do

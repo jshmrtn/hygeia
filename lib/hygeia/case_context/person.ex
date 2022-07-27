@@ -171,7 +171,6 @@ defmodule Hygeia.CaseContext.Person do
       :uuid,
       :human_readable_id,
       :tenant_uuid,
-      :first_name,
       :convalescent_externally
     ])
     |> validate_past_date(:birth_date)
