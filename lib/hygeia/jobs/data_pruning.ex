@@ -126,4 +126,31 @@ defmodule Hygeia.Jobs.DataPruning do
 
     :ok
   end
+
+  defp execute_prune(:user_pruning) do
+    users_without_grants_query =
+      from(
+        grant in Grant,
+        right_join: user in assoc(grant, :user),
+        select: user.uuid,
+        where: is_nil(grant)
+      )
+
+    {:ok, _} =
+      Ecto.Multi.new()
+      |> Ecto.Multi.delete_all(
+        :delete,
+        from(version in "versions",
+          join: user in subquery(users_without_grants_query),
+          where:
+            (version.item_table == "user_grants" and
+               fragment("(?->>'user_uuid')::uuid", version.item_pk) == user.uuid) or
+              (version.item_table == "users" and
+                 fragment("(?->>'uuid')::uuid", version.item_pk) == user.uuid)
+        )
+      )
+      |> Hygeia.Repo.transaction(timeout: :infinity)
+
+    :ok
+  end
 end
