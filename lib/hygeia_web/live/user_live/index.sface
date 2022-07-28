@@ -22,34 +22,32 @@
       </thead>
       <tbody id="users">
         <tr :for={user <- @users} id={"user-#{user.uuid}"}>
-          <div :if={not Enum.empty?(user.grants)}>
-            <td>
-              {user.display_name}
-            </td>
-            <td>
-              {user.email}
-            </td>
-            <td>
-              <span :for={role <- user.grants |> Enum.map(& &1.role) |> Enum.uniq() |> Enum.sort()}>
-                <span class="badge rounded-pill badge-outline-primary">
-                  {role}
-                </span>
+          <td>
+            {user.display_name}
+          </td>
+          <td>
+            {user.email}
+          </td>
+          <td>
+            <span :for={role <- user.grants |> Enum.map(& &1.role) |> Enum.uniq() |> Enum.sort()}>
+              <span class="badge rounded-pill badge-outline-primary">
+                {role}
               </span>
-            </td>
+            </span>
+          </td>
 
-            <td>
-              <div class="d-flex justify-content-end w-100">
-                <LiveRedirect
-                  to={Routes.user_show_path(@socket, :show, user)}
-                  :if={authorized?(user, :details, auth)}
-                >
-                  <button class="ms-auto btn btn-sm btn-outline-primary">
-                    {gettext("Show")}
-                  </button>
-                </LiveRedirect>
-              </div>
-            </td>
-          </div>
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LiveRedirect
+                to={Routes.user_show_path(@socket, :show, user)}
+                :if={authorized?(user, :details, auth)}
+              >
+                <button class="ms-auto btn btn-sm btn-outline-primary">
+                  {gettext("Show")}
+                </button>
+              </LiveRedirect>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
