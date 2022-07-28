@@ -138,12 +138,14 @@ defmodule HygeiaWeb.Plug.CheckAndRefreshAuthentication do
     Versioning.put_origin(:web)
     Versioning.put_originator(:noone)
 
-    UserContext.upsert_user(%{
-      email: email,
-      display_name: name,
-      iam_sub: sub,
-      grants: grants
-    })
+    UserContext.upsert_user(
+      User.anonymize_user_attrs_as_needed(%{
+        email: email,
+        display_name: name,
+        iam_sub: sub,
+        grants: grants
+      })
+    )
   end
 
   defp sentry_context(conn) do

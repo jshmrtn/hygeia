@@ -3,18 +3,14 @@ defmodule HygeiaWeb.OrganisationLive.Show do
 
   use HygeiaWeb, :surface_view
 
-  alias Hygeia.CaseContext.Person
   alias Hygeia.Helpers.Empty
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Organisation.SchoolType
   alias Hygeia.OrganisationContext.Organisation.Type
-  alias Hygeia.Repo
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
-  alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.Select
   alias Surface.Components.Form.TextArea
@@ -71,8 +67,6 @@ defmodule HygeiaWeb.OrganisationLive.Show do
   end
 
   def handle_event("validate", %{"organisation" => organisation_params}, socket) do
-    organisation_params = Map.put_new(organisation_params, "positions", [])
-
     {:noreply,
      socket
      |> assign(
@@ -95,31 +89,7 @@ defmodule HygeiaWeb.OrganisationLive.Show do
      |> redirect(to: Routes.organisation_index_path(socket, :index))}
   end
 
-  def handle_event(
-        "change_position_person_" <> uuid,
-        params,
-        %{assigns: %{changeset: changeset, organisation: organisation}} = socket
-      ) do
-    {:noreply,
-     socket
-     |> assign(
-       :changeset,
-       OrganisationContext.change_organisation(
-         organisation,
-         changeset_update_params_by_id(
-           changeset,
-           :positions,
-           %{uuid: uuid},
-           &Map.put(&1, "person_uuid", params["uuid"])
-         )
-       )
-     )
-     |> maybe_block_navigation()}
-  end
-
   def handle_event("save", %{"organisation" => organisation_params}, socket) do
-    organisation_params = Map.put_new(organisation_params, "positions", [])
-
     true = authorized?(socket.assigns.organisation, :update, get_auth(socket))
 
     socket.assigns.organisation
@@ -140,45 +110,7 @@ defmodule HygeiaWeb.OrganisationLive.Show do
     end
   end
 
-  def handle_event(
-        "remove_position",
-        %{"uuid" => uuid},
-        %{assigns: %{changeset: changeset, organisation: organisation}} = socket
-      ) do
-    {:noreply,
-     socket
-     |> assign(
-       :changeset,
-       OrganisationContext.change_organisation(
-         organisation,
-         changeset_remove_from_params_by_id(changeset, :positions, %{uuid: uuid})
-       )
-     )
-     |> maybe_block_navigation()}
-  end
-
-  def handle_event(
-        "add_position",
-        _params,
-        %{assigns: %{changeset: changeset, organisation: organisation}} = socket
-      ) do
-    {:noreply,
-     socket
-     |> assign(
-       :changeset,
-       OrganisationContext.change_organisation(
-         organisation,
-         changeset_add_to_params(changeset, :positions, %{
-           uuid: Ecto.UUID.generate(),
-           organisation_uuid: socket.assigns.organisation.uuid
-         })
-       )
-     )
-     |> maybe_block_navigation()}
-  end
-
   defp load_data(socket, organisation) do
-    organisation = Repo.preload(organisation, positions: [:person])
     changeset = OrganisationContext.change_organisation(organisation)
 
     socket
@@ -192,13 +124,5 @@ defmodule HygeiaWeb.OrganisationLive.Show do
     else
       push_event(socket, "block_navigation", %{})
     end
-  end
-
-  defp person_display_name(%Person{last_name: nil, first_name: first_name} = _person) do
-    first_name
-  end
-
-  defp person_display_name(%Person{last_name: last_name, first_name: first_name} = _person) do
-    "#{first_name} #{last_name}"
   end
 end

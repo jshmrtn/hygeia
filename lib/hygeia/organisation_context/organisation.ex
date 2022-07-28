@@ -12,7 +12,6 @@ defmodule Hygeia.OrganisationContext.Organisation do
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation.SchoolType
   alias Hygeia.OrganisationContext.Organisation.Type
-  alias Hygeia.OrganisationContext.Position
   alias Hygeia.OrganisationContext.Visit
 
   @derive {Phoenix.Param, key: :uuid}
@@ -25,7 +24,6 @@ defmodule Hygeia.OrganisationContext.Organisation do
           school_type: SchoolType.t() | nil,
           address: Address.t() | nil,
           notes: String.t() | nil,
-          positions: Ecto.Schema.has_many(Position.t()) | nil,
           visits: Ecto.Schema.has_many(Visit.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           divisions: Ecto.Schema.has_many(Division.t()) | nil,
@@ -41,7 +39,6 @@ defmodule Hygeia.OrganisationContext.Organisation do
           school_type: SchoolType.t() | nil,
           address: Address.t(),
           notes: String.t() | nil,
-          positions: Ecto.Schema.has_many(Position.t()),
           visits: Ecto.Schema.has_many(Visit.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()),
           divisions: Ecto.Schema.has_many(Division.t()),
@@ -58,7 +55,6 @@ defmodule Hygeia.OrganisationContext.Organisation do
     field :school_type, SchoolType
 
     embeds_one :address, Address, on_replace: :delete
-    has_many :positions, Position, foreign_key: :organisation_uuid, on_replace: :delete
     has_many :visits, Visit, foreign_key: :organisation_uuid, on_replace: :delete
     has_many :affiliations, Affiliation, foreign_key: :organisation_uuid, on_replace: :delete
     has_many :divisions, Division, foreign_key: :organisation_uuid, on_replace: :delete
@@ -80,7 +76,6 @@ defmodule Hygeia.OrganisationContext.Organisation do
     |> cast(attrs, [:name, :notes, :type, :type_other, :school_type])
     |> validate_required([:name])
     |> cast_embed(:address)
-    |> cast_assoc(:positions)
     |> check_duplicates()
     |> validate_type_other()
     |> validate_school_type()

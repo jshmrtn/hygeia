@@ -15,7 +15,6 @@ defmodule Hygeia.CaseContext.Person do
   alias Hygeia.EctoType.NOGA
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
-  alias Hygeia.OrganisationContext.Position
   alias Hygeia.TenantContext.Tenant
 
   @derive {Phoenix.Param, key: :uuid}
@@ -37,13 +36,15 @@ defmodule Hygeia.CaseContext.Person do
           tenant_uuid: Ecto.UUID.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
-          positions: Ecto.Schema.has_many(Position.t()) | nil,
           vaccination_shots: Ecto.Schema.has_many(VaccinationShot.t()) | nil,
           vaccination_shot_validities: Ecto.Schema.has_many(VaccinationShot.Validity.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employers: Ecto.Schema.has_many(Organisation.t()) | nil,
           pinned_notes: Ecto.Schema.has_many(Note.t()) | nil,
+          redacted: boolean() | nil,
+          redaction_date: Date.t() | nil,
+          reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -65,13 +66,15 @@ defmodule Hygeia.CaseContext.Person do
           tenant_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
           cases: Ecto.Schema.has_many(Case.t()),
-          positions: Ecto.Schema.has_many(Position.t()),
           vaccination_shots: Ecto.Schema.has_many(VaccinationShot.t()),
           vaccination_shot_validities: Ecto.Schema.has_many(VaccinationShot.Validity.t()),
           affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employers: Ecto.Schema.has_many(Organisation.t()),
           pinned_notes: Ecto.Schema.has_many(Note.t()),
+          redacted: boolean(),
+          redaction_date: Date.t() | nil,
+          reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -93,6 +96,9 @@ defmodule Hygeia.CaseContext.Person do
     field :profession_category_main, NOGA.Section
     field :is_vaccinated, :boolean
     field :convalescent_externally, :boolean, default: false
+    field :redacted, :boolean, default: false
+    field :redaction_date, :date
+    field :reidentification_date, :date
 
     embeds_one :address, Address, on_replace: :update
     embeds_many :contact_methods, ContactMethod, on_replace: :delete
@@ -107,7 +113,6 @@ defmodule Hygeia.CaseContext.Person do
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     has_many :cases, Case
-    has_many :positions, Position, foreign_key: :person_uuid
     has_many :affiliations, Affiliation, foreign_key: :person_uuid, on_replace: :delete
 
     has_many :employee_affiliations, Affiliation,
@@ -155,7 +160,10 @@ defmodule Hygeia.CaseContext.Person do
       :profession_category_main,
       :profession_category,
       :is_vaccinated,
-      :convalescent_externally
+      :convalescent_externally,
+      :redacted,
+      :redaction_date,
+      :reidentification_date
     ])
     |> fill_uuid
     |> fill_human_readable_id
