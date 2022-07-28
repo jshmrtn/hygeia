@@ -56,6 +56,14 @@ defmodule Hygeia.UserContext.User do
   end
 
   @spec changeset(user :: t | empty, attrs :: Hygeia.ecto_changeset_params()) :: Changeset.t()
+  def changeset(user, %{grants: []} = attrs) do
+    user
+    |> cast(attrs, [:uuid, :email, :display_name, :iam_sub])
+    |> cast_assoc(:grants)
+    |> validate_required([:display_name, :iam_sub])
+    |> unique_constraint(:iam_sub)
+  end
+
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:uuid, :email, :display_name, :iam_sub])
@@ -103,6 +111,15 @@ defmodule Hygeia.UserContext.User do
   @spec has_role?(user :: Person.t(), role :: Role.t(), tenant :: Tenant.t() | :any | String.t()) ::
           false
   def has_role?(%Person{}, _role, _tenant), do: false
+
+  @spec anonymize_user_attrs_as_needed(attrs :: map) :: map
+  def anonymize_user_attrs_as_needed(%{grants: []} = attrs),
+    do:
+      attrs
+      |> Map.replace(:email, nil)
+      |> Map.replace(:display_name, "anonymous")
+
+  def anonymize_user_attrs_as_needed(attrs), do: attrs
 
   defimpl Hygeia.Authorization.Resource do
     alias Hygeia.CaseContext.Person
