@@ -339,7 +339,6 @@ defmodule HygeiaWeb.PersonLive.BaseData do
       Repo.preload(
         person,
         [
-          positions: [organisation: []],
           tenant: [],
           affiliations: [],
           vaccination_shots: [],

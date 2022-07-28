@@ -21,7 +21,6 @@ defmodule HygeiaWeb.Helpers.Versioning do
     Hygeia.OrganisationContext.Affiliation,
     Hygeia.OrganisationContext.Division,
     Hygeia.OrganisationContext.Organisation,
-    Hygeia.OrganisationContext.Position,
     Hygeia.SystemMessageContext.SystemMessage,
     Hygeia.TenantContext.SedexExport,
     Hygeia.TenantContext.Tenant,

@@ -15,7 +15,6 @@ defmodule Hygeia.CaseContext.Person do
   alias Hygeia.EctoType.NOGA
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
-  alias Hygeia.OrganisationContext.Position
   alias Hygeia.TenantContext.Tenant
 
   @derive {Phoenix.Param, key: :uuid}
@@ -37,7 +36,6 @@ defmodule Hygeia.CaseContext.Person do
           tenant_uuid: Ecto.UUID.t() | nil,
           tenant: Ecto.Schema.belongs_to(Tenant.t()) | nil,
           cases: Ecto.Schema.has_many(Case.t()) | nil,
-          positions: Ecto.Schema.has_many(Position.t()) | nil,
           vaccination_shots: Ecto.Schema.has_many(VaccinationShot.t()) | nil,
           vaccination_shot_validities: Ecto.Schema.has_many(VaccinationShot.Validity.t()) | nil,
           affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
@@ -65,7 +63,6 @@ defmodule Hygeia.CaseContext.Person do
           tenant_uuid: Ecto.UUID.t(),
           tenant: Ecto.Schema.belongs_to(Tenant.t()),
           cases: Ecto.Schema.has_many(Case.t()),
-          positions: Ecto.Schema.has_many(Position.t()),
           vaccination_shots: Ecto.Schema.has_many(VaccinationShot.t()),
           vaccination_shot_validities: Ecto.Schema.has_many(VaccinationShot.Validity.t()),
           affiliations: Ecto.Schema.has_many(Affiliation.t()),
@@ -107,7 +104,6 @@ defmodule Hygeia.CaseContext.Person do
 
     belongs_to :tenant, Tenant, references: :uuid, foreign_key: :tenant_uuid
     has_many :cases, Case
-    has_many :positions, Position, foreign_key: :person_uuid
     has_many :affiliations, Affiliation, foreign_key: :person_uuid, on_replace: :delete
 
     has_many :employee_affiliations, Affiliation,

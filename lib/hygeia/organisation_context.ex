@@ -12,7 +12,6 @@ defmodule Hygeia.OrganisationContext do
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.OrganisationContext.Organisation
-  alias Hygeia.OrganisationContext.Position
   alias Hygeia.OrganisationContext.Visit
 
   @doc """
@@ -186,18 +185,6 @@ defmodule Hygeia.OrganisationContext do
           )
         end)
 
-      position_updates =
-        delete
-        |> Ecto.assoc(:positions)
-        |> Repo.stream()
-        |> Enum.reduce(Ecto.Multi.new(), fn %Position{uuid: uuid} = position, acc ->
-          Ecto.Multi.update(
-            acc,
-            uuid,
-            Ecto.Changeset.change(position, %{organisation_uuid: into_uuid})
-          )
-        end)
-
       division_updates =
         delete
         |> Ecto.assoc(:divisions)
@@ -224,7 +211,6 @@ defmodule Hygeia.OrganisationContext do
 
       {:ok, _updates} =
         affiliation_updates
-        |> Ecto.Multi.append(position_updates)
         |> Ecto.Multi.append(division_updates)
         |> Ecto.Multi.append(hospitalization_updates)
         |> Ecto.Multi.delete({:delete, delete_uuid}, Ecto.Changeset.change(delete))
@@ -286,122 +272,6 @@ defmodule Hygeia.OrganisationContext do
   @spec change_new_organisation(attrs :: Hygeia.ecto_changeset_params()) ::
           Ecto.Changeset.t(Organisation.t())
   def change_new_organisation(attrs \\ %{}), do: change_organisation(%Organisation{}, attrs)
-
-  @doc """
-  Returns the list of positions.
-
-  ## Examples
-
-      iex> list_positions()
-      [%Position{}, ...]
-
-  """
-  @spec list_positions :: [Position.t()]
-  def list_positions, do: Repo.all(Position)
-
-  @doc """
-  Gets a single position.
-
-  Raises `Ecto.NoResultsError` if the Position does not exist.
-
-  ## Examples
-
-      iex> get_position!(123)
-      %Position{}
-
-      iex> get_position!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  @spec get_position!(id :: Ecto.UUID.t()) :: Position.t()
-  def get_position!(id), do: Repo.get!(Position, id)
-
-  @doc """
-  Creates a position.
-
-  ## Examples
-
-      iex> create_position(%{field: value})
-      {:ok, %Position{}}
-
-      iex> create_position(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec create_position(attrs :: Hygeia.ecto_changeset_params()) ::
-          {:ok, Position.t()} | {:error, Ecto.Changeset.t(Position.t())}
-  def create_position(attrs \\ %{}) do
-    %Position{}
-    |> change_position(attrs)
-    |> versioning_insert()
-    |> broadcast("positions", :create)
-    |> versioning_extract()
-  end
-
-  @doc """
-  Updates a position.
-
-  ## Examples
-
-      iex> update_position(position, %{field: new_value})
-      {:ok, %Position{}}
-
-      iex> update_position(position, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec update_position(
-          position :: Position.t(),
-          attrs :: Hygeia.ecto_changeset_params()
-        ) ::
-          {:ok, Position.t()} | {:error, Ecto.Changeset.t(Position.t())}
-  def update_position(%Position{} = position, attrs) do
-    position
-    |> change_position(attrs)
-    |> versioning_update()
-    |> broadcast("positions", :update)
-    |> versioning_extract()
-  end
-
-  @doc """
-  Deletes a position.
-
-  ## Examples
-
-      iex> delete_position(position)
-      {:ok, %Position{}}
-
-      iex> delete_position(position)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec delete_position(position :: Position.t()) ::
-          {:ok, Position.t()} | {:error, Ecto.Changeset.t(Position.t())}
-  def delete_position(%Position{} = position),
-    do:
-      position
-      |> change_position()
-      |> versioning_delete()
-      |> broadcast("positions", :delete)
-      |> versioning_extract()
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking position changes.
-
-  ## Examples
-
-      iex> change_position(position)
-      %Ecto.Changeset{data: %Position{}}
-
-  """
-  @spec change_position(
-          position :: Position.t() | Position.empty(),
-          attrs :: Hygeia.ecto_changeset_params()
-        ) ::
-          Ecto.Changeset.t(Position.t())
-  def change_position(%Position{} = position, attrs \\ %{}) do
-    Position.changeset(position, attrs)
-  end
 
   @doc """
   Returns the list of affiliations.
