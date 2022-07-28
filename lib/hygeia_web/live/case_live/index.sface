@@ -359,12 +359,16 @@
             {case_display_type(case)}
           </td>
           <td>
-            <Link to={Routes.user_show_path(@socket, :show, case.tracer)} :if={case.tracer}>
+            {#if not is_nil(case.tracer) and is_nil(case.tracer.email)}
               {case.tracer.display_name}
-            </Link>
-            <span :if={is_nil(case.tracer)}>
-              {gettext("Case Administration")}
-            </span>
+            {#else}
+              <Link to={Routes.user_show_path(@socket, :show, case.tracer)} :if={case.tracer}>
+                {case.tracer.display_name}
+              </Link>
+              <span :if={is_nil(case.tracer)}>
+                {gettext("Case Administration")}
+              </span>
+            {/if}
           </td>
           <td>
             <Link to={Routes.user_show_path(@socket, :show, case.supervisor)} :if={case.supervisor}>

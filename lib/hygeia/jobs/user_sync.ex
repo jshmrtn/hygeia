@@ -144,7 +144,10 @@ defmodule Hygeia.Jobs.UserSync do
        ) do
     attrs = to_user_attrs(grants, tenants)
 
-    if UserContext.user_identical_after_update?(user, attrs) do
+    # Checking empty grants list because of not deleted user with no grants
+    #   email != nil and display_name != anonymous coming from access_token
+    if (Enum.empty?(user.grants) and Enum.empty?(attrs.grants)) or
+         UserContext.user_identical_after_update?(user, attrs) do
       Logger.debug("No changes for user #{sub}")
 
       multi

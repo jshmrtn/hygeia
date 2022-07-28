@@ -60,9 +60,25 @@ defmodule Hygeia.UserContext.User do
     user
     |> cast(attrs, [:uuid, :email, :display_name, :iam_sub])
     |> cast_assoc(:grants)
-    |> validate_required([:email, :display_name, :iam_sub])
+    |> validate_required([:display_name, :iam_sub])
     |> unique_constraint(:iam_sub)
-    |> validate_email(:email)
+    |> handle_grants()
+  end
+
+  defp handle_grants(changeset) do
+    changeset
+    |> fetch_field!(:grants)
+    |> case do
+      [_ | _] ->
+        changeset
+        |> validate_required([:email])
+        |> validate_email(:email)
+
+      [] ->
+        changeset
+        |> put_change(:display_name, "anonymous")
+        |> put_change(:email, nil)
+    end
   end
 
   @spec has_role?(user :: t, role :: Role.t(), tenant :: :any) :: boolean

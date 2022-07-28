@@ -28,7 +28,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -65,7 +65,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -99,7 +99,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -138,7 +138,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -179,7 +179,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -222,7 +222,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -265,7 +265,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -302,7 +302,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -342,7 +342,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -386,7 +386,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         inserted_at: ~U[2020-10-12 11:34:21.423847Z],
@@ -429,7 +429,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -464,7 +464,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -505,7 +505,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -556,7 +556,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -607,7 +607,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -644,7 +644,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -687,7 +687,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -727,7 +727,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         inserted_at: ~U[2020-10-12 13:16:00Z],
@@ -767,7 +767,7 @@ defmodule Hygeia.StatisticsContextTest do
 
     #   tenant = tenant_fixture()
     #   person = person_fixture(tenant)
-    #   user = user_fixture()
+    #   user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
     #   case_fixture(person, user, user, %{
     #     phases: [
@@ -813,7 +813,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -851,7 +851,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
       organisation = organisation_fixture()
 
       case_fixture(person, user, user, %{
@@ -881,7 +881,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         hospitalizations: []
@@ -908,7 +908,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
       organisation = organisation_fixture()
 
       case_fixture(person, user, user, %{
@@ -942,7 +942,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         complexity: :high,
@@ -986,7 +986,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         complexity: nil,
@@ -1030,7 +1030,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         complexity: :medium,
@@ -1067,7 +1067,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         complexity: :high,
@@ -1108,7 +1108,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       index_case =
         case_fixture(person, user, user, %{
@@ -1166,7 +1166,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       case_fixture(person, user, user, %{
         phases: [
@@ -1213,7 +1213,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       index_case =
         case_fixture(person, user, user, %{
@@ -1264,7 +1264,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       index_case =
         case_fixture(person, user, user, %{
@@ -1327,7 +1327,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       index_case =
         case_fixture(person, user, user, %{
@@ -1382,16 +1382,32 @@ defmodule Hygeia.StatisticsContextTest do
         Enum.to_list(Date.range(Date.add(Date.utc_today(), -3), Date.utc_today()))
 
       tenant = tenant_fixture()
-      user = user_fixture()
+      person1 = person_fixture(tenant)
+
+      tracer =
+        user_fixture(
+          iam_sub: Ecto.UUID.generate(),
+          grants: [
+            %{role: :tracer, tenant_uuid: tenant.uuid}
+          ]
+        )
+
+      supervisor =
+        user_fixture(
+          iam_sub: Ecto.UUID.generate(),
+          grants: [
+            %{role: :supervisor, tenant_uuid: tenant.uuid}
+          ]
+        )
+
       organisation1 = organisation_fixture()
       organisation1_name = organisation1.name
       organisation2 = organisation_fixture(%{name: "JMC"})
       organisation2_name = organisation2.name
 
-      person1 = person_fixture(tenant)
       affiliation_fixture(person1, organisation1, %{kind: :employee})
 
-      case_fixture(person1, user, user, %{
+      case_fixture(person1, tracer, supervisor, %{
         phases: [
           %{
             details: %{
@@ -1408,7 +1424,7 @@ defmodule Hygeia.StatisticsContextTest do
       person2 = person_fixture(tenant)
       affiliation_fixture(person2, organisation1, %{kind: :employee})
 
-      case_fixture(person2, user, user, %{
+      case_fixture(person2, tracer, supervisor, %{
         phases: [
           %{
             details: %{
@@ -1425,7 +1441,7 @@ defmodule Hygeia.StatisticsContextTest do
       person3 = person_fixture(tenant)
       affiliation_fixture(person3, organisation2, %{kind: :employee})
 
-      case_fixture(person3, user, user, %{
+      case_fixture(person3, tracer, supervisor, %{
         phases: [
           %{
             details: %{
@@ -1476,7 +1492,7 @@ defmodule Hygeia.StatisticsContextTest do
 
       tenant = tenant_fixture()
       person = person_fixture(tenant)
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       affiliation_fixture(person, organisation_fixture(), %{kind: :employee})
 
@@ -1524,7 +1540,7 @@ defmodule Hygeia.StatisticsContextTest do
           ]
         })
 
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       _index_case =
         case_fixture(person, user, user, %{
@@ -1573,7 +1589,7 @@ defmodule Hygeia.StatisticsContextTest do
           ]
         })
 
-      user = user_fixture()
+      user = user_fixture(grants: [%{role: :tracer, tenant_uuid: tenant.uuid}])
 
       _index_case =
         case_fixture(person, user, user, %{
