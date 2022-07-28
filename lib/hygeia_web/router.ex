@@ -27,7 +27,7 @@ defmodule HygeiaWeb.Router do
     plug Cldr.Plug.AcceptLanguage,
       cldr_backend: HygeiaCldr
 
-    plug Cldr.Plug.SetLocale,
+    plug Cldr.Plug.PutLocale,
       apps: [:cldr, :gettext],
       from: [:session, :accept_language],
       gettext: HygeiaGettext,
