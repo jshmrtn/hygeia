@@ -82,37 +82,30 @@
         </LivePatch>
 
         {#if @person.redacted}
-          <Link
-            to="#"
-            click="reidentify"
-            opts={
-              title: gettext("Reidentify"),
-              data: [confirm: gettext("Are you sure you want to reidentify this person?")]
-            }
+          <button
             :if={authorized?(@person, :create, auth)}
+            :on-click="reidentify"
+            class="btn btn-warning"
+            type="button"
+            data-confirm={pgettext("Person Base Data", "Are you sure you want to reidentify this person?")}
           >
-            <button class="btn btn-warning">
-              <span class="oi oi-eye" aria-hidden="true" />
-              {gettext("Reidentify")}
-            </button>
-          </Link>
+            <span class="oi oi-eye" aria-hidden="true" />
+            {pgettext("Person Base Data", "Reidentify")}
+          </button>
         {#else}
-          <Link
-            to="#"
-            click="redact"
-            opts={
-              title: gettext("Redact"),
-              data: [
-                confirm: gettext("Are you sure you want to redact this person and all the associated cases?")
-              ]
-            }
-            :if={authorized?(@person, :delete, auth)}
+          <button
+            :if={authorized?(@person, :update, auth)}
+            :on-click="redact"
+            class="btn btn-warning"
+            type="button"
+            data-confirm={pgettext(
+              "Person Base Data",
+              "Are you sure you want to redact this person and all the associated cases?"
+            )}
           >
-            <button class="btn btn-warning">
-              <span class="oi oi-warning" aria-hidden="true" />
-              {gettext("Redact")}
-            </button>
-          </Link>
+            <span class="oi oi-warning" aria-hidden="true" />
+            {pgettext("Person Base Data", "Redact")}
+          </button>
         {/if}
 
         <Link
