@@ -21,12 +21,9 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.PrematureRelease
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
-<<<<<<< HEAD
-  alias Hygeia.OrganisationContext
-=======
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
->>>>>>> feat/case_redaction
+  alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Visit
