@@ -167,6 +167,23 @@ defmodule Hygeia.CaseContext.Transmission do
             meta :: %{atom() => term}
           ) :: boolean
     def authorized?(
+          _transmission,
+          action,
+          _user,
+          %{case: %Case{redacted: true}}
+        )
+        when action in [:create, :update],
+        do: false
+
+    def authorized?(
+          transmission,
+          action,
+          user,
+          %{case: %Case{redacted: true} = case}
+        ),
+        do: authorized?(transmission, action, user, %{case: %Case{case | redacted: false}})
+
+    def authorized?(
           %Transmission{propagator_case: propagator_case, recipient_case: recipient_case},
           action,
           user,

@@ -576,7 +576,7 @@ defmodule Hygeia.CaseContext.Case do
         do: User.has_role?(user, :supervisor, :any)
 
     def authorized?(%Case{redacted: true}, action, _user, _meta)
-        when action in [:versioning, :update, :auto_tracing],
+        when action in [:partial_details, :versioning, :create, :update, :auto_tracing],
         do: false
 
     def authorized?(%Case{redacted: true}, action, user, _meta)
@@ -586,9 +586,6 @@ defmodule Hygeia.CaseContext.Case do
             [:tracer, :super_user, :supervisor, :admin],
             &User.has_role?(user, &1, :any)
           )
-
-    def authorized?(%Case{redacted: true}, :create, user, meta),
-      do: authorized?(%Case{}, :create, user, meta)
 
     def authorized?(%Case{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
         when action in [:details, :partial_details, :versioning, :update, :delete, :auto_tracing],

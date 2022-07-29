@@ -3,7 +3,7 @@
     <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
 
     <div class="card">
-      <div class="card-header" :if={authorized?(@case, :partial_details, auth)}>
+      <div class="card-header">
         <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
       </div>
       <div :if={not @has_index_phase?} class="card-body">
@@ -60,6 +60,7 @@
 
         <div class="d-flex">
           <LiveRedirect
+            :if={authorized?(%PossibleIndexSubmission{}, :create, auth, %{case: @case})}
             class="me-2"
             to={Routes.possible_index_submission_create_path(@socket, :create, @case)}
           >
