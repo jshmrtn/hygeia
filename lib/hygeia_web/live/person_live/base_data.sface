@@ -39,6 +39,22 @@
         </details>
       </Context>
 
+      {#unless is_nil(@person.redaction_date)}
+        {#if @person.redacted}
+          <div class="alert alert-warning mb-4">
+            {pgettext("Person Base Data", "This person has been redacted on: {date}",
+              date: HygeiaCldr.Date.to_string!(@person.redaction_date)
+            )}
+          </div>
+        {#else}
+          <div class="alert alert-info mb-4">
+            {pgettext("Person Base Data", "This person is scheduled to be redacted on: {date}",
+              date: HygeiaCldr.Date.to_string!(@person.redaction_date)
+            )}
+          </div>
+        {/if}
+      {/unless}
+
       <div class="mb-4" :if={@live_action == :show}>
         <LivePatch
           :if={authorized?(@person, :update, auth)}
@@ -57,13 +73,47 @@
             person_uuid: @person,
             return_to: Routes.case_index_path(@socket, :index)
           )}
-          :if={authorized?(Case, :create, auth, tenant: :any)}
+          :if={authorized?(Case, :create, auth, tenant: :any) and not @person.redacted}
         >
           <button type="button" class="btn btn-primary">
             <span class="oi oi-plus" aria-hidden="true" />
             {gettext("New Case")}
           </button>
         </LivePatch>
+
+        {#if @person.redacted}
+          <Link
+            to="#"
+            click="reidentify"
+            opts={
+              title: gettext("Reidentify"),
+              data: [confirm: gettext("Are you sure you want to reidentify this person?")]
+            }
+            :if={authorized?(@person, :create, auth)}
+          >
+            <button class="btn btn-warning">
+              <span class="oi oi-eye" aria-hidden="true" />
+              {gettext("Reidentify")}
+            </button>
+          </Link>
+        {#else}
+          <Link
+            to="#"
+            click="redact"
+            opts={
+              title: gettext("Redact"),
+              data: [
+                confirm: gettext("Are you sure you want to redact this person and all the associated cases?")
+              ]
+            }
+            :if={authorized?(@person, :delete, auth)}
+          >
+            <button class="btn btn-warning">
+              <span class="oi oi-warning" aria-hidden="true" />
+              {gettext("Redact")}
+            </button>
+          </Link>
+        {/if}
 
         <Link
           to="#"

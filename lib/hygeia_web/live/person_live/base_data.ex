@@ -323,6 +323,17 @@ defmodule HygeiaWeb.PersonLive.BaseData do
     end
   end
 
+  def handle_event("redact", _params, %{assigns: %{person: person}} = socket) do
+    true = authorized?(person, :update, get_auth(socket))
+
+    {:ok, _} = CaseContext.redact_person(person)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, gettext("Person redacted successfully"))
+     |> redirect(to: Routes.person_index_path(socket, :index))}
+  end
+
   def handle_event("delete", _params, %{assigns: %{person: person}} = socket) do
     true = authorized?(person, :delete, get_auth(socket))
 

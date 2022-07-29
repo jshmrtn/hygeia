@@ -31,6 +31,13 @@
           >
             <LiveRedirect to={to} class={"nav-link", active: active}>
               {gettext("Base Data")}
+              <span
+                :if={@person.redacted}
+                class="position-absolute top-10 start-10 translate-middle badge rounded-pill bg-warning"
+              >
+                {pgettext("Person Base Data", "Redacted")}
+                <span class="visually-hidden">{pgettext("Person Base Data", "This person has been redacted")}</span>
+              </span>
             </LiveRedirect>
           </UriActiveContext>
         </li>

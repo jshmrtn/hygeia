@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #, elixir-autogen, icu-format
 msgid "\"Merge\" and \"Into\" must not be the same"
@@ -327,6 +327,14 @@ msgstr "Sei un dipendente, studente o un membro di una società?"
 #, elixir-autogen, icu-format
 msgid "Are you planning to move to a different address for your isolation?"
 msgstr "Hai intenzione di trasferirti presso un altro indirizzo per il tuo isolamento?"
+
+#, elixir-autogen, icu-format
+msgid "Are you sure you want to redact this person and all the associated cases?"
+msgstr "Sei sicuro di voler anonimizzare questa persona e tutti i casi associati?"
+
+#, elixir-autogen, icu-format
+msgid "Are you sure you want to reidentify this person?"
+msgstr "Sei sicuro di voler identificare nuovamente questa persona?"
 
 #, elixir-autogen, icu-format
 msgid "Are you sure?"
@@ -3745,6 +3753,10 @@ msgid "Person living in the same household or in a very close relationship. (e.g
 msgstr "PPersona che vive nella stessa famiglia o in una relazione stretta. (es. coppia che non convive)"
 
 #, elixir-autogen, fuzzy, icu-format
+msgid "Person redacted successfully"
+msgstr "Persona creata con successo"
+
+#, elixir-autogen, fuzzy, icu-format
 msgid "Person updated successfully"
 msgstr "Persona aggiornata con successo"
 
@@ -4264,6 +4276,15 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
 msgid "Recipient Public Key"
 msgstr "Chiave pubblica del destinatario"
 
+#, elixir-autogen, icu-format
+msgid "Redact"
+msgstr "Anonimizza"
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Redacted"
+msgstr "Anonimizzato"
+
 #, elixir-autogen, fuzzy, icu-format
 msgid "Redirecting"
 msgstr "Reindirizzare"
@@ -4296,6 +4317,10 @@ msgstr "Riferimenti"
 msgctxt "ISM 2021-06-11 Test Field Group"
 msgid "References"
 msgstr "Riferimenti"
+
+#, elixir-autogen, fuzzy, icu-format
+msgid "Reidentify"
+msgstr "Residente"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
@@ -5315,12 +5340,31 @@ msgid "This person has been notified on the following contact methods"
 msgstr "Questa persona è stata informata sui seguenti metodi di contatto"
 
 #, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "This person has been redacted"
+msgstr "Questa persona è stata anonimizzata"
+
+#, elixir-autogen, icu-format
+msgid "This person has been redacted and you can no longer access the overview, please contact your supervisor for more information."
+msgstr "Questa persona è stata anonimizzata e non puoi più accedere alla panoramica, contatta il tuo supervisore per ulteriori informazioni."
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "This person has been redacted on: {date}"
+msgstr "Questa persona è stata anonimizzata il: {date}"
+
+#, elixir-autogen, icu-format
 msgid "This person has not been notified."
 msgstr "Questa persona non è stata informata."
 
 #, elixir-autogen, icu-format
 msgid "This person is in the database"
 msgstr "Questa persona ha un possibile duplicato"
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "This person is scheduled to be redacted on: {date}"
+msgstr "Questa persona dovrebbe essere anonimizzata il: {date}"
 
 #, elixir-autogen, icu-format
 msgid "This person requires further processing, please click on edit to correct the available information."

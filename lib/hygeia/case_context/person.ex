@@ -255,6 +255,15 @@ defmodule Hygeia.CaseContext.Person do
         when action in [:list, :create, :details, :partial_details, :update, :delete],
         do: false
 
+    def authorized?(%Person{redacted: true}, action, _user, _meta)
+        when action in [:versioning, :update],
+        do: false
+
+    def authorized?(%Person{redacted: true}, action, user, _meta)
+        when action in [:details, :partial_details, :create, :delete],
+        do:
+          Enum.any?([:tracer, :super_user, :supervisor, :admin], &User.has_role?(user, &1, :any))
+
     def authorized?(%Person{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
         when action in [:details, :partial_details, :versioning, :update, :delete],
         do:
