@@ -366,29 +366,31 @@ defmodule Hygeia.CaseContext do
   @spec redact_person(person :: Person.t()) ::
           {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
   def redact_person(%Person{} = person) do
-    person =
-      Repo.preload(person, [:affiliations, :vaccination_shots, :employee_affiliations, :employers])
+    person = Repo.preload(person, [:affiliations, :vaccination_shots])
+
+    contact_methods =
+      Enum.map(person.contact_methods, &%{comment: nil, type: &1.type, uuid: &1.uuid, value: nil})
+
+    address = %{Map.from_struct(person.address) | address: nil, place: nil, zip: nil}
 
     attrs = %{
-      address: nil,
+      address: address,
       affiliations: [],
       birth_date: nil,
-      contact_methods: [],
-      employee_affiliations: [],
-      employers: [],
+      contact_methods: contact_methods,
       first_name: nil,
-      is_vaccinated: nil,
+      # is_vaccinated: nil,
       last_name: nil,
       profession_category: nil,
       profession_category_main: nil,
-      sex: nil,
+      # sex: nil,
       vaccination_shots: [],
       redacted: true,
       redaction_date: Date.utc_today()
     }
 
     person
-    |> change_person(attrs)
+    |> change_person(attrs, %{contact_value_optional: true})
     |> versioning_update()
     |> broadcast("people", :update)
     |> versioning_extract()

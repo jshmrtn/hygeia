@@ -215,7 +215,7 @@
                         />
                         <ErrorTag class="d-block invalid-feedback" />
                       </Field>
-                      <Field name={:value}>
+                      <Field name={:value} :if={not is_nil(fetch_field!(form.source, :value))}>
                         <TextInput
                           class="form-control"
                           field={:value}

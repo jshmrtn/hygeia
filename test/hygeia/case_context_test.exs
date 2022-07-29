@@ -292,22 +292,22 @@ defmodule Hygeia.CaseContextTest do
       assert OrganisationContext.list_affiliations() == []
 
       assert %Person{
-               address: nil,
+               address: %{address: nil, place: nil, zip: nil, country: "CH", subdivision: "SG"},
                affiliations: [],
                birth_date: nil,
-               contact_methods: [],
+               contact_methods: [%{type: :mobile, value: nil}],
                employee_affiliations: [],
                employers: [],
                first_name: nil,
                human_readable_id: ^person_human_readable_id,
-               is_vaccinated: nil,
+               #  is_vaccinated: nil,
                last_name: nil,
                profession_category: nil,
                profession_category_main: nil,
                redacted: true,
                redaction_date: ^today,
                reidentification_date: nil,
-               sex: nil,
+               sex: :female,
                suspected_duplicates_uuid: [],
                tenant_uuid: ^person_tenant_uuid,
                uuid: ^person_uuid

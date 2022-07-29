@@ -83,7 +83,8 @@ defmodule Hygeia.CaseContext.Person do
           optional(:address_required) => boolean,
           optional(:vaccination) => boolean,
           optional(:vaccination_required) => boolean,
-          optional(:initial_nil_jab_date_count) => integer
+          optional(:initial_nil_jab_date_count) => integer,
+          optional(:contact_value_optional) => boolean
         }
 
   schema "people" do
@@ -148,7 +149,9 @@ defmodule Hygeia.CaseContext.Person do
     |> validate_required([:is_vaccinated])
   end
 
-  def changeset(person, attrs, _opts) do
+  def changeset(person, attrs, opts) do
+    contact_value_optional = Map.get(opts, :contact_value_optional, false)
+
     person
     |> cast(attrs, [
       :uuid,
@@ -178,7 +181,9 @@ defmodule Hygeia.CaseContext.Person do
     |> cast_assoc(:affiliations)
     |> cast_embed(:external_references)
     |> cast_embed(:address)
-    |> cast_embed(:contact_methods)
+    |> cast_embed(:contact_methods,
+      with: &ContactMethod.changeset(&1, &2, %{value_optional: contact_value_optional})
+    )
     |> cast_assoc(:vaccination_shots)
     |> validate_vaccination_shots()
     |> foreign_key_constraint(:tenant_uuid)
