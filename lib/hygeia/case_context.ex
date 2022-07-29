@@ -20,6 +20,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
   alias Hygeia.EctoType.Country
+  alias Hygeia.Helpers.Anonymization
   alias Hygeia.TenantContext.Tenant
 
   @origin_country Application.compile_env!(:hygeia, [:phone_number_parsing_origin_country])
@@ -358,6 +359,40 @@ defmodule Hygeia.CaseContext do
       |> versioning_delete()
       |> broadcast("people", :delete)
       |> versioning_extract()
+
+  @doc """
+  Redacts a person.
+  """
+  @spec redact_person(person :: Person.t()) ::
+          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
+  def redact_person(%Person{} = person) do
+    person =
+      Repo.preload(person, [:affiliations, :vaccination_shots, :employee_affiliations, :employers])
+
+    attrs = %{
+      address: nil,
+      affiliations: [],
+      birth_date: nil,
+      contact_methods: [],
+      employee_affiliations: [],
+      employers: [],
+      first_name: nil,
+      is_vaccinated: nil,
+      last_name: nil,
+      profession_category: nil,
+      profession_category_main: nil,
+      sex: nil,
+      vaccination_shots: [],
+      redacted: true,
+      redaction_date: Date.utc_today()
+    }
+
+    person
+    |> change_person(attrs)
+    |> versioning_update()
+    |> broadcast("people", :update)
+    |> versioning_extract()
+  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking person changes.
@@ -2364,6 +2399,46 @@ defmodule Hygeia.CaseContext do
   def change_new_case(person, attrs) do
     tenant = Repo.preload(person, :tenant).tenant
     change_new_case(person, tenant, attrs)
+  end
+
+  @doc """
+  Redacts a case.
+  """
+  @spec redact_case(person :: Case.t()) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
+  def redact_case(%Case{} = case) do
+    case =
+      Repo.preload(case, [
+        :notes,
+        :emails,
+        :sms,
+        :visits,
+        :auto_tracing,
+        :received_transmissions,
+        :propagated_transmissions,
+        :tests
+      ])
+
+    attrs = %{
+      notes: [],
+      emails: [],
+      sms: [],
+      visits: [],
+      auto_tracing: nil,
+      received_transmissions:
+        Anonymization.anonymize_transmission_params(case.received_transmissions),
+      propagated_transmissions:
+        Anonymization.anonymize_transmission_params(case.propagated_transmissions),
+      tests: Anonymization.anonymize_test_params(case.tests),
+      redacted: true,
+      redaction_date: Date.utc_today()
+    }
+
+    case
+    |> change_case(attrs)
+    |> versioning_update()
+    |> broadcast("cases", :update)
+    |> versioning_extract()
   end
 
   @doc """

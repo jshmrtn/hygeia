@@ -336,6 +336,14 @@ msgid "Are you planning to move to a different address for your isolation?"
 msgstr ""
 
 #, elixir-autogen, icu-format
+msgid "Are you sure you want to redact this person and all the associated cases?"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgid "Are you sure you want to reidentify this person?"
+msgstr ""
+
+#, elixir-autogen, icu-format
 msgid "Are you sure?"
 msgstr ""
 
@@ -3673,6 +3681,10 @@ msgid "Person living in the same household or in a very close relationship. (e.g
 msgstr ""
 
 #, elixir-autogen, icu-format
+msgid "Person redacted successfully"
+msgstr ""
+
+#, elixir-autogen, icu-format
 msgid "Person updated successfully"
 msgstr ""
 
@@ -4193,6 +4205,15 @@ msgid "Recipient Public Key"
 msgstr ""
 
 #, elixir-autogen, icu-format
+msgid "Redact"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Redacted"
+msgstr ""
+
+#, elixir-autogen, icu-format
 msgid "Redirecting"
 msgstr ""
 
@@ -4223,6 +4244,10 @@ msgstr ""
 #, elixir-autogen, icu-format
 msgctxt "ISM 2021-06-11 Test Field Group"
 msgid "References"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgid "Reidentify"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -5243,11 +5268,30 @@ msgid "This person has been notified on the following contact methods"
 msgstr ""
 
 #, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "This person has been redacted"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgid "This person has been redacted and you can no longer access the overview, please contact your supervisor for more information."
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "This person has been redacted on: {date}"
+msgstr ""
+
+#, elixir-autogen, icu-format
 msgid "This person has not been notified."
 msgstr ""
 
 #, elixir-autogen, icu-format
 msgid "This person is in the database"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "This person is scheduled to be redacted on: {date}"
 msgstr ""
 
 #, elixir-autogen, icu-format
