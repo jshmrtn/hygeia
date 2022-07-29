@@ -57,7 +57,7 @@ msgstr "< 30 Min."
 msgid "> 15 Min."
 msgstr "> 15 Min."
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "> 30 Min."
 msgstr "> 30 Min."
 
@@ -65,15 +65,15 @@ msgstr "> 30 Min."
 msgid "A lot of contact persons from different places, clubs affected, gastronomy affected, hospital/nursing home affected"
 msgstr "Beaucoup de personnes de contact de différents endroits, clubs concernés, gastronomie concernée, hôpital/maison de retraite concernée"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "A lot of contact persons/places that must be determined / assignment to team lead"
 msgstr "Beaucoup de personnes/lieux de contact qui doivent être déterminés / attribution au chef d'équipe"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "A minimum of 2 points must be fulfilled"
 msgstr "Un minimum de 2 points doit être rempli"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "A minimum of 3 points must be fulfilled"
 msgstr "Un minimum de 3 points doit être rempli"
 
@@ -81,11 +81,11 @@ msgstr "Un minimum de 3 points doit être rempli"
 msgid "A new case will be created for this person."
 msgstr "Un nouveau dossier sera créé pour cette personne."
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgid "A phase will be appended."
 msgstr "Une phase sera annexée."
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Versioning Origin"
 msgid "API"
 msgstr "API"
@@ -329,10 +329,22 @@ msgid "Are you planning to move to a different address for your isolation?"
 msgstr "Prévoyez-vous de déménager à une autre adresse pour votre isolement?"
 
 #, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "Are you sure you want to redact this case?"
+msgstr "Voulez-vous vraiment anonymiser ce cas?"
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
 msgid "Are you sure you want to redact this person and all the associated cases?"
 msgstr "Voulez-vous vraiment anonymiser cette personne et tous les cas associés?"
 
 #, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "Are you sure you want to reidentify this case?"
+msgstr "Voulez-vous vraiment identifier à nouveau ce cas?"
+
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Person Base Data"
 msgid "Are you sure you want to reidentify this person?"
 msgstr "Êtes-vous sûr de vouloir ré-identifier cette personne?"
 
@@ -585,6 +597,10 @@ msgstr "Cas créé avec succès"
 #, elixir-autogen, fuzzy, icu-format
 msgid "Case deleted successfully"
 msgstr "Affaire supprimée avec succès"
+
+#, elixir-autogen, icu-format
+msgid "Case redacted successfully"
+msgstr "Cas anonymisé avec succès"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "Case updated successfully"
@@ -1541,6 +1557,11 @@ msgid "Early end because of negative test after the 7th day of quarantine"
 msgstr "Fin anticipée en raison d'un test négatif après le 7e jour de quarantaine"
 
 #, elixir-autogen, fuzzy, icu-format
+msgid "Edit"
+msgstr "Modifier"
+
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Case Base Data"
 msgid "Edit"
 msgstr "Modifier"
 
@@ -4277,12 +4298,18 @@ msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
 msgid "Recipient Public Key"
 msgstr "Clé publique du destinataire"
 
-#, elixir-autogen, icu-format
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Case Base Data"
 msgid "Redact"
 msgstr "Anonymiser"
 
-#, elixir-autogen, icu-format
+#, elixir-autogen, fuzzy, icu-format
 msgctxt "Person Base Data"
+msgid "Redact"
+msgstr "Anonymiser"
+
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Person Header"
 msgid "Redacted"
 msgstr "Anonymisé"
 
@@ -4319,9 +4346,15 @@ msgctxt "ISM 2021-06-11 Test Field Group"
 msgid "References"
 msgstr "Références"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
+msgctxt "Case Base Data"
 msgid "Reidentify"
-msgstr "Résident"
+msgstr "Réidentifier"
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Reidentify"
+msgstr "Réidentifier"
 
 #, elixir-autogen, fuzzy, icu-format
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
@@ -5300,9 +5333,24 @@ msgstr "L'application suisse covid est l'application officielle de recherche de 
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
 msgstr "Une erreur s'est produite lors de l'envoi du formulaire. Veuillez réessayer de soumettre le formulaire et contactez votre administrateur si le problème persiste."
 
+#, elixir-autogen, icu-format
+msgctxt "Person Header"
+msgid "This case has been redacted"
+msgstr "Ce cas a été expurgé anonymisé"
+
+#, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "This case has been redacted on: {date}"
+msgstr "Ce cas a été anonymisé le: {date}"
+
 #, elixir-autogen, fuzzy, icu-format
 msgid "This case is not in an index phase."
 msgstr "Cette affaire n'est pas en phase d'indexation."
+
+#, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "This case is scheduled to be redacted on: {date}"
+msgstr "Ce cas doit être anonymisé le: {date}"
 
 #, elixir-autogen, fuzzy, icu-format
 msgid "This entry cannot be modified because it is a consequence of the information provided in the Visits step."
@@ -5341,18 +5389,13 @@ msgid "This person has been notified on the following contact methods"
 msgstr "Cette personne a été notifiée sur les méthodes de contact suivantes"
 
 #, elixir-autogen, icu-format
-msgctxt "Person Base Data"
-msgid "This person has been redacted"
-msgstr "Cette personne a été anonymisée"
-
-#, elixir-autogen, icu-format
 msgid "This person has been redacted and you can no longer access the overview, please contact your supervisor for more information."
 msgstr "Cette personne a été anonymisée et vous ne pouvez plus accéder à l'aperçu, veuillez contacter votre superviseur pour plus d'informations."
 
 #, elixir-autogen, icu-format
 msgctxt "Person Base Data"
 msgid "This person has been redacted on: {date}"
-msgstr "Cette personne a été anonymisée le : {date}"
+msgstr "Cette personne a été anonymisée le: {date}"
 
 #, elixir-autogen, icu-format
 msgid "This person has not been notified."
@@ -5365,7 +5408,7 @@ msgstr "Cette personne a un double possible"
 #, elixir-autogen, icu-format
 msgctxt "Person Base Data"
 msgid "This person is scheduled to be redacted on: {date}"
-msgstr "Cette personne doit être anonymisée le : {date}"
+msgstr "Cette personne doit être anonymisée le: {date}"
 
 #, elixir-autogen, icu-format
 msgid "This person requires further processing, please click on edit to correct the available information."
