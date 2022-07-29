@@ -129,20 +129,26 @@ defmodule Hygeia.CaseContext.Case do
     belongs_to :tracer, User, references: :uuid, foreign_key: :tracer_uuid
     belongs_to :supervisor, User, references: :uuid, foreign_key: :supervisor_uuid
     # , references: :recipient_case
-    has_many :received_transmissions, Transmission, foreign_key: :recipient_case_uuid
+    has_many :received_transmissions, Transmission,
+      foreign_key: :recipient_case_uuid,
+      on_replace: :delete
+
     # , references: :propagator_case
-    has_many :propagated_transmissions, Transmission, foreign_key: :propagator_case_uuid
+    has_many :propagated_transmissions, Transmission,
+      foreign_key: :propagator_case_uuid,
+      on_replace: :delete
+
     has_many :possible_index_submissions, PossibleIndexSubmission, foreign_key: :case_uuid
-    has_many :emails, Email, foreign_key: :case_uuid
-    has_many :sms, SMS, foreign_key: :case_uuid
-    has_many :notes, Note, foreign_key: :case_uuid
+    has_many :emails, Email, foreign_key: :case_uuid, on_replace: :delete
+    has_many :sms, SMS, foreign_key: :case_uuid, on_replace: :delete
+    has_many :notes, Note, foreign_key: :case_uuid, on_replace: :delete
     has_many :pinned_notes, Note, foreign_key: :case_uuid, where: [pinned: true]
     has_many :hospitalizations, Hospitalization, foreign_key: :case_uuid, on_replace: :delete
     has_many :visits, Visit, foreign_key: :case_uuid, on_replace: :delete
     has_many :tests, Test, foreign_key: :case_uuid, on_replace: :delete
     has_many :premature_releases, PrematureRelease, foreign_key: :case_uuid, on_replace: :delete
 
-    has_one :auto_tracing, AutoTracing, foreign_key: :case_uuid
+    has_one :auto_tracing, AutoTracing, foreign_key: :case_uuid, on_replace: :delete
 
     timestamps()
   end
@@ -191,12 +197,18 @@ defmodule Hygeia.CaseContext.Case do
       :tenant_uuid,
       :person_uuid
     ])
+    |> cast_assoc(:auto_tracing)
     |> cast_embed(:clinical)
     |> cast_embed(:external_references)
+    |> cast_assoc(:emails)
     |> cast_assoc(:hospitalizations)
     |> cast_assoc(:visits)
+    |> cast_assoc(:received_transmissions)
+    |> cast_assoc(:propagated_transmissions)
+    |> cast_assoc(:sms)
     |> cast_assoc(:tests)
     |> cast_embed(:monitoring)
+    |> cast_assoc(:notes)
     |> cast_embed(:phases, required: true)
     |> validate_at_least_one_phase()
     |> validate_phase_type_unique()
