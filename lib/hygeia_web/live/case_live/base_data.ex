@@ -170,6 +170,17 @@ defmodule HygeiaWeb.CaseLive.BaseData do
     end
   end
 
+  def handle_event("redact", _params, %{assigns: %{case: case}} = socket) do
+    true = authorized?(case, :update, get_auth(socket), %{tenant: case.tenant})
+
+    {:ok, _} = CaseContext.redact_case(case)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, gettext("Case redacted successfully"))
+     |> redirect(to: Routes.case_base_data_path(socket, :show, case))}
+  end
+
   def handle_event(
         "add_external_reference",
         _params,

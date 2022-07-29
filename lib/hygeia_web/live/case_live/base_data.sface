@@ -7,17 +7,60 @@
         <div class="card-header">
           <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
         </div>
+
         <div class="card-body">
-          <div class="mb-4" :if={@live_action == :show}>
+          {#unless is_nil(@case.redaction_date)}
+            {#if @case.redacted}
+              <div class="alert alert-warning mb-4">
+                {pgettext("Case Base Data", "This case has been redacted on: {date}",
+                  date: HygeiaCldr.Date.to_string!(@case.redaction_date)
+                )}
+              </div>
+            {#else}
+              <div class="alert alert-info mb-4">
+                {pgettext("Case Base Data", "This case is scheduled to be redacted on: {date}",
+                  date: HygeiaCldr.Date.to_string!(@case.redaction_date)
+                )}
+              </div>
+            {/if}
+          {/unless}
+
+          <div class="mb-4">
             <LivePatch
-              :if={authorized?(@case, :update, auth)}
+              class="me-2"
+              :if={authorized?(@case, :update, auth) and @live_action == :show}
               to={Routes.case_base_data_path(@socket, :edit, @case)}
             >
               <button class="btn btn-primary" id="case-edit">
-                <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                {gettext("Edit")}
+                <span class="oi oi-pencil" title={pgettext("Case Base Data", "Edit")} aria-hidden="true" />
+                {pgettext("Case Base Data", "Edit")}
               </button>
             </LivePatch>
+
+            {#if @case.redacted}
+              <button
+                :if={authorized?(@case, :create, auth, %{tenant: @case.tenant})}
+                :on-click="reidentify"
+                class="btn btn-warning"
+                type="button"
+                disabled={@case.person.redacted}
+                data-confirm={pgettext("Case Base Data", "Are you sure you want to reidentify this case?")}
+              >
+                <span class="oi oi-eye" aria-hidden="true" />
+                {pgettext("Case Base Data", "Reidentify")}
+              </button>
+            {#else}
+              <button
+                :if={authorized?(@case, :update, auth, %{tenant: @case.tenant})}
+                :on-click="redact"
+                class="btn btn-warning"
+                type="button"
+                data-confirm={pgettext("Case Base Data", "Are you sure you want to redact this case?")}
+              >
+                <span class="oi oi-warning" aria-hidden="true" />
+                {pgettext("Case Base Data", "Redact")}
+              </button>
+            {/if}
           </div>
 
           <HygeiaWeb.Lock

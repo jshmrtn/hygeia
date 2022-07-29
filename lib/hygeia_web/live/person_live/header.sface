@@ -7,7 +7,11 @@
         id={"#{@myself}_person_recordview_#{@person.uuid}"}
         wrapper_tag={:span}
       >
-        {@person_display_name}
+        {#if @person.redacted}
+          <span class="badge rounded-pill bg-warning">{pgettext("Person Header", "Redacted")}</span>
+        {#else}
+          {@person_display_name}
+        {/if}
       </HygeiaWeb.RecordView>
     </h1>
     <h1 class="mb-4" :if={not authorized?(@person, :partial_details, auth)}>
@@ -54,6 +58,13 @@
           <LiveRedirect to={to} class={"nav-link", active: active}>
             {case_display_type(case)}
             <span class="date ms-2">{case_display_date(case, timezone)}</span>
+            <span
+              :if={case.redacted}
+              class="position-absolute top-10 start-10 translate-middle badge rounded-pill bg-warning"
+            >
+              {pgettext("Person Header", "Redacted")}
+              <span class="visually-hidden">{pgettext("Person Header", "This case has been redacted")}</span>
+            </span>
           </LiveRedirect>
         </UriActiveContext>
       </li>
