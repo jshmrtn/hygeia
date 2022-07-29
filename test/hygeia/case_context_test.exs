@@ -3,22 +3,29 @@ defmodule Hygeia.CaseContextTest do
 
   use Hygeia.DataCase
 
+  alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
+  alias Hygeia.CaseContext.Entity
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Hospitalization
+  alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.PrematureRelease
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.CommunicationContext.Email
+  alias Hygeia.CommunicationContext.SMS
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Visit
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
@@ -611,6 +618,200 @@ defmodule Hygeia.CaseContextTest do
     test "change_case/1 returns a case changeset" do
       case = case_fixture()
       assert %Ecto.Changeset{} = CaseContext.change_case(case)
+    end
+
+    test "redact_case/1 redacts the case" do
+      case_main_uuid = Ecto.UUID.generate()
+
+      case_main =
+        case_fixture(
+          person_fixture(),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          %{
+            uuid: case_main_uuid,
+            notes: [
+              %{case_uuid: case_main_uuid, note: "test"}
+            ],
+            visits: [
+              %{
+                reason: :visitor,
+                last_visit_at: ~D[2020-10-15],
+                unknown_organisation: %{name: "companyA"}
+              }
+            ],
+            tests: [
+              %{
+                kind: :serology,
+                result: :positive,
+                tested_at: ~D[2020-10-25],
+                reporting_unit: %{
+                  address: %{
+                    address: "Lagerstrasse 30",
+                    country: "CH",
+                    place: "Buchs SG",
+                    zip: "9470"
+                  },
+                  division: "Buchs",
+                  name: "Labormedizinisches Zentrum Dr. Risch"
+                }
+              }
+            ]
+          }
+        )
+
+      case_aux = case_fixture()
+
+      email_fixture(case_main)
+      sms_fixture(case_main)
+
+      {:ok, _auto_tracing} = AutoTracingContext.create_auto_tracing(case_main)
+
+      transmission_fixture(%{
+        date: Date.add(Date.utc_today(), -5),
+        propagator_internal: nil,
+        recipient_internal: true,
+        recipient_case_uuid: case_main.uuid,
+        comment: "Seat 3A",
+        infection_place: %{
+          address: %{
+            country: "GB"
+          },
+          known: true,
+          type: :flight,
+          name: "Swiss International Airlines",
+          flight_information: "LX332"
+        }
+      })
+
+      transmission_fixture(%{
+        date: Date.add(Date.utc_today(), -2),
+        propagator_internal: true,
+        propagator_case_uuid: case_main.uuid,
+        recipient_internal: true,
+        recipient_case_uuid: case_aux.uuid,
+        comment: "Drank beer, kept distance to other people",
+        infection_place: %{
+          address: %{
+            address: "Torstrasse 25",
+            zip: "9000",
+            place: "St. Gallen",
+            subdivision: "SG",
+            country: "CH"
+          },
+          known: true,
+          type: :flight,
+          name: "BrüW",
+          flight_information: nil
+        }
+      })
+
+      assert %Case{
+               uuid: ^case_main_uuid,
+               notes: [%Note{}],
+               emails: [%Email{}],
+               sms: [%SMS{}],
+               visits: [%Visit{}],
+               auto_tracing: %AutoTracing{},
+               received_transmissions: [
+                 %Transmission{
+                   comment: "Seat 3A",
+                   infection_place: %Transmission.InfectionPlace{
+                     address: %{
+                       country: "GB"
+                     }
+                   }
+                 }
+               ],
+               propagated_transmissions: [
+                 %Transmission{
+                   comment: "Drank beer, kept distance to other people",
+                   infection_place: %Transmission.InfectionPlace{
+                     address: %{
+                       address: "Torstrasse 25",
+                       zip: "9000",
+                       place: "St. Gallen",
+                       subdivision: "SG",
+                       country: "CH"
+                     }
+                   }
+                 }
+               ],
+               tests: [
+                 %Test{
+                   tested_at: ~D[2020-10-25],
+                   reporting_unit: %Entity{
+                     address: %Address{
+                       address: "Lagerstrasse 30",
+                       country: "CH",
+                       place: "Buchs SG",
+                       zip: "9470"
+                     },
+                     division: "Buchs",
+                     name: "Labormedizinisches Zentrum Dr. Risch"
+                   }
+                 }
+               ],
+               redacted: false,
+               redaction_date: nil
+             } =
+               Repo.preload(case_main, [
+                 :notes,
+                 :emails,
+                 :sms,
+                 :visits,
+                 :auto_tracing,
+                 :received_transmissions,
+                 :propagated_transmissions,
+                 :tests
+               ])
+
+      assert {:ok, redacted_case} = CaseContext.redact_case(case_main)
+
+      today = Date.utc_today()
+
+      assert %Case{
+               uuid: ^case_main_uuid,
+               notes: [],
+               emails: [],
+               sms: [],
+               visits: [],
+               auto_tracing: nil,
+               received_transmissions: [
+                 %Transmission{
+                   comment: nil,
+                   infection_place: %Transmission.InfectionPlace{
+                     address: nil
+                   }
+                 }
+               ],
+               propagated_transmissions: [
+                 %Transmission{
+                   comment: nil,
+                   infection_place: %Transmission.InfectionPlace{
+                     address: nil
+                   }
+                 }
+               ],
+               tests: [
+                 %Test{
+                   tested_at: nil,
+                   reporting_unit: nil
+                 }
+               ],
+               redacted: true,
+               redaction_date: ^today
+             } =
+               Repo.preload(redacted_case, [
+                 :notes,
+                 :emails,
+                 :sms,
+                 :visits,
+                 :auto_tracing,
+                 :received_transmissions,
+                 :propagated_transmissions,
+                 :tests
+               ])
     end
 
     test "case_export/3 exports :bag_med_16122020_case" do
