@@ -100,6 +100,8 @@ defmodule Hygeia.CommunicationContext.SMS do
         when action in [:create],
         do: false
 
+    def authorized?(_sms, :create, _user, %{case: %Case{redacted: true}}), do: false
+
     def authorized?(_sms, :create, user, %{case: %Case{tenant_uuid: tenant_uuid}}),
       do:
         Enum.any?(

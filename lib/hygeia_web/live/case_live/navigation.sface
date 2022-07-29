@@ -358,7 +358,7 @@
           {gettext("Create Note")}
         </a>
       </div>
-      <div :if={authorized?(Case, :create, auth, tenant: :any)}>
+      <div :if={authorized?(@case, :create, auth, tenant: :any)}>
         <div class="dropdown-divider" />
         <Context get={HygeiaWeb, uri: uri}>
           <LiveRedirect
@@ -384,29 +384,24 @@
           {gettext("Create Phase")}
         </a>
       </div>
-      <div class="dropdown-divider" />
-      <a
-        class="dropdown-item"
-        href="#"
-        :on-click="open_sms_modal"
-        :if={authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
-          CaseContext.person_has_mobile_number?(@case.person) and
-          TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}
-      >
-        <span class="oi oi-phone me-1" aria-hidden="true" />
-        {gettext("Send SMS")}
-      </a>
-      <a
-        class="dropdown-item"
-        href="#"
-        :on-click="open_email_modal"
-        :if={authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
-          CaseContext.person_has_email?(@case.person) and
-          TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}
-      >
-        <span class="oi oi-envelope-closed me-1" aria-hidden="true" />
-        {gettext("Send Email")}
-      </a>
+      <div :if={authorized?(Hygeia.CommunicationContext.SMS, :create, auth, %{case: @case}) and
+        CaseContext.person_has_mobile_number?(@case.person) and
+        TenantContext.tenant_has_outgoing_sms_configuration?(@case.tenant)}>
+        <div class="dropdown-divider" />
+        <a class="dropdown-item" href="#" :on-click="open_sms_modal">
+          <span class="oi oi-phone me-1" aria-hidden="true" />
+          {gettext("Send SMS")}
+        </a>
+      </div>
+      <div :if={authorized?(Hygeia.CommunicationContext.Email, :create, auth, %{case: @case}) and
+        CaseContext.person_has_email?(@case.person) and
+        TenantContext.tenant_has_outgoing_mail_configuration?(@case.tenant)}>
+        <div class="dropdown-divider" />
+        <a class="dropdown-item" href="#" :on-click="open_email_modal">
+          <span class="oi oi-envelope-closed me-1" aria-hidden="true" />
+          {gettext("Send Email")}
+        </a>
+      </div>
       <div :if={authorized?(@case, :delete, auth)}>
         <div class="dropdown-divider" />
         <Link

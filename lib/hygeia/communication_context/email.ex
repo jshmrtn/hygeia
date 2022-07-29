@@ -196,6 +196,8 @@ defmodule Hygeia.CommunicationContext.Email do
         when action in [:create],
         do: false
 
+    def authorized?(_email, :create, _user, %{case: %Case{redacted: true}}), do: false
+
     def authorized?(_email, :create, user, %{case: %Case{tenant_uuid: tenant_uuid}}),
       do:
         Enum.any?(
