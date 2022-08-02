@@ -381,10 +381,8 @@ defmodule Hygeia.CaseContext do
   def redact_person(%Person{} = person) do
     person = Repo.preload(person, [:affiliations, :vaccination_shots])
 
-    address = %{Map.from_struct(person.address) | address: nil, place: nil, zip: nil}
-
     attrs = %{
-      address: address,
+      address: Anonymization.anonymize_address_params(person.address),
       affiliations: [],
       birth_date: nil,
       contact_methods: [],

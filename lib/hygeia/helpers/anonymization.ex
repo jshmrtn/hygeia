@@ -1,6 +1,7 @@
 defmodule Hygeia.Helpers.Anonymization do
   @moduledoc false
 
+  alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
 
@@ -30,5 +31,12 @@ defmodule Hygeia.Helpers.Anonymization do
         |> Map.merge(%{tested_at: nil, reporting_unit: nil})
       end
     )
+  end
+
+  @spec anonymize_address_params(address :: Address.t() | nil) :: map()
+  def anonymize_address_params(nil), do: nil
+
+  def anonymize_address_params(%Address{} = address) do
+    %{Map.from_struct(address) | address: nil, place: nil, zip: nil}
   end
 end
