@@ -171,9 +171,9 @@ defmodule Hygeia.CaseContext.Person do
       :uuid,
       :human_readable_id,
       :tenant_uuid,
-      :first_name,
       :convalescent_externally
     ])
+    |> validate_first_name_as_needed()
     |> validate_past_date(:birth_date)
     |> validate_profession_category()
     |> cast_assoc(:affiliations)
@@ -187,6 +187,15 @@ defmodule Hygeia.CaseContext.Person do
     |> detect_duplicates(:mobile)
     |> detect_duplicates(:landline)
     |> detect_duplicates(:email)
+  end
+
+  defp validate_first_name_as_needed(changeset) do
+    changeset
+    |> fetch_field!(:redacted)
+    |> case do
+      true -> changeset
+      false -> validate_required(changeset, :first_name)
+    end
   end
 
   defp validate_profession_category(changeset) do

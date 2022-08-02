@@ -361,6 +361,37 @@ defmodule Hygeia.CaseContext do
       |> versioning_extract()
 
   @doc """
+  Redacts a person.
+  """
+  @spec redact_person(person :: Person.t()) ::
+          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
+  def redact_person(%Person{} = person) do
+    person = Repo.preload(person, [:affiliations, :vaccination_shots])
+
+    address = %{Map.from_struct(person.address) | address: nil, place: nil, zip: nil}
+
+    attrs = %{
+      address: address,
+      affiliations: [],
+      birth_date: nil,
+      contact_methods: [],
+      first_name: nil,
+      last_name: nil,
+      profession_category: nil,
+      profession_category_main: nil,
+      vaccination_shots: [],
+      redacted: true,
+      redaction_date: Date.utc_today()
+    }
+
+    person
+    |> change_person(attrs)
+    |> versioning_update()
+    |> broadcast("people", :update)
+    |> versioning_extract()
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for tracking person changes.
 
   ## Examples
