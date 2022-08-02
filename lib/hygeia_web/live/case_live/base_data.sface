@@ -9,22 +9,6 @@
         </div>
 
         <div class="card-body">
-          {#unless is_nil(@case.redaction_date)}
-            {#if @case.redacted}
-              <div class="alert alert-warning mb-4">
-                {pgettext("Case Base Data", "This case has been redacted on: {date}",
-                  date: HygeiaCldr.Date.to_string!(@case.redaction_date)
-                )}
-              </div>
-            {#else}
-              <div class="alert alert-info mb-4">
-                {pgettext("Case Base Data", "This case is scheduled to be redacted on: {date}",
-                  date: HygeiaCldr.Date.to_string!(@case.redaction_date)
-                )}
-              </div>
-            {/if}
-          {/unless}
-
           <div class="mb-4">
             <LivePatch
               class="me-2"

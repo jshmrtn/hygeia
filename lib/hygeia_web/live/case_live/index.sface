@@ -385,6 +385,9 @@
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">
+              <div :if={case.redacted} class="me-3">
+                <span class="badge rounded-pill bg-warning">{pgettext("Case Index", "Redacted")}</span>
+              </div>
               <LiveRedirect
                 to={Routes.case_base_data_path(@socket, :show, case)}
                 :if={authorized?(case, :details, auth)}

@@ -76,7 +76,8 @@ defmodule HygeiaWeb.CaseLive.Choose do
     cases =
       Repo.all(
         from(case in query,
-          where: case.tenant_uuid in ^Enum.map(socket.assigns.tenants, & &1.uuid),
+          where:
+            case.tenant_uuid in ^Enum.map(socket.assigns.tenants, & &1.uuid) and not case.redacted,
           limit: 25
         )
       )

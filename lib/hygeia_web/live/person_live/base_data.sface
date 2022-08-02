@@ -39,21 +39,13 @@
         </details>
       </Context>
 
-      {#unless is_nil(@person.redaction_date)}
-        {#if @person.redacted}
-          <div class="alert alert-warning mb-4">
-            {pgettext("Person Base Data", "This person has been redacted on: {date}",
-              date: HygeiaCldr.Date.to_string!(@person.redaction_date)
-            )}
-          </div>
-        {#else}
-          <div class="alert alert-info mb-4">
-            {pgettext("Person Base Data", "This person is scheduled to be redacted on: {date}",
-              date: HygeiaCldr.Date.to_string!(@person.redaction_date)
-            )}
-          </div>
-        {/if}
-      {/unless}
+      {#if @person.redacted}
+        <div class="alert alert-warning mb-4">
+          {pgettext("Person Base Data", "This person has been redacted on: {date}",
+            date: HygeiaCldr.Date.to_string!(@person.redaction_date)
+          )}
+        </div>
+      {/if}
 
       <div class="mb-4" :if={@live_action == :show}>
         <LivePatch
@@ -84,7 +76,7 @@
         {#if @person.redacted}
           <button
             :if={authorized?(@person, :create, auth)}
-            :on-click="reidentify"
+            :on-click="show_reidentification_modal"
             class="btn btn-warning"
             type="button"
             data-confirm={pgettext("Person Base Data", "Are you sure you want to reidentify this person?")}
@@ -599,4 +591,47 @@
       </Form>
     </HygeiaWeb.RecordView>
   </Context>
+
+  <HygeiaWeb.Modal
+    :if={@show_reidentification_modal}
+    id="show_reidentification_modal"
+    title={pgettext("Person Base Data", "Reidentify person")}
+    close="hide_reidentification_modal"
+    size="m"
+  >
+    <HygeiaWeb.Lock
+      id={"lock_Person_#{@person.uuid}_redaction"}
+      resource={{Person, @person.uuid}}
+      lock
+    >
+      <Form
+        for={@changeset}
+        change="validate"
+        submit="reidentify"
+        opts={autocomplete: "off", id: "redact-person-form", "phx-hook": "BlockNavigation"}
+      >
+        <HiddenInput field={:redacted} value="false" />
+        <Field name={:first_name} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <Field name={:last_name} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <button class="btn btn-primary" type="submit" phx-disable-with={"Saving..." |> gettext}>
+          <span
+            class="oi oi-circle-check"
+            title={pgettext("Person Base Data", "Reidentify")}
+            aria-hidden="true"
+          />
+          {gettext("Reidentify")}
+        </button>
+      </Form>
+    </HygeiaWeb.Lock>
+  </HygeiaWeb.Modal>
 </div>
