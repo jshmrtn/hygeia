@@ -4314,6 +4314,16 @@ msgid "Redacted"
 msgstr "Anonymisé"
 
 #, elixir-autogen, fuzzy, icu-format
+msgctxt "Case Index"
+msgid "Redacted"
+msgstr "Anonymisé"
+
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Person Index"
+msgid "Redacted"
+msgstr "Anonymisé"
+
+#, elixir-autogen, fuzzy, icu-format
 msgid "Redirecting"
 msgstr "Redirection de"
 
@@ -4354,6 +4364,15 @@ msgstr "Réidentifier"
 #, elixir-autogen, icu-format
 msgctxt "Person Base Data"
 msgid "Reidentify"
+msgstr "Réidentifier"
+
+#, elixir-autogen, fuzzy, icu-format
+msgid "Reidentify"
+msgstr "Réidentifier"
+
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Person Base Data"
+msgid "Reidentify person"
 msgstr "Réidentifier"
 
 #, elixir-autogen, fuzzy, icu-format
@@ -5347,11 +5366,6 @@ msgstr "Ce cas a été anonymisé le: {date}"
 msgid "This case is not in an index phase."
 msgstr "Cette affaire n'est pas en phase d'indexation."
 
-#, elixir-autogen, icu-format
-msgctxt "Case Base Data"
-msgid "This case is scheduled to be redacted on: {date}"
-msgstr "Ce cas doit être anonymisé le: {date}"
-
 #, elixir-autogen, fuzzy, icu-format
 msgid "This entry cannot be modified because it is a consequence of the information provided in the Visits step."
 msgstr "Cette entrée ne peut pas être modifiée car elle est une conséquence des informations fournies dans un établissement d'enseignement inséré ci-dessus."
@@ -5404,11 +5418,6 @@ msgstr "Cette personne n'a pas été prévenue."
 #, elixir-autogen, icu-format
 msgid "This person is in the database"
 msgstr "Cette personne a un double possible"
-
-#, elixir-autogen, icu-format
-msgctxt "Person Base Data"
-msgid "This person is scheduled to be redacted on: {date}"
-msgstr "Cette personne doit être anonymisée le: {date}"
 
 #, elixir-autogen, icu-format
 msgid "This person requires further processing, please click on edit to correct the available information."

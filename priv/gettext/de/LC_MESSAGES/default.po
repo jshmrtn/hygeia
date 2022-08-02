@@ -4310,6 +4310,16 @@ msgctxt "Person Header"
 msgid "Redacted"
 msgstr "Anonymisiert"
 
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Case Index"
+msgid "Redacted"
+msgstr "Anonymisiert"
+
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Person Index"
+msgid "Redacted"
+msgstr "Anonymisiert"
+
 #, elixir-autogen, icu-format
 msgid "Redirecting"
 msgstr "Weiterleiten"
@@ -4351,6 +4361,15 @@ msgstr "Neu identifizieren"
 #, elixir-autogen, icu-format
 msgctxt "Person Base Data"
 msgid "Reidentify"
+msgstr "Neu identifizieren"
+
+#, elixir-autogen, fuzzy, icu-format
+msgid "Reidentify"
+msgstr "Neu identifizieren"
+
+#, elixir-autogen, fuzzy, icu-format
+msgctxt "Person Base Data"
+msgid "Reidentify person"
 msgstr "Neu identifizieren"
 
 #, elixir-autogen, icu-format
@@ -5345,11 +5364,6 @@ msgid "This case is not in an index phase."
 msgstr "Dieser Fall befindet sich nicht in einer Indexphase."
 
 #, elixir-autogen, icu-format
-msgctxt "Case Base Data"
-msgid "This case is scheduled to be redacted on: {date}"
-msgstr "Dieser Fall soll am: {date} anonymisiert werden"
-
-#, elixir-autogen, icu-format
 msgid "This entry cannot be modified because it is a consequence of the information provided in the Visits step."
 msgstr "Dieser Eintrag kann nicht bearbeitet werden, da er die Konsequenz der Informationen, welche bei den Besuchen eingegeben wurden, ist."
 
@@ -5401,11 +5415,6 @@ msgstr "Diese Person wurde nicht benachrichtigt."
 #, elixir-autogen, icu-format
 msgid "This person is in the database"
 msgstr "Diese Person existiert bereits"
-
-#, elixir-autogen, icu-format
-msgctxt "Person Base Data"
-msgid "This person is scheduled to be redacted on: {date}"
-msgstr "Diese Person soll am: {date} anonymisiert werden"
 
 #, elixir-autogen, icu-format
 msgid "This person requires further processing, please click on edit to correct the available information."
