@@ -289,18 +289,15 @@ defmodule Hygeia.CaseContextTest do
 
       today = Date.utc_today()
 
-      assert OrganisationContext.list_affiliations() == []
-
       assert %Person{
                address: %{address: nil, place: nil, zip: nil, country: "CH", subdivision: "SG"},
                affiliations: [],
                birth_date: nil,
-               contact_methods: [%{type: :mobile, value: nil}],
+               contact_methods: [],
                employee_affiliations: [],
                employers: [],
                first_name: nil,
                human_readable_id: ^person_human_readable_id,
-               #  is_vaccinated: nil,
                last_name: nil,
                profession_category: nil,
                profession_category_main: nil,

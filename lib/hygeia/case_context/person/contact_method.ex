@@ -19,8 +19,6 @@ defmodule Hygeia.CaseContext.Person.ContactMethod do
           value: String.t()
         }
 
-  @type changeset_options :: %{optional(:value_optional) => boolean}
-
   embedded_schema do
     field :type, Type
     field :comment, :string
@@ -28,22 +26,9 @@ defmodule Hygeia.CaseContext.Person.ContactMethod do
   end
 
   @doc false
-  @spec changeset(
-          contact_method :: t | empty,
-          attrs :: Hygeia.ecto_changeset_params(),
-          opts :: changeset_options
-        ) ::
+  @spec changeset(contact_method :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
           Changeset.t()
-  def changeset(contact_method, attrs, opts \\ %{})
-
-  def changeset(contact_method, attrs, %{value_optional: true}) do
-    contact_method
-    |> cast(attrs, [:uuid, :type, :comment, :value])
-    |> fill_uuid
-    |> validate_required([:type])
-  end
-
-  def changeset(contact_method, attrs, _opts) do
+  def changeset(contact_method, attrs) do
     contact_method
     |> cast(attrs, [:uuid, :type, :comment, :value])
     |> fill_uuid

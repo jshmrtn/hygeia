@@ -23,8 +23,7 @@ defmodule HygeiaWeb.PersonLiveTest do
   }
   @invalid_attrs %{
     first_name: nil,
-    last_name: nil,
-    tenant_uuid: nil
+    last_name: nil
   }
 
   defp create_person(tags) do
@@ -60,12 +59,12 @@ defmodule HygeiaWeb.PersonLiveTest do
       {:ok, create_live, _html} = live(conn, Routes.person_create_path(conn, :create))
 
       assert create_live
-             |> form("#person-form", person: @invalid_attrs)
+             |> form("#person-form", person: Map.put(@invalid_attrs, :tenant_uuid, tenant.uuid))
              |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _view, html} =
         create_live
-        |> form("#person-form", person: Map.put(@create_attrs, :tenant_uuid, tenant.uuid))
+        |> form("#person-form", person: @create_attrs)
         |> render_submit()
         |> follow_redirect(conn)
 
@@ -85,6 +84,10 @@ defmodule HygeiaWeb.PersonLiveTest do
 
     test "updates person within modal", %{conn: conn, person: person} do
       {:ok, edit_live, _html} = live(conn, Routes.person_base_data_path(conn, :edit, person))
+
+      assert edit_live
+             |> form("#person-form", person: @invalid_attrs)
+             |> render_change() =~ "can&#39;t be blank"
 
       assert edit_live
              |> form("#person-form", person: %{is_vaccinated: true})

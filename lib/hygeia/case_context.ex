@@ -368,29 +368,24 @@ defmodule Hygeia.CaseContext do
   def redact_person(%Person{} = person) do
     person = Repo.preload(person, [:affiliations, :vaccination_shots])
 
-    contact_methods =
-      Enum.map(person.contact_methods, &%{comment: nil, type: &1.type, uuid: &1.uuid, value: nil})
-
     address = %{Map.from_struct(person.address) | address: nil, place: nil, zip: nil}
 
     attrs = %{
       address: address,
       affiliations: [],
       birth_date: nil,
-      contact_methods: contact_methods,
+      contact_methods: [],
       first_name: nil,
-      # is_vaccinated: nil,
       last_name: nil,
       profession_category: nil,
       profession_category_main: nil,
-      # sex: nil,
       vaccination_shots: [],
       redacted: true,
       redaction_date: Date.utc_today()
     }
 
     person
-    |> change_person(attrs, %{contact_value_optional: true})
+    |> change_person(attrs)
     |> versioning_update()
     |> broadcast("people", :update)
     |> versioning_extract()
