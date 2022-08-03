@@ -23,7 +23,6 @@ defmodule Hygeia.CaseContextTest do
   alias Hygeia.CaseContext.Transmission
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
-  alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.OrganisationContext.Visit
@@ -310,6 +309,77 @@ defmodule Hygeia.CaseContextTest do
                uuid: ^person_uuid
              } =
                Repo.preload(redacted_person, [:affiliations, :employee_affiliations, :employers])
+    end
+
+    test "list people for redaction" do
+      tenant = tenant_fixture()
+      person1 = person_fixture(tenant, %{first_name: "person1"})
+      person2 = person_fixture(tenant, %{first_name: "person2"})
+      person3 = person_fixture(tenant, %{first_name: "person3"})
+      person4 = person_fixture(tenant, %{first_name: "person4"})
+      person5 = person_fixture(tenant, %{first_name: "person5"})
+      _person6 = person_fixture(tenant, %{first_name: "person6"})
+      person7 = person_fixture(tenant, %{first_name: "person7"})
+
+      _case21 = case_fixture(person2)
+      case31 = case_fixture(person3)
+      case41 = case_fixture(person4)
+      _case42 = case_fixture(person4)
+      case51 = case_fixture(person5)
+      case52 = case_fixture(person5)
+      case71 = case_fixture(person7)
+
+      Repo.query!("SELECT SET_CONFIG('versioning.originator_id', NULL, true)")
+      Repo.query!("SELECT SET_CONFIG('versioning.origin', 'migration', true)")
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person1.uuid}'"
+      )
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person2.uuid}'"
+      )
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person3.uuid}'"
+      )
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person4.uuid}'"
+      )
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person5.uuid}'"
+      )
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person7.uuid}'"
+      )
+
+      Repo.query!("UPDATE cases SET redacted = true WHERE uuid = '#{case31.uuid}'")
+      Repo.query!("UPDATE cases SET redacted = true WHERE uuid = '#{case41.uuid}'")
+      Repo.query!("UPDATE cases SET redacted = true WHERE uuid = '#{case51.uuid}'")
+      Repo.query!("UPDATE cases SET redacted = true WHERE uuid = '#{case52.uuid}'")
+      Repo.query!("UPDATE cases SET redacted = true WHERE uuid = '#{case71.uuid}'")
+
+      Repo.query!("UPDATE people SET redacted = true WHERE uuid = '#{person7.uuid}'")
+
+      assert length(CaseContext.list_cases()) == 7
+      assert length(CaseContext.list_people()) == 7
+
+      # person1 - not redacted, old, no case
+      # person2 - not redacted, old, case not redacted
+      # person3 - not redacted, old, case redacted
+      # person4 - not redacted, old, 1 case redacted, 1 case not redacted
+      # person5 - not redacted, old, 2 cases redacted
+      # person6 - not redacted, not old, no case
+      # person7 - redacted, old, case redacted
+
+      assert ["person1", "person3", "person5"] ==
+               CaseContext.list_people_for_redaction_query()
+               |> Repo.all()
+               |> Enum.map(& &1.first_name)
+               |> Enum.sort()
     end
 
     test "update_person/2 with invalid data returns error changeset" do
