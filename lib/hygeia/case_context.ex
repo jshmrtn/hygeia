@@ -228,6 +228,20 @@ defmodule Hygeia.CaseContext do
         )
       )
 
+  @spec list_people_for_redaction_query :: Ecto.Query.t()
+  def list_people_for_redaction_query,
+    do:
+      from(person in Person,
+        left_join: case in assoc(person, :cases),
+        where:
+          not person.redacted and
+            coalesce(person.reidentification_date, person.inserted_at) < ago(2, "year"),
+        group_by: person.uuid,
+        having:
+          sum(fragment("CASE WHEN (? IS NULL OR ?) THEN ? ELSE ? END", case, case.redacted, 0, 1)) <
+            1
+      )
+
   @spec fulltext_person_search(query :: String.t(), limit :: pos_integer()) :: [Person.t()]
   def fulltext_person_search(query, limit \\ 10),
     do: Repo.all(fulltext_person_search_query(query, limit))
@@ -385,6 +399,30 @@ defmodule Hygeia.CaseContext do
     }
 
     person
+    |> change_person(attrs)
+    |> versioning_update()
+    |> broadcast("people", :update)
+    |> versioning_extract()
+  end
+
+  @doc """
+  Reidentifies a person
+  """
+  @spec reidentify_person(
+          uuid :: Ecto.UUID.t(),
+          first_name :: String.t(),
+          last_name :: String.t()
+        ) :: {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
+  def reidentify_person(uuid, first_name, last_name) do
+    attrs = %{
+      first_name: first_name,
+      last_name: last_name,
+      redacted: false,
+      reidentification_date: Date.utc_today()
+    }
+
+    uuid
+    |> get_person!()
     |> change_person(attrs)
     |> versioning_update()
     |> broadcast("people", :update)
