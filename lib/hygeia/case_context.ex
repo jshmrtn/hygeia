@@ -233,13 +233,12 @@ defmodule Hygeia.CaseContext do
     do:
       from(person in Person,
         left_join: case in assoc(person, :cases),
+        on: not case.redacted,
         where:
           not person.redacted and
             coalesce(person.reidentification_date, person.inserted_at) < ago(2, "year"),
         group_by: person.uuid,
-        having:
-          sum(fragment("CASE WHEN (? IS NULL OR ?) THEN ? ELSE ? END", case, case.redacted, 0, 1)) <
-            1
+        having: count(case.uuid) < 1
       )
 
   @spec fulltext_person_search(query :: String.t(), limit :: pos_integer()) :: [Person.t()]
