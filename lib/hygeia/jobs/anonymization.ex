@@ -5,15 +5,16 @@ defmodule Hygeia.Jobs.Anonymization do
 
   use GenServer
 
-  import Ecto.Query, only: [from: 2]
-
   alias Hygeia.CaseContext
-  alias Hygeia.CaseContext.Case
-  alias Hygeia.CaseContext.Person
   alias Hygeia.Helpers.Versioning
   alias Hygeia.Repo
 
-  @default_refresh_interval_ms :timer.seconds(10)
+  require Logger
+
+  case Mix.env() do
+    :dev -> @default_refresh_interval_ms :timer.minutes(1)
+    _env -> @default_refresh_interval_ms :timer.minutes(30)
+  end
 
   @spec start_link(otps :: Keyword.t()) :: GenServer.on_start()
   def start_link(opts),
@@ -43,57 +44,30 @@ defmodule Hygeia.Jobs.Anonymization do
   end
 
   def handle_info(:execute, _params) do
-    {:ok, now} = DateTime.now("Etc/UTC")
-    # 63072000 == 2 years in seconds
-    datetime = DateTime.add(now, -5, :second)
+    {:ok, n_cases} =
+      anonymize(CaseContext.list_cases_for_redaction_query(), &CaseContext.redact_case/1)
 
-    :ok = anonymize_cases(datetime)
-    :ok = anonymize_persons(datetime)
-    IO.puts("Anonymization performed")
+    {:ok, n_people} =
+      anonymize(CaseContext.list_people_for_redaction_query(), &CaseContext.redact_person/1)
+
+    Logger.info("Anonymization job: cases anonymized: #{n_cases}, people anonymized: #{n_people}")
+
     {:noreply, nil}
   end
 
-  defp anonymize_cases(datetime) do
-    date = DateTime.to_date(datetime)
+  defp anonymize(query, redaction_function) do
+    stream = Repo.stream(query, max_rows: 1000)
 
-    stream =
-      Repo.stream(
-        from(c in Case,
-          where:
-            (not c.redacted and c.inserted_at <= ^datetime) or c.reidentification_date <= ^date
-        ),
-        max_rows: 1000
-      )
-
-    {:ok, _any} =
+    {:ok, length} =
       Repo.transaction(fn ->
-        stream
-        |> Enum.to_list()
-        |> Enum.each(&CaseContext.redact_case/1)
+        redactions =
+          stream
+          |> Stream.each(redaction_function)
+          |> Enum.to_list()
+
+        length(redactions)
       end)
 
-    :ok
-  end
-
-  defp anonymize_persons(datetime) do
-    date = DateTime.to_date(datetime)
-
-    stream =
-      Repo.stream(
-        from(p in Person,
-          where:
-            (not p.redacted and p.inserted_at <= ^datetime) or p.reidentification_date <= ^date
-        ),
-        max_rows: 1000
-      )
-
-    {:ok, _any} =
-      Repo.transaction(fn ->
-        stream
-        |> Enum.to_list()
-        |> Enum.each(&CaseContext.redact_person/1)
-      end)
-
-    :ok
+    {:ok, length}
   end
 end

@@ -97,7 +97,7 @@ defmodule Hygeia.Jobs.Supervisor do
         {Highlander, {Hygeia.Jobs.DataPruning, name: :user_pruning}},
 
         # Anonymization
-        Hygeia.Jobs.Anonymization
+        {Highlander, Hygeia.Jobs.Anonymization}
       ]
   end
 

@@ -241,6 +241,15 @@ defmodule Hygeia.CaseContext do
         having: count(case.uuid) < 1
       )
 
+  @spec list_cases_for_redaction_query :: Ecto.Query.t()
+  def list_cases_for_redaction_query,
+    do:
+      from(case in Case,
+        where:
+          not case.redacted and
+            coalesce(case.reidentification_date, case.inserted_at) < ago(2, "year")
+      )
+
   @spec fulltext_person_search(query :: String.t(), limit :: pos_integer()) :: [Person.t()]
   def fulltext_person_search(query, limit \\ 10),
     do: Repo.all(fulltext_person_search_query(query, limit))
