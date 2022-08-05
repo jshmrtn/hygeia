@@ -816,6 +816,25 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
     end
   end
 
+  @spec reidentify_person(
+          row :: Row.t(),
+          params :: Planner.Generator.params(),
+          preceeding_action_plan :: [Planner.Action.t()]
+        ) :: {Planner.certainty(), Planner.Action.t()}
+  def reidentify_person(%Row{}, _params, preceeding_steps) do
+    {_certainty, %Planner.Action.SelectCase{case: case, person: person}} =
+      Enum.find(preceeding_steps, &match?({_certainty, %Planner.Action.SelectCase{}}, &1))
+
+    {certainty, action} =
+      case {case, person} do
+        {%Case{redacted: true}, _person} -> {:input_needed, :stop}
+        {_case, %Person{redacted: true}} -> {:uncertain, :reidentify}
+        {_case, _person} -> {:certain, :skip}
+      end
+
+    {certainty, %Planner.Action.ReidentifyPerson{action: action}}
+  end
+
   defp preload_case(case),
     do:
       Repo.preload(case, person: [], tenant: [], tests: [], hospitalizations: [], auto_tracing: [])

@@ -292,6 +292,7 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11_TestTest do
               {:uncertain, _choose_tenant},
               {:certain, _select_case},
               {:certain, _patch_phases},
+              {:certain, _reidentify_person},
               {:input_needed,
                %Planner.Action.PatchPerson{invalid_changes: [:subdivision, :email, :phone]}}
             ]} = Planner.generate_action_plan_suggestion(row)
