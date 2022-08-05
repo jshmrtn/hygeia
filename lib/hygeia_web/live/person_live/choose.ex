@@ -22,6 +22,7 @@ defmodule HygeiaWeb.PersonLive.Choose do
   prop change, :event
 
   prop disabled, :boolean, default: false
+  prop discard_anonymized, :boolean, default: true
   prop small, :boolean, default: false
 
   prop subject, :any, default: nil
@@ -73,12 +74,12 @@ defmodule HygeiaWeb.PersonLive.Choose do
       end
 
     people =
-      Repo.all(
-        from(person in query,
-          where: person.tenant_uuid in ^Enum.map(socket.assigns.tenants, & &1.uuid),
-          limit: 25
-        )
+      from(person in query,
+        where: person.tenant_uuid in ^Enum.map(socket.assigns.tenants, & &1.uuid),
+        limit: 25
       )
+      |> maybe_discard_anonymized(socket.assigns.discard_anonymized)
+      |> Repo.all()
 
     assign(socket, people: people)
   end
@@ -87,4 +88,7 @@ defmodule HygeiaWeb.PersonLive.Choose do
 
   defp format_date(nil), do: nil
   defp format_date(date), do: HygeiaCldr.Date.to_string!(date)
+
+  defp maybe_discard_anonymized(query, true), do: where(query, [person], person.redacted)
+  defp maybe_discard_anonymized(query, _any), do: query
 end

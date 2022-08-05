@@ -328,25 +328,51 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   def handle_event("redact", _params, %{assigns: %{person: person}} = socket) do
     true = authorized?(person, :update, get_auth(socket))
 
-    {:ok, _} = CaseContext.redact_person(person)
+    socket =
+      person
+      |> CaseContext.redact_person()
+      |> case do
+        {:ok, _person} ->
+          put_flash(socket, :info, pgettext("Person Base Data", "Person redacted successfully"))
 
-    {:noreply,
-     socket
-     |> put_flash(:info, gettext("Person redacted successfully"))
-     |> redirect(to: Routes.person_index_path(socket, :index))}
+        {:error, :unredacted_case} ->
+          put_flash(
+            socket,
+            :error,
+            pgettext(
+              "Person Base Data",
+              "This person can not be redacted because there are unredacted cases associated to it"
+            )
+          )
+
+        _else ->
+          put_flash(
+            socket,
+            :error,
+            pgettext(
+              "Person Base Data",
+              "An unexpected error occurred while redacting the person"
+            )
+          )
+      end
+
+    {:noreply, push_redirect(socket, to: Routes.person_base_data_path(socket, :show, person))}
   end
 
   def handle_event(
         "reidentify",
-        %{"person" => %{"first_name" => _first_name, "last_name" => _last_name}},
+        %{"person" => %{"first_name" => first_name, "last_name" => last_name}},
         %{assigns: %{person: person}} = socket
       ) do
     true = authorized?(person, :create, get_auth(socket))
 
+    {:ok, _person} = CaseContext.reidentify_person(person, first_name, last_name)
+
     {:noreply,
      socket
-     |> put_flash(:info, "Person reidentification feature not yet implemented")
-     |> redirect(to: Routes.person_index_path(socket, :index))}
+     |> assign(show_reidentification_modal: false)
+     |> put_flash(:info, pgettext("Person Base Data", "Person reidentified successfully"))
+     |> push_redirect(to: Routes.person_base_data_path(socket, :show, person))}
   end
 
   def handle_event("delete", _params, %{assigns: %{person: person}} = socket) do
@@ -379,6 +405,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
       Repo.preload(
         person,
         [
+          cases: [],
           tenant: [],
           affiliations: [],
           vaccination_shots: [],

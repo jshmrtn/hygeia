@@ -22,24 +22,37 @@
             </LivePatch>
 
             {#if @case.redacted}
-              <button
-                :if={authorized?(@case, :create, auth, %{tenant: @case.tenant})}
-                :on-click="reidentify"
-                class="btn btn-warning"
-                type="button"
-                disabled={@case.person.redacted}
-                data-confirm={pgettext("Case Base Data", "Are you sure you want to reidentify this case?")}
+              <div
+                class="d-inline-block"
+                title={if not CaseContext.can_reidentify_case?(@case),
+                  do:
+                    pgettext(
+                      "Person Base Data",
+                      "Cannot reidentify this case because the associated person is anonymized"
+                    )}
               >
-                <span class="oi oi-eye" aria-hidden="true" />
-                {pgettext("Case Base Data", "Reidentify")}
-              </button>
+                <button
+                  :if={authorized?(@case, :create, auth, %{tenant: @case.tenant})}
+                  :on-click="reidentify"
+                  class="btn btn-warning"
+                  type="button"
+                  disabled={not CaseContext.can_reidentify_case?(@case)}
+                  data-confirm={pgettext("Case Base Data", "Are you sure you want to reidentify this case?")}
+                >
+                  <span class="oi oi-eye" aria-hidden="true" />
+                  {pgettext("Case Base Data", "Reidentify")}
+                </button>
+              </div>
             {#else}
               <button
                 :if={authorized?(@case, :update, auth, %{tenant: @case.tenant})}
                 :on-click="redact"
                 class="btn btn-warning"
                 type="button"
-                data-confirm={pgettext("Case Base Data", "Are you sure you want to redact this case?")}
+                data-confirm={pgettext(
+                  "Case Base Data",
+                  "Are you sure you want to redact this case? Some data will be lost and you will not be able to recover it."
+                )}
               >
                 <span class="oi oi-warning" aria-hidden="true" />
                 {pgettext("Case Base Data", "Redact")}

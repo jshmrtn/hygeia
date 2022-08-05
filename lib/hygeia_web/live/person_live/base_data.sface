@@ -79,25 +79,35 @@
             :on-click="show_reidentification_modal"
             class="btn btn-warning"
             type="button"
-            data-confirm={pgettext("Person Base Data", "Are you sure you want to reidentify this person?")}
           >
             <span class="oi oi-eye" aria-hidden="true" />
             {pgettext("Person Base Data", "Reidentify")}
           </button>
         {#else}
-          <button
-            :if={authorized?(@person, :update, auth)}
-            :on-click="redact"
-            class="btn btn-warning"
-            type="button"
-            data-confirm={pgettext(
-              "Person Base Data",
-              "Are you sure you want to redact this person and all the associated cases?"
-            )}
+          <div
+            class="d-inline-block"
+            title={if not CaseContext.can_redact_person?(@person),
+              do:
+                pgettext(
+                  "Person Base Data",
+                  "Cannot anonymize this person because it has cases that are not anonymized"
+                )}
           >
-            <span class="oi oi-warning" aria-hidden="true" />
-            {pgettext("Person Base Data", "Redact")}
-          </button>
+            <button
+              :if={authorized?(@person, :update, auth)}
+              :on-click="redact"
+              class="btn btn-warning"
+              type="button"
+              data-confirm={pgettext(
+                "Person Base Data",
+                "Are you sure you want to redact this person? Some data will be lost and you will not be able to recover it."
+              )}
+              disabled={not CaseContext.can_redact_person?(@person)}
+            >
+              <span class="oi oi-warning" aria-hidden="true" />
+              {pgettext("Person Base Data", "Redact")}
+            </button>
+          </div>
         {/if}
 
         <Link
@@ -623,7 +633,12 @@
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
 
-        <button class="btn btn-primary" type="submit" phx-disable-with={"Saving..." |> gettext}>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          phx-disable-with={"Saving..." |> gettext}
+          data-confirm={pgettext("Person Base Data", "Are you sure you want to reidentify this person?")}
+        >
           <span
             class="oi oi-circle-check"
             title={pgettext("Person Base Data", "Reidentify")}

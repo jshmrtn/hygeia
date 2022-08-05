@@ -144,6 +144,31 @@
                       </label>
                     </Field>
                   </div>
+                  <div class="form-group">
+                    <label class="d-block">{gettext("Show cases")}</label>
+                    <Field name="anonymization" class="form-check form-check-inline">
+                      <label class="form-check-label radio-label">
+                        <RadioButton
+                          class="form-check-input"
+                          value="any"
+                          checked={match?("any", form.source["anonymization"])}
+                        />
+                        {gettext("Any")}
+                      </label>
+                    </Field>
+                    <Field name="anonymization" class="form-check form-check-inline">
+                      <label class="form-check-label radio-label">
+                        <RadioButton class="form-check-input" value="anonymized" />
+                        {gettext("Anonymized")}
+                      </label>
+                    </Field>
+                    <Field name="anonymization" class="form-check form-check-inline">
+                      <label class="form-check-label radio-label">
+                        <RadioButton class="form-check-input" value="not_anonymized" />
+                        {gettext("Not anonymized")}
+                      </label>
+                    </Field>
+                  </div>
                 </div>
               </div>
 

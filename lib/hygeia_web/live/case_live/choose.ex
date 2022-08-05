@@ -27,6 +27,8 @@ defmodule HygeiaWeb.CaseLive.Choose do
 
   prop disabled, :boolean, default: false
 
+  prop discard_anonymized, :boolean, default: true
+
   data modal_open, :boolean, default: false
   data query, :string, default: ""
   data tenants, :list, default: nil
@@ -74,16 +76,18 @@ defmodule HygeiaWeb.CaseLive.Choose do
       end
 
     cases =
-      Repo.all(
-        from(case in query,
-          where:
-            case.tenant_uuid in ^Enum.map(socket.assigns.tenants, & &1.uuid) and not case.redacted,
-          limit: 25
-        )
+      from(case in query,
+        where: case.tenant_uuid in ^Enum.map(socket.assigns.tenants, & &1.uuid),
+        limit: 25
       )
+      |> maybe_discard_anonymized(socket.assigns.discard_anonymized)
+      |> Repo.all()
 
     assign(socket, cases: Repo.preload(cases, person: [tenant: []]))
   end
 
   defp load_case(uuid), do: uuid |> CaseContext.get_case!() |> Repo.preload(person: [tenant: []])
+
+  defp maybe_discard_anonymized(query, true), do: where(query, [case], case.redacted)
+  defp maybe_discard_anonymized(query, _any), do: query
 end
