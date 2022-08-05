@@ -104,10 +104,8 @@ defmodule Hygeia.MixProject do
       {:gen_state_machine, "~> 3.0"},
       {:gen_smtp, "~> 1.0"},
       {:gettext, "~> 0.19"},
-      # Get latest master that works with up-to-date cowboy
-      {:grpc, "~> 0.5-beta", github: "elixir-grpc/grpc", override: true},
       # Override Reason: https://github.com/elixir-grpc/grpc#grpc-elixir
-      {:gun, "~> 2.0-beta", override: true},
+      {:gun, "~> 2.0-rc", override: true},
       {:hackney, "~> 1.8"},
       {:highlander, "~> 0.2"},
       {:human_readable_identifier_generator, "~> 1.0"},
@@ -150,7 +148,7 @@ defmodule Hygeia.MixProject do
       {:tzdata, "~> 1.0"},
       {:websms, "~> 1.0.0-alpha"},
       {:xlsxir, "~> 1.6.4"},
-      {:zitadel_api, "~> 1.0-rc"}
+      {:zitadel_api, "~> 1.0"}
     ]
   end
 
