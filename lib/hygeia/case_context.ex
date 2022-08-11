@@ -686,6 +686,7 @@ defmodule Hygeia.CaseContext do
           fragment("?->'details'->>'__type__'", possible_index_phase_travel) == "possible_index" and
             fragment("?->'details'->>'type'", possible_index_phase_travel) == "travel",
         join: person in assoc(case, :person),
+        on: not person.redacted,
         left_join: mobile_contact_method in fragment("UNNEST(?)", person.contact_methods),
         on: fragment("?->>'type'", mobile_contact_method) == "mobile",
         left_join: landline_contact_method in fragment("UNNEST(?)", person.contact_methods),
@@ -710,7 +711,8 @@ defmodule Hygeia.CaseContext do
         left_join: vaccination_shots in assoc(person, :vaccination_shots),
         where:
           case.tenant_uuid == ^tenant_uuid and
-            fragment("?->'details'->>'__type__'", phase) == "index",
+            fragment("?->'details'->>'__type__'", phase) == "index" and
+            not case.redacted,
         group_by: [case.uuid, person.uuid],
         order_by: [asc: case.inserted_at],
         select: [
@@ -1415,6 +1417,7 @@ defmodule Hygeia.CaseContext do
         left_join: phase_index in fragment("UNNEST(?)", case.phases),
         on: fragment("?->'details'->>'__type__'", phase_index) == "index",
         join: person in assoc(case, :person),
+        on: not person.redacted,
         left_join: mobile_contact_method in fragment("UNNEST(?)", person.contact_methods),
         on: fragment("?->>'type'", mobile_contact_method) == "mobile",
         left_join: landline_contact_method in fragment("UNNEST(?)", person.contact_methods),
@@ -1439,7 +1442,8 @@ defmodule Hygeia.CaseContext do
         left_join: vaccination_shots in assoc(person, :vaccination_shots),
         where:
           case.tenant_uuid == ^tenant_uuid and
-            fragment("?->'details'->>'__type__'", phase) == "possible_index",
+            fragment("?->'details'->>'__type__'", phase) == "possible_index" and
+            not case.redacted,
         group_by: [case.uuid, person.uuid],
         order_by: [asc: case.inserted_at],
         select: [
@@ -2045,7 +2049,9 @@ defmodule Hygeia.CaseContext do
       list_vaccination_breakthrough_cases_query(
         from(case in Ecto.assoc(tenant, :cases),
           join: person in assoc(case, :person),
+          on: not person.redacted,
           as: :person,
+          where: not case.redacted,
           group_by: case.uuid
         )
       )

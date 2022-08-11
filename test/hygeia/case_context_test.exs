@@ -1409,6 +1409,24 @@ defmodule Hygeia.CaseContextTest do
                  |> CaseContext.case_export(:bag_med_16122020_case)
                  |> CSV.decode!(headers: true, escape_formulas: true)
                  |> Enum.to_list()
+
+        CaseContext.update_person(person_jay, %{redacted: true})
+
+        assert 1 =
+                 tenant
+                 |> CaseContext.case_export(:bag_med_16122020_case)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
+                 |> Enum.to_list()
+                 |> length()
+
+        CaseContext.update_case(case_jony, %{redacted: true})
+
+        assert 0 =
+                 tenant
+                 |> CaseContext.case_export(:bag_med_16122020_case)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
+                 |> Enum.to_list()
+                 |> length()
       end)
     end
 
@@ -1831,6 +1849,33 @@ defmodule Hygeia.CaseContextTest do
                  |> CaseContext.case_export(:bag_med_16122020_contact, true)
                  |> CSV.decode!(headers: true, escape_formulas: true)
                  |> Enum.to_list()
+
+        CaseContext.update_person(person_jony, %{redacted: true})
+
+        assert 1 =
+                 tenant
+                 |> CaseContext.case_export(:bag_med_16122020_contact)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
+                 |> Enum.to_list()
+                 |> length()
+
+        CaseContext.update_case(case_jony, %{redacted: true})
+
+        assert 1 =
+                 tenant
+                 |> CaseContext.case_export(:bag_med_16122020_contact)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
+                 |> Enum.to_list()
+                 |> length()
+
+        CaseContext.update_case(case_jay, %{redacted: true})
+
+        assert 0 =
+                 tenant
+                 |> CaseContext.case_export(:bag_med_16122020_contact)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
+                 |> Enum.to_list()
+                 |> length()
       end)
     end
   end
@@ -2021,6 +2066,24 @@ defmodule Hygeia.CaseContextTest do
                |> CaseContext.case_export(:breakthrough_infection)
                |> CSV.decode!(headers: true, escape_formulas: true)
                |> Enum.to_list()
+
+      CaseContext.update_person(person_jan, %{redacted: true})
+
+      assert 1 =
+               tenant
+               |> CaseContext.case_export(:breakthrough_infection)
+               |> CSV.decode!(headers: true, escape_formulas: true)
+               |> Enum.to_list()
+               |> length()
+
+      CaseContext.update_person(person_jony, %{redacted: true})
+
+      assert 0 =
+               tenant
+               |> CaseContext.case_export(:breakthrough_infection)
+               |> CSV.decode!(headers: true, escape_formulas: true)
+               |> Enum.to_list()
+               |> length()
     end)
   end
 
