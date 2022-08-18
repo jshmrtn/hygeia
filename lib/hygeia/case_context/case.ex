@@ -557,6 +557,18 @@ defmodule Hygeia.CaseContext.Case do
              ],
         do: false
 
+    def authorized?(_case, action, _user, %{person: %Person{redacted: true}})
+        when action in [
+               :list,
+               :create,
+               :details,
+               :partial_details,
+               :update,
+               :delete,
+               :auto_tracing
+             ],
+        do: false
+
     def authorized?(
           %Case{tracer_uuid: tracer_uuid},
           action,

@@ -36,7 +36,7 @@
           <h3>
             {gettext("Propagated")}
           </h3>
-          <div :if={authorized?(Transmission, :create, auth, tenant: :any, case: @case)}>
+          <div :if={authorized?(Case, :create, auth, tenant: :any)}>
             <Context get={HygeiaWeb, uri: uri}>
               <LiveRedirect
                 to={Routes.case_create_possible_index_path(

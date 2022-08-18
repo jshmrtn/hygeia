@@ -121,11 +121,7 @@
                 <label class="d-block">{gettext("Show people")}</label>
                 <Field name="anonymization" class="form-check form-check-inline">
                   <label class="form-check-label radio-label">
-                    <RadioButton
-                      class="form-check-input"
-                      value="any"
-                      checked={match?("any", form.source["anonymization"])}
-                    />
+                    <RadioButton class="form-check-input" value="any" />
                     {gettext("Any")}
                   </label>
                 </Field>

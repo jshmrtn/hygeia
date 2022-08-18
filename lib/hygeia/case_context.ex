@@ -2515,7 +2515,7 @@ defmodule Hygeia.CaseContext do
   Reidentifies a case
   """
   @spec reidentify_case(case :: Case.t()) ::
-          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())} | {:error, :redacted_person}
   def reidentify_case(case) do
     if can_reidentify_case?(case) do
       attrs = %{

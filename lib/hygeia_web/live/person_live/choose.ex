@@ -89,6 +89,6 @@ defmodule HygeiaWeb.PersonLive.Choose do
   defp format_date(nil), do: nil
   defp format_date(date), do: HygeiaCldr.Date.to_string!(date)
 
-  defp maybe_discard_anonymized(query, true), do: where(query, [person], person.redacted)
+  defp maybe_discard_anonymized(query, true), do: where(query, [person], not person.redacted)
   defp maybe_discard_anonymized(query, _any), do: query
 end

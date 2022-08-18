@@ -65,7 +65,7 @@
             person_uuid: @person,
             return_to: Routes.case_index_path(@socket, :index)
           )}
-          :if={authorized?(Case, :create, auth, tenant: :any) and not @person.redacted}
+          :if={authorized?(Case, :create, auth, tenant: :any, person: @person)}
         >
           <button type="button" class="btn btn-primary">
             <span class="oi oi-plus" aria-hidden="true" />
