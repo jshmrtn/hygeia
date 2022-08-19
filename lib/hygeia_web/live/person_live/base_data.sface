@@ -39,10 +39,10 @@
         </details>
       </Context>
 
-      {#if @person.redacted}
+      {#if @person.anonymized}
         <div class="alert alert-warning mb-4">
-          {pgettext("Person Base Data", "This person has been redacted on: {date}",
-            date: HygeiaCldr.Date.to_string!(@person.redaction_date)
+          {pgettext("Person Base Data", "This person has been anonymized on: {date}",
+            date: HygeiaCldr.Date.to_string!(@person.anonymization_date)
           )}
         </div>
       {/if}
@@ -73,7 +73,7 @@
           </button>
         </LivePatch>
 
-        {#if @person.redacted}
+        {#if @person.anonymized}
           <button
             :if={authorized?(@person, :create, auth)}
             :on-click="show_reidentification_modal"
@@ -86,7 +86,7 @@
         {#else}
           <div
             class="d-inline-block"
-            title={if not CaseContext.can_redact_person?(@person),
+            title={if not CaseContext.can_anonymize_person?(@person),
               do:
                 pgettext(
                   "Person Base Data",
@@ -95,17 +95,17 @@
           >
             <button
               :if={authorized?(@person, :update, auth)}
-              :on-click="redact"
+              :on-click="anonymize"
               class="btn btn-warning"
               type="button"
               data-confirm={pgettext(
                 "Person Base Data",
-                "Are you sure you want to redact this person? Some data will be lost and you will not be able to recover it."
+                "Are you sure you want to anonymize this person? Some data will be lost and you will not be able to recover it."
               )}
-              disabled={not CaseContext.can_redact_person?(@person)}
+              disabled={not CaseContext.can_anonymize_person?(@person)}
             >
               <span class="oi oi-warning" aria-hidden="true" />
-              {pgettext("Person Base Data", "Redact")}
+              {pgettext("Person Base Data", "Anonymize")}
             </button>
           </div>
         {/if}
@@ -610,7 +610,7 @@
     size="m"
   >
     <HygeiaWeb.Lock
-      id={"lock_Person_#{@person.uuid}_redaction"}
+      id={"lock_Person_#{@person.uuid}_anonymization"}
       resource={{Person, @person.uuid}}
       lock
     >
@@ -618,9 +618,9 @@
         for={@changeset}
         change="validate"
         submit="reidentify"
-        opts={autocomplete: "off", id: "redact-person-form", "phx-hook": "BlockNavigation"}
+        opts={autocomplete: "off", id: "anonymize-person-form", "phx-hook": "BlockNavigation"}
       >
-        <HiddenInput field={:redacted} value="false" />
+        <HiddenInput field={:anonymized} value="false" />
         <Field name={:first_name} class="form-group">
           <HygeiaWeb.FieldLabel />
           <TextInput class="form-control" />

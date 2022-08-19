@@ -27,7 +27,7 @@ defmodule Hygeia.Helpers.Anonymization do
       tests,
       fn %Test{} = test ->
         test
-        |> Map.from_struct()
+        |> Hygeia.Helpers.Map.from_nested_struct([{DateTime, :skip}])
         |> Map.merge(%{tested_at: nil, reporting_unit: nil})
       end
     )

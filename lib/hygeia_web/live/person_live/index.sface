@@ -218,8 +218,8 @@
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">
-              <div :if={person.redacted} class="me-3">
-                <span class="badge rounded-pill bg-warning">{pgettext("Person Index", "Redacted")}</span>
+              <div :if={person.anonymized} class="me-3">
+                <span class="badge rounded-pill bg-warning">{pgettext("Person Index", "Anonymized")}</span>
               </div>
               <LiveRedirect
                 to={Routes.person_base_data_path(@socket, :show, person)}

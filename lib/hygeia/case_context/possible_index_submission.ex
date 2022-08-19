@@ -150,7 +150,7 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
           _possible_index_submission,
           action,
           _user,
-          %{case: %Case{redacted: true}}
+          %{case: %Case{anonymized: true}}
         )
         when action in [:create, :update],
         do: false
@@ -159,11 +159,11 @@ defmodule Hygeia.CaseContext.PossibleIndexSubmission do
           possible_index_submission,
           action,
           user,
-          %{case: %Case{redacted: true} = case}
+          %{case: %Case{anonymized: true} = case}
         ),
         do:
           authorized?(possible_index_submission, action, user, %{
-            case: %Case{case | redacted: false}
+            case: %Case{case | anonymized: false}
           })
 
     def authorized?(_possible_index_submission, :create, %User{} = user, %{case: case} = meta),

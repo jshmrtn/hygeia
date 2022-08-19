@@ -18,7 +18,7 @@ defmodule Hygeia.ImportContext.Planner.Action.PatchPerson do
           %{person_changeset: person_changeset},
           _row
         ) do
-      if not Ecto.Changeset.fetch_field!(person_changeset, :redacted) do
+      if not Ecto.Changeset.fetch_field!(person_changeset, :anonymized) do
         person_changeset = Person.changeset(person_changeset, person_attrs)
 
         existing_values =

@@ -45,27 +45,30 @@ defmodule Hygeia.Jobs.Anonymization do
 
   def handle_info(:execute, _params) do
     {:ok, n_cases} =
-      anonymize(CaseContext.list_cases_for_redaction_query(), &CaseContext.redact_case/1)
+      anonymize(CaseContext.list_cases_for_anonymization_query(), &CaseContext.anonymize_case/1)
 
     {:ok, n_people} =
-      anonymize(CaseContext.list_people_for_redaction_query(), &CaseContext.redact_person/1)
+      anonymize(
+        CaseContext.list_people_for_anonymization_query(),
+        &CaseContext.anonymize_person/1
+      )
 
     Logger.info("Anonymization job: cases anonymized: #{n_cases}, people anonymized: #{n_people}")
 
     {:noreply, nil}
   end
 
-  defp anonymize(query, redaction_function) do
+  defp anonymize(query, anonymization_function) do
     stream = Repo.stream(query, max_rows: 1000)
 
     {:ok, length} =
       Repo.transaction(fn ->
-        redactions =
+        anonymizations =
           stream
-          |> Stream.each(redaction_function)
+          |> Stream.each(anonymization_function)
           |> Enum.to_list()
 
-        length(redactions)
+        length(anonymizations)
       end)
 
     {:ok, length}

@@ -162,10 +162,10 @@ defmodule HygeiaWeb.PersonLive.Index do
           query
 
         {:anonymization, "anonymized"}, query ->
-          where(query, [person], person.redacted)
+          where(query, [person], person.anonymized)
 
         {:anonymization, "not_anonymized"}, query ->
-          where(query, [person], not person.redacted)
+          where(query, [person], not person.anonymized)
 
         {key, [_ | _] = value}, query when is_list(value) ->
           where(query, [person], field(person, ^key) in ^value)

@@ -97,7 +97,7 @@ defmodule Hygeia.CaseContext.Test do
             user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
-    def authorized?(_test, action, _user, %{case: %Case{redacted: true}})
+    def authorized?(_test, action, _user, %{case: %Case{anonymized: true}})
         when action in [:create, :update],
         do: false
 
@@ -105,9 +105,9 @@ defmodule Hygeia.CaseContext.Test do
           test,
           action,
           user,
-          %{case: %Case{redacted: true} = case}
+          %{case: %Case{anonymized: true} = case}
         ),
-        do: authorized?(test, action, user, %{case: %Case{case | redacted: false}})
+        do: authorized?(test, action, user, %{case: %Case{case | anonymized: false}})
 
     def authorized?(
           _test,

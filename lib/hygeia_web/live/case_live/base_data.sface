@@ -21,7 +21,7 @@
               </button>
             </LivePatch>
 
-            {#if @case.redacted}
+            {#if @case.anonymized}
               <div
                 class="d-inline-block"
                 title={if not CaseContext.can_reidentify_case?(@case),
@@ -46,16 +46,16 @@
             {#else}
               <button
                 :if={authorized?(@case, :update, auth, %{tenant: @case.tenant})}
-                :on-click="redact"
+                :on-click="anonymize"
                 class="btn btn-warning"
                 type="button"
                 data-confirm={pgettext(
                   "Case Base Data",
-                  "Are you sure you want to redact this case? Some data will be lost and you will not be able to recover it."
+                  "Are you sure you want to anonymize this case? Some data will be lost and you will not be able to recover it."
                 )}
               >
                 <span class="oi oi-warning" aria-hidden="true" />
-                {pgettext("Case Base Data", "Redact")}
+                {pgettext("Case Base Data", "Anonymize")}
               </button>
             {/if}
           </div>

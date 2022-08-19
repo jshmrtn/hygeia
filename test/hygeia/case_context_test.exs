@@ -260,7 +260,7 @@ defmodule Hygeia.CaseContextTest do
              } = Repo.preload(person, affiliations: [organisation: []])
     end
 
-    test "redact_person/1 redacts the person" do
+    test "anonymize_person/1 anonymizes the person" do
       %{
         human_readable_id: person_human_readable_id,
         tenant_uuid: person_tenant_uuid,
@@ -284,7 +284,7 @@ defmodule Hygeia.CaseContextTest do
                  }
                )
 
-      assert {:ok, redacted_person} = CaseContext.redact_person(person)
+      assert {:ok, anonymized_person} = CaseContext.anonymize_person(person)
 
       today = Date.utc_today()
 
@@ -300,18 +300,18 @@ defmodule Hygeia.CaseContextTest do
                last_name: nil,
                profession_category: nil,
                profession_category_main: nil,
-               redacted: true,
-               redaction_date: ^today,
+               anonymized: true,
+               anonymization_date: ^today,
                reidentification_date: nil,
                sex: :female,
                suspected_duplicates_uuid: [],
                tenant_uuid: ^person_tenant_uuid,
                uuid: ^person_uuid
              } =
-               Repo.preload(redacted_person, [:affiliations, :employee_affiliations, :employers])
+               Repo.preload(anonymized_person, [:affiliations, :employee_affiliations, :employers])
     end
 
-    test "list people for redaction" do
+    test "list people for anonymization" do
       tenant = tenant_fixture()
       person1 = person_fixture(tenant, %{first_name: "person1"})
       person2 = person_fixture(tenant, %{first_name: "person2"})
@@ -356,27 +356,27 @@ defmodule Hygeia.CaseContextTest do
         "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person7.uuid}'"
       )
 
-      Repo.query!("UPDATE cases SET redacted = true WHERE uuid = '#{case31.uuid}'")
-      Repo.query!("UPDATE cases SET redacted = true WHERE uuid = '#{case41.uuid}'")
-      Repo.query!("UPDATE cases SET redacted = true WHERE uuid = '#{case51.uuid}'")
-      Repo.query!("UPDATE cases SET redacted = true WHERE uuid = '#{case52.uuid}'")
-      Repo.query!("UPDATE cases SET redacted = true WHERE uuid = '#{case71.uuid}'")
+      Repo.query!("UPDATE cases SET anonymized = true WHERE uuid = '#{case31.uuid}'")
+      Repo.query!("UPDATE cases SET anonymized = true WHERE uuid = '#{case41.uuid}'")
+      Repo.query!("UPDATE cases SET anonymized = true WHERE uuid = '#{case51.uuid}'")
+      Repo.query!("UPDATE cases SET anonymized = true WHERE uuid = '#{case52.uuid}'")
+      Repo.query!("UPDATE cases SET anonymized = true WHERE uuid = '#{case71.uuid}'")
 
-      Repo.query!("UPDATE people SET redacted = true WHERE uuid = '#{person7.uuid}'")
+      Repo.query!("UPDATE people SET anonymized = true WHERE uuid = '#{person7.uuid}'")
 
       assert length(CaseContext.list_cases()) == 7
       assert length(CaseContext.list_people()) == 7
 
-      # person1 - not redacted, old, no case
-      # person2 - not redacted, old, case not redacted
-      # person3 - not redacted, old, case redacted
-      # person4 - not redacted, old, 1 case redacted, 1 case not redacted
-      # person5 - not redacted, old, 2 cases redacted
-      # person6 - not redacted, not old, no case
-      # person7 - redacted, old, case redacted
+      # person1 - not anonymized, old, no case
+      # person2 - not anonymized, old, case not anonymized
+      # person3 - not anonymized, old, case anonymized
+      # person4 - not anonymized, old, 1 case anonymized, 1 case not anonymized
+      # person5 - not anonymized, old, 2 cases anonymized
+      # person6 - not anonymized, not old, no case
+      # person7 - anonymized, old, case anonymized
 
       assert ["person1", "person3", "person5"] ==
-               CaseContext.list_people_for_redaction_query()
+               CaseContext.list_people_for_anonymization_query()
                |> Repo.all()
                |> Enum.map(& &1.first_name)
                |> Enum.sort()
@@ -742,7 +742,7 @@ defmodule Hygeia.CaseContextTest do
       assert %Ecto.Changeset{} = CaseContext.change_case(case)
     end
 
-    test "redact_case/1 redacts the case" do
+    test "anonymize_case/1 anonymizes the case" do
       case_main_uuid = Ecto.UUID.generate()
 
       case_main =
@@ -874,8 +874,8 @@ defmodule Hygeia.CaseContextTest do
                    }
                  }
                ],
-               redacted: false,
-               redaction_date: nil
+               anonymized: false,
+               anonymization_date: nil
              } =
                Repo.preload(case_main, [
                  :notes,
@@ -888,7 +888,7 @@ defmodule Hygeia.CaseContextTest do
                  :tests
                ])
 
-      assert {:ok, redacted_case} = CaseContext.redact_case(case_main)
+      assert {:ok, anonymized_case} = CaseContext.anonymize_case(case_main)
 
       today = Date.utc_today()
 
@@ -921,10 +921,10 @@ defmodule Hygeia.CaseContextTest do
                    reporting_unit: nil
                  }
                ],
-               redacted: true,
-               redaction_date: ^today
+               anonymized: true,
+               anonymization_date: ^today
              } =
-               Repo.preload(redacted_case, [
+               Repo.preload(anonymized_case, [
                  :notes,
                  :emails,
                  :sms,
@@ -1410,7 +1410,7 @@ defmodule Hygeia.CaseContextTest do
                  |> CSV.decode!(headers: true, escape_formulas: true)
                  |> Enum.to_list()
 
-        CaseContext.update_person(person_jay, %{redacted: true})
+        CaseContext.update_person(person_jay, %{anonymized: true})
 
         assert 1 =
                  tenant
@@ -1419,7 +1419,7 @@ defmodule Hygeia.CaseContextTest do
                  |> Enum.to_list()
                  |> length()
 
-        CaseContext.update_case(case_jony, %{redacted: true})
+        CaseContext.update_case(case_jony, %{anonymized: true})
 
         assert 0 =
                  tenant
@@ -1850,7 +1850,7 @@ defmodule Hygeia.CaseContextTest do
                  |> CSV.decode!(headers: true, escape_formulas: true)
                  |> Enum.to_list()
 
-        CaseContext.update_person(person_jony, %{redacted: true})
+        CaseContext.update_person(person_jony, %{anonymized: true})
 
         assert 1 =
                  tenant
@@ -1859,7 +1859,7 @@ defmodule Hygeia.CaseContextTest do
                  |> Enum.to_list()
                  |> length()
 
-        CaseContext.update_case(case_jony, %{redacted: true})
+        CaseContext.update_case(case_jony, %{anonymized: true})
 
         assert 1 =
                  tenant
@@ -1868,7 +1868,7 @@ defmodule Hygeia.CaseContextTest do
                  |> Enum.to_list()
                  |> length()
 
-        CaseContext.update_case(case_jay, %{redacted: true})
+        CaseContext.update_case(case_jay, %{anonymized: true})
 
         assert 0 =
                  tenant
@@ -2067,7 +2067,7 @@ defmodule Hygeia.CaseContextTest do
                |> CSV.decode!(headers: true, escape_formulas: true)
                |> Enum.to_list()
 
-      CaseContext.update_person(person_jan, %{redacted: true})
+      CaseContext.update_person(person_jan, %{anonymized: true})
 
       assert 1 =
                tenant
@@ -2076,7 +2076,7 @@ defmodule Hygeia.CaseContextTest do
                |> Enum.to_list()
                |> length()
 
-      CaseContext.update_person(person_jony, %{redacted: true})
+      CaseContext.update_person(person_jony, %{anonymized: true})
 
       assert 0 =
                tenant

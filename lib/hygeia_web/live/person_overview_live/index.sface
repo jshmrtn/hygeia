@@ -2,10 +2,10 @@
   <Context get={HygeiaWeb, timezone: timezone}>
     <HygeiaWeb.PersonLive.Header person={@person} id="header" />
 
-    {#if @person.redacted}
+    {#if @person.anonymized}
       <div class="p-5 my-5 jumbotron h3 font-weight-normal">
         {gettext(
-          "This person has been redacted and you can no longer access the overview, please contact your supervisor for more information."
+          "This person has been anonymized and you can no longer access the overview, please contact your supervisor for more information."
         )}
       </div>
     {#else}

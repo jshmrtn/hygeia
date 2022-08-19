@@ -271,7 +271,7 @@ msgstr "Immer von Oben nach Unten arbeiten. Ansonsten gehen Änderungen verloren
 
 #, elixir-autogen, icu-format
 msgctxt "Person Base Data"
-msgid "An unexpected error occurred while redacting the person"
+msgid "An unexpected error occurred while anonymizing the person"
 msgstr "Beim Anonymisieren der Person ist ein unerwarteter Fehler aufgetreten"
 
 #, elixir-autogen, icu-format
@@ -284,8 +284,37 @@ msgid "An unknown error happened during registration. Report this to your webmas
 msgstr "Bei der Registrierung ist ein unbekannter Fehler aufgetreten. Melden Sie dies Ihrem Webmaster."
 
 #, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "Anonymize"
+msgstr "Anonymisieren"
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Anonymize"
+msgstr "Anonymisieren"
+
+#, elixir-autogen, icu-format
 msgid "Anonymized"
 msgstr "Anonymisiert"
+
+#, elixir-autogen, icu-format
+msgctxt "Case Index"
+msgid "Anonymized"
+msgstr "Anonymisiert"
+
+#, elixir-autogen, icu-format
+msgctxt "Person Header"
+msgid "Anonymized"
+msgstr "Anonymisiert"
+
+#, elixir-autogen, icu-format
+msgctxt "Person Index"
+msgid "Anonymized"
+msgstr "Anonymisiert"
+
+#, elixir-autogen, icu-format
+msgid "Anonymized person will be reidentified"
+msgstr "Anonimisierte Person wird erneut identifiziert"
 
 #, elixir-autogen, icu-format
 msgctxt "Test Kind"
@@ -344,12 +373,12 @@ msgstr "Verbringen Sie Ihre Isolation an einem anderen Ort?"
 
 #, elixir-autogen, icu-format
 msgctxt "Case Base Data"
-msgid "Are you sure you want to redact this case? Some data will be lost and you will not be able to recover it."
+msgid "Are you sure you want to anonymize this case? Some data will be lost and you will not be able to recover it."
 msgstr "Möchten Sie diesen Fall wirklich anonymisieren? Viele Daten werden gelöscht und können nicht wiederhergestellt werden."
 
 #, elixir-autogen, icu-format
 msgctxt "Person Base Data"
-msgid "Are you sure you want to redact this person? Some data will be lost and you will not be able to recover it."
+msgid "Are you sure you want to anonymize this person? Some data will be lost and you will not be able to recover it."
 msgstr "Möchten Sie diese Person und alle zugehörigen Fälle wirklich anonymisieren? Viele Daten werden gelöscht und können nicht wiederhergestellt werden."
 
 #, elixir-autogen, icu-format
@@ -615,16 +644,16 @@ msgid "Case UUID"
 msgstr "Fall UUID"
 
 #, elixir-autogen, icu-format
+msgid "Case anonymized successfully"
+msgstr "Fall erfolgreich anonymisiert"
+
+#, elixir-autogen, icu-format
 msgid "Case created successfully"
 msgstr "Fall wurde erfolgreich erstellt"
 
 #, elixir-autogen, icu-format
 msgid "Case deleted successfully"
 msgstr "Fall erfolgreich gelöscht"
-
-#, elixir-autogen, icu-format
-msgid "Case redacted successfully"
-msgstr "Fall erfolgreich anonymisiert"
 
 #, elixir-autogen, icu-format
 msgctxt "Case Base Data"
@@ -3793,6 +3822,11 @@ msgid "Person UUID"
 msgstr "Person UUID"
 
 #, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Person anonymized successfully"
+msgstr "Person erfolgreich anonymisiert"
+
+#, elixir-autogen, icu-format
 msgid "Person created successfully"
 msgstr "Person wurde erfolgreich erstellt"
 
@@ -3809,12 +3843,7 @@ msgid "Person living in the same household or in a very close relationship. (e.g
 msgstr "Personen vom selben Haushalt oder mit sehr engem Kontakt. ( z.B. Paar, das nicht zusammen lebt)"
 
 #, elixir-autogen, icu-format
-msgctxt "Person Base Data"
-msgid "Person redacted successfully"
-msgstr "Person erfolgreich anonymisiert"
-
-#, elixir-autogen, icu-format
-msgid "Person reidentification not possible because selected case is redacted"
+msgid "Person reidentification not possible because selected case is anonymized"
 msgstr "Personenreidentifikation nicht möglich, da der ausgewählte Fall anonymisiert ist"
 
 #, elixir-autogen, icu-format
@@ -4341,35 +4370,6 @@ msgstr "Empfänger Intern"
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
 msgid "Recipient Public Key"
 msgstr "Empfänger öffentlicher Schlüssel"
-
-#, elixir-autogen, icu-format
-msgctxt "Case Base Data"
-msgid "Redact"
-msgstr "Anonymisieren"
-
-#, elixir-autogen, icu-format
-msgctxt "Person Base Data"
-msgid "Redact"
-msgstr "Anonymisieren"
-
-#, elixir-autogen, icu-format
-msgctxt "Case Index"
-msgid "Redacted"
-msgstr "Anonymisiert"
-
-#, elixir-autogen, icu-format
-msgctxt "Person Header"
-msgid "Redacted"
-msgstr "Anonymisiert"
-
-#, elixir-autogen, icu-format
-msgctxt "Person Index"
-msgid "Redacted"
-msgstr "Anonymisiert"
-
-#, elixir-autogen, icu-format
-msgid "Redacted person will be reidentified"
-msgstr "Anonimisierte Person wird erneut identifiziert"
 
 #, elixir-autogen, icu-format
 msgid "Redirecting"
@@ -5418,17 +5418,17 @@ msgstr "Beim Absenden des Formulars ist ein Fehler aufgetreten. Bitte versuchen 
 
 #, elixir-autogen, icu-format
 msgctxt "Case Base Data"
-msgid "This case can not be reidentified because the associated person is redacted"
+msgid "This case can not be reidentified because the associated person is anonymized"
 msgstr "Dieser Fall kann nicht erneut identifiziert werden, da die zugehörige Person anonymisiert ist"
 
 #, elixir-autogen, icu-format
 msgctxt "Person Header"
-msgid "This case has been redacted"
+msgid "This case has been anonymized"
 msgstr "Dieser Fall wurde anonymisiert"
 
 #, elixir-autogen, icu-format
 msgctxt "Case Base Data"
-msgid "This case has been redacted on: {date}"
+msgid "This case has been anonymized on: {date}"
 msgstr "Dieser Fall wurde anonymisiert am: {date}"
 
 #, elixir-autogen, icu-format
@@ -5451,7 +5451,7 @@ msgstr "Diese Organisation ist möglicherweise ein Duplikat von {name_link}, üb
 
 #, elixir-autogen, icu-format
 msgctxt "Person Base Data"
-msgid "This person can not be redacted because there are unredacted cases associated to it"
+msgid "This person can not be anonymized because there are not anonymized cases associated to it"
 msgstr "Diese Person kann nicht anonymisiert werden, da nicht anonymisierte Fälle bestehen"
 
 #, elixir-autogen, icu-format
@@ -5473,17 +5473,17 @@ msgstr[0] "Diese Person ist möglicherweise ein Duplikat."
 msgstr[1] "Diese Person hat {count} Duplikate."
 
 #, elixir-autogen, icu-format
-msgid "This person has been notified on the following contact methods"
-msgstr "Diese Person wurde über die folgenden Kontaktmethoden benachrichtigt"
-
-#, elixir-autogen, icu-format
-msgid "This person has been redacted and you can no longer access the overview, please contact your supervisor for more information."
+msgid "This person has been anonymized and you can no longer access the overview, please contact your supervisor for more information."
 msgstr "Diese Person wurde anonymisiert und Sie können nicht mehr auf die Übersicht zugreifen, bitte wenden Sie sich für weitere Informationen an Ihren Vorgesetzten."
 
 #, elixir-autogen, icu-format
 msgctxt "Person Base Data"
-msgid "This person has been redacted on: {date}"
+msgid "This person has been anonymized on: {date}"
 msgstr "Diese Person wurde anonymisiert am: {date}"
+
+#, elixir-autogen, icu-format
+msgid "This person has been notified on the following contact methods"
+msgstr "Diese Person wurde über die folgenden Kontaktmethoden benachrichtigt"
 
 #, elixir-autogen, icu-format
 msgid "This person has not been notified."
