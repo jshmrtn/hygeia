@@ -170,6 +170,51 @@ defmodule HygeiaWeb.CaseLive.BaseData do
     end
   end
 
+  def handle_event("anonymize", _params, %{assigns: %{case: case}} = socket) do
+    true = authorized?(case, :update, get_auth(socket), %{tenant: case.tenant})
+
+    {:ok, _case} = CaseContext.anonymize_case(case)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, gettext("Case anonymized successfully"))
+     |> push_redirect(to: Routes.case_base_data_path(socket, :show, case))}
+  end
+
+  def handle_event("reidentify", _params, %{assigns: %{case: case}} = socket) do
+    true = authorized?(case, :create, get_auth(socket))
+
+    socket =
+      case
+      |> CaseContext.reidentify_case()
+      |> case do
+        {:ok, _case} ->
+          put_flash(socket, :info, pgettext("Case Base Data", "Case reidentified successfully"))
+
+        {:error, :anonymized_person} ->
+          put_flash(
+            socket,
+            :error,
+            pgettext(
+              "Case Base Data",
+              "This case can not be reidentified because the associated person is anonymized"
+            )
+          )
+
+        _else ->
+          put_flash(
+            socket,
+            :error,
+            pgettext(
+              "Case Base Data",
+              "An unexpected error occurred while reidentifying the case"
+            )
+          )
+      end
+
+    {:noreply, push_redirect(socket, to: Routes.case_base_data_path(socket, :show, case))}
+  end
+
   def handle_event(
         "add_external_reference",
         _params,

@@ -165,6 +165,7 @@
                 id={"#{index}_Action.SelectCase_person"}
                 change="select_person"
                 subject={index}
+                discard_anonymized="false"
               />
             </Field>
 
@@ -176,6 +177,7 @@
                 id={"#{index}_Action.SelectCase_case"}
                 change="select_case"
                 subject={index}
+                discard_anonymized="false"
               />
             </Field>
 
@@ -193,6 +195,26 @@
             </button>
           </Form>
         {/if}
+
+        {#if match?(%Action.ReidentifyPerson{}, action)}
+          <summary class="card-header">
+            <div class="d-inline-block">
+              <span class="d-block small certainty-label">
+                {translate_certainty(certainty)}
+              </span>
+              <span :if={action.action == :stop}>{gettext("Reidentification not possible")}</span>
+              <span :if={action.action == :skip}>{gettext("Nothing to reidentify")}</span>
+              <span :if={action.action == :reidentify}>{gettext("Reidentify Person")}</span>
+            </div>
+          </summary>
+
+          <div class="card-body">
+            <span :if={action.action == :stop}>{gettext("Person reidentification not possible because selected case is anonymized")}</span>
+            <span :if={action.action == :skip}>{gettext("Nothing to reidentify")}</span>
+            <span :if={action.action == :reidentify}>{gettext("Anonymized person will be reidentified")}</span>
+          </div>
+        {/if}
+
         {#if match?(%Action.PatchPhases{}, action)}
           <summary class="card-header">
             <div class="d-inline-block">

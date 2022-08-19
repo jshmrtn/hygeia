@@ -42,6 +42,9 @@ defmodule Hygeia.CaseContext.Person do
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employers: Ecto.Schema.has_many(Organisation.t()) | nil,
           pinned_notes: Ecto.Schema.has_many(Note.t()) | nil,
+          anonymized: boolean() | nil,
+          anonymization_date: Date.t() | nil,
+          reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -69,6 +72,9 @@ defmodule Hygeia.CaseContext.Person do
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employers: Ecto.Schema.has_many(Organisation.t()),
           pinned_notes: Ecto.Schema.has_many(Note.t()),
+          anonymized: boolean(),
+          anonymization_date: Date.t() | nil,
+          reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -90,6 +96,9 @@ defmodule Hygeia.CaseContext.Person do
     field :profession_category_main, NOGA.Section
     field :is_vaccinated, :boolean
     field :convalescent_externally, :boolean, default: false
+    field :anonymized, :boolean, default: false
+    field :anonymization_date, :date
+    field :reidentification_date, :date
 
     embeds_one :address, Address, on_replace: :update
     embeds_many :contact_methods, ContactMethod, on_replace: :delete
@@ -151,7 +160,10 @@ defmodule Hygeia.CaseContext.Person do
       :profession_category_main,
       :profession_category,
       :is_vaccinated,
-      :convalescent_externally
+      :convalescent_externally,
+      :anonymized,
+      :anonymization_date,
+      :reidentification_date
     ])
     |> fill_uuid
     |> fill_human_readable_id
@@ -159,9 +171,9 @@ defmodule Hygeia.CaseContext.Person do
       :uuid,
       :human_readable_id,
       :tenant_uuid,
-      :first_name,
       :convalescent_externally
     ])
+    |> validate_first_name_as_needed()
     |> validate_past_date(:birth_date)
     |> validate_profession_category()
     |> cast_assoc(:affiliations)
@@ -175,6 +187,15 @@ defmodule Hygeia.CaseContext.Person do
     |> detect_duplicates(:mobile)
     |> detect_duplicates(:landline)
     |> detect_duplicates(:email)
+  end
+
+  defp validate_first_name_as_needed(changeset) do
+    changeset
+    |> fetch_field!(:anonymized)
+    |> case do
+      true -> changeset
+      false -> validate_required(changeset, :first_name)
+    end
   end
 
   defp validate_profession_category(changeset) do
@@ -233,6 +254,15 @@ defmodule Hygeia.CaseContext.Person do
     def authorized?(_person, action, %Person{}, _meta)
         when action in [:list, :create, :details, :partial_details, :update, :delete],
         do: false
+
+    def authorized?(%Person{anonymized: true}, action, _user, _meta)
+        when action in [:versioning, :update],
+        do: false
+
+    def authorized?(%Person{anonymized: true}, action, user, _meta)
+        when action in [:details, :partial_details, :create, :delete],
+        do:
+          Enum.any?([:tracer, :super_user, :supervisor, :admin], &User.has_role?(user, &1, :any))
 
     def authorized?(%Person{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
         when action in [:details, :partial_details, :versioning, :update, :delete],

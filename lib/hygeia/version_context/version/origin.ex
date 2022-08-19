@@ -12,7 +12,8 @@ defmodule Hygeia.VersionContext.Version.Origin do
     :sms_sender,
     :migration,
     :detect_no_reaction_cases_job,
-    :data_pruning
+    :data_pruning,
+    :anonymization_job
   ]
 
   origins =

@@ -62,7 +62,22 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
               normalized_params
 
             uuid ->
-              Map.merge(normalized_params, possible_index_submission_attrs(uuid))
+              %PossibleIndexSubmission{
+                case: case
+              } =
+                possible_index_submission =
+                uuid
+                |> CaseContext.get_possible_index_submission!()
+                |> Hygeia.Repo.preload(case: [:person, :tenant])
+
+              if case.anonymized do
+                normalized_params
+              else
+                Map.merge(
+                  normalized_params,
+                  possible_index_submission_attrs(possible_index_submission)
+                )
+              end
           end
 
         assign(socket,
@@ -84,9 +99,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
   end
 
   @impl Phoenix.LiveView
-  def handle_params(params, _uri, socket) do
-    %{assigns: %{visited_steps: visited_steps}} = socket
-
+  def handle_params(params, _uri, %Socket{assigns: %{visited_steps: visited_steps}} = socket) do
     form_step =
       validate_form_step(
         @form_steps,
@@ -184,10 +197,10 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
 
   def handle_info(_other, socket), do: {:noreply, socket}
 
-  defp possible_index_submission_attrs(uuid) do
+  defp possible_index_submission_attrs(possible_index_submission) do
     %PossibleIndexSubmission{
       uuid: possible_index_submission_uuid,
-      case_uuid: case_uuid,
+      case: propagator_case,
       comment: comment,
       transmission_date: transmission_date,
       infection_place: infection_place,
@@ -200,12 +213,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       email: email,
       address: address,
       employer: employer
-    } = CaseContext.get_possible_index_submission!(uuid)
-
-    propagator_case =
-      case_uuid
-      |> CaseContext.get_case!()
-      |> Hygeia.Repo.preload([:person, :tenant])
+    } = possible_index_submission
 
     person_changeset =
       CaseContext.change_person(
@@ -250,7 +258,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
       possible_index_submission_uuid: possible_index_submission_uuid,
       comment: comment,
       propagator_internal: true,
-      propagator_case_uuid: case_uuid,
+      propagator_case_uuid: propagator_case.uuid,
       propagator_case: propagator_case,
       type: :contact_person,
       date: Date.to_iso8601(transmission_date),

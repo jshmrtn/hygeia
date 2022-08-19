@@ -60,6 +60,9 @@ defmodule Hygeia.CaseContext.Case do
           tests: Ecto.Schema.has_many(Test.t()) | nil,
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()) | nil,
           auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
+          anonymized: boolean() | nil,
+          anonymization_date: Date.t() | nil,
+          reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
         }
@@ -91,6 +94,9 @@ defmodule Hygeia.CaseContext.Case do
           tests: Ecto.Schema.has_many(Test.t()),
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()),
           auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
+          anonymized: boolean(),
+          anonymization_date: Date.t() | nil,
+          reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -103,6 +109,9 @@ defmodule Hygeia.CaseContext.Case do
     field :complexity, Complexity
     field :human_readable_id, :string
     field :status, Status, default: :first_contact
+    field :anonymized, :boolean, default: false
+    field :anonymization_date, :date
+    field :reidentification_date, :date
 
     # Generated Helper fields for more effinicient queries. do not use externally
     field :first_test_date, :date, read_after_writes: true
@@ -120,20 +129,26 @@ defmodule Hygeia.CaseContext.Case do
     belongs_to :tracer, User, references: :uuid, foreign_key: :tracer_uuid
     belongs_to :supervisor, User, references: :uuid, foreign_key: :supervisor_uuid
     # , references: :recipient_case
-    has_many :received_transmissions, Transmission, foreign_key: :recipient_case_uuid
+    has_many :received_transmissions, Transmission,
+      foreign_key: :recipient_case_uuid,
+      on_replace: :delete
+
     # , references: :propagator_case
-    has_many :propagated_transmissions, Transmission, foreign_key: :propagator_case_uuid
+    has_many :propagated_transmissions, Transmission,
+      foreign_key: :propagator_case_uuid,
+      on_replace: :delete
+
     has_many :possible_index_submissions, PossibleIndexSubmission, foreign_key: :case_uuid
-    has_many :emails, Email, foreign_key: :case_uuid
-    has_many :sms, SMS, foreign_key: :case_uuid
-    has_many :notes, Note, foreign_key: :case_uuid
+    has_many :emails, Email, foreign_key: :case_uuid, on_replace: :delete
+    has_many :sms, SMS, foreign_key: :case_uuid, on_replace: :delete
+    has_many :notes, Note, foreign_key: :case_uuid, on_replace: :delete
     has_many :pinned_notes, Note, foreign_key: :case_uuid, where: [pinned: true]
     has_many :hospitalizations, Hospitalization, foreign_key: :case_uuid, on_replace: :delete
     has_many :visits, Visit, foreign_key: :case_uuid, on_replace: :delete
     has_many :tests, Test, foreign_key: :case_uuid, on_replace: :delete
     has_many :premature_releases, PrematureRelease, foreign_key: :case_uuid, on_replace: :delete
 
-    has_one :auto_tracing, AutoTracing, foreign_key: :case_uuid
+    has_one :auto_tracing, AutoTracing, foreign_key: :case_uuid, on_replace: :delete
 
     timestamps()
   end
@@ -168,7 +183,10 @@ defmodule Hygeia.CaseContext.Case do
       :supervisor_uuid,
       :tenant_uuid,
       :person_uuid,
-      :inserted_at
+      :inserted_at,
+      :anonymized,
+      :anonymization_date,
+      :reidentification_date
     ])
     |> fill_uuid
     |> fill_human_readable_id
@@ -179,12 +197,18 @@ defmodule Hygeia.CaseContext.Case do
       :tenant_uuid,
       :person_uuid
     ])
+    |> cast_assoc(:auto_tracing)
     |> cast_embed(:clinical)
     |> cast_embed(:external_references)
+    |> cast_assoc(:emails)
     |> cast_assoc(:hospitalizations)
     |> cast_assoc(:visits)
+    |> cast_assoc(:received_transmissions)
+    |> cast_assoc(:propagated_transmissions)
+    |> cast_assoc(:sms)
     |> cast_assoc(:tests)
     |> cast_embed(:monitoring)
+    |> cast_assoc(:notes)
     |> cast_embed(:phases, required: true)
     |> validate_at_least_one_phase()
     |> validate_phase_type_unique()
@@ -533,6 +557,18 @@ defmodule Hygeia.CaseContext.Case do
              ],
         do: false
 
+    def authorized?(_case, action, _user, %{person: %Person{anonymized: true}})
+        when action in [
+               :list,
+               :create,
+               :details,
+               :partial_details,
+               :update,
+               :delete,
+               :auto_tracing
+             ],
+        do: false
+
     def authorized?(
           %Case{tracer_uuid: tracer_uuid},
           action,
@@ -550,6 +586,18 @@ defmodule Hygeia.CaseContext.Case do
         )
         when action in [:details, :partial_details, :auto_tracing],
         do: User.has_role?(user, :supervisor, :any)
+
+    def authorized?(%Case{anonymized: true}, action, _user, _meta)
+        when action in [:partial_details, :versioning, :update, :auto_tracing],
+        do: false
+
+    def authorized?(%Case{anonymized: true}, action, user, _meta)
+        when action in [:details, :partial_details, :create, :delete],
+        do:
+          Enum.any?(
+            [:tracer, :super_user, :supervisor, :admin],
+            &User.has_role?(user, &1, :any)
+          )
 
     def authorized?(%Case{tenant: %Tenant{iam_domain: nil}}, action, user, _meta)
         when action in [:details, :partial_details, :versioning, :update, :delete, :auto_tracing],

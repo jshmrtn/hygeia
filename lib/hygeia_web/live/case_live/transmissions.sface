@@ -9,7 +9,7 @@
       <div class="card-body">
         <div class="d-flex justify-content-between mb-1">
           <h3>{gettext("Received")}</h3>
-          <div :if={authorized?(Transmission, :create, auth, tenant: :any)}>
+          <div :if={authorized?(Transmission, :create, auth, tenant: :any, case: @case)}>
             <LiveRedirect
               to={Routes.transmission_create_path(
                 @socket,

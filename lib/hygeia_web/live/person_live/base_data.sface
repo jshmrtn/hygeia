@@ -39,6 +39,14 @@
         </details>
       </Context>
 
+      {#if @person.anonymized}
+        <div class="alert alert-warning mb-4">
+          {pgettext("Person Base Data", "This person has been anonymized on: {date}",
+            date: HygeiaCldr.Date.to_string!(@person.anonymization_date)
+          )}
+        </div>
+      {/if}
+
       <div class="mb-4" :if={@live_action == :show}>
         <LivePatch
           :if={authorized?(@person, :update, auth)}
@@ -57,13 +65,50 @@
             person_uuid: @person,
             return_to: Routes.case_index_path(@socket, :index)
           )}
-          :if={authorized?(Case, :create, auth, tenant: :any)}
+          :if={authorized?(Case, :create, auth, tenant: :any, person: @person)}
         >
           <button type="button" class="btn btn-primary">
             <span class="oi oi-plus" aria-hidden="true" />
             {gettext("New Case")}
           </button>
         </LivePatch>
+
+        {#if @person.anonymized}
+          <button
+            :if={authorized?(@person, :create, auth)}
+            :on-click="show_reidentification_modal"
+            class="btn btn-warning"
+            type="button"
+          >
+            <span class="oi oi-eye" aria-hidden="true" />
+            {pgettext("Person Base Data", "Reidentify")}
+          </button>
+        {#else}
+          <div
+            class="d-inline-block"
+            title={if not CaseContext.can_anonymize_person?(@person),
+              do:
+                pgettext(
+                  "Person Base Data",
+                  "Cannot anonymize this person because it has cases that are not anonymized"
+                )}
+          >
+            <button
+              :if={authorized?(@person, :update, auth)}
+              :on-click="anonymize"
+              class="btn btn-warning"
+              type="button"
+              data-confirm={pgettext(
+                "Person Base Data",
+                "Are you sure you want to anonymize this person? Some data will be lost and you will not be able to recover it."
+              )}
+              disabled={not CaseContext.can_anonymize_person?(@person)}
+            >
+              <span class="oi oi-warning" aria-hidden="true" />
+              {pgettext("Person Base Data", "Anonymize")}
+            </button>
+          </div>
+        {/if}
 
         <Link
           to="#"
@@ -556,4 +601,52 @@
       </Form>
     </HygeiaWeb.RecordView>
   </Context>
+
+  <HygeiaWeb.Modal
+    :if={@show_reidentification_modal}
+    id="show_reidentification_modal"
+    title={pgettext("Person Base Data", "Reidentify person")}
+    close="hide_reidentification_modal"
+    size="m"
+  >
+    <HygeiaWeb.Lock
+      id={"lock_Person_#{@person.uuid}_anonymization"}
+      resource={{Person, @person.uuid}}
+      lock
+    >
+      <Form
+        for={@changeset}
+        change="validate"
+        submit="reidentify"
+        opts={autocomplete: "off", id: "anonymize-person-form", "phx-hook": "BlockNavigation"}
+      >
+        <HiddenInput field={:anonymized} value="false" />
+        <Field name={:first_name} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <Field name={:last_name} class="form-group">
+          <HygeiaWeb.FieldLabel />
+          <TextInput class="form-control" />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+          phx-disable-with={"Saving..." |> gettext}
+          data-confirm={pgettext("Person Base Data", "Are you sure you want to reidentify this person?")}
+        >
+          <span
+            class="oi oi-circle-check"
+            title={pgettext("Person Base Data", "Reidentify")}
+            aria-hidden="true"
+          />
+          {gettext("Reidentify")}
+        </button>
+      </Form>
+    </HygeiaWeb.Lock>
+  </HygeiaWeb.Modal>
 </div>

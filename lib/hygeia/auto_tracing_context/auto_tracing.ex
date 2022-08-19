@@ -209,6 +209,8 @@ defmodule Hygeia.AutoTracingContext.AutoTracing do
             user :: :anonymous | User.t() | Person.t(),
             meta :: %{atom() => term}
           ) :: boolean
+    def authorized?(_auto_tracing, _action, _user, %{case: %Case{anonymized: true}}), do: false
+
     def authorized?(_auto_tracing, :create, %User{} = user, %{case: case} = meta),
       do: Resource.authorized?(case, :update, user, meta)
 

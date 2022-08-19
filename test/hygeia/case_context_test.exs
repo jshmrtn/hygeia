@@ -3,22 +3,29 @@ defmodule Hygeia.CaseContextTest do
 
   use Hygeia.DataCase
 
+  alias Hygeia.AutoTracingContext
+  alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.CaseContext
   alias Hygeia.CaseContext.Address
   alias Hygeia.CaseContext.Case
   alias Hygeia.CaseContext.Case.Clinical
   alias Hygeia.CaseContext.Case.Monitoring
   alias Hygeia.CaseContext.Case.Phase
+  alias Hygeia.CaseContext.Entity
   alias Hygeia.CaseContext.ExternalReference
   alias Hygeia.CaseContext.Hospitalization
+  alias Hygeia.CaseContext.Note
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.Person.ContactMethod
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.CaseContext.PrematureRelease
   alias Hygeia.CaseContext.Test
   alias Hygeia.CaseContext.Transmission
+  alias Hygeia.CommunicationContext.Email
+  alias Hygeia.CommunicationContext.SMS
   alias Hygeia.OrganisationContext.Affiliation
   alias Hygeia.OrganisationContext.Organisation
+  alias Hygeia.OrganisationContext.Visit
   alias Hygeia.TenantContext.Tenant
   alias Hygeia.UserContext.User
 
@@ -251,6 +258,128 @@ defmodule Hygeia.CaseContextTest do
                last_name: "some updated last_name",
                sex: :male
              } = Repo.preload(person, affiliations: [organisation: []])
+    end
+
+    test "anonymize_person/1 anonymizes the person" do
+      %{
+        human_readable_id: person_human_readable_id,
+        tenant_uuid: person_tenant_uuid,
+        uuid: person_uuid
+      } =
+        person =
+        Repo.preload(person_fixture(), [:affiliations, :employee_affiliations, :employers])
+
+      organisation = organisation_fixture()
+
+      assert {:ok, person} =
+               CaseContext.update_person(
+                 person,
+                 %{
+                   affiliations: [
+                     %{
+                       kind: :employee,
+                       organisation_uuid: organisation.uuid
+                     }
+                   ]
+                 }
+               )
+
+      assert {:ok, anonymized_person} = CaseContext.anonymize_person(person)
+
+      today = Date.utc_today()
+
+      assert %Person{
+               address: %{address: nil, place: nil, zip: nil, country: "CH", subdivision: "SG"},
+               affiliations: [],
+               birth_date: nil,
+               contact_methods: [],
+               employee_affiliations: [],
+               employers: [],
+               first_name: nil,
+               human_readable_id: ^person_human_readable_id,
+               last_name: nil,
+               profession_category: nil,
+               profession_category_main: nil,
+               anonymized: true,
+               anonymization_date: ^today,
+               reidentification_date: nil,
+               sex: :female,
+               suspected_duplicates_uuid: [],
+               tenant_uuid: ^person_tenant_uuid,
+               uuid: ^person_uuid
+             } =
+               Repo.preload(anonymized_person, [:affiliations, :employee_affiliations, :employers])
+    end
+
+    test "list people for anonymization" do
+      tenant = tenant_fixture()
+      person1 = person_fixture(tenant, %{first_name: "person1"})
+      person2 = person_fixture(tenant, %{first_name: "person2"})
+      person3 = person_fixture(tenant, %{first_name: "person3"})
+      person4 = person_fixture(tenant, %{first_name: "person4"})
+      person5 = person_fixture(tenant, %{first_name: "person5"})
+      _person6 = person_fixture(tenant, %{first_name: "person6"})
+      person7 = person_fixture(tenant, %{first_name: "person7"})
+
+      _case21 = case_fixture(person2)
+      case31 = case_fixture(person3)
+      case41 = case_fixture(person4)
+      _case42 = case_fixture(person4)
+      case51 = case_fixture(person5)
+      case52 = case_fixture(person5)
+      case71 = case_fixture(person7)
+
+      Repo.query!("SELECT SET_CONFIG('versioning.originator_id', NULL, true)")
+      Repo.query!("SELECT SET_CONFIG('versioning.origin', 'migration', true)")
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person1.uuid}'"
+      )
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person2.uuid}'"
+      )
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person3.uuid}'"
+      )
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person4.uuid}'"
+      )
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person5.uuid}'"
+      )
+
+      Repo.query!(
+        "UPDATE people SET inserted_at = '2019-07-26 15:07:26.855383' WHERE uuid = '#{person7.uuid}'"
+      )
+
+      Repo.query!("UPDATE cases SET anonymized = true WHERE uuid = '#{case31.uuid}'")
+      Repo.query!("UPDATE cases SET anonymized = true WHERE uuid = '#{case41.uuid}'")
+      Repo.query!("UPDATE cases SET anonymized = true WHERE uuid = '#{case51.uuid}'")
+      Repo.query!("UPDATE cases SET anonymized = true WHERE uuid = '#{case52.uuid}'")
+      Repo.query!("UPDATE cases SET anonymized = true WHERE uuid = '#{case71.uuid}'")
+
+      Repo.query!("UPDATE people SET anonymized = true WHERE uuid = '#{person7.uuid}'")
+
+      assert length(CaseContext.list_cases()) == 7
+      assert length(CaseContext.list_people()) == 7
+
+      # person1 - not anonymized, old, no case
+      # person2 - not anonymized, old, case not anonymized
+      # person3 - not anonymized, old, case anonymized
+      # person4 - not anonymized, old, 1 case anonymized, 1 case not anonymized
+      # person5 - not anonymized, old, 2 cases anonymized
+      # person6 - not anonymized, not old, no case
+      # person7 - anonymized, old, case anonymized
+
+      assert ["person1", "person3", "person5"] ==
+               CaseContext.list_people_for_anonymization_query()
+               |> Repo.all()
+               |> Enum.map(& &1.first_name)
+               |> Enum.sort()
     end
 
     test "update_person/2 with invalid data returns error changeset" do
@@ -611,6 +740,200 @@ defmodule Hygeia.CaseContextTest do
     test "change_case/1 returns a case changeset" do
       case = case_fixture()
       assert %Ecto.Changeset{} = CaseContext.change_case(case)
+    end
+
+    test "anonymize_case/1 anonymizes the case" do
+      case_main_uuid = Ecto.UUID.generate()
+
+      case_main =
+        case_fixture(
+          person_fixture(),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          user_fixture(%{iam_sub: Ecto.UUID.generate()}),
+          %{
+            uuid: case_main_uuid,
+            notes: [
+              %{case_uuid: case_main_uuid, note: "test"}
+            ],
+            visits: [
+              %{
+                reason: :visitor,
+                last_visit_at: ~D[2020-10-15],
+                unknown_organisation: %{name: "companyA"}
+              }
+            ],
+            tests: [
+              %{
+                kind: :serology,
+                result: :positive,
+                tested_at: ~D[2020-10-25],
+                reporting_unit: %{
+                  address: %{
+                    address: "Lagerstrasse 30",
+                    country: "CH",
+                    place: "Buchs SG",
+                    zip: "9470"
+                  },
+                  division: "Buchs",
+                  name: "Labormedizinisches Zentrum Dr. Risch"
+                }
+              }
+            ]
+          }
+        )
+
+      case_aux = case_fixture()
+
+      email_fixture(case_main)
+      sms_fixture(case_main)
+
+      {:ok, _auto_tracing} = AutoTracingContext.create_auto_tracing(case_main)
+
+      transmission_fixture(%{
+        date: Date.add(Date.utc_today(), -5),
+        propagator_internal: nil,
+        recipient_internal: true,
+        recipient_case_uuid: case_main.uuid,
+        comment: "Seat 3A",
+        infection_place: %{
+          address: %{
+            country: "GB"
+          },
+          known: true,
+          type: :flight,
+          name: "Swiss International Airlines",
+          flight_information: "LX332"
+        }
+      })
+
+      transmission_fixture(%{
+        date: Date.add(Date.utc_today(), -2),
+        propagator_internal: true,
+        propagator_case_uuid: case_main.uuid,
+        recipient_internal: true,
+        recipient_case_uuid: case_aux.uuid,
+        comment: "Drank beer, kept distance to other people",
+        infection_place: %{
+          address: %{
+            address: "Torstrasse 25",
+            zip: "9000",
+            place: "St. Gallen",
+            subdivision: "SG",
+            country: "CH"
+          },
+          known: true,
+          type: :flight,
+          name: "BrüW",
+          flight_information: nil
+        }
+      })
+
+      assert %Case{
+               uuid: ^case_main_uuid,
+               notes: [%Note{}],
+               emails: [%Email{}],
+               sms: [%SMS{}],
+               visits: [%Visit{}],
+               auto_tracing: %AutoTracing{},
+               received_transmissions: [
+                 %Transmission{
+                   comment: "Seat 3A",
+                   infection_place: %Transmission.InfectionPlace{
+                     address: %{
+                       country: "GB"
+                     }
+                   }
+                 }
+               ],
+               propagated_transmissions: [
+                 %Transmission{
+                   comment: "Drank beer, kept distance to other people",
+                   infection_place: %Transmission.InfectionPlace{
+                     address: %{
+                       address: "Torstrasse 25",
+                       zip: "9000",
+                       place: "St. Gallen",
+                       subdivision: "SG",
+                       country: "CH"
+                     }
+                   }
+                 }
+               ],
+               tests: [
+                 %Test{
+                   tested_at: ~D[2020-10-25],
+                   reporting_unit: %Entity{
+                     address: %Address{
+                       address: "Lagerstrasse 30",
+                       country: "CH",
+                       place: "Buchs SG",
+                       zip: "9470"
+                     },
+                     division: "Buchs",
+                     name: "Labormedizinisches Zentrum Dr. Risch"
+                   }
+                 }
+               ],
+               anonymized: false,
+               anonymization_date: nil
+             } =
+               Repo.preload(case_main, [
+                 :notes,
+                 :emails,
+                 :sms,
+                 :visits,
+                 :auto_tracing,
+                 :received_transmissions,
+                 :propagated_transmissions,
+                 :tests
+               ])
+
+      assert {:ok, anonymized_case} = CaseContext.anonymize_case(case_main)
+
+      today = Date.utc_today()
+
+      assert %Case{
+               uuid: ^case_main_uuid,
+               notes: [],
+               emails: [],
+               sms: [],
+               visits: [],
+               auto_tracing: nil,
+               received_transmissions: [
+                 %Transmission{
+                   comment: nil,
+                   infection_place: %Transmission.InfectionPlace{
+                     address: nil
+                   }
+                 }
+               ],
+               propagated_transmissions: [
+                 %Transmission{
+                   comment: nil,
+                   infection_place: %Transmission.InfectionPlace{
+                     address: nil
+                   }
+                 }
+               ],
+               tests: [
+                 %Test{
+                   tested_at: nil,
+                   reporting_unit: nil
+                 }
+               ],
+               anonymized: true,
+               anonymization_date: ^today
+             } =
+               Repo.preload(anonymized_case, [
+                 :notes,
+                 :emails,
+                 :sms,
+                 :visits,
+                 :auto_tracing,
+                 :received_transmissions,
+                 :propagated_transmissions,
+                 :tests
+               ])
     end
 
     test "case_export/3 exports :bag_med_16122020_case" do
@@ -1086,6 +1409,24 @@ defmodule Hygeia.CaseContextTest do
                  |> CaseContext.case_export(:bag_med_16122020_case)
                  |> CSV.decode!(headers: true, escape_formulas: true)
                  |> Enum.to_list()
+
+        CaseContext.update_person(person_jay, %{anonymized: true})
+
+        assert 1 =
+                 tenant
+                 |> CaseContext.case_export(:bag_med_16122020_case)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
+                 |> Enum.to_list()
+                 |> length()
+
+        CaseContext.update_case(case_jony, %{anonymized: true})
+
+        assert 0 =
+                 tenant
+                 |> CaseContext.case_export(:bag_med_16122020_case)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
+                 |> Enum.to_list()
+                 |> length()
       end)
     end
 
@@ -1508,6 +1849,33 @@ defmodule Hygeia.CaseContextTest do
                  |> CaseContext.case_export(:bag_med_16122020_contact, true)
                  |> CSV.decode!(headers: true, escape_formulas: true)
                  |> Enum.to_list()
+
+        CaseContext.update_person(person_jony, %{anonymized: true})
+
+        assert 1 =
+                 tenant
+                 |> CaseContext.case_export(:bag_med_16122020_contact)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
+                 |> Enum.to_list()
+                 |> length()
+
+        CaseContext.update_case(case_jony, %{anonymized: true})
+
+        assert 1 =
+                 tenant
+                 |> CaseContext.case_export(:bag_med_16122020_contact)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
+                 |> Enum.to_list()
+                 |> length()
+
+        CaseContext.update_case(case_jay, %{anonymized: true})
+
+        assert 0 =
+                 tenant
+                 |> CaseContext.case_export(:bag_med_16122020_contact)
+                 |> CSV.decode!(headers: true, escape_formulas: true)
+                 |> Enum.to_list()
+                 |> length()
       end)
     end
   end
@@ -1698,6 +2066,24 @@ defmodule Hygeia.CaseContextTest do
                |> CaseContext.case_export(:breakthrough_infection)
                |> CSV.decode!(headers: true, escape_formulas: true)
                |> Enum.to_list()
+
+      CaseContext.update_person(person_jan, %{anonymized: true})
+
+      assert 1 =
+               tenant
+               |> CaseContext.case_export(:breakthrough_infection)
+               |> CSV.decode!(headers: true, escape_formulas: true)
+               |> Enum.to_list()
+               |> length()
+
+      CaseContext.update_person(person_jony, %{anonymized: true})
+
+      assert 0 =
+               tenant
+               |> CaseContext.case_export(:breakthrough_infection)
+               |> CSV.decode!(headers: true, escape_formulas: true)
+               |> Enum.to_list()
+               |> length()
     end)
   end
 

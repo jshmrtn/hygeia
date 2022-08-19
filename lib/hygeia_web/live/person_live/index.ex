@@ -57,11 +57,13 @@ defmodule HygeiaWeb.PersonLive.Index do
       end
 
     filter =
-      Map.put_new(
-        params["filter"] || %{},
-        "tenant_persons",
-        Enum.map(socket.assigns.authorized_tenants, & &1.uuid)
-      )
+      params["filter"] ||
+        %{}
+        |> Map.put_new(
+          "tenant_persons",
+          Enum.map(socket.assigns.authorized_tenants, & &1.uuid)
+        )
+        |> Map.put_new("anonymization", "any")
 
     socket =
       case params["sort"] do
@@ -112,7 +114,8 @@ defmodule HygeiaWeb.PersonLive.Index do
     "sex" => :sex,
     "country" => :country,
     "subdivision" => :subdivision,
-    "fully_vaccinated" => :fully_vaccinated
+    "fully_vaccinated" => :fully_vaccinated,
+    "anonymization" => :anonymization
   }
 
   defp list_people(socket) do
@@ -154,6 +157,15 @@ defmodule HygeiaWeb.PersonLive.Index do
 
         {:subdivision, value}, query ->
           where(query, [person], fragment("?->'subdivision'", person.address) == ^value)
+
+        {:anonymization, "any"}, query ->
+          query
+
+        {:anonymization, "anonymized"}, query ->
+          where(query, [person], person.anonymized)
+
+        {:anonymization, "not_anonymized"}, query ->
+          where(query, [person], not person.anonymized)
 
         {key, [_ | _] = value}, query when is_list(value) ->
           where(query, [person], field(person, ^key) in ^value)

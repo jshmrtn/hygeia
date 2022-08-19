@@ -20,6 +20,7 @@ defmodule Hygeia.CaseContext do
   alias Hygeia.CommunicationContext.Email
   alias Hygeia.CommunicationContext.SMS
   alias Hygeia.EctoType.Country
+  alias Hygeia.Helpers.Anonymization
   alias Hygeia.TenantContext.Tenant
 
   @origin_country Application.compile_env!(:hygeia, [:phone_number_parsing_origin_country])
@@ -227,6 +228,28 @@ defmodule Hygeia.CaseContext do
         )
       )
 
+  @spec list_people_for_anonymization_query :: Ecto.Query.t()
+  def list_people_for_anonymization_query,
+    do:
+      from(person in Person,
+        left_join: case in assoc(person, :cases),
+        on: not case.anonymized,
+        where:
+          not person.anonymized and
+            coalesce(person.reidentification_date, person.inserted_at) < ago(2, "year"),
+        group_by: person.uuid,
+        having: count(case.uuid) < 1
+      )
+
+  @spec list_cases_for_anonymization_query :: Ecto.Query.t()
+  def list_cases_for_anonymization_query,
+    do:
+      from(case in Case,
+        where:
+          not case.anonymized and
+            coalesce(case.reidentification_date, case.inserted_at) < ago(2, "year")
+      )
+
   @spec fulltext_person_search(query :: String.t(), limit :: pos_integer()) :: [Person.t()]
   def fulltext_person_search(query, limit \\ 10),
     do: Repo.all(fulltext_person_search_query(query, limit))
@@ -358,6 +381,74 @@ defmodule Hygeia.CaseContext do
       |> versioning_delete()
       |> broadcast("people", :delete)
       |> versioning_extract()
+
+  @doc """
+  Checks if a person can be anonymized.
+  """
+  @spec can_anonymize_person?(person :: Person.t()) :: boolean()
+  def can_anonymize_person?(person) do
+    person = Repo.preload(person, [:cases], force: true)
+
+    Enum.all?(person.cases, & &1.anonymized)
+  end
+
+  @doc """
+  Anonymizes a person.
+  """
+  @spec anonymize_person(person :: Person.t()) ::
+          {:ok, Person.t()}
+          | {:error, Ecto.Changeset.t(Person.t())}
+          | {:error, :not_anonymized_case}
+  def anonymize_person(%Person{} = person) do
+    person = Repo.preload(person, [:affiliations, :vaccination_shots])
+
+    if can_anonymize_person?(person) do
+      attrs = %{
+        address: Anonymization.anonymize_address_params(person.address),
+        affiliations: [],
+        birth_date: nil,
+        contact_methods: [],
+        first_name: nil,
+        last_name: nil,
+        profession_category: nil,
+        profession_category_main: nil,
+        vaccination_shots: [],
+        anonymized: true,
+        anonymization_date: Date.utc_today()
+      }
+
+      person
+      |> change_person(attrs)
+      |> versioning_update()
+      |> broadcast("people", :update)
+      |> versioning_extract()
+    else
+      {:error, :not_anonymized_case}
+    end
+  end
+
+  @doc """
+  Reidentifies a person
+  """
+  @spec reidentify_person(
+          person :: Person.t(),
+          first_name :: String.t(),
+          last_name :: String.t()
+        ) :: {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
+  def reidentify_person(person, first_name, last_name) do
+    attrs = %{
+      first_name: first_name,
+      last_name: last_name,
+      anonymized: false,
+      reidentification_date: Date.utc_today()
+    }
+
+    person
+    |> change_person(attrs)
+    |> versioning_update()
+    |> broadcast("people", :update)
+    |> versioning_extract()
+  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking person changes.
@@ -610,6 +701,7 @@ defmodule Hygeia.CaseContext do
           fragment("?->'details'->>'__type__'", possible_index_phase_travel) == "possible_index" and
             fragment("?->'details'->>'type'", possible_index_phase_travel) == "travel",
         join: person in assoc(case, :person),
+        on: not person.anonymized,
         left_join: mobile_contact_method in fragment("UNNEST(?)", person.contact_methods),
         on: fragment("?->>'type'", mobile_contact_method) == "mobile",
         left_join: landline_contact_method in fragment("UNNEST(?)", person.contact_methods),
@@ -634,7 +726,8 @@ defmodule Hygeia.CaseContext do
         left_join: vaccination_shots in assoc(person, :vaccination_shots),
         where:
           case.tenant_uuid == ^tenant_uuid and
-            fragment("?->'details'->>'__type__'", phase) == "index",
+            fragment("?->'details'->>'__type__'", phase) == "index" and
+            not case.anonymized,
         group_by: [case.uuid, person.uuid],
         order_by: [asc: case.inserted_at],
         select: [
@@ -1339,6 +1432,7 @@ defmodule Hygeia.CaseContext do
         left_join: phase_index in fragment("UNNEST(?)", case.phases),
         on: fragment("?->'details'->>'__type__'", phase_index) == "index",
         join: person in assoc(case, :person),
+        on: not person.anonymized,
         left_join: mobile_contact_method in fragment("UNNEST(?)", person.contact_methods),
         on: fragment("?->>'type'", mobile_contact_method) == "mobile",
         left_join: landline_contact_method in fragment("UNNEST(?)", person.contact_methods),
@@ -1363,7 +1457,8 @@ defmodule Hygeia.CaseContext do
         left_join: vaccination_shots in assoc(person, :vaccination_shots),
         where:
           case.tenant_uuid == ^tenant_uuid and
-            fragment("?->'details'->>'__type__'", phase) == "possible_index",
+            fragment("?->'details'->>'__type__'", phase) == "possible_index" and
+            not case.anonymized,
         group_by: [case.uuid, person.uuid],
         order_by: [asc: case.inserted_at],
         select: [
@@ -1969,7 +2064,9 @@ defmodule Hygeia.CaseContext do
       list_vaccination_breakthrough_cases_query(
         from(case in Ecto.assoc(tenant, :cases),
           join: person in assoc(case, :person),
+          on: not person.anonymized,
           as: :person,
+          where: not case.anonymized,
           group_by: case.uuid
         )
       )
@@ -2364,6 +2461,78 @@ defmodule Hygeia.CaseContext do
   def change_new_case(person, attrs) do
     tenant = Repo.preload(person, :tenant).tenant
     change_new_case(person, tenant, attrs)
+  end
+
+  @doc """
+  Anonymizes a case.
+  """
+  @spec anonymize_case(person :: Case.t()) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())}
+  def anonymize_case(%Case{} = case) do
+    case =
+      Repo.preload(case, [
+        :notes,
+        :emails,
+        :sms,
+        :visits,
+        :auto_tracing,
+        :received_transmissions,
+        :propagated_transmissions,
+        :tests
+      ])
+
+    attrs = %{
+      notes: [],
+      emails: [],
+      sms: [],
+      visits: [],
+      auto_tracing: nil,
+      received_transmissions:
+        Anonymization.anonymize_transmission_params(case.received_transmissions),
+      propagated_transmissions:
+        Anonymization.anonymize_transmission_params(case.propagated_transmissions),
+      tests: Anonymization.anonymize_test_params(case.tests),
+      anonymized: true,
+      anonymization_date: Date.utc_today()
+    }
+
+    case
+    |> change_case(attrs)
+    |> versioning_update()
+    |> broadcast("cases", :update)
+    |> versioning_extract()
+  end
+
+  @doc """
+  Checks if a case can be reidentified.
+  """
+  @spec can_reidentify_case?(case :: Case.t()) :: boolean()
+  def can_reidentify_case?(case) do
+    case = Repo.preload(case, [:person], force: true)
+
+    not case.person.anonymized
+  end
+
+  @doc """
+  Reidentifies a case
+  """
+  @spec reidentify_case(case :: Case.t()) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())} | {:error, :anonymized_person}
+  def reidentify_case(case) do
+    if can_reidentify_case?(case) do
+      attrs = %{
+        anonymized: false,
+        reidentification_date: Date.utc_today()
+      }
+
+      case
+      |> change_case(attrs)
+      |> versioning_update()
+      |> broadcast("cases", :update)
+      |> versioning_extract()
+    else
+      {:error, :anonymized_person}
+    end
   end
 
   @doc """

@@ -140,7 +140,7 @@ defmodule HygeiaWeb.CaseLiveTest do
     end
   end
 
-  describe "BaseData" do
+  describe "Base Data" do
     setup [:create_case]
 
     test "displays case", %{conn: conn, case_model: case} do
@@ -219,6 +219,69 @@ defmodule HygeiaWeb.CaseLiveTest do
                  | _
                ]
              } = CaseContext.get_case!(case.uuid)
+    end
+
+    test "anonymizes case", %{conn: conn, case_model: case} do
+      {:ok, show_live, _html} = live(conn, Routes.case_base_data_path(conn, :show, case))
+
+      {:ok, _show_live, html} =
+        show_live
+        |> element("button", "Anonymize")
+        |> render_click()
+        |> follow_redirect(conn)
+
+      assert html =~ "Case anonymized successfully"
+    end
+
+    test "reidentifies case", %{conn: conn, case_model: case} do
+      {:ok, show_live, _html} = live(conn, Routes.case_base_data_path(conn, :show, case))
+
+      {:ok, _case} = CaseContext.anonymize_case(case)
+
+      {:ok, _show_live, html} =
+        show_live
+        |> element("button", "Reidentify")
+        |> render_click()
+        |> follow_redirect(conn)
+
+      assert html =~ "Case reidentified successfully"
+    end
+
+    test "case reidentify button is disabled if the person is anonymized", %{
+      conn: conn,
+      case_model: case
+    } do
+      case = Repo.preload(case, :person)
+
+      {:ok, case} = CaseContext.anonymize_case(case)
+      {:ok, _person} = CaseContext.anonymize_person(case.person)
+
+      {:ok, show_live, _html} = live(conn, Routes.case_base_data_path(conn, :show, case))
+
+      assert show_live
+             |> element("button", "Reidentify")
+             |> render() =~ "disabled"
+    end
+
+    test "case cannot be reidentified if the person is anonymized meanwhile", %{
+      conn: conn,
+      case_model: case
+    } do
+      case = Repo.preload(case, :person)
+      {:ok, case} = CaseContext.anonymize_case(case)
+
+      {:ok, show_live, _html} = live(conn, Routes.case_base_data_path(conn, :show, case))
+
+      {:ok, _person} = CaseContext.anonymize_person(case.person)
+
+      {:ok, _show_live, html} =
+        show_live
+        |> element("button", "Reidentify")
+        |> render_click()
+        |> follow_redirect(conn)
+
+      assert html =~
+               "This case can not be reidentified because the associated person is anonymized"
     end
   end
 

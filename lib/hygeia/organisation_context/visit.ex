@@ -154,6 +154,23 @@ defmodule Hygeia.OrganisationContext.Visit do
           ) :: boolean
     def authorized?(
           _visit,
+          action,
+          _user,
+          %{case: %Case{anonymized: true}}
+        )
+        when action in [:create, :update],
+        do: false
+
+    def authorized?(
+          visit,
+          action,
+          user,
+          %{case: %Case{anonymized: true} = case}
+        ),
+        do: authorized?(visit, action, user, %{case: %Case{case | anonymized: false}})
+
+    def authorized?(
+          _visit,
           :create,
           user,
           %{case: %Case{tenant_uuid: tenant_uuid}}
