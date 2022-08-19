@@ -383,43 +383,57 @@ defmodule Hygeia.CaseContext do
       |> versioning_extract()
 
   @doc """
+  Checks if a person can be redacted.
+  """
+  @spec can_redact_person?(person :: Person.t()) :: boolean()
+  def can_redact_person?(person) do
+    person = Repo.preload(person, [:cases], force: true)
+
+    Enum.all?(person.cases, & &1.redacted)
+  end
+
+  @doc """
   Redacts a person.
   """
   @spec redact_person(person :: Person.t()) ::
-          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
+          {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())} | {:error, :unredacted_case}
   def redact_person(%Person{} = person) do
     person = Repo.preload(person, [:affiliations, :vaccination_shots])
 
-    attrs = %{
-      address: Anonymization.anonymize_address_params(person.address),
-      affiliations: [],
-      birth_date: nil,
-      contact_methods: [],
-      first_name: nil,
-      last_name: nil,
-      profession_category: nil,
-      profession_category_main: nil,
-      vaccination_shots: [],
-      redacted: true,
-      redaction_date: Date.utc_today()
-    }
+    if can_redact_person?(person) do
+      attrs = %{
+        address: Anonymization.anonymize_address_params(person.address),
+        affiliations: [],
+        birth_date: nil,
+        contact_methods: [],
+        first_name: nil,
+        last_name: nil,
+        profession_category: nil,
+        profession_category_main: nil,
+        vaccination_shots: [],
+        redacted: true,
+        redaction_date: Date.utc_today()
+      }
 
-    person
-    |> change_person(attrs)
-    |> versioning_update()
-    |> broadcast("people", :update)
-    |> versioning_extract()
+      person
+      |> change_person(attrs)
+      |> versioning_update()
+      |> broadcast("people", :update)
+      |> versioning_extract()
+    else
+      {:error, :unredacted_case}
+    end
   end
 
   @doc """
   Reidentifies a person
   """
   @spec reidentify_person(
-          uuid :: Ecto.UUID.t(),
+          person :: Person.t(),
           first_name :: String.t(),
           last_name :: String.t()
         ) :: {:ok, Person.t()} | {:error, Ecto.Changeset.t(Person.t())}
-  def reidentify_person(uuid, first_name, last_name) do
+  def reidentify_person(person, first_name, last_name) do
     attrs = %{
       first_name: first_name,
       last_name: last_name,
@@ -427,8 +441,7 @@ defmodule Hygeia.CaseContext do
       reidentification_date: Date.utc_today()
     }
 
-    uuid
-    |> get_person!()
+    person
     |> change_person(attrs)
     |> versioning_update()
     |> broadcast("people", :update)
@@ -2486,6 +2499,38 @@ defmodule Hygeia.CaseContext do
     |> versioning_update()
     |> broadcast("cases", :update)
     |> versioning_extract()
+  end
+
+  @doc """
+  Checks if a case can be reidentified.
+  """
+  @spec can_reidentify_case?(case :: Case.t()) :: boolean()
+  def can_reidentify_case?(case) do
+    case = Repo.preload(case, [:person], force: true)
+
+    not case.person.redacted
+  end
+
+  @doc """
+  Reidentifies a case
+  """
+  @spec reidentify_case(case :: Case.t()) ::
+          {:ok, Case.t()} | {:error, Ecto.Changeset.t(Case.t())} | {:error, :redacted_person}
+  def reidentify_case(case) do
+    if can_reidentify_case?(case) do
+      attrs = %{
+        redacted: false,
+        reidentification_date: Date.utc_today()
+      }
+
+      case
+      |> change_case(attrs)
+      |> versioning_update()
+      |> broadcast("cases", :update)
+      |> versioning_extract()
+    else
+      {:error, :redacted_person}
+    end
   end
 
   @doc """

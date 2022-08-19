@@ -73,7 +73,7 @@ defmodule HygeiaWeb.PersonLiveTest do
     end
   end
 
-  describe "BaseData" do
+  describe "Base Data" do
     setup [:create_person]
 
     test "displays person", %{conn: conn, person: person} do
@@ -143,6 +143,68 @@ defmodule HygeiaWeb.PersonLiveTest do
                convalescent_externally: true,
                vaccination_shots: [_, _]
              } = person.uuid |> CaseContext.get_person!() |> Repo.preload([:vaccination_shots])
+    end
+
+    test "redacts person", %{conn: conn, person: person} do
+      {:ok, show_live, _html} = live(conn, Routes.person_base_data_path(conn, :show, person))
+
+      {:ok, _show_live, html} =
+        show_live
+        |> element("button", "Redact")
+        |> render_click()
+        |> follow_redirect(conn)
+
+      assert html =~ "Person redacted successfully"
+    end
+
+    test "person redact button is disabled if there are unredacted cases", %{
+      conn: conn,
+      person: person
+    } do
+      case_fixture(person)
+
+      {:ok, show_live, _html} = live(conn, Routes.person_base_data_path(conn, :show, person))
+
+      assert show_live
+             |> element("button", "Redact")
+             |> render() =~ "disabled"
+    end
+
+    test "person cannot be redacted if new case is added meanwhile", %{conn: conn, person: person} do
+      {:ok, show_live, _html} = live(conn, Routes.person_base_data_path(conn, :show, person))
+
+      case_fixture(person)
+
+      {:ok, _show_live, html} =
+        show_live
+        |> element("button", "Redact")
+        |> render_click()
+        |> follow_redirect(conn)
+
+      html =~
+        "This person can not be redacted because there are unredacted cases associated to it"
+    end
+
+    test "reidentifies person", %{conn: conn, person: person} do
+      {:ok, show_live, _html} = live(conn, Routes.person_base_data_path(conn, :show, person))
+
+      {:ok, _person} = CaseContext.redact_person(person)
+
+      html =
+        show_live
+        |> element("button", "Reidentify")
+        |> render_click()
+
+      assert html =~ "Reidentify person"
+
+      {:ok, _show_live, html} =
+        show_live
+        |> form("#redact-person-form", person: %{first_name: "TestFirstName"})
+        |> render_submit()
+        |> follow_redirect(conn)
+
+      assert html =~ "Person reidentified successfully"
+      assert html =~ "TestFirstName"
     end
   end
 end

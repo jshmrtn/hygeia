@@ -86,7 +86,8 @@ defmodule HygeiaWeb.CaseLive.Index do
                       &Atom.to_string/1
                     ),
                   "tracer_uuid" => [get_auth(socket).uuid],
-                  "tenant_cases" => Enum.map(socket.assigns.authorized_tenants, & &1.uuid)
+                  "tenant_cases" => Enum.map(socket.assigns.authorized_tenants, & &1.uuid),
+                  "anonymization" => "any"
                 },
                 sort
               )
@@ -148,7 +149,8 @@ defmodule HygeiaWeb.CaseLive.Index do
     "no_auto_tracing_problems" => :no_auto_tracing_problems,
     "auto_tracing_problem" => :auto_tracing_problem,
     "auto_tracing_active" => :auto_tracing_active,
-    "tenant_cases" => :tenant_cases
+    "tenant_cases" => :tenant_cases,
+    "anonymization" => :anonymization
   }
 
   # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
@@ -259,6 +261,15 @@ defmodule HygeiaWeb.CaseLive.Index do
         {:phase_type, phase_type}, query ->
           phase_match = %{details: %{__type__: phase_type}}
           where(query, [case], fragment("? <@ ANY (?)", ^phase_match, case.phases))
+
+        {:anonymization, "any"}, query ->
+          query
+
+        {:anonymization, "anonymized"}, query ->
+          where(query, [case], case.redacted)
+
+        {:anonymization, "not_anonymized"}, query ->
+          where(query, [case], not case.redacted)
       end)
       |> Repo.paginate(
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: cursor_fields)

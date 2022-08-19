@@ -116,6 +116,28 @@
                   </Label>
                 </Field>
               </div>
+
+              <div class="form-group">
+                <label class="d-block">{gettext("Show people")}</label>
+                <Field name="anonymization" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="any" />
+                    {gettext("Any")}
+                  </label>
+                </Field>
+                <Field name="anonymization" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="anonymized" />
+                    {gettext("Anonymized")}
+                  </label>
+                </Field>
+                <Field name="anonymization" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="not_anonymized" />
+                    {gettext("Not anonymized")}
+                  </label>
+                </Field>
+              </div>
             </InputContext>
           </Form>
         </:default>
@@ -182,13 +204,13 @@
       <tbody id="people">
         <tr :for={person <- @people} id={"person-#{person.uuid}"}>
           <HygeiaWeb.RecordView resource={person} action={:list} id={"person_recordview_#{person.uuid}"} />
-          <td>{person.first_name}</td>
-          <td>{person.last_name}</td>
+          <td>{person.first_name || "-"}</td>
+          <td>{person.last_name || "-"}</td>
           <td>{case person.birth_date do
-              nil -> nil
+              nil -> "-"
               date -> Cldr.Date.to_string!(date, HygeiaCldr)
             end}</td>
-          <td>{format_address(person.address)}</td>
+          <td>{format_address(person.address) || "-"}</td>
           <td>
             {person.inserted_at
             |> DateTime.shift_zone!(timezone)
@@ -196,6 +218,9 @@
           </td>
           <td>
             <div class="d-flex justify-content-end w-100">
+              <div :if={person.redacted} class="me-3">
+                <span class="badge rounded-pill bg-warning">{pgettext("Person Index", "Redacted")}</span>
+              </div>
               <LiveRedirect
                 to={Routes.person_base_data_path(@socket, :show, person)}
                 :if={authorized?(person, :details, auth)}

@@ -336,6 +336,26 @@ msgid "Are you planning to move to a different address for your isolation?"
 msgstr ""
 
 #, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "Are you sure you want to redact this case?"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Are you sure you want to redact this person and all the associated cases?"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "Are you sure you want to reidentify this case?"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Are you sure you want to reidentify this person?"
+msgstr ""
+
+#, elixir-autogen, icu-format
 msgid "Are you sure?"
 msgstr ""
 
@@ -583,6 +603,10 @@ msgstr ""
 
 #, elixir-autogen, icu-format
 msgid "Case deleted successfully"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgid "Case redacted successfully"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -1467,6 +1491,11 @@ msgid "Early end because of negative test after the 7th day of quarantine"
 msgstr ""
 
 #, elixir-autogen, icu-format
+msgid "Edit"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Case Base Data"
 msgid "Edit"
 msgstr ""
 
@@ -3673,6 +3702,10 @@ msgid "Person living in the same household or in a very close relationship. (e.g
 msgstr ""
 
 #, elixir-autogen, icu-format
+msgid "Person redacted successfully"
+msgstr ""
+
+#, elixir-autogen, icu-format
 msgid "Person updated successfully"
 msgstr ""
 
@@ -4193,6 +4226,31 @@ msgid "Recipient Public Key"
 msgstr ""
 
 #, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "Redact"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Redact"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Header"
+msgid "Redacted"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Case Index"
+msgid "Redacted"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Index"
+msgid "Redacted"
+msgstr ""
+
+#, elixir-autogen, icu-format
 msgid "Redirecting"
 msgstr ""
 
@@ -4223,6 +4281,25 @@ msgstr ""
 #, elixir-autogen, icu-format
 msgctxt "ISM 2021-06-11 Test Field Group"
 msgid "References"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "Reidentify"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Reidentify"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgid "Reidentify"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Reidentify person"
 msgstr ""
 
 #, elixir-autogen, icu-format
@@ -5203,6 +5280,16 @@ msgid "There was an error while submitting the form. Please try resubmitting the
 msgstr ""
 
 #, elixir-autogen, icu-format
+msgctxt "Person Header"
+msgid "This case has been redacted"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "This case has been redacted on: {date}"
+msgstr ""
+
+#, elixir-autogen, icu-format
 msgid "This case is not in an index phase."
 msgstr ""
 
@@ -5240,6 +5327,15 @@ msgstr[1] ""
 
 #, elixir-autogen, icu-format
 msgid "This person has been notified on the following contact methods"
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgid "This person has been redacted and you can no longer access the overview, please contact your supervisor for more information."
+msgstr ""
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "This person has been redacted on: {date}"
 msgstr ""
 
 #, elixir-autogen, icu-format

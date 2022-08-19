@@ -29,6 +29,8 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
 
+  data show_reidentification_modal, :boolean, default: false
+
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
     person = CaseContext.get_person!(id)
@@ -323,6 +325,56 @@ defmodule HygeiaWeb.PersonLive.BaseData do
     end
   end
 
+  def handle_event("redact", _params, %{assigns: %{person: person}} = socket) do
+    true = authorized?(person, :update, get_auth(socket))
+
+    socket =
+      person
+      |> CaseContext.redact_person()
+      |> case do
+        {:ok, _person} ->
+          put_flash(socket, :info, pgettext("Person Base Data", "Person redacted successfully"))
+
+        {:error, :unredacted_case} ->
+          put_flash(
+            socket,
+            :error,
+            pgettext(
+              "Person Base Data",
+              "This person can not be redacted because there are unredacted cases associated to it"
+            )
+          )
+
+        _else ->
+          put_flash(
+            socket,
+            :error,
+            pgettext(
+              "Person Base Data",
+              "An unexpected error occurred while redacting the person"
+            )
+          )
+      end
+
+    {:noreply, push_redirect(socket, to: Routes.person_base_data_path(socket, :show, person))}
+  end
+
+  def handle_event(
+        "reidentify",
+        %{"person" => %{"first_name" => first_name, "last_name" => last_name}},
+        %{assigns: %{person: person}} = socket
+      ) do
+    true = authorized?(person, :create, get_auth(socket))
+
+    {:ok, _person} = CaseContext.reidentify_person(person, first_name, last_name)
+
+    {:noreply,
+     socket
+     |> assign(show_reidentification_modal: false)
+     |> put_flash(:info, pgettext("Person Base Data", "Person reidentified successfully"))
+     |> push_redirect(to: Routes.person_base_data_path(socket, :show, person))}
+  end
+
   def handle_event("delete", _params, %{assigns: %{person: person}} = socket) do
     true = authorized?(person, :delete, get_auth(socket))
 
@@ -334,11 +386,26 @@ defmodule HygeiaWeb.PersonLive.BaseData do
      |> redirect(to: Routes.person_index_path(socket, :index))}
   end
 
+  def handle_event("show_reidentification_modal", _params, socket) do
+    {:noreply, assign(socket, show_reidentification_modal: true)}
+  end
+
+  def handle_event("hide_reidentification_modal", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(show_reidentification_modal: false)
+     |> assign(
+       :changeset,
+       CaseContext.change_person(socket.assigns.person, %{})
+     )}
+  end
+
   defp load_data(socket, person) do
     person =
       Repo.preload(
         person,
         [
+          cases: [],
           tenant: [],
           affiliations: [],
           vaccination_shots: [],

@@ -165,6 +165,7 @@
                 id={"#{index}_Action.SelectCase_person"}
                 change="select_person"
                 subject={index}
+                discard_anonymized="false"
               />
             </Field>
 
@@ -176,6 +177,7 @@
                 id={"#{index}_Action.SelectCase_case"}
                 change="select_case"
                 subject={index}
+                discard_anonymized="false"
               />
             </Field>
 
