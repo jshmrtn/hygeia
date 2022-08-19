@@ -270,8 +270,22 @@ msgid "Always work from Top to Bottom. Otherwise changes may be lost!"
 msgstr "Immer von Oben nach Unten arbeiten. Ansonsten gehen Änderungen verloren!"
 
 #, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "An unexpected error occurred while redacting the person"
+msgstr "Beim Anonymisieren der Person ist ein unerwarteter Fehler aufgetreten"
+
+#, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "An unexpected error occurred while reidentifying the case"
+msgstr "Beim erneuten Identifizieren des Falls ist ein unerwarteter Fehler aufgetreten"
+
+#, elixir-autogen, icu-format
 msgid "An unknown error happened during registration. Report this to your webmaster."
 msgstr "Bei der Registrierung ist ein unbekannter Fehler aufgetreten. Melden Sie dies Ihrem Webmaster."
+
+#, elixir-autogen, icu-format
+msgid "Anonymized"
+msgstr "Anonymisiert"
 
 #, elixir-autogen, icu-format
 msgctxt "Test Kind"
@@ -330,13 +344,13 @@ msgstr "Verbringen Sie Ihre Isolation an einem anderen Ort?"
 
 #, elixir-autogen, icu-format
 msgctxt "Case Base Data"
-msgid "Are you sure you want to redact this case?"
-msgstr "Möchten Sie diesen Fall wirklich anonymisieren?"
+msgid "Are you sure you want to redact this case? Some data will be lost and you will not be able to recover it."
+msgstr "Möchten Sie diesen Fall wirklich anonymisieren? Viele Daten werden gelöscht und können nicht wiederhergestellt werden."
 
 #, elixir-autogen, icu-format
 msgctxt "Person Base Data"
-msgid "Are you sure you want to redact this person and all the associated cases?"
-msgstr "Möchten Sie diese Person und alle zugehörigen Fälle wirklich anonymisieren?"
+msgid "Are you sure you want to redact this person? Some data will be lost and you will not be able to recover it."
+msgstr "Möchten Sie diese Person und alle zugehörigen Fälle wirklich anonymisieren? Viele Daten werden gelöscht und können nicht wiederhergestellt werden."
 
 #, elixir-autogen, icu-format
 msgctxt "Case Base Data"
@@ -539,6 +553,16 @@ msgid "Canceled"
 msgstr "Tracing abgebrochen"
 
 #, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Cannot anonymize this person because it has cases that are not anonymized"
+msgstr "Diese Person kann nicht anonymisiert werden, da Sie noch nicht anonymisierte Fälle hat."
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Cannot reidentify this case because the associated person is anonymized"
+msgstr "Dieser Fall kann nicht erneut identifiziert werden, da die zugehörige Person anonymisiert ist"
+
+#, elixir-autogen, icu-format
 msgctxt "School Type"
 msgid "Cantonal school or other middle school"
 msgstr "Kantonsschule oder andere Mittelschule"
@@ -601,6 +625,11 @@ msgstr "Fall erfolgreich gelöscht"
 #, elixir-autogen, icu-format
 msgid "Case redacted successfully"
 msgstr "Fall erfolgreich anonymisiert"
+
+#, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "Case reidentified successfully"
+msgstr "Person erfolgreich reidentifiziert"
 
 #, elixir-autogen, icu-format
 msgid "Case updated successfully"
@@ -3324,6 +3353,10 @@ msgid "Not Done"
 msgstr "Nicht Erledigt"
 
 #, elixir-autogen, icu-format
+msgid "Not anonymized"
+msgstr "Nicht anonymisiert"
+
+#, elixir-autogen, icu-format
 msgctxt "Import Table"
 msgid "Not authorised"
 msgstr "Nicht autorisiert"
@@ -3355,6 +3388,10 @@ msgstr "Notizen"
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Notes"
 msgstr "Notizen"
+
+#, elixir-autogen, icu-format
+msgid "Nothing to reidentify"
+msgstr "Nichts zu reidentifizieren"
 
 #, elixir-autogen, icu-format
 msgid "Notifications"
@@ -3772,8 +3809,18 @@ msgid "Person living in the same household or in a very close relationship. (e.g
 msgstr "Personen vom selben Haushalt oder mit sehr engem Kontakt. ( z.B. Paar, das nicht zusammen lebt)"
 
 #, elixir-autogen, icu-format
+msgctxt "Person Base Data"
 msgid "Person redacted successfully"
-msgstr "Person erfolgreich redigiert"
+msgstr "Person erfolgreich anonymisiert"
+
+#, elixir-autogen, icu-format
+msgid "Person reidentification not possible because selected case is redacted"
+msgstr "Personenreidentifikation nicht möglich, da der ausgewählte Fall anonymisiert ist"
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Person reidentified successfully"
+msgstr "Person erfolgreich reidentifiziert"
 
 #, elixir-autogen, icu-format
 msgid "Person updated successfully"
@@ -4306,19 +4353,23 @@ msgid "Redact"
 msgstr "Anonymisieren"
 
 #, elixir-autogen, icu-format
-msgctxt "Person Header"
-msgid "Redacted"
-msgstr "Anonymisiert"
-
-#, elixir-autogen, fuzzy, icu-format
 msgctxt "Case Index"
 msgid "Redacted"
 msgstr "Anonymisiert"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
+msgctxt "Person Header"
+msgid "Redacted"
+msgstr "Anonymisiert"
+
+#, elixir-autogen, icu-format
 msgctxt "Person Index"
 msgid "Redacted"
 msgstr "Anonymisiert"
+
+#, elixir-autogen, icu-format
+msgid "Redacted person will be reidentified"
+msgstr "Anonimisierte Person wird erneut identifiziert"
 
 #, elixir-autogen, icu-format
 msgid "Redirecting"
@@ -4354,6 +4405,14 @@ msgid "References"
 msgstr "Referenzen"
 
 #, elixir-autogen, icu-format
+msgid "Reidentification not possible"
+msgstr "Reidentifikation nicht möglich"
+
+#, elixir-autogen, icu-format
+msgid "Reidentify"
+msgstr "Neu identifizieren"
+
+#, elixir-autogen, icu-format
 msgctxt "Case Base Data"
 msgid "Reidentify"
 msgstr "Neu identifizieren"
@@ -4363,14 +4422,14 @@ msgctxt "Person Base Data"
 msgid "Reidentify"
 msgstr "Neu identifizieren"
 
-#, elixir-autogen, fuzzy, icu-format
-msgid "Reidentify"
-msgstr "Neu identifizieren"
+#, elixir-autogen, icu-format
+msgid "Reidentify Person"
+msgstr "Person neu identifizieren"
 
-#, elixir-autogen, fuzzy, icu-format
+#, elixir-autogen, icu-format
 msgctxt "Person Base Data"
 msgid "Reidentify person"
-msgstr "Neu identifizieren"
+msgstr "Person neu identifizieren"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
@@ -4779,6 +4838,14 @@ msgstr "Statistiken anzeigen"
 #, elixir-autogen, icu-format
 msgid "Show all"
 msgstr "Alle anzeigen"
+
+#, elixir-autogen, icu-format
+msgid "Show cases"
+msgstr "Fälle anzeigen"
+
+#, elixir-autogen, icu-format
+msgid "Show people"
+msgstr "Personen anzeigen"
 
 #, elixir-autogen, icu-format
 msgid "Showing {count} of {total} entries"
@@ -5350,6 +5417,11 @@ msgid "There was an error while submitting the form. Please try resubmitting the
 msgstr "Beim Absenden des Formulars ist ein Fehler aufgetreten. Bitte versuchen Sie das Formular erneut zu senden und wenden Sie sich an Ihren Administrator, wenn das Problem weiterhin besteht."
 
 #, elixir-autogen, icu-format
+msgctxt "Case Base Data"
+msgid "This case can not be reidentified because the associated person is redacted"
+msgstr "Dieser Fall kann nicht erneut identifiziert werden, da die zugehörige Person anonymisiert ist"
+
+#, elixir-autogen, icu-format
 msgctxt "Person Header"
 msgid "This case has been redacted"
 msgstr "Dieser Fall wurde anonymisiert"
@@ -5376,6 +5448,11 @@ msgstr[1] "Diese Organisation hat {count} mögliche Duplikate."
 #, elixir-autogen, icu-format
 msgid "This organisation is possibly a duplicate of {name_link}, please check."
 msgstr "Diese Organisation ist möglicherweise ein Duplikat von {name_link}, überprüfen Sie dies bitte."
+
+#, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "This person can not be redacted because there are unredacted cases associated to it"
+msgstr "Diese Person kann nicht anonymisiert werden, da nicht anonymisierte Fälle bestehen"
 
 #, elixir-autogen, icu-format
 msgid "This person cannot be contacted because: {reasons}."
