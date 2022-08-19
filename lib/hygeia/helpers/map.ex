@@ -1,3 +1,5 @@
+# Code Extracted from: https://github.com/prodis/miss-elixir/blob/13901157e5e180e23071aaa7fbcb69ebd30bd8f2/lib/miss/map.ex
+# License: https://github.com/prodis/miss-elixir/blob/13901157e5e180e23071aaa7fbcb69ebd30bd8f2/LICENSE
 defmodule Hygeia.Helpers.Map do
   @moduledoc """
   Elixir.Map Helper
