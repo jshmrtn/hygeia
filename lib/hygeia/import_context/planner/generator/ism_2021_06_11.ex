@@ -827,8 +827,8 @@ defmodule Hygeia.ImportContext.Planner.Generator.ISM_2021_06_11 do
 
     {certainty, action} =
       case {case, person} do
-        {%Case{redacted: true}, _person} -> {:input_needed, :stop}
-        {_case, %Person{redacted: true}} -> {:uncertain, :reidentify}
+        {%Case{anonymized: true}, _person} -> {:input_needed, :stop}
+        {_case, %Person{anonymized: true}} -> {:uncertain, :reidentify}
         {_case, _person} -> {:certain, :skip}
       end
 

@@ -170,14 +170,14 @@ defmodule HygeiaWeb.CaseLive.BaseData do
     end
   end
 
-  def handle_event("redact", _params, %{assigns: %{case: case}} = socket) do
+  def handle_event("anonymize", _params, %{assigns: %{case: case}} = socket) do
     true = authorized?(case, :update, get_auth(socket), %{tenant: case.tenant})
 
-    {:ok, _case} = CaseContext.redact_case(case)
+    {:ok, _case} = CaseContext.anonymize_case(case)
 
     {:noreply,
      socket
-     |> put_flash(:info, gettext("Case redacted successfully"))
+     |> put_flash(:info, gettext("Case anonymized successfully"))
      |> push_redirect(to: Routes.case_base_data_path(socket, :show, case))}
   end
 
@@ -191,13 +191,13 @@ defmodule HygeiaWeb.CaseLive.BaseData do
         {:ok, _case} ->
           put_flash(socket, :info, pgettext("Case Base Data", "Case reidentified successfully"))
 
-        {:error, :redacted_person} ->
+        {:error, :anonymized_person} ->
           put_flash(
             socket,
             :error,
             pgettext(
               "Case Base Data",
-              "This case can not be reidentified because the associated person is redacted"
+              "This case can not be reidentified because the associated person is anonymized"
             )
           )
 

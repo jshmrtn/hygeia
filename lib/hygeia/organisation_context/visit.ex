@@ -156,7 +156,7 @@ defmodule Hygeia.OrganisationContext.Visit do
           _visit,
           action,
           _user,
-          %{case: %Case{redacted: true}}
+          %{case: %Case{anonymized: true}}
         )
         when action in [:create, :update],
         do: false
@@ -165,9 +165,9 @@ defmodule Hygeia.OrganisationContext.Visit do
           visit,
           action,
           user,
-          %{case: %Case{redacted: true} = case}
+          %{case: %Case{anonymized: true} = case}
         ),
-        do: authorized?(visit, action, user, %{case: %Case{case | redacted: false}})
+        do: authorized?(visit, action, user, %{case: %Case{case | anonymized: false}})
 
     def authorized?(
           _visit,

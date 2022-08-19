@@ -60,8 +60,8 @@ defmodule Hygeia.CaseContext.Case do
           tests: Ecto.Schema.has_many(Test.t()) | nil,
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()) | nil,
           auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
-          redacted: boolean() | nil,
-          redaction_date: Date.t() | nil,
+          anonymized: boolean() | nil,
+          anonymization_date: Date.t() | nil,
           reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
@@ -94,8 +94,8 @@ defmodule Hygeia.CaseContext.Case do
           tests: Ecto.Schema.has_many(Test.t()),
           premature_releases: Ecto.Schema.has_many(PrematureRelease.t()),
           auto_tracing: Ecto.Schema.has_one(AutoTracing.t()) | nil,
-          redacted: boolean(),
-          redaction_date: Date.t() | nil,
+          anonymized: boolean(),
+          anonymization_date: Date.t() | nil,
           reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
@@ -109,8 +109,8 @@ defmodule Hygeia.CaseContext.Case do
     field :complexity, Complexity
     field :human_readable_id, :string
     field :status, Status, default: :first_contact
-    field :redacted, :boolean, default: false
-    field :redaction_date, :date
+    field :anonymized, :boolean, default: false
+    field :anonymization_date, :date
     field :reidentification_date, :date
 
     # Generated Helper fields for more effinicient queries. do not use externally
@@ -184,8 +184,8 @@ defmodule Hygeia.CaseContext.Case do
       :tenant_uuid,
       :person_uuid,
       :inserted_at,
-      :redacted,
-      :redaction_date,
+      :anonymized,
+      :anonymization_date,
       :reidentification_date
     ])
     |> fill_uuid
@@ -557,7 +557,7 @@ defmodule Hygeia.CaseContext.Case do
              ],
         do: false
 
-    def authorized?(_case, action, _user, %{person: %Person{redacted: true}})
+    def authorized?(_case, action, _user, %{person: %Person{anonymized: true}})
         when action in [
                :list,
                :create,
@@ -587,11 +587,11 @@ defmodule Hygeia.CaseContext.Case do
         when action in [:details, :partial_details, :auto_tracing],
         do: User.has_role?(user, :supervisor, :any)
 
-    def authorized?(%Case{redacted: true}, action, _user, _meta)
+    def authorized?(%Case{anonymized: true}, action, _user, _meta)
         when action in [:partial_details, :versioning, :update, :auto_tracing],
         do: false
 
-    def authorized?(%Case{redacted: true}, action, user, _meta)
+    def authorized?(%Case{anonymized: true}, action, user, _meta)
         when action in [:details, :partial_details, :create, :delete],
         do:
           Enum.any?(

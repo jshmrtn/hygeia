@@ -1,8 +1,8 @@
 <div>
-  {#if @case.redacted}
+  {#if @case.anonymized}
     <div class="alert alert-warning">
-      {pgettext("Case Base Data", "This case has been redacted on: {date}",
-        date: HygeiaCldr.Date.to_string!(@case.redaction_date)
+      {pgettext("Case Base Data", "This case has been anonymized on: {date}",
+        date: HygeiaCldr.Date.to_string!(@case.anonymization_date)
       )}
     </div>
   {/if}
@@ -60,7 +60,7 @@
           </UriActiveContext>
         </UriActiveContext>
       </li>
-      <li class="nav-item" :if={authorized?(Visit, :list, auth, case: @case) and not @case.redacted}>
+      <li class="nav-item" :if={authorized?(Visit, :list, auth, case: @case) and not @case.anonymized}>
         <UriActiveContext
           to={Routes.visit_index_path(@socket, :index, @case)}
           opts={active: :inclusive}
@@ -95,7 +95,7 @@
       </li>
       <li
         :if={has_index_phase?(@case) and authorized?(PossibleIndexSubmission, :list, auth, case: @case) and
-          not @case.redacted}
+          not @case.anonymized}
         class="nav-item"
       >
         <UriActiveContext
@@ -108,7 +108,7 @@
           </LiveRedirect>
         </UriActiveContext>
       </li>
-      <li class="nav-item" :if={authorized?(@case, :details, auth) and not @case.redacted}>
+      <li class="nav-item" :if={authorized?(@case, :details, auth) and not @case.anonymized}>
         <UriActiveContext
           to={Routes.case_protocol_path(@socket, :show, @case)}
           :let={to: to, active: active}
@@ -367,7 +367,7 @@
             {gettext("Create Note")}
           </a>
         </div>
-        <div :if={authorized?(@case, :create, auth, tenant: :any) and not @case.redacted}>
+        <div :if={authorized?(@case, :create, auth, tenant: :any) and not @case.anonymized}>
           <div class="dropdown-divider" />
           <Context get={HygeiaWeb, uri: uri}>
             <LiveRedirect

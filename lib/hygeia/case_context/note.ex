@@ -73,7 +73,7 @@ defmodule Hygeia.CaseContext.Note do
         when action in [:create],
         do: false
 
-    def authorized?(_note, :create, _user, %{case: %Case{redacted: true}}), do: false
+    def authorized?(_note, :create, _user, %{case: %Case{anonymized: true}}), do: false
 
     def authorized?(_note, :create, user, %{case: %Case{tenant_uuid: tenant_uuid}}),
       do:

@@ -25,7 +25,7 @@ defmodule Hygeia.ImportContext.Planner.Action.ReidentifyPerson do
            %{
              person_changeset:
                Changeset.change(person_changeset, %{
-                 redacted: false,
+                 anonymized: false,
                  reidentification_date: Date.utc_today()
                })
            }}

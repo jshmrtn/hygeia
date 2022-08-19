@@ -145,19 +145,19 @@ defmodule HygeiaWeb.PersonLiveTest do
              } = person.uuid |> CaseContext.get_person!() |> Repo.preload([:vaccination_shots])
     end
 
-    test "redacts person", %{conn: conn, person: person} do
+    test "anonymizes person", %{conn: conn, person: person} do
       {:ok, show_live, _html} = live(conn, Routes.person_base_data_path(conn, :show, person))
 
       {:ok, _show_live, html} =
         show_live
-        |> element("button", "Redact")
+        |> element("button", "Anonymize")
         |> render_click()
         |> follow_redirect(conn)
 
-      assert html =~ "Person redacted successfully"
+      assert html =~ "Person anonymized successfully"
     end
 
-    test "person redact button is disabled if there are unredacted cases", %{
+    test "person anonymize button is disabled if there are not anonymized cases", %{
       conn: conn,
       person: person
     } do
@@ -166,29 +166,32 @@ defmodule HygeiaWeb.PersonLiveTest do
       {:ok, show_live, _html} = live(conn, Routes.person_base_data_path(conn, :show, person))
 
       assert show_live
-             |> element("button", "Redact")
+             |> element("button", "Anonymize")
              |> render() =~ "disabled"
     end
 
-    test "person cannot be redacted if new case is added meanwhile", %{conn: conn, person: person} do
+    test "person cannot be anonymized if new case is added meanwhile", %{
+      conn: conn,
+      person: person
+    } do
       {:ok, show_live, _html} = live(conn, Routes.person_base_data_path(conn, :show, person))
 
       case_fixture(person)
 
       {:ok, _show_live, html} =
         show_live
-        |> element("button", "Redact")
+        |> element("button", "Anonymize")
         |> render_click()
         |> follow_redirect(conn)
 
       html =~
-        "This person can not be redacted because there are unredacted cases associated to it"
+        "This person can not be anonymized because there are not anonymized cases associated to it"
     end
 
     test "reidentifies person", %{conn: conn, person: person} do
       {:ok, show_live, _html} = live(conn, Routes.person_base_data_path(conn, :show, person))
 
-      {:ok, _person} = CaseContext.redact_person(person)
+      {:ok, _person} = CaseContext.anonymize_person(person)
 
       html =
         show_live
@@ -199,7 +202,7 @@ defmodule HygeiaWeb.PersonLiveTest do
 
       {:ok, _show_live, html} =
         show_live
-        |> form("#redact-person-form", person: %{first_name: "TestFirstName"})
+        |> form("#anonymize-person-form", person: %{first_name: "TestFirstName"})
         |> render_submit()
         |> follow_redirect(conn)
 

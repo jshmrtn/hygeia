@@ -266,10 +266,10 @@ defmodule HygeiaWeb.CaseLive.Index do
           query
 
         {:anonymization, "anonymized"}, query ->
-          where(query, [case], case.redacted)
+          where(query, [case], case.anonymized)
 
         {:anonymization, "not_anonymized"}, query ->
-          where(query, [case], not case.redacted)
+          where(query, [case], not case.anonymized)
       end)
       |> Repo.paginate(
         Keyword.merge(socket.assigns.pagination_params, cursor_fields: cursor_fields)

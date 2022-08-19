@@ -325,23 +325,23 @@ defmodule HygeiaWeb.PersonLive.BaseData do
     end
   end
 
-  def handle_event("redact", _params, %{assigns: %{person: person}} = socket) do
+  def handle_event("anonymize", _params, %{assigns: %{person: person}} = socket) do
     true = authorized?(person, :update, get_auth(socket))
 
     socket =
       person
-      |> CaseContext.redact_person()
+      |> CaseContext.anonymize_person()
       |> case do
         {:ok, _person} ->
-          put_flash(socket, :info, pgettext("Person Base Data", "Person redacted successfully"))
+          put_flash(socket, :info, pgettext("Person Base Data", "Person anonymized successfully"))
 
-        {:error, :unredacted_case} ->
+        {:error, :not_anonymized_case} ->
           put_flash(
             socket,
             :error,
             pgettext(
               "Person Base Data",
-              "This person can not be redacted because there are unredacted cases associated to it"
+              "This person can not be anonymized because there are not anonymized cases associated to it"
             )
           )
 
@@ -351,7 +351,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
             :error,
             pgettext(
               "Person Base Data",
-              "An unexpected error occurred while redacting the person"
+              "An unexpected error occurred while anonymizing the person"
             )
           )
       end

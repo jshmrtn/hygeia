@@ -70,7 +70,7 @@ defmodule HygeiaWeb.CaseLive.CreatePossibleIndex do
                 |> CaseContext.get_possible_index_submission!()
                 |> Hygeia.Repo.preload(case: [:person, :tenant])
 
-              if case.redacted do
+              if case.anonymized do
                 normalized_params
               else
                 Map.merge(

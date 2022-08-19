@@ -42,8 +42,8 @@ defmodule Hygeia.CaseContext.Person do
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()) | nil,
           employers: Ecto.Schema.has_many(Organisation.t()) | nil,
           pinned_notes: Ecto.Schema.has_many(Note.t()) | nil,
-          redacted: boolean() | nil,
-          redaction_date: Date.t() | nil,
+          anonymized: boolean() | nil,
+          anonymization_date: Date.t() | nil,
           reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t() | nil,
           updated_at: DateTime.t() | nil
@@ -72,8 +72,8 @@ defmodule Hygeia.CaseContext.Person do
           employee_affiliations: Ecto.Schema.has_many(Affiliation.t()),
           employers: Ecto.Schema.has_many(Organisation.t()),
           pinned_notes: Ecto.Schema.has_many(Note.t()),
-          redacted: boolean(),
-          redaction_date: Date.t() | nil,
+          anonymized: boolean(),
+          anonymization_date: Date.t() | nil,
           reidentification_date: Date.t() | nil,
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
@@ -96,8 +96,8 @@ defmodule Hygeia.CaseContext.Person do
     field :profession_category_main, NOGA.Section
     field :is_vaccinated, :boolean
     field :convalescent_externally, :boolean, default: false
-    field :redacted, :boolean, default: false
-    field :redaction_date, :date
+    field :anonymized, :boolean, default: false
+    field :anonymization_date, :date
     field :reidentification_date, :date
 
     embeds_one :address, Address, on_replace: :update
@@ -161,8 +161,8 @@ defmodule Hygeia.CaseContext.Person do
       :profession_category,
       :is_vaccinated,
       :convalescent_externally,
-      :redacted,
-      :redaction_date,
+      :anonymized,
+      :anonymization_date,
       :reidentification_date
     ])
     |> fill_uuid
@@ -191,7 +191,7 @@ defmodule Hygeia.CaseContext.Person do
 
   defp validate_first_name_as_needed(changeset) do
     changeset
-    |> fetch_field!(:redacted)
+    |> fetch_field!(:anonymized)
     |> case do
       true -> changeset
       false -> validate_required(changeset, :first_name)
@@ -255,11 +255,11 @@ defmodule Hygeia.CaseContext.Person do
         when action in [:list, :create, :details, :partial_details, :update, :delete],
         do: false
 
-    def authorized?(%Person{redacted: true}, action, _user, _meta)
+    def authorized?(%Person{anonymized: true}, action, _user, _meta)
         when action in [:versioning, :update],
         do: false
 
-    def authorized?(%Person{redacted: true}, action, user, _meta)
+    def authorized?(%Person{anonymized: true}, action, user, _meta)
         when action in [:details, :partial_details, :create, :delete],
         do:
           Enum.any?([:tracer, :super_user, :supervisor, :admin], &User.has_role?(user, &1, :any))

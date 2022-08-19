@@ -88,6 +88,6 @@ defmodule HygeiaWeb.CaseLive.Choose do
 
   defp load_case(uuid), do: uuid |> CaseContext.get_case!() |> Repo.preload(person: [tenant: []])
 
-  defp maybe_discard_anonymized(query, true), do: where(query, [case], not case.redacted)
+  defp maybe_discard_anonymized(query, true), do: where(query, [case], not case.anonymized)
   defp maybe_discard_anonymized(query, _any), do: query
 end

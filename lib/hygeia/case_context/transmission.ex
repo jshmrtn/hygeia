@@ -170,7 +170,7 @@ defmodule Hygeia.CaseContext.Transmission do
           _transmission,
           action,
           _user,
-          %{case: %Case{redacted: true}}
+          %{case: %Case{anonymized: true}}
         )
         when action in [:create, :update],
         do: false
@@ -179,9 +179,9 @@ defmodule Hygeia.CaseContext.Transmission do
           transmission,
           action,
           user,
-          %{case: %Case{redacted: true} = case}
+          %{case: %Case{anonymized: true} = case}
         ),
-        do: authorized?(transmission, action, user, %{case: %Case{case | redacted: false}})
+        do: authorized?(transmission, action, user, %{case: %Case{case | anonymized: false}})
 
     def authorized?(
           %Transmission{propagator_case: propagator_case, recipient_case: recipient_case},

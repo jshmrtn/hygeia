@@ -209,9 +209,9 @@
           </summary>
 
           <div class="card-body">
-            <span :if={action.action == :stop}>{gettext("Person reidentification not possible because selected case is redacted")}</span>
+            <span :if={action.action == :stop}>{gettext("Person reidentification not possible because selected case is anonymized")}</span>
             <span :if={action.action == :skip}>{gettext("Nothing to reidentify")}</span>
-            <span :if={action.action == :reidentify}>{gettext("Redacted person will be reidentified")}</span>
+            <span :if={action.action == :reidentify}>{gettext("Anonymized person will be reidentified")}</span>
           </div>
         {/if}
 
