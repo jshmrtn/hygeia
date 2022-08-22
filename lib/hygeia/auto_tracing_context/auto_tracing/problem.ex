@@ -7,7 +7,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
     enums: [
       :unmanaged_tenant,
       :covid_app,
-      :hospitalization,
       :school_related,
       :high_risk_country_travel,
       :flight_related,
@@ -27,8 +26,6 @@ defmodule Hygeia.AutoTracingContext.AutoTracing.Problem do
   @spec translate(problem :: t) :: String.t()
   def translate(:unmanaged_tenant), do: pgettext("Auto Tracing Problem", "Unmanaged Tenant")
   def translate(:covid_app), do: pgettext("Auto Tracing Problem", "SwissCovid App")
-
-  def translate(:hospitalization), do: pgettext("Auto Tracing Problem", "Hospitalization")
 
   def translate(:school_related), do: pgettext("Auto Tracing Problem", "School Related")
 

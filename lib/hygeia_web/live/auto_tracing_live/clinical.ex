@@ -155,22 +155,8 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
 
     :ok = send_notifications(case, socket)
 
-    {:ok, auto_tracing} =
-      case case do
-        %Case{hospitalizations: [_hospitalization | _others]} ->
-          AutoTracingContext.auto_tracing_add_problem_if_not_exists(
-            socket.assigns.auto_tracing,
-            :hospitalization
-          )
-
-        %Case{} ->
-          AutoTracingContext.auto_tracing_remove_problem(
-            socket.assigns.auto_tracing,
-            :hospitalization
-          )
-      end
-
-    {:ok, _auto_tracing} = AutoTracingContext.advance_one_step(auto_tracing, :clinical)
+    {:ok, _auto_tracing} =
+      AutoTracingContext.advance_one_step(socket.assigns.auto_tracing, :clinical)
 
     {:noreply,
      push_redirect(socket,
