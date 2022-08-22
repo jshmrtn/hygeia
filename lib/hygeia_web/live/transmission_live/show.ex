@@ -79,7 +79,9 @@ defmodule HygeiaWeb.TransmissionLive.Show do
      socket
      |> assign(
        changeset: %{
-         CaseContext.change_transmission(socket.assigns.transmission, transmission_params)
+         CaseContext.change_transmission(socket.assigns.transmission, transmission_params, %{
+           transmission_case_uuid_required: true
+         })
          | action: :validate
        }
      )
@@ -101,7 +103,9 @@ defmodule HygeiaWeb.TransmissionLive.Show do
     true = authorized?(socket.assigns.transmission, :update, get_auth(socket))
 
     socket.assigns.transmission
-    |> CaseContext.update_transmission(transmission_params)
+    |> CaseContext.update_transmission(transmission_params, %{
+      transmission_case_uuid_required: true
+    })
     |> case do
       {:ok, transmission} ->
         {:noreply,
@@ -155,7 +159,10 @@ defmodule HygeiaWeb.TransmissionLive.Show do
         propagator_case: [tenant: []]
       )
 
-    changeset = CaseContext.change_transmission(transmission, attrs)
+    changeset =
+      CaseContext.change_transmission(transmission, attrs, %{
+        transmission_case_uuid_required: true
+      })
 
     socket
     |> assign(

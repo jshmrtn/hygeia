@@ -21,7 +21,10 @@ defmodule HygeiaWeb.TransmissionLive.Create do
     socket =
       if authorized?(Transmission, :create, get_auth(socket)) do
         assign(socket,
-          changeset: CaseContext.change_transmission(%Transmission{}, params),
+          changeset:
+            CaseContext.change_transmission(%Transmission{}, params, %{
+              transmission_case_uuid_required: true
+            }),
           page_title: gettext("New Transmission"),
           return_url: params["return_url"]
         )
@@ -41,7 +44,9 @@ defmodule HygeiaWeb.TransmissionLive.Create do
   def handle_event("validate", %{"transmission" => transmission_params}, socket) do
     {:noreply,
      assign(socket, :changeset, %{
-       CaseContext.change_transmission(%Transmission{}, transmission_params)
+       CaseContext.change_transmission(%Transmission{}, transmission_params, %{
+         transmission_case_uuid_required: true
+       })
        | action: :validate
      })}
   end
