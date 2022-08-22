@@ -420,11 +420,6 @@
                             {/case}
                           </div>
                         </div>
-                      {#match :hospitalization}
-                        <p>{pgettext("Auto Tracing Resolve Problems", "Report case to your supervisor.")}</p>
-                        <button :on-click="resolve" phx-value-problem={problem} class="btn btn-primary">
-                          {pgettext("Auto Tracing Resolve Problems", "Done")}
-                        </button>
                       {#match :school_related}
                         <p>{pgettext(
                             "Auto Tracing Resolve Problems",
