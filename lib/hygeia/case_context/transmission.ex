@@ -52,7 +52,10 @@ defmodule Hygeia.CaseContext.Transmission do
           updated_at: DateTime.t() | nil
         }
 
-  @type changeset_params :: %{optional(:place_type_required) => boolean()}
+  @type changeset_params :: %{
+          optional(:place_type_required) => boolean(),
+          optional(:transmission_case_uuid_required) => boolean()
+        }
 
   @derive {Phoenix.Param, key: :uuid}
 
@@ -92,6 +95,13 @@ defmodule Hygeia.CaseContext.Transmission do
     )
   end
 
+  def changeset(transmission, attrs, %{transmission_case_uuid_required: true} = changeset_params) do
+    transmission
+    |> changeset(attrs, %{changeset_params | transmission_case_uuid_required: false})
+    |> validate_case(:propagator_internal, :propagator_ism_id, :propagator_case_uuid)
+    |> validate_case(:recipient_internal, :recipient_ism_id, :recipient_case_uuid)
+  end
+
   def changeset(transmission, attrs, _changeset_params) do
     transmission
     |> cast(attrs, [
@@ -109,8 +119,6 @@ defmodule Hygeia.CaseContext.Transmission do
     |> cast_embed(:infection_place)
     |> validate_required([:date, :type])
     |> validate_past_date(:date)
-    |> validate_case(:propagator_internal, :propagator_ism_id, :propagator_case_uuid)
-    |> validate_case(:recipient_internal, :recipient_ism_id, :recipient_case_uuid)
     |> validate_propagator_or_recipient_required()
   end
 
