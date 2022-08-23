@@ -14,6 +14,7 @@ defmodule HygeiaWeb.Notification.PrematureRelease do
       preload_assigns_one(
         assign_list,
         :body,
-        &Repo.preload(&1, premature_release: [case: [person: []]])
+        &Repo.preload(&1, premature_release: [case: [person: []]]),
+        & &1.premature_release_uuid
       )
 end

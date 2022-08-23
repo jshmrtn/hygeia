@@ -10,5 +10,5 @@ defmodule HygeiaWeb.Notification.EmailSendFailed do
 
   @impl Phoenix.LiveComponent
   def preload(assign_list),
-    do: preload_assigns_one(assign_list, :body, &Repo.preload(&1, case: :person))
+    do: preload_assigns_one(assign_list, :body, &Repo.preload(&1, case: :person), & &1.email_uuid)
 end
