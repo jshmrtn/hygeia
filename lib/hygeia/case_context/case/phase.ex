@@ -66,7 +66,7 @@ defmodule Hygeia.CaseContext.Case.Phase do
     field :premature_release_disabled_reason, DisabledReason
     field :premature_release_disabled_reason_other, :string
 
-    field :details, PolymorphicEmbed,
+    polymorphic_embeds_one :details,
       types: [
         index: Index,
         possible_index: PossibleIndex

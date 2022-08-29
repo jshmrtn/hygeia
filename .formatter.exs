@@ -1,4 +1,5 @@
 [
+  locals_without_parens: [polymorphic_embeds_one: 2, polymorphic_embeds_many: 2],
   import_deps: [:phoenix, :phoenix_live_view, :surface, :ecto, :ecto_enum],
   inputs: [
     ".dialyzer_ignore.exs",

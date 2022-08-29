@@ -41,7 +41,7 @@ defmodule Hygeia.NotificationContext.Notification do
         }
 
   schema "notifications" do
-    field :body, PolymorphicEmbed,
+    polymorphic_embeds_one :body,
       types: [
         case_assignee: __MODULE__.CaseAssignee,
         email_send_failed: __MODULE__.EmailSendFailed,

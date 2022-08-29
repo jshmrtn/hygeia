@@ -48,7 +48,8 @@ defmodule Hygeia do
       import Hygeia.Helpers.PersonDuplicates
       import Hygeia.Helpers.Phone
 
-      import PolymorphicEmbed, only: [cast_polymorphic_embed: 2]
+      import PolymorphicEmbed,
+        only: [cast_polymorphic_embed: 2, polymorphic_embeds_one: 2, polymorphic_embeds_many: 2]
 
       alias Ecto.Changeset
 
