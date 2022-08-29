@@ -97,13 +97,13 @@ defmodule Hygeia.TenantContext.Tenant do
 
     timestamps()
 
-    field :outgoing_mail_configuration, PolymorphicEmbed,
+    polymorphic_embeds_one :outgoing_mail_configuration,
       types: [
         smtp: Smtp
       ],
       on_replace: :update
 
-    field :outgoing_sms_configuration, PolymorphicEmbed,
+    polymorphic_embeds_one :outgoing_sms_configuration,
       types: [
         websms: Websms
       ],

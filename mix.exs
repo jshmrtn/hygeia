@@ -135,7 +135,7 @@ defmodule Hygeia.MixProject do
       {:plug_content_security_policy, "~> 0.2.1"},
       {:plug_cowboy, "~> 2.4"},
       {:plug_dynamic, "~> 1.0"},
-      {:polymorphic_embed, "~> 2.0"},
+      {:polymorphic_embed, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:remote_ip, "~> 1.0"},
       {:sedex, "~> 1.0"},
