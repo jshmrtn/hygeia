@@ -29,9 +29,9 @@ defmodule Hygeia.UserContext.User do
           updated_at: DateTime.t() | nil
         }
 
-  @type t :: %__MODULE__{
+  @type normal_user :: %__MODULE__{
           uuid: Ecto.UUID.t(),
-          email: String.t(),
+          email: String.t() | nil,
           display_name: String.t(),
           iam_sub: String.t(),
           grants: Ecto.Schema.has_many(Grant.t()),
@@ -41,6 +41,21 @@ defmodule Hygeia.UserContext.User do
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
+
+  @type anonymized_user :: %__MODULE__{
+          uuid: Ecto.UUID.t(),
+          email: nil,
+          display_name: String.t(),
+          iam_sub: String.t(),
+          grants: Ecto.Schema.has_many([]),
+          tenants: Ecto.Schema.has_many([]),
+          notifications: Ecto.Schema.has_many(Notification.t()),
+          emails: Ecto.Schema.has_many(Email.t()),
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
+        }
+
+  @type t :: normal_user() | anonymized_user()
 
   schema "users" do
     field :display_name, :string
