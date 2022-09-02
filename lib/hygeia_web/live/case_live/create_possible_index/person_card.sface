@@ -5,7 +5,7 @@
   @class
 }>
   <div class="card-header">
-    <#slot name="header">
+    <#slot {@header}>
       <div>
         <div>
           <div class="d-inline-block me-1">{fetch_field!(@person_changeset, :first_name)}</div>
@@ -19,8 +19,8 @@
   </div>
   <div class="card-body p-3">
     <div class="d-flex">
-      <#slot name="left" />
-      <#slot name="center">
+      <#slot {@left} />
+      <#slot {@center}>
         <div class="value-pairs">
           <div>
             <label class="small text-muted">{gettext("Tenant")}:</label>
@@ -60,9 +60,9 @@
           </div>
         </div>
       </#slot>
-      <#slot name="right" />
+      <#slot {@right} />
     </div>
-    <#slot name="error">
+    <#slot {@error}>
       {#if not @person_changeset.valid?}
         <span class="d-block invalid-feedback">
           {gettext(
@@ -71,6 +71,6 @@
         </span>
       {/if}
     </#slot>
-    <#slot name="bottom" />
+    <#slot {@bottom} />
   </div>
 </div>

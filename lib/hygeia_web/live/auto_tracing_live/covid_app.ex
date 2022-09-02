@@ -13,7 +13,7 @@ defmodule HygeiaWeb.AutoTracingLive.CovidApp do
   alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
-  alias Surface.Components.Form.Input.InputContext
+
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.LiveRedirect
 

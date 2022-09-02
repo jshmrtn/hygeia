@@ -20,7 +20,7 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
+
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.Form.Select
@@ -30,6 +30,19 @@ defmodule HygeiaWeb.PersonLive.BaseData do
   alias Surface.Components.LivePatch
 
   data show_reidentification_modal, :boolean, default: false
+  data duplicate_persons, :list, default: []
+
+  @impl Phoenix.LiveView
+  def render(assigns) do
+    assigns
+    |> assign(
+      duplicate_persons:
+        assigns.changeset
+        |> fetch_field!(:suspected_duplicates_uuid)
+        |> load_people_by_id()
+    )
+    |> render_sface()
+  end
 
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do

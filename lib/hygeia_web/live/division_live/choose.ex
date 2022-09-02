@@ -8,16 +8,18 @@ defmodule HygeiaWeb.DivisionLive.Choose do
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.Repo
+  alias Phoenix.HTML.FormData
+  alias Surface.Components.Form
+  alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
   @doc "An identifier for the form"
-  prop form, :form
+  prop form, :form, from_context: {Form, :form}
 
   @doc "An identifier for the associated field"
-  prop field, :atom
+  prop field, :atom, from_context: {Field, :field}
 
   prop change, :event
 
@@ -35,9 +37,24 @@ defmodule HygeiaWeb.DivisionLive.Choose do
 
   prop organisation, :string, required: true
 
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+
   data divisions, :list, default: []
   data modal_open, :boolean, default: false
   data query, :string, default: nil
+
+  @impl Phoenix.LiveComponent
+  def render(assigns) do
+    value =
+      assigns.value || FormData.input_value(assigns.form.source, assigns.form, assigns.field)
+
+    has_value = value not in [nil, ""]
+    division = if has_value, do: load_division(value)
+
+    assigns
+    |> assign(value: value, has_value: has_value, division: division)
+    |> render_sface()
+  end
 
   @impl Phoenix.LiveComponent
   def handle_event("open_modal", _params, socket),

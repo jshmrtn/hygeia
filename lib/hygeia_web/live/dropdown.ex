@@ -27,7 +27,7 @@ defmodule HygeiaWeb.Dropdown do
       }
     >
       <div class={@trigger_class} :on-click="toggle_dropdown">
-        <#slot name="trigger" />
+        <#slot {@trigger} />
       </div>
 
       <div class={

@@ -19,6 +19,9 @@ defmodule HygeiaWeb.CaseLive.Navigation do
 
   prop case, :map, required: true
 
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+  prop uri, :string, from_context: {HygeiaWeb, :uri}
+
   data note_modal, :map, default: nil
   data sms_modal, :map, default: nil
   data email_modal, :map, default: nil

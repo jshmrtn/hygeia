@@ -12,6 +12,8 @@ defmodule HygeiaWeb.DivisionLive.Header do
   # Changeset or actual Tenant
   prop division, :map, required: true
 
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+
   data display_name, :string
 
   @impl Phoenix.LiveComponent

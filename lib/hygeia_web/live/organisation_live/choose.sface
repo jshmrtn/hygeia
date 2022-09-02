@@ -1,113 +1,97 @@
 <div>
-  <Context get={HygeiaWeb, auth: auth}>
-    <InputContext assigns={assigns} :let={form: form, field: field}>
-      <Context
-        put={value: @value || Phoenix.HTML.FormData.input_value(form.source, form, field)}
-        get={value: value}
-      >
-        <HiddenInput value={value} />
+  <HiddenInput value={@internal_value} />
 
-        <div :if={value not in [nil, ""]}>
-          <Context
-            put={
-              organisation: load_organisation(value)
-            }
-            get={organisation: organisation}
+  <div :if={@has_value}>
+    <div class="card">
+      <div class="card-body py-2 px-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <LiveRedirect
+            :if={@disabled and authorized?(@organisation, :details, @auth)}
+            to={Routes.organisation_show_path(@socket, :show, @organisation)}
           >
-            <div class="card">
-              <div class="card-body py-2 px-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <LiveRedirect
-                    :if={@disabled and authorized?(organisation, :details, auth)}
-                    to={Routes.organisation_show_path(@socket, :show, organisation)}
-                  >
-                    {render_organisation(assigns, organisation)}
-                  </LiveRedirect>
-                  <div :if={not @disabled or not authorized?(organisation, :details, auth)}>
-                    {render_organisation(assigns, organisation)}
-                  </div>
-                  <button
-                    :if={not @disabled}
-                    class="btn btn-danger"
-                    :on-click={@change}
-                    type="button"
-                    phx-value-from-uuid={organisation.uuid}
-                    phx-value-subject={@subject}
-                  >
-                    <span class="oi oi-trash" aria-hidden="true" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </Context>
-        </div>
-
-        <div :if={value in [nil, ""]}>
-          <button disabled={@disabled} class="btn btn-outline-primary" :on-click="open_modal" type="button">
-            {gettext("Choose organisation")}
+            {render_organisation(assigns, @organisation)}
+          </LiveRedirect>
+          <div :if={not @disabled or not authorized?(@organisation, :details, @auth)}>
+            {render_organisation(assigns, @organisation)}
+          </div>
+          <button
+            :if={not @disabled}
+            class="btn btn-danger"
+            :on-click={@change}
+            type="button"
+            phx-value-from-uuid={@organisation.uuid}
+            phx-value-subject={@subject}
+          >
+            <span class="oi oi-trash" aria-hidden="true" />
           </button>
-
-          <HygeiaWeb.Modal
-            id={"choose_organisation_#{field}"}
-            :if={@modal_open}
-            title={gettext("Select Organisation")}
-            close="close_modal"
-          >
-            <div class="d-flex flex-justify-content-between">
-              <div class="input-group flex-grow-1">
-                <span class="input-group-text">
-                  <span class="oi oi-magnifying-glass" aria-hidden="true" />
-                </span>
-                <input
-                  class="form-control"
-                  type="search"
-                  value={@query}
-                  :on-keyup="query"
-                  placeholder={gettext("Search")}
-                />
-                <div
-                  class="input-group-apend"
-                  id={"#{@myself}_create"}
-                  phx-hook="PostMessage"
-                  data-post-message-target={@myself}
-                >
-                  <Link
-                    class="input-group-text text-nowrap"
-                    to={Routes.organisation_create_path(@socket, :create, popup: true)}
-                    opts={target: "_blank", rel: "opener"}
-                    :if={authorized?(Organisation, :create, auth)}
-                  >
-                    <span class="oi oi-plus" />
-                    {pgettext("Organisation", "Create")}
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div
-                role="button"
-                class="card hy-button-card mt-2"
-                :for={organisation <- @organisations}
-                :on-click={@change}
-                phx-value-uuid={organisation.uuid}
-                phx-value-subject={@subject}
-              >
-                <div class="card-body py-2 px-3">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                      {render_organisation(assigns, organisation)}
-                    </div>
-                    <button class="btn btn-primary" type="button">
-                      {gettext("choose")}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </HygeiaWeb.Modal>
         </div>
-      </Context>
-    </InputContext>
-  </Context>
+      </div>
+    </div>
+  </div>
+
+  <div :if={not @has_value}>
+    <button disabled={@disabled} class="btn btn-outline-primary" :on-click="open_modal" type="button">
+      {gettext("Choose organisation")}
+    </button>
+
+    <HygeiaWeb.Modal
+      id={"choose_organisation_#{@field}"}
+      :if={@modal_open}
+      title={gettext("Select Organisation")}
+      close="close_modal"
+    >
+      <div class="d-flex flex-justify-content-between">
+        <div class="input-group flex-grow-1">
+          <span class="input-group-text">
+            <span class="oi oi-magnifying-glass" aria-hidden="true" />
+          </span>
+          <input
+            class="form-control"
+            type="search"
+            value={@query}
+            :on-keyup="query"
+            placeholder={gettext("Search")}
+          />
+          <div
+            class="input-group-apend"
+            id={"#{@myself}_create"}
+            phx-hook="PostMessage"
+            data-post-message-target={@myself}
+          >
+            <Link
+              class="input-group-text text-nowrap"
+              to={Routes.organisation_create_path(@socket, :create, popup: true)}
+              opts={target: "_blank", rel: "opener"}
+              :if={authorized?(Organisation, :create, @auth)}
+            >
+              <span class="oi oi-plus" />
+              {pgettext("Organisation", "Create")}
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div
+          role="button"
+          class="card hy-button-card mt-2"
+          :for={organisation <- @organisations}
+          :on-click={@change}
+          phx-value-uuid={organisation.uuid}
+          phx-value-subject={@subject}
+        >
+          <div class="card-body py-2 px-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                {render_organisation(assigns, organisation)}
+              </div>
+              <button class="btn btn-primary" type="button">
+                {gettext("choose")}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </HygeiaWeb.Modal>
+  </div>
 </div>

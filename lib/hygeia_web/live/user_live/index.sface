@@ -1,57 +1,55 @@
 <div class="component-user-index container">
-  <Context get={HygeiaWeb, auth: auth}>
-    <h1 class="mb-3">
-      {gettext("Listing Users")}
-    </h1>
+  <h1 class="mb-3">
+    {gettext("Listing Users")}
+  </h1>
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th>
-            {schema_field_name(:display_name, User)}
-          </th>
-          <th>
-            {schema_field_name(:email, User)}
-          </th>
-          <th>
-            {schema_field_name(:roles, User)}
-          </th>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          {schema_field_name(:display_name, User)}
+        </th>
+        <th>
+          {schema_field_name(:email, User)}
+        </th>
+        <th>
+          {schema_field_name(:roles, User)}
+        </th>
 
-          <th />
-        </tr>
-      </thead>
-      <tbody id="users">
-        <tr :for={user <- @users} id={"user-#{user.uuid}"}>
-          <div :if={not Enum.empty?(user.grants)}>
-            <td>
-              {user.display_name}
-            </td>
-            <td>
-              {user.email}
-            </td>
-            <td>
-              <span :for={role <- user.grants |> Enum.map(& &1.role) |> Enum.uniq() |> Enum.sort()}>
-                <span class="badge rounded-pill badge-outline-primary">
-                  {role}
-                </span>
+        <th />
+      </tr>
+    </thead>
+    <tbody id="users">
+      <tr :for={user <- @users} id={"user-#{user.uuid}"}>
+        <div :if={not Enum.empty?(user.grants)}>
+          <td>
+            {user.display_name}
+          </td>
+          <td>
+            {user.email}
+          </td>
+          <td>
+            <span :for={role <- user.grants |> Enum.map(& &1.role) |> Enum.uniq() |> Enum.sort()}>
+              <span class="badge rounded-pill badge-outline-primary">
+                {role}
               </span>
-            </td>
+            </span>
+          </td>
 
-            <td>
-              <div class="d-flex justify-content-end w-100">
-                <LiveRedirect
-                  to={Routes.user_show_path(@socket, :show, user)}
-                  :if={authorized?(user, :details, auth)}
-                >
-                  <button class="ms-auto btn btn-sm btn-outline-primary">
-                    {gettext("Show")}
-                  </button>
-                </LiveRedirect>
-              </div>
-            </td>
-          </div>
-        </tr>
-      </tbody>
-    </table>
-  </Context>
+          <td>
+            <div class="d-flex justify-content-end w-100">
+              <LiveRedirect
+                to={Routes.user_show_path(@socket, :show, user)}
+                :if={authorized?(user, :details, @auth)}
+              >
+                <button class="ms-auto btn btn-sm btn-outline-primary">
+                  {gettext("Show")}
+                </button>
+              </LiveRedirect>
+            </div>
+          </td>
+        </div>
+      </tr>
+    </tbody>
+  </table>
 </div>

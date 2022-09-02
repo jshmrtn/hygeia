@@ -71,6 +71,9 @@ defmodule HygeiaWeb.StatisticsLive.Timeline do
     {:noreply,
      socket
      |> assign(enable_vision_impaired_mode: params["enable_vision_impaired_mode"] == "true")
+     |> Context.put(HygeiaWeb.Chart,
+       enable_vision_impaired_mode: params["enable_vision_impaired_mode"] == "true"
+     )
      |> push_patch(
        to:
          Routes.statistics_timeline_path(

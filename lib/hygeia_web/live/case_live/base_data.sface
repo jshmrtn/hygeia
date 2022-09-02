@@ -1,669 +1,656 @@
 <div class="component-case-base-data container">
-  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
-    <HygeiaWeb.RecordView resource={@case} action={:details} id={"case_recordview_#{@case.uuid}"}>
-      <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
+  <HygeiaWeb.RecordView resource={@case} action={:details} id={"case_recordview_#{@case.uuid}"}>
+    <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
 
-      <div class="card">
-        <div class="card-header">
-          <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
-        </div>
+    <div class="card">
+      <div class="card-header">
+        <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
+      </div>
 
-        <div class="card-body">
-          <div class="mb-4">
-            <LivePatch
-              class="me-2"
-              :if={authorized?(@case, :update, auth) and @live_action == :show}
-              to={Routes.case_base_data_path(@socket, :edit, @case)}
+      <div class="card-body">
+        <div class="mb-4">
+          <LivePatch
+            class="me-2"
+            :if={authorized?(@case, :update, @auth) and @live_action == :show}
+            to={Routes.case_base_data_path(@socket, :edit, @case)}
+          >
+            <button class="btn btn-primary" id="case-edit">
+              <span class="oi oi-pencil" title={pgettext("Case Base Data", "Edit")} aria-hidden="true" />
+              {pgettext("Case Base Data", "Edit")}
+            </button>
+          </LivePatch>
+
+          {#if @case.anonymized}
+            <div
+              class="d-inline-block"
+              title={if not CaseContext.can_reidentify_case?(@case),
+                do:
+                  pgettext(
+                    "Person Base Data",
+                    "Cannot reidentify this case because the associated person is anonymized"
+                  )}
             >
-              <button class="btn btn-primary" id="case-edit">
-                <span class="oi oi-pencil" title={pgettext("Case Base Data", "Edit")} aria-hidden="true" />
-                {pgettext("Case Base Data", "Edit")}
-              </button>
-            </LivePatch>
-
-            {#if @case.anonymized}
-              <div
-                class="d-inline-block"
-                title={if not CaseContext.can_reidentify_case?(@case),
-                  do:
-                    pgettext(
-                      "Person Base Data",
-                      "Cannot reidentify this case because the associated person is anonymized"
-                    )}
-              >
-                <button
-                  :if={authorized?(@case, :create, auth, %{tenant: @case.tenant})}
-                  :on-click="reidentify"
-                  class="btn btn-warning"
-                  type="button"
-                  disabled={not CaseContext.can_reidentify_case?(@case)}
-                  data-confirm={pgettext("Case Base Data", "Are you sure you want to reidentify this case?")}
-                >
-                  <span class="oi oi-eye" aria-hidden="true" />
-                  {pgettext("Case Base Data", "Reidentify")}
-                </button>
-              </div>
-            {#else}
               <button
-                :if={authorized?(@case, :update, auth, %{tenant: @case.tenant})}
-                :on-click="anonymize"
+                :if={authorized?(@case, :create, @auth, %{tenant: @case.tenant})}
+                :on-click="reidentify"
                 class="btn btn-warning"
                 type="button"
-                data-confirm={pgettext(
-                  "Case Base Data",
-                  "Are you sure you want to anonymize this case? Some data will be lost and you will not be able to recover it."
-                )}
+                disabled={not CaseContext.can_reidentify_case?(@case)}
+                data-confirm={pgettext("Case Base Data", "Are you sure you want to reidentify this case?")}
               >
-                <span class="oi oi-warning" aria-hidden="true" />
-                {pgettext("Case Base Data", "Anonymize")}
+                <span class="oi oi-eye" aria-hidden="true" />
+                {pgettext("Case Base Data", "Reidentify")}
               </button>
-            {/if}
-          </div>
-
-          <HygeiaWeb.Lock
-            id={"lock_Case_#{@case.uuid}"}
-            resource={{Case, @case.uuid}}
-            lock={@live_action == :edit}
-          >
-            <Form
-              for={@changeset}
-              change="validate"
-              submit="save"
-              opts={autocomplete: "off", id: "case-form", "phx-hook": "BlockNavigation"}
+            </div>
+          {#else}
+            <button
+              :if={authorized?(@case, :update, @auth, %{tenant: @case.tenant})}
+              :on-click="anonymize"
+              class="btn btn-warning"
+              type="button"
+              data-confirm={pgettext(
+                "Case Base Data",
+                "Are you sure you want to anonymize this case? Some data will be lost and you will not be able to recover it."
+              )}
             >
-              <div :if={@live_action == :edit}>
-                <div class="mb-4" :if={@live_action == :edit}>
-                  <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
-                    <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
-                    {gettext("Save")}
-                  </button>
-                  <button
-                    :on-click="reset"
-                    class="btn btn-warning"
-                    type="button"
-                    data-confirm={if @changeset.changes != %{} do
-                      gettext("Do you really want to discard your changes?")
-                    else
-                      nil
-                    end}
-                  >
-                    <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
-                    {gettext("Discard")}
-                  </button>
+              <span class="oi oi-warning" aria-hidden="true" />
+              {pgettext("Case Base Data", "Anonymize")}
+            </button>
+          {/if}
+        </div>
+
+        <HygeiaWeb.Lock
+          id={"lock_Case_#{@case.uuid}"}
+          resource={{Case, @case.uuid}}
+          lock={@live_action == :edit}
+        >
+          <Form
+            for={@changeset}
+            change="validate"
+            submit="save"
+            opts={autocomplete: "off", id: "case-form", "phx-hook": "BlockNavigation"}
+          >
+            <div :if={@live_action == :edit}>
+              <div class="mb-4" :if={@live_action == :edit}>
+                <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
+                  <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+                  {gettext("Save")}
+                </button>
+                <button
+                  :on-click="reset"
+                  class="btn btn-warning"
+                  type="button"
+                  data-confirm={if @changeset.changes != %{} do
+                    gettext("Do you really want to discard your changes?")
+                  else
+                    nil
+                  end}
+                >
+                  <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+                  {gettext("Discard")}
+                </button>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">{gettext("Tracing")}</h4>
+                  <Field name={:tenant_uuid} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <Select
+                      class="form-control"
+                      opts={prompt: "Select tenant" |> gettext, disabled: @live_action == :show}
+                      options={Enum.map(@tenants, &{&1.name, &1.uuid})}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+
+                  <div class="row">
+                    <div class="col">
+                      <Field name={:tracer_uuid} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <Select
+                          class="form-control"
+                          opts={prompt: gettext("Case Administration"), disabled: @live_action == :show}
+                          options={Enum.map(
+                            CaseLiveHelper.get_users(
+                              @tracer_users,
+                              Ecto.Changeset.fetch_field!(@changeset, :tenant_uuid),
+                              :tracer
+                            ),
+                            &{&1.display_name, &1.uuid}
+                          )}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                    <div class="col">
+                      <Field name={:supervisor_uuid} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <Select
+                          class="form-control"
+                          opts={prompt: gettext("Case Administration"), disabled: @live_action == :show}
+                          options={Enum.map(
+                            CaseLiveHelper.get_users(
+                              @supervisor_users,
+                              Ecto.Changeset.fetch_field!(@changeset, :tenant_uuid),
+                              :supervisor
+                            ),
+                            &{&1.display_name, &1.uuid}
+                          )}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col d-flex">
+                      <Field name={:complexity} class="form-group flex-grow-1">
+                        <HygeiaWeb.FieldLabel />
+                        <Select
+                          class="form-control"
+                          opts={prompt: "Select complexity" |> gettext, disabled: @live_action == :show}
+                          options={Case.Complexity.map()}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <div :if={@live_action != :show} class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="button" class="d-block ms-1 btn btn-info" :on-click="show_complexity_help">
+                          <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col d-flex">
+                      <Field name={:status} class="form-group flex-grow-1">
+                        <HygeiaWeb.FieldLabel />
+                        <Select
+                          class="form-control"
+                          opts={prompt: "Select status" |> gettext, disabled: @live_action == :show}
+                          options={Status.map()}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <div :if={@live_action != :show} class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="button" class="d-block ms-1 btn btn-info" :on-click="show_case_status_help">
+                          <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="form-grid">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">{gettext("Tracing")}</h4>
-                    <Field name={:tenant_uuid} class="form-group">
-                      <HygeiaWeb.FieldLabel />
-                      <Select
-                        class="form-control"
-                        opts={prompt: "Select tenant" |> gettext, disabled: @live_action == :show}
-                        options={Enum.map(@tenants, &{&1.name, &1.uuid})}
-                      />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
-
-                    <div class="row">
-                      <div class="col">
-                        <Field name={:tracer_uuid} class="form-group">
-                          <HygeiaWeb.FieldLabel />
-                          <Select
-                            class="form-control"
-                            opts={prompt: gettext("Case Administration"), disabled: @live_action == :show}
-                            options={Enum.map(
-                              CaseLiveHelper.get_users(
-                                @tracer_users,
-                                Ecto.Changeset.fetch_field!(@changeset, :tenant_uuid),
-                                :tracer
-                              ),
-                              &{&1.display_name, &1.uuid}
-                            )}
-                          />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                      </div>
-                      <div class="col">
-                        <Field name={:supervisor_uuid} class="form-group">
-                          <HygeiaWeb.FieldLabel />
-                          <Select
-                            class="form-control"
-                            opts={prompt: gettext("Case Administration"), disabled: @live_action == :show}
-                            options={Enum.map(
-                              CaseLiveHelper.get_users(
-                                @supervisor_users,
-                                Ecto.Changeset.fetch_field!(@changeset, :tenant_uuid),
-                                :supervisor
-                              ),
-                              &{&1.display_name, &1.uuid}
-                            )}
-                          />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col d-flex">
-                        <Field name={:complexity} class="form-group flex-grow-1">
-                          <HygeiaWeb.FieldLabel />
-                          <Select
-                            class="form-control"
-                            opts={prompt: "Select complexity" |> gettext, disabled: @live_action == :show}
-                            options={Case.Complexity.map()}
-                          />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                        <div :if={@live_action != :show} class="form-group">
-                          <label>&nbsp;</label>
-                          <button type="button" class="d-block ms-1 btn btn-info" :on-click="show_complexity_help">
-                            <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
-                          </button>
-                        </div>
-                      </div>
-                      <div class="col d-flex">
-                        <Field name={:status} class="form-group flex-grow-1">
-                          <HygeiaWeb.FieldLabel />
-                          <Select
-                            class="form-control"
-                            opts={prompt: "Select status" |> gettext, disabled: @live_action == :show}
-                            options={Status.map()}
-                          />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                        <div :if={@live_action != :show} class="form-group">
-                          <label>&nbsp;</label>
-                          <button type="button" class="d-block ms-1 btn btn-info" :on-click="show_case_status_help">
-                            <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">{gettext("References")}</h4>
+                  <HygeiaWeb.References
+                    disabled={@live_action == :show}
+                    source={@case}
+                    id="references"
+                    add="add_external_reference"
+                    remove="remove_external_reference"
+                  />
                 </div>
+              </div>
 
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">{gettext("References")}</h4>
-                    <HygeiaWeb.References
-                      disabled={@live_action == :show}
-                      source={@case}
-                      id="references"
-                      add="add_external_reference"
-                      remove="remove_external_reference"
-                    />
-                  </div>
+              <div class="card full-width">
+                <div class="card-header">
+                  <h4 class="card-title mb-0">{gettext("Phases")}</h4>
                 </div>
-
-                <div class="card full-width">
-                  <div class="card-header">
-                    <h4 class="card-title mb-0">{gettext("Phases")}</h4>
-                  </div>
-                  <div class="card-body">
-                    <ErrorTag class="d-block invalid-feedback" field={:phases} />
-                    <div class="form-grid">
-                      <Inputs for={:phases}>
-                        <HiddenInput field={:uuid} />
-                        <div class="card">
-                          <div class="card-body">
-                            <InputContext assigns={assigns} :let={form: form}>
-                              <Context
-                                put={__MODULE__, phase_details: Ecto.Changeset.get_field(form.source, :details)}
-                                get={__MODULE__, phase_details: phase_details}
+                <div class="card-body">
+                  <ErrorTag class="d-block invalid-feedback" field={:phases} />
+                  <div class="form-grid">
+                    <Inputs for={:phases} :let={form: form}>
+                      <HiddenInput field={:uuid} />
+                      <div class="card">
+                        <div class="card-body">
+                          {phase_details = Ecto.Changeset.get_field(form.source, :details)
+                          nil}
+                          <div :if={@live_action != :show} class="row">
+                            <div class="col d-flex justify-content-end">
+                              <button
+                                class="btn btn-sm btn-danger"
+                                type="button"
+                                phx-value-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
+                                :on-click="remove_phase"
+                                title={gettext("Remove")}
                               >
-                                <div :if={@live_action != :show} class="row">
-                                  <div class="col d-flex justify-content-end">
-                                    <button
-                                      class="btn btn-sm btn-danger"
-                                      type="button"
-                                      phx-value-uuid={Ecto.Changeset.fetch_field!(form.source, :uuid)}
-                                      :on-click="remove_phase"
-                                      title={gettext("Remove")}
-                                    >
-                                      {gettext("Remove")}
-                                      <span class="oi oi-trash" aria-hidden="true" />
-                                    </button>
-                                  </div>
-                                </div>
-                                <div class="form-group">
-                                  <HygeiaWeb.FieldLabel field={:type} />
-                                  <div class="value">
-                                    {case_phase_type_translation(phase_details)}
-                                  </div>
-                                </div>
+                                {gettext("Remove")}
+                                <span class="oi oi-trash" aria-hidden="true" />
+                              </button>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <HygeiaWeb.FieldLabel field={:type} />
+                            <div class="value">
+                              {case_phase_type_translation(phase_details)}
+                            </div>
+                          </div>
 
-                                <Field name={:quarantine_order} class="form-group">
-                                  <div>
+                          <Field name={:quarantine_order} class="form-group">
+                            <div>
+                              <HygeiaWeb.FieldLabel />
+                            </div>
+                            <div class="btn-group btn-group-toggle btn-radio-group">
+                              <label class={
+                                "btn",
+                                "btn-sm",
+                                "btn-outline-primary",
+                                active: Ecto.Changeset.get_field(form.source, :quarantine_order) == nil,
+                                disabled: @live_action == :show
+                              }>
+                                <RadioButton value={nil} opts={disabled: @live_action == :show} />
+                                {gettext("Unknown")}
+                              </label>
+                              <label class={
+                                "btn",
+                                "btn-sm",
+                                "btn-outline-primary",
+                                active: Ecto.Changeset.get_field(form.source, :quarantine_order) == true,
+                                disabled: @live_action == :show
+                              }>
+                                <RadioButton value opts={disabled: @live_action == :show} />
+                                {gettext("Ordered")}
+                              </label>
+                              <label class={
+                                "btn",
+                                "btn-sm",
+                                "btn-outline-primary",
+                                active: Ecto.Changeset.get_field(form.source, :quarantine_order) == false,
+                                disabled: @live_action == :show
+                              }>
+                                <RadioButton value={false} opts={disabled: @live_action == :show} />
+                                {gettext("No Order")}
+                              </label>
+                            </div>
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+
+                          <div class="row" :if={Ecto.Changeset.get_field(form.source, :quarantine_order) == true}>
+                            <div class="col">
+                              <Field name={:start} class="form-group">
+                                <HygeiaWeb.FieldLabel />
+                                <DateInput class="form-control" opts={disabled: @live_action == :show} />
+                                <ErrorTag class="d-block invalid-feedback" />
+                              </Field>
+                            </div>
+                            <div class="col">
+                              <Field name={:end} class="form-group">
+                                <HygeiaWeb.FieldLabel />
+                                <DateInput class="form-control" opts={disabled: @live_action == :show} />
+                                <ErrorTag class="d-block invalid-feedback" />
+                              </Field>
+                            </div>
+                          </div>
+
+                          <PolimorphicInputs
+                            :if={match?(%Phase.Index{}, phase_details) or
+                              match?(%Ecto.Changeset{data: %Phase.Index{}}, phase_details)}
+                            field={:details}
+                            type={:index}
+                            id={"poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
+                            :let={form: form}
+                          >
+                            <div class="row">
+                              <div class="col">
+                                <div class="d-flex">
+                                  <Field name={:end_reason} class="form-group flex-grow-1">
                                     <HygeiaWeb.FieldLabel />
-                                  </div>
-                                  <div class="btn-group btn-group-toggle btn-radio-group">
-                                    <label class={
-                                      "btn",
-                                      "btn-sm",
-                                      "btn-outline-primary",
-                                      active: Ecto.Changeset.get_field(form.source, :quarantine_order) == nil,
-                                      disabled: @live_action == :show
-                                    }>
-                                      <RadioButton value={nil} opts={disabled: @live_action == :show} />
-                                      {gettext("Unknown")}
-                                    </label>
-                                    <label class={
-                                      "btn",
-                                      "btn-sm",
-                                      "btn-outline-primary",
-                                      active: Ecto.Changeset.get_field(form.source, :quarantine_order) == true,
-                                      disabled: @live_action == :show
-                                    }>
-                                      <RadioButton value opts={disabled: @live_action == :show} />
-                                      {gettext("Ordered")}
-                                    </label>
-                                    <label class={
-                                      "btn",
-                                      "btn-sm",
-                                      "btn-outline-primary",
-                                      active: Ecto.Changeset.get_field(form.source, :quarantine_order) == false,
-                                      disabled: @live_action == :show
-                                    }>
-                                      <RadioButton value={false} opts={disabled: @live_action == :show} />
-                                      {gettext("No Order")}
-                                    </label>
-                                  </div>
+                                    <Select
+                                      class="form-control"
+                                      opts={prompt: gettext("Select end reason"), disabled: @live_action == :show}
+                                      options={Phase.Index.EndReason.map()}
+                                    />
+                                    <ErrorTag class="d-block invalid-feedback" />
+                                  </Field>
+                                </div>
+                              </div>
+                              <div :if={Ecto.Changeset.get_field(form.source, :end_reason) == :other} class="col">
+                                <Field name={:other_end_reason} class="form-group flex-grow-1">
+                                  <HygeiaWeb.FieldLabel />
+                                  <TextInput class="form-control" opts={disabled: @live_action == :show} />
                                   <ErrorTag class="d-block invalid-feedback" />
                                 </Field>
-
-                                <div class="row" :if={Ecto.Changeset.get_field(form.source, :quarantine_order) == true}>
-                                  <div class="col">
-                                    <Field name={:start} class="form-group">
-                                      <HygeiaWeb.FieldLabel />
-                                      <DateInput class="form-control" opts={disabled: @live_action == :show} />
-                                      <ErrorTag class="d-block invalid-feedback" />
-                                    </Field>
-                                  </div>
-                                  <div class="col">
-                                    <Field name={:end} class="form-group">
-                                      <HygeiaWeb.FieldLabel />
-                                      <DateInput class="form-control" opts={disabled: @live_action == :show} />
-                                      <ErrorTag class="d-block invalid-feedback" />
-                                    </Field>
-                                  </div>
-                                </div>
-
-                                <PolimorphicInputs
-                                  :if={match?(%Phase.Index{}, phase_details) or
-                                    match?(%Ecto.Changeset{data: %Phase.Index{}}, phase_details)}
-                                  field={:details}
-                                  type={:index}
-                                  id={"poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
+                              </div>
+                              <div :if={@live_action != :show} class="form-group">
+                                <label>&nbsp;</label>
+                                <button
+                                  type="button"
+                                  class="d-block ms-1 btn btn-info"
+                                  :on-click="show_index_phase_end_reason_help"
                                 >
-                                  <InputContext assigns={assigns} :let={form: form}>
-                                    <div class="row">
-                                      <div class="col">
-                                        <div class="d-flex">
-                                          <Field name={:end_reason} class="form-group flex-grow-1">
-                                            <HygeiaWeb.FieldLabel />
-                                            <Select
-                                              class="form-control"
-                                              opts={prompt: gettext("Select end reason"), disabled: @live_action == :show}
-                                              options={Phase.Index.EndReason.map()}
-                                            />
-                                            <ErrorTag class="d-block invalid-feedback" />
-                                          </Field>
-                                        </div>
-                                      </div>
-                                      <div :if={Ecto.Changeset.get_field(form.source, :end_reason) == :other} class="col">
-                                        <Field name={:other_end_reason} class="form-group flex-grow-1">
-                                          <HygeiaWeb.FieldLabel />
-                                          <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                                          <ErrorTag class="d-block invalid-feedback" />
-                                        </Field>
-                                      </div>
-                                      <div :if={@live_action != :show} class="form-group">
-                                        <label>&nbsp;</label>
-                                        <button
-                                          type="button"
-                                          class="d-block ms-1 btn btn-info"
-                                          :on-click="show_index_phase_end_reason_help"
-                                        >
-                                          <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </InputContext>
-                                </PolimorphicInputs>
-                                <PolimorphicInputs
-                                  :if={match?(%Phase.PossibleIndex{}, phase_details) or
-                                    match?(%Ecto.Changeset{data: %Phase.PossibleIndex{}}, phase_details)}
-                                  field={:details}
-                                  type={:possible_index}
-                                  id={"poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
-                                >
-                                  <InputContext assigns={assigns} :let={form: form}>
-                                    <div class="form-group">
-                                      <HygeiaWeb.FieldLabel field={:type} />
-                                      <div class="value">
-                                        {form.source |> Ecto.Changeset.fetch_field!(:type) |> Phase.PossibleIndex.Type.translate()}
-                                      </div>
-                                    </div>
-                                    <div class="row">
-                                      <div class="col">
-                                        <div class="d-flex">
-                                          <Field name={:end_reason} class="form-group flex-grow-1">
-                                            <HygeiaWeb.FieldLabel />
-                                            <Select
-                                              class="form-control"
-                                              opts={prompt: gettext("Select end reason"), disabled: @live_action == :show}
-                                              options={Phase.PossibleIndex.EndReason.map()}
-                                            />
-                                            <ErrorTag class="d-block invalid-feedback" />
-                                          </Field>
-                                        </div>
-                                      </div>
-                                      <div :if={Ecto.Changeset.get_field(form.source, :end_reason) == :other} class="col">
-                                        <Field name={:other_end_reason} class="form-group">
-                                          <HygeiaWeb.FieldLabel />
-                                          <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                                          <ErrorTag class="d-block invalid-feedback" />
-                                        </Field>
-                                      </div>
-                                      <div :if={@live_action != :show} class="col-auto form-group">
-                                        <label>&nbsp;</label>
-                                        <button
-                                          type="button"
-                                          class="d-block ms-1 btn btn-info"
-                                          :on-click="show_possible_index_phase_end_reason_help"
-                                        >
-                                          <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </InputContext>
-                                </PolimorphicInputs>
-
-                                <div
-                                  :if={match?(%Phase.PossibleIndex{}, phase_details) or
-                                    match?(%Ecto.Changeset{data: %Phase.PossibleIndex{}}, phase_details)}
-                                  class="mt-2"
-                                >
-                                  <div class="row">
-                                    <div class="col">
-                                      <Field name={:premature_release_permission} class="form-group">
-                                        <label data-disabled={@live_action == :show}>
-                                          {gettext("Premature release permission")}
-                                          <label class="btn mb-0" data-disabled={@live_action == :show}>
-                                            <RadioButton value="true" opts={disabled: @live_action == :show} />
-                                            {gettext("Allow")}
-                                          </label>
-                                          <label class="btn mb-0" data-disabled={@live_action == :show}>
-                                            <RadioButton value="false" opts={disabled: @live_action == :show} />
-                                            {gettext("Deny")}
-                                          </label>
-                                        </label>
-                                        <ErrorTag class="d-block invalid-feedback" />
-                                      </Field>
-                                    </div>
-                                  </div>
-                                  <div
-                                    :if={not Ecto.Changeset.fetch_field!(form.source, :premature_release_permission)}
-                                    class="row mb-3"
-                                  >
-                                    <div class="col">
-                                      <div class="d-flex">
-                                        <Field name={:premature_release_disabled_reason} class="form-group flex-grow-1">
-                                          <HygeiaWeb.FieldLabel />
-                                          <Select
-                                            class="form-control"
-                                            opts={prompt: gettext("Select premature release disabled reason"), disabled: @live_action == :show}
-                                            options={DisabledReason.map()}
-                                          />
-                                          <ErrorTag class="d-block invalid-feedback" />
-                                        </Field>
-                                      </div>
-                                    </div>
-                                    <div
-                                      :if={Ecto.Changeset.get_field(form.source, :premature_release_disabled_reason) == :other}
-                                      class="col"
-                                    >
-                                      <Field name={:premature_release_disabled_reason_other} class="form-group">
-                                        <HygeiaWeb.FieldLabel />
-                                        <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                                        <ErrorTag class="d-block invalid-feedback" />
-                                      </Field>
-                                    </div>
-                                    <div :if={@live_action != :show} class="col-auto form-group">
-                                      <label>&nbsp;</label>
-                                      <button
-                                        type="button"
-                                        class="d-block ms-1 btn btn-info"
-                                        :on-click="show_premature_release_disabled_reason_help"
-                                      >
-                                        <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div class="row" :if={Ecto.Changeset.get_field(form.source, :quarantine_order) == true}>
-                                  <div class="col">
-                                    <Field
-                                      :if={Ecto.Changeset.get_field(form.source, :automated_close_email_sent) == nil}
-                                      name={:send_automated_close_email}
-                                      class="form-check"
-                                    >
-                                      <label class="checkbox-label">
-                                        <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
-                                        {gettext("Automated Close Email")}
-                                      </label>
-                                      <ErrorTag class="d-block invalid-feedback" />
-                                    </Field>
-
-                                    <div
-                                      :if={Ecto.Changeset.get_field(form.source, :automated_close_email_sent) != nil}
-                                      class="form-group"
-                                    >
-                                      <label>
-                                        {gettext("Automated Close Email")}
-                                      </label>
-
-                                      <div class="value">
-                                        {gettext(
-                                          "Sent at {date}",
-                                          date:
-                                            form.source
-                                            |> Ecto.Changeset.get_field(:automated_close_email_sent)
-                                            |> DateTime.shift_zone!(timezone)
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </Context>
-                            </InputContext>
-                          </div>
-                        </div>
-                      </Inputs>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">{gettext("Clinical Information")}</h4>
-                    <Inputs for={:clinical}>
-                      <div class="row">
-                        <div class="col">
-                          <div class="form-group">
-                            <InputContext assigns={assigns} :let={form: form}>
-                              <Field name={:reasons_for_test}>
-                                <div class="mb-2 d-flex align-items-center">
-                                  <HygeiaWeb.FieldLabel class="mb-0" />
-                                  <button
-                                    :if={@live_action != :show}
-                                    type="button"
-                                    class="d-block ms-2 btn btn-info btn-sm"
-                                    :on-click="show_reasons_for_test_help"
-                                  >
-                                    <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
-                                  </button>
-                                </div>
-                                <label
-                                  :for={{name, key} <- Case.Clinical.TestReason.map()}
-                                  class="d-block checkbox-label"
-                                  data-disabled={@live_action == :show}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    name={input_name(form, :reasons_for_test) <> "[]"}
-                                    disabled={@live_action == :show}
-                                    checked={key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || [])}
-                                    value={key}
-                                  />
-                                  {name}
-                                </label>
-                                <ErrorTag class="d-block invalid-feedback" />
-                              </Field>
-                            </InputContext>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <div class="form-group">
-                            <InputContext assigns={assigns} :let={form: form}>
-                              <Field name={:has_symptoms} class="form-group">
-                                <div class="btn-group-vertical disabled display-only btn-group-toggle btn-radio-group">
-                                  <label class={
-                                    "btn",
-                                    "btn-sm",
-                                    "btn-outline-primary",
-                                    "mb-0",
-                                    active: Ecto.Changeset.get_field(form.source, :has_symptoms) == nil,
-                                    disabled: @live_action == :show
-                                  }>
-                                    <RadioButton value={nil} opts={disabled: @live_action == :show} />
-                                    {gettext("Undocumented")}
-                                  </label>
-                                  <label class={
-                                    "btn",
-                                    "btn-sm",
-                                    "btn-outline-primary",
-                                    "mb-0",
-                                    active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true,
-                                    disabled: @live_action == :show
-                                  }>
-                                    <RadioButton value opts={disabled: @live_action == :show} />
-                                    {gettext("Has Symptoms")}
-                                  </label>
-                                  <label class={
-                                    "btn",
-                                    "btn-sm",
-                                    "btn-outline-primary",
-                                    "mb-0",
-                                    active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false,
-                                    disabled: @live_action == :show
-                                  }>
-                                    <RadioButton value={false} opts={disabled: @live_action == :show} />
-                                    {gettext("No Symptoms")}
-                                  </label>
-                                </div>
-                                <ErrorTag class="d-block invalid-feedback" />
-                              </Field>
-                              <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
-                                <Field name={:symptoms}>
-                                  <label
-                                    :for={{name, key} <- Case.Clinical.Symptom.map()}
-                                    class="d-block checkbox-label"
-                                    data-disabled={@live_action == :show}
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      name={input_name(form, :symptoms) <> "[]"}
-                                      disabled={@live_action == :show}
-                                      checked={key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || [])}
-                                      value={key}
+                                  <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
+                                </button>
+                              </div>
+                            </div>
+                          </PolimorphicInputs>
+                          <PolimorphicInputs
+                            :if={match?(%Phase.PossibleIndex{}, phase_details) or
+                              match?(%Ecto.Changeset{data: %Phase.PossibleIndex{}}, phase_details)}
+                            field={:details}
+                            type={:possible_index}
+                            id={"poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
+                            :let={form: form}
+                          >
+                            <div class="form-group">
+                              <HygeiaWeb.FieldLabel field={:type} />
+                              <div class="value">
+                                {form.source |> Ecto.Changeset.fetch_field!(:type) |> Phase.PossibleIndex.Type.translate()}
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                <div class="d-flex">
+                                  <Field name={:end_reason} class="form-group flex-grow-1">
+                                    <HygeiaWeb.FieldLabel />
+                                    <Select
+                                      class="form-control"
+                                      opts={prompt: gettext("Select end reason"), disabled: @live_action == :show}
+                                      options={Phase.PossibleIndex.EndReason.map()}
                                     />
-                                    {name}
+                                    <ErrorTag class="d-block invalid-feedback" />
+                                  </Field>
+                                </div>
+                              </div>
+                              <div :if={Ecto.Changeset.get_field(form.source, :end_reason) == :other} class="col">
+                                <Field name={:other_end_reason} class="form-group">
+                                  <HygeiaWeb.FieldLabel />
+                                  <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                                  <ErrorTag class="d-block invalid-feedback" />
+                                </Field>
+                              </div>
+                              <div :if={@live_action != :show} class="col-auto form-group">
+                                <label>&nbsp;</label>
+                                <button
+                                  type="button"
+                                  class="d-block ms-1 btn btn-info"
+                                  :on-click="show_possible_index_phase_end_reason_help"
+                                >
+                                  <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
+                                </button>
+                              </div>
+                            </div>
+                          </PolimorphicInputs>
+
+                          <div
+                            :if={match?(%Phase.PossibleIndex{}, phase_details) or
+                              match?(%Ecto.Changeset{data: %Phase.PossibleIndex{}}, phase_details)}
+                            class="mt-2"
+                          >
+                            <div class="row">
+                              <div class="col">
+                                <Field name={:premature_release_permission} class="form-group">
+                                  <label data-disabled={@live_action == :show}>
+                                    {gettext("Premature release permission")}
+                                    <label class="btn mb-0" data-disabled={@live_action == :show}>
+                                      <RadioButton value="true" opts={disabled: @live_action == :show} />
+                                      {gettext("Allow")}
+                                    </label>
+                                    <label class="btn mb-0" data-disabled={@live_action == :show}>
+                                      <RadioButton value="false" opts={disabled: @live_action == :show} />
+                                      {gettext("Deny")}
+                                    </label>
                                   </label>
                                   <ErrorTag class="d-block invalid-feedback" />
                                 </Field>
                               </div>
-                            </InputContext>
+                            </div>
+                            <div
+                              :if={not Ecto.Changeset.fetch_field!(form.source, :premature_release_permission)}
+                              class="row mb-3"
+                            >
+                              <div class="col">
+                                <div class="d-flex">
+                                  <Field name={:premature_release_disabled_reason} class="form-group flex-grow-1">
+                                    <HygeiaWeb.FieldLabel />
+                                    <Select
+                                      class="form-control"
+                                      opts={prompt: gettext("Select premature release disabled reason"), disabled: @live_action == :show}
+                                      options={DisabledReason.map()}
+                                    />
+                                    <ErrorTag class="d-block invalid-feedback" />
+                                  </Field>
+                                </div>
+                              </div>
+                              <div
+                                :if={Ecto.Changeset.get_field(form.source, :premature_release_disabled_reason) == :other}
+                                class="col"
+                              >
+                                <Field name={:premature_release_disabled_reason_other} class="form-group">
+                                  <HygeiaWeb.FieldLabel />
+                                  <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                                  <ErrorTag class="d-block invalid-feedback" />
+                                </Field>
+                              </div>
+                              <div :if={@live_action != :show} class="col-auto form-group">
+                                <label>&nbsp;</label>
+                                <button
+                                  type="button"
+                                  class="d-block ms-1 btn btn-info"
+                                  :on-click="show_premature_release_disabled_reason_help"
+                                >
+                                  <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
+                                </button>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col">
-                          <Field name={:symptom_start} class="form-group">
-                            <HygeiaWeb.FieldLabel />
-                            <DateInput class="form-control" opts={disabled: @live_action == :show} />
-                            <ErrorTag class="d-block invalid-feedback" />
-                          </Field>
+
+                          <div class="row" :if={Ecto.Changeset.get_field(form.source, :quarantine_order) == true}>
+                            <div class="col">
+                              <Field
+                                :if={Ecto.Changeset.get_field(form.source, :automated_close_email_sent) == nil}
+                                name={:send_automated_close_email}
+                                class="form-check"
+                              >
+                                <label class="checkbox-label">
+                                  <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
+                                  {gettext("Automated Close Email")}
+                                </label>
+                                <ErrorTag class="d-block invalid-feedback" />
+                              </Field>
+
+                              <div
+                                :if={Ecto.Changeset.get_field(form.source, :automated_close_email_sent) != nil}
+                                class="form-group"
+                              >
+                                <label>
+                                  {gettext("Automated Close Email")}
+                                </label>
+
+                                <div class="value">
+                                  {gettext(
+                                    "Sent at {date}",
+                                    date:
+                                      form.source
+                                      |> Ecto.Changeset.get_field(:automated_close_email_sent)
+                                      |> DateTime.shift_zone!(@timezone)
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </Inputs>
                   </div>
                 </div>
+              </div>
 
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">{gettext("Monitoring")}</h4>
-                    <HygeiaWeb.CaseLive.Monitoring disabled={@live_action == :show} source={@case} id="monitoring" />
-                  </div>
-                </div>
-
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">{gettext("Hospitalizations")}</h4>
-                    <HygeiaWeb.CaseLive.Hospitalizations
-                      disabled={@live_action == :show}
-                      source={@case}
-                      id="hospitalizations"
-                      add_hospitalization="add_hospitalization"
-                      remove_hospitalization="remove_hospitalization"
-                    />
-                  </div>
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">{gettext("Clinical Information")}</h4>
+                  <Inputs for={:clinical} :let={form: form}>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <Field name={:reasons_for_test}>
+                            <div class="mb-2 d-flex align-items-center">
+                              <HygeiaWeb.FieldLabel class="mb-0" />
+                              <button
+                                :if={@live_action != :show}
+                                type="button"
+                                class="d-block ms-2 btn btn-info btn-sm"
+                                :on-click="show_reasons_for_test_help"
+                              >
+                                <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
+                              </button>
+                            </div>
+                            <label
+                              :for={{name, key} <- Case.Clinical.TestReason.map()}
+                              class="d-block checkbox-label"
+                              data-disabled={@live_action == :show}
+                            >
+                              <input
+                                type="checkbox"
+                                name={input_name(form, :reasons_for_test) <> "[]"}
+                                disabled={@live_action == :show}
+                                checked={key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || [])}
+                                value={key}
+                              />
+                              {name}
+                            </label>
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-group">
+                          <Field name={:has_symptoms} class="form-group">
+                            <div class="btn-group-vertical disabled display-only btn-group-toggle btn-radio-group">
+                              <label class={
+                                "btn",
+                                "btn-sm",
+                                "btn-outline-primary",
+                                "mb-0",
+                                active: Ecto.Changeset.get_field(form.source, :has_symptoms) == nil,
+                                disabled: @live_action == :show
+                              }>
+                                <RadioButton value={nil} opts={disabled: @live_action == :show} />
+                                {gettext("Undocumented")}
+                              </label>
+                              <label class={
+                                "btn",
+                                "btn-sm",
+                                "btn-outline-primary",
+                                "mb-0",
+                                active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true,
+                                disabled: @live_action == :show
+                              }>
+                                <RadioButton value opts={disabled: @live_action == :show} />
+                                {gettext("Has Symptoms")}
+                              </label>
+                              <label class={
+                                "btn",
+                                "btn-sm",
+                                "btn-outline-primary",
+                                "mb-0",
+                                active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false,
+                                disabled: @live_action == :show
+                              }>
+                                <RadioButton value={false} opts={disabled: @live_action == :show} />
+                                {gettext("No Symptoms")}
+                              </label>
+                            </div>
+                            <ErrorTag class="d-block invalid-feedback" />
+                          </Field>
+                          <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
+                            <Field name={:symptoms}>
+                              <label
+                                :for={{name, key} <- Case.Clinical.Symptom.map()}
+                                class="d-block checkbox-label"
+                                data-disabled={@live_action == :show}
+                              >
+                                <input
+                                  type="checkbox"
+                                  name={input_name(form, :symptoms) <> "[]"}
+                                  disabled={@live_action == :show}
+                                  checked={key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || [])}
+                                  value={key}
+                                />
+                                {name}
+                              </label>
+                              <ErrorTag class="d-block invalid-feedback" />
+                            </Field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <Field name={:symptom_start} class="form-group">
+                          <HygeiaWeb.FieldLabel />
+                          <DateInput class="form-control" opts={disabled: @live_action == :show} />
+                          <ErrorTag class="d-block invalid-feedback" />
+                        </Field>
+                      </div>
+                    </div>
+                  </Inputs>
                 </div>
               </div>
 
-              <div :if={@live_action == :edit}>
-                <div class="mt-4" :if={@live_action == :edit}>
-                  <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
-                    <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
-                    {gettext("Save")}
-                  </button>
-                  <button
-                    :on-click="reset"
-                    class="btn btn-warning"
-                    type="button"
-                    data-confirm={if @changeset.changes != %{} do
-                      gettext("Do you really want to discard your changes?")
-                    else
-                      nil
-                    end}
-                  >
-                    <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
-                    {gettext("Discard")}
-                  </button>
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">{gettext("Monitoring")}</h4>
+                  <HygeiaWeb.CaseLive.Monitoring disabled={@live_action == :show} source={@case} id="monitoring" />
                 </div>
               </div>
 
-              <div class="mt-4" :if={@live_action == :show}>
-                <LivePatch
-                  :if={authorized?(@case, :update, auth)}
-                  to={Routes.case_base_data_path(@socket, :edit, @case)}
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">{gettext("Hospitalizations")}</h4>
+                  <HygeiaWeb.CaseLive.Hospitalizations
+                    disabled={@live_action == :show}
+                    source={@case}
+                    id="hospitalizations"
+                    add_hospitalization="add_hospitalization"
+                    remove_hospitalization="remove_hospitalization"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div :if={@live_action == :edit}>
+              <div class="mt-4" :if={@live_action == :edit}>
+                <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
+                  <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+                  {gettext("Save")}
+                </button>
+                <button
+                  :on-click="reset"
+                  class="btn btn-warning"
+                  type="button"
+                  data-confirm={if @changeset.changes != %{} do
+                    gettext("Do you really want to discard your changes?")
+                  else
+                    nil
+                  end}
                 >
-                  <button class="btn btn-primary" id="case-edit">
-                    <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                    {gettext("Edit")}
-                  </button>
-                </LivePatch>
+                  <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+                  {gettext("Discard")}
+                </button>
               </div>
-            </Form>
-          </HygeiaWeb.Lock>
-        </div>
+            </div>
+
+            <div class="mt-4" :if={@live_action == :show}>
+              <LivePatch
+                :if={authorized?(@case, :update, @auth)}
+                to={Routes.case_base_data_path(@socket, :edit, @case)}
+              >
+                <button class="btn btn-primary" id="case-edit">
+                  <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+                  {gettext("Edit")}
+                </button>
+              </LivePatch>
+            </div>
+          </Form>
+        </HygeiaWeb.Lock>
       </div>
-    </HygeiaWeb.RecordView>
-  </Context>
+    </div>
+  </HygeiaWeb.RecordView>
 
   <HygeiaWeb.Modal
     :if={@show_complexity_help}

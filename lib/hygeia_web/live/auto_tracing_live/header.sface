@@ -1,34 +1,32 @@
 <div class="container component-auto-tracing-header mb-5">
-  <InputContext assigns={assigns}>
-    <h1 class="mb-5">
-      {gettext("Auto Tracing")}
-    </h1>
+  <h1 class="mb-5">
+    {gettext("Auto Tracing")}
+  </h1>
 
-    <nav class="mb-4 progress-steps" id="progressbar">
-      <div aria-hidden="false" class="progress-bar" />
-      {#for step <- Step.publicly_available_steps()}
-        {#if AutoTracing.step_available?(@auto_tracing, step)}
-          <UriActiveContext to={get_step_route(step).(@socket, @auto_tracing.case_uuid)} :let={to: to}>
-            <LiveRedirect
-              to={to}
-              class={
-                "progress-step",
-                active: @auto_tracing.current_step == step,
-                completed: AutoTracing.step_completed?(@auto_tracing, step),
-                next: AutoTracing.first_not_completed_step?(@auto_tracing, step)
-              }
-            >
-              <small class="d-none d-lg-block">
-                {Step.translate(step)}
-              </small>
-            </LiveRedirect>
-          </UriActiveContext>
-        {#else}
-          <div class="progress-step">
-            <small class="link-inactive d-none d-lg-block">{Step.translate(step)}</small>
-          </div>
-        {/if}
-      {/for}
-    </nav>
-  </InputContext>
+  <nav class="mb-4 progress-steps" id="progressbar">
+    <div aria-hidden="false" class="progress-bar" />
+    {#for step <- Step.publicly_available_steps()}
+      {#if AutoTracing.step_available?(@auto_tracing, step)}
+        <UriActiveContext to={get_step_route(step).(@socket, @auto_tracing.case_uuid)} :let={to: to}>
+          <LiveRedirect
+            to={to}
+            class={
+              "progress-step",
+              active: @auto_tracing.current_step == step,
+              completed: AutoTracing.step_completed?(@auto_tracing, step),
+              next: AutoTracing.first_not_completed_step?(@auto_tracing, step)
+            }
+          >
+            <small class="d-none d-lg-block">
+              {Step.translate(step)}
+            </small>
+          </LiveRedirect>
+        </UriActiveContext>
+      {#else}
+        <div class="progress-step">
+          <small class="link-inactive d-none d-lg-block">{Step.translate(step)}</small>
+        </div>
+      {/if}
+    {/for}
+  </nav>
 </div>

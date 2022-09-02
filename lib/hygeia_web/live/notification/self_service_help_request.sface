@@ -1,34 +1,32 @@
 <div>
-  <Context get={HygeiaWeb, timezone: timezone}>
-    <LiveRedirect
-      class="d-inline-block"
-      to={Routes.case_base_data_path(@socket, :show, @body.case_uuid)}
+  <LiveRedirect
+    class="d-inline-block"
+    to={Routes.case_base_data_path(@socket, :show, @body.case_uuid)}
+  >
+    <HygeiaWeb.RecordView
+      :if={not is_nil(@body.case)}
+      resource={@body.case}
+      action={:list}
+      id={"#{@id}_record_view_#{@body.case.uuid}"}
+      wrapper_tag={:strong}
     >
+      {case_display_type(@body.case)}
+      <span class="date ml-2">
+        {case_display_date(@body.case, @timezone)}
+      </span>
       <HygeiaWeb.RecordView
-        :if={not is_nil(@body.case)}
-        resource={@body.case}
+        resource={@body.case.person}
         action={:list}
-        id={"#{@id}_record_view_#{@body.case.uuid}"}
-        wrapper_tag={:strong}
+        id={"#{@id}_record_view_person_#{@body.case.person.uuid}"}
+        wrapper_tag={:span}
       >
-        {case_display_type(@body.case)}
-        <span class="date ml-2">
-          {case_display_date(@body.case, timezone)}
-        </span>
-        <HygeiaWeb.RecordView
-          resource={@body.case.person}
-          action={:list}
-          id={"#{@id}_record_view_person_#{@body.case.person.uuid}"}
-          wrapper_tag={:span}
-        >
-          ({@body.case.person.first_name} {@body.case.person.last_name})
-        </HygeiaWeb.RecordView>
+        ({@body.case.person.first_name} {@body.case.person.last_name})
       </HygeiaWeb.RecordView>
-      <em :if={is_nil(@body.case)}>
-        {pgettext("Notification", "deleted")}
-      </em>
+    </HygeiaWeb.RecordView>
+    <em :if={is_nil(@body.case)}>
+      {pgettext("Notification", "deleted")}
+    </em>
 
-      {pgettext("Notification", "needs help with self-service.")}
-    </LiveRedirect>
-  </Context>
+    {pgettext("Notification", "needs help with self-service.")}
+  </LiveRedirect>
 </div>

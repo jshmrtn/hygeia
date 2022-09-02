@@ -38,14 +38,12 @@
     <div class="col-12 col-md-6">
       <Field name={:subdivision} class="form-group">
         <HygeiaWeb.FieldLabel />
-        <InputContext assigns={assigns} :let={form: form}>
-          <Select
-            class="form-control"
-            opts={prompt: gettext("Choose subdivision"), disabled: @disabled}
-            field={:subdivision}
-            options={subdivisions(form.source)}
-          />
-        </InputContext>
+        <Select
+          class="form-control"
+          opts={prompt: gettext("Choose subdivision"), disabled: @disabled}
+          field={:subdivision}
+          options={subdivisions(@form.source)}
+        />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
     </div>

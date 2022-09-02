@@ -73,6 +73,9 @@ defmodule HygeiaWeb.StatisticsLive.DailyStatistics do
     {:noreply,
      socket
      |> assign(enable_vision_impaired_mode: params["enable_vision_impaired_mode"] == "true")
+     |> Context.put(HygeiaWeb.Chart,
+       enable_vision_impaired_mode: params["enable_vision_impaired_mode"] == "true"
+     )
      |> push_patch(
        to:
          Routes.statistics_daily_statistics_path(

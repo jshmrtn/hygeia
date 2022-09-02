@@ -19,6 +19,20 @@ defmodule HygeiaWeb.OrganisationLive.Show do
   alias Surface.Components.LivePatch
   alias Surface.Components.LiveRedirect
 
+  data duplicate_organisations, :list, default: []
+
+  @impl Phoenix.LiveView
+  def render(assigns) do
+    assigns
+    |> assign(
+      duplicate_organisations:
+        assigns.changeset
+        |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
+        |> OrganisationContext.list_organisations_by_ids()
+    )
+    |> render_sface()
+  end
+
   @impl Phoenix.LiveView
   def handle_params(%{"id" => id}, _uri, socket) do
     organisation = OrganisationContext.get_organisation!(id)

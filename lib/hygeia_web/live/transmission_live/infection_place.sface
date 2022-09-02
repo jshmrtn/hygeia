@@ -1,14 +1,14 @@
-<InputContext assigns={assigns} :let={form: form}>
+<div>
   <div class="row">
     <div class="col">
       <Field name={:known} class="form-group">
         <div class="btn-group btn-group-toggle btn-radio-group">
           <label class="input-group-text input-sm">{gettext("Infection place")}:</label>
-          <label class={"btn", "btn-outline-primary", active: Ecto.Changeset.get_field(form.source, :known) == true}>
+          <label class={"btn", "btn-outline-primary", active: Ecto.Changeset.get_field(@form.source, :known) == true}>
             <RadioButton value="true" opts={disabled: @disabled} />
             {gettext("Known")}
           </label>
-          <label class={"btn", "btn-outline-primary", active: Ecto.Changeset.get_field(form.source, :known) == false}>
+          <label class={"btn", "btn-outline-primary", active: Ecto.Changeset.get_field(@form.source, :known) == false}>
             <RadioButton value="false" opts={disabled: @disabled} />
             {gettext("Unknown")}
           </label>
@@ -19,7 +19,7 @@
   </div>
   <div class="row">
     <div class="col-12 col-lg-6 mb-3 mb-lg-0">
-      <div :if={Ecto.Changeset.get_field(form.source, :known) == true}>
+      <div :if={Ecto.Changeset.get_field(@form.source, :known) == true}>
         <div class="card">
           <div class="card-body">
             <div class="row">
@@ -37,7 +37,7 @@
                   <ErrorTag class="d-block invalid-feedback" />
                 </Field>
               </div>
-              <div :if={Ecto.Changeset.get_field(form.source, :type) == :other} class="col">
+              <div :if={Ecto.Changeset.get_field(@form.source, :type) == :other} class="col">
                 <Field name={:type_other} class="form-group">
                   <HygeiaWeb.FieldLabel />
                   <TextInput class="form-control" opts={disabled: @disabled} />
@@ -51,7 +51,7 @@
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
             <Field
-              :if={Ecto.Changeset.get_field(form.source, :type) == :flight}
+              :if={Ecto.Changeset.get_field(@form.source, :type) == :flight}
               name={:flight_information}
               class="form-group"
             >
@@ -63,7 +63,7 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-lg-6" :if={Ecto.Changeset.get_field(form.source, :known) == true}>
+    <div class="col-12 col-lg-6" :if={Ecto.Changeset.get_field(@form.source, :known) == true}>
       <div class="card">
         <div class="card-body">
           <Inputs for={:address}>
@@ -73,4 +73,4 @@
       </div>
     </div>
   </div>
-</InputContext>
+</div>

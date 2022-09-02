@@ -17,7 +17,7 @@ defmodule HygeiaWeb.CaseLive.Index do
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.FieldContext
-  alias Surface.Components.Form.Input.InputContext
+
   alias Surface.Components.Form.Label
   alias Surface.Components.Form.MultipleSelect
   alias Surface.Components.Form.RadioButton

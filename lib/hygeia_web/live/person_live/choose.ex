@@ -9,15 +9,17 @@ defmodule HygeiaWeb.PersonLive.Choose do
   alias Hygeia.CaseContext.Person
   alias Hygeia.Repo
   alias Hygeia.TenantContext
+  alias Phoenix.HTML.FormData
+  alias Surface.Components.Form
+  alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Link
 
   @doc "An identifier for the form"
-  prop form, :form
+  prop form, :form, from_context: {Form, :form}
 
   @doc "An identifier for the associated field"
-  prop field, :atom
+  prop field, :atom, from_context: {Field, :field}
 
   prop change, :event
 
@@ -27,9 +29,35 @@ defmodule HygeiaWeb.PersonLive.Choose do
 
   prop subject, :any, default: nil
 
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+
+  data current_value, :struct, default: nil
+
   data modal_open, :boolean, default: false
   data query, :string, default: ""
   data tenants, :list, default: nil
+  data has_value, :boolean, default: false
+  data person, :struct, default: nil
+
+  @impl Phoenix.LiveComponent
+  def render(assigns) do
+    has_value =
+      FormData.input_value(assigns.form.source, assigns.form, assigns.field) not in [
+        nil,
+        ""
+      ]
+
+    person =
+      if has_value do
+        assigns.form.source
+        |> FormData.input_value(assigns.form, assigns.field)
+        |> load_person()
+      end
+
+    assigns
+    |> assign(has_value: has_value, person: person)
+    |> render_sface()
+  end
 
   @impl Phoenix.LiveComponent
   def handle_event("open_modal", _params, socket) do

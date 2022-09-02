@@ -1,488 +1,486 @@
 <div class="component-statistics-daily-statistics container pt-3">
-  <Context put={HygeiaWeb.Chart, enable_vision_impaired_mode: @enable_vision_impaired_mode}>
-    <HygeiaWeb.StatisticsLive.Header tenant={@tenant} id="header" />
+  <HygeiaWeb.StatisticsLive.Header tenant={@tenant} id="header" />
 
-    <div class="component-statistics-daily-statistics container pt-3">
-      <div class="container">
-        <Form for={assigns} change="params_change" opts={class: "mt-3 d-flex align-items-center"}>
-          <Field name={:date} class="input-group w-auto">
-            <span class="input-group-text">{gettext("Date")}</span>
-            <DateInput class="form-control" />
-          </Field>
-          <Field name={:enable_vision_impaired_mode} class="ms-2 w-auto">
-            <Checkbox />
-            <Label class="mb-0">
-              {gettext("Enable Vision Impaired Mode")}
-            </Label>
-          </Field>
-        </Form>
+  <div class="component-statistics-daily-statistics container pt-3">
+    <div class="container">
+      <Form for={assigns} change="params_change" opts={class: "mt-3 d-flex align-items-center"}>
+        <Field name={:date} class="input-group w-auto">
+          <span class="input-group-text">{gettext("Date")}</span>
+          <DateInput class="form-control" />
+        </Field>
+        <Field name={:enable_vision_impaired_mode} class="ms-2 w-auto">
+          <Checkbox />
+          <Label class="mb-0">
+            {gettext("Enable Vision Impaired Mode")}
+          </Label>
+        </Field>
+      </Form>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6 text-center h-full d-flex justify-content-center align-items-center">
+        <div
+          :if={@active_isolation_cases_per_day != []}
+          class="card justify-content-center align-items-center"
+        >
+          <div class="card-body p-5">
+            <h5 class="card-title mb-5 text-muted">{gettext("People in isolation")}</h5>
+            <p class="display-1 m-0">
+              {case @active_isolation_cases_per_day do
+                [%{count: count}] -> HygeiaCldr.Number.to_string!(count)
+                [] -> nil
+              end}
+            </p>
+          </div>
+        </div>
+        <HygeiaWeb.StatisticsLive.NoDataWarning
+          :if={@active_isolation_cases_per_day == []}
+          title={gettext("People in isolation")}
+        />
       </div>
 
-      <div class="row mt-5">
-        <div class="col-12 col-xl-6 text-center h-full d-flex justify-content-center align-items-center">
-          <div
-            :if={@active_isolation_cases_per_day != []}
-            class="card justify-content-center align-items-center"
-          >
-            <div class="card-body p-5">
-              <h5 class="card-title mb-5 text-muted">{gettext("People in isolation")}</h5>
-              <p class="display-1 m-0">
-                {case @active_isolation_cases_per_day do
-                  [%{count: count}] -> HygeiaCldr.Number.to_string!(count)
-                  [] -> nil
-                end}
-              </p>
-            </div>
-          </div>
-          <HygeiaWeb.StatisticsLive.NoDataWarning
-            :if={@active_isolation_cases_per_day == []}
-            title={gettext("People in isolation")}
-          />
-        </div>
+      <div class="col-12 col-xl-6 mt-5 mt-xl-0">
+        <HygeiaWeb.Chart
+          :if={@cumulative_index_case_end_reasons != []}
+          id="cumulative_index_case_end_reasons"
+          dom_id="cumulative_index_case_end_reasons"
+          config={%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@cumulative_index_case_end_reasons, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(@cumulative_index_case_end_reasons, fn
+                  %StatisticsContext.CumulativeIndexCaseEndReasons{end_reason: nil} ->
+                    gettext("unknown")
 
-        <div class="col-12 col-xl-6 mt-5 mt-xl-0">
-          <HygeiaWeb.Chart
-            :if={@cumulative_index_case_end_reasons != []}
-            id="cumulative_index_case_end_reasons"
-            dom_id="cumulative_index_case_end_reasons"
-            config={%{
-              type: "doughnut",
-              data: %{
-                datasets: [
-                  %{
-                    data: Enum.map(@cumulative_index_case_end_reasons, & &1.count)
-                  }
-                ],
-                labels:
-                  Enum.map(@cumulative_index_case_end_reasons, fn
-                    %StatisticsContext.CumulativeIndexCaseEndReasons{end_reason: nil} ->
-                      gettext("unknown")
-
-                    %StatisticsContext.CumulativeIndexCaseEndReasons{end_reason: end_reason} ->
-                      Hygeia.CaseContext.Case.Phase.Index.EndReason.translate(end_reason)
-                  end)
-              },
-              options: %{
-                plugins: %{
-                  title: %{
-                    display: true,
-                    text: gettext("Finished isolations")
-                  }
+                  %StatisticsContext.CumulativeIndexCaseEndReasons{end_reason: end_reason} ->
+                    Hygeia.CaseContext.Case.Phase.Index.EndReason.translate(end_reason)
+                end)
+            },
+            options: %{
+              plugins: %{
+                title: %{
+                  display: true,
+                  text: gettext("Finished isolations")
                 }
               }
-            }}
-          />
-          <div
-            class="d-flex justify-content-center align-items-center"
-            :if={@cumulative_index_case_end_reasons == []}
-          >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Finished isolations")} />
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-5">
-        <div class="col-12 col-xl-6">
-          <HygeiaWeb.Chart
-            :if={@active_quarantine_cases_per_day != []}
-            id="active_quarantine_cases_per_day"
-            dom_id="active_quarantine_cases_per_day"
-            config={%{
-              type: "doughnut",
-              data: %{
-                datasets: [
-                  %{
-                    data: Enum.map(@active_quarantine_cases_per_day, & &1.count)
-                  }
-                ],
-                labels:
-                  Enum.map(
-                    @active_quarantine_cases_per_day,
-                    &Phase.PossibleIndex.Type.translate(&1.type)
-                  )
-              },
-              options: %{
-                plugins: %{
-                  title: %{
-                    display: true,
-                    text: gettext("People in quarantine")
-                  }
-                }
-              }
-            }}
-          />
-          <div
-            class="d-flex justify-content-center align-items-center"
-            :if={@active_quarantine_cases_per_day == []}
-          >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("People in quarantine")} />
-          </div>
-        </div>
-
-        <div class="col-12 col-xl-6 mt-5 mt-xl-0">
-          <HygeiaWeb.Chart
-            :if={@cumulative_possible_index_case_end_reasons != []}
-            id="cumulative_possible_index_case_end_reasons"
-            dom_id="cumulative_possible_index_case_end_reasons"
-            config={%{
-              type: "doughnut",
-              data: %{
-                datasets: [
-                  %{
-                    data:
-                      @cumulative_possible_index_case_end_reasons
-                      |> Enum.group_by(& &1.type)
-                      |> Enum.sort()
-                      |> Enum.map(fn {_group, entries} ->
-                        entries |> Enum.map(& &1.count) |> Enum.sum()
-                      end),
-                    labels:
-                      @cumulative_possible_index_case_end_reasons
-                      |> Enum.map(& &1.type)
-                      |> Enum.uniq()
-                      |> Enum.sort()
-                      |> Enum.map(&Phase.PossibleIndex.Type.translate(&1))
-                  },
-                  %{
-                    data:
-                      @cumulative_possible_index_case_end_reasons
-                      |> Enum.sort_by(& &1.type)
-                      |> Enum.map(& &1.count),
-                    labels:
-                      @cumulative_possible_index_case_end_reasons
-                      |> Enum.sort_by(& &1.type)
-                      |> Enum.map(fn
-                        %StatisticsContext.CumulativePossibleIndexCaseEndReasons{end_reason: nil, type: type} ->
-                          Phase.PossibleIndex.Type.translate(type) <>
-                            " / " <> gettext("unknown")
-
-                        %StatisticsContext.CumulativePossibleIndexCaseEndReasons{
-                          end_reason: end_reason,
-                          type: type
-                        } ->
-                          Phase.PossibleIndex.Type.translate(type) <>
-                            " / " <> Phase.PossibleIndex.EndReason.translate(end_reason)
-                      end)
-                  }
-                ]
-              },
-              options: %{
-                plugins: %{
-                  title: %{
-                    display: true,
-                    text: gettext("Quarantine end reasons")
-                  },
-                  legend: %{
-                    display: false
-                  }
-                }
-              }
-            }}
-          />
-          <div
-            class="d-flex justify-content-center align-items-center"
-            :if={@cumulative_possible_index_case_end_reasons == []}
-          >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Quarantine end reasons")} />
-          </div>
-        </div>
-      </div>
-
-      <div class="row mt-5">
-        <div class="col-12 col-xl-6">
-          <HygeiaWeb.Chart
-            :if={@new_cases_per_day != []}
-            id="new_cases_per_day"
-            dom_id="new_cases_per_day"
-            config={%{
-              type: "doughnut",
-              data: %{
-                datasets: [
-                  %{
-                    data: Enum.map(@new_cases_per_day, & &1.count)
-                  }
-                ],
-                labels:
-                  Enum.map(@new_cases_per_day, fn
-                    %StatisticsContext.NewCasesPerDay{type: :index, sub_type: nil} ->
-                      gettext("Index")
-
-                    %StatisticsContext.NewCasesPerDay{type: :possible_index, sub_type: sub_type} ->
-                      Phase.PossibleIndex.Type.translate(sub_type)
-                  end)
-              },
-              options: %{
-                plugins: %{
-                  title: %{
-                    display: true,
-                    text: gettext("New cases")
-                  }
-                }
-              }
-            }}
-          />
-          <div class="d-flex justify-content-center align-items-center" :if={@new_cases_per_day == []}>
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("New cases")} />
-          </div>
-        </div>
-
-        <div class="col-12 col-xl-6  mt-5 mt-xl-0 text-center h-full d-flex justify-content-center align-items-center">
-          <div
-            :if={@hospital_admission_cases_per_day != []}
-            class="card justify-content-center align-items-center"
-          >
-            <div class="card-body p-5">
-              <h5 class="card-title mb-5 text-muted">{gettext("People admitted in hospital")}</h5>
-              <p class="display-1 m-0">
-                {case @hospital_admission_cases_per_day do
-                  [%StatisticsContext.HospitalAdmissionCasesPerDay{count: count}] ->
-                    HygeiaCldr.Number.to_string!(count)
-
-                  [] ->
-                    "?"
-                end}
-              </p>
-            </div>
-          </div>
-          <HygeiaWeb.StatisticsLive.NoDataWarning
-            :if={@hospital_admission_cases_per_day == []}
-            title={gettext("People admitted in hospital")}
-          />
-        </div>
-      </div>
-      <div class="row mt-5">
-        <div class="col-12 col-xl-6 mt-5 mt-xl-0 text-center h-full d-flex justify-content-center align-items-center">
-          <div
-            :if={@vaccination_breakthroughs_per_day != []}
-            class="card justify-content-center align-items-center"
-          >
-            <div class="card-body p-5">
-              <h5 class="card-title mb-5 text-muted">{gettext("Vaccination breakthroughs")}</h5>
-              <p class="display-1 m-0">
-                {case @vaccination_breakthroughs_per_day do
-                  [%StatisticsContext.VaccinationBreakthroughsPerDay{count: count}] ->
-                    HygeiaCldr.Number.to_string!(count)
-
-                  [] ->
-                    "?"
-                end}
-              </p>
-            </div>
-          </div>
-          <HygeiaWeb.StatisticsLive.NoDataWarning
-            :if={@vaccination_breakthroughs_per_day == []}
-            title={gettext("Vaccination breakthroughs")}
-          />
-        </div>
-      </div>
-
-      <div class="row mt-5">
-        <div class="col-12 col-xl-6">
-          <HygeiaWeb.Chart
-            :if={@active_complexity_cases_per_day != []}
-            id="active_complexity_cases_per_day"
-            dom_id="active_complexity_cases_per_day"
-            config={%{
-              type: "doughnut",
-              data: %{
-                datasets: [
-                  %{
-                    data: Enum.map(@active_complexity_cases_per_day, & &1.count)
-                  }
-                ],
-                labels:
-                  Enum.map(@active_complexity_cases_per_day, fn
-                    %StatisticsContext.ActiveComplexityCasesPerDay{case_complexity: nil} ->
-                      gettext("unknown")
-
-                    %StatisticsContext.ActiveComplexityCasesPerDay{case_complexity: case_complexity} ->
-                      Case.Complexity.translate(case_complexity)
-                  end)
-              },
-              options: %{
-                plugins: %{
-                  title: %{
-                    display: true,
-                    text: gettext("Complexity")
-                  }
-                }
-              }
-            }}
-          />
-          <div
-            class="d-flex justify-content-center align-items-center"
-            :if={@active_complexity_cases_per_day == []}
-          >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Complexity")} />
-          </div>
-        </div>
-        <div class={"col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_infection_place_cases_per_day == []}>
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="mb-0">{gettext("Infection place")}</h5>
-            <button
-              class="btn btn-sm btn-outline-primary"
-              :on-click="open_infection_table_modal"
-              type="button"
-            >
-              {gettext("Show all")}
-            </button>
-          </div>
-          <HygeiaWeb.StatisticsLive.InfectionPlaceTable
-            count={5}
-            active_infection_place_cases_per_day={@active_infection_place_cases_per_day}
-          />
-          <HygeiaWeb.Modal
-            id="infection_place_table_modal"
-            :if={@infection_table_modal_open}
-            title={gettext("Infection place")}
-            close="close_infection_table_modal"
-          >
-            <HygeiaWeb.StatisticsLive.InfectionPlaceTable active_infection_place_cases_per_day={@active_infection_place_cases_per_day} />
-          </HygeiaWeb.Modal>
-        </div>
-      </div>
-
-      <div class="row mt-5">
-        <div class={"col-12 col-xl-6 h-full", empty: @transmission_country_cases_per_day == []}>
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="mb-2">{gettext("Transmission countries")}</h5>
-            <button class="btn btn-sm btn-outline-primary" :on-click="open_country_table_modal" type="button">
-              {gettext("Show all")}
-            </button>
-          </div>
-          <HygeiaWeb.StatisticsLive.CountryTable
-            count={5}
-            transmission_country_cases_per_day={@transmission_country_cases_per_day}
-          />
-          <HygeiaWeb.Modal
-            id="country_table_modal"
-            :if={@country_table_modal_open}
-            title={gettext("Transmission countries")}
-            close="close_country_table_modal"
-          >
-            <HygeiaWeb.StatisticsLive.CountryTable transmission_country_cases_per_day={@transmission_country_cases_per_day} />
-          </HygeiaWeb.Modal>
-        </div>
-        <div class={"col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_cases_per_day_and_organisation == []}>
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="mb-2">{gettext("Isolations per organisation")}</h5>
-            <button
-              class="btn btn-sm btn-outline-primary"
-              :on-click="open_organisation_table_modal"
-              type="button"
-            >
-              {gettext("Show all")}
-            </button>
-          </div>
-          <HygeiaWeb.StatisticsLive.OrganisationTable
-            count={5}
-            active_cases_per_day_and_organisation={@active_cases_per_day_and_organisation}
-          />
-          <HygeiaWeb.Modal
-            id="organisation_table_modal"
-            :if={@organisation_table_modal_open}
-            title={gettext("Isolations per organisation")}
-            close="close_organisation_table_modal"
-          >
-            <HygeiaWeb.StatisticsLive.OrganisationTable active_cases_per_day_and_organisation={@active_cases_per_day_and_organisation} />
-          </HygeiaWeb.Modal>
-        </div>
-      </div>
-
-      <div class="row mt-5">
-        <div class="col-12 col-xl-6">
-          <HygeiaWeb.Chart
-            :if={@new_registered_cases_per_day_first_contact != []}
-            id="new_registered_cases_per_day_first_contact"
-            dom_id="new_registered_cases_per_day_first_contact"
-            config={%{
-              type: "doughnut",
-              data: %{
-                datasets: [
-                  %{
-                    data: Enum.map(@new_registered_cases_per_day_first_contact, & &1.count)
-                  }
-                ],
-                labels:
-                  Enum.map(@new_registered_cases_per_day_first_contact, fn
-                    %StatisticsContext.NewRegisteredCasesPerDay{type: :index} ->
-                      gettext("Index")
-
-                    %StatisticsContext.NewRegisteredCasesPerDay{type: :possible_index} ->
-                      gettext("Possible Index")
-                  end)
-              },
-              options: %{
-                plugins: %{
-                  title: %{
-                    display: true,
-                    text: gettext("New Registered Cases (Unprocessed)")
-                  },
-                  doughnutlabel: %{
-                    labels: [
-                      %{
-                        text: "550",
-                        font: %{
-                          size: 20,
-                          weight: "bold"
-                        }
-                      },
-                      %{
-                        text: "total"
-                      }
-                    ]
-                  }
-                }
-              }
-            }}
-          />
-          <div
-            class="d-flex justify-content-center align-items-center"
-            :if={@new_registered_cases_per_day_first_contact == []}
-          >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("New Registered Cases (Unprocessed)")} />
-          </div>
-        </div>
-        <div class="col-12 col-xl-6">
-          <HygeiaWeb.Chart
-            :if={@new_registered_cases_per_day_not_first_contact != []}
-            id="new_registered_cases_per_day_not_first_contact"
-            dom_id="new_registered_cases_per_day_not_first_contact"
-            config={%{
-              type: "doughnut",
-              data: %{
-                datasets: [
-                  %{
-                    data: Enum.map(@new_registered_cases_per_day_not_first_contact, & &1.count)
-                  }
-                ],
-                labels:
-                  Enum.map(@new_registered_cases_per_day_not_first_contact, fn
-                    %StatisticsContext.NewRegisteredCasesPerDay{type: :index} ->
-                      gettext("Index")
-
-                    %StatisticsContext.NewRegisteredCasesPerDay{type: :possible_index} ->
-                      gettext("Possible Index")
-                  end)
-              },
-              options: %{
-                plugins: %{
-                  title: %{
-                    display: true,
-                    text: gettext("New Registered Cases (Processed)")
-                  }
-                }
-              }
-            }}
-          />
-          <div
-            class="d-flex justify-content-center align-items-center"
-            :if={@new_registered_cases_per_day_not_first_contact == []}
-          >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("New Registered Cases (Processed)")} />
-          </div>
+            }
+          }}
+        />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={@cumulative_index_case_end_reasons == []}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Finished isolations")} />
         </div>
       </div>
     </div>
-  </Context>
+
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6">
+        <HygeiaWeb.Chart
+          :if={@active_quarantine_cases_per_day != []}
+          id="active_quarantine_cases_per_day"
+          dom_id="active_quarantine_cases_per_day"
+          config={%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@active_quarantine_cases_per_day, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(
+                  @active_quarantine_cases_per_day,
+                  &Phase.PossibleIndex.Type.translate(&1.type)
+                )
+            },
+            options: %{
+              plugins: %{
+                title: %{
+                  display: true,
+                  text: gettext("People in quarantine")
+                }
+              }
+            }
+          }}
+        />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={@active_quarantine_cases_per_day == []}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("People in quarantine")} />
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6 mt-5 mt-xl-0">
+        <HygeiaWeb.Chart
+          :if={@cumulative_possible_index_case_end_reasons != []}
+          id="cumulative_possible_index_case_end_reasons"
+          dom_id="cumulative_possible_index_case_end_reasons"
+          config={%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data:
+                    @cumulative_possible_index_case_end_reasons
+                    |> Enum.group_by(& &1.type)
+                    |> Enum.sort()
+                    |> Enum.map(fn {_group, entries} ->
+                      entries |> Enum.map(& &1.count) |> Enum.sum()
+                    end),
+                  labels:
+                    @cumulative_possible_index_case_end_reasons
+                    |> Enum.map(& &1.type)
+                    |> Enum.uniq()
+                    |> Enum.sort()
+                    |> Enum.map(&Phase.PossibleIndex.Type.translate(&1))
+                },
+                %{
+                  data:
+                    @cumulative_possible_index_case_end_reasons
+                    |> Enum.sort_by(& &1.type)
+                    |> Enum.map(& &1.count),
+                  labels:
+                    @cumulative_possible_index_case_end_reasons
+                    |> Enum.sort_by(& &1.type)
+                    |> Enum.map(fn
+                      %StatisticsContext.CumulativePossibleIndexCaseEndReasons{end_reason: nil, type: type} ->
+                        Phase.PossibleIndex.Type.translate(type) <>
+                          " / " <> gettext("unknown")
+
+                      %StatisticsContext.CumulativePossibleIndexCaseEndReasons{
+                        end_reason: end_reason,
+                        type: type
+                      } ->
+                        Phase.PossibleIndex.Type.translate(type) <>
+                          " / " <> Phase.PossibleIndex.EndReason.translate(end_reason)
+                    end)
+                }
+              ]
+            },
+            options: %{
+              plugins: %{
+                title: %{
+                  display: true,
+                  text: gettext("Quarantine end reasons")
+                },
+                legend: %{
+                  display: false
+                }
+              }
+            }
+          }}
+        />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={@cumulative_possible_index_case_end_reasons == []}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Quarantine end reasons")} />
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6">
+        <HygeiaWeb.Chart
+          :if={@new_cases_per_day != []}
+          id="new_cases_per_day"
+          dom_id="new_cases_per_day"
+          config={%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@new_cases_per_day, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(@new_cases_per_day, fn
+                  %StatisticsContext.NewCasesPerDay{type: :index, sub_type: nil} ->
+                    gettext("Index")
+
+                  %StatisticsContext.NewCasesPerDay{type: :possible_index, sub_type: sub_type} ->
+                    Phase.PossibleIndex.Type.translate(sub_type)
+                end)
+            },
+            options: %{
+              plugins: %{
+                title: %{
+                  display: true,
+                  text: gettext("New cases")
+                }
+              }
+            }
+          }}
+        />
+        <div class="d-flex justify-content-center align-items-center" :if={@new_cases_per_day == []}>
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("New cases")} />
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6  mt-5 mt-xl-0 text-center h-full d-flex justify-content-center align-items-center">
+        <div
+          :if={@hospital_admission_cases_per_day != []}
+          class="card justify-content-center align-items-center"
+        >
+          <div class="card-body p-5">
+            <h5 class="card-title mb-5 text-muted">{gettext("People admitted in hospital")}</h5>
+            <p class="display-1 m-0">
+              {case @hospital_admission_cases_per_day do
+                [%StatisticsContext.HospitalAdmissionCasesPerDay{count: count}] ->
+                  HygeiaCldr.Number.to_string!(count)
+
+                [] ->
+                  "?"
+              end}
+            </p>
+          </div>
+        </div>
+        <HygeiaWeb.StatisticsLive.NoDataWarning
+          :if={@hospital_admission_cases_per_day == []}
+          title={gettext("People admitted in hospital")}
+        />
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6 mt-5 mt-xl-0 text-center h-full d-flex justify-content-center align-items-center">
+        <div
+          :if={@vaccination_breakthroughs_per_day != []}
+          class="card justify-content-center align-items-center"
+        >
+          <div class="card-body p-5">
+            <h5 class="card-title mb-5 text-muted">{gettext("Vaccination breakthroughs")}</h5>
+            <p class="display-1 m-0">
+              {case @vaccination_breakthroughs_per_day do
+                [%StatisticsContext.VaccinationBreakthroughsPerDay{count: count}] ->
+                  HygeiaCldr.Number.to_string!(count)
+
+                [] ->
+                  "?"
+              end}
+            </p>
+          </div>
+        </div>
+        <HygeiaWeb.StatisticsLive.NoDataWarning
+          :if={@vaccination_breakthroughs_per_day == []}
+          title={gettext("Vaccination breakthroughs")}
+        />
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6">
+        <HygeiaWeb.Chart
+          :if={@active_complexity_cases_per_day != []}
+          id="active_complexity_cases_per_day"
+          dom_id="active_complexity_cases_per_day"
+          config={%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@active_complexity_cases_per_day, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(@active_complexity_cases_per_day, fn
+                  %StatisticsContext.ActiveComplexityCasesPerDay{case_complexity: nil} ->
+                    gettext("unknown")
+
+                  %StatisticsContext.ActiveComplexityCasesPerDay{case_complexity: case_complexity} ->
+                    Case.Complexity.translate(case_complexity)
+                end)
+            },
+            options: %{
+              plugins: %{
+                title: %{
+                  display: true,
+                  text: gettext("Complexity")
+                }
+              }
+            }
+          }}
+        />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={@active_complexity_cases_per_day == []}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Complexity")} />
+        </div>
+      </div>
+      <div class={"col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_infection_place_cases_per_day == []}>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="mb-0">{gettext("Infection place")}</h5>
+          <button
+            class="btn btn-sm btn-outline-primary"
+            :on-click="open_infection_table_modal"
+            type="button"
+          >
+            {gettext("Show all")}
+          </button>
+        </div>
+        <HygeiaWeb.StatisticsLive.InfectionPlaceTable
+          count={5}
+          active_infection_place_cases_per_day={@active_infection_place_cases_per_day}
+        />
+        <HygeiaWeb.Modal
+          id="infection_place_table_modal"
+          :if={@infection_table_modal_open}
+          title={gettext("Infection place")}
+          close="close_infection_table_modal"
+        >
+          <HygeiaWeb.StatisticsLive.InfectionPlaceTable active_infection_place_cases_per_day={@active_infection_place_cases_per_day} />
+        </HygeiaWeb.Modal>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class={"col-12 col-xl-6 h-full", empty: @transmission_country_cases_per_day == []}>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="mb-2">{gettext("Transmission countries")}</h5>
+          <button class="btn btn-sm btn-outline-primary" :on-click="open_country_table_modal" type="button">
+            {gettext("Show all")}
+          </button>
+        </div>
+        <HygeiaWeb.StatisticsLive.CountryTable
+          count={5}
+          transmission_country_cases_per_day={@transmission_country_cases_per_day}
+        />
+        <HygeiaWeb.Modal
+          id="country_table_modal"
+          :if={@country_table_modal_open}
+          title={gettext("Transmission countries")}
+          close="close_country_table_modal"
+        >
+          <HygeiaWeb.StatisticsLive.CountryTable transmission_country_cases_per_day={@transmission_country_cases_per_day} />
+        </HygeiaWeb.Modal>
+      </div>
+      <div class={"col-12 col-xl-6 h-full mt-5 mt-xl-0", empty: @active_cases_per_day_and_organisation == []}>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="mb-2">{gettext("Isolations per organisation")}</h5>
+          <button
+            class="btn btn-sm btn-outline-primary"
+            :on-click="open_organisation_table_modal"
+            type="button"
+          >
+            {gettext("Show all")}
+          </button>
+        </div>
+        <HygeiaWeb.StatisticsLive.OrganisationTable
+          count={5}
+          active_cases_per_day_and_organisation={@active_cases_per_day_and_organisation}
+        />
+        <HygeiaWeb.Modal
+          id="organisation_table_modal"
+          :if={@organisation_table_modal_open}
+          title={gettext("Isolations per organisation")}
+          close="close_organisation_table_modal"
+        >
+          <HygeiaWeb.StatisticsLive.OrganisationTable active_cases_per_day_and_organisation={@active_cases_per_day_and_organisation} />
+        </HygeiaWeb.Modal>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6">
+        <HygeiaWeb.Chart
+          :if={@new_registered_cases_per_day_first_contact != []}
+          id="new_registered_cases_per_day_first_contact"
+          dom_id="new_registered_cases_per_day_first_contact"
+          config={%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@new_registered_cases_per_day_first_contact, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(@new_registered_cases_per_day_first_contact, fn
+                  %StatisticsContext.NewRegisteredCasesPerDay{type: :index} ->
+                    gettext("Index")
+
+                  %StatisticsContext.NewRegisteredCasesPerDay{type: :possible_index} ->
+                    gettext("Possible Index")
+                end)
+            },
+            options: %{
+              plugins: %{
+                title: %{
+                  display: true,
+                  text: gettext("New Registered Cases (Unprocessed)")
+                },
+                doughnutlabel: %{
+                  labels: [
+                    %{
+                      text: "550",
+                      font: %{
+                        size: 20,
+                        weight: "bold"
+                      }
+                    },
+                    %{
+                      text: "total"
+                    }
+                  ]
+                }
+              }
+            }
+          }}
+        />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={@new_registered_cases_per_day_first_contact == []}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("New Registered Cases (Unprocessed)")} />
+        </div>
+      </div>
+      <div class="col-12 col-xl-6">
+        <HygeiaWeb.Chart
+          :if={@new_registered_cases_per_day_not_first_contact != []}
+          id="new_registered_cases_per_day_not_first_contact"
+          dom_id="new_registered_cases_per_day_not_first_contact"
+          config={%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@new_registered_cases_per_day_not_first_contact, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(@new_registered_cases_per_day_not_first_contact, fn
+                  %StatisticsContext.NewRegisteredCasesPerDay{type: :index} ->
+                    gettext("Index")
+
+                  %StatisticsContext.NewRegisteredCasesPerDay{type: :possible_index} ->
+                    gettext("Possible Index")
+                end)
+            },
+            options: %{
+              plugins: %{
+                title: %{
+                  display: true,
+                  text: gettext("New Registered Cases (Processed)")
+                }
+              }
+            }
+          }}
+        />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={@new_registered_cases_per_day_not_first_contact == []}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("New Registered Cases (Processed)")} />
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

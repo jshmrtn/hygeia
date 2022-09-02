@@ -1,58 +1,56 @@
 <div class="row">
   <div class="col-12">
     <div class="vaccination-grid">
-      <Inputs for={:vaccination_shots}>
+      <Inputs for={:vaccination_shots} :let={form: form}>
         <HiddenInput field={:uuid} />
-        <InputContext assigns={assigns} :let={form: form}>
-          <div aria-hidden="true" />
-          <h6>{gettext("Date")}</h6>
-          <h6>{gettext("Vaccine")}</h6>
-          <div aria-hidden="true" />
+        <div aria-hidden="true" />
+        <h6>{gettext("Date")}</h6>
+        <h6>{gettext("Vaccine")}</h6>
+        <div aria-hidden="true" />
 
-          <label class="fw-bold small">
-            {pgettext(
-              "Person Vaccination",
-              "{ordering,number,:spellout_ordinal} jab date",
-              ordering: form.index + 1
-            )}
-          </label>
-          <Field name={:date} class="form-group me-2">
-            <DateInput class="form-control" opts={disabled: @disabled} />
+        <label class="fw-bold small">
+          {pgettext(
+            "Person Vaccination",
+            "{ordering,number,:spellout_ordinal} jab date",
+            ordering: form.index + 1
+          )}
+        </label>
+        <Field name={:date} class="form-group me-2">
+          <DateInput class="form-control" opts={disabled: @disabled} />
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
+        <div class="d-flex">
+          <Field name={:vaccine_type} class="form-group me-2 flex-fill">
+            <Select
+              class="form-control"
+              opts={prompt: gettext("Choose vaccine"), disabled: @disabled}
+              field={:vaccine_type}
+              options={VaccineType.map()}
+            />
             <ErrorTag class="d-block invalid-feedback" />
           </Field>
-          <div class="d-flex">
-            <Field name={:vaccine_type} class="form-group me-2 flex-fill">
-              <Select
+          {#if fetch_field!(form.source, :vaccine_type) == :other}
+            <Field name={:vaccine_type_other} class="form-group">
+              <TextInput
+                opts={disabled: @disabled, placeholder: gettext("Vaccine name")}
                 class="form-control"
-                opts={prompt: gettext("Choose vaccine"), disabled: @disabled}
-                field={:vaccine_type}
-                options={VaccineType.map()}
               />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-            {#if fetch_field!(form.source, :vaccine_type) == :other}
-              <Field name={:vaccine_type_other} class="form-group">
-                <TextInput
-                  opts={disabled: @disabled, placeholder: gettext("Vaccine name")}
-                  class="form-control"
-                />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            {/if}
-          </div>
-          <div>
-            <button
-              :if={@show_buttons}
-              type="button"
-              class="ms-2 btn btn-danger ms-2"
-              :on-click={@remove_event}
-              phx-value-uuid={fetch_field!(form.source, :uuid)}
-              disabled={@disabled}
-            >
-              <span class="oi oi-trash" aria-hidden="true" />
-            </button>
-          </div>
-        </InputContext>
+          {/if}
+        </div>
+        <div>
+          <button
+            :if={@show_buttons}
+            type="button"
+            class="ms-2 btn btn-danger ms-2"
+            :on-click={@remove_event}
+            phx-value-uuid={fetch_field!(form.source, :uuid)}
+            disabled={@disabled}
+          >
+            <span class="oi oi-trash" aria-hidden="true" />
+          </button>
+        </div>
       </Inputs>
     </div>
     <div class="mt-3">

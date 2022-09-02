@@ -8,6 +8,7 @@ defmodule HygeiaWeb.ImportLive.Show do
   alias Hygeia.ImportContext.Import
   alias Hygeia.ImportContext.Import.Type
   alias Hygeia.Repo
+  alias Surface.Components.Context
   alias Surface.Components.Link
 
   data import, :struct
@@ -20,7 +21,7 @@ defmodule HygeiaWeb.ImportLive.Show do
       if authorized?(import, :details, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "imports:#{id}")
 
-        timezone = context_get(socket, :timezone)
+        timezone = Context.get(socket, HygeiaWeb, :timezone)
 
         inserted_at =
           import.inserted_at |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()

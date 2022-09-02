@@ -11,6 +11,8 @@ defmodule HygeiaWeb.DateTimeLocalInput do
   prop input_opts, :keyword, default: []
   prop select_opts, :keyword, default: []
 
+  prop browser_features, :map, from_context: {HygeiaWeb, :browser_features}
+
   @impl Surface.Component
   def render(assigns) do
     year_now = Date.utc_today().year
@@ -66,25 +68,21 @@ defmodule HygeiaWeb.DateTimeLocalInput do
       end
 
     ~F"""
-    <InputContext assigns={assigns} :let={form: form, field: field}>
-      <Context get={HygeiaWeb, browser_features: browser_features}>
-        {if browser_features["datetime_local_input"] != false,
-          do:
-            datetime_local_input(
-              form,
-              field,
-              helper_opts ++ attr_opts ++ @opts ++ @input_opts ++ event_opts
-            )}
+    {if @browser_features["datetime_local_input"] != false,
+      do:
+        datetime_local_input(
+          @form,
+          @field,
+          helper_opts ++ attr_opts ++ @opts ++ @input_opts ++ event_opts
+        )}
 
-        <div :if={browser_features["datetime_local_input"] == false} class="datetime-select">
-          {datetime_select(
-            form,
-            field,
-            helper_opts ++ attr_opts ++ @opts ++ select_opts ++ event_opts
-          )}
-        </div>
-      </Context>
-    </InputContext>
+    <div :if={@browser_features["datetime_local_input"] == false} class="datetime-select">
+      {datetime_select(
+        @form,
+        @field,
+        helper_opts ++ attr_opts ++ @opts ++ select_opts ++ event_opts
+      )}
+    </div>
     """
   end
 

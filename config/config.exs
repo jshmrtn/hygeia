@@ -71,7 +71,10 @@ config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 # Surface
 config :surface, :components, [
   {Surface.Components.Form.ErrorTag,
-   default_translator: {HygeiaWeb.ErrorHelpers, :translate_error}}
+   default_translator: {HygeiaWeb.ErrorHelpers, :translate_error}},
+  {HygeiaWeb.PolimorphicInputs, propagate_context_to_slots: true},
+  {HygeiaWeb.CaseLive.CreatePossibleIndex.CaseSnippet, propagate_context_to_slots: true},
+  {HygeiaWeb.PersonLive.CreateForm, propagate_context_to_slots: true}
 ]
 
 # AWS (Minio)

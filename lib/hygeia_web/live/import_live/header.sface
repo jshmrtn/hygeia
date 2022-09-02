@@ -1,52 +1,50 @@
 <div class="component-person-header mb-4">
-  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
-    <span class="text-muted">{@import.inserted_at |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()}</span>
-    <h1 class="mb-4" :if={authorized?(@import, :details, auth)}>
-      {Type.translate(@import.type)}
-    </h1>
-    <h1 class="mb-4" :if={not authorized?(@import, :details, auth)}>
-      {@import.uuid}
-    </h1>
+  <span class="text-muted">{@import.inserted_at |> DateTime.shift_zone!(@timezone) |> HygeiaCldr.DateTime.to_string!()}</span>
+  <h1 class="mb-4" :if={authorized?(@import, :details, @auth)}>
+    {Type.translate(@import.type)}
+  </h1>
+  <h1 class="mb-4" :if={not authorized?(@import, :details, @auth)}>
+    {@import.uuid}
+  </h1>
 
-    <ul class="nav nav-tabs">
-      <li class="nav-item" :if={authorized?(@import, :details, auth)}>
-        <UriActiveContext
-          to={Routes.import_show_path(@socket, :show, @import)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            {gettext("Base Data")}
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
-      <li
-        :for={status <- [:pending, :resolved, :discarded]}
-        class="nav-item"
-        :if={authorized?(Row, :list, auth, import: @import)}
+  <ul class="nav nav-tabs">
+    <li class="nav-item" :if={authorized?(@import, :details, @auth)}>
+      <UriActiveContext
+        to={Routes.import_show_path(@socket, :show, @import)}
+        :let={to: to, active: active}
       >
-        <UriActiveContext
-          to={Routes.row_index_path(@socket, :index, @import, status)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            {case status do
-              :pending -> gettext("Pending Rows")
-              :resolved -> gettext("Resolved Rows")
-              :discarded -> gettext("Discarded Rows")
-            end} ({@counts[status]})
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
-      <li class="nav-item" :if={authorized?(@import, :versioning, auth)}>
-        <UriActiveContext
-          to={Routes.version_show_path(@socket, :show, Import.__schema__(:source), @import)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            {gettext("History")}
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
-    </ul>
-  </Context>
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {gettext("Base Data")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+    <li
+      :for={status <- [:pending, :resolved, :discarded]}
+      class="nav-item"
+      :if={authorized?(Row, :list, @auth, import: @import)}
+    >
+      <UriActiveContext
+        to={Routes.row_index_path(@socket, :index, @import, status)}
+        :let={to: to, active: active}
+      >
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {case status do
+            :pending -> gettext("Pending Rows")
+            :resolved -> gettext("Resolved Rows")
+            :discarded -> gettext("Discarded Rows")
+          end} ({@counts[status]})
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+    <li class="nav-item" :if={authorized?(@import, :versioning, @auth)}>
+      <UriActiveContext
+        to={Routes.version_show_path(@socket, :show, Import.__schema__(:source), @import)}
+        :let={to: to, active: active}
+      >
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {gettext("History")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+  </ul>
 </div>

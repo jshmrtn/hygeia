@@ -1,139 +1,125 @@
 <div>
-  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
-    <InputContext assigns={assigns} :let={form: form, field: field}>
-      <HiddenInput />
+  <HiddenInput />
 
-      <div :if={Phoenix.HTML.FormData.input_value(form.source, form, field) not in [nil, ""]}>
-        <Context
-          put={
-            case:
-              form.source
-              |> Phoenix.HTML.FormData.input_value(form, field)
-              |> load_case()
-          }
-          get={case: case}
-        >
-          <div class="card">
-            <div class="card-body py-2 px-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <HygeiaWeb.RecordView resource={case} action={:list} id={"#{@id_prefix}_#{case.uuid}"}>
-                  <HygeiaWeb.RecordView
-                    resource={case.person}
-                    action={:list}
-                    id={"#{@id_prefix}_case_person_value_recordview_#{case.uuid}_#{case.person.uuid}"}
-                    :if={authorized?(case.person, :details, auth)}
-                    wrapper_tag={:span}
-                  >
-                    <LiveRedirect :if={@disabled} to={Routes.person_base_data_path(@socket, :show, case.person)}>
-                      {case.person.first_name}
-                      {case.person.last_name}
-                    </LiveRedirect>
-                    <span :if={not @disabled}>
-                      {case.person.first_name}
-                      {case.person.last_name}
-                    </span>
-                  </HygeiaWeb.RecordView>
-                  <span :if={not authorized?(case.person, :details, auth)}>
-                    {case.person.tenant.subdivision}
-                    /
-                    {case.person.human_readable_id}
-                  </span>
-                  <LiveRedirect
-                    :if={@disabled and authorized?(case, :details, auth)}
-                    to={Routes.case_base_data_path(@socket, :show, case)}
-                  >
-                    <small class="d-block">{case_phase_type_translation(List.last(case.phases))}</small>
-                    <small class="d-block">{case_display_date(case, timezone)}</small>
-                  </LiveRedirect>
-                  <div :if={not @disabled or not authorized?(case, :details, auth)}>
-                    <small class="d-block text-muted">{case_phase_type_translation(List.last(case.phases))}</small>
-                    <small class="d-block text-muted">{case_display_date(case, timezone)}</small>
-                  </div>
-                </HygeiaWeb.RecordView>
-                <button
-                  class="btn btn-danger"
-                  :on-click={@change}
-                  type="button"
-                  phx-value-subject={@subject}
-                  :if={not @disabled}
-                >
-                  <span class="oi oi-trash" aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </Context>
-      </div>
-
-      <div :if={Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""]}>
-        <button
-          class="btn btn-outline-primary"
-          :on-click="open_modal"
-          type="button"
-          phx-value-subject={@subject}
-        >
-          {gettext("Choose case")}
-        </button>
-
-        <HygeiaWeb.Modal
-          id={"choose_case_#{field}"}
-          :if={@modal_open}
-          title={gettext("Select Case")}
-          close="close_modal"
-        >
-          <div class="input-group">
-            <span class="input-group-text">
-              <span class="oi oi-magnifying-glass" aria-hidden="true" />
-            </span>
-            <input
-              class="form-control"
-              type="search"
-              value={@query}
-              :on-keyup="query"
-              placeholder={gettext("Search")}
-            />
-          </div>
-
-          <div>
-            <div
-              role="button"
-              class="card hy-button-card mt-2"
-              :for={case <- @cases}
-              :on-click={@change}
-              phx-value-subject={@subject}
-              phx-value-uuid={case.uuid}
+  <div :if={@has_value}>
+    <div class="card">
+      <div class="card-body py-2 px-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <HygeiaWeb.RecordView resource={@case} action={:list} id={"#{@id_prefix}_#{@case.uuid}"}>
+            <HygeiaWeb.RecordView
+              resource={@case.person}
+              action={:list}
+              id={"#{@id_prefix}_case_person_value_recordview_#{@case.uuid}_#{@case.person.uuid}"}
+              :if={authorized?(@case.person, :details, @auth)}
+              wrapper_tag={:span}
             >
-              <div class="card-body py-2 px-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <HygeiaWeb.RecordView resource={case} action={:list} id={"case_select_recordview_#{case.uuid}"}>
-                    <HygeiaWeb.RecordView
-                      resource={case.person}
-                      action={:list}
-                      id={"case_select_person_value_recordview_#{case.uuid}_#{case.person.uuid}"}
-                      :if={authorized?(case.person, :details, auth)}
-                      wrapper_tag={:span}
-                    >
-                      {case.person.first_name}
-                      {case.person.last_name}
-                    </HygeiaWeb.RecordView>
-                    <span :if={not authorized?(case.person, :details, auth)}>
-                      {case.person.tenant.subdivision}
-                      /
-                      {case.person.human_readable_id}
-                    </span>
-                    <small class="d-block text-muted" :if={[] != case.phases}>{case_phase_type_translation(List.last(case.phases))}</small>
-                    <small class="d-block text-muted">{case_display_date(case, timezone)}</small>
-                  </HygeiaWeb.RecordView>
+              <LiveRedirect :if={@disabled} to={Routes.person_base_data_path(@socket, :show, @case.person)}>
+                {@case.person.first_name}
+                {@case.person.last_name}
+              </LiveRedirect>
+              <span :if={not @disabled}>
+                {@case.person.first_name}
+                {@case.person.last_name}
+              </span>
+            </HygeiaWeb.RecordView>
+            <span :if={not authorized?(@case.person, :details, @auth)}>
+              {@case.person.tenant.subdivision}
+              /
+              {@case.person.human_readable_id}
+            </span>
+            <LiveRedirect
+              :if={@disabled and authorized?(@case, :details, @auth)}
+              to={Routes.case_base_data_path(@socket, :show, @case)}
+            >
+              <small class="d-block">{case_phase_type_translation(List.last(@case.phases))}</small>
+              <small class="d-block">{case_display_date(@case, @timezone)}</small>
+            </LiveRedirect>
+            <div :if={not @disabled or not authorized?(@case, :details, @auth)}>
+              <small class="d-block text-muted">{case_phase_type_translation(List.last(@case.phases))}</small>
+              <small class="d-block text-muted">{case_display_date(@case, @timezone)}</small>
+            </div>
+          </HygeiaWeb.RecordView>
+          <button
+            class="btn btn-danger"
+            :on-click={@change}
+            type="button"
+            phx-value-subject={@subject}
+            :if={not @disabled}
+          >
+            <span class="oi oi-trash" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                  <button class="btn btn-primary" type="button">
-                    {gettext("choose")}
-                  </button>
-                </div>
-              </div>
+  <div :if={not @has_value}>
+    <button
+      class="btn btn-outline-primary"
+      :on-click="open_modal"
+      type="button"
+      phx-value-subject={@subject}
+    >
+      {gettext("Choose case")}
+    </button>
+
+    <HygeiaWeb.Modal
+      id={"choose_case_#{@field}"}
+      :if={@modal_open}
+      title={gettext("Select Case")}
+      close="close_modal"
+    >
+      <div class="input-group">
+        <span class="input-group-text">
+          <span class="oi oi-magnifying-glass" aria-hidden="true" />
+        </span>
+        <input
+          class="form-control"
+          type="search"
+          value={@query}
+          :on-keyup="query"
+          placeholder={gettext("Search")}
+        />
+      </div>
+
+      <div>
+        <div
+          role="button"
+          class="card hy-button-card mt-2"
+          :for={case <- @cases}
+          :on-click={@change}
+          phx-value-subject={@subject}
+          phx-value-uuid={case.uuid}
+        >
+          <div class="card-body py-2 px-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <HygeiaWeb.RecordView resource={case} action={:list} id={"case_select_recordview_#{case.uuid}"}>
+                <HygeiaWeb.RecordView
+                  resource={case.person}
+                  action={:list}
+                  id={"case_select_person_value_recordview_#{case.uuid}_#{case.person.uuid}"}
+                  :if={authorized?(case.person, :details, @auth)}
+                  wrapper_tag={:span}
+                >
+                  {case.person.first_name}
+                  {case.person.last_name}
+                </HygeiaWeb.RecordView>
+                <span :if={not authorized?(case.person, :details, @auth)}>
+                  {case.person.tenant.subdivision}
+                  /
+                  {case.person.human_readable_id}
+                </span>
+                <small class="d-block text-muted" :if={[] != case.phases}>{case_phase_type_translation(List.last(case.phases))}</small>
+                <small class="d-block text-muted">{case_display_date(case, @timezone)}</small>
+              </HygeiaWeb.RecordView>
+
+              <button class="btn btn-primary" type="button">
+                {gettext("choose")}
+              </button>
             </div>
           </div>
-        </HygeiaWeb.Modal>
+        </div>
       </div>
-    </InputContext>
-  </Context>
+    </HygeiaWeb.Modal>
+  </div>
 </div>

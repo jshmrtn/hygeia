@@ -6,7 +6,6 @@ defmodule HygeiaWeb.UserLive.Index do
   alias Hygeia.Repo
   alias Hygeia.UserContext
   alias Hygeia.UserContext.User
-  alias Surface.Components.Context
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView

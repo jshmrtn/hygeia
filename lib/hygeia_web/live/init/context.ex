@@ -3,13 +3,13 @@ defmodule HygeiaWeb.Init.Context do
   Load Context on mount
   """
 
-  import HygeiaWeb, only: [context_assign: 3]
   import HygeiaWeb.Helpers.Auth
 
   import Phoenix.LiveView,
-    only: [get_connect_params: 1, connected?: 1, get_connect_info: 2, attach_hook: 4]
+    only: [assign: 2, get_connect_params: 1, connected?: 1, get_connect_info: 2, attach_hook: 4]
 
   alias Hygeia.EctoType.LocalizedNaiveDatetime
+  alias Surface.Components.Context
 
   @default_timezone "Europe/Zurich"
 
@@ -34,14 +34,19 @@ defmodule HygeiaWeb.Init.Context do
         }
       })
 
+    context = [
+      auth: get_auth(socket),
+      logged_in: is_logged_in?(socket),
+      browser_features: browser_features(socket),
+      ip_address: get_ip_address(socket),
+      uri: uri(socket),
+      timezone: timezone(socket)
+    ]
+
     socket =
       socket
-      |> context_assign(:auth, get_auth(socket))
-      |> context_assign(:logged_in, is_logged_in?(socket))
-      |> context_assign(:browser_features, browser_features(socket))
-      |> context_assign(:ip_address, get_ip_address(socket))
-      |> context_assign(:uri, uri(socket))
-      |> context_assign(:timezone, timezone(socket))
+      |> assign(context)
+      |> Context.put(HygeiaWeb, context)
 
     socket =
       case params do
@@ -116,6 +121,6 @@ defmodule HygeiaWeb.Init.Context do
     do:
       {:cont,
        socket
-       |> context_assign(:params, params)
-       |> context_assign(:uri, uri)}
+       |> assign(params: params, uri: uri)
+       |> Context.put(HygeiaWeb, params: params, uri: uri)}
 end

@@ -5,20 +5,21 @@ defmodule HygeiaWeb.CaseLive.ModalSelect do
 
   alias Ecto.UUID
   alias Phoenix.HTML.FormData
+  alias Surface.Components.Form
+  alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
 
   @doc "An identifier for the form"
-  prop form, :form
+  prop form, :form, from_context: {Form, :form}
 
   @doc "An identifier for the associated field"
-  prop field, :atom
+  prop field, :atom, from_context: {Field, :field}
 
   prop title, :string, default: ""
   prop options, :list, default: []
   prop disabled, :boolean, default: false
 
-  slot default, args: [:value]
+  slot default, arg: %{value: :any}
 
   data input_id, :string
   data query, :string, default: ""

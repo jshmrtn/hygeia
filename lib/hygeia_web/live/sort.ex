@@ -5,7 +5,7 @@ defmodule HygeiaWeb.Sort do
 
   use HygeiaWeb, :surface_live_component
 
-  slot default, args: [:asc?, :desc?, :active, :sort_params]
+  slot default, arg: %{asc?: :boolean, desc?: :boolean, active: :boolean, sort_params: :list}
 
   prop params, :list, required: true
   prop current_params, :list, required: true
@@ -14,7 +14,8 @@ defmodule HygeiaWeb.Sort do
   def render(assigns) do
     ~F"""
     <span class="sort-row-header">
-      <#slot :args={
+      <#slot {
+        @default,
         asc?: is_asc?(@params, @current_params),
         desc?: is_desc?(@params, @current_params),
         active: is_asc?(@params, @current_params) or is_desc?(@params, @current_params),

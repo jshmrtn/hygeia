@@ -10,7 +10,6 @@ defmodule HygeiaWeb.CaseLive.Suggestions do
   alias Hygeia.Helpers.Empty
   alias Hygeia.Repo
   alias Hygeia.TenantContext.Tenant
-  alias Surface.Components.Context
   alias Surface.Components.Link
 
   prop person_changeset, :map, required: true
@@ -22,6 +21,9 @@ defmodule HygeiaWeb.CaseLive.Suggestions do
   prop new_selected, :event
   prop person_selected, :event
   prop case_selected, :event
+
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+  prop timezone, :string, from_context: {HygeiaWeb, :timezone}
 
   data suggestions, :list, default: []
   data person, :map

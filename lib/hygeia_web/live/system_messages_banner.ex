@@ -5,6 +5,8 @@ defmodule HygeiaWeb.SystemMessagesBanner do
 
   data hidden_message_ids, :list, default: nil
 
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+
   @impl Phoenix.LiveComponent
   def handle_event("hide_alerts", %{"alertIds" => hidden_message_ids}, socket) do
     {:noreply, assign(socket, hidden_message_ids: hidden_message_ids)}

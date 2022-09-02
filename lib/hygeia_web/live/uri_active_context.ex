@@ -3,17 +3,17 @@ defmodule HygeiaWeb.UriActiveContext do
 
   use Surface.Component
 
-  slot default, args: [:active, :to], required: true
+  slot default, arg: %{active: :boolean, to: :string}, required: true
 
   prop to, :string, required: true
   prop opts, :keyword, default: [active: :exact]
 
+  prop uri, :string, from_context: {HygeiaWeb, :uri}
+
   @impl Surface.Component
   def render(assigns) do
     ~F"""
-    <Context get={HygeiaWeb, uri: uri}>
-      <#slot :args={active: is_active(@to, uri, @opts), to: @to} />
-    </Context>
+    <#slot {@default, active: is_active(@to, @uri, @opts), to: @to} />
     """
   end
 

@@ -1,35 +1,33 @@
 <div class="component-case-address-input">
-  <InputContext assigns={assigns} :let={form: form, field: field}>
-    <HiddenInput field={:address} />
-    <HiddenInput field={:zip} />
-    <HiddenInput field={:place} />
-    <HiddenInput field={:country} />
-    <HiddenInput field={:subdivision} />
+  <HiddenInput field={:address} />
+  <HiddenInput field={:zip} />
+  <HiddenInput field={:place} />
+  <HiddenInput field={:country} />
+  <HiddenInput field={:subdivision} />
 
-    <div
-      class="d-flex align-items-center justify-content-between"
-      :if={Phoenix.HTML.FormData.input_value(form.source, form, field) in [nil, ""]}
+  <div
+    class="d-flex align-items-center justify-content-between"
+    :if={Phoenix.HTML.FormData.input_value(@form.source, @form, @field) in [nil, ""]}
+  >
+    <#slot {@default, address: merged_address(@form)}>
+      <span class="address me-1">{Address.to_string(merged_address(@form), :long)}</span>
+    </#slot>
+    <button
+      :if={!@disabled}
+      class="btn btn-sm btn-outline-primary"
+      :on-click="open_modal"
+      type="button"
     >
-      <#slot :args={address: merged_address(form)}>
-        <span class="address me-1">{Address.to_string(merged_address(form), :long)}</span>
-      </#slot>
-      <button
-        :if={!@disabled}
-        class="btn btn-sm btn-outline-primary"
-        :on-click="open_modal"
-        type="button"
-      >
-        <span class="oi oi-pencil" aria-hidden="true" />
-      </button>
+      <span class="oi oi-pencil" aria-hidden="true" />
+    </button>
 
-      <HygeiaWeb.Modal
-        id={"#{@id}_address_input"}
-        :if={@modal_open}
-        title={gettext("Address")}
-        close="close_modal"
-      >
-        <HygeiaWeb.AddressForm id={"#{@id}_address_input_form"} />
-      </HygeiaWeb.Modal>
-    </div>
-  </InputContext>
+    <HygeiaWeb.Modal
+      id={"#{@id}_address_input"}
+      :if={@modal_open}
+      title={gettext("Address")}
+      close="close_modal"
+    >
+      <HygeiaWeb.AddressForm id={"#{@id}_address_input_form"} />
+    </HygeiaWeb.Modal>
+  </div>
 </div>

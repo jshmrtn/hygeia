@@ -1,94 +1,92 @@
 <div class="component-case-test-show container">
-  <Context get={HygeiaWeb, auth: auth}>
-    <HygeiaWeb.PersonLive.Header person={@test.case.person} id="header" />
+  <HygeiaWeb.PersonLive.Header person={@test.case.person} id="header" />
 
-    <div class="card">
-      <div class="card-header">
-        <HygeiaWeb.CaseLive.Navigation case={@test.case} id="navigation" />
-      </div>
-      <div class="card-body">
-        <Form
-          for={@changeset}
-          change="validate"
-          submit="save"
-          opts={autocomplete: "off", id: "transmission-form", class: "view-test-show container"}
-        >
-          <LiveRedirect
-            to={Routes.test_index_path(
-              @socket,
-              :show,
-              @test.case.uuid
-            )}
-            class="btn btn-outline-primary mb-4"
-          >
-            <span class="oi oi-arrow-left me-1" aria-hidden="true" />
-            {gettext("Back to list")}
-          </LiveRedirect>
-
-          <h1 class="mb-3">
-            {gettext("Test")}
-          </h1>
-
-          <div class="mt-4" :if={@live_action == :show}>
-            <LivePatch
-              :if={authorized?(@test, :update, auth)}
-              to={Routes.test_show_path(@socket, :edit, @test)}
-            >
-              <button class="btn btn-primary mb-3" id="test-edit">
-                <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                {gettext("Edit")}
-              </button>
-            </LivePatch>
-            <Link
-              to="#"
-              click="delete"
-              opts={
-                title: gettext("Delete"),
-                data: [confirm: gettext("Are you sure?")]
-              }
-              :if={authorized?(@test, :delete, auth)}
-            >
-              <button class="btn btn-danger mb-3">
-                <span class="oi oi-trash" aria-hidden="true" />
-                {gettext("Delete")}
-              </button>
-            </Link>
-          </div>
-
-          <div class="mb-4" :if={@live_action == :edit}>
-            <button
-              class="btn btn-primary me-2"
-              type="submit"
-              disabled={not @changeset.valid?}
-              phx-disable-with={gettext("Saving...")}
-            >
-              <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
-              {gettext("Save")}
-            </button>
-            <button
-              :on-click="reset"
-              class="btn btn-warning"
-              type="button"
-              data-confirm={if @changeset.changes != %{} do
-                gettext("Do you really want to discard your changes?")
-              else
-                nil
-              end}
-            >
-              <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
-              {gettext("Discard")}
-            </button>
-          </div>
-
-          <HygeiaWeb.Lock
-            id={"lock_Test_#{@test.uuid}"}
-            resource={{Test, @test.uuid}}
-            lock={@live_action == :edit}
-          >
-            <HygeiaWeb.TestLive.Form disabled={@live_action == :show} id="test-show" />
-          </HygeiaWeb.Lock>
-        </Form>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <HygeiaWeb.CaseLive.Navigation case={@test.case} id="navigation" />
     </div>
-  </Context>
+    <div class="card-body">
+      <Form
+        for={@changeset}
+        change="validate"
+        submit="save"
+        opts={autocomplete: "off", id: "transmission-form", class: "view-test-show container"}
+      >
+        <LiveRedirect
+          to={Routes.test_index_path(
+            @socket,
+            :show,
+            @test.case.uuid
+          )}
+          class="btn btn-outline-primary mb-4"
+        >
+          <span class="oi oi-arrow-left me-1" aria-hidden="true" />
+          {gettext("Back to list")}
+        </LiveRedirect>
+
+        <h1 class="mb-3">
+          {gettext("Test")}
+        </h1>
+
+        <div class="mt-4" :if={@live_action == :show}>
+          <LivePatch
+            :if={authorized?(@test, :update, @auth)}
+            to={Routes.test_show_path(@socket, :edit, @test)}
+          >
+            <button class="btn btn-primary mb-3" id="test-edit">
+              <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+              {gettext("Edit")}
+            </button>
+          </LivePatch>
+          <Link
+            to="#"
+            click="delete"
+            opts={
+              title: gettext("Delete"),
+              data: [confirm: gettext("Are you sure?")]
+            }
+            :if={authorized?(@test, :delete, @auth)}
+          >
+            <button class="btn btn-danger mb-3">
+              <span class="oi oi-trash" aria-hidden="true" />
+              {gettext("Delete")}
+            </button>
+          </Link>
+        </div>
+
+        <div class="mb-4" :if={@live_action == :edit}>
+          <button
+            class="btn btn-primary me-2"
+            type="submit"
+            disabled={not @changeset.valid?}
+            phx-disable-with={gettext("Saving...")}
+          >
+            <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+            {gettext("Save")}
+          </button>
+          <button
+            :on-click="reset"
+            class="btn btn-warning"
+            type="button"
+            data-confirm={if @changeset.changes != %{} do
+              gettext("Do you really want to discard your changes?")
+            else
+              nil
+            end}
+          >
+            <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+            {gettext("Discard")}
+          </button>
+        </div>
+
+        <HygeiaWeb.Lock
+          id={"lock_Test_#{@test.uuid}"}
+          resource={{Test, @test.uuid}}
+          lock={@live_action == :edit}
+        >
+          <HygeiaWeb.TestLive.Form disabled={@live_action == :show} id="test-show" />
+        </HygeiaWeb.Lock>
+      </Form>
+    </div>
+  </div>
 </div>
