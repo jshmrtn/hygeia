@@ -8,7 +8,7 @@ defmodule HygeiaWeb.AutoTracingLive.Header do
   alias Hygeia.AutoTracingContext.AutoTracing
   alias Hygeia.AutoTracingContext.AutoTracing.Step
   alias HygeiaWeb.UriActiveContext
-  alias Surface.Components.Form.Input.InputContext
+
   alias Surface.Components.LiveRedirect
 
   prop auto_tracing, :map, required: true

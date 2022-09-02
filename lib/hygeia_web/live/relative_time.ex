@@ -6,6 +6,8 @@ defmodule HygeiaWeb.RelativeTime do
   prop time, :map, required: true
   prop component_id, :string, required: true
 
+  prop timezone, :string, from_context: {HygeiaWeb, :timezone}
+
   data now, :map
 
   @impl Phoenix.LiveComponent
@@ -20,17 +22,15 @@ defmodule HygeiaWeb.RelativeTime do
     )
 
     ~F"""
-    <Context get={HygeiaWeb, timezone: timezone}>
-      <time
-        datetime={DateTime.to_iso8601(@time)}
-        title={@time |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()}
-      >
-        {HygeiaCldr.DateTime.Relative.to_string!(@time,
-          format: :short,
-          relative_to: @now
-        )}
-      </time>
-    </Context>
+    <time
+      datetime={DateTime.to_iso8601(@time)}
+      title={@time |> DateTime.shift_zone!(@timezone) |> HygeiaCldr.DateTime.to_string!()}
+    >
+      {HygeiaCldr.DateTime.Relative.to_string!(@time,
+        format: :short,
+        relative_to: @now
+      )}
+    </time>
     """
   end
 end

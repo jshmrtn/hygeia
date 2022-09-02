@@ -8,90 +8,85 @@
       class="card-title mb-2"
     >{gettext("Phases")}</h5>
     <div>
-      <#slot name="top" />
+      <#slot {@top} />
       <ErrorTag class="d-block invalid-feedback" field={:phases} />
       <div class="d-flex gap-2 flex-row mb-3 flex-wrap">
-        <Inputs for={:phases}>
+        <Inputs for={:phases} :let={form: form}>
           <div class="card flex-grow-1">
             <div class="card-body hy-readonly-form">
-              <InputContext assigns={assigns} :let={form: form}>
-                <Context
-                  put={__MODULE__, phase_details: Ecto.Changeset.fetch_field!(form.source, :details)}
-                  get={__MODULE__, phase_details: phase_details}
-                >
-                  <div class="form-group">
-                    <HygeiaWeb.FieldLabel field={:type} />
-                    <div class="value">
-                      {case_phase_type_translation(phase_details)}
-                    </div>
-                  </div>
+              {phase_details = Ecto.Changeset.fetch_field!(form.source, :details)
+              nil}
+              <div class="form-group">
+                <HygeiaWeb.FieldLabel field={:type} />
+                <div class="value">
+                  {case_phase_type_translation(phase_details)}
+                </div>
+              </div>
 
-                  <Field name={:quarantine_order} class="form-group">
-                    <div>
-                      <HygeiaWeb.FieldLabel />
-                    </div>
-                    <div class="btn-group btn-group-toggle btn-radio-group">
-                      <label class={
-                        "btn",
-                        "btn-sm",
-                        "btn-outline-primary",
-                        active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == nil,
-                        disabled: true
-                      }>
-                        <RadioButton value={nil} opts={disabled: true} />
-                        {gettext("Unknown")}
-                      </label>
-                      <label class={
-                        "btn",
-                        "btn-sm",
-                        "btn-outline-primary",
-                        active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == true,
-                        disabled: true
-                      }>
-                        <RadioButton value opts={disabled: true} />
-                        {gettext("Ordered")}
-                      </label>
-                      <label class={
-                        "btn",
-                        "btn-sm",
-                        "btn-outline-primary",
-                        active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == false,
-                        disabled: true
-                      }>
-                        <RadioButton value={false} opts={disabled: true} />
-                        {gettext("No Order")}
-                      </label>
-                    </div>
+              <Field name={:quarantine_order} class="form-group">
+                <div>
+                  <HygeiaWeb.FieldLabel />
+                </div>
+                <div class="btn-group btn-group-toggle btn-radio-group">
+                  <label class={
+                    "btn",
+                    "btn-sm",
+                    "btn-outline-primary",
+                    active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == nil,
+                    disabled: true
+                  }>
+                    <RadioButton value={nil} opts={disabled: true} />
+                    {gettext("Unknown")}
+                  </label>
+                  <label class={
+                    "btn",
+                    "btn-sm",
+                    "btn-outline-primary",
+                    active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == true,
+                    disabled: true
+                  }>
+                    <RadioButton value opts={disabled: true} />
+                    {gettext("Ordered")}
+                  </label>
+                  <label class={
+                    "btn",
+                    "btn-sm",
+                    "btn-outline-primary",
+                    active: Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == false,
+                    disabled: true
+                  }>
+                    <RadioButton value={false} opts={disabled: true} />
+                    {gettext("No Order")}
+                  </label>
+                </div>
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+
+              <div class="row" :if={Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == true}>
+                <div class="col">
+                  <Field name={:start} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <DateInput class="form-control" opts={disabled: true} />
                     <ErrorTag class="d-block invalid-feedback" />
                   </Field>
+                </div>
+                <div class="col">
+                  <Field name={:end} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <DateInput class="form-control" opts={disabled: true} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
+                </div>
+              </div>
 
-                  <div class="row" :if={Ecto.Changeset.fetch_field!(form.source, :quarantine_order) == true}>
-                    <div class="col">
-                      <Field name={:start} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <DateInput class="form-control" opts={disabled: true} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                    </div>
-                    <div class="col">
-                      <Field name={:end} class="form-group">
-                        <HygeiaWeb.FieldLabel />
-                        <DateInput class="form-control" opts={disabled: true} />
-                        <ErrorTag class="d-block invalid-feedback" />
-                      </Field>
-                    </div>
-                  </div>
-
-                  <div
-                    class="form-group mb-0"
-                    :if={Ecto.Changeset.fetch_field!(form.source, :quarantine_order) != true and
-                      is_map(Ecto.Changeset.fetch_field!(@case_changeset, :inserted_at))}
-                  >
-                    <label>{gettext("Phase created at")}</label>
-                    <div class="value">{@case_changeset |> Ecto.Changeset.fetch_field!(:inserted_at) |> HygeiaCldr.DateTime.to_string!()}</div>
-                  </div>
-                </Context>
-              </InputContext>
+              <div
+                class="form-group mb-0"
+                :if={Ecto.Changeset.fetch_field!(form.source, :quarantine_order) != true and
+                  is_map(Ecto.Changeset.fetch_field!(@case_changeset, :inserted_at))}
+              >
+                <label>{gettext("Phase created at")}</label>
+                <div class="value">{@case_changeset |> Ecto.Changeset.fetch_field!(:inserted_at) |> HygeiaCldr.DateTime.to_string!()}</div>
+              </div>
             </div>
           </div>
         </Inputs>

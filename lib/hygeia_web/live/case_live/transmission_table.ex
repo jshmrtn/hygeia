@@ -15,6 +15,9 @@ defmodule HygeiaWeb.CaseLive.TransmissionTable do
   prop show_propagator, :boolean, default: true
   prop id_prefix, :string, default: "transmission"
 
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+  prop timezone, :string, from_context: {HygeiaWeb, :timezone}
+
   @impl Phoenix.LiveComponent
   def mount(socket) do
     {:ok, assign(socket, suspected_duplicate_changeset_uuid: nil)}

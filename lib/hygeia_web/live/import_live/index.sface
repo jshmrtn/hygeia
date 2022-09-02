@@ -1,32 +1,30 @@
 <div class="component-import-index container">
-  <Context get={HygeiaWeb, auth: auth}>
-    <h1>
-      {gettext("Listing Imports")}
-    </h1>
+  <h1>
+    {gettext("Listing Imports")}
+  </h1>
 
+  <LiveRedirect
+    to={Routes.import_create_path(@socket, :create)}
+    :if={authorized?(Import, :create, @auth, tenant: :any)}
+  >
+    <button type="button" class="mb-2 mt-3 btn btn-primary">
+      <span class="oi oi-plus" aria-hidden="true" />
+      {gettext("New Import")}
+    </button>
+  </LiveRedirect>
+
+  <HygeiaWeb.ImportLive.Table id="imports_table" imports={@imports} delete_event="delete" />
+
+  <HygeiaWeb.Pagination
+    pagination={@pagination}
+    :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
+    id="pagination"
+  >
     <LiveRedirect
-      to={Routes.import_create_path(@socket, :create)}
-      :if={authorized?(Import, :create, auth, tenant: :any)}
+      class="page-link"
+      to={Routes.import_index_path(@socket, :index, cursor_direction, cursor)}
     >
-      <button type="button" class="mb-2 mt-3 btn btn-primary">
-        <span class="oi oi-plus" aria-hidden="true" />
-        {gettext("New Import")}
-      </button>
+      {text}
     </LiveRedirect>
-
-    <HygeiaWeb.ImportLive.Table id="imports_table" imports={@imports} delete_event="delete" />
-
-    <HygeiaWeb.Pagination
-      pagination={@pagination}
-      :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
-      id="pagination"
-    >
-      <LiveRedirect
-        class="page-link"
-        to={Routes.import_index_path(@socket, :index, cursor_direction, cursor)}
-      >
-        {text}
-      </LiveRedirect>
-    </HygeiaWeb.Pagination>
-  </Context>
+  </HygeiaWeb.Pagination>
 </div>

@@ -1,94 +1,92 @@
 <div class="component-division-index container">
-  <Context get={HygeiaWeb, auth: auth}>
-    <HygeiaWeb.OrganisationLive.Header organisation={@organisation} id="header" />
+  <HygeiaWeb.OrganisationLive.Header organisation={@organisation} id="header" />
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th>
-            {schema_field_name(:title, Division)}
-          </th>
-          <th>
-            {schema_field_name(:address, Division)}
-          </th>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          {schema_field_name(:title, Division)}
+        </th>
+        <th>
+          {schema_field_name(:address, Division)}
+        </th>
 
-          <th />
-        </tr>
-      </thead>
-      <tbody id="divisions">
-        <tr :for={division <- @divisions} id={"division-#{division.uuid}"}>
-          <td>
-            {division.title}
-          </td>
-          <td :if={division.shares_address}>
-            {format_address(@organisation.address)}
-          </td>
-          <td :if={not division.shares_address}>
-            {format_address(division.address)}
-          </td>
+        <th />
+      </tr>
+    </thead>
+    <tbody id="divisions">
+      <tr :for={division <- @divisions} id={"division-#{division.uuid}"}>
+        <td>
+          {division.title}
+        </td>
+        <td :if={division.shares_address}>
+          {format_address(@organisation.address)}
+        </td>
+        <td :if={not division.shares_address}>
+          {format_address(division.address)}
+        </td>
 
-          <td>
-            <div class="d-flex justify-content-end w-100">
-              <LiveRedirect
-                to={Routes.division_show_path(@socket, :show, division)}
-                :if={authorized?(division, :details, auth)}
-              >
-                <button class="ms-auto btn btn-sm btn-outline-primary">
-                  {gettext("Show")}
-                </button>
-              </LiveRedirect>
-              <LiveRedirect
-                to={Routes.division_show_path(@socket, :edit, division)}
-                :if={authorized?(division, :update, auth)}
-              >
-                <button class="ms-1 btn btn-sm btn-outline-primary">
-                  <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                </button>
-              </LiveRedirect>
-              <Link
-                to="#"
-                click="delete"
-                class="delete"
-                opts={
-                  title: gettext("Delete"),
-                  data: [
-                    confirm:
-                      cond do
-                        OrganisationContext.has_affiliations?(division) ->
-                          gettext("Are you sure? There are affiliations assigned!")
+        <td>
+          <div class="d-flex justify-content-end w-100">
+            <LiveRedirect
+              to={Routes.division_show_path(@socket, :show, division)}
+              :if={authorized?(division, :details, @auth)}
+            >
+              <button class="ms-auto btn btn-sm btn-outline-primary">
+                {gettext("Show")}
+              </button>
+            </LiveRedirect>
+            <LiveRedirect
+              to={Routes.division_show_path(@socket, :edit, division)}
+              :if={authorized?(division, :update, @auth)}
+            >
+              <button class="ms-1 btn btn-sm btn-outline-primary">
+                <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+              </button>
+            </LiveRedirect>
+            <Link
+              to="#"
+              click="delete"
+              class="delete"
+              opts={
+                title: gettext("Delete"),
+                data: [
+                  confirm:
+                    cond do
+                      OrganisationContext.has_affiliations?(division) ->
+                        gettext("Are you sure? There are affiliations assigned!")
 
-                        OrganisationContext.has_visits?(division) ->
-                          gettext("Are you sure? There are visits assigned!")
+                      OrganisationContext.has_visits?(division) ->
+                        gettext("Are you sure? There are visits assigned!")
 
-                        true ->
-                          gettext("Are you sure?")
-                      end
-                  ],
-                  "phx-value-id": division.uuid
-                }
-                :if={authorized?(division, :delete, auth)}
-              >
-                <button class="ms-1 btn btn-sm btn-danger">
-                  <span class="oi oi-trash" aria-hidden="true" />
-                </button>
-              </Link>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                      true ->
+                        gettext("Are you sure?")
+                    end
+                ],
+                "phx-value-id": division.uuid
+              }
+              :if={authorized?(division, :delete, @auth)}
+            >
+              <button class="ms-1 btn btn-sm btn-danger">
+                <span class="oi oi-trash" aria-hidden="true" />
+              </button>
+            </Link>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-    <HygeiaWeb.Pagination
-      pagination={@pagination}
-      :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
-      id="pagination"
+  <HygeiaWeb.Pagination
+    pagination={@pagination}
+    :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
+    id="pagination"
+  >
+    <LivePatch
+      class="page-link"
+      to={Routes.division_index_path(@socket, :index, @organisation, cursor_direction, cursor)}
     >
-      <LivePatch
-        class="page-link"
-        to={Routes.division_index_path(@socket, :index, @organisation, cursor_direction, cursor)}
-      >
-        {text}
-      </LivePatch>
-    </HygeiaWeb.Pagination>
-  </Context>
+      {text}
+    </LivePatch>
+  </HygeiaWeb.Pagination>
 </div>

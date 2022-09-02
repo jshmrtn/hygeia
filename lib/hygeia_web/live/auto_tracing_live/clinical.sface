@@ -10,100 +10,96 @@
     <div class="row gx-7">
       <div class="col-12 col-lg-6 mb-5 mb-lg-0">
         <ErrorTag class="d-block p-1 alert alert-danger" field={:clinical} />
-        <Inputs for={:clinical}>
+        <Inputs for={:clinical} :let={form: form}>
           <div class="mb-5">
-            <InputContext assigns={assigns} :let={form: form}>
-              <h4>{gettext("Symptoms")}
-              </h4>
-              <p class="mb-4">{gettext("Do you have or have had symptoms?")}</p>
-              <Field name={:has_symptoms} class="form-group mb-4">
-                <HiddenInput />
-                <div class="disabled display-only btn-group-toggle btn-radio-group">
-                  <label class={
-                    "btn",
-                    "btn-sm",
-                    "btn-outline-primary",
-                    "mb-0",
-                    active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true
-                  }>
-                    <RadioButton value />
-                    {gettext("Yes")}
-                  </label>
-                  <label class={
-                    "btn",
-                    "btn-sm",
-                    "btn-outline-primary",
-                    "mb-0",
-                    active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false
-                  }>
-                    <RadioButton value={false} />
-                    {gettext("No")}
-                  </label>
-                </div>
+            <h4>{gettext("Symptoms")}
+            </h4>
+            <p class="mb-4">{gettext("Do you have or have had symptoms?")}</p>
+            <Field name={:has_symptoms} class="form-group mb-4">
+              <HiddenInput />
+              <div class="disabled display-only btn-group-toggle btn-radio-group">
+                <label class={
+                  "btn",
+                  "btn-sm",
+                  "btn-outline-primary",
+                  "mb-0",
+                  active: Ecto.Changeset.get_field(form.source, :has_symptoms) == true
+                }>
+                  <RadioButton value />
+                  {gettext("Yes")}
+                </label>
+                <label class={
+                  "btn",
+                  "btn-sm",
+                  "btn-outline-primary",
+                  "mb-0",
+                  active: Ecto.Changeset.get_field(form.source, :has_symptoms) == false
+                }>
+                  <RadioButton value={false} />
+                  {gettext("No")}
+                </label>
+              </div>
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
+              <p class="my-4">{gettext("What symptoms do/did you experience?")}</p>
+              <Field name={:symptoms}>
+                <label :for={{name, key} <- Clinical.Symptom.map()} class="d-block checkbox-label">
+                  <input
+                    type="checkbox"
+                    name={input_name(form, :symptoms) <> "[]"}
+                    checked={key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || [])}
+                    value={key}
+                  />
+                  {name}
+                </label>
                 <ErrorTag class="d-block invalid-feedback" />
               </Field>
-              <div :if={Ecto.Changeset.get_field(form.source, :has_symptoms) == true}>
-                <p class="my-4">{gettext("What symptoms do/did you experience?")}</p>
-                <Field name={:symptoms}>
-                  <label :for={{name, key} <- Clinical.Symptom.map()} class="d-block checkbox-label">
-                    <input
-                      type="checkbox"
-                      name={input_name(form, :symptoms) <> "[]"}
-                      checked={key in (Ecto.Changeset.get_field(form.source, :symptoms, []) || [])}
-                      value={key}
-                    />
-                    {name}
-                  </label>
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-                <p class="my-4">{gettext("When did the symptoms start?")}</p>
-                <Field name={:symptom_start} class="form-group">
-                  <!--
+              <p class="my-4">{gettext("When did the symptoms start?")}</p>
+              <Field name={:symptom_start} class="form-group">
+                <!--
                     TODO: Re-add min/max one https://github.com/jshmrtn/hygeia/issues/930#issuecomment-984785198 is resolved,
                     opts={max: Date.utc_today()}
                   -->
-                  <HygeiaWeb.DateInput class="form-control" />
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-                {#if index_phase_dates(Ecto.Changeset.apply_changes(@changeset))
-                  |> elem(2)
-                  |> Enum.any?(&match?(:phase_start_date_corrected, &1))}
-                  <div class="p-2 mb-2 alert alert-warning" role="alert">{pgettext(
-                      "Auto Tracing Clinical",
-                      "Are you sure? This date is unusual far in the past."
-                    )}</div>
-                {/if}
-              </div>
-            </InputContext>
+                <HygeiaWeb.DateInput class="form-control" />
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+              {#if index_phase_dates(Ecto.Changeset.apply_changes(@changeset))
+                |> elem(2)
+                |> Enum.any?(&match?(:phase_start_date_corrected, &1))}
+                <div class="p-2 mb-2 alert alert-warning" role="alert">{pgettext(
+                    "Auto Tracing Clinical",
+                    "Are you sure? This date is unusual far in the past."
+                  )}</div>
+              {/if}
+            </div>
           </div>
           <div>
             <h4 class="mb-4">{gettext("Reasons for the test")}</h4>
-            <InputContext assigns={assigns} :let={form: form}>
-              <div class="form-group">
-                <Field name={:reasons_for_test}>
-                  <div class="mb-2 d-flex align-items-center">
-                    <HygeiaWeb.FieldLabel class="mb-0" />
-                    <button
-                      type="button"
-                      class="d-block ms-2 btn btn-info btn-sm"
-                      :on-click="show_reasons_for_test_help"
-                    >
-                      <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
-                    </button>
-                  </div>
-                  <label :for={{name, key} <- Clinical.TestReason.map()} class="d-block checkbox-label">
-                    <input
-                      type="checkbox"
-                      name={input_name(form, :reasons_for_test) <> "[]"}
-                      checked={key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || [])}
-                      value={key}
-                    />
-                    {name}
-                  </label>
-                  <ErrorTag class="d-block invalid-feedback" />
-                </Field>
-              </div>
-            </InputContext>
+            <div class="form-group">
+              <Field name={:reasons_for_test}>
+                <div class="mb-2 d-flex align-items-center">
+                  <HygeiaWeb.FieldLabel class="mb-0" />
+                  <button
+                    type="button"
+                    class="d-block ms-2 btn btn-info btn-sm"
+                    :on-click="show_reasons_for_test_help"
+                  >
+                    <span class="oi oi-info" title={gettext("Info")} aria-hidden="true" />
+                  </button>
+                </div>
+                <label :for={{name, key} <- Clinical.TestReason.map()} class="d-block checkbox-label">
+                  <input
+                    type="checkbox"
+                    name={input_name(form, :reasons_for_test) <> "[]"}
+                    checked={key in (Ecto.Changeset.get_field(form.source, :reasons_for_test, []) || [])}
+                    value={key}
+                  />
+                  {name}
+                </label>
+                <ErrorTag class="d-block invalid-feedback" />
+              </Field>
+            </div>
           </div>
         </Inputs>
       </div>

@@ -3,6 +3,7 @@
   change="validate"
   submit="save"
   opts={autocomplete: "off", id: "system_message-form", class: "container"}
+  :let={form: form}
 >
   <h1 class="mb-3">
     {gettext("New System Message")}
@@ -40,47 +41,43 @@
           <ErrorTag class="d-block invalid-feedback" />
         </Field>
 
-        <InputContext assigns={assigns} :let={form: form}>
-          <Field name={:roles}>
-            <HygeiaWeb.FieldLabel />
-            <label
-              :for={{name, key} <- roles()}
-              class="d-block checkbox-label"
-              data-disabled={@live_action == :show}
-            >
-              <input
-                type="checkbox"
-                name={input_name(form, :roles) <> "[]"}
-                disabled={@live_action == :show}
-                checked={key in (Ecto.Changeset.get_field(form.source, :roles, []) || [])}
-                value={key}
-              />
-              {name}
-            </label>
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </InputContext>
+        <Field name={:roles}>
+          <HygeiaWeb.FieldLabel />
+          <label
+            :for={{name, key} <- roles()}
+            class="d-block checkbox-label"
+            data-disabled={@live_action == :show}
+          >
+            <input
+              type="checkbox"
+              name={input_name(form, :roles) <> "[]"}
+              disabled={@live_action == :show}
+              checked={key in (Ecto.Changeset.get_field(form.source, :roles, []) || [])}
+              value={key}
+            />
+            {name}
+          </label>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
 
-        <InputContext assigns={assigns} :let={form: form}>
-          <Field name={:related_tenants}>
-            <HygeiaWeb.FieldLabel />
-            <label
-              :for={{name, key} <- tenants()}
-              class="d-block checkbox-label"
-              data-disabled={@live_action == :show}
-            >
-              <input
-                type="checkbox"
-                name={input_name(form, :related_tenants) <> "[]"}
-                disabled={@live_action == :show}
-                checked={key in Enum.map(Ecto.Changeset.get_field(form.source, :related_tenants, []), & &1.uuid)}
-                value={key}
-              />
-              {name}
-            </label>
-            <ErrorTag class="d-block invalid-feedback" />
-          </Field>
-        </InputContext>
+        <Field name={:related_tenants}>
+          <HygeiaWeb.FieldLabel />
+          <label
+            :for={{name, key} <- tenants()}
+            class="d-block checkbox-label"
+            data-disabled={@live_action == :show}
+          >
+            <input
+              type="checkbox"
+              name={input_name(form, :related_tenants) <> "[]"}
+              disabled={@live_action == :show}
+              checked={key in Enum.map(Ecto.Changeset.get_field(form.source, :related_tenants, []), & &1.uuid)}
+              value={key}
+            />
+            {name}
+          </label>
+          <ErrorTag class="d-block invalid-feedback" />
+        </Field>
       </div>
     </div>
   </div>

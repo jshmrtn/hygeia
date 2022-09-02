@@ -5,7 +5,6 @@ defmodule HygeiaWeb.MutationLive.Index do
 
   alias Hygeia.MutationContext
   alias Hygeia.MutationContext.Mutation
-  alias Surface.Components.Context
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 

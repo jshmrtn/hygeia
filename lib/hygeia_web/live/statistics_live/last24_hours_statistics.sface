@@ -1,105 +1,103 @@
 <div class="component-statistics-last24hours-statistics container pt-3">
-  <Context put={HygeiaWeb.Chart, enable_vision_impaired_mode: @enable_vision_impaired_mode}>
-    <HygeiaWeb.StatisticsLive.Header tenant={@tenant} id="header" />
+  <HygeiaWeb.StatisticsLive.Header tenant={@tenant} id="header" />
 
-    <div class="component-statistics-last24hours-statistics container pt-3">
-      <div class="container">
-        <Form for={assigns} change="params_change" opts={class: "mt-3 d-flex align-items-center"}>
-          <Field name={:enable_vision_impaired_mode} class="ms-2 w-auto">
-            <Checkbox />
-            <Label class="mb-0">
-              {gettext("Enable Vision Impaired Mode")}
-            </Label>
-          </Field>
-        </Form>
-      </div>
+  <div class="component-statistics-last24hours-statistics container pt-3">
+    <div class="container">
+      <Form for={assigns} change="params_change" opts={class: "mt-3 d-flex align-items-center"}>
+        <Field name={:enable_vision_impaired_mode} class="ms-2 w-auto">
+          <Checkbox />
+          <Label class="mb-0">
+            {gettext("Enable Vision Impaired Mode")}
+          </Label>
+        </Field>
+      </Form>
+    </div>
 
-      <div class="row mt-5">
-        <div class="col-12 col-xl-6 text-center h-full d-flex justify-content-center align-items-center">
-          <div class="card-body p-5">
-            <h5 class="card-title mb-5 text-muted">{gettext("Isolation Ordered")}</h5>
-            <p class="display-1 m-0">
-              {HygeiaCldr.Number.to_string!(@last24hours_isolation_orders)}
-            </p>
-          </div>
-        </div>
-
-        <div class="col-12 col-xl-6">
-          <HygeiaWeb.Chart
-            :if={@last24hours_quarantine_orders != []}
-            id="last24hours_quarantine_orders"
-            dom_id="last24hours_quarantine_orders"
-            config={%{
-              type: "doughnut",
-              data: %{
-                datasets: [
-                  %{
-                    data: Enum.map(@last24hours_quarantine_orders, & &1.count)
-                  }
-                ],
-                labels:
-                  Enum.map(
-                    @last24hours_quarantine_orders,
-                    &Phase.PossibleIndex.Type.translate(&1.type)
-                  )
-              },
-              options: %{
-                plugins: %{
-                  title: %{
-                    display: true,
-                    text: gettext("Quarantine Ordered")
-                  }
-                }
-              }
-            }}
-          />
-          <div
-            class="d-flex justify-content-center align-items-center"
-            :if={@last24hours_quarantine_orders == []}
-          >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Quarantine Ordered")} />
-          </div>
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6 text-center h-full d-flex justify-content-center align-items-center">
+        <div class="card-body p-5">
+          <h5 class="card-title mb-5 text-muted">{gettext("Isolation Ordered")}</h5>
+          <p class="display-1 m-0">
+            {HygeiaCldr.Number.to_string!(@last24hours_isolation_orders)}
+          </p>
         </div>
       </div>
 
-      <div class="row mt-5">
-        <div class="col-12 col-xl-6">
-          <HygeiaWeb.Chart
-            :if={@last24hours_quarantine_converted_to_index != []}
-            id="last24hours_quarantine_converted_to_index"
-            dom_id="last24hours_quarantine_converted_to_index"
-            config={%{
-              type: "doughnut",
-              data: %{
-                datasets: [
-                  %{
-                    data: Enum.map(@last24hours_quarantine_converted_to_index, & &1.count)
-                  }
-                ],
-                labels:
-                  Enum.map(
-                    @last24hours_quarantine_converted_to_index,
-                    &Phase.PossibleIndex.Type.translate(&1.type)
-                  )
-              },
-              options: %{
-                plugins: %{
-                  title: %{
-                    display: true,
-                    text: gettext("Converted to Index")
-                  }
+      <div class="col-12 col-xl-6">
+        <HygeiaWeb.Chart
+          :if={@last24hours_quarantine_orders != []}
+          id="last24hours_quarantine_orders"
+          dom_id="last24hours_quarantine_orders"
+          config={%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@last24hours_quarantine_orders, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(
+                  @last24hours_quarantine_orders,
+                  &Phase.PossibleIndex.Type.translate(&1.type)
+                )
+            },
+            options: %{
+              plugins: %{
+                title: %{
+                  display: true,
+                  text: gettext("Quarantine Ordered")
                 }
               }
-            }}
-          />
-          <div
-            class="d-flex justify-content-center align-items-center"
-            :if={@last24hours_quarantine_converted_to_index == []}
-          >
-            <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Converted to Index")} />
-          </div>
+            }
+          }}
+        />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={@last24hours_quarantine_orders == []}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Quarantine Ordered")} />
         </div>
       </div>
     </div>
-  </Context>
+
+    <div class="row mt-5">
+      <div class="col-12 col-xl-6">
+        <HygeiaWeb.Chart
+          :if={@last24hours_quarantine_converted_to_index != []}
+          id="last24hours_quarantine_converted_to_index"
+          dom_id="last24hours_quarantine_converted_to_index"
+          config={%{
+            type: "doughnut",
+            data: %{
+              datasets: [
+                %{
+                  data: Enum.map(@last24hours_quarantine_converted_to_index, & &1.count)
+                }
+              ],
+              labels:
+                Enum.map(
+                  @last24hours_quarantine_converted_to_index,
+                  &Phase.PossibleIndex.Type.translate(&1.type)
+                )
+            },
+            options: %{
+              plugins: %{
+                title: %{
+                  display: true,
+                  text: gettext("Converted to Index")
+                }
+              }
+            }
+          }}
+        />
+        <div
+          class="d-flex justify-content-center align-items-center"
+          :if={@last24hours_quarantine_converted_to_index == []}
+        >
+          <HygeiaWeb.StatisticsLive.NoDataWarning title={gettext("Converted to Index")} />
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

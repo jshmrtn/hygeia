@@ -4,11 +4,18 @@ defmodule HygeiaWeb.CaseLive.Hospitalizations do
   use HygeiaWeb, :surface_live_component
 
   alias HygeiaWeb.DateInput
+  alias Surface.Components.Form
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
+
   alias Surface.Components.Form.Inputs
+
+  @doc "An identifier for the form"
+  prop form, :form, from_context: {Form, :form}
+
+  @doc "An identifier for the associated field"
+  prop field, :atom, from_context: {Field, :field}
 
   prop source, :map, required: true
   prop add_hospitalization, :event, required: true

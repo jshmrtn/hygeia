@@ -52,7 +52,11 @@ defmodule HygeiaWeb.StatisticsLive.Last24HoursStatistics do
   @impl Phoenix.LiveView
   def handle_event("params_change", params, socket) do
     {:noreply,
-     assign(socket, enable_vision_impaired_mode: params["enable_vision_impaired_mode"] == "true")}
+     socket
+     |> assign(enable_vision_impaired_mode: params["enable_vision_impaired_mode"] == "true")
+     |> Context.put(HygeiaWeb.Chart,
+       enable_vision_impaired_mode: params["enable_vision_impaired_mode"] == "true"
+     )}
   end
 
   @impl Phoenix.LiveView

@@ -11,6 +11,7 @@ defmodule HygeiaWeb.TransmissionLive.Header do
 
   # Changeset or actual Tenant
   prop transmission, :map, required: true
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
 
   data display_name, :string
 

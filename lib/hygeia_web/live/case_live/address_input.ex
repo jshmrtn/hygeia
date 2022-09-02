@@ -5,18 +5,19 @@ defmodule HygeiaWeb.CaseLive.AddressInput do
 
   alias Hygeia.CaseContext.Address
 
+  alias Surface.Components.Form
+  alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
 
   @doc "An identifier for the form"
-  prop form, :form
+  prop form, :form, from_context: {Form, :form}
 
   @doc "An identifier for the associated field"
-  prop field, :atom
+  prop field, :atom, from_context: {Field, :field}
 
   prop disabled, :boolean, default: false
 
-  slot default, args: [:address]
+  slot default, arg: %{address: :struct}
 
   data modal_open, :boolean, default: false
 

@@ -23,38 +23,36 @@
     <ErrorTag class="d-block invalid-feedback" />
   </Field>
 
-  <Inputs for={:phases} opts={append: [%Phase{}]}>
-    <InputContext assigns={assigns} :let={form: form}>
+  <Inputs for={:phases} opts={append: [%Phase{}]} :let={form: form}>
+    <Field name={:type} class="form-group">
+      <HygeiaWeb.FieldLabel />
+      <Select class="form-control" options={Phase.Type.map()} opts={prompt: gettext("Select Type")} />
+      <ErrorTag class="d-block invalid-feedback" />
+    </Field>
+
+    <PolimorphicInputs
+      :if={Ecto.Changeset.get_field(form.source, :type) == :index}
+      field={:details}
+      type={:index}
+      id={"poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
+    />
+
+    <PolimorphicInputs
+      :if={Ecto.Changeset.get_field(form.source, :type) == :possible_index}
+      field={:details}
+      type={:possible_index}
+      id={"poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
+    >
       <Field name={:type} class="form-group">
         <HygeiaWeb.FieldLabel />
-        <Select class="form-control" options={Phase.Type.map()} opts={prompt: gettext("Select Type")} />
+        <Select
+          class="form-control"
+          options={Phase.PossibleIndex.Type.map()}
+          opts={prompt: gettext("Select Type")}
+        />
         <ErrorTag class="d-block invalid-feedback" />
       </Field>
-
-      <PolimorphicInputs
-        :if={Ecto.Changeset.get_field(form.source, :type) == :index}
-        field={:details}
-        type={:index}
-        id={"poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
-      />
-
-      <PolimorphicInputs
-        :if={Ecto.Changeset.get_field(form.source, :type) == :possible_index}
-        field={:details}
-        type={:possible_index}
-        id={"poly-inputs-phase-#{Ecto.Changeset.fetch_field!(form.source, :uuid)}"}
-      >
-        <Field name={:type} class="form-group">
-          <HygeiaWeb.FieldLabel />
-          <Select
-            class="form-control"
-            options={Phase.PossibleIndex.Type.map()}
-            opts={prompt: gettext("Select Type")}
-          />
-          <ErrorTag class="d-block invalid-feedback" />
-        </Field>
-      </PolimorphicInputs>
-    </InputContext>
+    </PolimorphicInputs>
   </Inputs>
 
   <button class="btn btn-primary" type="submit" phx-disable-with={gettext("Saving...")}>

@@ -1,108 +1,106 @@
 <div class="component-person-header mb-4">
-  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
-    <h1 class="mb-4" :if={authorized?(@person, :partial_details, auth)}>
-      <HygeiaWeb.RecordView
-        resource={@person}
-        action={:list}
-        id={"#{@myself}_person_recordview_#{@person.uuid}"}
-        wrapper_tag={:span}
-      >
-        {#if @person.anonymized}
-          <span class="badge rounded-pill bg-warning">{pgettext("Person Header", "Anonymized")}</span>
-        {#else}
-          {@person_display_name}
-        {/if}
-      </HygeiaWeb.RecordView>
-    </h1>
-    <h1 class="mb-4" :if={not authorized?(@person, :partial_details, auth)}>
-      {@person.tenant.subdivision}
-      /
-      {@person.human_readable_id}
-    </h1>
-
-    <HygeiaWeb.PinnedNotes
-      person={@person}
-      id={"#{@myself}_person_pinned_notes_#{@person.uuid}"}
-      :if={authorized?(Hygeia.CaseContext.Note, :list, auth, person: @person)}
-    />
-
-    <ul class="nav nav-tabs">
-      {#if authorized?(@person, :details, auth)}
-        <li class="nav-item">
-          <UriActiveContext
-            to={Routes.person_base_data_path(@socket, :show, @person)}
-            :let={to: to, active: active}
-          >
-            <LiveRedirect to={to} class={"nav-link", active: active}>
-              {gettext("Base Data")}
-            </LiveRedirect>
-          </UriActiveContext>
-        </li>
+  <h1 class="mb-4" :if={authorized?(@person, :partial_details, @auth)}>
+    <HygeiaWeb.RecordView
+      resource={@person}
+      action={:list}
+      id={"#{@myself}_person_recordview_#{@person.uuid}"}
+      wrapper_tag={:span}
+    >
+      {#if @person.anonymized}
+        <span class="badge rounded-pill bg-warning">{pgettext("Person Header", "Anonymized")}</span>
+      {#else}
+        {@person_display_name}
       {/if}
-      <li class="nav-item" :if={authorized?(@person, :versioning, auth)}>
+    </HygeiaWeb.RecordView>
+  </h1>
+  <h1 class="mb-4" :if={not authorized?(@person, :partial_details, @auth)}>
+    {@person.tenant.subdivision}
+    /
+    {@person.human_readable_id}
+  </h1>
+
+  <HygeiaWeb.PinnedNotes
+    person={@person}
+    id={"#{@myself}_person_pinned_notes_#{@person.uuid}"}
+    :if={authorized?(Hygeia.CaseContext.Note, :list, @auth, person: @person)}
+  />
+
+  <ul class="nav nav-tabs">
+    {#if authorized?(@person, :details, @auth)}
+      <li class="nav-item">
         <UriActiveContext
-          to={Routes.version_show_path(@socket, :show, Person.__schema__(:source), @person)}
+          to={Routes.person_base_data_path(@socket, :show, @person)}
           :let={to: to, active: active}
         >
           <LiveRedirect to={to} class={"nav-link", active: active}>
-            {gettext("History")}
+            {gettext("Base Data")}
           </LiveRedirect>
         </UriActiveContext>
       </li>
-      <li class="nav-item" :for={case <- @person.cases} :if={authorized?(case, :details, auth)}>
-        <UriActiveContext
-          to={Routes.case_base_data_path(@socket, :show, case)}
-          :let={to: to, active: active}
-          opts={active: :inclusive}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            {case_display_type(case)}
-            <span class="date ms-2">{case_display_date(case, timezone)}</span>
-            <span
-              :if={case.anonymized}
-              class="position-absolute top-10 start-10 translate-middle badge rounded-pill bg-warning"
-            >
-              {pgettext("Person Header", "Anonymized")}
-              <span class="visually-hidden">{pgettext("Person Header", "This case has been anonymized")}</span>
-            </span>
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
-      <li
-        class="nav-item"
-        :for={case <- @person.cases}
-        :if={not authorized?(case, :details, auth) and authorized?(case, :partial_details, auth) and
-          !Case.closed?(case) and
-          Enum.any?(case.phases, &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))}
+    {/if}
+    <li class="nav-item" :if={authorized?(@person, :versioning, @auth)}>
+      <UriActiveContext
+        to={Routes.version_show_path(@socket, :show, Person.__schema__(:source), @person)}
+        :let={to: to, active: active}
       >
-        <UriActiveContext
-          to={Routes.possible_index_submission_index_path(@socket, :index, case)}
-          :let={to: to, active: active}
-          opts={active: :inclusive}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            <HygeiaWeb.RecordView
-              resource={case}
-              action={:list}
-              id={"#{@myself}_case_recordview_#{case.uuid}"}
-              wrapper_tag={:span}
-            >
-              {case_display_type(case)}
-              <span class="date ms-2">{case_display_date(case, timezone)}</span>
-            </HygeiaWeb.RecordView>
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
-      <li class="nav-item" :if={authorized?(@person, :partial_details, auth)}>
-        <UriActiveContext
-          to={Routes.person_overview_index_path(@socket, :index, @person)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            {gettext("Overview")}
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
-    </ul>
-  </Context>
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {gettext("History")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+    <li class="nav-item" :for={case <- @person.cases} :if={authorized?(case, :details, @auth)}>
+      <UriActiveContext
+        to={Routes.case_base_data_path(@socket, :show, case)}
+        :let={to: to, active: active}
+        opts={active: :inclusive}
+      >
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {case_display_type(case)}
+          <span class="date ms-2">{case_display_date(case, @timezone)}</span>
+          <span
+            :if={case.anonymized}
+            class="position-absolute top-10 start-10 translate-middle badge rounded-pill bg-warning"
+          >
+            {pgettext("Person Header", "Anonymized")}
+            <span class="visually-hidden">{pgettext("Person Header", "This case has been anonymized")}</span>
+          </span>
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+    <li
+      class="nav-item"
+      :for={case <- @person.cases}
+      :if={not authorized?(case, :details, @auth) and authorized?(case, :partial_details, @auth) and
+        !Case.closed?(case) and
+        Enum.any?(case.phases, &match?(%Case.Phase{details: %Case.Phase.Index{}}, &1))}
+    >
+      <UriActiveContext
+        to={Routes.possible_index_submission_index_path(@socket, :index, case)}
+        :let={to: to, active: active}
+        opts={active: :inclusive}
+      >
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          <HygeiaWeb.RecordView
+            resource={case}
+            action={:list}
+            id={"#{@myself}_case_recordview_#{case.uuid}"}
+            wrapper_tag={:span}
+          >
+            {case_display_type(case)}
+            <span class="date ms-2">{case_display_date(case, @timezone)}</span>
+          </HygeiaWeb.RecordView>
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+    <li class="nav-item" :if={authorized?(@person, :partial_details, @auth)}>
+      <UriActiveContext
+        to={Routes.person_overview_index_path(@socket, :index, @person)}
+        :let={to: to, active: active}
+      >
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {gettext("Overview")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+  </ul>
 </div>

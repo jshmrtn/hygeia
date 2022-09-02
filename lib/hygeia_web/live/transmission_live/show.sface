@@ -1,231 +1,229 @@
 <div class="component-transmission-base-data container">
-  <Context get={HygeiaWeb, auth: auth}>
-    <HygeiaWeb.RecordView
-      resource={@transmission}
-      action={:details}
-      id={"transmission_recordview_#{@transmission.uuid}"}
+  <HygeiaWeb.RecordView
+    resource={@transmission}
+    action={:details}
+    id={"transmission_recordview_#{@transmission.uuid}"}
+  >
+    <HygeiaWeb.TransmissionLive.Header transmission={@transmission} id="header" />
+
+    <Form
+      for={@changeset}
+      change="validate"
+      submit="save"
+      opts={autocomplete: "off", id: "transmission-form", "phx-hook": "BlockNavigation"}
     >
-      <HygeiaWeb.TransmissionLive.Header transmission={@transmission} id="header" />
-
-      <Form
-        for={@changeset}
-        change="validate"
-        submit="save"
-        opts={autocomplete: "off", id: "transmission-form", "phx-hook": "BlockNavigation"}
+      <HygeiaWeb.Lock
+        id={"lock_Transmission_#{@transmission.uuid}"}
+        resource={{Transmission, @transmission.uuid}}
+        lock={@live_action == :edit}
       >
-        <HygeiaWeb.Lock
-          id={"lock_Transmission_#{@transmission.uuid}"}
-          resource={{Transmission, @transmission.uuid}}
-          lock={@live_action == :edit}
-        >
-          <div class="card">
-            <div class="card-body">
-              <div class="mb-4" :if={@live_action == :show}>
-                <LivePatch
-                  :if={authorized?(@transmission, :update, auth)}
-                  to={Routes.transmission_show_path(@socket, :edit, @transmission)}
-                >
-                  <button class="btn btn-primary mb-3" id="transmission-edit">
-                    <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                    {gettext("Edit")}
-                  </button>
-                </LivePatch>
-                <Link
-                  to="#"
-                  click="delete"
-                  opts={
-                    title: gettext("Delete"),
-                    data: [confirm: gettext("Are you sure?")]
-                  }
-                  :if={authorized?(@transmission, :delete, auth)}
-                >
-                  <button class="btn btn-danger mb-3">
-                    <span class="oi oi-trash" aria-hidden="true" />
-                    {gettext("Delete")}
-                  </button>
-                </Link>
-              </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="mb-4" :if={@live_action == :show}>
+              <LivePatch
+                :if={authorized?(@transmission, :update, @auth)}
+                to={Routes.transmission_show_path(@socket, :edit, @transmission)}
+              >
+                <button class="btn btn-primary mb-3" id="transmission-edit">
+                  <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+                  {gettext("Edit")}
+                </button>
+              </LivePatch>
+              <Link
+                to="#"
+                click="delete"
+                opts={
+                  title: gettext("Delete"),
+                  data: [confirm: gettext("Are you sure?")]
+                }
+                :if={authorized?(@transmission, :delete, @auth)}
+              >
+                <button class="btn btn-danger mb-3">
+                  <span class="oi oi-trash" aria-hidden="true" />
+                  {gettext("Delete")}
+                </button>
+              </Link>
+            </div>
 
-              <div :if={@live_action == :edit}>
-                <div class="mb-4" :if={@live_action == :edit}>
-                  <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
-                    <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
-                    {gettext("Save")}
-                  </button>
-                  <button
-                    :on-click="reset"
-                    class="btn btn-warning"
-                    type="button"
-                    data-confirm={if @changeset.changes != %{} do
-                      gettext("Do you really want to discard your changes?")
-                    else
-                      nil
-                    end}
-                  >
-                    <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
-                    {gettext("Discard")}
-                  </button>
-                </div>
+            <div :if={@live_action == :edit}>
+              <div class="mb-4" :if={@live_action == :edit}>
+                <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
+                  <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+                  {gettext("Save")}
+                </button>
+                <button
+                  :on-click="reset"
+                  class="btn btn-warning"
+                  type="button"
+                  data-confirm={if @changeset.changes != %{} do
+                    gettext("Do you really want to discard your changes?")
+                  else
+                    nil
+                  end}
+                >
+                  <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+                  {gettext("Discard")}
+                </button>
               </div>
+            </div>
 
-              <div class="form-grid">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">{gettext("Base Data")}</h4>
-                    <div class="row">
-                      <div class="col-12">
-                        <Field name={:type} class="form-group">
-                          <HygeiaWeb.FieldLabel />
-                          <span class="form-control">
-                            {PossibleIndexType.translate(Ecto.Changeset.fetch_field!(@changeset, :type))}
-                          </span>
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                      </div>
-                      <div class="col-12 col-sm-6">
-                        <Field
-                          name={:propagator_internal}
-                          class="form-group"
-                          :if={Ecto.Changeset.fetch_field!(@changeset, :type) in [:contact_person, :other]}
-                        >
-                          <div class="btn-group btn-group-toggle btn-radio-group">
-                            <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
-                            <label class={
-                              "btn",
-                              "btn-outline-primary",
-                              active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil
-                            }>
-                              <RadioButton value="" opts={disabled: @live_action == :show} />
-                              {gettext("No propagator")}
-                            </label>
-                            <label class={
-                              "btn",
-                              "btn-outline-primary",
-                              active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true
-                            }>
-                              <RadioButton value="true" opts={disabled: @live_action == :show} />
-                              {gettext("Internal")}
-                            </label>
-                            <label class={
-                              "btn",
-                              "btn-outline-primary",
-                              active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false
-                            }>
-                              <RadioButton value="false" opts={disabled: @live_action == :show} />
-                              {gettext("External")}
-                            </label>
-                          </div>
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                        <Field
-                          name={:propagator_ism_id}
-                          class="form-group"
-                          :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}
-                        >
-                          <HygeiaWeb.FieldLabel />
-                          <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                        <Field
-                          name={:propagator_case_uuid}
-                          class="form-group"
-                          :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}
-                        >
-                          <HygeiaWeb.FieldLabel />
-                          <HygeiaWeb.CaseLive.Choose
-                            id="propagator_case"
-                            change="change_propagator_case"
-                            id_prefix="propagator_case_value_recordview"
-                            disabled={@live_action == :show}
-                          />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                      </div>
-                      <div class="col-12 col-sm-6">
-                        <Field name={:recipient_internal} class="form-group">
-                          <div class="btn-group btn-group-toggle btn-radio-group">
-                            <label class="input-group-text input-sm">{gettext("Recipient")}:</label>
-                            <label class={
-                              "btn",
-                              "btn-outline-primary",
-                              active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == nil
-                            }>
-                              <RadioButton value="" opts={disabled: @live_action == :show} />
-                              {gettext("No recipient")}
-                            </label>
-                            <label class={
-                              "btn",
-                              "btn-outline-primary",
-                              active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == true
-                            }>
-                              <RadioButton value="true" opts={disabled: @live_action == :show} />
-                              {gettext("Internal")}
-                            </label>
-                            <label class={
-                              "btn",
-                              "btn-outline-primary",
-                              active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == false
-                            }>
-                              <RadioButton value="false" opts={disabled: @live_action == :show} />
-                              {gettext("External")}
-                            </label>
-                          </div>
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                        <Field
-                          name={:recipient_ism_id}
-                          class="form-group"
-                          :if={Ecto.Changeset.get_field(@changeset, :recipient_internal) == false}
-                        >
-                          <HygeiaWeb.FieldLabel />
-                          <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field>
-                        <Field
-                          name={:recipient_case_uuid}
-                          class="form-group"
-                          :if={Ecto.Changeset.get_field(@changeset, :recipient_internal) == true}
-                        >
-                          <HygeiaWeb.FieldLabel />
-                          <HygeiaWeb.CaseLive.Choose
-                            id="recipient_case"
-                            change="change_recipient_case"
-                            id_prefix="recipient_case_value_recordview"
-                            disabled={@live_action == :show}
-                          />
-                          <ErrorTag class="d-block invalid-feedback" />
-                        </Field></div>
+            <div class="form-grid">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">{gettext("Base Data")}</h4>
+                  <div class="row">
+                    <div class="col-12">
+                      <Field name={:type} class="form-group">
+                        <HygeiaWeb.FieldLabel />
+                        <span class="form-control">
+                          {PossibleIndexType.translate(Ecto.Changeset.fetch_field!(@changeset, :type))}
+                        </span>
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
                     </div>
-                    <Field name={:date} class="form-group">
-                      <HygeiaWeb.FieldLabel />
-                      <DateInput class="form-control" opts={disabled: @live_action == :show} />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+                    <div class="col-12 col-sm-6">
+                      <Field
+                        name={:propagator_internal}
+                        class="form-group"
+                        :if={Ecto.Changeset.fetch_field!(@changeset, :type) in [:contact_person, :other]}
+                      >
+                        <div class="btn-group btn-group-toggle btn-radio-group">
+                          <label class="input-group-text input-sm">{gettext("Propagator")}:</label>
+                          <label class={
+                            "btn",
+                            "btn-outline-primary",
+                            active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == nil
+                          }>
+                            <RadioButton value="" opts={disabled: @live_action == :show} />
+                            {gettext("No propagator")}
+                          </label>
+                          <label class={
+                            "btn",
+                            "btn-outline-primary",
+                            active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == true
+                          }>
+                            <RadioButton value="true" opts={disabled: @live_action == :show} />
+                            {gettext("Internal")}
+                          </label>
+                          <label class={
+                            "btn",
+                            "btn-outline-primary",
+                            active: Ecto.Changeset.get_field(@changeset, :propagator_internal) == false
+                          }>
+                            <RadioButton value="false" opts={disabled: @live_action == :show} />
+                            {gettext("External")}
+                          </label>
+                        </div>
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field
+                        name={:propagator_ism_id}
+                        class="form-group"
+                        :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == false}
+                      >
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field
+                        name={:propagator_case_uuid}
+                        class="form-group"
+                        :if={Ecto.Changeset.get_field(@changeset, :propagator_internal) == true}
+                      >
+                        <HygeiaWeb.FieldLabel />
+                        <HygeiaWeb.CaseLive.Choose
+                          id="propagator_case"
+                          change="change_propagator_case"
+                          id_prefix="propagator_case_value_recordview"
+                          disabled={@live_action == :show}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                      <Field name={:recipient_internal} class="form-group">
+                        <div class="btn-group btn-group-toggle btn-radio-group">
+                          <label class="input-group-text input-sm">{gettext("Recipient")}:</label>
+                          <label class={
+                            "btn",
+                            "btn-outline-primary",
+                            active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == nil
+                          }>
+                            <RadioButton value="" opts={disabled: @live_action == :show} />
+                            {gettext("No recipient")}
+                          </label>
+                          <label class={
+                            "btn",
+                            "btn-outline-primary",
+                            active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == true
+                          }>
+                            <RadioButton value="true" opts={disabled: @live_action == :show} />
+                            {gettext("Internal")}
+                          </label>
+                          <label class={
+                            "btn",
+                            "btn-outline-primary",
+                            active: Ecto.Changeset.get_field(@changeset, :recipient_internal) == false
+                          }>
+                            <RadioButton value="false" opts={disabled: @live_action == :show} />
+                            {gettext("External")}
+                          </label>
+                        </div>
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field
+                        name={:recipient_ism_id}
+                        class="form-group"
+                        :if={Ecto.Changeset.get_field(@changeset, :recipient_internal) == false}
+                      >
+                        <HygeiaWeb.FieldLabel />
+                        <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field>
+                      <Field
+                        name={:recipient_case_uuid}
+                        class="form-group"
+                        :if={Ecto.Changeset.get_field(@changeset, :recipient_internal) == true}
+                      >
+                        <HygeiaWeb.FieldLabel />
+                        <HygeiaWeb.CaseLive.Choose
+                          id="recipient_case"
+                          change="change_recipient_case"
+                          id_prefix="recipient_case_value_recordview"
+                          disabled={@live_action == :show}
+                        />
+                        <ErrorTag class="d-block invalid-feedback" />
+                      </Field></div>
                   </div>
+                  <Field name={:date} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <DateInput class="form-control" opts={disabled: @live_action == :show} />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
                 </div>
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">{gettext("Infection Place")}</h4>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">{gettext("Infection Place")}</h4>
 
-                    <Field name={:comment} class="form-group">
-                      <HygeiaWeb.FieldLabel />
-                      <TextArea class="form-control" />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+                  <Field name={:comment} class="form-group">
+                    <HygeiaWeb.FieldLabel />
+                    <TextArea class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
 
-                    <Inputs for={:infection_place}>
-                      <HygeiaWeb.TransmissionLive.InfectionPlace
-                        id="infection_place"
-                        disabled={@live_action == :show}
-                      />
-                    </Inputs>
-                  </div>
+                  <Inputs for={:infection_place}>
+                    <HygeiaWeb.TransmissionLive.InfectionPlace
+                      id="infection_place"
+                      disabled={@live_action == :show}
+                    />
+                  </Inputs>
                 </div>
               </div>
             </div>
           </div>
-        </HygeiaWeb.Lock>
-      </Form>
-    </HygeiaWeb.RecordView>
-  </Context>
+        </div>
+      </HygeiaWeb.Lock>
+    </Form>
+  </HygeiaWeb.RecordView>
 </div>

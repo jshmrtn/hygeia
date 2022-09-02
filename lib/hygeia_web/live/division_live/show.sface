@@ -1,118 +1,116 @@
 <div class="component-organisation-base-data container">
-  <Context get={HygeiaWeb, auth: auth}>
-    <HygeiaWeb.DivisionLive.Header division={@changeset} id="header" />
+  <HygeiaWeb.DivisionLive.Header division={@changeset} id="header" />
 
-    <div class="mb-4" :if={@live_action == :show}>
-      <LivePatch
-        :if={authorized?(@division, :update, auth)}
-        to={Routes.division_show_path(@socket, :edit, @division)}
-      >
-        <button class="btn btn-primary me-2" id="organisation-edit">
-          <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-          {gettext("Edit")}
-        </button>
-      </LivePatch>
-      <Link
-        to="#"
-        click="delete"
-        opts={
-          title: gettext("Delete"),
-          data: [confirm: gettext("Are you sure?")]
-        }
-        :if={authorized?(@division, :delete, auth) and not OrganisationContext.has_affiliations?(@division)}
-      >
-        <button class="btn btn-danger">
-          <span class="oi oi-trash" aria-hidden="true" />
-          {gettext("Delete")}
-        </button>
-      </Link>
-      <Link
-        to="#"
-        click="delete"
-        opts={
-          title: gettext("Delete"),
-          data: [confirm: gettext("Are you sure? There are affiliations assigned!")]
-        }
-        :if={authorized?(@division, :delete, auth) and OrganisationContext.has_affiliations?(@division)}
-      >
-        <button class="btn border-dark btn-danger">
-          <span class="oi oi-trash" aria-hidden="true" />
-          {gettext("Delete")}
-        </button>
-      </Link>
-    </div>
-
-    <Form
-      for={@changeset}
-      change="validate"
-      submit="save"
-      opts={autocomplete: "off", id: "division-form", "phx-hook": "BlockNavigation"}
+  <div class="mb-4" :if={@live_action == :show}>
+    <LivePatch
+      :if={authorized?(@division, :update, @auth)}
+      to={Routes.division_show_path(@socket, :edit, @division)}
     >
-      <HygeiaWeb.Lock
-        id={"lock_Division_#{@division.uuid}"}
-        resource={{Division, @division.uuid}}
-        lock={@live_action == :edit}
-      >
-        <div :if={@live_action == :edit}>
-          <div class="mb-4" :if={@live_action == :edit}>
-            <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
-              <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
-              {gettext("Save")}
-            </button>
-            <button
-              :on-click="reset"
-              class="btn btn-warning"
-              type="button"
-              data-confirm={if @changeset.changes != %{} do
-                gettext("Do you really want to discard your changes?")
-              else
-                nil
-              end}
-            >
-              <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
-              {gettext("Discard")}
-            </button>
+      <button class="btn btn-primary me-2" id="organisation-edit">
+        <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+        {gettext("Edit")}
+      </button>
+    </LivePatch>
+    <Link
+      to="#"
+      click="delete"
+      opts={
+        title: gettext("Delete"),
+        data: [confirm: gettext("Are you sure?")]
+      }
+      :if={authorized?(@division, :delete, @auth) and not OrganisationContext.has_affiliations?(@division)}
+    >
+      <button class="btn btn-danger">
+        <span class="oi oi-trash" aria-hidden="true" />
+        {gettext("Delete")}
+      </button>
+    </Link>
+    <Link
+      to="#"
+      click="delete"
+      opts={
+        title: gettext("Delete"),
+        data: [confirm: gettext("Are you sure? There are affiliations assigned!")]
+      }
+      :if={authorized?(@division, :delete, @auth) and OrganisationContext.has_affiliations?(@division)}
+    >
+      <button class="btn border-dark btn-danger">
+        <span class="oi oi-trash" aria-hidden="true" />
+        {gettext("Delete")}
+      </button>
+    </Link>
+  </div>
+
+  <Form
+    for={@changeset}
+    change="validate"
+    submit="save"
+    opts={autocomplete: "off", id: "division-form", "phx-hook": "BlockNavigation"}
+  >
+    <HygeiaWeb.Lock
+      id={"lock_Division_#{@division.uuid}"}
+      resource={{Division, @division.uuid}}
+      lock={@live_action == :edit}
+    >
+      <div :if={@live_action == :edit}>
+        <div class="mb-4" :if={@live_action == :edit}>
+          <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
+            <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+            {gettext("Save")}
+          </button>
+          <button
+            :on-click="reset"
+            class="btn btn-warning"
+            type="button"
+            data-confirm={if @changeset.changes != %{} do
+              gettext("Do you really want to discard your changes?")
+            else
+              nil
+            end}
+          >
+            <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+            {gettext("Discard")}
+          </button>
+        </div>
+      </div>
+
+      <div class="hy-card-grid-2-cols hy-readonly-form">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{gettext("Name")}</h4>
+
+            <Field name={:title} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" opts={disabled: @live_action == :show} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+
+            <Field name={:description} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <TextArea class="form-control" opts={disabled: @live_action == :show} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
           </div>
         </div>
 
-        <div class="hy-card-grid-2-cols hy-readonly-form">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{gettext("Name")}</h4>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{gettext("Address")}</h4>
 
-              <Field name={:title} class="form-group">
-                <HygeiaWeb.FieldLabel />
-                <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
+            <Field name={:shares_address} class="form-check">
+              <HygeiaWeb.FieldLabel />
+              <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
 
-              <Field name={:description} class="form-group">
-                <HygeiaWeb.FieldLabel />
-                <TextArea class="form-control" opts={disabled: @live_action == :show} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </div>
-          </div>
+            <ErrorTag class="d-block invalid-feedback" field={:address} />
 
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{gettext("Address")}</h4>
-
-              <Field name={:shares_address} class="form-check">
-                <HygeiaWeb.FieldLabel />
-                <Checkbox class="form-check-input" opts={disabled: @live_action == :show} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-
-              <ErrorTag class="d-block invalid-feedback" field={:address} />
-
-              <Inputs for={:address} :if={not Ecto.Changeset.fetch_field!(@changeset, :shares_address)}>
-                <HygeiaWeb.AddressForm disabled={@live_action == :show} id="address" />
-              </Inputs>
-            </div>
+            <Inputs for={:address} :if={not Ecto.Changeset.fetch_field!(@changeset, :shares_address)}>
+              <HygeiaWeb.AddressForm disabled={@live_action == :show} id="address" />
+            </Inputs>
           </div>
         </div>
-      </HygeiaWeb.Lock>
-    </Form>
-  </Context>
+      </div>
+    </HygeiaWeb.Lock>
+  </Form>
 </div>

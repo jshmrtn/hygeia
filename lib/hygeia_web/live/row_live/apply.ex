@@ -14,6 +14,7 @@ defmodule HygeiaWeb.RowLive.Apply do
   alias Hygeia.Repo
   alias Hygeia.TenantContext
   alias Hygeia.UserContext
+  alias Surface.Components.Context
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.Field
@@ -70,7 +71,7 @@ defmodule HygeiaWeb.RowLive.Apply do
         true ->
           Phoenix.PubSub.subscribe(Hygeia.PubSub, "rows:#{id}")
 
-          timezone = context_get(socket, :timezone)
+          timezone = Context.get(socket, HygeiaWeb, :timezone)
 
           inserted_at =
             row.import.inserted_at

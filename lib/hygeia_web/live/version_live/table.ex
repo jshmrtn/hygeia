@@ -12,6 +12,8 @@ defmodule HygeiaWeb.VersionLive.Table do
 
   prop versions, :list, required: true
   prop now, :map, required: true
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+  prop timezone, :string, from_context: {HygeiaWeb, :timezone}
 
   @impl Phoenix.LiveComponent
   def preload(assigns_list),

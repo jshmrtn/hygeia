@@ -1,48 +1,46 @@
 <div class="component-tenant-base-data container">
   <HygeiaWeb.TenantLive.Header tenant={@tenant} id="header" />
 
-  <Context get={HygeiaWeb, auth: auth}>
-    <ul>
-      <li :if={authorized?(@tenant, :export_data, auth, format: :bag_med_16122020_case)}>
-        <Link
-          to={Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_case)}
-          opts={download: "bag_med_16122020_case - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
-        >
-          {gettext("BAG MED 16122020 (Case)")}
-        </Link>
-      </li>
-      <li :if={authorized?(@tenant, :export_data, auth, format: :bag_med_16122020_case)}>
-        <Link
-          to={Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_case, extended: true)}
-          opts={download: "bag_med_16122020_case - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
-        >
-          {gettext("BAG MED 16122020 (Case; Hygeia Extended Fields)")}
-        </Link>
-      </li>
-      <li :if={authorized?(@tenant, :export_data, auth, format: :bag_med_16122020_contact)}>
-        <Link
-          to={Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_contact)}
-          opts={download: "bag_med_16122020_contact - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
-        >
-          {gettext("BAG MED 16122020 (Contact)")}
-        </Link>
-      </li>
-      <li :if={authorized?(@tenant, :export_data, auth, format: :bag_med_16122020_contact)}>
-        <Link
-          to={Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_contact, extended: true)}
-          opts={download: "bag_med_16122020_contact - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
-        >
-          {gettext("BAG MED 16122020 (Contact; Hygeia Extended Fields)")}
-        </Link>
-      </li>
-      <li :if={authorized?(@tenant, :export_data, auth, format: :breakthrough_infection)}>
-        <Link
-          to={Routes.tenant_path(@socket, :export, @tenant, :breakthrough_infection, extended: true)}
-          opts={download: "breakthrough_infections - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
-        >
-          {gettext("Breakthrough Infections")}
-        </Link>
-      </li>
-    </ul>
-  </Context>
+  <ul>
+    <li :if={authorized?(@tenant, :export_data, @auth, format: :bag_med_16122020_case)}>
+      <Link
+        to={Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_case)}
+        opts={download: "bag_med_16122020_case - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
+      >
+        {gettext("BAG MED 16122020 (Case)")}
+      </Link>
+    </li>
+    <li :if={authorized?(@tenant, :export_data, @auth, format: :bag_med_16122020_case)}>
+      <Link
+        to={Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_case, extended: true)}
+        opts={download: "bag_med_16122020_case - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
+      >
+        {gettext("BAG MED 16122020 (Case; Hygeia Extended Fields)")}
+      </Link>
+    </li>
+    <li :if={authorized?(@tenant, :export_data, @auth, format: :bag_med_16122020_contact)}>
+      <Link
+        to={Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_contact)}
+        opts={download: "bag_med_16122020_contact - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
+      >
+        {gettext("BAG MED 16122020 (Contact)")}
+      </Link>
+    </li>
+    <li :if={authorized?(@tenant, :export_data, @auth, format: :bag_med_16122020_contact)}>
+      <Link
+        to={Routes.tenant_path(@socket, :export, @tenant, :bag_med_16122020_contact, extended: true)}
+        opts={download: "bag_med_16122020_contact - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
+      >
+        {gettext("BAG MED 16122020 (Contact; Hygeia Extended Fields)")}
+      </Link>
+    </li>
+    <li :if={authorized?(@tenant, :export_data, @auth, format: :breakthrough_infection)}>
+      <Link
+        to={Routes.tenant_path(@socket, :export, @tenant, :breakthrough_infection, extended: true)}
+        opts={download: "breakthrough_infections - #{@tenant.name} - #{DateTime.utc_now()}.csv"}
+      >
+        {gettext("Breakthrough Infections")}
+      </Link>
+    </li>
+  </ul>
 </div>

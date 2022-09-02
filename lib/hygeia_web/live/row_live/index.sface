@@ -1,66 +1,64 @@
 <div class="component-row-index container">
-  <Context get={HygeiaWeb, auth: auth}>
-    <HygeiaWeb.ImportLive.Header import={@import} id="header" />
+  <HygeiaWeb.ImportLive.Header import={@import} id="header" />
 
-    <h1>
-      {gettext("Listing Rows")}
-    </h1>
+  <h1>
+    {gettext("Listing Rows")}
+  </h1>
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th :for={field <- @list_fields}>
-            {field}
-          </th>
-          <th>
-            {schema_field_name(:status, Row)}
-          </th>
-          <th />
-        </tr>
-      </thead>
-      <tbody id="rows">
-        <tr :for={row <- @rows} id={"row-#{row.uuid}"}>
-          <td :for={field <- @list_fields}>
-            {Row.get_data_field(row, [field])}
-          </td>
-          <td>
-            {Status.translate(row.status)}
-          </td>
-          <td>
-            <div class="d-flex justify-content-end w-100">
-              <LiveRedirect
-                to={Routes.row_apply_path(@socket, :apply, row)}
-                :if={authorized?(row, :details, auth) and row.status == :pending}
-              >
-                <button class="ms-auto btn btn-sm btn-primary">
-                  {pgettext("Inbox Row Index", "Process")}
-                </button>
-              </LiveRedirect>
-              <LiveRedirect
-                to={Routes.row_show_path(@socket, :show, row)}
-                :if={authorized?(row, :details, auth)}
-              >
-                <button class="ms-1 btn btn-sm btn-outline-primary">
-                  {gettext("Show")}
-                </button>
-              </LiveRedirect>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <table class="table">
+    <thead>
+      <tr>
+        <th :for={field <- @list_fields}>
+          {field}
+        </th>
+        <th>
+          {schema_field_name(:status, Row)}
+        </th>
+        <th />
+      </tr>
+    </thead>
+    <tbody id="rows">
+      <tr :for={row <- @rows} id={"row-#{row.uuid}"}>
+        <td :for={field <- @list_fields}>
+          {Row.get_data_field(row, [field])}
+        </td>
+        <td>
+          {Status.translate(row.status)}
+        </td>
+        <td>
+          <div class="d-flex justify-content-end w-100">
+            <LiveRedirect
+              to={Routes.row_apply_path(@socket, :apply, row)}
+              :if={authorized?(row, :details, @auth) and row.status == :pending}
+            >
+              <button class="ms-auto btn btn-sm btn-primary">
+                {pgettext("Inbox Row Index", "Process")}
+              </button>
+            </LiveRedirect>
+            <LiveRedirect
+              to={Routes.row_show_path(@socket, :show, row)}
+              :if={authorized?(row, :details, @auth)}
+            >
+              <button class="ms-1 btn btn-sm btn-outline-primary">
+                {gettext("Show")}
+              </button>
+            </LiveRedirect>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-    <HygeiaWeb.Pagination
-      pagination={@pagination}
-      :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
-      id="pagination"
+  <HygeiaWeb.Pagination
+    pagination={@pagination}
+    :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
+    id="pagination"
+  >
+    <LiveRedirect
+      class="page-link"
+      to={Routes.row_index_path(@socket, :index, @import, @status, cursor_direction, cursor)}
     >
-      <LiveRedirect
-        class="page-link"
-        to={Routes.row_index_path(@socket, :index, @import, @status, cursor_direction, cursor)}
-      >
-        {text}
-      </LiveRedirect>
-    </HygeiaWeb.Pagination>
-  </Context>
+      {text}
+    </LiveRedirect>
+  </HygeiaWeb.Pagination>
 </div>

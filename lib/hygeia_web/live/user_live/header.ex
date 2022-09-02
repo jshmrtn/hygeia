@@ -8,4 +8,5 @@ defmodule HygeiaWeb.UserLive.Header do
   alias Surface.Components.LiveRedirect
 
   prop user, :map, required: true
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
 end

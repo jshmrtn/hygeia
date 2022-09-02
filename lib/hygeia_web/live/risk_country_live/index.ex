@@ -8,7 +8,6 @@ defmodule HygeiaWeb.RiskCountryLive.Index do
   alias Hygeia.RiskCountryContext
   alias Hygeia.RiskCountryContext.RiskCountry
 
-  alias Surface.Components.Context
   alias Surface.Components.Form
   alias Surface.Components.Form.Checkbox
   alias Surface.Components.Form.Field

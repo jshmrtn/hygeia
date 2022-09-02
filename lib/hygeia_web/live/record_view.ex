@@ -10,32 +10,53 @@ defmodule HygeiaWeb.RecordView do
 
   prop wrapper_tag, :atom, default: :div
 
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+  prop ip_address, :tuple, from_context: {HygeiaWeb, :ip_address}
+  prop uri, :string, from_context: {HygeiaWeb, :uri}
+
   slot default
 
   @impl Phoenix.LiveComponent
-  for wrapper_tag <- [:div, :tr, :span, :strong] do
-    def render(%{wrapper_tag: unquote(wrapper_tag)} = assigns) do
-      ~F"""
-      <Context get={HygeiaWeb, auth: auth, ip_address: ip_address, uri: uri}>
-        {raw("<#{@wrapper_tag}>")}
-        {trigger(assigns, %{auth: auth, ip_address: ip_address, uri: uri})}
-        <#slot />
-        {raw("</#{@wrapper_tag}>")}
-      </Context>
-      """
-    end
+  def render(assigns) do
+    trigger(assigns)
+
+    render_contents(assigns)
   end
 
-  defp trigger(assigns, %{auth: auth, ip_address: ip_address, uri: uri}) do
+  defp render_contents(%{wrapper_tag: :div} = assigns) do
+    ~F"""
+    <div><#slot /></div>
+    """
+  end
+
+  defp render_contents(%{wrapper_tag: :tr} = assigns) do
+    ~F"""
+    <tr><#slot /></tr>
+    """
+  end
+
+  defp render_contents(%{wrapper_tag: :span} = assigns) do
+    ~F"""
+    <span><#slot /></span>
+    """
+  end
+
+  defp render_contents(%{wrapper_tag: :strong} = assigns) do
+    ~F"""
+    <strong><#slot /></strong>
+    """
+  end
+
+  defp trigger(assigns) do
     if Enum.any?([:resource, :action, :__context__], &changed?(assigns, &1)) do
       AuditContext.log_view(
         assigns.socket.id,
         case get_auth(assigns.socket) do
-          :anonymous -> auth || :anonymous
+          :anonymous -> assigns.auth || :anonymous
           other -> other
         end,
-        ip_address,
-        uri,
+        assigns.ip_address,
+        assigns.uri,
         assigns.action,
         assigns.resource
       )

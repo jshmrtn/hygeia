@@ -17,7 +17,7 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   alias Surface.Components.Form.ErrorTag
   alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
+
   alias Surface.Components.Form.Inputs
   alias Surface.Components.Form.RadioButton
   alias Surface.Components.LiveRedirect

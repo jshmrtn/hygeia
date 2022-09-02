@@ -1,199 +1,188 @@
 <div class="component-organisation-base-data container">
-  <Context get={HygeiaWeb, auth: auth}>
-    <HygeiaWeb.OrganisationLive.Header organisation={@changeset} id="header" />
+  <HygeiaWeb.OrganisationLive.Header organisation={@changeset} id="header" />
 
-    <Context
-      put={
-        duplicate_organisations:
-          @changeset
-          |> Ecto.Changeset.fetch_field!(:suspected_duplicates_uuid)
-          |> OrganisationContext.list_organisations_by_ids()
-      }
-      get={duplicate_organisations: duplicate_organisations}
+  <details
+    id={"organisation_duplicates_details_#{@organisation.uuid}"}
+    phx-hook="DetailsState"
+    data-uuid={@organisation.uuid}
+    class="alert alert-warning p-3"
+    :if={length(@duplicate_organisations) > 0}
+  >
+    <summary>
+      {ngettext(
+        "This organisation has a possible duplicate.",
+        "This organisation has {count} possible duplicates.",
+        length(@duplicate_organisations)
+      )}
+    </summary>
+    <div
+      :for={%Organisation{name: name, address: address} = organisation <-
+        @duplicate_organisations}
+      class="card mt-2 card-body"
     >
-      <details
-        id={"organisation_duplicates_details_#{@organisation.uuid}"}
-        phx-hook="DetailsState"
-        data-uuid={@organisation.uuid}
-        class="alert alert-warning p-3"
-        :if={length(duplicate_organisations) > 0}
-      >
-        <summary>
-          {ngettext(
-            "This organisation has a possible duplicate.",
-            "This organisation has {count} possible duplicates.",
-            length(duplicate_organisations)
-          )}
-        </summary>
-        <div
-          :for={%Organisation{name: name, address: address} = organisation <-
-            duplicate_organisations}
-          class="card mt-2 card-body"
+      <div class="d-flex justify-content-between align-items-center">
+        <span>
+          {"This organisation is possibly a duplicate of {name_link}, please check."
+          |> gettext(
+            name_link:
+              "#{name} #{if(address, do: "(#{address.place})")}"
+              |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
+              |> safe_to_string
+          )
+          |> raw}
+        </span>
+
+        <LiveRedirect
+          :if={authorized?(@organisation, :update, @auth) and authorized?(organisation, :update, @auth)}
+          class="btn btn-outline-primary btn-sm"
+          to={Routes.organisation_merge_path(@socket, :merge, delete: organisation, into: @organisation)}
         >
-          <div class="d-flex justify-content-between align-items-center">
-            <span>
-              {"This organisation is possibly a duplicate of {name_link}, please check."
-              |> gettext(
-                name_link:
-                  "#{name} #{if(address, do: "(#{address.place})")}"
-                  |> link(to: Routes.organisation_show_path(@socket, :show, organisation), target: "_blank")
-                  |> safe_to_string
-              )
-              |> raw}
-            </span>
-
-            <LiveRedirect
-              :if={authorized?(@organisation, :update, auth) and authorized?(organisation, :update, auth)}
-              class="btn btn-outline-primary btn-sm"
-              to={Routes.organisation_merge_path(@socket, :merge, delete: organisation, into: @organisation)}
-            >
-              {pgettext("Organisation", "Merge")}
-            </LiveRedirect>
-          </div>
-        </div>
-      </details>
-    </Context>
-
-    <div class="mb-4" :if={@live_action == :show}>
-      <LivePatch
-        :if={authorized?(@organisation, :update, auth)}
-        to={Routes.organisation_show_path(@socket, :edit, @organisation)}
-      >
-        <button class="btn btn-primary me-2" id="organisation-edit">
-          <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-          {gettext("Edit")}
-        </button>
-      </LivePatch>
-      <Link
-        to="#"
-        click="delete"
-        opts={
-          title: gettext("Delete"),
-          data: [confirm: gettext("Are you sure?")]
-        }
-        :if={authorized?(@organisation, :delete, auth) and
-          not OrganisationContext.has_affiliations?(@organisation)}
-      >
-        <button class="btn btn-danger">
-          <span class="oi oi-trash" aria-hidden="true" />
-          {gettext("Delete")}
-        </button>
-      </Link>
-      <Link
-        to="#"
-        click="delete"
-        opts={
-          title: gettext("Delete"),
-          data: [confirm: gettext("Are you sure? There are affiliations assigned!")]
-        }
-        :if={authorized?(@organisation, :delete, auth) and OrganisationContext.has_affiliations?(@organisation)}
-      >
-        <button class="btn border-dark btn-danger">
-          <span class="oi oi-trash" aria-hidden="true" />
-          {gettext("Delete")}
-        </button>
-      </Link>
+          {pgettext("Organisation", "Merge")}
+        </LiveRedirect>
+      </div>
     </div>
+  </details>
 
-    <Form
-      for={@changeset}
-      change="validate"
-      submit="save"
-      opts={autocomplete: "off", id: "organisation-form", "phx-hook": "BlockNavigation"}
+  <div class="mb-4" :if={@live_action == :show}>
+    <LivePatch
+      :if={authorized?(@organisation, :update, @auth)}
+      to={Routes.organisation_show_path(@socket, :edit, @organisation)}
     >
-      <HygeiaWeb.Lock
-        id={"lock_Organisation_#{@organisation.uuid}"}
-        resource={{Organisation, @organisation.uuid}}
-        lock={@live_action == :edit}
-      >
-        <div :if={@live_action == :edit}>
-          <div class="mb-4" :if={@live_action == :edit}>
-            <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
-              <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
-              {gettext("Save")}
-            </button>
-            <button
-              :on-click="reset"
-              class="btn btn-warning"
-              type="button"
-              data-confirm={if @changeset.changes != %{} do
-                gettext("Do you really want to discard your changes?")
-              else
-                nil
-              end}
-            >
-              <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
-              {gettext("Discard")}
-            </button>
-          </div>
+      <button class="btn btn-primary me-2" id="organisation-edit">
+        <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+        {gettext("Edit")}
+      </button>
+    </LivePatch>
+    <Link
+      to="#"
+      click="delete"
+      opts={
+        title: gettext("Delete"),
+        data: [confirm: gettext("Are you sure?")]
+      }
+      :if={authorized?(@organisation, :delete, @auth) and
+        not OrganisationContext.has_affiliations?(@organisation)}
+    >
+      <button class="btn btn-danger">
+        <span class="oi oi-trash" aria-hidden="true" />
+        {gettext("Delete")}
+      </button>
+    </Link>
+    <Link
+      to="#"
+      click="delete"
+      opts={
+        title: gettext("Delete"),
+        data: [confirm: gettext("Are you sure? There are affiliations assigned!")]
+      }
+      :if={authorized?(@organisation, :delete, @auth) and
+        OrganisationContext.has_affiliations?(@organisation)}
+    >
+      <button class="btn border-dark btn-danger">
+        <span class="oi oi-trash" aria-hidden="true" />
+        {gettext("Delete")}
+      </button>
+    </Link>
+  </div>
+
+  <Form
+    for={@changeset}
+    change="validate"
+    submit="save"
+    opts={autocomplete: "off", id: "organisation-form", "phx-hook": "BlockNavigation"}
+  >
+    <HygeiaWeb.Lock
+      id={"lock_Organisation_#{@organisation.uuid}"}
+      resource={{Organisation, @organisation.uuid}}
+      lock={@live_action == :edit}
+    >
+      <div :if={@live_action == :edit}>
+        <div class="mb-4" :if={@live_action == :edit}>
+          <button class="btn btn-primary me-2" type="submit" phx-disable-with={gettext("Saving...")}>
+            <span class="oi oi-circle-check" title={gettext("Save")} aria-hidden="true" />
+            {gettext("Save")}
+          </button>
+          <button
+            :on-click="reset"
+            class="btn btn-warning"
+            type="button"
+            data-confirm={if @changeset.changes != %{} do
+              gettext("Do you really want to discard your changes?")
+            else
+              nil
+            end}
+          >
+            <span class="oi oi-circle-x" title={gettext("Discard")} aria-hidden="true" />
+            {gettext("Discard")}
+          </button>
         </div>
+      </div>
 
-        <div class="hy-card-grid-2-cols hy-readonly-form">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{gettext("Name")}</h4>
+      <div class="hy-card-grid-2-cols hy-readonly-form">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{gettext("Name")}</h4>
 
-              <Field name={:name} class="form-group">
-                <HygeiaWeb.FieldLabel />
-                <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
+            <Field name={:name} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <TextInput class="form-control" opts={disabled: @live_action == :show} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
 
-              <div class="row">
-                <div class="col">
-                  <Field name={:type} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <Select
-                      class="form-control"
-                      options={Type.map()}
-                      opts={prompt: gettext("Select Type"), disabled: @live_action == :show}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-                <div :if={Ecto.Changeset.get_field(@changeset, :type) == :school} class="col">
-                  <Field name={:school_type} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <Select
-                      class="form-control"
-                      options={SchoolType.map()}
-                      opts={prompt: gettext("Select school type"), disabled: @live_action == :show}
-                    />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
-                <div :if={Ecto.Changeset.get_field(@changeset, :type) == :other} class="col">
-                  <Field name={:type_other} class="form-group">
-                    <HygeiaWeb.FieldLabel />
-                    <TextInput class="form-control" opts={disabled: @live_action == :show} />
-                    <ErrorTag class="d-block invalid-feedback" />
-                  </Field>
-                </div>
+            <div class="row">
+              <div class="col">
+                <Field name={:type} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <Select
+                    class="form-control"
+                    options={Type.map()}
+                    opts={prompt: gettext("Select Type"), disabled: @live_action == :show}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+              <div :if={Ecto.Changeset.get_field(@changeset, :type) == :school} class="col">
+                <Field name={:school_type} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <Select
+                    class="form-control"
+                    options={SchoolType.map()}
+                    opts={prompt: gettext("Select school type"), disabled: @live_action == :show}
+                  />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
+              </div>
+              <div :if={Ecto.Changeset.get_field(@changeset, :type) == :other} class="col">
+                <Field name={:type_other} class="form-group">
+                  <HygeiaWeb.FieldLabel />
+                  <TextInput class="form-control" opts={disabled: @live_action == :show} />
+                  <ErrorTag class="d-block invalid-feedback" />
+                </Field>
               </div>
             </div>
           </div>
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{gettext("Notes")}</h4>
-              <Field name={:notes} class="form-group">
-                <HygeiaWeb.FieldLabel />
-                <TextArea class="form-control" opts={disabled: @live_action == :show} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{gettext("Address")}</h4>
-
-              <Inputs for={:address}>
-                <HygeiaWeb.AddressForm disabled={@live_action == :show} id="address" />
-              </Inputs>
-            </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{gettext("Notes")}</h4>
+            <Field name={:notes} class="form-group">
+              <HygeiaWeb.FieldLabel />
+              <TextArea class="form-control" opts={disabled: @live_action == :show} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
           </div>
         </div>
-      </HygeiaWeb.Lock>
-    </Form>
-  </Context>
+
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{gettext("Address")}</h4>
+
+            <Inputs for={:address}>
+              <HygeiaWeb.AddressForm disabled={@live_action == :show} id="address" />
+            </Inputs>
+          </div>
+        </div>
+      </div>
+    </HygeiaWeb.Lock>
+  </Form>
 </div>

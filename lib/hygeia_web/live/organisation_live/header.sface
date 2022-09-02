@@ -1,84 +1,82 @@
 <div class="component-person-header mb-4">
-  <Context get={HygeiaWeb, auth: auth}>
-    <h1 class="mb-4" :if={authorized?(@organisation, :details, auth)}>
-      {@display_name}
-    </h1>
-    <h1 class="mb-4" :if={not authorized?(@organisation, :details, auth)}>
-      {@organisation.uuid}
-    </h1>
+  <h1 class="mb-4" :if={authorized?(@organisation, :details, @auth)}>
+    {@display_name}
+  </h1>
+  <h1 class="mb-4" :if={not authorized?(@organisation, :details, @auth)}>
+    {@organisation.uuid}
+  </h1>
 
-    <ul class="nav nav-tabs">
-      <li class="nav-item" :if={authorized?(@organisation, :details, auth)}>
-        <UriActiveContext
-          to={Routes.organisation_show_path(@socket, :show, @organisation)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            {gettext("Base Data")}
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
-      <li class="nav-item" :if={authorized?(Division, :list, auth, organisation: @organisation)}>
-        <UriActiveContext
-          to={Routes.division_index_path(@socket, :index, @organisation)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            {gettext("Divisions")}
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
-      <li class="nav-item" :if={authorized?(Affiliation, :list, auth, organisation: @organisation)}>
-        <UriActiveContext
-          to={Routes.affiliation_index_path(@socket, :index, @organisation)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            {gettext("Affiliations")}
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
-      <li class="nav-item" :if={authorized?(@organisation, :versioning, auth)}>
-        <UriActiveContext
-          to={Routes.version_show_path(@socket, :show, Organisation.__schema__(:source), @organisation)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"nav-link", active: active}>
-            {gettext("History")}
-          </LiveRedirect>
-        </UriActiveContext>
-      </li>
-
-      <HygeiaWeb.Dropdown
-        class="ms-auto"
-        trigger_class="btn btn-sm btn-outline-primary dropdown-toggle"
-        dropdown_class="dropdown-menu-end"
-        id="navigation-dropdown"
+  <ul class="nav nav-tabs">
+    <li class="nav-item" :if={authorized?(@organisation, :details, @auth)}>
+      <UriActiveContext
+        to={Routes.organisation_show_path(@socket, :show, @organisation)}
+        :let={to: to, active: active}
       >
-        <:trigger>
-          {gettext("Actions")}
-        </:trigger>
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {gettext("Base Data")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+    <li class="nav-item" :if={authorized?(Division, :list, @auth, organisation: @organisation)}>
+      <UriActiveContext
+        to={Routes.division_index_path(@socket, :index, @organisation)}
+        :let={to: to, active: active}
+      >
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {gettext("Divisions")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+    <li class="nav-item" :if={authorized?(Affiliation, :list, @auth, organisation: @organisation)}>
+      <UriActiveContext
+        to={Routes.affiliation_index_path(@socket, :index, @organisation)}
+        :let={to: to, active: active}
+      >
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {gettext("Affiliations")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
+    <li class="nav-item" :if={authorized?(@organisation, :versioning, @auth)}>
+      <UriActiveContext
+        to={Routes.version_show_path(@socket, :show, Organisation.__schema__(:source), @organisation)}
+        :let={to: to, active: active}
+      >
+        <LiveRedirect to={to} class={"nav-link", active: active}>
+          {gettext("History")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </li>
 
-        <UriActiveContext
-          :if={authorized?(@organisation, :update, auth)}
-          to={Routes.organisation_merge_path(@socket, :merge, delete: @organisation)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"dropdown-item", "nav-link", active: active}>
-            {pgettext("Organisation", "Merge")}
-          </LiveRedirect>
-        </UriActiveContext>
+    <HygeiaWeb.Dropdown
+      class="ms-auto"
+      trigger_class="btn btn-sm btn-outline-primary dropdown-toggle"
+      dropdown_class="dropdown-menu-end"
+      id="navigation-dropdown"
+    >
+      <:trigger>
+        {gettext("Actions")}
+      </:trigger>
 
-        <UriActiveContext
-          to={Routes.division_create_path(@socket, :create, @organisation)}
-          :if={authorized?(Division, :create, auth, organisation: @organisation)}
-          :let={to: to, active: active}
-        >
-          <LiveRedirect to={to} class={"dropdown-item", "nav-link", active: active}>
-            {gettext("New Division")}
-          </LiveRedirect>
-        </UriActiveContext>
-      </HygeiaWeb.Dropdown>
-    </ul>
-  </Context>
+      <UriActiveContext
+        :if={authorized?(@organisation, :update, @auth)}
+        to={Routes.organisation_merge_path(@socket, :merge, delete: @organisation)}
+        :let={to: to, active: active}
+      >
+        <LiveRedirect to={to} class={"dropdown-item", "nav-link", active: active}>
+          {pgettext("Organisation", "Merge")}
+        </LiveRedirect>
+      </UriActiveContext>
+
+      <UriActiveContext
+        to={Routes.division_create_path(@socket, :create, @organisation)}
+        :if={authorized?(Division, :create, @auth, organisation: @organisation)}
+        :let={to: to, active: active}
+      >
+        <LiveRedirect to={to} class={"dropdown-item", "nav-link", active: active}>
+          {gettext("New Division")}
+        </LiveRedirect>
+      </UriActiveContext>
+    </HygeiaWeb.Dropdown>
+  </ul>
 </div>

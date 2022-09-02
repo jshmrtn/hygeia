@@ -10,7 +10,7 @@ defmodule HygeiaWeb.RowLive.Changes do
   prop row, :map
   prop data, :map
 
-  slot field_value, args: [:key, :value]
+  slot field_value, arg: %{key: :strin, value: :any}
 
   @impl Phoenix.LiveComponent
   def preload(assign_list),

@@ -27,53 +27,51 @@
         opts={class: if(not @case_changeset.valid?, do: "p-2 rounded-3 border border-2 border-danger")}
       >
         <ErrorTag field={:monitoring} class="d-block p-1 alert alert-danger" />
-        <Inputs for={:monitoring}>
-          <InputContext assigns={assigns} :let={form: form}>
-            <Field name={:different_location} class="form-group">
-              <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                <label class={
-                  "btn",
-                  "btn-sm",
-                  "btn-outline-primary",
-                  active: Ecto.Changeset.get_field(form.source, :different_location) == true
-                }>
-                  <RadioButton value />
-                  {gettext("Yes")}
-                </label>
-                <label class={
-                  "btn",
-                  "btn-sm",
-                  "btn-outline-primary",
-                  active: Ecto.Changeset.get_field(form.source, :different_location) == false
-                }>
-                  <RadioButton value={false} />
-                  {gettext("No")}
-                </label>
-              </div>
+        <Inputs for={:monitoring} :let={form: form}>
+          <Field name={:different_location} class="form-group">
+            <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(form.source, :different_location) == true
+              }>
+                <RadioButton value />
+                {gettext("Yes")}
+              </label>
+              <label class={
+                "btn",
+                "btn-sm",
+                "btn-outline-primary",
+                active: Ecto.Changeset.get_field(form.source, :different_location) == false
+              }>
+                <RadioButton value={false} />
+                {gettext("No")}
+              </label>
+            </div>
+            <ErrorTag class="d-block invalid-feedback" />
+          </Field>
+          <div :if={Ecto.Changeset.get_field(form.source, :different_location) == true}>
+            <Field class="form-group" name={:location}>
+              <HygeiaWeb.FieldLabel />
+              <Select
+                class="form-control"
+                opts={prompt: gettext("Choose location")}
+                field={:location}
+                options={Enum.reject(IsolationLocation.map(), &match?({_name, :home}, &1))}
+              />
               <ErrorTag class="d-block invalid-feedback" />
             </Field>
-            <div :if={Ecto.Changeset.get_field(form.source, :different_location) == true}>
-              <Field class="form-group" name={:location}>
-                <HygeiaWeb.FieldLabel />
-                <Select
-                  class="form-control"
-                  opts={prompt: gettext("Choose location")}
-                  field={:location}
-                  options={Enum.reject(IsolationLocation.map(), &match?({_name, :home}, &1))}
-                />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-              <Field class="form-group" name={:location_details}>
-                <HygeiaWeb.FieldLabel />
-                <TextArea class="form-control" field={:location_details} />
-                <ErrorTag class="d-block invalid-feedback" />
-              </Field>
-              <Inputs for={:address}>
-                <HygeiaWeb.AddressForm id="monitoring_address" />
-              </Inputs>
-              <ErrorTag field={:address} class="d-block invalid-feedback" />
-            </div>
-          </InputContext>
+            <Field class="form-group" name={:location_details}>
+              <HygeiaWeb.FieldLabel />
+              <TextArea class="form-control" field={:location_details} />
+              <ErrorTag class="d-block invalid-feedback" />
+            </Field>
+            <Inputs for={:address}>
+              <HygeiaWeb.AddressForm id="monitoring_address" />
+            </Inputs>
+            <ErrorTag field={:address} class="d-block invalid-feedback" />
+          </div>
         </Inputs>
       </Form>
     </div>

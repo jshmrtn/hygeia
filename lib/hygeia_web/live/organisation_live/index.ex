@@ -8,10 +8,8 @@ defmodule HygeiaWeb.OrganisationLive.Index do
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
-  alias Surface.Components.Context
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
-  alias Surface.Components.Form.Input.InputContext
 
   alias Surface.Components.Form.Select
   alias Surface.Components.Link

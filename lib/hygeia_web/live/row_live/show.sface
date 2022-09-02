@@ -1,122 +1,120 @@
 <div class="component-row-show container">
-  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
-    <HygeiaWeb.ImportLive.Header import={@row.import} id="header" />
+  <HygeiaWeb.ImportLive.Header import={@row.import} id="header" />
 
-    <div>
-      <LiveRedirect
-        to={Routes.row_apply_path(@socket, :apply, @row)}
-        :if={authorized?(@row, :details, auth) and @row.status == :pending}
-      >
-        <button class="ms-auto btn btn-primary">
-          {gettext("Apply")}
-        </button>
-      </LiveRedirect>
-      <Link
-        :if={@row.status == :pending}
-        to="#"
-        click="discard"
-        opts={
-          title: gettext("Discard"),
-          data: [confirm: gettext("Are you sure?")]
-        }
-      >
-        <button class="btn btn-danger">
-          <span class="oi oi-trash" aria-hidden="true" />
-          {gettext("Discard")}
-        </button>
-      </Link>
-    </div>
+  <div>
+    <LiveRedirect
+      to={Routes.row_apply_path(@socket, :apply, @row)}
+      :if={authorized?(@row, :details, @auth) and @row.status == :pending}
+    >
+      <button class="ms-auto btn btn-primary">
+        {gettext("Apply")}
+      </button>
+    </LiveRedirect>
+    <Link
+      :if={@row.status == :pending}
+      to="#"
+      click="discard"
+      opts={
+        title: gettext("Discard"),
+        data: [confirm: gettext("Are you sure?")]
+      }
+    >
+      <button class="btn btn-danger">
+        <span class="oi oi-trash" aria-hidden="true" />
+        {gettext("Discard")}
+      </button>
+    </Link>
+  </div>
 
-    <div class="mt-4 mb-3 alert alert-info">
-      <strong>{gettext("Status")}:</strong> {Row.Status.translate(@row.status)}
-    </div>
+  <div class="mt-4 mb-3 alert alert-info">
+    <strong>{gettext("Status")}:</strong> {Row.Status.translate(@row.status)}
+  </div>
 
-    <div class="mb-2 card data-card">
-      <details id="row_data">
-        <summary class="card-header">
-          {#case @row.status}
-            {#match :pending}
-              {pgettext("Inbox Row Show", "Imported Data")}
-            {#match :discarded}
-              {pgettext("Inbox Row Show", "Imported Data")}
-            {#match :resolved}
-              {pgettext("Inbox Row Show", "Processed Data")}
-          {/case}
-        </summary>
-        <div class="card-body hy-readonly-form">
-          <HygeiaWeb.RowLive.Changes
-            row={@row}
-            id="change_result_table"
-            data={Row.get_changes(@row, nil)}
-          />
-        </div>
-      </details>
-    </div>
+  <div class="mb-2 card data-card">
+    <details id="row_data">
+      <summary class="card-header">
+        {#case @row.status}
+          {#match :pending}
+            {pgettext("Inbox Row Show", "Imported Data")}
+          {#match :discarded}
+            {pgettext("Inbox Row Show", "Imported Data")}
+          {#match :resolved}
+            {pgettext("Inbox Row Show", "Processed Data")}
+        {/case}
+      </summary>
+      <div class="card-body hy-readonly-form">
+        <HygeiaWeb.RowLive.Changes
+          row={@row}
+          id="change_result_table"
+          data={Row.get_changes(@row, nil)}
+        />
+      </div>
+    </details>
+  </div>
 
-    <div class="mb-2 card data-card">
-      <details id="row_data">
-        <summary class="card-header">
-          {pgettext("Import Row Show", "Imports that imported this row")}
-        </summary>
-        <div class="card-body">
-          <HygeiaWeb.ImportLive.Table
-            id="imports_table"
-            imports={Enum.sort_by(@row.imports, & &1.inserted_at, {:desc, DateTime})}
-            show_controls={false}
-          />
-        </div>
-      </details>
-    </div>
+  <div class="mb-2 card data-card">
+    <details id="row_data">
+      <summary class="card-header">
+        {pgettext("Import Row Show", "Imports that imported this row")}
+      </summary>
+      <div class="card-body">
+        <HygeiaWeb.ImportLive.Table
+          id="imports_table"
+          imports={Enum.sort_by(@row.imports, & &1.inserted_at, {:desc, DateTime})}
+          show_controls={false}
+        />
+      </div>
+    </details>
+  </div>
 
-    <div class="mt-4" :if={@row.case}>
-      <label>{gettext("Case")}:</label>
+  <div class="mt-4" :if={@row.case}>
+    <label>{gettext("Case")}:</label>
 
-      <div class="card">
-        <div class="card-body py-2 px-3">
-          <div>
-            <Link
-              to={Routes.person_base_data_path(@socket, :show, @row.case.person)}
-              :if={authorized?(@row.case.person, :details, auth)}
+    <div class="card">
+      <div class="card-body py-2 px-3">
+        <div>
+          <Link
+            to={Routes.person_base_data_path(@socket, :show, @row.case.person)}
+            :if={authorized?(@row.case.person, :details, @auth)}
+          >
+            <HygeiaWeb.RecordView
+              resource={@row.case.person}
+              action={:list}
+              id="record_view_person"
+              wrapper_tag={:span}
             >
-              <HygeiaWeb.RecordView
-                resource={@row.case.person}
-                action={:list}
-                id="record_view_person"
-                wrapper_tag={:span}
-              >
-                {@row.case.person.first_name}
-                {@row.case.person.last_name}
-              </HygeiaWeb.RecordView>
-            </Link>
-            <div :if={not authorized?(@row.case.person, :details, auth)}>
-              {@row.case.person.tenant.subdivision}
-              /
-              {@row.case.person.human_readable_id}
-            </div>
-
-            <Link
-              class="d-flex align-items-center"
-              to={Routes.case_base_data_path(@socket, :show, @row.case)}
-              :if={authorized?(@row.case, :details, auth)}
-            >
-              <HygeiaWeb.RecordView
-                resource={@row.case}
-                action={:list}
-                id="record_view_case"
-                wrapper_tag={:span}
-              >
-                <small class="d-block">{case_display_type(@row.case)}</small>
-                <small class="d-block">{case_display_date(@row.case, timezone)}</small>
-              </HygeiaWeb.RecordView>
-            </Link>
-            <span :if={not authorized?(@row.case, :details, auth)}>
-              {@row.case.tenant.subdivision}
-              /
-              {@row.case.human_readable_id}
-            </span>
+              {@row.case.person.first_name}
+              {@row.case.person.last_name}
+            </HygeiaWeb.RecordView>
+          </Link>
+          <div :if={not authorized?(@row.case.person, :details, @auth)}>
+            {@row.case.person.tenant.subdivision}
+            /
+            {@row.case.person.human_readable_id}
           </div>
+
+          <Link
+            class="d-flex align-items-center"
+            to={Routes.case_base_data_path(@socket, :show, @row.case)}
+            :if={authorized?(@row.case, :details, @auth)}
+          >
+            <HygeiaWeb.RecordView
+              resource={@row.case}
+              action={:list}
+              id="record_view_case"
+              wrapper_tag={:span}
+            >
+              <small class="d-block">{case_display_type(@row.case)}</small>
+              <small class="d-block">{case_display_date(@row.case, @timezone)}</small>
+            </HygeiaWeb.RecordView>
+          </Link>
+          <span :if={not authorized?(@row.case, :details, @auth)}>
+            {@row.case.tenant.subdivision}
+            /
+            {@row.case.human_readable_id}
+          </span>
         </div>
       </div>
     </div>
-  </Context>
+  </div>
 </div>

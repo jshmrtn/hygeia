@@ -5,7 +5,7 @@ defmodule HygeiaWeb.Pagination do
 
   use HygeiaWeb, :surface_live_component
 
-  slot default, args: [:cursor_direction, :cursor, :text]
+  slot default, arg: %{cursor_direction: :string, cursor: :string, text: :string}
 
   prop pagination, :map, required: true
 
@@ -14,7 +14,7 @@ defmodule HygeiaWeb.Pagination do
     ~F"""
     <ul class="pagination justify-content-center">
       <li class="page-item" :if={not is_nil(@pagination.before)}>
-        <#slot :args={cursor_direction: "before", cursor: @pagination.before, text: gettext("Previous")} />
+        <#slot {@default, cursor_direction: "before", cursor: @pagination.before, text: gettext("Previous")} />
       </li>
       <li class="page-item disabled" :if={is_nil(@pagination.before)}>
         <span class="page-link">{gettext("Previous")}</span>
@@ -28,7 +28,7 @@ defmodule HygeiaWeb.Pagination do
         </span>
       </li>
       <li class="page-item" :if={not is_nil(@pagination.after)}>
-        <#slot :args={cursor_direction: "after", cursor: @pagination.after, text: gettext("Next")} />
+        <#slot {@default, cursor_direction: "after", cursor: @pagination.after, text: gettext("Next")} />
       </li>
       <li class="page-item disabled" :if={is_nil(@pagination.after)}>
         <span class="page-link">{gettext("Next")}</span>

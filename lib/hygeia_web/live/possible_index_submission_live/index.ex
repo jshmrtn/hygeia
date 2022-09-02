@@ -10,7 +10,6 @@ defmodule HygeiaWeb.PossibleIndexSubmissionLive.Index do
   alias Hygeia.CaseContext.Person
   alias Hygeia.CaseContext.PossibleIndexSubmission
   alias Hygeia.Repo
-  alias Surface.Components.Context
   alias Surface.Components.LiveRedirect
 
   @impl Phoenix.LiveView

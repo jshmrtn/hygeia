@@ -128,80 +128,78 @@
 
         <div :if={get_field(@changeset, :has_flown)}>
           <div class="hy-card-grid-2-cols">
-            <Inputs for={:flights}>
-              <InputContext assigns={assigns} :let={form: flight}>
-                <div class="card">
-                  <div class="card-body">
-                    <HiddenInput field={:uuid} />
-                    <Field class="form-group" name={:flight_date}>
-                      <HygeiaWeb.FieldLabel />
-                      <HygeiaWeb.DateInput
-                        class="form-control"
-                        opts={Enum.zip([:min, :max], @case |> get_inquiry_dates() |> Tuple.to_list())}
-                      />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+            <Inputs for={:flights} :let={form: flight}>
+              <div class="card">
+                <div class="card-body">
+                  <HiddenInput field={:uuid} />
+                  <Field class="form-group" name={:flight_date}>
+                    <HygeiaWeb.FieldLabel />
+                    <HygeiaWeb.DateInput
+                      class="form-control"
+                      opts={Enum.zip([:min, :max], @case |> get_inquiry_dates() |> Tuple.to_list())}
+                    />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
 
-                    <Field class="form-group" name={:departure_place}>
-                      <HygeiaWeb.FieldLabel />
-                      <TextInput class="form-control" />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+                  <Field class="form-group" name={:departure_place}>
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
 
-                    <Field class="form-group" name={:arrival_place}>
-                      <HygeiaWeb.FieldLabel />
-                      <TextInput class="form-control" />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+                  <Field class="form-group" name={:arrival_place}>
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
 
-                    <Field class="form-group" name={:flight_number}>
-                      <HygeiaWeb.FieldLabel />
-                      <TextInput class="form-control" />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+                  <Field class="form-group" name={:flight_number}>
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
 
-                    <Field class="form-group" name={:seat_number}>
-                      <HygeiaWeb.FieldLabel />
-                      <TextInput class="form-control" />
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+                  <Field class="form-group" name={:seat_number}>
+                    <HygeiaWeb.FieldLabel />
+                    <TextInput class="form-control" />
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
 
-                    <p>{gettext("Did you wear the mask during the whole flight?")}</p>
-                    <Field name={:wore_mask} class="form-group">
-                      <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
-                        <label class={
-                          "btn",
-                          "btn-sm",
-                          "btn-outline-primary",
-                          active: get_field(flight.source, :wore_mask) == true
-                        }>
-                          <RadioButton value />
-                          {gettext("Yes")}
-                        </label>
-                        <label class={
-                          "btn",
-                          "btn-sm",
-                          "btn-outline-primary",
-                          active: get_field(flight.source, :wore_mask) == false
-                        }>
-                          <RadioButton value={false} />
-                          {gettext("No")}
-                        </label>
-                      </div>
-                      <ErrorTag class="d-block invalid-feedback" />
-                    </Field>
+                  <p>{gettext("Did you wear the mask during the whole flight?")}</p>
+                  <Field name={:wore_mask} class="form-group">
+                    <div class="btn-group disabled display-only btn-group-toggle btn-radio-group">
+                      <label class={
+                        "btn",
+                        "btn-sm",
+                        "btn-outline-primary",
+                        active: get_field(flight.source, :wore_mask) == true
+                      }>
+                        <RadioButton value />
+                        {gettext("Yes")}
+                      </label>
+                      <label class={
+                        "btn",
+                        "btn-sm",
+                        "btn-outline-primary",
+                        active: get_field(flight.source, :wore_mask) == false
+                      }>
+                        <RadioButton value={false} />
+                        {gettext("No")}
+                      </label>
+                    </div>
+                    <ErrorTag class="d-block invalid-feedback" />
+                  </Field>
 
-                    <button
-                      class="btn btn-danger mb-4"
-                      type="button"
-                      :on-click="remove_flight"
-                      value={fetch_field!(flight.source, :uuid)}
-                    >
-                      <span class="oi oi-trash" aria-hidden="true" />
-                    </button>
-                  </div>
+                  <button
+                    class="btn btn-danger mb-4"
+                    type="button"
+                    :on-click="remove_flight"
+                    value={fetch_field!(flight.source, :uuid)}
+                  >
+                    <span class="oi oi-trash" aria-hidden="true" />
+                  </button>
                 </div>
-              </InputContext>
+              </div>
             </Inputs>
           </div>
           <div class="mt-4">

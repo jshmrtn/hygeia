@@ -6,25 +6,23 @@ defmodule HygeiaWeb.PolimorphicInputs do
   import PolymorphicEmbed.HTML.Form
   import Phoenix.HTML.Form, only: [hidden_inputs_for: 1]
 
-  alias Surface.Components.Form.Input.InputContext
+  alias Surface.Components.Form
 
-  slot default, args: [:form]
+  slot default, arg: %{form: :form}
 
+  prop form, :form, from_context: {Form, :form}
   prop field, :string, required: true
   prop type, :atom, required: true
 
   @impl Phoenix.LiveComponent
   def render(assigns) do
     ~F"""
-    <InputContext assigns={assigns} :let={form: form}>
-      <Context
-        :for={f <- to_form(form.source, form, @field, @type, Keyword.take(form.options, [:multipart]))}
-        put={Surface.Components.Form, form: f}
-      >
+    <div>
+      <div :for={f <- to_form(@form.source, @form, @field, @type, Keyword.take(@form.options, [:multipart]))}>
         {hidden_inputs_for(f)}
-        <#slot :args={form: f} />
-      </Context>
-    </InputContext>
+        <#slot {@default, form: f} context_put={Form, form: f} />
+      </div>
+    </div>
     """
   end
 end

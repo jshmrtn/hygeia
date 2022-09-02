@@ -6,14 +6,15 @@ defmodule HygeiaWeb.FieldLabel do
   import HygeiaWeb.Helpers.FieldName
   import Surface.Components.Form.Utils
 
-  alias Surface.Components.Form.Input.InputContext
+  alias Surface.Components.Form
+  alias Surface.Components.Form.Field
   alias Surface.Components.Form.Label
 
   @doc "The form identifier"
-  prop form, :form
+  prop form, :form, from_context: {Form, :form}
 
   @doc "The field name"
-  prop field, :atom
+  prop field, :atom, from_context: {Field, :field}
 
   @doc "The CSS class for the underlying tag"
   prop class, :css_class
@@ -27,7 +28,7 @@ defmodule HygeiaWeb.FieldLabel do
   @doc """
   The text for the label
   """
-  slot default, args: [:name, :schema, :field]
+  slot default, arg: %{name: :string, schema: :atom, field: :atom}
 
   @impl Surface.Component
   def render(assigns) do
@@ -36,24 +37,23 @@ defmodule HygeiaWeb.FieldLabel do
     # The duplication is not refactored nicely since props does not accept the output of a function call directly
 
     ~F"""
-    <InputContext assigns={assigns} :let={form: form, field: field}>
-      <Label form={form} field={field} class={@class} opts={@opts}>
-        <#slot :args={
-          schema: get_schema_name(helper_opts, form),
-          field: cut_relation_uuid(field, get_schema_name(helper_opts, form)),
-          name:
-            schema_field_name(
-              cut_relation_uuid(field, get_schema_name(helper_opts, form)),
-              get_schema_name(helper_opts, form)
-            )
-        }>
-          {schema_field_name(
-            cut_relation_uuid(field, get_schema_name(helper_opts, form)),
-            get_schema_name(helper_opts, form)
-          )}
-        </#slot>
-      </Label>
-    </InputContext>
+    <Label form={@form} field={@field} class={@class} opts={@opts}>
+      <#slot {
+        @default,
+        schema: get_schema_name(helper_opts, @form),
+        field: cut_relation_uuid(@field, get_schema_name(helper_opts, @form)),
+        name:
+          schema_field_name(
+            cut_relation_uuid(@field, get_schema_name(helper_opts, @form)),
+            get_schema_name(helper_opts, @form)
+          )
+      }>
+        {schema_field_name(
+          cut_relation_uuid(@field, get_schema_name(helper_opts, @form)),
+          get_schema_name(helper_opts, @form)
+        )}
+      </#slot>
+    </Label>
     """
   end
 

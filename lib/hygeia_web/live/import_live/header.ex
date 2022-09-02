@@ -13,6 +13,9 @@ defmodule HygeiaWeb.ImportLive.Header do
 
   prop import, :map, required: true
 
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+  prop timezone, :string, from_context: {HygeiaWeb, :timezone}
+
   data counts, :map
 
   @impl Phoenix.LiveComponent

@@ -13,6 +13,9 @@ defmodule HygeiaWeb.PersonLive.Header do
   # Changeset or actual Person
   prop person, :map, required: true
 
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+  prop timezone, :string, from_context: {HygeiaWeb, :timezone}
+
   @impl Phoenix.LiveComponent
   def update(
         %{person: %Changeset{data: data} = changeset} = _assigns,

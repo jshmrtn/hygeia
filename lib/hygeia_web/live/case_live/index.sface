@@ -1,467 +1,464 @@
 <div class="component-case-index container">
-  <Context get={HygeiaWeb, auth: auth, timezone: timezone}>
-    <h1 class="mb-3">
-      {gettext("Listing Cases")}
-    </h1>
+  <h1 class="mb-3">
+    {gettext("Listing Cases")}
+  </h1>
 
-    <div class="d-flex">
-      <LivePatch
-        class="me-2"
-        to={Routes.case_create_path(@socket, :create, return_to: Routes.case_index_path(@socket, :index))}
-        :if={authorized?(Case, :create, auth, tenant: :any)}
-      >
-        <button type="button" class="mb-2 mt-3 btn btn-primary">
-          <span class="oi oi-plus" aria-hidden="true" />
-          {gettext("New Case")}
+  <div class="d-flex">
+    <LivePatch
+      class="me-2"
+      to={Routes.case_create_path(@socket, :create, return_to: Routes.case_index_path(@socket, :index))}
+      :if={authorized?(Case, :create, @auth, tenant: :any)}
+    >
+      <button type="button" class="mb-2 mt-3 btn btn-primary">
+        <span class="oi oi-plus" aria-hidden="true" />
+        {gettext("New Case")}
+      </button>
+    </LivePatch>
+
+    <LivePatch
+      class="me-2"
+      to={Routes.case_create_possible_index_path(@socket, :create,
+        return_to: Routes.case_index_path(@socket, :index)
+      )}
+      :if={authorized?(Case, :create, @auth, tenant: :any)}
+    >
+      <button type="button" class="mb-2 mt-3 btn btn-primary">
+        <span class="oi oi-plus" aria-hidden="true" />
+        {gettext("New Possible Index")}
+      </button>
+    </LivePatch>
+
+    <HygeiaWeb.Dropdown
+      class="ms-auto"
+      trigger_class="mt-3"
+      dropdown_class="dropdown-menu-end p-3 filter-dropdown container"
+      id="filter-dropdown"
+    >
+      <:trigger>
+        <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
+          <span class="oi oi-cog" aria-hidden="true" />
+          {gettext("Filter")}
         </button>
-      </LivePatch>
-
-      <LivePatch
-        class="me-2"
-        to={Routes.case_create_possible_index_path(@socket, :create,
-          return_to: Routes.case_index_path(@socket, :index)
-        )}
-        :if={authorized?(Case, :create, auth, tenant: :any)}
-      >
-        <button type="button" class="mb-2 mt-3 btn btn-primary">
-          <span class="oi oi-plus" aria-hidden="true" />
-          {gettext("New Possible Index")}
-        </button>
-      </LivePatch>
-
-      <HygeiaWeb.Dropdown
-        class="ms-auto"
-        trigger_class="mt-3"
-        dropdown_class="dropdown-menu-end p-3 filter-dropdown container"
-        id="filter-dropdown"
-      >
-        <:trigger>
-          <button class="btn btn-outline-primary" type="button" aria-haspopup="true" aria-expanded="false">
-            <span class="oi oi-cog" aria-hidden="true" />
-            {gettext("Filter")}
-          </button>
-        </:trigger>
-        <:default>
-          <div class="d-flex mb-3">
-            <h4 class="m-0">{gettext("Filter")}</h4>
-            <LivePatch class="ms-auto" to={page_url(@socket, [], %{}, %{})}>
-              <button class="btn btn-outline-info" type="button" aria-haspopup="true" aria-expanded="false">
-                <span class="oi oi-reload" aria-hidden="true" />
-                {gettext("Reset filters")}
-              </button>
-            </LivePatch>
-          </div>
-          <Form
-            for={@filters}
-            change="filter"
-            submit="filter"
-            opts={autocomplete: "off", id: "filter-form", as: :filter}
-          >
-            <InputContext assigns={assigns} :let={form: form}>
-              <div class="row">
-                <div class="col-md-4 col-sm-12">
-                  <Field name="tenant_cases" class="form-group">
-                    <Label class="checkbox-label">{gettext("Tenant")}</Label>
-                    <MultipleSelect
-                      class="form-control"
-                      options={Enum.map(@tenants, &{&1.name, &1.uuid})}
-                      opts={size: 15}
-                    />
-                  </Field>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                  <div class="form-group">
-                    <label class="d-block">{schema_field_name(:tracer, Case)}</label>
-                    <FieldContext name={:tracer_uuid}>
-                      <MultipleSelect
-                        class="form-control"
-                        options={Enum.map(@tracer_users, &{&1.display_name, &1.uuid})}
-                        opts={size: 15}
-                      />
-                    </FieldContext>
-                  </div>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                  <div class="form-group">
-                    <label class="d-block">{schema_field_name(:supervisor, Case)}</label>
-                    <FieldContext name={:supervisor_uuid}>
-                      <MultipleSelect
-                        class="form-control"
-                        options={Enum.map(@supervisor_users, &{&1.display_name, &1.uuid})}
-                        opts={size: 15}
-                      />
-                    </FieldContext>
-                  </div>
-                </div></div>
-              <div class="row">
-                <div class="col-md-4 col-sm-12">
-                  <div class="form-group">
-                    <label class="d-block">{schema_field_name(:status, Case)}</label>
-                    <label class="d-block" :for={{name, key} <- Status.map()}>
-                      <input
-                        type="checkbox"
-                        name={input_name(form, :status) <> "[]"}
-                        checked={Atom.to_string(key) in (form.source["status"] || [])}
-                        value={key}
-                      />
-                      {name}
-                    </label>
-                  </div>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                  <div class="form-group">
-                    <label class="d-block">{schema_field_name(:complexity, Case)}</label>
-                    <label :for={{name, key} <- Case.Complexity.map()} class="d-block checkbox-label">
-                      <input
-                        type="checkbox"
-                        name={input_name(form, :complexity) <> "[]"}
-                        checked={Atom.to_string(key) in (form.source["complexity"] || [])}
-                        value={key}
-                      />
-                      {name}
-                    </label>
-                  </div>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                  <div class="form-group">
-                    <label class="d-block">{gettext("Includes Phase Type")}</label>
-                    <Field name="phase_type" class="form-check form-check-inline">
-                      <label class="form-check-label radio-label">
-                        <RadioButton class="form-check-input" value="" />
-                        {gettext("Any")}
-                      </label>
-                    </Field>
-                    <Field name="phase_type" class="form-check form-check-inline">
-                      <label class="form-check-label radio-label">
-                        <RadioButton class="form-check-input" value="index" />
-                        {gettext("Index")}
-                      </label>
-                    </Field>
-                    <Field name="phase_type" class="form-check form-check-inline">
-                      <label class="form-check-label radio-label">
-                        <RadioButton class="form-check-input" value="possible_index" />
-                        {gettext("Possible Index")}
-                      </label>
-                    </Field>
-                  </div>
-                  <div class="form-group">
-                    <label class="d-block">{gettext("Show cases")}</label>
-                    <Field name="anonymization" class="form-check form-check-inline">
-                      <label class="form-check-label radio-label">
-                        <RadioButton class="form-check-input" value="any" />
-                        {gettext("Any")}
-                      </label>
-                    </Field>
-                    <Field name="anonymization" class="form-check form-check-inline">
-                      <label class="form-check-label radio-label">
-                        <RadioButton class="form-check-input" value="anonymized" />
-                        {gettext("Anonymized")}
-                      </label>
-                    </Field>
-                    <Field name="anonymization" class="form-check form-check-inline">
-                      <label class="form-check-label radio-label">
-                        <RadioButton class="form-check-input" value="not_anonymized" />
-                        {gettext("Not anonymized")}
-                      </label>
-                    </Field>
-                  </div>
-                </div>
-              </div>
-
-              <hr class="mb-3">
-              <div class="row">
-                <div class="col-md-6 col-sm-12">
-                  <Field name="fully_vaccinated" class="form-group">
-                    <Label class="checkbox-label">
-                      <Checkbox />
-                      {gettext("Fully Vaccinated")}
-                    </Label>
-                  </Field>
-                </div>
-
-                <div class="col-md-6 col-sm-12">
-                  <Field name="vaccination_failures" class="form-group">
-                    <Label class="checkbox-label">
-                      <Checkbox />
-                      {gettext("Vaccination Failures")}
-                    </Label>
-                  </Field>
-                </div></div>
-
-              <Field name="inserted_at" class="form-group">
-                <div class="row">
-                  <div class="col-md-6 col-sm-12">
-                    <Label class="d-block">{schema_field_name(:inserted_at, Case)}</Label>
-
-                    <FieldContext name={:inserted_at_from}>
-                      <HygeiaWeb.DateTimeLocalInput class="form-control" />
-                    </FieldContext>
-                  </div>
-                  <div class="col-md-6 col-sm-12">
-                    <Label class="d-block">{pgettext("Date Range", "until")}</Label>
-                    <FieldContext name={:inserted_at_to}>
-                      <HygeiaWeb.DateTimeLocalInput class="form-control" />
-                    </FieldContext>
-                  </div>
-                </div>
+      </:trigger>
+      <:default>
+        <div class="d-flex mb-3">
+          <h4 class="m-0">{gettext("Filter")}</h4>
+          <LivePatch class="ms-auto" to={page_url(@socket, [], %{}, %{})}>
+            <button class="btn btn-outline-info" type="button" aria-haspopup="true" aria-expanded="false">
+              <span class="oi oi-reload" aria-hidden="true" />
+              {gettext("Reset filters")}
+            </button>
+          </LivePatch>
+        </div>
+        <Form
+          for={@filters}
+          change="filter"
+          submit="filter"
+          opts={autocomplete: "off", id: "filter-form", as: :filter}
+          :let={form: form}
+        >
+          <div class="row">
+            <div class="col-md-4 col-sm-12">
+              <Field name="tenant_cases" class="form-group">
+                <Label class="checkbox-label">{gettext("Tenant")}</Label>
+                <MultipleSelect
+                  class="form-control"
+                  options={Enum.map(@tenants, &{&1.name, &1.uuid})}
+                  opts={size: 15}
+                />
               </Field>
-
-              <div class="row">
-                <div class="col-md-6 col-sm-12">
-                  <div class="form-group">
-                    <label class="d-block">{gettext("Auto Tracing Problem")}</label>
-
-                    <Field name="no_auto_tracing_problems">
-                      <Label class="d-block checkbox-label">
-                        <Checkbox />
-                        {gettext("No Auto Tracing Problems")}
-                      </Label>
-                    </Field>
-
-                    <label :for={{name, key} <- AutoTracing.Problem.map()} class="d-block checkbox-label">
-                      <input
-                        type="checkbox"
-                        name={input_name(form, :auto_tracing_problem) <> "[]"}
-                        checked={Atom.to_string(key) in (form.source["auto_tracing_problem"] || [])}
-                        value={key}
-                      />
-                      {name}
-                    </label>
-                  </div>
-                </div>
-                <div class="col-md-6 col-sm-12">
-                  <div class="form-group">
-                    <label class="d-block">{gettext("Auto Tracing active")}</label>
-                    <Field name="auto_tracing_active" class="form-check form-check-inline">
-                      <label class="form-check-label radio-label">
-                        <RadioButton class="form-check-input" value="" />
-                        {gettext("Any")}
-                      </label>
-                    </Field>
-                    <Field name="auto_tracing_active" class="form-check form-check-inline">
-                      <label class="form-check-label radio-label">
-                        <RadioButton class="form-check-input" value />
-                        {gettext("Yes")}
-                      </label>
-                    </Field>
-                    <Field name="auto_tracing_active" class="form-check form-check-inline">
-                      <label class="form-check-label radio-label">
-                        <RadioButton class="form-check-input" value={false} />
-                        {gettext("False")}
-                      </label>
-                    </Field>
-                    <Field name="auto_tracing_active" class="form-check form-check-inline">
-                      <label class="form-check-label radio-label">
-                        <RadioButton class="form-check-input" value="complete" />
-                        {gettext("Complete")}
-                      </label>
-                    </Field>
-                  </div>
-                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+              <div class="form-group">
+                <label class="d-block">{schema_field_name(:tracer, Case)}</label>
+                <FieldContext name={:tracer_uuid}>
+                  <MultipleSelect
+                    class="form-control"
+                    options={Enum.map(@tracer_users, &{&1.display_name, &1.uuid})}
+                    opts={size: 15}
+                  />
+                </FieldContext>
               </div>
-            </InputContext>
-          </Form>
-        </:default>
-      </HygeiaWeb.Dropdown>
-    </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+              <div class="form-group">
+                <label class="d-block">{schema_field_name(:supervisor, Case)}</label>
+                <FieldContext name={:supervisor_uuid}>
+                  <MultipleSelect
+                    class="form-control"
+                    options={Enum.map(@supervisor_users, &{&1.display_name, &1.uuid})}
+                    opts={size: 15}
+                  />
+                </FieldContext>
+              </div>
+            </div></div>
+          <div class="row">
+            <div class="col-md-4 col-sm-12">
+              <div class="form-group">
+                <label class="d-block">{schema_field_name(:status, Case)}</label>
+                <label class="d-block" :for={{name, key} <- Status.map()}>
+                  <input
+                    type="checkbox"
+                    name={input_name(form, :status) <> "[]"}
+                    checked={Atom.to_string(key) in (form.source["status"] || [])}
+                    value={key}
+                  />
+                  {name}
+                </label>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+              <div class="form-group">
+                <label class="d-block">{schema_field_name(:complexity, Case)}</label>
+                <label :for={{name, key} <- Case.Complexity.map()} class="d-block checkbox-label">
+                  <input
+                    type="checkbox"
+                    name={input_name(form, :complexity) <> "[]"}
+                    checked={Atom.to_string(key) in (form.source["complexity"] || [])}
+                    value={key}
+                  />
+                  {name}
+                </label>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+              <div class="form-group">
+                <label class="d-block">{gettext("Includes Phase Type")}</label>
+                <Field name="phase_type" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="" />
+                    {gettext("Any")}
+                  </label>
+                </Field>
+                <Field name="phase_type" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="index" />
+                    {gettext("Index")}
+                  </label>
+                </Field>
+                <Field name="phase_type" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="possible_index" />
+                    {gettext("Possible Index")}
+                  </label>
+                </Field>
+              </div>
+              <div class="form-group">
+                <label class="d-block">{gettext("Show cases")}</label>
+                <Field name="anonymization" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="any" />
+                    {gettext("Any")}
+                  </label>
+                </Field>
+                <Field name="anonymization" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="anonymized" />
+                    {gettext("Anonymized")}
+                  </label>
+                </Field>
+                <Field name="anonymization" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="not_anonymized" />
+                    {gettext("Not anonymized")}
+                  </label>
+                </Field>
+              </div>
+            </div>
+          </div>
 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>
-            <HygeiaWeb.Sort
-              params={["person_last_name", "person_first_name"]}
-              current_params={@sort}
-              id="sort_person"
-              :let={sort_params: sort_params}
-            >
-              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
-                {schema_field_name(:person, Case)}
-              </LivePatch>
-            </HygeiaWeb.Sort>
-          </th>
-          <th>
-            <HygeiaWeb.Sort
-              params={["complexity"]}
-              current_params={@sort}
-              id="sort_complexity"
-              :let={sort_params: sort_params}
-            >
-              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
-                {schema_field_name(:complexity, Case)}
-              </LivePatch>
-            </HygeiaWeb.Sort>
-          </th>
-          <th>
-            <HygeiaWeb.Sort
-              params={["status"]}
-              current_params={@sort}
-              id="sort_status"
-              :let={sort_params: sort_params}
-            >
-              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
-                {schema_field_name(:status, Case)}
-              </LivePatch>
-            </HygeiaWeb.Sort>
-          </th>
-          <th>
-            <HygeiaWeb.Sort
-              params={["phases"]}
-              current_params={@sort}
-              id="sort_phases"
-              :let={sort_params: sort_params}
-            >
-              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
-                {schema_field_name(:phases, Case)}
-              </LivePatch>
-            </HygeiaWeb.Sort>
-          </th>
-          <th>
-            <HygeiaWeb.Sort
-              params={["tracer"]}
-              current_params={@sort}
-              id="sort_tracer"
-              :let={sort_params: sort_params}
-            >
-              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
-                {schema_field_name(:tracer, Case)}
-              </LivePatch>
-            </HygeiaWeb.Sort>
-          </th>
-          <th>
-            <HygeiaWeb.Sort
-              params={["supervisor"]}
-              current_params={@sort}
-              id="sort_supervisor"
-              :let={sort_params: sort_params}
-            >
-              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
-                {schema_field_name(:supervisor, Case)}
-              </LivePatch>
-            </HygeiaWeb.Sort>
-          </th>
-          <th>
-            <HygeiaWeb.Sort
-              params={["inserted_at"]}
-              current_params={@sort}
-              id="sort_inserted_at"
-              :let={sort_params: sort_params}
-            >
-              <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
-                {schema_field_name(:inserted_at, Case)}
-              </LivePatch>
-            </HygeiaWeb.Sort>
-          </th>
-          <th />
-        </tr>
-      </thead>
-      <tbody id="cases">
-        <tr :for={case <- @cases} id={"case-#{case.uuid}"}>
-          <td :if={authorized?(case.person, :details, auth)}>
-            <HygeiaWeb.RecordView resource={case} action={:list} id={"case_recordview_#{case.uuid}"} />
-            {case.person.first_name}
-            {case.person.last_name}
-          </td>
-          <td :if={not authorized?(case.person, :details, auth)}>
-            {case.person.tenant.subdivision}
-            /
-            {case.person.human_readable_id}
-          </td>
-          <td>
-            {case case.complexity do
-              nil -> nil
-              other -> Case.Complexity.translate(other)
-            end}
-          </td>
-          <td>
-            {Status.translate(case.status)}
-          </td>
-          <td>
-            {case_display_type(case)}
-          </td>
-          <td>
-            {#if not is_nil(case.tracer) and is_nil(case.tracer.email)}
+          <hr class="mb-3">
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <Field name="fully_vaccinated" class="form-group">
+                <Label class="checkbox-label">
+                  <Checkbox />
+                  {gettext("Fully Vaccinated")}
+                </Label>
+              </Field>
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+              <Field name="vaccination_failures" class="form-group">
+                <Label class="checkbox-label">
+                  <Checkbox />
+                  {gettext("Vaccination Failures")}
+                </Label>
+              </Field>
+            </div></div>
+
+          <Field name="inserted_at" class="form-group">
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <Label class="d-block">{schema_field_name(:inserted_at, Case)}</Label>
+
+                <FieldContext name={:inserted_at_from}>
+                  <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                </FieldContext>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <Label class="d-block">{pgettext("Date Range", "until")}</Label>
+                <FieldContext name={:inserted_at_to}>
+                  <HygeiaWeb.DateTimeLocalInput class="form-control" />
+                </FieldContext>
+              </div>
+            </div>
+          </Field>
+
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div class="form-group">
+                <label class="d-block">{gettext("Auto Tracing Problem")}</label>
+
+                <Field name="no_auto_tracing_problems">
+                  <Label class="d-block checkbox-label">
+                    <Checkbox />
+                    {gettext("No Auto Tracing Problems")}
+                  </Label>
+                </Field>
+
+                <label :for={{name, key} <- AutoTracing.Problem.map()} class="d-block checkbox-label">
+                  <input
+                    type="checkbox"
+                    name={input_name(form, :auto_tracing_problem) <> "[]"}
+                    checked={Atom.to_string(key) in (form.source["auto_tracing_problem"] || [])}
+                    value={key}
+                  />
+                  {name}
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="form-group">
+                <label class="d-block">{gettext("Auto Tracing active")}</label>
+                <Field name="auto_tracing_active" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="" />
+                    {gettext("Any")}
+                  </label>
+                </Field>
+                <Field name="auto_tracing_active" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value />
+                    {gettext("Yes")}
+                  </label>
+                </Field>
+                <Field name="auto_tracing_active" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value={false} />
+                    {gettext("False")}
+                  </label>
+                </Field>
+                <Field name="auto_tracing_active" class="form-check form-check-inline">
+                  <label class="form-check-label radio-label">
+                    <RadioButton class="form-check-input" value="complete" />
+                    {gettext("Complete")}
+                  </label>
+                </Field>
+              </div>
+            </div>
+          </div>
+        </Form>
+      </:default>
+    </HygeiaWeb.Dropdown>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>
+          <HygeiaWeb.Sort
+            params={["person_last_name", "person_first_name"]}
+            current_params={@sort}
+            id="sort_person"
+            :let={sort_params: sort_params}
+          >
+            <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+              {schema_field_name(:person, Case)}
+            </LivePatch>
+          </HygeiaWeb.Sort>
+        </th>
+        <th>
+          <HygeiaWeb.Sort
+            params={["complexity"]}
+            current_params={@sort}
+            id="sort_complexity"
+            :let={sort_params: sort_params}
+          >
+            <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+              {schema_field_name(:complexity, Case)}
+            </LivePatch>
+          </HygeiaWeb.Sort>
+        </th>
+        <th>
+          <HygeiaWeb.Sort
+            params={["status"]}
+            current_params={@sort}
+            id="sort_status"
+            :let={sort_params: sort_params}
+          >
+            <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+              {schema_field_name(:status, Case)}
+            </LivePatch>
+          </HygeiaWeb.Sort>
+        </th>
+        <th>
+          <HygeiaWeb.Sort
+            params={["phases"]}
+            current_params={@sort}
+            id="sort_phases"
+            :let={sort_params: sort_params}
+          >
+            <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+              {schema_field_name(:phases, Case)}
+            </LivePatch>
+          </HygeiaWeb.Sort>
+        </th>
+        <th>
+          <HygeiaWeb.Sort
+            params={["tracer"]}
+            current_params={@sort}
+            id="sort_tracer"
+            :let={sort_params: sort_params}
+          >
+            <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+              {schema_field_name(:tracer, Case)}
+            </LivePatch>
+          </HygeiaWeb.Sort>
+        </th>
+        <th>
+          <HygeiaWeb.Sort
+            params={["supervisor"]}
+            current_params={@sort}
+            id="sort_supervisor"
+            :let={sort_params: sort_params}
+          >
+            <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+              {schema_field_name(:supervisor, Case)}
+            </LivePatch>
+          </HygeiaWeb.Sort>
+        </th>
+        <th>
+          <HygeiaWeb.Sort
+            params={["inserted_at"]}
+            current_params={@sort}
+            id="sort_inserted_at"
+            :let={sort_params: sort_params}
+          >
+            <LivePatch to={page_url(@socket, [], @filters, sort_params)}>
+              {schema_field_name(:inserted_at, Case)}
+            </LivePatch>
+          </HygeiaWeb.Sort>
+        </th>
+        <th />
+      </tr>
+    </thead>
+    <tbody id="cases">
+      <tr :for={case <- @cases} id={"case-#{case.uuid}"}>
+        <td :if={authorized?(case.person, :details, @auth)}>
+          <HygeiaWeb.RecordView resource={case} action={:list} id={"case_recordview_#{case.uuid}"} />
+          {case.person.first_name}
+          {case.person.last_name}
+        </td>
+        <td :if={not authorized?(case.person, :details, @auth)}>
+          {case.person.tenant.subdivision}
+          /
+          {case.person.human_readable_id}
+        </td>
+        <td>
+          {case case.complexity do
+            nil -> nil
+            other -> Case.Complexity.translate(other)
+          end}
+        </td>
+        <td>
+          {Status.translate(case.status)}
+        </td>
+        <td>
+          {case_display_type(case)}
+        </td>
+        <td>
+          {#if not is_nil(case.tracer) and is_nil(case.tracer.email)}
+            {case.tracer.display_name}
+          {#else}
+            <Link to={Routes.user_show_path(@socket, :show, case.tracer)} :if={case.tracer}>
               {case.tracer.display_name}
-            {#else}
-              <Link to={Routes.user_show_path(@socket, :show, case.tracer)} :if={case.tracer}>
-                {case.tracer.display_name}
-              </Link>
-              <span :if={is_nil(case.tracer)}>
-                {gettext("Case Administration")}
-              </span>
-            {/if}
-          </td>
-          <td>
-            <Link to={Routes.user_show_path(@socket, :show, case.supervisor)} :if={case.supervisor}>
-              {case.supervisor.display_name}
             </Link>
-            <span :if={is_nil(case.supervisor)}>
+            <span :if={is_nil(case.tracer)}>
               {gettext("Case Administration")}
             </span>
-          </td>
-          <td>
-            {case.inserted_at
-            |> DateTime.shift_zone!(timezone)
-            |> HygeiaCldr.DateTime.to_string!(format: :short)}
-          </td>
-          <td>
-            <div class="d-flex justify-content-end w-100">
-              <div :if={case.anonymized} class="me-3">
-                <span class="badge rounded-pill bg-warning">{pgettext("Case Index", "Anonymized")}</span>
-              </div>
-              <LiveRedirect
-                to={Routes.case_base_data_path(@socket, :show, case)}
-                :if={authorized?(case, :details, auth)}
-              >
-                <button class="ms-auto btn btn-sm btn-outline-primary">{"Show" |> gettext}</button>
-              </LiveRedirect>
-              <LiveRedirect
-                to={Routes.case_base_data_path(@socket, :edit, case)}
-                :if={authorized?(case, :update, auth)}
-              >
-                <button class="ms-1 btn btn-sm btn-outline-primary">
-                  <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                </button>
-              </LiveRedirect>
-              <Link
-                to="#"
-                click="delete"
-                class="delete"
-                opts={
-                  title: gettext("Delete"),
-                  data: [confirm: gettext("Are you sure?")],
-                  "phx-value-id": case.uuid
-                }
-                :if={authorized?(case, :delete, auth)}
-              >
-                <button class="ms-1 btn btn-sm btn-danger">
-                  <span class="oi oi-trash" aria-hidden="true" />
-                </button>
-              </Link>
+          {/if}
+        </td>
+        <td>
+          <Link to={Routes.user_show_path(@socket, :show, case.supervisor)} :if={case.supervisor}>
+            {case.supervisor.display_name}
+          </Link>
+          <span :if={is_nil(case.supervisor)}>
+            {gettext("Case Administration")}
+          </span>
+        </td>
+        <td>
+          {case.inserted_at
+          |> DateTime.shift_zone!(@timezone)
+          |> HygeiaCldr.DateTime.to_string!(format: :short)}
+        </td>
+        <td>
+          <div class="d-flex justify-content-end w-100">
+            <div :if={case.anonymized} class="me-3">
+              <span class="badge rounded-pill bg-warning">{pgettext("Case Index", "Anonymized")}</span>
             </div>
-          </td>
-        </tr>
-        <tr :if={length(@cases) == 0}>
-          <td colspan="8">
-            <div class="d-flex justify-content-center py-3">
-              {"No data to display" |> gettext}
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <LiveRedirect
+              to={Routes.case_base_data_path(@socket, :show, case)}
+              :if={authorized?(case, :details, @auth)}
+            >
+              <button class="ms-auto btn btn-sm btn-outline-primary">{"Show" |> gettext}</button>
+            </LiveRedirect>
+            <LiveRedirect
+              to={Routes.case_base_data_path(@socket, :edit, case)}
+              :if={authorized?(case, :update, @auth)}
+            >
+              <button class="ms-1 btn btn-sm btn-outline-primary">
+                <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+              </button>
+            </LiveRedirect>
+            <Link
+              to="#"
+              click="delete"
+              class="delete"
+              opts={
+                title: gettext("Delete"),
+                data: [confirm: gettext("Are you sure?")],
+                "phx-value-id": case.uuid
+              }
+              :if={authorized?(case, :delete, @auth)}
+            >
+              <button class="ms-1 btn btn-sm btn-danger">
+                <span class="oi oi-trash" aria-hidden="true" />
+              </button>
+            </Link>
+          </div>
+        </td>
+      </tr>
+      <tr :if={length(@cases) == 0}>
+        <td colspan="8">
+          <div class="d-flex justify-content-center py-3">
+            {"No data to display" |> gettext}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-    <HygeiaWeb.Pagination
-      pagination={@pagination}
-      :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
-      id="pagination"
+  <HygeiaWeb.Pagination
+    pagination={@pagination}
+    :let={text: text, cursor_direction: cursor_direction, cursor: cursor}
+    id="pagination"
+  >
+    <LivePatch
+      class="page-link"
+      to={page_url(@socket, [{cursor_direction, cursor}], @filters, @sort)}
     >
-      <LivePatch
-        class="page-link"
-        to={page_url(@socket, [{cursor_direction, cursor}], @filters, @sort)}
-      >
-        {text}
-      </LivePatch>
-    </HygeiaWeb.Pagination>
-  </Context>
+      {text}
+    </LivePatch>
+  </HygeiaWeb.Pagination>
 </div>

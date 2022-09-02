@@ -1,148 +1,146 @@
 <div class="component-case-tests container">
-  <Context get={HygeiaWeb, auth: auth}>
-    <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
+  <HygeiaWeb.PersonLive.Header person={@case.person} id="header" />
 
-    <div class="card">
-      <div class="card-header">
-        <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between mb-1">
-          <h3>{gettext("Visits")}</h3>
-
-          <div :if={authorized?(Visit, :create, auth, %{case: @case})}>
-            <LiveRedirect
-              to={Routes.visit_create_path(
-                @socket,
-                :create,
-                @case.uuid
-              )}
-              class="btn btn-primary"
-            >
-              <span class="oi oi-plus me-1" aria-hidden="true" />
-              {gettext("New Visit")}
-            </LiveRedirect>
-          </div>
-        </div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>
-                {schema_field_name(:reason, Visit)}
-              </th>
-              <th>
-                {schema_field_name(:other_reason, Visit)}
-              </th>
-              <th>
-                {schema_field_name(:last_visit_at, Visit)}
-              </th>
-              <th>
-                {schema_field_name(:organisation, Visit)}
-              </th>
-              <th>
-                {schema_field_name(:division, Visit)}
-              </th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            <HygeiaWeb.RecordView
-              :for={visit <- Enum.sort_by(@case.visits, & &1.last_visit_at, {:desc, Date})}
-              resource={visit}
-              action={:list}
-              id={"visit-#{visit.uuid}"}
-              wrapper_tag={:tr}
-            >
-              <td class="align-middle">{Reason.translate(visit.reason)}</td>
-              <td class="align-middle">{visit.other_reason}</td>
-              <td class="align-middle">{format_date(visit.last_visit_at)}</td>
-              <td class="align-middle">
-                <div>
-                  {#if organisation = visit.organisation || visit.unknown_organisation}
-                    <div class="d-fled">
-                      <strong>{organisation.name}</strong>
-                      <span :if={visit.unknown_organisation} class="badge rounded-pill bg-warning text-dark ms-auto">{pgettext("Person Visits", "Unknown")}</span>
-                    </div>
-                    <small class="d-block text-muted" :if={organisation.address}>{Address.to_string(organisation.address, :long)}</small>
-                  {/if}
-                </div>
-              </td>
-
-              <td class="align-middle">
-                <div>
-                  {#case {visit.division, visit.unknown_division}}
-                    {#match {nil, nil}}
-                      <div>{pgettext("Person Visits", "Division not provided")}</div>
-                    {#match {%Division{} = division, nil}}
-                      <div>
-                        {pgettext("Person Visits", "Name")}:
-                        {division.title}
-                      </div>
-                      <div class="mb-3">
-                        {pgettext("Person Visits", "Address")}:
-                        {division.shares_address
-                        |> if do
-                          visit.organisation.address
-                        else
-                          division.address
-                        end
-                        |> case do
-                          nil -> pgettext("Person Visits", "Not provided")
-                          %Address{} = address -> Address.to_string(address, :long)
-                        end}
-                      </div>
-                    {#match {nil, %Entity{} = unknown_division}}
-                      <div class="d-fled">
-                        {pgettext("Person Visits", "Name")}:
-                        {unknown_division.name}
-                        <span class="badge rounded-pill bg-warning text-dark ms-auto">{pgettext("Person Visits", "Unknown")}</span>
-                      </div>
-                      <div class="mb-3" :if={unknown_division.address}>
-                        {pgettext("Person Visits", "Address")}:
-                        {Address.to_string(unknown_division.address, :long)}
-                      </div>
-                  {/case}
-                </div>
-              </td>
-
-              <td class="align-middle">
-                <div class="d-flex justify-content-end w-100">
-                  <LivePatch
-                    to={Routes.visit_show_path(@socket, :show, visit.uuid)}
-                    :if={authorized?(visit, :details, auth, %{case: @case})}
-                  >
-                    <button class="ms-auto btn btn-sm btn-outline-primary">{gettext("Show")}</button>
-                  </LivePatch>
-                  <LivePatch
-                    to={Routes.visit_show_path(@socket, :edit, visit.uuid)}
-                    :if={authorized?(visit, :update, auth, %{case: @case})}
-                  >
-                    <button class="ms-1 btn btn-sm btn-outline-primary">
-                      <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                    </button>
-                  </LivePatch>
-                  <Link
-                    id={"visit-#{visit.uuid}"}
-                    to="#"
-                    click="delete"
-                    opts={
-                      title: gettext("Delete"),
-                      data: [confirm: gettext("Are you sure?")],
-                      "phx-value-id": visit.uuid,
-                      class: "delete"
-                    }
-                    :if={authorized?(visit, :delete, auth, %{case: @case})}
-                  >
-                    <button class="ms-1 btn btn-sm btn-danger">
-                      <span class="oi oi-trash" aria-hidden="true" />
-                    </button>
-                  </Link>
-                </div>
-              </td>
-            </HygeiaWeb.RecordView>
-          </tbody>
-        </table>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <HygeiaWeb.CaseLive.Navigation case={@case} id="navigation" />
     </div>
-  </Context>
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-1">
+        <h3>{gettext("Visits")}</h3>
+
+        <div :if={authorized?(Visit, :create, @auth, %{case: @case})}>
+          <LiveRedirect
+            to={Routes.visit_create_path(
+              @socket,
+              :create,
+              @case.uuid
+            )}
+            class="btn btn-primary"
+          >
+            <span class="oi oi-plus me-1" aria-hidden="true" />
+            {gettext("New Visit")}
+          </LiveRedirect>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              {schema_field_name(:reason, Visit)}
+            </th>
+            <th>
+              {schema_field_name(:other_reason, Visit)}
+            </th>
+            <th>
+              {schema_field_name(:last_visit_at, Visit)}
+            </th>
+            <th>
+              {schema_field_name(:organisation, Visit)}
+            </th>
+            <th>
+              {schema_field_name(:division, Visit)}
+            </th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          <HygeiaWeb.RecordView
+            :for={visit <- Enum.sort_by(@case.visits, & &1.last_visit_at, {:desc, Date})}
+            resource={visit}
+            action={:list}
+            id={"visit-#{visit.uuid}"}
+            wrapper_tag={:tr}
+          >
+            <td class="align-middle">{Reason.translate(visit.reason)}</td>
+            <td class="align-middle">{visit.other_reason}</td>
+            <td class="align-middle">{format_date(visit.last_visit_at)}</td>
+            <td class="align-middle">
+              <div>
+                {#if organisation = visit.organisation || visit.unknown_organisation}
+                  <div class="d-fled">
+                    <strong>{organisation.name}</strong>
+                    <span :if={visit.unknown_organisation} class="badge rounded-pill bg-warning text-dark ms-auto">{pgettext("Person Visits", "Unknown")}</span>
+                  </div>
+                  <small class="d-block text-muted" :if={organisation.address}>{Address.to_string(organisation.address, :long)}</small>
+                {/if}
+              </div>
+            </td>
+
+            <td class="align-middle">
+              <div>
+                {#case {visit.division, visit.unknown_division}}
+                  {#match {nil, nil}}
+                    <div>{pgettext("Person Visits", "Division not provided")}</div>
+                  {#match {%Division{} = division, nil}}
+                    <div>
+                      {pgettext("Person Visits", "Name")}:
+                      {division.title}
+                    </div>
+                    <div class="mb-3">
+                      {pgettext("Person Visits", "Address")}:
+                      {division.shares_address
+                      |> if do
+                        visit.organisation.address
+                      else
+                        division.address
+                      end
+                      |> case do
+                        nil -> pgettext("Person Visits", "Not provided")
+                        %Address{} = address -> Address.to_string(address, :long)
+                      end}
+                    </div>
+                  {#match {nil, %Entity{} = unknown_division}}
+                    <div class="d-fled">
+                      {pgettext("Person Visits", "Name")}:
+                      {unknown_division.name}
+                      <span class="badge rounded-pill bg-warning text-dark ms-auto">{pgettext("Person Visits", "Unknown")}</span>
+                    </div>
+                    <div class="mb-3" :if={unknown_division.address}>
+                      {pgettext("Person Visits", "Address")}:
+                      {Address.to_string(unknown_division.address, :long)}
+                    </div>
+                {/case}
+              </div>
+            </td>
+
+            <td class="align-middle">
+              <div class="d-flex justify-content-end w-100">
+                <LivePatch
+                  to={Routes.visit_show_path(@socket, :show, visit.uuid)}
+                  :if={authorized?(visit, :details, @auth, %{case: @case})}
+                >
+                  <button class="ms-auto btn btn-sm btn-outline-primary">{gettext("Show")}</button>
+                </LivePatch>
+                <LivePatch
+                  to={Routes.visit_show_path(@socket, :edit, visit.uuid)}
+                  :if={authorized?(visit, :update, @auth, %{case: @case})}
+                >
+                  <button class="ms-1 btn btn-sm btn-outline-primary">
+                    <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+                  </button>
+                </LivePatch>
+                <Link
+                  id={"visit-#{visit.uuid}"}
+                  to="#"
+                  click="delete"
+                  opts={
+                    title: gettext("Delete"),
+                    data: [confirm: gettext("Are you sure?")],
+                    "phx-value-id": visit.uuid,
+                    class: "delete"
+                  }
+                  :if={authorized?(visit, :delete, @auth, %{case: @case})}
+                >
+                  <button class="ms-1 btn btn-sm btn-danger">
+                    <span class="oi oi-trash" aria-hidden="true" />
+                  </button>
+                </Link>
+              </div>
+            </td>
+          </HygeiaWeb.RecordView>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

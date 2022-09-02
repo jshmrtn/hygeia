@@ -13,6 +13,8 @@ defmodule HygeiaWeb.OrganisationLive.Header do
   # Changeset or actual Tenant
   prop organisation, :map, required: true
 
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+
   data display_name, :string
 
   @impl Phoenix.LiveComponent

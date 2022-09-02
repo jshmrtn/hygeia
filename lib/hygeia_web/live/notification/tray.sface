@@ -13,88 +13,86 @@
     </button>
   </:trigger>
   <:default>
-    <Context get={HygeiaWeb, timezone: timezone}>
-      <div class="dropdown-item actions">
-        <button class="btn btn-outline-primary btn-sm" :on-click="read_all">
-          <span class="oi oi-check" aria-hidden="true" />
-          {pgettext("Notification", "mark all as read")}
-        </button>
-        <button class="btn btn-danger btn-sm" :on-click="delete_all" data-confirm="Are you sure?">
-          <span class="oi oi-trash" aria-hidden="true" />
-          {pgettext("Notification", "delete all")}
-        </button>
-      </div>
-      <div class="scroll-container">
-        <div
-          :for={%Notification{uuid: uuid, read: read, body: body, inserted_at: inserted_at} = notification <-
-            @notifications}
-          id={"notifications_tray_notification_#{uuid}"}
-          class={"dropdown-item", "notification", body.__struct__, read: read}
-        >
-          <span
-            :on-click="read"
-            phx-value-uuid={uuid}
-            class={"read-icon", "oi", "oi-envelope-closed": !read, "oi-envelope-open": read}
-          />
-          <div class="notification-content">
-            <small class="notification-time">
-              <time
-                datetime={DateTime.to_iso8601(inserted_at)}
-                title={inserted_at |> DateTime.shift_zone!(timezone) |> HygeiaCldr.DateTime.to_string!()}
-              >
-                {HygeiaCldr.DateTime.Relative.to_string!(
-                  inserted_at,
-                  format: :short,
-                  relative_to: @now
-                )}
-              </time>
-            </small>
-            <div :on-click="read" phx-value-uuid={uuid}>
-              {#case notification.body}
-                {#match %Notification.CaseAssignee{} = body}
-                  <HygeiaWeb.Notification.CaseAssignee
-                    id={"notifications_tray_notification_body_#{uuid}"}
-                    body={body}
-                  />
-                {#match %Notification.PossibleIndexSubmitted{} = body}
-                  <HygeiaWeb.Notification.PossibleIndexSubmitted
-                    id={"notifications_tray_notification_body_#{uuid}"}
-                    body={body}
-                  />
-                {#match %Notification.EmailSendFailed{} = body}
-                  <HygeiaWeb.Notification.EmailSendFailed
-                    id={"notifications_tray_notification_body_#{uuid}"}
-                    body={body}
-                  />
-                {#match %Notification.PrematureRelease{} = body}
-                  <HygeiaWeb.Notification.PrematureRelease
-                    id={"notifications_tray_notification_body_#{uuid}"}
-                    body={body}
-                  />
-                {#match %Notification.SelfServiceHelpRequest{} = body}
-                  <HygeiaWeb.Notification.SelfServiceHelpRequest
-                    id={"notifications_tray_notification_body_#{uuid}"}
-                    body={body}
-                  />
-              {/case}
-            </div>
+    <div class="dropdown-item actions">
+      <button class="btn btn-outline-primary btn-sm" :on-click="read_all">
+        <span class="oi oi-check" aria-hidden="true" />
+        {pgettext("Notification", "mark all as read")}
+      </button>
+      <button class="btn btn-danger btn-sm" :on-click="delete_all" data-confirm="Are you sure?">
+        <span class="oi oi-trash" aria-hidden="true" />
+        {pgettext("Notification", "delete all")}
+      </button>
+    </div>
+    <div class="scroll-container">
+      <div
+        :for={%Notification{uuid: uuid, read: read, body: body, inserted_at: inserted_at} = notification <-
+          @notifications}
+        id={"notifications_tray_notification_#{uuid}"}
+        class={"dropdown-item", "notification", body.__struct__, read: read}
+      >
+        <span
+          :on-click="read"
+          phx-value-uuid={uuid}
+          class={"read-icon", "oi", "oi-envelope-closed": !read, "oi-envelope-open": read}
+        />
+        <div class="notification-content">
+          <small class="notification-time">
+            <time
+              datetime={DateTime.to_iso8601(inserted_at)}
+              title={inserted_at |> DateTime.shift_zone!(@timezone) |> HygeiaCldr.DateTime.to_string!()}
+            >
+              {HygeiaCldr.DateTime.Relative.to_string!(
+                inserted_at,
+                format: :short,
+                relative_to: @now
+              )}
+            </time>
+          </small>
+          <div :on-click="read" phx-value-uuid={uuid}>
+            {#case notification.body}
+              {#match %Notification.CaseAssignee{} = body}
+                <HygeiaWeb.Notification.CaseAssignee
+                  id={"notifications_tray_notification_body_#{uuid}"}
+                  body={body}
+                />
+              {#match %Notification.PossibleIndexSubmitted{} = body}
+                <HygeiaWeb.Notification.PossibleIndexSubmitted
+                  id={"notifications_tray_notification_body_#{uuid}"}
+                  body={body}
+                />
+              {#match %Notification.EmailSendFailed{} = body}
+                <HygeiaWeb.Notification.EmailSendFailed
+                  id={"notifications_tray_notification_body_#{uuid}"}
+                  body={body}
+                />
+              {#match %Notification.PrematureRelease{} = body}
+                <HygeiaWeb.Notification.PrematureRelease
+                  id={"notifications_tray_notification_body_#{uuid}"}
+                  body={body}
+                />
+              {#match %Notification.SelfServiceHelpRequest{} = body}
+                <HygeiaWeb.Notification.SelfServiceHelpRequest
+                  id={"notifications_tray_notification_body_#{uuid}"}
+                  body={body}
+                />
+            {/case}
           </div>
-          <button
-            class="remove-notification btn float-right btn-link btn-sm text-dark"
-            :on-click="delete"
-            phx-value-uuid={uuid}
-          >
-            <span class="oi oi-x" title={pgettext("Notification", "Delete")} />
-          </button>
         </div>
-        <div
-          :if={@total_count > @notification_show_limit}
-          id="notifications_tray_notification_overflow"
-          class="dropdown-item notification overflow"
+        <button
+          class="remove-notification btn float-right btn-link btn-sm text-dark"
+          :on-click="delete"
+          phx-value-uuid={uuid}
         >
-          {pgettext("Notification Tray", "and {count} more", count: @total_count - length(@notifications))}
-        </div>
+          <span class="oi oi-x" title={pgettext("Notification", "Delete")} />
+        </button>
       </div>
-    </Context>
+      <div
+        :if={@total_count > @notification_show_limit}
+        id="notifications_tray_notification_overflow"
+        class="dropdown-item notification overflow"
+      >
+        {pgettext("Notification Tray", "and {count} more", count: @total_count - length(@notifications))}
+      </div>
+    </div>
   </:default>
 </HygeiaWeb.Dropdown>

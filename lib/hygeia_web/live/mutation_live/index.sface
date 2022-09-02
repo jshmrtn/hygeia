@@ -1,79 +1,77 @@
 <div class="component-mutation-index container">
-  <Context get={HygeiaWeb, auth: auth}>
-    <h1>
-      {gettext("Listing Mutations")}
-    </h1>
+  <h1>
+    {gettext("Listing Mutations")}
+  </h1>
 
-    <div class="d-flex">
-      <LiveRedirect
-        class="me-2"
-        to={Routes.mutation_create_path(@socket, :create)}
-        :if={authorized?(Mutation, :create, auth)}
-      >
-        <button type="button" class="mb-2 mt-3 btn btn-primary">
-          <span class="oi oi-plus" aria-hidden="true" />
-          {gettext("New Mutation")}
-        </button>
-      </LiveRedirect>
-    </div>
+  <div class="d-flex">
+    <LiveRedirect
+      class="me-2"
+      to={Routes.mutation_create_path(@socket, :create)}
+      :if={authorized?(Mutation, :create, @auth)}
+    >
+      <button type="button" class="mb-2 mt-3 btn btn-primary">
+        <span class="oi oi-plus" aria-hidden="true" />
+        {gettext("New Mutation")}
+      </button>
+    </LiveRedirect>
+  </div>
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th>
-            {schema_field_name(:name, Mutation)}
-          </th>
-          <th>
-            {schema_field_name(:ism_code, Mutation)}
-          </th>
-          <th />
-        </tr>
-      </thead>
-      <tbody id="mutations">
-        <tr :for={mutation <- @mutations} id={"mutation-#{mutation.uuid}"}>
-          <td>
-            {mutation.name}
-          </td>
-          <td>
-            {mutation.ism_code}
-          </td>
-          <td>
-            <div class="d-flex justify-content-end w-100">
-              <LiveRedirect
-                to={Routes.mutation_show_path(@socket, :show, mutation)}
-                :if={authorized?(mutation, :details, auth)}
-              >
-                <button class="ms-auto btn btn-sm btn-outline-primary">
-                  {gettext("Show")}
-                </button>
-              </LiveRedirect>
-              <LiveRedirect
-                to={Routes.mutation_show_path(@socket, :edit, mutation)}
-                :if={authorized?(mutation, :update, auth)}
-              >
-                <button class="ms-1 btn btn-sm btn-outline-primary">
-                  <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
-                </button>
-              </LiveRedirect>
-              <Link
-                to="#"
-                click="delete"
-                class="delete"
-                opts={
-                  title: gettext("Delete"),
-                  data: [confirm: gettext("Are you sure?")],
-                  "phx-value-id": mutation.uuid
-                }
-                :if={authorized?(mutation, :delete, auth)}
-              >
-                <button class="ms-1 btn btn-sm btn-danger">
-                  <span class="oi oi-trash" aria-hidden="true" />
-                </button>
-              </Link>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </Context>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          {schema_field_name(:name, Mutation)}
+        </th>
+        <th>
+          {schema_field_name(:ism_code, Mutation)}
+        </th>
+        <th />
+      </tr>
+    </thead>
+    <tbody id="mutations">
+      <tr :for={mutation <- @mutations} id={"mutation-#{mutation.uuid}"}>
+        <td>
+          {mutation.name}
+        </td>
+        <td>
+          {mutation.ism_code}
+        </td>
+        <td>
+          <div class="d-flex justify-content-end w-100">
+            <LiveRedirect
+              to={Routes.mutation_show_path(@socket, :show, mutation)}
+              :if={authorized?(mutation, :details, @auth)}
+            >
+              <button class="ms-auto btn btn-sm btn-outline-primary">
+                {gettext("Show")}
+              </button>
+            </LiveRedirect>
+            <LiveRedirect
+              to={Routes.mutation_show_path(@socket, :edit, mutation)}
+              :if={authorized?(mutation, :update, @auth)}
+            >
+              <button class="ms-1 btn btn-sm btn-outline-primary">
+                <span class="oi oi-pencil" title={gettext("Edit")} aria-hidden="true" />
+              </button>
+            </LiveRedirect>
+            <Link
+              to="#"
+              click="delete"
+              class="delete"
+              opts={
+                title: gettext("Delete"),
+                data: [confirm: gettext("Are you sure?")],
+                "phx-value-id": mutation.uuid
+              }
+              :if={authorized?(mutation, :delete, @auth)}
+            >
+              <button class="ms-1 btn btn-sm btn-danger">
+                <span class="oi oi-trash" aria-hidden="true" />
+              </button>
+            </Link>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

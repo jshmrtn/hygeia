@@ -8,16 +8,18 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Organisation
   alias Hygeia.Repo
+  alias Phoenix.HTML.FormData
+  alias Surface.Components.Form
+  alias Surface.Components.Form.Field
   alias Surface.Components.Form.HiddenInput
-  alias Surface.Components.Form.Input.InputContext
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
   @doc "An identifier for the form"
-  prop form, :form
+  prop form, :form, from_context: {Form, :form}
 
   @doc "An identifier for the associated field"
-  prop field, :atom
+  prop field, :atom, from_context: {Field, :field}
 
   prop change, :event
 
@@ -28,9 +30,13 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   @doc "Value to pre-populated the input"
   prop value, :string
 
+  prop query_clauses, :list, default: []
+
+  prop auth, :map, from_context: {HygeiaWeb, :auth}
+
   data modal_open, :boolean, default: false
   data query, :string, default: nil
-  prop query_clauses, :list, default: []
+  data organisation, :struct, default: nil
 
   @impl Phoenix.LiveComponent
   def mount(socket), do: {:ok, socket}
@@ -38,6 +44,20 @@ defmodule HygeiaWeb.OrganisationLive.Choose do
   @impl Phoenix.LiveComponent
   def update(assigns, socket) do
     {:ok, socket |> assign(assigns) |> load_organisations()}
+  end
+
+  @impl Phoenix.LiveComponent
+  def render(assigns) do
+    value =
+      assigns.value || FormData.input_value(assigns.form.source, assigns.form, assigns.field)
+
+    has_value = value not in [nil, ""]
+
+    organisation = if has_value, do: load_organisation(value)
+
+    assigns
+    |> assign(internal_value: value, has_value: has_value, organisation: organisation)
+    |> render_sface()
   end
 
   @impl Phoenix.LiveComponent

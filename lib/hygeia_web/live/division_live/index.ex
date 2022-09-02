@@ -8,7 +8,6 @@ defmodule HygeiaWeb.DivisionLive.Index do
   alias Hygeia.OrganisationContext
   alias Hygeia.OrganisationContext.Division
   alias Hygeia.Repo
-  alias Surface.Components.Context
   alias Surface.Components.Link
   alias Surface.Components.LivePatch
   alias Surface.Components.LiveRedirect

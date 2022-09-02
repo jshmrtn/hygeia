@@ -8,6 +8,7 @@ defmodule HygeiaWeb.RowLive.Show do
   alias Hygeia.ImportContext.Import.Type
   alias Hygeia.ImportContext.Row
   alias Hygeia.Repo
+  alias Surface.Components.Context
   alias Surface.Components.Link
   alias Surface.Components.LiveRedirect
 
@@ -26,7 +27,7 @@ defmodule HygeiaWeb.RowLive.Show do
       if authorized?(row, :details, get_auth(socket)) do
         Phoenix.PubSub.subscribe(Hygeia.PubSub, "rows:#{id}")
 
-        timezone = context_get(socket, :timezone)
+        timezone = Context.get(socket, HygeiaWeb, :timezone)
 
         inserted_at =
           row.import.inserted_at
