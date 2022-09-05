@@ -1,5 +1,0 @@
-<%= case @reason do %>
-  <% %DBConnection.ConnectionError{} -> %>
-    <%= gettext("We're having difficulty connecting to the database.") %>
-  <% _other -> %>
-<% end %>

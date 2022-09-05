@@ -10,6 +10,7 @@ defmodule Hygeia.MixProject do
       name: "Hygeia",
       version: "1.48.0-beta.2",
       elixir: "~> 1.13",
+      compilers: Mix.compilers() ++ [:surface],
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),

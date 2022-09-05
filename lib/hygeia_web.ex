@@ -40,6 +40,8 @@ defmodule HygeiaWeb do
         root: "lib/hygeia_web/templates",
         namespace: HygeiaWeb
 
+      use Surface.View, root: "lib/hygeia_web/templates"
+
       # Import convenience functions from controllers
       import Phoenix.Controller,
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
