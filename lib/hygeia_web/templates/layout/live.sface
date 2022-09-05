@@ -1,0 +1,51 @@
+<div class="page-container">
+  <!-- FIXME: Surface is not passing __context__, invoking via `live_component` therefore. -->
+  <!-- <HygeiaWeb.Header id="global-header" /> -->
+  {live_component(
+    Map.merge(
+      Surface.build_assigns(
+        assigns[:__context__],
+        [id: "global-header"],
+        %{},
+        HygeiaWeb.Header,
+        HygeiaWeb.Header,
+        __ENV__
+      ),
+      %{module: HygeiaWeb.Header}
+    )
+  )}
+
+  <main role="main" class="layout-live-main px-3 px-sm-2">
+    <div class="container">
+      <p class="alert alert-info" role="alert" phx-click="lv:clear-flash" phx-value-key="info">{live_flash(@flash, :info)}</p>
+
+      <p class="alert alert-warning" role="alert" phx-click="lv:clear-flash" phx-value-key="warning">{live_flash(@flash, :warning)}</p>
+
+      <p class="alert alert-danger" role="alert" phx-click="lv:clear-flash" phx-value-key="error">{live_flash(@flash, :error)}</p>
+    </div>
+
+    <noscript :if={assigns[:no_js_required] == true}>
+      <div class="container">
+        <p class="alert alert-danger" role="alert">
+          {pgettext("Layout", "JavaScript is required to use this application.")}<br>
+          {link(
+            pgettext(
+              "Layout",
+              "Here are the instructions how to enable JavaScript in your web browser."
+            ),
+            to: "https://www.enable-javascript.com/",
+            target: "_blank"
+          )}
+        </p>
+      </div>
+    </noscript>
+
+    {@inner_content}
+  </main>
+
+  <HygeiaWeb.Footer
+    :if={assigns[:hide_footer] != true}
+    id="global-footer"
+    {...Map.take(assigns, [:tenants, :tenant, :case, :person, :auto_tracing])}
+  />
+</div>

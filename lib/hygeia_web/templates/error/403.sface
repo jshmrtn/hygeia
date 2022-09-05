@@ -1,0 +1,5 @@
+{#case @reason}
+  {#match %HygeiaWeb.AutoTracingLive.AutoTracing.CaseClosedError{}}
+    {gettext("The link is no longer available")}
+  {#match _other}
+{/case}

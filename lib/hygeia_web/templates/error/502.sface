@@ -1,0 +1,5 @@
+{#case @reason}
+  {#match %DBConnection.ConnectionError{}}
+    {gettext("We're having difficulty connecting to the database.")}
+  {#match _other}
+{/case}

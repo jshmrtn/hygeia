@@ -1,0 +1,8 @@
+<!-- TODO: Add conditions for other errors -->
+<h1>
+  {gettext("Unknown Error")}
+</h1>
+
+<p>
+  {gettext("An unknown error happened during registration. Report this to your webmaster.")}
+</p>
