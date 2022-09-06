@@ -5471,6 +5471,11 @@ msgstr[0] "Cette personne a un double possible."
 msgstr[1] "Cette personne a {count} de doublons possibles."
 
 #, elixir-autogen, icu-format
+msgctxt "Person Login Form"
+msgid "This person has been anonymized and the requested data is no longer available."
+msgstr "Cette personne a été anonymisée et les données demandées ne sont plus disponibles."
+
+#, elixir-autogen, icu-format
 msgid "This person has been anonymized and you can no longer access the overview, please contact your supervisor for more information."
 msgstr "Cette personne a été anonymisée et vous ne pouvez plus accéder à l'aperçu, veuillez contacter votre superviseur pour plus d'informations."
 

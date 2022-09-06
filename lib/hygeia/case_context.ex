@@ -2493,7 +2493,8 @@ defmodule Hygeia.CaseContext do
         Anonymization.anonymize_transmission_params(case.propagated_transmissions),
       tests: Anonymization.anonymize_test_params(case.tests),
       anonymized: true,
-      anonymization_date: Date.utc_today()
+      anonymization_date: Date.utc_today(),
+      monitoring: Anonymization.anonymize_monitoring_params(case.monitoring)
     }
 
     case

@@ -24,6 +24,8 @@ defmodule Hygeia.CaseContext.Case.Monitoring do
           different_location: boolean()
         }
 
+  @type changeset_options :: %{required(:complete_data_required) => boolean}
+
   embedded_schema do
     field :first_contact, :date
     field :location, IsolationLocation
@@ -34,27 +36,40 @@ defmodule Hygeia.CaseContext.Case.Monitoring do
   end
 
   @doc false
-  @spec changeset(monitoring :: t | empty, attrs :: Hygeia.ecto_changeset_params()) ::
+  @spec changeset(
+          monitoring :: t | empty,
+          attrs :: Hygeia.ecto_changeset_params(),
+          opts :: changeset_options
+        ) ::
           Changeset.t()
-  def changeset(monitoring, attrs) do
+  def changeset(monitoring, attrs \\ %{}, changeset_options) do
     monitoring
     |> cast(attrs, [:first_contact, :location, :location_details, :different_location])
-    |> validate_different_location()
-    |> validate_location_other()
+    |> validate_different_location(changeset_options)
+    |> validate_location_other(changeset_options)
   end
 
-  defp validate_different_location(changeset) do
+  defp validate_different_location(
+         changeset,
+         %{complete_data_required: complete_data_required} = _changeset_options
+       ) do
     changeset
     |> fetch_field!(:different_location)
     |> case do
       true ->
-        changeset
-        |> validate_required([:location])
-        |> cast_embed(:address,
-          with: &Address.changeset(&1, &2, %{required: true}),
-          required: true
-        )
-        |> validate_embed_required(:address, Address)
+        changeset =
+          changeset
+          |> validate_required([:location])
+          |> cast_embed(:address,
+            with: &Address.changeset(&1, &2, %{required: complete_data_required}),
+            required: true
+          )
+
+        if complete_data_required do
+          validate_embed_required(changeset, :address, Address)
+        else
+          changeset
+        end
 
       _else ->
         changeset
@@ -64,15 +79,15 @@ defmodule Hygeia.CaseContext.Case.Monitoring do
     end
   end
 
-  defp validate_location_other(changeset) do
-    changeset
-    |> fetch_field!(:location)
-    |> case do
-      :other ->
-        validate_required(changeset, [:location_details])
-
-      _else ->
-        changeset
+  defp validate_location_other(
+         changeset,
+         %{complete_data_required: complete_data_required} = _changeset_options
+       ) do
+    with :other <- fetch_field!(changeset, :location),
+         true <- complete_data_required do
+      validate_required(changeset, [:location_details])
+    else
+      _not_required -> changeset
     end
   end
 end
