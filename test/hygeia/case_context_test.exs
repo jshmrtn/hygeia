@@ -772,6 +772,7 @@ defmodule Hygeia.CaseContextTest do
                     address: "Lagerstrasse 30",
                     country: "CH",
                     place: "Buchs SG",
+                    subdivision: "SG",
                     zip: "9470"
                   },
                   division: "Buchs",
@@ -867,6 +868,7 @@ defmodule Hygeia.CaseContextTest do
                        address: "Lagerstrasse 30",
                        country: "CH",
                        place: "Buchs SG",
+                       subdivision: "SG",
                        zip: "9470"
                      },
                      division: "Buchs",
@@ -918,7 +920,19 @@ defmodule Hygeia.CaseContextTest do
                tests: [
                  %Test{
                    tested_at: nil,
-                   reporting_unit: nil
+                   reporting_unit: %Entity{
+                     name: nil,
+                     division: nil,
+                     person_first_name: nil,
+                     person_last_name: nil,
+                     address: %Address{
+                       address: nil,
+                       zip: nil,
+                       place: nil,
+                       subdivision: "SG",
+                       country: "CH"
+                     }
+                   }
                  }
                ],
                anonymized: true,

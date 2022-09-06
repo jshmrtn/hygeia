@@ -13,50 +13,59 @@
         <div class="card-header">
           {pgettext("Login", "Person")}
         </div>
-        <div class="card-body">
-          <Form
-            for={@form}
-            submit="login"
-            opts={autocomplete: "off", id: "person-login-form", as: :person_login}
-          >
-            <Field class="form-group" name={:first_name}>
-              <HygeiaWeb.FieldLabel schema={Person} />
-              <TextInput
-                class="form-control"
-                opts={
-                  placeholder: pgettext("Person Login Form", "Jane"),
-                  required: true,
-                  autofocus: true,
-                  disabled: @login_disabled or not connected?(@socket)
-                }
-              />
-            </Field>
-            <Field class="form-group" name={:last_name}>
-              <HygeiaWeb.FieldLabel schema={Person} />
-              <TextInput
-                class="form-control"
-                opts={
-                  placeholder: pgettext("Person Login Form", "Doe"),
-                  required: true,
-                  disabled: @login_disabled or not connected?(@socket)
-                }
-              />
-            </Field>
-
-            <button
-              class="btn btn-primary me-2"
-              type="submit"
-              phx-disable-with={gettext("Logging In...")}
-              disabled={@login_disabled or not connected?(@socket)}
+        {#if Map.has_key?(assigns, :person) and assigns.person.anonymized}
+          <div class="card-body">
+            {pgettext(
+              "Person Login Form",
+              "This person has been anonymized and the requested data is no longer available."
+            )}
+          </div>
+        {#else}
+          <div class="card-body">
+            <Form
+              for={@form}
+              submit="login"
+              opts={autocomplete: "off", id: "person-login-form", as: :person_login}
             >
-              <span class="oi oi-account-login me-1" title={gettext("Log In")} aria-hidden="true" />
-              {gettext("Log In")}
-              {#if @login_disabled}
-                ({format_remaining_time(@login_lock_remaining)})
-              {/if}
-            </button>
-          </Form>
-        </div>
+              <Field class="form-group" name={:first_name}>
+                <HygeiaWeb.FieldLabel schema={Person} />
+                <TextInput
+                  class="form-control"
+                  opts={
+                    placeholder: pgettext("Person Login Form", "Jane"),
+                    required: true,
+                    autofocus: true,
+                    disabled: @login_disabled or not connected?(@socket)
+                  }
+                />
+              </Field>
+              <Field class="form-group" name={:last_name}>
+                <HygeiaWeb.FieldLabel schema={Person} />
+                <TextInput
+                  class="form-control"
+                  opts={
+                    placeholder: pgettext("Person Login Form", "Doe"),
+                    required: true,
+                    disabled: @login_disabled or not connected?(@socket)
+                  }
+                />
+              </Field>
+
+              <button
+                class="btn btn-primary me-2"
+                type="submit"
+                phx-disable-with={gettext("Logging In...")}
+                disabled={@login_disabled or not connected?(@socket)}
+              >
+                <span class="oi oi-account-login me-1" title={gettext("Log In")} aria-hidden="true" />
+                {gettext("Log In")}
+                {#if @login_disabled}
+                  ({format_remaining_time(@login_lock_remaining)})
+                {/if}
+              </button>
+            </Form>
+          </div>
+        {/if}
       </div>
     </div>
     <div class="col-12 col-lg-6">

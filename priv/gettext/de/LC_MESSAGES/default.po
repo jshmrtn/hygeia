@@ -5468,6 +5468,11 @@ msgstr[0] "Diese Person ist möglicherweise ein Duplikat."
 msgstr[1] "Diese Person hat {count} Duplikate."
 
 #, elixir-autogen, icu-format
+msgctxt "Person Login Form"
+msgid "This person has been anonymized and the requested data is no longer available."
+msgstr "Diese Person wurde anonymisiert und die angeforderten Daten sind nicht mehr verfügbar."
+
+#, elixir-autogen, icu-format
 msgid "This person has been anonymized and you can no longer access the overview, please contact your supervisor for more information."
 msgstr "Diese Person wurde anonymisiert und Sie können nicht mehr auf die Übersicht zugreifen, bitte wenden Sie sich für weitere Informationen an Ihren Vorgesetzten."
 

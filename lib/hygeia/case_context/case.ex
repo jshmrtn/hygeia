@@ -207,7 +207,7 @@ defmodule Hygeia.CaseContext.Case do
     |> cast_assoc(:propagated_transmissions)
     |> cast_assoc(:sms)
     |> cast_assoc(:tests)
-    |> cast_embed(:monitoring)
+    |> validate_monitoring()
     |> cast_assoc(:notes)
     |> cast_embed(:phases, required: true)
     |> validate_at_least_one_phase()
@@ -216,6 +216,15 @@ defmodule Hygeia.CaseContext.Case do
     |> sort_phases_as_needed()
     |> validate_phase_orders()
     |> validate_phase_no_overlap()
+  end
+
+  defp validate_monitoring(changeset) do
+    cast_embed(changeset, :monitoring,
+      with:
+        &Monitoring.changeset(&1, &2, %{
+          complete_data_required: not fetch_field!(changeset, :anonymized)
+        })
+    )
   end
 
   defp validate_clinical_required(changeset) do
