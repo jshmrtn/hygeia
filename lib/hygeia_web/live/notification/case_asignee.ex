@@ -7,6 +7,7 @@ defmodule HygeiaWeb.Notification.CaseAssignee do
   alias Surface.Components.LiveRedirect
 
   prop body, :map, required: true
+  prop timezone, :string, from_context: {HygeiaWeb, :timezone}
 
   @impl Phoenix.LiveComponent
   def preload(assign_list),
