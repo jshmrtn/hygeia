@@ -78,7 +78,7 @@ defmodule Hygeia.MixProject do
       # TODO: Revert back to the released version when the following PR is
       # merged and released:
       # - https://github.com/beatrichartz/csv/pull/104
-      {:csv, "~> 2.4", github: "jshmrtn/csv", branch: "hygeia"},
+      {:csv, "~> 2.4", github: "beatrichartz/csv", branch: "main"},
       {:debounce, "~> 1.0"},
       {:dialyxir, "~> 1.0", runtime: false, only: [:dev]},
       {:earmark, "~> 1.1"},
