@@ -12,10 +12,15 @@
               action={:details}
               id={"person_value_recordview_#{@person.uuid}"}
             >
-              {@person.first_name}
-              {@person.last_name}
-              <small :if={!@small} class="d-block text-muted">{format_date(@person.birth_date)}</small>
-              <small :if={!@small} class="d-block text-muted">{format_address(@person.address)}</small>
+              <div :if={@person.anonymized} class="me-3">
+                <span class="badge rounded-pill bg-warning">{gettext("Anonymized")}</span>
+              </div>
+              <div :if={not @person.anonymized}>
+                {@person.first_name}
+                {@person.last_name}
+                <small :if={!@small} class="d-block text-muted">{format_date(@person.birth_date)}</small>
+                <small :if={!@small} class="d-block text-muted">{format_address(@person.address)}</small>
+              </div>
             </HygeiaWeb.RecordView>
           </Link>
           <div :if={not authorized?(@person, :details, @auth)}>

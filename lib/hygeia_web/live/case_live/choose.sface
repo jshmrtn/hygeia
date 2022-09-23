@@ -13,14 +13,13 @@
               :if={authorized?(@case.person, :details, @auth)}
               wrapper_tag={:span}
             >
-              <LiveRedirect :if={@disabled} to={Routes.person_base_data_path(@socket, :show, @case.person)}>
+              <LiveRedirect
+                :if={not @case.anonymized}
+                to={Routes.person_base_data_path(@socket, :show, @case.person)}
+              >
                 {@case.person.first_name}
                 {@case.person.last_name}
               </LiveRedirect>
-              <span :if={not @disabled}>
-                {@case.person.first_name}
-                {@case.person.last_name}
-              </span>
             </HygeiaWeb.RecordView>
             <span :if={not authorized?(@case.person, :details, @auth)}>
               {@case.person.tenant.subdivision}
@@ -28,13 +27,18 @@
               {@case.person.human_readable_id}
             </span>
             <LiveRedirect
-              :if={@disabled and authorized?(@case, :details, @auth)}
+              :if={authorized?(@case, :details, @auth)}
               to={Routes.case_base_data_path(@socket, :show, @case)}
             >
-              <small class="d-block">{case_phase_type_translation(List.last(@case.phases))}</small>
-              <small class="d-block">{case_display_date(@case, @timezone)}</small>
+              <div :if={@case.anonymized} class="me-3">
+                <span class="badge rounded-pill bg-warning">{gettext("Anonymized")}</span>
+              </div>
+              <div :if={not @case.anonymized}>
+                <small class="d-block">{case_phase_type_translation(List.last(@case.phases))}</small>
+                <small class="d-block">{case_display_date(@case, @timezone)}</small>
+              </div>
             </LiveRedirect>
-            <div :if={not @disabled or not authorized?(@case, :details, @auth)}>
+            <div :if={not authorized?(@case, :details, @auth)}>
               <small class="d-block text-muted">{case_phase_type_translation(List.last(@case.phases))}</small>
               <small class="d-block text-muted">{case_display_date(@case, @timezone)}</small>
             </div>
