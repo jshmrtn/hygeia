@@ -282,29 +282,35 @@ defmodule HygeiaWeb.AutoTracingLive.Clinical do
   end
 
   defp send_notifications(case, socket) do
-    case = Repo.preload(case, person: [])
+    case case.anonymized do
+      true ->
+        {:error, :anonymized_case}
 
-    index_phase = Enum.find(case.phases, &match?(%Case.Phase{details: %Index{}}, &1))
+      false ->
+        case = Repo.preload(case, person: [])
 
-    :ok =
-      case
-      |> CommunicationContext.create_outgoing_sms(isolation_sms(socket, case, index_phase))
-      |> case do
-        {:ok, _sms} -> :ok
-        {:error, :no_mobile_number} -> :ok
-        {:error, :sms_config_missing} -> :ok
-      end
+        index_phase = Enum.find(case.phases, &match?(%Case.Phase{details: %Index{}}, &1))
 
-    :ok =
-      case
-      |> CommunicationContext.create_outgoing_email(
-        isolation_email_subject(),
-        isolation_email_body(socket, case, index_phase, :email)
-      )
-      |> case do
-        {:ok, _email} -> :ok
-        {:error, :no_email} -> :ok
-        {:error, :no_outgoing_mail_configuration} -> :ok
-      end
+        :ok =
+          case
+          |> CommunicationContext.create_outgoing_sms(isolation_sms(socket, case, index_phase))
+          |> case do
+            {:ok, _sms} -> :ok
+            {:error, :no_mobile_number} -> :ok
+            {:error, :sms_config_missing} -> :ok
+          end
+
+        :ok =
+          case
+          |> CommunicationContext.create_outgoing_email(
+            isolation_email_subject(),
+            isolation_email_body(socket, case, index_phase, :email)
+          )
+          |> case do
+            {:ok, _email} -> :ok
+            {:error, :no_email} -> :ok
+            {:error, :no_outgoing_mail_configuration} -> :ok
+          end
+    end
   end
 end

@@ -6,6 +6,7 @@ defmodule HygeiaWeb.RowLiveTest do
 
   import Phoenix.LiveViewTest
 
+  alias Hygeia.CaseContext
   alias Hygeia.ImportContext
   alias Hygeia.ImportContext.Import
   alias Hygeia.Repo
@@ -34,6 +35,42 @@ defmodule HygeiaWeb.RowLiveTest do
     %{import: Repo.preload(import, :rows)}
   end
 
+  defp create_person(%{tenant: tenant}) do
+    {:ok, person} =
+      CaseContext.create_person(tenant, %{
+        first_name: "Laura",
+        last_name: "Licht",
+        birth_date: ~D[1943-09-30],
+        sex: :female,
+        external_references: [
+          %{
+            type: :ism_patient,
+            value: "1561000"
+          }
+        ]
+      })
+
+    %{person: person}
+  end
+
+  defp create_case(%{person: person}) do
+    case1 =
+      case_fixture(person, nil, nil, %{
+        external_references: [
+          %{
+            type: :ism_case,
+            value: "2182953"
+          },
+          %{
+            type: :ism_report,
+            value: "1772032"
+          }
+        ]
+      })
+
+    %{case1: case1}
+  end
+
   describe "Index" do
     setup [:load_user_tenant, :create_import]
 
@@ -41,6 +78,35 @@ defmodule HygeiaWeb.RowLiveTest do
       {:ok, _index_live, html} = live(conn, Routes.row_index_path(conn, :index, import, :pending))
 
       assert html =~ row.uuid
+    end
+  end
+
+  describe "Select Case" do
+    setup [:load_user_tenant, :create_import, :create_person, :create_case]
+
+    test "has link to person and case", %{
+      conn: conn,
+      import: %Import{rows: [row | _]},
+      person: person,
+      case1: case1
+    } do
+      {:ok, _apply_live, html} = live(conn, Routes.row_apply_path(conn, :apply, row))
+
+      person_link_text =
+        html
+        |> Floki.parse_document!()
+        |> Floki.find(~s(a[href="#{Routes.person_base_data_path(conn, :show, person)}"]))
+        |> Floki.text()
+
+      assert person_link_text =~ person.first_name
+
+      case_link_text =
+        html
+        |> Floki.parse_document!()
+        |> Floki.find(~s(a[href="#{Routes.case_base_data_path(conn, :show, case1)}"]))
+        |> Floki.text()
+
+      assert case_link_text =~ "Index"
     end
   end
 
