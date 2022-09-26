@@ -6,7 +6,9 @@ defmodule HygeiaWeb.Init.Context do
   import HygeiaWeb.Helpers.Auth
 
   import Phoenix.LiveView,
-    only: [assign: 2, get_connect_params: 1, connected?: 1, get_connect_info: 2, attach_hook: 4]
+    only: [get_connect_params: 1, connected?: 1, get_connect_info: 2, attach_hook: 4]
+
+  import Phoenix.Component, only: [assign: 2]
 
   alias Hygeia.EctoType.LocalizedNaiveDatetime
   alias Surface.Components.Context
