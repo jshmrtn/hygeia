@@ -31,8 +31,7 @@ jobs:
             --repo ${{ github.repository }} \
             --title ${{ inputs.releaseName }} \
             --prerelease \
-            --notes '' \
-            --draft \
+            --generate-notes \
             ${{ inputs.releaseName }}
 
   create_stable:
@@ -53,6 +52,5 @@ jobs:
           gh release create \
             --repo ${{ github.repository }} \
             --title ${{ inputs.releaseName }} \
-            --notes '' \
-            --draft \
+            --generate-notes \
             ${{ inputs.releaseName }}
