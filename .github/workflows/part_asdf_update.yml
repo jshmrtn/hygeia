@@ -30,18 +30,18 @@ jobs:
         run: |
           LATEST_VERSION=$(asdf latest "${{ inputs.plugin }}" "${{ inputs.constraint }}")
           echo "Latest (${{ inputs.constraint }}): $LATEST_VERSION"
-          echo ::set-output name=LATEST_VERSION::${LATEST_VERSION}
+          echo "LATEST_VERSION=${LATEST_VERSION}" >> $GITHUB_ENV
       - name: "Try Installing new version"
         run: |
-          asdf install "${{ inputs.plugin }}" "${{ steps.newestVersion.outputs.LATEST_VERSION }}"
+          asdf install "${{ inputs.plugin }}" "${{ env.LATEST_VERSION }}"
       - name: "Apply latest version to .tool-versions"
         run: |
-          asdf local "${{ inputs.plugin }}" "${{ steps.newestVersion.outputs.LATEST_VERSION }}"
+          asdf local "${{ inputs.plugin }}" "${{ env.LATEST_VERSION }}"
       - uses: peter-evans/create-pull-request@v4
         with:
           add-paths: '.tool-versions'
-          commit-message: 'Update ${{ inputs.plugin }} to ${{ steps.newestVersion.outputs.LATEST_VERSION }}'
-          title: 'Update ${{ inputs.plugin }} to ${{ steps.newestVersion.outputs.LATEST_VERSION }}'
-          branch: 'asdf/${{ inputs.plugin }}/${{ steps.newestVersion.outputs.LATEST_VERSION }}'
+          commit-message: 'Update ${{ inputs.plugin }} to ${{ env.LATEST_VERSION }}'
+          title: 'Update ${{ inputs.plugin }} to ${{ env.LATEST_VERSION }}'
+          branch: 'asdf/${{ inputs.plugin }}/${{ env.LATEST_VERSION }}'
           delete-branch: true
           labels: 'asdf,enhancement'

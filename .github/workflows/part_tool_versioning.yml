@@ -20,9 +20,9 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      elixirVersion: "${{ steps.toolVersions.outputs.ELIXIR_VERSION }}"
-      otpVersion: "${{ steps.toolVersions.outputs.OTP_VERSION }}"
-      nodeVersion: "${{ steps.toolVersions.outputs.NODE_VERSION }}"
+      elixirVersion: "${{ env.ELIXIR_VERSION }}"
+      otpVersion: "${{ env.OTP_VERSION }}"
+      nodeVersion: "${{ env.NODE_VERSION }}"
 
     steps:
       - uses: actions/checkout@v3
@@ -31,12 +31,12 @@ jobs:
         run: |
           ELIXIR_VERSION="$(cat .tool-versions | grep elixir | cut -d' ' -f2- | sed 's/-otp-[0-9]*//')"
           echo Elixir: $ELIXIR_VERSION
-          echo ::set-output name=ELIXIR_VERSION::${ELIXIR_VERSION}
+          echo "ELIXIR_VERSION=${ELIXIR_VERSION}" >> $GITHUB_ENV
 
           OTP_VERSION="$(cat .tool-versions | grep erlang | cut -d' ' -f2-)"
           echo OTP: $OTP_VERSION
-          echo ::set-output name=OTP_VERSION::${OTP_VERSION}
+          echo "OTP_VERSION=${OTP_VERSION}" >> $GITHUB_ENV
 
           NODE_VERSION="$(cat .tool-versions | grep nodejs | cut -d' ' -f2-)"
           echo Node.js: $NODE_VERSION
-          echo ::set-output name=NODE_VERSION::${NODE_VERSION}
+          echo "NODE_VERSION=${NODE_VERSION}" >> $GITHUB_ENV
