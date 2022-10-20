@@ -94,6 +94,7 @@ defmodule Hygeia.Repo.Migrations.CreateAffiliations do
     """)
 
     alter table(:people) do
+      remove :fulltext
       remove :employers, {:list, :map}
     end
 
