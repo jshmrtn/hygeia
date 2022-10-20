@@ -1,5 +1,5 @@
-<div>
-  <div class="system-messages" phx-hook="HideAlert" :if={@hidden_message_ids != nil}>
+<div phx-hook="HideAlert">
+  <div class="system-messages" :if={@hidden_message_ids != nil}>
     <div
       :for={{uuid, msg} <- filtered_system_messages(@auth, @hidden_message_ids)}
       class="alert alert-info m-0 d-flex align-items-center rounded-0"
