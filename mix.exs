@@ -75,10 +75,7 @@ defmodule Hygeia.MixProject do
       {:cowboy, "~> 2.9", override: true},
       {:credo, "~> 1.4", runtime: false, only: [:dev]},
       {:crontab, "~> 1.1"},
-      # TODO: Revert back to the released version when the following PR is
-      # merged and released:
-      # - https://github.com/beatrichartz/csv/pull/104
-      {:csv, "~> 2.4", github: "beatrichartz/csv", branch: "main"},
+      {:csv, "~> 3.0"},
       {:debounce, "~> 1.0"},
       {:dialyxir, "~> 1.0", runtime: false, only: [:dev]},
       {:earmark, "~> 1.1"},
