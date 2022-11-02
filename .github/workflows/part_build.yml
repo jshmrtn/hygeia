@@ -17,7 +17,7 @@ on:
       releaseHexPmOSVersion:
         required: false
         type: string
-        default: bullseye-20220801-slim
+        default: bullseye-20221004-slim
       dockerTag:
         required: false
         type: string
