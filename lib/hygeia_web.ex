@@ -56,7 +56,7 @@ defmodule HygeiaWeb do
   def live_view do
     quote location: :keep do
       use Phoenix.LiveView,
-        layout: {HygeiaWeb.LayoutView, "live.html"}
+        layout: {HygeiaWeb.LayoutView, :live}
 
       on_mount(HygeiaWeb.Init.Sentry)
       on_mount(HygeiaWeb.Init.Auth)
@@ -74,7 +74,7 @@ defmodule HygeiaWeb do
   def surface_view do
     quote location: :keep do
       use Surface.LiveView,
-        layout: {HygeiaWeb.LayoutView, "live.html"}
+        layout: {HygeiaWeb.LayoutView, :live}
 
       on_mount(HygeiaWeb.Init.Sentry)
       on_mount(HygeiaWeb.Init.Auth)
@@ -91,7 +91,7 @@ defmodule HygeiaWeb do
   def surface_view_bare do
     quote location: :keep do
       use Surface.LiveView,
-        layout: {HygeiaWeb.LayoutView, "live.html"}
+        layout: {HygeiaWeb.LayoutView, :live}
 
       on_mount(HygeiaWeb.Init.Sentry)
       on_mount(HygeiaWeb.Init.Auth)
