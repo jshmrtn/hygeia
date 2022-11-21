@@ -18,9 +18,12 @@
       integrity={integrity_hash(Routes.static_path(@conn, "/css/app.css"))}
       nonce={nonce(@conn, :style)}
     />
-    <script type="text/javascript" nonce={nonce(@conn, :script)}>
-      __webpack_nonce__ = {@conn |> nonce(:script) |> Jason.encode!() |> raw};
-    </script>
+    {content_tag(
+      :script,
+      ["__webpack_nonce__ = ", @conn |> nonce(:script) |> Jason.encode!() |> raw, ";"],
+      type: "text/javascript",
+      nonce: nonce(@conn, :script)
+    )}
     <script
       defer
       phx-track-static
