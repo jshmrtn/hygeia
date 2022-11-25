@@ -31,7 +31,7 @@ defmodule Hygeia.Jobs.UserSync do
     _env -> @default_refresh_interval_ms :timer.minutes(5)
   end
 
-  @grpc_server "api.zitadel.ch:443"
+  @grpc_server "hygeia-aprced.zitadel.cloud:443"
 
   defstruct [:channel, :user_sync_token_server_name]
 

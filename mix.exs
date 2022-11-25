@@ -146,7 +146,7 @@ defmodule Hygeia.MixProject do
       {:tzdata, "~> 1.0"},
       {:websms, "~> 1.0.0-alpha"},
       {:xlsxir, "~> 1.6.4"},
-      {:zitadel_api, "~> 1.0"}
+      {:zitadel_api, "~> 2.1"}
     ]
   end
 

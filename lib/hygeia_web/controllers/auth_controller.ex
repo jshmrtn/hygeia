@@ -19,8 +19,11 @@ defmodule HygeiaWeb.AuthController do
         redirect(conn, to: "/")
 
       _tokens ->
-        {:ok, %{end_session_endpoint: end_session_endpoint}} =
-          :oidcc.get_openid_provider_info("zitadel")
+        end_session_endpoint =
+          case :oidcc.get_openid_provider_info("zitadel") do
+            {:ok, %{end_session_endpoint: end_session_endpoint}} -> end_session_endpoint
+            {:ok, %{"end_session_endpoint" => end_session_endpoint}} -> end_session_endpoint
+          end
 
         %{query: query} = end_session_uri = URI.parse(end_session_endpoint)
 

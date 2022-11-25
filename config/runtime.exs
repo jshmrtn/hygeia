@@ -74,7 +74,7 @@ config :hygeia, HygeiaTelemetry,
 
 # IAM
 iam_config = [
-  issuer_or_config_endpoint: System.get_env("IAM_ISSUER", "https://issuer.zitadel.ch"),
+  issuer_or_config_endpoint: System.get_env("IAM_ISSUER", "https://hygeia-aprced.zitadel.cloud"),
   client_id: System.fetch_env!("WEB_IAM_CLIENT_ID"),
   client_secret: System.fetch_env!("WEB_IAM_CLIENT_SECRET"),
   local_endpoint:

@@ -63,7 +63,7 @@ defmodule HygeiaIam do
              URI.encode_query(%{
                "assertion" => assertion,
                "grant_type" => "urn:ietf:params:oauth:grant-type:jwt-bearer",
-               "scope" => "urn:zitadel:iam:org:project:id:69234237810729019:aud"
+               "scope" => "urn:zitadel:iam:org:project:id:zitadel:aud"
              })
            ),
          {:ok, %{"access_token" => access_token, "expires_in" => expires_in}} <-
