@@ -127,6 +127,22 @@ config :hygeia, HygeiaIam,
   organisation_id: System.fetch_env!("IAM_ORGANISATION_ID"),
   project_id: System.fetch_env!("IAM_PROJECT_ID")
 
+config :hygeia, HygeiaHealth,
+  sedex_backup: [
+    host: System.get_env("SEDEX_BACKUP_HOST"),
+    access_key_id: System.get_env("SEDEX_BACKUP_ACCESS_KEY_ID"),
+    secret_access_key: System.get_env("SEDEX_BACKUP_SECRET_ACCESS_KEY"),
+    bucket: System.get_env("SEDEX_BACKUP_BUCKET"),
+    path: System.get_env("SEDEX_BACKUP_PATH", "hygeia-dev")
+  ],
+  database_backup: [
+    host: System.get_env("DATABASE_BACKUP_HOST"),
+    access_key_id: System.get_env("DATABASE_BACKUP_ACCESS_KEY_ID"),
+    secret_access_key: System.get_env("DATABASE_BACKUP_SECRET_ACCESS_KEY"),
+    bucket: System.get_env("DATABASE_BACKUP_BUCKET"),
+    path: System.get_env("DATABASE_BACKUP_PATH", "hygeia-dev")
+  ]
+
 config :sentry,
   dsn: System.get_env("SENTRY_DSN"),
   tags: %{version: System.get_env("SENTRY_VERSION", System.get_env("RELEASE_VSN", "dev"))},

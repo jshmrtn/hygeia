@@ -3,6 +3,8 @@ defmodule HygeiaHealth do
   Health Checks
   """
 
+  require Logger
+
   Module.register_attribute(__MODULE__, :checks, accumulate: true)
 
   @type check_result :: :ok | {:error, String.t()}
@@ -57,8 +59,12 @@ defmodule HygeiaHealth do
     "invalid"
     |> :oidcc.retrieve_user_info("zitadel")
     |> case do
-      {:error, {:bad_status, %{status: 401}}} -> :ok
-      {:error, _reason} -> {:error, :unexpected_response}
+      {:error, {:bad_status, %{status: 401}}} ->
+        :ok
+
+      {:error, reason} ->
+        Logger.error("Unexpected Response: #{inspect(reason)}")
+        {:error, :unexpected_response}
     end
   end
 
@@ -72,8 +78,12 @@ defmodule HygeiaHealth do
     "invalid"
     |> :oidcc.retrieve_and_validate_token("zitadel")
     |> case do
-      {:error, {:http_error, 400, _body}} -> :ok
-      {:error, _reason} -> {:error, :unexpected_response}
+      {:error, {:http_error, 400, _body}} ->
+        :ok
+
+      {:error, reason} ->
+        Logger.error("Unexpected Response: #{inspect(reason)}")
+        {:error, :unexpected_response}
     end
   end
 
@@ -155,6 +165,62 @@ defmodule HygeiaHealth do
       {tenant_name, :ok}
     else
       {:error, reason} -> {tenant_name, {:error, reason}}
+    end
+  end
+
+  for {name, description} <- [sedex_backup: "Sedex Backup", database_backup: "Database Backup"] do
+    @checks %PlugCheckup.Check{
+      name: description,
+      module: __MODULE__,
+      function: name
+    }
+    @spec unquote(name)() :: check_result()
+    # credo:disable-for-next-line Credo.Check.Readability.Specs
+    def unquote(name)() do
+      with host when is_binary(host) <-
+             Application.get_env(:hygeia, __MODULE__)[unquote(name)][:host],
+           access_key_id when is_binary(access_key_id) <-
+             Application.get_env(:hygeia, __MODULE__)[unquote(name)][:access_key_id],
+           secret_access_key when is_binary(secret_access_key) <-
+             Application.get_env(:hygeia, __MODULE__)[unquote(name)][:secret_access_key],
+           bucket when is_binary(bucket) <-
+             Application.get_env(:hygeia, __MODULE__)[unquote(name)][:bucket],
+           path when is_binary(path) <-
+             Application.get_env(:hygeia, __MODULE__)[unquote(name)][:path] do
+        date =
+          DateTime.utc_now()
+          |> DateTime.add(-(60 * 60 * 12), :second)
+          |> DateTime.to_date()
+
+        check_s3_for_object_with_date(bucket, path, date,
+          host: host,
+          access_key_id: access_key_id,
+          secret_access_key: secret_access_key
+        )
+      else
+        nil -> {:error, "the health check is not configured correctly"}
+      end
+    end
+  end
+
+  defp check_s3_for_object_with_date(bucket, prefix, date, s3_config) do
+    bucket
+    |> ExAws.S3.list_objects(prefix: prefix)
+    |> ExAws.request(s3_config)
+    |> case do
+      {:ok, %{body: %{contents: contents}, status_code: 200}} ->
+        date_to_search = Date.to_iso8601(date)
+
+        contents
+        |> Enum.find(fn %{last_modified: last_modified} -> last_modified =~ date_to_search end)
+        |> case do
+          nil -> {:error, "backup for #{date_to_search} not found"}
+          %{} -> :ok
+        end
+
+      {:error, reason} ->
+        Logger.error("Could not check if backup was made: #{inspect(reason)}")
+        {:error, "request error"}
     end
   end
 
