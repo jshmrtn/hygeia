@@ -68,6 +68,8 @@ defmodule Hygeia.MixProject do
   # and cannot be accessed from applications inside the apps/ folder.
   defp deps do
     [
+      {:ex_aws, "~> 2.1"},
+      {:ex_aws_s3, "~> 2.0"},
       {:briefly, "~> 0.3"},
       {:cadastre, "~> 0.2.0"},
       {:certifi, "~> 2.5"},
