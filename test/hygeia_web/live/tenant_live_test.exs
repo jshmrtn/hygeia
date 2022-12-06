@@ -19,14 +19,14 @@ defmodule HygeiaWeb.TenantLiveTest do
   @update_attrs %{
     name: "some updated name",
     outgoing_mail_configuration_type: "smtp",
-    from_email: "info@kanton.com",
+    from_email: "info@example.com",
     case_management_enabled: true,
     iam_domain: "test",
     outgoing_mail_configuration: %{
       __type__: "smtp",
       enable_relay: true,
       relay: %{
-        server: "kanton.com",
+        server: "example.com",
         port: 2525,
         username: "test1",
         change_password: true,
