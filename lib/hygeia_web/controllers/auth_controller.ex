@@ -18,7 +18,7 @@ defmodule HygeiaWeb.AuthController do
       nil ->
         redirect(conn, to: "/")
 
-      _tokens ->
+      {tokens, "zitadel"} ->
         end_session_endpoint =
           case :oidcc.get_openid_provider_info("zitadel") do
             {:ok, %{end_session_endpoint: end_session_endpoint}} -> end_session_endpoint
@@ -31,7 +31,14 @@ defmodule HygeiaWeb.AuthController do
           query
           |> Kernel.||("")
           |> URI.decode_query()
-          |> Map.put("post_logout_redirect_uri", Routes.home_index_url(conn, :index))
+          |> Map.put(
+            "post_logout_redirect_uri",
+            conn |> Routes.home_index_url(:index) |> String.trim_trailing("/")
+          )
+          |> Map.put(
+            "id_token_hint",
+            tokens |> Map.fetch!(:id) |> Map.fetch!(:token)
+          )
           |> URI.encode_query()
 
         after_logout_url = URI.to_string(%{end_session_uri | query: query})
