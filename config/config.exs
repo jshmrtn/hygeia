@@ -7,10 +7,9 @@ config :hygeia,
   generators: [context_app: :hygeia, binary_id: true]
 
 # Configures if contact persons are captured
-# TODO: Used for presentation, disable before test release!
 config :hygeia,
-  quarantine_enabled: true,
-  isolation_enabled: true
+  quarantine_enabled: false,
+  isolation_enabled: false
 
 config :hygeia, Hygeia.Repo,
   migration_timestamps: [type: :utc_datetime_usec],
