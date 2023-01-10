@@ -6,54 +6,27 @@ on:
 name: "Main Branch"
 
 # Secrets:
-# * CACHE_VERSION - Set to `date +%s`, set new when the cache should be busted
 # * JM_GITLAB_REF - Branch to trigger CI on. (Even though the name includes "ref", GitLab does only allow branch names)
 # * JM_GITLAB_TOKEN - Auth token to trigger GitLab CI
 # * JM_GITLAB_URL - CI Trigger URL
 
 jobs:
-  detectToolVersions:
-    name: "Detect Tool Versions"
-
-    uses: ./.github/workflows/part_tool_versioning.yml
-
   test:
     name: "Test"
 
-    needs: ['detectToolVersions']
-
     uses: ./.github/workflows/part_test.yml
-    with:
-      elixirVersion: "${{ needs.detectToolVersions.outputs.elixirVersion }}"
-      otpVersion: "${{ needs.detectToolVersions.outputs.otpVersion }}"
-    secrets:
-      CACHE_VERSION: "${{ secrets.CACHE_VERSION }}"
 
   build:
     name: "Build"
 
-    needs: ['detectToolVersions']
-
     uses: ./.github/workflows/part_build.yml
     with:
-      elixirVersion: "${{ needs.detectToolVersions.outputs.elixirVersion }}"
-      otpVersion: "${{ needs.detectToolVersions.outputs.otpVersion }}"
-      nodeVersion: "${{ needs.detectToolVersions.outputs.nodeVersion }}"
       dockerTag: "${{ github.ref_name }}"
-    secrets:
-      CACHE_VERSION: "${{ secrets.CACHE_VERSION }}"
 
   docs:
     name: "Docs"
 
-    needs: ['detectToolVersions']
-
     uses: ./.github/workflows/part_docs.yml
-    with:
-      elixirVersion: "${{ needs.detectToolVersions.outputs.elixirVersion }}"
-      otpVersion: "${{ needs.detectToolVersions.outputs.otpVersion }}"
-    secrets:
-      CACHE_VERSION: "${{ secrets.CACHE_VERSION }}"
 
   deploy:
     name: "Deploy"
